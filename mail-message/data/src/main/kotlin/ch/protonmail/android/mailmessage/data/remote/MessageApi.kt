@@ -55,29 +55,19 @@ interface MessageApi : BaseRetrofitApi {
     ): GetMessagesResponse
 
     @GET("mail/v4/messages/{messageId}")
-    suspend fun getMessage(
-        @Path("messageId") messageId: String
-    ): GetMessageResponse
+    suspend fun getMessage(@Path("messageId") messageId: String): GetMessageResponse
 
     @PUT("mail/v4/messages/label")
-    suspend fun addLabel(
-        @Body putLabelBody: PutLabelBody
-    ): PutLabelResponse
+    suspend fun addLabel(@Body putLabelBody: PutLabelBody): PutLabelResponse
 
     @PUT("mail/v4/messages/unlabel")
-    suspend fun removeLabel(
-        @Body putLabelBody: PutLabelBody
-    ): PutLabelResponse
+    suspend fun removeLabel(@Body putLabelBody: PutLabelBody): PutLabelResponse
 
     @PUT("mail/v4/messages/unread")
-    suspend fun markAsUnread(
-        @Body markUnreadBody: MarkMessageAsUnreadBody
-    ): MarkUnreadResponse
+    suspend fun markAsUnread(@Body markUnreadBody: MarkMessageAsUnreadBody): MarkUnreadResponse
 
     @PUT("mail/v4/messages/read")
-    suspend fun markAsRead(
-        @Body markReadBody: MarkMessageAsReadBody
-    ): MarkReadResponse
+    suspend fun markAsRead(@Body markReadBody: MarkMessageAsReadBody): MarkReadResponse
 
     companion object {
 

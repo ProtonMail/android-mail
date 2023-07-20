@@ -55,8 +55,7 @@ import javax.inject.Singleton
 object AppDatabaseModule {
     @Provides
     @Singleton
-    fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase =
-        AppDatabase.buildDatabase(context)
+    fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase = AppDatabase.buildDatabase(context)
 }
 
 @Module
