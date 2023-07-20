@@ -209,14 +209,20 @@ class MessageLocalDataSourceImpl @Inject constructor(
         return updatedMessages.right()
     }
 
-    override suspend fun markUnread(userId: UserId, messageId: MessageId): Either<DataError.Local, Message> {
-        val message = observeMessage(userId, messageId).first()
+    override suspend fun markUnread(
+        userId: UserId,
+        messageIds: List<MessageId>
+    ): Either<DataError.Local, List<Message>> {
+        val messages = observeMessages(userId, messageIds).first()
+            .takeIf { it.isNotEmpty() }
             ?: return DataError.Local.NoDataCached.left()
-        val updatedMessage = message.copy(
-            unread = true
-        )
-        upsertMessage(updatedMessage)
-        return updatedMessage.right()
+        val updatedMessages = messages.map {
+            it.copy(
+                unread = true
+            )
+        }
+        upsertMessages(updatedMessages)
+        return updatedMessages.right()
     }
 
     override suspend fun markRead(userId: UserId, messageId: MessageId): Either<DataError.Local, Message> {

@@ -62,7 +62,7 @@ class MarkMessageAsReadWorker @AssistedInject constructor(
                 if (result.isRetryable()) {
                     Result.retry()
                 } else {
-                    messageLocalDataSource.markUnread(userId, messageId)
+                    messageLocalDataSource.markUnread(userId, listOf(messageId))
                     Result.failure()
                 }
             }
@@ -70,6 +70,7 @@ class MarkMessageAsReadWorker @AssistedInject constructor(
     }
 
     companion object {
+
         internal const val RawUserIdKey = "markReadWorkParamUserId"
         internal const val RawMessageIdKey = "markReadWorkParamMessageId"
 

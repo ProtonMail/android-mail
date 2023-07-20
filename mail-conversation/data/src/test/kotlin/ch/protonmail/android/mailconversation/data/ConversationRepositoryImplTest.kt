@@ -850,7 +850,7 @@ class ConversationRepositoryImplTest {
         val conversationId = ConversationIdSample.WeatherForecast
         val error = DataErrorSample.NoCache.left()
         coEvery { conversationLocalDataSource.markUnread(userId, conversationId, contextLabelId) } returns error
-        coEvery { messageLocalDataSource.markUnread(userId, any()) } returns MessageSample.build().right()
+        coEvery { messageLocalDataSource.markUnread(userId, any()) } returns listOf(MessageSample.build()).right()
 
         // when
         val result = conversationRepository.markUnread(userId, conversationId, contextLabelId)
@@ -871,7 +871,7 @@ class ConversationRepositoryImplTest {
                 contextLabelId
             )
         } returns updatedConversation
-        coEvery { messageLocalDataSource.markUnread(userId, any()) } returns MessageSample.build().right()
+        coEvery { messageLocalDataSource.markUnread(userId, any()) } returns listOf(MessageSample.build()).right()
 
         // when
         val result = conversationRepository.markUnread(userId, conversationId, contextLabelId)
@@ -894,13 +894,13 @@ class ConversationRepositoryImplTest {
         coEvery { conversationLocalDataSource.markUnread(userId, conversationId, contextLabelId) } returns
             ConversationSample.WeatherForecast.right()
         every { messageLocalDataSource.observeMessages(userId, conversationId) } returns flowOf(messages)
-        coEvery { messageLocalDataSource.markUnread(userId, any()) } returns MessageSample.build().right()
+        coEvery { messageLocalDataSource.markUnread(userId, any()) } returns listOf(MessageSample.build()).right()
 
         // when
         conversationRepository.markUnread(userId, conversationId, contextLabelId)
 
         // then
-        coVerify { messageLocalDataSource.markUnread(userId, MessageIdSample.AlphaAppQAReport) }
+        coVerify { messageLocalDataSource.markUnread(userId, listOf(MessageIdSample.AlphaAppQAReport)) }
     }
 
     @Test

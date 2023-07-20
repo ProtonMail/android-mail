@@ -240,7 +240,7 @@ class ConversationRepositoryImpl @Inject constructor(
         messageLocalDataSource.observeMessages(userId, conversationId).first()
             .filter { message -> message.read && message.labelIds.contains(contextLabelId) }
             .maxByOrNull { message -> message.time }
-            ?.let { message -> messageLocalDataSource.markUnread(userId, message.messageId) }
+            ?.let { message -> messageLocalDataSource.markUnread(userId, listOf(message.messageId)) }
 
         conversationRemoteDataSource.markUnread(userId, conversationId, contextLabelId)
         return conversationLocalDataSource.markUnread(userId, conversationId, contextLabelId)

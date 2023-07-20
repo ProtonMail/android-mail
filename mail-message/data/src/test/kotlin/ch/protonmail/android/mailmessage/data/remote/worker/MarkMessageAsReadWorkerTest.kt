@@ -69,12 +69,14 @@ internal class MarkMessageAsReadWorkerTest {
     }
     private val messageApi: MessageApi = mockk()
     private val messageLocalDataSource: MessageLocalDataSource = mockk {
-        coEvery { markUnread(userId, messageId) } returns MessageSample.Invoice.right()
+        coEvery { markUnread(userId, listOf(messageId)) } returns listOf(MessageSample.Invoice).right()
     }
     private val params: WorkerParameters = mockk {
         every { taskExecutor } returns mockk(relaxed = true)
         every { inputData.getString(MarkMessageAsReadWorker.RawUserIdKey) } returns userId.id
-        every { inputData.getString(MarkMessageAsReadWorker.RawMessageIdKey) } returns messageId.id
+        every {
+            inputData.getString(MarkMessageAsReadWorker.RawMessageIdKey)
+        } returns messageId.id
     }
     private val workManager: WorkManager = mockk {
         coEvery { enqueue(ofType<OneTimeWorkRequest>()) } returns mockk()
@@ -176,6 +178,6 @@ internal class MarkMessageAsReadWorkerTest {
         worker.doWork()
 
         // then
-        coVerify { messageLocalDataSource.markUnread(userId, messageId) }
+        coVerify { messageLocalDataSource.markUnread(userId, listOf(messageId)) }
     }
 }

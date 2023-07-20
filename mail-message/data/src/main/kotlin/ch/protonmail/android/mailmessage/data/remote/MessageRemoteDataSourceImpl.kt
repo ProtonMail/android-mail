@@ -101,8 +101,9 @@ class MessageRemoteDataSourceImpl @Inject constructor(
         }
     }
 
-    override fun markUnread(userId: UserId, messageId: MessageId) {
-        enqueuer.enqueue<MarkMessageAsUnreadWorker>(MarkMessageAsUnreadWorker.params(userId, messageId))
+    override fun markUnread(userId: UserId, messageIds: List<MessageId>) {
+        messageIds.chunked(Enqueuer.MAX_PARAMETER_COUNT)
+            .forEach { enqueuer.enqueue<MarkMessageAsUnreadWorker>(MarkMessageAsUnreadWorker.params(userId, it)) }
     }
 
     override fun markRead(userId: UserId, messageId: MessageId) {

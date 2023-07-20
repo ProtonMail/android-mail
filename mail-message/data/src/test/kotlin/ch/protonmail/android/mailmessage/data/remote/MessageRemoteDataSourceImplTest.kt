@@ -346,12 +346,10 @@ class MessageRemoteDataSourceImplTest {
         // When
         messageRemoteDataSource.removeLabelsFromMessages(userId, listOf(messageId), listOf(labelId, labelId2))
         // Then
-        verify {
+        verifySequence {
             enqueuer.enqueue<RemoveLabelMessageWorker>(
                 RemoveLabelMessageWorker.params(userId, listOf(messageId), labelId)
             )
-        }
-        verify {
             enqueuer.enqueue<RemoveLabelMessageWorker>(
                 RemoveLabelMessageWorker.params(userId, listOf(messageId), labelId2)
             )
@@ -361,13 +359,32 @@ class MessageRemoteDataSourceImplTest {
     @Test
     fun `enqueues worker to mark message as unread`() {
         // given
-        val messageId = MessageIdSample.Invoice
+        val messageId = listOf(MessageIdSample.Invoice)
 
         // when
         messageRemoteDataSource.markUnread(userId, messageId)
 
         // then
         verify { enqueuer.enqueue<MarkMessageAsUnreadWorker>(MarkMessageAsUnreadWorker.params(userId, messageId)) }
+    }
+
+    @Test
+    fun `enqueues worker to mark messages as unread twice if message id count exceeds limit`() {
+        // Given
+        val messageIds = List(Enqueuer.MAX_PARAMETER_COUNT + 1) { MessageIdSample.Invoice }
+
+        // When
+        messageRemoteDataSource.markUnread(userId, messageIds)
+
+        // Then
+        verifySequence {
+            enqueuer.enqueue<MarkMessageAsUnreadWorker>(
+                MarkMessageAsUnreadWorker.params(userId, messageIds.take(Enqueuer.MAX_PARAMETER_COUNT))
+            )
+            enqueuer.enqueue<MarkMessageAsUnreadWorker>(
+                MarkMessageAsUnreadWorker.params(userId, messageIds.drop(Enqueuer.MAX_PARAMETER_COUNT))
+            )
+        }
     }
 
     @Test

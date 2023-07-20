@@ -172,7 +172,7 @@ interface MessageLocalDataSource {
     /**
      * Marks as unread the message for the given [messageId] related to the same [userId]
      */
-    suspend fun markUnread(userId: UserId, messageId: MessageId): Either<DataError.Local, Message>
+    suspend fun markUnread(userId: UserId, messageIds: List<MessageId>): Either<DataError.Local, List<Message>>
 
     /**
      * Marks as read the message for the given [messageId] related to the same [userId]

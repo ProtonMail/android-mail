@@ -101,9 +101,9 @@ interface MessageRepository {
     ): Either<DataError.Local, List<Message>>
 
     /**
-     * Set the message with the given [messageId] as unread
+     * Set the messages with the given [messageIds] as unread
      */
-    suspend fun markUnread(userId: UserId, messageId: MessageId): Either<DataError.Local, Message>
+    suspend fun markUnread(userId: UserId, messageIds: List<MessageId>): Either<DataError.Local, List<Message>>
 
     /**
      * Set the message with the given [messageId] as read

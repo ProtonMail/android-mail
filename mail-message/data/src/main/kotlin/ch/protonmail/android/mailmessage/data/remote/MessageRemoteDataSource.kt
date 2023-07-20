@@ -57,9 +57,9 @@ interface MessageRemoteDataSource {
     )
 
     /**
-     * Mark message with the given [messageId] as unread
+     * Mark message with the given [messageIds] as unread
      */
-    fun markUnread(userId: UserId, messageId: MessageId)
+    fun markUnread(userId: UserId, messageIds: List<MessageId>)
 
     /**
      * Mark message with the given [messageId] as read

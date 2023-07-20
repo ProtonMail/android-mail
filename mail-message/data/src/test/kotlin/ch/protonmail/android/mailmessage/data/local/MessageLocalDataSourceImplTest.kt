@@ -596,12 +596,18 @@ class MessageLocalDataSourceImplTest {
     }
 
     @Test
-    fun `mark unread returns updated message`() = runTest {
+    fun `mark unread returns updated messages`() = runTest {
         // given
         val userId = UserIdSample.Primary
         val messageId = MessageIdSample.Invoice
+        val messageId2 = MessageIdSample.SepWeatherForecast
         val message = MessageWithLabelIdsSample.Invoice.copy(
             message = MessageEntitySample.Invoice.copy(
+                unread = false
+            )
+        )
+        val message2 = MessageWithLabelIdsSample.SepWeatherForecast.copy(
+            message = MessageEntitySample.SepWeatherForecast.copy(
                 unread = false
             )
         )
@@ -610,13 +616,21 @@ class MessageLocalDataSourceImplTest {
                 unread = true
             )
         )
-        every { messageDao.observe(userId, messageId) } returns flowOf(message)
+        val updatedMessage2 = message2.copy(
+            message = MessageEntitySample.SepWeatherForecast.copy(
+                unread = true
+            )
+        )
+        val expected = listOf(updatedMessage, updatedMessage2).map { it.toMessage() }.right()
+        every { messageDao.observeMessages(userId, listOf(messageId, messageId2)) } returns flowOf(
+            listOf(message, message2)
+        )
 
         // when
-        val result = messageLocalDataSource.markUnread(userId, messageId)
+        val result = messageLocalDataSource.markUnread(userId, listOf(messageId, messageId2))
 
         // then
-        assertEquals(updatedMessage.toMessage().right(), result)
+        assertEquals(expected, result)
     }
 
     @Test
@@ -625,10 +639,10 @@ class MessageLocalDataSourceImplTest {
         val userId = UserIdSample.Primary
         val messageId = MessageIdSample.Invoice
         val error = DataErrorSample.NoCache.left()
-        every { messageDao.observe(userId, messageId) } returns flowOf(null)
+        every { messageDao.observeMessages(userId, listOf(messageId)) } returns flowOf(emptyList())
 
         // when
-        val result = messageLocalDataSource.markUnread(userId, messageId)
+        val result = messageLocalDataSource.markUnread(userId, listOf(messageId))
 
         // then
         assertEquals(error, result)

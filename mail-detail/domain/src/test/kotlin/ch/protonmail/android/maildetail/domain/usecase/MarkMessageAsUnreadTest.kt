@@ -53,7 +53,7 @@ internal class MarkMessageAsUnreadTest {
     fun `when repository succeed then message is returned`() = runTest {
         // given
         val message = MessageSample.Invoice.right()
-        coEvery { messageRepository.markUnread(any(), any()) } returns message
+        coEvery { messageRepository.markUnread(any(), any()) } returns listOf(MessageSample.Invoice).right()
 
         // when
         val result = markUnread(UserIdSample.Primary, MessageIdSample.Invoice)

@@ -43,6 +43,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.SerializationException
 import me.proton.core.network.data.ApiProvider
 import me.proton.core.network.domain.ApiResult
+import me.proton.core.util.kotlin.serialize
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -74,7 +75,9 @@ internal class MarkMessageAsUnreadWorkerTest {
     private val params: WorkerParameters = mockk {
         every { taskExecutor } returns mockk(relaxed = true)
         every { inputData.getString(MarkMessageAsUnreadWorker.RawUserIdKey) } returns userId.id
-        every { inputData.getString(MarkMessageAsUnreadWorker.RawMessageIdKey) } returns messageId.id
+        every {
+            inputData.getString(MarkMessageAsUnreadWorker.RawMessageIdsKey)
+        } returns listOf(messageId.id).serialize()
     }
     private val workManager: WorkManager = mockk {
         coEvery { enqueue(ofType<OneTimeWorkRequest>()) } returns mockk()
@@ -93,7 +96,9 @@ internal class MarkMessageAsUnreadWorkerTest {
         val expectedNetworkType = NetworkType.CONNECTED
 
         // when
-        Enqueuer(workManager).enqueue<MarkMessageAsUnreadWorker>(MarkMessageAsUnreadWorker.params(userId, messageId))
+        Enqueuer(workManager).enqueue<MarkMessageAsUnreadWorker>(
+            MarkMessageAsUnreadWorker.params(userId, listOf(messageId))
+        )
 
         // then
         val requestSlot = slot<OneTimeWorkRequest>()
@@ -104,7 +109,12 @@ internal class MarkMessageAsUnreadWorkerTest {
     @Test
     fun `worker is enqueued with correct parameters`() {
         // when
-        Enqueuer(workManager).enqueue<MarkMessageAsUnreadWorker>(MarkMessageAsUnreadWorker.params(userId, messageId))
+        Enqueuer(workManager).enqueue<MarkMessageAsUnreadWorker>(
+            MarkMessageAsUnreadWorker.params(
+                userId,
+                listOf(messageId)
+            )
+        )
 
         // then
         val requestSlot = slot<OneTimeWorkRequest>()
@@ -114,8 +124,8 @@ internal class MarkMessageAsUnreadWorkerTest {
             actual = requestSlot.captured.workSpec.input.getString(MarkMessageAsUnreadWorker.RawUserIdKey)
         )
         assertEquals(
-            expected = messageId.id,
-            actual = requestSlot.captured.workSpec.input.getString(MarkMessageAsUnreadWorker.RawMessageIdKey)
+            expected = listOf(messageId.id).serialize(),
+            actual = requestSlot.captured.workSpec.input.getString(MarkMessageAsUnreadWorker.RawMessageIdsKey)
         )
     }
 

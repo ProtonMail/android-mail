@@ -175,10 +175,12 @@ class MessageRepositoryImpl @Inject constructor(
         return updatedMessages.right()
     }
 
-    override suspend fun markUnread(userId: UserId, messageId: MessageId): Either<DataError.Local, Message> =
-        localDataSource.markUnread(userId, messageId).onRight {
-            remoteDataSource.markUnread(userId, messageId)
-        }
+    override suspend fun markUnread(
+        userId: UserId,
+        messageIds: List<MessageId>
+    ): Either<DataError.Local, List<Message>> = localDataSource.markUnread(userId, messageIds).onRight {
+        remoteDataSource.markUnread(userId, messageIds)
+    }
 
     override suspend fun markRead(userId: UserId, messageId: MessageId): Either<DataError.Local, Message> =
         localDataSource.markRead(userId, messageId).onRight {
