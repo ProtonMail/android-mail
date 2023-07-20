@@ -26,6 +26,7 @@ buildscript {
         classpath("com.android.tools.build:gradle:${Versions.Gradle.androidGradlePlugin}")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.Gradle.kotlinGradlePlugin}")
         classpath("com.google.dagger:hilt-android-gradle-plugin:${Versions.Gradle.hiltAndroidGradlePlugin}")
+        classpath("com.google.gms:google-services:${Versions.Gradle.googleServicesPlugin}")
         classpath("org.jacoco:org.jacoco.core:${Versions.Gradle.jacocoGradlePlugin}")
         classpath("io.sentry:sentry-android-gradle-plugin:${Versions.Gradle.sentryGradlePlugin}")
     }

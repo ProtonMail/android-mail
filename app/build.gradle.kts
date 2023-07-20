@@ -20,6 +20,7 @@ import java.util.Properties
 
 plugins {
     id("com.android.application")
+    id("com.google.gms.google-services")
     kotlin("android")
     kotlin("kapt")
     id("com.google.devtools.ksp")
@@ -191,6 +192,7 @@ dependencies {
     implementation(project(":mail-label"))
     implementation(project(":mail-mailbox"))
     implementation(project(":mail-message"))
+    implementation(project(":mail-notifications"))
     implementation(project(":mail-pagination"))
     implementation(project(":mail-settings"))
 

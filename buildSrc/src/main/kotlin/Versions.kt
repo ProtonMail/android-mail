@@ -42,6 +42,7 @@ object Versions {
         const val customViewPoolingContainer = "1.0.0"
         const val datastore = "1.0.0"
         const val hilt = "1.0.0"
+        const val lifecycle = "2.6.1"
         const val material3 = "1.1.0"
         const val navigation = "2.6.0-rc02"
         const val paging = "3.1.1"
@@ -79,10 +80,16 @@ object Versions {
         const val detekt = "1.22.0"
     }
 
+    object Firebase {
+
+        const val bom = "32.2.0"
+    }
+
     object Gradle {
 
         const val androidGradlePlugin = "8.0.2"
         const val benManesVersionsPlugin = "0.45.0"
+        const val googleServicesPlugin = "4.3.15"
         const val hiltAndroidGradlePlugin = Dagger.dagger
         const val kotlinGradlePlugin = Kotlin.kotlin
         const val jacocoGradlePlugin = "0.8.8"

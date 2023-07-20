@@ -107,6 +107,13 @@ object AndroidX {
         const val work = "androidx.hilt:hilt-work:$version"
     }
 
+    object Lifecycle {
+
+        private const val version = Versions.AndroidX.lifecycle
+
+        const val process = "androidx.lifecycle:lifecycle-process:$version"
+    }
+
     object Navigation {
 
         private const val version = Versions.AndroidX.navigation
@@ -188,6 +195,12 @@ object Detekt {
 
     const val api = "io.gitlab.arturbosch.detekt:detekt-api:${Versions.Detekt.detekt}"
     const val test = "io.gitlab.arturbosch.detekt:detekt-test:${Versions.Detekt.detekt}"
+}
+
+object Firebase {
+
+    const val bom = "com.google.firebase:firebase-bom:${Versions.Firebase.bom}"
+    const val messaging = "com.google.firebase:firebase-messaging-ktx"
 }
 
 object JakeWharton {

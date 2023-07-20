@@ -74,6 +74,8 @@ include(":mail-mailbox:data")
 include(":mail-mailbox:domain")
 include(":mail-mailbox:presentation")
 
+include(":mail-notifications")
+
 include(":mail-settings:dagger")
 include(":mail-settings:data")
 include(":mail-settings:domain")

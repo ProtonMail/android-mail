@@ -55,6 +55,7 @@ object Dependencies {
         add(AndroidX.Hilt.compiler)
         add(AndroidX.Hilt.navigationCompose)
         add(AndroidX.Hilt.work)
+        add(AndroidX.Lifecycle.process)
         add(AndroidX.Navigation.compose)
         add(AndroidX.Paging.compose)
         add(AndroidX.Paging.runtime)
@@ -192,6 +193,12 @@ object Dependencies {
         add(Proton.Core.paymentIap)
         add(Proton.Core.testAndroidInstrumented)
         add(Proton.Core.testQuark)
+    }
+
+    val firebaseBom = Firebase.bom
+
+    val firebaseMessaging = mutableListOf<String>().apply {
+        add(Firebase.messaging)
     }
 }
 
