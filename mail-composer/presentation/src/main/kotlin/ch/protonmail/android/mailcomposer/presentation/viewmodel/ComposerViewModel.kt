@@ -48,6 +48,8 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -64,6 +66,7 @@ class ComposerViewModel @Inject constructor(
     provideNewDraftId: ProvideNewDraftId
 ) : ViewModel() {
 
+    private val actionMutex = Mutex()
     private val messageId = MessageId(provideNewDraftId().id)
     private val primaryUserId = observePrimaryUserId().filterNotNull()
 
@@ -80,13 +83,15 @@ class ComposerViewModel @Inject constructor(
 
     internal fun submit(action: ComposerAction) {
         viewModelScope.launch {
-            when (action) {
-                is ComposerAction.DraftBodyChanged -> emitNewStateFor(onDraftBodyChanged(action))
-                is ComposerAction.SenderChanged -> emitNewStateFor(onSenderChanged(action))
-                is ComposerAction.SubjectChanged -> emitNewStateFor(onSubjectChanged(action))
-                is ComposerAction.ChangeSenderRequested -> emitNewStateFor(onChangeSender())
-                is ComposerAction.OnCloseComposer -> emitNewStateFor(onCloseComposer(action))
-                else -> emitNewStateFor(action)
+            actionMutex.withLock {
+                when (action) {
+                    is ComposerAction.DraftBodyChanged -> emitNewStateFor(onDraftBodyChanged(action))
+                    is ComposerAction.SenderChanged -> emitNewStateFor(onSenderChanged(action))
+                    is ComposerAction.SubjectChanged -> emitNewStateFor(onSubjectChanged(action))
+                    is ComposerAction.ChangeSenderRequested -> emitNewStateFor(onChangeSender())
+                    is ComposerAction.OnCloseComposer -> emitNewStateFor(onCloseComposer(action))
+                    else -> emitNewStateFor(action)
+                }
             }
         }
     }
