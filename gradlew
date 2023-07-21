@@ -62,6 +62,16 @@
 #
 ##############################################################################
 
+copyDummyGoogleSevicesFiles() {
+    if [ ! -f app/google-services.json ]
+    then
+        echo "Copying dummy google-services.json file"
+        cp "config/google-services/dummy-google-services.json" "app/google-services.json"
+    fi
+}
+
+copyDummyGoogleSevicesFiles
+
 # Attempt to set APP_HOME
 
 # Resolve links: $0 may be a link
