@@ -349,7 +349,7 @@ object MessageDetailScreen {
         val onAttachmentClicked: (attachmentId: AttachmentId) -> Unit,
         val openAttachment: (values: OpenAttachmentIntentValues) -> Unit,
         val showFeatureMissingSnackbar: () -> Unit,
-        val loadEmbeddedImage: suspend (contentId: String) -> GetEmbeddedImageResult?
+        val loadEmbeddedImage: (contentId: String) -> GetEmbeddedImageResult?
     ) {
 
         companion object {
@@ -386,7 +386,7 @@ object MessageDetailContent {
         val onShowAllAttachmentsClicked: () -> Unit,
         val onAttachmentClicked: (attachmentId: AttachmentId) -> Unit,
         val showFeatureMissingSnackbar: () -> Unit,
-        val loadEmbeddedImage: suspend (contentId: String) -> GetEmbeddedImageResult?
+        val loadEmbeddedImage: (contentId: String) -> GetEmbeddedImageResult?
     )
 }
 

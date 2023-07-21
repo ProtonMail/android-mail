@@ -67,7 +67,6 @@ import com.google.accompanist.web.WebView
 import com.google.accompanist.web.rememberWebViewStateWithHTMLData
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import me.proton.core.compose.component.ProtonSolidButton
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
@@ -128,9 +127,9 @@ internal fun MessageBodyWebView(
                 return if (!messageBodyUiModel.shouldShowRemoteContent && request?.isRemoteContent() == true) {
                     WebResourceResponse("", "", null)
                 } else if (messageBodyUiModel.shouldShowEmbeddedImages && request?.isEmbeddedImage() == true) {
-                    runBlocking {
-                        actions.loadEmbeddedImage(messageId, "<${request.url.schemeSpecificPart}>")
-                    }?.let { WebResourceResponse(it.mimeType, "", ByteArrayInputStream(it.data)) }
+                    actions.loadEmbeddedImage(messageId, "<${request.url.schemeSpecificPart}>")?.let {
+                        WebResourceResponse(it.mimeType, "", ByteArrayInputStream(it.data))
+                    }
                 } else {
                     super.shouldInterceptRequest(view, request)
                 }
@@ -264,7 +263,7 @@ object MessageBody {
         val onMessageBodyLinkClicked: (uri: Uri) -> Unit,
         val onShowAllAttachments: () -> Unit,
         val onAttachmentClicked: (attachmentId: AttachmentId) -> Unit,
-        val loadEmbeddedImage: suspend (messageId: MessageId?, contentId: String) -> GetEmbeddedImageResult?
+        val loadEmbeddedImage: (messageId: MessageId?, contentId: String) -> GetEmbeddedImageResult?
     )
 }
 

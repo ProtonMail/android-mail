@@ -39,13 +39,15 @@ class GetEmbeddedImageAvoidDuplicatedExecution @Inject constructor(
         messageId: MessageId,
         contentId: String,
         coroutineContext: CoroutineContext
-    ): GetEmbeddedImageResult? = withContext(coroutineContext) {
-        if (loadEmbeddedImageJobMap[contentId]?.isActive == true) {
-            loadEmbeddedImageJobMap[contentId]
-        } else {
-            async { getEmbeddedImage(userId, messageId, contentId).getOrNull() }.apply {
-                loadEmbeddedImageJobMap[contentId] = this
-            }
-        }?.await()
-    }
+    ): GetEmbeddedImageResult? = runCatching {
+        withContext(coroutineContext) {
+            if (loadEmbeddedImageJobMap[contentId]?.isActive == true) {
+                loadEmbeddedImageJobMap[contentId]
+            } else {
+                async { getEmbeddedImage(userId, messageId, contentId).getOrNull() }.apply {
+                    loadEmbeddedImageJobMap[contentId] = this
+                }
+            }?.await()
+        }
+    }.getOrNull()
 }
