@@ -22,6 +22,7 @@ import arrow.core.Either
 import arrow.core.continuations.either
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.extension.hasAllowedEmbeddedImageMimeType
 import ch.protonmail.android.mailmessage.domain.repository.AttachmentRepository
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import me.proton.core.domain.entity.UserId
@@ -40,7 +41,7 @@ class GetEmbeddedImage @Inject constructor(
         val messageWithBody =
             messageRepository.getLocalMessageWithBody(userId, messageId) ?: shift(DataError.Local.NoDataCached)
         val attachment = messageWithBody.messageBody.attachments
-            .filter { it.mimeType.startsWith("image/") || it.mimeType == "application/octet-stream" }
+            .filter { it.hasAllowedEmbeddedImageMimeType() }
             .firstOrNull { it.headers["content-id"] == contentId }
             ?: shift(DataError.Local.NoDataCached)
 
