@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcomposer.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
@@ -32,13 +33,17 @@ import ch.protonmail.android.mailcomposer.domain.usecase.IsValidEmailAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithAllFields
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithBody
+import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithRecipients
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithSubject
+import ch.protonmail.android.mailcomposer.presentation.mapper.ParticipantMapper
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerEvent
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerOperation
+import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
 import ch.protonmail.android.mailcomposer.presentation.reducer.ComposerReducer
+import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -50,6 +55,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import me.proton.core.util.kotlin.takeIfNotEmpty
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -58,6 +64,9 @@ class ComposerViewModel @Inject constructor(
     private val storeDraftWithBody: StoreDraftWithBody,
     private val storeDraftWithSubject: StoreDraftWithSubject,
     private val storeDraftWithAllFields: StoreDraftWithAllFields,
+    private val storeDraftWithRecipients: StoreDraftWithRecipients,
+    private val getContacts: GetContacts,
+    private val participantMapper: ParticipantMapper,
     private val reducer: ComposerReducer,
     private val isValidEmailAddress: IsValidEmailAddress,
     private val getPrimaryAddress: GetPrimaryAddress,
@@ -89,8 +98,10 @@ class ComposerViewModel @Inject constructor(
                     is ComposerAction.SenderChanged -> emitNewStateFor(onSenderChanged(action))
                     is ComposerAction.SubjectChanged -> emitNewStateFor(onSubjectChanged(action))
                     is ComposerAction.ChangeSenderRequested -> emitNewStateFor(onChangeSender())
+                    is ComposerAction.RecipientsToChanged -> emitNewStateFor(onToChanged(action))
+                    is ComposerAction.RecipientsCcChanged -> emitNewStateFor(onCcChanged(action))
+                    is ComposerAction.RecipientsBccChanged -> emitNewStateFor(onBccChanged(action))
                     is ComposerAction.OnCloseComposer -> emitNewStateFor(onCloseComposer(action))
-                    else -> emitNewStateFor(action)
                 }
             }
         }
@@ -141,6 +152,8 @@ class ComposerViewModel @Inject constructor(
 
     private fun currentSenderEmail() = SenderEmail(state.value.fields.sender.email)
 
+    private suspend fun contactsOrEmpty() = getContacts(primaryUserId()).getOrElse { emptyList() }
+
     private suspend fun onChangeSender() = getComposerSenderAddresses().fold(
         ifLeft = { changeSenderError ->
             when (changeSenderError) {
@@ -153,6 +166,45 @@ class ComposerViewModel @Inject constructor(
             ComposerEvent.SenderAddressesReceived(userAddresses.map { SenderUiModel(it.email) })
         }
     )
+
+    private suspend fun onToChanged(action: ComposerAction.RecipientsToChanged): ComposerOperation =
+        action.recipients.filterIsInstance<RecipientUiModel.Valid>().takeIfNotEmpty()?.let { validRecipients ->
+            storeDraftWithRecipients(
+                primaryUserId(),
+                messageId,
+                currentSenderEmail(),
+                to = validRecipients.map { participantMapper.recipientUiModelToParticipant(it, contactsOrEmpty()) }
+            ).fold(
+                ifLeft = { ComposerEvent.ErrorStoringDraftRecipients },
+                ifRight = { action }
+            )
+        } ?: action
+
+    private suspend fun onCcChanged(action: ComposerAction.RecipientsCcChanged): ComposerOperation =
+        action.recipients.filterIsInstance<RecipientUiModel.Valid>().takeIfNotEmpty()?.let { validRecipients ->
+            storeDraftWithRecipients(
+                primaryUserId(),
+                messageId,
+                currentSenderEmail(),
+                cc = validRecipients.map { participantMapper.recipientUiModelToParticipant(it, contactsOrEmpty()) }
+            ).fold(
+                ifLeft = { ComposerEvent.ErrorStoringDraftRecipients },
+                ifRight = { action }
+            )
+        } ?: action
+
+    private suspend fun onBccChanged(action: ComposerAction.RecipientsBccChanged): ComposerOperation =
+        action.recipients.filterIsInstance<RecipientUiModel.Valid>().takeIfNotEmpty()?.let { validRecipients ->
+            storeDraftWithRecipients(
+                primaryUserId(),
+                messageId,
+                currentSenderEmail(),
+                bcc = validRecipients.map { participantMapper.recipientUiModelToParticipant(it, contactsOrEmpty()) }
+            ).fold(
+                ifLeft = { ComposerEvent.ErrorStoringDraftRecipients },
+                ifRight = { action }
+            )
+        } ?: action
 
     private fun emitNewStateFor(operation: ComposerOperation) {
         val currentState = state.value

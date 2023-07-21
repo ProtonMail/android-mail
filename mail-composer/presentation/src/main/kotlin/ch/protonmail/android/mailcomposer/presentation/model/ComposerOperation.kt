@@ -44,6 +44,7 @@ sealed interface ComposerEvent : ComposerOperation {
     object ErrorVerifyingPermissionsToChangeSender : ComposerEvent
     object ErrorStoringDraftSenderAddress : ComposerEvent
     object ErrorStoringDraftBody : ComposerEvent
+    object ErrorStoringDraftRecipients : ComposerEvent
     object ErrorStoringDraftSubject : ComposerEvent
     object OnCloseWithDraftSaved : ComposerEvent
 }
