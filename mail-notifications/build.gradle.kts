@@ -58,4 +58,6 @@ dependencies {
     implementation(Dependencies.modulePresentationLibs)
     implementation(platform(Dependencies.firebaseBom))
     implementation(Dependencies.firebaseMessaging)
+
+    testImplementation(Dependencies.testLibs)
 }
