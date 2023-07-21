@@ -21,6 +21,9 @@ package ch.protonmail.android.db
 import android.content.Context
 import androidx.room.Database
 import androidx.room.TypeConverters
+import ch.protonmail.android.composer.data.local.entity.DraftStateEntity
+import ch.protonmail.android.composer.data.local.DraftStateDatabase
+import ch.protonmail.android.composer.data.local.converters.DraftStateConverters
 import ch.protonmail.android.mailconversation.data.local.ConversationDatabase
 import ch.protonmail.android.mailconversation.data.local.converters.ConversationConverters
 import ch.protonmail.android.mailconversation.data.local.converters.MapConverters
@@ -159,7 +162,9 @@ import me.proton.core.usersettings.data.entity.UserSettingsEntity
         ObservabilityEventEntity::class,
         // key transparency
         AddressChangeEntity::class,
-        SelfAuditResultEntity::class
+        SelfAuditResultEntity::class,
+        // draft state
+        DraftStateEntity::class
     ],
     version = AppDatabase.version,
     exportSchema = true
@@ -181,7 +186,8 @@ import me.proton.core.usersettings.data.entity.UserSettingsEntity
     ConversationConverters::class,
     MapConverters::class,
     AttachmentWorkerStatusConverters::class,
-    UriConverter::class
+    UriConverter::class,
+    DraftStateConverters::class
 )
 @Suppress("UnnecessaryAbstractClass")
 abstract class AppDatabase :
@@ -207,12 +213,13 @@ abstract class AppDatabase :
     ObservabilityDatabase,
     KeyTransparencyDatabase,
     NotificationDatabase,
-    PushDatabase {
+    PushDatabase,
+    DraftStateDatabase {
 
     companion object {
 
         const val name = "db-mail"
-        const val version = 10
+        const val version = 11
 
         internal val migrations = listOf(
             AppDatabaseMigrations.MIGRATION_1_2,
@@ -223,7 +230,8 @@ abstract class AppDatabase :
             AppDatabaseMigrations.MIGRATION_6_7,
             AppDatabaseMigrations.MIGRATION_7_8,
             AppDatabaseMigrations.MIGRATION_8_9,
-            AppDatabaseMigrations.MIGRATION_9_10
+            AppDatabaseMigrations.MIGRATION_9_10,
+            AppDatabaseMigrations.MIGRATION_10_11
         )
         fun buildDatabase(context: Context): AppDatabase = databaseBuilder<AppDatabase>(context, name)
             .apply { migrations.forEach { addMigrations(it) } }

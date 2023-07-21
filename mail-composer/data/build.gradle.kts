@@ -43,7 +43,12 @@ android {
 }
 
 dependencies {
+    implementation(Dependencies.moduleDataLibs)
+    implementation(Proton.Core.user)
+
     implementation(project(":mail-composer:domain"))
+    implementation(project(":mail-message:data"))
+    implementation(project(":mail-message:domain"))
 
     testImplementation(Dependencies.testLibs)
 }
