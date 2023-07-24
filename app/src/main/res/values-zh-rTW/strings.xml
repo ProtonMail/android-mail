@@ -23,4 +23,5 @@
   <string name="user_select_other_account_content_description">選取其它帳號</string>
   <string name="you_are_offline">您處於離線狀態</string>
   <string name="feature_coming_soon">即將推出的新功能…</string>
+  <string name="mailbox_draft_saved_message">草稿已儲存</string>
 </resources>

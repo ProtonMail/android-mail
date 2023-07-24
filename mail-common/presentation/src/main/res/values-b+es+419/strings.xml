@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="expiration_expired">Expirada</string>
+  <string name="expiration_days_arg">%d d</string>
+  <string name="expiration_hours_arg">%d h</string>
+  <string name="expiration_minutes_arg">%d min</string>
+  <string name="retry">Reintentar</string>
+  <string name="toolbar_back_content_description">Volver a la pantalla anterior</string>
+  <string name="x_error_not_logged_in">Sesión no iniciada</string>
+  <string name="action_reply_content_description">Responder</string>
+  <string name="action_reply_all_content_description">Responder a todos</string>
+  <string name="action_forward_content_description">Reenviar</string>
+  <string name="action_mark_read_content_description">Marcar como leído</string>
+  <string name="action_mark_unread_content_description">Marcar como no leído</string>
+  <string name="action_star_content_description">Destacar</string>
+  <string name="action_unstar_content_description">No destacar</string>
+  <string name="action_label_content_description">Etiquetar como</string>
+  <string name="action_move_content_description">Mover a</string>
+  <string name="action_trash_content_description">Papelera</string>
+  <string name="action_delete_content_description">Eliminar</string>
+  <string name="action_archive_content_description">Archivo</string>
+  <string name="action_spam_content_description">Spam</string>
+  <string name="action_view_in_light_mode_content_description">Ver mensaje en modo claro</string>
+  <string name="action_view_in_dark_mode_content_description">Ver mensaje en modo oscuro</string>
+  <string name="action_print_content_description">Imprimir</string>
+  <string name="action_view_headers_content_description">Ver encabezados</string>
+  <string name="action_view_html_content_description">Ver HTML</string>
+  <string name="action_report_phishing_content_description">Reportar suplantación de identidad</string>
+  <string name="action_remind_content_description">Recordarme</string>
+  <string name="action_save_pdf_content_description">Guardar como PDF</string>
+  <string name="action_sender_emails_content_description">Definir acciones para futuros correos de este remitente</string>
+  <string name="action_save_attachments_content_description">Guardar adjuntos</string>
+  <string name="common_error_loading_actions">Error al cargar las acciones</string>
+  <string name="yesterday">Ayer</string>
+  <!-- notification channels -->
+  <string name="attachment_download_notification_channel_name">Archivos adjuntos</string>
+  <string name="attachment_download_notification_channel_description">Notificaciones de descargas de archivos adjuntos</string>
+  <string name="auth_badge_official">Oficial</string>
+</resources>

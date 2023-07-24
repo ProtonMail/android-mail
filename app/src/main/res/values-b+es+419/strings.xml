@@ -17,11 +17,11 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="title_remove">Odstranit</string>
-  <string name="title_remove_account">Odstranit účet</string>
-  <string name="description_remove_account">Odhlásíte se a odstraníte všechny informace spojené s tímto účtem.</string>
-  <string name="user_select_other_account_content_description">Vybrat jiný účet</string>
-  <string name="you_are_offline">Jste v režimu offline</string>
-  <string name="feature_coming_soon">Funkce bude brzy k dispozici...</string>
-  <string name="mailbox_draft_saved_message">Koncept uložen</string>
+  <string name="title_remove">Eliminar</string>
+  <string name="title_remove_account">Eliminar cuenta</string>
+  <string name="description_remove_account">Cerrará la sesión y eliminará toda la información asociada con esta cuenta.</string>
+  <string name="user_select_other_account_content_description">Seleccione otra cuenta</string>
+  <string name="you_are_offline">No está conectado</string>
+  <string name="feature_coming_soon">Pronto tendrá esta función...</string>
+  <string name="mailbox_draft_saved_message">Borrador guardado</string>
 </resources>

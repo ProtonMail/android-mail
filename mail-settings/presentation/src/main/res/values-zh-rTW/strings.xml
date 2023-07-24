@@ -64,8 +64,8 @@
   <string name="mail_settings_not_set">未設定</string>
   <string name="mail_settings_conversation_mode_hint">收件匣可將同一對話的電郵，以群組或單獨方式陳列顯示</string>
   <!-- Swipe Actions -->
-  <string name="mail_settings_swipe_actions_title">滑動動作</string>
-  <string name="mail_settings_swipe_actions_subtitle">設定滑動手勢以存取最常用動作。</string>
+  <string name="mail_settings_swipe_actions_title">滑動操作</string>
+  <string name="mail_settings_swipe_actions_subtitle">設定滑動手勢以存取最常用的動作。</string>
   <string name="mail_settings_swipe_right_name">由左至右</string>
   <string name="mail_settings_swipe_left_name">從右至左</string>
   <string name="mail_settings_swipe_action_archive_title">封存</string>

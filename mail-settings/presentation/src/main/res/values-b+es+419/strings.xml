@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="mail_settings_settings">Ajustes</string>
+  <string name="mail_settings_toolbar_button_content_description">Atrás</string>
+  <!-- Settings items -->
+  <string name="mail_settings_account_settings">Ajustes de la cuenta</string>
+  <string name="mail_settings_app_settings">Ajustes de la app</string>
+  <string name="mail_settings_theme">Tema</string>
+  <string name="mail_settings_push_notifications">Notificaciones push</string>
+  <string name="mail_settings_auto_lock">Bloqueo automático</string>
+  <string name="mail_settings_alternative_routing">Ruta alternativa</string>
+  <string name="mail_settings_app_language">Idioma de la app</string>
+  <string name="mail_settings_combined_contacts">Contactos combinados</string>
+  <string name="mail_settings_swipe_actions">Acciones de deslizamiento</string>
+  <string name="mail_settings_combined_contacts_hint">Active esta función para completar automáticamente las direcciones usando los contactos de todas sus cuentas conectadas.</string>
+  <string name="mail_settings_alternative_routing_hint">En caso de que los sitios de Proton estén bloqueados, este ajuste permite a la aplicación probar rutas alternativas para llegar a Proton, lo que puede ser útil para evitar problemas de red o firewalls. Recomendamos mantener este ajuste activado para mayor confiabilidad.</string>
+  <!-- Theme settings -->
+  <string name="mail_settings_system_default">Del sistema</string>
+  <string name="mail_settings_theme_light">Claro</string>
+  <string name="mail_settings_theme_dark">Oscuro</string>
+  <!-- Settings item states -->
+  <string name="mail_settings_no_information_available">Sin información disponible</string>
+  <string name="mail_settings_enabled">Habilitada</string>
+  <string name="mail_settings_disabled">Deshabilitado</string>
+  <string name="mail_settings_allowed">Permitido</string>
+  <string name="mail_settings_denied">Denegado</string>
+  <string name="mail_settings_auto_detect">Detectar automáticamente</string>
+  <string name="mail_settings_app_information">Información de la app</string>
+  <string name="mail_settings_app_version">Versión de la app</string>
+  <string name="mail_settings_account">Cuenta</string>
+  <!-- Account Settings items -->
+  <string name="mail_settings_subscription">Suscripción</string>
+  <string name="mail_settings_password_management">Gestionar contraseñas</string>
+  <string name="mail_settings_recovery_email">Correo de recuperación</string>
+  <string name="mail_settings_mailbox_size">Tamaño del buzón</string>
+  <string name="mail_settings_addresses">Direcciones</string>
+  <string name="mail_settings_default_email_address">Dirección de correo por defecto</string>
+  <string name="mail_settings_display_name_and_signature">Nombre a mostrar y firma</string>
+  <string name="mail_settings_mailbox">Buzón</string>
+  <string name="mail_settings_privacy">Privacidad</string>
+  <string name="mail_settings_search_message_content">Buscar contenido del mensaje</string>
+  <string name="mail_settings_labels_and_folders">Etiquetas y carpetas</string>
+  <string name="mail_settings_local_storage">Almacenamiento local</string>
+  <string name="mail_settings_snooze">Silenciar</string>
+  <string name="mail_settings_snooze_notifications">Silenciar notificaciones</string>
+  <string name="mail_settings_conversation_mode">Modo de conversación</string>
+  <string name="mail_settings_not_set">No definido</string>
+  <string name="mail_settings_conversation_mode_hint">Agrupa correos electrónicos en la misma conversación juntos en su bandeja de entrada o los muestra por separado</string>
+  <!-- Swipe Actions -->
+  <string name="mail_settings_swipe_actions_title">Acciones al deslizar</string>
+  <string name="mail_settings_swipe_actions_subtitle">Definir gestos de deslizamiento para acceder a las acciones más usadas.</string>
+  <string name="mail_settings_swipe_right_name">Izquierda a derecha</string>
+  <string name="mail_settings_swipe_left_name">Derecha a izquierda</string>
+  <string name="mail_settings_swipe_action_archive_title">Archivar</string>
+  <string name="mail_settings_swipe_action_read_title">No leído</string>
+  <string name="mail_settings_swipe_action_spam_title">Spam</string>
+  <string name="mail_settings_swipe_action_star_title">Destacar</string>
+  <string name="mail_settings_swipe_action_trash_title">Papelera</string>
+  <string name="mail_settings_swipe_action_archive_description">Mover al archivo</string>
+  <string name="mail_settings_swipe_action_read_description">Marcar como no leído/leído</string>
+  <string name="mail_settings_swipe_action_spam_description">Mover a spam</string>
+  <string name="mail_settings_swipe_action_star_description">Destacar/no destacar</string>
+  <string name="mail_settings_swipe_action_trash_description">Mover a la papelera</string>
+  <!-- Error messages -->
+  <string name="mail_settings_generic_error_message">Ocurrió un error, intente de nuevo.</string>
+</resources>

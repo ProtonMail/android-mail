@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="from_prefix">De:</string>
+  <string name="to_prefix">Para:</string>
+  <string name="cc_prefix">CC:</string>
+  <string name="bcc_prefix">CCO:</string>
+  <string name="subject_placeholder">Asunto</string>
+  <string name="compose_message_placeholder">Redactar un correo</string>
+  <string name="close_composer_content_description">Cerrar editor</string>
+  <string name="send_message_content_description">Enviar mensaje</string>
+  <string name="composer_expand_recipients_button">Mostrar los otros destinatarios</string>
+  <string name="composer_error_invalid_email">Dirección de correo inválida</string>
+  <string name="composer_error_invalid_sender">La dirección del remitente es inválida</string>
+  <string name="change_sender_button_content_description">Cambiar el remitente</string>
+  <string name="composer_change_sender_paid_feature">Mejore a un plan de pago para cambiar la dirección de remitente</string>
+  <string name="composer_error_change_sender_failed_getting_subscription">No se puede cambiar el remitente porque no pudo obtener la suscripción del usuario. Intente otra vez.</string>
+  <string name="composer_error_store_draft_sender_address">Error al guardar la dirección del remitente de este borrador</string>
+  <string name="composer_error_store_draft_body">Error al guardar el cuerpo de este borrador</string>
+  <string name="composer_error_duplicate_recipient">Destinatario duplicado eliminado: %1$s</string>
+  <string name="composer_error_store_draft_subject">Error al guardar el asunto de este borrador</string>
+</resources>

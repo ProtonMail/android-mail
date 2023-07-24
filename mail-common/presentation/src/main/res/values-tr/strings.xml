@@ -37,8 +37,8 @@
   <string name="action_delete_content_description">Sil</string>
   <string name="action_archive_content_description">Arşivle</string>
   <string name="action_spam_content_description">İstenmeyen e-posta</string>
-  <string name="action_view_in_light_mode_content_description">İletiyi açık kipte görüntüle</string>
-  <string name="action_view_in_dark_mode_content_description">İletiyi koyu kipte görüntüle</string>
+  <string name="action_view_in_light_mode_content_description">İletiyi açık tema ile görüntüle</string>
+  <string name="action_view_in_dark_mode_content_description">İletiyi koyu tema ile görüntüle</string>
   <string name="action_print_content_description">Yazdır</string>
   <string name="action_view_headers_content_description">Üst bilgileri görüntüle</string>
   <string name="action_view_html_content_description">HTML olarak görüntüle</string>

@@ -23,4 +23,5 @@
   <string name="user_select_other_account_content_description">Vælg en anden konto</string>
   <string name="you_are_offline">Du er offline</string>
   <string name="feature_coming_soon">Funktion kommer snart...</string>
+  <string name="mailbox_draft_saved_message">Kladde gemt</string>
 </resources>

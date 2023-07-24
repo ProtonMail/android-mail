@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="label_title_inbox">Bandeja de entrada</string>
+  <string name="label_title_drafts">Borradores</string>
+  <string name="label_title_sent">Enviados</string>
+  <string name="label_title_starred">Destacados</string>
+  <string name="label_title_archive">Archivo</string>
+  <string name="label_title_spam">Spam</string>
+  <string name="label_title_trash">Papelera</string>
+  <string name="label_title_outbox">Bandeja de salida</string>
+  <string name="label_title_all_mail">Todos</string>
+  <string name="label_title_all_drafts">Todos los borradores</string>
+  <string name="label_title_all_sent">Todos los enviados</string>
+  <string name="label_title_folders">Carpetas</string>
+  <string name="label_title_labels">Etiquetas</string>
+  <string name="label_title_add_folder">Añadir carpeta</string>
+  <string name="label_title_add_label">Añadir etiqueta</string>
+</resources>

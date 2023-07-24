@@ -80,5 +80,5 @@
   <string name="attachment_type_excel">Excel</string>
   <string name="attachment_type_presentation">Asenked</string>
   <string name="attachment_type_description">%1$s afaylu</string>
-  <string name="message_body_error_no_webview">Ilaq ad yilli unagraw WebView n Android ibdded akken ad twaliḍ agbur n yizen.</string>
+  <string name="message_body_error_no_webview">You need to have a WebView installed to see this message\'s content.</string>
 </resources>

@@ -23,4 +23,5 @@
   <string name="user_select_other_account_content_description">选择其他账户</string>
   <string name="you_are_offline">网络未连接</string>
   <string name="feature_coming_soon">功能即将推出…</string>
+  <string name="mailbox_draft_saved_message">Draft saved</string>
 </resources>

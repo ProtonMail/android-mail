@@ -80,5 +80,5 @@
   <string name="attachment_type_excel">Excel</string>
   <string name="attachment_type_presentation">Presentació</string>
   <string name="attachment_type_description">%1$s fitxer</string>
-  <string name="message_body_error_no_webview">Necessiteu tenir instal·lat el WebView del sistema Android per veure el contingut d\'aquest missatge.</string>
+  <string name="message_body_error_no_webview">Cal que tingueu WebView instal·lat per a veure el contingut d\'aquest missatge.</string>
 </resources>

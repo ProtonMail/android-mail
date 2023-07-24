@@ -20,35 +20,35 @@
   <string name="detail_error_loading_contacts">Error al cargar los contactos</string>
   <string name="detail_error_loading_conversation">Error al cargar la conversación</string>
   <string name="detail_error_loading_messages">Error al cargar los mensajes</string>
-  <string name="error_mark_unread_failed">Error al marcar como \"No leído\". Inténtalo de nuevo.</string>
+  <string name="error_mark_unread_failed">Error al marcar como no leído. Intente de nuevo.</string>
   <plurals name="message_count_label_text">
     <item quantity="one">%d mensaje</item>
     <item quantity="other">%d mensajes</item>
   </plurals>
   <string name="more_button_content_description">Más</string>
   <string name="to">Para:</string>
-  <string name="cc">CC:</string>
+  <string name="cc">Cc:</string>
   <string name="bcc">Cco:</string>
   <string name="hide_details">Ocultar detalles</string>
   <string name="undisclosed_recipients">Destinatarios ocultos</string>
-  <string name="error_mark_as_unread_failed">Error al marcar como no leído. Inténtalo de nuevo.</string>
-  <string name="error_star_operation_failed">Error al marcar como Destacado. Inténtalo de nuevo.</string>
-  <string name="error_unstar_operation_failed">Error al desmarcar Destacado. Inténtalo de nuevo.</string>
-  <string name="error_move_to_trash_failed">Error al mover a la papelera. Inténtalo de nuevo.</string>
+  <string name="error_mark_as_unread_failed">Operación fallida al marcar como no leído. Intente otra vez.</string>
+  <string name="error_star_operation_failed">Error al destacar. Intente de nuevo.</string>
+  <string name="error_unstar_operation_failed">Error al eliminar el destacado. Intente de nuevo.</string>
+  <string name="error_move_to_trash_failed">Error al mover a la papelera. Intente de nuevo.</string>
   <string name="message_moved_to_trash">Mensaje movido a la papelera</string>
   <string name="message_moved_to_archive">Mensaje movido al archivo</string>
   <string name="message_moved_to_selected_destination">Mensaje movido a %1$s</string>
-  <string name="error_move_message_failed">Error al mover el mensaje. Inténtalo de nuevo.</string>
+  <string name="error_move_message_failed">Error al mover el mensaje, intente de nuevo.</string>
   <string name="conversation_moved_to_trash">Conversación movida a la papelera</string>
-  <string name="conversation_moved_to_selected_destination">Conversación movida a $%1$s</string>
+  <string name="conversation_moved_to_selected_destination">Conversación movida a %1$s</string>
   <string name="conversation_moved_to_archive">Conversación movida al archivo</string>
-  <string name="error_move_conversation_failed">Error al mover la conversación. Inténtalo de nuevo.</string>
-  <string name="error_loading_message">Se ha producido un error. Inténtalo de nuevo más tarde.</string>
-  <string name="error_offline_loading_message">No estás conectado. Se necesita una conexión a internet para mostrar el contenido de este mensaje.</string>
+  <string name="error_move_conversation_failed">Error al mover la conversación. Intente de nuevo.</string>
+  <string name="error_loading_message">Hubo un problema. Intente de nuevo.</string>
+  <string name="error_offline_loading_message">No tiene conexión. Se necesita una conexión a internet para mostrar el contenido de este mensaje.</string>
   <string name="error_get_attachment_failed">Error al obtener el archivo adjunto.</string>
   <string name="error_attachment_download_in_progress">La descarga actual debe completarse antes de iniciar una nueva.</string>
   <string name="attachment_permission_dialog_title">Permiso requerido</string>
-  <string name="attachment_permission_dialog_message">Proton Mail necesita permiso para acceder a tu almacenamiento para descargar el adjunto.</string>
+  <string name="attachment_permission_dialog_message">Proton Mail necesita permiso para acceder a su almacenamiento para descargar el adjunto.</string>
   <string name="attachment_permission_dialog_dismiss_button">OK</string>
   <string name="attachment_permission_dialog_action_button">Ajustes</string>
   <string name="error_get_attachment_not_enough_memory">Error al obtener el adjunto por falta de memoria</string>
@@ -57,20 +57,20 @@
     <item quantity="one">%d archivo</item>
     <item quantity="other">%d archivos</item>
   </plurals>
-  <string name="attachment_show_more_label">+%1$d más</string>
+  <string name="attachment_show_more_label">%1$d más</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Mover a...</string>
   <string name="bottom_sheet_done_action">Hecho</string>
   <string name="bottom_sheet_archive_action">¿También archivar?</string>
   <string name="bottom_sheet_label_as_title">Etiquetar como...</string>
-  <string name="error_relabel_message_failed">Error al etiquetar de nuevo el mensaje. Inténtalo de nuevo.</string>
-  <string name="error_relabel_conversation_failed">Error al reetiquetar la conversación. Vuelve a intentarlo</string>
-  <string name="please_go_back_online_to_load_messages">Estás desconectado. Vuelve a conectarte para cargar los mensajes.</string>
+  <string name="error_relabel_message_failed">Error al reetiquetar el mensaje, intente de nuevo</string>
+  <string name="error_relabel_conversation_failed">Error al reetiquetar la conversación, intente de nuevo</string>
+  <string name="please_go_back_online_to_load_messages">No está en línea. Vuelva a conectarse para cargar los mensajes</string>
   <string name="decryption_error">Error al descifrar el mensaje.</string>
-  <string name="detail_error_retrieving_message_body">No se ha podido recuperar el mensaje</string>
+  <string name="detail_error_retrieving_message_body">No se puede recuperar el mensaje</string>
   <!-- Attachment Types -->
   <string name="attachment_type_image">Imagen</string>
-  <string name="attachment_type_video">Vídeo</string>
+  <string name="attachment_type_video">Video</string>
   <string name="attachment_type_audio">Audio</string>
   <string name="attachment_type_unknown">Desconocido</string>
   <string name="attachment_type_pdf">PDF</string>
@@ -79,6 +79,6 @@
   <string name="attachment_type_document">Documento</string>
   <string name="attachment_type_excel">Excel</string>
   <string name="attachment_type_presentation">Presentación</string>
-  <string name="attachment_type_description">Archivo %1$s</string>
-  <string name="message_body_error_no_webview">Necesitas instalar una aplicación WebView para ver el contenido de este mensaje.</string>
+  <string name="attachment_type_description">%1$s archivo</string>
+  <string name="message_body_error_no_webview">Necesita instalar una aplicación WebView para ver el contenido de este mensaje.</string>
 </resources>

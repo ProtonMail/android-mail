@@ -34,5 +34,5 @@
   <string name="composer_error_store_draft_sender_address">Das Speichern der Absenderadresse dieses Entwurfs ist fehlgeschlagen.</string>
   <string name="composer_error_store_draft_body">Das Speichern des Inhalts dieses Entwurfs ist fehlgeschlagen.</string>
   <string name="composer_error_duplicate_recipient">Doppelten Empfänger entfernt: %1$s</string>
-  <string name="composer_error_store_draft_subject">Das Speichern dieses Entwurfs ist fehlgeschlagen.</string>
+  <string name="composer_error_store_draft_subject">Das Speichern des Betreffs dieses Entwurfs ist fehlgeschlagen.</string>
 </resources>

@@ -23,4 +23,5 @@
   <string name="user_select_other_account_content_description">Επιλογή άλλου λογαριασμού</string>
   <string name="you_are_offline">Βρίσκεστε εκτός σύνδεσης</string>
   <string name="feature_coming_soon">Η δυνατότητα θα είναι διαθέσιμη σύντομα …</string>
+  <string name="mailbox_draft_saved_message">Το πρόχειρο αποθηκεύτηκε</string>
 </resources>

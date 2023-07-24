@@ -23,4 +23,5 @@
   <string name="user_select_other_account_content_description">Pilih akun lain</string>
   <string name="you_are_offline">Anda sedang offline</string>
   <string name="feature_coming_soon">Fitur ini akan segera hadir...</string>
+  <string name="mailbox_draft_saved_message">Draft saved</string>
 </resources>

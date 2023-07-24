@@ -40,7 +40,7 @@
   <string name="action_view_in_light_mode_content_description">Veure missatges en mode clar</string>
   <string name="action_view_in_dark_mode_content_description">Veure missatges en mode fosc</string>
   <string name="action_print_content_description">Imprimeix</string>
-  <string name="action_view_headers_content_description">Mostrar les capçaleres</string>
+  <string name="action_view_headers_content_description">Mostra les capçaleres</string>
   <string name="action_view_html_content_description">Mostra el codi HTML</string>
   <string name="action_report_phishing_content_description">Denuncia una suplantació d\'identitat</string>
   <string name="action_remind_content_description">Recorda-m\'ho</string>

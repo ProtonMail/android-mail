@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="drawer_title_more">Más</string>
+  <string name="drawer_title_contacts">Contactos</string>
+  <string name="drawer_title_subscription">Suscripción</string>
+  <string name="mailbox_toolbar_compose_button_content_description">Redactar mensaje nuevo</string>
+  <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Salir del modo de selección</string>
+  <string name="mailbox_toolbar_menu_button_content_description">Menú</string>
+  <string name="mailbox_toolbar_search_button_content_description">Buscar</string>
+  <string name="mailbox_toolbar_selected_count">%d seleccionado</string>
+  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
+  <string name="filter_unread_button_text_without_counter">Sin leer</string>
+  <plurals name="filter_unread_button_text">
+    <item quantity="one">%d sin leer</item>
+    <item quantity="other">%d sin leer</item>
+  </plurals>
+  <string name="mailbox_default_recipient">(Sin destinatario)</string>
+  <string name="mailbox_default_sender">(Sin remitente)</string>
+  <string name="mailbox_error_message_offline">No hay conexión, no se pueden recuperar los elementos</string>
+  <string name="mailbox_error_message_generic">Error al cargar el buzón</string>
+  <string name="mailbox_error_message_unexpected">Se produjo un error imprevisto</string>
+  <string name="mailbox_is_empty_message">Este buzón está vacío</string>
+</resources>

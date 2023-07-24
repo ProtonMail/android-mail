@@ -48,10 +48,10 @@
   <string name="error_get_attachment_failed">Erro ao obter o anexo.</string>
   <string name="error_attachment_download_in_progress">A transferência actual deve ser concluída antes de iniciar uma nova.</string>
   <string name="attachment_permission_dialog_title">Permissão necessária</string>
-  <string name="attachment_permission_dialog_message">Proton Mail needs permission to access your storage to download the attachment.</string>
+  <string name="attachment_permission_dialog_message">Proton Mail precisa de permissão de acesso ao seu armazenamento para executar a transferência do anexo.</string>
   <string name="attachment_permission_dialog_dismiss_button">OK</string>
-  <string name="attachment_permission_dialog_action_button">Settings</string>
-  <string name="error_get_attachment_not_enough_memory">Failed to get attachment due to insufficient memory</string>
+  <string name="attachment_permission_dialog_action_button">Configurações</string>
+  <string name="error_get_attachment_not_enough_memory">Erro ao obter o anexo devido a memória insuficiente</string>
   <string name="reload">Recarregar</string>
   <plurals name="attachment_count_label">
     <item quantity="one">%d ficheiro</item>
@@ -80,5 +80,5 @@
   <string name="attachment_type_excel">Excel</string>
   <string name="attachment_type_presentation">Apresentação</string>
   <string name="attachment_type_description">%1$s ficheiro</string>
-  <string name="message_body_error_no_webview">Necessita ter o Android System WebView instalado para visualizar o conteúdo desta mensagem.</string>
+  <string name="message_body_error_no_webview">Necessita instalar WebView para visualizar o conteúdo desta mensagem.</string>
 </resources>

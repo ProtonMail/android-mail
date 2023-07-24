@@ -29,10 +29,10 @@
   <string name="composer_error_invalid_email">L\'adreça de correu electrònic no és vàlida</string>
   <string name="composer_error_invalid_sender">L\'adreça del remitent no és vàlida</string>
   <string name="change_sender_button_content_description">Canvia el remitent</string>
-  <string name="composer_change_sender_paid_feature">Upgrade to a paid plan to change the sender address</string>
-  <string name="composer_error_change_sender_failed_getting_subscription">Cannot change sender as getting user\'s subscription failed. Try again.</string>
-  <string name="composer_error_store_draft_sender_address">Storing this draft\'s sender address failed</string>
-  <string name="composer_error_store_draft_body">Storing this draft\'s body failed</string>
-  <string name="composer_error_duplicate_recipient">Removed duplicate recipient: %1$s</string>
-  <string name="composer_error_store_draft_subject">Storing this draft\'s subject failed</string>
+  <string name="composer_change_sender_paid_feature">Milloreu a un pla de pagament per canviar l\'adreça del remitent.</string>
+  <string name="composer_error_change_sender_failed_getting_subscription">No es pot canviar el remitent perquè no s\'ha pogut obtenir la subscripció de l\'usuari. Torna-ho a provar.</string>
+  <string name="composer_error_store_draft_sender_address">S\'ha produït un error en desar l\'adreça del remitent..</string>
+  <string name="composer_error_store_draft_body">S\'ha produït un error en desar el cos de l\'esborrany.</string>
+  <string name="composer_error_duplicate_recipient">Destinatari duplicat eliminat: %1$s</string>
+  <string name="composer_error_store_draft_subject">S\'ha produït un error en desar l\'assumpte de l\'esborrany.</string>
 </resources>

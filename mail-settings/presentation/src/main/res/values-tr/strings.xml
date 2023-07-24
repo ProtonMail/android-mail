@@ -29,7 +29,7 @@
   <string name="mail_settings_app_language">Uygulama dili</string>
   <string name="mail_settings_combined_contacts">Birleştirilmiş kişiler</string>
   <string name="mail_settings_swipe_actions">Kaydırma işlemleri</string>
-  <string name="mail_settings_combined_contacts_hint">E-posta adreslerinin, oturum açtığınız tüm hesaplardaki kişilerle otomatik olarak tamamlanması için bu özelliği etkinleştirin.</string>
+  <string name="mail_settings_combined_contacts_hint">E-posta adreslerinin, oturum açtığınız tüm hesaplardaki kişilerle otomatik olarak tamamlanması için bu özelliği açın.</string>
   <string name="mail_settings_alternative_routing_hint">Bu seçenek ile, Proton sitelerinin engellenmiş olması durumunda, uygulama Proton ağına ulaşmak için güvenlik duvarlarını veya ağ sorunlarını aşmakta yararlı olabilecek alternatif ağ yöneltmesini dener: Bağlantı güvenilirliğini artırmak için bu seçeneği açık tutmanız önerilir.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Sistem varsayılanı</string>
@@ -37,8 +37,8 @@
   <string name="mail_settings_theme_dark">Koyu</string>
   <!-- Settings item states -->
   <string name="mail_settings_no_information_available">Kullanılabilecek bir bilgi yok</string>
-  <string name="mail_settings_enabled">Etkin</string>
-  <string name="mail_settings_disabled">Devre dışı</string>
+  <string name="mail_settings_enabled">Açık</string>
+  <string name="mail_settings_disabled">Kullanımdan kaldırılmış</string>
   <string name="mail_settings_allowed">İzin verildi</string>
   <string name="mail_settings_denied">Reddedildi</string>
   <string name="mail_settings_auto_detect">Otomatik algılama</string>

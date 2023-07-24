@@ -82,5 +82,5 @@
   <string name="attachment_type_excel">Excel</string>
   <string name="attachment_type_presentation">Prezentare</string>
   <string name="attachment_type_description">%1$s fișier</string>
-  <string name="message_body_error_no_webview">Trebuie să aveți instalat Android System WebView pentru a vedea conținutul acestui mesaj.</string>
+  <string name="message_body_error_no_webview">Trebuie să aveți instalat WebView pentru a vedea conținutul acestui mesaj.</string>
 </resources>
