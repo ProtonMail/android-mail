@@ -46,12 +46,7 @@ import org.hamcrest.core.Is.`is`
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
-@AttachTo(
-    targets = [
-        ConversationDetailRobot::class,
-        MessageDetailRobot::class
-    ]
-)
+@AttachTo(targets = [ConversationDetailRobot::class, MessageDetailRobot::class])
 internal class MessageBodySection : ComposeSectionRobot() {
 
     private val webView: Web.WebInteraction<*> by lazy {
@@ -117,6 +112,28 @@ internal class MessageBodySection : ComposeSectionRobot() {
             """.trimMargin()
 
             runAndMatchJsCodeOutput(jsSnippet, true)
+        }
+
+        fun hasEmbeddedImages(expectedNumber: Int) {
+            val jsSnippet = """
+                |var embeddedImages = Array.from(document.getElementsByClassName('proton-embedded'));
+                |return embeddedImages.length == $expectedNumber; 
+            """.trimMargin()
+
+            runAndMatchJsCodeOutput(jsSnippet, true)
+        }
+
+        fun hasEmbeddedImagesSuccessfullyLoaded(expected: Boolean) {
+            val jsSnippet = """
+                |var embeddedImages = Array.from(document.getElementsByClassName('proton-embedded'));
+                |if (embeddedImages.length == 0) {
+                |   return false;
+                |}
+                |var imagesLoaded = embeddedImages.every(value => value.complete && value.naturalHeight != 0 && value.naturalWidth != 0);
+                |return imagesLoaded;
+            """.trimMargin()
+
+            runAndMatchJsCodeOutput(jsSnippet, expected)
         }
 
         private fun runAndMatchJsCodeOutput(script: String, expected: Boolean) {

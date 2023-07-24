@@ -38,6 +38,14 @@ internal sealed class SnackbarTextEntry(val value: String) {
         getTestString(testR.string.test_error_attachment_download_in_progress)
     )
 
+    object FailedToDecryptMessage : SnackbarTextEntry(
+        getTestString(testR.string.test_decryption_error)
+    )
+
+    object FailedToLoadMessage : SnackbarTextEntry(
+        getTestString(testR.string.test_detail_error_retrieving_message_body)
+    )
+
     object FailedToLoadNewItems : SnackbarTextEntry(
         getTestString(testR.string.test_mailbox_error_message_generic)
     )

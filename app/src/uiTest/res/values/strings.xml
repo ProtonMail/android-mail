@@ -35,6 +35,9 @@
     <string name="test_mailbox_error_message_generic">Loading mailbox failed</string>
     <string name="test_mailbox_draft_saved_message">Draft saved</string>
 
+    <!-- Mailbox detail -->
+    <string name="test_detail_error_retrieving_message_body">Unable to retrieve message</string>
+
     <!-- Composer -->
     <string name="test_composer_sender_label">From:</string>
     <string name="test_composer_to_recipient_label">To:</string>
@@ -64,4 +67,7 @@
 
     <!-- Attachments -->
     <string name="test_error_attachment_download_in_progress">Current download must complete before starting a new one.</string>
+
+    <!-- Decryption -->
+    <string name="test_decryption_error">Message decryption failed.</string>
 </resources>
