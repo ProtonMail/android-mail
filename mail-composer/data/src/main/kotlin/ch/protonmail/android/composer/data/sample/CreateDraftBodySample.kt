@@ -16,20 +16,24 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmessage.domain.sample
+package ch.protonmail.android.composer.data.sample
 
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.composer.data.remote.resource.CreateDraftBody
+import ch.protonmail.android.composer.data.remote.resource.DraftMessageResource
 
-object MessageIdSample {
+object CreateDraftBodySample {
 
-    val AugWeatherForecast = MessageId("aug_weather_forecast")
-    val EmptyDraft = MessageId("empty_draft")
-    val NewDraftWithSubject = MessageId("new_draft_with_subject_only")
-    val Invoice = MessageId("invoice")
-    val OctWeatherForecast = MessageId("oct_weather_forecast")
-    val SepWeatherForecast = MessageId("sep_weather_forecast")
-    val AlphaAppQAReport = MessageId("QA_testing_report")
-    val AlphaAppInfoRequest = MessageId("alpha_app_info_request")
+    val NewDraftWithSubject = build()
 
-    fun build() = MessageId("message")
+    fun build(
+        message: DraftMessageResource = DraftMessageResourceSample.NewDraftWithSubject,
+        parentId: String? = null,
+        action: Int = -1,
+        attachmentKeyPackets: List<String> = emptyList()
+    ) = CreateDraftBody(
+        message = message,
+        parentId = parentId,
+        action = action,
+        attachmentKeyPackets = attachmentKeyPackets
+    )
 }

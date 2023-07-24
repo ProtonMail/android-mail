@@ -18,23 +18,40 @@
 
 package ch.protonmail.android.mailmessage.domain.sample
 
+import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.entity.MessageBody
 import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.entity.MimeType
+import ch.protonmail.android.mailmessage.domain.entity.Recipient
 
 object MessageWithBodySample {
 
-    val EmptyDraft = MessageWithBody(
-        message = MessageSample.EmptyDraft,
+    val EmptyDraft = build()
+
+    val Invoice = build(
+        message = MessageSample.Invoice,
+        body = "This is the ENCRYPTED body of this invoice message"
+    )
+
+    val NewDraftWithSubject = build(
+        message = MessageSample.NewDraftWithSubject
+    )
+
+    private fun build(
+        message: Message = MessageSample.EmptyDraft,
+        replyTo: Recipient = RecipientSample.John,
+        body: String = ""
+    ) = MessageWithBody(
+        message = message,
         messageBody = MessageBody(
-            userId = MessageSample.EmptyDraft.userId,
-            messageId = MessageSample.EmptyDraft.messageId,
-            body = "",
+            userId = message.userId,
+            messageId = message.messageId,
+            body = body,
             header = "",
             attachments = emptyList(),
             mimeType = MimeType.PlainText,
             spamScore = "",
-            replyTo = RecipientSample.Doe,
+            replyTo = replyTo,
             replyTos = emptyList(),
             unsubscribeMethods = null
         )

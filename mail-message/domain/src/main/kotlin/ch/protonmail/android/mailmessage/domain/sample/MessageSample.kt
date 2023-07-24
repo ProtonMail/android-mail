@@ -57,6 +57,12 @@ object MessageSample {
         labelIds = listOf(LabelIdSample.AllDraft)
     )
 
+    val NewDraftWithSubject = build(
+        subject = "New draft, just typed the subject",
+        labelIds = listOf(LabelIdSample.AllDraft),
+        sender = RecipientSample.John
+    )
+
     val ExpiringInvitation = build(
         attachmentCount = AttachmentCountSample.CalendarInvite,
         numAttachments = AttachmentCountSample.CalendarInvite.calendar,

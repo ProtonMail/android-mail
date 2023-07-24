@@ -16,20 +16,15 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmessage.domain.sample
+package ch.protonmail.android.composer.data.remote.resource
 
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-object MessageIdSample {
-
-    val AugWeatherForecast = MessageId("aug_weather_forecast")
-    val EmptyDraft = MessageId("empty_draft")
-    val NewDraftWithSubject = MessageId("new_draft_with_subject_only")
-    val Invoice = MessageId("invoice")
-    val OctWeatherForecast = MessageId("oct_weather_forecast")
-    val SepWeatherForecast = MessageId("sep_weather_forecast")
-    val AlphaAppQAReport = MessageId("QA_testing_report")
-    val AlphaAppInfoRequest = MessageId("alpha_app_info_request")
-
-    fun build() = MessageId("message")
-}
+@Serializable
+data class UpdateDraftBody(
+    @SerialName("Message")
+    val message: DraftMessageResource,
+    @SerialName("AttachmentKeyPackets")
+    val attachmentKeyPackets: List<String>
+)

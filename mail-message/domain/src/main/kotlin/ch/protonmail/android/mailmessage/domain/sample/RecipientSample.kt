@@ -42,10 +42,7 @@ object RecipientSample {
         name = "definitely-not-a-scam@totally-legit.com"
     )
 
-    fun build(
-        address: String = "email@pm.me",
-        name: String = "name"
-    ) = Recipient(
+    fun build(address: String = "email@pm.me", name: String = "name") = Recipient(
         address = address,
         name = name
     )

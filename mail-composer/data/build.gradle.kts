@@ -45,10 +45,14 @@ android {
 dependencies {
     implementation(Dependencies.moduleDataLibs)
     implementation(Proton.Core.user)
+    implementation(Proton.Core.label)
 
+    implementation(project(":mail-common:data"))
+    implementation(project(":mail-common:domain"))
     implementation(project(":mail-composer:domain"))
     implementation(project(":mail-message:data"))
     implementation(project(":mail-message:domain"))
 
     testImplementation(Dependencies.testLibs)
+    testImplementation(Proton.Core.testAndroid)
 }
