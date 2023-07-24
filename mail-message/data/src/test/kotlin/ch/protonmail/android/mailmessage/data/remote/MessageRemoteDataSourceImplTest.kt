@@ -22,6 +22,7 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailmessage.data.getMessage
 import ch.protonmail.android.mailmessage.data.getMessageResource
+import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSourceImpl.Companion.MAX_ACTION_WORKER_PARAMETER_COUNT
 import ch.protonmail.android.mailmessage.data.remote.response.GetMessagesResponse
 import ch.protonmail.android.mailmessage.data.remote.worker.AddLabelMessageWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.MarkMessageAsReadWorker
@@ -285,7 +286,7 @@ class MessageRemoteDataSourceImplTest {
     fun `enqueues worker to perform add label API call twice when add label is called for massages above the limit`() =
         runTest {
             // Given
-            val messageIds = List(Enqueuer.MAX_PARAMETER_COUNT + 1) { MessageIdSample.Invoice }
+            val messageIds = List(MAX_ACTION_WORKER_PARAMETER_COUNT + 1) { MessageIdSample.Invoice }
 
             // When
             messageRemoteDataSource.addLabelsToMessages(userId, messageIds, listOf(LabelId("10")))
@@ -293,10 +294,14 @@ class MessageRemoteDataSourceImplTest {
             // Then
             verifySequence {
                 enqueuer.enqueue<AddLabelMessageWorker>(
-                    AddLabelMessageWorker.params(userId, messageIds.take(Enqueuer.MAX_PARAMETER_COUNT), LabelId("10"))
+                    AddLabelMessageWorker.params(
+                        userId, messageIds.take(MAX_ACTION_WORKER_PARAMETER_COUNT), LabelId("10")
+                    )
                 )
                 enqueuer.enqueue<AddLabelMessageWorker>(
-                    AddLabelMessageWorker.params(userId, messageIds.drop(Enqueuer.MAX_PARAMETER_COUNT), LabelId("10"))
+                    AddLabelMessageWorker.params(
+                        userId, messageIds.drop(MAX_ACTION_WORKER_PARAMETER_COUNT), LabelId("10")
+                    )
                 )
             }
         }
@@ -371,7 +376,7 @@ class MessageRemoteDataSourceImplTest {
     @Test
     fun `enqueues worker to mark messages as unread twice if message id count exceeds limit`() {
         // Given
-        val messageIds = List(Enqueuer.MAX_PARAMETER_COUNT + 1) { MessageIdSample.Invoice }
+        val messageIds = List(MAX_ACTION_WORKER_PARAMETER_COUNT + 1) { MessageIdSample.Invoice }
 
         // When
         messageRemoteDataSource.markUnread(userId, messageIds)
@@ -379,10 +384,10 @@ class MessageRemoteDataSourceImplTest {
         // Then
         verifySequence {
             enqueuer.enqueue<MarkMessageAsUnreadWorker>(
-                MarkMessageAsUnreadWorker.params(userId, messageIds.take(Enqueuer.MAX_PARAMETER_COUNT))
+                MarkMessageAsUnreadWorker.params(userId, messageIds.take(MAX_ACTION_WORKER_PARAMETER_COUNT))
             )
             enqueuer.enqueue<MarkMessageAsUnreadWorker>(
-                MarkMessageAsUnreadWorker.params(userId, messageIds.drop(Enqueuer.MAX_PARAMETER_COUNT))
+                MarkMessageAsUnreadWorker.params(userId, messageIds.drop(MAX_ACTION_WORKER_PARAMETER_COUNT))
             )
         }
     }
@@ -402,7 +407,7 @@ class MessageRemoteDataSourceImplTest {
     @Test
     fun `enqueues worker to mark messages as read twice if message id count exceeds limit`() {
         // Given
-        val messageIds = List(Enqueuer.MAX_PARAMETER_COUNT + 1) { MessageIdSample.Invoice }
+        val messageIds = List(MAX_ACTION_WORKER_PARAMETER_COUNT + 1) { MessageIdSample.Invoice }
 
         // When
         messageRemoteDataSource.markRead(userId, messageIds)
@@ -410,10 +415,10 @@ class MessageRemoteDataSourceImplTest {
         // Then
         verifySequence {
             enqueuer.enqueue<MarkMessageAsReadWorker>(
-                MarkMessageAsReadWorker.params(userId, messageIds.take(Enqueuer.MAX_PARAMETER_COUNT))
+                MarkMessageAsReadWorker.params(userId, messageIds.take(MAX_ACTION_WORKER_PARAMETER_COUNT))
             )
             enqueuer.enqueue<MarkMessageAsReadWorker>(
-                MarkMessageAsReadWorker.params(userId, messageIds.drop(Enqueuer.MAX_PARAMETER_COUNT))
+                MarkMessageAsReadWorker.params(userId, messageIds.drop(MAX_ACTION_WORKER_PARAMETER_COUNT))
             )
         }
     }

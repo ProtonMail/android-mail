@@ -75,9 +75,4 @@ class Enqueuer @Inject constructor(private val workManager: WorkManager) {
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
     }
-
-    companion object {
-
-        const val MAX_PARAMETER_COUNT = 100
-    }
 }

@@ -158,7 +158,7 @@ interface MessageLocalDataSource {
      * The operation will first remove the labels of the affected messages and then add the new ones
      * @param userId the user id of the affected messages
      * @param messageIds the ids of the affected messages
-     * @param labelIdsToAdd the ids of the labels to add
+     * @param labelIdsToRemove the ids of the labels to remove
      * @param labelIdsToAdd the ids of the labels to add
      * @return either the list of affected messages or a [DataError.Local]
      */

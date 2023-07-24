@@ -82,7 +82,7 @@ class MessageRemoteDataSourceImpl @Inject constructor(
         messageIds: List<MessageId>,
         labelIds: List<LabelId>
     ) {
-        messageIds.chunked(Enqueuer.MAX_PARAMETER_COUNT).forEach { messages ->
+        messageIds.chunked(MAX_ACTION_WORKER_PARAMETER_COUNT).forEach { messages ->
             labelIds.forEach { labelId ->
                 enqueuer.enqueue<AddLabelMessageWorker>(AddLabelMessageWorker.params(userId, messages, labelId))
             }
@@ -94,7 +94,7 @@ class MessageRemoteDataSourceImpl @Inject constructor(
         messageIds: List<MessageId>,
         labelIds: List<LabelId>
     ) {
-        messageIds.chunked(Enqueuer.MAX_PARAMETER_COUNT).forEach {
+        messageIds.chunked(MAX_ACTION_WORKER_PARAMETER_COUNT).forEach {
             labelIds.forEach { labelIds ->
                 enqueuer.enqueue<RemoveLabelMessageWorker>(RemoveLabelMessageWorker.params(userId, it, labelIds))
             }
@@ -102,12 +102,17 @@ class MessageRemoteDataSourceImpl @Inject constructor(
     }
 
     override fun markUnread(userId: UserId, messageIds: List<MessageId>) {
-        messageIds.chunked(Enqueuer.MAX_PARAMETER_COUNT)
+        messageIds.chunked(MAX_ACTION_WORKER_PARAMETER_COUNT)
             .forEach { enqueuer.enqueue<MarkMessageAsUnreadWorker>(MarkMessageAsUnreadWorker.params(userId, it)) }
     }
 
     override fun markRead(userId: UserId, messageIds: List<MessageId>) {
-        messageIds.chunked(Enqueuer.MAX_PARAMETER_COUNT)
+        messageIds.chunked(MAX_ACTION_WORKER_PARAMETER_COUNT)
             .forEach { enqueuer.enqueue<MarkMessageAsReadWorker>(MarkMessageAsReadWorker.params(userId, it)) }
+    }
+
+    companion object {
+
+        const val MAX_ACTION_WORKER_PARAMETER_COUNT = 100
     }
 }
