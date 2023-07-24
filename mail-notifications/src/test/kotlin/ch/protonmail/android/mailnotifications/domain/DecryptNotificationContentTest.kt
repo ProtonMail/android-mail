@@ -34,6 +34,7 @@ import me.proton.core.crypto.common.pgp.DecryptedMimeBody
 import me.proton.core.crypto.common.pgp.DecryptedMimeMessage
 import me.proton.core.crypto.common.pgp.PGPCrypto
 import me.proton.core.crypto.common.pgp.exception.CryptoException
+import me.proton.core.domain.entity.UserId
 import me.proton.core.key.domain.entity.key.PrivateKey
 import me.proton.core.user.domain.UserManager
 import me.proton.core.user.domain.entity.User
@@ -85,7 +86,7 @@ class DecryptNotificationContentTest {
         val useCase = DecryptNotificationContent(cryptoContext, userManager)
 
         // When
-        val result = useCase.invoke(mockk(), "encrypted notification")
+        val result = useCase.invoke(UserId(UUID.randomUUID().toString()), "encrypted notification")
 
         // Then
         assert(result.isLeft())
