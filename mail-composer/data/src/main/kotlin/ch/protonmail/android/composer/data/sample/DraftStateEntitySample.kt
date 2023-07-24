@@ -16,48 +16,27 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.composer.data.local.entity
+package ch.protonmail.android.composer.data.sample
 
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.Index
+import ch.protonmail.android.composer.data.local.entity.DraftStateEntity
+import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcomposer.domain.model.DraftAction
-import ch.protonmail.android.mailcomposer.domain.model.DraftState
 import ch.protonmail.android.mailcomposer.domain.model.DraftSyncState
-import ch.protonmail.android.mailmessage.data.local.entity.MessageEntity
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import me.proton.core.domain.entity.UserId
-import me.proton.core.user.data.entity.UserEntity
 
-@Entity(
-    primaryKeys = ["userId", "messageId"],
-    indices = [
-        Index("userId"),
-        Index("userId", "messageId")
-    ],
-    foreignKeys = [
-        ForeignKey(
-            entity = UserEntity::class,
-            parentColumns = ["userId"],
-            childColumns = ["userId"],
-            onDelete = ForeignKey.CASCADE
-        ),
-        ForeignKey(
-            entity = MessageEntity::class,
-            parentColumns = ["userId", "messageId"],
-            childColumns = ["userId", "messageId"],
-            onDelete = ForeignKey.CASCADE
-        )
-    ]
-)
-data class DraftStateEntity(
-    val userId: UserId,
-    val messageId: MessageId,
-    val apiMessageId: MessageId?,
-    val state: DraftSyncState,
-    val action: DraftAction
-) {
-    fun toDraftState() = DraftState(
+object DraftStateEntitySample {
+
+    val NewDraftState = build()
+
+    fun build(
+        userId: UserId = UserIdSample.Primary,
+        messageId: MessageId = MessageIdSample.EmptyDraft,
+        apiMessageId: MessageId? = null,
+        state: DraftSyncState = DraftSyncState.Local,
+        action: DraftAction = DraftAction.Compose
+    ) = DraftStateEntity(
         userId = userId,
         messageId = messageId,
         apiMessageId = apiMessageId,

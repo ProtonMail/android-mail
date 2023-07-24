@@ -16,25 +16,23 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.composer.data.local.dao
+package ch.protonmail.android.composer.data.remote
 
-import androidx.room.Dao
-import androidx.room.Query
-import ch.protonmail.android.composer.data.local.entity.DraftStateEntity
+import arrow.core.Either
+import ch.protonmail.android.composer.data.local.DraftStateLocalDataSourceImpl
+import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcomposer.domain.model.DraftState
+import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import kotlinx.coroutines.flow.Flow
-import me.proton.core.data.room.db.BaseDao
 import me.proton.core.domain.entity.UserId
+import javax.inject.Inject
 
-@Dao
-abstract class DraftStateDao : BaseDao<DraftStateEntity>() {
+class DraftStateRepositoryImpl @Inject constructor(
+    private val localDataSource: DraftStateLocalDataSourceImpl
+) : DraftStateRepository {
 
-    @Query(
-        """
-            SELECT * from DraftStateEntity
-            WHERE userId = :userId
-            AND messageId = :messageId
-        """
-    )
-    abstract fun observeDraftState(userId: UserId, messageId: MessageId): Flow<DraftStateEntity?>
+    override suspend fun observe(userId: UserId, messageId: MessageId): Flow<Either<DataError, DraftState>> =
+        localDataSource.observe(userId, messageId)
+
 }
