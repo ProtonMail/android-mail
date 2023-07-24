@@ -19,8 +19,8 @@
 package ch.protonmail.android.composer.data.remote
 
 import arrow.core.continuations.either
-import ch.protonmail.android.mailcomposer.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.repository.DraftRepository
+import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import kotlinx.coroutines.flow.first
@@ -29,13 +29,14 @@ import javax.inject.Inject
 
 internal class DraftRepositoryImpl @Inject constructor(
     private val messageRepository: MessageRepository,
-    private val draftRemoteDataSource: DraftRemoteDataSourceImpl
+    private val draftStateRepository: DraftStateRepository,
+    private val draftRemoteDataSource: DraftRemoteDataSource
 ) : DraftRepository {
 
     override suspend fun create(userId: UserId, messageId: MessageId) = either {
-
         val message = messageRepository.observeMessageWithBody(userId, messageId).first().bind()
+        val draftState = draftStateRepository.observe(userId, messageId).first().bind()
 
-        draftRemoteDataSource.create(userId, message, DraftAction.Compose).bind()
+        draftRemoteDataSource.create(userId, message, draftState.action).bind()
     }
 }

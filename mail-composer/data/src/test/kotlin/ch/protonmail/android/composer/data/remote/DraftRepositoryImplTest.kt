@@ -24,6 +24,9 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.ProtonError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcomposer.domain.model.DraftAction
+import ch.protonmail.android.mailcomposer.domain.model.DraftState
+import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
+import ch.protonmail.android.mailcomposer.domain.sample.DraftStateSample
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
@@ -41,10 +44,12 @@ import org.junit.Test
 class DraftRepositoryImplTest {
 
     private val messageRepository = mockk<MessageRepository>()
-    private val draftRemoteDataSource = mockk<DraftRemoteDataSourceImpl>()
+    private val draftRemoteDataSource = mockk<DraftRemoteDataSource>()
+    private val draftStateRepository = mockk<DraftStateRepository>()
 
     private val draftRepository = DraftRepositoryImpl(
         messageRepository,
+        draftStateRepository,
         draftRemoteDataSource
     )
 
@@ -56,6 +61,8 @@ class DraftRepositoryImplTest {
         val expectedDraft = MessageWithBodySample.Invoice
         val expectedAction = DraftAction.Compose
         val expectedResponse = MessageWithBodySample.EmptyDraft
+        val expectedDraftState = DraftStateSample.NewDraftState
+        expectGetDraftStateSucceeds(userId, messageId, expectedDraftState)
         expectGetLocalMessageSucceeds(userId, messageId, expectedDraft)
         expectRemoteDataSourceSuccess(userId, expectedDraft, expectedAction, expectedResponse)
 
@@ -82,6 +89,23 @@ class DraftRepositoryImplTest {
     }
 
     @Test
+    fun `returns local failure when reading the draft state from DB fails`() = runTest {
+        // Given
+        val messageId = MessageIdSample.Invoice
+        val userId = UserIdSample.Primary
+        val expectedDraft = MessageWithBodySample.Invoice
+        val expectedError = DataError.Local.NoDataCached
+        expectGetLocalMessageSucceeds(userId, messageId, expectedDraft)
+        expectGetDraftStateFails(userId, messageId, expectedError)
+
+        // When
+        val actual = draftRepository.create(userId, messageId)
+
+        // Then
+        assertEquals(expectedError.left(), actual)
+    }
+
+    @Test
     fun `returns remote failure when remote data source fails`() = runTest {
         // Given
         val messageId = MessageIdSample.Invoice
@@ -89,6 +113,8 @@ class DraftRepositoryImplTest {
         val expectedDraft = MessageWithBodySample.Invoice
         val expectedAction = DraftAction.Compose
         val expectedError = DataError.Remote.Proton(ProtonError.MessageUpdateDraftNotDraft)
+        val expectedDraftState = DraftStateSample.NewDraftState
+        expectGetDraftStateSucceeds(userId, messageId, expectedDraftState)
         expectGetLocalMessageSucceeds(userId, messageId, expectedDraft)
         expectRemoteDataSourceFailure(userId, expectedDraft, expectedAction, expectedError)
 
@@ -131,5 +157,21 @@ class DraftRepositoryImplTest {
         error: DataError.Local
     ) {
         every { messageRepository.observeMessageWithBody(userId, messageId) } returns flowOf(error.left())
+    }
+
+    private fun expectGetDraftStateSucceeds(
+        userId: UserId,
+        messageId: MessageId,
+        expectedState: DraftState
+    ) {
+        coEvery { draftStateRepository.observe(userId, messageId) } returns flowOf(expectedState.right())
+    }
+
+    private fun expectGetDraftStateFails(
+        userId: UserId,
+        messageId: MessageId,
+        error: DataError.Local
+    ) {
+        coEvery { draftStateRepository.observe(userId, messageId) } returns flowOf(error.left())
     }
 }
