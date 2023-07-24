@@ -30,6 +30,7 @@ import me.proton.core.key.domain.entity.keyholder.KeyHolderContext
 import me.proton.core.key.domain.useKeys
 import me.proton.core.user.domain.UserManager
 import me.proton.core.util.kotlin.deserialize
+import timber.log.Timber
 import javax.inject.Inject
 
 class DecryptNotificationContent @Inject constructor(
@@ -41,16 +42,16 @@ class DecryptNotificationContent @Inject constructor(
         userId: UserId,
         notificationContent: String
     ): Either<DecryptionError, DecryptedNotification> = userManager.getUser(userId).useKeys(cryptoContext) {
-        val result = tryDecrypt(notificationContent)
+        val result = tryDecrypt(notificationContent, userId)
         result
     }
         ?.right()
         ?: DecryptionError(notificationContent).left()
 
-    @Suppress("SwallowedException")
-    private fun KeyHolderContext.tryDecrypt(notification: String): DecryptedNotification? = try {
+    private fun KeyHolderContext.tryDecrypt(notification: String, userId: UserId): DecryptedNotification? = try {
         decryptMimeMessage(notification).run { DecryptedNotification(body.content.deserialize<PushNotification>()) }
     } catch (e: CryptoException) {
+        Timber.e("Failed to decrypt notification for user id: ${userId.id}.")
         null
     }
 
