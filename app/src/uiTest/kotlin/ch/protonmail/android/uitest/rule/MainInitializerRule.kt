@@ -20,6 +20,9 @@ package ch.protonmail.android.uitest.rule
 
 import androidx.test.core.app.ApplicationProvider
 import ch.protonmail.android.initializer.MainInitializer
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import org.junit.rules.ExternalResource
 
 /**
@@ -29,6 +32,8 @@ class MainInitializerRule : ExternalResource() {
 
     override fun before() {
         super.before()
-        MainInitializer.init(ApplicationProvider.getApplicationContext())
+        runBlocking {
+            withContext(Dispatchers.Main) { MainInitializer.init(ApplicationProvider.getApplicationContext()) }
+        }
     }
 }
