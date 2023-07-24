@@ -46,10 +46,10 @@ class RelabelMessage @Inject constructor(
         val addedLabels = updatedLabelIds - currentLabelIds
         return messageRepository.relabel(
             userId = userId,
-            messageIds = listOf(messageId),
+            messageId = messageId,
             labelsToBeRemoved = removedLabels,
             labelsToBeAdded = addedLabels
-        ).map { it.first() }
+        )
     }
 
 }

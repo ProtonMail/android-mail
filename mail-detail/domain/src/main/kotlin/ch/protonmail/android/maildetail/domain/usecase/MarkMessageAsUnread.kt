@@ -31,5 +31,5 @@ class MarkMessageAsUnread @Inject constructor(
 ) {
 
     suspend operator fun invoke(userId: UserId, messageId: MessageId): Either<DataError.Local, Message> =
-        messageRepository.markUnread(userId, listOf(messageId)).map { it.first() }
+        messageRepository.markUnread(userId, messageId)
 }

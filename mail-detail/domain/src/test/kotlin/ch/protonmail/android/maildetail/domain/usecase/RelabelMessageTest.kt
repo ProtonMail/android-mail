@@ -21,6 +21,7 @@ package ch.protonmail.android.maildetail.domain.usecase
 import arrow.core.left
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import io.mockk.coEvery
@@ -40,7 +41,7 @@ internal class RelabelMessageTest {
     fun `when repository fails then error is returned`() = runTest {
         // Given
         val error = DataError.Local.NoDataCached.left()
-        coEvery { messageRepository.relabel(any(), any(), any(), any()) } returns error
+        coEvery { messageRepository.relabel(any(), any<MessageId>(), any(), any()) } returns error
 
         // When
         val result = relabel(
@@ -64,7 +65,7 @@ internal class RelabelMessageTest {
         coEvery {
             messageRepository.relabel(
                 userId = UserIdSample.Primary,
-                messageIds = listOf(MessageIdSample.Invoice),
+                messageId = MessageIdSample.Invoice,
                 labelsToBeRemoved = removedLabels,
                 labelsToBeAdded = addedLabels
             )
@@ -77,7 +78,7 @@ internal class RelabelMessageTest {
         coVerify {
             messageRepository.relabel(
                 userId = UserIdSample.Primary,
-                messageIds = listOf(MessageIdSample.Invoice),
+                messageId = MessageIdSample.Invoice,
                 labelsToBeRemoved = removedLabels,
                 labelsToBeAdded = addedLabels
             )

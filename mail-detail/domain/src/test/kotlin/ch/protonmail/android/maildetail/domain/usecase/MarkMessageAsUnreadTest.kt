@@ -22,6 +22,7 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
@@ -40,7 +41,7 @@ internal class MarkMessageAsUnreadTest {
     fun `when repository fails then error is returned`() = runTest {
         // given
         val error = DataError.Local.NoDataCached.left()
-        coEvery { messageRepository.markUnread(any(), any()) } returns error
+        coEvery { messageRepository.markUnread(any(), any<MessageId>()) } returns error
 
         // when
         val result = markUnread(UserIdSample.Primary, MessageIdSample.Invoice)
@@ -53,7 +54,7 @@ internal class MarkMessageAsUnreadTest {
     fun `when repository succeed then message is returned`() = runTest {
         // given
         val message = MessageSample.Invoice.right()
-        coEvery { messageRepository.markUnread(any(), any()) } returns listOf(MessageSample.Invoice).right()
+        coEvery { messageRepository.markUnread(any(), any<MessageId>()) } returns MessageSample.Invoice.right()
 
         // when
         val result = markUnread(UserIdSample.Primary, MessageIdSample.Invoice)

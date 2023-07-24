@@ -43,7 +43,7 @@ internal class MarkMessageAsReadTest {
     fun `when repository fails then error is returned`() = runTest {
         // given
         val error = DataError.Local.NoDataCached.left()
-        coEvery { messageRepository.markRead(userId, listOf(messageId)) } returns error
+        coEvery { messageRepository.markRead(userId, messageId) } returns error
 
         // when
         val result = markRead(userId, messageId)
@@ -55,13 +55,13 @@ internal class MarkMessageAsReadTest {
     @Test
     fun `when repository succeed then message is returned`() = runTest {
         // given
-        val message = listOf(MessageSample.Invoice).right()
-        coEvery { messageRepository.markRead(userId, listOf(messageId)) } returns message
+        val message = MessageSample.Invoice.right()
+        coEvery { messageRepository.markRead(userId, messageId) } returns message
 
         // when
         val result = markRead(userId, messageId)
 
         // then
-        assertEquals(message.map { it.first() }, result)
+        assertEquals(message, result)
     }
 }

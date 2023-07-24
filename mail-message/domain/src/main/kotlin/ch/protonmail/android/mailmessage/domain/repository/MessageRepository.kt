@@ -89,6 +89,20 @@ interface MessageRepository {
     suspend fun upsertMessageWithBody(userId: UserId, messageWithBody: MessageWithBody): Boolean
 
     /**
+     * Moves the given [messageId] from the optional exclusive label to the [toLabel]
+     * @param userId the user id of the affected messages
+     * @param messageId the message to be moved
+     * @param fromLabel the message's optional exclusive label
+     * @param toLabel the label to move the messages to
+     */
+    suspend fun moveTo(
+        userId: UserId,
+        messageId: MessageId,
+        fromLabel: LabelId?,
+        toLabel: LabelId
+    ): Either<DataError.Local, Message>
+
+    /**
      * Moves the given [messageIds] from the optional exclusive label to the [toLabel]
      * @param userId the user id of the affected messages
      * @param messageWithExclusiveLabel the messages to move with their optional exclusive label
@@ -101,9 +115,19 @@ interface MessageRepository {
     ): Either<DataError.Local, List<Message>>
 
     /**
+     * Set the message with the given [messageId] as unread
+     */
+    suspend fun markUnread(userId: UserId, messageId: MessageId): Either<DataError.Local, Message>
+
+    /**
      * Set the messages with the given [messageIds] as unread
      */
     suspend fun markUnread(userId: UserId, messageIds: List<MessageId>): Either<DataError.Local, List<Message>>
+
+    /**
+     * Set the message with the given [messageId] as read
+     */
+    suspend fun markRead(userId: UserId, messageId: MessageId): Either<DataError.Local, Message>
 
     /**
      * Set the messages with the given [messageIds] as read
@@ -114,6 +138,16 @@ interface MessageRepository {
 
     /**
      * Removes [labelsToBeRemoved] and adds [labelsToBeAdded] from the message with the given [messageId]
+     */
+    suspend fun relabel(
+        userId: UserId,
+        messageId: MessageId,
+        labelsToBeRemoved: List<LabelId> = emptyList(),
+        labelsToBeAdded: List<LabelId> = emptyList()
+    ): Either<DataError.Local, Message>
+
+    /**
+     * Removes [labelsToBeRemoved] and adds [labelsToBeAdded] from the messages with the given [messageIds]
      */
     suspend fun relabel(
         userId: UserId,

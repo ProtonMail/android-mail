@@ -32,8 +32,8 @@ class UnStarMessage @Inject constructor(private val messageRepository: MessageRe
     suspend operator fun invoke(userId: UserId, messageId: MessageId): Either<DataError, Message> =
         messageRepository.relabel(
             userId,
-            listOf(messageId),
+            messageId,
             labelsToBeRemoved = listOf(SystemLabelId.Starred.labelId),
             labelsToBeAdded = listOf()
-        ).map { it.first() }
+        )
 }

@@ -40,8 +40,8 @@ internal class StarMessageTest {
 
     private val messageRepository: MessageRepository = mockk {
         coEvery {
-            relabel(userId, listOf(messageId), labelsToBeAdded = listOf(starredLabelId))
-        } returns listOf(MessageTestData.starredMessage).right()
+            relabel(userId, messageId, labelsToBeAdded = listOf(starredLabelId))
+        } returns MessageTestData.starredMessage.right()
     }
 
     private val starMessage = StarMessage(
@@ -54,7 +54,7 @@ internal class StarMessageTest {
         starMessage(userId, messageId)
 
         // Then
-        coVerify { messageRepository.relabel(userId, listOf(messageId), emptyList(), listOf(starredLabelId)) }
+        coVerify { messageRepository.relabel(userId, messageId, emptyList(), listOf(starredLabelId)) }
     }
 
     @Test
@@ -73,7 +73,7 @@ internal class StarMessageTest {
         coEvery {
             messageRepository.relabel(
                 userId = userId,
-                messageIds = listOf(messageId),
+                messageId = messageId,
                 labelsToBeAdded = listOf(starredLabelId)
             )
         } returns localError.left()

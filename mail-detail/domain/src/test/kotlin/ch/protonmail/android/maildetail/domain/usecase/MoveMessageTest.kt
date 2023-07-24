@@ -88,13 +88,7 @@ class MoveMessageTest {
     fun `when move to returns error then return error`() = runTest {
         // Given
         val error = DataError.Local.NoDataCached.left()
-        coEvery {
-            messageRepository.moveTo(
-                userId = userId,
-                messageWithExclusiveLabel = mapOf(messageId to fromLabelId),
-                toLabel = toLabelId
-            )
-        } returns error
+        coEvery { messageRepository.moveTo(userId, messageId, fromLabelId, toLabelId) } returns error
 
         // When
         val actual = move(userId, messageId, toLabelId)
@@ -106,14 +100,14 @@ class MoveMessageTest {
     @Test
     fun `when move a message then repository is called with the given data`() = runTest {
         // Given
-        val message = listOf(MessageSample.AugWeatherForecast).right()
-        coEvery { messageRepository.moveTo(userId, mapOf(messageId to fromLabelId), toLabelId) } returns message
+        val message = MessageSample.AugWeatherForecast.right()
+        coEvery { messageRepository.moveTo(userId, messageId, fromLabelId, toLabelId) } returns message
 
         // When
         val actual = move(userId, messageId, toLabelId)
 
         // Then
-        coVerify { messageRepository.moveTo(userId, mapOf(messageId to fromLabelId), toLabelId) }
-        assertEquals(message.map { it.first() }, actual)
+        coVerify { messageRepository.moveTo(userId, messageId, fromLabelId, toLabelId) }
+        assertEquals(message, actual)
     }
 }

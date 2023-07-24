@@ -148,6 +148,13 @@ class MessageRepositoryImpl @Inject constructor(
 
     override suspend fun moveTo(
         userId: UserId,
+        messageId: MessageId,
+        fromLabel: LabelId?,
+        toLabel: LabelId
+    ): Either<DataError.Local, Message> = moveTo(userId, mapOf(messageId to fromLabel), toLabel).map { it.first() }
+
+    override suspend fun moveTo(
+        userId: UserId,
         messageWithExclusiveLabel: Map<MessageId, LabelId?>,
         toLabel: LabelId
     ): Either<DataError.Local, List<Message>> {
@@ -175,12 +182,18 @@ class MessageRepositoryImpl @Inject constructor(
         return updatedMessages.right()
     }
 
+    override suspend fun markUnread(userId: UserId, messageId: MessageId): Either<DataError.Local, Message> =
+        markUnread(userId, listOf(messageId)).map { it.first() }
+
     override suspend fun markUnread(
         userId: UserId,
         messageIds: List<MessageId>
     ): Either<DataError.Local, List<Message>> = localDataSource.markUnread(userId, messageIds).onRight {
         remoteDataSource.markUnread(userId, messageIds)
     }
+
+    override suspend fun markRead(userId: UserId, messageId: MessageId): Either<DataError.Local, Message> =
+        markRead(userId, listOf(messageId)).map { it.first() }
 
     override suspend fun markRead(userId: UserId, messageIds: List<MessageId>): Either<DataError.Local, List<Message>> =
         localDataSource.markRead(userId, messageIds).onRight {
@@ -189,6 +202,14 @@ class MessageRepositoryImpl @Inject constructor(
 
     override suspend fun isMessageRead(userId: UserId, messageId: MessageId): Either<DataError.Local, Boolean> =
         localDataSource.isMessageRead(userId, messageId)
+
+    override suspend fun relabel(
+        userId: UserId,
+        messageId: MessageId,
+        labelsToBeRemoved: List<LabelId>,
+        labelsToBeAdded: List<LabelId>
+    ): Either<DataError.Local, Message> =
+        relabel(userId, listOf(messageId), labelsToBeRemoved, labelsToBeAdded).map { it.first() }
 
     override suspend fun relabel(
         userId: UserId,

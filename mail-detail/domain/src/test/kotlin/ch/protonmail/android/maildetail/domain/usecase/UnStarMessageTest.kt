@@ -40,8 +40,8 @@ internal class UnStarMessageTest {
 
     private val messageRepository: MessageRepository = mockk {
         coEvery {
-            relabel(userId, listOf(messageId), labelsToBeRemoved = listOf(starredLabelId))
-        } returns listOf(MessageTestData.message).right()
+            relabel(userId, messageId, labelsToBeRemoved = listOf(starredLabelId))
+        } returns MessageTestData.message.right()
     }
 
 
@@ -58,7 +58,7 @@ internal class UnStarMessageTest {
         coVerify {
             messageRepository.relabel(
                 userId,
-                listOf(messageId),
+                messageId,
                 labelsToBeRemoved = listOf(SystemLabelId.Starred.labelId)
             )
         }
@@ -78,7 +78,7 @@ internal class UnStarMessageTest {
         // Given
         val localError = DataError.Local.NoDataCached
         coEvery {
-            messageRepository.relabel(userId, listOf(messageId), labelsToBeRemoved = listOf(starredLabelId))
+            messageRepository.relabel(userId, messageId, labelsToBeRemoved = listOf(starredLabelId))
         } returns localError.left()
 
         // When
