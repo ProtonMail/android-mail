@@ -19,10 +19,8 @@
 package ch.protonmail.android.composer.data.remote.resource
 
 import ch.protonmail.android.mailmessage.data.remote.resource.RecipientResource
-import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import me.proton.core.util.kotlin.toInt
 
 @Serializable
 data class DraftMessageResource(
@@ -46,17 +44,4 @@ data class DraftMessageResource(
     val body: String,
     @SerialName("MIMEType")
     val mimeType: String
-)
-
-fun MessageWithBody.toDraftMessageResource() = DraftMessageResource(
-    subject = this.message.subject,
-    this.message.unread.toInt(),
-    with(this.message.sender) { RecipientResource(address, name) },
-    this.message.toList.map { RecipientResource(it.address, it.name) },
-    this.message.ccList.map { RecipientResource(it.address, it.name) },
-    this.message.bccList.map { RecipientResource(it.address, it.name) },
-    this.message.externalId,
-    this.message.flags,
-    this.messageBody.body,
-    this.messageBody.mimeType.value
 )
