@@ -28,6 +28,7 @@ import androidx.compose.ui.test.performClick
 import ch.protonmail.android.uicomponents.chips.ChipsTestTags
 import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import ch.protonmail.android.uitest.util.assertions.CustomSemanticsPropertyKeyNames
+import ch.protonmail.android.uitest.util.awaitDisplayed
 import ch.protonmail.android.uitest.util.child
 import ch.protonmail.android.uitest.util.extensions.getKeyValueByName
 import org.junit.Assert.assertEquals
@@ -46,32 +47,38 @@ internal class RecipientChipEntryModel(
     private val deleteIcon = parent.child { hasTestTag(ChipsTestTags.InputChipIcon) }
 
     // region actions
-    fun tapDeleteIcon() {
+    fun tapDeleteIcon() = withParentDisplayed {
         deleteIcon.performClick()
     }
     // endregion
 
     // region verification
-    fun hasText(value: String): RecipientChipEntryModel = apply {
+    fun hasText(value: String): RecipientChipEntryModel = withParentDisplayed {
         text.assertTextEquals(value)
     }
 
-    fun hasEmailValidationState(state: RecipientChipValidationState) = apply {
+    fun hasEmailValidationState(state: RecipientChipValidationState) = withParentDisplayed {
         parent.assertFieldState(state.value)
     }
 
-    fun hasDeleteIcon() = apply {
+    fun hasDeleteIcon() = withParentDisplayed {
         deleteIcon.assertExists()
     }
 
-    fun hasNoDeleteIcon() = apply {
+    fun hasNoDeleteIcon() = withParentDisplayed {
         deleteIcon.assertDoesNotExist()
     }
 
-    fun doesNotExist() = apply {
+    fun doesNotExist() {
         parent.assertDoesNotExist()
     }
     // endregion
+
+    // On some configurations, the transition from raw text to chip might take a bit and make the test fail.
+    private fun withParentDisplayed(block: RecipientChipEntryModel.() -> Unit) = apply {
+        parent.awaitDisplayed()
+        block()
+    }
 
     private fun SemanticsNodeInteraction.assertFieldState(isValid: Boolean) = apply {
         val isValidProperty = requireNotNull(getKeyValueByName(CustomSemanticsPropertyKeyNames.IsValidFieldKey)) {

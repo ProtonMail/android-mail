@@ -119,12 +119,12 @@ internal class ComposerDraftsMainTests : MockedNetworkTest(), ComposerTests {
         subject: String? = null,
         body: String = "sample body"
     ) {
-        // For now the item is always the same as some of the fields are not populated.
-        // Will be extracted once MAILANDR-495 is implemented.
+        val participant = recipient?.let { ParticipantEntry.WithParticipant(it) } ?: ParticipantEntry.NoRecipient
+
         val expectedDraftItem = MailboxListItemEntry(
             index = 0,
-            participants = listOf(ParticipantEntry.NoRecipient),
             avatarInitial = AvatarInitial.Draft,
+            participants = listOf(participant),
             date = "Jul 1, 2023",
             subject = subject.orEmpty()
         )

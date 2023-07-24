@@ -164,6 +164,8 @@ internal class ComposerRecipientsCollapsedChipsTests : MockedNetworkTest(), Comp
         composerRobot {
             toRecipientSection {
                 typeMultipleRecipients("test@example.com", "test2@example.com", "test3@example.com")
+
+                verify { hasRecipientChips(*expectedMultipleFocusedEntries) }
             }
 
             subjectSection { focusField() }
