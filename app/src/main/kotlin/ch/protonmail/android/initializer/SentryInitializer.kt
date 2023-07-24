@@ -26,8 +26,10 @@ import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
+import io.sentry.SentryLevel
 import io.sentry.SentryOptions
 import io.sentry.android.core.SentryAndroid
+import me.proton.core.util.android.sentry.TimberLoggerIntegration
 
 class SentryInitializer : Initializer<Unit> {
 
@@ -36,6 +38,12 @@ class SentryInitializer : Initializer<Unit> {
             options.dsn = BuildConfig.SENTRY_DSN
             options.release = BuildConfig.VERSION_NAME
             options.environment = BuildConfig.HOST
+            options.addIntegration(
+                TimberLoggerIntegration(
+                    minEventLevel = SentryLevel.WARNING,
+                    minBreadcrumbLevel = SentryLevel.INFO
+                )
+            )
         }
 
         EntryPointAccessors.fromApplication(

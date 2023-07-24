@@ -96,6 +96,7 @@ object Dependencies {
         add(Proton.Core.user)
         add(Proton.Core.userSettings)
         add(Proton.Core.utilAndroidDagger)
+        add(Proton.Core.utilAndroidSentry)
         add(Proton.Core.utilAndroidStrictMode)
         add(Proton.Core.utilKotlin)
         add(Sentry.compose)
