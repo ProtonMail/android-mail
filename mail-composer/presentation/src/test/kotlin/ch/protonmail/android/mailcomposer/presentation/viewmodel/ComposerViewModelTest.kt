@@ -44,10 +44,12 @@ import ch.protonmail.android.mailcomposer.presentation.mapper.ParticipantMapper
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerFields
+import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
 import ch.protonmail.android.mailcomposer.presentation.reducer.ComposerReducer
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.entity.Recipient
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.test.utils.rule.LoggingTestRule
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
@@ -60,6 +62,7 @@ import io.mockk.mockkObject
 import io.mockk.unmockkObject
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
+import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.domain.entity.UserId
 import me.proton.core.user.domain.entity.UserAddress
 import kotlin.test.AfterTest
@@ -187,6 +190,144 @@ class ComposerViewModelTest {
                 expectedMessageId,
                 expectedSenderEmail,
                 expectedSubject
+            )
+        }
+    }
+
+    @Test
+    fun `should store draft recipients TO when they change`() = runTest {
+        // Given
+        val expectedRecipients = listOf(
+            Recipient("valid@email.com", "Valid Email", false)
+        )
+        val recipientsUiModels = listOf(
+            RecipientUiModel.Valid("valid@email.com"),
+            RecipientUiModel.Invalid("invalid email")
+        )
+        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+        val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val action = ComposerAction.RecipientsToChanged(recipientsUiModels)
+        expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        expectStoreDraftRecipientsSucceeds(
+            expectedMessageId,
+            expectedSenderEmail,
+            expectedUserId,
+            expectedTo = expectedRecipients,
+            expectedCc = null,
+            expectedBcc = null
+        )
+        val expectedContacts = emptyList<Contact>()
+        coEvery { getContactsMock.invoke(UserIdSample.Primary) } returns expectedContacts.right()
+        every {
+            participantMapperMock.recipientUiModelToParticipant(
+                RecipientUiModel.Valid("valid@email.com"),
+                expectedContacts
+            )
+        } returns Recipient("valid@email.com", "Valid Email", false)
+
+        // When
+        viewModel.submit(action)
+
+        // Then
+        coVerify {
+            storeDraftWithRecipientsMock(
+                expectedUserId,
+                expectedMessageId,
+                expectedSenderEmail,
+                to = expectedRecipients
+            )
+        }
+    }
+
+    @Test
+    fun `should store draft recipients CC when they change`() = runTest {
+        // Given
+        val expectedRecipients = listOf(
+            Recipient("valid@email.com", "Valid Email", false)
+        )
+        val recipientsUiModels = listOf(
+            RecipientUiModel.Valid("valid@email.com"),
+            RecipientUiModel.Invalid("invalid email")
+        )
+        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+        val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val action = ComposerAction.RecipientsCcChanged(recipientsUiModels)
+        expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        expectStoreDraftRecipientsSucceeds(
+            expectedMessageId,
+            expectedSenderEmail,
+            expectedUserId,
+            expectedTo = null,
+            expectedCc = expectedRecipients,
+            expectedBcc = null
+        )
+        val expectedContacts = emptyList<Contact>()
+        coEvery { getContactsMock.invoke(UserIdSample.Primary) } returns expectedContacts.right()
+        every {
+            participantMapperMock.recipientUiModelToParticipant(
+                RecipientUiModel.Valid("valid@email.com"),
+                expectedContacts
+            )
+        } returns Recipient("valid@email.com", "Valid Email", false)
+
+        // When
+        viewModel.submit(action)
+
+        // Then
+        coVerify {
+            storeDraftWithRecipientsMock(
+                expectedUserId,
+                expectedMessageId,
+                expectedSenderEmail,
+                cc = expectedRecipients
+            )
+        }
+    }
+
+    @Test
+    fun `should store draft recipients BCC when they change`() = runTest {
+        // Given
+        val expectedRecipients = listOf(
+            Recipient("valid@email.com", "Valid Email", false)
+        )
+        val recipientsUiModels = listOf(
+            RecipientUiModel.Valid("valid@email.com"),
+            RecipientUiModel.Invalid("invalid email")
+        )
+        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+        val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val action = ComposerAction.RecipientsBccChanged(recipientsUiModels)
+        expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        expectStoreDraftRecipientsSucceeds(
+            expectedMessageId,
+            expectedSenderEmail,
+            expectedUserId,
+            expectedTo = null,
+            expectedCc = null,
+            expectedBcc = expectedRecipients
+        )
+        val expectedContacts = emptyList<Contact>()
+        coEvery { getContactsMock.invoke(UserIdSample.Primary) } returns expectedContacts.right()
+        every {
+            participantMapperMock.recipientUiModelToParticipant(
+                RecipientUiModel.Valid("valid@email.com"),
+                expectedContacts
+            )
+        } returns Recipient("valid@email.com", "Valid Email", false)
+
+        // When
+        viewModel.submit(action)
+
+        // Then
+        coVerify {
+            storeDraftWithRecipientsMock(
+                expectedUserId,
+                expectedMessageId,
+                expectedSenderEmail,
+                bcc = expectedRecipients
             )
         }
     }
@@ -419,6 +560,120 @@ class ComposerViewModelTest {
         )
     }
 
+    @Test
+    fun `emits state with saving draft subject error when save draft TO returns error`() = runTest {
+        // Given
+        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+        val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val expectedRecipients = listOf(
+            Recipient("valid@email.com", "Valid Email", false)
+        )
+        val recipientsUiModels = listOf(
+            RecipientUiModel.Valid("valid@email.com"),
+            RecipientUiModel.Invalid("invalid email")
+        )
+        val action = ComposerAction.RecipientsToChanged(recipientsUiModels)
+        expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        expectStoreDraftRecipientsFails(
+            expectedMessageId, expectedSenderEmail, expectedUserId,
+            expectedTo = expectedRecipients, expectedCc = null, expectedBcc = null
+        ) {
+            StoreDraftWithRecipients.Error.DraftSaveError
+        }
+        val expectedContacts = emptyList<Contact>()
+        coEvery { getContactsMock.invoke(UserIdSample.Primary) } returns expectedContacts.right()
+        every {
+            participantMapperMock.recipientUiModelToParticipant(
+                RecipientUiModel.Valid("valid@email.com"),
+                expectedContacts
+            )
+        } returns Recipient("valid@email.com", "Valid Email", false)
+
+        // When
+        viewModel.submit(action)
+
+        // Then
+        val currentState = viewModel.state.value
+        assertEquals(TextUiModel(R.string.composer_error_store_draft_recipients), currentState.error.consume())
+    }
+
+    @Test
+    fun `emits state with saving draft subject error when save draft CC returns error`() = runTest {
+        // Given
+        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+        val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val expectedRecipients = listOf(
+            Recipient("valid@email.com", "Valid Email", false)
+        )
+        val recipientsUiModels = listOf(
+            RecipientUiModel.Valid("valid@email.com"),
+            RecipientUiModel.Invalid("invalid email")
+        )
+        val action = ComposerAction.RecipientsCcChanged(recipientsUiModels)
+        expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        expectStoreDraftRecipientsFails(
+            expectedMessageId, expectedSenderEmail, expectedUserId,
+            expectedTo = null, expectedCc = expectedRecipients, expectedBcc = null
+        ) {
+            StoreDraftWithRecipients.Error.DraftSaveError
+        }
+        val expectedContacts = emptyList<Contact>()
+        coEvery { getContactsMock.invoke(UserIdSample.Primary) } returns expectedContacts.right()
+        every {
+            participantMapperMock.recipientUiModelToParticipant(
+                RecipientUiModel.Valid("valid@email.com"),
+                expectedContacts
+            )
+        } returns Recipient("valid@email.com", "Valid Email", false)
+
+        // When
+        viewModel.submit(action)
+
+        // Then
+        val currentState = viewModel.state.value
+        assertEquals(TextUiModel(R.string.composer_error_store_draft_recipients), currentState.error.consume())
+    }
+
+    @Test
+    fun `emits state with saving draft subject error when save draft BCC returns error`() = runTest {
+        // Given
+        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+        val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val expectedRecipients = listOf(
+            Recipient("valid@email.com", "Valid Email", false)
+        )
+        val recipientsUiModels = listOf(
+            RecipientUiModel.Valid("valid@email.com"),
+            RecipientUiModel.Invalid("invalid email")
+        )
+        val action = ComposerAction.RecipientsBccChanged(recipientsUiModels)
+        expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        expectStoreDraftRecipientsFails(
+            expectedMessageId, expectedSenderEmail, expectedUserId,
+            expectedTo = null, expectedCc = null, expectedBcc = expectedRecipients
+        ) {
+            StoreDraftWithRecipients.Error.DraftSaveError
+        }
+        val expectedContacts = emptyList<Contact>()
+        coEvery { getContactsMock.invoke(UserIdSample.Primary) } returns expectedContacts.right()
+        every {
+            participantMapperMock.recipientUiModelToParticipant(
+                RecipientUiModel.Valid("valid@email.com"),
+                expectedContacts
+            )
+        } returns Recipient("valid@email.com", "Valid Email", false)
+
+        // When
+        viewModel.submit(action)
+
+        // Then
+        val currentState = viewModel.state.value
+        assertEquals(TextUiModel(R.string.composer_error_store_draft_recipients), currentState.error.consume())
+    }
+
     @AfterTest
     fun tearDown() {
         unmockkObject(ComposerDraftState.Companion)
@@ -538,6 +793,47 @@ class ComposerViewModelTest {
                 expectedMessageId,
                 expectedSenderEmail,
                 expectedSubject
+            )
+        } returns it.left()
+    }
+
+    private fun expectStoreDraftRecipientsSucceeds(
+        expectedMessageId: MessageId,
+        expectedSenderEmail: SenderEmail,
+        expectedUserId: UserId,
+        expectedTo: List<Recipient>? = emptyList(),
+        expectedCc: List<Recipient>? = emptyList(),
+        expectedBcc: List<Recipient>? = emptyList()
+    ) {
+        coEvery {
+            storeDraftWithRecipientsMock(
+                expectedUserId,
+                expectedMessageId,
+                expectedSenderEmail,
+                to = expectedTo,
+                cc = expectedCc,
+                bcc = expectedBcc
+            )
+        } returns Unit.right()
+    }
+
+    private fun expectStoreDraftRecipientsFails(
+        expectedMessageId: MessageId,
+        expectedSenderEmail: SenderEmail,
+        expectedUserId: UserId,
+        expectedTo: List<Recipient>? = emptyList(),
+        expectedCc: List<Recipient>? = emptyList(),
+        expectedBcc: List<Recipient>? = emptyList(),
+        error: () -> StoreDraftWithRecipients.Error
+    ) = error().also {
+        coEvery {
+            storeDraftWithRecipientsMock(
+                expectedUserId,
+                expectedMessageId,
+                expectedSenderEmail,
+                to = expectedTo,
+                cc = expectedCc,
+                bcc = expectedBcc
             )
         } returns it.left()
     }
