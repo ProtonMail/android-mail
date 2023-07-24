@@ -19,29 +19,39 @@
 package ch.protonmail.android.initializer
 
 import android.content.Context
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.startup.Initializer
-import ch.protonmail.android.mailcommon.presentation.system.NotificationProvider
+import ch.protonmail.android.mailnotifications.domain.AppInBackgroundState
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
 
-class NotificationInitializer : Initializer<Unit> {
+class AppInBackgroundCheckerInitializer : Initializer<Unit>, LifecycleEventObserver {
 
+    private var appInBackgroundState: AppInBackgroundState? = null
     override fun create(context: Context) {
-        EntryPointAccessors.fromApplication(
+        appInBackgroundState = EntryPointAccessors.fromApplication(
             context.applicationContext,
-            NotificationInitializerEntryPoint::class.java
-        ).notificationProvider().initNotificationChannels()
+            AppInBackgroundCheckerInitializerEntryPoint::class.java
+        ).isAppInBackground()
+
+        ProcessLifecycleOwner.get().lifecycle.addObserver(this)
     }
 
-    override fun dependencies(): List<Class<out Initializer<*>>> = listOf(AppInBackgroundCheckerInitializer::class.java)
+    override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()
+
+    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+        appInBackgroundState?.isAppInBackground = event != Lifecycle.Event.ON_RESUME
+    }
 
     @EntryPoint
     @InstallIn(SingletonComponent::class)
-    interface NotificationInitializerEntryPoint {
+    interface AppInBackgroundCheckerInitializerEntryPoint {
 
-        fun notificationProvider(): NotificationProvider
+        fun isAppInBackground(): AppInBackgroundState
     }
-
 }
