@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.composer.data.remote
 
+import java.util.UUID
 import arrow.core.continuations.either
 import ch.protonmail.android.mailcomposer.domain.repository.DraftRepository
 import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
@@ -25,6 +26,7 @@ import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import kotlinx.coroutines.flow.first
 import me.proton.core.domain.entity.UserId
+import timber.log.Timber
 import javax.inject.Inject
 
 internal class DraftRepositoryImpl @Inject constructor(
@@ -33,10 +35,22 @@ internal class DraftRepositoryImpl @Inject constructor(
     private val draftRemoteDataSource: DraftRemoteDataSource
 ) : DraftRepository {
 
-    override suspend fun create(userId: UserId, messageId: MessageId) = either {
+    override suspend fun sync(userId: UserId, messageId: MessageId) = either {
         val message = messageRepository.observeMessageWithBody(userId, messageId).first().bind()
         val draftState = draftStateRepository.observe(userId, messageId).first().bind()
 
-        draftRemoteDataSource.create(userId, message, draftState.action).bind()
+        if (isMessageLocal(messageId)) {
+            draftRemoteDataSource.create(userId, message, draftState.action).bind()
+        } else {
+            draftRemoteDataSource.update(userId, message).bind()
+        }
+    }
+
+    private fun isMessageLocal(messageId: MessageId) = try {
+        UUID.fromString(messageId.id)
+        true
+    } catch (e: IllegalArgumentException) {
+        Timber.d("Given messageId ($this) is not a local id (not in UUID format). $e")
+        false
     }
 }

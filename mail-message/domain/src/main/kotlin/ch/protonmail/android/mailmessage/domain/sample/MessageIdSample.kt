@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmessage.domain.sample
 
+import java.util.UUID
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 
 object MessageIdSample {
@@ -25,7 +26,10 @@ object MessageIdSample {
     val AugWeatherForecast = MessageId("aug_weather_forecast")
     val EmptyDraft = MessageId("empty_draft")
     val NewDraftWithSubject = MessageId("new_draft_with_subject_only")
-    val RemoteDraft = MessageId("draft_known_to_API")
+    val RemoteDraft = MessageId(
+        "j3AabCJkO7V4T9aJA81ilVFs2HYzJYhwRDPH_dm2O8twgGjRqUZ0-9XX7ZGP8ehEgtIm5o2J8N5svjFuVfu0GQ=="
+    )
+    val LocalDraft = MessageId(UUID.randomUUID().toString())
     val Invoice = MessageId("invoice")
     val OctWeatherForecast = MessageId("oct_weather_forecast")
     val SepWeatherForecast = MessageId("sep_weather_forecast")

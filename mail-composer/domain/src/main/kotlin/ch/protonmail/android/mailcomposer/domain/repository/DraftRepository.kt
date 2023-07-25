@@ -26,5 +26,5 @@ import me.proton.core.domain.entity.UserId
 
 interface DraftRepository {
 
-    suspend fun create(userId: UserId, messageId: MessageId): Either<DataError, MessageWithBody>
+    suspend fun sync(userId: UserId, messageId: MessageId): Either<DataError, MessageWithBody>
 }

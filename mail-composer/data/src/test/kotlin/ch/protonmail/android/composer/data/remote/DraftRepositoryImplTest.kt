@@ -33,6 +33,7 @@ import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
@@ -56,7 +57,7 @@ class DraftRepositoryImplTest {
     @Test
     fun `returns success when remote data source succeeds`() = runTest {
         // Given
-        val messageId = MessageIdSample.Invoice
+        val messageId = MessageIdSample.LocalDraft
         val userId = UserIdSample.Primary
         val expectedDraft = MessageWithBodySample.Invoice
         val expectedAction = DraftAction.Compose
@@ -64,13 +65,14 @@ class DraftRepositoryImplTest {
         val expectedDraftState = DraftStateSample.NewDraftState
         expectGetDraftStateSucceeds(userId, messageId, expectedDraftState)
         expectGetLocalMessageSucceeds(userId, messageId, expectedDraft)
-        expectRemoteDataSourceSuccess(userId, expectedDraft, expectedAction, expectedResponse)
+        expectRemoteDataSourceCreateSuccess(userId, expectedDraft, expectedAction, expectedResponse)
 
         // When
-        val actual = draftRepository.create(userId, messageId)
+        val actual = draftRepository.sync(userId, messageId)
 
         // Then
         assertEquals(expectedResponse.right(), actual)
+        coVerify(exactly = 0) { draftRemoteDataSource.update(any(), any()) }
     }
 
     @Test
@@ -82,7 +84,7 @@ class DraftRepositoryImplTest {
         expectGetLocalMessageFails(userId, messageId, expectedError)
 
         // When
-        val actual = draftRepository.create(userId, messageId)
+        val actual = draftRepository.sync(userId, messageId)
 
         // Then
         assertEquals(expectedError.left(), actual)
@@ -99,7 +101,7 @@ class DraftRepositoryImplTest {
         expectGetDraftStateFails(userId, messageId, expectedError)
 
         // When
-        val actual = draftRepository.create(userId, messageId)
+        val actual = draftRepository.sync(userId, messageId)
 
         // Then
         assertEquals(expectedError.left(), actual)
@@ -108,7 +110,7 @@ class DraftRepositoryImplTest {
     @Test
     fun `returns remote failure when remote data source fails`() = runTest {
         // Given
-        val messageId = MessageIdSample.Invoice
+        val messageId = MessageIdSample.LocalDraft
         val userId = UserIdSample.Primary
         val expectedDraft = MessageWithBodySample.Invoice
         val expectedAction = DraftAction.Compose
@@ -119,13 +121,33 @@ class DraftRepositoryImplTest {
         expectRemoteDataSourceFailure(userId, expectedDraft, expectedAction, expectedError)
 
         // When
-        val actual = draftRepository.create(userId, messageId)
+        val actual = draftRepository.sync(userId, messageId)
 
         // Then
         assertEquals(expectedError.left(), actual)
     }
 
-    private fun expectRemoteDataSourceSuccess(
+    @Test
+    fun `sync performs update on remote data source when draft is already known to the API`() = runTest {
+        // Given
+        val messageId = MessageIdSample.RemoteDraft
+        val userId = UserIdSample.Primary
+        val expectedDraft = MessageWithBodySample.RemoteDraft
+        val expectedResponse = MessageWithBodySample.RemoteDraft
+        val expectedDraftState = DraftStateSample.RemoteDraftState
+        expectGetDraftStateSucceeds(userId, messageId, expectedDraftState)
+        expectGetLocalMessageSucceeds(userId, messageId, expectedDraft)
+        expectRemoteDataSourceUpdateSuccess(userId, expectedDraft, expectedResponse)
+
+        // When
+        val actual = draftRepository.sync(userId, messageId)
+
+        // Then
+        assertEquals(expectedResponse.right(), actual)
+        coVerify(exactly = 0) { draftRemoteDataSource.create(any(), any(), any()) }
+    }
+
+    private fun expectRemoteDataSourceCreateSuccess(
         userId: UserId,
         messageWithBody: MessageWithBody,
         action: DraftAction,
@@ -133,6 +155,15 @@ class DraftRepositoryImplTest {
     ) {
         coEvery { draftRemoteDataSource.create(userId, messageWithBody, action) } returns response.right()
     }
+
+    private fun expectRemoteDataSourceUpdateSuccess(
+        userId: UserId,
+        messageWithBody: MessageWithBody,
+        response: MessageWithBody
+    ) {
+        coEvery { draftRemoteDataSource.update(userId, messageWithBody) } returns response.right()
+    }
+
 
     private fun expectRemoteDataSourceFailure(
         userId: UserId,
