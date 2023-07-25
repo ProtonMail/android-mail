@@ -30,6 +30,12 @@ object DraftStateEntitySample {
 
     val NewDraftState = build()
 
+    val RemoteDraft = build(
+        messageId = MessageIdSample.RemoteDraft,
+        apiMessageId = MessageIdSample.RemoteDraft,
+        state = DraftSyncState.Synchronized
+    )
+
     fun build(
         userId: UserId = UserIdSample.Primary,
         messageId: MessageId = MessageIdSample.EmptyDraft,

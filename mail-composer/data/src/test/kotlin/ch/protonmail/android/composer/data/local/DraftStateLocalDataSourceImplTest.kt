@@ -28,6 +28,8 @@ import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcomposer.domain.sample.DraftStateSample
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.first
@@ -69,6 +71,22 @@ class DraftStateLocalDataSourceImplTest {
         val actual = localDataSource.observe(userId, draftId).first()
 
         assertEquals(expectedError.left(), actual)
+    }
+
+    @Test
+    fun `save draft state returns Unit when succeeding`() = runTest {
+        val draftState = DraftStateSample.RemoteDraftState
+        val draftStateEntity = DraftStateEntitySample.RemoteDraft
+        expectDraftStateDaoUpsertSuccess(draftStateEntity)
+
+        val actual = localDataSource.save(draftState)
+
+        assertEquals(Unit.right(), actual)
+        coVerify { draftStateDao.insertOrUpdate(draftStateEntity) }
+    }
+
+    private fun expectDraftStateDaoUpsertSuccess(draftStateEntity: DraftStateEntity) {
+        coEvery { draftStateDao.insertOrUpdate(draftStateEntity) } returns Unit
     }
 
     private fun expectDraftStateDaoSuccess(

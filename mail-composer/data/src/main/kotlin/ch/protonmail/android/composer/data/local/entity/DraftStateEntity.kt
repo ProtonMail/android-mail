@@ -65,3 +65,11 @@ data class DraftStateEntity(
         action = action
     )
 }
+
+fun DraftState.toDraftStateEntity() = DraftStateEntity(
+    userId = this.userId,
+    messageId = this.messageId,
+    apiMessageId = this.apiMessageId,
+    state = this.state,
+    action = this.action
+)

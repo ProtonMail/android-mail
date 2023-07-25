@@ -19,12 +19,15 @@
 package ch.protonmail.android.composer.data.remote
 
 import arrow.core.Either
+import arrow.core.continuations.either
 import ch.protonmail.android.composer.data.local.DraftStateLocalDataSourceImpl
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcomposer.domain.model.DraftState
+import ch.protonmail.android.mailcomposer.domain.model.DraftSyncState
 import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
@@ -34,5 +37,19 @@ class DraftStateRepositoryImpl @Inject constructor(
 
     override suspend fun observe(userId: UserId, messageId: MessageId): Flow<Either<DataError, DraftState>> =
         localDataSource.observe(userId, messageId)
+
+    override suspend fun saveCreatedState(
+        userId: UserId,
+        messageId: MessageId,
+        remoteDraftId: MessageId
+    ): Either<DataError, Unit> = either {
+        val draftState = localDataSource.observe(userId, messageId).first().bind()
+        val updatedState = draftState.copy(
+            messageId = remoteDraftId,
+            apiMessageId = remoteDraftId,
+            state = DraftSyncState.Synchronized
+        )
+        localDataSource.save(updatedState)
+    }
 
 }

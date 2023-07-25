@@ -28,4 +28,5 @@ import me.proton.core.domain.entity.UserId
 interface DraftStateLocalDataSource {
 
     suspend fun observe(userId: UserId, messageId: MessageId): Flow<Either<DataError, DraftState>>
+    suspend fun save(state: DraftState): Either<DataError, Unit>
 }

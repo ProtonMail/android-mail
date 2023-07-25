@@ -21,12 +21,14 @@ package ch.protonmail.android.composer.data.local
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.composer.data.local.entity.toDraftStateEntity
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcomposer.domain.model.DraftState
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import me.proton.core.domain.entity.UserId
+import timber.log.Timber
 import javax.inject.Inject
 
 class DraftStateLocalDataSourceImpl @Inject constructor(
@@ -42,5 +44,14 @@ class DraftStateLocalDataSourceImpl @Inject constructor(
                 else -> it.toDraftState().right()
             }
         }
+
+    override suspend fun save(state: DraftState): Either<DataError, Unit> {
+        return Either.catch {
+            draftStateDao.insertOrUpdate(state.toDraftStateEntity())
+        }.mapLeft {
+            Timber.e("Unexpected error writing draft state to DB. $it")
+            DataError.Local.Unknown
+        }
+    }
 
 }
