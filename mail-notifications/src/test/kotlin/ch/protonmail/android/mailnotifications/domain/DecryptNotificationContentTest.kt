@@ -30,8 +30,6 @@ import kotlinx.coroutines.test.runTest
 import me.proton.core.crypto.common.context.CryptoContext
 import me.proton.core.crypto.common.keystore.EncryptedByteArray
 import me.proton.core.crypto.common.keystore.PlainByteArray
-import me.proton.core.crypto.common.pgp.DecryptedMimeBody
-import me.proton.core.crypto.common.pgp.DecryptedMimeMessage
 import me.proton.core.crypto.common.pgp.PGPCrypto
 import me.proton.core.crypto.common.pgp.exception.CryptoException
 import me.proton.core.domain.entity.UserId
@@ -120,8 +118,7 @@ class DecryptNotificationContentTest {
             )
         )
 
-        every { pgpCryptoMock.decryptMimeMessage(any(), any()) } returns
-            DecryptedMimeMessage(emptyList(), DecryptedMimeBody("text/plain", serialised), emptyList())
+        every { pgpCryptoMock.decryptText(any(), any()) } returns serialised
         // Given
         val useCase = DecryptNotificationContent(cryptoContext, userManager)
 

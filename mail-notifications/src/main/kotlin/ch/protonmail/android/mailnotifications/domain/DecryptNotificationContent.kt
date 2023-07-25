@@ -25,7 +25,7 @@ import ch.protonmail.android.mailnotifications.domain.model.PushNotification
 import me.proton.core.crypto.common.context.CryptoContext
 import me.proton.core.crypto.common.pgp.exception.CryptoException
 import me.proton.core.domain.entity.UserId
-import me.proton.core.key.domain.decryptMimeMessage
+import me.proton.core.key.domain.decryptText
 import me.proton.core.key.domain.entity.keyholder.KeyHolderContext
 import me.proton.core.key.domain.useKeys
 import me.proton.core.user.domain.UserManager
@@ -49,7 +49,7 @@ class DecryptNotificationContent @Inject constructor(
         ?: DecryptionError(notificationContent).left()
 
     private fun KeyHolderContext.tryDecrypt(notification: String, userId: UserId): DecryptedNotification? = try {
-        decryptMimeMessage(notification).run { DecryptedNotification(body.content.deserialize<PushNotification>()) }
+        decryptText(notification).run { DecryptedNotification(this.deserialize<PushNotification>()) }
     } catch (e: CryptoException) {
         Timber.e("Failed to decrypt notification for user id: ${userId.id}.")
         null
