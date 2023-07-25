@@ -22,9 +22,14 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-@Suppress("UseDataClass")
 class AppInBackgroundState @Inject constructor() {
 
-    var isAppInBackground: Boolean = true
+    private var isAppInBackground: Boolean = true
 
+    internal fun isAppInBackground(): Boolean = isAppInBackground
+
+    @Synchronized
+    fun setAppInBackground(isAppInBackground: Boolean) {
+        this.isAppInBackground = isAppInBackground
+    }
 }

@@ -37,7 +37,7 @@ class AppInBackgroundCheckerInitializer : Initializer<Unit>, LifecycleEventObser
         appInBackgroundState = EntryPointAccessors.fromApplication(
             context.applicationContext,
             AppInBackgroundCheckerInitializerEntryPoint::class.java
-        ).isAppInBackground()
+        ).appInBackgroundState()
 
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
     }
@@ -45,13 +45,13 @@ class AppInBackgroundCheckerInitializer : Initializer<Unit>, LifecycleEventObser
     override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
-        appInBackgroundState?.isAppInBackground = event != Lifecycle.Event.ON_RESUME
+        appInBackgroundState?.setAppInBackground(event != Lifecycle.Event.ON_RESUME)
     }
 
     @EntryPoint
     @InstallIn(SingletonComponent::class)
     interface AppInBackgroundCheckerInitializerEntryPoint {
 
-        fun isAppInBackground(): AppInBackgroundState
+        fun appInBackgroundState(): AppInBackgroundState
     }
 }
