@@ -16,24 +16,20 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.rule
+package ch.protonmail.android.mailnotifications.domain
 
-import androidx.test.core.app.ApplicationProvider
-import ch.protonmail.android.initializer.MainInitializer
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
-import org.junit.rules.ExternalResource
+import javax.inject.Inject
+import javax.inject.Singleton
 
-/**
- * A custom rule to initialize the [MainInitializer] before each test.
- */
-class MainInitializerRule : ExternalResource() {
+@Singleton
+class AppInBackgroundState @Inject constructor() {
 
-    override fun before() {
-        super.before()
-        runBlocking {
-            withContext(Dispatchers.Main) { MainInitializer.init(ApplicationProvider.getApplicationContext()) }
-        }
+    private var isAppInBackground: Boolean = true
+
+    internal fun isAppInBackground(): Boolean = isAppInBackground
+
+    @Synchronized
+    fun setAppInBackground(isAppInBackground: Boolean) {
+        this.isAppInBackground = isAppInBackground
     }
 }

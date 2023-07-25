@@ -112,9 +112,11 @@
                 android:value="androidx.startup"
                 tools:node="remove" />
 
+            <meta-data
+                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+                android:value="androidx.startup" />
             <!--
              Left Initializers:
-             - androidx.lifecycle.ProcessLifecycleInitializer
              - androidx.profileinstaller.ProfileInstallerInitializer
             -->
 
