@@ -20,18 +20,16 @@ package ch.protonmail.android.composer.data.remote
 
 import arrow.core.Either
 import ch.protonmail.android.composer.data.remote.resource.CreateDraftBody
-import ch.protonmail.android.composer.data.remote.resource.DraftMessageResource
+import ch.protonmail.android.composer.data.remote.resource.toDraftMessageResource
 import ch.protonmail.android.mailcommon.data.mapper.toEither
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcomposer.domain.model.DraftAction
-import ch.protonmail.android.mailmessage.data.remote.resource.RecipientResource
 import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
 import me.proton.core.domain.entity.UserId
 import me.proton.core.network.data.ApiProvider
-import me.proton.core.util.kotlin.toInt
 import javax.inject.Inject
 
-class DraftRemoteDataSourceImpl @Inject constructor(
+internal class DraftRemoteDataSourceImpl @Inject constructor(
     private val apiProvider: ApiProvider
 ) : DraftRemoteDataSource {
 
@@ -57,17 +55,4 @@ class DraftRemoteDataSourceImpl @Inject constructor(
             createDraft(body).toMessageWithBody(userId)
         }.toEither()
     }
-
-    private fun MessageWithBody.toDraftMessageResource() = DraftMessageResource(
-        subject = this.message.subject,
-        this.message.unread.toInt(),
-        with(this.message.sender) { RecipientResource(address, name) },
-        this.message.toList.map { RecipientResource(it.address, it.name) },
-        this.message.ccList.map { RecipientResource(it.address, it.name) },
-        this.message.bccList.map { RecipientResource(it.address, it.name) },
-        this.message.externalId,
-        this.message.flags,
-        this.messageBody.body,
-        this.messageBody.mimeType.value
-    )
 }

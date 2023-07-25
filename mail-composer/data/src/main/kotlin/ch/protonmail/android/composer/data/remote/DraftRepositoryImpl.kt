@@ -27,7 +27,7 @@ import kotlinx.coroutines.flow.first
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
-class DraftRepositoryImpl @Inject constructor(
+internal class DraftRepositoryImpl @Inject constructor(
     private val messageRepository: MessageRepository,
     private val draftRemoteDataSource: DraftRemoteDataSourceImpl
 ) : DraftRepository {
