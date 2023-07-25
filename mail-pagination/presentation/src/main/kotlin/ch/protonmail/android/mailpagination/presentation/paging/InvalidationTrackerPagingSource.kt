@@ -36,7 +36,7 @@ abstract class InvalidationTrackerPagingSource<Key : Any, Value : Any>(
     private val registeredObserver = AtomicBoolean(false)
 
     private val observer = object : InvalidationTracker.Observer(tables) {
-        override fun onInvalidated(tables: MutableSet<String>) {
+        override fun onInvalidated(tables: Set<String>) {
             invalidate()
         }
     }

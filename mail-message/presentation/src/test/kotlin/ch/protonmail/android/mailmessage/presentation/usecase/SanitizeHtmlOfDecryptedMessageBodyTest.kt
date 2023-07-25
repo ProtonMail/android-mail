@@ -46,7 +46,9 @@ class SanitizeHtmlOfDecryptedMessageBodyTest {
              <head>
              </head>
              <body>
-              <p>HTML message body</p> <label for="name">First name:</label> <br><br>
+              <p>HTML message body</p> <label for="name">First name:</label>
+              <br>
+              <br>
              </body>
             </html>
         """.trimIndent()

@@ -48,10 +48,10 @@ object Versions {
         const val paging = "3.1.1"
         const val pagingCompose = "3.2.0"
         const val room = "2.4.3"
-        const val splashscreen = "1.0.0"
+        const val splashscreen = "1.0.1"
         const val testAndroidJUnit = "1.1.5"
         const val testCore = "1.5.0"
-        const val testMacroBenchmark = "1.1.0-beta05"
+        const val testMacroBenchmark = "1.2.0-rc01"
         const val testMonitor = "1.6.1"
         const val testRunner = "1.5.2"
         const val testRules = "1.5.0"
@@ -63,12 +63,12 @@ object Versions {
 
     object Arrow {
 
-        const val core = "1.1.5"
+        const val core = "1.2.1"
     }
 
     object Cash {
 
-        const val turbine = "0.12.1"
+        const val turbine = "1.0.0"
     }
 
     object Dagger {
@@ -78,18 +78,18 @@ object Versions {
 
     object Detekt {
 
-        const val detekt = "1.22.0"
+        const val detekt = "1.23.0"
     }
 
     object Firebase {
 
-        const val bom = "32.2.0"
+        const val bom = "32.3.1"
     }
 
     object Gradle {
 
         const val androidGradlePlugin = "8.0.2"
-        const val benManesVersionsPlugin = "0.45.0"
+        const val benManesVersionsPlugin = "0.48.0"
         const val googleServicesPlugin = "4.3.15"
         const val hiltAndroidGradlePlugin = Dagger.dagger
         const val kotlinGradlePlugin = Kotlin.kotlin
@@ -114,7 +114,7 @@ object Versions {
 
     object Jsoup {
 
-        const val jsoup = "1.15.4"
+        const val jsoup = "1.16.1"
     }
 
     object Ksp {
@@ -146,7 +146,7 @@ object Versions {
 
     object Mockk {
 
-        const val mockk = "1.13.3"
+        const val mockk = "1.13.8"
     }
 
     object Proton {
@@ -163,13 +163,13 @@ object Versions {
     object Squareup {
 
         const val kotlinPoetKsp = "1.13.2"
-        const val leakCanary = "2.10"
-        const val okhttp = "4.10.0"
+        const val leakCanary = "2.12"
+        const val okhttp = "4.11.0"
         const val retrofit = "2.9.0"
     }
 
     object Sentry {
 
-        const val sentry = "6.27.0"
+        const val sentry = "6.30.0"
     }
 }
