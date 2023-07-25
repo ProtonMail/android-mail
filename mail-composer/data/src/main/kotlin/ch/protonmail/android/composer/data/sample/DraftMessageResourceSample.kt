@@ -27,6 +27,8 @@ object DraftMessageResourceSample {
 
     val NewDraftWithSubject = build(subject = "New draft, just typed the subject")
 
+    val RemoteDraft = build(subject = "Remote draft, known to the API")
+
     fun build(subject: String = "") = DraftMessageResource(
         subject = subject,
         unread = 0,

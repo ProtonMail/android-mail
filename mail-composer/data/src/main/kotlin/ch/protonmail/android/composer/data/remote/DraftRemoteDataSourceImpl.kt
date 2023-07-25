@@ -21,6 +21,7 @@ package ch.protonmail.android.composer.data.remote
 import arrow.core.Either
 import ch.protonmail.android.composer.data.remote.resource.CreateDraftBody
 import ch.protonmail.android.composer.data.remote.resource.DraftMessageResource
+import ch.protonmail.android.composer.data.remote.resource.UpdateDraftBody
 import ch.protonmail.android.mailcommon.data.mapper.toEither
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcomposer.domain.model.DraftAction
@@ -55,6 +56,21 @@ internal class DraftRemoteDataSourceImpl @Inject constructor(
 
         return apiProvider.get<DraftApi>(userId).invoke {
             createDraft(body).toMessageWithBody(userId)
+        }.toEither()
+    }
+
+    override suspend fun update(
+        userId: UserId,
+        messageWithBody: MessageWithBody
+    ): Either<DataError.Remote, MessageWithBody> {
+        val messageId = messageWithBody.message.messageId
+        val body = UpdateDraftBody(
+            messageWithBody.toDraftMessageResource(),
+            emptyList()
+        )
+
+        return apiProvider.get<DraftApi>(userId).invoke {
+            updateDraft(messageId.id, body).toMessageWithBody(userId)
         }.toEither()
     }
 

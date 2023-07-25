@@ -31,4 +31,6 @@ interface DraftRemoteDataSource {
         messageWithBody: MessageWithBody,
         action: DraftAction
     ): Either<DataError.Remote, MessageWithBody>
+
+    suspend fun update(userId: UserId, messageWithBody: MessageWithBody): Either<DataError.Remote, MessageWithBody>
 }

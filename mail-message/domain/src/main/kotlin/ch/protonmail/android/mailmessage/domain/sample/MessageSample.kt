@@ -58,7 +58,15 @@ object MessageSample {
     )
 
     val NewDraftWithSubject = build(
+        messageId = MessageIdSample.NewDraftWithSubject,
         subject = "New draft, just typed the subject",
+        labelIds = listOf(LabelIdSample.AllDraft),
+        sender = RecipientSample.John
+    )
+
+    val RemoteDraft = build(
+        messageId = MessageIdSample.RemoteDraft,
+        subject = "Remote draft, known to the API",
         labelIds = listOf(LabelIdSample.AllDraft),
         sender = RecipientSample.John
     )

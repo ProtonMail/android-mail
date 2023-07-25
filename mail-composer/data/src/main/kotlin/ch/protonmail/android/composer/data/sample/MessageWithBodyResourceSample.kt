@@ -32,6 +32,8 @@ object MessageWithBodyResourceSample {
 
     val NewDraftWithSubject = MessageWithBodySample.NewDraftWithSubject.asResource()
 
+    val RemoteDraft = MessageWithBodySample.RemoteDraft.asResource()
+
     private fun MessageWithBody.asResource() = with(this) {
         MessageWithBodyResource(
             id = message.id,

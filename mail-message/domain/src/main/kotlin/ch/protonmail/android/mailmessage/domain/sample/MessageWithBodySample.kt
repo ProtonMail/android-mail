@@ -37,6 +37,10 @@ object MessageWithBodySample {
         message = MessageSample.NewDraftWithSubject
     )
 
+    val RemoteDraft = build(
+        message = MessageSample.RemoteDraft
+    )
+
     private fun build(
         message: Message = MessageSample.EmptyDraft,
         replyTo: Recipient = RecipientSample.John,

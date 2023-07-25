@@ -20,12 +20,15 @@ package ch.protonmail.android.composer.data.remote
 
 import arrow.core.right
 import ch.protonmail.android.composer.data.remote.resource.CreateDraftBody
+import ch.protonmail.android.composer.data.remote.resource.UpdateDraftBody
 import ch.protonmail.android.composer.data.sample.CreateDraftBodySample
 import ch.protonmail.android.composer.data.sample.MessageWithBodyResourceSample
+import ch.protonmail.android.composer.data.sample.UpdateDraftBodySample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcomposer.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.data.remote.resource.MessageWithBodyResource
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
 import io.mockk.coEvery
 import io.mockk.every
@@ -82,8 +85,34 @@ class DraftRemoteDataSourceTest {
         assertEquals(expected.right(), actual)
     }
 
+    @Test
+    fun `update draft returns message with body when API call is successful`() = runTest {
+        // Given
+        val apiTime = 123L
+        val messageId = MessageIdSample.RemoteDraft
+        val inputDraft = MessageWithBodySample.RemoteDraft
+        val expectedRequest = UpdateDraftBodySample.RemoteDraft
+        // Change time to ensure difference between input and API response drafts (API sets time)
+        val expectedApiResponse = MessageWithBodyResourceSample.RemoteDraft.copy(time = apiTime)
+        expectUpdateDraftApiSucceeds(messageId, expectedRequest, expectedApiResponse)
+
+        // When
+        val actual = remoteDataSource.update(userId, inputDraft)
+
+        // Then
+        val expected = inputDraft.copy(message = inputDraft.message.copy(time = apiTime))
+        assertEquals(expected.right(), actual)
+    }
+
     private fun expectCreateDraftApiSucceeds(body: CreateDraftBody, expected: MessageWithBodyResource) {
         coEvery { draftApi.createDraft(body) } returns expected
     }
 
+    private fun expectUpdateDraftApiSucceeds(
+        messageId: MessageId,
+        body: UpdateDraftBody,
+        expected: MessageWithBodyResource
+    ) {
+        coEvery { draftApi.updateDraft(messageId.id, body) } returns expected
+    }
 }
