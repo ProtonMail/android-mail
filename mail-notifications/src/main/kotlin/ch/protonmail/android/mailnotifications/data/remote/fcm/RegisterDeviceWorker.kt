@@ -51,9 +51,12 @@ class RegisterDeviceWorker @AssistedInject constructor(
         val userId = inputData.getString(RawUserIdKey)?.takeIfNotBlank()
             ?.let(::UserId)
             ?: return Result.failure(workDataOf(KEY_PM_REGISTRATION_WORKER_ERROR to "User id not provided"))
+        val fcmToken = fcmTokenPreferences.getToken().ifBlank {
+            return Result.failure(workDataOf(KEY_PM_REGISTRATION_WORKER_ERROR to "FCM token not found"))
+        }
         val api: ApiManager<out DeviceServiceApi> = apiProvider.get(userId)
         val registerDeviceRequest = RegisterDeviceRequest(
-            deviceToken = fcmTokenPreferences.getToken(),
+            deviceToken = fcmToken,
             environment = DeviceEnvironmentAndroid
         )
 

@@ -43,6 +43,7 @@ import me.proton.core.network.data.ApiProvider
 import me.proton.core.network.domain.ApiResult
 import org.junit.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class RegisterDeviceWorkerTest {
 
@@ -100,7 +101,7 @@ class RegisterDeviceWorkerTest {
     }
 
     @Test
-    fun `Should enqueue the worker with the correct parameters`() = runTest {
+    fun `Should call the API with the correct parameters`() = runTest {
         // given
         coEvery { deviceServiceApi.registerDevice(any()) } returns mockk()
 
@@ -114,17 +115,16 @@ class RegisterDeviceWorkerTest {
     }
 
     @Test
-    fun `Should call the API with the correct parameters`() = runTest {
+    fun `Should return error when there is no FCM token stored`() = runTest {
         // given
+        coEvery { fcmTokenPreferences.getToken() } returns ""
         coEvery { deviceServiceApi.registerDevice(any()) } returns mockk()
 
         // when
-        worker.doWork()
+        val result = worker.doWork()
 
         // then
-        coVerify {
-            deviceServiceApi.registerDevice(RegisterDeviceRequest(token, environment))
-        }
+        assertTrue { result is Result.Failure }
     }
 
     @Test
