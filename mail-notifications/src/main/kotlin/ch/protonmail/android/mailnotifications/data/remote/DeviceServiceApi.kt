@@ -22,18 +22,10 @@ import ch.protonmail.android.mailnotifications.data.remote.resource.RegisterDevi
 import ch.protonmail.android.mailnotifications.data.remote.resource.RegisterDeviceResponse
 import me.proton.core.network.data.protonApi.BaseRetrofitApi
 import retrofit2.http.Body
-import retrofit2.http.Headers
 import retrofit2.http.POST
 
 interface DeviceServiceApi : BaseRetrofitApi {
 
-    @POST("devices")
-    @Headers(CONTENT_TYPE, ACCEPT_HEADER_V1)
+    @POST("core/v4/devices")
     suspend fun registerDevice(@Body deviceRequest: RegisterDeviceRequest): RegisterDeviceResponse
-
-    companion object {
-
-        const val ACCEPT_HEADER_V1 = "Accept: application/vnd.protonmail.v1+json"
-        const val CONTENT_TYPE = "Content-Type: application/json;charset=utf-8"
-    }
 }
