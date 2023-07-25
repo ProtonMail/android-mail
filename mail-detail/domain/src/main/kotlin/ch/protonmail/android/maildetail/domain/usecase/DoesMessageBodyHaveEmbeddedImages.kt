@@ -25,6 +25,6 @@ import javax.inject.Inject
 class DoesMessageBodyHaveEmbeddedImages @Inject constructor() {
 
     operator fun invoke(messageBody: DecryptedMessageBody): Boolean = messageBody.attachments.any {
-        it.headers["content-disposition"] == "inline" && it.hasAllowedEmbeddedImageMimeType()
+        it.disposition == "inline" && it.hasAllowedEmbeddedImageMimeType()
     }
 }
