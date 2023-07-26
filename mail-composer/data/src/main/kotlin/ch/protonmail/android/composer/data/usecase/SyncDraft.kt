@@ -19,9 +19,10 @@
 package ch.protonmail.android.composer.data.usecase
 
 import java.util.UUID
+import arrow.core.Either
 import arrow.core.continuations.either
 import ch.protonmail.android.composer.data.remote.DraftRemoteDataSource
-import ch.protonmail.android.mailcomposer.domain.repository.DraftRepository
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
@@ -30,13 +31,13 @@ import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import javax.inject.Inject
 
-internal class DraftRepositoryImpl @Inject constructor(
+internal class SyncDraft @Inject constructor(
     private val messageRepository: MessageRepository,
     private val draftStateRepository: DraftStateRepository,
     private val draftRemoteDataSource: DraftRemoteDataSource
-) : DraftRepository {
+) {
 
-    override suspend fun sync(userId: UserId, messageId: MessageId) = either {
+    suspend operator fun invoke(userId: UserId, messageId: MessageId): Either<DataError, Unit> = either {
         val message = messageRepository.observeMessageWithBody(userId, messageId).first().bind()
         val draftState = draftStateRepository.observe(userId, messageId).first().bind()
 

@@ -16,14 +16,20 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcomposer.domain.repository
+package ch.protonmail.android.composer.data.repository
 
 import arrow.core.Either
+import ch.protonmail.android.composer.data.usecase.SyncDraft
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcomposer.domain.repository.DraftRepository
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import me.proton.core.domain.entity.UserId
+import javax.inject.Inject
 
-interface DraftRepository {
+internal class DraftRepositoryImpl @Inject constructor(
+    private val syncDraft: SyncDraft
+) : DraftRepository {
 
-    suspend fun sync(userId: UserId, messageId: MessageId): Either<DataError, Unit>
+    override suspend fun sync(userId: UserId, messageId: MessageId): Either<DataError, Unit> =
+        syncDraft(userId, messageId)
 }
