@@ -18,18 +18,17 @@
 
 package ch.protonmail.android.composer.data.repository
 
-import arrow.core.Either
-import ch.protonmail.android.composer.data.usecase.SyncDraft
-import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.composer.data.remote.SyncDraftWorker
+import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcomposer.domain.repository.DraftRepository
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 internal class DraftRepositoryImpl @Inject constructor(
-    private val syncDraft: SyncDraft
+    private val enqueuer: Enqueuer
 ) : DraftRepository {
 
-    override suspend fun sync(userId: UserId, messageId: MessageId): Either<DataError, Unit> =
-        syncDraft(userId, messageId)
+    override suspend fun sync(userId: UserId, messageId: MessageId) =
+        enqueuer.enqueue<SyncDraftWorker>(SyncDraftWorker.params(userId, messageId))
 }
