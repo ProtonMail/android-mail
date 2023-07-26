@@ -127,28 +127,33 @@ class ConversationLocalDataSourceImpl @Inject constructor(
         userId: UserId,
         conversationId: ConversationId,
         labelIds: List<LabelId>
-    ): Either<DataError.Local, Conversation> {
-        val conversation = observeConversation(userId, conversationId).first()
-            ?: return DataError.Local.NoDataCached.left()
+    ): Either<DataError.Local, Conversation> = addLabels(userId, listOf(conversationId), labelIds).map { it.first() }
 
-        val conversationLabels = labelIds.map { labelId ->
-            ConversationLabel(
-                conversationId = conversationId,
-                labelId = labelId,
-                contextTime = conversation.labels.maxOf { it.contextTime },
-                contextSize = 0L,
-                contextNumMessages = conversation.numMessages,
-                contextNumUnread = conversation.numUnread,
-                contextNumAttachments = conversation.numAttachments
-            )
+    override suspend fun addLabels(
+        userId: UserId,
+        conversationIds: List<ConversationId>,
+        labelIds: List<LabelId>
+    ): Either<DataError.Local, List<Conversation>> = db.inTransaction {
+        getConversations(userId, conversationIds).map { conversations ->
+            val updatedConversations = conversations.map { conversation ->
+                val conversationLabels = labelIds.map { labelId ->
+                    ConversationLabel(
+                        conversationId = conversation.conversationId,
+                        labelId = labelId,
+                        contextTime = conversation.labels.maxOf { it.contextTime },
+                        contextSize = 0L,
+                        contextNumMessages = conversation.numMessages,
+                        contextNumUnread = conversation.numUnread,
+                        contextNumAttachments = conversation.numAttachments
+                    )
+                }
+                conversation.copy(
+                    labels = conversation.labels + conversationLabels
+                )
+            }
+            upsertConversations(updatedConversations)
+            return@map updatedConversations
         }
-
-        val updatedConversation = conversation.copy(
-            labels = conversation.labels + conversationLabels
-        )
-
-        upsertConversation(userId, updatedConversation)
-        return updatedConversation.right()
     }
 
     override suspend fun removeLabel(
@@ -161,14 +166,22 @@ class ConversationLocalDataSourceImpl @Inject constructor(
         userId: UserId,
         conversationId: ConversationId,
         labelIds: List<LabelId>
-    ): Either<DataError.Local, Conversation> {
-        val conversation = observeConversation(userId, conversationId).first()
-            ?: return DataError.Local.NoDataCached.left()
-        val updatedConversation = conversation.copy(
-            labels = conversation.labels.filterNot { labelIds.contains(it.labelId) }
-        )
-        upsertConversation(userId, updatedConversation)
-        return updatedConversation.right()
+    ): Either<DataError.Local, Conversation> = removeLabels(userId, listOf(conversationId), labelIds).map { it.first() }
+
+    override suspend fun removeLabels(
+        userId: UserId,
+        conversationIds: List<ConversationId>,
+        labelIds: List<LabelId>
+    ): Either<DataError.Local, List<Conversation>> = db.inTransaction {
+        getConversations(userId, conversationIds).map { conversations ->
+            val updatedConversations = conversations.map { conversation ->
+                conversation.copy(
+                    labels = conversation.labels.filterNot { labelIds.contains(it.labelId) }
+                )
+            }
+            upsertConversations(updatedConversations)
+            return@map updatedConversations
+        }
     }
 
     override suspend fun markUnread(
@@ -285,10 +298,21 @@ class ConversationLocalDataSourceImpl @Inject constructor(
     override suspend fun getConversation(
         userId: UserId,
         conversationId: ConversationId
-    ): Either<DataError, Conversation> = conversationDao.getConversation(userId, conversationId)
+    ): Either<DataError.Local, Conversation> = conversationDao.getConversation(userId, conversationId)
         ?.toConversation()
         ?.right()
         ?: DataError.Local.NoDataCached.left()
+
+    override suspend fun getConversations(
+        userId: UserId,
+        conversationIds: List<ConversationId>
+    ): Either<DataError.Local, List<Conversation>> {
+        val conversations = conversationDao.getConversations(userId, conversationIds)
+            .takeIf { it.isNotEmpty() }
+            ?: return DataError.Local.NoDataCached.left()
+
+        return conversations.map { it.toConversation() }.right()
+    }
 
     private suspend fun Map<UserId, MutableList<Conversation>>.insertLabels() {
         entries.forEach { (userId, conversations) ->

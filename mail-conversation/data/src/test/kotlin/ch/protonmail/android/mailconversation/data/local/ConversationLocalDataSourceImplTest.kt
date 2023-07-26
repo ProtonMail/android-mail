@@ -230,11 +230,11 @@ class ConversationLocalDataSourceImplTest {
     fun `add label insert conversation labels locally`() = runTest {
         // Given
         coEvery {
-            conversationDao.observe(
+            conversationDao.getConversations(
                 userId,
-                ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
+                listOf(ConversationId(ConversationTestData.RAW_CONVERSATION_ID))
             )
-        } returns flowOf(
+        } returns listOf(
             ConversationWithLabelTestData.conversationWithLabel(
                 userId = userId,
                 conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
@@ -259,11 +259,11 @@ class ConversationLocalDataSourceImplTest {
     fun `add labels insert all passed conversation labels locally`() = runTest {
         // Given
         coEvery {
-            conversationDao.observe(
+            conversationDao.getConversations(
                 userId,
-                ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
+                listOf(ConversationId(ConversationTestData.RAW_CONVERSATION_ID))
             )
-        } returns flowOf(
+        } returns listOf(
             ConversationWithLabelTestData.conversationWithLabel(
                 userId = userId,
                 conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
@@ -293,11 +293,11 @@ class ConversationLocalDataSourceImplTest {
     fun `remove label removes conversation labels locally`() = runTest {
         // Given
         coEvery {
-            conversationDao.observe(
+            conversationDao.getConversations(
                 userId,
-                ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
+                listOf(ConversationId(ConversationTestData.RAW_CONVERSATION_ID))
             )
-        } returns flowOf(
+        } returns listOf(
             ConversationWithLabelTestData.conversationWithLabel(
                 userId = userId,
                 conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
@@ -319,11 +319,11 @@ class ConversationLocalDataSourceImplTest {
     fun `remove labels removes all passed conversation labels locally`() = runTest {
         // Given
         coEvery {
-            conversationDao.observe(
+            conversationDao.getConversations(
                 userId,
-                ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
+                listOf(ConversationId(ConversationTestData.RAW_CONVERSATION_ID))
             )
-        } returns flowOf(
+        } returns listOf(
             ConversationWithLabelTestData.conversationWithMultipleLabels(
                 userId = userId,
                 conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)

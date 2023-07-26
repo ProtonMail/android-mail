@@ -34,18 +34,12 @@ interface ConversationLocalDataSource {
     /**
      * Observe all [Conversation] by [userId] for this [pageKey].
      */
-    fun observeConversations(
-        userId: UserId,
-        pageKey: PageKey
-    ): Flow<List<ConversationWithContext>>
+    fun observeConversations(userId: UserId, pageKey: PageKey): Flow<List<ConversationWithContext>>
 
     /**
      * Get all [Conversation] by [userId] for this [pageKey].
      */
-    suspend fun getConversations(
-        userId: UserId,
-        pageKey: PageKey
-    ): List<ConversationWithContext>
+    suspend fun getConversations(userId: UserId, pageKey: PageKey): List<ConversationWithContext>
 
     /**
      * Update or insert [Conversation] related to the same [userId] and [pageKey].
@@ -59,32 +53,22 @@ interface ConversationLocalDataSource {
     /**
      * Update or insert [Conversation].
      */
-    suspend fun upsertConversations(
-        items: List<Conversation>
-    )
+    suspend fun upsertConversations(items: List<Conversation>)
 
     /**
      * Delete Conversation(s) for [userId], by [ids].
      */
-    suspend fun deleteConversation(
-        userId: UserId,
-        ids: List<ConversationId>
-    )
+    suspend fun deleteConversation(userId: UserId, ids: List<ConversationId>)
 
     /**
      * Delete all conversations for [userId].
      */
-    suspend fun deleteAllConversations(
-        userId: UserId
-    )
+    suspend fun deleteAllConversations(userId: UserId)
 
     /**
      * Mark local data as stale for [userId], by [labelId].
      */
-    suspend fun markAsStale(
-        userId: UserId,
-        labelId: LabelId
-    )
+    suspend fun markAsStale(userId: UserId, labelId: LabelId)
 
     /**
      * Return true if all [Conversation] are considered locally up-to-date according the given [pageKey].
@@ -100,15 +84,9 @@ interface ConversationLocalDataSource {
      *
      * Note: Usually used to trim unnecessary interval from the [PageKey] before fetching.
      */
-    suspend fun getClippedPageKey(
-        userId: UserId,
-        pageKey: PageKey
-    ): PageKey?
+    suspend fun getClippedPageKey(userId: UserId, pageKey: PageKey): PageKey?
 
-    fun observeConversation(
-        userId: UserId,
-        conversationId: ConversationId
-    ): Flow<Conversation?>
+    fun observeConversation(userId: UserId, conversationId: ConversationId): Flow<Conversation?>
 
     suspend fun upsertConversation(userId: UserId, conversation: Conversation)
 
@@ -122,13 +100,22 @@ interface ConversationLocalDataSource {
     ): Either<DataError.Local, Conversation>
 
     /**
-     * Adds provided [labelIds] to given [conversationId] related to the same [userId]
+     * Adds [labelIds] to given [conversationId] related to the same [userId]
      */
     suspend fun addLabels(
         userId: UserId,
         conversationId: ConversationId,
         labelIds: List<LabelId>
     ): Either<DataError.Local, Conversation>
+
+    /**
+     * Adds provided [labelIds] to given [conversationIds] related to the same [userId]
+     */
+    suspend fun addLabels(
+        userId: UserId,
+        conversationIds: List<ConversationId>,
+        labelIds: List<LabelId>
+    ): Either<DataError.Local, List<Conversation>>
 
     /**
      * Removes [labelId] from given [conversationId] related to the same [userId]
@@ -147,6 +134,15 @@ interface ConversationLocalDataSource {
         conversationId: ConversationId,
         labelIds: List<LabelId>
     ): Either<DataError.Local, Conversation>
+
+    /**
+     * Removes provided [labelIds] from given [conversationIds] related to the same [userId]
+     */
+    suspend fun removeLabels(
+        userId: UserId,
+        conversationIds: List<ConversationId>,
+        labelIds: List<LabelId>
+    ): Either<DataError.Local, List<Conversation>>
 
     suspend fun markUnread(
         userId: UserId,
@@ -174,8 +170,10 @@ interface ConversationLocalDataSource {
         contextLabelId: LabelId
     ): Either<DataError.Local, Conversation>
 
-    suspend fun getConversation(
+    suspend fun getConversation(userId: UserId, conversationId: ConversationId): Either<DataError.Local, Conversation>
+
+    suspend fun getConversations(
         userId: UserId,
-        conversationId: ConversationId
-    ): Either<DataError, Conversation>
+        conversationIds: List<ConversationId>
+    ): Either<DataError.Local, List<Conversation>>
 }

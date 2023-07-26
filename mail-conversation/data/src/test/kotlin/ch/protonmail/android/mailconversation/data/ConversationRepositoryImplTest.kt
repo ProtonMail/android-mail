@@ -74,7 +74,7 @@ class ConversationRepositoryImplTest {
     private val contextLabelId = MailLabelId.System.Inbox.labelId
 
     private val conversationLocalDataSource = mockk<ConversationLocalDataSource>(relaxUnitFun = true) {
-        coEvery { this@mockk.getConversations(any(), any()) } returns emptyList()
+        coEvery { this@mockk.getConversations(any(), any<PageKey>()) } returns emptyList()
         coEvery { this@mockk.isLocalPageValid(any(), any(), any()) } returns false
     }
     private val conversationRemoteDataSource = mockk<ConversationRemoteDataSource>(relaxUnitFun = true) {
@@ -258,7 +258,7 @@ class ConversationRepositoryImplTest {
     @Test
     fun `add label returns conversation with label when upsert was successful`() = runTest {
         // Given
-        coEvery { conversationLocalDataSource.addLabels(any(), any(), any()) } returns
+        coEvery { conversationLocalDataSource.addLabels(any(), any<ConversationId>(), any()) } returns
             ConversationTestData.starredConversation.right()
 
         every { messageLocalDataSource.observeMessages(any(), any<ConversationId>()) } returns flowOf(
@@ -278,7 +278,7 @@ class ConversationRepositoryImplTest {
     @Test
     fun `add label to conversation updates remote data source and filters only for affected messages`() = runTest {
         // Given
-        coEvery { conversationLocalDataSource.addLabels(any(), any(), any()) } returns
+        coEvery { conversationLocalDataSource.addLabels(any(), any<ConversationId>(), any()) } returns
             ConversationTestData.conversation.right()
 
         every { messageLocalDataSource.observeMessages(any(), any<ConversationId>()) } returns flowOf(
@@ -303,7 +303,7 @@ class ConversationRepositoryImplTest {
     @Test
     fun `add label to stored messages of conversation`() = runTest {
         // Given
-        coEvery { conversationLocalDataSource.addLabels(any(), any(), any()) } returns
+        coEvery { conversationLocalDataSource.addLabels(any(), any<ConversationId>(), any()) } returns
             ConversationTestData.starredConversation.right()
 
         // When
@@ -321,11 +321,7 @@ class ConversationRepositoryImplTest {
     fun `add label conversation even if no messages are stored`() = runTest {
         // Given
         coEvery {
-            conversationLocalDataSource.addLabels(
-                any(),
-                any(),
-                any()
-            )
+            conversationLocalDataSource.addLabels(any(), any<ConversationId>(), any())
         } returns ConversationTestData.starredConversation.right()
 
         every { messageLocalDataSource.observeMessages(any(), any<ConversationId>()) } returns flowOf(
@@ -347,11 +343,7 @@ class ConversationRepositoryImplTest {
     fun `add label to messages of a conversation`() = runTest {
         // Given
         coEvery {
-            conversationLocalDataSource.addLabels(
-                any(),
-                any(),
-                any()
-            )
+            conversationLocalDataSource.addLabels(any(), any<ConversationId>(), any())
         } returns ConversationTestData.conversation.right()
 
         every { messageLocalDataSource.observeMessages(userId, any<ConversationId>()) } returns flowOf(
@@ -374,7 +366,7 @@ class ConversationRepositoryImplTest {
         coEvery {
             messageLocalDataSource.observeMessages(userId = userId, conversationId = any())
         } returns flowOf(messages)
-        coEvery { conversationLocalDataSource.addLabels(any(), any(), any()) } returns
+        coEvery { conversationLocalDataSource.addLabels(any(), any<ConversationId>(), any()) } returns
             ConversationTestData.conversation.right()
 
         // When
@@ -392,7 +384,7 @@ class ConversationRepositoryImplTest {
         coEvery {
             messageLocalDataSource.observeMessages(userId = userId, conversationId = any())
         } returns flowOf(messages)
-        coEvery { conversationLocalDataSource.addLabels(any(), any(), any()) } returns
+        coEvery { conversationLocalDataSource.addLabels(any(), any<ConversationId>(), any()) } returns
             ConversationTestData.conversation.right()
 
         // When
@@ -405,7 +397,7 @@ class ConversationRepositoryImplTest {
     @Test
     fun `remove label returns updated conversation without label when upsert was successful`() = runTest {
         // Given
-        coEvery { conversationLocalDataSource.removeLabels(any(), any(), any()) } returns
+        coEvery { conversationLocalDataSource.removeLabels(any(), any<ConversationId>(), any()) } returns
             ConversationTestData.conversation.right()
 
         // When
@@ -421,7 +413,7 @@ class ConversationRepositoryImplTest {
 
     @Test
     fun `remove label of messages when removing labels from conversation was successful`() = runTest {
-        coEvery { conversationLocalDataSource.removeLabels(any(), any(), any()) } returns
+        coEvery { conversationLocalDataSource.removeLabels(any(), any<ConversationId>(), any()) } returns
             ConversationTestData.conversation.right()
 
         every { messageLocalDataSource.observeMessages(userId, any<ConversationId>()) } returns flowOf(
@@ -441,7 +433,7 @@ class ConversationRepositoryImplTest {
     @Test
     fun `remove label from conversation updates remote data source and filters only for affected messages`() = runTest {
         // Given
-        coEvery { conversationLocalDataSource.removeLabels(any(), any(), any()) } returns
+        coEvery { conversationLocalDataSource.removeLabels(any(), any<ConversationId>(), any()) } returns
             ConversationTestData.conversation.right()
 
         every { messageLocalDataSource.observeMessages(any(), any<ConversationId>()) } returns flowOf(
@@ -467,7 +459,7 @@ class ConversationRepositoryImplTest {
     fun `remove labels updates remote data source and filters only for affected messages also with unknown labels`() {
         runTest {
             // Given
-            coEvery { conversationLocalDataSource.removeLabels(any(), any(), any()) } returns
+            coEvery { conversationLocalDataSource.removeLabels(any(), any<ConversationId>(), any()) } returns
                 ConversationTestData.conversation.right()
 
             every { messageLocalDataSource.observeMessages(any(), any<ConversationId>()) } returns flowOf(
@@ -494,7 +486,7 @@ class ConversationRepositoryImplTest {
     fun `remove labels doesn't call upsert messages when no messages are affected`() {
         runTest {
             // Given
-            coEvery { conversationLocalDataSource.removeLabels(any(), any(), any()) } returns
+            coEvery { conversationLocalDataSource.removeLabels(any(), any<ConversationId>(), any()) } returns
                 ConversationTestData.conversation.right()
 
             every { messageLocalDataSource.observeMessages(any(), any<ConversationId>()) } returns flowOf(
@@ -518,7 +510,7 @@ class ConversationRepositoryImplTest {
         coEvery {
             messageLocalDataSource.observeMessages(userId = userId, conversationId = any())
         } returns flowOf(messages)
-        coEvery { conversationLocalDataSource.removeLabels(any(), any(), any()) } returns
+        coEvery { conversationLocalDataSource.removeLabels(any(), any<ConversationId>(), any()) } returns
             ConversationTestData.conversation.right()
 
         // When
