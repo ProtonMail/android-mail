@@ -33,7 +33,7 @@ interface DraftStateDatabase : Database {
             @Suppress("MaxLineLength")
             override fun migrate(database: SupportSQLiteDatabase) {
                 // Create DraftState table
-                database.execSQL("CREATE TABLE IF NOT EXISTS `DraftStateEntity` (`userId` TEXT NOT NULL, `messageId` TEXT NOT NULL, `apiMessageId` TEXT, `state` TEXT NOT NULL, `action` TEXT NOT NULL, PRIMARY KEY(`userId`, `messageId`), FOREIGN KEY(`userId`, `messageId`) REFERENCES `MessageEntity`(`userId`,`messageId`) ON UPDATE NO ACTION ON DELETE CASCADE, FOREIGN KEY(`userId`)  REFERENCES `UserEntity`(`userId`) ON UPDATE NO ACTION ON DELETE CASCADE )")
+                database.execSQL("CREATE TABLE IF NOT EXISTS `DraftStateEntity` (`userId` TEXT NOT NULL, `messageId` TEXT NOT NULL, `apiMessageId` TEXT, `state` INTEGER NOT NULL, `action` TEXT NOT NULL, PRIMARY KEY(`userId`, `messageId`), FOREIGN KEY(`userId`, `messageId`) REFERENCES `MessageEntity`(`userId`,`messageId`) ON UPDATE NO ACTION ON DELETE CASCADE, FOREIGN KEY(`userId`)  REFERENCES `UserEntity`(`userId`) ON UPDATE NO ACTION ON DELETE CASCADE )")
                 database.execSQL("CREATE INDEX IF NOT EXISTS `index_DraftStateEntity_userId` ON `DraftStateEntity` (`userId`)")
                 database.execSQL("CREATE INDEX IF NOT EXISTS `index_DraftStateEntity_userId_messageId` ON `DraftStateEntity` (`userId`, `messageId`)")
             }

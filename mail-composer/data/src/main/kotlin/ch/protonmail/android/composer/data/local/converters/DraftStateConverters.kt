@@ -33,9 +33,9 @@ class DraftStateConverters {
     fun fromDraftActionToString(value: DraftAction?): String? = value?.serialize()
 
     @TypeConverter
-    fun fromStateToString(value: DraftSyncState?): String? = value?.name
+    fun fromStateToInt(state: DraftSyncState?): Int? = state?.value
 
     @TypeConverter
-    fun fromStringToDraftState(value: String?): DraftSyncState? = value?.let { DraftSyncState.valueOf(it) }
+    fun fromIntToDraftState(value: Int?): DraftSyncState? = value?.let { DraftSyncState.from(it) }
 
 }
