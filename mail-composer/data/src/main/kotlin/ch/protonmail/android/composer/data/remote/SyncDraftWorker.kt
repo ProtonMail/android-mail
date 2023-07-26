@@ -53,5 +53,7 @@ internal class SyncDraftWorker @Inject constructor(
             RawUserIdKey to userId.id,
             RawMessageIdKey to messageId.id
         )
+
+        fun id(messageId: MessageId): String = "SyncDraftWorker-${messageId.id}"
     }
 }

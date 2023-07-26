@@ -22,6 +22,8 @@ import ch.protonmail.android.composer.data.remote.SyncDraftWorker
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -40,16 +42,40 @@ class DraftRepositoryImplTest {
         val userId = UserIdSample.Primary
         val messageId = MessageIdSample.LocalDraft
         val expectedParams = SyncDraftWorker.params(userId, messageId)
-        givenEnqueuerSucceeds(expectedParams)
+        val expectedWorkerId = SyncDraftWorker.id(messageId)
+        givenEnqueuerSucceeds(expectedWorkerId, expectedParams)
+        givenRemoveUnstartedWorkSucceeds(expectedWorkerId)
 
         // When
         draftRepository.sync(userId, messageId)
 
         // Then
-        verify { enqueuer.enqueue<SyncDraftWorker>(expectedParams) }
+        verify { enqueuer.enqueueUniqueWork<SyncDraftWorker>(expectedWorkerId, expectedParams) }
     }
 
-    private fun givenEnqueuerSucceeds(expectedParams: Map<String, String>) {
-        every { enqueuer.enqueue<SyncDraftWorker>(expectedParams) } returns Unit
+    @Test
+    fun `cancel any un-started existing work before enqueuing the new one`() = runTest {
+        // Given
+        val userId = UserIdSample.Primary
+        val messageId = MessageIdSample.LocalDraft
+        val expectedParams = SyncDraftWorker.params(userId, messageId)
+        val expectedWorkerId = SyncDraftWorker.id(messageId)
+        givenEnqueuerSucceeds(expectedWorkerId, expectedParams)
+        givenRemoveUnstartedWorkSucceeds(expectedWorkerId)
+
+        // When
+        draftRepository.sync(userId, messageId)
+
+        // Then
+        coVerify { enqueuer.removeUnStartedExistingWork(expectedWorkerId) }
+        verify { enqueuer.enqueueUniqueWork<SyncDraftWorker>(expectedWorkerId, expectedParams) }
+    }
+
+    private fun givenRemoveUnstartedWorkSucceeds(expectedWorkerId: String) {
+        coEvery { enqueuer.removeUnStartedExistingWork(expectedWorkerId) } returns Unit
+    }
+
+    private fun givenEnqueuerSucceeds(workId: String, expectedParams: Map<String, String>) {
+        every { enqueuer.enqueueUniqueWork<SyncDraftWorker>(workId, expectedParams) } returns Unit
     }
 }

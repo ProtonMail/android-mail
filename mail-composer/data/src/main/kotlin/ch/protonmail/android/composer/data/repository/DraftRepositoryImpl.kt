@@ -29,6 +29,10 @@ internal class DraftRepositoryImpl @Inject constructor(
     private val enqueuer: Enqueuer
 ) : DraftRepository {
 
-    override suspend fun sync(userId: UserId, messageId: MessageId) =
-        enqueuer.enqueue<SyncDraftWorker>(SyncDraftWorker.params(userId, messageId))
+    override suspend fun sync(userId: UserId, messageId: MessageId) {
+        val uniqueWorkId = SyncDraftWorker.id(messageId)
+
+        enqueuer.removeUnStartedExistingWork(uniqueWorkId)
+        enqueuer.enqueueUniqueWork<SyncDraftWorker>(uniqueWorkId, SyncDraftWorker.params(userId, messageId))
+    }
 }
