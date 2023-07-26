@@ -53,6 +53,7 @@ import ch.protonmail.android.mailmessage.domain.entity.Recipient
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.test.utils.rule.LoggingTestRule
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
+import ch.protonmail.android.testdata.contact.ContactSample
 import io.mockk.Called
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -62,7 +63,6 @@ import io.mockk.mockkObject
 import io.mockk.unmockkObject
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.domain.entity.UserId
 import me.proton.core.user.domain.entity.UserAddress
 import kotlin.test.AfterTest
@@ -213,18 +213,9 @@ class ComposerViewModelTest {
             expectedMessageId,
             expectedSenderEmail,
             expectedUserId,
-            expectedTo = expectedRecipients,
-            expectedCc = null,
-            expectedBcc = null
+            expectedTo = expectedRecipients
         )
-        val expectedContacts = emptyList<Contact>()
-        coEvery { getContactsMock.invoke(UserIdSample.Primary) } returns expectedContacts.right()
-        every {
-            participantMapperMock.recipientUiModelToParticipant(
-                RecipientUiModel.Valid("valid@email.com"),
-                expectedContacts
-            )
-        } returns Recipient("valid@email.com", "Valid Email", false)
+        mockParticipantMapper()
 
         // When
         viewModel.submit(action)
@@ -259,18 +250,9 @@ class ComposerViewModelTest {
             expectedMessageId,
             expectedSenderEmail,
             expectedUserId,
-            expectedTo = null,
-            expectedCc = expectedRecipients,
-            expectedBcc = null
+            expectedCc = expectedRecipients
         )
-        val expectedContacts = emptyList<Contact>()
-        coEvery { getContactsMock.invoke(UserIdSample.Primary) } returns expectedContacts.right()
-        every {
-            participantMapperMock.recipientUiModelToParticipant(
-                RecipientUiModel.Valid("valid@email.com"),
-                expectedContacts
-            )
-        } returns Recipient("valid@email.com", "Valid Email", false)
+        mockParticipantMapper()
 
         // When
         viewModel.submit(action)
@@ -305,18 +287,9 @@ class ComposerViewModelTest {
             expectedMessageId,
             expectedSenderEmail,
             expectedUserId,
-            expectedTo = null,
-            expectedCc = null,
             expectedBcc = expectedRecipients
         )
-        val expectedContacts = emptyList<Contact>()
-        coEvery { getContactsMock.invoke(UserIdSample.Primary) } returns expectedContacts.right()
-        every {
-            participantMapperMock.recipientUiModelToParticipant(
-                RecipientUiModel.Valid("valid@email.com"),
-                expectedContacts
-            )
-        } returns Recipient("valid@email.com", "Valid Email", false)
+        mockParticipantMapper()
 
         // When
         viewModel.submit(action)
@@ -581,14 +554,7 @@ class ComposerViewModelTest {
         ) {
             StoreDraftWithRecipients.Error.DraftSaveError
         }
-        val expectedContacts = emptyList<Contact>()
-        coEvery { getContactsMock.invoke(UserIdSample.Primary) } returns expectedContacts.right()
-        every {
-            participantMapperMock.recipientUiModelToParticipant(
-                RecipientUiModel.Valid("valid@email.com"),
-                expectedContacts
-            )
-        } returns Recipient("valid@email.com", "Valid Email", false)
+        mockParticipantMapper()
 
         // When
         viewModel.submit(action)
@@ -619,14 +585,7 @@ class ComposerViewModelTest {
         ) {
             StoreDraftWithRecipients.Error.DraftSaveError
         }
-        val expectedContacts = emptyList<Contact>()
-        coEvery { getContactsMock.invoke(UserIdSample.Primary) } returns expectedContacts.right()
-        every {
-            participantMapperMock.recipientUiModelToParticipant(
-                RecipientUiModel.Valid("valid@email.com"),
-                expectedContacts
-            )
-        } returns Recipient("valid@email.com", "Valid Email", false)
+        mockParticipantMapper()
 
         // When
         viewModel.submit(action)
@@ -657,14 +616,7 @@ class ComposerViewModelTest {
         ) {
             StoreDraftWithRecipients.Error.DraftSaveError
         }
-        val expectedContacts = emptyList<Contact>()
-        coEvery { getContactsMock.invoke(UserIdSample.Primary) } returns expectedContacts.right()
-        every {
-            participantMapperMock.recipientUiModelToParticipant(
-                RecipientUiModel.Valid("valid@email.com"),
-                expectedContacts
-            )
-        } returns Recipient("valid@email.com", "Valid Email", false)
+        mockParticipantMapper()
 
         // When
         viewModel.submit(action)
@@ -801,9 +753,9 @@ class ComposerViewModelTest {
         expectedMessageId: MessageId,
         expectedSenderEmail: SenderEmail,
         expectedUserId: UserId,
-        expectedTo: List<Recipient>? = emptyList(),
-        expectedCc: List<Recipient>? = emptyList(),
-        expectedBcc: List<Recipient>? = emptyList()
+        expectedTo: List<Recipient>? = null,
+        expectedCc: List<Recipient>? = null,
+        expectedBcc: List<Recipient>? = null
     ) {
         coEvery {
             storeDraftWithRecipientsMock(
@@ -850,6 +802,17 @@ class ComposerViewModelTest {
                 expectedFields
             )
         } returns Unit
+    }
+
+    private fun mockParticipantMapper() {
+        val expectedContacts = listOf(ContactSample.Doe, ContactSample.John)
+        coEvery { getContactsMock.invoke(UserIdSample.Primary) } returns expectedContacts.right()
+        every {
+            participantMapperMock.recipientUiModelToParticipant(
+                RecipientUiModel.Valid("valid@email.com"),
+                expectedContacts
+            )
+        } returns Recipient("valid@email.com", "Valid Email", false)
     }
 
     companion object TestData {

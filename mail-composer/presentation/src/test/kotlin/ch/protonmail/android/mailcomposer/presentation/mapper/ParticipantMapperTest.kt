@@ -31,6 +31,8 @@ import kotlin.test.assertEquals
 class ParticipantMapperTest {
 
     private val recipientUiModel = RecipientUiModel.Valid("test1@protonmail.com")
+    private val recipientUiModelNotInContacts = RecipientUiModel.Valid("test_not_in_contacts@protonmail.com")
+    private val recipientUiModelEmptyNames = RecipientUiModel.Valid("test3@protonmail.com")
     private val participantMapper = ParticipantMapper()
 
     private val contacts = listOf(
@@ -40,8 +42,8 @@ class ParticipantMapperTest {
                 ContactEmail(
                     UserIdTestData.userId,
                     ContactEmailId("contact email id 1"),
-                    "First name",
-                    "test1@protonmail.com",
+                    "First name from contact email",
+                    "test1+alias@protonmail.com",
                     0,
                     0,
                     ContactIdTestData.contactId1,
@@ -51,17 +53,28 @@ class ParticipantMapperTest {
             )
         ),
         Contact(
-            UserIdTestData.userId, ContactIdTestData.contactId2, "second contact",
+            UserIdTestData.userId, ContactIdTestData.contactId2, "",
             listOf(
                 ContactEmail(
                     UserIdTestData.userId,
                     ContactEmailId("contact email id 2"),
-                    "Second name",
+                    "",
                     "test2@protonmail.com",
+                    0,
+                    0,
+                    ContactIdTestData.contactId2,
+                    "test2@protonmail.com",
+                    emptyList()
+                ),
+                ContactEmail(
+                    UserIdTestData.userId,
+                    ContactEmailId("contact email id 3"),
+                    "",
+                    "test3@protonmail.com",
                     0,
                     0,
                     ContactIdTestData.contactId1,
-                    "test2@protonmail.com",
+                    "test3@protonmail.com",
                     emptyList()
                 )
             )
@@ -69,16 +82,48 @@ class ParticipantMapperTest {
     )
 
     @Test
-    fun `valid recipient ui model is mapped to participant`() {
+    fun `valid recipient ui model is mapped to participant, name from ContactEmail`() {
         // Given
         val expectedResult = Participant(
             address = "test1@protonmail.com",
-            name = "First name",
+            name = "First name from contact email",
             isProton = false
         )
 
         // When
         val result = participantMapper.recipientUiModelToParticipant(recipientUiModel, contacts)
+
+        // Then
+        assertEquals(expectedResult, result)
+    }
+
+    @Test
+    fun `valid recipient ui model is mapped to participant, Contact names are empty, fallback name to email address`() {
+        // Given
+        val expectedResult = Participant(
+            address = "test_not_in_contacts@protonmail.com",
+            name = "test_not_in_contacts@protonmail.com",
+            isProton = false
+        )
+
+        // When
+        val result = participantMapper.recipientUiModelToParticipant(recipientUiModelNotInContacts, contacts)
+
+        // Then
+        assertEquals(expectedResult, result)
+    }
+
+    @Test
+    fun `valid recipient ui model is mapped to participant, not found in Contacts, fallback name to email address`() {
+        // Given
+        val expectedResult = Participant(
+            address = "test3@protonmail.com",
+            name = "test3@protonmail.com",
+            isProton = false
+        )
+
+        // When
+        val result = participantMapper.recipientUiModelToParticipant(recipientUiModelEmptyNames, contacts)
 
         // Then
         assertEquals(expectedResult, result)

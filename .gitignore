@@ -49,6 +49,7 @@ sentry.properties
 # Test users credentials
 **/users.json
 **/internal_api.json
+**/internal_apis.json
 
 # UI Tests Assets backup lockfile
 scripts/uitests/AssetsFile.lock.bak
