@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.composer.data.remote
+package ch.protonmail.android.composer.data.repository
 
 import arrow.core.Either
 import arrow.core.continuations.either
