@@ -740,6 +740,36 @@ class MessageLocalDataSourceImplTest {
     }
 
     @Test
+    fun `should add a label to all messages in the given conversations`() = runTest {
+        // Given
+        val conversationIds = listOf(ConversationId("conversation1"), ConversationId("conversation2"))
+        val messageIds = listOf(MessageId("message1"), MessageId("message2"), MessageId("message3"))
+        val labelToAdd = LabelId("labelToAdd")
+        val messagesWithLabelIds = listOf(
+            MessageWithLabelIdsSample.build(labelIds = listOf(LabelId("1"))),
+            MessageWithLabelIdsSample.build(labelIds = emptyList()),
+            MessageWithLabelIdsSample.build(labelIds = listOf(LabelId("1"), LabelId("2")))
+        )
+        val expected = messagesWithLabelIds.map { it.toMessage().copy(labelIds = it.labelIds + labelToAdd) }.right()
+        coEvery {
+            messageDao.getMessageIdsInConversations(userId1, conversationIds)
+        } returns messageIds
+        coEvery {
+            messageDao.observeMessages(userId1, messageIds)
+        } returns flowOf(messagesWithLabelIds)
+
+        // When
+        val actual = messageLocalDataSource.addLabelToMessagesInConversations(
+            userId1,
+            conversationIds,
+            labelToAdd
+        )
+
+        // Then
+        assertEquals(expected, actual)
+    }
+
+    @Test
     fun `should remove label from all messages in the given conversations`() = runTest {
         // Given
         val conversationIds = listOf(ConversationId("conversation1"), ConversationId("conversation2"))

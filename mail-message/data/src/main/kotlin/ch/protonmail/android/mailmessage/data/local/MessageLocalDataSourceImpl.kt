@@ -209,6 +209,15 @@ class MessageLocalDataSourceImpl @Inject constructor(
         return updatedMessages.right()
     }
 
+    override suspend fun addLabelToMessagesInConversations(
+        userId: UserId,
+        conversationIds: List<ConversationId>,
+        labelId: LabelId
+    ): Either<DataError.Local, List<Message>> = db.inTransaction {
+        val messageIds = messageDao.getMessageIdsInConversations(userId, conversationIds)
+        relabelMessages(userId, messageIds, labelIdsToAdd = setOf(labelId))
+    }
+
     override suspend fun removeLabelFromMessagesInConversations(
         userId: UserId,
         conversationIds: List<ConversationId>,

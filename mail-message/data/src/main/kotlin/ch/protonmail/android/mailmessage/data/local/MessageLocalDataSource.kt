@@ -170,6 +170,15 @@ interface MessageLocalDataSource {
     ): Either<DataError.Local, List<Message>>
 
     /**
+     * Adds a [labelId] to messages from the given [conversationIds] related to the same [userId]
+     */
+    suspend fun addLabelToMessagesInConversations(
+        userId: UserId,
+        conversationIds: List<ConversationId>,
+        labelId: LabelId
+    ): Either<DataError.Local, List<Message>>
+
+    /**
      * Removes a [labelId] from messages from the given [conversationIds] related to the same [userId]
      */
     suspend fun removeLabelFromMessagesInConversations(

@@ -319,9 +319,8 @@ class ConversationRemoteDataSourceImplTest {
         // Then
         val expected = RemoveLabelConversationWorker.params(
             userId,
-            conversationId,
-            labelId,
-            messageIds
+            listOf(conversationId),
+            labelId
         )
         verify {
             enqueuer.enqueue<RemoveLabelConversationWorker>(
@@ -342,18 +341,16 @@ class ConversationRemoteDataSourceImplTest {
         verifySequence {
             val expectedFirst = RemoveLabelConversationWorker.params(
                 userId,
-                conversationId,
-                labelList.first(),
-                messageIds
+                listOf(conversationId),
+                labelList.first()
             )
             enqueuer.enqueue<RemoveLabelConversationWorker>(
                 match { mapDeepEquals(it, expectedFirst) }
             )
             val expectedLast = RemoveLabelConversationWorker.params(
                 userId,
-                conversationId,
-                labelList.last(),
-                messageIds
+                listOf(conversationId),
+                labelList.last()
             )
             enqueuer.enqueue<RemoveLabelConversationWorker>(
                 match { mapDeepEquals(it, expectedLast) }

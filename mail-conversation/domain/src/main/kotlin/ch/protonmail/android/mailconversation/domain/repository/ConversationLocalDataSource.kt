@@ -100,6 +100,15 @@ interface ConversationLocalDataSource {
     ): Either<DataError.Local, Conversation>
 
     /**
+     * Adds [labelId] to given [conversationIds] related to the same [userId]
+     */
+    suspend fun addLabel(
+        userId: UserId,
+        conversationIds: List<ConversationId>,
+        labelId: LabelId
+    ): Either<DataError.Local, List<Conversation>>
+
+    /**
      * Adds [labelIds] to given [conversationId] related to the same [userId]
      */
     suspend fun addLabels(

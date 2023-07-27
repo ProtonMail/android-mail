@@ -130,9 +130,8 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
             enqueuer.enqueue<RemoveLabelConversationWorker>(
                 RemoveLabelConversationWorker.params(
                     userId,
-                    conversationId,
-                    labelId,
-                    messageIds
+                    listOf(conversationId),
+                    labelId
                 )
             )
         }

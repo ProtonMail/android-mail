@@ -123,6 +123,12 @@ class ConversationLocalDataSourceImpl @Inject constructor(
         labelId: LabelId
     ): Either<DataError.Local, Conversation> = addLabels(userId, conversationId, listOf(labelId))
 
+    override suspend fun addLabel(
+        userId: UserId,
+        conversationIds: List<ConversationId>,
+        labelId: LabelId
+    ): Either<DataError.Local, List<Conversation>> = addLabels(userId, conversationIds, listOf(labelId))
+
     override suspend fun addLabels(
         userId: UserId,
         conversationId: ConversationId,
