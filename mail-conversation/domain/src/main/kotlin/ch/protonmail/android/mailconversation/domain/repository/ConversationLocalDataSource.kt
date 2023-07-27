@@ -127,6 +127,15 @@ interface ConversationLocalDataSource {
     ): Either<DataError.Local, Conversation>
 
     /**
+     * Removes [labelId] from given [conversationIds] related to the same [userId]
+     */
+    suspend fun removeLabel(
+        userId: UserId,
+        conversationIds: List<ConversationId>,
+        labelId: LabelId
+    ): Either<DataError.Local, List<Conversation>>
+
+    /**
      * Removes provided [labelIds] from given [conversationId] related to the same [userId]
      */
     suspend fun removeLabels(

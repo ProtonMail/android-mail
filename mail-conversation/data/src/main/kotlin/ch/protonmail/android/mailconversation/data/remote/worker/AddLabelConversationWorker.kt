@@ -27,7 +27,6 @@ import ch.protonmail.android.mailconversation.data.remote.ConversationApi
 import ch.protonmail.android.mailconversation.data.remote.resource.PutConversationLabelBody
 import ch.protonmail.android.mailconversation.domain.repository.ConversationLocalDataSource
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.proton.core.domain.entity.UserId
@@ -48,12 +47,10 @@ class AddLabelConversationWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result {
         val userId = inputData.getString(RawUserIdKey)?.takeIfNotBlank()
-        val conversationId =
-            inputData.getString(RawConversationIdKey)?.takeIfNotBlank()
+        val conversationIds = inputData.getStringArray(RawConversationIdsKey)?.toList()
         val labelId = inputData.getString(RawLabelIdKey)?.takeIfNotBlank()
-        val messageIds = inputData.getStringArray(RawAffectedMessageIds)?.toList()
 
-        if (userId == null || conversationId == null || labelId == null) {
+        if (userId == null || conversationIds == null || labelId == null) {
             return Result.failure()
         }
 
@@ -61,7 +58,7 @@ class AddLabelConversationWorker @AssistedInject constructor(
             addLabel(
                 PutConversationLabelBody(
                     labelId = labelId,
-                    conversationIds = listOf(conversationId)
+                    conversationIds = conversationIds
                 )
             )
         }
@@ -71,11 +68,11 @@ class AddLabelConversationWorker @AssistedInject constructor(
             is ApiResult.Error -> {
                 if (result.isRetryable()) return Result.retry()
                 else {
+                    val user = UserId(userId)
+                    val conversations = conversationIds.map { ConversationId(it) }
                     val label = LabelId(labelId)
-                    conversationLocalDataSource.removeLabel(UserId(userId), ConversationId(conversationId), label)
-                    messageIds?.map { MessageId(it) }?.forEach {
-                        messageLocalDataSource.removeLabel(UserId(userId), it, label)
-                    }
+                    conversationLocalDataSource.removeLabel(user, conversations, label)
+                    messageLocalDataSource.removeLabelFromMessagesInConversations(user, conversations, label)
                     Result.failure()
                 }
             }
@@ -85,20 +82,17 @@ class AddLabelConversationWorker @AssistedInject constructor(
     companion object {
 
         internal const val RawUserIdKey = "addLabelConversationWorkParamUserId"
-        internal const val RawConversationIdKey = "addLabelConversationWorkParamMessageId"
+        internal const val RawConversationIdsKey = "addLabelConversationWorkParamConversationIds"
         internal const val RawLabelIdKey = "addLabelConversationWorkParamLabelId"
-        internal const val RawAffectedMessageIds = "addLabelConversationWorkParamMsgIds"
 
         fun params(
             userId: UserId,
-            conversationId: ConversationId,
-            labelId: LabelId,
-            affectMessageIds: List<MessageId>
+            conversationIds: List<ConversationId>,
+            labelId: LabelId
         ) = mapOf(
             RawUserIdKey to userId.id,
-            RawConversationIdKey to conversationId.id,
-            RawLabelIdKey to labelId.id,
-            RawAffectedMessageIds to affectMessageIds.map { it.id }.toTypedArray()
+            RawConversationIdsKey to conversationIds.map { it.id }.toTypedArray(),
+            RawLabelIdKey to labelId.id
         )
     }
 }

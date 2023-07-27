@@ -181,6 +181,9 @@ abstract class MessageDao : BaseDao<MessageEntity>() {
         size: Int = Int.MAX_VALUE
     ): Flow<List<MessageWithLabelIds>>
 
+    @Query("SELECT messageId FROM MessageEntity WHERE userId = :userId AND conversationId IN (:conversationIds)")
+    abstract fun getMessageIdsInConversations(userId: UserId, conversationIds: List<ConversationId>): List<MessageId>
+
     private companion object {
 
         private val ReadAndUnread = listOf(false, true)

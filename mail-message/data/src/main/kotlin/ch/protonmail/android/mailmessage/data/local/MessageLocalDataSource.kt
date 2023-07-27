@@ -170,6 +170,15 @@ interface MessageLocalDataSource {
     ): Either<DataError.Local, List<Message>>
 
     /**
+     * Removes a [labelId] from messages from the given [conversationIds] related to the same [userId]
+     */
+    suspend fun removeLabelFromMessagesInConversations(
+        userId: UserId,
+        conversationIds: List<ConversationId>,
+        labelId: LabelId
+    ): Either<DataError.Local, List<Message>>
+
+    /**
      * Marks as unread the messages for the given [messageIds] related to the same [userId]
      */
     suspend fun markUnread(userId: UserId, messageIds: List<MessageId>): Either<DataError.Local, List<Message>>

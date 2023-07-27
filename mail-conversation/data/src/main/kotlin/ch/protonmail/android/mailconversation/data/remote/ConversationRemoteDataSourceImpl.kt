@@ -104,9 +104,8 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
             enqueuer.enqueue<AddLabelConversationWorker>(
                 AddLabelConversationWorker.params(
                     userId,
-                    conversationId,
-                    labelId,
-                    messageIds
+                    listOf(conversationId),
+                    labelId
                 )
             )
         }

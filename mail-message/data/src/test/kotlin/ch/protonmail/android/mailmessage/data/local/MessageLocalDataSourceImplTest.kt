@@ -22,6 +22,7 @@ import java.util.UUID
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.DataErrorSample
 import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
@@ -736,6 +737,36 @@ class MessageLocalDataSourceImplTest {
 
         // Then
         assertEquals(DataError.Local.NoDataCached.left(), result)
+    }
+
+    @Test
+    fun `should remove label from all messages in the given conversations`() = runTest {
+        // Given
+        val conversationIds = listOf(ConversationId("conversation1"), ConversationId("conversation2"))
+        val messageIds = listOf(MessageId("message1"), MessageId("message2"), MessageId("message3"))
+        val labelToRemove = LabelId("labelToRemove")
+        val messagesWithLabelIds = listOf(
+            MessageWithLabelIdsSample.build(labelIds = listOf(LabelId("1"), labelToRemove)),
+            MessageWithLabelIdsSample.build(labelIds = listOf(labelToRemove)),
+            MessageWithLabelIdsSample.build(labelIds = listOf(LabelId("1"), LabelId("2"), labelToRemove))
+        )
+        val expected = messagesWithLabelIds.map { it.toMessage().copy(labelIds = it.labelIds - labelToRemove) }.right()
+        coEvery {
+            messageDao.getMessageIdsInConversations(userId1, conversationIds)
+        } returns messageIds
+        coEvery {
+            messageDao.observeMessages(userId1, messageIds)
+        } returns flowOf(messagesWithLabelIds)
+
+        // When
+        val actual = messageLocalDataSource.removeLabelFromMessagesInConversations(
+            userId1,
+            conversationIds,
+            labelToRemove
+        )
+
+        // Then
+        assertEquals(expected, actual)
     }
 
     private fun verifyLabelsUpdatedFor(messageWithBody: MessageWithBody) {

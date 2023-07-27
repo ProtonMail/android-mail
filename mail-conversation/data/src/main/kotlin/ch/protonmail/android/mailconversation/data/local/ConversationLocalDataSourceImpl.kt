@@ -162,6 +162,12 @@ class ConversationLocalDataSourceImpl @Inject constructor(
         labelId: LabelId
     ): Either<DataError.Local, Conversation> = removeLabels(userId, conversationId, listOf(labelId))
 
+    override suspend fun removeLabel(
+        userId: UserId,
+        conversationIds: List<ConversationId>,
+        labelId: LabelId
+    ): Either<DataError.Local, List<Conversation>> = removeLabels(userId, conversationIds, listOf(labelId))
+
     override suspend fun removeLabels(
         userId: UserId,
         conversationId: ConversationId,
