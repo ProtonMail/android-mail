@@ -20,6 +20,8 @@ package ch.protonmail.android.mailnotifications.dagger
 
 import ch.protonmail.android.mailnotifications.data.local.fcm.FcmTokenPreferencesImpl
 import ch.protonmail.android.mailnotifications.domain.FcmTokenPreferences
+import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator
+import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestratorImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -37,5 +39,10 @@ object MailNotificationsModule {
         @Binds
         @Singleton
         fun bindFcmTokenPreferences(implementation: FcmTokenPreferencesImpl): FcmTokenPreferences
+
+        @Binds
+        fun notificationsPermissionsOrchestrator(
+            implementation: NotificationsPermissionsOrchestratorImpl
+        ): NotificationsPermissionsOrchestrator
     }
 }
