@@ -29,7 +29,8 @@ import javax.inject.Inject
 
 class StoreDraftWithAllFields @Inject constructor(
     private val storeDraftWithSubject: StoreDraftWithSubject,
-    private val storeDraftWithBody: StoreDraftWithBody
+    private val storeDraftWithBody: StoreDraftWithBody,
+    private val storeDraftWithRecipients: StoreDraftWithRecipients
 ) {
 
     suspend operator fun invoke(
@@ -40,6 +41,14 @@ class StoreDraftWithAllFields @Inject constructor(
         withContext(NonCancellable) {
             storeDraftWithBody(draftMessageId, fields.body, fields.sender, userId).logError(draftMessageId)
             storeDraftWithSubject(userId, draftMessageId, fields.sender, fields.subject).logError(draftMessageId)
+            storeDraftWithRecipients(
+                userId,
+                draftMessageId,
+                fields.sender,
+                fields.recipientsTo.value,
+                fields.recipientsCc.value,
+                fields.recipientsBcc.value
+            ).logError(draftMessageId)
         }
     }
 

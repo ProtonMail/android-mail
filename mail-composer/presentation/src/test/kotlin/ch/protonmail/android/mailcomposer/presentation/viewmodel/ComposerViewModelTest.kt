@@ -28,6 +28,9 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
+import ch.protonmail.android.mailcomposer.domain.model.RecipientsBcc
+import ch.protonmail.android.mailcomposer.domain.model.RecipientsCc
+import ch.protonmail.android.mailcomposer.domain.model.RecipientsTo
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.domain.model.Subject
 import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses
@@ -51,6 +54,7 @@ import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.Recipient
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import ch.protonmail.android.mailmessage.domain.sample.RecipientSample
 import ch.protonmail.android.test.utils.rule.LoggingTestRule
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import ch.protonmail.android.testdata.contact.ContactSample
@@ -63,6 +67,7 @@ import io.mockk.mockkObject
 import io.mockk.unmockkObject
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
+import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.domain.entity.UserId
 import me.proton.core.user.domain.entity.UserAddress
 import kotlin.test.AfterTest
@@ -314,11 +319,28 @@ class ComposerViewModelTest {
         val expectedUserId = expectedUserId { UserIdSample.Primary }
         val expectedDraftBody = DraftBody("I am plaintext")
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
-        val expectedFields = DraftFields(expectedSenderEmail, expectedSubject, expectedDraftBody)
+        val recipientsTo = RecipientsTo(listOf(RecipientSample.John))
+        val recipientsCc = RecipientsCc(listOf(RecipientSample.John))
+        val recipientsBcc = RecipientsBcc(listOf(RecipientSample.John))
+        val expectedFields = DraftFields(
+            expectedSenderEmail,
+            expectedSubject,
+            expectedDraftBody,
+            recipientsTo,
+            recipientsCc,
+            recipientsBcc
+        )
+        mockParticipantMapper()
         expectStoreAllDraftFieldsSucceeds(expectedUserId, expectedMessageId, expectedFields)
 
         // Change internal state of the View Model to simulate the existence of all fields before closing the composer
-        expectedViewModelInitialState(expectedMessageId, expectedSenderEmail, expectedSubject, expectedDraftBody)
+        expectedViewModelInitialState(
+            expectedMessageId,
+            expectedSenderEmail,
+            expectedSubject,
+            expectedDraftBody,
+            Triple(recipientsTo, recipientsCc, recipientsBcc)
+        )
 
         // When
         viewModel.submit(ComposerAction.OnCloseComposer)
@@ -352,11 +374,27 @@ class ComposerViewModelTest {
         val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
         val expectedUserId = expectedUserId { UserIdSample.Primary }
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
-        val expectedFields = DraftFields(expectedSenderEmail, expectedSubject, expectedDraftBody)
+        val recipientsTo = RecipientsTo(listOf(RecipientSample.John))
+        val recipientsCc = RecipientsCc(listOf(RecipientSample.John))
+        val recipientsBcc = RecipientsBcc(listOf(RecipientSample.John))
+        val expectedFields = DraftFields(
+            expectedSenderEmail,
+            expectedSubject,
+            expectedDraftBody,
+            recipientsTo,
+            recipientsCc,
+            recipientsBcc
+        )
+        mockParticipantMapper()
         expectStoreAllDraftFieldsSucceeds(expectedUserId, expectedMessageId, expectedFields)
 
         // Change internal state of the View Model to simulate the existence of all fields before closing the composer
-        expectedViewModelInitialState(expectedMessageId, expectedSenderEmail, expectedSubject)
+        expectedViewModelInitialState(
+            expectedMessageId,
+            expectedSenderEmail,
+            expectedSubject,
+            recipients = Triple(recipientsTo, recipientsCc, recipientsBcc)
+        )
 
         // When
         viewModel.submit(ComposerAction.OnCloseComposer)
@@ -635,15 +673,20 @@ class ComposerViewModelTest {
         messageId: MessageId,
         senderEmail: SenderEmail = SenderEmail(""),
         subject: Subject = Subject(""),
-        draftBody: DraftBody = DraftBody("")
+        draftBody: DraftBody = DraftBody(""),
+        recipients: Triple<RecipientsTo, RecipientsCc, RecipientsBcc> = Triple(
+            RecipientsTo(emptyList()),
+            RecipientsCc(emptyList()),
+            RecipientsBcc(emptyList())
+        )
     ) {
         val expected = ComposerDraftState(
             fields = ComposerFields(
                 messageId,
                 SenderUiModel(senderEmail.value),
-                emptyList(),
-                emptyList(),
-                emptyList(),
+                recipients.first.value.map { RecipientUiModel.Valid(it.address) },
+                recipients.second.value.map { RecipientUiModel.Valid(it.address) },
+                recipients.third.value.map { RecipientUiModel.Valid(it.address) },
                 subject.value,
                 draftBody.value
             ),
@@ -804,15 +847,26 @@ class ComposerViewModelTest {
         } returns Unit
     }
 
-    private fun mockParticipantMapper() {
+    private fun expectContacts(): List<Contact> {
         val expectedContacts = listOf(ContactSample.Doe, ContactSample.John)
         coEvery { getContactsMock.invoke(UserIdSample.Primary) } returns expectedContacts.right()
+        return expectedContacts
+    }
+
+    private fun mockParticipantMapper() {
+        val expectedContacts = expectContacts()
         every {
             participantMapperMock.recipientUiModelToParticipant(
                 RecipientUiModel.Valid("valid@email.com"),
                 expectedContacts
             )
         } returns Recipient("valid@email.com", "Valid Email", false)
+        every {
+            participantMapperMock.recipientUiModelToParticipant(
+                RecipientUiModel.Valid(RecipientSample.John.address),
+                any()
+            )
+        } returns Recipient(RecipientSample.John.address, RecipientSample.John.name, false)
     }
 
     companion object TestData {

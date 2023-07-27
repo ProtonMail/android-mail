@@ -24,6 +24,9 @@ import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
+import ch.protonmail.android.mailcomposer.domain.model.RecipientsBcc
+import ch.protonmail.android.mailcomposer.domain.model.RecipientsCc
+import ch.protonmail.android.mailcomposer.domain.model.RecipientsTo
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.domain.model.Subject
 import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses
@@ -110,7 +113,14 @@ class ComposerViewModel @Inject constructor(
     fun validateEmailAddress(emailAddress: String): Boolean = isValidEmailAddress(emailAddress)
 
     private suspend fun onCloseComposer(action: ComposerAction.OnCloseComposer): ComposerOperation {
-        val fields = DraftFields(currentSenderEmail(), currentSubject(), currentDraftBody())
+        val fields = DraftFields(
+            currentSenderEmail(),
+            currentSubject(),
+            currentDraftBody(),
+            currentValidRecipientsTo(),
+            currentValidRecipientsCc(),
+            currentValidRecipientsBcc()
+        )
         return when {
             fields.areBlank() -> action
             else -> {
@@ -151,6 +161,24 @@ class ComposerViewModel @Inject constructor(
     private fun currentDraftBody() = DraftBody(state.value.fields.body)
 
     private fun currentSenderEmail() = SenderEmail(state.value.fields.sender.email)
+
+    private suspend fun currentValidRecipientsTo() = RecipientsTo(
+        state.value.fields.to.filterIsInstance<RecipientUiModel.Valid>().map {
+            participantMapper.recipientUiModelToParticipant(it, contactsOrEmpty())
+        }
+    )
+
+    private suspend fun currentValidRecipientsCc() = RecipientsCc(
+        state.value.fields.cc.filterIsInstance<RecipientUiModel.Valid>().map {
+            participantMapper.recipientUiModelToParticipant(it, contactsOrEmpty())
+        }
+    )
+
+    private suspend fun currentValidRecipientsBcc() = RecipientsBcc(
+        state.value.fields.bcc.filterIsInstance<RecipientUiModel.Valid>().map {
+            participantMapper.recipientUiModelToParticipant(it, contactsOrEmpty())
+        }
+    )
 
     private suspend fun contactsOrEmpty() = getContacts(primaryUserId()).getOrElse { emptyList() }
 
