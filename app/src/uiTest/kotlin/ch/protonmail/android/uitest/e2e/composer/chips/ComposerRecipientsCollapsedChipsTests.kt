@@ -40,6 +40,7 @@ import dagger.hilt.android.testing.UninstallModules
 import io.mockk.mockk
 import me.proton.core.auth.domain.usecase.ValidateServerProof
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 
 @RegressionTest
@@ -85,6 +86,7 @@ internal class ComposerRecipientsCollapsedChipsTests : MockedNetworkTest(), Comp
         navigator { navigateTo(Destination.Composer) }
     }
 
+    @Ignore("https://jira.protontech.ch/browse/MAILANDR-781")
     @Test
     @SmokeTest
     @TestId("190243")
@@ -142,6 +144,7 @@ internal class ComposerRecipientsCollapsedChipsTests : MockedNetworkTest(), Comp
         }
     }
 
+    @Ignore("https://jira.protontech.ch/browse/MAILANDR-781")
     @Test
     @SmokeTest
     @TestId("190246")

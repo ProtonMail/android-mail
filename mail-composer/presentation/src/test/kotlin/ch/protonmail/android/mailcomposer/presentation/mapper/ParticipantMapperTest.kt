@@ -48,7 +48,8 @@ class ParticipantMapperTest {
                     0,
                     ContactIdTestData.contactId1,
                     "test1@protonmail.com",
-                    emptyList()
+                    emptyList(),
+                    true
                 )
             )
         ),
@@ -64,7 +65,8 @@ class ParticipantMapperTest {
                     0,
                     ContactIdTestData.contactId2,
                     "test2@protonmail.com",
-                    emptyList()
+                    emptyList(),
+                    false
                 ),
                 ContactEmail(
                     UserIdTestData.userId,
@@ -75,7 +77,8 @@ class ParticipantMapperTest {
                     0,
                     ContactIdTestData.contactId1,
                     "test3@protonmail.com",
-                    emptyList()
+                    emptyList(),
+                    false
                 )
             )
         )
@@ -87,7 +90,7 @@ class ParticipantMapperTest {
         val expectedResult = Participant(
             address = "test1@protonmail.com",
             name = "First name from contact email",
-            isProton = false
+            isProton = true
         )
 
         // When

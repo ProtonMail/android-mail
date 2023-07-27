@@ -39,7 +39,7 @@ class ParticipantMapper @Inject constructor() {
         return Participant(
             recipient.address,
             contactEmail?.name?.takeIfNotBlank() ?: recipient.address,
-            false, // after we bump core, change to: contactEmail?.isProton ?: false
+            contactEmail?.isProton ?: false,
             null
         )
     }
