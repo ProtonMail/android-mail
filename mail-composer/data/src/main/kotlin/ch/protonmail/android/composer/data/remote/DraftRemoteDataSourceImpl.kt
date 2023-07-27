@@ -32,7 +32,7 @@ import me.proton.core.network.data.ApiProvider
 import me.proton.core.util.kotlin.toInt
 import javax.inject.Inject
 
-internal class DraftRemoteDataSourceImpl @Inject constructor(
+class DraftRemoteDataSourceImpl @Inject constructor(
     private val apiProvider: ApiProvider
 ) : DraftRemoteDataSource {
 

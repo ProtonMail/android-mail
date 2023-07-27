@@ -25,7 +25,7 @@ import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
-internal class DraftRepositoryImpl @Inject constructor(
+class DraftRepositoryImpl @Inject constructor(
     private val enqueuer: Enqueuer
 ) : DraftRepository {
 

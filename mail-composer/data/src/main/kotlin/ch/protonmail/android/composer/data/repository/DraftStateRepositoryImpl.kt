@@ -20,7 +20,7 @@ package ch.protonmail.android.composer.data.repository
 
 import arrow.core.Either
 import arrow.core.continuations.either
-import ch.protonmail.android.composer.data.local.DraftStateLocalDataSourceImpl
+import ch.protonmail.android.composer.data.local.DraftStateLocalDataSource
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcomposer.domain.model.DraftState
 import ch.protonmail.android.mailcomposer.domain.model.DraftSyncState
@@ -32,7 +32,7 @@ import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 class DraftStateRepositoryImpl @Inject constructor(
-    private val localDataSource: DraftStateLocalDataSourceImpl
+    private val localDataSource: DraftStateLocalDataSource
 ) : DraftStateRepository {
 
     override suspend fun observe(userId: UserId, messageId: MessageId): Flow<Either<DataError, DraftState>> =

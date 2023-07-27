@@ -20,6 +20,7 @@ package ch.protonmail.android.di
 
 import android.content.Context
 import androidx.room.RoomDatabase
+import ch.protonmail.android.composer.data.local.DraftStateDatabase
 import ch.protonmail.android.db.AppDatabase
 import ch.protonmail.android.mailconversation.data.local.ConversationDatabase
 import ch.protonmail.android.mailmessage.data.local.MessageDatabase
@@ -126,4 +127,7 @@ abstract class AppDatabaseBindsModule {
 
     @Binds
     abstract fun providePushDatabase(appDatabase: AppDatabase): PushDatabase
+
+    @Binds
+    abstract fun provideDraftStateDatabase(appDatabase: AppDatabase): DraftStateDatabase
 }

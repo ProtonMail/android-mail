@@ -43,7 +43,11 @@ android {
 }
 
 dependencies {
+    implementation(Proton.Core.network)
+
     implementation(project(":mail-composer:data"))
     implementation(project(":mail-composer:domain"))
     implementation(project(":mail-composer:presentation"))
+
+    implementation(project(":mail-common:data"))
 }

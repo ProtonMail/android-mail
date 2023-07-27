@@ -43,7 +43,11 @@ android {
 }
 
 dependencies {
+    kapt(Dependencies.appAnnotationProcessors)
+
     implementation(Dependencies.moduleDataLibs)
+    implementation(Dagger.hiltAndroid)
+    implementation(AndroidX.Hilt.work)
     implementation(Proton.Core.user)
     implementation(Proton.Core.label)
 
