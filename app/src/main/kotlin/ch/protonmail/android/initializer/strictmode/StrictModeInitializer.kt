@@ -41,6 +41,7 @@ class StrictModeInitializer : Initializer<Unit> {
             .detectAll()
             .penaltyFlashScreen()
             .penaltyLog()
+            .permitDiskReads()
         val vmPolicyBuilder = StrictMode.VmPolicy.Builder()
             .detectCommon()
             .penaltyLog()

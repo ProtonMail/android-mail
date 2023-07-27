@@ -22,6 +22,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator
+import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator.Companion.PermissionResult
 import ch.protonmail.android.navigation.model.LauncherState
 import ch.protonmail.android.navigation.model.LauncherState.AccountNeeded
 import ch.protonmail.android.navigation.model.LauncherState.PrimaryExist
@@ -30,8 +32,8 @@ import ch.protonmail.android.navigation.model.LauncherState.StepNeeded
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import me.proton.core.account.domain.entity.AccountType
@@ -66,29 +68,41 @@ class LauncherViewModel @Inject constructor(
     private val authOrchestrator: AuthOrchestrator,
     private val plansOrchestrator: PlansOrchestrator,
     private val reportOrchestrator: ReportOrchestrator,
-    private val userSettingsOrchestrator: UserSettingsOrchestrator
+    private val userSettingsOrchestrator: UserSettingsOrchestrator,
+    private val notificationsPermissionsOrchestrator: NotificationsPermissionsOrchestrator
 ) : ViewModel() {
 
-    val state: StateFlow<LauncherState> = accountManager.getAccounts()
-        .map { accounts ->
-            when {
-                accounts.isEmpty() || accounts.all { it.isDisabled() } -> AccountNeeded
-                accounts.any { it.isReady() } -> PrimaryExist
-                accounts.any { it.isStepNeeded() } -> StepNeeded
-                else -> Processing
+    val state: StateFlow<LauncherState> = accountManager.getAccounts().combine(
+        notificationsPermissionsOrchestrator.permissionResult()
+    ) { accounts, permissionResult ->
+        when {
+            accounts.isEmpty() || accounts.all { it.isDisabled() } -> AccountNeeded
+            accounts.any { it.isReady() } -> when (permissionResult) {
+                PermissionResult.CHECKING -> {
+                    notificationsPermissionsOrchestrator.requestPermissionIfRequired()
+                    StepNeeded
+                }
+
+                PermissionResult.SHOW_RATIONALE,
+                PermissionResult.GRANTED,
+                PermissionResult.DENIED -> PrimaryExist
             }
+
+            accounts.any { it.isStepNeeded() } -> StepNeeded
+            else -> Processing
         }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.Lazily,
-            initialValue = Processing
-        )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Lazily,
+        initialValue = Processing
+    )
 
     fun register(context: AppCompatActivity) {
         authOrchestrator.register(context)
         plansOrchestrator.register(context)
         reportOrchestrator.register(context)
         userSettingsOrchestrator.register(context)
+        notificationsPermissionsOrchestrator.register(context)
 
         authOrchestrator.onAddAccountResult { result ->
             viewModelScope.launch {
