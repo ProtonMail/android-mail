@@ -24,7 +24,6 @@ import androidx.room.Index
 import ch.protonmail.android.mailcomposer.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftState
 import ch.protonmail.android.mailcomposer.domain.model.DraftSyncState
-import ch.protonmail.android.mailmessage.data.local.entity.MessageEntity
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import me.proton.core.domain.entity.UserId
 import me.proton.core.user.data.entity.UserEntity
@@ -41,13 +40,10 @@ import me.proton.core.user.data.entity.UserEntity
             parentColumns = ["userId"],
             childColumns = ["userId"],
             onDelete = ForeignKey.CASCADE
-        ),
-        ForeignKey(
-            entity = MessageEntity::class,
-            parentColumns = ["userId", "messageId"],
-            childColumns = ["userId", "messageId"],
-            onDelete = ForeignKey.CASCADE
         )
+        /* No Foreign Key on messageId as this table should preserve the local `messageId` also after
+         * the MessageEntity was updated with the api-assigned one.
+         */
     ]
 )
 data class DraftStateEntity(

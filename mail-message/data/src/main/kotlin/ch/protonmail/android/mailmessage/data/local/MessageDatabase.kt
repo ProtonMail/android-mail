@@ -82,5 +82,137 @@ interface MessageDatabase : Database, PageIntervalDatabase {
                 database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageAttachmentMetadataEntity_attachmentId` ON `MessageAttachmentMetadataEntity` (`attachmentId`)")
             }
         }
+
+        val MIGRATION_4 = object : DatabaseMigration {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                recreateMessageLabelWithUpdateCascade(database)
+                recreateMessageBodyWithUpdateCascade(database)
+                recreateMsgAttachmentWithUpdateCascade(database)
+            }
+
+            private fun recreateMsgAttachmentWithUpdateCascade(database: SupportSQLiteDatabase) {
+                // Create a MessageAttachmentEntity table with the new schema
+                database.execSQL(
+                    """
+                        CREATE TABLE IF NOT EXISTS `MessageAttachmentEntity_copy` (
+                        `userId` TEXT NOT NULL,
+                        `messageId` TEXT NOT NULL,
+                        `attachmentId` TEXT NOT NULL,
+                        `name` TEXT NOT NULL,
+                        `size` INTEGER NOT NULL,
+                        `mimeType` TEXT NOT NULL,
+                        `disposition` TEXT,
+                        `keyPackets` TEXT,
+                        `signature` TEXT,
+                        `encSignature` TEXT,
+                        `headers` TEXT NOT NULL,
+                         PRIMARY KEY(`userId`, `messageId`, `attachmentId`),
+                         FOREIGN KEY(`userId`) REFERENCES `UserEntity`(`userId`) ON UPDATE NO ACTION ON DELETE CASCADE,
+                         FOREIGN KEY(`userId`, `messageId`) REFERENCES `MessageBodyEntity`(`userId`, `messageId`)
+                         ON UPDATE CASCADE ON DELETE CASCADE )
+                    """.trimIndent()
+                )
+
+                // Copy data from old table to new one
+                database.execSQL(
+                    """
+                        INSERT INTO `MessageAttachmentEntity_copy` (
+                        `userId`, `messageId`, `attachmentId`, `name`, `size`,
+                        `mimeType`, `disposition`, `keyPackets`, `signature`, `encSignature`, `headers` )
+                        SELECT `userId`, `messageId`, `attachmentId`, `name`, `size`,
+                        `mimeType`, `disposition`, `keyPackets`, `signature`, `encSignature`, `headers` FROM `MessageAttachmentEntity`
+                    """.trimIndent()
+                )
+
+                // Delete the old table
+                database.execSQL("DROP TABLE `MessageAttachmentEntity`")
+                // Rename new table
+                database.execSQL("ALTER TABLE `MessageAttachmentEntity_copy` RENAME TO `MessageAttachmentEntity` ")
+
+                // Recreate indexes
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageAttachmentEntity_userId` ON `MessageAttachmentEntity` (`userId`)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageAttachmentEntity_messageId` ON `MessageAttachmentEntity` (`messageId`)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageAttachmentEntity_attachmentId` ON `MessageAttachmentEntity` (`attachmentId`)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageAttachmentEntity_userId_messageId` ON `MessageAttachmentEntity` (`userId`, `messageId`)")
+            }
+
+            private fun recreateMessageBodyWithUpdateCascade(database: SupportSQLiteDatabase) {
+                // Create a MessageBody table with the new schema
+                database.execSQL(
+                    """
+                        CREATE TABLE IF NOT EXISTS `MessageBodyEntity_copy` (
+                        `userId` TEXT NOT NULL,
+                        `messageId` TEXT NOT NULL,
+                        `body` TEXT,
+                        `header` TEXT NOT NULL,
+                        `mimeType` TEXT NOT NULL,
+                        `spamScore` TEXT NOT NULL,
+                        `replyTo` TEXT NOT NULL,
+                        `replyTos` TEXT NOT NULL,
+                        `unsubscribeMethodsEntity` TEXT,
+                         PRIMARY KEY(`userId`, `messageId`),
+                         FOREIGN KEY(`userId`) REFERENCES `UserEntity`(`userId`) ON UPDATE NO ACTION ON DELETE CASCADE,
+                         FOREIGN KEY(`userId`, `messageId`) REFERENCES `MessageEntity`(`userId`, `messageId`)
+                         ON UPDATE CASCADE ON DELETE NO ACTION )
+                    """.trimIndent()
+                )
+
+                // Copy data from old table to new one
+                database.execSQL(
+                    """
+                        INSERT INTO `MessageBodyEntity_copy` (
+                        `userId`, `messageId`, `body`, `header`, `mimeType`,
+                        `spamScore`, `replyTo`, `replyTos`, `unsubscribeMethodsEntity` )
+                        SELECT `userId`, `messageId`, `body`, `header`, `mimeType`,
+                        `spamScore`, `replyTo`, `replyTos`, `unsubscribeMethodsEntity` FROM `MessageBodyEntity`
+                    """.trimIndent()
+                )
+
+                // Delete the old table
+                database.execSQL("DROP TABLE `MessageBodyEntity`")
+                // Rename new table
+                database.execSQL("ALTER TABLE `MessageBodyEntity_copy` RENAME TO `MessageBodyEntity` ")
+
+                // Recreate indexes
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageBodyEntity_userId` ON `MessageBodyEntity` (`userId`)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageBodyEntity_messageId` ON `MessageBodyEntity` (`messageId`)")
+            }
+
+            private fun recreateMessageLabelWithUpdateCascade(database: SupportSQLiteDatabase) {
+                // Create a MessageLabelEntity_copy table with the new schema
+                database.execSQL(
+                    """
+                        CREATE TABLE IF NOT EXISTS `MessageLabelEntity_copy` (
+                        `userId` TEXT NOT NULL,
+                        `labelId` TEXT NOT NULL,
+                        `messageId` TEXT NOT NULL,
+                        PRIMARY KEY(`userId`,`messageId`,`labelId`),
+                        FOREIGN KEY(`userId`) REFERENCES `UserEntity`(`userId`) ON UPDATE NO ACTION ON DELETE CASCADE,
+                        FOREIGN KEY(`userId`, `messageId`) REFERENCES `MessageEntity`(`userId`,`messageId`)
+                        ON UPDATE CASCADE ON DELETE CASCADE)
+                    """.trimIndent()
+                )
+
+                // Copy data from old table to new one
+                database.execSQL(
+                    """
+                        INSERT INTO `MessageLabelEntity_copy` ( `userId`, `labelId`, `messageId` )
+                        SELECT `userId`, `labelId`, `messageId` FROM `MessageLabelEntity`
+                    """.trimIndent()
+                )
+
+                // Delete the old table
+                database.execSQL("DROP TABLE `MessageLabelEntity`")
+                // Rename new table
+                database.execSQL("ALTER TABLE `MessageLabelEntity_copy` RENAME TO `MessageLabelEntity` ")
+
+                // Recreate indexes
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageLabelEntity_userId` ON `MessageLabelEntity` (`userId`)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageLabelEntity_messageId` ON `MessageLabelEntity` (`messageId`)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageLabelEntity_labelId` ON `MessageLabelEntity` (`labelId`)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageLabelEntity_userId_messageId` ON `MessageLabelEntity` (`userId`, `messageId`)")
+
+            }
+        }
     }
 }

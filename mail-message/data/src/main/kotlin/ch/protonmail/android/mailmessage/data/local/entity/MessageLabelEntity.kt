@@ -53,7 +53,8 @@ import me.proton.core.user.data.entity.UserEntity
             entity = MessageEntity::class,
             parentColumns = ["userId", "messageId"],
             childColumns = ["userId", "messageId"],
-            onDelete = ForeignKey.CASCADE
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE
         )
     ]
 )

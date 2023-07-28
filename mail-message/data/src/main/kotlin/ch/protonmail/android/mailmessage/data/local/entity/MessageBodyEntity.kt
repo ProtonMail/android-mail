@@ -39,16 +39,18 @@ import me.proton.core.user.data.entity.UserEntity
             parentColumns = ["userId"],
             childColumns = ["userId"],
             onDelete = ForeignKey.CASCADE
-        )
+        ),
         /*
-        No foreign key for messageId.
-        We want to keep MessageBodyEntity without MessageEntity.
+        No delete cascade on foreign key for messageId. We want to keep MessageBodyEntity without MessageEntity.
+        Update cascade as we want messageId to be updated when updated on messageEntity (local draft becoming remote)
+         */
         ForeignKey(
             entity = MessageEntity::class,
             parentColumns = ["userId", "messageId"],
             childColumns = ["userId", "messageId"],
-            onDelete = ForeignKey.CASCADE
-        ),*/
+            onDelete = ForeignKey.NO_ACTION,
+            onUpdate = ForeignKey.CASCADE
+        )
     ]
 )
 data class MessageBodyEntity(
