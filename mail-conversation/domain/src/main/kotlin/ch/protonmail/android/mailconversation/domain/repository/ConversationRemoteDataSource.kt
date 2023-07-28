@@ -24,7 +24,6 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailconversation.domain.entity.ConversationWithContext
 import ch.protonmail.android.mailconversation.domain.entity.ConversationWithMessages
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
@@ -45,43 +44,39 @@ interface ConversationRemoteDataSource {
     ): ConversationWithMessages
 
     /**
-     * Add [labelId] to the given [conversationId]
+     * Add [labelId] to the given [conversationIds]
      */
     fun addLabel(
         userId: UserId,
-        conversationId: ConversationId,
-        labelId: LabelId,
-        messageIds: List<MessageId>
+        conversationIds: List<ConversationId>,
+        labelId: LabelId
     )
 
     /**
-     * Add the provided [labelIds] to the given [conversationId]
+     * Add the provided [labelIds] to the given [conversationIds]
      */
     fun addLabels(
         userId: UserId,
-        conversationId: ConversationId,
-        labelIds: List<LabelId>,
-        messageIds: List<MessageId>
+        conversationIds: List<ConversationId>,
+        labelIds: List<LabelId>
     )
 
     /**
-     * Remove [labelId] from the given [conversationId]
+     * Remove [labelId] from the given [conversationIds]
      */
     fun removeLabel(
         userId: UserId,
-        conversationId: ConversationId,
-        labelId: LabelId,
-        messageIds: List<MessageId>
+        conversationIds: List<ConversationId>,
+        labelId: LabelId
     )
 
     /**
-     * Remove the provided [labelIds] from the given [conversationId]
+     * Remove the provided [labelIds] from the given [conversationIds]
      */
     fun removeLabels(
         userId: UserId,
-        conversationId: ConversationId,
-        labelIds: List<LabelId>,
-        messageIds: List<MessageId>
+        conversationIds: List<ConversationId>,
+        labelIds: List<LabelId>
     )
 
     suspend fun markUnread(

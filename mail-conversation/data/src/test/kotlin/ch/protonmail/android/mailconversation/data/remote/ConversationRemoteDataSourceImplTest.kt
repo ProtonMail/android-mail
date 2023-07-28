@@ -23,13 +23,13 @@ import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailconversation.data.getConversationResource
+import ch.protonmail.android.mailconversation.data.remote.ConversationRemoteDataSourceImpl.Companion.MAX_ACTION_WORKER_PARAMETER_COUNT
 import ch.protonmail.android.mailconversation.data.remote.response.GetConversationsResponse
 import ch.protonmail.android.mailconversation.data.remote.worker.AddLabelConversationWorker
 import ch.protonmail.android.mailconversation.data.remote.worker.MarkConversationAsReadWorker
 import ch.protonmail.android.mailconversation.data.remote.worker.MarkConversationAsUnreadWorker
 import ch.protonmail.android.mailconversation.data.remote.worker.RemoveLabelConversationWorker
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailpagination.domain.model.OrderBy
 import ch.protonmail.android.mailpagination.domain.model.OrderDirection
 import ch.protonmail.android.mailpagination.domain.model.PageFilter
@@ -263,9 +263,10 @@ class ConversationRemoteDataSourceImplTest {
         // Given
         val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
         val labelId = LabelId("10")
-        val messageIds = listOf(MessageId("123"), MessageId("124"))
+
         // When
-        conversationRemoteDataSource.addLabel(userId, conversationId, labelId, messageIds)
+        conversationRemoteDataSource.addLabel(userId, listOf(conversationId), labelId)
+
         // Then
         val expectedParams = AddLabelConversationWorker.params(
             userId,
@@ -284,9 +285,10 @@ class ConversationRemoteDataSourceImplTest {
         // Given
         val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
         val labelList = listOf(LabelId("10"), LabelId("11"))
-        val messageIds = listOf(MessageId("123"), MessageId("124"))
+
         // When
-        conversationRemoteDataSource.addLabels(userId, conversationId, labelList, messageIds)
+        conversationRemoteDataSource.addLabels(userId, listOf(conversationId), labelList)
+
         // Then
         verifySequence {
             val expectedFirst = AddLabelConversationWorker.params(
@@ -309,13 +311,44 @@ class ConversationRemoteDataSourceImplTest {
     }
 
     @Test
+    fun `enqueues worker to perform add label API call twice when conversations number is above the limit`() = runTest {
+        // Given
+        val conversationIds = List(MAX_ACTION_WORKER_PARAMETER_COUNT + 1) { ConversationIdSample.Invoices }
+        val labelId = LabelId("10")
+
+        // When
+        conversationRemoteDataSource.addLabels(userId, conversationIds, listOf(labelId))
+
+        // Then
+        verifySequence {
+            val expectedFirst = AddLabelConversationWorker.params(
+                userId,
+                conversationIds.take(MAX_ACTION_WORKER_PARAMETER_COUNT),
+                labelId
+            )
+            enqueuer.enqueue<AddLabelConversationWorker>(
+                match { mapDeepEquals(it, expectedFirst) }
+            )
+            val expectedSecond = AddLabelConversationWorker.params(
+                userId,
+                conversationIds.drop(MAX_ACTION_WORKER_PARAMETER_COUNT),
+                labelId
+            )
+            enqueuer.enqueue<AddLabelConversationWorker>(
+                match { mapDeepEquals(it, expectedSecond) }
+            )
+        }
+    }
+
+    @Test
     fun `enqueues worker to perform remove label API call when remove label is called for conversation`() {
         // Given
         val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
         val labelId = LabelId("10")
-        val messageIds = listOf(MessageId("123"), MessageId("124"))
+
         // When
-        conversationRemoteDataSource.removeLabel(userId, conversationId, labelId, messageIds)
+        conversationRemoteDataSource.removeLabel(userId, listOf(conversationId), labelId)
+
         // Then
         val expected = RemoveLabelConversationWorker.params(
             userId,
@@ -334,9 +367,10 @@ class ConversationRemoteDataSourceImplTest {
         // Given
         val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
         val labelList = listOf(LabelId("10"), LabelId("11"))
-        val messageIds = listOf(MessageId("123"), MessageId("124"))
+
         // When
-        conversationRemoteDataSource.removeLabels(userId, conversationId, labelList, messageIds)
+        conversationRemoteDataSource.removeLabels(userId, listOf(conversationId), labelList)
+
         // Then
         verifySequence {
             val expectedFirst = RemoveLabelConversationWorker.params(
@@ -357,6 +391,37 @@ class ConversationRemoteDataSourceImplTest {
             )
         }
     }
+
+    @Test
+    fun `enqueues worker to perform remove label API call twice when conversations number is above the limit`() =
+        runTest {
+            // Given
+            val conversationIds = List(MAX_ACTION_WORKER_PARAMETER_COUNT + 1) { ConversationIdSample.Invoices }
+            val labelId = LabelId("10")
+
+            // When
+            conversationRemoteDataSource.removeLabels(userId, conversationIds, listOf(labelId))
+
+            // Then
+            verifySequence {
+                val expectedFirst = RemoveLabelConversationWorker.params(
+                    userId,
+                    conversationIds.take(MAX_ACTION_WORKER_PARAMETER_COUNT),
+                    labelId
+                )
+                enqueuer.enqueue<RemoveLabelConversationWorker>(
+                    match { mapDeepEquals(it, expectedFirst) }
+                )
+                val expectedSecond = RemoveLabelConversationWorker.params(
+                    userId,
+                    conversationIds.drop(MAX_ACTION_WORKER_PARAMETER_COUNT),
+                    labelId
+                )
+                enqueuer.enqueue<RemoveLabelConversationWorker>(
+                    match { mapDeepEquals(it, expectedSecond) }
+                )
+            }
+        }
 
     @Test
     fun `enqueues worker to perform mark unread API call when mark unread is called for conversation`() = runTest {

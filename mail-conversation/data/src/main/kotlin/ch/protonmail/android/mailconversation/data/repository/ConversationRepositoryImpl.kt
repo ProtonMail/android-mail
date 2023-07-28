@@ -169,9 +169,8 @@ class ConversationRepositoryImpl @Inject constructor(
 
             conversationRemoteDataSource.addLabels(
                 userId,
-                conversationId,
-                labelIds,
-                affectedMessages.map { it.messageId }
+                listOf(conversationId),
+                labelIds
             )
         }
     }
@@ -199,9 +198,8 @@ class ConversationRepositoryImpl @Inject constructor(
 
             conversationRemoteDataSource.removeLabels(
                 userId,
-                conversationId,
-                labelIds,
-                affectedMessages.map { it.messageId }
+                listOf(conversationId),
+                labelIds
             )
         }
     }

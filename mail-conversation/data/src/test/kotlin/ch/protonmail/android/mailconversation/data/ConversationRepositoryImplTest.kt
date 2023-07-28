@@ -40,7 +40,6 @@ import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailpagination.domain.model.PageFilter
@@ -293,9 +292,8 @@ class ConversationRepositoryImplTest {
         coVerify {
             conversationRemoteDataSource.addLabels(
                 userId,
-                conversationId,
-                listOf(LabelId("10")),
-                listOf(MessageId("123"), MessageId("124"))
+                listOf(conversationId),
+                listOf(LabelId("10"))
             )
         }
     }
@@ -448,9 +446,8 @@ class ConversationRepositoryImplTest {
         coVerify {
             conversationRemoteDataSource.removeLabels(
                 userId,
-                conversationId,
-                listOf(LabelId("10")),
-                listOf(MessageId("123"), MessageId("124"))
+                listOf(conversationId),
+                listOf(LabelId("10"))
             )
         }
     }
@@ -474,9 +471,8 @@ class ConversationRepositoryImplTest {
             coVerify {
                 conversationRemoteDataSource.removeLabels(
                     userId,
-                    conversationId,
-                    listOf(LabelId("10"), LabelId("11")),
-                    listOf(MessageId("123"), MessageId("124"))
+                    listOf(conversationId),
+                    listOf(LabelId("10"), LabelId("11"))
                 )
             }
         }
@@ -941,13 +937,12 @@ class ConversationRepositoryImplTest {
         // then
         coVerifyOrder {
             conversationLocalDataSource.removeLabels(userId, conversationId, toBeRemovedLabels)
-            conversationRemoteDataSource.removeLabels(userId, conversationId, toBeRemovedLabels, listOf())
+            conversationRemoteDataSource.removeLabels(userId, listOf(conversationId), toBeRemovedLabels)
             conversationLocalDataSource.addLabels(userId, conversationId, toBeAddedLabels)
             conversationRemoteDataSource.addLabels(
                 userId,
-                conversationId,
-                toBeAddedLabels,
-                MessageTestData.unStarredMessagesByConversation.map { it.messageId }
+                listOf(conversationId),
+                toBeAddedLabels
             )
         }
     }

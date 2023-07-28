@@ -30,7 +30,6 @@ import ch.protonmail.android.mailconversation.data.remote.worker.RemoveLabelConv
 import ch.protonmail.android.mailconversation.domain.entity.ConversationWithContext
 import ch.protonmail.android.mailconversation.domain.entity.ConversationWithMessages
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRemoteDataSource
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailpagination.domain.model.OrderBy
 import ch.protonmail.android.mailpagination.domain.model.OrderDirection
 import ch.protonmail.android.mailpagination.domain.model.PageKey
@@ -87,53 +86,53 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
 
     override fun addLabel(
         userId: UserId,
-        conversationId: ConversationId,
-        labelId: LabelId,
-        messageIds: List<MessageId>
+        conversationIds: List<ConversationId>,
+        labelId: LabelId
     ) {
-        addLabels(userId, conversationId, listOf(labelId), messageIds)
+        addLabels(userId, conversationIds, listOf(labelId))
     }
 
     override fun addLabels(
         userId: UserId,
-        conversationId: ConversationId,
-        labelIds: List<LabelId>,
-        messageIds: List<MessageId>
+        conversationIds: List<ConversationId>,
+        labelIds: List<LabelId>
     ) {
-        labelIds.forEach { labelId ->
-            enqueuer.enqueue<AddLabelConversationWorker>(
-                AddLabelConversationWorker.params(
-                    userId,
-                    listOf(conversationId),
-                    labelId
+        conversationIds.chunked(MAX_ACTION_WORKER_PARAMETER_COUNT).forEach { conversationIdsChunk ->
+            labelIds.forEach { labelId ->
+                enqueuer.enqueue<AddLabelConversationWorker>(
+                    AddLabelConversationWorker.params(
+                        userId = userId,
+                        conversationIds = conversationIdsChunk,
+                        labelId = labelId
+                    )
                 )
-            )
+            }
         }
     }
 
     override fun removeLabel(
         userId: UserId,
-        conversationId: ConversationId,
-        labelId: LabelId,
-        messageIds: List<MessageId>
+        conversationIds: List<ConversationId>,
+        labelId: LabelId
     ) {
-        removeLabels(userId, conversationId, listOf(labelId), messageIds)
+        removeLabels(userId, conversationIds, listOf(labelId))
     }
 
     override fun removeLabels(
         userId: UserId,
-        conversationId: ConversationId,
-        labelIds: List<LabelId>,
-        messageIds: List<MessageId>
+        conversationIds: List<ConversationId>,
+        labelIds: List<LabelId>
     ) {
-        labelIds.forEach { labelId ->
-            enqueuer.enqueue<RemoveLabelConversationWorker>(
-                RemoveLabelConversationWorker.params(
-                    userId,
-                    listOf(conversationId),
-                    labelId
+        conversationIds.chunked(MAX_ACTION_WORKER_PARAMETER_COUNT).forEach { conversationIdsChunk ->
+            labelIds.forEach { labelId ->
+                enqueuer.enqueue<RemoveLabelConversationWorker>(
+                    RemoveLabelConversationWorker.params(
+                        userId = userId,
+                        conversationIds = conversationIdsChunk,
+                        labelId = labelId
+                    )
                 )
-            )
+            }
         }
     }
 
@@ -159,5 +158,10 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
                 contextLabelId
             )
         )
+    }
+
+    companion object {
+
+        const val MAX_ACTION_WORKER_PARAMETER_COUNT = 100
     }
 }
