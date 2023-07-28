@@ -20,6 +20,7 @@ package ch.protonmail.android.maildetail.domain.usecase
 
 import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
@@ -35,7 +36,7 @@ import kotlin.test.assertEquals
 class UnStarConversationTest {
 
     private val conversationRepository: ConversationRepository = mockk {
-        coEvery { removeLabel(any(), any(), any()) } returns ConversationTestData.conversation.right()
+        coEvery { removeLabel(any(), any<ConversationId>(), any()) } returns ConversationTestData.conversation.right()
     }
 
     private val conversationId = ConversationTestData.starredConversation.conversationId
@@ -68,7 +69,7 @@ class UnStarConversationTest {
     fun `returns error when repository fails`() = runTest {
         // Given
         val localError = DataError.Local.NoDataCached
-        coEvery { conversationRepository.removeLabel(any(), any(), any()) } returns localError.left()
+        coEvery { conversationRepository.removeLabel(any(), any<ConversationId>(), any()) } returns localError.left()
         // When
         val actual = unStarConversation(UserIdTestData.userId, conversationId)
         // Then

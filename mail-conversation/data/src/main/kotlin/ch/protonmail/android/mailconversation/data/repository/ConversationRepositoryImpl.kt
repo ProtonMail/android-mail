@@ -148,28 +148,36 @@ class ConversationRepositoryImpl @Inject constructor(
         userId: UserId,
         conversationId: ConversationId,
         labelId: LabelId
-    ): Either<DataError, Conversation> = addLabels(userId, conversationId, listOf(labelId))
+    ): Either<DataError, Conversation> = addLabels(userId, listOf(conversationId), listOf(labelId)).map { it.first() }
+
+    override suspend fun addLabel(
+        userId: UserId,
+        conversationIds: List<ConversationId>,
+        labelId: LabelId
+    ): Either<DataError, List<Conversation>> = addLabels(userId, conversationIds, listOf(labelId))
 
     override suspend fun addLabels(
         userId: UserId,
-        conversationId: ConversationId,
+        conversationIds: List<ConversationId>,
         labelIds: List<LabelId>
-    ): Either<DataError, Conversation> {
-        val conversationEither = conversationLocalDataSource.addLabels(userId, conversationId, labelIds)
-        return conversationEither.tap {
-            val affectedMessages = messageLocalDataSource.observeMessages(userId, conversationId).first()
-                .filterNot { it.labelIds.containsAll(labelIds) }
-            val updatedMessages = affectedMessages.map {
-                it.copy(labelIds = it.labelIds.union(labelIds).toList())
-            }
+    ): Either<DataError, List<Conversation>> {
+        val conversationEither = conversationLocalDataSource.addLabels(userId, conversationIds, labelIds)
+        return conversationEither.onRight { conversations ->
+            conversations.forEach { conversation ->
+                val affectedMessages = messageLocalDataSource.observeMessages(userId, conversation.conversationId)
+                    .first()
+                    .filterNot { it.labelIds.containsAll(labelIds) }
+                val updatedMessages = affectedMessages.map {
+                    it.copy(labelIds = it.labelIds.union(labelIds).toList())
+                }
 
-            if (updatedMessages.isNotEmpty()) {
-                messageLocalDataSource.upsertMessages(updatedMessages)
+                if (updatedMessages.isNotEmpty()) {
+                    messageLocalDataSource.upsertMessages(updatedMessages)
+                }
             }
-
             conversationRemoteDataSource.addLabels(
                 userId,
-                listOf(conversationId),
+                conversationIds,
                 labelIds
             )
         }
@@ -179,26 +187,34 @@ class ConversationRepositoryImpl @Inject constructor(
         userId: UserId,
         conversationId: ConversationId,
         labelId: LabelId
-    ): Either<DataError, Conversation> = removeLabels(userId, conversationId, listOf(labelId))
+    ): Either<DataError, Conversation> = removeLabel(userId, listOf(conversationId), labelId).map { it.first() }
+
+    override suspend fun removeLabel(
+        userId: UserId,
+        conversationIds: List<ConversationId>,
+        labelId: LabelId
+    ): Either<DataError, List<Conversation>> = removeLabels(userId, conversationIds, listOf(labelId))
 
     override suspend fun removeLabels(
         userId: UserId,
-        conversationId: ConversationId,
+        conversationIds: List<ConversationId>,
         labelIds: List<LabelId>
-    ): Either<DataError, Conversation> {
-        return conversationLocalDataSource.removeLabels(userId, conversationId, labelIds).tap {
-            val affectedMessages = messageLocalDataSource.observeMessages(userId, conversationId).first()
-                .filter { it.labelIds.intersect(labelIds).isNotEmpty() }
-            val updatedMessages = affectedMessages.map {
-                it.copy(labelIds = it.labelIds - labelIds)
+    ): Either<DataError, List<Conversation>> {
+        return conversationLocalDataSource.removeLabels(userId, conversationIds, labelIds).onRight { conversations ->
+            conversations.forEach { conversation ->
+                val affectedMessages = messageLocalDataSource.observeMessages(userId, conversation.conversationId)
+                    .first()
+                    .filter { it.labelIds.intersect(labelIds).isNotEmpty() }
+                val updatedMessages = affectedMessages.map {
+                    it.copy(labelIds = it.labelIds - labelIds)
+                }
+                if (updatedMessages.isNotEmpty()) {
+                    messageLocalDataSource.upsertMessages(updatedMessages)
+                }
             }
-            if (updatedMessages.isNotEmpty()) {
-                messageLocalDataSource.upsertMessages(updatedMessages)
-            }
-
             conversationRemoteDataSource.removeLabels(
                 userId,
-                listOf(conversationId),
+                conversationIds,
                 labelIds
             )
         }
@@ -264,11 +280,19 @@ class ConversationRepositoryImpl @Inject constructor(
         conversationId: ConversationId,
         labelsToBeRemoved: List<LabelId>,
         labelsToBeAdded: List<LabelId>
-    ): Either<DataError, Conversation> {
-        val removeOperation = removeLabels(userId, conversationId, labelsToBeRemoved)
+    ): Either<DataError, Conversation> =
+        relabel(userId, listOf(conversationId), labelsToBeRemoved, labelsToBeAdded).map { it.first() }
+
+    override suspend fun relabel(
+        userId: UserId,
+        conversationIds: List<ConversationId>,
+        labelsToBeRemoved: List<LabelId>,
+        labelsToBeAdded: List<LabelId>
+    ): Either<DataError, List<Conversation>> {
+        val removeOperation = removeLabels(userId, conversationIds, labelsToBeRemoved)
         if (removeOperation.isLeft()) return removeOperation
 
-        return addLabels(userId, conversationId, labelsToBeAdded)
+        return addLabels(userId, conversationIds, labelsToBeAdded)
     }
 
     private suspend fun moveToTrashOrSpam(

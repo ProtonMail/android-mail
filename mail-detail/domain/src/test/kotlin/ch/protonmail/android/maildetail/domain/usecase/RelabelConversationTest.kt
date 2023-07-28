@@ -19,6 +19,7 @@
 package ch.protonmail.android.maildetail.domain.usecase
 
 import arrow.core.left
+import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
@@ -41,7 +42,7 @@ class RelabelConversationTest {
     fun `when repository fails then error is returned`() = runTest {
         // Given
         val error = DataError.Local.NoDataCached.left()
-        coEvery { conversationRepository.relabel(any(), any(), any(), any()) } returns error
+        coEvery { conversationRepository.relabel(any(), any<ConversationId>(), any(), any()) } returns error
 
         // When
         val result = relabelConversation(
