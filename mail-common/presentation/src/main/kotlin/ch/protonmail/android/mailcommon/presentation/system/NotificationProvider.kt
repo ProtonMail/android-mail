@@ -45,6 +45,14 @@ class NotificationProvider @Inject constructor(
             channelName = R.string.attachment_download_notification_channel_name,
             channelDescription = R.string.attachment_download_notification_channel_description
         )
+
+        // Email
+        createNotificationChannel(
+            context = context,
+            channelId = EMAIL_CHANNEL_ID,
+            channelName = R.string.email_notification_channel_name,
+            channelDescription = R.string.email_notification_channel_description
+        )
     }
 
     fun provideNotificationChannel(channelId: ChannelId): NotificationChannel =
@@ -60,6 +68,25 @@ class NotificationProvider @Inject constructor(
             setContentTitle(context.getString(title))
             setSmallIcon(R.drawable.ic_logo_mail_no_bg)
             setOngoing(true)
+        }.build()
+    }
+
+    fun provideEmailNotification(
+        context: Context,
+        contentTitle: String,
+        subText: String,
+        contentText: String,
+        group: String,
+        isGroupSummary: Boolean = false
+    ): Notification {
+        val channel = provideNotificationChannel(EMAIL_CHANNEL_ID)
+        return NotificationCompat.Builder(context, channel.id).apply {
+            setContentTitle(contentTitle)
+            setSmallIcon(R.drawable.ic_logo_mail_no_bg)
+            setSubText(subText)
+            setContentText(contentText)
+            setGroup(group)
+            if (isGroupSummary) setGroupSummary(true)
         }.build()
     }
 
@@ -81,5 +108,6 @@ class NotificationProvider @Inject constructor(
     companion object {
 
         const val ATTACHMENT_CHANNEL_ID: ChannelId = "attachment_channel_id"
+        const val EMAIL_CHANNEL_ID: ChannelId = "email_channel_id"
     }
 }

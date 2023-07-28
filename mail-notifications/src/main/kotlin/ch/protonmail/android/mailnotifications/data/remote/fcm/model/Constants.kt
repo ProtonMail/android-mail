@@ -18,4 +18,6 @@
 
 package ch.protonmail.android.mailnotifications.data.remote.fcm.model
 
+internal const val KEY_PM_REGISTRATION_WORKER_TOKEN = "PMRegistrationWorker.input.token"
+internal const val KEY_PM_REGISTRATION_WORKER_SESSION_ID = "PMRegistrationWorker.input.session.id"
 internal const val KEY_PM_REGISTRATION_WORKER_ERROR = "PMRegistrationWorker.error"

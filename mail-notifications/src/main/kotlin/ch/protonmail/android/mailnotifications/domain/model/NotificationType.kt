@@ -22,22 +22,22 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-enum class NotificationAction(val action: String) {
+enum class NotificationType(val type: String) {
 
-    @SerialName(NOTIFICATION_ACTION_MESSAGE_CREATED)
-    CREATED("message_created"),
+    @SerialName(NOTIFICATION_TYPE_EMAIL)
+    EMAIL("email"),
 
-    @SerialName(NOTIFICATION_ACTION_MESSAGE_TOUCHED)
-    TOUCHED("message_touched");
+    @SerialName(NOTIFICATION_TYPE_OPEN_URL)
+    OPEN_URL("open_url");
 
     companion object {
 
-        private const val NOTIFICATION_ACTION_MESSAGE_CREATED = "message_created"
-        private const val NOTIFICATION_ACTION_MESSAGE_TOUCHED = "message_touched"
+        private const val NOTIFICATION_TYPE_EMAIL = "email"
+        private const val NOTIFICATION_TYPE_OPEN_URL = "open_url"
 
-        fun fromStringOrNull(action: String): NotificationAction? {
+        fun fromStringOrNull(type: String): NotificationType? {
             return values().find {
-                it.action == action
+                it.type == type
             }
         }
     }

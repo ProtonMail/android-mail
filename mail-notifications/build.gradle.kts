@@ -52,12 +52,13 @@ kapt {
 }
 
 dependencies {
+    api(platform(Dependencies.firebaseBom))
+    api(Firebase.messaging)
+
     implementation(project(":mail-common"))
     implementation(Dependencies.appLibs)
     implementation(Dependencies.moduleDataLibs)
     implementation(Dependencies.modulePresentationLibs)
-    implementation(platform(Dependencies.firebaseBom))
-    implementation(Dependencies.firebaseMessaging)
 
     testImplementation(Dependencies.testLibs)
 }
