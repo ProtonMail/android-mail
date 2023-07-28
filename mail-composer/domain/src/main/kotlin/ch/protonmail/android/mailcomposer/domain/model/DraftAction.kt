@@ -19,10 +19,19 @@
 package ch.protonmail.android.mailcomposer.domain.model
 
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import kotlinx.serialization.Serializable
 
+@Serializable
 sealed interface DraftAction {
+    @Serializable
     object Compose : DraftAction
+
+    @Serializable
     data class Reply(val parentId: MessageId) : DraftAction
+
+    @Serializable
     data class ReplyAll(val parentId: MessageId) : DraftAction
+
+    @Serializable
     data class Forward(val parentId: MessageId) : DraftAction
 }

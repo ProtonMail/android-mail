@@ -19,7 +19,10 @@
 package ch.protonmail.android.mailcomposer.domain.usecase
 
 import arrow.core.Either
+import ch.protonmail.android.mailcomposer.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
+import ch.protonmail.android.mailcomposer.domain.repository.DraftRepository
+import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.withContext
@@ -28,6 +31,8 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class StoreDraftWithAllFields @Inject constructor(
+    private val draftRepository: DraftRepository,
+    private val draftStateRepository: DraftStateRepository,
     private val storeDraftWithSubject: StoreDraftWithSubject,
     private val storeDraftWithBody: StoreDraftWithBody,
     private val storeDraftWithRecipients: StoreDraftWithRecipients
@@ -36,7 +41,8 @@ class StoreDraftWithAllFields @Inject constructor(
     suspend operator fun invoke(
         userId: UserId,
         draftMessageId: MessageId,
-        fields: DraftFields
+        fields: DraftFields,
+        action: DraftAction = DraftAction.Compose
     ) {
         withContext(NonCancellable) {
             storeDraftWithBody(draftMessageId, fields.body, fields.sender, userId).logError(draftMessageId)
@@ -49,6 +55,9 @@ class StoreDraftWithAllFields @Inject constructor(
                 fields.recipientsCc.value,
                 fields.recipientsBcc.value
             ).logError(draftMessageId)
+
+            draftStateRepository.saveLocalState(userId, draftMessageId, action)
+            draftRepository.sync(userId, draftMessageId)
         }
     }
 

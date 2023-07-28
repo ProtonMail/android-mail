@@ -16,26 +16,16 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.composer.data.local.dao
+package ch.protonmail.android.composer.data.remote.response
 
-import androidx.room.Dao
-import androidx.room.Query
-import ch.protonmail.android.composer.data.local.entity.DraftStateEntity
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
-import kotlinx.coroutines.flow.Flow
-import me.proton.core.data.room.db.BaseDao
-import me.proton.core.domain.entity.UserId
+import ch.protonmail.android.mailmessage.data.remote.resource.MessageWithBodyResource
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@Dao
-abstract class DraftStateDao : BaseDao<DraftStateEntity>() {
-
-    @Query(
-        """
-            SELECT * from DraftStateEntity
-            WHERE userId = :userId
-            AND messageId = :messageId
-            OR apiMessageId = :messageId
-        """
-    )
-    abstract fun observeDraftState(userId: UserId, messageId: MessageId): Flow<DraftStateEntity?>
-}
+@Serializable
+data class SaveDraftResponse(
+    @SerialName("Code")
+    val code: Int,
+    @SerialName("Message")
+    val message: MessageWithBodyResource
+)

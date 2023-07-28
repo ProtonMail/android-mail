@@ -65,10 +65,12 @@ class SyncDraftTest {
         val expectedAction = DraftAction.Compose
         val expectedResponse = MessageWithBodySample.EmptyDraft
         val expectedDraftState = DraftStateSample.NewDraftState
+        val apiAssignedMessageId = expectedResponse.message.messageId
         expectGetDraftStateSucceeds(userId, messageId, expectedDraftState)
         expectGetLocalMessageSucceeds(userId, messageId, expectedDraft)
         expectRemoteDataSourceCreateSuccess(userId, expectedDraft, expectedAction, expectedResponse)
-        expectStoreCreatedStateSuccess(userId, messageId, expectedResponse.message.messageId)
+        expectStoreSynchedStateSuccess(userId, messageId, apiAssignedMessageId)
+        expectMessageUpdateSuccess(userId, messageId, apiAssignedMessageId)
 
         // When
         val actual = draftRepository(userId, messageId)
@@ -79,25 +81,47 @@ class SyncDraftTest {
     }
 
     @Test
-    fun `update draft state with api message id when create call succeeds`() = runTest {
+    fun `update message and draft state with api message id when create call succeeds`() = runTest {
         // Given
         val messageId = MessageIdSample.LocalDraft
-        val remoteDraftId = MessageIdSample.RemoteDraft
-        val expectedDraft = MessageWithBodySample.Invoice
+        val apiAssignedMessageId = MessageIdSample.RemoteDraft
+        val expectedDraft = MessageWithBodySample.NewDraftWithSubject
         val expectedAction = DraftAction.Compose
         val expectedResponse = MessageWithBodySample.RemoteDraft
         val expectedDraftState = DraftStateSample.NewDraftState
         expectGetDraftStateSucceeds(userId, messageId, expectedDraftState)
         expectGetLocalMessageSucceeds(userId, messageId, expectedDraft)
         expectRemoteDataSourceCreateSuccess(userId, expectedDraft, expectedAction, expectedResponse)
-        expectStoreCreatedStateSuccess(userId, messageId, remoteDraftId)
+        expectStoreSynchedStateSuccess(userId, messageId, apiAssignedMessageId)
+        expectMessageUpdateSuccess(userId, messageId, apiAssignedMessageId)
 
         // When
         val actual = draftRepository(userId, messageId)
 
         // Then
         assertEquals(Unit.right(), actual)
-        coVerify { draftStateRepository.saveCreatedState(userId, messageId, remoteDraftId) }
+        coVerify { messageRepository.updateDraftMessageId(userId, messageId, apiAssignedMessageId) }
+        coVerify { draftStateRepository.saveSynchedState(userId, messageId, apiAssignedMessageId) }
+    }
+
+    @Test
+    fun `update draft state to synched when update call succeeds`() = runTest {
+        // Given
+        val messageId = MessageIdSample.RemoteDraft
+        val expectedDraft = MessageWithBodySample.RemoteDraft
+        val expectedResponse = MessageWithBodySample.RemoteDraft
+        val expectedDraftState = DraftStateSample.NewDraftState
+        expectGetDraftStateSucceeds(userId, messageId, expectedDraftState)
+        expectGetLocalMessageSucceeds(userId, messageId, expectedDraft)
+        expectRemoteDataSourceUpdateSuccess(userId, expectedDraft, expectedResponse)
+        expectStoreSynchedStateSuccess(userId, messageId, messageId)
+
+        // When
+        val actual = draftRepository(userId, messageId)
+
+        // Then
+        assertEquals(Unit.right(), actual)
+        coVerify { draftStateRepository.saveSynchedState(userId, messageId, messageId) }
     }
 
     @Test
@@ -159,6 +183,7 @@ class SyncDraftTest {
         expectGetDraftStateSucceeds(userId, messageId, expectedDraftState)
         expectGetLocalMessageSucceeds(userId, messageId, expectedDraft)
         expectRemoteDataSourceUpdateSuccess(userId, expectedDraft, expectedResponse)
+        expectStoreSynchedStateSuccess(userId, messageId, messageId)
 
         // When
         val actual = draftRepository(userId, messageId)
@@ -168,12 +193,16 @@ class SyncDraftTest {
         coVerify(exactly = 0) { draftRemoteDataSource.create(any(), any(), any()) }
     }
 
-    private fun expectStoreCreatedStateSuccess(
+    private fun expectMessageUpdateSuccess(userId: UserId, messageId: MessageId, remoteMessageId: MessageId) {
+        coEvery { messageRepository.updateDraftMessageId(userId, messageId, remoteMessageId) } returns Unit
+    }
+
+    private fun expectStoreSynchedStateSuccess(
         userId: UserId,
         messageId: MessageId,
-        remoteDraftId: MessageId
+        apiAssignedMessageId: MessageId
     ) {
-        coEvery { draftStateRepository.saveCreatedState(userId, messageId, remoteDraftId) } returns Unit.right()
+        coEvery { draftStateRepository.saveSynchedState(userId, messageId, apiAssignedMessageId) } returns Unit.right()
     }
 
     private fun expectRemoteDataSourceCreateSuccess(

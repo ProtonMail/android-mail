@@ -278,6 +278,14 @@ class MessageLocalDataSourceImpl @Inject constructor(
         return message.unread.not().right()
     }
 
+    override suspend fun updateDraftMessageId(
+        userId: UserId,
+        localDraftId: MessageId,
+        apiAssignedId: MessageId
+    ) {
+        messageDao.updateDraftMessageId(userId, localDraftId, apiAssignedId)
+    }
+
     private suspend fun updateLabels(messages: List<Message>) = with(groupByUserId(messages)) {
         deleteLabels()
         insertLabels()
@@ -313,14 +321,11 @@ class MessageLocalDataSourceImpl @Inject constructor(
         }
     }
 
-    private suspend fun MessageWithBodyEntity.withBodyFromFileIfNeeded(userId: UserId) =
-        if (messageBody.body == null) {
-            copy(
-                messageBody = messageBody.copy(
-                    body = messageBodyFileStorage.readMessageBody(userId, message.messageId)
-                )
-            )
-        } else {
-            this
-        }
+    private suspend fun MessageWithBodyEntity.withBodyFromFileIfNeeded(userId: UserId) = if (messageBody.body == null) {
+        copy(
+            messageBody = messageBody.copy(body = messageBodyFileStorage.readMessageBody(userId, message.messageId))
+        )
+    } else {
+        this
+    }
 }

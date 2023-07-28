@@ -22,6 +22,7 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.mailcomposer.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsBcc
@@ -29,6 +30,8 @@ import ch.protonmail.android.mailcomposer.domain.model.RecipientsCc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsTo
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.domain.model.Subject
+import ch.protonmail.android.mailcomposer.domain.repository.DraftRepository
+import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.RecipientSample
@@ -46,11 +49,15 @@ class StoreDraftWithAllFieldsTest {
     @get:Rule
     val loggingTestRule = LoggingTestRule()
 
+    private val draftRepository = mockk<DraftRepository>()
+    private val draftStateRepository = mockk<DraftStateRepository>()
     private val storeDraftWithSubjectMock = mockk<StoreDraftWithSubject>()
     private val storeDraftWithBodyMock = mockk<StoreDraftWithBody>()
     private val storeDraftWithRecipientsMock = mockk<StoreDraftWithRecipients>()
 
     private val storeDraftWithAllFields = StoreDraftWithAllFields(
+        draftRepository,
+        draftStateRepository,
         storeDraftWithSubjectMock,
         storeDraftWithBodyMock,
         storeDraftWithRecipientsMock
@@ -83,6 +90,8 @@ class StoreDraftWithAllFieldsTest {
             senderEmail,
             Triple(recipientsTo, recipientsCc, recipientsBcc)
         )
+        expectStoreDraftStateSucceeds(userId, draftMessageId)
+        expectSyncDraftSucceeds(userId, draftMessageId)
 
         // When
         storeDraftWithAllFields(userId, draftMessageId, draftFields)
@@ -113,7 +122,7 @@ class StoreDraftWithAllFieldsTest {
         val recipientsTo = RecipientsTo(listOf(RecipientSample.John))
         val recipientsCc = RecipientsCc(listOf(RecipientSample.John))
         val recipientsBcc = RecipientsBcc(listOf(RecipientSample.John))
-        val draftFields = DraftFields(
+        val draftFields = buildDraftFields(
             senderEmail,
             subject,
             plaintextDraftBody,
@@ -130,6 +139,8 @@ class StoreDraftWithAllFieldsTest {
             senderEmail,
             Triple(recipientsTo, recipientsCc, recipientsBcc)
         )
+        expectStoreDraftStateSucceeds(userId, draftMessageId)
+        expectSyncDraftSucceeds(userId, draftMessageId)
 
         // When
         storeDraftWithAllFields(userId, draftMessageId, draftFields)
@@ -150,7 +161,7 @@ class StoreDraftWithAllFieldsTest {
         val recipientsTo = RecipientsTo(listOf(RecipientSample.John))
         val recipientsCc = RecipientsCc(listOf(RecipientSample.John))
         val recipientsBcc = RecipientsBcc(listOf(RecipientSample.John))
-        val draftFields = DraftFields(
+        val draftFields = buildDraftFields(
             senderEmail,
             subject,
             plaintextDraftBody,
@@ -161,6 +172,8 @@ class StoreDraftWithAllFieldsTest {
         val expectedError = StoreDraftWithSubject.Error.DraftSaveError
         expectStoreDraftBodySucceeds(draftMessageId, plaintextDraftBody, senderEmail, userId)
         expectStoreDraftSubjectFails(draftMessageId, senderEmail, userId, subject) { expectedError }
+        expectStoreDraftStateSucceeds(userId, draftMessageId)
+        expectSyncDraftSucceeds(userId, draftMessageId)
         expectStoreDraftRecipientsSucceeds(
             userId,
             draftMessageId,
@@ -187,7 +200,7 @@ class StoreDraftWithAllFieldsTest {
         val recipientsTo = RecipientsTo(listOf(RecipientSample.John))
         val recipientsCc = RecipientsCc(listOf(RecipientSample.John))
         val recipientsBcc = RecipientsBcc(listOf(RecipientSample.John))
-        val draftFields = DraftFields(
+        val draftFields = buildDraftFields(
             senderEmail,
             subject,
             plaintextDraftBody,
@@ -198,6 +211,8 @@ class StoreDraftWithAllFieldsTest {
         val expectedError = StoreDraftWithRecipients.Error.DraftSaveError
         expectStoreDraftBodySucceeds(draftMessageId, plaintextDraftBody, senderEmail, userId)
         expectStoreDraftSubjectSucceeds(userId, draftMessageId, senderEmail, subject)
+        expectStoreDraftStateSucceeds(userId, draftMessageId)
+        expectSyncDraftSucceeds(userId, draftMessageId)
         expectStoreDraftRecipientsFails(
             draftMessageId,
             senderEmail,
@@ -211,6 +226,89 @@ class StoreDraftWithAllFieldsTest {
         // Then
         val expectedLog = "Storing all draft fields failed due to $expectedError. \n Draft MessageId = $draftMessageId"
         loggingTestRule.assertErrorLogged(expectedLog)
+    }
+
+    @Test
+    fun `store draft state as Local when draft data is saved locally`() = runTest {
+        // Given
+        val userId = UserIdSample.Primary
+        val draftMessageId = MessageIdSample.build()
+        val senderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+        val subject = Subject("Subject of this email")
+        val plaintextDraftBody = DraftBody("I am plaintext")
+        val draftFields = buildDraftFields(senderEmail, subject, plaintextDraftBody)
+        val expectedAction = DraftAction.Compose
+        expectStoreDraftBodySucceeds(draftMessageId, plaintextDraftBody, senderEmail, userId)
+        expectStoreDraftSubjectSucceeds(userId, draftMessageId, senderEmail, subject)
+        expectStoreDraftStateSucceeds(userId, draftMessageId, expectedAction)
+        expectSyncDraftSucceeds(userId, draftMessageId)
+        expectStoreDraftRecipientsSucceeds(
+            userId,
+            draftMessageId,
+            senderEmail,
+            Triple(RecipientsTo(emptyList()), RecipientsCc(emptyList()), RecipientsBcc(emptyList()))
+        )
+
+        // When
+        storeDraftWithAllFields(userId, draftMessageId, draftFields)
+
+        // Then
+        coVerify { draftStateRepository.saveLocalState(userId, draftMessageId, expectedAction) }
+    }
+
+    @Test
+    fun `sync draft with remote once saving locally was successful`() = runTest {
+        // Given
+        val userId = UserIdSample.Primary
+        val draftMessageId = MessageIdSample.build()
+        val senderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+        val subject = Subject("Subject of this email")
+        val plaintextDraftBody = DraftBody("I am plaintext")
+        val draftFields = buildDraftFields(senderEmail, subject, plaintextDraftBody)
+        expectStoreDraftBodySucceeds(draftMessageId, plaintextDraftBody, senderEmail, userId)
+        expectStoreDraftSubjectSucceeds(userId, draftMessageId, senderEmail, subject)
+        expectStoreDraftStateSucceeds(userId, draftMessageId)
+        expectSyncDraftSucceeds(userId, draftMessageId)
+        expectStoreDraftRecipientsSucceeds(
+            userId,
+            draftMessageId,
+            senderEmail,
+            Triple(RecipientsTo(emptyList()), RecipientsCc(emptyList()), RecipientsBcc(emptyList()))
+        )
+
+        // When
+        storeDraftWithAllFields(userId, draftMessageId, draftFields)
+
+        // Then
+        coVerify { draftRepository.sync(userId, draftMessageId) }
+    }
+
+    private fun buildDraftFields(
+        senderEmail: SenderEmail,
+        subject: Subject,
+        plaintextDraftBody: DraftBody,
+        recipientsTo: RecipientsTo = RecipientsTo(emptyList()),
+        recipientsCc: RecipientsCc = RecipientsCc(emptyList()),
+        recipientsBcc: RecipientsBcc = RecipientsBcc(emptyList())
+    ) = DraftFields(
+        senderEmail,
+        subject,
+        plaintextDraftBody,
+        recipientsTo,
+        recipientsCc,
+        recipientsBcc
+    )
+
+    private fun expectStoreDraftStateSucceeds(
+        userId: UserId,
+        draftMessageId: MessageId,
+        expectedAction: DraftAction = DraftAction.Compose
+    ) {
+        coEvery { draftStateRepository.saveLocalState(userId, draftMessageId, expectedAction) } returns Unit.right()
+    }
+
+    private fun expectSyncDraftSucceeds(expectedUserId: UserId, expectedMessageId: MessageId) {
+        coEvery { draftRepository.sync(expectedUserId, expectedMessageId) } returns Unit
     }
 
     private fun expectStoreDraftBodySucceeds(

@@ -201,4 +201,6 @@ interface MessageLocalDataSource {
     ): Either<DataError.Local, List<Message>>
 
     suspend fun isMessageRead(userId: UserId, messageId: MessageId): Either<DataError.Local, Boolean>
+
+    suspend fun updateDraftMessageId(userId: UserId, localDraftId: MessageId, apiAssignedId: MessageId)
 }

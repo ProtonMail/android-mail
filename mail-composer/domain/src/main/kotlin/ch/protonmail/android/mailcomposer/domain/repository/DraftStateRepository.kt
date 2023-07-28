@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcomposer.domain.repository
 
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcomposer.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftState
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import kotlinx.coroutines.flow.Flow
@@ -29,9 +30,15 @@ interface DraftStateRepository {
 
     suspend fun observe(userId: UserId, messageId: MessageId): Flow<Either<DataError, DraftState>>
 
-    suspend fun saveCreatedState(
+    suspend fun saveSynchedState(
         userId: UserId,
         messageId: MessageId,
         remoteDraftId: MessageId
+    ): Either<DataError, Unit>
+
+    suspend fun saveLocalState(
+        userId: UserId,
+        messageId: MessageId,
+        action: DraftAction
     ): Either<DataError, Unit>
 }

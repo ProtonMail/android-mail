@@ -21,6 +21,7 @@ package ch.protonmail.android.composer.data.remote
 import arrow.core.right
 import ch.protonmail.android.composer.data.remote.resource.CreateDraftBody
 import ch.protonmail.android.composer.data.remote.resource.UpdateDraftBody
+import ch.protonmail.android.composer.data.remote.response.SaveDraftResponse
 import ch.protonmail.android.composer.data.sample.CreateDraftBodySample
 import ch.protonmail.android.composer.data.sample.MessageWithBodyResourceSample
 import ch.protonmail.android.composer.data.sample.UpdateDraftBodySample
@@ -105,7 +106,7 @@ class DraftRemoteDataSourceTest {
     }
 
     private fun expectCreateDraftApiSucceeds(body: CreateDraftBody, expected: MessageWithBodyResource) {
-        coEvery { draftApi.createDraft(body) } returns expected
+        coEvery { draftApi.createDraft(body) } returns SaveDraftResponse(code = GoodResponseCode, expected)
     }
 
     private fun expectUpdateDraftApiSucceeds(
@@ -113,6 +114,11 @@ class DraftRemoteDataSourceTest {
         body: UpdateDraftBody,
         expected: MessageWithBodyResource
     ) {
-        coEvery { draftApi.updateDraft(messageId.id, body) } returns expected
+        coEvery { draftApi.updateDraft(messageId.id, body) } returns
+            SaveDraftResponse(code = GoodResponseCode, expected)
+    }
+
+    companion object {
+        private const val GoodResponseCode = 1000
     }
 }

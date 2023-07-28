@@ -55,7 +55,7 @@ class DraftRemoteDataSourceImpl @Inject constructor(
         )
 
         return apiProvider.get<DraftApi>(userId).invoke {
-            createDraft(body).toMessageWithBody(userId)
+            createDraft(body).message.toMessageWithBody(userId)
         }.toEither()
     }
 
@@ -70,7 +70,7 @@ class DraftRemoteDataSourceImpl @Inject constructor(
         )
 
         return apiProvider.get<DraftApi>(userId).invoke {
-            updateDraft(messageId.id, body).toMessageWithBody(userId)
+            updateDraft(messageId.id, body).message.toMessageWithBody(userId)
         }.toEither()
     }
 

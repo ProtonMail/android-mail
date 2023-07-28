@@ -21,12 +21,14 @@ package ch.protonmail.android.mailmessage.domain.entity
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailpagination.domain.model.PageItem
+import kotlinx.serialization.Serializable
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.user.domain.entity.AddressId
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
+@Serializable
 data class MessageId(val id: String)
 
 /**

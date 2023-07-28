@@ -20,6 +20,7 @@ plugins {
     id("com.android.library")
     kotlin("android")
     kotlin("kapt")
+    kotlin("plugin.serialization") version Versions.Gradle.kotlinGradlePlugin
 }
 
 setAsHiltModule()

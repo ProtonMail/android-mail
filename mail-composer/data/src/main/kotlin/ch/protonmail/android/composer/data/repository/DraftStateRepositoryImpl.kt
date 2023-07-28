@@ -20,8 +20,10 @@ package ch.protonmail.android.composer.data.repository
 
 import arrow.core.Either
 import arrow.core.continuations.either
+import arrow.core.getOrElse
 import ch.protonmail.android.composer.data.local.DraftStateLocalDataSource
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcomposer.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftState
 import ch.protonmail.android.mailcomposer.domain.model.DraftSyncState
 import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
@@ -38,14 +40,25 @@ class DraftStateRepositoryImpl @Inject constructor(
     override suspend fun observe(userId: UserId, messageId: MessageId): Flow<Either<DataError, DraftState>> =
         localDataSource.observe(userId, messageId)
 
-    override suspend fun saveCreatedState(
+    override suspend fun saveLocalState(
+        userId: UserId,
+        messageId: MessageId,
+        action: DraftAction
+    ): Either<DataError, Unit> = either {
+        val draftState = localDataSource.observe(userId, messageId).first().getOrElse {
+            DraftState(userId, messageId, null, DraftSyncState.Local, action)
+        }
+        val updatedState = draftState.copy(state = DraftSyncState.Local)
+        localDataSource.save(updatedState)
+    }
+
+    override suspend fun saveSynchedState(
         userId: UserId,
         messageId: MessageId,
         remoteDraftId: MessageId
     ): Either<DataError, Unit> = either {
         val draftState = localDataSource.observe(userId, messageId).first().bind()
         val updatedState = draftState.copy(
-            messageId = remoteDraftId,
             apiMessageId = remoteDraftId,
             state = DraftSyncState.Synchronized
         )

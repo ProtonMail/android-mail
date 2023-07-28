@@ -228,6 +228,14 @@ class MessageRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun updateDraftMessageId(
+        userId: UserId,
+        localDraftId: MessageId,
+        apiAssignedId: MessageId
+    ) {
+        localDataSource.updateDraftMessageId(userId, localDraftId, apiAssignedId)
+    }
+
     private suspend fun moveToTrashOrSpam(
         userId: UserId,
         messageIds: List<MessageId>,

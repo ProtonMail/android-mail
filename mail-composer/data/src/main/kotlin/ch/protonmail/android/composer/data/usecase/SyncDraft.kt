@@ -43,10 +43,14 @@ internal class SyncDraft @Inject constructor(
 
         if (isMessageLocal(messageId)) {
             draftRemoteDataSource.create(userId, message, draftState.action).bind().also { syncDraft ->
-                draftStateRepository.saveCreatedState(userId, messageId, syncDraft.message.messageId)
+                val remoteDraftId = syncDraft.message.messageId
+                messageRepository.updateDraftMessageId(userId, messageId, remoteDraftId)
+                draftStateRepository.saveSynchedState(userId, messageId, remoteDraftId)
             }
         } else {
-            draftRemoteDataSource.update(userId, message).bind()
+            draftRemoteDataSource.update(userId, message).bind().also {
+                draftStateRepository.saveSynchedState(userId, messageId, messageId)
+            }
         }
     }
 

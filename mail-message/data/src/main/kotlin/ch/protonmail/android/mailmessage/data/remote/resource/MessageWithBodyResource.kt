@@ -98,7 +98,7 @@ data class MessageWithBodyResource(
     @SerialName("UnsubscribeMethods")
     val unsubscribeMethods: UnsubscribeMethodResource? = null,
     @SerialName("AttachmentInfo")
-    val attachmentsInfo: AttachmentsInfoResource?
+    val attachmentsInfo: AttachmentsInfoResource? = null
 ) {
     fun toMessageWithBody(userId: UserId) = MessageWithBody(
         message = Message(

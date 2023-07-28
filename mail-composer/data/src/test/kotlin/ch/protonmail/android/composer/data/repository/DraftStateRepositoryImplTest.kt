@@ -23,12 +23,14 @@ import arrow.core.right
 import ch.protonmail.android.composer.data.local.DraftStateLocalDataSourceImpl
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.mailcomposer.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftState
 import ch.protonmail.android.mailcomposer.domain.model.DraftSyncState
 import ch.protonmail.android.mailcomposer.domain.sample.DraftStateSample
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
@@ -68,20 +70,52 @@ class DraftStateRepositoryImplTest {
     }
 
     @Test
-    fun `store created state does update message id, api message id and draft sync state`() = runTest {
+    fun `store synched state does update api message id and draft sync state`() = runTest {
         val draftId = MessageIdSample.EmptyDraft
         val remoteDraftId = MessageIdSample.RemoteDraft
         val existingState = DraftStateSample.NewDraftState
         val expectedDraftState = existingState.copy(
-            messageId = remoteDraftId,
             apiMessageId = remoteDraftId,
             state = DraftSyncState.Synchronized
         )
         expectDraftStateLocalDataSourceSuccess(userId, draftId, existingState)
         expectLocalDataSourceUpsertSuccess(expectedDraftState)
 
-        val actual = repository.saveCreatedState(userId, draftId, remoteDraftId)
+        val actual = repository.saveSynchedState(userId, draftId, remoteDraftId)
 
+        assertEquals(Unit.right(), actual)
+    }
+
+    @Test
+    fun `save local state stores new draft state when no state exists`() = runTest {
+        val draftId = MessageIdSample.EmptyDraft
+        val expectedDraftState = DraftStateSample.NewDraftState.copy(
+            messageId = draftId,
+            state = DraftSyncState.Local
+        )
+        val expectedAction = DraftAction.Compose
+        val expectedError = DataError.Local.NoDataCached
+        expectDraftStateLocalDataSourceFailure(userId, draftId, expectedError)
+        expectLocalDataSourceUpsertSuccess(expectedDraftState)
+
+        val actual = repository.saveLocalState(userId, draftId, expectedAction)
+
+        coVerify { draftStateLocalDataSource.save(expectedDraftState) }
+        assertEquals(Unit.right(), actual)
+    }
+
+    @Test
+    fun `save local state updates draft state in data source when state exists`() = runTest {
+        val draftId = MessageIdSample.RemoteDraft
+        val existingState = DraftStateSample.RemoteDraftState
+        val expectedAction = DraftAction.Compose
+        val expectedDraftState = existingState.copy(state = DraftSyncState.Local)
+        expectDraftStateLocalDataSourceSuccess(userId, draftId, existingState)
+        expectLocalDataSourceUpsertSuccess(expectedDraftState)
+
+        val actual = repository.saveLocalState(userId, draftId, expectedAction)
+
+        coVerify { draftStateLocalDataSource.save(expectedDraftState) }
         assertEquals(Unit.right(), actual)
     }
 
