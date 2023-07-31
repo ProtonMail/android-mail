@@ -86,12 +86,13 @@ class ComposerViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val actionMutex = Mutex()
-    private val messageId = MessageId(
-        savedStateHandle.get<String>(ComposerScreen.DraftMessageIdKey) ?: provideNewDraftId().id
-    )
     private val primaryUserId = observePrimaryUserId().filterNotNull()
 
-    private val mutableState = MutableStateFlow(ComposerDraftState.initial(messageId))
+    private val mutableState = MutableStateFlow(
+        ComposerDraftState.initial(
+            MessageId(savedStateHandle.get<String>(ComposerScreen.DraftMessageIdKey) ?: provideNewDraftId().id)
+        )
+    )
     val state: StateFlow<ComposerDraftState> = mutableState
 
     init {
@@ -102,11 +103,11 @@ class ComposerViewModel @Inject constructor(
         }.launchIn(viewModelScope)
 
         savedStateHandle.get<String>(ComposerScreen.DraftMessageIdKey)?.let { inputDraftId ->
-            Timber.d("Opening composer with $inputDraftId / $messageId")
-            emitNewStateFor(ComposerEvent.OpenExistingDraft(messageId))
+            Timber.d("Opening composer with $inputDraftId / ${currentMessageId()}")
+            emitNewStateFor(ComposerEvent.OpenExistingDraft(currentMessageId()))
 
             viewModelScope.launch {
-                getDecryptedDraftFields(primaryUserId(), messageId)
+                getDecryptedDraftFields(primaryUserId(), currentMessageId())
                     .onRight { emitNewStateFor(ComposerEvent.ExistingDraftDataReceived(it)) }
                     .onLeft { emitNewStateFor(ComposerEvent.ErrorLoadingDraftData) }
 
@@ -152,32 +153,33 @@ class ComposerViewModel @Inject constructor(
         return when {
             fields.areBlank() -> action
             else -> {
-                viewModelScope.launch { storeDraftWithAllFields(primaryUserId(), messageId, fields) }
+                viewModelScope.launch { storeDraftWithAllFields(primaryUserId(), currentMessageId(), fields) }
                 ComposerEvent.OnCloseWithDraftSaved
             }
         }
     }
 
     private suspend fun onSubjectChanged(action: ComposerAction.SubjectChanged): ComposerOperation =
-        storeDraftWithSubject(primaryUserId.first(), messageId, currentSenderEmail(), action.subject).fold(
+        storeDraftWithSubject(primaryUserId.first(), currentMessageId(), currentSenderEmail(), action.subject).fold(
             ifLeft = {
-                Timber.e("Store draft $messageId with new subject ${action.subject} failed")
+                Timber.e("Store draft ${currentMessageId()} with new subject ${action.subject} failed")
                 ComposerEvent.ErrorStoringDraftSubject
             },
             ifRight = { action }
         )
 
     private suspend fun onSenderChanged(action: ComposerAction.SenderChanged): ComposerOperation =
-        storeDraftWithBody(messageId, currentDraftBody(), SenderEmail(action.sender.email), primaryUserId()).fold(
-            ifLeft = {
-                Timber.e("Store draft $messageId with new sender ${action.sender.email} failed")
-                ComposerEvent.ErrorStoringDraftSenderAddress
-            },
-            ifRight = { action }
-        )
+        storeDraftWithBody(currentMessageId(), currentDraftBody(), SenderEmail(action.sender.email), primaryUserId())
+            .fold(
+                ifLeft = {
+                    Timber.e("Store draft ${currentMessageId()} with new sender ${action.sender.email} failed")
+                    ComposerEvent.ErrorStoringDraftSenderAddress
+                },
+                ifRight = { action }
+            )
 
     private suspend fun onDraftBodyChanged(action: ComposerAction.DraftBodyChanged): ComposerOperation =
-        storeDraftWithBody(messageId, action.draftBody, currentSenderEmail(), primaryUserId()).fold(
+        storeDraftWithBody(currentMessageId(), action.draftBody, currentSenderEmail(), primaryUserId()).fold(
             ifLeft = { ComposerEvent.ErrorStoringDraftBody },
             ifRight = { ComposerAction.DraftBodyChanged(action.draftBody) }
         )
@@ -189,6 +191,8 @@ class ComposerViewModel @Inject constructor(
     private fun currentDraftBody() = DraftBody(state.value.fields.body)
 
     private fun currentSenderEmail() = SenderEmail(state.value.fields.sender.email)
+
+    private fun currentMessageId() = state.value.fields.draftId
 
     private suspend fun currentValidRecipientsTo() = RecipientsTo(
         state.value.fields.to.filterIsInstance<RecipientUiModel.Valid>().map {
@@ -227,7 +231,7 @@ class ComposerViewModel @Inject constructor(
         action.recipients.filterIsInstance<RecipientUiModel.Valid>().takeIfNotEmpty()?.let { validRecipients ->
             storeDraftWithRecipients(
                 primaryUserId(),
-                messageId,
+                currentMessageId(),
                 currentSenderEmail(),
                 to = validRecipients.map { participantMapper.recipientUiModelToParticipant(it, contactsOrEmpty()) }
             ).fold(
@@ -240,7 +244,7 @@ class ComposerViewModel @Inject constructor(
         action.recipients.filterIsInstance<RecipientUiModel.Valid>().takeIfNotEmpty()?.let { validRecipients ->
             storeDraftWithRecipients(
                 primaryUserId(),
-                messageId,
+                currentMessageId(),
                 currentSenderEmail(),
                 cc = validRecipients.map { participantMapper.recipientUiModelToParticipant(it, contactsOrEmpty()) }
             ).fold(
@@ -253,7 +257,7 @@ class ComposerViewModel @Inject constructor(
         action.recipients.filterIsInstance<RecipientUiModel.Valid>().takeIfNotEmpty()?.let { validRecipients ->
             storeDraftWithRecipients(
                 primaryUserId(),
-                messageId,
+                currentMessageId(),
                 currentSenderEmail(),
                 bcc = validRecipients.map { participantMapper.recipientUiModelToParticipant(it, contactsOrEmpty()) }
             ).fold(
