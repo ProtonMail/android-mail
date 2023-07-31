@@ -203,7 +203,7 @@ class MessageLocalDataSourceImpl @Inject constructor(
         val messages = observeMessages(userId, messageIds).first().takeIf { it.isNotEmpty() }
             ?: return DataError.Local.NoDataCached.left()
         val updatedMessages = messages.map { message ->
-            message.copy(labelIds = message.labelIds - labelIdsToRemove + labelIdsToAdd)
+            message.copy(labelIds = (message.labelIds - labelIdsToRemove).union(labelIdsToAdd).toList())
         }
         upsertMessages(updatedMessages)
         return updatedMessages.right()
