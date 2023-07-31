@@ -4,16 +4,17 @@ Copyright (c) 2023 Proton Technologies AG
 
 ## Build instructions
 - Install and configure the environment (two options available)
-    - [Android Studio bundle](https://developer.android.com/studio/install)
-    - [Standalone Android SDK](https://android-doc.github.io/sdk/installing/index.html?pkg=tools)
-- Install and configure Java 11 (not needed for Android Studio bundle as it's included)
-    - Install java11 with `brew install java11` | `apt install openjdk-11-jdk`
-    - Set Java 11 as the current version by using the `JAVA_HOME` environment variable.
-- Clone this repository (Use `git clone [url]`.).
-- Build with any of the following: 
-  - Execute `./gradlew assembleDevDebug` in a terminal.
-  - Execute `bundle exec fastlane assembleDevDebug` in a terminal.
-  - Open Android Studio and build the `:app` module.
+  - [Android Studio bundle](https://developer.android.com/studio/install)
+  - [Standalone Android SDK](https://android-doc.github.io/sdk/installing/index.html?pkg=tools)
+- Install and configure Java 17+ (not needed for Android Studio bundle as it's included)
+  - Install Java 17 with `brew install openjdk@17` | `apt install openjdk-17-jdk`
+  - Set Java 17 as the current version by using the `JAVA_HOME` environment variable
+- Clone this repository (Use `git clone [url]`.)
+- Setup `google-services.json` file by running `./scripts/setup_google_services.sh`
+- Build with any of the following:
+  - Execute `./gradlew assembleDevDebug` in a terminal
+  - Execute `bundle exec fastlane assembleDevDebug` in a terminal
+  - Open Android Studio and build the `:app` module
 
 ## CI / CD
 CI stages are defined in the `.gitlab-ci.yml` file and we rely on [fastlane](https://docs.fastlane.tools/) to implement most of them.
