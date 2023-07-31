@@ -38,6 +38,9 @@
     <!-- Mailbox detail -->
     <string name="test_detail_error_retrieving_message_body">Unable to retrieve message</string>
 
+    <!-- Banners -->
+    <string name="test_message_body_embedded_images_banner_text">Automatic loading of embedded images is turned off. This can be changed in the settings.</string>
+
     <!-- Composer -->
     <string name="test_composer_sender_label">From:</string>
     <string name="test_composer_to_recipient_label">To:</string>

@@ -268,17 +268,23 @@ internal fun MessageBodyLoadingError(
 private fun MessageBodyBanner(modifier: Modifier = Modifier, text: String) {
     Row(
         modifier = modifier
+            .testTag(MessageBodyTestTags.MessageBodyBanner)
             .padding(ProtonDimens.DefaultSpacing)
             .background(color = ProtonTheme.colors.backgroundSecondary, shape = ProtonTheme.shapes.medium)
             .padding(ProtonDimens.DefaultSpacing)
     ) {
         Icon(
+            modifier = Modifier.testTag(MessageBodyTestTags.MessageBodyBannerIcon),
             painter = painterResource(id = R.drawable.ic_proton_image),
             contentDescription = NO_CONTENT_DESCRIPTION,
             tint = ProtonTheme.colors.iconWeak
         )
         Spacer(modifier = Modifier.width(ProtonDimens.SmallSpacing))
-        Text(text = text, style = ProtonTheme.typography.defaultSmallWeak)
+        Text(
+            modifier = Modifier.testTag(MessageBodyTestTags.MessageBodyBannerText),
+            text = text,
+            style = ProtonTheme.typography.defaultSmallWeak
+        )
     }
 }
 
@@ -296,6 +302,9 @@ object MessageBodyTestTags {
 
     const val WebView = "MessageBodyWebView"
     const val WebViewAlternative = "MessageBodyWithoutWebView"
+    const val MessageBodyBanner = "MessageBodyBanner"
+    const val MessageBodyBannerIcon = "MessageBodyBannerIcon"
+    const val MessageBodyBannerText = "MessageBodyBannerText"
 }
 
 private const val WEB_PAGE_CONTENT_LOAD_TIMEOUT = 500L
