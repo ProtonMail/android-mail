@@ -28,7 +28,6 @@ import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.proton.core.domain.entity.UserId
-import timber.log.Timber
 
 @HiltWorker
 internal class SyncDraftWorker @AssistedInject constructor(
@@ -42,10 +41,7 @@ internal class SyncDraftWorker @AssistedInject constructor(
         val messageId = MessageId(requireNotBlank(inputData.getString(RawMessageIdKey), fieldName = "Message ids"))
 
         return syncDraft(userId, messageId).fold(
-            ifLeft = {
-                Timber.d("Sync draft work failed: $it")
-                Result.failure()
-            },
+            ifLeft = { Result.failure() },
             ifRight = { Result.success() }
         )
     }

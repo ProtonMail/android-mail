@@ -28,6 +28,7 @@ import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import kotlinx.coroutines.flow.first
 import me.proton.core.domain.entity.UserId
+import timber.log.Timber
 import javax.inject.Inject
 
 internal class SyncDraft @Inject constructor(
@@ -37,19 +38,26 @@ internal class SyncDraft @Inject constructor(
 ) {
 
     suspend operator fun invoke(userId: UserId, messageId: MessageId): Either<DataError, Unit> = either {
-        val message = messageRepository.observeMessageWithBody(userId, messageId).first().bind()
-        val draftState = draftStateRepository.observe(userId, messageId).first().bind()
+        val message = messageRepository.observeMessageWithBody(userId, messageId).first().onLeft {
+            Timber.w("Sync draft failure $messageId: No message found")
+        }.bind()
+        val draftState = draftStateRepository.observe(userId, messageId).first().onLeft {
+            Timber.w("Sync draft failure $messageId: No draft state found")
+        }.bind()
 
         if (draftState.isLocal()) {
-            draftRemoteDataSource.create(userId, message, draftState.action).bind().also { syncDraft ->
-                val remoteDraftId = syncDraft.message.messageId
-                messageRepository.updateDraftMessageId(userId, messageId, remoteDraftId)
-                draftStateRepository.saveSynchedState(userId, messageId, remoteDraftId)
-            }
+            val syncDraft = draftRemoteDataSource.create(userId, message, draftState.action).onLeft {
+                Timber.w("Sync draft failure $messageId: Create API call error $it")
+            }.bind()
+
+            val remoteDraftId = syncDraft.message.messageId
+            messageRepository.updateDraftMessageId(userId, messageId, remoteDraftId)
+            draftStateRepository.saveSynchedState(userId, messageId, remoteDraftId)
         } else {
-            draftRemoteDataSource.update(userId, message).bind().also {
-                draftStateRepository.saveSynchedState(userId, messageId, messageId)
-            }
+            draftRemoteDataSource.update(userId, message).onLeft {
+                Timber.w("Sync draft failure $messageId: Update API call error $it")
+            }.bind()
+            draftStateRepository.saveSynchedState(userId, messageId, messageId)
         }
     }
 
