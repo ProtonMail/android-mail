@@ -40,9 +40,11 @@ import ch.protonmail.android.uitest.models.snackbar.SnackbarTextEntry
 import ch.protonmail.android.uitest.robot.common.section.snackbarSection
 import ch.protonmail.android.uitest.robot.common.section.verify
 import ch.protonmail.android.uitest.robot.detail.conversationDetailRobot
+import ch.protonmail.android.uitest.robot.detail.messageDetailRobot
 import ch.protonmail.android.uitest.robot.detail.model.attachments.AttachmentDetailItemEntry
 import ch.protonmail.android.uitest.robot.detail.model.attachments.AttachmentDetailSummaryEntry
 import ch.protonmail.android.uitest.robot.detail.section.attachmentsSection
+import ch.protonmail.android.uitest.robot.detail.section.bannerSection
 import ch.protonmail.android.uitest.robot.detail.section.messageBodySection
 import ch.protonmail.android.uitest.robot.detail.section.verify
 import dagger.hilt.android.testing.BindValue
@@ -57,7 +59,7 @@ import org.junit.Test
 @UninstallModules(ServerProofModule::class)
 internal class ConversationDetailEmbeddedImagesTests :
     MockedNetworkTest(loginType = LoginTestUserTypes.Paid.FancyCapybara),
-    InlineAttachmentsTests {
+    EmbeddedImagesTests {
 
     @JvmField
     @BindValue
@@ -65,7 +67,7 @@ internal class ConversationDetailEmbeddedImagesTests :
 
     @Test
     @SmokeTest
-    @TestId("203101")
+    @TestId("203101", "203695")
     fun testConversationDetailEmbeddedImagesNotLoadedWithSettingOff() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
@@ -90,6 +92,8 @@ internal class ConversationDetailEmbeddedImagesTests :
 
         conversationDetailRobot {
             messageBodySection { verifyEmbeddedImageLoaded(expectedState = false) }
+
+            bannerSection { verify { hasBlockedEmbeddedImagesBannerDisplayed() } }
         }
     }
 
@@ -156,7 +160,7 @@ internal class ConversationDetailEmbeddedImagesTests :
     @Test
     @SmokeTest
     @SdkSuppress(minSdkVersion = 29)
-    @TestId("203105")
+    @TestId("203105", "203692")
     fun testConversationDetailEmbeddedImagesAreLoaded() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
@@ -188,6 +192,8 @@ internal class ConversationDetailEmbeddedImagesTests :
 
         conversationDetailRobot {
             messageBodySection { verifyEmbeddedImageLoaded(expectedState = true) }
+
+            bannerSection { verify { doesNotHaveBlockedEmbeddedImagesBannerDisplayed() } }
 
             attachmentsSection {
                 verify {
@@ -260,6 +266,68 @@ internal class ConversationDetailEmbeddedImagesTests :
 
         conversationDetailRobot {
             messageBodySection { verifyEmbeddedImageLoaded(expectedState = false) }
+        }
+    }
+
+    @Test
+    @TestId("203696")
+    fun testConversationDetailEmbeddedImagesBlockedBannerIsNotDisplayedWhenNoEmbeddedImagesArePresent() {
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
+            addMockRequests(
+                "/mail/v4/settings"
+                    respondWith "/mail/v4/settings/mail-v4-settings_203696.json"
+                    withStatusCode 200,
+                "/mail/v4/conversations"
+                    respondWith "/mail/v4/conversations/conversations_203696.json"
+                    withStatusCode 200 ignoreQueryParams true,
+                "/mail/v4/conversations/*"
+                    respondWith "/mail/v4/conversations/conversation-id/conversation-id_203696.json"
+                    withStatusCode 200 matchWildcards true,
+                "/mail/v4/messages/*"
+                    respondWith "/mail/v4/messages/message-id/message-id_203696.json"
+                    withStatusCode 200 matchWildcards true serveOnce true
+            )
+        }
+
+        navigator {
+            navigateTo(Destination.MailDetail())
+        }
+
+        messageDetailRobot {
+            messageBodySection { waitUntilMessageIsShown() }
+
+            bannerSection { verify { doesNotHaveBlockedEmbeddedImagesBannerDisplayed() } }
+        }
+    }
+
+    @Test
+    @TestId("203699", "203700/2")
+    fun testConversationDetailEmbeddedImagesBlockedBannerIsDisplayedOnExternalEmails() {
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
+            addMockRequests(
+                "/mail/v4/settings"
+                    respondWith "/mail/v4/settings/mail-v4-settings_203700_2.json"
+                    withStatusCode 200,
+                "/mail/v4/conversations"
+                    respondWith "/mail/v4/conversations/conversations_203700.json"
+                    withStatusCode 200 ignoreQueryParams true,
+                "/mail/v4/conversations/*"
+                    respondWith "/mail/v4/conversations/conversation-id/conversation-id_203700.json"
+                    withStatusCode 200 matchWildcards true,
+                "/mail/v4/messages/*"
+                    respondWith "/mail/v4/messages/message-id/message-id_203700.json"
+                    withStatusCode 200 matchWildcards true serveOnce true
+            )
+        }
+
+        navigator {
+            navigateTo(Destination.MailDetail())
+        }
+
+        messageDetailRobot {
+            messageBodySection { waitUntilMessageIsShown() }
+
+            bannerSection { verify { hasBlockedEmbeddedImagesBannerDisplayed() } }
         }
     }
 }

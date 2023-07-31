@@ -21,7 +21,7 @@ package ch.protonmail.android.uitest.e2e.mailbox.detail.attachments.inline
 import ch.protonmail.android.uitest.robot.detail.section.MessageBodySection
 import ch.protonmail.android.uitest.robot.detail.section.verify
 
-internal interface InlineAttachmentsTests {
+internal interface EmbeddedImagesTests {
 
     fun MessageBodySection.verifyEmbeddedImageLoaded(expectedNumber: Int = 1, expectedState: Boolean) {
         waitUntilMessageIsShown()
