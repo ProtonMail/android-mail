@@ -169,7 +169,6 @@ internal class AttachmentErrorsTests : MockedNetworkTest(loginType = LoginTestUs
                 "/mail/v4/attachments/*"
                     respondWith "/global/errors/error_mock.json"
                     withStatusCode 403 matchWildcards true serveOnce true,
-                // Keep the 200 anyway, as we don't expect this to be served which would make the test fail otherwise.
                 "/mail/v4/attachments/*"
                     respondWith "/mail/v4/attachments/attachment_png"
                     withStatusCode 200 matchWildcards true serveOnce true

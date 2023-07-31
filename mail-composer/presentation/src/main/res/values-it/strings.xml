@@ -35,4 +35,5 @@
   <string name="composer_error_store_draft_body">L\'archiviazione del contenuto di questa bozza non è riuscita</string>
   <string name="composer_error_duplicate_recipient">Destinatario duplicato rimosso: %1$s</string>
   <string name="composer_error_store_draft_subject">L\'archiviazione dell\'oggetto di questa bozza non è riuscita</string>
+  <string name="composer_error_store_draft_recipients">Memorizzazione dei destinatari di questa bozza fallita</string>
 </resources>

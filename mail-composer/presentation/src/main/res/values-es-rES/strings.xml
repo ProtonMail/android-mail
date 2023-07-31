@@ -35,4 +35,5 @@
   <string name="composer_error_store_draft_body">Error al guardar el cuerpo de este borrador</string>
   <string name="composer_error_duplicate_recipient">Destinatario duplicado eliminado: %1$s</string>
   <string name="composer_error_store_draft_subject">Error al guardar el asunto de este borrador</string>
+  <string name="composer_error_store_draft_recipients">Error al guardar los destinatarios de este borrador</string>
 </resources>

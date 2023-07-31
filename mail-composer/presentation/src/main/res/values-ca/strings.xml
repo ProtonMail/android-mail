@@ -35,4 +35,5 @@
   <string name="composer_error_store_draft_body">S\'ha produït un error en desar el cos de l\'esborrany.</string>
   <string name="composer_error_duplicate_recipient">Destinatari duplicat eliminat: %1$s</string>
   <string name="composer_error_store_draft_subject">S\'ha produït un error en desar l\'assumpte de l\'esborrany.</string>
+  <string name="composer_error_store_draft_recipients">S\'ha produït un error en desar els destinataris de l\'esborrany.</string>
 </resources>

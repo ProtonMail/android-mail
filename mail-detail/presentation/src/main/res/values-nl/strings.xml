@@ -45,13 +45,13 @@
   <string name="error_move_conversation_failed">Gesprek verplaatsen mislukt. Probeer opnieuw.</string>
   <string name="error_loading_message">Er ging iets mis. Probeer opnieuw.</string>
   <string name="error_offline_loading_message">U bent offline. Een internetverbinding is verplicht om de inhoud van dit bericht te tonen.</string>
-  <string name="error_get_attachment_failed">Failed to get attachment.</string>
-  <string name="error_attachment_download_in_progress">Current download must complete before starting a new one.</string>
-  <string name="attachment_permission_dialog_title">Permission required</string>
-  <string name="attachment_permission_dialog_message">Proton Mail needs permission to access your storage to download the attachment.</string>
+  <string name="error_get_attachment_failed">Het is niet gelukt om de bijlage op te halen.</string>
+  <string name="error_attachment_download_in_progress">Huidige download moet voltooid zijn voordat je een nieuwe start.</string>
+  <string name="attachment_permission_dialog_title">Toestemming vereist</string>
+  <string name="attachment_permission_dialog_message">Proton Mail heeft toestemming nodig voor toegang tot je opslag om de bijlage te downloaden.</string>
   <string name="attachment_permission_dialog_dismiss_button">OK</string>
   <string name="attachment_permission_dialog_action_button">Instellingen</string>
-  <string name="error_get_attachment_not_enough_memory">Failed to get attachment due to insufficient memory</string>
+  <string name="error_get_attachment_not_enough_memory">Kan bijlage niet ophalen vanwege onvoldoende geheugen</string>
   <string name="reload">Opnieuw laden</string>
   <plurals name="attachment_count_label">
     <item quantity="one">%d bestand</item>
@@ -80,5 +80,7 @@
   <string name="attachment_type_excel">Excel</string>
   <string name="attachment_type_presentation">Presentatie</string>
   <string name="attachment_type_description">%1$s bestand</string>
-  <string name="message_body_error_no_webview">You need to have a WebView installed to see this message\'s content.</string>
+  <string name="message_body_error_no_webview">U moet een WebView hebben geïnstalleerd om de inhoud van dit bericht te zien.</string>
+  <!-- Banners -->
+  <string name="message_body_embedded_images_banner_text">Automatisch laden van ingesloten afbeeldingen is uitgeschakeld. Dit kan worden gewijzigd bij de instellingen.</string>
 </resources>

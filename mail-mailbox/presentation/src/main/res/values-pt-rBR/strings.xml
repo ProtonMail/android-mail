@@ -34,7 +34,7 @@
   <string name="mailbox_default_recipient">(Nenhum destinatário)</string>
   <string name="mailbox_default_sender">(Nenhum remetente)</string>
   <string name="mailbox_error_message_offline">Você está desconectado, não é possível recuperar os itens</string>
-  <string name="mailbox_error_message_generic">Falha ao carregar a caixa de correio</string>
+  <string name="mailbox_error_message_generic">Erro ao carregar a caixa de correio</string>
   <string name="mailbox_error_message_unexpected">Ocorreu um erro inesperado.</string>
   <string name="mailbox_is_empty_message">Esta caixa de correio está vazia</string>
 </resources>

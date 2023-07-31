@@ -80,5 +80,7 @@
   <string name="attachment_type_excel">Excel</string>
   <string name="attachment_type_presentation">Präsentation</string>
   <string name="attachment_type_description">%1$s Datei</string>
-  <string name="message_body_error_no_webview">Du musst ein WebView installiert haben, um den Inhalt dieser Nachricht zu sehen.</string>
+  <string name="message_body_error_no_webview">Du musst eine WebView installiert haben um den Inhalt dieser Nachricht zu sehen.</string>
+  <!-- Banners -->
+  <string name="message_body_embedded_images_banner_text">Das automatische Laden von eingebetteten Bildern ist ausgeschaltet. Dies kann in den Einstellungen geändert werden.</string>
 </resources>

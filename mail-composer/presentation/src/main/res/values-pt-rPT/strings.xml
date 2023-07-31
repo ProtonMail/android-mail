@@ -35,4 +35,5 @@
   <string name="composer_error_store_draft_body">Erro ao armazenar a estrutura deste rascunho</string>
   <string name="composer_error_duplicate_recipient">Destinatário duplicado eliminado: %1$s</string>
   <string name="composer_error_store_draft_subject">Erro ao guardar o assunto deste rascunho</string>
+  <string name="composer_error_store_draft_recipients">Erro ao guardar os destinatários deste rascunho</string>
 </resources>

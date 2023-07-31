@@ -35,4 +35,5 @@
   <string name="composer_error_store_draft_body">下書き本文の保存に失敗しました</string>
   <string name="composer_error_duplicate_recipient">重複していた宛先を削除しました: %1$s</string>
   <string name="composer_error_store_draft_subject">下書きのタイトルの保存に失敗しました</string>
+  <string name="composer_error_store_draft_recipients">Storing this draft\'s recipients failed</string>
 </resources>

@@ -27,6 +27,7 @@ import ch.protonmail.android.test.ksp.annotations.AttachTo
 import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
 import ch.protonmail.android.test.robot.ProtonMailSectionRobot
 import ch.protonmail.android.uitest.robot.helpers.DeviceRobot
+import me.proton.core.test.android.instrumented.utils.waitUntil
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.any
 import org.hamcrest.Matcher
@@ -37,8 +38,16 @@ internal class DeviceRobotIntentsSection : ProtonMailSectionRobot {
     @VerifiesOuter
     inner class Verify {
 
-        fun actionViewIntentWasLaunched(times: Int = 1, mimeType: String? = null) {
-            intended(allOf(hasAction(Intent.ACTION_VIEW), mimeType.asMimeTypeMatcher()), times(times))
+        fun actionViewIntentWasLaunched(
+            times: Int = 1,
+            mimeType: String? = null,
+            timeout: Long = 5000L
+        ) {
+            waitUntil(timeout) {
+                runCatching {
+                    intended(allOf(hasAction(Intent.ACTION_VIEW), mimeType.asMimeTypeMatcher()), times(times))
+                }.isSuccess
+            }
         }
 
         fun actionViewIntentWasNotLaunched(mimeType: String? = null) {

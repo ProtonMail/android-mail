@@ -34,5 +34,6 @@
   <string name="composer_error_store_draft_sender_address">Het opslaan van het afzenderadres van dit concept is mislukt</string>
   <string name="composer_error_store_draft_body">Het opslaan van deze body versie is mislukt</string>
   <string name="composer_error_duplicate_recipient">Dubbele ontvanger verwijderd: %1$s</string>
-  <string name="composer_error_store_draft_subject">Storing this draft\'s subject failed</string>
+  <string name="composer_error_store_draft_subject">Opslaan van het onderwerp van dit concept is mislukt</string>
+  <string name="composer_error_store_draft_recipients">Opslaan van de ontvangers van dit concept is mislukt</string>
 </resources>

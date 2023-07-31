@@ -35,4 +35,5 @@
   <string name="composer_error_store_draft_body">L\'enregistrement du corps du brouillon n\'a pas abouti.</string>
   <string name="composer_error_duplicate_recipient">Destinataire dupliqué supprimé : %1$s</string>
   <string name="composer_error_store_draft_subject">L\'enregistrement de l\'objet du brouillon n\'a pas abouti.</string>
+  <string name="composer_error_store_draft_recipients">L\'enregistrement des destinataires du brouillon n\'a pas abouti.</string>
 </resources>
