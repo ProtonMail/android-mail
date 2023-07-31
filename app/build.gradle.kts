@@ -73,6 +73,14 @@ android {
     }
 
     signingConfigs {
+        // Signing config for debug uses a dummy shared keystore to allow Firebase to work on any internal machine.
+        getByName("debug") {
+            storeFile = file("$rootDir/keystore/debug.keystore")
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+        }
+
         register("release") {
             storeFile = file("$rootDir/keystore/ProtonMail.keystore")
             storePassword = "${privateProperties["keyStorePassword"]}"
