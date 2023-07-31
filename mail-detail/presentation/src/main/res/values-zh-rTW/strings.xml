@@ -79,4 +79,6 @@
   <string name="attachment_type_presentation">簡報</string>
   <string name="attachment_type_description">%1$s 個檔案</string>
   <string name="message_body_error_no_webview">您必須安裝一個 Android System WebView 才能查看此訊息的內容。</string>
+  <!-- Banners -->
+  <string name="message_body_embedded_images_banner_text">已經關閉內嵌影像的自動載入。這可以在設定中變更。</string>
 </resources>

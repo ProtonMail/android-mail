@@ -35,4 +35,5 @@
   <string name="composer_error_store_draft_body">Αποτυχία αποθήκευσης του σώματος αυτού του πρόχειρου</string>
   <string name="composer_error_duplicate_recipient">Αφαιρέθηκε διπλότυπος παραλήπτης: %1$s</string>
   <string name="composer_error_store_draft_subject">Η αποθήκευση αυτού του θέματος του πρόχειρου απέτυχε</string>
+  <string name="composer_error_store_draft_recipients">Η αποθήκευση των παραληπτών αυτού του πρόχειρου απέτυχε</string>
 </resources>

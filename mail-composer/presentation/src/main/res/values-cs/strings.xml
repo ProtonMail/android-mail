@@ -30,9 +30,10 @@
   <string name="composer_error_invalid_sender">Adresa odesílatele je neplatná</string>
   <string name="change_sender_button_content_description">Změnit odesílatele</string>
   <string name="composer_change_sender_paid_feature">Přejděte na placený tarif pro změnu adresy odesílatele</string>
-  <string name="composer_error_change_sender_failed_getting_subscription">Cannot change sender as getting user\'s subscription failed. Try again.</string>
+  <string name="composer_error_change_sender_failed_getting_subscription">Nelze změnit odesílatele, protože získání odběru uživatele se nezdařilo. Zkuste to znovu.</string>
   <string name="composer_error_store_draft_sender_address">Uložení adresy odesílatele tohoto návrhu se nezdařilo</string>
   <string name="composer_error_store_draft_body">Uložení těla tohoto návrhu se nezdařilo</string>
   <string name="composer_error_duplicate_recipient">Odstraněn duplicitní příjemce: %1$s</string>
   <string name="composer_error_store_draft_subject">Uložení předmětu tohoto návrhu se nezdařilo</string>
+  <string name="composer_error_store_draft_recipients">Storing this draft\'s recipients failed</string>
 </resources>

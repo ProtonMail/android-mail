@@ -35,4 +35,5 @@
   <string name="composer_error_store_draft_body">Не вдалося зберегти тіло цієї чернетки</string>
   <string name="composer_error_duplicate_recipient">Видалено дублікат одержувача: %1$s</string>
   <string name="composer_error_store_draft_subject">Не вдалося зберегти об\'єкт ескізу</string>
+  <string name="composer_error_store_draft_recipients">Storing this draft\'s recipients failed</string>
 </resources>

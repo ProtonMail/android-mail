@@ -31,7 +31,7 @@
   <string name="bcc">Cco:</string>
   <string name="hide_details">Ocultar detalles</string>
   <string name="undisclosed_recipients">Destinatarios ocultos</string>
-  <string name="error_mark_as_unread_failed">Operación fallida al marcar como no leído. Intente otra vez.</string>
+  <string name="error_mark_as_unread_failed">Error al marcar como no leído. Intente otra vez.</string>
   <string name="error_star_operation_failed">Error al destacar. Intente de nuevo.</string>
   <string name="error_unstar_operation_failed">Error al eliminar el destacado. Intente de nuevo.</string>
   <string name="error_move_to_trash_failed">Error al mover a la papelera. Intente de nuevo.</string>
@@ -81,4 +81,6 @@
   <string name="attachment_type_presentation">Presentación</string>
   <string name="attachment_type_description">%1$s archivo</string>
   <string name="message_body_error_no_webview">Necesita instalar una aplicación WebView para ver el contenido de este mensaje.</string>
+  <!-- Banners -->
+  <string name="message_body_embedded_images_banner_text">La carga automática de imágenes incrustadas está desactivada. Esto se puede cambiar en los ajustes.</string>
 </resources>

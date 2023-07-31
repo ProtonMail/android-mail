@@ -85,4 +85,6 @@
   <string name="attachment_type_presentation">Прэзентацыя</string>
   <string name="attachment_type_description">Файл %1$s</string>
   <string name="message_body_error_no_webview">Вам неабходна ўсталяваць WebView, каб бачыць змесціва гэтага паведамлення.</string>
+  <!-- Banners -->
+  <string name="message_body_embedded_images_banner_text">Аўтаматычная загрузка ўбудаваных відарысаў выключана. Гэта можна змяніць у наладах.</string>
 </resources>

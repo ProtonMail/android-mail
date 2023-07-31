@@ -23,5 +23,5 @@
   <string name="user_select_other_account_content_description">Másik fiók választása</string>
   <string name="you_are_offline">Nincs internetkapcsolat</string>
   <string name="feature_coming_soon">A funkció hamarosan érkezik...</string>
-  <string name="mailbox_draft_saved_message">Draft saved</string>
+  <string name="mailbox_draft_saved_message">Postafiók_mentett_piszkozat_üzenet</string>
 </resources>

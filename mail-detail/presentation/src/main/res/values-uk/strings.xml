@@ -51,7 +51,7 @@
   <string name="error_attachment_download_in_progress">Поточне завантаження повинно завершитися, щоб розпочалося нове</string>
   <string name="attachment_permission_dialog_title">Потрібен дозвіл</string>
   <string name="attachment_permission_dialog_message">Щоб завантажити вкладення, Proton Mail потрібен дозвіл доступ до вашого сховища.</string>
-  <string name="attachment_permission_dialog_dismiss_button">OK</string>
+  <string name="attachment_permission_dialog_dismiss_button">Гаразд</string>
   <string name="attachment_permission_dialog_action_button">Налаштування</string>
   <string name="error_get_attachment_not_enough_memory">Не вдалося отримати вкладення через брак пам\'яті</string>
   <string name="reload">Перезавантажити</string>
@@ -85,4 +85,6 @@
   <string name="attachment_type_presentation">Презентація</string>
   <string name="attachment_type_description">%1$s файл</string>
   <string name="message_body_error_no_webview">Вам потрібно встановити WebView, щоб побачити вміст цього повідомлення.</string>
+  <!-- Banners -->
+  <string name="message_body_embedded_images_banner_text">Автоматичне завантаження вбудованих зображень вимкнено. Це можна змінити в налаштуваннях.</string>
 </resources>

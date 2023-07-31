@@ -35,4 +35,5 @@
   <string name="composer_error_store_draft_body">處存草稿內容失敗</string>
   <string name="composer_error_duplicate_recipient">已移除重複的收件者：%1$s</string>
   <string name="composer_error_store_draft_subject">無法儲存此草稿主旨</string>
+  <string name="composer_error_store_draft_recipients">Storing this draft\'s recipients failed</string>
 </resources>

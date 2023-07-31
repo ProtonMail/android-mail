@@ -81,4 +81,6 @@
   <string name="attachment_type_presentation">Presentation</string>
   <string name="attachment_type_description">Fichier %1$s</string>
   <string name="message_body_error_no_webview">Vous devez installer une application WebView pour voir le contenu de ce message.</string>
+  <!-- Banners -->
+  <string name="message_body_embedded_images_banner_text">Le chargement automatique des images intégrées est désactivé. Vous pouvez modifier cette option dans les paramètres.</string>
 </resources>
