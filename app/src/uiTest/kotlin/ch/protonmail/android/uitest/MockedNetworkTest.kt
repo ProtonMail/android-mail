@@ -25,6 +25,7 @@ import ch.protonmail.android.uitest.helpers.core.TestIdWatcher
 import ch.protonmail.android.uitest.helpers.login.LoginTestUserTypes
 import ch.protonmail.android.uitest.helpers.login.LoginType
 import ch.protonmail.android.uitest.helpers.network.authenticationDispatcher
+import ch.protonmail.android.uitest.rule.GrantNotificationsPermissionRule
 import ch.protonmail.android.uitest.rule.MainInitializerRule
 import ch.protonmail.android.uitest.rule.MockIntentsRule
 import ch.protonmail.android.uitest.rule.MockTimeRule
@@ -40,6 +41,7 @@ import javax.inject.Inject
 /**
  * A base test class used in UI tests that require complete network isolation.
  *
+ * @param captureIntents whether intents shall be captured (and mocked) for further verification.
  * @param loginType the login type to use for a given test suite.
  */
 @HiltAndroidTest
@@ -50,7 +52,7 @@ internal open class MockedNetworkTest(
 
     private val hiltAndroidRule = HiltAndroidRule(this)
     private val composeTestRule: ComposeTestRule = ComposeTestRuleHolder.createAndGetComposeRule()
-    private val writeExtStoragePermission = GrantPermissionRule.grant(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    private val writeExtStoragePermissionRule = GrantPermissionRule.grant(Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
     @Inject
     lateinit var mockWebServer: MockWebServer
@@ -61,15 +63,17 @@ internal open class MockedNetworkTest(
     ).around(
         composeTestRule
     ).around(
-        writeExtStoragePermission
+        writeExtStoragePermissionRule
+    ).around(
+        GrantNotificationsPermissionRule()
     ).around(
         MockIntentsRule(captureIntents)
     ).around(
         MainInitializerRule()
     ).around(
-        TestIdWatcher()
-    ).around(
         MockTimeRule()
+    ).around(
+        TestIdWatcher()
     )
 
     @Before
