@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailnotifications.domain
 
+import android.app.PendingIntent
 import android.content.Context
 import androidx.core.app.NotificationManagerCompat
 import androidx.hilt.work.HiltWorker
@@ -29,12 +30,15 @@ import ch.protonmail.android.mailnotifications.R
 import ch.protonmail.android.mailnotifications.domain.model.NotificationAction
 import ch.protonmail.android.mailnotifications.domain.model.NotificationType
 import ch.protonmail.android.mailnotifications.domain.model.PushNotification
+import ch.protonmail.android.mailnotifications.domain.model.PushNotificationData
+import ch.protonmail.android.mailnotifications.domain.model.PushNotificationSender
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.proton.core.accountmanager.domain.SessionManager
 import me.proton.core.domain.entity.UserId
 import me.proton.core.network.domain.session.SessionId
 import me.proton.core.user.domain.UserManager
+import me.proton.core.user.domain.entity.User
 import timber.log.Timber
 
 @HiltWorker
@@ -45,7 +49,8 @@ class ProcessPushNotificationDataWorker @AssistedInject constructor(
     private val decryptNotificationContent: DecryptNotificationContent,
     private val appInBackgroundState: AppInBackgroundState,
     private val notificationProvider: NotificationProvider,
-    private val userManager: UserManager
+    private val userManager: UserManager,
+    private val notificationsDeepLinkHelper: NotificationsDeepLinkHelper
 ) : CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result = if (appInBackgroundState.isAppInBackground()) {
@@ -85,39 +90,76 @@ class ProcessPushNotificationDataWorker @AssistedInject constructor(
 
         Timber.d("Decrypted data: $decryptedNotification")
 
-        return if (decryptedNotification == null) {
-            Result.failure(
+        return when {
+            decryptedNotification == null -> Result.failure(
                 workDataOf(
                     KEY_PROCESS_PUSH_NOTIFICATION_DATA_ERROR to "Error decrypting the notification content."
                 )
             )
-        } else if (
+
             !isCreatedMessageNotification(decryptedNotification.value) ||
-            decryptedNotification.value.data == null || decryptedNotification.value.data.sender == null
-        ) {
-            Result.success()
-        } else {
-            val notification = notificationProvider.provideEmailNotification(
-                context = context,
-                contentTitle = decryptedNotification.value.data.sender.senderName,
-                subText = user.email ?: "",
-                contentText = decryptedNotification.value.data.body,
-                group = user.userId.id
+                decryptedNotification.value.data == null ||
+                decryptedNotification.value.data.sender == null -> Result.success()
+
+            else -> processNotification(
+                context,
+                user,
+                decryptedNotification.value.data.sender,
+                decryptedNotification.value.data
             )
-            val groupNotification = notificationProvider.provideEmailNotification(
-                context = context,
-                contentTitle = decryptedNotification.value.data.sender.senderName,
-                subText = user.email ?: "",
-                contentText = context.getString(R.string.notification_summary_text_new_messages),
-                group = user.userId.id,
-                isGroupSummary = true
-            )
-            NotificationManagerCompat.from(context).apply {
-                notify(decryptedNotification.value.data.messageId.hashCode(), notification)
-                notify(userId.id.hashCode(), groupNotification)
-            }
-            Result.success()
         }
+    }
+
+    private fun processNotification(
+        context: Context,
+        user: User,
+        sender: PushNotificationSender,
+        notificationData: PushNotificationData
+    ): Result {
+        val notification = notificationProvider.provideEmailNotificationBuilder(
+            context = context,
+            contentTitle = sender.senderName,
+            subText = user.email ?: "",
+            contentText = notificationData.body,
+            group = user.userId.id
+        ).apply {
+            setContentIntent(
+                PendingIntent.getActivity(
+                    context,
+                    notificationData.messageId.hashCode(),
+                    notificationsDeepLinkHelper.buildMessageDeepLinkIntent(
+                        notificationData.messageId.hashCode().toString(),
+                        notificationData.messageId,
+                        user.userId.id
+                    ),
+                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                )
+            )
+        }.build()
+        val groupNotification = notificationProvider.provideEmailNotificationBuilder(
+            context = context,
+            contentTitle = sender.senderName,
+            subText = user.email ?: "",
+            contentText = context.getString(R.string.notification_summary_text_new_messages),
+            group = user.userId.id,
+            isGroupSummary = true
+        ).apply {
+            setContentIntent(
+                PendingIntent.getActivity(
+                    context,
+                    notificationData.messageId.hashCode(),
+                    notificationsDeepLinkHelper.buildMessageGroupDeepLinkIntent(
+                        user.userId.id.hashCode().toString()
+                    ),
+                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                )
+            )
+        }.build()
+        NotificationManagerCompat.from(context).apply {
+            notify(notificationData.messageId.hashCode(), notification)
+            notify(user.userId.id.hashCode(), groupNotification)
+        }
+        return Result.success()
     }
 
     private fun isCreatedMessageNotification(pushNotification: PushNotification): Boolean {

@@ -71,14 +71,14 @@ class NotificationProvider @Inject constructor(
         }.build()
     }
 
-    fun provideEmailNotification(
+    fun provideEmailNotificationBuilder(
         context: Context,
         contentTitle: String,
         subText: String,
         contentText: String,
         group: String,
         isGroupSummary: Boolean = false
-    ): Notification {
+    ): NotificationCompat.Builder {
         val channel = provideNotificationChannel(EMAIL_CHANNEL_ID)
         return NotificationCompat.Builder(context, channel.id).apply {
             setContentTitle(contentTitle)
@@ -87,7 +87,7 @@ class NotificationProvider @Inject constructor(
             setContentText(contentText)
             setGroup(group)
             if (isGroupSummary) setGroupSummary(true)
-        }.build()
+        }
     }
 
     private fun createNotificationChannel(

@@ -22,6 +22,9 @@ import android.content.Context
 import androidx.work.WorkManager
 import ch.protonmail.android.BuildConfig
 import ch.protonmail.android.mailcommon.domain.AppInformation
+import ch.protonmail.android.mailnotifications.domain.NotificationsDeepLinkHelper
+import ch.protonmail.android.navigation.deeplinks.NotificationsDeepLinkHelperImpl
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -66,7 +69,13 @@ object ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideWorkManager(
-        @ApplicationContext context: Context
-    ): WorkManager = WorkManager.getInstance(context)
+    fun provideWorkManager(@ApplicationContext context: Context): WorkManager = WorkManager.getInstance(context)
+
+    @Module
+    @InstallIn(SingletonComponent::class)
+    interface BindsModule {
+
+        @Binds
+        fun bindNotificationsDeepLinkHelper(impl: NotificationsDeepLinkHelperImpl): NotificationsDeepLinkHelper
+    }
 }
