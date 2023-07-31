@@ -37,7 +37,7 @@ class DraftStateRepositoryImpl @Inject constructor(
     private val localDataSource: DraftStateLocalDataSource
 ) : DraftStateRepository {
 
-    override suspend fun observe(userId: UserId, messageId: MessageId): Flow<Either<DataError, DraftState>> =
+    override fun observe(userId: UserId, messageId: MessageId): Flow<Either<DataError, DraftState>> =
         localDataSource.observe(userId, messageId)
 
     override suspend fun saveLocalState(

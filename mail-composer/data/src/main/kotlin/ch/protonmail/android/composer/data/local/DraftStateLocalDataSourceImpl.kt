@@ -37,7 +37,7 @@ class DraftStateLocalDataSourceImpl @Inject constructor(
 
     private val draftStateDao = draftStateDatabase.draftStateDao()
 
-    override suspend fun observe(userId: UserId, messageId: MessageId): Flow<Either<DataError, DraftState>> =
+    override fun observe(userId: UserId, messageId: MessageId): Flow<Either<DataError, DraftState>> =
         draftStateDao.observeDraftState(userId, messageId).map {
             when (it) {
                 null -> DataError.Local.NoDataCached.left()

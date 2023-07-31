@@ -28,7 +28,7 @@ import me.proton.core.domain.entity.UserId
 
 interface DraftStateRepository {
 
-    suspend fun observe(userId: UserId, messageId: MessageId): Flow<Either<DataError, DraftState>>
+    fun observe(userId: UserId, messageId: MessageId): Flow<Either<DataError, DraftState>>
 
     suspend fun saveSyncedState(
         userId: UserId,
