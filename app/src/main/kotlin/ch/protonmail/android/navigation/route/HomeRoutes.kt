@@ -19,10 +19,14 @@
 package ch.protonmail.android.navigation.route
 
 import android.net.Uri
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
+import androidx.navigation.navDeepLink
 import ch.protonmail.android.feature.account.RemoveAccountDialog
 import ch.protonmail.android.feature.account.RemoveAccountDialog.USER_ID_KEY
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
@@ -35,7 +39,10 @@ import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreen
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailnotifications.domain.NotificationsDeepLinkHelper.Companion.DEEP_LINK_MESSAGE_GROUP_TEMPLATE
+import ch.protonmail.android.mailnotifications.domain.NotificationsDeepLinkHelper.Companion.DEEP_LINK_MESSAGE_TEMPLATE
 import ch.protonmail.android.mailsettings.presentation.settings.MainSettingsScreen
+import ch.protonmail.android.navigation.deeplinks.NotificationsDeepLinksViewModel
 import ch.protonmail.android.navigation.model.Destination
 import me.proton.core.compose.navigation.get
 import me.proton.core.domain.entity.UserId
@@ -166,6 +173,84 @@ internal fun NavGraphBuilder.addSettings(navController: NavHostController, showF
                 }
             )
         )
+    }
+}
+
+internal fun NavGraphBuilder.addDeepLinkHandler(navController: NavHostController) {
+    composable(
+        route = Destination.Screen.DeepLinksHandler.route,
+        deepLinks = listOf(
+            navDeepLink { uriPattern = DEEP_LINK_MESSAGE_TEMPLATE },
+            navDeepLink { uriPattern = DEEP_LINK_MESSAGE_GROUP_TEMPLATE }
+        )
+    ) {
+        val viewModel: NotificationsDeepLinksViewModel = hiltViewModel()
+        val state = viewModel.state.collectAsState().value
+
+        fun onGroupNotification(
+            messageId: String?,
+            userId: String?,
+            notificationId: Int?,
+            action: (notificationId: Int) -> Unit
+        ) = if (notificationId != null && messageId == null && userId == null) {
+            action(notificationId)
+        } else {
+            Unit
+        }
+
+        fun onMessageNotification(
+            messageId: String?,
+            userId: String?,
+            notificationId: Int?,
+            action: (messageId: String, userId: String, notificationId: Int) -> Unit
+        ) = if (notificationId != null && messageId != null && userId != null) {
+            action(messageId, userId, notificationId)
+        } else {
+            Unit
+        }
+
+        LaunchedEffect(key1 = state) {
+            when (state) {
+                NotificationsDeepLinksViewModel.State.None -> {}
+
+                NotificationsDeepLinksViewModel.State.NavigateToInbox -> {
+                    navController.navigate(Destination.Screen.Mailbox.route) {
+                        popUpTo(Destination.Screen.Mailbox.route) {
+                            inclusive = false
+                        }
+                    }
+                }
+
+                is NotificationsDeepLinksViewModel.State.NavigateToMessageDetails -> {
+                    navController.navigate(Destination.Screen.Message(state.messageId)) {
+                        popUpTo(Destination.Screen.Mailbox.route) {
+                            inclusive = false
+                        }
+                    }
+                }
+
+                is NotificationsDeepLinksViewModel.State.NavigateToConversation -> {
+                    navController.navigate(Destination.Screen.Conversation(state.conversationId)) {
+                        popUpTo(Destination.Screen.Mailbox.route) {
+                            inclusive = false
+                        }
+                    }
+                }
+            }
+            val messageIdArg = it.arguments?.getString("messageId")
+            val userIdArg = it.arguments?.getString("userId")
+            val notificationIdArg = it.arguments?.getString("notificationId")?.toIntOrNull()
+            onGroupNotification(messageIdArg, userIdArg, notificationIdArg) { notificationId ->
+                viewModel.navigateToInbox(notificationId = notificationId)
+            }
+            onMessageNotification(messageIdArg, userIdArg, notificationIdArg) { messageId, userId, notificationId ->
+                viewModel.navigateToMessage(
+                    notificationId = notificationId,
+                    messageId = messageId,
+                    userId = userId
+                )
+            }
+        }
     }
 }
 

@@ -56,6 +56,7 @@ sealed class Destination(val route: String) {
                 route.replace(SWIPE_DIRECTION_KEY.wrap(), direction.name)
         }
         object ThemeSettings : Destination("settings/theme")
+        object DeepLinksHandler : Destination("deepLinksHandler")
     }
 
     object Dialog {
