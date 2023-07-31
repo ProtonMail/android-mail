@@ -97,16 +97,14 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
         conversationIds: List<ConversationId>,
         labelIds: List<LabelId>
     ) {
-        conversationIds.chunked(MAX_ACTION_WORKER_PARAMETER_COUNT).forEach { conversationIdsChunk ->
-            labelIds.forEach { labelId ->
-                enqueuer.enqueue<AddLabelConversationWorker>(
-                    AddLabelConversationWorker.params(
-                        userId = userId,
-                        conversationIds = conversationIdsChunk,
-                        labelId = labelId
-                    )
+        labelIds.forEach { labelId ->
+            enqueuer.enqueue<AddLabelConversationWorker>(
+                AddLabelConversationWorker.params(
+                    userId = userId,
+                    conversationIds = conversationIds,
+                    labelId = labelId
                 )
-            }
+            )
         }
     }
 
@@ -123,16 +121,14 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
         conversationIds: List<ConversationId>,
         labelIds: List<LabelId>
     ) {
-        conversationIds.chunked(MAX_ACTION_WORKER_PARAMETER_COUNT).forEach { conversationIdsChunk ->
-            labelIds.forEach { labelId ->
-                enqueuer.enqueue<RemoveLabelConversationWorker>(
-                    RemoveLabelConversationWorker.params(
-                        userId = userId,
-                        conversationIds = conversationIdsChunk,
-                        labelId = labelId
-                    )
+        labelIds.forEach { labelId ->
+            enqueuer.enqueue<RemoveLabelConversationWorker>(
+                RemoveLabelConversationWorker.params(
+                    userId = userId,
+                    conversationIds = conversationIds,
+                    labelId = labelId
                 )
-            }
+            )
         }
     }
 
@@ -158,10 +154,5 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
                 contextLabelId
             )
         )
-    }
-
-    companion object {
-
-        const val MAX_ACTION_WORKER_PARAMETER_COUNT = 100
     }
 }
