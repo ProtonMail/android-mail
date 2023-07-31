@@ -41,9 +41,9 @@ class NotificationsDeepLinkHelperImpl @Inject constructor(
         MainActivity::class.java
     )
 
-    override fun buildMessageGroupDeepLinkIntent(notificationId: String): Intent = Intent(
+    override fun buildMessageGroupDeepLinkIntent(notificationId: String, userId: String): Intent = Intent(
         Intent.ACTION_VIEW,
-        buildMessageGroupDeepLinkUri(notificationId),
+        buildMessageGroupDeepLinkUri(notificationId, userId),
         context,
         MainActivity::class.java
     )

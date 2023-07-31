@@ -149,7 +149,8 @@ class ProcessPushNotificationDataWorker @AssistedInject constructor(
                     context,
                     notificationData.messageId.hashCode(),
                     notificationsDeepLinkHelper.buildMessageGroupDeepLinkIntent(
-                        user.userId.id.hashCode().toString()
+                        user.userId.id.hashCode().toString(),
+                        user.userId.id
                     ),
                     PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                 )

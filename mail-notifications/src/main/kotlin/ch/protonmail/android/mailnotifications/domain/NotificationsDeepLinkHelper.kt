@@ -29,7 +29,7 @@ interface NotificationsDeepLinkHelper {
         userId: String
     ): Intent
 
-    fun buildMessageGroupDeepLinkIntent(notificationId: String): Intent
+    fun buildMessageGroupDeepLinkIntent(notificationId: String, userId: String): Intent
 
     fun cancelNotification(notificationId: Int)
 
@@ -44,10 +44,12 @@ interface NotificationsDeepLinkHelper {
             .replace("{notificationId}", notificationId)
     )
 
-    fun NotificationsDeepLinkHelper.buildMessageGroupDeepLinkUri(notificationId: String): Uri = Uri.parse(
-        DEEP_LINK_MESSAGE_GROUP_TEMPLATE
-            .replace("{notificationId}", notificationId)
-    )
+    fun NotificationsDeepLinkHelper.buildMessageGroupDeepLinkUri(notificationId: String, userId: String): Uri =
+        Uri.parse(
+            DEEP_LINK_MESSAGE_GROUP_TEMPLATE
+                .replace("{notificationId}", notificationId)
+                .replace("{userId}", userId)
+        )
 
     companion object {
 
@@ -55,6 +57,6 @@ interface NotificationsDeepLinkHelper {
         private const val DEEP_LINK_MESSAGE_BASE = "${DEEP_LINK_BASE_URI}mailbox/message/"
         const val DEEP_LINK_MESSAGE_TEMPLATE = "$DEEP_LINK_MESSAGE_BASE{messageId}/{userId}/{notificationId}"
         private const val DEEP_LINK_MESSAGE_GROUP_BASE = "${DEEP_LINK_BASE_URI}mailbox/"
-        const val DEEP_LINK_MESSAGE_GROUP_TEMPLATE = "$DEEP_LINK_MESSAGE_GROUP_BASE{notificationId}"
+        const val DEEP_LINK_MESSAGE_GROUP_TEMPLATE = "$DEEP_LINK_MESSAGE_GROUP_BASE{notificationId}/{userId}"
     }
 }
