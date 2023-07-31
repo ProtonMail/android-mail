@@ -38,6 +38,7 @@ import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddres
 import ch.protonmail.android.mailcomposer.domain.usecase.GetDecryptedDraftFields
 import ch.protonmail.android.mailcomposer.domain.usecase.GetPrimaryAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.IsValidEmailAddress
+import ch.protonmail.android.mailcomposer.domain.usecase.ObserveDraftStateForApiAssignedId
 import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithAllFields
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithBody
@@ -106,6 +107,7 @@ class ComposerViewModelTest {
     }
     private val savedStateHandle = mockk<SavedStateHandle>()
     private val getDecryptedDraftFields = mockk<GetDecryptedDraftFields>()
+    private val observeDraftStateForApiAssignedId = mockk<ObserveDraftStateForApiAssignedId>()
     private val reducer = ComposerReducer()
 
     private val viewModel by lazy {
@@ -123,6 +125,7 @@ class ComposerViewModelTest {
             composerIdlingResource,
             getDecryptedDraftFields,
             savedStateHandle,
+            observeDraftStateForApiAssignedId,
             observePrimaryUserIdMock,
             provideNewDraftIdMock
         )

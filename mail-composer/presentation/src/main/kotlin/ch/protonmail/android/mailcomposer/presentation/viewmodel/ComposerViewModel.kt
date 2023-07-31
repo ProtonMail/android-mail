@@ -35,6 +35,7 @@ import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddres
 import ch.protonmail.android.mailcomposer.domain.usecase.GetDecryptedDraftFields
 import ch.protonmail.android.mailcomposer.domain.usecase.GetPrimaryAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.IsValidEmailAddress
+import ch.protonmail.android.mailcomposer.domain.usecase.ObserveDraftStateForApiAssignedId
 import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithAllFields
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithBody
@@ -58,7 +59,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -81,6 +84,7 @@ class ComposerViewModel @Inject constructor(
     private val composerIdlingResource: ComposerIdlingResource,
     getDecryptedDraftFields: GetDecryptedDraftFields,
     savedStateHandle: SavedStateHandle,
+    private val observeDraftStateForApiAssignedId: ObserveDraftStateForApiAssignedId,
     observePrimaryUserId: ObservePrimaryUserId,
     provideNewDraftId: ProvideNewDraftId
 ) : ViewModel() {
@@ -100,6 +104,14 @@ class ComposerViewModel @Inject constructor(
             getPrimaryAddress(userId)
                 .onLeft { emitNewStateFor(ComposerEvent.ErrorLoadingDefaultSenderAddress) }
                 .onRight { emitNewStateFor(ComposerEvent.DefaultSenderReceived(SenderUiModel(it.email))) }
+
+            observeDraftStateForApiAssignedId(userId, currentMessageId()).mapLatest {
+                Timber.d("Draft state updated with API assigned ID $it")
+                // Re-trigger syncher with new API ID
+            }.onStart {
+                // Trigger syncher with initial local message ID
+                // Input param such as parentId, action and messageId (eg. reply, existing draft) are also given here
+            }
         }.launchIn(viewModelScope)
 
         savedStateHandle.get<String>(ComposerScreen.DraftMessageIdKey)?.let { inputDraftId ->
