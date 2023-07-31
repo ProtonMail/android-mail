@@ -110,7 +110,7 @@ class SyncDraftTest {
         val messageId = MessageIdSample.RemoteDraft
         val expectedDraft = MessageWithBodySample.RemoteDraft
         val expectedResponse = MessageWithBodySample.RemoteDraft
-        val expectedDraftState = DraftStateSample.NewDraftState
+        val expectedDraftState = DraftStateSample.RemoteDraftState
         expectGetDraftStateSucceeds(userId, messageId, expectedDraftState)
         expectGetLocalMessageSucceeds(userId, messageId, expectedDraft)
         expectRemoteDataSourceUpdateSuccess(userId, expectedDraft, expectedResponse)
@@ -193,7 +193,11 @@ class SyncDraftTest {
         coVerify(exactly = 0) { draftRemoteDataSource.create(any(), any(), any()) }
     }
 
-    private fun expectMessageUpdateSuccess(userId: UserId, messageId: MessageId, remoteMessageId: MessageId) {
+    private fun expectMessageUpdateSuccess(
+        userId: UserId,
+        messageId: MessageId,
+        remoteMessageId: MessageId
+    ) {
         coEvery { messageRepository.updateDraftMessageId(userId, messageId, remoteMessageId) } returns Unit
     }
 
