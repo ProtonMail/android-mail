@@ -759,10 +759,10 @@ class MessageLocalDataSourceImplTest {
         } returns flowOf(messagesWithLabelIds)
 
         // When
-        val actual = messageLocalDataSource.addLabelToMessagesInConversations(
-            userId1,
-            conversationIds,
-            labelToAdd
+        val actual = messageLocalDataSource.relabelMessagesInConversations(
+            userId = userId1,
+            conversationIds = conversationIds,
+            labelIdsToAdd = setOf(labelToAdd)
         )
 
         // Then
@@ -789,10 +789,10 @@ class MessageLocalDataSourceImplTest {
         } returns flowOf(messagesWithLabelIds)
 
         // When
-        val actual = messageLocalDataSource.removeLabelFromMessagesInConversations(
-            userId1,
-            conversationIds,
-            labelToRemove
+        val actual = messageLocalDataSource.relabelMessagesInConversations(
+            userId = userId1,
+            conversationIds = conversationIds,
+            labelIdsToRemove = setOf(labelToRemove)
         )
 
         // Then

@@ -205,7 +205,11 @@ internal class AddLabelConversationWorkerTest {
             conversationLocalDataSource.removeLabel(userId, conversationIds, labelId)
         } returns listOf(ConversationTestData.starredConversation).right()
         coEvery {
-            messageLocalDataSource.removeLabelFromMessagesInConversations(userId, conversationIds, labelId)
+            messageLocalDataSource.relabelMessagesInConversations(
+                userId = userId,
+                conversationIds = conversationIds,
+                labelIdsToRemove = setOf(labelId)
+            )
         } returns emptyList<Message>().right()
 
         // When
@@ -215,7 +219,11 @@ internal class AddLabelConversationWorkerTest {
         assertEquals(Result.failure(), result)
         coVerifySequence {
             conversationLocalDataSource.removeLabel(userId, conversationIds, labelId)
-            messageLocalDataSource.removeLabelFromMessagesInConversations(userId, conversationIds, labelId)
+            messageLocalDataSource.relabelMessagesInConversations(
+                userId = userId,
+                conversationIds = conversationIds,
+                labelIdsToRemove = setOf(labelId)
+            )
         }
     }
 }

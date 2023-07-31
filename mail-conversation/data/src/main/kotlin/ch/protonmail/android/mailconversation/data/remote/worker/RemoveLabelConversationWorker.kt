@@ -72,7 +72,11 @@ class RemoveLabelConversationWorker @AssistedInject constructor(
                     val conversations = conversationIds.map { ConversationId(it) }
                     val label = LabelId(labelId)
                     conversationLocalDataSource.addLabel(user, conversations, LabelId(labelId))
-                    messageLocalDataSource.addLabelToMessagesInConversations(user, conversations, label)
+                    messageLocalDataSource.relabelMessagesInConversations(
+                        userId = user,
+                        conversationIds = conversations,
+                        labelIdsToAdd = setOf(label)
+                    )
                     Result.failure()
                 }
             }

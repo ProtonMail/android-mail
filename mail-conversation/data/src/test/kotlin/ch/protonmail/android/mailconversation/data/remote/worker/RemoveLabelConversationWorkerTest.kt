@@ -200,7 +200,11 @@ internal class RemoveLabelConversationWorkerTest {
         // Given
         coEvery { messageApi.removeLabel(any()) } throws SerializationException()
         coEvery {
-            messageLocalDataSource.addLabelToMessagesInConversations(userId, conversationIds, labelId)
+            messageLocalDataSource.relabelMessagesInConversations(
+                userId = userId,
+                conversationIds = conversationIds,
+                labelIdsToAdd = setOf(labelId)
+            )
         } returns listOf(MessageTestData.message).right()
         coEvery {
             conversationLocalDataSource.addLabel(userId, conversationIds, labelId)
@@ -213,7 +217,11 @@ internal class RemoveLabelConversationWorkerTest {
         assertEquals(Result.failure(), result)
         coVerifySequence {
             conversationLocalDataSource.addLabel(userId, conversationIds, labelId)
-            messageLocalDataSource.addLabelToMessagesInConversations(userId, conversationIds, labelId)
+            messageLocalDataSource.relabelMessagesInConversations(
+                userId = userId,
+                conversationIds = conversationIds,
+                labelIdsToAdd = setOf(labelId)
+            )
         }
     }
 }
