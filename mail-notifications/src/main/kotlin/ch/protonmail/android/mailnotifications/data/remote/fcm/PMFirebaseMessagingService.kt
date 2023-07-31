@@ -24,6 +24,7 @@ import ch.protonmail.android.mailnotifications.domain.ProcessPushNotificationDat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -48,10 +49,13 @@ class PMFirebaseMessagingService : FirebaseMessagingService() {
     @Inject
     lateinit var accountManager: AccountManager
 
+    private var onNewTokenJob: Job? = null
+
     override fun onNewToken(token: String) {
         super.onNewToken(token)
 
-        scopeProvider.GlobalDefaultSupervisedScope.launch {
+        onNewTokenJob?.cancel()
+        onNewTokenJob = scopeProvider.GlobalDefaultSupervisedScope.launch {
             fcmTokenPreferences.storeToken(token)
             accountManager.getAccounts()
                 .map { accounts -> accounts.filter { account -> account.state == AccountState.Ready } }
@@ -74,5 +78,10 @@ class PMFirebaseMessagingService : FirebaseMessagingService() {
                 ProcessPushNotificationDataWorker.params(uid, encryptedMessage)
             )
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        onNewTokenJob?.cancel()
     }
 }
