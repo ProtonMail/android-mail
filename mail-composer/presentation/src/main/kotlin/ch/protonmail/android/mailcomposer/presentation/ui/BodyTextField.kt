@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcomposer.presentation.ui
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -32,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
 import ch.protonmail.android.mailcomposer.presentation.R
 import me.proton.core.compose.theme.ProtonTheme
@@ -56,6 +58,7 @@ internal fun BodyTextField(onBodyChange: (String) -> Unit, modifier: Modifier = 
         textStyle = ProtonTheme.typography.defaultNorm,
         minLines = bodyMinLines,
         colors = TextFieldDefaults.composerTextFieldColors(),
+        keyboardOptions = KeyboardOptions.Default.copy(capitalization = KeyboardCapitalization.Sentences),
         placeholder = {
             Text(
                 modifier = Modifier.testTag(ComposerTestTags.MessageBodyPlaceholder),

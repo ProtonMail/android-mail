@@ -31,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
 import ch.protonmail.android.mailcomposer.presentation.R
 import me.proton.core.compose.theme.ProtonTheme
@@ -51,6 +52,10 @@ internal fun SubjectTextField(onSubjectChange: (String) -> Unit, modifier: Modif
         textStyle = ProtonTheme.typography.defaultNorm,
         colors = TextFieldDefaults.composerTextFieldColors(),
         maxLines = 3,
+        keyboardOptions = KeyboardOptions.Default.copy(
+            capitalization = KeyboardCapitalization.Sentences,
+            imeAction = ImeAction.Next
+        ),
         placeholder = {
             Text(
                 modifier = Modifier.testTag(ComposerTestTags.SubjectPlaceholder),
@@ -58,7 +63,6 @@ internal fun SubjectTextField(onSubjectChange: (String) -> Unit, modifier: Modif
                 color = ProtonTheme.colors.textHint,
                 style = ProtonTheme.typography.defaultNorm
             )
-        },
-        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
+        }
     )
 }
