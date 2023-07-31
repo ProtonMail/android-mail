@@ -19,14 +19,17 @@
 package ch.protonmail.android.navigation.route
 
 import android.net.Uri
+import android.widget.Toast
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.navDeepLink
+import ch.protonmail.android.R
 import ch.protonmail.android.feature.account.RemoveAccountDialog
 import ch.protonmail.android.feature.account.RemoveAccountDialog.USER_ID_KEY
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
@@ -47,6 +50,7 @@ import ch.protonmail.android.navigation.model.Destination
 import me.proton.core.compose.navigation.get
 import me.proton.core.domain.entity.UserId
 import me.proton.core.util.kotlin.takeIfNotBlank
+import timber.log.Timber
 
 internal fun NavGraphBuilder.addConversationDetail(
     navController: NavHostController,
@@ -184,6 +188,7 @@ internal fun NavGraphBuilder.addDeepLinkHandler(navController: NavHostController
             navDeepLink { uriPattern = DEEP_LINK_MESSAGE_GROUP_TEMPLATE }
         )
     ) {
+        val context = LocalContext.current
         val viewModel: NotificationsDeepLinksViewModel = hiltViewModel()
         val state = viewModel.state.collectAsState().value
 
@@ -191,9 +196,9 @@ internal fun NavGraphBuilder.addDeepLinkHandler(navController: NavHostController
             messageId: String?,
             userId: String?,
             notificationId: Int?,
-            action: (notificationId: Int) -> Unit
-        ) = if (notificationId != null && messageId == null && userId == null) {
-            action(notificationId)
+            action: (notificationId: Int, userId: String) -> Unit
+        ) = if (notificationId != null && userId != null && messageId == null) {
+            action(notificationId, userId)
         } else {
             Unit
         }
@@ -209,16 +214,38 @@ internal fun NavGraphBuilder.addDeepLinkHandler(navController: NavHostController
             Unit
         }
 
+        fun showUserSwitchedEmailIfRequired(email: String?) {
+            if (email != null) {
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.notification_switched_account, email),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+
+        }
+
         LaunchedEffect(key1 = state) {
             when (state) {
-                NotificationsDeepLinksViewModel.State.None -> {}
+                NotificationsDeepLinksViewModel.State.None -> {
+                    Timber.d("Deep link state is None")
+                }
 
-                NotificationsDeepLinksViewModel.State.NavigateToInbox -> {
+                NotificationsDeepLinksViewModel.State.NavigateToInbox.ActiveUser -> {
                     navController.navigate(Destination.Screen.Mailbox.route) {
-                        popUpTo(Destination.Screen.Mailbox.route) {
+                        popUpTo(navController.graph.id) {
                             inclusive = false
                         }
                     }
+                }
+
+                is NotificationsDeepLinksViewModel.State.NavigateToInbox.ActiveUserSwitched -> {
+                    navController.navigate(Destination.Screen.Mailbox.route) {
+                        popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
+                    }
+                    showUserSwitchedEmailIfRequired(state.email)
                 }
 
                 is NotificationsDeepLinksViewModel.State.NavigateToMessageDetails -> {
@@ -227,6 +254,7 @@ internal fun NavGraphBuilder.addDeepLinkHandler(navController: NavHostController
                             inclusive = false
                         }
                     }
+                    showUserSwitchedEmailIfRequired(state.userSwitchedEmail)
                 }
 
                 is NotificationsDeepLinksViewModel.State.NavigateToConversation -> {
@@ -235,13 +263,14 @@ internal fun NavGraphBuilder.addDeepLinkHandler(navController: NavHostController
                             inclusive = false
                         }
                     }
+                    showUserSwitchedEmailIfRequired(state.userSwitchedEmail)
                 }
             }
             val messageIdArg = it.arguments?.getString("messageId")
             val userIdArg = it.arguments?.getString("userId")
             val notificationIdArg = it.arguments?.getString("notificationId")?.toIntOrNull()
-            onGroupNotification(messageIdArg, userIdArg, notificationIdArg) { notificationId ->
-                viewModel.navigateToInbox(notificationId = notificationId)
+            onGroupNotification(messageIdArg, userIdArg, notificationIdArg) { notificationId, userId ->
+                viewModel.navigateToInbox(notificationId = notificationId, userId = userId)
             }
             onMessageNotification(messageIdArg, userIdArg, notificationIdArg) { messageId, userId, notificationId ->
                 viewModel.navigateToMessage(

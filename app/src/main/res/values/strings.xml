@@ -25,4 +25,5 @@
     <string name="you_are_offline">You are offline</string>
     <string name="feature_coming_soon">Feature coming soon...</string>
     <string name="mailbox_draft_saved_message">Draft saved</string>
+    <string name="notification_switched_account">Switched to account: %s</string>
 </resources>
