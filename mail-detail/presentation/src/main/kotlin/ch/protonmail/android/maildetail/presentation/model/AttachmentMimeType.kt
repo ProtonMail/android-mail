@@ -127,11 +127,11 @@ fun getDrawableForMimeType(mimeType: String) = when {
     AttachmentMimeType.Ppt.mimeTypes.contains(mimeType) -> drawable.ic_proton_file_type_powerpoint_24
     AttachmentMimeType.Video.mimeTypes.contains(mimeType) -> drawable.ic_proton_file_type_video_24
     AttachmentMimeType.Xls.mimeTypes.contains(mimeType) -> drawable.ic_proton_file_type_excel_24
-    else -> drawable.ic_proton_file_type_unknown_24
+    else -> drawable.ic_proton_file_type_default_24
 }
 
 @StringRes
-fun getContentDescriptionForMimeTpye(mimeType: String) = when {
+fun getContentDescriptionForMimeType(mimeType: String) = when {
     AttachmentMimeType.Doc.mimeTypes.contains(mimeType) -> AttachmentMimeType.Doc.contentDescription
     AttachmentMimeType.Pdf.mimeTypes.contains(mimeType) -> AttachmentMimeType.Pdf.contentDescription
     AttachmentMimeType.Zip.mimeTypes.contains(mimeType) -> AttachmentMimeType.Zip.contentDescription

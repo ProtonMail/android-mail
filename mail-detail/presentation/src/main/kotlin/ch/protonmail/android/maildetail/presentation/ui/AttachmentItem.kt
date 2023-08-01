@@ -46,7 +46,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.AttachmentUiModel
-import ch.protonmail.android.maildetail.presentation.model.getContentDescriptionForMimeTpye
+import ch.protonmail.android.maildetail.presentation.model.getContentDescriptionForMimeType
 import ch.protonmail.android.maildetail.presentation.model.getDrawableForMimeType
 import ch.protonmail.android.maildetail.presentation.sample.AttachmentUiModelSample
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
@@ -137,7 +137,7 @@ fun AttachmentItem(
                 painter = painterResource(id = getDrawableForMimeType(attachmentUiModel.mimeType)),
                 contentDescription = stringResource(
                     id = R.string.attachment_type_description,
-                    stringResource(id = getContentDescriptionForMimeTpye(attachmentUiModel.mimeType))
+                    stringResource(id = getContentDescriptionForMimeType(attachmentUiModel.mimeType))
                 )
             )
         }
