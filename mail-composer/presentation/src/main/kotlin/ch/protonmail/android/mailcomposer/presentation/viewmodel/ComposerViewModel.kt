@@ -48,6 +48,7 @@ import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
 import ch.protonmail.android.mailcomposer.presentation.reducer.ComposerReducer
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.test.idlingresources.ComposerIdlingResource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -74,6 +75,7 @@ class ComposerViewModel @Inject constructor(
     private val isValidEmailAddress: IsValidEmailAddress,
     private val getPrimaryAddress: GetPrimaryAddress,
     private val getComposerSenderAddresses: GetComposerSenderAddresses,
+    private val composerIdlingResource: ComposerIdlingResource,
     observePrimaryUserId: ObservePrimaryUserId,
     provideNewDraftId: ProvideNewDraftId
 ) : ViewModel() {
@@ -93,9 +95,15 @@ class ComposerViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        composerIdlingResource.clear()
+    }
+
     internal fun submit(action: ComposerAction) {
         viewModelScope.launch {
             actionMutex.withLock {
+                composerIdlingResource.increment()
                 when (action) {
                     is ComposerAction.DraftBodyChanged -> emitNewStateFor(onDraftBodyChanged(action))
                     is ComposerAction.SenderChanged -> emitNewStateFor(onSenderChanged(action))
@@ -106,6 +114,7 @@ class ComposerViewModel @Inject constructor(
                     is ComposerAction.RecipientsBccChanged -> emitNewStateFor(onBccChanged(action))
                     is ComposerAction.OnCloseComposer -> emitNewStateFor(onCloseComposer(action))
                 }
+                composerIdlingResource.decrement()
             }
         }
     }
@@ -238,5 +247,4 @@ class ComposerViewModel @Inject constructor(
         val currentState = state.value
         mutableState.value = reducer.newStateFrom(currentState, operation)
     }
-
 }

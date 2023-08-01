@@ -21,6 +21,7 @@ package ch.protonmail.android.uitest
 import android.Manifest
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.test.rule.GrantPermissionRule
+import ch.protonmail.android.test.idlingresources.ComposeIdlingResource
 import ch.protonmail.android.uitest.helpers.core.TestIdWatcher
 import ch.protonmail.android.uitest.helpers.login.LoginTestUserTypes
 import ch.protonmail.android.uitest.helpers.login.LoginType
@@ -33,6 +34,7 @@ import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import okhttp3.mockwebserver.MockWebServer
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.rules.RuleChain
@@ -57,6 +59,9 @@ internal open class MockedNetworkTest(
     @Inject
     lateinit var mockWebServer: MockWebServer
 
+    @Inject
+    lateinit var idlingResources: Set<@JvmSuppressWildcards ComposeIdlingResource>
+
     @get:Rule
     val ruleChain: RuleChain = RuleChain.outerRule(
         hiltAndroidRule
@@ -79,6 +84,17 @@ internal open class MockedNetworkTest(
     @Before
     fun setup() {
         hiltAndroidRule.inject()
+
+        idlingResources.forEach { idlingResource ->
+            idlingResource.clear()
+            composeTestRule.registerIdlingResource(idlingResource)
+        }
+
         mockWebServer.dispatcher = authenticationDispatcher(loginType)
+    }
+
+    @After
+    fun tearDown() {
+        idlingResources.forEach { composeTestRule.unregisterIdlingResource(it) }
     }
 }
