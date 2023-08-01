@@ -25,10 +25,10 @@ import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import ch.protonmail.android.uicomponents.chips.ChipsTestTags
 import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import ch.protonmail.android.uitest.util.assertions.CustomSemanticsPropertyKeyNames
-import ch.protonmail.android.uitest.util.awaitDisplayed
 import ch.protonmail.android.uitest.util.child
 import ch.protonmail.android.uitest.util.extensions.getKeyValueByName
 import org.junit.Assert.assertEquals
@@ -76,7 +76,7 @@ internal class RecipientChipEntryModel(
 
     // On some configurations, the transition from raw text to chip might take a bit and make the test fail.
     private fun withParentDisplayed(block: RecipientChipEntryModel.() -> Unit) = apply {
-        parent.awaitDisplayed()
+        parent.performScrollTo()
         block()
     }
 
