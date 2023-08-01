@@ -39,16 +39,49 @@ internal class AttachmentMimeTypeTest(
 
     companion object {
 
-        private val fallbackDrawable = R.drawable.ic_proton_file_type_unknown_24
+        private val fallbackDrawable = R.drawable.ic_proton_file_type_default_24
         private val expectedDocDrawable = R.drawable.ic_proton_file_type_word_24
         private val expectedImageDrawable = R.drawable.ic_proton_file_type_image_24
         private val expectedPdfDrawable = R.drawable.ic_proton_file_type_pdf_24
-        private val expectedZipDrawable = R.drawable.ic_proton_file_type_zip_24
+        private val expectedArchiveDrawable = R.drawable.ic_proton_file_type_zip_24
         private val expectedVideoDrawable = R.drawable.ic_proton_file_type_video_24
         private val expectedTextDrawable = R.drawable.ic_proton_file_type_text_24
         private val expectedAudioDrawable = R.drawable.ic_proton_file_type_audio_24
-        private val expectedExcelDrawable = R.drawable.ic_proton_file_type_excel_24
+        private val expectedSpreadsheetDrawable = R.drawable.ic_proton_file_type_excel_24
         private val expectedPowerPointDrawable = R.drawable.ic_proton_file_type_powerpoint_24
+
+        private val archive = listOf(
+            TestInput(
+                group = "Archive",
+                mimeType = "application/gzip",
+                expectedDrawable = expectedArchiveDrawable
+            ),
+            TestInput(
+                group = "Archive",
+                mimeType = "application/x-7z-compressed",
+                expectedDrawable = expectedArchiveDrawable
+            ),
+            TestInput(
+                group = "Archive",
+                mimeType = "application/x-bzip",
+                expectedDrawable = expectedArchiveDrawable
+            ),
+            TestInput(
+                group = "Archive",
+                mimeType = "application/x-bzip2",
+                expectedDrawable = expectedArchiveDrawable
+            ),
+            TestInput(
+                group = "Archive",
+                mimeType = "application/vnd.rar",
+                expectedDrawable = expectedArchiveDrawable
+            ),
+            TestInput(
+                group = "Archive",
+                mimeType = "application/zip",
+                expectedDrawable = expectedArchiveDrawable
+            )
+        )
 
         private val audio = listOf(
             TestInput(
@@ -114,6 +147,16 @@ internal class AttachmentMimeTypeTest(
         private val image = listOf(
             TestInput(
                 group = "Image",
+                mimeType = "image/bmp",
+                expectedDrawable = expectedImageDrawable
+            ),
+            TestInput(
+                group = "Image",
+                mimeType = "image/gif",
+                expectedDrawable = expectedImageDrawable
+            ),
+            TestInput(
+                group = "Image",
                 mimeType = "image/jpg",
                 expectedDrawable = expectedImageDrawable
             ),
@@ -124,7 +167,32 @@ internal class AttachmentMimeTypeTest(
             ),
             TestInput(
                 group = "Image",
+                mimeType = "image/heic",
+                expectedDrawable = expectedImageDrawable
+            ),
+            TestInput(
+                group = "Image",
                 mimeType = "image/png",
+                expectedDrawable = expectedImageDrawable
+            ),
+            TestInput(
+                group = "Image",
+                mimeType = "image/svg+xml",
+                expectedDrawable = expectedImageDrawable
+            ),
+            TestInput(
+                group = "Image",
+                mimeType = "image/tiff",
+                expectedDrawable = expectedImageDrawable
+            ),
+            TestInput(
+                group = "Image",
+                mimeType = "image/x-icon",
+                expectedDrawable = expectedImageDrawable
+            ),
+            TestInput(
+                group = "Image",
+                mimeType = "image/webp",
                 expectedDrawable = expectedImageDrawable
             )
         )
@@ -166,6 +234,11 @@ internal class AttachmentMimeTypeTest(
         )
 
         private val txt = listOf(
+            TestInput(
+                group = "Txt",
+                mimeType = "application/rtf",
+                expectedDrawable = expectedTextDrawable
+            ),
             TestInput(
                 group = "Txt",
                 mimeType = "text/plain",
@@ -216,6 +289,11 @@ internal class AttachmentMimeTypeTest(
             ),
             TestInput(
                 group = "Video",
+                mimeType = "video/webm",
+                expectedDrawable = expectedVideoDrawable
+            ),
+            TestInput(
+                group = "Video",
                 mimeType = "video/x-matroska",
                 expectedDrawable = expectedVideoDrawable
             )
@@ -225,35 +303,27 @@ internal class AttachmentMimeTypeTest(
             TestInput(
                 group = "Xls",
                 mimeType = "application/excel",
-                expectedDrawable = expectedExcelDrawable
+                expectedDrawable = expectedSpreadsheetDrawable
             ),
             TestInput(
                 group = "Xls",
                 mimeType = "application/vnd.ms-excel",
-                expectedDrawable = expectedExcelDrawable
+                expectedDrawable = expectedSpreadsheetDrawable
             ),
             TestInput(
                 group = "Xls",
                 mimeType = "application/x-excel",
-                expectedDrawable = expectedExcelDrawable
+                expectedDrawable = expectedSpreadsheetDrawable
             ),
             TestInput(
                 group = "Xls",
                 mimeType = "application/x-msexcel",
-                expectedDrawable = expectedExcelDrawable
+                expectedDrawable = expectedSpreadsheetDrawable
             ),
             TestInput(
                 group = "Xls",
                 mimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                expectedDrawable = expectedExcelDrawable
-            )
-        )
-
-        private val zip = listOf(
-            TestInput(
-                group = "Zip",
-                mimeType = "application/zip",
-                expectedDrawable = expectedZipDrawable
+                expectedDrawable = expectedSpreadsheetDrawable
             )
         )
 
@@ -268,7 +338,8 @@ internal class AttachmentMimeTypeTest(
         @JvmStatic
         @Parameterized.Parameters(name = "{0}")
         fun data() = (
-            audio +
+            archive +
+                audio +
                 doc +
                 image +
                 pdf +
@@ -276,7 +347,6 @@ internal class AttachmentMimeTypeTest(
                 txt +
                 video +
                 xls +
-                zip +
                 unknown
             ).map {
             val testName = """

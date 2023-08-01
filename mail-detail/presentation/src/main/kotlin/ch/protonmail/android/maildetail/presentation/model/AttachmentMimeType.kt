@@ -24,6 +24,18 @@ import ch.protonmail.android.maildetail.presentation.R
 import me.proton.core.presentation.R.drawable
 
 sealed class AttachmentMimeType(@StringRes val contentDescription: Int, val mimeTypes: List<String>) {
+    object Archive : AttachmentMimeType(
+        contentDescription = R.string.attachment_type_archive,
+        mimeTypes = listOf(
+            "application/gzip",
+            "application/x-7z-compressed",
+            "application/x-bzip",
+            "application/x-bzip2",
+            "application/vnd.rar",
+            "application/zip"
+        )
+    )
+
     object Audio : AttachmentMimeType(
         contentDescription = R.string.attachment_type_audio,
         mimeTypes = listOf(
@@ -50,9 +62,16 @@ sealed class AttachmentMimeType(@StringRes val contentDescription: Int, val mime
     object Image : AttachmentMimeType(
         contentDescription = R.string.attachment_type_image,
         mimeTypes = listOf(
+            "image/bmp",
+            "image/gif",
             "image/jpg",
             "image/jpeg",
-            "image/png"
+            "image/heic",
+            "image/png",
+            "image/svg+xml",
+            "image/tiff",
+            "image/x-icon",
+            "image/webp"
         )
     )
 
@@ -77,6 +96,7 @@ sealed class AttachmentMimeType(@StringRes val contentDescription: Int, val mime
     object Txt : AttachmentMimeType(
         contentDescription = R.string.attachment_type_text,
         mimeTypes = listOf(
+            "application/rtf",
             "text/plain"
         )
     )
@@ -92,12 +112,13 @@ sealed class AttachmentMimeType(@StringRes val contentDescription: Int, val mime
             "audio/x-wav",
             "video/avi",
             "video/mp4",
+            "video/webm",
             "video/x-matroska"
         )
     )
 
     object Xls : AttachmentMimeType(
-        contentDescription = R.string.attachment_type_excel,
+        contentDescription = R.string.attachment_type_spreadsheet,
         mimeTypes = listOf(
             "application/excel",
             "application/vnd.ms-excel",
@@ -106,21 +127,13 @@ sealed class AttachmentMimeType(@StringRes val contentDescription: Int, val mime
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         )
     )
-
-    object Zip : AttachmentMimeType(
-        contentDescription = R.string.attachment_type_zip,
-        mimeTypes = listOf(
-            "application/zip"
-        )
-    )
-
 }
 
 @DrawableRes
 fun getDrawableForMimeType(mimeType: String) = when {
     AttachmentMimeType.Doc.mimeTypes.contains(mimeType) -> drawable.ic_proton_file_type_word_24
     AttachmentMimeType.Pdf.mimeTypes.contains(mimeType) -> drawable.ic_proton_file_type_pdf_24
-    AttachmentMimeType.Zip.mimeTypes.contains(mimeType) -> drawable.ic_proton_file_type_zip_24
+    AttachmentMimeType.Archive.mimeTypes.contains(mimeType) -> drawable.ic_proton_file_type_zip_24
     AttachmentMimeType.Image.mimeTypes.contains(mimeType) -> drawable.ic_proton_file_type_image_24
     AttachmentMimeType.Txt.mimeTypes.contains(mimeType) -> drawable.ic_proton_file_type_text_24
     AttachmentMimeType.Audio.mimeTypes.contains(mimeType) -> drawable.ic_proton_file_type_audio_24
@@ -134,7 +147,7 @@ fun getDrawableForMimeType(mimeType: String) = when {
 fun getContentDescriptionForMimeType(mimeType: String) = when {
     AttachmentMimeType.Doc.mimeTypes.contains(mimeType) -> AttachmentMimeType.Doc.contentDescription
     AttachmentMimeType.Pdf.mimeTypes.contains(mimeType) -> AttachmentMimeType.Pdf.contentDescription
-    AttachmentMimeType.Zip.mimeTypes.contains(mimeType) -> AttachmentMimeType.Zip.contentDescription
+    AttachmentMimeType.Archive.mimeTypes.contains(mimeType) -> AttachmentMimeType.Archive.contentDescription
     AttachmentMimeType.Image.mimeTypes.contains(mimeType) -> AttachmentMimeType.Image.contentDescription
     AttachmentMimeType.Txt.mimeTypes.contains(mimeType) -> AttachmentMimeType.Txt.contentDescription
     AttachmentMimeType.Audio.mimeTypes.contains(mimeType) -> AttachmentMimeType.Audio.contentDescription
