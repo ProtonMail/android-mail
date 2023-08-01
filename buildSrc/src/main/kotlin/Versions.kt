@@ -52,6 +52,7 @@ object Versions {
         const val testAndroidJUnit = "1.1.5"
         const val testCore = "1.5.0"
         const val testMacroBenchmark = "1.1.0-beta05"
+        const val testMonitor = "1.6.1"
         const val testRunner = "1.5.2"
         const val testRules = "1.5.0"
         const val testOrchestrator = "1.4.2"

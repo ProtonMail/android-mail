@@ -185,6 +185,7 @@ object Dependencies {
         add(AndroidX.Test.espresso)
         add(AndroidX.Test.espressoWeb)
         add(AndroidX.Test.espressoIntents)
+        add(AndroidX.Test.monitor)
         add(AndroidX.Test.rules)
         add(AndroidX.Test.runner)
         add(AndroidX.Test.uiautomator)

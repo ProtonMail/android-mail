@@ -155,6 +155,7 @@ object AndroidX {
         const val espressoIntents = "androidx.test.espresso:espresso-intents:${Versions.AndroidX.testEspresso}"
         const val macroBenchmark = "androidx.benchmark:benchmark-macro-junit4:${Versions.AndroidX.testMacroBenchmark}"
         const val orchestrator = "androidx.test:orchestrator:${Versions.AndroidX.testOrchestrator}"
+        const val monitor = "androidx.test:monitor:${Versions.AndroidX.testMonitor}"
         const val runner = "androidx.test:runner:${Versions.AndroidX.testRunner}"
         const val rules = "androidx.test:rules:${Versions.AndroidX.testRules}"
         const val uiautomator = "androidx.test.uiautomator:uiautomator:${Versions.AndroidX.testUiautomator}"
