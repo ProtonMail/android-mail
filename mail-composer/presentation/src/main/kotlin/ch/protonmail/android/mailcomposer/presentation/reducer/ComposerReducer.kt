@@ -82,6 +82,9 @@ class ComposerReducer @Inject constructor() {
             error = Effect.of(TextUiModel(R.string.composer_error_loading_draft)),
             isLoading = false
         )
+        is ComposerEvent.ApiAssignedMessageIdReceived -> currentState.copy(
+            fields = currentState.fields.copy(draftId = apiAssignedMessageId)
+        )
     }
 
     private fun updateComposerFieldsState(currentState: ComposerDraftState, draftFields: DraftFields) =

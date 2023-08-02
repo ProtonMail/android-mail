@@ -27,6 +27,7 @@ import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcomposer.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsBcc
@@ -34,6 +35,7 @@ import ch.protonmail.android.mailcomposer.domain.model.RecipientsCc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsTo
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.domain.model.Subject
+import ch.protonmail.android.mailcomposer.domain.usecase.DraftSyncer
 import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses
 import ch.protonmail.android.mailcomposer.domain.usecase.GetDecryptedDraftFields
 import ch.protonmail.android.mailcomposer.domain.usecase.GetPrimaryAddress
@@ -66,6 +68,7 @@ import ch.protonmail.android.testdata.contact.ContactSample
 import io.mockk.Called
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.coVerifyOrder
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
@@ -102,6 +105,7 @@ class ComposerViewModelTest {
     private val isValidEmailAddressMock = mockk<IsValidEmailAddress>()
     private val getPrimaryAddressMock = mockk<GetPrimaryAddress>()
     private val provideNewDraftIdMock = mockk<ProvideNewDraftId>()
+    private val draftSyncer = mockk<DraftSyncer>()
     private val getComposerSenderAddresses = mockk<GetComposerSenderAddresses> {
         coEvery { this@mockk.invoke() } returns GetComposerSenderAddresses.Error.UpgradeToChangeSender.left()
     }
@@ -126,6 +130,7 @@ class ComposerViewModelTest {
             getDecryptedDraftFields,
             savedStateHandle,
             observeDraftStateForApiAssignedId,
+            draftSyncer,
             observePrimaryUserIdMock,
             provideNewDraftIdMock
         )
@@ -758,6 +763,47 @@ class ComposerViewModelTest {
         assertEquals(TextUiModel(R.string.composer_error_loading_draft), actual.error.consume())
     }
 
+    @Test
+    fun `starts syncing draft for current messageId when composer is opened`() = runTest {
+        // Given
+        val userId = expectedUserId { UserIdSample.Primary }
+        val messageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        expectedPrimaryAddress(userId) { UserAddressSample.PrimaryAddress }
+        expectNoApiAssignedId(userId, messageId)
+        expectStartDraftSync(userId, messageId)
+        expectNoInputDraftMessageId()
+
+        // When
+        val actual = viewModel.state.value
+
+        // Then
+        assertEquals(messageId, actual.fields.draftId)
+        coVerify { draftSyncer.start(userId, messageId, DraftAction.Compose, any()) }
+    }
+
+    @Test
+    fun `emits state with api assigned messageId and re-start syncing draft with it`() = runTest {
+        // Given
+        val apiAssignedId = MessageIdSample.RemoteDraft
+        val userId = expectedUserId { UserIdSample.Primary }
+        val messageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        expectedPrimaryAddress(userId) { UserAddressSample.PrimaryAddress }
+        expectApiAssignedId(userId, messageId, apiAssignedId)
+        expectStartDraftSync(userId, messageId)
+        expectStartDraftSync(userId, apiAssignedId)
+        expectNoInputDraftMessageId()
+
+        // When
+        val state = viewModel.state.value
+
+        // Then
+        assertEquals(apiAssignedId, state.fields.draftId)
+        coVerifyOrder {
+            draftSyncer.start(userId, messageId, DraftAction.Compose, any())
+            draftSyncer.start(userId, apiAssignedId, DraftAction.Compose, any())
+        }
+    }
+
     @AfterTest
     fun tearDown() {
         unmockkObject(ComposerDraftState.Companion)
@@ -787,6 +833,22 @@ class ComposerViewModelTest {
 
     private fun expectInputDraftMessageId(draftId: () -> MessageId) = draftId().also {
         every { savedStateHandle.get<String>(ComposerScreen.DraftMessageIdKey) } returns it.id
+    }
+
+    private fun expectStartDraftSync(userId: UserId, messageId: MessageId) {
+        coEvery { draftSyncer.start(userId, messageId, DraftAction.Compose, any()) } returns Unit
+    }
+
+    private fun expectApiAssignedId(
+        userId: UserId,
+        messageId: MessageId,
+        apiAssignedId: MessageId
+    ) {
+        coEvery { observeDraftStateForApiAssignedId(userId, messageId) } returns flowOf(apiAssignedId)
+    }
+
+    private fun expectNoApiAssignedId(userId: UserId, messageId: MessageId) {
+        coEvery { observeDraftStateForApiAssignedId(userId, messageId) } returns flowOf()
     }
 
     private fun expectedViewModelInitialState(

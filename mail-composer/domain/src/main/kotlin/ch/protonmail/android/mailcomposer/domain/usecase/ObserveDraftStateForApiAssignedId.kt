@@ -28,10 +28,9 @@ import javax.inject.Inject
 
 class ObserveDraftStateForApiAssignedId @Inject constructor(private val draftStateRepository: DraftStateRepository) {
 
-    operator fun invoke(userId: UserId, messageId: MessageId): Flow<MessageId> {
-        return draftStateRepository.observe(userId, messageId).mapNotNull {
+    operator fun invoke(userId: UserId, messageId: MessageId): Flow<MessageId> =
+        draftStateRepository.observe(userId, messageId).mapNotNull {
             it.getOrNull()?.apiMessageId
         }.distinctUntilChanged()
-    }
 
 }

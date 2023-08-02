@@ -23,6 +23,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailcomposer.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsBcc
@@ -30,6 +31,7 @@ import ch.protonmail.android.mailcomposer.domain.model.RecipientsCc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsTo
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.domain.model.Subject
+import ch.protonmail.android.mailcomposer.domain.usecase.DraftSyncer
 import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses
 import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses.Error
 import ch.protonmail.android.mailcomposer.domain.usecase.GetDecryptedDraftFields
@@ -54,12 +56,14 @@ import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.test.idlingresources.ComposerIdlingResource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
@@ -85,6 +89,7 @@ class ComposerViewModel @Inject constructor(
     getDecryptedDraftFields: GetDecryptedDraftFields,
     savedStateHandle: SavedStateHandle,
     private val observeDraftStateForApiAssignedId: ObserveDraftStateForApiAssignedId,
+    private val draftSyncer: DraftSyncer,
     observePrimaryUserId: ObservePrimaryUserId,
     provideNewDraftId: ProvideNewDraftId
 ) : ViewModel() {
@@ -104,14 +109,6 @@ class ComposerViewModel @Inject constructor(
             getPrimaryAddress(userId)
                 .onLeft { emitNewStateFor(ComposerEvent.ErrorLoadingDefaultSenderAddress) }
                 .onRight { emitNewStateFor(ComposerEvent.DefaultSenderReceived(SenderUiModel(it.email))) }
-
-            observeDraftStateForApiAssignedId(userId, currentMessageId()).mapLatest {
-                Timber.d("Draft state updated with API assigned ID $it")
-                // Re-trigger syncher with new API ID
-            }.onStart {
-                // Trigger syncher with initial local message ID
-                // Input param such as parentId, action and messageId (eg. reply, existing draft) are also given here
-            }
         }.launchIn(viewModelScope)
 
         savedStateHandle.get<String>(ComposerScreen.DraftMessageIdKey)?.let { inputDraftId ->
@@ -125,6 +122,7 @@ class ComposerViewModel @Inject constructor(
 
             }
         }
+        viewModelScope.launch { startDraftSyncer() }
     }
 
     override fun onCleared() {
@@ -195,6 +193,17 @@ class ComposerViewModel @Inject constructor(
             ifLeft = { ComposerEvent.ErrorStoringDraftBody },
             ifRight = { ComposerAction.DraftBodyChanged(action.draftBody) }
         )
+
+    private suspend fun CoroutineScope.startDraftSyncer() {
+        observeDraftStateForApiAssignedId(primaryUserId(), currentMessageId()).map { apiMessageId ->
+            Timber.d("Draft syncer: state updated with API assigned id: $apiMessageId")
+            draftSyncer.start(primaryUserId(), apiMessageId, DraftAction.Compose, this)
+            emitNewStateFor(ComposerEvent.ApiAssignedMessageIdReceived(apiMessageId))
+        }.onStart {
+            Timber.d("Draft syncer: scheduled with messageId ${currentMessageId()}")
+            draftSyncer.start(primaryUserId(), currentMessageId(), DraftAction.Compose, this@startDraftSyncer)
+        }.collect()
+    }
 
     private suspend fun primaryUserId() = primaryUserId.first()
 

@@ -46,6 +46,7 @@ import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel.Va
 import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.Recipient
+import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -456,6 +457,16 @@ class ComposerReducerTest(
             )
         )
 
+        private val EmptyToUpdatedMessageIdOnApiAssignedId = TestTransition(
+            name = "Should update the draft id in the draft state fields when API assigned ID is received",
+            currentState = ComposerDraftState.initial(messageId),
+            operation = ComposerEvent.ApiAssignedMessageIdReceived(MessageIdSample.RemoteDraft),
+            expectedState = aNotSubmittableState(
+                draftId = MessageIdSample.RemoteDraft,
+                error = Effect.empty()
+            )
+        )
+
         private val transitions = listOf(
             EmptyToSubmittableToField,
             EmptyToNotSubmittableToField,
@@ -484,7 +495,8 @@ class ComposerReducerTest(
             EmptyToCloseComposerWithDraftSaved,
             EmptyToLoadingWithOpenExistingDraft,
             LoadingToFieldsWhenReceivedDraftData,
-            LoadingToErrorWhenErrorLoadingDraftData
+            LoadingToErrorWhenErrorLoadingDraftData,
+            EmptyToUpdatedMessageIdOnApiAssignedId
         )
 
         private fun aSubmittableState(
