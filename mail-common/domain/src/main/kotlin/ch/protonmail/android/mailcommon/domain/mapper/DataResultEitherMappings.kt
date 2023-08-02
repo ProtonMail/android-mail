@@ -66,7 +66,7 @@ private fun toHttpDataError(dataResult: DataResult.Error.Remote): DataError.Remo
     if (networkError == NetworkError.Unknown) {
         Timber.e("UNHANDLED NETWORK ERROR caused by result: $dataResult")
     }
-    return DataError.Remote.Http(networkError)
+    return DataError.Remote.Http(networkError, dataResult.tryExtractErrorMessage())
 }
 
 private fun handleRemoteError(dataResult: DataResult.Error.Remote): DataError.Remote =
@@ -77,11 +77,13 @@ private fun handleRemoteError(dataResult: DataResult.Error.Remote): DataError.Re
 
 private fun handleApiException(cause: ApiException, dataResult: DataResult.Error.Remote) =
     when (val innerCause = cause.cause) {
-        is UnknownHostException -> DataError.Remote.Http(NetworkError.NoNetwork)
+        is UnknownHostException -> DataError.Remote.Http(NetworkError.NoNetwork, dataResult.tryExtractErrorMessage())
         is HttpException -> toHttpDataError(dataResult.copy(httpCode = innerCause.code()))
         is ProtonErrorException -> toProtonDataError(dataResult.copy(protonCode = innerCause.protonData.code))
         else -> unhandledRemoteError(dataResult)
     }
+
+private fun DataResult.Error.Remote.tryExtractErrorMessage() = this.message ?: "No error message found"
 
 private fun unhandledRemoteError(dataResult: DataResult.Error.Remote): DataError.Remote.Unknown {
     Timber.e("UNHANDLED REMOTE ERROR caused by result: $dataResult")

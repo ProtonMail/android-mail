@@ -104,7 +104,7 @@ class AttachmentRemoteDataSourceImplTest {
     fun `should return api response mapped to either when embedded image api call has failed`() = runTest {
         // Given
         coEvery { attachmentApi.getAttachment(attachmentId.id) } throws UnknownHostException()
-        val expected = DataError.Remote.Http(NetworkError.NoNetwork).left()
+        val expected = DataError.Remote.Http(NetworkError.NoNetwork, "No error message found").left()
 
         // When
         val actual = attachmentRemoteDataSource.getEmbeddedImage(userId, messageId, attachmentId)

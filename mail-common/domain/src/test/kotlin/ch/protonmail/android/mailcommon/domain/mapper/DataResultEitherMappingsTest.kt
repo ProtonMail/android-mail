@@ -102,7 +102,7 @@ internal class DataResultEitherMappingsTest {
         // when
         input.mapToEither().test {
             // then
-            assertEquals(DataError.Remote.Http(NetworkError.NotFound).left(), awaitItem())
+            assertEquals(DataError.Remote.Http(NetworkError.NotFound, "No error message found").left(), awaitItem())
             awaitComplete()
         }
     }
@@ -115,7 +115,9 @@ internal class DataResultEitherMappingsTest {
         // when
         input.mapToEither().test {
             // then
-            val expected = DataError.Remote.Http(NetworkError.Unknown).left()
+            val expected = DataError.Remote.Http(
+                NetworkError.Unknown, "No error message found"
+            ).left()
             assertEquals(expected, awaitItem())
             loggingTestRule.assertErrorLogged("UNHANDLED NETWORK ERROR caused by result: $dataResult")
             awaitComplete()
@@ -185,7 +187,7 @@ internal class DataResultEitherMappingsTest {
             )
         )
         val dataResult = DataResult.Error.Remote(message = null, cause = cause)
-        val expectedError = DataError.Remote.Http(NetworkError.NoNetwork)
+        val expectedError = DataError.Remote.Http(NetworkError.NoNetwork, "No error message found")
         val input = flowOf(dataResult)
         // when
         input.mapToEither().test {
@@ -198,13 +200,14 @@ internal class DataResultEitherMappingsTest {
     @Test
     fun `does handle nested Http Exceptions mapping them to http errors`() = runTest {
         // given
+        val errorMessage = "HTTP 505 HTTP Version Not Supported"
         val httpException = mockk<HttpException> {
-            every { message } returns "HTTP 505 HTTP Version Not Supported"
+            every { this@mockk.message } returns errorMessage
             every { code() } returns 505
         }
         val input = flowOf(
             DataResult.Error.Remote(
-                message = "HTTP 505 HTTP Version Not Supported",
+                message = errorMessage,
                 cause = ApiException(ApiResult.Error.Parse(httpException)),
                 httpCode = 0
             )
@@ -212,7 +215,8 @@ internal class DataResultEitherMappingsTest {
         // when
         input.mapToEither().test {
             // then
-            assertEquals(DataError.Remote.Http(NetworkError.ServerError).left(), awaitItem())
+            val http = DataError.Remote.Http(NetworkError.ServerError, errorMessage)
+            assertEquals(http.left(), awaitItem())
             awaitComplete()
         }
     }

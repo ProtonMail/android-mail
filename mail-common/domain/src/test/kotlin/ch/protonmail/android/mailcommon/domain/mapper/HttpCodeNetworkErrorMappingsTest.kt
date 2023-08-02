@@ -77,7 +77,7 @@ internal class HttpCodeNetworkErrorMappingsTest {
     @Test
     fun `does return Unknown for unknown errors`() {
         // given
-        val unknownCodes = generateRandoms(0..400) +
+        val unknownCodes = generateRandoms(0..399) +
             generateRandoms(405..499) +
             generateRandoms(600..999)
         // when
@@ -88,8 +88,7 @@ internal class HttpCodeNetworkErrorMappingsTest {
         }
     }
 
-    private fun generateRandoms(range: IntRange, howMany: Int = 100): Set<Int> =
-        (0 until howMany).map {
-            range.random()
-        }.toSet()
+    private fun generateRandoms(range: IntRange, howMany: Int = 100): Set<Int> = (0 until howMany).map {
+        range.random()
+    }.toSet()
 }

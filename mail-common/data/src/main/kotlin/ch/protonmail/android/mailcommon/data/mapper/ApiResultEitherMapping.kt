@@ -30,13 +30,24 @@ import timber.log.Timber
 
 fun <T : Any> ApiResult<T>.toEither(): Either<DataError.Remote, T> = when (this) {
     is ApiResult.Success -> value.right()
-    is ApiResult.Error.Http -> DataError.Remote.Http(NetworkError.fromHttpCode(httpCode)).left()
+
+    is ApiResult.Error.Http -> {
+        DataError.Remote.Http(NetworkError.fromHttpCode(httpCode), this.extractApiErrorInfo()).left()
+    }
+
     is ApiResult.Error.Parse -> {
         Timber.e("Unexpected parse error, caused by: ${this.cause}")
-        DataError.Remote.Http(NetworkError.Parse).left()
+        DataError.Remote.Http(NetworkError.Parse, this.cause.tryExtractError()).left()
     }
-    is ApiResult.Error.Connection -> DataError.Remote.Http(toNetworkError(this)).left()
+
+    is ApiResult.Error.Connection -> {
+        DataError.Remote.Http(toNetworkError(this), this.cause.tryExtractError()).left()
+    }
 }
+
+private fun Throwable?.tryExtractError() = this?.cause?.message ?: "No error message found"
+
+private fun ApiResult.Error.Http.extractApiErrorInfo(): String = "${this.message} - ${this.proton?.error}"
 
 private fun toNetworkError(apiResult: ApiResult.Error.Connection): NetworkError = when (apiResult) {
     is ApiResult.Error.NoInternet -> NetworkError.NoNetwork

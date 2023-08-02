@@ -59,7 +59,8 @@ class ApiResultEitherMappingTest {
         val actual = apiResult.toEither()
 
         // then
-        assertEquals(DataError.Remote.Http(NetworkError.Parse).left(), actual)
+        val expected = DataError.Remote.Http(NetworkError.Parse, "No error message found")
+        assertEquals(expected.left(), actual)
         loggingTestRule.assertErrorLogged("Unexpected parse error, caused by: $cause")
     }
 
@@ -72,7 +73,8 @@ class ApiResultEitherMappingTest {
         val result = apiResult.toEither()
 
         // then
-        assertEquals(DataError.Remote.Http(NetworkError.NoNetwork).left(), result)
+        val expected = DataError.Remote.Http(NetworkError.NoNetwork, "No error message found")
+        assertEquals(expected.left(), result)
     }
 
     @Test
@@ -84,7 +86,8 @@ class ApiResultEitherMappingTest {
         val result = apiResult.toEither()
 
         // then
-        assertEquals(DataError.Remote.Http(NetworkError.Unreachable).left(), result)
+        val expected = DataError.Remote.Http(NetworkError.Unreachable, "No error message found")
+        assertEquals(expected.left(), result)
     }
 
     @Test
@@ -101,7 +104,8 @@ class ApiResultEitherMappingTest {
         val result = apiResult.toEither()
 
         // then
-        assertEquals(DataError.Remote.Http(NetworkError.NoNetwork).left(), result)
+        val expected = DataError.Remote.Http(NetworkError.NoNetwork, "No error message found")
+        assertEquals(expected.left(), result)
     }
 
     @Test
@@ -109,13 +113,15 @@ class ApiResultEitherMappingTest {
         // given
         mockkStatic(NetworkError.Companion::fromHttpCode) {
             every { NetworkError.fromHttpCode(any()) } returns NetworkError.Unreachable
-            val apiResult = ApiResult.Error.Http(404, "message")
+            val protonData = ApiResult.Error.ProtonData(-1, "protonError")
+            val apiResult = ApiResult.Error.Http(404, "message", protonData)
 
             // when
             val result = apiResult.toEither()
 
             // then
-            assertEquals(DataError.Remote.Http(NetworkError.Unreachable).left(), result)
+            val expected = DataError.Remote.Http(NetworkError.Unreachable, "message - protonError")
+            assertEquals(expected.left(), result)
         }
     }
 }

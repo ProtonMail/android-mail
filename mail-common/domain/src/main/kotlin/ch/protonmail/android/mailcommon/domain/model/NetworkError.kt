@@ -63,6 +63,11 @@ sealed interface NetworkError {
     object Parse : NetworkError
 
     /**
+     * Request is not in the correct format
+     */
+    object BadRequest : NetworkError
+
+    /**
      * This object is not meant to be actively used.
      * Its purpose is to notify the logging tool that a case that should be handled
      * is not and to allow dedicated handling to be put in place.

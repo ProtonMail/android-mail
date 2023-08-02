@@ -50,7 +50,7 @@ sealed interface DataError {
         /**
          * The API returned a failure response
          */
-        data class Http(val networkError: NetworkError) : Remote
+        data class Http(val networkError: NetworkError, val apiErrorInfo: String? = null) : Remote
 
         /**
          * The API returned a success, but proton code is not OK
