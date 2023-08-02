@@ -93,7 +93,7 @@ class NotificationsDeepLinksViewModelTest {
     }
 
     @Test
-    fun `Should emit navigate to conversation details when conversation model is enabled`() = runTest {
+    fun `Should emit navigate to conversation details when conversation mode is enabled`() = runTest {
         // Given
         val notificationId = Random.nextInt()
         val messageId = UUID.randomUUID().toString()
@@ -128,7 +128,7 @@ class NotificationsDeepLinksViewModelTest {
     }
 
     @Test
-    fun `Should emit navigate to message details when conversation model is not enabled`() = runTest {
+    fun `Should emit navigate to message details when conversation mode is not enabled`() = runTest {
         // Given
         val notificationId = Random.nextInt()
         val messageId = UUID.randomUUID().toString()

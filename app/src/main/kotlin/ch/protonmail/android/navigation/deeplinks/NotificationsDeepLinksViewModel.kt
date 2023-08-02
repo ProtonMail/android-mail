@@ -64,7 +64,6 @@ class NotificationsDeepLinksViewModel @Inject constructor(
 
     private var navigateToMessageJob: Job? = null
 
-    // accountManager.setAsPrimary(userId)
     fun navigateToMessage(
         notificationId: Int,
         messageId: String,

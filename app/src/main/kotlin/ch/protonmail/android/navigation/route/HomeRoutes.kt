@@ -180,6 +180,7 @@ internal fun NavGraphBuilder.addSettings(navController: NavHostController, showF
     }
 }
 
+@Suppress("ComplexMethod")
 internal fun NavGraphBuilder.addDeepLinkHandler(navController: NavHostController) {
     composable(
         route = Destination.Screen.DeepLinksHandler.route,
@@ -197,10 +198,9 @@ internal fun NavGraphBuilder.addDeepLinkHandler(navController: NavHostController
             userId: String?,
             notificationId: Int?,
             action: (notificationId: Int, userId: String) -> Unit
-        ) = if (notificationId != null && userId != null && messageId == null) {
-            action(notificationId, userId)
-        } else {
-            Unit
+        ) = when {
+            notificationId != null && userId != null && messageId == null -> action(notificationId, userId)
+            else -> Unit
         }
 
         fun onMessageNotification(
@@ -208,10 +208,9 @@ internal fun NavGraphBuilder.addDeepLinkHandler(navController: NavHostController
             userId: String?,
             notificationId: Int?,
             action: (messageId: String, userId: String, notificationId: Int) -> Unit
-        ) = if (notificationId != null && messageId != null && userId != null) {
-            action(messageId, userId, notificationId)
-        } else {
-            Unit
+        ) = when {
+            notificationId != null && messageId != null && userId != null -> action(messageId, userId, notificationId)
+            else -> Unit
         }
 
         fun showUserSwitchedEmailIfRequired(email: String?) {
@@ -222,46 +221,37 @@ internal fun NavGraphBuilder.addDeepLinkHandler(navController: NavHostController
                     Toast.LENGTH_LONG
                 ).show()
             }
-
         }
 
         LaunchedEffect(key1 = state) {
             when (state) {
-                NotificationsDeepLinksViewModel.State.None -> {
+                is NotificationsDeepLinksViewModel.State.None -> {
                     Timber.d("Deep link state is None")
                 }
 
-                NotificationsDeepLinksViewModel.State.NavigateToInbox.ActiveUser -> {
+                is NotificationsDeepLinksViewModel.State.NavigateToInbox.ActiveUser -> {
                     navController.navigate(Destination.Screen.Mailbox.route) {
-                        popUpTo(navController.graph.id) {
-                            inclusive = false
-                        }
+                        popUpTo(navController.graph.id) { inclusive = false }
                     }
                 }
 
                 is NotificationsDeepLinksViewModel.State.NavigateToInbox.ActiveUserSwitched -> {
                     navController.navigate(Destination.Screen.Mailbox.route) {
-                        popUpTo(navController.graph.id) {
-                            inclusive = true
-                        }
+                        popUpTo(navController.graph.id) { inclusive = true }
                     }
                     showUserSwitchedEmailIfRequired(state.email)
                 }
 
                 is NotificationsDeepLinksViewModel.State.NavigateToMessageDetails -> {
                     navController.navigate(Destination.Screen.Message(state.messageId)) {
-                        popUpTo(Destination.Screen.Mailbox.route) {
-                            inclusive = false
-                        }
+                        popUpTo(Destination.Screen.Mailbox.route) { inclusive = false }
                     }
                     showUserSwitchedEmailIfRequired(state.userSwitchedEmail)
                 }
 
                 is NotificationsDeepLinksViewModel.State.NavigateToConversation -> {
                     navController.navigate(Destination.Screen.Conversation(state.conversationId)) {
-                        popUpTo(Destination.Screen.Mailbox.route) {
-                            inclusive = false
-                        }
+                        popUpTo(Destination.Screen.Mailbox.route) { inclusive = false }
                     }
                     showUserSwitchedEmailIfRequired(state.userSwitchedEmail)
                 }
@@ -282,4 +272,3 @@ internal fun NavGraphBuilder.addDeepLinkHandler(navController: NavHostController
         }
     }
 }
-
