@@ -24,13 +24,13 @@ import androidx.compose.ui.test.onNodeWithText
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
 import ch.protonmail.android.maillabel.presentation.previewdata.MailboxItemLabelsPreviewData
 import ch.protonmail.android.maillabel.presentation.ui.LabelsList
-import ch.protonmail.android.test.annotations.suite.SmokeExtendedTest
+import ch.protonmail.android.test.annotations.suite.RegressionTest
 import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import me.proton.core.compose.theme.ProtonTheme
 import org.junit.Rule
 import kotlin.test.Test
 
-@SmokeExtendedTest
+@RegressionTest
 internal class MailboxItemLabelsTest {
 
     @get:Rule

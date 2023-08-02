@@ -25,7 +25,7 @@ import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryPara
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withPriority
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withStatusCode
-import ch.protonmail.android.test.annotations.suite.SmokeExtendedTest
+import ch.protonmail.android.test.annotations.suite.RegressionTest
 import ch.protonmail.android.test.annotations.suite.TemporaryTest
 import ch.protonmail.android.uitest.MockedNetworkTest
 import ch.protonmail.android.uitest.helpers.core.TestId
@@ -58,7 +58,7 @@ import io.mockk.mockk
 import me.proton.core.auth.domain.usecase.ValidateServerProof
 import org.junit.Test
 
-@SmokeExtendedTest
+@RegressionTest
 @HiltAndroidTest
 @UninstallModules(ServerProofModule::class)
 internal class ComposerMainTests : MockedNetworkTest(), ComposerTests {

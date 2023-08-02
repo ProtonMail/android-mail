@@ -31,7 +31,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailsPreviewData
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
-import ch.protonmail.android.test.annotations.suite.SmokeExtendedTest
+import ch.protonmail.android.test.annotations.suite.RegressionTest
 import ch.protonmail.android.testdata.message.MessageBodyUiModelTestData
 import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.detail.ExtendedHeaderRecipientEntry
@@ -46,7 +46,7 @@ import org.junit.Rule
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
-@SmokeExtendedTest
+@RegressionTest
 internal class MessageDetailScreenTest {
 
     @get:Rule

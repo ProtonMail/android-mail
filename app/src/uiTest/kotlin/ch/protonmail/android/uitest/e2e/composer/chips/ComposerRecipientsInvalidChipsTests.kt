@@ -20,7 +20,7 @@ package ch.protonmail.android.uitest.e2e.composer.chips
 
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.networkmocks.mockwebserver.combineWith
-import ch.protonmail.android.test.annotations.suite.SmokeExtendedTest
+import ch.protonmail.android.test.annotations.suite.RegressionTest
 import ch.protonmail.android.test.annotations.suite.SmokeTest
 import ch.protonmail.android.uitest.MockedNetworkTest
 import ch.protonmail.android.uitest.helpers.core.TestId
@@ -46,7 +46,7 @@ import me.proton.core.auth.domain.usecase.ValidateServerProof
 import org.junit.Before
 import org.junit.Test
 
-@SmokeExtendedTest
+@RegressionTest
 @HiltAndroidTest
 @UninstallModules(ServerProofModule::class)
 internal class ComposerRecipientsInvalidChipsTests : MockedNetworkTest(), ComposerChipsTests {

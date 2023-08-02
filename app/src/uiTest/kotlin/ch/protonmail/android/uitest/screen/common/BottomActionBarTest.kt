@@ -22,7 +22,7 @@ import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
-import ch.protonmail.android.test.annotations.suite.SmokeExtendedTest
+import ch.protonmail.android.test.annotations.suite.RegressionTest
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
 import ch.protonmail.android.uitest.robot.common.BottomActionBarRobot
 import ch.protonmail.android.uitest.robot.common.verify
@@ -30,7 +30,7 @@ import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import org.junit.Rule
 import org.junit.Test
 
-@SmokeExtendedTest
+@RegressionTest
 internal class BottomActionBarTest {
 
     @get:Rule

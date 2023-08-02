@@ -20,7 +20,6 @@ package ch.protonmail.android.uitest.filters
 
 import androidx.test.filters.AbstractFilter
 import ch.protonmail.android.test.annotations.suite.RegressionTest
-import ch.protonmail.android.test.annotations.suite.SmokeExtendedTest
 import ch.protonmail.android.test.annotations.suite.SmokeTest
 import org.junit.runner.Description
 
@@ -33,7 +32,6 @@ internal class FullRegressionTestFilter : AbstractFilter() {
 
     override fun evaluateTest(description: Description): Boolean {
         return description.hasAnnotation(RegressionTest::class.java) ||
-            description.hasAnnotation(SmokeExtendedTest::class.java) ||
             description.hasAnnotation(SmokeTest::class.java)
     }
 }
