@@ -59,11 +59,6 @@ platform :android do
     sh("../scripts/run_firebase_ui_tests.sh smoke-test")
   end
 
-  desc "Runs extended Smoke Tests Suite on Firebase Test lab"
-  lane :smokeTestExtended do
-    sh("../scripts/run_firebase_ui_tests.sh smoke-extended-test")
-  end
-
   desc "Runs all UI tests on a wide set of devices on Firebase Test lab"
   lane :fullRegressionTest do
     sh("../scripts/run_firebase_ui_tests.sh full-regression-test")

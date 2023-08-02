@@ -29,13 +29,6 @@ case $1 in
   timeout=15m
   ;;
 
-'smoke-extended-test')
-  device_config=smokeTest
-  shards=4
-  test_targets='filter ch.protonmail.android.uitest.filters.SmokeTestExtendedFilter'
-  timeout=30m
-  ;;
-
 'full-regression-test')
   device_config=fullTest
   shards=4

@@ -175,21 +175,12 @@ run_firebase_smoke_tests:
       when: never
     - when: on_success
 
-run_firebase_extended_smoke_tests:
-  extends: .firebase_test_job
-  script:
-    - bundle exec fastlane smokeTestExtended
-  rules:
-    - if: $NIGHTLY_ALPHA_BUILD == "true"
-      when: never
-    - if: $CI_COMMIT_BRANCH == "master"
-
 run_firebase_full_regression_tests:
   extends: .firebase_test_job
   script:
     - bundle exec fastlane fullRegressionTest
   rules:
-    - if: $CI_COMMIT_BRANCH == "master" && $NIGHTLY_ALPHA_BUILD == "true"
+    - if: $CI_COMMIT_BRANCH == "master" && ($NIGHTLY_ALPHA_BUILD == "true" || $INTERNAL_ALPHA_RELEASE == "true")
     # Allow manual regression test runs on MRs if needed.
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
       when: manual
