@@ -21,6 +21,7 @@ package ch.protonmail.android.uitest.robot.composer.section
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerTestTags
 import ch.protonmail.android.test.ksp.annotations.AttachTo
 import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
@@ -49,7 +50,7 @@ internal class ComposerTopBarAppSection : ComposeSectionRobot() {
     }
 
     fun tapCloseButton() = apply {
-        closeButton.performClick()
+        closeButton.performScrollTo().performClick()
     }
 
     fun tapSendButton() = apply {
