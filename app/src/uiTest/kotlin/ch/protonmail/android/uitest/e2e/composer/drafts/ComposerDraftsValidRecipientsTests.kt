@@ -20,14 +20,13 @@ package ch.protonmail.android.uitest.e2e.composer.drafts
 
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.networkmocks.mockwebserver.combineWith
+import ch.protonmail.android.test.annotations.suite.RegressionTest
 import ch.protonmail.android.test.annotations.suite.SmokeTest
 import ch.protonmail.android.uitest.MockedNetworkTest
 import ch.protonmail.android.uitest.helpers.core.TestId
 import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.models.mailbox.ParticipantEntry
-import ch.protonmail.android.uitest.robot.composer.composerRobot
-import ch.protonmail.android.uitest.robot.composer.section.topAppBarSection
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
@@ -36,17 +35,18 @@ import me.proton.core.auth.domain.usecase.ValidateServerProof
 import org.junit.Before
 import org.junit.Test
 
-@SmokeTest
+@RegressionTest
 @HiltAndroidTest
 @UninstallModules(ServerProofModule::class)
-internal class ComposerDraftsMainTests : MockedNetworkTest(), ComposerDraftsTests {
+internal class ComposerDraftsValidRecipientsTests : MockedNetworkTest(), ComposerDraftsTests {
 
     @JvmField
     @BindValue
     val serverProofValidation: ValidateServerProof = mockk(relaxUnitFun = true)
 
-    private val subject = "A subject!"
-    private val messageBody = "sample body"
+    private val validToRecipient = ParticipantEntry.WithParticipant("a@b.c")
+    private val validCcRecipient = ParticipantEntry.WithParticipant("d@e.f")
+    private val validBccRecipient = ParticipantEntry.WithParticipant("g@h.i")
 
     @Before
     fun navigateToComposer() {
@@ -55,35 +55,35 @@ internal class ComposerDraftsMainTests : MockedNetworkTest(), ComposerDraftsTest
     }
 
     @Test
-    @TestId("190295", "207357")
-    fun testNoDraftSavedUponComposerExit() {
-        composerRobot {
-            topAppBarSection { tapCloseButton() }
-        }
-
-        verifyEmptyDrafts()
+    @SmokeTest
+    @TestId("207363")
+    fun testValidToAddressDoesTriggerDraftCreation() {
+        createDraftWithSuccess(toRecipient = validToRecipient)
+        verifyDraftCreation(validToRecipient)
     }
 
     @Test
-    @TestId("190296", "207367")
-    fun testDraftSavedWithSubjectOnlyUponEmptyBody() {
-        createDraftWithSuccess(subject = subject, body = "")
-        verifyDraftCreation(ParticipantEntry.NoRecipient, subject = subject)
+    @TestId("207364")
+    fun testValidCcAddressDoesTriggerDraftCreation() {
+        createDraftWithSuccess(ccRecipient = validCcRecipient)
+        verifyDraftCreation(validCcRecipient)
     }
 
     @Test
-    @TestId("190297")
-    fun testDraftSavedWhenBodyIsPopulated() {
-        createDraftWithSuccess(body = "sample body")
-        verifyDraftCreation(ParticipantEntry.NoRecipient, body = messageBody)
+    @TestId("207365")
+    fun testValidBccAddressDoesTriggerDraftCreation() {
+        createDraftWithSuccess(bccRecipient = validBccRecipient)
+        verifyDraftCreation(validBccRecipient)
     }
 
     @Test
-    @TestId("190298")
-    fun testDraftSavedWhenAllFieldsArePopulated() {
-        val participant = ParticipantEntry.WithParticipant("test@example.com")
-
-        createDraftWithSuccess(toRecipient = participant, subject = subject, body = messageBody)
-        verifyDraftCreation(participant, subject = subject, body = messageBody)
+    @TestId("207366")
+    fun testValidAddressesDoTriggerDraftCreation() {
+        createDraftWithSuccess(
+            toRecipient = validToRecipient,
+            ccRecipient = validCcRecipient,
+            bccRecipient = validBccRecipient
+        )
+        verifyDraftCreation(validToRecipient, validCcRecipient, validBccRecipient)
     }
 }
