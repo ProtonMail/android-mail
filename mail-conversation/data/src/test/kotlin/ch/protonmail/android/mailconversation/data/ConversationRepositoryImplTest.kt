@@ -261,13 +261,7 @@ class ConversationRepositoryImplTest {
         coEvery {
             conversationLocalDataSource.addLabels(userId, conversationIds, listOf(labelId))
         } returns listOf(ConversationTestData.starredConversation).right()
-        coEvery {
-            messageLocalDataSource.relabelMessagesInConversations(
-                userId = userId,
-                conversationIds = conversationIds,
-                labelIdsToAdd = setOf(labelId)
-            )
-        } returns MessageTestData.unStarredMessagesByConversation.right()
+        expectMessageRelabelingSuccess(conversationIds, labelIdsToAdd = setOf(labelId))
 
         // When
         val actual = conversationRepository.addLabel(userId, conversationIds, labelId)
@@ -285,13 +279,7 @@ class ConversationRepositoryImplTest {
         coEvery {
             conversationLocalDataSource.addLabels(userId, conversationIds, listOf(labelId))
         } returns listOf(ConversationTestData.conversation).right()
-        coEvery {
-            messageLocalDataSource.relabelMessagesInConversations(
-                userId = userId,
-                conversationIds = conversationIds,
-                labelIdsToAdd = setOf(labelId)
-            )
-        } returns MessageTestData.unStarredMsgByConversationWithStarredMsg.right()
+        expectMessageRelabelingSuccess(conversationIds, labelIdsToAdd = setOf(labelId))
 
         // When
         conversationRepository.addLabel(userId, conversationIds, labelId)
@@ -310,13 +298,7 @@ class ConversationRepositoryImplTest {
         coEvery {
             conversationLocalDataSource.addLabels(userId, conversationIds, listOf(labelId))
         } returns listOf(ConversationTestData.conversation).right()
-        coEvery {
-            messageLocalDataSource.relabelMessagesInConversations(
-                userId = userId,
-                conversationIds = conversationIds,
-                labelIdsToAdd = setOf(labelId)
-            )
-        } returns MessageTestData.unStarredMsgByConversationWithStarredMsg.right()
+        expectMessageRelabelingSuccess(conversationIds, labelIdsToAdd = setOf(labelId))
 
         // When
         conversationRepository.addLabel(userId, conversationIds, labelId)
@@ -339,13 +321,7 @@ class ConversationRepositoryImplTest {
         coEvery {
             conversationLocalDataSource.addLabels(userId, conversationIds, labelIds)
         } returns listOf(ConversationTestData.conversation).right()
-        coEvery {
-            messageLocalDataSource.relabelMessagesInConversations(
-                userId = userId,
-                conversationIds = conversationIds,
-                labelIdsToAdd = labelIds.toSet()
-            )
-        } returns MessageTestData.unStarredMsgByConversationWithStarredMsg.right()
+        expectMessageRelabelingSuccess(conversationIds, labelIdsToAdd = labelIds.toSet())
 
         // When
         conversationRepository.addLabels(userId, conversationIds, labelIds)
@@ -368,13 +344,7 @@ class ConversationRepositoryImplTest {
         coEvery {
             conversationLocalDataSource.removeLabels(userId, conversationIds, listOf(labelId))
         } returns listOf(ConversationTestData.conversation).right()
-        coEvery {
-            messageLocalDataSource.relabelMessagesInConversations(
-                userId = userId,
-                conversationIds = conversationIds,
-                labelIdsToRemove = setOf(labelId)
-            )
-        } returns MessageTestData.unStarredMsgByConversationWithStarredMsg.right()
+        expectMessageRelabelingSuccess(conversationIds, labelIdsToRemove = setOf(labelId))
 
         // When
         val actual = conversationRepository.removeLabel(userId, conversationIds, labelId)
@@ -392,13 +362,7 @@ class ConversationRepositoryImplTest {
         coEvery {
             conversationLocalDataSource.removeLabels(userId, conversationIds, listOf(labelId))
         } returns listOf(ConversationTestData.conversation).right()
-        coEvery {
-            messageLocalDataSource.relabelMessagesInConversations(
-                userId = userId,
-                conversationIds = conversationIds,
-                labelIdsToRemove = setOf(labelId)
-            )
-        } returns MessageTestData.unStarredMsgByConversationWithStarredMsg.right()
+        expectMessageRelabelingSuccess(conversationIds, labelIdsToRemove = setOf(labelId))
 
         // When
         conversationRepository.removeLabel(userId, conversationIds, labelId)
@@ -421,13 +385,7 @@ class ConversationRepositoryImplTest {
         coEvery {
             conversationLocalDataSource.removeLabels(userId, conversationIds, listOf(labelId))
         } returns listOf(ConversationTestData.conversation).right()
-        coEvery {
-            messageLocalDataSource.relabelMessagesInConversations(
-                userId = userId,
-                conversationIds = conversationIds,
-                labelIdsToRemove = setOf(labelId)
-            )
-        } returns MessageTestData.unStarredMsgByConversationWithStarredMsg.right()
+        expectMessageRelabelingSuccess(conversationIds, labelIdsToRemove = setOf(labelId))
 
         // When
         conversationRepository.removeLabel(userId, conversationIds, labelId)
@@ -447,13 +405,7 @@ class ConversationRepositoryImplTest {
             coEvery {
                 conversationLocalDataSource.removeLabels(userId, conversationIds, labelIds)
             } returns listOf(ConversationTestData.conversation).right()
-            coEvery {
-                messageLocalDataSource.relabelMessagesInConversations(
-                    userId = userId,
-                    conversationIds = conversationIds,
-                    labelIdsToRemove = labelIds.toSet()
-                )
-            } returns MessageTestData.unStarredMsgByConversationWithStarredMsg.right()
+            expectMessageRelabelingSuccess(conversationIds, labelIdsToRemove = labelIds.toSet())
 
             // When
             conversationRepository.removeLabels(userId, conversationIds, labelIds)
@@ -473,13 +425,7 @@ class ConversationRepositoryImplTest {
         coEvery {
             conversationLocalDataSource.removeLabels(userId, conversationIds, labelIds)
         } returns listOf(ConversationTestData.conversation).right()
-        coEvery {
-            messageLocalDataSource.relabelMessagesInConversations(
-                userId = userId,
-                conversationIds = conversationIds,
-                labelIdsToRemove = labelIds.toSet()
-            )
-        } returns MessageTestData.unStarredMsgByConversationWithStarredMsg.right()
+        expectMessageRelabelingSuccess(conversationIds, labelIdsToRemove = labelIds.toSet())
 
         // When
         conversationRepository.removeLabels(userId, conversationIds, labelIds)
@@ -515,13 +461,7 @@ class ConversationRepositoryImplTest {
                 labelIds = listOf(SystemLabelId.Trash.labelId)
             )
         } returns listOf(trashedConversation).right()
-        coEvery {
-            messageLocalDataSource.relabelMessagesInConversations(
-                userId = userId,
-                conversationIds = listOf(conversationId),
-                labelIdsToAdd = setOf(SystemLabelId.Trash.labelId)
-            )
-        } returns MessageTestData.unStarredMsgByConversationWithStarredMsg.right()
+        expectMessageRelabelingSuccess(listOf(conversationId), labelIdsToAdd = setOf(SystemLabelId.Trash.labelId))
 
         // when
         val result = conversationRepository.move(userId, conversationId, emptyList(), SystemLabelId.Trash.labelId)
@@ -543,13 +483,7 @@ class ConversationRepositoryImplTest {
                 labelIds = listOf(SystemLabelId.Trash.labelId)
             )
         } returns listOf(ConversationSample.WeatherForecast).right()
-        coEvery {
-            messageLocalDataSource.relabelMessagesInConversations(
-                userId = userId,
-                conversationIds = listOf(conversationId),
-                labelIdsToAdd = setOf(SystemLabelId.Trash.labelId)
-            )
-        } returns MessageTestData.unStarredMsgByConversationWithStarredMsg.right()
+        expectMessageRelabelingSuccess(listOf(conversationId), labelIdsToAdd = setOf(SystemLabelId.Trash.labelId))
 
         // when
         conversationRepository.move(userId, conversationId, emptyList(), SystemLabelId.Trash.labelId)
@@ -600,13 +534,7 @@ class ConversationRepositoryImplTest {
                 labelIds = listOf(SystemLabelId.Trash.labelId)
             )
         } returns listOf(trashedConversation).right()
-        coEvery {
-            messageLocalDataSource.relabelMessagesInConversations(
-                userId = userId,
-                conversationIds = listOf(conversationId),
-                labelIdsToAdd = setOf(SystemLabelId.Trash.labelId)
-            )
-        } returns MessageTestData.unStarredMsgByConversationWithStarredMsg.right()
+        expectMessageRelabelingSuccess(listOf(conversationId), labelIdsToAdd = setOf(SystemLabelId.Trash.labelId))
 
         // when
         val result = conversationRepository.move(
@@ -656,13 +584,7 @@ class ConversationRepositoryImplTest {
                 labelIds = listOf(SystemLabelId.Spam.labelId)
             )
         } returns listOf(spammedConversation).right()
-        coEvery {
-            messageLocalDataSource.relabelMessagesInConversations(
-                userId = userId,
-                conversationIds = listOf(conversationId),
-                labelIdsToAdd = setOf(SystemLabelId.Spam.labelId)
-            )
-        } returns MessageTestData.unStarredMsgByConversationWithStarredMsg.right()
+        expectMessageRelabelingSuccess(listOf(conversationId), labelIdsToAdd = setOf(SystemLabelId.Spam.labelId))
 
         // when
         val result = conversationRepository.move(
@@ -689,13 +611,7 @@ class ConversationRepositoryImplTest {
                 labelIds = listOf(SystemLabelId.Trash.labelId)
             )
         } returns listOf(ConversationSample.WeatherForecast).right()
-        coEvery {
-            messageLocalDataSource.relabelMessagesInConversations(
-                userId = userId,
-                conversationIds = listOf(conversationId),
-                labelIdsToAdd = setOf(SystemLabelId.Trash.labelId)
-            )
-        } returns MessageTestData.unStarredMsgByConversationWithStarredMsg.right()
+        expectMessageRelabelingSuccess(listOf(conversationId), labelIdsToAdd = setOf(SystemLabelId.Trash.labelId))
 
         // when
         conversationRepository.move(
@@ -744,13 +660,10 @@ class ConversationRepositoryImplTest {
                 listOf(SystemLabelId.Archive.labelId)
             )
         } returns listOf(ConversationTestData.conversationWithArchiveLabel).right()
-        coEvery {
-            messageLocalDataSource.relabelMessagesInConversations(
-                userId = userId,
-                conversationIds = listOf(conversation.conversationId),
-                labelIdsToAdd = setOf(SystemLabelId.Archive.labelId)
-            )
-        } returns MessageTestData.unStarredMsgByConversationWithStarredMsg.right()
+        expectMessageRelabelingSuccess(
+            listOf(conversation.conversationId),
+            labelIdsToAdd = setOf(SystemLabelId.Archive.labelId)
+        )
 
         // When
         val actual = conversationRepository.move(
@@ -1032,5 +945,20 @@ class ConversationRepositoryImplTest {
 
         // Then
         assertFalse(actual)
+    }
+
+    private fun expectMessageRelabelingSuccess(
+        conversationIds: List<ConversationId>,
+        labelIdsToAdd: Set<LabelId> = setOf(),
+        labelIdsToRemove: Set<LabelId> = setOf()
+    ) {
+        coEvery {
+            messageLocalDataSource.relabelMessagesInConversations(
+                userId = userId,
+                conversationIds = conversationIds,
+                labelIdsToRemove = labelIdsToRemove,
+                labelIdsToAdd = labelIdsToAdd
+            )
+        } returns MessageTestData.unStarredMsgByConversationWithStarredMsg.right()
     }
 }
