@@ -30,6 +30,7 @@ import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.model.toMailLabelSystem
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveMailLabels
+import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -52,6 +53,15 @@ class MoveConversationTest {
             ).right()
         )
     }
+    private val observeMailLabels: ObserveMailLabels = mockk {
+        every { this@mockk.invoke(userId) } returns flowOf(
+            MailLabels(
+                systemLabels = exclusiveMailLabels,
+                folders = emptyList(),
+                labels = emptyList()
+            )
+        )
+    }
     private val observeExclusiveMailLabels: ObserveExclusiveMailLabels = mockk {
         every { this@mockk.invoke(userId) } returns flowOf(
             MailLabels(
@@ -63,7 +73,8 @@ class MoveConversationTest {
     }
     private val move = MoveConversation(
         conversationRepository = conversationRepository,
-        observeExclusiveMailLabels = observeExclusiveMailLabels
+        observeExclusiveMailLabels = observeExclusiveMailLabels,
+        observeMailLabels = observeMailLabels
     )
 
     @Test
@@ -87,6 +98,7 @@ class MoveConversationTest {
             conversationRepository.move(
                 userId,
                 conversationId,
+                exclusiveMailLabels.map { it.id.labelId },
                 exclusiveMailLabels.map { it.id.labelId },
                 SystemLabelId.Trash.labelId
             )
@@ -113,6 +125,7 @@ class MoveConversationTest {
                 userId,
                 conversationId,
                 exclusiveMailLabels.map { it.id.labelId },
+                exclusiveMailLabels.map { it.id.labelId },
                 toLabel
             )
         } returns conversation
@@ -125,6 +138,7 @@ class MoveConversationTest {
             conversationRepository.move(
                 userId,
                 conversationId,
+                exclusiveMailLabels.map { it.id.labelId },
                 exclusiveMailLabels.map { it.id.labelId },
                 toLabel
             )

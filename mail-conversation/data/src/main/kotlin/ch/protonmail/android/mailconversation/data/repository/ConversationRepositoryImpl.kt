@@ -53,7 +53,6 @@ import me.proton.core.domain.arch.ResponseSource
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.util.kotlin.CoroutineScopeProvider
-import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.math.min
@@ -202,27 +201,25 @@ class ConversationRepositoryImpl @Inject constructor(
     override suspend fun move(
         userId: UserId,
         conversationId: ConversationId,
+        allLabelIds: List<LabelId>,
         fromLabelIds: List<LabelId>,
         toLabelId: LabelId
-    ): Either<DataError, Conversation> {
+    ): Either<DataError, Conversation> = move(userId, listOf(conversationId), allLabelIds, fromLabelIds, toLabelId)
+        .first()
+        .map { it.first() }
+
+    override suspend fun move(
+        userId: UserId,
+        conversationIds: List<ConversationId>,
+        allLabelIds: List<LabelId>,
+        fromLabelIds: List<LabelId>,
+        toLabelId: LabelId
+    ): List<Either<DataError, List<Conversation>>> {
         if (toLabelId.isTrash() || toLabelId.isSpam()) {
-            return moveToTrashOrSpam(userId, conversationId, toLabelId)
+            return moveToTrashOrSpam(userId, conversationIds, allLabelIds, toLabelId)
         }
 
-        conversationLocalDataSource.observeConversation(userId, conversationId).first()
-            ?: return DataError.Local.NoDataCached.left()
-
-        if (fromLabelIds.isNotEmpty()) {
-            conversationLocalDataSource.removeLabels(userId, conversationId, fromLabelIds)
-        }
-
-        messageLocalDataSource.observeMessages(userId, conversationId).first()
-            .map { message ->
-                messageLocalDataSource.removeLabels(userId, message.messageId, fromLabelIds)
-                    .onLeft { Timber.d("Failed to remove label") }
-            }
-
-        return addLabel(userId, conversationId, toLabelId)
+        return relabel(userId, conversationIds, fromLabelIds, listOf(toLabelId))
     }
 
     override suspend fun markUnread(
@@ -276,37 +273,20 @@ class ConversationRepositoryImpl @Inject constructor(
 
     private suspend fun moveToTrashOrSpam(
         userId: UserId,
-        conversationId: ConversationId,
+        conversationIds: List<ConversationId>,
+        allLabelIds: List<LabelId>,
         labelId: LabelId
-    ): Either<DataError, Conversation> {
+    ): List<Either<DataError, List<Conversation>>> {
         require(labelId.isTrash() || labelId.isSpam()) { "Invalid system label id: $labelId" }
 
-        val persistentLabels = listOf(
+        val persistentLabels = setOf(
             SystemLabelId.AllDrafts.labelId,
             SystemLabelId.AllMail.labelId,
             SystemLabelId.AllSent.labelId
         )
+        val labelsToBeRemoved = allLabelIds - persistentLabels
 
-        val conversation = conversationLocalDataSource.observeConversation(userId, conversationId).first()
-            ?: return DataError.Local.NoDataCached.left()
-        val messages = messageLocalDataSource.observeMessages(userId, conversationId).first()
-
-        val updatedConversation = conversation.copy(
-            labels = conversation.labels.filter { conversationLabel ->
-                conversationLabel.labelId in persistentLabels
-            }
-        )
-        val updatedMessages = messages.map { message ->
-            message.copy(
-                labelIds = message.labelIds.filter { labelId ->
-                    labelId in persistentLabels
-                }
-            )
-        }
-
-        conversationLocalDataSource.upsertConversation(userId, updatedConversation)
-        messageLocalDataSource.upsertMessages(updatedMessages)
-        return addLabel(userId, conversationId, labelId)
+        return relabel(userId, conversationIds, labelsToBeRemoved, listOf(labelId))
     }
 
     private suspend fun upsertConversations(

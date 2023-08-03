@@ -34,7 +34,6 @@ import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailconversation.domain.entity.ConversationWithMessages
 import ch.protonmail.android.mailconversation.domain.repository.ConversationLocalDataSource
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRemoteDataSource
-import ch.protonmail.android.mailconversation.domain.sample.ConversationLabelSample
 import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
@@ -54,7 +53,6 @@ import io.mockk.coVerifyOrder
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -441,192 +439,140 @@ class ConversationRepositoryImplTest {
     }
 
     @Test
-    fun `move to trash add the trash label to the conversation`() = runTest {
-        // given
-        val conversationId = ConversationIdSample.WeatherForecast
-        val conversation = ConversationSample.WeatherForecast.copy(
-            labels = listOf(ConversationLabelSample.WeatherForecast.AllDrafts)
-        )
-        val trashedConversation = ConversationSample.WeatherForecast.copy(
-            labels = listOf(
-                ConversationLabelSample.WeatherForecast.AllDrafts,
-                ConversationLabelSample.WeatherForecast.Trash
-            )
-        )
-        every { conversationLocalDataSource.observeConversation(userId, conversationId) } returns flowOf(conversation)
+    fun `move to trash adds the trash label to the conversation`() = runTest {
+        // Given
+        val labelId = SystemLabelId.Trash.labelId
+        val conversationIds = listOf(ConversationId(ConversationTestData.RAW_CONVERSATION_ID))
         coEvery {
-            conversationLocalDataSource.addLabels(
-                userId = userId,
-                conversationIds = listOf(conversationId),
-                labelIds = listOf(SystemLabelId.Trash.labelId)
-            )
-        } returns listOf(trashedConversation).right()
-        expectMessageRelabelingSuccess(listOf(conversationId), labelIdsToAdd = setOf(SystemLabelId.Trash.labelId))
+            conversationLocalDataSource.addLabels(userId, conversationIds, listOf(labelId))
+        } returns listOf(ConversationTestData.starredConversation).right()
+        coEvery {
+            conversationLocalDataSource.removeLabels(userId, conversationIds, emptyList())
+        } returns listOf(ConversationTestData.starredConversation).right()
+        expectMessageRelabelingSuccess(conversationIds, labelIdsToRemove = emptySet())
+        expectMessageRelabelingSuccess(conversationIds, labelIdsToAdd = setOf(labelId))
 
-        // when
-        val result = conversationRepository.move(userId, conversationId, emptyList(), SystemLabelId.Trash.labelId)
+        // When
+        conversationRepository.move(userId, conversationIds, emptyList(), emptyList(), labelId)
 
-        // then
-        assertEquals(trashedConversation.right(), result)
+        // Then
+        coVerify { conversationLocalDataSource.addLabels(userId, conversationIds, listOf(labelId)) }
     }
 
     @Test
     fun `move to trash add the trash label to every message in the conversation`() = runTest {
-        // given
-        val conversationId = ConversationIdSample.WeatherForecast
-        val conversation = ConversationSample.WeatherForecast
-        every { conversationLocalDataSource.observeConversation(userId, conversationId) } returns flowOf(conversation)
+        // Given
+        val labelId = SystemLabelId.Trash.labelId
+        val conversationIds = listOf(ConversationId(ConversationTestData.RAW_CONVERSATION_ID))
         coEvery {
-            conversationLocalDataSource.addLabels(
-                userId = userId,
-                conversationIds = listOf(conversationId),
-                labelIds = listOf(SystemLabelId.Trash.labelId)
-            )
-        } returns listOf(ConversationSample.WeatherForecast).right()
-        expectMessageRelabelingSuccess(listOf(conversationId), labelIdsToAdd = setOf(SystemLabelId.Trash.labelId))
+            conversationLocalDataSource.addLabels(userId, conversationIds, listOf(labelId))
+        } returns listOf(ConversationTestData.starredConversation).right()
+        coEvery {
+            conversationLocalDataSource.removeLabels(userId, conversationIds, emptyList())
+        } returns listOf(ConversationTestData.starredConversation).right()
+        expectMessageRelabelingSuccess(conversationIds, labelIdsToRemove = emptySet())
+        expectMessageRelabelingSuccess(conversationIds, labelIdsToAdd = setOf(labelId))
 
-        // when
-        conversationRepository.move(userId, conversationId, emptyList(), SystemLabelId.Trash.labelId)
+        // When
+        conversationRepository.move(userId, conversationIds, emptyList(), emptyList(), labelId)
 
-        // then
+        // Then
         coVerify {
             messageLocalDataSource.relabelMessagesInConversations(
-                userId = userId,
-                conversationIds = listOf(conversationId),
-                labelIdsToAdd = setOf(SystemLabelId.Trash.labelId)
+                userId, conversationIds, labelIdsToAdd = setOf(labelId)
             )
         }
     }
 
     @Test
     fun `move to trash removes all the labels from conversation, except AllMail, AllDraft and AllSent`() = runTest {
-        // given
-        val conversationId = ConversationIdSample.WeatherForecast
-
-        val conversation = ConversationSample.WeatherForecast.copy(
-            labels = listOf(
-                ConversationLabelSample.WeatherForecast.AllDrafts,
-                ConversationLabelSample.WeatherForecast.AllMail,
-                ConversationLabelSample.WeatherForecast.AllSent,
-                ConversationLabelSample.WeatherForecast.Inbox,
-                ConversationLabelSample.WeatherForecast.News
-            )
+        // Given
+        val labelsToBeRemoved = SystemLabelId.exclusiveList.map { it.labelId }
+        val allLabelIds = labelsToBeRemoved + setOf(
+            SystemLabelId.AllMail.labelId,
+            SystemLabelId.AllDrafts.labelId,
+            SystemLabelId.AllSent.labelId
         )
-        val conversationWithoutLabels = ConversationSample.WeatherForecast.copy(
-            labels = listOf(
-                ConversationLabelSample.WeatherForecast.AllDrafts,
-                ConversationLabelSample.WeatherForecast.AllMail,
-                ConversationLabelSample.WeatherForecast.AllSent
-            )
-        )
-        val trashedConversation = conversationWithoutLabels.copy(
-            labels = conversationWithoutLabels.labels + ConversationLabelSample.WeatherForecast.Trash
-        )
-        val conversationFlow = MutableStateFlow(conversation)
-        every { conversationLocalDataSource.observeConversation(userId, conversationId) } returns conversationFlow
-        coEvery { conversationLocalDataSource.upsertConversation(userId, conversationWithoutLabels) } coAnswers {
-            conversationFlow.emit(conversationWithoutLabels)
-        }
+        val labelId = SystemLabelId.Trash.labelId
+        val conversationIds = listOf(ConversationId(ConversationTestData.RAW_CONVERSATION_ID))
         coEvery {
-            conversationLocalDataSource.addLabels(
-                userId = userId,
-                conversationIds = listOf(conversationId),
-                labelIds = listOf(SystemLabelId.Trash.labelId)
+            conversationLocalDataSource.addLabels(userId, conversationIds, listOf(labelId))
+        } returns listOf(ConversationTestData.starredConversation).right()
+        coEvery {
+            conversationLocalDataSource.removeLabels(userId, conversationIds, labelsToBeRemoved)
+        } returns listOf(ConversationTestData.starredConversation).right()
+        expectMessageRelabelingSuccess(conversationIds, labelIdsToRemove = labelsToBeRemoved.toSet())
+        expectMessageRelabelingSuccess(conversationIds, labelIdsToAdd = setOf(labelId))
+
+        // When
+        conversationRepository.move(userId, conversationIds, allLabelIds, emptyList(), labelId)
+
+        // Then
+        coVerify {
+            conversationLocalDataSource.removeLabels(
+                userId, conversationIds, labelsToBeRemoved
             )
-        } returns listOf(trashedConversation).right()
-        expectMessageRelabelingSuccess(listOf(conversationId), labelIdsToAdd = setOf(SystemLabelId.Trash.labelId))
-
-        // when
-        val result = conversationRepository.move(
-            userId,
-            conversationId,
-            listOf(SystemLabelId.Inbox.labelId),
-            SystemLabelId.Trash.labelId
-        )
-
-        // then
-        assertEquals(trashedConversation.right(), result)
+        }
     }
 
     @Test
     fun `move to spam removes all the labels from conversation, except AllMail, AllDraft and AllSent`() = runTest {
-        // given
-        val conversationId = ConversationIdSample.WeatherForecast
-
-        val conversation = ConversationSample.WeatherForecast.copy(
-            labels = listOf(
-                ConversationLabelSample.WeatherForecast.AllDrafts,
-                ConversationLabelSample.WeatherForecast.AllMail,
-                ConversationLabelSample.WeatherForecast.AllSent,
-                ConversationLabelSample.WeatherForecast.Inbox,
-                ConversationLabelSample.WeatherForecast.News
-            )
+        // Given
+        val labelsToBeRemoved = SystemLabelId.exclusiveList.map { it.labelId }
+        val allLabelIds = labelsToBeRemoved + setOf(
+            SystemLabelId.AllMail.labelId,
+            SystemLabelId.AllDrafts.labelId,
+            SystemLabelId.AllSent.labelId
         )
-        val conversationWithoutLabels = ConversationSample.WeatherForecast.copy(
-            labels = listOf(
-                ConversationLabelSample.WeatherForecast.AllDrafts,
-                ConversationLabelSample.WeatherForecast.AllMail,
-                ConversationLabelSample.WeatherForecast.AllSent
-            )
-        )
-        val spammedConversation = conversationWithoutLabels.copy(
-            labels = conversationWithoutLabels.labels + ConversationLabelSample.WeatherForecast.Spam
-        )
-        val conversationFlow = MutableStateFlow(conversation)
-        every { conversationLocalDataSource.observeConversation(userId, conversationId) } returns conversationFlow
-        coEvery { conversationLocalDataSource.upsertConversation(userId, conversationWithoutLabels) } coAnswers {
-            conversationFlow.emit(conversationWithoutLabels)
-        }
+        val labelId = SystemLabelId.Spam.labelId
+        val conversationIds = listOf(ConversationId(ConversationTestData.RAW_CONVERSATION_ID))
         coEvery {
-            conversationLocalDataSource.addLabels(
-                userId = userId,
-                conversationIds = listOf(conversationId),
-                labelIds = listOf(SystemLabelId.Spam.labelId)
+            conversationLocalDataSource.addLabels(userId, conversationIds, listOf(labelId))
+        } returns listOf(ConversationTestData.starredConversation).right()
+        coEvery {
+            conversationLocalDataSource.removeLabels(userId, conversationIds, labelsToBeRemoved)
+        } returns listOf(ConversationTestData.starredConversation).right()
+        expectMessageRelabelingSuccess(conversationIds, labelIdsToRemove = labelsToBeRemoved.toSet())
+        expectMessageRelabelingSuccess(conversationIds, labelIdsToAdd = setOf(labelId))
+
+        // When
+        conversationRepository.move(userId, conversationIds, allLabelIds, emptyList(), labelId)
+
+        // Then
+        coVerify {
+            conversationLocalDataSource.removeLabels(
+                userId, conversationIds, labelsToBeRemoved
             )
-        } returns listOf(spammedConversation).right()
-        expectMessageRelabelingSuccess(listOf(conversationId), labelIdsToAdd = setOf(SystemLabelId.Spam.labelId))
-
-        // when
-        val result = conversationRepository.move(
-            userId,
-            conversationId,
-            listOf(SystemLabelId.Inbox.labelId),
-            SystemLabelId.Spam.labelId
-        )
-
-        // then
-        assertEquals(spammedConversation.right(), result)
+        }
     }
 
     @Test
     fun `move to trash removes all labels from messages, except AllMail, AllDraft and AllSent`() = runTest {
-        // given
-        val conversationId = ConversationIdSample.WeatherForecast
-        val conversation = ConversationSample.WeatherForecast
-        every { conversationLocalDataSource.observeConversation(userId, conversationId) } returns flowOf(conversation)
-        coEvery {
-            conversationLocalDataSource.addLabels(
-                userId = userId,
-                conversationIds = listOf(conversationId),
-                labelIds = listOf(SystemLabelId.Trash.labelId)
-            )
-        } returns listOf(ConversationSample.WeatherForecast).right()
-        expectMessageRelabelingSuccess(listOf(conversationId), labelIdsToAdd = setOf(SystemLabelId.Trash.labelId))
-
-        // when
-        conversationRepository.move(
-            userId,
-            conversationId,
-            listOf(SystemLabelId.Inbox.labelId),
-            SystemLabelId.Trash.labelId
+        // Given
+        val labelsToBeRemoved = SystemLabelId.exclusiveList.map { it.labelId }
+        val allLabelIds = labelsToBeRemoved + setOf(
+            SystemLabelId.AllMail.labelId,
+            SystemLabelId.AllDrafts.labelId,
+            SystemLabelId.AllSent.labelId
         )
+        val labelId = SystemLabelId.Trash.labelId
+        val conversationIds = listOf(ConversationId(ConversationTestData.RAW_CONVERSATION_ID))
+        coEvery {
+            conversationLocalDataSource.addLabels(userId, conversationIds, listOf(labelId))
+        } returns listOf(ConversationTestData.starredConversation).right()
+        coEvery {
+            conversationLocalDataSource.removeLabels(userId, conversationIds, labelsToBeRemoved)
+        } returns listOf(ConversationTestData.starredConversation).right()
+        expectMessageRelabelingSuccess(conversationIds, labelIdsToRemove = labelsToBeRemoved.toSet())
+        expectMessageRelabelingSuccess(conversationIds, labelIdsToAdd = setOf(labelId))
 
-        // then
+        // When
+        conversationRepository.move(userId, conversationIds, allLabelIds, emptyList(), labelId)
+
+        // Then
         coVerify {
             messageLocalDataSource.relabelMessagesInConversations(
-                userId = userId,
-                conversationIds = listOf(conversationId),
-                labelIdsToAdd = setOf(SystemLabelId.Trash.labelId)
+                userId, conversationIds, labelIdsToRemove = labelsToBeRemoved.toSet()
             )
         }
     }
@@ -634,78 +580,28 @@ class ConversationRepositoryImplTest {
     @Test
     fun `move removes previous exclusive label and adds new label`() = runTest {
         // Given
-        val conversation = ConversationTestData.conversation
-        val toBeRemovedLabels = listOf(SystemLabelId.Inbox.labelId)
-        coEvery { conversationLocalDataSource.observeConversation(userId, conversation.conversationId) } returns flowOf(
-            conversation
-        )
+        val exclusiveLabels = SystemLabelId.exclusiveList.map { it.labelId }
+        val labelId = SystemLabelId.Archive.labelId
+        val conversationIds = listOf(ConversationId(ConversationTestData.RAW_CONVERSATION_ID))
         coEvery {
-            conversationLocalDataSource.removeLabels(
-                userId,
-                conversation.conversationId,
-                toBeRemovedLabels
-            )
-        } returns conversation.copy(labels = listOf()).right()
+            conversationLocalDataSource.addLabels(userId, conversationIds, listOf(labelId))
+        } returns listOf(ConversationTestData.starredConversation).right()
         coEvery {
-            messageLocalDataSource.removeLabels(
-                userId,
-                any(),
-                toBeRemovedLabels
-            )
-        } returns MessageTestData.message.right()
-        coEvery {
-            conversationLocalDataSource.addLabels(
-                userId,
-                listOf(conversation.conversationId),
-                listOf(SystemLabelId.Archive.labelId)
-            )
-        } returns listOf(ConversationTestData.conversationWithArchiveLabel).right()
-        expectMessageRelabelingSuccess(
-            listOf(conversation.conversationId),
-            labelIdsToAdd = setOf(SystemLabelId.Archive.labelId)
-        )
+            conversationLocalDataSource.removeLabels(userId, conversationIds, exclusiveLabels)
+        } returns listOf(ConversationTestData.starredConversation).right()
+        expectMessageRelabelingSuccess(conversationIds, labelIdsToRemove = exclusiveLabels.toSet())
+        expectMessageRelabelingSuccess(conversationIds, labelIdsToAdd = setOf(labelId))
 
         // When
-        val actual = conversationRepository.move(
-            userId,
-            conversation.conversationId,
-            toBeRemovedLabels,
-            SystemLabelId.Archive.labelId
-        )
+        conversationRepository.move(userId, conversationIds, emptyList(), exclusiveLabels, labelId)
 
         // Then
         coVerify {
-            conversationLocalDataSource.addLabels(
-                userId = userId,
-                conversationIds = listOf(conversation.conversationId),
-                labelIds = listOf(SystemLabelId.Archive.labelId)
-            )
+            conversationLocalDataSource.removeLabels(userId, conversationIds, exclusiveLabels)
         }
         coVerify {
-            messageLocalDataSource.relabelMessagesInConversations(
-                userId = userId,
-                conversationIds = listOf(conversation.conversationId),
-                labelIdsToAdd = setOf(SystemLabelId.Archive.labelId)
-            )
+            conversationLocalDataSource.addLabels(userId, conversationIds, listOf(labelId))
         }
-        assertEquals(ConversationTestData.conversationWithArchiveLabel.right(), actual)
-    }
-
-    @Test
-    fun `move return error when conversation doesn't exist`() = runTest {
-        val conversation = ConversationTestData.conversation
-        val toBeRemovedLabels = listOf(SystemLabelId.Inbox.labelId)
-        coEvery { conversationLocalDataSource.observeConversation(userId, conversation.conversationId) } returns flowOf(
-            null
-        )
-
-        val actual = conversationRepository.move(
-            userId,
-            conversation.conversationId,
-            toBeRemovedLabels,
-            SystemLabelId.Archive.labelId
-        )
-        assertEquals(DataError.Local.NoDataCached.left(), actual)
     }
 
     @Test

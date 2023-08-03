@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveMailLabels
+import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
 import kotlinx.coroutines.flow.first
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
@@ -32,7 +33,8 @@ import javax.inject.Inject
 
 class MoveConversation @Inject constructor(
     private val conversationRepository: ConversationRepository,
-    private val observeExclusiveMailLabels: ObserveExclusiveMailLabels
+    private val observeExclusiveMailLabels: ObserveExclusiveMailLabels,
+    private val observeMailLabels: ObserveMailLabels
 ) {
 
     suspend operator fun invoke(
@@ -43,9 +45,9 @@ class MoveConversation @Inject constructor(
         return conversationRepository.observeConversation(userId, conversationId, refreshData = false).first().fold(
             ifLeft = { DataError.Local.NoDataCached.left() },
             ifRight = {
-                val exclusiveLabelIds =
-                    observeExclusiveMailLabels(userId).first().allById.mapNotNull { it.key.labelId }
-                conversationRepository.move(userId, conversationId, exclusiveLabelIds, toLabelId = labelId)
+                val allLabelIds = observeMailLabels(userId).first().allById.mapNotNull { it.key.labelId }
+                val exclusiveLabelIds = observeExclusiveMailLabels(userId).first().allById.mapNotNull { it.key.labelId }
+                conversationRepository.move(userId, conversationId, allLabelIds, exclusiveLabelIds, toLabelId = labelId)
             }
         )
     }
