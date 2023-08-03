@@ -56,7 +56,6 @@ class DraftSyncer @Inject constructor(
             while (true) {
                 delay(SyncInterval)
                 Timber.d("Draft syncer: syncing draft $messageId")
-                println("foooooo")
                 draftRepository.sync(userId, messageId)
             }
         }
