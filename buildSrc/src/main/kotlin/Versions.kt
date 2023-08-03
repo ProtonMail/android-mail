@@ -94,7 +94,7 @@ object Versions {
         const val hiltAndroidGradlePlugin = Dagger.dagger
         const val kotlinGradlePlugin = Kotlin.kotlin
         const val jacocoGradlePlugin = "0.8.8"
-        const val sentryGradlePlugin = "3.4.2"
+        const val sentryGradlePlugin = "3.11.1"
     }
 
     object JakeWharton {
@@ -170,6 +170,6 @@ object Versions {
 
     object Sentry {
 
-        const val sentry = "6.13.1"
+        const val sentry = "6.27.0"
     }
 }
