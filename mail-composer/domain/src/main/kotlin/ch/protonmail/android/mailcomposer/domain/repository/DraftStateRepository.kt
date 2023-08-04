@@ -30,7 +30,7 @@ interface DraftStateRepository {
 
     suspend fun observe(userId: UserId, messageId: MessageId): Flow<Either<DataError, DraftState>>
 
-    suspend fun saveSynchedState(
+    suspend fun saveSyncedState(
         userId: UserId,
         messageId: MessageId,
         remoteDraftId: MessageId

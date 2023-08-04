@@ -52,12 +52,12 @@ internal class SyncDraft @Inject constructor(
 
             val remoteDraftId = syncDraft.message.messageId
             messageRepository.updateDraftMessageId(userId, messageId, remoteDraftId)
-            draftStateRepository.saveSynchedState(userId, messageId, remoteDraftId)
+            draftStateRepository.saveSyncedState(userId, messageId, remoteDraftId)
         } else {
             draftRemoteDataSource.update(userId, message).onLeft {
                 Timber.w("Sync draft failure $messageId: Update API call error $it")
             }.bind()
-            draftStateRepository.saveSynchedState(userId, messageId, messageId)
+            draftStateRepository.saveSyncedState(userId, messageId, messageId)
         }
     }
 

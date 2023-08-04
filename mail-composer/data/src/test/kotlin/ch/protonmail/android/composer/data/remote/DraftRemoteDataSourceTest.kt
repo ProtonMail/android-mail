@@ -106,7 +106,7 @@ class DraftRemoteDataSourceTest {
     }
 
     private fun expectCreateDraftApiSucceeds(body: CreateDraftBody, expected: MessageWithBodyResource) {
-        coEvery { draftApi.createDraft(body) } returns SaveDraftResponse(code = GoodResponseCode, expected)
+        coEvery { draftApi.createDraft(body) } returns SaveDraftResponse(code = ResponseCodes.OK, expected)
     }
 
     private fun expectUpdateDraftApiSucceeds(
@@ -115,10 +115,12 @@ class DraftRemoteDataSourceTest {
         expected: MessageWithBodyResource
     ) {
         coEvery { draftApi.updateDraft(messageId.id, body) } returns
-            SaveDraftResponse(code = GoodResponseCode, expected)
+            SaveDraftResponse(code = ResponseCodes.OK, expected)
     }
 
     companion object {
-        private const val GoodResponseCode = 1000
+        private object ResponseCodes {
+            const val OK = 1000
+        }
     }
 }

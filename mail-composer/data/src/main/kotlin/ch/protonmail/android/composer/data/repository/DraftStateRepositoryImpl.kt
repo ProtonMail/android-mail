@@ -52,7 +52,7 @@ class DraftStateRepositoryImpl @Inject constructor(
         localDataSource.save(updatedState)
     }
 
-    override suspend fun saveSynchedState(
+    override suspend fun saveSyncedState(
         userId: UserId,
         messageId: MessageId,
         remoteDraftId: MessageId

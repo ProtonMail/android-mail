@@ -49,28 +49,35 @@ class DraftStateRepositoryImplTest {
 
     @Test
     fun `observe draft state returns it when existing`() = runTest {
+        // Given
         val draftId = MessageIdSample.EmptyDraft
         val expected = DraftStateSample.NewDraftState
         expectDraftStateLocalDataSourceSuccess(userId, draftId, expected)
 
+        // When
         val actual = repository.observe(userId, draftId).first()
 
+        // Then
         assertEquals(expected.right(), actual)
     }
 
     @Test
     fun `observe draft state returns no data cached error when not existing`() = runTest {
+        // Given
         val draftId = MessageIdSample.EmptyDraft
         val expectedError = DataError.Local.NoDataCached
         expectDraftStateLocalDataSourceFailure(userId, draftId, expectedError)
 
+        // When
         val actual = repository.observe(userId, draftId).first()
 
+        // Then
         assertEquals(expectedError.left(), actual)
     }
 
     @Test
-    fun `store synched state does update api message id and draft sync state`() = runTest {
+    fun `store synced state does update api message id and draft sync state`() = runTest {
+        // Given
         val draftId = MessageIdSample.EmptyDraft
         val remoteDraftId = MessageIdSample.RemoteDraft
         val existingState = DraftStateSample.NewDraftState
@@ -81,13 +88,16 @@ class DraftStateRepositoryImplTest {
         expectDraftStateLocalDataSourceSuccess(userId, draftId, existingState)
         expectLocalDataSourceUpsertSuccess(expectedDraftState)
 
-        val actual = repository.saveSynchedState(userId, draftId, remoteDraftId)
+        // When
+        val actual = repository.saveSyncedState(userId, draftId, remoteDraftId)
 
+        // Then
         assertEquals(Unit.right(), actual)
     }
 
     @Test
     fun `save local state stores new draft state when no state exists`() = runTest {
+        // Given
         val draftId = MessageIdSample.EmptyDraft
         val expectedDraftState = DraftStateSample.NewDraftState.copy(
             messageId = draftId,
@@ -98,14 +108,17 @@ class DraftStateRepositoryImplTest {
         expectDraftStateLocalDataSourceFailure(userId, draftId, expectedError)
         expectLocalDataSourceUpsertSuccess(expectedDraftState)
 
+        // When
         val actual = repository.saveLocalState(userId, draftId, expectedAction)
 
+        // Then
         coVerify { draftStateLocalDataSource.save(expectedDraftState) }
         assertEquals(Unit.right(), actual)
     }
 
     @Test
     fun `save local state updates draft state in data source when state exists`() = runTest {
+        // Given
         val draftId = MessageIdSample.RemoteDraft
         val existingState = DraftStateSample.RemoteDraftState
         val expectedAction = DraftAction.Compose
@@ -113,8 +126,10 @@ class DraftStateRepositoryImplTest {
         expectDraftStateLocalDataSourceSuccess(userId, draftId, existingState)
         expectLocalDataSourceUpsertSuccess(expectedDraftState)
 
+        // When
         val actual = repository.saveLocalState(userId, draftId, expectedAction)
 
+        // Then
         coVerify { draftStateLocalDataSource.save(expectedDraftState) }
         assertEquals(Unit.right(), actual)
     }
