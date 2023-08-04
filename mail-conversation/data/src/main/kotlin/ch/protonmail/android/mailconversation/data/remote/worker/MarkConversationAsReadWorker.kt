@@ -46,15 +46,13 @@ class MarkConversationAsReadWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result {
         val userId = UserId(requireNotBlank(inputData.getString(RawUserIdKey), fieldName = "User id"))
-        val conversationId = ConversationId(
-            requireNotBlank(inputData.getString(RawConversationIdKey), fieldName = "Conversation id")
-        )
+        val conversationIds = requireNotNull(inputData.getStringArray(RawConversationIdsKey)).toList()
         val contextLabelId = LabelId(
             requireNotBlank(inputData.getString(RawContextLabelId), fieldName = "Context label id")
         )
 
         val api: ApiManager<out ConversationApi> = apiProvider.get(userId)
-        val requestBody = MarkConversationAsReadBody(conversationIds = listOf(conversationId.id))
+        val requestBody = MarkConversationAsReadBody(conversationIds = conversationIds)
 
         return when (val result = api { markConversationAsRead(requestBody) }) {
             is ApiResult.Success -> Result.success()
@@ -62,7 +60,8 @@ class MarkConversationAsReadWorker @AssistedInject constructor(
                 if (result.isRetryable()) {
                     Result.retry()
                 } else {
-                    conversationLocalDataSource.rollbackMarkRead(userId, conversationId, contextLabelId)
+                    val conversations = conversationIds.map { ConversationId(it) }
+                    conversationLocalDataSource.markUnread(userId, conversations, contextLabelId)
                     Result.failure()
                 }
             }
@@ -72,16 +71,16 @@ class MarkConversationAsReadWorker @AssistedInject constructor(
     companion object {
 
         internal const val RawUserIdKey = "markConversationReadWorkParamUserId"
-        internal const val RawConversationIdKey = "markConversationReadWorkParamConversationId"
+        internal const val RawConversationIdsKey = "markConversationReadWorkParamConversationIds"
         internal const val RawContextLabelId = "markConversationReadWorkParamContextLabelId"
 
         fun params(
             userId: UserId,
-            conversationId: ConversationId,
+            conversationIds: List<ConversationId>,
             contextLabelId: LabelId
         ) = mapOf(
             RawUserIdKey to userId.id,
-            RawConversationIdKey to conversationId.id,
+            RawConversationIdsKey to conversationIds.map { it.id }.toTypedArray(),
             RawContextLabelId to contextLabelId.id
         )
     }

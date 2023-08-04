@@ -282,27 +282,6 @@ class ConversationLocalDataSourceImpl @Inject constructor(
         return (conversation.numUnread == 0).right()
     }
 
-    override suspend fun rollbackMarkRead(
-        userId: UserId,
-        conversationId: ConversationId,
-        contextLabelId: LabelId
-    ): Either<DataError.Local, Conversation> {
-        val conversation = observeConversation(userId, conversationId).first()
-            ?: return DataError.Local.NoDataCached.left()
-
-        val updatedLabels = conversation.labels.mapOnly(contextLabelId) { label ->
-            label.copy(contextNumUnread = label.contextNumUnread.incrementUpTo(conversation.numMessages))
-        }
-
-        val updatedConversation = conversation.copy(
-            numUnread = conversation.numUnread.incrementUpTo(conversation.numMessages),
-            labels = updatedLabels
-        )
-
-        upsertConversation(userId, updatedConversation)
-        return updatedConversation.right()
-    }
-
     private suspend fun upsertPageInterval(
         userId: UserId,
         pageKey: PageKey,

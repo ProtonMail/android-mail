@@ -26,6 +26,7 @@ import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import arrow.core.right
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
+import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailconversation.data.remote.ConversationApi
@@ -49,7 +50,7 @@ import kotlin.test.assertEquals
 internal class MarkConversationAsReadWorkerTest {
 
     private val userId = UserIdSample.Primary
-    private val conversationId = ConversationIdSample.WeatherForecast
+    private val conversationIds = listOf(ConversationIdSample.WeatherForecast)
     private val labelId = ConversationSample.WeatherForecast.labels.first().labelId
     private val nonRetryableException = SerializationException()
     private val retryableException = UnknownHostException()
@@ -71,13 +72,15 @@ internal class MarkConversationAsReadWorkerTest {
     private val conversationApi: ConversationApi = mockk()
     private val conversationLocalDataSource: ConversationLocalDataSource = mockk {
         coEvery {
-            rollbackMarkRead(userId, conversationId, labelId)
-        } returns ConversationSample.WeatherForecast.right()
+            markUnread(userId, conversationIds, labelId)
+        } returns listOf(ConversationSample.WeatherForecast).right()
     }
     private val params: WorkerParameters = mockk {
         every { taskExecutor } returns mockk(relaxed = true)
         every { inputData.getString(MarkConversationAsReadWorker.RawUserIdKey) } returns userId.id
-        every { inputData.getString(MarkConversationAsReadWorker.RawConversationIdKey) } returns conversationId.id
+        every {
+            inputData.getStringArray(MarkConversationAsReadWorker.RawConversationIdsKey)
+        } returns arrayOf(ConversationIdSample.WeatherForecast.id)
         every { inputData.getString(MarkConversationAsReadWorker.RawContextLabelId) } returns labelId.id
     }
     private val workManager: WorkManager = mockk {
@@ -98,7 +101,7 @@ internal class MarkConversationAsReadWorkerTest {
 
         // when
         Enqueuer(workManager).enqueue<MarkConversationAsReadWorker>(
-            MarkConversationAsReadWorker.params(userId, conversationId, labelId)
+            MarkConversationAsReadWorker.params(userId, conversationIds, labelId)
         )
 
         // then
@@ -111,7 +114,7 @@ internal class MarkConversationAsReadWorkerTest {
     fun `worker is enqueued with correct parameters`() {
         // when
         Enqueuer(workManager).enqueue<MarkConversationAsReadWorker>(
-            MarkConversationAsReadWorker.params(userId, conversationId, labelId)
+            MarkConversationAsReadWorker.params(userId, conversationIds, labelId)
         )
 
         // then
@@ -122,8 +125,10 @@ internal class MarkConversationAsReadWorkerTest {
             actual = requestSlot.captured.workSpec.input.getString(MarkConversationAsReadWorker.RawUserIdKey)
         )
         assertEquals(
-            expected = conversationId.id,
-            actual = requestSlot.captured.workSpec.input.getString(MarkConversationAsReadWorker.RawConversationIdKey)
+            expected = conversationIds,
+            actual = requestSlot.captured.workSpec.input.getStringArray(
+                MarkConversationAsReadWorker.RawConversationIdsKey
+            )?.toList()?.map { ConversationId(it) }
         )
         assertEquals(
             expected = labelId.id,
@@ -141,7 +146,7 @@ internal class MarkConversationAsReadWorkerTest {
 
         // then
         coVerify {
-            conversationApi.markConversationAsRead(MarkConversationAsReadBody(listOf(conversationId.id)))
+            conversationApi.markConversationAsRead(MarkConversationAsReadBody(conversationIds.map { it.id }))
         }
     }
 
@@ -190,6 +195,6 @@ internal class MarkConversationAsReadWorkerTest {
         worker.doWork()
 
         // then
-        coVerify { conversationLocalDataSource.rollbackMarkRead(userId, conversationId, labelId) }
+        coVerify { conversationLocalDataSource.markUnread(userId, conversationIds, labelId) }
     }
 }

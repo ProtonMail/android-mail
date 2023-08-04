@@ -183,12 +183,6 @@ interface ConversationLocalDataSource {
 
     suspend fun isConversationRead(userId: UserId, conversationId: ConversationId): Either<DataError.Local, Boolean>
 
-    suspend fun rollbackMarkRead(
-        userId: UserId,
-        conversationId: ConversationId,
-        contextLabelId: LabelId
-    ): Either<DataError.Local, Conversation>
-
     suspend fun getConversation(userId: UserId, conversationId: ConversationId): Either<DataError.Local, Conversation>
 
     suspend fun getConversations(

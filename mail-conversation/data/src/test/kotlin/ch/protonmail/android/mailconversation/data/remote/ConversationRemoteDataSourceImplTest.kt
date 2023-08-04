@@ -456,7 +456,7 @@ class ConversationRemoteDataSourceImplTest {
             enqueuer.enqueue<MarkConversationAsReadWorker>(
                 MarkConversationAsReadWorker.params(
                     userId,
-                    conversationId,
+                    listOf(conversationId),
                     contextLabelId
                 )
             )
