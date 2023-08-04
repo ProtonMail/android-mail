@@ -120,12 +120,6 @@ class ConversationLocalDataSourceImpl @Inject constructor(
 
     override suspend fun addLabel(
         userId: UserId,
-        conversationId: ConversationId,
-        labelId: LabelId
-    ): Either<DataError.Local, Conversation> = addLabels(userId, conversationId, listOf(labelId))
-
-    override suspend fun addLabel(
-        userId: UserId,
         conversationIds: List<ConversationId>,
         labelId: LabelId
     ): Either<DataError.Local, List<Conversation>> = addLabels(userId, conversationIds, listOf(labelId))
@@ -162,12 +156,6 @@ class ConversationLocalDataSourceImpl @Inject constructor(
             return@map updatedConversations
         }
     }
-
-    override suspend fun removeLabel(
-        userId: UserId,
-        conversationId: ConversationId,
-        labelId: LabelId
-    ): Either<DataError.Local, Conversation> = removeLabels(userId, conversationId, listOf(labelId))
 
     override suspend fun removeLabel(
         userId: UserId,

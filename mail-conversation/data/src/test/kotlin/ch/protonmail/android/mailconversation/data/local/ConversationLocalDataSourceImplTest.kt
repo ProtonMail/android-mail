@@ -244,7 +244,7 @@ class ConversationLocalDataSourceImplTest {
         val labelId = LabelId("10")
 
         // When
-        conversationLocalDataSource.addLabel(userId, conversation.conversationId, labelId)
+        conversationLocalDataSource.addLabel(userId, listOf(conversation.conversationId), labelId)
 
         // Then
         val slot = slot<ConversationLabelEntity>()
@@ -307,7 +307,7 @@ class ConversationLocalDataSourceImplTest {
         val labelId = LabelId("0")
 
         // When
-        conversationLocalDataSource.removeLabel(userId, conversation.conversationId, labelId)
+        conversationLocalDataSource.removeLabel(userId, listOf(conversation.conversationId), labelId)
 
         // Then
         coVerifySequence {
