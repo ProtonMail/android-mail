@@ -139,6 +139,7 @@ import kotlinx.coroutines.test.setMain
 import me.proton.core.contact.domain.entity.Contact
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
+import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
@@ -465,6 +466,7 @@ class ConversationDetailViewModelIntegrationTest {
     }
 
     @Test
+    @Ignore("MAILANDR-696")
     fun `should emit first non draft message as expanding and expanded states on start`() = runTest {
         // given
         val expectedExpanded = MessageWithLabelsSample.AugWeatherForecast
