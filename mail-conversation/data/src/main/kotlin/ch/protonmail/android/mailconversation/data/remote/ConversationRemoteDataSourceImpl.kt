@@ -144,7 +144,7 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
         enqueuer.enqueue<MarkConversationAsUnreadWorker>(
             MarkConversationAsUnreadWorker.params(
                 userId,
-                conversationId,
+                listOf(conversationId),
                 contextLabelId
             )
         )

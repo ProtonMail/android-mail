@@ -26,6 +26,7 @@ import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import arrow.core.right
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
+import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailconversation.data.remote.ConversationApi
@@ -52,7 +53,7 @@ internal class MarkConversationAsUnreadWorkerTest {
     private val contextLabelId = MailLabelId.System.Archive.labelId
 
     private val userId = UserIdSample.Primary
-    private val conversationId = ConversationIdSample.WeatherForecast
+    private val conversationIds = listOf(ConversationIdSample.WeatherForecast)
     private val nonRetryableException = SerializationException()
     private val retryableException = UnknownHostException()
 
@@ -73,13 +74,15 @@ internal class MarkConversationAsUnreadWorkerTest {
     private val conversationApi: ConversationApi = mockk()
     private val conversationLocalDataSource: ConversationLocalDataSource = mockk {
         coEvery {
-            rollbackMarkUnread(userId, conversationId, contextLabelId)
-        } returns ConversationSample.WeatherForecast.right()
+            markRead(userId, conversationIds, contextLabelId)
+        } returns listOf(ConversationSample.WeatherForecast).right()
     }
     private val params: WorkerParameters = mockk {
         every { taskExecutor } returns mockk(relaxed = true)
         every { inputData.getString(MarkConversationAsUnreadWorker.RawUserIdKey) } returns userId.id
-        every { inputData.getString(MarkConversationAsUnreadWorker.RawConversationIdKey) } returns conversationId.id
+        every {
+            inputData.getStringArray(MarkConversationAsUnreadWorker.RawConversationIdsKey)
+        } returns arrayOf(ConversationIdSample.WeatherForecast.id)
         every { inputData.getString(MarkConversationAsUnreadWorker.RawContextLabelId) } returns contextLabelId.id
     }
     private val workManager: WorkManager = mockk {
@@ -103,7 +106,7 @@ internal class MarkConversationAsUnreadWorkerTest {
         Enqueuer(workManager).enqueue<MarkConversationAsUnreadWorker>(
             MarkConversationAsUnreadWorker.params(
                 userId,
-                conversationId,
+                conversationIds,
                 contextLabelId
             )
         )
@@ -120,7 +123,7 @@ internal class MarkConversationAsUnreadWorkerTest {
         Enqueuer(workManager).enqueue<MarkConversationAsUnreadWorker>(
             MarkConversationAsUnreadWorker.params(
                 userId,
-                conversationId,
+                conversationIds,
                 contextLabelId
             )
         )
@@ -133,8 +136,10 @@ internal class MarkConversationAsUnreadWorkerTest {
             actual = requestSlot.captured.workSpec.input.getString(MarkConversationAsUnreadWorker.RawUserIdKey)
         )
         assertEquals(
-            expected = conversationId.id,
-            actual = requestSlot.captured.workSpec.input.getString(MarkConversationAsUnreadWorker.RawConversationIdKey)
+            expected = conversationIds,
+            actual = requestSlot.captured.workSpec.input.getStringArray(
+                MarkConversationAsUnreadWorker.RawConversationIdsKey
+            )?.toList()?.map { ConversationId(it) }
         )
     }
 
@@ -148,7 +153,7 @@ internal class MarkConversationAsUnreadWorkerTest {
 
         // then
         coVerify {
-            conversationApi.markAsUnread(MarkConversationAsUnreadBody(listOf(conversationId.id), contextLabelId.id))
+            conversationApi.markAsUnread(MarkConversationAsUnreadBody(conversationIds.map { it.id }, contextLabelId.id))
         }
     }
 
@@ -197,6 +202,6 @@ internal class MarkConversationAsUnreadWorkerTest {
         worker.doWork()
 
         // then
-        coVerify { conversationLocalDataSource.rollbackMarkUnread(userId, conversationId, contextLabelId) }
+        coVerify { conversationLocalDataSource.markRead(userId, conversationIds, contextLabelId) }
     }
 }

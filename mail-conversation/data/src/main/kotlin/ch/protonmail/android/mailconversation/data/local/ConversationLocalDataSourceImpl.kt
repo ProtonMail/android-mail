@@ -224,27 +224,6 @@ class ConversationLocalDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun rollbackMarkUnread(
-        userId: UserId,
-        conversationId: ConversationId,
-        contextLabelId: LabelId
-    ): Either<DataError.Local, Conversation> {
-        val conversation = observeConversation(userId, conversationId).first()
-            ?: return DataError.Local.NoDataCached.left()
-
-        val updatedLabels = conversation.labels.mapOnly(contextLabelId) { label ->
-            label.copy(contextNumUnread = label.contextNumUnread.decrementCoercingZero())
-        }
-
-        val updatedConversation = conversation.copy(
-            numUnread = conversation.numUnread.decrementCoercingZero(),
-            labels = updatedLabels
-        )
-
-        upsertConversation(userId, updatedConversation)
-        return updatedConversation.right()
-    }
-
     override suspend fun markRead(
         userId: UserId,
         conversationId: ConversationId,

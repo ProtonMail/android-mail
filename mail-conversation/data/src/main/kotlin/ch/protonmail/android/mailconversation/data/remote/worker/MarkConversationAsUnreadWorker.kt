@@ -46,14 +46,13 @@ class MarkConversationAsUnreadWorker @AssistedInject constructor(
     override suspend fun doWork(): Result {
         val userId = requireNotBlank(inputData.getString(RawUserIdKey), fieldName = "User id")
             .let(::UserId)
-        val conversationId = requireNotBlank(inputData.getString(RawConversationIdKey), fieldName = "Conversation id")
-            .let(::ConversationId)
+        val conversationIds = requireNotNull(inputData.getStringArray(RawConversationIdsKey)).toList()
         val contextLabelId = requireNotBlank(inputData.getString(RawContextLabelId), fieldName = "Context Label id")
             .let(::LabelId)
 
         val api = apiProvider.get<ConversationApi>(userId)
         val requestBody = MarkConversationAsUnreadBody(
-            conversationIds = listOf(conversationId.id),
+            conversationIds = conversationIds,
             labelId = contextLabelId.id
         )
         val result = api {
@@ -66,7 +65,8 @@ class MarkConversationAsUnreadWorker @AssistedInject constructor(
                 if (result.isRetryable()) {
                     Result.retry()
                 } else {
-                    conversationLocalDataSource.rollbackMarkUnread(userId, conversationId, contextLabelId)
+                    val conversations = conversationIds.map { ConversationId(it) }
+                    conversationLocalDataSource.markRead(userId, conversations, contextLabelId)
                     Result.failure()
                 }
             }
@@ -76,16 +76,16 @@ class MarkConversationAsUnreadWorker @AssistedInject constructor(
     companion object {
 
         internal const val RawUserIdKey = "markUnreadWorkParamUserId"
-        internal const val RawConversationIdKey = "markUnreadWorkParamConversationId"
+        internal const val RawConversationIdsKey = "markUnreadWorkParamConversationIds"
         internal const val RawContextLabelId = "markUnreadWorkParamContextLabelId"
 
         fun params(
             userId: UserId,
-            conversationId: ConversationId,
+            conversationIds: List<ConversationId>,
             contextLabelId: LabelId
         ) = mapOf(
             RawUserIdKey to userId.id,
-            RawConversationIdKey to conversationId.id,
+            RawConversationIdsKey to conversationIds.map { it.id }.toTypedArray(),
             RawContextLabelId to contextLabelId.id
         )
     }
