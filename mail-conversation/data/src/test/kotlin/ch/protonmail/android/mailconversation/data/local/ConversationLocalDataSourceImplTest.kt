@@ -372,17 +372,17 @@ class ConversationLocalDataSourceImplTest {
             numMessages = 3,
             numUnread = 3
         )
-        every { conversationDao.observe(userId, conversationId) } returns flowOf(conversation)
+        coEvery { conversationDao.getConversations(userId, listOf(conversationId)) } returns listOf(conversation)
 
         // when
         val result = conversationLocalDataSource.markUnread(
             userId,
-            ConversationIdSample.WeatherForecast,
+            listOf(ConversationIdSample.WeatherForecast),
             contextLabelId
         )
 
         // then
-        assertEquals(updatedConversation.right(), result)
+        assertEquals(listOf(updatedConversation).right(), result)
     }
 
     @Test
@@ -406,17 +406,17 @@ class ConversationLocalDataSourceImplTest {
             numUnread = 1,
             labels = updatedLabels
         )
-        every { conversationDao.observe(userId, conversationId) } returns flowOf(conversation)
+        coEvery { conversationDao.getConversations(userId, listOf(conversationId)) } returns listOf(conversation)
 
         // when
         val result = conversationLocalDataSource.markUnread(
             userId,
-            ConversationIdSample.AlphaAppFeedback,
+            listOf(ConversationIdSample.AlphaAppFeedback),
             contextLabelId
         )
 
         // then
-        assertEquals(updatedConversation.right(), result)
+        assertEquals(listOf(updatedConversation).right(), result)
     }
 
     @Test
@@ -433,31 +433,17 @@ class ConversationLocalDataSourceImplTest {
             numMessages = 2,
             numUnread = 2
         )
-        every { conversationDao.observe(userId, conversationId) } returns flowOf(conversation)
+        coEvery { conversationDao.getConversations(userId, listOf(conversationId)) } returns listOf(conversation)
 
         // when
         val result = conversationLocalDataSource.markUnread(
             userId,
-            ConversationIdSample.WeatherForecast,
+            listOf(ConversationIdSample.WeatherForecast),
             contextLabelId
         )
 
         // then
-        assertEquals(updatedConversation.right(), result)
-    }
-
-    @Test
-    fun `mark unread returns error if conversation not found`() = runTest {
-        // given
-        val conversationId = ConversationIdSample.WeatherForecast
-        val error = DataErrorSample.NoCache.left()
-        every { conversationLocalDataSource.observeConversation(userId, conversationId) } returns flowOf(null)
-
-        // when
-        val result = conversationLocalDataSource.markUnread(userId, conversationId, contextLabelId)
-
-        // then
-        assertEquals(error, result)
+        assertEquals(listOf(updatedConversation).right(), result)
     }
 
     @Test
@@ -551,17 +537,17 @@ class ConversationLocalDataSourceImplTest {
             numMessages = 3,
             numUnread = 1
         )
-        every { conversationDao.observe(userId, conversationId) } returns flowOf(conversation)
+        coEvery { conversationDao.getConversations(userId, listOf(conversationId)) } returns listOf(conversation)
 
         // when
         val result = conversationLocalDataSource.markRead(
             userId,
-            ConversationIdSample.WeatherForecast,
+            listOf(ConversationIdSample.WeatherForecast),
             contextLabelId
         )
 
         // then
-        assertEquals(updatedConversation.right(), result)
+        assertEquals(listOf(updatedConversation).right(), result)
     }
 
     @Test
@@ -585,31 +571,17 @@ class ConversationLocalDataSourceImplTest {
             numUnread = 0,
             labels = updatedLabels
         )
-        every { conversationDao.observe(userId, conversationId) } returns flowOf(conversation)
+        coEvery { conversationDao.getConversations(userId, listOf(conversationId)) } returns listOf(conversation)
 
         // when
         val result = conversationLocalDataSource.markRead(
             userId,
-            ConversationIdSample.AlphaAppFeedback,
+            listOf(ConversationIdSample.AlphaAppFeedback),
             contextLabelId
         )
 
         // then
-        assertEquals(updatedConversation.right(), result)
-    }
-
-    @Test
-    fun `mark read returns error if conversation not found`() = runTest {
-        // given
-        val conversationId = ConversationIdSample.WeatherForecast
-        val error = DataErrorSample.NoCache.left()
-        every { conversationLocalDataSource.observeConversation(userId, conversationId) } returns flowOf(null)
-
-        // when
-        val result = conversationLocalDataSource.markRead(userId, conversationId, contextLabelId)
-
-        // then
-        assertEquals(error, result)
+        assertEquals(listOf(updatedConversation).right(), result)
     }
 
     @Test

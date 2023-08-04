@@ -213,20 +213,27 @@ class ConversationLocalDataSourceImpl @Inject constructor(
         userId: UserId,
         conversationId: ConversationId,
         contextLabelId: LabelId
-    ): Either<DataError.Local, Conversation> {
-        val conversation = observeConversation(userId, conversationId).first()
-            ?: return DataError.Local.NoDataCached.left()
+    ): Either<DataError.Local, Conversation> = markUnread(userId, listOf(conversationId), contextLabelId)
+        .map { it.first() }
 
-        val updatedLabels = conversation.labels.mapOnly(contextLabelId) { label ->
-            label.copy(contextNumUnread = label.contextNumUnread.incrementUpTo(label.contextNumMessages))
+    override suspend fun markUnread(
+        userId: UserId,
+        conversationIds: List<ConversationId>,
+        contextLabelId: LabelId
+    ): Either<DataError.Local, List<Conversation>> = db.inTransaction {
+        getConversations(userId, conversationIds).map { conversations ->
+            val updatedConversations = conversations.map { conversation ->
+                val updatedLabels = conversation.labels.mapOnly(contextLabelId) { label ->
+                    label.copy(contextNumUnread = label.contextNumUnread.incrementUpTo(label.contextNumMessages))
+                }
+                conversation.copy(
+                    numUnread = conversation.numUnread.incrementUpTo(conversation.numMessages),
+                    labels = updatedLabels
+                )
+            }
+            upsertConversations(updatedConversations)
+            return@map updatedConversations
         }
-
-        val updatedConversation = conversation.copy(
-            numUnread = conversation.numUnread.incrementUpTo(conversation.numMessages),
-            labels = updatedLabels
-        )
-        upsertConversation(userId, updatedConversation)
-        return updatedConversation.right()
     }
 
     override suspend fun rollbackMarkUnread(
@@ -254,20 +261,27 @@ class ConversationLocalDataSourceImpl @Inject constructor(
         userId: UserId,
         conversationId: ConversationId,
         contextLabelId: LabelId
-    ): Either<DataError.Local, Conversation> {
-        val conversation = observeConversation(userId, conversationId).first()
-            ?: return DataError.Local.NoDataCached.left()
+    ): Either<DataError.Local, Conversation> = markRead(userId, listOf(conversationId), contextLabelId)
+        .map { it.first() }
 
-        val updatedLabels = conversation.labels.mapOnly(contextLabelId) { label ->
-            label.copy(contextNumUnread = label.contextNumUnread.decrementCoercingZero())
+    override suspend fun markRead(
+        userId: UserId,
+        conversationIds: List<ConversationId>,
+        contextLabelId: LabelId
+    ): Either<DataError.Local, List<Conversation>> = db.inTransaction {
+        getConversations(userId, conversationIds).map { conversations ->
+            val updatedConversations = conversations.map { conversation ->
+                val updatedLabels = conversation.labels.mapOnly(contextLabelId) { label ->
+                    label.copy(contextNumUnread = label.contextNumUnread.decrementCoercingZero())
+                }
+                conversation.copy(
+                    numUnread = conversation.numUnread.decrementCoercingZero(),
+                    labels = updatedLabels
+                )
+            }
+            upsertConversations(updatedConversations)
+            return@map updatedConversations
         }
-
-        val updatedConversation = conversation.copy(
-            numUnread = conversation.numUnread.decrementCoercingZero(),
-            labels = updatedLabels
-        )
-        upsertConversation(userId, updatedConversation)
-        return updatedConversation.right()
     }
 
     override suspend fun isConversationRead(
