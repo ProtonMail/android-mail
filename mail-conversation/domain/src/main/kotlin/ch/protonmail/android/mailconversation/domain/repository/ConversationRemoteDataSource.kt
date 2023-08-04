@@ -81,13 +81,13 @@ interface ConversationRemoteDataSource {
 
     suspend fun markUnread(
         userId: UserId,
-        conversationId: ConversationId,
+        conversationIds: List<ConversationId>,
         contextLabelId: LabelId
     )
 
     suspend fun markRead(
         userId: UserId,
-        conversationId: ConversationId,
+        conversationIds: List<ConversationId>,
         contextLabelId: LabelId
     )
 }

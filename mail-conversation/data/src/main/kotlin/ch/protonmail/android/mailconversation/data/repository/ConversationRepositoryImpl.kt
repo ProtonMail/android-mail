@@ -245,7 +245,7 @@ class ConversationRepositoryImpl @Inject constructor(
             .maxByOrNull { message -> message.time }
             ?.let { message -> messageLocalDataSource.markUnread(userId, listOf(message.messageId)) }
 
-        conversationRemoteDataSource.markUnread(userId, conversationId, contextLabelId)
+        conversationRemoteDataSource.markUnread(userId, listOf(conversationId), contextLabelId)
         return conversationLocalDataSource.markUnread(userId, conversationId, contextLabelId)
     }
 
@@ -254,7 +254,7 @@ class ConversationRepositoryImpl @Inject constructor(
         conversationId: ConversationId,
         contextLabelId: LabelId
     ): Either<DataError.Local, Conversation> {
-        conversationRemoteDataSource.markRead(userId, conversationId, contextLabelId)
+        conversationRemoteDataSource.markRead(userId, listOf(conversationId), contextLabelId)
         return conversationLocalDataSource.markRead(userId, conversationId, contextLabelId)
     }
 

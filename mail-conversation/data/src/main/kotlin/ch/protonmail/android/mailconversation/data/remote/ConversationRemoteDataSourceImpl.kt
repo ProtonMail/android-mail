@@ -138,13 +138,13 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun markUnread(
         userId: UserId,
-        conversationId: ConversationId,
+        conversationIds: List<ConversationId>,
         contextLabelId: LabelId
     ) {
         enqueuer.enqueue<MarkConversationAsUnreadWorker>(
             MarkConversationAsUnreadWorker.params(
                 userId,
-                listOf(conversationId),
+                conversationIds,
                 contextLabelId
             )
         )
@@ -152,13 +152,13 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun markRead(
         userId: UserId,
-        conversationId: ConversationId,
+        conversationIds: List<ConversationId>,
         contextLabelId: LabelId
     ) {
         enqueuer.enqueue<MarkConversationAsReadWorker>(
             MarkConversationAsReadWorker.params(
                 userId,
-                listOf(conversationId),
+                conversationIds,
                 contextLabelId
             )
         )

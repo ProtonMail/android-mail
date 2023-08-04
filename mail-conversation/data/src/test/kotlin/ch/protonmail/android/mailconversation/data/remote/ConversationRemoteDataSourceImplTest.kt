@@ -429,16 +429,17 @@ class ConversationRemoteDataSourceImplTest {
         val conversationId = ConversationIdSample.WeatherForecast
 
         // when
-        conversationRemoteDataSource.markUnread(userId, conversationId, contextLabelId)
+        conversationRemoteDataSource.markUnread(userId, listOf(conversationId), contextLabelId)
 
         // then
+        val expected = MarkConversationAsUnreadWorker.params(
+            userId,
+            listOf(conversationId),
+            contextLabelId
+        )
         verify {
             enqueuer.enqueue<MarkConversationAsUnreadWorker>(
-                MarkConversationAsUnreadWorker.params(
-                    userId,
-                    listOf(conversationId),
-                    contextLabelId
-                )
+                match { mapDeepEquals(it, expected) }
             )
         }
     }
@@ -449,16 +450,17 @@ class ConversationRemoteDataSourceImplTest {
         val conversationId = ConversationIdSample.WeatherForecast
 
         // when
-        conversationRemoteDataSource.markRead(userId, conversationId, contextLabelId)
+        conversationRemoteDataSource.markRead(userId, listOf(conversationId), contextLabelId)
 
         // then
+        val expected = MarkConversationAsReadWorker.params(
+            userId,
+            listOf(conversationId),
+            contextLabelId
+        )
         verify {
             enqueuer.enqueue<MarkConversationAsReadWorker>(
-                MarkConversationAsReadWorker.params(
-                    userId,
-                    listOf(conversationId),
-                    contextLabelId
-                )
+                match { mapDeepEquals(it, expected) }
             )
         }
     }

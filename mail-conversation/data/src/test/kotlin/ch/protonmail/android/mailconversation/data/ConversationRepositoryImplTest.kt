@@ -683,7 +683,7 @@ class ConversationRepositoryImplTest {
         conversationRepository.markUnread(userId, conversationId, contextLabelId)
 
         // then
-        coVerify { conversationRemoteDataSource.markUnread(userId, conversationId, contextLabelId) }
+        coVerify { conversationRemoteDataSource.markUnread(userId, listOf(conversationId), contextLabelId) }
     }
 
     @Test
@@ -765,7 +765,7 @@ class ConversationRepositoryImplTest {
         conversationRepository.markRead(userId, conversationId, contextLabelId)
 
         // then
-        coVerify { conversationRemoteDataSource.markRead(userId, conversationId, contextLabelId) }
+        coVerify { conversationRemoteDataSource.markRead(userId, listOf(conversationId), contextLabelId) }
     }
 
     @Test
