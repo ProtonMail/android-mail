@@ -19,6 +19,7 @@
 package ch.protonmail.android.composer.data.remote
 
 import arrow.core.Either
+import arrow.core.left
 import ch.protonmail.android.composer.data.remote.resource.CreateDraftBody
 import ch.protonmail.android.composer.data.remote.resource.DraftMessageResource
 import ch.protonmail.android.composer.data.remote.resource.UpdateDraftBody
@@ -53,6 +54,16 @@ class DraftRemoteDataSourceImpl @Inject constructor(
             action.toApiInt(),
             emptyList()
         )
+
+        if (body.message.body.isBlank()) {
+            /*
+             * The API doesn't accept being called with an empty body.
+             * Body is empty when the draft was just created and any data (subject, recipients..) was added
+             * but the body wasn't. In order to avoid adding ad-hoc logic to create an encrypted empty-string
+             * body, we block the draft creation (triggered by the automatic sync) from happening till a body was added
+             */
+            return DataError.Remote.CreateDraftRequestNotPerformed.left()
+        }
 
         return apiProvider.get<DraftApi>(userId).invoke {
             createDraft(body).message.toMessageWithBody(userId)

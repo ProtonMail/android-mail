@@ -25,6 +25,10 @@ object CreateDraftBodySample {
 
     val NewDraftWithSubject = build()
 
+    val NewDraftWithSubjectAndBody = build(
+        message = DraftMessageResourceSample.NewDraftWithSubjectAndBody
+    )
+
     fun build(
         message: DraftMessageResource = DraftMessageResourceSample.NewDraftWithSubject,
         parentId: String? = null,

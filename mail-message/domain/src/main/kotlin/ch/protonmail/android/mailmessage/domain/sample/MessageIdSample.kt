@@ -26,6 +26,7 @@ object MessageIdSample {
     val AugWeatherForecast = MessageId("aug_weather_forecast")
     val EmptyDraft = MessageId("empty_draft")
     val NewDraftWithSubject = MessageId("new_draft_with_subject_only")
+    val NewDraftWithSubjectAndBody = MessageId("new_draft_with_subject_and_body")
     val RemoteDraft = MessageId(
         "j3AabCJkO7V4T9aJA81ilVFs2HYzJYhwRDPH_dm2O8twgGjRqUZ0-9XX7ZGP8ehEgtIm5o2J8N5svjFuVfu0GQ=="
     )

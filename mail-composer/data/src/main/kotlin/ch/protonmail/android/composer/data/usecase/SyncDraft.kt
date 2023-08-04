@@ -56,7 +56,7 @@ internal class SyncDraft @Inject constructor(
             draftStateRepository.saveSyncedState(userId, messageId, messageId)
         } else {
             val syncDraft = draftRemoteDataSource.create(userId, message, draftState.action).onLeft {
-                Timber.w("Sync draft failure $messageId: Create API call error $it")
+                if (it.shouldBeLogged()) { Timber.w("Sync draft failure $messageId: Create API call error $it") }
             }.bind()
 
             val remoteDraftId = syncDraft.message.messageId
@@ -64,4 +64,7 @@ internal class SyncDraft @Inject constructor(
             draftStateRepository.saveSyncedState(userId, messageId, remoteDraftId)
         }
     }
+
+    private fun DataError.Remote.shouldBeLogged() = this != DataError.Remote.CreateDraftRequestNotPerformed
+
 }

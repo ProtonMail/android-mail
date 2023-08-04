@@ -37,6 +37,11 @@ object MessageWithBodySample {
         message = MessageSample.NewDraftWithSubject
     )
 
+    val NewDraftWithSubjectAndBody = build(
+        message = MessageSample.NewDraftWithSubject,
+        body = "This is the body typed from the user, ENCRYPTED"
+    )
+
     val RemoteDraft = build(
         message = MessageSample.RemoteDraft
     )

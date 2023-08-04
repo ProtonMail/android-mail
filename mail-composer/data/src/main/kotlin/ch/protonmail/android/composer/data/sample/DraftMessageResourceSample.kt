@@ -27,9 +27,14 @@ object DraftMessageResourceSample {
 
     val NewDraftWithSubject = build(subject = "New draft, just typed the subject")
 
+    val NewDraftWithSubjectAndBody = build(
+        subject = "New draft, just typed the subject",
+        body = "This is the body typed from the user, ENCRYPTED"
+    )
+
     val RemoteDraft = build(subject = "Remote draft, known to the API")
 
-    fun build(subject: String = "") = DraftMessageResource(
+    fun build(subject: String = "", body: String = "") = DraftMessageResource(
         subject = subject,
         unread = 0,
         sender = RecipientResource(RecipientSample.John.address, RecipientSample.John.name),
@@ -38,7 +43,7 @@ object DraftMessageResourceSample {
         bccList = emptyList(),
         externalId = null,
         flags = 0L,
-        body = "",
+        body = body,
         mimeType = MimeType.PlainText.value
     )
 }

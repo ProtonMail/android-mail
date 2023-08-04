@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.composer.data.remote
 
+import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.composer.data.remote.resource.CreateDraftBody
 import ch.protonmail.android.composer.data.remote.resource.UpdateDraftBody
@@ -25,15 +26,18 @@ import ch.protonmail.android.composer.data.remote.response.SaveDraftResponse
 import ch.protonmail.android.composer.data.sample.CreateDraftBodySample
 import ch.protonmail.android.composer.data.sample.MessageWithBodyResourceSample
 import ch.protonmail.android.composer.data.sample.UpdateDraftBodySample
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcomposer.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.data.remote.resource.MessageWithBodyResource
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
+import io.mockk.Called
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.test.runTest
 import me.proton.core.network.data.ApiManagerFactory
 import me.proton.core.network.data.ApiProvider
@@ -70,9 +74,9 @@ class DraftRemoteDataSourceTest {
         // Given
         val apiMessageId = MessageId("remote-api-assigned-messageId")
         val action = DraftAction.Compose
-        val inputDraft = MessageWithBodySample.NewDraftWithSubject
-        val expectedRequest = CreateDraftBodySample.NewDraftWithSubject
-        val expectedApiResponse = MessageWithBodyResourceSample.NewDraftWithSubject.copy(id = apiMessageId.id)
+        val inputDraft = MessageWithBodySample.NewDraftWithSubjectAndBody
+        val expectedRequest = CreateDraftBodySample.NewDraftWithSubjectAndBody
+        val expectedApiResponse = MessageWithBodyResourceSample.NewDraftWithSubjectAndBody.copy(id = apiMessageId.id)
         expectCreateDraftApiSucceeds(expectedRequest, expectedApiResponse)
 
         // When
@@ -103,6 +107,21 @@ class DraftRemoteDataSourceTest {
         // Then
         val expected = inputDraft.copy(message = inputDraft.message.copy(time = apiTime))
         assertEquals(expected.right(), actual)
+    }
+
+    @Test
+    fun `create draft returns 'call is not performed' error without calling API when message has no body`() = runTest {
+        // Given
+        val action = DraftAction.Compose
+        val inputDraft = MessageWithBodySample.NewDraftWithSubject
+
+        // When
+        val actual = remoteDataSource.create(userId, inputDraft, action)
+
+        // Then
+        val expected = DataError.Remote.CreateDraftRequestNotPerformed
+        assertEquals(expected.left(), actual)
+        verify { draftApi wasNot Called }
     }
 
     private fun expectCreateDraftApiSucceeds(body: CreateDraftBody, expected: MessageWithBodyResource) {

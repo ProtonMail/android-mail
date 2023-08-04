@@ -34,6 +34,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
+import ch.protonmail.android.test.utils.rule.LoggingTestRule
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -41,9 +42,13 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import org.junit.Assert.assertEquals
+import org.junit.Rule
 import org.junit.Test
 
 class SyncDraftTest {
+
+    @get:Rule
+    val loggingRule = LoggingTestRule()
 
     private val userId = UserIdSample.Primary
 
@@ -176,8 +181,31 @@ class SyncDraftTest {
         val actual = draftRepository(userId, messageId)
 
         // Then
+        loggingRule.assertWarningLogged("Sync draft failure $messageId: Create API call error $expectedError")
         assertEquals(expectedError.left(), actual)
     }
+
+    @Test
+    fun `does not log failure on sentry when remote data source fails with create draft request not performed`() =
+        runTest {
+            // Given
+            val messageId = MessageIdSample.LocalDraft
+            val expectedDraft = MessageWithBodySample.Invoice
+            val expectedAction = DraftAction.Compose
+            val expectedError = DataError.Remote.CreateDraftRequestNotPerformed
+            val expectedDraftState = DraftStateSample.NewDraftState
+            expectGetDraftStateSucceeds(userId, messageId, expectedDraftState)
+            expectGetLocalMessageSucceeds(userId, messageId, expectedDraft)
+            expectRemoteDataSourceFailure(userId, expectedDraft, expectedAction, expectedError)
+            expectIsDraftKnownToApi(expectedDraftState, false)
+
+            // When
+            val actual = draftRepository(userId, messageId)
+
+            // Then
+            assertEquals(expectedError.left(), actual)
+            loggingRule.assertNoLogs()
+        }
 
     @Test
     fun `sync performs update on remote data source when draft is already known to the API`() = runTest {

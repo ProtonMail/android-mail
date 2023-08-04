@@ -24,6 +24,7 @@ import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 import timber.log.Timber
 import kotlin.test.assertEquals
+import kotlin.test.assertNull
 
 class LoggingTestRule(
     private val testTree: TestTree = TestTree()
@@ -40,5 +41,14 @@ class LoggingTestRule(
     fun assertErrorLogged(message: String) {
         val expectedLog = TestTree.Log(Log.ERROR, null, message, null)
         assertEquals(expectedLog, testTree.logs.lastOrNull())
+    }
+
+    fun assertWarningLogged(message: String) {
+        val expectedLog = TestTree.Log(Log.WARN, null, message, null)
+        assertEquals(expectedLog, testTree.logs.lastOrNull())
+    }
+
+    fun assertNoLogs() {
+        assertNull(testTree.logs.lastOrNull())
     }
 }

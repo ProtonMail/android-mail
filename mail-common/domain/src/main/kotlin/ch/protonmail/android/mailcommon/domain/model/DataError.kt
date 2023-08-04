@@ -63,6 +63,8 @@ sealed interface DataError {
          * is not and to allow dedicated handling to be put in place.
          */
         object Unknown : Remote
+
+        object CreateDraftRequestNotPerformed : Remote
     }
 }
 
