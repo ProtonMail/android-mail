@@ -73,15 +73,15 @@
   <string name="decryption_error">Не ўдалося расшыфраваць паведамленне.</string>
   <string name="detail_error_retrieving_message_body">Немагчыма атрымаць паведамленне</string>
   <!-- Attachment Types -->
+  <string name="attachment_type_archive">Архіў</string>
   <string name="attachment_type_image">Відарыс</string>
   <string name="attachment_type_video">Відэа</string>
   <string name="attachment_type_audio">Аўдыя</string>
   <string name="attachment_type_unknown">Невядомы</string>
   <string name="attachment_type_pdf">PDF</string>
-  <string name="attachment_type_zip">ZIP</string>
   <string name="attachment_type_text">Тэкст</string>
   <string name="attachment_type_document">Дакумент</string>
-  <string name="attachment_type_excel">Excel</string>
+  <string name="attachment_type_spreadsheet">Электронная табліца</string>
   <string name="attachment_type_presentation">Прэзентацыя</string>
   <string name="attachment_type_description">Файл %1$s</string>
   <string name="message_body_error_no_webview">Вам неабходна ўсталяваць WebView, каб бачыць змесціва гэтага паведамлення.</string>

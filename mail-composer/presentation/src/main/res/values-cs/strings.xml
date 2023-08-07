@@ -35,5 +35,5 @@
   <string name="composer_error_store_draft_body">Uložení těla tohoto návrhu se nezdařilo</string>
   <string name="composer_error_duplicate_recipient">Odstraněn duplicitní příjemce: %1$s</string>
   <string name="composer_error_store_draft_subject">Uložení předmětu tohoto návrhu se nezdařilo</string>
-  <string name="composer_error_store_draft_recipients">Storing this draft\'s recipients failed</string>
+  <string name="composer_error_store_draft_recipients">Uložení příjemců tohoto konceptu selhalo</string>
 </resources>

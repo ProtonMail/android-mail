@@ -34,6 +34,6 @@
   <string name="composer_error_store_draft_sender_address">存储此草稿的发件人地址失败</string>
   <string name="composer_error_store_draft_body">存储草稿正文失败</string>
   <string name="composer_error_duplicate_recipient">已删除重复收件人：%1$s</string>
-  <string name="composer_error_store_draft_subject">Storing this draft\'s subject failed</string>
-  <string name="composer_error_store_draft_recipients">Storing this draft\'s recipients failed</string>
+  <string name="composer_error_store_draft_subject">存储此草稿的主题失败</string>
+  <string name="composer_error_store_draft_recipients">存储此草稿的收件人失败</string>
 </resources>

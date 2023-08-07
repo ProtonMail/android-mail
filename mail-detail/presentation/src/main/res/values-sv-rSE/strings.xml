@@ -69,15 +69,15 @@
   <string name="decryption_error">Dekryptering av meddelande misslyckades.</string>
   <string name="detail_error_retrieving_message_body">Kan inte hämta meddelande</string>
   <!-- Attachment Types -->
+  <string name="attachment_type_archive">Arkiv</string>
   <string name="attachment_type_image">Bild</string>
   <string name="attachment_type_video">Video</string>
   <string name="attachment_type_audio">Ljud</string>
   <string name="attachment_type_unknown">Okänd</string>
   <string name="attachment_type_pdf">PDF</string>
-  <string name="attachment_type_zip">ZIP</string>
   <string name="attachment_type_text">Text</string>
   <string name="attachment_type_document">Dokument</string>
-  <string name="attachment_type_excel">Excel</string>
+  <string name="attachment_type_spreadsheet">Kalkylblad</string>
   <string name="attachment_type_presentation">Presentation</string>
   <string name="attachment_type_description">%1$s-fil</string>
   <string name="message_body_error_no_webview">Du måste ha ett WebView installerat för att se innehållet i detta meddelande.</string>

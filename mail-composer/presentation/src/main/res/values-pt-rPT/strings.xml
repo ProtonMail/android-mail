@@ -29,11 +29,11 @@
   <string name="composer_error_invalid_email">O endereço de email não é válido.</string>
   <string name="composer_error_invalid_sender">O endereço do remetente é inválido</string>
   <string name="change_sender_button_content_description">Alterar o remetente</string>
-  <string name="composer_change_sender_paid_feature">Para alterar o endereço do remetente, actualize para um plano pago.</string>
+  <string name="composer_change_sender_paid_feature">Para alterar o endereço do remetente, atualize para um plano pago.</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Não é possível alterar o remetente porque a subscrição do utilizador não pôde ser obtida. Tente novamente.</string>
   <string name="composer_error_store_draft_sender_address">Erro ao armazenar o endereço do remetente deste rascunho</string>
-  <string name="composer_error_store_draft_body">Erro ao armazenar a estrutura deste rascunho</string>
+  <string name="composer_error_store_draft_body">O armazenamento do corpo deste rascunho falhou</string>
   <string name="composer_error_duplicate_recipient">Destinatário duplicado eliminado: %1$s</string>
   <string name="composer_error_store_draft_subject">Erro ao guardar o assunto deste rascunho</string>
-  <string name="composer_error_store_draft_recipients">Erro ao guardar os destinatários deste rascunho</string>
+  <string name="composer_error_store_draft_recipients">Falha ao guardar os destinatários deste rascunho</string>
 </resources>

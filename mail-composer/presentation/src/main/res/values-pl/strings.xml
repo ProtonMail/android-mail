@@ -35,5 +35,5 @@
   <string name="composer_error_store_draft_body">Zapisanie treści szkicu nie powiodło się</string>
   <string name="composer_error_duplicate_recipient">Zduplikowany odbiorca %1$s został usunięty</string>
   <string name="composer_error_store_draft_subject">Zapisanie tematu szkicu nie powiodło się</string>
-  <string name="composer_error_store_draft_recipients">Storing this draft\'s recipients failed</string>
+  <string name="composer_error_store_draft_recipients">Zapisanie odbiorców szkicu nie powiodło się</string>
 </resources>

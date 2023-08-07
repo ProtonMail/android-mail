@@ -71,15 +71,15 @@
   <string name="decryption_error">Decriptarea mesajului a eșuat.</string>
   <string name="detail_error_retrieving_message_body">Nu s-a putut prelua mesajul.</string>
   <!-- Attachment Types -->
+  <string name="attachment_type_archive">Arhivă</string>
   <string name="attachment_type_image">Imagine</string>
   <string name="attachment_type_video">Video</string>
   <string name="attachment_type_audio">Audio</string>
   <string name="attachment_type_unknown">Necunoscut</string>
   <string name="attachment_type_pdf">PDF</string>
-  <string name="attachment_type_zip">ZIP</string>
   <string name="attachment_type_text">Text</string>
   <string name="attachment_type_document">Document</string>
-  <string name="attachment_type_excel">Excel</string>
+  <string name="attachment_type_spreadsheet">Foaie de calcul</string>
   <string name="attachment_type_presentation">Prezentare</string>
   <string name="attachment_type_description">%1$s fișier</string>
   <string name="message_body_error_no_webview">Trebuie să aveți instalat WebView pentru a vedea conținutul acestui mesaj.</string>

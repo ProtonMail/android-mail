@@ -73,15 +73,15 @@
   <string name="decryption_error">Odszyfrowanie wiadomości nie powiodło się.</string>
   <string name="detail_error_retrieving_message_body">Nie można pobrać wiadomości</string>
   <!-- Attachment Types -->
+  <string name="attachment_type_archive">Archiwum</string>
   <string name="attachment_type_image">Obraz</string>
   <string name="attachment_type_video">Wideo</string>
   <string name="attachment_type_audio">Dźwięk</string>
   <string name="attachment_type_unknown">Nieznany</string>
   <string name="attachment_type_pdf">PDF</string>
-  <string name="attachment_type_zip">ZIP</string>
   <string name="attachment_type_text">Tekst</string>
   <string name="attachment_type_document">Dokument</string>
-  <string name="attachment_type_excel">Excel</string>
+  <string name="attachment_type_spreadsheet">Arkusz kalkulacyjny</string>
   <string name="attachment_type_presentation">Prezentacja</string>
   <string name="attachment_type_description">%1$s plik</string>
   <string name="message_body_error_no_webview">Musisz zainstalować WebView, aby zobaczyć zawartość wiadomości.</string>

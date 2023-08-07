@@ -69,18 +69,18 @@
   <string name="decryption_error">Entschlüsseln der Nachricht fehlgeschlagen.</string>
   <string name="detail_error_retrieving_message_body">Fehler beim Abrufen der Nachricht</string>
   <!-- Attachment Types -->
+  <string name="attachment_type_archive">Archiv</string>
   <string name="attachment_type_image">Bild</string>
   <string name="attachment_type_video">Video</string>
   <string name="attachment_type_audio">Audio</string>
   <string name="attachment_type_unknown">Unbekannt</string>
   <string name="attachment_type_pdf">PDF</string>
-  <string name="attachment_type_zip">ZIP</string>
   <string name="attachment_type_text">Text</string>
   <string name="attachment_type_document">Dokument</string>
-  <string name="attachment_type_excel">Excel</string>
+  <string name="attachment_type_spreadsheet">Tabellendokument</string>
   <string name="attachment_type_presentation">Präsentation</string>
   <string name="attachment_type_description">%1$s Datei</string>
-  <string name="message_body_error_no_webview">Du musst eine WebView installiert haben um den Inhalt dieser Nachricht zu sehen.</string>
+  <string name="message_body_error_no_webview">Du musst eine WebView-App installiert haben, um den Inhalt dieser Nachricht zu sehen.</string>
   <!-- Banners -->
   <string name="message_body_embedded_images_banner_text">Das automatische Laden von eingebetteten Bildern ist ausgeschaltet. Dies kann in den Einstellungen geändert werden.</string>
 </resources>

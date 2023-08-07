@@ -45,13 +45,13 @@
   <string name="error_move_conversation_failed">A beszélgetés áthelyezése sikertelen. Próbálja újra.</string>
   <string name="error_loading_message">Nem meghatározott hiba történt, kérjük próbálja meg újra.</string>
   <string name="error_offline_loading_message">Ön jelenleg offline. Internet kapcsolat szükséges az üzenet tartalmának betöltéséhez.</string>
-  <string name="error_get_attachment_failed">Failed to get attachment.</string>
-  <string name="error_attachment_download_in_progress">Current download must complete before starting a new one.</string>
-  <string name="attachment_permission_dialog_title">Permission required</string>
-  <string name="attachment_permission_dialog_message">Proton Mail needs permission to access your storage to download the attachment.</string>
+  <string name="error_get_attachment_failed">A melléklet elérése sikertelen</string>
+  <string name="error_attachment_download_in_progress">A jelenlegi letöltésnek be kell fejeződnie az új letöltés megkezdése előtt.</string>
+  <string name="attachment_permission_dialog_title">Engedély szükséges</string>
+  <string name="attachment_permission_dialog_message">A Proton Mailnek engedélyre van szüksége a tárolójához való hozzáféréshez hogy letöltse a mellékletet.</string>
   <string name="attachment_permission_dialog_dismiss_button">OK</string>
-  <string name="attachment_permission_dialog_action_button">Settings</string>
-  <string name="error_get_attachment_not_enough_memory">Failed to get attachment due to insufficient memory</string>
+  <string name="attachment_permission_dialog_action_button">Beállítások</string>
+  <string name="error_get_attachment_not_enough_memory">Elégtelen memória miatt a melléklet letöltése sikertelen</string>
   <string name="reload">Újratöltés</string>
   <plurals name="attachment_count_label">
     <item quantity="one">%d fájl</item>
@@ -69,18 +69,18 @@
   <string name="decryption_error">Az üzenet visszafejtése sikertelen.</string>
   <string name="detail_error_retrieving_message_body">Az üzenet betöltése sikertelen</string>
   <!-- Attachment Types -->
+  <string name="attachment_type_archive">Archive</string>
   <string name="attachment_type_image">Kép</string>
   <string name="attachment_type_video">Videó</string>
   <string name="attachment_type_audio">Hang</string>
   <string name="attachment_type_unknown">Ismeretlen</string>
   <string name="attachment_type_pdf">PDF</string>
-  <string name="attachment_type_zip">ZIP</string>
   <string name="attachment_type_text">Szöveg</string>
   <string name="attachment_type_document">Dokumentum</string>
-  <string name="attachment_type_excel">Excel</string>
+  <string name="attachment_type_spreadsheet">Számolótábla</string>
   <string name="attachment_type_presentation">Prezentáció</string>
   <string name="attachment_type_description">%1$s fájl</string>
   <string name="message_body_error_no_webview">You need to have a WebView installed to see this message\'s content.</string>
   <!-- Banners -->
-  <string name="message_body_embedded_images_banner_text">Automatic loading of embedded images is turned off. This can be changed in the settings.</string>
+  <string name="message_body_embedded_images_banner_text">A beágyazott képek automatikus letöltése ki van kapcsolva. A beállításoknál lehet ezt megváltoztatni.</string>
 </resources>

@@ -35,5 +35,5 @@
   <string name="composer_error_store_draft_body">Збой захавання цела гэтага чарнавіка</string>
   <string name="composer_error_duplicate_recipient">Выдалены дублікат атрымальніка: %1$s</string>
   <string name="composer_error_store_draft_subject">Збой захавання тэмы гэтага чарнавіка</string>
-  <string name="composer_error_store_draft_recipients">Storing this draft\'s recipients failed</string>
+  <string name="composer_error_store_draft_recipients">Збой захавання атрымальнікаў гэтага чарнавіка</string>
 </resources>

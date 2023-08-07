@@ -71,15 +71,15 @@
   <string name="decryption_error">Dešifriranje poruke neuspješno.</string>
   <string name="detail_error_retrieving_message_body">Nije moguće dohvatiti poruku</string>
   <!-- Attachment Types -->
+  <string name="attachment_type_archive">Archive</string>
   <string name="attachment_type_image">Slika</string>
   <string name="attachment_type_video">Videozapis</string>
   <string name="attachment_type_audio">Zvuk</string>
   <string name="attachment_type_unknown">Nepoznato</string>
   <string name="attachment_type_pdf">PDF</string>
-  <string name="attachment_type_zip">ZIP</string>
   <string name="attachment_type_text">Tekst</string>
   <string name="attachment_type_document">Dokument</string>
-  <string name="attachment_type_excel">Excel</string>
+  <string name="attachment_type_spreadsheet">Spreadsheet</string>
   <string name="attachment_type_presentation">Presentation</string>
   <string name="attachment_type_description">%1$s file</string>
   <string name="message_body_error_no_webview">You need to have a WebView installed to see this message\'s content.</string>

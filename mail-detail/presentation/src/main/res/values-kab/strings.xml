@@ -69,15 +69,15 @@
   <string name="decryption_error">Awgelhen n yinzan yecceḍ.</string>
   <string name="detail_error_retrieving_message_body">Ur izmir ara ad d-yawi izen</string>
   <!-- Attachment Types -->
+  <string name="attachment_type_archive">Archive</string>
   <string name="attachment_type_image">Tugna</string>
   <string name="attachment_type_video">Tavidyut</string>
   <string name="attachment_type_audio">Ameslaw</string>
   <string name="attachment_type_unknown">Arussin</string>
   <string name="attachment_type_pdf">PDF</string>
-  <string name="attachment_type_zip">ZIP</string>
   <string name="attachment_type_text">Aḍris</string>
   <string name="attachment_type_document">Isemli</string>
-  <string name="attachment_type_excel">Excel</string>
+  <string name="attachment_type_spreadsheet">Spreadsheet</string>
   <string name="attachment_type_presentation">Asenked</string>
   <string name="attachment_type_description">%1$s afaylu</string>
   <string name="message_body_error_no_webview">You need to have a WebView installed to see this message\'s content.</string>

@@ -67,15 +67,15 @@
   <string name="decryption_error">訊息解密失敗。</string>
   <string name="detail_error_retrieving_message_body">無法擷取訊息</string>
   <!-- Attachment Types -->
+  <string name="attachment_type_archive">封存檔</string>
   <string name="attachment_type_image">圖像</string>
   <string name="attachment_type_video">影片</string>
   <string name="attachment_type_audio">音訊</string>
   <string name="attachment_type_unknown">不明</string>
   <string name="attachment_type_pdf">PDF</string>
-  <string name="attachment_type_zip">ZIP</string>
   <string name="attachment_type_text">文字</string>
   <string name="attachment_type_document">文件</string>
-  <string name="attachment_type_excel">Excel</string>
+  <string name="attachment_type_spreadsheet">試算表</string>
   <string name="attachment_type_presentation">簡報</string>
   <string name="attachment_type_description">%1$s 個檔案</string>
   <string name="message_body_error_no_webview">您必須安裝一個 Android System WebView 才能查看此訊息的內容。</string>

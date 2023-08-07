@@ -73,15 +73,15 @@
   <string name="decryption_error">Dešifrování zprávy se nezdařilo.</string>
   <string name="detail_error_retrieving_message_body">Nelze načíst zprávu</string>
   <!-- Attachment Types -->
+  <string name="attachment_type_archive">Archiv</string>
   <string name="attachment_type_image">Obrázek</string>
   <string name="attachment_type_video">Video</string>
   <string name="attachment_type_audio">Audio</string>
   <string name="attachment_type_unknown">Neznámý</string>
   <string name="attachment_type_pdf">PDF</string>
-  <string name="attachment_type_zip">ZIP</string>
   <string name="attachment_type_text">Text</string>
   <string name="attachment_type_document">Dokument</string>
-  <string name="attachment_type_excel">Excel</string>
+  <string name="attachment_type_spreadsheet">Tabulka</string>
   <string name="attachment_type_presentation">Prezentace</string>
   <string name="attachment_type_description">Soubor %1$s</string>
   <string name="message_body_error_no_webview">Pro zobrazení obsahu této zprávy musíte mít nainstalovanu součást WebView.</string>

@@ -67,18 +67,18 @@
   <string name="decryption_error">メッセージの復号に失敗しました。</string>
   <string name="detail_error_retrieving_message_body">メッセージの取得ができません。</string>
   <!-- Attachment Types -->
+  <string name="attachment_type_archive">Archive</string>
   <string name="attachment_type_image">画像</string>
   <string name="attachment_type_video">動画</string>
   <string name="attachment_type_audio">音楽</string>
   <string name="attachment_type_unknown">不明</string>
   <string name="attachment_type_pdf">PDF</string>
-  <string name="attachment_type_zip">ZIP</string>
   <string name="attachment_type_text">テキスト</string>
   <string name="attachment_type_document">ドキュメント</string>
-  <string name="attachment_type_excel">Excel</string>
+  <string name="attachment_type_spreadsheet">Spreadsheet</string>
   <string name="attachment_type_presentation">プレゼンテーション</string>
   <string name="attachment_type_description">%1$s 件のファイル</string>
-  <string name="message_body_error_no_webview">You need to have a WebView installed to see this message\'s content.</string>
+  <string name="message_body_error_no_webview">このメッセージの内容を表示するには、WebView をインストールする必要があります。</string>
   <!-- Banners -->
-  <string name="message_body_embedded_images_banner_text">Automatic loading of embedded images is turned off. This can be changed in the settings.</string>
+  <string name="message_body_embedded_images_banner_text">埋め込み画像の自動読み込みはオフになっています。これは設定で変更できます。</string>
 </resources>

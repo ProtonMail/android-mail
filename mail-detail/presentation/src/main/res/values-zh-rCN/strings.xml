@@ -67,15 +67,15 @@
   <string name="decryption_error">消息解密失败。</string>
   <string name="detail_error_retrieving_message_body">无法获取消息</string>
   <!-- Attachment Types -->
+  <string name="attachment_type_archive">Archive</string>
   <string name="attachment_type_image">图片</string>
   <string name="attachment_type_video">视频</string>
   <string name="attachment_type_audio">音频</string>
   <string name="attachment_type_unknown">未知</string>
   <string name="attachment_type_pdf">PDF</string>
-  <string name="attachment_type_zip">ZIP</string>
   <string name="attachment_type_text">文本</string>
   <string name="attachment_type_document">文档</string>
-  <string name="attachment_type_excel">Excel</string>
+  <string name="attachment_type_spreadsheet">Spreadsheet</string>
   <string name="attachment_type_presentation">演示文稿</string>
   <string name="attachment_type_description">%1$s 个文件</string>
   <string name="message_body_error_no_webview">You need to have a WebView installed to see this message\'s content.</string>

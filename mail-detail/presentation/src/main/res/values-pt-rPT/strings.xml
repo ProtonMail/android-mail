@@ -46,12 +46,12 @@
   <string name="error_loading_message">Ocorreu um erro. Tente mais tarde.</string>
   <string name="error_offline_loading_message">Está offline. A ligação à internet é necessária para mostrar o conteúdo desta mensagem.</string>
   <string name="error_get_attachment_failed">Erro ao obter o anexo.</string>
-  <string name="error_attachment_download_in_progress">A transferência actual deve ser concluída antes de iniciar uma nova.</string>
+  <string name="error_attachment_download_in_progress">A transferência atual deve ser concluída antes de iniciar uma nova.</string>
   <string name="attachment_permission_dialog_title">Permissão necessária</string>
   <string name="attachment_permission_dialog_message">Proton Mail precisa de permissão de acesso ao seu armazenamento para executar a transferência do anexo.</string>
   <string name="attachment_permission_dialog_dismiss_button">OK</string>
-  <string name="attachment_permission_dialog_action_button">Configurações</string>
-  <string name="error_get_attachment_not_enough_memory">Erro ao obter o anexo devido a memória insuficiente</string>
+  <string name="attachment_permission_dialog_action_button">Definições</string>
+  <string name="error_get_attachment_not_enough_memory">Falha ao obter o anexo devido à memória insuficiente</string>
   <string name="reload">Recarregar</string>
   <plurals name="attachment_count_label">
     <item quantity="one">%d ficheiro</item>
@@ -69,15 +69,15 @@
   <string name="decryption_error">Erro ao desencriptar a mensagem.</string>
   <string name="detail_error_retrieving_message_body">Não é possível recuperar a mensagem</string>
   <!-- Attachment Types -->
+  <string name="attachment_type_archive">Arquivo</string>
   <string name="attachment_type_image">Imagem</string>
   <string name="attachment_type_video">Vídeo</string>
   <string name="attachment_type_audio">Áudio</string>
   <string name="attachment_type_unknown">Desconhecido</string>
   <string name="attachment_type_pdf">PDF</string>
-  <string name="attachment_type_zip">ZIP</string>
   <string name="attachment_type_text">Texto</string>
   <string name="attachment_type_document">Documento</string>
-  <string name="attachment_type_excel">Excel</string>
+  <string name="attachment_type_spreadsheet">Folha de cálculo</string>
   <string name="attachment_type_presentation">Apresentação</string>
   <string name="attachment_type_description">%1$s ficheiro</string>
   <string name="message_body_error_no_webview">Necessita instalar WebView para visualizar o conteúdo desta mensagem.</string>

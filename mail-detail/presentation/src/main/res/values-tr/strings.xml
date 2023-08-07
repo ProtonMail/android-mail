@@ -69,15 +69,15 @@
   <string name="decryption_error">İletinin kodu çözülemedi.</string>
   <string name="detail_error_retrieving_message_body">İletiler alınamadı</string>
   <!-- Attachment Types -->
+  <string name="attachment_type_archive">Arşiv</string>
   <string name="attachment_type_image">Görsel</string>
   <string name="attachment_type_video">Görüntü</string>
   <string name="attachment_type_audio">Ses</string>
   <string name="attachment_type_unknown">Bilinmiyor</string>
   <string name="attachment_type_pdf">PDF</string>
-  <string name="attachment_type_zip">ZIP</string>
   <string name="attachment_type_text">Metin</string>
   <string name="attachment_type_document">Belge</string>
-  <string name="attachment_type_excel">Excel</string>
+  <string name="attachment_type_spreadsheet">Elektronik tablo</string>
   <string name="attachment_type_presentation">Sunum</string>
   <string name="attachment_type_description">%1$s dosya</string>
   <string name="message_body_error_no_webview">Bu iletinin içeriğini görebilmek için WebView kurulu olmalıdır.</string>

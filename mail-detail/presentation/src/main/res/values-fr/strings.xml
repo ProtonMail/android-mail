@@ -69,15 +69,15 @@
   <string name="decryption_error">Le message n\'a pas pu être déchiffré.</string>
   <string name="detail_error_retrieving_message_body">Le message ne peut pas être récupéré.</string>
   <!-- Attachment Types -->
+  <string name="attachment_type_archive">Archive</string>
   <string name="attachment_type_image">Image</string>
   <string name="attachment_type_video">Vidéo</string>
   <string name="attachment_type_audio">Audio</string>
   <string name="attachment_type_unknown">Inconnu</string>
   <string name="attachment_type_pdf">PDF</string>
-  <string name="attachment_type_zip">ZIP</string>
   <string name="attachment_type_text">Texte</string>
   <string name="attachment_type_document">Document</string>
-  <string name="attachment_type_excel">Excel</string>
+  <string name="attachment_type_spreadsheet">Feuille de calcul</string>
   <string name="attachment_type_presentation">Presentation</string>
   <string name="attachment_type_description">Fichier %1$s</string>
   <string name="message_body_error_no_webview">Vous devez installer une application WebView pour voir le contenu de ce message.</string>

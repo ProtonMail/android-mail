@@ -69,15 +69,15 @@
   <string name="decryption_error">Αποτυχία αποκρυπτογράφησης μηνύματος.</string>
   <string name="detail_error_retrieving_message_body">Δεν είναι δυνατή η ανάκτηση του μηνύματος</string>
   <!-- Attachment Types -->
+  <string name="attachment_type_archive">Αρχειοθετημένα</string>
   <string name="attachment_type_image">Εικόνα</string>
   <string name="attachment_type_video">Βίντεο</string>
   <string name="attachment_type_audio">Ήχος</string>
   <string name="attachment_type_unknown">Άγνωστο</string>
   <string name="attachment_type_pdf">PDF</string>
-  <string name="attachment_type_zip">ZIP</string>
   <string name="attachment_type_text">Κείμενο</string>
   <string name="attachment_type_document">Έγγραφο</string>
-  <string name="attachment_type_excel">Excel</string>
+  <string name="attachment_type_spreadsheet">Υπολογιστικό φύλλο</string>
   <string name="attachment_type_presentation">Παρουσίαση</string>
   <string name="attachment_type_description">%1$s Αρχείο</string>
   <string name="message_body_error_no_webview">Πρέπει να έχετε εγκαταστήσει ένα WebView για να δείτε το περιεχόμενο αυτού του μηνύματος.</string>
