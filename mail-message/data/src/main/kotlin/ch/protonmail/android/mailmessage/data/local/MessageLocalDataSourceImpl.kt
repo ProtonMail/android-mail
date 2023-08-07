@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailmessage.data.local
 
 import arrow.core.Either
+import arrow.core.continuations.either
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.data.file.shouldBeStoredAsFile
@@ -235,6 +236,25 @@ class MessageLocalDataSourceImpl @Inject constructor(
         return updatedMessages.right()
     }
 
+    override suspend fun markUnreadLastReadMessageInConversations(
+        userId: UserId,
+        conversationIds: List<ConversationId>,
+        contextLabelId: LabelId
+    ): Either<DataError.Local, List<Message>> = db.inTransaction {
+        either {
+            conversationIds.map { conversationId ->
+                observeMessages(userId, conversationId).first()
+                    .filter { message -> message.read && message.labelIds.contains(contextLabelId) }
+                    .maxByOrNull { message -> message.time }
+                    .let { message ->
+                        markUnread(userId, message?.let { listOf(it.messageId) } ?: emptyList())
+                    }
+                    .map { it.first() }
+                    .bind()
+            }
+        }
+    }
+
     override suspend fun markRead(userId: UserId, messageIds: List<MessageId>): Either<DataError.Local, List<Message>> {
         val messages = observeMessages(userId, messageIds).first()
             .takeIf { it.isNotEmpty() }
@@ -242,6 +262,14 @@ class MessageLocalDataSourceImpl @Inject constructor(
         val updatedMessages = messages.map { it.copy(unread = false) }
         upsertMessages(updatedMessages)
         return updatedMessages.right()
+    }
+
+    override suspend fun markMessagesInConversationsRead(
+        userId: UserId,
+        conversationIds: List<ConversationId>
+    ): Either<DataError.Local, List<Message>> = db.inTransaction {
+        val messageIds = messageDao.getMessageIdsInConversations(userId, conversationIds)
+        markRead(userId, messageIds)
     }
 
     override suspend fun isMessageRead(userId: UserId, messageId: MessageId): Either<DataError.Local, Boolean> {

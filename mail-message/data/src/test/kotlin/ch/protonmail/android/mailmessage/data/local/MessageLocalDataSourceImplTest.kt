@@ -24,9 +24,11 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.DataErrorSample
 import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.data.getMessage
 import ch.protonmail.android.mailmessage.data.getMessageWithLabels
@@ -44,6 +46,7 @@ import ch.protonmail.android.mailmessage.data.sample.MessageWithLabelIdsSample
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailpagination.data.local.dao.PageIntervalDao
 import ch.protonmail.android.mailpagination.data.local.upsertPageInterval
 import ch.protonmail.android.mailpagination.domain.model.OrderDirection
@@ -650,6 +653,54 @@ class MessageLocalDataSourceImplTest {
     }
 
     @Test
+    fun `should mark unread last read messages from conversations with the current label`() = runTest {
+        // Given
+        val userId = userId1
+        val contextLabelId = MailLabelId.System.Inbox.labelId
+        val conversationId = ConversationIdSample.AlphaAppFeedback
+        val messages = listOf(
+            MessageWithLabelIds(
+                MessageSample.AlphaAppArchivedFeedback.copy(unread = false).toEntity(), listOf(LabelIdSample.Archive)
+            ),
+            MessageWithLabelIds(
+                MessageSample.AlphaAppInfoRequest.copy(unread = false).toEntity(), listOf(LabelIdSample.Inbox)
+            ),
+            MessageWithLabelIds(
+                MessageSample.AlphaAppQAReport.copy(unread = false).toEntity(), listOf(LabelIdSample.Inbox)
+            ),
+            MessageWithLabelIds(
+                MessageSample.AlphaAppArchivedFeedback.copy(unread = false).toEntity(), listOf(LabelIdSample.Archive)
+            ),
+            MessageWithLabelIds(
+                MessageSample.AlphaAppArchivedFeedback.copy(unread = true).toEntity(), listOf(LabelIdSample.Archive)
+            )
+        )
+        val expected = listOf(MessageSample.AlphaAppQAReport.copy(unread = true)).right()
+        coEvery {
+            messageDao.observeAllOrderByTimeAsc(userId, conversationId = conversationId)
+        } returns flowOf(messages)
+        coEvery {
+            messageDao.observeMessages(userId, listOf(MessageSample.AlphaAppQAReport.messageId))
+        } returns flowOf(
+            listOf(
+                MessageWithLabelIds(
+                    MessageSample.AlphaAppQAReport.copy(unread = false).toEntity(), listOf(LabelIdSample.Inbox)
+                )
+            )
+        )
+
+        // When
+        val actual = messageLocalDataSource.markUnreadLastReadMessageInConversations(
+            userId,
+            listOf(conversationId),
+            contextLabelId
+        )
+
+        // Then
+        assertEquals(expected, actual)
+    }
+
+    @Test
     fun `mark read returns updated message`() = runTest {
         // given
         val userId = UserIdSample.Primary
@@ -686,6 +737,42 @@ class MessageLocalDataSourceImplTest {
 
         // then
         assertEquals(error, result)
+    }
+
+    @Test
+    fun `should mark read all messages from given conversations`() = runTest {
+        // Given
+        val conversationId = ConversationIdSample.AlphaAppFeedback
+        val messageIds = listOf(
+            MessageSample.AlphaAppInfoRequest.messageId,
+            MessageSample.AlphaAppQAReport.messageId,
+            MessageSample.AlphaAppArchivedFeedback.messageId
+        )
+        val expected = listOf(
+            MessageSample.AlphaAppInfoRequest.copy(unread = false),
+            MessageSample.AlphaAppQAReport.copy(unread = false),
+            MessageSample.AlphaAppArchivedFeedback.copy(unread = false)
+        ).right()
+        coEvery { messageDao.getMessageIdsInConversations(userId1, listOf(conversationId)) } returns messageIds
+        coEvery { messageDao.observeMessages(userId1, messageIds) } returns flowOf(
+            listOf(
+                MessageWithLabelIds(
+                    MessageSample.AlphaAppInfoRequest.copy(unread = true).toEntity(), listOf(LabelIdSample.Inbox)
+                ),
+                MessageWithLabelIds(
+                    MessageSample.AlphaAppQAReport.copy(unread = false).toEntity(), listOf(LabelIdSample.Inbox)
+                ),
+                MessageWithLabelIds(
+                    MessageSample.AlphaAppArchivedFeedback.copy(unread = true).toEntity(), listOf(LabelIdSample.Archive)
+                )
+            )
+        )
+
+        // When
+        val actual = messageLocalDataSource.markMessagesInConversationsRead(userId1, listOf(conversationId))
+
+        // Then
+        assertEquals(expected, actual)
     }
 
     @Test

@@ -184,10 +184,21 @@ interface MessageLocalDataSource {
      */
     suspend fun markUnread(userId: UserId, messageIds: List<MessageId>): Either<DataError.Local, List<Message>>
 
+    suspend fun markUnreadLastReadMessageInConversations(
+        userId: UserId,
+        conversationIds: List<ConversationId>,
+        contextLabelId: LabelId
+    ): Either<DataError.Local, List<Message>>
+
     /**
      * Marks as read the messages for the given [messageIds] related to the same [userId]
      */
     suspend fun markRead(userId: UserId, messageIds: List<MessageId>): Either<DataError.Local, List<Message>>
+
+    suspend fun markMessagesInConversationsRead(
+        userId: UserId,
+        conversationIds: List<ConversationId>
+    ): Either<DataError.Local, List<Message>>
 
     suspend fun isMessageRead(userId: UserId, messageId: MessageId): Either<DataError.Local, Boolean>
 }

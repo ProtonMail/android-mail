@@ -43,7 +43,6 @@ import com.dropbox.android.external.store4.StoreRequest
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import me.proton.core.data.arch.ProtonStore
 import me.proton.core.data.arch.buildProtonStore
@@ -250,14 +249,8 @@ class ConversationRepositoryImpl @Inject constructor(
     ): List<Either<DataError, List<Conversation>>> {
         val result = mutableListOf<Either<DataError, List<Conversation>>>()
         conversationIds.chunked(MAX_ACTION_PARAMETER_COUNT).forEach { conversationIdsChunk ->
-            conversationIdsChunk.forEach { conversationId ->
-                messageLocalDataSource.observeMessages(userId, conversationId).first()
-                    .filter { message -> message.read && message.labelIds.contains(contextLabelId) }
-                    .maxByOrNull { message -> message.time }
-                    ?.let { message -> messageLocalDataSource.markUnread(userId, listOf(message.messageId)) }
-            }
-
             conversationRemoteDataSource.markUnread(userId, conversationIdsChunk, contextLabelId)
+            messageLocalDataSource.markUnreadLastReadMessageInConversations(userId, conversationIds, contextLabelId)
             result.add(conversationLocalDataSource.markUnread(userId, conversationIdsChunk, contextLabelId))
         }
         return result
@@ -279,6 +272,7 @@ class ConversationRepositoryImpl @Inject constructor(
         val result = mutableListOf<Either<DataError, List<Conversation>>>()
         conversationIds.chunked(MAX_ACTION_PARAMETER_COUNT).forEach { conversationIdsChunk ->
             conversationRemoteDataSource.markRead(userId, conversationIdsChunk, contextLabelId)
+            messageLocalDataSource.markMessagesInConversationsRead(userId, conversationIds)
             result.add(conversationLocalDataSource.markRead(userId, conversationIdsChunk, contextLabelId))
         }
         return result
