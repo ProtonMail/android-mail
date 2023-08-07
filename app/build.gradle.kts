@@ -90,6 +90,9 @@ android {
     }
 
     buildTypes {
+        // In UI Tests, we don't want the FCM service to be instantiated.
+        val isFcmServiceEnabled = properties["enableFcmService"] ?: true
+
         debug {
             isDebuggable = true
             isTestCoverageEnabled = false
@@ -99,6 +102,7 @@ android {
                 isRemoveUnusedCode = false
                 isRemoveUnusedResources = false
             }
+            manifestPlaceholders["isFcmServiceEnabled"] = isFcmServiceEnabled
         }
         release {
             isDebuggable = false
@@ -110,6 +114,7 @@ android {
                 isRemoveUnusedResources = true
                 file("proguard").listFiles()?.forEach { proguardFile(it) }
             }
+            manifestPlaceholders["isFcmServiceEnabled"] = isFcmServiceEnabled
             signingConfig = signingConfigs["release"]
         }
         create("benchmark") {
@@ -119,6 +124,7 @@ android {
             postprocessing {
                 isObfuscate = false
             }
+            manifestPlaceholders["isFcmServiceEnabled"] = false
         }
     }
 

@@ -21,7 +21,7 @@ platform :android do
 
   desc "Assemble the devDebug APK"
   lane :assembleDevDebug do
-    gradle(task: "assembleDevDebug")
+    gradle(task: "assembleDevDebug", properties: { "enableFcmService" => false })
   end
 
   desc "Assemble the androidTest APK"
