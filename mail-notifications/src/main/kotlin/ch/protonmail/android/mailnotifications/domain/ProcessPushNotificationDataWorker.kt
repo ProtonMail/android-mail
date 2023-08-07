@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailnotifications.domain
 
+import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Context
 import androidx.core.app.NotificationManagerCompat
@@ -110,6 +111,7 @@ class ProcessPushNotificationDataWorker @AssistedInject constructor(
         }
     }
 
+    @SuppressLint("MissingPermission") // Already handled at App startup
     private fun processNotification(
         context: Context,
         user: User,
@@ -118,7 +120,7 @@ class ProcessPushNotificationDataWorker @AssistedInject constructor(
     ): Result {
         val notification = notificationProvider.provideEmailNotificationBuilder(
             context = context,
-            contentTitle = sender.senderName,
+            contentTitle = sender.senderName.ifEmpty { sender.senderAddress },
             subText = user.email ?: "",
             contentText = notificationData.body,
             group = user.userId.id
