@@ -153,21 +153,9 @@ interface ConversationLocalDataSource {
 
     suspend fun markUnread(
         userId: UserId,
-        conversationId: ConversationId,
-        contextLabelId: LabelId
-    ): Either<DataError.Local, Conversation>
-
-    suspend fun markUnread(
-        userId: UserId,
         conversationIds: List<ConversationId>,
         contextLabelId: LabelId
     ): Either<DataError.Local, List<Conversation>>
-
-    suspend fun markRead(
-        userId: UserId,
-        conversationId: ConversationId,
-        contextLabelId: LabelId
-    ): Either<DataError.Local, Conversation>
 
     suspend fun markRead(
         userId: UserId,

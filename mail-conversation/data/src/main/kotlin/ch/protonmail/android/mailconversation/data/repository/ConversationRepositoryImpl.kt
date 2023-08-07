@@ -239,23 +239,49 @@ class ConversationRepositoryImpl @Inject constructor(
         userId: UserId,
         conversationId: ConversationId,
         contextLabelId: LabelId
-    ): Either<DataError.Local, Conversation> {
-        messageLocalDataSource.observeMessages(userId, conversationId).first()
-            .filter { message -> message.read && message.labelIds.contains(contextLabelId) }
-            .maxByOrNull { message -> message.time }
-            ?.let { message -> messageLocalDataSource.markUnread(userId, listOf(message.messageId)) }
+    ): Either<DataError, Conversation> = markUnread(userId, listOf(conversationId), contextLabelId)
+        .first()
+        .map { it.first() }
 
-        conversationRemoteDataSource.markUnread(userId, listOf(conversationId), contextLabelId)
-        return conversationLocalDataSource.markUnread(userId, conversationId, contextLabelId)
+    override suspend fun markUnread(
+        userId: UserId,
+        conversationIds: List<ConversationId>,
+        contextLabelId: LabelId
+    ): List<Either<DataError, List<Conversation>>> {
+        val result = mutableListOf<Either<DataError, List<Conversation>>>()
+        conversationIds.chunked(MAX_ACTION_PARAMETER_COUNT).forEach { conversationIdsChunk ->
+            conversationIdsChunk.forEach { conversationId ->
+                messageLocalDataSource.observeMessages(userId, conversationId).first()
+                    .filter { message -> message.read && message.labelIds.contains(contextLabelId) }
+                    .maxByOrNull { message -> message.time }
+                    ?.let { message -> messageLocalDataSource.markUnread(userId, listOf(message.messageId)) }
+            }
+
+            conversationRemoteDataSource.markUnread(userId, conversationIdsChunk, contextLabelId)
+            result.add(conversationLocalDataSource.markUnread(userId, conversationIdsChunk, contextLabelId))
+        }
+        return result
     }
 
     override suspend fun markRead(
         userId: UserId,
         conversationId: ConversationId,
         contextLabelId: LabelId
-    ): Either<DataError.Local, Conversation> {
-        conversationRemoteDataSource.markRead(userId, listOf(conversationId), contextLabelId)
-        return conversationLocalDataSource.markRead(userId, conversationId, contextLabelId)
+    ): Either<DataError, Conversation> = markRead(userId, listOf(conversationId), contextLabelId)
+        .first()
+        .map { it.first() }
+
+    override suspend fun markRead(
+        userId: UserId,
+        conversationIds: List<ConversationId>,
+        contextLabelId: LabelId
+    ): List<Either<DataError, List<Conversation>>> {
+        val result = mutableListOf<Either<DataError, List<Conversation>>>()
+        conversationIds.chunked(MAX_ACTION_PARAMETER_COUNT).forEach { conversationIdsChunk ->
+            conversationRemoteDataSource.markRead(userId, conversationIdsChunk, contextLabelId)
+            result.add(conversationLocalDataSource.markRead(userId, conversationIdsChunk, contextLabelId))
+        }
+        return result
     }
 
     override suspend fun isCachedConversationRead(

@@ -617,7 +617,7 @@ class ConversationRepositoryImplTest {
         // given
         val conversationId = ConversationIdSample.WeatherForecast
         val error = DataErrorSample.NoCache.left()
-        coEvery { conversationLocalDataSource.markUnread(userId, conversationId, contextLabelId) } returns error
+        coEvery { conversationLocalDataSource.markUnread(userId, listOf(conversationId), contextLabelId) } returns error
         coEvery { messageLocalDataSource.markUnread(userId, any()) } returns listOf(MessageSample.build()).right()
 
         // when
@@ -631,21 +631,17 @@ class ConversationRepositoryImplTest {
     fun `mark unread returns updated conversation when local data source succeeds`() = runTest {
         // given
         val conversationId = ConversationIdSample.WeatherForecast
-        val updatedConversation = ConversationSample.WeatherForecast.right()
+        val updatedConversation = ConversationSample.WeatherForecast
         coEvery {
-            conversationLocalDataSource.markUnread(
-                userId,
-                conversationId,
-                contextLabelId
-            )
-        } returns updatedConversation
+            conversationLocalDataSource.markUnread(userId, listOf(conversationId), contextLabelId)
+        } returns listOf(updatedConversation).right()
         coEvery { messageLocalDataSource.markUnread(userId, any()) } returns listOf(MessageSample.build()).right()
 
         // when
         val result = conversationRepository.markUnread(userId, conversationId, contextLabelId)
 
         // then
-        assertEquals(updatedConversation, result)
+        assertEquals(updatedConversation.right(), result)
     }
 
     @Test
@@ -659,8 +655,9 @@ class ConversationRepositoryImplTest {
             MessageSample.AlphaAppArchivedFeedback.copy(unread = false),
             MessageSample.AlphaAppArchivedFeedback.copy(unread = true)
         )
-        coEvery { conversationLocalDataSource.markUnread(userId, conversationId, contextLabelId) } returns
-            ConversationSample.WeatherForecast.right()
+        coEvery {
+            conversationLocalDataSource.markUnread(userId, listOf(conversationId), contextLabelId)
+        } returns listOf(ConversationSample.WeatherForecast).right()
         every { messageLocalDataSource.observeMessages(userId, conversationId) } returns flowOf(messages)
         coEvery { messageLocalDataSource.markUnread(userId, any()) } returns listOf(MessageSample.build()).right()
 
@@ -675,8 +672,9 @@ class ConversationRepositoryImplTest {
     fun `mark unread calls conversation remote data source`() = runTest {
         // given
         val conversationId = ConversationIdSample.WeatherForecast
-        coEvery { conversationLocalDataSource.markUnread(userId, conversationId, contextLabelId) } returns
-            ConversationSample.WeatherForecast.right()
+        coEvery {
+            conversationLocalDataSource.markUnread(userId, listOf(conversationId), contextLabelId)
+        } returns listOf(ConversationSample.WeatherForecast).right()
         every { messageLocalDataSource.observeMessages(userId, conversationId) } returns flowOf(emptyList())
 
         // when
@@ -729,7 +727,7 @@ class ConversationRepositoryImplTest {
         // given
         val conversationId = ConversationIdSample.WeatherForecast
         val error = DataErrorSample.NoCache.left()
-        coEvery { conversationLocalDataSource.markRead(userId, conversationId, contextLabelId) } returns error
+        coEvery { conversationLocalDataSource.markRead(userId, listOf(conversationId), contextLabelId) } returns error
 
         // when
         val result = conversationRepository.markRead(userId, conversationId, contextLabelId)
@@ -742,24 +740,25 @@ class ConversationRepositoryImplTest {
     fun `mark read returns updated conversation when local data source succeeds`() = runTest {
         // given
         val conversationId = ConversationIdSample.WeatherForecast
-        val updatedConversation = ConversationSample.WeatherForecast.right()
+        val updatedConversation = ConversationSample.WeatherForecast
         coEvery {
-            conversationLocalDataSource.markRead(userId, conversationId, contextLabelId)
-        } returns updatedConversation
+            conversationLocalDataSource.markRead(userId, listOf(conversationId), contextLabelId)
+        } returns listOf(updatedConversation).right()
 
         // when
         val result = conversationRepository.markRead(userId, conversationId, contextLabelId)
 
         // then
-        assertEquals(updatedConversation, result)
+        assertEquals(updatedConversation.right(), result)
     }
 
     @Test
     fun `mark read calls conversation remote data source`() = runTest {
         // given
         val conversationId = ConversationIdSample.WeatherForecast
-        coEvery { conversationLocalDataSource.markRead(userId, conversationId, contextLabelId) } returns
-            ConversationSample.WeatherForecast.right()
+        coEvery {
+            conversationLocalDataSource.markRead(userId, listOf(conversationId), contextLabelId)
+        } returns listOf(ConversationSample.WeatherForecast).right()
 
         // when
         conversationRepository.markRead(userId, conversationId, contextLabelId)

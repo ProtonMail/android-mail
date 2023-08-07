@@ -28,7 +28,7 @@ import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 
-@Suppress("TooManyFunctions")
+@Suppress("TooManyFunctions", "ComplexInterface")
 interface ConversationRepository {
 
     /**
@@ -139,13 +139,25 @@ interface ConversationRepository {
         userId: UserId,
         conversationId: ConversationId,
         contextLabelId: LabelId
-    ): Either<DataError.Local, Conversation>
+    ): Either<DataError, Conversation>
+
+    suspend fun markUnread(
+        userId: UserId,
+        conversationIds: List<ConversationId>,
+        contextLabelId: LabelId
+    ): List<Either<DataError, List<Conversation>>>
 
     suspend fun markRead(
         userId: UserId,
         conversationId: ConversationId,
         contextLabelId: LabelId
-    ): Either<DataError.Local, Conversation>
+    ): Either<DataError, Conversation>
+
+    suspend fun markRead(
+        userId: UserId,
+        conversationIds: List<ConversationId>,
+        contextLabelId: LabelId
+    ): List<Either<DataError, List<Conversation>>>
 
     suspend fun isCachedConversationRead(
         userId: UserId,

@@ -32,10 +32,7 @@ class MarkConversationAsUnread @Inject constructor(
     private val selectedMailLabelId: SelectedMailLabelId
 ) {
 
-    suspend operator fun invoke(
-        userId: UserId,
-        conversationId: ConversationId
-    ): Either<DataError.Local, Conversation> {
+    suspend operator fun invoke(userId: UserId, conversationId: ConversationId): Either<DataError, Conversation> {
         val contextLabelId = selectedMailLabelId.flow.value.labelId
         return conversationRepository.markUnread(userId, conversationId, contextLabelId)
     }

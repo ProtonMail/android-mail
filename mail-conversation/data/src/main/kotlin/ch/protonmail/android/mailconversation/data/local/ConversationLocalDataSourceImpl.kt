@@ -199,13 +199,6 @@ class ConversationLocalDataSourceImpl @Inject constructor(
 
     override suspend fun markUnread(
         userId: UserId,
-        conversationId: ConversationId,
-        contextLabelId: LabelId
-    ): Either<DataError.Local, Conversation> = markUnread(userId, listOf(conversationId), contextLabelId)
-        .map { it.first() }
-
-    override suspend fun markUnread(
-        userId: UserId,
         conversationIds: List<ConversationId>,
         contextLabelId: LabelId
     ): Either<DataError.Local, List<Conversation>> = db.inTransaction {
@@ -223,13 +216,6 @@ class ConversationLocalDataSourceImpl @Inject constructor(
             return@map updatedConversations
         }
     }
-
-    override suspend fun markRead(
-        userId: UserId,
-        conversationId: ConversationId,
-        contextLabelId: LabelId
-    ): Either<DataError.Local, Conversation> = markRead(userId, listOf(conversationId), contextLabelId)
-        .map { it.first() }
 
     override suspend fun markRead(
         userId: UserId,
