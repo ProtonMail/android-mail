@@ -81,7 +81,7 @@ class PMFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         onNewTokenJob?.cancel()
+        super.onDestroy()
     }
 }
