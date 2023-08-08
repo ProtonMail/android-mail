@@ -18,63 +18,44 @@
 
 package ch.protonmail.android.mailcommon.data.worker
 
-import java.util.UUID
-import androidx.work.Data
-import androidx.work.WorkInfo
+import androidx.work.ExistingWorkPolicy
+import androidx.work.ListenableWorker
+import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
-import com.google.common.util.concurrent.ListenableFuture
-import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.verify
+import io.mockk.slot
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class EnqueuerTest {
 
     private val workManager = mockk<WorkManager>()
-    private val listenableFuture: ListenableFuture<List<WorkInfo>> = mockk {
-        every { isDone } returns true
-    }
 
     private val enqueuer = Enqueuer(workManager)
 
     @Test
-    fun `does not remove existing work when already started`() = runTest {
+    fun `keep the existing enqueued work when trying to enqueue again some unique work`() = runTest {
         // Given
         val workId = "SyncDraftWork-test-message-id"
-        val workInfo = WorkInfo(UUID.randomUUID(), WorkInfo.State.RUNNING, Data.EMPTY, emptyList(), Data.EMPTY, 0)
-        givenWorkManagerReturns(workId, workInfo)
+        val params = mapOf("messageId" to "test-message-id")
+        givenEnqueueWorkSucceeds(workId)
 
         // When
-        enqueuer.removeUnStartedExistingWork(workId)
+        enqueuer.enqueueUniqueWork<ListenableWorker>(workId, params)
 
         // Then
-        verify(exactly = 0) { workManager.cancelUniqueWork(workId) }
+        val workPolicySlot = slot<ExistingWorkPolicy>()
+        coVerify { workManager.enqueueUniqueWork(workId, capture(workPolicySlot), any<OneTimeWorkRequest>()) }
+        assertEquals(ExistingWorkPolicy.KEEP, workPolicySlot.captured)
     }
 
-    @Test
-    fun `removes existing work when enqueued but not started yet`() = runTest {
-        // Given
-        val workId = "SyncDraftWork-test-message-id"
-        val workInfo = WorkInfo(UUID.randomUUID(), WorkInfo.State.ENQUEUED, Data.EMPTY, emptyList(), Data.EMPTY, 0)
-        givenWorkManagerReturns(workId, workInfo)
-        givenCancelUniqueWorkSucceeds(workId)
-
-        // When
-        enqueuer.removeUnStartedExistingWork(workId)
-
-        // Then
-        verify { workManager.cancelUniqueWork(workId) }
+    private fun givenEnqueueWorkSucceeds(workId: String) {
+        every {
+            workManager.enqueueUniqueWork(workId, ExistingWorkPolicy.KEEP, any<OneTimeWorkRequest>())
+        } returns mockk()
     }
 
-    private fun givenCancelUniqueWorkSucceeds(workId: String) {
-        every { workManager.cancelUniqueWork(workId) } returns mockk()
-    }
-
-
-    private fun givenWorkManagerReturns(workId: String, workInfo: WorkInfo) {
-        every { workManager.getWorkInfosForUniqueWork(workId) } returns listenableFuture
-        coEvery { listenableFuture.get() } returns listOf(workInfo)
-    }
 }

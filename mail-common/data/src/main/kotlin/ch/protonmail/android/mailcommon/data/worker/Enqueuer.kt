@@ -23,9 +23,7 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.ListenableWorker
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequest
-import androidx.work.WorkInfo
 import androidx.work.WorkManager
-import androidx.work.await
 import androidx.work.workDataOf
 import javax.inject.Inject
 
@@ -55,16 +53,6 @@ class Enqueuer @Inject constructor(private val workManager: WorkManager) {
     ) {
         workManager.enqueueUniqueWork(workerId, ExistingWorkPolicy.KEEP, createRequest(worker, params, constraints))
     }
-
-    suspend fun removeUnStartedExistingWork(uniqueWorkId: String) {
-        val workInfo = workManager.getWorkInfosForUniqueWork(uniqueWorkId).await()
-        val isRunning = workInfo.any { it.state == WorkInfo.State.RUNNING }
-        if (isRunning) {
-            return
-        }
-        workManager.cancelUniqueWork(uniqueWorkId)
-    }
-
 
     private fun createRequest(
         worker: Class<out ListenableWorker>,

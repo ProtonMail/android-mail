@@ -32,7 +32,6 @@ class DraftRepositoryImpl @Inject constructor(
     override suspend fun sync(userId: UserId, messageId: MessageId) {
         val uniqueWorkId = SyncDraftWorker.id(messageId)
 
-        enqueuer.removeUnStartedExistingWork(uniqueWorkId)
         enqueuer.enqueueUniqueWork<SyncDraftWorker>(uniqueWorkId, SyncDraftWorker.params(userId, messageId))
     }
 }
