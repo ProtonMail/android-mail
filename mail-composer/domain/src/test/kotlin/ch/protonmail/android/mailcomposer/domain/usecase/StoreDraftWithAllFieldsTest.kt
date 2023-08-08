@@ -280,7 +280,7 @@ class StoreDraftWithAllFieldsTest {
         storeDraftWithAllFields(userId, draftMessageId, draftFields)
 
         // Then
-        coVerify { draftRepository.sync(userId, draftMessageId) }
+        coVerify { draftRepository.upload(userId, draftMessageId) }
     }
 
     private fun buildDraftFields(
@@ -308,7 +308,7 @@ class StoreDraftWithAllFieldsTest {
     }
 
     private fun expectSyncDraftSucceeds(expectedUserId: UserId, expectedMessageId: MessageId) {
-        coEvery { draftRepository.sync(expectedUserId, expectedMessageId) } returns Unit
+        coEvery { draftRepository.upload(expectedUserId, expectedMessageId) } returns Unit
     }
 
     private fun expectStoreDraftBodySucceeds(

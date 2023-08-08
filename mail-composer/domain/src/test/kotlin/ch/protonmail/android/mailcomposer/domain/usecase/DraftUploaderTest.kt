@@ -36,14 +36,14 @@ import me.proton.core.domain.entity.UserId
 import org.junit.Ignore
 import org.junit.Test
 
-class DraftSyncerTest {
+class DraftUploaderTest {
 
     private val draftStateRepository = mockk<DraftStateRepository>()
     private val draftRepository = mockk<DraftRepository>()
     private val testDispatcher = UnconfinedTestDispatcher()
     private val coroutineScope = CoroutineScope(testDispatcher)
 
-    private val draftSyncer = DraftSyncer(draftStateRepository, draftRepository, testDispatcher)
+    private val draftUploader = DraftUploader(draftStateRepository, draftRepository, testDispatcher)
 
     @Test
     @Ignore("Test fails due to the infinite loop going OutOfMemory")
@@ -55,7 +55,7 @@ class DraftSyncerTest {
         expectSaveLocalStateSuccess(userId, messageId, action)
         expectSyncDraft(userId, messageId)
         // When
-        val job = launch { draftSyncer.start(userId, messageId, action, coroutineScope) }
+        val job = launch { draftUploader.startContinuousUpload(userId, messageId, action, coroutineScope) }
         testDispatcher.scheduler.advanceTimeBy(1000)
         job.cancel()
         // Then
@@ -72,15 +72,15 @@ class DraftSyncerTest {
         expectSaveLocalStateSuccess(userId, messageId, action)
         expectSyncDraft(userId, messageId)
         // When
-        val job = launch { draftSyncer.start(userId, messageId, action, coroutineScope) }
+        val job = launch { draftUploader.startContinuousUpload(userId, messageId, action, coroutineScope) }
         testDispatcher.scheduler.advanceTimeBy(1000)
         job.cancel()
         // Then
-        coVerify { draftRepository.sync(userId, messageId) }
+        coVerify { draftRepository.upload(userId, messageId) }
     }
 
     private fun expectSyncDraft(userId: UserId, messageId: MessageId) {
-        coEvery { draftRepository.sync(userId, messageId) } returns Unit
+        coEvery { draftRepository.upload(userId, messageId) } returns Unit
     }
 
     private fun expectSaveLocalStateSuccess(

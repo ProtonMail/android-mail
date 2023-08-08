@@ -31,7 +31,7 @@ import ch.protonmail.android.mailcomposer.domain.model.RecipientsCc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsTo
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.domain.model.Subject
-import ch.protonmail.android.mailcomposer.domain.usecase.DraftSyncer
+import ch.protonmail.android.mailcomposer.domain.usecase.DraftUploader
 import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses
 import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses.Error
 import ch.protonmail.android.mailcomposer.domain.usecase.GetDecryptedDraftFields
@@ -89,7 +89,7 @@ class ComposerViewModel @Inject constructor(
     getDecryptedDraftFields: GetDecryptedDraftFields,
     savedStateHandle: SavedStateHandle,
     private val observeDraftStateForApiAssignedId: ObserveDraftStateForApiAssignedId,
-    private val draftSyncer: DraftSyncer,
+    private val draftUploader: DraftUploader,
     observePrimaryUserId: ObservePrimaryUserId,
     provideNewDraftId: ProvideNewDraftId
 ) : ViewModel() {
@@ -122,7 +122,8 @@ class ComposerViewModel @Inject constructor(
 
             }
         }
-        viewModelScope.launch { startDraftSyncer() }
+
+        viewModelScope.launch { startDraftContinuousUpload() }
     }
 
     override fun onCleared() {
@@ -194,14 +195,16 @@ class ComposerViewModel @Inject constructor(
             ifRight = { ComposerAction.DraftBodyChanged(action.draftBody) }
         )
 
-    private suspend fun CoroutineScope.startDraftSyncer() {
+    private suspend fun CoroutineScope.startDraftContinuousUpload() {
         observeDraftStateForApiAssignedId(primaryUserId(), currentMessageId()).map { apiMessageId ->
             Timber.d("Draft syncer: state updated with API assigned id: $apiMessageId")
-            draftSyncer.start(primaryUserId(), apiMessageId, DraftAction.Compose, this)
+            draftUploader.startContinuousUpload(primaryUserId(), apiMessageId, DraftAction.Compose, this)
             emitNewStateFor(ComposerEvent.ApiAssignedMessageIdReceived(apiMessageId))
         }.onStart {
             Timber.d("Draft syncer: scheduled with messageId ${currentMessageId()}")
-            draftSyncer.start(primaryUserId(), currentMessageId(), DraftAction.Compose, this@startDraftSyncer)
+            draftUploader.startContinuousUpload(
+                primaryUserId(), currentMessageId(), DraftAction.Compose, this@startDraftContinuousUpload
+            )
         }.collect()
     }
 

@@ -22,7 +22,7 @@ import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import ch.protonmail.android.composer.data.usecase.SyncDraft
+import ch.protonmail.android.composer.data.usecase.UploadDraft
 import ch.protonmail.android.mailcommon.domain.util.requireNotBlank
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import dagger.assisted.Assisted
@@ -30,17 +30,17 @@ import dagger.assisted.AssistedInject
 import me.proton.core.domain.entity.UserId
 
 @HiltWorker
-internal class SyncDraftWorker @AssistedInject constructor(
+internal class UploadDraftWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted workerParameters: WorkerParameters,
-    private val syncDraft: SyncDraft
+    private val uploadDraft: UploadDraft
 ) : CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {
         val userId = UserId(requireNotBlank(inputData.getString(RawUserIdKey), fieldName = "User id"))
         val messageId = MessageId(requireNotBlank(inputData.getString(RawMessageIdKey), fieldName = "Message ids"))
 
-        return syncDraft(userId, messageId).fold(
+        return uploadDraft(userId, messageId).fold(
             ifLeft = { Result.failure() },
             ifRight = { Result.success() }
         )

@@ -35,7 +35,7 @@ import ch.protonmail.android.mailcomposer.domain.model.RecipientsCc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsTo
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.domain.model.Subject
-import ch.protonmail.android.mailcomposer.domain.usecase.DraftSyncer
+import ch.protonmail.android.mailcomposer.domain.usecase.DraftUploader
 import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses
 import ch.protonmail.android.mailcomposer.domain.usecase.GetDecryptedDraftFields
 import ch.protonmail.android.mailcomposer.domain.usecase.GetPrimaryAddress
@@ -105,7 +105,7 @@ class ComposerViewModelTest {
     private val isValidEmailAddressMock = mockk<IsValidEmailAddress>()
     private val getPrimaryAddressMock = mockk<GetPrimaryAddress>()
     private val provideNewDraftIdMock = mockk<ProvideNewDraftId>()
-    private val draftSyncer = mockk<DraftSyncer>()
+    private val draftUploader = mockk<DraftUploader>()
     private val getComposerSenderAddresses = mockk<GetComposerSenderAddresses> {
         coEvery { this@mockk.invoke() } returns GetComposerSenderAddresses.Error.UpgradeToChangeSender.left()
     }
@@ -130,7 +130,7 @@ class ComposerViewModelTest {
             getDecryptedDraftFields,
             savedStateHandle,
             observeDraftStateForApiAssignedId,
-            draftSyncer,
+            draftUploader,
             observePrimaryUserIdMock,
             provideNewDraftIdMock
         )
@@ -778,7 +778,7 @@ class ComposerViewModelTest {
 
         // Then
         assertEquals(messageId, actual.fields.draftId)
-        coVerify { draftSyncer.start(userId, messageId, DraftAction.Compose, any()) }
+        coVerify { draftUploader.startContinuousUpload(userId, messageId, DraftAction.Compose, any()) }
     }
 
     @Test
@@ -799,8 +799,8 @@ class ComposerViewModelTest {
         // Then
         assertEquals(apiAssignedId, state.fields.draftId)
         coVerifyOrder {
-            draftSyncer.start(userId, messageId, DraftAction.Compose, any())
-            draftSyncer.start(userId, apiAssignedId, DraftAction.Compose, any())
+            draftUploader.startContinuousUpload(userId, messageId, DraftAction.Compose, any())
+            draftUploader.startContinuousUpload(userId, apiAssignedId, DraftAction.Compose, any())
         }
     }
 
@@ -836,7 +836,7 @@ class ComposerViewModelTest {
     }
 
     private fun expectStartDraftSync(userId: UserId, messageId: MessageId) {
-        coEvery { draftSyncer.start(userId, messageId, DraftAction.Compose, any()) } returns Unit
+        coEvery { draftUploader.startContinuousUpload(userId, messageId, DraftAction.Compose, any()) } returns Unit
     }
 
     private fun expectApiAssignedId(

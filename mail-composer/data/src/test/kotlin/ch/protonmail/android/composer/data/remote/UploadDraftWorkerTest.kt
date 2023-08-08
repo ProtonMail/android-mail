@@ -25,7 +25,7 @@ import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import arrow.core.right
-import ch.protonmail.android.composer.data.usecase.SyncDraft
+import ch.protonmail.android.composer.data.usecase.UploadDraft
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -43,7 +43,7 @@ import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
-class SyncDraftWorkerTest {
+class UploadDraftWorkerTest {
 
     private val workManager: WorkManager = mockk {
         coEvery { enqueue(any<OneTimeWorkRequest>()) } returns mockk()
@@ -52,9 +52,9 @@ class SyncDraftWorkerTest {
         every { this@mockk.getTaskExecutor() } returns mockk(relaxed = true)
     }
     private val context: Context = mockk()
-    private val syncDraft: SyncDraft = mockk()
+    private val uploadDraft: UploadDraft = mockk()
 
-    private val syncDraftWorker = SyncDraftWorker(context, parameters, syncDraft)
+    private val uploadDraftWorker = UploadDraftWorker(context, parameters, uploadDraft)
 
     @Test
     fun `worker is enqueued with given parameters`() {
@@ -64,7 +64,7 @@ class SyncDraftWorkerTest {
         givenInputData(userId, messageId)
 
         // When
-        Enqueuer(workManager).enqueue<SyncDraftWorker>(SyncDraftWorker.params(userId, messageId))
+        Enqueuer(workManager).enqueue<UploadDraftWorker>(UploadDraftWorker.params(userId, messageId))
 
         // Then
         val requestSlot = slot<OneTimeWorkRequest>()
@@ -72,8 +72,8 @@ class SyncDraftWorkerTest {
         val workSpec = requestSlot.captured.workSpec
         val constraints = workSpec.constraints
         val inputData = workSpec.input
-        val actualUserId = inputData.getString(SyncDraftWorker.RawUserIdKey)
-        val actualMessageIds = inputData.getString(SyncDraftWorker.RawMessageIdKey)
+        val actualUserId = inputData.getString(UploadDraftWorker.RawUserIdKey)
+        val actualMessageIds = inputData.getString(UploadDraftWorker.RawMessageIdKey)
         assertEquals(userId.id, actualUserId)
         assertEquals(messageId.id, actualMessageIds)
         assertEquals(NetworkType.CONNECTED, constraints.requiredNetworkType)
@@ -88,10 +88,10 @@ class SyncDraftWorkerTest {
         givenSyncDraftSucceeds(userId, messageId)
 
         // When
-        val actual = syncDraftWorker.doWork()
+        val actual = uploadDraftWorker.doWork()
 
         // Then
-        coVerify { syncDraft(userId, messageId) }
+        coVerify { uploadDraft(userId, messageId) }
         assertEquals(Result.success(), actual)
     }
 
@@ -103,8 +103,8 @@ class SyncDraftWorkerTest {
         givenInputData(userId, messageId)
 
         // When - Then
-        assertFailsWith<IllegalArgumentException> { syncDraftWorker.doWork() }
-        coVerify { syncDraft wasNot Called }
+        assertFailsWith<IllegalArgumentException> { uploadDraftWorker.doWork() }
+        coVerify { uploadDraft wasNot Called }
     }
 
     @Test
@@ -115,15 +115,15 @@ class SyncDraftWorkerTest {
         givenInputData(userId, messageId)
 
         // When - Then
-        assertFailsWith<IllegalArgumentException> { syncDraftWorker.doWork() }
-        coVerify { syncDraft wasNot Called }
+        assertFailsWith<IllegalArgumentException> { uploadDraftWorker.doWork() }
+        coVerify { uploadDraft wasNot Called }
     }
 
     private fun givenSyncDraftSucceeds(userId: UserId, messageId: MessageId) {
-        coEvery { syncDraft(userId, messageId) } returns Unit.right()
+        coEvery { uploadDraft(userId, messageId) } returns Unit.right()
     }
     private fun givenInputData(userId: UserId?, messageId: MessageId?) {
-        every { parameters.inputData.getString(SyncDraftWorker.RawUserIdKey) } returns userId?.id
-        every { parameters.inputData.getString(SyncDraftWorker.RawMessageIdKey) } returns messageId?.id
+        every { parameters.inputData.getString(UploadDraftWorker.RawUserIdKey) } returns userId?.id
+        every { parameters.inputData.getString(UploadDraftWorker.RawMessageIdKey) } returns messageId?.id
     }
 }

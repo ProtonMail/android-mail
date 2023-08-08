@@ -57,7 +57,7 @@ class StoreDraftWithAllFields @Inject constructor(
             ).logError(draftMessageId)
 
             draftStateRepository.saveLocalState(userId, draftMessageId, action)
-            draftRepository.sync(userId, draftMessageId)
+            draftRepository.upload(userId, draftMessageId)
         }
     }
 

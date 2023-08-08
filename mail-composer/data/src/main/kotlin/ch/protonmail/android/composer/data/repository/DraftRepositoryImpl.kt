@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.composer.data.repository
 
-import ch.protonmail.android.composer.data.remote.SyncDraftWorker
+import ch.protonmail.android.composer.data.remote.UploadDraftWorker
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcomposer.domain.repository.DraftRepository
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -29,9 +29,9 @@ class DraftRepositoryImpl @Inject constructor(
     private val enqueuer: Enqueuer
 ) : DraftRepository {
 
-    override suspend fun sync(userId: UserId, messageId: MessageId) {
-        val uniqueWorkId = SyncDraftWorker.id(messageId)
+    override suspend fun upload(userId: UserId, messageId: MessageId) {
+        val uniqueWorkId = UploadDraftWorker.id(messageId)
 
-        enqueuer.enqueueUniqueWork<SyncDraftWorker>(uniqueWorkId, SyncDraftWorker.params(userId, messageId))
+        enqueuer.enqueueUniqueWork<UploadDraftWorker>(uniqueWorkId, UploadDraftWorker.params(userId, messageId))
     }
 }

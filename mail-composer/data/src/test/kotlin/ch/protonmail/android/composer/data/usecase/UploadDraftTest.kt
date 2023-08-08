@@ -45,7 +45,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 
-class SyncDraftTest {
+class UploadDraftTest {
 
     @get:Rule
     val loggingRule = LoggingTestRule()
@@ -57,7 +57,7 @@ class SyncDraftTest {
     private val draftStateRepository = mockk<DraftStateRepository>()
     private val isDraftKnownToApi = mockk<IsDraftKnownToApi>()
 
-    private val draftRepository = SyncDraft(
+    private val draftRepository = UploadDraft(
         messageRepository,
         draftStateRepository,
         draftRemoteDataSource,

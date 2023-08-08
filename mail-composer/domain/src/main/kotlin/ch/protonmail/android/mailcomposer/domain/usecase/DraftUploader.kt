@@ -35,7 +35,7 @@ import javax.inject.Singleton
 import kotlin.time.Duration.Companion.seconds
 
 @Singleton
-class DraftSyncer @Inject constructor(
+class DraftUploader @Inject constructor(
     private val draftStateRepository: DraftStateRepository,
     private val draftRepository: DraftRepository,
     @DefaultDispatcher
@@ -44,7 +44,7 @@ class DraftSyncer @Inject constructor(
 
     private var syncJob: Job? = null
 
-    suspend fun start(
+    suspend fun startContinuousUpload(
         userId: UserId,
         messageId: MessageId,
         action: DraftAction,
@@ -56,7 +56,7 @@ class DraftSyncer @Inject constructor(
             while (true) {
                 delay(SyncInterval)
                 Timber.d("Draft syncer: syncing draft $messageId")
-                draftRepository.sync(userId, messageId)
+                draftRepository.upload(userId, messageId)
             }
         }
     }

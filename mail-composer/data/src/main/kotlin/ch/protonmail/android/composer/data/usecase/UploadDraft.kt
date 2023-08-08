@@ -32,7 +32,7 @@ import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import javax.inject.Inject
 
-internal class SyncDraft @Inject constructor(
+internal class UploadDraft @Inject constructor(
     private val messageRepository: MessageRepository,
     private val draftStateRepository: DraftStateRepository,
     private val draftRemoteDataSource: DraftRemoteDataSource,

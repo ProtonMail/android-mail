@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.composer.data.repository
 
-import ch.protonmail.android.composer.data.remote.SyncDraftWorker
+import ch.protonmail.android.composer.data.remote.UploadDraftWorker
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
@@ -39,18 +39,18 @@ class DraftRepositoryImplTest {
         // Given
         val userId = UserIdSample.Primary
         val messageId = MessageIdSample.LocalDraft
-        val expectedParams = SyncDraftWorker.params(userId, messageId)
-        val expectedWorkerId = SyncDraftWorker.id(messageId)
+        val expectedParams = UploadDraftWorker.params(userId, messageId)
+        val expectedWorkerId = UploadDraftWorker.id(messageId)
         givenEnqueuerSucceeds(expectedWorkerId, expectedParams)
 
         // When
-        draftRepository.sync(userId, messageId)
+        draftRepository.upload(userId, messageId)
 
         // Then
-        verify { enqueuer.enqueueUniqueWork<SyncDraftWorker>(expectedWorkerId, expectedParams) }
+        verify { enqueuer.enqueueUniqueWork<UploadDraftWorker>(expectedWorkerId, expectedParams) }
     }
 
     private fun givenEnqueuerSucceeds(workId: String, expectedParams: Map<String, String>) {
-        every { enqueuer.enqueueUniqueWork<SyncDraftWorker>(workId, expectedParams) } returns Unit
+        every { enqueuer.enqueueUniqueWork<UploadDraftWorker>(workId, expectedParams) } returns Unit
     }
 }
