@@ -338,7 +338,7 @@ class ComposerViewModelTest {
     }
 
     @Test
-    fun `should store all draft fields when composer is closed`() = runTest {
+    fun `should store all draft fields and upload the draft when composer is closed`() = runTest {
         // Given
         val expectedSubject = Subject("Subject for the message")
         val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
@@ -360,6 +360,7 @@ class ComposerViewModelTest {
         mockParticipantMapper()
         expectStoreAllDraftFieldsSucceeds(expectedUserId, expectedMessageId, expectedFields)
         expectNoInputDraftMessageId()
+        expectUploadDraftSucceeds(expectedUserId, expectedMessageId)
 
         // Change internal state of the View Model to simulate the existence of all fields before closing the composer
         expectedViewModelInitialState(
@@ -374,6 +375,7 @@ class ComposerViewModelTest {
         viewModel.submit(ComposerAction.OnCloseComposer)
 
         // Then
+        coVerify { draftUploader.upload(expectedUserId, expectedMessageId) }
         coVerify { storeDraftWithAllFields(expectedUserId, expectedMessageId, expectedFields) }
         assertEquals(Effect.of(Unit), viewModel.state.value.closeComposerWithDraftSaved)
     }
@@ -391,47 +393,53 @@ class ComposerViewModelTest {
 
         // Then
         coVerify { storeDraftWithAllFields wasNot Called }
+        coVerify(exactly = 0) { draftUploader.upload(any(), any()) }
         assertEquals(Effect.of(Unit), viewModel.state.value.closeComposer)
     }
 
     @Test
-    fun `should store draft when any field which requires used input is not empty and composer is closed`() = runTest {
-        // Given
-        val expectedSubject = Subject("Added subject")
-        val expectedDraftBody = DraftBody("")
-        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
-        val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
-        val expectedUserId = expectedUserId { UserIdSample.Primary }
-        expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
-        val recipientsTo = RecipientsTo(listOf(RecipientSample.John))
-        val recipientsCc = RecipientsCc(listOf(RecipientSample.John))
-        val recipientsBcc = RecipientsBcc(listOf(RecipientSample.John))
-        val expectedFields = DraftFields(
-            expectedSenderEmail,
-            expectedSubject,
-            expectedDraftBody,
-            recipientsTo,
-            recipientsCc,
-            recipientsBcc
-        )
-        mockParticipantMapper()
-        expectStoreAllDraftFieldsSucceeds(expectedUserId, expectedMessageId, expectedFields)
-        expectNoInputDraftMessageId()
+    fun `should store and upload draft when any field which requires used input is not empty and composer is closed`() =
+        runTest {
+            // Given
+            val expectedSubject = Subject("Added subject")
+            val expectedDraftBody = DraftBody("")
+            val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+            val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
+            val expectedUserId = expectedUserId { UserIdSample.Primary }
+            expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+            val recipientsTo = RecipientsTo(listOf(RecipientSample.John))
+            val recipientsCc = RecipientsCc(listOf(RecipientSample.John))
+            val recipientsBcc = RecipientsBcc(listOf(RecipientSample.John))
+            val expectedFields = DraftFields(
+                expectedSenderEmail,
+                expectedSubject,
+                expectedDraftBody,
+                recipientsTo,
+                recipientsCc,
+                recipientsBcc
+            )
+            mockParticipantMapper()
+            expectStoreAllDraftFieldsSucceeds(expectedUserId, expectedMessageId, expectedFields)
+            expectNoInputDraftMessageId()
 
-        // Change internal state of the View Model to simulate the existence of all fields before closing the composer
-        expectedViewModelInitialState(
-            expectedMessageId,
-            expectedSenderEmail,
-            expectedSubject,
-            recipients = Triple(recipientsTo, recipientsCc, recipientsBcc)
-        )
+            // Change internal state of the View Model to simulate the
+            // existence of all fields before closing the composer
+            expectedViewModelInitialState(
+                expectedMessageId,
+                expectedSenderEmail,
+                expectedSubject,
+                recipients = Triple(recipientsTo, recipientsCc, recipientsBcc)
+            )
 
-        // When
-        viewModel.submit(ComposerAction.OnCloseComposer)
+            // When
+            viewModel.submit(ComposerAction.OnCloseComposer)
 
-        // Then
-        coVerify { storeDraftWithAllFields(expectedUserId, expectedMessageId, expectedFields) }
-    }
+            // Then
+            coVerifyOrder {
+                storeDraftWithAllFields(expectedUserId, expectedMessageId, expectedFields)
+                draftUploader.upload(expectedUserId, expectedMessageId)
+            }
+        }
 
     @Test
     fun `emits state with primary sender address when available`() = runTest {
@@ -833,6 +841,10 @@ class ComposerViewModelTest {
 
     private fun expectInputDraftMessageId(draftId: () -> MessageId) = draftId().also {
         every { savedStateHandle.get<String>(ComposerScreen.DraftMessageIdKey) } returns it.id
+    }
+
+    private fun expectUploadDraftSucceeds(expectedUserId: UserId, expectedMessageId: MessageId) {
+        coEvery { draftUploader.upload(expectedUserId, expectedMessageId) } returns Unit
     }
 
     private fun expectStartDraftSync(userId: UserId, messageId: MessageId) {

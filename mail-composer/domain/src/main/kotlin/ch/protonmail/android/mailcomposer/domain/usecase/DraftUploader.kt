@@ -61,6 +61,10 @@ class DraftUploader @Inject constructor(
         }
     }
 
+    suspend fun upload(userId: UserId, messageId: MessageId) {
+        draftRepository.upload(userId, messageId)
+    }
+
     companion object {
         val SyncInterval = 1.seconds
     }

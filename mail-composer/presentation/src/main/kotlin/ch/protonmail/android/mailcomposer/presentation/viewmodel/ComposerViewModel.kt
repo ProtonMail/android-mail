@@ -164,7 +164,10 @@ class ComposerViewModel @Inject constructor(
         return when {
             fields.areBlank() -> action
             else -> {
-                viewModelScope.launch { storeDraftWithAllFields(primaryUserId(), currentMessageId(), fields) }
+                viewModelScope.launch {
+                    storeDraftWithAllFields(primaryUserId(), currentMessageId(), fields)
+                    draftUploader.upload(primaryUserId(), currentMessageId())
+                }
                 ComposerEvent.OnCloseWithDraftSaved
             }
         }

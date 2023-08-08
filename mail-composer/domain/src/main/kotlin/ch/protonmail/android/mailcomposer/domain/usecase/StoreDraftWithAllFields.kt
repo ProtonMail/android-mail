@@ -21,7 +21,6 @@ package ch.protonmail.android.mailcomposer.domain.usecase
 import arrow.core.Either
 import ch.protonmail.android.mailcomposer.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
-import ch.protonmail.android.mailcomposer.domain.repository.DraftRepository
 import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import kotlinx.coroutines.NonCancellable
@@ -31,7 +30,6 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class StoreDraftWithAllFields @Inject constructor(
-    private val draftRepository: DraftRepository,
     private val draftStateRepository: DraftStateRepository,
     private val storeDraftWithSubject: StoreDraftWithSubject,
     private val storeDraftWithBody: StoreDraftWithBody,
@@ -57,7 +55,6 @@ class StoreDraftWithAllFields @Inject constructor(
             ).logError(draftMessageId)
 
             draftStateRepository.saveLocalState(userId, draftMessageId, action)
-            draftRepository.upload(userId, draftMessageId)
         }
     }
 

@@ -22,6 +22,8 @@ import ch.protonmail.android.composer.data.remote.UploadDraftWorker
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcomposer.domain.repository.DraftRepository
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.withContext
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
@@ -29,7 +31,7 @@ class DraftRepositoryImpl @Inject constructor(
     private val enqueuer: Enqueuer
 ) : DraftRepository {
 
-    override suspend fun upload(userId: UserId, messageId: MessageId) {
+    override suspend fun upload(userId: UserId, messageId: MessageId) = withContext(NonCancellable) {
         val uniqueWorkId = UploadDraftWorker.id(messageId)
 
         enqueuer.enqueueUniqueWork<UploadDraftWorker>(uniqueWorkId, UploadDraftWorker.params(userId, messageId))
