@@ -141,13 +141,15 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
         conversationIds: List<ConversationId>,
         contextLabelId: LabelId
     ) {
-        enqueuer.enqueue<MarkConversationAsUnreadWorker>(
-            MarkConversationAsUnreadWorker.params(
-                userId,
-                conversationIds,
-                contextLabelId
+        conversationIds.chunked(MAX_CONVERSATION_IDS_API_LIMIT).forEach { conversationIdsChunk ->
+            enqueuer.enqueue<MarkConversationAsUnreadWorker>(
+                MarkConversationAsUnreadWorker.params(
+                    userId,
+                    conversationIdsChunk,
+                    contextLabelId
+                )
             )
-        )
+        }
     }
 
     override suspend fun markRead(
@@ -155,13 +157,15 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
         conversationIds: List<ConversationId>,
         contextLabelId: LabelId
     ) {
-        enqueuer.enqueue<MarkConversationAsReadWorker>(
-            MarkConversationAsReadWorker.params(
-                userId,
-                conversationIds,
-                contextLabelId
+        conversationIds.chunked(MAX_CONVERSATION_IDS_API_LIMIT).forEach { conversationIdsChunk ->
+            enqueuer.enqueue<MarkConversationAsReadWorker>(
+                MarkConversationAsReadWorker.params(
+                    userId,
+                    conversationIdsChunk,
+                    contextLabelId
+                )
             )
-        )
+        }
     }
 
     companion object {

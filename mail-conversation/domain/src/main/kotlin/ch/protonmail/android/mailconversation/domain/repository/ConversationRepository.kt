@@ -145,7 +145,7 @@ interface ConversationRepository {
         userId: UserId,
         conversationIds: List<ConversationId>,
         contextLabelId: LabelId
-    ): List<Either<DataError, List<Conversation>>>
+    ): Either<DataError, List<Conversation>>
 
     suspend fun markRead(
         userId: UserId,
@@ -157,7 +157,7 @@ interface ConversationRepository {
         userId: UserId,
         conversationIds: List<ConversationId>,
         contextLabelId: LabelId
-    ): List<Either<DataError, List<Conversation>>>
+    ): Either<DataError, List<Conversation>>
 
     suspend fun isCachedConversationRead(
         userId: UserId,

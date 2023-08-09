@@ -341,6 +341,65 @@ class ConversationRemoteDataSourceImplTest {
     }
 
     @Test
+    fun `enqueues worker to perform mark read API call twice when conversations number is above the limit`() = runTest {
+        // Given
+        val conversationIds = List(MAX_CONVERSATION_IDS_API_LIMIT + 1) { ConversationIdSample.Invoices }
+
+        // When
+        conversationRemoteDataSource.markRead(userId, conversationIds, contextLabelId)
+
+        // Then
+        verifySequence {
+            val expectedFirst = MarkConversationAsReadWorker.params(
+                userId,
+                conversationIds.take(MAX_CONVERSATION_IDS_API_LIMIT),
+                contextLabelId
+            )
+            enqueuer.enqueue<MarkConversationAsReadWorker>(
+                match { mapDeepEquals(it, expectedFirst) }
+            )
+            val expectedSecond = MarkConversationAsReadWorker.params(
+                userId,
+                conversationIds.drop(MAX_CONVERSATION_IDS_API_LIMIT),
+                contextLabelId
+            )
+            enqueuer.enqueue<MarkConversationAsReadWorker>(
+                match { mapDeepEquals(it, expectedSecond) }
+            )
+        }
+    }
+
+    @Test
+    fun `enqueues worker to perform mark unread API call twice when conversations number is above the limit`() =
+        runTest {
+            // Given
+            val conversationIds = List(MAX_CONVERSATION_IDS_API_LIMIT + 1) { ConversationIdSample.Invoices }
+
+            // When
+            conversationRemoteDataSource.markUnread(userId, conversationIds, contextLabelId)
+
+            // Then
+            verifySequence {
+                val expectedFirst = MarkConversationAsUnreadWorker.params(
+                    userId,
+                    conversationIds.take(MAX_CONVERSATION_IDS_API_LIMIT),
+                    contextLabelId
+                )
+                enqueuer.enqueue<MarkConversationAsUnreadWorker>(
+                    match { mapDeepEquals(it, expectedFirst) }
+                )
+                val expectedSecond = MarkConversationAsUnreadWorker.params(
+                    userId,
+                    conversationIds.drop(MAX_CONVERSATION_IDS_API_LIMIT),
+                    contextLabelId
+                )
+                enqueuer.enqueue<MarkConversationAsUnreadWorker>(
+                    match { mapDeepEquals(it, expectedSecond) }
+                )
+            }
+        }
+
+    @Test
     fun `enqueues worker to perform remove label API call when remove label is called for conversation`() {
         // Given
         val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
