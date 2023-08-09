@@ -205,7 +205,6 @@ class ConversationRepositoryImpl @Inject constructor(
         fromLabelIds: List<LabelId>,
         toLabelId: LabelId
     ): Either<DataError, Conversation> = move(userId, listOf(conversationId), allLabelIds, fromLabelIds, toLabelId)
-        .first()
         .map { it.first() }
 
     override suspend fun move(
@@ -214,12 +213,26 @@ class ConversationRepositoryImpl @Inject constructor(
         allLabelIds: List<LabelId>,
         fromLabelIds: List<LabelId>,
         toLabelId: LabelId
-    ): List<Either<DataError, List<Conversation>>> {
+    ): Either<DataError, List<Conversation>> {
         if (toLabelId.isTrash() || toLabelId.isSpam()) {
             return moveToTrashOrSpam(userId, conversationIds, allLabelIds, toLabelId)
         }
 
-        return relabel(userId, conversationIds, fromLabelIds, listOf(toLabelId))
+
+        return conversationLocalDataSource.relabel(
+            userId = userId,
+            conversationIds = conversationIds,
+            labelIdsToAdd = listOf(toLabelId),
+            labelIdsToRemove = fromLabelIds
+        ).onRight {
+            messageLocalDataSource.relabelMessagesInConversations(
+                userId = userId,
+                conversationIds = conversationIds,
+                labelIdsToAdd = setOf(toLabelId),
+                labelIdsToRemove = fromLabelIds.toSet()
+            )
+            conversationRemoteDataSource.addLabel(userId, conversationIds, toLabelId)
+        }
     }
 
     override suspend fun markUnread(
@@ -276,7 +289,7 @@ class ConversationRepositoryImpl @Inject constructor(
         conversationIds: List<ConversationId>,
         allLabelIds: List<LabelId>,
         labelId: LabelId
-    ): List<Either<DataError, List<Conversation>>> {
+    ): Either<DataError, List<Conversation>> {
         require(labelId.isTrash() || labelId.isSpam()) { "Invalid system label id: $labelId" }
 
         val persistentLabels = setOf(
@@ -286,7 +299,20 @@ class ConversationRepositoryImpl @Inject constructor(
         )
         val labelsToBeRemoved = allLabelIds - persistentLabels
 
-        return relabel(userId, conversationIds, labelsToBeRemoved, listOf(labelId))
+        return conversationLocalDataSource.relabel(
+            userId = userId,
+            conversationIds = conversationIds,
+            labelIdsToAdd = listOf(labelId),
+            labelIdsToRemove = labelsToBeRemoved
+        ).onRight {
+            messageLocalDataSource.relabelMessagesInConversations(
+                userId = userId,
+                conversationIds = conversationIds,
+                labelIdsToRemove = labelsToBeRemoved.toSet(),
+                labelIdsToAdd = setOf(labelId)
+            )
+            conversationRemoteDataSource.addLabel(userId, conversationIds, labelId)
+        }
     }
 
     private suspend fun upsertConversations(

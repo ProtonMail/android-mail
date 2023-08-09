@@ -133,7 +133,7 @@ interface ConversationRepository {
         allLabelIds: List<LabelId>,
         fromLabelIds: List<LabelId> = emptyList(),
         toLabelId: LabelId
-    ): List<Either<DataError, List<Conversation>>>
+    ): Either<DataError, List<Conversation>>
 
     suspend fun markUnread(
         userId: UserId,

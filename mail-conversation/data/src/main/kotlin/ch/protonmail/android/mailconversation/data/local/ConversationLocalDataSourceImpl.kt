@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailconversation.data.local
 
 import arrow.core.Either
+import arrow.core.continuations.either
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
@@ -193,6 +194,18 @@ class ConversationLocalDataSourceImpl @Inject constructor(
             }
             upsertConversations(updatedConversations)
             return@map updatedConversations
+        }
+    }
+
+    override suspend fun relabel(
+        userId: UserId,
+        conversationIds: List<ConversationId>,
+        labelIdsToAdd: List<LabelId>,
+        labelIdsToRemove: List<LabelId>
+    ): Either<DataError.Local, List<Conversation>> = db.inTransaction {
+        either {
+            removeLabels(userId, conversationIds, labelIdsToRemove).bind()
+            addLabels(userId, conversationIds, labelIdsToAdd).bind()
         }
     }
 

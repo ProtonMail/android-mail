@@ -444,43 +444,32 @@ class ConversationRepositoryImplTest {
         val labelId = SystemLabelId.Trash.labelId
         val conversationIds = listOf(ConversationId(ConversationTestData.RAW_CONVERSATION_ID))
         coEvery {
-            conversationLocalDataSource.addLabels(userId, conversationIds, listOf(labelId))
-        } returns listOf(ConversationTestData.starredConversation).right()
-        coEvery {
-            conversationLocalDataSource.removeLabels(userId, conversationIds, emptyList())
-        } returns listOf(ConversationTestData.starredConversation).right()
-        expectMessageRelabelingSuccess(conversationIds, labelIdsToRemove = emptySet())
-        expectMessageRelabelingSuccess(conversationIds, labelIdsToAdd = setOf(labelId))
-
-        // When
-        conversationRepository.move(userId, conversationIds, emptyList(), emptyList(), labelId)
-
-        // Then
-        coVerify { conversationLocalDataSource.addLabels(userId, conversationIds, listOf(labelId)) }
-    }
-
-    @Test
-    fun `move to trash add the trash label to every message in the conversation`() = runTest {
-        // Given
-        val labelId = SystemLabelId.Trash.labelId
-        val conversationIds = listOf(ConversationId(ConversationTestData.RAW_CONVERSATION_ID))
-        coEvery {
-            conversationLocalDataSource.addLabels(userId, conversationIds, listOf(labelId))
-        } returns listOf(ConversationTestData.starredConversation).right()
-        coEvery {
-            conversationLocalDataSource.removeLabels(userId, conversationIds, emptyList())
-        } returns listOf(ConversationTestData.starredConversation).right()
-        expectMessageRelabelingSuccess(conversationIds, labelIdsToRemove = emptySet())
-        expectMessageRelabelingSuccess(conversationIds, labelIdsToAdd = setOf(labelId))
-
-        // When
-        conversationRepository.move(userId, conversationIds, emptyList(), emptyList(), labelId)
-
-        // Then
-        coVerify {
-            messageLocalDataSource.relabelMessagesInConversations(
-                userId, conversationIds, labelIdsToAdd = setOf(labelId)
+            conversationLocalDataSource.relabel(
+                userId = userId,
+                conversationIds = conversationIds,
+                labelIdsToAdd = listOf(labelId),
+                labelIdsToRemove = emptyList()
             )
+        } returns listOf(ConversationTestData.starredConversation).right()
+        expectMessageRelabelingSuccess(conversationIds, labelIdsToAdd = setOf(labelId))
+
+        // When
+        conversationRepository.move(userId, conversationIds, emptyList(), emptyList(), labelId)
+
+        // Then
+        coVerifyOrder {
+            conversationLocalDataSource.relabel(
+                userId,
+                conversationIds,
+                labelIdsToAdd = listOf(labelId),
+                labelIdsToRemove = emptyList()
+            )
+            messageLocalDataSource.relabelMessagesInConversations(
+                userId = userId,
+                conversationIds = conversationIds,
+                labelIdsToAdd = setOf(labelId)
+            )
+            conversationRemoteDataSource.addLabel(userId, conversationIds, labelId)
         }
     }
 
@@ -496,22 +485,43 @@ class ConversationRepositoryImplTest {
         val labelId = SystemLabelId.Trash.labelId
         val conversationIds = listOf(ConversationId(ConversationTestData.RAW_CONVERSATION_ID))
         coEvery {
-            conversationLocalDataSource.addLabels(userId, conversationIds, listOf(labelId))
+            conversationLocalDataSource.relabel(
+                userId = userId,
+                conversationIds = conversationIds,
+                labelIdsToAdd = listOf(labelId),
+                labelIdsToRemove = labelsToBeRemoved
+            )
         } returns listOf(ConversationTestData.starredConversation).right()
-        coEvery {
-            conversationLocalDataSource.removeLabels(userId, conversationIds, labelsToBeRemoved)
-        } returns listOf(ConversationTestData.starredConversation).right()
-        expectMessageRelabelingSuccess(conversationIds, labelIdsToRemove = labelsToBeRemoved.toSet())
-        expectMessageRelabelingSuccess(conversationIds, labelIdsToAdd = setOf(labelId))
+        expectMessageRelabelingSuccess(
+            conversationIds,
+            labelIdsToAdd = setOf(labelId),
+            labelIdsToRemove = labelsToBeRemoved.toSet()
+        )
 
         // When
-        conversationRepository.move(userId, conversationIds, allLabelIds, emptyList(), labelId)
+        conversationRepository.move(
+            userId = userId,
+            conversationIds = conversationIds,
+            allLabelIds = allLabelIds,
+            fromLabelIds = emptyList(),
+            toLabelId = labelId
+        )
 
         // Then
-        coVerify {
-            conversationLocalDataSource.removeLabels(
-                userId, conversationIds, labelsToBeRemoved
+        coVerifyOrder {
+            conversationLocalDataSource.relabel(
+                userId,
+                conversationIds,
+                labelIdsToAdd = listOf(labelId),
+                labelIdsToRemove = labelsToBeRemoved
             )
+            messageLocalDataSource.relabelMessagesInConversations(
+                userId = userId,
+                conversationIds = conversationIds,
+                labelIdsToRemove = labelsToBeRemoved.toSet(),
+                labelIdsToAdd = setOf(labelId)
+            )
+            conversationRemoteDataSource.addLabel(userId, conversationIds, labelId)
         }
     }
 
@@ -527,53 +537,37 @@ class ConversationRepositoryImplTest {
         val labelId = SystemLabelId.Spam.labelId
         val conversationIds = listOf(ConversationId(ConversationTestData.RAW_CONVERSATION_ID))
         coEvery {
-            conversationLocalDataSource.addLabels(userId, conversationIds, listOf(labelId))
-        } returns listOf(ConversationTestData.starredConversation).right()
-        coEvery {
-            conversationLocalDataSource.removeLabels(userId, conversationIds, labelsToBeRemoved)
-        } returns listOf(ConversationTestData.starredConversation).right()
-        expectMessageRelabelingSuccess(conversationIds, labelIdsToRemove = labelsToBeRemoved.toSet())
-        expectMessageRelabelingSuccess(conversationIds, labelIdsToAdd = setOf(labelId))
-
-        // When
-        conversationRepository.move(userId, conversationIds, allLabelIds, emptyList(), labelId)
-
-        // Then
-        coVerify {
-            conversationLocalDataSource.removeLabels(
-                userId, conversationIds, labelsToBeRemoved
+            conversationLocalDataSource.relabel(
+                userId = userId,
+                conversationIds = conversationIds,
+                labelIdsToAdd = listOf(labelId),
+                labelIdsToRemove = labelsToBeRemoved
             )
-        }
-    }
-
-    @Test
-    fun `move to trash removes all labels from messages, except AllMail, AllDraft and AllSent`() = runTest {
-        // Given
-        val labelsToBeRemoved = SystemLabelId.exclusiveList.map { it.labelId }
-        val allLabelIds = labelsToBeRemoved + setOf(
-            SystemLabelId.AllMail.labelId,
-            SystemLabelId.AllDrafts.labelId,
-            SystemLabelId.AllSent.labelId
+        } returns listOf(ConversationTestData.starredConversation).right()
+        expectMessageRelabelingSuccess(
+            conversationIds,
+            labelIdsToAdd = setOf(labelId),
+            labelIdsToRemove = labelsToBeRemoved.toSet()
         )
-        val labelId = SystemLabelId.Trash.labelId
-        val conversationIds = listOf(ConversationId(ConversationTestData.RAW_CONVERSATION_ID))
-        coEvery {
-            conversationLocalDataSource.addLabels(userId, conversationIds, listOf(labelId))
-        } returns listOf(ConversationTestData.starredConversation).right()
-        coEvery {
-            conversationLocalDataSource.removeLabels(userId, conversationIds, labelsToBeRemoved)
-        } returns listOf(ConversationTestData.starredConversation).right()
-        expectMessageRelabelingSuccess(conversationIds, labelIdsToRemove = labelsToBeRemoved.toSet())
-        expectMessageRelabelingSuccess(conversationIds, labelIdsToAdd = setOf(labelId))
 
         // When
         conversationRepository.move(userId, conversationIds, allLabelIds, emptyList(), labelId)
 
         // Then
-        coVerify {
-            messageLocalDataSource.relabelMessagesInConversations(
-                userId, conversationIds, labelIdsToRemove = labelsToBeRemoved.toSet()
+        coVerifyOrder {
+            conversationLocalDataSource.relabel(
+                userId,
+                conversationIds,
+                labelIdsToAdd = listOf(labelId),
+                labelIdsToRemove = labelsToBeRemoved
             )
+            messageLocalDataSource.relabelMessagesInConversations(
+                userId = userId,
+                conversationIds = conversationIds,
+                labelIdsToRemove = labelsToBeRemoved.toSet(),
+                labelIdsToAdd = setOf(labelId)
+            )
+            conversationRemoteDataSource.addLabel(userId, conversationIds, labelId)
         }
     }
 
@@ -584,23 +578,37 @@ class ConversationRepositoryImplTest {
         val labelId = SystemLabelId.Archive.labelId
         val conversationIds = listOf(ConversationId(ConversationTestData.RAW_CONVERSATION_ID))
         coEvery {
-            conversationLocalDataSource.addLabels(userId, conversationIds, listOf(labelId))
+            conversationLocalDataSource.relabel(
+                userId = userId,
+                conversationIds = conversationIds,
+                labelIdsToAdd = listOf(labelId),
+                labelIdsToRemove = exclusiveLabels
+            )
         } returns listOf(ConversationTestData.starredConversation).right()
-        coEvery {
-            conversationLocalDataSource.removeLabels(userId, conversationIds, exclusiveLabels)
-        } returns listOf(ConversationTestData.starredConversation).right()
-        expectMessageRelabelingSuccess(conversationIds, labelIdsToRemove = exclusiveLabels.toSet())
-        expectMessageRelabelingSuccess(conversationIds, labelIdsToAdd = setOf(labelId))
+        expectMessageRelabelingSuccess(
+            conversationIds,
+            labelIdsToRemove = exclusiveLabels.toSet(),
+            labelIdsToAdd = setOf(labelId)
+        )
 
         // When
         conversationRepository.move(userId, conversationIds, emptyList(), exclusiveLabels, labelId)
 
         // Then
-        coVerify {
-            conversationLocalDataSource.removeLabels(userId, conversationIds, exclusiveLabels)
-        }
-        coVerify {
-            conversationLocalDataSource.addLabels(userId, conversationIds, listOf(labelId))
+        coVerifyOrder {
+            conversationLocalDataSource.relabel(
+                userId,
+                conversationIds,
+                labelIdsToAdd = listOf(labelId),
+                labelIdsToRemove = exclusiveLabels
+            )
+            messageLocalDataSource.relabelMessagesInConversations(
+                userId = userId,
+                conversationIds = conversationIds,
+                labelIdsToRemove = exclusiveLabels.toSet(),
+                labelIdsToAdd = setOf(labelId)
+            )
+            conversationRemoteDataSource.addLabel(userId, conversationIds, labelId)
         }
     }
 

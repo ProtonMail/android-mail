@@ -162,6 +162,13 @@ interface ConversationLocalDataSource {
         labelIds: List<LabelId>
     ): Either<DataError.Local, List<Conversation>>
 
+    suspend fun relabel(
+        userId: UserId,
+        conversationIds: List<ConversationId>,
+        labelIdsToAdd: List<LabelId> = emptyList(),
+        labelIdsToRemove: List<LabelId> = emptyList()
+    ): Either<DataError.Local, List<Conversation>>
+
     suspend fun markUnread(
         userId: UserId,
         conversationId: ConversationId,
