@@ -21,6 +21,7 @@ package ch.protonmail.android.uitest.e2e.mailbox.detail.attachments
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.networkmocks.mockwebserver.combineWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MimeType
+import ch.protonmail.android.networkmocks.mockwebserver.requests.given
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.matchWildcards
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
@@ -68,22 +69,22 @@ internal class AttachmentConversationModeTests : MockedNetworkTest(loginType = L
     fun testMultipleAttachmentDownloadingInConversationMode() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_placeholder_conversation.json"
                     withStatusCode 200,
-                "/mail/v4/conversations"
+                given("/mail/v4/conversations")
                     respondWith "/mail/v4/conversations/conversations_194318.json"
                     withStatusCode 200 ignoreQueryParams true,
-                "/mail/v4/conversations/*"
+                given("/mail/v4/conversations/*")
                     respondWith "/mail/v4/conversations/conversation-id/conversation-id_194318.json"
                     withStatusCode 200 matchWildcards true,
-                "/mail/v4/messages/*"
+                given("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_194318.json"
                     withStatusCode 200 matchWildcards true serveOnce true,
-                "/mail/v4/messages/*"
+                given("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_194318_2.json"
                     withStatusCode 200 matchWildcards true serveOnce true,
-                "/mail/v4/attachments/*"
+                given("/mail/v4/attachments/*")
                     respondWith "/mail/v4/attachments/attachment_194318"
                     withStatusCode 200 matchWildcards true serveOnce true
                     withMimeType MimeType.OctetStream withNetworkDelay 2000

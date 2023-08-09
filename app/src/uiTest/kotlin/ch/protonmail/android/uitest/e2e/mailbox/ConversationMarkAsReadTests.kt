@@ -20,6 +20,7 @@ package ch.protonmail.android.uitest.e2e.mailbox
 
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.networkmocks.mockwebserver.combineWith
+import ch.protonmail.android.networkmocks.mockwebserver.requests.given
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.matchWildcards
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
@@ -60,16 +61,16 @@ internal class ConversationMarkAsReadTests : MockedNetworkTest() {
     fun checkConversationMarkedAsReadWhenLastUnreadMessageIsOpened() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_78994.json"
                     withStatusCode 200,
-                "/mail/v4/conversations"
+                given("/mail/v4/conversations")
                     respondWith "/mail/v4/conversations/conversations_78994.json"
                     withStatusCode 200 ignoreQueryParams true,
-                "/mail/v4/conversations/*"
+                given("/mail/v4/conversations/*")
                     respondWith "/mail/v4/conversations/conversation-id/conversation-id_78994.json"
                     withStatusCode 200 matchWildcards true,
-                "/mail/v4/messages/*"
+                given("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_78994.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )

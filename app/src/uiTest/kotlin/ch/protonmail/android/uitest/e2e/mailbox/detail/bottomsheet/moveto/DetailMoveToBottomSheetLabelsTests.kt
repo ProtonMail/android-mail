@@ -20,6 +20,7 @@ package ch.protonmail.android.uitest.e2e.mailbox.detail.bottomsheet.moveto
 
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.networkmocks.mockwebserver.combineWith
+import ch.protonmail.android.networkmocks.mockwebserver.requests.given
 import ch.protonmail.android.networkmocks.mockwebserver.requests.matchWildcards
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.serveOnce
@@ -79,22 +80,22 @@ internal class DetailMoveToBottomSheetLabelsTests : MockedNetworkTest() {
             useDefaultMailReadResponses = true
         ) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_185425.json"
                     withStatusCode 200,
-                "/core/v4/labels?Type=1"
+                given("/core/v4/labels?Type=1")
                     respondWith "/core/v4/labels/labels-type1_185425.json"
                     withStatusCode 200,
-                "/mail/v4/conversations?Page=0&PageSize=75&Limit=75&LabelID=0&Sort=Time&Desc=1"
+                given("/mail/v4/conversations?Page=0&PageSize=75&Limit=75&LabelID=0&Sort=Time&Desc=1")
                     respondWith "/mail/v4/conversations/conversations_185425.json"
                     withStatusCode 200,
-                "/mail/v4/conversations?Page=0&PageSize=75&Limit=75&LabelID=3&Sort=Time&Desc=1"
+                given("/mail/v4/conversations?Page=0&PageSize=75&Limit=75&LabelID=3&Sort=Time&Desc=1")
                     respondWith "/mail/v4/conversations/conversations_185425_2.json"
                     withStatusCode 200,
-                "/mail/v4/conversations/*"
+                given("/mail/v4/conversations/*")
                     respondWith "/mail/v4/conversations/conversation-id/conversation-id_185425.json"
                     withStatusCode 200 matchWildcards true serveOnce true,
-                "/mail/v4/messages/*"
+                given("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_185425.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )
@@ -141,22 +142,22 @@ internal class DetailMoveToBottomSheetLabelsTests : MockedNetworkTest() {
             useDefaultLabels = false
         ) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_185425.json"
                     withStatusCode 200,
-                "/core/v4/labels?Type=1"
+                given("/core/v4/labels?Type=1")
                     respondWith "/core/v4/labels/labels-type1_185425.json"
                     withStatusCode 200,
-                "/mail/v4/conversations?Page=0&PageSize=75&Limit=75&LabelID=0&Sort=Time&Desc=1"
+                given("/mail/v4/conversations?Page=0&PageSize=75&Limit=75&LabelID=0&Sort=Time&Desc=1")
                     respondWith "/mail/v4/conversations/conversations_185425.json"
                     withStatusCode 200,
-                "/mail/v4/conversations?Page=0&PageSize=75&Limit=75&LabelID=4&Sort=Time&Desc=1"
+                given("/mail/v4/conversations?Page=0&PageSize=75&Limit=75&LabelID=4&Sort=Time&Desc=1")
                     respondWith "/mail/v4/conversations/conversations_185425_3.json"
                     withStatusCode 200,
-                "/mail/v4/conversations/*"
+                given("/mail/v4/conversations/*")
                     respondWith "/mail/v4/conversations/conversation-id/conversation-id_185425.json"
                     withStatusCode 200 matchWildcards true serveOnce true,
-                "/mail/v4/messages/*"
+                given("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_185425.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )

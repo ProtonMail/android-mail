@@ -22,6 +22,7 @@ package ch.protonmail.android.uitest.helpers.network
 
 import ch.protonmail.android.networkmocks.mockwebserver.MockNetworkDispatcher
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MockPriority
+import ch.protonmail.android.networkmocks.mockwebserver.requests.given
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.matchWildcards
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
@@ -47,53 +48,69 @@ internal fun mockNetworkDispatcher(
 
     if (useDefaultCoreSettings) {
         addMockRequests(
-            "/core/v4/settings" respondWith "/core/v4/settings/core-v4-settings_base_placeholder.json" withStatusCode 200
+            given("/core/v4/settings")
+                respondWith "/core/v4/settings/core-v4-settings_base_placeholder.json"
+                withStatusCode 200
         )
     }
 
     if (useDefaultMailSettings) {
         addMockRequests(
-            "/mail/v4/settings" respondWith "/mail/v4/settings/mail-v4-settings_base_placeholder.json" withStatusCode 200
+            given("/mail/v4/settings")
+                respondWith "/mail/v4/settings/mail-v4-settings_base_placeholder.json"
+                withStatusCode 200
         )
     }
 
     if (useDefaultContacts) {
         addMockRequests(
-            "/contacts/v4/contacts" respondWith "/contacts/v4/contacts/contacts_base_placeholder.json" withStatusCode 200 ignoreQueryParams true,
-            "/contacts/v4/contacts/emails" respondWith "/contacts/v4/contacts/emails/contacts-emails_base_placeholder.json" withStatusCode 200 ignoreQueryParams true
+            given("/contacts/v4/contacts")
+                respondWith "/contacts/v4/contacts/contacts_base_placeholder.json"
+                withStatusCode 200 ignoreQueryParams true,
+            given("/contacts/v4/contacts/emails")
+                respondWith "/contacts/v4/contacts/emails/contacts-emails_base_placeholder.json"
+                withStatusCode 200 ignoreQueryParams true
         )
     }
 
     if (useDefaultFeatures) {
         addMockRequests(
-            "/core/v4/features" respondWith "/core/v4/features/features_empty_placeholder.json" withStatusCode 200 ignoreQueryParams true
+            given("/core/v4/features")
+                respondWith "/core/v4/features/features_empty_placeholder.json"
+                withStatusCode 200 ignoreQueryParams true
         )
     }
 
     if (useDefaultLabels) {
         addMockRequests(
-            "/core/v4/labels?Type=1" respondWith "/core/v4/labels/labels-type1_base_placeholder.json" withStatusCode 200
+            given("/core/v4/labels?Type=1")
+                respondWith "/core/v4/labels/labels-type1_base_placeholder.json"
+                withStatusCode 200
         )
     }
 
     if (useDefaultCustomFolders) {
         addMockRequests(
-            "/core/v4/labels?Type=3" respondWith "/core/v4/labels/labels-type3_base_placeholder.json" withStatusCode 200
+            given("/core/v4/labels?Type=3")
+                respondWith "/core/v4/labels/labels-type3_base_placeholder.json"
+                withStatusCode 200
         )
     }
 
     if (useDefaultPaymentSettings) {
         addMockRequests(
-            "/payments/v4/status/google" respondWith "/payments/v4/status/google/payments_empty.json" withStatusCode 200
+            given("/payments/v4/status/google")
+                respondWith "/payments/v4/status/google/payments_empty.json"
+                withStatusCode 200
         )
     }
 
     if (useDefaultMailReadResponses) {
         addMockRequests(
-            "/mail/v4/messages/read"
+            given("/mail/v4/messages/read")
                 respondWith "/mail/v4/messages/read/read_base_placeholder.json"
                 withStatusCode 200 withPriority MockPriority.Highest,
-            "/mail/v4/conversations/read"
+            given("/mail/v4/conversations/read")
                 respondWith "/mail/v4/conversations/read/conversations_read_base_placeholder.json"
                 withStatusCode 200 withPriority MockPriority.Highest
         )
@@ -101,8 +118,12 @@ internal fun mockNetworkDispatcher(
 
     if (ignoreEvents) {
         addMockRequests(
-            "/core/v4/events/*" respondWith "/core/v4/events/event-id/event_base_placeholder.json" withStatusCode 200 matchWildcards true,
-            "/core/v4/events/latest" respondWith "/core/v4/events/latest/events-latest_base_placeholder.json" withStatusCode 200
+            given("/core/v4/events/*")
+                respondWith "/core/v4/events/event-id/event_base_placeholder.json"
+                withStatusCode 200 matchWildcards true,
+            given("/core/v4/events/latest")
+                respondWith "/core/v4/events/latest/events-latest_base_placeholder.json"
+                withStatusCode 200
         )
     }
 

@@ -20,6 +20,7 @@ package ch.protonmail.android.uitest.e2e.mailbox.detail.bodycontent
 
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.networkmocks.mockwebserver.combineWith
+import ch.protonmail.android.networkmocks.mockwebserver.requests.given
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.matchWildcards
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
@@ -55,13 +56,13 @@ internal class MessageDetailHtmlSanitizationTests : MockedNetworkTest() {
     fun checkHtmlSanitizationInMessageMode() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_placeholder_messages.json"
                     withStatusCode 200,
-                "/mail/v4/messages"
+                given("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_189700.json"
                     withStatusCode 200 matchWildcards true ignoreQueryParams true,
-                "/mail/v4/messages/*"
+                given("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_189700.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )

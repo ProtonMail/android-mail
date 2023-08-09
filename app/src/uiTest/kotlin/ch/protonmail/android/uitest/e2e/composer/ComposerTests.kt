@@ -20,6 +20,7 @@ package ch.protonmail.android.uitest.e2e.composer
 
 import ch.protonmail.android.networkmocks.mockwebserver.MockNetworkDispatcher
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MockPriority
+import ch.protonmail.android.networkmocks.mockwebserver.requests.given
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withPriority
@@ -36,7 +37,7 @@ interface ComposerTests {
 
         if (composerEnabled) {
             addMockRequests(
-                "/core/v4/features?Code=HideComposerAndroid&Type=boolean"
+                given("/core/v4/features?Code=HideComposerAndroid&Type=boolean")
                     respondWith "/core/v4/features/composer/hide_composer_disabled.json"
                     withStatusCode 200 withPriority MockPriority.Highest
             )
@@ -44,7 +45,7 @@ interface ComposerTests {
 
         if (useDefaultMessagesList) {
             addMockRequests(
-                "/mail/v4/messages"
+                given("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_empty.json"
                     withStatusCode 200 ignoreQueryParams true
             )

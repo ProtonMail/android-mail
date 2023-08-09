@@ -21,6 +21,7 @@ package ch.protonmail.android.uitest.e2e.mailbox.detail.attachments
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.networkmocks.mockwebserver.combineWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MimeType
+import ch.protonmail.android.networkmocks.mockwebserver.requests.given
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.matchWildcards
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
@@ -68,16 +69,16 @@ internal class AttachmentErrorsTests : MockedNetworkTest(loginType = LoginTestUs
     fun testMultipleAttachmentsAreNotHandledInParallel() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_placeholder_messages.json"
                     withStatusCode 200,
-                "/mail/v4/messages"
+                given("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_194315.json"
                     withStatusCode 200 ignoreQueryParams true,
-                "/mail/v4/messages/*"
+                given("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_194315.json"
                     withStatusCode 200 matchWildcards true serveOnce true,
-                "/mail/v4/attachments/*"
+                given("/mail/v4/attachments/*")
                     respondWith "/mail/v4/attachments/attachment_png"
                     withStatusCode 200 matchWildcards true serveOnce true
                     withMimeType MimeType.OctetStream withNetworkDelay 2000L
@@ -114,19 +115,19 @@ internal class AttachmentErrorsTests : MockedNetworkTest(loginType = LoginTestUs
     fun testManualDownloadRetry() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_placeholder_messages.json"
                     withStatusCode 200,
-                "/mail/v4/messages"
+                given("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_194354.json"
                     withStatusCode 200 ignoreQueryParams true,
-                "/mail/v4/messages/*"
+                given("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_194354.json"
                     withStatusCode 200 matchWildcards true serveOnce true,
-                "/mail/v4/attachments/*"
+                given("/mail/v4/attachments/*")
                     respondWith "/global/errors/error_mock.json"
                     withStatusCode 403 matchWildcards true serveOnce true,
-                "/mail/v4/attachments/*"
+                given("/mail/v4/attachments/*")
                     respondWith "/mail/v4/attachments/attachment_png"
                     withStatusCode 200 matchWildcards true serveOnce true
                     withMimeType MimeType.OctetStream
@@ -157,19 +158,19 @@ internal class AttachmentErrorsTests : MockedNetworkTest(loginType = LoginTestUs
     fun testDownloadIsNotRetriedOn403() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_placeholder_messages.json"
                     withStatusCode 200,
-                "/mail/v4/messages"
+                given("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_194355.json"
                     withStatusCode 200 ignoreQueryParams true,
-                "/mail/v4/messages/*"
+                given("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_194355.json"
                     withStatusCode 200 matchWildcards true serveOnce true,
-                "/mail/v4/attachments/*"
+                given("/mail/v4/attachments/*")
                     respondWith "/global/errors/error_mock.json"
                     withStatusCode 403 matchWildcards true serveOnce true,
-                "/mail/v4/attachments/*"
+                given("/mail/v4/attachments/*")
                     respondWith "/mail/v4/attachments/attachment_png"
                     withStatusCode 200 matchWildcards true serveOnce true
                     withMimeType MimeType.OctetStream
@@ -201,19 +202,19 @@ internal class AttachmentErrorsTests : MockedNetworkTest(loginType = LoginTestUs
     fun test500StatusCodeOnDownloadError() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_placeholder_messages.json"
                     withStatusCode 200,
-                "/mail/v4/messages"
+                given("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_194355.json"
                     withStatusCode 200 ignoreQueryParams true,
-                "/mail/v4/messages/*"
+                given("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_194355.json"
                     withStatusCode 200 matchWildcards true serveOnce true,
-                "/mail/v4/attachments/*"
+                given("/mail/v4/attachments/*")
                     respondWith "/global/errors/error_mock.json"
                     withStatusCode 500 matchWildcards true serveOnce true,
-                "/mail/v4/attachments/*"
+                given("/mail/v4/attachments/*")
                     respondWith "/mail/v4/attachments/attachment_png"
                     withStatusCode 200 matchWildcards true serveOnce true
                     withMimeType MimeType.OctetStream

@@ -20,6 +20,7 @@ package ch.protonmail.android.uitest.e2e.mailbox.detail.bottomsheet.moveto
 
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.networkmocks.mockwebserver.combineWith
+import ch.protonmail.android.networkmocks.mockwebserver.requests.given
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.matchWildcards
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
@@ -60,13 +61,13 @@ internal class MessageDetailMoveToBottomSheetDismissalTests : MockedNetworkTest(
     fun checkMessageMoveToBottomSheetDismissalWithBackButton() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_79354.json"
                     withStatusCode 200,
-                "/mail/v4/messages"
+                given("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_79354.json"
                     withStatusCode 200 ignoreQueryParams true,
-                "/mail/v4/messages/*"
+                given("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_79354.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )
@@ -102,13 +103,13 @@ internal class MessageDetailMoveToBottomSheetDismissalTests : MockedNetworkTest(
     fun checkMessageMoveToBottomSheetDismissalWithExternalTap() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_79356.json"
                     withStatusCode 200,
-                "/mail/v4/messages"
+                given("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_79356.json"
                     withStatusCode 200 ignoreQueryParams true,
-                "/mail/v4/messages/*"
+                given("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_79356.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )

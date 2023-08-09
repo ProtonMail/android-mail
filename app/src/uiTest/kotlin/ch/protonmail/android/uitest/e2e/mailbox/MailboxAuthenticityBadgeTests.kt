@@ -21,6 +21,7 @@ package ch.protonmail.android.uitest.e2e.mailbox
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.networkmocks.mockwebserver.combineWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MockPriority
+import ch.protonmail.android.networkmocks.mockwebserver.requests.given
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withPriority
@@ -91,10 +92,10 @@ internal class MailboxAuthenticityBadgeTests : MockedNetworkTest(
     fun testAuthenticityBadgeInMailboxInMessageMode() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_192128.json"
                     withStatusCode 200,
-                "/mail/v4/messages"
+                given("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_192128.json"
                     withStatusCode 200 ignoreQueryParams true
             )
@@ -116,10 +117,10 @@ internal class MailboxAuthenticityBadgeTests : MockedNetworkTest(
     fun testAuthenticityBadgeWithLongNameInMessageMode() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_194274.json"
                     withStatusCode 200,
-                "/mail/v4/messages"
+                given("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_194274.json"
                     withStatusCode 200 ignoreQueryParams true
             )
@@ -139,13 +140,13 @@ internal class MailboxAuthenticityBadgeTests : MockedNetworkTest(
     fun testAuthenticityBadgeInSentFolder() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_192130.json"
                     withStatusCode 200,
-                "/mail/v4/messages"
+                given("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_empty.json"
                     withStatusCode 200 ignoreQueryParams true,
-                "/mail/v4/messages?Page=0&PageSize=75&Limit=75&LabelID=7&Sort=Time&Desc=1"
+                given("/mail/v4/messages?Page=0&PageSize=75&Limit=75&LabelID=7&Sort=Time&Desc=1")
                     respondWith "/mail/v4/messages/messages_192130.json"
                     withStatusCode 200 withPriority MockPriority.Highest
             )
@@ -186,10 +187,10 @@ internal class MailboxAuthenticityBadgeTests : MockedNetworkTest(
     fun testAuthenticityBadgeInMailboxInConversationMode() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_192134.json"
                     withStatusCode 200,
-                "/mail/v4/conversations"
+                given("/mail/v4/conversations")
                     respondWith "/mail/v4/conversations/conversations_192134.json"
                     withStatusCode 200 ignoreQueryParams true
             )
@@ -211,10 +212,10 @@ internal class MailboxAuthenticityBadgeTests : MockedNetworkTest(
     fun testAuthenticityBadgeWithLongNameInConversationMode() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_194275.json"
                     withStatusCode 200,
-                "/mail/v4/conversations"
+                given("/mail/v4/conversations")
                     respondWith "/mail/v4/conversations/conversations_194275.json"
                     withStatusCode 200 ignoreQueryParams true
             )

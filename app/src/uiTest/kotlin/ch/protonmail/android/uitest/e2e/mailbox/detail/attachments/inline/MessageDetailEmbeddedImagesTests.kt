@@ -22,6 +22,7 @@ import androidx.test.filters.SdkSuppress
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.networkmocks.mockwebserver.combineWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MimeType
+import ch.protonmail.android.networkmocks.mockwebserver.requests.given
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.matchWildcards
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
@@ -71,13 +72,13 @@ internal class MessageDetailEmbeddedImagesTests :
     fun testMessageDetailEmbeddedImagesNotLoadedWithSettingOff() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_203101_2.json"
                     withStatusCode 200,
-                "/mail/v4/messages"
+                given("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_203101.json"
                     withStatusCode 200 matchWildcards true ignoreQueryParams true,
-                "/mail/v4/messages/*"
+                given("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_203101.json"
                     withStatusCode 200 matchWildcards true
             )
@@ -100,13 +101,13 @@ internal class MessageDetailEmbeddedImagesTests :
     fun testMessageDetailEmbeddedImagesBodyLoadingError() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_203102_2.json"
                     withStatusCode 200,
-                "/mail/v4/messages"
+                given("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_203102.json"
                     withStatusCode 200 matchWildcards true ignoreQueryParams true,
-                "/mail/v4/messages/*"
+                given("/mail/v4/messages/*")
                     respondWith "/global/errors/error_mock.json"
                     withStatusCode 503 matchWildcards true
             )
@@ -127,13 +128,13 @@ internal class MessageDetailEmbeddedImagesTests :
     fun testMessageDetailEmbeddedImagesBodyDecryptionError() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_203104_2.json"
                     withStatusCode 200,
-                "/mail/v4/messages"
+                given("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_203104.json"
                     withStatusCode 200 matchWildcards true ignoreQueryParams true,
-                "/mail/v4/messages/*"
+                given("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_203104.json"
                     withStatusCode 200 matchWildcards true
             )
@@ -155,16 +156,16 @@ internal class MessageDetailEmbeddedImagesTests :
     fun testMessageDetailEmbeddedImagesAreLoaded() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_203105_2.json"
                     withStatusCode 200,
-                "/mail/v4/messages"
+                given("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_203105.json"
                     withStatusCode 200 matchWildcards true ignoreQueryParams true,
-                "/mail/v4/messages/*"
+                given("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_203105.json"
                     withStatusCode 200 matchWildcards true,
-                "/mail/v4/attachments/*"
+                given("/mail/v4/attachments/*")
                     respondWith "/mail/v4/attachments/attachment_203105"
                     withStatusCode 200 matchWildcards true serveOnce true
                     withMimeType MimeType.OctetStream
@@ -197,16 +198,16 @@ internal class MessageDetailEmbeddedImagesTests :
     fun testMessageDetailEmbeddedImagesErrorsUponDownload() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_203106_2.json"
                     withStatusCode 200,
-                "/mail/v4/messages"
+                given("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_203106.json"
                     withStatusCode 200 matchWildcards true ignoreQueryParams true,
-                "/mail/v4/messages/*"
+                given("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_203106.json"
                     withStatusCode 200 matchWildcards true,
-                "/mail/v4/attachments/*"
+                given("/mail/v4/attachments/*")
                     respondWith "/global/errors/error_mock.json"
                     withStatusCode 503 matchWildcards true serveOnce true
             )
@@ -226,16 +227,16 @@ internal class MessageDetailEmbeddedImagesTests :
     fun testMessageDetailEmbeddedImagesErrorsUponDecryption() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_203107_2.json"
                     withStatusCode 200,
-                "/mail/v4/messages"
+                given("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_203107.json"
                     withStatusCode 200 matchWildcards true ignoreQueryParams true,
-                "/mail/v4/messages/*"
+                given("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_203107.json"
                     withStatusCode 200 matchWildcards true,
-                "/mail/v4/attachments/*"
+                given("/mail/v4/attachments/*")
                     respondWith "/mail/v4/attachments/attachment_203107"
                     withStatusCode 200 matchWildcards true serveOnce true
                     withMimeType MimeType.OctetStream
@@ -256,13 +257,13 @@ internal class MessageDetailEmbeddedImagesTests :
     fun testMessageDetailEmbeddedImagesBlockedBannerIsNotDisplayedWhenNoEmbeddedImagesArePresent() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_203696_2.json"
                     withStatusCode 200,
-                "/mail/v4/messages"
+                given("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_203696.json"
                     withStatusCode 200 ignoreQueryParams true,
-                "/mail/v4/messages/*"
+                given("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_203696.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )
@@ -285,13 +286,13 @@ internal class MessageDetailEmbeddedImagesTests :
     fun testMessageDetailEmbeddedImagesBlockedBannerIsDisplayedOnExternalEmails() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_203700.json"
                     withStatusCode 200,
-                "/mail/v4/messages"
+                given("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_203700.json"
                     withStatusCode 200 ignoreQueryParams true,
-                "/mail/v4/messages/*"
+                given("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_203700.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )

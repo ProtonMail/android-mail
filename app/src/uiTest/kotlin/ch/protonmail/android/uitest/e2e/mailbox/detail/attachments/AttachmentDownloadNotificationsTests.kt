@@ -22,6 +22,7 @@ import androidx.test.filters.SdkSuppress
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.networkmocks.mockwebserver.combineWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MimeType
+import ch.protonmail.android.networkmocks.mockwebserver.requests.given
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.matchWildcards
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
@@ -74,16 +75,16 @@ internal class AttachmentDownloadNotificationsTests :
     fun testForegroundNotificationWhenAttachmentIsDownloading() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_placeholder_messages.json"
                     withStatusCode 200,
-                "/mail/v4/messages"
+                given("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_189706.json"
                     withStatusCode 200 ignoreQueryParams true,
-                "/mail/v4/messages/*"
+                given("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_189706.json"
                     withStatusCode 200 matchWildcards true serveOnce true,
-                "/mail/v4/attachments/*"
+                given("/mail/v4/attachments/*")
                     respondWith "/mail/v4/attachments/attachment_small_jpg"
                     withStatusCode 200 matchWildcards true withMimeType MimeType.OctetStream withNetworkDelay 150_000L
             )
@@ -114,16 +115,16 @@ internal class AttachmentDownloadNotificationsTests :
     fun testForegroundNotificationIsGoneAfterSuccessfulDownload() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_placeholder_messages.json"
                     withStatusCode 200,
-                "/mail/v4/messages"
+                given("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_189707.json"
                     withStatusCode 200 ignoreQueryParams true,
-                "/mail/v4/messages/*"
+                given("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_189707.json"
                     withStatusCode 200 matchWildcards true serveOnce true,
-                "/mail/v4/attachments/*"
+                given("/mail/v4/attachments/*")
                     respondWith "/mail/v4/attachments/attachment_small_jpg"
                     withStatusCode 200 matchWildcards true withMimeType MimeType.OctetStream withNetworkDelay 5000L
             )

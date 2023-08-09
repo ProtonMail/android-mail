@@ -23,6 +23,7 @@ import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.maildetail.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.entity.MimeType
 import ch.protonmail.android.networkmocks.mockwebserver.combineWith
+import ch.protonmail.android.networkmocks.mockwebserver.requests.given
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.matchWildcards
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
@@ -80,16 +81,16 @@ internal class ConversationDetailRemoteContentTests : MockedNetworkTest(), Detai
     fun checkRemoteContentNotBlockedWhenConversationModeIsEnabled() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_184206.json"
                     withStatusCode 200,
-                "/mail/v4/conversations"
+                given("/mail/v4/conversations")
                     respondWith "/mail/v4/conversations/conversations_184206.json"
                     withStatusCode 200 ignoreQueryParams true,
-                "/mail/v4/conversations/*"
+                given("/mail/v4/conversations/*")
                     respondWith "/mail/v4/conversations/conversation-id/conversation-id_184206.json"
                     withStatusCode 200 matchWildcards true,
-                "/mail/v4/messages/*"
+                given("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_base_placeholder.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )
@@ -116,16 +117,16 @@ internal class ConversationDetailRemoteContentTests : MockedNetworkTest(), Detai
     fun checkRemoteContentNotBlockedWithMultipleMessagesWhenConversationModeIsEnabled() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_184208.json"
                     withStatusCode 200,
-                "/mail/v4/conversations"
+                given("/mail/v4/conversations")
                     respondWith "/mail/v4/conversations/conversations_184208.json"
                     withStatusCode 200 ignoreQueryParams true,
-                "/mail/v4/conversations/*"
+                given("/mail/v4/conversations/*")
                     respondWith "/mail/v4/conversations/conversation-id/conversation-id_184208.json"
                     withStatusCode 200 matchWildcards true,
-                "/mail/v4/messages/*"
+                given("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_base_placeholder.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )
@@ -152,16 +153,16 @@ internal class ConversationDetailRemoteContentTests : MockedNetworkTest(), Detai
     fun checkRemoteContentNotBlockedOnMultipleMessagesWhenConversationModeIsEnabled() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_184209.json"
                     withStatusCode 200,
-                "/mail/v4/conversations"
+                given("/mail/v4/conversations")
                     respondWith "/mail/v4/conversations/conversations_184209.json"
                     withStatusCode 200 ignoreQueryParams true,
-                "/mail/v4/conversations/*"
+                given("/mail/v4/conversations/*")
                     respondWith "/mail/v4/conversations/conversation-id/conversation-id_184209.json"
                     withStatusCode 200 matchWildcards true,
-                "/mail/v4/messages/*"
+                given("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_base_placeholder.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )
@@ -217,16 +218,16 @@ internal class ConversationDetailRemoteContentTests : MockedNetworkTest(), Detai
     fun checkRemoteContentBlockedWhenConversationModeIsEnabled() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_184211.json"
                     withStatusCode 200,
-                "/mail/v4/conversations"
+                given("/mail/v4/conversations")
                     respondWith "/mail/v4/conversations/conversations_184211.json"
                     withStatusCode 200 ignoreQueryParams true,
-                "/mail/v4/conversations/*"
+                given("/mail/v4/conversations/*")
                     respondWith "/mail/v4/conversations/conversation-id/conversation-id_184211.json"
                     withStatusCode 200 matchWildcards true,
-                "/mail/v4/messages/*"
+                given("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_base_placeholder.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )
@@ -253,16 +254,16 @@ internal class ConversationDetailRemoteContentTests : MockedNetworkTest(), Detai
     fun checkRemoteContentBlockedWithMultipleMessagesWhenConversationModeIsEnabled() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_184212.json"
                     withStatusCode 200,
-                "/mail/v4/conversations"
+                given("/mail/v4/conversations")
                     respondWith "/mail/v4/conversations/conversations_184212.json"
                     withStatusCode 200 ignoreQueryParams true,
-                "/mail/v4/conversations/*"
+                given("/mail/v4/conversations/*")
                     respondWith "/mail/v4/conversations/conversation-id/conversation-id_184212.json"
                     withStatusCode 200 matchWildcards true,
-                "/mail/v4/messages/*"
+                given("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_base_placeholder.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )

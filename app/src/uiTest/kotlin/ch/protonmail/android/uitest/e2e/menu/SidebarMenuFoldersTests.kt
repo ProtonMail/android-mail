@@ -20,6 +20,7 @@ package ch.protonmail.android.uitest.e2e.menu
 
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.networkmocks.mockwebserver.combineWith
+import ch.protonmail.android.networkmocks.mockwebserver.requests.given
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withStatusCode
@@ -57,13 +58,13 @@ internal class SidebarMenuFoldersTests : MockedNetworkTest() {
             useDefaultMailSettings = false
         ) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_68718.json"
                     withStatusCode 200,
-                "/core/v4/labels?Type=3"
+                given("/core/v4/labels?Type=3")
                     respondWith "/core/v4/labels/labels-type3_68718.json"
                     withStatusCode 200,
-                "/mail/v4/messages"
+                given("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_empty.json"
                     withStatusCode 200 ignoreQueryParams true
             )
@@ -93,13 +94,13 @@ internal class SidebarMenuFoldersTests : MockedNetworkTest() {
             useDefaultMailSettings = false
         ) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_79096.json"
                     withStatusCode 200,
-                "/core/v4/labels?Type=3"
+                given("/core/v4/labels?Type=3")
                     respondWith "/core/v4/labels/labels-type3_79096.json"
                     withStatusCode 200,
-                "/mail/v4/messages"
+                given("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_empty.json"
                     withStatusCode 200 ignoreQueryParams true
             )
@@ -128,13 +129,13 @@ internal class SidebarMenuFoldersTests : MockedNetworkTest() {
             useDefaultMailSettings = false
         ) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_79097.json"
                     withStatusCode 200,
-                "/core/v4/labels?Type=3"
+                given("/core/v4/labels?Type=3")
                     respondWith "/core/v4/labels/labels-type3_79097.json"
                     withStatusCode 200,
-                "/mail/v4/messages"
+                given("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_empty.json"
                     withStatusCode 200 ignoreQueryParams true
             )

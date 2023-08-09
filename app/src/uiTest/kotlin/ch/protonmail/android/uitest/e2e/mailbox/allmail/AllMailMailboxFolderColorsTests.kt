@@ -21,6 +21,7 @@ package ch.protonmail.android.uitest.e2e.mailbox.allmail
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.networkmocks.mockwebserver.combineWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MockPriority
+import ch.protonmail.android.networkmocks.mockwebserver.requests.given
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withPriority
@@ -81,16 +82,16 @@ internal class AllMailMailboxFolderColorsTests : MockedNetworkTest() {
             useDefaultCustomFolders = false
         ) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_80673.json"
                     withStatusCode 200,
-                "/core/v4/labels?Type=3"
+                given("/core/v4/labels?Type=3")
                     respondWith "/core/v4/labels/labels-type3_80673.json"
                     withStatusCode 200,
-                "/mail/v4/conversations"
+                given("/mail/v4/conversations")
                     respondWith "/mail/v4/conversations/conversations_empty.json"
                     withStatusCode 200 ignoreQueryParams true,
-                "/mail/v4/conversations?Page=0&PageSize=75&Limit=75&LabelID=5&Sort=Time&Desc=1"
+                given("/mail/v4/conversations?Page=0&PageSize=75&Limit=75&LabelID=5&Sort=Time&Desc=1")
                     respondWith "/mail/v4/conversations/conversations_80673.json"
                     withStatusCode 200 withPriority MockPriority.Highest
             )
@@ -110,16 +111,16 @@ internal class AllMailMailboxFolderColorsTests : MockedNetworkTest() {
             useDefaultCustomFolders = false
         ) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_80674.json"
                     withStatusCode 200,
-                "/core/v4/labels?Type=3"
+                given("/core/v4/labels?Type=3")
                     respondWith "/core/v4/labels/labels-type3_80674.json"
                     withStatusCode 200,
-                "/mail/v4/messages"
+                given("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_empty.json"
                     withStatusCode 200 ignoreQueryParams true,
-                "/mail/v4/messages?Page=0&PageSize=75&Limit=75&LabelID=5&Sort=Time&Desc=1"
+                given("/mail/v4/messages?Page=0&PageSize=75&Limit=75&LabelID=5&Sort=Time&Desc=1")
                     respondWith "/mail/v4/messages/messages_80674.json"
                     withStatusCode 200 withPriority MockPriority.Highest
             )
@@ -139,16 +140,16 @@ internal class AllMailMailboxFolderColorsTests : MockedNetworkTest() {
             useDefaultCustomFolders = false
         ) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_80675.json"
                     withStatusCode 200,
-                "/core/v4/labels?Type=3"
+                given("/core/v4/labels?Type=3")
                     respondWith "/core/v4/labels/labels-type3_80675.json"
                     withStatusCode 200,
-                "/mail/v4/conversations"
+                given("/mail/v4/conversations")
                     respondWith "/mail/v4/conversations/conversations_empty.json"
                     withStatusCode 200 ignoreQueryParams true,
-                "/mail/v4/conversations?Page=0&PageSize=75&Limit=75&LabelID=5&Sort=Time&Desc=1"
+                given("/mail/v4/conversations?Page=0&PageSize=75&Limit=75&LabelID=5&Sort=Time&Desc=1")
                     respondWith "/mail/v4/conversations/conversations_80675.json"
                     withStatusCode 200 withPriority MockPriority.Highest
             )
@@ -168,16 +169,16 @@ internal class AllMailMailboxFolderColorsTests : MockedNetworkTest() {
             useDefaultCustomFolders = false
         ) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_80676.json"
                     withStatusCode 200,
-                "/core/v4/labels?Type=3"
+                given("/core/v4/labels?Type=3")
                     respondWith "/core/v4/labels/labels-type3_80676.json"
                     withStatusCode 200,
-                "/mail/v4/messages"
+                given("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_empty.json"
                     withStatusCode 200 ignoreQueryParams true,
-                "/mail/v4/messages?Page=0&PageSize=75&Limit=75&LabelID=5&Sort=Time&Desc=1"
+                given("/mail/v4/messages?Page=0&PageSize=75&Limit=75&LabelID=5&Sort=Time&Desc=1")
                     respondWith "/mail/v4/messages/messages_80676.json"
                     withStatusCode 200 withPriority MockPriority.Highest
             )
@@ -197,16 +198,16 @@ internal class AllMailMailboxFolderColorsTests : MockedNetworkTest() {
             useDefaultCustomFolders = false
         ) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_80677.json"
                     withStatusCode 200,
-                "/core/v4/labels?Type=3"
+                given("/core/v4/labels?Type=3")
                     respondWith "/core/v4/labels/labels-type3_80677.json"
                     withStatusCode 200,
-                "/mail/v4/conversations"
+                given("/mail/v4/conversations")
                     respondWith "/mail/v4/conversations/conversations_empty.json"
                     withStatusCode 200 ignoreQueryParams true,
-                "/mail/v4/conversations?Page=0&PageSize=75&Limit=75&LabelID=5&Sort=Time&Desc=1"
+                given("/mail/v4/conversations?Page=0&PageSize=75&Limit=75&LabelID=5&Sort=Time&Desc=1")
                     respondWith "/mail/v4/conversations/conversations_80677.json"
                     withStatusCode 200 withPriority MockPriority.Highest
             )
@@ -226,16 +227,16 @@ internal class AllMailMailboxFolderColorsTests : MockedNetworkTest() {
             useDefaultCustomFolders = false
         ) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_80678.json"
                     withStatusCode 200,
-                "/core/v4/labels?Type=3"
+                given("/core/v4/labels?Type=3")
                     respondWith "/core/v4/labels/labels-type3_80678.json"
                     withStatusCode 200,
-                "/mail/v4/messages"
+                given("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_empty.json"
                     withStatusCode 200 ignoreQueryParams true,
-                "/mail/v4/messages?Page=0&PageSize=75&Limit=75&LabelID=5&Sort=Time&Desc=1"
+                given("/mail/v4/messages?Page=0&PageSize=75&Limit=75&LabelID=5&Sort=Time&Desc=1")
                     respondWith "/mail/v4/messages/messages_80678.json"
                     withStatusCode 200 withPriority MockPriority.Highest
             )
@@ -255,16 +256,16 @@ internal class AllMailMailboxFolderColorsTests : MockedNetworkTest() {
             useDefaultCustomFolders = false
         ) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_80679.json"
                     withStatusCode 200,
-                "/core/v4/labels?Type=3"
+                given("/core/v4/labels?Type=3")
                     respondWith "/core/v4/labels/labels-type3_80679.json"
                     withStatusCode 200,
-                "/mail/v4/conversations"
+                given("/mail/v4/conversations")
                     respondWith "/mail/v4/conversations/conversations_empty.json"
                     withStatusCode 200 ignoreQueryParams true,
-                "/mail/v4/conversations?Page=0&PageSize=75&Limit=75&LabelID=5&Sort=Time&Desc=1"
+                given("/mail/v4/conversations?Page=0&PageSize=75&Limit=75&LabelID=5&Sort=Time&Desc=1")
                     respondWith "/mail/v4/conversations/conversations_80679.json"
                     withStatusCode 200 withPriority MockPriority.Highest
             )
@@ -284,16 +285,16 @@ internal class AllMailMailboxFolderColorsTests : MockedNetworkTest() {
             useDefaultCustomFolders = false
         ) {
             addMockRequests(
-                "/mail/v4/settings"
+                given("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_80680.json"
                     withStatusCode 200,
-                "/core/v4/labels?Type=3"
+                given("/core/v4/labels?Type=3")
                     respondWith "/core/v4/labels/labels-type3_80680.json"
                     withStatusCode 200,
-                "/mail/v4/messages"
+                given("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_empty.json"
                     withStatusCode 200 ignoreQueryParams true,
-                "/mail/v4/messages?Page=0&PageSize=75&Limit=75&LabelID=5&Sort=Time&Desc=1"
+                given("/mail/v4/messages?Page=0&PageSize=75&Limit=75&LabelID=5&Sort=Time&Desc=1")
                     respondWith "/mail/v4/messages/messages_80680.json"
                     withStatusCode 200 withPriority MockPriority.Highest
             )
