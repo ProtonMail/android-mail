@@ -16,21 +16,18 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.networkmocks.mockwebserver.requests
+package ch.protonmail.android.networkmocks.mockwebserver
+
+import okhttp3.mockwebserver.Dispatcher
 
 /**
- * A data class representing a **partial** [MockRequest].
+ * Allows combining the current list of mocked requests with the one from another [MockNetworkDispatcher].
  *
- * @param remotePath The remote path of the API call.
- * @param localFilePath The path of the local file to use as response.
+ * @param dispatcher a [MockNetworkDispatcher] instance.
+ *
+ * @throws IllegalArgumentException if the receiver is not a [MockNetworkDispatcher].
  */
-data class PartialMockRequest(
-    val remotePath: MockRequestRemotePath,
-    val localFilePath: MockRequestLocalPath
-)
-
-/**
- * Creates a [MockRequest] from a [PartialMockRequest] with a defined `statusCode`.
- */
-infix fun PartialMockRequest.withStatusCode(statusCode: Int): MockRequest =
-    MockRequest(remotePath, localFilePath, statusCode)
+infix fun Dispatcher.combineWith(dispatcher: MockNetworkDispatcher) {
+    require(this is MockNetworkDispatcher) { "Receiver needs to be a MockNetworkDispatcher instance." }
+    addMockRequests(*dispatcher.requestsList.toTypedArray())
+}

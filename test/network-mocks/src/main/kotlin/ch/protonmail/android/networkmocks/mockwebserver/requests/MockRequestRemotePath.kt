@@ -18,19 +18,26 @@
 
 package ch.protonmail.android.networkmocks.mockwebserver.requests
 
-/**
- * A data class representing a **partial** [MockRequest].
- *
- * @param remotePath The remote path of the API call.
- * @param localFilePath The path of the local file to use as response.
- */
-data class PartialMockRequest(
-    val remotePath: MockRequestRemotePath,
-    val localFilePath: MockRequestLocalPath
-)
+@JvmInline
+value class MockRequestRemotePath(val path: String) {
+
+    override fun toString() = path
+}
 
 /**
- * Creates a [MockRequest] from a [PartialMockRequest] with a defined `statusCode`.
+ * Returns a [MockRequestRemotePath] from a given [String].
  */
-infix fun PartialMockRequest.withStatusCode(statusCode: Int): MockRequest =
-    MockRequest(remotePath, localFilePath, statusCode)
+fun given(remotePath: String) = MockRequestRemotePath(remotePath)
+
+/**
+ * Creates a [PartialMockRequest] by pairing a given [MockRequestRemotePath]
+ * to a [String] containing the local file path.
+ */
+infix fun MockRequestRemotePath.respondWith(localFilePath: String) =
+    PartialMockRequest(this, MockRequestLocalPath(localFilePath))
+
+/**
+ * Creates a [MockRequest] from a [MockRequestRemotePath] to simulate a no connectivity scenario.
+ */
+infix fun MockRequestRemotePath.simulateNoNetwork(value: Boolean) =
+    MockRequest(this, MockRequestLocalPath.NoPath, Int.MIN_VALUE, simulateNoNetwork = value)

@@ -21,7 +21,10 @@ package ch.protonmail.android.networkmocks.mockwebserver
 import java.util.logging.Logger
 import ch.protonmail.android.networkmocks.assets.RawAssets
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MockRequest
+import ch.protonmail.android.networkmocks.mockwebserver.requests.MockRequestLocalPath
+import ch.protonmail.android.networkmocks.mockwebserver.requests.MockRequestRemotePath
 import ch.protonmail.android.networkmocks.mockwebserver.response.generateAssetNotFoundResponse
+import ch.protonmail.android.networkmocks.mockwebserver.response.generateNoNetworkResponse
 import ch.protonmail.android.networkmocks.mockwebserver.response.generateResponse
 import ch.protonmail.android.networkmocks.mockwebserver.response.generateUnhandledPathResponse
 import okhttp3.mockwebserver.Dispatcher
@@ -52,8 +55,8 @@ import okhttp3.mockwebserver.RecordedRequest
  *        // Simple usage and definition of a custom dispatcher.
  *        mockWebServer.dispatcher extendWith MockNetworkDispatcher().apply {
  *            addMockRequests(
- *                 "/api/v1/path" respondWith "/api/v1/localPath" withStatusCode 200,
- *                 "/api/v1/path2" respondWith "/api/v1/localPath2" withStatusCode 401
+ *                 given("/api/v1/path") respondWith "/api/v1/localPath" withStatusCode 200,
+ *                 given("/api/v1/path2") respondWith "/api/v1/localPath2" withStatusCode 401
  *             )
  *        }
  *
@@ -72,12 +75,42 @@ class MockNetworkDispatcher(
     private val knownRequests = mutableListOf<MockRequest>()
     val requestsList: List<MockRequest> = knownRequests
 
+    @SuppressWarnings("ReturnCount")
     override fun dispatch(request: RecordedRequest): MockResponse {
-        val remotePath = checkNotNull(request.path) {
-            "❌ Handling requests with `null` path is unsupported."
+        val path = checkNotNull(request.path) { "❌ Handling requests with `null` path is unsupported." }
+        val remotePath = MockRequestRemotePath(path)
+
+        val validRequest = findRequestForPath(remotePath) ?: run {
+            logger.severe("⚠️ Unknown path '$remotePath', check the mocked network definitions.")
+            return generateUnhandledPathResponse(remotePath)
         }
 
-        val validRequest = knownRequests
+        if (validRequest.serveOnce) knownRequests.remove(validRequest)
+        logger.info("✅ Match found for '$remotePath'.")
+
+        if (validRequest.simulateNoNetwork) {
+            logger.info("📶 Simulating no network response for '$remotePath'.")
+            return generateNoNetworkResponse()
+        }
+
+        val content = getRawContentFromLocalAsset(validRequest.localFilePath) ?: run {
+            logger.severe("⚠️ Unable to retrieve content for asset '${validRequest.localFilePath}.")
+            return generateAssetNotFoundResponse(validRequest.localFilePath)
+        }
+
+        logger.info("➡️ Serving ${request.method} $remotePath with $validRequest.")
+        return generateResponse(validRequest.statusCode, content, validRequest.mimeType, validRequest.networkDelay)
+    }
+
+    /**
+     * Adds an arbitrary number of [MockRequest] to the known requests list.
+     */
+    fun addMockRequests(vararg requests: MockRequest) {
+        knownRequests.addAll(requests)
+    }
+
+    private fun findRequestForPath(remotePath: MockRequestRemotePath): MockRequest? {
+        return knownRequests
             .asSequence()
             .sortedByDescending { it.priority.value }
             .find { mockRequest ->
@@ -92,41 +125,16 @@ class MockNetworkDispatcher(
                     else -> remotePath == mockRequest.remotePath
                 }
             }
-            ?: run {
-                logger.severe("⚠️ Unknown path '$remotePath', check the mocked network definitions.")
-                return generateUnhandledPathResponse(remotePath)
-            }
-
-        if (validRequest.serveOnce) knownRequests.remove(validRequest)
-        logger.info("✅ Match found for '$remotePath'.")
-
-        val content = getRawContentFromLocalAsset(validRequest.localFilePath) ?: run {
-            logger.severe("⚠️ Unable to retrieve content for asset '${validRequest.localFilePath}.")
-            return generateAssetNotFoundResponse(validRequest.localFilePath)
-        }
-
-        logger.info("➡️ Serving ${request.method} $remotePath with $validRequest.")
-
-        return generateResponse(
-            validRequest.statusCode, content, validRequest.mimeType, validRequest.networkDelay
-        )
     }
 
-    /**
-     * Adds an arbitrary number of [MockRequest] to the known requests list.
-     */
-    fun addMockRequests(vararg requests: MockRequest) {
-        knownRequests.addAll(requests)
-    }
+    private fun getRawContentFromLocalAsset(localPath: MockRequestLocalPath): ByteArray? =
+        RawAssets.getRawContentForPath(assetsRootPath + localPath.path)
 
-    private fun getRawContentFromLocalAsset(path: String): ByteArray? =
-        RawAssets.getRawContentForPath(assetsRootPath + path)
+    private fun MockRequestRemotePath.stripQueryParams() = MockRequestRemotePath(path.substringBefore("?"))
 
-    private fun String.stripQueryParams(): String = substringBefore("?")
-
-    private fun String.wildcardMatches(value: String): Boolean {
-        val paths = split("/")
-        val valuePaths = value.split("/")
+    private fun MockRequestRemotePath.wildcardMatches(value: MockRequestRemotePath): Boolean {
+        val paths = path.split("/")
+        val valuePaths = value.path.split("/")
 
         if (paths.size != valuePaths.size) return false
 
@@ -143,18 +151,4 @@ class MockNetworkDispatcher(
         private val logger = Logger.getLogger(this::class.java.name)
         private const val DefaultAssetsRootPath = "assets/network-mocks"
     }
-}
-
-/**
- * Allows combining the current list of mocked requests with the one from another [MockNetworkDispatcher].
- *
- * @param dispatcher a [MockNetworkDispatcher] instance.
- *
- * @throws IllegalArgumentException if the receiver is not a [MockNetworkDispatcher].
- */
-infix fun Dispatcher.combineWith(dispatcher: MockNetworkDispatcher) {
-    require(this is MockNetworkDispatcher) {
-        "Receiver needs to be a MockNetworkDispatcher instance."
-    }
-    addMockRequests(*dispatcher.requestsList.toTypedArray())
 }

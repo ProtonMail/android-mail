@@ -20,19 +20,22 @@ package ch.protonmail.android.networkmocks.mockwebserver.response
 
 import java.util.concurrent.TimeUnit
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MimeType
+import ch.protonmail.android.networkmocks.mockwebserver.requests.MockRequestLocalPath
+import ch.protonmail.android.networkmocks.mockwebserver.requests.MockRequestRemotePath
 import okhttp3.Headers
 import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.SocketPolicy
 import okio.Buffer
 
 /**
  * Delegate to [MockResponse] creation that will force custom JSON content
  * specifying that a local asset cannot be found by the Dispatcher.
  */
-internal fun generateAssetNotFoundResponse(forPath: String): MockResponse {
+internal fun generateAssetNotFoundResponse(path: MockRequestLocalPath): MockResponse {
     val body = """
         {
             "error": "ASSET_NOT_FOUND",
-            "cause": "No local asset found at path '$forPath'."
+            "cause": "No local asset found at path '$path'."
         }
     """.trimIndent()
 
@@ -43,11 +46,11 @@ internal fun generateAssetNotFoundResponse(forPath: String): MockResponse {
  * Delegate to [MockResponse] creation that will force custom JSON content
  * specifying that a route is currently not handled by the Dispatcher.
  */
-internal fun generateUnhandledPathResponse(forPath: String): MockResponse {
+internal fun generateUnhandledPathResponse(path: MockRequestRemotePath): MockResponse {
     val body = """
         {
             "error": "PATH_NOT_FOUND",
-            "cause": "No route found for path '$forPath'."
+            "cause": "No route found for remote path '$path'."
         }
     """.trimIndent()
 
@@ -58,7 +61,7 @@ internal fun generateUnhandledPathResponse(forPath: String): MockResponse {
  * Generic function to generate a [MockResponse] that takes care of headers, status code, body and delay (if any).
  *
  * @param statusCode the response status code.
- * @param body the response body.
+ * @param content the response body as [ByteArray].
  * @param networkDelay the network delay (defaults to 0ms).
  */
 internal fun generateResponse(
@@ -91,3 +94,18 @@ internal fun generateResponse(
     }
 }
 
+/**
+ * Generates a no network response, simulating a scenario where the connection is established
+ * but a disconnection occurs mid-response.
+ *
+ * This is useful to replicate low/no network scenarios.
+ */
+internal fun generateNoNetworkResponse(): MockResponse {
+    // Size is irrelevant here and completely arbitrary.
+    val byteArrayStub = ByteArray(1024)
+
+    return MockResponse().apply {
+        setBody(Buffer().write(byteArrayStub))
+        setSocketPolicy(SocketPolicy.DISCONNECT_DURING_RESPONSE_BODY)
+    }
+}
