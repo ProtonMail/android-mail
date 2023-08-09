@@ -25,21 +25,16 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
-import arrow.core.right
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailconversation.data.remote.ConversationApi
 import ch.protonmail.android.mailconversation.data.remote.resource.PutConversationLabelBody
-import ch.protonmail.android.mailconversation.domain.repository.ConversationLocalDataSource
-import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.sample.PutLabelResponseSample
-import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.testdata.conversation.ConversationTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.Called
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.coVerifySequence
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
@@ -84,8 +79,6 @@ internal class AddLabelConversationWorkerTest {
     private val apiManagerFactory = mockk<ApiManagerFactory> {
         every { create(any(), ConversationApi::class) } returns TestApiManager(messageApi)
     }
-    private val conversationLocalDataSource = mockk<ConversationLocalDataSource>()
-    private val messageLocalDataSource = mockk<MessageLocalDataSource>()
 
     private lateinit var apiProvider: ApiProvider
     private lateinit var addLabelMessageWorker: AddLabelConversationWorker
@@ -96,9 +89,7 @@ internal class AddLabelConversationWorkerTest {
         addLabelMessageWorker = AddLabelConversationWorker(
             context,
             parameters,
-            apiProvider,
-            conversationLocalDataSource,
-            messageLocalDataSource
+            apiProvider
         )
     }
 
@@ -201,29 +192,11 @@ internal class AddLabelConversationWorkerTest {
     fun `worker returns failure when api call fails due to serializationException error`() = runTest {
         // Given
         coEvery { messageApi.addLabel(any()) } throws SerializationException()
-        coEvery {
-            conversationLocalDataSource.removeLabel(userId, conversationIds, labelId)
-        } returns listOf(ConversationTestData.starredConversation).right()
-        coEvery {
-            messageLocalDataSource.relabelMessagesInConversations(
-                userId = userId,
-                conversationIds = conversationIds,
-                labelIdsToRemove = setOf(labelId)
-            )
-        } returns emptyList<Message>().right()
 
         // When
         val result = addLabelMessageWorker.doWork()
 
         // Then
         assertEquals(Result.failure(), result)
-        coVerifySequence {
-            conversationLocalDataSource.removeLabel(userId, conversationIds, labelId)
-            messageLocalDataSource.relabelMessagesInConversations(
-                userId = userId,
-                conversationIds = conversationIds,
-                labelIdsToRemove = setOf(labelId)
-            )
-        }
     }
 }

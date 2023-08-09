@@ -25,21 +25,16 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
-import arrow.core.right
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailconversation.data.remote.ConversationApi
 import ch.protonmail.android.mailconversation.data.remote.resource.PutConversationLabelBody
-import ch.protonmail.android.mailconversation.domain.repository.ConversationLocalDataSource
-import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.sample.PutLabelResponseSample
 import ch.protonmail.android.testdata.conversation.ConversationTestData
-import ch.protonmail.android.testdata.message.MessageTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.Called
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.coVerifySequence
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
@@ -86,8 +81,6 @@ internal class RemoveLabelConversationWorkerTest {
     private val apiManagerFactory = mockk<ApiManagerFactory> {
         every { create(any(), ConversationApi::class) } returns TestApiManager(messageApi)
     }
-    private val conversationLocalDataSource = mockk<ConversationLocalDataSource>()
-    private val messageLocalDataSource = mockk<MessageLocalDataSource>()
 
     private lateinit var apiProvider: ApiProvider
     private lateinit var removeLabelMessageWorker: RemoveLabelConversationWorker
@@ -96,7 +89,7 @@ internal class RemoveLabelConversationWorkerTest {
     fun setUp() {
         apiProvider = ApiProvider(apiManagerFactory, sessionProvider, DefaultDispatcherProvider())
         removeLabelMessageWorker = RemoveLabelConversationWorker(
-            context, parameters, apiProvider, conversationLocalDataSource, messageLocalDataSource
+            context, parameters, apiProvider
         )
     }
 
@@ -199,29 +192,11 @@ internal class RemoveLabelConversationWorkerTest {
     fun `worker returns failure when api call fails due to serializationException error`() = runTest {
         // Given
         coEvery { messageApi.removeLabel(any()) } throws SerializationException()
-        coEvery {
-            messageLocalDataSource.relabelMessagesInConversations(
-                userId = userId,
-                conversationIds = conversationIds,
-                labelIdsToAdd = setOf(labelId)
-            )
-        } returns listOf(MessageTestData.message).right()
-        coEvery {
-            conversationLocalDataSource.addLabel(userId, conversationIds, labelId)
-        } returns listOf(ConversationTestData.conversation).right()
 
         // When
         val result = removeLabelMessageWorker.doWork()
 
         // Then
         assertEquals(Result.failure(), result)
-        coVerifySequence {
-            conversationLocalDataSource.addLabel(userId, conversationIds, labelId)
-            messageLocalDataSource.relabelMessagesInConversations(
-                userId = userId,
-                conversationIds = conversationIds,
-                labelIdsToAdd = setOf(labelId)
-            )
-        }
     }
 }

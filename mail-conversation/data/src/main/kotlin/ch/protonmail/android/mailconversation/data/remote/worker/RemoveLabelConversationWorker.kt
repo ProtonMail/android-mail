@@ -25,8 +25,6 @@ import androidx.work.WorkerParameters
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailconversation.data.remote.ConversationApi
 import ch.protonmail.android.mailconversation.data.remote.resource.PutConversationLabelBody
-import ch.protonmail.android.mailconversation.domain.repository.ConversationLocalDataSource
-import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.proton.core.domain.entity.UserId
@@ -40,9 +38,7 @@ import me.proton.core.util.kotlin.takeIfNotBlank
 class RemoveLabelConversationWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted workerParameters: WorkerParameters,
-    private val apiProvider: ApiProvider,
-    private val conversationLocalDataSource: ConversationLocalDataSource,
-    private val messageLocalDataSource: MessageLocalDataSource
+    private val apiProvider: ApiProvider
 ) : CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {
@@ -67,18 +63,7 @@ class RemoveLabelConversationWorker @AssistedInject constructor(
             is ApiResult.Success -> Result.success()
             is ApiResult.Error -> {
                 if (result.isRetryable()) return Result.retry()
-                else {
-                    val user = UserId(userId)
-                    val conversations = conversationIds.map { ConversationId(it) }
-                    val label = LabelId(labelId)
-                    conversationLocalDataSource.addLabel(user, conversations, LabelId(labelId))
-                    messageLocalDataSource.relabelMessagesInConversations(
-                        userId = user,
-                        conversationIds = conversations,
-                        labelIdsToAdd = setOf(label)
-                    )
-                    Result.failure()
-                }
+                else Result.failure()
             }
         }
     }
