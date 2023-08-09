@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.uitest.di
 
+import java.security.SecureRandom
+import java.security.cert.X509Certificate
 import android.content.Context
 import dagger.Module
 import dagger.Provides
@@ -25,14 +27,13 @@ import dagger.Reusable
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn
+import io.mockk.spyk
 import me.proton.core.network.dagger.CoreBaseNetworkModule
 import me.proton.core.network.data.NetworkManager
 import me.proton.core.network.data.di.SharedOkHttpClient
 import me.proton.core.network.domain.NetworkManager
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockWebServer
-import java.security.SecureRandom
-import java.security.cert.X509Certificate
 import javax.inject.Singleton
 import javax.net.ssl.SSLContext
 import javax.net.ssl.SSLSocketFactory
@@ -46,18 +47,13 @@ import javax.net.ssl.X509TrustManager
  */
 @Module
 @TestInstallIn(components = [SingletonComponent::class], replaces = [CoreBaseNetworkModule::class])
-class NetworkManagerTestModule {
+class CoreBaseNetworkTestModule {
 
-    @Provides
-    @Singleton
-    @SharedOkHttpClient
-    internal fun provideOkHttpClient(@TestClientSSLSocketFactory sslSocketFactory: SSLSocketFactory): OkHttpClient {
-        return OkHttpClient.Builder().sslSocketFactory(sslSocketFactory, testX509TrustManager).build()
+    private val testX509TrustManager = object : X509TrustManager {
+        override fun checkClientTrusted(p0: Array<out X509Certificate>?, p1: String?) = Unit
+        override fun checkServerTrusted(p0: Array<out X509Certificate>?, p1: String?) = Unit
+        override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
     }
-
-    @Provides
-    @Singleton
-    internal fun provideNetworkManager(@ApplicationContext context: Context): NetworkManager = NetworkManager(context)
 
     @Provides
     @Reusable
@@ -68,9 +64,14 @@ class NetworkManagerTestModule {
         }.socketFactory
     }
 
-    private val testX509TrustManager = object : X509TrustManager {
-        override fun checkClientTrusted(p0: Array<out X509Certificate>?, p1: String?) = Unit
-        override fun checkServerTrusted(p0: Array<out X509Certificate>?, p1: String?) = Unit
-        override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
-    }
+    @Provides
+    @Singleton
+    @SharedOkHttpClient
+    internal fun provideOkHttpClient(@TestClientSSLSocketFactory sslSocketFactory: SSLSocketFactory): OkHttpClient =
+        OkHttpClient.Builder().sslSocketFactory(sslSocketFactory, testX509TrustManager).build()
+
+    @Provides
+    @Singleton
+    internal fun provideNetworkManager(@ApplicationContext context: Context): NetworkManager =
+        spyk(NetworkManager(context))
 }

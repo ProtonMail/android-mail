@@ -33,6 +33,8 @@ import ch.protonmail.android.uitest.rule.MockTimeRule
 import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import io.mockk.unmockkObject
+import me.proton.core.network.domain.NetworkManager
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
 import org.junit.Before
@@ -61,6 +63,9 @@ internal open class MockedNetworkTest(
 
     @Inject
     lateinit var idlingResources: Set<@JvmSuppressWildcards ComposeIdlingResource>
+
+    @Inject
+    lateinit var networkManager: NetworkManager
 
     @get:Rule
     val ruleChain: RuleChain = RuleChain.outerRule(
@@ -96,5 +101,6 @@ internal open class MockedNetworkTest(
     @After
     fun tearDown() {
         idlingResources.forEach { composeTestRule.unregisterIdlingResource(it) }
+        unmockkObject(networkManager)
     }
 }
