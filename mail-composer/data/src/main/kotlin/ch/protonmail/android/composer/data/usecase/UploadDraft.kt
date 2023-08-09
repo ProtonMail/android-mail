@@ -40,31 +40,54 @@ internal class UploadDraft @Inject constructor(
 ) {
 
     suspend operator fun invoke(userId: UserId, messageId: MessageId): Either<DataError, Unit> = either {
-        val message = messageRepository.getLocalMessageWithBody(userId, messageId)
-            ?: shift<MessageWithBody>(DataError.Local.NoDataCached).also {
-                Timber.w("Sync draft failure $messageId: No message found")
-            }
+        Timber.d("Draft: Uploading draft for $messageId")
 
         val draftState = draftStateRepository.observe(userId, messageId).first().onLeft {
             Timber.w("Sync draft failure $messageId: No draft state found")
         }.bind()
 
+        val message = findLocalMessageWithBody(userId, messageId, draftState.apiMessageId)
+        if (message == null) {
+            Timber.w("Sync draft failure $messageId: No message found")
+            shift<MessageWithBody>(DataError.Local.NoDataCached)
+            // Return for the compiler's sake (message optionality). shift is causing a left to be returned just above
+            return@either
+        }
+
         if (isDraftKnownToApi(draftState)) {
-            draftRemoteDataSource.update(userId, message).onLeft {
+            draftRemoteDataSource.update(userId, message).onRight {
+                draftStateRepository.saveSyncedState(userId, it.message.messageId, it.message.messageId)
+            }.onLeft {
                 Timber.w("Sync draft failure $messageId: Update API call error $it")
             }.bind()
-            draftStateRepository.saveSyncedState(userId, messageId, messageId)
         } else {
-            val syncDraft = draftRemoteDataSource.create(userId, message, draftState.action).onLeft {
-                if (it.shouldBeLogged()) { Timber.w("Sync draft failure $messageId: Create API call error $it") }
+            draftRemoteDataSource.create(userId, message, draftState.action).onRight {
+                messageRepository.updateDraftMessageId(userId, messageId, it.message.messageId)
+                draftStateRepository.saveSyncedState(userId, messageId, it.message.messageId)
+            }.onLeft {
+                if (it.shouldLogToSentry()) { Timber.w("Sync draft failure $messageId: Create API call error $it") }
+                Timber.d("Sync draft error $messageId: Create API call error $it")
             }.bind()
 
-            val remoteDraftId = syncDraft.message.messageId
-            messageRepository.updateDraftMessageId(userId, messageId, remoteDraftId)
-            draftStateRepository.saveSyncedState(userId, messageId, remoteDraftId)
         }
     }
 
-    private fun DataError.Remote.shouldBeLogged() = this != DataError.Remote.CreateDraftRequestNotPerformed
+    private suspend fun findLocalMessageWithBody(
+        userId: UserId,
+        messageId: MessageId,
+        apiMessageId: MessageId?
+    ): MessageWithBody? {
+        messageRepository.getLocalMessageWithBody(userId, messageId)?.let { messageFoundByMessageId ->
+            return messageFoundByMessageId
+        }
+        apiMessageId?.let {
+            messageRepository.getLocalMessageWithBody(userId, apiMessageId)?.let { messageFoundByApiMessageId ->
+                return messageFoundByApiMessageId
+            }
+        }
+        return null
+    }
+
+    private fun DataError.Remote.shouldLogToSentry() = this != DataError.Remote.CreateDraftRequestNotPerformed
 
 }

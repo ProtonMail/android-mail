@@ -24,4 +24,5 @@ import me.proton.core.domain.entity.UserId
 interface DraftRepository {
 
     suspend fun upload(userId: UserId, messageId: MessageId)
+    suspend fun forceUpload(userId: UserId, messageId: MessageId)
 }

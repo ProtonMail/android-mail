@@ -18,22 +18,37 @@
 
 package ch.protonmail.android.composer.data.repository
 
+import androidx.work.ExistingWorkPolicy
 import ch.protonmail.android.composer.data.remote.UploadDraftWorker
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcomposer.domain.repository.DraftRepository
 import ch.protonmail.android.mailmessage.domain.model.MessageId
-import kotlinx.coroutines.NonCancellable
-import kotlinx.coroutines.withContext
 import me.proton.core.domain.entity.UserId
+import timber.log.Timber
 import javax.inject.Inject
 
 class DraftRepositoryImpl @Inject constructor(
     private val enqueuer: Enqueuer
 ) : DraftRepository {
 
-    override suspend fun upload(userId: UserId, messageId: MessageId) = withContext(NonCancellable) {
+    override suspend fun upload(userId: UserId, messageId: MessageId) {
         val uniqueWorkId = UploadDraftWorker.id(messageId)
 
-        enqueuer.enqueueUniqueWork<UploadDraftWorker>(uniqueWorkId, UploadDraftWorker.params(userId, messageId))
+        enqueuer.enqueueUniqueWork<UploadDraftWorker>(
+            workerId = uniqueWorkId,
+            params = UploadDraftWorker.params(userId, messageId),
+            existingWorkPolicy = ExistingWorkPolicy.KEEP
+        )
+    }
+
+    override suspend fun forceUpload(userId: UserId, messageId: MessageId) {
+        Timber.d("Draft force upload: Adding work to upload $messageId")
+        val uniqueWorkId = UploadDraftWorker.id(messageId)
+
+        enqueuer.enqueueUniqueWork<UploadDraftWorker>(
+            workerId = uniqueWorkId,
+            params = UploadDraftWorker.params(userId, messageId),
+            existingWorkPolicy = ExistingWorkPolicy.APPEND_OR_REPLACE
+        )
     }
 }

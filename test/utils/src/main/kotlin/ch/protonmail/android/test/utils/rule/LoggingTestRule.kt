@@ -24,7 +24,7 @@ import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 import timber.log.Timber
 import kotlin.test.assertEquals
-import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 class LoggingTestRule(
     private val testTree: TestTree = TestTree()
@@ -40,15 +40,18 @@ class LoggingTestRule(
 
     fun assertErrorLogged(message: String) {
         val expectedLog = TestTree.Log(Log.ERROR, null, message, null)
-        assertEquals(expectedLog, testTree.logs.lastOrNull())
+        val errorLogs = testTree.logs.filter { it.priority == Log.ERROR }
+        assertEquals(expectedLog, errorLogs.lastOrNull())
     }
 
     fun assertWarningLogged(message: String) {
         val expectedLog = TestTree.Log(Log.WARN, null, message, null)
-        assertEquals(expectedLog, testTree.logs.lastOrNull())
+        val warningLogs = testTree.logs.filter { it.priority == Log.WARN }
+        assertEquals(expectedLog, warningLogs.lastOrNull())
     }
 
-    fun assertNoLogs() {
-        assertNull(testTree.logs.lastOrNull())
+    fun assertNoWarningLogs() {
+        val logsWarningUp = testTree.logs.filter { it.priority >= Log.WARN }
+        assertTrue(logsWarningUp.isEmpty(), "Excepted no warning logged, found: $logsWarningUp")
     }
 }

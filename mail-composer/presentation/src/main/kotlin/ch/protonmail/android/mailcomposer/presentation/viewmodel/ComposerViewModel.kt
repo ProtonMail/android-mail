@@ -57,6 +57,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.test.idlingresources.ComposerIdlingResource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
@@ -69,6 +70,7 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 import me.proton.core.util.kotlin.takeIfNotEmpty
 import timber.log.Timber
 import javax.inject.Inject
@@ -165,8 +167,10 @@ class ComposerViewModel @Inject constructor(
             fields.areBlank() -> action
             else -> {
                 viewModelScope.launch {
-                    storeDraftWithAllFields(primaryUserId(), currentMessageId(), fields)
-                    draftUploader.upload(primaryUserId(), currentMessageId())
+                    withContext(NonCancellable) {
+                        storeDraftWithAllFields(primaryUserId(), currentMessageId(), fields)
+                        draftUploader.upload(primaryUserId(), currentMessageId())
+                    }
                 }
                 ComposerEvent.OnCloseWithDraftSaved
             }

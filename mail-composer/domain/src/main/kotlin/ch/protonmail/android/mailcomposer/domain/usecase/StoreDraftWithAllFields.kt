@@ -41,21 +41,20 @@ class StoreDraftWithAllFields @Inject constructor(
         draftMessageId: MessageId,
         fields: DraftFields,
         action: DraftAction = DraftAction.Compose
-    ) {
-        withContext(NonCancellable) {
-            storeDraftWithBody(draftMessageId, fields.body, fields.sender, userId).logError(draftMessageId)
-            storeDraftWithSubject(userId, draftMessageId, fields.sender, fields.subject).logError(draftMessageId)
-            storeDraftWithRecipients(
-                userId,
-                draftMessageId,
-                fields.sender,
-                fields.recipientsTo.value,
-                fields.recipientsCc.value,
-                fields.recipientsBcc.value
-            ).logError(draftMessageId)
+    ) = withContext(NonCancellable) {
+        storeDraftWithBody(draftMessageId, fields.body, fields.sender, userId).logError(draftMessageId)
+        storeDraftWithSubject(userId, draftMessageId, fields.sender, fields.subject).logError(draftMessageId)
+        storeDraftWithRecipients(
+            userId,
+            draftMessageId,
+            fields.sender,
+            fields.recipientsTo.value,
+            fields.recipientsCc.value,
+            fields.recipientsBcc.value
+        ).logError(draftMessageId)
 
-            draftStateRepository.saveLocalState(userId, draftMessageId, action)
-        }
+        draftStateRepository.saveLocalState(userId, draftMessageId, action)
+        Timber.d("Draft: finished storing draft locally $draftMessageId")
     }
 
     private fun <T> Either<T, Unit>.logError(draftMessageId: MessageId) = this.onLeft { error ->

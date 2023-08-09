@@ -36,9 +36,10 @@ class Enqueuer @Inject constructor(private val workManager: WorkManager) {
     inline fun <reified T : ListenableWorker> enqueueUniqueWork(
         workerId: String,
         params: Map<String, Any>,
-        constraints: Constraints? = buildDefaultConstraints()
+        constraints: Constraints? = buildDefaultConstraints(),
+        existingWorkPolicy: ExistingWorkPolicy = defaultExistingWorkPolicy()
     ) {
-        enqueueUniqueWork(workerId, T::class.java, params, constraints)
+        enqueueUniqueWork(workerId, T::class.java, params, constraints, existingWorkPolicy)
     }
 
     fun enqueue(worker: Class<out ListenableWorker>, params: Map<String, Any>) {
@@ -49,9 +50,10 @@ class Enqueuer @Inject constructor(private val workManager: WorkManager) {
         workerId: String,
         worker: Class<out ListenableWorker>,
         params: Map<String, Any>,
-        constraints: Constraints?
+        constraints: Constraints?,
+        existingWorkPolicy: ExistingWorkPolicy
     ) {
-        workManager.enqueueUniqueWork(workerId, ExistingWorkPolicy.KEEP, createRequest(worker, params, constraints))
+        workManager.enqueueUniqueWork(workerId, existingWorkPolicy, createRequest(worker, params, constraints))
     }
 
     private fun createRequest(
@@ -68,6 +70,8 @@ class Enqueuer @Inject constructor(private val workManager: WorkManager) {
             build()
         }
     }
+
+    fun defaultExistingWorkPolicy() = ExistingWorkPolicy.KEEP
 
     fun buildDefaultConstraints(): Constraints {
         return Constraints.Builder()

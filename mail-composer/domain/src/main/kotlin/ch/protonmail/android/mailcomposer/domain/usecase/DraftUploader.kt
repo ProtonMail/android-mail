@@ -62,7 +62,8 @@ class DraftUploader @Inject constructor(
     }
 
     suspend fun upload(userId: UserId, messageId: MessageId) {
-        draftRepository.upload(userId, messageId)
+        Timber.d("Draft syncer: Forcing upload of draft for $messageId")
+        draftRepository.forceUpload(userId, messageId)
     }
 
     companion object {

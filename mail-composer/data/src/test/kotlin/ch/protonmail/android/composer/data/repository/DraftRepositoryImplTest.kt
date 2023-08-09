@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.composer.data.repository
 
+import androidx.work.ExistingWorkPolicy
 import ch.protonmail.android.composer.data.remote.UploadDraftWorker
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
@@ -35,22 +36,63 @@ class DraftRepositoryImplTest {
     private val draftRepository = DraftRepositoryImpl(enqueuer)
 
     @Test
-    fun `enqueue sync draft work`() = runTest {
+    fun `upload enqueue upload draft work when not already enqueued`() = runTest {
         // Given
         val userId = UserIdSample.Primary
         val messageId = MessageIdSample.LocalDraft
         val expectedParams = UploadDraftWorker.params(userId, messageId)
         val expectedWorkerId = UploadDraftWorker.id(messageId)
-        givenEnqueuerSucceeds(expectedWorkerId, expectedParams)
+        val expectedWorkPolicy = ExistingWorkPolicy.KEEP
+        givenEnqueuerSucceeds(expectedWorkerId, expectedParams, expectedWorkPolicy)
 
         // When
         draftRepository.upload(userId, messageId)
 
         // Then
-        verify { enqueuer.enqueueUniqueWork<UploadDraftWorker>(expectedWorkerId, expectedParams) }
+        verify {
+            enqueuer.enqueueUniqueWork<UploadDraftWorker>(
+                workerId = expectedWorkerId,
+                params = expectedParams,
+                existingWorkPolicy = expectedWorkPolicy
+            )
+        }
     }
 
-    private fun givenEnqueuerSucceeds(workId: String, expectedParams: Map<String, String>) {
-        every { enqueuer.enqueueUniqueWork<UploadDraftWorker>(workId, expectedParams) } returns Unit
+    @Test
+    fun `force upload enqueue upload draft work also if existing`() = runTest {
+        // Given
+        val userId = UserIdSample.Primary
+        val messageId = MessageIdSample.LocalDraft
+        val expectedParams = UploadDraftWorker.params(userId, messageId)
+        val expectedWorkerId = UploadDraftWorker.id(messageId)
+        // This work should happen independently on the outcome of the previous one
+        val expectedWorkPolicy = ExistingWorkPolicy.APPEND_OR_REPLACE
+        givenEnqueuerSucceeds(expectedWorkerId, expectedParams, expectedWorkPolicy)
+
+        // When
+        draftRepository.forceUpload(userId, messageId)
+
+        // Then
+        verify {
+            enqueuer.enqueueUniqueWork<UploadDraftWorker>(
+                workerId = expectedWorkerId,
+                params = expectedParams,
+                existingWorkPolicy = expectedWorkPolicy
+            )
+        }
+    }
+
+    private fun givenEnqueuerSucceeds(
+        workId: String,
+        expectedParams: Map<String, String>,
+        existingWorkPolicy: ExistingWorkPolicy
+    ) {
+        every {
+            enqueuer.enqueueUniqueWork<UploadDraftWorker>(
+                workerId = workId,
+                params = expectedParams,
+                existingWorkPolicy = existingWorkPolicy
+            )
+        } returns Unit
     }
 }

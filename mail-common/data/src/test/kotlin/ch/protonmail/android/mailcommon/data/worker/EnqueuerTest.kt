@@ -41,7 +41,7 @@ class EnqueuerTest {
         // Given
         val workId = "SyncDraftWork-test-message-id"
         val params = mapOf("messageId" to "test-message-id")
-        givenEnqueueWorkSucceeds(workId)
+        givenEnqueueWorkSucceeds(workId, ExistingWorkPolicy.KEEP)
 
         // When
         enqueuer.enqueueUniqueWork<ListenableWorker>(workId, params)
@@ -52,9 +52,26 @@ class EnqueuerTest {
         assertEquals(ExistingWorkPolicy.KEEP, workPolicySlot.captured)
     }
 
-    private fun givenEnqueueWorkSucceeds(workId: String) {
+    @Test
+    fun `changes default existing work policy when explicitly requested`() = runTest {
+        // Given
+        val workId = "SyncDraftWork-test-message-id"
+        val params = mapOf("messageId" to "test-message-id")
+        val existingWorkPolicy = ExistingWorkPolicy.APPEND
+        givenEnqueueWorkSucceeds(workId, existingWorkPolicy)
+
+        // When
+        enqueuer.enqueueUniqueWork<ListenableWorker>(workId, params, existingWorkPolicy = existingWorkPolicy)
+
+        // Then
+        val workPolicySlot = slot<ExistingWorkPolicy>()
+        coVerify { workManager.enqueueUniqueWork(workId, capture(workPolicySlot), any<OneTimeWorkRequest>()) }
+        assertEquals(existingWorkPolicy, workPolicySlot.captured)
+    }
+
+    private fun givenEnqueueWorkSucceeds(workId: String, existingWorkPolicy: ExistingWorkPolicy) {
         every {
-            workManager.enqueueUniqueWork(workId, ExistingWorkPolicy.KEEP, any<OneTimeWorkRequest>())
+            workManager.enqueueUniqueWork(workId, existingWorkPolicy, any<OneTimeWorkRequest>())
         } returns mockk()
     }
 
