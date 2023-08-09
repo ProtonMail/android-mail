@@ -18,14 +18,17 @@
 
 package ch.protonmail.android.networkmocks
 
+import java.io.IOException
 import ch.protonmail.android.networkmocks.mockwebserver.MockNetworkDispatcher
 import ch.protonmail.android.networkmocks.mockwebserver.combineWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MimeType
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MockPriority
+import ch.protonmail.android.networkmocks.mockwebserver.requests.given
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.matchWildcards
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.serveOnce
+import ch.protonmail.android.networkmocks.mockwebserver.requests.simulateNoNetwork
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withMimeType
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withPriority
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withStatusCode
@@ -42,6 +45,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import kotlin.test.assertFailsWith
 
 internal class MockNetworkDispatcherTests {
 
@@ -62,7 +66,7 @@ internal class MockNetworkDispatcherTests {
 
         mockWebServer.dispatcher = mockNetworkDispatcher {
             addMockRequests(
-                "/api/v1/test" respondWith "/api/v1/test_1.json" withStatusCode 200
+                given("/api/v1/test") respondWith "/api/v1/test_1.json" withStatusCode 200
             )
         }
 
@@ -81,7 +85,7 @@ internal class MockNetworkDispatcherTests {
 
         mockWebServer.dispatcher = mockNetworkDispatcher {
             addMockRequests(
-                "/api/v1/test"
+                given("/api/v1/test")
                     respondWith "/api/v1/test_no_json.zip"
                     withStatusCode 200 withMimeType MimeType.OctetStream
             )
@@ -102,7 +106,7 @@ internal class MockNetworkDispatcherTests {
 
         mockWebServer.dispatcher = mockNetworkDispatcher {
             addMockRequests(
-                "/api/v1/test" respondWith "/api/v1/test_1.json" withStatusCode 500
+                given("/api/v1/test") respondWith "/api/v1/test_1.json" withStatusCode 500
             )
         }
 
@@ -121,7 +125,7 @@ internal class MockNetworkDispatcherTests {
 
         mockWebServer.dispatcher = mockNetworkDispatcher {
             addMockRequests(
-                "/api/v1/test" respondWith "/api/v1/test_1.json" withStatusCode 204
+                given("/api/v1/test") respondWith "/api/v1/test_1.json" withStatusCode 204
             )
         }
 
@@ -142,7 +146,7 @@ internal class MockNetworkDispatcherTests {
 
         mockWebServer.dispatcher = mockNetworkDispatcher {
             addMockRequests(
-                "/api/v1/test" respondWith "/api/v1/test_1.json" withStatusCode 200 ignoreQueryParams true
+                given("/api/v1/test") respondWith "/api/v1/test_1.json" withStatusCode 200 ignoreQueryParams true
             )
         }
 
@@ -163,7 +167,7 @@ internal class MockNetworkDispatcherTests {
 
         mockWebServer.dispatcher = mockNetworkDispatcher {
             addMockRequests(
-                "/api/*/test" respondWith "/api/v1/test_1.json" withStatusCode 200 matchWildcards true
+                given("/api/*/test") respondWith "/api/v1/test_1.json" withStatusCode 200 matchWildcards true
             )
         }
 
@@ -184,7 +188,7 @@ internal class MockNetworkDispatcherTests {
 
         mockWebServer.dispatcher = mockNetworkDispatcher {
             addMockRequests(
-                "/api/*/test" respondWith "/api/v1/test_1.json" withStatusCode 200
+                given("/api/*/test") respondWith "/api/v1/test_1.json" withStatusCode 200
                     ignoreQueryParams true matchWildcards true
             )
         }
@@ -208,7 +212,7 @@ internal class MockNetworkDispatcherTests {
 
         mockWebServer.dispatcher = mockNetworkDispatcher {
             addMockRequests(
-                "/api/v1/test" respondWith "/api/v1/test_1.json" withStatusCode 200 serveOnce true
+                given("/api/v1/test") respondWith "/api/v1/test_1.json" withStatusCode 200 serveOnce true
             )
         }
 
@@ -235,8 +239,8 @@ internal class MockNetworkDispatcherTests {
 
         mockWebServer.dispatcher = mockNetworkDispatcher {
             addMockRequests(
-                "/api/v1/test" respondWith "/api/v1/test_1.json" withStatusCode 200 serveOnce true,
-                "/api/v1/test" respondWith "/api/v1/test_2.json" withStatusCode 500 serveOnce true
+                given("/api/v1/test") respondWith "/api/v1/test_1.json" withStatusCode 200 serveOnce true,
+                given("/api/v1/test") respondWith "/api/v1/test_2.json" withStatusCode 500 serveOnce true
             )
         }
 
@@ -259,7 +263,7 @@ internal class MockNetworkDispatcherTests {
 
         mockWebServer.dispatcher = mockNetworkDispatcher {
             addMockRequests(
-                "/api/v1/test" respondWith "/api/v1/test_1.json" withStatusCode 200
+                given("/api/v1/test") respondWith "/api/v1/test_1.json" withStatusCode 200
             )
         }
 
@@ -278,7 +282,7 @@ internal class MockNetworkDispatcherTests {
 
         mockWebServer.dispatcher = mockNetworkDispatcher {
             addMockRequests(
-                "/api/v1/test" respondWith "/api/v1/unknown_file.json" withStatusCode 200
+                given("/api/v1/test") respondWith "/api/v1/unknown_file.json" withStatusCode 200
             )
         }
 
@@ -299,9 +303,15 @@ internal class MockNetworkDispatcherTests {
 
         mockWebServer.dispatcher = mockNetworkDispatcher {
             addMockRequests(
-                "/api/v1/*" respondWith "/api/v1/test_1.json" withStatusCode 200 matchWildcards true,
-                "/api/v1/test" respondWith "/api/v1/test_2.json" withStatusCode 200,
-                "/api/v1/test" respondWith "/api/v1/test_3.json" withStatusCode 500 withPriority MockPriority.Highest
+                given("/api/v1/*")
+                    respondWith "/api/v1/test_1.json"
+                    withStatusCode 200 matchWildcards true,
+                given("/api/v1/test")
+                    respondWith "/api/v1/test_2.json"
+                    withStatusCode 200,
+                given("/api/v1/test")
+                    respondWith "/api/v1/test_3.json"
+                    withStatusCode 500 withPriority MockPriority.Highest
             )
         }
 
@@ -314,6 +324,24 @@ internal class MockNetworkDispatcherTests {
     }
 
     @Test
+    fun `when a request is required to simulate no network, the dispatcher resets the connection mid-response`() {
+        // Given
+        val request = buildRequest("api/v1/test")
+
+        mockWebServer.dispatcher = mockNetworkDispatcher {
+            addMockRequests(
+                given("/api/v1/test") simulateNoNetwork true
+            )
+        }
+
+        // When
+        val response = runBlocking { performRequest(request) }
+
+        // Then
+        assertFailsWith<IOException> { response.body!!.string() }
+    }
+
+    @Test
     fun `when the dispatcher is extended, then it contains all the requests and serves the additional definitions`() {
         // Given
         val firstExpectedStatusCode = 200
@@ -321,8 +349,8 @@ internal class MockNetworkDispatcherTests {
         val secondExpectedStatusCode = 200
         val secondExpectedBody = """{ "b": 2 }"""
 
-        val firstMockDefinition = "/api/v1/test1" respondWith "/api/v1/test_1.json" withStatusCode 200
-        val secondMockDefinition = "/api/v1/test2" respondWith "/api/v1/test_2.json" withStatusCode 200
+        val firstMockDefinition = given("/api/v1/test1") respondWith "/api/v1/test_1.json" withStatusCode 200
+        val secondMockDefinition = given("/api/v1/test2") respondWith "/api/v1/test_2.json" withStatusCode 200
 
         val request = buildRequest("api/v1/test1")
         val secondRequest = buildRequest("api/v1/test2")
@@ -348,6 +376,12 @@ internal class MockNetworkDispatcherTests {
             listOf(firstMockDefinition, secondMockDefinition),
             (mockWebServer.dispatcher as MockNetworkDispatcher).requestsList
         )
+    }
+
+    @Test
+    fun `when a generic dispatcher is extended, then an illegal argument exception is thrown`() {
+        // Then
+        assertFailsWith<IllegalArgumentException> { mockWebServer.dispatcher combineWith MockNetworkDispatcher() }
     }
 
     private fun mockNetworkDispatcher(func: MockNetworkDispatcher.() -> Unit) =

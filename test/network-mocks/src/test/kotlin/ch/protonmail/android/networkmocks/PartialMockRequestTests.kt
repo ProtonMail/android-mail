@@ -19,7 +19,10 @@
 package ch.protonmail.android.networkmocks
 
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MockRequest
+import ch.protonmail.android.networkmocks.mockwebserver.requests.MockRequestLocalPath
+import ch.protonmail.android.networkmocks.mockwebserver.requests.MockRequestRemotePath
 import ch.protonmail.android.networkmocks.mockwebserver.requests.PartialMockRequest
+import ch.protonmail.android.networkmocks.mockwebserver.requests.given
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withStatusCode
 import org.junit.Assert.assertEquals
@@ -30,10 +33,13 @@ internal class PartialMockRequestTests {
     @Test
     fun `when infix function is applied on a String, then a PartialMockRequest is created`() {
         // Given
-        val expected = PartialMockRequest(remotePath = "remotePath", localFilePath = "localPath")
+        val expected = PartialMockRequest(
+            remotePath = MockRequestRemotePath("remotePath"),
+            localFilePath = MockRequestLocalPath("localPath")
+        )
 
         // When
-        val actual = "remotePath" respondWith "localPath"
+        val actual = given("remotePath") respondWith "localPath"
 
         // Then
         assertEquals(expected, actual)
@@ -43,14 +49,14 @@ internal class PartialMockRequestTests {
     fun `when a status code is added to a PartialMockRequest, then a MockRequest is created`() {
         // Given
         val expected = MockRequest(
-            remotePath = "api/v1/remote-path",
-            localFilePath = "api/v1/local-path",
+            remotePath = MockRequestRemotePath("api/v1/remote-path"),
+            localFilePath = MockRequestLocalPath("api/v1/local-path"),
             statusCode = 200
         )
 
         val partialMockRequest = PartialMockRequest(
-            remotePath = "api/v1/remote-path",
-            localFilePath = "api/v1/local-path"
+            remotePath = MockRequestRemotePath("api/v1/remote-path"),
+            localFilePath = MockRequestLocalPath("api/v1/local-path")
         )
 
         // When
@@ -64,13 +70,13 @@ internal class PartialMockRequestTests {
     fun `when a status code is set via infix functions on a PartialMockRequest, then a MockRequest is created`() {
         // Given
         val expected = MockRequest(
-            remotePath = "api/v1/remote-path",
-            localFilePath = "api/v1/local-path",
+            remotePath = MockRequestRemotePath("api/v1/remote-path"),
+            localFilePath = MockRequestLocalPath("api/v1/local-path"),
             statusCode = 200
         )
 
         // When
-        val actual = "api/v1/remote-path" respondWith "api/v1/local-path" withStatusCode 200
+        val actual = given("api/v1/remote-path") respondWith "api/v1/local-path" withStatusCode 200
 
         // Then
         assertEquals(expected, actual)

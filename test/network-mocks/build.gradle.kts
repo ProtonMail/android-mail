@@ -30,6 +30,6 @@ dependencies {
     implementation(Squareup.okhttpTls)
 
     testImplementation(KotlinX.coroutinesTest)
+    testImplementation(Kotlin.test)
     testImplementation(Squareup.okhttp)
-    testImplementation(Junit.junit)
 }

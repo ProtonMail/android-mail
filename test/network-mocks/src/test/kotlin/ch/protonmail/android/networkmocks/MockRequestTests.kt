@@ -21,6 +21,9 @@ package ch.protonmail.android.networkmocks
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MimeType
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MockPriority
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MockRequest
+import ch.protonmail.android.networkmocks.mockwebserver.requests.MockRequestLocalPath
+import ch.protonmail.android.networkmocks.mockwebserver.requests.MockRequestRemotePath
+import ch.protonmail.android.networkmocks.mockwebserver.requests.given
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.matchWildcards
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
@@ -39,16 +42,16 @@ internal class MockRequestTests {
     fun `when mimeType is set on a MockRequest, then the request is updated properly`() {
         // Given
         val expected = MockRequest(
-            remotePath = "dummy-path",
-            localFilePath = "dummy-path-local",
+            remotePath = MockRequestRemotePath("dummy-path"),
+            localFilePath = MockRequestLocalPath("dummy-path-local"),
             statusCode = 200,
             mimeType = MimeType.OctetStream,
             ignoreQueryParams = true
         )
 
         val request = MockRequest(
-            remotePath = "dummy-path",
-            localFilePath = "dummy-path-local",
+            remotePath = MockRequestRemotePath("dummy-path"),
+            localFilePath = MockRequestLocalPath("dummy-path-local"),
             statusCode = 200,
             mimeType = MimeType.Json,
             ignoreQueryParams = true
@@ -65,15 +68,15 @@ internal class MockRequestTests {
     fun `when ignoreQueryParams is set on a MockRequest, then the request is updated properly`() {
         // Given
         val expected = MockRequest(
-            remotePath = "dummy-path",
-            localFilePath = "dummy-path-local",
+            remotePath = MockRequestRemotePath("dummy-path"),
+            localFilePath = MockRequestLocalPath("dummy-path-local"),
             statusCode = 200,
             ignoreQueryParams = true
         )
 
         val request = MockRequest(
-            remotePath = "dummy-path",
-            localFilePath = "dummy-path-local",
+            remotePath = MockRequestRemotePath("dummy-path"),
+            localFilePath = MockRequestLocalPath("dummy-path-local"),
             statusCode = 200,
             ignoreQueryParams = false
         )
@@ -89,15 +92,15 @@ internal class MockRequestTests {
     fun `when matchWildcards is set on a MockRequest, then the request is updated properly`() {
         // Given
         val expected = MockRequest(
-            remotePath = "dummy-path",
-            localFilePath = "dummy-path-local",
+            remotePath = MockRequestRemotePath("dummy-path"),
+            localFilePath = MockRequestLocalPath("dummy-path-local"),
             statusCode = 200,
             wildcardMatch = true
         )
 
         val request = MockRequest(
-            remotePath = "dummy-path",
-            localFilePath = "dummy-path-local",
+            remotePath = MockRequestRemotePath("dummy-path"),
+            localFilePath = MockRequestLocalPath("dummy-path-local"),
             statusCode = 200,
             wildcardMatch = false
         )
@@ -113,15 +116,15 @@ internal class MockRequestTests {
     fun `when networkDelay is set on a MockRequest, then the request is updated properly`() {
         // Given
         val expected = MockRequest(
-            remotePath = "dummy-path",
-            localFilePath = "dummy-path-local",
+            remotePath = MockRequestRemotePath("dummy-path"),
+            localFilePath = MockRequestLocalPath("dummy-path-local"),
             statusCode = 200,
             networkDelay = 100L
         )
 
         val request = MockRequest(
-            remotePath = "dummy-path",
-            localFilePath = "dummy-path-local",
+            remotePath = MockRequestRemotePath("dummy-path"),
+            localFilePath = MockRequestLocalPath("dummy-path-local"),
             statusCode = 200,
             networkDelay = 500L
         )
@@ -137,15 +140,15 @@ internal class MockRequestTests {
     fun `when a priority is set on a MockRequest, then the request is updated properly`() {
         // Given
         val expected = MockRequest(
-            remotePath = "dummy-path",
-            localFilePath = "dummy-path-local",
+            remotePath = MockRequestRemotePath("dummy-path"),
+            localFilePath = MockRequestLocalPath("dummy-path-local"),
             statusCode = 200,
             priority = MockPriority.Highest
         )
 
         val request = MockRequest(
-            remotePath = "dummy-path",
-            localFilePath = "dummy-path-local",
+            remotePath = MockRequestRemotePath("dummy-path"),
+            localFilePath = MockRequestLocalPath("dummy-path-local"),
             statusCode = 200
         )
 
@@ -160,15 +163,15 @@ internal class MockRequestTests {
     fun `when serveOnce is set on a MockRequest, then the request is updated properly`() {
         // Given
         val expected = MockRequest(
-            remotePath = "dummy-path",
-            localFilePath = "dummy-path-local",
+            remotePath = MockRequestRemotePath("dummy-path"),
+            localFilePath = MockRequestLocalPath("dummy-path-local"),
             statusCode = 200,
             serveOnce = true
         )
 
         val request = MockRequest(
-            remotePath = "dummy-path",
-            localFilePath = "dummy-path-local",
+            remotePath = MockRequestRemotePath("dummy-path"),
+            localFilePath = MockRequestLocalPath("dummy-path-local"),
             statusCode = 200,
             serveOnce = false
         )
@@ -184,20 +187,21 @@ internal class MockRequestTests {
     fun `when infix functions are used to generate a MockRequest, then its values are set properly`() {
         // Given
         val expected = MockRequest(
-            remotePath = "dummy-path",
-            localFilePath = "dummy-path-local",
+            remotePath = MockRequestRemotePath("dummy-path"),
+            localFilePath = MockRequestLocalPath("dummy-path-local"),
             statusCode = 201,
-            mimeType = MimeType.Json,
             ignoreQueryParams = true,
+            mimeType = MimeType.Json,
             wildcardMatch = false,
-            serveOnce = true,
             networkDelay = 1500L,
+            serveOnce = true,
+            simulateNoNetwork = false,
             priority = MockPriority.Highest
         )
 
         // When
         val actual =
-            "dummy-path" respondWith "dummy-path-local" withStatusCode 201 ignoreQueryParams true matchWildcards false serveOnce true withNetworkDelay 1500 withPriority MockPriority.Highest
+            given("dummy-path") respondWith "dummy-path-local" withStatusCode 201 ignoreQueryParams true matchWildcards false serveOnce true withNetworkDelay 1500 withPriority MockPriority.Highest
 
         // Then
         assertEquals(expected, actual)
