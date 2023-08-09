@@ -93,13 +93,13 @@ interface ConversationRepository {
         userId: UserId,
         conversationIds: List<ConversationId>,
         labelId: LabelId
-    ): List<Either<DataError, List<Conversation>>>
+    ): Either<DataError, List<Conversation>>
 
     suspend fun addLabels(
         userId: UserId,
         conversationIds: List<ConversationId>,
         labelIds: List<LabelId>
-    ): List<Either<DataError, List<Conversation>>>
+    ): Either<DataError, List<Conversation>>
 
     suspend fun removeLabel(
         userId: UserId,
@@ -111,13 +111,13 @@ interface ConversationRepository {
         userId: UserId,
         conversationIds: List<ConversationId>,
         labelId: LabelId
-    ): List<Either<DataError, List<Conversation>>>
+    ): Either<DataError, List<Conversation>>
 
     suspend fun removeLabels(
         userId: UserId,
         conversationIds: List<ConversationId>,
         labelIds: List<LabelId>
-    ): List<Either<DataError, List<Conversation>>>
+    ): Either<DataError, List<Conversation>>
 
     suspend fun move(
         userId: UserId,
@@ -155,5 +155,5 @@ interface ConversationRepository {
         conversationIds: List<ConversationId>,
         labelsToBeRemoved: List<LabelId>,
         labelsToBeAdded: List<LabelId>
-    ): List<Either<DataError, List<Conversation>>>
+    ): Either<DataError, List<Conversation>>
 }

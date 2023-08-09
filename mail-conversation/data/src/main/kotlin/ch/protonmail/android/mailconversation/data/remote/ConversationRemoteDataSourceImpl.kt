@@ -97,14 +97,16 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
         conversationIds: List<ConversationId>,
         labelIds: List<LabelId>
     ) {
-        labelIds.forEach { labelId ->
-            enqueuer.enqueue<AddLabelConversationWorker>(
-                AddLabelConversationWorker.params(
-                    userId = userId,
-                    conversationIds = conversationIds,
-                    labelId = labelId
+        conversationIds.chunked(MAX_CONVERSATION_IDS_API_LIMIT).forEach { conversationIdsChunk ->
+            labelIds.forEach { labelId ->
+                enqueuer.enqueue<AddLabelConversationWorker>(
+                    AddLabelConversationWorker.params(
+                        userId = userId,
+                        conversationIds = conversationIdsChunk,
+                        labelId = labelId
+                    )
                 )
-            )
+            }
         }
     }
 
@@ -121,14 +123,16 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
         conversationIds: List<ConversationId>,
         labelIds: List<LabelId>
     ) {
-        labelIds.forEach { labelId ->
-            enqueuer.enqueue<RemoveLabelConversationWorker>(
-                RemoveLabelConversationWorker.params(
-                    userId = userId,
-                    conversationIds = conversationIds,
-                    labelId = labelId
+        conversationIds.chunked(MAX_CONVERSATION_IDS_API_LIMIT).forEach { conversationIdsChunk ->
+            labelIds.forEach { labelId ->
+                enqueuer.enqueue<RemoveLabelConversationWorker>(
+                    RemoveLabelConversationWorker.params(
+                        userId = userId,
+                        conversationIds = conversationIdsChunk,
+                        labelId = labelId
+                    )
                 )
-            )
+            }
         }
     }
 
@@ -154,5 +158,10 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
                 contextLabelId
             )
         )
+    }
+
+    companion object {
+
+        const val MAX_CONVERSATION_IDS_API_LIMIT = 50
     }
 }

@@ -267,7 +267,7 @@ class ConversationRepositoryImplTest {
         val actual = conversationRepository.addLabel(userId, conversationIds, labelId)
 
         // Then
-        assertEquals(listOf(listOf(ConversationTestData.starredConversation).right()), actual)
+        assertEquals(listOf(ConversationTestData.starredConversation).right(), actual)
         coVerify { conversationLocalDataSource.addLabels(userId, conversationIds, listOf(labelId)) }
     }
 
@@ -351,7 +351,7 @@ class ConversationRepositoryImplTest {
 
         // Then
         val unStaredConversation = ConversationTestData.conversation
-        assertEquals(listOf(listOf(unStaredConversation).right()), actual)
+        assertEquals(listOf(unStaredConversation).right(), actual)
     }
 
     @Test

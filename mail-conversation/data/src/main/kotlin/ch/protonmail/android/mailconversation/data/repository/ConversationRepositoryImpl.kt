@@ -149,67 +149,54 @@ class ConversationRepositoryImpl @Inject constructor(
         conversationId: ConversationId,
         labelId: LabelId
     ): Either<DataError, Conversation> = addLabels(userId, listOf(conversationId), listOf(labelId))
-        .first()
         .map { it.first() }
 
     override suspend fun addLabel(
         userId: UserId,
         conversationIds: List<ConversationId>,
         labelId: LabelId
-    ): List<Either<DataError, List<Conversation>>> = addLabels(userId, conversationIds, listOf(labelId))
+    ): Either<DataError, List<Conversation>> = addLabels(userId, conversationIds, listOf(labelId))
 
     override suspend fun addLabels(
         userId: UserId,
         conversationIds: List<ConversationId>,
         labelIds: List<LabelId>
-    ): List<Either<DataError, List<Conversation>>> {
-        val result = mutableListOf<Either<DataError, List<Conversation>>>()
-        conversationIds.chunked(MAX_ACTION_PARAMETER_COUNT).forEach { conversationIdsChunk ->
-            result.add(
-                conversationLocalDataSource.addLabels(userId, conversationIdsChunk, labelIds).onRight {
-                    messageLocalDataSource.relabelMessagesInConversations(
-                        userId = userId,
-                        conversationIds = conversationIdsChunk,
-                        labelIdsToAdd = labelIds.toSet()
-                    )
-                    conversationRemoteDataSource.addLabels(userId, conversationIdsChunk, labelIds)
-                }
+    ): Either<DataError, List<Conversation>> {
+        return conversationLocalDataSource.addLabels(userId, conversationIds, labelIds).onRight {
+            messageLocalDataSource.relabelMessagesInConversations(
+                userId = userId,
+                conversationIds = conversationIds,
+                labelIdsToAdd = labelIds.toSet()
             )
+            conversationRemoteDataSource.addLabels(userId, conversationIds, labelIds)
         }
-        return result
     }
 
     override suspend fun removeLabel(
         userId: UserId,
         conversationId: ConversationId,
         labelId: LabelId
-    ): Either<DataError, Conversation> = removeLabel(userId, listOf(conversationId), labelId).first().map { it.first() }
+    ): Either<DataError, Conversation> = removeLabel(userId, listOf(conversationId), labelId).map { it.first() }
 
     override suspend fun removeLabel(
         userId: UserId,
         conversationIds: List<ConversationId>,
         labelId: LabelId
-    ): List<Either<DataError, List<Conversation>>> = removeLabels(userId, conversationIds, listOf(labelId))
+    ): Either<DataError, List<Conversation>> = removeLabels(userId, conversationIds, listOf(labelId))
 
     override suspend fun removeLabels(
         userId: UserId,
         conversationIds: List<ConversationId>,
         labelIds: List<LabelId>
-    ): List<Either<DataError, List<Conversation>>> {
-        val result = mutableListOf<Either<DataError, List<Conversation>>>()
-        conversationIds.chunked(MAX_ACTION_PARAMETER_COUNT).forEach { conversationIdsChunk ->
-            result.add(
-                conversationLocalDataSource.removeLabels(userId, conversationIdsChunk, labelIds).onRight {
-                    messageLocalDataSource.relabelMessagesInConversations(
-                        userId = userId,
-                        conversationIds = conversationIdsChunk,
-                        labelIdsToRemove = labelIds.toSet()
-                    )
-                    conversationRemoteDataSource.removeLabels(userId, conversationIdsChunk, labelIds)
-                }
+    ): Either<DataError, List<Conversation>> {
+        return conversationLocalDataSource.removeLabels(userId, conversationIds, labelIds).onRight {
+            messageLocalDataSource.relabelMessagesInConversations(
+                userId = userId,
+                conversationIds = conversationIds,
+                labelIdsToRemove = labelIds.toSet()
             )
+            conversationRemoteDataSource.removeLabels(userId, conversationIds, labelIds)
         }
-        return result
     }
 
     override suspend fun move(
@@ -273,22 +260,18 @@ class ConversationRepositoryImpl @Inject constructor(
         labelsToBeRemoved: List<LabelId>,
         labelsToBeAdded: List<LabelId>
     ): Either<DataError, Conversation> =
-        relabel(userId, listOf(conversationId), labelsToBeRemoved, labelsToBeAdded).first().map { it.first() }
+        relabel(userId, listOf(conversationId), labelsToBeRemoved, labelsToBeAdded).map { it.first() }
 
     override suspend fun relabel(
         userId: UserId,
         conversationIds: List<ConversationId>,
         labelsToBeRemoved: List<LabelId>,
         labelsToBeAdded: List<LabelId>
-    ): List<Either<DataError, List<Conversation>>> {
-        val result = mutableListOf<Either<DataError, List<Conversation>>>()
-        conversationIds.chunked(MAX_ACTION_PARAMETER_COUNT).forEach { conversationIdsChunk ->
-            val removeOperation = removeLabels(userId, conversationIdsChunk, labelsToBeRemoved)
-            if (removeOperation.first().isLeft()) return removeOperation
+    ): Either<DataError, List<Conversation>> {
+        val removeOperation = removeLabels(userId, conversationIds, labelsToBeRemoved)
+        if (removeOperation.isLeft()) return removeOperation
 
-            result.add(addLabels(userId, conversationIdsChunk, labelsToBeAdded).first())
-        }
-        return result
+        return addLabels(userId, conversationIds, labelsToBeAdded)
     }
 
     private suspend fun moveToTrashOrSpam(
@@ -335,9 +318,4 @@ class ConversationRepositoryImpl @Inject constructor(
         pageKey = pageKey,
         items = conversations
     )
-
-    companion object {
-
-        const val MAX_ACTION_PARAMETER_COUNT = 100
-    }
 }
