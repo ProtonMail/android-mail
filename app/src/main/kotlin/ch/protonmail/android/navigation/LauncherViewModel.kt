@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.mailnotifications.data.repository.NotificationTokenRepository
 import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator
 import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator.Companion.PermissionResult
 import ch.protonmail.android.navigation.model.LauncherState
@@ -49,7 +50,13 @@ import me.proton.core.accountmanager.presentation.onAccountTwoPassModeNeeded
 import me.proton.core.accountmanager.presentation.onSessionForceLogout
 import me.proton.core.accountmanager.presentation.onSessionSecondFactorNeeded
 import me.proton.core.auth.presentation.AuthOrchestrator
+import me.proton.core.auth.presentation.entity.SecondFactorResult
 import me.proton.core.auth.presentation.onAddAccountResult
+import me.proton.core.auth.presentation.onLoginResult
+import me.proton.core.auth.presentation.onLoginSsoResult
+import me.proton.core.auth.presentation.onOnSignUpResult
+import me.proton.core.auth.presentation.onSecondFactorResult
+import me.proton.core.auth.presentation.onTwoPassModeResult
 import me.proton.core.domain.entity.Product
 import me.proton.core.domain.entity.UserId
 import me.proton.core.plan.presentation.PlansOrchestrator
@@ -69,7 +76,8 @@ class LauncherViewModel @Inject constructor(
     private val plansOrchestrator: PlansOrchestrator,
     private val reportOrchestrator: ReportOrchestrator,
     private val userSettingsOrchestrator: UserSettingsOrchestrator,
-    private val notificationsPermissionsOrchestrator: NotificationsPermissionsOrchestrator
+    private val notificationsPermissionsOrchestrator: NotificationsPermissionsOrchestrator,
+    private val notificationsTokenRepository: NotificationTokenRepository
 ) : ViewModel() {
 
     val state: StateFlow<LauncherState> = accountManager.getAccounts().combine(
@@ -99,18 +107,11 @@ class LauncherViewModel @Inject constructor(
 
     fun register(context: AppCompatActivity) {
         authOrchestrator.register(context)
+        authOrchestrator.registerAdditionalCallbacks(context)
         plansOrchestrator.register(context)
         reportOrchestrator.register(context)
         userSettingsOrchestrator.register(context)
         notificationsPermissionsOrchestrator.register(context)
-
-        authOrchestrator.onAddAccountResult { result ->
-            viewModelScope.launch {
-                if (result == null && getPrimaryUserIdOrNull() == null) {
-                    context.finish()
-                }
-            }
-        }
 
         accountManager.observe(context.lifecycle, Lifecycle.State.CREATED)
             .onSessionForceLogout { userManager.lock(it.userId) }
@@ -134,6 +135,53 @@ class LauncherViewModel @Inject constructor(
                 is Action.SignOut -> onSignOut(action.userId)
                 is Action.Switch -> onSwitch(action.userId)
             }.exhaustive
+        }
+    }
+
+    @SuppressWarnings("ComplexMethod")
+    private fun AuthOrchestrator.registerAdditionalCallbacks(context: AppCompatActivity) {
+        onAddAccountResult { result ->
+            viewModelScope.launch {
+                if (result == null && getPrimaryUserIdOrNull() == null) {
+                    context.finish()
+                }
+            }
+
+            val userId = result?.userId?.let { UserId(it) } ?: return@onAddAccountResult
+            registerNotificationTokenForUserId(userId)
+        }
+
+        onOnSignUpResult { result ->
+            val userId = result?.let { UserId(it.userId) } ?: return@onOnSignUpResult
+            registerNotificationTokenForUserId(userId)
+        }
+
+        onLoginResult {
+            val userId = it?.let { UserId(it.userId) } ?: return@onLoginResult
+            registerNotificationTokenForUserId(userId)
+        }
+
+        onLoginSsoResult { result ->
+            val userId = result?.let { UserId(it.userId) } ?: return@onLoginSsoResult
+            registerNotificationTokenForUserId(userId)
+        }
+
+        onSecondFactorResult { result ->
+            val userId =
+                (result as? SecondFactorResult.Success)?.let { UserId(it.userId) } ?: return@onSecondFactorResult
+            registerNotificationTokenForUserId(userId)
+        }
+
+        onTwoPassModeResult { result ->
+            val userId = result?.let { UserId(it.userId) } ?: return@onTwoPassModeResult
+            registerNotificationTokenForUserId(userId)
+        }
+    }
+
+    private fun registerNotificationTokenForUserId(userId: UserId) {
+        viewModelScope.launch {
+            val account = accountManager.getAccount(userId).firstOrNull() ?: return@launch
+            if (account.isReady()) notificationsTokenRepository.synchronizeTokenForUser(userId)
         }
     }
 

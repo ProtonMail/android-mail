@@ -20,6 +20,7 @@ package ch.protonmail.android.navigation
 
 import androidx.appcompat.app.AppCompatActivity
 import app.cash.turbine.test
+import ch.protonmail.android.mailnotifications.data.repository.NotificationTokenRepository
 import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator
 import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator.Companion.PermissionResult.CHECKING
 import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator.Companion.PermissionResult.DENIED
@@ -77,6 +78,7 @@ class LauncherViewModelTest {
             every { permissionResult() } returns MutableStateFlow(GRANTED)
         }
 
+    private val notificationTokenRepository = mockk<NotificationTokenRepository>()
     private val userManager = mockk<UserManager>()
 
     private val accountListFlow = MutableStateFlow<List<Account>>(emptyList())
@@ -325,7 +327,7 @@ class LauncherViewModelTest {
     }
 
     @Test
-    fun `Should check if the permission needs to be requested when the accounts are ready`() = runTest {
+    fun `when the accounts are ready, should check if the permission needs to be requested`() = runTest {
         // given
         every { accountManager.getAccounts() } returns flowOf(listOf(AccountTestData.readyAccount))
         every { notificationsPermissionsOrchestrator.permissionResult() } returns flowOf(CHECKING)
@@ -339,7 +341,7 @@ class LauncherViewModelTest {
     }
 
     @Test
-    fun `Should not check for notifications permissions when there are no accounts`() = runTest {
+    fun `when there are no accounts, should not check for notifications permissions`() = runTest {
         // given
         every { accountManager.getAccounts() } returns flowOf(emptyList())
         every { notificationsPermissionsOrchestrator.permissionResult() } returns flowOf(CHECKING)
@@ -353,7 +355,7 @@ class LauncherViewModelTest {
     }
 
     @Test
-    fun `Should not check for notifications permissions when the accounts are disabled`() = runTest {
+    fun `when the accounts are disabled, should not check for notifications permissions`() = runTest {
         // given
         every { accountManager.getAccounts() } returns flowOf(listOf(AccountTestData.disabledAccount))
         every { notificationsPermissionsOrchestrator.permissionResult() } returns flowOf(CHECKING)
@@ -367,7 +369,7 @@ class LauncherViewModelTest {
     }
 
     @Test
-    fun `Should not check for notifications permissions when the accounts are missing steps`() = runTest {
+    fun `when the accounts are missing steps, should not check for notifications permissions`() = runTest {
         // given
         every { accountManager.getAccounts() } returns flowOf(listOf(AccountTestData.notReadyAccount))
         every { notificationsPermissionsOrchestrator.permissionResult() } returns flowOf(CHECKING)
@@ -381,7 +383,7 @@ class LauncherViewModelTest {
     }
 
     @Test
-    fun `Should not check for notifications permissions when the permission is already granted`() = runTest {
+    fun `when the permission is already granted, should not check for notifications permissions`() = runTest {
         // given
         every { accountManager.getAccounts() } returns flowOf(listOf(AccountTestData.readyAccount))
         every { notificationsPermissionsOrchestrator.permissionResult() } returns flowOf(GRANTED)
@@ -395,7 +397,7 @@ class LauncherViewModelTest {
     }
 
     @Test
-    fun `Should not check for notifications permissions when the permission is already denied`() = runTest {
+    fun `when the permission is already denied, should not check for notifications permissions`() = runTest {
         // given
         every { accountManager.getAccounts() } returns flowOf(listOf(AccountTestData.readyAccount))
         every { notificationsPermissionsOrchestrator.permissionResult() } returns flowOf(DENIED)
@@ -409,7 +411,7 @@ class LauncherViewModelTest {
     }
 
     @Test
-    fun `Should not check for notifications permissions when the permission is in rationale state`() = runTest {
+    fun `when the permission is in rationale state, should not check for notifications permissions`() = runTest {
         // given
         every { accountManager.getAccounts() } returns flowOf(listOf(AccountTestData.readyAccount))
         every { notificationsPermissionsOrchestrator.permissionResult() } returns flowOf(SHOW_RATIONALE)
@@ -431,7 +433,8 @@ class LauncherViewModelTest {
         plansOrchestrator,
         reportOrchestrator,
         userSettingsOrchestrator,
-        notificationsPermissionsOrchestrator
+        notificationsPermissionsOrchestrator,
+        notificationTokenRepository
     )
 
     private fun mockAccountManagerObserver(): AccountManagerObserver {
