@@ -73,11 +73,11 @@ internal class AddLabelConversationWorkerTest {
     private val sessionProvider = mockk<SessionProvider> {
         coEvery { getSessionId(userId) } returns SessionId("testSessionId")
     }
-    private val messageApi = mockk<ConversationApi> {
+    private val conversationApi = mockk<ConversationApi> {
         coEvery { addLabel(any()) } returns PutLabelResponseSample.putLabelResponseForOneMessage
     }
     private val apiManagerFactory = mockk<ApiManagerFactory> {
-        every { create(any(), ConversationApi::class) } returns TestApiManager(messageApi)
+        every { create(any(), ConversationApi::class) } returns TestApiManager(conversationApi)
     }
 
     private lateinit var apiProvider: ApiProvider
@@ -125,7 +125,7 @@ internal class AddLabelConversationWorkerTest {
         addLabelMessageWorker.doWork()
 
         // Then
-        coVerify { messageApi.addLabel(PutConversationLabelBody(labelId.id, conversationIds.map { it.id })) }
+        coVerify { conversationApi.addLabel(PutConversationLabelBody(labelId.id, conversationIds.map { it.id })) }
     }
 
     @Test
@@ -137,7 +137,7 @@ internal class AddLabelConversationWorkerTest {
         val result = addLabelMessageWorker.doWork()
 
         // Then
-        coVerify { messageApi wasNot Called }
+        coVerify { conversationApi wasNot Called }
         assertEquals(Result.failure(), result)
     }
 
@@ -150,7 +150,7 @@ internal class AddLabelConversationWorkerTest {
         val result = addLabelMessageWorker.doWork()
 
         // Then
-        coVerify { messageApi wasNot Called }
+        coVerify { conversationApi wasNot Called }
         assertEquals(Result.failure(), result)
     }
 
@@ -163,7 +163,7 @@ internal class AddLabelConversationWorkerTest {
         val result = addLabelMessageWorker.doWork()
 
         // Then
-        coVerify { messageApi wasNot Called }
+        coVerify { conversationApi wasNot Called }
         assertEquals(Result.failure(), result)
     }
 
@@ -179,7 +179,7 @@ internal class AddLabelConversationWorkerTest {
     @Test
     fun `worker returns retry when api call fails due to connection error`() = runTest {
         // Given
-        coEvery { messageApi.addLabel(any()) } throws UnknownHostException()
+        coEvery { conversationApi.addLabel(any()) } throws UnknownHostException()
 
         // When
         val result = addLabelMessageWorker.doWork()
@@ -191,7 +191,7 @@ internal class AddLabelConversationWorkerTest {
     @Test
     fun `worker returns failure when api call fails due to serializationException error`() = runTest {
         // Given
-        coEvery { messageApi.addLabel(any()) } throws SerializationException()
+        coEvery { conversationApi.addLabel(any()) } throws SerializationException()
 
         // When
         val result = addLabelMessageWorker.doWork()
