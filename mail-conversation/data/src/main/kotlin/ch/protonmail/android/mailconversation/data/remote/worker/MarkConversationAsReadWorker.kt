@@ -26,11 +26,9 @@ import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.util.requireNotBlank
 import ch.protonmail.android.mailconversation.data.remote.ConversationApi
 import ch.protonmail.android.mailconversation.data.remote.resource.MarkConversationAsReadBody
-import ch.protonmail.android.mailconversation.domain.repository.ConversationLocalDataSource
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.proton.core.domain.entity.UserId
-import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.network.data.ApiProvider
 import me.proton.core.network.domain.ApiManager
 import me.proton.core.network.domain.ApiResult
@@ -40,16 +38,12 @@ import me.proton.core.network.domain.isRetryable
 class MarkConversationAsReadWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted workerParameters: WorkerParameters,
-    private val apiProvider: ApiProvider,
-    private val conversationLocalDataSource: ConversationLocalDataSource
+    private val apiProvider: ApiProvider
 ) : CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {
         val userId = UserId(requireNotBlank(inputData.getString(RawUserIdKey), fieldName = "User id"))
         val conversationIds = requireNotNull(inputData.getStringArray(RawConversationIdsKey)).toList()
-        val contextLabelId = LabelId(
-            requireNotBlank(inputData.getString(RawContextLabelId), fieldName = "Context label id")
-        )
 
         val api: ApiManager<out ConversationApi> = apiProvider.get(userId)
         val requestBody = MarkConversationAsReadBody(conversationIds = conversationIds)
@@ -57,13 +51,8 @@ class MarkConversationAsReadWorker @AssistedInject constructor(
         return when (val result = api { markConversationAsRead(requestBody) }) {
             is ApiResult.Success -> Result.success()
             is ApiResult.Error -> {
-                if (result.isRetryable()) {
-                    Result.retry()
-                } else {
-                    val conversations = conversationIds.map { ConversationId(it) }
-                    conversationLocalDataSource.markUnread(userId, conversations, contextLabelId)
-                    Result.failure()
-                }
+                if (result.isRetryable()) Result.retry()
+                else Result.failure()
             }
         }
     }
@@ -72,16 +61,10 @@ class MarkConversationAsReadWorker @AssistedInject constructor(
 
         internal const val RawUserIdKey = "markConversationReadWorkParamUserId"
         internal const val RawConversationIdsKey = "markConversationReadWorkParamConversationIds"
-        internal const val RawContextLabelId = "markConversationReadWorkParamContextLabelId"
 
-        fun params(
-            userId: UserId,
-            conversationIds: List<ConversationId>,
-            contextLabelId: LabelId
-        ) = mapOf(
+        fun params(userId: UserId, conversationIds: List<ConversationId>) = mapOf(
             RawUserIdKey to userId.id,
-            RawConversationIdsKey to conversationIds.map { it.id }.toTypedArray(),
-            RawContextLabelId to contextLabelId.id
+            RawConversationIdsKey to conversationIds.map { it.id }.toTypedArray()
         )
     }
 }

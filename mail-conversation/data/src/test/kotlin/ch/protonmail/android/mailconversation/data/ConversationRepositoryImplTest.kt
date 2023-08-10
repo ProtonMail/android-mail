@@ -793,7 +793,7 @@ class ConversationRepositoryImplTest {
         conversationRepository.markRead(userId, conversationId, contextLabelId)
 
         // then
-        coVerify { conversationRemoteDataSource.markRead(userId, listOf(conversationId), contextLabelId) }
+        coVerify { conversationRemoteDataSource.markRead(userId, listOf(conversationId)) }
     }
 
     @Test

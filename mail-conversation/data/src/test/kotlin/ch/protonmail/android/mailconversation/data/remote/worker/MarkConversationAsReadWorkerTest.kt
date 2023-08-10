@@ -24,15 +24,12 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
-import arrow.core.right
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailconversation.data.remote.ConversationApi
 import ch.protonmail.android.mailconversation.data.remote.resource.MarkConversationAsReadBody
-import ch.protonmail.android.mailconversation.domain.repository.ConversationLocalDataSource
-import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.mailmessage.data.remote.response.MarkUnreadResponse
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -51,7 +48,6 @@ internal class MarkConversationAsReadWorkerTest {
 
     private val userId = UserIdSample.Primary
     private val conversationIds = listOf(ConversationIdSample.WeatherForecast)
-    private val labelId = ConversationSample.WeatherForecast.labels.first().labelId
     private val nonRetryableException = SerializationException()
     private val retryableException = UnknownHostException()
 
@@ -70,18 +66,12 @@ internal class MarkConversationAsReadWorkerTest {
         }
     }
     private val conversationApi: ConversationApi = mockk()
-    private val conversationLocalDataSource: ConversationLocalDataSource = mockk {
-        coEvery {
-            markUnread(userId, conversationIds, labelId)
-        } returns listOf(ConversationSample.WeatherForecast).right()
-    }
     private val params: WorkerParameters = mockk {
         every { taskExecutor } returns mockk(relaxed = true)
         every { inputData.getString(MarkConversationAsReadWorker.RawUserIdKey) } returns userId.id
         every {
             inputData.getStringArray(MarkConversationAsReadWorker.RawConversationIdsKey)
         } returns arrayOf(ConversationIdSample.WeatherForecast.id)
-        every { inputData.getString(MarkConversationAsReadWorker.RawContextLabelId) } returns labelId.id
     }
     private val workManager: WorkManager = mockk {
         coEvery { enqueue(ofType<OneTimeWorkRequest>()) } returns mockk()
@@ -90,8 +80,7 @@ internal class MarkConversationAsReadWorkerTest {
     private val worker = MarkConversationAsReadWorker(
         context = mockk(),
         workerParameters = params,
-        apiProvider = apiProvider,
-        conversationLocalDataSource = conversationLocalDataSource
+        apiProvider = apiProvider
     )
 
     @Test
@@ -101,7 +90,7 @@ internal class MarkConversationAsReadWorkerTest {
 
         // when
         Enqueuer(workManager).enqueue<MarkConversationAsReadWorker>(
-            MarkConversationAsReadWorker.params(userId, conversationIds, labelId)
+            MarkConversationAsReadWorker.params(userId, conversationIds)
         )
 
         // then
@@ -114,7 +103,7 @@ internal class MarkConversationAsReadWorkerTest {
     fun `worker is enqueued with correct parameters`() {
         // when
         Enqueuer(workManager).enqueue<MarkConversationAsReadWorker>(
-            MarkConversationAsReadWorker.params(userId, conversationIds, labelId)
+            MarkConversationAsReadWorker.params(userId, conversationIds)
         )
 
         // then
@@ -129,10 +118,6 @@ internal class MarkConversationAsReadWorkerTest {
             actual = requestSlot.captured.workSpec.input.getStringArray(
                 MarkConversationAsReadWorker.RawConversationIdsKey
             )?.toList()?.map { ConversationId(it) }
-        )
-        assertEquals(
-            expected = labelId.id,
-            actual = requestSlot.captured.workSpec.input.getString(MarkConversationAsReadWorker.RawContextLabelId)
         )
     }
 
@@ -184,17 +169,5 @@ internal class MarkConversationAsReadWorkerTest {
 
         // then
         assertEquals(Result.failure(), result)
-    }
-
-    @Test
-    fun `rollback unread when api call fails with non-retryable error`() = runTest {
-        // given
-        coEvery { conversationApi.markConversationAsRead(any()) } throws nonRetryableException
-
-        // when
-        worker.doWork()
-
-        // then
-        coVerify { conversationLocalDataSource.markUnread(userId, conversationIds, labelId) }
     }
 }

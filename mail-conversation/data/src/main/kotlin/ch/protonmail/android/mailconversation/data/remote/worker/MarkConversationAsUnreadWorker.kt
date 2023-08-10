@@ -26,7 +26,6 @@ import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.util.requireNotBlank
 import ch.protonmail.android.mailconversation.data.remote.ConversationApi
 import ch.protonmail.android.mailconversation.data.remote.resource.MarkConversationAsUnreadBody
-import ch.protonmail.android.mailconversation.domain.repository.ConversationLocalDataSource
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.proton.core.domain.entity.UserId
@@ -39,8 +38,7 @@ import me.proton.core.network.domain.isRetryable
 class MarkConversationAsUnreadWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted workerParameters: WorkerParameters,
-    private val apiProvider: ApiProvider,
-    private val conversationLocalDataSource: ConversationLocalDataSource
+    private val apiProvider: ApiProvider
 ) : CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {
@@ -62,13 +60,8 @@ class MarkConversationAsUnreadWorker @AssistedInject constructor(
         return when (result) {
             is ApiResult.Success -> Result.success()
             is ApiResult.Error -> {
-                if (result.isRetryable()) {
-                    Result.retry()
-                } else {
-                    val conversations = conversationIds.map { ConversationId(it) }
-                    conversationLocalDataSource.markRead(userId, conversations, contextLabelId)
-                    Result.failure()
-                }
+                if (result.isRetryable()) Result.retry()
+                else Result.failure()
             }
         }
     }

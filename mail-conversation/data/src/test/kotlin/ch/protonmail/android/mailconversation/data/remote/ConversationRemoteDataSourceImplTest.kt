@@ -346,22 +346,20 @@ class ConversationRemoteDataSourceImplTest {
         val conversationIds = List(MAX_CONVERSATION_IDS_API_LIMIT + 1) { ConversationIdSample.Invoices }
 
         // When
-        conversationRemoteDataSource.markRead(userId, conversationIds, contextLabelId)
+        conversationRemoteDataSource.markRead(userId, conversationIds)
 
         // Then
         verifySequence {
             val expectedFirst = MarkConversationAsReadWorker.params(
                 userId,
-                conversationIds.take(MAX_CONVERSATION_IDS_API_LIMIT),
-                contextLabelId
+                conversationIds.take(MAX_CONVERSATION_IDS_API_LIMIT)
             )
             enqueuer.enqueue<MarkConversationAsReadWorker>(
                 match { mapDeepEquals(it, expectedFirst) }
             )
             val expectedSecond = MarkConversationAsReadWorker.params(
                 userId,
-                conversationIds.drop(MAX_CONVERSATION_IDS_API_LIMIT),
-                contextLabelId
+                conversationIds.drop(MAX_CONVERSATION_IDS_API_LIMIT)
             )
             enqueuer.enqueue<MarkConversationAsReadWorker>(
                 match { mapDeepEquals(it, expectedSecond) }
@@ -509,13 +507,12 @@ class ConversationRemoteDataSourceImplTest {
         val conversationId = ConversationIdSample.WeatherForecast
 
         // when
-        conversationRemoteDataSource.markRead(userId, listOf(conversationId), contextLabelId)
+        conversationRemoteDataSource.markRead(userId, listOf(conversationId))
 
         // then
         val expected = MarkConversationAsReadWorker.params(
             userId,
-            listOf(conversationId),
-            contextLabelId
+            listOf(conversationId)
         )
         verify {
             enqueuer.enqueue<MarkConversationAsReadWorker>(

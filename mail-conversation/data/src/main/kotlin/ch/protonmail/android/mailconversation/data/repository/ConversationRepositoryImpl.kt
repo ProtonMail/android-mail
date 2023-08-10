@@ -265,7 +265,7 @@ class ConversationRepositoryImpl @Inject constructor(
     ): Either<DataError, List<Conversation>> {
         return conversationLocalDataSource.markRead(userId, conversationIds, contextLabelId).onRight {
             messageLocalDataSource.markMessagesInConversationsRead(userId, conversationIds)
-            conversationRemoteDataSource.markRead(userId, conversationIds, contextLabelId)
+            conversationRemoteDataSource.markRead(userId, conversationIds)
         }
     }
 
