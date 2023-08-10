@@ -18,30 +18,27 @@
 
 package ch.protonmail.android.mailnotifications.data.remote.fcm
 
-import ch.protonmail.android.mailcommon.data.worker.Enqueuer
-import ch.protonmail.android.mailnotifications.domain.FcmTokenPreferences
-import ch.protonmail.android.mailnotifications.domain.ProcessPushNotificationDataWorker
+import ch.protonmail.android.mailnotifications.data.repository.NotificationTokenRepository
+import ch.protonmail.android.mailnotifications.domain.usecase.ProcessPushNotificationMessage
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import me.proton.core.account.domain.entity.AccountState
 import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.util.kotlin.CoroutineScopeProvider
-import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class PMFirebaseMessagingService : FirebaseMessagingService() {
 
     @Inject
-    lateinit var enqueuer: Enqueuer
+    lateinit var notificationTokenRepository: NotificationTokenRepository
 
     @Inject
-    lateinit var fcmTokenPreferences: FcmTokenPreferences
+    lateinit var processPushNotificationMessage: ProcessPushNotificationMessage
 
     @Inject
     lateinit var scopeProvider: CoroutineScopeProvider
@@ -56,14 +53,13 @@ class PMFirebaseMessagingService : FirebaseMessagingService() {
 
         onNewTokenJob?.cancel()
         onNewTokenJob = scopeProvider.GlobalDefaultSupervisedScope.launch {
-            fcmTokenPreferences.storeToken(token)
+            notificationTokenRepository.storeToken(token)
+
             accountManager.getAccounts()
-                .map { accounts -> accounts.filter { account -> account.state == AccountState.Ready } }
-                .collectLatest { accounts ->
-                    accounts.map { account -> account.userId }.forEach { userId ->
-                        enqueuer.enqueue<RegisterDeviceWorker>(RegisterDeviceWorker.params(userId))
-                    }
-                }
+                .first()
+                .filter { it.state == AccountState.Ready }
+                .map { it.userId }
+                .forEach { notificationTokenRepository.synchronizeTokenForUser(it) }
         }
     }
 
@@ -73,10 +69,7 @@ class PMFirebaseMessagingService : FirebaseMessagingService() {
         val uid = remoteMessage.data["UID"]
         val encryptedMessage = remoteMessage.data["encryptedMessage"]
         if (uid != null && encryptedMessage != null) {
-            Timber.d("onMessageReceived: ${remoteMessage.data}")
-            enqueuer.enqueue<ProcessPushNotificationDataWorker>(
-                ProcessPushNotificationDataWorker.params(uid, encryptedMessage)
-            )
+            processPushNotificationMessage(uid, encryptedMessage)
         }
     }
 

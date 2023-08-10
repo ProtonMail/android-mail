@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailnotifications.data.remote.fcm
+package ch.protonmail.android.mailnotifications.data.remote
 
 import java.net.UnknownHostException
 import java.util.UUID
@@ -27,10 +27,8 @@ import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
-import ch.protonmail.android.mailnotifications.data.remote.DeviceServiceApi
-import ch.protonmail.android.mailnotifications.data.remote.resource.RegisterDeviceResponse
 import ch.protonmail.android.mailnotifications.data.remote.resource.RegisterDeviceRequest
-import ch.protonmail.android.mailnotifications.domain.FcmTokenPreferences
+import ch.protonmail.android.mailnotifications.data.remote.resource.RegisterDeviceResponse
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -45,13 +43,10 @@ import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class RegisterDeviceWorkerTest {
+internal class RegisterDeviceWorkerTest {
 
     private val environment = 4 // Android for the API
     private val token = UUID.randomUUID().toString()
-    private val fcmTokenPreferences: FcmTokenPreferences = mockk {
-        coEvery { getToken() } returns token
-    }
     private val userId = UserIdSample.Primary
     private val workManager: WorkManager = mockk {
         coEvery { enqueue(ofType<OneTimeWorkRequest>()) } returns mockk()
@@ -76,12 +71,12 @@ class RegisterDeviceWorkerTest {
     private val params: WorkerParameters = mockk {
         every { taskExecutor } returns mockk(relaxed = true)
         every { inputData.getString(RegisterDeviceWorker.RawUserIdKey) } returns userId.id
+        every { inputData.getString(RegisterDeviceWorker.TokenKey) } returns token
     }
     private val worker = RegisterDeviceWorker(
         context = mockk(),
         workerParameters = params,
-        apiProvider = apiProvider,
-        fcmTokenPreferences = fcmTokenPreferences
+        apiProvider = apiProvider
     )
 
     @Test
@@ -91,7 +86,7 @@ class RegisterDeviceWorkerTest {
 
         // when
         Enqueuer(workManager).enqueue<RegisterDeviceWorker>(
-            RegisterDeviceWorker.params(userId)
+            RegisterDeviceWorker.params(userId, token)
         )
 
         // then
@@ -115,9 +110,9 @@ class RegisterDeviceWorkerTest {
     }
 
     @Test
-    fun `Should return error when there is no FCM token stored`() = runTest {
+    fun `Should return error when there is no token stored`() = runTest {
         // given
-        coEvery { fcmTokenPreferences.getToken() } returns ""
+        every { params.inputData.getString(RegisterDeviceWorker.TokenKey) } returns ""
         coEvery { deviceServiceApi.registerDevice(any()) } returns mockk()
 
         // when

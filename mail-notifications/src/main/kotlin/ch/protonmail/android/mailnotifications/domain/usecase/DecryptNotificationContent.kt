@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailnotifications.domain
+package ch.protonmail.android.mailnotifications.domain.usecase
 
 import arrow.core.Either
 import arrow.core.left

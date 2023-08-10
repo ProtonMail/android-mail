@@ -23,6 +23,7 @@ import ch.protonmail.android.mailnotifications.domain.model.NotificationAction
 import ch.protonmail.android.mailnotifications.domain.model.PushNotification
 import ch.protonmail.android.mailnotifications.domain.model.PushNotificationData
 import ch.protonmail.android.mailnotifications.domain.model.PushNotificationSender
+import ch.protonmail.android.mailnotifications.domain.usecase.DecryptNotificationContent
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -40,7 +41,7 @@ import me.proton.core.user.domain.entity.UserKey
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class DecryptNotificationContentTest {
+internal class DecryptNotificationContentTest {
 
     private val armoredPrivateKey = "armoredPrivateKey"
     private val armoredPublicKey = "armoredPublicKey"

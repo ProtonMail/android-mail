@@ -16,17 +16,15 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailnotifications.data.remote.fcm
+package ch.protonmail.android.mailnotifications.data.remote
 
 import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
-import ch.protonmail.android.mailnotifications.data.remote.DeviceServiceApi
 import ch.protonmail.android.mailnotifications.data.remote.fcm.model.KEY_PM_REGISTRATION_WORKER_ERROR
 import ch.protonmail.android.mailnotifications.data.remote.resource.RegisterDeviceRequest
-import ch.protonmail.android.mailnotifications.domain.FcmTokenPreferences
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.proton.core.domain.entity.UserId
@@ -43,7 +41,6 @@ import me.proton.core.util.kotlin.takeIfNotBlank
 class RegisterDeviceWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted workerParameters: WorkerParameters,
-    private val fcmTokenPreferences: FcmTokenPreferences,
     private val apiProvider: ApiProvider
 ) : CoroutineWorker(context, workerParameters) {
 
@@ -51,12 +48,13 @@ class RegisterDeviceWorker @AssistedInject constructor(
         val userId = inputData.getString(RawUserIdKey)?.takeIfNotBlank()
             ?.let(::UserId)
             ?: return Result.failure(workDataOf(KEY_PM_REGISTRATION_WORKER_ERROR to "User id not provided"))
-        val fcmToken = fcmTokenPreferences.getToken().ifBlank {
-            return Result.failure(workDataOf(KEY_PM_REGISTRATION_WORKER_ERROR to "FCM token not found"))
-        }
+
+        val token = inputData.getString(TokenKey)?.takeIfNotBlank()
+            ?: return Result.failure(workDataOf(KEY_PM_REGISTRATION_WORKER_ERROR to "Notifications token not found"))
+
         val api: ApiManager<out DeviceServiceApi> = apiProvider.get(userId)
         val registerDeviceRequest = RegisterDeviceRequest(
-            deviceToken = fcmToken,
+            deviceToken = token,
             environment = DeviceEnvironmentAndroid
         )
 
@@ -74,9 +72,12 @@ class RegisterDeviceWorker @AssistedInject constructor(
     companion object {
 
         private const val DeviceEnvironmentAndroid = 4
-        internal const val RawUserIdKey = "pmRegistrationWorkerUserId"
 
-        fun params(userId: UserId) = mapOf(
+        const val RawUserIdKey = "pmRegistrationWorkerUserId"
+        const val TokenKey = "pmRegistrationWorkerToken"
+
+        fun params(userId: UserId, token: String) = mapOf(
+            TokenKey to token,
             RawUserIdKey to userId.id
         )
     }

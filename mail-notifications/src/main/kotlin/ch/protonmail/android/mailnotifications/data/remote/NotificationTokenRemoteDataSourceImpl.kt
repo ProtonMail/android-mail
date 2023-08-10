@@ -16,11 +16,17 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailnotifications.domain
+package ch.protonmail.android.mailnotifications.data.remote
 
-interface FcmTokenPreferences {
+import ch.protonmail.android.mailcommon.data.worker.Enqueuer
+import me.proton.core.domain.entity.UserId
+import javax.inject.Inject
 
-    suspend fun storeToken(token: String)
+internal class NotificationTokenRemoteDataSourceImpl @Inject constructor(
+    private val enqueuer: Enqueuer
+) : NotificationTokenRemoteDataSource {
 
-    suspend fun getToken(): String
+    override suspend fun synchronizeTokenForUser(userId: UserId, token: String) {
+        enqueuer.enqueue<RegisterDeviceWorker>(RegisterDeviceWorker.params(userId, token))
+    }
 }

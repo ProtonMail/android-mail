@@ -18,12 +18,19 @@
 
 package ch.protonmail.android.mailnotifications.dagger
 
+import ch.protonmail.android.mailnotifications.data.local.NotificationTokenLocalDataSource
+import ch.protonmail.android.mailnotifications.data.local.NotificationTokenLocalDataSourceImpl
+import ch.protonmail.android.mailnotifications.data.local.NotificationTokenPreferences
 import ch.protonmail.android.mailnotifications.data.local.fcm.FcmTokenPreferencesImpl
-import ch.protonmail.android.mailnotifications.domain.FcmTokenPreferences
+import ch.protonmail.android.mailnotifications.data.remote.NotificationTokenRemoteDataSource
+import ch.protonmail.android.mailnotifications.data.remote.NotificationTokenRemoteDataSourceImpl
+import ch.protonmail.android.mailnotifications.data.repository.NotificationTokenRepository
+import ch.protonmail.android.mailnotifications.data.repository.NotificationTokenRepositoryImpl
 import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator
 import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestratorImpl
 import dagger.Binds
 import dagger.Module
+import dagger.Reusable
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
@@ -38,11 +45,28 @@ object MailNotificationsModule {
 
         @Binds
         @Singleton
-        fun bindFcmTokenPreferences(implementation: FcmTokenPreferencesImpl): FcmTokenPreferences
+        fun bindFcmTokenPreferences(implementation: FcmTokenPreferencesImpl): NotificationTokenPreferences
 
         @Binds
-        fun notificationsPermissionsOrchestrator(
+        @Reusable
+        fun notificationPermissionsOrchestrator(
             implementation: NotificationsPermissionsOrchestratorImpl
         ): NotificationsPermissionsOrchestrator
+
+        @Binds
+        @Reusable
+        fun notificationTokenRemoteDataSource(
+            dataSource: NotificationTokenRemoteDataSourceImpl
+        ): NotificationTokenRemoteDataSource
+
+        @Binds
+        @Reusable
+        fun notificationTokenLocalDataSource(
+            dataSource: NotificationTokenLocalDataSourceImpl
+        ): NotificationTokenLocalDataSource
+
+        @Binds
+        @Reusable
+        fun notificationTokenRepository(repository: NotificationTokenRepositoryImpl): NotificationTokenRepository
     }
 }

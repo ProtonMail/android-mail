@@ -16,19 +16,22 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailnotifications.domain.usecase
+package ch.protonmail.android.mailnotifications.data.repository
 
-import ch.protonmail.android.mailcommon.data.worker.Enqueuer
-import ch.protonmail.android.mailnotifications.data.local.ProcessPushNotificationDataWorker
+import ch.protonmail.android.mailnotifications.data.local.NotificationTokenLocalDataSource
+import ch.protonmail.android.mailnotifications.data.remote.NotificationTokenRemoteDataSource
+import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
-class ProcessPushNotificationMessage @Inject constructor(
-    private val enqueuer: Enqueuer
-) {
+internal class NotificationTokenRepositoryImpl @Inject constructor(
+    private val localDataSource: NotificationTokenLocalDataSource,
+    private val remoteDataSource: NotificationTokenRemoteDataSource
+) : NotificationTokenRepository {
 
-    operator fun invoke(uid: String, encryptedMessage: String) {
-        enqueuer.enqueue<ProcessPushNotificationDataWorker>(
-            ProcessPushNotificationDataWorker.params(uid, encryptedMessage)
-        )
+    override suspend fun storeToken(token: String) = localDataSource.storeToken(token)
+
+    override suspend fun synchronizeTokenForUser(userId: UserId) {
+        val token = localDataSource.getToken()
+        remoteDataSource.synchronizeTokenForUser(userId, token)
     }
 }

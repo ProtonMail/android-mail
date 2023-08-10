@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailnotifications.domain
+package ch.protonmail.android.mailnotifications.data.local
 
 import android.annotation.SuppressLint
 import android.app.PendingIntent
@@ -28,11 +28,14 @@ import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import ch.protonmail.android.mailcommon.presentation.system.NotificationProvider
 import ch.protonmail.android.mailnotifications.R
+import ch.protonmail.android.mailnotifications.domain.AppInBackgroundState
+import ch.protonmail.android.mailnotifications.domain.NotificationsDeepLinkHelper
 import ch.protonmail.android.mailnotifications.domain.model.NotificationAction
 import ch.protonmail.android.mailnotifications.domain.model.NotificationType
 import ch.protonmail.android.mailnotifications.domain.model.PushNotification
 import ch.protonmail.android.mailnotifications.domain.model.PushNotificationData
 import ch.protonmail.android.mailnotifications.domain.model.PushNotificationSender
+import ch.protonmail.android.mailnotifications.domain.usecase.DecryptNotificationContent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.proton.core.accountmanager.domain.SessionManager
