@@ -23,7 +23,6 @@ import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import ch.protonmail.android.mailcommon.domain.util.requireNotBlank
-import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageApi
 import ch.protonmail.android.mailmessage.data.remote.resource.MarkMessageAsUnreadBody
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
@@ -40,8 +39,7 @@ import me.proton.core.util.kotlin.serialize
 class MarkMessageAsUnreadWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted workerParameters: WorkerParameters,
-    private val apiProvider: ApiProvider,
-    private val messageLocalDataSource: MessageLocalDataSource
+    private val apiProvider: ApiProvider
 ) : CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {
@@ -61,12 +59,8 @@ class MarkMessageAsUnreadWorker @AssistedInject constructor(
         return when (result) {
             is ApiResult.Success -> Result.success()
             is ApiResult.Error -> {
-                if (result.isRetryable()) {
-                    Result.retry()
-                } else {
-                    messageLocalDataSource.markRead(userId, messageIds.map { MessageId(it) })
-                    Result.failure()
-                }
+                if (result.isRetryable()) Result.retry()
+                else Result.failure()
             }
         }
     }

@@ -24,15 +24,12 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
-import arrow.core.right
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
-import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageApi
 import ch.protonmail.android.mailmessage.data.remote.resource.MarkMessageAsReadBody
 import ch.protonmail.android.mailmessage.data.remote.response.MarkReadResponse
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
-import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -69,9 +66,6 @@ internal class MarkMessageAsReadWorkerTest {
         }
     }
     private val messageApi: MessageApi = mockk()
-    private val messageLocalDataSource: MessageLocalDataSource = mockk {
-        coEvery { markUnread(userId, listOf(messageId)) } returns listOf(MessageSample.Invoice).right()
-    }
     private val params: WorkerParameters = mockk {
         every { taskExecutor } returns mockk(relaxed = true)
         every { inputData.getString(MarkMessageAsReadWorker.RawUserIdKey) } returns userId.id
@@ -86,8 +80,7 @@ internal class MarkMessageAsReadWorkerTest {
     private val worker = MarkMessageAsReadWorker(
         context = mockk(),
         workerParameters = params,
-        apiProvider = apiProvider,
-        messageLocalDataSource = messageLocalDataSource
+        apiProvider = apiProvider
     )
 
     @Test
@@ -172,17 +165,5 @@ internal class MarkMessageAsReadWorkerTest {
 
         // then
         assertEquals(Result.failure(), result)
-    }
-
-    @Test
-    fun `rollback unread when api call fails with non-retryable error`() = runTest {
-        // given
-        coEvery { messageApi.markAsRead(any()) } throws nonRetryableException
-
-        // when
-        worker.doWork()
-
-        // then
-        coVerify { messageLocalDataSource.markUnread(userId, listOf(messageId)) }
     }
 }

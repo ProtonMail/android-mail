@@ -23,7 +23,6 @@ import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import ch.protonmail.android.mailcommon.domain.util.requireNotBlank
-import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageApi
 import ch.protonmail.android.mailmessage.data.remote.resource.PutLabelBody
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
@@ -41,8 +40,7 @@ import me.proton.core.util.kotlin.serialize
 class RemoveLabelMessageWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted workerParameters: WorkerParameters,
-    private val apiProvider: ApiProvider,
-    private val messageLocalDataSource: MessageLocalDataSource
+    private val apiProvider: ApiProvider
 ) : CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {
@@ -64,14 +62,7 @@ class RemoveLabelMessageWorker @AssistedInject constructor(
             is ApiResult.Success -> Result.success()
             is ApiResult.Error -> {
                 if (result.isRetryable()) return Result.retry()
-
-                messageLocalDataSource.relabelMessages(
-                    userId = UserId(id = userId),
-                    messageIds = messageIds.map { MessageId(it) },
-                    labelIdsToRemove = emptySet(),
-                    labelIdsToAdd = setOf(LabelId(labelId))
-                )
-                Result.failure()
+                else Result.failure()
             }
         }
     }

@@ -25,9 +25,7 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
-import arrow.core.right
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
-import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageApi
 import ch.protonmail.android.mailmessage.data.remote.resource.PutLabelBody
 import ch.protonmail.android.mailmessage.data.sample.PutLabelResponseSample
@@ -67,7 +65,7 @@ class RemoveLabelMessageWorkerTest {
         coEvery { enqueue(any<OneTimeWorkRequest>()) } returns mockk()
     }
     private val parameters: WorkerParameters = mockk {
-        every { getTaskExecutor() } returns mockk(relaxed = true)
+        every { taskExecutor } returns mockk(relaxed = true)
         every { inputData.getString(RemoveLabelMessageWorker.RawUserIdKey) } returns userId.id
         every {
             inputData.getString(RemoveLabelMessageWorker.RawMessageIdsKey)
@@ -85,11 +83,6 @@ class RemoveLabelMessageWorkerTest {
     private val apiManagerFactory = mockk<ApiManagerFactory> {
         every { create(any(), MessageApi::class) } returns TestApiManager(messageApi)
     }
-    private val messageLocalDataSource = mockk<MessageLocalDataSource> {
-        coEvery {
-            relabelMessages(userId, listOf(messageId), labelIdsToAdd = setOf(labelId))
-        } returns listOf(MessageTestData.message).right()
-    }
 
     private lateinit var apiProvider: ApiProvider
     private lateinit var removeLabelMessageWorker: RemoveLabelMessageWorker
@@ -100,8 +93,7 @@ class RemoveLabelMessageWorkerTest {
         removeLabelMessageWorker = RemoveLabelMessageWorker(
             context,
             parameters,
-            apiProvider,
-            messageLocalDataSource
+            apiProvider
         )
     }
 
@@ -215,15 +207,5 @@ class RemoveLabelMessageWorkerTest {
         val result = removeLabelMessageWorker.doWork()
         // Then
         assertEquals(Result.failure(), result)
-    }
-
-    @Test
-    fun `remove label roll back changes to message when api call fails with a non-retryable error`() = runTest {
-        // Given
-        coEvery { messageApi.removeLabel(any()) } throws SerializationException()
-        // When
-        removeLabelMessageWorker.doWork()
-        // Then
-        coVerify { messageLocalDataSource.relabelMessages(userId, listOf(messageId), labelIdsToAdd = setOf(labelId)) }
     }
 }
