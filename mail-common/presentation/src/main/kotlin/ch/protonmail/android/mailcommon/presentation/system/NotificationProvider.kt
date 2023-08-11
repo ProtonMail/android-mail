@@ -77,7 +77,8 @@ class NotificationProvider @Inject constructor(
         subText: String,
         contentText: String,
         group: String,
-        isGroupSummary: Boolean = false
+        isGroupSummary: Boolean = false,
+        autoCancel: Boolean = false
     ): NotificationCompat.Builder {
         val channel = provideNotificationChannel(EMAIL_CHANNEL_ID)
         return NotificationCompat.Builder(context, channel.id).apply {
@@ -86,7 +87,8 @@ class NotificationProvider @Inject constructor(
             setSubText(subText)
             setContentText(contentText)
             setGroup(group)
-            if (isGroupSummary) setGroupSummary(true)
+            setGroupSummary(isGroupSummary)
+            setAutoCancel(autoCancel)
         }
     }
 

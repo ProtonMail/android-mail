@@ -123,7 +123,8 @@ class ProcessPushNotificationDataWorker @AssistedInject constructor(
             contentTitle = sender.senderName.ifEmpty { sender.senderAddress },
             subText = user.email ?: "",
             contentText = notificationData.body,
-            group = user.userId.id
+            group = user.userId.id,
+            autoCancel = true
         ).apply {
             setContentIntent(
                 PendingIntent.getActivity(
@@ -144,7 +145,8 @@ class ProcessPushNotificationDataWorker @AssistedInject constructor(
             subText = user.email ?: "",
             contentText = context.getString(R.string.notification_summary_text_new_messages),
             group = user.userId.id,
-            isGroupSummary = true
+            isGroupSummary = true,
+            autoCancel = true
         ).apply {
             setContentIntent(
                 PendingIntent.getActivity(
