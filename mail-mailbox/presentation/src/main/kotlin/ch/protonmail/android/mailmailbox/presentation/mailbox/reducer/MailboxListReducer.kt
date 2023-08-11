@@ -51,7 +51,7 @@ class MailboxListReducer @Inject constructor() {
     ): MailboxListState.Data {
         val currentMailLabel = operation.selectedLabel
         return when (currentState) {
-            is MailboxListState.Loading -> MailboxListState.Data(
+            is MailboxListState.Loading -> MailboxListState.Data.ViewMode(
                 currentMailLabel,
                 openItemEffect = Effect.empty(),
                 scrollToMailboxTop = Effect.empty(),
@@ -60,7 +60,11 @@ class MailboxListReducer @Inject constructor() {
                 refreshRequested = false
             )
 
-            is MailboxListState.Data -> currentState.copy(
+            is MailboxListState.Data.SelectionMode -> currentState.copy(
+                currentMailLabel = currentMailLabel
+            )
+
+            is MailboxListState.Data.ViewMode -> currentState.copy(
                 currentMailLabel = currentMailLabel
             )
         }
@@ -72,7 +76,7 @@ class MailboxListReducer @Inject constructor() {
     ): MailboxListState.Data {
         val currentMailLabel = operation.selectedLabel
         return when (currentState) {
-            is MailboxListState.Loading -> MailboxListState.Data(
+            is MailboxListState.Loading -> MailboxListState.Data.ViewMode(
                 currentMailLabel,
                 openItemEffect = Effect.empty(),
                 scrollToMailboxTop = Effect.empty(),
@@ -81,9 +85,13 @@ class MailboxListReducer @Inject constructor() {
                 refreshRequested = false
             )
 
-            is MailboxListState.Data -> currentState.copy(
+            is MailboxListState.Data.ViewMode -> currentState.copy(
                 currentMailLabel = currentMailLabel,
                 scrollToMailboxTop = Effect.of(currentMailLabel.id)
+            )
+
+            is MailboxListState.Data.SelectionMode -> currentState.copy(
+                currentMailLabel = currentMailLabel
             )
         }
     }
@@ -108,13 +116,13 @@ class MailboxListReducer @Inject constructor() {
             }
         }
         return when (currentState) {
-            is MailboxListState.Loading -> currentState
-            is MailboxListState.Data -> currentState.copy(openItemEffect = Effect.of(request))
+            is MailboxListState.Data.ViewMode -> currentState.copy(openItemEffect = Effect.of(request))
+            else -> currentState
         }
     }
 
     private fun reduceOfflineWithData(currentState: MailboxListState) = when (currentState) {
-        is MailboxListState.Data -> {
+        is MailboxListState.Data.ViewMode -> {
             if (currentState.refreshRequested) {
                 currentState.copy(offlineEffect = Effect.of(Unit), refreshRequested = false)
             } else {
@@ -122,16 +130,16 @@ class MailboxListReducer @Inject constructor() {
             }
         }
 
-        is MailboxListState.Loading -> currentState
+        else -> currentState
     }
 
     private fun reduceRefresh(currentState: MailboxListState) = when (currentState) {
-        is MailboxListState.Data -> currentState.copy(refreshRequested = true)
-        is MailboxListState.Loading -> currentState
+        is MailboxListState.Data.ViewMode -> currentState.copy(refreshRequested = true)
+        else -> currentState
     }
 
     private fun reduceErrorWithData(currentState: MailboxListState) = when (currentState) {
-        is MailboxListState.Data -> {
+        is MailboxListState.Data.ViewMode -> {
             if (currentState.refreshRequested) {
                 currentState.copy(refreshErrorEffect = Effect.of(Unit), refreshRequested = false)
             } else {
@@ -139,6 +147,6 @@ class MailboxListReducer @Inject constructor() {
             }
         }
 
-        is MailboxListState.Loading -> currentState
+        else -> currentState
     }
 }

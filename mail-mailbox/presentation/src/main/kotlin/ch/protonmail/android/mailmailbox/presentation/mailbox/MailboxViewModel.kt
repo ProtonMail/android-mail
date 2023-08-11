@@ -261,7 +261,7 @@ class MailboxViewModel @Inject constructor(
             .distinctUntilChanged()
 
     private fun Flow<MailboxState>.observeMailLabelChanges() =
-        this.map { it.mailboxListState as? MailboxListState.Data }
+        this.map { it.mailboxListState as? MailboxListState.Data.ViewMode }
             .mapNotNull { it?.currentMailLabel }
             .distinctUntilChanged()
 

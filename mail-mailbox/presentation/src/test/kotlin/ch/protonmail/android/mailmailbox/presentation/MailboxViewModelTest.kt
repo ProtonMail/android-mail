@@ -203,7 +203,7 @@ class MailboxViewModelTest {
         val expectedMailLabel = MailLabel.System(MailLabelId.System.Spam)
         val expectedCount = UnreadCountersTestData.labelToCounterMap[expectedMailLabel.id.labelId]
         val expectedState = MailboxStateSampleData.Loading.copy(
-            mailboxListState = MailboxListState.Data(
+            mailboxListState = MailboxListState.Data.ViewMode(
                 currentMailLabel = expectedMailLabel,
                 openItemEffect = Effect.empty(),
                 scrollToMailboxTop = Effect.of(expectedMailLabel.id),
@@ -237,7 +237,7 @@ class MailboxViewModelTest {
         val initialMailLabel = MailLabelTestData.customLabelOne
         val modifiedMailLabel = initialMailLabel.copy(isExpanded = !MailLabelTestData.customLabelOne.isExpanded)
         val expectedState = MailboxStateSampleData.Loading.copy(
-            mailboxListState = MailboxListState.Data(
+            mailboxListState = MailboxListState.Data.ViewMode(
                 currentMailLabel = modifiedMailLabel,
                 openItemEffect = Effect.empty(),
                 scrollToMailboxTop = Effect.of(initialMailLabel.id),
@@ -527,7 +527,7 @@ class MailboxViewModelTest {
         // Given
         val item = buildMailboxUiModelItem("id", Message)
         val expectedState = MailboxStateSampleData.Loading.copy(
-            mailboxListState = MailboxListState.Data(
+            mailboxListState = MailboxListState.Data.ViewMode(
                 currentMailLabel = MailLabel.System(initialLocationMailLabelId),
                 openItemEffect = Effect.of(OpenMailboxItemRequest(MailboxItemId(item.id), Message)),
                 scrollToMailboxTop = Effect.empty(),
@@ -556,7 +556,7 @@ class MailboxViewModelTest {
     fun `when on offline with data is submitted, new state is produced and emitted`() = runTest {
         // Given
         val expectedState = MailboxStateSampleData.Loading.copy(
-            mailboxListState = MailboxListState.Data(
+            mailboxListState = MailboxListState.Data.ViewMode(
                 currentMailLabel = MailLabel.System(initialLocationMailLabelId),
                 openItemEffect = Effect.empty(),
                 scrollToMailboxTop = Effect.empty(),
@@ -584,7 +584,7 @@ class MailboxViewModelTest {
     fun `when on error with data is submitted, new state is produced and emitted`() = runTest {
         // Given
         val expectedState = MailboxStateSampleData.Loading.copy(
-            mailboxListState = MailboxListState.Data(
+            mailboxListState = MailboxListState.Data.ViewMode(
                 currentMailLabel = MailLabel.System(initialLocationMailLabelId),
                 openItemEffect = Effect.empty(),
                 scrollToMailboxTop = Effect.empty(),
@@ -612,7 +612,7 @@ class MailboxViewModelTest {
     fun `when refresh action is submitted, new state is produced and emitted`() = runTest {
         // Given
         val expectedState = MailboxStateSampleData.Loading.copy(
-            mailboxListState = MailboxListState.Data(
+            mailboxListState = MailboxListState.Data.ViewMode(
                 currentMailLabel = MailLabel.System(initialLocationMailLabelId),
                 openItemEffect = Effect.empty(),
                 scrollToMailboxTop = Effect.empty(),
@@ -641,7 +641,7 @@ class MailboxViewModelTest {
         // Given
         val item = buildMailboxUiModelItem("id", Conversation)
         val expectedState = MailboxStateSampleData.Loading.copy(
-            mailboxListState = MailboxListState.Data(
+            mailboxListState = MailboxListState.Data.ViewMode(
                 currentMailLabel = MailLabel.System(initialLocationMailLabelId),
                 openItemEffect = Effect.of(OpenMailboxItemRequest(MailboxItemId(item.id), Conversation)),
                 scrollToMailboxTop = Effect.empty(),
@@ -887,7 +887,7 @@ class MailboxViewModelTest {
         selectedMailLabelId: MailLabelId.System = initialLocationMailLabelId
     ): MailboxState {
         return MailboxStateSampleData.Loading.copy(
-            mailboxListState = MailboxListState.Data(
+            mailboxListState = MailboxListState.Data.ViewMode(
                 currentMailLabel = MailLabel.System(selectedMailLabelId),
                 openItemEffect = openEffect,
                 scrollToMailboxTop = Effect.empty(),

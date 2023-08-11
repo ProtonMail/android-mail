@@ -108,7 +108,7 @@ internal class MailboxReducerTest(
         private val spamLabel = MailLabel.System(MailLabelId.System.Spam)
         private val currentState = MailboxStateSampleData.Loading
         private val reducedState = MailboxState(
-            mailboxListState = MailboxListState.Data(
+            mailboxListState = MailboxListState.Data.ViewMode(
                 currentMailLabel = spamLabel,
                 openItemEffect = Effect.empty(),
                 scrollToMailboxTop = Effect.empty(),

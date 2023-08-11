@@ -57,7 +57,7 @@ internal class MailboxListReducerTest(
             TestInput(
                 currentState = MailboxListState.Loading,
                 operation = MailboxEvent.SelectedLabelChanged(MailLabelTestData.customLabelOne),
-                expectedState = MailboxListState.Data(
+                expectedState = MailboxListState.Data.ViewMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,
                     openItemEffect = Effect.empty(),
                     scrollToMailboxTop = Effect.empty(),
@@ -69,7 +69,7 @@ internal class MailboxListReducerTest(
             TestInput(
                 currentState = MailboxListState.Loading,
                 operation = MailboxEvent.NewLabelSelected(MailLabelTestData.customLabelOne, UNREAD_COUNT),
-                expectedState = MailboxListState.Data(
+                expectedState = MailboxListState.Data.ViewMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,
                     openItemEffect = Effect.empty(),
                     scrollToMailboxTop = Effect.empty(),
@@ -113,7 +113,7 @@ internal class MailboxListReducerTest(
 
         private val transitionsFromDataState = listOf(
             TestInput(
-                currentState = MailboxListState.Data(
+                currentState = MailboxListState.Data.ViewMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,
                     openItemEffect = Effect.empty(),
                     scrollToMailboxTop = Effect.empty(),
@@ -122,7 +122,7 @@ internal class MailboxListReducerTest(
                     refreshRequested = false
                 ),
                 operation = MailboxEvent.SelectedLabelChanged(MailLabelTestData.customLabelTwo),
-                expectedState = MailboxListState.Data(
+                expectedState = MailboxListState.Data.ViewMode(
                     currentMailLabel = MailLabelTestData.customLabelTwo,
                     openItemEffect = Effect.empty(),
                     scrollToMailboxTop = Effect.empty(),
@@ -132,7 +132,7 @@ internal class MailboxListReducerTest(
                 )
             ),
             TestInput(
-                currentState = MailboxListState.Data(
+                currentState = MailboxListState.Data.ViewMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,
                     openItemEffect = Effect.empty(),
                     scrollToMailboxTop = Effect.empty(),
@@ -141,7 +141,7 @@ internal class MailboxListReducerTest(
                     refreshRequested = false
                 ),
                 operation = MailboxEvent.NewLabelSelected(MailLabelTestData.customLabelTwo, UNREAD_COUNT),
-                expectedState = MailboxListState.Data(
+                expectedState = MailboxListState.Data.ViewMode(
                     currentMailLabel = MailLabelTestData.customLabelTwo,
                     openItemEffect = Effect.empty(),
                     scrollToMailboxTop = Effect.of(MailLabelTestData.customLabelTwo.id),
@@ -151,7 +151,7 @@ internal class MailboxListReducerTest(
                 )
             ),
             TestInput(
-                currentState = MailboxListState.Data(
+                currentState = MailboxListState.Data.ViewMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,
                     openItemEffect = Effect.empty(),
                     scrollToMailboxTop = Effect.empty(),
@@ -163,7 +163,7 @@ internal class MailboxListReducerTest(
                     item = MailboxItemUiModelTestData.readMailboxItemUiModel,
                     preferredViewMode = ViewMode.ConversationGrouping
                 ),
-                expectedState = MailboxListState.Data(
+                expectedState = MailboxListState.Data.ViewMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,
                     openItemEffect = Effect.of(
                         OpenMailboxItemRequest(
@@ -178,7 +178,7 @@ internal class MailboxListReducerTest(
                 )
             ),
             TestInput(
-                currentState = MailboxListState.Data(
+                currentState = MailboxListState.Data.ViewMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,
                     openItemEffect = Effect.empty(),
                     scrollToMailboxTop = Effect.empty(),
@@ -190,7 +190,7 @@ internal class MailboxListReducerTest(
                     item = MailboxItemUiModelTestData.readMailboxItemUiModel,
                     preferredViewMode = ViewMode.NoConversationGrouping
                 ),
-                expectedState = MailboxListState.Data(
+                expectedState = MailboxListState.Data.ViewMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,
                     openItemEffect = Effect.of(
                         OpenMailboxItemRequest(
@@ -205,7 +205,7 @@ internal class MailboxListReducerTest(
                 )
             ),
             TestInput(
-                currentState = MailboxListState.Data(
+                currentState = MailboxListState.Data.ViewMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,
                     openItemEffect = Effect.empty(),
                     scrollToMailboxTop = Effect.empty(),
@@ -214,7 +214,7 @@ internal class MailboxListReducerTest(
                     refreshRequested = true
                 ),
                 operation = MailboxViewAction.OnOfflineWithData,
-                expectedState = MailboxListState.Data(
+                expectedState = MailboxListState.Data.ViewMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,
                     openItemEffect = Effect.empty(),
                     scrollToMailboxTop = Effect.empty(),
@@ -224,7 +224,7 @@ internal class MailboxListReducerTest(
                 )
             ),
             TestInput(
-                currentState = MailboxListState.Data(
+                currentState = MailboxListState.Data.ViewMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,
                     openItemEffect = Effect.empty(),
                     scrollToMailboxTop = Effect.empty(),
@@ -233,7 +233,7 @@ internal class MailboxListReducerTest(
                     refreshRequested = false
                 ),
                 operation = MailboxViewAction.OnOfflineWithData,
-                expectedState = MailboxListState.Data(
+                expectedState = MailboxListState.Data.ViewMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,
                     openItemEffect = Effect.empty(),
                     scrollToMailboxTop = Effect.empty(),
@@ -243,7 +243,7 @@ internal class MailboxListReducerTest(
                 )
             ),
             TestInput(
-                currentState = MailboxListState.Data(
+                currentState = MailboxListState.Data.ViewMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,
                     openItemEffect = Effect.empty(),
                     scrollToMailboxTop = Effect.empty(),
@@ -252,7 +252,7 @@ internal class MailboxListReducerTest(
                     refreshRequested = true
                 ),
                 operation = MailboxViewAction.OnErrorWithData,
-                expectedState = MailboxListState.Data(
+                expectedState = MailboxListState.Data.ViewMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,
                     openItemEffect = Effect.empty(),
                     scrollToMailboxTop = Effect.empty(),
@@ -262,7 +262,7 @@ internal class MailboxListReducerTest(
                 )
             ),
             TestInput(
-                currentState = MailboxListState.Data(
+                currentState = MailboxListState.Data.ViewMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,
                     openItemEffect = Effect.empty(),
                     scrollToMailboxTop = Effect.empty(),
@@ -271,7 +271,7 @@ internal class MailboxListReducerTest(
                     refreshRequested = false
                 ),
                 operation = MailboxViewAction.OnErrorWithData,
-                expectedState = MailboxListState.Data(
+                expectedState = MailboxListState.Data.ViewMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,
                     openItemEffect = Effect.empty(),
                     scrollToMailboxTop = Effect.empty(),
@@ -281,7 +281,7 @@ internal class MailboxListReducerTest(
                 )
             ),
             TestInput(
-                currentState = MailboxListState.Data(
+                currentState = MailboxListState.Data.ViewMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,
                     openItemEffect = Effect.empty(),
                     scrollToMailboxTop = Effect.empty(),
@@ -290,7 +290,7 @@ internal class MailboxListReducerTest(
                     refreshRequested = false
                 ),
                 operation = MailboxViewAction.Refresh,
-                expectedState = MailboxListState.Data(
+                expectedState = MailboxListState.Data.ViewMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,
                     openItemEffect = Effect.empty(),
                     scrollToMailboxTop = Effect.empty(),

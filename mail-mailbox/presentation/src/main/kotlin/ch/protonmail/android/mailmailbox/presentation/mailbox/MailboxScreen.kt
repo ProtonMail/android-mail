@@ -157,7 +157,7 @@ fun MailboxScreen(
         }
     ) { paddingValues ->
         when (val mailboxListState = mailboxState.mailboxListState) {
-            is MailboxListState.Data -> {
+            is MailboxListState.Data.ViewMode -> {
 
                 ConsumableLaunchedEffect(mailboxListState.scrollToMailboxTop) {
                     lazyListState.animateScrollToItem(0)
@@ -182,6 +182,8 @@ fun MailboxScreen(
                     actions = actions
                 )
             }
+
+            is MailboxListState.Data.SelectionMode -> {}
 
             MailboxListState.Loading -> ProtonCenteredProgress(
                 modifier = Modifier

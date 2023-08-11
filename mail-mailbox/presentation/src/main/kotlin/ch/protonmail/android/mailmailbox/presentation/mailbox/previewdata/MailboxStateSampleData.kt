@@ -36,7 +36,7 @@ object MailboxStateSampleData {
     )
 
     val Inbox = MailboxState(
-        mailboxListState = MailboxListState.Data(
+        mailboxListState = MailboxListState.Data.ViewMode(
             currentMailLabel = MailLabel.System(MailLabelId.System.Inbox),
             openItemEffect = Effect.empty(),
             scrollToMailboxTop = Effect.empty(),
@@ -55,7 +55,7 @@ object MailboxStateSampleData {
     )
 
     val AllMail = MailboxState(
-        mailboxListState = MailboxListState.Data(
+        mailboxListState = MailboxListState.Data.ViewMode(
             currentMailLabel = MailLabel.System(MailLabelId.System.AllMail),
             openItemEffect = Effect.empty(),
             scrollToMailboxTop = Effect.empty(),
