@@ -66,6 +66,10 @@ class DraftUploader @Inject constructor(
         draftRepository.forceUpload(userId, messageId)
     }
 
+    fun stopContinuousUpload() {
+        syncJob?.cancel()
+    }
+
     companion object {
         val SyncInterval = 1.seconds
     }

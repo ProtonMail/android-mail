@@ -361,6 +361,7 @@ class ComposerViewModelTest {
         expectStoreAllDraftFieldsSucceeds(expectedUserId, expectedMessageId, expectedFields)
         expectNoInputDraftMessageId()
         expectUploadDraftSucceeds(expectedUserId, expectedMessageId)
+        expectStopContinuousDraftUploadSucceeds()
 
         // Change internal state of the View Model to simulate the existence of all fields before closing the composer
         expectedViewModelInitialState(
@@ -375,8 +376,11 @@ class ComposerViewModelTest {
         viewModel.submit(ComposerAction.OnCloseComposer)
 
         // Then
-        coVerify { draftUploader.upload(expectedUserId, expectedMessageId) }
-        coVerify { storeDraftWithAllFields(expectedUserId, expectedMessageId, expectedFields) }
+        coVerifyOrder {
+            draftUploader.stopContinuousUpload()
+            storeDraftWithAllFields(expectedUserId, expectedMessageId, expectedFields)
+            draftUploader.upload(expectedUserId, expectedMessageId)
+        }
         assertEquals(Effect.of(Unit), viewModel.state.value.closeComposerWithDraftSaved)
     }
 
@@ -398,7 +402,7 @@ class ComposerViewModelTest {
     }
 
     @Test
-    fun `should store and upload draft when any field which requires used input is not empty and composer is closed`() =
+    fun `should store and upload draft when any field which requires user input is not empty and composer is closed`() =
         runTest {
             // Given
             val expectedSubject = Subject("Added subject")
@@ -421,6 +425,8 @@ class ComposerViewModelTest {
             mockParticipantMapper()
             expectStoreAllDraftFieldsSucceeds(expectedUserId, expectedMessageId, expectedFields)
             expectNoInputDraftMessageId()
+            expectStopContinuousDraftUploadSucceeds()
+            expectUploadDraftSucceeds(expectedUserId, expectedMessageId)
 
             // Change internal state of the View Model to simulate the
             // existence of all fields before closing the composer
@@ -436,6 +442,7 @@ class ComposerViewModelTest {
 
             // Then
             coVerifyOrder {
+                draftUploader.stopContinuousUpload()
                 storeDraftWithAllFields(expectedUserId, expectedMessageId, expectedFields)
                 draftUploader.upload(expectedUserId, expectedMessageId)
             }
@@ -841,6 +848,10 @@ class ComposerViewModelTest {
 
     private fun expectInputDraftMessageId(draftId: () -> MessageId) = draftId().also {
         every { savedStateHandle.get<String>(ComposerScreen.DraftMessageIdKey) } returns it.id
+    }
+
+    private fun expectStopContinuousDraftUploadSucceeds() {
+        coEvery { draftUploader.stopContinuousUpload() } returns Unit
     }
 
     private fun expectUploadDraftSucceeds(expectedUserId: UserId, expectedMessageId: MessageId) {

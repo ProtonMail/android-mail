@@ -168,6 +168,7 @@ class ComposerViewModel @Inject constructor(
             else -> {
                 viewModelScope.launch {
                     withContext(NonCancellable) {
+                        draftUploader.stopContinuousUpload()
                         storeDraftWithAllFields(primaryUserId(), currentMessageId(), fields)
                         draftUploader.upload(primaryUserId(), currentMessageId())
                     }
