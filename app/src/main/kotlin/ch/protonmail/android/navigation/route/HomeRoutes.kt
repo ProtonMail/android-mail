@@ -214,13 +214,13 @@ internal fun NavGraphBuilder.addDeepLinkHandler(navController: NavHostController
         }
 
         fun showUserSwitchedEmailIfRequired(email: String?) {
-            if (email != null) {
-                Toast.makeText(
-                    context,
-                    context.getString(R.string.notification_switched_account, email),
-                    Toast.LENGTH_LONG
-                ).show()
-            }
+            if (email.isNullOrBlank()) return
+
+            Toast.makeText(
+                context,
+                context.getString(R.string.notification_switched_account, email),
+                Toast.LENGTH_LONG
+            ).show()
         }
 
         LaunchedEffect(key1 = state) {

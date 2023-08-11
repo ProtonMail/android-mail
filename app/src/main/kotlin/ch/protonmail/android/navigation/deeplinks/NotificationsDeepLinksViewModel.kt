@@ -22,6 +22,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcomposer.domain.usecase.GetPrimaryAddress
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
@@ -53,6 +54,7 @@ import kotlin.coroutines.CoroutineContext
 class NotificationsDeepLinksViewModel @Inject constructor(
     private val networkManager: NetworkManager,
     private val accountManager: AccountManager,
+    private val getPrimaryAddress: GetPrimaryAddress,
     private val messageRepository: MessageRepository,
     private val conversationRepository: ConversationRepository,
     private val mailSettingsRepository: MailSettingsRepository,
@@ -160,7 +162,8 @@ class NotificationsDeepLinksViewModel @Inject constructor(
                 .firstOrNull()
             if (targetAccount != null) {
                 accountManager.setAsPrimary(UserId(userId))
-                AccountSwitchResult.AccountSwitched(targetAccount.userId, targetAccount.email ?: "")
+                val emailAddress = getPrimaryAddress(UserId(userId)).getOrNull()?.email
+                AccountSwitchResult.AccountSwitched(targetAccount.userId, emailAddress ?: "")
             } else {
                 AccountSwitchResult.AccountSwitchError
             }

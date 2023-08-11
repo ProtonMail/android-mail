@@ -19,12 +19,13 @@
 package ch.protonmail.android.navigation.deeplinks
 
 import java.util.UUID
-import androidx.lifecycle.viewmodel.compose.viewModel
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.AccountSample
+import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
+import ch.protonmail.android.mailcomposer.domain.usecase.GetPrimaryAddress
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
 import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
@@ -69,6 +70,7 @@ class NotificationsDeepLinksViewModelTest {
         coEvery { getMailSettings(any(), any()) } returns mailSettings
     }
     private val notificationsDeepLinkHelper: NotificationsDeepLinkHelper = mockk(relaxed = true)
+    private val getPrimaryAddress: GetPrimaryAddress = mockk()
 
     @Before
     fun before() {
@@ -227,20 +229,22 @@ class NotificationsDeepLinksViewModelTest {
     fun `Should switch account and emit switched for inbox notification to an active non primary account`() = runTest {
         // Given
         val notificationId = Random.nextInt()
-        val notificationUserId = UUID.randomUUID().toString()
-        val activeUserId = UUID.randomUUID().toString()
+        val notificationUserId = UserId(UUID.randomUUID().toString())
+        val activeUserId = UserId(UUID.randomUUID().toString())
         val viewModel = buildViewModel()
-        coEvery { accountManager.getPrimaryUserId() } returns flowOf(UserId(activeUserId))
-        coEvery { accountManager.getAccount(UserId(notificationUserId)) } returns flowOf(AccountSample.Primary)
+        coEvery { accountManager.getPrimaryUserId() } returns flowOf(activeUserId)
+        coEvery { accountManager.getAccount(notificationUserId) } returns flowOf(AccountSample.Primary)
+        coEvery {
+            getPrimaryAddress.invoke(notificationUserId)
+        } returns UserAddressSample.PrimaryAddress.right()
 
         // When
-        viewModel.navigateToInbox(notificationId, notificationUserId)
+        viewModel.navigateToInbox(notificationId, notificationUserId.id)
 
         // Then
         viewModel.state.test {
             assertEquals(NavigateToInbox.ActiveUserSwitched(AccountSample.Primary.email!!), awaitItem())
-            verify { notificationsDeepLinkHelper.cancelNotification(notificationId) }
-            coVerify { accountManager.setAsPrimary(UserId(notificationUserId)) }
+            coVerify { accountManager.setAsPrimary(notificationUserId) }
         }
     }
 
@@ -249,10 +253,13 @@ class NotificationsDeepLinksViewModelTest {
         // Given
         val notificationId = Random.nextInt()
         val notificationTargetAccount = AccountSample.Primary
-        val activeUserId = UUID.randomUUID().toString()
+        val activeUserId = UserId(UUID.randomUUID().toString())
         val messageId = UUID.randomUUID().toString()
         val viewModel = buildViewModel()
-        coEvery { accountManager.getPrimaryUserId() } returns flowOf(UserId(activeUserId))
+        coEvery { accountManager.getPrimaryUserId() } returns flowOf(activeUserId)
+        coEvery {
+            getPrimaryAddress.invoke(notificationTargetAccount.userId)
+        } returns UserAddressSample.PrimaryAddress.right()
         coEvery {
             accountManager.getAccount(notificationTargetAccount.userId)
         } returns flowOf(notificationTargetAccount)
@@ -290,6 +297,7 @@ class NotificationsDeepLinksViewModelTest {
         messageRepository = messageRepository,
         conversationRepository = conversationRepository,
         mailSettingsRepository = mailSettingsRepository,
-        notificationsDeepLinkHelper = notificationsDeepLinkHelper
+        notificationsDeepLinkHelper = notificationsDeepLinkHelper,
+        getPrimaryAddress = getPrimaryAddress
     )
 }
