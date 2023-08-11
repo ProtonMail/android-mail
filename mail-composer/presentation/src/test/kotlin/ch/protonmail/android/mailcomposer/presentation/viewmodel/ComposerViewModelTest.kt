@@ -40,7 +40,6 @@ import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddres
 import ch.protonmail.android.mailcomposer.domain.usecase.GetDecryptedDraftFields
 import ch.protonmail.android.mailcomposer.domain.usecase.GetPrimaryAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.IsValidEmailAddress
-import ch.protonmail.android.mailcomposer.domain.usecase.ObserveDraftStateForApiAssignedId
 import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithAllFields
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithBody
@@ -111,7 +110,6 @@ class ComposerViewModelTest {
     }
     private val savedStateHandle = mockk<SavedStateHandle>()
     private val getDecryptedDraftFields = mockk<GetDecryptedDraftFields>()
-    private val observeDraftStateForApiAssignedId = mockk<ObserveDraftStateForApiAssignedId>()
     private val reducer = ComposerReducer()
 
     private val viewModel by lazy {
@@ -129,7 +127,6 @@ class ComposerViewModelTest {
             composerIdlingResource,
             getDecryptedDraftFields,
             savedStateHandle,
-            observeDraftStateForApiAssignedId,
             draftUploader,
             observePrimaryUserIdMock,
             provideNewDraftIdMock
@@ -784,7 +781,6 @@ class ComposerViewModelTest {
         val userId = expectedUserId { UserIdSample.Primary }
         val messageId = expectedMessageId { MessageIdSample.EmptyDraft }
         expectedPrimaryAddress(userId) { UserAddressSample.PrimaryAddress }
-        expectNoApiAssignedId(userId, messageId)
         expectStartDraftSync(userId, messageId)
         expectNoInputDraftMessageId()
 
@@ -794,29 +790,6 @@ class ComposerViewModelTest {
         // Then
         assertEquals(messageId, actual.fields.draftId)
         coVerify { draftUploader.startContinuousUpload(userId, messageId, DraftAction.Compose, any()) }
-    }
-
-    @Test
-    fun `emits state with api assigned messageId and re-start syncing draft with it`() = runTest {
-        // Given
-        val apiAssignedId = MessageIdSample.RemoteDraft
-        val userId = expectedUserId { UserIdSample.Primary }
-        val messageId = expectedMessageId { MessageIdSample.EmptyDraft }
-        expectedPrimaryAddress(userId) { UserAddressSample.PrimaryAddress }
-        expectApiAssignedId(userId, messageId, apiAssignedId)
-        expectStartDraftSync(userId, messageId)
-        expectStartDraftSync(userId, apiAssignedId)
-        expectNoInputDraftMessageId()
-
-        // When
-        val state = viewModel.state.value
-
-        // Then
-        assertEquals(apiAssignedId, state.fields.draftId)
-        coVerifyOrder {
-            draftUploader.startContinuousUpload(userId, messageId, DraftAction.Compose, any())
-            draftUploader.startContinuousUpload(userId, apiAssignedId, DraftAction.Compose, any())
-        }
     }
 
     @AfterTest
@@ -860,18 +833,6 @@ class ComposerViewModelTest {
 
     private fun expectStartDraftSync(userId: UserId, messageId: MessageId) {
         coEvery { draftUploader.startContinuousUpload(userId, messageId, DraftAction.Compose, any()) } returns Unit
-    }
-
-    private fun expectApiAssignedId(
-        userId: UserId,
-        messageId: MessageId,
-        apiAssignedId: MessageId
-    ) {
-        coEvery { observeDraftStateForApiAssignedId(userId, messageId) } returns flowOf(apiAssignedId)
-    }
-
-    private fun expectNoApiAssignedId(userId: UserId, messageId: MessageId) {
-        coEvery { observeDraftStateForApiAssignedId(userId, messageId) } returns flowOf()
     }
 
     private fun expectedViewModelInitialState(

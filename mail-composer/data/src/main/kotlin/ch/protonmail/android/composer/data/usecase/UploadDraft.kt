@@ -24,6 +24,7 @@ import ch.protonmail.android.composer.data.remote.DraftRemoteDataSource
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailcomposer.domain.usecase.IsDraftKnownToApi
+import ch.protonmail.android.mailcomposer.domain.usecase.FindLocalDraft
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
@@ -34,6 +35,7 @@ import javax.inject.Inject
 
 internal class UploadDraft @Inject constructor(
     private val messageRepository: MessageRepository,
+    private val findLocalDraft: FindLocalDraft,
     private val draftStateRepository: DraftStateRepository,
     private val draftRemoteDataSource: DraftRemoteDataSource,
     private val isDraftKnownToApi: IsDraftKnownToApi
@@ -42,17 +44,17 @@ internal class UploadDraft @Inject constructor(
     suspend operator fun invoke(userId: UserId, messageId: MessageId): Either<DataError, Unit> = either {
         Timber.d("Draft: Uploading draft for $messageId")
 
-        val draftState = draftStateRepository.observe(userId, messageId).first().onLeft {
-            Timber.w("Sync draft failure $messageId: No draft state found")
-        }.bind()
-
-        val message = findLocalMessageWithBody(userId, messageId, draftState.apiMessageId)
+        val message = findLocalDraft(userId, messageId)
         if (message == null) {
             Timber.w("Sync draft failure $messageId: No message found")
             shift<MessageWithBody>(DataError.Local.NoDataCached)
             // Return for the compiler's sake (message optionality). shift is causing a left to be returned just above
             return@either
         }
+
+        val draftState = draftStateRepository.observe(userId, messageId).first().onLeft {
+            Timber.w("Sync draft failure $messageId: No draft state found")
+        }.bind()
 
         if (isDraftKnownToApi(draftState)) {
             draftRemoteDataSource.update(userId, message).onRight {
@@ -70,22 +72,6 @@ internal class UploadDraft @Inject constructor(
             }.bind()
 
         }
-    }
-
-    private suspend fun findLocalMessageWithBody(
-        userId: UserId,
-        messageId: MessageId,
-        apiMessageId: MessageId?
-    ): MessageWithBody? {
-        messageRepository.getLocalMessageWithBody(userId, messageId)?.let { messageFoundByMessageId ->
-            return messageFoundByMessageId
-        }
-        apiMessageId?.let {
-            messageRepository.getLocalMessageWithBody(userId, apiMessageId)?.let { messageFoundByApiMessageId ->
-                return messageFoundByApiMessageId
-            }
-        }
-        return null
     }
 
     private fun DataError.Remote.shouldLogToSentry() = this != DataError.Remote.CreateDraftRequestNotPerformed

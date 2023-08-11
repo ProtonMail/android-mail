@@ -29,6 +29,7 @@ import ch.protonmail.android.mailcomposer.domain.model.DraftState
 import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailcomposer.domain.sample.DraftStateSample
 import ch.protonmail.android.mailcomposer.domain.usecase.IsDraftKnownToApi
+import ch.protonmail.android.mailcomposer.domain.usecase.FindLocalDraft
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
@@ -53,12 +54,14 @@ class UploadDraftTest {
     private val userId = UserIdSample.Primary
 
     private val messageRepository = mockk<MessageRepository>()
+    private val findLocalDraft = mockk<FindLocalDraft>()
     private val draftRemoteDataSource = mockk<DraftRemoteDataSource>()
     private val draftStateRepository = mockk<DraftStateRepository>()
     private val isDraftKnownToApi = mockk<IsDraftKnownToApi>()
 
     private val draftRepository = UploadDraft(
         messageRepository,
+        findLocalDraft,
         draftStateRepository,
         draftRemoteDataSource,
         isDraftKnownToApi
@@ -132,34 +135,6 @@ class UploadDraftTest {
         // Then
         assertEquals(Unit.right(), actual)
         coVerify { draftStateRepository.saveSyncedState(userId, messageId, messageId) }
-    }
-
-    @Test
-    fun `when local message is not found by messageId but it is by apiMessageId then perform update`() = runTest {
-        /*
-         * This case would happen in case of concurrent executions of message creation (eg. typing a new draft while
-         * fully offline results in two works for upload the draft being scheduled as we append when exiting composer).
-         * First one succeeds, second fails as the first did update the ID of the message id DB.
-         */
-        // Given
-        val messageId = MessageIdSample.LocalDraft
-        val apiMessageId = MessageIdSample.RemoteDraft
-        val expectedMessage = MessageWithBodySample.RemoteDraft
-        val expectedDraftState = DraftStateSample.RemoteDraftState
-        val expectedResponse = MessageWithBodySample.RemoteDraft
-        expectGetLocalMessageFails(userId, messageId)
-        expectGetLocalMessageSucceeds(userId, apiMessageId, expectedMessage)
-        expectGetDraftStateSucceeds(userId, messageId, expectedDraftState)
-        expectRemoteDataSourceUpdateSuccess(userId, expectedMessage, expectedResponse)
-        expectStoreSyncedStateSuccess(userId, apiMessageId, apiMessageId)
-
-        // When
-        val actual = draftRepository(userId, messageId)
-
-        // Then
-        loggingRule.assertNoWarningLogs()
-        assertEquals(Unit.right(), actual)
-        coVerify { draftRemoteDataSource.update(userId, expectedMessage) }
     }
 
     @Test
@@ -311,11 +286,11 @@ class UploadDraftTest {
         messageId: MessageId,
         expectedMessage: MessageWithBody
     ) {
-        coEvery { messageRepository.getLocalMessageWithBody(userId, messageId) } returns expectedMessage
+        coEvery { findLocalDraft(userId, messageId) } returns expectedMessage
     }
 
     private fun expectGetLocalMessageFails(userId: UserId, messageId: MessageId) {
-        coEvery { messageRepository.getLocalMessageWithBody(userId, messageId) } returns null
+        coEvery { findLocalDraft(userId, messageId) } returns null
     }
 
     private fun expectGetDraftStateSucceeds(

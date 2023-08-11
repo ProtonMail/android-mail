@@ -23,13 +23,12 @@ import arrow.core.continuations.either
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
-import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 class GetLocalDraft @Inject constructor(
     private val createEmptyDraft: CreateEmptyDraft,
-    private val messageRepository: MessageRepository,
+    private val findLocalDraft: FindLocalDraft,
     private val resolveUserAddress: ResolveUserAddress
 ) {
 
@@ -42,7 +41,7 @@ class GetLocalDraft @Inject constructor(
             .mapLeft { Error.ResolveUserAddressError }
             .bind()
 
-        return@either messageRepository.getLocalMessageWithBody(userId, messageId)
+        return@either findLocalDraft(userId, messageId)
             ?: createEmptyDraft(messageId, userId, senderAddress)
     }
 

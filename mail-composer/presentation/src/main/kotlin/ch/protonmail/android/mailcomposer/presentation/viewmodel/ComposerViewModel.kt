@@ -37,7 +37,6 @@ import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddres
 import ch.protonmail.android.mailcomposer.domain.usecase.GetDecryptedDraftFields
 import ch.protonmail.android.mailcomposer.domain.usecase.GetPrimaryAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.IsValidEmailAddress
-import ch.protonmail.android.mailcomposer.domain.usecase.ObserveDraftStateForApiAssignedId
 import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithAllFields
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithBody
@@ -60,13 +59,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -90,7 +86,6 @@ class ComposerViewModel @Inject constructor(
     private val composerIdlingResource: ComposerIdlingResource,
     getDecryptedDraftFields: GetDecryptedDraftFields,
     savedStateHandle: SavedStateHandle,
-    private val observeDraftStateForApiAssignedId: ObserveDraftStateForApiAssignedId,
     private val draftUploader: DraftUploader,
     observePrimaryUserId: ObservePrimaryUserId,
     provideNewDraftId: ProvideNewDraftId
@@ -203,18 +198,9 @@ class ComposerViewModel @Inject constructor(
             ifRight = { ComposerAction.DraftBodyChanged(action.draftBody) }
         )
 
-    private suspend fun CoroutineScope.startDraftContinuousUpload() {
-        observeDraftStateForApiAssignedId(primaryUserId(), currentMessageId()).map { apiMessageId ->
-            Timber.d("Draft syncer: state updated with API assigned id: $apiMessageId")
-            draftUploader.startContinuousUpload(primaryUserId(), apiMessageId, DraftAction.Compose, this)
-            emitNewStateFor(ComposerEvent.ApiAssignedMessageIdReceived(apiMessageId))
-        }.onStart {
-            Timber.d("Draft syncer: scheduled with messageId ${currentMessageId()}")
-            draftUploader.startContinuousUpload(
-                primaryUserId(), currentMessageId(), DraftAction.Compose, this@startDraftContinuousUpload
-            )
-        }.collect()
-    }
+    private suspend fun CoroutineScope.startDraftContinuousUpload() = draftUploader.startContinuousUpload(
+        primaryUserId(), currentMessageId(), DraftAction.Compose, this@startDraftContinuousUpload
+    )
 
     private suspend fun primaryUserId() = primaryUserId.first()
 

@@ -25,7 +25,6 @@ import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
-import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
 import io.mockk.coEvery
@@ -40,12 +39,12 @@ import kotlin.test.assertEquals
 class GetLocalDraftTest {
 
     private val createEmptyDraftMock = mockk<CreateEmptyDraft>()
-    private val messageRepositoryMock = mockk<MessageRepository>()
+    private val findLocalDraftMock = mockk<FindLocalDraft>()
     private val resolveUserAddressMock = mockk<ResolveUserAddress>()
 
     private val getLocalDraft = GetLocalDraft(
         createEmptyDraftMock,
-        messageRepositoryMock,
+        findLocalDraftMock,
         resolveUserAddressMock
     )
 
@@ -106,7 +105,7 @@ class GetLocalDraftTest {
         senderAddress: UserAddress,
         existingDraft: () -> MessageWithBody
     ): MessageWithBody = existingDraft().also {
-        coEvery { messageRepositoryMock.getLocalMessageWithBody(userId, messageId) } returns null
+        coEvery { findLocalDraftMock(userId, messageId) } returns null
         every { createEmptyDraftMock(messageId, userId, senderAddress) } returns it
     }
 
@@ -115,7 +114,7 @@ class GetLocalDraftTest {
         messageId: MessageId,
         existingDraft: () -> MessageWithBody
     ): MessageWithBody = existingDraft().also {
-        coEvery { messageRepositoryMock.getLocalMessageWithBody(userId, messageId) } returns it
+        coEvery { findLocalDraftMock(userId, messageId) } returns it
     }
 
     private fun expectedResolvedUserAddress(
