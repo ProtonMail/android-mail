@@ -23,6 +23,16 @@ import me.proton.core.domain.entity.UserId
 
 interface DraftRepository {
 
+    /**
+     * Schedules the upload of the message with the given messageId.
+     * In case a job to upload this message is already ongoing or enqueued, nothing is done
+     */
     suspend fun upload(userId: UserId, messageId: MessageId)
+
+    /**
+     * Schedules the upload of the message with the given messageId.
+     * In case a job to upload this message is already ongoing or enqueued,
+     * a new job will be chained to happen afterwards, independently of the outcome of the existing one.
+     */
     suspend fun forceUpload(userId: UserId, messageId: MessageId)
 }
