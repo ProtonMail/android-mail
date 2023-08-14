@@ -45,18 +45,12 @@ import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.accountmanager.presentation.observe
 import me.proton.core.accountmanager.presentation.onAccountCreateAddressFailed
 import me.proton.core.accountmanager.presentation.onAccountCreateAddressNeeded
+import me.proton.core.accountmanager.presentation.onAccountReady
 import me.proton.core.accountmanager.presentation.onAccountTwoPassModeFailed
 import me.proton.core.accountmanager.presentation.onAccountTwoPassModeNeeded
 import me.proton.core.accountmanager.presentation.onSessionForceLogout
 import me.proton.core.accountmanager.presentation.onSessionSecondFactorNeeded
 import me.proton.core.auth.presentation.AuthOrchestrator
-import me.proton.core.auth.presentation.entity.SecondFactorResult
-import me.proton.core.auth.presentation.onAddAccountResult
-import me.proton.core.auth.presentation.onLoginResult
-import me.proton.core.auth.presentation.onLoginSsoResult
-import me.proton.core.auth.presentation.onOnSignUpResult
-import me.proton.core.auth.presentation.onSecondFactorResult
-import me.proton.core.auth.presentation.onTwoPassModeResult
 import me.proton.core.domain.entity.Product
 import me.proton.core.domain.entity.UserId
 import me.proton.core.plan.presentation.PlansOrchestrator
@@ -107,7 +101,6 @@ class LauncherViewModel @Inject constructor(
 
     fun register(context: AppCompatActivity) {
         authOrchestrator.register(context)
-        authOrchestrator.registerAdditionalCallbacks(context)
         plansOrchestrator.register(context)
         reportOrchestrator.register(context)
         userSettingsOrchestrator.register(context)
@@ -120,6 +113,7 @@ class LauncherViewModel @Inject constructor(
             .onSessionSecondFactorNeeded { authOrchestrator.startSecondFactorWorkflow(it) }
             .onAccountTwoPassModeNeeded { authOrchestrator.startTwoPassModeWorkflow(it) }
             .onAccountCreateAddressNeeded { authOrchestrator.startChooseAddressWorkflow(it) }
+            .onAccountReady { registerNotificationTokenForUserId(it.userId) }
     }
 
     fun submit(action: Action) {
@@ -135,46 +129,6 @@ class LauncherViewModel @Inject constructor(
                 is Action.SignOut -> onSignOut(action.userId)
                 is Action.Switch -> onSwitch(action.userId)
             }.exhaustive
-        }
-    }
-
-    @SuppressWarnings("ComplexMethod")
-    private fun AuthOrchestrator.registerAdditionalCallbacks(context: AppCompatActivity) {
-        onAddAccountResult { result ->
-            viewModelScope.launch {
-                if (result == null && getPrimaryUserIdOrNull() == null) {
-                    context.finish()
-                }
-            }
-
-            val userId = result?.userId?.let { UserId(it) } ?: return@onAddAccountResult
-            registerNotificationTokenForUserId(userId)
-        }
-
-        onOnSignUpResult { result ->
-            val userId = result?.let { UserId(it.userId) } ?: return@onOnSignUpResult
-            registerNotificationTokenForUserId(userId)
-        }
-
-        onLoginResult {
-            val userId = it?.let { UserId(it.userId) } ?: return@onLoginResult
-            registerNotificationTokenForUserId(userId)
-        }
-
-        onLoginSsoResult { result ->
-            val userId = result?.let { UserId(it.userId) } ?: return@onLoginSsoResult
-            registerNotificationTokenForUserId(userId)
-        }
-
-        onSecondFactorResult { result ->
-            val userId =
-                (result as? SecondFactorResult.Success)?.let { UserId(it.userId) } ?: return@onSecondFactorResult
-            registerNotificationTokenForUserId(userId)
-        }
-
-        onTwoPassModeResult { result ->
-            val userId = result?.let { UserId(it.userId) } ?: return@onTwoPassModeResult
-            registerNotificationTokenForUserId(userId)
         }
     }
 

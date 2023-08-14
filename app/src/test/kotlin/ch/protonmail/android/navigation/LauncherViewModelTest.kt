@@ -49,6 +49,7 @@ import me.proton.core.accountmanager.presentation.AccountManagerObserver
 import me.proton.core.accountmanager.presentation.observe
 import me.proton.core.accountmanager.presentation.onAccountCreateAddressFailed
 import me.proton.core.accountmanager.presentation.onAccountCreateAddressNeeded
+import me.proton.core.accountmanager.presentation.onAccountReady
 import me.proton.core.accountmanager.presentation.onAccountTwoPassModeFailed
 import me.proton.core.accountmanager.presentation.onAccountTwoPassModeNeeded
 import me.proton.core.accountmanager.presentation.onSessionForceLogout
@@ -286,6 +287,7 @@ class LauncherViewModelTest {
         verify(exactly = 1) { amObserver.onAccountTwoPassModeNeeded(any(), any()) }
         verify(exactly = 1) { amObserver.onSessionForceLogout(any(), any()) }
         verify(exactly = 1) { amObserver.onSessionSecondFactorNeeded(any(), any()) }
+        verify(exactly = 1) { amObserver.onAccountReady(any(), any()) }
     }
 
     @Test
@@ -444,6 +446,7 @@ class LauncherViewModelTest {
         mockkStatic(AccountManagerObserver::onAccountTwoPassModeNeeded)
         mockkStatic(AccountManagerObserver::onSessionForceLogout)
         mockkStatic(AccountManagerObserver::onSessionSecondFactorNeeded)
+        mockkStatic(AccountManagerObserver::onAccountReady)
         return mockk {
             every { onAccountCreateAddressFailed(any(), any()) } returns this
             every { onAccountCreateAddressNeeded(any(), any()) } returns this
@@ -451,6 +454,7 @@ class LauncherViewModelTest {
             every { onAccountTwoPassModeNeeded(any(), any()) } returns this
             every { onSessionForceLogout(any(), any()) } returns this
             every { onSessionSecondFactorNeeded(any(), any()) } returns this
+            every { onAccountReady(any(), any()) } returns this
         }
     }
 }
