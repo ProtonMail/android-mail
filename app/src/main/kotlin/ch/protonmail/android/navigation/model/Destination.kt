@@ -20,6 +20,7 @@ package ch.protonmail.android.navigation.model
 
 import ch.protonmail.android.feature.account.RemoveAccountDialog.USER_ID_KEY
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.DraftMessageIdKey
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.ConversationIdKey
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen.MESSAGE_ID_KEY
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -42,6 +43,10 @@ sealed class Destination(val route: String) {
         }
 
         object Composer : Destination("composer")
+
+        object PrefilledComposer : Destination("composer/${DraftMessageIdKey.wrap()}") {
+            operator fun invoke(messageId: MessageId) = route.replace(DraftMessageIdKey.wrap(), messageId.id)
+        }
 
         object Settings : Destination("settings")
         object AccountSettings : Destination("settings/account")

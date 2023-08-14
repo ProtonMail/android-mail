@@ -389,4 +389,24 @@ class MailboxItemUiModelMapperTest {
         )
         assertEquals(expectedLabels, result.labels)
     }
+
+    @Test
+    fun `when mailbox item has all-drafts label, should open as draft is true`() = runTest {
+        // Given
+        val mailboxItem = buildMailboxItem(labelIds = listOf(SystemLabelId.AllDrafts.labelId))
+        // When
+        val mailboxItemUiModel = mapper.toUiModel(mailboxItem, ContactTestData.contacts, defaultFolderColorSettings)
+        // Then
+        assertTrue(mailboxItemUiModel.shouldOpenInComposer)
+    }
+
+    @Test
+    fun `when mailbox item does not have all-drafts label, should open as draft is false`() = runTest {
+        // Given
+        val mailboxItem = buildMailboxItem(labelIds = listOf(SystemLabelId.AllMail.labelId))
+        // When
+        val mailboxItemUiModel = mapper.toUiModel(mailboxItem, ContactTestData.contacts, defaultFolderColorSettings)
+        // Then
+        assertFalse(mailboxItemUiModel.shouldOpenInComposer)
+    }
 }

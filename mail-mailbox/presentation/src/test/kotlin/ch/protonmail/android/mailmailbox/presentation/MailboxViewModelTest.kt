@@ -539,7 +539,7 @@ class MailboxViewModelTest {
         val expectedState = MailboxStateSampleData.Loading.copy(
             mailboxListState = MailboxListState.Data.ViewMode(
                 currentMailLabel = MailLabel.System(initialLocationMailLabelId),
-                openItemEffect = Effect.of(OpenMailboxItemRequest(MailboxItemId(item.id), Message)),
+                openItemEffect = Effect.of(OpenMailboxItemRequest(MailboxItemId(item.id), Message, false)),
                 scrollToMailboxTop = Effect.empty(),
                 offlineEffect = Effect.empty(),
                 refreshErrorEffect = Effect.empty(),
@@ -657,7 +657,7 @@ class MailboxViewModelTest {
         val expectedState = MailboxStateSampleData.Loading.copy(
             mailboxListState = MailboxListState.Data.ViewMode(
                 currentMailLabel = MailLabel.System(initialLocationMailLabelId),
-                openItemEffect = Effect.of(OpenMailboxItemRequest(MailboxItemId(item.id), Conversation)),
+                openItemEffect = Effect.of(OpenMailboxItemRequest(MailboxItemId(item.id), Conversation, false)),
                 scrollToMailboxTop = Effect.empty(),
                 offlineEffect = Effect.empty(),
                 refreshErrorEffect = Effect.empty(),
@@ -896,7 +896,7 @@ class MailboxViewModelTest {
                     MailboxEvent.ItemDetailsOpenedInViewMode(unreadMailboxItemUiModel, NoConversationGrouping)
                 )
             } returns createMailboxDataState(
-                Effect.of(OpenMailboxItemRequest(MailboxItemId(unreadMailboxItem.id), unreadMailboxItem.type))
+                Effect.of(OpenMailboxItemRequest(MailboxItemId(unreadMailboxItem.id), unreadMailboxItem.type, false))
             )
 
             mailboxViewModel.items.test {

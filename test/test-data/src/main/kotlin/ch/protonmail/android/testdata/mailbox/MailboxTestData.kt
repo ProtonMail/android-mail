@@ -175,13 +175,22 @@ object MailboxItemUiModelTestData {
         isRead = true
     )
 
+    val draftMailboxItemUiModel = buildMailboxUiModelItem(
+        id = "3",
+        type = MailboxItemType.Message,
+        subject = "Composing something",
+        isRead = true,
+        shouldOpenInComposer = true
+    )
+
     fun buildMailboxUiModelItem(
         id: String = "0",
         type: MailboxItemType = MailboxItemType.Message,
         subject: String = id,
         isRead: Boolean = true,
         labels: ImmutableList<LabelUiModel> = persistentListOf(),
-        locations: ImmutableList<MailboxItemLocationUiModel> = persistentListOf()
+        locations: ImmutableList<MailboxItemLocationUiModel> = persistentListOf(),
+        shouldOpenInComposer: Boolean = false
     ) = MailboxItemUiModel(
         avatar = AvatarUiModel.ParticipantInitial("T"),
         type = type,
@@ -201,6 +210,7 @@ object MailboxItemUiModelTestData {
         locations = locations,
         shouldShowAttachmentIcon = false,
         shouldShowExpirationLabel = false,
-        shouldShowCalendarIcon = false
+        shouldShowCalendarIcon = false,
+        shouldOpenInComposer = shouldOpenInComposer
     )
 }

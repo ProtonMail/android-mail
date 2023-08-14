@@ -85,13 +85,15 @@ internal fun NavGraphBuilder.addMailbox(
         MailboxScreen(
             actions = MailboxScreen.Actions.Empty.copy(
                 navigateToMailboxItem = { request ->
-                    navController.navigate(
-                        when (request.itemType) {
+                    val destination = when (request.shouldOpenInComposer) {
+                        true -> Destination.Screen.PrefilledComposer(MessageId(request.itemId.value))
+                        false -> when (request.itemType) {
                             MailboxItemType.Message -> Destination.Screen.Message(MessageId(request.itemId.value))
                             MailboxItemType.Conversation ->
                                 Destination.Screen.Conversation(ConversationId(request.itemId.value))
                         }
-                    )
+                    }
+                    navController.navigate(destination)
                 },
                 navigateToComposer = { navController.navigate(Destination.Screen.Composer.route) },
                 openDrawerMenu = openDrawerMenu,
@@ -127,6 +129,12 @@ internal fun NavGraphBuilder.addMessageDetail(
 
 internal fun NavGraphBuilder.addComposer(navController: NavHostController, showDraftSavedSnackbar: () -> Unit) {
     composable(route = Destination.Screen.Composer.route) {
+        ComposerScreen(
+            onCloseComposerClick = navController::popBackStack,
+            showDraftSavedSnackbar = showDraftSavedSnackbar
+        )
+    }
+    composable(route = Destination.Screen.PrefilledComposer.route) {
         ComposerScreen(
             onCloseComposerClick = navController::popBackStack,
             showDraftSavedSnackbar = showDraftSavedSnackbar

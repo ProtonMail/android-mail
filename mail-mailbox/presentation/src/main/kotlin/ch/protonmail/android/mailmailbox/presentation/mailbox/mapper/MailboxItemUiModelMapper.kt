@@ -78,7 +78,8 @@ class MailboxItemUiModelMapper @Inject constructor(
             locations = getLocationIconsToDisplay(mailboxItem, folderColorSettings),
             shouldShowAttachmentIcon = mailboxItem.hasNonCalendarAttachments,
             shouldShowExpirationLabel = hasExpirationTime(mailboxItem),
-            shouldShowCalendarIcon = hasCalendarAttachment(mailboxItem)
+            shouldShowCalendarIcon = hasCalendarAttachment(mailboxItem),
+            shouldOpenInComposer = mailboxItem.labelIds.contains(SystemLabelId.AllDrafts.labelId)
         )
     }
 

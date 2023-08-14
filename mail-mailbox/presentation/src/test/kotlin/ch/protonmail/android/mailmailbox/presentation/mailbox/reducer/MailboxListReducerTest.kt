@@ -180,7 +180,8 @@ internal class MailboxListReducerTest(
                     openItemEffect = Effect.of(
                         OpenMailboxItemRequest(
                             itemId = MailboxItemId(MailboxItemUiModelTestData.readMailboxItemUiModel.conversationId.id),
-                            itemType = MailboxItemType.Conversation
+                            itemType = MailboxItemType.Conversation,
+                            shouldOpenInComposer = false
                         )
                     ),
                     scrollToMailboxTop = Effect.empty(),
@@ -209,7 +210,68 @@ internal class MailboxListReducerTest(
                     openItemEffect = Effect.of(
                         OpenMailboxItemRequest(
                             itemId = MailboxItemId(MailboxItemUiModelTestData.readMailboxItemUiModel.id),
-                            itemType = MailboxItemType.Message
+                            itemType = MailboxItemType.Message,
+                            shouldOpenInComposer = false
+                        )
+                    ),
+                    scrollToMailboxTop = Effect.empty(),
+                    offlineEffect = Effect.empty(),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshRequested = false,
+                    selectionModeEnabled = false
+                )
+            ),
+            TestInput(
+                currentState = MailboxListState.Data.ViewMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    openItemEffect = Effect.empty(),
+                    scrollToMailboxTop = Effect.empty(),
+                    offlineEffect = Effect.empty(),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshRequested = false,
+                    selectionModeEnabled = false
+                ),
+                operation = MailboxEvent.ItemDetailsOpenedInViewMode(
+                    item = MailboxItemUiModelTestData.draftMailboxItemUiModel,
+                    preferredViewMode = ViewMode.NoConversationGrouping
+                ),
+                expectedState = MailboxListState.Data.ViewMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    openItemEffect = Effect.of(
+                        OpenMailboxItemRequest(
+                            itemId = MailboxItemId(MailboxItemUiModelTestData.draftMailboxItemUiModel.id),
+                            itemType = MailboxItemType.Message,
+                            shouldOpenInComposer = true
+                        )
+                    ),
+                    scrollToMailboxTop = Effect.empty(),
+                    offlineEffect = Effect.empty(),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshRequested = false,
+                    selectionModeEnabled = false
+                )
+            ),
+            TestInput(
+                currentState = MailboxListState.Data.ViewMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    openItemEffect = Effect.empty(),
+                    scrollToMailboxTop = Effect.empty(),
+                    offlineEffect = Effect.empty(),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshRequested = false,
+                    selectionModeEnabled = false
+                ),
+                operation = MailboxEvent.ItemDetailsOpenedInViewMode(
+                    item = MailboxItemUiModelTestData.draftMailboxItemUiModel,
+                    preferredViewMode = ViewMode.ConversationGrouping
+                ),
+                expectedState = MailboxListState.Data.ViewMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    openItemEffect = Effect.of(
+                        OpenMailboxItemRequest(
+                            itemId = MailboxItemId(MailboxItemUiModelTestData.draftMailboxItemUiModel.id),
+                            itemType = MailboxItemType.Message,
+                            shouldOpenInComposer = true
                         )
                     ),
                     scrollToMailboxTop = Effect.empty(),

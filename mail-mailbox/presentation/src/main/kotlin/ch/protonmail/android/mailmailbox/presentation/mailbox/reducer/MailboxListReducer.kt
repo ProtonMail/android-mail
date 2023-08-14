@@ -105,19 +105,28 @@ class MailboxListReducer @Inject constructor() {
         operation: MailboxEvent.ItemDetailsOpenedInViewMode,
         currentState: MailboxListState
     ): MailboxListState {
-        val request = when (operation.preferredViewMode) {
-            ViewMode.ConversationGrouping -> {
-                OpenMailboxItemRequest(
-                    itemId = MailboxItemId(operation.item.conversationId.id),
-                    itemType = MailboxItemType.Conversation
-                )
-            }
+        val request = when (operation.item.shouldOpenInComposer) {
+            true -> OpenMailboxItemRequest(
+                itemId = MailboxItemId(operation.item.id),
+                itemType = MailboxItemType.Message,
+                shouldOpenInComposer = true
+            )
+            false -> when (operation.preferredViewMode) {
+                ViewMode.ConversationGrouping -> {
+                    OpenMailboxItemRequest(
+                        itemId = MailboxItemId(operation.item.conversationId.id),
+                        itemType = MailboxItemType.Conversation,
+                        shouldOpenInComposer = false
+                    )
+                }
 
-            ViewMode.NoConversationGrouping -> {
-                OpenMailboxItemRequest(
-                    itemId = MailboxItemId(operation.item.id),
-                    itemType = operation.item.type
-                )
+                ViewMode.NoConversationGrouping -> {
+                    OpenMailboxItemRequest(
+                        itemId = MailboxItemId(operation.item.id),
+                        itemType = operation.item.type,
+                        shouldOpenInComposer = false
+                    )
+                }
             }
         }
         return when (currentState) {

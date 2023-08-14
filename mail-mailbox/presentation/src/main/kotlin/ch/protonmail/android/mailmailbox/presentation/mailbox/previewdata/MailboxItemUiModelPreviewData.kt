@@ -43,83 +43,89 @@ object MailboxItemUiModelPreviewData {
 
         val DroidConLondon = MailboxItemUiModel(
             avatar = AvatarUiModel.ParticipantInitial("D"),
-            conversationId = ConversationId("DroidConLondon"),
+            type = MailboxItemType.Conversation,
             id = "DroidConLondon",
+            userId = UserId,
+            conversationId = ConversationId("DroidConLondon"),
+            time = TextUiModel.Text("Aug 20th 2022"),
             isRead = true,
             labels = persistentListOf(),
-            locations = persistentListOf(MailboxItemLocationUiModel(R.drawable.ic_proton_archive_box)),
-            numMessages = 2,
+            subject = "DroidCon London",
             participants = ParticipantsUiModel.Participants(
                 listOf(ParticipantUiModel(name = "DroidCon", shouldShowOfficialBadge = false))
             ),
-            shouldShowAttachmentIcon = true,
-            shouldShowCalendarIcon = true,
-            shouldShowExpirationLabel = false,
-            shouldShowForwardedIcon = true,
-            shouldShowRepliedAllIcon = false,
             shouldShowRepliedIcon = false,
+            shouldShowRepliedAllIcon = false,
+            shouldShowForwardedIcon = true,
+            numMessages = 2,
             showStar = true,
-            subject = "DroidCon London",
-            time = TextUiModel.Text("Aug 20th 2022"),
-            type = MailboxItemType.Conversation,
-            userId = UserId
+            locations = persistentListOf(MailboxItemLocationUiModel(R.drawable.ic_proton_archive_box)),
+            shouldShowAttachmentIcon = true,
+            shouldShowExpirationLabel = false,
+            shouldShowCalendarIcon = true,
+            shouldOpenInComposer = false
         )
 
         val DroidConLondonWithZeroMessages = MailboxItemUiModel(
             avatar = AvatarUiModel.ParticipantInitial("D"),
-            conversationId = ConversationId("DroidConLondon"),
+            type = MailboxItemType.Conversation,
             id = "DroidConLondon",
+            userId = UserId,
+            conversationId = ConversationId("DroidConLondon"),
+            time = TextUiModel.Text("Aug 20th 2022"),
             isRead = true,
             labels = persistentListOf(),
-            locations = persistentListOf(),
-            numMessages = null,
+            subject = "DroidCon London",
             participants = ParticipantsUiModel.Participants(
                 listOf(ParticipantUiModel(name = "DroidCon", shouldShowOfficialBadge = false))
             ),
-            shouldShowAttachmentIcon = false,
-            shouldShowCalendarIcon = false,
-            shouldShowExpirationLabel = false,
-            shouldShowForwardedIcon = false,
-            shouldShowRepliedAllIcon = false,
             shouldShowRepliedIcon = false,
+            shouldShowRepliedAllIcon = false,
+            shouldShowForwardedIcon = false,
+            numMessages = null,
             showStar = true,
-            subject = "DroidCon London",
-            time = TextUiModel.Text("Aug 20th 2022"),
-            type = MailboxItemType.Conversation,
-            userId = UserId
+            locations = persistentListOf(),
+            shouldShowAttachmentIcon = false,
+            shouldShowExpirationLabel = false,
+            shouldShowCalendarIcon = false,
+            shouldOpenInComposer = false
         )
 
         val WeatherForecast = MailboxItemUiModel(
             avatar = AccuWeatherAvatar,
-            conversationId = WeatherForecastConversationId,
+            type = MailboxItemType.Conversation,
             id = "WeatherForecast",
+            userId = UserId,
+            conversationId = WeatherForecastConversationId,
+            time = Message.WeatherForecastSep.time,
             isRead = false,
             labels = persistentListOf(),
+            subject = "Weather Forecast",
+            participants = ParticipantsUiModel.Participants(
+                listOf(ParticipantUiModel(name = AccuWeatherName, shouldShowOfficialBadge = false))
+            ),
+            shouldShowRepliedIcon = false,
+            shouldShowRepliedAllIcon = false,
+            shouldShowForwardedIcon = false,
+            numMessages = 2,
+            showStar = true,
             locations = persistentListOf(
                 MailboxItemLocationUiModel(R.drawable.ic_proton_inbox),
                 MailboxItemLocationUiModel(R.drawable.ic_proton_trash)
             ),
-            numMessages = 2,
-            participants = ParticipantsUiModel.Participants(
-                listOf(ParticipantUiModel(name = AccuWeatherName, shouldShowOfficialBadge = false))
-            ),
             shouldShowAttachmentIcon = true,
-            shouldShowCalendarIcon = false,
             shouldShowExpirationLabel = false,
-            shouldShowForwardedIcon = false,
-            shouldShowRepliedAllIcon = false,
-            shouldShowRepliedIcon = false,
-            showStar = true,
-            subject = "Weather Forecast",
-            time = Message.WeatherForecastSep.time,
-            type = MailboxItemType.Conversation,
-            userId = UserId
+            shouldShowCalendarIcon = false,
+            shouldOpenInComposer = false
         )
 
         val MultipleRecipientWithLabel = MailboxItemUiModel(
             avatar = AvatarUiModel.ParticipantInitial("D"),
-            conversationId = ConversationId("DroidConLondon"),
+            type = MailboxItemType.Conversation,
             id = "DroidConLondon",
+            userId = UserId,
+            conversationId = ConversationId("DroidConLondon"),
+            time = TextUiModel.Text("Aug 20th 2022"),
             isRead = true,
             labels = persistentListOf(
                 LabelUiModel("Long Test", Color.Red),
@@ -129,8 +135,7 @@ object MailboxItemUiModelPreviewData {
                 LabelUiModel("1234567890123", Color.Blue),
                 LabelUiModel("Very important mail label", Color.Green)
             ),
-            locations = persistentListOf(),
-            numMessages = 2,
+            subject = "DroidCon London",
             participants = ParticipantsUiModel.Participants(
                 listOf(
                     ParticipantUiModel(name = "FirstRecipient", shouldShowOfficialBadge = false),
@@ -138,90 +143,92 @@ object MailboxItemUiModelPreviewData {
                     ParticipantUiModel(name = "ThirdRecipient", shouldShowOfficialBadge = false)
                 )
             ),
-            shouldShowAttachmentIcon = true,
-            shouldShowCalendarIcon = true,
-            shouldShowExpirationLabel = true,
-            shouldShowForwardedIcon = true,
-            shouldShowRepliedAllIcon = true,
             shouldShowRepliedIcon = true,
+            shouldShowRepliedAllIcon = true,
+            shouldShowForwardedIcon = true,
+            numMessages = 2,
             showStar = true,
-            subject = "DroidCon London",
-            time = TextUiModel.Text("Aug 20th 2022"),
-            type = MailboxItemType.Conversation,
-            userId = UserId
+            locations = persistentListOf(),
+            shouldShowAttachmentIcon = true,
+            shouldShowExpirationLabel = true,
+            shouldShowCalendarIcon = true,
+            shouldOpenInComposer = false
         )
 
         val LongSubjectWithIcons = MailboxItemUiModel(
             avatar = AccuWeatherAvatar,
-            conversationId = WeatherForecastConversationId,
+            type = MailboxItemType.Conversation,
             id = "WeatherForecast",
+            userId = UserId,
+            conversationId = WeatherForecastConversationId,
+            time = Message.WeatherForecastSep.time,
             isRead = false,
             labels = persistentListOf(),
+            subject = "This is a really long subject without any information",
+            participants = ParticipantsUiModel.Participants(
+                listOf(ParticipantUiModel(name = AccuWeatherName, shouldShowOfficialBadge = false))
+            ),
+            shouldShowRepliedIcon = false,
+            shouldShowRepliedAllIcon = false,
+            shouldShowForwardedIcon = false,
+            numMessages = 2,
+            showStar = true,
             locations = persistentListOf(
                 MailboxItemLocationUiModel(R.drawable.ic_proton_inbox),
                 MailboxItemLocationUiModel(R.drawable.ic_proton_trash)
             ),
-            numMessages = 2,
-            participants = ParticipantsUiModel.Participants(
-                listOf(ParticipantUiModel(name = AccuWeatherName, shouldShowOfficialBadge = false))
-            ),
             shouldShowAttachmentIcon = false,
-            shouldShowCalendarIcon = false,
             shouldShowExpirationLabel = false,
-            shouldShowForwardedIcon = false,
-            shouldShowRepliedAllIcon = false,
-            shouldShowRepliedIcon = false,
-            showStar = true,
-            subject = "This is a really long subject without any information",
-            time = Message.WeatherForecastSep.time,
-            type = MailboxItemType.Conversation,
-            userId = UserId
+            shouldShowCalendarIcon = false,
+            shouldOpenInComposer = false
         )
 
         val LongSubjectWithoutIcons = MailboxItemUiModel(
             avatar = AccuWeatherAvatar,
-            conversationId = WeatherForecastConversationId,
+            type = MailboxItemType.Conversation,
             id = "WeatherForecast",
+            userId = UserId,
+            conversationId = WeatherForecastConversationId,
+            time = Message.WeatherForecastSep.time,
             isRead = false,
             labels = persistentListOf(),
-            locations = persistentListOf(),
-            numMessages = 2,
+            subject = "This is a really long subject without any information",
             participants = ParticipantsUiModel.Participants(
                 listOf(ParticipantUiModel(name = AccuWeatherName, shouldShowOfficialBadge = false))
             ),
-            shouldShowAttachmentIcon = false,
-            shouldShowCalendarIcon = false,
-            shouldShowExpirationLabel = false,
-            shouldShowForwardedIcon = false,
-            shouldShowRepliedAllIcon = false,
             shouldShowRepliedIcon = false,
+            shouldShowRepliedAllIcon = false,
+            shouldShowForwardedIcon = false,
+            numMessages = 2,
             showStar = false,
-            subject = "This is a really long subject without any information",
-            time = Message.WeatherForecastSep.time,
-            type = MailboxItemType.Conversation,
-            userId = UserId
+            locations = persistentListOf(),
+            shouldShowAttachmentIcon = false,
+            shouldShowExpirationLabel = false,
+            shouldShowCalendarIcon = false,
+            shouldOpenInComposer = false
         )
 
         val NoParticipant = MailboxItemUiModel(
             avatar = AccuWeatherAvatar,
-            conversationId = WeatherForecastConversationId,
+            type = MailboxItemType.Conversation,
             id = "WeatherForecast",
+            userId = UserId,
+            conversationId = WeatherForecastConversationId,
+            time = Message.WeatherForecastSep.time,
             isRead = false,
             labels = persistentListOf(),
-            locations = persistentListOf(),
-            numMessages = 2,
-            participants = ParticipantsUiModel.NoParticipants(message = TextUiModel(R.string.mailbox_default_sender)),
-            shouldShowAttachmentIcon = false,
-            shouldShowCalendarIcon = false,
-            shouldShowExpirationLabel = false,
-            shouldShowForwardedIcon = false,
-            shouldShowRepliedAllIcon = false,
-            shouldShowRepliedIcon = false,
-            showStar = false,
             subject = "This is a really long subject without any information",
-            time = Message.WeatherForecastSep.time,
-            type = MailboxItemType.Conversation,
-            userId = UserId
+            participants = ParticipantsUiModel.NoParticipants(message = TextUiModel(R.string.mailbox_default_sender)),
+            shouldShowRepliedIcon = false,
+            shouldShowRepliedAllIcon = false,
+            shouldShowForwardedIcon = false,
+            numMessages = 2,
+            showStar = false,
+            locations = persistentListOf(),
+            shouldShowAttachmentIcon = false,
+            shouldShowExpirationLabel = false,
+            shouldShowCalendarIcon = false,
+            shouldOpenInComposer = false
         )
     }
 
@@ -229,50 +236,52 @@ object MailboxItemUiModelPreviewData {
 
         val WeatherForecastAug = MailboxItemUiModel(
             avatar = AccuWeatherAvatar,
-            conversationId = WeatherForecastConversationId,
+            type = MailboxItemType.Message,
             id = "WeatherForecastAugust2022",
+            userId = UserId,
+            conversationId = WeatherForecastConversationId,
+            time = TextUiModel.Text("Jul 30th 2022"),
             isRead = true,
             labels = persistentListOf(),
-            locations = persistentListOf(),
-            numMessages = 1,
+            subject = "Weather Forecast for August 2022",
             participants = ParticipantsUiModel.Participants(
                 listOf(ParticipantUiModel(name = AccuWeatherName, shouldShowOfficialBadge = false))
             ),
-            shouldShowAttachmentIcon = true,
-            shouldShowCalendarIcon = false,
-            shouldShowExpirationLabel = false,
-            shouldShowForwardedIcon = false,
-            shouldShowRepliedAllIcon = false,
             shouldShowRepliedIcon = false,
+            shouldShowRepliedAllIcon = false,
+            shouldShowForwardedIcon = false,
+            numMessages = 1,
             showStar = true,
-            subject = "Weather Forecast for August 2022",
-            time = TextUiModel.Text("Jul 30th 2022"),
-            type = MailboxItemType.Message,
-            userId = UserId
+            locations = persistentListOf(),
+            shouldShowAttachmentIcon = true,
+            shouldShowExpirationLabel = false,
+            shouldShowCalendarIcon = false,
+            shouldOpenInComposer = false
         )
 
         val WeatherForecastSep = MailboxItemUiModel(
             avatar = AccuWeatherAvatar,
-            conversationId = WeatherForecastConversationId,
+            type = MailboxItemType.Message,
             id = "WeatherForecastSeptember2022",
+            userId = UserId,
+            conversationId = WeatherForecastConversationId,
+            time = TextUiModel.TextRes(R.string.yesterday),
             isRead = false,
             labels = persistentListOf(),
-            locations = persistentListOf(),
-            numMessages = 1,
+            subject = "Weather Forecast for September 2022",
             participants = ParticipantsUiModel.Participants(
                 listOf(ParticipantUiModel(name = AccuWeatherName, shouldShowOfficialBadge = false))
             ),
-            shouldShowAttachmentIcon = true,
-            shouldShowCalendarIcon = false,
-            shouldShowExpirationLabel = false,
-            shouldShowForwardedIcon = false,
-            shouldShowRepliedAllIcon = false,
             shouldShowRepliedIcon = false,
+            shouldShowRepliedAllIcon = false,
+            shouldShowForwardedIcon = false,
+            numMessages = 1,
             showStar = true,
-            subject = "Weather Forecast for September 2022",
-            time = TextUiModel.TextRes(R.string.yesterday),
-            type = MailboxItemType.Message,
-            userId = UserId
+            locations = persistentListOf(),
+            shouldShowAttachmentIcon = true,
+            shouldShowExpirationLabel = false,
+            shouldShowCalendarIcon = false,
+            shouldOpenInComposer = false
         )
     }
 }

@@ -158,6 +158,10 @@ private fun buildActions(
     onChangeSender = { viewModel.submit(ComposerAction.ChangeSenderRequested) }
 )
 
+object ComposerScreen {
+    const val DraftMessageIdKey = "draft_message_id"
+}
+
 @Composable
 @AdaptivePreviews
 private fun MessageDetailScreenPreview() {
