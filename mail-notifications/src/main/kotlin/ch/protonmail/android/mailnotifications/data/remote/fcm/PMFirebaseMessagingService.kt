@@ -26,7 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import me.proton.core.account.domain.entity.AccountState
+import me.proton.core.account.domain.entity.isReady
 import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.util.kotlin.CoroutineScopeProvider
 import javax.inject.Inject
@@ -57,7 +57,7 @@ class PMFirebaseMessagingService : FirebaseMessagingService() {
 
             accountManager.getAccounts()
                 .first()
-                .filter { it.state == AccountState.Ready }
+                .filter { it.isReady() }
                 .map { it.userId }
                 .forEach { notificationTokenRepository.bindTokenToUser(it) }
         }
