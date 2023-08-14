@@ -73,7 +73,7 @@
   <string name="decryption_error">Дешифрование сообщения не удалось.</string>
   <string name="detail_error_retrieving_message_body">Не удалось получить сообщение</string>
   <!-- Attachment Types -->
-  <string name="attachment_type_archive">Archive</string>
+  <string name="attachment_type_archive">Архивировать</string>
   <string name="attachment_type_image">Изображение</string>
   <string name="attachment_type_video">Видео</string>
   <string name="attachment_type_audio">Аудио</string>
@@ -81,7 +81,7 @@
   <string name="attachment_type_pdf">PDF</string>
   <string name="attachment_type_text">Текст</string>
   <string name="attachment_type_document">Документ</string>
-  <string name="attachment_type_spreadsheet">Spreadsheet</string>
+  <string name="attachment_type_spreadsheet">Таблица</string>
   <string name="attachment_type_presentation">Презентация</string>
   <string name="attachment_type_description">файл %1$s</string>
   <string name="message_body_error_no_webview">Чтобы вы могли увидеть содержимое этого сообщения, у вас должен быть установлен WebView.</string>

@@ -24,4 +24,5 @@
   <string name="you_are_offline">Вы па-за сеткай</string>
   <string name="feature_coming_soon">Функцыя неўзабаве з\'явіцца...</string>
   <string name="mailbox_draft_saved_message">Чарнавік захаваны</string>
+  <string name="notification_switched_account">Зменена на ўліковы запіс: %s</string>
 </resources>

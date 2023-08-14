@@ -24,4 +24,5 @@
   <string name="you_are_offline">Jste v režimu offline</string>
   <string name="feature_coming_soon">Funkce bude brzy k dispozici...</string>
   <string name="mailbox_draft_saved_message">Koncept uložen</string>
+  <string name="notification_switched_account">Přepnuto na účet: \'%s</string>
 </resources>

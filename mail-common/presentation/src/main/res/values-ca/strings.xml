@@ -52,5 +52,7 @@
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Adjunts</string>
   <string name="attachment_download_notification_channel_description">Notificacions per a descàrregues d\'adjunts</string>
+  <string name="email_notification_channel_name">Correus electrònics</string>
+  <string name="email_notification_channel_description">Notificacions de correu electrònic entrant</string>
   <string name="auth_badge_official">Oficial</string>
 </resources>

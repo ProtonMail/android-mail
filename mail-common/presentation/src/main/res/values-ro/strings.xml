@@ -52,5 +52,7 @@
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Fișiere atașate</string>
   <string name="attachment_download_notification_channel_description">Notificări pentru descărcări atașamente</string>
+  <string name="email_notification_channel_name">Mesaje</string>
+  <string name="email_notification_channel_description">Notificări mesaje primite</string>
   <string name="auth_badge_official">Oficial</string>
 </resources>

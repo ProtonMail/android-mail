@@ -24,4 +24,5 @@
   <string name="you_are_offline">Está offline</string>
   <string name="feature_coming_soon">Funcionalidade a disponibilizar em breve...</string>
   <string name="mailbox_draft_saved_message">Rascunho guardado</string>
+  <string name="notification_switched_account">Mudou para a conta: \'%s\'.</string>
 </resources>

@@ -24,4 +24,5 @@
   <string name="you_are_offline">Ви не в мережі</string>
   <string name="feature_coming_soon">Функція скоро з\'явиться...</string>
   <string name="mailbox_draft_saved_message">Чернетку збережено</string>
+  <string name="notification_switched_account">Змінено на обліковий запис: %s</string>
 </resources>

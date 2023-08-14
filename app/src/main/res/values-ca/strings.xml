@@ -24,4 +24,5 @@
   <string name="you_are_offline">Esteu fora de línia</string>
   <string name="feature_coming_soon">Aquesta característica arribarà aviat...</string>
   <string name="mailbox_draft_saved_message">S\'ha desat l\'esborrany</string>
+  <string name="notification_switched_account">Canviat al compte: %s</string>
 </resources>

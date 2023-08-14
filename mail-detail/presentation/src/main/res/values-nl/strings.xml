@@ -69,7 +69,7 @@
   <string name="decryption_error">Decoderen van bericht mislukt.</string>
   <string name="detail_error_retrieving_message_body">Kan bericht niet ophalen</string>
   <!-- Attachment Types -->
-  <string name="attachment_type_archive">Archive</string>
+  <string name="attachment_type_archive">Archiveren</string>
   <string name="attachment_type_image">Afbeelding</string>
   <string name="attachment_type_video">Video</string>
   <string name="attachment_type_audio">Audio</string>
@@ -77,7 +77,7 @@
   <string name="attachment_type_pdf">PDF</string>
   <string name="attachment_type_text">Tekst</string>
   <string name="attachment_type_document">Document</string>
-  <string name="attachment_type_spreadsheet">Spreadsheet</string>
+  <string name="attachment_type_spreadsheet">Werkblad</string>
   <string name="attachment_type_presentation">Presentatie</string>
   <string name="attachment_type_description">%1$s bestand</string>
   <string name="message_body_error_no_webview">U moet een WebView hebben geïnstalleerd om de inhoud van dit bericht te zien.</string>

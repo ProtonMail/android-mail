@@ -52,5 +52,7 @@
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Anexos</string>
   <string name="attachment_download_notification_channel_description">Notificações para as transferências de anexos</string>
+  <string name="email_notification_channel_name">E-mails</string>
+  <string name="email_notification_channel_description">Notificações de e-mail recebido</string>
   <string name="auth_badge_official">Oficial</string>
 </resources>
