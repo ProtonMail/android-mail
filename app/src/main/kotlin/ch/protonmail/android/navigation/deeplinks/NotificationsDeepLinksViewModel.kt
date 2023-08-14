@@ -27,7 +27,6 @@ import ch.protonmail.android.mailconversation.domain.repository.ConversationRepo
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
-import ch.protonmail.android.mailnotifications.domain.NotificationsDeepLinkHelper
 import ch.protonmail.android.navigation.deeplinks.NotificationsDeepLinksViewModel.State.NavigateToInbox
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -57,8 +56,7 @@ class NotificationsDeepLinksViewModel @Inject constructor(
     private val getPrimaryAddress: GetPrimaryAddress,
     private val messageRepository: MessageRepository,
     private val conversationRepository: ConversationRepository,
-    private val mailSettingsRepository: MailSettingsRepository,
-    private val notificationsDeepLinkHelper: NotificationsDeepLinkHelper
+    private val mailSettingsRepository: MailSettingsRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<State>(State.None)
@@ -66,20 +64,15 @@ class NotificationsDeepLinksViewModel @Inject constructor(
 
     private var navigateToMessageJob: Job? = null
 
-    fun navigateToMessage(
-        notificationId: Int,
-        messageId: String,
-        userId: String
-    ) {
+    fun navigateToMessage(messageId: String, userId: String) {
         if (isOffline()) {
-            navigateToInbox(notificationId, userId)
+            navigateToInbox(userId)
         } else {
-            navigateToMessageOrConversation(notificationId, messageId, UserId(userId))
+            navigateToMessageOrConversation(messageId, UserId(userId))
         }
     }
 
-    fun navigateToInbox(notificationId: Int, userId: String) {
-        notificationsDeepLinkHelper.cancelNotification(notificationId)
+    fun navigateToInbox(userId: String) {
         viewModelScope.launch {
             val activeUserId = accountManager.getPrimaryUserId().firstOrNull()
             if (activeUserId != null && activeUserId.id != userId) {
@@ -99,19 +92,14 @@ class NotificationsDeepLinksViewModel @Inject constructor(
         }
     }
 
-    private fun navigateToMessageOrConversation(
-        notificationId: Int,
-        messageId: String,
-        userId: UserId
-    ) {
+    private fun navigateToMessageOrConversation(messageId: String, userId: UserId) {
         Timber.d("navigateToMessage: $messageId, $userId")
         navigateToMessageJob?.cancel()
         navigateToMessageJob = viewModelScope.launch {
             when (val switchAccountResult = switchActiveUserIfRequiredTo(userId.id)) {
-                AccountSwitchResult.AccountSwitchError -> navigateToInbox(notificationId, userId.id)
+                AccountSwitchResult.AccountSwitchError -> navigateToInbox(userId.id)
                 is AccountSwitchResult.AccountSwitched -> navigateToMessageOrConversation(
                     this.coroutineContext,
-                    notificationId,
                     messageId,
                     switchAccountResult.newUserId,
                     switchAccountResult.newEmail
@@ -119,7 +107,6 @@ class NotificationsDeepLinksViewModel @Inject constructor(
 
                 AccountSwitchResult.NotRequired -> navigateToMessageOrConversation(
                     this.coroutineContext,
-                    notificationId,
                     messageId,
                     userId
                 )
@@ -129,7 +116,6 @@ class NotificationsDeepLinksViewModel @Inject constructor(
 
     private suspend fun navigateToMessageOrConversation(
         coroutineContext: CoroutineContext,
-        notificationId: Int,
         messageId: String,
         userId: UserId,
         switchedAccountEmail: String? = null
@@ -137,14 +123,13 @@ class NotificationsDeepLinksViewModel @Inject constructor(
         messageRepository.observeCachedMessage(userId, MessageId(messageId))
             .distinctUntilChanged()
             .collectLatest { messageResult ->
-                notificationsDeepLinkHelper.cancelNotification(notificationId)
                 messageResult
                     .onLeft {
-                        if (it != DataError.Local.NoDataCached) navigateToInbox(notificationId, userId.id)
+                        if (it != DataError.Local.NoDataCached) navigateToInbox(userId.id)
                     }
                     .onRight { message ->
                         if (isConversationModeEnabled(userId)) {
-                            navigateToConversation(message, userId, notificationId, switchedAccountEmail)
+                            navigateToConversation(message, userId, switchedAccountEmail)
                         } else {
                             _state.value = State.NavigateToMessageDetails(message.messageId, switchedAccountEmail)
                         }
@@ -178,7 +163,6 @@ class NotificationsDeepLinksViewModel @Inject constructor(
     private suspend fun navigateToConversation(
         message: Message,
         userId: UserId,
-        notificationId: Int,
         switchedAccountEmail: String?
     ) {
         conversationRepository.observeConversation(
@@ -189,7 +173,7 @@ class NotificationsDeepLinksViewModel @Inject constructor(
             conversationResult
                 .onLeft {
                     Timber.d("Conversation not found: $it")
-                    if (it != DataError.Local.NoDataCached) navigateToInbox(notificationId, userId.id)
+                    if (it != DataError.Local.NoDataCached) navigateToInbox(userId.id)
                 }
                 .onRight { conversation ->
                     _state.value =

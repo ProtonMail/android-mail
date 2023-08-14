@@ -31,14 +31,12 @@ import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample.AlphaAppQAReport
-import ch.protonmail.android.mailnotifications.domain.NotificationsDeepLinkHelper
 import ch.protonmail.android.navigation.deeplinks.NotificationsDeepLinksViewModel.State.NavigateToConversation
 import ch.protonmail.android.navigation.deeplinks.NotificationsDeepLinksViewModel.State.NavigateToInbox
 import ch.protonmail.android.navigation.deeplinks.NotificationsDeepLinksViewModel.State.NavigateToMessageDetails
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -54,7 +52,6 @@ import me.proton.core.network.domain.NetworkManager
 import me.proton.core.network.domain.NetworkStatus
 import org.junit.Before
 import org.junit.Test
-import kotlin.random.Random
 import kotlin.test.assertEquals
 
 class NotificationsDeepLinksViewModelTest {
@@ -69,7 +66,6 @@ class NotificationsDeepLinksViewModelTest {
     private val mailSettingsRepository: MailSettingsRepository = mockk {
         coEvery { getMailSettings(any(), any()) } returns mailSettings
     }
-    private val notificationsDeepLinkHelper: NotificationsDeepLinkHelper = mockk(relaxed = true)
     private val getPrimaryAddress: GetPrimaryAddress = mockk()
 
     @Before
@@ -84,20 +80,17 @@ class NotificationsDeepLinksViewModelTest {
         val userId = UUID.randomUUID().toString()
 
         // When
-        val notificationId = Random.nextInt()
-        viewModel.navigateToInbox(notificationId, userId)
+        viewModel.navigateToInbox(userId)
 
         // Then
         viewModel.state.test {
             assertEquals(NavigateToInbox.ActiveUser, awaitItem())
-            verify { notificationsDeepLinkHelper.cancelNotification(notificationId) }
         }
     }
 
     @Test
     fun `Should emit navigate to conversation details when conversation mode is enabled`() = runTest {
         // Given
-        val notificationId = Random.nextInt()
         val messageId = UUID.randomUUID().toString()
         val userId = UUID.randomUUID().toString()
         coEvery { accountManager.getPrimaryUserId() } returns flowOf(UserId(userId))
@@ -117,7 +110,7 @@ class NotificationsDeepLinksViewModelTest {
         val viewModel = buildViewModel()
 
         // When
-        viewModel.navigateToMessage(notificationId, messageId, userId)
+        viewModel.navigateToMessage(messageId, userId)
 
         // Then
         viewModel.state.test {
@@ -125,14 +118,12 @@ class NotificationsDeepLinksViewModelTest {
                 NavigateToConversation(AlphaAppQAReport.conversationId),
                 awaitItem()
             )
-            verify { notificationsDeepLinkHelper.cancelNotification(notificationId) }
         }
     }
 
     @Test
     fun `Should emit navigate to message details when conversation mode is not enabled`() = runTest {
         // Given
-        val notificationId = Random.nextInt()
         val messageId = UUID.randomUUID().toString()
         val userId = UUID.randomUUID().toString()
         coEvery { accountManager.getPrimaryUserId() } returns flowOf(UserId(userId))
@@ -143,7 +134,7 @@ class NotificationsDeepLinksViewModelTest {
         val viewModel = buildViewModel()
 
         // When
-        viewModel.navigateToMessage(notificationId, messageId, userId)
+        viewModel.navigateToMessage(messageId, userId)
 
         // Then
         viewModel.state.test {
@@ -151,33 +142,29 @@ class NotificationsDeepLinksViewModelTest {
                 NavigateToMessageDetails(AlphaAppQAReport.messageId),
                 awaitItem()
             )
-            verify { notificationsDeepLinkHelper.cancelNotification(notificationId) }
         }
     }
 
     @Test
     fun `Should emit navigate to inbox when the user is offline and taps in a message deeplink`() = runTest {
         // Given
-        val notificationId = Random.nextInt()
         val messageId = UUID.randomUUID().toString()
         val userId = UUID.randomUUID().toString()
         coEvery { networkManager.networkStatus } returns NetworkStatus.Disconnected
         val viewModel = buildViewModel()
 
         // When
-        viewModel.navigateToMessage(notificationId, messageId, userId)
+        viewModel.navigateToMessage(messageId, userId)
 
         // Then
         viewModel.state.test {
             assertEquals(NavigateToInbox.ActiveUser, awaitItem())
-            verify { notificationsDeepLinkHelper.cancelNotification(notificationId) }
         }
     }
 
     @Test
     fun `Should navigate to the inbox if there is an error retrieving the local messages`() = runTest {
         // Given
-        val notificationId = Random.nextInt()
         val messageId = UUID.randomUUID().toString()
         val userId = UUID.randomUUID().toString()
         coEvery { mailSettings.viewMode } returns IntEnum(ViewMode.NoConversationGrouping.value, null)
@@ -187,19 +174,17 @@ class NotificationsDeepLinksViewModelTest {
         val viewModel = buildViewModel()
 
         // When
-        viewModel.navigateToMessage(notificationId, messageId, userId)
+        viewModel.navigateToMessage(messageId, userId)
 
         // Then
         viewModel.state.test {
             assertEquals(NavigateToInbox.ActiveUser, awaitItem())
-            verify { notificationsDeepLinkHelper.cancelNotification(notificationId) }
         }
     }
 
     @Test
     fun `Should navigate to inbox if conversation mode is enabled but the conversation can not be read`() = runTest {
         // Given
-        val notificationId = Random.nextInt()
         val messageId = UUID.randomUUID().toString()
         val userId = UUID.randomUUID().toString()
         coEvery { mailSettings.viewMode } returns IntEnum(ViewMode.ConversationGrouping.value, null)
@@ -216,19 +201,17 @@ class NotificationsDeepLinksViewModelTest {
         val viewModel = buildViewModel()
 
         // When
-        viewModel.navigateToMessage(notificationId, messageId, userId)
+        viewModel.navigateToMessage(messageId, userId)
 
         // Then
         viewModel.state.test {
             assertEquals(NavigateToInbox.ActiveUser, awaitItem())
-            verify { notificationsDeepLinkHelper.cancelNotification(notificationId) }
         }
     }
 
     @Test
     fun `Should switch account and emit switched for inbox notification to an active non primary account`() = runTest {
         // Given
-        val notificationId = Random.nextInt()
         val notificationUserId = UserId(UUID.randomUUID().toString())
         val activeUserId = UserId(UUID.randomUUID().toString())
         val viewModel = buildViewModel()
@@ -239,19 +222,18 @@ class NotificationsDeepLinksViewModelTest {
         } returns UserAddressSample.PrimaryAddress.right()
 
         // When
-        viewModel.navigateToInbox(notificationId, notificationUserId.id)
+        viewModel.navigateToInbox(notificationUserId.id)
 
         // Then
         viewModel.state.test {
             assertEquals(NavigateToInbox.ActiveUserSwitched(AccountSample.Primary.email!!), awaitItem())
-            coVerify { accountManager.setAsPrimary(notificationUserId) }
+            coVerify { accountManager.setAsPrimary(UserId(notificationUserId.id)) }
         }
     }
 
     @Test
     fun `Should switch account and emit switched for message notification to active non primary account`() = runTest {
         // Given
-        val notificationId = Random.nextInt()
         val notificationTargetAccount = AccountSample.Primary
         val activeUserId = UserId(UUID.randomUUID().toString())
         val messageId = UUID.randomUUID().toString()
@@ -278,7 +260,7 @@ class NotificationsDeepLinksViewModelTest {
         )
 
         // When
-        viewModel.navigateToMessage(notificationId, messageId, notificationTargetAccount.userId.id)
+        viewModel.navigateToMessage(messageId, notificationTargetAccount.userId.id)
 
         // Then
         viewModel.state.test {
@@ -286,7 +268,6 @@ class NotificationsDeepLinksViewModelTest {
                 NavigateToConversation(AlphaAppQAReport.conversationId, AccountSample.Primary.email),
                 awaitItem()
             )
-            verify { notificationsDeepLinkHelper.cancelNotification(notificationId) }
             coVerify { accountManager.setAsPrimary(notificationTargetAccount.userId) }
         }
     }
@@ -297,7 +278,6 @@ class NotificationsDeepLinksViewModelTest {
         messageRepository = messageRepository,
         conversationRepository = conversationRepository,
         mailSettingsRepository = mailSettingsRepository,
-        notificationsDeepLinkHelper = notificationsDeepLinkHelper,
         getPrimaryAddress = getPrimaryAddress
     )
 }

@@ -196,20 +196,18 @@ internal fun NavGraphBuilder.addDeepLinkHandler(navController: NavHostController
         fun onGroupNotification(
             messageId: String?,
             userId: String?,
-            notificationId: Int?,
-            action: (notificationId: Int, userId: String) -> Unit
+            action: (userId: String) -> Unit
         ) = when {
-            notificationId != null && userId != null && messageId == null -> action(notificationId, userId)
+            userId != null && messageId == null -> action(userId)
             else -> Unit
         }
 
         fun onMessageNotification(
             messageId: String?,
             userId: String?,
-            notificationId: Int?,
-            action: (messageId: String, userId: String, notificationId: Int) -> Unit
+            action: (messageId: String, userId: String) -> Unit
         ) = when {
-            notificationId != null && messageId != null && userId != null -> action(messageId, userId, notificationId)
+            messageId != null && userId != null -> action(messageId, userId)
             else -> Unit
         }
 
@@ -258,16 +256,11 @@ internal fun NavGraphBuilder.addDeepLinkHandler(navController: NavHostController
             }
             val messageIdArg = it.arguments?.getString("messageId")
             val userIdArg = it.arguments?.getString("userId")
-            val notificationIdArg = it.arguments?.getString("notificationId")?.toIntOrNull()
-            onGroupNotification(messageIdArg, userIdArg, notificationIdArg) { notificationId, userId ->
-                viewModel.navigateToInbox(notificationId = notificationId, userId = userId)
+            onGroupNotification(messageIdArg, userIdArg) { userId ->
+                viewModel.navigateToInbox(userId = userId)
             }
-            onMessageNotification(messageIdArg, userIdArg, notificationIdArg) { messageId, userId, notificationId ->
-                viewModel.navigateToMessage(
-                    notificationId = notificationId,
-                    messageId = messageId,
-                    userId = userId
-                )
+            onMessageNotification(messageIdArg, userIdArg) { messageId, userId ->
+                viewModel.navigateToMessage(messageId = messageId, userId = userId)
             }
         }
     }
