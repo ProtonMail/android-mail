@@ -403,6 +403,17 @@ class ComposerReducerTest(
             )
         )
 
+        private val EmptyToLoadingWithOpenExistingDraft = TestTransition(
+            name = "Should set state to loading when open of existing draft was requested",
+            currentState = ComposerDraftState.initial(messageId),
+            operation = ComposerEvent.OpenExistingDraft(messageId),
+            expectedState = aNotSubmittableState(
+                draftId = messageId,
+                error = Effect.empty(),
+                isLoading = true
+            )
+        )
+
         private val transitions = listOf(
             EmptyToSubmittableToField,
             EmptyToNotSubmittableToField,
@@ -428,7 +439,8 @@ class ComposerReducerTest(
             EmptyToUpdatedDraftBody,
             EmptyToUpdatedSubject,
             EmptyToCloseComposer,
-            EmptyToCloseComposerWithDraftSaved
+            EmptyToCloseComposerWithDraftSaved,
+            EmptyToLoadingWithOpenExistingDraft
         )
 
         private fun aSubmittableState(
@@ -453,7 +465,8 @@ class ComposerReducerTest(
             senderAddresses = emptyList(),
             changeSenderBottomSheetVisibility = Effect.empty(),
             closeComposer = Effect.empty(),
-            closeComposerWithDraftSaved = Effect.empty()
+            closeComposerWithDraftSaved = Effect.empty(),
+            isLoading = false
         )
 
         private fun aNotSubmittableState(
@@ -469,7 +482,8 @@ class ComposerReducerTest(
             draftBody: String = "",
             subject: Subject = Subject(""),
             closeComposer: Effect<Unit> = Effect.empty(),
-            closeComposerWithDraftSaved: Effect<Unit> = Effect.empty()
+            closeComposerWithDraftSaved: Effect<Unit> = Effect.empty(),
+            isLoading: Boolean = false
         ) = ComposerDraftState(
             fields = ComposerFields(
                 draftId = draftId,
@@ -486,7 +500,8 @@ class ComposerReducerTest(
             senderAddresses = senderAddresses,
             changeSenderBottomSheetVisibility = changeSenderBottomSheetVisibility,
             closeComposer = closeComposer,
-            closeComposerWithDraftSaved = closeComposerWithDraftSaved
+            closeComposerWithDraftSaved = closeComposerWithDraftSaved,
+            isLoading = isLoading
         )
 
         private fun aPositiveRandomInt(bound: Int = 10) = Random().nextInt(bound)

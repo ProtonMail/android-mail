@@ -30,7 +30,8 @@ data class ComposerDraftState(
     val senderAddresses: List<SenderUiModel>,
     val changeSenderBottomSheetVisibility: Effect<Boolean>,
     val closeComposer: Effect<Unit>,
-    val closeComposerWithDraftSaved: Effect<Unit>
+    val closeComposerWithDraftSaved: Effect<Unit>,
+    val isLoading: Boolean
 ) {
 
     companion object {
@@ -51,7 +52,8 @@ data class ComposerDraftState(
             senderAddresses = emptyList(),
             changeSenderBottomSheetVisibility = Effect.empty(),
             closeComposer = Effect.empty(),
-            closeComposerWithDraftSaved = Effect.empty()
+            closeComposerWithDraftSaved = Effect.empty(),
+            isLoading = false
         )
     }
 }

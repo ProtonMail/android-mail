@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcomposer.presentation.viewmodel
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
@@ -46,6 +47,7 @@ import ch.protonmail.android.mailcomposer.presentation.model.ComposerOperation
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
 import ch.protonmail.android.mailcomposer.presentation.reducer.ComposerReducer
+import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.test.idlingresources.ComposerIdlingResource
@@ -76,15 +78,18 @@ class ComposerViewModel @Inject constructor(
     private val getPrimaryAddress: GetPrimaryAddress,
     private val getComposerSenderAddresses: GetComposerSenderAddresses,
     private val composerIdlingResource: ComposerIdlingResource,
+    savedStateHandle: SavedStateHandle,
     observePrimaryUserId: ObservePrimaryUserId,
     provideNewDraftId: ProvideNewDraftId
 ) : ViewModel() {
 
     private val actionMutex = Mutex()
-    private val messageId = MessageId(provideNewDraftId().id)
+    private val messageId = MessageId(
+        savedStateHandle.get<String>(ComposerScreen.DraftMessageIdKey) ?: provideNewDraftId().id
+    )
     private val primaryUserId = observePrimaryUserId().filterNotNull()
 
-    private val mutableState = MutableStateFlow(ComposerDraftState.initial(provideNewDraftId()))
+    private val mutableState = MutableStateFlow(ComposerDraftState.initial(messageId))
     val state: StateFlow<ComposerDraftState> = mutableState
 
     init {
@@ -93,6 +98,11 @@ class ComposerViewModel @Inject constructor(
                 .onLeft { emitNewStateFor(ComposerEvent.ErrorLoadingDefaultSenderAddress) }
                 .onRight { emitNewStateFor(ComposerEvent.DefaultSenderReceived(SenderUiModel(it.email))) }
         }.launchIn(viewModelScope)
+
+        savedStateHandle.get<String>(ComposerScreen.DraftMessageIdKey)?.let { inputDraftId ->
+            Timber.d("Opening composer with $inputDraftId / $messageId")
+            emitNewStateFor(ComposerEvent.OpenExistingDraft(messageId))
+        }
     }
 
     override fun onCleared() {

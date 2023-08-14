@@ -75,6 +75,7 @@ class ComposerReducer @Inject constructor() {
             changeSenderBottomSheetVisibility = Effect.of(true)
         )
         is ComposerEvent.OnCloseWithDraftSaved -> updateCloseComposerState(currentState, true)
+        is ComposerEvent.OpenExistingDraft -> currentState.copy(isLoading = true)
     }
 
     private fun updateCloseComposerState(currentState: ComposerDraftState, isDraftSaved: Boolean) = if (isDraftSaved) {

@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcomposer.presentation.viewmodel
 
+import androidx.lifecycle.SavedStateHandle
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
@@ -50,6 +51,7 @@ import ch.protonmail.android.mailcomposer.presentation.model.ComposerFields
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
 import ch.protonmail.android.mailcomposer.presentation.reducer.ComposerReducer
+import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.Recipient
@@ -76,6 +78,7 @@ import org.junit.Rule
 import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class ComposerViewModelTest {
 
@@ -99,6 +102,7 @@ class ComposerViewModelTest {
     private val getComposerSenderAddresses = mockk<GetComposerSenderAddresses> {
         coEvery { this@mockk.invoke() } returns GetComposerSenderAddresses.Error.UpgradeToChangeSender.left()
     }
+    private val savedStateHandle = mockk<SavedStateHandle>()
     private val reducer = ComposerReducer()
 
     private val viewModel by lazy {
@@ -114,6 +118,7 @@ class ComposerViewModelTest {
             getPrimaryAddressMock,
             getComposerSenderAddresses,
             composerIdlingResource,
+            savedStateHandle,
             observePrimaryUserIdMock,
             provideNewDraftIdMock
         )
@@ -135,6 +140,7 @@ class ComposerViewModelTest {
             expectedSenderEmail,
             expectedUserId
         )
+        expectNoInputDraftMessageId()
 
         // When
         viewModel.submit(action)
@@ -160,6 +166,7 @@ class ComposerViewModelTest {
         val action = ComposerAction.SenderChanged(SenderUiModel(expectedSenderEmail.value))
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
         expectStoreDraftBodySucceeds(expectedMessageId, expectedDraftBody, expectedSenderEmail, expectedUserId)
+        expectNoInputDraftMessageId()
 
         // Change internal state of the View Model to simulate an existing draft body before changing sender
         expectedViewModelInitialState(messageId = expectedMessageId, draftBody = expectedDraftBody)
@@ -188,6 +195,7 @@ class ComposerViewModelTest {
         val action = ComposerAction.SubjectChanged(expectedSubject)
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
         expectStoreDraftSubjectSucceeds(expectedMessageId, expectedSenderEmail, expectedUserId, expectedSubject)
+        expectNoInputDraftMessageId()
 
         // When
         viewModel.submit(action)
@@ -225,6 +233,7 @@ class ComposerViewModelTest {
             expectedTo = expectedRecipients
         )
         mockParticipantMapper()
+        expectNoInputDraftMessageId()
 
         // When
         viewModel.submit(action)
@@ -262,6 +271,7 @@ class ComposerViewModelTest {
             expectedCc = expectedRecipients
         )
         mockParticipantMapper()
+        expectNoInputDraftMessageId()
 
         // When
         viewModel.submit(action)
@@ -299,6 +309,7 @@ class ComposerViewModelTest {
             expectedBcc = expectedRecipients
         )
         mockParticipantMapper()
+        expectNoInputDraftMessageId()
 
         // When
         viewModel.submit(action)
@@ -336,6 +347,7 @@ class ComposerViewModelTest {
         )
         mockParticipantMapper()
         expectStoreAllDraftFieldsSucceeds(expectedUserId, expectedMessageId, expectedFields)
+        expectNoInputDraftMessageId()
 
         // Change internal state of the View Model to simulate the existence of all fields before closing the composer
         expectedViewModelInitialState(
@@ -360,6 +372,7 @@ class ComposerViewModelTest {
         val expectedUserId = expectedUserId { UserIdSample.Primary }
         expectedMessageId { MessageIdSample.EmptyDraft }
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        expectNoInputDraftMessageId()
 
         // When
         viewModel.submit(ComposerAction.OnCloseComposer)
@@ -391,6 +404,7 @@ class ComposerViewModelTest {
         )
         mockParticipantMapper()
         expectStoreAllDraftFieldsSucceeds(expectedUserId, expectedMessageId, expectedFields)
+        expectNoInputDraftMessageId()
 
         // Change internal state of the View Model to simulate the existence of all fields before closing the composer
         expectedViewModelInitialState(
@@ -413,6 +427,7 @@ class ComposerViewModelTest {
         val expectedUserId = expectedUserId { UserIdSample.Primary }
         expectedMessageId { MessageIdSample.EmptyDraft }
         val primaryAddress = expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        expectNoInputDraftMessageId()
 
         // When
         val actual = viewModel.state.value
@@ -427,6 +442,7 @@ class ComposerViewModelTest {
         val expectedUserId = expectedUserId { UserIdSample.Primary }
         expectedMessageId { MessageIdSample.EmptyDraft }
         expectedPrimaryAddressError(expectedUserId) { DataError.Local.NoDataCached }
+        expectNoInputDraftMessageId()
 
         // When
         val actual = viewModel.state.value
@@ -443,6 +459,7 @@ class ComposerViewModelTest {
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
         expectedMessageId { MessageIdSample.EmptyDraft }
         expectedGetComposerSenderAddresses { addresses }
+        expectNoInputDraftMessageId()
 
         // When
         viewModel.submit(ComposerAction.ChangeSenderRequested)
@@ -460,6 +477,7 @@ class ComposerViewModelTest {
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
         expectedMessageId { MessageIdSample.EmptyDraft }
         expectedGetComposerSenderAddressesError { GetComposerSenderAddresses.Error.UpgradeToChangeSender }
+        expectNoInputDraftMessageId()
 
         // When
         viewModel.submit(ComposerAction.ChangeSenderRequested)
@@ -477,6 +495,7 @@ class ComposerViewModelTest {
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
         expectedMessageId { MessageIdSample.EmptyDraft }
         expectedGetComposerSenderAddressesError { GetComposerSenderAddresses.Error.FailedDeterminingUserSubscription }
+        expectNoInputDraftMessageId()
 
         // When
         viewModel.submit(ComposerAction.ChangeSenderRequested)
@@ -497,6 +516,7 @@ class ComposerViewModelTest {
         val action = ComposerAction.SenderChanged(SenderUiModel(expectedSenderEmail.value))
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
         expectStoreDraftBodySucceeds(expectedMessageId, expectedDraftBody, expectedSenderEmail, expectedUserId)
+        expectNoInputDraftMessageId()
 
         // When
         viewModel.submit(action)
@@ -518,6 +538,7 @@ class ComposerViewModelTest {
         expectStoreDraftBodyFails(expectedMessageId, expectedDraftBody, expectedSenderEmail, expectedUserId) {
             StoreDraftWithBodyError.DraftSaveError
         }
+        expectNoInputDraftMessageId()
 
         // When
         viewModel.submit(action)
@@ -542,6 +563,7 @@ class ComposerViewModelTest {
         expectStoreDraftBodyFails(expectedMessageId, expectedDraftBody, expectedSenderEmail, expectedUserId) {
             StoreDraftWithBodyError.DraftSaveError
         }
+        expectNoInputDraftMessageId()
 
         // When
         viewModel.submit(action)
@@ -563,6 +585,7 @@ class ComposerViewModelTest {
         expectStoreDraftSubjectFails(expectedMessageId, expectedSenderEmail, expectedUserId, expectedSubject) {
             StoreDraftWithSubject.Error.DraftReadError
         }
+        expectNoInputDraftMessageId()
 
         // When
         viewModel.submit(action)
@@ -597,6 +620,7 @@ class ComposerViewModelTest {
             StoreDraftWithRecipients.Error.DraftSaveError
         }
         mockParticipantMapper()
+        expectNoInputDraftMessageId()
 
         // When
         viewModel.submit(action)
@@ -628,6 +652,7 @@ class ComposerViewModelTest {
             StoreDraftWithRecipients.Error.DraftSaveError
         }
         mockParticipantMapper()
+        expectNoInputDraftMessageId()
 
         // When
         viewModel.submit(action)
@@ -659,6 +684,7 @@ class ComposerViewModelTest {
             StoreDraftWithRecipients.Error.DraftSaveError
         }
         mockParticipantMapper()
+        expectNoInputDraftMessageId()
 
         // When
         viewModel.submit(action)
@@ -668,9 +694,31 @@ class ComposerViewModelTest {
         assertEquals(TextUiModel(R.string.composer_error_store_draft_recipients), currentState.error.consume())
     }
 
+    @Test
+    fun `emits state with loading draft content when draftId was given as input`() = runTest {
+        // Given
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        expectInputDraftMessageId { MessageIdSample.RemoteDraft }
+
+        // When
+        val actual = viewModel.state.value
+
+        // Then
+        assertTrue(actual.isLoading)
+    }
+
     @AfterTest
     fun tearDown() {
         unmockkObject(ComposerDraftState.Companion)
+    }
+
+    private fun expectNoInputDraftMessageId() {
+        every { savedStateHandle.get<String>(ComposerScreen.DraftMessageIdKey) } returns null
+    }
+
+    private fun expectInputDraftMessageId(draftId: () -> MessageId) = draftId().also {
+        every { savedStateHandle.get<String>(ComposerScreen.DraftMessageIdKey) } returns it.id
     }
 
     private fun expectedViewModelInitialState(
@@ -700,7 +748,8 @@ class ComposerViewModelTest {
             senderAddresses = emptyList(),
             changeSenderBottomSheetVisibility = Effect.empty(),
             closeComposer = Effect.empty(),
-            closeComposerWithDraftSaved = Effect.empty()
+            closeComposerWithDraftSaved = Effect.empty(),
+            isLoading = false
         )
 
         mockkObject(ComposerDraftState.Companion)
