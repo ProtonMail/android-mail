@@ -28,8 +28,10 @@ import ch.protonmail.android.mailnotifications.data.repository.NotificationToken
 import ch.protonmail.android.mailnotifications.data.repository.NotificationTokenRepositoryImpl
 import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator
 import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestratorImpl
+import com.google.firebase.messaging.FirebaseMessaging
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.Reusable
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
@@ -38,6 +40,10 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object MailNotificationsModule {
+
+    @Provides
+    @Reusable
+    fun provideFirebaseMessaging(): FirebaseMessaging = FirebaseMessaging.getInstance()
 
     @Module
     @InstallIn(SingletonComponent::class)

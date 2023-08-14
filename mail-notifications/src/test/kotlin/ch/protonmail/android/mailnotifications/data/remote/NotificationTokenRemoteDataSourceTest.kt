@@ -29,14 +29,14 @@ import org.junit.Test
 internal class NotificationTokenRemoteDataSourceTest {
 
     private val enqueuer: Enqueuer = mockk<Enqueuer>(relaxUnitFun = true)
-    private val remoteDataSource = NotificationTokenRemoteDataSourceImpl(enqueuer)
+    private val remoteDataSource = NotificationTokenRemoteDataSourceImpl(mockk(), enqueuer)
     private val token = UUID.randomUUID().toString()
     private val userId = UserId("userId")
 
     @Test
     fun `when the synchronization is invoked, it is delegated to the underlying enqueuer`() = runTest {
         // When
-        remoteDataSource.synchronizeTokenForUser(userId, token)
+        remoteDataSource.bindTokenToUser(userId, token)
 
         // Then
         coVerify(exactly = 1) {

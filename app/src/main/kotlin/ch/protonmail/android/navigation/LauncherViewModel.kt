@@ -135,7 +135,7 @@ class LauncherViewModel @Inject constructor(
     private fun registerNotificationTokenForUserId(userId: UserId) {
         viewModelScope.launch {
             val account = accountManager.getAccount(userId).firstOrNull() ?: return@launch
-            if (account.isReady()) notificationsTokenRepository.synchronizeTokenForUser(userId)
+            if (account.isReady()) notificationsTokenRepository.bindTokenToUser(userId)
         }
     }
 

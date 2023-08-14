@@ -18,15 +18,34 @@
 
 package ch.protonmail.android.mailnotifications.data.remote
 
+import arrow.core.Either
+import arrow.core.left
+import arrow.core.right
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
+import ch.protonmail.android.mailcommon.domain.model.DataError
+import com.google.firebase.messaging.FirebaseMessaging
+import kotlinx.coroutines.suspendCancellableCoroutine
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
+import kotlin.coroutines.resume
 
 internal class NotificationTokenRemoteDataSourceImpl @Inject constructor(
+    private val firebaseMessaging: FirebaseMessaging,
     private val enqueuer: Enqueuer
 ) : NotificationTokenRemoteDataSource {
 
-    override suspend fun synchronizeTokenForUser(userId: UserId, token: String) {
+    override suspend fun fetchToken() = fetchFirebaseToken()
+
+    override suspend fun bindTokenToUser(userId: UserId, token: String) {
         enqueuer.enqueue<RegisterDeviceWorker>(RegisterDeviceWorker.params(userId, token))
+    }
+
+    private suspend fun fetchFirebaseToken(): Either<DataError.Remote, String> {
+        return suspendCancellableCoroutine { continuation ->
+            firebaseMessaging.token.addOnCompleteListener {
+                val token = if (it.isSuccessful) it.result.right() else DataError.Remote.Unknown.left()
+                continuation.resume(token)
+            }
+        }
     }
 }

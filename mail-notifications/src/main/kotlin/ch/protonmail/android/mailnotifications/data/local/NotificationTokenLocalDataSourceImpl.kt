@@ -28,5 +28,5 @@ internal class NotificationTokenLocalDataSourceImpl @Inject constructor(
         notificationTokenPreferences.storeToken(token)
     }
 
-    override suspend fun getToken(): String = notificationTokenPreferences.getToken()
+    override suspend fun getToken() = notificationTokenPreferences.getToken()
 }

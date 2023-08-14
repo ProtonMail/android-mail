@@ -30,8 +30,11 @@ internal class NotificationTokenRepositoryImpl @Inject constructor(
 
     override suspend fun storeToken(token: String) = localDataSource.storeToken(token)
 
-    override suspend fun synchronizeTokenForUser(userId: UserId) {
-        val token = localDataSource.getToken()
-        remoteDataSource.synchronizeTokenForUser(userId, token)
+    override suspend fun bindTokenToUser(userId: UserId) {
+        val token = localDataSource.getToken().getOrNull() ?: run {
+            remoteDataSource.fetchToken().getOrNull()?.also { localDataSource.storeToken(it) }
+        } ?: return
+
+        remoteDataSource.bindTokenToUser(userId, token)
     }
 }

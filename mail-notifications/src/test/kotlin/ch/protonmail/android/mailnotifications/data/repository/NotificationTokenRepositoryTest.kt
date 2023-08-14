@@ -19,6 +19,9 @@
 package ch.protonmail.android.mailnotifications.data.repository
 
 import java.util.UUID
+import arrow.core.left
+import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailnotifications.data.local.NotificationTokenLocalDataSource
 import ch.protonmail.android.mailnotifications.data.remote.NotificationTokenRemoteDataSource
 import io.mockk.called
@@ -35,9 +38,11 @@ internal class NotificationTokenRepositoryTest {
     private val token = UUID.randomUUID().toString()
     private val userId = UserId("userId")
     private val localDataSource = mockk<NotificationTokenLocalDataSource>(relaxUnitFun = true) {
-        coEvery { getToken() } returns token
+        coEvery { getToken() } returns token.right()
     }
-    private val remoteDataSource = mockk<NotificationTokenRemoteDataSource>(relaxUnitFun = true)
+    private val remoteDataSource = mockk<NotificationTokenRemoteDataSource>(relaxUnitFun = true) {
+        coEvery { fetchToken() } returns token.right()
+    }
     private val repository = NotificationTokenRepositoryImpl(localDataSource, remoteDataSource)
 
     @Test
@@ -51,18 +56,42 @@ internal class NotificationTokenRepositoryTest {
     }
 
     @Test
-    fun `when the repo synchronizes a token, it fetches it from local and then passes it to the remote data source`() =
+    fun `when the repo binds a token, it fetches it from local and then passes it to the remote data source`() =
         runTest {
             // When
-            repository.synchronizeTokenForUser(userId)
+            repository.bindTokenToUser(userId)
 
             // Then
             coVerifyOrder {
                 localDataSource.getToken()
-                remoteDataSource.synchronizeTokenForUser(userId, token)
+                remoteDataSource.bindTokenToUser(userId, token)
             }
 
             coVerify(exactly = 1) { localDataSource.getToken() }
-            coVerify(exactly = 1) { remoteDataSource.synchronizeTokenForUser(userId, token) }
+            coVerify(exactly = 1) { remoteDataSource.bindTokenToUser(userId, token) }
+            coVerify(exactly = 0) { remoteDataSource.fetchToken() }
+            coVerify(exactly = 0) { localDataSource.storeToken(token) }
         }
+
+    @Test
+    fun `when binding a token with no local data, the repo fetches it and stores it again locally first`() = runTest {
+        // Given
+        coEvery { localDataSource.getToken() } returns DataError.Local.Unknown.left()
+
+        // When
+        repository.bindTokenToUser(userId)
+
+        // Then
+        coVerifyOrder {
+            localDataSource.getToken()
+            remoteDataSource.fetchToken()
+            localDataSource.storeToken(token)
+            remoteDataSource.bindTokenToUser(userId, token)
+        }
+
+        coVerify(exactly = 1) { localDataSource.getToken() }
+        coVerify(exactly = 1) { remoteDataSource.fetchToken() }
+        coVerify(exactly = 1) { localDataSource.storeToken(token) }
+        coVerify(exactly = 1) { remoteDataSource.bindTokenToUser(userId, token) }
+    }
 }

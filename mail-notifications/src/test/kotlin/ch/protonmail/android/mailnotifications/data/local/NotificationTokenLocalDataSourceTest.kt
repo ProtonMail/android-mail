@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailnotifications.data.local
 
 import java.util.UUID
+import arrow.core.right
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -29,7 +30,7 @@ internal class NotificationTokenLocalDataSourceTest {
 
     private val token = UUID.randomUUID().toString()
     private val preferences: NotificationTokenPreferences = mockk<NotificationTokenPreferences>(relaxUnitFun = true) {
-        coEvery { getToken() } returns token
+        coEvery { getToken() } returns token.right()
     }
     private val dataSource = NotificationTokenLocalDataSourceImpl(preferences)
 

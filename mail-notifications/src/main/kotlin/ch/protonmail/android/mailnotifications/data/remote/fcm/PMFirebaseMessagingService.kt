@@ -59,7 +59,7 @@ class PMFirebaseMessagingService : FirebaseMessagingService() {
                 .first()
                 .filter { it.state == AccountState.Ready }
                 .map { it.userId }
-                .forEach { notificationTokenRepository.synchronizeTokenForUser(it) }
+                .forEach { notificationTokenRepository.bindTokenToUser(it) }
         }
     }
 

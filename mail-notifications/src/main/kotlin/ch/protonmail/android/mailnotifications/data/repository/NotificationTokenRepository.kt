@@ -24,5 +24,5 @@ interface NotificationTokenRepository {
 
     suspend fun storeToken(token: String)
 
-    suspend fun synchronizeTokenForUser(userId: UserId)
+    suspend fun bindTokenToUser(userId: UserId)
 }

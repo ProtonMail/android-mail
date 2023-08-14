@@ -18,9 +18,12 @@
 
 package ch.protonmail.android.mailnotifications.data.local
 
+import arrow.core.Either
+import ch.protonmail.android.mailcommon.domain.model.DataError
+
 interface NotificationTokenLocalDataSource {
 
     suspend fun storeToken(token: String)
 
-    suspend fun getToken(): String
+    suspend fun getToken(): Either<DataError.Local, String>
 }

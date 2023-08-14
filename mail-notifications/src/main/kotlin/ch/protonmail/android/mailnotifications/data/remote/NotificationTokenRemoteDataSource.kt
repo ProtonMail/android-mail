@@ -18,9 +18,13 @@
 
 package ch.protonmail.android.mailnotifications.data.remote
 
+import arrow.core.Either
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import me.proton.core.domain.entity.UserId
 
 interface NotificationTokenRemoteDataSource {
 
-    suspend fun synchronizeTokenForUser(userId: UserId, token: String)
+    suspend fun fetchToken(): Either<DataError.Remote, String>
+
+    suspend fun bindTokenToUser(userId: UserId, token: String)
 }

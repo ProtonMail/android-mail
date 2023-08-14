@@ -24,9 +24,13 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import arrow.core.Either
+import arrow.core.left
+import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailnotifications.data.local.NotificationTokenPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -40,8 +44,14 @@ internal class FcmTokenPreferencesImpl @Inject constructor(
         context.fcmTokenStore.edit { preferences -> preferences[stringPreferencesKey(FCM_TOKEN_KEY)] = token }
     }
 
-    override suspend fun getToken(): String =
-        context.fcmTokenStore.data.map { preferences -> preferences[stringPreferencesKey(FCM_TOKEN_KEY)] ?: "" }.first()
+    override suspend fun getToken(): Either<DataError.Local, String> {
+        val token = context.fcmTokenStore.data.map { preferences ->
+            preferences[stringPreferencesKey(FCM_TOKEN_KEY)]
+        }.firstOrNull()
+
+        return token?.right() ?: DataError.Local.NoDataCached.left()
+    }
+
 
     private companion object {
 
