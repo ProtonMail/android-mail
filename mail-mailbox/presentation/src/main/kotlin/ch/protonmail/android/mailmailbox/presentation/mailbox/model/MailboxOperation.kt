@@ -19,6 +19,9 @@
 package ch.protonmail.android.mailmailbox.presentation.mailbox.model
 
 import ch.protonmail.android.maillabel.domain.model.MailLabel
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingMailboxList
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingTopAppBar
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingUnreadFilter
 import me.proton.core.mailsettings.domain.entity.ViewMode
 
 internal sealed interface MailboxOperation {
@@ -28,50 +31,47 @@ internal sealed interface MailboxOperation {
 }
 
 internal sealed interface MailboxViewAction : MailboxOperation {
-    object EnterSelectionMode : MailboxViewAction, MailboxOperation.AffectingTopAppBar
-    object ExitSelectionMode : MailboxViewAction, MailboxOperation.AffectingTopAppBar
+    data class EnterSelectionMode(
+        val item: MailboxItemUiModel
+    ) : MailboxViewAction, AffectingTopAppBar, AffectingMailboxList
+
+    object ExitSelectionMode : MailboxViewAction, AffectingTopAppBar, AffectingMailboxList
     data class OpenItemDetails(val item: MailboxItemUiModel) : MailboxViewAction
-    object Refresh : MailboxViewAction, MailboxOperation.AffectingMailboxList
-    object EnableUnreadFilter : MailboxViewAction, MailboxOperation.AffectingUnreadFilter
-    object DisableUnreadFilter : MailboxViewAction, MailboxOperation.AffectingUnreadFilter
+    object Refresh : MailboxViewAction, AffectingMailboxList
+    object EnableUnreadFilter : MailboxViewAction, AffectingUnreadFilter
+    object DisableUnreadFilter : MailboxViewAction, AffectingUnreadFilter
+
     /*
      *`OnOfflineWithData` and `OnErrorWithData` are not actual Actions which are actively performed by the user
      * but rather "Events" which happen when loading mailbox items. They are represented as actions due to
      * limitations of the paging library, which delivers such events on the Composable. See commit 7c3f88 for more.
      */
-    object OnOfflineWithData : MailboxViewAction, MailboxOperation.AffectingMailboxList
-    object OnErrorWithData : MailboxViewAction, MailboxOperation.AffectingMailboxList
+    object OnOfflineWithData : MailboxViewAction, AffectingMailboxList
+    object OnErrorWithData : MailboxViewAction, AffectingMailboxList
 }
 
 internal sealed interface MailboxEvent : MailboxOperation {
     data class ItemDetailsOpenedInViewMode(
         val item: MailboxItemUiModel,
         val preferredViewMode: ViewMode
-    ) : MailboxEvent,
-        MailboxOperation.AffectingMailboxList
+    ) : MailboxEvent, AffectingMailboxList
 
     data class NewLabelSelected(
         val selectedLabel: MailLabel,
         val selectedLabelCount: Int?
-    ) : MailboxEvent,
-        MailboxOperation.AffectingTopAppBar,
-        MailboxOperation.AffectingUnreadFilter,
-        MailboxOperation.AffectingMailboxList
+    ) : MailboxEvent, AffectingTopAppBar, AffectingUnreadFilter, AffectingMailboxList
 
     data class SelectedLabelChanged(
         val selectedLabel: MailLabel
-    ) : MailboxEvent,
-        MailboxOperation.AffectingTopAppBar,
-        MailboxOperation.AffectingMailboxList
+    ) : MailboxEvent, AffectingTopAppBar, AffectingMailboxList
 
     data class SelectedLabelCountChanged(
         val selectedLabelCount: Int
-    ) : MailboxEvent,
-        MailboxOperation.AffectingUnreadFilter
+    ) : MailboxEvent, AffectingUnreadFilter
 
     data class ComposerDisabledChanged(
         val composerDisabled: Boolean
-    ) : MailboxEvent, MailboxOperation.AffectingTopAppBar
+    ) : MailboxEvent, AffectingTopAppBar
 }
 
 

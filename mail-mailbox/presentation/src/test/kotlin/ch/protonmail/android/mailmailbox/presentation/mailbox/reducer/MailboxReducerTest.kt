@@ -128,14 +128,14 @@ internal class MailboxReducerTest(
 
         private val actions = listOf(
             TestInput(
-                MailboxViewAction.EnterSelectionMode,
-                shouldReduceMailboxListState = false,
+                MailboxViewAction.EnterSelectionMode(MailboxItemUiModelTestData.readMailboxItemUiModel),
+                shouldReduceMailboxListState = true,
                 shouldReduceTopAppBarState = true,
                 shouldReduceUnreadFilterState = false
             ),
             TestInput(
                 MailboxViewAction.ExitSelectionMode,
-                shouldReduceMailboxListState = false,
+                shouldReduceMailboxListState = true,
                 shouldReduceTopAppBarState = true,
                 shouldReduceUnreadFilterState = false
             ),

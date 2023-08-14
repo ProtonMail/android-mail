@@ -23,8 +23,9 @@ import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.text
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
+import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData
 import me.proton.core.util.kotlin.EMPTY_STRING
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -54,12 +55,12 @@ internal class MailboxTopAppBarReducerTest(
         private val transitionsFromLoadingState = listOf(
             TestInput(
                 currentState = MailboxTopAppBarState.Loading(isComposerDisabled = true),
-                operation = MailboxViewAction.EnterSelectionMode,
+                operation = MailboxViewAction.EnterSelectionMode(MailboxItemUiModelTestData.readMailboxItemUiModel),
                 expectedState = MailboxTopAppBarState.Loading(isComposerDisabled = true)
             ),
             TestInput(
                 currentState = MailboxTopAppBarState.Loading(isComposerDisabled = false),
-                operation = MailboxViewAction.EnterSelectionMode,
+                operation = MailboxViewAction.EnterSelectionMode(MailboxItemUiModelTestData.readMailboxItemUiModel),
                 expectedState = MailboxTopAppBarState.Loading(isComposerDisabled = false)
             ),
             TestInput(
@@ -107,19 +108,19 @@ internal class MailboxTopAppBarReducerTest(
         private val transitionsFromDefaultModeState = listOf(
             TestInput(
                 currentState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text(), isComposerDisabled = true),
-                operation = MailboxViewAction.EnterSelectionMode,
+                operation = MailboxViewAction.EnterSelectionMode(MailboxItemUiModelTestData.readMailboxItemUiModel),
                 expectedState = MailboxTopAppBarState.Data.SelectionMode(
                     inboxLabel.text(),
-                    selectedCount = 0,
+                    selectedCount = 1,
                     isComposerDisabled = true
                 )
             ),
             TestInput(
                 currentState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text(), isComposerDisabled = false),
-                operation = MailboxViewAction.EnterSelectionMode,
+                operation = MailboxViewAction.EnterSelectionMode(MailboxItemUiModelTestData.readMailboxItemUiModel),
                 expectedState = MailboxTopAppBarState.Data.SelectionMode(
                     inboxLabel.text(),
-                    selectedCount = 0,
+                    selectedCount = 1,
                     isComposerDisabled = false
                 )
             ),
@@ -172,10 +173,10 @@ internal class MailboxTopAppBarReducerTest(
                     selectedCount = 42,
                     isComposerDisabled = true
                 ),
-                operation = MailboxViewAction.EnterSelectionMode,
+                operation = MailboxViewAction.EnterSelectionMode(MailboxItemUiModelTestData.readMailboxItemUiModel),
                 expectedState = MailboxTopAppBarState.Data.SelectionMode(
                     inboxLabel.text(),
-                    selectedCount = 0,
+                    selectedCount = 1,
                     isComposerDisabled = true
                 )
             ),
@@ -185,10 +186,10 @@ internal class MailboxTopAppBarReducerTest(
                     selectedCount = 42,
                     isComposerDisabled = false
                 ),
-                operation = MailboxViewAction.EnterSelectionMode,
+                operation = MailboxViewAction.EnterSelectionMode(MailboxItemUiModelTestData.readMailboxItemUiModel),
                 expectedState = MailboxTopAppBarState.Data.SelectionMode(
                     inboxLabel.text(),
-                    selectedCount = 0,
+                    selectedCount = 1,
                     isComposerDisabled = false
                 )
             ),
@@ -297,10 +298,10 @@ internal class MailboxTopAppBarReducerTest(
                     searchQuery = EMPTY_STRING,
                     isComposerDisabled = true
                 ),
-                operation = MailboxViewAction.EnterSelectionMode,
+                operation = MailboxViewAction.EnterSelectionMode(MailboxItemUiModelTestData.readMailboxItemUiModel),
                 expectedState = MailboxTopAppBarState.Data.SelectionMode(
                     inboxLabel.text(),
-                    selectedCount = 0,
+                    selectedCount = 1,
                     isComposerDisabled = true
                 )
             ),
@@ -310,10 +311,10 @@ internal class MailboxTopAppBarReducerTest(
                     searchQuery = EMPTY_STRING,
                     isComposerDisabled = false
                 ),
-                operation = MailboxViewAction.EnterSelectionMode,
+                operation = MailboxViewAction.EnterSelectionMode(MailboxItemUiModelTestData.readMailboxItemUiModel),
                 expectedState = MailboxTopAppBarState.Data.SelectionMode(
                     inboxLabel.text(),
-                    selectedCount = 0,
+                    selectedCount = 1,
                     isComposerDisabled = false
                 )
             ),

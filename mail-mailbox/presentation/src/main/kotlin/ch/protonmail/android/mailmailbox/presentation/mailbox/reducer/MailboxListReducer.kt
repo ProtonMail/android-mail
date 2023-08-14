@@ -42,6 +42,8 @@ class MailboxListReducer @Inject constructor() {
             is MailboxViewAction.OnOfflineWithData -> reduceOfflineWithData(currentState)
             is MailboxViewAction.OnErrorWithData -> reduceErrorWithData(currentState)
             is MailboxViewAction.Refresh -> reduceRefresh(currentState)
+            is MailboxViewAction.EnterSelectionMode -> reduceEnterSelectionMode(currentState, operation)
+            is MailboxViewAction.ExitSelectionMode -> reduceExitSelectionMode(currentState)
         }
     }
 
@@ -146,6 +148,31 @@ class MailboxListReducer @Inject constructor() {
                 currentState
             }
         }
+
+        else -> currentState
+    }
+
+    private fun reduceEnterSelectionMode(
+        currentState: MailboxListState,
+        operation: MailboxViewAction.EnterSelectionMode
+    ) = when (currentState) {
+        is MailboxListState.Data.ViewMode -> MailboxListState.Data.SelectionMode(
+            currentMailLabel = currentState.currentMailLabel,
+            selectedMailboxItems = listOf(operation.item),
+        )
+
+        else -> currentState
+    }
+
+    private fun reduceExitSelectionMode(currentState: MailboxListState) = when (currentState) {
+        is MailboxListState.Data.SelectionMode -> MailboxListState.Data.ViewMode(
+            currentMailLabel = currentState.currentMailLabel,
+            openItemEffect = Effect.empty(),
+            scrollToMailboxTop = Effect.empty(),
+            offlineEffect = Effect.empty(),
+            refreshErrorEffect = Effect.empty(),
+            refreshRequested = false
+        )
 
         else -> currentState
     }

@@ -96,7 +96,7 @@ fun MailboxScreen(
         onErrorWithData = { viewModel.submit(MailboxViewAction.OnErrorWithData) },
         onNavigateToMailboxItem = { item -> viewModel.submit(MailboxViewAction.OpenItemDetails(item)) },
         onOpenSelectionMode = {
-            viewModel.submit(MailboxViewAction.EnterSelectionMode)
+            viewModel.submit(MailboxViewAction.EnterSelectionMode(it))
             actions.showFeatureMissingSnackbar()
         },
         onRefreshList = { viewModel.submit(MailboxViewAction.Refresh) }
@@ -393,7 +393,7 @@ object MailboxScreen {
         val onEnableUnreadFilter: () -> Unit,
         val onExitSelectionMode: () -> Unit,
         val onNavigateToMailboxItem: (MailboxItemUiModel) -> Unit,
-        val onOpenSelectionMode: () -> Unit,
+        val onOpenSelectionMode: (MailboxItemUiModel) -> Unit,
         val onRefreshList: () -> Unit,
         val openDrawerMenu: () -> Unit,
         val showOfflineSnackbar: () -> Unit,

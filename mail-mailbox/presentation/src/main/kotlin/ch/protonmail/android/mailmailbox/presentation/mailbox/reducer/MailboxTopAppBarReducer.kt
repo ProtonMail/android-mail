@@ -20,10 +20,10 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.presentation.text
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import javax.inject.Inject
 
 class MailboxTopAppBarReducer @Inject constructor() {
@@ -35,8 +35,8 @@ class MailboxTopAppBarReducer @Inject constructor() {
         return when (operation) {
             is MailboxEvent.SelectedLabelChanged -> currentState.toNewStateForSelectedLabelChanged(operation)
             is MailboxEvent.NewLabelSelected -> currentState.toNewStateForNewLabelSelected(operation)
-            MailboxViewAction.EnterSelectionMode -> currentState.toNewStateForEnterSelectionMode()
-            MailboxViewAction.ExitSelectionMode -> currentState.toNewStateForExitSelectionMode()
+            is MailboxViewAction.EnterSelectionMode -> currentState.toNewStateForEnterSelectionMode()
+            is MailboxViewAction.ExitSelectionMode -> currentState.toNewStateForExitSelectionMode()
             is MailboxEvent.ComposerDisabledChanged -> currentState.toNewStateForComposerDisabledChanged(operation)
         }
     }
@@ -69,25 +69,23 @@ class MailboxTopAppBarReducer @Inject constructor() {
         }
     }
 
-    private fun MailboxTopAppBarState.toNewStateForEnterSelectionMode() =
-        when (this) {
-            is MailboxTopAppBarState.Loading -> this
-            is MailboxTopAppBarState.Data -> MailboxTopAppBarState.Data.SelectionMode(
-                currentLabelName,
-                isComposerDisabled,
-                selectedCount = 0
-            )
-        }
+    private fun MailboxTopAppBarState.toNewStateForEnterSelectionMode() = when (this) {
+        is MailboxTopAppBarState.Loading -> this
+        is MailboxTopAppBarState.Data -> MailboxTopAppBarState.Data.SelectionMode(
+            currentLabelName,
+            isComposerDisabled,
+            selectedCount = 1
+        )
+    }
 
-    private fun MailboxTopAppBarState.toNewStateForExitSelectionMode() =
-        when (this) {
-            is MailboxTopAppBarState.Loading -> this
-            is MailboxTopAppBarState.Data ->
-                MailboxTopAppBarState.Data.DefaultMode(
-                    currentLabelName,
-                    isComposerDisabled
-                )
-        }
+    private fun MailboxTopAppBarState.toNewStateForExitSelectionMode() = when (this) {
+        is MailboxTopAppBarState.Loading -> this
+        is MailboxTopAppBarState.Data ->
+            MailboxTopAppBarState.Data.DefaultMode(
+                currentLabelName,
+                isComposerDisabled
+            )
+    }
 
     private fun MailboxTopAppBarState.toNewStateForComposerDisabledChanged(
         operation: MailboxEvent.ComposerDisabledChanged

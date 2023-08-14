@@ -341,15 +341,22 @@ class MailboxViewModelTest {
     @Test
     fun `when enter selection mode action submitted, new state is created and emitted`() = runTest {
         // Given
+        val expectedMailboxItem = readMailboxItemUiModel
         val expectedState = MailboxStateSampleData.Loading.copy(
             topAppBarState = MailboxTopAppBarState.Data.SelectionMode(
                 currentLabelName = MailLabel.System(initialLocationMailLabelId).text(),
                 selectedCount = 0,
                 isComposerDisabled = false
+            ),
+            mailboxListState = MailboxListState.Data.SelectionMode(
+                currentMailLabel = MailLabel.System(initialLocationMailLabelId),
+                selectedMailboxItems = listOf(expectedMailboxItem)
             )
         )
         every {
-            mailboxReducer.newStateFrom(MailboxStateSampleData.Loading, MailboxViewAction.EnterSelectionMode)
+            mailboxReducer.newStateFrom(
+                MailboxStateSampleData.Loading, MailboxViewAction.EnterSelectionMode(expectedMailboxItem)
+            )
         } returns expectedState
 
         mailboxViewModel.state.test {
@@ -357,7 +364,7 @@ class MailboxViewModelTest {
             awaitItem() // First emission for selected user
 
             // When
-            mailboxViewModel.submit(MailboxViewAction.EnterSelectionMode)
+            mailboxViewModel.submit(MailboxViewAction.EnterSelectionMode(expectedMailboxItem))
 
             // Then
             assertEquals(expectedState, awaitItem())

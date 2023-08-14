@@ -298,6 +298,36 @@ internal class MailboxListReducerTest(
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = true
                 )
+            ),
+            TestInput(
+                currentState = MailboxListState.Data.ViewMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    openItemEffect = Effect.empty(),
+                    scrollToMailboxTop = Effect.empty(),
+                    offlineEffect = Effect.empty(),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshRequested = false
+                ),
+                operation = MailboxViewAction.EnterSelectionMode(MailboxItemUiModelTestData.readMailboxItemUiModel),
+                expectedState = MailboxListState.Data.SelectionMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    selectedMailboxItems = listOf(MailboxItemUiModelTestData.readMailboxItemUiModel)
+                )
+            ),
+            TestInput(
+                currentState = MailboxListState.Data.SelectionMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    selectedMailboxItems = listOf(MailboxItemUiModelTestData.readMailboxItemUiModel)
+                ),
+                operation = MailboxViewAction.ExitSelectionMode,
+                expectedState = MailboxListState.Data.ViewMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    openItemEffect = Effect.empty(),
+                    scrollToMailboxTop = Effect.empty(),
+                    offlineEffect = Effect.empty(),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshRequested = false
+                )
             )
         )
 

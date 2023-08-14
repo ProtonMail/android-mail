@@ -72,11 +72,11 @@ fun MailboxItem(
     modifier: Modifier = Modifier,
     item: MailboxItemUiModel,
     onItemClicked: (MailboxItemUiModel) -> Unit,
-    onOpenSelectionMode: () -> Unit
+    onOpenSelectionMode: (MailboxItemUiModel) -> Unit
 ) {
     Row(
         modifier = modifier
-            .combinedClickable(onClick = { onItemClicked(item) }, onLongClick = onOpenSelectionMode)
+            .combinedClickable(onClick = { onItemClicked(item) }, onLongClick = { onOpenSelectionMode(item) })
             .semantics { isItemRead = item.isRead }
             .padding(
                 start = ProtonDimens.DefaultSpacing,
@@ -205,6 +205,7 @@ private fun Participants(
                 fontColor = fontColor
             )
         }
+
         is ParticipantsUiModel.NoParticipants -> {
             Text(
                 modifier = modifier.testTag(ParticipantsListTestTags.NoParticipant),
