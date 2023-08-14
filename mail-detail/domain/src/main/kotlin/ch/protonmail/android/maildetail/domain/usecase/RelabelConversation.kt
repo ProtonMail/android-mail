@@ -37,17 +37,17 @@ class RelabelConversation @Inject constructor(
         currentSelections: LabelSelectionList,
         updatedSelections: LabelSelectionList
     ): Either<DataError, Conversation> {
-        val removedLabels = currentSelections.selectedLabels - updatedSelections.selectedLabels
-        val addedLabels = updatedSelections.selectedLabels - currentSelections.selectedLabels
+        val currentFullAndPartialSelections = currentSelections.let { it.selectedLabels + it.partiallySelectionLabels }
+        val updatedFullAndPartialSelections = updatedSelections.let { it.selectedLabels + it.partiallySelectionLabels }
 
-        val removedPartialSelectedLabels =
-            currentSelections.partiallySelectionLabels - updatedSelections.partiallySelectionLabels
+        val labelsToBeRemoved = currentFullAndPartialSelections - updatedFullAndPartialSelections.toSet()
+        val labelsToBeAdded = updatedSelections.selectedLabels - currentSelections.selectedLabels.toSet()
 
         return conversationRepository.relabel(
             userId = userId,
             conversationId = conversationId,
-            labelsToBeRemoved = removedLabels + removedPartialSelectedLabels,
-            labelsToBeAdded = addedLabels
+            labelsToBeRemoved = labelsToBeRemoved,
+            labelsToBeAdded = labelsToBeAdded
         )
     }
 }

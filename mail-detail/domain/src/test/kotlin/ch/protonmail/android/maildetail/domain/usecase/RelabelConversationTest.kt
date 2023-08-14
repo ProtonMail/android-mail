@@ -104,13 +104,55 @@ class RelabelConversationTest {
     }
 
     @Test
-    fun `use case passing correct add and remove label lists when partial selection is changed`() = runTest {
+    fun `use case passing correct add and remove label lists when partial selection is changed to remove`() = runTest {
         // Given
         val oldLabelIds = listOf(LabelId("1"), LabelId("2"), LabelId("3"))
         val oldPartialSelectedLabels = listOf(LabelId("5"))
         val newLabelIds = listOf(LabelId("1"), LabelId("2"), LabelId("4"))
         val removedLabels = listOf(LabelId("3"), LabelId("5"))
         val addedLabels = listOf(LabelId("4"))
+        coEvery {
+            conversationRepository.relabel(
+                userId = UserIdSample.Primary,
+                conversationId = ConversationIdSample.Invoices,
+                labelsToBeRemoved = removedLabels,
+                labelsToBeAdded = addedLabels
+            )
+        } returns mockk()
+
+        // When
+        relabelConversation(
+            UserIdSample.Primary,
+            ConversationIdSample.Invoices,
+            currentSelections = LabelSelectionList(
+                selectedLabels = oldLabelIds,
+                partiallySelectionLabels = oldPartialSelectedLabels
+            ),
+            updatedSelections = LabelSelectionList(
+                selectedLabels = newLabelIds,
+                partiallySelectionLabels = emptyList()
+            )
+        )
+
+        // Then
+        coVerify {
+            conversationRepository.relabel(
+                userId = UserIdSample.Primary,
+                conversationId = ConversationIdSample.Invoices,
+                labelsToBeRemoved = removedLabels,
+                labelsToBeAdded = addedLabels
+            )
+        }
+    }
+
+    @Test
+    fun `use case passing correct add and remove label lists when partial selection is changed to add`() = runTest {
+        // Given
+        val oldLabelIds = listOf(LabelId("1"), LabelId("2"), LabelId("3"))
+        val oldPartialSelectedLabels = listOf(LabelId("5"))
+        val newLabelIds = listOf(LabelId("1"), LabelId("2"), LabelId("4"), LabelId("5"))
+        val removedLabels = listOf(LabelId("3"))
+        val addedLabels = listOf(LabelId("4"), LabelId("5"))
         coEvery {
             conversationRepository.relabel(
                 userId = UserIdSample.Primary,
