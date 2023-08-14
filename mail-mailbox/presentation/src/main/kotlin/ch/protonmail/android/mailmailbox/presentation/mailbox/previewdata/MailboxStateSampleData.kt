@@ -30,7 +30,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilter
 object MailboxStateSampleData {
 
     val Loading = MailboxState(
-        mailboxListState = MailboxListState.Loading,
+        mailboxListState = MailboxListState.Loading(selectionModeEnabled = false),
         topAppBarState = MailboxTopAppBarState.Loading(isComposerDisabled = false),
         unreadFilterState = UnreadFilterState.Loading
     )
@@ -42,7 +42,8 @@ object MailboxStateSampleData {
             scrollToMailboxTop = Effect.empty(),
             offlineEffect = Effect.empty(),
             refreshErrorEffect = Effect.empty(),
-            refreshRequested = false
+            refreshRequested = false,
+            selectionModeEnabled = false
         ),
         topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
             currentLabelName = MailLabel.System(MailLabelId.System.Inbox).text(),
@@ -61,7 +62,8 @@ object MailboxStateSampleData {
             scrollToMailboxTop = Effect.empty(),
             offlineEffect = Effect.empty(),
             refreshErrorEffect = Effect.empty(),
-            refreshRequested = false
+            refreshRequested = false,
+            selectionModeEnabled = false
         ),
         topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
             currentLabelName = MailLabel.System(MailLabelId.System.AllMail).text(),

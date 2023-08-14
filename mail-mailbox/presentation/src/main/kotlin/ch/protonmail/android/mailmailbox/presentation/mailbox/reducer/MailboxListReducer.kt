@@ -39,10 +39,11 @@ class MailboxListReducer @Inject constructor() {
             is MailboxEvent.SelectedLabelChanged -> reduceSelectedLabelChanged(operation, currentState)
             is MailboxEvent.NewLabelSelected -> reduceNewLabelSelected(operation, currentState)
             is MailboxEvent.ItemDetailsOpenedInViewMode -> reduceItemDetailOpened(operation, currentState)
+            is MailboxEvent.SelectionModeEnabledChanged -> reduceSelectionModeEnabledChanged(operation, currentState)
             is MailboxViewAction.OnOfflineWithData -> reduceOfflineWithData(currentState)
             is MailboxViewAction.OnErrorWithData -> reduceErrorWithData(currentState)
             is MailboxViewAction.Refresh -> reduceRefresh(currentState)
-            is MailboxViewAction.EnterSelectionMode -> reduceEnterSelectionMode(currentState, operation)
+            is MailboxViewAction.EnterSelectionMode -> reduceEnterSelectionMode(operation, currentState)
             is MailboxViewAction.ExitSelectionMode -> reduceExitSelectionMode(currentState)
         }
     }
@@ -59,7 +60,8 @@ class MailboxListReducer @Inject constructor() {
                 scrollToMailboxTop = Effect.empty(),
                 offlineEffect = Effect.empty(),
                 refreshErrorEffect = Effect.empty(),
-                refreshRequested = false
+                refreshRequested = false,
+                selectionModeEnabled = currentState.selectionModeEnabled
             )
 
             is MailboxListState.Data.SelectionMode -> currentState.copy(
@@ -84,7 +86,8 @@ class MailboxListReducer @Inject constructor() {
                 scrollToMailboxTop = Effect.empty(),
                 offlineEffect = Effect.empty(),
                 refreshErrorEffect = Effect.empty(),
-                refreshRequested = false
+                refreshRequested = false,
+                selectionModeEnabled = currentState.selectionModeEnabled
             )
 
             is MailboxListState.Data.ViewMode -> currentState.copy(
@@ -153,12 +156,13 @@ class MailboxListReducer @Inject constructor() {
     }
 
     private fun reduceEnterSelectionMode(
-        currentState: MailboxListState,
-        operation: MailboxViewAction.EnterSelectionMode
+        operation: MailboxViewAction.EnterSelectionMode,
+        currentState: MailboxListState
     ) = when (currentState) {
         is MailboxListState.Data.ViewMode -> MailboxListState.Data.SelectionMode(
             currentMailLabel = currentState.currentMailLabel,
             selectedMailboxItems = listOf(operation.item),
+            selectionModeEnabled = currentState.selectionModeEnabled
         )
 
         else -> currentState
@@ -171,9 +175,21 @@ class MailboxListReducer @Inject constructor() {
             scrollToMailboxTop = Effect.empty(),
             offlineEffect = Effect.empty(),
             refreshErrorEffect = Effect.empty(),
-            refreshRequested = false
+            refreshRequested = false,
+            selectionModeEnabled = currentState.selectionModeEnabled
         )
 
         else -> currentState
+    }
+
+    private fun reduceSelectionModeEnabledChanged(
+        operation: MailboxEvent.SelectionModeEnabledChanged,
+        currentState: MailboxListState
+    ) = with(currentState) {
+        when (this) {
+            is MailboxListState.Data.SelectionMode -> copy(selectionModeEnabled = operation.selectionModeEnabled)
+            is MailboxListState.Data.ViewMode -> copy(selectionModeEnabled = operation.selectionModeEnabled)
+            is MailboxListState.Loading -> copy(selectionModeEnabled = operation.selectionModeEnabled)
+        }
     }
 }

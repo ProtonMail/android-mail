@@ -24,10 +24,12 @@ import me.proton.core.featureflag.domain.entity.FeatureId
  * This class contains all the feature flags that are used by the Mail client.
  */
 enum class MailFeatureId(val id: FeatureId) {
+
     // Remote flags
     ConversationMode(FeatureId("ThreadingAndroid")),
     HideComposer(FeatureId("HideComposerAndroid")),
 
     // Local only flag (unknown to remote API)
-    ShowSettings(FeatureId("ShowSettings"))
+    ShowSettings(FeatureId("ShowSettings")),
+    SelectionMode(FeatureId("EnableSelectionMode"))
 }

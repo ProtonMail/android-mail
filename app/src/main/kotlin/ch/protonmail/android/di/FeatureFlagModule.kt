@@ -41,7 +41,8 @@ object FeatureFlagModule {
             mapOf(
                 MailFeatureId.ConversationMode to isAlphaOrDev,
                 MailFeatureId.ShowSettings to isAlphaOrDev,
-                MailFeatureId.HideComposer to buildDebug.not()
+                MailFeatureId.HideComposer to buildDebug.not(),
+                MailFeatureId.SelectionMode to buildDebug
             )
         )
     }

@@ -72,6 +72,10 @@ internal sealed interface MailboxEvent : MailboxOperation {
     data class ComposerDisabledChanged(
         val composerDisabled: Boolean
     ) : MailboxEvent, AffectingTopAppBar
+
+    data class SelectionModeEnabledChanged(
+        val selectionModeEnabled: Boolean
+    ) : MailboxEvent, AffectingMailboxList
 }
 
 

@@ -25,12 +25,15 @@ import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
 
 sealed interface MailboxListState {
 
+    val selectionModeEnabled: Boolean
+
     sealed interface Data : MailboxListState {
 
         val currentMailLabel: MailLabel
 
         data class ViewMode(
             override val currentMailLabel: MailLabel,
+            override val selectionModeEnabled: Boolean,
             val openItemEffect: Effect<OpenMailboxItemRequest>,
             val scrollToMailboxTop: Effect<MailLabelId>,
             val offlineEffect: Effect<Unit>,
@@ -40,10 +43,11 @@ sealed interface MailboxListState {
 
         data class SelectionMode(
             override val currentMailLabel: MailLabel,
+            override val selectionModeEnabled: Boolean,
             val selectedMailboxItems: List<MailboxItemUiModel>
         ) : Data
     }
 
-    object Loading : MailboxListState
+    data class Loading(override val selectionModeEnabled: Boolean) : MailboxListState
 }
 

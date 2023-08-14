@@ -186,7 +186,7 @@ class MailboxViewModelTest {
             // Then
             val actual = awaitItem()
             val expected = MailboxState(
-                mailboxListState = MailboxListState.Loading,
+                mailboxListState = MailboxListState.Loading(selectionModeEnabled = false),
                 topAppBarState = MailboxTopAppBarState.Loading(isComposerDisabled = false),
                 unreadFilterState = UnreadFilterState.Loading
             )
@@ -209,7 +209,8 @@ class MailboxViewModelTest {
                 scrollToMailboxTop = Effect.of(expectedMailLabel.id),
                 offlineEffect = Effect.empty(),
                 refreshErrorEffect = Effect.empty(),
-                refreshRequested = false
+                refreshRequested = false,
+                selectionModeEnabled = false
             )
         )
         val currentLocationFlow = MutableStateFlow<MailLabelId>(MailLabelId.System.Inbox)
@@ -243,7 +244,8 @@ class MailboxViewModelTest {
                 scrollToMailboxTop = Effect.of(initialMailLabel.id),
                 offlineEffect = Effect.empty(),
                 refreshErrorEffect = Effect.empty(),
-                refreshRequested = false
+                refreshRequested = false,
+                selectionModeEnabled = false
             )
         )
         val mailLabelsFlow = MutableStateFlow(
@@ -350,7 +352,8 @@ class MailboxViewModelTest {
             ),
             mailboxListState = MailboxListState.Data.SelectionMode(
                 currentMailLabel = MailLabel.System(initialLocationMailLabelId),
-                selectedMailboxItems = listOf(expectedMailboxItem)
+                selectedMailboxItems = listOf(expectedMailboxItem),
+                selectionModeEnabled = true
             )
         )
         every {
@@ -540,7 +543,8 @@ class MailboxViewModelTest {
                 scrollToMailboxTop = Effect.empty(),
                 offlineEffect = Effect.empty(),
                 refreshErrorEffect = Effect.empty(),
-                refreshRequested = false
+                refreshRequested = false,
+                selectionModeEnabled = false
             )
         )
         every { observeCurrentViewMode(userId = any()) } returns flowOf(NoConversationGrouping)
@@ -569,7 +573,8 @@ class MailboxViewModelTest {
                 scrollToMailboxTop = Effect.empty(),
                 offlineEffect = Effect.of(Unit),
                 refreshErrorEffect = Effect.empty(),
-                refreshRequested = false
+                refreshRequested = false,
+                selectionModeEnabled = false
             )
         )
         every {
@@ -597,7 +602,8 @@ class MailboxViewModelTest {
                 scrollToMailboxTop = Effect.empty(),
                 offlineEffect = Effect.empty(),
                 refreshErrorEffect = Effect.of(Unit),
-                refreshRequested = false
+                refreshRequested = false,
+                selectionModeEnabled = false
             )
         )
         every {
@@ -625,7 +631,8 @@ class MailboxViewModelTest {
                 scrollToMailboxTop = Effect.empty(),
                 offlineEffect = Effect.of(Unit),
                 refreshErrorEffect = Effect.empty(),
-                refreshRequested = true
+                refreshRequested = true,
+                selectionModeEnabled = false
             )
         )
         every {
@@ -654,7 +661,8 @@ class MailboxViewModelTest {
                 scrollToMailboxTop = Effect.empty(),
                 offlineEffect = Effect.empty(),
                 refreshErrorEffect = Effect.empty(),
-                refreshRequested = false
+                refreshRequested = false,
+                selectionModeEnabled = false
             )
         )
         every { observeCurrentViewMode(userId = any()) } returns flowOf(ConversationGrouping)
@@ -731,6 +739,45 @@ class MailboxViewModelTest {
             // The initial state
             skipItems(1)
             featureFlagFlow.emit(FeatureFlag.default(MailFeatureId.HideComposer.id.id, defaultValue = true))
+
+            // Then
+            assertEquals(expectedState, awaitItem())
+        }
+    }
+
+    @Test
+    fun `when selection mode enabled with a feature flag, produces and emits a new state`() = runTest {
+        // Given
+        val expectedState = MailboxStateSampleData.Loading.copy(
+            topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
+                currentLabelName = MailLabel.System(initialLocationMailLabelId).text(),
+                isComposerDisabled = true
+            ),
+            mailboxListState = MailboxListState.Data.ViewMode(
+                currentMailLabel = MailLabel.System(initialLocationMailLabelId),
+                openItemEffect = Effect.empty(),
+                scrollToMailboxTop = Effect.empty(),
+                offlineEffect = Effect.empty(),
+                refreshErrorEffect = Effect.empty(),
+                refreshRequested = false,
+                selectionModeEnabled = true
+            )
+        )
+        every {
+            mailboxReducer.newStateFrom(
+                MailboxStateSampleData.Loading,
+                MailboxEvent.SelectionModeEnabledChanged(selectionModeEnabled = true)
+            )
+        } returns expectedState
+        val featureFlagFlow = MutableSharedFlow<FeatureFlag>()
+        every { observeMailFeature(userId, MailFeatureId.SelectionMode) } returns featureFlagFlow
+
+        // When
+        mailboxViewModel.state.test {
+
+            // The initial state
+            skipItems(1)
+            featureFlagFlow.emit(FeatureFlag.default(MailFeatureId.SelectionMode.id.id, defaultValue = true))
 
             // Then
             assertEquals(expectedState, awaitItem())
@@ -900,7 +947,8 @@ class MailboxViewModelTest {
                 scrollToMailboxTop = Effect.empty(),
                 offlineEffect = Effect.empty(),
                 refreshErrorEffect = Effect.empty(),
-                refreshRequested = false
+                refreshRequested = false,
+                selectionModeEnabled = false
             ),
             unreadFilterState = UnreadFilterState.Data(
                 numUnread = UnreadCountersTestData.labelToCounterMap[initialLocationMailLabelId.labelId]!!,

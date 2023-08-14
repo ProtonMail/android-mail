@@ -130,6 +130,14 @@ class MailboxViewModel @Inject constructor(
                 emitNewStateFrom(MailboxEvent.ComposerDisabledChanged(composerDisabled = hideComposerFlag.value))
             }
             .launchIn(viewModelScope)
+
+        primaryUserId
+            .filterNotNull()
+            .flatMapLatest { userId -> observeMailFeature(userId, MailFeatureId.SelectionMode) }
+            .onEach {
+                emitNewStateFrom(MailboxEvent.SelectionModeEnabledChanged(selectionModeEnabled = it.value))
+            }
+            .launchIn(viewModelScope)
     }
 
     internal fun submit(viewAction: MailboxViewAction) {
@@ -139,6 +147,7 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.ExitSelectionMode,
                 is MailboxViewAction.DisableUnreadFilter,
                 is MailboxViewAction.EnableUnreadFilter -> emitNewStateFrom(viewAction)
+
                 is MailboxViewAction.Refresh -> emitNewStateFrom(viewAction)
                 is MailboxViewAction.OpenItemDetails -> onOpenItemDetails(viewAction.item)
                 is MailboxViewAction.OnOfflineWithData -> emitNewStateFrom(viewAction)
@@ -268,7 +277,7 @@ class MailboxViewModel @Inject constructor(
     companion object {
 
         val initialState = MailboxState(
-            mailboxListState = MailboxListState.Loading,
+            mailboxListState = MailboxListState.Loading(selectionModeEnabled = false),
             topAppBarState = MailboxTopAppBarState.Loading(isComposerDisabled = false),
             unreadFilterState = UnreadFilterState.Loading
         )

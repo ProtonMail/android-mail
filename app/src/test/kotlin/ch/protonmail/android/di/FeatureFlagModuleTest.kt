@@ -47,7 +47,8 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
                 expectedDefaultsMap = mapOf(
                     MailFeatureId.ConversationMode to true,
                     MailFeatureId.ShowSettings to true,
-                    MailFeatureId.HideComposer to true
+                    MailFeatureId.HideComposer to true,
+                    MailFeatureId.SelectionMode to false
                 )
             ),
             TestInput(
@@ -56,7 +57,8 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
                 expectedDefaultsMap = mapOf(
                     MailFeatureId.ConversationMode to true,
                     MailFeatureId.ShowSettings to true,
-                    MailFeatureId.HideComposer to false
+                    MailFeatureId.HideComposer to false,
+                    MailFeatureId.SelectionMode to true
                 )
             ),
             TestInput(
@@ -65,7 +67,8 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
                 expectedDefaultsMap = mapOf(
                     MailFeatureId.ConversationMode to true,
                     MailFeatureId.ShowSettings to true,
-                    MailFeatureId.HideComposer to true
+                    MailFeatureId.HideComposer to true,
+                    MailFeatureId.SelectionMode to false
                 )
             ),
             TestInput(
@@ -74,7 +77,8 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
                 expectedDefaultsMap = mapOf(
                     MailFeatureId.ConversationMode to true,
                     MailFeatureId.ShowSettings to true,
-                    MailFeatureId.HideComposer to false
+                    MailFeatureId.HideComposer to false,
+                    MailFeatureId.SelectionMode to true
                 )
             ),
             TestInput(
@@ -83,7 +87,8 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
                 expectedDefaultsMap = mapOf(
                     MailFeatureId.ConversationMode to false,
                     MailFeatureId.ShowSettings to false,
-                    MailFeatureId.HideComposer to true
+                    MailFeatureId.HideComposer to true,
+                    MailFeatureId.SelectionMode to false
                 )
             ),
             TestInput(
@@ -92,7 +97,8 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
                 expectedDefaultsMap = mapOf(
                     MailFeatureId.ConversationMode to false,
                     MailFeatureId.ShowSettings to false,
-                    MailFeatureId.HideComposer to false
+                    MailFeatureId.HideComposer to false,
+                    MailFeatureId.SelectionMode to true
                 )
             )
         )

@@ -96,8 +96,11 @@ fun MailboxScreen(
         onErrorWithData = { viewModel.submit(MailboxViewAction.OnErrorWithData) },
         onNavigateToMailboxItem = { item -> viewModel.submit(MailboxViewAction.OpenItemDetails(item)) },
         onOpenSelectionMode = {
-            viewModel.submit(MailboxViewAction.EnterSelectionMode(it))
-            actions.showFeatureMissingSnackbar()
+            if (mailboxState.mailboxListState.selectionModeEnabled) {
+                viewModel.submit(MailboxViewAction.EnterSelectionMode(it))
+            } else {
+                actions.showFeatureMissingSnackbar()
+            }
         },
         onRefreshList = { viewModel.submit(MailboxViewAction.Refresh) }
     )
@@ -130,12 +133,10 @@ fun MailboxScreen(
                     state = mailboxState.topAppBarState,
                     actions = MailboxTopAppBar.Actions(
                         onOpenMenu = actions.openDrawerMenu,
-                        onExitSelectionMode = actions.onExitSelectionMode,
+                        onExitSelectionMode = { actions.onExitSelectionMode() },
                         onExitSearchMode = {},
                         onTitleClick = { scope.launch { lazyListState.animateScrollToItem(0) } },
-                        onEnterSearchMode = {
-                            actions.showFeatureMissingSnackbar()
-                        },
+                        onEnterSearchMode = { actions.showFeatureMissingSnackbar() },
                         onSearch = {},
                         onOpenComposer = {
                             if (mailboxState.topAppBarState.isComposerDisabled) {
@@ -185,7 +186,7 @@ fun MailboxScreen(
 
             is MailboxListState.Data.SelectionMode -> {}
 
-            MailboxListState.Loading -> ProtonCenteredProgress(
+            is MailboxListState.Loading -> ProtonCenteredProgress(
                 modifier = Modifier
                     .testTag(MailboxScreenTestTags.ListProgress)
                     .padding(paddingValues)
