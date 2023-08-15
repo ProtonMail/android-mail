@@ -16,10 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.domain.model
-
-import ch.protonmail.android.mailmessage.domain.entity.MessageAttachment
-import ch.protonmail.android.mailmessage.domain.entity.MimeType
+package ch.protonmail.android.mailmessage.domain.entity
 
 data class DecryptedMessageBody(
     val value: String,

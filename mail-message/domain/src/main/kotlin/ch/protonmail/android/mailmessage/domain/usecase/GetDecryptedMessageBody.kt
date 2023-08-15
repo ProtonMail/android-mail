@@ -16,18 +16,18 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.domain.usecase
+package ch.protonmail.android.mailmessage.domain.usecase
 
 import arrow.core.Either
 import arrow.core.flatMap
 import arrow.core.left
 import arrow.core.right
-import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
-import ch.protonmail.android.maildetail.domain.model.GetDecryptedMessageBodyError
+import ch.protonmail.android.mailmessage.domain.entity.DecryptedMessageBody
+import ch.protonmail.android.mailmessage.domain.entity.GetDecryptedMessageBodyError
+import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.entity.MessageBody
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.MimeType
-import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import me.proton.core.crypto.common.context.CryptoContext
 import me.proton.core.crypto.common.pgp.exception.CryptoException
 import me.proton.core.domain.entity.UserId

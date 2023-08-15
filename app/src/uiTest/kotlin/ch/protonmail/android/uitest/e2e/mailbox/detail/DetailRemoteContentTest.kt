@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.uitest.e2e.mailbox.detail
 
-import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
+import ch.protonmail.android.mailmessage.domain.entity.DecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.entity.MimeType
 import ch.protonmail.android.networkmocks.assets.RawAssets
 

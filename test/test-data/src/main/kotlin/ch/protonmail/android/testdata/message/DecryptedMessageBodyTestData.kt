@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.testdata.message
 
-import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
+import ch.protonmail.android.mailmessage.domain.entity.DecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.entity.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.entity.MimeType
 

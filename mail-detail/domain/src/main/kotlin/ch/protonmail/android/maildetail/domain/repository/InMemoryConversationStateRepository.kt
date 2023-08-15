@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.maildetail.domain.repository
 
-import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
+import ch.protonmail.android.mailmessage.domain.entity.DecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import kotlinx.coroutines.flow.Flow
 
