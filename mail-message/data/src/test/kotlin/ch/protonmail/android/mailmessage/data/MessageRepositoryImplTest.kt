@@ -948,4 +948,19 @@ class MessageRepositoryImplTest {
         // Then
         assertEquals(expectedMessageWithBody.right(), actualMessageWithBody)
     }
+
+    @Test
+    fun `when fetching message with body from remote storage is successful, save it locally`() = runTest {
+        // Given
+        val userId = UserIdSample.Primary
+        val expectedMessageWithBody = MessageWithBodySample.RemoteDraft
+        val expectedMessageId = MessageIdSample.RemoteDraft
+        coEvery { remoteDataSource.getMessage(userId, expectedMessageId) } returns expectedMessageWithBody.right()
+
+        // When
+        messageRepository.fetchMessageWithBody(userId, expectedMessageId)
+
+        // Then
+        coVerify { localDataSource.upsertMessageWithBody(userId, expectedMessageWithBody) }
+    }
 }

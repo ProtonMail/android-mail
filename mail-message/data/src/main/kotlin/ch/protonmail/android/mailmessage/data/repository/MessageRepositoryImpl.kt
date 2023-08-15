@@ -136,7 +136,9 @@ class MessageRepositoryImpl @Inject constructor(
     override suspend fun fetchMessageWithBody(
         userId: UserId,
         messageId: MessageId
-    ): Either<DataError, MessageWithBody> = remoteDataSource.getMessage(userId, messageId)
+    ): Either<DataError, MessageWithBody> = remoteDataSource.getMessage(userId, messageId).also { either ->
+        either.getOrNull()?.let { upsertMessageWithBody(userId, it) }
+    }
 
     override suspend fun upsertMessageWithBody(userId: UserId, messageWithBody: MessageWithBody): Boolean {
         return try {

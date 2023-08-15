@@ -87,7 +87,8 @@ interface MessageRepository {
     suspend fun getLocalMessageWithBody(userId: UserId, messageId: MessageId): MessageWithBody?
 
     /**
-     * Get the [MessageWithBody] for a given [MessageId] and [userId] from the remote storage.
+     * Get the [MessageWithBody] for a given [MessageId] and [userId] from the remote storage
+     * and stores it locally.
      */
     suspend fun fetchMessageWithBody(userId: UserId, messageId: MessageId): Either<DataError, MessageWithBody>
 
