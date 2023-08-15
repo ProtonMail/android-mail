@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcomposer.presentation.reducer
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
+import ch.protonmail.android.mailcomposer.domain.model.DraftFields
 import ch.protonmail.android.mailcomposer.domain.model.Subject
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
@@ -76,7 +77,25 @@ class ComposerReducer @Inject constructor() {
         )
         is ComposerEvent.OnCloseWithDraftSaved -> updateCloseComposerState(currentState, true)
         is ComposerEvent.OpenExistingDraft -> currentState.copy(isLoading = true)
+        is ComposerEvent.ExistingDraftDataReceived -> updateComposerFieldsState(currentState, this.draftFields)
+        is ComposerEvent.ErrorLoadingDraftData -> currentState.copy(
+            error = Effect.of(TextUiModel(R.string.composer_error_loading_draft)),
+            isLoading = false
+        )
     }
+
+    private fun updateComposerFieldsState(currentState: ComposerDraftState, draftFields: DraftFields) =
+        currentState.copy(
+            fields = currentState.fields.copy(
+                sender = SenderUiModel(draftFields.sender.value),
+                subject = draftFields.subject.value,
+                body = draftFields.body.value,
+                to = draftFields.recipientsTo.value.map { RecipientUiModel.Valid(it.address) },
+                cc = draftFields.recipientsCc.value.map { RecipientUiModel.Valid(it.address) },
+                bcc = draftFields.recipientsBcc.value.map { RecipientUiModel.Valid(it.address) }
+            ),
+            isLoading = false
+        )
 
     private fun updateCloseComposerState(currentState: ComposerDraftState, isDraftSaved: Boolean) = if (isDraftSaved) {
         currentState.copy(closeComposerWithDraftSaved = Effect.of(Unit))

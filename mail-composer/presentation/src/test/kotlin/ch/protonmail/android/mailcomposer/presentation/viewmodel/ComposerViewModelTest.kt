@@ -35,6 +35,7 @@ import ch.protonmail.android.mailcomposer.domain.model.RecipientsTo
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.domain.model.Subject
 import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses
+import ch.protonmail.android.mailcomposer.domain.usecase.GetDecryptedDraftFields
 import ch.protonmail.android.mailcomposer.domain.usecase.GetPrimaryAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.IsValidEmailAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
@@ -69,6 +70,7 @@ import io.mockk.mockk
 import io.mockk.mockkObject
 import io.mockk.spyk
 import io.mockk.unmockkObject
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.contact.domain.entity.Contact
@@ -103,6 +105,7 @@ class ComposerViewModelTest {
         coEvery { this@mockk.invoke() } returns GetComposerSenderAddresses.Error.UpgradeToChangeSender.left()
     }
     private val savedStateHandle = mockk<SavedStateHandle>()
+    private val getDecryptedDraftFields = mockk<GetDecryptedDraftFields>()
     private val reducer = ComposerReducer()
 
     private val viewModel by lazy {
@@ -118,6 +121,7 @@ class ComposerViewModelTest {
             getPrimaryAddressMock,
             getComposerSenderAddresses,
             composerIdlingResource,
+            getDecryptedDraftFields,
             savedStateHandle,
             observePrimaryUserIdMock,
             provideNewDraftIdMock
@@ -698,19 +702,80 @@ class ComposerViewModelTest {
     fun `emits state with loading draft content when draftId was given as input`() = runTest {
         // Given
         val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val expectedDraftId = expectInputDraftMessageId { MessageIdSample.RemoteDraft }
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
-        expectInputDraftMessageId { MessageIdSample.RemoteDraft }
+        // Simulate a small delay in getDecryptedDraftFields to ensure the "loading" state was emitted
+        expectDecryptedDraftDataSuccess(expectedUserId, expectedDraftId, 100) { existingDraftFields }
 
         // When
         val actual = viewModel.state.value
 
         // Then
         assertTrue(actual.isLoading)
+        coVerify { getDecryptedDraftFields(expectedUserId, expectedDraftId) }
+    }
+
+    @Test
+    fun `emits state with draft fields to be prefilled when getting decrypted draft fields succeeds`() = runTest {
+        // Given
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val expectedDraftId = expectInputDraftMessageId { MessageIdSample.RemoteDraft }
+        val expectedDraftFields = existingDraftFields
+        expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        expectDecryptedDraftDataSuccess(expectedUserId, expectedDraftId) { expectedDraftFields }
+
+        // When
+        val actual = viewModel.state.value
+
+        // Then
+        val expectedComposerFields = ComposerFields(
+            expectedDraftId,
+            SenderUiModel(expectedDraftFields.sender.value),
+            expectedDraftFields.recipientsTo.value.map { RecipientUiModel.Valid(it.address) },
+            emptyList(),
+            emptyList(),
+            expectedDraftFields.subject.value,
+            expectedDraftFields.body.value
+        )
+        assertEquals(expectedComposerFields, actual.fields)
+    }
+
+    @Test
+    fun `emits state with error loading existing draft when getting decrypted draft fields fails`() = runTest {
+        // Given
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val expectedDraftId = expectInputDraftMessageId { MessageIdSample.RemoteDraft }
+        expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        expectDecryptedDraftDataError(expectedUserId, expectedDraftId) { DataError.Local.NoDataCached }
+
+        // When
+        val actual = viewModel.state.value
+
+        // Then
+        assertEquals(TextUiModel(R.string.composer_error_loading_draft), actual.error.consume())
     }
 
     @AfterTest
     fun tearDown() {
         unmockkObject(ComposerDraftState.Companion)
+    }
+
+    private fun expectDecryptedDraftDataError(
+        userId: UserId,
+        draftId: MessageId,
+        error: () -> DataError
+    ) = error().also { coEvery { getDecryptedDraftFields(userId, draftId) } returns it.left() }
+
+    private fun expectDecryptedDraftDataSuccess(
+        userId: UserId,
+        draftId: MessageId,
+        responseDelay: Long = 0L,
+        result: () -> DraftFields
+    ) = result().also { draftFields ->
+        coEvery { getDecryptedDraftFields(userId, draftId) } coAnswers {
+            delay(responseDelay)
+            draftFields.right()
+        }
     }
 
     private fun expectNoInputDraftMessageId() {
@@ -925,5 +990,15 @@ class ComposerViewModelTest {
     companion object TestData {
 
         const val RawDraftBody = "I'm a message body"
+
+        val existingDraftFields = DraftFields(
+            SenderEmail("author@proton.me"),
+            Subject("Here is the matter"),
+            DraftBody("Decrypted body of this draft"),
+            RecipientsTo(listOf(Recipient("you@proton.ch", "Name"))),
+            RecipientsCc(emptyList()),
+            RecipientsBcc(emptyList())
+        )
+
     }
 }

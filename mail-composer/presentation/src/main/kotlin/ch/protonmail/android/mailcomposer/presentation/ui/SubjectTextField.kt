@@ -38,9 +38,13 @@ import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultNorm
 
 @Composable
-internal fun SubjectTextField(onSubjectChange: (String) -> Unit, modifier: Modifier = Modifier) {
+internal fun SubjectTextField(
+    initialValue: String,
+    onSubjectChange: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
     var text by rememberSaveable(stateSaver = TextFieldValue.Saver) {
-        mutableStateOf(TextFieldValue(""))
+        mutableStateOf(TextFieldValue(initialValue))
     }
     TextField(
         value = text,

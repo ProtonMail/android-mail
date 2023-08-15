@@ -32,6 +32,7 @@ import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.domain.model.Subject
 import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses
 import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses.Error
+import ch.protonmail.android.mailcomposer.domain.usecase.GetDecryptedDraftFields
 import ch.protonmail.android.mailcomposer.domain.usecase.GetPrimaryAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.IsValidEmailAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
@@ -78,6 +79,7 @@ class ComposerViewModel @Inject constructor(
     private val getPrimaryAddress: GetPrimaryAddress,
     private val getComposerSenderAddresses: GetComposerSenderAddresses,
     private val composerIdlingResource: ComposerIdlingResource,
+    getDecryptedDraftFields: GetDecryptedDraftFields,
     savedStateHandle: SavedStateHandle,
     observePrimaryUserId: ObservePrimaryUserId,
     provideNewDraftId: ProvideNewDraftId
@@ -102,6 +104,13 @@ class ComposerViewModel @Inject constructor(
         savedStateHandle.get<String>(ComposerScreen.DraftMessageIdKey)?.let { inputDraftId ->
             Timber.d("Opening composer with $inputDraftId / $messageId")
             emitNewStateFor(ComposerEvent.OpenExistingDraft(messageId))
+
+            viewModelScope.launch {
+                getDecryptedDraftFields(primaryUserId(), messageId)
+                    .onRight { emitNewStateFor(ComposerEvent.ExistingDraftDataReceived(it)) }
+                    .onLeft { emitNewStateFor(ComposerEvent.ErrorLoadingDraftData) }
+
+            }
         }
     }
 

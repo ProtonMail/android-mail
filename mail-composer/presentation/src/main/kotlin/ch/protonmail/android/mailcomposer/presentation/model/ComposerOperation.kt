@@ -19,8 +19,9 @@
 package ch.protonmail.android.mailcomposer.presentation.model
 
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
+import ch.protonmail.android.mailcomposer.domain.model.DraftFields
 import ch.protonmail.android.mailcomposer.domain.model.Subject
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 
 sealed interface ComposerOperation
 
@@ -40,6 +41,7 @@ sealed interface ComposerEvent : ComposerOperation {
     data class DefaultSenderReceived(val sender: SenderUiModel) : ComposerEvent
     data class SenderAddressesReceived(val senders: List<SenderUiModel>) : ComposerEvent
     data class OpenExistingDraft(val draftId: MessageId) : ComposerEvent
+    data class ExistingDraftDataReceived(val draftFields: DraftFields) : ComposerEvent
 
     object ErrorLoadingDefaultSenderAddress : ComposerEvent
     object ErrorFreeUserCannotChangeSender : ComposerEvent
@@ -49,4 +51,5 @@ sealed interface ComposerEvent : ComposerOperation {
     object ErrorStoringDraftRecipients : ComposerEvent
     object ErrorStoringDraftSubject : ComposerEvent
     object OnCloseWithDraftSaved : ComposerEvent
+    object ErrorLoadingDraftData : ComposerEvent
 }

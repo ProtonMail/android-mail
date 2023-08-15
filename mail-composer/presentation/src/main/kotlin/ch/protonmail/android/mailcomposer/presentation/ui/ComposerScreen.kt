@@ -96,13 +96,17 @@ fun ComposerScreen(
                         viewModel.submit(ComposerAction.OnCloseComposer)
                     }
                 )
-                ComposerForm(
-                    emailValidator = viewModel::validateEmailAddress,
-                    recipientsOpen = recipientsOpen,
-                    initialFocus = focusedField,
-                    fields = state.fields,
-                    actions = buildActions(viewModel, { recipientsOpen = it }, { focusedField = it })
-                )
+                if (!state.isLoading) {
+                    // Not showing the form till we're done loading ensure it does receive the
+                    // right "initial values" from state when displayed
+                    ComposerForm(
+                        emailValidator = viewModel::validateEmailAddress,
+                        recipientsOpen = recipientsOpen,
+                        initialFocus = focusedField,
+                        fields = state.fields,
+                        actions = buildActions(viewModel, { recipientsOpen = it }, { focusedField = it })
+                    )
+                }
             }
             ProtonSnackbarHost(
                 modifier = Modifier

@@ -169,6 +169,7 @@ internal fun ComposerForm(
             }
             MailDivider()
             SubjectTextField(
+                initialValue = fields.subject,
                 onSubjectChange = actions.onSubjectChanged,
                 modifier = maxWidthModifier
                     .testTag(ComposerTestTags.Subject)
@@ -176,6 +177,7 @@ internal fun ComposerForm(
             )
             MailDivider()
             BodyTextField(
+                initialValue = fields.body,
                 onBodyChange = actions.onBodyChanged,
                 modifier = maxWidthModifier
                     .testTag(ComposerTestTags.MessageBody)

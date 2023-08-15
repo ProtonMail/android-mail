@@ -24,6 +24,11 @@ import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
+import ch.protonmail.android.mailcomposer.domain.model.DraftFields
+import ch.protonmail.android.mailcomposer.domain.model.RecipientsBcc
+import ch.protonmail.android.mailcomposer.domain.model.RecipientsCc
+import ch.protonmail.android.mailcomposer.domain.model.RecipientsTo
+import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.domain.model.Subject
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
@@ -40,6 +45,7 @@ import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel.In
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel.Valid
 import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.Recipient
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -67,6 +73,14 @@ class ComposerReducerTest(
         private val messageId = MessageId(UUID.randomUUID().toString())
         private val addresses = listOf(UserAddressSample.PrimaryAddress, UserAddressSample.AliasAddress)
 
+        private val draftFields = DraftFields(
+            SenderEmail("author@proton.me"),
+            Subject("Here is the matter"),
+            DraftBody("Decrypted body of this draft"),
+            RecipientsTo(listOf(Recipient("you@proton.ch", "Name"))),
+            RecipientsCc(emptyList()),
+            RecipientsBcc(emptyList())
+        )
 
         private val EmptyToSubmittableToField = with("a@b.c") {
             TestTransition(
@@ -414,6 +428,34 @@ class ComposerReducerTest(
             )
         )
 
+        private val LoadingToFieldsWhenReceivedDraftData = TestTransition(
+            name = "Should stop loading and set the received draft data as composer fields when draft data received",
+            currentState = ComposerDraftState.initial(messageId).copy(isLoading = true),
+            operation = ComposerEvent.ExistingDraftDataReceived(draftFields),
+            expectedState = aNotSubmittableState(
+                draftId = messageId,
+                sender = SenderUiModel(draftFields.sender.value),
+                to = draftFields.recipientsTo.value.map { Valid(it.address) },
+                cc = draftFields.recipientsCc.value.map { Valid(it.address) },
+                bcc = draftFields.recipientsBcc.value.map { Valid(it.address) },
+                subject = draftFields.subject,
+                draftBody = draftFields.body.value,
+                error = Effect.empty(),
+                isLoading = false
+            )
+        )
+
+        private val LoadingToErrorWhenErrorLoadingDraftData = TestTransition(
+            name = "Should stop loading and display error when failing to receive draft data",
+            currentState = ComposerDraftState.initial(messageId).copy(isLoading = true),
+            operation = ComposerEvent.ErrorLoadingDraftData,
+            expectedState = aNotSubmittableState(
+                draftId = messageId,
+                error = Effect.of(TextUiModel(R.string.composer_error_loading_draft)),
+                isLoading = false
+            )
+        )
+
         private val transitions = listOf(
             EmptyToSubmittableToField,
             EmptyToNotSubmittableToField,
@@ -440,7 +482,9 @@ class ComposerReducerTest(
             EmptyToUpdatedSubject,
             EmptyToCloseComposer,
             EmptyToCloseComposerWithDraftSaved,
-            EmptyToLoadingWithOpenExistingDraft
+            EmptyToLoadingWithOpenExistingDraft,
+            LoadingToFieldsWhenReceivedDraftData,
+            LoadingToErrorWhenErrorLoadingDraftData
         )
 
         private fun aSubmittableState(
