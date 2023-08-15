@@ -81,13 +81,14 @@ internal class MailboxScreenTest {
 
     @Test
     fun whenLoadingCompletedThenItemsAreDisplayed() {
-        val mailboxListState = MailboxListState.Data(
+        val mailboxListState = MailboxListState.Data.ViewMode(
             currentMailLabel = MailLabel.System(MailLabelId.System.Inbox),
             openItemEffect = Effect.empty(),
             scrollToMailboxTop = Effect.empty(),
             offlineEffect = Effect.empty(),
             refreshErrorEffect = Effect.empty(),
-            refreshRequested = false
+            refreshRequested = false,
+            selectionModeEnabled = false
         )
         val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
         val items = listOf(MailboxItemUiModelTestData.readMailboxItemUiModel)
@@ -102,13 +103,14 @@ internal class MailboxScreenTest {
 
     @Test
     fun whenLoadingCompletedThenItemsLabelsAreDisplayed() {
-        val mailboxListState = MailboxListState.Data(
+        val mailboxListState = MailboxListState.Data.ViewMode(
             currentMailLabel = MailLabel.System(MailLabelId.System.Inbox),
             openItemEffect = Effect.empty(),
             scrollToMailboxTop = Effect.empty(),
             offlineEffect = Effect.empty(),
             refreshErrorEffect = Effect.empty(),
-            refreshRequested = false
+            refreshRequested = false,
+            selectionModeEnabled = false
         )
         val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
         val label = LabelUiModelSample.News
@@ -133,13 +135,14 @@ internal class MailboxScreenTest {
         """
     ) // MAILANDR-330
     fun givenLoadingCompletedWhenNoItemThenEmptyMailboxIsDisplayed() {
-        val mailboxListState = MailboxListState.Data(
+        val mailboxListState = MailboxListState.Data.ViewMode(
             currentMailLabel = MailLabel.System(MailLabelId.System.Inbox),
             openItemEffect = Effect.empty(),
             scrollToMailboxTop = Effect.empty(),
             offlineEffect = Effect.empty(),
             refreshErrorEffect = Effect.empty(),
-            refreshRequested = false
+            refreshRequested = false,
+            selectionModeEnabled = false
         )
         val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
         val robot = setupScreen(state = mailboxState)
@@ -150,13 +153,14 @@ internal class MailboxScreenTest {
     @Test
     @Ignore("How to verify SwipeRefresh is refreshing?") // MAILANDR-330
     fun givenEmptyMailboxIsDisplayedWhenSwipeDownThenRefreshIsTriggered() {
-        val mailboxListState = MailboxListState.Data(
+        val mailboxListState = MailboxListState.Data.ViewMode(
             currentMailLabel = MailLabel.System(MailLabelId.System.Inbox),
             openItemEffect = Effect.empty(),
             scrollToMailboxTop = Effect.empty(),
             offlineEffect = Effect.empty(),
             refreshErrorEffect = Effect.empty(),
-            refreshRequested = false
+            refreshRequested = false,
+            selectionModeEnabled = false
         )
         val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
         val robot = setupScreen(state = mailboxState)
@@ -181,13 +185,14 @@ internal class MailboxScreenTest {
             val scrollToTopEffect: Effect<MailLabelId> =
                 if (shouldScrollToTop) Effect.of(systemLabel) else Effect.empty()
             MailboxState(
-                mailboxListState = MailboxListState.Data(
+                mailboxListState = MailboxListState.Data.ViewMode(
                     currentMailLabel = MailLabel.System(systemLabel),
                     openItemEffect = Effect.empty(),
                     scrollToMailboxTop = scrollToTopEffect,
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
-                    refreshRequested = false
+                    refreshRequested = false,
+                    selectionModeEnabled = false
                 ),
                 topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
                     currentLabelName = MailLabel.System(systemLabel).text(),
