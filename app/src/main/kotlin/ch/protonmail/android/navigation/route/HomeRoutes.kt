@@ -41,7 +41,7 @@ import ch.protonmail.android.maildetail.presentation.ui.MessageDetail
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreen
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailnotifications.domain.NotificationsDeepLinkHelper.Companion.DEEP_LINK_MESSAGE_GROUP_TEMPLATE
 import ch.protonmail.android.mailnotifications.domain.NotificationsDeepLinkHelper.Companion.DEEP_LINK_MESSAGE_TEMPLATE
 import ch.protonmail.android.mailsettings.presentation.settings.MainSettingsScreen

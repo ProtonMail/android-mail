@@ -20,7 +20,7 @@ package ch.protonmail.android.maildetail.presentation.mapper
 
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
 import ch.protonmail.android.maildetail.presentation.R
-import ch.protonmail.android.mailmessage.domain.entity.Participant
+import ch.protonmail.android.mailmessage.domain.model.Participant
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantNameResult
 import ch.protonmail.android.testdata.contact.ContactTestData

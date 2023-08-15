@@ -32,10 +32,10 @@ import ch.protonmail.android.mailmessage.data.local.entity.MessageAttachmentMeta
 import ch.protonmail.android.mailmessage.data.local.usecase.DecryptAttachmentByteArray
 import ch.protonmail.android.mailmessage.data.local.usecase.PrepareAttachmentForSharing
 import ch.protonmail.android.mailmessage.data.mapper.toMessageAttachmentMetadata
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentWorkerStatus
-import ch.protonmail.android.mailmessage.domain.entity.MessageAttachmentMetadata
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
+import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
+import ch.protonmail.android.mailmessage.domain.model.MessageAttachmentMetadata
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.firstOrNull

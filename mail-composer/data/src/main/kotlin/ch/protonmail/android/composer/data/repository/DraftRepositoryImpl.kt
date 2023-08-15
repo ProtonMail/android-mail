@@ -21,7 +21,7 @@ package ch.protonmail.android.composer.data.repository
 import ch.protonmail.android.composer.data.remote.SyncDraftWorker
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcomposer.domain.repository.DraftRepository
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 

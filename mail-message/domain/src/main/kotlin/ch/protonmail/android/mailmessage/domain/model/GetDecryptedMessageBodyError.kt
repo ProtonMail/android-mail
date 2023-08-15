@@ -16,10 +16,13 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmessage.domain.entity
+package ch.protonmail.android.mailmessage.domain.model
 
-data class DecryptedMessageBody(
-    val value: String,
-    val mimeType: MimeType,
-    val attachments: List<MessageAttachment> = emptyList()
-)
+import ch.protonmail.android.mailcommon.domain.model.DataError
+
+sealed interface GetDecryptedMessageBodyError {
+
+    data class Decryption(val encryptedMessageBody: String) : GetDecryptedMessageBodyError
+
+    data class Data(val dataError: DataError) : GetDecryptedMessageBodyError
+}

@@ -33,7 +33,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailSta
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
 import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 
 object ConversationDetailsPreviewData {
 

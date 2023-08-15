@@ -19,7 +19,7 @@
 package ch.protonmail.android.maildetail.presentation.sample
 
 import ch.protonmail.android.maildetail.presentation.model.AttachmentUiModel
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentWorkerStatus
+import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
 
 object AttachmentUiModelSample {
 

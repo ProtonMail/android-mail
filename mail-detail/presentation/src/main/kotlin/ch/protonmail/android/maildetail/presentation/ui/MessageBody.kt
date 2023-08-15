@@ -62,8 +62,8 @@ import ch.protonmail.android.maildetail.presentation.extensions.isEmbeddedImage
 import ch.protonmail.android.maildetail.presentation.extensions.isRemoteContent
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import com.google.accompanist.web.AccompanistWebChromeClient
 import com.google.accompanist.web.AccompanistWebViewClient
 import com.google.accompanist.web.WebView

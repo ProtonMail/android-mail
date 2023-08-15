@@ -24,8 +24,8 @@ import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import ch.protonmail.android.maildetail.presentation.sample.AttachmentUiModelSample
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentWorkerStatus
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
+import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
 import ch.protonmail.android.testdata.message.MessageBodyUiModelTestData
 import org.junit.Test
 import org.junit.runner.RunWith

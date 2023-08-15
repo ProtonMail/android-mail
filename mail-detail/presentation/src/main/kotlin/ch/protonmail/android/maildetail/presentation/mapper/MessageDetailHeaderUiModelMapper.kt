@@ -31,7 +31,7 @@ import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailHeaderUiModel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
-import ch.protonmail.android.mailmessage.domain.entity.Message
+import ch.protonmail.android.mailmessage.domain.model.Message
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import dagger.hilt.android.qualifiers.ApplicationContext

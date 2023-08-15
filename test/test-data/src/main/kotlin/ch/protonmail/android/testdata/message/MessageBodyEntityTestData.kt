@@ -21,7 +21,7 @@ package ch.protonmail.android.testdata.message
 import ch.protonmail.android.mailmessage.data.local.entity.MessageBodyEntity
 import ch.protonmail.android.mailmessage.data.local.entity.MimeTypeEntity
 import ch.protonmail.android.mailmessage.data.local.entity.UnsubscribeMethodsEntity
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.RecipientSample
 import ch.protonmail.android.testdata.user.UserIdTestData
 

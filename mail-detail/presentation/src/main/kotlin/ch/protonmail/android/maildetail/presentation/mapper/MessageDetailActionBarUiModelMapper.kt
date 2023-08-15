@@ -20,7 +20,7 @@ package ch.protonmail.android.maildetail.presentation.mapper
 
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailActionBarUiModel
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
-import ch.protonmail.android.mailmessage.domain.entity.Message
+import ch.protonmail.android.mailmessage.domain.model.Message
 import javax.inject.Inject
 
 class MessageDetailActionBarUiModelMapper @Inject constructor() {

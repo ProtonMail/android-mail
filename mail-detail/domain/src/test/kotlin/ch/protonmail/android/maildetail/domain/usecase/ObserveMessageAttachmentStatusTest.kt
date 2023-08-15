@@ -20,9 +20,9 @@ package ch.protonmail.android.maildetail.domain.usecase
 
 import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentWorkerStatus
-import ch.protonmail.android.mailmessage.domain.entity.MessageAttachmentMetadata
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
+import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
+import ch.protonmail.android.mailmessage.domain.model.MessageAttachmentMetadata
 import ch.protonmail.android.mailmessage.domain.repository.AttachmentRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import io.mockk.coEvery

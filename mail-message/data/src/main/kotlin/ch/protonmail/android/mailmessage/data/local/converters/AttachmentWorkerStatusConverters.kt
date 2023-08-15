@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailmessage.data.local.converters
 
 import androidx.room.TypeConverter
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentWorkerStatus
+import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
 import me.proton.core.util.kotlin.deserialize
 import me.proton.core.util.kotlin.serialize
 

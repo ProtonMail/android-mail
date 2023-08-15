@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.mailmessage.data.remote.resource
 
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentCount
+import ch.protonmail.android.mailmessage.domain.model.AttachmentCount
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

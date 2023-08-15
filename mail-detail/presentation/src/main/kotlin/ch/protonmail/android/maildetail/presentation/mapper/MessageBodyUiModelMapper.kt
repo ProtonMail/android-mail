@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.mapper
 
-import ch.protonmail.android.mailmessage.domain.entity.DecryptedMessageBody
+import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.usecase.DoesMessageBodyHaveEmbeddedImages
 import ch.protonmail.android.maildetail.domain.usecase.ShouldShowEmbeddedImages
 import ch.protonmail.android.maildetail.domain.usecase.ShouldShowRemoteContent
@@ -28,7 +28,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.MimeTypeUiModel
 import ch.protonmail.android.maildetail.presentation.usecase.InjectCssIntoDecryptedMessageBody
 import ch.protonmail.android.maildetail.presentation.usecase.SanitizeHtmlOfDecryptedMessageBody
-import ch.protonmail.android.mailmessage.domain.entity.MimeType
+import ch.protonmail.android.mailmessage.domain.model.MimeType
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 

@@ -33,9 +33,9 @@ import ch.protonmail.android.mailmessage.data.local.MessageBodyFileWriteExceptio
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageApi
 import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSource
-import ch.protonmail.android.mailmessage.domain.entity.Message
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
-import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
+import ch.protonmail.android.mailmessage.domain.model.Message
+import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import com.dropbox.android.external.store4.Fetcher

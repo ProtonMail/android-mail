@@ -20,9 +20,9 @@ package ch.protonmail.android.maildetail.presentation.mapper
 
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
-import ch.protonmail.android.mailmessage.domain.entity.Participant
-import ch.protonmail.android.mailmessage.domain.entity.Recipient
-import ch.protonmail.android.mailmessage.domain.entity.Sender
+import ch.protonmail.android.mailmessage.domain.model.Participant
+import ch.protonmail.android.mailmessage.domain.model.Recipient
+import ch.protonmail.android.mailmessage.domain.model.Sender
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import me.proton.core.contact.domain.entity.Contact
 import javax.inject.Inject

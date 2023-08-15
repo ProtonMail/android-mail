@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.mailmessage.domain.usecase
 
-import ch.protonmail.android.mailmessage.domain.entity.Participant
+import ch.protonmail.android.mailmessage.domain.model.Participant
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName.FallbackType
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.user.UserIdTestData

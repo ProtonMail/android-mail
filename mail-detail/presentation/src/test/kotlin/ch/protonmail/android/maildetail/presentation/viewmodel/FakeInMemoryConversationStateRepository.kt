@@ -19,10 +19,10 @@
 package ch.protonmail.android.maildetail.presentation.viewmodel
 
 import java.util.concurrent.ConcurrentHashMap
-import ch.protonmail.android.mailmessage.domain.entity.DecryptedMessageBody
+import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationStateRepository
 import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationStateRepository.MessageState
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 

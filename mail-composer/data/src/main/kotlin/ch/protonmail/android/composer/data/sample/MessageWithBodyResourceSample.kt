@@ -23,8 +23,8 @@ import ch.protonmail.android.mailmessage.data.remote.resource.AttachmentResource
 import ch.protonmail.android.mailmessage.data.remote.resource.AttachmentsInfoResource
 import ch.protonmail.android.mailmessage.data.remote.resource.MessageWithBodyResource
 import ch.protonmail.android.mailmessage.data.remote.resource.RecipientResource
-import ch.protonmail.android.mailmessage.domain.entity.MessageAttachment
-import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
+import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
+import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
 import me.proton.core.util.kotlin.toInt
 

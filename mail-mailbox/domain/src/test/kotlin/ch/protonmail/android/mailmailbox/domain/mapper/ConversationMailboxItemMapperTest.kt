@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.mailmailbox.domain.mapper
 
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentCount
+import ch.protonmail.android.mailmessage.domain.model.AttachmentCount
 import ch.protonmail.android.testdata.conversation.ConversationWithContextTestData
 import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId

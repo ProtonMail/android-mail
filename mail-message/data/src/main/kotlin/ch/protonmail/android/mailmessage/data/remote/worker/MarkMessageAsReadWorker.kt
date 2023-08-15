@@ -25,7 +25,7 @@ import androidx.work.WorkerParameters
 import ch.protonmail.android.mailcommon.domain.util.requireNotBlank
 import ch.protonmail.android.mailmessage.data.remote.MessageApi
 import ch.protonmail.android.mailmessage.data.remote.resource.MarkMessageAsReadBody
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.proton.core.domain.entity.UserId

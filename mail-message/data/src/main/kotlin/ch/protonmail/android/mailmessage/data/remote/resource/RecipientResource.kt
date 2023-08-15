@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.mailmessage.data.remote.resource
 
-import ch.protonmail.android.mailmessage.domain.entity.Recipient
+import ch.protonmail.android.mailmessage.domain.model.Recipient
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import me.proton.core.util.kotlin.toBooleanOrFalse

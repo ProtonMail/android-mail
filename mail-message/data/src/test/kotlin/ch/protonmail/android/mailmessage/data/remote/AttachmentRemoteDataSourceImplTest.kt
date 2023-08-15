@@ -26,7 +26,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailmessage.data.remote.worker.GetAttachmentWorker
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import io.mockk.coEvery
 import io.mockk.coVerify

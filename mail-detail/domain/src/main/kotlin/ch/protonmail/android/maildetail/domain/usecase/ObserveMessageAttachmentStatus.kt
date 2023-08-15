@@ -18,9 +18,9 @@
 
 package ch.protonmail.android.maildetail.domain.usecase
 
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
-import ch.protonmail.android.mailmessage.domain.entity.MessageAttachmentMetadata
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
+import ch.protonmail.android.mailmessage.domain.model.MessageAttachmentMetadata
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.AttachmentRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull

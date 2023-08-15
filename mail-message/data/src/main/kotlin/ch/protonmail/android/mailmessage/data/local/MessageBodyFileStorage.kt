@@ -19,8 +19,8 @@
 package ch.protonmail.android.mailmessage.data.local
 
 import ch.protonmail.android.mailcommon.data.file.InternalFileStorage
-import ch.protonmail.android.mailmessage.domain.entity.MessageBody
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageBody
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 

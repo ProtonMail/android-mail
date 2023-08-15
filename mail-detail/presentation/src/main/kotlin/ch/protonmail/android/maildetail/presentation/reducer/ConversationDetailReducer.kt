@@ -30,7 +30,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailSta
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
 import ch.protonmail.android.maildetail.presentation.model.LabelAsBottomSheetState.LabelAsBottomSheetAction.LabelToggled
 import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState.MoveToBottomSheetAction.MoveToDestinationSelected
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import javax.inject.Inject
 
 class ConversationDetailReducer @Inject constructor(

@@ -18,8 +18,8 @@
 
 package ch.protonmail.android.uitest.e2e.mailbox.detail
 
-import ch.protonmail.android.mailmessage.domain.entity.DecryptedMessageBody
-import ch.protonmail.android.mailmessage.domain.entity.MimeType
+import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
+import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.networkmocks.assets.RawAssets
 
 internal interface DetailRemoteContentTest {

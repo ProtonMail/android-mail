@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.maildetail.domain.model
 
-import ch.protonmail.android.mailmessage.domain.entity.Message
+import ch.protonmail.android.mailmessage.domain.model.Message
 import me.proton.core.label.domain.entity.Label
 
 data class MessageWithLabels(

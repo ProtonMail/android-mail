@@ -21,9 +21,9 @@ package ch.protonmail.android.testdata.message
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailmessage.data.local.entity.AttachmentCountEntity
 import ch.protonmail.android.mailmessage.data.local.entity.MessageEntity
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
-import ch.protonmail.android.mailmessage.domain.entity.Recipient
-import ch.protonmail.android.mailmessage.domain.entity.Sender
+import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.Recipient
+import ch.protonmail.android.mailmessage.domain.model.Sender
 import ch.protonmail.android.testdata.user.UserIdTestData
 import me.proton.core.domain.entity.UserId
 import me.proton.core.user.domain.entity.AddressId

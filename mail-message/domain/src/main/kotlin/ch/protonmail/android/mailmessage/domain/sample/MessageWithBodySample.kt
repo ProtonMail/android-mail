@@ -18,11 +18,11 @@
 
 package ch.protonmail.android.mailmessage.domain.sample
 
-import ch.protonmail.android.mailmessage.domain.entity.Message
-import ch.protonmail.android.mailmessage.domain.entity.MessageBody
-import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
-import ch.protonmail.android.mailmessage.domain.entity.MimeType
-import ch.protonmail.android.mailmessage.domain.entity.Recipient
+import ch.protonmail.android.mailmessage.domain.model.Message
+import ch.protonmail.android.mailmessage.domain.model.MessageBody
+import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
+import ch.protonmail.android.mailmessage.domain.model.MimeType
+import ch.protonmail.android.mailmessage.domain.model.Recipient
 
 object MessageWithBodySample {
 

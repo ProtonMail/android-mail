@@ -16,15 +16,10 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmessage.domain.entity
+package ch.protonmail.android.mailmessage.domain.model
 
-import android.net.Uri
-import me.proton.core.domain.entity.UserId
-
-data class MessageAttachmentMetadata(
-    val userId: UserId,
-    val messageId: MessageId,
-    val attachmentId: AttachmentId,
-    val uri: Uri?,
-    val status: AttachmentWorkerStatus
+data class DecryptedMessageBody(
+    val value: String,
+    val mimeType: MimeType,
+    val attachments: List<MessageAttachment> = emptyList()
 )

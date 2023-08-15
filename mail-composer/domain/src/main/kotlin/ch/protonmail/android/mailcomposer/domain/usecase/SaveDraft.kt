@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.mailcomposer.domain.usecase
 
-import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
+import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject

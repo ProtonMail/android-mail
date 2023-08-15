@@ -21,7 +21,7 @@ package ch.protonmail.android.maildetail.presentation.model
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 
 sealed interface ConversationDetailMessageUiModel {
 

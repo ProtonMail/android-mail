@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailmessage.data.mapper
 
 import ch.protonmail.android.mailmessage.data.local.entity.MessageAttachmentMetadataEntity
-import ch.protonmail.android.mailmessage.domain.entity.MessageAttachmentMetadata
+import ch.protonmail.android.mailmessage.domain.model.MessageAttachmentMetadata
 
 fun MessageAttachmentMetadataEntity.toMessageAttachmentMetadata() = MessageAttachmentMetadata(
     userId = userId,

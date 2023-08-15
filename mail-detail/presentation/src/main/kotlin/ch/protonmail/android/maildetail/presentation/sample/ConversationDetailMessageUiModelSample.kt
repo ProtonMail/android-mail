@@ -29,7 +29,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageBodyAttachment
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageLocationUiModel
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
-import ch.protonmail.android.mailmessage.domain.entity.Message
+import ch.protonmail.android.mailmessage.domain.model.Message
 import kotlinx.collections.immutable.persistentListOf
 
 object ConversationDetailMessageUiModelSample {

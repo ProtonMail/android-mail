@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.mailmessage.domain.usecase
 
-import ch.protonmail.android.mailmessage.domain.entity.Participant
+import ch.protonmail.android.mailmessage.domain.model.Participant
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.util.kotlin.EMPTY_STRING
 import me.proton.core.util.kotlin.takeIfNotBlank

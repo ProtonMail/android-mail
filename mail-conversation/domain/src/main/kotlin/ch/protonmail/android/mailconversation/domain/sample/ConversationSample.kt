@@ -23,9 +23,9 @@ import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailconversation.domain.entity.ConversationLabel
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentCount
-import ch.protonmail.android.mailmessage.domain.entity.Recipient
-import ch.protonmail.android.mailmessage.domain.entity.Sender
+import ch.protonmail.android.mailmessage.domain.model.AttachmentCount
+import ch.protonmail.android.mailmessage.domain.model.Recipient
+import ch.protonmail.android.mailmessage.domain.model.Sender
 import ch.protonmail.android.mailmessage.domain.sample.AttachmentCountSample
 import ch.protonmail.android.mailmessage.domain.sample.RecipientSample
 import me.proton.core.domain.entity.UserId

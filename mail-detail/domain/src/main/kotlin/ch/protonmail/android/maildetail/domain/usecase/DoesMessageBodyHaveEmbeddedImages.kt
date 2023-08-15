@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.maildetail.domain.usecase
 
-import ch.protonmail.android.mailmessage.domain.entity.DecryptedMessageBody
+import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.extension.hasAllowedEmbeddedImageMimeType
 import javax.inject.Inject
 

@@ -19,9 +19,9 @@
 package ch.protonmail.android.mailconversation.domain.entity
 
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentCount
-import ch.protonmail.android.mailmessage.domain.entity.Recipient
-import ch.protonmail.android.mailmessage.domain.entity.Sender
+import ch.protonmail.android.mailmessage.domain.model.AttachmentCount
+import ch.protonmail.android.mailmessage.domain.model.Recipient
+import ch.protonmail.android.mailmessage.domain.model.Sender
 import me.proton.core.domain.entity.UserId
 
 data class Conversation(

@@ -23,7 +23,7 @@ import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.mailcommon.presentation.mapper.ExpirationTimeMapper
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatShortTime
-import ch.protonmail.android.mailmessage.domain.entity.DecryptedMessageBody
+import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId

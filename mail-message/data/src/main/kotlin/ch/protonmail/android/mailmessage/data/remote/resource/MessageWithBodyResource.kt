@@ -19,15 +19,15 @@
 package ch.protonmail.android.mailmessage.data.remote.resource
 
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
-import ch.protonmail.android.mailmessage.domain.entity.MailTo
-import ch.protonmail.android.mailmessage.domain.entity.Message
-import ch.protonmail.android.mailmessage.domain.entity.MessageAttachment
-import ch.protonmail.android.mailmessage.domain.entity.MessageBody
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
-import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
-import ch.protonmail.android.mailmessage.domain.entity.MimeType
-import ch.protonmail.android.mailmessage.domain.entity.UnsubscribeMethods
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
+import ch.protonmail.android.mailmessage.domain.model.MailTo
+import ch.protonmail.android.mailmessage.domain.model.Message
+import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
+import ch.protonmail.android.mailmessage.domain.model.MessageBody
+import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
+import ch.protonmail.android.mailmessage.domain.model.MimeType
+import ch.protonmail.android.mailmessage.domain.model.UnsubscribeMethods
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement

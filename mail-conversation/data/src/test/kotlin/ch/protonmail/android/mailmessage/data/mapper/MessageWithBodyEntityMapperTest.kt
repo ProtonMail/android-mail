@@ -20,7 +20,7 @@ package ch.protonmail.android.mailmessage.data.mapper
 
 import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailmessage.data.local.relation.MessageWithBodyEntity
-import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
+import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.testdata.message.MessageAttachmentTestData
 import ch.protonmail.android.testdata.message.MessageBodyEntityTestData
 import ch.protonmail.android.testdata.message.MessageBodyTestData

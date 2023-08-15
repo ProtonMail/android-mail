@@ -26,7 +26,7 @@ import ch.protonmail.android.mailcommon.data.mapper.toEither
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcomposer.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.data.remote.resource.RecipientResource
-import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
+import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import me.proton.core.domain.entity.UserId
 import me.proton.core.network.data.ApiProvider
 import me.proton.core.util.kotlin.toInt

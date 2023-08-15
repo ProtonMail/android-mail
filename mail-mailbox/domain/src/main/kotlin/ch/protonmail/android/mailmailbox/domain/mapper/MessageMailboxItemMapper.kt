@@ -20,7 +20,7 @@ package ch.protonmail.android.mailmailbox.domain.mapper
 
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
-import ch.protonmail.android.mailmessage.domain.entity.Message
+import ch.protonmail.android.mailmessage.domain.model.Message
 import me.proton.core.domain.arch.Mapper
 import me.proton.core.label.domain.entity.Label
 import me.proton.core.label.domain.entity.LabelId

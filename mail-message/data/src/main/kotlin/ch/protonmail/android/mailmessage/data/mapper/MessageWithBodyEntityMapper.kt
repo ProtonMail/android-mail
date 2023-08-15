@@ -23,13 +23,13 @@ import ch.protonmail.android.mailmessage.data.local.entity.MessageBodyEntity
 import ch.protonmail.android.mailmessage.data.local.entity.MimeTypeEntity
 import ch.protonmail.android.mailmessage.data.local.entity.UnsubscribeMethodsEntity
 import ch.protonmail.android.mailmessage.data.local.relation.MessageWithBodyEntity
-import ch.protonmail.android.mailmessage.domain.entity.MailTo
-import ch.protonmail.android.mailmessage.domain.entity.Message
-import ch.protonmail.android.mailmessage.domain.entity.MessageAttachment
-import ch.protonmail.android.mailmessage.domain.entity.MessageBody
-import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
-import ch.protonmail.android.mailmessage.domain.entity.MimeType
-import ch.protonmail.android.mailmessage.domain.entity.UnsubscribeMethods
+import ch.protonmail.android.mailmessage.domain.model.MailTo
+import ch.protonmail.android.mailmessage.domain.model.Message
+import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
+import ch.protonmail.android.mailmessage.domain.model.MessageBody
+import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
+import ch.protonmail.android.mailmessage.domain.model.MimeType
+import ch.protonmail.android.mailmessage.domain.model.UnsubscribeMethods
 import javax.inject.Inject
 
 class MessageWithBodyEntityMapper @Inject constructor() {

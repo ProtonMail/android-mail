@@ -69,8 +69,8 @@ import ch.protonmail.android.maildetail.presentation.model.LabelAsBottomSheetSta
 import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
 import ch.protonmail.android.maildetail.presentation.previewdata.ConversationDetailsPreviewProvider
 import ch.protonmail.android.maildetail.presentation.viewmodel.ConversationDetailViewModel
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch

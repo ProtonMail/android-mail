@@ -18,8 +18,8 @@
 
 package ch.protonmail.android.testdata.message
 
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
-import ch.protonmail.android.mailmessage.domain.entity.MessageAttachment
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
+import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 
 object MessageAttachmentTestData {
 

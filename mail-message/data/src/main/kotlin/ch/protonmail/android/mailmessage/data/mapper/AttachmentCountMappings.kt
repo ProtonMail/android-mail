@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailmessage.data.mapper
 
 import ch.protonmail.android.mailmessage.data.local.entity.AttachmentCountEntity
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentCount
+import ch.protonmail.android.mailmessage.domain.model.AttachmentCount
 
 fun AttachmentCount.toEntity() = AttachmentCountEntity(this.calendar)
 

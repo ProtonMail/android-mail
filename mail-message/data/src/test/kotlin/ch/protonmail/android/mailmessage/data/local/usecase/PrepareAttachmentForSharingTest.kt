@@ -32,8 +32,8 @@ import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcommon.domain.system.BuildVersionProvider
 import ch.protonmail.android.mailcommon.domain.system.ContentValuesProvider
 import ch.protonmail.android.mailmessage.data.local.provider.GetUriFromMediaScanner
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
-import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
+import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.testdata.message.MessageAttachmentTestData

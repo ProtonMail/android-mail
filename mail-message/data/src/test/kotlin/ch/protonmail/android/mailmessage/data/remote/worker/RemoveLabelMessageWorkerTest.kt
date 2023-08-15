@@ -29,7 +29,7 @@ import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailmessage.data.remote.MessageApi
 import ch.protonmail.android.mailmessage.data.remote.resource.PutLabelBody
 import ch.protonmail.android.mailmessage.data.sample.PutLabelResponseSample
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.testdata.message.MessageTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId

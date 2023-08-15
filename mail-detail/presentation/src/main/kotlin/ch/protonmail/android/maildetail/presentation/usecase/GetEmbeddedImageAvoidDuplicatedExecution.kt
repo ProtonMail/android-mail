@@ -20,7 +20,7 @@ package ch.protonmail.android.maildetail.presentation.usecase
 
 import ch.protonmail.android.maildetail.domain.usecase.GetEmbeddedImage
 import ch.protonmail.android.maildetail.domain.usecase.GetEmbeddedImageResult
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext

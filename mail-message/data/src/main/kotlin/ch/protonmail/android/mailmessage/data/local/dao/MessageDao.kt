@@ -23,7 +23,7 @@ import androidx.room.Query
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailmessage.data.local.entity.MessageEntity
 import ch.protonmail.android.mailmessage.data.local.relation.MessageWithLabelIds
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailpagination.domain.model.OrderBy
 import ch.protonmail.android.mailpagination.domain.model.OrderDirection
 import ch.protonmail.android.mailpagination.domain.model.PageKey

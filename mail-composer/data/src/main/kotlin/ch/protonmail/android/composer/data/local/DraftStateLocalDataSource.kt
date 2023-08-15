@@ -21,7 +21,7 @@ package ch.protonmail.android.composer.data.local
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcomposer.domain.model.DraftState
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
 

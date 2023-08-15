@@ -23,9 +23,9 @@ import arrow.core.continuations.either
 import ch.protonmail.android.mailcommon.domain.util.mapFalse
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
-import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
-import ch.protonmail.android.mailmessage.domain.entity.Sender
+import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
+import ch.protonmail.android.mailmessage.domain.model.Sender
 import me.proton.core.domain.entity.UserId
 import me.proton.core.user.domain.entity.UserAddress
 import timber.log.Timber

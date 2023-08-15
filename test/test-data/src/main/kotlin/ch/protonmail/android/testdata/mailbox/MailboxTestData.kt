@@ -31,8 +31,8 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemLocationUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.ParticipantsUiModel
-import ch.protonmail.android.mailmessage.domain.entity.Recipient
-import ch.protonmail.android.mailmessage.domain.entity.Sender
+import ch.protonmail.android.mailmessage.domain.model.Recipient
+import ch.protonmail.android.mailmessage.domain.model.Sender
 import ch.protonmail.android.testdata.R
 import ch.protonmail.android.mailmailbox.R.string as mailboxStrings
 import ch.protonmail.android.testdata.label.LabelTestData.buildLabel

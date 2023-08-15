@@ -45,7 +45,7 @@ import ch.protonmail.android.maildetail.presentation.R.plurals
 import ch.protonmail.android.maildetail.presentation.extensions.getTotalAttachmentByteSizeReadable
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyAttachmentsUiModel
 import ch.protonmail.android.maildetail.presentation.sample.AttachmentUiModelSample
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultSmall

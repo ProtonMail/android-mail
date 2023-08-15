@@ -18,9 +18,9 @@
 
 package ch.protonmail.android.maildetail.domain.usecase
 
-import ch.protonmail.android.mailmessage.domain.entity.DecryptedMessageBody
+import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationStateRepository
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import javax.inject.Inject
 
 class SetMessageViewState @Inject constructor(

@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.model
 
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentWorkerStatus
+import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
 
 data class MessageBodyUiModel(
     val messageBody: String,

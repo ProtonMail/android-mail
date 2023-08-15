@@ -26,7 +26,7 @@ import ch.protonmail.android.composer.data.sample.DraftStateEntitySample
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcomposer.domain.sample.DraftStateSample
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import io.mockk.coEvery
 import io.mockk.coVerify

@@ -23,8 +23,8 @@ import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maildetail.domain.model.BottomBarDefaults
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
-import ch.protonmail.android.mailmessage.domain.entity.Message
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.Message
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapLatest

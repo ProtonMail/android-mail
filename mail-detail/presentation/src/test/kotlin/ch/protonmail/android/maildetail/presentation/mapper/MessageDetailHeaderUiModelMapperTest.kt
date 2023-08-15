@@ -37,7 +37,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageLocationUiMode
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelSample
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentCount
+import ch.protonmail.android.mailmessage.domain.model.AttachmentCount
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantNameResult
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings

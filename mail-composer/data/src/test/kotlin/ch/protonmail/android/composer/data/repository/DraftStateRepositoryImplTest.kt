@@ -27,7 +27,7 @@ import ch.protonmail.android.mailcomposer.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftState
 import ch.protonmail.android.mailcomposer.domain.model.DraftSyncState
 import ch.protonmail.android.mailcomposer.domain.sample.DraftStateSample
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import io.mockk.coEvery
 import io.mockk.coVerify

@@ -36,8 +36,8 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMes
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel.Collapsed
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel.Expanded
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel.Expanding
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.theme.ProtonTheme
 

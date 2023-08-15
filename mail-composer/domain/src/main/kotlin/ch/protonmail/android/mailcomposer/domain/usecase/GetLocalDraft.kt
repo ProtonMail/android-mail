@@ -21,8 +21,8 @@ package ch.protonmail.android.mailcomposer.domain.usecase
 import arrow.core.Either
 import arrow.core.continuations.either
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
-import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
+import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject

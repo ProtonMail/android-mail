@@ -19,7 +19,7 @@
 package ch.protonmail.android.maildetail.domain.mapper
 
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
-import ch.protonmail.android.mailmessage.domain.entity.Message
+import ch.protonmail.android.mailmessage.domain.model.Message
 import me.proton.core.label.domain.entity.Label
 import javax.inject.Inject
 

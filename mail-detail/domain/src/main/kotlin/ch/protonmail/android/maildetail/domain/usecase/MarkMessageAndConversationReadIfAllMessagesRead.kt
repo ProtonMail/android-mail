@@ -31,8 +31,8 @@ import ch.protonmail.android.maildetail.domain.model.MarkConversationReadError.C
 import ch.protonmail.android.maildetail.domain.model.MarkConversationReadError.ConversationHasUnreadMessages
 import ch.protonmail.android.maildetail.domain.model.MarkConversationReadError.DataSourceError
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
-import ch.protonmail.android.mailmessage.domain.entity.Message
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.Message
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map

@@ -23,8 +23,8 @@ import ch.protonmail.android.mailcommon.data.mapper.toEither
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.data.remote.worker.GetAttachmentWorker
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import me.proton.core.domain.entity.UserId
 import me.proton.core.network.data.ApiProvider
 import javax.inject.Inject

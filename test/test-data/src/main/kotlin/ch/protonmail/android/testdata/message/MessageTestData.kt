@@ -21,11 +21,11 @@ package ch.protonmail.android.testdata.message
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentCount
-import ch.protonmail.android.mailmessage.domain.entity.Message
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
-import ch.protonmail.android.mailmessage.domain.entity.Recipient
-import ch.protonmail.android.mailmessage.domain.entity.Sender
+import ch.protonmail.android.mailmessage.domain.model.AttachmentCount
+import ch.protonmail.android.mailmessage.domain.model.Message
+import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.Recipient
+import ch.protonmail.android.mailmessage.domain.model.Sender
 import ch.protonmail.android.testdata.user.UserIdTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import me.proton.core.domain.entity.UserId

@@ -43,8 +43,8 @@ import ch.protonmail.android.mailmessage.data.mapper.MessageAttachmentEntityMapp
 import ch.protonmail.android.mailmessage.data.mapper.MessageWithBodyEntityMapper
 import ch.protonmail.android.mailmessage.data.sample.MessageEntitySample
 import ch.protonmail.android.mailmessage.data.sample.MessageWithLabelIdsSample
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
-import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
+import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailpagination.data.local.dao.PageIntervalDao

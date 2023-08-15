@@ -22,8 +22,8 @@ import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.usecase.GetParticipantsResolvedNames
 import ch.protonmail.android.mailmailbox.domain.usecase.ParticipantsResolvedNamesResult
-import ch.protonmail.android.mailmessage.domain.entity.Recipient
-import ch.protonmail.android.mailmessage.domain.entity.Sender
+import ch.protonmail.android.mailmessage.domain.model.Recipient
+import ch.protonmail.android.mailmessage.domain.model.Sender
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantNameResult
 import ch.protonmail.android.testdata.contact.ContactTestData

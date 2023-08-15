@@ -58,7 +58,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
 import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailsPreviewProvider
 import ch.protonmail.android.maildetail.presentation.viewmodel.MessageDetailViewModel
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonErrorMessage

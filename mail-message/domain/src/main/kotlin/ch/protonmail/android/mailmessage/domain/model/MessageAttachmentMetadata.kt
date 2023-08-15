@@ -16,41 +16,15 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmessage.domain.entity
+package ch.protonmail.android.mailmessage.domain.model
 
+import android.net.Uri
 import me.proton.core.domain.entity.UserId
 
-data class MessageBody(
+data class MessageAttachmentMetadata(
     val userId: UserId,
     val messageId: MessageId,
-    val body: String,
-    val header: String,
-    val attachments: List<MessageAttachment>,
-    val mimeType: MimeType,
-    val spamScore: String,
-    val replyTo: Recipient,
-    val replyTos: List<Recipient>,
-    val unsubscribeMethods: UnsubscribeMethods?
-)
-
-enum class MimeType(val value: String) {
-    PlainText("text/plain"),
-    Html("text/html"),
-    MultipartMixed("multipart/mixed");
-
-    companion object {
-        fun from(value: String) = values().find { it.value == value } ?: PlainText
-    }
-}
-
-data class UnsubscribeMethods(
-    val httpClient: String?,
-    val oneClick: String?,
-    val mailTo: MailTo?
-)
-
-data class MailTo(
-    val toList: List<String>,
-    val subject: String?,
-    val body: String?
+    val attachmentId: AttachmentId,
+    val uri: Uri?,
+    val status: AttachmentWorkerStatus
 )

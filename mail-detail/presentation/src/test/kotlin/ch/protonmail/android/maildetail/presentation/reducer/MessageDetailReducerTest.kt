@@ -35,8 +35,8 @@ import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentWorkerStatus
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
+import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
 import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData
 import ch.protonmail.android.testdata.maillabel.MailLabelUiModelTestData

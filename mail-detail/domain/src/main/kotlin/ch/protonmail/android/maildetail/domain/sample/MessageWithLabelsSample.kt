@@ -20,7 +20,7 @@ package ch.protonmail.android.maildetail.domain.sample
 
 import ch.protonmail.android.mailcommon.domain.sample.LabelSample
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
-import ch.protonmail.android.mailmessage.domain.entity.Message
+import ch.protonmail.android.mailmessage.domain.model.Message
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import me.proton.core.label.domain.entity.Label
 

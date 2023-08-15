@@ -20,7 +20,7 @@ package ch.protonmail.android.maildetail.presentation.mapper
 
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.usecase.GetInitial
-import ch.protonmail.android.mailmessage.domain.entity.Message
+import ch.protonmail.android.mailmessage.domain.model.Message
 import javax.inject.Inject
 
 class DetailAvatarUiModelMapper @Inject constructor(

@@ -33,8 +33,8 @@ import ch.protonmail.android.mailmessage.data.local.usecase.AttachmentDecryption
 import ch.protonmail.android.mailmessage.data.local.usecase.DecryptAttachmentByteArray
 import ch.protonmail.android.mailmessage.data.local.usecase.PrepareAttachmentForSharing
 import ch.protonmail.android.mailmessage.data.mapper.toMessageAttachmentMetadata
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentWorkerStatus
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
+import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.testdata.message.MessageAttachmentMetadataEntityTestData
 import io.mockk.Runs

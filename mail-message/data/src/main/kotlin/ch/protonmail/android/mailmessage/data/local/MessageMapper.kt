@@ -22,7 +22,7 @@ import ch.protonmail.android.mailmessage.data.local.entity.MessageEntity
 import ch.protonmail.android.mailmessage.data.local.relation.MessageWithLabelIds
 import ch.protonmail.android.mailmessage.data.mapper.toDomainModel
 import ch.protonmail.android.mailmessage.data.mapper.toEntity
-import ch.protonmail.android.mailmessage.domain.entity.Message
+import ch.protonmail.android.mailmessage.domain.model.Message
 
 fun MessageWithLabelIds.toMessage() = Message(
     userId = message.userId,

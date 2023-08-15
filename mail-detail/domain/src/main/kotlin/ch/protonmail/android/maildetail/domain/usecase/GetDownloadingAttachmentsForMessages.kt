@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.maildetail.domain.usecase
 
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.AttachmentRepository
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject

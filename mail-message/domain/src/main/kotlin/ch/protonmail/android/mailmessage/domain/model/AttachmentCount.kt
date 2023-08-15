@@ -16,28 +16,8 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmessage.domain.entity
+package ch.protonmail.android.mailmessage.domain.model
 
-import kotlinx.serialization.Serializable
-
-@Serializable
-sealed class AttachmentWorkerStatus {
-
-    @Serializable
-    object Running : AttachmentWorkerStatus()
-
-    @Serializable
-    sealed class Failed : AttachmentWorkerStatus() {
-
-        @Serializable
-        object OutOfMemory : Failed()
-
-        @Serializable
-        object Generic : Failed()
-    }
-
-    @Serializable
-    object Success : AttachmentWorkerStatus()
-}
-
-fun AttachmentWorkerStatus.finished() = this is AttachmentWorkerStatus.Failed || this is AttachmentWorkerStatus.Success
+data class AttachmentCount(
+    val calendar: Int
+)

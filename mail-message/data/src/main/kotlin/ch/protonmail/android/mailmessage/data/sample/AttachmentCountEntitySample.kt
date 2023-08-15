@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailmessage.data.sample
 
 import ch.protonmail.android.mailmessage.data.local.entity.AttachmentCountEntity
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentCount
+import ch.protonmail.android.mailmessage.domain.model.AttachmentCount
 import ch.protonmail.android.mailmessage.domain.sample.AttachmentCountSample
 
 object AttachmentCountEntitySample {

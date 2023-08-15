@@ -24,7 +24,7 @@ import ch.protonmail.android.composer.data.remote.DraftRemoteDataSource
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcomposer.domain.model.DraftState
 import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import kotlinx.coroutines.flow.first
 import me.proton.core.domain.entity.UserId

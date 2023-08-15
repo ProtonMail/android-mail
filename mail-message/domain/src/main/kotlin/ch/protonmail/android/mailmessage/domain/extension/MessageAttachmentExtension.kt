@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.mailmessage.domain.extension
 
-import ch.protonmail.android.mailmessage.domain.entity.MessageAttachment
+import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 
 fun MessageAttachment.hasAllowedEmbeddedImageMimeType(): Boolean =
     mimeType.startsWith("image/") || mimeType == "application/octet-stream"

@@ -28,8 +28,8 @@ import ch.protonmail.android.mailcomposer.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftState
 import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailcomposer.domain.sample.DraftStateSample
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
-import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
+import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample

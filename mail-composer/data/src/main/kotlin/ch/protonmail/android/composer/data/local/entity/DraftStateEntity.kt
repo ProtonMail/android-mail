@@ -24,7 +24,7 @@ import androidx.room.Index
 import ch.protonmail.android.mailcomposer.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftState
 import ch.protonmail.android.mailcomposer.domain.model.DraftSyncState
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import me.proton.core.domain.entity.UserId
 import me.proton.core.user.data.entity.UserEntity
 

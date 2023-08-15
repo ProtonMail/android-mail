@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailmessage.data.sample
 
 import ch.protonmail.android.mailmessage.data.local.entity.MessageEntity
-import ch.protonmail.android.mailmessage.domain.entity.Message
+import ch.protonmail.android.mailmessage.domain.model.Message
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 
 object MessageEntitySample {

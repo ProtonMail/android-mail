@@ -22,8 +22,8 @@ import arrow.core.Either
 import arrow.core.continuations.either
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.AttachmentRepository
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import me.proton.core.domain.entity.UserId

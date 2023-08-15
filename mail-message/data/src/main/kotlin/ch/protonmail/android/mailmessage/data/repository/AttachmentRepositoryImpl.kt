@@ -27,11 +27,11 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.data.local.AttachmentLocalDataSource
 import ch.protonmail.android.mailmessage.data.local.usecase.DecryptAttachmentByteArray
 import ch.protonmail.android.mailmessage.data.remote.AttachmentRemoteDataSource
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentWorkerStatus
-import ch.protonmail.android.mailmessage.domain.entity.MessageAttachmentMetadata
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
-import ch.protonmail.android.mailmessage.domain.entity.finished
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
+import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
+import ch.protonmail.android.mailmessage.domain.model.MessageAttachmentMetadata
+import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.finished
 import ch.protonmail.android.mailmessage.domain.repository.AttachmentRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow

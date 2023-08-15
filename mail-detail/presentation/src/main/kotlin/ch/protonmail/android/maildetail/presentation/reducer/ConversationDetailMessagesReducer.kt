@@ -25,7 +25,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMes
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import javax.inject.Inject
 
 class ConversationDetailMessagesReducer @Inject constructor() {

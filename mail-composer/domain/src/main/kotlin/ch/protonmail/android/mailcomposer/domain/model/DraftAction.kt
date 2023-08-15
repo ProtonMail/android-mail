@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.mailcomposer.domain.model
 
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import kotlinx.serialization.Serializable
 
 @Serializable

@@ -36,8 +36,8 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
-import ch.protonmail.android.mailmessage.domain.entity.DecryptedMessageBody
-import ch.protonmail.android.mailmessage.domain.entity.GetDecryptedMessageBodyError
+import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
+import ch.protonmail.android.mailmessage.domain.model.GetDecryptedMessageBodyError
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
@@ -80,9 +80,9 @@ import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ObserveCustomMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinationMailLabels
 import ch.protonmail.android.maillabel.presentation.model.LabelSelectedState
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
-import ch.protonmail.android.mailmessage.domain.entity.MimeType
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings

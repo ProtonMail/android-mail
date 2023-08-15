@@ -32,7 +32,7 @@ import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMe
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMetadataUiModelSample
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.model.toMailLabelSystem
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import io.mockk.Called
 import io.mockk.mockk
 import io.mockk.verify

@@ -49,8 +49,8 @@ import ch.protonmail.android.mailcommon.presentation.usecase.GetInitial
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
-import ch.protonmail.android.mailmessage.domain.entity.DecryptedMessageBody
-import ch.protonmail.android.mailmessage.domain.entity.GetDecryptedMessageBodyError
+import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
+import ch.protonmail.android.mailmessage.domain.model.GetDecryptedMessageBodyError
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.maildetail.domain.usecase.DoesMessageBodyHaveEmbeddedImages
@@ -108,10 +108,10 @@ import ch.protonmail.android.maillabel.domain.usecase.GetRootLabel
 import ch.protonmail.android.maillabel.domain.usecase.ObserveCustomMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinationMailLabels
 import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelSample
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
-import ch.protonmail.android.mailmessage.domain.entity.MessageAttachment
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
-import ch.protonmail.android.mailmessage.domain.entity.MimeType
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
+import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
+import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings

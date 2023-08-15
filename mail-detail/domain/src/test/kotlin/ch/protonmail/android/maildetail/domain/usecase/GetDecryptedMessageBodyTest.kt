@@ -21,11 +21,11 @@ package ch.protonmail.android.maildetail.domain.usecase
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailmessage.domain.entity.DecryptedMessageBody
-import ch.protonmail.android.mailmessage.domain.entity.GetDecryptedMessageBodyError
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
-import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
-import ch.protonmail.android.mailmessage.domain.entity.MimeType
+import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
+import ch.protonmail.android.mailmessage.domain.model.GetDecryptedMessageBodyError
+import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
+import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.testdata.message.MessageBodyTestData

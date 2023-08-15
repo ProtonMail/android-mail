@@ -20,7 +20,7 @@ package ch.protonmail.android.composer.data.sample
 
 import ch.protonmail.android.composer.data.remote.resource.DraftMessageResource
 import ch.protonmail.android.mailmessage.data.remote.resource.RecipientResource
-import ch.protonmail.android.mailmessage.domain.entity.MimeType
+import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.sample.RecipientSample
 
 object DraftMessageResourceSample {

@@ -29,9 +29,9 @@ import ch.protonmail.android.mailmessage.data.local.entity.MessageLabelEntity
 import ch.protonmail.android.mailmessage.data.local.relation.MessageWithBodyEntity
 import ch.protonmail.android.mailmessage.data.mapper.MessageAttachmentEntityMapper
 import ch.protonmail.android.mailmessage.data.mapper.MessageWithBodyEntityMapper
-import ch.protonmail.android.mailmessage.domain.entity.Message
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
-import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
+import ch.protonmail.android.mailmessage.domain.model.Message
+import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailpagination.data.local.getClippedPageKey
 import ch.protonmail.android.mailpagination.data.local.isLocalPageValid
 import ch.protonmail.android.mailpagination.data.local.upsertPageInterval

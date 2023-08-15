@@ -39,7 +39,7 @@ import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel.Invalid
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel.Valid
 import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.junit.runner.RunWith

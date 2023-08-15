@@ -18,12 +18,12 @@
 
 package ch.protonmail.android.testdata.message
 
-import ch.protonmail.android.mailmessage.domain.entity.MessageAttachment
-import ch.protonmail.android.mailmessage.domain.entity.MessageBody
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
-import ch.protonmail.android.mailmessage.domain.entity.MimeType
-import ch.protonmail.android.mailmessage.domain.entity.Recipient
-import ch.protonmail.android.mailmessage.domain.entity.UnsubscribeMethods
+import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
+import ch.protonmail.android.mailmessage.domain.model.MessageBody
+import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MimeType
+import ch.protonmail.android.mailmessage.domain.model.Recipient
+import ch.protonmail.android.mailmessage.domain.model.UnsubscribeMethods
 import ch.protonmail.android.mailmessage.domain.sample.RecipientSample
 import ch.protonmail.android.testdata.message.MessageTestData.RAW_MESSAGE_ID
 import ch.protonmail.android.testdata.user.UserIdTestData

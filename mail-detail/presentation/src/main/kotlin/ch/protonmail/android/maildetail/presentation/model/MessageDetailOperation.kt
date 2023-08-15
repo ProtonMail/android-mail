@@ -26,8 +26,8 @@ import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperatio
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation.AffectingMessage
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation.AffectingMessageBody
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentWorkerStatus
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
+import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
 import me.proton.core.label.domain.entity.LabelId
 
 sealed interface MessageDetailOperation {

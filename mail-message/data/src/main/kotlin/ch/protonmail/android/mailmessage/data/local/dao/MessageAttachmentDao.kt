@@ -21,7 +21,7 @@ package ch.protonmail.android.mailmessage.data.local.dao
 import androidx.room.Dao
 import androidx.room.Query
 import ch.protonmail.android.mailmessage.data.local.entity.MessageAttachmentEntity
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.data.room.db.BaseDao
 import me.proton.core.domain.entity.UserId

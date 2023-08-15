@@ -27,7 +27,7 @@ import ch.protonmail.android.mailmailbox.domain.mapper.MessageMailboxItemMapper
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Conversation
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Message
 import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
-import ch.protonmail.android.mailmessage.domain.entity.Sender
+import ch.protonmail.android.mailmessage.domain.model.Sender
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailpagination.domain.model.OrderDirection
 import ch.protonmail.android.mailpagination.domain.model.PageKey

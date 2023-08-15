@@ -20,10 +20,10 @@ package ch.protonmail.android.testdata.message
 
 import android.net.Uri
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentWorkerStatus
-import ch.protonmail.android.mailmessage.domain.entity.MessageAttachmentMetadata
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
+import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
+import ch.protonmail.android.mailmessage.domain.model.MessageAttachmentMetadata
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import me.proton.core.domain.entity.UserId
 

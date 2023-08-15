@@ -21,7 +21,7 @@ package ch.protonmail.android.uitest.e2e.mailbox.detail.bodycontent
 import arrow.core.Either
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
-import ch.protonmail.android.mailmessage.domain.entity.MimeType
+import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.networkmocks.mockwebserver.combineWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.given
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams

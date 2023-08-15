@@ -21,12 +21,12 @@ package ch.protonmail.android.maildetail.data.repository
 import java.util.Random
 import java.util.UUID
 import app.cash.turbine.test
-import ch.protonmail.android.mailmessage.domain.entity.DecryptedMessageBody
+import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationStateRepository.MessageState.Collapsed
 import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationStateRepository.MessageState.Expanded
 import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationStateRepository.MessageState.Expanding
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
-import ch.protonmail.android.mailmessage.domain.entity.MimeType
+import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import kotlinx.coroutines.test.runTest
 import org.junit.Test

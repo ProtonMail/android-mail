@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailmessage.domain.sample
 
 import java.util.UUID
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 
 object MessageIdSample {
 

@@ -22,7 +22,7 @@ import ch.protonmail.android.feature.account.RemoveAccountDialog.USER_ID_KEY
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.ConversationIdKey
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen.MESSAGE_ID_KEY
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailsettings.domain.model.SwipeActionDirection
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.EditSwipeActionPreferenceScreen.SWIPE_DIRECTION_KEY
 import me.proton.core.domain.entity.UserId

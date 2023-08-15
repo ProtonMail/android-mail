@@ -23,7 +23,7 @@ import arrow.core.continuations.either
 import ch.protonmail.android.mailcommon.domain.util.mapFalse
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.domain.model.Subject
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 

@@ -28,7 +28,7 @@ import ch.protonmail.android.mailmessage.data.remote.worker.AddLabelMessageWorke
 import ch.protonmail.android.mailmessage.data.remote.worker.MarkMessageAsReadWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.MarkMessageAsUnreadWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.RemoveLabelMessageWorker
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailpagination.domain.model.OrderBy
 import ch.protonmail.android.mailpagination.domain.model.OrderDirection

@@ -16,9 +16,17 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmessage.domain.entity
+package ch.protonmail.android.mailmessage.domain.model
 
-data class MessageWithBody(
-    val message: Message,
-    val messageBody: MessageBody
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class Participant(
+    val address: String,
+    val name: String,
+    val isProton: Boolean = false,
+    val group: String? = null
 )
+
+typealias Sender = Participant
+typealias Recipient = Participant

@@ -23,9 +23,9 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
-import ch.protonmail.android.mailmessage.domain.entity.Recipient
-import ch.protonmail.android.mailmessage.domain.entity.Sender
+import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.Recipient
+import ch.protonmail.android.mailmessage.domain.model.Sender
 import me.proton.core.domain.entity.UserId
 import me.proton.core.user.data.entity.AddressEntity
 import me.proton.core.user.data.entity.UserEntity

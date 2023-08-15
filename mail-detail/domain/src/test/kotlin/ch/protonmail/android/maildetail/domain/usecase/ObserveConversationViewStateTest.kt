@@ -22,7 +22,7 @@ import java.util.Random
 import app.cash.turbine.test
 import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationStateRepository
 import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationStateRepository.MessageState.Collapsed
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf

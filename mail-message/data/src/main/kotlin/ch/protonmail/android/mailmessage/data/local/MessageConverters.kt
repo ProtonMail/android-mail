@@ -22,9 +22,9 @@ import androidx.room.TypeConverter
 import ch.protonmail.android.mailmessage.data.local.entity.AttachmentCountEntity
 import ch.protonmail.android.mailmessage.data.local.entity.MimeTypeEntity
 import ch.protonmail.android.mailmessage.data.local.entity.UnsubscribeMethodsEntity
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
-import ch.protonmail.android.mailmessage.domain.entity.Participant
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.Participant
 import ch.protonmail.android.mailpagination.domain.model.OrderBy
 import ch.protonmail.android.mailpagination.domain.model.ReadStatus
 import me.proton.core.util.kotlin.deserialize

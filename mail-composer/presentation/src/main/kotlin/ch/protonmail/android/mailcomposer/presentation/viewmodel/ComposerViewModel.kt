@@ -47,7 +47,7 @@ import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
 import ch.protonmail.android.mailcomposer.presentation.reducer.ComposerReducer
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.test.idlingresources.ComposerIdlingResource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

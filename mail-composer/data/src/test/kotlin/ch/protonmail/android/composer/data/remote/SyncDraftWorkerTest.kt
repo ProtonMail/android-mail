@@ -28,7 +28,7 @@ import arrow.core.right
 import ch.protonmail.android.composer.data.usecase.SyncDraft
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import io.mockk.Called
 import io.mockk.coEvery

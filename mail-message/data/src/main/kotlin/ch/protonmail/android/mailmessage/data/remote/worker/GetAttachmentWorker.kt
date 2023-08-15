@@ -30,9 +30,9 @@ import ch.protonmail.android.mailcommon.presentation.system.NotificationProvider
 import ch.protonmail.android.mailmessage.data.R
 import ch.protonmail.android.mailmessage.data.local.AttachmentLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.AttachmentApi
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentWorkerStatus
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
+import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.proton.core.domain.entity.UserId

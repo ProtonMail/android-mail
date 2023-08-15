@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.mailconversation.domain.entity
 
-import ch.protonmail.android.mailmessage.domain.entity.Message
+import ch.protonmail.android.mailmessage.domain.model.Message
 
 data class ConversationWithMessages(
     val conversation: Conversation,

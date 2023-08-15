@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailcomposer.presentation.mapper
 
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
-import ch.protonmail.android.mailmessage.domain.entity.Participant
+import ch.protonmail.android.mailmessage.domain.model.Participant
 import ch.protonmail.android.testdata.contact.ContactIdTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
 import me.proton.core.contact.domain.entity.Contact

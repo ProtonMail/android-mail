@@ -28,7 +28,7 @@ import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
-import ch.protonmail.android.mailmessage.domain.entity.GetDecryptedMessageBodyError
+import ch.protonmail.android.mailmessage.domain.model.GetDecryptedMessageBodyError
 import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
 import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.usecase.GetDownloadingAttachmentsForMessages
@@ -63,9 +63,9 @@ import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinatio
 import ch.protonmail.android.maillabel.presentation.model.LabelSelectedState
 import ch.protonmail.android.maillabel.presentation.toCustomUiModel
 import ch.protonmail.android.maillabel.presentation.toUiModels
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
-import ch.protonmail.android.mailmessage.domain.entity.MessageAttachment
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
+import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
