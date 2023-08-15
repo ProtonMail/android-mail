@@ -80,7 +80,7 @@ class MessageRepositoryImpl @Inject constructor(
                 localDataSource.upsertMessageWithBody(key.userId, messageWithBody)
             }
         )
-    ).buildProtonStore(coroutineScopeProvider)
+    ).disableCache().buildProtonStore(coroutineScopeProvider)
 
     override suspend fun getLocalMessages(userId: UserId, pageKey: PageKey) =
         localDataSource.getMessages(userId, pageKey)
