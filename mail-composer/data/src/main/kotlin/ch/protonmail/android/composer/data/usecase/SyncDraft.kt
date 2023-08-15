@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcomposer.domain.model.DraftState
 import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import kotlinx.coroutines.flow.first
 import me.proton.core.domain.entity.UserId
@@ -38,9 +39,11 @@ internal class SyncDraft @Inject constructor(
 ) {
 
     suspend operator fun invoke(userId: UserId, messageId: MessageId): Either<DataError, Unit> = either {
-        val message = messageRepository.observeMessageWithBody(userId, messageId).first().onLeft {
-            Timber.w("Sync draft failure $messageId: No message found")
-        }.bind()
+        val message = messageRepository.getLocalMessageWithBody(userId, messageId)
+            ?: shift<MessageWithBody>(DataError.Local.NoDataCached).also {
+                Timber.w("Sync draft failure $messageId: No message found")
+            }
+
         val draftState = draftStateRepository.observe(userId, messageId).first().onLeft {
             Timber.w("Sync draft failure $messageId: No draft state found")
         }.bind()

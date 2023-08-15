@@ -35,7 +35,6 @@ import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -129,7 +128,7 @@ class SyncDraftTest {
         // Given
         val messageId = MessageIdSample.Invoice
         val expectedError = DataError.Local.NoDataCached
-        expectGetLocalMessageFails(userId, messageId, expectedError)
+        expectGetLocalMessageFails(userId, messageId)
 
         // When
         val actual = draftRepository(userId, messageId)
@@ -241,15 +240,11 @@ class SyncDraftTest {
         messageId: MessageId,
         expectedMessage: MessageWithBody
     ) {
-        every { messageRepository.observeMessageWithBody(userId, messageId) } returns flowOf(expectedMessage.right())
+        coEvery { messageRepository.getLocalMessageWithBody(userId, messageId) } returns expectedMessage
     }
 
-    private fun expectGetLocalMessageFails(
-        userId: UserId,
-        messageId: MessageId,
-        error: DataError.Local
-    ) {
-        every { messageRepository.observeMessageWithBody(userId, messageId) } returns flowOf(error.left())
+    private fun expectGetLocalMessageFails(userId: UserId, messageId: MessageId) {
+        coEvery { messageRepository.getLocalMessageWithBody(userId, messageId) } returns null
     }
 
     private fun expectGetDraftStateSucceeds(
