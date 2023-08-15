@@ -79,7 +79,7 @@ class MessageRepositoryImplTest {
             getMessage(id = "4", time = 4000)
         ).right()
         coEvery {
-            getMessage(userId = any(), messageId = any())
+            getMessageOrThrow(userId = any(), messageId = any())
         } returns MessageWithBody(MessageTestData.message, MessageBodyTestData.messageBody)
     }
     private val localDataSource = mockk<MessageLocalDataSource>(relaxUnitFun = true) {
@@ -280,7 +280,7 @@ class MessageRepositoryImplTest {
             messageRepository.observeMessageWithBody(userId, messageId).test {
                 // Then
                 coVerify {
-                    remoteDataSource.getMessage(userId, messageId)
+                    remoteDataSource.getMessageOrThrow(userId, messageId)
                     localDataSource.upsertMessageWithBody(userId, expected)
                 }
             }
@@ -291,7 +291,7 @@ class MessageRepositoryImplTest {
         // Given
         val messageId = MessageIdSample.AugWeatherForecast
         coEvery { localDataSource.observeMessageWithBody(userId, messageId) } returns flowOf(null)
-        coEvery { remoteDataSource.getMessage(userId, messageId) } throws Exception()
+        coEvery { remoteDataSource.getMessageOrThrow(userId, messageId) } throws Exception()
 
         // When
         messageRepository.observeMessageWithBody(userId, messageId).test {
@@ -299,7 +299,7 @@ class MessageRepositoryImplTest {
             assertEquals(DataError.Remote.Unknown.left(), awaitItem())
             coVerify(exactly = 1) {
                 localDataSource.observeMessageWithBody(userId, messageId)
-                remoteDataSource.getMessage(userId, messageId)
+                remoteDataSource.getMessageOrThrow(userId, messageId)
             }
             coVerify(exactly = 0) {
                 localDataSource.upsertMessageWithBody(userId, any())
@@ -932,5 +932,20 @@ class MessageRepositoryImplTest {
 
         // Then
         assertNull(actualMessageWithBody)
+    }
+
+    @Test
+    fun `should read the message with body from remote storage`() = runTest {
+        // Given
+        val userId = UserIdSample.Primary
+        val expectedMessageWithBody = MessageWithBodySample.RemoteDraft
+        val expectedMessageId = MessageIdSample.RemoteDraft
+        coEvery { remoteDataSource.getMessage(userId, expectedMessageId) } returns expectedMessageWithBody.right()
+
+        // When
+        val actualMessageWithBody = messageRepository.fetchMessageWithBody(userId, expectedMessageId)
+
+        // Then
+        assertEquals(expectedMessageWithBody.right(), actualMessageWithBody)
     }
 }

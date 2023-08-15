@@ -36,7 +36,7 @@ interface MessageRemoteDataSource {
     /**
      * Get a [Message] for [userId], by [messageId].
      */
-    suspend fun getMessage(userId: UserId, messageId: MessageId): MessageWithBody
+    suspend fun getMessageOrThrow(userId: UserId, messageId: MessageId): MessageWithBody
 
     /**
      * Adds [labelIds] to the given [MessageId]
@@ -65,4 +65,5 @@ interface MessageRemoteDataSource {
      * Mark messages with the given [messageIds] as read
      */
     fun markRead(userId: UserId, messageIds: List<MessageId>)
+    suspend fun getMessage(userId: UserId, messageId: MessageId): Either<DataError, MessageWithBody>
 }

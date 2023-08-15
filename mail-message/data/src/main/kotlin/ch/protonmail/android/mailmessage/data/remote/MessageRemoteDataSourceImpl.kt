@@ -70,12 +70,15 @@ class MessageRemoteDataSourceImpl @Inject constructor(
             ).messages.map { it.toMessage(userId) }
         }.toEither()
 
-    override suspend fun getMessage(userId: UserId, messageId: MessageId): MessageWithBody =
-        apiProvider.get<MessageApi>(userId).invoke {
-            getMessage(
-                messageId = messageId.id
-            ).message.toMessageWithBody(userId)
-        }.valueOrThrow
+    /**
+     * Needed by ProtonStore (DropboxStore) implementation, which expects an exception when fetching fails.
+     * Such exception is later used by our own Mappers to extract the error (Store -> DataError -> Either (Mappers))
+     */
+    override suspend fun getMessageOrThrow(userId: UserId, messageId: MessageId): MessageWithBody =
+        fetchMessage(userId, messageId).valueOrThrow
+
+    override suspend fun getMessage(userId: UserId, messageId: MessageId): Either<DataError, MessageWithBody> =
+        fetchMessage(userId, messageId).toEither()
 
     override fun addLabelsToMessages(
         userId: UserId,
@@ -110,6 +113,11 @@ class MessageRemoteDataSourceImpl @Inject constructor(
         messageIds.chunked(MAX_ACTION_WORKER_PARAMETER_COUNT)
             .forEach { enqueuer.enqueue<MarkMessageAsReadWorker>(MarkMessageAsReadWorker.params(userId, it)) }
     }
+
+    private suspend fun fetchMessage(userId: UserId, messageId: MessageId) =
+        apiProvider.get<MessageApi>(userId).invoke {
+            getMessage(messageId = messageId.id).message.toMessageWithBody(userId)
+        }
 
     companion object {
 

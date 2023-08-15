@@ -30,7 +30,7 @@ import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 
-@Suppress("TooManyFunctions")
+@Suppress("TooManyFunctions", "ComplexInterface")
 interface MessageRepository {
 
     /**
@@ -85,6 +85,11 @@ interface MessageRepository {
      * Get the [MessageWithBody] for a given [MessageId] and [userId] from the local storage.
      */
     suspend fun getLocalMessageWithBody(userId: UserId, messageId: MessageId): MessageWithBody?
+
+    /**
+     * Get the [MessageWithBody] for a given [MessageId] and [userId] from the remote storage.
+     */
+    suspend fun fetchMessageWithBody(userId: UserId, messageId: MessageId): Either<DataError, MessageWithBody>
 
     suspend fun upsertMessageWithBody(userId: UserId, messageWithBody: MessageWithBody): Boolean
 

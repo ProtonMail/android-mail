@@ -70,7 +70,7 @@ class MessageRepositoryImpl @Inject constructor(
 
     private val messageWithBodyStore: ProtonStore<MessageKey, MessageWithBody> = StoreBuilder.from(
         fetcher = Fetcher.of { key: MessageKey ->
-            remoteDataSource.getMessage(key.userId, key.messageId)
+            remoteDataSource.getMessageOrThrow(key.userId, key.messageId)
         },
         sourceOfTruth = SourceOfTruth.of(
             reader = { key: MessageKey ->
@@ -132,6 +132,11 @@ class MessageRepositoryImpl @Inject constructor(
 
     override suspend fun getLocalMessageWithBody(userId: UserId, messageId: MessageId): MessageWithBody? =
         localDataSource.observeMessageWithBody(userId, messageId).firstOrNull()
+
+    override suspend fun fetchMessageWithBody(
+        userId: UserId,
+        messageId: MessageId
+    ): Either<DataError, MessageWithBody> = remoteDataSource.getMessage(userId, messageId)
 
     override suspend fun upsertMessageWithBody(userId: UserId, messageWithBody: MessageWithBody): Boolean {
         return try {
