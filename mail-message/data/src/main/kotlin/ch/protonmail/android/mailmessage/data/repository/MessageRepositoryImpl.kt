@@ -20,6 +20,7 @@ package ch.protonmail.android.mailmessage.data.repository
 
 import arrow.core.Either
 import arrow.core.NonEmptyList
+import arrow.core.getOrElse
 import arrow.core.left
 import arrow.core.right
 import arrow.core.toNonEmptyListOrNull
@@ -133,12 +134,10 @@ class MessageRepositoryImpl @Inject constructor(
     override suspend fun getLocalMessageWithBody(userId: UserId, messageId: MessageId): MessageWithBody? =
         localDataSource.observeMessageWithBody(userId, messageId).firstOrNull()
 
-    override suspend fun fetchAndStoreMessageWithBody(
-        userId: UserId,
-        messageId: MessageId
-    ): Either<DataError, MessageWithBody> = remoteDataSource.getMessage(userId, messageId).also { either ->
-        either.getOrNull()?.let { upsertMessageWithBody(userId, it) }
-    }
+    override suspend fun getRefreshedMessageWithBody(userId: UserId, messageId: MessageId): MessageWithBody? =
+        remoteDataSource.getMessage(userId, messageId).onRight { upsertMessageWithBody(userId, it) }.getOrElse {
+            getLocalMessageWithBody(userId, messageId)
+        }
 
     override suspend fun upsertMessageWithBody(userId: UserId, messageWithBody: MessageWithBody): Boolean {
         return try {

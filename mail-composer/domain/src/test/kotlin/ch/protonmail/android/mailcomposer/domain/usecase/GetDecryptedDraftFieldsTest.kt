@@ -21,7 +21,6 @@ package ch.protonmail.android.mailcomposer.domain.usecase
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
@@ -54,13 +53,13 @@ class GetDecryptedDraftFieldsTest {
     private val getDecryptedDraftFields = GetDecryptedDraftFields(messageRepository, getDecryptedMessageBody)
 
     @Test
-    fun `returns draft data when fetch and decrypt operations succeed`() = runTest {
+    fun `returns draft data when get refreshed message and decrypt operations succeed`() = runTest {
         // Given
         val userId = UserIdSample.Primary
         val messageId = MessageIdSample.RemoteDraft
         val decryptedMessageBody = DecryptedMessageBodyTestData.buildDecryptedMessageBody()
         val expectedMessage = MessageWithBodySample.RemoteDraft
-        expectedFetchMessage(userId, messageId) { expectedMessage }
+        expectedGetRefreshedMessage(userId, messageId) { expectedMessage }
         expectDecryptedMessageResult(userId, messageId) { decryptedMessageBody }
 
         // When
@@ -72,31 +71,11 @@ class GetDecryptedDraftFieldsTest {
     }
 
     @Test
-    fun `get message from local when fetch message fails`() = runTest {
+    fun `returns no cached data error when get refreshed message with body fails`() = runTest {
         // Given
         val userId = UserIdSample.Primary
         val messageId = MessageIdSample.RemoteDraft
-        val decryptedMessageBody = DecryptedMessageBodyTestData.buildDecryptedMessageBody()
-        val expectedMessage = MessageWithBodySample.RemoteDraft
-        expectedFetchMessageError(userId, messageId) { DataError.Remote.Http(NetworkError.ServerError) }
-        expectedGetLocalMessage(userId, messageId) { expectedMessage }
-        expectDecryptedMessageResult(userId, messageId) { decryptedMessageBody }
-
-        // When
-        val actual = getDecryptedDraftFields(userId, messageId)
-
-        // Then
-        val expected = expectedMessage.toDraftFields(decryptedMessageBody.value)
-        assertEquals(expected.right(), actual)
-    }
-
-    @Test
-    fun `returns data error when both fetch message and get local message with body fails`() = runTest {
-        // Given
-        val userId = UserIdSample.Primary
-        val messageId = MessageIdSample.RemoteDraft
-        val fetchError = DataError.Remote.Http(NetworkError.NoNetwork)
-        expectedFetchMessageError(userId, messageId) { fetchError }
+        expectedGetRefreshedMessageError(userId, messageId)
         expectGetLocalMessageFailure(userId, messageId)
 
         // When
@@ -113,7 +92,7 @@ class GetDecryptedDraftFieldsTest {
         val messageId = MessageIdSample.RemoteDraft
         val expectedMessage = MessageWithBodySample.RemoteDraft
         val decryptError = GetDecryptedMessageBodyError.Decryption("Failed decrypting")
-        expectedFetchMessage(userId, messageId) { expectedMessage }
+        expectedGetRefreshedMessage(userId, messageId) { expectedMessage }
         expectDecryptedMessageError(userId, messageId) { decryptError }
 
         // When
@@ -136,12 +115,8 @@ class GetDecryptedDraftFieldsTest {
         coEvery { messageRepository.getLocalMessageWithBody(userId, messageId) } returns null
     }
 
-    private fun expectedFetchMessageError(
-        userId: UserId,
-        messageId: MessageId,
-        error: () -> DataError.Remote
-    ) = error().also {
-        coEvery { messageRepository.fetchAndStoreMessageWithBody(userId, messageId) } returns it.left()
+    private fun expectedGetRefreshedMessageError(userId: UserId, messageId: MessageId) {
+        coEvery { messageRepository.getRefreshedMessageWithBody(userId, messageId) } returns null
     }
 
     private fun expectDecryptedMessageResult(
@@ -152,20 +127,12 @@ class GetDecryptedDraftFieldsTest {
         coEvery { getDecryptedMessageBody(userId, messageId) } returns it.right()
     }
 
-    private fun expectedGetLocalMessage(
+    private fun expectedGetRefreshedMessage(
         userId: UserId,
         messageId: MessageId,
         result: () -> MessageWithBody
     ) = result().also {
-        coEvery { messageRepository.getLocalMessageWithBody(userId, messageId) } returns it
-    }
-
-    private fun expectedFetchMessage(
-        userId: UserId,
-        messageId: MessageId,
-        result: () -> MessageWithBody
-    ) = result().also {
-        coEvery { messageRepository.fetchAndStoreMessageWithBody(userId, messageId) } returns it.right()
+        coEvery { messageRepository.getRefreshedMessageWithBody(userId, messageId) } returns it
     }
 
     private fun MessageWithBody.toDraftFields(decryptedBody: String) = with(message) {

@@ -44,7 +44,8 @@ class GetDecryptedDraftFields @Inject constructor(
 
     suspend operator fun invoke(userId: UserId, messageId: MessageId): Either<DataError, DraftFields> {
         Timber.d("Get decrypted draft data for $userId $messageId")
-        val message = getMessageWithBody(userId, messageId)?.message ?: return DataError.Local.NoDataCached.left()
+        val message = messageRepository.getRefreshedMessageWithBody(userId, messageId)?.message
+            ?: return DataError.Local.NoDataCached.left()
 
         val decryptedMessageBody = getDecryptedMessageBody(userId, messageId).getOrElse {
             return DataError.Local.DecryptionError.left()
@@ -60,9 +61,4 @@ class GetDecryptedDraftFields @Inject constructor(
         ).right()
     }
 
-    private suspend fun getMessageWithBody(userId: UserId, messageId: MessageId) =
-        messageRepository.fetchAndStoreMessageWithBody(userId, messageId).getOrElse {
-            Timber.d("Couldn't fetch message with body: $it. Trying to get message locally...")
-            messageRepository.getLocalMessageWithBody(userId, messageId)
-        }
 }

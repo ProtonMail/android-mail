@@ -44,7 +44,7 @@ interface MessageRepository {
     suspend fun isLocalPageValid(
         userId: UserId,
         pageKey: PageKey,
-        items: List<Message>,
+        items: List<Message>
     ): Boolean
 
     /**
@@ -88,9 +88,9 @@ interface MessageRepository {
 
     /**
      * Get the [MessageWithBody] for a given [MessageId] and [userId] from the remote storage
-     * and stores it locally.
+     * and stores it locally. When getting from remote fails, returns any existing local one
      */
-    suspend fun fetchAndStoreMessageWithBody(userId: UserId, messageId: MessageId): Either<DataError, MessageWithBody>
+    suspend fun getRefreshedMessageWithBody(userId: UserId, messageId: MessageId): MessageWithBody?
 
     suspend fun upsertMessageWithBody(userId: UserId, messageWithBody: MessageWithBody): Boolean
 
@@ -162,5 +162,9 @@ interface MessageRepository {
         labelsToBeAdded: List<LabelId> = emptyList()
     ): Either<DataError.Local, List<Message>>
 
-    suspend fun updateDraftMessageId(userId: UserId, localDraftId: MessageId, apiAssignedId: MessageId)
+    suspend fun updateDraftMessageId(
+        userId: UserId,
+        localDraftId: MessageId,
+        apiAssignedId: MessageId
+    )
 }

@@ -935,32 +935,38 @@ class MessageRepositoryImplTest {
     }
 
     @Test
-    fun `should read the message with body from remote storage`() = runTest {
-        // Given
-        val userId = UserIdSample.Primary
-        val expectedMessageWithBody = MessageWithBodySample.RemoteDraft
-        val expectedMessageId = MessageIdSample.RemoteDraft
-        coEvery { remoteDataSource.getMessage(userId, expectedMessageId) } returns expectedMessageWithBody.right()
+    fun `when get refreshed message with body from remote storage is successful update local cache and return it`() =
+        runTest {
+            // Given
+            val userId = UserIdSample.Primary
+            val expectedMessageWithBody = MessageWithBodySample.RemoteDraft
+            val expectedMessageId = MessageIdSample.RemoteDraft
+            coEvery { remoteDataSource.getMessage(userId, expectedMessageId) } returns expectedMessageWithBody.right()
 
-        // When
-        val actualMessageWithBody = messageRepository.fetchAndStoreMessageWithBody(userId, expectedMessageId)
+            // When
+            val actual = messageRepository.getRefreshedMessageWithBody(userId, expectedMessageId)
 
-        // Then
-        assertEquals(expectedMessageWithBody.right(), actualMessageWithBody)
-    }
+            // Then
+            assertEquals(expectedMessageWithBody, actual)
+            coVerify { localDataSource.upsertMessageWithBody(userId, expectedMessageWithBody) }
+        }
 
     @Test
-    fun `when fetching message with body from remote storage is successful, save it locally`() = runTest {
+    fun `when get refreshed message with body from remote storage fails, return cached one`() = runTest {
         // Given
         val userId = UserIdSample.Primary
         val expectedMessageWithBody = MessageWithBodySample.RemoteDraft
         val expectedMessageId = MessageIdSample.RemoteDraft
-        coEvery { remoteDataSource.getMessage(userId, expectedMessageId) } returns expectedMessageWithBody.right()
+        val expectedError = DataError.Remote.Http(NetworkError.Unreachable).left()
+        coEvery { remoteDataSource.getMessage(userId, expectedMessageId) } returns expectedError
+        coEvery { localDataSource.observeMessageWithBody(userId, expectedMessageId) } returns
+            flowOf(expectedMessageWithBody)
 
         // When
-        messageRepository.fetchAndStoreMessageWithBody(userId, expectedMessageId)
+        val actual = messageRepository.getRefreshedMessageWithBody(userId, expectedMessageId)
 
         // Then
-        coVerify { localDataSource.upsertMessageWithBody(userId, expectedMessageWithBody) }
+        assertEquals(expectedMessageWithBody, actual)
+        coVerify(exactly = 0) { localDataSource.upsertMessageWithBody(userId, expectedMessageWithBody) }
     }
 }
