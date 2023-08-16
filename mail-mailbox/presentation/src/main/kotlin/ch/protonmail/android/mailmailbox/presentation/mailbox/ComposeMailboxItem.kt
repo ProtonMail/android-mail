@@ -92,7 +92,8 @@ fun MailboxItem(
 
         Avatar(
             avatarUiModel = item.avatar,
-            modifier = Modifier.padding(top = ProtonDimens.SmallSpacing, end = ProtonDimens.ExtraSmallSpacing)
+            modifier = Modifier.padding(top = ProtonDimens.SmallSpacing, end = ProtonDimens.ExtraSmallSpacing),
+            onClick = { onOpenSelectionMode(item) }
         )
         Column(modifier = Modifier.padding(start = ProtonDimens.SmallSpacing, top = ProtonDimens.SmallSpacing)) {
             Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {

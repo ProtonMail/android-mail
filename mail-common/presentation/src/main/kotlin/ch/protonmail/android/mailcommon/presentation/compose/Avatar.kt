@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcommon.presentation.compose
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -41,10 +42,13 @@ import me.proton.core.compose.theme.ProtonTheme
 @Composable
 fun Avatar(
     modifier: Modifier = Modifier,
-    avatarUiModel: AvatarUiModel
+    avatarUiModel: AvatarUiModel,
+    onClick: () -> Unit = {}
 ) {
     Box(
-        modifier = modifier.size(MailDimens.DefaultTouchTargetSize),
+        modifier = modifier
+            .size(MailDimens.DefaultTouchTargetSize)
+            .clickable { onClick() },
         contentAlignment = Alignment.Center
     ) {
         when (avatarUiModel) {
@@ -69,6 +73,7 @@ fun Avatar(
                         contentDescription = NO_CONTENT_DESCRIPTION
                     )
                 }
+
             is AvatarUiModel.ParticipantInitial ->
                 Box(
                     modifier = Modifier
