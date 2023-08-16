@@ -30,6 +30,7 @@ object MessageDetailBodyUiModelSample {
         shouldShowEmbeddedImages: Boolean = false,
         shouldShowRemoteContent: Boolean = false,
         shouldShowEmbeddedImagesBanner: Boolean = false,
+        shouldShowRemoteContentBanner: Boolean = false,
         attachments: MessageBodyAttachmentsUiModel? = null
     ) = MessageBodyUiModel(
         messageBody = messageBody,
@@ -37,6 +38,7 @@ object MessageDetailBodyUiModelSample {
         shouldShowEmbeddedImages = shouldShowEmbeddedImages,
         shouldShowRemoteContent = shouldShowRemoteContent,
         shouldShowEmbeddedImagesBanner = shouldShowEmbeddedImagesBanner,
+        shouldShowRemoteContentBanner = shouldShowRemoteContentBanner,
         attachments = attachments
     )
 }

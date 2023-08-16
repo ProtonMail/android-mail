@@ -20,6 +20,7 @@ package ch.protonmail.android.maildetail.presentation.mapper
 
 import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.usecase.DoesMessageBodyHaveEmbeddedImages
+import ch.protonmail.android.maildetail.domain.usecase.DoesMessageBodyHaveRemoteContent
 import ch.protonmail.android.maildetail.domain.usecase.ShouldShowEmbeddedImages
 import ch.protonmail.android.maildetail.domain.usecase.ShouldShowRemoteContent
 import ch.protonmail.android.maildetail.presentation.model.AttachmentUiModel
@@ -34,6 +35,7 @@ import javax.inject.Inject
 
 class MessageBodyUiModelMapper @Inject constructor(
     private val doesMessageBodyHaveEmbeddedImages: DoesMessageBodyHaveEmbeddedImages,
+    private val doesMessageBodyHaveRemoteContent: DoesMessageBodyHaveRemoteContent,
     private val injectCssIntoDecryptedMessageBody: InjectCssIntoDecryptedMessageBody,
     private val sanitizeHtmlOfDecryptedMessageBody: SanitizeHtmlOfDecryptedMessageBody,
     private val shouldShowEmbeddedImages: ShouldShowEmbeddedImages,
@@ -47,6 +49,8 @@ class MessageBodyUiModelMapper @Inject constructor(
         )
         val shouldShowEmbeddedImages = shouldShowEmbeddedImages(userId)
         val doesMessageBodyHaveEmbeddedImages = doesMessageBodyHaveEmbeddedImages(decryptedMessageBody)
+        val shouldShowRemoteContent = shouldShowRemoteContent(userId)
+        val doesMessageBodyHaveRemoteContent = doesMessageBodyHaveRemoteContent(decryptedMessageBody)
 
         return MessageBodyUiModel(
             messageBody = injectCssIntoDecryptedMessageBody(
@@ -57,6 +61,7 @@ class MessageBodyUiModelMapper @Inject constructor(
             shouldShowEmbeddedImages = shouldShowEmbeddedImages,
             shouldShowRemoteContent = shouldShowRemoteContent(userId),
             shouldShowEmbeddedImagesBanner = !shouldShowEmbeddedImages && doesMessageBodyHaveEmbeddedImages,
+            shouldShowRemoteContentBanner = !shouldShowRemoteContent && doesMessageBodyHaveRemoteContent,
             attachments = if (decryptedMessageBody.attachments.isNotEmpty()) {
                 MessageBodyAttachmentsUiModel(
                     attachments = decryptedMessageBody.attachments.map {
@@ -79,6 +84,7 @@ class MessageBodyUiModelMapper @Inject constructor(
         shouldShowEmbeddedImages = false,
         shouldShowRemoteContent = false,
         shouldShowEmbeddedImagesBanner = false,
+        shouldShowRemoteContentBanner = false,
         attachments = null
     )
 

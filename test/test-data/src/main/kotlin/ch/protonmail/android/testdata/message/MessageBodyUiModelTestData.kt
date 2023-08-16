@@ -22,25 +22,12 @@ import ch.protonmail.android.maildetail.presentation.model.MessageBodyAttachment
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.MimeTypeUiModel
 import ch.protonmail.android.maildetail.presentation.sample.AttachmentUiModelSample
-import ch.protonmail.android.mailmessage.domain.model.MessageBody
 
 object MessageBodyUiModelTestData {
 
-    val plainTextMessageBodyUiModel = MessageBodyUiModel(
-        MessageBodyTestData.messageBody.body,
-        mimeType = MimeTypeUiModel.PlainText,
-        shouldShowEmbeddedImages = false,
-        shouldShowRemoteContent = false,
-        shouldShowEmbeddedImagesBanner = false,
-        attachments = null
-    )
+    val plainTextMessageBodyUiModel = buildMessageBodyUiModel()
 
-    val messageBodyWithAttachmentsUiModel = MessageBodyUiModel(
-        MessageBodyTestData.messageBody.body,
-        mimeType = MimeTypeUiModel.PlainText,
-        shouldShowEmbeddedImages = false,
-        shouldShowRemoteContent = false,
-        shouldShowEmbeddedImagesBanner = false,
+    val messageBodyWithAttachmentsUiModel = buildMessageBodyUiModel(
         attachments = MessageBodyAttachmentsUiModel(
             limit = 3,
             attachments = listOf(
@@ -52,7 +39,7 @@ object MessageBodyUiModelTestData {
         )
     )
 
-    val htmlMessageBodyUiModel = MessageBodyUiModel(
+    val htmlMessageBodyUiModel = buildMessageBodyUiModel(
         """
             <div>
                 <p>Dear Test,</p>
@@ -61,27 +48,25 @@ object MessageBodyUiModelTestData {
                 Developer</p>
             </div>
         """.trimIndent(),
-        mimeType = MimeTypeUiModel.Html,
-        shouldShowEmbeddedImages = false,
-        shouldShowRemoteContent = false,
-        shouldShowEmbeddedImagesBanner = false,
-        attachments = null
+        mimeType = MimeTypeUiModel.Html
     )
 
     fun buildMessageBodyUiModel(
-        messageBody: MessageBody = MessageBodyTestData.messageBody,
+        messageBody: String = MessageBodyTestData.messageBody.body,
         mimeType: MimeTypeUiModel = MimeTypeUiModel.PlainText,
         shouldShowEmbeddedImages: Boolean = false,
         shouldShowRemoteContent: Boolean = false,
         shouldShowEmbeddedImagesBanner: Boolean = false,
+        shouldShowRemoteContentBanner: Boolean = false,
         attachments: MessageBodyAttachmentsUiModel? = null
     ): MessageBodyUiModel {
         return MessageBodyUiModel(
-            messageBody = messageBody.body,
+            messageBody = messageBody,
             mimeType = mimeType,
             shouldShowEmbeddedImages = shouldShowEmbeddedImages,
             shouldShowRemoteContent = shouldShowRemoteContent,
             shouldShowEmbeddedImagesBanner = shouldShowEmbeddedImagesBanner,
+            shouldShowRemoteContentBanner = shouldShowRemoteContentBanner,
             attachments = attachments
         )
     }

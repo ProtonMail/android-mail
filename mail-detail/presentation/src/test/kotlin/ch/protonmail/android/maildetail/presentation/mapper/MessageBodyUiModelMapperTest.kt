@@ -20,6 +20,7 @@ package ch.protonmail.android.maildetail.presentation.mapper
 
 import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.usecase.DoesMessageBodyHaveEmbeddedImages
+import ch.protonmail.android.maildetail.domain.usecase.DoesMessageBodyHaveRemoteContent
 import ch.protonmail.android.maildetail.domain.usecase.ShouldShowEmbeddedImages
 import ch.protonmail.android.maildetail.domain.usecase.ShouldShowRemoteContent
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyAttachmentsUiModel
@@ -48,6 +49,9 @@ class MessageBodyUiModelMapperTest {
     private val doesMessageBodyHaveEmbeddedImages = mockk<DoesMessageBodyHaveEmbeddedImages> {
         every { this@mockk.invoke(any()) } returns false
     }
+    private val doesMessageBodyHaveRemoteContent = mockk<DoesMessageBodyHaveRemoteContent> {
+        every { this@mockk.invoke(any()) } returns false
+    }
     private val injectCssIntoDecryptedMessageBody = mockk<InjectCssIntoDecryptedMessageBody> {
         every { this@mockk.invoke(decryptedMessageBody, any()) } returns decryptedMessageBody
     }
@@ -62,6 +66,7 @@ class MessageBodyUiModelMapperTest {
     }
     private val messageBodyUiModelMapper = MessageBodyUiModelMapper(
         doesMessageBodyHaveEmbeddedImages = doesMessageBodyHaveEmbeddedImages,
+        doesMessageBodyHaveRemoteContent = doesMessageBodyHaveRemoteContent,
         injectCssIntoDecryptedMessageBody = injectCssIntoDecryptedMessageBody,
         sanitizeHtmlOfDecryptedMessageBody = sanitizeHtmlOfDecryptedMessageBody,
         shouldShowEmbeddedImages = shouldShowEmbeddedImages,
@@ -78,6 +83,7 @@ class MessageBodyUiModelMapperTest {
             shouldShowEmbeddedImages = false,
             shouldShowRemoteContent = false,
             shouldShowEmbeddedImagesBanner = false,
+            shouldShowRemoteContentBanner = false,
             attachments = null
         )
 
@@ -106,6 +112,7 @@ class MessageBodyUiModelMapperTest {
             shouldShowEmbeddedImages = false,
             shouldShowRemoteContent = false,
             shouldShowEmbeddedImagesBanner = false,
+            shouldShowRemoteContentBanner = false,
             MessageBodyAttachmentsUiModel(
                 attachments = listOf(
                     AttachmentUiModelSample.invoice,
@@ -138,6 +145,7 @@ class MessageBodyUiModelMapperTest {
             shouldShowEmbeddedImages = false,
             shouldShowRemoteContent = false,
             shouldShowEmbeddedImagesBanner = false,
+            shouldShowRemoteContentBanner = false,
             attachments = null
         )
 
@@ -159,8 +167,10 @@ class MessageBodyUiModelMapperTest {
                 shouldShowEmbeddedImages = false,
                 shouldShowRemoteContent = true,
                 shouldShowEmbeddedImagesBanner = false,
+                shouldShowRemoteContentBanner = false,
                 attachments = null
             )
+            every { doesMessageBodyHaveRemoteContent(messageBody) } returns true
             coEvery { shouldShowRemoteContent(UserIdTestData.userId) } returns true
 
             // When
@@ -181,8 +191,10 @@ class MessageBodyUiModelMapperTest {
                 shouldShowEmbeddedImages = false,
                 shouldShowRemoteContent = false,
                 shouldShowEmbeddedImagesBanner = false,
+                shouldShowRemoteContentBanner = true,
                 attachments = null
             )
+            every { doesMessageBodyHaveRemoteContent(messageBody) } returns true
             coEvery { shouldShowRemoteContent(UserIdTestData.userId) } returns false
 
             // When
@@ -203,6 +215,7 @@ class MessageBodyUiModelMapperTest {
                 shouldShowEmbeddedImages = true,
                 shouldShowRemoteContent = false,
                 shouldShowEmbeddedImagesBanner = false,
+                shouldShowRemoteContentBanner = false,
                 attachments = null
             )
             every { doesMessageBodyHaveEmbeddedImages(messageBody) } returns true
@@ -226,6 +239,7 @@ class MessageBodyUiModelMapperTest {
                 shouldShowEmbeddedImages = false,
                 shouldShowRemoteContent = false,
                 shouldShowEmbeddedImagesBanner = true,
+                shouldShowRemoteContentBanner = false,
                 attachments = null
             )
             every { doesMessageBodyHaveEmbeddedImages(messageBody) } returns true
@@ -248,6 +262,7 @@ class MessageBodyUiModelMapperTest {
             shouldShowEmbeddedImages = false,
             shouldShowRemoteContent = false,
             shouldShowEmbeddedImagesBanner = false,
+            shouldShowRemoteContentBanner = false,
             attachments = null
         )
 

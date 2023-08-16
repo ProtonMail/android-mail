@@ -49,6 +49,7 @@ object MessageDetailsPreviewData {
                 shouldShowEmbeddedImages = false,
                 shouldShowRemoteContent = false,
                 shouldShowEmbeddedImagesBanner = false,
+                shouldShowRemoteContentBanner = false,
                 attachments = null
             )
         ),

@@ -26,6 +26,7 @@ data class MessageBodyUiModel(
     val shouldShowEmbeddedImages: Boolean,
     val shouldShowRemoteContent: Boolean,
     val shouldShowEmbeddedImagesBanner: Boolean,
+    val shouldShowRemoteContentBanner: Boolean,
     val attachments: MessageBodyAttachmentsUiModel?
 )
 
