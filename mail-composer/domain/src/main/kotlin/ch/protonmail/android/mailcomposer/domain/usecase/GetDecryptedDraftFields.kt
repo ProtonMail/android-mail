@@ -61,7 +61,7 @@ class GetDecryptedDraftFields @Inject constructor(
     }
 
     private suspend fun getMessageWithBody(userId: UserId, messageId: MessageId) =
-        messageRepository.fetchMessageWithBody(userId, messageId).getOrElse {
+        messageRepository.fetchAndStoreMessageWithBody(userId, messageId).getOrElse {
             Timber.d("Couldn't fetch message with body: $it. Trying to get message locally...")
             messageRepository.getLocalMessageWithBody(userId, messageId)
         }

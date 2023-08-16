@@ -943,7 +943,7 @@ class MessageRepositoryImplTest {
         coEvery { remoteDataSource.getMessage(userId, expectedMessageId) } returns expectedMessageWithBody.right()
 
         // When
-        val actualMessageWithBody = messageRepository.fetchMessageWithBody(userId, expectedMessageId)
+        val actualMessageWithBody = messageRepository.fetchAndStoreMessageWithBody(userId, expectedMessageId)
 
         // Then
         assertEquals(expectedMessageWithBody.right(), actualMessageWithBody)
@@ -958,7 +958,7 @@ class MessageRepositoryImplTest {
         coEvery { remoteDataSource.getMessage(userId, expectedMessageId) } returns expectedMessageWithBody.right()
 
         // When
-        messageRepository.fetchMessageWithBody(userId, expectedMessageId)
+        messageRepository.fetchAndStoreMessageWithBody(userId, expectedMessageId)
 
         // Then
         coVerify { localDataSource.upsertMessageWithBody(userId, expectedMessageWithBody) }

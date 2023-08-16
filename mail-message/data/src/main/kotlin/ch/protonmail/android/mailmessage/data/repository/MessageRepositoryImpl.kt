@@ -133,7 +133,7 @@ class MessageRepositoryImpl @Inject constructor(
     override suspend fun getLocalMessageWithBody(userId: UserId, messageId: MessageId): MessageWithBody? =
         localDataSource.observeMessageWithBody(userId, messageId).firstOrNull()
 
-    override suspend fun fetchMessageWithBody(
+    override suspend fun fetchAndStoreMessageWithBody(
         userId: UserId,
         messageId: MessageId
     ): Either<DataError, MessageWithBody> = remoteDataSource.getMessage(userId, messageId).also { either ->

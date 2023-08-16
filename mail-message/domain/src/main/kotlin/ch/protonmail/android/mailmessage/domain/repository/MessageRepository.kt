@@ -90,7 +90,7 @@ interface MessageRepository {
      * Get the [MessageWithBody] for a given [MessageId] and [userId] from the remote storage
      * and stores it locally.
      */
-    suspend fun fetchMessageWithBody(userId: UserId, messageId: MessageId): Either<DataError, MessageWithBody>
+    suspend fun fetchAndStoreMessageWithBody(userId: UserId, messageId: MessageId): Either<DataError, MessageWithBody>
 
     suspend fun upsertMessageWithBody(userId: UserId, messageWithBody: MessageWithBody): Boolean
 

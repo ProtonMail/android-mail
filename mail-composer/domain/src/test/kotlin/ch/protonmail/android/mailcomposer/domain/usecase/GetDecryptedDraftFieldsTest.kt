@@ -141,7 +141,7 @@ class GetDecryptedDraftFieldsTest {
         messageId: MessageId,
         error: () -> DataError.Remote
     ) = error().also {
-        coEvery { messageRepository.fetchMessageWithBody(userId, messageId) } returns it.left()
+        coEvery { messageRepository.fetchAndStoreMessageWithBody(userId, messageId) } returns it.left()
     }
 
     private fun expectDecryptedMessageResult(
@@ -165,7 +165,7 @@ class GetDecryptedDraftFieldsTest {
         messageId: MessageId,
         result: () -> MessageWithBody
     ) = result().also {
-        coEvery { messageRepository.fetchMessageWithBody(userId, messageId) } returns it.right()
+        coEvery { messageRepository.fetchAndStoreMessageWithBody(userId, messageId) } returns it.right()
     }
 
     private fun MessageWithBody.toDraftFields(decryptedBody: String) = with(message) {
