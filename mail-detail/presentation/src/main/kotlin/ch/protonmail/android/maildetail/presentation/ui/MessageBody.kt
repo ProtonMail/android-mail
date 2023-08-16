@@ -87,8 +87,16 @@ fun MessageBody(
 ) {
     val hasWebView = LocalDeviceCapabilitiesProvider.current.hasWebView
 
-    if (messageBodyUiModel.shouldShowEmbeddedImagesBanner) {
-        MessageBodyBanner(text = stringResource(id = R.string.message_body_embedded_images_banner_text))
+    when {
+        messageBodyUiModel.shouldShowEmbeddedImagesBanner && messageBodyUiModel.shouldShowRemoteContentBanner -> {
+            MessageBodyBanner(text = stringResource(id = R.string.message_body_embedded_and_remote_content_banner_text))
+        }
+        messageBodyUiModel.shouldShowEmbeddedImagesBanner -> {
+            MessageBodyBanner(text = stringResource(id = R.string.message_body_embedded_images_banner_text))
+        }
+        messageBodyUiModel.shouldShowRemoteContentBanner -> {
+            MessageBodyBanner(text = stringResource(id = R.string.message_body_remote_content_banner_text))
+        }
     }
 
     if (hasWebView) {
