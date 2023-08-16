@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.composer.data.usecase
 
+import java.util.UUID
 import arrow.core.Either
 import arrow.core.continuations.either
 import ch.protonmail.android.composer.data.remote.DraftRemoteDataSource
@@ -64,5 +65,13 @@ internal class SyncDraft @Inject constructor(
         }
     }
 
-    private fun DraftState.isLocal() = this.apiMessageId == null
+    private fun DraftState.isLocal() = this.apiMessageId == null && hasUuidFormat(this.messageId)
+
+    private fun hasUuidFormat(messageId: MessageId) = try {
+        UUID.fromString(messageId.id)
+        true
+    } catch (e: IllegalArgumentException) {
+        Timber.d("Given messageId ($this) is not a local id (not in UUID format). $e")
+        false
+    }
 }
