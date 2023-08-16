@@ -28,6 +28,7 @@ import ch.protonmail.android.mailcomposer.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftState
 import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailcomposer.domain.sample.DraftStateSample
+import ch.protonmail.android.mailcomposer.domain.usecase.IsDraftKnownToApi
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
@@ -49,11 +50,13 @@ class SyncDraftTest {
     private val messageRepository = mockk<MessageRepository>()
     private val draftRemoteDataSource = mockk<DraftRemoteDataSource>()
     private val draftStateRepository = mockk<DraftStateRepository>()
+    private val isDraftKnownToApi = mockk<IsDraftKnownToApi>()
 
     private val draftRepository = SyncDraft(
         messageRepository,
         draftStateRepository,
-        draftRemoteDataSource
+        draftRemoteDataSource,
+        isDraftKnownToApi
     )
 
     @Test
@@ -70,6 +73,7 @@ class SyncDraftTest {
         expectRemoteDataSourceCreateSuccess(userId, expectedDraft, expectedAction, expectedResponse)
         expectStoreSyncedStateSuccess(userId, messageId, apiAssignedMessageId)
         expectMessageUpdateSuccess(userId, messageId, apiAssignedMessageId)
+        expectIsDraftKnownToApi(expectedDraftState, false)
 
         // When
         val actual = draftRepository(userId, messageId)
@@ -93,6 +97,7 @@ class SyncDraftTest {
         expectRemoteDataSourceCreateSuccess(userId, expectedDraft, expectedAction, expectedResponse)
         expectStoreSyncedStateSuccess(userId, messageId, apiAssignedMessageId)
         expectMessageUpdateSuccess(userId, messageId, apiAssignedMessageId)
+        expectIsDraftKnownToApi(expectedDraftState, false)
 
         // When
         val actual = draftRepository(userId, messageId)
@@ -114,6 +119,7 @@ class SyncDraftTest {
         expectGetLocalMessageSucceeds(userId, messageId, expectedDraft)
         expectRemoteDataSourceUpdateSuccess(userId, expectedDraft, expectedResponse)
         expectStoreSyncedStateSuccess(userId, messageId, messageId)
+        expectIsDraftKnownToApi(expectedDraftState, true)
 
         // When
         val actual = draftRepository(userId, messageId)
@@ -164,6 +170,7 @@ class SyncDraftTest {
         expectGetDraftStateSucceeds(userId, messageId, expectedDraftState)
         expectGetLocalMessageSucceeds(userId, messageId, expectedDraft)
         expectRemoteDataSourceFailure(userId, expectedDraft, expectedAction, expectedError)
+        expectIsDraftKnownToApi(expectedDraftState, false)
 
         // When
         val actual = draftRepository(userId, messageId)
@@ -183,6 +190,7 @@ class SyncDraftTest {
         expectGetLocalMessageSucceeds(userId, messageId, expectedDraft)
         expectRemoteDataSourceUpdateSuccess(userId, expectedDraft, expectedResponse)
         expectStoreSyncedStateSuccess(userId, messageId, messageId)
+        expectIsDraftKnownToApi(expectedDraftState, true)
 
         // When
         val actual = draftRepository(userId, messageId)
@@ -190,6 +198,10 @@ class SyncDraftTest {
         // Then
         assertEquals(Unit.right(), actual)
         coVerify(exactly = 0) { draftRemoteDataSource.create(any(), any(), any()) }
+    }
+
+    private fun expectIsDraftKnownToApi(draftSTate: DraftState, isKnown: Boolean) {
+        coEvery { isDraftKnownToApi(draftSTate) } returns isKnown
     }
 
     private fun expectMessageUpdateSuccess(

@@ -18,13 +18,12 @@
 
 package ch.protonmail.android.composer.data.usecase
 
-import java.util.UUID
 import arrow.core.Either
 import arrow.core.continuations.either
 import ch.protonmail.android.composer.data.remote.DraftRemoteDataSource
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailcomposer.domain.model.DraftState
 import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
+import ch.protonmail.android.mailcomposer.domain.usecase.IsDraftKnownToApi
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
@@ -36,7 +35,8 @@ import javax.inject.Inject
 internal class SyncDraft @Inject constructor(
     private val messageRepository: MessageRepository,
     private val draftStateRepository: DraftStateRepository,
-    private val draftRemoteDataSource: DraftRemoteDataSource
+    private val draftRemoteDataSource: DraftRemoteDataSource,
+    private val isDraftKnownToApi: IsDraftKnownToApi
 ) {
 
     suspend operator fun invoke(userId: UserId, messageId: MessageId): Either<DataError, Unit> = either {
@@ -49,7 +49,12 @@ internal class SyncDraft @Inject constructor(
             Timber.w("Sync draft failure $messageId: No draft state found")
         }.bind()
 
-        if (draftState.isLocal()) {
+        if (isDraftKnownToApi(draftState)) {
+            draftRemoteDataSource.update(userId, message).onLeft {
+                Timber.w("Sync draft failure $messageId: Update API call error $it")
+            }.bind()
+            draftStateRepository.saveSyncedState(userId, messageId, messageId)
+        } else {
             val syncDraft = draftRemoteDataSource.create(userId, message, draftState.action).onLeft {
                 Timber.w("Sync draft failure $messageId: Create API call error $it")
             }.bind()
@@ -57,21 +62,6 @@ internal class SyncDraft @Inject constructor(
             val remoteDraftId = syncDraft.message.messageId
             messageRepository.updateDraftMessageId(userId, messageId, remoteDraftId)
             draftStateRepository.saveSyncedState(userId, messageId, remoteDraftId)
-        } else {
-            draftRemoteDataSource.update(userId, message).onLeft {
-                Timber.w("Sync draft failure $messageId: Update API call error $it")
-            }.bind()
-            draftStateRepository.saveSyncedState(userId, messageId, messageId)
         }
-    }
-
-    private fun DraftState.isLocal() = this.apiMessageId == null && hasUuidFormat(this.messageId)
-
-    private fun hasUuidFormat(messageId: MessageId) = try {
-        UUID.fromString(messageId.id)
-        true
-    } catch (e: IllegalArgumentException) {
-        Timber.d("Given messageId ($this) is not a local id (not in UUID format). $e")
-        false
     }
 }

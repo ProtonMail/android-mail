@@ -30,6 +30,33 @@ object DraftStateSample {
 
     val NewDraftState = build()
 
+    /**
+     * Represents a draft that was created locally and never synced to API yet
+     */
+    val LocalDraftNeverSynced = build(
+        messageId = MessageIdSample.LocalDraft,
+        apiMessageId = null,
+        state = DraftSyncState.Local
+    )
+    /**
+     * Represents a draft that was created locally and then synced to rmeote
+     */
+    val LocalDraftThatWasSyncedOnce = build(
+        messageId = MessageIdSample.LocalDraft,
+        apiMessageId = MessageIdSample.RemoteDraft,
+        state = DraftSyncState.Synchronized
+    )
+
+    /**
+     * Represents a draft that was created from another platform and being edited for the first time
+     * Draft state being created will have a messageId in the "remote" format but have no `apiMessageId` yet)
+     */
+    val RemoteWithoutApiMessageId = build(
+        messageId = MessageIdSample.RemoteDraft,
+        apiMessageId = null,
+        state = DraftSyncState.Synchronized
+    )
+
     val RemoteDraftState = build(
         messageId = MessageIdSample.RemoteDraft,
         apiMessageId = MessageIdSample.RemoteDraft,
