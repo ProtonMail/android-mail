@@ -71,6 +71,7 @@ import me.proton.core.util.kotlin.takeIfNotEmpty
 import timber.log.Timber
 import javax.inject.Inject
 
+@Suppress("LongParameterList")
 @HiltViewModel
 class ComposerViewModel @Inject constructor(
     private val storeDraftWithBody: StoreDraftWithBody,
@@ -84,9 +85,9 @@ class ComposerViewModel @Inject constructor(
     private val getPrimaryAddress: GetPrimaryAddress,
     private val getComposerSenderAddresses: GetComposerSenderAddresses,
     private val composerIdlingResource: ComposerIdlingResource,
+    private val draftUploader: DraftUploader,
     getDecryptedDraftFields: GetDecryptedDraftFields,
     savedStateHandle: SavedStateHandle,
-    private val draftUploader: DraftUploader,
     observePrimaryUserId: ObservePrimaryUserId,
     provideNewDraftId: ProvideNewDraftId
 ) : ViewModel() {

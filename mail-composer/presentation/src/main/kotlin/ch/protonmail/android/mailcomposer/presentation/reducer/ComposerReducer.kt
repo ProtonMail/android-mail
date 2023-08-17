@@ -51,6 +51,7 @@ class ComposerReducer @Inject constructor() {
         is ComposerAction.ChangeSenderRequested -> currentState
     }
 
+    @Suppress("ComplexMethod")
     private fun ComposerEvent.newStateForEvent(currentState: ComposerDraftState) = when (this) {
         is ComposerEvent.DefaultSenderReceived -> updateSenderTo(currentState, this.sender)
         is ComposerEvent.ErrorLoadingDefaultSenderAddress -> updateStateToSenderError(currentState)

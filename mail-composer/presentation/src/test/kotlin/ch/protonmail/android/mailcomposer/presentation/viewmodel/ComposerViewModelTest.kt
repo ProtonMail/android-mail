@@ -125,9 +125,9 @@ class ComposerViewModelTest {
             getPrimaryAddressMock,
             getComposerSenderAddresses,
             composerIdlingResource,
+            draftUploader,
             getDecryptedDraftFields,
             savedStateHandle,
-            draftUploader,
             observePrimaryUserIdMock,
             provideNewDraftIdMock
         )
