@@ -35,6 +35,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
+import ch.protonmail.android.test.utils.FakeTransactor
 import ch.protonmail.android.test.utils.rule.LoggingTestRule
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -58,8 +59,10 @@ class UploadDraftTest {
     private val draftRemoteDataSource = mockk<DraftRemoteDataSource>()
     private val draftStateRepository = mockk<DraftStateRepository>()
     private val isDraftKnownToApi = mockk<IsDraftKnownToApi>()
+    private val fakeTransactor = FakeTransactor()
 
     private val draftRepository = UploadDraft(
+        fakeTransactor,
         messageRepository,
         findLocalDraft,
         draftStateRepository,

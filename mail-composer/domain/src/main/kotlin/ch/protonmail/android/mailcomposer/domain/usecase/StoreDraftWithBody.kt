@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcomposer.domain.usecase
 import arrow.core.Either
 import arrow.core.continuations.either
 import ch.protonmail.android.mailcommon.domain.util.mapFalse
+import ch.protonmail.android.mailcomposer.domain.Transactor
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -35,7 +36,8 @@ class StoreDraftWithBody @Inject constructor(
     private val getLocalDraft: GetLocalDraft,
     private val encryptDraftBody: EncryptDraftBody,
     private val saveDraft: SaveDraft,
-    private val resolveUserAddress: ResolveUserAddress
+    private val resolveUserAddress: ResolveUserAddress,
+    private val transactor: Transactor
 ) {
 
     suspend operator fun invoke(
@@ -44,28 +46,31 @@ class StoreDraftWithBody @Inject constructor(
         senderEmail: SenderEmail,
         userId: UserId
     ): Either<StoreDraftWithBodyError, Unit> = either {
-        val draftWithBody = getLocalDraft(userId, messageId, senderEmail)
-            .mapLeft { StoreDraftWithBodyError.DraftReadError }
-            .bind()
 
         val senderAddress = resolveUserAddress(userId, senderEmail)
             .mapLeft { StoreDraftWithBodyError.DraftResolveUserAddressError }
             .bind()
 
-        val encryptedDraftBody = encryptDraftBody(draftBody, senderAddress)
-            .mapLeft {
-                Timber.e("Encrypt draft $messageId body to store to local DB failed")
-                StoreDraftWithBodyError.DraftBodyEncryptionError
-            }
-            .bind()
+        transactor.performTransaction {
+            val draftWithBody = getLocalDraft(userId, messageId, senderEmail)
+                .mapLeft { StoreDraftWithBodyError.DraftReadError }
+                .bind()
 
-        val updatedDraft = draftWithBody.updateWith(senderAddress, encryptedDraftBody)
-        saveDraft(updatedDraft, userId)
-            .mapFalse {
-                Timber.e("Store draft $messageId body to local DB failed")
-                StoreDraftWithBodyError.DraftSaveError
-            }
-            .bind()
+            val encryptedDraftBody = encryptDraftBody(draftBody, senderAddress)
+                .mapLeft {
+                    Timber.e("Encrypt draft $messageId body to store to local DB failed")
+                    StoreDraftWithBodyError.DraftBodyEncryptionError
+                }
+                .bind()
+
+            val updatedDraft = draftWithBody.updateWith(senderAddress, encryptedDraftBody)
+            saveDraft(updatedDraft, userId)
+                .mapFalse {
+                    Timber.e("Store draft $messageId body to local DB failed")
+                    StoreDraftWithBodyError.DraftSaveError
+                }
+                .bind()
+        }
     }
 
     private fun MessageWithBody.updateWith(senderAddress: UserAddress, encryptedDraftBody: DraftBody) = this.copy(

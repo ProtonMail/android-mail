@@ -28,6 +28,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
 import ch.protonmail.android.mailmessage.domain.sample.RecipientSample
+import ch.protonmail.android.test.utils.FakeTransactor
 import io.mockk.Called
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -41,10 +42,12 @@ class StoreDraftWithRecipientsTest {
 
     private val saveDraftMock = mockk<SaveDraft>()
     private val getLocalDraftMock = mockk<GetLocalDraft>()
+    private val fakeTransactor = FakeTransactor()
 
     private val storeDraftWithRecipients = StoreDraftWithRecipients(
         getLocalDraftMock,
-        saveDraftMock
+        saveDraftMock,
+        fakeTransactor
     )
 
     @Test

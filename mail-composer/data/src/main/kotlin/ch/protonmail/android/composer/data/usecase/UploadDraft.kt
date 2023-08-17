@@ -22,9 +22,10 @@ import arrow.core.Either
 import arrow.core.continuations.either
 import ch.protonmail.android.composer.data.remote.DraftRemoteDataSource
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcomposer.domain.Transactor
 import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
-import ch.protonmail.android.mailcomposer.domain.usecase.IsDraftKnownToApi
 import ch.protonmail.android.mailcomposer.domain.usecase.FindLocalDraft
+import ch.protonmail.android.mailcomposer.domain.usecase.IsDraftKnownToApi
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
@@ -34,6 +35,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 internal class UploadDraft @Inject constructor(
+    private val transactor: Transactor,
     private val messageRepository: MessageRepository,
     private val findLocalDraft: FindLocalDraft,
     private val draftStateRepository: DraftStateRepository,
@@ -42,7 +44,7 @@ internal class UploadDraft @Inject constructor(
 ) {
 
     suspend operator fun invoke(userId: UserId, messageId: MessageId): Either<DataError, Unit> = either {
-        Timber.d("Draft: Uploading draft for $messageId")
+        Timber.d("Draft: Requested draft upload for $messageId")
 
         val message = findLocalDraft(userId, messageId)
         if (message == null) {
@@ -51,6 +53,7 @@ internal class UploadDraft @Inject constructor(
             // Return for the compiler's sake (message optionality). shift is causing a left to be returned just above
             return@either
         }
+        Timber.d("Draft: Uploading draft for ${message.message.messageId}")
 
         val draftState = draftStateRepository.observe(userId, messageId).first().onLeft {
             Timber.w("Sync draft failure $messageId: No draft state found")
@@ -64,8 +67,11 @@ internal class UploadDraft @Inject constructor(
             }.bind()
         } else {
             draftRemoteDataSource.create(userId, message, draftState.action).onRight {
-                messageRepository.updateDraftMessageId(userId, messageId, it.message.messageId)
-                draftStateRepository.saveSyncedState(userId, messageId, it.message.messageId)
+
+                transactor.performTransaction {
+                    messageRepository.updateDraftMessageId(userId, messageId, it.message.messageId)
+                    draftStateRepository.saveSyncedState(userId, messageId, it.message.messageId)
+                }
             }.onLeft {
                 if (it.shouldLogToSentry()) { Timber.w("Sync draft failure $messageId: Create API call error $it") }
                 Timber.d("Sync draft error $messageId: Create API call error $it")

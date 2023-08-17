@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcomposer.domain.usecase
 
 import arrow.core.Either
+import ch.protonmail.android.mailcomposer.domain.Transactor
 import ch.protonmail.android.mailcomposer.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
 import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
@@ -33,7 +34,8 @@ class StoreDraftWithAllFields @Inject constructor(
     private val draftStateRepository: DraftStateRepository,
     private val storeDraftWithSubject: StoreDraftWithSubject,
     private val storeDraftWithBody: StoreDraftWithBody,
-    private val storeDraftWithRecipients: StoreDraftWithRecipients
+    private val storeDraftWithRecipients: StoreDraftWithRecipients,
+    private val transactor: Transactor
 ) {
 
     suspend operator fun invoke(
@@ -42,19 +44,22 @@ class StoreDraftWithAllFields @Inject constructor(
         fields: DraftFields,
         action: DraftAction = DraftAction.Compose
     ) = withContext(NonCancellable) {
-        storeDraftWithBody(draftMessageId, fields.body, fields.sender, userId).logError(draftMessageId)
-        storeDraftWithSubject(userId, draftMessageId, fields.sender, fields.subject).logError(draftMessageId)
-        storeDraftWithRecipients(
-            userId,
-            draftMessageId,
-            fields.sender,
-            fields.recipientsTo.value,
-            fields.recipientsCc.value,
-            fields.recipientsBcc.value
-        ).logError(draftMessageId)
+        transactor.performTransaction {
+            storeDraftWithBody(draftMessageId, fields.body, fields.sender, userId).logError(draftMessageId)
+            storeDraftWithSubject(userId, draftMessageId, fields.sender, fields.subject).logError(draftMessageId)
+            storeDraftWithRecipients(
+                userId,
+                draftMessageId,
+                fields.sender,
+                fields.recipientsTo.value,
+                fields.recipientsCc.value,
+                fields.recipientsBcc.value
+            ).logError(draftMessageId)
 
-        draftStateRepository.saveLocalState(userId, draftMessageId, action)
-        Timber.d("Draft: finished storing draft locally $draftMessageId")
+            draftStateRepository.saveLocalState(userId, draftMessageId, action)
+            Timber.d("DraftARF: LOCAL state stored")
+            Timber.d("Draft: finished storing draft locally $draftMessageId")
+        }
     }
 
     private fun <T> Either<T, Unit>.logError(draftMessageId: MessageId) = this.onLeft { error ->

@@ -11,6 +11,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.model.Sender
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
+import ch.protonmail.android.test.utils.FakeTransactor
 import ch.protonmail.android.test.utils.rule.LoggingTestRule
 import io.mockk.called
 import io.mockk.coEvery
@@ -32,12 +33,14 @@ class StoreDraftWithBodyTest {
     private val saveDraftMock = mockk<SaveDraft>()
     private val getLocalDraftMock = mockk<GetLocalDraft>()
     private val resolveUserAddressMock = mockk<ResolveUserAddress>()
+    private val fakeTransactor = FakeTransactor()
 
     private val storeDraftWithBody = StoreDraftWithBody(
         getLocalDraftMock,
         encryptDraftBodyMock,
         saveDraftMock,
-        resolveUserAddressMock
+        resolveUserAddressMock,
+        fakeTransactor
     )
 
     @Test

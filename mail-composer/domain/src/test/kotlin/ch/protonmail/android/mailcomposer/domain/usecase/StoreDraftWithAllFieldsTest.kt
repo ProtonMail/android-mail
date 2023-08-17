@@ -34,6 +34,7 @@ import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.RecipientSample
+import ch.protonmail.android.test.utils.FakeTransactor
 import ch.protonmail.android.test.utils.rule.LoggingTestRule
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -52,12 +53,14 @@ class StoreDraftWithAllFieldsTest {
     private val storeDraftWithSubjectMock = mockk<StoreDraftWithSubject>()
     private val storeDraftWithBodyMock = mockk<StoreDraftWithBody>()
     private val storeDraftWithRecipientsMock = mockk<StoreDraftWithRecipients>()
+    private val fakeTransactor = FakeTransactor()
 
     private val storeDraftWithAllFields = StoreDraftWithAllFields(
         draftStateRepository,
         storeDraftWithSubjectMock,
         storeDraftWithBodyMock,
-        storeDraftWithRecipientsMock
+        storeDraftWithRecipientsMock,
+        fakeTransactor
     )
 
     @Test
