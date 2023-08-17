@@ -124,7 +124,6 @@ object Dependencies {
     }
 
     val modulePresentationLibs = mutableListOf<String>().apply {
-        add(Accompanist.swipeRefresh)
         add(Accompanist.webview)
         add(Accompanist.permissions)
         add(AndroidX.Activity.ktx)

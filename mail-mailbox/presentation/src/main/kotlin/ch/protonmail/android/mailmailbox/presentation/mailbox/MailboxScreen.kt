@@ -32,10 +32,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Button
 import androidx.compose.material.Divider
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -52,7 +57,8 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.itemsIndexed
+import androidx.paging.compose.itemContentType
+import androidx.paging.compose.itemKey
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
@@ -66,10 +72,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilter
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxPreview
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxPreviewProvider
 import ch.protonmail.android.mailmailbox.presentation.paging.mapToUiStates
-import ch.protonmail.android.mailpagination.presentation.paging.rememberLazyListState
 import ch.protonmail.android.mailpagination.presentation.paging.verticalScrollbar
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.flow.rememberAsState
@@ -122,7 +125,7 @@ fun MailboxScreen(
 ) {
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
-    val lazyListState = mailboxListItems.rememberLazyListState()
+    val lazyListState = rememberLazyListState()
 
     Scaffold(
         modifier = modifier.testTag(MailboxScreenTestTags.Root),
@@ -217,6 +220,7 @@ private fun MailboxStickyHeader(
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun MailboxSwipeRefresh(
     items: LazyPagingItems<MailboxItemUiModel>,
@@ -224,19 +228,19 @@ private fun MailboxSwipeRefresh(
     actions: MailboxScreen.Actions,
     modifier: Modifier = Modifier
 ) {
-
     val currentViewState = items.mapToUiStates()
     Timber.d("view state = $currentViewState")
 
-    SwipeRefresh(
-        modifier = modifier,
-        state = rememberSwipeRefreshState(currentViewState is MailboxScreenState.LoadingWithData),
+    val refreshing = currentViewState is MailboxScreenState.LoadingWithData
+    val pullRefreshState = rememberPullRefreshState(
+        refreshing = refreshing,
         onRefresh = {
             actions.onRefreshList()
             items.refresh()
         }
-    ) {
+    )
 
+    Box(modifier = modifier.pullRefresh(pullRefreshState)) {
         when (currentViewState) {
             is MailboxScreenState.Loading -> ProtonCenteredProgress(
                 modifier = Modifier.testTag(MailboxScreenTestTags.ListProgress)
@@ -274,6 +278,11 @@ private fun MailboxSwipeRefresh(
             is MailboxScreenState.AppendOfflineError,
             is MailboxScreenState.Data -> MailboxItemsList(listState, currentViewState, items, actions)
         }
+        PullRefreshIndicator(
+            refreshing = refreshing,
+            state = pullRefreshState,
+            modifier = Modifier.align(Alignment.TopCenter)
+        )
     }
 }
 
@@ -292,21 +301,22 @@ private fun MailboxItemsList(
             .fillMaxSize()
             .let { if (BuildConfig.DEBUG) it.verticalScrollbar(listState) else it }
     ) {
-        itemsIndexed(
-            items = items,
-            key = { _, item -> item.id }
-        ) { index, item ->
-            item?.let {
+        items(
+            count = items.itemCount,
+            key = items.itemKey { it.id },
+            contentType = items.itemContentType { MailboxItemUiModel::class }
+        ) { index ->
+            items[index]?.let {
                 MailboxItem(
                     modifier = Modifier
                         .testTag("${MailboxItemTestTags.ItemRow}$index")
                         .animateItemPlacement(),
-                    item = item,
+                    item = it,
                     onItemClicked = actions.onNavigateToMailboxItem,
                     onOpenSelectionMode = actions.onOpenSelectionMode
                 )
+                Divider(color = ProtonTheme.colors.separatorNorm, thickness = MailDimens.SeparatorHeight)
             }
-            Divider(color = ProtonTheme.colors.separatorNorm, thickness = MailDimens.SeparatorHeight)
         }
         item {
             when (viewState) {

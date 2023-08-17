@@ -46,7 +46,7 @@ object Versions {
         const val material3 = "1.1.0"
         const val navigation = "2.6.0-rc02"
         const val paging = "3.1.1"
-        const val pagingCompose = "1.0.0-alpha17"
+        const val pagingCompose = "3.2.0"
         const val room = "2.4.3"
         const val splashscreen = "1.0.0"
         const val testAndroidJUnit = "1.1.5"
