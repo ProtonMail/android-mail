@@ -21,11 +21,13 @@ package ch.protonmail.android.mailcomposer.dagger
 import ch.protonmail.android.composer.data.local.DraftStateDatabase
 import ch.protonmail.android.composer.data.local.DraftStateLocalDataSource
 import ch.protonmail.android.composer.data.local.DraftStateLocalDataSourceImpl
+import ch.protonmail.android.composer.data.local.RoomTransactor
 import ch.protonmail.android.composer.data.remote.DraftRemoteDataSource
 import ch.protonmail.android.composer.data.remote.DraftRemoteDataSourceImpl
 import ch.protonmail.android.composer.data.repository.DraftRepositoryImpl
 import ch.protonmail.android.composer.data.repository.DraftStateRepositoryImpl
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
+import ch.protonmail.android.mailcomposer.domain.Transactor
 import ch.protonmail.android.mailcomposer.domain.repository.DraftRepository
 import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
 import dagger.Module
@@ -57,4 +59,9 @@ object MailComposerModule {
     @Singleton
     fun provideDraftStateRemoteDataSource(apiProvider: ApiProvider): DraftRemoteDataSource =
         DraftRemoteDataSourceImpl(apiProvider)
+
+    @Provides
+    @Singleton
+    fun provideRoomTransactor(database: DraftStateDatabase): Transactor = RoomTransactor(database)
+
 }

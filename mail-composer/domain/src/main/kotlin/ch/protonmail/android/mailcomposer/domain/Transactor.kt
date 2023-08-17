@@ -16,33 +16,13 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.android.library")
-    kotlin("android")
-}
+package ch.protonmail.android.mailcomposer.domain
 
-android {
-    namespace = "ch.protonmail.android.testutils"
-    compileSdk = Config.compileSdk
+/**
+ * Implementers of this interface will allow to perform a data operation in a single "transaction"
+ * which will grant both synchronization and atomicity of the operation.
+ */
+interface Transactor {
 
-    defaultConfig {
-        minSdk = Config.minSdk
-        targetSdk = Config.targetSdk
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
-    }
-}
-
-dependencies {
-    implementation(JakeWharton.timber)
-    implementation(Dependencies.testLibs)
-
-    implementation(project(":mail-composer"))
+    suspend fun <T> performTransaction(block: suspend () -> T): T
 }

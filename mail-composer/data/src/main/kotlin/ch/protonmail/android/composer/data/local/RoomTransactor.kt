@@ -16,33 +16,21 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.android.library")
-    kotlin("android")
-}
+package ch.protonmail.android.composer.data.local
 
-android {
-    namespace = "ch.protonmail.android.testutils"
-    compileSdk = Config.compileSdk
+import ch.protonmail.android.mailcomposer.domain.Transactor
+import javax.inject.Inject
 
-    defaultConfig {
-        minSdk = Config.minSdk
-        targetSdk = Config.targetSdk
-    }
+/**
+ * Implementation of [Transactor] interface for Room DB.
+ * Allows executing the given block in a DB transaction, which ensures both synchronization and atomicity.
+ *
+ * [DraftStateDatabase] in injected arbitrarily, any table implementing [me.proton.core.data.room.db.Database]
+ * will do the same (as this app has a single DB)
+ */
+class RoomTransactor @Inject constructor(
+    private val database: DraftStateDatabase
+) : Transactor {
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
-    }
-}
-
-dependencies {
-    implementation(JakeWharton.timber)
-    implementation(Dependencies.testLibs)
-
-    implementation(project(":mail-composer"))
+    override suspend fun <T> performTransaction(block: suspend () -> T): T = database.inTransaction { block() }
 }

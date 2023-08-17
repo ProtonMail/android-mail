@@ -16,33 +16,11 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.android.library")
-    kotlin("android")
-}
+package ch.protonmail.android.test.utils
 
-android {
-    namespace = "ch.protonmail.android.testutils"
-    compileSdk = Config.compileSdk
+import ch.protonmail.android.mailcomposer.domain.Transactor
 
-    defaultConfig {
-        minSdk = Config.minSdk
-        targetSdk = Config.targetSdk
-    }
+class FakeTransactor : Transactor {
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
-    }
-}
-
-dependencies {
-    implementation(JakeWharton.timber)
-    implementation(Dependencies.testLibs)
-
-    implementation(project(":mail-composer"))
+    override suspend fun <T> performTransaction(block: suspend () -> T): T = block()
 }
