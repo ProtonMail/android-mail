@@ -109,19 +109,23 @@ class ComposerViewModel @Inject constructor(
                 .onRight { emitNewStateFor(ComposerEvent.DefaultSenderReceived(SenderUiModel(it.email))) }
         }.launchIn(viewModelScope)
 
-        savedStateHandle.get<String>(ComposerScreen.DraftMessageIdKey)?.let { inputDraftId ->
+        val inputDraftId = savedStateHandle.get<String>(ComposerScreen.DraftMessageIdKey)
+        if (inputDraftId != null) {
             Timber.d("Opening composer with $inputDraftId / ${currentMessageId()}")
             emitNewStateFor(ComposerEvent.OpenExistingDraft(currentMessageId()))
 
             viewModelScope.launch {
                 getDecryptedDraftFields(primaryUserId(), currentMessageId())
-                    .onRight { emitNewStateFor(ComposerEvent.ExistingDraftDataReceived(it)) }
+                    .onRight {
+                        startDraftContinuousUpload()
+                        emitNewStateFor(ComposerEvent.ExistingDraftDataReceived(it))
+                    }
                     .onLeft { emitNewStateFor(ComposerEvent.ErrorLoadingDraftData) }
 
             }
+        } else {
+            viewModelScope.launch { startDraftContinuousUpload() }
         }
-
-        viewModelScope.launch { startDraftContinuousUpload() }
     }
 
     override fun onCleared() {

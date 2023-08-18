@@ -743,6 +743,7 @@ class ComposerViewModelTest {
         val expectedDraftFields = existingDraftFields
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
         expectDecryptedDraftDataSuccess(expectedUserId, expectedDraftId) { expectedDraftFields }
+        expectStartDraftSync(expectedUserId, expectedDraftId)
 
         // When
         val actual = viewModel.state.value
