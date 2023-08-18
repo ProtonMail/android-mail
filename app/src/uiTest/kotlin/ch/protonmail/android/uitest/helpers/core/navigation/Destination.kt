@@ -28,4 +28,5 @@ internal sealed class Destination {
     object Archive : Destination()
     object Composer : Destination()
     class MailDetail(val messagePosition: Int = 0) : Destination()
+    class EditDraft(val draftPosition: Int = 0) : Destination()
 }

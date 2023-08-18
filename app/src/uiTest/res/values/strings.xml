@@ -50,7 +50,8 @@
     <string name="test_composer_body_placeholder">Compose email</string>
     <string name="test_composer_error_invalid_email">Email address is invalid</string>
     <string name="test_composer_error_duplicate_email">Removed duplicate recipient: %1$s</string>
-    <string name="composer_change_sender_paid_feature">Upgrade to a paid plan to change the sender address</string>
+    <string name="test_composer_change_sender_paid_feature">Upgrade to a paid plan to change the sender address</string>
+    <string name="test_composer_error_loading_draft">The content of this draft is not available at this time. Editing will override any pre-existing content.</string>
 
     <!-- Bottom sheets -->
     <string name="test_bottom_sheet_done_action">Done</string>

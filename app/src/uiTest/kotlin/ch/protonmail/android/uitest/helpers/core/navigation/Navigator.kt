@@ -75,6 +75,11 @@ internal class Navigator {
             is Destination.MailDetail -> mailboxRobot {
                 listSection { clickMessageByPosition(destination.messagePosition) }
             }
+
+            is Destination.EditDraft -> {
+                navigateTo(Destination.Drafts, launchApp = false, performLoginViaUI = false)
+                mailboxRobot { listSection { clickMessageByPosition(destination.draftPosition) } }
+            }
         }
     }
 

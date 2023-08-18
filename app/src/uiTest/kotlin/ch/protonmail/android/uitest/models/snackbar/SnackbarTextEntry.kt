@@ -54,6 +54,10 @@ internal sealed class SnackbarTextEntry(val value: String) {
         getTestString(testR.string.test_mailbox_draft_saved_message)
     )
 
+    object DraftOutOfSync : SnackbarTextEntry(
+        getTestString(testR.string.test_composer_error_loading_draft)
+    )
+
     class DuplicateEmailAddress(recipient: String) : SnackbarTextEntry(
         getTestString(testR.string.test_composer_error_duplicate_email, recipient)
     )
@@ -63,6 +67,6 @@ internal sealed class SnackbarTextEntry(val value: String) {
     )
 
     object UpgradePlanToChangeSender : SnackbarTextEntry(
-        getTestString(testR.string.composer_change_sender_paid_feature)
+        getTestString(testR.string.test_composer_change_sender_paid_feature)
     )
 }

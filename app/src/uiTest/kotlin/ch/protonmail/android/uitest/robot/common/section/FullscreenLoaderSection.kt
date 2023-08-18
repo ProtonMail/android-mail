@@ -16,29 +16,21 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.robot.composer
+package ch.protonmail.android.uitest.robot.common.section
 
 import androidx.compose.ui.test.onNodeWithTag
-import ch.protonmail.android.mailcomposer.presentation.ui.ComposerTestTags
-import ch.protonmail.android.test.ksp.annotations.AsDsl
-import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
-import ch.protonmail.android.uitest.robot.ComposeRobot
-import ch.protonmail.android.uitest.util.awaitDisplayed
+import ch.protonmail.android.test.ksp.annotations.AttachTo
+import ch.protonmail.android.uitest.robot.ComposeSectionRobot
+import ch.protonmail.android.uitest.robot.composer.ComposerRobot
+import ch.protonmail.android.uitest.util.awaitHidden
+import me.proton.core.compose.component.PROTON_PROGRESS_TEST_TAG
 
-@AsDsl
-internal class ComposerRobot : ComposeRobot() {
+@AttachTo(targets = [ComposerRobot::class])
+internal class FullscreenLoaderSection : ComposeSectionRobot() {
 
-    private val rootItem = composeTestRule.onNodeWithTag(ComposerTestTags.RootItem)
+    private val rootItem = composeTestRule.onNodeWithTag(PROTON_PROGRESS_TEST_TAG)
 
-    init {
-        rootItem.awaitDisplayed()
-    }
-
-    @VerifiesOuter
-    inner class Verify {
-
-        fun composerIsShown() = apply {
-            rootItem.assertExists()
-        }
+    fun waitUntilGone() {
+        rootItem.awaitHidden()
     }
 }
