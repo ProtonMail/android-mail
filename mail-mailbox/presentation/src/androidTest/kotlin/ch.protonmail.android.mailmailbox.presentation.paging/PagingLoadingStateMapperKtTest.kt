@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmailbox.presentation.paging
 
+import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import ch.protonmail.android.mailcommon.domain.model.DataError
@@ -25,15 +26,21 @@ import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreenState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.paging.exception.DataErrorException
+import ch.protonmail.android.test.annotations.suite.SmokeTest
 import io.mockk.every
 import io.mockk.mockk
-import org.junit.Assert.assertEquals
+import org.junit.Rule
 import org.junit.Test
+import kotlin.test.assertEquals
 
+@SmokeTest
 class PagingLoadingStateMapperKtTest {
 
+    @get:Rule
+    val composeTestRule = createComposeRule()
+
     @Test
-    fun `when source is loading and itemCount is 0 then Loading is returned`() {
+    fun returnLoadingWhenItemCountIsZero() {
         val items = mockk<LazyPagingItems<MailboxItemUiModel>> {
             every { itemCount } returns 0
             every { loadState.source.refresh } returns LoadState.Loading
@@ -42,7 +49,7 @@ class PagingLoadingStateMapperKtTest {
     }
 
     @Test
-    fun `when mediator is loading and itemCount is 0 then Loading is returned`() {
+    fun returnLoadingWhenItemCountIsZeroAndMediatorIsLoading() {
         val items = mockk<LazyPagingItems<MailboxItemUiModel>> {
             every { loadState.mediator } returns mockk(relaxed = true)
             every { itemCount } returns 0
@@ -53,7 +60,7 @@ class PagingLoadingStateMapperKtTest {
     }
 
     @Test
-    fun `when source is loading and itemCount is larger than 0 then LoadingWithData is returned`() {
+    fun returnLoadingWithDataWhenItemCountIsLargerThanZeroAndSourceIsLoading() {
         val items = mockk<LazyPagingItems<MailboxItemUiModel>> {
             every { itemCount } returns 10
             every { loadState.source.refresh } returns LoadState.Loading
@@ -62,7 +69,7 @@ class PagingLoadingStateMapperKtTest {
     }
 
     @Test
-    fun `when mediator is loading and item count is larger than 0 then LoadingWithData is returned`() {
+    fun returnLoadingWithDataWhenItemCountIsLargerThanZeroAndMediatorIsLoading() {
         val items = mockk<LazyPagingItems<MailboxItemUiModel>> {
             every { itemCount } returns 10
             every { loadState.source.refresh } returns LoadState.NotLoading(false)
@@ -73,7 +80,7 @@ class PagingLoadingStateMapperKtTest {
     }
 
     @Test
-    fun `when loadState is an unknown error then UnexpectedError is returned`() {
+    fun returnUnexpectedErrorWhenLoadStateIsAnUnknownError() {
         val items = mockk<LazyPagingItems<MailboxItemUiModel>> {
             every { itemCount } returns 0
             every { loadState.refresh } returns LoadState.Error(Exception("Not a DataErrorException"))
@@ -85,7 +92,7 @@ class PagingLoadingStateMapperKtTest {
     }
 
     @Test
-    fun `when loadState is a known error and item count is 0 then Error is returned`() {
+    fun returnErrorWhenLoadStateIsAKnownErrorAndItemCountIsZero() {
         val items = mockk<LazyPagingItems<MailboxItemUiModel>> {
             every { itemCount } returns 0
             every { loadState.refresh } returns LoadState.Error(
@@ -99,7 +106,7 @@ class PagingLoadingStateMapperKtTest {
     }
 
     @Test
-    fun `when refresh loadState is offline error and item count is 0 then Offline is returned`() {
+    fun returnOfflineWhenRefreshLoadStateIsOfflineAndItemCountIsZero() {
         val items = mockk<LazyPagingItems<MailboxItemUiModel>> {
             every { itemCount } returns 0
             every { loadState.refresh } returns LoadState.Error(
@@ -113,7 +120,7 @@ class PagingLoadingStateMapperKtTest {
     }
 
     @Test
-    fun `when loadState is a known error and item count larger than 0 then ErrorWithData is returned`() {
+    fun returnErrorWithDataWhenLoadStateIsAKnownErrorAndItemCountIsLargerThanZero() {
         val items = mockk<LazyPagingItems<MailboxItemUiModel>> {
             every { itemCount } returns 10
             every { loadState.refresh } returns LoadState.Error(
@@ -127,7 +134,7 @@ class PagingLoadingStateMapperKtTest {
     }
 
     @Test
-    fun `when refresh loadState is offline error and item count larger than 0 then OfflineWithData is returned`() {
+    fun returnOfflineWithDataWhenLoadStateIsOfflineAndItemCountIsLargerThanZero() {
         val items = mockk<LazyPagingItems<MailboxItemUiModel>> {
             every { itemCount } returns 10
             every { loadState.refresh } returns LoadState.Error(
@@ -141,7 +148,7 @@ class PagingLoadingStateMapperKtTest {
     }
 
     @Test
-    fun `when itemCount is 0 then Empty is returned`() {
+    fun returnEmptyWhenItemCountIsZero() {
         val items = mockk<LazyPagingItems<MailboxItemUiModel>> {
             every { itemCount } returns 0
             every { loadState.source } returns mockk(relaxed = true)
@@ -154,7 +161,7 @@ class PagingLoadingStateMapperKtTest {
     }
 
     @Test
-    fun `when itemCount is larger than 0 then Data is returned`() {
+    fun returnDataWhenItemCountIsLargerThanZero() {
         val items = mockk<LazyPagingItems<MailboxItemUiModel>> {
             every { itemCount } returns 10
             every { loadState.source } returns mockk(relaxed = true)
@@ -167,7 +174,7 @@ class PagingLoadingStateMapperKtTest {
     }
 
     @Test
-    fun `when append loadState is loading then AppendLoading is returned`() {
+    fun returnAppendLoadingWhenAppendLoadStateIsLoading() {
         val items = mockk<LazyPagingItems<MailboxItemUiModel>> {
             every { itemCount } returns 10
             every { loadState.refresh } returns LoadState.NotLoading(false)
@@ -179,7 +186,7 @@ class PagingLoadingStateMapperKtTest {
     }
 
     @Test
-    fun `when append loadState is an unknown error then UnexpectedError is returned`() {
+    fun returnUnexpectedErrorWhenAppendLoadStateIsAnUnknownError() {
         val items = mockk<LazyPagingItems<MailboxItemUiModel>> {
             every { itemCount } returns 10
             every { loadState.refresh } returns LoadState.NotLoading(false)
@@ -191,7 +198,7 @@ class PagingLoadingStateMapperKtTest {
     }
 
     @Test
-    fun `when append loadState is a known error then AppendError is returned`() {
+    fun returnExpectedErrorWhenAppendLoadStateIsAnKnownError() {
         val items = mockk<LazyPagingItems<MailboxItemUiModel>> {
             every { itemCount } returns 10
             every { loadState.refresh } returns LoadState.NotLoading(false)
@@ -205,7 +212,7 @@ class PagingLoadingStateMapperKtTest {
     }
 
     @Test
-    fun `when append loadState is offline error then AppendOfflineError is returned`() {
+    fun returnAppendOfflineErrorWhenAppendLoadStateIsOfflineError() {
         val items = mockk<LazyPagingItems<MailboxItemUiModel>> {
             every { itemCount } returns 10
             every { loadState.refresh } returns LoadState.NotLoading(false)

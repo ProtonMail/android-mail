@@ -174,6 +174,7 @@ object Dependencies {
         add(Mockk.mockk)
         add(Proton.Core.testKotlin)
         add(Proton.Core.testQuark)
+        add(AndroidX.Paging.testing)
     }
     val androidTestLibs = mutableListOf<String>().apply {
         add(AndroidX.Compose.uiTest)

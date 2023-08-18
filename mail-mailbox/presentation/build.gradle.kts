@@ -32,7 +32,7 @@ android {
     defaultConfig {
         minSdk = Config.minSdk
         targetSdk = Config.targetSdk
-        testInstrumentationRunner = Config.testInstrumentationRunner
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     compileOptions {
@@ -53,6 +53,8 @@ android {
     }
 
     packagingOptions {
+        resources.excludes.add("MANIFEST.MF")
+        resources.excludes.add("META-INF/LICENSE*")
         resources.excludes.add("META-INF/licenses/**")
         resources.excludes.add("META-INF/AL2.0")
         resources.excludes.add("META-INF/LGPL2.1")
@@ -87,4 +89,7 @@ dependencies {
 
     testImplementation(Dependencies.testLibs)
     testImplementation(project(":test:test-data"))
+    
+    androidTestImplementation(Dependencies.androidTestLibs)
+    androidTestImplementation(project(":test:annotations"))
 }

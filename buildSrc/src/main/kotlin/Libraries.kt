@@ -126,6 +126,7 @@ object AndroidX {
 
         const val runtime = "androidx.paging:paging-runtime:$version"
         const val common = "androidx.paging:paging-common:$version"
+        const val testing = "androidx.paging:paging-testing:${Versions.AndroidX.pagingCompose}"
         const val compose = "androidx.paging:paging-compose:${Versions.AndroidX.pagingCompose}"
     }
 
