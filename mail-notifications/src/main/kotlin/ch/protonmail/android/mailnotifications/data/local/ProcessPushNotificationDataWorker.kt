@@ -18,10 +18,8 @@
 
 package ch.protonmail.android.mailnotifications.data.local
 
-import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Context
-import androidx.core.app.NotificationManagerCompat
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
@@ -35,6 +33,7 @@ import ch.protonmail.android.mailnotifications.domain.model.NotificationType
 import ch.protonmail.android.mailnotifications.domain.model.PushNotification
 import ch.protonmail.android.mailnotifications.domain.model.PushNotificationData
 import ch.protonmail.android.mailnotifications.domain.model.PushNotificationSender
+import ch.protonmail.android.mailnotifications.domain.proxy.NotificationManagerCompatProxy
 import ch.protonmail.android.mailnotifications.domain.usecase.DecryptNotificationContent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -54,7 +53,8 @@ class ProcessPushNotificationDataWorker @AssistedInject constructor(
     private val appInBackgroundState: AppInBackgroundState,
     private val notificationProvider: NotificationProvider,
     private val userManager: UserManager,
-    private val notificationsDeepLinkHelper: NotificationsDeepLinkHelper
+    private val notificationsDeepLinkHelper: NotificationsDeepLinkHelper,
+    private val notificationManagerCompatProxy: NotificationManagerCompatProxy
 ) : CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result = if (appInBackgroundState.isAppInBackground()) {
@@ -114,7 +114,6 @@ class ProcessPushNotificationDataWorker @AssistedInject constructor(
         }
     }
 
-    @SuppressLint("MissingPermission") // Already handled at App startup
     private fun processNotification(
         context: Context,
         user: User,
@@ -163,9 +162,9 @@ class ProcessPushNotificationDataWorker @AssistedInject constructor(
                 )
             )
         }.build()
-        NotificationManagerCompat.from(context).apply {
-            notify(notificationData.messageId.hashCode(), notification)
-            notify(user.userId.id.hashCode(), groupNotification)
+        notificationManagerCompatProxy.run {
+            showNotification(notificationData.messageId.hashCode(), notification)
+            showNotification(user.userId.id.hashCode(), groupNotification)
         }
         return Result.success()
     }

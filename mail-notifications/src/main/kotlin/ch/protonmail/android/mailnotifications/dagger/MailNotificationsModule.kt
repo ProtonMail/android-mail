@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailnotifications.dagger
 
+import android.content.Context
+import androidx.core.app.NotificationManagerCompat
 import ch.protonmail.android.mailnotifications.data.local.NotificationTokenLocalDataSource
 import ch.protonmail.android.mailnotifications.data.local.NotificationTokenLocalDataSourceImpl
 import ch.protonmail.android.mailnotifications.data.local.NotificationTokenPreferences
@@ -26,6 +28,10 @@ import ch.protonmail.android.mailnotifications.data.remote.NotificationTokenRemo
 import ch.protonmail.android.mailnotifications.data.remote.NotificationTokenRemoteDataSourceImpl
 import ch.protonmail.android.mailnotifications.data.repository.NotificationTokenRepository
 import ch.protonmail.android.mailnotifications.data.repository.NotificationTokenRepositoryImpl
+import ch.protonmail.android.mailnotifications.domain.handler.AccountStateAwareNotificationHandler
+import ch.protonmail.android.mailnotifications.domain.handler.AccountStateAwareNotificationHandlerImpl
+import ch.protonmail.android.mailnotifications.domain.proxy.NotificationManagerCompatProxy
+import ch.protonmail.android.mailnotifications.domain.proxy.NotificationManagerCompatProxyImpl
 import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator
 import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestratorImpl
 import com.google.firebase.messaging.FirebaseMessaging
@@ -33,7 +39,9 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
+import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -45,6 +53,19 @@ object MailNotificationsModule {
     @Reusable
     fun provideFirebaseMessaging(): FirebaseMessaging = FirebaseMessaging.getInstance()
 
+    @Provides
+    @Reusable
+    fun provideNotificationManagerCompat(@ApplicationContext context: Context): NotificationManagerCompat =
+        NotificationManagerCompat.from(context)
+
+
+    @EntryPoint
+    @InstallIn(SingletonComponent::class)
+    interface EntryPointModule {
+
+        fun handler(): AccountStateAwareNotificationHandler
+    }
+
     @Module
     @InstallIn(SingletonComponent::class)
     internal interface BindsModule {
@@ -55,24 +76,36 @@ object MailNotificationsModule {
 
         @Binds
         @Reusable
-        fun notificationPermissionsOrchestrator(
+        fun bindNotificationPermissionsOrchestrator(
             implementation: NotificationsPermissionsOrchestratorImpl
         ): NotificationsPermissionsOrchestrator
 
         @Binds
         @Reusable
-        fun notificationTokenRemoteDataSource(
+        fun bindNotificationTokenRemoteDataSource(
             dataSource: NotificationTokenRemoteDataSourceImpl
         ): NotificationTokenRemoteDataSource
 
         @Binds
         @Reusable
-        fun notificationTokenLocalDataSource(
+        fun bindNotificationTokenLocalDataSource(
             dataSource: NotificationTokenLocalDataSourceImpl
         ): NotificationTokenLocalDataSource
 
         @Binds
         @Reusable
-        fun notificationTokenRepository(repository: NotificationTokenRepositoryImpl): NotificationTokenRepository
+        fun bindNotificationTokenRepository(repository: NotificationTokenRepositoryImpl): NotificationTokenRepository
+
+        @Binds
+        @Reusable
+        fun bindNotificationManagerCompatProxy(
+            notificationManagerProxyImpl: NotificationManagerCompatProxyImpl
+        ): NotificationManagerCompatProxy
+
+        @Binds
+        @Singleton
+        fun bindAccountStateAwareNotificationHandler(
+            handlerImpl: AccountStateAwareNotificationHandlerImpl
+        ): AccountStateAwareNotificationHandler
     }
 }
