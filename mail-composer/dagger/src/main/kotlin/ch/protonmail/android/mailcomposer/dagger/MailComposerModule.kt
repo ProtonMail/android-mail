@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.mailcomposer.dagger
 
-import ch.protonmail.android.composer.data.local.DraftStateDatabase
 import ch.protonmail.android.composer.data.local.DraftStateLocalDataSource
 import ch.protonmail.android.composer.data.local.DraftStateLocalDataSourceImpl
 import ch.protonmail.android.composer.data.local.RoomTransactor
@@ -26,42 +25,36 @@ import ch.protonmail.android.composer.data.remote.DraftRemoteDataSource
 import ch.protonmail.android.composer.data.remote.DraftRemoteDataSourceImpl
 import ch.protonmail.android.composer.data.repository.DraftRepositoryImpl
 import ch.protonmail.android.composer.data.repository.DraftStateRepositoryImpl
-import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcomposer.domain.Transactor
 import ch.protonmail.android.mailcomposer.domain.repository.DraftRepository
 import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
+import dagger.Reusable
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import me.proton.core.network.data.ApiProvider
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object MailComposerModule {
+abstract class MailComposerModule {
 
-    @Provides
-    @Singleton
-    fun provideDraftRepository(enqueuer: Enqueuer): DraftRepository = DraftRepositoryImpl(enqueuer)
+    @Binds
+    @Reusable
+    abstract fun bindsDraftRepository(impl: DraftRepositoryImpl): DraftRepository
 
-    @Provides
-    @Singleton
-    fun provideDraftStateRepository(localDataSource: DraftStateLocalDataSource): DraftStateRepository =
-        DraftStateRepositoryImpl(localDataSource)
+    @Binds
+    @Reusable
+    abstract fun bindsDraftStateRepository(impl: DraftStateRepositoryImpl): DraftStateRepository
 
-    @Provides
-    @Singleton
-    fun provideDraftStateLocalDataSource(draftStateDatabase: DraftStateDatabase): DraftStateLocalDataSource =
-        DraftStateLocalDataSourceImpl(draftStateDatabase)
+    @Binds
+    @Reusable
+    abstract fun provideDraftStateLocalDataSource(impl: DraftStateLocalDataSourceImpl): DraftStateLocalDataSource
 
-    @Provides
-    @Singleton
-    fun provideDraftStateRemoteDataSource(apiProvider: ApiProvider): DraftRemoteDataSource =
-        DraftRemoteDataSourceImpl(apiProvider)
+    @Binds
+    @Reusable
+    abstract fun bindsRoomTransactor(impl: RoomTransactor): Transactor
 
-    @Provides
-    @Singleton
-    fun provideRoomTransactor(database: DraftStateDatabase): Transactor = RoomTransactor(database)
-
+    @Binds
+    @Reusable
+    abstract fun bindsDraftStateRemoteDataSource(impl: DraftRemoteDataSourceImpl): DraftRemoteDataSource
 }
