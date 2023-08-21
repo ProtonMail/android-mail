@@ -56,8 +56,7 @@ class StoreDraftWithAllFields @Inject constructor(
                 fields.recipientsBcc.value
             ).logError(draftMessageId)
 
-            draftStateRepository.saveLocalState(userId, draftMessageId, action)
-            Timber.d("DraftARF: LOCAL state stored")
+            draftStateRepository.createOrUpdateLocalState(userId, draftMessageId, action)
             Timber.d("Draft: finished storing draft locally $draftMessageId")
         }
     }

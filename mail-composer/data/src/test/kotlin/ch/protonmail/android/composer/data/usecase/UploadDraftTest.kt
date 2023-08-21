@@ -116,7 +116,7 @@ class UploadDraftTest {
         // Then
         assertEquals(Unit.right(), actual)
         coVerify { messageRepository.updateDraftMessageId(userId, messageId, apiAssignedMessageId) }
-        coVerify { draftStateRepository.saveSyncedState(userId, messageId, apiAssignedMessageId) }
+        coVerify { draftStateRepository.updateApiMessageIdAndSetSyncedState(userId, messageId, apiAssignedMessageId) }
     }
 
     @Test
@@ -137,7 +137,7 @@ class UploadDraftTest {
 
         // Then
         assertEquals(Unit.right(), actual)
-        coVerify { draftStateRepository.saveSyncedState(userId, messageId, messageId) }
+        coVerify { draftStateRepository.updateApiMessageIdAndSetSyncedState(userId, messageId, messageId) }
     }
 
     @Test
@@ -254,7 +254,9 @@ class UploadDraftTest {
         messageId: MessageId,
         apiAssignedMessageId: MessageId
     ) {
-        coEvery { draftStateRepository.saveSyncedState(userId, messageId, apiAssignedMessageId) } returns Unit.right()
+        coEvery {
+            draftStateRepository.updateApiMessageIdAndSetSyncedState(userId, messageId, apiAssignedMessageId)
+        } returns Unit.right()
     }
 
     private fun expectRemoteDataSourceCreateSuccess(

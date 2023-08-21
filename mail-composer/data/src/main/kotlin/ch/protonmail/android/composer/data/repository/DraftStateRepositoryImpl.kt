@@ -40,7 +40,7 @@ class DraftStateRepositoryImpl @Inject constructor(
     override fun observe(userId: UserId, messageId: MessageId): Flow<Either<DataError, DraftState>> =
         localDataSource.observe(userId, messageId)
 
-    override suspend fun saveLocalState(
+    override suspend fun createOrUpdateLocalState(
         userId: UserId,
         messageId: MessageId,
         action: DraftAction
@@ -52,14 +52,14 @@ class DraftStateRepositoryImpl @Inject constructor(
         localDataSource.save(updatedState)
     }
 
-    override suspend fun saveSyncedState(
+    override suspend fun updateApiMessageIdAndSetSyncedState(
         userId: UserId,
         messageId: MessageId,
-        remoteDraftId: MessageId
+        apiMessageId: MessageId
     ): Either<DataError, Unit> = either {
         val draftState = localDataSource.observe(userId, messageId).first().bind()
         val updatedState = draftState.copy(
-            apiMessageId = remoteDraftId,
+            apiMessageId = apiMessageId,
             state = DraftSyncState.Synchronized
         )
         localDataSource.save(updatedState)

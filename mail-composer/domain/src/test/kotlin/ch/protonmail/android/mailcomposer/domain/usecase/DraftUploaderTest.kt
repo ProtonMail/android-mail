@@ -59,7 +59,7 @@ class DraftUploaderTest {
         testDispatcher.scheduler.advanceTimeBy(1000)
         job.cancel()
         // Then
-        coVerify { draftStateRepository.saveLocalState(userId, messageId, action) }
+        coVerify { draftStateRepository.createOrUpdateLocalState(userId, messageId, action) }
     }
 
     @Test
@@ -88,6 +88,6 @@ class DraftUploaderTest {
         messageId: MessageId,
         action: DraftAction.Compose
     ) {
-        coEvery { draftStateRepository.saveLocalState(userId, messageId, action) } returns Unit.right()
+        coEvery { draftStateRepository.createOrUpdateLocalState(userId, messageId, action) } returns Unit.right()
     }
 }

@@ -30,13 +30,22 @@ interface DraftStateRepository {
 
     fun observe(userId: UserId, messageId: MessageId): Flow<Either<DataError, DraftState>>
 
-    suspend fun saveSyncedState(
+    /**
+     * Reads an existing [DraftState], updates it by setting its state to [DraftSyncState.Syncronized]
+     * and adding / updating the messageId assigned by the API as [apiMessageId].
+     * Errors out if a [DraftState] for the given ID does not exist.
+     */
+    suspend fun updateApiMessageIdAndSetSyncedState(
         userId: UserId,
         messageId: MessageId,
-        remoteDraftId: MessageId
+        apiMessageId: MessageId
     ): Either<DataError, Unit>
 
-    suspend fun saveLocalState(
+    /**
+     * Creates a new [DraftState] with a [DraftSyncState.Local].
+     * If existing, updates the state to [DraftSyncState.Local]
+     */
+    suspend fun createOrUpdateLocalState(
         userId: UserId,
         messageId: MessageId,
         action: DraftAction

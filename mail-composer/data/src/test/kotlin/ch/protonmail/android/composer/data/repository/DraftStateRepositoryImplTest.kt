@@ -89,7 +89,7 @@ class DraftStateRepositoryImplTest {
         expectLocalDataSourceUpsertSuccess(expectedDraftState)
 
         // When
-        val actual = repository.saveSyncedState(userId, draftId, remoteDraftId)
+        val actual = repository.updateApiMessageIdAndSetSyncedState(userId, draftId, remoteDraftId)
 
         // Then
         assertEquals(Unit.right(), actual)
@@ -109,7 +109,7 @@ class DraftStateRepositoryImplTest {
         expectLocalDataSourceUpsertSuccess(expectedDraftState)
 
         // When
-        val actual = repository.saveLocalState(userId, draftId, expectedAction)
+        val actual = repository.createOrUpdateLocalState(userId, draftId, expectedAction)
 
         // Then
         coVerify { draftStateLocalDataSource.save(expectedDraftState) }
@@ -127,7 +127,7 @@ class DraftStateRepositoryImplTest {
         expectLocalDataSourceUpsertSuccess(expectedDraftState)
 
         // When
-        val actual = repository.saveLocalState(userId, draftId, expectedAction)
+        val actual = repository.createOrUpdateLocalState(userId, draftId, expectedAction)
 
         // Then
         coVerify { draftStateLocalDataSource.save(expectedDraftState) }

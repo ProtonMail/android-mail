@@ -248,7 +248,7 @@ class StoreDraftWithAllFieldsTest {
         storeDraftWithAllFields(userId, draftMessageId, draftFields)
 
         // Then
-        coVerify { draftStateRepository.saveLocalState(userId, draftMessageId, expectedAction) }
+        coVerify { draftStateRepository.createOrUpdateLocalState(userId, draftMessageId, expectedAction) }
     }
 
     private fun buildDraftFields(
@@ -272,7 +272,9 @@ class StoreDraftWithAllFieldsTest {
         draftMessageId: MessageId,
         expectedAction: DraftAction = DraftAction.Compose
     ) {
-        coEvery { draftStateRepository.saveLocalState(userId, draftMessageId, expectedAction) } returns Unit.right()
+        coEvery {
+            draftStateRepository.createOrUpdateLocalState(userId, draftMessageId, expectedAction)
+        } returns Unit.right()
     }
 
     private fun expectStoreDraftBodySucceeds(

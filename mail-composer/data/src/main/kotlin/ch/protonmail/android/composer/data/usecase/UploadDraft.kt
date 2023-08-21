@@ -61,16 +61,17 @@ internal class UploadDraft @Inject constructor(
 
         if (isDraftKnownToApi(draftState)) {
             draftRemoteDataSource.update(userId, message).onRight {
-                draftStateRepository.saveSyncedState(userId, it.message.messageId, it.message.messageId)
+                draftStateRepository.updateApiMessageIdAndSetSyncedState(
+                    userId, it.message.messageId, it.message.messageId
+                )
             }.onLeft {
                 Timber.w("Sync draft failure $messageId: Update API call error $it")
             }.bind()
         } else {
             draftRemoteDataSource.create(userId, message, draftState.action).onRight {
-
                 transactor.performTransaction {
                     messageRepository.updateDraftMessageId(userId, messageId, it.message.messageId)
-                    draftStateRepository.saveSyncedState(userId, messageId, it.message.messageId)
+                    draftStateRepository.updateApiMessageIdAndSetSyncedState(userId, messageId, it.message.messageId)
                 }
             }.onLeft {
                 if (it.shouldLogToSentry()) { Timber.w("Sync draft failure $messageId: Create API call error $it") }

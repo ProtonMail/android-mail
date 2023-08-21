@@ -52,7 +52,7 @@ class DraftUploader @Inject constructor(
     ) {
         syncJob?.cancel()
         syncJob = scope.launch(dispatcher) {
-            draftStateRepository.saveLocalState(userId, messageId, action)
+            draftStateRepository.createOrUpdateLocalState(userId, messageId, action)
             while (true) {
                 delay(SyncInterval)
                 Timber.d("Draft syncer: syncing draft $messageId")
