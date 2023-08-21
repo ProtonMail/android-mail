@@ -51,7 +51,8 @@ class MainInitializer : Initializer<Unit> {
         LoggerInitializer::class.java,
         StrictModeInitializer::class.java,
         ThemeObserverInitializer::class.java,
-        NotificationInitializer::class.java
+        NotificationInitializer::class.java,
+        AccountStateAwareNotificationInitializer::class.java
     )
 
     private fun releaseOnlyDependenciesIfNeeded() =

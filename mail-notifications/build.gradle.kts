@@ -60,5 +60,6 @@ dependencies {
     implementation(Dependencies.moduleDataLibs)
     implementation(Dependencies.modulePresentationLibs)
 
+    testImplementation(project(":test:test-data"))
     testImplementation(Dependencies.testLibs)
 }

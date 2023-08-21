@@ -212,46 +212,42 @@ class NotificationsDeepLinksViewModelTest {
     @Test
     fun `Should switch account and emit switched for inbox notification to an active non primary account`() = runTest {
         // Given
+        val activeAccount = AccountSample.Primary.copy(email = "test@email.com")
         val notificationUserId = UserId(UUID.randomUUID().toString())
-        val activeUserId = UserId(UUID.randomUUID().toString())
+        val secondaryAccount = AccountSample.Primary.copy(userId = notificationUserId)
         val viewModel = buildViewModel()
-        coEvery { accountManager.getPrimaryUserId() } returns flowOf(activeUserId)
-        coEvery { accountManager.getAccount(notificationUserId) } returns flowOf(AccountSample.Primary)
-        coEvery {
-            getPrimaryAddress.invoke(notificationUserId)
-        } returns UserAddressSample.PrimaryAddress.right()
+        coEvery { accountManager.getPrimaryUserId() } returns flowOf(activeAccount.userId)
+        coEvery { accountManager.getAccounts() } returns flowOf(listOf(activeAccount, secondaryAccount))
+        coEvery { getPrimaryAddress.invoke(notificationUserId) } returns UserAddressSample.PrimaryAddress.right()
 
         // When
         viewModel.navigateToInbox(notificationUserId.id)
 
         // Then
         viewModel.state.test {
-            assertEquals(NavigateToInbox.ActiveUserSwitched(AccountSample.Primary.email!!), awaitItem())
-            coVerify { accountManager.setAsPrimary(UserId(notificationUserId.id)) }
+            assertEquals(NavigateToInbox.ActiveUserSwitched(secondaryAccount.email!!), awaitItem())
+            coVerify { accountManager.setAsPrimary(secondaryAccount.userId) }
         }
     }
 
     @Test
     fun `Should switch account and emit switched for message notification to active non primary account`() = runTest {
         // Given
-        val notificationTargetAccount = AccountSample.Primary
-        val activeUserId = UserId(UUID.randomUUID().toString())
+        val activeAccount = AccountSample.Primary.copy(email = "test@email.com")
+        val notificationUserId = UserId(UUID.randomUUID().toString())
+        val secondaryAccount = AccountSample.Primary.copy(userId = notificationUserId)
         val messageId = UUID.randomUUID().toString()
         val viewModel = buildViewModel()
-        coEvery { accountManager.getPrimaryUserId() } returns flowOf(activeUserId)
-        coEvery {
-            getPrimaryAddress.invoke(notificationTargetAccount.userId)
-        } returns UserAddressSample.PrimaryAddress.right()
-        coEvery {
-            accountManager.getAccount(notificationTargetAccount.userId)
-        } returns flowOf(notificationTargetAccount)
+        coEvery { accountManager.getPrimaryUserId() } returns flowOf(activeAccount.userId)
+        coEvery { getPrimaryAddress.invoke(secondaryAccount.userId) } returns UserAddressSample.PrimaryAddress.right()
+        coEvery { accountManager.getAccounts() } returns flowOf(listOf(activeAccount, secondaryAccount))
         coEvery { mailSettings.viewMode } returns IntEnum(ViewMode.ConversationGrouping.value, null)
         coEvery {
-            messageRepository.observeCachedMessage(notificationTargetAccount.userId, any())
+            messageRepository.observeCachedMessage(secondaryAccount.userId, any())
         } returns flowOf(AlphaAppQAReport.right())
         coEvery {
             conversationRepository.observeConversation(
-                notificationTargetAccount.userId,
+                secondaryAccount.userId,
                 AlphaAppQAReport.conversationId,
                 true
             )
@@ -260,7 +256,7 @@ class NotificationsDeepLinksViewModelTest {
         )
 
         // When
-        viewModel.navigateToMessage(messageId, notificationTargetAccount.userId.id)
+        viewModel.navigateToMessage(messageId, secondaryAccount.userId.id)
 
         // Then
         viewModel.state.test {
@@ -268,7 +264,7 @@ class NotificationsDeepLinksViewModelTest {
                 NavigateToConversation(AlphaAppQAReport.conversationId, AccountSample.Primary.email),
                 awaitItem()
             )
-            coVerify { accountManager.setAsPrimary(notificationTargetAccount.userId) }
+            coVerify { accountManager.setAsPrimary(secondaryAccount.userId) }
         }
     }
 

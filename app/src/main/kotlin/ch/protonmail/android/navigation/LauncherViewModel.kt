@@ -22,7 +22,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ch.protonmail.android.mailnotifications.data.repository.NotificationTokenRepository
 import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator
 import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator.Companion.PermissionResult
 import ch.protonmail.android.navigation.model.LauncherState
@@ -45,7 +44,6 @@ import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.accountmanager.presentation.observe
 import me.proton.core.accountmanager.presentation.onAccountCreateAddressFailed
 import me.proton.core.accountmanager.presentation.onAccountCreateAddressNeeded
-import me.proton.core.accountmanager.presentation.onAccountReady
 import me.proton.core.accountmanager.presentation.onAccountTwoPassModeFailed
 import me.proton.core.accountmanager.presentation.onAccountTwoPassModeNeeded
 import me.proton.core.accountmanager.presentation.onSessionForceLogout
@@ -57,7 +55,6 @@ import me.proton.core.plan.presentation.PlansOrchestrator
 import me.proton.core.report.presentation.ReportOrchestrator
 import me.proton.core.user.domain.UserManager
 import me.proton.core.usersettings.presentation.UserSettingsOrchestrator
-import me.proton.core.util.kotlin.exhaustive
 import javax.inject.Inject
 
 @HiltViewModel
@@ -70,8 +67,7 @@ class LauncherViewModel @Inject constructor(
     private val plansOrchestrator: PlansOrchestrator,
     private val reportOrchestrator: ReportOrchestrator,
     private val userSettingsOrchestrator: UserSettingsOrchestrator,
-    private val notificationsPermissionsOrchestrator: NotificationsPermissionsOrchestrator,
-    private val notificationsTokenRepository: NotificationTokenRepository
+    private val notificationsPermissionsOrchestrator: NotificationsPermissionsOrchestrator
 ) : ViewModel() {
 
     val state: StateFlow<LauncherState> = accountManager.getAccounts().combine(
@@ -113,7 +109,6 @@ class LauncherViewModel @Inject constructor(
             .onSessionSecondFactorNeeded { authOrchestrator.startSecondFactorWorkflow(it) }
             .onAccountTwoPassModeNeeded { authOrchestrator.startTwoPassModeWorkflow(it) }
             .onAccountCreateAddressNeeded { authOrchestrator.startChooseAddressWorkflow(it) }
-            .onAccountReady { registerNotificationTokenForUserId(it.userId) }
     }
 
     fun submit(action: Action) {
@@ -128,14 +123,7 @@ class LauncherViewModel @Inject constructor(
                 is Action.SignIn -> onSignIn(action.userId)
                 is Action.SignOut -> onSignOut(action.userId)
                 is Action.Switch -> onSwitch(action.userId)
-            }.exhaustive
-        }
-    }
-
-    private fun registerNotificationTokenForUserId(userId: UserId) {
-        viewModelScope.launch {
-            val account = accountManager.getAccount(userId).firstOrNull() ?: return@launch
-            if (account.isReady()) notificationsTokenRepository.bindTokenToUser(userId)
+            }
         }
     }
 

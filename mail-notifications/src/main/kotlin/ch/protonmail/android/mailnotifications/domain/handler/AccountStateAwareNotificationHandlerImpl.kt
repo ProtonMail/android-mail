@@ -41,7 +41,6 @@ internal class AccountStateAwareNotificationHandlerImpl @Inject constructor(
                     AccountState.Ready -> notificationTokenRepository.bindTokenToUser(it.userId)
                     AccountState.Disabled,
                     AccountState.Removed -> notificationManagerCompatProxy.dismissNotification(it.userId.hashCode())
-
                     else -> Unit
                 }
             }

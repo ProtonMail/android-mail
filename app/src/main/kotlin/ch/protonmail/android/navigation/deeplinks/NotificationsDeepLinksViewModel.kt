@@ -35,11 +35,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
-import me.proton.core.account.domain.entity.isReady
+import me.proton.core.account.domain.entity.AccountState
 import me.proton.core.accountmanager.domain.AccountManager
+import me.proton.core.accountmanager.domain.getAccounts
 import me.proton.core.domain.entity.UserId
 import me.proton.core.mailsettings.domain.entity.ViewMode
 import me.proton.core.mailsettings.domain.repository.MailSettingsRepository
@@ -142,16 +142,14 @@ class NotificationsDeepLinksViewModel @Inject constructor(
         return if (accountManager.getPrimaryUserId().firstOrNull()?.id == userId) {
             AccountSwitchResult.NotRequired
         } else {
-            val targetAccount = accountManager.getAccount(UserId(userId))
-                .filter { account -> account?.isReady() == true }
+            val targetAccount = accountManager.getAccounts(AccountState.Ready)
                 .firstOrNull()
-            if (targetAccount != null) {
-                accountManager.setAsPrimary(UserId(userId))
-                val emailAddress = getPrimaryAddress(UserId(userId)).getOrNull()?.email
-                AccountSwitchResult.AccountSwitched(targetAccount.userId, emailAddress ?: "")
-            } else {
-                AccountSwitchResult.AccountSwitchError
-            }
+                ?.find { it.userId.id == userId }
+                ?: return AccountSwitchResult.AccountSwitchError
+
+            accountManager.setAsPrimary(UserId(userId))
+            val emailAddress = getPrimaryAddress(UserId(userId)).getOrNull()?.email
+            AccountSwitchResult.AccountSwitched(targetAccount.userId, emailAddress ?: "")
         }
     }
 

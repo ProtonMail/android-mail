@@ -24,6 +24,7 @@ import me.proton.core.account.domain.entity.AccountDetails
 import me.proton.core.account.domain.entity.AccountState.Disabled
 import me.proton.core.account.domain.entity.AccountState.NotReady
 import me.proton.core.account.domain.entity.AccountState.Ready
+import me.proton.core.account.domain.entity.AccountState.Removed
 import me.proton.core.account.domain.entity.AccountType.Internal
 import me.proton.core.account.domain.entity.SessionDetails
 import me.proton.core.account.domain.entity.SessionState.Authenticated
@@ -79,6 +80,25 @@ object AccountTestData {
         email = RAW_EMAIL,
         state = Disabled,
         sessionId = SessionId(UserIdTestData.userId.id),
+        sessionState = null,
+        details = AccountDetails(
+            null,
+            SessionDetails(
+                initialEventId = INITIAL_EVENT_ID,
+                requiredAccountType = Internal,
+                secondFactorEnabled = true,
+                twoPassModeEnabled = true,
+                password = null
+            )
+        )
+    )
+
+    val removedAccount = Account(
+        userId = UserIdTestData.userId,
+        username = RAW_USERNAME,
+        email = RAW_EMAIL,
+        state = Removed,
+        sessionId = null,
         sessionState = null,
         details = AccountDetails(
             null,
