@@ -29,24 +29,22 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
-import org.junit.Ignore
 import org.junit.Test
+import kotlin.time.Duration.Companion.milliseconds
 
 class DraftUploaderTest {
 
     private val draftStateRepository = mockk<DraftStateRepository>()
     private val draftRepository = mockk<DraftRepository>()
-    private val testDispatcher = UnconfinedTestDispatcher()
+    private val testDispatcher = StandardTestDispatcher()
     private val coroutineScope = CoroutineScope(testDispatcher)
 
     private val draftUploader = DraftUploader(draftStateRepository, draftRepository, testDispatcher)
 
     @Test
-    @Ignore("Test fails due to the infinite loop going OutOfMemory")
     fun `saves draft state as local when starting`() = runTest(testDispatcher) {
         // Given
         val userId = UserIdSample.Primary
@@ -54,16 +52,17 @@ class DraftUploaderTest {
         val action = DraftAction.Compose
         expectSaveLocalStateSuccess(userId, messageId, action)
         expectSyncDraft(userId, messageId)
+
         // When
-        val job = launch { draftUploader.startContinuousUpload(userId, messageId, action, coroutineScope) }
+        draftUploader.startContinuousUpload(userId, messageId, action, coroutineScope)
         testDispatcher.scheduler.advanceTimeBy(1000)
-        job.cancel()
+        draftUploader.stopContinuousUpload()
+
         // Then
         coVerify { draftStateRepository.createOrUpdateLocalState(userId, messageId, action) }
     }
 
     @Test
-    @Ignore("Test fails due to the infinite loop going OutOfMemory")
     fun `keeps syncing the draft based on defined sync interval`() = runTest(testDispatcher) {
         // Given
         val userId = UserIdSample.Primary
@@ -71,12 +70,34 @@ class DraftUploaderTest {
         val action = DraftAction.Compose
         expectSaveLocalStateSuccess(userId, messageId, action)
         expectSyncDraft(userId, messageId)
+
         // When
-        val job = launch { draftUploader.startContinuousUpload(userId, messageId, action, coroutineScope) }
-        testDispatcher.scheduler.advanceTimeBy(1000)
-        job.cancel()
+        draftUploader.startContinuousUpload(userId, messageId, action, coroutineScope)
+        // Advance time by just a bit more than 2xSyncInterval so that 2 loops are executed
+        val advanceTimeMillis = DraftUploader.SyncInterval.times(2).plus(100.milliseconds).inWholeMilliseconds
+        testDispatcher.scheduler.advanceTimeBy(advanceTimeMillis)
+        draftUploader.stopContinuousUpload()
+
         // Then
-        coVerify { draftRepository.upload(userId, messageId) }
+        coVerify(exactly = 2) { draftRepository.upload(userId, messageId) }
+    }
+
+    @Test
+    fun `upload calls draft repository force upload`() = runTest(testDispatcher) {
+        // Given
+        val userId = UserIdSample.Primary
+        val messageId = MessageIdSample.RemoteDraft
+        expectForceUploadDraft(userId, messageId)
+
+        // When
+        draftUploader.upload(userId, messageId)
+
+        // Then
+        coVerify(exactly = 1) { draftRepository.forceUpload(userId, messageId) }
+    }
+
+    private fun expectForceUploadDraft(userId: UserId, messageId: MessageId) {
+        coEvery { draftRepository.forceUpload(userId, messageId) } returns Unit
     }
 
     private fun expectSyncDraft(userId: UserId, messageId: MessageId) {
