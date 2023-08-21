@@ -20,6 +20,8 @@ package ch.protonmail.android.uitest.helpers.core.navigation
 
 import ch.protonmail.android.test.ksp.annotations.AsDsl
 import ch.protonmail.android.uitest.helpers.login.MockedLoginTestUsers
+import ch.protonmail.android.uitest.robot.common.section.fullscreenLoaderSection
+import ch.protonmail.android.uitest.robot.composer.composerRobot
 import ch.protonmail.android.uitest.robot.mailbox.mailboxRobot
 import ch.protonmail.android.uitest.robot.mailbox.section.listSection
 import ch.protonmail.android.uitest.robot.mailbox.section.topAppBarSection
@@ -79,6 +81,7 @@ internal class Navigator {
             is Destination.EditDraft -> {
                 navigateTo(Destination.Drafts, launchApp = false, performLoginViaUI = false)
                 mailboxRobot { listSection { clickMessageByPosition(destination.draftPosition) } }
+                composerRobot { fullscreenLoaderSection { waitUntilGone() } }
             }
         }
     }

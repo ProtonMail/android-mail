@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.uitest.e2e.mailbox.drafts
 
-import ch.protonmail.android.uitest.robot.common.section.fullscreenLoaderSection
 import ch.protonmail.android.uitest.robot.composer.ComposerRobot
 import ch.protonmail.android.uitest.robot.composer.model.chips.RecipientChipEntry
 import ch.protonmail.android.uitest.robot.composer.section.messageBodySection
@@ -38,8 +37,6 @@ internal interface OpenExistingDraftsTest {
         subject: String,
         messageBody: String? = null
     ) {
-        fullscreenLoaderSection { waitUntilGone() }
-
         toRecipientSection {
             verify { hasRecipientChips(toRecipientChip) }
             expandCcAndBccFields()
@@ -51,8 +48,6 @@ internal interface OpenExistingDraftsTest {
     }
 
     fun ComposerRobot.verifyEmptyFields() {
-        fullscreenLoaderSection { waitUntilGone() }
-
         toRecipientSection {
             verify { isEmptyField() }
             expandCcAndBccFields()
