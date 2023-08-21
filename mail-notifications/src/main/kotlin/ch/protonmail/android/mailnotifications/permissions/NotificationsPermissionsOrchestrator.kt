@@ -19,19 +19,10 @@
 package ch.protonmail.android.mailnotifications.permissions
 
 import android.Manifest
-import android.content.Context
 import android.os.Build
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationManagerCompat
-import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator.Companion.NOTIFICATION_PERMISSION
-import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator.Companion.PermissionResult
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import javax.inject.Inject
 
 interface NotificationsPermissionsOrchestrator {
 
@@ -51,44 +42,5 @@ interface NotificationsPermissionsOrchestrator {
 
         @RequiresApi(Build.VERSION_CODES.TIRAMISU)
         internal const val NOTIFICATION_PERMISSION = Manifest.permission.POST_NOTIFICATIONS
-    }
-}
-
-internal class NotificationsPermissionsOrchestratorImpl @Inject constructor(
-    @ApplicationContext private val context: Context
-) : NotificationsPermissionsOrchestrator {
-
-    private val permissionResultFlow = MutableStateFlow(PermissionResult.CHECKING)
-    private var permissionRequester: ActivityResultLauncher<String>? = null
-
-    override fun permissionResult(): Flow<PermissionResult> = permissionResultFlow
-
-    override fun requestPermissionIfRequired() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-            permissionResultFlow.value = PermissionResult.GRANTED
-            return
-        }
-
-        if (NotificationManagerCompat.from(context).areNotificationsEnabled()) {
-            permissionResultFlow.value = PermissionResult.GRANTED
-        } else {
-            permissionRequester?.launch(NOTIFICATION_PERMISSION)
-        }
-    }
-
-    override fun register(caller: AppCompatActivity) {
-        permissionRequester = caller.registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { granted ->
-            permissionResultFlow.value = if (granted) {
-                PermissionResult.GRANTED
-            } else {
-                if (caller.shouldShowRequestPermissionRationale(NOTIFICATION_PERMISSION)) {
-                    PermissionResult.SHOW_RATIONALE
-                } else {
-                    PermissionResult.DENIED
-                }
-            }
-        }
     }
 }
