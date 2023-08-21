@@ -20,7 +20,6 @@ package ch.protonmail.android.navigation.deeplinks
 
 import android.content.Context
 import android.content.Intent
-import androidx.core.app.NotificationManagerCompat
 import ch.protonmail.android.MainActivity
 import ch.protonmail.android.mailnotifications.domain.NotificationsDeepLinkHelper
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -47,8 +46,4 @@ class NotificationsDeepLinkHelperImpl @Inject constructor(
         context,
         MainActivity::class.java
     )
-
-    override fun cancelNotification(notificationId: Int) {
-        NotificationManagerCompat.from(context).cancel(notificationId)
-    }
 }

@@ -31,8 +31,6 @@ interface NotificationsDeepLinkHelper {
 
     fun buildMessageGroupDeepLinkIntent(notificationId: String, userId: String): Intent
 
-    fun cancelNotification(notificationId: Int)
-
     fun NotificationsDeepLinkHelper.buildMessageDeepLinkUri(
         notificationId: String,
         messageId: String,
