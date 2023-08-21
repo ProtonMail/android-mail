@@ -36,4 +36,5 @@
   <string name="composer_error_duplicate_recipient">Removed duplicate recipient: %1$s</string>
   <string name="composer_error_store_draft_subject">Storing this draft\'s subject failed</string>
   <string name="composer_error_store_draft_recipients">Storing this draft\'s recipients failed</string>
+  <string name="composer_error_loading_draft">The content of this draft is not available at this time. Editing will override any pre-existing content.</string>
 </resources>

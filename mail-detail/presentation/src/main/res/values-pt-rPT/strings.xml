@@ -83,4 +83,6 @@
   <string name="message_body_error_no_webview">Necessita instalar WebView para visualizar o conteúdo desta mensagem.</string>
   <!-- Banners -->
   <string name="message_body_embedded_images_banner_text">O carregamento automático de imagens incorporadas está desativado. Isto pode ser alterado nas definições.</string>
+  <string name="message_body_remote_content_banner_text">Automatic loading of remote content is turned off. This can be changed in the settings.</string>
+  <string name="message_body_embedded_and_remote_content_banner_text">Automatic loading of embedded images and remote content is turned off. These can be changed in the settings.</string>
 </resources>

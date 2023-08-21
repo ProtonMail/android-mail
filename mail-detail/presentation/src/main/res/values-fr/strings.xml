@@ -83,4 +83,6 @@
   <string name="message_body_error_no_webview">Vous devez installer une application WebView pour voir le contenu de ce message.</string>
   <!-- Banners -->
   <string name="message_body_embedded_images_banner_text">Le chargement automatique des images intégrées est désactivé. Vous pouvez modifier cette option dans les paramètres.</string>
+  <string name="message_body_remote_content_banner_text">Le chargement automatique du contenu distant est désactivé. Vous pouvez modifier cette option dans les paramètres.</string>
+  <string name="message_body_embedded_and_remote_content_banner_text">Le chargement automatique des images intégrées et du contenu distant est désactivé. Vous pouvez modifier cette option dans les paramètres.</string>
 </resources>

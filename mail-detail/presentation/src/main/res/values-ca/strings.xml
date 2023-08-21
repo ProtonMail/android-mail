@@ -83,4 +83,6 @@
   <string name="message_body_error_no_webview">Cal que tingueu WebView instal·lat per a veure el contingut d\'aquest missatge.</string>
   <!-- Banners -->
   <string name="message_body_embedded_images_banner_text">La càrrega automàtica d\'imatges incrustades està desactivada. Això es pot canviar a les preferències.</string>
+  <string name="message_body_remote_content_banner_text">Automatic loading of remote content is turned off. This can be changed in the settings.</string>
+  <string name="message_body_embedded_and_remote_content_banner_text">Automatic loading of embedded images and remote content is turned off. These can be changed in the settings.</string>
 </resources>

@@ -52,7 +52,7 @@
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">添付ファイル</string>
   <string name="attachment_download_notification_channel_description">添付ファイルのダウンロードに関する通知</string>
-  <string name="email_notification_channel_name">Emails</string>
+  <string name="email_notification_channel_name">メール</string>
   <string name="email_notification_channel_description">Incoming email notifications</string>
   <string name="auth_badge_official">公式</string>
 </resources>

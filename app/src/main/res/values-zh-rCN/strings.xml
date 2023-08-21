@@ -24,5 +24,5 @@
   <string name="you_are_offline">网络未连接</string>
   <string name="feature_coming_soon">功能即将推出…</string>
   <string name="mailbox_draft_saved_message">草稿已保存</string>
-  <string name="notification_switched_account">Switched to account: %s</string>
+  <string name="notification_switched_account">已转至 %s</string>
 </resources>

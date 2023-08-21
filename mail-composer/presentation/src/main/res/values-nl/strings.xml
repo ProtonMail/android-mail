@@ -36,4 +36,5 @@
   <string name="composer_error_duplicate_recipient">Dubbele ontvanger verwijderd: %1$s</string>
   <string name="composer_error_store_draft_subject">Opslaan van het onderwerp van dit concept is mislukt</string>
   <string name="composer_error_store_draft_recipients">Opslaan van de ontvangers van dit concept is mislukt</string>
+  <string name="composer_error_loading_draft">The content of this draft is not available at this time. Editing will override any pre-existing content.</string>
 </resources>

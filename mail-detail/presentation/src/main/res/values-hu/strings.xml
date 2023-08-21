@@ -45,10 +45,10 @@
   <string name="error_move_conversation_failed">A beszélgetés áthelyezése sikertelen. Próbálja újra.</string>
   <string name="error_loading_message">Nem meghatározott hiba történt, kérjük próbálja meg újra.</string>
   <string name="error_offline_loading_message">Ön jelenleg offline. Internet kapcsolat szükséges az üzenet tartalmának betöltéséhez.</string>
-  <string name="error_get_attachment_failed">A melléklet elérése sikertelen</string>
+  <string name="error_get_attachment_failed">A melléklet elérése sikertelen.</string>
   <string name="error_attachment_download_in_progress">A jelenlegi letöltésnek be kell fejeződnie az új letöltés megkezdése előtt.</string>
   <string name="attachment_permission_dialog_title">Engedély szükséges</string>
-  <string name="attachment_permission_dialog_message">A Proton Mailnek engedélyre van szüksége a tárolójához való hozzáféréshez hogy letöltse a mellékletet.</string>
+  <string name="attachment_permission_dialog_message">A Proton Mailnek engedélyre van szüksége a tárolójához való hozzáféréshez, hogy letöltse a mellékletet.</string>
   <string name="attachment_permission_dialog_dismiss_button">OK</string>
   <string name="attachment_permission_dialog_action_button">Beállítások</string>
   <string name="error_get_attachment_not_enough_memory">Elégtelen memória miatt a melléklet letöltése sikertelen</string>
@@ -77,10 +77,12 @@
   <string name="attachment_type_pdf">PDF</string>
   <string name="attachment_type_text">Szöveg</string>
   <string name="attachment_type_document">Dokumentum</string>
-  <string name="attachment_type_spreadsheet">Számolótábla</string>
+  <string name="attachment_type_spreadsheet">Munkafüzet</string>
   <string name="attachment_type_presentation">Prezentáció</string>
   <string name="attachment_type_description">%1$s fájl</string>
   <string name="message_body_error_no_webview">You need to have a WebView installed to see this message\'s content.</string>
   <!-- Banners -->
   <string name="message_body_embedded_images_banner_text">A beágyazott képek automatikus letöltése ki van kapcsolva. A beállításoknál lehet ezt megváltoztatni.</string>
+  <string name="message_body_remote_content_banner_text">Automatic loading of remote content is turned off. This can be changed in the settings.</string>
+  <string name="message_body_embedded_and_remote_content_banner_text">Automatic loading of embedded images and remote content is turned off. These can be changed in the settings.</string>
 </resources>

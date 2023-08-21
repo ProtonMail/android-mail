@@ -36,4 +36,5 @@
   <string name="composer_error_duplicate_recipient">Destinatário duplicado removido: %1$s</string>
   <string name="composer_error_store_draft_subject">Erro ao salvar o assunto deste rascunho</string>
   <string name="composer_error_store_draft_recipients">Erro ao salvar os destinatários deste rascunho</string>
+  <string name="composer_error_loading_draft">O conteúdo deste rascunho não está disponível no momento. A edição substituirá qualquer conteúdo pré-existente.</string>
 </resources>

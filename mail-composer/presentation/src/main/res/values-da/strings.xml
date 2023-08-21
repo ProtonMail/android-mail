@@ -36,4 +36,5 @@
   <string name="composer_error_duplicate_recipient">Fjernet dobbelt modtager: %1$s</string>
   <string name="composer_error_store_draft_subject">Lagring af denne kladdes emne mislykkedes</string>
   <string name="composer_error_store_draft_recipients">Lagring af denne kladdes modtagere mislykkedes</string>
+  <string name="composer_error_loading_draft">The content of this draft is not available at this time. Editing will override any pre-existing content.</string>
 </resources>

@@ -36,4 +36,5 @@
   <string name="composer_error_duplicate_recipient">Tog bort duplicerad mottagare: %1$s</string>
   <string name="composer_error_store_draft_subject">Misslyckades att lagra ämnet för detta utkast</string>
   <string name="composer_error_store_draft_recipients">Misslyckades att lagra mottagare för detta utkast</string>
+  <string name="composer_error_loading_draft">Innehållet i detta utkast är inte tillgängligt för närvarande. Redigering kommer att åsidosätta allt redan existerande innehåll.</string>
 </resources>

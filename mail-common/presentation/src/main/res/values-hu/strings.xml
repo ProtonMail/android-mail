@@ -52,7 +52,7 @@
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Mellékletek</string>
   <string name="attachment_download_notification_channel_description">Értesítések a melléklet letöltésekhez</string>
-  <string name="email_notification_channel_name">Emails</string>
-  <string name="email_notification_channel_description">Incoming email notifications</string>
+  <string name="email_notification_channel_name">E-mailek</string>
+  <string name="email_notification_channel_description">Bejövő e-mail értesítések</string>
   <string name="auth_badge_official">Hivatalos</string>
 </resources>

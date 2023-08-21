@@ -35,5 +35,6 @@
   <string name="composer_error_store_draft_body">下書き本文の保存に失敗しました</string>
   <string name="composer_error_duplicate_recipient">重複していた宛先を削除しました: %1$s</string>
   <string name="composer_error_store_draft_subject">下書きのタイトルの保存に失敗しました</string>
-  <string name="composer_error_store_draft_recipients">Storing this draft\'s recipients failed</string>
+  <string name="composer_error_store_draft_recipients">下書きの宛先の保存に失敗しました</string>
+  <string name="composer_error_loading_draft">The content of this draft is not available at this time. Editing will override any pre-existing content.</string>
 </resources>

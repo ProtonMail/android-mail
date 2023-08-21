@@ -83,4 +83,6 @@
   <string name="message_body_error_no_webview">Πρέπει να έχετε εγκαταστήσει ένα WebView για να δείτε το περιεχόμενο αυτού του μηνύματος.</string>
   <!-- Banners -->
   <string name="message_body_embedded_images_banner_text">Η αυτόματη φόρτωση ενσωματωμένων εικόνων είναι απενεργοποιημένη. Αυτό μπορεί να αλλάξει στις ρυθμίσεις.</string>
+  <string name="message_body_remote_content_banner_text">Η αυτόματη φόρτωση απομακρυσμένου περιεχομένου είναι απενεργοποιημένη. Αυτό μπορεί να αλλάξει στις ρυθμίσεις.</string>
+  <string name="message_body_embedded_and_remote_content_banner_text">Η αυτόματη φόρτωση ενσωματωμένων εικόνων και απομακρυσμένου περιεχομένου είναι απενεργοποιημένη. Αυτά μπορούν να αλλάξουν στις ρυθμίσεις.</string>
 </resources>

@@ -80,5 +80,7 @@
   <string name="attachment_type_description">%1$s berkas</string>
   <string name="message_body_error_no_webview">Anda harus menginstal WebView untuk melihat konten pesan ini.</string>
   <!-- Banners -->
-  <string name="message_body_embedded_images_banner_text">Automatic loading of embedded images is turned off. This can be changed in the settings.</string>
+  <string name="message_body_embedded_images_banner_text">Pemuatan gambar tersemat secara otomatis dimatikan. Ini dapat diubah dalam pengaturan.</string>
+  <string name="message_body_remote_content_banner_text">Remote content tengah diatur untuk tidak dimuat secara otomatis. Hal ini dapat diubah pada menu pengaturan.</string>
+  <string name="message_body_embedded_and_remote_content_banner_text">Gambar tersemat dan remote content tengah diatur untuk tidak dimuat secara otomatis. Hal ini dapat diubah pada menu pengaturan.</string>
 </resources>

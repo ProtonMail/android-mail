@@ -36,4 +36,5 @@
   <string name="composer_error_duplicate_recipient">Odstraněn duplicitní příjemce: %1$s</string>
   <string name="composer_error_store_draft_subject">Uložení předmětu tohoto návrhu se nezdařilo</string>
   <string name="composer_error_store_draft_recipients">Uložení příjemců tohoto konceptu selhalo</string>
+  <string name="composer_error_loading_draft">The content of this draft is not available at this time. Editing will override any pre-existing content.</string>
 </resources>

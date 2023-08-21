@@ -36,4 +36,5 @@
   <string name="composer_error_duplicate_recipient">Выдалены дублікат атрымальніка: %1$s</string>
   <string name="composer_error_store_draft_subject">Збой захавання тэмы гэтага чарнавіка</string>
   <string name="composer_error_store_draft_recipients">Збой захавання атрымальнікаў гэтага чарнавіка</string>
+  <string name="composer_error_loading_draft">The content of this draft is not available at this time. Editing will override any pre-existing content.</string>
 </resources>
