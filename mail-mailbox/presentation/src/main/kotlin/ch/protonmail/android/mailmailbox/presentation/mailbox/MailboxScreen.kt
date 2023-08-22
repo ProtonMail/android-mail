@@ -323,7 +323,7 @@ private fun MailboxItemsList(
             key = items.itemKey { it.id },
             contentType = items.itemContentType { MailboxItemUiModel::class }
         ) { index ->
-            items[index]?.let {item ->
+            items[index]?.let { item ->
                 MailboxItem(
                     modifier = Modifier
                         .testTag("${MailboxItemTestTags.ItemRow}$index")
@@ -331,8 +331,8 @@ private fun MailboxItemsList(
                     item = item,
                     actions = itemActions,
                     // See doc 0014
-                    isSelected = when(state){
-                        is MailboxListState.Data.SelectionMode -> state.selectedMailboxItems.any { it.id == item.id }
+                    isSelected = when (state) {
+                        is MailboxListState.Data.SelectionMode -> state.selectedMailboxItems.contains(item.id)
                         else -> false
                     }
                 )

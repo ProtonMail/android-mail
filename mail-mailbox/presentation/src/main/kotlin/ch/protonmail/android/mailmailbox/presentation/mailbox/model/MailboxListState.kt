@@ -44,7 +44,7 @@ sealed interface MailboxListState {
         data class SelectionMode(
             override val currentMailLabel: MailLabel,
             override val selectionModeEnabled: Boolean,
-            val selectedMailboxItems: Set<MailboxItemUiModel>
+            val selectedMailboxItems: Set<String>
         ) : Data
     }
 

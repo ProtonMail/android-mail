@@ -175,7 +175,7 @@ class MailboxListReducer @Inject constructor() {
         when (currentState) {
             is MailboxListState.Data.ViewMode -> MailboxListState.Data.SelectionMode(
                 currentMailLabel = currentState.currentMailLabel,
-                selectedMailboxItems = setOf(item),
+                selectedMailboxItems = setOf(item.id),
                 selectionModeEnabled = currentState.selectionModeEnabled
             )
 
@@ -212,7 +212,7 @@ class MailboxListReducer @Inject constructor() {
         currentState: MailboxListState
     ) = when (currentState) {
         is MailboxListState.Data.SelectionMode ->
-            currentState.copy(selectedMailboxItems = currentState.selectedMailboxItems + operation.item)
+            currentState.copy(selectedMailboxItems = currentState.selectedMailboxItems + operation.item.id)
 
         else -> currentState
     }
@@ -222,7 +222,7 @@ class MailboxListReducer @Inject constructor() {
         currentState: MailboxListState
     ) = when (currentState) {
         is MailboxListState.Data.SelectionMode ->
-            currentState.copy(selectedMailboxItems = currentState.selectedMailboxItems - operation.item)
+            currentState.copy(selectedMailboxItems = currentState.selectedMailboxItems - operation.item.id)
 
         else -> currentState
     }
