@@ -91,7 +91,7 @@ internal class AttachmentConversationModeTests : MockedNetworkTest(loginType = L
             )
         }
 
-        val expectedMimeType = "image/png"
+        val expectedMimeType = "image/jpeg"
 
         navigator { navigateTo(Destination.MailDetail()) }
 
