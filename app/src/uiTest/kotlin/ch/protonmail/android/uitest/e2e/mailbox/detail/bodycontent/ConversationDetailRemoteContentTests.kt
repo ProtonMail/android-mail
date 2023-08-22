@@ -18,10 +18,7 @@
 
 package ch.protonmail.android.uitest.e2e.mailbox.detail.bodycontent
 
-import arrow.core.Either
 import ch.protonmail.android.di.ServerProofModule
-import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
-import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.networkmocks.mockwebserver.combineWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.given
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
@@ -32,12 +29,14 @@ import ch.protonmail.android.networkmocks.mockwebserver.requests.withStatusCode
 import ch.protonmail.android.test.annotations.suite.RegressionTest
 import ch.protonmail.android.test.annotations.suite.SmokeTest
 import ch.protonmail.android.uitest.MockedNetworkTest
-import ch.protonmail.android.uitest.e2e.mailbox.detail.DetailRemoteContentTest
 import ch.protonmail.android.uitest.helpers.core.TestId
 import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
+import ch.protonmail.android.uitest.helpers.login.LoginTestUserTypes
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.robot.detail.conversationDetailRobot
+import ch.protonmail.android.uitest.robot.detail.messageDetailRobot
+import ch.protonmail.android.uitest.robot.detail.section.bannerSection
 import ch.protonmail.android.uitest.robot.detail.section.conversation.messagesCollapsedSection
 import ch.protonmail.android.uitest.robot.detail.section.messageBodySection
 import ch.protonmail.android.uitest.robot.detail.section.messageHeaderSection
@@ -45,7 +44,6 @@ import ch.protonmail.android.uitest.robot.detail.section.verify
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
-import io.mockk.coEvery
 import io.mockk.mockk
 import me.proton.core.auth.domain.usecase.ValidateServerProof
 import org.junit.Test
@@ -53,32 +51,20 @@ import org.junit.Test
 @RegressionTest
 @HiltAndroidTest
 @UninstallModules(ServerProofModule::class)
-internal class ConversationDetailRemoteContentTests : MockedNetworkTest(), DetailRemoteContentTest {
+internal class ConversationDetailRemoteContentTests :
+    MockedNetworkTest(loginType = LoginTestUserTypes.Paid.FancyCapybara) {
 
     private val expectedBodyText = "Various img elements"
-    private val expectedBodyTextSecondMessage = "Various img elements (2)"
+    private val expectedBodyTextLastMessage = "Various img elements (2)"
 
     @JvmField
     @BindValue
     val serverProofValidation: ValidateServerProof = mockk(relaxUnitFun = true)
 
-    @JvmField
-    @BindValue // GetDecryptedMessageBody needs to be mocked to make sure content is passed as expected to the WebView.
-    val decryptedMessageBody: GetDecryptedMessageBody = mockk {
-        coEvery {
-            this@mockk.invoke(any(), any())
-        } returns Either.Right(
-            getFakeDecryptedMessageBodyWithRemoteContent(
-                assetName = "html_remote_content_placeholder.html",
-                mimeType = MimeType.Html
-            )
-        )
-    }
-
     @Test
     @SmokeTest
-    @TestId("184206")
-    fun checkRemoteContentNotBlockedWhenConversationModeIsEnabled() {
+    @TestId("184206", "212680")
+    fun checkRemoteContentNotBlockedInConversationMode() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
                 given("/mail/v4/settings")
@@ -91,7 +77,7 @@ internal class ConversationDetailRemoteContentTests : MockedNetworkTest(), Detai
                     respondWith "/mail/v4/conversations/conversation-id/conversation-id_184206.json"
                     withStatusCode 200 matchWildcards true,
                 given("/mail/v4/messages/*")
-                    respondWith "/mail/v4/messages/message-id/message-id_base_placeholder.json"
+                    respondWith "/mail/v4/messages/message-id/message-id_184206.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )
         }
@@ -109,48 +95,14 @@ internal class ConversationDetailRemoteContentTests : MockedNetworkTest(), Detai
                     hasRemoteImageLoaded(true)
                 }
             }
+
+            bannerSection { verify { hasBlockedContentBannerNotDisplayed() } }
         }
     }
 
     @Test
-    @TestId("184208")
-    fun checkRemoteContentNotBlockedWithMultipleMessagesWhenConversationModeIsEnabled() {
-        mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
-            addMockRequests(
-                given("/mail/v4/settings")
-                    respondWith "/mail/v4/settings/mail-v4-settings_184208.json"
-                    withStatusCode 200,
-                given("/mail/v4/conversations")
-                    respondWith "/mail/v4/conversations/conversations_184208.json"
-                    withStatusCode 200 ignoreQueryParams true,
-                given("/mail/v4/conversations/*")
-                    respondWith "/mail/v4/conversations/conversation-id/conversation-id_184208.json"
-                    withStatusCode 200 matchWildcards true,
-                given("/mail/v4/messages/*")
-                    respondWith "/mail/v4/messages/message-id/message-id_base_placeholder.json"
-                    withStatusCode 200 matchWildcards true serveOnce true
-            )
-        }
-
-        navigator {
-            navigateTo(Destination.MailDetail(0))
-        }
-
-        conversationDetailRobot {
-            messageBodySection {
-                waitUntilMessageIsShown()
-
-                verify {
-                    messageInWebViewContains(expectedBodyText)
-                    hasRemoteImageLoaded(true)
-                }
-            }
-        }
-    }
-
-    @Test
-    @TestId("184209")
-    fun checkRemoteContentNotBlockedOnMultipleMessagesWhenConversationModeIsEnabled() {
+    @TestId("184208", "184209")
+    fun checkRemoteContentNotBlockedOnMultipleMessagesInConversationMode() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
                 given("/mail/v4/settings")
@@ -163,7 +115,10 @@ internal class ConversationDetailRemoteContentTests : MockedNetworkTest(), Detai
                     respondWith "/mail/v4/conversations/conversation-id/conversation-id_184209.json"
                     withStatusCode 200 matchWildcards true,
                 given("/mail/v4/messages/*")
-                    respondWith "/mail/v4/messages/message-id/message-id_base_placeholder.json"
+                    respondWith "/mail/v4/messages/message-id/message-id_184209.json"
+                    withStatusCode 200 matchWildcards true serveOnce true,
+                given("/mail/v4/messages/*")
+                    respondWith "/mail/v4/messages/message-id/message-id_184209_2.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )
         }
@@ -177,24 +132,16 @@ internal class ConversationDetailRemoteContentTests : MockedNetworkTest(), Detai
                 waitUntilMessageIsShown()
 
                 verify {
-                    messageInWebViewContains(expectedBodyText)
+                    messageInWebViewContains(expectedBodyTextLastMessage)
                     hasRemoteImageLoaded(true)
                 }
             }
 
+            bannerSection { verify { hasBlockedContentBannerNotDisplayed() } }
+
             messageHeaderSection {
                 expanded { collapse() }
             }
-
-            // Change the mocked decrypted message on the fly before opening the next message.
-            coEvery {
-                decryptedMessageBody.invoke(any(), any())
-            } returns Either.Right(
-                getFakeDecryptedMessageBodyWithRemoteContent(
-                    assetName = "html_remote_content_184209.html",
-                    mimeType = MimeType.Html
-                )
-            )
 
             messagesCollapsedSection {
                 scrollToTop()
@@ -205,17 +152,19 @@ internal class ConversationDetailRemoteContentTests : MockedNetworkTest(), Detai
                 waitUntilMessageIsShown()
 
                 verify {
-                    messageInWebViewContains(expectedBodyTextSecondMessage)
+                    messageInWebViewContains(expectedBodyText)
                     hasRemoteImageLoaded(true)
                 }
             }
+
+            bannerSection { verify { hasBlockedContentBannerNotDisplayed() } }
         }
     }
 
     @Test
     @SmokeTest
-    @TestId("184211")
-    fun checkRemoteContentBlockedWhenConversationModeIsEnabled() {
+    @TestId("184211", "212682")
+    fun checkRemoteContentBlockedInConversationMode() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
                 given("/mail/v4/settings")
@@ -228,7 +177,7 @@ internal class ConversationDetailRemoteContentTests : MockedNetworkTest(), Detai
                     respondWith "/mail/v4/conversations/conversation-id/conversation-id_184211.json"
                     withStatusCode 200 matchWildcards true,
                 given("/mail/v4/messages/*")
-                    respondWith "/mail/v4/messages/message-id/message-id_base_placeholder.json"
+                    respondWith "/mail/v4/messages/message-id/message-id_184211.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )
         }
@@ -246,12 +195,14 @@ internal class ConversationDetailRemoteContentTests : MockedNetworkTest(), Detai
                     hasRemoteImageLoaded(false)
                 }
             }
+
+            bannerSection { verify { hasBlockedRemoteImagesBannerDisplayed() } }
         }
     }
 
     @Test
     @TestId("184212")
-    fun checkRemoteContentBlockedWithMultipleMessagesWhenConversationModeIsEnabled() {
+    fun checkRemoteContentBlockedWithMultipleMessagesInConversationMode() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
                 given("/mail/v4/settings")
@@ -264,8 +215,11 @@ internal class ConversationDetailRemoteContentTests : MockedNetworkTest(), Detai
                     respondWith "/mail/v4/conversations/conversation-id/conversation-id_184212.json"
                     withStatusCode 200 matchWildcards true,
                 given("/mail/v4/messages/*")
-                    respondWith "/mail/v4/messages/message-id/message-id_base_placeholder.json"
-                    withStatusCode 200 matchWildcards true serveOnce true
+                    respondWith "/mail/v4/messages/message-id/message-id_184212.json"
+                    withStatusCode 200 matchWildcards true serveOnce true,
+                given("/mail/v4/messages/*")
+                    respondWith "/mail/v4/messages/message-id/message-id_184212_2.json"
+                    withStatusCode 200 matchWildcards true
             )
         }
 
@@ -278,24 +232,16 @@ internal class ConversationDetailRemoteContentTests : MockedNetworkTest(), Detai
                 waitUntilMessageIsShown()
 
                 verify {
-                    messageInWebViewContains(expectedBodyText)
+                    messageInWebViewContains(expectedBodyTextLastMessage)
                     hasRemoteImageLoaded(false)
                 }
             }
 
+            bannerSection { verify { hasBlockedRemoteImagesBannerDisplayed() } }
+
             messageHeaderSection {
                 expanded { collapse() }
             }
-
-            // Change the mocked decrypted message on the fly before opening the next message.
-            coEvery {
-                decryptedMessageBody.invoke(any(), any())
-            } returns Either.Right(
-                getFakeDecryptedMessageBodyWithRemoteContent(
-                    assetName = "html_remote_content_184212.html",
-                    mimeType = MimeType.Html
-                )
-            )
 
             messagesCollapsedSection {
                 scrollToTop()
@@ -306,10 +252,118 @@ internal class ConversationDetailRemoteContentTests : MockedNetworkTest(), Detai
                 waitUntilMessageIsShown()
 
                 verify {
-                    messageInWebViewContains(expectedBodyTextSecondMessage)
+                    messageInWebViewContains(expectedBodyText)
                     hasRemoteImageLoaded(false)
                 }
             }
+
+            bannerSection { verify { hasBlockedRemoteImagesBannerDisplayed() } }
+        }
+    }
+
+    @Test
+    @TestId("212683/2")
+    fun checkRemoteContentBannerNotShownWhenNoRemoteContentIsDisplayedInConversationMode() {
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
+            addMockRequests(
+                given("/mail/v4/settings")
+                    respondWith "/mail/v4/settings/mail-v4-settings_212683_2.json"
+                    withStatusCode 200,
+                given("/mail/v4/conversations")
+                    respondWith "/mail/v4/conversations/conversations_212683.json"
+                    withStatusCode 200 matchWildcards true ignoreQueryParams true,
+                given("/mail/v4/conversations/*")
+                    respondWith "/mail/v4/conversations/conversation-id/conversation-id_212683.json"
+                    withStatusCode 200 matchWildcards true,
+                given("/mail/v4/messages/*")
+                    respondWith "/mail/v4/messages/message-id/message-id_212683.json"
+                    withStatusCode 200 matchWildcards true serveOnce true
+            )
+        }
+
+        navigator {
+            navigateTo(Destination.MailDetail(0))
+        }
+
+        conversationDetailRobot {
+            messageBodySection { waitUntilMessageIsShown() }
+            bannerSection { verify { hasBlockedContentBannerNotDisplayed() } }
+        }
+    }
+
+    @Test
+    @TestId("212684/2")
+    fun checkCombinedBannerIsShownWhenBothRemoteContentAndEmbeddedImagesAreBlockedInConversationMode() {
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
+            addMockRequests(
+                given("/mail/v4/settings")
+                    respondWith "/mail/v4/settings/mail-v4-settings_212684_2.json"
+                    withStatusCode 200,
+                given("/mail/v4/conversations")
+                    respondWith "/mail/v4/conversations/conversations_212684.json"
+                    withStatusCode 200 matchWildcards true ignoreQueryParams true,
+                given("/mail/v4/conversations/*")
+                    respondWith "/mail/v4/conversations/conversation-id/conversation-id_212684.json"
+                    withStatusCode 200 matchWildcards true serveOnce true,
+                given("/mail/v4/messages/*")
+                    respondWith "/mail/v4/messages/message-id/message-id_212684.json"
+                    withStatusCode 200 matchWildcards true serveOnce true
+            )
+        }
+
+        navigator {
+            navigateTo(Destination.MailDetail(0))
+        }
+
+        messageDetailRobot {
+            messageBodySection {
+                waitUntilMessageIsShown()
+
+                verify {
+                    hasRemoteImageLoaded(false)
+                    hasEmbeddedImagesSuccessfullyLoaded(false)
+                }
+            }
+
+            bannerSection { verify { hasBlockerEmbeddedAndRemoteImagesBannerDisplayed() } }
+        }
+    }
+
+    @Test
+    @TestId("212686/2", "212687")
+    fun checkRemoteContentBlockedFromExternalAddressInConversationMode() {
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
+            addMockRequests(
+                given("/mail/v4/settings")
+                    respondWith "/mail/v4/settings/mail-v4-settings_212686_2.json"
+                    withStatusCode 200,
+                given("/mail/v4/conversations")
+                    respondWith "/mail/v4/conversations/conversations_212686.json"
+                    withStatusCode 200 matchWildcards true ignoreQueryParams true,
+                given("/mail/v4/conversations/*")
+                    respondWith "/mail/v4/conversations/conversation-id/conversation-id_212686.json"
+                    withStatusCode 200 matchWildcards true,
+                given("/mail/v4/messages/*")
+                    respondWith "/mail/v4/messages/message-id/message-id_212686.json"
+                    withStatusCode 200 matchWildcards true serveOnce true
+            )
+        }
+
+        navigator {
+            navigateTo(Destination.MailDetail(0))
+        }
+
+        messageDetailRobot {
+            messageBodySection {
+                waitUntilMessageIsShown()
+
+                verify {
+                    messageInWebViewContains(expectedBodyText)
+                    hasRemoteImageLoaded(false)
+                }
+            }
+
+            bannerSection { verify { hasBlockedRemoteImagesBannerDisplayed() } }
         }
     }
 }

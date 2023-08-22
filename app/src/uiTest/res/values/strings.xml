@@ -40,7 +40,8 @@
 
     <!-- Banners -->
     <string name="test_message_body_embedded_images_banner_text">Automatic loading of embedded images is turned off. This can be changed in the settings.</string>
-
+    <string name="test_message_body_remote_content_banner_text">Automatic loading of remote content is turned off. This can be changed in the settings.</string>
+    <string name="test_message_body_embedded_and_remote_content_banner_text">Automatic loading of embedded images and remote content is turned off. These can be changed in the settings.</string>
     <!-- Composer -->
     <string name="test_composer_sender_label">From:</string>
     <string name="test_composer_to_recipient_label">To:</string>

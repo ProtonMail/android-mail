@@ -41,7 +41,19 @@ internal class MessageBannerSection : ComposeSectionRobot() {
             )
         }
 
-        fun doesNotHaveBlockedEmbeddedImagesBannerDisplayed() {
+        fun hasBlockedRemoteImagesBannerDisplayed() {
+            messageBannerEntryModel.isDisplayedWithText(
+                getTestString(testR.string.test_message_body_remote_content_banner_text)
+            )
+        }
+
+        fun hasBlockerEmbeddedAndRemoteImagesBannerDisplayed() {
+            messageBannerEntryModel.isDisplayedWithText(
+                getTestString(testR.string.test_message_body_embedded_and_remote_content_banner_text)
+            )
+        }
+
+        fun hasBlockedContentBannerNotDisplayed() {
             messageBannerEntryModel.doesNotExist()
         }
     }

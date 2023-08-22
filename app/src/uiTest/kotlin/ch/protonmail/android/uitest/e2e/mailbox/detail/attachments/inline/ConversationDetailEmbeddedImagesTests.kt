@@ -194,7 +194,7 @@ internal class ConversationDetailEmbeddedImagesTests :
         conversationDetailRobot {
             messageBodySection { verifyEmbeddedImageLoaded(expectedState = true) }
 
-            bannerSection { verify { doesNotHaveBlockedEmbeddedImagesBannerDisplayed() } }
+            bannerSection { verify { hasBlockedContentBannerNotDisplayed() } }
 
             attachmentsSection {
                 verify {
@@ -297,7 +297,7 @@ internal class ConversationDetailEmbeddedImagesTests :
         messageDetailRobot {
             messageBodySection { waitUntilMessageIsShown() }
 
-            bannerSection { verify { doesNotHaveBlockedEmbeddedImagesBannerDisplayed() } }
+            bannerSection { verify { hasBlockedContentBannerNotDisplayed() } }
         }
     }
 
