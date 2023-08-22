@@ -31,8 +31,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -51,6 +51,7 @@ import ch.protonmail.android.uicomponents.chips.ChipItem
 import ch.protonmail.android.uicomponents.chips.ChipsListField
 import ch.protonmail.android.uicomponents.chips.thenIf
 import me.proton.core.compose.theme.ProtonDimens
+import me.proton.core.compose.theme.ProtonTheme
 import timber.log.Timber
 
 @Composable
@@ -126,6 +127,7 @@ internal fun ComposerForm(
                             }
                             .rotate(recipientsButtonRotation.value),
                         imageVector = Icons.Filled.KeyboardArrowUp,
+                        tint = ProtonTheme.colors.textWeak,
                         contentDescription = stringResource(id = R.string.composer_expand_recipients_button)
                     )
                 }

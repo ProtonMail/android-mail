@@ -15,14 +15,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.InputChip
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SuggestionChip
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -56,6 +55,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import me.proton.core.compose.theme.ProtonTheme
+import me.proton.core.compose.theme.defaultSmallNorm
 
 @Stable
 sealed class ChipItem(open val value: String) {
@@ -83,10 +84,8 @@ fun ChipsListTextField(
     onListChanged: (List<ChipItem>) -> Unit,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     focusRequester: FocusRequester? = null,
-    cursorColor: Color = MaterialTheme.colorScheme.primary,
-    textStyle: TextStyle = MaterialTheme.typography.bodyMedium.copy(
-        color = MaterialTheme.colorScheme.primary
-    ),
+    cursorColor: Color = ProtonTheme.colors.brandDarken20,
+    textStyle: TextStyle = ProtonTheme.typography.defaultSmallNorm,
     animateChipsCreation: Boolean = false
 ) {
     val state by remember { mutableStateOf(ChipsListState(chipValidator, onListChanged)) }

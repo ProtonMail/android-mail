@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Text
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -14,6 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import me.proton.core.compose.theme.ProtonTheme
+import me.proton.core.compose.theme.defaultSmallNorm
 
 /*
     Composable that displays a ChipsListTextField with a label in a row (useful for forms)
@@ -40,7 +42,9 @@ fun ChipsListField(
             modifier = Modifier
                 .testTag(ChipsTestTags.FieldPrefix)
                 .align(Alignment.Top)
-                .padding(top = 16.dp, bottom = 16.dp, start = 0.dp)
+                .padding(top = 16.dp, bottom = 16.dp, start = 0.dp),
+            color = ProtonTheme.colors.textWeak,
+            style = ProtonTheme.typography.defaultSmallNorm
         )
         ChipsListTextField(
             modifier = Modifier
