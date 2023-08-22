@@ -185,6 +185,7 @@ fun MailboxScreen(
                 MailboxSwipeRefresh(
                     modifier = Modifier.padding(paddingValues),
                     items = mailboxListItems,
+                    state = mailboxListState,
                     listState = lazyListState,
                     viewState = mailboxListState,
                     actions = actions
@@ -225,6 +226,7 @@ private fun MailboxStickyHeader(
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun MailboxSwipeRefresh(
+    state: MailboxListState,
     items: LazyPagingItems<MailboxItemUiModel>,
     viewState: MailboxListState.Data,
     listState: LazyListState,
@@ -272,19 +274,19 @@ private fun MailboxSwipeRefresh(
 
             is MailboxScreenState.OfflineWithData -> {
                 actions.onOfflineWithData()
-                MailboxItemsList(listState, currentViewState, items, actions)
+                MailboxItemsList(state, listState, currentViewState, items, actions)
             }
 
             is MailboxScreenState.ErrorWithData -> {
                 actions.onErrorWithData()
-                MailboxItemsList(listState, currentViewState, items, actions)
+                MailboxItemsList(state, listState, currentViewState, items, actions)
             }
 
             is MailboxScreenState.LoadingWithData,
             is MailboxScreenState.AppendLoading,
             is MailboxScreenState.AppendError,
             is MailboxScreenState.AppendOfflineError,
-            is MailboxScreenState.Data -> MailboxItemsList(listState, currentViewState, items, actions)
+            is MailboxScreenState.Data -> MailboxItemsList(state, listState, currentViewState, items, actions)
         }
         PullRefreshIndicator(
             refreshing = refreshing,
@@ -297,6 +299,7 @@ private fun MailboxSwipeRefresh(
 @Composable
 @OptIn(ExperimentalFoundationApi::class)
 private fun MailboxItemsList(
+    state: MailboxListState,
     listState: LazyListState,
     viewState: MailboxScreenState,
     items: LazyPagingItems<MailboxItemUiModel>,
@@ -320,13 +323,18 @@ private fun MailboxItemsList(
             key = items.itemKey { it.id },
             contentType = items.itemContentType { MailboxItemUiModel::class }
         ) { index ->
-            items[index]?.let {
+            items[index]?.let {item ->
                 MailboxItem(
                     modifier = Modifier
                         .testTag("${MailboxItemTestTags.ItemRow}$index")
                         .animateItemPlacement(),
-                    item = it,
-                    actions = itemActions
+                    item = item,
+                    actions = itemActions,
+                    // See doc 0014
+                    isSelected = when(state){
+                        is MailboxListState.Data.SelectionMode -> state.selectedMailboxItems.any { it.id == item.id }
+                        else -> false
+                    }
                 )
                 Divider(color = ProtonTheme.colors.separatorNorm, thickness = MailDimens.SeparatorHeight)
             }

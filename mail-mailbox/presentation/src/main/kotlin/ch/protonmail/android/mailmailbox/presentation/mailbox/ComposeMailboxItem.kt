@@ -65,14 +65,18 @@ import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.captionNorm
 import me.proton.core.compose.theme.defaultNorm
 import me.proton.core.compose.theme.defaultSmallNorm
+import timber.log.Timber
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MailboxItem(
     modifier: Modifier = Modifier,
     actions: ComposeMailboxItem.Actions,
-    item: MailboxItemUiModel
+    item: MailboxItemUiModel,
+    isSelected: Boolean = false
 ) {
+    Timber.d("Item selection state: $isSelected")
+
     Row(
         modifier = modifier
             .combinedClickable(

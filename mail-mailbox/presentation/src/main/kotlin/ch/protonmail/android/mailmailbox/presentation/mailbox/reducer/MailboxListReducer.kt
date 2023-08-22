@@ -175,7 +175,7 @@ class MailboxListReducer @Inject constructor() {
         when (currentState) {
             is MailboxListState.Data.ViewMode -> MailboxListState.Data.SelectionMode(
                 currentMailLabel = currentState.currentMailLabel,
-                selectedMailboxItems = listOf(item),
+                selectedMailboxItems = setOf(item),
                 selectionModeEnabled = currentState.selectionModeEnabled
             )
 

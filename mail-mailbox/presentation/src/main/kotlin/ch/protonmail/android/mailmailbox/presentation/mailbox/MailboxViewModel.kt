@@ -189,7 +189,7 @@ class MailboxViewModel @Inject constructor(
             return
         }
 
-        val event = if (selectionMode.selectedMailboxItems.contains(item)) {
+        val event = if (selectionMode.selectedMailboxItems.any { it.id == item.id }) {
             MailboxEvent.ItemClicked.ItemRemovedFromSelection(item)
         } else {
             MailboxEvent.ItemClicked.ItemAddedToSelection(item)
@@ -201,7 +201,7 @@ class MailboxViewModel @Inject constructor(
     private fun enterSelectionMode(item: MailboxItemUiModel) {
         when (val state = state.value.mailboxListState) {
             is MailboxListState.Data.ViewMode -> emitNewStateFrom(MailboxEvent.EnterSelectionMode(item))
-            else -> Timber.d("Cannot enter selection mode frome state: $state")
+            else -> Timber.d("Cannot enter selection mode from state: $state")
         }
     }
 
