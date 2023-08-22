@@ -302,6 +302,12 @@ private fun MailboxItemsList(
     items: LazyPagingItems<MailboxItemUiModel>,
     actions: MailboxScreen.Actions
 ) {
+    val itemActions = ComposeMailboxItem.Actions(
+        onItemClicked = actions.onItemClicked,
+        onItemLongClicked = actions.onItemLongClicked,
+        onAvatarClicked = actions.onAvatarClicked
+    )
+
     LazyColumn(
         state = listState,
         modifier = Modifier
@@ -320,9 +326,7 @@ private fun MailboxItemsList(
                         .testTag("${MailboxItemTestTags.ItemRow}$index")
                         .animateItemPlacement(),
                     item = it,
-                    onItemClicked = actions.onItemClicked,
-                    onItemLongClicked = actions.onItemLongClicked,
-                    onAvatarClicked = actions.onAvatarClicked,
+                    actions = itemActions
                 )
                 Divider(color = ProtonTheme.colors.separatorNorm, thickness = MailDimens.SeparatorHeight)
             }
