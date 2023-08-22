@@ -39,6 +39,7 @@ object FeatureFlagModule {
         val isAlphaOrDev = buildFlavor == "dev" || buildFlavor == "alpha"
         return MailFeatureDefaults(
             mapOf(
+                MailFeatureId.AddAttachmentsToDraft to buildDebug,
                 MailFeatureId.ConversationMode to isAlphaOrDev,
                 MailFeatureId.ShowSettings to isAlphaOrDev,
                 MailFeatureId.HideComposer to buildDebug.not(),

@@ -522,7 +522,8 @@ class ComposerReducerTest(
             changeSenderBottomSheetVisibility = Effect.empty(),
             closeComposer = Effect.empty(),
             closeComposerWithDraftSaved = Effect.empty(),
-            isLoading = false
+            isLoading = false,
+            isAddAttachmentsButtonVisible = false
         )
 
         private fun aNotSubmittableState(
@@ -557,7 +558,8 @@ class ComposerReducerTest(
             changeSenderBottomSheetVisibility = changeSenderBottomSheetVisibility,
             closeComposer = closeComposer,
             closeComposerWithDraftSaved = closeComposerWithDraftSaved,
-            isLoading = isLoading
+            isLoading = isLoading,
+            isAddAttachmentsButtonVisible = false
         )
 
         private fun aPositiveRandomInt(bound: Int = 10) = Random().nextInt(bound)

@@ -45,6 +45,7 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
                 buildFlavor = "dev",
                 buildDebug = false,
                 expectedDefaultsMap = mapOf(
+                    MailFeatureId.AddAttachmentsToDraft to false,
                     MailFeatureId.ConversationMode to true,
                     MailFeatureId.ShowSettings to true,
                     MailFeatureId.HideComposer to true,
@@ -55,6 +56,7 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
                 buildFlavor = "dev",
                 buildDebug = true,
                 expectedDefaultsMap = mapOf(
+                    MailFeatureId.AddAttachmentsToDraft to true,
                     MailFeatureId.ConversationMode to true,
                     MailFeatureId.ShowSettings to true,
                     MailFeatureId.HideComposer to false,
@@ -65,6 +67,7 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
                 buildFlavor = "alpha",
                 buildDebug = false,
                 expectedDefaultsMap = mapOf(
+                    MailFeatureId.AddAttachmentsToDraft to false,
                     MailFeatureId.ConversationMode to true,
                     MailFeatureId.ShowSettings to true,
                     MailFeatureId.HideComposer to true,
@@ -75,6 +78,7 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
                 buildFlavor = "alpha",
                 buildDebug = true,
                 expectedDefaultsMap = mapOf(
+                    MailFeatureId.AddAttachmentsToDraft to true,
                     MailFeatureId.ConversationMode to true,
                     MailFeatureId.ShowSettings to true,
                     MailFeatureId.HideComposer to false,
@@ -85,6 +89,7 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
                 buildFlavor = "prod",
                 buildDebug = false,
                 expectedDefaultsMap = mapOf(
+                    MailFeatureId.AddAttachmentsToDraft to false,
                     MailFeatureId.ConversationMode to false,
                     MailFeatureId.ShowSettings to false,
                     MailFeatureId.HideComposer to true,
@@ -95,6 +100,7 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
                 buildFlavor = "prod",
                 buildDebug = true,
                 expectedDefaultsMap = mapOf(
+                    MailFeatureId.AddAttachmentsToDraft to true,
                     MailFeatureId.ConversationMode to false,
                     MailFeatureId.ShowSettings to false,
                     MailFeatureId.HideComposer to false,

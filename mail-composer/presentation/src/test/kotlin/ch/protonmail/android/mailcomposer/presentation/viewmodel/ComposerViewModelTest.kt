@@ -24,6 +24,7 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
@@ -110,6 +111,7 @@ class ComposerViewModelTest {
     }
     private val savedStateHandle = mockk<SavedStateHandle>()
     private val getDecryptedDraftFields = mockk<GetDecryptedDraftFields>()
+    private val observeMailFeature = mockk<ObserveMailFeature>()
     private val reducer = ComposerReducer()
 
     private val viewModel by lazy {
@@ -126,6 +128,7 @@ class ComposerViewModelTest {
             getComposerSenderAddresses,
             composerIdlingResource,
             draftUploader,
+            observeMailFeature,
             getDecryptedDraftFields,
             savedStateHandle,
             observePrimaryUserIdMock,
@@ -864,7 +867,8 @@ class ComposerViewModelTest {
             changeSenderBottomSheetVisibility = Effect.empty(),
             closeComposer = Effect.empty(),
             closeComposerWithDraftSaved = Effect.empty(),
-            isLoading = false
+            isLoading = false,
+            isAddAttachmentsButtonVisible = false
         )
 
         mockkObject(ComposerDraftState.Companion)

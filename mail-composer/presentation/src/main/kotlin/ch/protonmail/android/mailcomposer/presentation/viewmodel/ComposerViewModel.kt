@@ -22,6 +22,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
+import ch.protonmail.android.mailcommon.domain.MailFeatureId
+import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcomposer.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
@@ -61,6 +63,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -86,6 +89,7 @@ class ComposerViewModel @Inject constructor(
     private val getComposerSenderAddresses: GetComposerSenderAddresses,
     private val composerIdlingResource: ComposerIdlingResource,
     private val draftUploader: DraftUploader,
+    private val observeMailFeature: ObserveMailFeature,
     getDecryptedDraftFields: GetDecryptedDraftFields,
     savedStateHandle: SavedStateHandle,
     observePrimaryUserId: ObservePrimaryUserId,
@@ -126,6 +130,11 @@ class ComposerViewModel @Inject constructor(
         } else {
             viewModelScope.launch { startDraftContinuousUpload() }
         }
+
+        primaryUserId
+            .flatMapLatest { userId -> observeMailFeature(userId, MailFeatureId.AddAttachmentsToDraft) }
+            .onEach { mutableState.emit(mutableState.value.copy(isAddAttachmentsButtonVisible = it.value)) }
+            .launchIn(viewModelScope)
     }
 
     override fun onCleared() {

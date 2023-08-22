@@ -92,6 +92,7 @@ fun ComposerScreen(
                     .testTag(ComposerTestTags.RootItem)
             ) {
                 ComposerTopBar(
+                    isAddAttachmentsButtonVisible = state.isAddAttachmentsButtonVisible,
                     onCloseComposerClick = {
                         viewModel.submit(ComposerAction.OnCloseComposer)
                     }

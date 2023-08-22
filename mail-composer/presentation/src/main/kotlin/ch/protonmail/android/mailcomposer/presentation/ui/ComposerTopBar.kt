@@ -32,7 +32,7 @@ import me.proton.core.compose.component.appbar.ProtonTopAppBar
 import me.proton.core.compose.theme.ProtonTheme
 
 @Composable
-internal fun ComposerTopBar(onCloseComposerClick: () -> Unit) {
+internal fun ComposerTopBar(isAddAttachmentsButtonVisible: Boolean, onCloseComposerClick: () -> Unit) {
     ProtonTopAppBar(
         modifier = Modifier.testTag(ComposerTestTags.TopAppBar),
         title = {},
@@ -49,6 +49,17 @@ internal fun ComposerTopBar(onCloseComposerClick: () -> Unit) {
             }
         },
         actions = {
+            if (isAddAttachmentsButtonVisible) {
+                IconButton(
+                    onClick = {}
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_proton_paper_clip),
+                        tint = ProtonTheme.colors.iconNorm,
+                        contentDescription = stringResource(R.string.add_attachments_content_description)
+                    )
+                }
+            }
             IconButton(
                 modifier = Modifier.testTag(ComposerTestTags.SendButton),
                 onClick = {},
