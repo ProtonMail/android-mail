@@ -25,7 +25,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
-import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData
+import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData.readMailboxItemUiModel
 import me.proton.core.util.kotlin.EMPTY_STRING
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -55,12 +55,7 @@ internal class MailboxTopAppBarReducerTest(
         private val transitionsFromLoadingState = listOf(
             TestInput(
                 currentState = MailboxTopAppBarState.Loading,
-                operation = MailboxViewAction.EnterSelectionMode(MailboxItemUiModelTestData.readMailboxItemUiModel),
-                expectedState = MailboxTopAppBarState.Loading
-            ),
-            TestInput(
-                currentState = MailboxTopAppBarState.Loading,
-                operation = MailboxViewAction.EnterSelectionMode(MailboxItemUiModelTestData.readMailboxItemUiModel),
+                operation = MailboxEvent.EnterSelectionMode(readMailboxItemUiModel),
                 expectedState = MailboxTopAppBarState.Loading
             ),
             TestInput(
@@ -70,22 +65,17 @@ internal class MailboxTopAppBarReducerTest(
             ),
             TestInput(
                 currentState = MailboxTopAppBarState.Loading,
-                operation = MailboxViewAction.ExitSelectionMode,
+                operation = MailboxEvent.ItemClicked.ItemAddedToSelection(readMailboxItemUiModel),
+                expectedState = MailboxTopAppBarState.Loading
+            ),
+            TestInput(
+                currentState = MailboxTopAppBarState.Loading,
+                operation = MailboxEvent.ItemClicked.ItemRemovedFromSelection(readMailboxItemUiModel),
                 expectedState = MailboxTopAppBarState.Loading
             ),
             TestInput(
                 currentState = MailboxTopAppBarState.Loading,
                 operation = MailboxEvent.NewLabelSelected(inboxLabel, selectedLabelCount = 42),
-                expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text())
-            ),
-            TestInput(
-                currentState = MailboxTopAppBarState.Loading,
-                operation = MailboxEvent.NewLabelSelected(inboxLabel, selectedLabelCount = 42),
-                expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text())
-            ),
-            TestInput(
-                currentState = MailboxTopAppBarState.Loading,
-                operation = MailboxEvent.SelectedLabelChanged(inboxLabel),
                 expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text())
             ),
             TestInput(
@@ -98,12 +88,7 @@ internal class MailboxTopAppBarReducerTest(
         private val transitionsFromDefaultModeState = listOf(
             TestInput(
                 currentState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text()),
-                operation = MailboxViewAction.EnterSelectionMode(MailboxItemUiModelTestData.readMailboxItemUiModel),
-                expectedState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 1)
-            ),
-            TestInput(
-                currentState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text()),
-                operation = MailboxViewAction.EnterSelectionMode(MailboxItemUiModelTestData.readMailboxItemUiModel),
+                operation = MailboxEvent.EnterSelectionMode(readMailboxItemUiModel),
                 expectedState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 1)
             ),
             TestInput(
@@ -126,13 +111,23 @@ internal class MailboxTopAppBarReducerTest(
         private val transitionsFromSelectionModeState = listOf(
             TestInput(
                 currentState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 42),
-                operation = MailboxViewAction.EnterSelectionMode(MailboxItemUiModelTestData.readMailboxItemUiModel),
+                operation = MailboxEvent.EnterSelectionMode(readMailboxItemUiModel),
                 expectedState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 1)
             ),
             TestInput(
                 currentState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 42),
                 operation = MailboxViewAction.ExitSelectionMode,
                 expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text())
+            ),
+            TestInput(
+                currentState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 42),
+                operation = MailboxEvent.ItemClicked.ItemAddedToSelection(readMailboxItemUiModel),
+                expectedState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 43)
+            ),
+            TestInput(
+                currentState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 42),
+                operation = MailboxEvent.ItemClicked.ItemRemovedFromSelection(readMailboxItemUiModel),
+                expectedState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 41)
             ),
             TestInput(
                 currentState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 42),
@@ -149,7 +144,7 @@ internal class MailboxTopAppBarReducerTest(
         private val transitionsFromSearchModeState = listOf(
             TestInput(
                 currentState = MailboxTopAppBarState.Data.SearchMode(inboxLabel.text(), searchQuery = EMPTY_STRING),
-                operation = MailboxViewAction.EnterSelectionMode(MailboxItemUiModelTestData.readMailboxItemUiModel),
+                operation = MailboxEvent.EnterSelectionMode(readMailboxItemUiModel),
                 expectedState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 1)
             ),
             TestInput(

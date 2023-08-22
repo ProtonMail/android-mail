@@ -97,10 +97,17 @@ fun MailboxScreen(
         onExitSelectionMode = { viewModel.submit(MailboxViewAction.ExitSelectionMode) },
         onOfflineWithData = { viewModel.submit(MailboxViewAction.OnOfflineWithData) },
         onErrorWithData = { viewModel.submit(MailboxViewAction.OnErrorWithData) },
-        onNavigateToMailboxItem = { item -> viewModel.submit(MailboxViewAction.OpenItemDetails(item)) },
-        onOpenSelectionMode = {
+        onItemClicked = { item -> viewModel.submit(MailboxViewAction.ItemClicked(item)) },
+        onItemLongClicked = {
             if (mailboxState.mailboxListState.selectionModeEnabled) {
-                viewModel.submit(MailboxViewAction.EnterSelectionMode(it))
+                viewModel.submit(MailboxViewAction.OnItemLongClicked(it))
+            } else {
+                actions.showFeatureMissingSnackbar()
+            }
+        },
+        onAvatarClicked = {
+            if (mailboxState.mailboxListState.selectionModeEnabled) {
+                viewModel.submit(MailboxViewAction.OnItemAvatarClicked(it))
             } else {
                 actions.showFeatureMissingSnackbar()
             }
@@ -155,33 +162,34 @@ fun MailboxScreen(
         }
     ) { paddingValues ->
         when (val mailboxListState = mailboxState.mailboxListState) {
-            is MailboxListState.Data.ViewMode -> {
+            is MailboxListState.Data -> {
 
-                ConsumableLaunchedEffect(mailboxListState.scrollToMailboxTop) {
-                    lazyListState.animateScrollToItem(0)
-                }
+                if (mailboxListState is MailboxListState.Data.ViewMode) {
+                    ConsumableLaunchedEffect(mailboxListState.scrollToMailboxTop) {
+                        lazyListState.animateScrollToItem(0)
+                    }
 
-                ConsumableLaunchedEffect(mailboxListState.openItemEffect) { itemId ->
-                    actions.navigateToMailboxItem(itemId)
-                }
+                    ConsumableLaunchedEffect(mailboxListState.openItemEffect) { itemId ->
+                        actions.navigateToMailboxItem(itemId)
+                    }
 
-                ConsumableLaunchedEffect(mailboxListState.offlineEffect) {
-                    actions.showOfflineSnackbar()
-                }
+                    ConsumableLaunchedEffect(mailboxListState.offlineEffect) {
+                        actions.showOfflineSnackbar()
+                    }
 
-                ConsumableLaunchedEffect(mailboxListState.refreshErrorEffect) {
-                    actions.showRefreshErrorSnackbar()
+                    ConsumableLaunchedEffect(mailboxListState.refreshErrorEffect) {
+                        actions.showRefreshErrorSnackbar()
+                    }
                 }
 
                 MailboxSwipeRefresh(
                     modifier = Modifier.padding(paddingValues),
                     items = mailboxListItems,
                     listState = lazyListState,
+                    viewState = mailboxListState,
                     actions = actions
                 )
             }
-
-            is MailboxListState.Data.SelectionMode -> {}
 
             is MailboxListState.Loading -> ProtonCenteredProgress(
                 modifier = Modifier
@@ -218,6 +226,7 @@ private fun MailboxStickyHeader(
 @Composable
 private fun MailboxSwipeRefresh(
     items: LazyPagingItems<MailboxItemUiModel>,
+    viewState: MailboxListState.Data,
     listState: LazyListState,
     actions: MailboxScreen.Actions,
     modifier: Modifier = Modifier
@@ -234,7 +243,12 @@ private fun MailboxSwipeRefresh(
         }
     )
 
-    Box(modifier = modifier.pullRefresh(pullRefreshState)) {
+    Box(
+        modifier = modifier.pullRefresh(
+            state = pullRefreshState,
+            enabled = viewState is MailboxListState.Data.ViewMode
+        )
+    ) {
         when (currentViewState) {
             is MailboxScreenState.Loading -> ProtonCenteredProgress(
                 modifier = Modifier.testTag(MailboxScreenTestTags.ListProgress)
@@ -306,8 +320,9 @@ private fun MailboxItemsList(
                         .testTag("${MailboxItemTestTags.ItemRow}$index")
                         .animateItemPlacement(),
                     item = it,
-                    onItemClicked = actions.onNavigateToMailboxItem,
-                    onOpenSelectionMode = actions.onOpenSelectionMode
+                    onItemClicked = actions.onItemClicked,
+                    onItemLongClicked = actions.onItemLongClicked,
+                    onAvatarClicked = actions.onAvatarClicked,
                 )
                 Divider(color = ProtonTheme.colors.separatorNorm, thickness = MailDimens.SeparatorHeight)
             }
@@ -397,8 +412,9 @@ object MailboxScreen {
         val onDisableUnreadFilter: () -> Unit,
         val onEnableUnreadFilter: () -> Unit,
         val onExitSelectionMode: () -> Unit,
-        val onNavigateToMailboxItem: (MailboxItemUiModel) -> Unit,
-        val onOpenSelectionMode: (MailboxItemUiModel) -> Unit,
+        val onItemClicked: (MailboxItemUiModel) -> Unit,
+        val onItemLongClicked: (MailboxItemUiModel) -> Unit,
+        val onAvatarClicked: (MailboxItemUiModel) -> Unit,
         val onRefreshList: () -> Unit,
         val openDrawerMenu: () -> Unit,
         val showOfflineSnackbar: () -> Unit,
@@ -416,8 +432,9 @@ object MailboxScreen {
                 onDisableUnreadFilter = {},
                 onEnableUnreadFilter = {},
                 onExitSelectionMode = {},
-                onNavigateToMailboxItem = {},
-                onOpenSelectionMode = {},
+                onItemClicked = {},
+                onItemLongClicked = {},
+                onAvatarClicked = {},
                 onRefreshList = {},
                 openDrawerMenu = {},
                 showOfflineSnackbar = {},

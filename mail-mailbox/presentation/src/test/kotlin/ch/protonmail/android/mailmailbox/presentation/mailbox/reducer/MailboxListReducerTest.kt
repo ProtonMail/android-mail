@@ -82,7 +82,7 @@ internal class MailboxListReducerTest(
             ),
             TestInput(
                 currentState = MailboxListState.Loading(selectionModeEnabled = false),
-                operation = MailboxEvent.ItemDetailsOpenedInViewMode(
+                operation = MailboxEvent.ItemClicked.ItemDetailsOpenedInViewMode(
                     item = MailboxItemUiModelTestData.readMailboxItemUiModel,
                     preferredViewMode = ViewMode.ConversationGrouping
                 ),
@@ -90,7 +90,7 @@ internal class MailboxListReducerTest(
             ),
             TestInput(
                 currentState = MailboxListState.Loading(selectionModeEnabled = false),
-                operation = MailboxEvent.ItemDetailsOpenedInViewMode(
+                operation = MailboxEvent.ItemClicked.ItemDetailsOpenedInViewMode(
                     item = MailboxItemUiModelTestData.readMailboxItemUiModel,
                     preferredViewMode = ViewMode.NoConversationGrouping
                 ),
@@ -171,7 +171,7 @@ internal class MailboxListReducerTest(
                     refreshRequested = false,
                     selectionModeEnabled = false
                 ),
-                operation = MailboxEvent.ItemDetailsOpenedInViewMode(
+                operation = MailboxEvent.ItemClicked.ItemDetailsOpenedInViewMode(
                     item = MailboxItemUiModelTestData.readMailboxItemUiModel,
                     preferredViewMode = ViewMode.ConversationGrouping
                 ),
@@ -201,7 +201,7 @@ internal class MailboxListReducerTest(
                     refreshRequested = false,
                     selectionModeEnabled = false
                 ),
-                operation = MailboxEvent.ItemDetailsOpenedInViewMode(
+                operation = MailboxEvent.ItemClicked.ItemDetailsOpenedInViewMode(
                     item = MailboxItemUiModelTestData.readMailboxItemUiModel,
                     preferredViewMode = ViewMode.NoConversationGrouping
                 ),
@@ -231,7 +231,7 @@ internal class MailboxListReducerTest(
                     refreshRequested = false,
                     selectionModeEnabled = false
                 ),
-                operation = MailboxEvent.ItemDetailsOpenedInViewMode(
+                operation = MailboxEvent.ItemClicked.ItemDetailsOpenedInViewMode(
                     item = MailboxItemUiModelTestData.draftMailboxItemUiModel,
                     preferredViewMode = ViewMode.NoConversationGrouping
                 ),
@@ -261,7 +261,7 @@ internal class MailboxListReducerTest(
                     refreshRequested = false,
                     selectionModeEnabled = false
                 ),
-                operation = MailboxEvent.ItemDetailsOpenedInViewMode(
+                operation = MailboxEvent.ItemClicked.ItemDetailsOpenedInViewMode(
                     item = MailboxItemUiModelTestData.draftMailboxItemUiModel,
                     preferredViewMode = ViewMode.ConversationGrouping
                 ),
@@ -396,7 +396,7 @@ internal class MailboxListReducerTest(
                     refreshRequested = false,
                     selectionModeEnabled = false
                 ),
-                operation = MailboxViewAction.EnterSelectionMode(MailboxItemUiModelTestData.readMailboxItemUiModel),
+                operation = MailboxEvent.EnterSelectionMode(MailboxItemUiModelTestData.readMailboxItemUiModel),
                 expectedState = MailboxListState.Data.SelectionMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,
                     selectedMailboxItems = listOf(MailboxItemUiModelTestData.readMailboxItemUiModel),
@@ -417,6 +417,39 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    selectionModeEnabled = false
+                )
+            ),
+            TestInput(
+                currentState = MailboxListState.Data.SelectionMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    selectedMailboxItems = listOf(MailboxItemUiModelTestData.readMailboxItemUiModel),
+                    selectionModeEnabled = false
+                ),
+                operation = MailboxEvent.ItemClicked.ItemAddedToSelection(
+                    MailboxItemUiModelTestData.unreadMailboxItemUiModel
+                ),
+                expectedState = MailboxListState.Data.SelectionMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    selectedMailboxItems = listOf(
+                        MailboxItemUiModelTestData.readMailboxItemUiModel,
+                        MailboxItemUiModelTestData.unreadMailboxItemUiModel
+                    ),
+                    selectionModeEnabled = false
+                )
+            ),
+            TestInput(
+                currentState = MailboxListState.Data.SelectionMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    selectedMailboxItems = listOf(MailboxItemUiModelTestData.readMailboxItemUiModel),
+                    selectionModeEnabled = false
+                ),
+                operation = MailboxEvent.ItemClicked.ItemRemovedFromSelection(
+                    MailboxItemUiModelTestData.readMailboxItemUiModel
+                ),
+                expectedState = MailboxListState.Data.SelectionMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    selectedMailboxItems = listOf(),
                     selectionModeEnabled = false
                 )
             ),

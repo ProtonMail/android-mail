@@ -31,12 +31,18 @@ internal sealed interface MailboxOperation {
 }
 
 internal sealed interface MailboxViewAction : MailboxOperation {
-    data class EnterSelectionMode(
+    data class OnItemLongClicked(
         val item: MailboxItemUiModel
-    ) : MailboxViewAction, AffectingTopAppBar, AffectingMailboxList
+    ) : MailboxViewAction
+
+    data class OnItemAvatarClicked(
+        val item: MailboxItemUiModel
+    ) : MailboxViewAction
 
     object ExitSelectionMode : MailboxViewAction, AffectingTopAppBar, AffectingMailboxList
-    data class OpenItemDetails(val item: MailboxItemUiModel) : MailboxViewAction
+
+    data class ItemClicked(val item: MailboxItemUiModel) : MailboxViewAction
+
     object Refresh : MailboxViewAction, AffectingMailboxList
     object EnableUnreadFilter : MailboxViewAction, AffectingUnreadFilter
     object DisableUnreadFilter : MailboxViewAction, AffectingUnreadFilter
@@ -51,10 +57,6 @@ internal sealed interface MailboxViewAction : MailboxOperation {
 }
 
 internal sealed interface MailboxEvent : MailboxOperation {
-    data class ItemDetailsOpenedInViewMode(
-        val item: MailboxItemUiModel,
-        val preferredViewMode: ViewMode
-    ) : MailboxEvent, AffectingMailboxList
 
     data class NewLabelSelected(
         val selectedLabel: MailLabel,
@@ -72,6 +74,29 @@ internal sealed interface MailboxEvent : MailboxOperation {
     data class SelectionModeEnabledChanged(
         val selectionModeEnabled: Boolean
     ) : MailboxEvent, AffectingMailboxList
+
+    data class EnterSelectionMode(
+        val item: MailboxItemUiModel
+    ) : MailboxEvent, AffectingTopAppBar, AffectingMailboxList
+
+    sealed interface ItemClicked : MailboxEvent {
+
+        val item: MailboxItemUiModel
+
+        data class ItemDetailsOpenedInViewMode(
+            override val item: MailboxItemUiModel,
+            val preferredViewMode: ViewMode
+        ) : ItemClicked, AffectingMailboxList
+
+        data class ItemAddedToSelection(
+            override val item: MailboxItemUiModel
+        ) : ItemClicked, AffectingMailboxList, AffectingTopAppBar
+
+        data class ItemRemovedFromSelection(
+            override val item: MailboxItemUiModel
+        ) : ItemClicked, AffectingMailboxList, AffectingTopAppBar
+
+    }
 }
 
 

@@ -72,11 +72,12 @@ fun MailboxItem(
     modifier: Modifier = Modifier,
     item: MailboxItemUiModel,
     onItemClicked: (MailboxItemUiModel) -> Unit,
-    onOpenSelectionMode: (MailboxItemUiModel) -> Unit
+    onItemLongClicked: (MailboxItemUiModel) -> Unit,
+    onAvatarClicked: (MailboxItemUiModel) -> Unit
 ) {
     Row(
         modifier = modifier
-            .combinedClickable(onClick = { onItemClicked(item) }, onLongClick = { onOpenSelectionMode(item) })
+            .combinedClickable(onClick = { onItemClicked(item) }, onLongClick = { onItemLongClicked(item) })
             .semantics { isItemRead = item.isRead }
             .padding(
                 start = ProtonDimens.DefaultSpacing,
@@ -93,7 +94,7 @@ fun MailboxItem(
         Avatar(
             avatarUiModel = item.avatar,
             modifier = Modifier.padding(top = ProtonDimens.SmallSpacing, end = ProtonDimens.ExtraSmallSpacing),
-            onClick = { onOpenSelectionMode(item) }
+            onClick = { onAvatarClicked(item) }
         )
         Column(modifier = Modifier.padding(start = ProtonDimens.SmallSpacing, top = ProtonDimens.SmallSpacing)) {
             Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
@@ -362,7 +363,8 @@ private fun DroidConMailboxItemPreview() {
             modifier = Modifier,
             item = MailboxItemUiModelPreviewData.Conversation.DroidConLondon,
             onItemClicked = {},
-            onOpenSelectionMode = {}
+            onItemLongClicked = {},
+            onAvatarClicked = {}
         )
     }
 }
@@ -375,7 +377,8 @@ private fun DroidConWithoutCountMailboxItemPreview() {
             modifier = Modifier,
             item = MailboxItemUiModelPreviewData.Conversation.DroidConLondonWithZeroMessages,
             onItemClicked = {},
-            onOpenSelectionMode = {}
+            onItemLongClicked = {},
+            onAvatarClicked = {}
         )
     }
 }
@@ -388,7 +391,8 @@ private fun WeatherMailboxItemPreview() {
             modifier = Modifier,
             item = MailboxItemUiModelPreviewData.Conversation.WeatherForecast,
             onItemClicked = {},
-            onOpenSelectionMode = {}
+            onItemLongClicked = {},
+            onAvatarClicked = {}
         )
     }
 }
@@ -401,7 +405,8 @@ private fun LongRecipientItemPreview() {
             modifier = Modifier,
             item = MailboxItemUiModelPreviewData.Conversation.MultipleRecipientWithLabel,
             onItemClicked = {},
-            onOpenSelectionMode = {}
+            onItemLongClicked = {},
+            onAvatarClicked = {}
         )
     }
 }
@@ -414,7 +419,8 @@ private fun LongSubjectItemPreview() {
             modifier = Modifier,
             item = MailboxItemUiModelPreviewData.Conversation.LongSubjectWithIcons,
             onItemClicked = {},
-            onOpenSelectionMode = {}
+            onItemLongClicked = {},
+            onAvatarClicked = {}
         )
     }
 }
@@ -427,7 +433,8 @@ private fun LongSubjectWithIconItemPreview() {
             modifier = Modifier,
             item = MailboxItemUiModelPreviewData.Conversation.LongSubjectWithoutIcons,
             onItemClicked = {},
-            onOpenSelectionMode = {}
+            onItemLongClicked = {},
+            onAvatarClicked = {}
         )
     }
 }
@@ -440,7 +447,8 @@ private fun NoRecipientIconItemPreview() {
             modifier = Modifier,
             item = MailboxItemUiModelPreviewData.Conversation.NoParticipant,
             onItemClicked = {},
-            onOpenSelectionMode = {}
+            onItemLongClicked = {},
+            onAvatarClicked = {}
         )
     }
 }

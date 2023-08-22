@@ -22,6 +22,7 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.text
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
@@ -66,6 +67,22 @@ object MailboxStateSampleData {
         ),
         topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
             currentLabelName = MailLabel.System(MailLabelId.System.AllMail).text()
+        ),
+        unreadFilterState = UnreadFilterState.Data(
+            isFilterEnabled = false,
+            numUnread = 1
+        )
+    )
+
+    fun createSelectionMode(vararg selectedMailboxItemUiModel: MailboxItemUiModel) = MailboxState(
+        mailboxListState = MailboxListState.Data.SelectionMode(
+            currentMailLabel = MailLabel.System(MailLabelId.System.Inbox),
+            selectionModeEnabled = true,
+            selectedMailboxItems = selectedMailboxItemUiModel.toList()
+        ),
+        topAppBarState = MailboxTopAppBarState.Data.SelectionMode(
+            currentLabelName = MailLabel.System(MailLabelId.System.Inbox).text(),
+            selectedCount = selectedMailboxItemUiModel.size
         ),
         unreadFilterState = UnreadFilterState.Data(
             isFilterEnabled = false,

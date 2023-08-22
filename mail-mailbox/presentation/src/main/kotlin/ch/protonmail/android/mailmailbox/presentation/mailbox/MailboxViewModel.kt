@@ -135,21 +135,74 @@ class MailboxViewModel @Inject constructor(
     internal fun submit(viewAction: MailboxViewAction) {
         viewModelScope.launch {
             when (viewAction) {
-                is MailboxViewAction.EnterSelectionMode,
                 is MailboxViewAction.ExitSelectionMode,
                 is MailboxViewAction.DisableUnreadFilter,
                 is MailboxViewAction.EnableUnreadFilter -> emitNewStateFrom(viewAction)
 
+                is MailboxViewAction.OnItemAvatarClicked -> handleOnAvatarClicked(viewAction.item)
+                is MailboxViewAction.OnItemLongClicked -> handleItemLongClick(viewAction.item)
                 is MailboxViewAction.Refresh -> emitNewStateFrom(viewAction)
-                is MailboxViewAction.OpenItemDetails -> onOpenItemDetails(viewAction.item)
+                is MailboxViewAction.ItemClicked -> handleItemClick(viewAction.item)
                 is MailboxViewAction.OnOfflineWithData -> emitNewStateFrom(viewAction)
                 is MailboxViewAction.OnErrorWithData -> emitNewStateFrom(viewAction)
             }.exhaustive
         }
     }
 
+    private suspend fun handleItemClick(item: MailboxItemUiModel) {
+        when (state.value.mailboxListState) {
+            is MailboxListState.Data.SelectionMode -> handleItemClickInSelectionMode(item)
+            is MailboxListState.Data.ViewMode -> onOpenItemDetails(item)
+            is MailboxListState.Loading -> {
+                Timber.d("Loading state can't handle item clicks")
+            }
+        }
+    }
+
     private suspend fun onOpenItemDetails(item: MailboxItemUiModel) {
-        emitNewStateFrom(MailboxEvent.ItemDetailsOpenedInViewMode(item, getPreferredViewMode()))
+        emitNewStateFrom(MailboxEvent.ItemClicked.ItemDetailsOpenedInViewMode(item, getPreferredViewMode()))
+    }
+
+    private fun handleItemLongClick(item: MailboxItemUiModel) {
+        when (val state = state.value.mailboxListState) {
+            is MailboxListState.Data.ViewMode -> enterSelectionMode(item)
+            else -> {
+                Timber.d("Long click not supported in state: $state")
+            }
+        }
+    }
+
+    private fun handleOnAvatarClicked(item: MailboxItemUiModel) {
+        when (val state = state.value.mailboxListState) {
+            is MailboxListState.Data.ViewMode -> enterSelectionMode(item)
+            is MailboxListState.Data.SelectionMode -> handleItemClickInSelectionMode(item)
+            else -> {
+                Timber.d("Avatar clicked not supported in state: $state")
+            }
+        }
+    }
+
+    private fun handleItemClickInSelectionMode(item: MailboxItemUiModel) {
+        val selectionMode = state.value.mailboxListState as? MailboxListState.Data.SelectionMode
+        if (selectionMode == null) {
+            Timber.d("MailboxListState is not in SelectionMode")
+            return
+        }
+
+        val event = if (selectionMode.selectedMailboxItems.contains(item)) {
+            MailboxEvent.ItemClicked.ItemRemovedFromSelection(item)
+        } else {
+            MailboxEvent.ItemClicked.ItemAddedToSelection(item)
+        }
+
+        emitNewStateFrom(event)
+    }
+
+    private fun enterSelectionMode(item: MailboxItemUiModel) {
+        when (val state = state.value.mailboxListState) {
+            is MailboxListState.Data.ViewMode -> emitNewStateFrom(MailboxEvent.EnterSelectionMode(item))
+            else -> Timber.d("Cannot enter selection mode frome state: $state")
+        }
     }
 
     private fun observePagingData(): Flow<PagingData<MailboxItemUiModel>> =

@@ -23,6 +23,7 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
@@ -38,12 +39,18 @@ class MailboxListReducer @Inject constructor() {
         return when (operation) {
             is MailboxEvent.SelectedLabelChanged -> reduceSelectedLabelChanged(operation, currentState)
             is MailboxEvent.NewLabelSelected -> reduceNewLabelSelected(operation, currentState)
-            is MailboxEvent.ItemDetailsOpenedInViewMode -> reduceItemDetailOpened(operation, currentState)
+            is MailboxEvent.ItemClicked.ItemDetailsOpenedInViewMode -> reduceItemDetailOpened(operation, currentState)
             is MailboxEvent.SelectionModeEnabledChanged -> reduceSelectionModeEnabledChanged(operation, currentState)
+            is MailboxEvent.EnterSelectionMode -> reduceEnterSelectionMode(operation.item, currentState)
+            is MailboxEvent.ItemClicked.ItemAddedToSelection -> reduceItemAddedToSelection(operation, currentState)
+            is MailboxEvent.ItemClicked.ItemRemovedFromSelection -> reduceItemRemovedFromSelection(
+                operation,
+                currentState
+            )
+
             is MailboxViewAction.OnOfflineWithData -> reduceOfflineWithData(currentState)
             is MailboxViewAction.OnErrorWithData -> reduceErrorWithData(currentState)
             is MailboxViewAction.Refresh -> reduceRefresh(currentState)
-            is MailboxViewAction.EnterSelectionMode -> reduceEnterSelectionMode(operation, currentState)
             is MailboxViewAction.ExitSelectionMode -> reduceExitSelectionMode(currentState)
         }
     }
@@ -102,7 +109,7 @@ class MailboxListReducer @Inject constructor() {
     }
 
     private fun reduceItemDetailOpened(
-        operation: MailboxEvent.ItemDetailsOpenedInViewMode,
+        operation: MailboxEvent.ItemClicked.ItemDetailsOpenedInViewMode,
         currentState: MailboxListState
     ): MailboxListState {
         val request = when (operation.item.shouldOpenInComposer) {
@@ -164,18 +171,16 @@ class MailboxListReducer @Inject constructor() {
         else -> currentState
     }
 
-    private fun reduceEnterSelectionMode(
-        operation: MailboxViewAction.EnterSelectionMode,
-        currentState: MailboxListState
-    ) = when (currentState) {
-        is MailboxListState.Data.ViewMode -> MailboxListState.Data.SelectionMode(
-            currentMailLabel = currentState.currentMailLabel,
-            selectedMailboxItems = listOf(operation.item),
-            selectionModeEnabled = currentState.selectionModeEnabled
-        )
+    private fun reduceEnterSelectionMode(item: MailboxItemUiModel, currentState: MailboxListState) =
+        when (currentState) {
+            is MailboxListState.Data.ViewMode -> MailboxListState.Data.SelectionMode(
+                currentMailLabel = currentState.currentMailLabel,
+                selectedMailboxItems = listOf(item),
+                selectionModeEnabled = currentState.selectionModeEnabled
+            )
 
-        else -> currentState
-    }
+            else -> currentState
+        }
 
     private fun reduceExitSelectionMode(currentState: MailboxListState) = when (currentState) {
         is MailboxListState.Data.SelectionMode -> MailboxListState.Data.ViewMode(
@@ -200,5 +205,25 @@ class MailboxListReducer @Inject constructor() {
             is MailboxListState.Data.ViewMode -> copy(selectionModeEnabled = operation.selectionModeEnabled)
             is MailboxListState.Loading -> copy(selectionModeEnabled = operation.selectionModeEnabled)
         }
+    }
+
+    private fun reduceItemAddedToSelection(
+        operation: MailboxEvent.ItemClicked.ItemAddedToSelection,
+        currentState: MailboxListState
+    ) = when (currentState) {
+        is MailboxListState.Data.SelectionMode ->
+            currentState.copy(selectedMailboxItems = currentState.selectedMailboxItems + operation.item)
+
+        else -> currentState
+    }
+
+    private fun reduceItemRemovedFromSelection(
+        operation: MailboxEvent.ItemClicked.ItemRemovedFromSelection,
+        currentState: MailboxListState
+    ) = when (currentState) {
+        is MailboxListState.Data.SelectionMode ->
+            currentState.copy(selectedMailboxItems = currentState.selectedMailboxItems - operation.item)
+
+        else -> currentState
     }
 }

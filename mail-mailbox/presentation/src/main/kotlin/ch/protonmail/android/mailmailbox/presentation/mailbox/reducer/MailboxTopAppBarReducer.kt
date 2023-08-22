@@ -35,8 +35,10 @@ class MailboxTopAppBarReducer @Inject constructor() {
         return when (operation) {
             is MailboxEvent.SelectedLabelChanged -> currentState.toNewStateForSelectedLabelChanged(operation)
             is MailboxEvent.NewLabelSelected -> currentState.toNewStateForNewLabelSelected(operation)
-            is MailboxViewAction.EnterSelectionMode -> currentState.toNewStateForEnterSelectionMode()
             is MailboxViewAction.ExitSelectionMode -> currentState.toNewStateForExitSelectionMode()
+            is MailboxEvent.EnterSelectionMode -> currentState.toNewStateForEnterSelectionMode()
+            is MailboxEvent.ItemClicked.ItemAddedToSelection -> currentState.toNewStateForItemAddedToSelection()
+            is MailboxEvent.ItemClicked.ItemRemovedFromSelection -> currentState.toNewStateForItemRemovedFromSelection()
         }
     }
 
@@ -67,7 +69,18 @@ class MailboxTopAppBarReducer @Inject constructor() {
 
     private fun MailboxTopAppBarState.toNewStateForExitSelectionMode() = when (this) {
         is MailboxTopAppBarState.Loading -> this
-        is MailboxTopAppBarState.Data -> MailboxTopAppBarState.Data.DefaultMode(currentLabelName)
+        is MailboxTopAppBarState.Data ->
+            MailboxTopAppBarState.Data.DefaultMode(currentLabelName)
+    }
+
+    private fun MailboxTopAppBarState.toNewStateForItemAddedToSelection() = when (this) {
+        is MailboxTopAppBarState.Data.SelectionMode -> this.copy(selectedCount = this.selectedCount + 1)
+        else -> this
+    }
+
+    private fun MailboxTopAppBarState.toNewStateForItemRemovedFromSelection() = when (this) {
+        is MailboxTopAppBarState.Data.SelectionMode -> this.copy(selectedCount = this.selectedCount - 1)
+        else -> this
     }
 
     fun MailboxTopAppBarState.Data.with(currentLabelName: TextUiModel) = when (this) {

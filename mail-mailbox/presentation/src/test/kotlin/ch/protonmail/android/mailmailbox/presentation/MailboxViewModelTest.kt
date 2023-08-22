@@ -341,23 +341,109 @@ class MailboxViewModelTest {
     }
 
     @Test
-    fun `when enter selection mode action submitted, new state is created and emitted`() = runTest {
+    fun `when long item click action is submitted and state is view mode, new state is created and emitted`() =
+        runTest {
+            // Given
+            val item = readMailboxItemUiModel
+            val intermediateState = createMailboxDataState()
+            val expectedState = MailboxStateSampleData.createSelectionMode(item)
+            every {
+                mailboxReducer.newStateFrom(any(), MailboxEvent.SelectedLabelCountChanged(5))
+            } returns intermediateState
+            every {
+                mailboxReducer.newStateFrom(intermediateState, MailboxEvent.EnterSelectionMode(item))
+            } returns expectedState
+
+            mailboxViewModel.state.test {
+                // Given
+                awaitItem() // First emission for selected user
+
+                // When
+                mailboxViewModel.submit(MailboxViewAction.OnItemLongClicked(item))
+
+                // Then
+                assertEquals(expectedState, awaitItem())
+            }
+        }
+
+    @Test
+    fun `when long item click action is submitted and state is not view mode, no new state is created nor emitted`() =
+        runTest {
+            // Given
+            val item = readMailboxItemUiModel
+            val intermediateState = createMailboxDataState()
+            val expectedState = MailboxStateSampleData.createSelectionMode(item)
+            every {
+                mailboxReducer.newStateFrom(any(), MailboxEvent.SelectedLabelCountChanged(5))
+            } returns intermediateState
+            every {
+                mailboxReducer.newStateFrom(intermediateState, MailboxEvent.EnterSelectionMode(item))
+            } returns expectedState
+
+            mailboxViewModel.state.test {
+                // Given
+                awaitItem() // First emission for selected user
+
+                // When
+                mailboxViewModel.submit(MailboxViewAction.OnItemLongClicked(item))
+
+                // Then
+                assertEquals(expectedState, awaitItem())
+
+                // When
+                mailboxViewModel.submit(MailboxViewAction.OnItemLongClicked(item))
+
+                // Then
+                verify(exactly = 1) { mailboxReducer.newStateFrom(any(), MailboxEvent.EnterSelectionMode(item)) }
+            }
+        }
+
+    @Test
+    fun `when avatar click action is submitted and state is view mode, new state is created and emitted`() = runTest {
         // Given
-        val expectedMailboxItem = readMailboxItemUiModel
-        val expectedState = MailboxStateSampleData.Loading.copy(
-            topAppBarState = MailboxTopAppBarState.Data.SelectionMode(
-                currentLabelName = MailLabel.System(initialLocationMailLabelId).text(),
-                selectedCount = 0
-            ),
-            mailboxListState = MailboxListState.Data.SelectionMode(
-                currentMailLabel = MailLabel.System(initialLocationMailLabelId),
-                selectedMailboxItems = listOf(expectedMailboxItem),
-                selectionModeEnabled = true
-            )
-        )
+        val item = readMailboxItemUiModel
+        val intermediateState = createMailboxDataState()
+        val expectedState = MailboxStateSampleData.createSelectionMode(item)
+        every {
+            mailboxReducer.newStateFrom(any(), MailboxEvent.SelectedLabelCountChanged(5))
+        } returns intermediateState
+        every {
+            mailboxReducer.newStateFrom(intermediateState, MailboxEvent.EnterSelectionMode(item))
+        } returns expectedState
+
+        mailboxViewModel.state.test {
+            // Given
+            awaitItem() // First emission for selected user
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
+
+            // Then
+            assertEquals(expectedState, awaitItem())
+            verify(exactly = 1) {
+                mailboxReducer.newStateFrom(intermediateState, MailboxEvent.EnterSelectionMode(item))
+            }
+        }
+    }
+
+    @Test
+    fun `when avatar click action is submitted to add item to selection, new state is created and emitted`() = runTest {
+        // Given
+        val item = readMailboxItemUiModel
+        val secondItem = unreadMailboxItemUiModel
+        val initialState = createMailboxDataState()
+        val intermediateState = MailboxStateSampleData.createSelectionMode(item)
+        val expectedState = MailboxStateSampleData.createSelectionMode(item, secondItem)
+        every {
+            mailboxReducer.newStateFrom(any(), MailboxEvent.SelectedLabelCountChanged(5))
+        } returns initialState
+        every {
+            mailboxReducer.newStateFrom(initialState, MailboxEvent.EnterSelectionMode(item))
+        } returns intermediateState
         every {
             mailboxReducer.newStateFrom(
-                MailboxStateSampleData.Loading, MailboxViewAction.EnterSelectionMode(expectedMailboxItem)
+                intermediateState,
+                MailboxEvent.ItemClicked.ItemAddedToSelection(secondItem)
             )
         } returns expectedState
 
@@ -366,12 +452,75 @@ class MailboxViewModelTest {
             awaitItem() // First emission for selected user
 
             // When
-            mailboxViewModel.submit(MailboxViewAction.EnterSelectionMode(expectedMailboxItem))
+            mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
+
+            // Then
+            assertEquals(intermediateState, awaitItem())
+            verify(exactly = 1) {
+                mailboxReducer.newStateFrom(initialState, MailboxEvent.EnterSelectionMode(item))
+            }
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(secondItem))
 
             // Then
             assertEquals(expectedState, awaitItem())
+            verify(exactly = 1) {
+                mailboxReducer.newStateFrom(
+                    currentState = intermediateState,
+                    operation = MailboxEvent.ItemClicked.ItemAddedToSelection(secondItem)
+                )
+            }
         }
     }
+
+    @Test
+    fun `when avatar click action is submitted to remove item from selection, new state is created and emitted`() =
+        runTest {
+            // Given
+            val item = readMailboxItemUiModel
+            val initialState = createMailboxDataState()
+            val intermediateState = MailboxStateSampleData.createSelectionMode(item)
+            val expectedState = MailboxStateSampleData.createSelectionMode()
+            every {
+                mailboxReducer.newStateFrom(any(), MailboxEvent.SelectedLabelCountChanged(5))
+            } returns initialState
+            every {
+                mailboxReducer.newStateFrom(initialState, MailboxEvent.EnterSelectionMode(item))
+            } returns intermediateState
+            every {
+                mailboxReducer.newStateFrom(
+                    intermediateState,
+                    MailboxEvent.ItemClicked.ItemRemovedFromSelection(item)
+                )
+            } returns expectedState
+
+            mailboxViewModel.state.test {
+                // Given
+                awaitItem() // First emission for selected user
+
+                // When
+                mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
+
+                // Then
+                assertEquals(intermediateState, awaitItem())
+                verify(exactly = 1) {
+                    mailboxReducer.newStateFrom(initialState, MailboxEvent.EnterSelectionMode(item))
+                }
+
+                // When
+                mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
+
+                // Then
+                assertEquals(expectedState, awaitItem())
+                verify(exactly = 1) {
+                    mailboxReducer.newStateFrom(
+                        currentState = intermediateState,
+                        operation = MailboxEvent.ItemClicked.ItemRemovedFromSelection(item)
+                    )
+                }
+            }
+        }
 
     @Test
     fun `when exit selection mode action submitted, new state is created and emitted`() = runTest {
@@ -534,27 +683,23 @@ class MailboxViewModelTest {
     fun `when open item action submitted in message mode, new state is produced and emitted`() = runTest {
         // Given
         val item = buildMailboxUiModelItem("id", Message)
-        val expectedState = MailboxStateSampleData.Loading.copy(
-            mailboxListState = MailboxListState.Data.ViewMode(
-                currentMailLabel = MailLabel.System(initialLocationMailLabelId),
-                openItemEffect = Effect.of(OpenMailboxItemRequest(MailboxItemId(item.id), Message, false)),
-                scrollToMailboxTop = Effect.empty(),
-                offlineEffect = Effect.empty(),
-                refreshErrorEffect = Effect.empty(),
-                refreshRequested = false,
-                selectionModeEnabled = false
-            )
+        val intermediateState = createMailboxDataState()
+        val expectedState = createMailboxDataState(
+            openEffect = Effect.of(OpenMailboxItemRequest(MailboxItemId(item.id), Conversation, false))
         )
         every { observeCurrentViewMode(userId = any()) } returns flowOf(NoConversationGrouping)
         every {
+            mailboxReducer.newStateFrom(any(), MailboxEvent.SelectedLabelCountChanged(5))
+        } returns intermediateState
+        every {
             mailboxReducer.newStateFrom(
-                MailboxStateSampleData.Loading,
-                MailboxEvent.ItemDetailsOpenedInViewMode(item, NoConversationGrouping)
+                intermediateState,
+                MailboxEvent.ItemClicked.ItemDetailsOpenedInViewMode(item, NoConversationGrouping)
             )
         } returns expectedState
 
         // When
-        mailboxViewModel.submit(MailboxViewAction.OpenItemDetails(item))
+        mailboxViewModel.submit(MailboxViewAction.ItemClicked(item))
         mailboxViewModel.state.test {
             // Then
             assertEquals(expectedState, awaitItem())
@@ -652,28 +797,29 @@ class MailboxViewModelTest {
     fun `when open item action submitted in conversation mode, new state is produced and emitted`() = runTest {
         // Given
         val item = buildMailboxUiModelItem("id", Conversation)
-        val expectedState = MailboxStateSampleData.Loading.copy(
-            mailboxListState = MailboxListState.Data.ViewMode(
-                currentMailLabel = MailLabel.System(initialLocationMailLabelId),
-                openItemEffect = Effect.of(OpenMailboxItemRequest(MailboxItemId(item.id), Conversation, false)),
-                scrollToMailboxTop = Effect.empty(),
-                offlineEffect = Effect.empty(),
-                refreshErrorEffect = Effect.empty(),
-                refreshRequested = false,
-                selectionModeEnabled = false
-            )
+        val intermediateState = createMailboxDataState()
+        val expectedState = createMailboxDataState(
+            openEffect = Effect.of(OpenMailboxItemRequest(MailboxItemId(item.id), Conversation, false))
         )
+
         every { observeCurrentViewMode(userId = any()) } returns flowOf(ConversationGrouping)
+
+        every {
+            mailboxReducer.newStateFrom(any(), MailboxEvent.SelectedLabelCountChanged(5))
+        } returns intermediateState
         every {
             mailboxReducer.newStateFrom(
-                MailboxStateSampleData.Loading,
-                MailboxEvent.ItemDetailsOpenedInViewMode(item, ConversationGrouping)
+                intermediateState,
+                MailboxEvent.ItemClicked.ItemDetailsOpenedInViewMode(item, ConversationGrouping)
             )
         } returns expectedState
 
-        // When
-        mailboxViewModel.submit(MailboxViewAction.OpenItemDetails(item))
         mailboxViewModel.state.test {
+            awaitItem() // await that label count gets emitted
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.ItemClicked(item))
+
             // Then
             assertEquals(expectedState, awaitItem())
         }
@@ -830,7 +976,10 @@ class MailboxViewModelTest {
             every {
                 mailboxReducer.newStateFrom(
                     expectedMailBoxState,
-                    MailboxEvent.ItemDetailsOpenedInViewMode(unreadMailboxItemUiModel, NoConversationGrouping)
+                    MailboxEvent.ItemClicked.ItemDetailsOpenedInViewMode(
+                        unreadMailboxItemUiModel,
+                        NoConversationGrouping
+                    )
                 )
             } returns createMailboxDataState(
                 Effect.of(OpenMailboxItemRequest(MailboxItemId(unreadMailboxItem.id), unreadMailboxItem.type, false))
@@ -841,7 +990,7 @@ class MailboxViewModelTest {
                 awaitItem()
                 verify(exactly = 1) { pagerFactory.create(listOf(userId), Archive, false, Message) }
 
-                mailboxViewModel.submit(MailboxViewAction.OpenItemDetails(unreadMailboxItemUiModel))
+                mailboxViewModel.submit(MailboxViewAction.ItemClicked(unreadMailboxItemUiModel))
 
                 // Then
                 expectNoEvents()
