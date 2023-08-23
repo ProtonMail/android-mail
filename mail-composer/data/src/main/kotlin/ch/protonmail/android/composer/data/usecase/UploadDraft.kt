@@ -23,6 +23,7 @@ import arrow.core.continuations.either
 import ch.protonmail.android.composer.data.remote.DraftRemoteDataSource
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcomposer.domain.Transactor
+import ch.protonmail.android.mailcomposer.domain.model.DraftState
 import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailcomposer.domain.usecase.FindLocalDraft
 import ch.protonmail.android.mailcomposer.domain.usecase.IsDraftKnownToApi
@@ -60,25 +61,40 @@ internal class UploadDraft @Inject constructor(
         }.bind()
 
         if (isDraftKnownToApi(draftState)) {
-            draftRemoteDataSource.update(userId, message).onRight {
-                draftStateRepository.updateApiMessageIdAndSetSyncedState(
-                    userId, it.message.messageId, it.message.messageId
-                )
-            }.onLeft {
-                Timber.w("Sync draft failure $messageId: Update API call error $it")
-            }.bind()
+            handleUpdateDraft(userId, message, messageId).bind()
         } else {
-            draftRemoteDataSource.create(userId, message, draftState.action).onRight {
-                transactor.performTransaction {
-                    messageRepository.updateDraftMessageId(userId, messageId, it.message.messageId)
-                    draftStateRepository.updateApiMessageIdAndSetSyncedState(userId, messageId, it.message.messageId)
-                }
-            }.onLeft {
-                if (it.shouldLogToSentry()) { Timber.w("Sync draft failure $messageId: Create API call error $it") }
-                Timber.d("Sync draft error $messageId: Create API call error $it")
-            }.bind()
+            handleCreateDraft(userId, message, draftState, messageId).bind()
 
         }
+    }
+
+    private suspend fun handleCreateDraft(
+        userId: UserId,
+        message: MessageWithBody,
+        draftState: DraftState,
+        messageId: MessageId
+    ) = draftRemoteDataSource.create(userId, message, draftState.action).onRight {
+        transactor.performTransaction {
+            messageRepository.updateDraftMessageId(userId, messageId, it.message.messageId)
+            draftStateRepository.updateApiMessageIdAndSetSyncedState(userId, messageId, it.message.messageId)
+        }
+    }.onLeft {
+        if (it.shouldLogToSentry()) {
+            Timber.w("Sync draft failure $messageId: Create API call error $it")
+        }
+        Timber.d("Sync draft error $messageId: Create API call error $it")
+    }
+
+    private suspend fun handleUpdateDraft(
+        userId: UserId,
+        message: MessageWithBody,
+        messageId: MessageId
+    ) = draftRemoteDataSource.update(userId, message).onRight {
+        draftStateRepository.updateApiMessageIdAndSetSyncedState(
+            userId, it.message.messageId, it.message.messageId
+        )
+    }.onLeft {
+        Timber.w("Sync draft failure $messageId: Update API call error $it")
     }
 
     private fun DataError.Remote.shouldLogToSentry() = this != DataError.Remote.CreateDraftRequestNotPerformed
