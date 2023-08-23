@@ -50,6 +50,7 @@ import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.SmallNonClickableIcon
 import ch.protonmail.android.mailcommon.presentation.extension.isItemRead
 import ch.protonmail.android.mailcommon.presentation.extension.tintColor
+import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
@@ -65,7 +66,6 @@ import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.captionNorm
 import me.proton.core.compose.theme.defaultNorm
 import me.proton.core.compose.theme.defaultSmallNorm
-import timber.log.Timber
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -73,10 +73,9 @@ fun MailboxItem(
     modifier: Modifier = Modifier,
     actions: ComposeMailboxItem.Actions,
     item: MailboxItemUiModel,
+    selectionMode: Boolean = false,
     isSelected: Boolean = false
 ) {
-    Timber.d("Item selection state: $isSelected")
-
     Row(
         modifier = modifier
             .combinedClickable(
@@ -97,7 +96,7 @@ fun MailboxItem(
         val iconColor = if (item.isRead) ProtonTheme.colors.iconWeak else ProtonTheme.colors.iconNorm
 
         Avatar(
-            avatarUiModel = item.avatar,
+            avatarUiModel = if (selectionMode) AvatarUiModel.SelectionMode(isSelected) else item.avatar,
             modifier = Modifier.padding(top = ProtonDimens.SmallSpacing, end = ProtonDimens.ExtraSmallSpacing),
             onClick = { actions.onAvatarClicked(item) }
         )

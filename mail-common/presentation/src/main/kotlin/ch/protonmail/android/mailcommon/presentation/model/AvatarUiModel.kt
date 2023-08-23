@@ -20,5 +20,6 @@ package ch.protonmail.android.mailcommon.presentation.model
 
 sealed class AvatarUiModel {
     data class ParticipantInitial(val value: String) : AvatarUiModel()
+    data class SelectionMode(val selected: Boolean) : AvatarUiModel()
     object DraftIcon : AvatarUiModel()
 }

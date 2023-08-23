@@ -96,6 +96,36 @@ fun Avatar(
                         text = avatarUiModel.value
                     )
                 }
+
+            is AvatarUiModel.SelectionMode ->
+                Box(
+                    modifier = Modifier
+                        .sizeIn(
+                            minWidth = MailDimens.AvatarMinSize,
+                            minHeight = MailDimens.AvatarMinSize
+                        )
+                        .border(
+                            width = MailDimens.AvatarBorderLine,
+                            color = ProtonTheme.colors.interactionNorm,
+                            shape = ProtonTheme.shapes.medium
+                        )
+                        .background(
+                            color = when (avatarUiModel.selected) {
+                                true -> ProtonTheme.colors.interactionNorm
+                                false -> ProtonTheme.colors.backgroundNorm
+                            },
+                            shape = ProtonTheme.shapes.medium
+                        )
+                        .testTag(AvatarTestTags.AvatarSelectionMode),
+                    contentAlignment = Alignment.Center
+                ) {
+                    if (avatarUiModel.selected) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_checkmark),
+                            contentDescription = "checkmark"
+                        )
+                    }
+                }
         }
     }
 }
@@ -105,4 +135,5 @@ object AvatarTestTags {
     const val AvatarRootItem = "AvatarRootItem"
     const val AvatarText = "AvatarText"
     const val AvatarDraft = "AvatarDraft"
+    const val AvatarSelectionMode = "AvatarSelectionMode"
 }

@@ -24,6 +24,7 @@ object MailDimens {
 
     val ThinBorder = 0.5.dp
     val DefaultBorder = 1.dp
+    val AvatarBorderLine = 1.5.dp
 
     val TinySpacing = 2.dp
 
