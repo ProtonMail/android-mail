@@ -40,6 +40,7 @@ val privateProperties = Properties().apply {
     }
 }
 
+val accountSentryDSN: String = privateProperties.getProperty("accountSentryDSN") ?: ""
 val sentryDSN: String = privateProperties.getProperty("sentryDSN") ?: ""
 val proxyToken: String? = privateProperties.getProperty("PROXY_TOKEN")
 
@@ -64,6 +65,7 @@ android {
         }
 
         buildConfigField("String", "SENTRY_DSN", sentryDSN.toBuildConfigValue())
+        buildConfigField("String", "ACCOUNT_SENTRY_DSN", accountSentryDSN.toBuildConfigValue())
         buildConfigField("String", "PROXY_TOKEN", proxyToken.toBuildConfigValue())
         buildConfigField("String", "HUMAN_VERIFICATION_HOST", "verify.proton.me".toBuildConfigValue())
     }

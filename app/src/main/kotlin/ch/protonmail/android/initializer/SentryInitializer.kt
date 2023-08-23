@@ -30,6 +30,7 @@ import io.sentry.SentryLevel
 import io.sentry.SentryOptions
 import io.sentry.android.core.SentryAndroid
 import me.proton.core.util.android.sentry.TimberLoggerIntegration
+import me.proton.core.util.android.sentry.project.AccountSentryHubBuilder
 
 class SentryInitializer : Initializer<Unit> {
 
@@ -46,10 +47,15 @@ class SentryInitializer : Initializer<Unit> {
             )
         }
 
-        EntryPointAccessors.fromApplication(
+        val entryPoint = EntryPointAccessors.fromApplication(
             context.applicationContext,
             SentryInitializerEntryPoint::class.java
-        ).observer().start()
+        )
+        entryPoint.observer().start()
+
+        entryPoint.accountSentryHubBuilder().invoke(
+            sentryDsn = BuildConfig.ACCOUNT_SENTRY_DSN
+        )
     }
 
     override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()
@@ -57,6 +63,7 @@ class SentryInitializer : Initializer<Unit> {
     @EntryPoint
     @InstallIn(SingletonComponent::class)
     interface SentryInitializerEntryPoint {
+        fun accountSentryHubBuilder(): AccountSentryHubBuilder
         fun observer(): SentryUserObserver
     }
 }
