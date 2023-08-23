@@ -35,6 +35,7 @@ object UserSample {
         userId: UserId = UserIdSample.Primary
     ) = User(
         credit = 1,
+        createdAtUtc = 0,
         currency = "CHF",
         delinquent = Delinquent.None,
         displayName = displayName,

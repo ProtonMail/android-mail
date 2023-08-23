@@ -28,6 +28,7 @@ object UserEntitySample {
 
     fun build(user: User = UserSample.build()) = UserEntity(
         credit = user.credit,
+        createdAtUtc = user.createdAtUtc,
         currency = user.currency,
         delinquent = user.delinquent?.value,
         displayName = user.displayName,
