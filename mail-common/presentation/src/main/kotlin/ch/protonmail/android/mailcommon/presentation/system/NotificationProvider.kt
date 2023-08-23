@@ -66,7 +66,7 @@ class NotificationProvider @Inject constructor(
     ): Notification {
         return NotificationCompat.Builder(context, channel.id).apply {
             setContentTitle(context.getString(title))
-            setSmallIcon(R.drawable.ic_logo_mail_no_bg)
+            setSmallIcon(R.drawable.ic_proton_brand_proton_mail)
             setOngoing(true)
         }.build()
     }
@@ -83,7 +83,7 @@ class NotificationProvider @Inject constructor(
         val channel = provideNotificationChannel(EMAIL_CHANNEL_ID)
         return NotificationCompat.Builder(context, channel.id).apply {
             setContentTitle(contentTitle)
-            setSmallIcon(R.drawable.ic_logo_mail_no_bg)
+            setSmallIcon(R.drawable.ic_proton_brand_proton_mail)
             setSubText(subText)
             setContentText(contentText)
             setGroup(group)
