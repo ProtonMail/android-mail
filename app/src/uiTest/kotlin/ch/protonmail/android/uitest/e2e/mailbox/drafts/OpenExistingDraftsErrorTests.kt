@@ -250,11 +250,8 @@ internal class OpenExistingDraftsErrorTests :
                     respondWith "/mail/v4/messages/message-id/message-id_212674.json"
                     withStatusCode 200 matchWildcards true serveOnce true,
                 given("/mail/v4/messages/*")
-                    respondWith "/mail/v4/messages/message-id/message-id_212674.json"
-                    withStatusCode 200 matchWildcards true serveOnce true,
-                given("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_212674_2.json"
-                    withStatusCode 200 matchWildcards true serveOnce true
+                    withStatusCode 200 matchWildcards true
             )
         }
 

@@ -34,6 +34,7 @@ import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.login.LoginTestUserTypes
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
+import ch.protonmail.android.uitest.robot.common.section.fullscreenLoaderSection
 import ch.protonmail.android.uitest.robot.composer.composerRobot
 import ch.protonmail.android.uitest.robot.composer.model.chips.RecipientChipEntry
 import ch.protonmail.android.uitest.robot.composer.model.chips.RecipientChipValidationState
@@ -273,6 +274,8 @@ internal class OpenExistingDraftsHappyPathTests :
         }
 
         composerRobot {
+            fullscreenLoaderSection { waitUntilGone() }
+
             verifyPrefilledFields(
                 toRecipientChip = expectedUpdatedToChip,
                 subject = expectedUpdatedSubject,
