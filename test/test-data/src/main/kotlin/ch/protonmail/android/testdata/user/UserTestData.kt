@@ -59,6 +59,7 @@ object UserTestData {
         userId: UserId = UserIdTestData.Primary,
         subscribed: Int = 1
     ) = User(
+        createdAtUtc = 0,
         credit = 1,
         currency = "CHF",
         delinquent = Delinquent.None,
