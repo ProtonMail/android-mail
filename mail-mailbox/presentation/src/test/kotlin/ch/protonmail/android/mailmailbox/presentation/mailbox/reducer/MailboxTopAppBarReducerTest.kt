@@ -54,365 +54,118 @@ internal class MailboxTopAppBarReducerTest(
 
         private val transitionsFromLoadingState = listOf(
             TestInput(
-                currentState = MailboxTopAppBarState.Loading(isComposerDisabled = true),
+                currentState = MailboxTopAppBarState.Loading,
                 operation = MailboxViewAction.EnterSelectionMode(MailboxItemUiModelTestData.readMailboxItemUiModel),
-                expectedState = MailboxTopAppBarState.Loading(isComposerDisabled = true)
+                expectedState = MailboxTopAppBarState.Loading
             ),
             TestInput(
-                currentState = MailboxTopAppBarState.Loading(isComposerDisabled = false),
+                currentState = MailboxTopAppBarState.Loading,
                 operation = MailboxViewAction.EnterSelectionMode(MailboxItemUiModelTestData.readMailboxItemUiModel),
-                expectedState = MailboxTopAppBarState.Loading(isComposerDisabled = false)
+                expectedState = MailboxTopAppBarState.Loading
             ),
             TestInput(
-                currentState = MailboxTopAppBarState.Loading(isComposerDisabled = true),
+                currentState = MailboxTopAppBarState.Loading,
                 operation = MailboxViewAction.ExitSelectionMode,
-                expectedState = MailboxTopAppBarState.Loading(isComposerDisabled = true)
+                expectedState = MailboxTopAppBarState.Loading
             ),
             TestInput(
-                currentState = MailboxTopAppBarState.Loading(isComposerDisabled = false),
+                currentState = MailboxTopAppBarState.Loading,
                 operation = MailboxViewAction.ExitSelectionMode,
-                expectedState = MailboxTopAppBarState.Loading(isComposerDisabled = false)
+                expectedState = MailboxTopAppBarState.Loading
             ),
             TestInput(
-                currentState = MailboxTopAppBarState.Loading(isComposerDisabled = true),
+                currentState = MailboxTopAppBarState.Loading,
                 operation = MailboxEvent.NewLabelSelected(inboxLabel, selectedLabelCount = 42),
-                expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text(), isComposerDisabled = true)
+                expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text())
             ),
             TestInput(
-                currentState = MailboxTopAppBarState.Loading(isComposerDisabled = false),
+                currentState = MailboxTopAppBarState.Loading,
                 operation = MailboxEvent.NewLabelSelected(inboxLabel, selectedLabelCount = 42),
-                expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text(), isComposerDisabled = false)
+                expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text())
             ),
             TestInput(
-                currentState = MailboxTopAppBarState.Loading(isComposerDisabled = true),
+                currentState = MailboxTopAppBarState.Loading,
                 operation = MailboxEvent.SelectedLabelChanged(inboxLabel),
-                expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text(), isComposerDisabled = true)
+                expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text())
             ),
             TestInput(
-                currentState = MailboxTopAppBarState.Loading(isComposerDisabled = false),
+                currentState = MailboxTopAppBarState.Loading,
                 operation = MailboxEvent.SelectedLabelChanged(inboxLabel),
-                expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text(), isComposerDisabled = false)
-            ),
-            TestInput(
-                currentState = MailboxTopAppBarState.Loading(isComposerDisabled = true),
-                operation = MailboxEvent.ComposerDisabledChanged(composerDisabled = false),
-                expectedState = MailboxTopAppBarState.Loading(isComposerDisabled = false)
-            ),
-            TestInput(
-                currentState = MailboxTopAppBarState.Loading(isComposerDisabled = false),
-                operation = MailboxEvent.ComposerDisabledChanged(composerDisabled = true),
-                expectedState = MailboxTopAppBarState.Loading(isComposerDisabled = true)
+                expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text())
             )
         )
 
         private val transitionsFromDefaultModeState = listOf(
             TestInput(
-                currentState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text(), isComposerDisabled = true),
+                currentState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text()),
                 operation = MailboxViewAction.EnterSelectionMode(MailboxItemUiModelTestData.readMailboxItemUiModel),
-                expectedState = MailboxTopAppBarState.Data.SelectionMode(
-                    inboxLabel.text(),
-                    selectedCount = 1,
-                    isComposerDisabled = true
-                )
+                expectedState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 1)
             ),
             TestInput(
-                currentState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text(), isComposerDisabled = false),
+                currentState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text()),
                 operation = MailboxViewAction.EnterSelectionMode(MailboxItemUiModelTestData.readMailboxItemUiModel),
-                expectedState = MailboxTopAppBarState.Data.SelectionMode(
-                    inboxLabel.text(),
-                    selectedCount = 1,
-                    isComposerDisabled = false
-                )
+                expectedState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 1)
             ),
             TestInput(
-                currentState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text(), isComposerDisabled = true),
+                currentState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text()),
                 operation = MailboxViewAction.ExitSelectionMode,
-                expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text(), isComposerDisabled = true)
+                expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text())
             ),
             TestInput(
-                currentState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text(), isComposerDisabled = false),
-                operation = MailboxViewAction.ExitSelectionMode,
-                expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text(), isComposerDisabled = false)
-            ),
-            TestInput(
-                currentState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text(), isComposerDisabled = true),
+                currentState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text()),
                 operation = MailboxEvent.NewLabelSelected(trashLabel, selectedLabelCount = 42),
-                expectedState = MailboxTopAppBarState.Data.DefaultMode(trashLabel.text(), isComposerDisabled = true)
+                expectedState = MailboxTopAppBarState.Data.DefaultMode(trashLabel.text())
             ),
             TestInput(
-                currentState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text(), isComposerDisabled = false),
-                operation = MailboxEvent.NewLabelSelected(trashLabel, selectedLabelCount = 42),
-                expectedState = MailboxTopAppBarState.Data.DefaultMode(trashLabel.text(), isComposerDisabled = false)
-            ),
-            TestInput(
-                currentState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text(), isComposerDisabled = true),
+                currentState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text()),
                 operation = MailboxEvent.SelectedLabelChanged(trashLabel),
-                expectedState = MailboxTopAppBarState.Data.DefaultMode(trashLabel.text(), isComposerDisabled = true)
-            ),
-            TestInput(
-                currentState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text(), isComposerDisabled = false),
-                operation = MailboxEvent.SelectedLabelChanged(trashLabel),
-                expectedState = MailboxTopAppBarState.Data.DefaultMode(trashLabel.text(), isComposerDisabled = false)
-            ),
-            TestInput(
-                currentState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text(), isComposerDisabled = true),
-                operation = MailboxEvent.ComposerDisabledChanged(composerDisabled = false),
-                expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text(), isComposerDisabled = false)
-            ),
-            TestInput(
-                currentState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text(), isComposerDisabled = false),
-                operation = MailboxEvent.ComposerDisabledChanged(composerDisabled = true),
-                expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text(), isComposerDisabled = true)
+                expectedState = MailboxTopAppBarState.Data.DefaultMode(trashLabel.text())
             )
         )
 
         private val transitionsFromSelectionModeState = listOf(
             TestInput(
-                currentState = MailboxTopAppBarState.Data.SelectionMode(
-                    inboxLabel.text(),
-                    selectedCount = 42,
-                    isComposerDisabled = true
-                ),
+                currentState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 42),
                 operation = MailboxViewAction.EnterSelectionMode(MailboxItemUiModelTestData.readMailboxItemUiModel),
-                expectedState = MailboxTopAppBarState.Data.SelectionMode(
-                    inboxLabel.text(),
-                    selectedCount = 1,
-                    isComposerDisabled = true
-                )
+                expectedState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 1)
             ),
             TestInput(
-                currentState = MailboxTopAppBarState.Data.SelectionMode(
-                    inboxLabel.text(),
-                    selectedCount = 42,
-                    isComposerDisabled = false
-                ),
-                operation = MailboxViewAction.EnterSelectionMode(MailboxItemUiModelTestData.readMailboxItemUiModel),
-                expectedState = MailboxTopAppBarState.Data.SelectionMode(
-                    inboxLabel.text(),
-                    selectedCount = 1,
-                    isComposerDisabled = false
-                )
-            ),
-            TestInput(
-                currentState = MailboxTopAppBarState.Data.SelectionMode(
-                    inboxLabel.text(),
-                    selectedCount = 42,
-                    isComposerDisabled = true
-                ),
+                currentState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 42),
                 operation = MailboxViewAction.ExitSelectionMode,
-                expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text(), isComposerDisabled = true)
+                expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text())
             ),
             TestInput(
-                currentState = MailboxTopAppBarState.Data.SelectionMode(
-                    inboxLabel.text(),
-                    selectedCount = 42,
-                    isComposerDisabled = false
-                ),
-                operation = MailboxViewAction.ExitSelectionMode,
-                expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text(), isComposerDisabled = false)
-            ),
-            TestInput(
-                currentState = MailboxTopAppBarState.Data.SelectionMode(
-                    inboxLabel.text(),
-                    selectedCount = 42,
-                    isComposerDisabled = true
-                ),
+                currentState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 42),
                 operation = MailboxEvent.NewLabelSelected(trashLabel, selectedLabelCount = 42),
-                expectedState = MailboxTopAppBarState.Data.SelectionMode(
-                    trashLabel.text(),
-                    selectedCount = 42,
-                    isComposerDisabled = true
-                )
+                expectedState = MailboxTopAppBarState.Data.SelectionMode(trashLabel.text(), selectedCount = 42)
             ),
             TestInput(
-                currentState = MailboxTopAppBarState.Data.SelectionMode(
-                    inboxLabel.text(),
-                    selectedCount = 42,
-                    isComposerDisabled = false
-                ),
-                operation = MailboxEvent.NewLabelSelected(trashLabel, selectedLabelCount = 42),
-                expectedState = MailboxTopAppBarState.Data.SelectionMode(
-                    trashLabel.text(),
-                    selectedCount = 42,
-                    isComposerDisabled = false
-                )
-            ),
-            TestInput(
-                currentState = MailboxTopAppBarState.Data.SelectionMode(
-                    inboxLabel.text(),
-                    selectedCount = 42,
-                    isComposerDisabled = true
-                ),
+                currentState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 42),
                 operation = MailboxEvent.SelectedLabelChanged(trashLabel),
-                expectedState = MailboxTopAppBarState.Data.SelectionMode(
-                    trashLabel.text(),
-                    selectedCount = 42,
-                    isComposerDisabled = true
-                )
-            ),
-            TestInput(
-                currentState = MailboxTopAppBarState.Data.SelectionMode(
-                    inboxLabel.text(),
-                    selectedCount = 42,
-                    isComposerDisabled = false
-                ),
-                operation = MailboxEvent.SelectedLabelChanged(trashLabel),
-                expectedState = MailboxTopAppBarState.Data.SelectionMode(
-                    trashLabel.text(),
-                    selectedCount = 42,
-                    isComposerDisabled = false
-                )
-            ),
-            TestInput(
-                currentState = MailboxTopAppBarState.Data.SelectionMode(
-                    inboxLabel.text(),
-                    selectedCount = 42,
-                    isComposerDisabled = true
-                ),
-                operation = MailboxEvent.ComposerDisabledChanged(composerDisabled = false),
-                expectedState = MailboxTopAppBarState.Data.SelectionMode(
-                    inboxLabel.text(),
-                    selectedCount = 42,
-                    isComposerDisabled = false
-                )
-            ),
-            TestInput(
-                currentState = MailboxTopAppBarState.Data.SelectionMode(
-                    inboxLabel.text(),
-                    selectedCount = 42,
-                    isComposerDisabled = false
-                ),
-                operation = MailboxEvent.ComposerDisabledChanged(composerDisabled = true),
-                expectedState = MailboxTopAppBarState.Data.SelectionMode(
-                    inboxLabel.text(),
-                    selectedCount = 42,
-                    isComposerDisabled = true
-                )
+                expectedState = MailboxTopAppBarState.Data.SelectionMode(trashLabel.text(), selectedCount = 42)
             )
         )
 
         private val transitionsFromSearchModeState = listOf(
             TestInput(
-                currentState = MailboxTopAppBarState.Data.SearchMode(
-                    inboxLabel.text(),
-                    searchQuery = EMPTY_STRING,
-                    isComposerDisabled = true
-                ),
+                currentState = MailboxTopAppBarState.Data.SearchMode(inboxLabel.text(), searchQuery = EMPTY_STRING),
                 operation = MailboxViewAction.EnterSelectionMode(MailboxItemUiModelTestData.readMailboxItemUiModel),
-                expectedState = MailboxTopAppBarState.Data.SelectionMode(
-                    inboxLabel.text(),
-                    selectedCount = 1,
-                    isComposerDisabled = true
-                )
+                expectedState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 1)
             ),
             TestInput(
-                currentState = MailboxTopAppBarState.Data.SearchMode(
-                    inboxLabel.text(),
-                    searchQuery = EMPTY_STRING,
-                    isComposerDisabled = false
-                ),
-                operation = MailboxViewAction.EnterSelectionMode(MailboxItemUiModelTestData.readMailboxItemUiModel),
-                expectedState = MailboxTopAppBarState.Data.SelectionMode(
-                    inboxLabel.text(),
-                    selectedCount = 1,
-                    isComposerDisabled = false
-                )
-            ),
-            TestInput(
-                currentState = MailboxTopAppBarState.Data.SearchMode(
-                    inboxLabel.text(),
-                    searchQuery = EMPTY_STRING,
-                    isComposerDisabled = true
-                ),
+                currentState = MailboxTopAppBarState.Data.SearchMode(inboxLabel.text(), searchQuery = EMPTY_STRING),
                 operation = MailboxViewAction.ExitSelectionMode,
-                expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text(), isComposerDisabled = true)
+                expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text())
             ),
             TestInput(
-                currentState = MailboxTopAppBarState.Data.SearchMode(
-                    inboxLabel.text(),
-                    searchQuery = EMPTY_STRING,
-                    isComposerDisabled = false
-                ),
-                operation = MailboxViewAction.ExitSelectionMode,
-                expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text(), isComposerDisabled = false)
-            ),
-            TestInput(
-                currentState = MailboxTopAppBarState.Data.SearchMode(
-                    inboxLabel.text(),
-                    searchQuery = EMPTY_STRING,
-                    isComposerDisabled = true
-                ),
+                currentState = MailboxTopAppBarState.Data.SearchMode(inboxLabel.text(), searchQuery = EMPTY_STRING),
                 operation = MailboxEvent.NewLabelSelected(trashLabel, selectedLabelCount = 42),
-                expectedState = MailboxTopAppBarState.Data.SearchMode(
-                    trashLabel.text(),
-                    searchQuery = EMPTY_STRING,
-                    isComposerDisabled = true
-                )
+                expectedState = MailboxTopAppBarState.Data.SearchMode(trashLabel.text(), searchQuery = EMPTY_STRING)
             ),
             TestInput(
-                currentState = MailboxTopAppBarState.Data.SearchMode(
-                    inboxLabel.text(),
-                    searchQuery = EMPTY_STRING,
-                    isComposerDisabled = false
-                ),
-                operation = MailboxEvent.NewLabelSelected(trashLabel, selectedLabelCount = 42),
-                expectedState = MailboxTopAppBarState.Data.SearchMode(
-                    trashLabel.text(),
-                    searchQuery = EMPTY_STRING,
-                    isComposerDisabled = false
-                )
-            ),
-            TestInput(
-                currentState = MailboxTopAppBarState.Data.SearchMode(
-                    inboxLabel.text(),
-                    searchQuery = EMPTY_STRING,
-                    isComposerDisabled = true
-                ),
+                currentState = MailboxTopAppBarState.Data.SearchMode(inboxLabel.text(), searchQuery = EMPTY_STRING),
                 operation = MailboxEvent.SelectedLabelChanged(trashLabel),
-                expectedState = MailboxTopAppBarState.Data.SearchMode(
-                    trashLabel.text(),
-                    searchQuery = EMPTY_STRING,
-                    isComposerDisabled = true
-                )
-            ),
-            TestInput(
-                currentState = MailboxTopAppBarState.Data.SearchMode(
-                    inboxLabel.text(),
-                    searchQuery = EMPTY_STRING,
-                    isComposerDisabled = false
-                ),
-                operation = MailboxEvent.SelectedLabelChanged(trashLabel),
-                expectedState = MailboxTopAppBarState.Data.SearchMode(
-                    trashLabel.text(),
-                    searchQuery = EMPTY_STRING,
-                    isComposerDisabled = false
-                )
-            ),
-            TestInput(
-                currentState = MailboxTopAppBarState.Data.SearchMode(
-                    inboxLabel.text(),
-                    searchQuery = EMPTY_STRING,
-                    isComposerDisabled = true
-                ),
-                operation = MailboxEvent.ComposerDisabledChanged(composerDisabled = false),
-                expectedState = MailboxTopAppBarState.Data.SearchMode(
-                    inboxLabel.text(),
-                    searchQuery = EMPTY_STRING,
-                    isComposerDisabled = false
-                )
-            ),
-            TestInput(
-                currentState = MailboxTopAppBarState.Data.SearchMode(
-                    inboxLabel.text(),
-                    searchQuery = EMPTY_STRING,
-                    isComposerDisabled = false
-                ),
-                operation = MailboxEvent.ComposerDisabledChanged(composerDisabled = true),
-                expectedState = MailboxTopAppBarState.Data.SearchMode(
-                    inboxLabel.text(),
-                    searchQuery = EMPTY_STRING,
-                    isComposerDisabled = true
-                )
+                expectedState = MailboxTopAppBarState.Data.SearchMode(trashLabel.text(), searchQuery = EMPTY_STRING)
             )
         )
 

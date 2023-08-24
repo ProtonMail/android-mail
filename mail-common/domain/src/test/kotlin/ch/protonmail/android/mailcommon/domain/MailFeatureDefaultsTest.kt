@@ -28,14 +28,12 @@ class MailFeatureDefaultsTest {
     fun `should return the default value if found in the provided defaults or false otherwise`() {
         // Given
         val defaultsMap = mapOf(
-            MailFeatureId.ConversationMode to true,
-            MailFeatureId.HideComposer to false
+            MailFeatureId.ConversationMode to true
         )
         val defaults = MailFeatureDefaults(defaultsMap)
 
         // When/Then
         assertTrue(defaults[MailFeatureId.ConversationMode])
-        assertFalse(defaults[MailFeatureId.HideComposer])
         assertFalse(defaults[MailFeatureId.ShowSettings])
     }
 }

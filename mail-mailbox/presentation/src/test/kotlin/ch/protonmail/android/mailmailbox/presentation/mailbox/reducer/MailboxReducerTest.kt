@@ -118,8 +118,7 @@ internal class MailboxReducerTest(
                 selectionModeEnabled = false
             ),
             topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
-                currentLabelName = spamLabel.text(),
-                isComposerDisabled = false
+                currentLabelName = spamLabel.text()
             ),
             unreadFilterState = UnreadFilterState.Data(
                 numUnread = 42,
@@ -190,12 +189,6 @@ internal class MailboxReducerTest(
                 shouldReduceMailboxListState = false,
                 shouldReduceTopAppBarState = false,
                 shouldReduceUnreadFilterState = true
-            ),
-            TestInput(
-                MailboxEvent.ComposerDisabledChanged(composerDisabled = false),
-                shouldReduceMailboxListState = false,
-                shouldReduceTopAppBarState = true,
-                shouldReduceUnreadFilterState = false
             ),
             TestInput(
                 MailboxEvent.SelectionModeEnabledChanged(selectionModeEnabled = false),

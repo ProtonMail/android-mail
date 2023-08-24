@@ -187,7 +187,7 @@ class MailboxViewModelTest {
             val actual = awaitItem()
             val expected = MailboxState(
                 mailboxListState = MailboxListState.Loading(selectionModeEnabled = false),
-                topAppBarState = MailboxTopAppBarState.Loading(isComposerDisabled = false),
+                topAppBarState = MailboxTopAppBarState.Loading,
                 unreadFilterState = UnreadFilterState.Loading
             )
 
@@ -347,8 +347,7 @@ class MailboxViewModelTest {
         val expectedState = MailboxStateSampleData.Loading.copy(
             topAppBarState = MailboxTopAppBarState.Data.SelectionMode(
                 currentLabelName = MailLabel.System(initialLocationMailLabelId).text(),
-                selectedCount = 0,
-                isComposerDisabled = false
+                selectedCount = 0
             ),
             mailboxListState = MailboxListState.Data.SelectionMode(
                 currentMailLabel = MailLabel.System(initialLocationMailLabelId),
@@ -379,8 +378,7 @@ class MailboxViewModelTest {
         // Given
         val expectedState = MailboxStateSampleData.Loading.copy(
             topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
-                currentLabelName = MailLabel.System(initialLocationMailLabelId).text(),
-                isComposerDisabled = false
+                currentLabelName = MailLabel.System(initialLocationMailLabelId).text()
             )
         )
         every {
@@ -716,42 +714,11 @@ class MailboxViewModelTest {
     }
 
     @Test
-    fun `when composer disabled with a feature flag, produces and emits a new state`() = runTest {
-        // Given
-        val expectedState = MailboxStateSampleData.Loading.copy(
-            topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
-                currentLabelName = MailLabel.System(initialLocationMailLabelId).text(),
-                isComposerDisabled = true
-            )
-        )
-        every {
-            mailboxReducer.newStateFrom(
-                MailboxStateSampleData.Loading,
-                MailboxEvent.ComposerDisabledChanged(composerDisabled = true)
-            )
-        } returns expectedState
-        val featureFlagFlow = MutableSharedFlow<FeatureFlag>()
-        every { observeMailFeature(userId, MailFeatureId.HideComposer) } returns featureFlagFlow
-
-        // When
-        mailboxViewModel.state.test {
-
-            // The initial state
-            skipItems(1)
-            featureFlagFlow.emit(FeatureFlag.default(MailFeatureId.HideComposer.id.id, defaultValue = true))
-
-            // Then
-            assertEquals(expectedState, awaitItem())
-        }
-    }
-
-    @Test
     fun `when selection mode enabled with a feature flag, produces and emits a new state`() = runTest {
         // Given
         val expectedState = MailboxStateSampleData.Loading.copy(
             topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
-                currentLabelName = MailLabel.System(initialLocationMailLabelId).text(),
-                isComposerDisabled = true
+                currentLabelName = MailLabel.System(initialLocationMailLabelId).text()
             ),
             mailboxListState = MailboxListState.Data.ViewMode(
                 currentMailLabel = MailLabel.System(initialLocationMailLabelId),
@@ -809,36 +776,6 @@ class MailboxViewModelTest {
             awaitItem()
             verify(exactly = 1) { pagerFactory.create(listOf(userId), Archive, true, Message) }
             cancelAndIgnoreRemainingEvents()
-        }
-    }
-
-    @Test
-    fun `when composer enabled with a feature flag, produces and emits a new state`() = runTest {
-        // Given
-        val expectedState = MailboxStateSampleData.Loading.copy(
-            topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
-                currentLabelName = MailLabel.System(initialLocationMailLabelId).text(),
-                isComposerDisabled = false
-            )
-        )
-        every {
-            mailboxReducer.newStateFrom(
-                MailboxStateSampleData.Loading,
-                MailboxEvent.ComposerDisabledChanged(composerDisabled = false)
-            )
-        } returns expectedState
-        val featureFlagFlow = MutableSharedFlow<FeatureFlag>()
-        every { observeMailFeature(userId, MailFeatureId.HideComposer) } returns featureFlagFlow
-
-        // When
-        mailboxViewModel.state.test {
-
-            // The initial state
-            skipItems(1)
-            featureFlagFlow.emit(FeatureFlag.default(MailFeatureId.HideComposer.id.id, defaultValue = false))
-
-            // Then
-            assertEquals(expectedState, awaitItem())
         }
     }
 
