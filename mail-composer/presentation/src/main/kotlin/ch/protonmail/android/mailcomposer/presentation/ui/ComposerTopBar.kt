@@ -32,7 +32,11 @@ import me.proton.core.compose.component.appbar.ProtonTopAppBar
 import me.proton.core.compose.theme.ProtonTheme
 
 @Composable
-internal fun ComposerTopBar(isAddAttachmentsButtonVisible: Boolean, onCloseComposerClick: () -> Unit) {
+internal fun ComposerTopBar(
+    isAddAttachmentsButtonVisible: Boolean,
+    onAddAttachmentsClick: () -> Unit,
+    onCloseComposerClick: () -> Unit
+) {
     ProtonTopAppBar(
         modifier = Modifier.testTag(ComposerTestTags.TopAppBar),
         title = {},
@@ -51,7 +55,7 @@ internal fun ComposerTopBar(isAddAttachmentsButtonVisible: Boolean, onCloseCompo
         actions = {
             if (isAddAttachmentsButtonVisible) {
                 IconButton(
-                    onClick = {}
+                    onClick = onAddAttachmentsClick
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_proton_paper_clip),

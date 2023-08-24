@@ -864,7 +864,7 @@ class ComposerViewModelTest {
             error = Effect.empty(),
             isSubmittable = false,
             senderAddresses = emptyList(),
-            changeSenderBottomSheetVisibility = Effect.empty(),
+            changeBottomSheetVisibility = Effect.empty(),
             closeComposer = Effect.empty(),
             closeComposerWithDraftSaved = Effect.empty(),
             isLoading = false,

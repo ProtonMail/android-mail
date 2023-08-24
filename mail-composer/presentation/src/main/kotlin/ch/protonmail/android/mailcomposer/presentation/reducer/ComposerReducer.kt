@@ -74,7 +74,7 @@ class ComposerReducer @Inject constructor() {
         )
         is ComposerEvent.SenderAddressesReceived -> currentState.copy(
             senderAddresses = this.senders,
-            changeSenderBottomSheetVisibility = Effect.of(true)
+            changeBottomSheetVisibility = Effect.of(true)
         )
         is ComposerEvent.OnCloseWithDraftSaved -> updateCloseComposerState(currentState, true)
         is ComposerEvent.OpenExistingDraft -> currentState.copy(isLoading = true)
@@ -114,7 +114,7 @@ class ComposerReducer @Inject constructor() {
         currentState.copy(fields = currentState.fields.copy(subject = subject.value))
 
     private fun updateStateForChangeSenderFailed(currentState: ComposerDraftState, errorMessage: TextUiModel) =
-        currentState.copy(changeSenderBottomSheetVisibility = Effect.of(false), error = Effect.of(errorMessage))
+        currentState.copy(changeBottomSheetVisibility = Effect.of(false), error = Effect.of(errorMessage))
 
     private fun updateStateToPaidFeatureMessage(currentState: ComposerDraftState) =
         currentState.copy(premiumFeatureMessage = Effect.of(TextUiModel(R.string.composer_change_sender_paid_feature)))
@@ -126,7 +126,7 @@ class ComposerReducer @Inject constructor() {
 
     private fun updateSenderTo(currentState: ComposerDraftState, sender: SenderUiModel) = currentState.copy(
         fields = currentState.fields.copy(sender = sender),
-        changeSenderBottomSheetVisibility = Effect.of(false)
+        changeBottomSheetVisibility = Effect.of(false)
     )
 
     private fun updateRecipientsTo(
