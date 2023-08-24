@@ -57,11 +57,15 @@ internal class MailboxListItemEntryModel(
             hasTestTag("${MailboxItemTestTags.ItemRow}$position")
         }
 
-    private val avatar = item.child {
-        hasTestTag(AvatarTestTags.Avatar)
+    private val avatarRootItem = item.child {
+        hasTestTag(AvatarTestTags.AvatarRootItem)
     }
 
-    private val avatarDraft = item.child {
+    private val avatar = avatarRootItem.child {
+        hasTestTag(AvatarTestTags.AvatarText)
+    }
+
+    private val avatarDraft = avatarRootItem.child {
         hasTestTag(AvatarTestTags.AvatarDraft)
     }
 

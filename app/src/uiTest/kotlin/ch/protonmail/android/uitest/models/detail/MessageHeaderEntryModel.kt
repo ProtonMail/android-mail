@@ -50,11 +50,15 @@ internal class MessageHeaderEntryModel(
         useUnmergedTree = true
     )
 
-    private val avatar = rootItem.child {
-        hasTestTag(AvatarTestTags.Avatar)
+    private val avatarRootItem = rootItem.child {
+        hasTestTag(AvatarTestTags.AvatarRootItem)
     }
 
-    private val avatarDraft = rootItem.child {
+    private val avatar = avatarRootItem.child {
+        hasTestTag(AvatarTestTags.AvatarText)
+    }
+
+    private val avatarDraft = avatarRootItem.child {
         hasTestTag(AvatarTestTags.AvatarDraft)
     }
 

@@ -47,6 +47,7 @@ fun Avatar(
 ) {
     Box(
         modifier = modifier
+            .testTag(AvatarTestTags.AvatarRootItem)
             .size(MailDimens.DefaultTouchTargetSize)
             .clickable { onClick() },
         contentAlignment = Alignment.Center
@@ -89,7 +90,7 @@ fun Avatar(
                 ) {
                     Text(
                         modifier = Modifier
-                            .testTag(AvatarTestTags.Avatar)
+                            .testTag(AvatarTestTags.AvatarText)
                             .padding(horizontal = ProtonDimens.SmallSpacing),
                         textAlign = TextAlign.Center,
                         text = avatarUiModel.value
@@ -101,6 +102,7 @@ fun Avatar(
 
 object AvatarTestTags {
 
-    const val Avatar = "Avatar"
+    const val AvatarRootItem = "AvatarRootItem"
+    const val AvatarText = "AvatarText"
     const val AvatarDraft = "AvatarDraft"
 }
