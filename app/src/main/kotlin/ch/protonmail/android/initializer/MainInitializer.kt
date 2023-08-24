@@ -38,6 +38,7 @@ class MainInitializer : Initializer<Unit> {
     override fun dependencies() = coreDependencies() + mailDependencies() + releaseOnlyDependenciesIfNeeded()
 
     private fun coreDependencies() = listOf(
+        FeatureFlagInitializer::class.java,
         CryptoValidatorInitializer::class.java,
         HumanVerificationInitializer::class.java,
         MissingScopeInitializer::class.java,

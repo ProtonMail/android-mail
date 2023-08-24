@@ -60,6 +60,10 @@
                 android:value="androidx.startup"
                 tools:node="remove" />
             <meta-data
+                android:name="ch.protonmail.android.initializer.FeatureFlagInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+            <meta-data
                 android:name="ch.protonmail.android.initializer.SentryInitializer"
                 android:value="androidx.startup"
                 tools:node="remove" />
