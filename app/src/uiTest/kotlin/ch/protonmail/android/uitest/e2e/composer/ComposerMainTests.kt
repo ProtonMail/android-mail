@@ -20,22 +20,17 @@ package ch.protonmail.android.uitest.e2e.composer
 
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.networkmocks.mockwebserver.combineWith
-import ch.protonmail.android.networkmocks.mockwebserver.requests.MockPriority
 import ch.protonmail.android.networkmocks.mockwebserver.requests.given
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
-import ch.protonmail.android.networkmocks.mockwebserver.requests.withPriority
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withStatusCode
 import ch.protonmail.android.test.annotations.suite.RegressionTest
-import ch.protonmail.android.test.annotations.suite.TemporaryTest
 import ch.protonmail.android.uitest.MockedNetworkTest
 import ch.protonmail.android.uitest.helpers.core.TestId
 import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
-import ch.protonmail.android.uitest.models.snackbar.SnackbarTextEntry
 import ch.protonmail.android.uitest.robot.common.section.keyboardSection
-import ch.protonmail.android.uitest.robot.common.section.snackbarSection
 import ch.protonmail.android.uitest.robot.common.section.verify
 import ch.protonmail.android.uitest.robot.composer.composerRobot
 import ch.protonmail.android.uitest.robot.composer.section.messageBodySection
@@ -68,62 +63,6 @@ internal class ComposerMainTests : MockedNetworkTest(), ComposerTests {
     @BindValue
     val serverProofValidation: ValidateServerProof = mockk(relaxUnitFun = true)
 
-    @TemporaryTest
-    @Test
-    @TestId("79034")
-    fun checkNavigationToComposerIsDisabledWhenFeatureToggleIsEnabled() {
-        mockWebServer.dispatcher combineWith mockNetworkDispatcher {
-            addMockRequests(
-                given("/mail/v4/messages")
-                    respondWith "/mail/v4/messages/messages_empty.json"
-                    withStatusCode 200 ignoreQueryParams true,
-                given("/core/v4/features?Code=HideComposerAndroid&Type=boolean")
-                    respondWith "/core/v4/features/composer/hide_composer_enabled.json"
-                    withStatusCode 200 withPriority MockPriority.Highest
-            )
-        }
-
-        navigator {
-            navigateTo(Destination.Inbox)
-        }
-
-        mailboxRobot {
-            topAppBarSection { tapComposerIcon() }
-
-            snackbarSection {
-                verify { hasMessage(SnackbarTextEntry.FeatureComingSoon) }
-            }
-        }
-    }
-
-    @TemporaryTest
-    @Test
-    @TestId("79035")
-    fun checkNavigationToComposerIsEnabledWhenFeatureToggleIsDisabled() {
-        mockWebServer.dispatcher combineWith mockNetworkDispatcher {
-            addMockRequests(
-                given("/mail/v4/messages")
-                    respondWith "/mail/v4/messages/messages_empty.json"
-                    withStatusCode 200 ignoreQueryParams true,
-                given("/core/v4/features?Code=HideComposerAndroid&Type=boolean")
-                    respondWith "/core/v4/features/composer/hide_composer_disabled.json"
-                    withStatusCode 200 withPriority MockPriority.Highest
-            )
-        }
-
-        navigator {
-            navigateTo(Destination.Inbox)
-        }
-
-        mailboxRobot {
-            topAppBarSection { tapComposerIcon() }
-        }
-
-        composerRobot {
-            verify { composerIsShown() }
-        }
-    }
-
     @Test
     @TestId("79036")
     fun checkComposerMainFieldsAndInteractions() {
@@ -131,10 +70,7 @@ internal class ComposerMainTests : MockedNetworkTest(), ComposerTests {
             addMockRequests(
                 given("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_empty.json"
-                    withStatusCode 200 ignoreQueryParams true,
-                given("/core/v4/features?Code=HideComposerAndroid&Type=boolean")
-                    respondWith "/core/v4/features/composer/hide_composer_disabled.json"
-                    withStatusCode 200 withPriority MockPriority.Highest
+                    withStatusCode 200 ignoreQueryParams true
             )
         }
 
@@ -197,10 +133,7 @@ internal class ComposerMainTests : MockedNetworkTest(), ComposerTests {
             addMockRequests(
                 given("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_empty.json"
-                    withStatusCode 200 ignoreQueryParams true,
-                given("/core/v4/features?Code=HideComposerAndroid&Type=boolean")
-                    respondWith "/core/v4/features/composer/hide_composer_disabled.json"
-                    withStatusCode 200 withPriority MockPriority.Highest
+                    withStatusCode 200 ignoreQueryParams true
             )
         }
 
@@ -228,10 +161,7 @@ internal class ComposerMainTests : MockedNetworkTest(), ComposerTests {
             addMockRequests(
                 given("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_empty.json"
-                    withStatusCode 200 ignoreQueryParams true,
-                given("/core/v4/features?Code=HideComposerAndroid&Type=boolean")
-                    respondWith "/core/v4/features/composer/hide_composer_disabled.json"
-                    withStatusCode 200 withPriority MockPriority.Highest
+                    withStatusCode 200 ignoreQueryParams true
             )
         }
 
@@ -261,10 +191,7 @@ internal class ComposerMainTests : MockedNetworkTest(), ComposerTests {
             addMockRequests(
                 given("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_empty.json"
-                    withStatusCode 200 ignoreQueryParams true,
-                given("/core/v4/features?Code=HideComposerAndroid&Type=boolean")
-                    respondWith "/core/v4/features/composer/hide_composer_disabled.json"
-                    withStatusCode 200 withPriority MockPriority.Highest
+                    withStatusCode 200 ignoreQueryParams true
             )
         }
 

@@ -19,29 +19,18 @@
 package ch.protonmail.android.uitest.e2e.composer
 
 import ch.protonmail.android.networkmocks.mockwebserver.MockNetworkDispatcher
-import ch.protonmail.android.networkmocks.mockwebserver.requests.MockPriority
 import ch.protonmail.android.networkmocks.mockwebserver.requests.given
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
-import ch.protonmail.android.networkmocks.mockwebserver.requests.withPriority
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withStatusCode
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 
 interface ComposerTests {
 
     fun composerMockNetworkDispatcher(
-        composerEnabled: Boolean = true,
         useDefaultMessagesList: Boolean = true,
         mockDefinitions: MockNetworkDispatcher.() -> Unit = {}
     ) = mockNetworkDispatcher {
-
-        if (composerEnabled) {
-            addMockRequests(
-                given("/core/v4/features?Code=HideComposerAndroid&Type=boolean")
-                    respondWith "/core/v4/features/composer/hide_composer_disabled.json"
-                    withStatusCode 200 withPriority MockPriority.Highest
-            )
-        }
 
         if (useDefaultMessagesList) {
             addMockRequests(
