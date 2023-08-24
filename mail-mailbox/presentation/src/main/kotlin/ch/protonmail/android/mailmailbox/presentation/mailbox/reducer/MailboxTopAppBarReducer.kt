@@ -37,7 +37,6 @@ class MailboxTopAppBarReducer @Inject constructor() {
             is MailboxEvent.NewLabelSelected -> currentState.toNewStateForNewLabelSelected(operation)
             is MailboxViewAction.EnterSelectionMode -> currentState.toNewStateForEnterSelectionMode()
             is MailboxViewAction.ExitSelectionMode -> currentState.toNewStateForExitSelectionMode()
-            is MailboxEvent.ComposerDisabledChanged -> currentState.toNewStateForComposerDisabledChanged(operation)
         }
     }
 
@@ -46,11 +45,7 @@ class MailboxTopAppBarReducer @Inject constructor() {
     ): MailboxTopAppBarState.Data {
         val currentMailLabel = operation.selectedLabel
         return when (this) {
-            is MailboxTopAppBarState.Loading -> MailboxTopAppBarState.Data.DefaultMode(
-                currentMailLabel.text(),
-                isComposerDisabled
-            )
-
+            is MailboxTopAppBarState.Loading -> MailboxTopAppBarState.Data.DefaultMode(currentMailLabel.text())
             is MailboxTopAppBarState.Data -> this.with(currentMailLabel.text())
         }
     }
@@ -60,40 +55,19 @@ class MailboxTopAppBarReducer @Inject constructor() {
     ): MailboxTopAppBarState.Data {
         val currentMailLabel = operation.selectedLabel
         return when (this) {
-            is MailboxTopAppBarState.Loading -> MailboxTopAppBarState.Data.DefaultMode(
-                currentMailLabel.text(),
-                isComposerDisabled
-            )
-
+            is MailboxTopAppBarState.Loading -> MailboxTopAppBarState.Data.DefaultMode(currentMailLabel.text())
             is MailboxTopAppBarState.Data -> this.with(currentMailLabel.text())
         }
     }
 
     private fun MailboxTopAppBarState.toNewStateForEnterSelectionMode() = when (this) {
         is MailboxTopAppBarState.Loading -> this
-        is MailboxTopAppBarState.Data -> MailboxTopAppBarState.Data.SelectionMode(
-            currentLabelName,
-            isComposerDisabled,
-            selectedCount = 1
-        )
+        is MailboxTopAppBarState.Data -> MailboxTopAppBarState.Data.SelectionMode(currentLabelName, selectedCount = 1)
     }
 
     private fun MailboxTopAppBarState.toNewStateForExitSelectionMode() = when (this) {
         is MailboxTopAppBarState.Loading -> this
-        is MailboxTopAppBarState.Data ->
-            MailboxTopAppBarState.Data.DefaultMode(
-                currentLabelName,
-                isComposerDisabled
-            )
-    }
-
-    private fun MailboxTopAppBarState.toNewStateForComposerDisabledChanged(
-        operation: MailboxEvent.ComposerDisabledChanged
-    ) = when (this) {
-        is MailboxTopAppBarState.Data.DefaultMode -> copy(isComposerDisabled = operation.composerDisabled)
-        is MailboxTopAppBarState.Data.SearchMode -> copy(isComposerDisabled = operation.composerDisabled)
-        is MailboxTopAppBarState.Data.SelectionMode -> copy(isComposerDisabled = operation.composerDisabled)
-        is MailboxTopAppBarState.Loading -> copy(isComposerDisabled = operation.composerDisabled)
+        is MailboxTopAppBarState.Data -> MailboxTopAppBarState.Data.DefaultMode(currentLabelName)
     }
 
     fun MailboxTopAppBarState.Data.with(currentLabelName: TextUiModel) = when (this) {

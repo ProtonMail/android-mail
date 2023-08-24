@@ -27,7 +27,6 @@ enum class MailFeatureId(val id: FeatureId) {
 
     // Remote flags
     ConversationMode(FeatureId("ThreadingAndroid")),
-    HideComposer(FeatureId("HideComposerAndroid")),
 
     // Local only flag (unknown to remote API)
     AddAttachmentsToDraft(FeatureId("AddAttachmentsToDraft")),

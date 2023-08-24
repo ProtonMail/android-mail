@@ -125,14 +125,6 @@ class MailboxViewModel @Inject constructor(
 
         primaryUserId
             .filterNotNull()
-            .flatMapLatest { userId -> observeMailFeature(userId, MailFeatureId.HideComposer) }
-            .onEach { hideComposerFlag ->
-                emitNewStateFrom(MailboxEvent.ComposerDisabledChanged(composerDisabled = hideComposerFlag.value))
-            }
-            .launchIn(viewModelScope)
-
-        primaryUserId
-            .filterNotNull()
             .flatMapLatest { userId -> observeMailFeature(userId, MailFeatureId.SelectionMode) }
             .onEach {
                 emitNewStateFrom(MailboxEvent.SelectionModeEnabledChanged(selectionModeEnabled = it.value))
@@ -278,7 +270,7 @@ class MailboxViewModel @Inject constructor(
 
         val initialState = MailboxState(
             mailboxListState = MailboxListState.Loading(selectionModeEnabled = false),
-            topAppBarState = MailboxTopAppBarState.Loading(isComposerDisabled = false),
+            topAppBarState = MailboxTopAppBarState.Loading,
             unreadFilterState = UnreadFilterState.Loading
         )
     }

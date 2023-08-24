@@ -153,7 +153,7 @@ private data class UiModel(
 @Composable
 @Preview
 fun LoadingMailboxTopAppBarPreview() {
-    val state = MailboxTopAppBarState.Loading(isComposerDisabled = false)
+    val state = MailboxTopAppBarState.Loading
 
     MailboxTopAppBar(
         state = state,

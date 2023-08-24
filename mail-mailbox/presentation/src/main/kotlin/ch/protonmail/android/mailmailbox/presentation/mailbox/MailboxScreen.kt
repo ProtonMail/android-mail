@@ -141,13 +141,7 @@ fun MailboxScreen(
                         onTitleClick = { scope.launch { lazyListState.animateScrollToItem(0) } },
                         onEnterSearchMode = { actions.showFeatureMissingSnackbar() },
                         onSearch = {},
-                        onOpenComposer = {
-                            if (mailboxState.topAppBarState.isComposerDisabled) {
-                                actions.showFeatureMissingSnackbar()
-                            } else {
-                                actions.navigateToComposer()
-                            }
-                        }
+                        onOpenComposer = { actions.navigateToComposer() }
                     )
                 )
 
