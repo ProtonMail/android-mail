@@ -37,22 +37,22 @@ import me.proton.core.compose.component.ProtonRawListItem
 import me.proton.core.compose.theme.ProtonDimens
 
 @Composable
-fun AddAttachmentsBottomSheetContent(onSelectFromPhotoLibrarySelected: () -> Unit, modifier: Modifier = Modifier) {
+fun AddAttachmentsBottomSheetContent(onImportFromSelected: () -> Unit, modifier: Modifier = Modifier) {
     Column(modifier = modifier.padding(vertical = ProtonDimens.DefaultSpacing)) {
         ProtonRawListItem(
             modifier = Modifier
-                .clickable { onSelectFromPhotoLibrarySelected() }
+                .clickable { onImportFromSelected() }
                 .height(ProtonDimens.ListItemHeight)
                 .padding(horizontal = ProtonDimens.DefaultSpacing)
         ) {
             Icon(
-                painter = painterResource(id = R.drawable.ic_proton_image),
+                painter = painterResource(id = R.drawable.ic_proton_folder_open),
                 contentDescription = NO_CONTENT_DESCRIPTION
             )
             Spacer(modifier = Modifier.width(ProtonDimens.DefaultSpacing))
             Text(
                 modifier = Modifier.weight(1f),
-                text = stringResource(id = R.string.select_from_your_photo_library),
+                text = stringResource(id = R.string.add_attachments_bottom_sheet_import_from),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )

@@ -38,5 +38,5 @@
     <string name="composer_error_store_draft_recipients">Storing this draft\'s recipients failed</string>
     <string name="composer_error_loading_draft">The content of this draft is not available at this time. Editing will override any pre-existing content.</string>
     <string name="add_attachments_content_description">Add attachments</string>
-    <string name="select_from_your_photo_library">Select from your photo library</string>
+    <string name="add_attachments_bottom_sheet_import_from">Import from…</string>
 </resources>

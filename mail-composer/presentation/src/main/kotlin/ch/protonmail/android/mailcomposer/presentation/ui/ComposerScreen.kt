@@ -85,7 +85,7 @@ fun ComposerScreen(
         sheetContent = {
             when (bottomSheetType.value) {
                 BottomSheetType.AddAttachments -> AddAttachmentsBottomSheetContent(
-                    {
+                    onImportFromSelected = {
                         onAddAttachments()
                         scope.launch { bottomSheetState.hide() }
                     }
