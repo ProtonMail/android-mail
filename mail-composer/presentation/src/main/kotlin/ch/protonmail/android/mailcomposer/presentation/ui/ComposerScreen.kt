@@ -64,12 +64,7 @@ import me.proton.core.compose.theme.ProtonTheme3
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterialApi::class)
 @Composable
-fun ComposerScreen(
-    onAddAttachments: () -> Unit,
-    onCloseComposerClick: () -> Unit,
-    showDraftSavedSnackbar: () -> Unit,
-    viewModel: ComposerViewModel = hiltViewModel()
-) {
+fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel = hiltViewModel()) {
     val context = LocalContext.current
     val view = LocalView.current
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -86,7 +81,7 @@ fun ComposerScreen(
             when (bottomSheetType.value) {
                 BottomSheetType.AddAttachments -> AddAttachmentsBottomSheetContent(
                     onImportFromSelected = {
-                        onAddAttachments()
+                        actions.onAddAttachments()
                         scope.launch { bottomSheetState.hide() }
                     }
                 )
@@ -163,13 +158,13 @@ fun ComposerScreen(
 
     ConsumableLaunchedEffect(effect = state.closeComposer) {
         dismissKeyboard(context, view, keyboardController)
-        onCloseComposerClick()
+        actions.onCloseComposerClick()
     }
 
     ConsumableLaunchedEffect(effect = state.closeComposerWithDraftSaved) {
         dismissKeyboard(context, view, keyboardController)
-        onCloseComposerClick()
-        showDraftSavedSnackbar()
+        actions.onCloseComposerClick()
+        actions.showDraftSavedSnackbar()
     }
 
     BackHandler(true) {
@@ -198,6 +193,21 @@ private fun buildActions(
 
 object ComposerScreen {
     const val DraftMessageIdKey = "draft_message_id"
+
+    data class Actions(
+        val onAddAttachments: () -> Unit,
+        val onCloseComposerClick: () -> Unit,
+        val showDraftSavedSnackbar: () -> Unit
+    ) {
+        companion object {
+
+            val Empty = Actions(
+                onAddAttachments = {},
+                onCloseComposerClick = {},
+                showDraftSavedSnackbar = {}
+            )
+        }
+    }
 }
 
 private enum class BottomSheetType { AddAttachments, ChangeSender }
@@ -206,6 +216,6 @@ private enum class BottomSheetType { AddAttachments, ChangeSender }
 @AdaptivePreviews
 private fun MessageDetailScreenPreview() {
     ProtonTheme3 {
-        ComposerScreen(onAddAttachments = {}, onCloseComposerClick = {}, showDraftSavedSnackbar = {})
+        ComposerScreen(ComposerScreen.Actions.Empty)
     }
 }
