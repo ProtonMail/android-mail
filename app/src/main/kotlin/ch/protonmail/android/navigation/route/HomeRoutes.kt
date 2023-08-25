@@ -127,15 +127,21 @@ internal fun NavGraphBuilder.addMessageDetail(
     }
 }
 
-internal fun NavGraphBuilder.addComposer(navController: NavHostController, showDraftSavedSnackbar: () -> Unit) {
+internal fun NavGraphBuilder.addComposer(
+    navController: NavHostController,
+    onAddAttachments: () -> Unit,
+    showDraftSavedSnackbar: () -> Unit
+) {
     composable(route = Destination.Screen.Composer.route) {
         ComposerScreen(
+            onAddAttachments = onAddAttachments,
             onCloseComposerClick = navController::popBackStack,
             showDraftSavedSnackbar = showDraftSavedSnackbar
         )
     }
     composable(route = Destination.Screen.PrefilledComposer.route) {
         ComposerScreen(
+            onAddAttachments = onAddAttachments,
             onCloseComposerClick = navController::popBackStack,
             showDraftSavedSnackbar = showDraftSavedSnackbar
         )

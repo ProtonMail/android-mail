@@ -67,7 +67,8 @@ class LauncherViewModel @Inject constructor(
     private val plansOrchestrator: PlansOrchestrator,
     private val reportOrchestrator: ReportOrchestrator,
     private val userSettingsOrchestrator: UserSettingsOrchestrator,
-    private val notificationsPermissionsOrchestrator: NotificationsPermissionsOrchestrator
+    private val notificationsPermissionsOrchestrator: NotificationsPermissionsOrchestrator,
+    private val addAttachmentsOrchestrator: AddAttachmentsOrchestrator
 ) : ViewModel() {
 
     val state: StateFlow<LauncherState> = accountManager.getAccounts().combine(
@@ -101,6 +102,7 @@ class LauncherViewModel @Inject constructor(
         reportOrchestrator.register(context)
         userSettingsOrchestrator.register(context)
         notificationsPermissionsOrchestrator.register(context)
+        addAttachmentsOrchestrator.register(context)
 
         accountManager.observe(context.lifecycle, Lifecycle.State.CREATED)
             .onSessionForceLogout { userManager.lock(it.userId) }
@@ -115,6 +117,7 @@ class LauncherViewModel @Inject constructor(
         viewModelScope.launch {
             when (action) {
                 Action.AddAccount -> onAddAccount()
+                Action.AddAttachments -> onAddAttachments()
                 Action.OpenPasswordManagement -> onOpenPasswordManagement()
                 Action.OpenRecoveryEmail -> onOpenRecoveryEmail()
                 Action.OpenReport -> onOpenReport()
@@ -133,6 +136,10 @@ class LauncherViewModel @Inject constructor(
             creatableAccountType = AccountType.Internal,
             product = product
         )
+    }
+
+    private fun onAddAttachments() {
+        addAttachmentsOrchestrator.openFilePicker()
     }
 
     private suspend fun onOpenPasswordManagement() {
@@ -184,6 +191,7 @@ class LauncherViewModel @Inject constructor(
     sealed interface Action {
 
         object AddAccount : Action
+        object AddAttachments : Action
         object OpenPasswordManagement : Action
         object OpenRecoveryEmail : Action
         object OpenReport : Action

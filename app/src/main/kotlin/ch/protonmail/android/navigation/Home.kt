@@ -172,6 +172,7 @@ fun Home(
                 )
                 addComposer(
                     navController,
+                    onAddAttachments = launcherActions.onAddAttachments,
                     showDraftSavedSnackbar = { showDraftSavedSnackbar() }
                 )
                 addRemoveAccountDialog(navController)

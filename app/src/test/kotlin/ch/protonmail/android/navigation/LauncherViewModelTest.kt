@@ -76,6 +76,7 @@ class LauncherViewModelTest {
         mockk<NotificationsPermissionsOrchestrator>(relaxUnitFun = true) {
             every { permissionResult() } returns MutableStateFlow(GRANTED)
         }
+    private val addAttachmentsOrchestrator = mockk<AddAttachmentsOrchestrator>(relaxUnitFun = true)
 
     private val userManager = mockk<UserManager>()
 
@@ -422,6 +423,29 @@ class LauncherViewModelTest {
         verify(exactly = 0) { notificationsPermissionsOrchestrator.requestPermissionIfRequired() }
     }
 
+    @Test
+    fun `when register is called then register for activity result for adding attachments is called`() {
+        // Given
+        mockkStatic(AccountManager::observe)
+        val amObserver = mockAccountManagerObserver()
+        every { accountManager.observe(any(), any()) } returns amObserver
+
+        // When
+        viewModel.register(context)
+
+        // Then
+        verify { addAttachmentsOrchestrator.register(context) }
+    }
+
+    @Test
+    fun `when add attachments action is submitted then file picker is opened`() {
+        // When
+        viewModel.submit(LauncherViewModel.Action.AddAttachments)
+
+        // Then
+        verify { addAttachmentsOrchestrator.openFilePicker() }
+    }
+
     private fun buildViewModel() = LauncherViewModel(
         Mail,
         Internal,
@@ -431,7 +455,8 @@ class LauncherViewModelTest {
         plansOrchestrator,
         reportOrchestrator,
         userSettingsOrchestrator,
-        notificationsPermissionsOrchestrator
+        notificationsPermissionsOrchestrator,
+        addAttachmentsOrchestrator
     )
 
     private fun mockAccountManagerObserver(): AccountManagerObserver {

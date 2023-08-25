@@ -30,10 +30,7 @@ import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.domain.entity.UserId
 
 @Composable
-fun Launcher(
-    activityActions: MainActivity.Actions,
-    viewModel: LauncherViewModel = hiltViewModel()
-) {
+fun Launcher(activityActions: MainActivity.Actions, viewModel: LauncherViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsState(LauncherState.Processing)
 
     when (state) {
@@ -41,6 +38,7 @@ fun Launcher(
         LauncherState.PrimaryExist -> Home(
             activityActions = activityActions,
             launcherActions = Launcher.Actions(
+                onAddAttachments = { viewModel.submit(LauncherViewModel.Action.AddAttachments) },
                 onPasswordManagement = { viewModel.submit(LauncherViewModel.Action.OpenPasswordManagement) },
                 onRecoveryEmail = { viewModel.submit(LauncherViewModel.Action.OpenRecoveryEmail) },
                 onReportBug = { viewModel.submit(LauncherViewModel.Action.OpenReport) },
@@ -61,6 +59,7 @@ object Launcher {
      * A set of actions that can be executed in the scope of Core's Orchestrators
      */
     data class Actions(
+        val onAddAttachments: () -> Unit,
         val onSignIn: (UserId?) -> Unit,
         val onSignOut: (UserId) -> Unit,
         val onSwitchAccount: (UserId) -> Unit,

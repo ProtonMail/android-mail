@@ -65,6 +65,7 @@ import me.proton.core.compose.theme.ProtonTheme3
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun ComposerScreen(
+    onAddAttachments: () -> Unit,
     onCloseComposerClick: () -> Unit,
     showDraftSavedSnackbar: () -> Unit,
     viewModel: ComposerViewModel = hiltViewModel()
@@ -84,7 +85,10 @@ fun ComposerScreen(
         sheetContent = {
             when (bottomSheetType.value) {
                 BottomSheetType.AddAttachments -> AddAttachmentsBottomSheetContent(
-                    { scope.launch { bottomSheetState.hide() } }
+                    {
+                        onAddAttachments()
+                        scope.launch { bottomSheetState.hide() }
+                    }
                 )
                 BottomSheetType.ChangeSender -> ChangeSenderBottomSheetContent(
                     state.senderAddresses,
@@ -202,6 +206,6 @@ private enum class BottomSheetType { AddAttachments, ChangeSender }
 @AdaptivePreviews
 private fun MessageDetailScreenPreview() {
     ProtonTheme3 {
-        ComposerScreen(onCloseComposerClick = {}, showDraftSavedSnackbar = {})
+        ComposerScreen(onAddAttachments = {}, onCloseComposerClick = {}, showDraftSavedSnackbar = {})
     }
 }
