@@ -55,6 +55,7 @@ fun Action.iconDrawable() = when (this) {
     Action.SavePdf -> R.drawable.ic_proton_arrow_down_line
     Action.SenderEmails -> R.drawable.ic_proton_envelope
     Action.SaveAttachments -> R.drawable.ic_proton_arrow_down_to_square
+    Action.More -> R.drawable.ic_proton_three_dots_horizontal
 }
 
 @StringRes
@@ -83,4 +84,5 @@ fun Action.contentDescription() = when (this) {
     Action.SavePdf -> R.string.action_save_pdf_content_description
     Action.SenderEmails -> R.string.action_sender_emails_content_description
     Action.SaveAttachments -> R.string.action_save_attachments_content_description
+    Action.More -> R.string.action_more_content_description
 }

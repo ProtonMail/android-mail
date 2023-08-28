@@ -70,10 +70,12 @@ fun BottomActionBar(
                 is BottomBarState.Loading -> {
                     ProtonCenteredProgress(modifier = Modifier.size(MailDimens.ProgressDefaultSize))
                 }
+
                 is BottomBarState.Error -> Text(
                     text = stringResource(id = R.string.common_error_loading_actions),
                     style = ProtonTypography.Default.default
                 )
+
                 is BottomBarState.Data -> {
                     state.actions.forEachIndexed { index, uiModel ->
                         if (index.exceedsMaxActionsShowed()) {
@@ -116,6 +118,7 @@ fun callbackForAction(action: Action, viewActionCallbacks: BottomActionBar.Actio
     Action.SavePdf -> viewActionCallbacks.onSavePdf
     Action.SenderEmails -> viewActionCallbacks.onSenderEmail
     Action.SaveAttachments -> viewActionCallbacks.onSaveAttachments
+    Action.More -> viewActionCallbacks.onMore
 }
 
 @Composable
@@ -167,7 +170,8 @@ object BottomActionBar {
         val onRemind: () -> Unit,
         val onSavePdf: () -> Unit,
         val onSenderEmail: () -> Unit,
-        val onSaveAttachments: () -> Unit
+        val onSaveAttachments: () -> Unit,
+        val onMore: () -> Unit
     ) {
 
         companion object {
@@ -195,7 +199,8 @@ object BottomActionBar {
                 onRemind = {},
                 onSavePdf = {},
                 onSenderEmail = {},
-                onSaveAttachments = {}
+                onSaveAttachments = {},
+                onMore = {}
             )
         }
     }
@@ -204,9 +209,7 @@ object BottomActionBar {
 
 @Composable
 @AdaptivePreviews
-private fun BottomActionPreview(
-    @PreviewParameter(BottomActionBarPreviewProvider::class) state: BottomBarState
-) {
+private fun BottomActionPreview(@PreviewParameter(BottomActionBarPreviewProvider::class) state: BottomBarState) {
     ProtonTheme {
         BottomActionBar(state = state, viewActionCallbacks = BottomActionBar.Actions.Empty)
     }

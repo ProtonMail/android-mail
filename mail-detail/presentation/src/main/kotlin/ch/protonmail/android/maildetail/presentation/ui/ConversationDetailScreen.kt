@@ -263,7 +263,8 @@ fun ConversationDetailScreen(
                     onRemind = { Timber.d("conversation onRemind clicked") },
                     onSavePdf = { Timber.d("conversation onSavePdf clicked") },
                     onSenderEmail = { Timber.d("conversation onSenderEmail clicked") },
-                    onSaveAttachments = { Timber.d("conversation onSaveAttachments clicked") }
+                    onSaveAttachments = { Timber.d("conversation onSaveAttachments clicked") },
+                    onMore = { Timber.d("conversation onMore clicked") }
                 )
             )
         }

@@ -41,5 +41,6 @@ enum class Action {
     Remind,
     SavePdf,
     SenderEmails,
-    SaveAttachments
+    SaveAttachments,
+    More
 }

@@ -234,7 +234,8 @@ fun MessageDetailScreen(
                     onRemind = { Timber.d("message onRemind clicked") },
                     onSavePdf = { Timber.d("message onSavePdf clicked") },
                     onSenderEmail = { Timber.d("message onSenderEmail clicked") },
-                    onSaveAttachments = { Timber.d("message onSaveAttachments clicked") }
+                    onSaveAttachments = { Timber.d("message onSaveAttachments clicked") },
+                    onMore = { Timber.d("message onMore clicked") }
                 )
             )
         }
