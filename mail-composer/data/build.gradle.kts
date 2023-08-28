@@ -50,12 +50,14 @@ dependencies {
     implementation(AndroidX.Hilt.work)
     implementation(Proton.Core.user)
     implementation(Proton.Core.label)
+    implementation(Proton.Core.mailSendPreferences)
 
     implementation(project(":mail-common:data"))
     implementation(project(":mail-common:domain"))
     implementation(project(":mail-composer:domain"))
     implementation(project(":mail-message:data"))
     implementation(project(":mail-message:domain"))
+    implementation(project(":mail-label:domain"))
 
     testImplementation(Dependencies.testLibs)
     testImplementation(Proton.Core.testAndroid)

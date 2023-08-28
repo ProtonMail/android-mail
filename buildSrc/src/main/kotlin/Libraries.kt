@@ -294,6 +294,7 @@ object Proton {
         val labelData = coreArtifact("label-data", Versions.Proton.core)
         val labelDomain = coreArtifact("label-domain", Versions.Proton.core)
         val mailSettings = coreArtifact("mail-settings", Versions.Proton.core)
+        val mailSendPreferences = coreArtifact("mail-send-preferences", Versions.Proton.core)
         val network = coreArtifact("network", Versions.Proton.core)
         val notification = coreArtifact("notification", Versions.Proton.core)
         val observability = coreArtifact("observability", Versions.Proton.core)
