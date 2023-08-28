@@ -20,9 +20,13 @@ package ch.protonmail.android.mailcomposer.domain.model
 
 enum class DraftSyncState(val value: Int) {
     Local(0),
-    Synchronized(1);
+    Synchronized(1),
+    Sending(2),
+    ErrorSending(3),
+    Sent(4);
 
     companion object {
+
         fun from(value: Int) = values().find { it.value == value } ?: Local
     }
 }

@@ -52,6 +52,20 @@ class DraftStateRepositoryImpl @Inject constructor(
         localDataSource.save(updatedState)
     }
 
+    override suspend fun updateDraftSyncState(
+        userId: UserId,
+        messageId: MessageId,
+        syncState: DraftSyncState
+    ): Either<DataError, Unit> = either {
+        val draftState = localDataSource.observe(userId, messageId).first().bind()
+        localDataSource.save(draftState.copy(state = syncState))
+    }
+
+    override suspend fun deleteDraftState(userId: UserId, messageId: MessageId): Either<DataError, Unit> = either {
+        val draftState = localDataSource.observe(userId, messageId).first().bind()
+        localDataSource.delete(draftState)
+    }
+
     override suspend fun updateApiMessageIdAndSetSyncedState(
         userId: UserId,
         messageId: MessageId,

@@ -54,4 +54,8 @@ class DraftStateLocalDataSourceImpl @Inject constructor(
         }
     }
 
+    override suspend fun delete(state: DraftState) {
+        draftStateDao.delete(state.toDraftStateEntity())
+    }
+
 }
