@@ -36,5 +36,6 @@
   <string name="composer_error_duplicate_recipient">Destinatar duplicat eliminat: %1$s</string>
   <string name="composer_error_store_draft_subject">Salvarea subiectului acestei ciorne a eșuat.</string>
   <string name="composer_error_store_draft_recipients">Stocarea destinatarului acestei ciorne a eșuat.</string>
-  <string name="composer_error_loading_draft">The content of this draft is not available at this time. Editing will override any pre-existing content.</string>
+  <string name="composer_error_loading_draft">Conținutul acestei ciorne nu este disponibil momentan. Editarea va înlocui orice conținut preexistent.</string>
+  <string name="add_attachments_content_description">Add attachments</string>
 </resources>

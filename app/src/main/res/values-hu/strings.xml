@@ -24,5 +24,5 @@
   <string name="you_are_offline">Nincs internetkapcsolat</string>
   <string name="feature_coming_soon">A funkció hamarosan érkezik...</string>
   <string name="mailbox_draft_saved_message">Piszkozat mentve</string>
-  <string name="notification_switched_account">Switched to account: %s</string>
+  <string name="notification_switched_account">Átlépve a fiókba: %s</string>
 </resources>

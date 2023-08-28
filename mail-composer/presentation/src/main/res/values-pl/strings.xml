@@ -37,4 +37,5 @@
   <string name="composer_error_store_draft_subject">Zapisanie tematu szkicu nie powiodło się</string>
   <string name="composer_error_store_draft_recipients">Zapisanie odbiorców szkicu nie powiodło się</string>
   <string name="composer_error_loading_draft">Zawartość szkicu nie jest dostępna. Edycja zastąpi obecną zawartość.</string>
+  <string name="add_attachments_content_description">Dodaj załączniki</string>
 </resources>

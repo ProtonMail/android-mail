@@ -37,4 +37,5 @@
   <string name="composer_error_store_draft_subject">Menyimpan subjek draf gagal</string>
   <string name="composer_error_store_draft_recipients">Menyimpan penerima draf gagal</string>
   <string name="composer_error_loading_draft">Konten draf ini sedang tidak tersedia. Dengan menyunting pesan, isi draf yang telah ada sebelumnya akan tertimpa.</string>
+  <string name="add_attachments_content_description">Tambah lampiran</string>
 </resources>

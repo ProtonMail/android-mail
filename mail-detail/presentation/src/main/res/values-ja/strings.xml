@@ -81,6 +81,6 @@
   <string name="message_body_error_no_webview">このメッセージの内容を表示するには、WebView をインストールする必要があります。</string>
   <!-- Banners -->
   <string name="message_body_embedded_images_banner_text">埋め込み画像の自動読み込みはオフになっています。これは設定で変更できます。</string>
-  <string name="message_body_remote_content_banner_text">Automatic loading of remote content is turned off. This can be changed in the settings.</string>
-  <string name="message_body_embedded_and_remote_content_banner_text">Automatic loading of embedded images and remote content is turned off. These can be changed in the settings.</string>
+  <string name="message_body_remote_content_banner_text">リモートコンテンツの自動読み込みはオフになっています。これは設定で変更できます。</string>
+  <string name="message_body_embedded_and_remote_content_banner_text">埋め込み画像やリモートコンテンツの自動読み込みはオフになっています。これらは設定で変更できます。</string>
 </resources>

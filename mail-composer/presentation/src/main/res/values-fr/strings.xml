@@ -24,7 +24,7 @@
   <string name="subject_placeholder">Objet</string>
   <string name="compose_message_placeholder">Écrire un message</string>
   <string name="close_composer_content_description">Fermer l\'éditeur</string>
-  <string name="send_message_content_description">Envoyez le message</string>
+  <string name="send_message_content_description">Envoyer le message</string>
   <string name="composer_expand_recipients_button">Afficher les autres destinataires</string>
   <string name="composer_error_invalid_email">L\'adresse e-mail n\'est pas valide.</string>
   <string name="composer_error_invalid_sender">L\'adresse de l\'expéditeur n\'est pas valide.</string>
@@ -36,5 +36,6 @@
   <string name="composer_error_duplicate_recipient">Destinataire dupliqué supprimé : %1$s</string>
   <string name="composer_error_store_draft_subject">L\'enregistrement de l\'objet du brouillon n\'a pas abouti.</string>
   <string name="composer_error_store_draft_recipients">L\'enregistrement des destinataires du brouillon n\'a pas abouti.</string>
-  <string name="composer_error_loading_draft">Le contenu de ce brouillon n\'est pour le moment pas disponible. Sa modification remplacera le contenu préexistant.</string>
+  <string name="composer_error_loading_draft">Le contenu de ce brouillon n\'est pas disponible pour l\'instant. Sa modification remplacera tout contenu déjà existant.</string>
+  <string name="add_attachments_content_description">Ajouter une pièce jointe</string>
 </resources>

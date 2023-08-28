@@ -36,5 +36,6 @@
   <string name="composer_error_duplicate_recipient">Yinelenen alıcı kaldırıldı: %1$s</string>
   <string name="composer_error_store_draft_subject">Bu taslağın konusu kaydedilemedi</string>
   <string name="composer_error_store_draft_recipients">Bu taslağın alıcıları kaydedilemedi</string>
-  <string name="composer_error_loading_draft">The content of this draft is not available at this time. Editing will override any pre-existing content.</string>
+  <string name="composer_error_loading_draft">Bu taslağın içeriği şu anda kullanılamıyor. Düzenleme daha önce var olan içerikleri değiştirecek.</string>
+  <string name="add_attachments_content_description">Add attachments</string>
 </resources>

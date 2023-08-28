@@ -29,12 +29,13 @@
   <string name="composer_error_invalid_email">O endereço de e-mail não é válido.</string>
   <string name="composer_error_invalid_sender">O endereço do remetente não é válido.</string>
   <string name="change_sender_button_content_description">Alterar o remetente</string>
-  <string name="composer_change_sender_paid_feature">Para alterar o endereço do remetente, atualize para um plano pago</string>
+  <string name="composer_change_sender_paid_feature">Para alterar o endereço do remetente, faça um upgrade para um plano pago</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Não é possível alterar o remetente, pois a assinatura do usuário não pôde ser obtida. Tente novamente.</string>
   <string name="composer_error_store_draft_sender_address">Erro ao armazenar o endereço do remetente deste rascunho</string>
-  <string name="composer_error_store_draft_body">Erro ao armazenar a estrutura deste rascunho</string>
+  <string name="composer_error_store_draft_body">Erro ao armazenar o corpo deste rascunho</string>
   <string name="composer_error_duplicate_recipient">Destinatário duplicado removido: %1$s</string>
   <string name="composer_error_store_draft_subject">Erro ao salvar o assunto deste rascunho</string>
   <string name="composer_error_store_draft_recipients">Erro ao salvar os destinatários deste rascunho</string>
   <string name="composer_error_loading_draft">O conteúdo deste rascunho não está disponível no momento. A edição substituirá qualquer conteúdo pré-existente.</string>
+  <string name="add_attachments_content_description">Adicionar anexos</string>
 </resources>

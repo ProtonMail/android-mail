@@ -37,4 +37,5 @@
   <string name="composer_error_store_draft_subject">Не вдалося зберегти об\'єкт ескізу</string>
   <string name="composer_error_store_draft_recipients">Не вдалося зберегти отримувачів цієї чернетки</string>
   <string name="composer_error_loading_draft">Вміст цієї чернетки недоступний в цей момент. Редагування перезапише будь-який попередній вміст.</string>
+  <string name="add_attachments_content_description">Add attachments</string>
 </resources>

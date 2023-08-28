@@ -29,12 +29,13 @@
   <string name="composer_error_invalid_email">电子邮箱地址无效</string>
   <string name="composer_error_invalid_sender">发件人地址无效</string>
   <string name="change_sender_button_content_description">更改发件地址</string>
-  <string name="composer_change_sender_paid_feature">升级到付费计划以更改发件人地址</string>
+  <string name="composer_change_sender_paid_feature">开通付费账户方可更改发件地址</string>
   <string name="composer_error_change_sender_failed_getting_subscription">获取用户等级失败，无法更改发件人地址。请重试。</string>
   <string name="composer_error_store_draft_sender_address">无法存储此草稿的发件人地址</string>
   <string name="composer_error_store_draft_body">无法存储此草稿正文</string>
   <string name="composer_error_duplicate_recipient">已删除重复收件人：%1$s</string>
   <string name="composer_error_store_draft_subject">无法存储此草稿的主题</string>
   <string name="composer_error_store_draft_recipients">无法存储此草稿的收件人信息</string>
-  <string name="composer_error_loading_draft">The content of this draft is not available at this time. Editing will override any pre-existing content.</string>
+  <string name="composer_error_loading_draft">此草稿的内容暂时无法加载，继续编辑将覆盖此前保存的内容。</string>
+  <string name="add_attachments_content_description">Add attachments</string>
 </resources>

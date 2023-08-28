@@ -81,6 +81,6 @@
   <string name="message_body_error_no_webview">您必須安裝一個 Android System WebView 才能查看此訊息的內容。</string>
   <!-- Banners -->
   <string name="message_body_embedded_images_banner_text">已經關閉內嵌影像的自動載入。這可以在設定中變更。</string>
-  <string name="message_body_remote_content_banner_text">Automatic loading of remote content is turned off. This can be changed in the settings.</string>
-  <string name="message_body_embedded_and_remote_content_banner_text">Automatic loading of embedded images and remote content is turned off. These can be changed in the settings.</string>
+  <string name="message_body_remote_content_banner_text">已經關閉遠端內容的自動載入。這可以在設定中變更。</string>
+  <string name="message_body_embedded_and_remote_content_banner_text">已經關閉內嵌影像與遠端內容的自動載入。這可以在設定中變更。</string>
 </resources>

@@ -19,8 +19,8 @@
 <resources>
   <string name="from_prefix">Seg:</string>
   <string name="to_prefix">I:</string>
-  <string name="cc_prefix">Cc:</string>
-  <string name="bcc_prefix">Bcc:</string>
+  <string name="cc_prefix">Anɣ. I:</string>
+  <string name="bcc_prefix">Anɣ. Uff. I:</string>
   <string name="subject_placeholder">Asentel</string>
   <string name="compose_message_placeholder">Aru imayl</string>
   <string name="close_composer_content_description">Mdel amsuddes</string>
@@ -33,8 +33,9 @@
   <string name="composer_error_change_sender_failed_getting_subscription">Cannot change sender as getting user\'s subscription failed. Try again.</string>
   <string name="composer_error_store_draft_sender_address">Storing this draft\'s sender address failed</string>
   <string name="composer_error_store_draft_body">Storing this draft\'s body failed</string>
-  <string name="composer_error_duplicate_recipient">Removed duplicate recipient: %1$s</string>
+  <string name="composer_error_duplicate_recipient">Anermas uslig yettwakkes: %1$s</string>
   <string name="composer_error_store_draft_subject">Storing this draft\'s subject failed</string>
   <string name="composer_error_store_draft_recipients">Storing this draft\'s recipients failed</string>
   <string name="composer_error_loading_draft">The content of this draft is not available at this time. Editing will override any pre-existing content.</string>
+  <string name="add_attachments_content_description">Add attachments</string>
 </resources>
