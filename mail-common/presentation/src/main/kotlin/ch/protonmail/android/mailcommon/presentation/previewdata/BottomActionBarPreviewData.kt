@@ -27,7 +27,7 @@ import ch.protonmail.android.mailcommon.presentation.model.iconDrawable
 
 object BottomActionBarsPreviewData {
 
-    val Data = BottomBarState.Data(
+    val Data = BottomBarState.Data.Shown(
         listOf(
             ActionUiModel(Action.Reply, Action.Reply.iconDrawable(), Action.Reply.contentDescription()),
             ActionUiModel(Action.MarkUnread, Action.MarkUnread.iconDrawable(), Action.MarkUnread.contentDescription()),

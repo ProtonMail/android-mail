@@ -574,7 +574,7 @@ class ConversationDetailViewModelTest {
         } returns messages.first()
         val actions = listOf(Action.Reply, Action.Archive)
         val actionUiModels = listOf(ActionUiModelTestData.reply, ActionUiModelTestData.archive)
-        val expected = initialState.copy(bottomBarState = BottomBarState.Data(actionUiModels))
+        val expected = initialState.copy(bottomBarState = BottomBarState.Data.Shown(actionUiModels))
         every {
             observeConversationDetailActions(UserIdSample.Primary, ConversationIdSample.WeatherForecast, any())
         } returns flowOf(actions.right())
@@ -682,7 +682,7 @@ class ConversationDetailViewModelTest {
 
             // Then
             val bottomBarState = ConversationDetailState.Loading.copy(
-                bottomBarState = BottomBarState.Data(actionUiModels)
+                bottomBarState = BottomBarState.Data.Shown(actionUiModels)
             )
             assertEquals(bottomBarState, awaitItem())
 
@@ -1740,7 +1740,7 @@ class ConversationDetailViewModelTest {
                 operation = ofType<ConversationDetailEvent.ConversationBottomBarEvent>()
             )
         } returns ConversationDetailState.Loading.copy(
-            bottomBarState = BottomBarState.Data(actionUiModels)
+            bottomBarState = BottomBarState.Data.Shown(actionUiModels)
         )
     }
 

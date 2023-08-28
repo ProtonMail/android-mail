@@ -51,7 +51,12 @@ internal class BottomBarReducerTest(
             TestInput(
                 currentState = BottomBarState.Loading,
                 operation = BottomBarEvent.ActionsData(actions),
-                expectedState = BottomBarState.Data(actions)
+                expectedState = BottomBarState.Data.Hidden(actions)
+            ),
+            TestInput(
+                currentState = BottomBarState.Loading,
+                operation = BottomBarEvent.ShowAndUpdateActionsData(actions),
+                expectedState = BottomBarState.Data.Shown(actions)
             ),
             TestInput(
                 currentState = BottomBarState.Loading,
@@ -62,14 +67,44 @@ internal class BottomBarReducerTest(
 
         private val transitionsFromDataState = listOf(
             TestInput(
-                currentState = BottomBarState.Data(actions),
+                currentState = BottomBarState.Data.Hidden(actions),
                 operation = BottomBarEvent.ActionsData(updatedActions),
-                expectedState = BottomBarState.Data(updatedActions)
+                expectedState = BottomBarState.Data.Hidden(updatedActions)
             ),
             TestInput(
-                currentState = BottomBarState.Data(actions),
+                currentState = BottomBarState.Data.Shown(actions),
+                operation = BottomBarEvent.ActionsData(updatedActions),
+                expectedState = BottomBarState.Data.Shown(updatedActions)
+            ),
+            TestInput(
+                currentState = BottomBarState.Data.Hidden(actions),
                 operation = BottomBarEvent.ErrorLoadingActions,
-                expectedState = BottomBarState.Data(actions)
+                expectedState = BottomBarState.Data.Hidden(actions)
+            ),
+            TestInput(
+                currentState = BottomBarState.Data.Shown(actions),
+                operation = BottomBarEvent.ErrorLoadingActions,
+                expectedState = BottomBarState.Data.Shown(actions)
+            ),
+            TestInput(
+                currentState = BottomBarState.Data.Hidden(actions),
+                operation = BottomBarEvent.ShowBottomSheet,
+                expectedState = BottomBarState.Data.Shown(actions)
+            ),
+            TestInput(
+                currentState = BottomBarState.Data.Shown(actions),
+                operation = BottomBarEvent.ShowBottomSheet,
+                expectedState = BottomBarState.Data.Shown(actions)
+            ),
+            TestInput(
+                currentState = BottomBarState.Data.Shown(actions),
+                operation = BottomBarEvent.HideBottomSheet,
+                expectedState = BottomBarState.Data.Hidden(actions)
+            ),
+            TestInput(
+                currentState = BottomBarState.Data.Hidden(actions),
+                operation = BottomBarEvent.HideBottomSheet,
+                expectedState = BottomBarState.Data.Hidden(actions)
             )
         )
 
@@ -77,11 +112,26 @@ internal class BottomBarReducerTest(
             TestInput(
                 currentState = BottomBarState.Error.FailedLoadingActions,
                 operation = BottomBarEvent.ActionsData(actions),
-                expectedState = BottomBarState.Data(actions)
+                expectedState = BottomBarState.Data.Hidden(actions)
+            ),
+            TestInput(
+                currentState = BottomBarState.Error.FailedLoadingActions,
+                operation = BottomBarEvent.ShowAndUpdateActionsData(actions),
+                expectedState = BottomBarState.Data.Shown(actions)
             ),
             TestInput(
                 currentState = BottomBarState.Error.FailedLoadingActions,
                 operation = BottomBarEvent.ErrorLoadingActions,
+                expectedState = BottomBarState.Error.FailedLoadingActions
+            ),
+            TestInput(
+                currentState = BottomBarState.Error.FailedLoadingActions,
+                operation = BottomBarEvent.ShowBottomSheet,
+                expectedState = BottomBarState.Error.FailedLoadingActions
+            ),
+            TestInput(
+                currentState = BottomBarState.Error.FailedLoadingActions,
+                operation = BottomBarEvent.HideBottomSheet,
                 expectedState = BottomBarState.Error.FailedLoadingActions
             )
         )
@@ -91,9 +141,9 @@ internal class BottomBarReducerTest(
         fun data() = (transitionsFromLoadingState + transitionsFromDataState + transitionsFromErrorState)
             .map { testInput ->
                 val testName = """
-                        Current state: ${testInput.currentState}
-                        Operation: ${testInput.operation}
-                        Next state: ${testInput.expectedState}
+                    Current state: ${testInput.currentState}
+                    Operation: ${testInput.operation}
+                    Next state: ${testInput.expectedState}
                         
                 """.trimIndent()
                 arrayOf(testName, testInput)

@@ -465,7 +465,7 @@ class MessageDetailViewModelTest {
             advanceUntilIdle()
             // Then
             val actionUiModels = listOf(ActionUiModelTestData.reply, ActionUiModelTestData.archive)
-            val expected = BottomBarState.Data(actionUiModels)
+            val expected = BottomBarState.Data.Shown(actionUiModels)
             assertEquals(expected, lastEmittedItem().bottomBarState)
         }
     }
@@ -640,7 +640,7 @@ class MessageDetailViewModelTest {
             )
             assertEquals(dataState, awaitItem())
             val bottomState = dataState.copy(
-                bottomBarState = BottomBarState.Data(
+                bottomBarState = BottomBarState.Data.Shown(
                     listOf(
                         ActionUiModelTestData.reply,
                         ActionUiModelTestData.archive,

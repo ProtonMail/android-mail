@@ -27,14 +27,34 @@ class BottomBarReducer @Inject constructor() {
     @SuppressWarnings("UnusedPrivateMember")
     fun newStateFrom(currentState: BottomBarState, event: BottomBarEvent): BottomBarState {
         return when (event) {
-            is BottomBarEvent.ActionsData -> BottomBarState.Data(event.actionUiModels)
+            is BottomBarEvent.ActionsData -> currentState.toNewStateForActionData(event)
+            is BottomBarEvent.ShowAndUpdateActionsData -> BottomBarState.Data.Shown(event.actionUiModels)
+            is BottomBarEvent.HideBottomSheet -> currentState.toNewStateForHiding()
+            is BottomBarEvent.ShowBottomSheet -> currentState.toNewStateForShowing()
             is BottomBarEvent.ErrorLoadingActions -> currentState.toNewStateForErrorLoading()
         }
+    }
+
+    private fun BottomBarState.toNewStateForActionData(operation: BottomBarEvent.ActionsData) = when (this) {
+        is BottomBarState.Data.Hidden -> BottomBarState.Data.Hidden(operation.actionUiModels)
+        is BottomBarState.Data.Shown -> BottomBarState.Data.Shown(operation.actionUiModels)
+        is BottomBarState.Error.FailedLoadingActions -> BottomBarState.Data.Hidden(operation.actionUiModels)
+        is BottomBarState.Loading -> BottomBarState.Data.Hidden(operation.actionUiModels)
     }
 
     private fun BottomBarState.toNewStateForErrorLoading() = when (this) {
         is BottomBarState.Data -> this
         is BottomBarState.Error.FailedLoadingActions -> this
         is BottomBarState.Loading -> BottomBarState.Error.FailedLoadingActions
+    }
+
+    private fun BottomBarState.toNewStateForHiding() = when (this) {
+        is BottomBarState.Data.Shown -> BottomBarState.Data.Hidden(this.actions)
+        else -> this
+    }
+
+    private fun BottomBarState.toNewStateForShowing() = when (this) {
+        is BottomBarState.Data.Hidden -> BottomBarState.Data.Shown(this.actions)
+        else -> this
     }
 }

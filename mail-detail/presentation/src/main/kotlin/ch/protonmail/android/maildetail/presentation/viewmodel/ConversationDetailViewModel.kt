@@ -349,7 +349,9 @@ class ConversationDetailViewModel @Inject constructor(
                     ifLeft = { ConversationDetailEvent.ConversationBottomBarEvent(BottomBarEvent.ErrorLoadingActions) },
                     ifRight = { actions ->
                         val actionUiModels = actions.map { actionUiModelMapper.toUiModel(it) }
-                        ConversationDetailEvent.ConversationBottomBarEvent(BottomBarEvent.ActionsData(actionUiModels))
+                        ConversationDetailEvent.ConversationBottomBarEvent(
+                            BottomBarEvent.ShowAndUpdateActionsData(actionUiModels)
+                        )
                     }
                 )
             }

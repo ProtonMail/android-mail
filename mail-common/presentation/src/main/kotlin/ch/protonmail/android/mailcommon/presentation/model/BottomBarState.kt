@@ -20,9 +20,13 @@ package ch.protonmail.android.mailcommon.presentation.model
 
 sealed interface BottomBarState {
 
-    data class Data(
+    sealed interface Data : BottomBarState {
+
         val actions: List<ActionUiModel>
-    ) : BottomBarState
+
+        data class Hidden(override val actions: List<ActionUiModel>) : Data
+        data class Shown(override val actions: List<ActionUiModel>) : Data
+    }
 
     object Loading : BottomBarState
 
@@ -34,6 +38,11 @@ sealed interface BottomBarState {
 sealed interface BottomBarEvent {
 
     data class ActionsData(val actionUiModels: List<ActionUiModel>) : BottomBarEvent
+
+    data class ShowAndUpdateActionsData(val actionUiModels: List<ActionUiModel>) : BottomBarEvent
+
+    object ShowBottomSheet : BottomBarEvent
+    object HideBottomSheet : BottomBarEvent
 
     object ErrorLoadingActions : BottomBarEvent
 }

@@ -162,7 +162,7 @@ class MessageDetailReducerTest(
         private val reducedState = MessageDetailState(
             messageMetadataState = MessageMetadataState.Data(actionBarUiModel, detailHeaderUiModel),
             messageBodyState = MessageBodyState.Data(messageBodyUiModel),
-            bottomBarState = BottomBarState.Data(listOf(ActionUiModelTestData.markUnread)),
+            bottomBarState = BottomBarState.Data.Shown(listOf(ActionUiModelTestData.markUnread)),
             bottomSheetState = BottomSheetState(
                 MoveToBottomSheetState.Data(
                     MailLabelUiModelTestData.spamAndCustomFolder,
