@@ -51,7 +51,7 @@ internal sealed class SnackbarTextEntry(val value: String) {
     )
 
     object DraftSaved : SnackbarTextEntry(
-        getTestString(testR.string.test_mailbox_draft_saved_message)
+        getTestString(testR.string.test_mailbox_draft_saved)
     )
 
     object DraftOutOfSync : SnackbarTextEntry(

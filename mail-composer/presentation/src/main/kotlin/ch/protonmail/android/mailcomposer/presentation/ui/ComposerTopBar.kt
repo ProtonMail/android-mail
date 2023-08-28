@@ -35,7 +35,9 @@ import me.proton.core.compose.theme.ProtonTheme
 internal fun ComposerTopBar(
     isAddAttachmentsButtonVisible: Boolean,
     onAddAttachmentsClick: () -> Unit,
-    onCloseComposerClick: () -> Unit
+    onCloseComposerClick: () -> Unit,
+    onSendMessageComposerClick: () -> Unit,
+    isSendMessageButtonEnabled: Boolean
 ) {
     ProtonTopAppBar(
         modifier = Modifier.testTag(ComposerTestTags.TopAppBar),
@@ -66,12 +68,16 @@ internal fun ComposerTopBar(
             }
             IconButton(
                 modifier = Modifier.testTag(ComposerTestTags.SendButton),
-                onClick = {},
-                enabled = false
+                onClick = onSendMessageComposerClick,
+                enabled = isSendMessageButtonEnabled
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_proton_paper_plane),
-                    tint = ProtonTheme.colors.iconDisabled,
+                    tint = if (isSendMessageButtonEnabled) {
+                        ProtonTheme.colors.iconNorm
+                    } else {
+                        ProtonTheme.colors.iconDisabled
+                    },
                     contentDescription = stringResource(R.string.send_message_content_description)
                 )
             }

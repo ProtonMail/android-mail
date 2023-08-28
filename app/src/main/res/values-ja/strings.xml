@@ -23,6 +23,6 @@
   <string name="user_select_other_account_content_description">別のアカウントを選択する</string>
   <string name="you_are_offline">オフラインです</string>
   <string name="feature_coming_soon">近日公開予定です。</string>
-  <string name="mailbox_draft_saved_message">下書きが保存されました</string>
+  <string name="mailbox_draft_saved">下書きが保存されました</string>
   <string name="notification_switched_account">アカウントを %s に切り替えました</string>
 </resources>

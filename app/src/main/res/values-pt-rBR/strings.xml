@@ -23,6 +23,6 @@
   <string name="user_select_other_account_content_description">Selecione outra conta</string>
   <string name="you_are_offline">Você está desconectado</string>
   <string name="feature_coming_soon">Este recurso chegará em breve...</string>
-  <string name="mailbox_draft_saved_message">Rascunho salvo</string>
+  <string name="mailbox_draft_saved">Rascunho salvo</string>
   <string name="notification_switched_account">Mudou para a conta %s</string>
 </resources>

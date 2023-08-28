@@ -23,6 +23,6 @@
   <string name="user_select_other_account_content_description">Seleccione otra cuenta</string>
   <string name="you_are_offline">No está conectado</string>
   <string name="feature_coming_soon">Pronto tendrá esta función...</string>
-  <string name="mailbox_draft_saved_message">Borrador guardado</string>
+  <string name="mailbox_draft_saved">Borrador guardado</string>
   <string name="notification_switched_account">Cambiada a la cuenta: %s</string>
 </resources>

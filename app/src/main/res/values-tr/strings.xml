@@ -23,6 +23,6 @@
   <string name="user_select_other_account_content_description">Başka bir hesap seçin</string>
   <string name="you_are_offline">Çevrim dışısınız</string>
   <string name="feature_coming_soon">Özellik yakında kullanılabilecek...</string>
-  <string name="mailbox_draft_saved_message">Taslak kaydedildi</string>
+  <string name="mailbox_draft_saved">Taslak kaydedildi</string>
   <string name="notification_switched_account">Geçilen hesap: %s</string>
 </resources>

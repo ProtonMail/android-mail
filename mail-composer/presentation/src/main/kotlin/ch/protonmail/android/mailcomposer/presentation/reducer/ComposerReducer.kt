@@ -51,6 +51,7 @@ class ComposerReducer @Inject constructor() {
         is ComposerAction.OnAddAttachments -> updateBottomSheetVisibility(currentState, true)
         is ComposerAction.OnCloseComposer -> updateCloseComposerState(currentState, false)
         is ComposerAction.ChangeSenderRequested -> currentState
+        is ComposerAction.OnSendMessage -> updateStateForSendMessage(currentState)
     }
 
     @Suppress("ComplexMethod")
@@ -88,6 +89,7 @@ class ComposerReducer @Inject constructor() {
         is ComposerEvent.ApiAssignedMessageIdReceived -> currentState.copy(
             fields = currentState.fields.copy(draftId = apiAssignedMessageId)
         )
+        is ComposerEvent.OnSendMessageOffline -> updateStateForSendMessageOffline(currentState)
     }
 
     private fun updateBottomSheetVisibility(currentState: ComposerDraftState, bottomSheetVisibility: Boolean) =
@@ -120,6 +122,12 @@ class ComposerReducer @Inject constructor() {
 
     private fun updateStateForChangeSenderFailed(currentState: ComposerDraftState, errorMessage: TextUiModel) =
         currentState.copy(changeBottomSheetVisibility = Effect.of(false), error = Effect.of(errorMessage))
+
+    private fun updateStateForSendMessage(currentState: ComposerDraftState) =
+        currentState.copy(closeComposerWithMessageSending = Effect.of(Unit))
+
+    private fun updateStateForSendMessageOffline(currentState: ComposerDraftState) =
+        currentState.copy(closeComposerWithMessageSendingOffline = Effect.of(Unit))
 
     private fun updateStateToPaidFeatureMessage(currentState: ComposerDraftState) =
         currentState.copy(premiumFeatureMessage = Effect.of(TextUiModel(R.string.composer_change_sender_paid_feature)))

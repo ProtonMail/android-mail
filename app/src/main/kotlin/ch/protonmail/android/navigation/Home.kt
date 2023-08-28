@@ -103,9 +103,17 @@ fun Home(
             type = ProtonSnackbarType.ERROR
         )
     }
-    val draftSavedMessage = stringResource(id = R.string.mailbox_draft_saved_message)
+    val draftSavedText = stringResource(id = R.string.mailbox_draft_saved)
     fun showDraftSavedSnackbar() = scope.launch {
-        snackbarHostState.showSnackbar(message = draftSavedMessage, type = ProtonSnackbarType.SUCCESS)
+        snackbarHostState.showSnackbar(message = draftSavedText, type = ProtonSnackbarType.SUCCESS)
+    }
+    val sendingMessageText = stringResource(id = R.string.mailbox_message_sending)
+    fun showMessageSendingSnackbar() = scope.launch {
+        snackbarHostState.showSnackbar(message = sendingMessageText, type = ProtonSnackbarType.NORM)
+    }
+    val sendingMessageOfflineText = stringResource(id = R.string.mailbox_message_sending_offline)
+    fun showMessageSendingOfflineSnackbar() = scope.launch {
+        snackbarHostState.showSnackbar(message = sendingMessageOfflineText, type = ProtonSnackbarType.NORM)
     }
 
     Scaffold(
@@ -173,7 +181,9 @@ fun Home(
                 addComposer(
                     navController,
                     onAddAttachments = launcherActions.onAddAttachments,
-                    showDraftSavedSnackbar = { showDraftSavedSnackbar() }
+                    showDraftSavedSnackbar = { showDraftSavedSnackbar() },
+                    showMessageSendingSnackbar = { showMessageSendingSnackbar() },
+                    showMessageSendingOfflineSnackbar = { showMessageSendingOfflineSnackbar() }
                 )
                 addRemoveAccountDialog(navController)
                 addSettings(

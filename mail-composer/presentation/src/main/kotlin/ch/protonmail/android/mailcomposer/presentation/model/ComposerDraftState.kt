@@ -31,6 +31,8 @@ data class ComposerDraftState(
     val changeBottomSheetVisibility: Effect<Boolean>,
     val closeComposer: Effect<Unit>,
     val closeComposerWithDraftSaved: Effect<Unit>,
+    val closeComposerWithMessageSending: Effect<Unit>,
+    val closeComposerWithMessageSendingOffline: Effect<Unit>,
     val isLoading: Boolean,
     val isAddAttachmentsButtonVisible: Boolean
 ) {
@@ -54,6 +56,8 @@ data class ComposerDraftState(
             changeBottomSheetVisibility = Effect.empty(),
             closeComposer = Effect.empty(),
             closeComposerWithDraftSaved = Effect.empty(),
+            closeComposerWithMessageSending = Effect.empty(),
+            closeComposerWithMessageSendingOffline = Effect.empty(),
             isLoading = false,
             isAddAttachmentsButtonVisible = false
         )

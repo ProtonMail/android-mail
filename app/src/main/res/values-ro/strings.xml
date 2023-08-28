@@ -23,6 +23,6 @@
   <string name="user_select_other_account_content_description">Selectare alt cont</string>
   <string name="you_are_offline">Sunteți deconectat</string>
   <string name="feature_coming_soon">Funcție disponibilă în curând...</string>
-  <string name="mailbox_draft_saved_message">Ciornă salvată</string>
+  <string name="mailbox_draft_saved">Ciornă salvată</string>
   <string name="notification_switched_account">S-a comutat la contul: %s</string>
 </resources>

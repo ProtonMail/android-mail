@@ -23,6 +23,6 @@
   <string name="user_select_other_account_content_description">Kies een ander account</string>
   <string name="you_are_offline">U bent offline</string>
   <string name="feature_coming_soon">Functie binnenkort mogelijk...</string>
-  <string name="mailbox_draft_saved_message">Concept opgeslagen</string>
+  <string name="mailbox_draft_saved">Concept opgeslagen</string>
   <string name="notification_switched_account">Overgeschakeld naar account: %s</string>
 </resources>

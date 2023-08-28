@@ -61,6 +61,7 @@ import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.theme.ProtonTheme3
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterialApi::class)
+@Suppress("UseComposableActions")
 @Composable
 fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel = hiltViewModel()) {
     val context = LocalContext.current
@@ -104,7 +105,11 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
                     },
                     onCloseComposerClick = {
                         viewModel.submit(ComposerAction.OnCloseComposer)
-                    }
+                    },
+                    onSendMessageComposerClick = {
+                        viewModel.submit(ComposerAction.OnSendMessage)
+                    },
+                    isSendMessageButtonEnabled = state.isSubmittable
                 )
                 if (!state.isLoading) {
                     // Not showing the form till we're done loading ensure it does receive the
@@ -165,6 +170,18 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
         actions.showDraftSavedSnackbar()
     }
 
+    ConsumableLaunchedEffect(effect = state.closeComposerWithMessageSending) {
+        dismissKeyboard(context, view, keyboardController)
+        actions.onCloseComposerClick()
+        actions.showMessageSendingSnackbar()
+    }
+
+    ConsumableLaunchedEffect(effect = state.closeComposerWithMessageSendingOffline) {
+        dismissKeyboard(context, view, keyboardController)
+        actions.onCloseComposerClick()
+        actions.showMessageSendingOfflineSnackbar()
+    }
+
     BackHandler(true) {
         viewModel.submit(ComposerAction.OnCloseComposer)
     }
@@ -195,14 +212,18 @@ object ComposerScreen {
     data class Actions(
         val onImportAttachmentsFrom: () -> Unit,
         val onCloseComposerClick: () -> Unit,
-        val showDraftSavedSnackbar: () -> Unit
+        val showDraftSavedSnackbar: () -> Unit,
+        val showMessageSendingSnackbar: () -> Unit,
+        val showMessageSendingOfflineSnackbar: () -> Unit
     ) {
         companion object {
 
             val Empty = Actions(
                 onImportAttachmentsFrom = {},
                 onCloseComposerClick = {},
-                showDraftSavedSnackbar = {}
+                showDraftSavedSnackbar = {},
+                showMessageSendingSnackbar = {},
+                showMessageSendingOfflineSnackbar = {}
             )
         }
     }

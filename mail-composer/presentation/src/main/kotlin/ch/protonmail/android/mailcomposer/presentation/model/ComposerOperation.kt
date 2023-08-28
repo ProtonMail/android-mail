@@ -37,6 +37,7 @@ internal sealed interface ComposerAction : ComposerOperation {
     object OnBottomSheetOptionSelected : ComposerAction
     object OnAddAttachments : ComposerAction
     object OnCloseComposer : ComposerAction
+    object OnSendMessage : ComposerAction
 }
 
 sealed interface ComposerEvent : ComposerOperation {
@@ -54,5 +55,6 @@ sealed interface ComposerEvent : ComposerOperation {
     object ErrorStoringDraftRecipients : ComposerEvent
     object ErrorStoringDraftSubject : ComposerEvent
     object OnCloseWithDraftSaved : ComposerEvent
+    object OnSendMessageOffline : ComposerEvent
     object ErrorLoadingDraftData : ComposerEvent
 }

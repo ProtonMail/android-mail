@@ -33,7 +33,7 @@
     <!-- Mailbox messages -->
     <string name="test_mailbox_is_empty_message">This mailbox is empty</string>
     <string name="test_mailbox_error_message_generic">Loading mailbox failed</string>
-    <string name="test_mailbox_draft_saved_message">Draft saved</string>
+    <string name="test_mailbox_draft_saved">Draft saved</string>
 
     <!-- Mailbox detail -->
     <string name="test_detail_error_retrieving_message_body">Unable to retrieve message</string>

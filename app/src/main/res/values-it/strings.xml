@@ -23,6 +23,6 @@
   <string name="user_select_other_account_content_description">Seleziona un altro account</string>
   <string name="you_are_offline">Sei offline</string>
   <string name="feature_coming_soon">Funzionalità presto disponibile...</string>
-  <string name="mailbox_draft_saved_message">Bozza salvata</string>
+  <string name="mailbox_draft_saved">Bozza salvata</string>
   <string name="notification_switched_account">Passato all\'account: %s</string>
 </resources>

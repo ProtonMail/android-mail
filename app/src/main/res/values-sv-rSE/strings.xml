@@ -23,6 +23,6 @@
   <string name="user_select_other_account_content_description">Välj annat konto</string>
   <string name="you_are_offline">Du är offline</string>
   <string name="feature_coming_soon">Funktion kommer snart...</string>
-  <string name="mailbox_draft_saved_message">Utkast sparat</string>
+  <string name="mailbox_draft_saved">Utkast sparat</string>
   <string name="notification_switched_account">Bytte till konto: %s</string>
 </resources>

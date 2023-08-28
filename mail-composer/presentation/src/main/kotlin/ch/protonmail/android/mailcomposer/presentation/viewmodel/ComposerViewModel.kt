@@ -40,6 +40,7 @@ import ch.protonmail.android.mailcomposer.domain.usecase.GetDecryptedDraftFields
 import ch.protonmail.android.mailcomposer.domain.usecase.GetPrimaryAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.IsValidEmailAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
+import ch.protonmail.android.mailcomposer.domain.usecase.SendMessage
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithAllFields
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithBody
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithRecipients
@@ -70,6 +71,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
+import me.proton.core.network.domain.NetworkManager
 import me.proton.core.util.kotlin.takeIfNotEmpty
 import timber.log.Timber
 import javax.inject.Inject
@@ -90,6 +92,8 @@ class ComposerViewModel @Inject constructor(
     private val composerIdlingResource: ComposerIdlingResource,
     private val draftUploader: DraftUploader,
     private val observeMailFeature: ObserveMailFeature,
+    private val sendMessage: SendMessage,
+    private val networkManager: NetworkManager,
     getDecryptedDraftFields: GetDecryptedDraftFields,
     savedStateHandle: SavedStateHandle,
     observePrimaryUserId: ObservePrimaryUserId,
@@ -157,6 +161,7 @@ class ComposerViewModel @Inject constructor(
                     is ComposerAction.OnBottomSheetOptionSelected -> emitNewStateFor(action)
                     is ComposerAction.OnAddAttachments -> emitNewStateFor(action)
                     is ComposerAction.OnCloseComposer -> emitNewStateFor(onCloseComposer(action))
+                    is ComposerAction.OnSendMessage -> emitNewStateFor(onSendMessage(action))
                 }
                 composerIdlingResource.decrement()
             }
@@ -166,21 +171,14 @@ class ComposerViewModel @Inject constructor(
     fun validateEmailAddress(emailAddress: String): Boolean = isValidEmailAddress(emailAddress)
 
     private suspend fun onCloseComposer(action: ComposerAction.OnCloseComposer): ComposerOperation {
-        val fields = DraftFields(
-            currentSenderEmail(),
-            currentSubject(),
-            currentDraftBody(),
-            currentValidRecipientsTo(),
-            currentValidRecipientsCc(),
-            currentValidRecipientsBcc()
-        )
+        val draftFields = buildDraftFields()
         return when {
-            fields.areBlank() -> action
+            draftFields.areBlank() -> action
             else -> {
                 viewModelScope.launch {
                     withContext(NonCancellable) {
                         draftUploader.stopContinuousUpload()
-                        storeDraftWithAllFields(primaryUserId(), currentMessageId(), fields)
+                        storeDraftWithAllFields(primaryUserId(), currentMessageId(), draftFields)
                         draftUploader.upload(primaryUserId(), currentMessageId())
                     }
                 }
@@ -188,6 +186,37 @@ class ComposerViewModel @Inject constructor(
             }
         }
     }
+
+    private suspend fun onSendMessage(action: ComposerAction.OnSendMessage): ComposerOperation {
+        val draftFields = buildDraftFields()
+        return when {
+            draftFields.areBlank() -> action
+            else -> {
+                viewModelScope.launch {
+                    withContext(NonCancellable) {
+                        draftUploader.stopContinuousUpload()
+                        storeDraftWithAllFields(primaryUserId(), currentMessageId(), draftFields)
+                        sendMessage(primaryUserId(), currentMessageId())
+                    }
+                }
+
+                if (networkManager.isConnectedToNetwork()) {
+                    ComposerAction.OnSendMessage
+                } else {
+                    ComposerEvent.OnSendMessageOffline
+                }
+            }
+        }
+    }
+
+    private suspend fun buildDraftFields() = DraftFields(
+        currentSenderEmail(),
+        currentSubject(),
+        currentDraftBody(),
+        currentValidRecipientsTo(),
+        currentValidRecipientsCc(),
+        currentValidRecipientsBcc()
+    )
 
     private suspend fun onSubjectChanged(action: ComposerAction.SubjectChanged): ComposerOperation =
         storeDraftWithSubject(primaryUserId.first(), currentMessageId(), currentSenderEmail(), action.subject).fold(
