@@ -19,10 +19,12 @@
 package ch.protonmail.android.mailmailbox.presentation.mailbox.model
 
 import androidx.compose.runtime.Stable
+import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 
 @Stable
 data class MailboxState(
     val mailboxListState: MailboxListState,
     val topAppBarState: MailboxTopAppBarState,
-    val unreadFilterState: UnreadFilterState
+    val unreadFilterState: UnreadFilterState,
+    val bottomAppBarState: BottomBarState
 )

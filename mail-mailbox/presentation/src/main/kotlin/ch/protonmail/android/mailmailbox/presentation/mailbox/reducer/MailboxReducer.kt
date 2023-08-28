@@ -18,24 +18,31 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 
+import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
+import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
+import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import javax.inject.Inject
 
 class MailboxReducer @Inject constructor(
     private val mailboxListReducer: MailboxListReducer,
     private val topAppBarReducer: MailboxTopAppBarReducer,
-    private val unreadFilterReducer: MailboxUnreadFilterReducer
+    private val unreadFilterReducer: MailboxUnreadFilterReducer,
+    private val bottomAppBarReducer: BottomBarReducer
 ) {
 
     internal fun newStateFrom(currentState: MailboxState, operation: MailboxOperation): MailboxState =
         currentState.copy(
             mailboxListState = currentState.toNewMailboxListStateFrom(operation),
             topAppBarState = currentState.toNewTopAppBarStateFrom(operation),
-            unreadFilterState = currentState.toNewUnreadFilterStateFrom(operation)
+            unreadFilterState = currentState.toNewUnreadFilterStateFrom(operation),
+            bottomAppBarState = currentState.toNewBottomAppBarStateFrom(operation)
         )
 
     private fun MailboxState.toNewMailboxListStateFrom(operation: MailboxOperation): MailboxListState {
@@ -59,6 +66,19 @@ class MailboxReducer @Inject constructor(
             unreadFilterReducer.newStateFrom(unreadFilterState, operation)
         } else {
             unreadFilterState
+        }
+    }
+
+    private fun MailboxState.toNewBottomAppBarStateFrom(operation: MailboxOperation): BottomBarState {
+        return if (operation is MailboxOperation.AffectingBottomAppBar) {
+            val bottomBarOperation = when (operation) {
+                is MailboxEvent.EnterSelectionMode -> BottomBarEvent.ShowBottomSheet
+                is MailboxViewAction.ExitSelectionMode -> BottomBarEvent.HideBottomSheet
+                is MailboxEvent.MessageBottomBarEvent -> operation.bottomBarEvent
+            }
+            bottomAppBarReducer.newStateFrom(bottomAppBarState, bottomBarOperation)
+        } else {
+            bottomAppBarState
         }
     }
 }

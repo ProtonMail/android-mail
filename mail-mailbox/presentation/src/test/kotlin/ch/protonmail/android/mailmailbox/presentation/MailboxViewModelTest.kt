@@ -26,6 +26,7 @@ import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabel
@@ -188,7 +189,8 @@ class MailboxViewModelTest {
             val expected = MailboxState(
                 mailboxListState = MailboxListState.Loading(selectionModeEnabled = false),
                 topAppBarState = MailboxTopAppBarState.Loading,
-                unreadFilterState = UnreadFilterState.Loading
+                unreadFilterState = UnreadFilterState.Loading,
+                bottomAppBarState = BottomBarState.Loading
             )
 
             assertEquals(expected, actual)

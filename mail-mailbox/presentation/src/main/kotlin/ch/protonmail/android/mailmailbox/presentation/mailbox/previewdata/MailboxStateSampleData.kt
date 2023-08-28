@@ -19,6 +19,8 @@
 package ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata
 
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
+import ch.protonmail.android.mailcommon.presentation.sample.ActionUiModelSample
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.text
@@ -33,7 +35,8 @@ object MailboxStateSampleData {
     val Loading = MailboxState(
         mailboxListState = MailboxListState.Loading(selectionModeEnabled = false),
         topAppBarState = MailboxTopAppBarState.Loading,
-        unreadFilterState = UnreadFilterState.Loading
+        unreadFilterState = UnreadFilterState.Loading,
+        bottomAppBarState = BottomBarState.Loading
     )
 
     val Inbox = MailboxState(
@@ -52,6 +55,9 @@ object MailboxStateSampleData {
         unreadFilterState = UnreadFilterState.Data(
             isFilterEnabled = false,
             numUnread = 1
+        ),
+        bottomAppBarState = BottomBarState.Data.Hidden(
+            actions = listOf(ActionUiModelSample.Archive)
         )
     )
 
@@ -71,6 +77,9 @@ object MailboxStateSampleData {
         unreadFilterState = UnreadFilterState.Data(
             isFilterEnabled = false,
             numUnread = 1
+        ),
+        bottomAppBarState = BottomBarState.Data.Hidden(
+            actions = listOf(ActionUiModelSample.Archive)
         )
     )
 
@@ -87,6 +96,9 @@ object MailboxStateSampleData {
         unreadFilterState = UnreadFilterState.Data(
             isFilterEnabled = false,
             numUnread = 1
+        ),
+        bottomAppBarState = BottomBarState.Data.Hidden(
+            actions = listOf(ActionUiModelSample.Archive)
         )
     )
 }

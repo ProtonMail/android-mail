@@ -18,7 +18,9 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox.model
 
+import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.maillabel.domain.model.MailLabel
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingBottomAppBar
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingMailboxList
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingTopAppBar
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingUnreadFilter
@@ -28,6 +30,7 @@ internal sealed interface MailboxOperation {
     sealed interface AffectingTopAppBar
     sealed interface AffectingUnreadFilter
     sealed interface AffectingMailboxList
+    sealed interface AffectingBottomAppBar
 }
 
 internal sealed interface MailboxViewAction : MailboxOperation {
@@ -39,7 +42,7 @@ internal sealed interface MailboxViewAction : MailboxOperation {
         val item: MailboxItemUiModel
     ) : MailboxViewAction
 
-    object ExitSelectionMode : MailboxViewAction, AffectingTopAppBar, AffectingMailboxList
+    object ExitSelectionMode : MailboxViewAction, AffectingTopAppBar, AffectingMailboxList, AffectingBottomAppBar
 
     data class ItemClicked(val item: MailboxItemUiModel) : MailboxViewAction
 
@@ -77,7 +80,7 @@ internal sealed interface MailboxEvent : MailboxOperation {
 
     data class EnterSelectionMode(
         val item: MailboxItemUiModel
-    ) : MailboxEvent, AffectingTopAppBar, AffectingMailboxList
+    ) : MailboxEvent, AffectingTopAppBar, AffectingMailboxList, AffectingBottomAppBar
 
     sealed interface ItemClicked : MailboxEvent {
 
@@ -97,6 +100,10 @@ internal sealed interface MailboxEvent : MailboxOperation {
         ) : ItemClicked, AffectingMailboxList, AffectingTopAppBar
 
     }
+
+    data class MessageBottomBarEvent(
+        val bottomBarEvent: BottomBarEvent
+    ) : MailboxEvent, AffectingBottomAppBar
 }
 
 
