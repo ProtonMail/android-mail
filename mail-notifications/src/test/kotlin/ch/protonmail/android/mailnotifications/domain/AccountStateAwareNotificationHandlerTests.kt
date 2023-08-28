@@ -19,8 +19,8 @@
 package ch.protonmail.android.mailnotifications.domain
 
 import ch.protonmail.android.mailnotifications.data.repository.NotificationTokenRepository
-import ch.protonmail.android.mailnotifications.domain.handler.AccountStateAwareNotificationHandlerImpl
-import ch.protonmail.android.mailnotifications.domain.proxy.NotificationManagerCompatProxy
+import ch.protonmail.android.mailnotifications.domain.handler.AccountStateAwareNotificationHandler
+import ch.protonmail.android.mailnotifications.domain.usecase.DismissEmailNotificationsForUser
 import ch.protonmail.android.testdata.AccountTestData
 import io.mockk.called
 import io.mockk.coVerify
@@ -40,12 +40,12 @@ internal class AccountStateAwareNotificationHandlerTests {
 
     private val accountManager = mockk<AccountManager>()
     private val notificationTokenRepository: NotificationTokenRepository = mockk()
-    private val notificationManagerCompatProxy: NotificationManagerCompatProxy = mockk()
+    private val dismissEmailNotificationsForUser: DismissEmailNotificationsForUser = mockk()
     private val scope = TestScope()
-    private val notificationHandler = AccountStateAwareNotificationHandlerImpl(
+    private val notificationHandler = AccountStateAwareNotificationHandler(
         accountManager,
         notificationTokenRepository,
-        notificationManagerCompatProxy,
+        dismissEmailNotificationsForUser,
         scope
     )
 
@@ -61,12 +61,12 @@ internal class AccountStateAwareNotificationHandlerTests {
         every { accountManager.onAccountStateChanged(true) } returns flowOf(expectedAccount)
 
         // when
-        notificationHandler.observeAccountStateChanges()
+        notificationHandler.handle()
         scope.advanceUntilIdle()
 
         // then
         coVerify(exactly = 1) { notificationTokenRepository.bindTokenToUser(expectedAccount.userId) }
-        verify { notificationManagerCompatProxy wasNot called }
+        verify { dismissEmailNotificationsForUser wasNot called }
     }
 
     @Test
@@ -76,11 +76,11 @@ internal class AccountStateAwareNotificationHandlerTests {
         every { accountManager.onAccountStateChanged(true) } returns flowOf(expectedAccount)
 
         // when
-        notificationHandler.observeAccountStateChanges()
+        notificationHandler.handle()
         scope.advanceUntilIdle()
 
         // then
-        verify(exactly = 1) { notificationManagerCompatProxy.dismissNotification(expectedAccount.userId.hashCode()) }
+        verify(exactly = 1) { dismissEmailNotificationsForUser(expectedAccount.userId) }
         verify { notificationTokenRepository wasNot called }
     }
 
@@ -91,11 +91,11 @@ internal class AccountStateAwareNotificationHandlerTests {
         every { accountManager.onAccountStateChanged(true) } returns flowOf(expectedAccount)
 
         // when
-        notificationHandler.observeAccountStateChanges()
+        notificationHandler.handle()
         scope.advanceUntilIdle()
 
         // then
-        verify(exactly = 1) { notificationManagerCompatProxy.dismissNotification(expectedAccount.userId.hashCode()) }
+        verify(exactly = 1) { dismissEmailNotificationsForUser(expectedAccount.userId) }
         verify { notificationTokenRepository wasNot called }
     }
 
@@ -106,11 +106,11 @@ internal class AccountStateAwareNotificationHandlerTests {
         every { accountManager.onAccountStateChanged(true) } returns flowOf(expectedAccount)
 
         // when
-        notificationHandler.observeAccountStateChanges()
+        notificationHandler.handle()
         scope.advanceUntilIdle()
 
         // then
-        verify { notificationManagerCompatProxy wasNot called }
         verify { notificationTokenRepository wasNot called }
+        verify { dismissEmailNotificationsForUser wasNot called }
     }
 }
