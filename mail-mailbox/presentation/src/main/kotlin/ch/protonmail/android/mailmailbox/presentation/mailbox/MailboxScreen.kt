@@ -61,6 +61,7 @@ import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
+import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
 import ch.protonmail.android.mailmailbox.presentation.BuildConfig
 import ch.protonmail.android.mailmailbox.presentation.R
@@ -161,6 +162,37 @@ fun MailboxScreen(
                     onFilterDisabled = actions.onDisableUnreadFilter
                 )
             }
+        },
+        bottomBar = {
+            BottomActionBar(
+                state = mailboxState.bottomAppBarState,
+                viewActionCallbacks = BottomActionBar.Actions(
+                    onReply = { Timber.d("mailbox onReply clicked") },
+                    onReplyAll = { Timber.d("mailbox onReplyAll clicked") },
+                    onForward = { Timber.d("mailbox onForward clicked") },
+                    onMove = { Timber.d("mailbox onMove clicked") },
+                    onLabel = { Timber.d("mailbox onLabel clicked") },
+                    onTrash = { Timber.d("mailbox onTrash clicked") },
+                    onDelete = { Timber.d("mailbox onDelete clicked") },
+                    onArchive = { Timber.d("mailbox onArchive clicked") },
+                    onSpam = { Timber.d("mailbox onSpam clicked") },
+                    onViewInLightMode = { Timber.d("mailbox onViewInLightMode clicked") },
+                    onViewInDarkMode = { Timber.d("mailbox onViewInDarkMode clicked") },
+                    onPrint = { Timber.d("mailbox onPrint clicked") },
+                    onViewHeaders = { Timber.d("mailbox onViewHeaders clicked") },
+                    onViewHtml = { Timber.d("mailbox onViewHtml clicked") },
+                    onReportPhishing = { Timber.d("mailbox onReportPhishing clicked") },
+                    onRemind = { Timber.d("mailbox onRemind clicked") },
+                    onSavePdf = { Timber.d("mailbox onSavePdf clicked") },
+                    onSenderEmail = { Timber.d("mailbox onSenderEmail clicked") },
+                    onSaveAttachments = { Timber.d("mailbox onSaveAttachments clicked") },
+                    onMore = { Timber.d("mailbox onMore clicked") },
+                    onMarkRead = { Timber.d("mailbox onMarkRead clicked") },
+                    onMarkUnread = { Timber.d("mailbox onMarkUnread clicked") },
+                    onStar = { Timber.d("mailbox onStar clicked") },
+                    onUnstar = { Timber.d("mailbox onUnstar clicked") }
+                )
+            )
         }
     ) { paddingValues ->
         when (val mailboxListState = mailboxState.mailboxListState) {

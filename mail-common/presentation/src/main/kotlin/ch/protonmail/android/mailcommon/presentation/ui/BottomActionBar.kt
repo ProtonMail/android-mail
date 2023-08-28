@@ -55,7 +55,7 @@ fun BottomActionBar(
     viewActionCallbacks: BottomActionBar.Actions,
     modifier: Modifier = Modifier
 ) {
-
+    if (state !is BottomBarState.Data.Shown) return
     Column(modifier = modifier.background(ProtonTheme.colors.backgroundNorm)) {
 
         Divider(color = ProtonTheme.colors.separatorNorm, thickness = MailDimens.SeparatorHeight)
