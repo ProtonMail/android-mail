@@ -24,6 +24,7 @@ import arrow.core.right
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import kotlinx.coroutines.flow.first
 import me.proton.core.domain.entity.UserId
+import me.proton.core.user.domain.entity.AddressId
 import me.proton.core.user.domain.entity.UserAddress
 import timber.log.Timber
 import javax.inject.Inject
@@ -35,7 +36,17 @@ class ResolveUserAddress @Inject constructor(
     suspend operator fun invoke(userId: UserId, email: SenderEmail): Either<Error, UserAddress> {
         val userAddress = observeUserAddresses(userId).first().find { it.email == email.value }
         if (userAddress == null) {
-            Timber.e("Could not resolve user address for ${email.value}")
+            Timber.e("Could not resolve user address for email: ${email.value}")
+            return Error.UserAddressNotFound.left()
+        }
+
+        return userAddress.right()
+    }
+
+    suspend operator fun invoke(userId: UserId, addressId: AddressId): Either<Error, UserAddress> {
+        val userAddress = observeUserAddresses(userId).first().find { it.addressId == addressId }
+        if (userAddress == null) {
+            Timber.e("Could not resolve user address for address ID: ${addressId.id}")
             return Error.UserAddressNotFound.left()
         }
 

@@ -55,11 +55,11 @@ class ResolveUserAddressTest {
         val actual = resolveUserAddress(userId, SenderEmail(expectedUserAddress.email))
 
         // Then
-        assertEquals(UserAddressSample.AliasAddress.right(), actual)
+        assertEquals(expectedUserAddress.right(), actual)
     }
 
     @Test
-    fun `returns error when user address not found`() = runTest {
+    fun `returns error when user address was not found by email`() = runTest {
         // Given
         val expectedResult = ResolveUserAddress.Error.UserAddressNotFound
         val notFoundUserAddress = UserAddressSample.DisabledAddress
@@ -69,6 +69,34 @@ class ResolveUserAddressTest {
 
         // Then
         assertEquals(expectedResult.left(), actual)
-        loggingTestRule.assertErrorLogged("Could not resolve user address for ${notFoundUserAddress.email}")
+        loggingTestRule.assertErrorLogged("Could not resolve user address for email: ${notFoundUserAddress.email}")
     }
+
+    @Test
+    fun `returns user address by address ID when found in user addresses`() = runTest {
+        // Given
+        val expectedUserAddress = UserAddressSample.AliasAddress
+
+        // When
+        val actual = resolveUserAddress(userId, expectedUserAddress.addressId)
+
+        // Then
+        assertEquals(expectedUserAddress.right(), actual)
+    }
+
+    @Test
+    fun `returns error when user address was not found by address ID`() = runTest {
+        // Given
+        val expectedResult = ResolveUserAddress.Error.UserAddressNotFound
+        val notFoundUserAddress = UserAddressSample.DisabledAddress
+
+        // When
+        val actual = resolveUserAddress(userId, notFoundUserAddress.addressId)
+
+        // Then
+        assertEquals(expectedResult.left(), actual)
+        loggingTestRule
+            .assertErrorLogged("Could not resolve user address for address ID: ${notFoundUserAddress.addressId.id}")
+    }
+
 }
