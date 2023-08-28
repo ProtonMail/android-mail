@@ -108,6 +108,7 @@ import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.unmockkStatic
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -900,6 +901,9 @@ class MessageDetailViewModelTest {
         coEvery {
             messageBodyUiModelMapper.toUiModel(userId, expectedMessageBody)
         } returns MessageBodyUiModelTestData.messageBodyWithAttachmentsUiModel
+        coEvery {
+            observeAttachmentWorkerStatus.invoke(userId, MessageId(rawMessageId), any())
+        } returns emptyFlow()
 
 
         viewModel.state.test {
@@ -934,6 +938,9 @@ class MessageDetailViewModelTest {
             coEvery {
                 messageBodyUiModelMapper.toUiModel(userId, expectedMessageBody)
             } returns MessageBodyUiModelTestData.messageBodyWithAttachmentsUiModel
+            coEvery {
+                observeAttachmentWorkerStatus.invoke(userId, MessageId(rawMessageId), any())
+            } returns emptyFlow()
 
 
             viewModel.state.test {

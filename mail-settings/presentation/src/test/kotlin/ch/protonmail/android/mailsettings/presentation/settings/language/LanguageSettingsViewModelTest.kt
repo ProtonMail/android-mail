@@ -24,6 +24,7 @@ import ch.protonmail.android.mailsettings.domain.model.AppLanguage
 import ch.protonmail.android.mailsettings.domain.repository.AppLanguageRepository
 import ch.protonmail.android.mailsettings.presentation.settings.language.LanguageSettingsState.Loading
 import io.mockk.coEvery
+import io.mockk.justRun
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
@@ -88,6 +89,9 @@ class LanguageSettingsViewModelTest {
     @Test
     fun `onLanguageSelected saves selected lang in repository`() =
         runTest {
+            // Given
+            justRun { languageRepository.save(AppLanguage.DANISH) }
+
             // When
             viewModel.onLanguageSelected(AppLanguage.DANISH)
 
@@ -98,6 +102,9 @@ class LanguageSettingsViewModelTest {
     @Test
     fun `onDefaultSelected deletes previous language preference from repository`() =
         runTest {
+            // Given
+            justRun { languageRepository.clear() }
+
             // When
             viewModel.onSystemDefaultSelected()
 

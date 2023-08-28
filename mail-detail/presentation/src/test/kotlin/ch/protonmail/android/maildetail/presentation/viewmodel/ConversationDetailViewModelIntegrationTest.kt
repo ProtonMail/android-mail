@@ -647,6 +647,7 @@ class ConversationDetailViewModelIntegrationTest {
                     aMessageAttachment(id = it.toString())
                 }
             ).right()
+        coEvery { observeAttachmentStatus.invoke(userId, any(), any()) } returns flowOf()
 
         val viewModel = buildConversationDetailViewModel()
 
@@ -695,6 +696,9 @@ class ConversationDetailViewModelIntegrationTest {
                 listOf(defaultExpanded.message.messageId, expandedMessageId)
             )
         } returns listOf()
+        coEvery {
+            getAttachmentIntentValues.invoke(any(), any(), any())
+        } returns DataError.Local.NoDataCached.left()
 
         val viewModel = buildConversationDetailViewModel()
 
