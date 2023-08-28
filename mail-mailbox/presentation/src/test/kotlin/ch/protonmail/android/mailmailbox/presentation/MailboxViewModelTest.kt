@@ -22,11 +22,16 @@ import android.util.Log
 import androidx.paging.PagingData
 import app.cash.turbine.test
 import arrow.core.Either
+import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.MailFeatureId
+import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
+import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
+import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
+import ch.protonmail.android.mailcommon.presentation.sample.ActionUiModelSample
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabel
@@ -40,6 +45,7 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Conversati
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Message
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
+import ch.protonmail.android.mailmailbox.domain.usecase.ObserveMailboxActions
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
 import ch.protonmail.android.mailmailbox.presentation.helper.MailboxAsyncPagingDataDiffer
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxViewModel
@@ -78,6 +84,7 @@ import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.unmockkStatic
 import io.mockk.verify
+import io.mockk.verifyOrder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -100,6 +107,8 @@ class MailboxViewModelTest {
 
     private val defaultFolderColorSettings = FolderColorSettings()
     private val initialLocationMailLabelId = Archive
+    private val actionUiModelMapper = ActionUiModelMapper()
+
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
         every { this@mockk.invoke() } returns flowOf(userId)
     }
@@ -146,6 +155,10 @@ class MailboxViewModelTest {
         every { this@mockk(any(), any()) } returns flowOf()
     }
 
+    private val observeMailboxActions = mockk<ObserveMailboxActions> {
+        coEvery { this@mockk(any()) } returns listOf(Action.Archive, Action.Trash).right()
+    }
+
     private val mailboxViewModel by lazy {
         MailboxViewModel(
             mailboxPagerFactory = pagerFactory,
@@ -155,6 +168,8 @@ class MailboxViewModelTest {
             selectedMailLabelId = selectedMailLabelId,
             observeUnreadCounters = observeUnreadCounters,
             observeFolderColorSettings = observeFolderColorSettings,
+            observeMailboxActions = observeMailboxActions,
+            actionUiModelMapper = actionUiModelMapper,
             mailboxItemMapper = mailboxItemMapper,
             getContacts = getContacts,
             mailboxReducer = mailboxReducer,
@@ -204,16 +219,9 @@ class MailboxViewModelTest {
         // Given
         val expectedMailLabel = MailLabel.System(MailLabelId.System.Spam)
         val expectedCount = UnreadCountersTestData.labelToCounterMap[expectedMailLabel.id.labelId]
-        val expectedState = MailboxStateSampleData.Loading.copy(
-            mailboxListState = MailboxListState.Data.ViewMode(
-                currentMailLabel = expectedMailLabel,
-                openItemEffect = Effect.empty(),
-                scrollToMailboxTop = Effect.of(expectedMailLabel.id),
-                offlineEffect = Effect.empty(),
-                refreshErrorEffect = Effect.empty(),
-                refreshRequested = false,
-                selectionModeEnabled = false
-            )
+        val expectedState = createMailboxDataState(
+            selectedMailLabelId = expectedMailLabel.id,
+            scrollToMailboxTop = Effect.of(expectedMailLabel.id)
         )
         val currentLocationFlow = MutableStateFlow<MailLabelId>(MailLabelId.System.Inbox)
         every { selectedMailLabelId.flow } returns currentLocationFlow
@@ -223,6 +231,7 @@ class MailboxViewModelTest {
                 MailboxEvent.NewLabelSelected(expectedMailLabel, expectedCount)
             )
         } returns expectedState
+        returnExpectedStateForBottomBarEvent(expectedState = expectedState)
 
         mailboxViewModel.state.test {
             awaitItem()
@@ -231,6 +240,53 @@ class MailboxViewModelTest {
 
             // Then
             assertEquals(expectedState, awaitItem())
+        }
+    }
+
+    @Test
+    fun `when new location selected, new bottom bar state is created and emitted`() = runTest {
+        // Given
+        val expectedMailLabel = MailLabel.System(MailLabelId.System.Spam)
+        val expectedCount = UnreadCountersTestData.labelToCounterMap[expectedMailLabel.id.labelId]
+        val intermediateState = createMailboxDataState(
+            selectedMailLabelId = expectedMailLabel.id,
+            scrollToMailboxTop = Effect.of(expectedMailLabel.id)
+        )
+        val expectedState = intermediateState.copy(
+            bottomAppBarState = BottomBarState.Data.Shown(
+                actions = listOf(
+                    ActionUiModelSample.Archive,
+                    ActionUiModelSample.Trash
+                )
+            )
+        )
+        val currentLocationFlow = MutableStateFlow<MailLabelId>(MailLabelId.System.Inbox)
+        every { selectedMailLabelId.flow } returns currentLocationFlow
+        every {
+            mailboxReducer.newStateFrom(
+                any(),
+                MailboxEvent.NewLabelSelected(expectedMailLabel, expectedCount)
+            )
+        } returns intermediateState
+        returnExpectedStateForBottomBarEvent(intermediateState, expectedState)
+
+        mailboxViewModel.state.test {
+            awaitItem()
+
+            // When
+            currentLocationFlow.emit(expectedMailLabel.id)
+
+            // Then
+            assertEquals(expectedState, awaitItem())
+            verifyOrder {
+                mailboxReducer.newStateFrom(any(), MailboxEvent.NewLabelSelected(expectedMailLabel, expectedCount))
+                mailboxReducer.newStateFrom(
+                    currentState = intermediateState,
+                    operation = MailboxEvent.MessageBottomBarEvent(
+                        BottomBarEvent.ActionsData(listOf(ActionUiModelSample.Archive, ActionUiModelSample.Trash))
+                    )
+                )
+            }
         }
     }
 
@@ -601,6 +657,7 @@ class MailboxViewModelTest {
         // Given
         val currentLocationFlow = MutableStateFlow<MailLabelId>(initialLocationMailLabelId)
         val initialMailboxState = createMailboxDataState()
+        val expectedState = createMailboxDataState(selectedMailLabelId = MailLabelId.System.Spam)
         val userIds = listOf(userId)
         every { selectedMailLabelId.flow } returns currentLocationFlow
         every { pagerFactory.create(userIds, any(), false, Message) } returns mockk mockPager@{
@@ -615,7 +672,8 @@ class MailboxViewModelTest {
                     UnreadCountersTestData.labelToCounterMap[MailLabelId.System.Spam.labelId]!!
                 )
             )
-        } returns createMailboxDataState(selectedMailLabelId = MailLabelId.System.Spam)
+        } returns expectedState
+        returnExpectedStateForBottomBarEvent(expectedState = expectedState)
 
         mailboxViewModel.items.test {
             // Then
@@ -673,7 +731,11 @@ class MailboxViewModelTest {
             )
         } returns unreadMailboxItemUiModelWithLabelColored
         coEvery {
-            mailboxItemMapper.toUiModel(unreadMailboxItemWithLabel, ContactTestData.contacts, updatedFolderColorSetting)
+            mailboxItemMapper.toUiModel(
+                unreadMailboxItemWithLabel,
+                ContactTestData.contacts,
+                updatedFolderColorSetting
+            )
         } returns unreadMailboxItemUiModelWithLabel
 
         every { pagerFactory.create(listOf(userId), Archive, false, any()) } returns mockk {
@@ -981,6 +1043,7 @@ class MailboxViewModelTest {
         val expectedMailBoxState = createMailboxDataState(selectedMailLabelId = initialLocationMailLabelId)
         val inboxLabel = MailLabelId.System.Inbox
         val currentLocationFlow = MutableStateFlow<MailLabelId>(initialLocationMailLabelId)
+        val expectedState = createMailboxDataState(selectedMailLabelId = inboxLabel)
         every { selectedMailLabelId.flow } returns currentLocationFlow
         every { mailboxReducer.newStateFrom(any(), any()) } returns expectedMailBoxState
         every { pagerFactory.create(any(), any(), any(), any()) } returns mockk mockPager@{
@@ -994,7 +1057,8 @@ class MailboxViewModelTest {
                     UnreadCountersTestData.labelToCounterMap[inboxLabel.labelId]!!
                 )
             )
-        } returns createMailboxDataState(selectedMailLabelId = inboxLabel)
+        } returns expectedState
+        returnExpectedStateForBottomBarEvent(expectedState = expectedState)
 
         mailboxViewModel.items.test {
             // When
@@ -1032,7 +1096,13 @@ class MailboxViewModelTest {
                     )
                 )
             } returns createMailboxDataState(
-                Effect.of(OpenMailboxItemRequest(MailboxItemId(unreadMailboxItem.id), unreadMailboxItem.type, false))
+                Effect.of(
+                    OpenMailboxItemRequest(
+                        MailboxItemId(unreadMailboxItem.id),
+                        unreadMailboxItem.type,
+                        false
+                    )
+                )
             )
 
             mailboxViewModel.items.test {
@@ -1073,6 +1143,7 @@ class MailboxViewModelTest {
 
     private fun createMailboxDataState(
         openEffect: Effect<OpenMailboxItemRequest> = Effect.empty(),
+        scrollToMailboxTop: Effect<MailLabelId> = Effect.empty(),
         unreadFilterState: Boolean = false,
         selectedMailLabelId: MailLabelId.System = initialLocationMailLabelId
     ): MailboxState {
@@ -1080,7 +1151,7 @@ class MailboxViewModelTest {
             mailboxListState = MailboxListState.Data.ViewMode(
                 currentMailLabel = MailLabel.System(selectedMailLabelId),
                 openItemEffect = openEffect,
-                scrollToMailboxTop = Effect.empty(),
+                scrollToMailboxTop = scrollToMailboxTop,
                 offlineEffect = Effect.empty(),
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
@@ -1091,5 +1162,21 @@ class MailboxViewModelTest {
                 isFilterEnabled = unreadFilterState
             )
         )
+    }
+
+    private fun returnExpectedStateForBottomBarEvent(
+        intermediateState: MailboxState? = null,
+        expectedState: MailboxState
+    ) {
+        every {
+            mailboxReducer.newStateFrom(
+                intermediateState ?: any(),
+                MailboxEvent.MessageBottomBarEvent(
+                    BottomBarEvent.ActionsData(
+                        listOf(ActionUiModelSample.Archive, ActionUiModelSample.Trash)
+                    )
+                )
+            )
+        } returns expectedState
     }
 }

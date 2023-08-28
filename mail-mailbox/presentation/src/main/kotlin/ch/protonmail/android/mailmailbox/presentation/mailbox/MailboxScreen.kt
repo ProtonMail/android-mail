@@ -91,6 +91,8 @@ fun MailboxScreen(
     val mailboxState = rememberAsState(viewModel.state, MailboxViewModel.initialState).value
     val mailboxListItems = viewModel.items.collectAsLazyPagingItems()
 
+    Timber.d("BottomState: ${mailboxState.bottomAppBarState}")
+
     val completeActions = actions.copy(
         onDisableUnreadFilter = { viewModel.submit(MailboxViewAction.DisableUnreadFilter) },
         onEnableUnreadFilter = { viewModel.submit(MailboxViewAction.EnableUnreadFilter) },

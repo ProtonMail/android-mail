@@ -29,6 +29,8 @@ import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
+import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
+import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabel
@@ -40,6 +42,7 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
 import ch.protonmail.android.mailmailbox.domain.model.UnreadCounter
 import ch.protonmail.android.mailmailbox.domain.model.toMailboxItemType
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
+import ch.protonmail.android.mailmailbox.domain.usecase.ObserveMailboxActions
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
 import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.MailboxItemUiModelMapper
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
@@ -88,6 +91,8 @@ class MailboxViewModel @Inject constructor(
     private val selectedMailLabelId: SelectedMailLabelId,
     private val observeUnreadCounters: ObserveUnreadCounters,
     private val observeFolderColorSettings: ObserveFolderColorSettings,
+    private val observeMailboxActions: ObserveMailboxActions,
+    private val actionUiModelMapper: ActionUiModelMapper,
     private val mailboxItemMapper: MailboxItemUiModelMapper,
     private val getContacts: GetContacts,
     private val mailboxReducer: MailboxReducer,
@@ -103,9 +108,7 @@ class MailboxViewModel @Inject constructor(
 
     init {
         observeCurrentMailLabel()
-            .onEach { currentMailLabel ->
-                emitNewStateFrom(MailboxEvent.SelectedLabelChanged(currentMailLabel))
-            }
+            .onEach { currentMailLabel -> emitNewStateFrom(MailboxEvent.SelectedLabelChanged(currentMailLabel)) }
             .launchIn(viewModelScope)
 
         selectedMailLabelId.flow
@@ -113,6 +116,18 @@ class MailboxViewModel @Inject constructor(
             .pairWithCurrentLabelCount()
             .onEach { (currentMailLabel, currentLabelCount) ->
                 emitNewStateFrom(MailboxEvent.NewLabelSelected(currentMailLabel, currentLabelCount))
+            }
+            .map { observeMailboxActions(it.first) }
+            .onEach {
+                val operation = it.fold(
+                    ifLeft = { MailboxEvent.MessageBottomBarEvent(BottomBarEvent.ErrorLoadingActions) },
+                    ifRight = { actions ->
+                        MailboxEvent.MessageBottomBarEvent(
+                            BottomBarEvent.ActionsData(actions.map { action -> actionUiModelMapper.toUiModel(action) })
+                        )
+                    }
+                )
+                emitNewStateFrom(operation)
             }
             .launchIn(viewModelScope)
 
