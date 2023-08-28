@@ -52,7 +52,7 @@ class MainInitializer : Initializer<Unit> {
         StrictModeInitializer::class.java,
         ThemeObserverInitializer::class.java,
         NotificationInitializer::class.java,
-        AccountStateAwareNotificationInitializer::class.java
+        NotificationHandlersInitializer::class.java
     )
 
     private fun releaseOnlyDependenciesIfNeeded() =

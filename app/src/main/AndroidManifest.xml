@@ -114,7 +114,7 @@
                 tools:node="remove" />
 
             <meta-data
-                android:name="ch.protonmail.android.initializer.AccountStateAwareNotificationInitializer"
+                android:name="ch.protonmail.android.initializer.NotificationHandlersInitializer"
                 android:value="androidx.startup"
                 tools:node="remove" />
 

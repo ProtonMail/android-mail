@@ -16,25 +16,17 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailnotifications.domain
+package ch.protonmail.android.mailnotifications.domain.usecase
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.update
+import ch.protonmail.android.mailnotifications.domain.proxy.NotificationManagerCompatProxy
+import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class AppInBackgroundState @Inject constructor() {
+internal class DismissEmailNotificationsForUser @Inject constructor(
+    private val notificationManagerCompatProxy: NotificationManagerCompatProxy
+) {
 
-    private val _state = MutableStateFlow(true)
-
-    suspend fun isAppInBackground(): Boolean = observe().firstOrNull() ?: true
-
-    fun observe(): Flow<Boolean> = _state.asStateFlow()
-
-    @Synchronized
-    fun setAppInBackground(isAppInBackground: Boolean) = _state.update { isAppInBackground }
+    operator fun invoke(userId: UserId) {
+        notificationManagerCompatProxy.dismissNotification(userId.id.hashCode())
+    }
 }

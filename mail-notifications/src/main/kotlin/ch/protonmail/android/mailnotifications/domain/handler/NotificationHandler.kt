@@ -16,25 +16,9 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailnotifications.domain
+package ch.protonmail.android.mailnotifications.domain.handler
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.update
-import javax.inject.Inject
-import javax.inject.Singleton
+interface NotificationHandler {
 
-@Singleton
-class AppInBackgroundState @Inject constructor() {
-
-    private val _state = MutableStateFlow(true)
-
-    suspend fun isAppInBackground(): Boolean = observe().firstOrNull() ?: true
-
-    fun observe(): Flow<Boolean> = _state.asStateFlow()
-
-    @Synchronized
-    fun setAppInBackground(isAppInBackground: Boolean) = _state.update { isAppInBackground }
+    fun handle()
 }

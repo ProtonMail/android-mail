@@ -18,7 +18,32 @@
 
 package ch.protonmail.android.mailnotifications.domain.handler
 
-interface AccountStateAwareNotificationHandler {
+import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
+import ch.protonmail.android.mailnotifications.data.repository.NotificationTokenRepository
+import ch.protonmail.android.mailnotifications.domain.usecase.DismissEmailNotificationsForUser
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import me.proton.core.account.domain.entity.AccountState
+import me.proton.core.accountmanager.domain.AccountManager
+import javax.inject.Inject
 
-    fun observeAccountStateChanges()
+internal class AccountStateAwareNotificationHandler @Inject constructor(
+    private val accountManager: AccountManager,
+    private val notificationTokenRepository: NotificationTokenRepository,
+    private val dismissEmailNotificationsForUser: DismissEmailNotificationsForUser,
+    @AppScope private val coroutineScope: CoroutineScope
+) : NotificationHandler {
+
+    override fun handle() {
+        coroutineScope.launch {
+            accountManager.onAccountStateChanged(true).collect {
+                when (it.state) {
+                    AccountState.Ready -> notificationTokenRepository.bindTokenToUser(it.userId)
+                    AccountState.Disabled,
+                    AccountState.Removed -> dismissEmailNotificationsForUser(it.userId)
+                    else -> Unit
+                }
+            }
+        }
+    }
 }

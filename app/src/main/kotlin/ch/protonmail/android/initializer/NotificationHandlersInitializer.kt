@@ -23,15 +23,17 @@ import androidx.startup.Initializer
 import ch.protonmail.android.mailnotifications.dagger.MailNotificationsModule
 import dagger.hilt.android.EntryPointAccessors
 
-class AccountStateAwareNotificationInitializer : Initializer<Unit> {
+internal class NotificationHandlersInitializer : Initializer<Unit> {
 
     override fun create(context: Context) {
         EntryPointAccessors.fromApplication(
             context.applicationContext,
             MailNotificationsModule.EntryPointModule::class.java
-        ).handler().observeAccountStateChanges()
+        ).handlers().forEach { it.handle() }
     }
 
-    override fun dependencies(): List<Class<out Initializer<*>>> =
-        listOf(AccountStateHandlerInitializer::class.java, NotificationInitializer::class.java)
+    override fun dependencies(): List<Class<out Initializer<*>>> = listOf(
+        AccountStateHandlerInitializer::class.java,
+        AppInBackgroundCheckerInitializer::class.java
+    )
 }

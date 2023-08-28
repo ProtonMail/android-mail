@@ -29,7 +29,8 @@ import ch.protonmail.android.mailnotifications.data.remote.NotificationTokenRemo
 import ch.protonmail.android.mailnotifications.data.repository.NotificationTokenRepository
 import ch.protonmail.android.mailnotifications.data.repository.NotificationTokenRepositoryImpl
 import ch.protonmail.android.mailnotifications.domain.handler.AccountStateAwareNotificationHandler
-import ch.protonmail.android.mailnotifications.domain.handler.AccountStateAwareNotificationHandlerImpl
+import ch.protonmail.android.mailnotifications.domain.handler.NotificationHandler
+import ch.protonmail.android.mailnotifications.domain.handler.SessionAwareNotificationHandler
 import ch.protonmail.android.mailnotifications.domain.proxy.NotificationManagerCompatProxy
 import ch.protonmail.android.mailnotifications.domain.proxy.NotificationManagerCompatProxyImpl
 import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator
@@ -43,6 +44,7 @@ import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import dagger.multibindings.IntoSet
 import javax.inject.Singleton
 
 @Module
@@ -63,7 +65,7 @@ object MailNotificationsModule {
     @InstallIn(SingletonComponent::class)
     interface EntryPointModule {
 
-        fun handler(): AccountStateAwareNotificationHandler
+        fun handlers(): Set<NotificationHandler>
     }
 
     @Module
@@ -104,8 +106,14 @@ object MailNotificationsModule {
 
         @Binds
         @Singleton
+        @IntoSet
         fun bindAccountStateAwareNotificationHandler(
-            handlerImpl: AccountStateAwareNotificationHandlerImpl
-        ): AccountStateAwareNotificationHandler
+            handlerImpl: AccountStateAwareNotificationHandler
+        ): NotificationHandler
+
+        @Binds
+        @Singleton
+        @IntoSet
+        fun bindSessionAwareNotificationHandler(handlerImpl: SessionAwareNotificationHandler): NotificationHandler
     }
 }
