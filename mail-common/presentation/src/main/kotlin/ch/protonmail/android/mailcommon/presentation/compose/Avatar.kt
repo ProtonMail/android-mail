@@ -122,7 +122,7 @@ fun Avatar(
                     if (avatarUiModel.selected) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_proton_checkmark),
-                            contentDescription = "checkmark",
+                            contentDescription = NO_CONTENT_DESCRIPTION,
                             modifier = Modifier.size(MailDimens.AvatarCheckmarkSize)
                         )
                     }
