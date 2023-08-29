@@ -475,13 +475,61 @@ class MailboxViewModelTest {
     }
 
     @Test
-    fun `when avatar click action is submitted to remove item from selection, new state is created and emitted`() =
+    fun `when avatar click action is submitted to remove last item from selection, exit selection mode is triggered`() =
         runTest {
             // Given
             val item = readMailboxItemUiModel
             val initialState = createMailboxDataState()
             val intermediateState = MailboxStateSampleData.createSelectionMode(item)
-            val expectedState = MailboxStateSampleData.createSelectionMode()
+            every {
+                mailboxReducer.newStateFrom(any(), MailboxEvent.SelectedLabelCountChanged(5))
+            } returns initialState
+            every {
+                mailboxReducer.newStateFrom(initialState, MailboxEvent.EnterSelectionMode(item))
+            } returns intermediateState
+            every {
+                mailboxReducer.newStateFrom(
+                    intermediateState,
+                    MailboxViewAction.ExitSelectionMode
+                )
+            } returns initialState
+
+            mailboxViewModel.state.test {
+                // Given
+                awaitItem() // First emission for selected user
+
+                // When
+                mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
+
+                // Then
+                assertEquals(intermediateState, awaitItem())
+                verify(exactly = 1) {
+                    mailboxReducer.newStateFrom(initialState, MailboxEvent.EnterSelectionMode(item))
+                }
+
+                // When
+                mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
+
+                // Then
+                assertEquals(initialState, awaitItem())
+                verify(exactly = 1) {
+                    mailboxReducer.newStateFrom(
+                        currentState = intermediateState,
+                        operation = MailboxViewAction.ExitSelectionMode
+                    )
+                }
+            }
+        }
+
+    @Test
+    fun `when avatar click action is submitted to remove item from selection, new state is created and emitted`() =
+        runTest {
+            // Given
+            val item = readMailboxItemUiModel
+            val secondItem = unreadMailboxItemUiModel
+            val initialState = createMailboxDataState()
+            val intermediateState = MailboxStateSampleData.createSelectionMode(item, secondItem)
+            val expectedState = MailboxStateSampleData.createSelectionMode(secondItem)
             every {
                 mailboxReducer.newStateFrom(any(), MailboxEvent.SelectedLabelCountChanged(5))
             } returns initialState

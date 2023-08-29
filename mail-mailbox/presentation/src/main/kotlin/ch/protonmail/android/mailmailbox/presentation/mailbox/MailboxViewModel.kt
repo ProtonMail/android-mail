@@ -190,7 +190,11 @@ class MailboxViewModel @Inject constructor(
         }
 
         val event = if (selectionMode.selectedMailboxItems.contains(item.id)) {
-            MailboxEvent.ItemClicked.ItemRemovedFromSelection(item)
+            if (selectionMode.selectedMailboxItems.size == 1) {
+                MailboxViewAction.ExitSelectionMode
+            } else {
+                MailboxEvent.ItemClicked.ItemRemovedFromSelection(item)
+            }
         } else {
             MailboxEvent.ItemClicked.ItemAddedToSelection(item)
         }
