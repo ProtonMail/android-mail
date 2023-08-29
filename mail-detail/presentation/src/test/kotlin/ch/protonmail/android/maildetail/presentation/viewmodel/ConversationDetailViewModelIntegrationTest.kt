@@ -128,9 +128,12 @@ import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.unmockkStatic
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -550,30 +553,38 @@ class ConversationDetailViewModelIntegrationTest {
             expectedExpanded
         )
         coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
+        coEvery { getDecryptedMessageBody.invoke(any(), any()) } coAnswers {
+            // Add a delay, so we're able to receive the `Expanding` state.
+            // Without it, we'd only get the final `Expanded` state.
+            delay(1)
+            DecryptedMessageBody("", MimeType.Html).right()
+        }
 
         val viewModel = buildConversationDetailViewModel()
 
-        viewModel.state.test {
-            skipItems(3)
+        launch(start = CoroutineStart.UNDISPATCHED) {
+            viewModel.state.test {
+                skipItems(3)
 
-            // when
-            viewModel.submit(ExpandMessage(expectedExpanded.message.messageId))
+                // then
+                val expandingState = awaitItem()
+                val expandingMessage = (expandingState.messagesState as ConversationDetailsMessagesState.Data)
+                    .messages
+                    .first { it.messageId == expectedExpanded.message.messageId }
+                assertIs<Expanding>(expandingMessage)
 
-            // then
-            val expandingState = awaitItem()
-            val expandingMessage = (expandingState.messagesState as ConversationDetailsMessagesState.Data)
-                .messages
-                .first { it.messageId == expectedExpanded.message.messageId }
-            assertIs<Expanding>(expandingMessage)
-
-            val expandedState = awaitItem()
-            println(expandedState)
-            val expandedMessage = (expandedState.messagesState as ConversationDetailsMessagesState.Data)
-                .messages
-                .first { it.messageId == expectedExpanded.message.messageId }
-            assertIs<Expanded>(expandedMessage)
-            cancelAndIgnoreRemainingEvents()
+                val expandedState = awaitItem()
+                println(expandedState)
+                val expandedMessage = (expandedState.messagesState as ConversationDetailsMessagesState.Data)
+                    .messages
+                    .first { it.messageId == expectedExpanded.message.messageId }
+                assertIs<Expanded>(expandedMessage)
+                cancelAndIgnoreRemainingEvents()
+            }
         }
+
+        // when
+        viewModel.submit(ExpandMessage(expectedExpanded.message.messageId))
     }
 
     @Test
