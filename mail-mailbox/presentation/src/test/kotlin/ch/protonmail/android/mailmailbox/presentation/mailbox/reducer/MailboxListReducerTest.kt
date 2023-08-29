@@ -231,9 +231,8 @@ internal class MailboxListReducerTest(
                     refreshRequested = false,
                     selectionModeEnabled = false
                 ),
-                operation = MailboxEvent.ItemClicked.ItemDetailsOpenedInViewMode(
-                    item = MailboxItemUiModelTestData.draftMailboxItemUiModel,
-                    preferredViewMode = ViewMode.NoConversationGrouping
+                operation = MailboxEvent.ItemClicked.OpenComposer(
+                    item = MailboxItemUiModelTestData.draftMailboxItemUiModel
                 ),
                 expectedState = MailboxListState.Data.ViewMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,
@@ -261,9 +260,8 @@ internal class MailboxListReducerTest(
                     refreshRequested = false,
                     selectionModeEnabled = false
                 ),
-                operation = MailboxEvent.ItemClicked.ItemDetailsOpenedInViewMode(
-                    item = MailboxItemUiModelTestData.draftMailboxItemUiModel,
-                    preferredViewMode = ViewMode.ConversationGrouping
+                operation = MailboxEvent.ItemClicked.OpenComposer(
+                    item = MailboxItemUiModelTestData.draftMailboxItemUiModel
                 ),
                 expectedState = MailboxListState.Data.ViewMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,

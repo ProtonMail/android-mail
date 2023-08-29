@@ -36,6 +36,8 @@ import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabels
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.maillabel.domain.model.toMailLabelSystem
 import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
@@ -166,17 +168,21 @@ class MailboxViewModel @Inject constructor(
     }
 
     private suspend fun handleItemClick(item: MailboxItemUiModel) {
-        when (state.value.mailboxListState) {
+        when (val currentState = state.value.mailboxListState) {
             is MailboxListState.Data.SelectionMode -> handleItemClickInSelectionMode(item)
-            is MailboxListState.Data.ViewMode -> onOpenItemDetails(item)
+            is MailboxListState.Data.ViewMode -> handleItemClickInViewMode(currentState, item)
             is MailboxListState.Loading -> {
                 Timber.d("Loading state can't handle item clicks")
             }
         }
     }
 
-    private suspend fun onOpenItemDetails(item: MailboxItemUiModel) {
-        emitNewStateFrom(MailboxEvent.ItemClicked.ItemDetailsOpenedInViewMode(item, getPreferredViewMode()))
+    private suspend fun handleItemClickInViewMode(viewState: MailboxListState.Data.ViewMode, item: MailboxItemUiModel) {
+        if (item.shouldOpenInComposer && viewState.currentMailLabel == SystemLabelId.Drafts.toMailLabelSystem()) {
+            emitNewStateFrom(MailboxEvent.ItemClicked.OpenComposer(item))
+        } else {
+            emitNewStateFrom(MailboxEvent.ItemClicked.ItemDetailsOpenedInViewMode(item, getPreferredViewMode()))
+        }
     }
 
     private fun handleItemLongClick(item: MailboxItemUiModel) {

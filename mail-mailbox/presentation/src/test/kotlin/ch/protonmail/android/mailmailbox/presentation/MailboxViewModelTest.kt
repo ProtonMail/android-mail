@@ -819,6 +819,61 @@ class MailboxViewModelTest {
     }
 
     @Test
+    fun `when item action to open composer submitted in draft, new state is produced and emitted`() = runTest {
+        // Given
+        val item = buildMailboxUiModelItem("id", Message, shouldOpenInComposer = true)
+        val intermediateState = createMailboxDataState(selectedMailLabelId = MailLabelId.System.Drafts)
+        val expectedState = createMailboxDataState(
+            selectedMailLabelId = MailLabelId.System.Drafts,
+            openEffect = Effect.of(OpenMailboxItemRequest(MailboxItemId(item.id), Conversation, true))
+        )
+        every { observeCurrentViewMode(userId = any()) } returns flowOf(NoConversationGrouping)
+        every {
+            mailboxReducer.newStateFrom(any(), MailboxEvent.SelectedLabelCountChanged(5))
+        } returns intermediateState
+        every {
+            mailboxReducer.newStateFrom(
+                intermediateState,
+                MailboxEvent.ItemClicked.OpenComposer(item)
+            )
+        } returns expectedState
+
+        // When
+        mailboxViewModel.submit(MailboxViewAction.ItemClicked(item))
+        mailboxViewModel.state.test {
+            // Then
+            assertEquals(expectedState, awaitItem())
+        }
+    }
+
+    @Test
+    fun `when item action to open composer submitted in non draft, new state is produced and emitted`() = runTest {
+        // Given
+        val item = buildMailboxUiModelItem("id", Message, shouldOpenInComposer = true)
+        val intermediateState = createMailboxDataState()
+        val expectedState = createMailboxDataState(
+            openEffect = Effect.of(OpenMailboxItemRequest(MailboxItemId(item.id), Conversation, true))
+        )
+        every { observeCurrentViewMode(userId = any()) } returns flowOf(NoConversationGrouping)
+        every {
+            mailboxReducer.newStateFrom(any(), MailboxEvent.SelectedLabelCountChanged(5))
+        } returns intermediateState
+        every {
+            mailboxReducer.newStateFrom(
+                intermediateState,
+                MailboxEvent.ItemClicked.ItemDetailsOpenedInViewMode(item, preferredViewMode = NoConversationGrouping)
+            )
+        } returns expectedState
+
+        // When
+        mailboxViewModel.submit(MailboxViewAction.ItemClicked(item))
+        mailboxViewModel.state.test {
+            // Then
+            assertEquals(expectedState, awaitItem())
+        }
+    }
+
+    @Test
     fun `when on offline with data is submitted, new state is produced and emitted`() = runTest {
         // Given
         val expectedState = MailboxStateSampleData.Loading.copy(

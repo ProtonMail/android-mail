@@ -91,6 +91,10 @@ internal sealed interface MailboxEvent : MailboxOperation {
             val preferredViewMode: ViewMode
         ) : ItemClicked, AffectingMailboxList
 
+        data class OpenComposer(
+            override val item: MailboxItemUiModel
+        ) : ItemClicked, AffectingMailboxList
+
         data class ItemAddedToSelection(
             override val item: MailboxItemUiModel
         ) : ItemClicked, AffectingMailboxList, AffectingTopAppBar

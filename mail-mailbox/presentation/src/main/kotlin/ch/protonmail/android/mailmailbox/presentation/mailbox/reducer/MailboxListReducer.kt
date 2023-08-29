@@ -40,6 +40,7 @@ class MailboxListReducer @Inject constructor() {
             is MailboxEvent.SelectedLabelChanged -> reduceSelectedLabelChanged(operation, currentState)
             is MailboxEvent.NewLabelSelected -> reduceNewLabelSelected(operation, currentState)
             is MailboxEvent.ItemClicked.ItemDetailsOpenedInViewMode -> reduceItemDetailOpened(operation, currentState)
+            is MailboxEvent.ItemClicked.OpenComposer -> reduceOpenComposer(operation, currentState)
             is MailboxEvent.SelectionModeEnabledChanged -> reduceSelectionModeEnabledChanged(operation, currentState)
             is MailboxEvent.EnterSelectionMode -> reduceEnterSelectionMode(operation.item, currentState)
             is MailboxEvent.ItemClicked.ItemAddedToSelection -> reduceItemAddedToSelection(operation, currentState)
@@ -112,30 +113,24 @@ class MailboxListReducer @Inject constructor() {
         operation: MailboxEvent.ItemClicked.ItemDetailsOpenedInViewMode,
         currentState: MailboxListState
     ): MailboxListState {
-        val request = when (operation.item.shouldOpenInComposer) {
-            true -> OpenMailboxItemRequest(
-                itemId = MailboxItemId(operation.item.id),
-                itemType = MailboxItemType.Message,
-                shouldOpenInComposer = true
-            )
-            false -> when (operation.preferredViewMode) {
-                ViewMode.ConversationGrouping -> {
-                    OpenMailboxItemRequest(
-                        itemId = MailboxItemId(operation.item.conversationId.id),
-                        itemType = MailboxItemType.Conversation,
-                        shouldOpenInComposer = false
-                    )
-                }
+        val request = when (operation.preferredViewMode) {
+            ViewMode.ConversationGrouping -> {
+                OpenMailboxItemRequest(
+                    itemId = MailboxItemId(operation.item.conversationId.id),
+                    itemType = MailboxItemType.Conversation,
+                    shouldOpenInComposer = false
+                )
+            }
 
-                ViewMode.NoConversationGrouping -> {
-                    OpenMailboxItemRequest(
-                        itemId = MailboxItemId(operation.item.id),
-                        itemType = operation.item.type,
-                        shouldOpenInComposer = false
-                    )
-                }
+            ViewMode.NoConversationGrouping -> {
+                OpenMailboxItemRequest(
+                    itemId = MailboxItemId(operation.item.id),
+                    itemType = operation.item.type,
+                    shouldOpenInComposer = false
+                )
             }
         }
+
         return when (currentState) {
             is MailboxListState.Data.ViewMode -> currentState.copy(openItemEffect = Effect.of(request))
             else -> currentState
@@ -226,4 +221,19 @@ class MailboxListReducer @Inject constructor() {
 
         else -> currentState
     }
+
+    private fun reduceOpenComposer(operation: MailboxEvent.ItemClicked.OpenComposer, currentState: MailboxListState) =
+        when (currentState) {
+            is MailboxListState.Data.ViewMode -> currentState.copy(
+                openItemEffect = Effect.of(
+                    OpenMailboxItemRequest(
+                        itemId = MailboxItemId(operation.item.id),
+                        itemType = operation.item.type,
+                        shouldOpenInComposer = true
+                    )
+                )
+            )
+
+            else -> currentState
+        }
 }
