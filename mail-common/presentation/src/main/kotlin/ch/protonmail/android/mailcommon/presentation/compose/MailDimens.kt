@@ -33,6 +33,7 @@ object MailDimens {
     val DefaultTouchTargetSize = 32.dp
 
     val AvatarMinSize = 28.dp
+    val AvatarCheckmarkSize = 20.dp
 
     val ProgressDefaultSize = 24.dp
 
