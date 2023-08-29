@@ -76,6 +76,10 @@ internal class MenuRobot : ComposeRobot() {
         tapSidebarMenuItemWithText(getTestString(testR.string.test_report_a_problem))
     }
 
+    fun openSubscription() {
+        tapSidebarMenuItemWithText(getTestString(testR.string.test_subscription))
+    }
+
     private fun tapSidebarMenuItemWithText(value: String) {
         rootItem.onChild()
             .apply { performScrollToNode(hasText(value)) }

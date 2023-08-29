@@ -22,6 +22,7 @@ import android.content.Context
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.test.core.app.ActivityScenario
 import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.rule.GrantPermissionRule
 import ch.protonmail.android.MainActivity
 import ch.protonmail.android.test.BuildConfig
 import ch.protonmail.android.uitest.rule.GrantNotificationsPermissionRule
@@ -59,6 +60,10 @@ internal open class BaseTest(
 
     @get:Rule(order = RuleOrder_10_Initialization)
     val mainInitializerRule = MainInitializerRule()
+
+    @get:Rule(order = RuleOrder_11_Initialized)
+    val grantPermissionRule: GrantPermissionRule = GrantPermissionRule
+        .grant(android.Manifest.permission.POST_NOTIFICATIONS)
 
     @get:Rule(order = RuleOrder_20_Injection)
     val hiltInjectRule = HiltInjectRule(hiltRule)

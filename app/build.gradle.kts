@@ -223,6 +223,7 @@ dependencies {
     androidTestImplementation(Dependencies.androidTestLibs)
     androidTestImplementation(Proton.Core.accountManagerPresentationCompose)
     androidTestImplementation(Proton.Core.authTest)
+    androidTestImplementation(Proton.Core.planTest)
     androidTestImplementation(Proton.Core.reportTest)
     androidTestImplementation(project(":test:annotations"))
     androidTestImplementation(project(":test:idlingresources"))
