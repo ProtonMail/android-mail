@@ -227,7 +227,7 @@ internal class MessageDetailScreenTest {
     fun whenTrashIsClickedThenActionIsCalled() {
         // given
         val state = MessageDetailsPreviewData.Message.copy(
-            bottomBarState = BottomBarState.Data(
+            bottomBarState = BottomBarState.Data.Shown(
                 actions = listOf(ActionUiModelSample.Trash)
             )
         )
@@ -268,7 +268,7 @@ internal class MessageDetailScreenTest {
     fun whenUnreadClickedThenCallbackIsInvoked() {
         // given
         val state = MessageDetailsPreviewData.Message.copy(
-            bottomBarState = BottomBarState.Data(
+            bottomBarState = BottomBarState.Data.Shown(
                 actions = listOf(ActionUiModelSample.MarkUnread)
             )
         )

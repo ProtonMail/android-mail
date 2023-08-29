@@ -63,7 +63,7 @@ internal class BottomActionBarTest {
     @Test
     fun whenBottomBarStateIsDataUpToMaxActionsAreShowed() {
         // given
-        val state = BottomBarState.Data(
+        val state = BottomBarState.Data.Shown(
             listOf(
                 ActionUiModelTestData.reply,
                 ActionUiModelTestData.forward,

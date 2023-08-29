@@ -24,6 +24,7 @@ import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import arrow.core.nonEmptyListOf
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelSample
@@ -197,7 +198,8 @@ internal class MailboxScreenTest {
                 topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
                     currentLabelName = MailLabel.System(systemLabel).text()
                 ),
-                unreadFilterState = UnreadFilterState.Loading
+                unreadFilterState = UnreadFilterState.Loading,
+                bottomAppBarState = BottomBarState.Data.Hidden(emptyList())
             )
         }
 
