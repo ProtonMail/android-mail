@@ -205,7 +205,7 @@ class MailboxViewModelTest {
                 mailboxListState = MailboxListState.Loading(selectionModeEnabled = false),
                 topAppBarState = MailboxTopAppBarState.Loading,
                 unreadFilterState = UnreadFilterState.Loading,
-                bottomAppBarState = BottomBarState.Loading
+                bottomAppBarState = BottomBarState.Data.Hidden(emptyList())
             )
 
             assertEquals(expected, actual)

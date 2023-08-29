@@ -345,7 +345,7 @@ class MailboxViewModel @Inject constructor(
             mailboxListState = MailboxListState.Loading(selectionModeEnabled = false),
             topAppBarState = MailboxTopAppBarState.Loading,
             unreadFilterState = UnreadFilterState.Loading,
-            bottomAppBarState = BottomBarState.Loading
+            bottomAppBarState = BottomBarState.Data.Hidden(emptyList())
         )
     }
 }
