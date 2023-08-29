@@ -24,6 +24,9 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import ch.protonmail.android.composer.data.usecase.SendMessage
 import ch.protonmail.android.mailcommon.domain.util.requireNotBlank
+import ch.protonmail.android.mailcomposer.domain.model.DraftSyncState
+import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
+import ch.protonmail.android.mailcomposer.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -34,7 +37,9 @@ import timber.log.Timber
 internal class SendMessageWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted workerParameters: WorkerParameters,
-    private val sendMessage: SendMessage
+    private val sendMessage: SendMessage,
+    private val draftStateRepository: DraftStateRepository,
+    private val messageRepository: MessageRepository
 ) : CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {
@@ -44,9 +49,12 @@ internal class SendMessageWorker @AssistedInject constructor(
         return sendMessage(userId, messageId).fold(
             ifLeft = {
                 Timber.e("error sending $it")
+                draftStateRepository.updateDraftSyncState(userId, messageId, DraftSyncState.ErrorSending)
+                messageRepository.moveMessageBackFromSentToDrafts(userId, messageId)
                 Result.failure()
             },
             ifRight = {
+                draftStateRepository.updateDraftSyncState(userId, messageId, DraftSyncState.Sent)
                 Result.success()
             }
         )

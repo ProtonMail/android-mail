@@ -43,6 +43,7 @@ import ch.protonmail.android.mailcomposer.domain.usecase.GetDecryptedDraftFields
 import ch.protonmail.android.mailcomposer.domain.usecase.GetPrimaryAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.IsValidEmailAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
+import ch.protonmail.android.mailcomposer.domain.usecase.SendMessage
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithAllFields
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithBody
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithBodyError
@@ -83,6 +84,7 @@ import kotlinx.coroutines.test.runTest
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.domain.entity.UserId
 import me.proton.core.featureflag.domain.entity.FeatureFlag
+import me.proton.core.network.domain.NetworkManager
 import me.proton.core.user.domain.entity.UserAddress
 import org.junit.Rule
 import kotlin.test.AfterTest
@@ -102,6 +104,8 @@ class ComposerViewModelTest {
     private val storeDraftWithBodyMock = mockk<StoreDraftWithBody>()
     private val storeDraftWithSubjectMock = mockk<StoreDraftWithSubject>()
     private val storeDraftWithRecipientsMock = mockk<StoreDraftWithRecipients>()
+    private val sendMessageMock = mockk<SendMessage>()
+    private val networkManagerMock = mockk<NetworkManager>()
     private val getContactsMock = mockk<GetContacts>()
     private val participantMapperMock = mockk<ParticipantMapper>()
     private val observePrimaryUserIdMock = mockk<ObservePrimaryUserId>()
@@ -133,6 +137,8 @@ class ComposerViewModelTest {
             composerIdlingResource,
             draftUploader,
             observeMailFeature,
+            sendMessageMock,
+            networkManagerMock,
             getDecryptedDraftFields,
             savedStateHandle,
             observePrimaryUserIdMock,
@@ -960,7 +966,9 @@ class ComposerViewModelTest {
             closeComposer = Effect.empty(),
             closeComposerWithDraftSaved = Effect.empty(),
             isLoading = false,
-            isAddAttachmentsButtonVisible = false
+            isAddAttachmentsButtonVisible = false,
+            closeComposerWithMessageSending = Effect.empty(),
+            closeComposerWithMessageSendingOffline = Effect.empty()
         )
 
         mockkObject(ComposerDraftState.Companion)

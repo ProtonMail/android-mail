@@ -25,6 +25,8 @@ interface MessageRepository {
 
     suspend fun send(userId: UserId, messageId: MessageId)
 
-    suspend fun moveMessageToSent(userId: UserId, messageId: MessageId)
+    suspend fun moveMessageFromDraftsToSent(userId: UserId, messageId: MessageId)
+
+    suspend fun moveMessageBackFromSentToDrafts(userId: UserId, messageId: MessageId)
 
 }

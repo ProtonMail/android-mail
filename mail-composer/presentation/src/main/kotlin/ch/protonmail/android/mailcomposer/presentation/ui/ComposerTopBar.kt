@@ -32,6 +32,7 @@ import me.proton.core.compose.component.appbar.ProtonTopAppBar
 import me.proton.core.compose.theme.ProtonTheme
 
 @Composable
+@Suppress("UseComposableActions")
 internal fun ComposerTopBar(
     isAddAttachmentsButtonVisible: Boolean,
     onAddAttachmentsClick: () -> Unit,

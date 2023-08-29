@@ -45,7 +45,7 @@ class MessageRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun moveMessageToSent(userId: UserId, messageId: MessageId) {
+    override suspend fun moveMessageFromDraftsToSent(userId: UserId, messageId: MessageId) {
 
         // optimistically move message to "Sent folder", but only in local DB (for the time of sending)
         messageLocalDataSource.relabelMessages(
@@ -53,6 +53,18 @@ class MessageRepositoryImpl @Inject constructor(
             listOf(messageId),
             labelIdsToAdd = setOf(SystemLabelId.Sent.labelId, SystemLabelId.AllSent.labelId),
             labelIdsToRemove = setOf(SystemLabelId.Drafts.labelId, SystemLabelId.AllDrafts.labelId)
+        )
+    }
+
+    override suspend fun moveMessageBackFromSentToDrafts(userId: UserId, messageId: MessageId) {
+
+        // move message back from "Sent folder" to "Drafts", but only in local DB (to rollback the optimistic move
+        // to "Sent")
+        messageLocalDataSource.relabelMessages(
+            userId,
+            listOf(messageId),
+            labelIdsToAdd = setOf(SystemLabelId.Drafts.labelId, SystemLabelId.AllDrafts.labelId),
+            labelIdsToRemove = setOf(SystemLabelId.Sent.labelId, SystemLabelId.AllSent.labelId)
         )
     }
 

@@ -25,8 +25,6 @@ import ch.protonmail.android.composer.data.remote.MessageRemoteDataSource
 import ch.protonmail.android.composer.data.remote.resource.SendMessageBody
 import ch.protonmail.android.composer.data.remote.resource.SendMessagePackage
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailcomposer.domain.model.DraftSyncState
-import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailcomposer.domain.usecase.FindLocalDraft
 import ch.protonmail.android.mailcomposer.domain.usecase.ResolveUserAddress
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -56,11 +54,9 @@ import me.proton.core.util.kotlin.filterValues
 import me.proton.core.util.kotlin.toInt
 import timber.log.Timber
 import javax.inject.Inject
-import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.random.Random
 
 internal class SendMessage @Inject constructor(
-    private val draftStateRepository: DraftStateRepository,
     private val messageRemoteDataSource: MessageRemoteDataSource,
     private val resolveUserAddress: ResolveUserAddress,
     private val cryptoContext: CryptoContext,
@@ -74,7 +70,6 @@ internal class SendMessage @Inject constructor(
      * local draft has been correctly uploaded to backend and we will get the final version from DB here. Draft
      * should also be locked for editing by now.
      */
-    @OptIn(ExperimentalEncodingApi::class)
     suspend operator fun invoke(userId: UserId, messageId: MessageId): Either<DataError, Unit> = either {
 
         val localDraft = findLocalDraft(userId, messageId) ?: shift(DataError.Local.NoDataCached)
@@ -102,10 +97,8 @@ internal class SendMessage @Inject constructor(
 
         response.onLeft {
             Timber.e("API error sending message ID: $messageId", it)
-            draftStateRepository.updateDraftSyncState(userId, messageId, DraftSyncState.ErrorSending)
         }.onRight {
             Timber.d("Success sending message ID: $messageId")
-            draftStateRepository.updateDraftSyncState(userId, messageId, DraftSyncState.Sent)
         }
     }
 

@@ -32,7 +32,7 @@ class SendMessage @Inject constructor(
 
     suspend operator fun invoke(userId: UserId, messageId: MessageId) {
         draftStateRepository.updateDraftSyncState(userId, messageId, DraftSyncState.Sending)
-        messageRepository.moveMessageToSent(userId, messageId)
+        messageRepository.moveMessageFromDraftsToSent(userId, messageId)
         messageRepository.send(userId, messageId)
     }
 }
