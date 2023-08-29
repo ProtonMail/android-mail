@@ -107,9 +107,12 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.unmockkStatic
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
@@ -411,17 +414,20 @@ class MessageDetailViewModelTest {
             getDecryptedMessageBody(userId, messageId)
         } returns GetDecryptedMessageBodyError.Data(DataError.Local.NoDataCached).left()
 
-        viewModel.state.test {
-            initialStateEmitted()
-            messageBodyLoadingErrorEmitted()
 
-            // When
-            viewModel.submit(MessageViewAction.Reload)
+        launch(start = CoroutineStart.UNDISPATCHED) {
+            viewModel.state.test {
+                initialStateEmitted()
+                messageBodyLoadingErrorEmitted()
 
-            // Then
-            assertEquals(MessageBodyState.Loading, awaitItem().messageBodyState)
-            cancelAndIgnoreRemainingEvents()
+                // Then
+                assertEquals(MessageBodyState.Loading, awaitItem().messageBodyState)
+                cancelAndIgnoreRemainingEvents()
+            }
         }
+
+        // When
+        viewModel.submit(MessageViewAction.Reload)
     }
 
     @Test
@@ -871,17 +877,19 @@ class MessageDetailViewModelTest {
         val uri = mockk<Uri>()
         val expected = Effect.of(uri)
 
-        viewModel.state.test {
-            initialStateEmitted()
-            messageBodyEmitted()
+        launch(start = CoroutineStart.UNDISPATCHED) {
+            viewModel.state.test {
+                initialStateEmitted()
+                messageBodyEmitted()
 
-            // When
-            viewModel.submit(MessageViewAction.MessageBodyLinkClicked(uri))
-
-            // Then
-            assertEquals(expected, awaitItem().openMessageBodyLinkEffect)
-            cancelAndIgnoreRemainingEvents()
+                // Then
+                assertEquals(expected, awaitItem().openMessageBodyLinkEffect)
+                cancelAndIgnoreRemainingEvents()
+            }
         }
+
+        // When
+        viewModel.submit(MessageViewAction.MessageBodyLinkClicked(uri))
     }
 
     @Test
@@ -989,19 +997,28 @@ class MessageDetailViewModelTest {
         } returns expectedIntentValues.right()
         coEvery { getDownloadingAttachmentsForMessages(userId, listOf(MessageId(rawMessageId))) } returns listOf()
 
-        viewModel.state.test {
-            initialStateEmitted()
-            messageBodyWithAttachmentEmitted()
+        launch(start = CoroutineStart.UNDISPATCHED) {
+            viewModel.state.test {
+                initialStateEmitted()
+                messageBodyWithAttachmentEmitted()
 
-            // When
-            viewModel.submit(MessageViewAction.OnAttachmentClicked(AttachmentId("invoice")))
-            val actualState = awaitItem()
+                val actualState = awaitItem()
 
-            // Then
-            coVerify { getAttachmentIntentValues(userId, MessageId(rawMessageId), AttachmentId("invoice")) }
-            assertEquals(Effect.of(expectedIntentValues), actualState.openAttachmentEffect)
-            cancelAndIgnoreRemainingEvents()
+                // Then
+                coVerify {
+                    getAttachmentIntentValues(
+                        userId,
+                        MessageId(rawMessageId),
+                        AttachmentId("invoice")
+                    )
+                }
+                assertEquals(Effect.of(expectedIntentValues), actualState.openAttachmentEffect)
+                cancelAndIgnoreRemainingEvents()
+            }
         }
+
+        // When
+        viewModel.submit(MessageViewAction.OnAttachmentClicked(AttachmentId("invoice")))
     }
 
     @Test
@@ -1027,18 +1044,21 @@ class MessageDetailViewModelTest {
         coEvery { getAttachmentIntentValues(any(), any(), any()) } returns DataError.Local.NoDataCached.left()
         coEvery { getDownloadingAttachmentsForMessages(userId, listOf(MessageId(rawMessageId))) } returns listOf()
 
-        viewModel.state.test {
-            initialStateEmitted()
-            messageBodyWithAttachmentEmitted()
+        launch(start = CoroutineStart.UNDISPATCHED) {
+            viewModel.state.test {
+                initialStateEmitted()
+                messageBodyWithAttachmentEmitted()
 
-            // When
-            viewModel.submit(MessageViewAction.OnAttachmentClicked(AttachmentId("invoice")))
-            val actualState = awaitItem()
+                val actualState = awaitItem()
 
-            // Then
-            assertEquals(Effect.of(TextUiModel(R.string.error_get_attachment_failed)), actualState.error)
-            cancelAndIgnoreRemainingEvents()
+                // Then
+                assertEquals(Effect.of(TextUiModel(R.string.error_get_attachment_failed)), actualState.error)
+                cancelAndIgnoreRemainingEvents()
+            }
         }
+
+        // When
+        viewModel.submit(MessageViewAction.OnAttachmentClicked(AttachmentId("invoice")))
     }
 
     @Test
@@ -1164,7 +1184,7 @@ class MessageDetailViewModelTest {
     }
 
     private fun givenNoLoggedInUser() {
-        every { observePrimaryUserId.invoke() } returns flowOf(null)
+        every { observePrimaryUserId.invoke() } returns MutableStateFlow(null)
     }
 
     private suspend fun ReceiveTurbine<MessageDetailState>.lastEmittedItem(): MessageDetailState {
