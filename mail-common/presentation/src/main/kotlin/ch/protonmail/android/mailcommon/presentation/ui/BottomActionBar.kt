@@ -55,7 +55,7 @@ fun BottomActionBar(
     viewActionCallbacks: BottomActionBar.Actions,
     modifier: Modifier = Modifier
 ) {
-    if (state !is BottomBarState.Data.Shown) return
+    if (state is BottomBarState.Data.Hidden) return
     Column(modifier = modifier.background(ProtonTheme.colors.backgroundNorm)) {
 
         Divider(color = ProtonTheme.colors.separatorNorm, thickness = MailDimens.SeparatorHeight)
@@ -76,7 +76,7 @@ fun BottomActionBar(
                     style = ProtonTypography.Default.default
                 )
 
-                is BottomBarState.Data -> {
+                is BottomBarState.Data.Shown -> {
                     state.actions.forEachIndexed { index, uiModel ->
                         if (index.exceedsMaxActionsShowed()) {
                             return@forEachIndexed
@@ -87,6 +87,10 @@ fun BottomActionBar(
                             onClick = callbackForAction(uiModel.action, viewActionCallbacks)
                         )
                     }
+                }
+
+                else -> {
+                    // no-op, Hidden state is handled at the beginning
                 }
             }
         }
