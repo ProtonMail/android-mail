@@ -102,6 +102,7 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
                 ComposerTopBar(
                     isAddAttachmentsButtonVisible = state.isAddAttachmentsButtonVisible,
                     onAddAttachmentsClick = {
+                        dismissKeyboard(context, view, keyboardController)
                         bottomSheetType.value = BottomSheetType.AddAttachments
                         scope.launch { bottomSheetState.show() }
                     },
@@ -150,6 +151,7 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
 
     ConsumableLaunchedEffect(effect = state.changeBottomSheetVisibility) { show ->
         if (show) {
+            dismissKeyboard(context, view, keyboardController)
             bottomSheetState.show()
         } else {
             bottomSheetState.hide()
