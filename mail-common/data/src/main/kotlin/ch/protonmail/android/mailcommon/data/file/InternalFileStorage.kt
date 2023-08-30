@@ -93,7 +93,7 @@ class InternalFileStorage @Inject constructor(
     )
 
     private suspend fun UserId.asRootDirectory() = withContext(ioDispatcher) {
-        "${applicationContext.filesDir}/${id.asSanitisedPath()}/"
+        "${applicationContext.cacheDir}/${id.asSanitisedPath()}/"
     }
 
     private fun String.asSanitisedPath() = HashUtils.sha256(this)

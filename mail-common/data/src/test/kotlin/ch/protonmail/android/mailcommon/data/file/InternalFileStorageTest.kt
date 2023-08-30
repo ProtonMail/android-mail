@@ -40,7 +40,7 @@ import org.junit.Test
 class InternalFileStorageTest {
 
     private val contextMock = mockk<Context> {
-        every { filesDir } returns File(InternalStoragePath)
+        every { cacheDir } returns File(InternalStoragePath)
     }
     private val fileHelperMock = mockk<FileHelper>()
     private val internalFileStorage = InternalFileStorage(contextMock, fileHelperMock, Dispatchers.Unconfined)
