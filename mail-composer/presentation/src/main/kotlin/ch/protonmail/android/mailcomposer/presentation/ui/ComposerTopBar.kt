@@ -60,7 +60,7 @@ internal fun ComposerTopBar(
                     Icon(
                         painter = painterResource(id = R.drawable.ic_proton_paper_clip),
                         tint = ProtonTheme.colors.iconNorm,
-                        contentDescription = stringResource(R.string.add_attachments_content_description)
+                        contentDescription = stringResource(R.string.composer_add_attachments_content_description)
                     )
                 }
             }

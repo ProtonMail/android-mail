@@ -52,7 +52,7 @@ fun AddAttachmentsBottomSheetContent(onImportFromSelected: () -> Unit, modifier:
             Spacer(modifier = Modifier.width(ProtonDimens.DefaultSpacing))
             Text(
                 modifier = Modifier.weight(1f),
-                text = stringResource(id = R.string.add_attachments_bottom_sheet_import_from),
+                text = stringResource(id = R.string.composer_add_attachments_bottom_sheet_import_from),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
