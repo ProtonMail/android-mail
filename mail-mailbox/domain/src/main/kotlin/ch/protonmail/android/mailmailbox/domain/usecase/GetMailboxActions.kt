@@ -29,9 +29,16 @@ import javax.inject.Inject
 
 class GetMailboxActions @Inject constructor() {
 
-    suspend operator fun invoke(currentMailLabel: MailLabel): Either<DataError, List<Action>> {
+    suspend operator fun invoke(
+        currentMailLabel: MailLabel,
+        areAllItemsUnread: Boolean
+    ): Either<DataError, List<Action>> {
         return either {
             val actions = MailboxBottomBarDefaults.actions.toMutableList()
+
+            if (areAllItemsUnread) {
+                actions[actions.indexOf(Action.MarkUnread)] = Action.MarkRead
+            }
 
             if (currentMailLabel.isTrashOrSpam()) {
                 actions[actions.indexOf(Action.Trash)] = Action.Delete

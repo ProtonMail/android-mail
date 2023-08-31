@@ -64,6 +64,7 @@ import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSetti
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData.buildMailboxUiModelItem
+import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData.draftMailboxItemUiModel
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData.readMailboxItemUiModel
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData.unreadMailboxItemUiModel
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData.unreadMailboxItemUiModelWithLabel
@@ -156,7 +157,7 @@ class MailboxViewModelTest {
     }
 
     private val observeMailboxActions = mockk<GetMailboxActions> {
-        coEvery { this@mockk(any()) } returns listOf(Action.Archive, Action.Trash).right()
+        coEvery { this@mockk(any(), any()) } returns listOf(Action.Archive, Action.Trash).right()
     }
 
     private val mailboxViewModel by lazy {
@@ -248,9 +249,9 @@ class MailboxViewModelTest {
         // Given
         val expectedMailLabel = MailLabel.System(MailLabelId.System.Spam)
         val expectedCount = UnreadCountersTestData.labelToCounterMap[expectedMailLabel.id.labelId]
-        val intermediateState = createMailboxDataState(
-            selectedMailLabelId = expectedMailLabel.id,
-            scrollToMailboxTop = Effect.of(expectedMailLabel.id)
+        val intermediateState = MailboxStateSampleData.createSelectionMode(
+            currentMailLabel = expectedMailLabel,
+            selectedMailboxItemUiModels = listOf(unreadMailboxItemUiModelWithLabel)
         )
         val expectedState = intermediateState.copy(
             bottomAppBarState = BottomBarState.Data.Shown(
@@ -268,7 +269,7 @@ class MailboxViewModelTest {
                 MailboxEvent.NewLabelSelected(expectedMailLabel, expectedCount)
             )
         } returns intermediateState
-        returnExpectedStateForBottomBarEvent(intermediateState, expectedState)
+        returnExpectedStateForBottomBarEvent(expectedState = expectedState)
 
         mailboxViewModel.state.test {
             awaitItem()
@@ -277,6 +278,7 @@ class MailboxViewModelTest {
             currentLocationFlow.emit(expectedMailLabel.id)
 
             // Then
+            assertEquals(intermediateState, awaitItem())
             assertEquals(expectedState, awaitItem())
             verifyOrder {
                 mailboxReducer.newStateFrom(any(), MailboxEvent.NewLabelSelected(expectedMailLabel, expectedCount))
@@ -404,13 +406,19 @@ class MailboxViewModelTest {
             // Given
             val item = readMailboxItemUiModel
             val intermediateState = createMailboxDataState()
-            val expectedState = MailboxStateSampleData.createSelectionMode(listOf(item))
+            val expectedSelectionState = MailboxStateSampleData.createSelectionMode(listOf(item))
+            val expectedBottomBarState = expectedSelectionState.copy(
+                bottomAppBarState = BottomBarState.Data.Shown(
+                    listOf(ActionUiModelSample.Archive, ActionUiModelSample.Trash)
+                )
+            )
             every {
                 mailboxReducer.newStateFrom(any(), MailboxEvent.SelectedLabelCountChanged(5))
             } returns intermediateState
             every {
                 mailboxReducer.newStateFrom(intermediateState, MailboxEvent.EnterSelectionMode(item))
-            } returns expectedState
+            } returns expectedSelectionState
+            returnExpectedStateForBottomBarEvent(expectedSelectionState, expectedBottomBarState)
 
             mailboxViewModel.state.test {
                 // Given
@@ -420,7 +428,8 @@ class MailboxViewModelTest {
                 mailboxViewModel.submit(MailboxViewAction.OnItemLongClicked(item))
 
                 // Then
-                assertEquals(expectedState, awaitItem())
+                assertEquals(expectedSelectionState, awaitItem())
+                assertEquals(expectedBottomBarState, awaitItem())
             }
         }
 
@@ -430,13 +439,19 @@ class MailboxViewModelTest {
             // Given
             val item = readMailboxItemUiModel
             val intermediateState = createMailboxDataState()
-            val expectedState = MailboxStateSampleData.createSelectionMode(listOf(item))
+            val expectedSelectionState = MailboxStateSampleData.createSelectionMode(listOf(item))
+            val expectedBottomBarState = expectedSelectionState.copy(
+                bottomAppBarState = BottomBarState.Data.Shown(
+                    listOf(ActionUiModelSample.Archive, ActionUiModelSample.Trash)
+                )
+            )
             every {
                 mailboxReducer.newStateFrom(any(), MailboxEvent.SelectedLabelCountChanged(5))
             } returns intermediateState
             every {
                 mailboxReducer.newStateFrom(intermediateState, MailboxEvent.EnterSelectionMode(item))
-            } returns expectedState
+            } returns expectedSelectionState
+            returnExpectedStateForBottomBarEvent(expectedSelectionState, expectedBottomBarState)
 
             mailboxViewModel.state.test {
                 // Given
@@ -446,7 +461,8 @@ class MailboxViewModelTest {
                 mailboxViewModel.submit(MailboxViewAction.OnItemLongClicked(item))
 
                 // Then
-                assertEquals(expectedState, awaitItem())
+                assertEquals(expectedSelectionState, awaitItem())
+                assertEquals(expectedBottomBarState, awaitItem())
 
                 // When
                 mailboxViewModel.submit(MailboxViewAction.OnItemLongClicked(item))
@@ -462,12 +478,23 @@ class MailboxViewModelTest {
         val item = readMailboxItemUiModel
         val intermediateState = createMailboxDataState()
         val expectedState = MailboxStateSampleData.createSelectionMode(listOf(item))
+        val expectedBottomBarActions = listOf(ActionUiModelSample.Archive, ActionUiModelSample.Trash)
+        val expectedBottomBarState = MailboxStateSampleData.createSelectionMode(
+            selectedMailboxItemUiModels = listOf(item),
+            bottomBarAction = expectedBottomBarActions
+        )
         every {
             mailboxReducer.newStateFrom(any(), MailboxEvent.SelectedLabelCountChanged(5))
         } returns intermediateState
         every {
             mailboxReducer.newStateFrom(intermediateState, MailboxEvent.EnterSelectionMode(item))
         } returns expectedState
+        every {
+            mailboxReducer.newStateFrom(
+                currentState = expectedState,
+                operation = MailboxEvent.MessageBottomBarEvent(BottomBarEvent.ActionsData(expectedBottomBarActions))
+            )
+        } returns expectedBottomBarState
 
         mailboxViewModel.state.test {
             // Given
@@ -481,6 +508,7 @@ class MailboxViewModelTest {
             verify(exactly = 1) {
                 mailboxReducer.newStateFrom(intermediateState, MailboxEvent.EnterSelectionMode(item))
             }
+            assertEquals(expectedBottomBarState, awaitItem())
         }
     }
 
@@ -488,22 +516,35 @@ class MailboxViewModelTest {
     fun `when avatar click action is submitted to add item to selection, new state is created and emitted`() = runTest {
         // Given
         val item = readMailboxItemUiModel
-        val secondItem = unreadMailboxItemUiModel
-        val initialState = createMailboxDataState()
-        val intermediateState = MailboxStateSampleData.createSelectionMode(listOf(item))
-        val expectedState = MailboxStateSampleData.createSelectionMode(listOf(item, secondItem))
+        val secondItem = draftMailboxItemUiModel
+        val dataState = createMailboxDataState()
+        val intermediateSelectionState = MailboxStateSampleData.createSelectionMode(listOf(item))
+        val expectedSelectionState = MailboxStateSampleData.createSelectionMode(listOf(item, secondItem))
+
+        val expectedBottomBarActions = listOf(ActionUiModelSample.Archive, ActionUiModelSample.Trash)
+
+        val expectedBottomBarState = MailboxStateSampleData.createSelectionMode(
+            selectedMailboxItemUiModels = listOf(item),
+            bottomBarAction = expectedBottomBarActions
+        )
         every {
             mailboxReducer.newStateFrom(any(), MailboxEvent.SelectedLabelCountChanged(5))
-        } returns initialState
+        } returns dataState
         every {
-            mailboxReducer.newStateFrom(initialState, MailboxEvent.EnterSelectionMode(item))
-        } returns intermediateState
+            mailboxReducer.newStateFrom(dataState, MailboxEvent.EnterSelectionMode(item))
+        } returns intermediateSelectionState
         every {
             mailboxReducer.newStateFrom(
-                intermediateState,
-                MailboxEvent.ItemClicked.ItemAddedToSelection(secondItem)
+                currentState = intermediateSelectionState,
+                operation = MailboxEvent.MessageBottomBarEvent(BottomBarEvent.ActionsData(expectedBottomBarActions))
             )
-        } returns expectedState
+        } returns expectedBottomBarState
+        every {
+            mailboxReducer.newStateFrom(
+                currentState = expectedBottomBarState,
+                operation = MailboxEvent.ItemClicked.ItemAddedToSelection(secondItem)
+            )
+        } returns expectedSelectionState
 
         mailboxViewModel.state.test {
             // Given
@@ -513,22 +554,17 @@ class MailboxViewModelTest {
             mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
 
             // Then
-            assertEquals(intermediateState, awaitItem())
+            assertEquals(intermediateSelectionState, awaitItem())
             verify(exactly = 1) {
-                mailboxReducer.newStateFrom(initialState, MailboxEvent.EnterSelectionMode(item))
+                mailboxReducer.newStateFrom(dataState, MailboxEvent.EnterSelectionMode(item))
             }
+            assertEquals(expectedBottomBarState, awaitItem())
 
             // When
             mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(secondItem))
 
             // Then
-            assertEquals(expectedState, awaitItem())
-            verify(exactly = 1) {
-                mailboxReducer.newStateFrom(
-                    currentState = intermediateState,
-                    operation = MailboxEvent.ItemClicked.ItemAddedToSelection(secondItem)
-                )
-            }
+            assertEquals(expectedSelectionState, awaitItem())
         }
     }
 
@@ -545,6 +581,7 @@ class MailboxViewModelTest {
             every {
                 mailboxReducer.newStateFrom(initialState, MailboxEvent.EnterSelectionMode(item))
             } returns intermediateState
+            returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
             every {
                 mailboxReducer.newStateFrom(
                     intermediateState,
@@ -594,6 +631,7 @@ class MailboxViewModelTest {
             every {
                 mailboxReducer.newStateFrom(initialState, MailboxEvent.EnterSelectionMode(item))
             } returns intermediateState
+            returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
             every {
                 mailboxReducer.newStateFrom(
                     intermediateState,

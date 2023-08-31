@@ -28,9 +28,9 @@ import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
-import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
+import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabel
@@ -117,9 +117,11 @@ class MailboxViewModel @Inject constructor(
             .onEach { (currentMailLabel, currentLabelCount) ->
                 emitNewStateFrom(MailboxEvent.NewLabelSelected(currentMailLabel, currentLabelCount))
             }
-            .map { getMailboxActions(it.first) }
-            .onEach {
-                val operation = it.fold(
+            .launchIn(viewModelScope)
+
+        selectedMailLabelId.flow.mapToExistingLabel()
+            .combine(state.observeSelectedMailboxItems()) { selectedMailLabelId, selectedMailboxItems ->
+                getMailboxActions(selectedMailLabelId, selectedMailboxItems.none { it.isRead }).fold(
                     ifLeft = { MailboxEvent.MessageBottomBarEvent(BottomBarEvent.ErrorLoadingActions) },
                     ifRight = { actions ->
                         MailboxEvent.MessageBottomBarEvent(
@@ -127,8 +129,9 @@ class MailboxViewModel @Inject constructor(
                         )
                     }
                 )
-                emitNewStateFrom(operation)
             }
+            .distinctUntilChanged()
+            .onEach { emitNewStateFrom(it) }
             .launchIn(viewModelScope)
 
         observeUnreadCounters()
@@ -341,6 +344,11 @@ class MailboxViewModel @Inject constructor(
     private fun Flow<MailboxState>.observeMailLabelChanges() =
         this.map { it.mailboxListState as? MailboxListState.Data.ViewMode }
             .mapNotNull { it?.currentMailLabel }
+            .distinctUntilChanged()
+
+    private fun Flow<MailboxState>.observeSelectedMailboxItems() =
+        this.map { it.mailboxListState as? MailboxListState.Data.SelectionMode }
+            .mapNotNull { it?.selectedMailboxItems }
             .distinctUntilChanged()
 
     companion object {
