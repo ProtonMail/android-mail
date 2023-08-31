@@ -36,6 +36,7 @@ import ch.protonmail.android.MainActivity
 import ch.protonmail.android.R
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
+import ch.protonmail.android.mailcomposer.domain.model.DraftSyncState
 import ch.protonmail.android.mailmailbox.presentation.sidebar.Sidebar
 import ch.protonmail.android.navigation.model.Destination.Dialog
 import ch.protonmail.android.navigation.model.Destination.Screen
@@ -72,13 +73,16 @@ fun Home(
 ) {
     val navController = rememberNavController().withSentryObservableEffect()
     val scaffoldState = rememberScaffoldState()
-    val snackbarHostState = ProtonSnackbarHostState()
+    val snackbarHostSuccessState = ProtonSnackbarHostState()
+    val snackbarHostWarningState = ProtonSnackbarHostState()
+    val snackbarHostNormState = ProtonSnackbarHostState()
+    val snackbarHostErrorState = ProtonSnackbarHostState()
     val scope = rememberCoroutineScope()
     val state = rememberAsState(flow = viewModel.state, initial = HomeState.Initial)
 
     val offlineSnackbarMessage = stringResource(id = R.string.you_are_offline)
     fun showOfflineSnackbar() = scope.launch {
-        snackbarHostState.showSnackbar(
+        snackbarHostWarningState.showSnackbar(
             message = offlineSnackbarMessage,
             type = ProtonSnackbarType.WARNING
         )
@@ -91,29 +95,46 @@ fun Home(
 
     val featureMissingSnackbarMessage = stringResource(id = R.string.feature_coming_soon)
     fun showFeatureMissingSnackbar() = scope.launch {
-        snackbarHostState.showSnackbar(
+        snackbarHostNormState.showSnackbar(
             message = featureMissingSnackbarMessage,
             type = ProtonSnackbarType.NORM
         )
     }
     val refreshMailboxErrorMessage = stringResource(id = R.string.mailbox_error_message_generic)
     fun showRefreshErrorSnackbar() = scope.launch {
-        snackbarHostState.showSnackbar(
+        snackbarHostErrorState.showSnackbar(
             message = refreshMailboxErrorMessage,
             type = ProtonSnackbarType.ERROR
         )
     }
     val draftSavedText = stringResource(id = R.string.mailbox_draft_saved)
     fun showDraftSavedSnackbar() = scope.launch {
-        snackbarHostState.showSnackbar(message = draftSavedText, type = ProtonSnackbarType.SUCCESS)
+        snackbarHostSuccessState.showSnackbar(message = draftSavedText, type = ProtonSnackbarType.SUCCESS)
     }
     val sendingMessageText = stringResource(id = R.string.mailbox_message_sending)
     fun showMessageSendingSnackbar() = scope.launch {
-        snackbarHostState.showSnackbar(message = sendingMessageText, type = ProtonSnackbarType.NORM)
+        snackbarHostNormState.showSnackbar(message = sendingMessageText, type = ProtonSnackbarType.NORM)
     }
     val sendingMessageOfflineText = stringResource(id = R.string.mailbox_message_sending_offline)
     fun showMessageSendingOfflineSnackbar() = scope.launch {
-        snackbarHostState.showSnackbar(message = sendingMessageOfflineText, type = ProtonSnackbarType.NORM)
+        snackbarHostNormState.showSnackbar(message = sendingMessageOfflineText, type = ProtonSnackbarType.NORM)
+    }
+    val successSendingMessageText = stringResource(id = R.string.mailbox_message_sending_success)
+    fun showSuccessSendingMessageSnackbar() = scope.launch {
+        snackbarHostSuccessState.showSnackbar(message = successSendingMessageText, type = ProtonSnackbarType.SUCCESS)
+    }
+    val errorSendingMessageText = stringResource(id = R.string.mailbox_message_sending_error)
+    fun showErrorSendingMessageSnackbar() = scope.launch {
+        snackbarHostErrorState.showSnackbar(message = errorSendingMessageText, type = ProtonSnackbarType.ERROR)
+    }
+    ConsumableLaunchedEffect(state.value.messageSendingStatusEffect) { draftStates ->
+        draftStates.forEach {
+            when (it.draftSyncState) {
+                DraftSyncState.Sent -> showSuccessSendingMessageSnackbar()
+                DraftSyncState.ErrorSending -> showErrorSendingMessageSnackbar()
+                else -> { } // nothing to do, other states should be handled somewhere else
+            }
+        }
     }
 
     Scaffold(
@@ -129,7 +150,19 @@ fun Home(
         snackbarHost = {
             ProtonSnackbarHost(
                 modifier = Modifier.testTag(CommonTestTags.SnackbarHost),
-                hostState = snackbarHostState
+                hostState = snackbarHostSuccessState
+            )
+            ProtonSnackbarHost(
+                modifier = Modifier.testTag(CommonTestTags.SnackbarHost),
+                hostState = snackbarHostWarningState
+            )
+            ProtonSnackbarHost(
+                modifier = Modifier.testTag(CommonTestTags.SnackbarHost),
+                hostState = snackbarHostNormState
+            )
+            ProtonSnackbarHost(
+                modifier = Modifier.testTag(CommonTestTags.SnackbarHost),
+                hostState = snackbarHostErrorState
             )
         }
     ) { contentPadding ->
@@ -145,7 +178,7 @@ fun Home(
                     navController = navController,
                     showSnackbar = { message ->
                         scope.launch {
-                            snackbarHostState.showSnackbar(
+                            snackbarHostNormState.showSnackbar(
                                 message = message,
                                 type = ProtonSnackbarType.NORM
                             )
@@ -168,7 +201,7 @@ fun Home(
                     navController = navController,
                     showSnackbar = { message ->
                         scope.launch {
-                            snackbarHostState.showSnackbar(
+                            snackbarHostNormState.showSnackbar(
                                 message = message,
                                 type = ProtonSnackbarType.NORM
                             )

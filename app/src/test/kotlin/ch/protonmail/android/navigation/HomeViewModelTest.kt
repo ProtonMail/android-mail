@@ -19,11 +19,18 @@
 package ch.protonmail.android.navigation
 
 import app.cash.turbine.test
+import ch.protonmail.android.mailcommon.domain.sample.UserSample
+import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcomposer.domain.model.DraftSyncState
+import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
+import ch.protonmail.android.mailcomposer.domain.sample.DraftStateSample
+import ch.protonmail.android.mailcomposer.presentation.model.MessageSendingUiModel
 import ch.protonmail.android.navigation.model.HomeState
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -32,16 +39,26 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import me.proton.core.network.domain.NetworkManager
 import me.proton.core.network.domain.NetworkStatus
+import me.proton.core.user.domain.entity.User
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.BeforeTest
 
 class HomeViewModelTest {
 
+    private val user = UserSample.Primary
+
     private val networkManager = mockk<NetworkManager>()
+    private val draftStateRepositoryMock = mockk<DraftStateRepository> {
+        every { observeAll(any()) } returns flowOf(emptyList())
+    }
+
+    private val observePrimaryUserMock = mockk<ObservePrimaryUser> {
+        every { this@mockk() } returns MutableStateFlow<User?>(user)
+    }
 
     private val homeViewModel by lazy {
-        HomeViewModel(networkManager)
+        HomeViewModel(networkManager, draftStateRepositoryMock, observePrimaryUserMock)
     }
 
     @BeforeTest
@@ -78,7 +95,8 @@ class HomeViewModelTest {
                 advanceUntilIdle()
                 val actualItem = awaitItem()
                 val expectedItem = HomeState(
-                    Effect.of(NetworkStatus.Disconnected)
+                    networkStatusEffect = Effect.of(NetworkStatus.Disconnected),
+                    messageSendingStatusEffect = Effect.of(emptyList())
                 )
 
                 // Then
@@ -87,41 +105,96 @@ class HomeViewModelTest {
         }
 
     @Test
-    fun `when the status is disconnected and is metered after 5 seconds then emit metered status`() =
-        runTest {
-            // Given
-            every { networkManager.observe() } returns flowOf(NetworkStatus.Disconnected)
-            every { networkManager.networkStatus } returns NetworkStatus.Metered
+    fun `when the status is disconnected and is metered after 5 seconds then emit metered status`() = runTest {
+        // Given
+        every { networkManager.observe() } returns flowOf(NetworkStatus.Disconnected)
+        every { networkManager.networkStatus } returns NetworkStatus.Metered
 
-            // When
-            homeViewModel.state.test {
-                awaitItem()
-                advanceUntilIdle()
-                val actualItem = awaitItem()
-                val expectedItem = HomeState(
-                    Effect.of(NetworkStatus.Metered)
-                )
+        // When
+        homeViewModel.state.test {
+            awaitItem()
+            advanceUntilIdle()
+            val actualItem = awaitItem()
+            val expectedItem = HomeState(
+                networkStatusEffect = Effect.of(NetworkStatus.Metered),
+                messageSendingStatusEffect = Effect.of(emptyList())
+            )
 
-                // Then
-                assertEquals(expectedItem, actualItem)
-            }
+            // Then
+            assertEquals(expectedItem, actualItem)
         }
+    }
 
     @Test
-    fun `when the status is metered then emit metered status`() =
-        runTest {
-            // Given
-            every { networkManager.observe() } returns flowOf(NetworkStatus.Metered)
+    fun `when the status is metered then emit metered status`() = runTest {
+        // Given
+        every { networkManager.observe() } returns flowOf(NetworkStatus.Metered)
 
-            // When
-            homeViewModel.state.test {
-                val actualItem = awaitItem()
-                val expectedItem = HomeState(
-                    Effect.of(NetworkStatus.Metered)
-                )
+        // When
+        homeViewModel.state.test {
+            val actualItem = awaitItem()
+            val expectedItem = HomeState(
+                networkStatusEffect = Effect.of(NetworkStatus.Metered),
+                messageSendingStatusEffect = Effect.of(emptyList())
+            )
 
-                // Then
-                assertEquals(expectedItem, actualItem)
-            }
+            // Then
+            assertEquals(expectedItem, actualItem)
         }
+    }
+
+    @Test
+    fun `when there are ErrorSending or Sent draft states then emit MessageSendingUiModels`() = runTest {
+        // Given
+        val allDraftStates = listOf(
+            DraftStateSample.RemoteDraftInSendingState,
+            DraftStateSample.RemoteDraftInErrorSendingState,
+            DraftStateSample.RemoteDraftInSentState
+        )
+        val expectedMessageSendingUiModels = allDraftStates.map {
+            MessageSendingUiModel(it.userId, it.apiMessageId ?: it.messageId, it.state)
+        }.filter { it.draftSyncState == DraftSyncState.Sent || it.draftSyncState == DraftSyncState.ErrorSending }
+        every { networkManager.observe() } returns flowOf(NetworkStatus.Metered)
+        every { draftStateRepositoryMock.observeAll(any()) } returns flowOf(
+            allDraftStates
+        )
+
+        // When
+        homeViewModel.state.test {
+            val actualItem = awaitItem()
+            val expectedItem = HomeState(
+                networkStatusEffect = Effect.of(NetworkStatus.Metered),
+                messageSendingStatusEffect = Effect.of(expectedMessageSendingUiModels)
+            )
+
+            // Then
+            assertEquals(expectedItem, actualItem)
+        }
+    }
+
+    @Test
+    fun `when there are no ErrorSending or Sent draft states then emit empty MessageSendingUiModels`() = runTest {
+        // Given
+        val allDraftStates = listOf(
+            DraftStateSample.RemoteDraftInSendingState,
+            DraftStateSample.RemoteDraftState
+        )
+        val expectedMessageSendingUiModels = emptyList<MessageSendingUiModel>()
+        every { networkManager.observe() } returns flowOf(NetworkStatus.Metered)
+        every { draftStateRepositoryMock.observeAll(any()) } returns flowOf(
+            allDraftStates
+        )
+
+        // When
+        homeViewModel.state.test {
+            val actualItem = awaitItem()
+            val expectedItem = HomeState(
+                networkStatusEffect = Effect.of(NetworkStatus.Metered),
+                messageSendingStatusEffect = Effect.of(expectedMessageSendingUiModels)
+            )
+
+            // Then
+            assertEquals(expectedItem, actualItem)
+        }
+    }
 }

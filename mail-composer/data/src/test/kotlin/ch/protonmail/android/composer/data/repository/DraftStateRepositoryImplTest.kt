@@ -62,6 +62,36 @@ class DraftStateRepositoryImplTest {
     }
 
     @Test
+    fun `observe all draft state returns them when existing`() = runTest {
+        // Given
+        val expected = listOf(
+            DraftStateSample.RemoteDraftInSendingState,
+            DraftStateSample.RemoteDraftInErrorSendingState,
+            DraftStateSample.RemoteDraftInSentState
+        )
+        expectAllDraftStateLocalDataSourceSuccess(userId, expected)
+
+        // When
+        val actual = repository.observeAll(userId).first()
+
+        // Then
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `observe all draft state returns empty list when not existing`() = runTest {
+        // Given
+        val expected = emptyList<DraftState>()
+        expectAllDraftStateLocalDataSourceNoDataAvailable(userId)
+
+        // When
+        val actual = repository.observeAll(userId).first()
+
+        // Then
+        assertEquals(expected, actual)
+    }
+
+    @Test
     fun `observe draft state returns no data cached error when not existing`() = runTest {
         // Given
         val draftId = MessageIdSample.EmptyDraft
@@ -142,6 +172,10 @@ class DraftStateRepositoryImplTest {
         coEvery { draftStateLocalDataSource.observe(userId, draftId) } returns flowOf(expected.right())
     }
 
+    private fun expectAllDraftStateLocalDataSourceSuccess(userId: UserId, expected: List<DraftState>) {
+        coEvery { draftStateLocalDataSource.observeAll(userId) } returns flowOf(expected)
+    }
+
     private fun expectLocalDataSourceUpsertSuccess(state: DraftState) {
         coEvery { draftStateLocalDataSource.save(state) } returns Unit.right()
     }
@@ -152,6 +186,10 @@ class DraftStateRepositoryImplTest {
         error: DataError
     ) {
         coEvery { draftStateLocalDataSource.observe(userId, draftId) } returns flowOf(error.left())
+    }
+
+    private fun expectAllDraftStateLocalDataSourceNoDataAvailable(userId: UserId) {
+        coEvery { draftStateLocalDataSource.observeAll(userId) } returns flowOf(emptyList())
     }
 
 }

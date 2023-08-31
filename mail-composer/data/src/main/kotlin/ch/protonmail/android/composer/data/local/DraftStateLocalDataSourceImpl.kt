@@ -45,6 +45,10 @@ class DraftStateLocalDataSourceImpl @Inject constructor(
             }
         }
 
+    override fun observeAll(userId: UserId): Flow<List<DraftState>> = draftStateDao.observeAllDraftsState(userId).map {
+        it.map { it.toDraftState() }
+    }
+
     override suspend fun save(state: DraftState): Either<DataError, Unit> {
         return Either.catch {
             draftStateDao.insertOrUpdate(state.toDraftStateEntity())

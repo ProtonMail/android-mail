@@ -16,19 +16,14 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.composer.data.local
+package ch.protonmail.android.mailcomposer.presentation.model
 
-import arrow.core.Either
-import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailcomposer.domain.model.DraftState
+import ch.protonmail.android.mailcomposer.domain.model.DraftSyncState
 import ch.protonmail.android.mailmessage.domain.model.MessageId
-import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
 
-interface DraftStateLocalDataSource {
-
-    fun observe(userId: UserId, messageId: MessageId): Flow<Either<DataError, DraftState>>
-    fun observeAll(userId: UserId): Flow<List<DraftState>>
-    suspend fun save(state: DraftState): Either<DataError, Unit>
-    suspend fun delete(state: DraftState)
-}
+data class MessageSendingUiModel(
+    val userId: UserId,
+    val messageId: MessageId,
+    val draftSyncState: DraftSyncState
+)

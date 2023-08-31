@@ -38,4 +38,12 @@ abstract class DraftStateDao : BaseDao<DraftStateEntity>() {
         """
     )
     abstract fun observeDraftState(userId: UserId, messageId: MessageId): Flow<DraftStateEntity?>
+
+    @Query(
+        """
+            SELECT * from DraftStateEntity
+            WHERE userId = :userId
+        """
+    )
+    abstract fun observeAllDraftsState(userId: UserId): Flow<List<DraftStateEntity>>
 }

@@ -31,6 +31,8 @@ interface DraftStateRepository {
 
     fun observe(userId: UserId, messageId: MessageId): Flow<Either<DataError, DraftState>>
 
+    fun observeAll(userId: UserId): Flow<List<DraftState>>
+
 
     /**
      * Reads an existing [DraftState], updates it by setting its state to [DraftSyncState.Syncronized]

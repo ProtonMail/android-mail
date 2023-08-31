@@ -39,7 +39,7 @@ object DraftStateSample {
         state = DraftSyncState.Local
     )
     /**
-     * Represents a draft that was created locally and then synced to rmeote
+     * Represents a draft that was created locally and then synced to remote
      */
     val LocalDraftThatWasSyncedOnce = build(
         messageId = MessageIdSample.LocalDraft,
@@ -61,6 +61,33 @@ object DraftStateSample {
         messageId = MessageIdSample.RemoteDraft,
         apiMessageId = MessageIdSample.RemoteDraft,
         state = DraftSyncState.Synchronized
+    )
+
+    /**
+     * Represents a remote draft that is scheduled for sending.
+     */
+    val RemoteDraftInSendingState = build(
+        messageId = MessageIdSample.RemoteDraft,
+        apiMessageId = MessageIdSample.RemoteDraft,
+        state = DraftSyncState.Sending
+    )
+
+    /**
+     * Represents a remote draft that failed to be sent.
+     */
+    val RemoteDraftInErrorSendingState = build(
+        messageId = MessageIdSample.RemoteDraft,
+        apiMessageId = MessageIdSample.RemoteDraft,
+        state = DraftSyncState.ErrorSending
+    )
+
+    /**
+     * Represents a remote draft that has been successfully sent.
+     */
+    val RemoteDraftInSentState = build(
+        messageId = MessageIdSample.RemoteDraft,
+        apiMessageId = MessageIdSample.RemoteDraft,
+        state = DraftSyncState.Sent
     )
 
     fun build(
