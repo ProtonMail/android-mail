@@ -40,7 +40,8 @@ import org.junit.Test
 class InternalFileStorageTest {
 
     private val contextMock = mockk<Context> {
-        every { cacheDir } returns File(InternalStoragePath)
+        every { filesDir } returns File(InternalStoragePath)
+        every { cacheDir } returns File(CachedStoragePath)
     }
     private val fileHelperMock = mockk<FileHelper>()
     private val internalFileStorage = InternalFileStorage(contextMock, fileHelperMock, Dispatchers.Unconfined)
@@ -79,6 +80,28 @@ class InternalFileStorageTest {
     }
 
     @Test
+    fun `should read from cached file using a correct sanitised folder and filename and return body on success`() =
+        runTest {
+            // Given
+            coEvery {
+                fileHelperMock.readFromFile(
+                    folder = FileHelper.Folder(CompleteCachedFolderPath),
+                    filename = FileHelper.Filename(MessageId.EncodedDigest)
+                )
+            } returns MessageBody
+
+            // When
+            val actualFileContent = internalFileStorage.readFromCachedFile(
+                userId = UserId.Object,
+                folder = InternalFileStorage.Folder.MessageBodies,
+                fileIdentifier = InternalFileStorage.FileIdentifier(MessageId.Raw)
+            )
+
+            // Then
+            assertEquals(MessageBody, actualFileContent)
+        }
+
+    @Test
     fun `should read from file using a correct sanitised folder and filename and return null on failure`() = runTest {
         // Given
         coEvery {
@@ -98,6 +121,28 @@ class InternalFileStorageTest {
         // Then
         assertNull(actualFileContent)
     }
+
+    @Test
+    fun `should read from cached file using a correct sanitised folder and filename and return null on failure`() =
+        runTest {
+            // Given
+            coEvery {
+                fileHelperMock.readFromFile(
+                    folder = FileHelper.Folder(CompleteCachedFolderPath),
+                    filename = FileHelper.Filename(MessageId.EncodedDigest)
+                )
+            } returns null
+
+            // When
+            val actualFileContent = internalFileStorage.readFromCachedFile(
+                userId = UserId.Object,
+                folder = InternalFileStorage.Folder.MessageBodies,
+                fileIdentifier = InternalFileStorage.FileIdentifier(MessageId.Raw)
+            )
+
+            // Then
+            assertNull(actualFileContent)
+        }
 
     @Test
     fun `should read file using a correct sanitised folder and filename and return file on success`() = runTest {
@@ -122,6 +167,28 @@ class InternalFileStorageTest {
     }
 
     @Test
+    fun `should read cached file using a correct sanitised folder and filename and return file on success`() = runTest {
+        // Given
+        val fileMock = mockk<File>()
+        coEvery {
+            fileHelperMock.getFile(
+                folder = FileHelper.Folder(CompleteCachedFolderPath),
+                filename = FileHelper.Filename(MessageId.EncodedDigest)
+            )
+        } returns fileMock
+
+        // When
+        val actualFile = internalFileStorage.getCachedFile(
+            userId = UserId.Object,
+            folder = InternalFileStorage.Folder.MessageBodies,
+            fileIdentifier = InternalFileStorage.FileIdentifier(MessageId.Raw)
+        )
+
+        // Then
+        assertEquals(fileMock, actualFile)
+    }
+
+    @Test
     fun `should read file using a correct sanitised folder and filename and return null on failure`() = runTest {
         // Given
         coEvery {
@@ -133,6 +200,27 @@ class InternalFileStorageTest {
 
         // When
         val actualFile = internalFileStorage.getFile(
+            userId = UserId.Object,
+            folder = InternalFileStorage.Folder.MessageBodies,
+            fileIdentifier = InternalFileStorage.FileIdentifier(MessageId.Raw)
+        )
+
+        // Then
+        assertNull(actualFile)
+    }
+
+    @Test
+    fun `should read cached file using a correct sanitised folder and filename and return null on failure`() = runTest {
+        // Given
+        coEvery {
+            fileHelperMock.getFile(
+                folder = FileHelper.Folder(CompleteCachedFolderPath),
+                filename = FileHelper.Filename(MessageId.EncodedDigest)
+            )
+        } returns null
+
+        // When
+        val actualFile = internalFileStorage.getCachedFile(
             userId = UserId.Object,
             folder = InternalFileStorage.Folder.MessageBodies,
             fileIdentifier = InternalFileStorage.FileIdentifier(MessageId.Raw)
@@ -166,6 +254,30 @@ class InternalFileStorageTest {
     }
 
     @Test
+    fun `should write to cached file using a correct sanitised folder and filename and return true on success`() =
+        runTest {
+            // Given
+            coEvery {
+                fileHelperMock.writeToFile(
+                    folder = FileHelper.Folder(CompleteCachedFolderPath),
+                    filename = FileHelper.Filename(MessageId.EncodedDigest),
+                    content = MessageBody
+                )
+            } returns true
+
+            // When
+            val fileWritten = internalFileStorage.writeToCachedFile(
+                userId = UserId.Object,
+                folder = InternalFileStorage.Folder.MessageBodies,
+                fileIdentifier = InternalFileStorage.FileIdentifier(MessageId.Raw),
+                content = MessageBody
+            )
+
+            // Then
+            assertTrue(fileWritten)
+        }
+
+    @Test
     fun `should write to file using a correct sanitised folder and filename and return false on failure`() = runTest {
         // Given
         coEvery {
@@ -187,6 +299,30 @@ class InternalFileStorageTest {
         // Then
         assertFalse(fileWritten)
     }
+
+    @Test
+    fun `should write to cached file using a correct sanitised folder and filename and return false on failure`() =
+        runTest {
+            // Given
+            coEvery {
+                fileHelperMock.writeToFile(
+                    folder = FileHelper.Folder(CompleteCachedFolderPath),
+                    filename = FileHelper.Filename(MessageId.EncodedDigest),
+                    content = MessageBody
+                )
+            } returns false
+
+            // When
+            val fileWritten = internalFileStorage.writeToCachedFile(
+                userId = UserId.Object,
+                folder = InternalFileStorage.Folder.MessageBodies,
+                fileIdentifier = InternalFileStorage.FileIdentifier(MessageId.Raw),
+                content = MessageBody
+            )
+
+            // Then
+            assertFalse(fileWritten)
+        }
 
     @Test
     fun `should write file using a correct sanitised folder and filename and return file on success`() = runTest {
@@ -214,6 +350,32 @@ class InternalFileStorageTest {
     }
 
     @Test
+    fun `should write cached file using a correct sanitised folder and filename and return file on success`() =
+        runTest {
+            // Given
+            val fileMock = mockk<File>()
+            val fileByteArray = MessageBody.toByteArray()
+            coEvery {
+                fileHelperMock.writeToFile(
+                    folder = FileHelper.Folder(CompleteCachedFolderPath),
+                    filename = FileHelper.Filename(MessageId.EncodedDigest),
+                    content = fileByteArray
+                )
+            } returns fileMock
+
+            // When
+            val actualFile = internalFileStorage.writeCachedFile(
+                userId = UserId.Object,
+                folder = InternalFileStorage.Folder.MessageBodies,
+                fileIdentifier = InternalFileStorage.FileIdentifier(MessageId.Raw),
+                content = fileByteArray
+            )
+
+            // Then
+            assertEquals(fileMock, actualFile)
+        }
+
+    @Test
     fun `should write file using a correct sanitised folder and filename and return null on failure`() = runTest {
         // Given
         val fileByteArray = MessageBody.toByteArray()
@@ -238,6 +400,31 @@ class InternalFileStorageTest {
     }
 
     @Test
+    fun `should write cached file using a correct sanitised folder and filename and return null on failure`() =
+        runTest {
+            // Given
+            val fileByteArray = MessageBody.toByteArray()
+            coEvery {
+                fileHelperMock.writeToFile(
+                    folder = FileHelper.Folder(CompleteCachedFolderPath),
+                    filename = FileHelper.Filename(MessageId.EncodedDigest),
+                    content = fileByteArray
+                )
+            } returns null
+
+            // When
+            val actualFile = internalFileStorage.writeCachedFile(
+                userId = UserId.Object,
+                folder = InternalFileStorage.Folder.MessageBodies,
+                fileIdentifier = InternalFileStorage.FileIdentifier(MessageId.Raw),
+                content = fileByteArray
+            )
+
+            // Then
+            assertNull(actualFile)
+        }
+
+    @Test
     fun `should delete a file using a correct sanitised folder and filename and return true on success`() = runTest {
         // Given
         coEvery {
@@ -257,6 +444,28 @@ class InternalFileStorageTest {
         // Then
         assertTrue(fileDeleted)
     }
+
+    @Test
+    fun `should delete a cached file using a correct sanitised folder and filename and return true on success`() =
+        runTest {
+            // Given
+            coEvery {
+                fileHelperMock.deleteFile(
+                    folder = FileHelper.Folder(CompleteCachedFolderPath),
+                    filename = FileHelper.Filename(MessageId.EncodedDigest)
+                )
+            } returns true
+
+            // When
+            val fileDeleted = internalFileStorage.deleteCachedFile(
+                userId = UserId.Object,
+                folder = InternalFileStorage.Folder.MessageBodies,
+                fileIdentifier = InternalFileStorage.FileIdentifier(MessageId.Raw)
+            )
+
+            // Then
+            assertTrue(fileDeleted)
+        }
 
     @Test
     fun `should delete a file using a correct sanitised folder and filename and return false on failure`() = runTest {
@@ -280,6 +489,28 @@ class InternalFileStorageTest {
     }
 
     @Test
+    fun `should delete a cached file using a correct sanitised folder and filename and return false on failure`() =
+        runTest {
+            // Given
+            coEvery {
+                fileHelperMock.deleteFile(
+                    folder = FileHelper.Folder(CompleteCachedFolderPath),
+                    filename = FileHelper.Filename(MessageId.EncodedDigest)
+                )
+            } returns false
+
+            // When
+            val fileDeleted = internalFileStorage.deleteCachedFile(
+                userId = UserId.Object,
+                folder = InternalFileStorage.Folder.MessageBodies,
+                fileIdentifier = InternalFileStorage.FileIdentifier(MessageId.Raw)
+            )
+
+            // Then
+            assertFalse(fileDeleted)
+        }
+
+    @Test
     fun `should delete a folder using a correct sanitised folder name and return true on success`() = runTest {
         // Given
         coEvery { fileHelperMock.deleteFolder(FileHelper.Folder(CompleteFolderPath)) } returns true
@@ -295,12 +526,42 @@ class InternalFileStorageTest {
     }
 
     @Test
+    fun `should delete a cached folder using a correct sanitised folder name and return true on success`() = runTest {
+        // Given
+        coEvery { fileHelperMock.deleteFolder(FileHelper.Folder(CompleteCachedFolderPath)) } returns true
+
+        // When
+        val fileDeleted = internalFileStorage.deleteCachedFolder(
+            userId = UserId.Object,
+            folder = InternalFileStorage.Folder.MessageBodies
+        )
+
+        // Then
+        assertTrue(fileDeleted)
+    }
+
+    @Test
     fun `should delete a folder using a correct sanitised folder name and return false on success`() = runTest {
         // Given
         coEvery { fileHelperMock.deleteFolder(FileHelper.Folder(CompleteFolderPath)) } returns false
 
         // When
         val fileDeleted = internalFileStorage.deleteFolder(
+            userId = UserId.Object,
+            folder = InternalFileStorage.Folder.MessageBodies
+        )
+
+        // Then
+        assertFalse(fileDeleted)
+    }
+
+    @Test
+    fun `should delete a cached folder using a correct sanitised folder name and return false on success`() = runTest {
+        // Given
+        coEvery { fileHelperMock.deleteFolder(FileHelper.Folder(CompleteCachedFolderPath)) } returns false
+
+        // When
+        val fileDeleted = internalFileStorage.deleteCachedFolder(
             userId = UserId.Object,
             folder = InternalFileStorage.Folder.MessageBodies
         )
@@ -328,6 +589,10 @@ class InternalFileStorageTest {
 
         const val InternalStoragePath = "/some/path/to/internal/storage"
         const val CompleteFolderPath = "$InternalStoragePath/${UserId.EncodedDigest}/message_bodies/"
+
+        const val CachedStoragePath = "/some/path/to/cache/storage"
+        const val CompleteCachedFolderPath = "$CachedStoragePath/${UserId.EncodedDigest}/message_bodies/"
+
         const val MessageBody = "I am a message body"
     }
 }

@@ -43,6 +43,15 @@ class InternalFileStorage @Inject constructor(
         filename = FileHelper.Filename(fileIdentifier.value.asSanitisedPath())
     )
 
+    suspend fun readFromCachedFile(
+        userId: UserId,
+        folder: Folder,
+        fileIdentifier: FileIdentifier
+    ): String? = fileHelper.readFromFile(
+        folder = FileHelper.Folder("${userId.asRootCacheDirectory()}${folder.path}"),
+        filename = FileHelper.Filename(fileIdentifier.value.asSanitisedPath())
+    )
+
 
     suspend fun getFile(
         userId: UserId,
@@ -53,6 +62,14 @@ class InternalFileStorage @Inject constructor(
         filename = FileHelper.Filename(fileIdentifier.value.asSanitisedPath())
     )
 
+    suspend fun getCachedFile(
+        userId: UserId,
+        folder: Folder,
+        fileIdentifier: FileIdentifier
+    ): File? = fileHelper.getFile(
+        folder = FileHelper.Folder("${userId.asRootCacheDirectory()}${folder.path}"),
+        filename = FileHelper.Filename(fileIdentifier.value.asSanitisedPath())
+    )
 
     suspend fun writeToFile(
         userId: UserId,
@@ -61,6 +78,17 @@ class InternalFileStorage @Inject constructor(
         content: String
     ): Boolean = fileHelper.writeToFile(
         folder = FileHelper.Folder("${userId.asRootDirectory()}${folder.path}"),
+        filename = FileHelper.Filename(fileIdentifier.value.asSanitisedPath()),
+        content = content
+    )
+
+    suspend fun writeToCachedFile(
+        userId: UserId,
+        folder: Folder,
+        fileIdentifier: FileIdentifier,
+        content: String
+    ): Boolean = fileHelper.writeToFile(
+        folder = FileHelper.Folder("${userId.asRootCacheDirectory()}${folder.path}"),
         filename = FileHelper.Filename(fileIdentifier.value.asSanitisedPath()),
         content = content
     )
@@ -77,6 +105,16 @@ class InternalFileStorage @Inject constructor(
         content = content
     )
 
+    suspend fun writeCachedFile(
+        userId: UserId,
+        folder: Folder,
+        fileIdentifier: FileIdentifier,
+        content: ByteArray
+    ): File? = fileHelper.writeToFile(
+        folder = FileHelper.Folder("${userId.asRootCacheDirectory()}${folder.path}"),
+        filename = FileHelper.Filename(fileIdentifier.value.asSanitisedPath()),
+        content = content
+    )
 
     suspend fun deleteFile(
         userId: UserId,
@@ -87,12 +125,28 @@ class InternalFileStorage @Inject constructor(
         filename = FileHelper.Filename(fileIdentifier.value.asSanitisedPath())
     )
 
+    suspend fun deleteCachedFile(
+        userId: UserId,
+        folder: Folder,
+        fileIdentifier: FileIdentifier
+    ): Boolean = fileHelper.deleteFile(
+        folder = FileHelper.Folder("${userId.asRootCacheDirectory()}${folder.path}"),
+        filename = FileHelper.Filename(fileIdentifier.value.asSanitisedPath())
+    )
 
     suspend fun deleteFolder(userId: UserId, folder: Folder): Boolean = fileHelper.deleteFolder(
         folder = FileHelper.Folder("${userId.asRootDirectory()}${folder.path}")
     )
 
+    suspend fun deleteCachedFolder(userId: UserId, folder: Folder): Boolean = fileHelper.deleteFolder(
+        folder = FileHelper.Folder("${userId.asRootCacheDirectory()}${folder.path}")
+    )
+
     private suspend fun UserId.asRootDirectory() = withContext(ioDispatcher) {
+        "${applicationContext.filesDir}/${id.asSanitisedPath()}/"
+    }
+
+    private suspend fun UserId.asRootCacheDirectory() = withContext(ioDispatcher) {
         "${applicationContext.cacheDir}/${id.asSanitisedPath()}/"
     }
 
