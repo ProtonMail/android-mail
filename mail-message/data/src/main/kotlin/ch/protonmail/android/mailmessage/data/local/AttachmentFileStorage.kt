@@ -41,6 +41,20 @@ class AttachmentFileStorage @Inject constructor(
         )
     }
 
+    suspend fun saveAttachmentCached(
+        userId: UserId,
+        messageId: String,
+        attachmentId: String,
+        content: ByteArray
+    ): File? {
+        return internalFileStorage.writeCachedFile(
+            userId,
+            InternalFileStorage.Folder.MessageAttachments(messageId),
+            InternalFileStorage.FileIdentifier(attachmentId),
+            content
+        )
+    }
+
     @Throws(AttachmentFileReadException::class)
     suspend fun readAttachment(
         userId: UserId,
@@ -54,8 +68,24 @@ class AttachmentFileStorage @Inject constructor(
         ) ?: throw AttachmentFileReadException
     }
 
+    @Throws(AttachmentFileReadException::class)
+    suspend fun readCachedAttachment(
+        userId: UserId,
+        messageId: String,
+        attachmentId: String
+    ): File {
+        return internalFileStorage.getCachedFile(
+            userId,
+            InternalFileStorage.Folder.MessageAttachments(messageId),
+            InternalFileStorage.FileIdentifier(attachmentId)
+        ) ?: throw AttachmentFileReadException
+    }
+
     suspend fun deleteAttachmentsOfMessage(userId: UserId, messageId: String): Boolean =
         internalFileStorage.deleteFolder(userId, InternalFileStorage.Folder.MessageAttachments(messageId))
+
+    suspend fun deleteCachedAttachmentsOfMessage(userId: UserId, messageId: String): Boolean =
+        internalFileStorage.deleteCachedFolder(userId, InternalFileStorage.Folder.MessageAttachments(messageId))
 }
 
 object AttachmentFileReadException : RuntimeException()

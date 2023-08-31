@@ -62,6 +62,30 @@ internal class AttachmentFileStorageTest {
     }
 
     @Test
+    fun `should save file in cache storage and return file when successful`() = runTest {
+        // Given
+        val file = File("")
+        val userId = UserIdSample.Primary
+        val messageId = MessageIdSample.Invoice.id
+        val attachmentId = "attachmentId"
+        val content = "content".toByteArray()
+        coEvery {
+            internalFileStorageMock.writeCachedFile(
+                userId = userId,
+                folder = InternalFileStorage.Folder.MessageAttachments(messageId),
+                fileIdentifier = InternalFileStorage.FileIdentifier(attachmentId),
+                content = content
+            )
+        } returns file
+
+        // When
+        val result = attachmentFileStorage.saveAttachmentCached(userId, messageId, attachmentId, content)
+
+        // Then
+        assertEquals(file, result)
+    }
+
+    @Test
     fun `should return null when saving file in internal storage fails`() = runTest {
         // Given
         val userId = UserIdSample.Primary
@@ -79,6 +103,29 @@ internal class AttachmentFileStorageTest {
 
         // When
         val result = attachmentFileStorage.saveAttachment(userId, messageId, attachmentId, content)
+
+        // Then
+        assertNull(result)
+    }
+
+    @Test
+    fun `should return null when saving file in cache storage fails`() = runTest {
+        // Given
+        val userId = UserIdSample.Primary
+        val messageId = MessageIdSample.Invoice.id
+        val attachmentId = "attachmentId"
+        val content = "content".toByteArray()
+        coEvery {
+            internalFileStorageMock.writeCachedFile(
+                userId = userId,
+                folder = InternalFileStorage.Folder.MessageAttachments(messageId),
+                fileIdentifier = InternalFileStorage.FileIdentifier(attachmentId),
+                content = content
+            )
+        } returns null
+
+        // When
+        val result = attachmentFileStorage.saveAttachmentCached(userId, messageId, attachmentId, content)
 
         // Then
         assertNull(result)
@@ -107,6 +154,28 @@ internal class AttachmentFileStorageTest {
     }
 
     @Test
+    fun `should read file from cache storage and return file when successful`() = runTest {
+        // Given
+        val file = File("")
+        val userId = UserIdSample.Primary
+        val messageId = MessageIdSample.Invoice.id
+        val attachmentId = "attachmentId"
+        coEvery {
+            internalFileStorageMock.getCachedFile(
+                userId = userId,
+                folder = InternalFileStorage.Folder.MessageAttachments(messageId),
+                fileIdentifier = InternalFileStorage.FileIdentifier(attachmentId)
+            )
+        } returns file
+
+        // When
+        val result = attachmentFileStorage.readCachedAttachment(userId, messageId, attachmentId)
+
+        // Then
+        assertEquals(file, result)
+    }
+
+    @Test
     fun `should throw exception when reading file from internal storage fails`() = runTest {
         // Given
         val userId = UserIdSample.Primary
@@ -124,6 +193,27 @@ internal class AttachmentFileStorageTest {
         assertFailsWith<AttachmentFileReadException> {
             // When
             attachmentFileStorage.readAttachment(userId, messageId, attachmentId)
+        }
+    }
+
+    @Test
+    fun `should throw exception when reading file from cache storage fails`() = runTest {
+        // Given
+        val userId = UserIdSample.Primary
+        val messageId = MessageIdSample.Invoice.id
+        val attachmentId = "attachmentId"
+        coEvery {
+            internalFileStorageMock.getCachedFile(
+                userId = userId,
+                folder = InternalFileStorage.Folder.MessageAttachments(messageId),
+                fileIdentifier = InternalFileStorage.FileIdentifier(attachmentId)
+            )
+        } returns null
+
+        // Then
+        assertFailsWith<AttachmentFileReadException> {
+            // When
+            attachmentFileStorage.readCachedAttachment(userId, messageId, attachmentId)
         }
     }
 
@@ -147,6 +237,26 @@ internal class AttachmentFileStorageTest {
     }
 
     @Test
+    fun `should delete all cached files connected to a message from internal storage and return true on success`() =
+        runTest {
+            // Given
+            val userId = UserIdSample.Primary
+            val messageId = MessageIdSample.Invoice.id
+            coEvery {
+                internalFileStorageMock.deleteCachedFolder(
+                    userId = userId,
+                    folder = InternalFileStorage.Folder.MessageAttachments(messageId)
+                )
+            } returns true
+
+            // When
+            val result = attachmentFileStorage.deleteCachedAttachmentsOfMessage(userId, messageId)
+
+            // Then
+            assertTrue(result)
+        }
+
+    @Test
     fun `should return false when deleting all files connected to a message from internal fails`() = runTest {
         // Given
         val userId = UserIdSample.Primary
@@ -160,6 +270,25 @@ internal class AttachmentFileStorageTest {
 
         // When
         val result = attachmentFileStorage.deleteAttachmentsOfMessage(userId, messageId)
+
+        // Then
+        assertFalse(result)
+    }
+
+    @Test
+    fun `should return false when deleting all cached files connected to a message from internal fails`() = runTest {
+        // Given
+        val userId = UserIdSample.Primary
+        val messageId = MessageIdSample.Invoice.id
+        coEvery {
+            internalFileStorageMock.deleteCachedFolder(
+                userId = userId,
+                folder = InternalFileStorage.Folder.MessageAttachments(messageId)
+            )
+        } returns false
+
+        // When
+        val result = attachmentFileStorage.deleteCachedAttachmentsOfMessage(userId, messageId)
 
         // Then
         assertFalse(result)
