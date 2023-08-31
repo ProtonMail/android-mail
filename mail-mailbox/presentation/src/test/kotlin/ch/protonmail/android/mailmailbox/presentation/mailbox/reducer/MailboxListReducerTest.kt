@@ -24,6 +24,7 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState.Data.SelectionMode.SelectedMailboxItem
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData
@@ -397,14 +398,18 @@ internal class MailboxListReducerTest(
                 operation = MailboxEvent.EnterSelectionMode(MailboxItemUiModelTestData.readMailboxItemUiModel),
                 expectedState = MailboxListState.Data.SelectionMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,
-                    selectedMailboxItems = setOf(MailboxItemUiModelTestData.readMailboxItemUiModel.id),
+                    selectedMailboxItems = setOf(
+                        SelectedMailboxItem(MailboxItemUiModelTestData.readMailboxItemUiModel.id, true)
+                    ),
                     selectionModeEnabled = false
                 )
             ),
             TestInput(
                 currentState = MailboxListState.Data.SelectionMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,
-                    selectedMailboxItems = setOf(MailboxItemUiModelTestData.readMailboxItemUiModel.id),
+                    selectedMailboxItems = setOf(
+                        SelectedMailboxItem(MailboxItemUiModelTestData.unreadMailboxItemUiModel.id, false)
+                    ),
                     selectionModeEnabled = false
                 ),
                 operation = MailboxViewAction.ExitSelectionMode,
@@ -421,7 +426,9 @@ internal class MailboxListReducerTest(
             TestInput(
                 currentState = MailboxListState.Data.SelectionMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,
-                    selectedMailboxItems = setOf(MailboxItemUiModelTestData.readMailboxItemUiModel.id),
+                    selectedMailboxItems = setOf(
+                        SelectedMailboxItem(MailboxItemUiModelTestData.readMailboxItemUiModel.id, false)
+                    ),
                     selectionModeEnabled = false
                 ),
                 operation = MailboxEvent.ItemClicked.ItemAddedToSelection(
@@ -430,8 +437,8 @@ internal class MailboxListReducerTest(
                 expectedState = MailboxListState.Data.SelectionMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,
                     selectedMailboxItems = setOf(
-                        MailboxItemUiModelTestData.readMailboxItemUiModel.id,
-                        MailboxItemUiModelTestData.unreadMailboxItemUiModel.id
+                        SelectedMailboxItem(MailboxItemUiModelTestData.readMailboxItemUiModel.id, false),
+                        SelectedMailboxItem(MailboxItemUiModelTestData.unreadMailboxItemUiModel.id, false)
                     ),
                     selectionModeEnabled = false
                 )
@@ -439,7 +446,9 @@ internal class MailboxListReducerTest(
             TestInput(
                 currentState = MailboxListState.Data.SelectionMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,
-                    selectedMailboxItems = setOf(MailboxItemUiModelTestData.readMailboxItemUiModel.id),
+                    selectedMailboxItems = setOf(
+                        SelectedMailboxItem(MailboxItemUiModelTestData.readMailboxItemUiModel.id, false)
+                    ),
                     selectionModeEnabled = false
                 ),
                 operation = MailboxEvent.ItemClicked.ItemRemovedFromSelection(

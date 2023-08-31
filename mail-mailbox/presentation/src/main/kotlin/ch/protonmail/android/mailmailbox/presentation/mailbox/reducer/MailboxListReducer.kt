@@ -25,6 +25,7 @@ import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState.Data.SelectionMode.SelectedMailboxItem
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import me.proton.core.mailsettings.domain.entity.ViewMode
@@ -170,7 +171,7 @@ class MailboxListReducer @Inject constructor() {
         when (currentState) {
             is MailboxListState.Data.ViewMode -> MailboxListState.Data.SelectionMode(
                 currentMailLabel = currentState.currentMailLabel,
-                selectedMailboxItems = setOf(item.id),
+                selectedMailboxItems = setOf(SelectedMailboxItem(item.id, item.isRead)),
                 selectionModeEnabled = currentState.selectionModeEnabled
             )
 
@@ -207,7 +208,10 @@ class MailboxListReducer @Inject constructor() {
         currentState: MailboxListState
     ) = when (currentState) {
         is MailboxListState.Data.SelectionMode ->
-            currentState.copy(selectedMailboxItems = currentState.selectedMailboxItems + operation.item.id)
+            currentState.copy(
+                selectedMailboxItems = currentState.selectedMailboxItems +
+                    SelectedMailboxItem(operation.item.id, operation.item.isRead)
+            )
 
         else -> currentState
     }
@@ -217,7 +221,11 @@ class MailboxListReducer @Inject constructor() {
         currentState: MailboxListState
     ) = when (currentState) {
         is MailboxListState.Data.SelectionMode ->
-            currentState.copy(selectedMailboxItems = currentState.selectedMailboxItems - operation.item.id)
+            currentState.copy(
+                selectedMailboxItems = currentState.selectedMailboxItems
+                    .filterNot { it.id == operation.item.id }
+                    .toSet()
+            )
 
         else -> currentState
     }

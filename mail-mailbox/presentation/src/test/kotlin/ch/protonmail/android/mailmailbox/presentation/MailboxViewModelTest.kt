@@ -404,7 +404,7 @@ class MailboxViewModelTest {
             // Given
             val item = readMailboxItemUiModel
             val intermediateState = createMailboxDataState()
-            val expectedState = MailboxStateSampleData.createSelectionMode(item)
+            val expectedState = MailboxStateSampleData.createSelectionMode(listOf(item))
             every {
                 mailboxReducer.newStateFrom(any(), MailboxEvent.SelectedLabelCountChanged(5))
             } returns intermediateState
@@ -430,7 +430,7 @@ class MailboxViewModelTest {
             // Given
             val item = readMailboxItemUiModel
             val intermediateState = createMailboxDataState()
-            val expectedState = MailboxStateSampleData.createSelectionMode(item)
+            val expectedState = MailboxStateSampleData.createSelectionMode(listOf(item))
             every {
                 mailboxReducer.newStateFrom(any(), MailboxEvent.SelectedLabelCountChanged(5))
             } returns intermediateState
@@ -461,7 +461,7 @@ class MailboxViewModelTest {
         // Given
         val item = readMailboxItemUiModel
         val intermediateState = createMailboxDataState()
-        val expectedState = MailboxStateSampleData.createSelectionMode(item)
+        val expectedState = MailboxStateSampleData.createSelectionMode(listOf(item))
         every {
             mailboxReducer.newStateFrom(any(), MailboxEvent.SelectedLabelCountChanged(5))
         } returns intermediateState
@@ -490,8 +490,8 @@ class MailboxViewModelTest {
         val item = readMailboxItemUiModel
         val secondItem = unreadMailboxItemUiModel
         val initialState = createMailboxDataState()
-        val intermediateState = MailboxStateSampleData.createSelectionMode(item)
-        val expectedState = MailboxStateSampleData.createSelectionMode(item, secondItem)
+        val intermediateState = MailboxStateSampleData.createSelectionMode(listOf(item))
+        val expectedState = MailboxStateSampleData.createSelectionMode(listOf(item, secondItem))
         every {
             mailboxReducer.newStateFrom(any(), MailboxEvent.SelectedLabelCountChanged(5))
         } returns initialState
@@ -538,7 +538,7 @@ class MailboxViewModelTest {
             // Given
             val item = readMailboxItemUiModel
             val initialState = createMailboxDataState()
-            val intermediateState = MailboxStateSampleData.createSelectionMode(item)
+            val intermediateState = MailboxStateSampleData.createSelectionMode(listOf(item))
             every {
                 mailboxReducer.newStateFrom(any(), MailboxEvent.SelectedLabelCountChanged(5))
             } returns initialState
@@ -586,8 +586,8 @@ class MailboxViewModelTest {
             val item = readMailboxItemUiModel
             val secondItem = unreadMailboxItemUiModel
             val initialState = createMailboxDataState()
-            val intermediateState = MailboxStateSampleData.createSelectionMode(item, secondItem)
-            val expectedState = MailboxStateSampleData.createSelectionMode(secondItem)
+            val intermediateState = MailboxStateSampleData.createSelectionMode(listOf(item, secondItem))
+            val expectedState = MailboxStateSampleData.createSelectionMode(listOf(secondItem))
             every {
                 mailboxReducer.newStateFrom(any(), MailboxEvent.SelectedLabelCountChanged(5))
             } returns initialState

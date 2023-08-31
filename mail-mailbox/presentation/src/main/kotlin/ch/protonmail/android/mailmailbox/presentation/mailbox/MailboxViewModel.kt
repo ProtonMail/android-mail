@@ -209,7 +209,7 @@ class MailboxViewModel @Inject constructor(
             return
         }
 
-        val event = if (selectionMode.selectedMailboxItems.contains(item.id)) {
+        val event = if (selectionMode.selectedMailboxItems.any { it.id == item.id }) {
             if (selectionMode.selectedMailboxItems.size == 1) {
                 MailboxViewAction.ExitSelectionMode
             } else {

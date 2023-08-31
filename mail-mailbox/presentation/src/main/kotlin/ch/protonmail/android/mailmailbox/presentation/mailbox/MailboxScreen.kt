@@ -364,7 +364,7 @@ private fun MailboxItemsList(
                     selectionMode = state is MailboxListState.Data.SelectionMode,
                     // See doc 0014
                     isSelected = when (state) {
-                        is MailboxListState.Data.SelectionMode -> state.selectedMailboxItems.contains(item.id)
+                        is MailboxListState.Data.SelectionMode -> state.selectedMailboxItems.any { it.id == item.id }
                         else -> false
                     }
                 )

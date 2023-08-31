@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata
 
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.sample.ActionUiModelSample
 import ch.protonmail.android.maillabel.domain.model.MailLabel
@@ -26,6 +27,7 @@ import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.text
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState.Data.SelectionMode.SelectedMailboxItem
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
@@ -83,22 +85,26 @@ object MailboxStateSampleData {
         )
     )
 
-    fun createSelectionMode(vararg selectedMailboxItemUiModel: MailboxItemUiModel) = MailboxState(
+    fun createSelectionMode(
+        selectedMailboxItemUiModels: List<MailboxItemUiModel>,
+        bottomBarAction: List<ActionUiModel> = listOf(ActionUiModelSample.Archive),
+        currentMailLabel: MailLabel = MailLabel.System(MailLabelId.System.Inbox)
+    ) = MailboxState(
         mailboxListState = MailboxListState.Data.SelectionMode(
-            currentMailLabel = MailLabel.System(MailLabelId.System.Inbox),
+            currentMailLabel = currentMailLabel,
             selectionModeEnabled = true,
-            selectedMailboxItems = selectedMailboxItemUiModel.map { it.id }.toSet()
+            selectedMailboxItems = selectedMailboxItemUiModels.map { SelectedMailboxItem(it.id, it.isRead) }.toSet()
         ),
         topAppBarState = MailboxTopAppBarState.Data.SelectionMode(
             currentLabelName = MailLabel.System(MailLabelId.System.Inbox).text(),
-            selectedCount = selectedMailboxItemUiModel.size
+            selectedCount = selectedMailboxItemUiModels.size
         ),
         unreadFilterState = UnreadFilterState.Data(
             isFilterEnabled = false,
             numUnread = 1
         ),
         bottomAppBarState = BottomBarState.Data.Hidden(
-            actions = listOf(ActionUiModelSample.Archive)
+            actions = bottomBarAction
         )
     )
 }
