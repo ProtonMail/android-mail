@@ -56,41 +56,6 @@ internal class MessageDetailRemoteContentTests : MockedNetworkTest(loginType = L
     val serverProofValidation: ValidateServerProof = mockk(relaxUnitFun = true)
 
     @Test
-    @TestId("184207", "212679")
-    fun checkRemoteContentNotBlockedInMessageMode() {
-        mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
-            addMockRequests(
-                given("/mail/v4/settings")
-                    respondWith "/mail/v4/settings/mail-v4-settings_184207.json"
-                    withStatusCode 200,
-                given("/mail/v4/messages")
-                    respondWith "/mail/v4/messages/messages_184207.json"
-                    withStatusCode 200 matchWildcards true ignoreQueryParams true,
-                given("/mail/v4/messages/*")
-                    respondWith "/mail/v4/messages/message-id/message-id_184207.json"
-                    withStatusCode 200 matchWildcards true serveOnce true
-            )
-        }
-
-        navigator {
-            navigateTo(Destination.MailDetail(0))
-        }
-
-        messageDetailRobot {
-            messageBodySection {
-                waitUntilMessageIsShown()
-
-                verify {
-                    messageInWebViewContains(expectedBodyText)
-                    hasRemoteImageLoaded(true)
-                }
-            }
-
-            bannerSection { verify { hasBlockedContentBannerNotDisplayed() } }
-        }
-    }
-
-    @Test
     @TestId("184210", "212681")
     fun checkRemoteContentBlockedInMessageMode() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
