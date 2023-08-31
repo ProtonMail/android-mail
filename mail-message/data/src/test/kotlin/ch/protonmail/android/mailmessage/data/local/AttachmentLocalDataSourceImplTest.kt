@@ -298,7 +298,7 @@ class AttachmentLocalDataSourceImplTest {
         // Given
         @Suppress("BlockingMethodInNonBlockingContext")
         val file = File.createTempFile("test", "test")
-        coEvery { attachmentFileStorage.readAttachment(userId, messageId.id, attachmentId.id) } returns file
+        coEvery { attachmentFileStorage.readCachedAttachment(userId, messageId.id, attachmentId.id) } returns file
         val expected = file.right()
 
         // When
@@ -312,7 +312,7 @@ class AttachmentLocalDataSourceImplTest {
     fun `should return local error when getting embedded image call has failed`() = runTest {
         // Given
         coEvery {
-            attachmentFileStorage.readAttachment(userId, messageId.id, attachmentId.id)
+            attachmentFileStorage.readCachedAttachment(userId, messageId.id, attachmentId.id)
         } throws AttachmentFileReadException
         val expected = DataError.Local.NoDataCached.left()
 
@@ -329,12 +329,14 @@ class AttachmentLocalDataSourceImplTest {
         @Suppress("BlockingMethodInNonBlockingContext")
         val file = File.createTempFile("test", "test")
         val byteArray = file.readBytes()
-        coEvery { attachmentFileStorage.saveAttachment(userId, messageId.id, attachmentId.id, byteArray) } returns file
+        coEvery {
+            attachmentFileStorage.saveAttachmentCached(userId, messageId.id, attachmentId.id, byteArray)
+        } returns file
 
         // When
         attachmentLocalDataSource.storeEmbeddedImage(userId, messageId, attachmentId, byteArray)
 
         // Then
-        coVerify { attachmentFileStorage.saveAttachment(userId, messageId.id, attachmentId.id, byteArray) }
+        coVerify { attachmentFileStorage.saveAttachmentCached(userId, messageId.id, attachmentId.id, byteArray) }
     }
 }

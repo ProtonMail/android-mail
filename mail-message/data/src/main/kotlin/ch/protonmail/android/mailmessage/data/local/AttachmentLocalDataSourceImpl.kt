@@ -89,7 +89,7 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
         attachmentId: AttachmentId
     ): Either<DataError.Local, File> {
         return runCatching {
-            attachmentFileStorage.readAttachment(userId, messageId.id, attachmentId.id)
+            attachmentFileStorage.readCachedAttachment(userId, messageId.id, attachmentId.id)
         }.fold(
             onSuccess = { it.right() },
             onFailure = { DataError.Local.NoDataCached.left() }
@@ -166,7 +166,14 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
         attachmentId: AttachmentId,
         encryptedAttachment: ByteArray
     ) {
-        runCatching { attachmentFileStorage.saveAttachment(userId, messageId.id, attachmentId.id, encryptedAttachment) }
+        runCatching {
+            attachmentFileStorage.saveAttachmentCached(
+                userId = userId,
+                messageId = messageId.id,
+                attachmentId = attachmentId.id,
+                content = encryptedAttachment
+            )
+        }
             .onFailure { Timber.d("Failed to store attachment: $attachmentId") }
     }
 
