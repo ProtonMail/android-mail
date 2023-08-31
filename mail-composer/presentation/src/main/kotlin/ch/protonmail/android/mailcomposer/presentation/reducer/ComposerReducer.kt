@@ -47,6 +47,8 @@ class ComposerReducer @Inject constructor() {
         is ComposerAction.RecipientsToChanged -> updateRecipientsTo(currentState, this.recipients)
         is ComposerAction.DraftBodyChanged -> updateDraftBodyTo(currentState, this.draftBody)
         is ComposerAction.SubjectChanged -> updateSubjectTo(currentState, this.subject)
+        is ComposerAction.OnBottomSheetOptionSelected -> updateBottomSheetVisibility(currentState, false)
+        is ComposerAction.OnAddAttachments -> updateBottomSheetVisibility(currentState, true)
         is ComposerAction.OnCloseComposer -> updateCloseComposerState(currentState, false)
         is ComposerAction.ChangeSenderRequested -> currentState
     }
@@ -87,6 +89,9 @@ class ComposerReducer @Inject constructor() {
             fields = currentState.fields.copy(draftId = apiAssignedMessageId)
         )
     }
+
+    private fun updateBottomSheetVisibility(currentState: ComposerDraftState, bottomSheetVisibility: Boolean) =
+        currentState.copy(changeBottomSheetVisibility = Effect.of(bottomSheetVisibility))
 
     private fun updateComposerFieldsState(currentState: ComposerDraftState, draftFields: DraftFields) =
         currentState.copy(

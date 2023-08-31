@@ -467,6 +467,24 @@ class ComposerReducerTest(
             )
         )
 
+        private val EmptyToBottomSheetOpened = TestTransition(
+            name = "Should open the bottom sheet when add attachments action is chosen",
+            currentState = ComposerDraftState.initial(messageId),
+            operation = ComposerAction.OnAddAttachments,
+            expectedState = ComposerDraftState.initial(messageId).copy(
+                changeBottomSheetVisibility = Effect.of(true)
+            )
+        )
+
+        private val EmptyToBottomSheetClosed = TestTransition(
+            name = "Should close the bottom sheet when a bottom sheet option has been chosen",
+            currentState = ComposerDraftState.initial(messageId),
+            operation = ComposerAction.OnBottomSheetOptionSelected,
+            expectedState = ComposerDraftState.initial(messageId).copy(
+                changeBottomSheetVisibility = Effect.of(false)
+            )
+        )
+
         private val transitions = listOf(
             EmptyToSubmittableToField,
             EmptyToNotSubmittableToField,
@@ -496,7 +514,9 @@ class ComposerReducerTest(
             EmptyToLoadingWithOpenExistingDraft,
             LoadingToFieldsWhenReceivedDraftData,
             LoadingToErrorWhenErrorLoadingDraftData,
-            EmptyToUpdatedMessageIdOnApiAssignedId
+            EmptyToUpdatedMessageIdOnApiAssignedId,
+            EmptyToBottomSheetOpened,
+            EmptyToBottomSheetClosed
         )
 
         private fun aSubmittableState(

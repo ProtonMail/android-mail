@@ -33,7 +33,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -54,7 +53,6 @@ import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.Subject
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
 import ch.protonmail.android.mailcomposer.presentation.viewmodel.ComposerViewModel
-import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonModalBottomSheetLayout
 import me.proton.core.compose.component.ProtonSnackbarHost
@@ -69,7 +67,6 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
     val view = LocalView.current
     val keyboardController = LocalSoftwareKeyboardController.current
     val state by viewModel.state.collectAsState()
-    val scope = rememberCoroutineScope()
     var recipientsOpen by rememberSaveable { mutableStateOf(false) }
     var focusedField by rememberSaveable { mutableStateOf(FocusedFieldType.TO) }
     val snackbarHostState = remember { ProtonSnackbarHostState() }
@@ -81,8 +78,8 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
             when (bottomSheetType.value) {
                 BottomSheetType.AddAttachments -> AddAttachmentsBottomSheetContent(
                     onImportFromSelected = {
-                        actions.onAddAttachments()
-                        scope.launch { bottomSheetState.hide() }
+                        viewModel.submit(ComposerAction.OnBottomSheetOptionSelected)
+                        actions.onImportAttachmentsFrom()
                     }
                 )
                 BottomSheetType.ChangeSender -> ChangeSenderBottomSheetContent(
@@ -102,9 +99,8 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
                 ComposerTopBar(
                     isAddAttachmentsButtonVisible = state.isAddAttachmentsButtonVisible,
                     onAddAttachmentsClick = {
-                        dismissKeyboard(context, view, keyboardController)
                         bottomSheetType.value = BottomSheetType.AddAttachments
-                        scope.launch { bottomSheetState.show() }
+                        viewModel.submit(ComposerAction.OnAddAttachments)
                     },
                     onCloseComposerClick = {
                         viewModel.submit(ComposerAction.OnCloseComposer)
@@ -197,14 +193,14 @@ object ComposerScreen {
     const val DraftMessageIdKey = "draft_message_id"
 
     data class Actions(
-        val onAddAttachments: () -> Unit,
+        val onImportAttachmentsFrom: () -> Unit,
         val onCloseComposerClick: () -> Unit,
         val showDraftSavedSnackbar: () -> Unit
     ) {
         companion object {
 
             val Empty = Actions(
-                onAddAttachments = {},
+                onImportAttachmentsFrom = {},
                 onCloseComposerClick = {},
                 showDraftSavedSnackbar = {}
             )

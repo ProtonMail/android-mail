@@ -154,6 +154,8 @@ class ComposerViewModel @Inject constructor(
                     is ComposerAction.RecipientsToChanged -> emitNewStateFor(onToChanged(action))
                     is ComposerAction.RecipientsCcChanged -> emitNewStateFor(onCcChanged(action))
                     is ComposerAction.RecipientsBccChanged -> emitNewStateFor(onBccChanged(action))
+                    is ComposerAction.OnBottomSheetOptionSelected -> emitNewStateFor(action)
+                    is ComposerAction.OnAddAttachments -> emitNewStateFor(action)
                     is ComposerAction.OnCloseComposer -> emitNewStateFor(onCloseComposer(action))
                 }
                 composerIdlingResource.decrement()

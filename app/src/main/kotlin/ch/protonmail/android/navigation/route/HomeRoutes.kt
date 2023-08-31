@@ -135,7 +135,7 @@ internal fun NavGraphBuilder.addComposer(
     composable(route = Destination.Screen.Composer.route) {
         ComposerScreen(
             ComposerScreen.Actions(
-                onAddAttachments = onAddAttachments,
+                onImportAttachmentsFrom = onAddAttachments,
                 onCloseComposerClick = navController::popBackStack,
                 showDraftSavedSnackbar = showDraftSavedSnackbar
             )
@@ -144,7 +144,7 @@ internal fun NavGraphBuilder.addComposer(
     composable(route = Destination.Screen.PrefilledComposer.route) {
         ComposerScreen(
             ComposerScreen.Actions(
-                onAddAttachments = onAddAttachments,
+                onImportAttachmentsFrom = onAddAttachments,
                 onCloseComposerClick = navController::popBackStack,
                 showDraftSavedSnackbar = showDraftSavedSnackbar
             )

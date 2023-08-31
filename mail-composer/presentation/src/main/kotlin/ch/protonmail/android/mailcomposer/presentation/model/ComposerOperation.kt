@@ -34,6 +34,8 @@ internal sealed interface ComposerAction : ComposerOperation {
     data class DraftBodyChanged(val draftBody: DraftBody) : ComposerAction
 
     object ChangeSenderRequested : ComposerAction
+    object OnBottomSheetOptionSelected : ComposerAction
+    object OnAddAttachments : ComposerAction
     object OnCloseComposer : ComposerAction
 }
 
