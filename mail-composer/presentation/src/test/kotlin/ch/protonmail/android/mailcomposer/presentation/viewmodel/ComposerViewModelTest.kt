@@ -853,7 +853,10 @@ class ComposerViewModelTest {
         // Given
         val expectedUserId = expectedUserId { UserIdSample.Primary }
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
-        expectInputDraftMessageId { MessageIdSample.RemoteDraft }
+        val expectedDraftId = expectInputDraftMessageId { MessageIdSample.RemoteDraft }
+        expectDecryptedDraftDataSuccess(expectedUserId, expectedDraftId) { existingDraftFields }
+        expectStartDraftSync(expectedUserId, expectedDraftId)
+        expectObserveMailFeature(expectedUserId) { emptyFlow() }
 
         // When
         viewModel.submit(ComposerAction.OnAddAttachments)
@@ -868,7 +871,10 @@ class ComposerViewModelTest {
         // Given
         val expectedUserId = expectedUserId { UserIdSample.Primary }
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
-        expectInputDraftMessageId { MessageIdSample.RemoteDraft }
+        val expectedDraftId = expectInputDraftMessageId { MessageIdSample.RemoteDraft }
+        expectDecryptedDraftDataSuccess(expectedUserId, expectedDraftId) { existingDraftFields }
+        expectStartDraftSync(expectedUserId, expectedDraftId)
+        expectObserveMailFeature(expectedUserId) { emptyFlow() }
 
         // When
         viewModel.submit(ComposerAction.OnBottomSheetOptionSelected)
