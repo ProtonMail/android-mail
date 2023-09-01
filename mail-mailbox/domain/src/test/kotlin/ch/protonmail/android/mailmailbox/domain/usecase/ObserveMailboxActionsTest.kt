@@ -28,7 +28,7 @@ import kotlin.test.assertEquals
 
 class ObserveMailboxActionsTest {
 
-    private val observeMailboxActions = ObserveMailboxActions()
+    private val observeMailboxActions = GetMailboxActions()
 
     @Test
     fun `returns default actions for non-trash or non-spam labels`() = runTest {

@@ -27,7 +27,7 @@ import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxBottomBarDefaults
 import javax.inject.Inject
 
-class ObserveMailboxActions @Inject constructor() {
+class GetMailboxActions @Inject constructor() {
 
     suspend operator fun invoke(currentMailLabel: MailLabel): Either<DataError, List<Action>> {
         return either {

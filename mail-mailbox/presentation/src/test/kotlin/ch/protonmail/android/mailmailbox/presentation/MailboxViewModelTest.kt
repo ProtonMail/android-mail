@@ -45,7 +45,7 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Conversati
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Message
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
-import ch.protonmail.android.mailmailbox.domain.usecase.ObserveMailboxActions
+import ch.protonmail.android.mailmailbox.domain.usecase.GetMailboxActions
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
 import ch.protonmail.android.mailmailbox.presentation.helper.MailboxAsyncPagingDataDiffer
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxViewModel
@@ -155,7 +155,7 @@ class MailboxViewModelTest {
         every { this@mockk(any(), any()) } returns flowOf()
     }
 
-    private val observeMailboxActions = mockk<ObserveMailboxActions> {
+    private val observeMailboxActions = mockk<GetMailboxActions> {
         coEvery { this@mockk(any()) } returns listOf(Action.Archive, Action.Trash).right()
     }
 
@@ -168,7 +168,7 @@ class MailboxViewModelTest {
             selectedMailLabelId = selectedMailLabelId,
             observeUnreadCounters = observeUnreadCounters,
             observeFolderColorSettings = observeFolderColorSettings,
-            observeMailboxActions = observeMailboxActions,
+            getMailboxActions = observeMailboxActions,
             actionUiModelMapper = actionUiModelMapper,
             mailboxItemMapper = mailboxItemMapper,
             getContacts = getContacts,

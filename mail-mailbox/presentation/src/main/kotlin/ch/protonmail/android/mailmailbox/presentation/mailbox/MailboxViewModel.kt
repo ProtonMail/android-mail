@@ -42,7 +42,7 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
 import ch.protonmail.android.mailmailbox.domain.model.UnreadCounter
 import ch.protonmail.android.mailmailbox.domain.model.toMailboxItemType
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
-import ch.protonmail.android.mailmailbox.domain.usecase.ObserveMailboxActions
+import ch.protonmail.android.mailmailbox.domain.usecase.GetMailboxActions
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
 import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.MailboxItemUiModelMapper
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
@@ -91,7 +91,7 @@ class MailboxViewModel @Inject constructor(
     private val selectedMailLabelId: SelectedMailLabelId,
     private val observeUnreadCounters: ObserveUnreadCounters,
     private val observeFolderColorSettings: ObserveFolderColorSettings,
-    private val observeMailboxActions: ObserveMailboxActions,
+    private val getMailboxActions: GetMailboxActions,
     private val actionUiModelMapper: ActionUiModelMapper,
     private val mailboxItemMapper: MailboxItemUiModelMapper,
     private val getContacts: GetContacts,
@@ -117,7 +117,7 @@ class MailboxViewModel @Inject constructor(
             .onEach { (currentMailLabel, currentLabelCount) ->
                 emitNewStateFrom(MailboxEvent.NewLabelSelected(currentMailLabel, currentLabelCount))
             }
-            .map { observeMailboxActions(it.first) }
+            .map { getMailboxActions(it.first) }
             .onEach {
                 val operation = it.fold(
                     ifLeft = { MailboxEvent.MessageBottomBarEvent(BottomBarEvent.ErrorLoadingActions) },
