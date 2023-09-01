@@ -151,7 +151,7 @@ object Versions {
 
     object Proton {
 
-        const val core = "15.0.0"
+        const val core = "15.1.0"
         const val corePlugin = "1.1.1"
     }
 
