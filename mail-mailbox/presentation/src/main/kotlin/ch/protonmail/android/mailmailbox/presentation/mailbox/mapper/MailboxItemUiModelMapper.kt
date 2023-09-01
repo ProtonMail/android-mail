@@ -79,7 +79,8 @@ class MailboxItemUiModelMapper @Inject constructor(
             shouldShowAttachmentIcon = mailboxItem.hasNonCalendarAttachments,
             shouldShowExpirationLabel = hasExpirationTime(mailboxItem),
             shouldShowCalendarIcon = hasCalendarAttachment(mailboxItem),
-            shouldOpenInComposer = mailboxItem.labelIds.contains(SystemLabelId.AllDrafts.labelId)
+            shouldOpenInComposer = mailboxItem.labelIds.contains(SystemLabelId.AllDrafts.labelId) &&
+                mailboxItem.type == MailboxItemType.Message
         )
     }
 
@@ -135,6 +136,7 @@ class MailboxItemUiModelMapper @Inject constructor(
                 is ParticipantsResolvedNamesResult.Recipients -> ParticipantsUiModel.NoParticipants(
                     TextUiModel(R.string.mailbox_default_recipient)
                 )
+
                 is ParticipantsResolvedNamesResult.Senders -> ParticipantsUiModel.NoParticipants(
                     TextUiModel(R.string.mailbox_default_sender)
                 )
