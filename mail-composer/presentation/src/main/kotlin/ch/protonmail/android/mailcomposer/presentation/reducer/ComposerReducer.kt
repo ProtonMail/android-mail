@@ -41,6 +41,7 @@ class ComposerReducer @Inject constructor() {
         }
 
     private fun ComposerAction.newStateForAction(currentState: ComposerDraftState) = when (this) {
+        is ComposerAction.AttachmentsAdded -> currentState
         is ComposerAction.SenderChanged -> updateSenderTo(currentState, this.sender)
         is ComposerAction.RecipientsBccChanged -> updateRecipientsBcc(currentState, this.recipients)
         is ComposerAction.RecipientsCcChanged -> updateRecipientsCc(currentState, this.recipients)

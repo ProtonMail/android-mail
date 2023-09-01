@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.navigation
 
+import android.net.Uri
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -26,14 +27,16 @@ import javax.inject.Inject
 class AddAttachmentsOrchestrator @Inject constructor() {
 
     private var launcher: ActivityResultLauncher<String>? = null
+    private var onActivityResult: (List<Uri>) -> Unit = {}
 
     fun register(caller: AppCompatActivity) {
         launcher = caller.registerForActivityResult(ActivityResultContracts.GetMultipleContents()) {
-            // Coming soon: Handle saving/uploading of attachments here
+            onActivityResult(it)
         }
     }
 
-    fun openFilePicker() {
+    fun openFilePicker(onActivityResult: (List<Uri>) -> Unit) {
+        this.onActivityResult = onActivityResult
         launcher?.launch(MIME_TYPE)
     }
 

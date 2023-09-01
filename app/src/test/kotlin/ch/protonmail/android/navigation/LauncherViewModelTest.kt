@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.navigation
 
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import app.cash.turbine.test
 import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator
@@ -439,11 +440,14 @@ class LauncherViewModelTest {
 
     @Test
     fun `when add attachments action is submitted then file picker is opened`() {
+        // Given
+        val onActivityResult: (List<Uri>) -> Unit = {}
+
         // When
-        viewModel.submit(LauncherViewModel.Action.AddAttachments)
+        viewModel.submit(LauncherViewModel.Action.AddAttachments(onActivityResult))
 
         // Then
-        verify { addAttachmentsOrchestrator.openFilePicker() }
+        verify { addAttachmentsOrchestrator.openFilePicker(onActivityResult) }
     }
 
     private fun buildViewModel() = LauncherViewModel(

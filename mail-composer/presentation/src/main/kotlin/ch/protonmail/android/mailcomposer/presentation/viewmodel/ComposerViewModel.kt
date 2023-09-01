@@ -151,6 +151,7 @@ class ComposerViewModel @Inject constructor(
             actionMutex.withLock {
                 composerIdlingResource.increment()
                 when (action) {
+                    is ComposerAction.AttachmentsAdded -> onAttachmentsAdded(action)
                     is ComposerAction.DraftBodyChanged -> emitNewStateFor(onDraftBodyChanged(action))
                     is ComposerAction.SenderChanged -> emitNewStateFor(onSenderChanged(action))
                     is ComposerAction.SubjectChanged -> emitNewStateFor(onSubjectChanged(action))
@@ -169,6 +170,10 @@ class ComposerViewModel @Inject constructor(
     }
 
     fun validateEmailAddress(emailAddress: String): Boolean = isValidEmailAddress(emailAddress)
+
+    private fun onAttachmentsAdded(action: ComposerAction.AttachmentsAdded) {
+        Timber.d("Attachments added: ${action.uriList}")
+    }
 
     private suspend fun onCloseComposer(action: ComposerAction.OnCloseComposer): ComposerOperation {
         val draftFields = buildDraftFields()

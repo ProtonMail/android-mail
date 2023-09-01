@@ -129,7 +129,7 @@ internal fun NavGraphBuilder.addMessageDetail(
 
 internal fun NavGraphBuilder.addComposer(
     navController: NavHostController,
-    onAddAttachments: () -> Unit,
+    onAddAttachments: ((List<Uri>) -> Unit) -> Unit,
     showDraftSavedSnackbar: () -> Unit,
     showMessageSendingSnackbar: () -> Unit,
     showMessageSendingOfflineSnackbar: () -> Unit

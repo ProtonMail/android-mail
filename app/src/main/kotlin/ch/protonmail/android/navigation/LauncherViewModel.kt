@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.navigation
 
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
@@ -117,11 +118,11 @@ class LauncherViewModel @Inject constructor(
         viewModelScope.launch {
             when (action) {
                 Action.AddAccount -> onAddAccount()
-                Action.AddAttachments -> onAddAttachments()
                 Action.OpenPasswordManagement -> onOpenPasswordManagement()
                 Action.OpenRecoveryEmail -> onOpenRecoveryEmail()
                 Action.OpenReport -> onOpenReport()
                 Action.OpenSubscription -> onOpenSubscription()
+                is Action.AddAttachments -> onAddAttachments(action.handleActivityResult)
                 is Action.Remove -> onRemove(action.userId)
                 is Action.SignIn -> onSignIn(action.userId)
                 is Action.SignOut -> onSignOut(action.userId)
@@ -138,8 +139,8 @@ class LauncherViewModel @Inject constructor(
         )
     }
 
-    private fun onAddAttachments() {
-        addAttachmentsOrchestrator.openFilePicker()
+    private fun onAddAttachments(handleActivityResult: (List<Uri>) -> Unit) {
+        addAttachmentsOrchestrator.openFilePicker(handleActivityResult)
     }
 
     private suspend fun onOpenPasswordManagement() {
@@ -191,11 +192,11 @@ class LauncherViewModel @Inject constructor(
     sealed interface Action {
 
         object AddAccount : Action
-        object AddAttachments : Action
         object OpenPasswordManagement : Action
         object OpenRecoveryEmail : Action
         object OpenReport : Action
         object OpenSubscription : Action
+        data class AddAttachments(val handleActivityResult: (List<Uri>) -> Unit) : Action
         data class Remove(val userId: UserId) : Action
         data class SignIn(val userId: UserId?) : Action
         data class SignOut(val userId: UserId?) : Action

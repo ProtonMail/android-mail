@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcomposer.presentation.ui
 
+import android.net.Uri
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -80,7 +81,7 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
                 BottomSheetType.AddAttachments -> AddAttachmentsBottomSheetContent(
                     onImportFromSelected = {
                         viewModel.submit(ComposerAction.OnBottomSheetOptionSelected)
-                        actions.onImportAttachmentsFrom()
+                        actions.onImportAttachmentsFrom { viewModel.submit(ComposerAction.AttachmentsAdded(it)) }
                     }
                 )
                 BottomSheetType.ChangeSender -> ChangeSenderBottomSheetContent(
@@ -210,7 +211,7 @@ object ComposerScreen {
     const val DraftMessageIdKey = "draft_message_id"
 
     data class Actions(
-        val onImportAttachmentsFrom: () -> Unit,
+        val onImportAttachmentsFrom: ((List<Uri>) -> Unit) -> Unit,
         val onCloseComposerClick: () -> Unit,
         val showDraftSavedSnackbar: () -> Unit,
         val showMessageSendingSnackbar: () -> Unit,

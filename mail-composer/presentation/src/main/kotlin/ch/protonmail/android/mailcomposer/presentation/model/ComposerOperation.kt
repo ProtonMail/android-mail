@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcomposer.presentation.model
 
+import android.net.Uri
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
 import ch.protonmail.android.mailcomposer.domain.model.Subject
@@ -26,6 +27,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 sealed interface ComposerOperation
 
 internal sealed interface ComposerAction : ComposerOperation {
+    data class AttachmentsAdded(val uriList: List<Uri>) : ComposerAction
     data class SenderChanged(val sender: SenderUiModel) : ComposerAction
     data class RecipientsToChanged(val recipients: List<RecipientUiModel>) : ComposerAction
     data class RecipientsCcChanged(val recipients: List<RecipientUiModel>) : ComposerAction
