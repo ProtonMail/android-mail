@@ -49,14 +49,11 @@ import ch.protonmail.android.mailcommon.presentation.usecase.GetInitial
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
-import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
-import ch.protonmail.android.mailmessage.domain.model.GetDecryptedMessageBodyError
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.maildetail.domain.usecase.DoesMessageBodyHaveEmbeddedImages
 import ch.protonmail.android.maildetail.domain.usecase.DoesMessageBodyHaveRemoteContent
 import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
-import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.usecase.GetDownloadingAttachmentsForMessages
 import ch.protonmail.android.maildetail.domain.usecase.GetEmbeddedImageResult
 import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
@@ -110,9 +107,12 @@ import ch.protonmail.android.maillabel.domain.usecase.ObserveCustomMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinationMailLabels
 import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelSample
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
+import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
+import ch.protonmail.android.mailmessage.domain.model.GetDecryptedMessageBodyError
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MimeType
+import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
@@ -128,12 +128,10 @@ import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.unmockkStatic
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -562,29 +560,27 @@ class ConversationDetailViewModelIntegrationTest {
 
         val viewModel = buildConversationDetailViewModel()
 
-        launch(start = CoroutineStart.UNDISPATCHED) {
-            viewModel.state.test {
-                skipItems(3)
-
-                // then
-                val expandingState = awaitItem()
-                val expandingMessage = (expandingState.messagesState as ConversationDetailsMessagesState.Data)
-                    .messages
-                    .first { it.messageId == expectedExpanded.message.messageId }
-                assertIs<Expanding>(expandingMessage)
-
-                val expandedState = awaitItem()
-                println(expandedState)
-                val expandedMessage = (expandedState.messagesState as ConversationDetailsMessagesState.Data)
-                    .messages
-                    .first { it.messageId == expectedExpanded.message.messageId }
-                assertIs<Expanded>(expandedMessage)
-                cancelAndIgnoreRemainingEvents()
-            }
-        }
-
         // when
         viewModel.submit(ExpandMessage(expectedExpanded.message.messageId))
+
+        viewModel.state.test {
+            skipItems(3)
+
+            // then
+            val expandingState = awaitItem()
+            val expandingMessage = (expandingState.messagesState as ConversationDetailsMessagesState.Data)
+                .messages
+                .first { it.messageId == expectedExpanded.message.messageId }
+            assertIs<Expanding>(expandingMessage)
+
+            val expandedState = awaitItem()
+            println(expandedState)
+            val expandedMessage = (expandedState.messagesState as ConversationDetailsMessagesState.Data)
+                .messages
+                .first { it.messageId == expectedExpanded.message.messageId }
+            assertIs<Expanded>(expandedMessage)
+            cancelAndIgnoreRemainingEvents()
+        }
     }
 
     @Test
