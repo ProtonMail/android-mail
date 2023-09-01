@@ -24,6 +24,7 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.platform.app.InstrumentationRegistry
 import ch.protonmail.android.MainActivity
 import ch.protonmail.android.test.BuildConfig
+import ch.protonmail.android.uitest.rule.GrantNotificationsPermissionRule
 import ch.protonmail.android.uitest.rule.HiltInjectRule
 import ch.protonmail.android.uitest.rule.MainInitializerRule
 import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
@@ -49,7 +50,7 @@ import javax.inject.Inject
  * If using orchestrator with `clearPackageData` option this might be redundant (might still be
  * beneficial as it doesn't leave open sessions but doesn't impact the test itself)
  */
-open class BaseTest(
+internal open class BaseTest(
     private val logoutUsersOnTearDown: Boolean = true
 ) {
 
@@ -64,6 +65,9 @@ open class BaseTest(
 
     @get:Rule(order = RuleOrder_30_ActivityLaunch)
     val composeTestRule: ComposeTestRule = ComposeTestRuleHolder.createAndGetComposeRule()
+
+    @get:Rule(order = RuleOrder_40_NotificationPermissions)
+    val grantNotificationsPermissionRule = GrantNotificationsPermissionRule()
 
     @Inject
     lateinit var loginTestHelper: LoginTestHelper
@@ -109,6 +113,7 @@ open class BaseTest(
         const val RuleOrder_21_Injected = 21
         const val RuleOrder_30_ActivityLaunch = 30
         const val RuleOrder_31_ActivityLaunched = 31
+        const val RuleOrder_40_NotificationPermissions = 40
         const val RuleOrder_99_Last = 99
 
         private val context: Context

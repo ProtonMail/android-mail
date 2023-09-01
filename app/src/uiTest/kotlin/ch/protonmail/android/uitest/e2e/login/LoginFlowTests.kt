@@ -39,7 +39,7 @@ import javax.inject.Inject
 @CoreLibraryTest
 @HiltAndroidTest
 @UninstallModules(LocalhostApiModule::class)
-class LoginFlowTests : BaseTest(), MinimalSignInInternalTests {
+internal class LoginFlowTests : BaseTest(), MinimalSignInInternalTests {
 
     @JvmField
     @BindValue

@@ -19,7 +19,7 @@ import me.proton.core.test.quark.data.User
 @CoreLibraryTest
 @HiltAndroidTest
 @UninstallModules(LocalhostApiModule::class)
-class SidebarCoreFlowTests : BaseTest(), MinimalReportInternalTests {
+internal class SidebarCoreFlowTests : BaseTest(), MinimalReportInternalTests {
 
     private val loginRobot = LoginRobot()
 
