@@ -28,6 +28,7 @@ import ch.protonmail.android.mailmailbox.domain.usecase.GetMultiUserMailboxItems
 import ch.protonmail.android.mailmailbox.domain.usecase.IsMultiUserLocalPageValid
 import ch.protonmail.android.mailpagination.domain.GetAdjacentPageKeys
 import ch.protonmail.android.mailpagination.domain.getRefreshPageKey
+import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.mailpagination.presentation.paging.InvalidationTrackerPagingSource
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -89,8 +90,19 @@ class MailboxItemPagingSource @AssistedInject constructor(
         val items = state.pages.flatMap { it.data }.takeIfNotEmpty() ?: return null
         Timber.d("Paging: getRefreshKey: ${items.size} items")
         val key = items.getRefreshPageKey(mailboxPageKey.pageKey)
+        if (key.isRefreshingOneItem()) {
+            // Solve the issue detailed in MAILANDR-854
+            return mailboxPageKey.copy(
+                pageKey = key.copy(filter = key.filter.copy(maxTime = Long.MAX_VALUE))
+            )
+        }
         return mailboxPageKey.copy(pageKey = key)
     }
+
+    /*
+     * A PageKey is considered to be refreshing one item only if the min time and max time are the same
+     */
+    private fun PageKey.isRefreshingOneItem() = this.filter.minTime == this.filter.maxTime
 
     /*
      * Use this MailboxPageKey when it is NOT Append OR items are NOT empty.

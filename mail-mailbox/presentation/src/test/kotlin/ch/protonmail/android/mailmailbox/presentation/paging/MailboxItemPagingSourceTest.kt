@@ -383,6 +383,49 @@ class MailboxItemPagingSourceTest {
     }
 
     @Test
+    fun `given paging state contains one item only, then getRefreshKey returns key with max time to INF`() = runTest {
+        /*
+         * MAILANDR-854: This prevents a crash when refreshing Drafts location after updating a draft.
+         * Issue was caused by the refresh key relying on the time of the item in the list which
+         * is not valid anymore after the draft was updated on the backend (as time is updated).
+         * Keeping the interval open on "maxTime" side allows finding the item after the time was updated.
+         */
+        // When
+        val refreshKey = buildPagingSource().getRefreshKey(
+            PagingState(
+                pages = buildMockPages(listOf(buildMailboxItem(userId, "1", time = 1000))),
+                anchorPosition = null,
+                config = PagingConfig(pageSize = 5, initialLoadSize = 15),
+                leadingPlaceholderCount = 0
+            )
+        )
+
+        // Then
+        assertEquals(
+            expected = MailboxPageKey(
+                userIds = listOf(userId),
+                pageKey = PageKey(
+                    filter = PageFilter(
+                        labelId = LabelId("0"),
+                        keyword = "",
+                        read = ReadStatus.All,
+                        minTime = 1000,
+                        maxTime = Long.MAX_VALUE,
+                        minOrder = 1000,
+                        maxOrder = 1000,
+                        minId = null,
+                        maxId = null
+                    ),
+                    orderBy = OrderBy.Time,
+                    orderDirection = OrderDirection.Descending,
+                    size = 25
+                )
+            ),
+            actual = refreshKey
+        )
+    }
+
+    @Test
     fun `adjacent page keys are loaded using initial page size`() = runTest {
         // Paging implementation params.loadSize is by default 3x the (initial) pageSize,
         // for the first load. We take the max to respect this value.
@@ -417,10 +460,12 @@ class MailboxItemPagingSourceTest {
             type = type
         )
 
-    private fun buildMockPages(): List<PagingSource.LoadResult.Page<MailboxPageKey, MailboxItem>> =
+    private fun buildMockPages(
+        items: List<MailboxItem> = mailboxItems
+    ): List<PagingSource.LoadResult.Page<MailboxPageKey, MailboxItem>> =
         listOf(
             PagingSource.LoadResult.Page(
-                data = mailboxItems,
+                data = items,
                 prevKey = null,
                 nextKey = null
             )
