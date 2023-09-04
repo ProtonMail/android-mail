@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.composer.data.repository
 
+import androidx.work.ExistingWorkPolicy
 import ch.protonmail.android.composer.data.remote.SendMessageWorker
 import ch.protonmail.android.composer.data.remote.UploadDraftWorker
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
@@ -38,10 +39,10 @@ class MessageRepositoryImpl @Inject constructor(
         Timber.d("MessageRepository send $messageId")
 
         enqueuer.enqueueInChain<UploadDraftWorker, SendMessageWorker>(
-            UploadDraftWorker.id(messageId),
-            UploadDraftWorker.params(userId, messageId),
-            SendMessageWorker.id(messageId),
-            SendMessageWorker.params(userId, messageId)
+            uniqueWorkId = UploadDraftWorker.id(messageId),
+            params1 = UploadDraftWorker.params(userId, messageId),
+            params2 = SendMessageWorker.params(userId, messageId),
+            existingWorkPolicy = ExistingWorkPolicy.APPEND_OR_REPLACE
         )
     }
 

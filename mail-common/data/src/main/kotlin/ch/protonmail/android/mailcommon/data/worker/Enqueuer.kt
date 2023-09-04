@@ -43,20 +43,18 @@ class Enqueuer @Inject constructor(private val workManager: WorkManager) {
     }
 
     inline fun <reified T : ListenableWorker, reified K : ListenableWorker> enqueueInChain(
-        workerId1: String,
+        uniqueWorkId: String,
         params1: Map<String, Any>,
-        workerId2: String,
         params2: Map<String, Any>,
         constraints: Constraints = buildDefaultConstraints(),
         existingWorkPolicy: ExistingWorkPolicy = ExistingWorkPolicy.KEEP
     ) {
         enqueueInChain(
+            uniqueWorkId,
             T::class.java,
             params1,
-            workerId1,
             K::class.java,
             params2,
-            workerId2,
             constraints,
             existingWorkPolicy
         )
@@ -68,17 +66,16 @@ class Enqueuer @Inject constructor(private val workManager: WorkManager) {
 
     @Suppress("LongParameterList")
     fun enqueueInChain(
+        uniqueWorkId: String,
         worker1: Class<out ListenableWorker>,
         params1: Map<String, Any>,
-        uniqueName1: String,
         worker2: Class<out ListenableWorker>,
         params2: Map<String, Any>,
-        uniqueName2: String,
         constraints: Constraints,
         existingWorkPolicy: ExistingWorkPolicy
     ) {
         workManager.beginUniqueWork(
-            "$uniqueName1-$uniqueName2",
+            uniqueWorkId,
             existingWorkPolicy,
             createRequest(worker1, params1, constraints)
         )
