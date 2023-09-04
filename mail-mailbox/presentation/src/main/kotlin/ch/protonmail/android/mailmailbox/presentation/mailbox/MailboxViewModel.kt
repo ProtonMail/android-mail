@@ -26,6 +26,7 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.MailFeatureId
+import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
@@ -41,6 +42,7 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
 import ch.protonmail.android.mailmailbox.domain.model.UnreadCounter
 import ch.protonmail.android.mailmailbox.domain.model.toMailboxItemType
+import ch.protonmail.android.mailmailbox.domain.usecase.MarkConversationsAsRead
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
 import ch.protonmail.android.mailmailbox.domain.usecase.GetMailboxActions
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
@@ -95,6 +97,7 @@ class MailboxViewModel @Inject constructor(
     private val actionUiModelMapper: ActionUiModelMapper,
     private val mailboxItemMapper: MailboxItemUiModelMapper,
     private val getContacts: GetContacts,
+    private val markConversationsAsRead: MarkConversationsAsRead,
     private val mailboxReducer: MailboxReducer,
     private val observeMailFeature: ObserveMailFeature,
     private val dispatchersProvider: DispatcherProvider
@@ -164,6 +167,7 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.ItemClicked -> handleItemClick(viewAction.item)
                 is MailboxViewAction.OnOfflineWithData -> emitNewStateFrom(viewAction)
                 is MailboxViewAction.OnErrorWithData -> emitNewStateFrom(viewAction)
+                is MailboxViewAction.MarkAsRead -> handleMarkAsReadAction(viewAction)
             }.exhaustive
         }
     }
@@ -258,11 +262,28 @@ class MailboxViewModel @Inject constructor(
                 pager.flow.cachedIn(viewModelScope),
                 observeFolderColorSettings(userId)
             ) { pagingData, folderColorSettings ->
-                pagingData.map { mailboxItem ->
-                    mailboxItemMapper.toUiModel(mailboxItem, contacts, folderColorSettings)
-                }
+                pagingData.map { mailboxItemMapper.toUiModel(it, contacts, folderColorSettings) }
             }
         }
+    }
+
+    private suspend fun handleMarkAsReadAction(markAsReadOperation: MailboxViewAction.MarkAsRead) {
+        val selectionModeDataState = state.value.mailboxListState as? MailboxListState.Data.SelectionMode
+        if (selectionModeDataState == null) {
+            Timber.d("MailboxListState is not in SelectionMode")
+            return
+        }
+        val primaryUserId = primaryUserId.firstOrNull() ?: return
+
+        when (getPreferredViewMode()) {
+            ViewMode.ConversationGrouping -> markConversationsAsRead(
+                userId = primaryUserId,
+                conversationIds = selectionModeDataState.selectedMailboxItems.map { ConversationId(it.id) }
+            )
+
+            ViewMode.NoConversationGrouping -> Timber.d("Mark as read not supported for message grouping yet")
+        }
+        emitNewStateFrom(markAsReadOperation)
     }
 
     private fun observeCurrentMailLabel() = observeMailLabels()

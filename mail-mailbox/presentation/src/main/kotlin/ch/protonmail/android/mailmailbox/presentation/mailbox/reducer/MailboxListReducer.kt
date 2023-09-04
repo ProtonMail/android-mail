@@ -54,6 +54,7 @@ class MailboxListReducer @Inject constructor() {
             is MailboxViewAction.OnErrorWithData -> reduceErrorWithData(currentState)
             is MailboxViewAction.Refresh -> reduceRefresh(currentState)
             is MailboxViewAction.ExitSelectionMode -> reduceExitSelectionMode(currentState)
+            is MailboxViewAction.MarkAsRead -> reduceMarkAsRead(currentState)
         }
     }
 
@@ -244,4 +245,14 @@ class MailboxListReducer @Inject constructor() {
 
             else -> currentState
         }
+
+    private fun reduceMarkAsRead(currentState: MailboxListState) = when (currentState) {
+        is MailboxListState.Data.SelectionMode -> currentState.copy(
+            selectedMailboxItems = currentState.selectedMailboxItems.map { currentSelectedItem ->
+                currentSelectedItem.copy(isRead = true)
+            }.toSet()
+        )
+
+        else -> currentState
+    }
 }

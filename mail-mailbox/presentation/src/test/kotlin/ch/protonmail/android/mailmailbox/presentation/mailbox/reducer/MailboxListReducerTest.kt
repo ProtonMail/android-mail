@@ -480,6 +480,23 @@ internal class MailboxListReducerTest(
                     refreshRequested = false,
                     selectionModeEnabled = true
                 )
+            ),
+            TestInput(
+                currentState = MailboxListState.Data.SelectionMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    selectedMailboxItems = setOf(
+                        SelectedMailboxItem(MailboxItemUiModelTestData.readMailboxItemUiModel.id, false)
+                    ),
+                    selectionModeEnabled = false
+                ),
+                operation = MailboxViewAction.MarkAsRead,
+                expectedState = MailboxListState.Data.SelectionMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    selectedMailboxItems = setOf(
+                        SelectedMailboxItem(MailboxItemUiModelTestData.readMailboxItemUiModel.id, true)
+                    ),
+                    selectionModeEnabled = false
+                )
             )
         )
 

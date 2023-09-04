@@ -25,6 +25,7 @@ import arrow.core.Either
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import ch.protonmail.android.mailcommon.domain.model.Action
+import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
@@ -44,6 +45,7 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Conversation
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Message
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
+import ch.protonmail.android.mailmailbox.domain.usecase.MarkConversationsAsRead
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
 import ch.protonmail.android.mailmailbox.domain.usecase.GetMailboxActions
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
@@ -103,6 +105,7 @@ import org.junit.Test
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
+import ch.protonmail.android.mailconversation.domain.entity.Conversation as DomainConversation
 
 class MailboxViewModelTest {
 
@@ -160,6 +163,8 @@ class MailboxViewModelTest {
         coEvery { this@mockk(any(), any()) } returns listOf(Action.Archive, Action.Trash).right()
     }
 
+    private val markConversationsAsRead = mockk<MarkConversationsAsRead>()
+
     private val mailboxViewModel by lazy {
         MailboxViewModel(
             mailboxPagerFactory = pagerFactory,
@@ -173,6 +178,7 @@ class MailboxViewModelTest {
             actionUiModelMapper = actionUiModelMapper,
             mailboxItemMapper = mailboxItemMapper,
             getContacts = getContacts,
+            markConversationsAsRead = markConversationsAsRead,
             mailboxReducer = mailboxReducer,
             observeMailFeature = observeMailFeature,
             dispatchersProvider = TestDispatcherProvider()
@@ -1204,6 +1210,53 @@ class MailboxViewModelTest {
             awaitItem()
             // Then
             confirmVerified(pagerFactory)
+        }
+    }
+
+    @Test
+    fun `verify mark read action triggers mark read use case`() = runTest {
+        // Given
+        val item = readMailboxItemUiModel
+        val secondItem = unreadMailboxItemUiModel
+        val initialState = createMailboxDataState()
+        val intermediateState = MailboxStateSampleData.createSelectionMode(listOf(item, secondItem))
+        val expectedState = MailboxStateSampleData.createSelectionMode(
+            listOf(item.copy(isRead = true), secondItem.copy(isRead = true))
+        )
+        every { observeCurrentViewMode(any()) } returns flowOf(ConversationGrouping)
+        every {
+            mailboxReducer.newStateFrom(any(), MailboxEvent.SelectedLabelCountChanged(5))
+        } returns initialState
+        every {
+            mailboxReducer.newStateFrom(initialState, MailboxEvent.EnterSelectionMode(item))
+        } returns intermediateState
+        returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
+        every { mailboxReducer.newStateFrom(intermediateState, MailboxViewAction.MarkAsRead) } returns expectedState
+        coEvery {
+            markConversationsAsRead(userId, listOf(ConversationId(item.id), ConversationId(secondItem.id)))
+        } returns emptyList<DomainConversation>().right()
+
+        mailboxViewModel.state.test {
+            // Given
+            awaitItem() // First emission for selected user
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
+
+            // Then
+            assertEquals(intermediateState, awaitItem())
+            verify(exactly = 1) {
+                mailboxReducer.newStateFrom(initialState, MailboxEvent.EnterSelectionMode(item))
+            }
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.MarkAsRead)
+
+            // Then
+            assertEquals(expectedState, awaitItem())
+            coVerify(exactly = 1) {
+                markConversationsAsRead(userId, listOf(ConversationId(item.id), ConversationId(secondItem.id)))
+            }
         }
     }
 

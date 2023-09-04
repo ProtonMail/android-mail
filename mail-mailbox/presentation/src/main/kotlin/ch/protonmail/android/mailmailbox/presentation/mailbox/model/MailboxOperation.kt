@@ -50,6 +50,8 @@ internal sealed interface MailboxViewAction : MailboxOperation {
     object EnableUnreadFilter : MailboxViewAction, AffectingUnreadFilter
     object DisableUnreadFilter : MailboxViewAction, AffectingUnreadFilter
 
+    object MarkAsRead : MailboxViewAction, AffectingMailboxList
+
     /*
      *`OnOfflineWithData` and `OnErrorWithData` are not actual Actions which are actively performed by the user
      * but rather "Events" which happen when loading mailbox items. They are represented as actions due to
