@@ -41,6 +41,7 @@ import ch.protonmail.android.mailcomposer.domain.usecase.GetPrimaryAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.IsValidEmailAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
 import ch.protonmail.android.mailcomposer.domain.usecase.SendMessage
+import ch.protonmail.android.mailcomposer.domain.usecase.StoreAttachments
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithAllFields
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithBody
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithRecipients
@@ -79,6 +80,7 @@ import javax.inject.Inject
 @Suppress("LongParameterList")
 @HiltViewModel
 class ComposerViewModel @Inject constructor(
+    private val storeAttachments: StoreAttachments,
     private val storeDraftWithBody: StoreDraftWithBody,
     private val storeDraftWithSubject: StoreDraftWithSubject,
     private val storeDraftWithAllFields: StoreDraftWithAllFields,
@@ -172,7 +174,18 @@ class ComposerViewModel @Inject constructor(
     fun validateEmailAddress(emailAddress: String): Boolean = isValidEmailAddress(emailAddress)
 
     private fun onAttachmentsAdded(action: ComposerAction.AttachmentsAdded) {
-        Timber.d("Attachments added: ${action.uriList}")
+        viewModelScope.launch {
+            val fields = DraftFields(
+                currentSenderEmail(),
+                currentSubject(),
+                currentDraftBody(),
+                currentValidRecipientsTo(),
+                currentValidRecipientsCc(),
+                currentValidRecipientsBcc()
+            )
+            storeDraftWithAllFields(primaryUserId(), currentMessageId(), fields)
+            storeAttachments(primaryUserId(), currentMessageId(), action.uriList)
+        }
     }
 
     private suspend fun onCloseComposer(action: ComposerAction.OnCloseComposer): ComposerOperation {

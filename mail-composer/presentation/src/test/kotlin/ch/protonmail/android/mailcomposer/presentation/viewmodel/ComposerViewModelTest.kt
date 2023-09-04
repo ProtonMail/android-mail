@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcomposer.presentation.viewmodel
 
+import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import arrow.core.left
 import arrow.core.right
@@ -44,6 +45,7 @@ import ch.protonmail.android.mailcomposer.domain.usecase.GetPrimaryAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.IsValidEmailAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
 import ch.protonmail.android.mailcomposer.domain.usecase.SendMessage
+import ch.protonmail.android.mailcomposer.domain.usecase.StoreAttachments
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithAllFields
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithBody
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithBodyError
@@ -85,6 +87,8 @@ import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.domain.entity.UserId
 import me.proton.core.featureflag.domain.entity.FeatureFlag
 import me.proton.core.network.domain.NetworkManager
+import me.proton.core.featureflag.domain.entity.FeatureId
+import me.proton.core.featureflag.domain.entity.Scope
 import me.proton.core.user.domain.entity.UserAddress
 import org.junit.Rule
 import kotlin.test.AfterTest
@@ -100,6 +104,7 @@ class ComposerViewModelTest {
     @get:Rule
     val loggingTestRule = LoggingTestRule()
 
+    private val storeAttachments = mockk<StoreAttachments>()
     private val storeDraftWithAllFields = mockk<StoreDraftWithAllFields>()
     private val storeDraftWithBodyMock = mockk<StoreDraftWithBody>()
     private val storeDraftWithSubjectMock = mockk<StoreDraftWithSubject>()
@@ -119,11 +124,24 @@ class ComposerViewModelTest {
     }
     private val savedStateHandle = mockk<SavedStateHandle>()
     private val getDecryptedDraftFields = mockk<GetDecryptedDraftFields>()
-    private val observeMailFeature = mockk<ObserveMailFeature>()
+    private val observeMailFeature = mockk<ObserveMailFeature> {
+        coEvery {
+            this@mockk.invoke(any(), MailFeatureId.AddAttachmentsToDraft)
+        } returns flowOf(
+            FeatureFlag(
+                userId = UserIdSample.Primary,
+                featureId = FeatureId("AddAttachmentsToDraft"),
+                scope = Scope.Local,
+                defaultValue = true,
+                value = true
+            )
+        )
+    }
     private val reducer = ComposerReducer()
 
     private val viewModel by lazy {
         ComposerViewModel(
+            storeAttachments,
             storeDraftWithBodyMock,
             storeDraftWithSubjectMock,
             storeDraftWithAllFields,
@@ -144,6 +162,51 @@ class ComposerViewModelTest {
             observePrimaryUserIdMock,
             provideNewDraftIdMock
         )
+    }
+
+    @Test
+    fun `should store draft with all fields and store attachments when attachments are added to the draft`() {
+        // Given
+        val uri = mockk<Uri>()
+        val primaryAddress = UserAddressSample.PrimaryAddress
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val messageId = MessageIdSample.Invoice
+        val expectedSubject = Subject("Subject for the message")
+        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+        val expectedDraftBody = DraftBody("I am plaintext")
+        val recipientsTo = RecipientsTo(listOf(RecipientSample.John))
+        val recipientsCc = RecipientsCc(listOf(RecipientSample.John))
+        val recipientsBcc = RecipientsBcc(listOf(RecipientSample.John))
+        val expectedFields = DraftFields(
+            expectedSenderEmail,
+            expectedSubject,
+            expectedDraftBody,
+            recipientsTo,
+            recipientsCc,
+            recipientsBcc
+        )
+        expectedPrimaryAddress(expectedUserId) { primaryAddress }
+        expectInputDraftMessageId { messageId }
+        expectStoreAllDraftFieldsSucceeds(expectedUserId, messageId, expectedFields)
+        expectStoreAttachmentsSucceeds(expectedUserId, messageId, listOf(uri))
+        expectDecryptedDraftDataSuccess(expectedUserId, messageId) { expectedFields }
+        expectStartDraftSync(expectedUserId, messageId)
+        expectContacts()
+        mockParticipantMapper()
+        expectedViewModelInitialState(
+            messageId,
+            expectedSenderEmail,
+            expectedSubject,
+            expectedDraftBody,
+            Triple(recipientsTo, recipientsCc, recipientsBcc)
+        )
+
+        // When
+        viewModel.submit(ComposerAction.AttachmentsAdded(listOf(uri)))
+
+        // Then
+        coVerify { storeDraftWithAllFields(expectedUserId, messageId, expectedFields) }
+        coVerify { storeAttachments(expectedUserId, messageId, listOf(uri)) }
     }
 
     @Test
@@ -1229,6 +1292,14 @@ class ComposerViewModelTest {
                 expectedFields
             )
         } returns Unit
+    }
+
+    private fun expectStoreAttachmentsSucceeds(
+        expectedUserId: UserId,
+        expectedMessageId: MessageId,
+        expectedUriList: List<Uri>
+    ) {
+        coEvery { storeAttachments(expectedUserId, expectedMessageId, expectedUriList) } returns Unit
     }
 
     private fun expectContacts(): List<Contact> {
