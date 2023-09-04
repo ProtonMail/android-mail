@@ -34,10 +34,10 @@ import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailSettings
 import com.github.mangstadt.vinnie.io.FoldedLineWriter
 import kotlinx.coroutines.flow.first
 import me.proton.core.crypto.common.context.CryptoContext
+import me.proton.core.crypto.common.pgp.EncryptedPacket
+import me.proton.core.crypto.common.pgp.PacketType
 import me.proton.core.crypto.common.pgp.SessionKey
-import me.proton.core.crypto.common.pgp.UnlockedKey
 import me.proton.core.crypto.common.pgp.dataPacket
-import me.proton.core.crypto.common.pgp.exception.CryptoException
 import me.proton.core.crypto.common.pgp.keyPacket
 import me.proton.core.crypto.common.pgp.split
 import me.proton.core.domain.entity.UserId
@@ -45,6 +45,7 @@ import me.proton.core.key.domain.decryptMimeMessage
 import me.proton.core.key.domain.decryptSessionKey
 import me.proton.core.key.domain.decryptText
 import me.proton.core.key.domain.encryptAndSignText
+import me.proton.core.key.domain.entity.keyholder.KeyHolderContext
 import me.proton.core.key.domain.useKeys
 import me.proton.core.mailmessage.domain.entity.Email
 import me.proton.core.mailsendpreferences.domain.model.SendPreferences
@@ -119,7 +120,7 @@ internal class SendMessage @Inject constructor(
         lateinit var encryptedMimeBodyDataPacket: ByteArray
 
         // Map<Email, Pair<KeyPacket, DataPacket>>
-        lateinit var signedAndEncryptedMimeBodyForRecipients: Map<Email, Pair<ByteArray, ByteArray>>
+        lateinit var signedAndEncryptedMimeBodyForRecipients: Map<Email, Pair<EncryptedPacket, EncryptedPacket>>
 
         senderAddress.useKeys(cryptoContext) {
 
@@ -144,11 +145,9 @@ internal class SendMessage @Inject constructor(
             decryptedMimeBodySessionKey = decryptSessionKey(encryptedMimeBodySplit.keyPacket())
             encryptedMimeBodyDataPacket = encryptedMimeBodySplit.dataPacket()
 
-            this.privateKeyRing.unlockedPrimaryKey.unlockedKey.use { unlockedPrimaryKey ->
-                signedAndEncryptedMimeBodyForRecipients = sendPreferences.mapValues { entry ->
-                    signAndEncryptMimeBody(entry, plaintextMimeBody, unlockedPrimaryKey)
-                }.filterNullValues()
-            }
+            signedAndEncryptedMimeBodyForRecipients = sendPreferences.mapValues { entry ->
+                signAndEncryptMimeBody(entry, plaintextMimeBody, this, cryptoContext)
+            }.filterNullValues()
         }
 
         return sendPreferences.map { entry ->
@@ -171,22 +170,20 @@ internal class SendMessage @Inject constructor(
     private fun signAndEncryptMimeBody(
         entry: Map.Entry<Email, SendPreferences>,
         plaintextMimeBody: String,
-        unlockedPrimaryKey: UnlockedKey
-    ): Pair<ByteArray, ByteArray>? {
+        keyHolderContext: KeyHolderContext,
+        cryptoContext: CryptoContext
+    ): Pair<EncryptedPacket, EncryptedPacket>? {
         return with(entry.value) {
-            if (encrypt && pgpScheme != PackageType.ProtonMail && publicKey != null) {
+            if (encrypt && pgpScheme != PackageType.ProtonMail) {
                 publicKey?.let {
-                    try {
-                        val split = cryptoContext.pgpCrypto.encryptAndSignText(
-                            plaintextMimeBody,
-                            it.key,
-                            unlockedPrimaryKey.value
-                        ).split(cryptoContext.pgpCrypto)
-                        Pair(split.keyPacket(), split.dataPacket())
-                    } catch (e: CryptoException) {
-                        Timber.e("Exception encrypting and signing MIME body for recipient", e)
-                        null
-                    }
+                    keyHolderContext.encryptAndSignText(plaintextMimeBody, it)
+                        ?.split(cryptoContext.pgpCrypto)
+                        ?.let { split ->
+                            Pair(
+                                EncryptedPacket(split.keyPacket(), PacketType.Key),
+                                EncryptedPacket(split.dataPacket(), PacketType.Data)
+                            )
+                        }
                 }
             } else null
         }

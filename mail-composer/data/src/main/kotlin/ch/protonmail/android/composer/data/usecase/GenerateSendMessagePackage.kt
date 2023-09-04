@@ -20,6 +20,7 @@ package ch.protonmail.android.composer.data.usecase
 
 import ch.protonmail.android.composer.data.remote.resource.SendMessagePackage
 import me.proton.core.crypto.common.context.CryptoContext
+import me.proton.core.crypto.common.pgp.EncryptedPacket
 import me.proton.core.crypto.common.pgp.SessionKey
 import me.proton.core.key.domain.encryptSessionKey
 import me.proton.core.mailmessage.domain.entity.Email
@@ -45,7 +46,7 @@ class GenerateSendMessagePackage @Inject constructor(
         encryptedBodyDataPacket: ByteArray,
         decryptedMimeBodySessionKey: SessionKey,
         encryptedMimeBodyDataPacket: ByteArray,
-        signedEncryptedMimeBody: Pair<ByteArray, ByteArray>?, // <KeyPacket, DataPacket>
+        signedEncryptedMimeBody: Pair<EncryptedPacket, EncryptedPacket>?,
         decryptedAttachmentSessionKeys: List<SessionKey>
     ): SendMessagePackage? {
 
@@ -82,11 +83,11 @@ class GenerateSendMessagePackage @Inject constructor(
                     addresses = mapOf(
                         recipientEmail to SendMessagePackage.Address.ExternalEncrypted(
                             signature = true.toInt(),
-                            bodyKeyPacket = Base64.encode(signedEncryptedMimeBody.first)
+                            bodyKeyPacket = Base64.encode(signedEncryptedMimeBody.first.packet)
                         )
                     ),
                     mimeType = MimeType.Mixed.value,
-                    body = Base64.encode(signedEncryptedMimeBody.second),
+                    body = Base64.encode(signedEncryptedMimeBody.second.packet),
                     type = PackageType.PgpMime.type
                 )
 
