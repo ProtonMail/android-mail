@@ -284,6 +284,7 @@ class MessageLocalDataSourceImpl @Inject constructor(
         apiAssignedId: MessageId
     ) {
         messageDao.updateDraftMessageId(userId, localDraftId, apiAssignedId)
+        messageAttachmentDao.updateMessageId(userId, localDraftId, apiAssignedId)
     }
 
     private suspend fun updateLabels(messages: List<Message>) = with(groupByUserId(messages)) {

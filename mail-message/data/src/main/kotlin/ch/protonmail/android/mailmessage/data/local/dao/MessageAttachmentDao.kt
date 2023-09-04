@@ -41,4 +41,17 @@ abstract class MessageAttachmentDao : BaseDao<MessageAttachmentEntity>() {
         messageId: MessageId
     ): Flow<List<MessageAttachmentEntity>>
 
+    @Query(
+        """
+            UPDATE MessageAttachmentEntity
+            SET messageId = :apiAssignedId
+            WHERE userId = :userId
+            AND messageId = :localDraftId
+        """
+    )
+    abstract fun updateMessageId(
+        userId: UserId,
+        localDraftId: MessageId,
+        apiAssignedId: MessageId
+    )
 }
