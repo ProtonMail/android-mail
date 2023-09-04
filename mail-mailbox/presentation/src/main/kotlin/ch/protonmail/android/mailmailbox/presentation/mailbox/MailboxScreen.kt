@@ -116,7 +116,8 @@ fun MailboxScreen(
             }
         },
         onRefreshList = { viewModel.submit(MailboxViewAction.Refresh) },
-        markAsRead = { viewModel.submit(MailboxViewAction.MarkAsRead) }
+        markAsRead = { viewModel.submit(MailboxViewAction.MarkAsRead) },
+        markAsUnread = { viewModel.submit(MailboxViewAction.MarkAsUnread) }
     )
 
     MailboxScreen(
@@ -186,7 +187,7 @@ fun MailboxScreen(
                     onSaveAttachments = { Timber.d("mailbox onSaveAttachments clicked") },
                     onMore = { Timber.d("mailbox onMore clicked") },
                     onMarkRead = actions.markAsRead,
-                    onMarkUnread = { Timber.d("mailbox onMarkUnread clicked") },
+                    onMarkUnread = actions.markAsUnread,
                     onStar = { Timber.d("mailbox onStar clicked") },
                     onUnstar = { Timber.d("mailbox onUnstar clicked") }
                 )
@@ -467,7 +468,8 @@ object MailboxScreen {
         val showFeatureMissingSnackbar: () -> Unit,
         val onOfflineWithData: () -> Unit,
         val onErrorWithData: () -> Unit,
-        val markAsRead: () -> Unit
+        val markAsRead: () -> Unit,
+        val markAsUnread: () -> Unit
     ) {
 
         companion object {
@@ -488,7 +490,8 @@ object MailboxScreen {
                 showFeatureMissingSnackbar = {},
                 onOfflineWithData = {},
                 onErrorWithData = {},
-                markAsRead = {}
+                markAsRead = {},
+                markAsUnread = {}
             )
         }
     }

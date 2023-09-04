@@ -43,6 +43,7 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
 import ch.protonmail.android.mailmailbox.domain.model.UnreadCounter
 import ch.protonmail.android.mailmailbox.domain.model.toMailboxItemType
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkConversationsAsRead
+import ch.protonmail.android.mailmailbox.domain.usecase.MarkConversationsAsUnread
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
 import ch.protonmail.android.mailmailbox.domain.usecase.GetMailboxActions
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
@@ -85,6 +86,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
+@SuppressWarnings("LongParameterList")
 class MailboxViewModel @Inject constructor(
     private val mailboxPagerFactory: MailboxPagerFactory,
     private val observeCurrentViewMode: ObserveCurrentViewMode,
@@ -98,6 +100,7 @@ class MailboxViewModel @Inject constructor(
     private val mailboxItemMapper: MailboxItemUiModelMapper,
     private val getContacts: GetContacts,
     private val markConversationsAsRead: MarkConversationsAsRead,
+    private val markConversationsAsUnread: MarkConversationsAsUnread,
     private val mailboxReducer: MailboxReducer,
     private val observeMailFeature: ObserveMailFeature,
     private val dispatchersProvider: DispatcherProvider
@@ -168,6 +171,7 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.OnOfflineWithData -> emitNewStateFrom(viewAction)
                 is MailboxViewAction.OnErrorWithData -> emitNewStateFrom(viewAction)
                 is MailboxViewAction.MarkAsRead -> handleMarkAsReadAction(viewAction)
+                is MailboxViewAction.MarkAsUnread -> handleMarkAsUnreadAction(viewAction)
             }.exhaustive
         }
     }
@@ -277,6 +281,25 @@ class MailboxViewModel @Inject constructor(
 
         when (getPreferredViewMode()) {
             ViewMode.ConversationGrouping -> markConversationsAsRead(
+                userId = primaryUserId,
+                conversationIds = selectionModeDataState.selectedMailboxItems.map { ConversationId(it.id) }
+            )
+
+            ViewMode.NoConversationGrouping -> Timber.d("Mark as read not supported for message grouping yet")
+        }
+        emitNewStateFrom(markAsReadOperation)
+    }
+
+    private suspend fun handleMarkAsUnreadAction(markAsReadOperation: MailboxViewAction.MarkAsUnread) {
+        val selectionModeDataState = state.value.mailboxListState as? MailboxListState.Data.SelectionMode
+        if (selectionModeDataState == null) {
+            Timber.d("MailboxListState is not in SelectionMode")
+            return
+        }
+        val primaryUserId = primaryUserId.firstOrNull() ?: return
+
+        when (getPreferredViewMode()) {
+            ViewMode.ConversationGrouping -> markConversationsAsUnread(
                 userId = primaryUserId,
                 conversationIds = selectionModeDataState.selectedMailboxItems.map { ConversationId(it.id) }
             )

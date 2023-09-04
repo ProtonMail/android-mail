@@ -33,6 +33,7 @@ import javax.inject.Inject
 
 class MailboxListReducer @Inject constructor() {
 
+    @Suppress("ComplexMethod")
     internal fun newStateFrom(
         currentState: MailboxListState,
         operation: MailboxOperation.AffectingMailboxList
@@ -55,6 +56,7 @@ class MailboxListReducer @Inject constructor() {
             is MailboxViewAction.Refresh -> reduceRefresh(currentState)
             is MailboxViewAction.ExitSelectionMode -> reduceExitSelectionMode(currentState)
             is MailboxViewAction.MarkAsRead -> reduceMarkAsRead(currentState)
+            is MailboxViewAction.MarkAsUnread -> reduceMarkAsUnread(currentState)
         }
     }
 
@@ -250,6 +252,16 @@ class MailboxListReducer @Inject constructor() {
         is MailboxListState.Data.SelectionMode -> currentState.copy(
             selectedMailboxItems = currentState.selectedMailboxItems.map { currentSelectedItem ->
                 currentSelectedItem.copy(isRead = true)
+            }.toSet()
+        )
+
+        else -> currentState
+    }
+
+    private fun reduceMarkAsUnread(currentState: MailboxListState) = when (currentState) {
+        is MailboxListState.Data.SelectionMode -> currentState.copy(
+            selectedMailboxItems = currentState.selectedMailboxItems.map { currentSelectedItem ->
+                currentSelectedItem.copy(isRead = false)
             }.toSet()
         )
 

@@ -46,6 +46,7 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Conversati
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Message
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkConversationsAsRead
+import ch.protonmail.android.mailmailbox.domain.usecase.MarkConversationsAsUnread
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
 import ch.protonmail.android.mailmailbox.domain.usecase.GetMailboxActions
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
@@ -164,6 +165,7 @@ class MailboxViewModelTest {
     }
 
     private val markConversationsAsRead = mockk<MarkConversationsAsRead>()
+    private val markConversationsAsUnread = mockk<MarkConversationsAsUnread>()
 
     private val mailboxViewModel by lazy {
         MailboxViewModel(
@@ -179,6 +181,7 @@ class MailboxViewModelTest {
             mailboxItemMapper = mailboxItemMapper,
             getContacts = getContacts,
             markConversationsAsRead = markConversationsAsRead,
+            markConversationsAsUnread = markConversationsAsUnread,
             mailboxReducer = mailboxReducer,
             observeMailFeature = observeMailFeature,
             dispatchersProvider = TestDispatcherProvider()
@@ -1256,6 +1259,53 @@ class MailboxViewModelTest {
             assertEquals(expectedState, awaitItem())
             coVerify(exactly = 1) {
                 markConversationsAsRead(userId, listOf(ConversationId(item.id), ConversationId(secondItem.id)))
+            }
+        }
+    }
+
+    @Test
+    fun `verify mark unread action triggers mark unread use case`() = runTest {
+        // Given
+        val item = readMailboxItemUiModel
+        val secondItem = unreadMailboxItemUiModel
+        val initialState = createMailboxDataState()
+        val intermediateState = MailboxStateSampleData.createSelectionMode(listOf(item, secondItem))
+        val expectedState = MailboxStateSampleData.createSelectionMode(
+            listOf(item.copy(isRead = false), secondItem.copy(isRead = false))
+        )
+        every { observeCurrentViewMode(any()) } returns flowOf(ConversationGrouping)
+        every {
+            mailboxReducer.newStateFrom(any(), MailboxEvent.SelectedLabelCountChanged(5))
+        } returns initialState
+        every {
+            mailboxReducer.newStateFrom(initialState, MailboxEvent.EnterSelectionMode(item))
+        } returns intermediateState
+        returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
+        every { mailboxReducer.newStateFrom(intermediateState, MailboxViewAction.MarkAsUnread) } returns expectedState
+        coEvery {
+            markConversationsAsUnread(userId, listOf(ConversationId(item.id), ConversationId(secondItem.id)))
+        } returns emptyList<DomainConversation>().right()
+
+        mailboxViewModel.state.test {
+            // Given
+            awaitItem() // First emission for selected user
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
+
+            // Then
+            assertEquals(intermediateState, awaitItem())
+            verify(exactly = 1) {
+                mailboxReducer.newStateFrom(initialState, MailboxEvent.EnterSelectionMode(item))
+            }
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.MarkAsUnread)
+
+            // Then
+            assertEquals(expectedState, awaitItem())
+            coVerify(exactly = 1) {
+                markConversationsAsUnread(userId, listOf(ConversationId(item.id), ConversationId(secondItem.id)))
             }
         }
     }
