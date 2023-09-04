@@ -33,8 +33,8 @@
   </plurals>
   <string name="mailbox_default_recipient">(Ulac iɣerwaḍen)</string>
   <string name="mailbox_default_sender">(Ulac amazan)</string>
-  <string name="mailbox_error_message_offline">You are offline, unable to retrieve items</string>
-  <string name="mailbox_error_message_generic">Loading mailbox failed</string>
-  <string name="mailbox_error_message_unexpected">Something went unexpectedly wrong</string>
-  <string name="mailbox_is_empty_message">This mailbox is empty</string>
+  <string name="mailbox_error_message_offline">Ur teqqineḍ ara, ulamek i d-terriḍ iferdisen</string>
+  <string name="mailbox_error_message_generic">Yecceḍ usali n tnaka n urmas</string>
+  <string name="mailbox_error_message_unexpected">Tella-d tuccḍa</string>
+  <string name="mailbox_is_empty_message">Tanaka-a n urmas d tilemt</string>
 </resources>

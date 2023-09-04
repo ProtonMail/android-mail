@@ -47,6 +47,7 @@
   <string name="action_save_pdf_content_description">Desa com a PDF</string>
   <string name="action_sender_emails_content_description">Estableix l\'acció per a correus electrònics futurs d\'aquest remitent</string>
   <string name="action_save_attachments_content_description">Desa els adjunts</string>
+  <string name="action_more_content_description">More</string>
   <string name="common_error_loading_actions">No s\'han pogut carregar les accions</string>
   <string name="yesterday">Ahir</string>
   <!-- notification channels -->

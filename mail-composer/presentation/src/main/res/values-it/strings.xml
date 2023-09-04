@@ -37,5 +37,6 @@
   <string name="composer_error_store_draft_subject">L\'archiviazione dell\'oggetto di questa bozza non è riuscita</string>
   <string name="composer_error_store_draft_recipients">Memorizzazione dei destinatari di questa bozza fallita</string>
   <string name="composer_error_loading_draft">Il contenuto di questa bozza non è al momento disponibile. La modifica sovrascriverà qualsiasi contenuto preesistente.</string>
-  <string name="add_attachments_content_description">Aggiungi allegati</string>
+  <string name="composer_add_attachments_content_description">Aggiungi allegati</string>
+  <string name="composer_add_attachments_bottom_sheet_import_from">Importa da…</string>
 </resources>

@@ -47,6 +47,7 @@
   <string name="action_save_pdf_content_description">Захаваць як PDF</string>
   <string name="action_sender_emails_content_description">Задаць дзеянне для будучых лістоў ад гэтага адпраўніка</string>
   <string name="action_save_attachments_content_description">Захаваць далучэнні</string>
+  <string name="action_more_content_description">Больш</string>
   <string name="common_error_loading_actions">Не ўдалося загрузіць дзеянні</string>
   <string name="yesterday">Учора</string>
   <!-- notification channels -->

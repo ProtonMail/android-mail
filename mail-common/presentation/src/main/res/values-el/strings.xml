@@ -47,6 +47,7 @@
   <string name="action_save_pdf_content_description">Αποθήκευση ως PDF</string>
   <string name="action_sender_emails_content_description">Ορισμός ενέργειας για μελλοντικά μηνύματα ηλεκτρονικού ταχυδρομείου από αυτόν τον αποστολέα</string>
   <string name="action_save_attachments_content_description">Αποθήκευση συνημμένων</string>
+  <string name="action_more_content_description">More</string>
   <string name="common_error_loading_actions">Αποτυχία φόρτωσης ενεργειών</string>
   <string name="yesterday">Χθες</string>
   <!-- notification channels -->

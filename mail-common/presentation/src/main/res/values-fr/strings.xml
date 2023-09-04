@@ -47,6 +47,7 @@
   <string name="action_save_pdf_content_description">Enregistrer en PDF</string>
   <string name="action_sender_emails_content_description">Définir l\'action pour les prochains messages de cet expéditeur</string>
   <string name="action_save_attachments_content_description">Enregistrer les pièces jointes</string>
+  <string name="action_more_content_description">Plus</string>
   <string name="common_error_loading_actions">Les actions n\'ont pu être chargées.</string>
   <string name="yesterday">Hier</string>
   <!-- notification channels -->

@@ -37,5 +37,6 @@
   <string name="composer_error_store_draft_subject">Lagring af denne kladdes emne mislykkedes</string>
   <string name="composer_error_store_draft_recipients">Lagring af denne kladdes modtagere mislykkedes</string>
   <string name="composer_error_loading_draft">Indholdet af denne kladde er ikke tilgængeligt på nuværende tidspunkt. Redigering vil overskrive alt allerede eksisterende indhold.</string>
-  <string name="add_attachments_content_description">Tilføj vedhæftninger</string>
+  <string name="composer_add_attachments_content_description">Add attachments</string>
+  <string name="composer_add_attachments_bottom_sheet_import_from">Import from…</string>
 </resources>

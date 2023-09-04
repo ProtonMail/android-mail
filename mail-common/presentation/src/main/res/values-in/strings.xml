@@ -47,11 +47,12 @@
   <string name="action_save_pdf_content_description">Simpan sebagai PDF</string>
   <string name="action_sender_emails_content_description">Tentukan tindakan untuk email dari pengirim ini ke depannya</string>
   <string name="action_save_attachments_content_description">Simpan lampiran</string>
+  <string name="action_more_content_description">Lainnya</string>
   <string name="common_error_loading_actions">Tindakan gagal dimuat</string>
   <string name="yesterday">Kemarin</string>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Lampiran</string>
-  <string name="attachment_download_notification_channel_description">Notifikasi untuk penguduhan lampiran</string>
+  <string name="attachment_download_notification_channel_description">Notifikasi untuk unduhan lampiran</string>
   <string name="email_notification_channel_name">Email</string>
   <string name="email_notification_channel_description">Notifikasi email masuk</string>
   <string name="auth_badge_official">Resmi</string>

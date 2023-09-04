@@ -37,5 +37,6 @@
   <string name="composer_error_store_draft_subject">Erro ao salvar o assunto deste rascunho</string>
   <string name="composer_error_store_draft_recipients">Erro ao salvar os destinatários deste rascunho</string>
   <string name="composer_error_loading_draft">O conteúdo deste rascunho não está disponível no momento. A edição substituirá qualquer conteúdo pré-existente.</string>
-  <string name="add_attachments_content_description">Adicionar anexos</string>
+  <string name="composer_add_attachments_content_description">Adicionar anexos</string>
+  <string name="composer_add_attachments_bottom_sheet_import_from">Importar de…</string>
 </resources>

@@ -47,6 +47,7 @@
   <string name="action_save_pdf_content_description">Gem som PDF</string>
   <string name="action_sender_emails_content_description">Indstil handling for fremtidige e-mails fra denne afsender</string>
   <string name="action_save_attachments_content_description">Gem vedhæftninger</string>
+  <string name="action_more_content_description">Mere</string>
   <string name="common_error_loading_actions">Kunne ikke indlæse handlinger</string>
   <string name="yesterday">I går</string>
   <!-- notification channels -->

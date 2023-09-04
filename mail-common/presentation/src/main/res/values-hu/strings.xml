@@ -47,6 +47,7 @@
   <string name="action_save_pdf_content_description">Mentés PDF-ként</string>
   <string name="action_sender_emails_content_description">A feladó jövőbeli e-mailjeihez tartozó művelet beállítása</string>
   <string name="action_save_attachments_content_description">Mellékletek mentése</string>
+  <string name="action_more_content_description">More</string>
   <string name="common_error_loading_actions">Töltés sikertelen</string>
   <string name="yesterday">Tegnap</string>
   <!-- notification channels -->

@@ -37,5 +37,6 @@
   <string name="composer_error_store_draft_subject">Opslaan van het onderwerp van dit concept is mislukt</string>
   <string name="composer_error_store_draft_recipients">Opslaan van de ontvangers van dit concept is mislukt</string>
   <string name="composer_error_loading_draft">De inhoud van deze conceptversie is op dit moment niet beschikbaar. Bewerking zal eventuele al bestaande inhoud overschrijven.</string>
-  <string name="add_attachments_content_description">Add attachments</string>
+  <string name="composer_add_attachments_content_description">Add attachments</string>
+  <string name="composer_add_attachments_bottom_sheet_import_from">Import from…</string>
 </resources>

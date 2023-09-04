@@ -37,5 +37,6 @@
   <string name="composer_error_store_draft_subject">Bu taslağın konusu kaydedilemedi</string>
   <string name="composer_error_store_draft_recipients">Bu taslağın alıcıları kaydedilemedi</string>
   <string name="composer_error_loading_draft">Bu taslağın içeriği şu anda kullanılamıyor. Düzenleme daha önce var olan içerikleri değiştirecek.</string>
-  <string name="add_attachments_content_description">Add attachments</string>
+  <string name="composer_add_attachments_content_description">Add attachments</string>
+  <string name="composer_add_attachments_bottom_sheet_import_from">Import from…</string>
 </resources>

@@ -47,6 +47,7 @@
   <string name="action_save_pdf_content_description">PDFにして保存</string>
   <string name="action_sender_emails_content_description">この送信者からのメールに既定の動作を設定</string>
   <string name="action_save_attachments_content_description">添付ファイルを保存</string>
+  <string name="action_more_content_description">More</string>
   <string name="common_error_loading_actions">動作の読み込みに失敗</string>
   <string name="yesterday">昨日</string>
   <!-- notification channels -->

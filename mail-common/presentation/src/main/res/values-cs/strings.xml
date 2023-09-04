@@ -47,6 +47,7 @@
   <string name="action_save_pdf_content_description">Uložit jako PDF</string>
   <string name="action_sender_emails_content_description">Nastavit akci pro budoucí e-maily od tohoto odesílatele</string>
   <string name="action_save_attachments_content_description">Uložit přílohy</string>
+  <string name="action_more_content_description">More</string>
   <string name="common_error_loading_actions">Načtení akcí selhalo</string>
   <string name="yesterday">Včera</string>
   <!-- notification channels -->

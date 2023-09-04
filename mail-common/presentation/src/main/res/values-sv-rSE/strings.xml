@@ -47,6 +47,7 @@
   <string name="action_save_pdf_content_description">Spara som PDF</string>
   <string name="action_sender_emails_content_description">Ställ in åtgärd för framtida e-postmeddelanden från denna avsändare</string>
   <string name="action_save_attachments_content_description">Spara bilagorna</string>
+  <string name="action_more_content_description">Mer</string>
   <string name="common_error_loading_actions">Misslyckades ladda åtgärder</string>
   <string name="yesterday">Igår</string>
   <!-- notification channels -->

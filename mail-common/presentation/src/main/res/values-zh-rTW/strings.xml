@@ -47,6 +47,7 @@
   <string name="action_save_pdf_content_description">儲存為 PDF</string>
   <string name="action_sender_emails_content_description">設定動作套用於日後接獲寄件者傳送的電郵</string>
   <string name="action_save_attachments_content_description">儲存附件</string>
+  <string name="action_more_content_description">More</string>
   <string name="common_error_loading_actions">無法載入動作</string>
   <string name="yesterday">昨天</string>
   <!-- notification channels -->

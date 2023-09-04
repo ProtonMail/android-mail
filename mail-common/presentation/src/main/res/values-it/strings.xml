@@ -47,6 +47,7 @@
   <string name="action_save_pdf_content_description">Salva come PDF</string>
   <string name="action_sender_emails_content_description">Imposta un\'azione per tutte le email future che arriveranno da questo mittente</string>
   <string name="action_save_attachments_content_description">Salva allegati</string>
+  <string name="action_more_content_description">Altro</string>
   <string name="common_error_loading_actions">Il caricamento delle azioni non è andato a buon fine</string>
   <string name="yesterday">Ieri</string>
   <!-- notification channels -->

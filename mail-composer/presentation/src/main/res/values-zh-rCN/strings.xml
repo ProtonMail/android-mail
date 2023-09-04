@@ -37,5 +37,6 @@
   <string name="composer_error_store_draft_subject">无法存储此草稿的主题</string>
   <string name="composer_error_store_draft_recipients">无法存储此草稿的收件人信息</string>
   <string name="composer_error_loading_draft">此草稿的内容暂时无法加载，继续编辑将覆盖此前保存的内容。</string>
-  <string name="add_attachments_content_description">Add attachments</string>
+  <string name="composer_add_attachments_content_description">Add attachments</string>
+  <string name="composer_add_attachments_bottom_sheet_import_from">Import from…</string>
 </resources>

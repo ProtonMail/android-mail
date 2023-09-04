@@ -47,6 +47,7 @@
   <string name="action_save_pdf_content_description">Opslaan als PDF</string>
   <string name="action_sender_emails_content_description">Actie instellen voor toekomstige e-mails van deze afzender</string>
   <string name="action_save_attachments_content_description">Bijlagen opslaan</string>
+  <string name="action_more_content_description">More</string>
   <string name="common_error_loading_actions">Acties laden mislukt</string>
   <string name="yesterday">Gisteren</string>
   <!-- notification channels -->

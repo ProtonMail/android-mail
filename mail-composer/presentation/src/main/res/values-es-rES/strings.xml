@@ -37,5 +37,6 @@
   <string name="composer_error_store_draft_subject">Error al guardar el asunto de este borrador</string>
   <string name="composer_error_store_draft_recipients">Error al guardar los destinatarios de este borrador</string>
   <string name="composer_error_loading_draft">El contenido de este borrador no está disponible en este momento. Editarlo sobrescribirá cualquier contenido preexistente.</string>
-  <string name="add_attachments_content_description">Añadir un archivo adjunto</string>
+  <string name="composer_add_attachments_content_description">Add attachments</string>
+  <string name="composer_add_attachments_bottom_sheet_import_from">Import from…</string>
 </resources>

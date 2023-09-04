@@ -37,5 +37,6 @@
   <string name="composer_error_store_draft_subject">下書きのタイトルの保存に失敗しました</string>
   <string name="composer_error_store_draft_recipients">下書きの宛先の保存に失敗しました</string>
   <string name="composer_error_loading_draft">この草稿の内容は現時点では利用できません。編集すると既存の内容が上書きされます。</string>
-  <string name="add_attachments_content_description">添付ファイルの追加</string>
+  <string name="composer_add_attachments_content_description">Add attachments</string>
+  <string name="composer_add_attachments_bottom_sheet_import_from">Import from…</string>
 </resources>

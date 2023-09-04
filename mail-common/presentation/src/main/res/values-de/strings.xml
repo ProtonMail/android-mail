@@ -47,6 +47,7 @@
   <string name="action_save_pdf_content_description">Als PDF speichern</string>
   <string name="action_sender_emails_content_description">Aktion für zukünftige E-Mails von diesem Absender festlegen</string>
   <string name="action_save_attachments_content_description">Anhänge speichern</string>
+  <string name="action_more_content_description">Mehr</string>
   <string name="common_error_loading_actions">Aktionen konnten nicht geladen werden</string>
   <string name="yesterday">Gestern</string>
   <!-- notification channels -->

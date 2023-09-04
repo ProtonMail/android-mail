@@ -37,5 +37,6 @@
   <string name="composer_error_store_draft_subject">Збой захавання тэмы гэтага чарнавіка</string>
   <string name="composer_error_store_draft_recipients">Збой захавання атрымальнікаў гэтага чарнавіка</string>
   <string name="composer_error_loading_draft">Змесціва гэтага чарнавіка недаступна ў цяперашні час. Рэдагаванне перавызначыць любое змесціва, якое было створана да гэтага.</string>
-  <string name="add_attachments_content_description">Add attachments</string>
+  <string name="composer_add_attachments_content_description">Add attachments</string>
+  <string name="composer_add_attachments_bottom_sheet_import_from">Імпартаваць з…</string>
 </resources>

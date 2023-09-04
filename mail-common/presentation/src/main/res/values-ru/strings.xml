@@ -47,12 +47,13 @@
   <string name="action_save_pdf_content_description">Сохранить как PDF</string>
   <string name="action_sender_emails_content_description">Установить действие для последующих писем от этого отправителя</string>
   <string name="action_save_attachments_content_description">Сохранить вложения</string>
+  <string name="action_more_content_description">More</string>
   <string name="common_error_loading_actions">Неудачные действия при скачивании</string>
   <string name="yesterday">Вчера</string>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Вложения</string>
   <string name="attachment_download_notification_channel_description">Уведомления о скачивании вложений</string>
-  <string name="email_notification_channel_name">Emails</string>
-  <string name="email_notification_channel_description">Incoming email notifications</string>
+  <string name="email_notification_channel_name">Электронные письма</string>
+  <string name="email_notification_channel_description">Уведомления о входящей электронной почте</string>
   <string name="auth_badge_official">Официальный</string>
 </resources>

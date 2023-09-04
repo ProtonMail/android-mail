@@ -37,5 +37,6 @@
   <string name="composer_error_store_draft_subject">L\'enregistrement de l\'objet du brouillon n\'a pas abouti.</string>
   <string name="composer_error_store_draft_recipients">L\'enregistrement des destinataires du brouillon n\'a pas abouti.</string>
   <string name="composer_error_loading_draft">Le contenu de ce brouillon n\'est pas disponible pour l\'instant. Sa modification remplacera tout contenu déjà existant.</string>
-  <string name="add_attachments_content_description">Ajouter une pièce jointe</string>
+  <string name="composer_add_attachments_content_description">Ajouter des pièces jointes</string>
+  <string name="composer_add_attachments_bottom_sheet_import_from">Importer depuis…</string>
 </resources>

@@ -47,6 +47,7 @@
   <string name="action_save_pdf_content_description">保存为 PDF 文件</string>
   <string name="action_sender_emails_content_description">对此发件人今后的邮件设置收信规则</string>
   <string name="action_save_attachments_content_description">保存附件</string>
+  <string name="action_more_content_description">More</string>
   <string name="common_error_loading_actions">加载操作失败</string>
   <string name="yesterday">昨天</string>
   <!-- notification channels -->

@@ -37,5 +37,6 @@
   <string name="composer_error_store_draft_subject">Misslyckades att lagra ämnet för detta utkast</string>
   <string name="composer_error_store_draft_recipients">Misslyckades att lagra mottagare för detta utkast</string>
   <string name="composer_error_loading_draft">Innehållet i detta utkast är inte tillgängligt för närvarande. Redigering kommer att åsidosätta allt redan existerande innehåll.</string>
-  <string name="add_attachments_content_description">Lägg till bilagor</string>
+  <string name="composer_add_attachments_content_description">Lägg till bilagor</string>
+  <string name="composer_add_attachments_bottom_sheet_import_from">Importera från…</string>
 </resources>

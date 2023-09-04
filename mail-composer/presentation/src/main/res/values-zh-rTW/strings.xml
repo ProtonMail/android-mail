@@ -37,5 +37,6 @@
   <string name="composer_error_store_draft_subject">無法儲存此草稿主旨</string>
   <string name="composer_error_store_draft_recipients">無法儲存此草稿的收件者</string>
   <string name="composer_error_loading_draft">目前無法擷取該草稿的內容。編輯將覆寫任何預先存在的內容。</string>
-  <string name="add_attachments_content_description">增加附件檔案</string>
+  <string name="composer_add_attachments_content_description">Add attachments</string>
+  <string name="composer_add_attachments_bottom_sheet_import_from">Import from…</string>
 </resources>
