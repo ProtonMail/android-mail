@@ -30,7 +30,9 @@ import ch.protonmail.android.mailcomposer.domain.usecase.ResolveUserAddress
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.model.MimeType
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailSettings
 import com.github.mangstadt.vinnie.io.FoldedLineWriter
+import kotlinx.coroutines.flow.first
 import me.proton.core.crypto.common.context.CryptoContext
 import me.proton.core.crypto.common.pgp.SessionKey
 import me.proton.core.crypto.common.pgp.UnlockedKey
@@ -62,7 +64,8 @@ internal class SendMessage @Inject constructor(
     private val cryptoContext: CryptoContext,
     private val findLocalDraft: FindLocalDraft,
     private val obtainSendPreferences: ObtainSendPreferences,
-    private val generateSendMessagePackage: GenerateSendMessagePackage
+    private val generateSendMessagePackage: GenerateSendMessagePackage,
+    private val observeMailSettings: ObserveMailSettings
 ) {
 
     /**
@@ -78,6 +81,8 @@ internal class SendMessage @Inject constructor(
             .mapLeft { DataError.Local.NoDataCached }
             .bind()
 
+        val autoSaveContacts = observeMailSettings(userId).first()?.autoSaveContacts ?: false
+
         val recipients = localDraft.message.toList + localDraft.message.ccList + localDraft.message.bccList
 
         val sendPreferences = obtainSendPreferences(userId, recipients.map { it.address })
@@ -90,7 +95,7 @@ internal class SendMessage @Inject constructor(
             userId,
             localDraft.message.messageId.id,
             SendMessageBody(
-                autoSaveContacts = false.toInt(),
+                autoSaveContacts = autoSaveContacts.toInt(),
                 packages = messagePackages
             )
         )

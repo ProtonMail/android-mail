@@ -57,6 +57,7 @@ dependencies {
     implementation(project(":mail-composer:domain"))
     implementation(project(":mail-message:data"))
     implementation(project(":mail-message:domain"))
+    implementation(project(":mail-settings:domain"))
     implementation(project(":mail-label:domain"))
 
     testImplementation(Dependencies.testLibs)
