@@ -73,10 +73,10 @@ fun Home(
 ) {
     val navController = rememberNavController().withSentryObservableEffect()
     val scaffoldState = rememberScaffoldState()
-    val snackbarHostSuccessState = ProtonSnackbarHostState()
-    val snackbarHostWarningState = ProtonSnackbarHostState()
-    val snackbarHostNormState = ProtonSnackbarHostState()
-    val snackbarHostErrorState = ProtonSnackbarHostState()
+    val snackbarHostSuccessState = ProtonSnackbarHostState(defaultType = ProtonSnackbarType.SUCCESS)
+    val snackbarHostWarningState = ProtonSnackbarHostState(defaultType = ProtonSnackbarType.WARNING)
+    val snackbarHostNormState = ProtonSnackbarHostState(defaultType = ProtonSnackbarType.NORM)
+    val snackbarHostErrorState = ProtonSnackbarHostState(defaultType = ProtonSnackbarType.ERROR)
     val scope = rememberCoroutineScope()
     val state = rememberAsState(flow = viewModel.state, initial = HomeState.Initial)
 
