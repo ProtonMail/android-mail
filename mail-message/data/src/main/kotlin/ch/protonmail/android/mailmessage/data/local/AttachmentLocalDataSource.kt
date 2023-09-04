@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailmessage.data.local
 
 import java.io.File
+import android.net.Uri
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
@@ -73,6 +74,13 @@ interface AttachmentLocalDataSource {
         attachmentId: AttachmentId,
         encryptedAttachment: ByteArray,
         status: AttachmentWorkerStatus
+    )
+
+    suspend fun upsertAttachment(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId,
+        uri: Uri
     )
 
     suspend fun updateAttachmentDownloadStatus(

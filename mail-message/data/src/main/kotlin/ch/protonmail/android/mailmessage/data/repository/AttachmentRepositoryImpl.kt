@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmessage.data.repository
 
+import android.net.Uri
 import arrow.core.Either
 import arrow.core.continuations.either
 import arrow.core.left
@@ -108,4 +109,13 @@ class AttachmentRepositoryImpl @Inject constructor(
         messageId: MessageId,
         attachmentId: AttachmentId
     ): Flow<MessageAttachmentMetadata?> = localDataSource.observeAttachmentMetadata(userId, messageId, attachmentId)
+
+    override suspend fun saveAttachment(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId,
+        uri: Uri
+    ) {
+        localDataSource.upsertAttachment(userId, messageId, attachmentId, uri)
+    }
 }

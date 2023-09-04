@@ -360,4 +360,16 @@ class AttachmentRepositoryImplTest {
         assertEquals(emptyList(), result)
     }
 
+    @Test
+    fun `should call method to save attachment to local storage`() = runTest {
+        // Given
+        val uri = mockk<Uri>()
+        coEvery { localDataSource.upsertAttachment(userId, messageId, attachmentId, uri) } just runs
+
+        // When
+        repository.saveAttachment(userId, messageId, attachmentId, uri)
+
+        // Then
+        coVerify { localDataSource.upsertAttachment(userId, messageId, attachmentId, uri) }
+    }
 }

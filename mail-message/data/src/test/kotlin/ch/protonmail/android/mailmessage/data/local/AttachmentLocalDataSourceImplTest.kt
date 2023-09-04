@@ -25,8 +25,10 @@ import android.content.Context
 import android.net.Uri
 import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailcommon.data.file.FileInformation
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.mailmessage.data.local.dao.MessageAttachmentDao
 import ch.protonmail.android.mailmessage.data.local.dao.MessageAttachmentMetadataDao
 import ch.protonmail.android.mailmessage.data.local.entity.MessageAttachmentMetadataEntity
 import ch.protonmail.android.mailmessage.data.local.usecase.AttachmentDecryptionError
@@ -36,6 +38,7 @@ import ch.protonmail.android.mailmessage.data.mapper.toMessageAttachmentMetadata
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import ch.protonmail.android.testdata.message.MessageAttachmentEntityTestData
 import ch.protonmail.android.testdata.message.MessageAttachmentMetadataEntityTestData
 import io.mockk.Runs
 import io.mockk.coEvery
@@ -80,9 +83,11 @@ class AttachmentLocalDataSourceImplTest {
     )
 
     private val attachmentFileStorage = mockk<AttachmentFileStorage>()
-    private val attachmentDao = mockk<MessageAttachmentMetadataDao>(relaxUnitFun = true)
+    private val attachmentDao = mockk<MessageAttachmentDao>(relaxUnitFun = true)
+    private val attachmentMetadataDao = mockk<MessageAttachmentMetadataDao>(relaxUnitFun = true)
     private val messageDatabase = mockk<MessageDatabase> {
-        every { messageAttachmentMetadataDao() } returns attachmentDao
+        every { messageAttachmentDao() } returns attachmentDao
+        every { messageAttachmentMetadataDao() } returns attachmentMetadataDao
     }
     private val decryptAttachmentByteArray = mockk<DecryptAttachmentByteArray>()
     private val prepareAttachmentForSharing = mockk<PrepareAttachmentForSharing>()
@@ -111,7 +116,7 @@ class AttachmentLocalDataSourceImplTest {
     fun `should return attachment metadata when file is stored locally`() = runTest {
         // Given
         coEvery {
-            attachmentDao.observeAttachmentMetadata(userId, messageId, attachmentId)
+            attachmentMetadataDao.observeAttachmentMetadata(userId, messageId, attachmentId)
         } returns flowOf(messageAttachmentMetadataEntity)
 
         // When
@@ -129,7 +134,7 @@ class AttachmentLocalDataSourceImplTest {
     fun `should return null when uri is not stored`() = runTest {
         // Given
         coEvery {
-            attachmentDao.observeAttachmentMetadata(userId, messageId, attachmentId)
+            attachmentMetadataDao.observeAttachmentMetadata(userId, messageId, attachmentId)
         } returns flowOf(messageAttachmentMetadataEntity.copy(uri = null))
 
         // When
@@ -147,7 +152,7 @@ class AttachmentLocalDataSourceImplTest {
     fun `should return null when uri is stored but file doesn't exist`() = runTest {
         // Given
         coEvery {
-            attachmentDao.observeAttachmentMetadata(userId, messageId, attachmentId)
+            attachmentMetadataDao.observeAttachmentMetadata(userId, messageId, attachmentId)
         } returns flowOf(messageAttachmentMetadataEntity)
         every { mockContentResolver.openInputStream(mockUri) } returns null
 
@@ -192,7 +197,47 @@ class AttachmentLocalDataSourceImplTest {
         )
 
         // Then
-        coVerify { attachmentDao.insertOrUpdate(attachmentToStore) }
+        coVerify { attachmentMetadataDao.insertOrUpdate(attachmentToStore) }
+    }
+
+    @Test
+    fun `should store attachment metadata locally when saving the file to internal storage was successful`() = runTest {
+        // Given
+        val fileName = "name"
+        val fileSize = 123L
+        val fileMimeType = "mimeType"
+        val messageAttachmentEntity = MessageAttachmentEntityTestData.build(
+            userId = userId,
+            messageId = messageId,
+            attachmentId = attachmentId,
+            name = fileName,
+            size = fileSize,
+            mimeType = fileMimeType,
+            disposition = "attachment"
+        )
+        coEvery {
+            attachmentFileStorage.saveAttachment(userId, messageId.id, attachmentId.id, mockUri)
+        } returns FileInformation(fileName, fileSize, fileMimeType)
+
+        // When
+        attachmentLocalDataSource.upsertAttachment(userId, messageId, attachmentId, mockUri)
+
+        // Then
+        coVerify { attachmentDao.insertOrUpdate(messageAttachmentEntity) }
+    }
+
+    @Test
+    fun `should not store attachment metadata locally when saving the file to internal storage has failed`() = runTest {
+        // Given
+        coEvery {
+            attachmentFileStorage.saveAttachment(userId, messageId.id, attachmentId.id, mockUri)
+        } returns null
+
+        // When
+        attachmentLocalDataSource.upsertAttachment(userId, messageId, attachmentId, mockUri)
+
+        // Then
+        coVerify(exactly = 0) { attachmentDao.insertOrUpdate(any()) }
     }
 
     @Test
@@ -223,20 +268,20 @@ class AttachmentLocalDataSourceImplTest {
         )
 
         // Then
-        coVerify { attachmentDao.insertOrUpdate(attachmentToStore) }
+        coVerify { attachmentMetadataDao.insertOrUpdate(attachmentToStore) }
     }
 
     @Test
     fun `should return true when deleting attachment files and metadata from db was successful`() = runTest {
         // Given
-        coEvery { attachmentDao.deleteAttachmentMetadataForMessage(userId, messageId) } returns Unit
+        coEvery { attachmentMetadataDao.deleteAttachmentMetadataForMessage(userId, messageId) } returns Unit
 
         // When
         val result = attachmentLocalDataSource.deleteAttachments(userId, messageId)
 
         // Then
         assertTrue(result)
-        coVerify { attachmentDao.deleteAttachmentMetadataForMessage(userId, messageId) }
+        coVerify { attachmentMetadataDao.deleteAttachmentMetadataForMessage(userId, messageId) }
     }
 
     @Test
@@ -256,7 +301,7 @@ class AttachmentLocalDataSourceImplTest {
         )
 
         coEvery {
-            attachmentDao.getAttachmentsForUserMessagesAndStatus(
+            attachmentMetadataDao.getAttachmentsForUserMessagesAndStatus(
                 userId, listOf(MessageIdSample.Invoice), AttachmentWorkerStatus.Running
             )
         } returns listOf(attachment1, attachment2, attachment3)
@@ -280,7 +325,7 @@ class AttachmentLocalDataSourceImplTest {
     fun `should return empty list when no attachments are downloading for a user`() = runTest {
         // Given
         coEvery {
-            attachmentDao.getAttachmentsForUserMessagesAndStatus(
+            attachmentMetadataDao.getAttachmentsForUserMessagesAndStatus(
                 userId, listOf(MessageIdSample.Invoice), AttachmentWorkerStatus.Running
             )
         } returns emptyList()

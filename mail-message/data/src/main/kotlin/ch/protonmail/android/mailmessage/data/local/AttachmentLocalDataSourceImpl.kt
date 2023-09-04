@@ -28,6 +28,7 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.coroutines.IODispatcher
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailmessage.data.local.entity.MessageAttachmentEntity
 import ch.protonmail.android.mailmessage.data.local.entity.MessageAttachmentMetadataEntity
 import ch.protonmail.android.mailmessage.data.local.usecase.DecryptAttachmentByteArray
 import ch.protonmail.android.mailmessage.data.local.usecase.PrepareAttachmentForSharing
@@ -46,7 +47,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class AttachmentLocalDataSourceImpl @Inject constructor(
-    db: MessageDatabase,
+    private val db: MessageDatabase,
     private val attachmentFileStorage: AttachmentFileStorage,
     @ApplicationContext private val context: Context,
     private val decryptAttachmentByteArray: DecryptAttachmentByteArray,
@@ -54,13 +55,14 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
     @IODispatcher private val ioDispatcher: CoroutineDispatcher
 ) : AttachmentLocalDataSource {
 
-    private val attachmentDao by lazy { db.messageAttachmentMetadataDao() }
+    private val attachmentMetadataDao by lazy { db.messageAttachmentMetadataDao() }
+    private val attachmentDao by lazy { db.messageAttachmentDao() }
 
     override suspend fun observeAttachmentMetadata(
         userId: UserId,
         messageId: MessageId,
         attachmentId: AttachmentId
-    ) = attachmentDao.observeAttachmentMetadata(userId, messageId, attachmentId)
+    ) = attachmentMetadataDao.observeAttachmentMetadata(userId, messageId, attachmentId)
         .mapLatest { it?.toMessageAttachmentMetadata() }
 
 
@@ -97,7 +99,7 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
     }
 
     override suspend fun getDownloadingAttachmentsForMessages(userId: UserId, messageIds: List<MessageId>) =
-        attachmentDao.getAttachmentsForUserMessagesAndStatus(userId, messageIds, AttachmentWorkerStatus.Running)
+        attachmentMetadataDao.getAttachmentsForUserMessagesAndStatus(userId, messageIds, AttachmentWorkerStatus.Running)
             .map { it.toMessageAttachmentMetadata() }
 
     override suspend fun upsertAttachment(
@@ -111,7 +113,7 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
         decryptAttachmentByteArray(userId, messageId, attachmentId, encryptedAttachment).fold(
             ifLeft = {
                 Timber.e("Failed to decrypt attachment: $it")
-                attachmentDao.insertOrUpdate(
+                attachmentMetadataDao.insertOrUpdate(
                     MessageAttachmentMetadataEntity(
                         userId = userId,
                         messageId = messageId,
@@ -126,7 +128,7 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
                     Timber.e("Failed to prepare attachment for sharing: $it")
                     null
                 }
-                attachmentDao.insertOrUpdate(
+                attachmentMetadataDao.insertOrUpdate(
                     MessageAttachmentMetadataEntity(
                         userId = userId,
                         messageId = messageId,
@@ -143,13 +145,37 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
         )
     }
 
+    override suspend fun upsertAttachment(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId,
+        uri: Uri
+    ) {
+        attachmentFileStorage.saveAttachment(userId, messageId.id, attachmentId.id, uri)?.let { fileInformation ->
+            val messageAttachmentEntity = MessageAttachmentEntity(
+                userId = userId,
+                messageId = messageId,
+                attachmentId = attachmentId,
+                name = fileInformation.name,
+                size = fileInformation.size,
+                mimeType = fileInformation.mimeType,
+                disposition = "attachment",
+                keyPackets = null,
+                signature = null,
+                encSignature = null,
+                headers = emptyMap()
+            )
+            attachmentDao.insertOrUpdate(messageAttachmentEntity)
+        }
+    }
+
     override suspend fun updateAttachmentDownloadStatus(
         userId: UserId,
         messageId: MessageId,
         attachmentId: AttachmentId,
         status: AttachmentWorkerStatus
     ) {
-        attachmentDao.insertOrUpdate(
+        attachmentMetadataDao.insertOrUpdate(
             MessageAttachmentMetadataEntity(
                 userId = userId,
                 messageId = messageId,
@@ -178,7 +204,7 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
     }
 
     override suspend fun deleteAttachments(userId: UserId, messageId: MessageId): Boolean {
-        attachmentDao.deleteAttachmentMetadataForMessage(userId, messageId)
+        attachmentMetadataDao.deleteAttachmentMetadataForMessage(userId, messageId)
         return true
     }
 

@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmessage.domain.repository
 
+import android.net.Uri
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
@@ -59,4 +60,11 @@ interface AttachmentRepository {
         messageId: MessageId,
         attachmentId: AttachmentId
     ): Flow<MessageAttachmentMetadata?>
+
+    suspend fun saveAttachment(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId,
+        uri: Uri
+    )
 }

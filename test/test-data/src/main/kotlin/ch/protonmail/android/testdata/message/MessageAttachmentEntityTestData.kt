@@ -58,4 +58,29 @@ object MessageAttachmentEntityTestData {
             headers = emptyMap()
         )
 
+    fun build(
+        userId: UserId = UserIdSample.Primary,
+        messageId: MessageId = MessageIdSample.Invoice,
+        attachmentId: AttachmentId = AttachmentId("attachmentId"),
+        name: String = "name.jpg",
+        size: Long = 123,
+        mimeType: String = "image/jpeg",
+        disposition: String? = null,
+        keyPackets: String? = null,
+        signature: String? = null,
+        encSignature: String? = null,
+        headers: Map<String, String> = emptyMap()
+    ) = MessageAttachmentEntity(
+        userId = userId,
+        messageId = messageId,
+        attachmentId = attachmentId,
+        name = name,
+        size = size,
+        mimeType = mimeType,
+        disposition = disposition,
+        keyPackets = keyPackets,
+        signature = signature,
+        encSignature = encSignature,
+        headers = headers
+    )
 }
