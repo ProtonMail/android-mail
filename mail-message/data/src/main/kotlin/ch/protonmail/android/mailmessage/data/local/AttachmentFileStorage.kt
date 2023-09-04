@@ -19,11 +19,15 @@
 package ch.protonmail.android.mailmessage.data.local
 
 import java.io.File
+import android.net.Uri
+import ch.protonmail.android.mailcommon.data.file.ExternalFileStorage
+import ch.protonmail.android.mailcommon.data.file.FileInformation
 import ch.protonmail.android.mailcommon.data.file.InternalFileStorage
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 class AttachmentFileStorage @Inject constructor(
+    private val externalFileStorage: ExternalFileStorage,
     private val internalFileStorage: InternalFileStorage
 ) {
 
@@ -39,6 +43,19 @@ class AttachmentFileStorage @Inject constructor(
             InternalFileStorage.FileIdentifier(attachmentId),
             content
         )
+    }
+
+    suspend fun saveAttachment(
+        userId: UserId,
+        messageId: String,
+        attachmentId: String,
+        uri: Uri
+    ): FileInformation? {
+        return externalFileStorage.readFromUri(uri)?.let {
+            saveAttachment(userId, messageId, attachmentId, it)?.let {
+                externalFileStorage.getFileInformationFromUri(uri)
+            }
+        }
     }
 
     suspend fun saveAttachmentCached(

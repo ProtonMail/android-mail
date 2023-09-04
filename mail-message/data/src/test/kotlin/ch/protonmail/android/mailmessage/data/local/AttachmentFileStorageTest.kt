@@ -19,8 +19,17 @@
 package ch.protonmail.android.mailmessage.data.local
 
 import java.io.File
+import android.net.Uri
+import ch.protonmail.android.mailcommon.data.file.ExternalFileStorage
+import ch.protonmail.android.mailcommon.data.file.FileInformation
 import ch.protonmail.android.mailcommon.data.file.InternalFileStorage
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.mailmessage.data.local.AttachmentFileStorageTest.TestData.File
+import ch.protonmail.android.mailmessage.data.local.AttachmentFileStorageTest.TestData.UserId
+import ch.protonmail.android.mailmessage.data.local.AttachmentFileStorageTest.TestData.MessageId
+import ch.protonmail.android.mailmessage.data.local.AttachmentFileStorageTest.TestData.AttachmentId
+import ch.protonmail.android.mailmessage.data.local.AttachmentFileStorageTest.TestData.Content
+import ch.protonmail.android.mailmessage.data.local.AttachmentFileStorageTest.TestData.FileInfo
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -34,75 +43,104 @@ import kotlin.test.assertTrue
 
 internal class AttachmentFileStorageTest {
 
+    private val uri = mockk<Uri>()
+    private val externalFileStorageMock = mockk<ExternalFileStorage>()
     private val internalFileStorageMock = mockk<InternalFileStorage>()
-    private val attachmentFileStorage = AttachmentFileStorage(internalFileStorageMock)
+    private val attachmentFileStorage = AttachmentFileStorage(externalFileStorageMock, internalFileStorageMock)
 
     @Test
     fun `should save file in internal storage and return file when successful`() = runTest {
         // Given
-        val file = File("")
-        val userId = UserIdSample.Primary
-        val messageId = MessageIdSample.Invoice.id
-        val attachmentId = "attachmentId"
-        val content = "content".toByteArray()
         coEvery {
             internalFileStorageMock.writeFile(
-                userId = userId,
-                folder = InternalFileStorage.Folder.MessageAttachments(messageId),
-                fileIdentifier = InternalFileStorage.FileIdentifier(attachmentId),
-                content = content
+                userId = UserId,
+                folder = InternalFileStorage.Folder.MessageAttachments(MessageId),
+                fileIdentifier = InternalFileStorage.FileIdentifier(AttachmentId),
+                content = Content
             )
-        } returns file
+        } returns File
 
         // When
-        val result = attachmentFileStorage.saveAttachment(userId, messageId, attachmentId, content)
+        val result = attachmentFileStorage.saveAttachment(UserId, MessageId, AttachmentId, Content)
 
         // Then
-        assertEquals(file, result)
+        assertEquals(File, result)
+    }
+
+    @Test
+    fun `should save file provided by uri in internal storage and return file information when successful`() = runTest {
+        // Given
+        coEvery { externalFileStorageMock.readFromUri(uri) } returns Content
+        coEvery { externalFileStorageMock.getFileInformationFromUri(uri) } returns FileInfo
+        coEvery {
+            internalFileStorageMock.writeFile(
+                userId = UserId,
+                folder = InternalFileStorage.Folder.MessageAttachments(MessageId),
+                fileIdentifier = InternalFileStorage.FileIdentifier(AttachmentId),
+                content = Content
+            )
+        } returns File
+
+        // When
+        val result = attachmentFileStorage.saveAttachment(UserId, MessageId, AttachmentId, uri)
+
+        // Then
+        assertEquals(FileInfo, result)
     }
 
     @Test
     fun `should save file in cache storage and return file when successful`() = runTest {
         // Given
-        val file = File("")
-        val userId = UserIdSample.Primary
-        val messageId = MessageIdSample.Invoice.id
-        val attachmentId = "attachmentId"
-        val content = "content".toByteArray()
         coEvery {
             internalFileStorageMock.writeCachedFile(
-                userId = userId,
-                folder = InternalFileStorage.Folder.MessageAttachments(messageId),
-                fileIdentifier = InternalFileStorage.FileIdentifier(attachmentId),
-                content = content
+                userId = UserId,
+                folder = InternalFileStorage.Folder.MessageAttachments(MessageId),
+                fileIdentifier = InternalFileStorage.FileIdentifier(AttachmentId),
+                content = Content
             )
-        } returns file
+        } returns File
 
         // When
-        val result = attachmentFileStorage.saveAttachmentCached(userId, messageId, attachmentId, content)
+        val result = attachmentFileStorage.saveAttachmentCached(UserId, MessageId, AttachmentId, Content)
 
         // Then
-        assertEquals(file, result)
+        assertEquals(File, result)
     }
 
     @Test
     fun `should return null when saving file in internal storage fails`() = runTest {
         // Given
-        val userId = UserIdSample.Primary
-        val messageId = MessageIdSample.Invoice.id
-        val attachmentId = "attachmentId"
-        val content = "content".toByteArray()
         coEvery {
             internalFileStorageMock.writeFile(
-                userId = userId,
-                folder = InternalFileStorage.Folder.MessageAttachments(messageId),
-                fileIdentifier = InternalFileStorage.FileIdentifier(attachmentId),
-                content = content
+                userId = UserId,
+                folder = InternalFileStorage.Folder.MessageAttachments(MessageId),
+                fileIdentifier = InternalFileStorage.FileIdentifier(AttachmentId),
+                content = Content
             )
         } returns null
 
         // When
-        val result = attachmentFileStorage.saveAttachment(userId, messageId, attachmentId, content)
+        val result = attachmentFileStorage.saveAttachment(UserId, MessageId, AttachmentId, Content)
+
+        // Then
+        assertNull(result)
+    }
+
+    @Test
+    fun `should return null when saving file provided by uri in internal storage fails`() = runTest {
+        // Given
+        coEvery { externalFileStorageMock.readFromUri(uri) } returns Content
+        coEvery {
+            internalFileStorageMock.writeFile(
+                userId = UserId,
+                folder = InternalFileStorage.Folder.MessageAttachments(MessageId),
+                fileIdentifier = InternalFileStorage.FileIdentifier(AttachmentId),
+                content = Content
+            )
+        } returns null
+
+        // When
+        val result = attachmentFileStorage.saveAttachment(UserId, MessageId, AttachmentId, uri)
 
         // Then
         assertNull(result)
@@ -111,21 +149,17 @@ internal class AttachmentFileStorageTest {
     @Test
     fun `should return null when saving file in cache storage fails`() = runTest {
         // Given
-        val userId = UserIdSample.Primary
-        val messageId = MessageIdSample.Invoice.id
-        val attachmentId = "attachmentId"
-        val content = "content".toByteArray()
         coEvery {
             internalFileStorageMock.writeCachedFile(
-                userId = userId,
-                folder = InternalFileStorage.Folder.MessageAttachments(messageId),
-                fileIdentifier = InternalFileStorage.FileIdentifier(attachmentId),
-                content = content
+                userId = UserId,
+                folder = InternalFileStorage.Folder.MessageAttachments(MessageId),
+                fileIdentifier = InternalFileStorage.FileIdentifier(AttachmentId),
+                content = Content
             )
         } returns null
 
         // When
-        val result = attachmentFileStorage.saveAttachmentCached(userId, messageId, attachmentId, content)
+        val result = attachmentFileStorage.saveAttachmentCached(UserId, MessageId, AttachmentId, Content)
 
         // Then
         assertNull(result)
@@ -134,103 +168,87 @@ internal class AttachmentFileStorageTest {
     @Test
     fun `should read file from internal storage and return file when successful`() = runTest {
         // Given
-        val file = File("")
-        val userId = UserIdSample.Primary
-        val messageId = MessageIdSample.Invoice.id
-        val attachmentId = "attachmentId"
         coEvery {
             internalFileStorageMock.getFile(
-                userId = userId,
-                folder = InternalFileStorage.Folder.MessageAttachments(messageId),
-                fileIdentifier = InternalFileStorage.FileIdentifier(attachmentId)
+                userId = UserId,
+                folder = InternalFileStorage.Folder.MessageAttachments(MessageId),
+                fileIdentifier = InternalFileStorage.FileIdentifier(AttachmentId)
             )
-        } returns file
+        } returns File
 
         // When
-        val result = attachmentFileStorage.readAttachment(userId, messageId, attachmentId)
+        val result = attachmentFileStorage.readAttachment(UserId, MessageId, AttachmentId)
 
         // Then
-        assertEquals(file, result)
+        assertEquals(File, result)
     }
 
     @Test
     fun `should read file from cache storage and return file when successful`() = runTest {
         // Given
-        val file = File("")
-        val userId = UserIdSample.Primary
-        val messageId = MessageIdSample.Invoice.id
-        val attachmentId = "attachmentId"
         coEvery {
             internalFileStorageMock.getCachedFile(
-                userId = userId,
-                folder = InternalFileStorage.Folder.MessageAttachments(messageId),
-                fileIdentifier = InternalFileStorage.FileIdentifier(attachmentId)
+                userId = UserId,
+                folder = InternalFileStorage.Folder.MessageAttachments(MessageId),
+                fileIdentifier = InternalFileStorage.FileIdentifier(AttachmentId)
             )
-        } returns file
+        } returns File
 
         // When
-        val result = attachmentFileStorage.readCachedAttachment(userId, messageId, attachmentId)
+        val result = attachmentFileStorage.readCachedAttachment(UserId, MessageId, AttachmentId)
 
         // Then
-        assertEquals(file, result)
+        assertEquals(File, result)
     }
 
     @Test
     fun `should throw exception when reading file from internal storage fails`() = runTest {
         // Given
-        val userId = UserIdSample.Primary
-        val messageId = MessageIdSample.Invoice.id
-        val attachmentId = "attachmentId"
         coEvery {
             internalFileStorageMock.getFile(
-                userId = userId,
-                folder = InternalFileStorage.Folder.MessageAttachments(messageId),
-                fileIdentifier = InternalFileStorage.FileIdentifier(attachmentId)
+                userId = UserId,
+                folder = InternalFileStorage.Folder.MessageAttachments(MessageId),
+                fileIdentifier = InternalFileStorage.FileIdentifier(AttachmentId)
             )
         } returns null
 
         // Then
         assertFailsWith<AttachmentFileReadException> {
             // When
-            attachmentFileStorage.readAttachment(userId, messageId, attachmentId)
+            attachmentFileStorage.readAttachment(UserId, MessageId, AttachmentId)
         }
     }
 
     @Test
     fun `should throw exception when reading file from cache storage fails`() = runTest {
         // Given
-        val userId = UserIdSample.Primary
-        val messageId = MessageIdSample.Invoice.id
-        val attachmentId = "attachmentId"
         coEvery {
             internalFileStorageMock.getCachedFile(
-                userId = userId,
-                folder = InternalFileStorage.Folder.MessageAttachments(messageId),
-                fileIdentifier = InternalFileStorage.FileIdentifier(attachmentId)
+                userId = UserId,
+                folder = InternalFileStorage.Folder.MessageAttachments(MessageId),
+                fileIdentifier = InternalFileStorage.FileIdentifier(AttachmentId)
             )
         } returns null
 
         // Then
         assertFailsWith<AttachmentFileReadException> {
             // When
-            attachmentFileStorage.readCachedAttachment(userId, messageId, attachmentId)
+            attachmentFileStorage.readCachedAttachment(UserId, MessageId, AttachmentId)
         }
     }
 
     @Test
     fun `should delete all files connected to a message from internal storage and return true on success`() = runTest {
         // Given
-        val userId = UserIdSample.Primary
-        val messageId = MessageIdSample.Invoice.id
         coEvery {
             internalFileStorageMock.deleteFolder(
-                userId = userId,
-                folder = InternalFileStorage.Folder.MessageAttachments(messageId)
+                userId = UserId,
+                folder = InternalFileStorage.Folder.MessageAttachments(MessageId)
             )
         } returns true
 
         // When
-        val result = attachmentFileStorage.deleteAttachmentsOfMessage(userId, messageId)
+        val result = attachmentFileStorage.deleteAttachmentsOfMessage(UserId, MessageId)
 
         // Then
         assertTrue(result)
@@ -240,17 +258,15 @@ internal class AttachmentFileStorageTest {
     fun `should delete all cached files connected to a message from internal storage and return true on success`() =
         runTest {
             // Given
-            val userId = UserIdSample.Primary
-            val messageId = MessageIdSample.Invoice.id
             coEvery {
                 internalFileStorageMock.deleteCachedFolder(
-                    userId = userId,
-                    folder = InternalFileStorage.Folder.MessageAttachments(messageId)
+                    userId = UserId,
+                    folder = InternalFileStorage.Folder.MessageAttachments(MessageId)
                 )
             } returns true
 
             // When
-            val result = attachmentFileStorage.deleteCachedAttachmentsOfMessage(userId, messageId)
+            val result = attachmentFileStorage.deleteCachedAttachmentsOfMessage(UserId, MessageId)
 
             // Then
             assertTrue(result)
@@ -259,17 +275,15 @@ internal class AttachmentFileStorageTest {
     @Test
     fun `should return false when deleting all files connected to a message from internal fails`() = runTest {
         // Given
-        val userId = UserIdSample.Primary
-        val messageId = MessageIdSample.Invoice.id
         coEvery {
             internalFileStorageMock.deleteFolder(
-                userId = userId,
-                folder = InternalFileStorage.Folder.MessageAttachments(messageId)
+                userId = UserId,
+                folder = InternalFileStorage.Folder.MessageAttachments(MessageId)
             )
         } returns false
 
         // When
-        val result = attachmentFileStorage.deleteAttachmentsOfMessage(userId, messageId)
+        val result = attachmentFileStorage.deleteAttachmentsOfMessage(UserId, MessageId)
 
         // Then
         assertFalse(result)
@@ -278,19 +292,27 @@ internal class AttachmentFileStorageTest {
     @Test
     fun `should return false when deleting all cached files connected to a message from internal fails`() = runTest {
         // Given
-        val userId = UserIdSample.Primary
-        val messageId = MessageIdSample.Invoice.id
         coEvery {
             internalFileStorageMock.deleteCachedFolder(
-                userId = userId,
-                folder = InternalFileStorage.Folder.MessageAttachments(messageId)
+                userId = UserId,
+                folder = InternalFileStorage.Folder.MessageAttachments(MessageId)
             )
         } returns false
 
         // When
-        val result = attachmentFileStorage.deleteCachedAttachmentsOfMessage(userId, messageId)
+        val result = attachmentFileStorage.deleteCachedAttachmentsOfMessage(UserId, MessageId)
 
         // Then
         assertFalse(result)
+    }
+
+    object TestData {
+
+        val File = File("")
+        val FileInfo = FileInformation("name", 123, "mimeType")
+        val UserId = UserIdSample.Primary
+        val MessageId = MessageIdSample.Invoice.id
+        val Content = "content".toByteArray()
+        const val AttachmentId = "attachmentId"
     }
 }
