@@ -70,7 +70,7 @@ class GenerateSendMessagePackage @Inject constructor(
                             attachmentKeyPackets = encryptedAttachmentKeyPackets
                         )
                     ),
-                    mimeType = MimeType.PlainText.value,
+                    mimeType = sendPreferences.mimeType.value,
                     body = Base64.encode(encryptedBodyDataPacket),
                     type = PackageType.ProtonMail.type
                 )
@@ -120,7 +120,7 @@ class GenerateSendMessagePackage @Inject constructor(
                     addresses = mapOf(
                         recipientEmail to SendMessagePackage.Address.ExternalCleartext(signature = false.toInt())
                     ),
-                    mimeType = MimeType.PlainText.value,
+                    mimeType = sendPreferences.mimeType.value,
                     body = Base64.encode(encryptedBodyDataPacket),
                     type = PackageType.Cleartext.type,
                     bodyKey = SendMessagePackage.Key(Base64.encode(decryptedBodySessionKey.key), SessionKeyAlgorithm),
