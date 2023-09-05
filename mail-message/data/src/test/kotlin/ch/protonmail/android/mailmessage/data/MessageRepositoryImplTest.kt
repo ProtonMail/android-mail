@@ -43,6 +43,7 @@ import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
 import ch.protonmail.android.mailpagination.domain.model.PageFilter
 import ch.protonmail.android.mailpagination.domain.model.PageKey
+import ch.protonmail.android.testdata.message.MessageAttachmentTestData
 import ch.protonmail.android.testdata.message.MessageBodyTestData
 import ch.protonmail.android.testdata.message.MessageTestData
 import io.mockk.Called
@@ -93,6 +94,7 @@ class MessageRepositoryImplTest {
         coEvery {
             observeMessageWithBody(userId = any(), messageId = any())
         } returns flowOf(MessageWithBody(MessageTestData.message, MessageBodyTestData.messageBody))
+        every { observeMessageAttachments(any(), any()) } returns flowOf(listOf(MessageAttachmentTestData.invoice))
     }
 
     private val messageRepository = MessageRepositoryImpl(
@@ -304,6 +306,21 @@ class MessageRepositoryImplTest {
             coVerify(exactly = 0) {
                 localDataSource.upsertMessageWithBody(userId, any())
             }
+        }
+    }
+
+    @Test
+    fun `observe message attachments calls the local data source and returns the result`() = runTest {
+        // Given
+        val messageId = MessageIdSample.Invoice
+        val expected = listOf(MessageAttachmentTestData.invoice)
+
+        // When
+        messageRepository.observeMessageAttachments(userId, messageId).test {
+
+            // Then
+            assertEquals(expected, awaitItem())
+            awaitComplete()
         }
     }
 

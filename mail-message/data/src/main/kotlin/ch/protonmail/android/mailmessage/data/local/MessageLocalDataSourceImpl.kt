@@ -30,6 +30,7 @@ import ch.protonmail.android.mailmessage.data.local.relation.MessageWithBodyEnti
 import ch.protonmail.android.mailmessage.data.mapper.MessageAttachmentEntityMapper
 import ch.protonmail.android.mailmessage.data.mapper.MessageWithBodyEntityMapper
 import ch.protonmail.android.mailmessage.domain.model.Message
+import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailpagination.data.local.getClippedPageKey
@@ -40,6 +41,7 @@ import ch.protonmail.android.mailpagination.domain.model.PageKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
@@ -137,6 +139,11 @@ class MessageLocalDataSourceImpl @Inject constructor(
             }
         }
     }
+
+    override fun observeMessageAttachments(userId: UserId, messageId: MessageId): Flow<List<MessageAttachment>> =
+        messageAttachmentDao.observeMessageAttachmentEntities(userId, messageId).map { messageAttachmentEntities ->
+            messageAttachmentEntities.map { messageAttachmentEntityMapper.toMessageAttachment(it) }
+        }
 
     override suspend fun upsertMessageWithBody(userId: UserId, messageWithBody: MessageWithBody) = db.inTransaction {
         upsertMessage(messageWithBody.message)

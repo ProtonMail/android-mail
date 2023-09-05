@@ -53,6 +53,7 @@ import ch.protonmail.android.mailpagination.domain.model.OrderDirection
 import ch.protonmail.android.mailpagination.domain.model.PageItemType
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.testdata.message.MessageAttachmentEntityTestData
+import ch.protonmail.android.testdata.message.MessageAttachmentTestData
 import ch.protonmail.android.testdata.message.MessageBodyEntityTestData
 import ch.protonmail.android.testdata.message.MessageBodyTestData
 import ch.protonmail.android.testdata.message.MessageEntityTestData
@@ -334,6 +335,21 @@ class MessageLocalDataSourceImplTest {
 
         // When
         messageLocalDataSource.observeMessageWithBody(userId1, observedMessageId).test {
+
+            // Then
+            assertEquals(expected, awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `observe message attachments returns a list of attachments`() = runTest {
+        // Given
+        val messageId = MessageIdSample.Invoice
+        val expected = listOf(MessageAttachmentTestData.invoice)
+
+        // When
+        messageLocalDataSource.observeMessageAttachments(userId1, messageId).test {
 
             // Then
             assertEquals(expected, awaitItem())

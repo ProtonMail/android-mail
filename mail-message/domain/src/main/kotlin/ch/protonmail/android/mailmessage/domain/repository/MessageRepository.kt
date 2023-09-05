@@ -23,6 +23,7 @@ import arrow.core.Nel
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.domain.model.Message
+import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailpagination.domain.model.PageKey
@@ -75,6 +76,11 @@ interface MessageRepository {
      * Observe the [MessageWithBody] for a given [MessageId], for [userId]
      */
     fun observeMessageWithBody(userId: UserId, messageId: MessageId): Flow<Either<DataError, MessageWithBody>>
+
+    /**
+     * Observe the list of [MessageAttachment] for a given [MessageId], for [userId]
+     */
+    fun observeMessageAttachments(userId: UserId, messageId: MessageId): Flow<List<MessageAttachment>>
 
     /**
      * Get the [MessageWithBody] for a given [MessageId], for [userId]

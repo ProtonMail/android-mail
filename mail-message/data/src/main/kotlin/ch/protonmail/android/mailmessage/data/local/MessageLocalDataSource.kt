@@ -22,6 +22,7 @@ import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.domain.model.Message
+import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailpagination.domain.model.PageKey
@@ -111,6 +112,11 @@ interface MessageLocalDataSource {
      * Observe [MessageWithBody] by [messageId] for this [userId].
      */
     fun observeMessageWithBody(userId: UserId, messageId: MessageId): Flow<MessageWithBody?>
+
+    /**
+     * Observe [MessageAttachment] by [messageId] for this [userId].
+     */
+    fun observeMessageAttachments(userId: UserId, messageId: MessageId): Flow<List<MessageAttachment>>
 
     /**
      * Update or insert [MessageWithBody] for this [userId].
