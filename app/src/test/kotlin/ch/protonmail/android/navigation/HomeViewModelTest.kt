@@ -23,8 +23,7 @@ import ch.protonmail.android.mailcommon.domain.sample.UserSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcomposer.domain.ObserveSendingDraftStates
-import ch.protonmail.android.mailcomposer.domain.model.DraftSyncState
-import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
+import ch.protonmail.android.mailcomposer.domain.UpdateSendingDraftState
 import ch.protonmail.android.mailcomposer.domain.sample.DraftStateSample
 import ch.protonmail.android.mailcomposer.presentation.model.MessageSendingUiModel.MessageSent
 import ch.protonmail.android.mailcomposer.presentation.model.MessageSendingUiModel.SendMessageError
@@ -55,9 +54,6 @@ class HomeViewModelTest {
     private val user = UserSample.Primary
 
     private val networkManager = mockk<NetworkManager>()
-    private val draftStateRepositoryMock = mockk<DraftStateRepository> {
-        every { observeAll(any()) } returns flowOf(emptyList())
-    }
 
     private val observePrimaryUserMock = mockk<ObservePrimaryUser> {
         every { this@mockk() } returns MutableStateFlow<User?>(user)
@@ -67,8 +63,13 @@ class HomeViewModelTest {
         every { this@mockk.invoke(any()) } returns flowOf(emptyList())
     }
 
+    private val updateSendingDraftState = mockk<UpdateSendingDraftState> {
+        coJustRun { this@mockk.resetErrorState(user.userId, any()) }
+        coJustRun { this@mockk.deleteDraftState(user.userId, any()) }
+    }
+
     private val homeViewModel by lazy {
-        HomeViewModel(networkManager, observeSendingDraftStates, draftStateRepositoryMock, observePrimaryUserMock)
+        HomeViewModel(networkManager, observeSendingDraftStates, updateSendingDraftState, observePrimaryUserMock)
     }
 
     @BeforeTest
@@ -230,9 +231,7 @@ class HomeViewModelTest {
             DraftStateSample.RemoteDraftState
         )
         every { networkManager.observe() } returns flowOf(NetworkStatus.Metered)
-        every { draftStateRepositoryMock.observeAll(any()) } returns flowOf(
-            allDraftStates
-        )
+        every { observeSendingDraftStates(user.userId) } returns flowOf(allDraftStates)
 
         // When
         homeViewModel.state.test {
@@ -253,16 +252,16 @@ class HomeViewModelTest {
         val userId = user.userId
         val messageIds = listOf(MessageIdSample.NewDraftWithSubject, MessageIdSample.NewDraftWithSubjectAndBody)
         val action = HomeAction.MessageSendingErrorShown(SendMessageError(userId, messageIds))
-        coJustRun { draftStateRepositoryMock.updateDraftSyncState(userId, messageIds[0], DraftSyncState.Synchronized) }
-        coJustRun { draftStateRepositoryMock.updateDraftSyncState(userId, messageIds[1], DraftSyncState.Synchronized) }
+        coJustRun { updateSendingDraftState.resetErrorState(userId, messageIds[0]) }
+        coJustRun { updateSendingDraftState.resetErrorState(userId, messageIds[1]) }
 
         // When
         homeViewModel.submit(action)
 
         // Then
         coVerifyOrder {
-            draftStateRepositoryMock.updateDraftSyncState(userId, messageIds[0], DraftSyncState.Synchronized)
-            draftStateRepositoryMock.updateDraftSyncState(userId, messageIds[1], DraftSyncState.Synchronized)
+            updateSendingDraftState.resetErrorState(userId, messageIds[0])
+            updateSendingDraftState.resetErrorState(userId, messageIds[1])
         }
     }
 
@@ -272,16 +271,16 @@ class HomeViewModelTest {
         val userId = user.userId
         val messageIds = listOf(MessageIdSample.NewDraftWithSubject, MessageIdSample.NewDraftWithSubjectAndBody)
         val action = HomeAction.MessageSentShown(MessageSent(userId, messageIds))
-        coJustRun { draftStateRepositoryMock.deleteDraftState(userId, messageIds[0]) }
-        coJustRun { draftStateRepositoryMock.deleteDraftState(userId, messageIds[1]) }
+        coJustRun { updateSendingDraftState.deleteDraftState(userId, messageIds[0]) }
+        coJustRun { updateSendingDraftState.deleteDraftState(userId, messageIds[1]) }
 
         // When
         homeViewModel.submit(action)
 
         // Then
         coVerifyOrder {
-            draftStateRepositoryMock.deleteDraftState(userId, messageIds[0])
-            draftStateRepositoryMock.deleteDraftState(userId, messageIds[1])
+            updateSendingDraftState.deleteDraftState(userId, messageIds[0])
+            updateSendingDraftState.deleteDraftState(userId, messageIds[1])
         }
     }
 }

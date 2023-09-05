@@ -23,9 +23,9 @@ import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcomposer.domain.ObserveSendingDraftStates
+import ch.protonmail.android.mailcomposer.domain.UpdateSendingDraftState
 import ch.protonmail.android.mailcomposer.domain.model.DraftState
 import ch.protonmail.android.mailcomposer.domain.model.DraftSyncState
-import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailcomposer.presentation.model.MessageSendingUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.MessageSendingUiModel.MessageSent
 import ch.protonmail.android.mailcomposer.presentation.model.MessageSendingUiModel.SendMessageError
@@ -49,7 +49,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val networkManager: NetworkManager,
     private val observeSendingDraftStates: ObserveSendingDraftStates,
-    private val draftStateRepository: DraftStateRepository,
+    private val updateSendingDraftState: UpdateSendingDraftState,
     observePrimaryUser: ObservePrimaryUser
 ) : ViewModel() {
 
@@ -79,10 +79,10 @@ class HomeViewModel @Inject constructor(
     internal suspend fun submit(action: HomeAction) {
         when (action) {
             is HomeAction.MessageSendingErrorShown -> action.messageError.messageIds.forEach {
-                draftStateRepository.updateDraftSyncState(action.messageError.userId, it, DraftSyncState.Synchronized)
+                updateSendingDraftState.resetErrorState(action.messageError.userId, it)
             }
             is HomeAction.MessageSentShown -> action.messageSent.messageIds.forEach {
-                draftStateRepository.deleteDraftState(action.messageSent.userId, it)
+                updateSendingDraftState.deleteDraftState(action.messageSent.userId, it)
             }
         }
     }
