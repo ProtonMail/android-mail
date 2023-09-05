@@ -18,10 +18,10 @@
 
 package ch.protonmail.android.testdata.message
 
-import ch.protonmail.android.maildetail.presentation.model.MessageBodyAttachmentsUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.MimeTypeUiModel
-import ch.protonmail.android.maildetail.presentation.sample.AttachmentUiModelSample
+import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
+import ch.protonmail.android.mailmessage.presentation.sample.AttachmentUiModelSample
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 
@@ -30,7 +30,7 @@ object MessageBodyUiModelTestData {
     val plainTextMessageBodyUiModel = buildMessageBodyUiModel()
 
     val messageBodyWithAttachmentsUiModel = buildMessageBodyUiModel(
-        attachments = MessageBodyAttachmentsUiModel(
+        attachments = AttachmentGroupUiModel(
             limit = 3,
             attachments = listOf(
                 AttachmentUiModelSample.invoice,
@@ -61,7 +61,7 @@ object MessageBodyUiModelTestData {
         shouldShowRemoteContent: Boolean = false,
         shouldShowEmbeddedImagesBanner: Boolean = false,
         shouldShowRemoteContentBanner: Boolean = false,
-        attachments: MessageBodyAttachmentsUiModel? = null
+        attachments: AttachmentGroupUiModel? = null
     ): MessageBodyUiModel {
         return MessageBodyUiModel(
             messageBody = messageBody,

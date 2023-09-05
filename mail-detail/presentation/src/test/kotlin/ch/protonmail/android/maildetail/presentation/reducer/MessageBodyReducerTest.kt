@@ -18,14 +18,14 @@
 
 package ch.protonmail.android.maildetail.presentation.reducer
 
-import ch.protonmail.android.maildetail.presentation.model.MessageBodyAttachmentsUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
-import ch.protonmail.android.maildetail.presentation.sample.AttachmentUiModelSample
+import ch.protonmail.android.mailmessage.presentation.sample.AttachmentUiModelSample
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
+import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
 import ch.protonmail.android.testdata.message.MessageBodyUiModelTestData
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -93,7 +93,7 @@ class MessageBodyReducerTest(
                 ),
                 MessageBodyState.Data(
                     MessageBodyUiModelTestData.buildMessageBodyUiModel(
-                        attachments = MessageBodyAttachmentsUiModel(
+                        attachments = AttachmentGroupUiModel(
                             limit = 3,
                             attachments = listOf(
                                 AttachmentUiModelSample.invoiceStatusRunning,

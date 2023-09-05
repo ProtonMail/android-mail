@@ -16,11 +16,19 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.extensions
+package ch.protonmail.android.mailmessage.presentation.mapper
 
-import android.content.Context
-import android.text.format.Formatter
+import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentUiModel
+import javax.inject.Inject
 
-fun List<AttachmentUiModel>.getTotalAttachmentByteSizeReadable(context: Context): String =
-    this.sumOf { it.size }.let { Formatter.formatShortFileSize(context, it) }
+class AttachmentUiModelMapper @Inject constructor() {
+
+    fun toUiModel(attachment: MessageAttachment) = AttachmentUiModel(
+        attachmentId = attachment.attachmentId.id,
+        fileName = attachment.name.split(".").dropLast(1).joinToString("."),
+        extension = attachment.name.split(".").last(),
+        size = attachment.size,
+        mimeType = attachment.mimeType
+    )
+}

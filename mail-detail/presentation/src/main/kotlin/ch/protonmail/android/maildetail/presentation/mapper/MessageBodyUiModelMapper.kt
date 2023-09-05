@@ -22,8 +22,6 @@ import ch.protonmail.android.maildetail.domain.usecase.DoesMessageBodyHaveEmbedd
 import ch.protonmail.android.maildetail.domain.usecase.DoesMessageBodyHaveRemoteContent
 import ch.protonmail.android.maildetail.domain.usecase.ShouldShowEmbeddedImages
 import ch.protonmail.android.maildetail.domain.usecase.ShouldShowRemoteContent
-import ch.protonmail.android.maildetail.presentation.model.AttachmentUiModel
-import ch.protonmail.android.maildetail.presentation.model.MessageBodyAttachmentsUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.MimeTypeUiModel
 import ch.protonmail.android.maildetail.presentation.usecase.InjectCssIntoDecryptedMessageBody
@@ -31,10 +29,13 @@ import ch.protonmail.android.maildetail.presentation.usecase.SanitizeHtmlOfDecry
 import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.model.GetDecryptedMessageBodyError
 import ch.protonmail.android.mailmessage.domain.model.MimeType
+import ch.protonmail.android.mailmessage.presentation.mapper.AttachmentUiModelMapper
+import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 class MessageBodyUiModelMapper @Inject constructor(
+    private val attachmentUiModelMapper: AttachmentUiModelMapper,
     private val doesMessageBodyHaveEmbeddedImages: DoesMessageBodyHaveEmbeddedImages,
     private val doesMessageBodyHaveRemoteContent: DoesMessageBodyHaveRemoteContent,
     private val injectCssIntoDecryptedMessageBody: InjectCssIntoDecryptedMessageBody,
@@ -65,15 +66,9 @@ class MessageBodyUiModelMapper @Inject constructor(
             shouldShowEmbeddedImagesBanner = !shouldShowEmbeddedImages && doesMessageBodyHaveEmbeddedImages,
             shouldShowRemoteContentBanner = !shouldShowRemoteContent && doesMessageBodyHaveRemoteContent,
             attachments = if (decryptedMessageBody.attachments.isNotEmpty()) {
-                MessageBodyAttachmentsUiModel(
+                AttachmentGroupUiModel(
                     attachments = decryptedMessageBody.attachments.map {
-                        AttachmentUiModel(
-                            attachmentId = it.attachmentId.id,
-                            fileName = it.name.split(".").dropLast(1).joinToString("."),
-                            extension = it.name.split(".").last(),
-                            size = it.size,
-                            mimeType = it.mimeType
-                        )
+                        attachmentUiModelMapper.toUiModel(it)
                     }
                 )
             } else null

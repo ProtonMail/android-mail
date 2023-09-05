@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.model
 
-import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
+import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 
 data class MessageBodyUiModel(
@@ -29,26 +29,10 @@ data class MessageBodyUiModel(
     val shouldShowRemoteContent: Boolean,
     val shouldShowEmbeddedImagesBanner: Boolean,
     val shouldShowRemoteContentBanner: Boolean,
-    val attachments: MessageBodyAttachmentsUiModel?
+    val attachments: AttachmentGroupUiModel?
 )
 
 enum class MimeTypeUiModel(val value: String) {
     PlainText("text/plain"),
     Html("text/html")
 }
-
-const val DEFAULT_ATTACHMENT_LIMIT = 3
-
-data class MessageBodyAttachmentsUiModel(
-    val limit: Int = DEFAULT_ATTACHMENT_LIMIT,
-    val attachments: List<AttachmentUiModel>
-)
-
-data class AttachmentUiModel(
-    val attachmentId: String,
-    val fileName: String,
-    val extension: String,
-    val size: Long,
-    val mimeType: String,
-    val status: AttachmentWorkerStatus? = null
-)

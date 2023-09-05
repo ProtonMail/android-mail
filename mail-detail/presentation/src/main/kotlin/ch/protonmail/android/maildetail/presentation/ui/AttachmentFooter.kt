@@ -43,9 +43,9 @@ import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.R.plurals
 import ch.protonmail.android.maildetail.presentation.extensions.getTotalAttachmentByteSizeReadable
-import ch.protonmail.android.maildetail.presentation.model.MessageBodyAttachmentsUiModel
-import ch.protonmail.android.maildetail.presentation.sample.AttachmentUiModelSample
+import ch.protonmail.android.mailmessage.presentation.sample.AttachmentUiModelSample
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
+import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultSmall
@@ -55,7 +55,7 @@ import me.proton.core.presentation.R.drawable
 @Composable
 fun AttachmentFooter(
     modifier: Modifier = Modifier,
-    messageBodyAttachmentsUiModel: MessageBodyAttachmentsUiModel,
+    messageBodyAttachmentsUiModel: AttachmentGroupUiModel,
     onShowAllAttachments: () -> Unit,
     onAttachmentClicked: (attachmentId: AttachmentId) -> Unit
 ) {
@@ -132,7 +132,7 @@ fun AttachmentFooter(
 @Suppress("MagicNumber")
 fun AttachmentFooterMultiAttachmentsPreview() {
     AttachmentFooter(
-        messageBodyAttachmentsUiModel = MessageBodyAttachmentsUiModel(
+        messageBodyAttachmentsUiModel = AttachmentGroupUiModel(
             limit = 1,
             attachments = listOf(
                 AttachmentUiModelSample.invoice,
@@ -149,7 +149,7 @@ fun AttachmentFooterMultiAttachmentsPreview() {
 @Suppress("MagicNumber")
 fun AttachmentFooterSingleAttachmentPreview() {
     AttachmentFooter(
-        messageBodyAttachmentsUiModel = MessageBodyAttachmentsUiModel(
+        messageBodyAttachmentsUiModel = AttachmentGroupUiModel(
             limit = 1,
             attachments = listOf(
                 AttachmentUiModelSample.invoice

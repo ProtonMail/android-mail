@@ -45,12 +45,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.maildetail.presentation.R
-import ch.protonmail.android.maildetail.presentation.model.AttachmentUiModel
 import ch.protonmail.android.maildetail.presentation.model.getContentDescriptionForMimeType
 import ch.protonmail.android.maildetail.presentation.model.getDrawableForMimeType
-import ch.protonmail.android.maildetail.presentation.sample.AttachmentUiModelSample
+import ch.protonmail.android.mailmessage.presentation.sample.AttachmentUiModelSample
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
+import ch.protonmail.android.mailmessage.presentation.model.AttachmentUiModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState

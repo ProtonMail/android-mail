@@ -25,11 +25,12 @@ import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
-import ch.protonmail.android.maildetail.presentation.model.MessageBodyAttachmentsUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageLocationUiModel
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
 import ch.protonmail.android.mailmessage.domain.model.Message
+import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
+import ch.protonmail.android.mailmessage.presentation.sample.AttachmentUiModelSample
 import kotlinx.collections.immutable.persistentListOf
 
 object ConversationDetailMessageUiModelSample {
@@ -124,7 +125,7 @@ object ConversationDetailMessageUiModelSample {
         messageWithLabels = MessageWithLabelsSample.InvoiceWithLabel,
         messageBodyUiModel = MessageDetailBodyUiModelSample.build(
             messageBody = "Invoice",
-            attachments = MessageBodyAttachmentsUiModel(
+            attachments = AttachmentGroupUiModel(
                 limit = limit,
                 attachments = listOf(
                     AttachmentUiModelSample.document,

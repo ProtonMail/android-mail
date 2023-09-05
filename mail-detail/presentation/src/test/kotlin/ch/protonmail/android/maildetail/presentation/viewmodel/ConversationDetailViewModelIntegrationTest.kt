@@ -116,6 +116,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
+import ch.protonmail.android.mailmessage.presentation.mapper.AttachmentUiModelMapper
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData
@@ -242,6 +243,7 @@ class ConversationDetailViewModelIntegrationTest {
     private val shouldShowRemoteContent = mockk<ShouldShowRemoteContent> {
         coEvery { this@mockk.invoke(userId) } returns true
     }
+    private val attachmentUiModelMapper = AttachmentUiModelMapper()
     private val doesMessageBodyHaveEmbeddedImages = DoesMessageBodyHaveEmbeddedImages()
     private val doesMessageBodyHaveRemoteContent = DoesMessageBodyHaveRemoteContent()
     // endregion
@@ -284,6 +286,7 @@ class ConversationDetailViewModelIntegrationTest {
             resolveParticipantName = resolveParticipantName
         ),
         messageBodyUiModelMapper = MessageBodyUiModelMapper(
+            attachmentUiModelMapper = attachmentUiModelMapper,
             doesMessageBodyHaveEmbeddedImages = doesMessageBodyHaveEmbeddedImages,
             doesMessageBodyHaveRemoteContent = doesMessageBodyHaveRemoteContent,
             injectCssIntoDecryptedMessageBody = injectCssIntoDecryptedMessageBody,

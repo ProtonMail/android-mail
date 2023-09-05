@@ -16,10 +16,10 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.sample
+package ch.protonmail.android.mailmessage.presentation.sample
 
-import ch.protonmail.android.maildetail.presentation.model.AttachmentUiModel
 import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
+import ch.protonmail.android.mailmessage.presentation.model.AttachmentUiModel
 
 object AttachmentUiModelSample {
 

@@ -71,6 +71,7 @@ dependencies {
     implementation(project(":mail-contact:domain"))
     implementation(project(":mail-conversation:domain"))
     implementation(project(":mail-message:domain"))
+    implementation(project(":mail-message:presentation"))
     implementation(project(":mail-label:domain"))
     implementation(project(":mail-label:presentation"))
     implementation(project(":mail-settings:domain"))

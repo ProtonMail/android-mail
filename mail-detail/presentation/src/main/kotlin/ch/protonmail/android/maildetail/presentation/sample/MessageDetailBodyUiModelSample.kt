@@ -18,9 +18,9 @@
 
 package ch.protonmail.android.maildetail.presentation.sample
 
-import ch.protonmail.android.maildetail.presentation.model.MessageBodyAttachmentsUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.MimeTypeUiModel
+import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 
 object MessageDetailBodyUiModelSample {
@@ -33,7 +33,7 @@ object MessageDetailBodyUiModelSample {
         shouldShowRemoteContent: Boolean = false,
         shouldShowEmbeddedImagesBanner: Boolean = false,
         shouldShowRemoteContentBanner: Boolean = false,
-        attachments: MessageBodyAttachmentsUiModel? = null
+        attachments: AttachmentGroupUiModel? = null
     ) = MessageBodyUiModel(
         messageBody = messageBody,
         messageId = messageId,
