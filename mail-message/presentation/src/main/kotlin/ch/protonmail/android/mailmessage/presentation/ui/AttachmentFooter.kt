@@ -40,11 +40,11 @@ import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
-import ch.protonmail.android.mailmessage.presentation.sample.AttachmentUiModelSample
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.presentation.R
 import ch.protonmail.android.mailmessage.presentation.extension.getTotalAttachmentByteSizeReadable
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
+import ch.protonmail.android.mailmessage.presentation.sample.AttachmentUiModelSample
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultSmall
@@ -55,8 +55,7 @@ import me.proton.core.presentation.R.drawable
 fun AttachmentFooter(
     modifier: Modifier = Modifier,
     messageBodyAttachmentsUiModel: AttachmentGroupUiModel,
-    onShowAllAttachments: () -> Unit,
-    onAttachmentClicked: (attachmentId: AttachmentId) -> Unit
+    actions: AttachmentFooter.Actions
 ) {
     val attachments = messageBodyAttachmentsUiModel.attachments
     Column(
@@ -100,7 +99,8 @@ fun AttachmentFooter(
             AttachmentItem(
                 modifier = Modifier.testTag("${AttachmentFooterTestTags.Item}$index"),
                 attachmentUiModel = item,
-                onAttachmentItemClicked = onAttachmentClicked
+                onAttachmentItemClicked = actions.onAttachmentClicked,
+                onAttachmentItemDeleteClicked = actions.onAttachmentDeleteClicked
             )
         }
         if (attachments.size > messageBodyAttachmentsUiModel.limit) {
@@ -112,7 +112,7 @@ fun AttachmentFooter(
                 Text(
                     modifier = Modifier
                         .testTag(AttachmentFooterTestTags.ShowMoreItems)
-                        .clickable { onShowAllAttachments() }
+                        .clickable { actions.onShowAllAttachments() }
                         .padding(ProtonDimens.SmallSpacing),
                     text = stringResource(
                         id = R.string.attachment_show_more_label,
@@ -123,6 +123,24 @@ fun AttachmentFooter(
             }
         }
         Spacer(modifier = Modifier.height(ProtonDimens.SmallSpacing))
+    }
+}
+
+object AttachmentFooter {
+    data class Actions(
+        val onShowAllAttachments: () -> Unit,
+        val onAttachmentClicked: (attachmentId: AttachmentId) -> Unit,
+        val onAttachmentDeleteClicked: (attachmentId: AttachmentId) -> Unit = {}
+    ) {
+
+        companion object {
+
+            val Empty = Actions(
+                onShowAllAttachments = {},
+                onAttachmentClicked = {},
+                onAttachmentDeleteClicked = {}
+            )
+        }
     }
 }
 
@@ -138,8 +156,7 @@ fun AttachmentFooterMultiAttachmentsPreview() {
                 AttachmentUiModelSample.document
             )
         ),
-        onShowAllAttachments = {},
-        onAttachmentClicked = {}
+        actions = AttachmentFooter.Actions.Empty
     )
 }
 
@@ -154,8 +171,7 @@ fun AttachmentFooterSingleAttachmentPreview() {
                 AttachmentUiModelSample.invoice
             )
         ),
-        onShowAllAttachments = {},
-        onAttachmentClicked = {}
+        actions = AttachmentFooter.Actions.Empty
     )
 }
 

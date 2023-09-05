@@ -69,6 +69,7 @@ import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.RecipientSample
 import ch.protonmail.android.mailmessage.presentation.mapper.AttachmentUiModelMapper
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
+import ch.protonmail.android.mailmessage.presentation.model.NO_ATTACHMENT_LIMIT
 import ch.protonmail.android.mailmessage.presentation.sample.AttachmentUiModelSample
 import ch.protonmail.android.test.idlingresources.ComposerIdlingResource
 import ch.protonmail.android.test.utils.rule.LoggingTestRule
@@ -1144,7 +1145,10 @@ class ComposerViewModelTest {
         viewModel.state.test {
 
             // Then
-            val expected = AttachmentGroupUiModel(attachments = listOf(AttachmentUiModelSample.invoice))
+            val expected = AttachmentGroupUiModel(
+                limit = NO_ATTACHMENT_LIMIT,
+                attachments = listOf(AttachmentUiModelSample.deletableInvoice)
+            )
             val actual = awaitItem().attachments
             assertEquals(expected, actual)
         }

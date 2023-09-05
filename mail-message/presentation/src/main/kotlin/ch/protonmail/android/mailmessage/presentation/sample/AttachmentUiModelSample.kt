@@ -40,6 +40,10 @@ object AttachmentUiModelSample {
         status = AttachmentWorkerStatus.Running
     )
 
+    val deletableInvoice = invoice.copy(
+        deletable = true
+    )
+
     val document = AttachmentUiModel(
         attachmentId = "document",
         fileName = "document",

@@ -43,14 +43,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
-import ch.protonmail.android.mailmessage.presentation.R
-import ch.protonmail.android.mailmessage.presentation.sample.AttachmentUiModelSample
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
+import ch.protonmail.android.mailmessage.presentation.R
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentUiModel
 import ch.protonmail.android.mailmessage.presentation.model.getContentDescriptionForMimeType
 import ch.protonmail.android.mailmessage.presentation.model.getDrawableForMimeType
+import ch.protonmail.android.mailmessage.presentation.sample.AttachmentUiModelSample
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -67,7 +68,8 @@ import me.proton.core.compose.theme.defaultSmall
 fun AttachmentItem(
     modifier: Modifier = Modifier,
     attachmentUiModel: AttachmentUiModel,
-    onAttachmentItemClicked: (attachmentId: AttachmentId) -> Unit
+    onAttachmentItemClicked: (attachmentId: AttachmentId) -> Unit,
+    onAttachmentItemDeleteClicked: (attachmentId: AttachmentId) -> Unit
 ) {
     val currentContext = LocalContext.current
     val shouldShowPermissionRationaleDialog = remember { mutableStateOf(false) }
@@ -163,6 +165,16 @@ fun AttachmentItem(
             text = Formatter.formatShortFileSize(LocalContext.current, attachmentUiModel.size),
             style = ProtonTheme.typography.captionHint
         )
+        if (attachmentUiModel.deletable) {
+            Spacer(modifier = Modifier.width(ProtonDimens.ExtraSmallSpacing))
+            Image(
+                modifier = Modifier
+                    .clickable { onAttachmentItemDeleteClicked(AttachmentId(attachmentUiModel.attachmentId)) }
+                    .testTag(AttachmentItemTestTags.Delete),
+                painter = painterResource(id = R.drawable.ic_proton_cross_small),
+                contentDescription = NO_CONTENT_DESCRIPTION
+            )
+        }
     }
 }
 
@@ -172,7 +184,8 @@ fun AttachmentItemPreview() {
     ProtonTheme {
         AttachmentItem(
             attachmentUiModel = AttachmentUiModelSample.invoice,
-            onAttachmentItemClicked = {}
+            onAttachmentItemClicked = {},
+            onAttachmentItemDeleteClicked = {}
         )
     }
 }
@@ -183,7 +196,8 @@ fun AttachmentItemTruncationPreview() {
     ProtonTheme {
         AttachmentItem(
             attachmentUiModel = AttachmentUiModelSample.documentWithReallyLongFileName,
-            onAttachmentItemClicked = {}
+            onAttachmentItemClicked = {},
+            onAttachmentItemDeleteClicked = {}
         )
     }
 }
@@ -195,4 +209,5 @@ object AttachmentItemTestTags {
     const val Name = "AttachmentName"
     const val Extension = "AttachmentExtension"
     const val Size = "AttachmentSize"
+    const val Delete = "AttachmentDelete"
 }

@@ -49,6 +49,7 @@ import ch.protonmail.android.mailmessage.domain.model.Recipient
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.presentation.mapper.AttachmentUiModelMapper
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
+import ch.protonmail.android.mailmessage.presentation.model.NO_ATTACHMENT_LIMIT
 import ch.protonmail.android.mailmessage.presentation.sample.AttachmentUiModelSample
 import ch.protonmail.android.testdata.message.MessageAttachmentTestData
 import kotlinx.coroutines.test.runTest
@@ -62,6 +63,7 @@ class ComposerReducerTest(
     private val testName: String,
     private val testTransition: TestTransition
 ) {
+
     private val attachmentUiModelMapper = AttachmentUiModelMapper()
     private val composerReducer = ComposerReducer(attachmentUiModelMapper)
 
@@ -517,7 +519,10 @@ class ComposerReducerTest(
             currentState = ComposerDraftState.initial(messageId),
             operation = ComposerEvent.OnAttachmentsUpdated(listOf(MessageAttachmentTestData.invoice)),
             expectedState = ComposerDraftState.initial(messageId).copy(
-                attachments = AttachmentGroupUiModel(attachments = listOf(AttachmentUiModelSample.invoice))
+                attachments = AttachmentGroupUiModel(
+                    limit = NO_ATTACHMENT_LIMIT,
+                    attachments = listOf(AttachmentUiModelSample.deletableInvoice)
+                )
             )
         )
 

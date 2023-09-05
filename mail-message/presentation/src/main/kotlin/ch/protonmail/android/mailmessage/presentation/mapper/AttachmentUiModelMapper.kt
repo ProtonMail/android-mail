@@ -24,11 +24,12 @@ import javax.inject.Inject
 
 class AttachmentUiModelMapper @Inject constructor() {
 
-    fun toUiModel(attachment: MessageAttachment) = AttachmentUiModel(
+    fun toUiModel(attachment: MessageAttachment, deletable: Boolean = false) = AttachmentUiModel(
         attachmentId = attachment.attachmentId.id,
         fileName = attachment.name.split(".").dropLast(1).joinToString("."),
         extension = attachment.name.split(".").last(),
         size = attachment.size,
-        mimeType = attachment.mimeType
+        mimeType = attachment.mimeType,
+        deletable = deletable
     )
 }

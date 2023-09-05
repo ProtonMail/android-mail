@@ -33,6 +33,7 @@ import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.presentation.mapper.AttachmentUiModelMapper
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
+import ch.protonmail.android.mailmessage.presentation.model.NO_ATTACHMENT_LIMIT
 import javax.inject.Inject
 
 class ComposerReducer @Inject constructor(
@@ -67,24 +68,30 @@ class ComposerReducer @Inject constructor(
         is ComposerEvent.ErrorVerifyingPermissionsToChangeSender -> currentState.copy(
             error = Effect.of(TextUiModel(R.string.composer_error_change_sender_failed_getting_subscription))
         )
+
         is ComposerEvent.ErrorFreeUserCannotChangeSender -> updateStateToPaidFeatureMessage(currentState)
         is ComposerEvent.ErrorStoringDraftSenderAddress -> updateStateForChangeSenderFailed(
             currentState = currentState,
             errorMessage = TextUiModel(R.string.composer_error_store_draft_sender_address)
         )
+
         is ComposerEvent.ErrorStoringDraftBody -> currentState.copy(
             error = Effect.of(TextUiModel(R.string.composer_error_store_draft_body))
         )
+
         is ComposerEvent.ErrorStoringDraftSubject -> currentState.copy(
             error = Effect.of(TextUiModel(R.string.composer_error_store_draft_subject))
         )
+
         is ComposerEvent.ErrorStoringDraftRecipients -> currentState.copy(
             error = Effect.of(TextUiModel(R.string.composer_error_store_draft_recipients))
         )
+
         is ComposerEvent.SenderAddressesReceived -> currentState.copy(
             senderAddresses = this.senders,
             changeBottomSheetVisibility = Effect.of(true)
         )
+
         is ComposerEvent.OnCloseWithDraftSaved -> updateCloseComposerState(currentState, true)
         is ComposerEvent.OpenExistingDraft -> currentState.copy(isLoading = true)
         is ComposerEvent.ExistingDraftDataReceived -> updateComposerFieldsState(currentState, this.draftFields)
@@ -92,9 +99,11 @@ class ComposerReducer @Inject constructor(
             error = Effect.of(TextUiModel(R.string.composer_error_loading_draft)),
             isLoading = false
         )
+
         is ComposerEvent.ApiAssignedMessageIdReceived -> currentState.copy(
             fields = currentState.fields.copy(draftId = apiAssignedMessageId)
         )
+
         is ComposerEvent.OnSendMessageOffline -> updateStateForSendMessageOffline(currentState)
         is ComposerEvent.OnAttachmentsUpdated -> updateAttachmentsState(currentState, this.attachments)
     }
@@ -118,7 +127,8 @@ class ComposerReducer @Inject constructor(
     private fun updateAttachmentsState(currentState: ComposerDraftState, attachments: List<MessageAttachment>) =
         currentState.copy(
             attachments = AttachmentGroupUiModel(
-                attachments = attachments.map { attachmentUiModelMapper.toUiModel(it) }
+                limit = NO_ATTACHMENT_LIMIT,
+                attachments = attachments.map { attachmentUiModelMapper.toUiModel(it, true) }
             )
         )
 

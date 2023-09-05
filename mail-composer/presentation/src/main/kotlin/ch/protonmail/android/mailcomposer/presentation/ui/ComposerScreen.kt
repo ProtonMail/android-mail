@@ -55,12 +55,14 @@ import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.Subject
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
 import ch.protonmail.android.mailcomposer.presentation.viewmodel.ComposerViewModel
+import ch.protonmail.android.mailmessage.presentation.ui.AttachmentFooter
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonModalBottomSheetLayout
 import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.theme.ProtonTheme3
+import timber.log.Timber
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterialApi::class)
 @Suppress("UseComposableActions")
@@ -92,6 +94,7 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
                         imagePicker.launch("*/*")
                     }
                 )
+
                 BottomSheetType.ChangeSender -> ChangeSenderBottomSheetContent(
                     state.senderAddresses,
                     { sender -> viewModel.submit(ComposerAction.SenderChanged(sender)) }
@@ -135,6 +138,16 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
                             { bottomSheetType.value = it }
                         )
                     )
+                    if (state.attachments.attachments.isNotEmpty()) {
+                        AttachmentFooter(
+                            messageBodyAttachmentsUiModel = state.attachments,
+                            actions = AttachmentFooter.Actions(
+                                onShowAllAttachments = { Timber.d("On show all attachments clicked") },
+                                onAttachmentClicked = { Timber.d("On attachment clicked: $it") },
+                                onAttachmentDeleteClicked = { Timber.d("Delete attachment: $it") }
+                            )
+                        )
+                    }
                 }
             }
             ProtonSnackbarHost(
@@ -146,7 +159,11 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
 
             if (state.isLoading) {
                 @Suppress("MagicNumber")
-                Surface(modifier = Modifier.fillMaxSize().alpha(.5f)) { ProtonCenteredProgress() }
+                Surface(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .alpha(.5f)
+                ) { ProtonCenteredProgress() }
             }
         }
     }
@@ -216,6 +233,7 @@ private fun buildActions(
 )
 
 object ComposerScreen {
+
     const val DraftMessageIdKey = "draft_message_id"
     const val SerializedDraftActionKey = "serialized_draft_action_key"
 
@@ -225,6 +243,7 @@ object ComposerScreen {
         val showMessageSendingSnackbar: () -> Unit,
         val showMessageSendingOfflineSnackbar: () -> Unit
     ) {
+
         companion object {
 
             val Empty = Actions(

@@ -282,8 +282,10 @@ internal fun MessageBodyWebView(
             AttachmentFooter(
                 modifier = Modifier.background(color = ProtonTheme.colors.backgroundNorm),
                 messageBodyAttachmentsUiModel = messageBodyUiModel.attachments,
-                onShowAllAttachments = actions.onShowAllAttachments,
-                onAttachmentClicked = actions.onAttachmentClicked
+                actions = AttachmentFooter.Actions(
+                    onShowAllAttachments = actions.onShowAllAttachments,
+                    onAttachmentClicked = actions.onAttachmentClicked
+                )
             )
         }
     }
