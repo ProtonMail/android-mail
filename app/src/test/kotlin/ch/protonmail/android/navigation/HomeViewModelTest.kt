@@ -25,8 +25,13 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcomposer.domain.model.DraftSyncState
 import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailcomposer.domain.sample.DraftStateSample
-import ch.protonmail.android.mailcomposer.presentation.model.MessageSendingUiModel
+import ch.protonmail.android.mailcomposer.presentation.model.MessageSendingUiModel.MessageSent
+import ch.protonmail.android.mailcomposer.presentation.model.MessageSendingUiModel.SendMessageError
+import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import ch.protonmail.android.navigation.model.HomeAction
 import ch.protonmail.android.navigation.model.HomeState
+import io.mockk.coJustRun
+import io.mockk.coVerifyOrder
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
@@ -40,9 +45,9 @@ import kotlinx.coroutines.test.setMain
 import me.proton.core.network.domain.NetworkManager
 import me.proton.core.network.domain.NetworkStatus
 import me.proton.core.user.domain.entity.User
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.BeforeTest
 
 class HomeViewModelTest {
 
@@ -67,20 +72,19 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `when initialized then emit initial state`() =
-        runTest {
-            // Given
-            every { networkManager.observe() } returns emptyFlow()
+    fun `when initialized then emit initial state`() = runTest {
+        // Given
+        every { networkManager.observe() } returns emptyFlow()
 
-            // When
-            homeViewModel.state.test {
-                val actualItem = awaitItem()
-                val expectedItem = HomeState.Initial
+        // When
+        homeViewModel.state.test {
+            val actualItem = awaitItem()
+            val expectedItem = HomeState.Initial
 
-                // Then
-                assertEquals(expectedItem, actualItem)
-            }
+            // Then
+            assertEquals(expectedItem, actualItem)
         }
+    }
 
     @Test
     fun `when the status is disconnected and is still disconnected after 5 seconds then emit disconnected status`() =
@@ -96,7 +100,7 @@ class HomeViewModelTest {
                 val actualItem = awaitItem()
                 val expectedItem = HomeState(
                     networkStatusEffect = Effect.of(NetworkStatus.Disconnected),
-                    messageSendingStatusEffect = Effect.of(emptyList())
+                    messageSendingStatusEffect = Effect.empty()
                 )
 
                 // Then
@@ -117,7 +121,7 @@ class HomeViewModelTest {
             val actualItem = awaitItem()
             val expectedItem = HomeState(
                 networkStatusEffect = Effect.of(NetworkStatus.Metered),
-                messageSendingStatusEffect = Effect.of(emptyList())
+                messageSendingStatusEffect = Effect.empty()
             )
 
             // Then
@@ -135,7 +139,7 @@ class HomeViewModelTest {
             val actualItem = awaitItem()
             val expectedItem = HomeState(
                 networkStatusEffect = Effect.of(NetworkStatus.Metered),
-                messageSendingStatusEffect = Effect.of(emptyList())
+                messageSendingStatusEffect = Effect.empty()
             )
 
             // Then
@@ -144,19 +148,13 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `when there are ErrorSending or Sent draft states then emit MessageSendingUiModels`() = runTest {
+    fun `when there are draft that failed sending then emit error sending messages effect`() = runTest {
         // Given
-        val allDraftStates = listOf(
-            DraftStateSample.RemoteDraftInSendingState,
-            DraftStateSample.RemoteDraftInErrorSendingState,
-            DraftStateSample.RemoteDraftInSentState
-        )
-        val expectedMessageSendingUiModels = allDraftStates.map {
-            MessageSendingUiModel(it.userId, it.apiMessageId ?: it.messageId, it.state)
-        }.filter { it.draftSyncState == DraftSyncState.Sent || it.draftSyncState == DraftSyncState.ErrorSending }
+        val errorSendingDraftState = DraftStateSample.RemoteDraftInErrorSendingState
+        val expected = SendMessageError(errorSendingDraftState.userId, listOf(errorSendingDraftState.messageId))
         every { networkManager.observe() } returns flowOf(NetworkStatus.Metered)
         every { draftStateRepositoryMock.observeAll(any()) } returns flowOf(
-            allDraftStates
+            listOf(DraftStateSample.RemoteDraftInSendingState, errorSendingDraftState)
         )
 
         // When
@@ -164,7 +162,7 @@ class HomeViewModelTest {
             val actualItem = awaitItem()
             val expectedItem = HomeState(
                 networkStatusEffect = Effect.of(NetworkStatus.Metered),
-                messageSendingStatusEffect = Effect.of(expectedMessageSendingUiModels)
+                messageSendingStatusEffect = Effect.of(expected)
             )
 
             // Then
@@ -173,13 +171,59 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `when there are no ErrorSending or Sent draft states then emit empty MessageSendingUiModels`() = runTest {
+    fun `when there are draft that succeeded sending then emit messages sent effect`() = runTest {
+        // Given
+        val sentDraftState = DraftStateSample.RemoteDraftInSentState
+        val expected = MessageSent(sentDraftState.userId, listOf(sentDraftState.messageId))
+        every { networkManager.observe() } returns flowOf(NetworkStatus.Metered)
+        every { draftStateRepositoryMock.observeAll(any()) } returns flowOf(
+            listOf(DraftStateSample.RemoteDraftInSendingState, sentDraftState)
+        )
+
+        // When
+        homeViewModel.state.test {
+            val actualItem = awaitItem()
+            val expectedItem = HomeState(
+                networkStatusEffect = Effect.of(NetworkStatus.Metered),
+                messageSendingStatusEffect = Effect.of(expected)
+            )
+
+            // Then
+            assertEquals(expectedItem, actualItem)
+        }
+    }
+
+    @Test
+    fun `when there are both failed and succeeded draft states then emit error sending message effect`() = runTest {
+        // Given
+        val sentDraftState = DraftStateSample.RemoteDraftInSentState
+        val errorSendingDraftState = DraftStateSample.RemoteDraftInErrorSendingState
+        val expected = SendMessageError(sentDraftState.userId, listOf(errorSendingDraftState.messageId))
+        every { networkManager.observe() } returns flowOf(NetworkStatus.Metered)
+        every { draftStateRepositoryMock.observeAll(any()) } returns flowOf(
+            listOf(DraftStateSample.RemoteDraftInSendingState, sentDraftState, errorSendingDraftState)
+        )
+
+        // When
+        homeViewModel.state.test {
+            val actualItem = awaitItem()
+            val expectedItem = HomeState(
+                networkStatusEffect = Effect.of(NetworkStatus.Metered),
+                messageSendingStatusEffect = Effect.of(expected)
+            )
+
+            // Then
+            assertEquals(expectedItem, actualItem)
+        }
+    }
+
+    @Test
+    fun `when there are no ErrorSending or Sent draft states then emit empty sending status effect`() = runTest {
         // Given
         val allDraftStates = listOf(
             DraftStateSample.RemoteDraftInSendingState,
             DraftStateSample.RemoteDraftState
         )
-        val expectedMessageSendingUiModels = emptyList<MessageSendingUiModel>()
         every { networkManager.observe() } returns flowOf(NetworkStatus.Metered)
         every { draftStateRepositoryMock.observeAll(any()) } returns flowOf(
             allDraftStates
@@ -190,11 +234,49 @@ class HomeViewModelTest {
             val actualItem = awaitItem()
             val expectedItem = HomeState(
                 networkStatusEffect = Effect.of(NetworkStatus.Metered),
-                messageSendingStatusEffect = Effect.of(expectedMessageSendingUiModels)
+                messageSendingStatusEffect = Effect.empty()
             )
 
             // Then
             assertEquals(expectedItem, actualItem)
+        }
+    }
+
+    @Test
+    fun `when submit message sending error shown action then draft states are updated`() = runTest {
+        // Given
+        val userId = user.userId
+        val messageIds = listOf(MessageIdSample.NewDraftWithSubject, MessageIdSample.NewDraftWithSubjectAndBody)
+        val action = HomeAction.MessageSendingErrorShown(SendMessageError(userId, messageIds))
+        coJustRun { draftStateRepositoryMock.updateDraftSyncState(userId, messageIds[0], DraftSyncState.Synchronized) }
+        coJustRun { draftStateRepositoryMock.updateDraftSyncState(userId, messageIds[1], DraftSyncState.Synchronized) }
+
+        // When
+        homeViewModel.submit(action)
+
+        // Then
+        coVerifyOrder {
+            draftStateRepositoryMock.updateDraftSyncState(userId, messageIds[0], DraftSyncState.Synchronized)
+            draftStateRepositoryMock.updateDraftSyncState(userId, messageIds[1], DraftSyncState.Synchronized)
+        }
+    }
+
+    @Test
+    fun `when submit message sent shown action then draft states are deleted`() = runTest {
+        // Given
+        val userId = user.userId
+        val messageIds = listOf(MessageIdSample.NewDraftWithSubject, MessageIdSample.NewDraftWithSubjectAndBody)
+        val action = HomeAction.MessageSentShown(MessageSent(userId, messageIds))
+        coJustRun { draftStateRepositoryMock.deleteDraftState(userId, messageIds[0]) }
+        coJustRun { draftStateRepositoryMock.deleteDraftState(userId, messageIds[1]) }
+
+        // When
+        homeViewModel.submit(action)
+
+        // Then
+        coVerifyOrder {
+            draftStateRepositoryMock.deleteDraftState(userId, messageIds[0])
+            draftStateRepositoryMock.deleteDraftState(userId, messageIds[1])
         }
     }
 }

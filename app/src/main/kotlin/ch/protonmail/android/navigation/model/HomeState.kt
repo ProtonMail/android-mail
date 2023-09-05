@@ -24,7 +24,7 @@ import me.proton.core.network.domain.NetworkStatus
 
 data class HomeState(
     val networkStatusEffect: Effect<NetworkStatus>,
-    val messageSendingStatusEffect: Effect<List<MessageSendingUiModel>>
+    val messageSendingStatusEffect: Effect<MessageSendingUiModel>
 ) {
 
     companion object {
