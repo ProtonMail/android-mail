@@ -66,6 +66,17 @@ sealed interface DataError {
 
         object CreateDraftRequestNotPerformed : Remote
     }
+
+    sealed interface MessageSending : DataError {
+
+        object DraftNotFound : MessageSending
+
+        object SenderAddressNotFound : MessageSending
+
+        object SendPreferences : MessageSending
+
+        object GeneratingPackages : MessageSending
+    }
 }
 
 fun DataError.isOfflineError() = this is DataError.Remote.Http && this.networkError is NetworkError.NoNetwork

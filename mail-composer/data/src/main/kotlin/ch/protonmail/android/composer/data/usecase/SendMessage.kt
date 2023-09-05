@@ -21,6 +21,8 @@ package ch.protonmail.android.composer.data.usecase
 import java.io.StringWriter
 import arrow.core.Either
 import arrow.core.continuations.either
+import arrow.core.left
+import arrow.core.right
 import ch.protonmail.android.composer.data.remote.MessageRemoteDataSource
 import ch.protonmail.android.composer.data.remote.resource.SendMessageBody
 import ch.protonmail.android.composer.data.remote.resource.SendMessagePackage
@@ -76,21 +78,19 @@ internal class SendMessage @Inject constructor(
      */
     suspend operator fun invoke(userId: UserId, messageId: MessageId): Either<DataError, Unit> = either {
 
-        val localDraft = findLocalDraft(userId, messageId) ?: shift(DataError.Local.NoDataCached)
+        val localDraft = findLocalDraft(userId, messageId) ?: shift(DataError.MessageSending.DraftNotFound)
 
         val senderAddress = resolveUserAddress(userId, localDraft.message.addressId)
-            .mapLeft { DataError.Local.NoDataCached }
+            .mapLeft { DataError.MessageSending.SenderAddressNotFound }
             .bind()
 
         val autoSaveContacts = observeMailSettings(userId).first()?.autoSaveContacts ?: false
 
         val recipients = localDraft.message.toList + localDraft.message.ccList + localDraft.message.bccList
 
-        val sendPreferences = obtainSendPreferences(userId, recipients.map { it.address })
-            .filterValues(ObtainSendPreferences.Result.Success::class.java)
-            .mapValues { it.value.sendPreferences }
+        val sendPreferences = getSendPreferences(userId, recipients.map { it.address }).bind()
 
-        val messagePackages = generateMessagePackages(senderAddress, localDraft, sendPreferences)
+        val messagePackages = generateMessagePackages(senderAddress, localDraft, sendPreferences).bind()
 
         val response = messageRemoteDataSource.send(
             userId,
@@ -108,11 +108,27 @@ internal class SendMessage @Inject constructor(
         }
     }
 
+    private suspend fun getSendPreferences(
+        userId: UserId,
+        emails: List<Email>
+    ): Either<DataError.MessageSending.SendPreferences, Map<Email, SendPreferences>> {
+
+        val sendPreferences = obtainSendPreferences(userId, emails)
+            .filterValues(ObtainSendPreferences.Result.Success::class.java)
+            .mapValues { it.value.sendPreferences }
+
+        // we failed getting send preferences for all recipients
+        return if (sendPreferences.size != emails.size) {
+            DataError.MessageSending.SendPreferences.left()
+        } else sendPreferences.right()
+
+    }
+
     private fun generateMessagePackages(
         senderAddress: UserAddress,
         localDraft: MessageWithBody,
         sendPreferences: Map<Email, SendPreferences>
-    ): List<SendMessagePackage> {
+    ): Either<DataError.MessageSending.GeneratingPackages, List<SendMessagePackage>> {
         lateinit var decryptedPlaintextBodySessionKey: SessionKey
         lateinit var encryptedPlaintextBodyDataPacket: ByteArray
 
@@ -150,7 +166,7 @@ internal class SendMessage @Inject constructor(
             }.filterNullValues()
         }
 
-        return sendPreferences.map { entry ->
+        val packages = sendPreferences.map { entry ->
             generateSendMessagePackage(
                 entry.key,
                 entry.value,
@@ -162,6 +178,10 @@ internal class SendMessage @Inject constructor(
                 emptyList() // waiting for attachments
             )
         }.filterNotNull()
+
+        return if (packages.size == sendPreferences.size) {
+            packages.right()
+        } else DataError.MessageSending.GeneratingPackages.left()
     }
 
     /**
