@@ -39,6 +39,7 @@ import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddres
 import ch.protonmail.android.mailcomposer.domain.usecase.GetDecryptedDraftFields
 import ch.protonmail.android.mailcomposer.domain.usecase.GetPrimaryAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.IsValidEmailAddress
+import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessageAttachments
 import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
 import ch.protonmail.android.mailcomposer.domain.usecase.SendMessage
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreAttachments
@@ -95,6 +96,7 @@ class ComposerViewModel @Inject constructor(
     private val composerIdlingResource: ComposerIdlingResource,
     private val draftUploader: DraftUploader,
     private val observeMailFeature: ObserveMailFeature,
+    private val observeMessageAttachments: ObserveMessageAttachments,
     private val sendMessage: SendMessage,
     private val networkManager: NetworkManager,
     getDecryptedDraftFields: GetDecryptedDraftFields,
@@ -146,6 +148,8 @@ class ComposerViewModel @Inject constructor(
             .flatMapLatest { userId -> observeMailFeature(userId, MailFeatureId.AddAttachmentsToDraft) }
             .onEach { mutableState.emit(mutableState.value.copy(isAddAttachmentsButtonVisible = it.value)) }
             .launchIn(viewModelScope)
+
+        observeMessageAttachments()
     }
 
     override fun onCleared() {
@@ -174,6 +178,13 @@ class ComposerViewModel @Inject constructor(
                 composerIdlingResource.decrement()
             }
         }
+    }
+
+    private fun observeMessageAttachments() {
+        primaryUserId
+            .flatMapLatest { userId -> observeMessageAttachments(userId, currentMessageId()) }
+            .onEach { emitNewStateFor(ComposerEvent.OnAttachmentsUpdated(it)) }
+            .launchIn(viewModelScope)
     }
 
     fun validateEmailAddress(emailAddress: String): Boolean = isValidEmailAddress(emailAddress)

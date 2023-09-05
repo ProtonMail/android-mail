@@ -47,6 +47,10 @@ import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.Recipient
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import ch.protonmail.android.mailmessage.presentation.mapper.AttachmentUiModelMapper
+import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
+import ch.protonmail.android.mailmessage.presentation.sample.AttachmentUiModelSample
+import ch.protonmail.android.testdata.message.MessageAttachmentTestData
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -58,7 +62,8 @@ class ComposerReducerTest(
     private val testName: String,
     private val testTransition: TestTransition
 ) {
-    private val composerReducer = ComposerReducer()
+    private val attachmentUiModelMapper = AttachmentUiModelMapper()
+    private val composerReducer = ComposerReducer(attachmentUiModelMapper)
 
     @Test
     fun `Test composer transition states`() = runTest {
@@ -507,6 +512,15 @@ class ComposerReducerTest(
             )
         )
 
+        private val EmptyToAttachmentsUpdated = TestTransition(
+            name = "Should emit attachments when they are updated",
+            currentState = ComposerDraftState.initial(messageId),
+            operation = ComposerEvent.OnAttachmentsUpdated(listOf(MessageAttachmentTestData.invoice)),
+            expectedState = ComposerDraftState.initial(messageId).copy(
+                attachments = AttachmentGroupUiModel(attachments = listOf(AttachmentUiModelSample.invoice))
+            )
+        )
+
         private val transitions = listOf(
             EmptyToSubmittableToField,
             EmptyToNotSubmittableToField,
@@ -540,7 +554,8 @@ class ComposerReducerTest(
             LoadingToErrorWhenErrorLoadingDraftData,
             EmptyToUpdatedMessageIdOnApiAssignedId,
             EmptyToBottomSheetOpened,
-            EmptyToBottomSheetClosed
+            EmptyToBottomSheetClosed,
+            EmptyToAttachmentsUpdated
         )
 
         private fun aSubmittableState(
@@ -561,6 +576,7 @@ class ComposerReducerTest(
                 subject = "",
                 body = ""
             ),
+            attachments = AttachmentGroupUiModel(attachments = emptyList()),
             premiumFeatureMessage = Effect.empty(),
             error = error,
             isSubmittable = true,
@@ -599,6 +615,7 @@ class ComposerReducerTest(
                 subject = subject.value,
                 body = draftBody
             ),
+            attachments = AttachmentGroupUiModel(attachments = emptyList()),
             premiumFeatureMessage = premiumFeatureMessage,
             error = error,
             isSubmittable = false,

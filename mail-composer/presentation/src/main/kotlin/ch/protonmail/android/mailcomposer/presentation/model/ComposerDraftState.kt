@@ -21,9 +21,11 @@ package ch.protonmail.android.mailcomposer.presentation.model
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
 
 data class ComposerDraftState(
     val fields: ComposerFields,
+    val attachments: AttachmentGroupUiModel,
     val premiumFeatureMessage: Effect<TextUiModel>,
     val error: Effect<TextUiModel>,
     val isSubmittable: Boolean,
@@ -48,6 +50,9 @@ data class ComposerDraftState(
                 bcc = emptyList(),
                 subject = "",
                 body = ""
+            ),
+            attachments = AttachmentGroupUiModel(
+                attachments = emptyList()
             ),
             premiumFeatureMessage = Effect.empty(),
             error = Effect.empty(),

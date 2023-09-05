@@ -30,9 +30,14 @@ import ch.protonmail.android.mailcomposer.presentation.model.ComposerEvent
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerOperation
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
+import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
+import ch.protonmail.android.mailmessage.presentation.mapper.AttachmentUiModelMapper
+import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
 import javax.inject.Inject
 
-class ComposerReducer @Inject constructor() {
+class ComposerReducer @Inject constructor(
+    private val attachmentUiModelMapper: AttachmentUiModelMapper
+) {
 
     fun newStateFrom(currentState: ComposerDraftState, operation: ComposerOperation): ComposerDraftState =
         when (operation) {
@@ -91,6 +96,7 @@ class ComposerReducer @Inject constructor() {
             fields = currentState.fields.copy(draftId = apiAssignedMessageId)
         )
         is ComposerEvent.OnSendMessageOffline -> updateStateForSendMessageOffline(currentState)
+        is ComposerEvent.OnAttachmentsUpdated -> updateAttachmentsState(currentState, this.attachments)
     }
 
     private fun updateBottomSheetVisibility(currentState: ComposerDraftState, bottomSheetVisibility: Boolean) =
@@ -107,6 +113,13 @@ class ComposerReducer @Inject constructor() {
                 bcc = draftFields.recipientsBcc.value.map { RecipientUiModel.Valid(it.address) }
             ),
             isLoading = false
+        )
+
+    private fun updateAttachmentsState(currentState: ComposerDraftState, attachments: List<MessageAttachment>) =
+        currentState.copy(
+            attachments = AttachmentGroupUiModel(
+                attachments = attachments.map { attachmentUiModelMapper.toUiModel(it) }
+            )
         )
 
     private fun updateCloseComposerState(currentState: ComposerDraftState, isDraftSaved: Boolean) = if (isDraftSaved) {

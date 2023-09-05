@@ -22,6 +22,7 @@ import android.net.Uri
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
 import ch.protonmail.android.mailcomposer.domain.model.Subject
+import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 
 sealed interface ComposerOperation
@@ -48,6 +49,7 @@ sealed interface ComposerEvent : ComposerOperation {
     data class OpenExistingDraft(val draftId: MessageId) : ComposerEvent
     data class ExistingDraftDataReceived(val draftFields: DraftFields) : ComposerEvent
     data class ApiAssignedMessageIdReceived(val apiAssignedMessageId: MessageId) : ComposerEvent
+    data class OnAttachmentsUpdated(val attachments: List<MessageAttachment>) : ComposerEvent
 
     object ErrorLoadingDefaultSenderAddress : ComposerEvent
     object ErrorFreeUserCannotChangeSender : ComposerEvent
