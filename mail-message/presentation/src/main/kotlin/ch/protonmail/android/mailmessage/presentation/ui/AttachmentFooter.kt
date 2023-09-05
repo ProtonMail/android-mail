@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.ui
+package ch.protonmail.android.mailmessage.presentation.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -40,11 +40,10 @@ import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
-import ch.protonmail.android.maildetail.presentation.R
-import ch.protonmail.android.maildetail.presentation.R.plurals
-import ch.protonmail.android.maildetail.presentation.extensions.getTotalAttachmentByteSizeReadable
 import ch.protonmail.android.mailmessage.presentation.sample.AttachmentUiModelSample
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
+import ch.protonmail.android.mailmessage.presentation.R
+import ch.protonmail.android.mailmessage.presentation.extension.getTotalAttachmentByteSizeReadable
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
@@ -87,7 +86,7 @@ fun AttachmentFooter(
             Spacer(modifier = Modifier.width(ProtonDimens.ExtraSmallSpacing))
             Text(
                 modifier = Modifier.testTag(AttachmentFooterTestTags.SummaryText),
-                text = pluralStringResource(plurals.attachment_count_label, attachments.size, attachments.size),
+                text = pluralStringResource(R.plurals.attachment_count_label, attachments.size, attachments.size),
                 style = ProtonTheme.typography.defaultSmall
             )
             Spacer(modifier = Modifier.width(ProtonDimens.ExtraSmallSpacing))

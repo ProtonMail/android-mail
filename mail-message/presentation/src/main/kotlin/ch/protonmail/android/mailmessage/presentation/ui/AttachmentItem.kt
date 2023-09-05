@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.ui
+package ch.protonmail.android.mailmessage.presentation.ui
 
 import android.content.Intent
 import android.net.Uri
@@ -44,13 +44,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
-import ch.protonmail.android.maildetail.presentation.R
-import ch.protonmail.android.maildetail.presentation.model.getContentDescriptionForMimeType
-import ch.protonmail.android.maildetail.presentation.model.getDrawableForMimeType
+import ch.protonmail.android.mailmessage.presentation.R
 import ch.protonmail.android.mailmessage.presentation.sample.AttachmentUiModelSample
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentUiModel
+import ch.protonmail.android.mailmessage.presentation.model.getContentDescriptionForMimeType
+import ch.protonmail.android.mailmessage.presentation.model.getDrawableForMimeType
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState

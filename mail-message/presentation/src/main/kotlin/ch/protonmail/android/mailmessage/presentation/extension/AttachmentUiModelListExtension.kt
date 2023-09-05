@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.extensions
+package ch.protonmail.android.mailmessage.presentation.extension
 
 import android.content.Context
 import android.text.format.Formatter

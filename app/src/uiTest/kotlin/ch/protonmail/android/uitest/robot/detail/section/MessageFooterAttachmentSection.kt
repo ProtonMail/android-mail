@@ -23,7 +23,7 @@ import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performScrollTo
-import ch.protonmail.android.maildetail.presentation.ui.AttachmentFooterTestTags
+import ch.protonmail.android.mailmessage.presentation.ui.AttachmentFooterTestTags
 import ch.protonmail.android.test.ksp.annotations.AttachTo
 import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
 import ch.protonmail.android.uitest.robot.ComposeSectionRobot

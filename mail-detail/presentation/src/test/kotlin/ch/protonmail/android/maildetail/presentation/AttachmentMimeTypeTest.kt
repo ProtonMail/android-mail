@@ -19,7 +19,7 @@
 package ch.protonmail.android.maildetail.presentation
 
 import ch.protonmail.android.maildetail.domain.R
-import ch.protonmail.android.maildetail.presentation.model.getDrawableForMimeType
+import ch.protonmail.android.mailmessage.presentation.model.getDrawableForMimeType
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized

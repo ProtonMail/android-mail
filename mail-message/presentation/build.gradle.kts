@@ -62,6 +62,7 @@ dependencies {
     implementation(Dependencies.modulePresentationLibs)
     kapt(Dependencies.hiltAnnotationProcessors)
 
+    implementation(project(":mail-common:presentation"))
     implementation(project(":mail-message:domain"))
 
     testImplementation(Dependencies.testLibs)

@@ -16,11 +16,11 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.model
+package ch.protonmail.android.mailmessage.presentation.model
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import ch.protonmail.android.maildetail.presentation.R
+import ch.protonmail.android.mailmessage.presentation.R
 import me.proton.core.presentation.R.drawable
 
 sealed class AttachmentMimeType(@StringRes val contentDescription: Int, val mimeTypes: List<String>) {

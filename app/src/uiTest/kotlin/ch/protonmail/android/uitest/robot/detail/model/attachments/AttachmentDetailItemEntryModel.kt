@@ -23,8 +23,8 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.performClick
-import ch.protonmail.android.maildetail.presentation.ui.AttachmentFooterTestTags
-import ch.protonmail.android.maildetail.presentation.ui.AttachmentItemTestTags
+import ch.protonmail.android.mailmessage.presentation.ui.AttachmentFooterTestTags
+import ch.protonmail.android.mailmessage.presentation.ui.AttachmentItemTestTags
 import ch.protonmail.android.uitest.util.awaitDisplayed
 import ch.protonmail.android.uitest.util.awaitHidden
 import ch.protonmail.android.uitest.util.child
