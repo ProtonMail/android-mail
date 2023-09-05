@@ -23,6 +23,7 @@ import me.proton.core.crypto.common.context.CryptoContext
 import me.proton.core.crypto.common.pgp.EncryptedPacket
 import me.proton.core.crypto.common.pgp.SessionKey
 import me.proton.core.key.domain.encryptSessionKey
+import me.proton.core.key.domain.entity.key.PublicKey
 import me.proton.core.mailmessage.domain.entity.Email
 import me.proton.core.mailsendpreferences.domain.model.SendPreferences
 import me.proton.core.mailsettings.domain.entity.MimeType
@@ -52,85 +53,130 @@ class GenerateSendMessagePackage @Inject constructor(
 
         return if (sendPreferences.encrypt) {
 
-            if (sendPreferences.pgpScheme == PackageType.ProtonMail) { // Internal Proton
+            if (sendPreferences.pgpScheme == PackageType.ProtonMail) {
 
                 val publicKey = sendPreferences.publicKey ?: return null
 
-                val recipientBodyKeyPacket = publicKey.encryptSessionKey(cryptoContext, decryptedBodySessionKey)
-
-                val encryptedAttachmentKeyPackets = decryptedAttachmentSessionKeys.map {
-                    Base64.encode(publicKey.encryptSessionKey(cryptoContext, it))
-                }
-
-                SendMessagePackage(
-                    addresses = mapOf(
-                        recipientEmail to SendMessagePackage.Address.Internal(
-                            signature = true.toInt(),
-                            bodyKeyPacket = Base64.encode(recipientBodyKeyPacket),
-                            attachmentKeyPackets = encryptedAttachmentKeyPackets
-                        )
-                    ),
-                    mimeType = sendPreferences.mimeType.value,
-                    body = Base64.encode(encryptedBodyDataPacket),
-                    type = PackageType.ProtonMail.type
+                generateProtonMail(
+                    publicKey,
+                    decryptedBodySessionKey,
+                    decryptedAttachmentSessionKeys,
+                    recipientEmail,
+                    sendPreferences,
+                    encryptedBodyDataPacket
                 )
 
-            } else { // PgpMime
+            } else {
 
                 if (signedEncryptedMimeBody == null) return null
 
-                SendMessagePackage(
-                    addresses = mapOf(
-                        recipientEmail to SendMessagePackage.Address.ExternalEncrypted(
-                            signature = true.toInt(),
-                            bodyKeyPacket = Base64.encode(signedEncryptedMimeBody.first.packet)
-                        )
-                    ),
-                    mimeType = MimeType.Mixed.value,
-                    body = Base64.encode(signedEncryptedMimeBody.second.packet),
-                    type = PackageType.PgpMime.type
-                )
+                generatePgpMime(recipientEmail, signedEncryptedMimeBody)
 
             }
 
         } else {
 
-            if (sendPreferences.sign) { // ClearMime
+            if (sendPreferences.sign) {
 
-                SendMessagePackage(
-                    addresses = mapOf(
-                        recipientEmail to SendMessagePackage.Address.ExternalSigned(signature = true.toInt())
-                    ),
-                    mimeType = MimeType.Mixed.value,
-                    body = Base64.encode(encryptedMimeBodyDataPacket),
-                    type = PackageType.ClearMime.type,
-                    bodyKey = SendMessagePackage.Key(
-                        Base64.encode(decryptedMimeBodySessionKey.key),
-                        SessionKeyAlgorithm
-                    )
-                )
+                generateClearMime(recipientEmail, encryptedMimeBodyDataPacket, decryptedMimeBodySessionKey)
 
-            } else { // Cleartext
+            } else {
 
-                val packageAttachmentKeys = decryptedAttachmentSessionKeys.map {
-                    SendMessagePackage.Key(Base64.encode(it.key), SessionKeyAlgorithm)
-                }
-
-                SendMessagePackage(
-                    addresses = mapOf(
-                        recipientEmail to SendMessagePackage.Address.ExternalCleartext(signature = false.toInt())
-                    ),
-                    mimeType = sendPreferences.mimeType.value,
-                    body = Base64.encode(encryptedBodyDataPacket),
-                    type = PackageType.Cleartext.type,
-                    bodyKey = SendMessagePackage.Key(Base64.encode(decryptedBodySessionKey.key), SessionKeyAlgorithm),
-                    attachmentKeys = packageAttachmentKeys
+                generateCleartext(
+                    decryptedAttachmentSessionKeys,
+                    recipientEmail,
+                    sendPreferences,
+                    encryptedBodyDataPacket,
+                    decryptedBodySessionKey
                 )
 
             }
 
         }
 
+    }
+
+    private fun generateCleartext(
+        decryptedAttachmentSessionKeys: List<SessionKey>,
+        recipientEmail: Email,
+        sendPreferences: SendPreferences,
+        encryptedBodyDataPacket: ByteArray,
+        decryptedBodySessionKey: SessionKey
+    ): SendMessagePackage {
+        val packageAttachmentKeys = decryptedAttachmentSessionKeys.map {
+            SendMessagePackage.Key(Base64.encode(it.key), SessionKeyAlgorithm)
+        }
+
+        return SendMessagePackage(
+            addresses = mapOf(
+                recipientEmail to SendMessagePackage.Address.ExternalCleartext(signature = false.toInt())
+            ),
+            mimeType = sendPreferences.mimeType.value,
+            body = Base64.encode(encryptedBodyDataPacket),
+            type = PackageType.Cleartext.type,
+            bodyKey = SendMessagePackage.Key(Base64.encode(decryptedBodySessionKey.key), SessionKeyAlgorithm),
+            attachmentKeys = packageAttachmentKeys
+        )
+    }
+
+    private fun generateClearMime(
+        recipientEmail: Email,
+        encryptedMimeBodyDataPacket: ByteArray,
+        decryptedMimeBodySessionKey: SessionKey
+    ) = SendMessagePackage(
+        addresses = mapOf(
+            recipientEmail to SendMessagePackage.Address.ExternalSigned(signature = true.toInt())
+        ),
+        mimeType = MimeType.Mixed.value,
+        body = Base64.encode(encryptedMimeBodyDataPacket),
+        type = PackageType.ClearMime.type,
+        bodyKey = SendMessagePackage.Key(
+            Base64.encode(decryptedMimeBodySessionKey.key),
+            SessionKeyAlgorithm
+        )
+    )
+
+    private fun generatePgpMime(
+        recipientEmail: Email,
+        signedEncryptedMimeBody: Pair<EncryptedPacket, EncryptedPacket>
+    ) = SendMessagePackage(
+        addresses = mapOf(
+            recipientEmail to SendMessagePackage.Address.ExternalEncrypted(
+                signature = true.toInt(),
+                bodyKeyPacket = Base64.encode(signedEncryptedMimeBody.first.packet)
+            )
+        ),
+        mimeType = MimeType.Mixed.value,
+        body = Base64.encode(signedEncryptedMimeBody.second.packet),
+        type = PackageType.PgpMime.type
+    )
+
+    private fun generateProtonMail(
+        publicKey: PublicKey,
+        decryptedBodySessionKey: SessionKey,
+        decryptedAttachmentSessionKeys: List<SessionKey>,
+        recipientEmail: Email,
+        sendPreferences: SendPreferences,
+        encryptedBodyDataPacket: ByteArray
+    ): SendMessagePackage {
+        val recipientBodyKeyPacket = publicKey.encryptSessionKey(cryptoContext, decryptedBodySessionKey)
+
+        val encryptedAttachmentKeyPackets = decryptedAttachmentSessionKeys.map {
+            Base64.encode(publicKey.encryptSessionKey(cryptoContext, it))
+        }
+
+        return SendMessagePackage(
+            addresses = mapOf(
+                recipientEmail to SendMessagePackage.Address.Internal(
+                    signature = true.toInt(),
+                    bodyKeyPacket = Base64.encode(recipientBodyKeyPacket),
+                    attachmentKeyPackets = encryptedAttachmentKeyPackets
+                )
+            ),
+            mimeType = sendPreferences.mimeType.value,
+            body = Base64.encode(encryptedBodyDataPacket),
+            type = PackageType.ProtonMail.type
+        )
     }
 
     private companion object {

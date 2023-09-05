@@ -18,56 +18,33 @@
 
 package ch.protonmail.android.composer.data.usecase
 
-import java.io.StringWriter
 import arrow.core.Either
 import arrow.core.continuations.either
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.composer.data.remote.MessageRemoteDataSource
 import ch.protonmail.android.composer.data.remote.resource.SendMessageBody
-import ch.protonmail.android.composer.data.remote.resource.SendMessagePackage
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcomposer.domain.usecase.FindLocalDraft
 import ch.protonmail.android.mailcomposer.domain.usecase.ResolveUserAddress
 import ch.protonmail.android.mailmessage.domain.model.MessageId
-import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
-import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailSettings
-import com.github.mangstadt.vinnie.io.FoldedLineWriter
 import kotlinx.coroutines.flow.first
-import me.proton.core.crypto.common.context.CryptoContext
-import me.proton.core.crypto.common.pgp.EncryptedPacket
-import me.proton.core.crypto.common.pgp.PacketType
-import me.proton.core.crypto.common.pgp.SessionKey
-import me.proton.core.crypto.common.pgp.dataPacket
-import me.proton.core.crypto.common.pgp.keyPacket
-import me.proton.core.crypto.common.pgp.split
 import me.proton.core.domain.entity.UserId
-import me.proton.core.key.domain.decryptMimeMessage
-import me.proton.core.key.domain.decryptSessionKey
-import me.proton.core.key.domain.decryptText
-import me.proton.core.key.domain.encryptAndSignText
-import me.proton.core.key.domain.entity.keyholder.KeyHolderContext
-import me.proton.core.key.domain.useKeys
 import me.proton.core.mailmessage.domain.entity.Email
 import me.proton.core.mailsendpreferences.domain.model.SendPreferences
 import me.proton.core.mailsendpreferences.domain.usecase.ObtainSendPreferences
-import me.proton.core.mailsettings.domain.entity.PackageType
-import me.proton.core.user.domain.entity.UserAddress
-import me.proton.core.util.kotlin.filterNullValues
 import me.proton.core.util.kotlin.filterValues
 import me.proton.core.util.kotlin.toInt
 import timber.log.Timber
 import javax.inject.Inject
-import kotlin.random.Random
 
 internal class SendMessage @Inject constructor(
     private val messageRemoteDataSource: MessageRemoteDataSource,
     private val resolveUserAddress: ResolveUserAddress,
-    private val cryptoContext: CryptoContext,
+    private val generateMessagePackages: GenerateMessagePackages,
     private val findLocalDraft: FindLocalDraft,
     private val obtainSendPreferences: ObtainSendPreferences,
-    private val generateSendMessagePackage: GenerateSendMessagePackage,
     private val observeMailSettings: ObserveMailSettings
 ) {
 
@@ -124,120 +101,4 @@ internal class SendMessage @Inject constructor(
 
     }
 
-    private fun generateMessagePackages(
-        senderAddress: UserAddress,
-        localDraft: MessageWithBody,
-        sendPreferences: Map<Email, SendPreferences>
-    ): Either<DataError.MessageSending.GeneratingPackages, List<SendMessagePackage>> {
-        lateinit var decryptedPlaintextBodySessionKey: SessionKey
-        lateinit var encryptedPlaintextBodyDataPacket: ByteArray
-
-        lateinit var decryptedMimeBodySessionKey: SessionKey
-        lateinit var encryptedMimeBodyDataPacket: ByteArray
-
-        // Map<Email, Pair<KeyPacket, DataPacket>>
-        lateinit var signedAndEncryptedMimeBodyForRecipients: Map<Email, Pair<EncryptedPacket, EncryptedPacket>>
-
-        senderAddress.useKeys(cryptoContext) {
-
-            val encryptedBodyPgpMessage = localDraft.messageBody.body
-
-            // Decrypt body's session key to send it for plaintext recipients.
-            val encryptedPlaintextBodySplit = encryptedBodyPgpMessage.split(cryptoContext.pgpCrypto)
-            decryptedPlaintextBodySessionKey = decryptSessionKey(encryptedPlaintextBodySplit.keyPacket())
-            encryptedPlaintextBodyDataPacket = encryptedPlaintextBodySplit.dataPacket()
-
-            // generate MIME version of the email
-            val decryptedBody = if (localDraft.messageBody.mimeType == MimeType.MultipartMixed) {
-                decryptMimeMessage(encryptedBodyPgpMessage).body.content
-            } else {
-                decryptText(encryptedBodyPgpMessage)
-            }
-
-            val plaintextMimeBody = generateMimeBody(decryptedBody)
-
-            // Encrypt and sign, then decrypt MIME body's session key to send it for plaintext recipients.
-            val encryptedMimeBodySplit = encryptAndSignText(plaintextMimeBody).split(cryptoContext.pgpCrypto)
-            decryptedMimeBodySessionKey = decryptSessionKey(encryptedMimeBodySplit.keyPacket())
-            encryptedMimeBodyDataPacket = encryptedMimeBodySplit.dataPacket()
-
-            signedAndEncryptedMimeBodyForRecipients = sendPreferences.mapValues { entry ->
-                signAndEncryptMimeBody(entry, plaintextMimeBody, this, cryptoContext)
-            }.filterNullValues()
-        }
-
-        val packages = sendPreferences.map { entry ->
-            generateSendMessagePackage(
-                entry.key,
-                entry.value,
-                decryptedPlaintextBodySessionKey,
-                encryptedPlaintextBodyDataPacket,
-                decryptedMimeBodySessionKey,
-                encryptedMimeBodyDataPacket,
-                signedAndEncryptedMimeBodyForRecipients[entry.key],
-                emptyList() // waiting for attachments
-            )
-        }.filterNotNull()
-
-        return if (packages.size == sendPreferences.size) {
-            packages.right()
-        } else DataError.MessageSending.GeneratingPackages.left()
-    }
-
-    /**
-     * @return nullable Pair<KeyPacket, DataPacket>
-     */
-    private fun signAndEncryptMimeBody(
-        entry: Map.Entry<Email, SendPreferences>,
-        plaintextMimeBody: String,
-        keyHolderContext: KeyHolderContext,
-        cryptoContext: CryptoContext
-    ): Pair<EncryptedPacket, EncryptedPacket>? {
-        return with(entry.value) {
-            if (encrypt && pgpScheme != PackageType.ProtonMail) {
-                publicKey?.let {
-                    keyHolderContext.encryptAndSignText(plaintextMimeBody, it)
-                        ?.split(cryptoContext.pgpCrypto)
-                        ?.let { split ->
-                            Pair(
-                                EncryptedPacket(split.keyPacket(), PacketType.Key),
-                                EncryptedPacket(split.dataPacket(), PacketType.Data)
-                            )
-                        }
-                }
-            } else null
-        }
-    }
-
-    /**
-     * Correctly encodes and formats plaintext Message body in multipart/mixed content type.
-     */
-    @Suppress("ImplicitDefaultLocale")
-    private fun generateMimeBody(body: String): String {
-
-        val bytes = ByteArray(16)
-        Random.nextBytes(bytes)
-        val boundaryHex = bytes.joinToString("") {
-            String.format("%02x", it)
-        }
-
-        val boundary = "---------------------$boundaryHex"
-
-        val stringWriter = StringWriter()
-        FoldedLineWriter(stringWriter).use {
-            it.write(body, true, Charsets.UTF_8)
-        }
-        val quotedPrintableBody = stringWriter.toString()
-
-        return """
-            Content-Type: multipart/mixed; boundary=${boundary.substring(2)}
-            
-            $boundary
-            Content-Transfer-Encoding: quoted-printable
-            Content-Type: text/plain; charset=utf-8
-            
-            $quotedPrintableBody
-            $boundary--
-        """.trimIndent()
-    }
 }
