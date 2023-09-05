@@ -22,6 +22,7 @@ import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcomposer.domain.ObserveSendingDraftStates
 import ch.protonmail.android.mailcomposer.domain.model.DraftSyncState
 import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailcomposer.domain.sample.DraftStateSample
@@ -62,8 +63,12 @@ class HomeViewModelTest {
         every { this@mockk() } returns MutableStateFlow<User?>(user)
     }
 
+    private val observeSendingDraftStates = mockk<ObserveSendingDraftStates> {
+        every { this@mockk.invoke(any()) } returns flowOf(emptyList())
+    }
+
     private val homeViewModel by lazy {
-        HomeViewModel(networkManager, draftStateRepositoryMock, observePrimaryUserMock)
+        HomeViewModel(networkManager, observeSendingDraftStates, draftStateRepositoryMock, observePrimaryUserMock)
     }
 
     @BeforeTest
@@ -153,7 +158,7 @@ class HomeViewModelTest {
         val errorSendingDraftState = DraftStateSample.RemoteDraftInErrorSendingState
         val expected = SendMessageError(errorSendingDraftState.userId, listOf(errorSendingDraftState.messageId))
         every { networkManager.observe() } returns flowOf(NetworkStatus.Metered)
-        every { draftStateRepositoryMock.observeAll(any()) } returns flowOf(
+        every { observeSendingDraftStates.invoke(user.userId) } returns flowOf(
             listOf(DraftStateSample.RemoteDraftInSendingState, errorSendingDraftState)
         )
 
@@ -176,7 +181,7 @@ class HomeViewModelTest {
         val sentDraftState = DraftStateSample.RemoteDraftInSentState
         val expected = MessageSent(sentDraftState.userId, listOf(sentDraftState.messageId))
         every { networkManager.observe() } returns flowOf(NetworkStatus.Metered)
-        every { draftStateRepositoryMock.observeAll(any()) } returns flowOf(
+        every { observeSendingDraftStates.invoke(user.userId) } returns flowOf(
             listOf(DraftStateSample.RemoteDraftInSendingState, sentDraftState)
         )
 
@@ -200,7 +205,7 @@ class HomeViewModelTest {
         val errorSendingDraftState = DraftStateSample.RemoteDraftInErrorSendingState
         val expected = SendMessageError(sentDraftState.userId, listOf(errorSendingDraftState.messageId))
         every { networkManager.observe() } returns flowOf(NetworkStatus.Metered)
-        every { draftStateRepositoryMock.observeAll(any()) } returns flowOf(
+        every { observeSendingDraftStates.invoke(user.userId) } returns flowOf(
             listOf(DraftStateSample.RemoteDraftInSendingState, sentDraftState, errorSendingDraftState)
         )
 

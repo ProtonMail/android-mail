@@ -22,6 +22,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcomposer.domain.ObserveSendingDraftStates
 import ch.protonmail.android.mailcomposer.domain.model.DraftState
 import ch.protonmail.android.mailcomposer.domain.model.DraftSyncState
 import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
@@ -39,9 +40,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import me.proton.core.domain.entity.UserId
 import me.proton.core.network.domain.NetworkManager
 import me.proton.core.network.domain.NetworkStatus
 import javax.inject.Inject
@@ -49,6 +48,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val networkManager: NetworkManager,
+    private val observeSendingDraftStates: ObserveSendingDraftStates,
     private val draftStateRepository: DraftStateRepository,
     observePrimaryUser: ObservePrimaryUser
 ) : ViewModel() {
@@ -103,7 +103,4 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun observeNetworkStatus() = networkManager.observe().distinctUntilChanged()
-    private fun observeSendingDraftStates(userId: UserId) = draftStateRepository.observeAll(userId).map { draftStates ->
-        draftStates.filter { it.state == DraftSyncState.Sent || it.state == DraftSyncState.ErrorSending }
-    }.distinctUntilChanged()
 }
