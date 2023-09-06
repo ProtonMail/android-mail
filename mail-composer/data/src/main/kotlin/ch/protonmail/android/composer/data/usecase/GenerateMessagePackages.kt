@@ -27,13 +27,13 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import com.github.mangstadt.vinnie.io.FoldedLineWriter
 import me.proton.core.crypto.common.context.CryptoContext
-import me.proton.core.crypto.common.pgp.EncryptedPacket
-import me.proton.core.crypto.common.pgp.PacketType
 import me.proton.core.crypto.common.pgp.SessionKey
 import me.proton.core.crypto.common.pgp.dataPacket
 import me.proton.core.crypto.common.pgp.keyPacket
 import me.proton.core.crypto.common.pgp.split
 import ch.protonmail.android.mailmessage.domain.model.MimeType
+import me.proton.core.crypto.common.pgp.DataPacket
+import me.proton.core.crypto.common.pgp.KeyPacket
 import me.proton.core.key.domain.decryptMimeMessage
 import me.proton.core.key.domain.decryptSessionKey
 import me.proton.core.key.domain.decryptText
@@ -63,13 +63,12 @@ class GenerateMessagePackages @Inject constructor(
         sendPreferences: Map<Email, SendPreferences>
     ): Either<DataError.MessageSending.GeneratingPackages, List<SendMessagePackage>> {
         lateinit var decryptedPlaintextBodySessionKey: SessionKey
-        lateinit var encryptedPlaintextBodyDataPacket: ByteArray
+        lateinit var encryptedPlaintextBodyDataPacket: DataPacket
 
         lateinit var decryptedMimeBodySessionKey: SessionKey
-        lateinit var encryptedMimeBodyDataPacket: ByteArray
+        lateinit var encryptedMimeBodyDataPacket: DataPacket
 
-        // Map<Email, Pair<KeyPacket, DataPacket>>
-        lateinit var signedAndEncryptedMimeBodyForRecipients: Map<Email, Pair<EncryptedPacket, EncryptedPacket>>
+        lateinit var signedAndEncryptedMimeBodyForRecipients: Map<Email, Pair<KeyPacket, DataPacket>>
 
         senderAddress.useKeys(cryptoContext) {
 
@@ -118,26 +117,18 @@ class GenerateMessagePackages @Inject constructor(
         } else DataError.MessageSending.GeneratingPackages.left()
     }
 
-    /**
-     * @return nullable Pair<KeyPacket, DataPacket>
-     */
     private fun signAndEncryptMimeBody(
         entry: Map.Entry<Email, SendPreferences>,
         plaintextMimeBody: String,
         keyHolderContext: KeyHolderContext,
         cryptoContext: CryptoContext
-    ): Pair<EncryptedPacket, EncryptedPacket>? {
+    ): Pair<KeyPacket, DataPacket>? {
         return with(entry.value) {
             if (encrypt && pgpScheme != PackageType.ProtonMail) {
                 publicKey?.let {
                     keyHolderContext.encryptAndSignText(plaintextMimeBody, it)
                         ?.split(cryptoContext.pgpCrypto)
-                        ?.let { split ->
-                            Pair(
-                                EncryptedPacket(split.keyPacket(), PacketType.Key),
-                                EncryptedPacket(split.dataPacket(), PacketType.Data)
-                            )
-                        }
+                        ?.let { Pair(it.keyPacket(), it.dataPacket()) }
                 }
             } else null
         }

@@ -20,7 +20,8 @@ package ch.protonmail.android.composer.data.usecase
 
 import ch.protonmail.android.composer.data.remote.resource.SendMessagePackage
 import me.proton.core.crypto.common.context.CryptoContext
-import me.proton.core.crypto.common.pgp.EncryptedPacket
+import me.proton.core.crypto.common.pgp.DataPacket
+import me.proton.core.crypto.common.pgp.KeyPacket
 import me.proton.core.crypto.common.pgp.SessionKey
 import me.proton.core.key.domain.encryptSessionKey
 import me.proton.core.key.domain.entity.key.PublicKey
@@ -47,7 +48,7 @@ class GenerateSendMessagePackage @Inject constructor(
         encryptedBodyDataPacket: ByteArray,
         decryptedMimeBodySessionKey: SessionKey,
         encryptedMimeBodyDataPacket: ByteArray,
-        signedEncryptedMimeBody: Pair<EncryptedPacket, EncryptedPacket>?,
+        signedEncryptedMimeBody: Pair<KeyPacket, DataPacket>?,
         decryptedAttachmentSessionKeys: List<SessionKey>
     ): SendMessagePackage? {
 
@@ -136,20 +137,18 @@ class GenerateSendMessagePackage @Inject constructor(
         )
     )
 
-    private fun generatePgpMime(
-        recipientEmail: Email,
-        signedEncryptedMimeBody: Pair<EncryptedPacket, EncryptedPacket>
-    ) = SendMessagePackage(
-        addresses = mapOf(
-            recipientEmail to SendMessagePackage.Address.ExternalEncrypted(
-                signature = true.toInt(),
-                bodyKeyPacket = Base64.encode(signedEncryptedMimeBody.first.packet)
-            )
-        ),
-        mimeType = MimeType.Mixed.value,
-        body = Base64.encode(signedEncryptedMimeBody.second.packet),
-        type = PackageType.PgpMime.type
-    )
+    private fun generatePgpMime(recipientEmail: Email, signedEncryptedMimeBody: Pair<KeyPacket, DataPacket>) =
+        SendMessagePackage(
+            addresses = mapOf(
+                recipientEmail to SendMessagePackage.Address.ExternalEncrypted(
+                    signature = true.toInt(),
+                    bodyKeyPacket = Base64.encode(signedEncryptedMimeBody.first)
+                )
+            ),
+            mimeType = MimeType.Mixed.value,
+            body = Base64.encode(signedEncryptedMimeBody.second),
+            type = PackageType.PgpMime.type
+        )
 
     private fun generateProtonMail(
         publicKey: PublicKey,
