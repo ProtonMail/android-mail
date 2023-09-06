@@ -16,49 +16,34 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcomposer.domain
+package ch.protonmail.android.mailcomposer.domain.usecase
 
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
-import ch.protonmail.android.mailcomposer.domain.model.DraftState
 import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailcomposer.domain.sample.DraftStateSample
-import io.mockk.coEvery
+import io.mockk.coJustRun
+import io.mockk.coVerify
 import io.mockk.mockk
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import me.proton.core.domain.entity.UserId
-import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class ObserveSendingDraftStatesTest {
+class DeleteDraftStateTest {
 
     private val draftStateRepository = mockk<DraftStateRepository>()
 
-    private val observeSendingMessageState = ObserveSendingDraftStates(draftStateRepository)
+    private val deleteDraftState = DeleteDraftState(draftStateRepository)
 
     @Test
-    fun `returns filtered sent and error sending draft states from repository`() = runTest {
+    fun `delete draft state delegates to repository`() = runTest {
         // Given
         val userId = UserIdSample.Primary
-        expectedDraftStates(userId) {
-            listOf(
-                DraftStateSample.RemoteDraftInSentState,
-                DraftStateSample.RemoteDraftInErrorSendingState,
-                DraftStateSample.RemoteDraftState
-            )
-        }
-
+        val messageId = DraftStateSample.RemoteDraftInErrorSendingState.messageId
+        coJustRun { draftStateRepository.deleteDraftState(userId, messageId) }
 
         // When
-        val actual = observeSendingMessageState(userId).first()
+        deleteDraftState(userId, messageId)
 
         // Then
-        val expected = listOf(DraftStateSample.RemoteDraftInSentState, DraftStateSample.RemoteDraftInErrorSendingState)
-        assertEquals(expected, actual)
-    }
-
-    private fun expectedDraftStates(userId: UserId, states: () -> List<DraftState>): List<DraftState> = states().also {
-        coEvery { draftStateRepository.observeAll(userId) } returns flowOf(it)
+        coVerify { draftStateRepository.deleteDraftState(userId, messageId) }
     }
 }

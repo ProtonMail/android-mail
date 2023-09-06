@@ -22,9 +22,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailcommon.presentation.Effect
-import ch.protonmail.android.mailcomposer.domain.DeleteDraftState
-import ch.protonmail.android.mailcomposer.domain.ObserveSendingDraftStates
-import ch.protonmail.android.mailcomposer.domain.ResetDraftStateError
+import ch.protonmail.android.mailcomposer.domain.usecase.DeleteDraftState
+import ch.protonmail.android.mailcomposer.domain.usecase.ObserveSendingDraftStates
+import ch.protonmail.android.mailcomposer.domain.usecase.ResetDraftStateError
 import ch.protonmail.android.mailcomposer.domain.model.DraftState
 import ch.protonmail.android.mailcomposer.domain.model.DraftSyncState
 import ch.protonmail.android.mailcomposer.presentation.model.MessageSendingUiModel

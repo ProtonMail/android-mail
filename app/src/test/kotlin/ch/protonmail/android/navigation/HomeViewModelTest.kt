@@ -22,9 +22,9 @@ import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailcommon.presentation.Effect
-import ch.protonmail.android.mailcomposer.domain.DeleteDraftState
-import ch.protonmail.android.mailcomposer.domain.ObserveSendingDraftStates
-import ch.protonmail.android.mailcomposer.domain.ResetDraftStateError
+import ch.protonmail.android.mailcomposer.domain.usecase.DeleteDraftState
+import ch.protonmail.android.mailcomposer.domain.usecase.ObserveSendingDraftStates
+import ch.protonmail.android.mailcomposer.domain.usecase.ResetDraftStateError
 import ch.protonmail.android.mailcomposer.domain.sample.DraftStateSample
 import ch.protonmail.android.mailcomposer.presentation.model.MessageSendingUiModel.MessageSent
 import ch.protonmail.android.mailcomposer.presentation.model.MessageSendingUiModel.SendMessageError
