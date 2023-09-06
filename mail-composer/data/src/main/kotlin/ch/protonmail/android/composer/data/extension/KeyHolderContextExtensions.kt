@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.composer.data.usecase
+package ch.protonmail.android.composer.data.extension
 
 import me.proton.core.crypto.common.pgp.EncryptedMessage
 import me.proton.core.crypto.common.pgp.exception.CryptoException
@@ -30,12 +30,11 @@ import timber.log.Timber
 fun KeyHolderContext.encryptAndSignText(text: String, forPublicKey: PublicKey): EncryptedMessage? {
     return this.privateKeyRing.unlockedPrimaryKey.unlockedKey.use { unlockedPrimaryKey ->
         try {
-            val split = context.pgpCrypto.encryptAndSignText(
+            context.pgpCrypto.encryptAndSignText(
                 text,
                 forPublicKey.key,
                 unlockedPrimaryKey.value
             )
-            split
         } catch (e: CryptoException) {
             Timber.e("Exception in encryptAndSignText", e)
             null
