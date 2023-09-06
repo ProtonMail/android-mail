@@ -22,8 +22,9 @@ import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcomposer.domain.DeleteDraftState
 import ch.protonmail.android.mailcomposer.domain.ObserveSendingDraftStates
-import ch.protonmail.android.mailcomposer.domain.UpdateSendingDraftState
+import ch.protonmail.android.mailcomposer.domain.ResetDraftStateError
 import ch.protonmail.android.mailcomposer.domain.sample.DraftStateSample
 import ch.protonmail.android.mailcomposer.presentation.model.MessageSendingUiModel.MessageSent
 import ch.protonmail.android.mailcomposer.presentation.model.MessageSendingUiModel.SendMessageError
@@ -63,13 +64,22 @@ class HomeViewModelTest {
         every { this@mockk.invoke(any()) } returns flowOf(emptyList())
     }
 
-    private val updateSendingDraftState = mockk<UpdateSendingDraftState> {
-        coJustRun { this@mockk.resetErrorState(user.userId, any()) }
-        coJustRun { this@mockk.deleteDraftState(user.userId, any()) }
+    private val resetDraftErrorState = mockk<ResetDraftStateError> {
+        coJustRun { this@mockk.invoke(user.userId, any()) }
+    }
+
+    private val deleteDraftState = mockk<DeleteDraftState> {
+        coJustRun { this@mockk.invoke(user.userId, any()) }
     }
 
     private val homeViewModel by lazy {
-        HomeViewModel(networkManager, observeSendingDraftStates, updateSendingDraftState, observePrimaryUserMock)
+        HomeViewModel(
+            networkManager,
+            observeSendingDraftStates,
+            resetDraftErrorState,
+            deleteDraftState,
+            observePrimaryUserMock
+        )
     }
 
     @BeforeTest
@@ -252,16 +262,16 @@ class HomeViewModelTest {
         val userId = user.userId
         val messageIds = listOf(MessageIdSample.NewDraftWithSubject, MessageIdSample.NewDraftWithSubjectAndBody)
         val action = HomeAction.MessageSendingErrorShown(SendMessageError(userId, messageIds))
-        coJustRun { updateSendingDraftState.resetErrorState(userId, messageIds[0]) }
-        coJustRun { updateSendingDraftState.resetErrorState(userId, messageIds[1]) }
+        coJustRun { resetDraftErrorState(userId, messageIds[0]) }
+        coJustRun { resetDraftErrorState(userId, messageIds[1]) }
 
         // When
         homeViewModel.submit(action)
 
         // Then
         coVerifyOrder {
-            updateSendingDraftState.resetErrorState(userId, messageIds[0])
-            updateSendingDraftState.resetErrorState(userId, messageIds[1])
+            resetDraftErrorState(userId, messageIds[0])
+            resetDraftErrorState(userId, messageIds[1])
         }
     }
 
@@ -271,16 +281,16 @@ class HomeViewModelTest {
         val userId = user.userId
         val messageIds = listOf(MessageIdSample.NewDraftWithSubject, MessageIdSample.NewDraftWithSubjectAndBody)
         val action = HomeAction.MessageSentShown(MessageSent(userId, messageIds))
-        coJustRun { updateSendingDraftState.deleteDraftState(userId, messageIds[0]) }
-        coJustRun { updateSendingDraftState.deleteDraftState(userId, messageIds[1]) }
+        coJustRun { deleteDraftState(userId, messageIds[0]) }
+        coJustRun { deleteDraftState(userId, messageIds[1]) }
 
         // When
         homeViewModel.submit(action)
 
         // Then
         coVerifyOrder {
-            updateSendingDraftState.deleteDraftState(userId, messageIds[0])
-            updateSendingDraftState.deleteDraftState(userId, messageIds[1])
+            deleteDraftState(userId, messageIds[0])
+            deleteDraftState(userId, messageIds[1])
         }
     }
 }

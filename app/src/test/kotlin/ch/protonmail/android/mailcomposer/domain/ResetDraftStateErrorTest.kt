@@ -28,11 +28,11 @@ import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
-class UpdateSendingDraftStateTest {
+class ResetDraftStateErrorTest {
 
     private val draftStateRepository = mockk<DraftStateRepository>()
 
-    private val updateSendingDraftState = UpdateSendingDraftState(draftStateRepository)
+    private val resetDraftStateError = ResetDraftStateError(draftStateRepository)
 
     @Test
     fun `reset error state sets the draft state to Syncronized`() = runTest {
@@ -42,23 +42,10 @@ class UpdateSendingDraftStateTest {
         coJustRun { draftStateRepository.updateDraftSyncState(userId, messageId, DraftSyncState.Synchronized) }
 
         // When
-        updateSendingDraftState.resetErrorState(userId, messageId)
+        resetDraftStateError.invoke(userId, messageId)
 
         // Then
         coVerify { draftStateRepository.updateDraftSyncState(userId, messageId, DraftSyncState.Synchronized) }
     }
 
-    @Test
-    fun `delete draft state delegates to repository`() = runTest {
-        // Given
-        val userId = UserIdSample.Primary
-        val messageId = DraftStateSample.RemoteDraftInErrorSendingState.messageId
-        coJustRun { draftStateRepository.deleteDraftState(userId, messageId) }
-
-        // When
-        updateSendingDraftState.deleteDraftState(userId, messageId)
-
-        // Then
-        coVerify { draftStateRepository.deleteDraftState(userId, messageId) }
-    }
 }

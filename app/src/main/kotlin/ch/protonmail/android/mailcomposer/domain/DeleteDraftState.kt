@@ -18,21 +18,16 @@
 
 package ch.protonmail.android.mailcomposer.domain
 
-import ch.protonmail.android.mailcomposer.domain.model.DraftSyncState
 import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
-class UpdateSendingDraftState @Inject constructor(
+class DeleteDraftState @Inject constructor(
     private val draftStateRepository: DraftStateRepository
 ) {
 
-    suspend fun resetErrorState(userId: UserId, messageId: MessageId) {
-        draftStateRepository.updateDraftSyncState(userId, messageId, DraftSyncState.Synchronized)
-    }
-
-    suspend fun deleteDraftState(userId: UserId, messageId: MessageId) {
+    suspend operator fun invoke(userId: UserId, messageId: MessageId) {
         draftStateRepository.deleteDraftState(userId, messageId)
     }
 }
