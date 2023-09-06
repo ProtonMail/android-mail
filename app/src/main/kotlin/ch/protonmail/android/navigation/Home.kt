@@ -36,11 +36,10 @@ import ch.protonmail.android.MainActivity
 import ch.protonmail.android.R
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
-import ch.protonmail.android.mailcomposer.presentation.model.MessageSendingUiModel
+import ch.protonmail.android.mailcomposer.presentation.model.MessageSendingStatus
 import ch.protonmail.android.mailmailbox.presentation.sidebar.Sidebar
 import ch.protonmail.android.navigation.model.Destination.Dialog
 import ch.protonmail.android.navigation.model.Destination.Screen
-import ch.protonmail.android.navigation.model.HomeAction
 import ch.protonmail.android.navigation.model.HomeState
 import ch.protonmail.android.navigation.route.addAccountSettings
 import ch.protonmail.android.navigation.route.addAlternativeRoutingSetting
@@ -121,19 +120,17 @@ fun Home(
         snackbarHostNormState.showSnackbar(message = sendingMessageOfflineText, type = ProtonSnackbarType.NORM)
     }
     val successSendingMessageText = stringResource(id = R.string.mailbox_message_sending_success)
-    fun showSuccessSendingMessageSnackbar(uiModel: MessageSendingUiModel.MessageSent) = scope.launch {
+    fun showSuccessSendingMessageSnackbar() = scope.launch {
         snackbarHostSuccessState.showSnackbar(message = successSendingMessageText, type = ProtonSnackbarType.SUCCESS)
-        viewModel.submit(HomeAction.MessageSentShown(uiModel))
     }
     val errorSendingMessageText = stringResource(id = R.string.mailbox_message_sending_error)
-    fun showErrorSendingMessageSnackbar(uiModel: MessageSendingUiModel.SendMessageError) = scope.launch {
+    fun showErrorSendingMessageSnackbar() = scope.launch {
         snackbarHostErrorState.showSnackbar(message = errorSendingMessageText, type = ProtonSnackbarType.ERROR)
-        viewModel.submit(HomeAction.MessageSendingErrorShown(uiModel))
     }
     ConsumableLaunchedEffect(state.value.messageSendingStatusEffect) { sendingStatus ->
         when (sendingStatus) {
-            is MessageSendingUiModel.MessageSent -> showSuccessSendingMessageSnackbar(sendingStatus)
-            is MessageSendingUiModel.SendMessageError -> showErrorSendingMessageSnackbar(sendingStatus)
+            is MessageSendingStatus.MessageSent -> showSuccessSendingMessageSnackbar()
+            is MessageSendingStatus.SendMessageError -> showErrorSendingMessageSnackbar()
         }
     }
 

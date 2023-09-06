@@ -19,12 +19,12 @@
 package ch.protonmail.android.navigation.model
 
 import ch.protonmail.android.mailcommon.presentation.Effect
-import ch.protonmail.android.mailcomposer.presentation.model.MessageSendingUiModel
+import ch.protonmail.android.mailcomposer.presentation.model.MessageSendingStatus
 import me.proton.core.network.domain.NetworkStatus
 
 data class HomeState(
     val networkStatusEffect: Effect<NetworkStatus>,
-    val messageSendingStatusEffect: Effect<MessageSendingUiModel>
+    val messageSendingStatusEffect: Effect<MessageSendingStatus>
 ) {
 
     companion object {

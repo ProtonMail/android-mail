@@ -16,13 +16,9 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.navigation.model
+package ch.protonmail.android.mailcomposer.presentation.model
 
-import ch.protonmail.android.mailcomposer.presentation.model.MessageSendingUiModel
-
-sealed interface HomeOperation
-
-internal sealed interface HomeAction : HomeOperation {
-    data class MessageSentShown(val messageSent: MessageSendingUiModel.MessageSent) : HomeAction
-    data class MessageSendingErrorShown(val messageError: MessageSendingUiModel.SendMessageError) : HomeAction
+sealed interface MessageSendingStatus {
+    object MessageSent : MessageSendingStatus
+    object SendMessageError : MessageSendingStatus
 }

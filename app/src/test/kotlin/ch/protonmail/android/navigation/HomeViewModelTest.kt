@@ -22,17 +22,15 @@ import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcomposer.domain.sample.DraftStateSample
 import ch.protonmail.android.mailcomposer.domain.usecase.DeleteDraftState
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveSendingDraftStates
 import ch.protonmail.android.mailcomposer.domain.usecase.ResetDraftStateError
-import ch.protonmail.android.mailcomposer.domain.sample.DraftStateSample
-import ch.protonmail.android.mailcomposer.presentation.model.MessageSendingUiModel.MessageSent
-import ch.protonmail.android.mailcomposer.presentation.model.MessageSendingUiModel.SendMessageError
-import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
-import ch.protonmail.android.navigation.model.HomeAction
+import ch.protonmail.android.mailcomposer.presentation.model.MessageSendingStatus.MessageSent
+import ch.protonmail.android.mailcomposer.presentation.model.MessageSendingStatus.SendMessageError
 import ch.protonmail.android.navigation.model.HomeState
 import io.mockk.coJustRun
-import io.mockk.coVerifyOrder
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
@@ -64,13 +62,9 @@ class HomeViewModelTest {
         every { this@mockk.invoke(any()) } returns flowOf(emptyList())
     }
 
-    private val resetDraftErrorState = mockk<ResetDraftStateError> {
-        coJustRun { this@mockk.invoke(user.userId, any()) }
-    }
+    private val resetDraftErrorState = mockk<ResetDraftStateError>()
 
-    private val deleteDraftState = mockk<DeleteDraftState> {
-        coJustRun { this@mockk.invoke(user.userId, any()) }
-    }
+    private val deleteDraftState = mockk<DeleteDraftState>()
 
     private val homeViewModel by lazy {
         HomeViewModel(
@@ -164,74 +158,82 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `when there are draft that failed sending then emit error sending messages effect`() = runTest {
-        // Given
-        val errorSendingDraftState = DraftStateSample.RemoteDraftInErrorSendingState
-        val expected = SendMessageError(errorSendingDraftState.userId, listOf(errorSendingDraftState.messageId))
-        every { networkManager.observe() } returns flowOf(NetworkStatus.Metered)
-        every { observeSendingDraftStates.invoke(user.userId) } returns flowOf(
-            listOf(DraftStateSample.RemoteDraftInSendingState, errorSendingDraftState)
-        )
-
-        // When
-        homeViewModel.state.test {
-            val actualItem = awaitItem()
-            val expectedItem = HomeState(
-                networkStatusEffect = Effect.of(NetworkStatus.Metered),
-                messageSendingStatusEffect = Effect.of(expected)
+    fun `when there are draft that failed sending then emit error sending messages effect and reset draft state`() =
+        runTest {
+            // Given
+            val errorSendingDraftState = DraftStateSample.RemoteDraftInErrorSendingState
+            every { networkManager.observe() } returns flowOf(NetworkStatus.Metered)
+            every { observeSendingDraftStates.invoke(user.userId) } returns flowOf(
+                listOf(DraftStateSample.RemoteDraftInSendingState, errorSendingDraftState)
             )
+            coJustRun { resetDraftErrorState(user.userId, errorSendingDraftState.messageId) }
 
-            // Then
-            assertEquals(expectedItem, actualItem)
+            // When
+            homeViewModel.state.test {
+                val actualItem = awaitItem()
+                val expectedItem = HomeState(
+                    networkStatusEffect = Effect.of(NetworkStatus.Metered),
+                    messageSendingStatusEffect = Effect.of(SendMessageError)
+                )
+
+                // Then
+                assertEquals(expectedItem, actualItem)
+                coVerify { resetDraftErrorState(user.userId, errorSendingDraftState.messageId) }
+            }
         }
-    }
 
     @Test
-    fun `when there are draft that succeeded sending then emit messages sent effect`() = runTest {
-        // Given
-        val sentDraftState = DraftStateSample.RemoteDraftInSentState
-        val expected = MessageSent(sentDraftState.userId, listOf(sentDraftState.messageId))
-        every { networkManager.observe() } returns flowOf(NetworkStatus.Metered)
-        every { observeSendingDraftStates.invoke(user.userId) } returns flowOf(
-            listOf(DraftStateSample.RemoteDraftInSendingState, sentDraftState)
-        )
-
-        // When
-        homeViewModel.state.test {
-            val actualItem = awaitItem()
-            val expectedItem = HomeState(
-                networkStatusEffect = Effect.of(NetworkStatus.Metered),
-                messageSendingStatusEffect = Effect.of(expected)
+    fun `when there are draft that succeeded sending then emit messages sent effect and delete draft state`() =
+        runTest {
+            // Given
+            val sentDraftState = DraftStateSample.RemoteDraftInSentState
+            every { networkManager.observe() } returns flowOf(NetworkStatus.Metered)
+            every { observeSendingDraftStates.invoke(user.userId) } returns flowOf(
+                listOf(DraftStateSample.RemoteDraftInSendingState, sentDraftState)
             )
+            coJustRun { deleteDraftState(user.userId, sentDraftState.messageId) }
 
-            // Then
-            assertEquals(expectedItem, actualItem)
+            // When
+            homeViewModel.state.test {
+                val actualItem = awaitItem()
+                val expectedItem = HomeState(
+                    networkStatusEffect = Effect.of(NetworkStatus.Metered),
+                    messageSendingStatusEffect = Effect.of(MessageSent)
+                )
+
+                // Then
+                assertEquals(expectedItem, actualItem)
+                coVerify { deleteDraftState(user.userId, sentDraftState.messageId) }
+            }
         }
-    }
 
     @Test
-    fun `when there are both failed and succeeded draft states then emit error sending message effect`() = runTest {
-        // Given
-        val sentDraftState = DraftStateSample.RemoteDraftInSentState
-        val errorSendingDraftState = DraftStateSample.RemoteDraftInErrorSendingState
-        val expected = SendMessageError(sentDraftState.userId, listOf(errorSendingDraftState.messageId))
-        every { networkManager.observe() } returns flowOf(NetworkStatus.Metered)
-        every { observeSendingDraftStates.invoke(user.userId) } returns flowOf(
-            listOf(DraftStateSample.RemoteDraftInSendingState, sentDraftState, errorSendingDraftState)
-        )
-
-        // When
-        homeViewModel.state.test {
-            val actualItem = awaitItem()
-            val expectedItem = HomeState(
-                networkStatusEffect = Effect.of(NetworkStatus.Metered),
-                messageSendingStatusEffect = Effect.of(expected)
+    fun `when there are both failed and succeeded draft states then emit error sending effect and reset states`() =
+        runTest {
+            // Given
+            val sentDraftState = DraftStateSample.RemoteDraftInSentState
+            val errorSendingDraftState = DraftStateSample.RemoteDraftInErrorSendingState
+            every { networkManager.observe() } returns flowOf(NetworkStatus.Metered)
+            every { observeSendingDraftStates.invoke(user.userId) } returns flowOf(
+                listOf(DraftStateSample.RemoteDraftInSendingState, sentDraftState, errorSendingDraftState)
             )
+            coJustRun { resetDraftErrorState(user.userId, errorSendingDraftState.messageId) }
+            coJustRun { deleteDraftState(user.userId, errorSendingDraftState.messageId) }
 
-            // Then
-            assertEquals(expectedItem, actualItem)
+            // When
+            homeViewModel.state.test {
+                val actualItem = awaitItem()
+                val expectedItem = HomeState(
+                    networkStatusEffect = Effect.of(NetworkStatus.Metered),
+                    messageSendingStatusEffect = Effect.of(SendMessageError)
+                )
+
+                // Then
+                assertEquals(expectedItem, actualItem)
+                coVerify { resetDraftErrorState(user.userId, sentDraftState.messageId) }
+                coVerify { deleteDraftState(user.userId, sentDraftState.messageId) }
+            }
         }
-    }
 
     @Test
     fun `when there are no ErrorSending or Sent draft states then emit empty sending status effect`() = runTest {
@@ -256,41 +258,4 @@ class HomeViewModelTest {
         }
     }
 
-    @Test
-    fun `when submit message sending error shown action then draft states are updated`() = runTest {
-        // Given
-        val userId = user.userId
-        val messageIds = listOf(MessageIdSample.NewDraftWithSubject, MessageIdSample.NewDraftWithSubjectAndBody)
-        val action = HomeAction.MessageSendingErrorShown(SendMessageError(userId, messageIds))
-        coJustRun { resetDraftErrorState(userId, messageIds[0]) }
-        coJustRun { resetDraftErrorState(userId, messageIds[1]) }
-
-        // When
-        homeViewModel.submit(action)
-
-        // Then
-        coVerifyOrder {
-            resetDraftErrorState(userId, messageIds[0])
-            resetDraftErrorState(userId, messageIds[1])
-        }
-    }
-
-    @Test
-    fun `when submit message sent shown action then draft states are deleted`() = runTest {
-        // Given
-        val userId = user.userId
-        val messageIds = listOf(MessageIdSample.NewDraftWithSubject, MessageIdSample.NewDraftWithSubjectAndBody)
-        val action = HomeAction.MessageSentShown(MessageSent(userId, messageIds))
-        coJustRun { deleteDraftState(userId, messageIds[0]) }
-        coJustRun { deleteDraftState(userId, messageIds[1]) }
-
-        // When
-        homeViewModel.submit(action)
-
-        // Then
-        coVerifyOrder {
-            deleteDraftState(userId, messageIds[0])
-            deleteDraftState(userId, messageIds[1])
-        }
-    }
 }
