@@ -113,7 +113,7 @@ class ComposerViewModelTest {
     private val isValidEmailAddressMock = mockk<IsValidEmailAddress>()
     private val getPrimaryAddressMock = mockk<GetPrimaryAddress>()
     private val provideNewDraftIdMock = mockk<ProvideNewDraftId>()
-    private val draftUploader = mockk<DraftUploader>()
+    private val draftUploaderMock = mockk<DraftUploader>()
     private val getComposerSenderAddresses = mockk<GetComposerSenderAddresses> {
         coEvery { this@mockk.invoke() } returns GetComposerSenderAddresses.Error.UpgradeToChangeSender.left()
     }
@@ -135,7 +135,7 @@ class ComposerViewModelTest {
             getPrimaryAddressMock,
             getComposerSenderAddresses,
             composerIdlingResource,
-            draftUploader,
+            draftUploaderMock,
             observeMailFeature,
             sendMessageMock,
             networkManagerMock,
@@ -401,11 +401,111 @@ class ComposerViewModelTest {
 
         // Then
         coVerifyOrder {
-            draftUploader.stopContinuousUpload()
+            draftUploaderMock.stopContinuousUpload()
             storeDraftWithAllFields(expectedUserId, expectedMessageId, expectedFields)
-            draftUploader.upload(expectedUserId, expectedMessageId)
+            draftUploaderMock.upload(expectedUserId, expectedMessageId)
         }
         assertEquals(Effect.of(Unit), viewModel.state.value.closeComposerWithDraftSaved)
+    }
+
+    @Test
+    fun `should store all draft fields and send message when send button is clicked`() = runTest {
+        // Given
+        val expectedSubject = Subject("Subject for the message")
+        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+        val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val expectedDraftBody = DraftBody("I am plaintext")
+        expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        val recipientsTo = RecipientsTo(listOf(RecipientSample.John))
+        val recipientsCc = RecipientsCc(listOf(RecipientSample.John))
+        val recipientsBcc = RecipientsBcc(listOf(RecipientSample.John))
+        val expectedFields = DraftFields(
+            expectedSenderEmail,
+            expectedSubject,
+            expectedDraftBody,
+            recipientsTo,
+            recipientsCc,
+            recipientsBcc
+        )
+        mockParticipantMapper()
+        expectNetworkManagerIsConnected()
+        expectStoreAllDraftFieldsSucceeds(expectedUserId, expectedMessageId, expectedFields)
+        expectNoInputDraftMessageId()
+        expectSendMessageSucceds(expectedUserId, expectedMessageId)
+        expectStopContinuousDraftUploadSucceeds()
+        expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
+        expectObserveMailFeature(expectedUserId) { emptyFlow() }
+
+        // Change internal state of the View Model to simulate the existence of all fields before closing the composer
+        expectedViewModelInitialState(
+            expectedMessageId,
+            expectedSenderEmail,
+            expectedSubject,
+            expectedDraftBody,
+            Triple(recipientsTo, recipientsCc, recipientsBcc)
+        )
+
+        // When
+        viewModel.submit(ComposerAction.OnSendMessage)
+
+        // Then
+        coVerifyOrder {
+            draftUploaderMock.stopContinuousUpload()
+            storeDraftWithAllFields(expectedUserId, expectedMessageId, expectedFields)
+            sendMessageMock(expectedUserId, expectedMessageId)
+        }
+        assertEquals(Effect.of(Unit), viewModel.state.value.closeComposerWithMessageSending)
+    }
+
+    @Test
+    fun `should store all draft fields and send message in offline when send button is clicked`() = runTest {
+        // Given
+        val expectedSubject = Subject("Subject for the message")
+        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+        val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val expectedDraftBody = DraftBody("I am plaintext")
+        expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        val recipientsTo = RecipientsTo(listOf(RecipientSample.John))
+        val recipientsCc = RecipientsCc(listOf(RecipientSample.John))
+        val recipientsBcc = RecipientsBcc(listOf(RecipientSample.John))
+        val expectedFields = DraftFields(
+            expectedSenderEmail,
+            expectedSubject,
+            expectedDraftBody,
+            recipientsTo,
+            recipientsCc,
+            recipientsBcc
+        )
+        mockParticipantMapper()
+        expectNetworkManagerIsDisconnected()
+        expectStoreAllDraftFieldsSucceeds(expectedUserId, expectedMessageId, expectedFields)
+        expectNoInputDraftMessageId()
+        expectSendMessageSucceds(expectedUserId, expectedMessageId)
+        expectStopContinuousDraftUploadSucceeds()
+        expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
+        expectObserveMailFeature(expectedUserId) { emptyFlow() }
+
+        // Change internal state of the View Model to simulate the existence of all fields before closing the composer
+        expectedViewModelInitialState(
+            expectedMessageId,
+            expectedSenderEmail,
+            expectedSubject,
+            expectedDraftBody,
+            Triple(recipientsTo, recipientsCc, recipientsBcc)
+        )
+
+        // When
+        viewModel.submit(ComposerAction.OnSendMessage)
+
+        // Then
+        coVerifyOrder {
+            draftUploaderMock.stopContinuousUpload()
+            storeDraftWithAllFields(expectedUserId, expectedMessageId, expectedFields)
+            sendMessageMock(expectedUserId, expectedMessageId)
+        }
+        assertEquals(Effect.of(Unit), viewModel.state.value.closeComposerWithMessageSendingOffline)
     }
 
     @Test
@@ -423,7 +523,7 @@ class ComposerViewModelTest {
 
         // Then
         coVerify { storeDraftWithAllFields wasNot Called }
-        coVerify(exactly = 0) { draftUploader.upload(any(), any()) }
+        coVerify(exactly = 0) { draftUploaderMock.upload(any(), any()) }
         assertEquals(Effect.of(Unit), viewModel.state.value.closeComposer)
     }
 
@@ -470,9 +570,9 @@ class ComposerViewModelTest {
 
             // Then
             coVerifyOrder {
-                draftUploader.stopContinuousUpload()
+                draftUploaderMock.stopContinuousUpload()
                 storeDraftWithAllFields(expectedUserId, expectedMessageId, expectedFields)
-                draftUploader.upload(expectedUserId, expectedMessageId)
+                draftUploaderMock.upload(expectedUserId, expectedMessageId)
             }
         }
 
@@ -851,7 +951,7 @@ class ComposerViewModelTest {
 
         // Then
         assertEquals(messageId, actual.fields.draftId)
-        coVerify { draftUploader.startContinuousUpload(userId, messageId, DraftAction.Compose, any()) }
+        coVerify { draftUploaderMock.startContinuousUpload(userId, messageId, DraftAction.Compose, any()) }
     }
 
     @Test
@@ -922,15 +1022,27 @@ class ComposerViewModelTest {
     }
 
     private fun expectStopContinuousDraftUploadSucceeds() {
-        coEvery { draftUploader.stopContinuousUpload() } returns Unit
+        coEvery { draftUploaderMock.stopContinuousUpload() } returns Unit
     }
 
     private fun expectUploadDraftSucceeds(expectedUserId: UserId, expectedMessageId: MessageId) {
-        coEvery { draftUploader.upload(expectedUserId, expectedMessageId) } returns Unit
+        coEvery { draftUploaderMock.upload(expectedUserId, expectedMessageId) } returns Unit
+    }
+
+    private fun expectSendMessageSucceds(expectedUserId: UserId, expectedMessageId: MessageId) {
+        coEvery { sendMessageMock.invoke(expectedUserId, expectedMessageId) } returns Unit
+    }
+
+    private fun expectNetworkManagerIsConnected() {
+        every { networkManagerMock.isConnectedToNetwork() } returns true
+    }
+
+    private fun expectNetworkManagerIsDisconnected() {
+        every { networkManagerMock.isConnectedToNetwork() } returns false
     }
 
     private fun expectStartDraftSync(userId: UserId, messageId: MessageId) {
-        coEvery { draftUploader.startContinuousUpload(userId, messageId, DraftAction.Compose, any()) } returns Unit
+        coEvery { draftUploaderMock.startContinuousUpload(userId, messageId, DraftAction.Compose, any()) } returns Unit
     }
 
     private fun expectObserveMailFeature(userId: UserId, result: () -> Flow<FeatureFlag>) = result().also {

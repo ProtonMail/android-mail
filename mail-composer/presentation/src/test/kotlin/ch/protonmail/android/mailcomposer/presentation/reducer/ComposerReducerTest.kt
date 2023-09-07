@@ -418,6 +418,28 @@ class ComposerReducerTest(
             )
         )
 
+        private val SubmittableToSendMessage =
+            TestTransition(
+                name = "Should update submittable state with message sending after OnSendMessage action",
+                currentState = aSubmittableState(messageId),
+                operation = ComposerAction.OnSendMessage,
+                expectedState = aSubmittableState(
+                    messageId,
+                    closeComposerWithMessageSending = Effect.of(Unit)
+                )
+            )
+
+        private val SubmittableToOnSendMessageOffline =
+            TestTransition(
+                name = "Should update submittable state with message sending after OnSendMessageOffline action",
+                currentState = aSubmittableState(messageId),
+                operation = ComposerEvent.OnSendMessageOffline,
+                expectedState = aSubmittableState(
+                    messageId,
+                    closeComposerWithMessageSendingOffline = Effect.of(Unit)
+                )
+            )
+
         private val EmptyToLoadingWithOpenExistingDraft = TestTransition(
             name = "Should set state to loading when open of existing draft was requested",
             currentState = ComposerDraftState.initial(messageId),
@@ -511,6 +533,8 @@ class ComposerReducerTest(
             EmptyToUpdatedSubject,
             EmptyToCloseComposer,
             EmptyToCloseComposerWithDraftSaved,
+            SubmittableToSendMessage,
+            SubmittableToOnSendMessageOffline,
             EmptyToLoadingWithOpenExistingDraft,
             LoadingToFieldsWhenReceivedDraftData,
             LoadingToErrorWhenErrorLoadingDraftData,
@@ -524,7 +548,9 @@ class ComposerReducerTest(
             to: List<RecipientUiModel> = emptyList(),
             cc: List<RecipientUiModel> = emptyList(),
             bcc: List<RecipientUiModel> = emptyList(),
-            error: Effect<TextUiModel> = Effect.empty()
+            error: Effect<TextUiModel> = Effect.empty(),
+            closeComposerWithMessageSending: Effect<Unit> = Effect.empty(),
+            closeComposerWithMessageSendingOffline: Effect<Unit> = Effect.empty()
         ) = ComposerDraftState(
             fields = ComposerFields(
                 draftId = draftId,
@@ -544,8 +570,8 @@ class ComposerReducerTest(
             closeComposerWithDraftSaved = Effect.empty(),
             isLoading = false,
             isAddAttachmentsButtonVisible = false,
-            closeComposerWithMessageSending = Effect.empty(),
-            closeComposerWithMessageSendingOffline = Effect.empty()
+            closeComposerWithMessageSending = closeComposerWithMessageSending,
+            closeComposerWithMessageSendingOffline = closeComposerWithMessageSendingOffline
         )
 
         private fun aNotSubmittableState(
