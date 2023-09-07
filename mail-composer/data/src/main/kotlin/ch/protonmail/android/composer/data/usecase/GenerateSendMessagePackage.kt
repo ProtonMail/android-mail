@@ -30,6 +30,7 @@ import me.proton.core.mailsendpreferences.domain.model.SendPreferences
 import me.proton.core.mailsettings.domain.entity.MimeType
 import me.proton.core.mailsettings.domain.entity.PackageType
 import me.proton.core.util.kotlin.toInt
+import timber.log.Timber
 import javax.inject.Inject
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
@@ -56,7 +57,9 @@ class GenerateSendMessagePackage @Inject constructor(
 
             if (sendPreferences.pgpScheme == PackageType.ProtonMail) {
 
-                val publicKey = sendPreferences.publicKey ?: return null
+                val publicKey = sendPreferences.publicKey ?: return null.also {
+                    Timber.e("GenerateSendMessagePackage: publicKey for ${sendPreferences.pgpScheme.name} was null")
+                }
 
                 generateProtonMail(
                     publicKey,
@@ -69,7 +72,9 @@ class GenerateSendMessagePackage @Inject constructor(
 
             } else {
 
-                if (signedEncryptedMimeBody == null) return null
+                if (signedEncryptedMimeBody == null) return null.also {
+                    Timber.e("GenerateSendMessagePackage: signedEncryptedMimeBody was null")
+                }
 
                 generatePgpMime(recipientEmail, signedEncryptedMimeBody)
 
@@ -178,7 +183,7 @@ class GenerateSendMessagePackage @Inject constructor(
         )
     }
 
-    private companion object {
+    companion object {
 
         const val SessionKeyAlgorithm = "aes256"
     }
