@@ -115,7 +115,6 @@ class AttachmentRepositoryImpl @Inject constructor(
         messageId: MessageId,
         attachmentId: AttachmentId,
         uri: Uri
-    ) {
-        localDataSource.upsertAttachment(userId, messageId, attachmentId, uri)
-    }
+    ): Either<DataError, Unit> = localDataSource.upsertAttachment(userId, messageId, attachmentId, uri)
+
 }

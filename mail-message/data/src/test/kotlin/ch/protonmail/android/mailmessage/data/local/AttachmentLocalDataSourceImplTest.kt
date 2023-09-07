@@ -203,6 +203,7 @@ class AttachmentLocalDataSourceImplTest {
     @Test
     fun `should store attachment metadata locally when saving the file to internal storage was successful`() = runTest {
         // Given
+        val expectedResult = Unit.right()
         val fileName = "name"
         val fileSize = 123L
         val fileMimeType = "mimeType"
@@ -220,24 +221,56 @@ class AttachmentLocalDataSourceImplTest {
         } returns FileInformation(fileName, fileSize, fileMimeType)
 
         // When
-        attachmentLocalDataSource.upsertAttachment(userId, messageId, attachmentId, mockUri)
+        val actual = attachmentLocalDataSource.upsertAttachment(userId, messageId, attachmentId, mockUri)
 
         // Then
+        assertEquals(expectedResult, actual)
         coVerify { attachmentDao.insertOrUpdate(messageAttachmentEntity) }
     }
 
     @Test
     fun `should not store attachment metadata locally when saving the file to internal storage has failed`() = runTest {
         // Given
+        val expectedResult = DataError.Local.FailedToStoreFile.left()
         coEvery {
             attachmentFileStorage.saveAttachment(userId, messageId.id, attachmentId.id, mockUri)
         } returns null
 
         // When
-        attachmentLocalDataSource.upsertAttachment(userId, messageId, attachmentId, mockUri)
+        val actual = attachmentLocalDataSource.upsertAttachment(userId, messageId, attachmentId, mockUri)
 
         // Then
+        assertEquals(expectedResult, actual)
         coVerify(exactly = 0) { attachmentDao.insertOrUpdate(any()) }
+    }
+
+    @Test
+    fun `should return data error when storing attachment metadata locally has failed`() = runTest {
+        // Given
+        val expectedResult = DataError.Local.FailedToStoreFile.left()
+        val fileName = "name"
+        val fileSize = 123L
+        val fileMimeType = "mimeType"
+        val messageAttachmentEntity = MessageAttachmentEntityTestData.build(
+            userId = userId,
+            messageId = messageId,
+            attachmentId = attachmentId,
+            name = fileName,
+            size = fileSize,
+            mimeType = fileMimeType,
+            disposition = "attachment"
+        )
+        coEvery {
+            attachmentFileStorage.saveAttachment(userId, messageId.id, attachmentId.id, mockUri)
+        } returns FileInformation(fileName, fileSize, fileMimeType)
+        coEvery { attachmentDao.insertOrUpdate(any()) } throws Exception()
+
+        // When
+        val actual = attachmentLocalDataSource.upsertAttachment(userId, messageId, attachmentId, mockUri)
+
+        // Then
+        assertEquals(expectedResult, actual)
+        coVerify { attachmentDao.insertOrUpdate(messageAttachmentEntity) }
     }
 
     @Test

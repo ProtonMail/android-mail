@@ -63,19 +63,17 @@ class StoreAttachments @Inject constructor(
                     shift<StoreDraftWithAttachmentError>(StoreDraftWithAttachmentError.FailedReceivingDraft)
                 }
             }
-
+            var attachmentFailedToStore = false
             uriList.forEach {
-                runCatching {
-                    attachmentRepository.saveAttachment(
-                        userId = userId,
-                        messageId = draft.message.messageId,
-                        attachmentId = provideNewAttachmentId(),
-                        uri = it
-                    )
-                }.onFailure {
-                    Timber.e(it, "Failed to store attachment")
-                    shift(StoreDraftWithAttachmentError.FailedToStoreAttachments)
-                }
+                attachmentRepository.saveAttachment(
+                    userId = userId,
+                    messageId = draft.message.messageId,
+                    attachmentId = provideNewAttachmentId(),
+                    uri = it
+                ).onLeft { attachmentFailedToStore = true }
+            }
+            if (attachmentFailedToStore) {
+                shift<StoreDraftWithAttachmentError>(StoreDraftWithAttachmentError.FailedToStoreAttachments)
             }
         }
     }

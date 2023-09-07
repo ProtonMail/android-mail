@@ -18,10 +18,10 @@
 
 package ch.protonmail.android.mailcomposer.domain.usecase
 
-import android.database.sqlite.SQLiteConstraintException
 import android.net.Uri
 import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
@@ -143,12 +143,12 @@ class StoreAttachmentsTest {
     }
 
     @Test
-    fun `should return failed to store attachment when storing throws an exception`() = runTest {
+    fun `should return failed to store attachment when storing returns error`() = runTest {
         // Given
         val expectedMessageId = MessageIdSample.Invoice
         expectedLocalDraft(expectedMessageId, MessageWithBodySample.Invoice)
         expectedLocalMessageBody(expectedMessageId, MessageWithBodySample.Invoice)
-        expectedAttachmentSavingFailed(expectedMessageId)
+        expectAttachmentSavingFailed(expectedMessageId, uri)
 
         val expectedError = StoreDraftWithAttachmentError.FailedToStoreAttachments.left()
 
@@ -158,6 +158,26 @@ class StoreAttachmentsTest {
         // Then
         assertEquals(expectedError, actual)
     }
+
+    @Test
+    fun `should return failed to store attachment when one URI withing a list failed to get stored`() = runTest {
+        // Given
+        val uri2 = mockk<Uri>()
+        val expectedMessageId = MessageIdSample.Invoice
+        expectedLocalDraft(expectedMessageId, MessageWithBodySample.Invoice)
+        expectedLocalMessageBody(expectedMessageId, MessageWithBodySample.Invoice)
+        expectAttachmentSavingSuccessful(expectedMessageId)
+        expectAttachmentSavingFailed(expectedMessageId, uri2)
+
+        val expectedError = StoreDraftWithAttachmentError.FailedToStoreAttachments.left()
+
+        // When
+        val actual = storeAttachments(userId, expectedMessageId, senderEmail, listOf(uri, uri2))
+
+        // Then
+        assertEquals(expectedError, actual)
+    }
+
 
     private fun expectedLocalDraft(expectedMessageId: MessageId, expectedMessageBody: MessageWithBody) {
         coEvery { getLocalDraft(userId, expectedMessageId, senderEmail) } returns expectedMessageBody.right()
@@ -178,12 +198,14 @@ class StoreAttachmentsTest {
     }
 
     private fun expectAttachmentSavingSuccessful(expectedMessageId: MessageId) {
-        coEvery { attachmentRepository.saveAttachment(userId, expectedMessageId, localAttachmentId, uri) } returns Unit
-    }
-
-    private fun expectedAttachmentSavingFailed(expectedMessageId: MessageId) {
         coEvery {
             attachmentRepository.saveAttachment(userId, expectedMessageId, localAttachmentId, uri)
-        } throws SQLiteConstraintException()
+        } returns Unit.right()
+    }
+
+    private fun expectAttachmentSavingFailed(expectedMessageId: MessageId, uri: Uri) {
+        coEvery {
+            attachmentRepository.saveAttachment(userId, expectedMessageId, localAttachmentId, uri)
+        } returns DataError.Local.FailedToStoreFile.left()
     }
 }

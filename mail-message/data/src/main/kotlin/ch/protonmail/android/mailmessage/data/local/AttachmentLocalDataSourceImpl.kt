@@ -47,7 +47,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class AttachmentLocalDataSourceImpl @Inject constructor(
-    private val db: MessageDatabase,
+    db: MessageDatabase,
     private val attachmentFileStorage: AttachmentFileStorage,
     @ApplicationContext private val context: Context,
     private val decryptAttachmentByteArray: DecryptAttachmentByteArray,
@@ -150,22 +150,26 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
         messageId: MessageId,
         attachmentId: AttachmentId,
         uri: Uri
-    ) {
-        attachmentFileStorage.saveAttachment(userId, messageId.id, attachmentId.id, uri)?.let { fileInformation ->
-            val messageAttachmentEntity = MessageAttachmentEntity(
-                userId = userId,
-                messageId = messageId,
-                attachmentId = attachmentId,
-                name = fileInformation.name,
-                size = fileInformation.size,
-                mimeType = fileInformation.mimeType,
-                disposition = "attachment",
-                keyPackets = null,
-                signature = null,
-                encSignature = null,
-                headers = emptyMap()
-            )
-            attachmentDao.insertOrUpdate(messageAttachmentEntity)
+    ): Either<DataError.Local, Unit> {
+        val fileInformation = attachmentFileStorage.saveAttachment(userId, messageId.id, attachmentId.id, uri)
+            ?: return DataError.Local.FailedToStoreFile.left()
+        val messageAttachmentEntity = MessageAttachmentEntity(
+            userId = userId,
+            messageId = messageId,
+            attachmentId = attachmentId,
+            name = fileInformation.name,
+            size = fileInformation.size,
+            mimeType = fileInformation.mimeType,
+            disposition = "attachment",
+            keyPackets = null,
+            signature = null,
+            encSignature = null,
+            headers = emptyMap()
+        )
+        val result = runCatching { attachmentDao.insertOrUpdate(messageAttachmentEntity) }
+        return when (result.isSuccess) {
+            true -> Unit.right()
+            false -> DataError.Local.FailedToStoreFile.left()
         }
     }
 

@@ -66,5 +66,5 @@ interface AttachmentRepository {
         messageId: MessageId,
         attachmentId: AttachmentId,
         uri: Uri
-    )
+    ): Either<DataError, Unit>
 }

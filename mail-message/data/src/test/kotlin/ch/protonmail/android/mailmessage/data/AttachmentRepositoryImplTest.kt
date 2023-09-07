@@ -364,12 +364,28 @@ class AttachmentRepositoryImplTest {
     fun `should call method to save attachment to local storage`() = runTest {
         // Given
         val uri = mockk<Uri>()
-        coEvery { localDataSource.upsertAttachment(userId, messageId, attachmentId, uri) } just runs
+        val expectedResult = Unit.right()
+        coEvery { localDataSource.upsertAttachment(userId, messageId, attachmentId, uri) } returns expectedResult
 
         // When
         repository.saveAttachment(userId, messageId, attachmentId, uri)
 
         // Then
+        coVerify { localDataSource.upsertAttachment(userId, messageId, attachmentId, uri) }
+    }
+
+    @Test
+    fun `should return data error when call method to save attachment failed`() = runTest {
+        // Given
+        val uri = mockk<Uri>()
+        val expectedResult = DataError.Local.FailedToStoreFile.left()
+        coEvery { localDataSource.upsertAttachment(userId, messageId, attachmentId, uri) } returns expectedResult
+
+        // When
+        val actual = repository.saveAttachment(userId, messageId, attachmentId, uri)
+
+        // Then
+        assertEquals(expectedResult, actual)
         coVerify { localDataSource.upsertAttachment(userId, messageId, attachmentId, uri) }
     }
 }
