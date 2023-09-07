@@ -19,18 +19,22 @@
 package ch.protonmail.android.mailcomposer.domain.usecase
 
 import android.net.Uri
+import arrow.core.Either
+import arrow.core.continuations.either
 import ch.protonmail.android.mailcomposer.domain.Transactor
-import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
+import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.AttachmentRepository
-import kotlinx.coroutines.flow.first
+import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import javax.inject.Inject
 
 class StoreAttachments @Inject constructor(
+    private val messageRepository: MessageRepository,
     private val attachmentRepository: AttachmentRepository,
-    private val draftStateRepository: DraftStateRepository,
+    private val getLocalDraft: GetLocalDraft,
+    private val saveDraft: SaveDraft,
     private val provideNewAttachmentId: ProvideNewAttachmentId,
     private val transactor: Transactor
 ) {
@@ -38,17 +42,47 @@ class StoreAttachments @Inject constructor(
     suspend operator fun invoke(
         userId: UserId,
         messageId: MessageId,
+        senderEmail: SenderEmail,
         uriList: List<Uri>
-    ) {
+    ): Either<StoreDraftWithAttachmentError, Unit> = either {
+        if (uriList.isEmpty()) {
+            shift<StoreDraftWithAttachmentError>(StoreDraftWithAttachmentError.AttachmentsMissing)
+        }
         transactor.performTransaction {
-            val apiMessageId = draftStateRepository.observe(userId, messageId).first().onLeft {
-                Timber.d("No draft state found for $messageId")
-            }.getOrNull()?.apiMessageId
+            val draft = getLocalDraft(userId, messageId, senderEmail)
+                .mapLeft { StoreDraftWithAttachmentError.FailedReceivingDraft }
+                .bind()
+
+            // Verify that draft exists in db, if not create it
+            val messageWithBody = messageRepository.getLocalMessageWithBody(userId, messageId)
+            Timber.d("Draft exists in db: ${messageWithBody != null}")
+            if (messageWithBody == null) {
+                val success = saveDraft(draft, userId)
+                if (!success) {
+                    Timber.d("Failed to save draft")
+                    shift<StoreDraftWithAttachmentError>(StoreDraftWithAttachmentError.FailedReceivingDraft)
+                }
+            }
 
             uriList.forEach {
-                val localAttachmentId = provideNewAttachmentId()
-                attachmentRepository.saveAttachment(userId, apiMessageId ?: messageId, localAttachmentId, it)
+                runCatching {
+                    attachmentRepository.saveAttachment(
+                        userId = userId,
+                        messageId = draft.message.messageId,
+                        attachmentId = provideNewAttachmentId(),
+                        uri = it
+                    )
+                }.onFailure {
+                    Timber.e(it, "Failed to store attachment")
+                    shift(StoreDraftWithAttachmentError.FailedToStoreAttachments)
+                }
             }
         }
     }
+}
+
+sealed interface StoreDraftWithAttachmentError {
+    object AttachmentsMissing : StoreDraftWithAttachmentError
+    object FailedReceivingDraft : StoreDraftWithAttachmentError
+    object FailedToStoreAttachments : StoreDraftWithAttachmentError
 }

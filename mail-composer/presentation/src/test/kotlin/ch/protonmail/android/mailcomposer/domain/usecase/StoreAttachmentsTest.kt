@@ -18,70 +18,172 @@
 
 package ch.protonmail.android.mailcomposer.domain.usecase
 
+import android.database.sqlite.SQLiteConstraintException
 import android.net.Uri
+import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
-import ch.protonmail.android.mailcomposer.domain.model.DraftAction
-import ch.protonmail.android.mailcomposer.domain.model.DraftState
-import ch.protonmail.android.mailcomposer.domain.model.DraftSyncState
-import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
+import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.repository.AttachmentRepository
+import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
+import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
 import ch.protonmail.android.test.utils.FakeTransactor
+import io.mockk.Called
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class StoreAttachmentsTest {
 
     private val userId = UserIdSample.Primary
+    private val senderAddress = UserAddressSample.build()
+    private val senderEmail = SenderEmail(senderAddress.email)
     private val localMessageId = MessageId("localMessageId")
-    private val remoteMessageId = MessageId("remoteMessageId")
     private val localAttachmentId = AttachmentId("localAttachmentId")
 
     private val uri = mockk<Uri>()
-    private val attachmentRepository = mockk<AttachmentRepository>(relaxUnitFun = true)
-    private val draftStateRepository = mockk<DraftStateRepository>()
+    private val messageRepository = mockk<MessageRepository>()
+    private val attachmentRepository = mockk<AttachmentRepository>()
+    private val getLocalDraft = mockk<GetLocalDraft>()
+    private val saveDraft = mockk<SaveDraft>()
     private val provideNewAttachmentId = mockk<ProvideNewAttachmentId> {
         every { this@mockk.invoke() } returns localAttachmentId
     }
     private val transactor = FakeTransactor()
 
     private val storeAttachments = StoreAttachments(
+        messageRepository,
         attachmentRepository,
-        draftStateRepository,
+        getLocalDraft,
+        saveDraft,
         provideNewAttachmentId,
         transactor
     )
 
     @Test
-    fun `should save attachment with local message id when remote message id doesn't exist`() = runTest {
+    fun `should save draft and attachment with id retrieved from local draft`() = runTest {
         // Given
-        val draftState = DraftState(userId, localMessageId, null, DraftSyncState.Local, DraftAction.Compose)
-        coEvery { draftStateRepository.observe(userId, localMessageId) } returns flowOf(draftState.right())
+        val expectedMessageId = MessageIdSample.Invoice
+        val expectedMessageBody = MessageWithBodySample.Invoice
+        expectedLocalDraft(expectedMessageId, expectedMessageBody)
+        expectedLocalMessageBody(expectedMessageId, null)
+        expectedDraftSaving(expectedMessageBody, true)
+        expectAttachmentSavingSuccessful(expectedMessageId)
 
         // When
-        storeAttachments(userId, localMessageId, listOf(uri))
+        val actual = storeAttachments(userId, expectedMessageId, senderEmail, listOf(uri))
 
         // Then
-        coVerify { attachmentRepository.saveAttachment(userId, localMessageId, localAttachmentId, uri) }
+        assertEquals(Unit.right(), actual)
+        coVerify { saveDraft(expectedMessageBody, userId) }
+        coVerify { attachmentRepository.saveAttachment(userId, expectedMessageId, localAttachmentId, uri) }
     }
 
     @Test
-    fun `should save attachment with remote id when remote id exists`() = runTest {
+    fun `should save attachment with id retrieved from existing local draft`() = runTest {
         // Given
-        val draftState = DraftState(userId, localMessageId, remoteMessageId, DraftSyncState.Local, DraftAction.Compose)
-        coEvery { draftStateRepository.observe(userId, localMessageId) } returns flowOf(draftState.right())
+        val expectedMessageId = MessageIdSample.Invoice
+        val expectedMessageBody = MessageWithBodySample.Invoice
+        expectedLocalDraft(expectedMessageId, expectedMessageBody)
+        expectedLocalMessageBody(expectedMessageId, expectedMessageBody)
+        expectAttachmentSavingSuccessful(expectedMessageId)
 
         // When
-        storeAttachments(userId, localMessageId, listOf(uri))
+        val actual = storeAttachments(userId, expectedMessageId, senderEmail, listOf(uri))
 
         // Then
-        coVerify { attachmentRepository.saveAttachment(userId, remoteMessageId, localAttachmentId, uri) }
+        assertEquals(Unit.right(), actual)
+        coVerify { saveDraft wasNot Called }
+        coVerify { attachmentRepository.saveAttachment(userId, expectedMessageId, localAttachmentId, uri) }
+    }
+
+    @Test
+    fun `should return failed receiving draft when storing draft fails`() = runTest {
+        // Given
+        val expectedMessageId = MessageIdSample.Invoice
+        val expectedMessageBody = MessageWithBodySample.Invoice
+        val expectedError = StoreDraftWithAttachmentError.FailedReceivingDraft.left()
+
+        expectedLocalDraft(expectedMessageId, expectedMessageBody)
+        expectedLocalMessageBody(expectedMessageId, null)
+        expectAttachmentSavingSuccessful(expectedMessageId)
+        expectedDraftSaving(expectedMessageBody, false)
+
+        // When
+        val actual = storeAttachments(userId, expectedMessageId, senderEmail, listOf(uri))
+
+        // Then
+        assertEquals(expectedError, actual)
+        coVerify { saveDraft(expectedMessageBody, userId) }
+        coVerify { attachmentRepository wasNot Called }
+    }
+
+    @Test
+    fun `should return failed receiving draft when get local draft fails`() = runTest {
+        // Given
+        expectedLocalDraftError()
+        val expectedError = StoreDraftWithAttachmentError.FailedReceivingDraft.left()
+
+        // When
+        val actual = storeAttachments(userId, localMessageId, senderEmail, listOf(uri))
+
+        // Then
+        assertEquals(expectedError, actual)
+        coVerify { messageRepository wasNot Called }
+        coVerify { attachmentRepository wasNot Called }
+    }
+
+    @Test
+    fun `should return failed to store attachment when storing throws an exception`() = runTest {
+        // Given
+        val expectedMessageId = MessageIdSample.Invoice
+        expectedLocalDraft(expectedMessageId, MessageWithBodySample.Invoice)
+        expectedLocalMessageBody(expectedMessageId, MessageWithBodySample.Invoice)
+        expectedAttachmentSavingFailed(expectedMessageId)
+
+        val expectedError = StoreDraftWithAttachmentError.FailedToStoreAttachments.left()
+
+        // When
+        val actual = storeAttachments(userId, expectedMessageId, senderEmail, listOf(uri))
+
+        // Then
+        assertEquals(expectedError, actual)
+    }
+
+    private fun expectedLocalDraft(expectedMessageId: MessageId, expectedMessageBody: MessageWithBody) {
+        coEvery { getLocalDraft(userId, expectedMessageId, senderEmail) } returns expectedMessageBody.right()
+    }
+
+    private fun expectedLocalDraftError() {
+        coEvery {
+            getLocalDraft(userId, localMessageId, senderEmail)
+        } returns GetLocalDraft.Error.ResolveUserAddressError.left()
+    }
+
+    private fun expectedLocalMessageBody(messageId: MessageId, expectedMessageBody: MessageWithBody?) {
+        coEvery { messageRepository.getLocalMessageWithBody(userId, messageId) } returns expectedMessageBody
+    }
+
+    private fun expectedDraftSaving(expectedMessageBody: MessageWithBody, successful: Boolean) {
+        coEvery { saveDraft(expectedMessageBody, userId) } returns successful
+    }
+
+    private fun expectAttachmentSavingSuccessful(expectedMessageId: MessageId) {
+        coEvery { attachmentRepository.saveAttachment(userId, expectedMessageId, localAttachmentId, uri) } returns Unit
+    }
+
+    private fun expectedAttachmentSavingFailed(expectedMessageId: MessageId) {
+        coEvery {
+            attachmentRepository.saveAttachment(userId, expectedMessageId, localAttachmentId, uri)
+        } throws SQLiteConstraintException()
     }
 }

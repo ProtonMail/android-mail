@@ -165,7 +165,7 @@ class ComposerViewModelTest {
     }
 
     @Test
-    fun `should store draft with all fields and store attachments when attachments are added to the draft`() {
+    fun `should store attachments when attachments are added to the draft`() {
         // Given
         val uri = mockk<Uri>()
         val primaryAddress = UserAddressSample.PrimaryAddress
@@ -188,25 +188,16 @@ class ComposerViewModelTest {
         expectedPrimaryAddress(expectedUserId) { primaryAddress }
         expectInputDraftMessageId { messageId }
         expectStoreAllDraftFieldsSucceeds(expectedUserId, messageId, expectedFields)
-        expectStoreAttachmentsSucceeds(expectedUserId, messageId, listOf(uri))
+        expectStoreAttachmentsSucceeds(expectedUserId, messageId, expectedSenderEmail, listOf(uri))
         expectDecryptedDraftDataSuccess(expectedUserId, messageId) { expectedFields }
         expectStartDraftSync(expectedUserId, messageId)
-        expectContacts()
-        mockParticipantMapper()
-        expectedViewModelInitialState(
-            messageId,
-            expectedSenderEmail,
-            expectedSubject,
-            expectedDraftBody,
-            Triple(recipientsTo, recipientsCc, recipientsBcc)
-        )
+
 
         // When
         viewModel.submit(ComposerAction.AttachmentsAdded(listOf(uri)))
 
         // Then
-        coVerify { storeDraftWithAllFields(expectedUserId, messageId, expectedFields) }
-        coVerify { storeAttachments(expectedUserId, messageId, listOf(uri)) }
+        coVerify { storeAttachments(expectedUserId, messageId, expectedSenderEmail, listOf(uri)) }
     }
 
     @Test
@@ -1297,9 +1288,12 @@ class ComposerViewModelTest {
     private fun expectStoreAttachmentsSucceeds(
         expectedUserId: UserId,
         expectedMessageId: MessageId,
+        expectedSenderEmail: SenderEmail,
         expectedUriList: List<Uri>
     ) {
-        coEvery { storeAttachments(expectedUserId, expectedMessageId, expectedUriList) } returns Unit
+        coEvery {
+            storeAttachments(expectedUserId, expectedMessageId, expectedSenderEmail, expectedUriList)
+        } returns Unit.right()
     }
 
     private fun expectContacts(): List<Contact> {

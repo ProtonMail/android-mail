@@ -175,16 +175,7 @@ class ComposerViewModel @Inject constructor(
 
     private fun onAttachmentsAdded(action: ComposerAction.AttachmentsAdded) {
         viewModelScope.launch {
-            val fields = DraftFields(
-                currentSenderEmail(),
-                currentSubject(),
-                currentDraftBody(),
-                currentValidRecipientsTo(),
-                currentValidRecipientsCc(),
-                currentValidRecipientsBcc()
-            )
-            storeDraftWithAllFields(primaryUserId(), currentMessageId(), fields)
-            storeAttachments(primaryUserId(), currentMessageId(), action.uriList)
+            storeAttachments(primaryUserId(), currentMessageId(), currentSenderEmail(), action.uriList)
         }
     }
 
