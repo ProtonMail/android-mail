@@ -16,9 +16,10 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcomposer.presentation.model
+package ch.protonmail.android.mailcomposer.domain.model
 
 sealed interface MessageSendingStatus {
     object MessageSent : MessageSendingStatus
     object SendMessageError : MessageSendingStatus
+    object None : MessageSendingStatus
 }

@@ -19,7 +19,7 @@
 package ch.protonmail.android.navigation.model
 
 import ch.protonmail.android.mailcommon.presentation.Effect
-import ch.protonmail.android.mailcomposer.presentation.model.MessageSendingStatus
+import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
 import me.proton.core.network.domain.NetworkStatus
 
 data class HomeState(

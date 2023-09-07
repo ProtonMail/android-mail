@@ -36,7 +36,7 @@ import ch.protonmail.android.MainActivity
 import ch.protonmail.android.R
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
-import ch.protonmail.android.mailcomposer.presentation.model.MessageSendingStatus
+import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
 import ch.protonmail.android.mailmailbox.presentation.sidebar.Sidebar
 import ch.protonmail.android.navigation.model.Destination.Dialog
 import ch.protonmail.android.navigation.model.Destination.Screen
@@ -131,6 +131,7 @@ fun Home(
         when (sendingStatus) {
             is MessageSendingStatus.MessageSent -> showSuccessSendingMessageSnackbar()
             is MessageSendingStatus.SendMessageError -> showErrorSendingMessageSnackbar()
+            is MessageSendingStatus.None -> {}
         }
     }
 

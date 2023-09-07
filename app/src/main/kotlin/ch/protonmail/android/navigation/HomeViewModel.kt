@@ -22,14 +22,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailcommon.presentation.Effect
-import ch.protonmail.android.mailcomposer.domain.usecase.DeleteDraftState
-import ch.protonmail.android.mailcomposer.domain.usecase.ObserveSendingDraftStates
-import ch.protonmail.android.mailcomposer.domain.usecase.ResetDraftStateError
-import ch.protonmail.android.mailcomposer.domain.model.DraftState
-import ch.protonmail.android.mailcomposer.domain.model.DraftSyncState
-import ch.protonmail.android.mailcomposer.presentation.model.MessageSendingStatus
-import ch.protonmail.android.mailcomposer.presentation.model.MessageSendingStatus.MessageSent
-import ch.protonmail.android.mailcomposer.presentation.model.MessageSendingStatus.SendMessageError
+import ch.protonmail.android.mailcomposer.domain.usecase.ObserveSendingMessagesStatus
+import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
+import ch.protonmail.android.mailcomposer.domain.usecase.ResetSendingMessagesStatus
 import ch.protonmail.android.navigation.model.HomeState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -37,6 +32,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -47,9 +43,8 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val networkManager: NetworkManager,
-    private val observeSendingDraftStates: ObserveSendingDraftStates,
-    private val resetDraftStateError: ResetDraftStateError,
-    private val deleteDraftState: DeleteDraftState,
+    private val observeSendingMessagesStatus: ObserveSendingMessagesStatus,
+    private val resetSendingMessageStatus: ResetSendingMessagesStatus,
     observePrimaryUser: ObservePrimaryUser
 ) : ViewModel() {
 
@@ -70,18 +65,16 @@ class HomeViewModel @Inject constructor(
         }.launchIn(viewModelScope)
 
         primaryUser.flatMapLatest { user ->
-            observeSendingDraftStates(user.userId)
+            observeSendingMessagesStatus(user.userId)
         }.onEach {
-            resetDraftStates(it)
-            emitNewStateFor(it.toSendingStatus())
+            emitNewStateFor(it)
+            resetSendingMessageStatus(primaryUser.first().userId)
         }.launchIn(viewModelScope)
     }
 
-    private fun emitNewStateFor(messageSendingStatus: MessageSendingStatus?) {
-        if (messageSendingStatus == null) {
-            // Do not override the error effect when empty. Given we update the draft states as part of this same
-            // flow (resetDraftStateError / deleteDraftState) the null status would override the previous Effect
-            // too fast causing it to never show. (This logic should go in a reducer)
+    private fun emitNewStateFor(messageSendingStatus: MessageSendingStatus) {
+        if (messageSendingStatus == MessageSendingStatus.None) {
+            // Emitting a None status to UI would override the previously emitted effect and cause snack not to show
             return
         }
         val currentState = state.value
@@ -91,27 +84,6 @@ class HomeViewModel @Inject constructor(
     private fun emitNewStateFor(networkStatus: NetworkStatus) {
         val currentState = state.value
         mutableState.value = currentState.copy(networkStatusEffect = Effect.of(networkStatus))
-    }
-
-    private suspend fun resetDraftStates(states: List<DraftState>) = states.map {
-        if (it.state == DraftSyncState.Sent) {
-            deleteDraftState(it.userId, it.messageId)
-        }
-        if (it.state == DraftSyncState.ErrorSending) {
-            resetDraftStateError(it.userId, it.messageId)
-        }
-    }
-
-    private fun List<DraftState>.toSendingStatus(): MessageSendingStatus? {
-        if (this.any { it.state == DraftSyncState.ErrorSending }) {
-            return SendMessageError
-        }
-
-        if (this.any { it.state == DraftSyncState.Sent }) {
-            return MessageSent
-        }
-
-        return null
     }
 
     private fun observeNetworkStatus() = networkManager.observe().distinctUntilChanged()

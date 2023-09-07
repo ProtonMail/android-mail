@@ -20,19 +20,24 @@ package ch.protonmail.android.mailcomposer.domain.usecase
 
 import ch.protonmail.android.mailcomposer.domain.model.DraftSyncState
 import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.firstOrNull
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
-class ObserveSendingDraftStates @Inject constructor(
-    private val draftStateRepository: DraftStateRepository
+class ResetSendingMessagesStatus @Inject constructor(
+    private val draftStateRepository: DraftStateRepository,
+    private val resetDraftStateError: ResetDraftStateError,
+    private val deleteDraftState: DeleteDraftState
 ) {
 
-    operator fun invoke(userId: UserId) = draftStateRepository.observeAll(userId).map { draftStates ->
-        draftStates.filter {
-            it.state == DraftSyncState.Sent || it.state == DraftSyncState.ErrorSending
+    suspend operator fun invoke(userId: UserId) {
+        draftStateRepository.observeAll(userId).firstOrNull()?.map {
+            if (it.state == DraftSyncState.Sent) {
+                deleteDraftState(it.userId, it.messageId)
+            }
+            if (it.state == DraftSyncState.ErrorSending) {
+                resetDraftStateError(it.userId, it.messageId)
+            }
         }
-    }.distinctUntilChanged()
-
+    }
 }

@@ -22,14 +22,10 @@ import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailcommon.presentation.Effect
-import ch.protonmail.android.mailcomposer.domain.sample.DraftStateSample
-import ch.protonmail.android.mailcomposer.domain.usecase.DeleteDraftState
-import ch.protonmail.android.mailcomposer.domain.usecase.ObserveSendingDraftStates
-import ch.protonmail.android.mailcomposer.domain.usecase.ResetDraftStateError
-import ch.protonmail.android.mailcomposer.presentation.model.MessageSendingStatus.MessageSent
-import ch.protonmail.android.mailcomposer.presentation.model.MessageSendingStatus.SendMessageError
+import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
+import ch.protonmail.android.mailcomposer.domain.usecase.ObserveSendingMessagesStatus
+import ch.protonmail.android.mailcomposer.domain.usecase.ResetSendingMessagesStatus
 import ch.protonmail.android.navigation.model.HomeState
-import io.mockk.coJustRun
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
@@ -58,20 +54,17 @@ class HomeViewModelTest {
         every { this@mockk() } returns MutableStateFlow<User?>(user)
     }
 
-    private val observeSendingDraftStates = mockk<ObserveSendingDraftStates> {
-        every { this@mockk.invoke(any()) } returns flowOf(emptyList())
+    private val observeSendingMessagesStatus = mockk<ObserveSendingMessagesStatus> {
+        every { this@mockk.invoke(any()) } returns flowOf(MessageSendingStatus.None)
     }
 
-    private val resetDraftErrorState = mockk<ResetDraftStateError>()
-
-    private val deleteDraftState = mockk<DeleteDraftState>()
+    private val resetSendingMessageStatus = mockk<ResetSendingMessagesStatus>(relaxUnitFun = true)
 
     private val homeViewModel by lazy {
         HomeViewModel(
             networkManager,
-            observeSendingDraftStates,
-            resetDraftErrorState,
-            deleteDraftState,
+            observeSendingMessagesStatus,
+            resetSendingMessageStatus,
             observePrimaryUserMock
         )
     }
@@ -158,104 +151,48 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `when there are draft that failed sending then emit error sending messages effect and reset draft state`() =
-        runTest {
-            // Given
-            val errorSendingDraftState = DraftStateSample.RemoteDraftInErrorSendingState
-            every { networkManager.observe() } returns flowOf(NetworkStatus.Metered)
-            every { observeSendingDraftStates.invoke(user.userId) } returns flowOf(
-                listOf(DraftStateSample.RemoteDraftInSendingState, errorSendingDraftState)
-            )
-            coJustRun { resetDraftErrorState(user.userId, errorSendingDraftState.messageId) }
-
-            // When
-            homeViewModel.state.test {
-                val actualItem = awaitItem()
-                val expectedItem = HomeState(
-                    networkStatusEffect = Effect.of(NetworkStatus.Metered),
-                    messageSendingStatusEffect = Effect.of(SendMessageError)
-                )
-
-                // Then
-                assertEquals(expectedItem, actualItem)
-                coVerify { resetDraftErrorState(user.userId, errorSendingDraftState.messageId) }
-            }
-        }
-
-    @Test
-    fun `when there are draft that succeeded sending then emit messages sent effect and delete draft state`() =
-        runTest {
-            // Given
-            val sentDraftState = DraftStateSample.RemoteDraftInSentState
-            every { networkManager.observe() } returns flowOf(NetworkStatus.Metered)
-            every { observeSendingDraftStates.invoke(user.userId) } returns flowOf(
-                listOf(DraftStateSample.RemoteDraftInSendingState, sentDraftState)
-            )
-            coJustRun { deleteDraftState(user.userId, sentDraftState.messageId) }
-
-            // When
-            homeViewModel.state.test {
-                val actualItem = awaitItem()
-                val expectedItem = HomeState(
-                    networkStatusEffect = Effect.of(NetworkStatus.Metered),
-                    messageSendingStatusEffect = Effect.of(MessageSent)
-                )
-
-                // Then
-                assertEquals(expectedItem, actualItem)
-                coVerify { deleteDraftState(user.userId, sentDraftState.messageId) }
-            }
-        }
-
-    @Test
-    fun `when there are both failed and succeeded draft states then emit error sending effect and reset states`() =
-        runTest {
-            // Given
-            val sentDraftState = DraftStateSample.RemoteDraftInSentState
-            val errorSendingDraftState = DraftStateSample.RemoteDraftInErrorSendingState
-            every { networkManager.observe() } returns flowOf(NetworkStatus.Metered)
-            every { observeSendingDraftStates.invoke(user.userId) } returns flowOf(
-                listOf(DraftStateSample.RemoteDraftInSendingState, sentDraftState, errorSendingDraftState)
-            )
-            coJustRun { resetDraftErrorState(user.userId, errorSendingDraftState.messageId) }
-            coJustRun { deleteDraftState(user.userId, errorSendingDraftState.messageId) }
-
-            // When
-            homeViewModel.state.test {
-                val actualItem = awaitItem()
-                val expectedItem = HomeState(
-                    networkStatusEffect = Effect.of(NetworkStatus.Metered),
-                    messageSendingStatusEffect = Effect.of(SendMessageError)
-                )
-
-                // Then
-                assertEquals(expectedItem, actualItem)
-                coVerify { resetDraftErrorState(user.userId, sentDraftState.messageId) }
-                coVerify { deleteDraftState(user.userId, sentDraftState.messageId) }
-            }
-        }
-
-    @Test
-    fun `when there are no ErrorSending or Sent draft states then emit empty sending status effect`() = runTest {
+    fun `when observe sending message status emits Send and then None then emit only send effect`() = runTest {
         // Given
-        val allDraftStates = listOf(
-            DraftStateSample.RemoteDraftInSendingState,
-            DraftStateSample.RemoteDraftState
-        )
         every { networkManager.observe() } returns flowOf(NetworkStatus.Metered)
-        every { observeSendingDraftStates(user.userId) } returns flowOf(allDraftStates)
+        val sendingMessageStatusFlow = MutableStateFlow<MessageSendingStatus>(MessageSendingStatus.MessageSent)
+        every { observeSendingMessagesStatus(user.userId) } returns sendingMessageStatusFlow
 
         // When
         homeViewModel.state.test {
             val actualItem = awaitItem()
             val expectedItem = HomeState(
                 networkStatusEffect = Effect.of(NetworkStatus.Metered),
-                messageSendingStatusEffect = Effect.empty()
+                messageSendingStatusEffect = Effect.of(MessageSendingStatus.MessageSent)
             )
+            sendingMessageStatusFlow.emit(MessageSendingStatus.None)
 
             // Then
             assertEquals(expectedItem, actualItem)
         }
     }
+
+    @Test
+    fun `when observe sending message status emits error then emit effect and reset sending messages status`() =
+        runTest {
+            // Given
+            every { networkManager.observe() } returns flowOf(NetworkStatus.Metered)
+            every { observeSendingMessagesStatus(user.userId) } returns flowOf(
+                MessageSendingStatus.SendMessageError
+            )
+
+            // When
+            homeViewModel.state.test {
+                val actualItem = awaitItem()
+                val expectedItem = HomeState(
+                    networkStatusEffect = Effect.of(NetworkStatus.Metered),
+                    messageSendingStatusEffect = Effect.of(MessageSendingStatus.SendMessageError)
+                )
+
+                // Then
+                assertEquals(expectedItem, actualItem)
+                coVerify { resetSendingMessageStatus(user.userId) }
+            }
+        }
+
 
 }
