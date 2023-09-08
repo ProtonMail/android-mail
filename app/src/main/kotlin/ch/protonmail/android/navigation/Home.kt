@@ -147,19 +147,19 @@ fun Home(
         },
         snackbarHost = {
             ProtonSnackbarHost(
-                modifier = Modifier.testTag(CommonTestTags.SnackbarHost),
+                modifier = Modifier.testTag(CommonTestTags.SnackbarHostSuccess),
                 hostState = snackbarHostSuccessState
             )
             ProtonSnackbarHost(
-                modifier = Modifier.testTag(CommonTestTags.SnackbarHost),
+                modifier = Modifier.testTag(CommonTestTags.SnackbarHostWarning),
                 hostState = snackbarHostWarningState
             )
             ProtonSnackbarHost(
-                modifier = Modifier.testTag(CommonTestTags.SnackbarHost),
+                modifier = Modifier.testTag(CommonTestTags.SnackbarHostNormal),
                 hostState = snackbarHostNormState
             )
             ProtonSnackbarHost(
-                modifier = Modifier.testTag(CommonTestTags.SnackbarHost),
+                modifier = Modifier.testTag(CommonTestTags.SnackbarHostError),
                 hostState = snackbarHostErrorState
             )
         }

@@ -279,7 +279,7 @@ internal class DetailMoveToBottomSheetActionTests : MockedNetworkTest() {
             }
 
             snackbarSection {
-                verify { hasMessage(snackbarText) }
+                verify { hasNormalMessage(snackbarText) }
             }
         }
 

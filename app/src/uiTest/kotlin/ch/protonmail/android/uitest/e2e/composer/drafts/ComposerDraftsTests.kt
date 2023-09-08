@@ -96,7 +96,7 @@ internal interface ComposerDraftsTests : ComposerTests {
         }
 
         mailboxRobot {
-            snackbarSection { verify { hasMessage(SnackbarTextEntry.DraftSaved) } }
+            snackbarSection { verify { hasSuccessMessage(SnackbarTextEntry.DraftSaved) } }
         }
     }
 

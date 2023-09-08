@@ -106,7 +106,7 @@ internal interface MailboxPullToRefreshErrorTests {
             }
 
             snackbarSection {
-                verify { hasMessage(SnackbarTextEntry.FailedToLoadNewItems) }
+                verify { hasErrorMessage(SnackbarTextEntry.FailedToLoadNewItems) }
             }
 
             listSection {

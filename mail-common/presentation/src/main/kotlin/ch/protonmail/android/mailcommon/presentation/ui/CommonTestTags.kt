@@ -21,4 +21,9 @@ package ch.protonmail.android.mailcommon.presentation.ui
 object CommonTestTags {
 
     const val SnackbarHost = "SnackbarHost"
+
+    const val SnackbarHostError = "SnackbarHostError"
+    const val SnackbarHostWarning = "SnackbarHostWarning"
+    const val SnackbarHostNormal = "SnackbarHostNormal"
+    const val SnackbarHostSuccess = "SnackbarHostSuccess"
 }

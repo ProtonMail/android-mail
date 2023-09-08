@@ -45,9 +45,17 @@ import ch.protonmail.android.uitest.util.awaitHidden
 internal class SnackbarSection : ComposeSectionRobot() {
 
     private val snackbarHost = composeTestRule.onAllNodesWithTag(CommonTestTags.SnackbarHost).onFirst()
+    private val snackbarHostError = composeTestRule.onAllNodesWithTag(CommonTestTags.SnackbarHostError).onFirst()
+    private val snackbarHostWarning = composeTestRule.onAllNodesWithTag(CommonTestTags.SnackbarHostWarning).onFirst()
+    private val snackbarHostNormal = composeTestRule.onAllNodesWithTag(CommonTestTags.SnackbarHostNormal).onFirst()
+    private val snackbarHostSuccess = composeTestRule.onAllNodesWithTag(CommonTestTags.SnackbarHostSuccess).onFirst()
 
     fun waitUntilGone() {
         snackbarHost.awaitHidden()
+        snackbarHostError.awaitHidden()
+        snackbarHostWarning.awaitHidden()
+        snackbarHostNormal.awaitHidden()
+        snackbarHostSuccess.awaitHidden()
     }
 
     @VerifiesOuter
@@ -56,6 +64,35 @@ internal class SnackbarSection : ComposeSectionRobot() {
         fun hasMessage(text: SnackbarTextEntry) = apply {
             // The actual text node is not an immediate child, so the hierarchy needs to be traversed.
             snackbarHost
+                .awaitDisplayed()
+                .hasAnyChildWith(hasText(text.value))
+        }
+
+        fun hasErrorMessage(text: SnackbarTextEntry) = apply {
+            // The actual text node is not an immediate child, so the hierarchy needs to be traversed.
+            snackbarHostError
+                .awaitDisplayed()
+                .hasAnyChildWith(hasText(text.value))
+        }
+
+        fun hasWarningMessage(text: SnackbarTextEntry) = apply {
+            // The actual text node is not an immediate child, so the hierarchy needs to be traversed.
+            snackbarHostWarning
+                .awaitDisplayed()
+                .hasAnyChildWith(hasText(text.value))
+        }
+
+
+        fun hasNormalMessage(text: SnackbarTextEntry) = apply {
+            // The actual text node is not an immediate child, so the hierarchy needs to be traversed.
+            snackbarHostNormal
+                .awaitDisplayed()
+                .hasAnyChildWith(hasText(text.value))
+        }
+
+        fun hasSuccessMessage(text: SnackbarTextEntry) = apply {
+            // The actual text node is not an immediate child, so the hierarchy needs to be traversed.
+            snackbarHostSuccess
                 .awaitDisplayed()
                 .hasAnyChildWith(hasText(text.value))
         }
