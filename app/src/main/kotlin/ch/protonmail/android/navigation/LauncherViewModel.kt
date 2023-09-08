@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.navigation
 
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
@@ -68,8 +67,7 @@ class LauncherViewModel @Inject constructor(
     private val plansOrchestrator: PlansOrchestrator,
     private val reportOrchestrator: ReportOrchestrator,
     private val userSettingsOrchestrator: UserSettingsOrchestrator,
-    private val notificationsPermissionsOrchestrator: NotificationsPermissionsOrchestrator,
-    private val addAttachmentsOrchestrator: AddAttachmentsOrchestrator
+    private val notificationsPermissionsOrchestrator: NotificationsPermissionsOrchestrator
 ) : ViewModel() {
 
     val state: StateFlow<LauncherState> = accountManager.getAccounts().combine(
@@ -103,7 +101,6 @@ class LauncherViewModel @Inject constructor(
         reportOrchestrator.register(context)
         userSettingsOrchestrator.register(context)
         notificationsPermissionsOrchestrator.register(context)
-        addAttachmentsOrchestrator.register(context)
 
         accountManager.observe(context.lifecycle, Lifecycle.State.CREATED)
             .onSessionForceLogout { userManager.lock(it.userId) }
@@ -122,7 +119,6 @@ class LauncherViewModel @Inject constructor(
                 Action.OpenRecoveryEmail -> onOpenRecoveryEmail()
                 Action.OpenReport -> onOpenReport()
                 Action.OpenSubscription -> onOpenSubscription()
-                is Action.AddAttachments -> onAddAttachments(action.handleActivityResult)
                 is Action.Remove -> onRemove(action.userId)
                 is Action.SignIn -> onSignIn(action.userId)
                 is Action.SignOut -> onSignOut(action.userId)
@@ -137,10 +133,6 @@ class LauncherViewModel @Inject constructor(
             creatableAccountType = AccountType.Internal,
             product = product
         )
-    }
-
-    private fun onAddAttachments(handleActivityResult: (List<Uri>) -> Unit) {
-        addAttachmentsOrchestrator.openFilePicker(handleActivityResult)
     }
 
     private suspend fun onOpenPasswordManagement() {
@@ -196,7 +188,6 @@ class LauncherViewModel @Inject constructor(
         object OpenRecoveryEmail : Action
         object OpenReport : Action
         object OpenSubscription : Action
-        data class AddAttachments(val handleActivityResult: (List<Uri>) -> Unit) : Action
         data class Remove(val userId: UserId) : Action
         data class SignIn(val userId: UserId?) : Action
         data class SignOut(val userId: UserId?) : Action

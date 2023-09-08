@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.navigation
 
-import android.net.Uri
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -39,7 +38,6 @@ fun Launcher(activityActions: MainActivity.Actions, viewModel: LauncherViewModel
         LauncherState.PrimaryExist -> Home(
             activityActions = activityActions,
             launcherActions = Launcher.Actions(
-                onAddAttachments = { viewModel.submit(LauncherViewModel.Action.AddAttachments(it)) },
                 onPasswordManagement = { viewModel.submit(LauncherViewModel.Action.OpenPasswordManagement) },
                 onRecoveryEmail = { viewModel.submit(LauncherViewModel.Action.OpenRecoveryEmail) },
                 onReportBug = { viewModel.submit(LauncherViewModel.Action.OpenReport) },
@@ -60,7 +58,6 @@ object Launcher {
      * A set of actions that can be executed in the scope of Core's Orchestrators
      */
     data class Actions(
-        val onAddAttachments: ((List<Uri>) -> Unit) -> Unit,
         val onSignIn: (UserId?) -> Unit,
         val onSignOut: (UserId) -> Unit,
         val onSwitchAccount: (UserId) -> Unit,

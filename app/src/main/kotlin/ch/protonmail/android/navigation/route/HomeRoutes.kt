@@ -129,7 +129,6 @@ internal fun NavGraphBuilder.addMessageDetail(
 
 internal fun NavGraphBuilder.addComposer(
     navController: NavHostController,
-    onAddAttachments: ((List<Uri>) -> Unit) -> Unit,
     showDraftSavedSnackbar: () -> Unit,
     showMessageSendingSnackbar: () -> Unit,
     showMessageSendingOfflineSnackbar: () -> Unit
@@ -137,7 +136,6 @@ internal fun NavGraphBuilder.addComposer(
     composable(route = Destination.Screen.Composer.route) {
         ComposerScreen(
             ComposerScreen.Actions(
-                onImportAttachmentsFrom = onAddAttachments,
                 onCloseComposerClick = navController::popBackStack,
                 showDraftSavedSnackbar = showDraftSavedSnackbar,
                 showMessageSendingSnackbar = showMessageSendingSnackbar,
@@ -148,7 +146,6 @@ internal fun NavGraphBuilder.addComposer(
     composable(route = Destination.Screen.PrefilledComposer.route) {
         ComposerScreen(
             ComposerScreen.Actions(
-                onImportAttachmentsFrom = onAddAttachments,
                 onCloseComposerClick = navController::popBackStack,
                 showDraftSavedSnackbar = showDraftSavedSnackbar,
                 showMessageSendingSnackbar = showMessageSendingSnackbar,

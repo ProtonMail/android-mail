@@ -18,8 +18,9 @@
 
 package ch.protonmail.android.mailcomposer.presentation.ui
 
-import android.net.Uri
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -75,13 +76,20 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
     val bottomSheetType = rememberSaveable { mutableStateOf(BottomSheetType.AddAttachments) }
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
 
+    val imagePicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetMultipleContents(),
+        onResult = { uris ->
+            viewModel.submit(ComposerAction.AttachmentsAdded(uris))
+        }
+    )
+
     ProtonModalBottomSheetLayout(
         sheetContent = {
             when (bottomSheetType.value) {
                 BottomSheetType.AddAttachments -> AddAttachmentsBottomSheetContent(
                     onImportFromSelected = {
                         viewModel.submit(ComposerAction.OnBottomSheetOptionSelected)
-                        actions.onImportAttachmentsFrom { viewModel.submit(ComposerAction.AttachmentsAdded(it)) }
+                        imagePicker.launch("*/*")
                     }
                 )
                 BottomSheetType.ChangeSender -> ChangeSenderBottomSheetContent(
@@ -211,7 +219,6 @@ object ComposerScreen {
     const val DraftMessageIdKey = "draft_message_id"
 
     data class Actions(
-        val onImportAttachmentsFrom: ((List<Uri>) -> Unit) -> Unit,
         val onCloseComposerClick: () -> Unit,
         val showDraftSavedSnackbar: () -> Unit,
         val showMessageSendingSnackbar: () -> Unit,
@@ -220,7 +227,6 @@ object ComposerScreen {
         companion object {
 
             val Empty = Actions(
-                onImportAttachmentsFrom = {},
                 onCloseComposerClick = {},
                 showDraftSavedSnackbar = {},
                 showMessageSendingSnackbar = {},

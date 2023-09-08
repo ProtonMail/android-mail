@@ -211,7 +211,6 @@ fun Home(
                 )
                 addComposer(
                     navController,
-                    onAddAttachments = launcherActions.onAddAttachments,
                     showDraftSavedSnackbar = { showDraftSavedSnackbar() },
                     showMessageSendingSnackbar = { showMessageSendingSnackbar() },
                     showMessageSendingOfflineSnackbar = { showMessageSendingOfflineSnackbar() }

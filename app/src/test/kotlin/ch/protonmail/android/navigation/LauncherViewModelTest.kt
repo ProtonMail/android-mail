@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.navigation
 
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import app.cash.turbine.test
 import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator
@@ -77,7 +76,6 @@ class LauncherViewModelTest {
         mockk<NotificationsPermissionsOrchestrator>(relaxUnitFun = true) {
             every { permissionResult() } returns MutableStateFlow(GRANTED)
         }
-    private val addAttachmentsOrchestrator = mockk<AddAttachmentsOrchestrator>(relaxUnitFun = true)
 
     private val userManager = mockk<UserManager>()
 
@@ -424,32 +422,6 @@ class LauncherViewModelTest {
         verify(exactly = 0) { notificationsPermissionsOrchestrator.requestPermissionIfRequired() }
     }
 
-    @Test
-    fun `when register is called then register for activity result for adding attachments is called`() {
-        // Given
-        mockkStatic(AccountManager::observe)
-        val amObserver = mockAccountManagerObserver()
-        every { accountManager.observe(any(), any()) } returns amObserver
-
-        // When
-        viewModel.register(context)
-
-        // Then
-        verify { addAttachmentsOrchestrator.register(context) }
-    }
-
-    @Test
-    fun `when add attachments action is submitted then file picker is opened`() {
-        // Given
-        val onActivityResult: (List<Uri>) -> Unit = {}
-
-        // When
-        viewModel.submit(LauncherViewModel.Action.AddAttachments(onActivityResult))
-
-        // Then
-        verify { addAttachmentsOrchestrator.openFilePicker(onActivityResult) }
-    }
-
     private fun buildViewModel() = LauncherViewModel(
         Mail,
         Internal,
@@ -459,8 +431,7 @@ class LauncherViewModelTest {
         plansOrchestrator,
         reportOrchestrator,
         userSettingsOrchestrator,
-        notificationsPermissionsOrchestrator,
-        addAttachmentsOrchestrator
+        notificationsPermissionsOrchestrator
     )
 
     private fun mockAccountManagerObserver(): AccountManagerObserver {
