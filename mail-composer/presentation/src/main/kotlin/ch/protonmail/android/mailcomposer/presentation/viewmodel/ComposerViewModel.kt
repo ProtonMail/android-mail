@@ -79,7 +79,7 @@ import me.proton.core.util.kotlin.takeIfNotEmpty
 import timber.log.Timber
 import javax.inject.Inject
 
-@Suppress("LongParameterList")
+@Suppress("LongParameterList", "TooManyFunctions")
 @HiltViewModel
 class ComposerViewModel @Inject constructor(
     private val storeAttachments: StoreAttachments,
