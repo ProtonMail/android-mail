@@ -21,7 +21,9 @@ package ch.protonmail.android.composer.data.sample
 import ch.protonmail.android.composer.data.remote.resource.SendMessagePackage
 import ch.protonmail.android.composer.data.usecase.GenerateSendMessagePackage
 import me.proton.core.crypto.common.pgp.DataPacket
+import me.proton.core.crypto.common.pgp.EncryptedPacket
 import me.proton.core.crypto.common.pgp.KeyPacket
+import me.proton.core.crypto.common.pgp.PacketType
 import me.proton.core.crypto.common.pgp.SessionKey
 import me.proton.core.key.domain.entity.key.PublicKey
 import me.proton.core.mailsendpreferences.domain.model.SendPreferences
@@ -35,6 +37,8 @@ object SendMessageSample {
 
     const val RecipientEmail = "recipient@email.com"
 
+    const val CleartextBody = "Cleartext body of the message"
+    const val PlaintextMimeBodyEncryptedAndSigned = "Plaintext Mime Body, encrypted and signed"
     val BodySessionKey = SessionKey("BodySessionKey".toByteArray())
     val MimeBodySessionKey = SessionKey("MimeBodySessionKey".toByteArray())
     val EncryptedBodyDataPacket = "EncryptedBodyDataPacket".toByteArray() as DataPacket
@@ -51,6 +55,26 @@ object SendMessageSample {
     val CleartextMimeBodyKey = SendMessagePackage.Key(
         Base64.encode(MimeBodySessionKey.key),
         GenerateSendMessagePackage.SessionKeyAlgorithm
+    )
+    val EncryptedPlaintextBodySplit = listOf(
+        EncryptedPacket(
+            packet = "EncryptedPlaintextBodySplit KeyPacket".toByteArray(),
+            type = PacketType.Key
+        ),
+        EncryptedPacket(
+            packet = "EncryptedPlaintextBodySplit DataPacket".toByteArray(),
+            type = PacketType.Data
+        )
+    )
+    val PlaintextMimeBodyEncryptedAndSignedSplit = listOf(
+        EncryptedPacket(
+            packet = "PlaintextMimeBodyEncryptedAndSigned KeyPacket".toByteArray(),
+            type = PacketType.Key
+        ),
+        EncryptedPacket(
+            packet = "PlaintextMimeBodyEncryptedAndSigned DataPacket".toByteArray(),
+            type = PacketType.Data
+        )
     )
 
     val PublicKey = PublicKey("SendPreferences PublicKey", true, true, true, true)

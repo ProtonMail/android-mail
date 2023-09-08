@@ -18,14 +18,8 @@
 
 package ch.protonmail.android.composer.data.usecase
 
-import ch.protonmail.android.composer.data.remote.DraftRemoteDataSource
 import ch.protonmail.android.composer.data.remote.resource.SendMessagePackage
 import ch.protonmail.android.composer.data.sample.SendMessageSample
-import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
-import ch.protonmail.android.mailcomposer.domain.usecase.FindLocalDraft
-import ch.protonmail.android.mailcomposer.domain.usecase.IsDraftKnownToApi
-import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
-import ch.protonmail.android.test.utils.FakeTransactor
 import ch.protonmail.android.test.utils.rule.LoggingTestRule
 import io.mockk.every
 import io.mockk.mockk
@@ -51,22 +45,6 @@ class GenerateSendMessagePackageTest {
     private val cryptoContextMock = mockk<CryptoContext>()
 
     private val sut = GenerateSendMessagePackage(cryptoContextMock)
-
-    private val messageRepository = mockk<MessageRepository>()
-    private val findLocalDraft = mockk<FindLocalDraft>()
-    private val draftRemoteDataSource = mockk<DraftRemoteDataSource>()
-    private val draftStateRepository = mockk<DraftStateRepository>()
-    private val isDraftKnownToApi = mockk<IsDraftKnownToApi>()
-    private val fakeTransactor = FakeTransactor()
-
-    private val draftRepository = UploadDraft(
-        fakeTransactor,
-        messageRepository,
-        findLocalDraft,
-        draftStateRepository,
-        draftRemoteDataSource,
-        isDraftKnownToApi
-    )
 
     @Test
     fun `using invalid SendPreferences without PublicKey returns null`() = runTest {

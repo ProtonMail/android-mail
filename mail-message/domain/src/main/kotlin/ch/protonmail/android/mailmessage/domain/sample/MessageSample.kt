@@ -78,6 +78,16 @@ object MessageSample {
         sender = RecipientSample.John
     )
 
+    val RemoteDraftWith4RecipientTypes = build(
+        messageId = MessageIdSample.RemoteDraft,
+        subject = "Remote draft, known to the API, 4 recipients total in TO, CC and BCC",
+        labelIds = listOf(LabelIdSample.AllDraft),
+        sender = RecipientSample.John,
+        toList = listOf(RecipientSample.Doe),
+        ccList = listOf(RecipientSample.PreciWeather),
+        bccList = listOf(RecipientSample.Scammer, RecipientSample.ExternalEncrypted)
+    )
+
     val ExpiringInvitation = build(
         attachmentCount = AttachmentCountSample.CalendarInvite,
         numAttachments = AttachmentCountSample.CalendarInvite.calendar,
@@ -171,13 +181,16 @@ object MessageSample {
         subject: String = "subject",
         time: Long = 1000,
         toList: List<Recipient> = emptyList(),
+        ccList: List<Recipient> = emptyList(),
+        bccList: List<Recipient> = emptyList(),
         userId: UserId = UserIdSample.Primary,
         unread: Boolean = false
     ) = Message(
         addressId = addressId,
         attachmentCount = attachmentCount,
-        bccList = emptyList(),
-        ccList = emptyList(),
+        toList = toList,
+        ccList = ccList,
+        bccList = bccList,
         conversationId = conversationId,
         expirationTime = expirationTime,
         externalId = null,
@@ -193,7 +206,6 @@ object MessageSample {
         size = 0,
         subject = subject,
         time = time,
-        toList = toList,
         unread = unread,
         userId = userId
     )

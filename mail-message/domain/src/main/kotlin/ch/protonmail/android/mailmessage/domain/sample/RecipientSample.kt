@@ -42,6 +42,11 @@ object RecipientSample {
         name = "definitely-not-a-scam@totally-legit.com"
     )
 
+    val ExternalEncrypted = build(
+        address = "external-encrypted@privacy.first.com",
+        name = "external-encrypted@privacy.first.com"
+    )
+
     fun build(address: String = "email@pm.me", name: String = "name") = Recipient(
         address = address,
         name = name
