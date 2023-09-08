@@ -20,16 +20,16 @@ package ch.protonmail.android.mailmessage.data.local
 
 import java.io.File
 import android.net.Uri
-import ch.protonmail.android.mailcommon.data.file.ExternalFileStorage
 import ch.protonmail.android.mailcommon.data.file.FileInformation
 import ch.protonmail.android.mailcommon.data.file.InternalFileStorage
+import ch.protonmail.android.mailcommon.data.file.UriHelper
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
-import ch.protonmail.android.mailmessage.data.local.AttachmentFileStorageTest.TestData.File
-import ch.protonmail.android.mailmessage.data.local.AttachmentFileStorageTest.TestData.UserId
-import ch.protonmail.android.mailmessage.data.local.AttachmentFileStorageTest.TestData.MessageId
 import ch.protonmail.android.mailmessage.data.local.AttachmentFileStorageTest.TestData.AttachmentId
 import ch.protonmail.android.mailmessage.data.local.AttachmentFileStorageTest.TestData.Content
+import ch.protonmail.android.mailmessage.data.local.AttachmentFileStorageTest.TestData.File
 import ch.protonmail.android.mailmessage.data.local.AttachmentFileStorageTest.TestData.FileInfo
+import ch.protonmail.android.mailmessage.data.local.AttachmentFileStorageTest.TestData.MessageId
+import ch.protonmail.android.mailmessage.data.local.AttachmentFileStorageTest.TestData.UserId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -44,9 +44,9 @@ import kotlin.test.assertTrue
 internal class AttachmentFileStorageTest {
 
     private val uri = mockk<Uri>()
-    private val externalFileStorageMock = mockk<ExternalFileStorage>()
+    private val uriFileHelper = mockk<UriHelper>()
     private val internalFileStorageMock = mockk<InternalFileStorage>()
-    private val attachmentFileStorage = AttachmentFileStorage(externalFileStorageMock, internalFileStorageMock)
+    private val attachmentFileStorage = AttachmentFileStorage(uriFileHelper, internalFileStorageMock)
 
     @Test
     fun `should save file in internal storage and return file when successful`() = runTest {
@@ -70,8 +70,8 @@ internal class AttachmentFileStorageTest {
     @Test
     fun `should save file provided by uri in internal storage and return file information when successful`() = runTest {
         // Given
-        coEvery { externalFileStorageMock.readFromUri(uri) } returns Content
-        coEvery { externalFileStorageMock.getFileInformationFromUri(uri) } returns FileInfo
+        coEvery { uriFileHelper.readFromUri(uri) } returns Content
+        coEvery { uriFileHelper.getFileInformationFromUri(uri) } returns FileInfo
         coEvery {
             internalFileStorageMock.writeFile(
                 userId = UserId,
@@ -129,7 +129,7 @@ internal class AttachmentFileStorageTest {
     @Test
     fun `should return null when saving file provided by uri in internal storage fails`() = runTest {
         // Given
-        coEvery { externalFileStorageMock.readFromUri(uri) } returns Content
+        coEvery { uriFileHelper.readFromUri(uri) } returns Content
         coEvery {
             internalFileStorageMock.writeFile(
                 userId = UserId,
