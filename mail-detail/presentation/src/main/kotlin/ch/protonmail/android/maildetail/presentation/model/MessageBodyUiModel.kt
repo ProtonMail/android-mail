@@ -19,8 +19,10 @@
 package ch.protonmail.android.maildetail.presentation.model
 
 import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 
 data class MessageBodyUiModel(
+    val messageId: MessageId,
     val messageBody: String,
     val mimeType: MimeTypeUiModel,
     val shouldShowEmbeddedImages: Boolean,

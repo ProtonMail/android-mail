@@ -21,6 +21,7 @@ package ch.protonmail.android.uitest.e2e.mailbox.detail.bodycontent
 import arrow.core.right
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.networkmocks.assets.RawAssets
@@ -229,7 +230,7 @@ internal class MockedDetailRemoteContentTests : MockedNetworkTest(loginType = Lo
             "Unable to retrieve content for file '$assetName'."
         }
 
-        return DecryptedMessageBody(String(content), MimeType.Html)
+        return DecryptedMessageBody(MessageId("html-message-id"), String(content), MimeType.Html)
     }
 
     companion object {

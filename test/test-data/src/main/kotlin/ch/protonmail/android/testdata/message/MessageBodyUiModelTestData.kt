@@ -22,6 +22,8 @@ import ch.protonmail.android.maildetail.presentation.model.MessageBodyAttachment
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.MimeTypeUiModel
 import ch.protonmail.android.maildetail.presentation.sample.AttachmentUiModelSample
+import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 
 object MessageBodyUiModelTestData {
 
@@ -40,7 +42,7 @@ object MessageBodyUiModelTestData {
     )
 
     val htmlMessageBodyUiModel = buildMessageBodyUiModel(
-        """
+        messageBody = """
             <div>
                 <p>Dear Test,</p>
                 <p>This is an HTML message body.</p>
@@ -52,6 +54,7 @@ object MessageBodyUiModelTestData {
     )
 
     fun buildMessageBodyUiModel(
+        messageId: MessageId = MessageIdSample.build(),
         messageBody: String = MessageBodyTestData.messageBody.body,
         mimeType: MimeTypeUiModel = MimeTypeUiModel.PlainText,
         shouldShowEmbeddedImages: Boolean = false,
@@ -62,6 +65,7 @@ object MessageBodyUiModelTestData {
     ): MessageBodyUiModel {
         return MessageBodyUiModel(
             messageBody = messageBody,
+            messageId = messageId,
             mimeType = mimeType,
             shouldShowEmbeddedImages = shouldShowEmbeddedImages,
             shouldShowRemoteContent = shouldShowRemoteContent,

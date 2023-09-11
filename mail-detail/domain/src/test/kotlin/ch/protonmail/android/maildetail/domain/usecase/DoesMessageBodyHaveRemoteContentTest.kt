@@ -20,6 +20,7 @@ package ch.protonmail.android.maildetail.domain.usecase
 
 import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.model.MimeType
+import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -31,7 +32,8 @@ class DoesMessageBodyHaveRemoteContentTest {
     @Test
     fun `should return false when the message body is plain text`() {
         // Given
-        val messageBody = DecryptedMessageBody(TestData.plainTextMessageBody, MimeType.PlainText)
+        val messageId = MessageIdSample.build()
+        val messageBody = DecryptedMessageBody(messageId, TestData.plainTextMessageBody, MimeType.PlainText)
 
         // When
         val actual = doesMessageBodyHaveRemoteContent(messageBody)
@@ -43,7 +45,8 @@ class DoesMessageBodyHaveRemoteContentTest {
     @Test
     fun `should return true when the message body contains img element with src attribute with remote url`() {
         // Given
-        val messageBody = DecryptedMessageBody(TestData.messageBodyWithRemoteUrlInImgElement, MimeType.Html)
+        val messageId = MessageIdSample.build()
+        val messageBody = DecryptedMessageBody(messageId, TestData.messageBodyWithRemoteUrlInImgElement, MimeType.Html)
 
         // When
         val actual = doesMessageBodyHaveRemoteContent(messageBody)
@@ -55,7 +58,10 @@ class DoesMessageBodyHaveRemoteContentTest {
     @Test
     fun `should return true when the message body contains style element with remote url`() {
         // Given
-        val messageBody = DecryptedMessageBody(TestData.messageBodyWithRemoteUrlInStyleElement, MimeType.Html)
+        val messageId = MessageIdSample.build()
+        val messageBody = DecryptedMessageBody(
+            messageId, TestData.messageBodyWithRemoteUrlInStyleElement, MimeType.Html
+        )
 
         // When
         val actual = doesMessageBodyHaveRemoteContent(messageBody)
@@ -67,7 +73,10 @@ class DoesMessageBodyHaveRemoteContentTest {
     @Test
     fun `should return true when the message body contains an element with a style attribute with remote url`() {
         // Given
-        val messageBody = DecryptedMessageBody(TestData.messageBodyWithRemoteUrlInStyleAttribute, MimeType.Html)
+        val messageId = MessageIdSample.build()
+        val messageBody = DecryptedMessageBody(
+            messageId, TestData.messageBodyWithRemoteUrlInStyleAttribute, MimeType.Html
+        )
 
         // When
         val actual = doesMessageBodyHaveRemoteContent(messageBody)
@@ -79,7 +88,8 @@ class DoesMessageBodyHaveRemoteContentTest {
     @Test
     fun `should return false if no remote content was detected`() {
         // Given
-        val messageBody = DecryptedMessageBody(TestData.messageBodyWithoutRemoteContent, MimeType.Html)
+        val messageId = MessageIdSample.build()
+        val messageBody = DecryptedMessageBody(messageId, TestData.messageBodyWithoutRemoteContent, MimeType.Html)
 
         // When
         val actual = doesMessageBodyHaveRemoteContent(messageBody)

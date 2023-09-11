@@ -89,6 +89,7 @@ import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinatio
 import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelWithSelectedStateSample
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MimeType
+import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
@@ -238,7 +239,9 @@ class ConversationDetailViewModelTest {
         coEvery { this@mockk.invoke(any(), any()) } returns ConversationTestData.conversation.right()
     }
     private val getDecryptedMessageBody: GetDecryptedMessageBody = mockk {
-        coEvery { this@mockk.invoke(any(), any()) } returns DecryptedMessageBody("", MimeType.Html).right()
+        coEvery { this@mockk.invoke(any(), any()) } returns DecryptedMessageBody(
+            MessageIdSample.build(), "", MimeType.Html
+        ).right()
     }
     private val observeMessageWithLabels = mockk<ObserveMessageWithLabels> {
         every { this@mockk.invoke(UserIdSample.Primary, any()) } returns mockk()
@@ -1437,7 +1440,7 @@ class ConversationDetailViewModelTest {
                 userId,
                 messageIds.first()
             )
-        } returns GetDecryptedMessageBodyError.Decryption("").left()
+        } returns GetDecryptedMessageBodyError.Decryption(messageIds.first(), "").left()
 
         viewModel.state.test {
             conversationMessagesEmitted()

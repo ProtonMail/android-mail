@@ -128,8 +128,8 @@ import kotlin.test.assertTrue
 
 class MessageDetailViewModelTest {
 
-    private val rawMessageId = "detailMessageId"
-    private val decryptedMessageBody = DecryptedMessageBody("Decrypted message body.", MimeType.PlainText)
+    private val messageId = MessageId("detailMessageId")
+    private val decryptedMessageBody = DecryptedMessageBody(messageId, "Decrypted message body.", MimeType.PlainText)
     private val actionUiModelMapper = ActionUiModelMapper()
     private val messageDetailActionBarUiModelMapper = MessageDetailActionBarUiModelMapper()
     private val messageDetailReducer = MessageDetailReducer(
@@ -155,10 +155,10 @@ class MessageDetailViewModelTest {
         coEvery { this@mockk(userId, any()) } returns decryptedMessageBody.right()
     }
     private val savedStateHandle = mockk<SavedStateHandle> {
-        every { this@mockk.get<String>(MessageDetailScreen.MESSAGE_ID_KEY) } returns rawMessageId
+        every { this@mockk.get<String>(MessageDetailScreen.MESSAGE_ID_KEY) } returns messageId.id
     }
     private val observeDetailActions = mockk<ObserveMessageDetailActions> {
-        every { this@mockk.invoke(userId, MessageId(rawMessageId)) } returns flowOf(
+        every { this@mockk.invoke(userId, messageId) } returns flowOf(
             nonEmptyListOf(Action.Reply, Action.Archive, Action.MarkUnread).right()
         )
     }
@@ -185,19 +185,19 @@ class MessageDetailViewModelTest {
     }
     private val observeAttachmentWorkerStatus = mockk<ObserveMessageAttachmentStatus>()
     private val markUnread = mockk<MarkMessageAsUnread> {
-        coEvery { this@mockk(userId, MessageId(rawMessageId)) } returns MessageSample.Invoice.right()
+        coEvery { this@mockk(userId, messageId) } returns MessageSample.Invoice.right()
     }
     private val markRead = mockk<MarkMessageAsRead> {
-        coEvery { this@mockk(userId, MessageId(rawMessageId)) } returns MessageSample.Invoice.right()
+        coEvery { this@mockk(userId, messageId) } returns MessageSample.Invoice.right()
     }
     private val getContacts = mockk<GetContacts> {
         coEvery { this@mockk.invoke(userId) } returns ContactTestData.contacts.right()
     }
     private val starMessage = mockk<StarMessage> {
-        coEvery { this@mockk.invoke(userId, MessageId(rawMessageId)) } returns MessageTestData.starredMessage.right()
+        coEvery { this@mockk.invoke(userId, messageId) } returns MessageTestData.starredMessage.right()
     }
     private val unStarMessage = mockk<UnStarMessage> {
-        coEvery { this@mockk.invoke(userId, MessageId(rawMessageId)) } returns MessageTestData.message.right()
+        coEvery { this@mockk.invoke(userId, messageId) } returns MessageTestData.message.right()
     }
     private val messageDetailHeaderUiModelMapper = mockk<MessageDetailHeaderUiModelMapper> {
         coEvery {
@@ -213,14 +213,16 @@ class MessageDetailViewModelTest {
             toUiModel(userId, decryptedMessageBody)
         } returns MessageBodyUiModelTestData.plainTextMessageBodyUiModel
         every {
-            toUiModel(MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY)
+            toUiModel(
+                GetDecryptedMessageBodyError.Decryption(messageId, MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY)
+            )
         } returns MessageBodyUiModelTestData.plainTextMessageBodyUiModel
     }
     private val moveMessage: MoveMessage = mockk {
         coEvery {
             this@mockk.invoke(
                 userId = userId,
-                messageId = MessageId(rawMessageId),
+                messageId = messageId,
                 labelId = SystemLabelId.Trash.labelId
             )
         } returns
@@ -230,7 +232,7 @@ class MessageDetailViewModelTest {
         coEvery {
             this@mockk.invoke(
                 userId = userId,
-                messageId = MessageId(rawMessageId),
+                messageId = messageId,
                 currentLabelIds = any(),
                 updatedLabelIds = any()
             )
@@ -322,7 +324,6 @@ class MessageDetailViewModelTest {
     @Test
     fun `message state is data when use case returns message metadata`() = runTest {
         // Given
-        val messageId = MessageId(rawMessageId)
         val subject = "message subject"
         val isStarred = true
         val cachedMessage = MessageTestData.buildMessage(
@@ -369,7 +370,6 @@ class MessageDetailViewModelTest {
     @Test
     fun `message body state is error when use case returns error`() = runTest {
         // Given
-        val messageId = MessageId(rawMessageId)
         coEvery {
             getDecryptedMessageBody(userId, messageId)
         } returns GetDecryptedMessageBodyError.Data(DataError.Local.NoDataCached).left()
@@ -388,7 +388,6 @@ class MessageDetailViewModelTest {
     @Test
     fun `message body state is network error when use case returns network error`() = runTest {
         // Given
-        val messageId = MessageId(rawMessageId)
         coEvery {
             getDecryptedMessageBody(userId, messageId)
         } returns GetDecryptedMessageBodyError.Data(DataError.Remote.Http(NetworkError.NoNetwork)).left()
@@ -407,7 +406,6 @@ class MessageDetailViewModelTest {
     @Test
     fun `message body state is loading when reload action was triggered`() = runTest {
         // Given
-        val messageId = MessageId(rawMessageId)
         coEvery {
             getDecryptedMessageBody(userId, messageId)
         } returns GetDecryptedMessageBodyError.Data(DataError.Local.NoDataCached).left()
@@ -428,10 +426,9 @@ class MessageDetailViewModelTest {
     @Test
     fun `message body state is decryption error when use case returns decryption error`() = runTest {
         // Given
-        val messageId = MessageId(rawMessageId)
-        coEvery {
-            getDecryptedMessageBody(userId, messageId)
-        } returns GetDecryptedMessageBodyError.Decryption(MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY).left()
+        coEvery { getDecryptedMessageBody(userId, messageId) } returns GetDecryptedMessageBodyError.Decryption(
+            messageId, MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY
+        ).left()
 
         // When
         viewModel.state.test {
@@ -449,7 +446,6 @@ class MessageDetailViewModelTest {
     @Test
     fun `bottomBar state is data when use case returns actions`() = runTest {
         // Given
-        val messageId = MessageId(rawMessageId)
         val cachedMessage = MessageTestData.buildMessage(
             userId = userId,
             id = messageId.id,
@@ -458,7 +454,7 @@ class MessageDetailViewModelTest {
         )
         val messageWithLabels = MessageWithLabels(cachedMessage, emptyList())
         every { observeMessageWithLabels.invoke(userId, messageId) } returns flowOf(messageWithLabels.right())
-        every { observeDetailActions.invoke(userId, MessageId(rawMessageId)) } returns flowOf(
+        every { observeDetailActions.invoke(userId, messageId) } returns flowOf(
             nonEmptyListOf(Action.Reply, Action.Archive).right()
         )
 
@@ -475,7 +471,6 @@ class MessageDetailViewModelTest {
     @Test
     fun `bottomBar state is failed loading actions when use case returns no actions`() = runTest {
         // Given
-        val messageId = MessageId(rawMessageId)
         val cachedMessage = MessageTestData.buildMessage(
             userId = userId,
             id = messageId.id,
@@ -485,7 +480,7 @@ class MessageDetailViewModelTest {
         val messageWithLabels = MessageWithLabels(cachedMessage, emptyList())
         every { observeMessageWithLabels.invoke(userId, messageId) } returns flowOf(messageWithLabels.right())
 
-        every { observeDetailActions.invoke(userId, MessageId(rawMessageId)) } returns
+        every { observeDetailActions.invoke(userId, messageId) } returns
             flowOf(DataError.Local.NoDataCached.left())
 
         // When
@@ -500,7 +495,7 @@ class MessageDetailViewModelTest {
     @Test
     fun `message detail state is dismiss message screen when mark unread is successful`() = runTest {
         // Given
-        coEvery { markUnread(userId, MessageId(rawMessageId)) } returns MessageSample.Invoice.right()
+        coEvery { markUnread(userId, messageId) } returns MessageSample.Invoice.right()
 
         viewModel.state.test {
             initialStateEmitted()
@@ -515,7 +510,7 @@ class MessageDetailViewModelTest {
     @Test
     fun `message detail state is error marking unread when mark unread fails`() = runTest {
         // Given
-        coEvery { markUnread(userId, MessageId(rawMessageId)) } returns DataError.Local.NoDataCached.left()
+        coEvery { markUnread(userId, messageId) } returns DataError.Local.NoDataCached.left()
 
         viewModel.state.test {
             // When
@@ -542,7 +537,6 @@ class MessageDetailViewModelTest {
     @Test
     fun `error starring message is emitted when star action fails`() = runTest {
         // Given
-        val messageId = MessageId(rawMessageId)
         coEvery { starMessage.invoke(userId, messageId) } returns DataError.Local.NoDataCached.left()
 
         viewModel.state.test {
@@ -558,7 +552,6 @@ class MessageDetailViewModelTest {
     @Test
     fun `unStarred message metadata is emitted when unStar action is successful`() = runTest {
         // Given
-        val messageId = MessageId(rawMessageId)
         val messageWithLabels = MessageWithLabels(MessageTestData.starredMessage, emptyList())
         every { observeMessageWithLabels.invoke(userId, messageId) } returns flowOf(messageWithLabels.right())
 
@@ -576,7 +569,6 @@ class MessageDetailViewModelTest {
     @Test
     fun `error unStarring message is emitted when unStar action fails`() = runTest {
         // Given
-        val messageId = MessageId(rawMessageId)
         coEvery { unStarMessage.invoke(userId, messageId) } returns DataError.Local.NoDataCached.left()
 
         viewModel.state.test {
@@ -600,7 +592,7 @@ class MessageDetailViewModelTest {
         viewModel.state.test {
 
             // then
-            coVerify { moveMessage(userId, MessageId(rawMessageId), SystemLabelId.Trash.labelId) }
+            coVerify { moveMessage(userId, messageId, SystemLabelId.Trash.labelId) }
             assertEquals(expectedMessage, awaitItem().exitScreenWithMessageEffect.consume())
         }
     }
@@ -611,7 +603,7 @@ class MessageDetailViewModelTest {
         coEvery {
             moveMessage(
                 userId,
-                MessageId(rawMessageId),
+                messageId,
                 SystemLabelId.Trash.labelId
             )
         } returns DataError.Local.NoDataCached.left()
@@ -677,7 +669,7 @@ class MessageDetailViewModelTest {
         coEvery {
             moveMessage(
                 userId,
-                MessageId(rawMessageId),
+                messageId,
                 MailLabelId.System.Spam.labelId
             )
         } returns MessageSample.Invoice.right()
@@ -694,14 +686,14 @@ class MessageDetailViewModelTest {
 
             // Then
             assertNotNull(lastEmittedItem().exitScreenWithMessageEffect.consume())
-            coVerify { moveMessage.invoke(userId, MessageId(rawMessageId), MailLabelId.System.Spam.labelId) }
+            coVerify { moveMessage.invoke(userId, messageId, MailLabelId.System.Spam.labelId) }
         }
     }
 
     @Test
     fun `when error moving a message, error is emitted`() = runTest {
         // Given
-        coEvery { moveMessage(userId, MessageId(rawMessageId), any()) } returns DataError.Local.NoDataCached.left()
+        coEvery { moveMessage(userId, messageId, any()) } returns DataError.Local.NoDataCached.left()
 
         // When
         viewModel.submit(MessageViewAction.MoveToDestinationConfirmed("spam"))
@@ -733,7 +725,7 @@ class MessageDetailViewModelTest {
         coEvery {
             relabelMessage(
                 userId = userId,
-                messageId = MessageId(rawMessageId),
+                messageId = messageId,
                 currentLabelIds = listOf(),
                 updatedLabelIds = listOf(
                     MailLabelTestData.customLabelOne.id.labelId,
@@ -758,7 +750,7 @@ class MessageDetailViewModelTest {
             coVerify {
                 relabelMessage.invoke(
                     userId = userId,
-                    messageId = MessageId(rawMessageId),
+                    messageId = messageId,
                     currentLabelIds = listOf(),
                     updatedLabelIds = listOf(
                         MailLabelTestData.customLabelOne.id.labelId,
@@ -772,12 +764,12 @@ class MessageDetailViewModelTest {
     @Test
     fun `verify relabel message and move to is called and dismiss is set when destination gets confirmed`() = runTest {
         // Given
-        coEvery { moveMessage(userId, MessageId(rawMessageId), any()) } returns MessageSample.Invoice.right()
+        coEvery { moveMessage(userId, messageId, any()) } returns MessageSample.Invoice.right()
 
         coEvery {
             relabelMessage(
                 userId = userId,
-                messageId = MessageId(rawMessageId),
+                messageId = messageId,
                 currentLabelIds = listOf(),
                 updatedLabelIds = listOf(
                     MailLabelTestData.customLabelOne.id.labelId,
@@ -800,10 +792,10 @@ class MessageDetailViewModelTest {
             // Then
             assertNotNull(lastEmittedItem().exitScreenWithMessageEffect.consume())
             coVerifySequence {
-                moveMessage(userId, MessageId(rawMessageId), MailLabelId.System.Archive.labelId)
+                moveMessage(userId, messageId, MailLabelId.System.Archive.labelId)
                 relabelMessage.invoke(
                     userId = userId,
-                    messageId = MessageId(rawMessageId),
+                    messageId = messageId,
                     currentLabelIds = listOf(),
                     updatedLabelIds = listOf(
                         MailLabelTestData.customLabelOne.id.labelId,
@@ -820,7 +812,7 @@ class MessageDetailViewModelTest {
         coEvery {
             relabelMessage(
                 userId = userId,
-                messageId = MessageId(rawMessageId),
+                messageId = messageId,
                 currentLabelIds = any(),
                 updatedLabelIds = any()
             )
@@ -844,7 +836,7 @@ class MessageDetailViewModelTest {
             messageBodyEmitted()
 
             // Then
-            coVerify { markRead.invoke(userId, MessageId(rawMessageId)) }
+            coVerify { markRead.invoke(userId, messageId) }
         }
     }
 
@@ -852,7 +844,6 @@ class MessageDetailViewModelTest {
     fun `should not mark the message as read if there is an error reading the message`() = runTest {
         viewModel.state.test {
             // Given
-            val messageId = MessageId(rawMessageId)
             coEvery {
                 getDecryptedMessageBody(userId, messageId)
             } returns GetDecryptedMessageBodyError.Data(DataError.Local.NoDataCached).left()
@@ -889,6 +880,7 @@ class MessageDetailViewModelTest {
     fun `all attachments are shown when all attachments should be shown`() = runTest {
         // Given
         val expectedMessageBody = DecryptedMessageBody(
+            messageId = messageId,
             value = "Plain message body",
             mimeType = MimeType.PlainText,
             attachments = listOf(
@@ -903,7 +895,7 @@ class MessageDetailViewModelTest {
             messageBodyUiModelMapper.toUiModel(userId, expectedMessageBody)
         } returns MessageBodyUiModelTestData.messageBodyWithAttachmentsUiModel
         coEvery {
-            observeAttachmentWorkerStatus.invoke(userId, MessageId(rawMessageId), any())
+            observeAttachmentWorkerStatus.invoke(userId, messageId, any())
         } returns emptyFlow()
 
 
@@ -926,6 +918,7 @@ class MessageDetailViewModelTest {
         runTest {
             // Given
             val expectedMessageBody = DecryptedMessageBody(
+                messageId = messageId,
                 value = "Plain message body",
                 mimeType = MimeType.PlainText,
                 attachments = listOf(
@@ -940,7 +933,7 @@ class MessageDetailViewModelTest {
                 messageBodyUiModelMapper.toUiModel(userId, expectedMessageBody)
             } returns MessageBodyUiModelTestData.messageBodyWithAttachmentsUiModel
             coEvery {
-                observeAttachmentWorkerStatus.invoke(userId, MessageId(rawMessageId), any())
+                observeAttachmentWorkerStatus.invoke(userId, messageId, any())
             } returns emptyFlow()
 
 
@@ -951,14 +944,14 @@ class MessageDetailViewModelTest {
 
                 // Then
                 coVerifyOrder {
-                    observeAttachmentWorkerStatus(userId, MessageId(rawMessageId), AttachmentId("invoice"))
-                    observeAttachmentWorkerStatus(userId, MessageId(rawMessageId), AttachmentId("document"))
+                    observeAttachmentWorkerStatus(userId, messageId, AttachmentId("invoice"))
+                    observeAttachmentWorkerStatus(userId, messageId, AttachmentId("document"))
                     observeAttachmentWorkerStatus(
                         userId,
-                        MessageId(rawMessageId),
+                        messageId,
                         AttachmentId("complicated.document.name")
                     )
-                    observeAttachmentWorkerStatus(userId, MessageId(rawMessageId), AttachmentId("image"))
+                    observeAttachmentWorkerStatus(userId, messageId, AttachmentId("image"))
                 }
                 cancelAndIgnoreRemainingEvents()
             }
@@ -969,6 +962,7 @@ class MessageDetailViewModelTest {
         // Given
         val expectedIntentValues = OpenAttachmentIntentValues(mimeType = "application/pdf", uri = mockk())
         val expectedMessageBody = DecryptedMessageBody(
+            messageId = messageId,
             value = "Plain message body",
             mimeType = MimeType.PlainText,
             attachments = listOf(
@@ -983,12 +977,12 @@ class MessageDetailViewModelTest {
             messageBodyUiModelMapper.toUiModel(userId, expectedMessageBody)
         } returns MessageBodyUiModelTestData.messageBodyWithAttachmentsUiModel
         coEvery {
-            observeAttachmentWorkerStatus(userId, MessageId(rawMessageId), any())
+            observeAttachmentWorkerStatus(userId, messageId, any())
         } returns flowOf()
         coEvery {
-            getAttachmentIntentValues(userId, MessageId(rawMessageId), AttachmentId("invoice"))
+            getAttachmentIntentValues(userId, messageId, AttachmentId("invoice"))
         } returns expectedIntentValues.right()
-        coEvery { getDownloadingAttachmentsForMessages(userId, listOf(MessageId(rawMessageId))) } returns listOf()
+        coEvery { getDownloadingAttachmentsForMessages(userId, listOf(messageId)) } returns listOf()
 
 
         // When
@@ -1004,7 +998,7 @@ class MessageDetailViewModelTest {
             coVerify {
                 getAttachmentIntentValues(
                     userId,
-                    MessageId(rawMessageId),
+                    messageId,
                     AttachmentId("invoice")
                 )
             }
@@ -1017,6 +1011,7 @@ class MessageDetailViewModelTest {
     fun `verify error is shown when getting attachment failed`() = runTest {
         // Given
         val expectedMessageBody = DecryptedMessageBody(
+            messageId = messageId,
             value = "Plain message body",
             mimeType = MimeType.PlainText,
             attachments = listOf(
@@ -1031,10 +1026,10 @@ class MessageDetailViewModelTest {
             messageBodyUiModelMapper.toUiModel(userId, expectedMessageBody)
         } returns MessageBodyUiModelTestData.messageBodyWithAttachmentsUiModel
         coEvery {
-            observeAttachmentWorkerStatus(userId, MessageId(rawMessageId), any())
+            observeAttachmentWorkerStatus(userId, messageId, any())
         } returns flowOf()
         coEvery { getAttachmentIntentValues(any(), any(), any()) } returns DataError.Local.NoDataCached.left()
-        coEvery { getDownloadingAttachmentsForMessages(userId, listOf(MessageId(rawMessageId))) } returns listOf()
+        coEvery { getDownloadingAttachmentsForMessages(userId, listOf(messageId)) } returns listOf()
 
         // When
         viewModel.submit(MessageViewAction.OnAttachmentClicked(AttachmentId("invoice")))
@@ -1057,6 +1052,7 @@ class MessageDetailViewModelTest {
             // Given
             val expectedIntentValues = OpenAttachmentIntentValues(mimeType = "application/pdf", uri = mockk())
             val expectedMessageBody = DecryptedMessageBody(
+                messageId = messageId,
                 value = "Plain message body",
                 mimeType = MimeType.PlainText,
                 attachments = listOf(
@@ -1071,13 +1067,13 @@ class MessageDetailViewModelTest {
                 messageBodyUiModelMapper.toUiModel(userId, expectedMessageBody)
             } returns MessageBodyUiModelTestData.messageBodyWithAttachmentsUiModel
             coEvery {
-                observeAttachmentWorkerStatus(userId, MessageId(rawMessageId), any())
+                observeAttachmentWorkerStatus(userId, messageId, any())
             } returns flowOf(MessageAttachmentMetadataTestData.buildMessageAttachmentMetadata())
             coEvery {
-                getAttachmentIntentValues(userId, MessageId(rawMessageId), AttachmentId("invoice"))
+                getAttachmentIntentValues(userId, messageId, AttachmentId("invoice"))
             } returns expectedIntentValues.right()
             coEvery {
-                getDownloadingAttachmentsForMessages(userId, listOf(MessageId(rawMessageId)))
+                getDownloadingAttachmentsForMessages(userId, listOf(messageId))
             } returns listOf(MessageAttachmentMetadataTestData.buildMessageAttachmentMetadata())
 
             viewModel.state.test {
@@ -1105,7 +1101,7 @@ class MessageDetailViewModelTest {
         coEvery {
             getEmbeddedImageAvoidDuplicatedExecution(
                 userId,
-                MessageId(rawMessageId),
+                messageId,
                 contentId,
                 any()
             )
@@ -1125,7 +1121,7 @@ class MessageDetailViewModelTest {
         coEvery {
             getEmbeddedImageAvoidDuplicatedExecution(
                 userId,
-                MessageId(rawMessageId),
+                messageId,
                 contentId,
                 any()
             )

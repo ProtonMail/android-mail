@@ -81,7 +81,6 @@ fun MessageBody(
     modifier: Modifier = Modifier,
     messageBodyUiModel: MessageBodyUiModel,
     actions: MessageBody.Actions,
-    messageId: MessageId? = null,
     webViewHeight: Int? = null,
     onMessageBodyLoaded: (messageId: MessageId, height: Int) -> Unit = { _, _ -> }
 ) {
@@ -104,7 +103,6 @@ fun MessageBody(
             modifier = modifier,
             messageBodyUiModel = messageBodyUiModel,
             actions = actions,
-            messageId = messageId,
             webViewHeight = webViewHeight,
             onMessageBodyLoaded = onMessageBodyLoaded
         )
@@ -120,7 +118,6 @@ internal fun MessageBodyWebView(
     modifier: Modifier = Modifier,
     messageBodyUiModel: MessageBodyUiModel,
     actions: MessageBody.Actions,
-    messageId: MessageId? = null,
     webViewHeight: Int? = null,
     onMessageBodyLoaded: (messageId: MessageId, height: Int) -> Unit = { _, _ -> }
 ) {
@@ -130,6 +127,7 @@ internal fun MessageBodyWebView(
         data = messageBodyUiModel.messageBody,
         mimeType = messageBodyUiModel.mimeType.value
     )
+    val messageId = messageBodyUiModel.messageId
 
     val client = remember {
         object : AccompanistWebViewClient() {
@@ -187,7 +185,7 @@ internal fun MessageBodyWebView(
             ) {
                 if (webViewHeight == null) {
                     onSizeChanged { size ->
-                        if (messageId != null && size.height >= 0 && contentLoaded) {
+                        if (size.height >= 0 && contentLoaded) {
                             scope.launch {
                                 delay(WEB_PAGE_CONTENT_LOAD_TIMEOUT)
                                 onMessageBodyLoaded(messageId, size.height)
@@ -302,7 +300,7 @@ object MessageBody {
         val onMessageBodyLinkClicked: (uri: Uri) -> Unit,
         val onShowAllAttachments: () -> Unit,
         val onAttachmentClicked: (attachmentId: AttachmentId) -> Unit,
-        val loadEmbeddedImage: (messageId: MessageId?, contentId: String) -> GetEmbeddedImageResult?
+        val loadEmbeddedImage: (messageId: MessageId, contentId: String) -> GetEmbeddedImageResult?
     )
 }
 

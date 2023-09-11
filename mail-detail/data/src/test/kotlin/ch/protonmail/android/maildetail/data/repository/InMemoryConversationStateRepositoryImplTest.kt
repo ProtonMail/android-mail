@@ -87,6 +87,7 @@ class InMemoryConversationStateRepositoryImplTest {
         val repo = buildRepository()
         val messageId = MessageIdSample.Invoice
         val decryptedBody = DecryptedMessageBody(
+            messageId = messageId,
             value = UUID.randomUUID().toString(),
             mimeType = MimeType.Html
         )
@@ -109,6 +110,7 @@ class InMemoryConversationStateRepositoryImplTest {
         val repo = buildRepository()
         val messageId = MessageIdSample.Invoice
         val decryptedBody = DecryptedMessageBody(
+            messageId = messageId,
             value = UUID.randomUUID().toString(),
             mimeType = MimeType.Html
         )

@@ -22,7 +22,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 
 sealed interface GetDecryptedMessageBodyError {
 
-    data class Decryption(val encryptedMessageBody: String) : GetDecryptedMessageBodyError
+    data class Decryption(val messageId: MessageId, val encryptedMessageBody: String) : GetDecryptedMessageBodyError
 
     data class Data(val dataError: DataError) : GetDecryptedMessageBodyError
 }

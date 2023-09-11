@@ -163,7 +163,11 @@ internal class ConversationDetailMessageUiModelMapperTest {
         // given
         val messageWithLabels = MessageWithLabelsSample.AugWeatherForecast
         val contactsList = listOf(ContactSample.John, ContactSample.Doe)
-        val decryptedMessageBody = DecryptedMessageBody(UUID.randomUUID().toString(), MimeType.Html)
+        val decryptedMessageBody = DecryptedMessageBody(
+            messageWithLabels.message.messageId,
+            UUID.randomUUID().toString(),
+            MimeType.Html
+        )
 
         // when
         val result = mapper.toUiModel(

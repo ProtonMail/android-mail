@@ -91,7 +91,7 @@ class GetDecryptedDraftFieldsTest {
         val userId = UserIdSample.Primary
         val messageId = MessageIdSample.RemoteDraft
         val expectedMessage = MessageWithBodySample.RemoteDraft
-        val decryptError = GetDecryptedMessageBodyError.Decryption("Failed decrypting")
+        val decryptError = GetDecryptedMessageBodyError.Decryption(messageId, "Failed decrypting")
         expectedGetRefreshedMessage(userId, messageId) { expectedMessage }
         expectDecryptedMessageError(userId, messageId) { decryptError }
 

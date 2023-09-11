@@ -38,8 +38,9 @@ class SetMessageViewStateTest {
         val useCase = buildUseCase()
         val messageId = MessageId(UUID.randomUUID().toString())
         val decryptedMessageBody = DecryptedMessageBody(
-            UUID.randomUUID().toString(),
-            MimeType.Html
+            messageId = messageId,
+            value = UUID.randomUUID().toString(),
+            mimeType = MimeType.Html
         )
 
         // When

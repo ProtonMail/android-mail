@@ -39,6 +39,7 @@ import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcommon.domain.usecase.GetCurrentEpochTimeDuration
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.mailcommon.presentation.mapper.ExpirationTimeMapper
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
@@ -70,7 +71,6 @@ import ch.protonmail.android.maildetail.domain.usecase.ShouldShowRemoteContent
 import ch.protonmail.android.maildetail.domain.usecase.StarConversation
 import ch.protonmail.android.maildetail.domain.usecase.UnStarConversation
 import ch.protonmail.android.maildetail.presentation.R
-import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMessageUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMetadataUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.DetailAvatarUiModelMapper
@@ -214,7 +214,9 @@ class ConversationDetailViewModelIntegrationTest {
     private val starConversation: StarConversation = mockk()
     private val unStarConversation: UnStarConversation = mockk()
     private val getDecryptedMessageBody: GetDecryptedMessageBody = mockk {
-        coEvery { this@mockk.invoke(any(), any()) } returns DecryptedMessageBody("", MimeType.Html).right()
+        coEvery { this@mockk.invoke(any(), any()) } returns DecryptedMessageBody(
+            MessageId("default"), "", MimeType.Html
+        ).right()
     }
 
     private val markMessageAndConversationReadIfAllRead: MarkMessageAndConversationReadIfAllMessagesRead =
@@ -329,6 +331,7 @@ class ConversationDetailViewModelIntegrationTest {
         val messageId = messages.first().messageId
 
         coEvery { getDecryptedMessageBody.invoke(userId, any()) } returns DecryptedMessageBody(
+            messageId = messageId,
             value = "",
             mimeType = MimeType.Html,
             attachments = listOf(
@@ -555,7 +558,7 @@ class ConversationDetailViewModelIntegrationTest {
             // Add a delay, so we're able to receive the `Expanding` state.
             // Without it, we'd only get the final `Expanded` state.
             delay(1)
-            DecryptedMessageBody("", MimeType.Html).right()
+            DecryptedMessageBody(defaultExpanded.message.messageId, "", MimeType.Html).right()
         }
 
         val viewModel = buildConversationDetailViewModel()
@@ -648,8 +651,9 @@ class ConversationDetailViewModelIntegrationTest {
         coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
         coEvery { getDecryptedMessageBody.invoke(any(), expectedExpanded.message.messageId) } returns
             DecryptedMessageBody(
+                messageId = expectedExpanded.message.messageId,
                 value = "",
-                MimeType.Html,
+                mimeType = MimeType.Html,
                 attachments = (0 until expectedAttachmentCount).map {
                     aMessageAttachment(id = it.toString())
                 }
@@ -690,8 +694,9 @@ class ConversationDetailViewModelIntegrationTest {
         coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
         coEvery { getDecryptedMessageBody.invoke(any(), expandedMessageId) } returns
             DecryptedMessageBody(
+                messageId = expandedMessageId,
                 value = "",
-                MimeType.Html,
+                mimeType = MimeType.Html,
                 attachments = (0 until expectedAttachmentCount).map {
                     aMessageAttachment(id = it.toString())
                 }
@@ -740,8 +745,9 @@ class ConversationDetailViewModelIntegrationTest {
             coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
             coEvery { getDecryptedMessageBody.invoke(any(), expandedMessageId) } returns
                 DecryptedMessageBody(
+                    messageId = expandedMessageId,
                     value = "",
-                    MimeType.Html,
+                    mimeType = MimeType.Html,
                     attachments = (0 until expectedAttachmentCount).map {
                         aMessageAttachment(id = it.toString())
                     }
@@ -860,6 +866,7 @@ class ConversationDetailViewModelIntegrationTest {
         coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
         coEvery { getDecryptedMessageBody.invoke(any(), expandedMessageId) } returns
             DecryptedMessageBody(
+                messageId = expandedMessageId,
                 value = "",
                 MimeType.Html,
                 attachments = (0 until expectedAttachmentCount).map {
@@ -888,7 +895,7 @@ class ConversationDetailViewModelIntegrationTest {
         )
         coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
         coEvery { getDecryptedMessageBody(any(), any()) } returns
-            GetDecryptedMessageBodyError.Decryption("").left()
+            GetDecryptedMessageBodyError.Decryption(defaultExpanded.message.messageId, "").left()
 
         val viewModel = buildConversationDetailViewModel()
         viewModel.state.test {

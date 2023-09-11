@@ -272,9 +272,7 @@ class MessageDetailViewModel @Inject constructor(
                     when (getDecryptedMessageBodyError) {
                         is GetDecryptedMessageBodyError.Decryption -> {
                             MessageDetailEvent.ErrorDecryptingMessageBody(
-                                messageBody = messageBodyUiModelMapper.toUiModel(
-                                    getDecryptedMessageBodyError.encryptedMessageBody
-                                )
+                                messageBody = messageBodyUiModelMapper.toUiModel(getDecryptedMessageBodyError)
                             )
                         }
 

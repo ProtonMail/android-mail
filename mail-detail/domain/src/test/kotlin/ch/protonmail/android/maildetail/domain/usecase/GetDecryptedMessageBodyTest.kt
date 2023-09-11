@@ -100,7 +100,11 @@ class GetDecryptedMessageBodyTest(
     fun `when repository gets message body and decryption is successful then the decrypted message body is returned`() =
         runTest {
             // Given
-            val expected = DecryptedMessageBody(decryptedMessageBody, testInput.mimeType).right()
+            val expected = DecryptedMessageBody(
+                testInput.messageWithBody.message.messageId,
+                decryptedMessageBody,
+                testInput.mimeType
+            ).right()
             coEvery {
                 messageRepository.getMessageWithBody(UserIdTestData.userId, messageId)
             } returns testInput.messageWithBody.right()
@@ -116,8 +120,9 @@ class GetDecryptedMessageBodyTest(
     @Test
     fun `when repository gets message body and decryption has failed then a decryption error is returned`() = runTest {
         // Given
-        val expected = GetDecryptedMessageBodyError.Decryption(MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY)
-            .left()
+        val expected = GetDecryptedMessageBodyError.Decryption(
+            messageId, MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY
+        ).left()
         coEvery {
             messageRepository.getMessageWithBody(UserIdTestData.userId, messageId)
         } returns testInput.messageWithBody.right()
@@ -133,8 +138,10 @@ class GetDecryptedMessageBodyTest(
     @Test
     fun `when repository gets message body and user address is null then a decryption error is returned`() = runTest {
         // Given
-        val expected = GetDecryptedMessageBodyError.Decryption(MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY)
-            .left()
+        val expected = GetDecryptedMessageBodyError.Decryption(
+            messageId,
+            MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY
+        ).left()
         coEvery {
             messageRepository.getMessageWithBody(UserIdTestData.userId, messageId)
         } returns testInput.messageWithBody.right()

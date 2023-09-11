@@ -33,6 +33,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MimeTypeUiModel
 import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
 import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelSample
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import kotlinx.collections.immutable.persistentListOf
 
 object MessageDetailsPreviewData {
@@ -45,6 +46,7 @@ object MessageDetailsPreviewData {
         messageBodyState = MessageBodyState.Data(
             messageBodyUiModel = MessageBodyUiModel(
                 messageBody = "This is a message body.",
+                messageId = MessageId("This is a messageId"),
                 mimeType = MimeTypeUiModel.PlainText,
                 shouldShowEmbeddedImages = false,
                 shouldShowRemoteContent = false,

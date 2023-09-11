@@ -20,7 +20,9 @@ package ch.protonmail.android.testdata.message
 
 import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MimeType
+import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 
 object DecryptedMessageBodyTestData {
 
@@ -51,10 +53,12 @@ object DecryptedMessageBodyTestData {
     )
 
     fun buildDecryptedMessageBody(
+        messageId: MessageId = MessageIdSample.build(),
         value: String = DECRYPTED_MESSAGE_BODY,
         mimeType: MimeType = MimeType.Html,
         attachments: List<MessageAttachment> = emptyList()
     ) = DecryptedMessageBody(
+        messageId = messageId,
         value = value,
         mimeType = mimeType,
         attachments = attachments

@@ -21,11 +21,13 @@ package ch.protonmail.android.maildetail.presentation.sample
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyAttachmentsUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.MimeTypeUiModel
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 
 object MessageDetailBodyUiModelSample {
 
     fun build(
         messageBody: String,
+        messageId: MessageId = MessageId("sample message id"),
         mimeType: MimeTypeUiModel = MimeTypeUiModel.Html,
         shouldShowEmbeddedImages: Boolean = false,
         shouldShowRemoteContent: Boolean = false,
@@ -34,6 +36,7 @@ object MessageDetailBodyUiModelSample {
         attachments: MessageBodyAttachmentsUiModel? = null
     ) = MessageBodyUiModel(
         messageBody = messageBody,
+        messageId = messageId,
         mimeType = mimeType,
         shouldShowEmbeddedImages = shouldShowEmbeddedImages,
         shouldShowRemoteContent = shouldShowRemoteContent,

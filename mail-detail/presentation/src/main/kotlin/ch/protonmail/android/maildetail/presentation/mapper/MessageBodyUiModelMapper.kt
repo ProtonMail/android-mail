@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.maildetail.presentation.mapper
 
-import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.usecase.DoesMessageBodyHaveEmbeddedImages
 import ch.protonmail.android.maildetail.domain.usecase.DoesMessageBodyHaveRemoteContent
 import ch.protonmail.android.maildetail.domain.usecase.ShouldShowEmbeddedImages
@@ -29,6 +28,8 @@ import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.MimeTypeUiModel
 import ch.protonmail.android.maildetail.presentation.usecase.InjectCssIntoDecryptedMessageBody
 import ch.protonmail.android.maildetail.presentation.usecase.SanitizeHtmlOfDecryptedMessageBody
+import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
+import ch.protonmail.android.mailmessage.domain.model.GetDecryptedMessageBodyError
 import ch.protonmail.android.mailmessage.domain.model.MimeType
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
@@ -57,6 +58,7 @@ class MessageBodyUiModelMapper @Inject constructor(
                 sanitizedMessageBody,
                 decryptedMessageBody.mimeType.toMimeTypeUiModel()
             ),
+            messageId = decryptedMessageBody.messageId,
             mimeType = decryptedMessageBody.mimeType.toMimeTypeUiModel(),
             shouldShowEmbeddedImages = shouldShowEmbeddedImages,
             shouldShowRemoteContent = shouldShowRemoteContent(userId),
@@ -78,8 +80,9 @@ class MessageBodyUiModelMapper @Inject constructor(
         )
     }
 
-    fun toUiModel(encryptedMessageBody: String) = MessageBodyUiModel(
-        messageBody = encryptedMessageBody,
+    fun toUiModel(decryptionError: GetDecryptedMessageBodyError.Decryption) = MessageBodyUiModel(
+        messageBody = decryptionError.encryptedMessageBody,
+        messageId = decryptionError.messageId,
         mimeType = MimeTypeUiModel.PlainText,
         shouldShowEmbeddedImages = false,
         shouldShowRemoteContent = false,

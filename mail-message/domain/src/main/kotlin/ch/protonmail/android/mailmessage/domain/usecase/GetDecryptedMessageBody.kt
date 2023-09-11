@@ -63,11 +63,11 @@ class GetDecryptedMessageBody @Inject constructor(
                         }.right()
                     } catch (cryptoException: CryptoException) {
                         Timber.e(cryptoException, "Error decrypting message")
-                        GetDecryptedMessageBodyError.Decryption(messageBody.body).left()
+                        GetDecryptedMessageBodyError.Decryption(messageId, messageBody.body).left()
                     }
                 } else {
                     Timber.e("Decryption error. Could not get UserAddress for user id ${userId.id}")
-                    GetDecryptedMessageBodyError.Decryption(messageBody.body).left()
+                    GetDecryptedMessageBodyError.Decryption(messageId, messageBody.body).left()
                 }
             }
     }
@@ -76,11 +76,11 @@ class GetDecryptedMessageBody @Inject constructor(
         return if (messageBody.mimeType == MimeType.MultipartMixed) {
             decryptMimeMessage(messageBody.body).run {
                 // PGP/MIME attachments are not supported yet
-                DecryptedMessageBody(body.content, MimeType.from(body.mimeType), emptyList())
+                DecryptedMessageBody(messageBody.messageId, body.content, MimeType.from(body.mimeType), emptyList())
             }
         } else {
             decryptText(messageBody.body).run {
-                DecryptedMessageBody(this, messageBody.mimeType, messageBody.attachments)
+                DecryptedMessageBody(messageBody.messageId, this, messageBody.mimeType, messageBody.attachments)
             }
         }
     }
