@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcommon.data.file
 
+import java.io.ByteArrayInputStream
 import java.io.File
 import android.content.Context
 import io.mockk.coEvery
@@ -423,6 +424,56 @@ class InternalFileStorageTest {
             // Then
             assertNull(actualFile)
         }
+
+    @Test
+    fun `should write file via input stream and return file on success`() = runTest {
+        // Given
+        val inputStream = ByteArrayInputStream(MessageBody.toByteArray())
+        val fileMock = mockk<File>()
+        coEvery {
+            fileHelperMock.writeToFileAsStream(
+                folder = FileHelper.Folder(CompleteFolderPath),
+                filename = FileHelper.Filename(MessageId.EncodedDigest),
+                inputStream = inputStream
+            )
+        } returns fileMock
+
+        // When
+        val actual = internalFileStorage.writeFileAsStream(
+            userId = UserId.Object,
+            folder = InternalFileStorage.Folder.MessageBodies,
+            fileIdentifier = InternalFileStorage.FileIdentifier(MessageId.Raw),
+            inputStream = inputStream
+        )
+
+        // Then
+        assertEquals(fileMock, actual)
+    }
+
+    @Test
+    fun `should write file via input stream and return null on failure`() = runTest {
+        // Given
+        val inputStream = ByteArrayInputStream(MessageBody.toByteArray())
+        coEvery {
+            fileHelperMock.writeToFileAsStream(
+                folder = FileHelper.Folder(CompleteFolderPath),
+                filename = FileHelper.Filename(MessageId.EncodedDigest),
+                inputStream = inputStream
+            )
+        } returns null
+
+        // When
+        val actual = internalFileStorage.writeFileAsStream(
+            userId = UserId.Object,
+            folder = InternalFileStorage.Folder.MessageBodies,
+            fileIdentifier = InternalFileStorage.FileIdentifier(MessageId.Raw),
+            inputStream = inputStream
+        )
+
+        // Then
+        assertNull(actual)
+    }
+
 
     @Test
     fun `should delete a file using a correct sanitised folder and filename and return true on success`() = runTest {

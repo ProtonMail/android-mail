@@ -163,6 +163,37 @@ internal class AllowedFoldersFileHelperTest(folderPath: String) : FileHelperTest
     }
 
     @Test
+    fun `should return file when writing to a file as stream`() = runTest(testDispatcherProvider.Main) {
+        // Given
+        val file = File(folder.path, filename.value)
+        val outputStream = ByteArrayOutputStream()
+        val inputStream = ByteArrayInputStream(FileContent.toByteArray())
+        every { fileFactoryMock.fileFrom(folder, filename) } returns file
+        every { fileStreamFactoryMock.outputStreamFrom(file) } returns outputStream
+
+        // When
+        val fileSaved = fileHelper.writeToFileAsStream(folder, filename, inputStream)
+
+        // Then
+        assertTrue(fileSaved != null)
+    }
+
+    @Test
+    fun `should return null when writing to a file as stream fails`() = runTest(testDispatcherProvider.Main) {
+        // Given
+        val file = File(folder.path, filename.value)
+        val inputStream = ByteArrayInputStream(FileContent.toByteArray())
+        every { fileFactoryMock.fileFrom(folder, filename) } returns file
+        every { fileStreamFactoryMock.outputStreamFrom(file) } returns failingOutputStream
+
+        // When
+        val fileSaved = fileHelper.writeToFileAsStream(folder, filename, inputStream)
+
+        // Then
+        assertNull(fileSaved)
+    }
+
+    @Test
     fun `should delete a file`() = runTest(testDispatcherProvider.Main) {
         // Given
         val fileMock = mockk<File> { every { delete() } returns true }
@@ -290,6 +321,23 @@ internal class BlacklistedFoldersFileHelperTest(folderPath: String) : FileHelper
             val actualContent = String(outputStream.toByteArray())
             assertEquals(EMPTY_STRING, actualContent)
             assertFalse(fileSaved)
+        }
+
+    @Test
+    fun `should return null when trying to write a file to a blacklisted folder as stream`() =
+        runTest(testDispatcherProvider.Main) {
+            // Given
+            val file = File(folder.path, filename.value)
+            val outputStream = ByteArrayOutputStream()
+            val inputStream = ByteArrayInputStream(FileContent.toByteArray())
+            every { fileFactoryMock.fileFrom(folder, filename) } returns file
+            every { fileStreamFactoryMock.outputStreamFrom(file) } returns outputStream
+
+            // When
+            val fileSaved = fileHelper.writeToFileAsStream(folder, filename, inputStream)
+
+            // Then
+            assertNull(fileSaved)
         }
 
     @Test

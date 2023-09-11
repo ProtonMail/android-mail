@@ -40,8 +40,9 @@ class UriHelperTest {
         every { getString(any()) } returns TestData.FileName
         every { getLong(any()) } returns TestData.FileSize
     }
+    private val byteArrayInputStream = ByteArrayInputStream(TestData.FileContent)
     private val contentResolverHelper = mockk<ContentResolverHelper> {
-        coEvery { openInputStream(uri) } returns ByteArrayInputStream(TestData.FileContent)
+        coEvery { openInputStream(uri) } returns byteArrayInputStream
         coEvery { getType(uri) } returns TestData.FileMimeType
         coEvery { query(uri) } returns cursor
     }
@@ -51,14 +52,11 @@ class UriHelperTest {
 
     @Test
     fun `should read file content from uri`() = runTest(testDispatcherProvider.Main) {
-        // Given
-        val expected = TestData.FileContent
-
         // When
         val actual = uriHelper.readFromUri(uri)
 
         // Then
-        assertEquals(expected.decodeToString(), actual?.decodeToString())
+        assertEquals(byteArrayInputStream, actual)
     }
 
     @Test

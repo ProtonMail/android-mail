@@ -71,6 +71,27 @@ class FileHelper @Inject constructor(
         }
     }
 
+    suspend fun writeToFileAsStream(
+        folder: Folder,
+        filename: Filename,
+        inputStream: InputStream
+    ): File? {
+        return fileOperationIn(folder) {
+            val fileToSave = fileFactory.fileFrom(folder, filename)
+            val result = runCatching {
+                inputStream.use { input ->
+                    fileStreamFactory.outputStreamFrom(fileToSave).use { output ->
+                        input.copyTo(output)
+                    }
+                }
+            }
+            when (result.isSuccess) {
+                true -> fileToSave
+                false -> null
+            }
+        }
+    }
+
     suspend fun deleteFile(folder: Folder, filename: Filename): Boolean = fileOperationIn(folder) {
         runCatching {
             fileFactory.fileFrom(folder, filename).delete()

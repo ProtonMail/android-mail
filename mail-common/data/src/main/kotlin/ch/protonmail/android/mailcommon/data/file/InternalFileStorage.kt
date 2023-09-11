@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcommon.data.file
 
 import java.io.File
+import java.io.InputStream
 import android.content.Context
 import ch.protonmail.android.mailcommon.domain.coroutines.IODispatcher
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -114,6 +115,17 @@ class InternalFileStorage @Inject constructor(
         folder = FileHelper.Folder("${userId.asRootCacheDirectory()}${folder.path}"),
         filename = FileHelper.Filename(fileIdentifier.value.asSanitisedPath()),
         content = content
+    )
+
+    suspend fun writeFileAsStream(
+        userId: UserId,
+        folder: Folder,
+        fileIdentifier: FileIdentifier,
+        inputStream: InputStream
+    ): File? = fileHelper.writeToFileAsStream(
+        folder = FileHelper.Folder("${userId.asRootDirectory()}${folder.path}"),
+        filename = FileHelper.Filename(fileIdentifier.value.asSanitisedPath()),
+        inputStream = inputStream
     )
 
     suspend fun deleteFile(

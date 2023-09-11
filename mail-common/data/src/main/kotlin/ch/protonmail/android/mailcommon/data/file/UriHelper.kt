@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcommon.data.file
 
+import java.io.InputStream
 import android.content.Context
 import android.net.Uri
 import android.provider.OpenableColumns
@@ -31,13 +32,8 @@ class UriHelper @Inject constructor(
     private val contentResolverHelper: ContentResolverHelper
 ) {
 
-    suspend fun readFromUri(uri: Uri): ByteArray? = withContext(dispatcherProvider.Io) {
-        runCatching {
-            contentResolverHelper.openInputStream(uri)
-                ?.bufferedReader()
-                ?.use { it.readText() }
-                ?.toByteArray()
-        }.getOrNull()
+    suspend fun readFromUri(uri: Uri): InputStream? = withContext(dispatcherProvider.Io) {
+        runCatching { contentResolverHelper.openInputStream(uri) }.getOrNull()
     }
 
     suspend fun getFileInformationFromUri(uri: Uri): FileInformation? {

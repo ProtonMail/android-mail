@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmessage.data.local
 
+import java.io.ByteArrayInputStream
 import java.io.File
 import android.net.Uri
 import ch.protonmail.android.mailcommon.data.file.FileInformation
@@ -44,6 +45,7 @@ import kotlin.test.assertTrue
 internal class AttachmentFileStorageTest {
 
     private val uri = mockk<Uri>()
+    private val inputStream = ByteArrayInputStream(Content)
     private val uriFileHelper = mockk<UriHelper>()
     private val internalFileStorageMock = mockk<InternalFileStorage>()
     private val attachmentFileStorage = AttachmentFileStorage(uriFileHelper, internalFileStorageMock)
@@ -70,14 +72,14 @@ internal class AttachmentFileStorageTest {
     @Test
     fun `should save file provided by uri in internal storage and return file information when successful`() = runTest {
         // Given
-        coEvery { uriFileHelper.readFromUri(uri) } returns Content
+        coEvery { uriFileHelper.readFromUri(uri) } returns inputStream
         coEvery { uriFileHelper.getFileInformationFromUri(uri) } returns FileInfo
         coEvery {
-            internalFileStorageMock.writeFile(
+            internalFileStorageMock.writeFileAsStream(
                 userId = UserId,
                 folder = InternalFileStorage.Folder.MessageAttachments(MessageId),
                 fileIdentifier = InternalFileStorage.FileIdentifier(AttachmentId),
-                content = Content
+                inputStream = inputStream
             )
         } returns File
 
@@ -129,13 +131,13 @@ internal class AttachmentFileStorageTest {
     @Test
     fun `should return null when saving file provided by uri in internal storage fails`() = runTest {
         // Given
-        coEvery { uriFileHelper.readFromUri(uri) } returns Content
+        coEvery { uriFileHelper.readFromUri(uri) } returns inputStream
         coEvery {
-            internalFileStorageMock.writeFile(
+            internalFileStorageMock.writeFileAsStream(
                 userId = UserId,
                 folder = InternalFileStorage.Folder.MessageAttachments(MessageId),
                 fileIdentifier = InternalFileStorage.FileIdentifier(AttachmentId),
-                content = Content
+                inputStream = inputStream
             )
         } returns null
 

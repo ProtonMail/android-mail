@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailmessage.data.local
 
 import java.io.File
+import java.io.InputStream
 import android.net.Uri
 import ch.protonmail.android.mailcommon.data.file.FileInformation
 import ch.protonmail.android.mailcommon.data.file.InternalFileStorage
@@ -52,7 +53,7 @@ class AttachmentFileStorage @Inject constructor(
         uri: Uri
     ): FileInformation? {
         return uriHelper.readFromUri(uri)?.let {
-            saveAttachment(userId, messageId, attachmentId, it)?.let {
+            saveAttachmentAsStream(userId, messageId, attachmentId, it)?.let {
                 uriHelper.getFileInformationFromUri(uri)
             }
         }
@@ -69,6 +70,20 @@ class AttachmentFileStorage @Inject constructor(
             InternalFileStorage.Folder.MessageAttachments(messageId),
             InternalFileStorage.FileIdentifier(attachmentId),
             content
+        )
+    }
+
+    suspend fun saveAttachmentAsStream(
+        userId: UserId,
+        messageId: String,
+        attachmentId: String,
+        inputStream: InputStream
+    ): File? {
+        return internalFileStorage.writeFileAsStream(
+            userId,
+            InternalFileStorage.Folder.MessageAttachments(messageId),
+            InternalFileStorage.FileIdentifier(attachmentId),
+            inputStream
         )
     }
 
