@@ -22,7 +22,11 @@
   <string name="description_remove_account">U zult worden afgemeld en verwijdert alle informatie verbonden met dit account.</string>
   <string name="user_select_other_account_content_description">Kies een ander account</string>
   <string name="you_are_offline">U bent offline</string>
-  <string name="feature_coming_soon">Functie binnenkort mogelijk...</string>
+  <string name="feature_coming_soon">Functie binnenkort mogelijk</string>
   <string name="mailbox_draft_saved">Concept opgeslagen</string>
+  <string name="mailbox_message_sending">Bericht wordt verzonden…</string>
+  <string name="mailbox_message_sending_offline">Offline, bericht geplaatst in wachtrij voor verzenden</string>
+  <string name="mailbox_message_sending_success">Bericht verzonden</string>
+  <string name="mailbox_message_sending_error">Fout bij verzenden bericht</string>
   <string name="notification_switched_account">Overgeschakeld naar account: %s</string>
 </resources>

@@ -22,7 +22,11 @@
   <string name="description_remove_account">Du logger ud og fjerner alle oplysninger, der er knyttet til denne konto.</string>
   <string name="user_select_other_account_content_description">Vælg en anden konto</string>
   <string name="you_are_offline">Du er offline</string>
-  <string name="feature_coming_soon">Funktion kommer snart...</string>
+  <string name="feature_coming_soon">Funktion kommer snart…</string>
   <string name="mailbox_draft_saved">Kladde gemt</string>
+  <string name="mailbox_message_sending">Sender besked…</string>
+  <string name="mailbox_message_sending_offline">Offline, besked sat i kø til afsendelse</string>
+  <string name="mailbox_message_sending_success">Besked sendt</string>
+  <string name="mailbox_message_sending_error">Fejl ved afsendelse af besked</string>
   <string name="notification_switched_account">Skiftede til konto: %s</string>
 </resources>

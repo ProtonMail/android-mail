@@ -22,7 +22,11 @@
   <string name="description_remove_account">Es tancarà la sessió i s\'eliminarà tota la informació associada a ella.</string>
   <string name="user_select_other_account_content_description">Seleccioneu un altre compte</string>
   <string name="you_are_offline">Esteu fora de línia</string>
-  <string name="feature_coming_soon">Aquesta característica arribarà aviat...</string>
-  <string name="mailbox_draft_saved">S\'ha desat l\'esborrany</string>
+  <string name="feature_coming_soon">Feature coming soon…</string>
+  <string name="mailbox_draft_saved">Draft saved</string>
+  <string name="mailbox_message_sending">Sending message…</string>
+  <string name="mailbox_message_sending_offline">Offline, message queued for sending</string>
+  <string name="mailbox_message_sending_success">Message sent</string>
+  <string name="mailbox_message_sending_error">Error sending message</string>
   <string name="notification_switched_account">Canviat al compte: %s</string>
 </resources>

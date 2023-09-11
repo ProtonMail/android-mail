@@ -22,7 +22,11 @@
   <string name="description_remove_account">您將登出，與此帳號相關的所有資訊都會被移除。</string>
   <string name="user_select_other_account_content_description">選取其它帳號</string>
   <string name="you_are_offline">您處於離線狀態</string>
-  <string name="feature_coming_soon">即將推出的新功能…</string>
+  <string name="feature_coming_soon">全新功能即將大展身手...</string>
   <string name="mailbox_draft_saved">草稿已儲存</string>
+  <string name="mailbox_message_sending">傳送郵件訊息...</string>
+  <string name="mailbox_message_sending_offline">未連線，郵件佇列等候傳送</string>
+  <string name="mailbox_message_sending_success">郵件已傳送</string>
+  <string name="mailbox_message_sending_error">傳送郵件時發生錯誤</string>
   <string name="notification_switched_account">已切換至帳號「%s」</string>
 </resources>

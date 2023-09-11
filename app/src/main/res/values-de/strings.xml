@@ -22,7 +22,11 @@
   <string name="description_remove_account">Du wirst abgemeldet und alle mit diesem Konto verbundenen Informationen werden gelöscht.</string>
   <string name="user_select_other_account_content_description">Anderes Konto auswählen</string>
   <string name="you_are_offline">Du bist offline</string>
-  <string name="feature_coming_soon">Funktion demnächst verfügbar...</string>
+  <string name="feature_coming_soon">Funktion demnächst verfügbar…</string>
   <string name="mailbox_draft_saved">Entwurf gespeichert</string>
+  <string name="mailbox_message_sending">Nachricht wird gesendet…</string>
+  <string name="mailbox_message_sending_offline">Offline, die Nachricht ist in der Warteschlange für den Versand</string>
+  <string name="mailbox_message_sending_success">Nachricht gesendet</string>
+  <string name="mailbox_message_sending_error">Fehler beim Senden der Nachricht</string>
   <string name="notification_switched_account">Zu Konto „%s“ gewechselt</string>
 </resources>

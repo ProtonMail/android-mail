@@ -22,7 +22,11 @@
   <string name="description_remove_account">Ви вийдете, а всі пов\'язані з цим обліковим записом дані буде вилучено.</string>
   <string name="user_select_other_account_content_description">Вибрати інший обліковий запис</string>
   <string name="you_are_offline">Ви не в мережі</string>
-  <string name="feature_coming_soon">Функція скоро з\'явиться...</string>
-  <string name="mailbox_draft_saved">Чернетку збережено</string>
+  <string name="feature_coming_soon">Feature coming soon…</string>
+  <string name="mailbox_draft_saved">Draft saved</string>
+  <string name="mailbox_message_sending">Sending message…</string>
+  <string name="mailbox_message_sending_offline">Offline, message queued for sending</string>
+  <string name="mailbox_message_sending_success">Message sent</string>
+  <string name="mailbox_message_sending_error">Error sending message</string>
   <string name="notification_switched_account">Змінено на обліковий запис: %s</string>
 </resources>

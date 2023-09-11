@@ -22,7 +22,11 @@
   <string name="description_remove_account">Du kommer att logga ut och ta bort all information som är associerat till detta konto.</string>
   <string name="user_select_other_account_content_description">Välj annat konto</string>
   <string name="you_are_offline">Du är offline</string>
-  <string name="feature_coming_soon">Funktion kommer snart...</string>
+  <string name="feature_coming_soon">Funktion kommer snart…</string>
   <string name="mailbox_draft_saved">Utkast sparat</string>
+  <string name="mailbox_message_sending">Skickar meddelande…</string>
+  <string name="mailbox_message_sending_offline">Offline, meddelandet i kö för att skickas</string>
+  <string name="mailbox_message_sending_success">Meddelande skickat</string>
+  <string name="mailbox_message_sending_error">Det gick inte att skicka meddelandet</string>
   <string name="notification_switched_account">Bytte till konto: %s</string>
 </resources>

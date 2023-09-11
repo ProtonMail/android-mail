@@ -69,7 +69,7 @@
   <string name="mail_settings_swipe_right_name">Da sinistra a destra</string>
   <string name="mail_settings_swipe_left_name">Da destra a sinistra</string>
   <string name="mail_settings_swipe_action_archive_title">Archivio</string>
-  <string name="mail_settings_swipe_action_read_title">Da leggere</string>
+  <string name="mail_settings_swipe_action_read_title">Non letto</string>
   <string name="mail_settings_swipe_action_spam_title">Spam</string>
   <string name="mail_settings_swipe_action_star_title">Preferito</string>
   <string name="mail_settings_swipe_action_trash_title">Cestino</string>

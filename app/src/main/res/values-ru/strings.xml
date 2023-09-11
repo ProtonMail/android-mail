@@ -22,8 +22,11 @@
   <string name="description_remove_account">Вы выйдете и удалите всю информацию, связанную с этим аккаунтом.</string>
   <string name="user_select_other_account_content_description">Выбрать другой аккаунт</string>
   <string name="you_are_offline">Вы офлайн</string>
-  <string name="feature_coming_soon">Функция скоро появится...</string>
-  <string name="mailbox_draft_saved">Черновик сохранен</string>
+  <string name="feature_coming_soon">Feature coming soon…</string>
+  <string name="mailbox_draft_saved">Draft saved</string>
+  <string name="mailbox_message_sending">Sending message…</string>
+  <string name="mailbox_message_sending_offline">Offline, message queued for sending</string>
+  <string name="mailbox_message_sending_success">Message sent</string>
+  <string name="mailbox_message_sending_error">Error sending message</string>
   <string name="notification_switched_account">Переключено на аккаунт: %s</string>
->>>>>>> 22571c22a (Enable send button, handle sending Message with Composer states/actions)
 </resources>

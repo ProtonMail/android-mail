@@ -22,7 +22,11 @@
   <string name="description_remove_account">Zostaniesz wylogowany i wszystkie dane powiązane z tym kontem zostaną usunięte.</string>
   <string name="user_select_other_account_content_description">Wybierz inne konto</string>
   <string name="you_are_offline">Jesteś w trybie offline</string>
-  <string name="feature_coming_soon">Funkcja dostępna wkrótce...</string>
+  <string name="feature_coming_soon">Funkcja dostępna wkrótce…</string>
   <string name="mailbox_draft_saved">Szkic został zapisany</string>
+  <string name="mailbox_message_sending">Wysyłanie wiadomości…</string>
+  <string name="mailbox_message_sending_offline">Brak połączenia z siecią. Wiadomość została dodana do kolejki wysyłania</string>
+  <string name="mailbox_message_sending_success">Wiadomość została wysłana</string>
+  <string name="mailbox_message_sending_error">Wystąpił błąd podczas wysyłania wiadomości</string>
   <string name="notification_switched_account">Przełączono na konto %s</string>
 </resources>

@@ -22,7 +22,11 @@
   <string name="description_remove_account">Você encerrará a sessão e removerá toda informação associada a esta conta.</string>
   <string name="user_select_other_account_content_description">Selecione outra conta</string>
   <string name="you_are_offline">Você está desconectado</string>
-  <string name="feature_coming_soon">Este recurso chegará em breve...</string>
+  <string name="feature_coming_soon">Este recurso chegará em breve…</string>
   <string name="mailbox_draft_saved">Rascunho salvo</string>
+  <string name="mailbox_message_sending">Enviando mensagem…</string>
+  <string name="mailbox_message_sending_offline">Sem conexão, mensagem aguardando o envio</string>
+  <string name="mailbox_message_sending_success">Mensagem enviada</string>
+  <string name="mailbox_message_sending_error">Erro no envio da mensagem</string>
   <string name="notification_switched_account">Mudou para a conta %s</string>
 </resources>

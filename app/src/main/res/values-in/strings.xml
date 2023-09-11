@@ -22,7 +22,11 @@
   <string name="description_remove_account">Anda akan keluar dari dan menghapus segala informasi yang terhubung dengan akun ini.</string>
   <string name="user_select_other_account_content_description">Pilih akun lain</string>
   <string name="you_are_offline">Anda sedang offline</string>
-  <string name="feature_coming_soon">Fitur ini akan segera hadir...</string>
-  <string name="mailbox_draft_saved">Draf disimpan</string>
+  <string name="feature_coming_soon">Feature coming soon…</string>
+  <string name="mailbox_draft_saved">Draft saved</string>
+  <string name="mailbox_message_sending">Sending message…</string>
+  <string name="mailbox_message_sending_offline">Offline, message queued for sending</string>
+  <string name="mailbox_message_sending_success">Message sent</string>
+  <string name="mailbox_message_sending_error">Error sending message</string>
   <string name="notification_switched_account">Anda telah beralih ke akun: \'%s</string>
 </resources>

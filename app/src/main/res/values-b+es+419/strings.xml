@@ -22,7 +22,11 @@
   <string name="description_remove_account">Cerrará la sesión y eliminará toda la información asociada con esta cuenta.</string>
   <string name="user_select_other_account_content_description">Seleccione otra cuenta</string>
   <string name="you_are_offline">No está conectado</string>
-  <string name="feature_coming_soon">Pronto tendrá esta función...</string>
+  <string name="feature_coming_soon">Próximamente...</string>
   <string name="mailbox_draft_saved">Borrador guardado</string>
+  <string name="mailbox_message_sending">Enviando mensaje…</string>
+  <string name="mailbox_message_sending_offline">Sin conexión, mensaje puesto en cola de envío</string>
+  <string name="mailbox_message_sending_success">Mensaje enviado</string>
+  <string name="mailbox_message_sending_error">Error al enviar el mensaje</string>
   <string name="notification_switched_account">Cambiada a la cuenta: %s</string>
 </resources>
