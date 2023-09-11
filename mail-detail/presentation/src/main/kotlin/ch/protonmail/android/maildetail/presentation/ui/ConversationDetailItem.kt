@@ -40,6 +40,7 @@ import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.theme.ProtonTheme
+import timber.log.Timber
 
 @Composable
 @Suppress("LongParameterList")
@@ -120,12 +121,14 @@ private fun ConversationDetailExpandedItem(
             messageBodyUiModel = uiModel.messageBodyUiModel,
             onMessageBodyLoaded = onMessageBodyLoadFinished,
             webViewHeight = webViewHeight,
-            messageId = uiModel.messageId,
             actions = MessageBody.Actions(
                 onMessageBodyLinkClicked = { actions.onMessageBodyLinkClicked(it.toString()) },
                 onShowAllAttachments = { actions.onShowAllAttachmentsForMessage(uiModel.messageId) },
                 onAttachmentClicked = { actions.onAttachmentClicked(uiModel.messageId, it) },
-                loadEmbeddedImage = actions.loadEmbeddedImage
+                loadEmbeddedImage = actions.loadEmbeddedImage,
+                onReply = { Timber.d("Conversation: Reply to message $it") },
+                onReplyAll = { Timber.d("Conversation: Reply All to message $it") },
+                onForward = { Timber.d("Conversation: Forward message $it") }
             )
         )
     }

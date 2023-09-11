@@ -27,8 +27,12 @@ import android.webkit.WebResourceResponse
 import android.webkit.WebSettings.FORCE_DARK_OFF
 import android.webkit.WebSettings.FORCE_DARK_ON
 import android.webkit.WebView
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -37,6 +41,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -52,6 +59,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.pxToDp
@@ -73,6 +81,7 @@ import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonSolidButton
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
+import me.proton.core.compose.theme.defaultSmallNorm
 import me.proton.core.compose.theme.defaultSmallWeak
 
 @Composable
@@ -109,6 +118,65 @@ fun MessageBody(
     } else {
         MessageBodyNoWebView(
             modifier = modifier
+        )
+    }
+
+}
+
+@Composable
+private fun MessageActionButtons(
+    modifier: Modifier = Modifier,
+    messageId: MessageId,
+    callbacks: MessageBody.Actions
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(ProtonDimens.ExtraSmallSpacing),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        MessageActionButton(
+            onClick = { callbacks.onReply(messageId) },
+            iconResource = R.drawable.ic_proton_reply,
+            textResource = R.string.action_reply
+        )
+        MessageActionButton(
+            onClick = { callbacks.onReplyAll(messageId) },
+            iconResource = R.drawable.ic_proton_reply_all,
+            textResource = R.string.action_reply_all
+        )
+        MessageActionButton(
+            onClick = { callbacks.onForward(messageId) },
+            iconResource = R.drawable.ic_proton_forward,
+            textResource = R.string.action_forward
+        )
+    }
+}
+
+@Composable
+private fun MessageActionButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    @DrawableRes iconResource: Int,
+    @StringRes textResource: Int
+) {
+    Button(
+        modifier = modifier,
+        shape = RoundedCornerShape(MailDimens.ActionButtonShapeRadius),
+        border = BorderStroke(.5.dp, ProtonTheme.colors.shade20),
+        colors = ButtonDefaults.buttonColors(backgroundColor = ProtonTheme.colors.backgroundNorm),
+        elevation = ButtonDefaults.elevation(defaultElevation = 0.dp),
+        onClick = { onClick() }
+    ) {
+        Icon(
+            modifier = Modifier.padding(end = ProtonDimens.ExtraSmallSpacing),
+            painter = painterResource(id = iconResource),
+            tint = ProtonTheme.colors.iconNorm,
+            contentDescription = null
+        )
+        Text(
+            text = stringResource(textResource),
+            style = ProtonTheme.typography.defaultSmallNorm
         )
     }
 }
@@ -300,7 +368,10 @@ object MessageBody {
         val onMessageBodyLinkClicked: (uri: Uri) -> Unit,
         val onShowAllAttachments: () -> Unit,
         val onAttachmentClicked: (attachmentId: AttachmentId) -> Unit,
-        val loadEmbeddedImage: (messageId: MessageId, contentId: String) -> GetEmbeddedImageResult?
+        val loadEmbeddedImage: (messageId: MessageId, contentId: String) -> GetEmbeddedImageResult?,
+        val onReply: (MessageId) -> Unit,
+        val onReplyAll: (MessageId) -> Unit,
+        val onForward: (MessageId) -> Unit
     )
 }
 

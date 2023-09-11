@@ -292,7 +292,10 @@ private fun MessageDetailContent(
                         onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked,
                         onShowAllAttachments = actions.onShowAllAttachmentsClicked,
                         onAttachmentClicked = actions.onAttachmentClicked,
-                        loadEmbeddedImage = { _, contentId -> actions.loadEmbeddedImage(contentId) }
+                        loadEmbeddedImage = { _, contentId -> actions.loadEmbeddedImage(contentId) },
+                        onReply = { Timber.d("Message: Reply to message $it") },
+                        onReplyAll = { Timber.d("Message: Reply All to message $it") },
+                        onForward = { Timber.d("Message: Forward message $it") }
                     )
                 )
 
@@ -309,7 +312,10 @@ private fun MessageDetailContent(
                             onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked,
                             onShowAllAttachments = actions.onShowAllAttachmentsClicked,
                             onAttachmentClicked = actions.onAttachmentClicked,
-                            loadEmbeddedImage = { _, contentId -> actions.loadEmbeddedImage(contentId) }
+                            loadEmbeddedImage = { _, contentId -> actions.loadEmbeddedImage(contentId) },
+                            onReply = { Timber.d("Message: Reply to message $it") },
+                            onReplyAll = { Timber.d("Message: Reply All to message $it") },
+                            onForward = { Timber.d("Message: Forward message $it") }
                         )
                     )
                 }
