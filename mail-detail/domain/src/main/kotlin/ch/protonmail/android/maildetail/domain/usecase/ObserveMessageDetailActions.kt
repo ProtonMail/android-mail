@@ -43,14 +43,9 @@ class ObserveMessageDetailActions @Inject constructor(
                 if (message.messageIsSpamOrTrash()) {
                     actions[actions.indexOf(Action.Trash)] = Action.Delete
                 }
-                if (message.hasMultipleRecipients()) {
-                    actions[actions.indexOf(Action.Reply)] = Action.ReplyAll
-                }
                 actions
             }
         }
-
-    private fun Message.hasMultipleRecipients() = (toList + ccList).size > 1
 
     private fun Message.messageIsSpamOrTrash() = labelIds.any {
         it == SystemLabelId.Spam.labelId || it == SystemLabelId.Trash.labelId

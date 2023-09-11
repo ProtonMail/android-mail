@@ -28,7 +28,7 @@ object BottomBarDefaults {
 
     object Message {
 
-        val actions = listOf(Action.Reply, Action.MarkUnread, Action.Trash, Action.Label, Action.Move)
+        val actions = listOf(Action.MarkUnread, Action.Trash, Action.Label, Action.Move)
 
     }
 }

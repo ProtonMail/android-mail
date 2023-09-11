@@ -54,7 +54,6 @@ internal class ObserveMessageDetailActionsTest {
         observeDetailActions.invoke(userId, messageId).test {
             // Then
             val expected = listOf(
-                Action.Reply,
                 Action.MarkUnread,
                 Action.Trash,
                 Action.Label,
@@ -64,49 +63,6 @@ internal class ObserveMessageDetailActionsTest {
             awaitComplete()
         }
     }
-
-    @Test
-    fun `returns reply all action when message has multiple recipients`() = runTest {
-        // Given
-        val messageId = MessageId(MessageTestData.RAW_MESSAGE_ID)
-        val message = MessageTestData.multipleRecipientsMessage
-        every { observeMessage.invoke(userId, messageId) } returns flowOf(message.right())
-        // When
-        observeDetailActions.invoke(userId, messageId).test {
-            // Then
-            val expected = listOf(
-                Action.ReplyAll,
-                Action.MarkUnread,
-                Action.Trash,
-                Action.Label,
-                Action.Move
-            )
-            assertEquals(expected.right(), awaitItem())
-            awaitComplete()
-        }
-    }
-
-    @Test
-    fun `returns delete and reply all actions when message is in spam and has multiple recipients`() =
-        runTest {
-            // Given
-            val messageId = MessageId(MessageTestData.RAW_MESSAGE_ID)
-            val message = MessageTestData.spamMessageWithMultipleRecipients
-            every { observeMessage.invoke(userId, messageId) } returns flowOf(message.right())
-            // When
-            observeDetailActions.invoke(userId, messageId).test {
-                // Then
-                val expected = listOf(
-                    Action.ReplyAll,
-                    Action.MarkUnread,
-                    Action.Delete,
-                    Action.Label,
-                    Action.Move
-                )
-                assertEquals(expected.right(), awaitItem())
-                awaitComplete()
-            }
-        }
 
     @Test
     fun `returns delete action when message is in trash`() = runTest {
@@ -118,7 +74,6 @@ internal class ObserveMessageDetailActionsTest {
         observeDetailActions.invoke(userId, messageId).test {
             // Then
             val expected = listOf(
-                Action.Reply,
                 Action.MarkUnread,
                 Action.Delete,
                 Action.Label,
@@ -139,7 +94,6 @@ internal class ObserveMessageDetailActionsTest {
         observeDetailActions.invoke(userId, messageId).test {
             // Then
             val expected = listOf(
-                Action.Reply,
                 Action.MarkUnread,
                 Action.Delete,
                 Action.Label,
@@ -160,7 +114,6 @@ internal class ObserveMessageDetailActionsTest {
         observeDetailActions.invoke(userId, messageId).test {
             // Then
             val expected = listOf(
-                Action.Reply,
                 Action.MarkUnread,
                 Action.Delete,
                 Action.Label,
