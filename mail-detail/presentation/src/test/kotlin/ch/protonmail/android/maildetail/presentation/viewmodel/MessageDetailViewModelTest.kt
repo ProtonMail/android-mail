@@ -26,12 +26,15 @@ import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.nonEmptyListOf
 import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
+import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
@@ -51,7 +54,6 @@ import ch.protonmail.android.maildetail.domain.usecase.RelabelMessage
 import ch.protonmail.android.maildetail.domain.usecase.StarMessage
 import ch.protonmail.android.maildetail.domain.usecase.UnStarMessage
 import ch.protonmail.android.maildetail.presentation.R
-import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageBodyUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailActionBarUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailHeaderUiModelMapper
@@ -115,6 +117,8 @@ import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import me.proton.core.featureflag.domain.entity.FeatureFlag
+import me.proton.core.featureflag.domain.entity.Scope
 import org.junit.After
 import org.junit.Assert.assertThrows
 import kotlin.test.BeforeTest
@@ -245,6 +249,11 @@ class MessageDetailViewModelTest {
             )
         }.right()
     }
+    private val observeMailFeature = mockk<ObserveMailFeature> {
+        every { this@mockk.invoke(userId, MailFeatureId.MessageActions) } returns flowOf(
+            FeatureFlag(userId, MailFeatureId.MessageActions.id, Scope.Unknown, defaultValue = false, value = false)
+        )
+    }
     private val getAttachmentIntentValues = mockk<GetAttachmentIntentValues>()
     private val getDownloadingAttachmentsForMessages = mockk<GetDownloadingAttachmentsForMessages>()
     private val getEmbeddedImageAvoidDuplicatedExecution = mockk<GetEmbeddedImageAvoidDuplicatedExecution>()
@@ -274,7 +283,8 @@ class MessageDetailViewModelTest {
             relabelMessage = relabelMessage,
             getAttachmentIntentValues = getAttachmentIntentValues,
             getDownloadingAttachmentsForMessages = getDownloadingAttachmentsForMessages,
-            getEmbeddedImageAvoidDuplicatedExecution = getEmbeddedImageAvoidDuplicatedExecution
+            getEmbeddedImageAvoidDuplicatedExecution = getEmbeddedImageAvoidDuplicatedExecution,
+            observeMailFeature = observeMailFeature
         )
     }
 

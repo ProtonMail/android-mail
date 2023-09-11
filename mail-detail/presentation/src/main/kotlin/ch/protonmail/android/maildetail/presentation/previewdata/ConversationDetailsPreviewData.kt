@@ -68,7 +68,8 @@ object ConversationDetailsPreviewData {
         error = Effect.empty(),
         openMessageBodyLinkEffect = Effect.empty(),
         openAttachmentEffect = Effect.empty(),
-        scrollToMessage = null
+        scrollToMessage = null,
+        showReplyActionsFeatureFlag = false
     )
 
     val SuccessWithRandomMessageIds = ConversationDetailState(
@@ -108,7 +109,8 @@ object ConversationDetailsPreviewData {
         error = Effect.empty(),
         openMessageBodyLinkEffect = Effect.empty(),
         openAttachmentEffect = Effect.empty(),
-        scrollToMessage = null
+        scrollToMessage = null,
+        showReplyActionsFeatureFlag = false
     )
 
     val FailedLoadingConversation = ConversationDetailState(
@@ -121,7 +123,8 @@ object ConversationDetailsPreviewData {
         bottomSheetState = BottomSheetState(MoveToBottomSheetState.Loading),
         openMessageBodyLinkEffect = Effect.empty(),
         openAttachmentEffect = Effect.empty(),
-        scrollToMessage = null
+        scrollToMessage = null,
+        showReplyActionsFeatureFlag = false
     )
 
     val FailedLoadingMessages = ConversationDetailState(
@@ -134,7 +137,8 @@ object ConversationDetailsPreviewData {
         bottomSheetState = BottomSheetState(MoveToBottomSheetState.Loading),
         openMessageBodyLinkEffect = Effect.empty(),
         openAttachmentEffect = Effect.empty(),
-        scrollToMessage = null
+        scrollToMessage = null,
+        showReplyActionsFeatureFlag = false
     )
 
     val FailedLoadingBottomBar = ConversationDetailState(
@@ -147,7 +151,8 @@ object ConversationDetailsPreviewData {
         bottomSheetState = BottomSheetState(MoveToBottomSheetState.Loading),
         openMessageBodyLinkEffect = Effect.empty(),
         openAttachmentEffect = Effect.empty(),
-        scrollToMessage = null
+        scrollToMessage = null,
+        showReplyActionsFeatureFlag = false
     )
 
     val Loading = ConversationDetailState(
@@ -160,7 +165,8 @@ object ConversationDetailsPreviewData {
         bottomSheetState = BottomSheetState(MoveToBottomSheetState.Loading),
         openMessageBodyLinkEffect = Effect.empty(),
         openAttachmentEffect = Effect.empty(),
-        scrollToMessage = null
+        scrollToMessage = null,
+        showReplyActionsFeatureFlag = false
     )
 
     val NotLoggedIn = ConversationDetailState(
@@ -173,7 +179,8 @@ object ConversationDetailsPreviewData {
         bottomSheetState = BottomSheetState(MoveToBottomSheetState.Loading),
         openMessageBodyLinkEffect = Effect.empty(),
         openAttachmentEffect = Effect.empty(),
-        scrollToMessage = null
+        scrollToMessage = null,
+        showReplyActionsFeatureFlag = false
     )
 }
 

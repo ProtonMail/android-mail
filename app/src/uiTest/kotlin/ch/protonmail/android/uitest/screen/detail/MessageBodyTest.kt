@@ -49,7 +49,8 @@ class MessageBodyTest {
                 MessageBody(
                     modifier = Modifier,
                     messageBodyUiModel = state,
-                    actions = MessageBody.Actions({}, {}, {}, { _, _ -> null })
+                    actions = MessageBody.Actions({}, {}, {}, { _, _ -> null }, {}, {}, {}),
+                    showReplyActionsFeatureFlag = false
                 )
             }
         }
@@ -71,7 +72,8 @@ class MessageBodyTest {
                 MessageBody(
                     modifier = Modifier,
                     messageBodyUiModel = state,
-                    actions = MessageBody.Actions({}, {}, {}, { _, _ -> null })
+                    actions = MessageBody.Actions({}, {}, {}, { _, _ -> null }, {}, {}, {}),
+                    showReplyActionsFeatureFlag = false
                 )
             }
         }

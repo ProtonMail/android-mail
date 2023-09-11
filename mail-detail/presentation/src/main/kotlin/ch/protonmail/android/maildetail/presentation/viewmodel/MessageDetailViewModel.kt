@@ -23,8 +23,10 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
+import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
+import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
@@ -88,7 +90,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-@Suppress("LongParameterList")
+@Suppress("LongParameterList", "TooManyFunctions")
 class MessageDetailViewModel @Inject constructor(
     observePrimaryUserId: ObservePrimaryUserId,
     private val observeMessageWithLabels: ObserveMessageWithLabels,
@@ -113,7 +115,8 @@ class MessageDetailViewModel @Inject constructor(
     private val relabelMessage: RelabelMessage,
     private val getAttachmentIntentValues: GetAttachmentIntentValues,
     private val getDownloadingAttachmentsForMessages: GetDownloadingAttachmentsForMessages,
-    private val getEmbeddedImageAvoidDuplicatedExecution: GetEmbeddedImageAvoidDuplicatedExecution
+    private val getEmbeddedImageAvoidDuplicatedExecution: GetEmbeddedImageAvoidDuplicatedExecution,
+    private val observeMailFeature: ObserveMailFeature
 ) : ViewModel() {
 
     private val messageId = requireMessageId()
@@ -128,6 +131,7 @@ class MessageDetailViewModel @Inject constructor(
         observeMessageWithLabels(messageId)
         getMessageBody(messageId)
         observeBottomBarActions(messageId)
+        observeReplyActionsFeatureFlag()
     }
 
     @Suppress("ComplexMethod")
@@ -299,6 +303,14 @@ class MessageDetailViewModel @Inject constructor(
             emitNewStateFrom(MessageViewAction.Reload)
             getMessageBody(messageId)
         }
+    }
+
+    private fun observeReplyActionsFeatureFlag() {
+        primaryUserId.flatMapLatest {
+            observeMailFeature(it, MailFeatureId.MessageActions).onEach { feature ->
+                mutableDetailState.emit(mutableDetailState.value.copy(showReplyActionsFeatureFlag = feature.value))
+            }
+        }.launchIn(viewModelScope)
     }
 
     private fun observeBottomBarActions(messageId: MessageId) {

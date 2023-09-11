@@ -91,7 +91,8 @@ fun MessageBody(
     messageBodyUiModel: MessageBodyUiModel,
     actions: MessageBody.Actions,
     webViewHeight: Int? = null,
-    onMessageBodyLoaded: (messageId: MessageId, height: Int) -> Unit = { _, _ -> }
+    onMessageBodyLoaded: (messageId: MessageId, height: Int) -> Unit = { _, _ -> },
+    showReplyActionsFeatureFlag: Boolean
 ) {
     val hasWebView = LocalDeviceCapabilitiesProvider.current.hasWebView
 
@@ -121,6 +122,9 @@ fun MessageBody(
         )
     }
 
+    if (showReplyActionsFeatureFlag) {
+        MessageActionButtons(messageId = messageBodyUiModel.messageId, callbacks = actions)
+    }
 }
 
 @Composable

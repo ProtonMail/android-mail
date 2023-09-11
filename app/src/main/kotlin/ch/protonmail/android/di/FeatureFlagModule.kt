@@ -42,7 +42,8 @@ object FeatureFlagModule {
                 MailFeatureId.AddAttachmentsToDraft to buildDebug,
                 MailFeatureId.ConversationMode to isAlphaOrDev,
                 MailFeatureId.ShowSettings to isAlphaOrDev,
-                MailFeatureId.SelectionMode to buildDebug
+                MailFeatureId.SelectionMode to buildDebug,
+                MailFeatureId.MessageActions to buildDebug
             )
         )
     }

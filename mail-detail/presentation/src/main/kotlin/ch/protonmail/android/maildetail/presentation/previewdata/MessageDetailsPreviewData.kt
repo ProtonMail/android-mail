@@ -71,7 +71,8 @@ object MessageDetailsPreviewData {
         exitScreenWithMessageEffect = Effect.empty(),
         error = Effect.empty(),
         openMessageBodyLinkEffect = Effect.empty(),
-        openAttachmentEffect = Effect.empty()
+        openAttachmentEffect = Effect.empty(),
+        showReplyActionsFeatureFlag = false
     )
 
     val MessageWithLabels = Message.copy(
@@ -95,7 +96,8 @@ object MessageDetailsPreviewData {
         exitScreenWithMessageEffect = Effect.empty(),
         error = Effect.empty(),
         openMessageBodyLinkEffect = Effect.empty(),
-        openAttachmentEffect = Effect.empty()
+        openAttachmentEffect = Effect.empty(),
+        showReplyActionsFeatureFlag = false
     )
 }
 

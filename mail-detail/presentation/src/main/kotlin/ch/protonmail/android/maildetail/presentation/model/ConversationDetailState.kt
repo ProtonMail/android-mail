@@ -34,7 +34,8 @@ data class ConversationDetailState(
     val error: Effect<TextUiModel>,
     val openMessageBodyLinkEffect: Effect<String>,
     val openAttachmentEffect: Effect<OpenAttachmentIntentValues>,
-    val scrollToMessage: MessageId?
+    val scrollToMessage: MessageId?,
+    val showReplyActionsFeatureFlag: Boolean
 ) {
 
     companion object {
@@ -49,7 +50,8 @@ data class ConversationDetailState(
             error = Effect.empty(),
             openMessageBodyLinkEffect = Effect.empty(),
             openAttachmentEffect = Effect.empty(),
-            scrollToMessage = null
+            scrollToMessage = null,
+            showReplyActionsFeatureFlag = false
         )
     }
 }

@@ -48,7 +48,8 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
                     MailFeatureId.AddAttachmentsToDraft to false,
                     MailFeatureId.ConversationMode to true,
                     MailFeatureId.ShowSettings to true,
-                    MailFeatureId.SelectionMode to false
+                    MailFeatureId.SelectionMode to false,
+                    MailFeatureId.MessageActions to false
                 )
             ),
             TestInput(
@@ -58,7 +59,8 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
                     MailFeatureId.AddAttachmentsToDraft to true,
                     MailFeatureId.ConversationMode to true,
                     MailFeatureId.ShowSettings to true,
-                    MailFeatureId.SelectionMode to true
+                    MailFeatureId.SelectionMode to true,
+                    MailFeatureId.MessageActions to true
                 )
             ),
             TestInput(
@@ -68,7 +70,8 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
                     MailFeatureId.AddAttachmentsToDraft to false,
                     MailFeatureId.ConversationMode to true,
                     MailFeatureId.ShowSettings to true,
-                    MailFeatureId.SelectionMode to false
+                    MailFeatureId.SelectionMode to false,
+                    MailFeatureId.MessageActions to false
                 )
             ),
             TestInput(
@@ -78,7 +81,8 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
                     MailFeatureId.AddAttachmentsToDraft to true,
                     MailFeatureId.ConversationMode to true,
                     MailFeatureId.ShowSettings to true,
-                    MailFeatureId.SelectionMode to true
+                    MailFeatureId.SelectionMode to true,
+                    MailFeatureId.MessageActions to true
                 )
             ),
             TestInput(
@@ -88,7 +92,8 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
                     MailFeatureId.AddAttachmentsToDraft to false,
                     MailFeatureId.ConversationMode to false,
                     MailFeatureId.ShowSettings to false,
-                    MailFeatureId.SelectionMode to false
+                    MailFeatureId.SelectionMode to false,
+                    MailFeatureId.MessageActions to false
                 )
             ),
             TestInput(
@@ -98,7 +103,8 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
                     MailFeatureId.AddAttachmentsToDraft to true,
                     MailFeatureId.ConversationMode to false,
                     MailFeatureId.ShowSettings to false,
-                    MailFeatureId.SelectionMode to true
+                    MailFeatureId.SelectionMode to true,
+                    MailFeatureId.MessageActions to true
                 )
             )
         )

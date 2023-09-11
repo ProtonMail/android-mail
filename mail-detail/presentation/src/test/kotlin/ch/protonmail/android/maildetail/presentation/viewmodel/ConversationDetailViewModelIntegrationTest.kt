@@ -31,12 +31,14 @@ import arrow.core.NonEmptyList
 import arrow.core.left
 import arrow.core.nonEmptyListOf
 import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.LabelSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcommon.domain.usecase.GetCurrentEpochTimeDuration
+import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
@@ -139,6 +141,8 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import me.proton.core.contact.domain.entity.Contact
+import me.proton.core.featureflag.domain.entity.FeatureFlag
+import me.proton.core.featureflag.domain.entity.Scope
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Ignore
@@ -202,6 +206,11 @@ class ConversationDetailViewModelIntegrationTest {
     private val getDownloadingAttachmentsForMessages = mockk<GetDownloadingAttachmentsForMessages>()
     private val getAttachmentIntentValues = mockk<GetAttachmentIntentValues>()
     private val getEmbeddedImageAvoidDuplicatedExecution = mockk<GetEmbeddedImageAvoidDuplicatedExecution>()
+    private val observeMailFeature = mockk<ObserveMailFeature> {
+        every { this@mockk.invoke(userId, MailFeatureId.MessageActions) } returns flowOf(
+            FeatureFlag(userId, MailFeatureId.MessageActions.id, Scope.Unknown, defaultValue = false, value = false)
+        )
+    }
     // endregion
 
     // region mock action use cases
@@ -1011,7 +1020,8 @@ class ConversationDetailViewModelIntegrationTest {
         observeConversationViewState = observeConversationViewState,
         getAttachmentIntentValues = getIntentValues,
         getEmbeddedImageAvoidDuplicatedExecution = getEmbeddedImageAvoidDuplicatedExecution,
-        ioDispatcher = ioDispatcher
+        ioDispatcher = ioDispatcher,
+        observeMailFeature = observeMailFeature
     )
 
     private fun aMessageAttachment(id: String): MessageAttachment = MessageAttachment(

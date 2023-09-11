@@ -49,7 +49,8 @@ fun ConversationDetailItem(
     actions: ConversationDetailItem.Actions,
     modifier: Modifier = Modifier,
     webViewHeight: Int?,
-    onMessageBodyLoadFinished: (messageId: MessageId, height: Int) -> Unit
+    onMessageBodyLoadFinished: (messageId: MessageId, height: Int) -> Unit,
+    showReplyActionsFeatureFlag: Boolean
 ) {
     ElevatedCard(
         modifier = modifier.fillMaxWidth(),
@@ -76,8 +77,9 @@ fun ConversationDetailItem(
                 ConversationDetailExpandedItem(
                     uiModel = uiModel,
                     actions = actions,
+                    onMessageBodyLoadFinished = onMessageBodyLoadFinished,
                     webViewHeight = webViewHeight,
-                    onMessageBodyLoadFinished = onMessageBodyLoadFinished
+                    showReplyActionsFeatureFlag = showReplyActionsFeatureFlag
                 )
             }
         }
@@ -102,7 +104,8 @@ private fun ConversationDetailExpandedItem(
     actions: ConversationDetailItem.Actions,
     modifier: Modifier = Modifier,
     onMessageBodyLoadFinished: (messageId: MessageId, height: Int) -> Unit,
-    webViewHeight: Int?
+    webViewHeight: Int?,
+    showReplyActionsFeatureFlag: Boolean
 ) {
     Column(modifier = modifier) {
         Box(
@@ -119,8 +122,6 @@ private fun ConversationDetailExpandedItem(
         MailDivider()
         MessageBody(
             messageBodyUiModel = uiModel.messageBodyUiModel,
-            onMessageBodyLoaded = onMessageBodyLoadFinished,
-            webViewHeight = webViewHeight,
             actions = MessageBody.Actions(
                 onMessageBodyLinkClicked = { actions.onMessageBodyLinkClicked(it.toString()) },
                 onShowAllAttachments = { actions.onShowAllAttachmentsForMessage(uiModel.messageId) },
@@ -129,7 +130,10 @@ private fun ConversationDetailExpandedItem(
                 onReply = { Timber.d("Conversation: Reply to message $it") },
                 onReplyAll = { Timber.d("Conversation: Reply All to message $it") },
                 onForward = { Timber.d("Conversation: Forward message $it") }
-            )
+            ),
+            webViewHeight = webViewHeight,
+            onMessageBodyLoaded = onMessageBodyLoadFinished,
+            showReplyActionsFeatureFlag = showReplyActionsFeatureFlag
         )
     }
 }

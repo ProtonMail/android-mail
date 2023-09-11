@@ -254,7 +254,8 @@ fun MessageDetailScreen(
                     modifier = Modifier.padding(innerPadding),
                     messageMetadataState = state.messageMetadataState,
                     messageBodyState = state.messageBodyState,
-                    actions = messageDetailContentActions
+                    actions = messageDetailContentActions,
+                    showMessageActionsFeatureFlag = state.showReplyActionsFeatureFlag
                 )
             }
 
@@ -271,7 +272,8 @@ private fun MessageDetailContent(
     modifier: Modifier = Modifier,
     messageMetadataState: MessageMetadataState.Data,
     messageBodyState: MessageBodyState,
-    actions: MessageDetailContent.Actions
+    actions: MessageDetailContent.Actions,
+    showMessageActionsFeatureFlag: Boolean
 ) {
     LazyColumn(
         modifier = modifier
@@ -296,7 +298,8 @@ private fun MessageDetailContent(
                         onReply = { Timber.d("Message: Reply to message $it") },
                         onReplyAll = { Timber.d("Message: Reply All to message $it") },
                         onForward = { Timber.d("Message: Forward message $it") }
-                    )
+                    ),
+                    showReplyActionsFeatureFlag = showMessageActionsFeatureFlag
                 )
 
                 is MessageBodyState.Error.Data -> MessageBodyLoadingError(
@@ -316,7 +319,8 @@ private fun MessageDetailContent(
                             onReply = { Timber.d("Message: Reply to message $it") },
                             onReplyAll = { Timber.d("Message: Reply All to message $it") },
                             onForward = { Timber.d("Message: Forward message $it") }
-                        )
+                        ),
+                        showReplyActionsFeatureFlag = showMessageActionsFeatureFlag
                     )
                 }
             }

@@ -33,7 +33,8 @@ data class MessageDetailState(
     val exitScreenWithMessageEffect: Effect<TextUiModel>,
     val error: Effect<TextUiModel>,
     val openMessageBodyLinkEffect: Effect<Uri>,
-    val openAttachmentEffect: Effect<OpenAttachmentIntentValues>
+    val openAttachmentEffect: Effect<OpenAttachmentIntentValues>,
+    val showReplyActionsFeatureFlag: Boolean
 ) {
 
     companion object {
@@ -47,7 +48,8 @@ data class MessageDetailState(
             exitScreenWithMessageEffect = Effect.empty(),
             error = Effect.empty(),
             openMessageBodyLinkEffect = Effect.empty(),
-            openAttachmentEffect = Effect.empty()
+            openAttachmentEffect = Effect.empty(),
+            showReplyActionsFeatureFlag = false
         )
     }
 }

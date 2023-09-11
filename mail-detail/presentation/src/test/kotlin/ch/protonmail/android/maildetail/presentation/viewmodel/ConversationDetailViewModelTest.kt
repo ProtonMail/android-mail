@@ -26,6 +26,7 @@ import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.nonEmptyListOf
 import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
@@ -33,6 +34,7 @@ import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.DataErrorSample
 import ch.protonmail.android.mailcommon.domain.sample.LabelSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
@@ -112,6 +114,8 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import me.proton.core.contact.domain.entity.Contact
+import me.proton.core.featureflag.domain.entity.FeatureFlag
+import me.proton.core.featureflag.domain.entity.Scope
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -250,6 +254,11 @@ class ConversationDetailViewModelTest {
         mockk {
             coEvery { this@mockk.invoke(any(), any(), any()) } returns Unit.right()
         }
+    private val observeMailFeature = mockk<ObserveMailFeature> {
+        every { this@mockk.invoke(userId, MailFeatureId.MessageActions) } returns flowOf(
+            FeatureFlag(userId, MailFeatureId.MessageActions.id, Scope.Unknown, defaultValue = false, value = false)
+        )
+    }
 
     private val inMemoryConversationStateRepository = FakeInMemoryConversationStateRepository()
     private val setMessageViewState = SetMessageViewState(inMemoryConversationStateRepository)
@@ -283,7 +292,8 @@ class ConversationDetailViewModelTest {
             observeConversationViewState = observeConversationViewState,
             getAttachmentIntentValues = getAttachmentIntentValues,
             getEmbeddedImageAvoidDuplicatedExecution = getEmbeddedImageAvoidDuplicatedExecution,
-            ioDispatcher = Dispatchers.Unconfined
+            ioDispatcher = Dispatchers.Unconfined,
+            observeMailFeature = observeMailFeature
         )
     }
 

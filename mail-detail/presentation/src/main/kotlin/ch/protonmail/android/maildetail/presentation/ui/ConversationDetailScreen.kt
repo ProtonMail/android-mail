@@ -285,7 +285,8 @@ fun ConversationDetailScreen(
                     uiModels = state.messagesState.messages,
                     padding = innerPadding,
                     scrollToMessageId = scrollToMessageId,
-                    actions = conversationDetailItemActions
+                    actions = conversationDetailItemActions,
+                    showReplyActionsFeatureFlag = state.showReplyActionsFeatureFlag
                 )
             }
 
@@ -314,7 +315,8 @@ private fun MessagesContent(
     padding: PaddingValues,
     scrollToMessageId: String?,
     modifier: Modifier = Modifier,
-    actions: ConversationDetailItem.Actions
+    actions: ConversationDetailItem.Actions,
+    showReplyActionsFeatureFlag: Boolean
 ) {
     val listState = rememberLazyListState()
     var loadedItemsChanged by remember { mutableStateOf(0) }
@@ -355,19 +357,20 @@ private fun MessagesContent(
         items(uiModels, key = { it.messageId.id }) { uiModel ->
             ConversationDetailItem(
                 uiModel = uiModel,
+                actions = actions,
                 modifier = when (uiModel) {
                     is ConversationDetailMessageUiModel.Collapsed,
                     is ConversationDetailMessageUiModel.Expanding -> Modifier.animateItemPlacement()
 
                     else -> Modifier
                 },
-                actions = actions,
+                webViewHeight = loadedItemsHeight[uiModel.messageId.id],
                 onMessageBodyLoadFinished = { messageId, height ->
                     Timber.d("onMessageBodyLoadFinished: $messageId, $height. loadedItemsChanged: $loadedItemsChanged")
                     loadedItemsHeight[messageId.id] = height
                     loadedItemsChanged += 1
                 },
-                webViewHeight = loadedItemsHeight[uiModel.messageId.id]
+                showReplyActionsFeatureFlag = showReplyActionsFeatureFlag
             )
         }
     }
