@@ -18,58 +18,31 @@
 
 package ch.protonmail.android.mailmessage.dagger
 
-import ch.protonmail.android.mailcommon.data.worker.Enqueuer
-import ch.protonmail.android.mailmessage.data.local.MessageBodyFileStorage
-import ch.protonmail.android.mailmessage.data.local.MessageDatabase
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSourceImpl
-import ch.protonmail.android.mailmessage.data.mapper.MessageAttachmentEntityMapper
-import ch.protonmail.android.mailmessage.data.mapper.MessageWithBodyEntityMapper
 import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSourceImpl
 import ch.protonmail.android.mailmessage.data.repository.MessageRepositoryImpl
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import me.proton.core.network.data.ApiProvider
-import me.proton.core.util.kotlin.CoroutineScopeProvider
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object MailMessageModule {
+abstract class MailMessageModule {
 
-    @Provides
+    @Binds
     @Singleton
-    fun provideMessageRepositoryImpl(
-        remoteDataSource: MessageRemoteDataSource,
-        localDataSource: MessageLocalDataSource,
-        coroutineScopeProvider: CoroutineScopeProvider
-    ): MessageRepository = MessageRepositoryImpl(remoteDataSource, localDataSource, coroutineScopeProvider)
+    abstract fun provideMessageRepositoryImpl(repositoryImpl: MessageRepositoryImpl): MessageRepository
 
-    @Provides
+    @Binds
     @Singleton
-    fun provideMessageRemoteDataSource(
-        apiProvider: ApiProvider,
-        enqueuer: Enqueuer
-    ): MessageRemoteDataSource = MessageRemoteDataSourceImpl(
-        apiProvider = apiProvider,
-        enqueuer = enqueuer
-    )
+    abstract fun provideMessageRemoteDataSource(remoteDataSource: MessageRemoteDataSourceImpl): MessageRemoteDataSource
 
-    @Provides
+    @Binds
     @Singleton
-    fun provideMessageLocalDataSource(
-        db: MessageDatabase,
-        messageBodyFileStorage: MessageBodyFileStorage,
-        messageWithBodyEntityMapper: MessageWithBodyEntityMapper,
-        messageAttachmentEntityMapper: MessageAttachmentEntityMapper
-    ): MessageLocalDataSource = MessageLocalDataSourceImpl(
-        db = db,
-        messageBodyFileStorage = messageBodyFileStorage,
-        messageWithBodyEntityMapper = messageWithBodyEntityMapper,
-        messageAttachmentEntityMapper = messageAttachmentEntityMapper
-    )
+    abstract fun provideMessageLocalDataSource(localDataSourceImpl: MessageLocalDataSourceImpl): MessageLocalDataSource
 }

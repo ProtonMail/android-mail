@@ -33,6 +33,8 @@ import ch.protonmail.android.mailmessage.data.local.AttachmentFileStorageTest.Te
 import ch.protonmail.android.mailmessage.data.local.AttachmentFileStorageTest.TestData.UserId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import io.mockk.coEvery
+import io.mockk.coJustRun
+import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -165,6 +167,31 @@ internal class AttachmentFileStorageTest {
 
         // Then
         assertNull(result)
+    }
+
+    @Test
+    fun `should update folder in internal storage`() = runTest {
+        // Given
+        val updatedMessageId = MessageId + "_new"
+        coJustRun {
+            internalFileStorageMock.renameFolder(
+                userId = UserId,
+                oldFolder = InternalFileStorage.Folder.MessageAttachments(MessageId),
+                newFolder = InternalFileStorage.Folder.MessageAttachments(updatedMessageId)
+            )
+        }
+
+        // When
+        attachmentFileStorage.updateParentFolderForAttachments(UserId, MessageId, updatedMessageId)
+
+        // Then
+        coVerify {
+            internalFileStorageMock.renameFolder(
+                userId = UserId,
+                oldFolder = InternalFileStorage.Folder.MessageAttachments(MessageId),
+                newFolder = InternalFileStorage.Folder.MessageAttachments(updatedMessageId)
+            )
+        }
     }
 
     @Test

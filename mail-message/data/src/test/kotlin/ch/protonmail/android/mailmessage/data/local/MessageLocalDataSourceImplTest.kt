@@ -122,6 +122,7 @@ class MessageLocalDataSourceImplTest {
         }
     }
     private val messageBodyFileStorage = mockk<MessageBodyFileStorage>()
+    private val attachmentFileStorage = mockk<AttachmentFileStorage>(relaxUnitFun = true)
     private val messageWithBodyEntityMapper = MessageWithBodyEntityMapper()
     private val attachmentEntityMapper = MessageAttachmentEntityMapper()
 
@@ -134,7 +135,8 @@ class MessageLocalDataSourceImplTest {
             db = db,
             messageBodyFileStorage = messageBodyFileStorage,
             messageWithBodyEntityMapper = messageWithBodyEntityMapper,
-            messageAttachmentEntityMapper = attachmentEntityMapper
+            messageAttachmentEntityMapper = attachmentEntityMapper,
+            attachmentFileStorage = attachmentFileStorage
         )
     }
 
@@ -870,6 +872,22 @@ class MessageLocalDataSourceImplTest {
 
         // Then
         assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `should update message id of stored attachments when message id changes`() = runTest {
+        // Given
+        val oldMessageId = MessageIdSample.Invoice
+        val newMessageId = MessageId(oldMessageId.id + "_new")
+
+        // When
+        messageLocalDataSource.updateDraftMessageId(userId1, oldMessageId, newMessageId)
+
+        // Then
+        coVerifyOrder {
+            messageDao.updateDraftMessageId(userId1, oldMessageId, newMessageId)
+            attachmentFileStorage.updateParentFolderForAttachments(userId1, oldMessageId.id, newMessageId.id)
+        }
     }
 
     @Test

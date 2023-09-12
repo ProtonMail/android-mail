@@ -621,6 +621,28 @@ class InternalFileStorageTest {
         assertFalse(fileDeleted)
     }
 
+    @Test
+    fun `should rename a folder using a correct sanitised folder name and return true on success`() = runTest {
+        // Given
+        val path = "/some/path/to/internal/storage/user_id_encoded/attachments"
+        coEvery {
+            fileHelperMock.renameFolder(
+                oldFolder = FileHelper.Folder("$path/message_id/"),
+                newFolder = FileHelper.Folder("$path/message_id_new/")
+            )
+        } returns true
+
+        // When
+        val fileDeleted = internalFileStorage.renameFolder(
+            userId = UserId.Object,
+            oldFolder = InternalFileStorage.Folder.MessageAttachments(MessageId.Raw),
+            newFolder = InternalFileStorage.Folder.MessageAttachments(MessageId.Raw + "_new")
+        )
+
+        // Then
+        assertTrue(fileDeleted)
+    }
+
     private companion object TestData {
 
         object MessageId {

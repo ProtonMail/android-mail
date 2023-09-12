@@ -52,7 +52,8 @@ class MessageLocalDataSourceImpl @Inject constructor(
     private val db: MessageDatabase,
     private val messageBodyFileStorage: MessageBodyFileStorage,
     private val messageWithBodyEntityMapper: MessageWithBodyEntityMapper,
-    private val messageAttachmentEntityMapper: MessageAttachmentEntityMapper
+    private val messageAttachmentEntityMapper: MessageAttachmentEntityMapper,
+    private val attachmentFileStorage: AttachmentFileStorage
 ) : MessageLocalDataSource {
 
     private val messageDao = db.messageDao()
@@ -291,6 +292,7 @@ class MessageLocalDataSourceImpl @Inject constructor(
         apiAssignedId: MessageId
     ) {
         messageDao.updateDraftMessageId(userId, localDraftId, apiAssignedId)
+        attachmentFileStorage.updateParentFolderForAttachments(userId, localDraftId.id, apiAssignedId.id)
     }
 
     private suspend fun updateLabels(messages: List<Message>) = with(groupByUserId(messages)) {

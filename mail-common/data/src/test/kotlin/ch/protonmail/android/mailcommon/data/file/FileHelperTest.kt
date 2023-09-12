@@ -249,6 +249,46 @@ internal class AllowedFoldersFileHelperTest(folderPath: String) : FileHelperTest
         unmockkStatic(File::deleteRecursively)
     }
 
+    @Test
+    fun `should rename a folder`() = runTest(testDispatcherProvider.Main) {
+        // Given
+        mockkStatic(File::renameTo)
+        val newFolder = FileHelper.Folder(folder.path + "_new")
+        val newFileMock = mockk<File>()
+        val oldFileMock = mockk<File> {
+            every { renameTo(newFileMock) } returns true
+        }
+        every { fileFactoryMock.folderFromWhenExists(folder) } returns oldFileMock
+        every { fileFactoryMock.folderFrom(newFolder) } returns newFileMock
+
+
+        // When
+        val folderRenamed = fileHelper.renameFolder(folder, newFolder)
+
+        // Then
+        assertTrue(folderRenamed)
+        unmockkStatic(File::renameTo)
+    }
+
+    @Test
+    fun `should return false when renaming a folder fails`() = runTest(testDispatcherProvider.Main) {
+        // Given
+        mockkStatic(File::renameTo)
+        val newFolder = FileHelper.Folder(folder.path + "_new")
+        val newFileMock = mockk<File>()
+        val oldFileMock = mockk<File> { every { renameTo(newFileMock) } returns false }
+        every { fileFactoryMock.folderFrom(folder) } returns oldFileMock
+        every { fileFactoryMock.folderFrom(newFolder) } returns newFileMock
+
+
+        // When
+        val folderRenamed = fileHelper.renameFolder(folder, newFolder)
+
+        // Then
+        assertFalse(folderRenamed)
+        unmockkStatic(File::renameTo)
+    }
+
     companion object {
 
         private val allowedFolders = listOf(
@@ -368,6 +408,24 @@ internal class BlacklistedFoldersFileHelperTest(folderPath: String) : FileHelper
         assertFalse(folderDeleted)
         verify(exactly = 0) { fileMock.deleteRecursively() }
         unmockkStatic(File::deleteRecursively)
+    }
+
+    @Test
+    fun `should return false when trying to rename a blacklisted folder`() = runTest(testDispatcherProvider.Main) {
+        // Given
+        mockkStatic(File::renameTo)
+        val newFolder = FileHelper.Folder(folder.path + "_new")
+        val newFileMock = mockk<File>()
+        val fileMock = mockk<File> { every { renameTo(newFileMock) } returns true }
+        every { fileFactoryMock.folderFrom(folder) } returns fileMock
+
+        // When
+        val folderRenamed = fileHelper.renameFolder(folder, newFolder)
+
+        // Then
+        assertFalse(folderRenamed)
+        verify(exactly = 0) { fileMock.renameTo(newFileMock) }
+        unmockkStatic(File::renameTo)
     }
 
     companion object {
