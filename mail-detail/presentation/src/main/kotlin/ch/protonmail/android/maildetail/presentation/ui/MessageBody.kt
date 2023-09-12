@@ -136,20 +136,24 @@ private fun MessageActionButtons(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(ProtonDimens.ExtraSmallSpacing),
+            .padding(ProtonDimens.SmallSpacing)
+            .padding(top = ProtonDimens.DefaultSpacing),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         MessageActionButton(
+            modifier = Modifier.weight(1f, false),
             onClick = { callbacks.onReply(messageId) },
             iconResource = R.drawable.ic_proton_reply,
             textResource = R.string.action_reply
         )
         MessageActionButton(
+            modifier = Modifier.weight(1f, false),
             onClick = { callbacks.onReplyAll(messageId) },
             iconResource = R.drawable.ic_proton_reply_all,
             textResource = R.string.action_reply_all
         )
         MessageActionButton(
+            modifier = Modifier.weight(1f, false),
             onClick = { callbacks.onForward(messageId) },
             iconResource = R.drawable.ic_proton_forward,
             textResource = R.string.action_forward
