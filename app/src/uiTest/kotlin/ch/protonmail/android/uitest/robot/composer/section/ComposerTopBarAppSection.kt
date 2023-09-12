@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.uitest.robot.composer.section
 
+import androidx.compose.ui.test.assertIsEnabled
+import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
@@ -46,7 +48,7 @@ internal class ComposerTopBarAppSection : ComposeSectionRobot() {
     }
 
     private val sendButton = rootItem.child {
-        hasTestTag(ComposerTestTags.CloseButton)
+        hasTestTag(ComposerTestTags.SendButton)
     }
 
     fun tapCloseButton() = apply {
@@ -60,12 +62,12 @@ internal class ComposerTopBarAppSection : ComposeSectionRobot() {
     @VerifiesOuter
     inner class Verify {
 
-        fun hasCloseButton() = apply {
-            closeButton.assertExists()
+        fun isSendButtonEnabled() = apply {
+            sendButton.assertIsEnabled()
         }
 
-        fun hasSendButton() = apply {
-            sendButton.assertExists()
+        fun isSendButtonDisabled() = apply {
+            sendButton.assertIsNotEnabled()
         }
     }
 }
