@@ -49,39 +49,6 @@ class ActionUiModelMapperTest(
 
         private val actions = listOf(
             TestParams(
-                "Map Reply action to UiModel",
-                TestParams.TestInput(
-                    action = Action.Reply,
-                    expected = ActionUiModel(
-                        Action.Reply,
-                        R.drawable.ic_proton_arrow_up_and_left,
-                        commonRes.string.action_reply_content_description
-                    )
-                )
-            ),
-            TestParams(
-                "Map ReplyAll action to UiModel",
-                TestParams.TestInput(
-                    action = Action.ReplyAll,
-                    expected = ActionUiModel(
-                        Action.ReplyAll,
-                        R.drawable.ic_proton_arrows_up_and_left,
-                        commonRes.string.action_reply_all_content_description
-                    )
-                )
-            ),
-            TestParams(
-                "Map Forward action to UiModel",
-                TestParams.TestInput(
-                    action = Action.Forward,
-                    expected = ActionUiModel(
-                        Action.Forward,
-                        R.drawable.ic_arrow_forward,
-                        commonRes.string.action_forward_content_description
-                    )
-                )
-            ),
-            TestParams(
                 "Map MarkRead action to UiModel",
                 TestParams.TestInput(
                     action = Action.MarkRead,

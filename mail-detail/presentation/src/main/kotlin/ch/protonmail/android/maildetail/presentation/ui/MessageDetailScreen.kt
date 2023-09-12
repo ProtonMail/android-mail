@@ -206,13 +206,6 @@ fun MessageDetailScreen(
             BottomActionBar(
                 state = state.bottomBarState,
                 viewActionCallbacks = BottomActionBar.Actions(
-                    onReply = {
-                        actions.onReplyClick()
-                    },
-                    onReplyAll = {
-                        actions.onReplyClick()
-                    },
-                    onForward = { Timber.d("message onForward clicked") },
                     onMarkRead = { Timber.d("message onMarkRead clicked") },
                     onMarkUnread = actions.onUnreadClick,
                     onStar = { Timber.d("message onStar clicked") },

@@ -202,7 +202,7 @@ class ConversationDetailViewModelTest {
         every {
             this@mockk(UserIdSample.Primary, ConversationIdSample.WeatherForecast, any())
         } returns flowOf(
-            listOf(Action.Reply, Action.Archive, Action.MarkUnread).right()
+            listOf(Action.Archive, Action.MarkUnread).right()
         )
     }
     private val observePrimaryUserId: ObservePrimaryUserId = mockk {
@@ -585,8 +585,8 @@ class ConversationDetailViewModelTest {
                 folderColorSettings = defaultFolderColorSettings
             )
         } returns messages.first()
-        val actions = listOf(Action.Reply, Action.Archive)
-        val actionUiModels = listOf(ActionUiModelTestData.reply, ActionUiModelTestData.archive)
+        val actions = listOf(Action.Archive)
+        val actionUiModels = listOf(ActionUiModelTestData.archive)
         val expected = initialState.copy(bottomBarState = BottomBarState.Data.Shown(actionUiModels))
         every {
             observeConversationDetailActions(UserIdSample.Primary, ConversationIdSample.WeatherForecast, any())
@@ -681,7 +681,6 @@ class ConversationDetailViewModelTest {
             )
         } returns messages.first()
         val actionUiModels = listOf(
-            ActionUiModelTestData.reply,
             ActionUiModelTestData.archive,
             ActionUiModelTestData.markUnread
         )
@@ -1743,7 +1742,6 @@ class ConversationDetailViewModelTest {
 
     private fun givenReducerReturnsBottomActions() {
         val actionUiModels = listOf(
-            ActionUiModelTestData.reply,
             ActionUiModelTestData.archive,
             ActionUiModelTestData.markUnread
         )

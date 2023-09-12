@@ -25,20 +25,20 @@ import ch.protonmail.android.mailcommon.R as commonRes
 
 object ActionUiModelTestData {
 
-    val reply = ActionUiModel(
-        Action.Reply,
-        R.drawable.ic_proton_arrow_up_and_left,
-        commonRes.string.action_reply_content_description
+    val star = ActionUiModel(
+        Action.Star,
+        R.drawable.ic_proton_star,
+        commonRes.string.action_star_content_description
+    )
+    val delete = ActionUiModel(
+        Action.Delete,
+        R.drawable.ic_proton_trash,
+        commonRes.string.action_delete_content_description
     )
     val archive = ActionUiModel(
         Action.Archive,
         R.drawable.ic_proton_archive_box,
         commonRes.string.action_archive_content_description
-    )
-    val forward = ActionUiModel(
-        Action.Forward,
-        R.drawable.ic_arrow_forward,
-        commonRes.string.action_forward_content_description
     )
     val markUnread = ActionUiModel(
         Action.MarkUnread,

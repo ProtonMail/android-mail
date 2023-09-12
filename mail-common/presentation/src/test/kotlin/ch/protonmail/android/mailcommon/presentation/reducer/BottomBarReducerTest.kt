@@ -45,7 +45,7 @@ internal class BottomBarReducerTest(
     companion object {
 
         private val actions = nonEmptyListOf(ActionUiModelTestData.markUnread)
-        private val updatedActions = listOf(ActionUiModelTestData.reply, ActionUiModelTestData.archive)
+        private val updatedActions = listOf(ActionUiModelTestData.archive)
 
         private val transitionsFromLoadingState = listOf(
             TestInput(

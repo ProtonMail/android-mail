@@ -57,7 +57,6 @@ object MessageDetailsPreviewData {
         ),
         bottomBarState = BottomBarState.Data.Shown(
             listOf(
-                ActionUiModel(Action.Reply, Action.Reply.iconDrawable(), Action.Reply.contentDescription()),
                 ActionUiModel(Action.Archive, Action.Archive.iconDrawable(), Action.Archive.contentDescription())
             )
         ),

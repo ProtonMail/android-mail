@@ -99,9 +99,6 @@ fun BottomActionBar(
 
 @SuppressWarnings("ComplexMethod")
 fun callbackForAction(action: Action, viewActionCallbacks: BottomActionBar.Actions) = when (action) {
-    Action.Reply -> viewActionCallbacks.onReply
-    Action.ReplyAll -> viewActionCallbacks.onReplyAll
-    Action.Forward -> viewActionCallbacks.onForward
     Action.MarkRead -> viewActionCallbacks.onMarkRead
     Action.MarkUnread -> viewActionCallbacks.onMarkUnread
     Action.Star -> viewActionCallbacks.onStar
@@ -152,9 +149,6 @@ object BottomActionBar {
     internal const val MAX_ACTIONS_COUNT = 5
 
     data class Actions(
-        val onReply: () -> Unit,
-        val onReplyAll: () -> Unit,
-        val onForward: () -> Unit,
         val onMarkRead: () -> Unit,
         val onMarkUnread: () -> Unit,
         val onStar: () -> Unit,
@@ -181,9 +175,6 @@ object BottomActionBar {
         companion object {
 
             val Empty = Actions(
-                onReply = {},
-                onReplyAll = {},
-                onForward = {},
                 onMarkRead = {},
                 onMarkUnread = {},
                 onStar = {},

@@ -163,7 +163,7 @@ class MessageDetailViewModelTest {
     }
     private val observeDetailActions = mockk<ObserveMessageDetailActions> {
         every { this@mockk.invoke(userId, messageId) } returns flowOf(
-            nonEmptyListOf(Action.Reply, Action.Archive, Action.MarkUnread).right()
+            nonEmptyListOf(Action.Archive, Action.MarkUnread).right()
         )
     }
     private val observeMailLabels = mockk<ObserveExclusiveDestinationMailLabels> {
@@ -465,14 +465,14 @@ class MessageDetailViewModelTest {
         val messageWithLabels = MessageWithLabels(cachedMessage, emptyList())
         every { observeMessageWithLabels.invoke(userId, messageId) } returns flowOf(messageWithLabels.right())
         every { observeDetailActions.invoke(userId, messageId) } returns flowOf(
-            nonEmptyListOf(Action.Reply, Action.Archive).right()
+            nonEmptyListOf(Action.Archive).right()
         )
 
         // When
         viewModel.state.test {
             advanceUntilIdle()
             // Then
-            val actionUiModels = listOf(ActionUiModelTestData.reply, ActionUiModelTestData.archive)
+            val actionUiModels = listOf(ActionUiModelTestData.archive)
             val expected = BottomBarState.Data.Shown(actionUiModels)
             assertEquals(expected, lastEmittedItem().bottomBarState)
         }
@@ -646,7 +646,6 @@ class MessageDetailViewModelTest {
             val bottomState = dataState.copy(
                 bottomBarState = BottomBarState.Data.Shown(
                     listOf(
-                        ActionUiModelTestData.reply,
                         ActionUiModelTestData.archive,
                         ActionUiModelTestData.markUnread
                     )

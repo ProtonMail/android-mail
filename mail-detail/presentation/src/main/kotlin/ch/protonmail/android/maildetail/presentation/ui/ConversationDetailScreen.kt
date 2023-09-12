@@ -241,9 +241,6 @@ fun ConversationDetailScreen(
             BottomActionBar(
                 state = state.bottomBarState,
                 viewActionCallbacks = BottomActionBar.Actions(
-                    onReply = { Timber.d("conversation onReply clicked") },
-                    onReplyAll = { Timber.d("conversation onReplyAll clicked") },
-                    onForward = { Timber.d("conversation onForward clicked") },
                     onMarkRead = { Timber.d("conversation onMarkRead clicked") },
                     onMarkUnread = actions.onUnreadClick,
                     onStar = { Timber.d("conversation onStar clicked") },

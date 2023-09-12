@@ -65,8 +65,8 @@ internal class BottomActionBarTest {
         // given
         val state = BottomBarState.Data.Shown(
             listOf(
-                ActionUiModelTestData.reply,
-                ActionUiModelTestData.forward,
+                ActionUiModelTestData.star,
+                ActionUiModelTestData.delete,
                 ActionUiModelTestData.archive,
                 ActionUiModelTestData.move,
                 ActionUiModelTestData.label,
@@ -82,8 +82,8 @@ internal class BottomActionBarTest {
         robot.verify {
             errorAndLoaderHidden()
 
-            actionIsDisplayed(Action.Reply)
-            actionIsDisplayed(Action.Forward)
+            actionIsDisplayed(Action.Star)
+            actionIsDisplayed(Action.Delete)
             actionIsDisplayed(Action.Archive)
             actionIsDisplayed(Action.Move)
             actionIsDisplayed(Action.Label)

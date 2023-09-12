@@ -178,7 +178,7 @@ class ConversationDetailViewModelIntegrationTest {
     }
     private val observeConversationDetailActions = mockk<ObserveConversationDetailActions> {
         every { this@mockk(UserIdSample.Primary, ConversationIdSample.WeatherForecast, any()) } returns flowOf(
-            listOf(Action.Reply, Action.Archive, Action.MarkUnread).right()
+            listOf(Action.Archive, Action.MarkUnread).right()
         )
     }
     private val observePrimaryUserId: ObservePrimaryUserId = mockk {

@@ -29,7 +29,6 @@ object BottomActionBarsPreviewData {
 
     val Data = BottomBarState.Data.Shown(
         listOf(
-            ActionUiModel(Action.Reply, Action.Reply.iconDrawable(), Action.Reply.contentDescription()),
             ActionUiModel(Action.MarkUnread, Action.MarkUnread.iconDrawable(), Action.MarkUnread.contentDescription()),
             ActionUiModel(Action.Archive, Action.Archive.iconDrawable(), Action.Archive.contentDescription()),
             ActionUiModel(Action.Trash, Action.Trash.iconDrawable(), Action.Trash.contentDescription()),

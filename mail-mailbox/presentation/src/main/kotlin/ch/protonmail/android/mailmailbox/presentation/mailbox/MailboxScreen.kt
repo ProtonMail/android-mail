@@ -167,9 +167,6 @@ fun MailboxScreen(
             BottomActionBar(
                 state = mailboxState.bottomAppBarState,
                 viewActionCallbacks = BottomActionBar.Actions(
-                    onReply = { Timber.d("mailbox onReply clicked") },
-                    onReplyAll = { Timber.d("mailbox onReplyAll clicked") },
-                    onForward = { Timber.d("mailbox onForward clicked") },
                     onMove = { Timber.d("mailbox onMove clicked") },
                     onLabel = { Timber.d("mailbox onLabel clicked") },
                     onTrash = { Timber.d("mailbox onTrash clicked") },

@@ -53,7 +53,6 @@ object ConversationDetailsPreviewData {
         ),
         bottomBarState = BottomBarState.Data.Shown(
             actions = listOf(
-                ActionUiModel(Action.Reply, Action.Reply.iconDrawable(), Action.Reply.contentDescription()),
                 ActionUiModel(Action.Archive, Action.Archive.iconDrawable(), Action.Archive.contentDescription())
             )
         ),
@@ -94,7 +93,6 @@ object ConversationDetailsPreviewData {
         ),
         bottomBarState = BottomBarState.Data.Shown(
             actions = listOf(
-                ActionUiModel(Action.Reply, Action.Reply.iconDrawable(), Action.Reply.contentDescription()),
                 ActionUiModel(Action.Archive, Action.Archive.iconDrawable(), Action.Archive.contentDescription())
             )
         ),

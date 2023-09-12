@@ -32,9 +32,6 @@ data class ActionUiModel(
 @DrawableRes
 @SuppressWarnings("ComplexMethod")
 fun Action.iconDrawable() = when (this) {
-    Action.Reply -> R.drawable.ic_proton_arrow_up_and_left
-    Action.ReplyAll -> R.drawable.ic_proton_arrows_up_and_left
-    Action.Forward -> R.drawable.ic_arrow_forward
     Action.MarkRead -> R.drawable.ic_proton_envelope
     Action.MarkUnread -> R.drawable.ic_proton_envelope_dot
     Action.Star -> R.drawable.ic_proton_star
@@ -61,9 +58,6 @@ fun Action.iconDrawable() = when (this) {
 @StringRes
 @SuppressWarnings("ComplexMethod")
 fun Action.contentDescription() = when (this) {
-    Action.Reply -> R.string.action_reply_content_description
-    Action.ReplyAll -> R.string.action_reply_all_content_description
-    Action.Forward -> R.string.action_forward_content_description
     Action.MarkRead -> R.string.action_mark_read_content_description
     Action.MarkUnread -> R.string.action_mark_unread_content_description
     Action.Star -> R.string.action_star_content_description
