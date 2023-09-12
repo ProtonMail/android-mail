@@ -21,6 +21,7 @@ package ch.protonmail.android.uitest.e2e.composer
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.networkmocks.mockwebserver.combineWith
 import ch.protonmail.android.test.annotations.suite.RegressionTest
+import ch.protonmail.android.test.annotations.suite.SmokeTest
 import ch.protonmail.android.uitest.MockedNetworkTest
 import ch.protonmail.android.uitest.helpers.core.TestId
 import ch.protonmail.android.uitest.helpers.core.navigation.Destination
@@ -57,6 +58,7 @@ internal class ComposerSendButtonTests : MockedNetworkTest(), ComposerTests {
     }
 
     @Test
+    @SmokeTest
     @TestId("216681")
     fun checkComposerSendButtonDisabledUponOpening() {
         navigator { navigateTo(Destination.Composer) }
