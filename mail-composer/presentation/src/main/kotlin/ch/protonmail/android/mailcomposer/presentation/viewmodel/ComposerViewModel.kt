@@ -73,6 +73,7 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import me.proton.core.network.domain.NetworkManager
+import me.proton.core.util.kotlin.deserialize
 import me.proton.core.util.kotlin.takeIfNotEmpty
 import timber.log.Timber
 import javax.inject.Inject
@@ -136,6 +137,10 @@ class ComposerViewModel @Inject constructor(
         } else {
             viewModelScope.launch { startDraftContinuousUpload() }
         }
+
+        val draftAction = savedStateHandle.get<String>(ComposerScreen.SerializedDraftActionKey)
+            ?.deserialize<DraftAction>()
+        Timber.d("Received draft action $draftAction")
 
         primaryUserId
             .flatMapLatest { userId -> observeMailFeature(userId, MailFeatureId.AddAttachmentsToDraft) }

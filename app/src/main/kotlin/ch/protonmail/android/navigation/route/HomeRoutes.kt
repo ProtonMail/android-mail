@@ -33,6 +33,7 @@ import ch.protonmail.android.R
 import ch.protonmail.android.feature.account.RemoveAccountDialog
 import ch.protonmail.android.feature.account.RemoveAccountDialog.USER_ID_KEY
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.mailcomposer.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetail
@@ -68,7 +69,15 @@ internal fun NavGraphBuilder.addConversationDetail(
                 },
                 openMessageBodyLink = { url -> openMessageBodyLink(Uri.parse(url)) },
                 openAttachment = openAttachment,
-                showFeatureMissingSnackbar = showFeatureMissingSnackbar
+                showFeatureMissingSnackbar = showFeatureMissingSnackbar,
+                onReply = { navController.navigate(Destination.Screen.MessageActionComposer(DraftAction.Reply(it))) },
+                onReplyAll = {
+                    navController.navigate(Destination.Screen.MessageActionComposer(DraftAction.ReplyAll(it)))
+                },
+                onForward = {
+                    navController.navigate(Destination.Screen.MessageActionComposer(DraftAction.Forward(it)))
+                }
+
             )
         )
     }
@@ -121,7 +130,14 @@ internal fun NavGraphBuilder.addMessageDetail(
                 },
                 openMessageBodyLink = openMessageBodyLink,
                 openAttachment = openAttachment,
-                showFeatureMissingSnackbar = showFeatureMissingSnackbar
+                showFeatureMissingSnackbar = showFeatureMissingSnackbar,
+                onReply = { navController.navigate(Destination.Screen.MessageActionComposer(DraftAction.Reply(it))) },
+                onReplyAll = {
+                    navController.navigate(Destination.Screen.MessageActionComposer(DraftAction.ReplyAll(it)))
+                },
+                onForward = {
+                    navController.navigate(Destination.Screen.MessageActionComposer(DraftAction.Forward(it)))
+                }
             )
         )
     }

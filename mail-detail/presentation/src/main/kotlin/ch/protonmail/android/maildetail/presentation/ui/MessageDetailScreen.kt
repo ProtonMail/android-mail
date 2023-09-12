@@ -59,6 +59,7 @@ import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetStat
 import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailsPreviewProvider
 import ch.protonmail.android.maildetail.presentation.viewmodel.MessageDetailViewModel
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonErrorMessage
@@ -141,8 +142,9 @@ fun MessageDetailScreen(
                 onLabelAsClick = { viewModel.submit(MessageViewAction.RequestLabelAsBottomSheet) },
                 onMessageBodyLinkClicked = { viewModel.submit(MessageViewAction.MessageBodyLinkClicked(it)) },
                 onOpenMessageBodyLink = actions.openMessageBodyLink,
-                onReplyClick = { actions.showFeatureMissingSnackbar() },
-                onReplyAllClick = { actions.showFeatureMissingSnackbar() },
+                onReplyClick = { actions.onReply(it) },
+                onReplyAllClick = { actions.onReplyAll(it) },
+                onForwardClick = { actions.onForward(it) },
                 onDeleteClick = { actions.showFeatureMissingSnackbar() },
                 onShowAllAttachmentsClicked = { viewModel.submit(MessageViewAction.ShowAllAttachments) },
                 onAttachmentClicked = { viewModel.submit(MessageViewAction.OnAttachmentClicked(it)) },
@@ -213,9 +215,7 @@ fun MessageDetailScreen(
                     onMove = actions.onMoveClick,
                     onLabel = actions.onLabelAsClick,
                     onTrash = actions.onTrashClick,
-                    onDelete = {
-                        actions.onDeleteClick()
-                    },
+                    onDelete = actions.onDeleteClick,
                     onArchive = { Timber.d("message onArchive clicked") },
                     onSpam = { Timber.d("message onSpam clicked") },
                     onViewInLightMode = { Timber.d("message onViewInLightMode clicked") },
@@ -241,7 +241,10 @@ fun MessageDetailScreen(
                     onShowAllAttachmentsClicked = actions.onShowAllAttachmentsClicked,
                     onAttachmentClicked = actions.onAttachmentClicked,
                     showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar,
-                    loadEmbeddedImage = actions.loadEmbeddedImage
+                    loadEmbeddedImage = actions.loadEmbeddedImage,
+                    onReply = actions.onReplyClick,
+                    onReplyAll = actions.onReplyAllClick,
+                    onForward = actions.onForwardClick
                 )
                 MessageDetailContent(
                     modifier = Modifier.padding(innerPadding),
@@ -288,9 +291,9 @@ private fun MessageDetailContent(
                         onShowAllAttachments = actions.onShowAllAttachmentsClicked,
                         onAttachmentClicked = actions.onAttachmentClicked,
                         loadEmbeddedImage = { _, contentId -> actions.loadEmbeddedImage(contentId) },
-                        onReply = { Timber.d("Message: Reply to message $it") },
-                        onReplyAll = { Timber.d("Message: Reply All to message $it") },
-                        onForward = { Timber.d("Message: Forward message $it") }
+                        onReply = actions.onReply,
+                        onReplyAll = actions.onReplyAll,
+                        onForward = actions.onForward
                     ),
                     showReplyActionsFeatureFlag = showMessageActionsFeatureFlag
                 )
@@ -327,7 +330,10 @@ object MessageDetail {
         val onExit: (message: String?) -> Unit,
         val openMessageBodyLink: (uri: Uri) -> Unit,
         val openAttachment: (values: OpenAttachmentIntentValues) -> Unit,
-        val showFeatureMissingSnackbar: () -> Unit
+        val showFeatureMissingSnackbar: () -> Unit,
+        val onReply: (MessageId) -> Unit,
+        val onReplyAll: (MessageId) -> Unit,
+        val onForward: (MessageId) -> Unit
     )
 }
 
@@ -346,8 +352,9 @@ object MessageDetailScreen {
         val onLabelAsClick: () -> Unit,
         val onMessageBodyLinkClicked: (uri: Uri) -> Unit,
         val onOpenMessageBodyLink: (uri: Uri) -> Unit,
-        val onReplyClick: () -> Unit,
-        val onReplyAllClick: () -> Unit,
+        val onReplyClick: (MessageId) -> Unit,
+        val onReplyAllClick: (MessageId) -> Unit,
+        val onForwardClick: (MessageId) -> Unit,
         val onDeleteClick: () -> Unit,
         val onShowAllAttachmentsClicked: () -> Unit,
         val onAttachmentClicked: (attachmentId: AttachmentId) -> Unit,
@@ -371,6 +378,7 @@ object MessageDetailScreen {
                 onOpenMessageBodyLink = {},
                 onReplyClick = {},
                 onReplyAllClick = {},
+                onForwardClick = {},
                 onDeleteClick = {},
                 onShowAllAttachmentsClicked = {},
                 onAttachmentClicked = {},
@@ -390,7 +398,10 @@ object MessageDetailContent {
         val onShowAllAttachmentsClicked: () -> Unit,
         val onAttachmentClicked: (attachmentId: AttachmentId) -> Unit,
         val showFeatureMissingSnackbar: () -> Unit,
-        val loadEmbeddedImage: (contentId: String) -> GetEmbeddedImageResult?
+        val loadEmbeddedImage: (contentId: String) -> GetEmbeddedImageResult?,
+        val onReply: (MessageId) -> Unit,
+        val onReplyAll: (MessageId) -> Unit,
+        val onForward: (MessageId) -> Unit
     )
 }
 

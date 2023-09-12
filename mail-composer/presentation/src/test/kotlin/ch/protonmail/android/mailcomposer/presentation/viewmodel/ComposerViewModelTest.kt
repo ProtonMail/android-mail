@@ -218,6 +218,7 @@ class ComposerViewModelTest {
             expectedUserId
         )
         expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
 
@@ -246,6 +247,7 @@ class ComposerViewModelTest {
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
         expectStoreDraftBodySucceeds(expectedMessageId, expectedDraftBody, expectedSenderEmail, expectedUserId)
         expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
 
@@ -277,6 +279,7 @@ class ComposerViewModelTest {
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
         expectStoreDraftSubjectSucceeds(expectedMessageId, expectedSenderEmail, expectedUserId, expectedSubject)
         expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
 
@@ -317,6 +320,7 @@ class ComposerViewModelTest {
         )
         mockParticipantMapper()
         expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
 
@@ -357,6 +361,7 @@ class ComposerViewModelTest {
         )
         mockParticipantMapper()
         expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
 
@@ -397,6 +402,7 @@ class ComposerViewModelTest {
         )
         mockParticipantMapper()
         expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
 
@@ -437,6 +443,7 @@ class ComposerViewModelTest {
         mockParticipantMapper()
         expectStoreAllDraftFieldsSucceeds(expectedUserId, expectedMessageId, expectedFields)
         expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
         expectUploadDraftSucceeds(expectedUserId, expectedMessageId)
         expectStopContinuousDraftUploadSucceeds()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
@@ -487,6 +494,7 @@ class ComposerViewModelTest {
         expectNetworkManagerIsConnected()
         expectStoreAllDraftFieldsSucceeds(expectedUserId, expectedMessageId, expectedFields)
         expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
         expectSendMessageSucceds(expectedUserId, expectedMessageId)
         expectStopContinuousDraftUploadSucceeds()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
@@ -537,6 +545,7 @@ class ComposerViewModelTest {
         expectNetworkManagerIsDisconnected()
         expectStoreAllDraftFieldsSucceeds(expectedUserId, expectedMessageId, expectedFields)
         expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
         expectSendMessageSucceds(expectedUserId, expectedMessageId)
         expectStopContinuousDraftUploadSucceeds()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
@@ -570,6 +579,7 @@ class ComposerViewModelTest {
         expectedMessageId { MessageIdSample.EmptyDraft }
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
         expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
 
@@ -606,6 +616,7 @@ class ComposerViewModelTest {
             mockParticipantMapper()
             expectStoreAllDraftFieldsSucceeds(expectedUserId, expectedMessageId, expectedFields)
             expectNoInputDraftMessageId()
+            expectNoInputDraftAction()
             expectStopContinuousDraftUploadSucceeds()
             expectUploadDraftSucceeds(expectedUserId, expectedMessageId)
             expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
@@ -638,6 +649,7 @@ class ComposerViewModelTest {
         expectedMessageId { MessageIdSample.EmptyDraft }
         val primaryAddress = expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
         expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
 
@@ -655,6 +667,7 @@ class ComposerViewModelTest {
         expectedMessageId { MessageIdSample.EmptyDraft }
         expectedPrimaryAddressError(expectedUserId) { DataError.Local.NoDataCached }
         expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
 
@@ -674,6 +687,7 @@ class ComposerViewModelTest {
         expectedMessageId { MessageIdSample.EmptyDraft }
         expectedGetComposerSenderAddresses { addresses }
         expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
 
@@ -694,6 +708,7 @@ class ComposerViewModelTest {
         expectedMessageId { MessageIdSample.EmptyDraft }
         expectedGetComposerSenderAddressesError { GetComposerSenderAddresses.Error.UpgradeToChangeSender }
         expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
 
@@ -714,6 +729,7 @@ class ComposerViewModelTest {
         expectedMessageId { MessageIdSample.EmptyDraft }
         expectedGetComposerSenderAddressesError { GetComposerSenderAddresses.Error.FailedDeterminingUserSubscription }
         expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
 
@@ -737,6 +753,7 @@ class ComposerViewModelTest {
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
         expectStoreDraftBodySucceeds(expectedMessageId, expectedDraftBody, expectedSenderEmail, expectedUserId)
         expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
 
@@ -761,6 +778,7 @@ class ComposerViewModelTest {
             StoreDraftWithBodyError.DraftSaveError
         }
         expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
 
@@ -788,6 +806,7 @@ class ComposerViewModelTest {
             StoreDraftWithBodyError.DraftSaveError
         }
         expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
 
@@ -812,6 +831,7 @@ class ComposerViewModelTest {
             StoreDraftWithSubject.Error.DraftReadError
         }
         expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
 
@@ -849,6 +869,7 @@ class ComposerViewModelTest {
         }
         mockParticipantMapper()
         expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(UserIdSample.Primary) { emptyFlow() }
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
@@ -884,6 +905,7 @@ class ComposerViewModelTest {
         }
         mockParticipantMapper()
         expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
 
@@ -918,6 +940,7 @@ class ComposerViewModelTest {
         }
         mockParticipantMapper()
         expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
 
@@ -939,6 +962,7 @@ class ComposerViewModelTest {
         expectDecryptedDraftDataSuccess(expectedUserId, expectedDraftId, 100) { existingDraftFields }
         expectStartDraftSync(UserIdSample.Primary, MessageIdSample.RemoteDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
+        expectNoInputDraftAction()
 
         // When
         val actual = viewModel.state.value
@@ -958,6 +982,7 @@ class ComposerViewModelTest {
         expectDecryptedDraftDataSuccess(expectedUserId, expectedDraftId) { expectedDraftFields }
         expectStartDraftSync(expectedUserId, expectedDraftId)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
+        expectNoInputDraftAction()
 
         // When
         val actual = viewModel.state.value
@@ -983,6 +1008,7 @@ class ComposerViewModelTest {
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
         expectDecryptedDraftDataError(expectedUserId, expectedDraftId) { DataError.Local.NoDataCached }
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
+        expectNoInputDraftAction()
 
         // When
         val actual = viewModel.state.value
@@ -999,6 +1025,7 @@ class ComposerViewModelTest {
         expectedPrimaryAddress(userId) { UserAddressSample.PrimaryAddress }
         expectStartDraftSync(userId, messageId)
         expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
         expectObserveMailFeature(userId) { emptyFlow() }
 
         // When
@@ -1018,6 +1045,7 @@ class ComposerViewModelTest {
         expectDecryptedDraftDataSuccess(expectedUserId, expectedDraftId) { existingDraftFields }
         expectStartDraftSync(expectedUserId, expectedDraftId)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
+        expectNoInputDraftAction()
 
         // When
         viewModel.submit(ComposerAction.OnAddAttachments)
@@ -1036,6 +1064,7 @@ class ComposerViewModelTest {
         expectDecryptedDraftDataSuccess(expectedUserId, expectedDraftId) { existingDraftFields }
         expectStartDraftSync(expectedUserId, expectedDraftId)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
+        expectNoInputDraftAction()
 
         // When
         viewModel.submit(ComposerAction.OnBottomSheetOptionSelected)
@@ -1066,6 +1095,10 @@ class ComposerViewModelTest {
             delay(responseDelay)
             draftFields.right()
         }
+    }
+
+    private fun expectNoInputDraftAction() {
+        every { savedStateHandle.get<String>(ComposerScreen.SerializedDraftActionKey) } returns null
     }
 
     private fun expectNoInputDraftMessageId() {

@@ -169,7 +169,10 @@ fun ConversationDetailScreen(
                 },
                 openAttachment = actions.openAttachment,
                 showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar,
-                loadEmbeddedImage = { messageId, contentId -> viewModel.loadEmbeddedImage(messageId, contentId) }
+                loadEmbeddedImage = { messageId, contentId -> viewModel.loadEmbeddedImage(messageId, contentId) },
+                onReply = actions.onReply,
+                onReplyAll = actions.onReplyAll,
+                onForward = actions.onForward
             ),
             scrollToMessageId = state.scrollToMessage?.id
         )
@@ -276,7 +279,10 @@ fun ConversationDetailScreen(
                     onShowAllAttachmentsForMessage = actions.onShowAllAttachmentsForMessage,
                     onAttachmentClicked = actions.onAttachmentClicked,
                     showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar,
-                    loadEmbeddedImage = actions.loadEmbeddedImage
+                    loadEmbeddedImage = actions.loadEmbeddedImage,
+                    onReply = actions.onReply,
+                    onReplyAll = actions.onReplyAll,
+                    onForward = actions.onForward
                 )
                 MessagesContent(
                     uiModels = state.messagesState.messages,
@@ -379,7 +385,10 @@ object ConversationDetail {
         val onExit: (notifyUserMessage: String?) -> Unit,
         val openMessageBodyLink: (url: String) -> Unit,
         val openAttachment: (values: OpenAttachmentIntentValues) -> Unit,
-        val showFeatureMissingSnackbar: () -> Unit
+        val showFeatureMissingSnackbar: () -> Unit,
+        val onReply: (MessageId) -> Unit,
+        val onReplyAll: (MessageId) -> Unit,
+        val onForward: (MessageId) -> Unit
     )
 }
 
@@ -404,7 +413,10 @@ object ConversationDetailScreen {
         val onAttachmentClicked: (MessageId, AttachmentId) -> Unit,
         val openAttachment: (values: OpenAttachmentIntentValues) -> Unit,
         val showFeatureMissingSnackbar: () -> Unit,
-        val loadEmbeddedImage: (messageId: MessageId?, contentId: String) -> GetEmbeddedImageResult?
+        val loadEmbeddedImage: (messageId: MessageId?, contentId: String) -> GetEmbeddedImageResult?,
+        val onReply: (MessageId) -> Unit,
+        val onReplyAll: (MessageId) -> Unit,
+        val onForward: (MessageId) -> Unit
     ) {
 
         companion object {
@@ -426,7 +438,10 @@ object ConversationDetailScreen {
                 onAttachmentClicked = { _, _ -> },
                 openAttachment = {},
                 showFeatureMissingSnackbar = {},
-                loadEmbeddedImage = { _, _ -> null }
+                loadEmbeddedImage = { _, _ -> null },
+                onReply = {},
+                onReplyAll = {},
+                onForward = {}
             )
         }
     }
