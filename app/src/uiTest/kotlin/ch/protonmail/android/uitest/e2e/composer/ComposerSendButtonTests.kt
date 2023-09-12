@@ -106,6 +106,19 @@ internal class ComposerSendButtonTests : MockedNetworkTest(), ComposerTests {
     @Test
     @TestId("216685")
     @Ignore("Enable again when MAILANDR-947 is fixed")
+    fun checkComposerSendButtonDisabledUponPressingBackspaceInRecipientFields() {
+        navigator { navigateTo(Destination.Composer) }
+
+        composerRobot {
+            toRecipientSection { tapBackspace() }
+
+            topAppBarSection { verify { isSendButtonDisabled() } }
+        }
+    }
+
+    @Test
+    @TestId("216686")
+    @Ignore("Enable again when MAILANDR-947 is fixed")
     fun checkComposerSendButtonDisabledUponAddingAndRemovingRecipients() {
         navigator { navigateTo(Destination.Composer) }
 
@@ -114,6 +127,46 @@ internal class ComposerSendButtonTests : MockedNetworkTest(), ComposerTests {
             topAppBarSection { verify { isSendButtonEnabled() } }
 
             toRecipientSection { deleteChipAt(0) }
+            topAppBarSection { verify { isSendButtonDisabled() } }
+        }
+    }
+
+    @Test
+    @TestId("216687")
+    @Ignore("Enable again when MAILANDR-947 is fixed")
+    fun checkComposerSendButtonDisabledUponAddingAndDeletingInvalidRecipient() {
+        navigator { navigateTo(Destination.Composer) }
+
+        composerRobot {
+            toRecipientSection {
+                typeRecipient("proton.me", autoConfirm = true)
+                deleteChipAt(0)
+            }
+
+            topAppBarSection { verify { isSendButtonDisabled() } }
+        }
+    }
+
+    @Test
+    @TestId("216688")
+    fun checkComposerSendButtonDisabledUponAddingAnInvalidRecipient() {
+        navigator { navigateTo(Destination.Composer) }
+
+        composerRobot {
+            toRecipientSection { typeRecipient("proton.me", autoConfirm = true) }
+
+            topAppBarSection { verify { isSendButtonDisabled() } }
+        }
+    }
+
+    @Test
+    @TestId("216689")
+    fun checkComposerSendButtonDisabledUponAddingMultipleRecipientsWithOneInvalid() {
+        navigator { navigateTo(Destination.Composer) }
+
+        composerRobot {
+            toRecipientSection { typeMultipleRecipients("proton.me", "test@proton.me") }
+
             topAppBarSection { verify { isSendButtonDisabled() } }
         }
     }
