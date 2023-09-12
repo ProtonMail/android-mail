@@ -191,6 +191,7 @@ class ComposerViewModelTest {
         expectStoreAttachmentsSucceeds(expectedUserId, messageId, expectedSenderEmail, listOf(uri))
         expectDecryptedDraftDataSuccess(expectedUserId, messageId) { expectedFields }
         expectStartDraftSync(expectedUserId, messageId)
+        expectNoInputDraftAction()
 
 
         // When

@@ -86,7 +86,7 @@ internal fun NavGraphBuilder.addMailbox(
             actions = MailboxScreen.Actions.Empty.copy(
                 navigateToMailboxItem = { request ->
                     val destination = when (request.shouldOpenInComposer) {
-                        true -> Destination.Screen.PrefilledComposer(MessageId(request.itemId.value))
+                        true -> Destination.Screen.EditDraftComposer(MessageId(request.itemId.value))
                         false -> when (request.itemType) {
                             MailboxItemType.Message -> Destination.Screen.Message(MessageId(request.itemId.value))
                             MailboxItemType.Conversation ->
@@ -133,26 +133,15 @@ internal fun NavGraphBuilder.addComposer(
     showMessageSendingSnackbar: () -> Unit,
     showMessageSendingOfflineSnackbar: () -> Unit
 ) {
-    composable(route = Destination.Screen.Composer.route) {
-        ComposerScreen(
-            ComposerScreen.Actions(
-                onCloseComposerClick = navController::popBackStack,
-                showDraftSavedSnackbar = showDraftSavedSnackbar,
-                showMessageSendingSnackbar = showMessageSendingSnackbar,
-                showMessageSendingOfflineSnackbar = showMessageSendingOfflineSnackbar
-            )
-        )
-    }
-    composable(route = Destination.Screen.PrefilledComposer.route) {
-        ComposerScreen(
-            ComposerScreen.Actions(
-                onCloseComposerClick = navController::popBackStack,
-                showDraftSavedSnackbar = showDraftSavedSnackbar,
-                showMessageSendingSnackbar = showMessageSendingSnackbar,
-                showMessageSendingOfflineSnackbar = showMessageSendingOfflineSnackbar
-            )
-        )
-    }
+    val actions = ComposerScreen.Actions(
+        onCloseComposerClick = navController::popBackStack,
+        showDraftSavedSnackbar = showDraftSavedSnackbar,
+        showMessageSendingSnackbar = showMessageSendingSnackbar,
+        showMessageSendingOfflineSnackbar = showMessageSendingOfflineSnackbar
+    )
+    composable(route = Destination.Screen.Composer.route) { ComposerScreen(actions) }
+    composable(route = Destination.Screen.EditDraftComposer.route) { ComposerScreen(actions) }
+    composable(route = Destination.Screen.MessageActionComposer.route) { ComposerScreen(actions) }
 }
 
 internal fun NavGraphBuilder.addRemoveAccountDialog(navController: NavHostController) {

@@ -20,6 +20,8 @@ package ch.protonmail.android.navigation.model
 
 import ch.protonmail.android.feature.account.RemoveAccountDialog.USER_ID_KEY
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.mailcomposer.domain.model.DraftAction
+import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.SerializedDraftActionKey
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.DraftMessageIdKey
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.ConversationIdKey
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen.MESSAGE_ID_KEY
@@ -27,6 +29,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailsettings.domain.model.SwipeActionDirection
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.EditSwipeActionPreferenceScreen.SWIPE_DIRECTION_KEY
 import me.proton.core.domain.entity.UserId
+import me.proton.core.util.kotlin.serialize
 
 sealed class Destination(val route: String) {
 
@@ -44,8 +47,13 @@ sealed class Destination(val route: String) {
 
         object Composer : Destination("composer")
 
-        object PrefilledComposer : Destination("composer/${DraftMessageIdKey.wrap()}") {
+        object EditDraftComposer : Destination("composer/${DraftMessageIdKey.wrap()}") {
             operator fun invoke(messageId: MessageId) = route.replace(DraftMessageIdKey.wrap(), messageId.id)
+        }
+
+        object MessageActionComposer : Destination("composer/action/${SerializedDraftActionKey.wrap()}") {
+            operator fun invoke(action: DraftAction) =
+                route.replace(SerializedDraftActionKey.wrap(), action.serialize())
         }
 
         object Settings : Destination("settings")
