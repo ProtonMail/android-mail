@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
+import ch.protonmail.android.mailcomposer.domain.repository.AttachmentStateRepository
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
@@ -53,6 +54,7 @@ class StoreAttachmentsTest {
     private val uri = mockk<Uri>()
     private val messageRepository = mockk<MessageRepository>()
     private val attachmentRepository = mockk<AttachmentRepository>()
+    private val attachmentStateRepository = mockk<AttachmentStateRepository>()
     private val getLocalDraft = mockk<GetLocalDraft>()
     private val saveDraft = mockk<SaveDraft>()
     private val provideNewAttachmentId = mockk<ProvideNewAttachmentId> {
@@ -63,6 +65,7 @@ class StoreAttachmentsTest {
     private val storeAttachments = StoreAttachments(
         messageRepository,
         attachmentRepository,
+        attachmentStateRepository,
         getLocalDraft,
         saveDraft,
         provideNewAttachmentId,
@@ -78,6 +81,7 @@ class StoreAttachmentsTest {
         expectedLocalMessageBody(expectedMessageId, null)
         expectedDraftSaving(expectedMessageBody, true)
         expectAttachmentSavingSuccessful(expectedMessageId)
+        expectAttachmentStateSavingSuccess(expectedMessageId)
 
         // When
         val actual = storeAttachments(userId, expectedMessageId, senderEmail, listOf(uri))
@@ -96,6 +100,7 @@ class StoreAttachmentsTest {
         expectedLocalDraft(expectedMessageId, expectedMessageBody)
         expectedLocalMessageBody(expectedMessageId, expectedMessageBody)
         expectAttachmentSavingSuccessful(expectedMessageId)
+        expectAttachmentStateSavingSuccess(expectedMessageId)
 
         // When
         val actual = storeAttachments(userId, expectedMessageId, senderEmail, listOf(uri))
@@ -125,6 +130,7 @@ class StoreAttachmentsTest {
         assertEquals(expectedError, actual)
         coVerify { saveDraft(expectedMessageBody, userId) }
         coVerify { attachmentRepository wasNot Called }
+        coVerify { attachmentStateRepository wasNot Called }
     }
 
     @Test
@@ -140,6 +146,7 @@ class StoreAttachmentsTest {
         assertEquals(expectedError, actual)
         coVerify { messageRepository wasNot Called }
         coVerify { attachmentRepository wasNot Called }
+        coVerify { attachmentStateRepository wasNot Called }
     }
 
     @Test
@@ -168,6 +175,7 @@ class StoreAttachmentsTest {
         expectedLocalMessageBody(expectedMessageId, MessageWithBodySample.Invoice)
         expectAttachmentSavingSuccessful(expectedMessageId)
         expectAttachmentSavingFailed(expectedMessageId, uri2)
+        expectAttachmentStateSavingSuccess(expectedMessageId)
 
         val expectedError = StoreDraftWithAttachmentError.FailedToStoreAttachments.left()
 
@@ -207,5 +215,11 @@ class StoreAttachmentsTest {
         coEvery {
             attachmentRepository.saveAttachment(userId, expectedMessageId, localAttachmentId, uri)
         } returns DataError.Local.FailedToStoreFile.left()
+    }
+
+    private fun expectAttachmentStateSavingSuccess(messageId: MessageId) {
+        coEvery {
+            attachmentStateRepository.createOrUpdateLocalState(userId, messageId, localAttachmentId)
+        } returns Unit.right()
     }
 }

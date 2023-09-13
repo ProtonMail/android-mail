@@ -23,6 +23,7 @@ import arrow.core.Either
 import arrow.core.continuations.either
 import ch.protonmail.android.mailcomposer.domain.Transactor
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
+import ch.protonmail.android.mailcomposer.domain.repository.AttachmentStateRepository
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.AttachmentRepository
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
@@ -33,6 +34,7 @@ import javax.inject.Inject
 class StoreAttachments @Inject constructor(
     private val messageRepository: MessageRepository,
     private val attachmentRepository: AttachmentRepository,
+    private val attachmentStateRepository: AttachmentStateRepository,
     private val getLocalDraft: GetLocalDraft,
     private val saveDraft: SaveDraft,
     private val provideNewAttachmentId: ProvideNewAttachmentId,
@@ -65,12 +67,10 @@ class StoreAttachments @Inject constructor(
             }
             var attachmentFailedToStore = false
             uriList.forEach {
-                attachmentRepository.saveAttachment(
-                    userId = userId,
-                    messageId = draft.message.messageId,
-                    attachmentId = provideNewAttachmentId(),
-                    uri = it
-                ).onLeft { attachmentFailedToStore = true }
+                val attachmentId = provideNewAttachmentId()
+                attachmentRepository.saveAttachment(userId, draft.message.messageId, attachmentId, it)
+                    .onLeft { attachmentFailedToStore = true }
+                    .onRight { attachmentStateRepository.createOrUpdateLocalState(userId, messageId, attachmentId) }
             }
             if (attachmentFailedToStore) {
                 shift<StoreDraftWithAttachmentError>(StoreDraftWithAttachmentError.FailedToStoreAttachments)
