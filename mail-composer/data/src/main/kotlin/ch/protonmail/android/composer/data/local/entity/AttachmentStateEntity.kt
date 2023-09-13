@@ -21,6 +21,7 @@ package ch.protonmail.android.composer.data.local.entity
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
+import ch.protonmail.android.mailcomposer.domain.model.AttachmentState
 import ch.protonmail.android.mailcomposer.domain.model.AttachmentSyncState
 import ch.protonmail.android.mailmessage.data.local.entity.MessageEntity
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
@@ -55,4 +56,21 @@ data class AttachmentStateEntity(
     val attachmentId: AttachmentId,
     val apiAttachmentId: AttachmentId?,
     val state: AttachmentSyncState
+) {
+
+    fun toAttachmentState() = AttachmentState(
+        userId = userId,
+        messageId = messageId,
+        attachmentId = attachmentId,
+        apiAttachmentId = apiAttachmentId,
+        state = state
+    )
+}
+
+fun AttachmentState.toAttachmentStateEntity() = AttachmentStateEntity(
+    userId = this.userId,
+    messageId = this.messageId,
+    attachmentId = this.attachmentId,
+    apiAttachmentId = this.apiAttachmentId,
+    state = this.state
 )
