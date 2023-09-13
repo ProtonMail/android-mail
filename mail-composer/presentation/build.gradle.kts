@@ -67,6 +67,7 @@ dependencies {
     implementation(project(":mail-contact:domain"))
     implementation(project(":mail-message:domain"))
     implementation(project(":mail-message:presentation"))
+    implementation(project(":mail-pagination:domain"))
     implementation(project(":test:idlingresources"))
     implementation(project(":uicomponents"))
 

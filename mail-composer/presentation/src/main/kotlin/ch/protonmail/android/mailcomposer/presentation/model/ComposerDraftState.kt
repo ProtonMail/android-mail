@@ -76,5 +76,6 @@ data class ComposerFields(
     val cc: List<RecipientUiModel>,
     val bcc: List<RecipientUiModel>,
     val subject: String,
-    val body: String
+    val body: String,
+    val quotedBody: String? = null
 )

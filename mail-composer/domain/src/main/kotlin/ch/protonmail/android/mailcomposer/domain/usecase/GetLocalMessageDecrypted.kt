@@ -23,13 +23,7 @@ import arrow.core.getOrElse
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailcomposer.domain.model.DraftBody
-import ch.protonmail.android.mailcomposer.domain.model.DraftFields
-import ch.protonmail.android.mailcomposer.domain.model.RecipientsBcc
-import ch.protonmail.android.mailcomposer.domain.model.RecipientsCc
-import ch.protonmail.android.mailcomposer.domain.model.RecipientsTo
-import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
-import ch.protonmail.android.mailcomposer.domain.model.Subject
+import ch.protonmail.android.mailcomposer.domain.model.MessageWithDecryptedBody
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
@@ -37,29 +31,24 @@ import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import javax.inject.Inject
 
-class GetDecryptedDraftFields @Inject constructor(
+class GetLocalMessageDecrypted @Inject constructor(
     private val messageRepository: MessageRepository,
     private val getDecryptedMessageBody: GetDecryptedMessageBody
 ) {
 
-    suspend operator fun invoke(userId: UserId, messageId: MessageId): Either<DataError, DraftFields> {
-        Timber.d("Get decrypted draft data for $userId $messageId")
-        val message = messageRepository.getRefreshedMessageWithBody(userId, messageId)?.message
-            ?: return DataError.Local.NoDataCached.left()
+    suspend operator fun invoke(userId: UserId, messageId: MessageId): Either<DataError, MessageWithDecryptedBody> {
+        Timber.d("Get decrypted local message data for $userId $messageId")
+        val messageWithBody = messageRepository.getLocalMessageWithBody(userId, messageId)
+        if (messageWithBody == null) {
+            Timber.e("Error getting local message decrypted")
+            return DataError.Local.NoDataCached.left()
+        }
 
         val decryptedMessageBody = getDecryptedMessageBody(userId, messageId).getOrElse {
             return DataError.Local.DecryptionError.left()
         }
 
-        return DraftFields(
-            SenderEmail(message.sender.address),
-            Subject(message.subject),
-            DraftBody(decryptedMessageBody.value),
-            RecipientsTo(message.toList),
-            RecipientsCc(message.ccList),
-            RecipientsBcc(message.bccList),
-            null
-        ).right()
+        return MessageWithDecryptedBody(messageWithBody, decryptedMessageBody).right()
     }
 
 }

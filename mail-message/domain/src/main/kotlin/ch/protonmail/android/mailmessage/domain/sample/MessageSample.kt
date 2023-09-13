@@ -94,6 +94,14 @@ object MessageSample {
         expirationTime = Aug2022
     )
 
+    val HtmlInvoice = build(
+        conversationId = ConversationIdSample.Invoices,
+        messageId = MessageIdSample.HtmlInvoice,
+        labelIds = listOf(LabelIdSample.Inbox),
+        numAttachments = 0,
+        subject = "Invoice in html format"
+    )
+
     val Invoice = build(
         conversationId = ConversationIdSample.Invoices,
         messageId = MessageIdSample.Invoice,
@@ -159,7 +167,6 @@ object MessageSample {
         subject = "Is this a known issue?",
         time = Feb2023
     )
-
 
     private val Aug2022 get() = 1_659_312_000L
     private val Oct2022 get() = 1_664_582_400L

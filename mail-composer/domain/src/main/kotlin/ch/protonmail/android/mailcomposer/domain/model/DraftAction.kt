@@ -23,6 +23,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 sealed interface DraftAction {
+
     @Serializable
     object Compose : DraftAction
 
@@ -34,4 +35,12 @@ sealed interface DraftAction {
 
     @Serializable
     data class Forward(val parentId: MessageId) : DraftAction
+
+    fun getParentMessageId(): MessageId? = when (this) {
+        is Compose -> null
+        is Forward -> this.parentId
+        is Reply -> this.parentId
+        is ReplyAll -> this.parentId
+    }
+
 }

@@ -32,6 +32,7 @@ object MessageIdSample {
     )
     val LocalDraft = MessageId(UUID.randomUUID().toString())
     val Invoice = MessageId("invoice")
+    val HtmlInvoice = MessageId("html_invoice")
     val OctWeatherForecast = MessageId("oct_weather_forecast")
     val SepWeatherForecast = MessageId("sep_weather_forecast")
     val AlphaAppQAReport = MessageId("QA_testing_report")

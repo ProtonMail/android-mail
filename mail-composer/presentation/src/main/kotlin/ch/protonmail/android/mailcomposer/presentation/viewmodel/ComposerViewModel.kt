@@ -37,6 +37,7 @@ import ch.protonmail.android.mailcomposer.domain.usecase.DraftUploader
 import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses
 import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses.Error
 import ch.protonmail.android.mailcomposer.domain.usecase.GetDecryptedDraftFields
+import ch.protonmail.android.mailcomposer.domain.usecase.GetLocalMessageDecrypted
 import ch.protonmail.android.mailcomposer.domain.usecase.GetPrimaryAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.IsValidEmailAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessageAttachments
@@ -56,6 +57,7 @@ import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
 import ch.protonmail.android.mailcomposer.presentation.reducer.ComposerReducer
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen
+import ch.protonmail.android.mailcomposer.presentation.usecase.ParentMessageToDraftFields
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.test.idlingresources.ComposerIdlingResource
@@ -99,6 +101,8 @@ class ComposerViewModel @Inject constructor(
     private val observeMessageAttachments: ObserveMessageAttachments,
     private val sendMessage: SendMessage,
     private val networkManager: NetworkManager,
+    private val getLocalMessageDecrypted: GetLocalMessageDecrypted,
+    private val parentMessageToDraftFields: ParentMessageToDraftFields,
     getDecryptedDraftFields: GetDecryptedDraftFields,
     savedStateHandle: SavedStateHandle,
     observePrimaryUserId: ObservePrimaryUserId,
@@ -123,26 +127,13 @@ class ComposerViewModel @Inject constructor(
         }.launchIn(viewModelScope)
 
         val inputDraftId = savedStateHandle.get<String>(ComposerScreen.DraftMessageIdKey)
-        if (inputDraftId != null) {
-            Timber.d("Opening composer with $inputDraftId / ${currentMessageId()}")
-            emitNewStateFor(ComposerEvent.OpenExistingDraft(currentMessageId()))
-
-            viewModelScope.launch {
-                getDecryptedDraftFields(primaryUserId(), currentMessageId())
-                    .onRight {
-                        startDraftContinuousUpload()
-                        emitNewStateFor(ComposerEvent.ExistingDraftDataReceived(it))
-                    }
-                    .onLeft { emitNewStateFor(ComposerEvent.ErrorLoadingDraftData) }
-
-            }
-        } else {
-            viewModelScope.launch { startDraftContinuousUpload() }
-        }
-
         val draftAction = savedStateHandle.get<String>(ComposerScreen.SerializedDraftActionKey)
             ?.deserialize<DraftAction>()
-        Timber.d("Received draft action $draftAction")
+        when {
+            inputDraftId != null -> prefillWithExistingDraft(inputDraftId, getDecryptedDraftFields)
+            draftAction != null -> prefillForDraftAction(draftAction)
+            else -> viewModelScope.launch { startDraftContinuousUpload() }
+        }
 
         primaryUserId
             .flatMapLatest { userId -> observeMailFeature(userId, MailFeatureId.AddAttachmentsToDraft) }
@@ -150,6 +141,37 @@ class ComposerViewModel @Inject constructor(
             .launchIn(viewModelScope)
 
         observeMessageAttachments()
+    }
+
+    private fun prefillForDraftAction(draftAction: DraftAction) {
+        val parentMessageId = draftAction.getParentMessageId() ?: return
+        Timber.d("Opening composer for draft action $draftAction / ${currentMessageId()}")
+        viewModelScope.launch {
+            getLocalMessageDecrypted(primaryUserId(), parentMessageId).onRight { parentMessage ->
+                Timber.d("Parent message draft data received $parentMessage")
+                parentMessageToDraftFields(primaryUserId(), parentMessage, draftAction).onRight { draftFields ->
+                    Timber.d("Quoted parent body $draftFields")
+                    startDraftContinuousUpload()
+                    emitNewStateFor(ComposerEvent.PrefillDraftDataReceived(draftFields))
+                }.onLeft { emitNewStateFor(ComposerEvent.ErrorLoadingParentMessageData) }
+            }.onLeft { emitNewStateFor(ComposerEvent.ErrorLoadingParentMessageData) }
+        }
+    }
+
+    private fun prefillWithExistingDraft(inputDraftId: String, getDecryptedDraftFields: GetDecryptedDraftFields) {
+        Timber.d("Opening composer with $inputDraftId / ${currentMessageId()}")
+        emitNewStateFor(ComposerEvent.OpenExistingDraft(currentMessageId()))
+
+        viewModelScope.launch {
+            getDecryptedDraftFields(primaryUserId(), currentMessageId())
+                .onRight {
+                    Timber.d("Opening existing draft with body $it")
+                    startDraftContinuousUpload()
+                    emitNewStateFor(ComposerEvent.PrefillDraftDataReceived(it))
+                }
+                .onLeft { emitNewStateFor(ComposerEvent.ErrorLoadingDraftData) }
+
+        }
     }
 
     override fun onCleared() {
@@ -240,7 +262,8 @@ class ComposerViewModel @Inject constructor(
         currentDraftBody(),
         currentValidRecipientsTo(),
         currentValidRecipientsCc(),
-        currentValidRecipientsBcc()
+        currentValidRecipientsBcc(),
+        null
     )
 
     private suspend fun onSubjectChanged(action: ComposerAction.SubjectChanged): ComposerOperation =

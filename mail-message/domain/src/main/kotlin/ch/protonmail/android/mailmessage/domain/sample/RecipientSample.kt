@@ -32,6 +32,21 @@ object RecipientSample {
         name = "John"
     )
 
+    val Alice = build(
+        address = "alice@pm.me",
+        name = "Alice"
+    )
+
+    val Bob = build(
+        address = "bob@pm.me",
+        name = "Bob"
+    )
+
+    val Billing = build(
+        address = "billing@company.com",
+        name = "Billing Service"
+    )
+
     val PreciWeather = build(
         address = "info@preciweather.com",
         name = "PreciWeather"

@@ -87,7 +87,8 @@ class ComposerReducerTest(
             DraftBody("Decrypted body of this draft"),
             RecipientsTo(listOf(Recipient("you@proton.ch", "Name"))),
             RecipientsCc(emptyList()),
-            RecipientsBcc(emptyList())
+            RecipientsBcc(emptyList()),
+            null
         )
 
         private val EmptyToSubmittableToField = with("a@b.c") {
@@ -461,7 +462,7 @@ class ComposerReducerTest(
         private val LoadingToFieldsWhenReceivedDraftData = TestTransition(
             name = "Should stop loading and set the received draft data as composer fields when draft data received",
             currentState = ComposerDraftState.initial(messageId).copy(isLoading = true),
-            operation = ComposerEvent.ExistingDraftDataReceived(draftFields),
+            operation = ComposerEvent.PrefillDraftDataReceived(draftFields),
             expectedState = aNotSubmittableState(
                 draftId = messageId,
                 sender = SenderUiModel(draftFields.sender.value),
@@ -579,7 +580,8 @@ class ComposerReducerTest(
                 cc = cc,
                 bcc = bcc,
                 subject = "",
-                body = ""
+                body = "",
+                quotedBody = null
             ),
             attachments = AttachmentGroupUiModel(attachments = emptyList()),
             premiumFeatureMessage = Effect.empty(),
@@ -618,7 +620,8 @@ class ComposerReducerTest(
                 cc = cc,
                 bcc = bcc,
                 subject = subject.value,
-                body = draftBody
+                body = draftBody,
+                quotedBody = null
             ),
             attachments = AttachmentGroupUiModel(attachments = emptyList()),
             premiumFeatureMessage = premiumFeatureMessage,

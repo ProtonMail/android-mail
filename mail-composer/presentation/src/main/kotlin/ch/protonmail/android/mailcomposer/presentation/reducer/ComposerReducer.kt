@@ -94,7 +94,7 @@ class ComposerReducer @Inject constructor(
 
         is ComposerEvent.OnCloseWithDraftSaved -> updateCloseComposerState(currentState, true)
         is ComposerEvent.OpenExistingDraft -> currentState.copy(isLoading = true)
-        is ComposerEvent.ExistingDraftDataReceived -> updateComposerFieldsState(currentState, this.draftFields)
+        is ComposerEvent.PrefillDraftDataReceived -> updateComposerFieldsState(currentState, this.draftFields)
         is ComposerEvent.ErrorLoadingDraftData -> currentState.copy(
             error = Effect.of(TextUiModel(R.string.composer_error_loading_draft)),
             isLoading = false
@@ -106,6 +106,9 @@ class ComposerReducer @Inject constructor(
 
         is ComposerEvent.OnSendMessageOffline -> updateStateForSendMessageOffline(currentState)
         is ComposerEvent.OnAttachmentsUpdated -> updateAttachmentsState(currentState, this.attachments)
+        is ComposerEvent.ErrorLoadingParentMessageData -> currentState.copy(
+            error = Effect.of(TextUiModel(R.string.composer_error_loading_parent_message))
+        )
     }
 
     private fun updateBottomSheetVisibility(currentState: ComposerDraftState, bottomSheetVisibility: Boolean) =
@@ -117,6 +120,7 @@ class ComposerReducer @Inject constructor(
                 sender = SenderUiModel(draftFields.sender.value),
                 subject = draftFields.subject.value,
                 body = draftFields.body.value,
+                quotedBody = draftFields.quotedHtmlBody?.value,
                 to = draftFields.recipientsTo.value.map { RecipientUiModel.Valid(it.address) },
                 cc = draftFields.recipientsCc.value.map { RecipientUiModel.Valid(it.address) },
                 bcc = draftFields.recipientsBcc.value.map { RecipientUiModel.Valid(it.address) }

@@ -52,6 +52,13 @@ object DecryptedMessageBodyTestData {
         )
     )
 
+    val htmlInvoice = buildDecryptedMessageBody(
+        messageId = MessageIdSample.HtmlInvoice,
+        value = "<div>Decrypted invoice message HTML body</div>",
+        mimeType = MimeType.Html,
+        attachments = emptyList()
+    )
+
     fun buildDecryptedMessageBody(
         messageId: MessageId = MessageIdSample.build(),
         value: String = DECRYPTED_MESSAGE_BODY,

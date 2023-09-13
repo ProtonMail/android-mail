@@ -80,7 +80,8 @@ class StoreDraftWithAllFieldsTest {
             plaintextDraftBody,
             recipientsTo,
             recipientsCc,
-            recipientsBcc
+            recipientsBcc,
+            null
         )
         expectStoreDraftBodySucceeds(draftMessageId, plaintextDraftBody, senderEmail, userId)
         expectStoreDraftSubjectSucceeds(userId, draftMessageId, senderEmail, subject)
@@ -264,7 +265,8 @@ class StoreDraftWithAllFieldsTest {
         plaintextDraftBody,
         recipientsTo,
         recipientsCc,
-        recipientsBcc
+        recipientsBcc,
+        null
     )
 
     private fun expectStoreDraftStateSucceeds(

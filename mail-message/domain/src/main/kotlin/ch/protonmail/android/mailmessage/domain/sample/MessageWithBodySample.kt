@@ -28,6 +28,12 @@ object MessageWithBodySample {
 
     val EmptyDraft = build()
 
+    val HtmlInvoice = build(
+        message = MessageSample.HtmlInvoice,
+        body = "This is the ENCRYPTED body of this html invoice message",
+        mimeType = MimeType.Html
+    )
+
     val Invoice = build(
         message = MessageSample.Invoice,
         body = "This is the ENCRYPTED body of this invoice message"
@@ -53,7 +59,8 @@ object MessageWithBodySample {
     private fun build(
         message: Message = MessageSample.EmptyDraft,
         replyTo: Recipient = RecipientSample.John,
-        body: String = ""
+        body: String = "",
+        mimeType: MimeType = MimeType.PlainText
     ) = MessageWithBody(
         message = message,
         messageBody = MessageBody(
@@ -62,7 +69,7 @@ object MessageWithBodySample {
             body = body,
             header = "",
             attachments = emptyList(),
-            mimeType = MimeType.PlainText,
+            mimeType = mimeType,
             spamScore = "",
             replyTo = replyTo,
             replyTos = emptyList(),
