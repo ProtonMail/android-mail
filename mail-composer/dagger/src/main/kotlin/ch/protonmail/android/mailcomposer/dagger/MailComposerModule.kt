@@ -69,4 +69,10 @@ abstract class MailComposerModule {
     @Binds
     @Reusable
     abstract fun bindsMessageRemoteDataSource(impl: MessageRemoteDataSourceImpl): MessageRemoteDataSource
+
+    @Binds
+    @Reusable
+    abstract fun bindsAttachmentStateLocalDataSource(
+        impl: AttachmentStateLocalDataSourceImpl
+    ): AttachmentStateLocalDataSource
 }
