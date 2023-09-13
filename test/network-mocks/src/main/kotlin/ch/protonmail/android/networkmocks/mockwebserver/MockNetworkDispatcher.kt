@@ -22,11 +22,12 @@ import java.util.logging.Logger
 import ch.protonmail.android.networkmocks.assets.RawAssets
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MockRequest
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MockRequestLocalPath
-import ch.protonmail.android.networkmocks.mockwebserver.requests.MockRequestRemotePath
+import ch.protonmail.android.networkmocks.mockwebserver.requests.RemoteRequest
+import ch.protonmail.android.networkmocks.mockwebserver.requests.RequestMethod
 import ch.protonmail.android.networkmocks.mockwebserver.response.generateAssetNotFoundResponse
 import ch.protonmail.android.networkmocks.mockwebserver.response.generateNoNetworkResponse
 import ch.protonmail.android.networkmocks.mockwebserver.response.generateResponse
-import ch.protonmail.android.networkmocks.mockwebserver.response.generateUnhandledPathResponse
+import ch.protonmail.android.networkmocks.mockwebserver.response.generateUnhandledRemoteRequestResponse
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -55,8 +56,8 @@ import okhttp3.mockwebserver.RecordedRequest
  *        // Simple usage and definition of a custom dispatcher.
  *        mockWebServer.dispatcher extendWith MockNetworkDispatcher().apply {
  *            addMockRequests(
- *                 given("/api/v1/path") respondWith "/api/v1/localPath" withStatusCode 200,
- *                 given("/api/v1/path2") respondWith "/api/v1/localPath2" withStatusCode 401
+ *                 get("/api/v1/path") respondWith "/api/v1/localPath" withStatusCode 200,
+ *                 get("/api/v1/path2") respondWith "/api/v1/localPath2" withStatusCode 401
  *             )
  *        }
  *
@@ -78,18 +79,19 @@ class MockNetworkDispatcher(
     @SuppressWarnings("ReturnCount")
     override fun dispatch(request: RecordedRequest): MockResponse {
         val path = checkNotNull(request.path) { "❌ Handling requests with `null` path is unsupported." }
-        val remotePath = MockRequestRemotePath(path)
+        val rawMethod = checkNotNull(request.method) { "❌ Handling requests with `null` method is unsupported." }
+        val remoteRequest = RemoteRequest(path, RequestMethod.valueOf(rawMethod))
 
-        val validRequest = findRequestForPath(remotePath) ?: run {
-            logger.severe("⚠️ Unknown path '$remotePath', check the mocked network definitions.")
-            return generateUnhandledPathResponse(remotePath)
+        val validRequest = findMatchingRequests(remoteRequest) ?: run {
+            logger.severe("⚠️ Unknown path for '$remoteRequest', check the mocked network definitions.")
+            return generateUnhandledRemoteRequestResponse(remoteRequest)
         }
 
         if (validRequest.serveOnce) knownRequests.remove(validRequest)
-        logger.info("✅ Match found for '$remotePath'.")
+        logger.info("✅ Match found for '$remoteRequest'.")
 
         if (validRequest.simulateNoNetwork) {
-            logger.info("📶 Simulating no network response for '$remotePath'.")
+            logger.info("📶 Simulating no network response for '$remoteRequest'.")
             return generateNoNetworkResponse()
         }
 
@@ -98,7 +100,7 @@ class MockNetworkDispatcher(
             return generateAssetNotFoundResponse(validRequest.localFilePath)
         }
 
-        logger.info("➡️ Serving ${request.method} $remotePath with $validRequest.")
+        logger.info("➡️ Serving $remoteRequest with $validRequest.")
         return generateResponse(validRequest.statusCode, content, validRequest.mimeType, validRequest.networkDelay)
     }
 
@@ -109,20 +111,21 @@ class MockNetworkDispatcher(
         knownRequests.addAll(requests)
     }
 
-    private fun findRequestForPath(remotePath: MockRequestRemotePath): MockRequest? {
+    private fun findMatchingRequests(remoteRequest: RemoteRequest): MockRequest? {
         return knownRequests
             .asSequence()
+            .filter { it.remoteRequest.method == remoteRequest.method }
             .sortedByDescending { it.priority.value }
             .find { mockRequest ->
                 when {
-                    mockRequest.ignoreQueryParams && mockRequest.wildcardMatch -> remotePath.stripQueryParams()
-                        .wildcardMatches(mockRequest.remotePath)
+                    mockRequest.ignoreQueryParams && mockRequest.wildcardMatch -> remoteRequest.stripQueryParams()
+                        .wildcardMatches(mockRequest.remoteRequest)
 
-                    mockRequest.ignoreQueryParams -> remotePath.stripQueryParams() == mockRequest.remotePath
+                    mockRequest.ignoreQueryParams -> remoteRequest.stripQueryParams() == mockRequest.remoteRequest
 
-                    mockRequest.wildcardMatch -> remotePath.wildcardMatches(mockRequest.remotePath)
+                    mockRequest.wildcardMatch -> remoteRequest.wildcardMatches(mockRequest.remoteRequest)
 
-                    else -> remotePath == mockRequest.remotePath
+                    else -> remoteRequest == mockRequest.remoteRequest
                 }
             }
     }
@@ -130,9 +133,9 @@ class MockNetworkDispatcher(
     private fun getRawContentFromLocalAsset(localPath: MockRequestLocalPath): ByteArray? =
         RawAssets.getRawContentForPath(assetsRootPath + localPath.path)
 
-    private fun MockRequestRemotePath.stripQueryParams() = MockRequestRemotePath(path.substringBefore("?"))
+    private fun RemoteRequest.stripQueryParams() = copy(path = path.substringBefore("?"))
 
-    private fun MockRequestRemotePath.wildcardMatches(value: MockRequestRemotePath): Boolean {
+    private fun RemoteRequest.wildcardMatches(value: RemoteRequest): Boolean {
         val paths = path.split("/")
         val valuePaths = value.path.split("/")
 

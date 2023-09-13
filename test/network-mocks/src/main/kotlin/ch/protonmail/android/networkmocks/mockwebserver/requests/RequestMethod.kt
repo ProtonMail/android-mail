@@ -18,19 +18,9 @@
 
 package ch.protonmail.android.networkmocks.mockwebserver.requests
 
-/**
- * A data class representing a **partial** [MockRequest].
- *
- * @param remoteRequest The remote API call request (method + path).
- * @param localFilePath The path of the local file to use as response.
- */
-data class PartialMockRequest(
-    val remoteRequest: RemoteRequest,
-    val localFilePath: MockRequestLocalPath
-)
-
-/**
- * Creates a [MockRequest] from a [PartialMockRequest] with a defined `statusCode`.
- */
-infix fun PartialMockRequest.withStatusCode(statusCode: Int): MockRequest =
-    MockRequest(remoteRequest, localFilePath, statusCode)
+enum class RequestMethod(val value: String) {
+    GET("GET"),
+    POST("POST"),
+    PUT("PUT"),
+    DELETE("DELETE")
+}

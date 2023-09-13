@@ -18,26 +18,20 @@
 
 package ch.protonmail.android.networkmocks.mockwebserver.requests
 
-@JvmInline
-value class MockRequestRemotePath(val path: String) {
 
-    override fun toString() = path
+data class RemoteRequest(val path: String, val method: RequestMethod = RequestMethod.GET) {
+
+    override fun toString() = "$method $path"
 }
 
 /**
- * Returns a [MockRequestRemotePath] from a given [String].
+ * Creates a [PartialMockRequest] by pairing a given [RemoteRequest] to a [String] containing the local file path.
  */
-fun given(remotePath: String) = MockRequestRemotePath(remotePath)
-
-/**
- * Creates a [PartialMockRequest] by pairing a given [MockRequestRemotePath]
- * to a [String] containing the local file path.
- */
-infix fun MockRequestRemotePath.respondWith(localFilePath: String) =
+infix fun RemoteRequest.respondWith(localFilePath: String) =
     PartialMockRequest(this, MockRequestLocalPath(localFilePath))
 
 /**
- * Creates a [MockRequest] from a [MockRequestRemotePath] to simulate a no connectivity scenario.
+ * Creates a [MockRequest] from a [RemoteRequest] to simulate a no connectivity scenario.
  */
-infix fun MockRequestRemotePath.simulateNoNetwork(value: Boolean) =
+infix fun RemoteRequest.simulateNoNetwork(value: Boolean) =
     MockRequest(this, MockRequestLocalPath.NoPath, Int.MIN_VALUE, simulateNoNetwork = value)

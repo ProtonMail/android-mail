@@ -21,7 +21,7 @@ package ch.protonmail.android.networkmocks.mockwebserver.requests
 /**
  * A data class representing a mock request.
  *
- * @param remotePath The remote path of the API call.
+ * @param remoteRequest The remote API call request (method + path).
  * @param localFilePath The path of the local file to use as response.
  * @param statusCode The status code to return.
  * @param ignoreQueryParams Whether query parameters shall be ignored for this request.
@@ -32,7 +32,7 @@ package ch.protonmail.android.networkmocks.mockwebserver.requests
  * @param priority A priority value to define whether the request shall override existing requests with the same path.
  */
 data class MockRequest(
-    val remotePath: MockRequestRemotePath,
+    val remoteRequest: RemoteRequest,
     val localFilePath: MockRequestLocalPath,
     val statusCode: Int,
     val mimeType: MimeType = MimeType.Json,

@@ -21,7 +21,7 @@ package ch.protonmail.android.networkmocks.mockwebserver.response
 import java.util.concurrent.TimeUnit
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MimeType
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MockRequestLocalPath
-import ch.protonmail.android.networkmocks.mockwebserver.requests.MockRequestRemotePath
+import ch.protonmail.android.networkmocks.mockwebserver.requests.RemoteRequest
 import okhttp3.Headers
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.SocketPolicy
@@ -46,11 +46,11 @@ internal fun generateAssetNotFoundResponse(path: MockRequestLocalPath): MockResp
  * Delegate to [MockResponse] creation that will force custom JSON content
  * specifying that a route is currently not handled by the Dispatcher.
  */
-internal fun generateUnhandledPathResponse(path: MockRequestRemotePath): MockResponse {
+internal fun generateUnhandledRemoteRequestResponse(request: RemoteRequest): MockResponse {
     val body = """
         {
-            "error": "PATH_NOT_FOUND",
-            "cause": "No route found for remote path '$path'."
+            "error": "ROUTE_NOT_FOUND",
+            "cause": "No route found for '$request'."
         }
     """.trimIndent()
 
