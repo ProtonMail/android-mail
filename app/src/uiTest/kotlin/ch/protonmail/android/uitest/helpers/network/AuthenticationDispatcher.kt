@@ -19,7 +19,8 @@
 package ch.protonmail.android.uitest.helpers.network
 
 import ch.protonmail.android.networkmocks.mockwebserver.MockNetworkDispatcher
-import ch.protonmail.android.networkmocks.mockwebserver.requests.given
+import ch.protonmail.android.networkmocks.mockwebserver.requests.get
+import ch.protonmail.android.networkmocks.mockwebserver.requests.post
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withStatusCode
 import ch.protonmail.android.uitest.helpers.login.LoginType
@@ -38,12 +39,12 @@ internal fun authenticationDispatcher(loginType: LoginType) = MockNetworkDispatc
     }
 
     addMockRequests(
-        given("/auth/v4") respondWith "/auth/v4/auth-v4_$id.json" withStatusCode 200,
-        given("/auth/v4/info") respondWith "/auth/v4/info/info_$id.json" withStatusCode 200,
-        given("/auth/v4/sessions") respondWith "/auth/v4/sessions/sessions_$id.json" withStatusCode 200,
-        given("/core/v4/users") respondWith "/core/v4/users/users_$id.json" withStatusCode 200,
-        given("/core/v4/addresses") respondWith "/core/v4/addresses/addresses_$id.json" withStatusCode 200,
-        given("/core/v4/keys/salts") respondWith "/core/v4/keys/salts/salts_$id.json" withStatusCode 200,
-        given("/auth/v4/scopes") respondWith "/auth/v4/scopes/scopes_$id.json" withStatusCode 200
+        post("/auth/v4") respondWith "/auth/v4/auth-v4_$id.json" withStatusCode 200,
+        post("/auth/v4/info") respondWith "/auth/v4/info/info_$id.json" withStatusCode 200,
+        post("/auth/v4/sessions") respondWith "/auth/v4/sessions/sessions_$id.json" withStatusCode 200,
+        get("/core/v4/users") respondWith "/core/v4/users/users_$id.json" withStatusCode 200,
+        get("/core/v4/addresses") respondWith "/core/v4/addresses/addresses_$id.json" withStatusCode 200,
+        get("/core/v4/keys/salts") respondWith "/core/v4/keys/salts/salts_$id.json" withStatusCode 200,
+        get("/auth/v4/scopes") respondWith "/auth/v4/scopes/scopes_$id.json" withStatusCode 200
     )
 }
