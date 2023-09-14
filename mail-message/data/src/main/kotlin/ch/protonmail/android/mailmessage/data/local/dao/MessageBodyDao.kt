@@ -20,6 +20,7 @@ package ch.protonmail.android.mailmessage.data.local.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.Transaction
 import ch.protonmail.android.mailmessage.data.local.entity.MessageBodyEntity
 import ch.protonmail.android.mailmessage.data.local.relation.MessageWithBodyEntity
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -43,8 +44,6 @@ abstract class MessageBodyDao : BaseDao<MessageBodyEntity>() {
             AND MessageEntity.messageId = :messageId
         """
     )
-    abstract fun observeMessageWithBodyEntity(
-        userId: UserId,
-        messageId: MessageId
-    ): Flow<MessageWithBodyEntity?>
+    @Transaction
+    abstract fun observeMessageWithBodyEntity(userId: UserId, messageId: MessageId): Flow<MessageWithBodyEntity?>
 }

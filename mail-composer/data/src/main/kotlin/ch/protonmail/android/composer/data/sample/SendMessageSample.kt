@@ -43,12 +43,12 @@ object SendMessageSample {
     const val PlaintextMimeBodyEncryptedAndSigned = "Plaintext Mime Body, encrypted and signed"
     val BodySessionKey = SessionKey("BodySessionKey".toByteArray())
     val MimeBodySessionKey = SessionKey("MimeBodySessionKey".toByteArray())
-    val EncryptedBodyDataPacket = "EncryptedBodyDataPacket".toByteArray() as DataPacket
-    val EncryptedMimeBodyDataPacket = "EncryptedMimeBodyDataPacket".toByteArray() as DataPacket
-    val RecipientBodyKeyPacket = "RecipientBodyKeyPacket".toByteArray() as KeyPacket
-    val SignedEncryptedMimeBody = Pair(
-        "SignedEncryptedMimeBody KeyPacket".toByteArray() as KeyPacket,
-        "SignedEncryptedMimeBody DataPacket".toByteArray() as DataPacket
+    val EncryptedBodyDataPacket: DataPacket = "EncryptedBodyDataPacket".toByteArray()
+    val EncryptedMimeBodyDataPacket: DataPacket = "EncryptedMimeBodyDataPacket".toByteArray()
+    val RecipientBodyKeyPacket: KeyPacket = "RecipientBodyKeyPacket".toByteArray()
+    val SignedEncryptedMimeBody: Pair<KeyPacket, DataPacket> = Pair(
+        "SignedEncryptedMimeBody KeyPacket".toByteArray(),
+        "SignedEncryptedMimeBody DataPacket".toByteArray()
     )
     val CleartextBodyKey = SendMessagePackage.Key(
         Base64.encode(BodySessionKey.key),

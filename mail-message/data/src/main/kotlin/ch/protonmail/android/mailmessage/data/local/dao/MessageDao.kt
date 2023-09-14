@@ -20,6 +20,7 @@ package ch.protonmail.android.mailmessage.data.local.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.Transaction
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailmessage.data.local.entity.MessageEntity
 import ch.protonmail.android.mailmessage.data.local.relation.MessageWithLabelIds
@@ -45,9 +46,11 @@ abstract class MessageDao : BaseDao<MessageEntity>() {
     abstract suspend fun deleteAll(userId: UserId)
 
     @Query("SELECT * FROM MessageEntity WHERE userId = :userId AND messageId = :messageId")
+    @Transaction
     abstract fun observe(userId: UserId, messageId: MessageId): Flow<MessageWithLabelIds?>
 
     @Query("SELECT * FROM MessageEntity WHERE userId = :userId AND messageId IN (:messages) ")
+    @Transaction
     abstract fun observeMessages(userId: UserId, messages: List<MessageId>): Flow<List<MessageWithLabelIds?>>
 
     fun observeAll(userId: UserId, pageKey: PageKey): Flow<List<MessageWithLabelIds>> {
@@ -124,6 +127,7 @@ abstract class MessageDao : BaseDao<MessageEntity>() {
         LIMIT :size
         """
     )
+    @Transaction
     abstract fun observeAllOrderByTimeAsc(
         userId: UserId,
         labelId: LabelId? = null,
@@ -168,6 +172,7 @@ abstract class MessageDao : BaseDao<MessageEntity>() {
         LIMIT :size
         """
     )
+    @Transaction
     abstract fun observeAllOrderByTimeDesc(
         userId: UserId,
         labelId: LabelId? = null,
