@@ -93,6 +93,7 @@ object Dependencies {
         add(Proton.Core.presentationCompose)
         add(Proton.Core.push)
         add(Proton.Core.report)
+        add(Proton.Core.telemetry)
         add(Proton.Core.user)
         add(Proton.Core.userSettings)
         add(Proton.Core.utilAndroidDagger)

@@ -53,7 +53,8 @@ object UserSettingsTestData {
         weekStart = null,
         dateFormat = null,
         timeFormat = null,
-        earlyAccess = null
+        earlyAccess = null,
+        telemetry = null
     )
 
     val emptyUserSettings = UserSettings(
@@ -82,6 +83,7 @@ object UserSettingsTestData {
         weekStart = null,
         dateFormat = null,
         timeFormat = null,
-        earlyAccess = null
+        earlyAccess = null,
+        telemetry = null
     )
 }

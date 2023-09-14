@@ -308,6 +308,7 @@ object Proton {
         val push = coreArtifact("push", Versions.Proton.core)
         val report = coreArtifact("report", Versions.Proton.core)
         val reportTest = coreArtifact("report-test", Versions.Proton.core)
+        val telemetry = coreArtifact("telemetry", Versions.Proton.core)
         val user = coreArtifact("user", Versions.Proton.core)
         val userSettings = coreArtifact("user-settings", Versions.Proton.core)
         val utilAndroidDagger = coreArtifact("util-android-dagger", Versions.Proton.core)

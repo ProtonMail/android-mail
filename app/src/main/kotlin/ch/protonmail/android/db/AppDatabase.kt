@@ -89,6 +89,8 @@ import me.proton.core.payment.data.local.entity.GooglePurchaseEntity
 import me.proton.core.push.data.local.db.PushConverters
 import me.proton.core.push.data.local.db.PushDatabase
 import me.proton.core.push.data.local.db.PushEntity
+import me.proton.core.telemetry.data.db.TelemetryDatabase
+import me.proton.core.telemetry.data.entity.TelemetryEventEntity
 import me.proton.core.user.data.db.AddressDatabase
 import me.proton.core.user.data.db.UserConverters
 import me.proton.core.user.data.db.UserDatabase
@@ -160,6 +162,8 @@ import me.proton.core.usersettings.data.entity.UserSettingsEntity
         GooglePurchaseEntity::class,
         // observability
         ObservabilityEventEntity::class,
+        // telemetry
+        TelemetryEventEntity::class,
         // key transparency
         AddressChangeEntity::class,
         SelfAuditResultEntity::class,
@@ -214,12 +218,13 @@ abstract class AppDatabase :
     KeyTransparencyDatabase,
     NotificationDatabase,
     PushDatabase,
+    TelemetryDatabase,
     DraftStateDatabase {
 
     companion object {
 
         const val name = "db-mail"
-        const val version = 14
+        const val version = 15
 
         internal val migrations = listOf(
             AppDatabaseMigrations.MIGRATION_1_2,
@@ -235,6 +240,7 @@ abstract class AppDatabase :
             AppDatabaseMigrations.MIGRATION_11_12,
             AppDatabaseMigrations.MIGRATION_12_13,
             AppDatabaseMigrations.MIGRATION_13_14,
+            AppDatabaseMigrations.MIGRATION_14_15,
         )
         fun buildDatabase(context: Context): AppDatabase = databaseBuilder<AppDatabase>(context, name)
             .apply { migrations.forEach { addMigrations(it) } }
