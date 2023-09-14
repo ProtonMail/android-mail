@@ -18,21 +18,27 @@
 
 package ch.protonmail.android.composer.data.usecase
 
+import ch.protonmail.android.composer.data.extension.encryptAndSignText
 import ch.protonmail.android.composer.data.remote.resource.SendMessagePackage
 import ch.protonmail.android.composer.data.sample.SendMessageSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
 import ch.protonmail.android.test.utils.rule.LoggingTestRule
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.test.runTest
 import me.proton.core.crypto.common.context.CryptoContext
 import me.proton.core.crypto.common.keystore.EncryptedByteArray
 import me.proton.core.crypto.common.keystore.PlainByteArray
+import me.proton.core.crypto.common.pgp.EncryptedMessage
 import me.proton.core.crypto.common.pgp.PGPCrypto
 import me.proton.core.crypto.common.pgp.dataPacket
 import me.proton.core.crypto.common.pgp.decryptSessionKeyOrNull
 import me.proton.core.crypto.common.pgp.keyPacket
 import me.proton.core.key.domain.entity.key.PrivateKey
+import me.proton.core.key.domain.entity.key.PrivateKeyRing
+import me.proton.core.key.domain.entity.key.PublicKeyRing
+import me.proton.core.key.domain.entity.keyholder.KeyHolderContext
 import me.proton.core.mailsettings.domain.entity.MimeType
 import me.proton.core.mailsettings.domain.entity.PackageType
 import me.proton.core.user.domain.entity.UserAddress
@@ -270,6 +276,43 @@ class GenerateMessagePackagesTest {
             body = Base64.encode(SendMessageSample.EncryptedBodyDataPacket),
             type = PackageType.ProtonMail.type
         )
+    }
+
+    @Test
+    fun `extension method KeyHolderContext#encryptAndSignText does not lock PrivateKey after using it`() = runTest {
+        // Given
+        val textToEncrypt = "text to encrypt"
+
+        val privateKeyRingMock = PrivateKeyRing(cryptoContextMock, listOf(SendMessageSample.PrivateKey))
+        val publicKeyRingMock = PublicKeyRing(listOf(SendMessageSample.PublicKey))
+
+        val privateKeyDecryptedPassphrase = PlainByteArray("decrypted private key passphrase".encodeToByteArray())
+        val unlockedPrivateKey = "unlocked PrivateKey".encodeToByteArray()
+
+        every {
+            cryptoContextMock.keyStoreCrypto.decrypt(SendMessageSample.PrivateKey.passphrase!!)
+        } returns privateKeyDecryptedPassphrase
+
+        every {
+            pgpCryptoMock.unlock(SendMessageSample.PrivateKey.key, privateKeyDecryptedPassphrase.array)
+        } returns mockk(relaxUnitFun = true) {
+            every { value } returns unlockedPrivateKey
+        }
+
+        every {
+            pgpCryptoMock.encryptAndSignText(textToEncrypt, any(), unlockedPrivateKey)
+        } returns EncryptedMessage()
+
+        val sut = KeyHolderContext(
+            cryptoContextMock,
+            privateKeyRingMock,
+            publicKeyRingMock
+        )
+
+        // When
+        sut.encryptAndSignText("text to encrypt", SendMessageSample.PublicKey)
+
+        verify(exactly = 0) { sut.privateKeyRing.unlockedPrimaryKey.unlockedKey.close() }
     }
 
 }

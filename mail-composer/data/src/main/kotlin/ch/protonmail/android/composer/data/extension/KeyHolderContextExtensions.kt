@@ -20,7 +20,9 @@ package ch.protonmail.android.composer.data.extension
 
 import me.proton.core.crypto.common.pgp.EncryptedMessage
 import me.proton.core.crypto.common.pgp.exception.CryptoException
+import me.proton.core.key.domain.encryptAndSignText
 import me.proton.core.key.domain.entity.key.PublicKey
+import me.proton.core.key.domain.entity.key.PublicKeyRing
 import me.proton.core.key.domain.entity.keyholder.KeyHolderContext
 import timber.log.Timber
 
@@ -28,16 +30,10 @@ import timber.log.Timber
  * Encrypts the [text] with [forPublicKey] and signs it with [KeyHolderContext]'s Primary Key.
  */
 fun KeyHolderContext.encryptAndSignText(text: String, forPublicKey: PublicKey): EncryptedMessage? {
-    return this.privateKeyRing.unlockedPrimaryKey.unlockedKey.use { unlockedPrimaryKey ->
-        try {
-            context.pgpCrypto.encryptAndSignText(
-                text,
-                forPublicKey.key,
-                unlockedPrimaryKey.value
-            )
-        } catch (e: CryptoException) {
-            Timber.e("Exception in encryptAndSignText", e)
-            null
-        }
+    return try {
+        this.encryptAndSignText(text, PublicKeyRing(listOf(forPublicKey)))
+    } catch (e: CryptoException) {
+        Timber.e("Exception in encryptAndSignText", e)
+        null
     }
 }

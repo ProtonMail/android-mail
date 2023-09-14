@@ -20,11 +20,13 @@ package ch.protonmail.android.composer.data.sample
 
 import ch.protonmail.android.composer.data.remote.resource.SendMessagePackage
 import ch.protonmail.android.composer.data.usecase.GenerateSendMessagePackage
+import me.proton.core.crypto.common.keystore.EncryptedByteArray
 import me.proton.core.crypto.common.pgp.DataPacket
 import me.proton.core.crypto.common.pgp.EncryptedPacket
 import me.proton.core.crypto.common.pgp.KeyPacket
 import me.proton.core.crypto.common.pgp.PacketType
 import me.proton.core.crypto.common.pgp.SessionKey
+import me.proton.core.key.domain.entity.key.PrivateKey
 import me.proton.core.key.domain.entity.key.PublicKey
 import me.proton.core.mailsendpreferences.domain.model.SendPreferences
 import me.proton.core.mailsettings.domain.entity.MimeType
@@ -77,7 +79,16 @@ object SendMessageSample {
         )
     )
 
-    val PublicKey = PublicKey("SendPreferences PublicKey", true, true, true, true)
+    val PublicKey: PublicKey = PublicKey("SendPreferences PublicKey", true, true, true, true)
+
+    val PrivateKey: PrivateKey = PrivateKey(
+        "SendMessage Sample Private Key",
+        true,
+        true,
+        true,
+        true,
+        EncryptedByteArray("encrypted passphrase".encodeToByteArray())
+    )
 
     object SendPreferences {
 
