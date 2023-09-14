@@ -20,7 +20,7 @@ package ch.protonmail.android.uitest.e2e.mailbox.detail.bodycontent
 
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.networkmocks.mockwebserver.combineWith
-import ch.protonmail.android.networkmocks.mockwebserver.requests.given
+import ch.protonmail.android.networkmocks.mockwebserver.requests.get
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.matchWildcards
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
@@ -67,16 +67,16 @@ internal class ConversationDetailRemoteContentTests :
     fun checkRemoteContentBlockedInConversationMode() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_184211.json"
                     withStatusCode 200,
-                given("/mail/v4/conversations")
+                get("/mail/v4/conversations")
                     respondWith "/mail/v4/conversations/conversations_184211.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/mail/v4/conversations/*")
+                get("/mail/v4/conversations/*")
                     respondWith "/mail/v4/conversations/conversation-id/conversation-id_184211.json"
                     withStatusCode 200 matchWildcards true,
-                given("/mail/v4/messages/*")
+                get("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_184211.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )
@@ -105,19 +105,19 @@ internal class ConversationDetailRemoteContentTests :
     fun checkRemoteContentBlockedWithMultipleMessagesInConversationMode() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_184212.json"
                     withStatusCode 200,
-                given("/mail/v4/conversations")
+                get("/mail/v4/conversations")
                     respondWith "/mail/v4/conversations/conversations_184212.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/mail/v4/conversations/*")
+                get("/mail/v4/conversations/*")
                     respondWith "/mail/v4/conversations/conversation-id/conversation-id_184212.json"
                     withStatusCode 200 matchWildcards true,
-                given("/mail/v4/messages/*")
+                get("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_184212.json"
                     withStatusCode 200 matchWildcards true serveOnce true,
-                given("/mail/v4/messages/*")
+                get("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_184212_2.json"
                     withStatusCode 200 matchWildcards true
             )
@@ -166,16 +166,16 @@ internal class ConversationDetailRemoteContentTests :
     fun checkRemoteContentBannerNotShownWhenNoRemoteContentIsDisplayedInConversationMode() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_212683_2.json"
                     withStatusCode 200,
-                given("/mail/v4/conversations")
+                get("/mail/v4/conversations")
                     respondWith "/mail/v4/conversations/conversations_212683.json"
                     withStatusCode 200 matchWildcards true ignoreQueryParams true,
-                given("/mail/v4/conversations/*")
+                get("/mail/v4/conversations/*")
                     respondWith "/mail/v4/conversations/conversation-id/conversation-id_212683.json"
                     withStatusCode 200 matchWildcards true,
-                given("/mail/v4/messages/*")
+                get("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_212683.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )
@@ -196,16 +196,16 @@ internal class ConversationDetailRemoteContentTests :
     fun checkCombinedBannerIsShownWhenBothRemoteContentAndEmbeddedImagesAreBlockedInConversationMode() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_212684_2.json"
                     withStatusCode 200,
-                given("/mail/v4/conversations")
+                get("/mail/v4/conversations")
                     respondWith "/mail/v4/conversations/conversations_212684.json"
                     withStatusCode 200 matchWildcards true ignoreQueryParams true,
-                given("/mail/v4/conversations/*")
+                get("/mail/v4/conversations/*")
                     respondWith "/mail/v4/conversations/conversation-id/conversation-id_212684.json"
                     withStatusCode 200 matchWildcards true serveOnce true,
-                given("/mail/v4/messages/*")
+                get("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_212684.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )
@@ -234,16 +234,16 @@ internal class ConversationDetailRemoteContentTests :
     fun checkRemoteContentBlockedFromExternalAddressInConversationMode() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_212686_2.json"
                     withStatusCode 200,
-                given("/mail/v4/conversations")
+                get("/mail/v4/conversations")
                     respondWith "/mail/v4/conversations/conversations_212686.json"
                     withStatusCode 200 matchWildcards true ignoreQueryParams true,
-                given("/mail/v4/conversations/*")
+                get("/mail/v4/conversations/*")
                     respondWith "/mail/v4/conversations/conversation-id/conversation-id_212686.json"
                     withStatusCode 200 matchWildcards true,
-                given("/mail/v4/messages/*")
+                get("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_212686.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )

@@ -20,7 +20,7 @@ package ch.protonmail.android.uitest.e2e.mailbox
 
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.networkmocks.mockwebserver.combineWith
-import ch.protonmail.android.networkmocks.mockwebserver.requests.given
+import ch.protonmail.android.networkmocks.mockwebserver.requests.get
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.serveOnce
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withNetworkDelay
@@ -67,13 +67,13 @@ internal class MailboxSwitchTests : MockedNetworkTest() {
     fun checkMailboxSwitchConversationToMessageMode() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_183527.json"
                     withStatusCode 200,
-                given("/mail/v4/conversations?Page=0&PageSize=75&Limit=75&LabelID=0&Sort=Time&Desc=1")
+                get("/mail/v4/conversations?Page=0&PageSize=75&Limit=75&LabelID=0&Sort=Time&Desc=1")
                     respondWith "/mail/v4/conversations/conversations_183527.json"
                     withStatusCode 200 serveOnce true,
-                given("/mail/v4/messages?Page=0&PageSize=75&Limit=75&LabelID=7&Sort=Time&Desc=1")
+                get("/mail/v4/messages?Page=0&PageSize=75&Limit=75&LabelID=7&Sort=Time&Desc=1")
                     respondWith "/mail/v4/messages/messages_183527.json"
                     withStatusCode 200 serveOnce true withNetworkDelay 2000
             )

@@ -20,7 +20,7 @@ package ch.protonmail.android.uitest.e2e.mailbox.drafts
 
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.networkmocks.mockwebserver.combineWith
-import ch.protonmail.android.networkmocks.mockwebserver.requests.given
+import ch.protonmail.android.networkmocks.mockwebserver.requests.get
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.matchWildcards
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
@@ -96,16 +96,16 @@ internal class OpenExistingDraftsHappyPathTests :
     fun openDraftWithPrefilledToRecipientAndOtherFields() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_placeholder_conversation.json"
                     withStatusCode 200,
-                given("/mail/v4/conversations")
+                get("/mail/v4/conversations")
                     respondWith "/mail/v4/conversations/conversations_empty.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/mail/v4/messages")
+                get("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_212662.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/mail/v4/messages/*")
+                get("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_212662.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )
@@ -133,16 +133,16 @@ internal class OpenExistingDraftsHappyPathTests :
     fun openDraftWithAllPrefilledFields() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_placeholder_conversation.json"
                     withStatusCode 200,
-                given("/mail/v4/conversations")
+                get("/mail/v4/conversations")
                     respondWith "/mail/v4/conversations/conversations_empty.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/mail/v4/messages")
+                get("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_212663.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/mail/v4/messages/*")
+                get("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_212663.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )
@@ -169,16 +169,16 @@ internal class OpenExistingDraftsHappyPathTests :
     fun openDraftWithAllPrefilledFieldsInMessageMode() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_placeholder_messages.json"
                     withStatusCode 200,
-                given("/mail/v4/messages")
+                get("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_empty.json"
                     withStatusCode 200 ignoreQueryParams true serveOnce true,
-                given("/mail/v4/messages")
+                get("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_212663.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/mail/v4/messages/*")
+                get("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_212663.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )
@@ -204,16 +204,16 @@ internal class OpenExistingDraftsHappyPathTests :
     fun openDraftWithoutSubjectAndMessageBody() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_placeholder_conversation.json"
                     withStatusCode 200,
-                given("/mail/v4/conversations")
+                get("/mail/v4/conversations")
                     respondWith "/mail/v4/conversations/conversations_empty.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/mail/v4/messages")
+                get("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_212665.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/mail/v4/messages/*")
+                get("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_212665.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )
@@ -233,19 +233,19 @@ internal class OpenExistingDraftsHappyPathTests :
     fun openingDraftsAlwaysFetchesRemoteContentFirst() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_placeholder_conversation.json"
                     withStatusCode 200,
-                given("/mail/v4/conversations")
+                get("/mail/v4/conversations")
                     respondWith "/mail/v4/conversations/conversations_empty.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/mail/v4/messages")
+                get("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_212666.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/mail/v4/messages/*")
+                get("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_212666.json"
                     withStatusCode 200 matchWildcards true serveOnce true,
-                given("/mail/v4/messages/*")
+                get("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_212666_2.json"
                     withStatusCode 200 matchWildcards true
             )
@@ -289,19 +289,19 @@ internal class OpenExistingDraftsHappyPathTests :
     fun openingDraftPreservesSenderAddress() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_placeholder_conversation.json"
                     withStatusCode 200,
-                given("/mail/v4/conversations")
+                get("/mail/v4/conversations")
                     respondWith "/mail/v4/conversations/conversations_empty.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/mail/v4/messages?Page=0&PageSize=75&Limit=75&LabelID=0&Sort=Time&Desc=1")
+                get("/mail/v4/messages?Page=0&PageSize=75&Limit=75&LabelID=0&Sort=Time&Desc=1")
                     respondWith "/mail/v4/messages/messages_empty.json"
                     withStatusCode 200,
-                given("/mail/v4/messages")
+                get("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_212675.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/mail/v4/messages/*")
+                get("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_212675.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )

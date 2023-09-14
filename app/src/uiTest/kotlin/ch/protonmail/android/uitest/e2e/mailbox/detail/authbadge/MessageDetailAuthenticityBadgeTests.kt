@@ -20,7 +20,7 @@ package ch.protonmail.android.uitest.e2e.mailbox.detail.authbadge
 
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.networkmocks.mockwebserver.combineWith
-import ch.protonmail.android.networkmocks.mockwebserver.requests.given
+import ch.protonmail.android.networkmocks.mockwebserver.requests.get
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.matchWildcards
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
@@ -58,13 +58,13 @@ internal class MessageDetailAuthenticityBadgeTests :
     fun testAuthBadgeInMessageHeaderWhenIsProtonOfficial() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_192136.json"
                     withStatusCode 200,
-                given("/mail/v4/messages")
+                get("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_192136.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/mail/v4/messages/*")
+                get("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_192136.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )
@@ -86,13 +86,13 @@ internal class MessageDetailAuthenticityBadgeTests :
     fun testAuthBadgeInMessageHeaderWhenIsNotProtonOfficial() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_192136.json"
                     withStatusCode 200,
-                given("/mail/v4/messages")
+                get("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_192138.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/mail/v4/messages/*")
+                get("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_192138.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )

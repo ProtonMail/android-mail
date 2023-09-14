@@ -21,7 +21,7 @@ package ch.protonmail.android.uitest.e2e.mailbox.errors.append
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.networkmocks.mockwebserver.combineWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MockPriority
-import ch.protonmail.android.networkmocks.mockwebserver.requests.given
+import ch.protonmail.android.networkmocks.mockwebserver.requests.get
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.serveOnce
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withNetworkDelay
@@ -66,19 +66,19 @@ internal class MessageModeAppendItemsTests : MockedNetworkTest(), MailboxAppendI
     fun checkAppendErrorAndRetryInMessageMode() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_placeholder_messages.json"
                     withStatusCode 200,
-                given("/mail/v4/messages?Page=0&PageSize=75&Limit=75&LabelID=0&Sort=Time&Desc=1")
+                get("/mail/v4/messages?Page=0&PageSize=75&Limit=75&LabelID=0&Sort=Time&Desc=1")
                     respondWith "/mail/v4/messages/messages_189114_1.json"
                     withStatusCode 200 serveOnce true,
-                given("/mail/v4/messages?Page=0&PageSize=25&Limit=25&LabelID=0&Sort=Time&Desc=1&End=1687181980&EndID=Ipolvuzgp9N-3XwngHmiQZ9fDZV3CUSv65Pi3SjL75I_-mhS4sxdT2qNo5-GEoLuFuzInClxbq3tKM9MydlQzQ%3D%3D")
+                get("/mail/v4/messages?Page=0&PageSize=25&Limit=25&LabelID=0&Sort=Time&Desc=1&End=1687181980&EndID=Ipolvuzgp9N-3XwngHmiQZ9fDZV3CUSv65Pi3SjL75I_-mhS4sxdT2qNo5-GEoLuFuzInClxbq3tKM9MydlQzQ%3D%3D")
                     respondWith "/mail/v4/messages/messages_189114_2.json"
                     withStatusCode 200 serveOnce true,
-                given("/mail/v4/messages?Page=0&PageSize=25&Limit=25&LabelID=0&Sort=Time&Desc=1&End=1678107386&EndID=Q0bXXG7rlW34PI8sKXbIliVZ2ybuoIefe933RlbTZYrjpl1nsWG7FKTAW7s4nnskarFkbvpPVOESe0omarcHsQ%3D%3D")
+                get("/mail/v4/messages?Page=0&PageSize=25&Limit=25&LabelID=0&Sort=Time&Desc=1&End=1678107386&EndID=Q0bXXG7rlW34PI8sKXbIliVZ2ybuoIefe933RlbTZYrjpl1nsWG7FKTAW7s4nnskarFkbvpPVOESe0omarcHsQ%3D%3D")
                     respondWith "/global/errors/error_mock.json"
                     withStatusCode 503 withPriority MockPriority.Highest withNetworkDelay 2000 serveOnce true,
-                given("/mail/v4/messages?Page=0&PageSize=25&Limit=25&LabelID=0&Sort=Time&Desc=1&End=1678107386&EndID=Q0bXXG7rlW34PI8sKXbIliVZ2ybuoIefe933RlbTZYrjpl1nsWG7FKTAW7s4nnskarFkbvpPVOESe0omarcHsQ%3D%3D")
+                get("/mail/v4/messages?Page=0&PageSize=25&Limit=25&LabelID=0&Sort=Time&Desc=1&End=1678107386&EndID=Q0bXXG7rlW34PI8sKXbIliVZ2ybuoIefe933RlbTZYrjpl1nsWG7FKTAW7s4nnskarFkbvpPVOESe0omarcHsQ%3D%3D")
                     respondWith "/mail/v4/messages/messages_189114_3.json"
                     withStatusCode 200 withNetworkDelay 2000
             )
@@ -97,16 +97,16 @@ internal class MessageModeAppendItemsTests : MockedNetworkTest(), MailboxAppendI
     fun checkAppendItemsInMessageMode() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_placeholder_messages.json"
                     withStatusCode 200,
-                given("/mail/v4/messages?Page=0&PageSize=75&Limit=75&LabelID=0&Sort=Time&Desc=1")
+                get("/mail/v4/messages?Page=0&PageSize=75&Limit=75&LabelID=0&Sort=Time&Desc=1")
                     respondWith "/mail/v4/messages/messages_189114_1.json"
                     withStatusCode 200 serveOnce true,
-                given("/mail/v4/messages?Page=0&PageSize=25&Limit=25&LabelID=0&Sort=Time&Desc=1&End=1687181980&EndID=Ipolvuzgp9N-3XwngHmiQZ9fDZV3CUSv65Pi3SjL75I_-mhS4sxdT2qNo5-GEoLuFuzInClxbq3tKM9MydlQzQ%3D%3D")
+                get("/mail/v4/messages?Page=0&PageSize=25&Limit=25&LabelID=0&Sort=Time&Desc=1&End=1687181980&EndID=Ipolvuzgp9N-3XwngHmiQZ9fDZV3CUSv65Pi3SjL75I_-mhS4sxdT2qNo5-GEoLuFuzInClxbq3tKM9MydlQzQ%3D%3D")
                     respondWith "/mail/v4/messages/messages_189114_2.json"
                     withStatusCode 200 serveOnce true,
-                given("/mail/v4/messages?Page=0&PageSize=25&Limit=25&LabelID=0&Sort=Time&Desc=1&End=1678107386&EndID=Q0bXXG7rlW34PI8sKXbIliVZ2ybuoIefe933RlbTZYrjpl1nsWG7FKTAW7s4nnskarFkbvpPVOESe0omarcHsQ%3D%3D")
+                get("/mail/v4/messages?Page=0&PageSize=25&Limit=25&LabelID=0&Sort=Time&Desc=1&End=1678107386&EndID=Q0bXXG7rlW34PI8sKXbIliVZ2ybuoIefe933RlbTZYrjpl1nsWG7FKTAW7s4nnskarFkbvpPVOESe0omarcHsQ%3D%3D")
                     respondWith "/mail/v4/messages/messages_189114_3.json"
                     withStatusCode 200 withNetworkDelay 2000
             )

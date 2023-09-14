@@ -20,7 +20,7 @@ package ch.protonmail.android.uitest.e2e.mailbox.errors.pulltorefresh
 
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.networkmocks.mockwebserver.combineWith
-import ch.protonmail.android.networkmocks.mockwebserver.requests.given
+import ch.protonmail.android.networkmocks.mockwebserver.requests.get
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.serveOnce
@@ -55,13 +55,13 @@ internal class MessageModeMailboxPullToRefreshErrorTests :
     fun checkMessagesLoadingErrorToError() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_placeholder_messages.json"
                     withStatusCode 200,
-                given("/mail/v4/messages")
+                get("/mail/v4/messages")
                     respondWith "/global/errors/error_mock.json"
                     withStatusCode 503 ignoreQueryParams true serveOnce true,
-                given("/mail/v4/messages")
+                get("/mail/v4/messages")
                     respondWith "/global/errors/error_mock.json"
                     withStatusCode 503 ignoreQueryParams true withNetworkDelay 2000 serveOnce true
             )
@@ -79,13 +79,13 @@ internal class MessageModeMailboxPullToRefreshErrorTests :
     fun checkMessagesLoadingContentToError() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_placeholder_messages.json"
                     withStatusCode 200,
-                given("/mail/v4/messages")
+                get("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_base_placeholder.json"
                     withStatusCode 200 ignoreQueryParams true serveOnce true,
-                given("/mail/v4/messages")
+                get("/mail/v4/messages")
                     respondWith "/global/errors/error_mock.json"
                     withStatusCode 503 ignoreQueryParams true withNetworkDelay 2000 serveOnce true
             )
@@ -104,13 +104,13 @@ internal class MessageModeMailboxPullToRefreshErrorTests :
     fun checkMessagesLoadingErrorToContent() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_placeholder_messages.json"
                     withStatusCode 200,
-                given("/mail/v4/messages")
+                get("/mail/v4/messages")
                     respondWith "/global/errors/error_mock.json"
                     withStatusCode 503 ignoreQueryParams true serveOnce true,
-                given("/mail/v4/messages")
+                get("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_base_placeholder.json"
                     withStatusCode 200 ignoreQueryParams true withNetworkDelay 2000 serveOnce true
             )
@@ -128,13 +128,13 @@ internal class MessageModeMailboxPullToRefreshErrorTests :
     fun checkMessagesLoadingEmptyToError() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_placeholder_messages.json"
                     withStatusCode 200,
-                given("/mail/v4/messages")
+                get("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_empty.json"
                     withStatusCode 200 ignoreQueryParams true serveOnce true,
-                given("/mail/v4/messages")
+                get("/mail/v4/messages")
                     respondWith "/global/errors/error_mock.json"
                     withStatusCode 503 ignoreQueryParams true withNetworkDelay 2000 serveOnce true
             )
@@ -152,13 +152,13 @@ internal class MessageModeMailboxPullToRefreshErrorTests :
     fun checkMessagesLoadingErrorToEmpty() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_placeholder_messages.json"
                     withStatusCode 200,
-                given("/mail/v4/messages")
+                get("/mail/v4/messages")
                     respondWith "/global/errors/error_mock.json"
                     withStatusCode 503 ignoreQueryParams true serveOnce true,
-                given("/mail/v4/messages")
+                get("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_empty.json"
                     withStatusCode 200 ignoreQueryParams true withNetworkDelay 2000 serveOnce true
             )
@@ -177,13 +177,13 @@ internal class MessageModeMailboxPullToRefreshErrorTests :
     fun checkMessagesLoadingEmptyToContent() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_placeholder_messages.json"
                     withStatusCode 200,
-                given("/mail/v4/messages")
+                get("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_empty.json"
                     withStatusCode 200 ignoreQueryParams true serveOnce true,
-                given("/mail/v4/messages")
+                get("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_base_placeholder.json"
                     withStatusCode 200 ignoreQueryParams true withNetworkDelay 2000 serveOnce true
             )

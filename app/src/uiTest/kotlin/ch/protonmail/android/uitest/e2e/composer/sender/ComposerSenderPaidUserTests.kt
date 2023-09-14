@@ -21,7 +21,7 @@ package ch.protonmail.android.uitest.e2e.composer.sender
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.networkmocks.mockwebserver.combineWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MockPriority
-import ch.protonmail.android.networkmocks.mockwebserver.requests.given
+import ch.protonmail.android.networkmocks.mockwebserver.requests.get
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withPriority
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withStatusCode
@@ -81,7 +81,7 @@ internal class ComposerSenderPaidUserTests :
     fun testMultipleAliasForPaidUser() {
         mockWebServer.dispatcher combineWith composerMockNetworkDispatcher {
             addMockRequests(
-                given("/core/v4/addresses")
+                get("/core/v4/addresses")
                     respondWith "/core/v4/addresses/addresses_192117.json"
                     withStatusCode 200 withPriority MockPriority.Highest
             )
@@ -111,7 +111,7 @@ internal class ComposerSenderPaidUserTests :
     fun testPrimaryAddressIsStillDefaultAfterDraftIsSaved() {
         mockWebServer.dispatcher combineWith composerMockNetworkDispatcher {
             addMockRequests(
-                given("/core/v4/addresses")
+                get("/core/v4/addresses")
                     respondWith "/core/v4/addresses/addresses_192122.json"
                     withStatusCode 200 withPriority MockPriority.Highest
             )

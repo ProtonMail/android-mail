@@ -20,7 +20,7 @@ package ch.protonmail.android.uitest.e2e.mailbox.drafts
 
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.networkmocks.mockwebserver.combineWith
-import ch.protonmail.android.networkmocks.mockwebserver.requests.given
+import ch.protonmail.android.networkmocks.mockwebserver.requests.get
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.matchWildcards
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
@@ -79,16 +79,16 @@ internal class OpenExistingDraftsErrorTests :
     fun openingDraftInOfflineModeWithNoLocalCacheShowsSnackbarWarning() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_placeholder_conversation.json"
                     withStatusCode 200,
-                given("/mail/v4/conversations")
+                get("/mail/v4/conversations")
                     respondWith "/mail/v4/conversations/conversations_empty.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/mail/v4/messages")
+                get("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_212667.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/mail/v4/messages/*")
+                get("/mail/v4/messages/*")
                     simulateNoNetwork true matchWildcards true
             )
         }
@@ -109,16 +109,16 @@ internal class OpenExistingDraftsErrorTests :
     fun openingDraftWhenBeReturnsErrorWithNoLocalCacheShowsSnackbarWarning() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_placeholder_conversation.json"
                     withStatusCode 200,
-                given("/mail/v4/conversations")
+                get("/mail/v4/conversations")
                     respondWith "/mail/v4/conversations/conversations_empty.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/mail/v4/messages")
+                get("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_212668.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/mail/v4/messages/*")
+                get("/mail/v4/messages/*")
                     respondWith "/global/errors/error_mock.json"
                     withStatusCode 503 matchWildcards true
             )
@@ -139,16 +139,16 @@ internal class OpenExistingDraftsErrorTests :
     fun openingDraftWithDecryptionErrorShowsOutOfSyncWarning() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_placeholder_conversation.json"
                     withStatusCode 200,
-                given("/mail/v4/conversations")
+                get("/mail/v4/conversations")
                     respondWith "/mail/v4/conversations/conversations_empty.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/mail/v4/messages")
+                get("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_212669.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/mail/v4/messages/*")
+                get("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_212669.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )
@@ -170,22 +170,22 @@ internal class OpenExistingDraftsErrorTests :
     fun openingDraftInOfflineModeWithLocalCacheShowsCachedData() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_placeholder_conversation.json"
                     withStatusCode 200,
-                given("/mail/v4/conversations")
+                get("/mail/v4/conversations")
                     respondWith "/mail/v4/conversations/conversations_empty.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/mail/v4/messages")
+                get("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_212670.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/mail/v4/messages/*")
+                get("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_212670.json"
                     withStatusCode 200 matchWildcards true serveOnce true,
-                given("/mail/v4/messages/*")
+                get("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_212670.json"
                     withStatusCode 200 matchWildcards true serveOnce true,
-                given("/mail/v4/messages/*")
+                get("/mail/v4/messages/*")
                     simulateNoNetwork true matchWildcards true
             )
         }
@@ -204,22 +204,22 @@ internal class OpenExistingDraftsErrorTests :
     fun openingDraftOnBeErrorWithLocalCacheShowsCachedData() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_placeholder_conversation.json"
                     withStatusCode 200,
-                given("/mail/v4/conversations")
+                get("/mail/v4/conversations")
                     respondWith "/mail/v4/conversations/conversations_empty.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/mail/v4/messages")
+                get("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_212673.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/mail/v4/messages/*")
+                get("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_212673.json"
                     withStatusCode 200 matchWildcards true serveOnce true,
-                given("/mail/v4/messages/*")
+                get("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_212673.json"
                     withStatusCode 200 matchWildcards true serveOnce true,
-                given("/mail/v4/messages/*")
+                get("/mail/v4/messages/*")
                     respondWith "/global/errors/error_mock.json"
                     withStatusCode 503 matchWildcards true
             )
@@ -237,19 +237,19 @@ internal class OpenExistingDraftsErrorTests :
     fun openingDraftOnDecryptionErrorWithLocalCacheShowsEmptyFields() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_placeholder_conversation.json"
                     withStatusCode 200,
-                given("/mail/v4/conversations")
+                get("/mail/v4/conversations")
                     respondWith "/mail/v4/conversations/conversations_empty.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/mail/v4/messages")
+                get("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_212674.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/mail/v4/messages/*")
+                get("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_212674.json"
                     withStatusCode 200 matchWildcards true serveOnce true,
-                given("/mail/v4/messages/*")
+                get("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_212674_2.json"
                     withStatusCode 200 matchWildcards true
             )

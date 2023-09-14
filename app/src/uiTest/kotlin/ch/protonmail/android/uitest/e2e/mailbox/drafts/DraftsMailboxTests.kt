@@ -21,7 +21,7 @@ package ch.protonmail.android.uitest.e2e.mailbox.drafts
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.networkmocks.mockwebserver.combineWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MockPriority
-import ch.protonmail.android.networkmocks.mockwebserver.requests.given
+import ch.protonmail.android.networkmocks.mockwebserver.requests.get
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withPriority
@@ -59,13 +59,13 @@ internal class DraftsMailboxTests : MockedNetworkTest() {
     fun checkParticipantNameInDraftFoldersWhenNotSpecified() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_80395.json"
                     withStatusCode 200,
-                given("/mail/v4/messages")
+                get("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_empty.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/mail/v4/messages?Page=0&PageSize=75&Limit=75&LabelID=8&Sort=Time&Desc=1")
+                get("/mail/v4/messages?Page=0&PageSize=75&Limit=75&LabelID=8&Sort=Time&Desc=1")
                     respondWith "/mail/v4/messages/messages_80395.json"
                     withStatusCode 200 withPriority MockPriority.Highest
             )
@@ -98,19 +98,19 @@ internal class DraftsMailboxTests : MockedNetworkTest() {
             useDefaultContacts = false
         ) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_80396.json"
                     withStatusCode 200,
-                given("/contacts/v4/contacts")
+                get("/contacts/v4/contacts")
                     respondWith "/contacts/v4/contacts/contacts_80396.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/contacts/v4/contacts/emails")
+                get("/contacts/v4/contacts/emails")
                     respondWith "/contacts/v4/contacts/emails/contacts-emails_80396.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/mail/v4/messages")
+                get("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_empty.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/mail/v4/messages?Page=0&PageSize=75&Limit=75&LabelID=8&Sort=Time&Desc=1")
+                get("/mail/v4/messages?Page=0&PageSize=75&Limit=75&LabelID=8&Sort=Time&Desc=1")
                     respondWith "/mail/v4/messages/messages_80396.json"
                     withStatusCode 200 withPriority MockPriority.Highest
             )
@@ -143,19 +143,19 @@ internal class DraftsMailboxTests : MockedNetworkTest() {
             useDefaultContacts = false
         ) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_80397.json"
                     withStatusCode 200,
-                given("/contacts/v4/contacts")
+                get("/contacts/v4/contacts")
                     respondWith "/contacts/v4/contacts/contacts_80397.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/contacts/v4/contacts/emails")
+                get("/contacts/v4/contacts/emails")
                     respondWith "/contacts/v4/contacts/emails/contacts-emails_80397.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/mail/v4/messages")
+                get("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_empty.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/mail/v4/messages?Page=0&PageSize=75&Limit=75&LabelID=8&Sort=Time&Desc=1")
+                get("/mail/v4/messages?Page=0&PageSize=75&Limit=75&LabelID=8&Sort=Time&Desc=1")
                     respondWith "/mail/v4/messages/messages_80397.json"
                     withStatusCode 200 withPriority MockPriority.Highest
             )

@@ -20,7 +20,7 @@ package ch.protonmail.android.uitest.e2e.mailbox
 
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.networkmocks.mockwebserver.combineWith
-import ch.protonmail.android.networkmocks.mockwebserver.requests.given
+import ch.protonmail.android.networkmocks.mockwebserver.requests.get
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withStatusCode
@@ -86,16 +86,16 @@ internal class MailboxParticipantsTest : MockedNetworkTest() {
             useDefaultContacts = false
         ) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_77426.json"
                     withStatusCode 200,
-                given("/contacts/v4/contacts")
+                get("/contacts/v4/contacts")
                     respondWith "/contacts/v4/contacts/contacts_77426.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/contacts/v4/contacts/emails")
+                get("/contacts/v4/contacts/emails")
                     respondWith "/contacts/v4/contacts/emails/contacts-emails_77426.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/mail/v4/messages")
+                get("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_77426.json"
                     withStatusCode 200 ignoreQueryParams true
             )
@@ -120,16 +120,16 @@ internal class MailboxParticipantsTest : MockedNetworkTest() {
             useDefaultContacts = false
         ) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_77427.json"
                     withStatusCode 200,
-                given("/contacts/v4/contacts")
+                get("/contacts/v4/contacts")
                     respondWith "/contacts/v4/contacts/contacts_77427.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/contacts/v4/contacts/emails")
+                get("/contacts/v4/contacts/emails")
                     respondWith "/contacts/v4/contacts/emails/contacts-emails_77427.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/mail/v4/conversations")
+                get("/mail/v4/conversations")
                     respondWith "/mail/v4/conversations/conversations_77427.json"
                     withStatusCode 200 ignoreQueryParams true
             )

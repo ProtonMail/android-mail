@@ -20,7 +20,7 @@ package ch.protonmail.android.uitest.e2e.mailbox.detail.bodycontent
 
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.networkmocks.mockwebserver.combineWith
-import ch.protonmail.android.networkmocks.mockwebserver.requests.given
+import ch.protonmail.android.networkmocks.mockwebserver.requests.get
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.matchWildcards
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
@@ -60,13 +60,13 @@ internal class MessageDetailRemoteContentTests : MockedNetworkTest(loginType = L
     fun checkRemoteContentBlockedInMessageMode() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_184210.json"
                     withStatusCode 200,
-                given("/mail/v4/messages")
+                get("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_184210.json"
                     withStatusCode 200 matchWildcards true ignoreQueryParams true,
-                given("/mail/v4/messages/*")
+                get("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_184210.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )
@@ -95,13 +95,13 @@ internal class MessageDetailRemoteContentTests : MockedNetworkTest(loginType = L
     fun checkRemoteContentBannerNotShownWhenNoRemoteContentIsDisplayedInMessageMode() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_212683.json"
                     withStatusCode 200,
-                given("/mail/v4/messages")
+                get("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_212683.json"
                     withStatusCode 200 matchWildcards true ignoreQueryParams true,
-                given("/mail/v4/messages/*")
+                get("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_212683.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )
@@ -122,13 +122,13 @@ internal class MessageDetailRemoteContentTests : MockedNetworkTest(loginType = L
     fun checkCombinedBannerIsShownWhenBothRemoteContentAndEmbeddedImagesAreBlockedInMessageMode() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_212684.json"
                     withStatusCode 200,
-                given("/mail/v4/messages")
+                get("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_212684.json"
                     withStatusCode 200 matchWildcards true ignoreQueryParams true,
-                given("/mail/v4/messages/*")
+                get("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_212684.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )
@@ -157,13 +157,13 @@ internal class MessageDetailRemoteContentTests : MockedNetworkTest(loginType = L
     fun checkRemoteContentBlockedFromExternalAddressInMessageMode() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_212686.json"
                     withStatusCode 200,
-                given("/mail/v4/messages")
+                get("/mail/v4/messages")
                     respondWith "/mail/v4/messages/messages_212686.json"
                     withStatusCode 200 matchWildcards true ignoreQueryParams true,
-                given("/mail/v4/messages/*")
+                get("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_212686.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )

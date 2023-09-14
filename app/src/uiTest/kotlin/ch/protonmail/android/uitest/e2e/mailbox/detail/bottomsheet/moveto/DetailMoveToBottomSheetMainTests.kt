@@ -20,7 +20,7 @@ package ch.protonmail.android.uitest.e2e.mailbox.detail.bottomsheet.moveto
 
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.networkmocks.mockwebserver.combineWith
-import ch.protonmail.android.networkmocks.mockwebserver.requests.given
+import ch.protonmail.android.networkmocks.mockwebserver.requests.get
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.matchWildcards
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
@@ -73,16 +73,16 @@ internal class DetailMoveToBottomSheetMainTests : MockedNetworkTest() {
     fun checkMoveToBottomSheetComponentsWithNoCustomFolders() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_185411.json"
                     withStatusCode 200,
-                given("/mail/v4/conversations")
+                get("/mail/v4/conversations")
                     respondWith "/mail/v4/conversations/conversations_base_placeholder.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/mail/v4/conversations/*")
+                get("/mail/v4/conversations/*")
                     respondWith "/mail/v4/conversations/conversation-id/conversation-id_base_placeholder.json"
                     withStatusCode 200 matchWildcards true,
-                given("/mail/v4/messages/*")
+                get("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_185411.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )
@@ -111,19 +111,19 @@ internal class DetailMoveToBottomSheetMainTests : MockedNetworkTest() {
             useDefaultMailReadResponses = true
         ) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_185412.json"
                     withStatusCode 200,
-                given("/core/v4/labels?Type=3")
+                get("/core/v4/labels?Type=3")
                     respondWith "/core/v4/labels/labels-type3_185412.json"
                     withStatusCode 200,
-                given("/mail/v4/conversations")
+                get("/mail/v4/conversations")
                     respondWith "/mail/v4/conversations/conversations_base_placeholder.json"
                     withStatusCode 200 ignoreQueryParams true,
-                given("/mail/v4/conversations/*")
+                get("/mail/v4/conversations/*")
                     respondWith "/mail/v4/conversations/conversation-id/conversation-id_base_placeholder.json"
                     withStatusCode 200 matchWildcards true,
-                given("/mail/v4/messages/*")
+                get("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_185412.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )
@@ -153,16 +153,16 @@ internal class DetailMoveToBottomSheetMainTests : MockedNetworkTest() {
             useDefaultMailReadResponses = true
         ) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_185414.json"
                     withStatusCode 200,
-                given("/mail/v4/conversations")
+                get("/mail/v4/conversations")
                     respondWith "/mail/v4/conversations/conversations_base_placeholder.json"
                     withStatusCode 200 ignoreQueryParams true serveOnce true,
-                given("/mail/v4/conversations/*")
+                get("/mail/v4/conversations/*")
                     respondWith "/mail/v4/conversations/conversation-id/conversation-id_base_placeholder.json"
                     withStatusCode 200 matchWildcards true,
-                given("/mail/v4/messages/*")
+                get("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_185414.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )
@@ -198,16 +198,16 @@ internal class DetailMoveToBottomSheetMainTests : MockedNetworkTest() {
             useDefaultMailReadResponses = true
         ) {
             addMockRequests(
-                given("/mail/v4/settings")
+                get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_185415.json"
                     withStatusCode 200,
-                given("/mail/v4/conversations")
+                get("/mail/v4/conversations")
                     respondWith "/mail/v4/conversations/conversations_base_placeholder.json"
                     withStatusCode 200 ignoreQueryParams true serveOnce true,
-                given("/mail/v4/conversations/*")
+                get("/mail/v4/conversations/*")
                     respondWith "/mail/v4/conversations/conversation-id/conversation-id_base_placeholder.json"
                     withStatusCode 200 matchWildcards true,
-                given("/mail/v4/messages/*")
+                get("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_185415.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )
