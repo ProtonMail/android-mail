@@ -85,8 +85,8 @@ private fun addCloseIconForEnabledState(state: UnreadFilterState.Data): @Composa
 @Composable
 private fun chipColors() = ChipDefaults.filterChipColors(
     backgroundColor = ProtonTheme.colors.interactionWeakNorm,
-    selectedBackgroundColor = ProtonTheme.colors.interactionNorm,
-    contentColor = ProtonTheme.colors.interactionNorm,
+    selectedBackgroundColor = ProtonTheme.colors.brandLighten20,
+    contentColor = ProtonTheme.colors.brandLighten20,
     selectedContentColor = ProtonTheme.colors.textInverted
 )
 
