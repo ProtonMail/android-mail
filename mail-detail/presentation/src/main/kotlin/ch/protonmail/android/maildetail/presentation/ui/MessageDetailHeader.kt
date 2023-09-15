@@ -462,7 +462,7 @@ private fun SenderAddress(
         ParticipantText(
             modifier = Modifier.testTag(MessageDetailHeaderTestTags.SenderAddress),
             text = participantUiModel.participantAddress,
-            textColor = ProtonTheme.colors.interactionNorm,
+            textColor = ProtonTheme.colors.brandLighten20,
             clickable = isExpanded,
             onClick = showFeatureMissingSnackbar
         )
@@ -576,7 +576,7 @@ private fun Recipients(
                 ParticipantText(
                     modifier = Modifier.testTag(MessageDetailHeaderTestTags.ParticipantValue),
                     text = participant.participantAddress,
-                    textColor = ProtonTheme.colors.interactionNorm,
+                    textColor = ProtonTheme.colors.brandLighten20,
                     onClick = showFeatureMissingSnackbar
                 )
             }
@@ -682,7 +682,7 @@ private fun HideDetails(modifier: Modifier = Modifier) {
     Text(
         modifier = modifier.testTag(MessageDetailHeaderTestTags.ExtendedHideDetails),
         text = stringResource(id = R.string.hide_details),
-        color = ProtonTheme.colors.interactionNorm,
+        color = ProtonTheme.colors.brandLighten20,
         style = ProtonTheme.typography.defaultSmallNorm
     )
 }
