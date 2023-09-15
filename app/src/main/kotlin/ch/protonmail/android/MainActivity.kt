@@ -35,11 +35,16 @@ import ch.protonmail.android.navigation.LauncherViewModel
 import ch.protonmail.android.navigation.model.LauncherState
 import dagger.hilt.android.AndroidEntryPoint
 import me.proton.core.compose.theme.ProtonTheme
+import me.proton.core.notification.presentation.deeplink.DeeplinkManager
+import me.proton.core.notification.presentation.deeplink.onActivityCreate
 import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var deeplinkManager: DeeplinkManager
 
     @Inject
     lateinit var deviceCapabilities: DeviceCapabilities
@@ -51,6 +56,7 @@ class MainActivity : AppCompatActivity() {
             launcherViewModel.state.value == LauncherState.Processing
         }
         super.onCreate(savedInstanceState)
+        deeplinkManager.onActivityCreate(this, savedInstanceState)
 
         // Register activities for result.
         launcherViewModel.register(this)

@@ -30,6 +30,8 @@ import me.proton.core.contact.data.ContactEventListener
 import me.proton.core.eventmanager.domain.EventListener
 import me.proton.core.label.data.LabelEventListener
 import me.proton.core.mailsettings.data.MailSettingsEventListener
+import me.proton.core.notification.data.NotificationEventListener
+import me.proton.core.push.data.PushEventListener
 import me.proton.core.user.data.UserAddressEventListener
 import me.proton.core.user.data.UserEventListener
 import me.proton.core.usersettings.data.UserSettingsEventListener
@@ -52,7 +54,9 @@ object EventManagerModule {
         contactEmailEventListener: ContactEmailEventListener,
         labelEventListener: LabelEventListener,
         messageEventListener: MessageEventListener,
-        conversationEventListener: ConversationEventListener
+        conversationEventListener: ConversationEventListener,
+        notificationEventListener: NotificationEventListener,
+        pushEventListener: PushEventListener
     ): Set<EventListener<*, *>> = setOf(
         userEventListener,
         userAddressEventListener,
@@ -62,6 +66,8 @@ object EventManagerModule {
         contactEmailEventListener,
         labelEventListener,
         messageEventListener,
-        conversationEventListener
+        conversationEventListener,
+        notificationEventListener,
+        pushEventListener
     )
 }

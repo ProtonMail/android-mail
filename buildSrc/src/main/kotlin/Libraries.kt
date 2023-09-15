@@ -274,6 +274,7 @@ object Proton {
         val accountManagerPresentationCompose =
             coreArtifact("account-manager-presentation-compose", Versions.Proton.core)
         val accountRecovery = coreArtifact("account-recovery", Versions.Proton.core)
+        val accountRecoveryTest = coreArtifact("account-recovery-test", Versions.Proton.core)
         val auth = coreArtifact("auth", Versions.Proton.core)
         val authTest = coreArtifact("auth-test", Versions.Proton.core)
         val challenge = coreArtifact("challenge", Versions.Proton.core)

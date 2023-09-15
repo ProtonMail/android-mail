@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <bool name="core_feature_account_recovery_enabled">true</bool>
     <bool name="core_feature_key_transparency_enabled">false</bool>
+    <bool name="core_feature_notifications_enabled">true</bool>
+    <!-- Mail already handle the Notification Permission (after successful login). -->
+    <bool name="core_feature_notifications_permission_request_enabled">false</bool>
 </resources>
