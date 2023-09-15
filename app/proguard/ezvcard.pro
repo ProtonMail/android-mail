@@ -1,0 +1,3 @@
+-keep,includedescriptorclasses class ezvcard.** { *; }
+-dontwarn ezvcard.io.json.**
+-dontwarn freemarker.**
