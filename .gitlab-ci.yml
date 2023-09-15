@@ -31,6 +31,7 @@ stages:
   - build
   - startReview
   - test
+  - tag
   - deploy
   - stopReview
 
@@ -106,8 +107,20 @@ build_alpha_release:
   script:
     - base64 -d - < "$PROTON_RELEASE_KEYSTORE_BASE64" > keystore/ProtonMail.keystore
     - base64 -d - < "$SENTRY_PROPERTIES_FILE" > "sentry.properties"
-    - bundle exec fastlane bumpAppVersion
     - bundle exec fastlane assembleAlphaRelease
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
+      # Always build on merge requests
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_PIPELINE_SOURCE == "parent_pipeline"
+      when: never
+
+build_beta_release:
+  extends: .build_job
+  script:
+    - base64 -d - < "$PROTON_RELEASE_KEYSTORE_BASE64" > keystore/ProtonMail.keystore
+    - base64 -d - < "$SENTRY_PROPERTIES_FILE" > "sentry.properties"
+    - bundle exec fastlane assembleBetaRelease
   rules:
     - if: $CI_COMMIT_BRANCH == "master"
       # Always build on merge requests
@@ -180,11 +193,18 @@ run_firebase_full_regression_tests:
   script:
     - bundle exec fastlane fullRegressionTest
   rules:
-    - if: $CI_COMMIT_BRANCH == "master" && ($NIGHTLY_ALPHA_BUILD == "true" || $INTERNAL_ALPHA_RELEASE == "true")
+    - if: $CI_COMMIT_BRANCH == "master" && ($NIGHTLY_ALPHA_BUILD == "true" || $INTERNAL_ALPHA_RELEASE == "true" || $BETA_RELEASE == "true")
     # Allow manual regression test runs on MRs if needed.
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
       when: manual
       allow_failure: true
+
+tag_release:
+  extends: .base_job
+  script:
+    - bundle exec fastlane tagRelease
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master" && ($INTERNAL_ALPHA_RELEASE == "true" || $BETA_RELEASE == "true")
 
 deploy_to_firebase_dev:
   extends: .firebase_deploy_job
@@ -213,7 +233,6 @@ deploy_to_firebase_alpha:
   extends: .firebase_deploy_job
   script:
     - bundle exec fastlane deployToFirebaseInternalAlphaGroup
-    - bundle exec fastlane tagRelease
   rules:
     - !reference [ .firebase_deploy_job, rules ]
     - if: $INTERNAL_ALPHA_RELEASE == "true"

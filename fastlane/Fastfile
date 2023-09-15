@@ -29,8 +29,15 @@ platform :android do
     gradle(task: "assembleDevDebugAndroidTest")
   end
 
+  desc "Assemble the release APK for beta flavor"
+  lane :assembleBetaRelease do
+    bumpAppVersion
+    gradle(task: "assembleBetaRelease")
+  end
+
   desc "Assemble the release APK for alpha flavor"
   lane :assembleAlphaRelease do
+    bumpAppVersion
     gradle(task: "assembleAlphaRelease")
   end
 
