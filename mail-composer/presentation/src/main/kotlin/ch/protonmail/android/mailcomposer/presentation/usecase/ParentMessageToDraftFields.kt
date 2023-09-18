@@ -42,6 +42,8 @@ import ch.protonmail.android.mailmessage.domain.model.Message
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.model.Recipient
+import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
+import ch.protonmail.android.mailmessage.presentation.usecase.InjectCssIntoDecryptedMessageBody
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.firstOrNull
 import me.proton.core.domain.entity.UserId
@@ -53,7 +55,8 @@ import kotlin.time.Duration.Companion.seconds
 class ParentMessageToDraftFields @Inject constructor(
     @ApplicationContext private val context: Context,
     private val observeUserAddresses: ObserveUserAddresses,
-    private val formatExtendedTime: FormatExtendedTime
+    private val formatExtendedTime: FormatExtendedTime,
+    private val injectCss: InjectCssIntoDecryptedMessageBody
 ) {
 
     suspend operator fun invoke(
@@ -106,6 +109,7 @@ class ParentMessageToDraftFields @Inject constructor(
             return null
         }
 
+        val bodyWithStyle = injectCss(decryptedBody.value, MimeTypeUiModel.Html)
         val raw = StringBuilder()
             .append(ProtonMailQuote)
             .append(buildOriginalMessageQuote())
@@ -113,7 +117,7 @@ class ParentMessageToDraftFields @Inject constructor(
             .append(buildSenderQuote(message))
             .append(LineBreak)
             .append(ProtonMailBlockquote)
-            .append(decryptedBody.value)
+            .append(bodyWithStyle)
             .append(CloseProtonMailBlockquote)
             .append(CloseProtonMailQuote)
             .toString()

@@ -32,6 +32,7 @@ object ComposerTestTags {
     const val Subject = "Subject"
     const val SubjectPlaceholder = "SubjectPlaceholder"
     const val MessageBody = "MessageBody"
+    const val MessageHtmlQuotedBody = "MessageHtmlQuotedBody"
     const val MessageBodyPlaceholder = "MessageBodyPlaceholder"
     const val CloseButton = "CloseButton"
     const val SendButton = "SendButton"

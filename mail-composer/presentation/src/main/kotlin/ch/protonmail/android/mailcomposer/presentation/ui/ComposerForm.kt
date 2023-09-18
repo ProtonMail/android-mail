@@ -185,6 +185,12 @@ internal fun ComposerForm(
                     .testTag(ComposerTestTags.MessageBody)
                     .retainFieldFocusOnConfigurationChange(FocusedFieldType.BODY)
             )
+            if (fields.quotedBody != null) {
+                BodyHtmlQuote(
+                    value = fields.quotedBody,
+                    modifier = maxWidthModifier.testTag(ComposerTestTags.MessageHtmlQuotedBody)
+                )
+            }
         }
     }
 

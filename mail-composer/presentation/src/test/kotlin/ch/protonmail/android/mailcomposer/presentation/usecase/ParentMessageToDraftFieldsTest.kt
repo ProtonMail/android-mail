@@ -39,6 +39,8 @@ import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
 import ch.protonmail.android.mailmessage.domain.sample.RecipientSample
+import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
+import ch.protonmail.android.mailmessage.presentation.usecase.InjectCssIntoDecryptedMessageBody
 import ch.protonmail.android.testdata.message.DecryptedMessageBodyTestData
 import io.mockk.every
 import io.mockk.mockk
@@ -57,6 +59,7 @@ class ParentMessageToDraftFieldsTest {
     private val observeUserAddresses = mockk<ObserveUserAddresses>()
     private val context = mockk<Context>()
     private val formatTime = mockk<FormatExtendedTime>()
+    private val injectCss = mockk<InjectCssIntoDecryptedMessageBody>()
 
     private val expectedOriginalMessageRes = expectStringRes(R.string.composer_original_message_quote) {
         "Original Message"
@@ -65,7 +68,12 @@ class ParentMessageToDraftFieldsTest {
         "On %s, %s &lt; %s&gt; wrote:"
     }
 
-    private val parentMessageToDraftFields = ParentMessageToDraftFields(context, observeUserAddresses, formatTime)
+    private val parentMessageToDraftFields = ParentMessageToDraftFields(
+        context,
+        observeUserAddresses,
+        formatTime,
+        injectCss
+    )
 
     @Test
     fun `returns quoted draft body with injected sender and body data`() = runTest {
@@ -86,6 +94,9 @@ class ParentMessageToDraftFieldsTest {
             expectedDecryptedMessage.messageWithBody.message.sender.address
         )
         expectedUserAddresses(userId) { listOf(UserAddressSample.PrimaryAddress) }
+        val expectedBodyStyled = expectInjectCssSuccess(expectedDecryptedMessage.decryptedMessageBody.value) {
+            "<style>custom css</style> ${expectedDecryptedMessage.decryptedMessageBody.value}"
+        }
 
         // When
         val actual = parentMessageToDraftFields(userId, expectedDecryptedMessage, expectedAction).getOrNull()!!
@@ -98,7 +109,7 @@ class ParentMessageToDraftFieldsTest {
             .append(expectedSenderQuote)
             .append(LineBreak)
             .append(ProtonMailBlockquote)
-            .append(expectedDecryptedMessage.decryptedMessageBody.value)
+            .append(expectedBodyStyled)
             .append(CloseProtonMailBlockquote)
             .append(CloseProtonMailQuote)
             .toString()
@@ -116,6 +127,7 @@ class ParentMessageToDraftFieldsTest {
         )
         expectedUserAddresses(userId) { listOf(UserAddressSample.PrimaryAddress) }
         expectFormattedTime(MessageSample.HtmlInvoice.time.seconds) { TextUiModel.Text("Sep 13, 2023 3:36 PM") }
+        expectInjectCssSuccess(expectedDecryptedMessage.decryptedMessageBody.value) { "decrypted body styled" }
 
         // When
         val actual = parentMessageToDraftFields(userId, expectedDecryptedMessage, expectedAction).getOrNull()!!
@@ -136,6 +148,7 @@ class ParentMessageToDraftFieldsTest {
         )
         expectedUserAddresses(userId) { listOf(UserAddressSample.PrimaryAddress) }
         expectFormattedTime(MessageSample.HtmlInvoice.time.seconds) { TextUiModel.Text("Sep 13, 2023 3:36 PM") }
+        expectInjectCssSuccess(expectedDecryptedMessage.decryptedMessageBody.value) { "decrypted body styled" }
 
         // When
         val actual = parentMessageToDraftFields(userId, expectedDecryptedMessage, expectedAction).getOrNull()!!
@@ -162,6 +175,7 @@ class ParentMessageToDraftFieldsTest {
         )
         expectedUserAddresses(userId) { listOf(UserAddressSample.PrimaryAddress) }
         expectFormattedTime(MessageSample.HtmlInvoice.time.seconds) { TextUiModel.Text("Sep 13, 2023 3:36 PM") }
+        expectInjectCssSuccess(expectedDecryptedMessage.decryptedMessageBody.value) { "decrypted body styled" }
 
         // When
         val actual = parentMessageToDraftFields(userId, expectedDecryptedMessage, expectedAction).getOrNull()!!
@@ -190,6 +204,7 @@ class ParentMessageToDraftFieldsTest {
         )
         expectedUserAddresses(userId) { listOf(johnUserAddress) }
         expectFormattedTime(MessageSample.HtmlInvoice.time.seconds) { TextUiModel.Text("Sep 13, 2023 3:36 PM") }
+        expectInjectCssSuccess(expectedDecryptedMessage.decryptedMessageBody.value) { "decrypted body styled" }
 
         // When
         val actual = parentMessageToDraftFields(userId, expectedDecryptedMessage, expectedAction).getOrNull()!!
@@ -199,6 +214,10 @@ class ParentMessageToDraftFieldsTest {
         assertEquals(expected, actual.recipientsTo.value)
     }
 
+
+    private fun expectInjectCssSuccess(quotedBody: String, result: () -> String) = result().also {
+        every { injectCss(quotedBody, MimeTypeUiModel.Html) } returns it
+    }
 
     private fun expectFormattedTime(timestamp: Duration, result: () -> TextUiModel.Text) = result().also {
         every { formatTime(timestamp) } returns it
