@@ -16,10 +16,10 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.usecase
+package ch.protonmail.android.mailmessage.presentation.usecase
 
 import android.content.Context
-import ch.protonmail.android.maildetail.presentation.R
+import ch.protonmail.android.mailmessage.presentation.R
 import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
 import io.mockk.every
 import io.mockk.mockk
