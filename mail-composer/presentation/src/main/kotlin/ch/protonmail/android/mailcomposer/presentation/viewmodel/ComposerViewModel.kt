@@ -146,6 +146,8 @@ class ComposerViewModel @Inject constructor(
     private fun prefillForDraftAction(draftAction: DraftAction) {
         val parentMessageId = draftAction.getParentMessageId() ?: return
         Timber.d("Opening composer for draft action $draftAction / ${currentMessageId()}")
+        emitNewStateFor(ComposerEvent.OpenWithMessageAction(currentMessageId()))
+
         viewModelScope.launch {
             getLocalMessageDecrypted(primaryUserId(), parentMessageId).onRight { parentMessage ->
                 Timber.d("Parent message draft data received $parentMessage")

@@ -94,6 +94,7 @@ class ComposerReducer @Inject constructor(
 
         is ComposerEvent.OnCloseWithDraftSaved -> updateCloseComposerState(currentState, true)
         is ComposerEvent.OpenExistingDraft -> currentState.copy(isLoading = true)
+        is ComposerEvent.OpenWithMessageAction -> currentState.copy(isLoading = true)
         is ComposerEvent.PrefillDraftDataReceived -> updateComposerFieldsState(currentState, this.draftFields)
         is ComposerEvent.ErrorLoadingDraftData -> currentState.copy(
             error = Effect.of(TextUiModel(R.string.composer_error_loading_draft)),
@@ -107,7 +108,8 @@ class ComposerReducer @Inject constructor(
         is ComposerEvent.OnSendMessageOffline -> updateStateForSendMessageOffline(currentState)
         is ComposerEvent.OnAttachmentsUpdated -> updateAttachmentsState(currentState, this.attachments)
         is ComposerEvent.ErrorLoadingParentMessageData -> currentState.copy(
-            error = Effect.of(TextUiModel(R.string.composer_error_loading_parent_message))
+            error = Effect.of(TextUiModel(R.string.composer_error_loading_parent_message)),
+            isLoading = false
         )
     }
 

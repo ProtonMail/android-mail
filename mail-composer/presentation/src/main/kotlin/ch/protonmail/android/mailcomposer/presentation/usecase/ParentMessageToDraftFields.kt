@@ -46,6 +46,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.firstOrNull
 import me.proton.core.domain.entity.UserId
 import me.proton.core.user.domain.entity.UserAddress
+import timber.log.Timber
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
@@ -81,10 +82,21 @@ class ParentMessageToDraftFields @Inject constructor(
             return DraftBody("")
         }
 
+        Timber.d("Decrypted body ${decryptedBody.value} \n splitted: ${decryptedBody.value.split("\n")}")
+        val bodyQuoted = decryptedBody.value
+            .split("\n")
+            .joinToString(separator = PlainTextNewLine) { "$PlainTextQuotePrefix $it" }
+
         val raw = StringBuilder()
+            .append(PlainTextNewLine)
+            .append(PlainTextNewLine)
+            .append(PlainTextNewLine)
             .append(buildOriginalMessageQuote())
+            .append(PlainTextNewLine)
             .append(buildSenderQuote(message))
-            .append(decryptedBody.value)
+            .append(PlainTextNewLine)
+            .append(PlainTextNewLine)
+            .append(bodyQuoted)
             .toString()
         return DraftBody(raw)
     }
@@ -158,5 +170,7 @@ class ParentMessageToDraftFields @Inject constructor(
         const val CloseProtonMailQuote = "</div>"
         const val CloseProtonMailBlockquote = "</blockquote>"
         const val LineBreak = "<br>"
+        const val PlainTextNewLine = "\n"
+        const val PlainTextQuotePrefix = "> "
     }
 }
