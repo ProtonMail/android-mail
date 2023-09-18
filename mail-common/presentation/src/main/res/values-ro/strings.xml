@@ -24,6 +24,9 @@
   <string name="retry">Reîncercare</string>
   <string name="toolbar_back_content_description">Înapoi la ecranul anterior</string>
   <string name="x_error_not_logged_in">Neconectat</string>
+  <string name="action_reply">Reply</string>
+  <string name="action_reply_all">Reply all</string>
+  <string name="action_forward">Forward</string>
   <string name="action_reply_content_description">Răspuns</string>
   <string name="action_reply_all_content_description">Răspuns tuturor</string>
   <string name="action_forward_content_description">Redirecționare</string>
@@ -47,7 +50,7 @@
   <string name="action_save_pdf_content_description">Salvare ca PDF</string>
   <string name="action_sender_emails_content_description">Setare acțiuni mesaje ulterioare de la acest expeditor</string>
   <string name="action_save_attachments_content_description">Salvare atașamente</string>
-  <string name="action_more_content_description">More</string>
+  <string name="action_more_content_description">Detalii</string>
   <string name="common_error_loading_actions">Încărcarea acțiunilor a eșuat.</string>
   <string name="yesterday">Ieri</string>
   <!-- notification channels -->

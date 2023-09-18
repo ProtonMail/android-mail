@@ -24,6 +24,9 @@
   <string name="retry">Reintentar</string>
   <string name="toolbar_back_content_description">Volver a la pantalla anterior</string>
   <string name="x_error_not_logged_in">Sesión no iniciada</string>
+  <string name="action_reply">Responder</string>
+  <string name="action_reply_all">Responder a todos</string>
+  <string name="action_forward">Reenviar</string>
   <string name="action_reply_content_description">Responder</string>
   <string name="action_reply_all_content_description">Responder a todos</string>
   <string name="action_forward_content_description">Reenviar</string>

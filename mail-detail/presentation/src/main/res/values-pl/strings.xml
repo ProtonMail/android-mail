@@ -49,19 +49,8 @@
   <string name="error_offline_loading_message">Jesteś w trybie offline. Połączenie internetowe jest wymagane, aby wyświetlić zawartość wiadomości.</string>
   <string name="error_get_attachment_failed">Nie udało się pobrać załącznika.</string>
   <string name="error_attachment_download_in_progress">Przed rozpoczęciem nowego pobierania obecne musi zostać zakończone.</string>
-  <string name="attachment_permission_dialog_title">Uprawnienie jest wymagane</string>
-  <string name="attachment_permission_dialog_message">Proton Mail potrzebuje dostępu do pamięci wewnętrznej, aby pobrać załącznik.</string>
-  <string name="attachment_permission_dialog_dismiss_button">OK</string>
-  <string name="attachment_permission_dialog_action_button">Ustawienia</string>
   <string name="error_get_attachment_not_enough_memory">Nie udało się pobrać załącznika z powodu braku dostępu do pamięci wewnętrznej</string>
   <string name="reload">Odśwież</string>
-  <plurals name="attachment_count_label">
-    <item quantity="one">%d plik</item>
-    <item quantity="few">%d pliki</item>
-    <item quantity="many">%d plików</item>
-    <item quantity="other">%d plików</item>
-  </plurals>
-  <string name="attachment_show_more_label">+%1$d więcej</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Przenieś do...</string>
   <string name="bottom_sheet_done_action">Gotowe</string>
@@ -72,18 +61,6 @@
   <string name="please_go_back_online_to_load_messages">Jesteś w trybie offline. Połącz się z Internetem, aby załadować wiadomość</string>
   <string name="decryption_error">Odszyfrowanie wiadomości nie powiodło się.</string>
   <string name="detail_error_retrieving_message_body">Nie można pobrać wiadomości</string>
-  <!-- Attachment Types -->
-  <string name="attachment_type_archive">Archiwum</string>
-  <string name="attachment_type_image">Obraz</string>
-  <string name="attachment_type_video">Wideo</string>
-  <string name="attachment_type_audio">Dźwięk</string>
-  <string name="attachment_type_unknown">Nieznany</string>
-  <string name="attachment_type_pdf">PDF</string>
-  <string name="attachment_type_text">Tekst</string>
-  <string name="attachment_type_document">Dokument</string>
-  <string name="attachment_type_spreadsheet">Arkusz kalkulacyjny</string>
-  <string name="attachment_type_presentation">Prezentacja</string>
-  <string name="attachment_type_description">%1$s plik</string>
   <string name="message_body_error_no_webview">Musisz zainstalować WebView, aby zobaczyć zawartość wiadomości.</string>
   <!-- Banners -->
   <string name="message_body_embedded_images_banner_text">Automatyczne ładowanie osadzonych obrazów jest wyłączone. Możesz to zmienić w ustawieniach.</string>

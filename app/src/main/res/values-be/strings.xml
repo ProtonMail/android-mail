@@ -22,11 +22,11 @@
   <string name="description_remove_account">Адбудзецца выхад і выдаленне ўсёй інфармацыі, звязанай з гэтым уліковым запісам.</string>
   <string name="user_select_other_account_content_description">Выбраць іншы ўліковы запіс</string>
   <string name="you_are_offline">Вы па-за сеткай</string>
-  <string name="feature_coming_soon">Функцыя неўзабаве з\'явіцца</string>
+  <string name="feature_coming_soon">Функцыя неўзабаве з\'явіцца…</string>
   <string name="mailbox_draft_saved">Чарнавік захаваны</string>
   <string name="mailbox_message_sending">Адпраўка паведамлення…</string>
   <string name="mailbox_message_sending_offline">Вы па-за сеткай, паведамленне ў чарзе на адпраўку</string>
-  <string name="mailbox_message_sending_success">Message sent</string>
-  <string name="mailbox_message_sending_error">Error sending message</string>
+  <string name="mailbox_message_sending_success">Паведамленне адпраўлена</string>
+  <string name="mailbox_message_sending_error">Памылка адпраўкі паведамлення</string>
   <string name="notification_switched_account">Зменена на ўліковы запіс: %s</string>
 </resources>

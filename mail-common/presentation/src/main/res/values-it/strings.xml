@@ -24,6 +24,9 @@
   <string name="retry">Riprova</string>
   <string name="toolbar_back_content_description">Torna alla schermata precedente</string>
   <string name="x_error_not_logged_in">Accesso non effettuato</string>
+  <string name="action_reply">Rispondi</string>
+  <string name="action_reply_all">Rispondi a tutti</string>
+  <string name="action_forward">Inoltra</string>
   <string name="action_reply_content_description">Rispondi</string>
   <string name="action_reply_all_content_description">Rispondi a tutti</string>
   <string name="action_forward_content_description">Inoltra</string>

@@ -24,6 +24,9 @@
   <string name="retry">Spróbuj ponownie</string>
   <string name="toolbar_back_content_description">Powrót do poprzedniego ekranu</string>
   <string name="x_error_not_logged_in">Niezalogowano</string>
+  <string name="action_reply">Odpowiedz</string>
+  <string name="action_reply_all">Odpowiedz wszystkim</string>
+  <string name="action_forward">Przekaż dalej</string>
   <string name="action_reply_content_description">Odpowiedz</string>
   <string name="action_reply_all_content_description">Odpowiedz wszystkim</string>
   <string name="action_forward_content_description">Przekaż dalej</string>

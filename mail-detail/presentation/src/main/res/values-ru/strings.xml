@@ -49,19 +49,8 @@
   <string name="error_offline_loading_message">Вы находитесь офлайн. Для отображения содержимого этого сообщения требуется подключение к Интернету.</string>
   <string name="error_get_attachment_failed">Не удалось получить вложение.</string>
   <string name="error_attachment_download_in_progress">Текущее скачивание должно быть завершено до начала нового.</string>
-  <string name="attachment_permission_dialog_title">Требуется разрешение</string>
-  <string name="attachment_permission_dialog_message">Proton Mail необходимо разрешение на доступ к вашему хранилищу, чтобы скачать вложение.</string>
-  <string name="attachment_permission_dialog_dismiss_button">OK</string>
-  <string name="attachment_permission_dialog_action_button">Настройки</string>
   <string name="error_get_attachment_not_enough_memory">Не удалось получить вложение из-за недостатка памяти</string>
   <string name="reload">Перезагрузить</string>
-  <plurals name="attachment_count_label">
-    <item quantity="one">%d файл</item>
-    <item quantity="few">%d файла</item>
-    <item quantity="many">%d файлов</item>
-    <item quantity="other">%d файлов</item>
-  </plurals>
-  <string name="attachment_show_more_label">+ ещё %1$d</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Переместить в...</string>
   <string name="bottom_sheet_done_action">Готово</string>
@@ -72,18 +61,6 @@
   <string name="please_go_back_online_to_load_messages">Вы офлайн. Чтобы загружать сообщения, перейдите обратно в режим онлайн</string>
   <string name="decryption_error">Дешифрование сообщения не удалось.</string>
   <string name="detail_error_retrieving_message_body">Не удалось получить сообщение</string>
-  <!-- Attachment Types -->
-  <string name="attachment_type_archive">Архивировать</string>
-  <string name="attachment_type_image">Изображение</string>
-  <string name="attachment_type_video">Видео</string>
-  <string name="attachment_type_audio">Аудио</string>
-  <string name="attachment_type_unknown">Неизвестный</string>
-  <string name="attachment_type_pdf">PDF</string>
-  <string name="attachment_type_text">Текст</string>
-  <string name="attachment_type_document">Документ</string>
-  <string name="attachment_type_spreadsheet">Таблица</string>
-  <string name="attachment_type_presentation">Презентация</string>
-  <string name="attachment_type_description">файл %1$s</string>
   <string name="message_body_error_no_webview">Чтобы вы могли увидеть содержимое этого сообщения, у вас должен быть установлен WebView.</string>
   <!-- Banners -->
   <string name="message_body_embedded_images_banner_text">Автоматическая загрузка встроенных изображений отключена. Это можно изменить в настройках.</string>

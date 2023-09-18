@@ -24,6 +24,9 @@
   <string name="retry">Ɛref̣ tikelt-nniḍen</string>
   <string name="toolbar_back_content_description">Uɣal ɣer ugdil udfir</string>
   <string name="x_error_not_logged_in">Ur iqqin ara</string>
+  <string name="action_reply">Reply</string>
+  <string name="action_reply_all">Reply all</string>
+  <string name="action_forward">Forward</string>
   <string name="action_reply_content_description">Err</string>
   <string name="action_reply_all_content_description">Err-asen akk</string>
   <string name="action_forward_content_description">Welleh</string>
@@ -47,7 +50,7 @@
   <string name="action_save_pdf_content_description">Sekles am PDF</string>
   <string name="action_sender_emails_content_description">Sbadu tigawt i yimaylen imaynuten n umazan-a</string>
   <string name="action_save_attachments_content_description">Sekles imeddayen</string>
-  <string name="action_more_content_description">More</string>
+  <string name="action_more_content_description">Ugar</string>
   <string name="common_error_loading_actions">Asali n tigawin yecceḍ</string>
   <string name="yesterday">Iḍelli</string>
   <!-- notification channels -->

@@ -49,19 +49,8 @@
   <string name="error_offline_loading_message">Ви офлайн. Для показів вмісту цього повідомлення потрібне з\'єднання з інтернетом.</string>
   <string name="error_get_attachment_failed">Не вдалося додати файл.</string>
   <string name="error_attachment_download_in_progress">Поточне завантаження повинно завершитися, щоб розпочалося нове</string>
-  <string name="attachment_permission_dialog_title">Потрібен дозвіл</string>
-  <string name="attachment_permission_dialog_message">Щоб завантажити вкладення, Proton Mail потрібен дозвіл доступ до вашого сховища.</string>
-  <string name="attachment_permission_dialog_dismiss_button">Гаразд</string>
-  <string name="attachment_permission_dialog_action_button">Налаштування</string>
   <string name="error_get_attachment_not_enough_memory">Не вдалося отримати вкладення через брак пам\'яті</string>
   <string name="reload">Перезавантажити</string>
-  <plurals name="attachment_count_label">
-    <item quantity="one">%d файл</item>
-    <item quantity="few">%d файли</item>
-    <item quantity="many">%d файлів</item>
-    <item quantity="other">%d файлів</item>
-  </plurals>
-  <string name="attachment_show_more_label">+ ще %1$d</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Перемістити до...</string>
   <string name="bottom_sheet_done_action">Готово</string>
@@ -72,21 +61,9 @@
   <string name="please_go_back_online_to_load_messages">Ви зараз офлайн. Під\'єднайтеся до інтернету, щоб завантажити повідомлення</string>
   <string name="decryption_error">Не вдалося розшифрувати повідомлення.</string>
   <string name="detail_error_retrieving_message_body">Не вдалося отримати повідомлення</string>
-  <!-- Attachment Types -->
-  <string name="attachment_type_archive">Архів</string>
-  <string name="attachment_type_image">Зображення</string>
-  <string name="attachment_type_video">Відео</string>
-  <string name="attachment_type_audio">Аудіо</string>
-  <string name="attachment_type_unknown">Невідомо</string>
-  <string name="attachment_type_pdf">PDF</string>
-  <string name="attachment_type_text">Текст</string>
-  <string name="attachment_type_document">Документ</string>
-  <string name="attachment_type_spreadsheet">Таблиця</string>
-  <string name="attachment_type_presentation">Презентація</string>
-  <string name="attachment_type_description">%1$s файл</string>
   <string name="message_body_error_no_webview">Вам потрібно встановити WebView, щоб побачити вміст цього повідомлення.</string>
   <!-- Banners -->
   <string name="message_body_embedded_images_banner_text">Автоматичне завантаження вбудованих зображень вимкнено. Це можна змінити в налаштуваннях.</string>
-  <string name="message_body_remote_content_banner_text">Automatic loading of remote content is turned off. This can be changed in the settings.</string>
-  <string name="message_body_embedded_and_remote_content_banner_text">Automatic loading of embedded images and remote content is turned off. These can be changed in the settings.</string>
+  <string name="message_body_remote_content_banner_text">Автоматичне завантаження віддаленого вмісту вимкнено. Це можна змінити в налаштуваннях.</string>
+  <string name="message_body_embedded_and_remote_content_banner_text">Автоматичне завантаження вбудованих зображень і віддаленого вмісту вимкнено. Це можна змінити в налаштуваннях.</string>
 </resources>

@@ -17,5 +17,25 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="attachment_download_notification_title">Λήψη συνημμένου</string>
+  <plurals name="attachment_count_label">
+    <item quantity="one">%d αρχείο</item>
+    <item quantity="other">%d αρχεία</item>
+  </plurals>
+  <string name="attachment_show_more_label">+%1$d παραπάνω</string>
+  <string name="attachment_permission_dialog_title">Απαιτείται εξουσιοδότηση</string>
+  <string name="attachment_permission_dialog_message">Το Proton Mail χρειάζεται άδεια πρόσβασης στον αποθηκευτικό σας χώρο για λήψη του συνημμένου.</string>
+  <string name="attachment_permission_dialog_dismiss_button">ΟΚ</string>
+  <string name="attachment_permission_dialog_action_button">Ρυθμίσεις</string>
+  <string name="attachment_type_description">%1$s αρχείο</string>
+  <!-- Attachment Types -->
+  <string name="attachment_type_archive">Αρχειοθετημένα</string>
+  <string name="attachment_type_image">Εικόνα</string>
+  <string name="attachment_type_video">Βίντεο</string>
+  <string name="attachment_type_audio">Ήχος</string>
+  <string name="attachment_type_unknown">Άγνωστο</string>
+  <string name="attachment_type_pdf">PDF</string>
+  <string name="attachment_type_text">Κείμενο</string>
+  <string name="attachment_type_document">Έγγραφο</string>
+  <string name="attachment_type_spreadsheet">Υπολογιστικό φύλλο</string>
+  <string name="attachment_type_presentation">Παρουσίαση</string>
 </resources>

@@ -46,16 +46,8 @@
   <string name="error_offline_loading_message">現在、オフラインです。このメッセージの内容を表示するには、インターネット接続が必要です。</string>
   <string name="error_get_attachment_failed">添付ファイルの取得に失敗しました</string>
   <string name="error_attachment_download_in_progress">新しいダウンロードを開始する前に、現在のダウンロードを完了させる必要があります。</string>
-  <string name="attachment_permission_dialog_title">権限が必要です</string>
-  <string name="attachment_permission_dialog_message">Proton Mail は添付ファイルをダウンロードするためにストレージへのアクセス権限が必要です。</string>
-  <string name="attachment_permission_dialog_dismiss_button">OK</string>
-  <string name="attachment_permission_dialog_action_button">設定</string>
   <string name="error_get_attachment_not_enough_memory">メモリ不足のため添付ファイルの取得に失敗しました</string>
   <string name="reload">再読み込み</string>
-  <plurals name="attachment_count_label">
-    <item quantity="other">%d 件のファイル</item>
-  </plurals>
-  <string name="attachment_show_more_label">+%1$d</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">移動先</string>
   <string name="bottom_sheet_done_action">完了</string>
@@ -66,18 +58,6 @@
   <string name="please_go_back_online_to_load_messages">現在オフラインです。メッセージを読むには、オンラインに移動してください。</string>
   <string name="decryption_error">メッセージの復号に失敗しました。</string>
   <string name="detail_error_retrieving_message_body">メッセージの取得ができません。</string>
-  <!-- Attachment Types -->
-  <string name="attachment_type_archive">アーカイブ</string>
-  <string name="attachment_type_image">画像</string>
-  <string name="attachment_type_video">動画</string>
-  <string name="attachment_type_audio">音楽</string>
-  <string name="attachment_type_unknown">不明</string>
-  <string name="attachment_type_pdf">PDF</string>
-  <string name="attachment_type_text">テキスト</string>
-  <string name="attachment_type_document">ドキュメント</string>
-  <string name="attachment_type_spreadsheet">スプレッドシート</string>
-  <string name="attachment_type_presentation">プレゼンテーション</string>
-  <string name="attachment_type_description">%1$s 件のファイル</string>
   <string name="message_body_error_no_webview">このメッセージの内容を表示するには、WebView をインストールする必要があります。</string>
   <!-- Banners -->
   <string name="message_body_embedded_images_banner_text">埋め込み画像の自動読み込みはオフになっています。これは設定で変更できます。</string>

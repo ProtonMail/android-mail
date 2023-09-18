@@ -24,6 +24,9 @@
   <string name="retry">Паўтарыць</string>
   <string name="toolbar_back_content_description">Вярнуцца на папярэдні экран</string>
   <string name="x_error_not_logged_in">Уваход не выкананы</string>
+  <string name="action_reply">Адказаць</string>
+  <string name="action_reply_all">Адказаць усім</string>
+  <string name="action_forward">Пераслаць</string>
   <string name="action_reply_content_description">Адказаць</string>
   <string name="action_reply_all_content_description">Адказаць усім</string>
   <string name="action_forward_content_description">Пераслаць</string>

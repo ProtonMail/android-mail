@@ -47,17 +47,8 @@
   <string name="error_offline_loading_message">Você está off-line. É necessária uma conexão com a Internet para exibir o conteúdo desta mensagem.</string>
   <string name="error_get_attachment_failed">Erro ao obter o anexo.</string>
   <string name="error_attachment_download_in_progress">O download atual deve ser concluída antes de iniciar uma nova.</string>
-  <string name="attachment_permission_dialog_title">Permissão necessária</string>
-  <string name="attachment_permission_dialog_message">Proton Mail precisa de permissão de acesso ao seu armazenamento para executar o download do anexo.</string>
-  <string name="attachment_permission_dialog_dismiss_button">OK</string>
-  <string name="attachment_permission_dialog_action_button">Configurações</string>
   <string name="error_get_attachment_not_enough_memory">Erro ao obter o anexo devido a memória insuficiente</string>
   <string name="reload">Recarregar</string>
-  <plurals name="attachment_count_label">
-    <item quantity="one">%d arquivo</item>
-    <item quantity="other">%d arquivos</item>
-  </plurals>
-  <string name="attachment_show_more_label">+%1$d mais</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Mover para...</string>
   <string name="bottom_sheet_done_action">Concluído</string>
@@ -68,18 +59,6 @@
   <string name="please_go_back_online_to_load_messages">Você está desconectado. Volte a se conectar para carregar as mensagens</string>
   <string name="decryption_error">Não foi possível descriptografar a mensagem.</string>
   <string name="detail_error_retrieving_message_body">Não é possível recuperar mensagem</string>
-  <!-- Attachment Types -->
-  <string name="attachment_type_archive">Arquivo</string>
-  <string name="attachment_type_image">Imagem</string>
-  <string name="attachment_type_video">Vídeo</string>
-  <string name="attachment_type_audio">Áudio</string>
-  <string name="attachment_type_unknown">Desconhecido</string>
-  <string name="attachment_type_pdf">PDF</string>
-  <string name="attachment_type_text">Texto</string>
-  <string name="attachment_type_document">Documento</string>
-  <string name="attachment_type_spreadsheet">Planilha</string>
-  <string name="attachment_type_presentation">Apresentação</string>
-  <string name="attachment_type_description">Arquivo %1$s</string>
   <string name="message_body_error_no_webview">Você precisa ter um WebView instalado para ver o conteúdo desta mensagem.</string>
   <!-- Banners -->
   <string name="message_body_embedded_images_banner_text">O carregamento automático de imagens incorporadas está desativado. Isso pode ser alterado nas configurações.</string>

@@ -24,6 +24,9 @@
   <string name="retry">Repetir</string>
   <string name="toolbar_back_content_description">Voltar ao ecrã anterior</string>
   <string name="x_error_not_logged_in">Sem sessão iniciada</string>
+  <string name="action_reply">Reply</string>
+  <string name="action_reply_all">Reply all</string>
+  <string name="action_forward">Forward</string>
   <string name="action_reply_content_description">Responder</string>
   <string name="action_reply_all_content_description">Responder a todos</string>
   <string name="action_forward_content_description">Reencaminhar</string>
@@ -47,7 +50,7 @@
   <string name="action_save_pdf_content_description">Guardar como PDF</string>
   <string name="action_sender_emails_content_description">Definir a acção para os futuros e-mails deste remetente</string>
   <string name="action_save_attachments_content_description">Guardar anexos</string>
-  <string name="action_more_content_description">More</string>
+  <string name="action_more_content_description">Mais</string>
   <string name="common_error_loading_actions">Erro ao carregar as acções</string>
   <string name="yesterday">Ontem</string>
   <!-- notification channels -->

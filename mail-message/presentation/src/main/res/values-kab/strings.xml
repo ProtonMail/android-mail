@@ -17,5 +17,25 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="attachment_download_notification_title">Asider n ifuyla yeddan</string>
+  <plurals name="attachment_count_label">
+    <item quantity="one">%d ufaylu</item>
+    <item quantity="other">%d yifuyla</item>
+  </plurals>
+  <string name="attachment_show_more_label">+%1$d d wugar</string>
+  <string name="attachment_permission_dialog_title">Tasiregt tettusra</string>
+  <string name="attachment_permission_dialog_message">Proton Mail needs permission to access your storage to download the attachment.</string>
+  <string name="attachment_permission_dialog_dismiss_button">IH</string>
+  <string name="attachment_permission_dialog_action_button">Iɣewwaren</string>
+  <string name="attachment_type_description">%1$s ufaylu</string>
+  <!-- Attachment Types -->
+  <string name="attachment_type_archive">Tarcivt</string>
+  <string name="attachment_type_image">Image</string>
+  <string name="attachment_type_video">Tavidyut</string>
+  <string name="attachment_type_audio">Ameslaw</string>
+  <string name="attachment_type_unknown">Arussin</string>
+  <string name="attachment_type_pdf">PDF</string>
+  <string name="attachment_type_text">Aḍris</string>
+  <string name="attachment_type_document">Isemli</string>
+  <string name="attachment_type_spreadsheet">Ambellez</string>
+  <string name="attachment_type_presentation">Asenked</string>
 </resources>

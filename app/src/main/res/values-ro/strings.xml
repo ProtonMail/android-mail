@@ -22,11 +22,11 @@
   <string name="description_remove_account">Vă veți deconecta și veți elimina toate informațiile asociate cu acest cont.</string>
   <string name="user_select_other_account_content_description">Selectare alt cont</string>
   <string name="you_are_offline">Sunteți deconectat</string>
-  <string name="feature_coming_soon">Feature coming soon…</string>
-  <string name="mailbox_draft_saved">Draft saved</string>
-  <string name="mailbox_message_sending">Sending message…</string>
-  <string name="mailbox_message_sending_offline">Offline, message queued for sending</string>
-  <string name="mailbox_message_sending_success">Message sent</string>
-  <string name="mailbox_message_sending_error">Error sending message</string>
+  <string name="feature_coming_soon">Funcție disponibilă în curând…</string>
+  <string name="mailbox_draft_saved">Ciornă salvată</string>
+  <string name="mailbox_message_sending">Se trimite mesajul…</string>
+  <string name="mailbox_message_sending_offline">Deconectat, mesajul va fi trimis ulterior.</string>
+  <string name="mailbox_message_sending_success">Mesaj trimis</string>
+  <string name="mailbox_message_sending_error">Eroare trimitere mesaj</string>
   <string name="notification_switched_account">S-a comutat la contul: %s</string>
 </resources>

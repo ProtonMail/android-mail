@@ -17,5 +17,25 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="attachment_download_notification_title">Descargando el archivo adjunto</string>
+  <plurals name="attachment_count_label">
+    <item quantity="one">%d archivo</item>
+    <item quantity="other">%d archivos</item>
+  </plurals>
+  <string name="attachment_show_more_label">%1$d más</string>
+  <string name="attachment_permission_dialog_title">Se necesita permiso.</string>
+  <string name="attachment_permission_dialog_message">Proton Mail necesita permiso para acceder a tu almacenamiento para descargar el archivo adjunto.</string>
+  <string name="attachment_permission_dialog_dismiss_button">OK</string>
+  <string name="attachment_permission_dialog_action_button">Ajustes</string>
+  <string name="attachment_type_description">Tipo de archivo: %1$s</string>
+  <!-- Attachment Types -->
+  <string name="attachment_type_archive">Archivo</string>
+  <string name="attachment_type_image">Imagen</string>
+  <string name="attachment_type_video">Vídeo</string>
+  <string name="attachment_type_audio">Audio</string>
+  <string name="attachment_type_unknown">Desconocido</string>
+  <string name="attachment_type_pdf">PDF</string>
+  <string name="attachment_type_text">Texto</string>
+  <string name="attachment_type_document">Documento</string>
+  <string name="attachment_type_spreadsheet">Hoja de cálculo</string>
+  <string name="attachment_type_presentation">Presentación</string>
 </resources>

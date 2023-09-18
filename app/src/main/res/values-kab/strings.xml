@@ -22,11 +22,11 @@
   <string name="description_remove_account">Ad teffɣeḍ syen kkes talɣut akk yeqqnen ɣer umiḍan-a.</string>
   <string name="user_select_other_account_content_description">Fren amiḍan-nniḍen</string>
   <string name="you_are_offline">Ur teqqineḍ ara</string>
-  <string name="feature_coming_soon">Feature coming soon…</string>
-  <string name="mailbox_draft_saved">Draft saved</string>
-  <string name="mailbox_message_sending">Sending message…</string>
+  <string name="feature_coming_soon">Tamahilt-a ad tili ticki…</string>
+  <string name="mailbox_draft_saved">Arewway yettusekles</string>
+  <string name="mailbox_message_sending">Tuzna n yizen…</string>
   <string name="mailbox_message_sending_offline">Offline, message queued for sending</string>
-  <string name="mailbox_message_sending_success">Message sent</string>
-  <string name="mailbox_message_sending_error">Error sending message</string>
+  <string name="mailbox_message_sending_success">Izen yettwazen</string>
+  <string name="mailbox_message_sending_error">Yalla-d tuccḍa deg tuzna n yizen</string>
   <string name="notification_switched_account">Tnekzeḍ ɣer umiḍan: %s</string>
 </resources>

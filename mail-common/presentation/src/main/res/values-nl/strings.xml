@@ -24,6 +24,9 @@
   <string name="retry">Opnieuw proberen</string>
   <string name="toolbar_back_content_description">Terug naar vorig scherm</string>
   <string name="x_error_not_logged_in">Niet ingelogd</string>
+  <string name="action_reply">Beantwoorden</string>
+  <string name="action_reply_all">Allen beantwoorden</string>
+  <string name="action_forward">Forward</string>
   <string name="action_reply_content_description">Beantwoorden</string>
   <string name="action_reply_all_content_description">Allen beantwoorden</string>
   <string name="action_forward_content_description">Doorsturen</string>
@@ -47,7 +50,7 @@
   <string name="action_save_pdf_content_description">Opslaan als PDF</string>
   <string name="action_sender_emails_content_description">Actie instellen voor toekomstige e-mails van deze afzender</string>
   <string name="action_save_attachments_content_description">Bijlagen opslaan</string>
-  <string name="action_more_content_description">More</string>
+  <string name="action_more_content_description">Meer</string>
   <string name="common_error_loading_actions">Acties laden mislukt</string>
   <string name="yesterday">Gisteren</string>
   <!-- notification channels -->

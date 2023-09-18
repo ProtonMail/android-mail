@@ -48,18 +48,8 @@
   <string name="error_offline_loading_message">Nu aveți conexiune. Pentru a afișa conținutul acestui mesaj aveți nevoie de conexiune la internet.</string>
   <string name="error_get_attachment_failed">Eșuare preluare atașament.</string>
   <string name="error_attachment_download_in_progress">Descărcarea actuală trebuie să se încheie înainte de a începe alta.</string>
-  <string name="attachment_permission_dialog_title">Permisiune necesară</string>
-  <string name="attachment_permission_dialog_message">Proton Mail are nevoie de permisiunea de a accesa spațiul de stocarea pentru a descărca atașamentul.</string>
-  <string name="attachment_permission_dialog_dismiss_button">OK</string>
-  <string name="attachment_permission_dialog_action_button">Setări</string>
   <string name="error_get_attachment_not_enough_memory">Nu s-a reușit obținerea atașamentului datorită memoriei insuficiente.</string>
   <string name="reload">Reîncărcare</string>
-  <plurals name="attachment_count_label">
-    <item quantity="one">%d fișier</item>
-    <item quantity="few">%d fișiere</item>
-    <item quantity="other">%d de fișiere</item>
-  </plurals>
-  <string name="attachment_show_more_label">+ încă %1$d</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Mutare în...</string>
   <string name="bottom_sheet_done_action">Gata</string>
@@ -70,18 +60,6 @@
   <string name="please_go_back_online_to_load_messages">Nu aveți conexiune. Reconectați-vă pentru a se încărca mesajele.</string>
   <string name="decryption_error">Decriptarea mesajului a eșuat.</string>
   <string name="detail_error_retrieving_message_body">Nu s-a putut prelua mesajul.</string>
-  <!-- Attachment Types -->
-  <string name="attachment_type_archive">Arhivă</string>
-  <string name="attachment_type_image">Imagine</string>
-  <string name="attachment_type_video">Video</string>
-  <string name="attachment_type_audio">Audio</string>
-  <string name="attachment_type_unknown">Necunoscut</string>
-  <string name="attachment_type_pdf">PDF</string>
-  <string name="attachment_type_text">Text</string>
-  <string name="attachment_type_document">Document</string>
-  <string name="attachment_type_spreadsheet">Foaie de calcul</string>
-  <string name="attachment_type_presentation">Prezentare</string>
-  <string name="attachment_type_description">%1$s fișier</string>
   <string name="message_body_error_no_webview">Trebuie să aveți instalat WebView pentru a vedea conținutul acestui mesaj.</string>
   <!-- Banners -->
   <string name="message_body_embedded_images_banner_text">Încărcarea automată a imaginilor încorporate este dezactivată. Acest lucru poate fi schimbat în setări.</string>

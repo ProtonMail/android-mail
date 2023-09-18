@@ -47,17 +47,8 @@
   <string name="error_offline_loading_message">Du er offline. En internetforbindelse er nødvendig for at vise indholdet af denne besked.</string>
   <string name="error_get_attachment_failed">Kunne ikke hente vedhæftning.</string>
   <string name="error_attachment_download_in_progress">Nuværende download skal afsluttes, før du starter et nyt.</string>
-  <string name="attachment_permission_dialog_title">Tilladelse krævet</string>
-  <string name="attachment_permission_dialog_message">Proton Mail skal have tilladelse for at få adgang til dit lager for at downloade den vedhæftede fil.</string>
-  <string name="attachment_permission_dialog_dismiss_button">OK</string>
-  <string name="attachment_permission_dialog_action_button">Indstillinger</string>
   <string name="error_get_attachment_not_enough_memory">Kunne ikke hente vedhæftet fil på grund af utilstrækkelig hukommelse</string>
   <string name="reload">Genindlæs</string>
-  <plurals name="attachment_count_label">
-    <item quantity="one">%d fil</item>
-    <item quantity="other">%d filer</item>
-  </plurals>
-  <string name="attachment_show_more_label">+%1$d mere</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Flyt til...</string>
   <string name="bottom_sheet_done_action">Udført</string>
@@ -68,18 +59,6 @@
   <string name="please_go_back_online_to_load_messages">Du er offline. Sørg for at være online igen for at indlæse beskeder</string>
   <string name="decryption_error">Dekryptering af besked mislykkedes.</string>
   <string name="detail_error_retrieving_message_body">Kan ikke hente besked</string>
-  <!-- Attachment Types -->
-  <string name="attachment_type_archive">Arkiv</string>
-  <string name="attachment_type_image">Billede</string>
-  <string name="attachment_type_video">Video</string>
-  <string name="attachment_type_audio">Lyd</string>
-  <string name="attachment_type_unknown">Ukendt</string>
-  <string name="attachment_type_pdf">PDF</string>
-  <string name="attachment_type_text">Tekst</string>
-  <string name="attachment_type_document">Dokument</string>
-  <string name="attachment_type_spreadsheet">Regneark</string>
-  <string name="attachment_type_presentation">Præsentation</string>
-  <string name="attachment_type_description">%1$s fil</string>
   <string name="message_body_error_no_webview">Du skal have WebView installeret for at se denne beskeds indhold</string>
   <!-- Banners -->
   <string name="message_body_embedded_images_banner_text">Automatisk indlæsning af indlejrede billeder er slået fra. Dette kan ændres i indstillingerne.</string>

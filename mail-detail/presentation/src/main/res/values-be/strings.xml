@@ -49,19 +49,8 @@
   <string name="error_offline_loading_message">Вы па-за сеткай. Для адлюстравання змесціва гэтага паведамлення неабходна падключэнне да інтэрнэту.</string>
   <string name="error_get_attachment_failed">Не ўдалося атрымаць далучэнне.</string>
   <string name="error_attachment_download_in_progress">Спачатку завяршыце бягучае спампоўванне перад тым, як пачаць новае.</string>
-  <string name="attachment_permission_dialog_title">Патрабуецца дазвол</string>
-  <string name="attachment_permission_dialog_message">Proton Mail неабходны дазвол доступу да вашага сховішча, каб спампаваць далучэнне.</string>
-  <string name="attachment_permission_dialog_dismiss_button">Добра</string>
-  <string name="attachment_permission_dialog_action_button">Налады</string>
   <string name="error_get_attachment_not_enough_memory">Не ўдалося атрымаць далучэнне па прычыне недахопу памяці</string>
   <string name="reload">Перазагрузіць</string>
-  <plurals name="attachment_count_label">
-    <item quantity="one">%d файл</item>
-    <item quantity="few">%d файлы</item>
-    <item quantity="many">%d файлаў</item>
-    <item quantity="other">%d файлы</item>
-  </plurals>
-  <string name="attachment_show_more_label">+яшчэ %1$d</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Перамясціць у...</string>
   <string name="bottom_sheet_done_action">Гатова</string>
@@ -72,18 +61,6 @@
   <string name="please_go_back_online_to_load_messages">Вы па-за сеткай. Для загрузкі паведамленняў неабходна падключэнне да інтэрнэту</string>
   <string name="decryption_error">Не ўдалося расшыфраваць паведамленне.</string>
   <string name="detail_error_retrieving_message_body">Немагчыма атрымаць паведамленне</string>
-  <!-- Attachment Types -->
-  <string name="attachment_type_archive">Архіў</string>
-  <string name="attachment_type_image">Відарыс</string>
-  <string name="attachment_type_video">Відэа</string>
-  <string name="attachment_type_audio">Аўдыя</string>
-  <string name="attachment_type_unknown">Невядомы</string>
-  <string name="attachment_type_pdf">PDF</string>
-  <string name="attachment_type_text">Тэкст</string>
-  <string name="attachment_type_document">Дакумент</string>
-  <string name="attachment_type_spreadsheet">Электронная табліца</string>
-  <string name="attachment_type_presentation">Прэзентацыя</string>
-  <string name="attachment_type_description">Файл %1$s</string>
   <string name="message_body_error_no_webview">Вам неабходна ўсталяваць WebView, каб бачыць змесціва гэтага паведамлення.</string>
   <!-- Banners -->
   <string name="message_body_embedded_images_banner_text">Аўтаматычная загрузка ўбудаваных відарысаў выключана. Гэта можна змяніць у наладах.</string>

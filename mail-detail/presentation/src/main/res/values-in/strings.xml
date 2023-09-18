@@ -46,16 +46,8 @@
   <string name="error_offline_loading_message">Anda sedang offline. Koneksi internet diperlukan untuk menampilkan konten pesan ini.</string>
   <string name="error_get_attachment_failed">Lampiran gagal diperoleh.</string>
   <string name="error_attachment_download_in_progress">Unduhan saat ini harus diselesaikan sebelum memulai unduhan baru.</string>
-  <string name="attachment_permission_dialog_title">Izin diperlukan</string>
-  <string name="attachment_permission_dialog_message">Proton Mail memerlukan izin akses ke media penyimpanan Anda untuk mengunduh lampiran.</string>
-  <string name="attachment_permission_dialog_dismiss_button">OK</string>
-  <string name="attachment_permission_dialog_action_button">Pengaturan</string>
   <string name="error_get_attachment_not_enough_memory">Lampiran gagal diperoleh karena memori yang tersedia tidak memadai</string>
   <string name="reload">Muat ulang</string>
-  <plurals name="attachment_count_label">
-    <item quantity="other">%d berkas</item>
-  </plurals>
-  <string name="attachment_show_more_label">+%1$d lainnya</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Pindahkan ke...</string>
   <string name="bottom_sheet_done_action">Selesai</string>
@@ -66,18 +58,6 @@
   <string name="please_go_back_online_to_load_messages">Anda sedang offline. Silakan sambungkan diri Anda ke internet untuk memuat pesan</string>
   <string name="decryption_error">Dekripsi pesan gagal.</string>
   <string name="detail_error_retrieving_message_body">Pesan tidak dapat diambil</string>
-  <!-- Attachment Types -->
-  <string name="attachment_type_archive">Arsip</string>
-  <string name="attachment_type_image">Gambar</string>
-  <string name="attachment_type_video">Video</string>
-  <string name="attachment_type_audio">Audio</string>
-  <string name="attachment_type_unknown">Tidak Diketahui</string>
-  <string name="attachment_type_pdf">PDF</string>
-  <string name="attachment_type_text">Teks</string>
-  <string name="attachment_type_document">Dokumen</string>
-  <string name="attachment_type_spreadsheet">Spreadsheet</string>
-  <string name="attachment_type_presentation">Presentasi</string>
-  <string name="attachment_type_description">%1$s berkas</string>
   <string name="message_body_error_no_webview">Anda harus menginstal WebView untuk melihat konten pesan ini.</string>
   <!-- Banners -->
   <string name="message_body_embedded_images_banner_text">Pemuatan gambar tersemat secara otomatis dimatikan. Ini dapat diubah dalam pengaturan.</string>

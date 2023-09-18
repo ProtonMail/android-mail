@@ -47,17 +47,8 @@
   <string name="error_offline_loading_message">Du bist offline. Um den Inhalt dieser Nachricht anzuzeigen, ist eine Internetverbindung erforderlich.</string>
   <string name="error_get_attachment_failed">Fehler beim Abrufen des Anhangs.</string>
   <string name="error_attachment_download_in_progress">Der aktuelle Download muss abgeschlossen sein, bevor ein neuer gestartet werden kann.</string>
-  <string name="attachment_permission_dialog_title">Berechtigung erforderlich</string>
-  <string name="attachment_permission_dialog_message">Proton Mail benötigt die Erlaubnis, auf deinen Speicher zuzugreifen, um den Anhang herunterzuladen.</string>
-  <string name="attachment_permission_dialog_dismiss_button">OK</string>
-  <string name="attachment_permission_dialog_action_button">Einstellungen</string>
   <string name="error_get_attachment_not_enough_memory">Abruf des Anhangs fehlgeschlagen, da der Speicher nicht ausreicht</string>
   <string name="reload">Neu laden</string>
-  <plurals name="attachment_count_label">
-    <item quantity="one">%d Datei</item>
-    <item quantity="other">%d Dateien</item>
-  </plurals>
-  <string name="attachment_show_more_label">+%1$d weitere</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Verschieben nach...</string>
   <string name="bottom_sheet_done_action">Fertig</string>
@@ -68,18 +59,6 @@
   <string name="please_go_back_online_to_load_messages">Du bist offline. Bitte gehe wieder online, um Nachrichten zu laden.</string>
   <string name="decryption_error">Entschlüsseln der Nachricht fehlgeschlagen.</string>
   <string name="detail_error_retrieving_message_body">Fehler beim Abrufen der Nachricht</string>
-  <!-- Attachment Types -->
-  <string name="attachment_type_archive">Archiv</string>
-  <string name="attachment_type_image">Bild</string>
-  <string name="attachment_type_video">Video</string>
-  <string name="attachment_type_audio">Audio</string>
-  <string name="attachment_type_unknown">Unbekannt</string>
-  <string name="attachment_type_pdf">PDF</string>
-  <string name="attachment_type_text">Text</string>
-  <string name="attachment_type_document">Dokument</string>
-  <string name="attachment_type_spreadsheet">Tabellendokument</string>
-  <string name="attachment_type_presentation">Präsentation</string>
-  <string name="attachment_type_description">%1$s Datei</string>
   <string name="message_body_error_no_webview">Du musst eine WebView-App installiert haben, um den Inhalt dieser Nachricht zu sehen.</string>
   <!-- Banners -->
   <string name="message_body_embedded_images_banner_text">Das automatische Laden von eingebetteten Bildern ist ausgeschaltet. Dies kann in den Einstellungen geändert werden.</string>

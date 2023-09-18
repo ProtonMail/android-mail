@@ -17,5 +17,24 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="attachment_download_notification_title">下載附件</string>
+  <plurals name="attachment_count_label">
+    <item quantity="other">%d 個檔案</item>
+  </plurals>
+  <string name="attachment_show_more_label">+%1$d 更多</string>
+  <string name="attachment_permission_dialog_title">需要權限</string>
+  <string name="attachment_permission_dialog_message">Proton Mail 需要權限下載附件。</string>
+  <string name="attachment_permission_dialog_dismiss_button">確定</string>
+  <string name="attachment_permission_dialog_action_button">設定</string>
+  <string name="attachment_type_description">%1$s 個檔案</string>
+  <!-- Attachment Types -->
+  <string name="attachment_type_archive">封存檔</string>
+  <string name="attachment_type_image">Image</string>
+  <string name="attachment_type_video">影片</string>
+  <string name="attachment_type_audio">音訊</string>
+  <string name="attachment_type_unknown">不明</string>
+  <string name="attachment_type_pdf">PDF</string>
+  <string name="attachment_type_text">文字</string>
+  <string name="attachment_type_document">文件</string>
+  <string name="attachment_type_spreadsheet">試算表</string>
+  <string name="attachment_type_presentation">簡報</string>
 </resources>

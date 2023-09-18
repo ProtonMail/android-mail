@@ -47,17 +47,8 @@
   <string name="error_offline_loading_message">No esteu connectat. Cal una connexió a internet per a mostrar el contingut d\'aquest missatge.</string>
   <string name="error_get_attachment_failed">No s\'ha pogut obtenir l\'adjunt.</string>
   <string name="error_attachment_download_in_progress">S\'ha de completar la descàrrega actual abans de començar-ne una de nova.</string>
-  <string name="attachment_permission_dialog_title">Es requereix permís</string>
-  <string name="attachment_permission_dialog_message">Proton Mail necessita permís per accedir a l\'emmagatzematge per a descarregar l\'adjunt.</string>
-  <string name="attachment_permission_dialog_dismiss_button">D\'acord</string>
-  <string name="attachment_permission_dialog_action_button">Preferències</string>
   <string name="error_get_attachment_not_enough_memory">No s\'ha pogut obtenir l\'adjunt a causa de memòria insuficient</string>
   <string name="reload">Recarrega</string>
-  <plurals name="attachment_count_label">
-    <item quantity="one">%d fitxer</item>
-    <item quantity="other">%d fitxers</item>
-  </plurals>
-  <string name="attachment_show_more_label">%1$d més</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Mou a...</string>
   <string name="bottom_sheet_done_action">Fet</string>
@@ -68,18 +59,6 @@
   <string name="please_go_back_online_to_load_messages">Esteu fora de línia. Torneu a connectar-vos per carregar els missatges</string>
   <string name="decryption_error">No s\'ha pogut desxifrar el missatge.</string>
   <string name="detail_error_retrieving_message_body">No s\'ha pogut recuperar el missatge</string>
-  <!-- Attachment Types -->
-  <string name="attachment_type_archive">Arxiu</string>
-  <string name="attachment_type_image">Imatge</string>
-  <string name="attachment_type_video">Vídeo</string>
-  <string name="attachment_type_audio">Àudio</string>
-  <string name="attachment_type_unknown">Desconegut</string>
-  <string name="attachment_type_pdf">PDF</string>
-  <string name="attachment_type_text">Text</string>
-  <string name="attachment_type_document">Document</string>
-  <string name="attachment_type_spreadsheet">Full de càlcul</string>
-  <string name="attachment_type_presentation">Presentació</string>
-  <string name="attachment_type_description">%1$s fitxer</string>
   <string name="message_body_error_no_webview">Cal que tingueu WebView instal·lat per a veure el contingut d\'aquest missatge.</string>
   <!-- Banners -->
   <string name="message_body_embedded_images_banner_text">La càrrega automàtica d\'imatges incrustades està desactivada. Això es pot canviar a les preferències.</string>

@@ -17,5 +17,27 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="attachment_download_notification_title">Спампоўванне далучэння</string>
+  <plurals name="attachment_count_label">
+    <item quantity="one">%d файл</item>
+    <item quantity="few">%d файлы</item>
+    <item quantity="many">%d файлаў</item>
+    <item quantity="other">%d файлаў</item>
+  </plurals>
+  <string name="attachment_show_more_label">+яшчэ %1$d</string>
+  <string name="attachment_permission_dialog_title">Патрабуецца дазвол</string>
+  <string name="attachment_permission_dialog_message">Proton Mail неабходны дазвол доступу да вашага сховішча, каб спампаваць далучэнне.</string>
+  <string name="attachment_permission_dialog_dismiss_button">Добра</string>
+  <string name="attachment_permission_dialog_action_button">Налады</string>
+  <string name="attachment_type_description">Файл %1$s</string>
+  <!-- Attachment Types -->
+  <string name="attachment_type_archive">з архівам</string>
+  <string name="attachment_type_image">Відарыс</string>
+  <string name="attachment_type_video">з відэа</string>
+  <string name="attachment_type_audio">з аўдыя</string>
+  <string name="attachment_type_unknown">&lt;невядома&gt;</string>
+  <string name="attachment_type_pdf">PDF</string>
+  <string name="attachment_type_text">з тэкстам</string>
+  <string name="attachment_type_document">з дакументам</string>
+  <string name="attachment_type_spreadsheet">з электроннай табліцай</string>
+  <string name="attachment_type_presentation">з прэзентацыяй</string>
 </resources>

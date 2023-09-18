@@ -24,6 +24,9 @@
   <string name="retry">再試行</string>
   <string name="toolbar_back_content_description">前の画面に戻る</string>
   <string name="x_error_not_logged_in">サインインしていません</string>
+  <string name="action_reply">Reply</string>
+  <string name="action_reply_all">Reply all</string>
+  <string name="action_forward">Forward</string>
   <string name="action_reply_content_description">返信</string>
   <string name="action_reply_all_content_description">全員に返信</string>
   <string name="action_forward_content_description">転送</string>

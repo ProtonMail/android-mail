@@ -48,18 +48,8 @@
   <string name="error_offline_loading_message">You are offline. An internet connection is required to display the content of this message.</string>
   <string name="error_get_attachment_failed">Failed to get attachment.</string>
   <string name="error_attachment_download_in_progress">Current download must complete before starting a new one.</string>
-  <string name="attachment_permission_dialog_title">Permission required</string>
-  <string name="attachment_permission_dialog_message">Proton Mail needs permission to access your storage to download the attachment.</string>
-  <string name="attachment_permission_dialog_dismiss_button">OK</string>
-  <string name="attachment_permission_dialog_action_button">Settings</string>
   <string name="error_get_attachment_not_enough_memory">Failed to get attachment due to insufficient memory</string>
   <string name="reload">Ponovno učitaj</string>
-  <plurals name="attachment_count_label">
-    <item quantity="one">%d file</item>
-    <item quantity="few">%d files</item>
-    <item quantity="other">%d files</item>
-  </plurals>
-  <string name="attachment_show_more_label">+%1$d more</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Premjesti u...</string>
   <string name="bottom_sheet_done_action">Gotovo</string>
@@ -70,18 +60,6 @@
   <string name="please_go_back_online_to_load_messages">Izvan mreže ste. Vratite se na mrežu kako bi učitali poruke</string>
   <string name="decryption_error">Dešifriranje poruke neuspješno.</string>
   <string name="detail_error_retrieving_message_body">Nije moguće dohvatiti poruku</string>
-  <!-- Attachment Types -->
-  <string name="attachment_type_archive">Archive</string>
-  <string name="attachment_type_image">Slika</string>
-  <string name="attachment_type_video">Videozapis</string>
-  <string name="attachment_type_audio">Zvuk</string>
-  <string name="attachment_type_unknown">Nepoznato</string>
-  <string name="attachment_type_pdf">PDF</string>
-  <string name="attachment_type_text">Tekst</string>
-  <string name="attachment_type_document">Dokument</string>
-  <string name="attachment_type_spreadsheet">Spreadsheet</string>
-  <string name="attachment_type_presentation">Presentation</string>
-  <string name="attachment_type_description">%1$s file</string>
   <string name="message_body_error_no_webview">You need to have a WebView installed to see this message\'s content.</string>
   <!-- Banners -->
   <string name="message_body_embedded_images_banner_text">Automatic loading of embedded images is turned off. This can be changed in the settings.</string>

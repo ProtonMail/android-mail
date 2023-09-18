@@ -24,6 +24,9 @@
   <string name="retry">Δοκιμάστε ξανά</string>
   <string name="toolbar_back_content_description">Επιστροφή στην προηγούμενη οθόνη</string>
   <string name="x_error_not_logged_in">Δεν έχει γίνει είσοδος</string>
+  <string name="action_reply">Απάντηση</string>
+  <string name="action_reply_all">Απάντηση σε όλους</string>
+  <string name="action_forward">Προώθηση</string>
   <string name="action_reply_content_description">Απάντηση</string>
   <string name="action_reply_all_content_description">Απάντηση σε όλους</string>
   <string name="action_forward_content_description">Προώθηση</string>

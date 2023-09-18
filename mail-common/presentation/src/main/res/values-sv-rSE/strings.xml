@@ -24,6 +24,9 @@
   <string name="retry">Försök igen</string>
   <string name="toolbar_back_content_description">Tillbaka till föregående skärm</string>
   <string name="x_error_not_logged_in">Inte inloggad</string>
+  <string name="action_reply">Svara</string>
+  <string name="action_reply_all">Svara alla</string>
+  <string name="action_forward">Vidarebefordra</string>
   <string name="action_reply_content_description">Svara</string>
   <string name="action_reply_all_content_description">Svara alla</string>
   <string name="action_forward_content_description">Vidarebefordra</string>

@@ -47,17 +47,8 @@
   <string name="error_offline_loading_message">Sei offline. Una connessione a Internet è necessaria per mostrare i contenuti di questo messaggio.</string>
   <string name="error_get_attachment_failed">Impossibile ottenere l\'allegato.</string>
   <string name="error_attachment_download_in_progress">Il download corrente deve essere completato prima di avviarne uno nuovo.</string>
-  <string name="attachment_permission_dialog_title">Permesso richiesto</string>
-  <string name="attachment_permission_dialog_message">Per poter scaricare l\'allegato, Proton Mail richiede l\'autorizzazione di accesso alla memoria di archiviazione.</string>
-  <string name="attachment_permission_dialog_dismiss_button">OK</string>
-  <string name="attachment_permission_dialog_action_button">Impostazioni</string>
   <string name="error_get_attachment_not_enough_memory">Impossibile scaricare l\'allegato a causa della memoria insufficiente</string>
   <string name="reload">Ricarica</string>
-  <plurals name="attachment_count_label">
-    <item quantity="one">%d file</item>
-    <item quantity="other">%d file</item>
-  </plurals>
-  <string name="attachment_show_more_label">+%1$d in più</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Sposta in...</string>
   <string name="bottom_sheet_done_action">Fatto</string>
@@ -65,21 +56,9 @@
   <string name="bottom_sheet_label_as_title">Etichetta come...</string>
   <string name="error_relabel_message_failed">Impossibile rietichettare il messaggio. Per favore riprova</string>
   <string name="error_relabel_conversation_failed">Impossibile rietichettare la conversazione. Per favore riprova</string>
-  <string name="please_go_back_online_to_load_messages">Sei scollegato da internet. Collegati per caricare i messaggi</string>
+  <string name="please_go_back_online_to_load_messages">Sei offline. Ritorna online per caricare i messaggi</string>
   <string name="decryption_error">Decriptazione del messaggio non riuscita.</string>
   <string name="detail_error_retrieving_message_body">Impossibile recuperare il messaggio</string>
-  <!-- Attachment Types -->
-  <string name="attachment_type_archive">Archivio</string>
-  <string name="attachment_type_image">Immagine</string>
-  <string name="attachment_type_video">Video</string>
-  <string name="attachment_type_audio">Audio</string>
-  <string name="attachment_type_unknown">Sconosciuto</string>
-  <string name="attachment_type_pdf">PDF</string>
-  <string name="attachment_type_text">Testo</string>
-  <string name="attachment_type_document">Documento</string>
-  <string name="attachment_type_spreadsheet">Foglio di calcolo</string>
-  <string name="attachment_type_presentation">Presentazione</string>
-  <string name="attachment_type_description">%1$s file</string>
   <string name="message_body_error_no_webview">Per visualizzare il contenuto di questo messaggio è necessario che sia installata una WebView.</string>
   <!-- Banners -->
   <string name="message_body_embedded_images_banner_text">Il caricamento automatico delle immagini incorporate è disattivato. Questo può essere modificato nelle impostazioni.</string>

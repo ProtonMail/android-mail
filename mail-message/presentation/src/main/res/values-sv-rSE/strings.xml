@@ -17,5 +17,25 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="attachment_download_notification_title">Laddar ner bilaga</string>
+  <plurals name="attachment_count_label">
+    <item quantity="one">%d fil</item>
+    <item quantity="other">%d filer</item>
+  </plurals>
+  <string name="attachment_show_more_label">+%1$d till</string>
+  <string name="attachment_permission_dialog_title">Behörighet krävs</string>
+  <string name="attachment_permission_dialog_message">Proton Mail behöver behörighet att komma åt ditt lagringsutrymme för att ladda ner bilagan.</string>
+  <string name="attachment_permission_dialog_dismiss_button">OK</string>
+  <string name="attachment_permission_dialog_action_button">Inställningar</string>
+  <string name="attachment_type_description">%1$s-fil</string>
+  <!-- Attachment Types -->
+  <string name="attachment_type_archive">Arkiv</string>
+  <string name="attachment_type_image">Bild</string>
+  <string name="attachment_type_video">Video</string>
+  <string name="attachment_type_audio">Ljud</string>
+  <string name="attachment_type_unknown">Okänd</string>
+  <string name="attachment_type_pdf">PDF</string>
+  <string name="attachment_type_text">Text</string>
+  <string name="attachment_type_document">Dokument</string>
+  <string name="attachment_type_spreadsheet">Kalkylblad</string>
+  <string name="attachment_type_presentation">Presentation</string>
 </resources>

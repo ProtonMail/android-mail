@@ -46,16 +46,8 @@
   <string name="error_offline_loading_message">您目前是離線狀態。需要網際網路連線才能顯示此訊息的內容。</string>
   <string name="error_get_attachment_failed">無法取得附件。</string>
   <string name="error_attachment_download_in_progress">在開始新的下載之前，必須先完成目前的。</string>
-  <string name="attachment_permission_dialog_title">需要權限</string>
-  <string name="attachment_permission_dialog_message">Proton Mail需要存取儲存權限以下載附件。</string>
-  <string name="attachment_permission_dialog_dismiss_button">好</string>
-  <string name="attachment_permission_dialog_action_button">設定</string>
   <string name="error_get_attachment_not_enough_memory">因為儲存空間不足，無法取得附件</string>
   <string name="reload">重新載入</string>
-  <plurals name="attachment_count_label">
-    <item quantity="other">%d 個檔案</item>
-  </plurals>
-  <string name="attachment_show_more_label">+另有 %1$d 等數量</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">移至...</string>
   <string name="bottom_sheet_done_action">已完成</string>
@@ -66,18 +58,6 @@
   <string name="please_go_back_online_to_load_messages">您目前是離線狀態。請重新連線以載入訊息</string>
   <string name="decryption_error">訊息解密失敗。</string>
   <string name="detail_error_retrieving_message_body">無法擷取訊息</string>
-  <!-- Attachment Types -->
-  <string name="attachment_type_archive">封存檔</string>
-  <string name="attachment_type_image">圖像</string>
-  <string name="attachment_type_video">影片</string>
-  <string name="attachment_type_audio">音訊</string>
-  <string name="attachment_type_unknown">不明</string>
-  <string name="attachment_type_pdf">PDF</string>
-  <string name="attachment_type_text">文字</string>
-  <string name="attachment_type_document">文件</string>
-  <string name="attachment_type_spreadsheet">試算表</string>
-  <string name="attachment_type_presentation">簡報</string>
-  <string name="attachment_type_description">%1$s 個檔案</string>
   <string name="message_body_error_no_webview">您必須安裝一個 Android System WebView 才能查看此訊息的內容。</string>
   <!-- Banners -->
   <string name="message_body_embedded_images_banner_text">已經關閉內嵌影像的自動載入。這可以在設定中變更。</string>
