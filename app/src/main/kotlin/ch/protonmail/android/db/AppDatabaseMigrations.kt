@@ -128,4 +128,11 @@ object AppDatabaseMigrations {
             UserSettingsDatabase.MIGRATION_3.migrate(database)
         }
     }
+
+    val MIGRATION_15_16 = object : Migration(15, 16) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            DraftStateDatabase.MIGRATION_2.migrate(database)
+        }
+
+    }
 }
