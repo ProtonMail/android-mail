@@ -641,12 +641,13 @@ class ConversationDetailViewModel @Inject constructor(
             ?.takeIf { it is ConversationDetailMessageUiModel.Expanded }
             ?.let { it as ConversationDetailMessageUiModel.Expanded }
             ?.let {
+                val attachmentGroupUiModel = it.messageBodyUiModel.attachments
                 val operation = ConversationDetailEvent.ShowAllAttachmentsForMessage(
                     messageId = messageId,
                     conversationDetailMessageUiModel = it.copy(
                         messageBodyUiModel = it.messageBodyUiModel.copy(
-                            attachments = it.messageBodyUiModel.attachments?.copy(
-                                limit = it.messageBodyUiModel.attachments.attachments.size
+                            attachments = attachmentGroupUiModel?.copy(
+                                limit = attachmentGroupUiModel.attachments.size
                             )
                         )
                     )

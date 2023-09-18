@@ -19,7 +19,7 @@
 package ch.protonmail.android.maildetail.presentation.reducer
 
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
-import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
@@ -53,17 +53,20 @@ class MessageBodyReducer @Inject constructor() {
     private fun createMessageBodyState(
         messageBodyUiModel: MessageBodyUiModel,
         operation: MessageDetailEvent.AttachmentStatusChanged
-    ) = MessageBodyState.Data(
-        messageBodyUiModel.copy(
-            attachments = messageBodyUiModel.attachments?.copy(
-                attachments = messageBodyUiModel.attachments.attachments.map { attachment ->
-                    if (attachment.attachmentId == operation.attachmentId.id) {
-                        attachment.copy(status = operation.status)
-                    } else {
-                        attachment
+    ): MessageBodyState.Data {
+        val attachmentGroupUiModel = messageBodyUiModel.attachments
+        return MessageBodyState.Data(
+            messageBodyUiModel.copy(
+                attachments = attachmentGroupUiModel?.copy(
+                    attachments = attachmentGroupUiModel.attachments.map { attachment ->
+                        if (attachment.attachmentId == operation.attachmentId.id) {
+                            attachment.copy(status = operation.status)
+                        } else {
+                            attachment
+                        }
                     }
-                }
+                )
             )
         )
-    )
+    }
 }

@@ -18,8 +18,8 @@
 
 package ch.protonmail.android.maildetail.presentation.sample
 
-import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
-import ch.protonmail.android.maildetail.presentation.model.MimeTypeUiModel
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
+import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 

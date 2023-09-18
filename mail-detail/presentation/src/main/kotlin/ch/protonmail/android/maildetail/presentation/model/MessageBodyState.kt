@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.maildetail.presentation.model
 
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
+
 sealed class MessageBodyState {
 
     data class Data(

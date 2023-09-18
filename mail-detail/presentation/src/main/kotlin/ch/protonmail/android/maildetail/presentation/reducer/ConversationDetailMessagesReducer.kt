@@ -24,7 +24,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEve
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
-import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import javax.inject.Inject
 
@@ -177,9 +177,10 @@ class ConversationDetailMessagesReducer @Inject constructor() {
         messageBodyUiModel: MessageBodyUiModel,
         operation: ConversationDetailEvent.AttachmentStatusChanged
     ): MessageBodyUiModel {
+        val attachmentGroupUiModel = messageBodyUiModel.attachments
         return messageBodyUiModel.copy(
-            attachments = messageBodyUiModel.attachments?.copy(
-                attachments = messageBodyUiModel.attachments.attachments.map { attachment ->
+            attachments = attachmentGroupUiModel?.copy(
+                attachments = attachmentGroupUiModel.attachments.map { attachment ->
                     if (attachment.attachmentId == operation.attachmentId.id) {
                         attachment.copy(status = operation.status)
                     } else {

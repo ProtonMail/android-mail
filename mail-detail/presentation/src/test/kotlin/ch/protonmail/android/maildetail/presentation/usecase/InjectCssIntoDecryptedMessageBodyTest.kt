@@ -20,7 +20,7 @@ package ch.protonmail.android.maildetail.presentation.usecase
 
 import android.content.Context
 import ch.protonmail.android.maildetail.presentation.R
-import ch.protonmail.android.maildetail.presentation.model.MimeTypeUiModel
+import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic

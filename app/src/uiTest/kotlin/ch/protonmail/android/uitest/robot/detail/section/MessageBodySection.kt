@@ -32,7 +32,8 @@ import androidx.test.espresso.web.webdriver.DriverAtoms.findElement
 import androidx.test.espresso.web.webdriver.DriverAtoms.getText
 import androidx.test.espresso.web.webdriver.Locator
 import ch.protonmail.android.maildetail.presentation.R
-import ch.protonmail.android.maildetail.presentation.ui.MessageBodyTestTags
+import ch.protonmail.android.mailmessage.presentation.ui.MessageBodyWebView
+import ch.protonmail.android.mailmessage.presentation.ui.MessageBodyWebViewTestTags
 import ch.protonmail.android.test.ksp.annotations.AttachTo
 import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
 import ch.protonmail.android.uitest.robot.ComposeSectionRobot
@@ -59,7 +60,7 @@ internal class MessageBodySection : ComposeSectionRobot() {
         composeTestRule.waitForIdle()
 
         // Wait for the WebView to appear.
-        composeTestRule.onNodeWithTag(MessageBodyTestTags.WebView)
+        composeTestRule.onNodeWithTag(MessageBodyWebViewTestTags.WebView)
             .awaitDisplayed(timeout = timeout)
     }
 

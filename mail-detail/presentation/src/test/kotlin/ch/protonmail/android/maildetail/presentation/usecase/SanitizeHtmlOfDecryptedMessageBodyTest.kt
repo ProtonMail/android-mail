@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.usecase
 
-import ch.protonmail.android.maildetail.presentation.model.MimeTypeUiModel
+import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

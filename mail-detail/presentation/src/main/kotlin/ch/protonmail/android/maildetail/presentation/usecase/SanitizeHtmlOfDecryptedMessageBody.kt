@@ -19,7 +19,7 @@
 package ch.protonmail.android.maildetail.presentation.usecase
 
 import java.util.regex.Pattern
-import ch.protonmail.android.maildetail.presentation.model.MimeTypeUiModel
+import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Attributes
 import org.jsoup.nodes.Document

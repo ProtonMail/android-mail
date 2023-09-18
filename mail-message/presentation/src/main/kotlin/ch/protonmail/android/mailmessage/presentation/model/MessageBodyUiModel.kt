@@ -16,15 +16,22 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.extensions
+package ch.protonmail.android.mailmessage.presentation.model
 
-import java.util.regex.Pattern
-import android.webkit.WebResourceRequest
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 
-fun WebResourceRequest.isRemoteContent() = url.scheme?.let {
-    Pattern.compile("https?").matcher(it).matches()
-} ?: false
+data class MessageBodyUiModel(
+    val messageId: MessageId,
+    val messageBody: String,
+    val mimeType: MimeTypeUiModel,
+    val shouldShowEmbeddedImages: Boolean,
+    val shouldShowRemoteContent: Boolean,
+    val shouldShowEmbeddedImagesBanner: Boolean,
+    val shouldShowRemoteContentBanner: Boolean,
+    val attachments: AttachmentGroupUiModel?
+)
 
-fun WebResourceRequest.isEmbeddedImage() = url.scheme?.let {
-    Pattern.compile("cid").matcher(it).matches()
-} ?: false
+enum class MimeTypeUiModel(val value: String) {
+    PlainText("text/plain"),
+    Html("text/html")
+}

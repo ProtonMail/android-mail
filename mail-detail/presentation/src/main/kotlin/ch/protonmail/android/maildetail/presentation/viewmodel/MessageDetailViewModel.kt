@@ -34,7 +34,7 @@ import ch.protonmail.android.mailmessage.domain.model.GetDecryptedMessageBodyErr
 import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
 import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.usecase.GetDownloadingAttachmentsForMessages
-import ch.protonmail.android.maildetail.domain.usecase.GetEmbeddedImageResult
+import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsRead
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MoveMessage
@@ -444,10 +444,11 @@ class MessageDetailViewModel @Inject constructor(
             Timber.e("MessageBodyState is not MessageBodyState.Data")
             return
         }
+        val attachmentGroupUiModel = state.messageBodyUiModel.attachments
         val operation = MessageDetailEvent.MessageBodyEvent(
             state.messageBodyUiModel.copy(
-                attachments = state.messageBodyUiModel.attachments?.copy(
-                    limit = state.messageBodyUiModel.attachments.attachments.size
+                attachments = attachmentGroupUiModel?.copy(
+                    limit = attachmentGroupUiModel.attachments.size
                 )
             )
         )
