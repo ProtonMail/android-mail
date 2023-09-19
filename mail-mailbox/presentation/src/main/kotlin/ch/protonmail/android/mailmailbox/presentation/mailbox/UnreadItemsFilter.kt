@@ -36,6 +36,7 @@ import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.PreviewData.DummyUnreadCount
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import me.proton.core.compose.component.ProtonCenteredProgress
+import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -50,10 +51,11 @@ fun UnreadItemsFilter(
         is UnreadFilterState.Loading -> {
             ProtonCenteredProgress(modifier = Modifier.size(MailDimens.ProgressDefaultSize))
         }
+
         is UnreadFilterState.Data -> {
             FilterChip(
                 modifier = modifier.testTag(UnreadItemsFilterTestTags.UnreadFilterChip),
-                colors = chipColors(),
+                colors = chipColors(state.isFilterEnabled),
                 selected = state.isFilterEnabled,
                 onClick = {
                     if (state.isFilterEnabled) {
@@ -75,7 +77,14 @@ fun UnreadItemsFilter(
 @Composable
 private fun addCloseIconForEnabledState(state: UnreadFilterState.Data): @Composable (() -> Unit)? {
     return if (state.isFilterEnabled) {
-        { Icon(imageVector = Icons.Filled.Close, contentDescription = null) }
+        {
+            Icon(
+                modifier = Modifier.size(ProtonDimens.SmallIconSize),
+                imageVector = Icons.Filled.Close,
+                contentDescription = null,
+                tint = ProtonTheme.colors.iconInverted
+            )
+        }
     } else {
         null
     }
@@ -83,12 +92,17 @@ private fun addCloseIconForEnabledState(state: UnreadFilterState.Data): @Composa
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun chipColors() = ChipDefaults.filterChipColors(
-    backgroundColor = ProtonTheme.colors.interactionWeakNorm,
-    selectedBackgroundColor = ProtonTheme.colors.brandLighten20,
-    contentColor = ProtonTheme.colors.brandLighten20,
-    selectedContentColor = ProtonTheme.colors.textInverted
-)
+private fun chipColors(isSelected: Boolean) = if (isSelected) {
+    ChipDefaults.filterChipColors(
+        selectedBackgroundColor = ProtonTheme.colors.iconAccent,
+        selectedContentColor = ProtonTheme.colors.textInverted
+    )
+} else {
+    ChipDefaults.filterChipColors(
+        backgroundColor = ProtonTheme.colors.backgroundSecondary,
+        contentColor = ProtonTheme.colors.textAccent
+    )
+}
 
 @Preview
 @Composable
