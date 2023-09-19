@@ -25,11 +25,15 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -45,6 +49,7 @@ internal fun BodyTextField(
     onBodyChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val focusRequester = remember { FocusRequester() }
     var text by rememberSaveable(stateSaver = TextFieldValue.Saver) {
         mutableStateOf(TextFieldValue(initialValue))
     }
@@ -58,7 +63,7 @@ internal fun BodyTextField(
             text = it
             onBodyChange(it.text)
         },
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize().focusRequester(focusRequester),
         textStyle = ProtonTheme.typography.defaultNorm,
         minLines = bodyMinLines,
         colors = TextFieldDefaults.composerTextFieldColors(),
@@ -72,4 +77,8 @@ internal fun BodyTextField(
             )
         }
     )
+
+    LaunchedEffect(initialValue) {
+        if (initialValue.isNotEmpty()) { focusRequester.requestFocus() }
+    }
 }

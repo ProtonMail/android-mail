@@ -64,10 +64,10 @@ internal class OpenExistingDraftsErrorTests :
     @BindValue
     val serverProofValidation: ValidateServerProof = mockk(relaxUnitFun = true)
 
-    private val expectedToChip = RecipientChipEntry(
+    private val expectedToChipWithNoDeleteIcon = RecipientChipEntry(
         index = 0,
         text = "aa@bb.cc",
-        hasDeleteIcon = true,
+        hasDeleteIcon = false,
         state = RecipientChipValidationState.Valid
     )
 
@@ -261,7 +261,7 @@ internal class OpenExistingDraftsErrorTests :
 
         composerRobot {
             verifyPrefilledFields(
-                toRecipientChip = expectedToChip,
+                toRecipientChip = expectedToChipWithNoDeleteIcon,
                 subject = expectedSubject,
                 messageBody = expectedMessageBody
             )
@@ -281,7 +281,7 @@ internal class OpenExistingDraftsErrorTests :
     private fun verifyLoadedCachedData() {
         composerRobot {
             verifyPrefilledFields(
-                toRecipientChip = expectedToChip,
+                toRecipientChip = expectedToChipWithNoDeleteIcon,
                 subject = expectedSubject,
                 messageBody = expectedMessageBody
             )
@@ -295,7 +295,7 @@ internal class OpenExistingDraftsErrorTests :
             fullscreenLoaderSection { waitUntilGone() }
 
             verifyPrefilledFields(
-                toRecipientChip = expectedToChip,
+                toRecipientChip = expectedToChipWithNoDeleteIcon,
                 subject = expectedSubject,
                 messageBody = expectedMessageBody
             )

@@ -74,6 +74,8 @@ internal class OpenExistingDraftsHappyPathTests :
         state = RecipientChipValidationState.Valid
     )
 
+    private val expectedToChipWithNoDeleteIcon = expectedToChip.copy(hasDeleteIcon = false)
+
     private val expectedCcChip = RecipientChipEntry(
         index = 0,
         text = "dd@ee.ff",
@@ -116,7 +118,7 @@ internal class OpenExistingDraftsHappyPathTests :
         }
 
         composerRobot {
-            toRecipientSection { verify { hasRecipientChips(expectedToChip) } }
+            toRecipientSection { verify { hasRecipientChips(expectedToChipWithNoDeleteIcon) } }
             ccRecipientSection { verify { isHidden() } }
             bccRecipientSection { verify { isHidden() } }
             toRecipientSection { expandCcAndBccFields() }
@@ -154,7 +156,7 @@ internal class OpenExistingDraftsHappyPathTests :
 
         composerRobot {
             verifyPrefilledFields(
-                toRecipientChip = expectedToChip,
+                toRecipientChip = expectedToChipWithNoDeleteIcon,
                 ccRecipientChip = expectedCcChip,
                 bccRecipientChip = expectedBccChip,
                 subject = expectedSubject,
@@ -190,7 +192,7 @@ internal class OpenExistingDraftsHappyPathTests :
 
         composerRobot {
             verifyPrefilledFields(
-                toRecipientChip = expectedToChip,
+                toRecipientChip = expectedToChipWithNoDeleteIcon,
                 ccRecipientChip = expectedCcChip,
                 bccRecipientChip = expectedBccChip,
                 subject = expectedSubject,
@@ -251,7 +253,7 @@ internal class OpenExistingDraftsHappyPathTests :
             )
         }
 
-        val expectedUpdatedToChip = expectedToChip.copy(text = "aa@bb2.cc")
+        val expectedUpdatedToChip = expectedToChipWithNoDeleteIcon.copy(text = "aa@bb2.cc")
         val expectedUpdatedSubject = "Test subject 2"
         val expectedUpdatedMessageBody = "Some text 2"
 
@@ -261,7 +263,7 @@ internal class OpenExistingDraftsHappyPathTests :
 
         composerRobot {
             verifyPrefilledFields(
-                toRecipientChip = expectedToChip,
+                toRecipientChip = expectedToChipWithNoDeleteIcon,
                 subject = expectedSubject,
                 messageBody = expectedMessageBody
             )
