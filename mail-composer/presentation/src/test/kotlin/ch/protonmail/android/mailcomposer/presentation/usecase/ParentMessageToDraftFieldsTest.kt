@@ -59,7 +59,7 @@ class ParentMessageToDraftFieldsTest {
     private val formatTime = mockk<FormatExtendedTime>()
 
     private val expectedOriginalMessageRes = expectStringRes(R.string.composer_original_message_quote) {
-        "-------- Original Message --------"
+        "Original Message"
     }
     private val expectedSenderQuoteRes = expectStringRes(R.string.composer_sender_quote) {
         "On %s, %s &lt; %s&gt; wrote:"
@@ -79,6 +79,7 @@ class ParentMessageToDraftFieldsTest {
         val expectedTime = expectFormattedTime(MessageSample.HtmlInvoice.time.seconds) {
             TextUiModel.Text("Sep 13, 2023 3:36 PM")
         }
+        val expectedOriginalMessageQuote = "-------- $expectedOriginalMessageRes --------"
         val expectedSenderQuote = expectedSenderQuoteRes.format(
             expectedTime.value,
             expectedDecryptedMessage.messageWithBody.message.sender.name,
@@ -92,7 +93,7 @@ class ParentMessageToDraftFieldsTest {
         // Then
         val expectedQuotedHtmlBody = StringBuilder()
             .append(ProtonMailQuote)
-            .append(expectedOriginalMessageRes)
+            .append(expectedOriginalMessageQuote)
             .append(LineBreak)
             .append(expectedSenderQuote)
             .append(LineBreak)

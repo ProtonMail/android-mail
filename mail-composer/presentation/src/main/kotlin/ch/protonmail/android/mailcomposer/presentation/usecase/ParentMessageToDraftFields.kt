@@ -82,7 +82,7 @@ class ParentMessageToDraftFields @Inject constructor(
         }
 
         val raw = StringBuilder()
-            .append(context.getString(R.string.composer_original_message_quote))
+            .append(buildOriginalMessageQuote())
             .append(buildSenderQuote(message))
             .append(decryptedBody.value)
             .toString()
@@ -96,7 +96,7 @@ class ParentMessageToDraftFields @Inject constructor(
 
         val raw = StringBuilder()
             .append(ProtonMailQuote)
-            .append(context.getString(R.string.composer_original_message_quote))
+            .append(buildOriginalMessageQuote())
             .append(LineBreak)
             .append(buildSenderQuote(message))
             .append(LineBreak)
@@ -108,6 +108,8 @@ class ParentMessageToDraftFields @Inject constructor(
         return QuotedHtmlBody(raw)
     }
 
+    private fun buildOriginalMessageQuote() =
+        "-------- ${context.getString(R.string.composer_original_message_quote)} --------"
 
     private fun buildSenderQuote(message: Message): String {
         val formattedTime = formatExtendedTime(message.time.seconds) as? TextUiModel.Text
