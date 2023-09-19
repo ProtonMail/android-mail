@@ -63,7 +63,7 @@ object NetworkModule {
         override val appVersionHeader: String
             get() = "android-mail@${BuildConfig.VERSION_NAME}"
         override val enableDebugLogging: Boolean
-            get() = true
+            get() = BuildConfig.DEBUG
         override val shouldUseDoh: Boolean
             get() = hasAlternativeRouting().value.isEnabled
         override val userAgent: String
