@@ -42,15 +42,9 @@ class DraftRemoteDataSourceImpl @Inject constructor(
         messageWithBody: MessageWithBody,
         action: DraftAction
     ): Either<DataError.Remote, MessageWithBody> {
-        val parentId = when (action) {
-            is DraftAction.Compose -> null
-            is DraftAction.Reply -> action.parentId
-            is DraftAction.ReplyAll -> action.parentId
-            is DraftAction.Forward -> action.parentId
-        }
         val body = CreateDraftBody(
             messageWithBody.toDraftMessageResource(),
-            parentId?.id,
+            action.getParentMessageId()?.id,
             action.toApiInt(),
             emptyList()
         )

@@ -154,7 +154,7 @@ class ComposerViewModel @Inject constructor(
                 Timber.d("Parent message draft data received $parentMessage")
                 parentMessageToDraftFields(primaryUserId(), parentMessage, draftAction).onRight { draftFields ->
                     Timber.d("Quoted parent body $draftFields")
-                    startDraftContinuousUpload()
+                    startDraftContinuousUpload(draftAction)
                     emitNewStateFor(ComposerEvent.PrefillDraftDataReceived(draftFields))
                 }.onLeft { emitNewStateFor(ComposerEvent.ErrorLoadingParentMessageData) }
             }.onLeft { emitNewStateFor(ComposerEvent.ErrorLoadingParentMessageData) }
@@ -304,9 +304,10 @@ class ComposerViewModel @Inject constructor(
             ifRight = { ComposerAction.DraftBodyChanged(action.draftBody) }
         )
 
-    private suspend fun CoroutineScope.startDraftContinuousUpload() = draftUploader.startContinuousUpload(
-        primaryUserId(), currentMessageId(), DraftAction.Compose, this@startDraftContinuousUpload
-    )
+    private suspend fun CoroutineScope.startDraftContinuousUpload(draftAction: DraftAction = DraftAction.Compose) =
+        draftUploader.startContinuousUpload(
+            primaryUserId(), currentMessageId(), draftAction, this@startDraftContinuousUpload
+        )
 
     private suspend fun primaryUserId() = primaryUserId.first()
 

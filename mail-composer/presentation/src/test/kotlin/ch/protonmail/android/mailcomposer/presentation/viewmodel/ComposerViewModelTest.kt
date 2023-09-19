@@ -231,6 +231,7 @@ class ComposerViewModelTest {
         val primaryAddress = UserAddressSample.PrimaryAddress
         val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
         val expectedDraftBody = DraftBody(RawDraftBody)
+        val expectedQuotedDraftBody = null
         val expectedUserId = expectedUserId { UserIdSample.Primary }
         val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
         val action = ComposerAction.DraftBodyChanged(expectedDraftBody)
@@ -238,6 +239,7 @@ class ComposerViewModelTest {
         expectStoreDraftBodySucceeds(
             expectedMessageId,
             expectedDraftBody,
+            expectedQuotedDraftBody,
             expectedSenderEmail,
             expectedUserId
         )
@@ -255,6 +257,7 @@ class ComposerViewModelTest {
             storeDraftWithBodyMock(
                 expectedMessageId,
                 expectedDraftBody,
+                expectedQuotedDraftBody,
                 expectedSenderEmail,
                 expectedUserId
             )
@@ -265,12 +268,19 @@ class ComposerViewModelTest {
     fun `should store draft with sender and current draft body when sender changes`() = runTest {
         // Given
         val expectedDraftBody = DraftBody(RawDraftBody)
+        val expectedQuotedDraftBody = null
         val expectedSenderEmail = SenderEmail(UserAddressSample.AliasAddress.email)
         val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
         val expectedUserId = expectedUserId { UserIdSample.Primary }
         val action = ComposerAction.SenderChanged(SenderUiModel(expectedSenderEmail.value))
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
-        expectStoreDraftBodySucceeds(expectedMessageId, expectedDraftBody, expectedSenderEmail, expectedUserId)
+        expectStoreDraftBodySucceeds(
+            expectedMessageId,
+            expectedDraftBody,
+            expectedQuotedDraftBody,
+            expectedSenderEmail,
+            expectedUserId
+        )
         expectNoInputDraftMessageId()
         expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
@@ -288,6 +298,7 @@ class ComposerViewModelTest {
             storeDraftWithBodyMock(
                 expectedMessageId,
                 expectedDraftBody,
+                expectedQuotedDraftBody,
                 expectedSenderEmail,
                 expectedUserId
             )
@@ -795,7 +806,7 @@ class ComposerViewModelTest {
         val expectedUserId = expectedUserId { UserIdSample.Primary }
         val action = ComposerAction.SenderChanged(SenderUiModel(expectedSenderEmail.value))
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
-        expectStoreDraftBodySucceeds(expectedMessageId, expectedDraftBody, expectedSenderEmail, expectedUserId)
+        expectStoreDraftBodySucceeds(expectedMessageId, expectedDraftBody, null, expectedSenderEmail, expectedUserId)
         expectNoInputDraftMessageId()
         expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
@@ -819,7 +830,7 @@ class ComposerViewModelTest {
         val action = ComposerAction.SenderChanged(SenderUiModel(expectedSenderEmail.value))
         val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
-        expectStoreDraftBodyFails(expectedMessageId, expectedDraftBody, expectedSenderEmail, expectedUserId) {
+        expectStoreDraftBodyFails(expectedMessageId, expectedDraftBody, null, expectedSenderEmail, expectedUserId) {
             StoreDraftWithBodyError.DraftSaveError
         }
         expectNoInputDraftMessageId()
@@ -848,7 +859,7 @@ class ComposerViewModelTest {
         val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
         val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
-        expectStoreDraftBodyFails(expectedMessageId, expectedDraftBody, expectedSenderEmail, expectedUserId) {
+        expectStoreDraftBodyFails(expectedMessageId, expectedDraftBody, null, expectedSenderEmail, expectedUserId) {
             StoreDraftWithBodyError.DraftSaveError
         }
         expectNoInputDraftMessageId()
@@ -1064,7 +1075,7 @@ class ComposerViewModelTest {
             val expectedAction = expectInputDraftAction { DraftAction.Reply(expectedParentId) }
             val expectedDecryptedParentBody = DecryptedMessageBodyTestData.htmlInvoice
             expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
-            expectStartDraftSync(expectedUserId, expectedDraftId)
+            expectStartDraftSync(expectedUserId, expectedDraftId, expectedAction)
             expectObserveMailFeature(expectedUserId) { emptyFlow() }
             expectNoInputDraftMessageId()
             val expectedMessageDecrypted = expectGetMessageWithDecryptedBodySuccess(expectedUserId, expectedParentId) {
@@ -1316,8 +1327,8 @@ class ComposerViewModelTest {
         every { networkManagerMock.isConnectedToNetwork() } returns false
     }
 
-    private fun expectStartDraftSync(userId: UserId, messageId: MessageId) {
-        coEvery { draftUploaderMock.startContinuousUpload(userId, messageId, DraftAction.Compose, any()) } returns Unit
+    private fun expectStartDraftSync(userId: UserId, messageId: MessageId, action: DraftAction = DraftAction.Compose) {
+        coEvery { draftUploaderMock.startContinuousUpload(userId, messageId, action, any()) } returns Unit
     }
 
     private fun expectObserveMailFeature(userId: UserId, result: () -> Flow<FeatureFlag>) = result().also {
@@ -1390,6 +1401,7 @@ class ComposerViewModelTest {
     private fun expectStoreDraftBodySucceeds(
         expectedMessageId: MessageId,
         expectedDraftBody: DraftBody,
+        expectedQuotedBody: QuotedHtmlBody?,
         expectedSenderEmail: SenderEmail,
         expectedUserId: UserId
     ) {
@@ -1397,15 +1409,18 @@ class ComposerViewModelTest {
             storeDraftWithBodyMock(
                 expectedMessageId,
                 expectedDraftBody,
+                expectedQuotedBody,
                 expectedSenderEmail,
                 expectedUserId
             )
         } returns Unit.right()
     }
 
+    @SuppressWarnings("LongParameterList")
     private fun expectStoreDraftBodyFails(
         expectedMessageId: MessageId,
         expectedDraftBody: DraftBody,
+        expectedQuotedBody: QuotedHtmlBody?,
         expectedSenderEmail: SenderEmail,
         expectedUserId: UserId,
         error: () -> StoreDraftWithBodyError
@@ -1414,6 +1429,7 @@ class ComposerViewModelTest {
             storeDraftWithBodyMock(
                 expectedMessageId,
                 expectedDraftBody,
+                expectedQuotedBody,
                 expectedSenderEmail,
                 expectedUserId
             )
@@ -1550,6 +1566,7 @@ class ComposerViewModelTest {
     companion object TestData {
 
         const val RawDraftBody = "I'm a message body"
+        const val RawQuotedHtmlBody = "<div> Quoted html body </div>"
 
         val existingDraftFields = DraftFields(
             SenderEmail("author@proton.me"),
