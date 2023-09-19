@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcomposer.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
+import ch.protonmail.android.mailcomposer.domain.model.QuotedHtmlBody
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsBcc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsCc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsTo
@@ -71,6 +72,7 @@ class StoreDraftWithAllFieldsTest {
         val senderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
         val subject = Subject("Subject of this email")
         val plaintextDraftBody = DraftBody("I am plaintext")
+        val quotedHtmlBody = QuotedHtmlBody("<div>Input quoted html body</div>")
         val recipientsTo = RecipientsTo(listOf(RecipientSample.John))
         val recipientsCc = RecipientsCc(listOf(RecipientSample.John))
         val recipientsBcc = RecipientsBcc(listOf(RecipientSample.John))
@@ -81,9 +83,9 @@ class StoreDraftWithAllFieldsTest {
             recipientsTo,
             recipientsCc,
             recipientsBcc,
-            null
+            quotedHtmlBody
         )
-        expectStoreDraftBodySucceeds(draftMessageId, plaintextDraftBody, senderEmail, userId)
+        expectStoreDraftBodySucceeds(draftMessageId, plaintextDraftBody, quotedHtmlBody, senderEmail, userId)
         expectStoreDraftSubjectSucceeds(userId, draftMessageId, senderEmail, subject)
         expectStoreDraftRecipientsSucceeds(
             userId,
@@ -97,7 +99,7 @@ class StoreDraftWithAllFieldsTest {
         storeDraftWithAllFields(userId, draftMessageId, draftFields)
 
         // Then
-        coVerify { storeDraftWithBodyMock(draftMessageId, plaintextDraftBody, senderEmail, userId) }
+        coVerify { storeDraftWithBodyMock(draftMessageId, plaintextDraftBody, quotedHtmlBody, senderEmail, userId) }
         coVerify { storeDraftWithSubjectMock(userId, draftMessageId, senderEmail, subject) }
         coVerify {
             storeDraftWithRecipientsMock(
@@ -169,7 +171,7 @@ class StoreDraftWithAllFieldsTest {
             recipientsBcc
         )
         val expectedError = StoreDraftWithSubject.Error.DraftSaveError
-        expectStoreDraftBodySucceeds(draftMessageId, plaintextDraftBody, senderEmail, userId)
+        expectStoreDraftBodySucceeds(draftMessageId, plaintextDraftBody, NoQuotedHtmlBody, senderEmail, userId)
         expectStoreDraftSubjectFails(draftMessageId, senderEmail, userId, subject) { expectedError }
         expectStoreDraftStateSucceeds(userId, draftMessageId)
         expectStoreDraftRecipientsSucceeds(
@@ -207,7 +209,7 @@ class StoreDraftWithAllFieldsTest {
             recipientsBcc
         )
         val expectedError = StoreDraftWithRecipients.Error.DraftSaveError
-        expectStoreDraftBodySucceeds(draftMessageId, plaintextDraftBody, senderEmail, userId)
+        expectStoreDraftBodySucceeds(draftMessageId, plaintextDraftBody, NoQuotedHtmlBody, senderEmail, userId)
         expectStoreDraftSubjectSucceeds(userId, draftMessageId, senderEmail, subject)
         expectStoreDraftStateSucceeds(userId, draftMessageId)
         expectStoreDraftRecipientsFails(
@@ -235,7 +237,7 @@ class StoreDraftWithAllFieldsTest {
         val plaintextDraftBody = DraftBody("I am plaintext")
         val draftFields = buildDraftFields(senderEmail, subject, plaintextDraftBody)
         val expectedAction = DraftAction.Compose
-        expectStoreDraftBodySucceeds(draftMessageId, plaintextDraftBody, senderEmail, userId)
+        expectStoreDraftBodySucceeds(draftMessageId, plaintextDraftBody, NoQuotedHtmlBody, senderEmail, userId)
         expectStoreDraftSubjectSucceeds(userId, draftMessageId, senderEmail, subject)
         expectStoreDraftStateSucceeds(userId, draftMessageId, expectedAction)
         expectStoreDraftRecipientsSucceeds(
@@ -282,6 +284,7 @@ class StoreDraftWithAllFieldsTest {
     private fun expectStoreDraftBodySucceeds(
         expectedMessageId: MessageId,
         expectedDraftBody: DraftBody,
+        expectedQuotedHtmlBody: QuotedHtmlBody?,
         expectedSenderEmail: SenderEmail,
         expectedUserId: UserId
     ) {
@@ -289,6 +292,7 @@ class StoreDraftWithAllFieldsTest {
             storeDraftWithBodyMock(
                 expectedMessageId,
                 expectedDraftBody,
+                expectedQuotedHtmlBody,
                 expectedSenderEmail,
                 expectedUserId
             )
@@ -306,6 +310,7 @@ class StoreDraftWithAllFieldsTest {
             storeDraftWithBodyMock(
                 expectedMessageId,
                 expectedDraftBody,
+                NoQuotedHtmlBody,
                 expectedSenderEmail,
                 expectedUserId
             )
@@ -382,4 +387,8 @@ class StoreDraftWithAllFieldsTest {
         } returns it.left()
     }
 
+
+    companion object {
+        private val NoQuotedHtmlBody = null
+    }
 }

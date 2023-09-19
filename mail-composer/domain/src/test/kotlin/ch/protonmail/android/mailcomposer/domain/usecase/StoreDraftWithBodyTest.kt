@@ -5,9 +5,11 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
+import ch.protonmail.android.mailcomposer.domain.model.QuotedHtmlBody
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
+import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.model.Sender
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
@@ -70,7 +72,48 @@ class StoreDraftWithBodyTest {
         givenSaveDraftSucceeds(expectedSavedDraft, expectedUserId)
 
         // When
-        val actualEither = storeDraftWithBody(draftMessageId, plaintextDraftBody, senderEmail, expectedUserId)
+        val actualEither = storeDraftWithBody(
+            draftMessageId, plaintextDraftBody, NoQuotedHtmlBody, senderEmail, expectedUserId
+        )
+
+        // Then
+        coVerify { saveDraftMock(expectedSavedDraft, expectedUserId) }
+        assertEquals(Unit.right(), actualEither)
+    }
+
+    @Test
+    fun `should append quoted html body to the draft body and set mime type to html when any quote exists`() = runTest {
+        // Given
+        val plaintextDraftBody = DraftBody("I am plaintext")
+        val quotedHtmlBody = QuotedHtmlBody("<div> I am quoted html </div>")
+        val expectedMergedBody = DraftBody("${plaintextDraftBody.value}${quotedHtmlBody.value}")
+        val senderAddress = UserAddressSample.build()
+        val senderEmail = SenderEmail(senderAddress.email)
+        val expectedUserId = UserIdSample.Primary
+        val draftMessageId = MessageIdSample.build()
+        val existingDraft = expectedGetLocalDraft(expectedUserId, draftMessageId, senderEmail) {
+            MessageWithBodySample.EmptyDraft
+        }
+        val expectedEncryptedDraftBody = expectedEncryptedDraftBody(expectedMergedBody, senderAddress) {
+            DraftBody("I am encrypted with the quoted html included")
+        }
+        val expectedSavedDraft = existingDraft.copy(
+            message = existingDraft.message.copy(
+                sender = Sender(senderAddress.email, senderAddress.displayName!!),
+                addressId = senderAddress.addressId
+            ),
+            messageBody = existingDraft.messageBody.copy(
+                body = expectedEncryptedDraftBody.value,
+                mimeType = MimeType.Html
+            )
+        )
+        expectedResolvedUserAddress(expectedUserId, senderEmail) { senderAddress }
+        givenSaveDraftSucceeds(expectedSavedDraft, expectedUserId)
+
+        // When
+        val actualEither = storeDraftWithBody(
+            draftMessageId, plaintextDraftBody, quotedHtmlBody, senderEmail, expectedUserId
+        )
 
         // Then
         coVerify { saveDraftMock(expectedSavedDraft, expectedUserId) }
@@ -90,7 +133,9 @@ class StoreDraftWithBodyTest {
         givenDraftBodyEncryptionFails()
 
         // When
-        val actualEither = storeDraftWithBody(draftMessageId, plaintextDraftBody, senderEmail, userId)
+        val actualEither = storeDraftWithBody(
+            draftMessageId, plaintextDraftBody, NoQuotedHtmlBody, senderEmail, userId
+        )
 
         // Then
         coVerify { saveDraftMock wasNot called }
@@ -125,7 +170,9 @@ class StoreDraftWithBodyTest {
         givenSaveDraftFails(expectedSavedDraft, expectedUserId)
 
         // When
-        val actualEither = storeDraftWithBody(draftMessageId, plaintextDraftBody, senderEmail, expectedUserId)
+        val actualEither = storeDraftWithBody(
+            draftMessageId, plaintextDraftBody, NoQuotedHtmlBody, senderEmail, expectedUserId
+        )
 
         // Then
         assertEquals(StoreDraftWithBodyError.DraftSaveError.left(), actualEither)
@@ -143,7 +190,9 @@ class StoreDraftWithBodyTest {
         expectResolveUserAddressFailure(expectedUserId, expectedSenderEmail)
 
         // When
-        val actualEither = storeDraftWithBody(draftMessageId, expectedDraftBody, expectedSenderEmail, expectedUserId)
+        val actualEither = storeDraftWithBody(
+            draftMessageId, expectedDraftBody, NoQuotedHtmlBody, expectedSenderEmail, expectedUserId
+        )
 
         // Then
         assertEquals(StoreDraftWithBodyError.DraftResolveUserAddressError.left(), actualEither)
@@ -162,7 +211,9 @@ class StoreDraftWithBodyTest {
         }
 
         // When
-        val actualEither = storeDraftWithBody(draftMessageId, expectedDraftBody, expectedSenderEmail, expectedUserId)
+        val actualEither = storeDraftWithBody(
+            draftMessageId, expectedDraftBody, NoQuotedHtmlBody, expectedSenderEmail, expectedUserId
+        )
 
         // Then
         assertEquals(StoreDraftWithBodyError.DraftReadError.left(), actualEither)
@@ -214,5 +265,9 @@ class StoreDraftWithBodyTest {
 
     private fun expectResolveUserAddressFailure(userId: UserId, email: SenderEmail) {
         coEvery { resolveUserAddressMock(userId, email) } returns ResolveUserAddress.Error.UserAddressNotFound.left()
+    }
+
+    companion object {
+        private val NoQuotedHtmlBody = null
     }
 }

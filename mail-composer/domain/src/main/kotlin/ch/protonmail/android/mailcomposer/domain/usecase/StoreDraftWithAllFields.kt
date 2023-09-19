@@ -45,7 +45,13 @@ class StoreDraftWithAllFields @Inject constructor(
         action: DraftAction = DraftAction.Compose
     ) = withContext(NonCancellable) {
         transactor.performTransaction {
-            storeDraftWithBody(draftMessageId, fields.body, fields.sender, userId).logError(draftMessageId)
+            storeDraftWithBody(
+                draftMessageId,
+                fields.body,
+                fields.quotedHtmlBody,
+                fields.sender,
+                userId
+            ).logError(draftMessageId)
             storeDraftWithSubject(userId, draftMessageId, fields.sender, fields.subject).logError(draftMessageId)
             storeDraftWithRecipients(
                 userId,

@@ -28,6 +28,7 @@ import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcomposer.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
+import ch.protonmail.android.mailcomposer.domain.model.QuotedHtmlBody
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsBcc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsCc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsTo
@@ -265,7 +266,7 @@ class ComposerViewModel @Inject constructor(
         currentValidRecipientsTo(),
         currentValidRecipientsCc(),
         currentValidRecipientsBcc(),
-        null
+        currentDraftQuotedHtmlBody()
     )
 
     private suspend fun onSubjectChanged(action: ComposerAction.SubjectChanged): ComposerOperation =
@@ -277,18 +278,28 @@ class ComposerViewModel @Inject constructor(
             ifRight = { action }
         )
 
-    private suspend fun onSenderChanged(action: ComposerAction.SenderChanged): ComposerOperation =
-        storeDraftWithBody(currentMessageId(), currentDraftBody(), SenderEmail(action.sender.email), primaryUserId())
-            .fold(
-                ifLeft = {
-                    Timber.e("Store draft ${currentMessageId()} with new sender ${action.sender.email} failed")
-                    ComposerEvent.ErrorStoringDraftSenderAddress
-                },
-                ifRight = { action }
-            )
+    private suspend fun onSenderChanged(action: ComposerAction.SenderChanged): ComposerOperation = storeDraftWithBody(
+        currentMessageId(),
+        currentDraftBody(),
+        currentDraftQuotedHtmlBody(),
+        SenderEmail(action.sender.email),
+        primaryUserId()
+    ).fold(
+        ifLeft = {
+            Timber.e("Store draft ${currentMessageId()} with new sender ${action.sender.email} failed")
+            ComposerEvent.ErrorStoringDraftSenderAddress
+        },
+        ifRight = { action }
+    )
 
     private suspend fun onDraftBodyChanged(action: ComposerAction.DraftBodyChanged): ComposerOperation =
-        storeDraftWithBody(currentMessageId(), action.draftBody, currentSenderEmail(), primaryUserId()).fold(
+        storeDraftWithBody(
+            currentMessageId(),
+            action.draftBody,
+            currentDraftQuotedHtmlBody(),
+            currentSenderEmail(),
+            primaryUserId()
+        ).fold(
             ifLeft = { ComposerEvent.ErrorStoringDraftBody },
             ifRight = { ComposerAction.DraftBodyChanged(action.draftBody) }
         )
@@ -302,6 +313,8 @@ class ComposerViewModel @Inject constructor(
     private fun currentSubject() = Subject(state.value.fields.subject)
 
     private fun currentDraftBody() = DraftBody(state.value.fields.body)
+
+    private fun currentDraftQuotedHtmlBody() = state.value.fields.quotedBody?.let { QuotedHtmlBody(it) }
 
     private fun currentSenderEmail() = SenderEmail(state.value.fields.sender.email)
 

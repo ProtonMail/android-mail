@@ -25,7 +25,6 @@ import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatExtendedTime
 import ch.protonmail.android.mailcomposer.domain.model.DraftAction
-import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.MessageWithDecryptedBody
 import ch.protonmail.android.mailcomposer.domain.model.Subject
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveUserAddresses
@@ -229,11 +228,5 @@ class ParentMessageToDraftFieldsTest {
 
     private fun expectedUserAddresses(userId: UserId, addresses: () -> List<UserAddress>) = addresses().also {
         every { observeUserAddresses.invoke(userId) } returns flowOf(it)
-    }
-
-    companion object {
-        object TestData {
-            val DraftBody = DraftBody("test unenecrypted body data")
-        }
     }
 }
