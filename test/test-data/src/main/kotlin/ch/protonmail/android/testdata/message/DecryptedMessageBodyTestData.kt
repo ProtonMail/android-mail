@@ -59,6 +59,13 @@ object DecryptedMessageBodyTestData {
         attachments = emptyList()
     )
 
+    val PlainTextDecryptedBody = buildDecryptedMessageBody(
+        messageId = MessageIdSample.PlainTextMessage,
+        value = "Plain text message",
+        mimeType = MimeType.PlainText,
+        attachments = emptyList()
+    )
+
     fun buildDecryptedMessageBody(
         messageId: MessageId = MessageIdSample.build(),
         value: String = DECRYPTED_MESSAGE_BODY,

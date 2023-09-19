@@ -23,7 +23,6 @@ import arrow.core.getOrElse
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsBcc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsCc
@@ -39,7 +38,8 @@ import javax.inject.Inject
 
 class GetDecryptedDraftFields @Inject constructor(
     private val messageRepository: MessageRepository,
-    private val getDecryptedMessageBody: GetDecryptedMessageBody
+    private val getDecryptedMessageBody: GetDecryptedMessageBody,
+    private val splitMessageBodyHtmlQuote: SplitMessageBodyHtmlQuote
 ) {
 
     suspend operator fun invoke(userId: UserId, messageId: MessageId): Either<DataError, DraftFields> {
@@ -51,14 +51,16 @@ class GetDecryptedDraftFields @Inject constructor(
             return DataError.Local.DecryptionError.left()
         }
 
+        val splitMessageBody = splitMessageBodyHtmlQuote(decryptedMessageBody)
+
         return DraftFields(
             SenderEmail(message.sender.address),
             Subject(message.subject),
-            DraftBody(decryptedMessageBody.value),
+            splitMessageBody.first,
             RecipientsTo(message.toList),
             RecipientsCc(message.ccList),
             RecipientsBcc(message.bccList),
-            null
+            splitMessageBody.second
         ).right()
     }
 

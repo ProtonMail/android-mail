@@ -24,6 +24,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
+import ch.protonmail.android.mailcomposer.domain.model.QuotedHtmlBody
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsBcc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsCc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsTo
@@ -49,8 +50,13 @@ class GetDecryptedDraftFieldsTest {
 
     private val messageRepository = mockk<MessageRepository>()
     private val getDecryptedMessageBody = mockk<GetDecryptedMessageBody>()
+    private val splitMessageBodyHtmlQuote = mockk<SplitMessageBodyHtmlQuote>()
 
-    private val getDecryptedDraftFields = GetDecryptedDraftFields(messageRepository, getDecryptedMessageBody)
+    private val getDecryptedDraftFields = GetDecryptedDraftFields(
+        messageRepository,
+        getDecryptedMessageBody,
+        splitMessageBodyHtmlQuote
+    )
 
     @Test
     fun `returns draft data when get refreshed message and decrypt operations succeed`() = runTest {
@@ -61,6 +67,7 @@ class GetDecryptedDraftFieldsTest {
         val expectedMessage = MessageWithBodySample.RemoteDraft
         expectedGetRefreshedMessage(userId, messageId) { expectedMessage }
         expectDecryptedMessageResult(userId, messageId) { decryptedMessageBody }
+        expectSplitMessageBodyHtmlQuote(decryptedMessageBody) { Pair(DraftBody(decryptedMessageBody.value), null) }
 
         // When
         val actual = getDecryptedDraftFields(userId, messageId)
@@ -102,6 +109,13 @@ class GetDecryptedDraftFieldsTest {
         assertEquals(DataError.Local.DecryptionError.left(), actual)
     }
 
+
+    private fun expectSplitMessageBodyHtmlQuote(
+        decryptedBody: DecryptedMessageBody,
+        result: () -> Pair<DraftBody, QuotedHtmlBody?>
+    ) = result().also {
+        coEvery { splitMessageBodyHtmlQuote(decryptedBody) } returns it
+    }
 
     private fun expectDecryptedMessageError(
         userId: UserId,
