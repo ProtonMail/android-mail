@@ -200,6 +200,7 @@ run_firebase_full_regression_tests:
       allow_failure: true
 
 tag_release:
+  stage: tag
   extends: .base_job
   script:
     - bundle exec fastlane tagRelease
