@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.usecase
+package ch.protonmail.android.mailmessage.presentation.usecase
 
 import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
 import kotlin.test.Test
