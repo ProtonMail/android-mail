@@ -23,6 +23,8 @@ import ch.protonmail.android.composer.data.local.AttachmentStateLocalDataSourceI
 import ch.protonmail.android.composer.data.local.DraftStateLocalDataSource
 import ch.protonmail.android.composer.data.local.DraftStateLocalDataSourceImpl
 import ch.protonmail.android.composer.data.local.RoomTransactor
+import ch.protonmail.android.composer.data.remote.AttachmentRemoteDataSource
+import ch.protonmail.android.composer.data.remote.AttachmentRemoteDataSourceImpl
 import ch.protonmail.android.composer.data.remote.DraftRemoteDataSource
 import ch.protonmail.android.composer.data.remote.DraftRemoteDataSourceImpl
 import ch.protonmail.android.composer.data.remote.MessageRemoteDataSource
@@ -83,4 +85,8 @@ abstract class MailComposerModule {
     @Binds
     @Reusable
     abstract fun bindsAttachmentStateRepository(impl: AttachmentStateRepositoryImpl): AttachmentStateRepository
+
+    @Binds
+    @Reusable
+    abstract fun bindsAttachmentRemoteDataSource(impl: AttachmentRemoteDataSourceImpl): AttachmentRemoteDataSource
 }
