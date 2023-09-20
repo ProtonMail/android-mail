@@ -40,6 +40,7 @@ import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerEvent
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerFields
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerOperation
+import ch.protonmail.android.mailcomposer.presentation.model.DraftUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel.Invalid
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel.Valid
@@ -90,6 +91,8 @@ class ComposerReducerTest(
             RecipientsBcc(emptyList()),
             null
         )
+
+        private val draftUiModel = DraftUiModel(draftFields, null)
 
         private val EmptyToSubmittableToField = with("a@b.c") {
             TestTransition(
@@ -462,7 +465,7 @@ class ComposerReducerTest(
         private val LoadingToFieldsWhenReceivedDraftData = TestTransition(
             name = "Should stop loading and set the received draft data as composer fields when draft data received",
             currentState = ComposerDraftState.initial(messageId).copy(isLoading = true),
-            operation = ComposerEvent.PrefillDraftDataReceived(draftFields),
+            operation = ComposerEvent.PrefillDraftDataReceived(draftUiModel),
             expectedState = aNotSubmittableState(
                 draftId = messageId,
                 sender = SenderUiModel(draftFields.sender.value),

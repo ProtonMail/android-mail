@@ -28,7 +28,8 @@ import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcomposer.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
-import ch.protonmail.android.mailcomposer.domain.model.QuotedHtmlBody
+import ch.protonmail.android.mailcomposer.domain.model.OriginalHtmlQuote
+import ch.protonmail.android.mailcomposer.domain.model.QuotedHtmlContent
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsBcc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsCc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsTo
@@ -54,11 +55,13 @@ import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerEvent
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerOperation
+import ch.protonmail.android.mailcomposer.presentation.model.DraftUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
 import ch.protonmail.android.mailcomposer.presentation.reducer.ComposerReducer
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen
 import ch.protonmail.android.mailcomposer.presentation.usecase.ParentMessageToDraftFields
+import ch.protonmail.android.mailcomposer.presentation.usecase.StyleQuotedHtml
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.test.idlingresources.ComposerIdlingResource
@@ -104,6 +107,7 @@ class ComposerViewModel @Inject constructor(
     private val networkManager: NetworkManager,
     private val getLocalMessageDecrypted: GetLocalMessageDecrypted,
     private val parentMessageToDraftFields: ParentMessageToDraftFields,
+    private val styleQuotedHtml: StyleQuotedHtml,
     getDecryptedDraftFields: GetDecryptedDraftFields,
     savedStateHandle: SavedStateHandle,
     observePrimaryUserId: ObservePrimaryUserId,
@@ -155,7 +159,7 @@ class ComposerViewModel @Inject constructor(
                 parentMessageToDraftFields(primaryUserId(), parentMessage, draftAction).onRight { draftFields ->
                     Timber.d("Quoted parent body $draftFields")
                     startDraftContinuousUpload(draftAction)
-                    emitNewStateFor(ComposerEvent.PrefillDraftDataReceived(draftFields))
+                    emitNewStateFor(ComposerEvent.PrefillDraftDataReceived(draftFields.toDraftUiModel()))
                 }.onLeft { emitNewStateFor(ComposerEvent.ErrorLoadingParentMessageData) }
             }.onLeft { emitNewStateFor(ComposerEvent.ErrorLoadingParentMessageData) }
         }
@@ -167,14 +171,21 @@ class ComposerViewModel @Inject constructor(
 
         viewModelScope.launch {
             getDecryptedDraftFields(primaryUserId(), currentMessageId())
-                .onRight {
-                    Timber.d("Opening existing draft with body $it")
+                .onRight { draftFields ->
+                    Timber.d("Opening existing draft with body $draftFields")
                     startDraftContinuousUpload()
-                    emitNewStateFor(ComposerEvent.PrefillDraftDataReceived(it))
+                    emitNewStateFor(ComposerEvent.PrefillDraftDataReceived(draftFields.toDraftUiModel()))
                 }
                 .onLeft { emitNewStateFor(ComposerEvent.ErrorLoadingDraftData) }
 
         }
+    }
+
+    private fun DraftFields.toDraftUiModel(): DraftUiModel {
+        val quotedHtml = this.originalHtmlQuote?.let {
+            QuotedHtmlContent(it, styleQuotedHtml(it))
+        }
+        return DraftUiModel(this, quotedHtml)
     }
 
     override fun onCleared() {
@@ -315,7 +326,7 @@ class ComposerViewModel @Inject constructor(
 
     private fun currentDraftBody() = DraftBody(state.value.fields.body)
 
-    private fun currentDraftQuotedHtmlBody() = state.value.fields.quotedBody?.let { QuotedHtmlBody(it) }
+    private fun currentDraftQuotedHtmlBody(): OriginalHtmlQuote? = state.value.fields.quotedBody?.original
 
     private fun currentSenderEmail() = SenderEmail(state.value.fields.sender.email)
 

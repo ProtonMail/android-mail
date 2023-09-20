@@ -29,7 +29,7 @@ import ch.protonmail.android.mailcomposer.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
 import ch.protonmail.android.mailcomposer.domain.model.MessageWithDecryptedBody
-import ch.protonmail.android.mailcomposer.domain.model.QuotedHtmlBody
+import ch.protonmail.android.mailcomposer.domain.model.OriginalHtmlQuote
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsBcc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsCc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsTo
@@ -42,8 +42,6 @@ import ch.protonmail.android.mailmessage.domain.model.Message
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.model.Recipient
-import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
-import ch.protonmail.android.mailmessage.presentation.usecase.InjectCssIntoDecryptedMessageBody
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.firstOrNull
 import me.proton.core.domain.entity.UserId
@@ -55,8 +53,7 @@ import kotlin.time.Duration.Companion.seconds
 class ParentMessageToDraftFields @Inject constructor(
     @ApplicationContext private val context: Context,
     private val observeUserAddresses: ObserveUserAddresses,
-    private val formatExtendedTime: FormatExtendedTime,
-    private val injectCss: InjectCssIntoDecryptedMessageBody
+    private val formatExtendedTime: FormatExtendedTime
 ) {
 
     suspend operator fun invoke(
@@ -104,24 +101,25 @@ class ParentMessageToDraftFields @Inject constructor(
         return DraftBody(raw)
     }
 
-    private fun buildQuotedHtmlBody(message: Message, decryptedBody: DecryptedMessageBody): QuotedHtmlBody? {
+    private fun buildQuotedHtmlBody(message: Message, decryptedBody: DecryptedMessageBody): OriginalHtmlQuote? {
         if (decryptedBody.mimeType == MimeType.PlainText) {
             return null
         }
 
-        val bodyWithStyle = injectCss(decryptedBody.value, MimeTypeUiModel.Html)
         val raw = StringBuilder()
             .append(ProtonMailQuote)
+            .append(LineBreak)
+            .append(LineBreak)
             .append(buildOriginalMessageQuote())
             .append(LineBreak)
             .append(buildSenderQuote(message))
             .append(LineBreak)
             .append(ProtonMailBlockquote)
-            .append(bodyWithStyle)
+            .append(decryptedBody.value)
             .append(CloseProtonMailBlockquote)
             .append(CloseProtonMailQuote)
             .toString()
-        return QuotedHtmlBody(raw)
+        return OriginalHtmlQuote(raw)
     }
 
     private fun buildOriginalMessageQuote() =
@@ -170,7 +168,7 @@ class ParentMessageToDraftFields @Inject constructor(
 
     companion object {
         const val ProtonMailQuote = "<div class=\"protonmail_quote\">"
-        const val ProtonMailBlockquote = "<blockquote class=\"protonmail_quote\""
+        const val ProtonMailBlockquote = "<blockquote class=\"protonmail_quote\">"
         const val CloseProtonMailQuote = "</div>"
         const val CloseProtonMailBlockquote = "</blockquote>"
         const val LineBreak = "<br>"

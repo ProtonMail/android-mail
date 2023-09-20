@@ -23,7 +23,7 @@ import arrow.core.continuations.either
 import ch.protonmail.android.mailcommon.domain.util.mapFalse
 import ch.protonmail.android.mailcomposer.domain.Transactor
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
-import ch.protonmail.android.mailcomposer.domain.model.QuotedHtmlBody
+import ch.protonmail.android.mailcomposer.domain.model.OriginalHtmlQuote
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
@@ -45,7 +45,7 @@ class StoreDraftWithBody @Inject constructor(
     suspend operator fun invoke(
         messageId: MessageId,
         draftBody: DraftBody,
-        quotedHtmlBody: QuotedHtmlBody?,
+        quotedHtmlBody: OriginalHtmlQuote?,
         senderEmail: SenderEmail,
         userId: UserId
     ): Either<StoreDraftWithBodyError, Unit> = either {
@@ -78,10 +78,10 @@ class StoreDraftWithBody @Inject constructor(
         }
     }
 
-    private fun DraftBody.appendQuotedHtml(quotedHtmlBody: QuotedHtmlBody?) =
+    private fun DraftBody.appendQuotedHtml(quotedHtmlBody: OriginalHtmlQuote?) =
         quotedHtmlBody?.let { quotedHtml -> DraftBody("${this.value}${quotedHtml.value}") } ?: this
 
-    private fun MessageWithBody.updateMimeWhenQuotingHtml(quotedHtmlBody: QuotedHtmlBody?): MessageWithBody {
+    private fun MessageWithBody.updateMimeWhenQuotingHtml(quotedHtmlBody: OriginalHtmlQuote?): MessageWithBody {
         if (quotedHtmlBody == null) {
             return this
         }

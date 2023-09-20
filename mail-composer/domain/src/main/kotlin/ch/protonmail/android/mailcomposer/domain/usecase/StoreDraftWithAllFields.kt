@@ -48,7 +48,7 @@ class StoreDraftWithAllFields @Inject constructor(
             storeDraftWithBody(
                 draftMessageId,
                 fields.body,
-                fields.quotedHtmlBody,
+                fields.originalHtmlQuote,
                 fields.sender,
                 userId
             ).logError(draftMessageId)

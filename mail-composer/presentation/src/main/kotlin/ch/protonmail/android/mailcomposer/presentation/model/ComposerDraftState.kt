@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcomposer.presentation.model
 
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcomposer.domain.model.QuotedHtmlContent
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
 
@@ -77,5 +78,5 @@ data class ComposerFields(
     val bcc: List<RecipientUiModel>,
     val subject: String,
     val body: String,
-    val quotedBody: String? = null
+    val quotedBody: QuotedHtmlContent? = null
 )

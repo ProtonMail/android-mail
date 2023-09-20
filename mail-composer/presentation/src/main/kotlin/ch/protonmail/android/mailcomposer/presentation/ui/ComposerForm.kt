@@ -187,7 +187,7 @@ internal fun ComposerForm(
             )
             if (fields.quotedBody != null) {
                 BodyHtmlQuote(
-                    value = fields.quotedBody,
+                    value = fields.quotedBody.styled.value,
                     modifier = maxWidthModifier.testTag(ComposerTestTags.MessageHtmlQuotedBody)
                 )
             }

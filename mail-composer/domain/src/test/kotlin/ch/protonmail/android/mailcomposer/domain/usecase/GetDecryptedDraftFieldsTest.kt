@@ -24,7 +24,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
-import ch.protonmail.android.mailcomposer.domain.model.QuotedHtmlBody
+import ch.protonmail.android.mailcomposer.domain.model.OriginalHtmlQuote
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsBcc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsCc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsTo
@@ -112,7 +112,7 @@ class GetDecryptedDraftFieldsTest {
 
     private fun expectSplitMessageBodyHtmlQuote(
         decryptedBody: DecryptedMessageBody,
-        result: () -> Pair<DraftBody, QuotedHtmlBody?>
+        result: () -> Pair<DraftBody, OriginalHtmlQuote?>
     ) = result().also {
         coEvery { splitMessageBodyHtmlQuote(decryptedBody) } returns it
     }

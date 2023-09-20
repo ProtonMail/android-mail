@@ -5,7 +5,7 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
-import ch.protonmail.android.mailcomposer.domain.model.QuotedHtmlBody
+import ch.protonmail.android.mailcomposer.domain.model.OriginalHtmlQuote
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
@@ -85,7 +85,7 @@ class StoreDraftWithBodyTest {
     fun `should append quoted html body to the draft body and set mime type to html when any quote exists`() = runTest {
         // Given
         val plaintextDraftBody = DraftBody("I am plaintext")
-        val quotedHtmlBody = QuotedHtmlBody("<div> I am quoted html </div>")
+        val quotedHtmlBody = OriginalHtmlQuote("<div> I am quoted html </div>")
         val expectedMergedBody = DraftBody("${plaintextDraftBody.value}${quotedHtmlBody.value}")
         val senderAddress = UserAddressSample.build()
         val senderEmail = SenderEmail(senderAddress.email)

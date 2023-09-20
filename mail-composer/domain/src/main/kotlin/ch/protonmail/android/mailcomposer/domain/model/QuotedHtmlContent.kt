@@ -18,5 +18,13 @@
 
 package ch.protonmail.android.mailcomposer.domain.model
 
+data class QuotedHtmlContent(
+    val original: OriginalHtmlQuote,
+    val styled: StyledHtmlQuote
+)
+
 @JvmInline
-value class QuotedHtmlBody(val value: String)
+value class OriginalHtmlQuote(val value: String)
+
+@JvmInline
+value class StyledHtmlQuote(val value: String)

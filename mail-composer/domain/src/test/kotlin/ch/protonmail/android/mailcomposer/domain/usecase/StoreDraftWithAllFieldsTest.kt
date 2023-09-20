@@ -25,7 +25,7 @@ import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcomposer.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
-import ch.protonmail.android.mailcomposer.domain.model.QuotedHtmlBody
+import ch.protonmail.android.mailcomposer.domain.model.OriginalHtmlQuote
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsBcc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsCc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsTo
@@ -72,7 +72,7 @@ class StoreDraftWithAllFieldsTest {
         val senderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
         val subject = Subject("Subject of this email")
         val plaintextDraftBody = DraftBody("I am plaintext")
-        val quotedHtmlBody = QuotedHtmlBody("<div>Input quoted html body</div>")
+        val quotedHtmlBody = OriginalHtmlQuote("<div>Input quoted html body</div>")
         val recipientsTo = RecipientsTo(listOf(RecipientSample.John))
         val recipientsCc = RecipientsCc(listOf(RecipientSample.John))
         val recipientsBcc = RecipientsBcc(listOf(RecipientSample.John))
@@ -284,7 +284,7 @@ class StoreDraftWithAllFieldsTest {
     private fun expectStoreDraftBodySucceeds(
         expectedMessageId: MessageId,
         expectedDraftBody: DraftBody,
-        expectedQuotedHtmlBody: QuotedHtmlBody?,
+        expectedQuotedHtmlBody: OriginalHtmlQuote?,
         expectedSenderEmail: SenderEmail,
         expectedUserId: UserId
     ) {

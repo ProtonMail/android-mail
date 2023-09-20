@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailcomposer.domain.usecase
 
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
-import ch.protonmail.android.mailcomposer.domain.model.QuotedHtmlBody
+import ch.protonmail.android.mailcomposer.domain.model.OriginalHtmlQuote
 import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.model.MimeType
 import org.jsoup.Jsoup
@@ -28,7 +28,7 @@ import javax.inject.Inject
 
 class SplitMessageBodyHtmlQuote @Inject constructor() {
 
-    operator fun invoke(decryptedBody: DecryptedMessageBody): Pair<DraftBody, QuotedHtmlBody?> {
+    operator fun invoke(decryptedBody: DecryptedMessageBody): Pair<DraftBody, OriginalHtmlQuote?> {
         if (decryptedBody.mimeType == MimeType.PlainText) {
             return Pair(DraftBody(decryptedBody.value), null)
         }
@@ -50,7 +50,7 @@ class SplitMessageBodyHtmlQuote @Inject constructor() {
         val bodyContent = htmlBodyDocument.body().text()
         Timber.d("Split body content without html $bodyContent")
         val draftBody = DraftBody(bodyContent)
-        val draftQuote = htmlQuote?.let { QuotedHtmlBody(it) }
+        val draftQuote = htmlQuote?.let { OriginalHtmlQuote(it) }
         Timber.d("Split message body $draftBody and quote $draftQuote")
         return Pair(draftBody, draftQuote)
     }

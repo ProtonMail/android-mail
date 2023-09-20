@@ -18,21 +18,21 @@
 
 package ch.protonmail.android.maildetail.presentation.mapper
 
-import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.usecase.DoesMessageBodyHaveEmbeddedImages
 import ch.protonmail.android.maildetail.domain.usecase.DoesMessageBodyHaveRemoteContent
 import ch.protonmail.android.maildetail.domain.usecase.ShouldShowEmbeddedImages
 import ch.protonmail.android.maildetail.domain.usecase.ShouldShowRemoteContent
+import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
+import ch.protonmail.android.mailmessage.domain.model.GetDecryptedMessageBodyError
+import ch.protonmail.android.mailmessage.domain.model.MimeType
+import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import ch.protonmail.android.mailmessage.presentation.mapper.AttachmentUiModelMapper
+import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
 import ch.protonmail.android.mailmessage.presentation.sample.AttachmentUiModelSample
 import ch.protonmail.android.mailmessage.presentation.usecase.InjectCssIntoDecryptedMessageBody
-import ch.protonmail.android.maildetail.presentation.usecase.SanitizeHtmlOfDecryptedMessageBody
-import ch.protonmail.android.mailmessage.domain.model.GetDecryptedMessageBodyError
-import ch.protonmail.android.mailmessage.domain.model.MimeType
-import ch.protonmail.android.mailmessage.presentation.mapper.AttachmentUiModelMapper
-import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
-import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import ch.protonmail.android.mailmessage.presentation.usecase.SanitizeHtmlOfDecryptedMessageBody
 import ch.protonmail.android.testdata.message.MessageAttachmentTestData
 import ch.protonmail.android.testdata.message.MessageBodyTestData
 import ch.protonmail.android.testdata.user.UserIdTestData

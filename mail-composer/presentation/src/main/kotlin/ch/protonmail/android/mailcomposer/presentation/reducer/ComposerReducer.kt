@@ -21,13 +21,13 @@ package ch.protonmail.android.mailcomposer.presentation.reducer
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
-import ch.protonmail.android.mailcomposer.domain.model.DraftFields
 import ch.protonmail.android.mailcomposer.domain.model.Subject
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerEvent
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerOperation
+import ch.protonmail.android.mailcomposer.presentation.model.DraftUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
@@ -95,7 +95,7 @@ class ComposerReducer @Inject constructor(
         is ComposerEvent.OnCloseWithDraftSaved -> updateCloseComposerState(currentState, true)
         is ComposerEvent.OpenExistingDraft -> currentState.copy(isLoading = true)
         is ComposerEvent.OpenWithMessageAction -> currentState.copy(isLoading = true)
-        is ComposerEvent.PrefillDraftDataReceived -> updateComposerFieldsState(currentState, this.draftFields)
+        is ComposerEvent.PrefillDraftDataReceived -> updateComposerFieldsState(currentState, this.draftUiModel)
         is ComposerEvent.ErrorLoadingDraftData -> currentState.copy(
             error = Effect.of(TextUiModel(R.string.composer_error_loading_draft)),
             isLoading = false
@@ -116,16 +116,16 @@ class ComposerReducer @Inject constructor(
     private fun updateBottomSheetVisibility(currentState: ComposerDraftState, bottomSheetVisibility: Boolean) =
         currentState.copy(changeBottomSheetVisibility = Effect.of(bottomSheetVisibility))
 
-    private fun updateComposerFieldsState(currentState: ComposerDraftState, draftFields: DraftFields) =
+    private fun updateComposerFieldsState(currentState: ComposerDraftState, draftUiModel: DraftUiModel) =
         currentState.copy(
             fields = currentState.fields.copy(
-                sender = SenderUiModel(draftFields.sender.value),
-                subject = draftFields.subject.value,
-                body = draftFields.body.value,
-                quotedBody = draftFields.quotedHtmlBody?.value,
-                to = draftFields.recipientsTo.value.map { RecipientUiModel.Valid(it.address) },
-                cc = draftFields.recipientsCc.value.map { RecipientUiModel.Valid(it.address) },
-                bcc = draftFields.recipientsBcc.value.map { RecipientUiModel.Valid(it.address) }
+                sender = SenderUiModel(draftUiModel.draftFields.sender.value),
+                subject = draftUiModel.draftFields.subject.value,
+                body = draftUiModel.draftFields.body.value,
+                quotedBody = draftUiModel.quotedHtmlContent,
+                to = draftUiModel.draftFields.recipientsTo.value.map { RecipientUiModel.Valid(it.address) },
+                cc = draftUiModel.draftFields.recipientsCc.value.map { RecipientUiModel.Valid(it.address) },
+                bcc = draftUiModel.draftFields.recipientsBcc.value.map { RecipientUiModel.Valid(it.address) }
             ),
             isLoading = false
         )
