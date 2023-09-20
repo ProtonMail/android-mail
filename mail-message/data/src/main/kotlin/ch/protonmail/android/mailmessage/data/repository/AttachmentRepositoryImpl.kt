@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmessage.data.repository
 
+import java.io.File
 import android.net.Uri
 import arrow.core.Either
 import arrow.core.continuations.either
@@ -116,5 +117,13 @@ class AttachmentRepositoryImpl @Inject constructor(
         attachmentId: AttachmentId,
         uri: Uri
     ): Either<DataError, Unit> = localDataSource.upsertAttachment(userId, messageId, attachmentId, uri)
+
+    override suspend fun readFileFromStorage(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId
+    ): Either<DataError, File> = localDataSource.readFileFromStorage(
+        userId, messageId, attachmentId
+    )
 
 }

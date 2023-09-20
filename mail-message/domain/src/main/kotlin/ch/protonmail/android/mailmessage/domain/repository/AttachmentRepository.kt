@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmessage.domain.repository
 
+import java.io.File
 import android.net.Uri
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.DataError
@@ -67,4 +68,10 @@ interface AttachmentRepository {
         attachmentId: AttachmentId,
         uri: Uri
     ): Either<DataError, Unit>
+
+    suspend fun readFileFromStorage(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId
+    ): Either<DataError, File>
 }

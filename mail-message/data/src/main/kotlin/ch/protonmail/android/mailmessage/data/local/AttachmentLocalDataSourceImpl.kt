@@ -212,6 +212,19 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
         return true
     }
 
+    override suspend fun readFileFromStorage(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId
+    ): Either<DataError.Local, File> =
+        runCatching { attachmentFileStorage.readAttachment(userId, messageId.id, attachmentId.id) }.fold(
+            onSuccess = { it.right() },
+            onFailure = {
+                Timber.e(it, "Failed to read attachment from file storage")
+                DataError.Local.NoDataCached.left()
+            }
+        )
+
     private fun isAttachmentFileAvailable(uri: Uri): Boolean {
         val doesFileExist = try {
             context.contentResolver.openInputStream(uri)?.use {

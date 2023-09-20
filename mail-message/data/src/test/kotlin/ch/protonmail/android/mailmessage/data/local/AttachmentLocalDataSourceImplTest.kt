@@ -417,4 +417,34 @@ class AttachmentLocalDataSourceImplTest {
         // Then
         coVerify { attachmentFileStorage.saveAttachmentCached(userId, messageId.id, attachmentId.id, byteArray) }
     }
+
+    @Test
+    fun `read file from storage returns stored file`() = runTest {
+        // Given
+        @Suppress("BlockingMethodInNonBlockingContext")
+        val file = File.createTempFile("test", "test")
+        coEvery {
+            attachmentFileStorage.readAttachment(userId, messageId.id, attachmentId.id)
+        } returns file
+
+        // When
+        val result = attachmentLocalDataSource.readFileFromStorage(userId, messageId, attachmentId)
+
+        // Then
+        assertEquals(file.right(), result)
+    }
+
+    @Test
+    fun `read file from storage returns null when file doesn't exist`() = runTest {
+        // Given
+        coEvery {
+            attachmentFileStorage.readAttachment(userId, messageId.id, attachmentId.id)
+        } throws AttachmentFileReadException
+
+        // When
+        val result = attachmentLocalDataSource.readFileFromStorage(userId, messageId, attachmentId)
+
+        // Then
+        assertEquals(DataError.Local.NoDataCached.left(), result)
+    }
 }

@@ -105,4 +105,14 @@ interface AttachmentLocalDataSource {
      * @return true if deleting was successful, false otherwise.
      */
     suspend fun deleteAttachments(userId: UserId, messageId: MessageId): Boolean
+
+    /**
+     * Returns the file for the given [userId], [messageId] and [attachmentId], or null if it does not exist.
+     */
+    suspend fun readFileFromStorage(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId
+    ): Either<DataError.Local, File>
+
 }

@@ -388,4 +388,32 @@ class AttachmentRepositoryImplTest {
         assertEquals(expectedResult, actual)
         coVerify { localDataSource.upsertAttachment(userId, messageId, attachmentId, uri) }
     }
+
+    @Test
+    fun `should return file from local storage when available`() = runTest {
+        // Given
+        val file = mockk<File>()
+        coEvery { localDataSource.readFileFromStorage(userId, messageId, attachmentId) } returns file.right()
+
+        // When
+        val actual = repository.readFileFromStorage(userId, messageId, attachmentId)
+
+        // Then
+        assertEquals(file.right(), actual)
+        coVerify { localDataSource.readFileFromStorage(userId, messageId, attachmentId) }
+    }
+
+    @Test
+    fun `should return local error when file from local storage is not available`() = runTest {
+        // Given
+        val expectedResult = DataError.Local.NoDataCached.left()
+        coEvery { localDataSource.readFileFromStorage(userId, messageId, attachmentId) } returns expectedResult
+
+        // When
+        val actual = repository.readFileFromStorage(userId, messageId, attachmentId)
+
+        // Then
+        assertEquals(expectedResult, actual)
+        coVerify { localDataSource.readFileFromStorage(userId, messageId, attachmentId) }
+    }
 }
