@@ -45,11 +45,11 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
                 buildFlavor = "dev",
                 buildDebug = false,
                 expectedDefaultsMap = mapOf(
-                    MailFeatureId.AddAttachmentsToDraft to false,
+                    MailFeatureId.AddAttachmentsToDraft to true,
                     MailFeatureId.ConversationMode to true,
                     MailFeatureId.ShowSettings to true,
                     MailFeatureId.SelectionMode to false,
-                    MailFeatureId.MessageActions to false
+                    MailFeatureId.MessageActions to true
                 )
             ),
             TestInput(
@@ -67,11 +67,11 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
                 buildFlavor = "alpha",
                 buildDebug = false,
                 expectedDefaultsMap = mapOf(
-                    MailFeatureId.AddAttachmentsToDraft to false,
+                    MailFeatureId.AddAttachmentsToDraft to true,
                     MailFeatureId.ConversationMode to true,
                     MailFeatureId.ShowSettings to true,
                     MailFeatureId.SelectionMode to false,
-                    MailFeatureId.MessageActions to false
+                    MailFeatureId.MessageActions to true
                 )
             ),
             TestInput(
@@ -100,11 +100,11 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
                 buildFlavor = "prod",
                 buildDebug = true,
                 expectedDefaultsMap = mapOf(
-                    MailFeatureId.AddAttachmentsToDraft to true,
+                    MailFeatureId.AddAttachmentsToDraft to false,
                     MailFeatureId.ConversationMode to false,
                     MailFeatureId.ShowSettings to false,
                     MailFeatureId.SelectionMode to true,
-                    MailFeatureId.MessageActions to true
+                    MailFeatureId.MessageActions to false
                 )
             )
         )
