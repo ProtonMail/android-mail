@@ -75,6 +75,34 @@ class AttachmentStateRepositoryImplTest {
     }
 
     @Test
+    fun `get all attachment states for message returns them when existing`() = runTest {
+        // Given
+        val draftId = MessageIdSample.EmptyDraft
+        val expected = listOf(AttachmentStateSample.LocalAttachmentState)
+        expectGetAllAttachmentStatesReturnsListWithEntries(draftId, expected)
+
+        // When
+        val actual = repository.getAllAttachmentStatesForMessage(userId, draftId)
+
+        // Then
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `get all attachment states for message returns empty list when not existing`() = runTest {
+        // Given
+        val draftId = MessageIdSample.EmptyDraft
+        val expected = emptyList<AttachmentState>()
+        expectGetAllAttachmentStatesReturnsListWithEntries(draftId, expected)
+
+        // When
+        val actual = repository.getAllAttachmentStatesForMessage(userId, draftId)
+
+        // Then
+        assertEquals(expected, actual)
+    }
+
+    @Test
     fun `store synced state does update api message id and attachment sync state`() = runTest {
         // Given
         val draftId = MessageIdSample.RemoteDraft
@@ -184,6 +212,13 @@ class AttachmentStateRepositoryImplTest {
         coEvery {
             attachmentStateLocalDataSource.getAttachmentState(userId, messageId, attachmentId)
         } returns DataError.Local.NoDataCached.left()
+    }
+
+    private fun expectGetAllAttachmentStatesReturnsListWithEntries(
+        draftId: MessageId,
+        expected: List<AttachmentState>
+    ) {
+        coEvery { attachmentStateLocalDataSource.getAllAttachmentStatesForMessage(userId, draftId) } returns expected
     }
 
     private fun expectLocalDataSourceUpsertSuccess(state: AttachmentState) {

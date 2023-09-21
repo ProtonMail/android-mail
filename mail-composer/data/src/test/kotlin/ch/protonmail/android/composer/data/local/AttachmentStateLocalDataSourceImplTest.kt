@@ -97,6 +97,31 @@ class AttachmentStateLocalDataSourceImplTest {
         coVerify { attachmentStateDao.delete(attachmentStateEntity) }
     }
 
+    @Test
+    fun `get all states of all attachments connected to user and message`() = runTest {
+        val userId = UserIdSample.Primary
+        val messageId = MessageIdSample.EmptyDraft
+        val attachmentStateEntity = listOf(AttachmentStateEntitySample.LocalAttachmentState)
+        val expected = listOf(AttachmentStateSample.LocalAttachmentState)
+        expectGetAllAttachmentStatesForMessageSuccessful(userId, messageId, attachmentStateEntity)
+
+        val actual = localDataSource.getAllAttachmentStatesForMessage(userId, messageId)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `get all states of attachments for user and message returns empty list when no states are stored`() = runTest {
+        val userId = UserIdSample.Primary
+        val messageId = MessageIdSample.EmptyDraft
+        val expectedStateEntities = listOf<AttachmentStateEntity>()
+        expectGetAllAttachmentStatesForMessageSuccessful(userId, messageId, expectedStateEntities)
+
+        val actual = localDataSource.getAllAttachmentStatesForMessage(userId, messageId)
+
+        assertEquals(emptyList(), actual)
+    }
+
     private fun expectAttachmentStateDaoSuccess(
         userId: UserId,
         messageId: MessageId,
@@ -124,6 +149,16 @@ class AttachmentStateLocalDataSourceImplTest {
 
     private fun expectedAttachmentStateDaoDeleteSuccess(attachmentStateEntity: AttachmentStateEntity) {
         coEvery { attachmentStateDao.delete(attachmentStateEntity) } returns Unit
+    }
+
+    private fun expectGetAllAttachmentStatesForMessageSuccessful(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentStateEntities: List<AttachmentStateEntity>
+    ) {
+        coEvery {
+            attachmentStateDao.getAllAttachmentStatesForMessage(userId, messageId)
+        } returns attachmentStateEntities
     }
 
 }

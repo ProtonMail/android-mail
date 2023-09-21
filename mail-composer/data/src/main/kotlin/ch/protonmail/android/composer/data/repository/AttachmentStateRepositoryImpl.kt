@@ -41,6 +41,9 @@ class AttachmentStateRepositoryImpl @Inject constructor(
         attachmentId: AttachmentId
     ): Either<DataError, AttachmentState> = localDataSource.getAttachmentState(userId, messageId, attachmentId)
 
+    override suspend fun getAllAttachmentStatesForMessage(userId: UserId, messageId: MessageId): List<AttachmentState> =
+        localDataSource.getAllAttachmentStatesForMessage(userId, messageId)
+
     override suspend fun createOrUpdateLocalState(
         userId: UserId,
         messageId: MessageId,

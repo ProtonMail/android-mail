@@ -33,6 +33,8 @@ interface AttachmentStateLocalDataSource {
         attachmentId: AttachmentId
     ): Either<DataError, AttachmentState>
 
+    suspend fun getAllAttachmentStatesForMessage(userId: UserId, messageId: MessageId): List<AttachmentState>
+
     suspend fun save(state: AttachmentState): Either<DataError, Unit>
 
     suspend fun delete(state: AttachmentState)

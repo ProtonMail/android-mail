@@ -33,6 +33,8 @@ interface AttachmentStateRepository {
         attachmentId: AttachmentId
     ): Either<DataError, AttachmentState>
 
+    suspend fun getAllAttachmentStatesForMessage(userId: UserId, messageId: MessageId): List<AttachmentState>
+
     suspend fun createOrUpdateLocalState(
         userId: UserId,
         messageId: MessageId,

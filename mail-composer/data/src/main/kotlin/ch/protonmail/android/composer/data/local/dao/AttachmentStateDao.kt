@@ -43,4 +43,16 @@ abstract class AttachmentStateDao : BaseDao<AttachmentStateEntity>() {
         messageId: MessageId,
         attachmentId: AttachmentId
     ): AttachmentStateEntity?
+
+    @Query(
+        """
+        SELECT * FROM AttachmentStateEntity
+        WHERE userId = :userId 
+        AND messageId = :messageId
+    """
+    )
+    abstract suspend fun getAllAttachmentStatesForMessage(
+        userId: UserId,
+        messageId: MessageId
+    ): List<AttachmentStateEntity>
 }

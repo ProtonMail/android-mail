@@ -43,6 +43,10 @@ class AttachmentStateLocalDataSourceImpl @Inject constructor(
     ): Either<DataError, AttachmentState> = attachmentStateDao.getAttachmentState(userId, messageId, attachmentId)
         .let { attachmentState -> attachmentState?.toAttachmentState()?.right() ?: DataError.Local.NoDataCached.left() }
 
+    override suspend fun getAllAttachmentStatesForMessage(userId: UserId, messageId: MessageId): List<AttachmentState> =
+        attachmentStateDao.getAllAttachmentStatesForMessage(userId, messageId)
+            .map { attachmentStateEntity -> attachmentStateEntity.toAttachmentState() }
+
     override suspend fun save(state: AttachmentState): Either<DataError, Unit> {
         return Either.catch {
             attachmentStateDao.insertOrUpdate(state.toAttachmentStateEntity())
