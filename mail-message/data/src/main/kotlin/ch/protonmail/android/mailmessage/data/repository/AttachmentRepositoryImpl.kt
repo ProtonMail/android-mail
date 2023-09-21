@@ -31,6 +31,7 @@ import ch.protonmail.android.mailmessage.data.local.usecase.DecryptAttachmentByt
 import ch.protonmail.android.mailmessage.data.remote.AttachmentRemoteDataSource
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
+import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachmentMetadata
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.finished
@@ -125,5 +126,11 @@ class AttachmentRepositoryImpl @Inject constructor(
     ): Either<DataError, File> = localDataSource.readFileFromStorage(
         userId, messageId, attachmentId
     )
+
+    override suspend fun getAttachmentInfo(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId
+    ): Either<DataError, MessageAttachment> = localDataSource.getAttachmentInfo(userId, messageId, attachmentId)
 
 }

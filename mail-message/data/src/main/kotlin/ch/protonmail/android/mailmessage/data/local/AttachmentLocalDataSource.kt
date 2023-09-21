@@ -24,6 +24,7 @@ import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
+import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachmentMetadata
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import kotlinx.coroutines.flow.Flow
@@ -45,6 +46,13 @@ interface AttachmentLocalDataSource {
         messageId: MessageId,
         attachmentId: AttachmentId
     ): Either<DataError.Local, MessageAttachmentMetadata>
+
+
+    suspend fun getAttachmentInfo(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId
+    ): Either<DataError.Local, MessageAttachment>
 
     /**
      * Get the embedded image for the given [userId], [messageId] and [attachmentId].

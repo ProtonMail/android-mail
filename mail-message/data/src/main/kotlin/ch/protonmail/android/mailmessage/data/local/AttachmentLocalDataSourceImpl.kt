@@ -32,6 +32,7 @@ import ch.protonmail.android.mailmessage.data.local.entity.MessageAttachmentEnti
 import ch.protonmail.android.mailmessage.data.local.entity.MessageAttachmentMetadataEntity
 import ch.protonmail.android.mailmessage.data.local.usecase.DecryptAttachmentByteArray
 import ch.protonmail.android.mailmessage.data.local.usecase.PrepareAttachmentForSharing
+import ch.protonmail.android.mailmessage.data.mapper.MessageAttachmentEntityMapper
 import ch.protonmail.android.mailmessage.data.mapper.toMessageAttachmentMetadata
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
@@ -52,6 +53,7 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     private val decryptAttachmentByteArray: DecryptAttachmentByteArray,
     private val prepareAttachmentForSharing: PrepareAttachmentForSharing,
+    private val messageAttachmentEntityMapper: MessageAttachmentEntityMapper,
     @IODispatcher private val ioDispatcher: CoroutineDispatcher
 ) : AttachmentLocalDataSource {
 
@@ -84,6 +86,16 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
             }
         }
     }
+
+    override suspend fun getAttachmentInfo(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId
+    ) = attachmentDao.getMessageAttachment(userId, messageId, attachmentId)
+        ?.let { messageAttachmentEntityMapper.toMessageAttachment(it) }
+        ?.right()
+        ?: DataError.Local.NoDataCached.left()
+
 
     override suspend fun getEmbeddedImage(
         userId: UserId,

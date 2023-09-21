@@ -21,6 +21,7 @@ package ch.protonmail.android.mailmessage.data.local.dao
 import androidx.room.Dao
 import androidx.room.Query
 import ch.protonmail.android.mailmessage.data.local.entity.MessageAttachmentEntity
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.data.room.db.BaseDao
@@ -40,6 +41,20 @@ abstract class MessageAttachmentDao : BaseDao<MessageAttachmentEntity>() {
         userId: UserId,
         messageId: MessageId
     ): Flow<List<MessageAttachmentEntity>>
+
+    @Query(
+        """
+            SELECT * FROM MessageAttachmentEntity
+            WHERE userId = :userId
+            AND messageId = :messageId
+            AND attachmentId = :attachmentId            
+        """
+    )
+    abstract fun getMessageAttachment(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId
+    ): MessageAttachmentEntity?
 
     @Query(
         """

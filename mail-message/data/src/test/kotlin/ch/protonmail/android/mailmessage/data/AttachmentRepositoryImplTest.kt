@@ -34,6 +34,7 @@ import ch.protonmail.android.mailmessage.data.repository.AttachmentRepositoryImp
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachmentMetadata
+import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.testdata.message.MessageAttachmentMetadataTestData.buildMessageAttachmentMetadata
 import io.mockk.Called
@@ -61,6 +62,7 @@ class AttachmentRepositoryImplTest {
     private val userId = UserIdSample.Primary
     private val messageId = MessageIdSample.Invoice
     private val attachmentId = AttachmentId("attachmentId")
+    private val messageAttachment = MessageAttachmentSample.invoice
     private val attachmentMetaData = MessageAttachmentMetadata(
         userId = userId,
         messageId = messageId,
@@ -415,5 +417,37 @@ class AttachmentRepositoryImplTest {
         // Then
         assertEquals(expectedResult, actual)
         coVerify { localDataSource.readFileFromStorage(userId, messageId, attachmentId) }
+    }
+
+    @Test
+    fun `should return attachment information from local when available`() = runTest {
+        // Given
+        val expected = messageAttachment.right()
+        coEvery {
+            localDataSource.getAttachmentInfo(userId, messageId, attachmentId)
+        } returns expected
+
+        // When
+        val actual = repository.getAttachmentInfo(userId, messageId, attachmentId)
+
+        // Then
+        assertEquals(expected, actual)
+        coVerify { remoteDataSource wasNot Called }
+    }
+
+    @Test
+    fun `should return local error when attachment information is not available`() = runTest {
+        // Given
+        val expected = DataError.Local.NoDataCached.left()
+        coEvery {
+            localDataSource.getAttachmentInfo(userId, messageId, attachmentId)
+        } returns expected
+
+        // When
+        val actual = repository.getAttachmentInfo(userId, messageId, attachmentId)
+
+        // Then
+        assertEquals(expected, actual)
+        coVerify { remoteDataSource wasNot Called }
     }
 }

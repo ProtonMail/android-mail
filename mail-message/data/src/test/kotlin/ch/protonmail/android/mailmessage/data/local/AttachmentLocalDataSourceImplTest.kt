@@ -34,9 +34,11 @@ import ch.protonmail.android.mailmessage.data.local.entity.MessageAttachmentMeta
 import ch.protonmail.android.mailmessage.data.local.usecase.AttachmentDecryptionError
 import ch.protonmail.android.mailmessage.data.local.usecase.DecryptAttachmentByteArray
 import ch.protonmail.android.mailmessage.data.local.usecase.PrepareAttachmentForSharing
+import ch.protonmail.android.mailmessage.data.mapper.MessageAttachmentEntityMapper
 import ch.protonmail.android.mailmessage.data.mapper.toMessageAttachmentMetadata
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
+import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.testdata.message.MessageAttachmentEntityTestData
 import ch.protonmail.android.testdata.message.MessageAttachmentMetadataEntityTestData
@@ -98,6 +100,7 @@ class AttachmentLocalDataSourceImplTest {
         context = context,
         decryptAttachmentByteArray = decryptAttachmentByteArray,
         prepareAttachmentForSharing = prepareAttachmentForSharing,
+        messageAttachmentEntityMapper = MessageAttachmentEntityMapper(),
         ioDispatcher = Dispatchers.Unconfined
     )
 
@@ -446,5 +449,34 @@ class AttachmentLocalDataSourceImplTest {
 
         // Then
         assertEquals(DataError.Local.NoDataCached.left(), result)
+    }
+
+    @Test
+    fun `get attachment info returns stored information`() = runTest {
+        // Given
+        coEvery {
+            attachmentDao.getMessageAttachment(userId, messageId, attachmentId)
+        } returns MessageAttachmentEntityTestData.invoice()
+        val expected = MessageAttachmentSample.invoice
+
+        // When
+        val actual = attachmentLocalDataSource.getAttachmentInfo(userId, messageId, attachmentId)
+
+        // Then
+        assertEquals(expected.right(), actual)
+    }
+
+    @Test
+    fun `get attachment info return no data cached when attachment doesn't exist`() = runTest {
+        // Given
+        coEvery {
+            attachmentDao.getMessageAttachment(userId, messageId, attachmentId)
+        } returns null
+
+        // When
+        val actual = attachmentLocalDataSource.getAttachmentInfo(userId, messageId, attachmentId)
+
+        // Then
+        assertEquals(DataError.Local.NoDataCached.left(), actual)
     }
 }
