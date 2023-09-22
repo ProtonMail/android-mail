@@ -19,6 +19,7 @@
 package ch.protonmail.android.composer.data.repository
 
 import androidx.work.ExistingWorkPolicy
+import ch.protonmail.android.composer.data.remote.UploadAttachmentsWorker
 import ch.protonmail.android.composer.data.remote.UploadDraftWorker
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
@@ -63,20 +64,27 @@ class DraftRepositoryImplTest {
         // Given
         val userId = UserIdSample.Primary
         val messageId = MessageIdSample.LocalDraft
-        val expectedParams = UploadDraftWorker.params(userId, messageId)
+        val expectedParamsDraftWorker = UploadDraftWorker.params(userId, messageId)
+        val expectedParamsAttachmentsWorker = UploadAttachmentsWorker.params(userId, messageId)
         val expectedWorkerId = UploadDraftWorker.id(messageId)
         // This work should happen independently on the outcome of the previous one
         val expectedWorkPolicy = ExistingWorkPolicy.APPEND_OR_REPLACE
-        givenEnqueuerSucceeds(expectedWorkerId, expectedParams, expectedWorkPolicy)
+        givenChainEnqueuerSucceeds(
+            workId = expectedWorkerId,
+            expectedParams1 = expectedParamsDraftWorker,
+            expectedParams2 = expectedParamsAttachmentsWorker,
+            existingWorkPolicy = expectedWorkPolicy
+        )
 
         // When
         draftRepository.forceUpload(userId, messageId)
 
         // Then
         verify {
-            enqueuer.enqueueUniqueWork<UploadDraftWorker>(
-                workerId = expectedWorkerId,
-                params = expectedParams,
+            enqueuer.enqueueInChain<UploadDraftWorker, UploadAttachmentsWorker>(
+                uniqueWorkId = expectedWorkerId,
+                params1 = expectedParamsDraftWorker,
+                params2 = expectedParamsAttachmentsWorker,
                 existingWorkPolicy = expectedWorkPolicy
             )
         }
@@ -91,6 +99,22 @@ class DraftRepositoryImplTest {
             enqueuer.enqueueUniqueWork<UploadDraftWorker>(
                 workerId = workId,
                 params = expectedParams,
+                existingWorkPolicy = existingWorkPolicy
+            )
+        } returns Unit
+    }
+
+    private fun givenChainEnqueuerSucceeds(
+        workId: String,
+        expectedParams1: Map<String, String>,
+        expectedParams2: Map<String, String>,
+        existingWorkPolicy: ExistingWorkPolicy
+    ) {
+        every {
+            enqueuer.enqueueInChain<UploadDraftWorker, UploadAttachmentsWorker>(
+                uniqueWorkId = workId,
+                params1 = expectedParams1,
+                params2 = expectedParams2,
                 existingWorkPolicy = existingWorkPolicy
             )
         } returns Unit

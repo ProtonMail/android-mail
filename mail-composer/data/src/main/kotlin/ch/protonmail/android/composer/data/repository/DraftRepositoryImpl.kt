@@ -19,6 +19,7 @@
 package ch.protonmail.android.composer.data.repository
 
 import androidx.work.ExistingWorkPolicy
+import ch.protonmail.android.composer.data.remote.UploadAttachmentsWorker
 import ch.protonmail.android.composer.data.remote.UploadDraftWorker
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcomposer.domain.repository.DraftRepository
@@ -45,9 +46,10 @@ class DraftRepositoryImpl @Inject constructor(
         Timber.d("Draft force upload: Adding work to upload $messageId")
         val uniqueWorkId = UploadDraftWorker.id(messageId)
 
-        enqueuer.enqueueUniqueWork<UploadDraftWorker>(
-            workerId = uniqueWorkId,
-            params = UploadDraftWorker.params(userId, messageId),
+        enqueuer.enqueueInChain<UploadDraftWorker, UploadAttachmentsWorker>(
+            uniqueWorkId = uniqueWorkId,
+            params1 = UploadDraftWorker.params(userId, messageId),
+            params2 = UploadAttachmentsWorker.params(userId, messageId),
             existingWorkPolicy = ExistingWorkPolicy.APPEND_OR_REPLACE
         )
     }
