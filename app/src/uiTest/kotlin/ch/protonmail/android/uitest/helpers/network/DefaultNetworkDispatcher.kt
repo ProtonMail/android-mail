@@ -42,7 +42,9 @@ internal fun mockNetworkDispatcher(
     useDefaultFeatures: Boolean = true,
     useDefaultUnleashToggles: Boolean = true,
     useDefaultLabels: Boolean = true,
+    useDefaultContactGroups: Boolean = true,
     useDefaultCustomFolders: Boolean = true,
+    useDefaultSystemFolders: Boolean = true,
     useDefaultPaymentSettings: Boolean = true,
     useDefaultMailReadResponses: Boolean = true,
     useDefaultDeviceRegistration: Boolean = true,
@@ -101,10 +103,26 @@ internal fun mockNetworkDispatcher(
         )
     }
 
+    if (useDefaultContactGroups) {
+        addMockRequests(
+            get("/core/v4/labels?Type=2")
+                respondWith "/core/v4/labels/labels-type2_base_placeholder.json"
+                withStatusCode 200
+        )
+    }
+
     if (useDefaultCustomFolders) {
         addMockRequests(
             get("/core/v4/labels?Type=3")
                 respondWith "/core/v4/labels/labels-type3_base_placeholder.json"
+                withStatusCode 200
+        )
+    }
+
+    if (useDefaultSystemFolders) {
+        addMockRequests(
+            get("/core/v4/labels?Type=4")
+                respondWith "/core/v4/labels/labels-type4_base_placeholder.json"
                 withStatusCode 200
         )
     }
