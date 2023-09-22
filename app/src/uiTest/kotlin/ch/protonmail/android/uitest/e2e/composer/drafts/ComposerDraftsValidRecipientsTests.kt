@@ -27,6 +27,8 @@ import ch.protonmail.android.uitest.helpers.core.TestId
 import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.models.mailbox.ParticipantEntry
+import ch.protonmail.android.uitest.robot.composer.composerRobot
+import ch.protonmail.android.uitest.robot.composer.section.topAppBarSection
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
@@ -58,32 +60,49 @@ internal class ComposerDraftsValidRecipientsTests : MockedNetworkTest(), Compose
     @SmokeTest
     @TestId("207363")
     fun testValidToAddressDoesTriggerDraftCreation() {
-        createDraftWithSuccess(toRecipient = validToRecipient)
+        composerRobot {
+            prepareDraft(toRecipients = listOf(validToRecipient))
+            topAppBarSection { tapCloseButton() }
+        }
+
         verifyDraftCreation(validToRecipient)
     }
 
     @Test
     @TestId("207364")
     fun testValidCcAddressDoesTriggerDraftCreation() {
-        createDraftWithSuccess(ccRecipient = validCcRecipient)
+        composerRobot {
+            prepareDraft(ccRecipients = listOf(validCcRecipient))
+            topAppBarSection { tapCloseButton() }
+        }
+
         verifyDraftCreation(validCcRecipient)
     }
 
     @Test
     @TestId("207365")
     fun testValidBccAddressDoesTriggerDraftCreation() {
-        createDraftWithSuccess(bccRecipient = validBccRecipient)
+        composerRobot {
+            prepareDraft(bccRecipients = listOf(validBccRecipient))
+            topAppBarSection { tapCloseButton() }
+        }
+
         verifyDraftCreation(validBccRecipient)
     }
 
     @Test
     @TestId("207366")
     fun testValidAddressesDoTriggerDraftCreation() {
-        createDraftWithSuccess(
-            toRecipient = validToRecipient,
-            ccRecipient = validCcRecipient,
-            bccRecipient = validBccRecipient
-        )
+        composerRobot {
+            prepareDraft(
+                toRecipients = listOf(validToRecipient),
+                ccRecipients = listOf(validCcRecipient),
+                bccRecipients = listOf(validBccRecipient)
+            )
+
+            topAppBarSection { tapCloseButton() }
+        }
+
         verifyDraftCreation(validToRecipient, validCcRecipient, validBccRecipient)
     }
 }

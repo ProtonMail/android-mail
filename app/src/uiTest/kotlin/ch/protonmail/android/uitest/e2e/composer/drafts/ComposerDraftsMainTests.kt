@@ -57,24 +57,29 @@ internal class ComposerDraftsMainTests : MockedNetworkTest(), ComposerDraftsTest
     @Test
     @TestId("190295", "207357")
     fun testNoDraftSavedUponComposerExit() {
-        composerRobot {
-            topAppBarSection { tapCloseButton() }
-        }
-
+        composerRobot { topAppBarSection { tapCloseButton() } }
         verifyEmptyDrafts()
     }
 
     @Test
     @TestId("190296", "207367")
     fun testDraftSavedWithSubjectOnlyUponEmptyBody() {
-        createDraftWithSuccess(subject = subject, body = "")
+        composerRobot {
+            prepareDraft(subject = subject, body = "")
+            topAppBarSection { tapCloseButton() }
+        }
+
         verifyDraftCreation(ParticipantEntry.NoRecipient, subject = subject)
     }
 
     @Test
     @TestId("190297")
     fun testDraftSavedWhenBodyIsPopulated() {
-        createDraftWithSuccess(body = "sample body")
+        composerRobot {
+            prepareDraft(body = "sample body")
+            topAppBarSection { tapCloseButton() }
+        }
+
         verifyDraftCreation(ParticipantEntry.NoRecipient, body = messageBody)
     }
 
@@ -83,7 +88,11 @@ internal class ComposerDraftsMainTests : MockedNetworkTest(), ComposerDraftsTest
     fun testDraftSavedWhenAllFieldsArePopulated() {
         val participant = ParticipantEntry.WithParticipant("test@example.com")
 
-        createDraftWithSuccess(toRecipient = participant, subject = subject, body = messageBody)
+        composerRobot {
+            prepareDraft(toRecipients = listOf(participant), subject = subject, body = messageBody)
+            topAppBarSection { tapCloseButton() }
+        }
+
         verifyDraftCreation(participant, subject = subject, body = messageBody)
     }
 }

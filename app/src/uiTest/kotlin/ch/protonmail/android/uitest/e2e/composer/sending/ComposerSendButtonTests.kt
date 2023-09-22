@@ -16,13 +16,14 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.e2e.composer
+package ch.protonmail.android.uitest.e2e.composer.sending
 
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.networkmocks.mockwebserver.combineWith
 import ch.protonmail.android.test.annotations.suite.RegressionTest
 import ch.protonmail.android.test.annotations.suite.SmokeTest
 import ch.protonmail.android.uitest.MockedNetworkTest
+import ch.protonmail.android.uitest.e2e.composer.ComposerTests
 import ch.protonmail.android.uitest.helpers.core.TestId
 import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
@@ -113,7 +114,6 @@ internal class ComposerSendButtonTests : MockedNetworkTest(), ComposerTests {
 
         composerRobot {
             toRecipientSection { tapBackspace() }
-
             topAppBarSection { verify { isSendButtonDisabled() } }
         }
     }

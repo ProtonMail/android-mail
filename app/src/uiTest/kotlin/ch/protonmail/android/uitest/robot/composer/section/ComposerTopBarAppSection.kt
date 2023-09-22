@@ -56,7 +56,7 @@ internal class ComposerTopBarAppSection : ComposeSectionRobot() {
     }
 
     fun tapSendButton() = apply {
-        sendButton.performClick()
+        sendButton.performScrollTo().performClick()
     }
 
     @VerifiesOuter
