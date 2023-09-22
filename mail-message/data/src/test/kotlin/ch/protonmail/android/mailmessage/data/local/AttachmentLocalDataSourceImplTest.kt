@@ -479,4 +479,75 @@ class AttachmentLocalDataSourceImplTest {
         // Then
         assertEquals(DataError.Local.NoDataCached.left(), actual)
     }
+
+    @Test
+    fun `update message attachment updates attachment in db`() = runTest {
+        // Given
+        val expectedAttachmentId = AttachmentId("updated_attachmentId")
+        val keyPackets = "updated_keyPackets"
+        val attachment = MessageAttachmentSample.invoice.copy(
+            attachmentId = expectedAttachmentId,
+            keyPackets = keyPackets
+        )
+        coEvery {
+            attachmentDao.updateAttachmentIdAndKeyPackets(
+                userId = userId,
+                messageId = messageId,
+                localAttachmentId = attachmentId,
+                apiAssignedId = expectedAttachmentId,
+                keyPackets = keyPackets
+            )
+        } just Runs
+
+        // When
+        val actual = attachmentLocalDataSource.updateMessageAttachment(
+            userId,
+            messageId,
+            attachmentId,
+            attachment
+        )
+
+        // Then
+        assertEquals(Unit.right(), actual)
+        coVerify {
+            attachmentDao.updateAttachmentIdAndKeyPackets(
+                userId,
+                messageId,
+                attachmentId,
+                expectedAttachmentId,
+                keyPackets
+            )
+        }
+    }
+
+    @Test
+    fun `update message attachment returns unknown error when update fails`() = runTest {
+        // Given
+        val expectedAttachmentId = AttachmentId("updated_attachmentId")
+        val keyPackets = "updated_keyPackets"
+        val attachment = MessageAttachmentSample.invoice.copy(
+            attachmentId = expectedAttachmentId,
+            keyPackets = keyPackets
+        )
+        coEvery {
+            attachmentDao.updateAttachmentIdAndKeyPackets(
+                userId,
+                messageId,
+                attachmentId,
+                expectedAttachmentId,
+                keyPackets
+            )
+        } throws Exception()
+
+        // When
+        val actual = attachmentLocalDataSource.updateMessageAttachment(
+            userId,
+            messageId,
+            attachmentId,
+            attachment
+        )
+
+        // Then
+        assertEquals(DataError.Local.Unknown.left(), actual)
+    }
 }

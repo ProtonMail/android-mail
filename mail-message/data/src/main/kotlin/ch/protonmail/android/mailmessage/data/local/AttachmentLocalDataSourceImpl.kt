@@ -36,6 +36,7 @@ import ch.protonmail.android.mailmessage.data.mapper.MessageAttachmentEntityMapp
 import ch.protonmail.android.mailmessage.data.mapper.toMessageAttachmentMetadata
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
+import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachmentMetadata
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -236,6 +237,29 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
                 DataError.Local.NoDataCached.left()
             }
         )
+
+    override suspend fun updateMessageAttachment(
+        userId: UserId,
+        messageId: MessageId,
+        localAttachmentId: AttachmentId,
+        attachment: MessageAttachment
+    ): Either<DataError.Local, Unit> {
+        return runCatching {
+            attachmentDao.updateAttachmentIdAndKeyPackets(
+                userId,
+                messageId,
+                localAttachmentId,
+                attachment.attachmentId,
+                attachment.keyPackets
+            )
+        }.fold(
+            onSuccess = { Unit.right() },
+            onFailure = {
+                Timber.e(it, "Failed to update message attachment")
+                DataError.Local.Unknown.left()
+            }
+        )
+    }
 
     private fun isAttachmentFileAvailable(uri: Uri): Boolean {
         val doesFileExist = try {

@@ -450,4 +450,36 @@ class AttachmentRepositoryImplTest {
         assertEquals(expected, actual)
         coVerify { remoteDataSource wasNot Called }
     }
+
+    @Test
+    fun `should update attachment information in local storage`() = runTest {
+        // Given
+        val expected = Unit.right()
+        coEvery {
+            localDataSource.updateMessageAttachment(userId, messageId, attachmentId, messageAttachment)
+        } returns expected
+
+        // When
+        val actual = repository.updateMessageAttachment(userId, messageId, attachmentId, messageAttachment)
+
+        // Then
+        assertEquals(expected, actual)
+        coVerify { remoteDataSource wasNot Called }
+    }
+
+    @Test
+    fun `should return local error when updating attachment information in local storage failed`() = runTest {
+        // Given
+        val expected = DataError.Local.FailedToStoreFile.left()
+        coEvery {
+            localDataSource.updateMessageAttachment(userId, messageId, attachmentId, messageAttachment)
+        } returns expected
+
+        // When
+        val actual = repository.updateMessageAttachment(userId, messageId, attachmentId, messageAttachment)
+
+        // Then
+        assertEquals(expected, actual)
+        coVerify { remoteDataSource wasNot Called }
+    }
 }

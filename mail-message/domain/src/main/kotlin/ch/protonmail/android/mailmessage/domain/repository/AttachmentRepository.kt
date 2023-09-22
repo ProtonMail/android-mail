@@ -81,4 +81,11 @@ interface AttachmentRepository {
         messageId: MessageId,
         attachmentId: AttachmentId
     ): Either<DataError, MessageAttachment>
+
+    suspend fun updateMessageAttachment(
+        userId: UserId,
+        messageId: MessageId,
+        localAttachmentId: AttachmentId,
+        attachment: MessageAttachment
+    ): Either<DataError, Unit>
 }

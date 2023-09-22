@@ -133,4 +133,12 @@ class AttachmentRepositoryImpl @Inject constructor(
         attachmentId: AttachmentId
     ): Either<DataError, MessageAttachment> = localDataSource.getAttachmentInfo(userId, messageId, attachmentId)
 
+    override suspend fun updateMessageAttachment(
+        userId: UserId,
+        messageId: MessageId,
+        localAttachmentId: AttachmentId,
+        attachment: MessageAttachment
+    ): Either<DataError, Unit> = localDataSource.updateMessageAttachment(
+        userId, messageId, localAttachmentId, attachment
+    )
 }

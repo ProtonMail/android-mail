@@ -123,4 +123,11 @@ interface AttachmentLocalDataSource {
         attachmentId: AttachmentId
     ): Either<DataError.Local, File>
 
+    suspend fun updateMessageAttachment(
+        userId: UserId,
+        messageId: MessageId,
+        localAttachmentId: AttachmentId,
+        attachment: MessageAttachment
+    ): Either<DataError.Local, Unit>
+
 }
