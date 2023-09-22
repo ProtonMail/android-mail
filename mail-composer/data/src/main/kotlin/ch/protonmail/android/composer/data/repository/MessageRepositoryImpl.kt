@@ -20,6 +20,7 @@ package ch.protonmail.android.composer.data.repository
 
 import androidx.work.ExistingWorkPolicy
 import ch.protonmail.android.composer.data.remote.SendMessageWorker
+import ch.protonmail.android.composer.data.remote.UploadAttachmentsWorker
 import ch.protonmail.android.composer.data.remote.UploadDraftWorker
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcomposer.domain.repository.MessageRepository
@@ -38,10 +39,11 @@ class MessageRepositoryImpl @Inject constructor(
     override suspend fun send(userId: UserId, messageId: MessageId) {
         Timber.d("MessageRepository send $messageId")
 
-        enqueuer.enqueueInChain<UploadDraftWorker, SendMessageWorker>(
+        enqueuer.enqueueInChain<UploadDraftWorker, UploadAttachmentsWorker, SendMessageWorker>(
             uniqueWorkId = UploadDraftWorker.id(messageId),
             params1 = UploadDraftWorker.params(userId, messageId),
-            params2 = SendMessageWorker.params(userId, messageId),
+            params2 = UploadAttachmentsWorker.params(userId, messageId),
+            params3 = SendMessageWorker.params(userId, messageId),
             existingWorkPolicy = ExistingWorkPolicy.APPEND_OR_REPLACE
         )
     }
