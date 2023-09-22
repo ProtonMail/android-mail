@@ -62,5 +62,6 @@ dependencies {
 
     testImplementation(Dependencies.testLibs)
     testImplementation(Proton.Core.testAndroid)
+    testImplementation(project(":test:test-data"))
     testImplementation(project(":test:utils"))
 }

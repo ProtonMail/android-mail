@@ -47,6 +47,7 @@ import me.proton.core.mailsettings.domain.entity.PackageType
 import me.proton.core.user.domain.entity.UserAddress
 import me.proton.core.util.kotlin.filterNullValues
 import javax.inject.Inject
+import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.random.Random
 
@@ -71,7 +72,16 @@ class GenerateMessagePackages @Inject constructor(
 
         lateinit var signedAndEncryptedMimeBodyForRecipients: Map<Email, Pair<KeyPacket, DataPacket>>
 
+        lateinit var decryptedAttachmentSessionKeys: Map<String, SessionKey>
+
         senderAddress.useKeys(cryptoContext) {
+
+            // Decrypt session keys of all attachments for later creation of packages for plaintext recipients.
+            decryptedAttachmentSessionKeys = localDraft.messageBody.attachments.associate { attachment ->
+                attachment.keyPackets?.let {
+                    attachment.attachmentId.id to decryptSessionKey(Base64.decode(it))
+                } ?: return DataError.MessageSending.GeneratingPackages.left()
+            }
 
             val encryptedBodyPgpMessage = localDraft.messageBody.body
 
@@ -109,7 +119,7 @@ class GenerateMessagePackages @Inject constructor(
                 decryptedMimeBodySessionKey,
                 encryptedMimeBodyDataPacket,
                 signedAndEncryptedMimeBodyForRecipients[entry.key],
-                emptyMap() // waiting for attachments
+                decryptedAttachmentSessionKeys
             )
         }.filterNotNull()
 
@@ -126,8 +136,8 @@ class GenerateMessagePackages @Inject constructor(
     ): Pair<KeyPacket, DataPacket>? {
         return with(entry.value) {
             if (encrypt && pgpScheme != PackageType.ProtonMail) {
-                publicKey?.let {
-                    keyHolderContext.encryptAndSignText(plaintextMimeBody, it)
+                publicKey?.let { publicKey ->
+                    keyHolderContext.encryptAndSignText(plaintextMimeBody, publicKey)
                         ?.split(cryptoContext.pgpCrypto)
                         ?.let { Pair(it.keyPacket(), it.dataPacket()) }
                 }

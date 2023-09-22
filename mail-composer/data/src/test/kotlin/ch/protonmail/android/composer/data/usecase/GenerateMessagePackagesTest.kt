@@ -21,6 +21,7 @@ package ch.protonmail.android.composer.data.usecase
 import ch.protonmail.android.composer.data.extension.encryptAndSignText
 import ch.protonmail.android.composer.data.remote.resource.SendMessagePackage
 import ch.protonmail.android.composer.data.sample.SendMessageSample
+import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
 import ch.protonmail.android.test.utils.rule.LoggingTestRule
 import io.mockk.every
@@ -56,7 +57,13 @@ class GenerateMessagePackagesTest {
     @get:Rule
     val loggingRule = LoggingTestRule()
 
-    private val draft = MessageWithBodySample.RemoteDraftWith4RecipientTypes
+    private val attachmentKeyPackets = Base64.encode("keyPackets".toByteArray())
+    private val attachment = MessageAttachmentSample.document.copy(keyPackets = attachmentKeyPackets)
+    private val draft = MessageWithBodySample.RemoteDraftWith4RecipientTypes.copy(
+        messageBody = MessageWithBodySample.RemoteDraftWith4RecipientTypes.messageBody.copy(
+            attachments = listOf(attachment)
+        )
+    )
 
     private val generateSendMessagePackageMock = mockk<GenerateSendMessagePackage>()
 
@@ -95,6 +102,9 @@ class GenerateMessagePackagesTest {
         every { unlock(armoredPrivateKey, decryptedPassphrase.array) } returns mockk(relaxUnitFun = true) {
             every { value } returns unlockedPrivateKey
         }
+        every {
+            decryptSessionKey(Base64.decode(attachmentKeyPackets), unlockedPrivateKey)
+        } returns SendMessageSample.AttachmentSessionKey
         every {
             decryptSessionKeyOrNull(SendMessageSample.EncryptedPlaintextBodySplit.keyPacket(), unlockedPrivateKey)
         } returns SendMessageSample.BodySessionKey
@@ -189,7 +199,7 @@ class GenerateMessagePackagesTest {
                     SendMessageSample.PlaintextMimeBodyEncryptedAndSignedSplit.keyPacket(),
                     SendMessageSample.PlaintextMimeBodyEncryptedAndSignedSplit.dataPacket()
                 ),
-                emptyMap()
+                mapOf(MessageAttachmentSample.document.attachmentId.id to SendMessageSample.AttachmentSessionKey)
             )
         } returns SendMessagePackage(
             addresses = mapOf(
@@ -214,7 +224,7 @@ class GenerateMessagePackagesTest {
                 SendMessageSample.MimeBodySessionKey,
                 SendMessageSample.PlaintextMimeBodyEncryptedAndSignedSplit.dataPacket(),
                 null, // Cleartext package type doesn't need this
-                emptyMap()
+                mapOf(MessageAttachmentSample.document.attachmentId.id to SendMessageSample.AttachmentSessionKey)
             )
         } returns SendMessagePackage(
             addresses = mapOf(
@@ -238,7 +248,7 @@ class GenerateMessagePackagesTest {
                 SendMessageSample.MimeBodySessionKey,
                 SendMessageSample.PlaintextMimeBodyEncryptedAndSignedSplit.dataPacket(),
                 null, // ClearMime package type doesn't need this
-                emptyMap()
+                mapOf(MessageAttachmentSample.document.attachmentId.id to SendMessageSample.AttachmentSessionKey)
             )
         } returns SendMessagePackage(
             addresses = mapOf(
@@ -262,7 +272,7 @@ class GenerateMessagePackagesTest {
                 SendMessageSample.MimeBodySessionKey,
                 SendMessageSample.PlaintextMimeBodyEncryptedAndSignedSplit.dataPacket(),
                 null, // ProtonMail package type doesn't need this
-                emptyMap()
+                mapOf(MessageAttachmentSample.document.attachmentId.id to SendMessageSample.AttachmentSessionKey)
             )
         } returns SendMessagePackage(
             addresses = mapOf(

@@ -43,6 +43,7 @@ object SendMessageSample {
     const val PlaintextMimeBodyEncryptedAndSigned = "Plaintext Mime Body, encrypted and signed"
     val BodySessionKey = SessionKey("BodySessionKey".toByteArray())
     val MimeBodySessionKey = SessionKey("MimeBodySessionKey".toByteArray())
+    val AttachmentSessionKey = SessionKey("AttachmentSessionKey".toByteArray())
     val EncryptedBodyDataPacket: DataPacket = "EncryptedBodyDataPacket".toByteArray()
     val EncryptedMimeBodyDataPacket: DataPacket = "EncryptedMimeBodyDataPacket".toByteArray()
     val RecipientBodyKeyPacket: KeyPacket = "RecipientBodyKeyPacket".toByteArray()
