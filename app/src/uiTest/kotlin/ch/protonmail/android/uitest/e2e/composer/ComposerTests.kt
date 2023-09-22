@@ -72,7 +72,7 @@ internal interface ComposerTests {
         if (useDefaultSendMessageResponse) {
             addMockRequests(
                 post("/mail/v4/messages/*")
-                    respondWith "/mail/v4/messages/post/post_base_send_placeholder.json"
+                    respondWith "/mail/v4/messages/post/post_messages_base_send_placeholder.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )
         }
@@ -81,13 +81,22 @@ internal interface ComposerTests {
             addMockRequests(
                 get("/core/v4/keys?Email=royalcat%40proton.black")
                     respondWith "/core/v4/keys/keys_royalcat.json"
-                    withStatusCode 200,
+                    withStatusCode 200 serveOnce true,
                 get("/core/v4/keys?Email=royaldog%40proton.black")
                     respondWith "/core/v4/keys/keys_royaldog.json"
-                    withStatusCode 200,
+                    withStatusCode 200 serveOnce true,
                 get("/core/v4/keys?Email=specialfox%40proton.black")
                     respondWith "/core/v4/keys/keys_specialfox.json"
-                    withStatusCode 200
+                    withStatusCode 200 serveOnce true,
+                get("/core/v4/keys?Email=sleepykoala%40proton.black")
+                    respondWith "/core/v4/keys/keys_sleepykoala.json"
+                    withStatusCode 200 serveOnce true,
+                get("/core/v4/keys?Email=strangewalrus%40proton.black")
+                    respondWith "/core/v4/keys/keys_strangewalrus.json"
+                    withStatusCode 200 serveOnce true,
+                get("/core/v4/keys?Email=happyllama%40proton.black")
+                    respondWith "/core/v4/keys/keys_happyllama.json"
+                    withStatusCode 200 serveOnce true,
             )
         }
 
