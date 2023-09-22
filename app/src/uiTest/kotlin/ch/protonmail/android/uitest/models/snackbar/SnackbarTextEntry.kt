@@ -69,4 +69,12 @@ internal sealed class SnackbarTextEntry(val value: String) {
     object UpgradePlanToChangeSender : SnackbarTextEntry(
         getTestString(testR.string.test_composer_change_sender_paid_feature)
     )
+
+    object SendingMessage : SnackbarTextEntry(
+        getTestString(testR.string.test_mailbox_message_sending)
+    )
+
+    object MessageSent : SnackbarTextEntry(
+        getTestString(testR.string.test_mailbox_message_sending_success)
+    )
 }
