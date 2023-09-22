@@ -33,7 +33,7 @@ import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
 import ch.protonmail.android.mailmessage.presentation.sample.AttachmentUiModelSample
 import ch.protonmail.android.mailmessage.presentation.usecase.InjectCssIntoDecryptedMessageBody
 import ch.protonmail.android.mailmessage.presentation.usecase.SanitizeHtmlOfDecryptedMessageBody
-import ch.protonmail.android.testdata.message.MessageAttachmentTestData
+import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
 import ch.protonmail.android.testdata.message.MessageBodyTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.coEvery
@@ -50,10 +50,10 @@ class MessageBodyUiModelMapperTest {
     private val sanitizedDecryptedMessageBodyWithCss = "Sanitized decrypted message body with CSS."
 
     private val attachmentUiModelMapper = mockk<AttachmentUiModelMapper> {
-        every { this@mockk.toUiModel(MessageAttachmentTestData.invoice) } returns AttachmentUiModelSample.invoice
-        every { this@mockk.toUiModel(MessageAttachmentTestData.document) } returns AttachmentUiModelSample.document
+        every { this@mockk.toUiModel(MessageAttachmentSample.invoice) } returns AttachmentUiModelSample.invoice
+        every { this@mockk.toUiModel(MessageAttachmentSample.document) } returns AttachmentUiModelSample.document
         every {
-            this@mockk.toUiModel(MessageAttachmentTestData.documentWithMultipleDots)
+            this@mockk.toUiModel(MessageAttachmentSample.documentWithMultipleDots)
         } returns AttachmentUiModelSample.documentWithMultipleDots
     }
     private val doesMessageBodyHaveEmbeddedImages = mockk<DoesMessageBodyHaveEmbeddedImages> {
@@ -116,9 +116,9 @@ class MessageBodyUiModelMapperTest {
             decryptedMessageBody,
             MimeType.PlainText,
             listOf(
-                MessageAttachmentTestData.invoice,
-                MessageAttachmentTestData.document,
-                MessageAttachmentTestData.documentWithMultipleDots
+                MessageAttachmentSample.invoice,
+                MessageAttachmentSample.document,
+                MessageAttachmentSample.documentWithMultipleDots
             )
         )
         val expected = MessageBodyUiModel(

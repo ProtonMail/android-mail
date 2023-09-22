@@ -36,7 +36,7 @@ import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
-import ch.protonmail.android.testdata.message.MessageAttachmentTestData
+import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
 import ch.protonmail.android.testdata.message.MessageBodyTestData
 import ch.protonmail.android.testdata.message.MessageTestData
 import io.mockk.Runs
@@ -132,7 +132,7 @@ class PrepareAttachmentForSharingTest {
     fun `return uri when storing attachment was successful and current api version is after Q`() = runTest {
         // Given
         val expectedUri = mockk<Uri>()
-        val expectedAttachment = MessageAttachmentTestData.invoice
+        val expectedAttachment = MessageAttachmentSample.invoice
         val outputStream = mockk<OutputStream>(relaxed = true)
 
         val contentValues = mockk<ContentValues>(relaxUnitFun = true) {
@@ -159,7 +159,7 @@ class PrepareAttachmentForSharingTest {
     @Test
     fun `throw exception when storing attachment failed and current api version is after Q`() = runTest {
         // Given
-        val expectedAttachment = MessageAttachmentTestData.invoice
+        val expectedAttachment = MessageAttachmentSample.invoice
 
         val contentValues = mockk<ContentValues>(relaxUnitFun = true) {
             every { put(MediaStore.Downloads.DISPLAY_NAME, expectedAttachment.name) } just Runs
@@ -186,7 +186,7 @@ class PrepareAttachmentForSharingTest {
         // Given
         provideSdkBeforeQ()
         val expectedUri = mockk<Uri>()
-        coEvery { getUriFromMediaScanner(any(), MessageAttachmentTestData.invoice.mimeType) } returns expectedUri
+        coEvery { getUriFromMediaScanner(any(), MessageAttachmentSample.invoice.mimeType) } returns expectedUri
 
         // When
         val result = prepareAttachmentForSharing(userId, messageId, attachmentId, decryptedByteArray)

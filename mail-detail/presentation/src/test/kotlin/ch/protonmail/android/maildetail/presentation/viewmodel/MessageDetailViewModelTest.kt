@@ -94,7 +94,7 @@ import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestD
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData.buildCustomFolder
 import ch.protonmail.android.testdata.message.MessageAttachmentMetadataTestData
-import ch.protonmail.android.testdata.message.MessageAttachmentTestData
+import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
 import ch.protonmail.android.testdata.message.MessageBodyTestData
 import ch.protonmail.android.testdata.message.MessageBodyUiModelTestData
 import ch.protonmail.android.testdata.message.MessageDetailActionBarUiModelTestData
@@ -893,10 +893,10 @@ class MessageDetailViewModelTest {
             value = "Plain message body",
             mimeType = MimeType.PlainText,
             attachments = listOf(
-                MessageAttachmentTestData.invoice,
-                MessageAttachmentTestData.document,
-                MessageAttachmentTestData.documentWithMultipleDots,
-                MessageAttachmentTestData.image
+                MessageAttachmentSample.invoice,
+                MessageAttachmentSample.document,
+                MessageAttachmentSample.documentWithMultipleDots,
+                MessageAttachmentSample.image
             )
         )
         coEvery { getDecryptedMessageBody(userId, any()) } returns expectedMessageBody.right()
@@ -931,10 +931,10 @@ class MessageDetailViewModelTest {
                 value = "Plain message body",
                 mimeType = MimeType.PlainText,
                 attachments = listOf(
-                    MessageAttachmentTestData.invoice,
-                    MessageAttachmentTestData.document,
-                    MessageAttachmentTestData.documentWithMultipleDots,
-                    MessageAttachmentTestData.image
+                    MessageAttachmentSample.invoice,
+                    MessageAttachmentSample.document,
+                    MessageAttachmentSample.documentWithMultipleDots,
+                    MessageAttachmentSample.image
                 )
             )
             coEvery { getDecryptedMessageBody(userId, any()) } returns expectedMessageBody.right()
@@ -975,10 +975,10 @@ class MessageDetailViewModelTest {
             value = "Plain message body",
             mimeType = MimeType.PlainText,
             attachments = listOf(
-                MessageAttachmentTestData.invoice,
-                MessageAttachmentTestData.document,
-                MessageAttachmentTestData.documentWithMultipleDots,
-                MessageAttachmentTestData.image
+                MessageAttachmentSample.invoice,
+                MessageAttachmentSample.document,
+                MessageAttachmentSample.documentWithMultipleDots,
+                MessageAttachmentSample.image
             )
         )
         coEvery { getDecryptedMessageBody(userId, any()) } returns expectedMessageBody.right()
@@ -1024,10 +1024,10 @@ class MessageDetailViewModelTest {
             value = "Plain message body",
             mimeType = MimeType.PlainText,
             attachments = listOf(
-                MessageAttachmentTestData.invoice,
-                MessageAttachmentTestData.document,
-                MessageAttachmentTestData.documentWithMultipleDots,
-                MessageAttachmentTestData.image
+                MessageAttachmentSample.invoice,
+                MessageAttachmentSample.document,
+                MessageAttachmentSample.documentWithMultipleDots,
+                MessageAttachmentSample.image
             )
         )
         coEvery { getDecryptedMessageBody(userId, any()) } returns expectedMessageBody.right()
@@ -1065,10 +1065,10 @@ class MessageDetailViewModelTest {
                 value = "Plain message body",
                 mimeType = MimeType.PlainText,
                 attachments = listOf(
-                    MessageAttachmentTestData.invoice,
-                    MessageAttachmentTestData.document,
-                    MessageAttachmentTestData.documentWithMultipleDots,
-                    MessageAttachmentTestData.image
+                    MessageAttachmentSample.invoice,
+                    MessageAttachmentSample.document,
+                    MessageAttachmentSample.documentWithMultipleDots,
+                    MessageAttachmentSample.image
                 )
             )
             coEvery { getDecryptedMessageBody(userId, any()) } returns expectedMessageBody.right()

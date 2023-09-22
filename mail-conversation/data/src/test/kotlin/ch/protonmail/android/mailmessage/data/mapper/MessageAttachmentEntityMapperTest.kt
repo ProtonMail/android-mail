@@ -21,7 +21,7 @@ package ch.protonmail.android.mailmessage.data.mapper
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.testdata.message.MessageAttachmentEntityTestData
-import ch.protonmail.android.testdata.message.MessageAttachmentTestData
+import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -34,7 +34,7 @@ class MessageAttachmentEntityMapperTest {
         // Given
         val userId = UserIdSample.Primary
         val messageId = MessageIdSample.Invoice
-        val attachment = MessageAttachmentTestData.invoice
+        val attachment = MessageAttachmentSample.invoice
         val expected = MessageAttachmentEntityTestData.invoice()
 
         // When
@@ -48,7 +48,7 @@ class MessageAttachmentEntityMapperTest {
     fun `attachment entity is correctly mapped to attachment domain model`() {
         // Given
         val attachmentEntity = MessageAttachmentEntityTestData.invoice()
-        val expected = MessageAttachmentTestData.invoice
+        val expected = MessageAttachmentSample.invoice
 
         // When
         val actual = messageAttachmentEntityMapper.toMessageAttachment(attachmentEntity)

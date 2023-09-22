@@ -16,12 +16,12 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.testdata.message
+package ch.protonmail.android.mailmessage.domain.sample
 
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 
-object MessageAttachmentTestData {
+object MessageAttachmentSample {
 
     val invoice = MessageAttachment(
         attachmentId = AttachmentId("invoice"),

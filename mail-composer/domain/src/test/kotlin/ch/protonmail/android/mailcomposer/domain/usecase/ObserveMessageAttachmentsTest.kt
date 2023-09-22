@@ -25,7 +25,7 @@ import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailcomposer.domain.sample.DraftStateSample
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
-import ch.protonmail.android.testdata.message.MessageAttachmentTestData
+import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
 import io.mockk.coVerifyOrder
 import io.mockk.every
 import io.mockk.mockk
@@ -52,7 +52,7 @@ class ObserveMessageAttachmentsTest {
     fun `should observe draft state and message repo to observe message attachments`() = runTest {
         // Given
         every { draftStateRepository.observe(userId, messageId) } returns flowOf(DraftStateSample.NewDraftState.right())
-        val expectedAttachment = listOf(MessageAttachmentTestData.invoice)
+        val expectedAttachment = listOf(MessageAttachmentSample.invoice)
         every { messageRepository.observeMessageAttachments(userId, messageId) } returns flowOf(
             expectedAttachment
         )
@@ -70,7 +70,7 @@ class ObserveMessageAttachmentsTest {
         // Given
         val draftStateFlow = MutableStateFlow(DraftStateSample.NewDraftState.right())
         every { draftStateRepository.observe(userId, messageId) } returns draftStateFlow
-        val expectedAttachment = listOf(MessageAttachmentTestData.invoice)
+        val expectedAttachment = listOf(MessageAttachmentSample.invoice)
 
         every { messageRepository.observeMessageAttachments(userId, messageId) } returns flowOf(
             expectedAttachment
@@ -97,7 +97,7 @@ class ObserveMessageAttachmentsTest {
     @Test
     fun `should load attachments when messageId changes and attachment observer returns empty list`() = runTest {
         // Given
-        val expectedAttachment = listOf(MessageAttachmentTestData.invoice)
+        val expectedAttachment = listOf(MessageAttachmentSample.invoice)
         val initialDraftStateFlow = MutableStateFlow(DraftStateSample.NewDraftState.right())
         val updatedDraftStateFlow = MutableStateFlow(DraftStateSample.RemoteDraftState.right())
         val attachmentFlow = MutableStateFlow(expectedAttachment)

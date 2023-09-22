@@ -24,6 +24,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.model.Recipient
 import ch.protonmail.android.mailmessage.domain.model.UnsubscribeMethods
+import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
 import ch.protonmail.android.mailmessage.domain.sample.RecipientSample
 import ch.protonmail.android.testdata.message.MessageTestData.RAW_MESSAGE_ID
 import ch.protonmail.android.testdata.user.UserIdTestData
@@ -37,25 +38,25 @@ object MessageBodyTestData {
 
     val messageBodyWithAttachment = buildMessageBody(
         attachments = listOf(
-            MessageAttachmentTestData.invoice
+            MessageAttachmentSample.invoice
         )
     )
 
     val messageBodyWithEmbeddedImage = buildMessageBody(
         attachments = listOf(
-            MessageAttachmentTestData.embeddedImageAttachment
+            MessageAttachmentSample.embeddedImageAttachment
         )
     )
 
     val messageBodyWithEmbeddedOctetStream = buildMessageBody(
         attachments = listOf(
-            MessageAttachmentTestData.embeddedOctetStreamAttachment
+            MessageAttachmentSample.embeddedOctetStreamAttachment
         )
     )
 
     val messageBodyWithInvalidEmbeddedAttachment = buildMessageBody(
         attachments = listOf(
-            MessageAttachmentTestData.invalidEmbeddedImageAttachment
+            MessageAttachmentSample.invalidEmbeddedImageAttachment
         )
     )
 

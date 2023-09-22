@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailmessage.presentation.mapper
 
 import ch.protonmail.android.mailmessage.presentation.sample.AttachmentUiModelSample
-import ch.protonmail.android.testdata.message.MessageAttachmentTestData
+import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -30,7 +30,7 @@ class AttachmentUiModelMapperTest {
     @Test
     fun `should map pdf message attachment with application pdf mime type to a ui model`() {
         // When
-        val actual = attachmentUiModelMapper.toUiModel(MessageAttachmentTestData.invoice)
+        val actual = attachmentUiModelMapper.toUiModel(MessageAttachmentSample.invoice)
 
         // Then
         val expected = AttachmentUiModelSample.invoice
@@ -40,7 +40,7 @@ class AttachmentUiModelMapperTest {
     @Test
     fun `should map message attachment with application doc mime type to a ui model`() {
         // When
-        val actual = attachmentUiModelMapper.toUiModel(MessageAttachmentTestData.document)
+        val actual = attachmentUiModelMapper.toUiModel(MessageAttachmentSample.document)
 
         // Then
         val expected = AttachmentUiModelSample.document
@@ -50,7 +50,7 @@ class AttachmentUiModelMapperTest {
     @Test
     fun `should map message attachment with multiple dots in the name to a ui model`() {
         // When
-        val actual = attachmentUiModelMapper.toUiModel(MessageAttachmentTestData.documentWithMultipleDots)
+        val actual = attachmentUiModelMapper.toUiModel(MessageAttachmentSample.documentWithMultipleDots)
 
         // Then
         val expected = AttachmentUiModelSample.documentWithMultipleDots

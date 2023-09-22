@@ -83,7 +83,7 @@ import ch.protonmail.android.test.idlingresources.ComposerIdlingResource
 import ch.protonmail.android.test.utils.rule.LoggingTestRule
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import ch.protonmail.android.testdata.contact.ContactSample
-import ch.protonmail.android.testdata.message.MessageAttachmentTestData
+import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
 import ch.protonmail.android.testdata.message.DecryptedMessageBodyTestData
 import io.mockk.Called
 import io.mockk.coEvery
@@ -1557,7 +1557,7 @@ class ComposerViewModelTest {
     private fun expectObservedMessageAttachments(userId: UserId, messageId: MessageId) {
         every {
             observeMessageAttachments(userId, messageId)
-        } returns flowOf(listOf(MessageAttachmentTestData.invoice))
+        } returns flowOf(listOf(MessageAttachmentSample.invoice))
     }
 
     private fun mockParticipantMapper() {

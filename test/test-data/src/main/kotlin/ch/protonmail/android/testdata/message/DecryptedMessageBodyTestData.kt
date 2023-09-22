@@ -22,6 +22,7 @@ import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MimeType
+import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 
 object DecryptedMessageBodyTestData {
@@ -30,25 +31,25 @@ object DecryptedMessageBodyTestData {
 
     val messageBodyWithAttachment = buildDecryptedMessageBody(
         attachments = listOf(
-            MessageAttachmentTestData.invoice
+            MessageAttachmentSample.invoice
         )
     )
 
     val messageBodyWithEmbeddedImage = buildDecryptedMessageBody(
         attachments = listOf(
-            MessageAttachmentTestData.embeddedImageAttachment
+            MessageAttachmentSample.embeddedImageAttachment
         )
     )
 
     val messageBodyWithEmbeddedOctetStream = buildDecryptedMessageBody(
         attachments = listOf(
-            MessageAttachmentTestData.embeddedOctetStreamAttachment
+            MessageAttachmentSample.embeddedOctetStreamAttachment
         )
     )
 
     val messageBodyWithInvalidEmbeddedAttachment = buildDecryptedMessageBody(
         attachments = listOf(
-            MessageAttachmentTestData.invalidEmbeddedImageAttachment
+            MessageAttachmentSample.invalidEmbeddedImageAttachment
         )
     )
 

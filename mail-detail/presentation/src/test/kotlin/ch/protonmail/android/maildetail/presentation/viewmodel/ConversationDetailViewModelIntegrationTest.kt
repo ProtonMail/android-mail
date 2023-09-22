@@ -121,7 +121,7 @@ import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData
 import ch.protonmail.android.testdata.message.MessageAttachmentMetadataTestData
-import ch.protonmail.android.testdata.message.MessageAttachmentTestData
+import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
 import io.mockk.Called
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -347,10 +347,10 @@ class ConversationDetailViewModelIntegrationTest {
             value = "",
             mimeType = MimeType.Html,
             attachments = listOf(
-                MessageAttachmentTestData.document,
-                MessageAttachmentTestData.documentWithReallyLongFileName,
-                MessageAttachmentTestData.invoice,
-                MessageAttachmentTestData.image
+                MessageAttachmentSample.document,
+                MessageAttachmentSample.documentWithReallyLongFileName,
+                MessageAttachmentSample.invoice,
+                MessageAttachmentSample.image
             )
         ).right()
         coEvery { observeAttachmentStatus.invoke(userId, messageId, any()) } returns flowOf()
@@ -368,14 +368,14 @@ class ConversationDetailViewModelIntegrationTest {
                 expandedMessage.messageBodyUiModel.attachments
             )
             coVerifyOrder {
-                observeAttachmentStatus.invoke(userId, messageId, MessageAttachmentTestData.document.attachmentId)
+                observeAttachmentStatus.invoke(userId, messageId, MessageAttachmentSample.document.attachmentId)
                 observeAttachmentStatus.invoke(
                     userId,
                     messageId,
-                    MessageAttachmentTestData.documentWithReallyLongFileName.attachmentId
+                    MessageAttachmentSample.documentWithReallyLongFileName.attachmentId
                 )
-                observeAttachmentStatus.invoke(userId, messageId, MessageAttachmentTestData.invoice.attachmentId)
-                observeAttachmentStatus.invoke(userId, messageId, MessageAttachmentTestData.image.attachmentId)
+                observeAttachmentStatus.invoke(userId, messageId, MessageAttachmentSample.invoice.attachmentId)
+                observeAttachmentStatus.invoke(userId, messageId, MessageAttachmentSample.image.attachmentId)
             }
             cancelAndIgnoreRemainingEvents()
         }
