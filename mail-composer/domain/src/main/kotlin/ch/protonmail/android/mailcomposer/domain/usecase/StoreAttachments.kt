@@ -56,7 +56,7 @@ class StoreAttachments @Inject constructor(
                 .bind()
 
             // Verify that draft exists in db, if not create it
-            val messageWithBody = messageRepository.getLocalMessageWithBody(userId, messageId)
+            val messageWithBody = messageRepository.getLocalMessageWithBody(userId, draft.message.messageId)
             Timber.d("Draft exists in db: ${messageWithBody != null}")
             if (messageWithBody == null) {
                 val success = saveDraft(draft, userId)
@@ -70,7 +70,11 @@ class StoreAttachments @Inject constructor(
                 val attachmentId = provideNewAttachmentId()
                 attachmentRepository.saveAttachment(userId, draft.message.messageId, attachmentId, it)
                     .onLeft { attachmentFailedToStore = true }
-                    .onRight { attachmentStateRepository.createOrUpdateLocalState(userId, messageId, attachmentId) }
+                    .onRight {
+                        attachmentStateRepository.createOrUpdateLocalState(
+                            userId, draft.message.messageId, attachmentId
+                        )
+                    }
             }
             if (attachmentFailedToStore) {
                 shift<StoreDraftWithAttachmentError>(StoreDraftWithAttachmentError.FailedToStoreAttachments)
