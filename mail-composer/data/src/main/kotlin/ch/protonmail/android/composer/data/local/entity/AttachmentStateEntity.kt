@@ -23,6 +23,7 @@ import androidx.room.ForeignKey
 import androidx.room.Index
 import ch.protonmail.android.mailcomposer.domain.model.AttachmentState
 import ch.protonmail.android.mailcomposer.domain.model.AttachmentSyncState
+import ch.protonmail.android.mailmessage.data.local.entity.MessageAttachmentEntity
 import ch.protonmail.android.mailmessage.data.local.entity.MessageEntity
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -30,10 +31,11 @@ import me.proton.core.domain.entity.UserId
 import me.proton.core.user.data.entity.UserEntity
 
 @Entity(
-    primaryKeys = ["userId", "messageId"],
+    primaryKeys = ["userId", "messageId", "attachmentId"],
     indices = [
         Index("userId"),
-        Index("userId", "messageId")
+        Index("userId", "messageId"),
+        Index("userId", "messageId", "attachmentId")
     ],
     foreignKeys = [
         ForeignKey(
@@ -46,7 +48,15 @@ import me.proton.core.user.data.entity.UserEntity
             entity = MessageEntity::class,
             parentColumns = ["userId", "messageId"],
             childColumns = ["userId", "messageId"],
-            onDelete = ForeignKey.CASCADE
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = MessageAttachmentEntity::class,
+            parentColumns = ["userId", "messageId", "attachmentId"],
+            childColumns = ["userId", "messageId", "attachmentId"],
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE
         )
     ]
 )
@@ -54,7 +64,6 @@ data class AttachmentStateEntity(
     val userId: UserId,
     val messageId: MessageId,
     val attachmentId: AttachmentId,
-    val apiAttachmentId: AttachmentId?,
     val state: AttachmentSyncState
 ) {
 
@@ -62,7 +71,6 @@ data class AttachmentStateEntity(
         userId = userId,
         messageId = messageId,
         attachmentId = attachmentId,
-        apiAttachmentId = apiAttachmentId,
         state = state
     )
 }
@@ -71,6 +79,5 @@ fun AttachmentState.toAttachmentStateEntity() = AttachmentStateEntity(
     userId = this.userId,
     messageId = this.messageId,
     attachmentId = this.attachmentId,
-    apiAttachmentId = this.apiAttachmentId,
     state = this.state
 )

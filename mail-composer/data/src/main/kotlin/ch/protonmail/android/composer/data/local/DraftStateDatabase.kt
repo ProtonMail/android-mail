@@ -60,7 +60,17 @@ interface DraftStateDatabase : Database {
                 database.execSQL("CREATE INDEX IF NOT EXISTS `index_AttachmentStateEntity_userId` ON `AttachmentStateEntity` (`userId`)")
                 database.execSQL("CREATE INDEX IF NOT EXISTS `index_AttachmentStateEntity_userId_messageId` ON `AttachmentStateEntity` (`userId`, `messageId`)")
             }
+        }
 
+        val MIGRATION_3: DatabaseMigration = object : DatabaseMigration {
+            @Suppress("MaxLineLength")
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.dropTable("AttachmentStateEntity")
+                database.execSQL("CREATE TABLE IF NOT EXISTS `AttachmentStateEntity` (`userId` TEXT NOT NULL, `messageId` TEXT NOT NULL, `attachmentId` TEXT NOT NULL, `state` INTEGER NOT NULL, PRIMARY KEY(`userId`, `messageId`, `attachmentId`), FOREIGN KEY(`userId`, `messageId`) REFERENCES `MessageEntity`(`userId`,`messageId`) ON UPDATE CASCADE ON DELETE CASCADE, FOREIGN KEY(`userId`) REFERENCES `UserEntity`(`userId`) ON UPDATE NO ACTION ON DELETE CASCADE, FOREIGN KEY(`userId`, `messageId`, `attachmentId`) REFERENCES MessageAttachmentEntity(`userId`, `messageId`, `attachmentId`) ON UPDATE CASCADE ON DELETE CASCADE )")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_AttachmentStateEntity_userId` ON `AttachmentStateEntity` (`userId`)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_AttachmentStateEntity_userId_messageId` ON `AttachmentStateEntity` (`userId`, `messageId`)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_AttachmentStateEntity_userId_messageId_attachmentId` ON `AttachmentStateEntity` (`userId`, `messageId`, `attachmentId`)")
+            }
         }
     }
 }

@@ -35,7 +35,6 @@ abstract class AttachmentStateDao : BaseDao<AttachmentStateEntity>() {
         WHERE userId = :userId 
         AND messageId = :messageId
         AND attachmentId = :attachmentId
-        OR apiAttachmentId = :attachmentId
     """
     )
     abstract suspend fun getAttachmentState(

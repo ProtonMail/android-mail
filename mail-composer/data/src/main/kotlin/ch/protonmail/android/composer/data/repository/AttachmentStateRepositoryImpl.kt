@@ -50,7 +50,7 @@ class AttachmentStateRepositoryImpl @Inject constructor(
         attachmentId: AttachmentId
     ): Either<DataError, Unit> = either {
         val attachmentState = localDataSource.getAttachmentState(userId, messageId, attachmentId).getOrElse {
-            AttachmentState(userId, messageId, attachmentId, null, AttachmentSyncState.Local)
+            AttachmentState(userId, messageId, attachmentId, AttachmentSyncState.Local)
         }
         val updatedState = attachmentState.copy(state = AttachmentSyncState.Local)
         localDataSource.save(updatedState)
@@ -63,12 +63,7 @@ class AttachmentStateRepositoryImpl @Inject constructor(
         apiAttachmentId: AttachmentId
     ): Either<DataError, Unit> = either {
         val attachmentState = localDataSource.getAttachmentState(userId, messageId, attachmentId).bind()
-        localDataSource.save(
-            attachmentState.copy(
-                apiAttachmentId = apiAttachmentId,
-                state = AttachmentSyncState.Uploaded
-            )
-        )
+        localDataSource.save(attachmentState.copy(state = AttachmentSyncState.Uploaded))
     }
 
     override suspend fun deleteAttachmentState(

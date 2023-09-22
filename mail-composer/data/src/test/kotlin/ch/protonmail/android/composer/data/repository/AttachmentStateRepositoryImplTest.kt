@@ -116,7 +116,7 @@ class AttachmentStateRepositoryImplTest {
             userId,
             draftId,
             attachmentId,
-            expectedAttachmentState.apiAttachmentId!!
+            expectedAttachmentState.attachmentId
         )
 
         // Then

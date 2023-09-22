@@ -26,6 +26,5 @@ data class AttachmentState(
     val userId: UserId,
     val messageId: MessageId,
     val attachmentId: AttachmentId,
-    val apiAttachmentId: AttachmentId?,
     val state: AttachmentSyncState
 )

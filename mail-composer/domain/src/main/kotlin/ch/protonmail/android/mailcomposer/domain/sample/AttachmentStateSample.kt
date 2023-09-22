@@ -32,7 +32,6 @@ object AttachmentStateSample {
 
     val RemoteAttachmentState = build(
         messageId = MessageIdSample.RemoteDraft,
-        apiAttachmentId = AttachmentId("api_attachment_id"),
         state = AttachmentSyncState.Uploaded
     )
 
@@ -40,13 +39,11 @@ object AttachmentStateSample {
         userId: UserId = UserIdSample.Primary,
         messageId: MessageId = MessageIdSample.RemoteDraft,
         attachmentId: AttachmentId = AttachmentId("attachment_id"),
-        apiAttachmentId: AttachmentId? = null,
         state: AttachmentSyncState = AttachmentSyncState.Local
     ) = AttachmentState(
         userId = userId,
         messageId = messageId,
         attachmentId = attachmentId,
-        apiAttachmentId = apiAttachmentId,
         state = state
     )
 }

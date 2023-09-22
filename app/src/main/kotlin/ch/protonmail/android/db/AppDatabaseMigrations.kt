@@ -133,6 +133,11 @@ object AppDatabaseMigrations {
         override fun migrate(database: SupportSQLiteDatabase) {
             DraftStateDatabase.MIGRATION_2.migrate(database)
         }
+    }
 
+    val MIGRATION_16_17 = object : Migration(16, 17) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            DraftStateDatabase.MIGRATION_3.migrate(database)
+        }
     }
 }
