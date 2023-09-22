@@ -35,8 +35,8 @@ data class SendMessagePackage(
     val type: Int, // the package global type is a logical OR of the types of all the addresses for this package
     @SerialName("BodyKey")
     val bodyKey: Key? = null, // include only if there are cleartext recipients
-    @SerialName("AttachmentKeys")
-    val attachmentKeys: List<Key>? = null // include only if there are cleartext recipients
+    @SerialName("AttachmentKeys") // a map of an attachment id and a session key
+    val attachmentKeys: Map<String, Key>? = null // include only if there are cleartext recipients
 ) {
 
     /**
@@ -55,7 +55,7 @@ data class SendMessagePackage(
             @SerialName("BodyKeyPacket")
             val bodyKeyPacket: String,
             @SerialName("AttachmentKeyPackets")
-            val attachmentKeyPackets: List<String>
+            val attachmentKeyPackets: Map<String, String>
         ) : Address(PackageType.ProtonMail.type)
 
         @Serializable

@@ -60,7 +60,7 @@ class GenerateSendMessagePackageTest {
             SendMessageSample.MimeBodySessionKey,
             SendMessageSample.EncryptedMimeBodyDataPacket,
             SendMessageSample.SignedEncryptedMimeBody,
-            emptyList()
+            emptyMap()
         )
 
         // Then
@@ -85,7 +85,7 @@ class GenerateSendMessagePackageTest {
             SendMessageSample.MimeBodySessionKey,
             SendMessageSample.EncryptedMimeBodyDataPacket,
             null,
-            emptyList()
+            emptyMap()
         )
 
         // Then
@@ -109,7 +109,7 @@ class GenerateSendMessagePackageTest {
             SendMessageSample.MimeBodySessionKey,
             SendMessageSample.EncryptedMimeBodyDataPacket,
             SendMessageSample.SignedEncryptedMimeBody,
-            emptyList()
+            emptyMap()
         )
 
         // Then
@@ -118,7 +118,7 @@ class GenerateSendMessagePackageTest {
                 SendMessageSample.RecipientEmail to SendMessagePackage.Address.Internal(
                     signature = true.toInt(),
                     bodyKeyPacket = Base64.encode(SendMessageSample.RecipientBodyKeyPacket),
-                    attachmentKeyPackets = emptyList()
+                    attachmentKeyPackets = emptyMap()
                 )
             ),
             mimeType = sendPreferences.mimeType.value,
@@ -147,7 +147,7 @@ class GenerateSendMessagePackageTest {
             SendMessageSample.MimeBodySessionKey,
             SendMessageSample.EncryptedMimeBodyDataPacket,
             SendMessageSample.SignedEncryptedMimeBody,
-            emptyList()
+            emptyMap()
         )
 
         // Then
@@ -184,7 +184,7 @@ class GenerateSendMessagePackageTest {
             SendMessageSample.MimeBodySessionKey,
             SendMessageSample.EncryptedMimeBodyDataPacket,
             SendMessageSample.SignedEncryptedMimeBody,
-            emptyList()
+            emptyMap()
         )
 
         // Then
@@ -217,7 +217,7 @@ class GenerateSendMessagePackageTest {
             SendMessageSample.MimeBodySessionKey,
             SendMessageSample.EncryptedMimeBodyDataPacket,
             SendMessageSample.SignedEncryptedMimeBody,
-            emptyList()
+            emptyMap()
         )
 
         // Then
@@ -231,7 +231,7 @@ class GenerateSendMessagePackageTest {
             body = Base64.encode(SendMessageSample.EncryptedBodyDataPacket),
             type = PackageType.Cleartext.type,
             bodyKey = SendMessageSample.CleartextBodyKey,
-            attachmentKeys = emptyList()
+            attachmentKeys = emptyMap()
         )
 
         assertEquals(expected, actual)

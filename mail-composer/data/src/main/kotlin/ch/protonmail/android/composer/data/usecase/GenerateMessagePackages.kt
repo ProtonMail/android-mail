@@ -109,7 +109,7 @@ class GenerateMessagePackages @Inject constructor(
                 decryptedMimeBodySessionKey,
                 encryptedMimeBodyDataPacket,
                 signedAndEncryptedMimeBodyForRecipients[entry.key],
-                emptyList() // waiting for attachments
+                emptyMap() // waiting for attachments
             )
         }.filterNotNull()
 

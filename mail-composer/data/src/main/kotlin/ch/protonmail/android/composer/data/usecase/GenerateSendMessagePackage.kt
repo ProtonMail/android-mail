@@ -50,7 +50,7 @@ class GenerateSendMessagePackage @Inject constructor(
         decryptedMimeBodySessionKey: SessionKey,
         encryptedMimeBodyDataPacket: ByteArray,
         signedEncryptedMimeBody: Pair<KeyPacket, DataPacket>?,
-        decryptedAttachmentSessionKeys: List<SessionKey>
+        decryptedAttachmentSessionKeys: Map<String, SessionKey>
     ): SendMessagePackage? {
 
         return if (sendPreferences.encrypt) {
@@ -103,14 +103,14 @@ class GenerateSendMessagePackage @Inject constructor(
     }
 
     private fun generateCleartext(
-        decryptedAttachmentSessionKeys: List<SessionKey>,
+        decryptedAttachmentSessionKeys: Map<String, SessionKey>,
         recipientEmail: Email,
         sendPreferences: SendPreferences,
         encryptedBodyDataPacket: ByteArray,
         decryptedBodySessionKey: SessionKey
     ): SendMessagePackage {
-        val packageAttachmentKeys = decryptedAttachmentSessionKeys.map {
-            SendMessagePackage.Key(Base64.encode(it.key), SessionKeyAlgorithm)
+        val packageAttachmentKeys = decryptedAttachmentSessionKeys.mapValues {
+            SendMessagePackage.Key(Base64.encode(it.value.key), SessionKeyAlgorithm)
         }
 
         return SendMessagePackage(
@@ -158,15 +158,15 @@ class GenerateSendMessagePackage @Inject constructor(
     private fun generateProtonMail(
         publicKey: PublicKey,
         decryptedBodySessionKey: SessionKey,
-        decryptedAttachmentSessionKeys: List<SessionKey>,
+        decryptedAttachmentSessionKeys: Map<String, SessionKey>,
         recipientEmail: Email,
         sendPreferences: SendPreferences,
         encryptedBodyDataPacket: ByteArray
     ): SendMessagePackage {
         val recipientBodyKeyPacket = publicKey.encryptSessionKey(cryptoContext, decryptedBodySessionKey)
 
-        val encryptedAttachmentKeyPackets = decryptedAttachmentSessionKeys.map {
-            Base64.encode(publicKey.encryptSessionKey(cryptoContext, it))
+        val encryptedAttachmentKeyPackets = decryptedAttachmentSessionKeys.mapValues {
+            Base64.encode(publicKey.encryptSessionKey(cryptoContext, it.value))
         }
 
         return SendMessagePackage(

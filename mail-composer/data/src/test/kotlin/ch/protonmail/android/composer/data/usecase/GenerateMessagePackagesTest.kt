@@ -189,7 +189,7 @@ class GenerateMessagePackagesTest {
                     SendMessageSample.PlaintextMimeBodyEncryptedAndSignedSplit.keyPacket(),
                     SendMessageSample.PlaintextMimeBodyEncryptedAndSignedSplit.dataPacket()
                 ),
-                emptyList()
+                emptyMap()
             )
         } returns SendMessagePackage(
             addresses = mapOf(
@@ -214,7 +214,7 @@ class GenerateMessagePackagesTest {
                 SendMessageSample.MimeBodySessionKey,
                 SendMessageSample.PlaintextMimeBodyEncryptedAndSignedSplit.dataPacket(),
                 null, // Cleartext package type doesn't need this
-                emptyList()
+                emptyMap()
             )
         } returns SendMessagePackage(
             addresses = mapOf(
@@ -238,7 +238,7 @@ class GenerateMessagePackagesTest {
                 SendMessageSample.MimeBodySessionKey,
                 SendMessageSample.PlaintextMimeBodyEncryptedAndSignedSplit.dataPacket(),
                 null, // ClearMime package type doesn't need this
-                emptyList()
+                emptyMap()
             )
         } returns SendMessagePackage(
             addresses = mapOf(
@@ -262,14 +262,14 @@ class GenerateMessagePackagesTest {
                 SendMessageSample.MimeBodySessionKey,
                 SendMessageSample.PlaintextMimeBodyEncryptedAndSignedSplit.dataPacket(),
                 null, // ProtonMail package type doesn't need this
-                emptyList()
+                emptyMap()
             )
         } returns SendMessagePackage(
             addresses = mapOf(
                 recipient1 to SendMessagePackage.Address.Internal(
                     signature = true.toInt(),
                     bodyKeyPacket = Base64.encode(SendMessageSample.RecipientBodyKeyPacket),
-                    attachmentKeyPackets = emptyList()
+                    attachmentKeyPackets = emptyMap()
                 )
             ),
             mimeType = SendMessageSample.SendPreferences.ProtonMail.mimeType.value,
