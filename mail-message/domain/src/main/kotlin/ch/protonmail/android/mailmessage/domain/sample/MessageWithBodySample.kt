@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailmessage.domain.sample
 
 import ch.protonmail.android.mailmessage.domain.model.Message
+import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.model.MessageBody
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.model.MimeType
@@ -56,11 +57,21 @@ object MessageWithBodySample {
         message = MessageSample.RemoteDraftWith4RecipientTypes
     )
 
+    val MessageWithAttachments = build(
+        message = MessageSample.MessageWithAttachments,
+        attachments = listOf(
+            MessageAttachmentSample.document,
+            MessageAttachmentSample.documentWithReallyLongFileName,
+            MessageAttachmentSample.embeddedImageAttachment
+        )
+    )
+
     private fun build(
         message: Message = MessageSample.EmptyDraft,
         replyTo: Recipient = RecipientSample.John,
         body: String = "",
-        mimeType: MimeType = MimeType.PlainText
+        mimeType: MimeType = MimeType.PlainText,
+        attachments: List<MessageAttachment> = emptyList()
     ) = MessageWithBody(
         message = message,
         messageBody = MessageBody(
@@ -68,7 +79,7 @@ object MessageWithBodySample {
             messageId = message.messageId,
             body = body,
             header = "",
-            attachments = emptyList(),
+            attachments = attachments,
             mimeType = mimeType,
             spamScore = "",
             replyTo = replyTo,

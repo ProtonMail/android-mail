@@ -56,6 +56,7 @@ import ch.protonmail.android.mailcomposer.domain.usecase.StoreAttachments
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithAllFields
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithBody
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithBodyError
+import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithParentAttachments
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithRecipients
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithSubject
 import ch.protonmail.android.mailcomposer.presentation.R
@@ -71,7 +72,9 @@ import ch.protonmail.android.mailcomposer.presentation.usecase.ParentMessageToDr
 import ch.protonmail.android.mailcomposer.presentation.usecase.StyleQuotedHtml
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.model.Recipient
+import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
 import ch.protonmail.android.mailmessage.domain.sample.RecipientSample
@@ -83,7 +86,6 @@ import ch.protonmail.android.test.idlingresources.ComposerIdlingResource
 import ch.protonmail.android.test.utils.rule.LoggingTestRule
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import ch.protonmail.android.testdata.contact.ContactSample
-import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
 import ch.protonmail.android.testdata.message.DecryptedMessageBodyTestData
 import io.mockk.Called
 import io.mockk.coEvery
@@ -144,6 +146,7 @@ class ComposerViewModelTest {
     private val styleQuotedHtml = mockk<StyleQuotedHtml>()
     private val getLocalMessageDecrypted = mockk<GetLocalMessageDecrypted>()
     private val parentMessageToDraftFields = mockk<ParentMessageToDraftFields>()
+    private val storeDraftWithParentAttachments = mockk<StoreDraftWithParentAttachments>()
     private val observeMailFeature = mockk<ObserveMailFeature> {
         coEvery {
             this@mockk.invoke(any(), MailFeatureId.AddAttachmentsToDraft)
@@ -184,6 +187,7 @@ class ComposerViewModelTest {
             getLocalMessageDecrypted,
             parentMessageToDraftFields,
             styleQuotedHtml,
+            storeDraftWithParentAttachments,
             getDecryptedDraftFields,
             savedStateHandle,
             observePrimaryUserIdMock,
@@ -1093,6 +1097,13 @@ class ComposerViewModelTest {
             val expectedStyledQuote = expectStyleQuotedHtml(expectedDraftFields.originalHtmlQuote) {
                 StyledHtmlQuote("<styled> ${expectedDraftFields.originalHtmlQuote?.value} </styled>")
             }
+            expectStoreDraftWithParentAttachmentsSucceeds(
+                expectedUserId,
+                expectedDraftId,
+                expectedMessageDecrypted.messageWithBody,
+                expectedDraftFields.sender,
+                expectedAction
+            )
 
             // When
             val actual = viewModel.state.value
@@ -1254,10 +1265,8 @@ class ComposerViewModelTest {
         unmockkObject(ComposerDraftState.Companion)
     }
 
-    private fun expectStyleQuotedHtml(
-        originalHtmlQuote: OriginalHtmlQuote?,
-        styledHtmlQuote: () -> StyledHtmlQuote
-    ) = styledHtmlQuote().also { coEvery { styleQuotedHtml(originalHtmlQuote!!) } returns it }
+    private fun expectStyleQuotedHtml(originalHtmlQuote: OriginalHtmlQuote?, styledHtmlQuote: () -> StyledHtmlQuote) =
+        styledHtmlQuote().also { coEvery { styleQuotedHtml(originalHtmlQuote!!) } returns it }
 
     private fun expectParentMessageToDraftFieldsSuccess(
         userId: UserId,
@@ -1340,7 +1349,11 @@ class ComposerViewModelTest {
         every { networkManagerMock.isConnectedToNetwork() } returns false
     }
 
-    private fun expectStartDraftSync(userId: UserId, messageId: MessageId, action: DraftAction = DraftAction.Compose) {
+    private fun expectStartDraftSync(
+        userId: UserId,
+        messageId: MessageId,
+        action: DraftAction = DraftAction.Compose
+    ) {
         coEvery { draftUploaderMock.startContinuousUpload(userId, messageId, action, any()) } returns Unit
     }
 
@@ -1410,6 +1423,19 @@ class ComposerViewModelTest {
     private fun expectedGetComposerSenderAddressesError(
         error: () -> GetComposerSenderAddresses.Error
     ): GetComposerSenderAddresses.Error = error().also { coEvery { getComposerSenderAddresses() } returns it.left() }
+
+    private fun expectStoreDraftWithParentAttachmentsSucceeds(
+        userId: UserId,
+        messageId: MessageId,
+        messageBody: MessageWithBody,
+        senderEmail: SenderEmail,
+        action: DraftAction
+    ) {
+        coEvery {
+            storeDraftWithParentAttachments(userId, messageId, messageBody, senderEmail, action)
+        } returns Unit.right()
+    }
+
 
     private fun expectStoreDraftBodySucceeds(
         expectedMessageId: MessageId,
@@ -1579,7 +1605,6 @@ class ComposerViewModelTest {
     companion object TestData {
 
         const val RawDraftBody = "I'm a message body"
-        const val RawQuotedHtmlBody = "<div> Quoted html body </div>"
 
         val existingDraftFields = DraftFields(
             SenderEmail("author@proton.me"),

@@ -35,6 +35,7 @@ import ch.protonmail.android.mailcomposer.domain.model.RecipientsCc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsTo
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.domain.model.Subject
+import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithParentAttachments
 import ch.protonmail.android.mailcomposer.domain.usecase.DraftUploader
 import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses
 import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses.Error
@@ -108,6 +109,7 @@ class ComposerViewModel @Inject constructor(
     private val getLocalMessageDecrypted: GetLocalMessageDecrypted,
     private val parentMessageToDraftFields: ParentMessageToDraftFields,
     private val styleQuotedHtml: StyleQuotedHtml,
+    private val storeDraftWithParentAttachments: StoreDraftWithParentAttachments,
     getDecryptedDraftFields: GetDecryptedDraftFields,
     savedStateHandle: SavedStateHandle,
     observePrimaryUserId: ObservePrimaryUserId,
@@ -160,6 +162,13 @@ class ComposerViewModel @Inject constructor(
                     Timber.d("Quoted parent body $draftFields")
                     startDraftContinuousUpload(draftAction)
                     emitNewStateFor(ComposerEvent.PrefillDraftDataReceived(draftFields.toDraftUiModel()))
+                    storeDraftWithParentAttachments.invoke(
+                        primaryUserId(),
+                        currentMessageId(),
+                        parentMessage.messageWithBody,
+                        draftFields.sender,
+                        draftAction
+                    )
                 }.onLeft { emitNewStateFor(ComposerEvent.ErrorLoadingParentMessageData) }
             }.onLeft { emitNewStateFor(ComposerEvent.ErrorLoadingParentMessageData) }
         }

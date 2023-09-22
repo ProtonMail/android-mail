@@ -38,6 +38,7 @@ object MessageIdSample {
     val AlphaAppQAReport = MessageId("QA_testing_report")
     val AlphaAppInfoRequest = MessageId("alpha_app_info_request")
     val PlainTextMessage = MessageId("plain_text_message")
+    val MessageWithAttachments = MessageId("Message_with_attachments")
 
     fun build() = MessageId("message")
 }
