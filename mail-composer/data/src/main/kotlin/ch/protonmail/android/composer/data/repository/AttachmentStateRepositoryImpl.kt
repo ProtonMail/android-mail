@@ -56,11 +56,10 @@ class AttachmentStateRepositoryImpl @Inject constructor(
         localDataSource.save(updatedState)
     }
 
-    override suspend fun updateApiAttachmentIdAndSetSyncedState(
+    override suspend fun setAttachmentToUploadState(
         userId: UserId,
         messageId: MessageId,
-        attachmentId: AttachmentId,
-        apiAttachmentId: AttachmentId
+        attachmentId: AttachmentId
     ): Either<DataError, Unit> = either {
         val attachmentState = localDataSource.getAttachmentState(userId, messageId, attachmentId).bind()
         localDataSource.save(attachmentState.copy(state = AttachmentSyncState.Uploaded))

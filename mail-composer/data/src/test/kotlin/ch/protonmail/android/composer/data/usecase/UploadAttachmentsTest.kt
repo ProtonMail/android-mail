@@ -42,7 +42,6 @@ import ch.protonmail.android.test.utils.FakeTransactor
 import io.mockk.Called
 import io.mockk.coEvery
 import io.mockk.coVerifyOrder
-import io.mockk.coVerifySequence
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.test.runTest
@@ -117,17 +116,16 @@ class UploadAttachmentsTest {
         // Then
         assertEquals(Unit.right(), actual)
         coVerifyOrder {
-            attachmentStateRepository.updateApiAttachmentIdAndSetSyncedState(
-                userId,
-                messageId,
-                AttachmentStateSample.LocalAttachmentState.attachmentId,
-                AttachmentId(uploadExpectedAttachmentResult.attachment.id)
-            )
             attachmentRepository.updateMessageAttachment(
                 userId,
                 messageId,
                 AttachmentStateSample.LocalAttachmentState.attachmentId,
                 expectedRemoteMessageAttachment
+            )
+            attachmentStateRepository.setAttachmentToUploadState(
+                userId,
+                messageId,
+                AttachmentId(uploadExpectedAttachmentResult.attachment.id)
             )
         }
     }
@@ -141,7 +139,7 @@ class UploadAttachmentsTest {
         val actual = uploadAttachments(userId, messageId)
 
         // Then
-        assertEquals(DataError.MessageSending.DraftNotFound.left(), actual)
+        assertEquals(AttachmentUploadError.DraftNotFound.left(), actual)
         verify { attachmentStateRepository wasNot Called }
         verify { attachmentRemoteDataSource wasNot Called }
         verify { attachmentRepository wasNot Called }
@@ -150,7 +148,7 @@ class UploadAttachmentsTest {
     }
 
     @Test
-    fun `when upload attachment fails due to missing attachment state then Unit is returned`() = runTest {
+    fun `when no attachment states are stored then Unit is returned`() = runTest {
         // Given
         expectFindLocalDraftSuccessful()
         coEvery {
@@ -180,46 +178,48 @@ class UploadAttachmentsTest {
             val actual = uploadAttachments(userId, messageId)
 
             // Then
-            assertEquals(DataError.MessageSending.SenderAddressNotFound.left(), actual)
+            assertEquals(AttachmentUploadError.SenderAddressNotFound.left(), actual)
             verify { attachmentRemoteDataSource wasNot Called }
             verify { attachmentRepository wasNot Called }
             verify { encryptAndSignAttachment wasNot Called }
         }
 
     @Test
-    fun `when upload attachment fails due to missing attachment file then Unit is returned`() = runTest {
-        // Given
-        expectFindLocalDraftSuccessful()
-        expectGetAllAttachmentStatesSuccessful()
-        expectResolveUserAddressSuccessful()
-        expectReadingFileFromStorageFailed()
+    fun `when upload attachment fails due to missing attachment file then attachment file not found error returned`() =
+        runTest {
+            // Given
+            expectFindLocalDraftSuccessful()
+            expectGetAllAttachmentStatesSuccessful()
+            expectResolveUserAddressSuccessful()
+            expectReadingFileFromStorageFailed()
 
-        // When
-        val actual = uploadAttachments(userId, messageId)
+            // When
+            val actual = uploadAttachments(userId, messageId)
 
-        // Then
-        assertEquals(Unit.right(), actual)
-        verify { attachmentRemoteDataSource wasNot Called }
-        verify { encryptAndSignAttachment wasNot Called }
-    }
+            // Then
+            assertEquals(AttachmentUploadError.AttachmentFileNotFound.left(), actual)
+            verify { attachmentRemoteDataSource wasNot Called }
+            verify { encryptAndSignAttachment wasNot Called }
+        }
 
     @Test
-    fun `when upload attachment fails due to missing attachment metadata then Unit is returned`() = runTest {
-        // Given
-        expectFindLocalDraftSuccessful()
-        expectGetAllAttachmentStatesSuccessful()
-        expectResolveUserAddressSuccessful()
-        expectReadingFileFromStorageSuccessful()
-        expectLoadingAttachmentMetadataFailed()
+    fun `when upload attachment fails due to missing attachment metadata then attachment info not found is returned`() =
+        runTest {
+            // Given
+            expectFindLocalDraftSuccessful()
+            expectGetAllAttachmentStatesSuccessful()
+            expectResolveUserAddressSuccessful()
+            expectReadingFileFromStorageSuccessful()
+            expectLoadingAttachmentMetadataFailed()
 
-        // When
-        val actual = uploadAttachments(userId, messageId)
+            // When
+            val actual = uploadAttachments(userId, messageId)
 
-        // Then
-        assertEquals(Unit.right(), actual)
-        verify { attachmentRemoteDataSource wasNot Called }
-        verify { encryptAndSignAttachment wasNot Called }
-    }
+            // Then
+            assertEquals(AttachmentUploadError.AttachmentInfoNotFound.left(), actual)
+            verify { attachmentRemoteDataSource wasNot Called }
+            verify { encryptAndSignAttachment wasNot Called }
+        }
 
     @Test
     fun `when upload attachment fails due to encryption error then Unit is returned`() = runTest {
@@ -235,53 +235,8 @@ class UploadAttachmentsTest {
         val actual = uploadAttachments(userId, messageId)
 
         // Then
-        assertEquals(Unit.right(), actual)
+        assertEquals(AttachmentUploadError.FailedToEncryptAttachment.left(), actual)
         verify { attachmentRemoteDataSource wasNot Called }
-    }
-
-    @Test
-    fun `when uploading multiple attachments the loop continues when a file fails to get encrypted`() = runTest {
-        // Given
-        val attachmentId2 = AttachmentId(id = "attachment_id_2")
-        val secondAttachmentFile = File.createTempFile("attachment", "txt")
-
-        expectFindLocalDraftSuccessful()
-        expectGetAllAttachmentStatesSuccessful(
-            listOf(
-                AttachmentStateSample.LocalAttachmentState.copy(attachmentId = attachmentId2),
-                AttachmentStateSample.LocalAttachmentState
-            )
-        )
-        expectResolveUserAddressSuccessful()
-        // First attachment
-        expectReadingFileFromStorageSuccessful()
-        expectLoadingAttachmentMetadataSuccessful()
-        expectEncryptingAndSigningSuccessful()
-        expectUploadSuccessful()
-        expectUpdateAttachmentStateSuccessful()
-        expectUpdateMessageAttachmentSuccessful()
-
-        // Second attachment
-        expectReadingFileFromStorageSuccessful(attachmentId2, secondAttachmentFile)
-        expectLoadingAttachmentMetadataSuccessful(attachmentId2, buildMessageAttachment(attachmentId2))
-        expectEncryptingAndSigningFailed(secondAttachmentFile)
-
-
-        // When
-        val actual = uploadAttachments(userId, messageId)
-
-        // Then
-        assertEquals(Unit.right(), actual)
-        coVerifySequence {
-            attachmentStateRepository.getAllAttachmentStatesForMessage(userId, messageId)
-            attachmentRemoteDataSource.uploadAttachment(userId, expectedUploadAttachmentModel)
-            attachmentStateRepository.updateApiAttachmentIdAndSetSyncedState(
-                userId,
-                messageId,
-                AttachmentStateSample.LocalAttachmentState.attachmentId,
-                AttachmentId(uploadExpectedAttachmentResult.attachment.id)
-            )
-        }
     }
 
     private fun expectFindLocalDraftSuccessful() {
@@ -382,10 +337,9 @@ class UploadAttachmentsTest {
 
     private fun expectUpdateAttachmentStateSuccessful() {
         coEvery {
-            attachmentStateRepository.updateApiAttachmentIdAndSetSyncedState(
+            attachmentStateRepository.setAttachmentToUploadState(
                 userId,
                 messageId,
-                AttachmentStateSample.LocalAttachmentState.attachmentId,
                 AttachmentId(uploadExpectedAttachmentResult.attachment.id)
             )
         } returns Unit.right()

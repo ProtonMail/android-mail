@@ -41,11 +41,10 @@ interface AttachmentStateRepository {
         attachmentId: AttachmentId
     ): Either<DataError, Unit>
 
-    suspend fun updateApiAttachmentIdAndSetSyncedState(
+    suspend fun setAttachmentToUploadState(
         userId: UserId,
         messageId: MessageId,
-        attachmentId: AttachmentId,
-        apiAttachmentId: AttachmentId
+        attachmentId: AttachmentId
     ): Either<DataError, Unit>
 
     suspend fun deleteAttachmentState(

@@ -24,6 +24,7 @@ import ch.protonmail.android.composer.data.local.AttachmentStateLocalDataSourceI
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcomposer.domain.model.AttachmentState
+import ch.protonmail.android.mailcomposer.domain.model.AttachmentSyncState
 import ch.protonmail.android.mailcomposer.domain.sample.AttachmentStateSample
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -103,19 +104,18 @@ class AttachmentStateRepositoryImplTest {
     }
 
     @Test
-    fun `store synced state does update api message id and attachment sync state`() = runTest {
+    fun `set attachment upload state does update attachment sync state`() = runTest {
         // Given
         val draftId = MessageIdSample.RemoteDraft
         val existingAttachmentState = AttachmentStateSample.LocalAttachmentState
-        val expectedAttachmentState = AttachmentStateSample.RemoteAttachmentState
+        val expectedAttachmentState = existingAttachmentState.copy(state = AttachmentSyncState.Uploaded)
         expectAttachmentStateLocalDataSourceSuccess(userId, draftId, attachmentId, existingAttachmentState)
         expectLocalDataSourceUpsertSuccess(expectedAttachmentState)
 
         // When
-        val actual = repository.updateApiAttachmentIdAndSetSyncedState(
+        val actual = repository.setAttachmentToUploadState(
             userId,
             draftId,
-            attachmentId,
             expectedAttachmentState.attachmentId
         )
 
@@ -165,11 +165,10 @@ class AttachmentStateRepositoryImplTest {
         expectLocalDataSourceUpsertSuccess(expectedAttachmentState)
 
         // When
-        val actual = repository.updateApiAttachmentIdAndSetSyncedState(
+        val actual = repository.setAttachmentToUploadState(
             userId = userId,
             messageId = messageId,
-            attachmentId = attachmentId,
-            apiAttachmentId = AttachmentId("api_attachment_id")
+            attachmentId = expectedAttachmentState.attachmentId
         )
 
         // Then

@@ -20,10 +20,8 @@ package ch.protonmail.android.composer.data.usecase
 
 import arrow.core.Either
 import arrow.core.continuations.either
-import arrow.core.getOrElse
 import ch.protonmail.android.composer.data.remote.AttachmentRemoteDataSource
 import ch.protonmail.android.composer.data.remote.UploadAttachmentModel
-import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcomposer.domain.Transactor
 import ch.protonmail.android.mailcomposer.domain.model.AttachmentSyncState
 import ch.protonmail.android.mailcomposer.domain.repository.AttachmentStateRepository
@@ -46,8 +44,8 @@ class UploadAttachments @Inject constructor(
     private val transactor: Transactor
 ) {
 
-    suspend operator fun invoke(userId: UserId, messageId: MessageId): Either<DataError, Unit> = either {
-        val localDraft = findLocalDraft(userId, messageId)?.message ?: shift(DataError.MessageSending.DraftNotFound)
+    suspend operator fun invoke(userId: UserId, messageId: MessageId): Either<AttachmentUploadError, Unit> = either {
+        val localDraft = findLocalDraft(userId, messageId)?.message ?: shift(AttachmentUploadError.DraftNotFound)
 
         val attachments = attachmentStateRepository.getAllAttachmentStatesForMessage(userId, localDraft.messageId)
             .filter { it.state != AttachmentSyncState.Uploaded }
@@ -55,23 +53,23 @@ class UploadAttachments @Inject constructor(
         if (attachments.isEmpty()) return@either
 
         val senderAddress = resolveUserAddress(userId, localDraft.addressId)
-            .mapLeft { DataError.MessageSending.SenderAddressNotFound }
+            .mapLeft { AttachmentUploadError.SenderAddressNotFound }
             .bind()
 
-        attachments.forEach attachment@{ attachmentState ->
+        attachments.forEach { attachmentState ->
             val attachment = attachmentRepository
                 .readFileFromStorage(userId, localDraft.messageId, attachmentState.attachmentId)
-                .getOrElse { return@attachment }
+                .mapLeft { AttachmentUploadError.AttachmentFileNotFound }
+                .bind()
 
             val attachmentInfo = attachmentRepository
                 .getAttachmentInfo(userId, localDraft.messageId, attachmentState.attachmentId)
-                .getOrElse { return@attachment }
+                .mapLeft { AttachmentUploadError.AttachmentInfoNotFound }
+                .bind()
 
             val encryptedAttachment = encryptAndSignAttachment(senderAddress, attachment)
-                .getOrElse {
-                    Timber.e(it.exception, "Failed to encrypt and sign attachment")
-                    return@attachment
-                }
+                .mapLeft { AttachmentUploadError.FailedToEncryptAttachment }
+                .bind()
 
             val uploadAttachment = UploadAttachmentModel(
                 messageId = localDraft.messageId,
@@ -82,26 +80,37 @@ class UploadAttachments @Inject constructor(
                 signature = encryptedAttachment.signature
             )
 
-            val response = attachmentRemoteDataSource.uploadAttachment(userId, uploadAttachment).getOrElse {
-                Timber.e("Failed to upload attachment: $it")
-                return@attachment
-            }
+            val response = attachmentRemoteDataSource.uploadAttachment(userId, uploadAttachment)
+                .mapLeft {
+                    Timber.e("Failed to upload attachment: $it")
+                    AttachmentUploadError.UploadFailed
+                }
+                .bind()
+
             transactor.performTransaction {
-                attachmentStateRepository.updateApiAttachmentIdAndSetSyncedState(
-                    userId = userId,
-                    messageId = localDraft.messageId,
-                    attachmentId = attachmentState.attachmentId,
-                    apiAttachmentId = AttachmentId(response.attachment.id)
-                ).bind()
                 attachmentRepository.updateMessageAttachment(
                     userId = userId,
                     messageId = localDraft.messageId,
                     localAttachmentId = attachmentState.attachmentId,
                     attachment = response.attachment.toMessageAttachment()
-                ).bind()
+                ).mapLeft { AttachmentUploadError.FailedToStoreAttachmentInfo }.bind()
+                attachmentStateRepository.setAttachmentToUploadState(
+                    userId = userId,
+                    messageId = localDraft.messageId,
+                    attachmentId = AttachmentId(response.attachment.id)
+                ).mapLeft { AttachmentUploadError.FailedToUpdateAttachmentId }.bind()
             }
-
         }
-
     }
+}
+
+sealed interface AttachmentUploadError {
+    object DraftNotFound : AttachmentUploadError
+    object SenderAddressNotFound : AttachmentUploadError
+    object AttachmentFileNotFound : AttachmentUploadError
+    object AttachmentInfoNotFound : AttachmentUploadError
+    object FailedToEncryptAttachment : AttachmentUploadError
+    object UploadFailed : AttachmentUploadError
+    object FailedToUpdateAttachmentId : AttachmentUploadError
+    object FailedToStoreAttachmentInfo : AttachmentUploadError
 }
