@@ -77,4 +77,12 @@ internal sealed class SnackbarTextEntry(val value: String) {
     object MessageSent : SnackbarTextEntry(
         getTestString(testR.string.test_mailbox_message_sending_success)
     )
+
+    object MessageSentError : SnackbarTextEntry(
+        getTestString(testR.string.test_mailbox_message_sending_error)
+    )
+
+    object MessageQueued : SnackbarTextEntry(
+        getTestString(testR.string.test_mailbox_message_sending_offline)
+    )
 }
