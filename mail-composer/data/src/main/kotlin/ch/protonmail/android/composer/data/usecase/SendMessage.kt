@@ -82,7 +82,7 @@ internal class SendMessage @Inject constructor(
             Timber.e("API error sending message ID: $messageId", it)
         }.onRight {
             Timber.d("Success sending message ID: $messageId")
-        }
+        }.bind()
     }
 
     private suspend fun getSendPreferences(
@@ -98,7 +98,5 @@ internal class SendMessage @Inject constructor(
         return if (sendPreferences.size != emails.size) {
             DataError.MessageSending.SendPreferences.left()
         } else sendPreferences.right()
-
     }
-
 }
