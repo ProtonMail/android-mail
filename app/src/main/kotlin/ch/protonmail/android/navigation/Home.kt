@@ -66,6 +66,7 @@ import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.network.domain.NetworkStatus
 
 @Composable
+@Suppress("ComplexMethod")
 fun Home(
     activityActions: MainActivity.Actions,
     launcherActions: Launcher.Actions,
@@ -127,10 +128,15 @@ fun Home(
     fun showErrorSendingMessageSnackbar() = scope.launch {
         snackbarHostErrorState.showSnackbar(message = errorSendingMessageText, type = ProtonSnackbarType.ERROR)
     }
+    val errorUploadAttachmentText = stringResource(id = R.string.mailbox_attachment_uploading_error)
+    fun showErrorUploadAttachmentSnackbar() = scope.launch {
+        snackbarHostErrorState.showSnackbar(message = errorUploadAttachmentText, type = ProtonSnackbarType.ERROR)
+    }
     ConsumableLaunchedEffect(state.value.messageSendingStatusEffect) { sendingStatus ->
         when (sendingStatus) {
             is MessageSendingStatus.MessageSent -> showSuccessSendingMessageSnackbar()
             is MessageSendingStatus.SendMessageError -> showErrorSendingMessageSnackbar()
+            is MessageSendingStatus.UploadAttachmentsError -> showErrorUploadAttachmentSnackbar()
             is MessageSendingStatus.None -> {}
         }
     }

@@ -53,6 +53,22 @@ class ObserveSendingMessagesStatusTest {
     }
 
     @Test
+    fun `when there are drafts that failed to upload attachments then emit error upload attachment status`() = runTest {
+        // Given
+        val userId = UserIdSample.Primary
+        val errorUploadingAttachmentsDraftState = DraftStateSample.RemoteDraftInErrorAttachmentUploadState
+        expectedDraftStates(userId) {
+            listOf(DraftStateSample.RemoteDraftInSendingState, errorUploadingAttachmentsDraftState)
+        }
+
+        // When
+        val actual = observeSendingMessageState.invoke(userId).first()
+
+        // Then
+        assertEquals(MessageSendingStatus.UploadAttachmentsError, actual)
+    }
+
+    @Test
     fun `when there are draft that succeeded sending then emit messages sent status`() = runTest {
         // Given
         val userId = UserIdSample.Primary

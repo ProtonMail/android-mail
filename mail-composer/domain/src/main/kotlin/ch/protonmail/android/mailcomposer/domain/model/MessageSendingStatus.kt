@@ -21,5 +21,6 @@ package ch.protonmail.android.mailcomposer.domain.model
 sealed interface MessageSendingStatus {
     object MessageSent : MessageSendingStatus
     object SendMessageError : MessageSendingStatus
+    object UploadAttachmentsError : MessageSendingStatus
     object None : MessageSendingStatus
 }

@@ -29,5 +29,6 @@
     <string name="mailbox_message_sending_offline">Offline, message queued for sending</string>
     <string name="mailbox_message_sending_success">Message sent</string>
     <string name="mailbox_message_sending_error">Error sending message</string>
+    <string name="mailbox_attachment_uploading_error">Error uploading attachment</string>
     <string name="notification_switched_account">Switched to account: %s</string>
 </resources>

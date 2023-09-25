@@ -35,7 +35,7 @@ class ResetSendingMessagesStatus @Inject constructor(
             if (it.state == DraftSyncState.Sent) {
                 deleteDraftState(it.userId, it.messageId)
             }
-            if (it.state == DraftSyncState.ErrorSending) {
+            if (it.state == DraftSyncState.ErrorSending || it.state == DraftSyncState.ErrorUploadAttachments) {
                 resetDraftStateError(it.userId, it.messageId)
             }
         }

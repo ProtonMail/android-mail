@@ -82,6 +82,15 @@ object DraftStateSample {
     )
 
     /**
+     * Represents a remote draft that failed to upload attachments.
+     */
+    val RemoteDraftInErrorAttachmentUploadState = build(
+        messageId = MessageIdSample.RemoteDraft,
+        apiMessageId = MessageIdSample.RemoteDraft,
+        state = DraftSyncState.ErrorUploadAttachments
+    )
+
+    /**
      * Represents a remote draft that has been successfully sent.
      */
     val RemoteDraftInSentState = build(

@@ -24,14 +24,20 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
+import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.composer.data.usecase.AttachmentUploadError
 import ch.protonmail.android.composer.data.usecase.UploadAttachments
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.mailcomposer.domain.model.DraftSyncState
+import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
+import ch.protonmail.android.mailcomposer.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import io.mockk.Called
 import io.mockk.coEvery
+import io.mockk.coJustRun
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
@@ -53,8 +59,11 @@ class UploadAttachmentsWorkerTest {
     }
     private val context: Context = mockk()
     private val uploadAttachments: UploadAttachments = mockk()
+    private val draftStateRepository: DraftStateRepository = mockk()
+    private val messageRepository: MessageRepository = mockk()
 
-    private val uploadAttachmentWorker = UploadAttachmentsWorker(context, parameters, uploadAttachments)
+    private val uploadAttachmentWorker =
+        UploadAttachmentsWorker(context, parameters, uploadAttachments, draftStateRepository, messageRepository)
 
     @Test
     fun `worker is enqueued with given parameters`() {
@@ -119,9 +128,44 @@ class UploadAttachmentsWorkerTest {
         coVerify { uploadAttachments wasNot Called }
     }
 
+    @Test
+    fun `worker moves message to draft when upload attachment fails`() = runTest {
+        // Given
+        val userId = UserIdSample.Primary
+        val messageId = MessageIdSample.LocalDraft
+        givenInputData(userId, messageId)
+        givenUploadAttachmentsFails(userId, messageId)
+        givenUpdateDraftSyncStateSucceeds(userId, messageId)
+        givenMoveMessageBackFromSentToDraftsSucceeds(userId, messageId)
+
+        // When
+        val actual = uploadAttachmentWorker.doWork()
+
+        // Then
+        coVerify { uploadAttachments(userId, messageId) }
+        coVerify { draftStateRepository.updateDraftSyncState(userId, messageId, DraftSyncState.ErrorUploadAttachments) }
+        coVerify { messageRepository.moveMessageBackFromSentToDrafts(userId, messageId) }
+        assertEquals(ListenableWorker.Result.failure(), actual)
+    }
+
     private fun givenUploadAttachmentsSucceeds(userId: UserId, messageId: MessageId) {
         coEvery { uploadAttachments(userId, messageId) } returns Unit.right()
     }
+
+    private fun givenUpdateDraftSyncStateSucceeds(userId: UserId, messageId: MessageId) {
+        coEvery {
+            draftStateRepository.updateDraftSyncState(userId, messageId, DraftSyncState.ErrorUploadAttachments)
+        } returns Unit.right()
+    }
+
+    private fun givenMoveMessageBackFromSentToDraftsSucceeds(userId: UserId, messageId: MessageId) {
+        coJustRun { messageRepository.moveMessageBackFromSentToDrafts(userId, messageId) }
+    }
+
+    private fun givenUploadAttachmentsFails(userId: UserId, messageId: MessageId) {
+        coEvery { uploadAttachments(userId, messageId) } returns AttachmentUploadError.UploadFailed.left()
+    }
+
     private fun givenInputData(userId: UserId?, messageId: MessageId?) {
         every { parameters.inputData.getString(UploadAttachmentsWorker.RawUserIdKey) } returns userId?.id
         every { parameters.inputData.getString(UploadAttachmentsWorker.RawMessageIdKey) } returns messageId?.id

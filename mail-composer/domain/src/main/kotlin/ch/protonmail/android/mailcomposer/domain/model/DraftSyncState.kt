@@ -23,7 +23,8 @@ enum class DraftSyncState(val value: Int) {
     Synchronized(1),
     Sending(2),
     ErrorSending(3),
-    Sent(4);
+    Sent(4),
+    ErrorUploadAttachments(5);
 
     companion object {
 

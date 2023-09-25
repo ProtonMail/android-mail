@@ -35,6 +35,10 @@ class ObserveSendingMessagesStatus @Inject constructor(
             return@map MessageSendingStatus.SendMessageError
         }
 
+        if (draftStates.any { it.state == DraftSyncState.ErrorUploadAttachments }) {
+            return@map MessageSendingStatus.UploadAttachmentsError
+        }
+
         if (draftStates.any { it.state == DraftSyncState.Sent }) {
             return@map MessageSendingStatus.MessageSent
         }
