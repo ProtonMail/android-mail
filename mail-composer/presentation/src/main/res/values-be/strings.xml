@@ -39,4 +39,7 @@
   <string name="composer_error_loading_draft">Змесціва гэтага чарнавіка недаступна ў цяперашні час. Рэдагаванне перавызначыць любое змесціва, якое было створана да гэтага.</string>
   <string name="composer_add_attachments_content_description">Дадаць далучэнні</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Імпартаваць з…</string>
+  <string name="composer_error_loading_parent_message">Could not load the message\'s information</string>
+  <string name="composer_original_message_quote">Original Message</string>
+  <string name="composer_sender_quote">On %s, %s &lt;%s&gt; wrote:</string>
 </resources>

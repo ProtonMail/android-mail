@@ -22,7 +22,7 @@
   <string name="description_remove_account">サインアウトして、このアカウントに関連するすべての情報を削除することになります。</string>
   <string name="user_select_other_account_content_description">別のアカウントを選択する</string>
   <string name="you_are_offline">オフラインです</string>
-  <string name="feature_coming_soon">Feature coming soon…</string>
+  <string name="feature_coming_soon">近日公開予定です。</string>
   <string name="mailbox_draft_saved">下書き保存</string>
   <string name="mailbox_message_sending">メッセージを送る</string>
   <string name="mailbox_message_sending_offline">オフライン、メッセージは送信待ち</string>

@@ -23,12 +23,12 @@
   </plurals>
   <string name="attachment_show_more_label">+%1$d d wugar</string>
   <string name="attachment_permission_dialog_title">Tasiregt tettusra</string>
-  <string name="attachment_permission_dialog_message">Proton Mail needs permission to access your storage to download the attachment.</string>
+  <string name="attachment_permission_dialog_message">Proton Mail yesra tasiregt i unekcum ɣer uḥraz-ik i wakken ad d-isader amedday.</string>
   <string name="attachment_permission_dialog_dismiss_button">IH</string>
   <string name="attachment_permission_dialog_action_button">Iɣewwaren</string>
   <string name="attachment_type_description">%1$s ufaylu</string>
   <!-- Attachment Types -->
-  <string name="attachment_type_archive">Tarcivt</string>
+  <string name="attachment_type_archive">Taṛcivt</string>
   <string name="attachment_type_image">Image</string>
   <string name="attachment_type_video">Tavidyut</string>
   <string name="attachment_type_audio">Ameslaw</string>

@@ -39,4 +39,7 @@
   <string name="composer_error_loading_draft">El contenido de este borrador no está disponible en este momento. Editarlo sobrescribirá cualquier contenido preexistente.</string>
   <string name="composer_add_attachments_content_description">Añadir archivos adjuntos</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Importar desde…</string>
+  <string name="composer_error_loading_parent_message">No se ha podido cargar la información del mensaje.</string>
+  <string name="composer_original_message_quote">Mensaje original</string>
+  <string name="composer_sender_quote">El %s, %s &lt;%s&gt; ha escrito:</string>
 </resources>

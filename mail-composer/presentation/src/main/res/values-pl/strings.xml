@@ -39,4 +39,7 @@
   <string name="composer_error_loading_draft">Zawartość szkicu nie jest dostępna. Edycja zastąpi obecną zawartość.</string>
   <string name="composer_add_attachments_content_description">Dodaj załączniki</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Importuj z…</string>
+  <string name="composer_error_loading_parent_message">Nie można załadować danych wiadomości</string>
+  <string name="composer_original_message_quote">Oryginalna wiadomość</string>
+  <string name="composer_sender_quote">%s, %s &lt;%s&gt; napisał(a):</string>
 </resources>

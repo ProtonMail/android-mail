@@ -39,4 +39,7 @@
   <string name="composer_error_loading_draft">Innehållet i detta utkast är inte tillgängligt för närvarande. Redigering kommer att åsidosätta allt redan existerande innehåll.</string>
   <string name="composer_add_attachments_content_description">Lägg till bilagor</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Importera från…</string>
+  <string name="composer_error_loading_parent_message">Kunde inte ladda meddelandets information</string>
+  <string name="composer_original_message_quote">Ursprungligt meddelande</string>
+  <string name="composer_sender_quote">On %s, %s &lt;%s&gt; wrote:</string>
 </resources>

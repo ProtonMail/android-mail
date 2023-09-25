@@ -39,4 +39,7 @@
   <string name="composer_error_loading_draft">Indholdet af denne kladde er ikke tilgængeligt på nuværende tidspunkt. Redigering vil overskrive alt allerede eksisterende indhold.</string>
   <string name="composer_add_attachments_content_description">Tilføj vedhæftninger</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Importér fra…</string>
+  <string name="composer_error_loading_parent_message">Kunne ikke indlæse beskedens oplysninger</string>
+  <string name="composer_original_message_quote">Oprindelig besked</string>
+  <string name="composer_sender_quote">%s, %s &lt;%s&gt; skrev:</string>
 </resources>

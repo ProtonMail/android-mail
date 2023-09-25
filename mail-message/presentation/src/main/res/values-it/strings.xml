@@ -21,12 +21,12 @@
     <item quantity="one">%d file</item>
     <item quantity="other">%d file</item>
   </plurals>
-  <string name="attachment_show_more_label">+%1$d altro</string>
+  <string name="attachment_show_more_label">+%1$d in più</string>
   <string name="attachment_permission_dialog_title">Autorizzazione richiesta</string>
   <string name="attachment_permission_dialog_message">Proton Mail ha bisogno dell\'autorizzazione all\'accesso al tuo spazio di archiviazione per scaricare l\'allegato.</string>
   <string name="attachment_permission_dialog_dismiss_button">OK</string>
   <string name="attachment_permission_dialog_action_button">Impostazioni</string>
-  <string name="attachment_type_description">file %1$s</string>
+  <string name="attachment_type_description">File %1$s</string>
   <!-- Attachment Types -->
   <string name="attachment_type_archive">Archivio</string>
   <string name="attachment_type_image">Immagine</string>

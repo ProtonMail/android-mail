@@ -29,14 +29,14 @@
   <string name="attachment_permission_dialog_action_button">Setări</string>
   <string name="attachment_type_description">Fișier %1$s</string>
   <!-- Attachment Types -->
-  <string name="attachment_type_archive">Arhivă</string>
+  <string name="attachment_type_archive">arhivă</string>
   <string name="attachment_type_image">Image</string>
-  <string name="attachment_type_video">Video</string>
-  <string name="attachment_type_audio">Audio</string>
-  <string name="attachment_type_unknown">Necunoscut</string>
+  <string name="attachment_type_video">video</string>
+  <string name="attachment_type_audio">audio</string>
+  <string name="attachment_type_unknown">necunoscut</string>
   <string name="attachment_type_pdf">PDF</string>
-  <string name="attachment_type_text">Text</string>
-  <string name="attachment_type_document">Document</string>
-  <string name="attachment_type_spreadsheet">Foaie de calcul</string>
-  <string name="attachment_type_presentation">Prezentare</string>
+  <string name="attachment_type_text">text</string>
+  <string name="attachment_type_document">document</string>
+  <string name="attachment_type_spreadsheet">foaie de calcul</string>
+  <string name="attachment_type_presentation">prezentare</string>
 </resources>

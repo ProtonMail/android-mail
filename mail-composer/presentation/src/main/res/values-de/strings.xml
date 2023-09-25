@@ -39,4 +39,7 @@
   <string name="composer_error_loading_draft">Der Inhalt dieses Entwurfs ist zu diesem Zeitpunkt nicht verfügbar. Durch die Bearbeitung wird der bereits vorhandene Inhalt überschrieben.</string>
   <string name="composer_add_attachments_content_description">Anhänge hinzufügen</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Importieren aus…</string>
+  <string name="composer_error_loading_parent_message">Die Informationen der Nachricht konnten nicht geladen werden.</string>
+  <string name="composer_original_message_quote">Ursprüngliche Nachricht</string>
+  <string name="composer_sender_quote">On %s, %s &lt;%s&gt; wrote:</string>
 </resources>

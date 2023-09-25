@@ -36,14 +36,14 @@
   <string name="error_unstar_operation_failed">Rimozione dai preferiti non riuscita. Per favore riprova.</string>
   <string name="error_move_to_trash_failed">Spostamento nel cestino non riuscito. Per favore riprova.</string>
   <string name="message_moved_to_trash">Messaggio spostato nel cestino</string>
-  <string name="message_moved_to_archive">Messaggio spostato nell\'Archivio</string>
+  <string name="message_moved_to_archive">Messaggio spostato in archivio</string>
   <string name="message_moved_to_selected_destination">Il messaggio è stato spostato in %1$s</string>
   <string name="error_move_message_failed">Spostamento del messaggio non riuscito. Per favore riprova.</string>
   <string name="conversation_moved_to_trash">Conversazione spostata nel Cestino</string>
   <string name="conversation_moved_to_selected_destination">Conversazione spostata in %1$s</string>
   <string name="conversation_moved_to_archive">Conversazione spostata nell\'Archivio</string>
   <string name="error_move_conversation_failed">Spostamento della conversazione non riuscito. Riprova.</string>
-  <string name="error_loading_message">Qualcosa è andato storto, si prega di riprovare.</string>
+  <string name="error_loading_message">Qualcosa è andato storto. Per favore riprova.</string>
   <string name="error_offline_loading_message">Sei offline. Una connessione a Internet è necessaria per mostrare i contenuti di questo messaggio.</string>
   <string name="error_get_attachment_failed">Impossibile ottenere l\'allegato.</string>
   <string name="error_attachment_download_in_progress">Il download corrente deve essere completato prima di avviarne uno nuovo.</string>

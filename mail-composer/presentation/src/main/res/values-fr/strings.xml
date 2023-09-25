@@ -39,4 +39,7 @@
   <string name="composer_error_loading_draft">Le contenu de ce brouillon n\'est pas disponible pour l\'instant. Sa modification remplacera tout contenu déjà existant.</string>
   <string name="composer_add_attachments_content_description">Ajouter des pièces jointes</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Importer depuis…</string>
+  <string name="composer_error_loading_parent_message">Les informations du message n\'ont pas pu être chargées.</string>
+  <string name="composer_original_message_quote">Message d\'origine</string>
+  <string name="composer_sender_quote">Le %s, %s &lt;%s&gt; a écrit :</string>
 </resources>

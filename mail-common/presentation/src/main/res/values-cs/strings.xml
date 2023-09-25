@@ -24,9 +24,9 @@
   <string name="retry">Obnovit</string>
   <string name="toolbar_back_content_description">Zpět na předchozí obrazovku</string>
   <string name="x_error_not_logged_in">Nejste přihlášeni</string>
-  <string name="action_reply">Reply</string>
-  <string name="action_reply_all">Reply all</string>
-  <string name="action_forward">Forward</string>
+  <string name="action_reply">Odpovědět</string>
+  <string name="action_reply_all">Odpovědět všem</string>
+  <string name="action_forward">Přeposlat</string>
   <string name="action_reply_content_description">Odpovědět</string>
   <string name="action_reply_all_content_description">Odpovědět všem</string>
   <string name="action_forward_content_description">Přeposlat</string>
@@ -50,7 +50,7 @@
   <string name="action_save_pdf_content_description">Uložit jako PDF</string>
   <string name="action_sender_emails_content_description">Nastavit akci pro budoucí e-maily od tohoto odesílatele</string>
   <string name="action_save_attachments_content_description">Uložit přílohy</string>
-  <string name="action_more_content_description">More</string>
+  <string name="action_more_content_description">Více</string>
   <string name="common_error_loading_actions">Načtení akcí selhalo</string>
   <string name="yesterday">Včera</string>
   <!-- notification channels -->

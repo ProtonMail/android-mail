@@ -39,4 +39,7 @@
   <string name="composer_error_loading_draft">Το περιεχόμενο αυτού του πρόχειρου δεν είναι διαθέσιμο προς το παρόν. Η επεξεργασία θα αντικαταστήσει τυχόν προϋπάρχον περιεχόμενο.</string>
   <string name="composer_add_attachments_content_description">Προσθήκη συνημμένων</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Εισαγωγή από…</string>
+  <string name="composer_error_loading_parent_message">Δεν ήταν δυνατή η φόρτωση των πληροφοριών του μηνύματος</string>
+  <string name="composer_original_message_quote">Αρχικό Μήνυμα</string>
+  <string name="composer_sender_quote">Την %s, %s ο/η &lt;%s&gt; έγραψε:</string>
 </resources>

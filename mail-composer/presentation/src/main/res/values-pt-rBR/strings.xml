@@ -39,4 +39,7 @@
   <string name="composer_error_loading_draft">O conteúdo deste rascunho não está disponível no momento. A edição substituirá qualquer conteúdo pré-existente.</string>
   <string name="composer_add_attachments_content_description">Adicionar anexos</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Importar de…</string>
+  <string name="composer_error_loading_parent_message">Não foi possível carregar a informação da mensagem</string>
+  <string name="composer_original_message_quote">Mensagem original</string>
+  <string name="composer_sender_quote">Em %s, %s &lt;%s&gt; escreveu:</string>
 </resources>

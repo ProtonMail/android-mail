@@ -24,9 +24,9 @@
   <string name="retry">Coba lagi</string>
   <string name="toolbar_back_content_description">Kembali ke layar sebelumnya</string>
   <string name="x_error_not_logged_in">Tidak masuk</string>
-  <string name="action_reply">Reply</string>
-  <string name="action_reply_all">Reply all</string>
-  <string name="action_forward">Forward</string>
+  <string name="action_reply">Balas</string>
+  <string name="action_reply_all">Balas semua</string>
+  <string name="action_forward">Teruskan</string>
   <string name="action_reply_content_description">Balas</string>
   <string name="action_reply_all_content_description">Balas semua</string>
   <string name="action_forward_content_description">Teruskan</string>

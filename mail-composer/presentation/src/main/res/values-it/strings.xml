@@ -39,4 +39,7 @@
   <string name="composer_error_loading_draft">Il contenuto di questa bozza non è al momento disponibile. La modifica sovrascriverà qualsiasi contenuto preesistente.</string>
   <string name="composer_add_attachments_content_description">Aggiungi allegati</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Importa da…</string>
+  <string name="composer_error_loading_parent_message">Impossibile caricare le informazioni del messaggio</string>
+  <string name="composer_original_message_quote">Messaggio originale</string>
+  <string name="composer_sender_quote">Il %s, %s &lt;%s&gt; ha scritto:</string>
 </resources>

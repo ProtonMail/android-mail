@@ -25,7 +25,7 @@
   <string name="feature_coming_soon">Funktion demnächst verfügbar…</string>
   <string name="mailbox_draft_saved">Entwurf gespeichert</string>
   <string name="mailbox_message_sending">Nachricht wird gesendet…</string>
-  <string name="mailbox_message_sending_offline">Offline, die Nachricht ist in der Warteschlange für den Versand</string>
+  <string name="mailbox_message_sending_offline">Offline, die Nachricht ist in der Warteschlange für den Versand.</string>
   <string name="mailbox_message_sending_success">Nachricht gesendet</string>
   <string name="mailbox_message_sending_error">Fehler beim Senden der Nachricht</string>
   <string name="notification_switched_account">Zu Konto „%s“ gewechselt</string>

@@ -31,7 +31,7 @@
   <string name="attachment_type_image">Image</string>
   <string name="attachment_type_video">影片</string>
   <string name="attachment_type_audio">音訊</string>
-  <string name="attachment_type_unknown">不明</string>
+  <string name="attachment_type_unknown">未知</string>
   <string name="attachment_type_pdf">PDF</string>
   <string name="attachment_type_text">文字</string>
   <string name="attachment_type_document">文件</string>

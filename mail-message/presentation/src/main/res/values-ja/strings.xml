@@ -24,17 +24,17 @@
   <string name="attachment_permission_dialog_title">Permission required</string>
   <string name="attachment_permission_dialog_message">Proton Mail needs permission to access your storage to download the attachment.</string>
   <string name="attachment_permission_dialog_dismiss_button">OK</string>
-  <string name="attachment_permission_dialog_action_button">Settings</string>
+  <string name="attachment_permission_dialog_action_button">設定</string>
   <string name="attachment_type_description">%1$s file</string>
   <!-- Attachment Types -->
-  <string name="attachment_type_archive">Archive</string>
+  <string name="attachment_type_archive">アーカイブ</string>
   <string name="attachment_type_image">Image</string>
-  <string name="attachment_type_video">Video</string>
-  <string name="attachment_type_audio">Audio</string>
-  <string name="attachment_type_unknown">Unknown</string>
+  <string name="attachment_type_video">動画</string>
+  <string name="attachment_type_audio">音声</string>
+  <string name="attachment_type_unknown">不明</string>
   <string name="attachment_type_pdf">PDF</string>
-  <string name="attachment_type_text">Text</string>
-  <string name="attachment_type_document">Document</string>
-  <string name="attachment_type_spreadsheet">Spreadsheet</string>
-  <string name="attachment_type_presentation">Presentation</string>
+  <string name="attachment_type_text">テキスト</string>
+  <string name="attachment_type_document">ドキュメント</string>
+  <string name="attachment_type_spreadsheet">スプレッドシート</string>
+  <string name="attachment_type_presentation">プレゼンテーション</string>
 </resources>

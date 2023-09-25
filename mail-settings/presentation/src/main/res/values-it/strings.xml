@@ -73,7 +73,7 @@
   <string name="mail_settings_swipe_action_spam_title">Spam</string>
   <string name="mail_settings_swipe_action_star_title">Preferito</string>
   <string name="mail_settings_swipe_action_trash_title">Cestino</string>
-  <string name="mail_settings_swipe_action_archive_description">Sposta nell\'archivio</string>
+  <string name="mail_settings_swipe_action_archive_description">Sposta in archivio</string>
   <string name="mail_settings_swipe_action_read_description">Segna come non letto/letto</string>
   <string name="mail_settings_swipe_action_spam_description">Sposta in spam</string>
   <string name="mail_settings_swipe_action_star_description">Aggiungi/rimuovi preferiti</string>

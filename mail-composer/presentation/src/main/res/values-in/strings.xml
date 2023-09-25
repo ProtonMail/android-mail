@@ -39,4 +39,7 @@
   <string name="composer_error_loading_draft">Konten draf ini sedang tidak tersedia. Dengan menyunting pesan, isi draf yang telah ada sebelumnya akan tertimpa.</string>
   <string name="composer_add_attachments_content_description">Tambah lampiran</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Impor dari…</string>
+  <string name="composer_error_loading_parent_message">Informasi pesan tidak dapat dimuat</string>
+  <string name="composer_original_message_quote">Pesan Asli</string>
+  <string name="composer_sender_quote">Pada %s, %s &lt;%s&gt; menulis:</string>
 </resources>

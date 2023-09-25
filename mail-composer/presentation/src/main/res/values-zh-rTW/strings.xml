@@ -39,4 +39,7 @@
   <string name="composer_error_loading_draft">目前無法擷取該草稿的內容。編輯將覆寫任何預先存在的內容。</string>
   <string name="composer_add_attachments_content_description">新增附件</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">匯入自……</string>
+  <string name="composer_error_loading_parent_message">Could not load the message\'s information</string>
+  <string name="composer_original_message_quote">Original Message</string>
+  <string name="composer_sender_quote">On %s, %s &lt;%s&gt; wrote:</string>
 </resources>
