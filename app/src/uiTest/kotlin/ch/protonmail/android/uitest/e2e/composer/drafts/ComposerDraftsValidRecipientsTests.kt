@@ -26,7 +26,6 @@ import ch.protonmail.android.uitest.MockedNetworkTest
 import ch.protonmail.android.uitest.helpers.core.TestId
 import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
-import ch.protonmail.android.uitest.models.mailbox.ParticipantEntry
 import ch.protonmail.android.uitest.robot.composer.composerRobot
 import ch.protonmail.android.uitest.robot.composer.section.topAppBarSection
 import dagger.hilt.android.testing.BindValue
@@ -46,9 +45,9 @@ internal class ComposerDraftsValidRecipientsTests : MockedNetworkTest(), Compose
     @BindValue
     val serverProofValidation: ValidateServerProof = mockk(relaxUnitFun = true)
 
-    private val validToRecipient = ParticipantEntry.WithParticipant("a@b.c")
-    private val validCcRecipient = ParticipantEntry.WithParticipant("d@e.f")
-    private val validBccRecipient = ParticipantEntry.WithParticipant("g@h.i")
+    private val validToRecipient = "a@b.c"
+    private val validCcRecipient = "d@e.f"
+    private val validBccRecipient = "g@h.i"
 
     @Before
     fun navigateToComposer() {

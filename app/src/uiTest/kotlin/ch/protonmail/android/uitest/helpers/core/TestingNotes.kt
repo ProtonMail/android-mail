@@ -19,5 +19,5 @@
 package ch.protonmail.android.uitest.helpers.core
 
 @Retention(AnnotationRetention.SOURCE)
-@Target(AnnotationTarget.FUNCTION)
-annotation class TestingNotes(@Suppress("unused") val note: String)
+@Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
+internal annotation class TestingNotes(@Suppress("unused") val note: String)

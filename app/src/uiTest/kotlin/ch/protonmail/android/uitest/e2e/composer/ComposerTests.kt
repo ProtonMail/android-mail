@@ -28,7 +28,6 @@ import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.serveOnce
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withStatusCode
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
-import ch.protonmail.android.uitest.models.mailbox.ParticipantEntry
 import ch.protonmail.android.uitest.robot.composer.ComposerRobot
 import ch.protonmail.android.uitest.robot.composer.composerRobot
 import ch.protonmail.android.uitest.robot.composer.section.messageBodySection
@@ -62,7 +61,7 @@ internal interface ComposerTests {
             addMockRequests(
                 post("/mail/v4/messages")
                     respondWith "/mail/v4/messages/post/post_messages_base_create_placeholder.json"
-                    withStatusCode 200 matchWildcards true serveOnce true,
+                    withStatusCode 200 serveOnce true,
                 put("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/put/put_messages_base_placeholder.json"
                     withStatusCode 200 matchWildcards true,
@@ -96,7 +95,7 @@ internal interface ComposerTests {
                     withStatusCode 200 serveOnce true,
                 get("/core/v4/keys?Email=happyllama%40proton.black")
                     respondWith "/core/v4/keys/keys_happyllama.json"
-                    withStatusCode 200 serveOnce true,
+                    withStatusCode 200 serveOnce true
             )
         }
 
@@ -104,9 +103,25 @@ internal interface ComposerTests {
     }
 
     fun ComposerRobot.prepareDraft(
-        toRecipients: List<ParticipantEntry> = emptyList(),
-        ccRecipients: List<ParticipantEntry> = emptyList(),
-        bccRecipients: List<ParticipantEntry> = emptyList(),
+        toRecipient: String? = null,
+        ccRecipient: String? = null,
+        bccRecipient: String? = null,
+        subject: String? = null,
+        body: String? = null
+    ) {
+        prepareDraft(
+            toRecipient?.let { listOf(it) } ?: emptyList(),
+            ccRecipient?.let { listOf(it) } ?: emptyList(),
+            bccRecipient?.let { listOf(it) } ?: emptyList(),
+            subject,
+            body
+        )
+    }
+
+    fun ComposerRobot.prepareDraft(
+        toRecipients: List<String> = emptyList(),
+        ccRecipients: List<String> = emptyList(),
+        bccRecipients: List<String> = emptyList(),
         subject: String? = null,
         body: String? = null
     ) {
@@ -116,7 +131,7 @@ internal interface ComposerTests {
 
         composerRobot {
             toRecipientSection {
-                toRecipients.forEach { typeRecipient(it.value, autoConfirm = true) }
+                toRecipients.forEach { typeRecipient(it, autoConfirm = true) }
             }
 
             if (ccRecipients.isNotEmpty() || bccRecipients.isNotEmpty()) {
@@ -124,11 +139,11 @@ internal interface ComposerTests {
             }
 
             ccRecipientSection {
-                ccRecipients.forEach { typeRecipient(it.value, autoConfirm = true) }
+                ccRecipients.forEach { typeRecipient(it, autoConfirm = true) }
             }
 
             bccRecipientSection {
-                bccRecipients.forEach { typeRecipient(it.value, autoConfirm = true) }
+                bccRecipients.forEach { typeRecipient(it, autoConfirm = true) }
             }
 
             subject?.let {

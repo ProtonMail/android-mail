@@ -108,7 +108,7 @@ internal class ComposerSendButtonTests : MockedNetworkTest(), ComposerTests {
 
     @Test
     @TestId("216685")
-    @Ignore("Enable again when MAILANDR-947 is fixed")
+    @Ignore("To be enabled again when MAILANDR-947 is addressed.")
     fun checkComposerSendButtonDisabledUponPressingBackspaceInRecipientFields() {
         navigator { navigateTo(Destination.Composer) }
 
@@ -120,7 +120,7 @@ internal class ComposerSendButtonTests : MockedNetworkTest(), ComposerTests {
 
     @Test
     @TestId("216686")
-    @Ignore("Enable again when MAILANDR-947 is fixed")
+    @Ignore("To be enabled again when MAILANDR-947 is addressed.")
     fun checkComposerSendButtonDisabledUponAddingAndRemovingRecipients() {
         navigator { navigateTo(Destination.Composer) }
 
@@ -135,7 +135,7 @@ internal class ComposerSendButtonTests : MockedNetworkTest(), ComposerTests {
 
     @Test
     @TestId("216687")
-    @Ignore("Enable again when MAILANDR-947 is fixed")
+    @Ignore("To be enabled again when MAILANDR-947 is addressed.")
     fun checkComposerSendButtonDisabledUponAddingAndDeletingInvalidRecipient() {
         navigator { navigateTo(Destination.Composer) }
 

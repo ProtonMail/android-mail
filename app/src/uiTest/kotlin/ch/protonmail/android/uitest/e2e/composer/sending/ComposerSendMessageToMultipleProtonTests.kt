@@ -25,10 +25,10 @@ import ch.protonmail.android.test.annotations.suite.SmokeTest
 import ch.protonmail.android.uitest.MockedNetworkTest
 import ch.protonmail.android.uitest.e2e.composer.ComposerTests
 import ch.protonmail.android.uitest.helpers.core.TestId
+import ch.protonmail.android.uitest.helpers.core.TestingNotes
 import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.login.LoginTestUserTypes
-import ch.protonmail.android.uitest.models.mailbox.ParticipantEntry
 import ch.protonmail.android.uitest.models.snackbar.SnackbarTextEntry
 import ch.protonmail.android.uitest.robot.common.section.snackbarSection
 import ch.protonmail.android.uitest.robot.common.section.verify
@@ -46,6 +46,7 @@ import org.junit.Test
 
 @RegressionTest
 @HiltAndroidTest
+@TestingNotes("Scope to be expanded once MAILANDR-988 is addressed.")
 @UninstallModules(ServerProofModule::class)
 internal class ComposerSendMessageToMultipleProtonTests : MockedNetworkTest(
     loginType = LoginTestUserTypes.Paid.FancyCapybara
@@ -55,10 +56,10 @@ internal class ComposerSendMessageToMultipleProtonTests : MockedNetworkTest(
     @BindValue
     val serverProofValidation: ValidateServerProof = mockk(relaxUnitFun = true)
 
-    private val protonRecipientTo = listOf(ParticipantEntry.WithParticipant("royalcat@proton.black"))
-    private val protonRecipientCc = listOf(ParticipantEntry.WithParticipant("royaldog@proton.black"))
-    private val protonRecipientBcc = listOf(ParticipantEntry.WithParticipant("specialfox@proton.black"))
-    private val mergedRecipients = protonRecipientTo + protonRecipientCc + protonRecipientBcc
+    private val protonRecipientTo = "royalcat@proton.black"
+    private val protonRecipientCc = "royaldog@proton.black"
+    private val protonRecipientBcc = "specialfox@proton.black"
+    private val mergedRecipients = listOf(protonRecipientTo, protonRecipientCc, protonRecipientBcc)
     private val subject = "A subject"
     private val baseMessageBody = "A message body"
 
@@ -134,7 +135,7 @@ internal class ComposerSendMessageToMultipleProtonTests : MockedNetworkTest(
     @TestId("216703")
     fun testMessageSendingToAndCcProtonUsers() {
         composerRobot {
-            prepareDraft(protonRecipientTo, ccRecipients = protonRecipientCc, subject = subject, body = baseMessageBody)
+            prepareDraft(protonRecipientTo, ccRecipient = protonRecipientCc, subject = subject, body = baseMessageBody)
             topAppBarSection { tapSendButton() }
         }
     }
@@ -145,7 +146,7 @@ internal class ComposerSendMessageToMultipleProtonTests : MockedNetworkTest(
         composerRobot {
             prepareDraft(
                 protonRecipientTo,
-                bccRecipients = protonRecipientBcc,
+                bccRecipient = protonRecipientBcc,
                 subject = subject,
                 body = baseMessageBody
             )
@@ -174,9 +175,9 @@ internal class ComposerSendMessageToMultipleProtonTests : MockedNetworkTest(
     @Test
     @TestId("216714")
     fun testMessageSendingToAndCcAndBccMultipleProtonUsers() {
-        val toRecipients = protonRecipientTo + ParticipantEntry.WithParticipant("sleepykoala@proton.black")
-        val ccRecipients = protonRecipientCc + ParticipantEntry.WithParticipant("happyllama@proton.black")
-        val bccRecipients = protonRecipientBcc + ParticipantEntry.WithParticipant("strangewalrus@proton.black")
+        val toRecipients = listOf(protonRecipientTo, "sleepykoala@proton.black")
+        val ccRecipients = listOf(protonRecipientCc, "happyllama@proton.black")
+        val bccRecipients = listOf(protonRecipientBcc, "strangewalrus@proton.black")
 
         composerRobot {
             prepareDraft(toRecipients, ccRecipients, bccRecipients, subject, baseMessageBody)

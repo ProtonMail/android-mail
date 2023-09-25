@@ -25,10 +25,10 @@ import ch.protonmail.android.test.annotations.suite.SmokeTest
 import ch.protonmail.android.uitest.MockedNetworkTest
 import ch.protonmail.android.uitest.e2e.composer.ComposerTests
 import ch.protonmail.android.uitest.helpers.core.TestId
+import ch.protonmail.android.uitest.helpers.core.TestingNotes
 import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.login.LoginTestUserTypes
-import ch.protonmail.android.uitest.models.mailbox.ParticipantEntry
 import ch.protonmail.android.uitest.models.snackbar.SnackbarTextEntry
 import ch.protonmail.android.uitest.robot.common.section.snackbarSection
 import ch.protonmail.android.uitest.robot.common.section.verify
@@ -47,6 +47,7 @@ import org.junit.Test
 
 @RegressionTest
 @HiltAndroidTest
+@TestingNotes("Scope to be expanded once MAILANDR-988 is addressed.")
 @UninstallModules(ServerProofModule::class)
 internal class ComposerSendMessageToProtonTests : MockedNetworkTest(
     loginType = LoginTestUserTypes.Paid.FancyCapybara
@@ -56,7 +57,7 @@ internal class ComposerSendMessageToProtonTests : MockedNetworkTest(
     @BindValue
     val serverProofValidation: ValidateServerProof = mockk(relaxUnitFun = true)
 
-    private val protonRecipient = listOf(ParticipantEntry.WithParticipant("royalcat@proton.black"))
+    private val protonRecipient = "royalcat@proton.black"
     private val subject = "A subject"
     private val baseMessageBody = "A message body"
 
@@ -87,7 +88,7 @@ internal class ComposerSendMessageToProtonTests : MockedNetworkTest(
     @TestId("216691", "219591")
     fun testMessageSendingToProtonUser() {
         composerRobot {
-            prepareDraft(toRecipients = protonRecipient, subject = subject, body = baseMessageBody)
+            prepareDraft(protonRecipient, subject = subject, body = baseMessageBody)
             topAppBarSection { tapSendButton() }
         }
     }
@@ -96,7 +97,7 @@ internal class ComposerSendMessageToProtonTests : MockedNetworkTest(
     @TestId("216691/2", "216722")
     fun testMessageSendingToProtonUserWithNoBody() {
         composerRobot {
-            prepareDraft(toRecipients = protonRecipient, subject = subject)
+            prepareDraft(protonRecipient, subject = subject)
             topAppBarSection { tapSendButton() }
         }
     }
@@ -105,7 +106,7 @@ internal class ComposerSendMessageToProtonTests : MockedNetworkTest(
     @TestId("216691/3", "219632")
     fun testMessageSendingToProtonUserWithNoBodyOrSubject() {
         composerRobot {
-            prepareDraft(toRecipients = protonRecipient, subject = subject, body = baseMessageBody)
+            prepareDraft(protonRecipient, subject = subject, body = baseMessageBody)
             topAppBarSection { tapSendButton() }
         }
     }
@@ -114,7 +115,7 @@ internal class ComposerSendMessageToProtonTests : MockedNetworkTest(
     @TestId("216694")
     fun testMessageSendingCcProtonUser() {
         composerRobot {
-            prepareDraft(ccRecipients = protonRecipient, subject = subject, body = baseMessageBody)
+            prepareDraft(ccRecipient = protonRecipient, subject = subject, body = baseMessageBody)
             topAppBarSection { tapSendButton() }
         }
     }
@@ -123,7 +124,7 @@ internal class ComposerSendMessageToProtonTests : MockedNetworkTest(
     @TestId("216695")
     fun testMessageSendingBccProtonUser() {
         composerRobot {
-            prepareDraft(bccRecipients = protonRecipient, subject = subject, body = baseMessageBody)
+            prepareDraft(bccRecipient = protonRecipient, subject = subject, body = baseMessageBody)
             topAppBarSection { tapSendButton() }
         }
     }
@@ -134,7 +135,7 @@ internal class ComposerSendMessageToProtonTests : MockedNetworkTest(
         val body = StringUtils.generateRandomString(length = 15000)
 
         composerRobot {
-            prepareDraft(bccRecipients = protonRecipient, subject = subject, body = body)
+            prepareDraft(bccRecipient = protonRecipient, subject = subject, body = body)
             topAppBarSection { tapSendButton() }
         }
     }
@@ -145,7 +146,7 @@ internal class ComposerSendMessageToProtonTests : MockedNetworkTest(
         val emojiSubject = "😖😫😩🥺😢😭😮‍💨😤😠😡"
 
         composerRobot {
-            prepareDraft(bccRecipients = protonRecipient, subject = emojiSubject, body = baseMessageBody)
+            prepareDraft(bccRecipient = protonRecipient, subject = emojiSubject, body = baseMessageBody)
             topAppBarSection { tapSendButton() }
         }
     }

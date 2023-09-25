@@ -47,15 +47,29 @@ internal interface ComposerDraftsTests : ComposerTests {
         }
     }
 
+    fun verifyDraftCreation(vararg expectedRecipient: ParticipantEntry, subject: String = "", body: String = "") {
+        verifyDraftCreation(expectedRecipient.toList(), subject, body)
+    }
+
+    fun verifyDraftCreation(expectedRecipient: String, subject: String = "", body: String = "") {
+        verifyDraftCreation(
+            expectedRecipients = listOf(
+                ParticipantEntry.WithParticipant(expectedRecipient)
+            ),
+            subject,
+            body
+        )
+    }
+
     fun verifyDraftCreation(
-        vararg expectedRecipients: ParticipantEntry,
+        expectedRecipients: List<ParticipantEntry>,
         subject: String = "",
         body: String = ""
     ) {
         val expectedDraftItem = MailboxListItemEntry(
             index = 0,
             avatarInitial = AvatarInitial.Draft,
-            participants = expectedRecipients.toList(),
+            participants = expectedRecipients,
             date = "Jul 1, 2023",
             subject = subject
         )
