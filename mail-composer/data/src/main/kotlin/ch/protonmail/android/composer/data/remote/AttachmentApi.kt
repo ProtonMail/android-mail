@@ -22,9 +22,12 @@ import ch.protonmail.android.composer.data.remote.response.UploadAttachmentRespo
 import me.proton.core.network.data.protonApi.BaseRetrofitApi
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
+import retrofit2.http.DELETE
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
+import retrofit2.http.Path
 
 interface AttachmentApi : BaseRetrofitApi {
 
@@ -39,5 +42,8 @@ interface AttachmentApi : BaseRetrofitApi {
         @Part dataPacket: MultipartBody.Part,
         @Part signature: MultipartBody.Part
     ): UploadAttachmentResponse
+
+    @DELETE("mail/v4/attachments/{AttachmentID}")
+    suspend fun deleteAttachment(@Path("AttachmentID") attachmentId: String): ResponseBody
 
 }
