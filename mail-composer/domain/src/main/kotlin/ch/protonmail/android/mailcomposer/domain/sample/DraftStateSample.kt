@@ -99,6 +99,16 @@ object DraftStateSample {
         state = DraftSyncState.Sent
     )
 
+    /**
+     * Represents a local draft that's forwarding a parent message
+     */
+    val LocalDraftWithForwardAction = build(
+        messageId = MessageIdSample.LocalDraft,
+        apiMessageId = MessageIdSample.MessageWithAttachments,
+        state = DraftSyncState.Local,
+        action = DraftAction.Forward(MessageIdSample.Invoice)
+    )
+
     fun build(
         userId: UserId = UserIdSample.Primary,
         messageId: MessageId = MessageIdSample.EmptyDraft,

@@ -30,8 +30,11 @@ import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailcomposer.domain.sample.DraftStateSample
 import ch.protonmail.android.mailcomposer.domain.usecase.IsDraftKnownToApi
 import ch.protonmail.android.mailcomposer.domain.usecase.FindLocalDraft
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
+import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
+import ch.protonmail.android.mailmessage.domain.repository.AttachmentRepository
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
@@ -60,6 +63,7 @@ class UploadDraftTest {
     private val draftStateRepository = mockk<DraftStateRepository>()
     private val isDraftKnownToApi = mockk<IsDraftKnownToApi>()
     private val fakeTransactor = FakeTransactor()
+    private val attachmentRepository = mockk<AttachmentRepository>()
 
     private val draftRepository = UploadDraft(
         fakeTransactor,
@@ -67,7 +71,8 @@ class UploadDraftTest {
         findLocalDraft,
         draftStateRepository,
         draftRemoteDataSource,
-        isDraftKnownToApi
+        isDraftKnownToApi,
+        attachmentRepository
     )
 
     @Test
@@ -235,6 +240,58 @@ class UploadDraftTest {
         // Then
         assertEquals(Unit.right(), actual)
         coVerify(exactly = 0) { draftRemoteDataSource.create(any(), any(), any()) }
+    }
+
+    @Test
+    fun `update local attachment id and key packets when create call succeeds`() = runTest {
+        // Given
+        val messageId = MessageIdSample.LocalDraft
+        val expectedDraft = MessageWithBodySample.MessageWithInvoiceAttachment
+        val expectedLocalAttachment = expectedDraft.messageBody.attachments.first()
+        val expectedUpdatedAttachment = expectedLocalAttachment.copy(
+            attachmentId = AttachmentId("Api-defined-id"),
+            keyPackets = "api-defined-key-packets"
+        )
+        val expectedResponse = expectedDraft.copy(
+            messageBody = expectedDraft.messageBody.copy(attachments = listOf(expectedUpdatedAttachment))
+        )
+        val apiAssignedMessageId = expectedResponse.message.messageId
+        val expectedDraftState = DraftStateSample.LocalDraftWithForwardAction
+        expectGetDraftStateSucceeds(userId, messageId, expectedDraftState)
+        expectGetLocalMessageSucceeds(userId, messageId, expectedDraft)
+        expectRemoteDataSourceCreateSuccess(userId, expectedDraft, expectedDraftState.action, expectedResponse)
+        expectStoreSyncedStateSuccess(userId, messageId, messageId)
+        expectIsDraftKnownToApi(expectedDraftState, false)
+        expectStoreSyncedStateSuccess(userId, messageId, apiAssignedMessageId)
+        expectMessageUpdateSuccess(userId, messageId, apiAssignedMessageId)
+        expectAttachmentUpdateSuccess(
+            userId, apiAssignedMessageId, expectedLocalAttachment.attachmentId, expectedUpdatedAttachment
+        )
+
+        // When
+        val actual = draftRepository(userId, messageId)
+
+        // Then
+        assertEquals(Unit.right(), actual)
+        coVerify {
+            attachmentRepository.updateMessageAttachment(
+                userId,
+                apiAssignedMessageId,
+                expectedLocalAttachment.attachmentId,
+                expectedUpdatedAttachment
+            )
+        }
+    }
+
+    private fun expectAttachmentUpdateSuccess(
+        userId: UserId,
+        messageId: MessageId,
+        localAttachmentId: AttachmentId,
+        updatedAttachment: MessageAttachment
+    ) {
+        coEvery {
+            attachmentRepository.updateMessageAttachment(userId, messageId, localAttachmentId, updatedAttachment)
+        } returns Unit.right()
     }
 
     private fun expectIsDraftKnownToApi(draftSTate: DraftState, isKnown: Boolean) {

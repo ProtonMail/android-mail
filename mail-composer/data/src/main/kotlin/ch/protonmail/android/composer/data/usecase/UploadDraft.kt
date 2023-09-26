@@ -29,6 +29,7 @@ import ch.protonmail.android.mailcomposer.domain.usecase.FindLocalDraft
 import ch.protonmail.android.mailcomposer.domain.usecase.IsDraftKnownToApi
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
+import ch.protonmail.android.mailmessage.domain.repository.AttachmentRepository
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import kotlinx.coroutines.flow.first
 import me.proton.core.domain.entity.UserId
@@ -41,7 +42,8 @@ internal class UploadDraft @Inject constructor(
     private val findLocalDraft: FindLocalDraft,
     private val draftStateRepository: DraftStateRepository,
     private val draftRemoteDataSource: DraftRemoteDataSource,
-    private val isDraftKnownToApi: IsDraftKnownToApi
+    private val isDraftKnownToApi: IsDraftKnownToApi,
+    private val attachmentRepository: AttachmentRepository
 ) {
 
     suspend operator fun invoke(userId: UserId, messageId: MessageId): Either<DataError, Unit> = either {
@@ -77,6 +79,7 @@ internal class UploadDraft @Inject constructor(
         transactor.performTransaction {
             messageRepository.updateDraftMessageId(userId, messageId, it.message.messageId)
             draftStateRepository.updateApiMessageIdAndSetSyncedState(userId, messageId, it.message.messageId)
+            updateAttachmentsData(message, it)
         }
     }.onLeft {
         if (it.shouldLogToSentry()) {
@@ -95,6 +98,27 @@ internal class UploadDraft @Inject constructor(
         )
     }.onLeft {
         Timber.w("Sync draft failure $messageId: Update API call error $it")
+    }
+
+    /*
+     * Matches local attachments with remote ones by name and size and updates their ID and keyPackets.
+     * This is needed to refresh the data of "parent attachments", which to support offline mode are copied for
+     * this message and only receive their "real" id when contacting API to create the draft.
+     */
+    private suspend fun updateAttachmentsData(localMessage: MessageWithBody, apiMessage: MessageWithBody) {
+        val localAttachments = localMessage.messageBody.attachments
+        val remoteAttachments = apiMessage.messageBody.attachments
+
+        remoteAttachments.forEach { attachment ->
+            localAttachments.find { it.name == attachment.name && it.size == attachment.size }?.let { localAttachment ->
+                attachmentRepository.updateMessageAttachment(
+                    apiMessage.message.userId,
+                    apiMessage.message.messageId,
+                    localAttachment.attachmentId,
+                    attachment
+                )
+            }
+        }
     }
 
     private fun DataError.Remote.shouldLogToSentry() = this != DataError.Remote.CreateDraftRequestNotPerformed
