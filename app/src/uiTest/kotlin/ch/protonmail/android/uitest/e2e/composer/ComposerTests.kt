@@ -26,6 +26,7 @@ import ch.protonmail.android.networkmocks.mockwebserver.requests.post
 import ch.protonmail.android.networkmocks.mockwebserver.requests.put
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.serveOnce
+import ch.protonmail.android.networkmocks.mockwebserver.requests.withNetworkDelay
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withStatusCode
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.robot.composer.ComposerRobot
@@ -72,7 +73,7 @@ internal interface ComposerTests {
             addMockRequests(
                 post("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/post/post_messages_base_send_placeholder.json"
-                    withStatusCode 200 matchWildcards true serveOnce true
+                    withStatusCode 200 matchWildcards true serveOnce true withNetworkDelay 500L
             )
         }
 
