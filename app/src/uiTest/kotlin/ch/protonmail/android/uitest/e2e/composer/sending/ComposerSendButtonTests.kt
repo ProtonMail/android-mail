@@ -39,7 +39,6 @@ import dagger.hilt.android.testing.UninstallModules
 import io.mockk.mockk
 import me.proton.core.auth.domain.usecase.ValidateServerProof
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 
 @RegressionTest
@@ -108,7 +107,6 @@ internal class ComposerSendButtonTests : MockedNetworkTest(), ComposerTests {
 
     @Test
     @TestId("216685")
-    @Ignore("To be enabled again when MAILANDR-947 is addressed.")
     fun checkComposerSendButtonDisabledUponPressingBackspaceInRecipientFields() {
         navigator { navigateTo(Destination.Composer) }
 
@@ -120,7 +118,6 @@ internal class ComposerSendButtonTests : MockedNetworkTest(), ComposerTests {
 
     @Test
     @TestId("216686")
-    @Ignore("To be enabled again when MAILANDR-947 is addressed.")
     fun checkComposerSendButtonDisabledUponAddingAndRemovingRecipients() {
         navigator { navigateTo(Destination.Composer) }
 
@@ -135,7 +132,6 @@ internal class ComposerSendButtonTests : MockedNetworkTest(), ComposerTests {
 
     @Test
     @TestId("216687")
-    @Ignore("To be enabled again when MAILANDR-947 is addressed.")
     fun checkComposerSendButtonDisabledUponAddingAndDeletingInvalidRecipient() {
         navigator { navigateTo(Destination.Composer) }
 
