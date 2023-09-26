@@ -92,14 +92,26 @@ class ComposerReducerTest(
             null
         )
 
+        private val draftFieldsWithoutRecipients = DraftFields(
+            SenderEmail("author@proton.me"),
+            Subject("Here is the matter"),
+            DraftBody("Decrypted body of this draft"),
+            RecipientsTo(emptyList()),
+            RecipientsCc(emptyList()),
+            RecipientsBcc(emptyList()),
+            null
+        )
+
         private val draftUiModel = DraftUiModel(draftFields, null)
+
+        private val draftUiModelWithoutRecipients = DraftUiModel(draftFieldsWithoutRecipients, null)
 
         private val EmptyToSubmittableToField = with("a@b.c") {
             TestTransition(
                 name = "Should generate submittable state when adding a new valid email address in the to field",
                 currentState = ComposerDraftState.initial(messageId),
                 operation = RecipientsToChanged(listOf(Valid(this))),
-                expectedState = aSubmittableState(messageId, listOf(Valid(this)))
+                expectedState = aSubmittableState(messageId, to = listOf(Valid(this)))
             )
         }
 
@@ -462,20 +474,40 @@ class ComposerReducerTest(
             )
         )
 
-        private val LoadingToFieldsWhenReceivedDraftData = TestTransition(
-            name = "Should stop loading and set the received draft data as composer fields when draft data received",
+        @Suppress("VariableMaxLength")
+        private val LoadingToFieldsWhenReceivedDraftDataEmptyRecipients = TestTransition(
+            name = "Should stop loading and set the received draft data as composer fields when draft data received, " +
+                "empty recipients",
             currentState = ComposerDraftState.initial(messageId).copy(isLoading = true),
-            operation = ComposerEvent.PrefillDraftDataReceived(draftUiModel),
+            operation = ComposerEvent.PrefillDraftDataReceived(draftUiModelWithoutRecipients),
             expectedState = aNotSubmittableState(
                 draftId = messageId,
-                sender = SenderUiModel(draftFields.sender.value),
+                sender = SenderUiModel(draftFieldsWithoutRecipients.sender.value),
+                to = draftFieldsWithoutRecipients.recipientsTo.value.map { Valid(it.address) },
+                cc = draftFieldsWithoutRecipients.recipientsCc.value.map { Valid(it.address) },
+                bcc = draftFieldsWithoutRecipients.recipientsBcc.value.map { Valid(it.address) },
+                subject = draftFieldsWithoutRecipients.subject,
+                draftBody = draftFieldsWithoutRecipients.body.value,
+                error = Effect.empty(),
+                isLoading = false
+            )
+        )
+
+        @Suppress("VariableMaxLength")
+        private val LoadingToFieldsWhenReceivedDraftDataValidRecipients = TestTransition(
+            name = "Should stop loading and set the received draft data as composer fields when draft data received, " +
+                "valid recipients",
+            currentState = ComposerDraftState.initial(messageId).copy(isLoading = true),
+            operation = ComposerEvent.PrefillDraftDataReceived(draftUiModel),
+            expectedState = aSubmittableState(
+                draftId = messageId,
+                sender = SenderUiModel(draftFieldsWithoutRecipients.sender.value),
                 to = draftFields.recipientsTo.value.map { Valid(it.address) },
                 cc = draftFields.recipientsCc.value.map { Valid(it.address) },
                 bcc = draftFields.recipientsBcc.value.map { Valid(it.address) },
-                subject = draftFields.subject,
-                draftBody = draftFields.body.value,
-                error = Effect.empty(),
-                isLoading = false
+                subject = draftFieldsWithoutRecipients.subject,
+                draftBody = draftFieldsWithoutRecipients.body.value,
+                error = Effect.empty()
             )
         )
 
@@ -559,7 +591,8 @@ class ComposerReducerTest(
             SubmittableToSendMessage,
             SubmittableToOnSendMessageOffline,
             EmptyToLoadingWithOpenExistingDraft,
-            LoadingToFieldsWhenReceivedDraftData,
+            LoadingToFieldsWhenReceivedDraftDataEmptyRecipients,
+            LoadingToFieldsWhenReceivedDraftDataValidRecipients,
             LoadingToErrorWhenErrorLoadingDraftData,
             EmptyToUpdatedMessageIdOnApiAssignedId,
             EmptyToBottomSheetOpened,
@@ -569,21 +602,24 @@ class ComposerReducerTest(
 
         private fun aSubmittableState(
             draftId: MessageId,
+            sender: SenderUiModel = SenderUiModel(""),
             to: List<RecipientUiModel> = emptyList(),
             cc: List<RecipientUiModel> = emptyList(),
             bcc: List<RecipientUiModel> = emptyList(),
+            draftBody: String = "",
+            subject: Subject = Subject(""),
             error: Effect<TextUiModel> = Effect.empty(),
             closeComposerWithMessageSending: Effect<Unit> = Effect.empty(),
             closeComposerWithMessageSendingOffline: Effect<Unit> = Effect.empty()
         ) = ComposerDraftState(
             fields = ComposerFields(
                 draftId = draftId,
-                sender = SenderUiModel(""),
+                sender = sender,
                 to = to,
                 cc = cc,
                 bcc = bcc,
-                subject = "",
-                body = "",
+                subject = subject.value,
+                body = draftBody,
                 quotedBody = null
             ),
             attachments = AttachmentGroupUiModel(attachments = emptyList()),

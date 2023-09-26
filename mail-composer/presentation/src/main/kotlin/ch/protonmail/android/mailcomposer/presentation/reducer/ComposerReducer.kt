@@ -116,19 +116,29 @@ class ComposerReducer @Inject constructor(
     private fun updateBottomSheetVisibility(currentState: ComposerDraftState, bottomSheetVisibility: Boolean) =
         currentState.copy(changeBottomSheetVisibility = Effect.of(bottomSheetVisibility))
 
-    private fun updateComposerFieldsState(currentState: ComposerDraftState, draftUiModel: DraftUiModel) =
-        currentState.copy(
+    private fun updateComposerFieldsState(
+        currentState: ComposerDraftState,
+        draftUiModel: DraftUiModel
+    ): ComposerDraftState {
+
+        val validToRecipients = draftUiModel.draftFields.recipientsTo.value.map { RecipientUiModel.Valid(it.address) }
+        val validCcRecipients = draftUiModel.draftFields.recipientsCc.value.map { RecipientUiModel.Valid(it.address) }
+        val validBccRecipients = draftUiModel.draftFields.recipientsBcc.value.map { RecipientUiModel.Valid(it.address) }
+
+        return currentState.copy(
             fields = currentState.fields.copy(
                 sender = SenderUiModel(draftUiModel.draftFields.sender.value),
                 subject = draftUiModel.draftFields.subject.value,
                 body = draftUiModel.draftFields.body.value,
                 quotedBody = draftUiModel.quotedHtmlContent,
-                to = draftUiModel.draftFields.recipientsTo.value.map { RecipientUiModel.Valid(it.address) },
-                cc = draftUiModel.draftFields.recipientsCc.value.map { RecipientUiModel.Valid(it.address) },
-                bcc = draftUiModel.draftFields.recipientsBcc.value.map { RecipientUiModel.Valid(it.address) }
+                to = validToRecipients,
+                cc = validCcRecipients,
+                bcc = validBccRecipients
             ),
-            isLoading = false
+            isLoading = false,
+            isSubmittable = (validToRecipients + validCcRecipients + validBccRecipients).isNotEmpty()
         )
+    }
 
     private fun updateAttachmentsState(currentState: ComposerDraftState, attachments: List<MessageAttachment>) =
         currentState.copy(
