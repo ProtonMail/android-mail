@@ -20,6 +20,7 @@ package ch.protonmail.android.composer.data.sample
 
 import ch.protonmail.android.composer.data.remote.resource.DraftMessageResource
 import ch.protonmail.android.composer.data.remote.resource.UpdateDraftBody
+import me.proton.core.crypto.common.pgp.Armored
 
 object UpdateDraftBodySample {
 
@@ -27,7 +28,7 @@ object UpdateDraftBodySample {
 
     fun build(
         message: DraftMessageResource = DraftMessageResourceSample.NewDraftWithSubject,
-        attachmentKeyPackets: List<String> = emptyList()
+        attachmentKeyPackets: Map<String, Armored> = emptyMap()
     ) = UpdateDraftBody(
         message = message,
         attachmentKeyPackets = attachmentKeyPackets

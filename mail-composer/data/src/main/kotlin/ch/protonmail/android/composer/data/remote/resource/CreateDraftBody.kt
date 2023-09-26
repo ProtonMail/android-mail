@@ -20,15 +20,16 @@ package ch.protonmail.android.composer.data.remote.resource
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import me.proton.core.crypto.common.pgp.Armored
 
 @Serializable
 data class CreateDraftBody(
     @SerialName("Message")
     val message: DraftMessageResource,
-    @SerialName("ParentId")
+    @SerialName("ParentID")
     val parentId: String?,
     @SerialName("Action")
     val action: Int,
     @SerialName("AttachmentKeyPackets")
-    val attachmentKeyPackets: List<String>
+    val attachmentKeyPackets: Map<String, Armored>
 )

@@ -20,11 +20,12 @@ package ch.protonmail.android.composer.data.remote.resource
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import me.proton.core.crypto.common.pgp.Armored
 
 @Serializable
 data class UpdateDraftBody(
     @SerialName("Message")
     val message: DraftMessageResource,
     @SerialName("AttachmentKeyPackets")
-    val attachmentKeyPackets: List<String>
+    val attachmentKeyPackets: Map<String, Armored>
 )
