@@ -139,6 +139,16 @@ class AttachmentFileStorage @Inject constructor(
         ) ?: throw AttachmentFileReadException
     }
 
+    suspend fun deleteAttachment(
+        userId: UserId,
+        messageId: String,
+        attachmentId: String
+    ): Boolean = internalFileStorage.deleteFile(
+        userId,
+        InternalFileStorage.Folder.MessageAttachments(messageId),
+        InternalFileStorage.FileIdentifier(attachmentId)
+    )
+
     suspend fun deleteAttachmentsOfMessage(userId: UserId, messageId: String): Boolean =
         internalFileStorage.deleteFolder(userId, InternalFileStorage.Folder.MessageAttachments(messageId))
 

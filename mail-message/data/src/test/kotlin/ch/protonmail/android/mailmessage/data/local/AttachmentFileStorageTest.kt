@@ -362,6 +362,24 @@ internal class AttachmentFileStorageTest {
         assertFalse(result)
     }
 
+    @Test
+    fun `should delete file from internal storage and return true on success`() = runTest {
+        // Given
+        coEvery {
+            internalFileStorageMock.deleteFile(
+                userId = UserId,
+                folder = InternalFileStorage.Folder.MessageAttachments(MessageId),
+                fileIdentifier = InternalFileStorage.FileIdentifier(AttachmentId)
+            )
+        } returns true
+
+        // When
+        val result = attachmentFileStorage.deleteAttachment(UserId, MessageId, AttachmentId)
+
+        // Then
+        assertTrue(result)
+    }
+
     object TestData {
 
         val File = File("")
