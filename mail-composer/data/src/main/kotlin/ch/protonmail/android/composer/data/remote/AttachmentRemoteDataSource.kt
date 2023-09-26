@@ -21,6 +21,7 @@ package ch.protonmail.android.composer.data.remote
 import arrow.core.Either
 import ch.protonmail.android.composer.data.remote.response.UploadAttachmentResponse
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import me.proton.core.domain.entity.UserId
 
 interface AttachmentRemoteDataSource {
@@ -30,4 +31,8 @@ interface AttachmentRemoteDataSource {
         uploadAttachmentModel: UploadAttachmentModel
     ): Either<DataError.Remote, UploadAttachmentResponse>
 
+    /**
+     * Delete the attachment for the given [userId] and [attachmentId].
+     */
+    fun deleteAttachmentFromDraft(userId: UserId, attachmentId: AttachmentId)
 }

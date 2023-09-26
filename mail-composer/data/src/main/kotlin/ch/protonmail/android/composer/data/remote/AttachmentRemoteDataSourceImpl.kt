@@ -21,7 +21,9 @@ package ch.protonmail.android.composer.data.remote
 import arrow.core.Either
 import ch.protonmail.android.composer.data.remote.response.UploadAttachmentResponse
 import ch.protonmail.android.mailcommon.data.mapper.toEither
+import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import me.proton.core.domain.entity.UserId
 import me.proton.core.network.data.ApiProvider
 import okhttp3.MediaType.Companion.toMediaType
@@ -31,6 +33,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import javax.inject.Inject
 
 class AttachmentRemoteDataSourceImpl @Inject constructor(
+    private val enqueuer: Enqueuer,
     private val apiProvider: ApiProvider
 ) : AttachmentRemoteDataSource {
 
@@ -65,5 +68,11 @@ class AttachmentRemoteDataSourceImpl @Inject constructor(
                 signature = signature
             )
         }.toEither()
+    }
+
+    override fun deleteAttachmentFromDraft(userId: UserId, attachmentId: AttachmentId) {
+        enqueuer.enqueue<DeleteAttachmentWorker>(
+            params = DeleteAttachmentWorker.params(userId, attachmentId)
+        )
     }
 }

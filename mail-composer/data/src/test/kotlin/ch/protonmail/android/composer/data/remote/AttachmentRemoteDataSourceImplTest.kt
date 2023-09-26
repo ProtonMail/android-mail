@@ -22,12 +22,15 @@ import java.net.UnknownHostException
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.composer.data.remote.response.UploadAttachmentResponse
+import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailmessage.data.remote.resource.AttachmentResource
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -44,6 +47,7 @@ import kotlin.test.assertEquals
 class AttachmentRemoteDataSourceImplTest {
 
     private val userId = UserIdSample.Primary
+    private val attachmentId = AttachmentId("attachmentId")
     private val sessionProvider = mockk<SessionProvider> {
         coEvery { getSessionId(userId) } returns SessionId("test- session-id")
     }
@@ -59,7 +63,13 @@ class AttachmentRemoteDataSourceImplTest {
         dispatcherProvider = DefaultDispatcherProvider()
     )
 
-    private val attachmentRemoteDataSource by lazy { AttachmentRemoteDataSourceImpl(apiProvider) }
+    private val enqueuer: Enqueuer = mockk {
+        every {
+            this@mockk.enqueue<DeleteAttachmentWorker>(params = DeleteAttachmentWorker.params(userId, attachmentId))
+        } returns mockk()
+    }
+
+    private val attachmentRemoteDataSource by lazy { AttachmentRemoteDataSourceImpl(enqueuer, apiProvider) }
 
     @Test
     fun `upload attachment returns response when successful`() = runTest {
@@ -116,6 +126,19 @@ class AttachmentRemoteDataSourceImplTest {
 
         // Then
         assertEquals(DataError.Remote.Http(NetworkError.NoNetwork, "No error message found").left(), actual)
+    }
+
+    @Test
+    fun `should enqueue work to delete attachment from draft`() = runTest {
+        // When
+        attachmentRemoteDataSource.deleteAttachmentFromDraft(userId, attachmentId)
+
+        // Then
+        coVerify {
+            enqueuer.enqueue<DeleteAttachmentWorker>(
+                params = DeleteAttachmentWorker.params(userId, attachmentId)
+            )
+        }
     }
 
     private fun expectUploadSuccessful(expectedResource: UploadAttachmentResponse) {
