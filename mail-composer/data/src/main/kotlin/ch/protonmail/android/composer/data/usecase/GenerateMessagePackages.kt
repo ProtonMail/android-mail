@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.composer.data.usecase
 
+import java.io.File
 import java.io.StringWriter
 import arrow.core.Either
 import arrow.core.left
@@ -25,6 +26,8 @@ import arrow.core.right
 import ch.protonmail.android.composer.data.extension.encryptAndSignText
 import ch.protonmail.android.composer.data.remote.resource.SendMessagePackage
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
+import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.model.MimeType
 import com.github.mangstadt.vinnie.io.FoldedLineWriter
@@ -62,7 +65,8 @@ class GenerateMessagePackages @Inject constructor(
     operator fun invoke(
         senderAddress: UserAddress,
         localDraft: MessageWithBody,
-        sendPreferences: Map<Email, SendPreferences>
+        sendPreferences: Map<Email, SendPreferences>,
+        attachmentFiles: Map<AttachmentId, File>
     ): Either<DataError.MessageSending.GeneratingPackages, List<SendMessagePackage>> {
         lateinit var decryptedPlaintextBodySessionKey: SessionKey
         lateinit var encryptedPlaintextBodyDataPacket: DataPacket

@@ -157,7 +157,8 @@ class GenerateMessagePackagesTest {
         val actual = sut(
             userAddress,
             draft,
-            sendPreferences
+            sendPreferences,
+            emptyMap()
         )
 
         // Then

@@ -34,6 +34,7 @@ import me.proton.core.domain.entity.UserId
 import me.proton.core.mailmessage.domain.entity.Email
 import me.proton.core.mailsendpreferences.domain.model.SendPreferences
 import me.proton.core.mailsendpreferences.domain.usecase.ObtainSendPreferences
+import me.proton.core.mailsettings.domain.entity.PackageType
 import me.proton.core.util.kotlin.filterValues
 import me.proton.core.util.kotlin.toInt
 import timber.log.Timber
@@ -45,7 +46,8 @@ internal class SendMessage @Inject constructor(
     private val generateMessagePackages: GenerateMessagePackages,
     private val findLocalDraft: FindLocalDraft,
     private val obtainSendPreferences: ObtainSendPreferences,
-    private val observeMailSettings: ObserveMailSettings
+    private val observeMailSettings: ObserveMailSettings,
+    private val readAttachmentsFromStorage: ReadAttachmentsFromStorage
 ) {
 
     /**
@@ -67,7 +69,15 @@ internal class SendMessage @Inject constructor(
 
         val sendPreferences = getSendPreferences(userId, recipients.map { it.address }).bind()
 
-        val messagePackages = generateMessagePackages(senderAddress, localDraft, sendPreferences).bind()
+        val attachmentFiles = if (sendPreferences.values.any { it.encrypt && it.pgpScheme != PackageType.ProtonMail }) {
+            val attachmentIds = localDraft.messageBody.attachments.map { it.attachmentId }
+            readAttachmentsFromStorage(userId, messageId, attachmentIds).bind()
+        } else {
+            emptyMap()
+        }
+
+        val messagePackages = generateMessagePackages(senderAddress, localDraft, sendPreferences, attachmentFiles)
+            .bind()
 
         val response = messageRemoteDataSource.send(
             userId,
