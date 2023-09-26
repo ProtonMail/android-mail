@@ -42,13 +42,19 @@ data class ComposerDraftState(
 
     companion object {
 
-        fun initial(draftId: MessageId): ComposerDraftState = ComposerDraftState(
+        fun initial(
+            draftId: MessageId,
+            to: List<RecipientUiModel> = emptyList(),
+            cc: List<RecipientUiModel> = emptyList(),
+            bcc: List<RecipientUiModel> = emptyList(),
+            isSubmittable: Boolean = false
+        ): ComposerDraftState = ComposerDraftState(
             fields = ComposerFields(
                 draftId = draftId,
                 sender = SenderUiModel(""),
-                to = emptyList(),
-                cc = emptyList(),
-                bcc = emptyList(),
+                to = to,
+                cc = cc,
+                bcc = bcc,
                 subject = "",
                 body = ""
             ),
@@ -57,7 +63,7 @@ data class ComposerDraftState(
             ),
             premiumFeatureMessage = Effect.empty(),
             error = Effect.empty(),
-            isSubmittable = false,
+            isSubmittable = isSubmittable,
             senderAddresses = emptyList(),
             changeBottomSheetVisibility = Effect.empty(),
             closeComposer = Effect.empty(),

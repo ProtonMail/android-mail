@@ -124,6 +124,19 @@ class ComposerReducerTest(
             )
         }
 
+        private val SubmittableToNotSubmittableEmptyToField = with("a@b.c") {
+            TestTransition(
+                name = "Should generate not-submittable state when removing all valid email addresses from TO field",
+                currentState = ComposerDraftState.initial(
+                    messageId,
+                    to = listOf(Valid(this)),
+                    isSubmittable = true
+                ),
+                operation = RecipientsToChanged(emptyList()),
+                expectedState = aNotSubmittableState(messageId, to = emptyList(), error = Effect.empty())
+            )
+        }
+
         private val EmptyToSubmittableCcField = with("a@b.c") {
             TestTransition(
                 name = "Should generate submittable state when adding a new valid email address in the cc field",
@@ -142,6 +155,19 @@ class ComposerReducerTest(
             )
         }
 
+        private val SubmittableToNotSubmittableEmptyCcField = with("a@b.c") {
+            TestTransition(
+                name = "Should generate not-submittable state when removing all valid email addresses from CC field",
+                currentState = ComposerDraftState.initial(
+                    messageId,
+                    cc = listOf(Valid(this)),
+                    isSubmittable = true
+                ),
+                operation = RecipientsCcChanged(emptyList()),
+                expectedState = aNotSubmittableState(messageId, cc = emptyList(), error = Effect.empty())
+            )
+        }
+
         private val EmptyToSubmittableBccField = with("a@b.c") {
             TestTransition(
                 name = "Should generate submittable state when adding a new valid email address in the bcc field",
@@ -157,6 +183,19 @@ class ComposerReducerTest(
                 currentState = ComposerDraftState.initial(messageId),
                 operation = RecipientsBccChanged(listOf(Invalid(this))),
                 expectedState = aNotSubmittableState(messageId, bcc = listOf(Invalid(this)))
+            )
+        }
+
+        private val SubmittableToNotSubmittableEmptyBccField = with("a@b.c") {
+            TestTransition(
+                name = "Should generate not-submittable state when removing all valid email addresses from BCC field",
+                currentState = ComposerDraftState.initial(
+                    messageId,
+                    bcc = listOf(Valid(this)),
+                    isSubmittable = true
+                ),
+                operation = RecipientsBccChanged(emptyList()),
+                expectedState = aNotSubmittableState(messageId, bcc = emptyList(), error = Effect.empty())
             )
         }
 
@@ -565,10 +604,13 @@ class ComposerReducerTest(
         private val transitions = listOf(
             EmptyToSubmittableToField,
             EmptyToNotSubmittableToField,
+            SubmittableToNotSubmittableEmptyToField,
             EmptyToSubmittableCcField,
             EmptyToNotSubmittableCcField,
+            SubmittableToNotSubmittableEmptyCcField,
             EmptyToSubmittableBccField,
             EmptyToNotSubmittableBccField,
+            SubmittableToNotSubmittableEmptyBccField,
             NotSubmittableToWithoutErrorToField,
             NotSubmittableToWithErrorToField,
             NotSubmittableWithoutErrorWhenRemoving,

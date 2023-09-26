@@ -219,6 +219,7 @@ class ComposerReducer @Inject constructor(
         bcc: List<RecipientUiModel>
     ): ComposerDraftState {
         val allValid = (to + cc + bcc).all { it is RecipientUiModel.Valid }
+        val notEmpty = (to + cc + bcc).isNotEmpty()
         val hasInvalidRecipients = hasInvalidRecipients(to, cc, bcc, currentState)
 
         val capturedToDuplicates = captureDuplicateEmails(to)
@@ -247,7 +248,7 @@ class ComposerReducer @Inject constructor(
                 bcc = capturedBccDuplicates.cleanedRecipients
             ),
             error = error,
-            isSubmittable = allValid
+            isSubmittable = allValid && notEmpty
         )
     }
 
