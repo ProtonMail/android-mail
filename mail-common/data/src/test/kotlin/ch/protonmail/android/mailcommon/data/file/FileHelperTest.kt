@@ -293,17 +293,14 @@ internal class AllowedFoldersFileHelperTest(folderPath: String) : FileHelperTest
     fun `should rename a file`() = runTest(testDispatcherProvider.Main) {
         // Given
         mockkStatic(File::renameTo)
-        val oldFile = FileHelper.Filename("oldFile")
-        val newFile = FileHelper.Filename("newFile")
+        val newFilename = FileHelper.Filename(filename.value + "_new")
         val newFileMock = mockk<File>()
-        val oldFileMock = mockk<File> {
-            every { renameTo(newFileMock) } returns true
-        }
-        every { fileFactoryMock.fileFromWhenExists(folder, oldFile) } returns oldFileMock
-        every { fileFactoryMock.fileFrom(folder, newFile) } returns newFileMock
+        val oldFileMock = mockk<File> { every { renameTo(newFileMock) } returns true }
+        every { fileFactoryMock.fileFromWhenExists(folder, filename) } returns oldFileMock
+        every { fileFactoryMock.fileFrom(folder, newFilename) } returns newFileMock
 
         // When
-        val fileRenamed = fileHelper.renameFile(folder, oldFile, newFile)
+        val fileRenamed = fileHelper.renameFile(folder, filename, newFilename)
 
         // Then
         assertTrue(fileRenamed)
@@ -314,20 +311,37 @@ internal class AllowedFoldersFileHelperTest(folderPath: String) : FileHelperTest
     fun `should return false when renaming a file fails`() = runTest(testDispatcherProvider.Main) {
         // Given
         mockkStatic(File::renameTo)
-        val oldFile = FileHelper.Filename("oldFile")
-        val newFile = FileHelper.Filename("newFile")
+        val newFilename = FileHelper.Filename(filename.value + "_new")
         val newFileMock = mockk<File>()
         val oldFileMock = mockk<File> { every { renameTo(newFileMock) } returns false }
-        every { fileFactoryMock.fileFromWhenExists(folder, oldFile) } returns oldFileMock
-        every { fileFactoryMock.fileFrom(folder, newFile) } returns newFileMock
+        every { fileFactoryMock.fileFromWhenExists(folder, filename) } returns oldFileMock
+        every { fileFactoryMock.fileFrom(folder, newFilename) } returns newFileMock
 
         // When
-        val fileRenamed = fileHelper.renameFile(folder, oldFile, newFile)
+        val fileRenamed = fileHelper.renameFile(folder, filename, newFilename)
 
         // Then
         assertFalse(fileRenamed)
         unmockkStatic(File::renameTo)
     }
+
+    @Test
+    fun `should return false when renaming a file fails because file doesn't exist`() =
+        runTest(testDispatcherProvider.Main) {
+            // Given
+            mockkStatic(File::renameTo)
+            val newFilename = FileHelper.Filename(filename.value + "_new")
+            val newFileMock = mockk<File>()
+            every { fileFactoryMock.fileFromWhenExists(folder, filename) } returns null
+            every { fileFactoryMock.fileFrom(folder, newFilename) } returns newFileMock
+
+            // When
+            val fileRenamed = fileHelper.renameFile(folder, filename, newFilename)
+
+            // Then
+            assertFalse(fileRenamed)
+            unmockkStatic(File::renameTo)
+        }
 
     companion object {
 
@@ -467,6 +481,24 @@ internal class BlacklistedFoldersFileHelperTest(folderPath: String) : FileHelper
         verify(exactly = 0) { fileMock.renameTo(newFileMock) }
         unmockkStatic(File::renameTo)
     }
+
+    @Test
+    fun `should return false when trying to rename a file in a blacklisted folder`() =
+        runTest(testDispatcherProvider.Main) {
+            // Given
+            mockkStatic(File::renameTo)
+            val newFilename = FileHelper.Filename(filename.value + "_new")
+            val newFileMock = mockk<File>()
+            val fileMock = mockk<File> { every { renameTo(newFileMock) } returns true }
+
+            // When
+            val fileRenamed = fileHelper.renameFile(folder, filename, newFilename)
+
+            // Then
+            assertFalse(fileRenamed)
+            verify(exactly = 0) { fileMock.renameTo(newFileMock) }
+            unmockkStatic(File::renameTo)
+        }
 
     companion object {
 

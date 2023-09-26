@@ -62,7 +62,9 @@ class FileHelper @Inject constructor(
         newFilename: Filename
     ) = fileOperationIn(folder) {
         runCatching {
-            fileFactory.fileFromWhenExists(folder, oldFilename)?.renameTo(fileFactory.fileFrom(folder, newFilename))
+            fileFactory.fileFromWhenExists(folder, oldFilename)
+                ?.renameTo(fileFactory.fileFrom(folder, newFilename))
+                ?: false
         }.getOrNull()
     } ?: false
 
@@ -162,7 +164,9 @@ class FileHelper @Inject constructor(
             filename.value
         )
 
-        fun fileFromWhenExists(folder: Folder, filename: Filename) = fileFrom(folder, filename).takeIf { it.exists() }
+        fun fileFromWhenExists(folder: Folder, filename: Filename) = folderFromWhenExists(folder)?.let { dir ->
+            File(dir, filename.value).takeIf { it.exists() }
+        }
 
         fun folderFrom(folder: Folder) = File(folder.path).apply { mkdirs() }
 

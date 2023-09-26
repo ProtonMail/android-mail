@@ -50,10 +50,12 @@ class InternalFileStorageTest {
     @Before
     fun setUp() {
         mockkObject(HashUtils)
-        every { HashUtils.sha256(AttachmentId.Local) } returns AttachmentId.EncodedLocal
-        every { HashUtils.sha256(AttachmentId.Api) } returns AttachmentId.EncodedApi
         every { HashUtils.sha256(MessageId.Raw) } returns MessageId.EncodedDigest
         every { HashUtils.sha256(UserId.Raw) } returns UserId.EncodedDigest
+        every { HashUtils.sha256(FileIdentifier.RawFileIdentifier) } returns FileIdentifier.EncodedDigestFileIdentifier
+        every {
+            HashUtils.sha256(FileIdentifier.RawFileIdentifierNew)
+        } returns FileIdentifier.EncodedDigestFileIdentifierNew
     }
 
     @After
@@ -646,55 +648,55 @@ class InternalFileStorageTest {
     }
 
     @Test
-    fun `should rename a file using the correct sanitised names for the old a new file name`() = runTest {
+    fun `should rename a file use a correct sanitised folder and filename and return true on success`() = runTest {
         // Given
-        val path = "/some/path/to/internal/storage/user_id_encoded/attachments"
         coEvery {
             fileHelperMock.renameFile(
-                folder = FileHelper.Folder("$path/message_id/"),
-                oldFilename = FileHelper.Filename(AttachmentId.EncodedLocal),
-                newFilename = FileHelper.Filename(AttachmentId.EncodedApi)
+                folder = FileHelper.Folder(CompleteAttachmentFolderPath),
+                oldFilename = FileHelper.Filename(FileIdentifier.EncodedDigestFileIdentifier),
+                newFilename = FileHelper.Filename(FileIdentifier.EncodedDigestFileIdentifierNew)
             )
         } returns true
 
         // When
-        val fileRenamed = internalFileStorage.renameFile(
+        val fileDeleted = internalFileStorage.renameFile(
             userId = UserId.Object,
             folder = InternalFileStorage.Folder.MessageAttachments(MessageId.Raw),
-            oldFileIdentifier = InternalFileStorage.FileIdentifier(AttachmentId.Local),
-            newFileIdentifier = InternalFileStorage.FileIdentifier(AttachmentId.Api)
+            oldFileIdentifier = InternalFileStorage.FileIdentifier(FileIdentifier.RawFileIdentifier),
+            newFileIdentifier = InternalFileStorage.FileIdentifier(FileIdentifier.RawFileIdentifierNew)
         )
 
         // Then
-        assertTrue(fileRenamed)
+        assertTrue(fileDeleted)
     }
 
+    @Suppress("MaxLineLength")
     private companion object TestData {
-
-        object AttachmentId {
-            const val Local = "local"
-            const val Api = "api"
-            const val EncodedLocal = "encodedLocal"
-            const val EncodedApi = "encodedApi"
-        }
 
         object MessageId {
 
             const val Raw = "message_id"
-            const val Digest = "message_id_digest"
-            const val EncodedDigest = "message_id_encoded"
+            const val EncodedDigest = "message_id_encoded_digest"
+        }
+
+        object FileIdentifier {
+
+            const val RawFileIdentifier = "attachment_id"
+            const val RawFileIdentifierNew = "attachment_id_new"
+            const val EncodedDigestFileIdentifier = "attachment_id_encoded_digest"
+            const val EncodedDigestFileIdentifierNew = "attachment_id_encoded_digest_new"
         }
 
         object UserId {
 
             const val Raw = "user_id"
             val Object = UserId(Raw)
-            const val Digest = "user_id_digest"
             const val EncodedDigest = "user_id_encoded"
         }
 
         const val InternalStoragePath = "/some/path/to/internal/storage"
         const val CompleteFolderPath = "$InternalStoragePath/${UserId.EncodedDigest}/message_bodies/"
+        const val CompleteAttachmentFolderPath = "$InternalStoragePath/${UserId.EncodedDigest}/attachments/${MessageId.Raw}/"
 
         const val CachedStoragePath = "/some/path/to/cache/storage"
         const val CompleteCachedFolderPath = "$CachedStoragePath/${UserId.EncodedDigest}/message_bodies/"
