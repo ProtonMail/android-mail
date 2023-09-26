@@ -267,6 +267,31 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
         )
     }
 
+    override suspend fun deleteAttachment(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId
+    ): Either<DataError.Local, Unit> {
+        return runCatching {
+            attachmentDao.deleteMessageAttachment(userId, messageId, attachmentId)
+            attachmentFileStorage.deleteAttachment(userId, messageId.id, attachmentId.id)
+        }.fold(
+            onSuccess = {
+                when {
+                    it -> Unit.right()
+                    else -> {
+                        Timber.e("Failed to delete attachment")
+                        DataError.Local.FailedToDeleteFile.left()
+                    }
+                }
+            },
+            onFailure = {
+                Timber.e(it, "Failed to delete message attachment")
+                DataError.Local.Unknown.left()
+            }
+        )
+    }
+
     private fun isAttachmentFileAvailable(uri: Uri): Boolean {
         val doesFileExist = try {
             context.contentResolver.openInputStream(uri)?.use {

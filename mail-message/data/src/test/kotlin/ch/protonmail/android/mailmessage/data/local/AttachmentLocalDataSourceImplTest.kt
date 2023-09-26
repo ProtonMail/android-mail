@@ -45,6 +45,7 @@ import ch.protonmail.android.testdata.message.MessageAttachmentMetadataEntityTes
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.coVerifyOrder
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
@@ -565,5 +566,47 @@ class AttachmentLocalDataSourceImplTest {
 
         // Then
         assertEquals(DataError.Local.Unknown.left(), actual)
+    }
+
+    @Test
+    fun `delete attachment deletes entry from db and file from local storage`() = runTest {
+        // Given
+        coEvery { attachmentDao.deleteMessageAttachment(userId, messageId, attachmentId) } just Runs
+        coEvery { attachmentFileStorage.deleteAttachment(userId, messageId.id, attachmentId.id) } returns true
+
+        // When
+        val actual = attachmentLocalDataSource.deleteAttachment(userId, messageId, attachmentId)
+
+        // Then
+        assertEquals(Unit.right(), actual)
+        coVerifyOrder {
+            attachmentDao.deleteMessageAttachment(userId, messageId, attachmentId)
+            attachmentFileStorage.deleteAttachment(userId, messageId.id, attachmentId.id)
+        }
+    }
+
+    @Test
+    fun `delete attachment returns unknown error when db delete fails`() = runTest {
+        // Given
+        coEvery { attachmentDao.deleteMessageAttachment(userId, messageId, attachmentId) } throws Exception()
+
+        // When
+        val actual = attachmentLocalDataSource.deleteAttachment(userId, messageId, attachmentId)
+
+        // Then
+        assertEquals(DataError.Local.Unknown.left(), actual)
+    }
+
+    @Test
+    fun `delete attachment returns unknown error when file delete fails`() = runTest {
+        // Given
+        coEvery { attachmentDao.deleteMessageAttachment(userId, messageId, attachmentId) } just Runs
+        coEvery { attachmentFileStorage.deleteAttachment(userId, messageId.id, attachmentId.id) } returns false
+
+        // When
+        val actual = attachmentLocalDataSource.deleteAttachment(userId, messageId, attachmentId)
+
+        // Then
+        assertEquals(DataError.Local.FailedToDeleteFile.left(), actual)
     }
 }
