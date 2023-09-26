@@ -66,6 +66,12 @@ object MessageWithBodySample {
         )
     )
 
+    val MessageWithInvoiceAttachment = build(
+        message = MessageSample.MessageWithAttachments,
+        attachments = listOf(MessageAttachmentSample.invoice),
+        body = "non-empty-body"
+    )
+
     private fun build(
         message: Message = MessageSample.EmptyDraft,
         replyTo: Recipient = RecipientSample.John,

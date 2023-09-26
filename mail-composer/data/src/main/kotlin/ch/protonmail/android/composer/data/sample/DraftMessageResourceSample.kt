@@ -32,6 +32,11 @@ object DraftMessageResourceSample {
         body = "This is the body typed from the user, ENCRYPTED"
     )
 
+    val NewDraftWithInvoiceAttachment = build(
+        subject = "Sending some documents",
+        body = "non-empty-body"
+    )
+
     val RemoteDraft = build(subject = "Remote draft, known to the API")
 
     fun build(subject: String = "", body: String = "") = DraftMessageResource(

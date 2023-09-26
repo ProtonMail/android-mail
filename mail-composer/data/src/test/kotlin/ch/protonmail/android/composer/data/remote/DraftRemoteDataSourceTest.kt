@@ -29,7 +29,9 @@ import ch.protonmail.android.composer.data.sample.UpdateDraftBodySample
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcomposer.domain.model.DraftAction
+import ch.protonmail.android.mailmessage.data.remote.resource.AttachmentResource
 import ch.protonmail.android.mailmessage.data.remote.resource.MessageWithBodyResource
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
@@ -122,6 +124,46 @@ class DraftRemoteDataSourceTest {
         val expected = DataError.Remote.CreateDraftRequestNotPerformed
         assertEquals(expected.left(), actual)
         verify { draftApi wasNot Called }
+    }
+
+    @Test
+    fun `when message has attachments with key packets they are passed to the API`() = runTest {
+        // Given
+        val parentMessageId = MessageId("parent-message-id")
+        val action = DraftAction.Forward(parentMessageId)
+        val inputDraft = MessageWithBodySample.MessageWithInvoiceAttachment
+        val expectedRequest = CreateDraftBodySample.NewDraftWithInvoiceAttachment.copy(
+            action = action.toApiInt(), parentId = action.getParentMessageId()!!.id
+        )
+        val expectedApiResponse = MessageWithBodyResourceSample.NewDraftWithAttachments.copy(
+            attachments = inputDraft.messageBody.attachments.filter { it.keyPackets != null }.map {
+                AttachmentResource(
+                    id = "Api-defined-id-${it.attachmentId}",
+                    name = it.name,
+                    size = it.size,
+                    mimeType = it.mimeType,
+                    keyPackets = "api-defined-key-packets-${it.keyPackets}",
+                    headers = hashMapOf()
+                )
+            }
+        )
+        expectCreateDraftApiSucceeds(expectedRequest, expectedApiResponse)
+
+        // When
+        val actual = remoteDataSource.create(userId, inputDraft, action)
+
+        // Then
+        val expected = inputDraft.copy(
+            messageBody = inputDraft.messageBody.copy(
+                attachments = inputDraft.messageBody.attachments.map {
+                    it.copy(
+                        attachmentId = AttachmentId("Api-defined-id-${it.attachmentId}"),
+                        keyPackets = "api-defined-key-packets-${it.keyPackets}"
+                    )
+                }
+            )
+        )
+        assertEquals(expected.right(), actual)
     }
 
     private fun expectCreateDraftApiSucceeds(body: CreateDraftBody, expected: MessageWithBodyResource) {

@@ -46,7 +46,7 @@ class DraftRemoteDataSourceImpl @Inject constructor(
             messageWithBody.toDraftMessageResource(),
             action.getParentMessageId()?.id,
             action.toApiInt(),
-            emptyList()
+            messageWithBody.buildAttachmentKeyPackets()
         )
 
         if (body.message.body.isBlank()) {
@@ -71,13 +71,18 @@ class DraftRemoteDataSourceImpl @Inject constructor(
         val messageId = messageWithBody.message.messageId
         val body = UpdateDraftBody(
             messageWithBody.toDraftMessageResource(),
-            emptyList()
+            messageWithBody.buildAttachmentKeyPackets()
         )
 
         return apiProvider.get<DraftApi>(userId).invoke {
             updateDraft(messageId.id, body).message.toMessageWithBody(userId)
         }.toEither()
     }
+
+    private fun MessageWithBody.buildAttachmentKeyPackets(): Map<String, String> =
+        this.messageBody.attachments.filter { it.keyPackets != null }.associate {
+            it.attachmentId.id to it.keyPackets!!
+        }
 
     private fun MessageWithBody.toDraftMessageResource() = DraftMessageResource(
         subject = this.message.subject,

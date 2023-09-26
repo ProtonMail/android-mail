@@ -20,11 +20,19 @@ package ch.protonmail.android.composer.data.sample
 
 import ch.protonmail.android.composer.data.remote.resource.CreateDraftBody
 import ch.protonmail.android.composer.data.remote.resource.DraftMessageResource
+import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
 import me.proton.core.crypto.common.pgp.Armored
 
 object CreateDraftBodySample {
 
     val NewDraftWithSubject = build()
+
+    val NewDraftWithInvoiceAttachment = build(
+        message = DraftMessageResourceSample.NewDraftWithInvoiceAttachment,
+        attachmentKeyPackets = MessageWithBodySample.MessageWithInvoiceAttachment.messageBody.attachments
+            .filter { it.keyPackets != null }
+            .associate { it.attachmentId.id to it.keyPackets!! }
+    )
 
     val NewDraftWithSubjectAndBody = build(
         message = DraftMessageResourceSample.NewDraftWithSubjectAndBody
