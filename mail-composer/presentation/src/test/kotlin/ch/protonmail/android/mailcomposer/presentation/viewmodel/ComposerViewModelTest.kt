@@ -43,6 +43,7 @@ import ch.protonmail.android.mailcomposer.domain.model.RecipientsTo
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.domain.model.StyledHtmlQuote
 import ch.protonmail.android.mailcomposer.domain.model.Subject
+import ch.protonmail.android.mailcomposer.domain.usecase.DeleteAttachment
 import ch.protonmail.android.mailcomposer.domain.usecase.DraftUploader
 import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses
 import ch.protonmail.android.mailcomposer.domain.usecase.GetDecryptedDraftFields
@@ -71,6 +72,7 @@ import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen
 import ch.protonmail.android.mailcomposer.presentation.usecase.ParentMessageToDraftFields
 import ch.protonmail.android.mailcomposer.presentation.usecase.StyleQuotedHtml
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.model.Recipient
@@ -147,6 +149,7 @@ class ComposerViewModelTest {
     private val getLocalMessageDecrypted = mockk<GetLocalMessageDecrypted>()
     private val parentMessageToDraftFields = mockk<ParentMessageToDraftFields>()
     private val storeDraftWithParentAttachments = mockk<StoreDraftWithParentAttachments>()
+    private val deleteAttachment = mockk<DeleteAttachment>()
     private val observeMailFeature = mockk<ObserveMailFeature> {
         coEvery {
             this@mockk.invoke(any(), MailFeatureId.AddAttachmentsToDraft)
@@ -188,6 +191,7 @@ class ComposerViewModelTest {
             parentMessageToDraftFields,
             styleQuotedHtml,
             storeDraftWithParentAttachments,
+            deleteAttachment,
             getDecryptedDraftFields,
             savedStateHandle,
             observePrimaryUserIdMock,
@@ -1260,6 +1264,44 @@ class ComposerViewModelTest {
         }
     }
 
+    @Test
+    fun `delete compose action triggers delete attachment use case`() = runTest {
+        // Given
+        val primaryAddress = UserAddressSample.PrimaryAddress
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val messageId = MessageIdSample.Invoice
+        val expectedSubject = Subject("Subject for the message")
+        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+        val expectedDraftBody = DraftBody("I am plaintext")
+        val expectedAttachmentId = AttachmentId("attachment_id")
+        val recipientsTo = RecipientsTo(listOf(RecipientSample.John))
+        val recipientsCc = RecipientsCc(listOf(RecipientSample.John))
+        val recipientsBcc = RecipientsBcc(listOf(RecipientSample.John))
+        val expectedFields = DraftFields(
+            expectedSenderEmail,
+            expectedSubject,
+            expectedDraftBody,
+            recipientsTo,
+            recipientsCc,
+            recipientsBcc,
+            null
+        )
+        expectedPrimaryAddress(expectedUserId) { primaryAddress }
+        expectInputDraftMessageId { messageId }
+        expectStoreAllDraftFieldsSucceeds(expectedUserId, messageId, expectedFields)
+        expectDecryptedDraftDataSuccess(expectedUserId, messageId) { expectedFields }
+        expectStartDraftSync(expectedUserId, messageId)
+        expectObservedMessageAttachments(expectedUserId, messageId)
+        expectNoInputDraftAction()
+        expectAttachmentDeleteSucceeds(expectedUserId, expectedSenderEmail, messageId, expectedAttachmentId)
+
+        // When
+        viewModel.submit(ComposerAction.RemoveAttachment(expectedAttachmentId))
+
+        // Then
+        coVerify { deleteAttachment(expectedUserId, expectedSenderEmail, messageId, expectedAttachmentId) }
+    }
+
     @AfterTest
     fun tearDown() {
         unmockkObject(ComposerDraftState.Companion)
@@ -1585,6 +1627,16 @@ class ComposerViewModelTest {
             observeMessageAttachments(userId, messageId)
         } returns flowOf(listOf(MessageAttachmentSample.invoice))
     }
+
+    private fun expectAttachmentDeleteSucceeds(
+        userId: UserId,
+        senderEmail: SenderEmail,
+        messageId: MessageId,
+        attachmentId: AttachmentId
+    ) {
+        coEvery { deleteAttachment(userId, senderEmail, messageId, attachmentId) } returns Unit.right()
+    }
+
 
     private fun mockParticipantMapper() {
         val expectedContacts = expectContacts()

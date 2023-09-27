@@ -35,7 +35,7 @@ import ch.protonmail.android.mailcomposer.domain.model.RecipientsCc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsTo
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.domain.model.Subject
-import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithParentAttachments
+import ch.protonmail.android.mailcomposer.domain.usecase.DeleteAttachment
 import ch.protonmail.android.mailcomposer.domain.usecase.DraftUploader
 import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses
 import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses.Error
@@ -49,6 +49,7 @@ import ch.protonmail.android.mailcomposer.domain.usecase.SendMessage
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreAttachments
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithAllFields
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithBody
+import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithParentAttachments
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithRecipients
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithSubject
 import ch.protonmail.android.mailcomposer.presentation.mapper.ParticipantMapper
@@ -110,6 +111,7 @@ class ComposerViewModel @Inject constructor(
     private val parentMessageToDraftFields: ParentMessageToDraftFields,
     private val styleQuotedHtml: StyleQuotedHtml,
     private val storeDraftWithParentAttachments: StoreDraftWithParentAttachments,
+    private val deleteAttachment: DeleteAttachment,
     getDecryptedDraftFields: GetDecryptedDraftFields,
     savedStateHandle: SavedStateHandle,
     observePrimaryUserId: ObservePrimaryUserId,
@@ -219,6 +221,7 @@ class ComposerViewModel @Inject constructor(
                     is ComposerAction.OnAddAttachments -> emitNewStateFor(action)
                     is ComposerAction.OnCloseComposer -> emitNewStateFor(onCloseComposer(action))
                     is ComposerAction.OnSendMessage -> emitNewStateFor(onSendMessage(action))
+                    is ComposerAction.RemoveAttachment -> onAttachmentsRemoved(action)
                 }
                 composerIdlingResource.decrement()
             }
@@ -237,6 +240,13 @@ class ComposerViewModel @Inject constructor(
     private fun onAttachmentsAdded(action: ComposerAction.AttachmentsAdded) {
         viewModelScope.launch {
             storeAttachments(primaryUserId(), currentMessageId(), currentSenderEmail(), action.uriList)
+        }
+    }
+
+    private fun onAttachmentsRemoved(action: ComposerAction.RemoveAttachment) {
+        viewModelScope.launch {
+            deleteAttachment(primaryUserId(), currentSenderEmail(), currentMessageId(), action.attachmentId)
+                .onLeft { Timber.e("Failed to delete attachment: $it") }
         }
     }
 

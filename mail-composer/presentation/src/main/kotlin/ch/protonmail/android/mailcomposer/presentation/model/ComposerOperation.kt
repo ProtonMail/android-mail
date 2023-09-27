@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcomposer.presentation.model
 import android.net.Uri
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.Subject
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 
@@ -34,6 +35,7 @@ internal sealed interface ComposerAction : ComposerOperation {
     data class RecipientsBccChanged(val recipients: List<RecipientUiModel>) : ComposerAction
     data class SubjectChanged(val subject: Subject) : ComposerAction
     data class DraftBodyChanged(val draftBody: DraftBody) : ComposerAction
+    data class RemoveAttachment(val attachmentId: AttachmentId) : ComposerAction
 
     object ChangeSenderRequested : ComposerAction
     object OnBottomSheetOptionSelected : ComposerAction

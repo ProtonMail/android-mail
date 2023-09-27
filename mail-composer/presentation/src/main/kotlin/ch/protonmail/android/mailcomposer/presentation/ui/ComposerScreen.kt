@@ -144,7 +144,7 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
                             actions = AttachmentFooter.Actions(
                                 onShowAllAttachments = { Timber.d("On show all attachments clicked") },
                                 onAttachmentClicked = { Timber.d("On attachment clicked: $it") },
-                                onAttachmentDeleteClicked = { Timber.d("Delete attachment: $it") }
+                                onAttachmentDeleteClicked = { viewModel.submit(ComposerAction.RemoveAttachment(it)) }
                             )
                         )
                     }
