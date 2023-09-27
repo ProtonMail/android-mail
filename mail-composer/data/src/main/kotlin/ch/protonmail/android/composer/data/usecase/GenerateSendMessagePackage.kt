@@ -19,6 +19,7 @@
 package ch.protonmail.android.composer.data.usecase
 
 import ch.protonmail.android.composer.data.remote.resource.SendMessagePackage
+import ch.protonmail.android.mailmessage.domain.model.MimeType
 import me.proton.core.crypto.common.context.CryptoContext
 import me.proton.core.crypto.common.pgp.DataPacket
 import me.proton.core.crypto.common.pgp.KeyPacket
@@ -27,7 +28,6 @@ import me.proton.core.key.domain.encryptSessionKey
 import me.proton.core.key.domain.entity.key.PublicKey
 import me.proton.core.mailmessage.domain.entity.Email
 import me.proton.core.mailsendpreferences.domain.model.SendPreferences
-import me.proton.core.mailsettings.domain.entity.MimeType
 import me.proton.core.mailsettings.domain.entity.PackageType
 import me.proton.core.util.kotlin.toInt
 import timber.log.Timber
@@ -134,7 +134,7 @@ class GenerateSendMessagePackage @Inject constructor(
         addresses = mapOf(
             recipientEmail to SendMessagePackage.Address.ExternalSigned(signature = true.toInt())
         ),
-        mimeType = MimeType.Mixed.value,
+        mimeType = MimeType.MultipartMixed.value,
         body = Base64.encode(encryptedMimeBodyDataPacket),
         type = PackageType.ClearMime.type,
         bodyKey = SendMessagePackage.Key(
@@ -151,7 +151,7 @@ class GenerateSendMessagePackage @Inject constructor(
                     bodyKeyPacket = Base64.encode(signedEncryptedMimeBody.first)
                 )
             ),
-            mimeType = MimeType.Mixed.value,
+            mimeType = MimeType.MultipartMixed.value,
             body = Base64.encode(signedEncryptedMimeBody.second),
             type = PackageType.PgpMime.type
         )

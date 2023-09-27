@@ -20,6 +20,7 @@ package ch.protonmail.android.composer.data.usecase
 
 import ch.protonmail.android.composer.data.remote.resource.SendMessagePackage
 import ch.protonmail.android.composer.data.sample.SendMessageSample
+import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.test.utils.rule.LoggingTestRule
 import io.mockk.every
 import io.mockk.mockk
@@ -28,7 +29,6 @@ import kotlinx.coroutines.test.runTest
 import me.proton.core.crypto.common.context.CryptoContext
 import me.proton.core.key.domain.encryptSessionKey
 import me.proton.core.key.domain.entity.key.PublicKey
-import me.proton.core.mailsettings.domain.entity.MimeType
 import me.proton.core.mailsettings.domain.entity.PackageType
 import me.proton.core.util.kotlin.toInt
 import org.junit.Assert.assertEquals

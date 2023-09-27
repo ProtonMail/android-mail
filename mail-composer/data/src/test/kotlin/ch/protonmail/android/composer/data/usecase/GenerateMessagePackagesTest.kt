@@ -21,6 +21,7 @@ package ch.protonmail.android.composer.data.usecase
 import ch.protonmail.android.composer.data.extension.encryptAndSignText
 import ch.protonmail.android.composer.data.remote.resource.SendMessagePackage
 import ch.protonmail.android.composer.data.sample.SendMessageSample
+import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
 import ch.protonmail.android.test.utils.rule.LoggingTestRule
@@ -40,7 +41,6 @@ import me.proton.core.key.domain.entity.key.PrivateKey
 import me.proton.core.key.domain.entity.key.PrivateKeyRing
 import me.proton.core.key.domain.entity.key.PublicKeyRing
 import me.proton.core.key.domain.entity.keyholder.KeyHolderContext
-import me.proton.core.mailsettings.domain.entity.MimeType
 import me.proton.core.mailsettings.domain.entity.PackageType
 import me.proton.core.user.domain.entity.UserAddress
 import me.proton.core.user.domain.entity.UserAddressKey
@@ -209,7 +209,7 @@ class GenerateMessagePackagesTest {
                     bodyKeyPacket = Base64.encode(SendMessageSample.EncryptedMimeBodyDataPacket)
                 )
             ),
-            mimeType = MimeType.Mixed.value,
+            mimeType = MimeType.MultipartMixed.value,
             body = Base64.encode(SendMessageSample.EncryptedMimeBodyDataPacket),
             type = PackageType.PgpMime.type
         )
@@ -259,7 +259,7 @@ class GenerateMessagePackagesTest {
                     signature = true.toInt()
                 )
             ),
-            mimeType = MimeType.Mixed.value,
+            mimeType = MimeType.MultipartMixed.value,
             body = Base64.encode(SendMessageSample.EncryptedMimeBodyDataPacket),
             type = PackageType.ClearMime.type
         )
