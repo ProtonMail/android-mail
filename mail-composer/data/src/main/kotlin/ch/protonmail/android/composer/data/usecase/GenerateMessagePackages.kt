@@ -102,7 +102,12 @@ class GenerateMessagePackages @Inject constructor(
                     decryptText(encryptedBodyPgpMessage)
                 }
 
-            val mimeBody = generateMimeBody(decryptedBody, localDraft.messageBody.mimeType)
+            val mimeBody = generateMimeBody(
+                decryptedBody,
+                localDraft.messageBody.mimeType,
+                localDraft.messageBody.attachments,
+                attachmentFiles
+            )
 
             // Encrypt and sign, then decrypt MIME body's session key to send it for plaintext recipients.
             val encryptedMimeBodySplit = encryptAndSignText(mimeBody).split(cryptoContext.pgpCrypto)
@@ -157,7 +162,12 @@ class GenerateMessagePackages @Inject constructor(
      * Correctly encodes and formats Message body in multipart/mixed content type.
      */
     @Suppress("ImplicitDefaultLocale")
-    private fun generateMimeBody(body: String, bodyContentType: MimeType): String {
+    private fun generateMimeBody(
+        body: String,
+        bodyContentType: MimeType,
+        attachments: List<MessageAttachment>,
+        attachmentFiles: Map<AttachmentId, File>
+    ): String {
 
         val bytes = ByteArray(16)
         Random.nextBytes(bytes)
@@ -173,6 +183,12 @@ class GenerateMessagePackages @Inject constructor(
         }
         val quotedPrintableBody = stringWriter.toString()
 
+        val mimeAttachments = attachments.joinToString(separator = "\n") { attachment ->
+            attachmentFiles[attachment.attachmentId]?.let { attachmentFile ->
+                "${boundary}\n${generateMimeAttachment(attachment, attachmentFile)}"
+            } ?: ""
+        }
+
         return """
             |Content-Type: multipart/mixed; boundary=${boundary.substring(2)}
             |
@@ -181,8 +197,25 @@ class GenerateMessagePackages @Inject constructor(
             |Content-Type: ${bodyContentType.value}; charset=utf-8
             |
             |$quotedPrintableBody
+            |$mimeAttachments
             |$boundary--
         """.trimMargin()
     }
 
+    private fun generateMimeAttachment(attachment: MessageAttachment, attachmentFile: File): String {
+
+        val stringWriter = StringWriter()
+        FoldedLineWriter(stringWriter).use {
+            it.write(Base64.encode(attachmentFile.readBytes()))
+        }
+        val foldedAttachment = stringWriter.toString()
+
+        return """
+            |Content-Type: ${attachment.mimeType}; filename="${attachment.name}"; name="${attachment.name}"
+            |Content-Transfer-Encoding: base64
+            |Content-Disposition: attachment; filename="${attachment.name}"; name="${attachment.name}"
+            |
+            |$foldedAttachment
+        """.trimMargin()
+    }
 }

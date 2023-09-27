@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.composer.data.usecase
 
+import java.io.File
 import ch.protonmail.android.composer.data.extension.encryptAndSignText
 import ch.protonmail.android.composer.data.remote.resource.SendMessagePackage
 import ch.protonmail.android.composer.data.sample.SendMessageSample
@@ -59,6 +60,7 @@ class GenerateMessagePackagesTest {
 
     private val attachmentKeyPackets = Base64.encode("keyPackets".toByteArray())
     private val attachment = MessageAttachmentSample.document.copy(keyPackets = attachmentKeyPackets)
+    private val attachmentFile = File.createTempFile("file", "txt")
     private val draft = MessageWithBodySample.RemoteDraftWith4RecipientTypes.copy(
         messageBody = MessageWithBodySample.RemoteDraftWith4RecipientTypes.messageBody.copy(
             attachments = listOf(attachment)
@@ -158,7 +160,7 @@ class GenerateMessagePackagesTest {
             userAddress,
             draft,
             sendPreferences,
-            emptyMap()
+            mapOf(attachment.attachmentId to attachmentFile)
         )
 
         // Then
