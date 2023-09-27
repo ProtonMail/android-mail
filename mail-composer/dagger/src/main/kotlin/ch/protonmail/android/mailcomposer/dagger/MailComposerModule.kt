@@ -29,11 +29,13 @@ import ch.protonmail.android.composer.data.remote.DraftRemoteDataSource
 import ch.protonmail.android.composer.data.remote.DraftRemoteDataSourceImpl
 import ch.protonmail.android.composer.data.remote.MessageRemoteDataSource
 import ch.protonmail.android.composer.data.remote.MessageRemoteDataSourceImpl
+import ch.protonmail.android.composer.data.repository.AttachmentRepositoryImpl
 import ch.protonmail.android.composer.data.repository.AttachmentStateRepositoryImpl
 import ch.protonmail.android.composer.data.repository.DraftRepositoryImpl
 import ch.protonmail.android.composer.data.repository.DraftStateRepositoryImpl
 import ch.protonmail.android.composer.data.repository.MessageRepositoryImpl
 import ch.protonmail.android.mailcomposer.domain.Transactor
+import ch.protonmail.android.mailcomposer.domain.repository.AttachmentRepository
 import ch.protonmail.android.mailcomposer.domain.repository.AttachmentStateRepository
 import ch.protonmail.android.mailcomposer.domain.repository.DraftRepository
 import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
@@ -89,4 +91,8 @@ abstract class MailComposerModule {
     @Binds
     @Reusable
     abstract fun bindsAttachmentRemoteDataSource(impl: AttachmentRemoteDataSourceImpl): AttachmentRemoteDataSource
+
+    @Binds
+    @Reusable
+    abstract fun bindsAttachmentRepository(impl: AttachmentRepositoryImpl): AttachmentRepository
 }
