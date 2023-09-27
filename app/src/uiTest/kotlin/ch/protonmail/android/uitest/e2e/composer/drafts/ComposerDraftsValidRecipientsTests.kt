@@ -102,6 +102,6 @@ internal class ComposerDraftsValidRecipientsTests : MockedNetworkTest(), Compose
             topAppBarSection { tapCloseButton() }
         }
 
-        verifyDraftCreation(validToRecipient, validCcRecipient, validBccRecipient)
+        verifyDraftCreation(validToRecipient, validCcRecipient, validBccRecipient, subject = "", body = "")
     }
 }

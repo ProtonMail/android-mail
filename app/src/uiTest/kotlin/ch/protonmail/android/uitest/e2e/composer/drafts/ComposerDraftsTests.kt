@@ -47,8 +47,13 @@ internal interface ComposerDraftsTests : ComposerTests {
         }
     }
 
+    fun verifyDraftCreation(vararg recipients: String, subject: String = "", body: String = "") {
+        val participants = recipients.map { ParticipantEntry.WithParticipant(it) }
+        verifyDraftCreation(expectedRecipients = participants, subject = subject, body = body)
+    }
+
     fun verifyDraftCreation(vararg expectedRecipient: ParticipantEntry, subject: String = "", body: String = "") {
-        verifyDraftCreation(expectedRecipient.toList(), subject, body)
+        verifyDraftCreation(expectedRecipient.toList(), subject = subject, body = body)
     }
 
     fun verifyDraftCreation(expectedRecipient: String, subject: String = "", body: String = "") {
@@ -56,8 +61,8 @@ internal interface ComposerDraftsTests : ComposerTests {
             expectedRecipients = listOf(
                 ParticipantEntry.WithParticipant(expectedRecipient)
             ),
-            subject,
-            body
+            subject = subject,
+            body = body
         )
     }
 
