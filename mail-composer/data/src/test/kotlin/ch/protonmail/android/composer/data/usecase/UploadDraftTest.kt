@@ -250,7 +250,7 @@ class UploadDraftTest {
         val expectedLocalAttachment = expectedDraft.messageBody.attachments.first()
         val expectedUpdatedAttachment = expectedLocalAttachment.copy(
             attachmentId = AttachmentId("Api-defined-id"),
-            keyPackets = "api-defined-key-packets"
+            keyPackets = "keyPackets"
         )
         val expectedResponse = expectedDraft.copy(
             messageBody = expectedDraft.messageBody.copy(attachments = listOf(expectedUpdatedAttachment))

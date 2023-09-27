@@ -110,7 +110,7 @@ internal class UploadDraft @Inject constructor(
         val remoteAttachments = apiMessage.messageBody.attachments
 
         remoteAttachments.forEach { attachment ->
-            localAttachments.find { it.name == attachment.name && it.size == attachment.size }?.let { localAttachment ->
+            localAttachments.find { it.keyPackets == attachment.keyPackets }?.let { localAttachment ->
                 attachmentRepository.updateMessageAttachment(
                     apiMessage.message.userId,
                     apiMessage.message.messageId,
