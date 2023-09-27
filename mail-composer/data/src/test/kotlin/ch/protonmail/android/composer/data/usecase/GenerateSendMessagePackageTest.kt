@@ -28,6 +28,7 @@ import kotlinx.coroutines.test.runTest
 import me.proton.core.crypto.common.context.CryptoContext
 import me.proton.core.key.domain.encryptSessionKey
 import me.proton.core.key.domain.entity.key.PublicKey
+import me.proton.core.mailsettings.domain.entity.MimeType
 import me.proton.core.mailsettings.domain.entity.PackageType
 import me.proton.core.util.kotlin.toInt
 import org.junit.Assert.assertEquals
@@ -59,6 +60,7 @@ class GenerateSendMessagePackageTest {
             SendMessageSample.EncryptedBodyDataPacket,
             SendMessageSample.MimeBodySessionKey,
             SendMessageSample.EncryptedMimeBodyDataPacket,
+            MimeType.PlainText,
             SendMessageSample.SignedEncryptedMimeBody,
             emptyMap()
         )
@@ -84,6 +86,7 @@ class GenerateSendMessagePackageTest {
             SendMessageSample.EncryptedBodyDataPacket,
             SendMessageSample.MimeBodySessionKey,
             SendMessageSample.EncryptedMimeBodyDataPacket,
+            MimeType.PlainText,
             null,
             emptyMap()
         )
@@ -108,6 +111,7 @@ class GenerateSendMessagePackageTest {
             SendMessageSample.EncryptedBodyDataPacket,
             SendMessageSample.MimeBodySessionKey,
             SendMessageSample.EncryptedMimeBodyDataPacket,
+            MimeType.PlainText,
             SendMessageSample.SignedEncryptedMimeBody,
             emptyMap()
         )
@@ -146,6 +150,7 @@ class GenerateSendMessagePackageTest {
             SendMessageSample.EncryptedBodyDataPacket,
             SendMessageSample.MimeBodySessionKey,
             SendMessageSample.EncryptedMimeBodyDataPacket,
+            MimeType.PlainText,
             SendMessageSample.SignedEncryptedMimeBody,
             emptyMap()
         )
@@ -183,6 +188,7 @@ class GenerateSendMessagePackageTest {
             SendMessageSample.EncryptedBodyDataPacket,
             SendMessageSample.MimeBodySessionKey,
             SendMessageSample.EncryptedMimeBodyDataPacket,
+            MimeType.PlainText,
             SendMessageSample.SignedEncryptedMimeBody,
             emptyMap()
         )
@@ -216,6 +222,7 @@ class GenerateSendMessagePackageTest {
             SendMessageSample.EncryptedBodyDataPacket,
             SendMessageSample.MimeBodySessionKey,
             SendMessageSample.EncryptedMimeBodyDataPacket,
+            MimeType.PlainText,
             SendMessageSample.SignedEncryptedMimeBody,
             emptyMap()
         )
@@ -227,7 +234,42 @@ class GenerateSendMessagePackageTest {
                     signature = false.toInt()
                 )
             ),
-            mimeType = sendPreferences.mimeType.value,
+            mimeType = MimeType.PlainText.value,
+            body = Base64.encode(SendMessageSample.EncryptedBodyDataPacket),
+            type = PackageType.Cleartext.type,
+            bodyKey = SendMessageSample.CleartextBodyKey,
+            attachmentKeys = emptyMap()
+        )
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `generate package for Cleartext, no attachments, override SendPreferences body MimeType with HTML`() = runTest {
+        // Given
+        val sendPreferences = SendMessageSample.SendPreferences.Cleartext
+
+        // When
+        val actual = sut(
+            SendMessageSample.RecipientEmail,
+            sendPreferences,
+            SendMessageSample.BodySessionKey,
+            SendMessageSample.EncryptedBodyDataPacket,
+            SendMessageSample.MimeBodySessionKey,
+            SendMessageSample.EncryptedMimeBodyDataPacket,
+            MimeType.Html,
+            SendMessageSample.SignedEncryptedMimeBody,
+            emptyMap()
+        )
+
+        // Then
+        val expected = SendMessagePackage(
+            addresses = mapOf(
+                SendMessageSample.RecipientEmail to SendMessagePackage.Address.ExternalCleartext(
+                    signature = false.toInt()
+                )
+            ),
+            mimeType = MimeType.Html.value,
             body = Base64.encode(SendMessageSample.EncryptedBodyDataPacket),
             type = PackageType.Cleartext.type,
             bodyKey = SendMessageSample.CleartextBodyKey,

@@ -49,6 +49,7 @@ class GenerateSendMessagePackage @Inject constructor(
         encryptedBodyDataPacket: ByteArray,
         decryptedMimeBodySessionKey: SessionKey,
         encryptedMimeBodyDataPacket: ByteArray,
+        bodyContentType: MimeType,
         signedEncryptedMimeBody: Pair<KeyPacket, DataPacket>?,
         decryptedAttachmentSessionKeys: Map<String, SessionKey>
     ): SendMessagePackage? {
@@ -91,7 +92,7 @@ class GenerateSendMessagePackage @Inject constructor(
                 generateCleartext(
                     decryptedAttachmentSessionKeys,
                     recipientEmail,
-                    sendPreferences,
+                    bodyContentType,
                     encryptedBodyDataPacket,
                     decryptedBodySessionKey
                 )
@@ -105,7 +106,7 @@ class GenerateSendMessagePackage @Inject constructor(
     private fun generateCleartext(
         decryptedAttachmentSessionKeys: Map<String, SessionKey>,
         recipientEmail: Email,
-        sendPreferences: SendPreferences,
+        bodyMimeType: MimeType,
         encryptedBodyDataPacket: ByteArray,
         decryptedBodySessionKey: SessionKey
     ): SendMessagePackage {
@@ -117,7 +118,7 @@ class GenerateSendMessagePackage @Inject constructor(
             addresses = mapOf(
                 recipientEmail to SendMessagePackage.Address.ExternalCleartext(signature = false.toInt())
             ),
-            mimeType = sendPreferences.mimeType.value,
+            mimeType = bodyMimeType.value,
             body = Base64.encode(encryptedBodyDataPacket),
             type = PackageType.Cleartext.type,
             bodyKey = SendMessagePackage.Key(Base64.encode(decryptedBodySessionKey.key), SessionKeyAlgorithm),

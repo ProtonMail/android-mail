@@ -110,6 +110,10 @@ class GenerateMessagePackages @Inject constructor(
             }.filterNullValues()
         }
 
+        val bodyContentType = me.proton.core.mailsettings.domain.entity.MimeType.enumFromContentType(
+            localDraft.messageBody.mimeType.value
+        ) ?: me.proton.core.mailsettings.domain.entity.MimeType.PlainText
+
         val packages = sendPreferences.map { entry ->
             generateSendMessagePackage(
                 entry.key,
@@ -118,6 +122,7 @@ class GenerateMessagePackages @Inject constructor(
                 encryptedPlaintextBodyDataPacket,
                 decryptedMimeBodySessionKey,
                 encryptedMimeBodyDataPacket,
+                bodyContentType,
                 signedAndEncryptedMimeBodyForRecipients[entry.key],
                 decryptedAttachmentSessionKeys
             )

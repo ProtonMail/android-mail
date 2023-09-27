@@ -195,6 +195,7 @@ class GenerateMessagePackagesTest {
                 SendMessageSample.EncryptedPlaintextBodySplit.dataPacket(),
                 SendMessageSample.MimeBodySessionKey,
                 SendMessageSample.PlaintextMimeBodyEncryptedAndSignedSplit.dataPacket(),
+                MimeType.PlainText,
                 Pair(
                     SendMessageSample.PlaintextMimeBodyEncryptedAndSignedSplit.keyPacket(),
                     SendMessageSample.PlaintextMimeBodyEncryptedAndSignedSplit.dataPacket()
@@ -223,6 +224,7 @@ class GenerateMessagePackagesTest {
                 SendMessageSample.EncryptedPlaintextBodySplit.dataPacket(),
                 SendMessageSample.MimeBodySessionKey,
                 SendMessageSample.PlaintextMimeBodyEncryptedAndSignedSplit.dataPacket(),
+                MimeType.PlainText,
                 null, // Cleartext package type doesn't need this
                 mapOf(MessageAttachmentSample.document.attachmentId.id to SendMessageSample.AttachmentSessionKey)
             )
@@ -247,6 +249,7 @@ class GenerateMessagePackagesTest {
                 SendMessageSample.EncryptedPlaintextBodySplit.dataPacket(),
                 SendMessageSample.MimeBodySessionKey,
                 SendMessageSample.PlaintextMimeBodyEncryptedAndSignedSplit.dataPacket(),
+                MimeType.PlainText,
                 null, // ClearMime package type doesn't need this
                 mapOf(MessageAttachmentSample.document.attachmentId.id to SendMessageSample.AttachmentSessionKey)
             )
@@ -271,6 +274,7 @@ class GenerateMessagePackagesTest {
                 SendMessageSample.EncryptedPlaintextBodySplit.dataPacket(),
                 SendMessageSample.MimeBodySessionKey,
                 SendMessageSample.PlaintextMimeBodyEncryptedAndSignedSplit.dataPacket(),
+                MimeType.PlainText,
                 null, // ProtonMail package type doesn't need this
                 mapOf(MessageAttachmentSample.document.attachmentId.id to SendMessageSample.AttachmentSessionKey)
             )
