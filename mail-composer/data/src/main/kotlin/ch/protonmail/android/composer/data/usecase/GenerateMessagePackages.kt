@@ -26,15 +26,15 @@ import ch.protonmail.android.composer.data.extension.encryptAndSignText
 import ch.protonmail.android.composer.data.remote.resource.SendMessagePackage
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
+import ch.protonmail.android.mailmessage.domain.model.MimeType
 import com.github.mangstadt.vinnie.io.FoldedLineWriter
 import me.proton.core.crypto.common.context.CryptoContext
+import me.proton.core.crypto.common.pgp.DataPacket
+import me.proton.core.crypto.common.pgp.KeyPacket
 import me.proton.core.crypto.common.pgp.SessionKey
 import me.proton.core.crypto.common.pgp.dataPacket
 import me.proton.core.crypto.common.pgp.keyPacket
 import me.proton.core.crypto.common.pgp.split
-import ch.protonmail.android.mailmessage.domain.model.MimeType
-import me.proton.core.crypto.common.pgp.DataPacket
-import me.proton.core.crypto.common.pgp.KeyPacket
 import me.proton.core.key.domain.decryptMimeMessage
 import me.proton.core.key.domain.decryptSessionKey
 import me.proton.core.key.domain.decryptText
@@ -110,6 +110,8 @@ class GenerateMessagePackages @Inject constructor(
             }.filterNullValues()
         }
 
+        val areAllAttachmentsSigned = localDraft.messageBody.attachments.all { it.signature != null }
+
         val packages = sendPreferences.map { entry ->
             generateSendMessagePackage(
                 entry.key,
@@ -120,7 +122,8 @@ class GenerateMessagePackages @Inject constructor(
                 encryptedMimeBodyDataPacket,
                 localDraft.messageBody.mimeType,
                 signedAndEncryptedMimeBodyForRecipients[entry.key],
-                decryptedAttachmentSessionKeys
+                decryptedAttachmentSessionKeys,
+                areAllAttachmentsSigned
             )
         }.filterNotNull()
 

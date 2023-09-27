@@ -51,7 +51,8 @@ class GenerateSendMessagePackage @Inject constructor(
         encryptedMimeBodyDataPacket: ByteArray,
         bodyContentType: MimeType,
         signedEncryptedMimeBody: Pair<KeyPacket, DataPacket>?,
-        decryptedAttachmentSessionKeys: Map<String, SessionKey>
+        decryptedAttachmentSessionKeys: Map<String, SessionKey>,
+        areAllAttachmentsSigned: Boolean
     ): SendMessagePackage? {
 
         return if (sendPreferences.encrypt) {
@@ -68,7 +69,8 @@ class GenerateSendMessagePackage @Inject constructor(
                     decryptedAttachmentSessionKeys,
                     recipientEmail,
                     sendPreferences,
-                    encryptedBodyDataPacket
+                    encryptedBodyDataPacket,
+                    areAllAttachmentsSigned
                 )
 
             } else {
@@ -77,7 +79,7 @@ class GenerateSendMessagePackage @Inject constructor(
                     Timber.e("GenerateSendMessagePackage: signedEncryptedMimeBody was null")
                 }
 
-                generatePgpMime(recipientEmail, signedEncryptedMimeBody)
+                generatePgpMime(recipientEmail, signedEncryptedMimeBody, areAllAttachmentsSigned)
 
             }
 
@@ -143,18 +145,21 @@ class GenerateSendMessagePackage @Inject constructor(
         )
     )
 
-    private fun generatePgpMime(recipientEmail: Email, signedEncryptedMimeBody: Pair<KeyPacket, DataPacket>) =
-        SendMessagePackage(
-            addresses = mapOf(
-                recipientEmail to SendMessagePackage.Address.ExternalEncrypted(
-                    signature = true.toInt(),
-                    bodyKeyPacket = Base64.encode(signedEncryptedMimeBody.first)
-                )
-            ),
-            mimeType = MimeType.MultipartMixed.value,
-            body = Base64.encode(signedEncryptedMimeBody.second),
-            type = PackageType.PgpMime.type
-        )
+    private fun generatePgpMime(
+        recipientEmail: Email,
+        signedEncryptedMimeBody: Pair<KeyPacket, DataPacket>,
+        areAllAttachmentsSigned: Boolean
+    ) = SendMessagePackage(
+        addresses = mapOf(
+            recipientEmail to SendMessagePackage.Address.ExternalEncrypted(
+                signature = areAllAttachmentsSigned.toInt(),
+                bodyKeyPacket = Base64.encode(signedEncryptedMimeBody.first)
+            )
+        ),
+        mimeType = MimeType.MultipartMixed.value,
+        body = Base64.encode(signedEncryptedMimeBody.second),
+        type = PackageType.PgpMime.type
+    )
 
     private fun generateProtonMail(
         publicKey: PublicKey,
@@ -162,7 +167,8 @@ class GenerateSendMessagePackage @Inject constructor(
         decryptedAttachmentSessionKeys: Map<String, SessionKey>,
         recipientEmail: Email,
         sendPreferences: SendPreferences,
-        encryptedBodyDataPacket: ByteArray
+        encryptedBodyDataPacket: ByteArray,
+        areAllAttachmentsSigned: Boolean
     ): SendMessagePackage {
         val recipientBodyKeyPacket = publicKey.encryptSessionKey(cryptoContext, decryptedBodySessionKey)
 
@@ -173,7 +179,7 @@ class GenerateSendMessagePackage @Inject constructor(
         return SendMessagePackage(
             addresses = mapOf(
                 recipientEmail to SendMessagePackage.Address.Internal(
-                    signature = true.toInt(),
+                    signature = areAllAttachmentsSigned.toInt(),
                     bodyKeyPacket = Base64.encode(recipientBodyKeyPacket),
                     attachmentKeyPackets = encryptedAttachmentKeyPackets
                 )

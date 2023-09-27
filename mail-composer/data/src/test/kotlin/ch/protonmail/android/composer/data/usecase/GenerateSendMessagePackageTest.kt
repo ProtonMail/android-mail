@@ -62,7 +62,8 @@ class GenerateSendMessagePackageTest {
             SendMessageSample.EncryptedMimeBodyDataPacket,
             MimeType.PlainText,
             SendMessageSample.SignedEncryptedMimeBody,
-            emptyMap()
+            emptyMap(),
+            areAllAttachmentsSigned = true
         )
 
         // Then
@@ -88,7 +89,8 @@ class GenerateSendMessagePackageTest {
             SendMessageSample.EncryptedMimeBodyDataPacket,
             MimeType.PlainText,
             null,
-            emptyMap()
+            emptyMap(),
+            areAllAttachmentsSigned = true
         )
 
         // Then
@@ -113,7 +115,8 @@ class GenerateSendMessagePackageTest {
             SendMessageSample.EncryptedMimeBodyDataPacket,
             MimeType.PlainText,
             SendMessageSample.SignedEncryptedMimeBody,
-            emptyMap()
+            emptyMap(),
+            areAllAttachmentsSigned = true
         )
 
         // Then
@@ -152,7 +155,8 @@ class GenerateSendMessagePackageTest {
             SendMessageSample.EncryptedMimeBodyDataPacket,
             MimeType.PlainText,
             SendMessageSample.SignedEncryptedMimeBody,
-            emptyMap()
+            emptyMap(),
+            areAllAttachmentsSigned = true
         )
 
         // Then
@@ -190,7 +194,8 @@ class GenerateSendMessagePackageTest {
             SendMessageSample.EncryptedMimeBodyDataPacket,
             MimeType.PlainText,
             SendMessageSample.SignedEncryptedMimeBody,
-            emptyMap()
+            emptyMap(),
+            areAllAttachmentsSigned = true
         )
 
         // Then
@@ -224,7 +229,8 @@ class GenerateSendMessagePackageTest {
             SendMessageSample.EncryptedMimeBodyDataPacket,
             MimeType.PlainText,
             SendMessageSample.SignedEncryptedMimeBody,
-            emptyMap()
+            emptyMap(),
+            areAllAttachmentsSigned = true
         )
 
         // Then
@@ -259,7 +265,8 @@ class GenerateSendMessagePackageTest {
             SendMessageSample.EncryptedMimeBodyDataPacket,
             MimeType.Html,
             SendMessageSample.SignedEncryptedMimeBody,
-            emptyMap()
+            emptyMap(),
+            areAllAttachmentsSigned = true
         )
 
         // Then
@@ -278,6 +285,45 @@ class GenerateSendMessagePackageTest {
 
         assertEquals(expected, actual)
     }
+
+    @Test
+    fun `generate package for ProtonMail with 'sign' disabled when there are unsigned attachments`() = runTest {
+        // Given
+        val sendPreferences = SendMessageSample.SendPreferences.ProtonMail.copy(
+            publicKey = expectPublicKeyEncryptSessionKey()
+        )
+
+        // When
+        val actual = sut(
+            SendMessageSample.RecipientEmail,
+            sendPreferences,
+            SendMessageSample.BodySessionKey,
+            SendMessageSample.EncryptedBodyDataPacket,
+            SendMessageSample.MimeBodySessionKey,
+            SendMessageSample.EncryptedMimeBodyDataPacket,
+            MimeType.PlainText,
+            SendMessageSample.SignedEncryptedMimeBody,
+            emptyMap(),
+            areAllAttachmentsSigned = false
+        )
+
+        // Then
+        val expected = SendMessagePackage(
+            addresses = mapOf(
+                SendMessageSample.RecipientEmail to SendMessagePackage.Address.Internal(
+                    signature = false.toInt(),
+                    bodyKeyPacket = Base64.encode(SendMessageSample.RecipientBodyKeyPacket),
+                    attachmentKeyPackets = emptyMap()
+                )
+            ),
+            mimeType = sendPreferences.mimeType.value,
+            body = Base64.encode(SendMessageSample.EncryptedBodyDataPacket),
+            type = PackageType.ProtonMail.type
+        )
+
+        assertEquals(expected, actual)
+    }
+
 
     private fun expectPublicKeyEncryptSessionKey(): PublicKey {
         mockkStatic(PublicKey::encryptSessionKey)

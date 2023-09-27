@@ -66,6 +66,11 @@ object MessageWithBodySample {
         )
     )
 
+    val MessageWithSignedAttachments = build(
+        message = MessageSample.MessageWithAttachments,
+        attachments = listOf(MessageAttachmentSample.signedDocument)
+    )
+
     val MessageWithInvoiceAttachment = build(
         message = MessageSample.MessageWithAttachments,
         attachments = listOf(MessageAttachmentSample.invoice),

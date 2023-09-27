@@ -200,7 +200,8 @@ class GenerateMessagePackagesTest {
                     SendMessageSample.PlaintextMimeBodyEncryptedAndSignedSplit.keyPacket(),
                     SendMessageSample.PlaintextMimeBodyEncryptedAndSignedSplit.dataPacket()
                 ),
-                mapOf(MessageAttachmentSample.document.attachmentId.id to SendMessageSample.AttachmentSessionKey)
+                mapOf(MessageAttachmentSample.document.attachmentId.id to SendMessageSample.AttachmentSessionKey),
+                areAllAttachmentsSigned = false
             )
         } returns SendMessagePackage(
             addresses = mapOf(
@@ -226,7 +227,8 @@ class GenerateMessagePackagesTest {
                 SendMessageSample.PlaintextMimeBodyEncryptedAndSignedSplit.dataPacket(),
                 MimeType.PlainText,
                 null, // Cleartext package type doesn't need this
-                mapOf(MessageAttachmentSample.document.attachmentId.id to SendMessageSample.AttachmentSessionKey)
+                mapOf(MessageAttachmentSample.document.attachmentId.id to SendMessageSample.AttachmentSessionKey),
+                areAllAttachmentsSigned = false
             )
         } returns SendMessagePackage(
             addresses = mapOf(
@@ -251,7 +253,8 @@ class GenerateMessagePackagesTest {
                 SendMessageSample.PlaintextMimeBodyEncryptedAndSignedSplit.dataPacket(),
                 MimeType.PlainText,
                 null, // ClearMime package type doesn't need this
-                mapOf(MessageAttachmentSample.document.attachmentId.id to SendMessageSample.AttachmentSessionKey)
+                mapOf(MessageAttachmentSample.document.attachmentId.id to SendMessageSample.AttachmentSessionKey),
+                areAllAttachmentsSigned = false
             )
         } returns SendMessagePackage(
             addresses = mapOf(
@@ -276,7 +279,8 @@ class GenerateMessagePackagesTest {
                 SendMessageSample.PlaintextMimeBodyEncryptedAndSignedSplit.dataPacket(),
                 MimeType.PlainText,
                 null, // ProtonMail package type doesn't need this
-                mapOf(MessageAttachmentSample.document.attachmentId.id to SendMessageSample.AttachmentSessionKey)
+                mapOf(MessageAttachmentSample.document.attachmentId.id to SendMessageSample.AttachmentSessionKey),
+                areAllAttachmentsSigned = false
             )
         } returns SendMessagePackage(
             addresses = mapOf(

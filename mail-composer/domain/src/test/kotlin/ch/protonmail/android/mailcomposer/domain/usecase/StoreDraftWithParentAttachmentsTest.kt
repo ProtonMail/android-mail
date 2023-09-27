@@ -182,6 +182,36 @@ class StoreDraftWithParentAttachmentsTest {
         assertEquals(StoreDraftWithParentAttachments.Error.DraftDataError.left(), result)
     }
 
+    @Test
+    fun `removes signature and encrypted signature from parent attachments before storing them`() = runTest {
+        // Given
+        val expectedParentMessage = MessageWithBodySample.MessageWithSignedAttachments
+        val expectedAction = DraftAction.Forward(expectedParentMessage.message.messageId)
+        val draftWithBody = expectedGetLocalDraft(userId, draftMessageId, senderEmail) {
+            MessageWithBodySample.EmptyDraft
+        }
+        val expectedAttachments = expectedParentMessage.messageBody.attachments.map {
+            it.copy(signature = null, encSignature = null)
+        }
+        val expectedSavedDraft = draftWithBody.copy(
+            messageBody = draftWithBody.messageBody.copy(attachments = expectedAttachments)
+        )
+        givenSaveDraftSucceeds(expectedSavedDraft, userId)
+
+        // When
+        val result = storeDraftWithParentAttachments(
+            userId,
+            draftMessageId,
+            expectedParentMessage,
+            senderEmail,
+            expectedAction
+        )
+
+        // Then
+        coVerify { saveDraftMock(expectedSavedDraft, userId) }
+        assertEquals(Unit.right(), result)
+    }
+
     private fun expectedGetLocalDraft(
         userId: UserId,
         messageId: MessageId,

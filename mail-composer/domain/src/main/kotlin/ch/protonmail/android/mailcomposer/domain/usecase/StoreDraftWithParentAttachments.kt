@@ -65,9 +65,12 @@ class StoreDraftWithParentAttachments @Inject constructor(
                 .mapLeft { Error.DraftDataError }
                 .bind()
 
+            val parentAttachmentsWithoutSignature = parentAttachments.map {
+                it.copy(signature = null, encSignature = null)
+            }
             val updatedDraft = draftWithBody.copy(
                 messageBody = draftWithBody.messageBody.copy(
-                    attachments = draftWithBody.messageBody.attachments + parentAttachments
+                    attachments = draftWithBody.messageBody.attachments + parentAttachmentsWithoutSignature
                 )
             )
             saveDraft(updatedDraft, userId)

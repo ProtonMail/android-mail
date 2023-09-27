@@ -119,4 +119,17 @@ object MessageAttachmentSample {
         headers = mapOf("content-id" to "embeddedImageContentId", "content-disposition" to "inline")
     )
 
+    val signedDocument = MessageAttachment(
+        attachmentId = AttachmentId("signed_document"),
+        name = "document_signed.pdf",
+        size = 1234,
+        mimeType = "application/doc",
+        disposition = null,
+        keyPackets = null,
+        signature = "attachment_signature",
+        encSignature = "PGPSIGN----test----PGPSIGN",
+        headers = emptyMap()
+    )
+
+
 }
