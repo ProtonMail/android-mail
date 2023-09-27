@@ -118,10 +118,15 @@ fun AttachmentItem(
                 shape = ProtonTheme.shapes.large
             )
             .clickable {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q || externalStoragePermission.status.isGranted) {
-                    onAttachmentItemClicked(AttachmentId(attachmentUiModel.attachmentId))
-                } else {
-                    externalStoragePermission.launchPermissionRequest()
+                // For now the deletable flag indicates the usage in composer.
+                // Since currently opening an attachment in the the composer is not supported,
+                // the click shouldn't do anything.
+                if (attachmentUiModel.deletable.not()) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q || externalStoragePermission.status.isGranted) {
+                        onAttachmentItemClicked(AttachmentId(attachmentUiModel.attachmentId))
+                    } else {
+                        externalStoragePermission.launchPermissionRequest()
+                    }
                 }
             }
             .padding(ProtonDimens.SmallSpacing),
