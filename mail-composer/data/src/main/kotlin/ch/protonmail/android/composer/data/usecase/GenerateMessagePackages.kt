@@ -98,15 +98,15 @@ class GenerateMessagePackages @Inject constructor(
                     decryptText(encryptedBodyPgpMessage)
                 }
 
-            val plaintextMimeBody = generateMimeBody(decryptedBody)
+            val mimeBody = generateMimeBody(decryptedBody, localDraft.messageBody.mimeType)
 
             // Encrypt and sign, then decrypt MIME body's session key to send it for plaintext recipients.
-            val encryptedMimeBodySplit = encryptAndSignText(plaintextMimeBody).split(cryptoContext.pgpCrypto)
+            val encryptedMimeBodySplit = encryptAndSignText(mimeBody).split(cryptoContext.pgpCrypto)
             decryptedMimeBodySessionKey = decryptSessionKey(encryptedMimeBodySplit.keyPacket())
             encryptedMimeBodyDataPacket = encryptedMimeBodySplit.dataPacket()
 
             signedAndEncryptedMimeBodyForRecipients = sendPreferences.mapValues { entry ->
-                signAndEncryptMimeBody(entry, plaintextMimeBody, this, cryptoContext)
+                signAndEncryptMimeBody(entry, mimeBody, this, cryptoContext)
             }.filterNullValues()
         }
 
@@ -146,10 +146,10 @@ class GenerateMessagePackages @Inject constructor(
     }
 
     /**
-     * Correctly encodes and formats plaintext Message body in multipart/mixed content type.
+     * Correctly encodes and formats Message body in multipart/mixed content type.
      */
     @Suppress("ImplicitDefaultLocale")
-    private fun generateMimeBody(body: String): String {
+    private fun generateMimeBody(body: String, bodyContentType: MimeType): String {
 
         val bytes = ByteArray(16)
         Random.nextBytes(bytes)
@@ -166,16 +166,15 @@ class GenerateMessagePackages @Inject constructor(
         val quotedPrintableBody = stringWriter.toString()
 
         return """
-            Content-Type: multipart/mixed; boundary=${boundary.substring(2)}
-            
-            $boundary
-            Content-Transfer-Encoding: quoted-printable
-            Content-Type: text/plain; charset=utf-8
-            
-            $quotedPrintableBody
-            $boundary--
-        """.trimIndent()
+            |Content-Type: multipart/mixed; boundary=${boundary.substring(2)}
+            |
+            |$boundary
+            |Content-Transfer-Encoding: quoted-printable
+            |Content-Type: ${bodyContentType.value}; charset=utf-8
+            |
+            |$quotedPrintableBody
+            |$boundary--
+        """.trimMargin()
     }
-
 
 }
