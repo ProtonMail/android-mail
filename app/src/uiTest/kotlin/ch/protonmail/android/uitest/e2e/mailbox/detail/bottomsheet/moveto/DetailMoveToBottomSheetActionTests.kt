@@ -35,10 +35,10 @@ import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.folders.Tint
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntry
 import ch.protonmail.android.uitest.models.mailbox.ParticipantEntry
-import ch.protonmail.android.uitest.models.snackbar.SnackbarTextEntry
 import ch.protonmail.android.uitest.robot.common.section.snackbarSection
 import ch.protonmail.android.uitest.robot.common.section.verify
 import ch.protonmail.android.uitest.robot.detail.conversationDetailRobot
+import ch.protonmail.android.uitest.robot.detail.model.MessageDetailSnackbar
 import ch.protonmail.android.uitest.robot.detail.model.bottomsheet.MoveToBottomSheetFolderEntry
 import ch.protonmail.android.uitest.robot.detail.model.bottomsheet.MoveToBottomSheetFolderEntry.SystemFolders.Archive
 import ch.protonmail.android.uitest.robot.detail.model.bottomsheet.MoveToBottomSheetFolderEntry.SystemFolders.Inbox
@@ -256,7 +256,7 @@ internal class DetailMoveToBottomSheetActionTests : MockedNetworkTest() {
         startingFolder: MoveToBottomSheetFolderEntry,
         destinationFolder: MoveToBottomSheetFolderEntry
     ) {
-        val snackbarText = SnackbarTextEntry.ConversationMovedToFolder(destinationFolder.name)
+        val snackbar = MessageDetailSnackbar.ConversationMovedToFolder(destinationFolder.name)
 
         menuRobot {
             swipeOpenSidebarMenu()
@@ -279,7 +279,7 @@ internal class DetailMoveToBottomSheetActionTests : MockedNetworkTest() {
             }
 
             snackbarSection {
-                verify { hasNormalMessage(snackbarText) }
+                verify { isDisplaying(snackbar) }
             }
         }
 

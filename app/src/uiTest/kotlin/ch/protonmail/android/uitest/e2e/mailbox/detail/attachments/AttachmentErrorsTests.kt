@@ -37,10 +37,10 @@ import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.login.LoginTestUserTypes
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
-import ch.protonmail.android.uitest.models.snackbar.SnackbarTextEntry
 import ch.protonmail.android.uitest.robot.common.section.snackbarSection
 import ch.protonmail.android.uitest.robot.common.section.verify
 import ch.protonmail.android.uitest.robot.detail.messageDetailRobot
+import ch.protonmail.android.uitest.robot.detail.model.MessageDetailSnackbar
 import ch.protonmail.android.uitest.robot.detail.section.attachmentsSection
 import ch.protonmail.android.uitest.robot.detail.section.messageBodySection
 import ch.protonmail.android.uitest.robot.detail.section.verify
@@ -85,6 +85,8 @@ internal class AttachmentErrorsTests : MockedNetworkTest(loginType = LoginTestUs
             )
         }
 
+        val expectedSnackbar = MessageDetailSnackbar.MultipleDownloadsWarning
+
         navigator { navigateTo(Destination.MailDetail()) }
 
         messageDetailRobot {
@@ -98,8 +100,8 @@ internal class AttachmentErrorsTests : MockedNetworkTest(loginType = LoginTestUs
             }
 
             snackbarSection {
-                verify { hasMessage(SnackbarTextEntry.MultipleDownloadsWarning) }
-                waitUntilGone()
+                verify { isDisplaying(expectedSnackbar) }
+                waitUntilDismisses(expectedSnackbar)
             }
 
             attachmentsSection { verify { hasLoaderNotDisplayedForItem(position = 0) } }
@@ -140,7 +142,7 @@ internal class AttachmentErrorsTests : MockedNetworkTest(loginType = LoginTestUs
             messageBodySection { waitUntilMessageIsShown() }
             attachmentsSection { tapItem() }
 
-            snackbarSection { verify { hasMessage(SnackbarTextEntry.FailedToGetAttachment) } }
+            snackbarSection { verify { isDisplaying(MessageDetailSnackbar.FailedToGetAttachment) } }
 
             attachmentsSection {
                 tapItem()
@@ -183,7 +185,7 @@ internal class AttachmentErrorsTests : MockedNetworkTest(loginType = LoginTestUs
             messageBodySection { waitUntilMessageIsShown() }
             attachmentsSection { tapItem() }
 
-            snackbarSection { verify { hasMessage(SnackbarTextEntry.FailedToGetAttachment) } }
+            snackbarSection { verify { isDisplaying(MessageDetailSnackbar.FailedToGetAttachment) } }
 
             deviceRobot {
                 intents { verify { actionViewIntentWasNotLaunched() } }

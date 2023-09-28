@@ -26,13 +26,13 @@ import ch.protonmail.android.uitest.MockedNetworkTest
 import ch.protonmail.android.uitest.helpers.core.TestId
 import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
-import ch.protonmail.android.uitest.models.snackbar.SnackbarTextEntry
 import ch.protonmail.android.uitest.robot.common.section.snackbarSection
 import ch.protonmail.android.uitest.robot.common.section.verify
 import ch.protonmail.android.uitest.robot.composer.composerRobot
 import ch.protonmail.android.uitest.robot.composer.model.chips.ChipsCreationTrigger
 import ch.protonmail.android.uitest.robot.composer.model.chips.RecipientChipEntry
 import ch.protonmail.android.uitest.robot.composer.model.chips.RecipientChipValidationState
+import ch.protonmail.android.uitest.robot.composer.model.snackbar.ComposerSnackbar
 import ch.protonmail.android.uitest.robot.composer.section.recipients.ComposerRecipientsSection
 import ch.protonmail.android.uitest.robot.composer.section.recipients.bccRecipientSection
 import ch.protonmail.android.uitest.robot.composer.section.recipients.ccRecipientSection
@@ -76,7 +76,7 @@ internal class ComposerRecipientsInvalidChipsTests : MockedNetworkTest(), Compos
                 createAndVerifyInvalidChip()
             }
 
-            snackbarSection { verify { hasMessage(SnackbarTextEntry.InvalidEmailAddress) } }
+            snackbarSection { verify { isDisplaying(ComposerSnackbar.InvalidEmailAddress) } }
         }
     }
 
@@ -92,7 +92,7 @@ internal class ComposerRecipientsInvalidChipsTests : MockedNetworkTest(), Compos
                 createAndVerifyInvalidChip()
             }
 
-            snackbarSection { verify { hasMessage(SnackbarTextEntry.InvalidEmailAddress) } }
+            snackbarSection { verify { isDisplaying(ComposerSnackbar.InvalidEmailAddress) } }
         }
     }
 
@@ -108,7 +108,7 @@ internal class ComposerRecipientsInvalidChipsTests : MockedNetworkTest(), Compos
                 createAndVerifyInvalidChip()
             }
 
-            snackbarSection { verify { hasMessage(SnackbarTextEntry.InvalidEmailAddress) } }
+            snackbarSection { verify { isDisplaying(ComposerSnackbar.InvalidEmailAddress) } }
         }
     }
 
@@ -129,7 +129,7 @@ internal class ComposerRecipientsInvalidChipsTests : MockedNetworkTest(), Compos
                 verify { hasRecipientChips(expectedRecipientChip) }
             }
 
-            snackbarSection { verify { hasMessage(SnackbarTextEntry.InvalidEmailAddress) } }
+            snackbarSection { verify { isDisplaying(ComposerSnackbar.InvalidEmailAddress) } }
         }
     }
 
@@ -141,7 +141,7 @@ internal class ComposerRecipientsInvalidChipsTests : MockedNetworkTest(), Compos
                 createAndVerifyInvalidChip(trigger = ChipsCreationTrigger.Spacebar)
             }
 
-            snackbarSection { verify { hasMessage(SnackbarTextEntry.InvalidEmailAddress) } }
+            snackbarSection { verify { isDisplaying(ComposerSnackbar.InvalidEmailAddress) } }
         }
     }
 
@@ -154,7 +154,7 @@ internal class ComposerRecipientsInvalidChipsTests : MockedNetworkTest(), Compos
                     typeRecipient(it.text, autoConfirm = true)
 
                     verify { hasRecipientChips(it) }
-                    snackbarSection { verify { hasMessage(SnackbarTextEntry.InvalidEmailAddress) } }
+                    snackbarSection { verify { isDisplaying(ComposerSnackbar.InvalidEmailAddress) } }
                 }
             }
         }

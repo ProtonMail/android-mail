@@ -36,13 +36,13 @@ import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.login.LoginTestUserTypes
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
-import ch.protonmail.android.uitest.models.snackbar.SnackbarTextEntry
 import ch.protonmail.android.uitest.robot.common.section.fullscreenLoaderSection
 import ch.protonmail.android.uitest.robot.common.section.snackbarSection
 import ch.protonmail.android.uitest.robot.common.section.verify
 import ch.protonmail.android.uitest.robot.composer.composerRobot
 import ch.protonmail.android.uitest.robot.composer.model.chips.RecipientChipEntry
 import ch.protonmail.android.uitest.robot.composer.model.chips.RecipientChipValidationState
+import ch.protonmail.android.uitest.robot.composer.model.snackbar.ComposerSnackbar
 import ch.protonmail.android.uitest.robot.composer.section.topAppBarSection
 import ch.protonmail.android.uitest.robot.mailbox.mailboxRobot
 import ch.protonmail.android.uitest.robot.mailbox.section.listSection
@@ -98,7 +98,7 @@ internal class OpenExistingDraftsErrorTests :
         }
 
         composerRobot {
-            snackbarSection { verify { hasMessage(SnackbarTextEntry.DraftOutOfSync) } }
+            snackbarSection { verify { isDisplaying(ComposerSnackbar.DraftOutOfSync) } }
             verifyEmptyFields()
         }
     }
@@ -130,7 +130,7 @@ internal class OpenExistingDraftsErrorTests :
 
         composerRobot {
             verifyEmptyFields()
-            snackbarSection { verify { hasMessage(SnackbarTextEntry.DraftOutOfSync) } }
+            snackbarSection { verify { isDisplaying(ComposerSnackbar.DraftOutOfSync) } }
         }
     }
 
@@ -160,7 +160,7 @@ internal class OpenExistingDraftsErrorTests :
 
         composerRobot {
             verifyEmptyFields()
-            snackbarSection { verify { hasMessage(SnackbarTextEntry.DraftOutOfSync) } }
+            snackbarSection { verify { isDisplaying(ComposerSnackbar.DraftOutOfSync) } }
         }
     }
 
@@ -274,7 +274,7 @@ internal class OpenExistingDraftsErrorTests :
         composerRobot {
             fullscreenLoaderSection { waitUntilGone() }
             verifyEmptyFields()
-            snackbarSection { verify { hasMessage(SnackbarTextEntry.DraftOutOfSync) } }
+            snackbarSection { verify { isDisplaying(ComposerSnackbar.DraftOutOfSync) } }
         }
     }
 

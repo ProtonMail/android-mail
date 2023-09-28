@@ -23,9 +23,9 @@ import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntry
 import ch.protonmail.android.uitest.models.mailbox.MailboxType
 import ch.protonmail.android.uitest.models.mailbox.ParticipantEntry
-import ch.protonmail.android.uitest.models.snackbar.SnackbarTextEntry
 import ch.protonmail.android.uitest.robot.common.section.snackbarSection
 import ch.protonmail.android.uitest.robot.common.section.verify
+import ch.protonmail.android.uitest.robot.composer.model.snackbar.ComposerSnackbar
 import ch.protonmail.android.uitest.robot.mailbox.mailboxRobot
 import ch.protonmail.android.uitest.robot.mailbox.section.emptyListSection
 import ch.protonmail.android.uitest.robot.mailbox.section.listSection
@@ -80,7 +80,7 @@ internal interface ComposerDraftsTests : ComposerTests {
         )
 
         mailboxRobot {
-            snackbarSection { verify { hasSuccessMessage(SnackbarTextEntry.DraftSaved) } }
+            snackbarSection { verify { isDisplaying(ComposerSnackbar.DraftSaved) } }
         }
 
         menuRobot {

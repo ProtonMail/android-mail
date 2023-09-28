@@ -37,10 +37,10 @@ import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.login.LoginTestUserTypes
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
-import ch.protonmail.android.uitest.models.snackbar.SnackbarTextEntry
 import ch.protonmail.android.uitest.robot.common.section.snackbarSection
 import ch.protonmail.android.uitest.robot.common.section.verify
 import ch.protonmail.android.uitest.robot.detail.messageDetailRobot
+import ch.protonmail.android.uitest.robot.detail.model.MessageDetailSnackbar
 import ch.protonmail.android.uitest.robot.detail.model.attachments.AttachmentDetailItemEntry
 import ch.protonmail.android.uitest.robot.detail.model.attachments.AttachmentDetailSummaryEntry
 import ch.protonmail.android.uitest.robot.detail.section.attachmentsSection
@@ -118,7 +118,7 @@ internal class MessageDetailEmbeddedImagesTests :
         }
 
         messageDetailRobot {
-            snackbarSection { verify { hasMessage(SnackbarTextEntry.FailedToLoadMessage) } }
+            snackbarSection { verify { isDisplaying(MessageDetailSnackbar.FailedToLoadMessage) } }
         }
     }
 
@@ -145,7 +145,7 @@ internal class MessageDetailEmbeddedImagesTests :
         }
 
         messageDetailRobot {
-            snackbarSection { verify { hasMessage(SnackbarTextEntry.FailedToDecryptMessage) } }
+            snackbarSection { verify { isDisplaying(MessageDetailSnackbar.FailedToDecryptMessage) } }
         }
     }
 

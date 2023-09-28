@@ -21,10 +21,10 @@ package ch.protonmail.android.uitest.e2e.mailbox.errors.pulltorefresh
 import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntry
 import ch.protonmail.android.uitest.models.mailbox.ParticipantEntry
-import ch.protonmail.android.uitest.models.snackbar.SnackbarTextEntry
 import ch.protonmail.android.uitest.robot.common.section.snackbarSection
 import ch.protonmail.android.uitest.robot.common.section.verify
 import ch.protonmail.android.uitest.robot.mailbox.mailboxRobot
+import ch.protonmail.android.uitest.robot.mailbox.model.snackbar.MailboxSnackbar
 import ch.protonmail.android.uitest.robot.mailbox.section.emptyListSection
 import ch.protonmail.android.uitest.robot.mailbox.section.fullScreenErrorSection
 import ch.protonmail.android.uitest.robot.mailbox.section.listSection
@@ -106,7 +106,7 @@ internal interface MailboxPullToRefreshErrorTests {
             }
 
             snackbarSection {
-                verify { hasErrorMessage(SnackbarTextEntry.FailedToLoadNewItems) }
+                verify { isDisplaying(MailboxSnackbar.FailedToLoadNewItems) }
             }
 
             listSection {

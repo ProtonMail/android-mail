@@ -36,10 +36,10 @@ import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.login.LoginTestUserTypes
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
-import ch.protonmail.android.uitest.models.snackbar.SnackbarTextEntry
 import ch.protonmail.android.uitest.robot.common.section.snackbarSection
 import ch.protonmail.android.uitest.robot.common.section.verify
 import ch.protonmail.android.uitest.robot.detail.conversationDetailRobot
+import ch.protonmail.android.uitest.robot.detail.model.MessageDetailSnackbar
 import ch.protonmail.android.uitest.robot.detail.section.attachmentsSection
 import ch.protonmail.android.uitest.robot.detail.section.conversation.messagesCollapsedSection
 import ch.protonmail.android.uitest.robot.detail.section.messageBodySection
@@ -87,10 +87,11 @@ internal class AttachmentConversationModeTests : MockedNetworkTest(loginType = L
                 get("/mail/v4/attachments/*")
                     respondWith "/mail/v4/attachments/attachment_194318"
                     withStatusCode 200 matchWildcards true serveOnce true
-                    withMimeType MimeType.OctetStream withNetworkDelay 2000
+                    withMimeType MimeType.OctetStream withNetworkDelay 5000L
             )
         }
 
+        val expectedSnackbar = MessageDetailSnackbar.MultipleDownloadsWarning
         val expectedMimeType = "image/jpeg"
 
         navigator { navigateTo(Destination.MailDetail()) }
@@ -111,8 +112,8 @@ internal class AttachmentConversationModeTests : MockedNetworkTest(loginType = L
             attachmentsSection { tapItem() }
 
             snackbarSection {
-                verify { hasMessage(SnackbarTextEntry.MultipleDownloadsWarning) }
-                waitUntilGone()
+                verify { isDisplaying(expectedSnackbar) }
+                waitUntilDismisses(expectedSnackbar)
             }
 
             deviceRobot {

@@ -28,10 +28,10 @@ import ch.protonmail.android.uitest.helpers.core.TestId
 import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.login.LoginTestUserTypes
-import ch.protonmail.android.uitest.models.snackbar.SnackbarTextEntry
 import ch.protonmail.android.uitest.robot.common.section.snackbarSection
 import ch.protonmail.android.uitest.robot.common.section.verify
 import ch.protonmail.android.uitest.robot.composer.composerRobot
+import ch.protonmail.android.uitest.robot.composer.model.snackbar.ComposerSnackbar
 import ch.protonmail.android.uitest.robot.composer.section.senderSection
 import ch.protonmail.android.uitest.robot.composer.section.verify
 import dagger.hilt.android.testing.BindValue
@@ -75,7 +75,7 @@ internal class ComposerSenderFreeUserTests :
     fun testFreeUserCannotChangeSender() {
         composerRobot {
             senderSection { tapChangeSender() }
-            snackbarSection { verify { hasMessage(SnackbarTextEntry.UpgradePlanToChangeSender) } }
+            snackbarSection { verify { isDisplaying(ComposerSnackbar.UpgradePlanToChangeSender) } }
         }
     }
 }

@@ -40,10 +40,10 @@ import ch.protonmail.android.uitest.helpers.core.TestingNotes
 import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.login.LoginTestUserTypes
-import ch.protonmail.android.uitest.models.snackbar.SnackbarTextEntry
 import ch.protonmail.android.uitest.robot.common.section.snackbarSection
 import ch.protonmail.android.uitest.robot.common.section.verify
 import ch.protonmail.android.uitest.robot.composer.composerRobot
+import ch.protonmail.android.uitest.robot.composer.model.snackbar.ComposerSnackbar
 import ch.protonmail.android.uitest.robot.composer.section.topAppBarSection
 import ch.protonmail.android.uitest.robot.mailbox.mailboxRobot
 import dagger.hilt.android.testing.BindValue
@@ -94,7 +94,7 @@ internal class ComposerSendMessageNetworkErrors : MockedNetworkTest(
         }
 
         mailboxRobot {
-            snackbarSection { verify { hasErrorMessage(SnackbarTextEntry.MessageSentError) } }
+            snackbarSection { verify { isDisplaying(ComposerSnackbar.MessageSentError) } }
         }
     }
 
@@ -122,7 +122,7 @@ internal class ComposerSendMessageNetworkErrors : MockedNetworkTest(
         }
 
         mailboxRobot {
-            snackbarSection { verify { hasErrorMessage(SnackbarTextEntry.MessageSentError) } }
+            snackbarSection { verify { isDisplaying(ComposerSnackbar.MessageSentError) } }
         }
     }
 
@@ -152,7 +152,7 @@ internal class ComposerSendMessageNetworkErrors : MockedNetworkTest(
         }
 
         mailboxRobot {
-            snackbarSection { verify { hasErrorMessage(SnackbarTextEntry.MessageSentError) } }
+            snackbarSection { verify { isDisplaying(ComposerSnackbar.MessageSentError) } }
         }
     }
 
@@ -181,7 +181,7 @@ internal class ComposerSendMessageNetworkErrors : MockedNetworkTest(
         }
 
         mailboxRobot {
-            snackbarSection { verify { hasErrorMessage(SnackbarTextEntry.MessageSentError) } }
+            snackbarSection { verify { isDisplaying(ComposerSnackbar.MessageSentError) } }
         }
     }
 
@@ -217,7 +217,7 @@ internal class ComposerSendMessageNetworkErrors : MockedNetworkTest(
         }
 
         mailboxRobot {
-            snackbarSection { verify { hasNormalMessage(SnackbarTextEntry.MessageQueued) } }
+            snackbarSection { verify { isDisplaying(ComposerSnackbar.MessageQueued) } }
         }
     }
 
@@ -246,7 +246,7 @@ internal class ComposerSendMessageNetworkErrors : MockedNetworkTest(
         }
 
         mailboxRobot {
-            snackbarSection { verify { hasErrorMessage(SnackbarTextEntry.MessageSentError) } }
+            snackbarSection { verify { isDisplaying(ComposerSnackbar.MessageSentError) } }
         }
     }
 
@@ -278,7 +278,7 @@ internal class ComposerSendMessageNetworkErrors : MockedNetworkTest(
         }
 
         mailboxRobot {
-            snackbarSection { verify { hasSuccessMessage(SnackbarTextEntry.MessageSent) } }
+            snackbarSection { verify { isDisplaying(ComposerSnackbar.MessageSent) } }
         }
     }
 
@@ -310,7 +310,7 @@ internal class ComposerSendMessageNetworkErrors : MockedNetworkTest(
         }
 
         mailboxRobot {
-            snackbarSection { verify { hasErrorMessage(SnackbarTextEntry.MessageSentError) } }
+            snackbarSection { verify { isDisplaying(ComposerSnackbar.MessageSentError) } }
         }
     }
 }

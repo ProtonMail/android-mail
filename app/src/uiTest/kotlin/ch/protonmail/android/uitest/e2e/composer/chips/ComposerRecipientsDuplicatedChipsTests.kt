@@ -25,12 +25,12 @@ import ch.protonmail.android.uitest.MockedNetworkTest
 import ch.protonmail.android.uitest.helpers.core.TestId
 import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
-import ch.protonmail.android.uitest.models.snackbar.SnackbarTextEntry
 import ch.protonmail.android.uitest.robot.common.section.snackbarSection
 import ch.protonmail.android.uitest.robot.common.section.verify
 import ch.protonmail.android.uitest.robot.composer.composerRobot
 import ch.protonmail.android.uitest.robot.composer.model.chips.RecipientChipEntry
 import ch.protonmail.android.uitest.robot.composer.model.chips.RecipientChipValidationState
+import ch.protonmail.android.uitest.robot.composer.model.snackbar.ComposerSnackbar
 import ch.protonmail.android.uitest.robot.composer.section.recipients.bccRecipientSection
 import ch.protonmail.android.uitest.robot.composer.section.recipients.ccRecipientSection
 import ch.protonmail.android.uitest.robot.composer.section.recipients.toRecipientSection
@@ -115,7 +115,7 @@ internal class ComposerRecipientsDuplicatedChipsTests : MockedNetworkTest(), Com
             }
 
             snackbarSection {
-                verify { hasMessage(SnackbarTextEntry.DuplicateEmailAddress(expectedFocusedRecipientChip.text)) }
+                verify { isDisplaying(ComposerSnackbar.DuplicateEmailAddress(expectedFocusedRecipientChip.text)) }
             }
         }
     }

@@ -18,13 +18,16 @@
 
 package ch.protonmail.android.uitest.robot.common.section
 
+import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onFirst
+import androidx.compose.ui.test.onNodeWithTag
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.test.ksp.annotations.AttachTo
 import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
-import ch.protonmail.android.uitest.models.snackbar.SnackbarTextEntry
+import ch.protonmail.android.uitest.models.snackbar.SnackbarEntry
+import ch.protonmail.android.uitest.models.snackbar.SnackbarType
 import ch.protonmail.android.uitest.robot.ComposeSectionRobot
 import ch.protonmail.android.uitest.robot.composer.ComposerRobot
 import ch.protonmail.android.uitest.robot.detail.ConversationDetailRobot
@@ -44,57 +47,52 @@ import ch.protonmail.android.uitest.util.awaitHidden
 )
 internal class SnackbarSection : ComposeSectionRobot() {
 
-    private val snackbarHost = composeTestRule.onAllNodesWithTag(CommonTestTags.SnackbarHost).onFirst()
-    private val snackbarHostError = composeTestRule.onAllNodesWithTag(CommonTestTags.SnackbarHostError).onFirst()
-    private val snackbarHostWarning = composeTestRule.onAllNodesWithTag(CommonTestTags.SnackbarHostWarning).onFirst()
-    private val snackbarHostNormal = composeTestRule.onAllNodesWithTag(CommonTestTags.SnackbarHostNormal).onFirst()
-    private val snackbarHostSuccess = composeTestRule.onAllNodesWithTag(CommonTestTags.SnackbarHostSuccess).onFirst()
+    // There are different hosts, thus they're defined as lazy to avoid
+    // spending unnecessary time locating unnecessary nodes.
+    private val snackbarHostDefault: SemanticsNodeInteraction by lazy {
+        composeTestRule.onAllNodesWithTag(CommonTestTags.SnackbarHost).onFirst()
+    }
 
-    fun waitUntilGone() {
-        snackbarHost.awaitHidden()
-        snackbarHostError.awaitHidden()
-        snackbarHostWarning.awaitHidden()
-        snackbarHostNormal.awaitHidden()
-        snackbarHostSuccess.awaitHidden()
+    private val snackbarHostError: SemanticsNodeInteraction by lazy {
+        composeTestRule.onNodeWithTag(CommonTestTags.SnackbarHostError)
+    }
+
+    private val snackbarHostWarning: SemanticsNodeInteraction by lazy {
+        composeTestRule.onNodeWithTag(CommonTestTags.SnackbarHostWarning)
+    }
+
+    private val snackbarHostNormal: SemanticsNodeInteraction by lazy {
+        composeTestRule.onNodeWithTag(CommonTestTags.SnackbarHostNormal)
+    }
+
+    private val snackbarHostSuccess: SemanticsNodeInteraction by lazy {
+        composeTestRule.onNodeWithTag(CommonTestTags.SnackbarHostSuccess)
+    }
+
+    fun waitUntilDismisses(entry: SnackbarEntry) {
+        val host = resolveHost(entry)
+        host.awaitHidden()
     }
 
     @VerifiesOuter
     inner class Verify {
 
-        fun hasMessage(text: SnackbarTextEntry) = apply {
+        fun isDisplaying(entry: SnackbarEntry) = apply {
+            val host = resolveHost(entry)
+
             // The actual text node is not an immediate child, so the hierarchy needs to be traversed.
-            snackbarHost
-                .awaitDisplayed()
-                .hasAnyChildWith(hasText(text.value))
+            host.awaitDisplayed()
+                .hasAnyChildWith(hasText(entry.value))
         }
+    }
 
-        fun hasErrorMessage(text: SnackbarTextEntry) = apply {
-            // The actual text node is not an immediate child, so the hierarchy needs to be traversed.
-            snackbarHostError
-                .awaitDisplayed()
-                .hasAnyChildWith(hasText(text.value))
-        }
-
-        fun hasWarningMessage(text: SnackbarTextEntry) = apply {
-            // The actual text node is not an immediate child, so the hierarchy needs to be traversed.
-            snackbarHostWarning
-                .awaitDisplayed()
-                .hasAnyChildWith(hasText(text.value))
-        }
-
-
-        fun hasNormalMessage(text: SnackbarTextEntry) = apply {
-            // The actual text node is not an immediate child, so the hierarchy needs to be traversed.
-            snackbarHostNormal
-                .awaitDisplayed()
-                .hasAnyChildWith(hasText(text.value))
-        }
-
-        fun hasSuccessMessage(text: SnackbarTextEntry) = apply {
-            // The actual text node is not an immediate child, so the hierarchy needs to be traversed.
-            snackbarHostSuccess
-                .awaitDisplayed()
-                .hasAnyChildWith(hasText(text.value))
+    private fun resolveHost(entry: SnackbarEntry): SemanticsNodeInteraction {
+        return when (entry.type) {
+            SnackbarType.Default -> snackbarHostDefault
+            SnackbarType.Normal -> snackbarHostNormal
+            SnackbarType.Error -> snackbarHostError
+            SnackbarType.Warning -> snackbarHostWarning
+            SnackbarType.Success -> snackbarHostSuccess
         }
     }
 }
