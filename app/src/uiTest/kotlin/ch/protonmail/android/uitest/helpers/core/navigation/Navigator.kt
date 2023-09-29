@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.uitest.helpers.core.navigation
 
+import androidx.test.espresso.Espresso
 import ch.protonmail.android.test.ksp.annotations.AsDsl
 import ch.protonmail.android.uitest.helpers.login.MockedLoginTestUsers
 import ch.protonmail.android.uitest.robot.common.section.fullscreenLoaderSection
@@ -40,6 +41,17 @@ internal class Navigator {
     private val addAccountRobot = AddAccountRobot()
 
     /**
+     * Triggers the launch of the app and waits for an idle state (via Espresso).
+     *
+     * The Compose test rule here is not used as the entry point when launching the app
+     * will never contain a Compose hierarchy for now (as it's the common Core sign in/up screen).
+     */
+    fun openApp() {
+        ActivityScenarioHolder.initialize()
+        Espresso.onIdle()
+    }
+
+    /**
      * Navigates to a given [Destination].
      *
      * The navigation shall always be performed at the beginning of the test, as it assumes that the initial state
@@ -54,7 +66,7 @@ internal class Navigator {
         launchApp: Boolean = true,
         performLoginViaUI: Boolean = true
     ) {
-        if (launchApp) ActivityScenarioHolder.initialize()
+        if (launchApp) openApp()
 
         if (performLoginViaUI) login()
 

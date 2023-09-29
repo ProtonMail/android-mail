@@ -18,14 +18,35 @@
 
 package ch.protonmail.android.uitest.robot.helpers
 
+import androidx.lifecycle.Lifecycle
+import androidx.test.core.app.ActivityScenario
+import androidx.test.espresso.Espresso
+import ch.protonmail.android.MainActivity
 import ch.protonmail.android.test.ksp.annotations.AsDsl
+import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
 import ch.protonmail.android.test.robot.ProtonMailRobot
 import ch.protonmail.android.uitest.util.ActivityScenarioHolder
+import org.junit.Assert.assertEquals
 
 @AsDsl
 internal class DeviceRobot : ProtonMailRobot {
 
+    private val activityScenario: ActivityScenario<MainActivity>
+        get() = ActivityScenarioHolder.scenario
+
+    fun pressBack() {
+        Espresso.pressBackUnconditionally()
+    }
+
     fun triggerActivityRecreation() {
-        ActivityScenarioHolder.scenario.recreate()
+        activityScenario.recreate()
+    }
+
+    @VerifiesOuter
+    inner class Verify {
+
+        fun isMainActivityNotDisplayed() {
+            assertEquals(Lifecycle.State.DESTROYED, activityScenario.state)
+        }
     }
 }
