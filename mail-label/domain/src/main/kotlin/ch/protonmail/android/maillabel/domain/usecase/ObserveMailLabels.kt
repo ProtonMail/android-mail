@@ -46,7 +46,11 @@ class ObserveMailLabels @Inject constructor(
     operator fun invoke(userId: UserId) = combine(
         observeSystemLabelIds().map { it.toMailLabelSystem() },
         observeLabels(userId, MessageLabel).map { it.toMailLabelCustom() },
-        observeLabels(userId, MessageFolder).map { it.toMailLabelCustom() }
+        observeLabels(userId, MessageFolder)
+            .map { labelList ->
+                labelList.map { it.copy(isExpanded = true) } // Temporary fix until folder hierarchy is supported
+            }
+            .map { it.toMailLabelCustom() }
     ) { defaults, labels, folders ->
         MailLabels(
             systemLabels = defaults,
