@@ -22,14 +22,18 @@ import java.io.File
 import arrow.core.Either
 import arrow.core.continuations.either
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.AttachmentRepository
+import kotlinx.coroutines.flow.first
 import me.proton.core.domain.entity.UserId
+import timber.log.Timber
 import javax.inject.Inject
 
 class ReadAttachmentsFromStorage @Inject constructor(
-    private val attachmentRepository: AttachmentRepository
+    private val attachmentRepository: AttachmentRepository,
+    private val draftStateRepository: DraftStateRepository
 ) {
 
     suspend operator fun invoke(
@@ -37,8 +41,12 @@ class ReadAttachmentsFromStorage @Inject constructor(
         messageId: MessageId,
         attachmentIds: List<AttachmentId>
     ): Either<DataError, Map<AttachmentId, File>> = either {
+        val apiMessageId = draftStateRepository.observe(userId, messageId).first().onLeft {
+            Timber.e("No draft state found for $messageId when reading attachments from storage")
+        }.getOrNull()?.apiMessageId ?: shift(DataError.Local.NoDataCached)
+
         attachmentIds.associateWith {
-            attachmentRepository.readFileFromStorage(userId, messageId, it).bind()
+            attachmentRepository.readFileFromStorage(userId, apiMessageId, it).bind()
         }
     }
 }
