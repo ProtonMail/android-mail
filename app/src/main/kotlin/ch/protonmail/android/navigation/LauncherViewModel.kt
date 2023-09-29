@@ -49,6 +49,7 @@ import me.proton.core.accountmanager.presentation.onAccountTwoPassModeNeeded
 import me.proton.core.accountmanager.presentation.onSessionForceLogout
 import me.proton.core.accountmanager.presentation.onSessionSecondFactorNeeded
 import me.proton.core.auth.presentation.AuthOrchestrator
+import me.proton.core.auth.presentation.onAddAccountResult
 import me.proton.core.domain.entity.Product
 import me.proton.core.domain.entity.UserId
 import me.proton.core.plan.presentation.PlansOrchestrator
@@ -101,6 +102,14 @@ class LauncherViewModel @Inject constructor(
         reportOrchestrator.register(context)
         userSettingsOrchestrator.register(context)
         notificationsPermissionsOrchestrator.register(context)
+
+        authOrchestrator.onAddAccountResult { result ->
+            viewModelScope.launch {
+                if (result == null && getPrimaryUserIdOrNull() == null) {
+                    context.finish()
+                }
+            }
+        }
 
         accountManager.observe(context.lifecycle, Lifecycle.State.CREATED)
             .onSessionForceLogout { userManager.lock(it.userId) }
