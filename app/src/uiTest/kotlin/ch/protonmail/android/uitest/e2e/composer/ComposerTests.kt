@@ -96,6 +96,12 @@ internal interface ComposerTests {
                     withStatusCode 200 serveOnce true,
                 get("/core/v4/keys?Email=happyllama%40proton.black")
                     respondWith "/core/v4/keys/keys_happyllama.json"
+                    withStatusCode 200 serveOnce true,
+                get("/core/v4/keys?Email=test%40example.com")
+                    respondWith "/core/v4/keys/keys_testexample.json"
+                    withStatusCode 200 serveOnce true,
+                get("/core/v4/keys?Email=test2%40example.com")
+                    respondWith "/core/v4/keys/keys_test2example.json"
                     withStatusCode 200 serveOnce true
             )
         }

@@ -49,7 +49,7 @@ import org.junit.Test
 @HiltAndroidTest
 @TestingNotes("Scope to be expanded once MAILANDR-988 is addressed.")
 @UninstallModules(ServerProofModule::class)
-internal class ComposerSendMessageToProtonTests : MockedNetworkTest(
+internal class ComposerSendMessageToExternalUserTests : MockedNetworkTest(
     loginType = LoginTestUserTypes.Paid.FancyCapybara
 ), ComposerTests {
 
@@ -57,7 +57,7 @@ internal class ComposerSendMessageToProtonTests : MockedNetworkTest(
     @BindValue
     val serverProofValidation: ValidateServerProof = mockk(relaxUnitFun = true)
 
-    private val protonRecipient = "royalcat@proton.black"
+    private val externalUser = "test@example.com"
     private val subject = "A subject"
     private val baseMessageBody = "A message body"
 
@@ -85,68 +85,69 @@ internal class ComposerSendMessageToProtonTests : MockedNetworkTest(
 
     @Test
     @SmokeTest
-    @TestId("216691", "219591")
-    fun testMessageSendingToProtonUser() {
+    @TestId("216690")
+    fun testMessageSendingToExternalUser() {
         composerRobot {
-            prepareDraft(protonRecipient, subject = subject, body = baseMessageBody)
+            prepareDraft(externalUser, subject = subject, body = baseMessageBody)
+            topAppBarSection { tapSendButton() }
+        }
+    }
+
+
+    @Test
+    @TestId("216728")
+    fun testMessageSendingToExternalUseWithNoBody() {
+        composerRobot {
+            prepareDraft(externalUser, subject = subject)
             topAppBarSection { tapSendButton() }
         }
     }
 
     @Test
-    @TestId("216691/2", "216722")
-    fun testMessageSendingToProtonUserWithNoBody() {
+    @TestId("216732")
+    fun testMessageSendingToExternalUseWithNoBodyOrSubject() {
         composerRobot {
-            prepareDraft(protonRecipient, subject = subject)
+            prepareDraft(externalUser)
             topAppBarSection { tapSendButton() }
         }
     }
 
     @Test
-    @TestId("216691/3", "219632")
-    fun testMessageSendingToProtonUserWithNoBodyOrSubject() {
+    @TestId("216692")
+    fun testMessageSendingCcExternalUser() {
         composerRobot {
-            prepareDraft(protonRecipient)
+            prepareDraft(ccRecipient = externalUser, subject = subject, body = baseMessageBody)
             topAppBarSection { tapSendButton() }
         }
     }
 
     @Test
-    @TestId("216694")
-    fun testMessageSendingCcProtonUser() {
+    @TestId("216693")
+    fun testMessageSendingBccExternalUser() {
         composerRobot {
-            prepareDraft(ccRecipient = protonRecipient, subject = subject, body = baseMessageBody)
+            prepareDraft(bccRecipient = externalUser, subject = subject, body = baseMessageBody)
             topAppBarSection { tapSendButton() }
         }
     }
 
     @Test
-    @TestId("216695")
-    fun testMessageSendingBccProtonUser() {
-        composerRobot {
-            prepareDraft(bccRecipient = protonRecipient, subject = subject, body = baseMessageBody)
-            topAppBarSection { tapSendButton() }
-        }
-    }
-
-    @Test
-    @TestId("216720")
-    fun testMessageSendingLongBodyToProtonUser() {
+    @TestId("219564")
+    fun testMessageSendingLongBodyToExternalUser() {
         val body = StringUtils.generateRandomString(length = 15000)
 
         composerRobot {
-            prepareDraft(bccRecipient = protonRecipient, subject = subject, body = body)
+            prepareDraft(bccRecipient = externalUser, subject = subject, body = body)
             topAppBarSection { tapSendButton() }
         }
     }
 
     @Test
-    @TestId("219635")
-    fun testMessageSendingWithEmojisAsSubjectToProtonUser() {
+    @TestId("219639")
+    fun testMessageSendingWithEmojisAsSubjectToExternalUser() {
         val emojiSubject = "😖😫😩🥺😢😭😮‍💨😤😠😡"
 
         composerRobot {
-            prepareDraft(bccRecipient = protonRecipient, subject = emojiSubject, body = baseMessageBody)
+            prepareDraft(bccRecipient = externalUser, subject = emojiSubject, body = baseMessageBody)
             topAppBarSection { tapSendButton() }
         }
     }
