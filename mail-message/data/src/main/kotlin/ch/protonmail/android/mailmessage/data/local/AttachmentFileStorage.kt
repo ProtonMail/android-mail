@@ -99,6 +99,20 @@ class AttachmentFileStorage @Inject constructor(
         )
     }
 
+    suspend fun updateFileNameForAttachment(
+        userId: UserId,
+        messageId: String,
+        oldAttachmentId: String,
+        newAttachmentId: String
+    ) {
+        internalFileStorage.renameFile(
+            userId,
+            InternalFileStorage.Folder.MessageAttachments(messageId),
+            InternalFileStorage.FileIdentifier(oldAttachmentId),
+            InternalFileStorage.FileIdentifier(newAttachmentId)
+        )
+    }
+
     @Throws(AttachmentFileReadException::class)
     suspend fun readAttachment(
         userId: UserId,

@@ -481,7 +481,7 @@ class AttachmentLocalDataSourceImplTest {
     }
 
     @Test
-    fun `update message attachment updates attachment in db`() = runTest {
+    fun `update message attachment updates attachment in db and attachment file name in app storage`() = runTest {
         // Given
         val expectedAttachmentId = AttachmentId("updated_attachmentId")
         val keyPackets = "updated_keyPackets"
@@ -496,6 +496,14 @@ class AttachmentLocalDataSourceImplTest {
                 localAttachmentId = attachmentId,
                 apiAssignedId = expectedAttachmentId,
                 keyPackets = keyPackets
+            )
+        } just Runs
+        coEvery {
+            attachmentFileStorage.updateFileNameForAttachment(
+                userId = userId,
+                messageId = messageId.id,
+                oldAttachmentId = attachmentId.id,
+                newAttachmentId = expectedAttachmentId.id
             )
         } just Runs
 
@@ -516,6 +524,14 @@ class AttachmentLocalDataSourceImplTest {
                 attachmentId,
                 expectedAttachmentId,
                 keyPackets
+            )
+        }
+        coVerify {
+            attachmentFileStorage.updateFileNameForAttachment(
+                userId = userId,
+                messageId = messageId.id,
+                oldAttachmentId = attachmentId.id,
+                newAttachmentId = expectedAttachmentId.id
             )
         }
     }

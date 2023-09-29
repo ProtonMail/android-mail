@@ -62,6 +62,17 @@ class InternalFileStorage @Inject constructor(
         newFolder = FileHelper.Folder("${userId.asRootDirectory()}${newFolder.path}")
     )
 
+    suspend fun renameFile(
+        userId: UserId,
+        folder: Folder,
+        oldFileIdentifier: FileIdentifier,
+        newFileIdentifier: FileIdentifier
+    ) = fileHelper.renameFile(
+        folder = FileHelper.Folder("${userId.asRootDirectory()}${folder.path}"),
+        oldFilename = FileHelper.Filename(oldFileIdentifier.value.asSanitisedPath()),
+        newFilename = FileHelper.Filename(newFileIdentifier.value.asSanitisedPath())
+    )
+
     suspend fun getFile(
         userId: UserId,
         folder: Folder,

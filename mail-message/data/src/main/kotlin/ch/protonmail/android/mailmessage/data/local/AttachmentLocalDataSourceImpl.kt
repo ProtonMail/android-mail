@@ -252,6 +252,12 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
                 attachment.attachmentId,
                 attachment.keyPackets
             )
+            attachmentFileStorage.updateFileNameForAttachment(
+                userId,
+                messageId.id,
+                localAttachmentId.id,
+                attachment.attachmentId.id
+            )
         }.fold(
             onSuccess = { Unit.right() },
             onFailure = {

@@ -50,6 +50,8 @@ class InternalFileStorageTest {
     @Before
     fun setUp() {
         mockkObject(HashUtils)
+        every { HashUtils.sha256(AttachmentId.Local) } returns AttachmentId.EncodedLocal
+        every { HashUtils.sha256(AttachmentId.Api) } returns AttachmentId.EncodedApi
         every { HashUtils.sha256(MessageId.Raw) } returns MessageId.EncodedDigest
         every { HashUtils.sha256(UserId.Raw) } returns UserId.EncodedDigest
     }
@@ -643,7 +645,38 @@ class InternalFileStorageTest {
         assertTrue(fileDeleted)
     }
 
+    @Test
+    fun `should rename a file using the correct sanitised names for the old a new file name`() = runTest {
+        // Given
+        val path = "/some/path/to/internal/storage/user_id_encoded/attachments"
+        coEvery {
+            fileHelperMock.renameFile(
+                folder = FileHelper.Folder("$path/message_id/"),
+                oldFilename = FileHelper.Filename(AttachmentId.EncodedLocal),
+                newFilename = FileHelper.Filename(AttachmentId.EncodedApi)
+            )
+        } returns true
+
+        // When
+        val fileRenamed = internalFileStorage.renameFile(
+            userId = UserId.Object,
+            folder = InternalFileStorage.Folder.MessageAttachments(MessageId.Raw),
+            oldFileIdentifier = InternalFileStorage.FileIdentifier(AttachmentId.Local),
+            newFileIdentifier = InternalFileStorage.FileIdentifier(AttachmentId.Api)
+        )
+
+        // Then
+        assertTrue(fileRenamed)
+    }
+
     private companion object TestData {
+
+        object AttachmentId {
+            const val Local = "local"
+            const val Api = "api"
+            const val EncodedLocal = "encodedLocal"
+            const val EncodedApi = "encodedApi"
+        }
 
         object MessageId {
 

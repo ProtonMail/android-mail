@@ -56,6 +56,16 @@ class FileHelper @Inject constructor(
         }.getOrNull()
     } ?: false
 
+    suspend fun renameFile(
+        folder: Folder,
+        oldFilename: Filename,
+        newFilename: Filename
+    ) = fileOperationIn(folder) {
+        runCatching {
+            fileFactory.fileFromWhenExists(folder, oldFilename)?.renameTo(fileFactory.fileFrom(folder, newFilename))
+        }.getOrNull()
+    } ?: false
+
     suspend fun writeToFile(
         folder: Folder,
         filename: Filename,
@@ -151,6 +161,8 @@ class FileHelper @Inject constructor(
             folderFrom(folder),
             filename.value
         )
+
+        fun fileFromWhenExists(folder: Folder, filename: Filename) = fileFrom(folder, filename).takeIf { it.exists() }
 
         fun folderFrom(folder: Folder) = File(folder.path).apply { mkdirs() }
 

@@ -289,6 +289,46 @@ internal class AllowedFoldersFileHelperTest(folderPath: String) : FileHelperTest
         unmockkStatic(File::renameTo)
     }
 
+    @Test
+    fun `should rename a file`() = runTest(testDispatcherProvider.Main) {
+        // Given
+        mockkStatic(File::renameTo)
+        val oldFile = FileHelper.Filename("oldFile")
+        val newFile = FileHelper.Filename("newFile")
+        val newFileMock = mockk<File>()
+        val oldFileMock = mockk<File> {
+            every { renameTo(newFileMock) } returns true
+        }
+        every { fileFactoryMock.fileFromWhenExists(folder, oldFile) } returns oldFileMock
+        every { fileFactoryMock.fileFrom(folder, newFile) } returns newFileMock
+
+        // When
+        val fileRenamed = fileHelper.renameFile(folder, oldFile, newFile)
+
+        // Then
+        assertTrue(fileRenamed)
+        unmockkStatic(File::renameTo)
+    }
+
+    @Test
+    fun `should return false when renaming a file fails`() = runTest(testDispatcherProvider.Main) {
+        // Given
+        mockkStatic(File::renameTo)
+        val oldFile = FileHelper.Filename("oldFile")
+        val newFile = FileHelper.Filename("newFile")
+        val newFileMock = mockk<File>()
+        val oldFileMock = mockk<File> { every { renameTo(newFileMock) } returns false }
+        every { fileFactoryMock.fileFromWhenExists(folder, oldFile) } returns oldFileMock
+        every { fileFactoryMock.fileFrom(folder, newFile) } returns newFileMock
+
+        // When
+        val fileRenamed = fileHelper.renameFile(folder, oldFile, newFile)
+
+        // Then
+        assertFalse(fileRenamed)
+        unmockkStatic(File::renameTo)
+    }
+
     companion object {
 
         private val allowedFolders = listOf(

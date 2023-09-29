@@ -195,6 +195,33 @@ internal class AttachmentFileStorageTest {
     }
 
     @Test
+    fun `should update file in internal storage`() = runTest {
+        // Given
+        val updatedAttachmentId = AttachmentId + "_new"
+        coJustRun {
+            internalFileStorageMock.renameFile(
+                userId = UserId,
+                folder = InternalFileStorage.Folder.MessageAttachments(MessageId),
+                oldFileIdentifier = InternalFileStorage.FileIdentifier(AttachmentId),
+                newFileIdentifier = InternalFileStorage.FileIdentifier(updatedAttachmentId)
+            )
+        }
+
+        // When
+        attachmentFileStorage.updateFileNameForAttachment(UserId, MessageId, AttachmentId, updatedAttachmentId)
+
+        // Then
+        coVerify {
+            internalFileStorageMock.renameFile(
+                userId = UserId,
+                folder = InternalFileStorage.Folder.MessageAttachments(MessageId),
+                oldFileIdentifier = InternalFileStorage.FileIdentifier(AttachmentId),
+                newFileIdentifier = InternalFileStorage.FileIdentifier(updatedAttachmentId)
+            )
+        }
+    }
+
+    @Test
     fun `should read file from internal storage and return file when successful`() = runTest {
         // Given
         coEvery {
