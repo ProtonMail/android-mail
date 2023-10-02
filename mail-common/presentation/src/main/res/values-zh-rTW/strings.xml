@@ -24,9 +24,9 @@
   <string name="retry">重試</string>
   <string name="toolbar_back_content_description">回到前一個畫面</string>
   <string name="x_error_not_logged_in">尚未登入</string>
-  <string name="action_reply">Reply</string>
-  <string name="action_reply_all">Reply all</string>
-  <string name="action_forward">Forward</string>
+  <string name="action_reply">回覆</string>
+  <string name="action_reply_all">回覆全部收件者</string>
+  <string name="action_forward">轉發</string>
   <string name="action_reply_content_description">回覆</string>
   <string name="action_reply_all_content_description">回覆全部收件者</string>
   <string name="action_forward_content_description">轉寄</string>

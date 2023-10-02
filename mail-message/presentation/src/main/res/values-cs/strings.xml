@@ -23,7 +23,7 @@
     <item quantity="many">%d souborů</item>
     <item quantity="other">%d souborů</item>
   </plurals>
-  <string name="attachment_show_more_label">+%1$d dalších</string>
+  <string name="attachment_show_more_label">+%1$d další(ch)</string>
   <string name="attachment_permission_dialog_title">Je vyžadováno oprávnění</string>
   <string name="attachment_permission_dialog_message">Proton Mail potřebuje ke stažení přílohy oprávnění k přístupu do vašeho úložiště.</string>
   <string name="attachment_permission_dialog_dismiss_button">OK</string>

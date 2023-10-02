@@ -28,5 +28,6 @@
   <string name="mailbox_message_sending_offline">Вы па-за сеткай, паведамленне ў чарзе на адпраўку</string>
   <string name="mailbox_message_sending_success">Паведамленне адпраўлена</string>
   <string name="mailbox_message_sending_error">Памылка адпраўкі паведамлення</string>
+  <string name="mailbox_attachment_uploading_error">Памылка запампоўвання далучэння</string>
   <string name="notification_switched_account">Зменена на ўліковы запіс: %s</string>
 </resources>

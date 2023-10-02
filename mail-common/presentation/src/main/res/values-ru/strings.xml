@@ -50,7 +50,7 @@
   <string name="action_save_pdf_content_description">Сохранить как PDF</string>
   <string name="action_sender_emails_content_description">Установить действие для последующих писем от этого отправителя</string>
   <string name="action_save_attachments_content_description">Сохранить вложения</string>
-  <string name="action_more_content_description">More</string>
+  <string name="action_more_content_description">Еще</string>
   <string name="common_error_loading_actions">Неудачные действия при скачивании</string>
   <string name="yesterday">Вчера</string>
   <!-- notification channels -->

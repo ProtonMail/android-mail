@@ -25,8 +25,9 @@
   <string name="feature_coming_soon">Aquesta característica arribarà aviat…</string>
   <string name="mailbox_draft_saved">S\'ha desat l\'esborrany.</string>
   <string name="mailbox_message_sending">Enviant missatge…</string>
-  <string name="mailbox_message_sending_offline">Offline, message queued for sending</string>
+  <string name="mailbox_message_sending_offline">Fora de línia, missatge a la cua per enviar</string>
   <string name="mailbox_message_sending_success">S\'ha enviat el missatge.</string>
   <string name="mailbox_message_sending_error">Error enviant el missatge</string>
+  <string name="mailbox_attachment_uploading_error">Error uploading attachment</string>
   <string name="notification_switched_account">Canviat al compte: %s</string>
 </resources>

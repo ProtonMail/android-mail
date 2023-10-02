@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="detail_error_loading_contacts">კონტაქტების ჩატვირთვის შეცდომა</string>
+  <string name="detail_error_loading_conversation">საუბრის ჩატვირთვის შეცდომა</string>
+  <string name="detail_error_loading_messages">შეტყობინებების ჩატვირთვის შეცდომა</string>
+  <string name="error_mark_unread_failed">წაუკითხავად მონიშვნის შეცდომა. თავიდან სცადეთ.</string>
+  <plurals name="message_count_label_text">
+    <item quantity="one">%d შეტყობინება</item>
+    <item quantity="other">%d შეტყობინება</item>
+  </plurals>
+  <string name="more_button_content_description">მეტი</string>
+  <string name="to">ვის:</string>
+  <string name="cc">ასლი:</string>
+  <string name="bcc">ბრმა ასლი:</string>
+  <string name="hide_details">დეტალების დამალვა</string>
+  <string name="undisclosed_recipients">გაუმჟღავნებელი მიმღებები</string>
+  <string name="error_mark_as_unread_failed">წაუკითხავად მონიშვნის ოპერაციის შეცდომა. თავიან სცადეთ.</string>
+  <string name="error_star_operation_failed">ვარსკვლავის დამატების ოპერაციის შეცდომა. თავიდან სცადეთ.</string>
+  <string name="error_unstar_operation_failed">ვარსკვლავის წაშლის ოპერაციის შეცდომა. თავიდან სცადეთ.</string>
+  <string name="error_move_to_trash_failed">ნაგვის ყუთში გადატანის შეცდომა. თავიდან სცადეთ.</string>
+  <string name="message_moved_to_trash">შეტყობინება გადატანილია ნაგვის ყუთში</string>
+  <string name="message_moved_to_archive">შეტყობინება გადატანილია არქივში</string>
+  <string name="message_moved_to_selected_destination">შეტყობინება გადატანილია %1$s-ში</string>
+  <string name="error_move_message_failed">შეტყობინების გადატანის შეცდომა. თავიდან სცადეთ.</string>
+  <string name="conversation_moved_to_trash">საუბარი გადატანილია ნაგავში</string>
+  <string name="conversation_moved_to_selected_destination">საუბარი გადატანილია %1$s-ში</string>
+  <string name="conversation_moved_to_archive">საუბარი გადატანილია არქივში</string>
+  <string name="error_move_conversation_failed">საუბრის გადატანის შეცდომა. თავიდან სცადეთ.</string>
+  <string name="error_loading_message">რაღაც არასწორად წავიდა. მოგვიანებით სცადეთ.</string>
+  <string name="error_offline_loading_message">ინტერნეტი არ გაქვთ. ამ შეტყობინებს შემცველობის სანახავად ინტერნეტ-შეერთება აუცილებელია.</string>
+  <string name="error_get_attachment_failed">მიბმული ფაილის მიღების შეცდომა.</string>
+  <string name="error_attachment_download_in_progress">ახალი გადმოწერის დასაწყებად ჯერ მიმდინარე უნდა დასრულდეს.</string>
+  <string name="error_get_attachment_not_enough_memory">მიმაგრებული ფაილის მიღება შეუძლებელია არასაკმარისი მეხსიერების გამო</string>
+  <string name="reload">თავიდან ჩატვირთვა</string>
+  <!-- Bottom Sheet -->
+  <string name="bottom_sheet_move_to_title">გადატანა...</string>
+  <string name="bottom_sheet_done_action">მზადაა</string>
+  <string name="bottom_sheet_archive_action">არქივის ჩათვლით?</string>
+  <string name="bottom_sheet_label_as_title">დანიშვნა, როგორც...</string>
+  <string name="error_relabel_message_failed">შეტყობინების ჭდის შეცვლის შეცდომა. თავიდან სცადეთ</string>
+  <string name="error_relabel_conversation_failed">შეტყობინების ჭდის თავიდან დაყენების შეცდომა. თავიდან სცადეთ</string>
+  <string name="please_go_back_online_to_load_messages">ინტერნეტი არ გაქვთ. შეტყობინებების ჩასატვირთად ჩართეთ ინტერნეტი</string>
+  <string name="decryption_error">შეტყობინების გაშიფვრის შეცდომა.</string>
+  <string name="detail_error_retrieving_message_body">შეტყობინების მიღების შეცდომა</string>
+  <string name="message_body_error_no_webview">ამ შეტყობინების შემცველობის სანახავად WebView-ის ქონა აუცილებელი პირობაა.</string>
+  <!-- Banners -->
+  <string name="message_body_embedded_images_banner_text">ჩადგმულ გამოსახულებების ავტომატური ჩატვირთვა გამორთულია. ეს მორგების ფანჯარაში შეიძლიათ, შეცვალოთ.</string>
+  <string name="message_body_remote_content_banner_text">დაშორებული შემცველობის ავტომატური ჩატვირთვა გამორთულია. ეს ქცევა მორგების ფანჯარაში შეგიძლიათ, შეცვალოთ.</string>
+  <string name="message_body_embedded_and_remote_content_banner_text">ჩადგმულ გამოსახულებებისა და დაშორებული შემცველობის ავტომატური ჩატვირთვა გამორთულია. ეს მორგების ფანჯარაში შეგიძლიათ, შეცვალოთ.</string>
+</resources>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="mail_settings_settings">მორგება</string>
+  <string name="mail_settings_toolbar_button_content_description">უკან</string>
+  <!-- Settings items -->
+  <string name="mail_settings_account_settings">ანგარიშის მორგება</string>
+  <string name="mail_settings_app_settings">აპის მორგება</string>
+  <string name="mail_settings_theme">თემა</string>
+  <string name="mail_settings_push_notifications">პუშ გაფრთხილებები</string>
+  <string name="mail_settings_auto_lock">თვითჩაკეტვა</string>
+  <string name="mail_settings_alternative_routing">ალტერნატიული რაუტინგი</string>
+  <string name="mail_settings_app_language">აპის ენა</string>
+  <string name="mail_settings_combined_contacts">გაერთიანებული კონტაქტები</string>
+  <string name="mail_settings_swipe_actions">გადათრევის ქმედებები</string>
+  <string name="mail_settings_combined_contacts_hint">ჩართეთ ეს ფუნქცია თქვენი ყველა შემოსული ანგარიშის კონტაქტების გამოყენებით ელფოსტის მისამართების ავტომატურად შესავსებად.</string>
+  <string name="mail_settings_alternative_routing_hint">იმ შემთხვევაში, თუ Proton-ის საიტები დაბლოკილია, ეს პარამეტრი აპს საშუალებას აძლევს, Proton-მდე მისასვლელად ქსელის ალტერნატიული რაუტინგი სცადოს, რაც შეიძლება, სასარგებლო იყოს ბრანდმაუერის ან ქსელის პრობლემების გვერდის ავლისთვის. მეტი საიმედოობისთვის გირჩევთ, ჩართოთ ეს პარამეტრი.</string>
+  <!-- Theme settings -->
+  <string name="mail_settings_system_default">სისტემის ნაგულისხმები</string>
+  <string name="mail_settings_theme_light">ღია</string>
+  <string name="mail_settings_theme_dark">ბნელი</string>
+  <!-- Settings item states -->
+  <string name="mail_settings_no_information_available">ინფორმაცია მიუწვდომელია</string>
+  <string name="mail_settings_enabled">ჩართულია</string>
+  <string name="mail_settings_disabled">გათიშულია</string>
+  <string name="mail_settings_allowed">დაშვებულია</string>
+  <string name="mail_settings_denied">უარყოფილია</string>
+  <string name="mail_settings_auto_detect">ავტო-ძებნა</string>
+  <string name="mail_settings_app_information">ინფორმაცია აპის შესახებ</string>
+  <string name="mail_settings_app_version">აპის ვერსია</string>
+  <string name="mail_settings_account">ანგარიში</string>
+  <!-- Account Settings items -->
+  <string name="mail_settings_subscription">გამოწერა</string>
+  <string name="mail_settings_password_management">პაროლების მართვა</string>
+  <string name="mail_settings_recovery_email">აღდგენის ელფოსტა</string>
+  <string name="mail_settings_mailbox_size">საფოსტო ყუთის ზომა</string>
+  <string name="mail_settings_addresses">მისამართები</string>
+  <string name="mail_settings_default_email_address">ელფოსტის ნაგულისხმები მისამართი</string>
+  <string name="mail_settings_display_name_and_signature">სახელისა და ხელმოწერის ჩვენება</string>
+  <string name="mail_settings_mailbox">საფოსტო ყუთი</string>
+  <string name="mail_settings_privacy">პირადი მონაცემები</string>
+  <string name="mail_settings_search_message_content">შეტყობინების შიგთავსში ძებნა</string>
+  <string name="mail_settings_labels_and_folders">ჭდეები და საქაღალდეები</string>
+  <string name="mail_settings_local_storage">ლოკალური საცავი</string>
+  <string name="mail_settings_snooze">გაჩუმება</string>
+  <string name="mail_settings_snooze_notifications">გაფრთხილებების ჩაჩუმება</string>
+  <string name="mail_settings_conversation_mode">საუბრის რეჟიმი</string>
+  <string name="mail_settings_not_set">დაყენებული არაა</string>
+  <string name="mail_settings_conversation_mode_hint">ელფოსტების ერთ საუბრად და ცალ-ცალკე ჩვენებას შორის გადართვა</string>
+  <!-- Swipe Actions -->
+  <string name="mail_settings_swipe_actions_title">გადათრევის ქმედებები</string>
+  <string name="mail_settings_swipe_actions_subtitle">გადათრევის ჟესტების ხშირად გამოყენებულ ქმედებებზე მინიჭება.</string>
+  <string name="mail_settings_swipe_right_name">მარცხნიდან მარჯვნივ</string>
+  <string name="mail_settings_swipe_left_name">მარჯვნიდან მარცხნივ</string>
+  <string name="mail_settings_swipe_action_archive_title">არქივი</string>
+  <string name="mail_settings_swipe_action_read_title">წაუკითხავები</string>
+  <string name="mail_settings_swipe_action_spam_title">სპამი</string>
+  <string name="mail_settings_swipe_action_star_title">ვარსკვლავი</string>
+  <string name="mail_settings_swipe_action_trash_title">ნაგავი</string>
+  <string name="mail_settings_swipe_action_archive_description">არქივში გადატანა</string>
+  <string name="mail_settings_swipe_action_read_description">წაუკითხავად/წაკითხულად მონიშვნა</string>
+  <string name="mail_settings_swipe_action_spam_description">სმაპში გადატანა</string>
+  <string name="mail_settings_swipe_action_star_description">ვარსკვლავის დაყენება/მოცილება</string>
+  <string name="mail_settings_swipe_action_trash_description">ნაგვის ყუთში გადატანა</string>
+  <!-- Error messages -->
+  <string name="mail_settings_generic_error_message">დაფიქსირდა შეცდომა. თავიდან სცადეთ.</string>
+</resources>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="expiration_expired">ვადაგასულია</string>
+  <string name="expiration_days_arg">%d დღე</string>
+  <string name="expiration_hours_arg">%dსთ</string>
+  <string name="expiration_minutes_arg">%d წთ</string>
+  <string name="retry">თავიდან</string>
+  <string name="toolbar_back_content_description">წინა ეკრანზე გადასვლა</string>
+  <string name="x_error_not_logged_in">შესული არ ბრძანდებით</string>
+  <string name="action_reply">Reply</string>
+  <string name="action_reply_all">Reply all</string>
+  <string name="action_forward">Forward</string>
+  <string name="action_reply_content_description">პასუხი</string>
+  <string name="action_reply_all_content_description">ყველასთვის პასუხი</string>
+  <string name="action_forward_content_description">გადაგზავნა</string>
+  <string name="action_mark_read_content_description">წაკითხულად მონიშვნა</string>
+  <string name="action_mark_unread_content_description">წაუკითხავად მონიშვნა</string>
+  <string name="action_star_content_description">ვარსკვლავი</string>
+  <string name="action_unstar_content_description">ვარსკვლავის მოხსნა</string>
+  <string name="action_label_content_description">ჭდის დადება</string>
+  <string name="action_move_content_description">გადატანა</string>
+  <string name="action_trash_content_description">სანაგვე ყუთი</string>
+  <string name="action_delete_content_description">წაშლა</string>
+  <string name="action_archive_content_description">არქივი</string>
+  <string name="action_spam_content_description">სპამი</string>
+  <string name="action_view_in_light_mode_content_description">შეტყობინებების ღია რეჟიმში ნახვა</string>
+  <string name="action_view_in_dark_mode_content_description">შეტყობინებების ბნელ რეჟიმში ნახვა</string>
+  <string name="action_print_content_description">დაბეჭდვა</string>
+  <string name="action_view_headers_content_description">თავსართების ნახვა</string>
+  <string name="action_view_html_content_description">HTML-ის ნახვა</string>
+  <string name="action_report_phishing_content_description">ფიშინგის შესახებ შეტყობინება</string>
+  <string name="action_remind_content_description">შემახსენე</string>
+  <string name="action_save_pdf_content_description">PDF-ად შენახვა</string>
+  <string name="action_sender_emails_content_description">მომავალში ამ გამომგზავნიდან მოსული ელფოსტებზე გადატარებული ქმეების დაყენება</string>
+  <string name="action_save_attachments_content_description">მიმაგრებული ფაილების შენახვა</string>
+  <string name="action_more_content_description">მეტი</string>
+  <string name="common_error_loading_actions">ქმედებების ჩატვირთვის შეცდომა</string>
+  <string name="yesterday">გუშინ</string>
+  <!-- notification channels -->
+  <string name="attachment_download_notification_channel_name">მიმაგრებები</string>
+  <string name="attachment_download_notification_channel_description">მიმაგრებული ფაილების გადმოწერის გაფრთხილება</string>
+  <string name="email_notification_channel_name">ელფოსტები</string>
+  <string name="email_notification_channel_description">შემომავალი ელფოსტის გაფრთხილებები</string>
+  <string name="auth_badge_official">ოფიციალური</string>
+</resources>

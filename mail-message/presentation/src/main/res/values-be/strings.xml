@@ -19,7 +19,7 @@
 <resources>
   <plurals name="attachment_count_label">
     <item quantity="one">%d файл</item>
-    <item quantity="few">%d файла</item>
+    <item quantity="few">%d файлы</item>
     <item quantity="many">%d файлаў</item>
     <item quantity="other">%d файлаў</item>
   </plurals>
@@ -30,14 +30,14 @@
   <string name="attachment_permission_dialog_action_button">Налады</string>
   <string name="attachment_type_description">Файл %1$s</string>
   <!-- Attachment Types -->
-  <string name="attachment_type_archive">Архіў</string>
-  <string name="attachment_type_image">Image</string>
-  <string name="attachment_type_video">Відэа</string>
-  <string name="attachment_type_audio">Аўдыя</string>
-  <string name="attachment_type_unknown">Невядомы</string>
+  <string name="attachment_type_archive">з архівам</string>
+  <string name="attachment_type_image">Відарыс</string>
+  <string name="attachment_type_video">з відэа</string>
+  <string name="attachment_type_audio">з аўдыя</string>
+  <string name="attachment_type_unknown">Невядома</string>
   <string name="attachment_type_pdf">PDF</string>
-  <string name="attachment_type_text">Тэкст</string>
-  <string name="attachment_type_document">Дакумент</string>
-  <string name="attachment_type_spreadsheet">Электронная табліца</string>
-  <string name="attachment_type_presentation">Прэзентацыя</string>
+  <string name="attachment_type_text">з тэкстам</string>
+  <string name="attachment_type_document">з дакументам</string>
+  <string name="attachment_type_spreadsheet">з электроннай табліцай</string>
+  <string name="attachment_type_presentation">з прэзентацыяй</string>
 </resources>

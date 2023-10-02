@@ -28,5 +28,6 @@
   <string name="mailbox_message_sending_offline">Offline, message queued for sending</string>
   <string name="mailbox_message_sending_success">Izen yettwazen</string>
   <string name="mailbox_message_sending_error">Yalla-d tuccḍa deg tuzna n yizen</string>
+  <string name="mailbox_attachment_uploading_error">Error uploading attachment</string>
   <string name="notification_switched_account">Tnekzeḍ ɣer umiḍan: %s</string>
 </resources>

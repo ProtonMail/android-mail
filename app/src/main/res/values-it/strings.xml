@@ -28,5 +28,6 @@
   <string name="mailbox_message_sending_offline">Offline, messaggio in coda per l\'invio</string>
   <string name="mailbox_message_sending_success">Messaggio inviato</string>
   <string name="mailbox_message_sending_error">Errore durante l\'invio del messaggio</string>
+  <string name="mailbox_attachment_uploading_error">Errore durante il caricamento dell\'allegato</string>
   <string name="notification_switched_account">Passato all\'account: %s</string>
 </resources>

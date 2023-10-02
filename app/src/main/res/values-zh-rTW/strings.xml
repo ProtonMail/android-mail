@@ -28,5 +28,6 @@
   <string name="mailbox_message_sending_offline">未連線，郵件佇列等候傳送</string>
   <string name="mailbox_message_sending_success">郵件已傳送</string>
   <string name="mailbox_message_sending_error">傳送郵件時發生錯誤</string>
+  <string name="mailbox_attachment_uploading_error">上載附件出現錯誤</string>
   <string name="notification_switched_account">已切換至帳號「%s」</string>
 </resources>

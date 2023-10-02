@@ -28,5 +28,6 @@
   <string name="mailbox_message_sending_offline">Offline, zpráva je ve frontě k odeslání</string>
   <string name="mailbox_message_sending_success">Zpráva odeslána</string>
   <string name="mailbox_message_sending_error">Chyba při odesílání zprávy</string>
+  <string name="mailbox_attachment_uploading_error">Error uploading attachment</string>
   <string name="notification_switched_account">Přepnuto na účet: \'%s</string>
 </resources>

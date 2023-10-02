@@ -28,5 +28,6 @@
   <string name="mailbox_message_sending_offline">オフライン、メッセージは送信待ち</string>
   <string name="mailbox_message_sending_success">メッセージ送信</string>
   <string name="mailbox_message_sending_error">メッセージ送信エラー</string>
+  <string name="mailbox_attachment_uploading_error">添付ファイルのアップロードエラー</string>
   <string name="notification_switched_account">アカウントを %s に切り替えました</string>
 </resources>

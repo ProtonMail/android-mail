@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="from_prefix">ვისგან:</string>
+  <string name="to_prefix">ვის:</string>
+  <string name="cc_prefix">ასლი:</string>
+  <string name="bcc_prefix">ბრმა ასლი:</string>
+  <string name="subject_placeholder">საგანი</string>
+  <string name="compose_message_placeholder">წერილის შედგენა</string>
+  <string name="close_composer_content_description">რედაქტორის დახურვა</string>
+  <string name="send_message_content_description">შეტყობინების გაგზავნა</string>
+  <string name="composer_expand_recipients_button">სხვა მიმღებების ჩვენება</string>
+  <string name="composer_error_invalid_email">ელფოსტის მისამართი არასწორია</string>
+  <string name="composer_error_invalid_sender">გამგზავნის მისამართი არასწორია</string>
+  <string name="change_sender_button_content_description">გამგზავნის შეცვლა</string>
+  <string name="composer_change_sender_paid_feature">გამგზავნის მისამართის შესაცვლელად ფასიან ტარიფზე გადადით</string>
+  <string name="composer_error_change_sender_failed_getting_subscription">გამგზავნის შეცვლა შეუძლებელია, რადგან მომხმარებლის გამოწერის მიღება ჩავარდა. თავიდან სცადეთ.</string>
+  <string name="composer_error_store_draft_sender_address">ამ მონახაზის გამგზავნის მისამართის შენახვა შეუძლებელია</string>
+  <string name="composer_error_store_draft_body">ამ მონახაზის შემცველობის შენახვა შეუძლებელია</string>
+  <string name="composer_error_duplicate_recipient">წაშლილია %1$s გამეორებადი მიმღები</string>
+  <string name="composer_error_store_draft_subject">ამ მონახაზის სათაურის შენახვა შეუძლებელია</string>
+  <string name="composer_error_store_draft_recipients">ამ მონახაზის მიმღებების შენახვა შეუძლებელია</string>
+  <string name="composer_error_loading_draft">ამ მონახაზის შემცველობა ამჟამად ხელმისაწვდომი არაა. მისი ჩასწორება უკვე არსებულ შემცველობას გადაფარავს.</string>
+  <string name="composer_add_attachments_content_description">მიმაგრებული ფაილის დამატება</string>
+  <string name="composer_add_attachments_bottom_sheet_import_from">შემოტანა…</string>
+  <string name="composer_error_loading_parent_message">Could not load the message\'s information</string>
+  <string name="composer_original_message_quote">Original Message</string>
+  <string name="composer_sender_quote">On %s, %s &lt;%s&gt; wrote:</string>
+</resources>

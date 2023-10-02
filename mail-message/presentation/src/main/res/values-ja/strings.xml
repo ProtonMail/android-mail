@@ -18,19 +18,19 @@
   -->
 <resources>
   <plurals name="attachment_count_label">
-    <item quantity="other">%d files</item>
+    <item quantity="other">%d ファイル</item>
   </plurals>
-  <string name="attachment_show_more_label">+%1$d more</string>
-  <string name="attachment_permission_dialog_title">Permission required</string>
-  <string name="attachment_permission_dialog_message">Proton Mail needs permission to access your storage to download the attachment.</string>
+  <string name="attachment_show_more_label">+%1$d 以上</string>
+  <string name="attachment_permission_dialog_title">許可が必要です</string>
+  <string name="attachment_permission_dialog_message">Proton Mail は添付ファイルをダウンロードするためにストレージにアクセスする許可を必要とします。</string>
   <string name="attachment_permission_dialog_dismiss_button">OK</string>
   <string name="attachment_permission_dialog_action_button">設定</string>
-  <string name="attachment_type_description">%1$s file</string>
+  <string name="attachment_type_description">%1$s ファイル</string>
   <!-- Attachment Types -->
   <string name="attachment_type_archive">アーカイブ</string>
-  <string name="attachment_type_image">Image</string>
+  <string name="attachment_type_image">画像</string>
   <string name="attachment_type_video">動画</string>
-  <string name="attachment_type_audio">音声</string>
+  <string name="attachment_type_audio">音楽</string>
   <string name="attachment_type_unknown">不明</string>
   <string name="attachment_type_pdf">PDF</string>
   <string name="attachment_type_text">テキスト</string>

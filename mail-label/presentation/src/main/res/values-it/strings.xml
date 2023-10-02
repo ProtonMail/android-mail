@@ -25,7 +25,7 @@
   <string name="label_title_spam">Spam</string>
   <string name="label_title_trash">Cestino</string>
   <string name="label_title_outbox">Posta in uscita</string>
-  <string name="label_title_all_mail">Tutti i messaggi</string>
+  <string name="label_title_all_mail">Tutte le email</string>
   <string name="label_title_all_drafts">Tutte le bozze</string>
   <string name="label_title_all_sent">Inviate</string>
   <string name="label_title_folders">Cartelle</string>

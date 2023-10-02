@@ -28,5 +28,6 @@
   <string name="mailbox_message_sending_offline">Deconectat, mesajul va fi trimis ulterior.</string>
   <string name="mailbox_message_sending_success">Mesaj trimis</string>
   <string name="mailbox_message_sending_error">Eroare trimitere mesaj</string>
+  <string name="mailbox_attachment_uploading_error">Error uploading attachment</string>
   <string name="notification_switched_account">S-a comutat la contul: %s</string>
 </resources>

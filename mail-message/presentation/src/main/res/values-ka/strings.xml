@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <plurals name="attachment_count_label">
+    <item quantity="one">%d ფაილი</item>
+    <item quantity="other">%d ფაილი</item>
+  </plurals>
+  <string name="attachment_show_more_label">+კიდევ %1$d</string>
+  <string name="attachment_permission_dialog_title">საჭიროა წვდომა</string>
+  <string name="attachment_permission_dialog_message">მიმაგრებული ფაილის გადმოსაწერად Proton Mail-ის თქვენს საცავთან წვდომა სჭირდება.</string>
+  <string name="attachment_permission_dialog_dismiss_button">დიახ</string>
+  <string name="attachment_permission_dialog_action_button">მორგება</string>
+  <string name="attachment_type_description">%1$s ფაილი</string>
+  <!-- Attachment Types -->
+  <string name="attachment_type_archive">არქივი</string>
+  <string name="attachment_type_image">Image</string>
+  <string name="attachment_type_video">ვიდეო</string>
+  <string name="attachment_type_audio">აუდიო</string>
+  <string name="attachment_type_unknown">უცნობი</string>
+  <string name="attachment_type_pdf">PDF</string>
+  <string name="attachment_type_text">ტექსტი</string>
+  <string name="attachment_type_document">დოკუმენტი</string>
+  <string name="attachment_type_spreadsheet">ელცხრილი</string>
+  <string name="attachment_type_presentation">პრეზენტაცია</string>
+</resources>

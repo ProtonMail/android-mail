@@ -28,5 +28,6 @@
   <string name="mailbox_message_sending_offline">Çevrim dışı. İleti gönderilmek üzere kuyruğa alındı</string>
   <string name="mailbox_message_sending_success">İleti gönderildi</string>
   <string name="mailbox_message_sending_error">İleti gönderilirken sorun çıktı</string>
+  <string name="mailbox_attachment_uploading_error">Error uploading attachment</string>
   <string name="notification_switched_account">Geçilen hesap: %s</string>
 </resources>

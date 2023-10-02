@@ -18,24 +18,24 @@
   -->
 <resources>
   <plurals name="attachment_count_label">
-    <item quantity="one">%d file</item>
-    <item quantity="other">%d files</item>
+    <item quantity="one">%d fitxer</item>
+    <item quantity="other">%d fitxers</item>
   </plurals>
-  <string name="attachment_show_more_label">+%1$d more</string>
+  <string name="attachment_show_more_label">%1$d més</string>
   <string name="attachment_permission_dialog_title">Permission required</string>
   <string name="attachment_permission_dialog_message">Proton Mail needs permission to access your storage to download the attachment.</string>
   <string name="attachment_permission_dialog_dismiss_button">OK</string>
-  <string name="attachment_permission_dialog_action_button">Settings</string>
-  <string name="attachment_type_description">%1$s file</string>
+  <string name="attachment_permission_dialog_action_button">Preferències</string>
+  <string name="attachment_type_description">Tipus de fitxer: %1$s</string>
   <!-- Attachment Types -->
-  <string name="attachment_type_archive">Archive</string>
-  <string name="attachment_type_image">Image</string>
-  <string name="attachment_type_video">Video</string>
-  <string name="attachment_type_audio">Audio</string>
-  <string name="attachment_type_unknown">Unknown</string>
+  <string name="attachment_type_archive">Arxiu</string>
+  <string name="attachment_type_image">Imatge</string>
+  <string name="attachment_type_video">Vídeo</string>
+  <string name="attachment_type_audio">Àudio</string>
+  <string name="attachment_type_unknown">Desconegut</string>
   <string name="attachment_type_pdf">PDF</string>
   <string name="attachment_type_text">Text</string>
   <string name="attachment_type_document">Document</string>
-  <string name="attachment_type_spreadsheet">Spreadsheet</string>
+  <string name="attachment_type_spreadsheet">Full de càlcul</string>
   <string name="attachment_type_presentation">Presentation</string>
 </resources>

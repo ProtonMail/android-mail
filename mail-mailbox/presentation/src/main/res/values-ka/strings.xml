@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="drawer_title_more">მეტი</string>
+  <string name="drawer_title_contacts">კონტაქტები</string>
+  <string name="drawer_title_subscription">გამოწერა</string>
+  <string name="mailbox_toolbar_compose_button_content_description">ახალი წერილის დაწერა</string>
+  <string name="mailbox_toolbar_exit_selection_mode_button_content_description">მონიშვნის რეჟიმიდან გამოსვლა</string>
+  <string name="mailbox_toolbar_menu_button_content_description">მენიუ</string>
+  <string name="mailbox_toolbar_search_button_content_description">ძებნა</string>
+  <string name="mailbox_toolbar_selected_count">მონიშნულია %d</string>
+  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
+  <string name="filter_unread_button_text_without_counter">წაუკითხავი</string>
+  <plurals name="filter_unread_button_text">
+    <item quantity="one">%d წაუკითხავი</item>
+    <item quantity="other">%d წაუკითხავი</item>
+  </plurals>
+  <string name="mailbox_default_recipient">(მიმღების გარეშე)</string>
+  <string name="mailbox_default_sender">(გამომგზავნის გარეშე)</string>
+  <string name="mailbox_error_message_offline">ინტერნეტკავშირის გარეშე. ელემენტების მიღება შეუძლებელია</string>
+  <string name="mailbox_error_message_generic">საფოსტო ყუთის ჩატვირთვის შეცდომა</string>
+  <string name="mailbox_error_message_unexpected">რაღაც, მოულოდნელად, გაფუჭდა</string>
+  <string name="mailbox_is_empty_message">ეს საფოსტო ყუთი ცარიელია</string>
+</resources>

@@ -22,11 +22,11 @@
   <string name="cc_prefix">Cc:</string>
   <string name="bcc_prefix">Bcc:</string>
   <string name="subject_placeholder">Subjek</string>
-  <string name="compose_message_placeholder">Tulis email</string>
+  <string name="compose_message_placeholder">Tulis surel</string>
   <string name="close_composer_content_description">Tutup komposer</string>
   <string name="send_message_content_description">Kirim pesan</string>
   <string name="composer_expand_recipients_button">Tampilkan penerima lainnya</string>
-  <string name="composer_error_invalid_email">Alamat email tidak valid</string>
+  <string name="composer_error_invalid_email">Alamat surel tidak valid</string>
   <string name="composer_error_invalid_sender">Alamat pengirim tidak valid</string>
   <string name="change_sender_button_content_description">Ubah pengirim</string>
   <string name="composer_change_sender_paid_feature">Tingkatkan ke paket berbayar untuk mengubah alamat pengirim</string>

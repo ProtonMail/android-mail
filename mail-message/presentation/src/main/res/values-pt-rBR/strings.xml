@@ -19,11 +19,11 @@
 <resources>
   <plurals name="attachment_count_label">
     <item quantity="one">%d arquivo</item>
-    <item quantity="other">%d files</item>
+    <item quantity="other">%d arquivos</item>
   </plurals>
-  <string name="attachment_show_more_label">%1$d mais</string>
+  <string name="attachment_show_more_label">+%1$d mais</string>
   <string name="attachment_permission_dialog_title">Permissão necessária</string>
-  <string name="attachment_permission_dialog_message">Proton Mail precisa de permissão de acesso ao seu armazenamento para executar o download do anexo.</string>
+  <string name="attachment_permission_dialog_message">Proton Mail precisa de permissão para acessar seu armazenamento para baixar o anexo.</string>
   <string name="attachment_permission_dialog_dismiss_button">OK</string>
   <string name="attachment_permission_dialog_action_button">Configurações</string>
   <string name="attachment_type_description">%1$s arquivo</string>

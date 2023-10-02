@@ -29,7 +29,7 @@
   <string name="mail_settings_app_language">Bahasa aplikasi</string>
   <string name="mail_settings_combined_contacts">Kontak gabungan</string>
   <string name="mail_settings_swipe_actions">Tindakan geser</string>
-  <string name="mail_settings_combined_contacts_hint">Aktifkan fitur ini agar alamat email yang Anda ketik dapat dilengkapi secara otomatis dengan data kontak dari seluruh akun yang terhubung masuk.</string>
+  <string name="mail_settings_combined_contacts_hint">Aktifkan fitur ini agar alamat surel yang Anda ketik dapat dilengkapi secara otomatis dengan data kontak dari seluruh akun yang terhubung masuk.</string>
   <string name="mail_settings_alternative_routing_hint">Apabila situs Proton diblokir, pengaturan ini akan memungkinkan aplikasi kami untuk dapat terhubung dengan Proton melalui lalu lintas jaringan alternatif, yang dapat berguna untuk melewati hadangan firewall atau masalah jaringan: Kami sarankan agar pengaturan ini selalu aktif untuk koneksi yang lebih andal.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Bawaan sistem</string>
@@ -48,10 +48,10 @@
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Langganan</string>
   <string name="mail_settings_password_management">Pengelolaan kata sandi</string>
-  <string name="mail_settings_recovery_email">Alamat email pemulihan</string>
+  <string name="mail_settings_recovery_email">Alamat surel pemulihan</string>
   <string name="mail_settings_mailbox_size">Ukuran kotak surat</string>
   <string name="mail_settings_addresses">Alamat</string>
-  <string name="mail_settings_default_email_address">Alamat email default</string>
+  <string name="mail_settings_default_email_address">Alamat surel default</string>
   <string name="mail_settings_display_name_and_signature">Nama tampilan dan tanda tangan</string>
   <string name="mail_settings_mailbox">Kotak Surat</string>
   <string name="mail_settings_privacy">Privasi</string>
@@ -62,7 +62,7 @@
   <string name="mail_settings_snooze_notifications">Tunda notifikasi</string>
   <string name="mail_settings_conversation_mode">Mode percakapan</string>
   <string name="mail_settings_not_set">Belum ditentukan</string>
-  <string name="mail_settings_conversation_mode_hint">Tentukan apakah email yang terhubung dalam suatu rantai percakapan akan saling dikelompokkan atau ditampilkan secara terpisah</string>
+  <string name="mail_settings_conversation_mode_hint">Tentukan apakah surel yang terhubung dalam suatu rantai percakapan akan saling dikelompokkan atau ditampilkan secara terpisah</string>
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Tindakan usap</string>
   <string name="mail_settings_swipe_actions_subtitle">Atur gestur usap untuk mengakses tindakan yang paling sering digunakan.</string>

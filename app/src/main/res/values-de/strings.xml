@@ -28,5 +28,6 @@
   <string name="mailbox_message_sending_offline">Offline, die Nachricht ist in der Warteschlange für den Versand.</string>
   <string name="mailbox_message_sending_success">Nachricht gesendet</string>
   <string name="mailbox_message_sending_error">Fehler beim Senden der Nachricht</string>
+  <string name="mailbox_attachment_uploading_error">Fehler beim Hochladen des Anhangs.</string>
   <string name="notification_switched_account">Zu Konto „%s“ gewechselt</string>
 </resources>

@@ -28,5 +28,6 @@
   <string name="mailbox_message_sending_offline">Sem conexão, mensagem aguardando o envio</string>
   <string name="mailbox_message_sending_success">Mensagem enviada</string>
   <string name="mailbox_message_sending_error">Erro no envio da mensagem</string>
+  <string name="mailbox_attachment_uploading_error">Erro ao enviar anexo</string>
   <string name="notification_switched_account">Mudou para a conta %s</string>
 </resources>

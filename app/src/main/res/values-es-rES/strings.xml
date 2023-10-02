@@ -28,5 +28,6 @@
   <string name="mailbox_message_sending_offline">Sin conexión: el mensaje está puesto en la cola de envío.</string>
   <string name="mailbox_message_sending_success">El mensaje ha sido enviado.</string>
   <string name="mailbox_message_sending_error">Error al enviar el mensaje</string>
+  <string name="mailbox_attachment_uploading_error">Error al cargar el archivo adjunto</string>
   <string name="notification_switched_account">Se ha cambiado a la cuenta: %s</string>
 </resources>

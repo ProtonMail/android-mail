@@ -20,7 +20,7 @@
   <string name="detail_error_loading_contacts">Impossibile caricare i contatti</string>
   <string name="detail_error_loading_conversation">Il caricamento della conversazione non è andato a buon fine</string>
   <string name="detail_error_loading_messages">Non è stato possibile caricare l\'elenco dei messaggi</string>
-  <string name="error_mark_unread_failed">Impossibile contrassegnare come non letto. Riprova.</string>
+  <string name="error_mark_unread_failed">Impossibile contrassegnare come non letto. Per favore riprova.</string>
   <plurals name="message_count_label_text">
     <item quantity="one">%d messaggio</item>
     <item quantity="other">%d messaggi</item>
@@ -39,7 +39,7 @@
   <string name="message_moved_to_archive">Messaggio spostato in archivio</string>
   <string name="message_moved_to_selected_destination">Il messaggio è stato spostato in %1$s</string>
   <string name="error_move_message_failed">Spostamento del messaggio non riuscito. Per favore riprova.</string>
-  <string name="conversation_moved_to_trash">Conversazione spostata nel Cestino</string>
+  <string name="conversation_moved_to_trash">Conversazione spostata nel cestino</string>
   <string name="conversation_moved_to_selected_destination">Conversazione spostata in %1$s</string>
   <string name="conversation_moved_to_archive">Conversazione spostata nell\'Archivio</string>
   <string name="error_move_conversation_failed">Spostamento della conversazione non riuscito. Riprova.</string>
