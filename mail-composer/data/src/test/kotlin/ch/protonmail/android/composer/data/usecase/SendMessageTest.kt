@@ -32,6 +32,7 @@ import ch.protonmail.android.mailcommon.domain.model.ProtonError
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcomposer.domain.usecase.FindLocalDraft
 import ch.protonmail.android.mailcomposer.domain.usecase.ResolveUserAddress
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.model.Participant
 import ch.protonmail.android.mailmessage.domain.model.Recipient
@@ -102,7 +103,7 @@ class SendMessageTest {
     @Test
     fun `when send address cannot be resolved, the error is propagated to the calling site`() = runTest {
         // Given
-        coEvery { findLocalDraft.invoke(userId, messageId) } answers { sampleMessage }
+        expectFindLocalDraftSucceeds()
         coEvery {
             resolveUserAddress(
                 userId,
@@ -120,11 +121,9 @@ class SendMessageTest {
     @Test
     fun `when send preferences cannot be fetched, the error is propagated to the calling site`() = runTest {
         // Given
-        coEvery { findLocalDraft.invoke(userId, messageId) } answers { sampleMessage }
-        coEvery {
-            resolveUserAddress(userId, sampleMessage.message.addressId)
-        } answers { UserAddressSample.PrimaryAddress.right() }
-        coEvery { observeMailSettings.invoke(userId) } answers { flowOf(null) }
+        expectFindLocalDraftSucceeds()
+        expectResolveUserAddressSucceeds()
+        expectObserveMailSettingsReturnsNull()
         coEvery { obtainSendPreferences(userId, recipients) } answers {
             mapOf(Pair(baseRecipient.address, ObtainSendPreferences.Result.Error.AddressDisabled))
         }
@@ -139,14 +138,13 @@ class SendMessageTest {
     @Test
     fun `when attachment reading fails, the error is propagated to the calling site`() = runTest {
         // Given
-        val senderAddress = UserAddressSample.PrimaryAddress
         val sendPreferences = generateSendPreferences(isPgpMime = true)
         val expectedError = DataError.Local.NoDataCached.left()
 
-        coEvery { findLocalDraft.invoke(userId, messageId) } answers { sampleMessage }
-        coEvery { resolveUserAddress(userId, sampleMessage.message.addressId) } answers { senderAddress.right() }
-        coEvery { observeMailSettings.invoke(userId) } answers { flowOf(null) }
-        coEvery { obtainSendPreferences(userId, recipients) } answers { sendPreferences }
+        expectFindLocalDraftSucceeds()
+        expectResolveUserAddressSucceeds()
+        expectObserveMailSettingsReturnsNull()
+        expectObtainSendPreferencesSucceeds(sendPreferences)
         coEvery {
             readAttachmentsFromStorage(userId, messageId, sampleMessage.messageBody.attachments.map { it.attachmentId })
         } returns DataError.Local.NoDataCached.left()
@@ -161,35 +159,17 @@ class SendMessageTest {
     @Test
     fun `should read attachments for PGP MIME messages`() = runTest {
         // Given
-        val senderAddress = UserAddressSample.PrimaryAddress
         val sendPreferences = generateSendPreferences(isPgpMime = true)
         val attachmentIds = sampleMessage.messageBody.attachments.map { it.attachmentId }
         val attachments = attachmentIds.associateWith { File.createTempFile("file", "txt") }
-        val messagePackages = generateSendPackages(senderAddress.email)
-        val mockedSuccess = SendMessageResponse(200, mockk()).right()
 
-        coEvery { findLocalDraft.invoke(userId, messageId) } answers { sampleMessage }
-        coEvery { resolveUserAddress(userId, sampleMessage.message.addressId) } answers { senderAddress.right() }
-        coEvery { observeMailSettings.invoke(userId) } answers { flowOf(null) }
-        coEvery { obtainSendPreferences(userId, recipients) } answers { sendPreferences }
-        coEvery {
-            readAttachmentsFromStorage(userId, messageId, attachmentIds)
-        } returns attachments.right()
-        coEvery {
-            generateMessagePackages(
-                senderAddress,
-                sampleMessage,
-                sendPreferences.forMessagePackages(),
-                attachments
-            )
-        } answers { messagePackages.right() }
-        coEvery {
-            messageRemoteDataSource.send(
-                userId,
-                messageId.id,
-                generateSendMessageBody(messagePackages)
-            )
-        } answers { mockedSuccess }
+        expectFindLocalDraftSucceeds()
+        expectResolveUserAddressSucceeds()
+        expectObserveMailSettingsReturnsNull()
+        expectObtainSendPreferencesSucceeds(sendPreferences)
+        expectReadAttachmentsFromStorageSucceeds(attachmentIds, attachments)
+        val messagePackages = expectGenerateMessagePackagesSucceeds(sendPreferences, attachments)
+        expectSendOperationSucceeds(messagePackages)
 
         // When
         sendMessage(userId, messageId)
@@ -201,30 +181,14 @@ class SendMessageTest {
     @Test
     fun `should not read attachments for non-PGP MIME messages`() = runTest {
         // Given
-        val senderAddress = UserAddressSample.PrimaryAddress
         val sendPreferences = generateSendPreferences(isPgpMime = false)
-        val messagePackages = generateSendPackages(senderAddress.email)
-        val mockedSuccess = SendMessageResponse(200, mockk()).right()
 
-        coEvery { findLocalDraft.invoke(userId, messageId) } answers { sampleMessage }
-        coEvery { resolveUserAddress(userId, sampleMessage.message.addressId) } answers { senderAddress.right() }
-        coEvery { observeMailSettings.invoke(userId) } answers { flowOf(null) }
-        coEvery { obtainSendPreferences(userId, recipients) } answers { sendPreferences }
-        coEvery {
-            generateMessagePackages(
-                senderAddress,
-                sampleMessage,
-                sendPreferences.forMessagePackages(),
-                emptyMap()
-            )
-        } answers { messagePackages.right() }
-        coEvery {
-            messageRemoteDataSource.send(
-                userId,
-                messageId.id,
-                generateSendMessageBody(messagePackages)
-            )
-        } answers { mockedSuccess }
+        expectFindLocalDraftSucceeds()
+        expectResolveUserAddressSucceeds()
+        expectObserveMailSettingsReturnsNull()
+        expectObtainSendPreferencesSucceeds(sendPreferences)
+        val messagePackages = expectGenerateMessagePackagesSucceeds(sendPreferences)
+        expectSendOperationSucceeds(messagePackages)
 
         // When
         sendMessage(userId, messageId)
@@ -240,10 +204,10 @@ class SendMessageTest {
         val sendPreferences = generateSendPreferences()
         val expectedError = DataError.MessageSending.GeneratingPackages.left()
 
-        coEvery { findLocalDraft.invoke(userId, messageId) } answers { sampleMessage }
-        coEvery { resolveUserAddress(userId, sampleMessage.message.addressId) } answers { senderAddress.right() }
-        coEvery { observeMailSettings.invoke(userId) } answers { flowOf(null) }
-        coEvery { obtainSendPreferences(userId, recipients) } answers { sendPreferences }
+        expectFindLocalDraftSucceeds()
+        expectResolveUserAddressSucceeds()
+        expectObserveMailSettingsReturnsNull()
+        expectObtainSendPreferencesSucceeds(sendPreferences)
         coEvery {
             generateMessagePackages(
                 senderAddress,
@@ -263,23 +227,14 @@ class SendMessageTest {
     @Test
     fun `when remote data source fails to send the message, the error is propagated to the calling site`() = runTest {
         // Given
-        val senderAddress = UserAddressSample.PrimaryAddress
         val sendPreferences = generateSendPreferences()
-        val messagePackages = generateSendPackages(senderAddress.email)
         val expectedError = DataError.Remote.Proton(ProtonError.fromProtonCode(503)).left()
 
-        coEvery { findLocalDraft.invoke(userId, messageId) } answers { sampleMessage }
-        coEvery { resolveUserAddress(userId, sampleMessage.message.addressId) } answers { senderAddress.right() }
-        coEvery { observeMailSettings.invoke(userId) } answers { flowOf(null) }
-        coEvery { obtainSendPreferences(userId, recipients) } answers { sendPreferences }
-        coEvery {
-            generateMessagePackages(
-                senderAddress,
-                sampleMessage,
-                sendPreferences.forMessagePackages(),
-                emptyMap()
-            )
-        } answers { messagePackages.right() }
+        expectFindLocalDraftSucceeds()
+        expectResolveUserAddressSucceeds()
+        expectObserveMailSettingsReturnsNull()
+        expectObtainSendPreferencesSucceeds(sendPreferences)
+        val messagePackages = expectGenerateMessagePackagesSucceeds(sendPreferences)
         coEvery {
             messageRemoteDataSource.send(
                 userId,
@@ -297,31 +252,15 @@ class SendMessageTest {
 
     @Test
     fun `when sending goes through, the success is propagated to the calling site`() = runTest {
-        val senderAddress = UserAddressSample.PrimaryAddress
         val sendPreferences = generateSendPreferences()
-        val messagePackages = generateSendPackages(senderAddress.email)
-        val mockedSuccess = SendMessageResponse(200, mockk()).right()
         val expectedResult = Unit.right()
 
-        coEvery { findLocalDraft.invoke(userId, messageId) } answers { sampleMessage }
-        coEvery { resolveUserAddress(userId, sampleMessage.message.addressId) } answers { senderAddress.right() }
-        coEvery { observeMailSettings.invoke(userId) } answers { flowOf(null) }
-        coEvery { obtainSendPreferences(userId, recipients) } answers { sendPreferences }
-        coEvery {
-            generateMessagePackages(
-                senderAddress,
-                sampleMessage,
-                sendPreferences.forMessagePackages(),
-                emptyMap()
-            )
-        } answers { messagePackages.right() }
-        coEvery {
-            messageRemoteDataSource.send(
-                userId,
-                messageId.id,
-                generateSendMessageBody(messagePackages)
-            )
-        } answers { mockedSuccess }
+        expectFindLocalDraftSucceeds()
+        expectResolveUserAddressSucceeds()
+        expectObserveMailSettingsReturnsNull()
+        expectObtainSendPreferencesSucceeds(sendPreferences)
+        val messagePackages = expectGenerateMessagePackagesSucceeds(sendPreferences)
+        expectSendOperationSucceeds(messagePackages)
 
         // When
         val result = sendMessage(userId, messageId)
@@ -330,6 +269,56 @@ class SendMessageTest {
         assertEquals(expectedResult, result)
     }
 
+    private fun expectFindLocalDraftSucceeds() {
+        coEvery { findLocalDraft.invoke(userId, messageId) } answers { sampleMessage }
+    }
+
+    private fun expectResolveUserAddressSucceeds() {
+        coEvery {
+            resolveUserAddress(userId, sampleMessage.message.addressId)
+        } answers { UserAddressSample.PrimaryAddress.right() }
+    }
+
+    private fun expectObserveMailSettingsReturnsNull() {
+        coEvery { observeMailSettings.invoke(userId) } answers { flowOf(null) }
+    }
+
+    private fun expectObtainSendPreferencesSucceeds(sendPreferences: Map<String, ObtainSendPreferences.Result>) {
+        coEvery { obtainSendPreferences(userId, recipients) } answers { sendPreferences }
+    }
+
+    private fun expectReadAttachmentsFromStorageSucceeds(
+        attachmentIds: List<AttachmentId>,
+        attachments: Map<AttachmentId, File>
+    ) {
+        coEvery {
+            readAttachmentsFromStorage(userId, messageId, attachmentIds)
+        } returns attachments.right()
+    }
+
+    private fun expectGenerateMessagePackagesSucceeds(
+        sendPreferences: Map<String, ObtainSendPreferences.Result>,
+        attachments: Map<AttachmentId, File> = emptyMap()
+    ) = generateSendPackages(UserAddressSample.PrimaryAddress.email).also { messagePackages ->
+        coEvery {
+            generateMessagePackages(
+                UserAddressSample.PrimaryAddress,
+                sampleMessage,
+                sendPreferences.forMessagePackages(),
+                attachments
+            )
+        } answers { messagePackages.right() }
+    }
+
+    private fun expectSendOperationSucceeds(messagePackages: List<SendMessagePackage>) {
+        coEvery {
+            messageRemoteDataSource.send(
+                userId,
+                messageId.id,
+                generateSendMessageBody(messagePackages)
+            )
+        } answers { SendMessageResponse(200, mockk()).right() }
+    }
 
     private fun generateDraftMessage(recipients: List<Recipient>): MessageWithBody {
         val message = MessageSample.build(toList = recipients)
@@ -344,7 +333,7 @@ class SendMessageTest {
                 ObtainSendPreferences.Result.Success(
                     SendPreferences(
                         encrypt = true,
-                        sign = false,
+                        sign = true,
                         pgpScheme = if (isPgpMime) PackageType.PgpMime else PackageType.ProtonMail,
                         mimeType = MimeType.Html,
                         publicKey = null
