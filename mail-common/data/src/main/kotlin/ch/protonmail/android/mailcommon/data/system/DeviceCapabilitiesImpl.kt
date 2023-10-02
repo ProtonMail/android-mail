@@ -18,50 +18,16 @@
 
 package ch.protonmail.android.mailcommon.data.system
 
-import android.content.Context
-import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
-import android.content.pm.PackageManager.NameNotFoundException
-import android.os.Build
+import android.webkit.WebView
 import ch.protonmail.android.mailcommon.domain.system.DeviceCapabilities
-import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-internal class DeviceCapabilitiesImpl @Inject constructor(
-    @ApplicationContext private val context: Context
-) : DeviceCapabilities {
+internal class DeviceCapabilitiesImpl @Inject constructor() : DeviceCapabilities {
 
+    // No need for custom getters as per official documentation:
+    // "If the WebView package changes, any app process that has loaded WebView will be killed."
+    // See `WebView.getCurrentWebViewPackage()` docs for more info.
     override fun getCapabilities(): DeviceCapabilities.Capabilities = DeviceCapabilities.Capabilities(
-        hasWebView = hasWebView()
+        hasWebView = WebView.getCurrentWebViewPackage()?.applicationInfo?.enabled ?: false
     )
-
-    private fun hasWebView(): Boolean =
-        hasWebViewPackageEnabled() || hasGoogleWebViewPackageEnabled() || hasChromeWebViewPackageEnabled()
-
-    private fun hasWebViewPackageEnabled(): Boolean =
-        context.packageManager.getPackageInfoCompat(WEB_VIEW_PACKAGE)?.applicationInfo?.enabled ?: false
-
-    private fun hasGoogleWebViewPackageEnabled(): Boolean =
-        context.packageManager.getPackageInfoCompat(WEB_VIEW_GOOGLE_PACKAGE)?.applicationInfo?.enabled ?: false
-
-    private fun hasChromeWebViewPackageEnabled(): Boolean =
-        context.packageManager.getPackageInfoCompat(WEB_VIEW_CHROME_PACKAGE)?.applicationInfo?.enabled ?: false
-
-    internal companion object {
-
-        const val WEB_VIEW_PACKAGE = "com.android.webview"
-        const val WEB_VIEW_GOOGLE_PACKAGE = "com.google.android.webview"
-        const val WEB_VIEW_CHROME_PACKAGE = "com.android.chrome"
-
-        @Suppress("SwallowedException")
-        fun PackageManager.getPackageInfoCompat(packageName: String, flags: Int = 0): PackageInfo? = try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(flags.toLong()))
-            } else {
-                @Suppress("DEPRECATION") getPackageInfo(packageName, flags)
-            }
-        } catch (e: NameNotFoundException) {
-            null
-        }
-    }
 }

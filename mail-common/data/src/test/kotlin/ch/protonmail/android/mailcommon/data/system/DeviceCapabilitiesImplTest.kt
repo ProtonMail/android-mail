@@ -18,147 +18,74 @@
 
 package ch.protonmail.android.mailcommon.data.system
 
-import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
-import android.content.pm.PackageManager.NameNotFoundException
-import android.content.pm.PackageManager.PackageInfoFlags
-import ch.protonmail.android.mailcommon.data.system.DeviceCapabilitiesImpl.Companion.WEB_VIEW_GOOGLE_PACKAGE
-import ch.protonmail.android.mailcommon.data.system.DeviceCapabilitiesImpl.Companion.WEB_VIEW_PACKAGE
+import android.webkit.WebView
 import io.mockk.every
-import io.mockk.mockk
+import io.mockk.mockkStatic
+import io.mockk.unmockkAll
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
 
 class DeviceCapabilitiesImplTest {
 
-    private val applicationInfoMock = mockk<ApplicationInfo>()
-    private val packageInfoMock = mockk<PackageInfo>()
-    private val packageManagerMock = mockk<PackageManager> {
-        every { this@mockk.getPackageInfo(any<String>(), any<Int>()) } returns packageInfoMock
-        every { this@mockk.getPackageInfo(any<String>(), any<PackageInfoFlags>()) } returns packageInfoMock
-    }
-    private val context = mockk<Context> {
-        every { this@mockk.packageManager } returns packageManagerMock
-    }
-
     @Before
-    fun setup() {
-        packageInfoMock.applicationInfo = applicationInfoMock
+    fun mockWebViewCheck() {
+        mockkStatic(WebView::class)
+    }
+
+    @After
+    fun teardown() {
+        unmockkAll()
     }
 
     @Test
-    fun `Should return web view available when only the standard web view package is available and enabled`() {
-        // given
-        applicationInfoMock.enabled = true
-        every {
-            packageManagerMock.getPackageInfo(WEB_VIEW_PACKAGE, any<PackageInfoFlags>())
-        } returns packageInfoMock
-        every {
-            packageManagerMock.getPackageInfo(WEB_VIEW_GOOGLE_PACKAGE, any<PackageInfoFlags>())
-        } throws NameNotFoundException()
+    fun `Should return web view not available when provider is not present`() {
+        // Given
+        expectedWebViewAvailableOnDevice(isPackagePresent = false)
 
-        // when
-        val capabilities = DeviceCapabilitiesImpl(context).getCapabilities()
+        // When
+        val capabilities = DeviceCapabilitiesImpl().getCapabilities()
 
-        // then
+        // Then
+        assertEquals(false, capabilities.hasWebView)
+    }
+
+    @Test
+    fun `Should return web view not available when provider is present but not enabled`() {
+        // Given
+        expectedWebViewAvailableOnDevice(isPackagePresent = true, isPackageEnabled = false)
+
+        // When
+        val capabilities = DeviceCapabilitiesImpl().getCapabilities()
+
+        // Then
+        assertEquals(false, capabilities.hasWebView)
+    }
+
+    @Test
+    fun `Should return web view available when provider is present and enabled`() {
+        // Given
+        expectedWebViewAvailableOnDevice(isPackagePresent = true, isPackageEnabled = true)
+
+        // When
+        val capabilities = DeviceCapabilitiesImpl().getCapabilities()
+
+        // Then
         assertEquals(true, capabilities.hasWebView)
     }
 
-    @Test
-    fun `Should return web view not available when only the standard web view package is available but not enabled`() {
-        // given
-        applicationInfoMock.enabled = false
-        every {
-            packageManagerMock.getPackageInfo(WEB_VIEW_PACKAGE, any<PackageInfoFlags>())
-        } returns packageInfoMock
-        every {
-            packageManagerMock.getPackageInfo(WEB_VIEW_GOOGLE_PACKAGE, any<PackageInfoFlags>())
-        } throws NameNotFoundException()
+    private fun expectedWebViewAvailableOnDevice(
+        isPackagePresent: Boolean,
+        isPackageEnabled: Boolean = false
+    ) {
+        val packageInfo = PackageInfo().apply {
+            applicationInfo = ApplicationInfo()
+            applicationInfo.enabled = isPackageEnabled
+        }
 
-        // when
-        val capabilities = DeviceCapabilitiesImpl(context).getCapabilities()
-
-        // then
-        assertEquals(false, capabilities.hasWebView)
-    }
-
-    @Test
-    fun `Should return web view available when only the google web view package is available and enabled`() {
-        // given
-        applicationInfoMock.enabled = true
-        every {
-            packageManagerMock.getPackageInfo(WEB_VIEW_PACKAGE, any<PackageInfoFlags>())
-        } throws NameNotFoundException()
-        every {
-            packageManagerMock.getPackageInfo(WEB_VIEW_GOOGLE_PACKAGE, any<PackageInfoFlags>())
-        } returns packageInfoMock
-
-        // when
-        val capabilities = DeviceCapabilitiesImpl(context).getCapabilities()
-
-        // then
-        assertEquals(true, capabilities.hasWebView)
-    }
-
-    @Test
-    fun `Should return web view not available when only the google web view package is available but not enabled`() {
-        // given
-        applicationInfoMock.enabled = false
-        every {
-            packageManagerMock.getPackageInfo(WEB_VIEW_PACKAGE, any<PackageInfoFlags>())
-        } throws NameNotFoundException()
-        every {
-            packageManagerMock.getPackageInfo(WEB_VIEW_GOOGLE_PACKAGE, any<PackageInfoFlags>())
-        } returns packageInfoMock
-
-        // when
-        val capabilities = DeviceCapabilitiesImpl(context).getCapabilities()
-
-        // then
-        assertEquals(false, capabilities.hasWebView)
-    }
-
-    @Test
-    fun `Should return web view not available when none of the packages are available`() {
-        // given
-        every {
-            packageManagerMock.getPackageInfo(WEB_VIEW_PACKAGE, any<PackageInfoFlags>())
-        } throws NameNotFoundException()
-        every {
-            packageManagerMock.getPackageInfo(WEB_VIEW_GOOGLE_PACKAGE, any<PackageInfoFlags>())
-        } throws NameNotFoundException()
-
-        // when
-        val capabilities = DeviceCapabilitiesImpl(context).getCapabilities()
-
-        // then
-        assertEquals(false, capabilities.hasWebView)
-    }
-
-    @Test
-    fun `Should return web view not available when not enabled`() {
-        // given
-        applicationInfoMock.enabled = false
-
-        // when
-        val capabilities = DeviceCapabilitiesImpl(context).getCapabilities()
-
-        // then
-        assertEquals(false, capabilities.hasWebView)
-    }
-
-    @Test
-    fun `Should return web view available when enabled`() {
-        // given
-        applicationInfoMock.enabled = true
-
-        // when
-        val capabilities = DeviceCapabilitiesImpl(context).getCapabilities()
-
-        // then
-        assertEquals(true, capabilities.hasWebView)
+        every { WebView.getCurrentWebViewPackage() } returns if (isPackagePresent) packageInfo else null
     }
 }
