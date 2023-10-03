@@ -40,7 +40,7 @@ class ObserveMailFeatureTest {
     fun `should return the requested feature flag if available`() = runTest {
         // Given
         val observeMailFeature = observeMailFeatureWithDefaults(emptyMap())
-        val requestedFeature = MailFeatureId.ShowSettings
+        val requestedFeature = MailFeatureId.MessageActions
         val expectedFeatureFlag = FeatureFlag(
             userId = UserIdSample.Primary,
             featureId = requestedFeature.id,
@@ -62,7 +62,7 @@ class ObserveMailFeatureTest {
     @Test
     fun `should return the default feature flag if failed to retrieve`() = runTest {
         // Given
-        val requestedFeature = MailFeatureId.ShowSettings
+        val requestedFeature = MailFeatureId.MessageActions
         val defaultsMap = mapOf(requestedFeature to true)
         val observeMailFeature = observeMailFeatureWithDefaults(defaultsMap)
         val expectedFeatureFlag = FeatureFlag(

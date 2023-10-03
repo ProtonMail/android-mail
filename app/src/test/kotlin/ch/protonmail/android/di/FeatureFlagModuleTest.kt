@@ -47,7 +47,6 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
                 expectedDefaultsMap = mapOf(
                     MailFeatureId.AddAttachmentsToDraft to true,
                     MailFeatureId.ConversationMode to true,
-                    MailFeatureId.ShowSettings to true,
                     MailFeatureId.SelectionMode to false,
                     MailFeatureId.MessageActions to true
                 )
@@ -58,7 +57,6 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
                 expectedDefaultsMap = mapOf(
                     MailFeatureId.AddAttachmentsToDraft to true,
                     MailFeatureId.ConversationMode to true,
-                    MailFeatureId.ShowSettings to true,
                     MailFeatureId.SelectionMode to true,
                     MailFeatureId.MessageActions to true
                 )
@@ -69,7 +67,6 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
                 expectedDefaultsMap = mapOf(
                     MailFeatureId.AddAttachmentsToDraft to true,
                     MailFeatureId.ConversationMode to true,
-                    MailFeatureId.ShowSettings to true,
                     MailFeatureId.SelectionMode to false,
                     MailFeatureId.MessageActions to true
                 )
@@ -80,7 +77,6 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
                 expectedDefaultsMap = mapOf(
                     MailFeatureId.AddAttachmentsToDraft to true,
                     MailFeatureId.ConversationMode to true,
-                    MailFeatureId.ShowSettings to true,
                     MailFeatureId.SelectionMode to true,
                     MailFeatureId.MessageActions to true
                 )
@@ -91,7 +87,6 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
                 expectedDefaultsMap = mapOf(
                     MailFeatureId.AddAttachmentsToDraft to false,
                     MailFeatureId.ConversationMode to false,
-                    MailFeatureId.ShowSettings to false,
                     MailFeatureId.SelectionMode to false,
                     MailFeatureId.MessageActions to false
                 )
@@ -102,7 +97,6 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
                 expectedDefaultsMap = mapOf(
                     MailFeatureId.AddAttachmentsToDraft to false,
                     MailFeatureId.ConversationMode to false,
-                    MailFeatureId.ShowSettings to false,
                     MailFeatureId.SelectionMode to true,
                     MailFeatureId.MessageActions to false
                 )

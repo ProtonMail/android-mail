@@ -21,8 +21,6 @@ package ch.protonmail.android.mailmailbox.presentation.sidebar
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcommon.domain.AppInformation
-import ch.protonmail.android.mailcommon.domain.MailFeatureId.ShowSettings
-import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
@@ -51,7 +49,6 @@ class SidebarViewModel @Inject constructor(
     private val selectedMailLabelId: SelectedMailLabelId,
     private val updateLabelExpandedState: UpdateLabelExpandedState,
     private val paymentManager: PaymentManager,
-    observeMailFeature: ObserveMailFeature,
     observePrimaryUser: ObservePrimaryUser,
     observeFolderColors: ObserveFolderColorSettings,
     observeMailLabels: ObserveMailLabels
@@ -72,13 +69,11 @@ class SidebarViewModel @Inject constructor(
 
         combine(
             selectedMailLabelId.flow,
-            observeMailFeature(user.userId, ShowSettings),
             observeFolderColors(user.userId),
             observeMailLabels(user.userId)
-        ) { selectedMailLabelId, settingsFeature, folderColors, mailLabels ->
+        ) { selectedMailLabelId, folderColors, mailLabels ->
             State.Enabled(
                 selectedMailLabelId = selectedMailLabelId,
-                isSettingsEnabled = settingsFeature.value,
                 canChangeSubscription = paymentManager.isSubscriptionAvailable(user.userId),
                 mailLabels = mailLabels.toUiModels(folderColors, emptyMap(), selectedMailLabelId)
             )
@@ -118,7 +113,6 @@ class SidebarViewModel @Inject constructor(
     sealed class State {
         data class Enabled(
             val selectedMailLabelId: MailLabelId,
-            val isSettingsEnabled: Boolean,
             val canChangeSubscription: Boolean,
             val mailLabels: MailLabelsUiModel
         ) : State()

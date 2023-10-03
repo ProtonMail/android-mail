@@ -34,6 +34,6 @@ class MailFeatureDefaultsTest {
 
         // When/Then
         assertTrue(defaults[MailFeatureId.ConversationMode])
-        assertFalse(defaults[MailFeatureId.ShowSettings])
+        assertFalse(defaults[MailFeatureId.MessageActions])
     }
 }

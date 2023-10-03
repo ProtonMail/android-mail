@@ -41,7 +41,6 @@ object FeatureFlagModule {
             mapOf(
                 MailFeatureId.AddAttachmentsToDraft to isNotProd,
                 MailFeatureId.ConversationMode to isNotProd,
-                MailFeatureId.ShowSettings to isNotProd,
                 MailFeatureId.SelectionMode to buildDebug,
                 MailFeatureId.MessageActions to isNotProd
             )

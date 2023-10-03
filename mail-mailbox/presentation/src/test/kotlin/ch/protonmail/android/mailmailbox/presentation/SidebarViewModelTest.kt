@@ -20,7 +20,6 @@ package ch.protonmail.android.mailmailbox.presentation
 
 import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.AppInformation
-import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
@@ -71,9 +70,6 @@ class SidebarViewModelTest {
     }
 
     private val showSettings = MutableStateFlow(FeatureFlag.default(FeatureFlagTestData.showSettingsId.id.id, false))
-    private val observeMailFeature = mockk<ObserveMailFeature> {
-        every { this@mockk(any(), FeatureFlagTestData.showSettingsId) } returns showSettings
-    }
     private val primaryUser = MutableStateFlow<User?>(null)
     private val observePrimaryUser = mockk<ObservePrimaryUser> {
         every { this@mockk() } returns primaryUser
@@ -104,7 +100,6 @@ class SidebarViewModelTest {
             selectedMailLabelId = selectedMailLabelId,
             updateLabelExpandedState = updateLabelExpandedState,
             paymentManager = paymentManager,
-            observeMailFeature = observeMailFeature,
             observePrimaryUser = observePrimaryUser,
             observeFolderColors = observeFolderColors,
             observeMailLabels = observeMailboxLabels
@@ -125,7 +120,6 @@ class SidebarViewModelTest {
             val actual = awaitItem() as Enabled
             val expected = Enabled(
                 selectedMailLabelId = Inbox,
-                isSettingsEnabled = false,
                 canChangeSubscription = true,
                 mailLabels = MailLabelsUiModel.Loading
             )
@@ -147,7 +141,6 @@ class SidebarViewModelTest {
             val actual = awaitItem() as Enabled
             val expected = Enabled(
                 selectedMailLabelId = Inbox,
-                isSettingsEnabled = true,
                 canChangeSubscription = true,
                 mailLabels = MailLabelsUiModel.Loading
             )
@@ -169,7 +162,6 @@ class SidebarViewModelTest {
             val actual = awaitItem() as Enabled
             val expected = Enabled(
                 selectedMailLabelId = Inbox,
-                isSettingsEnabled = false,
                 canChangeSubscription = true,
                 mailLabels = MailLabelsUiModel.Loading
             )
@@ -191,7 +183,6 @@ class SidebarViewModelTest {
             val actual = awaitItem() as Enabled
             val expected = Enabled(
                 selectedMailLabelId = Inbox,
-                isSettingsEnabled = false,
                 canChangeSubscription = true,
                 mailLabels = MailLabelsUiModel.Loading
             )
@@ -213,7 +204,6 @@ class SidebarViewModelTest {
             val actual = awaitItem() as Enabled
             val expected = Enabled(
                 selectedMailLabelId = Inbox,
-                isSettingsEnabled = false,
                 canChangeSubscription = false,
                 mailLabels = MailLabelsUiModel.Loading
             )
