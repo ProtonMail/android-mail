@@ -48,7 +48,6 @@ sealed interface ComposerEvent : ComposerOperation {
     data class OpenExistingDraft(val draftId: MessageId) : ComposerEvent
     data class OpenWithMessageAction(val parentId: MessageId) : ComposerEvent
     data class PrefillDraftDataReceived(val draftUiModel: DraftUiModel) : ComposerEvent
-    data class ApiAssignedMessageIdReceived(val apiAssignedMessageId: MessageId) : ComposerEvent
     data class OnAttachmentsUpdated(val attachments: List<MessageAttachment>) : ComposerEvent
 
     object ErrorLoadingDefaultSenderAddress : ComposerEvent

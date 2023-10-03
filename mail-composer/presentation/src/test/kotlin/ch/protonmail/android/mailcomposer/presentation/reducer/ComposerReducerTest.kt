@@ -47,12 +47,11 @@ import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel.Va
 import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.Recipient
-import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
 import ch.protonmail.android.mailmessage.presentation.mapper.AttachmentUiModelMapper
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
 import ch.protonmail.android.mailmessage.presentation.model.NO_ATTACHMENT_LIMIT
 import ch.protonmail.android.mailmessage.presentation.sample.AttachmentUiModelSample
-import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -561,16 +560,6 @@ class ComposerReducerTest(
             )
         )
 
-        private val EmptyToUpdatedMessageIdOnApiAssignedId = TestTransition(
-            name = "Should update the draft id in the draft state fields when API assigned ID is received",
-            currentState = ComposerDraftState.initial(messageId),
-            operation = ComposerEvent.ApiAssignedMessageIdReceived(MessageIdSample.RemoteDraft),
-            expectedState = aNotSubmittableState(
-                draftId = MessageIdSample.RemoteDraft,
-                error = Effect.empty()
-            )
-        )
-
         private val EmptyToBottomSheetOpened = TestTransition(
             name = "Should open the bottom sheet when add attachments action is chosen",
             currentState = ComposerDraftState.initial(messageId),
@@ -636,7 +625,6 @@ class ComposerReducerTest(
             LoadingToFieldsWhenReceivedDraftDataEmptyRecipients,
             LoadingToFieldsWhenReceivedDraftDataValidRecipients,
             LoadingToErrorWhenErrorLoadingDraftData,
-            EmptyToUpdatedMessageIdOnApiAssignedId,
             EmptyToBottomSheetOpened,
             EmptyToBottomSheetClosed,
             EmptyToAttachmentsUpdated

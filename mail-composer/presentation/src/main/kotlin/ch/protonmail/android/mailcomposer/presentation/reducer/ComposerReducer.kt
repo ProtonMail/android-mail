@@ -101,10 +101,6 @@ class ComposerReducer @Inject constructor(
             isLoading = false
         )
 
-        is ComposerEvent.ApiAssignedMessageIdReceived -> currentState.copy(
-            fields = currentState.fields.copy(draftId = apiAssignedMessageId)
-        )
-
         is ComposerEvent.OnSendMessageOffline -> updateStateForSendMessageOffline(currentState)
         is ComposerEvent.OnAttachmentsUpdated -> updateAttachmentsState(currentState, this.attachments)
         is ComposerEvent.ErrorLoadingParentMessageData -> currentState.copy(
