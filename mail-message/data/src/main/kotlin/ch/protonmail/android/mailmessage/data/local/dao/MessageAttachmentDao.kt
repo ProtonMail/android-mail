@@ -50,7 +50,7 @@ abstract class MessageAttachmentDao : BaseDao<MessageAttachmentEntity>() {
             AND attachmentId = :attachmentId            
         """
     )
-    abstract fun getMessageAttachment(
+    abstract suspend fun getMessageAttachment(
         userId: UserId,
         messageId: MessageId,
         attachmentId: AttachmentId
@@ -59,25 +59,11 @@ abstract class MessageAttachmentDao : BaseDao<MessageAttachmentEntity>() {
     @Query(
         """
             UPDATE MessageAttachmentEntity
-            SET messageId = :apiAssignedId
-            WHERE userId = :userId
-            AND messageId = :localDraftId
-        """
-    )
-    abstract fun updateMessageId(
-        userId: UserId,
-        localDraftId: MessageId,
-        apiAssignedId: MessageId
-    )
-
-    @Query(
-        """
-            UPDATE MessageAttachmentEntity
             SET attachmentId = :apiAssignedId, keyPackets = :keyPackets
             WHERE userId = :userId AND messageId = :messageId AND attachmentId = :localAttachmentId
         """
     )
-    abstract fun updateAttachmentIdAndKeyPackets(
+    abstract suspend fun updateAttachmentIdAndKeyPackets(
         userId: UserId,
         messageId: MessageId,
         localAttachmentId: AttachmentId,

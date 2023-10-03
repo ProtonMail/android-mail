@@ -512,7 +512,7 @@ class ConversationLocalDataSourceImplTest {
         // given
         val conversationId = ConversationIdSample.AlphaAppFeedback
         val conversation = ConversationWithLabelsSample.AlphaAppFeedback
-        every { conversationDao.getConversation(userId, conversationId) } returns conversation
+        coEvery { conversationDao.getConversation(userId, conversationId) } returns conversation
 
         // when
         val result = conversationLocalDataSource.getConversation(userId, conversationId)
@@ -526,7 +526,7 @@ class ConversationLocalDataSourceImplTest {
         // given
         val conversationId = ConversationIdSample.AlphaAppFeedback
         val error = DataErrorSample.NoCache.left()
-        every { conversationDao.getConversation(userId, conversationId) } returns null
+        coEvery { conversationDao.getConversation(userId, conversationId) } returns null
 
         // when
         val result = conversationLocalDataSource.getConversation(userId, conversationId)
@@ -540,7 +540,7 @@ class ConversationLocalDataSourceImplTest {
         // Given
         val sample = ConversationWithLabelsSample.AlphaAppFeedback
         val conversationId = sample.conversation.conversationId
-        every { conversationDao.getConversation(userId, conversationId) } returns
+        coEvery { conversationDao.getConversation(userId, conversationId) } returns
             sample.copy(conversation = sample.conversation.copy(numUnread = 0))
 
         // When
@@ -555,7 +555,7 @@ class ConversationLocalDataSourceImplTest {
         // Given
         val sample = ConversationWithLabelsSample.AlphaAppFeedback
         val conversationId = sample.conversation.conversationId
-        every { conversationDao.getConversation(userId, conversationId) } returns
+        coEvery { conversationDao.getConversation(userId, conversationId) } returns
             sample.copy(conversation = sample.conversation.copy(numUnread = 1))
 
         // When
@@ -569,7 +569,7 @@ class ConversationLocalDataSourceImplTest {
     fun `Should return error if the conversation is not cached`() = runTest {
         // Given
         val conversationId = ConversationId(UUID.randomUUID().toString())
-        every { conversationDao.getConversation(userId, conversationId) } returns null
+        coEvery { conversationDao.getConversation(userId, conversationId) } returns null
 
         // When
         val result = conversationLocalDataSource.isConversationRead(userId, conversationId)

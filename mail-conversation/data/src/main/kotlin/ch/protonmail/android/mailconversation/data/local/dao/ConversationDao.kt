@@ -163,7 +163,7 @@ abstract class ConversationDao : BaseDao<ConversationEntity>() {
 
     @Query("SELECT * FROM ConversationEntity WHERE userId = :userId AND conversationId = :conversationId")
     @Transaction
-    abstract fun getConversation(userId: UserId, conversationId: ConversationId): ConversationWithLabels?
+    abstract suspend fun getConversation(userId: UserId, conversationId: ConversationId): ConversationWithLabels?
 
     @Query("SELECT * FROM ConversationEntity WHERE userId = :userId AND conversationId IN (:conversationIds)")
     abstract suspend fun getConversations(

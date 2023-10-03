@@ -187,10 +187,13 @@ abstract class MessageDao : BaseDao<MessageEntity>() {
     ): Flow<List<MessageWithLabelIds>>
 
     @Query("SELECT messageId FROM MessageEntity WHERE userId = :userId AND conversationId IN (:conversationIds)")
-    abstract fun getMessageIdsInConversations(userId: UserId, conversationIds: List<ConversationId>): List<MessageId>
+    abstract suspend fun getMessageIdsInConversations(
+        userId: UserId,
+        conversationIds: List<ConversationId>
+    ): List<MessageId>
 
     @Query("UPDATE MessageEntity SET messageId = :apiAssignedId WHERE userId = :userId AND messageId = :localDraftId")
-    abstract fun updateDraftMessageId(
+    abstract suspend fun updateDraftMessageId(
         userId: UserId,
         localDraftId: MessageId,
         apiAssignedId: MessageId
