@@ -18,10 +18,8 @@
 
 package ch.protonmail.android.mailcommon.data.system
 
-import android.content.pm.ApplicationInfo
-import android.content.pm.PackageInfo
 import android.webkit.WebView
-import io.mockk.every
+import ch.protonmail.android.test.utils.mocks.WebViewProviderMocks.mockExpectedWebViewAvailableOnDevice
 import io.mockk.mockkStatic
 import io.mockk.unmockkAll
 import org.junit.After
@@ -44,7 +42,7 @@ class DeviceCapabilitiesImplTest {
     @Test
     fun `Should return web view not available when provider is not present`() {
         // Given
-        expectedWebViewAvailableOnDevice(isPackagePresent = false)
+        mockExpectedWebViewAvailableOnDevice(isPackagePresent = false)
 
         // When
         val capabilities = DeviceCapabilitiesImpl().getCapabilities()
@@ -56,7 +54,7 @@ class DeviceCapabilitiesImplTest {
     @Test
     fun `Should return web view not available when provider is present but not enabled`() {
         // Given
-        expectedWebViewAvailableOnDevice(isPackagePresent = true, isPackageEnabled = false)
+        mockExpectedWebViewAvailableOnDevice(isPackagePresent = true, isPackageEnabled = false)
 
         // When
         val capabilities = DeviceCapabilitiesImpl().getCapabilities()
@@ -68,24 +66,12 @@ class DeviceCapabilitiesImplTest {
     @Test
     fun `Should return web view available when provider is present and enabled`() {
         // Given
-        expectedWebViewAvailableOnDevice(isPackagePresent = true, isPackageEnabled = true)
+        mockExpectedWebViewAvailableOnDevice(isPackagePresent = true, isPackageEnabled = true)
 
         // When
         val capabilities = DeviceCapabilitiesImpl().getCapabilities()
 
         // Then
         assertEquals(true, capabilities.hasWebView)
-    }
-
-    private fun expectedWebViewAvailableOnDevice(
-        isPackagePresent: Boolean,
-        isPackageEnabled: Boolean = false
-    ) {
-        val packageInfo = PackageInfo().apply {
-            applicationInfo = ApplicationInfo()
-            applicationInfo.enabled = isPackageEnabled
-        }
-
-        every { WebView.getCurrentWebViewPackage() } returns if (isPackagePresent) packageInfo else null
     }
 }
