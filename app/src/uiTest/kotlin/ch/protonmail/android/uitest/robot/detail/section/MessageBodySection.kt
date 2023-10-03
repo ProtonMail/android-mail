@@ -19,6 +19,7 @@
 package ch.protonmail.android.uitest.robot.detail.section
 
 import androidx.annotation.StringRes
+import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -32,7 +33,7 @@ import androidx.test.espresso.web.webdriver.DriverAtoms.findElement
 import androidx.test.espresso.web.webdriver.DriverAtoms.getText
 import androidx.test.espresso.web.webdriver.Locator
 import ch.protonmail.android.maildetail.presentation.R
-import ch.protonmail.android.mailmessage.presentation.ui.MessageBodyWebView
+import ch.protonmail.android.maildetail.presentation.ui.MessageBodyTestTags
 import ch.protonmail.android.mailmessage.presentation.ui.MessageBodyWebViewTestTags
 import ch.protonmail.android.test.ksp.annotations.AttachTo
 import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
@@ -51,25 +52,38 @@ import kotlin.time.Duration.Companion.seconds
 internal class MessageBodySection : ComposeSectionRobot() {
 
     private val webView: Web.WebInteraction<*> by lazy {
-        onWebView(withClassName(equalTo("android.webkit.WebView"))).apply {
+        onWebView(withClassName(equalTo(WebViewClassName))).apply {
             forceJavascriptEnabled()
         }
+    }
+
+    private val webViewWrapper: SemanticsNodeInteraction by lazy {
+        composeTestRule.onNodeWithTag(MessageBodyWebViewTestTags.WebView)
+    }
+
+    private val webViewAlternative: SemanticsNodeInteraction by lazy {
+        composeTestRule.onNodeWithTag(MessageBodyTestTags.WebViewAlternative)
     }
 
     fun waitUntilMessageIsShown(timeout: Duration = 30.seconds) {
         composeTestRule.waitForIdle()
 
         // Wait for the WebView to appear.
-        composeTestRule.onNodeWithTag(MessageBodyWebViewTestTags.WebView)
-            .awaitDisplayed(timeout = timeout)
+        webViewWrapper.awaitDisplayed(timeout = timeout)
     }
 
     @VerifiesOuter
     internal inner class Verify {
 
+        fun isShowingMissingWebViewWarning() {
+            webViewAlternative.awaitDisplayed()
+            webViewWrapper.assertDoesNotExist()
+        }
+
         fun messageInWebViewContains(messageBody: String, tagName: String = "html") {
             webView.withElement(findElement(Locator.TAG_NAME, tagName))
                 .check(webMatches(getText(), containsString(messageBody)))
+            webViewAlternative.assertDoesNotExist()
         }
 
         fun loadingErrorMessageIsDisplayed(@StringRes errorMessage: Int) {
@@ -145,5 +159,10 @@ internal class MessageBodySection : ComposeSectionRobot() {
                 )
             )
         }
+    }
+
+    private companion object {
+
+        const val WebViewClassName = "android.webkit.WebView"
     }
 }

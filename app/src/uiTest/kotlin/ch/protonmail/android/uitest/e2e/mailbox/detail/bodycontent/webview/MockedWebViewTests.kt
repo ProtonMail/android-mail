@@ -16,24 +16,23 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.test.utils.mocks
+package ch.protonmail.android.uitest.e2e.mailbox.detail.bodycontent.webview
 
-import android.content.pm.ApplicationInfo
-import android.content.pm.PackageInfo
 import android.webkit.WebView
-import io.mockk.every
+import io.mockk.mockkStatic
+import io.mockk.unmockkAll
+import org.junit.After
+import org.junit.Before
 
-object WebViewProviderMocks {
+interface MockedWebViewTests {
 
-    fun mockWebViewAvailabilityOnDevice(
-        isPackagePresent: Boolean,
-        isPackageEnabled: Boolean = false
-    ) {
-        val packageInfo = PackageInfo().apply {
-            applicationInfo = ApplicationInfo()
-            applicationInfo.enabled = isPackageEnabled
-        }
+    @Before
+    fun mockWebView() {
+        mockkStatic(WebView::class)
+    }
 
-        every { WebView.getCurrentWebViewPackage() } returns if (isPackagePresent) packageInfo else null
+    @After
+    fun teardown() {
+        unmockkAll()
     }
 }

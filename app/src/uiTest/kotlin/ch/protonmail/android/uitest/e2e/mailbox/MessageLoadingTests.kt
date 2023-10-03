@@ -55,7 +55,7 @@ internal class MessageLoadingTests : MockedNetworkTest() {
     val serverProofValidation: ValidateServerProof = mockk(relaxUnitFun = true)
 
     @Test
-    @TestId("66392")
+    @TestId("66392", "225747/2")
     fun checkMessageLoadedInMessageMode() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
@@ -105,7 +105,7 @@ internal class MessageLoadingTests : MockedNetworkTest() {
     }
 
     @Test
-    @TestId("66393")
+    @TestId("66393", "225747")
     fun checkMessageLoadedInConversationMode() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(

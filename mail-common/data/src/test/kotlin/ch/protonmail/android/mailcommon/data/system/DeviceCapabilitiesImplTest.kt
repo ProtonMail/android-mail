@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailcommon.data.system
 
 import android.webkit.WebView
-import ch.protonmail.android.test.utils.mocks.WebViewProviderMocks.mockExpectedWebViewAvailableOnDevice
+import ch.protonmail.android.test.utils.mocks.WebViewProviderMocks.mockWebViewAvailabilityOnDevice
 import io.mockk.mockkStatic
 import io.mockk.unmockkAll
 import org.junit.After
@@ -42,7 +42,7 @@ class DeviceCapabilitiesImplTest {
     @Test
     fun `Should return web view not available when provider is not present`() {
         // Given
-        mockExpectedWebViewAvailableOnDevice(isPackagePresent = false)
+        mockWebViewAvailabilityOnDevice(isPackagePresent = false)
 
         // When
         val capabilities = DeviceCapabilitiesImpl().getCapabilities()
@@ -54,7 +54,7 @@ class DeviceCapabilitiesImplTest {
     @Test
     fun `Should return web view not available when provider is present but not enabled`() {
         // Given
-        mockExpectedWebViewAvailableOnDevice(isPackagePresent = true, isPackageEnabled = false)
+        mockWebViewAvailabilityOnDevice(isPackagePresent = true, isPackageEnabled = false)
 
         // When
         val capabilities = DeviceCapabilitiesImpl().getCapabilities()
@@ -66,7 +66,7 @@ class DeviceCapabilitiesImplTest {
     @Test
     fun `Should return web view available when provider is present and enabled`() {
         // Given
-        mockExpectedWebViewAvailableOnDevice(isPackagePresent = true, isPackageEnabled = true)
+        mockWebViewAvailabilityOnDevice(isPackagePresent = true, isPackageEnabled = true)
 
         // When
         val capabilities = DeviceCapabilitiesImpl().getCapabilities()
