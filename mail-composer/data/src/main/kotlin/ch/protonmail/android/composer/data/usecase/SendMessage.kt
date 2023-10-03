@@ -69,7 +69,7 @@ internal class SendMessage @Inject constructor(
 
         val sendPreferences = getSendPreferences(userId, recipients.map { it.address }).bind()
 
-        val attachmentFiles = if (sendPreferences.values.any { it.encrypt && it.pgpScheme != PackageType.ProtonMail }) {
+        val attachmentFiles = if (sendPreferences.containsMimeSchemePreferences()) {
             val attachmentIds = localDraft.messageBody.attachments.map { it.attachmentId }
             readAttachmentsFromStorage(userId, messageId, attachmentIds).bind()
         } else {
@@ -108,5 +108,10 @@ internal class SendMessage @Inject constructor(
         return if (sendPreferences.size != emails.size) {
             DataError.MessageSending.SendPreferences.left()
         } else sendPreferences.right()
+    }
+
+    private fun Map<Email, SendPreferences>.containsMimeSchemePreferences() = values.any {
+        it.encrypt && it.pgpScheme != PackageType.ProtonMail ||
+            it.encrypt.not() && it.sign
     }
 }

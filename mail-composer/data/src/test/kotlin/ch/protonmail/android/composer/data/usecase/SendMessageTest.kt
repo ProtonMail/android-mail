@@ -46,6 +46,7 @@ import io.mockk.mockk
 import io.mockk.unmockkAll
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
+import me.proton.core.key.domain.entity.key.PublicKey
 import me.proton.core.mailsendpreferences.domain.model.SendPreferences
 import me.proton.core.mailsendpreferences.domain.usecase.ObtainSendPreferences
 import me.proton.core.mailsettings.domain.entity.MimeType
@@ -138,7 +139,7 @@ class SendMessageTest {
     @Test
     fun `when attachment reading fails, the error is propagated to the calling site`() = runTest {
         // Given
-        val sendPreferences = generateSendPreferences(isPgpMime = true)
+        val sendPreferences = generateSendPreferences(encrypt = true, sign = true, pgpScheme = PackageType.PgpMime)
         val expectedError = DataError.Local.NoDataCached.left()
 
         expectFindLocalDraftSucceeds()
@@ -159,7 +160,7 @@ class SendMessageTest {
     @Test
     fun `should read attachments for PGP MIME messages`() = runTest {
         // Given
-        val sendPreferences = generateSendPreferences(isPgpMime = true)
+        val sendPreferences = generateSendPreferences(encrypt = true, sign = true, pgpScheme = PackageType.PgpMime)
         val attachmentIds = sampleMessage.messageBody.attachments.map { it.attachmentId }
         val attachments = attachmentIds.associateWith { File.createTempFile("file", "txt") }
 
@@ -179,9 +180,31 @@ class SendMessageTest {
     }
 
     @Test
-    fun `should not read attachments for non-PGP MIME messages`() = runTest {
+    fun `should read attachments for Clear MIME messages`() = runTest {
         // Given
-        val sendPreferences = generateSendPreferences(isPgpMime = false)
+        val sendPreferences = generateSendPreferences(encrypt = false, sign = true, pgpScheme = PackageType.ClearMime)
+        val attachmentIds = sampleMessage.messageBody.attachments.map { it.attachmentId }
+        val attachments = attachmentIds.associateWith { File.createTempFile("file", "txt") }
+
+        expectFindLocalDraftSucceeds()
+        expectResolveUserAddressSucceeds()
+        expectObserveMailSettingsReturnsNull()
+        expectObtainSendPreferencesSucceeds(sendPreferences)
+        expectReadAttachmentsFromStorageSucceeds(attachmentIds, attachments)
+        val messagePackages = expectGenerateMessagePackagesSucceeds(sendPreferences, attachments)
+        expectSendOperationSucceeds(messagePackages)
+
+        // When
+        sendMessage(userId, messageId)
+
+        // Then
+        coVerify(exactly = attachmentIds.size) { readAttachmentsFromStorage(userId, messageId, any()) }
+    }
+
+    @Test
+    fun `should not read attachments for non MIME messages`() = runTest {
+        // Given
+        val sendPreferences = generateSendPreferences(encrypt = true, sign = true, pgpScheme = PackageType.ProtonMail)
 
         expectFindLocalDraftSucceeds()
         expectResolveUserAddressSucceeds()
@@ -326,17 +349,23 @@ class SendMessageTest {
         return MessageWithBodySample.Invoice.copy(message = message, messageBody = messageBody)
     }
 
-    private fun generateSendPreferences(isPgpMime: Boolean = false): Map<String, ObtainSendPreferences.Result> {
+    private fun generateSendPreferences(
+        encrypt: Boolean = true,
+        sign: Boolean = true,
+        pgpScheme: PackageType = PackageType.ProtonMail,
+        mimeType: MimeType = MimeType.Html,
+        publicKey: PublicKey? = null
+    ): Map<String, ObtainSendPreferences.Result> {
         return mapOf(
             Pair(
                 baseRecipient.address,
                 ObtainSendPreferences.Result.Success(
                     SendPreferences(
-                        encrypt = true,
-                        sign = true,
-                        pgpScheme = if (isPgpMime) PackageType.PgpMime else PackageType.ProtonMail,
-                        mimeType = MimeType.Html,
-                        publicKey = null
+                        encrypt = encrypt,
+                        sign = sign,
+                        pgpScheme = pgpScheme,
+                        mimeType = mimeType,
+                        publicKey = publicKey
                     )
                 )
             )
