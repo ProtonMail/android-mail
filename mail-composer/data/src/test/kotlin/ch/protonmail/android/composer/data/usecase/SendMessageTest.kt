@@ -92,7 +92,7 @@ class SendMessageTest {
     @Test
     fun `when local draft is not found upon sending, the error is propagated to the calling site`() = runTest {
         // Given
-        coEvery { findLocalDraft.invoke(userId, messageId) } answers { null }
+        coEvery { findLocalDraft.invoke(userId, messageId) } returns null
 
         // When
         val result = sendMessage(userId, messageId)
@@ -110,7 +110,7 @@ class SendMessageTest {
                 userId,
                 sampleMessage.message.addressId
             )
-        } answers { ResolveUserAddress.Error.UserAddressNotFound.left() }
+        } returns ResolveUserAddress.Error.UserAddressNotFound.left()
 
         // When
         val result = sendMessage(userId, messageId)
@@ -125,9 +125,9 @@ class SendMessageTest {
         expectFindLocalDraftSucceeds()
         expectResolveUserAddressSucceeds()
         expectObserveMailSettingsReturnsNull()
-        coEvery { obtainSendPreferences(userId, recipients) } answers {
-            mapOf(Pair(baseRecipient.address, ObtainSendPreferences.Result.Error.AddressDisabled))
-        }
+        coEvery {
+            obtainSendPreferences(userId, recipients)
+        } returns mapOf(Pair(baseRecipient.address, ObtainSendPreferences.Result.Error.AddressDisabled))
 
         // When
         val result = sendMessage(userId, messageId)
@@ -238,7 +238,7 @@ class SendMessageTest {
                 sendPreferences.forMessagePackages(),
                 emptyMap()
             )
-        } answers { expectedError }
+        } returns expectedError
 
         // When
         val result = sendMessage(userId, messageId)
@@ -264,7 +264,7 @@ class SendMessageTest {
                 messageId.id,
                 generateSendMessageBody(messagePackages)
             )
-        } answers { expectedError }
+        } returns expectedError
 
         // When
         val result = sendMessage(userId, messageId)
@@ -293,21 +293,21 @@ class SendMessageTest {
     }
 
     private fun expectFindLocalDraftSucceeds() {
-        coEvery { findLocalDraft.invoke(userId, messageId) } answers { sampleMessage }
+        coEvery { findLocalDraft.invoke(userId, messageId) } returns sampleMessage
     }
 
     private fun expectResolveUserAddressSucceeds() {
         coEvery {
             resolveUserAddress(userId, sampleMessage.message.addressId)
-        } answers { UserAddressSample.PrimaryAddress.right() }
+        } returns UserAddressSample.PrimaryAddress.right()
     }
 
     private fun expectObserveMailSettingsReturnsNull() {
-        coEvery { observeMailSettings.invoke(userId) } answers { flowOf(null) }
+        coEvery { observeMailSettings.invoke(userId) } returns flowOf(null)
     }
 
     private fun expectObtainSendPreferencesSucceeds(sendPreferences: Map<String, ObtainSendPreferences.Result>) {
-        coEvery { obtainSendPreferences(userId, recipients) } answers { sendPreferences }
+        coEvery { obtainSendPreferences(userId, recipients) } returns sendPreferences
     }
 
     private fun expectReadAttachmentsFromStorageSucceeds(
@@ -330,7 +330,7 @@ class SendMessageTest {
                 sendPreferences.forMessagePackages(),
                 attachments
             )
-        } answers { messagePackages.right() }
+        } returns messagePackages.right()
     }
 
     private fun expectSendOperationSucceeds(messagePackages: List<SendMessagePackage>) {
@@ -340,7 +340,7 @@ class SendMessageTest {
                 messageId.id,
                 generateSendMessageBody(messagePackages)
             )
-        } answers { SendMessageResponse(200, mockk()).right() }
+        } returns SendMessageResponse(200, mockk()).right()
     }
 
     private fun generateDraftMessage(recipients: List<Recipient>): MessageWithBody {
