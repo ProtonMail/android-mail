@@ -22,6 +22,7 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
+import me.proton.core.domain.entity.UserId
 
 sealed interface MailboxListState {
 
@@ -48,6 +49,7 @@ sealed interface MailboxListState {
         ) : Data {
 
             data class SelectedMailboxItem(
+                val userId: UserId,
                 val id: String,
                 val isRead: Boolean
             )

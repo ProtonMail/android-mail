@@ -42,10 +42,10 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
 import ch.protonmail.android.mailmailbox.domain.model.UnreadCounter
 import ch.protonmail.android.mailmailbox.domain.model.toMailboxItemType
+import ch.protonmail.android.mailmailbox.domain.usecase.GetMailboxActions
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkConversationsAsRead
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkConversationsAsUnread
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
-import ch.protonmail.android.mailmailbox.domain.usecase.GetMailboxActions
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
 import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.MailboxItemUiModelMapper
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
@@ -277,15 +277,18 @@ class MailboxViewModel @Inject constructor(
             Timber.d("MailboxListState is not in SelectionMode")
             return
         }
-        val primaryUserId = primaryUserId.firstOrNull() ?: return
 
-        when (getPreferredViewMode()) {
-            ViewMode.ConversationGrouping -> markConversationsAsRead(
-                userId = primaryUserId,
-                conversationIds = selectionModeDataState.selectedMailboxItems.map { ConversationId(it.id) }
-            )
+        val selectedItemsByUserId = selectionModeDataState.selectedMailboxItems.groupBy { it.userId }
 
-            ViewMode.NoConversationGrouping -> Timber.d("Mark as read not supported for message grouping yet")
+        selectedItemsByUserId.keys.forEach { userId ->
+            when (getPreferredViewMode()) {
+                ViewMode.ConversationGrouping -> markConversationsAsRead(
+                    userId = userId,
+                    conversationIds = selectedItemsByUserId[userId]?.map { ConversationId(it.id) } ?: emptyList()
+                )
+
+                ViewMode.NoConversationGrouping -> Timber.d("Mark as read not supported for message grouping yet")
+            }
         }
         emitNewStateFrom(markAsReadOperation)
     }
@@ -296,15 +299,17 @@ class MailboxViewModel @Inject constructor(
             Timber.d("MailboxListState is not in SelectionMode")
             return
         }
-        val primaryUserId = primaryUserId.firstOrNull() ?: return
+        val selectedItemsByUserId = selectionModeDataState.selectedMailboxItems.groupBy { it.userId }
 
-        when (getPreferredViewMode()) {
-            ViewMode.ConversationGrouping -> markConversationsAsUnread(
-                userId = primaryUserId,
-                conversationIds = selectionModeDataState.selectedMailboxItems.map { ConversationId(it.id) }
-            )
+        selectedItemsByUserId.keys.forEach { userId ->
+            when (getPreferredViewMode()) {
+                ViewMode.ConversationGrouping -> markConversationsAsUnread(
+                    userId = userId,
+                    conversationIds = selectedItemsByUserId[userId]?.map { ConversationId(it.id) } ?: emptyList()
+                )
 
-            ViewMode.NoConversationGrouping -> Timber.d("Mark as read not supported for message grouping yet")
+                ViewMode.NoConversationGrouping -> Timber.d("Mark as read not supported for message grouping yet")
+            }
         }
         emitNewStateFrom(markAsReadOperation)
     }

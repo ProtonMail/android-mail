@@ -93,7 +93,9 @@ object MailboxStateSampleData {
         mailboxListState = MailboxListState.Data.SelectionMode(
             currentMailLabel = currentMailLabel,
             selectionModeEnabled = true,
-            selectedMailboxItems = selectedMailboxItemUiModels.map { SelectedMailboxItem(it.id, it.isRead) }.toSet()
+            selectedMailboxItems = selectedMailboxItemUiModels.map {
+                SelectedMailboxItem(it.userId, it.id, it.isRead)
+            }.toSet()
         ),
         topAppBarState = MailboxTopAppBarState.Data.SelectionMode(
             currentLabelName = MailLabel.System(MailLabelId.System.Inbox).text(),
