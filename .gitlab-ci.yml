@@ -1,6 +1,8 @@
 default:
   image: $CI_REGISTRY/android/shared/docker-android:v1.2.0
   interruptible: true
+  tags:
+    - shared-small
 
 before_script:
   - export JAVA_TOOL_OPTIONS="-Dhttp.proxyHost=$( echo ${http_proxy##http://} | cut -d':' -f1 ) -Dhttp.proxyPort=$( echo ${http_proxy##http://} | cut -d':' -f2 ) -Dhttps.proxyHost=$( echo ${https_proxy##http://} | cut -d':' -f1 ) -Dhttps.proxyPort=$( echo ${https_proxy##http://} | cut -d':' -f2 ) -Dhttp.nonProxyHosts=\"$( echo $no_proxy | tr ',' '|' )\""
@@ -39,7 +41,7 @@ setup:
   stage: setup
   extends: .base_job
   tags:
-    - small
+    - shared-small
   before_script:
     - !reference [ .ruby, before_script ]
   script:
@@ -54,7 +56,7 @@ analyse:
   stage: analyse
   extends: .base_job
   tags:
-    - medium
+    - shared-medium
   script:
     - bundle exec fastlane analyse
   artifacts:
@@ -65,7 +67,7 @@ analyse:
 danger-review:
   stage: danger-review
   tags:
-    - small
+    - shared-small
   when: always
   script:
     - bundle exec danger --fail-on-errors=false
@@ -78,21 +80,25 @@ danger-review:
 
 localise-sync-crowdin:
   stage: localise
+  extends: .i18n-sync-crowdin-shared
+  tags:
+    - shared-small
   variables:
     I18N_FILTER_OUT_ITEMS: 'proton-libs'
     I18N_SYNC_CROWDIN_PROJECT: 'android-mail-new'
     I18N_SYNC_BRANCH: 'master'
-  extends: .i18n-sync-crowdin-shared
   only:
     - master
 
 localise-commit-locales:
   stage: localise
+  extends: .i18n-commit-locales-shared
+  tags:
+    - shared-small
   variables:
     I18N_COMMIT_CROWDIN_PROJECT: 'android-mail-new'
     I18N_COMMIT_BRANCH_PUSH: 'master'
     I18N_COMMIT_BRANCH_ALLOWED: 'master'
-  extends: .i18n-commit-locales-shared
 
 build_dev_debug:
   extends: .build_job
@@ -130,6 +136,8 @@ build_beta_release:
 
 startReview:
   stage: startReview
+  tags:
+    - shared-small
   before_script:
     - export REVIEW_APP_ARTIFACT_PATH="app/build/outputs/apk/alpha/release/app-alpha-release.apk"
     - echo ${REVIEW_APP_ARTIFACT_PATH}
@@ -142,6 +150,8 @@ startReview:
 stopReview:
   stage: stopReview
   extends: .stopReview
+  tags:
+    - shared-small
   rules:
     # The cleanup is always manual on a Merge Request
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
@@ -202,6 +212,8 @@ run_firebase_full_regression_tests:
 tag_release:
   stage: tag
   extends: .base_job
+  tags:
+    - shared-small
   script:
     - bundle exec fastlane tagRelease
   rules:

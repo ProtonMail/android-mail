@@ -22,7 +22,7 @@ cache: &cache
   dependencies:
     - build_dev_debug
   tags:
-    - small
+    - shared-small
   before_script:
     - bundle install
     - ./scripts/setup_firebase_gcloud.sh
@@ -35,7 +35,7 @@ cache: &cache
   dependencies:
     - build_alpha_release
   tags:
-    - small
+    - shared-small
   before_script:
     - bundle install
     - echo $SERVICE_ACCOUNT_MAIL > /tmp/service-account.json
