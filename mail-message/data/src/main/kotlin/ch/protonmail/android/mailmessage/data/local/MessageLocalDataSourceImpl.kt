@@ -292,7 +292,7 @@ class MessageLocalDataSourceImpl @Inject constructor(
         apiAssignedId: MessageId
     ) {
         messageDao.updateDraftMessageId(userId, localDraftId, apiAssignedId)
-        attachmentFileStorage.updateParentFolderForAttachments(userId, localDraftId.id, apiAssignedId.id)
+        attachmentFileStorage.updateParentFolderForAttachments(userId, localDraftId, apiAssignedId)
     }
 
     private suspend fun updateLabels(messages: List<Message>) = with(groupByUserId(messages)) {

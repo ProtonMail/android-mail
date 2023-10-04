@@ -24,6 +24,8 @@ import android.net.Uri
 import ch.protonmail.android.mailcommon.data.file.FileInformation
 import ch.protonmail.android.mailcommon.data.file.InternalFileStorage
 import ch.protonmail.android.mailcommon.data.file.UriHelper
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
@@ -34,22 +36,22 @@ class AttachmentFileStorage @Inject constructor(
 
     suspend fun saveAttachment(
         userId: UserId,
-        messageId: String,
-        attachmentId: String,
+        messageId: MessageId,
+        attachmentId: AttachmentId,
         content: ByteArray
     ): File? {
         return internalFileStorage.writeFile(
             userId,
-            InternalFileStorage.Folder.MessageAttachments(messageId),
-            InternalFileStorage.FileIdentifier(attachmentId),
+            InternalFileStorage.Folder.MessageAttachments(messageId.id),
+            InternalFileStorage.FileIdentifier(attachmentId.id),
             content
         )
     }
 
     suspend fun saveAttachment(
         userId: UserId,
-        messageId: String,
-        attachmentId: String,
+        messageId: MessageId,
+        attachmentId: AttachmentId,
         uri: Uri
     ): FileInformation? {
         return uriHelper.readFromUri(uri)?.let {
@@ -61,81 +63,81 @@ class AttachmentFileStorage @Inject constructor(
 
     suspend fun saveAttachmentCached(
         userId: UserId,
-        messageId: String,
-        attachmentId: String,
+        messageId: MessageId,
+        attachmentId: AttachmentId,
         content: ByteArray
     ): File? {
         return internalFileStorage.writeCachedFile(
             userId,
-            InternalFileStorage.Folder.MessageAttachments(messageId),
-            InternalFileStorage.FileIdentifier(attachmentId),
+            InternalFileStorage.Folder.MessageAttachments(messageId.id),
+            InternalFileStorage.FileIdentifier(attachmentId.id),
             content
         )
     }
 
     suspend fun saveAttachmentAsStream(
         userId: UserId,
-        messageId: String,
-        attachmentId: String,
+        messageId: MessageId,
+        attachmentId: AttachmentId,
         inputStream: InputStream
     ): File? {
         return internalFileStorage.writeFileAsStream(
             userId,
-            InternalFileStorage.Folder.MessageAttachments(messageId),
-            InternalFileStorage.FileIdentifier(attachmentId),
+            InternalFileStorage.Folder.MessageAttachments(messageId.id),
+            InternalFileStorage.FileIdentifier(attachmentId.id),
             inputStream
         )
     }
 
     suspend fun updateParentFolderForAttachments(
         userId: UserId,
-        oldMessageId: String,
-        updatedMessageId: String
+        oldMessageId: MessageId,
+        updatedMessageId: MessageId
     ) {
         internalFileStorage.renameFolder(
             userId = userId,
-            oldFolder = InternalFileStorage.Folder.MessageAttachments(oldMessageId),
-            newFolder = InternalFileStorage.Folder.MessageAttachments(updatedMessageId)
+            oldFolder = InternalFileStorage.Folder.MessageAttachments(oldMessageId.id),
+            newFolder = InternalFileStorage.Folder.MessageAttachments(updatedMessageId.id)
         )
     }
 
     suspend fun updateFileNameForAttachment(
         userId: UserId,
-        messageId: String,
-        oldAttachmentId: String,
-        newAttachmentId: String
+        messageId: MessageId,
+        oldAttachmentId: AttachmentId,
+        newAttachmentId: AttachmentId
     ) {
         internalFileStorage.renameFile(
             userId,
-            InternalFileStorage.Folder.MessageAttachments(messageId),
-            InternalFileStorage.FileIdentifier(oldAttachmentId),
-            InternalFileStorage.FileIdentifier(newAttachmentId)
+            InternalFileStorage.Folder.MessageAttachments(messageId.id),
+            InternalFileStorage.FileIdentifier(oldAttachmentId.id),
+            InternalFileStorage.FileIdentifier(newAttachmentId.id)
         )
     }
 
     @Throws(AttachmentFileReadException::class)
     suspend fun readAttachment(
         userId: UserId,
-        messageId: String,
-        attachmentId: String
+        messageId: MessageId,
+        attachmentId: AttachmentId
     ): File {
         return internalFileStorage.getFile(
             userId,
-            InternalFileStorage.Folder.MessageAttachments(messageId),
-            InternalFileStorage.FileIdentifier(attachmentId)
+            InternalFileStorage.Folder.MessageAttachments(messageId.id),
+            InternalFileStorage.FileIdentifier(attachmentId.id)
         ) ?: throw AttachmentFileReadException
     }
 
     @Throws(AttachmentFileReadException::class)
     suspend fun readCachedAttachment(
         userId: UserId,
-        messageId: String,
-        attachmentId: String
+        messageId: MessageId,
+        attachmentId: AttachmentId
     ): File {
         return internalFileStorage.getCachedFile(
             userId,
-            InternalFileStorage.Folder.MessageAttachments(messageId),
-            InternalFileStorage.FileIdentifier(attachmentId)
+            InternalFileStorage.Folder.MessageAttachments(messageId.id),
+            InternalFileStorage.FileIdentifier(attachmentId.id)
         ) ?: throw AttachmentFileReadException
     }
 

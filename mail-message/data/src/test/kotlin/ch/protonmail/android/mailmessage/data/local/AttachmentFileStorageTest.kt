@@ -30,7 +30,11 @@ import ch.protonmail.android.mailmessage.data.local.AttachmentFileStorageTest.Te
 import ch.protonmail.android.mailmessage.data.local.AttachmentFileStorageTest.TestData.File
 import ch.protonmail.android.mailmessage.data.local.AttachmentFileStorageTest.TestData.FileInfo
 import ch.protonmail.android.mailmessage.data.local.AttachmentFileStorageTest.TestData.MessageId
+import ch.protonmail.android.mailmessage.data.local.AttachmentFileStorageTest.TestData.RawAttachmentId
+import ch.protonmail.android.mailmessage.data.local.AttachmentFileStorageTest.TestData.RawMessageId
 import ch.protonmail.android.mailmessage.data.local.AttachmentFileStorageTest.TestData.UserId
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import io.mockk.coEvery
 import io.mockk.coJustRun
@@ -65,7 +69,7 @@ internal class AttachmentFileStorageTest {
         } returns File
 
         // When
-        val result = attachmentFileStorage.saveAttachment(UserId, MessageId, AttachmentId, Content)
+        val result = attachmentFileStorage.saveAttachment(UserId, RawMessageId, RawAttachmentId, Content)
 
         // Then
         assertEquals(File, result)
@@ -86,7 +90,7 @@ internal class AttachmentFileStorageTest {
         } returns File
 
         // When
-        val result = attachmentFileStorage.saveAttachment(UserId, MessageId, AttachmentId, uri)
+        val result = attachmentFileStorage.saveAttachment(UserId, RawMessageId, RawAttachmentId, uri)
 
         // Then
         assertEquals(FileInfo, result)
@@ -105,7 +109,7 @@ internal class AttachmentFileStorageTest {
         } returns File
 
         // When
-        val result = attachmentFileStorage.saveAttachmentCached(UserId, MessageId, AttachmentId, Content)
+        val result = attachmentFileStorage.saveAttachmentCached(UserId, RawMessageId, RawAttachmentId, Content)
 
         // Then
         assertEquals(File, result)
@@ -124,7 +128,7 @@ internal class AttachmentFileStorageTest {
         } returns null
 
         // When
-        val result = attachmentFileStorage.saveAttachment(UserId, MessageId, AttachmentId, Content)
+        val result = attachmentFileStorage.saveAttachment(UserId, RawMessageId, RawAttachmentId, Content)
 
         // Then
         assertNull(result)
@@ -144,7 +148,7 @@ internal class AttachmentFileStorageTest {
         } returns null
 
         // When
-        val result = attachmentFileStorage.saveAttachment(UserId, MessageId, AttachmentId, uri)
+        val result = attachmentFileStorage.saveAttachment(UserId, RawMessageId, RawAttachmentId, uri)
 
         // Then
         assertNull(result)
@@ -163,7 +167,7 @@ internal class AttachmentFileStorageTest {
         } returns null
 
         // When
-        val result = attachmentFileStorage.saveAttachmentCached(UserId, MessageId, AttachmentId, Content)
+        val result = attachmentFileStorage.saveAttachmentCached(UserId, RawMessageId, RawAttachmentId, Content)
 
         // Then
         assertNull(result)
@@ -173,6 +177,7 @@ internal class AttachmentFileStorageTest {
     fun `should update folder in internal storage`() = runTest {
         // Given
         val updatedMessageId = MessageId + "_new"
+        val rawUpdatedMessageId = MessageId(updatedMessageId)
         coJustRun {
             internalFileStorageMock.renameFolder(
                 userId = UserId,
@@ -182,7 +187,7 @@ internal class AttachmentFileStorageTest {
         }
 
         // When
-        attachmentFileStorage.updateParentFolderForAttachments(UserId, MessageId, updatedMessageId)
+        attachmentFileStorage.updateParentFolderForAttachments(UserId, RawMessageId, rawUpdatedMessageId)
 
         // Then
         coVerify {
@@ -198,6 +203,7 @@ internal class AttachmentFileStorageTest {
     fun `should update file in internal storage`() = runTest {
         // Given
         val updatedAttachmentId = AttachmentId + "_new"
+        val rawUpdatedAttachmentId = AttachmentId(updatedAttachmentId)
         coJustRun {
             internalFileStorageMock.renameFile(
                 userId = UserId,
@@ -208,7 +214,7 @@ internal class AttachmentFileStorageTest {
         }
 
         // When
-        attachmentFileStorage.updateFileNameForAttachment(UserId, MessageId, AttachmentId, updatedAttachmentId)
+        attachmentFileStorage.updateFileNameForAttachment(UserId, RawMessageId, RawAttachmentId, rawUpdatedAttachmentId)
 
         // Then
         coVerify {
@@ -233,7 +239,7 @@ internal class AttachmentFileStorageTest {
         } returns File
 
         // When
-        val result = attachmentFileStorage.readAttachment(UserId, MessageId, AttachmentId)
+        val result = attachmentFileStorage.readAttachment(UserId, RawMessageId, RawAttachmentId)
 
         // Then
         assertEquals(File, result)
@@ -251,7 +257,7 @@ internal class AttachmentFileStorageTest {
         } returns File
 
         // When
-        val result = attachmentFileStorage.readCachedAttachment(UserId, MessageId, AttachmentId)
+        val result = attachmentFileStorage.readCachedAttachment(UserId, RawMessageId, RawAttachmentId)
 
         // Then
         assertEquals(File, result)
@@ -271,7 +277,7 @@ internal class AttachmentFileStorageTest {
         // Then
         assertFailsWith<AttachmentFileReadException> {
             // When
-            attachmentFileStorage.readAttachment(UserId, MessageId, AttachmentId)
+            attachmentFileStorage.readAttachment(UserId, RawMessageId, RawAttachmentId)
         }
     }
 
@@ -289,7 +295,7 @@ internal class AttachmentFileStorageTest {
         // Then
         assertFailsWith<AttachmentFileReadException> {
             // When
-            attachmentFileStorage.readCachedAttachment(UserId, MessageId, AttachmentId)
+            attachmentFileStorage.readCachedAttachment(UserId, RawMessageId, RawAttachmentId)
         }
     }
 
@@ -386,7 +392,9 @@ internal class AttachmentFileStorageTest {
         val FileInfo = FileInformation("name", 123, "mimeType")
         val UserId = UserIdSample.Primary
         val MessageId = MessageIdSample.Invoice.id
+        val RawMessageId = MessageId(MessageId)
         val Content = "content".toByteArray()
         const val AttachmentId = "attachmentId"
+        val RawAttachmentId = AttachmentId(AttachmentId)
     }
 }

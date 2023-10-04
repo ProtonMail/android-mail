@@ -221,7 +221,7 @@ class AttachmentLocalDataSourceImplTest {
             disposition = "attachment"
         )
         coEvery {
-            attachmentFileStorage.saveAttachment(userId, messageId.id, attachmentId.id, mockUri)
+            attachmentFileStorage.saveAttachment(userId, messageId, attachmentId, mockUri)
         } returns FileInformation(fileName, fileSize, fileMimeType)
 
         // When
@@ -237,7 +237,7 @@ class AttachmentLocalDataSourceImplTest {
         // Given
         val expectedResult = DataError.Local.FailedToStoreFile.left()
         coEvery {
-            attachmentFileStorage.saveAttachment(userId, messageId.id, attachmentId.id, mockUri)
+            attachmentFileStorage.saveAttachment(userId, messageId, attachmentId, mockUri)
         } returns null
 
         // When
@@ -265,7 +265,7 @@ class AttachmentLocalDataSourceImplTest {
             disposition = "attachment"
         )
         coEvery {
-            attachmentFileStorage.saveAttachment(userId, messageId.id, attachmentId.id, mockUri)
+            attachmentFileStorage.saveAttachment(userId, messageId, attachmentId, mockUri)
         } returns FileInformation(fileName, fileSize, fileMimeType)
         coEvery { attachmentDao.insertOrUpdate(any()) } throws Exception()
 
@@ -380,7 +380,7 @@ class AttachmentLocalDataSourceImplTest {
         // Given
         @Suppress("BlockingMethodInNonBlockingContext")
         val file = File.createTempFile("test", "test")
-        coEvery { attachmentFileStorage.readCachedAttachment(userId, messageId.id, attachmentId.id) } returns file
+        coEvery { attachmentFileStorage.readCachedAttachment(userId, messageId, attachmentId) } returns file
         val expected = file.right()
 
         // When
@@ -394,7 +394,7 @@ class AttachmentLocalDataSourceImplTest {
     fun `should return local error when getting embedded image call has failed`() = runTest {
         // Given
         coEvery {
-            attachmentFileStorage.readCachedAttachment(userId, messageId.id, attachmentId.id)
+            attachmentFileStorage.readCachedAttachment(userId, messageId, attachmentId)
         } throws AttachmentFileReadException
         val expected = DataError.Local.NoDataCached.left()
 
@@ -412,14 +412,14 @@ class AttachmentLocalDataSourceImplTest {
         val file = File.createTempFile("test", "test")
         val byteArray = file.readBytes()
         coEvery {
-            attachmentFileStorage.saveAttachmentCached(userId, messageId.id, attachmentId.id, byteArray)
+            attachmentFileStorage.saveAttachmentCached(userId, messageId, attachmentId, byteArray)
         } returns file
 
         // When
         attachmentLocalDataSource.storeEmbeddedImage(userId, messageId, attachmentId, byteArray)
 
         // Then
-        coVerify { attachmentFileStorage.saveAttachmentCached(userId, messageId.id, attachmentId.id, byteArray) }
+        coVerify { attachmentFileStorage.saveAttachmentCached(userId, messageId, attachmentId, byteArray) }
     }
 
     @Test
@@ -428,7 +428,7 @@ class AttachmentLocalDataSourceImplTest {
         @Suppress("BlockingMethodInNonBlockingContext")
         val file = File.createTempFile("test", "test")
         coEvery {
-            attachmentFileStorage.readAttachment(userId, messageId.id, attachmentId.id)
+            attachmentFileStorage.readAttachment(userId, messageId, attachmentId)
         } returns file
 
         // When
@@ -442,7 +442,7 @@ class AttachmentLocalDataSourceImplTest {
     fun `read file from storage returns null when file doesn't exist`() = runTest {
         // Given
         coEvery {
-            attachmentFileStorage.readAttachment(userId, messageId.id, attachmentId.id)
+            attachmentFileStorage.readAttachment(userId, messageId, attachmentId)
         } throws AttachmentFileReadException
 
         // When
@@ -502,9 +502,9 @@ class AttachmentLocalDataSourceImplTest {
         coEvery {
             attachmentFileStorage.updateFileNameForAttachment(
                 userId = userId,
-                messageId = messageId.id,
-                oldAttachmentId = attachmentId.id,
-                newAttachmentId = expectedAttachmentId.id
+                messageId = messageId,
+                oldAttachmentId = attachmentId,
+                newAttachmentId = expectedAttachmentId
             )
         } just Runs
 
@@ -530,9 +530,9 @@ class AttachmentLocalDataSourceImplTest {
         coVerify {
             attachmentFileStorage.updateFileNameForAttachment(
                 userId = userId,
-                messageId = messageId.id,
-                oldAttachmentId = attachmentId.id,
-                newAttachmentId = expectedAttachmentId.id
+                messageId = messageId,
+                oldAttachmentId = attachmentId,
+                newAttachmentId = expectedAttachmentId
             )
         }
     }

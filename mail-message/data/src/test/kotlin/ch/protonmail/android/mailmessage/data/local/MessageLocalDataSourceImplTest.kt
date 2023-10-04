@@ -45,6 +45,7 @@ import ch.protonmail.android.mailmessage.data.sample.MessageEntitySample
 import ch.protonmail.android.mailmessage.data.sample.MessageWithLabelIdsSample
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
+import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailpagination.data.local.dao.PageIntervalDao
@@ -53,7 +54,6 @@ import ch.protonmail.android.mailpagination.domain.model.OrderDirection
 import ch.protonmail.android.mailpagination.domain.model.PageItemType
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.testdata.message.MessageAttachmentEntityTestData
-import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
 import ch.protonmail.android.testdata.message.MessageBodyEntityTestData
 import ch.protonmail.android.testdata.message.MessageBodyTestData
 import ch.protonmail.android.testdata.message.MessageEntityTestData
@@ -886,7 +886,7 @@ class MessageLocalDataSourceImplTest {
         // Then
         coVerifyOrder {
             messageDao.updateDraftMessageId(userId1, oldMessageId, newMessageId)
-            attachmentFileStorage.updateParentFolderForAttachments(userId1, oldMessageId.id, newMessageId.id)
+            attachmentFileStorage.updateParentFolderForAttachments(userId1, oldMessageId, newMessageId)
         }
     }
 

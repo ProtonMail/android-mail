@@ -104,7 +104,7 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
         attachmentId: AttachmentId
     ): Either<DataError.Local, File> {
         return runCatching {
-            attachmentFileStorage.readCachedAttachment(userId, messageId.id, attachmentId.id)
+            attachmentFileStorage.readCachedAttachment(userId, messageId, attachmentId)
         }.fold(
             onSuccess = { it.right() },
             onFailure = { DataError.Local.NoDataCached.left() }
@@ -164,7 +164,7 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
         attachmentId: AttachmentId,
         uri: Uri
     ): Either<DataError.Local, Unit> {
-        val fileInformation = attachmentFileStorage.saveAttachment(userId, messageId.id, attachmentId.id, uri)
+        val fileInformation = attachmentFileStorage.saveAttachment(userId, messageId, attachmentId, uri)
             ?: return DataError.Local.FailedToStoreFile.left()
         val messageAttachmentEntity = MessageAttachmentEntity(
             userId = userId,
@@ -212,8 +212,8 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
         runCatching {
             attachmentFileStorage.saveAttachmentCached(
                 userId = userId,
-                messageId = messageId.id,
-                attachmentId = attachmentId.id,
+                messageId = messageId,
+                attachmentId = attachmentId,
                 content = encryptedAttachment
             )
         }
@@ -230,7 +230,7 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
         messageId: MessageId,
         attachmentId: AttachmentId
     ): Either<DataError.Local, File> =
-        runCatching { attachmentFileStorage.readAttachment(userId, messageId.id, attachmentId.id) }.fold(
+        runCatching { attachmentFileStorage.readAttachment(userId, messageId, attachmentId) }.fold(
             onSuccess = { it.right() },
             onFailure = {
                 Timber.e(it, "Failed to read attachment from file storage")
@@ -254,9 +254,9 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
             )
             attachmentFileStorage.updateFileNameForAttachment(
                 userId,
-                messageId.id,
-                localAttachmentId.id,
-                attachment.attachmentId.id
+                messageId,
+                localAttachmentId,
+                attachment.attachmentId
             )
         }.fold(
             onSuccess = { Unit.right() },
