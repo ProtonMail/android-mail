@@ -95,7 +95,7 @@ internal class MailboxTopAppBarTest {
         setupScreenWithSelectionMode(MAIL_LABEL_INBOX, selectedCount = SELECTED_COUNT_TEN)
 
         composeTestRule
-            .onNodeWithText(context.getString(R.string.mailbox_toolbar_selected_count, SELECTED_COUNT_TEN))
+            .onNodeWithText(context.getString(R.plurals.mailbox_toolbar_selected_count, SELECTED_COUNT_TEN))
             .assertIsDisplayed()
     }
 
