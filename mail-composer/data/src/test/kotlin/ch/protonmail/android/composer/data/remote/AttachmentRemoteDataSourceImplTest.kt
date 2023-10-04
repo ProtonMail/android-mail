@@ -19,6 +19,8 @@
 package ch.protonmail.android.composer.data.remote
 
 import java.net.UnknownHostException
+import java.util.UUID
+import androidx.work.WorkManager
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.composer.data.remote.response.UploadAttachmentResponse
@@ -65,11 +67,21 @@ class AttachmentRemoteDataSourceImplTest {
 
     private val enqueuer: Enqueuer = mockk {
         every {
-            this@mockk.enqueue<DeleteAttachmentWorker>(params = DeleteAttachmentWorker.params(userId, attachmentId))
+            this@mockk.enqueueUniqueWork<DeleteAttachmentWorker>(
+                workerId = attachmentId.id,
+                params = DeleteAttachmentWorker.params(userId, attachmentId)
+            )
         } returns mockk()
     }
+    private val workManager: WorkManager = mockk()
 
-    private val attachmentRemoteDataSource by lazy { AttachmentRemoteDataSourceImpl(enqueuer, apiProvider) }
+    private val attachmentRemoteDataSource by lazy {
+        AttachmentRemoteDataSourceImpl(
+            enqueuer,
+            workManager,
+            apiProvider
+        )
+    }
 
     @Test
     fun `upload attachment returns response when successful`() = runTest {
@@ -135,9 +147,53 @@ class AttachmentRemoteDataSourceImplTest {
 
         // Then
         coVerify {
-            enqueuer.enqueue<DeleteAttachmentWorker>(
+            enqueuer.enqueueUniqueWork<DeleteAttachmentWorker>(
+                workerId = attachmentId.id,
                 params = DeleteAttachmentWorker.params(userId, attachmentId)
             )
+        }
+    }
+
+    @Test
+    fun `should cancel worker when cancelling attachment upload`() = runTest {
+        // Given
+        expectWorkManagerHasAttachmentUploadWorkerScheduled()
+
+        // When
+        attachmentRemoteDataSource.cancelAttachmentUpload(attachmentId)
+
+        // Then
+        coVerify {
+            workManager.cancelUniqueWork(attachmentId.id)
+        }
+    }
+
+    @Test
+    fun `should ignore cancel request when no worker is scheduled`() = runTest {
+        // Given
+        expectWorkManagerHasNoAttachmentUploadWorkerScheduled()
+
+        // When
+        attachmentRemoteDataSource.cancelAttachmentUpload(attachmentId)
+
+        // Then
+        coVerify(exactly = 0) { workManager.cancelUniqueWork(attachmentId.id) }
+    }
+
+    private fun expectWorkManagerHasAttachmentUploadWorkerScheduled() {
+        every { workManager.getWorkInfosForUniqueWork(attachmentId.id) } returns mockk {
+            every { get() } returns listOf(
+                mockk {
+                    every { id } returns UUID.randomUUID()
+                }
+            )
+        }
+        every { workManager.cancelUniqueWork(attachmentId.id) } returns mockk()
+    }
+
+    private fun expectWorkManagerHasNoAttachmentUploadWorkerScheduled() {
+        every { workManager.getWorkInfosForUniqueWork(attachmentId.id) } returns mockk {
+            every { get() } returns emptyList()
         }
     }
 

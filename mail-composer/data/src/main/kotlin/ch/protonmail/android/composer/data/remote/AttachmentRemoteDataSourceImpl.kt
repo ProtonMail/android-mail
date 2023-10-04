@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.composer.data.remote
 
+import androidx.work.WorkManager
 import arrow.core.Either
 import ch.protonmail.android.composer.data.remote.response.UploadAttachmentResponse
 import ch.protonmail.android.mailcommon.data.mapper.toEither
@@ -34,6 +35,7 @@ import javax.inject.Inject
 
 class AttachmentRemoteDataSourceImpl @Inject constructor(
     private val enqueuer: Enqueuer,
+    private val workManager: WorkManager,
     private val apiProvider: ApiProvider
 ) : AttachmentRemoteDataSource {
 
@@ -71,8 +73,15 @@ class AttachmentRemoteDataSourceImpl @Inject constructor(
     }
 
     override fun deleteAttachmentFromDraft(userId: UserId, attachmentId: AttachmentId) {
-        enqueuer.enqueue<DeleteAttachmentWorker>(
+        enqueuer.enqueueUniqueWork<DeleteAttachmentWorker>(
+            workerId = attachmentId.id,
             params = DeleteAttachmentWorker.params(userId, attachmentId)
         )
+    }
+
+    override fun cancelAttachmentUpload(attachmentId: AttachmentId) {
+        workManager.getWorkInfosForUniqueWork(attachmentId.id).get().forEach {
+            workManager.cancelUniqueWork(attachmentId.id)
+        }
     }
 }

@@ -76,10 +76,11 @@ class AttachmentRepositoryImplTest {
     }
 
     @Test
-    fun `deleting file skips remote layer when attachment state is not uploaded`() = runTest {
+    fun `deleting file cancel worker when attachment state is not uploaded`() = runTest {
         // Given
         val expected = Unit.right()
         expectLoadingAttachmentStateLoadsLocalStateSuccessful()
+        expectCancelAttachmentWorkerSucceeds()
         expectDeleteAttachmentLocalSuccessful()
 
         // When
@@ -89,7 +90,7 @@ class AttachmentRepositoryImplTest {
         assertEquals(expected, actual)
         coVerifyOrder {
             attachmentStateLocalDataSource.getAttachmentState(userId, messageId, attachmentId)
-            attachmentRemoteDataSource wasNot Called
+            attachmentRemoteDataSource.cancelAttachmentUpload(attachmentId)
             attachmentLocalDataSource.deleteAttachment(userId, messageId, attachmentId)
         }
     }
@@ -139,6 +140,10 @@ class AttachmentRepositoryImplTest {
         coEvery {
             attachmentStateLocalDataSource.getAttachmentState(userId, messageId, attachmentId)
         } returns AttachmentStateSample.LocalAttachmentState.right()
+    }
+
+    private fun expectCancelAttachmentWorkerSucceeds() {
+        coJustRun { attachmentRemoteDataSource.cancelAttachmentUpload(attachmentId) }
     }
 
     private fun expectLoadingAttachmentStateFailed() {

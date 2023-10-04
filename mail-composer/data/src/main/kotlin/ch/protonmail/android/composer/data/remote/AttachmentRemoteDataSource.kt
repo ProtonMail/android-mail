@@ -35,4 +35,11 @@ interface AttachmentRemoteDataSource {
      * Delete the attachment for the given [userId] and [attachmentId].
      */
     fun deleteAttachmentFromDraft(userId: UserId, attachmentId: AttachmentId)
+
+    /**
+     * Cancel the attachment upload for the given [attachmentId].
+     */
+    fun cancelAttachmentUpload(
+        attachmentId: AttachmentId
+    )
 }
