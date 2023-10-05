@@ -82,43 +82,45 @@ class StoreDraftWithBodyTest {
     }
 
     @Test
-    fun `should append quoted html body to the draft body and set mime type to html when any quote exists`() = runTest {
-        // Given
-        val plaintextDraftBody = DraftBody("I am plaintext")
-        val quotedHtmlBody = OriginalHtmlQuote("<div> I am quoted html </div>")
-        val expectedMergedBody = DraftBody("${plaintextDraftBody.value}${quotedHtmlBody.value}")
-        val senderAddress = UserAddressSample.build()
-        val senderEmail = SenderEmail(senderAddress.email)
-        val expectedUserId = UserIdSample.Primary
-        val draftMessageId = MessageIdSample.build()
-        val existingDraft = expectedGetLocalDraft(expectedUserId, draftMessageId, senderEmail) {
-            MessageWithBodySample.EmptyDraft
-        }
-        val expectedEncryptedDraftBody = expectedEncryptedDraftBody(expectedMergedBody, senderAddress) {
-            DraftBody("I am encrypted with the quoted html included")
-        }
-        val expectedSavedDraft = existingDraft.copy(
-            message = existingDraft.message.copy(
-                sender = Sender(senderAddress.email, senderAddress.displayName!!),
-                addressId = senderAddress.addressId
-            ),
-            messageBody = existingDraft.messageBody.copy(
-                body = expectedEncryptedDraftBody.value,
-                mimeType = MimeType.Html
+    fun `should wrap draft text in 'pre', append quoted html body and set mime type to html when any quote exists`() =
+        runTest {
+            // Given
+            val plaintextDraftBody = DraftBody("I am plaintext")
+            val quotedHtmlBody = OriginalHtmlQuote("<div> I am quoted html </div>")
+            val preformattedDraftText = "<pre>${plaintextDraftBody.value}</pre>"
+            val expectedMergedBody = DraftBody("$preformattedDraftText${quotedHtmlBody.value}")
+            val senderAddress = UserAddressSample.build()
+            val senderEmail = SenderEmail(senderAddress.email)
+            val expectedUserId = UserIdSample.Primary
+            val draftMessageId = MessageIdSample.build()
+            val existingDraft = expectedGetLocalDraft(expectedUserId, draftMessageId, senderEmail) {
+                MessageWithBodySample.EmptyDraft
+            }
+            val expectedEncryptedDraftBody = expectedEncryptedDraftBody(expectedMergedBody, senderAddress) {
+                DraftBody("I am encrypted with the quoted html included")
+            }
+            val expectedSavedDraft = existingDraft.copy(
+                message = existingDraft.message.copy(
+                    sender = Sender(senderAddress.email, senderAddress.displayName!!),
+                    addressId = senderAddress.addressId
+                ),
+                messageBody = existingDraft.messageBody.copy(
+                    body = expectedEncryptedDraftBody.value,
+                    mimeType = MimeType.Html
+                )
             )
-        )
-        expectedResolvedUserAddress(expectedUserId, senderEmail) { senderAddress }
-        givenSaveDraftSucceeds(expectedSavedDraft, expectedUserId)
+            expectedResolvedUserAddress(expectedUserId, senderEmail) { senderAddress }
+            givenSaveDraftSucceeds(expectedSavedDraft, expectedUserId)
 
-        // When
-        val actualEither = storeDraftWithBody(
-            draftMessageId, plaintextDraftBody, quotedHtmlBody, senderEmail, expectedUserId
-        )
+            // When
+            val actualEither = storeDraftWithBody(
+                draftMessageId, plaintextDraftBody, quotedHtmlBody, senderEmail, expectedUserId
+            )
 
-        // Then
-        coVerify { saveDraftMock(expectedSavedDraft, expectedUserId) }
-        assertEquals(Unit.right(), actualEither)
-    }
+            // Then
+            coVerify { saveDraftMock(expectedSavedDraft, expectedUserId) }
+            assertEquals(Unit.right(), actualEither)
+        }
 
     @Test
     fun `should return error and not save draft when encryption fails`() = runTest {

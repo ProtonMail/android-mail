@@ -79,7 +79,7 @@ class StoreDraftWithBody @Inject constructor(
     }
 
     private fun DraftBody.appendQuotedHtml(quotedHtmlBody: OriginalHtmlQuote?) =
-        quotedHtmlBody?.let { quotedHtml -> DraftBody("${this.value}${quotedHtml.value}") } ?: this
+        quotedHtmlBody?.let { quotedHtml -> DraftBody("<pre>${this.value}</pre>${quotedHtml.value}") } ?: this
 
     private fun MessageWithBody.updateMimeWhenQuotingHtml(quotedHtmlBody: OriginalHtmlQuote?): MessageWithBody {
         if (quotedHtmlBody == null) {
