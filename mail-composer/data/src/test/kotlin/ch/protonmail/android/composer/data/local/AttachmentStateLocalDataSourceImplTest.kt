@@ -49,6 +49,7 @@ class AttachmentStateLocalDataSourceImplTest {
 
     @Test
     fun `get attachment state returns it when existing`() = runTest {
+        // Given
         val userId = UserIdSample.Primary
         val messageId = MessageIdSample.EmptyDraft
         val attachmentId = AttachmentId("attachment_id")
@@ -56,34 +57,64 @@ class AttachmentStateLocalDataSourceImplTest {
         val attachmentStateEntity = AttachmentStateEntitySample.LocalAttachmentState
         expectAttachmentStateDaoSuccess(userId, messageId, attachmentId, attachmentStateEntity)
 
+        // When
         val actual = localDataSource.getAttachmentState(userId, messageId, attachmentId)
 
+        // Then
         assertEquals(expected.right(), actual)
     }
 
     @Test
     fun `get attachment state returns no data when not existing`() = runTest {
+        // Given
         val userId = UserIdSample.Primary
         val messageId = MessageIdSample.EmptyDraft
         val attachmentId = AttachmentId("attachment_id")
         val expected = DataError.Local.NoDataCached
         expectAttachmentStateDaoReturnsNull(userId, messageId, attachmentId)
 
+        // When
         val actual = localDataSource.getAttachmentState(userId, messageId, attachmentId)
 
+        // Then
         assertEquals(expected.left(), actual)
     }
 
     @Test
     fun `save attachment state returns Unit when succeeding`() = runTest {
+        // Given
         val attachmentState = AttachmentStateSample.LocalAttachmentState
         val attachmentStateEntity = AttachmentStateEntitySample.LocalAttachmentState
         expectAttachmentStateDaoUpsertSuccess(attachmentStateEntity)
 
-        val actual = localDataSource.save(attachmentState)
+        // When
+        val actual = localDataSource.createOrUpdate(attachmentState)
 
+        // Then
         assertEquals(Unit.right(), actual)
         coVerify { attachmentStateDao.insertOrUpdate(attachmentStateEntity) }
+    }
+
+    @Test
+    fun `save attachment states returns Unit when succeeding`() = runTest {
+        // Given
+        val attachmentStates = listOf(
+            AttachmentStateSample.LocalAttachmentState.copy(attachmentId = AttachmentId("attachment_id_1")),
+            AttachmentStateSample.LocalAttachmentState.copy(attachmentId = AttachmentId("attachment_id_2")),
+            AttachmentStateSample.LocalAttachmentState.copy(attachmentId = AttachmentId("attachment_id_3"))
+        )
+        val attachmentStateEntities = listOf(
+            AttachmentStateEntitySample.LocalAttachmentState.copy(attachmentId = AttachmentId("attachment_id_1")),
+            AttachmentStateEntitySample.LocalAttachmentState.copy(attachmentId = AttachmentId("attachment_id_2")),
+            AttachmentStateEntitySample.LocalAttachmentState.copy(attachmentId = AttachmentId("attachment_id_3"))
+        )
+
+        // When
+        val actual = localDataSource.createOrUpdate(attachmentStates)
+
+        // Then
+        assertEquals(Unit.right(), actual)
+        coVerify { attachmentStateDao.insertOrUpdate(*attachmentStateEntities.toTypedArray()) }
     }
 
     @Test

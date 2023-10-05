@@ -47,11 +47,14 @@ class AttachmentStateLocalDataSourceImpl @Inject constructor(
         attachmentStateDao.getAllAttachmentStatesForMessage(userId, messageId)
             .map { attachmentStateEntity -> attachmentStateEntity.toAttachmentState() }
 
-    override suspend fun save(state: AttachmentState): Either<DataError, Unit> {
+    override suspend fun createOrUpdate(state: AttachmentState) = createOrUpdate(listOf(state))
+
+    override suspend fun createOrUpdate(states: List<AttachmentState>): Either<DataError, Unit> {
         return Either.catch {
-            attachmentStateDao.insertOrUpdate(state.toAttachmentStateEntity())
+            val mappedStates = states.map { it.toAttachmentStateEntity() }
+            attachmentStateDao.insertOrUpdate(*mappedStates.toTypedArray())
         }.mapLeft {
-            Timber.e(it, "Unexpected error writing attachment state to DB")
+            Timber.e(it, "Unexpected error writing attachment states to DB")
             DataError.Local.Unknown
         }
     }

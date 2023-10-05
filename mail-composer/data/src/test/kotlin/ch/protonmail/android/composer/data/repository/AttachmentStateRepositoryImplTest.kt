@@ -124,34 +124,42 @@ class AttachmentStateRepositoryImplTest {
     }
 
     @Test
-    fun `store synced state stores new attachment state when no state exists`() = runTest {
+    fun `store synced state calls attachment state local data source`() = runTest {
         // Given
         val expectedAttachmentState = AttachmentStateSample.LocalAttachmentState
         val messageId = MessageIdSample.RemoteDraft
-        expectAttachmentStateLocalDataSourceNoData(userId, messageId, attachmentId)
         expectLocalDataSourceUpsertSuccess(expectedAttachmentState)
 
         // When
         val actual = repository.createOrUpdateLocalState(userId, messageId, attachmentId)
 
         // Then
-        coVerify { attachmentStateLocalDataSource.save(expectedAttachmentState) }
+        coVerify { attachmentStateLocalDataSource.createOrUpdate(expectedAttachmentState) }
         assertEquals(Unit.right(), actual)
     }
 
     @Test
-    fun `store synced state updates attachment state`() = runTest {
+    fun `store synced states calls attachment state local data source for multiple states`() = runTest {
         // Given
-        val expectedAttachmentState = AttachmentStateSample.LocalAttachmentState
+        val attachmentId1 = AttachmentId("1")
+        val attachmentId2 = AttachmentId("2")
+        val expectedAttachmentState = AttachmentStateSample.LocalAttachmentState.copy(attachmentId = attachmentId1)
+        val expectedAttachmentState2 = AttachmentStateSample.LocalAttachmentState.copy(attachmentId = attachmentId2)
         val messageId = MessageIdSample.RemoteDraft
-        expectAttachmentStateLocalDataSourceSuccess(userId, messageId, attachmentId, expectedAttachmentState)
-        expectLocalDataSourceUpsertSuccess(expectedAttachmentState)
+        expectLocalDataSourceUpsertSuccess(listOf(expectedAttachmentState, expectedAttachmentState2))
 
         // When
-        val actual = repository.createOrUpdateLocalState(userId, messageId, attachmentId)
+        val actual = repository.createOrUpdateLocalStates(
+            userId = userId,
+            messageId = messageId,
+            attachmentIds = listOf(attachmentId1, attachmentId2),
+            syncState = AttachmentSyncState.Local
+        )
 
         // Then
-        coVerify { attachmentStateLocalDataSource.save(expectedAttachmentState) }
+        coVerify {
+            attachmentStateLocalDataSource.createOrUpdate(listOf(expectedAttachmentState, expectedAttachmentState2))
+        }
         assertEquals(Unit.right(), actual)
     }
 
@@ -172,7 +180,7 @@ class AttachmentStateRepositoryImplTest {
         )
 
         // Then
-        coVerify { attachmentStateLocalDataSource.save(expectedAttachmentState) }
+        coVerify { attachmentStateLocalDataSource.createOrUpdate(expectedAttachmentState) }
         assertEquals(Unit.right(), actual)
     }
 
@@ -221,7 +229,11 @@ class AttachmentStateRepositoryImplTest {
     }
 
     private fun expectLocalDataSourceUpsertSuccess(state: AttachmentState) {
-        coEvery { attachmentStateLocalDataSource.save(state) } returns Unit.right()
+        coEvery { attachmentStateLocalDataSource.createOrUpdate(state) } returns Unit.right()
+    }
+
+    private fun expectLocalDataSourceUpsertSuccess(states: List<AttachmentState>) {
+        coEvery { attachmentStateLocalDataSource.createOrUpdate(states) } returns Unit.right()
     }
 
     private fun expectedDeleteSuccess(state: AttachmentState) {

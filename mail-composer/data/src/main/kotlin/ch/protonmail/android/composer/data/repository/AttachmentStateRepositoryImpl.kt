@@ -20,7 +20,6 @@ package ch.protonmail.android.composer.data.repository
 
 import arrow.core.Either
 import arrow.core.continuations.either
-import arrow.core.getOrElse
 import ch.protonmail.android.composer.data.local.AttachmentStateLocalDataSource
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcomposer.domain.model.AttachmentState
@@ -48,12 +47,19 @@ class AttachmentStateRepositoryImpl @Inject constructor(
         userId: UserId,
         messageId: MessageId,
         attachmentId: AttachmentId
-    ): Either<DataError, Unit> = either {
-        val attachmentState = localDataSource.getAttachmentState(userId, messageId, attachmentId).getOrElse {
-            AttachmentState(userId, messageId, attachmentId, AttachmentSyncState.Local)
-        }
-        val updatedState = attachmentState.copy(state = AttachmentSyncState.Local)
-        localDataSource.save(updatedState)
+    ): Either<DataError, Unit> = localDataSource
+        .createOrUpdate(AttachmentState(userId, messageId, attachmentId, AttachmentSyncState.Local))
+
+
+    override suspend fun createOrUpdateLocalStates(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentIds: List<AttachmentId>,
+        syncState: AttachmentSyncState
+    ): Either<DataError, Unit> {
+        return attachmentIds
+            .map { AttachmentState(userId, messageId, it, syncState) }
+            .let { localDataSource.createOrUpdate(it) }
     }
 
     override suspend fun setAttachmentToUploadState(
@@ -62,7 +68,7 @@ class AttachmentStateRepositoryImpl @Inject constructor(
         attachmentId: AttachmentId
     ): Either<DataError, Unit> = either {
         val attachmentState = localDataSource.getAttachmentState(userId, messageId, attachmentId).bind()
-        localDataSource.save(attachmentState.copy(state = AttachmentSyncState.Uploaded))
+        localDataSource.createOrUpdate(attachmentState.copy(state = AttachmentSyncState.Uploaded))
     }
 
     override suspend fun deleteAttachmentState(
