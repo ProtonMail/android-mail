@@ -28,6 +28,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcomposer.domain.model.AttachmentState
+import ch.protonmail.android.mailcomposer.domain.model.AttachmentSyncState
 import ch.protonmail.android.mailcomposer.domain.repository.AttachmentStateRepository
 import ch.protonmail.android.mailcomposer.domain.sample.AttachmentStateSample
 import ch.protonmail.android.mailcomposer.domain.usecase.FindLocalDraft
@@ -237,6 +238,63 @@ class UploadAttachmentsTest {
         // Then
         assertEquals(AttachmentUploadError.FailedToEncryptAttachment.left(), actual)
         verify { attachmentRemoteDataSource wasNot Called }
+    }
+
+    @Test
+    fun `when the attachment state is Uploaded then the attachment is not uploaded`() = runTest {
+        // Given
+        expectFindLocalDraftSuccessful()
+        expectGetAllAttachmentStatesSuccessful(
+            listOf(AttachmentStateSample.LocalAttachmentState.copy(state = AttachmentSyncState.Uploaded))
+        )
+
+        // When
+        val actual = uploadAttachments(userId, messageId)
+
+        // Then
+        assertEquals(Unit.right(), actual)
+        verify { attachmentRemoteDataSource wasNot Called }
+        verify { attachmentRepository wasNot Called }
+        verify { encryptAndSignAttachment wasNot Called }
+        verify { resolveUserAddress wasNot Called }
+    }
+
+    @Test
+    fun `when the attachment state is ParentUploaded then the attachment is not uploaded`() = runTest {
+        // Given
+        expectFindLocalDraftSuccessful()
+        expectGetAllAttachmentStatesSuccessful(
+            listOf(AttachmentStateSample.LocalAttachmentState.copy(state = AttachmentSyncState.ParentUploaded))
+        )
+
+        // When
+        val actual = uploadAttachments(userId, messageId)
+
+        // Then
+        assertEquals(Unit.right(), actual)
+        verify { attachmentRemoteDataSource wasNot Called }
+        verify { attachmentRepository wasNot Called }
+        verify { encryptAndSignAttachment wasNot Called }
+        verify { resolveUserAddress wasNot Called }
+    }
+
+    @Test
+    fun `when the attachment state is Parent then the attachment is not uploaded`() = runTest {
+        // Given
+        expectFindLocalDraftSuccessful()
+        expectGetAllAttachmentStatesSuccessful(
+            listOf(AttachmentStateSample.LocalAttachmentState.copy(state = AttachmentSyncState.Parent))
+        )
+
+        // When
+        val actual = uploadAttachments(userId, messageId)
+
+        // Then
+        assertEquals(Unit.right(), actual)
+        verify { attachmentRemoteDataSource wasNot Called }
+        verify { attachmentRepository wasNot Called }
+        verify { encryptAndSignAttachment wasNot Called }
+        verify { resolveUserAddress wasNot Called }
     }
 
     private fun expectFindLocalDraftSuccessful() {

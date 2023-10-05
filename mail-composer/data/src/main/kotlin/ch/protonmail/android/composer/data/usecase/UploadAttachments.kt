@@ -48,7 +48,7 @@ class UploadAttachments @Inject constructor(
         val localDraft = findLocalDraft(userId, messageId)?.message ?: shift(AttachmentUploadError.DraftNotFound)
 
         val attachments = attachmentStateRepository.getAllAttachmentStatesForMessage(userId, localDraft.messageId)
-            .filter { it.state != AttachmentSyncState.Uploaded }
+            .filter { it.state == AttachmentSyncState.Local }
 
         if (attachments.isEmpty()) return@either
 
