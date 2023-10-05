@@ -24,6 +24,7 @@ import ch.protonmail.android.composer.data.local.AttachmentStateLocalDataSource
 import ch.protonmail.android.composer.data.remote.AttachmentRemoteDataSource
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.mailcomposer.domain.model.AttachmentSyncState
 import ch.protonmail.android.mailcomposer.domain.sample.AttachmentStateSample
 import ch.protonmail.android.mailmessage.data.local.AttachmentLocalDataSource
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
@@ -57,23 +58,44 @@ class AttachmentRepositoryImplTest {
     )
 
     @Test
-    fun `delete first schedule triggers remote layer before the local data is deleted`() = runTest {
-        // Given
-        val expected = Unit.right()
-        expectLoadingAttachmentStateLoadsUploadedStateSuccessful()
-        expectDeleteAttachmentLocalSuccessful()
+    fun `when uploaded attachment is deleted then remote layer is called before delete with file locally is called`() =
+        runTest {
+            // Given
+            val expected = Unit.right()
+            expectLoadingAttachmentStateLoadsUploadedStateSuccessful()
+            expectDeleteAttachmentWithFileLocalSuccessful()
 
-        // When
-        val actual = attachmentRepositoryImpl.deleteAttachment(userId, messageId, attachmentId)
+            // When
+            val actual = attachmentRepositoryImpl.deleteAttachment(userId, messageId, attachmentId)
 
-        // Then
-        assertEquals(expected, actual)
-        coVerifyOrder {
-            attachmentStateLocalDataSource.getAttachmentState(userId, messageId, attachmentId)
-            attachmentRemoteDataSource.deleteAttachmentFromDraft(userId, attachmentId)
-            attachmentLocalDataSource.deleteAttachment(userId, messageId, attachmentId)
+            // Then
+            assertEquals(expected, actual)
+            coVerifyOrder {
+                attachmentStateLocalDataSource.getAttachmentState(userId, messageId, attachmentId)
+                attachmentRemoteDataSource.deleteAttachmentFromDraft(userId, attachmentId)
+                attachmentLocalDataSource.deleteAttachmentWithFile(userId, messageId, attachmentId)
+            }
         }
-    }
+
+    @Test
+    fun `when parent uploaded attachment is deleted then remote layer is executed before delete locally is called`() =
+        runTest {
+            // Given
+            val expected = Unit.right()
+            expectLoadingAttachmentStateLoadsParentUploadedStateSuccessful()
+            expectDeleteAttachmentLocalSuccessful()
+
+            // When
+            val actual = attachmentRepositoryImpl.deleteAttachment(userId, messageId, attachmentId)
+
+            // Then
+            assertEquals(expected, actual)
+            coVerifyOrder {
+                attachmentStateLocalDataSource.getAttachmentState(userId, messageId, attachmentId)
+                attachmentRemoteDataSource.deleteAttachmentFromDraft(userId, attachmentId)
+                attachmentLocalDataSource.deleteAttachment(userId, messageId, attachmentId)
+            }
+        }
 
     @Test
     fun `deleting file cancel worker when attachment state is not uploaded`() = runTest {
@@ -81,7 +103,7 @@ class AttachmentRepositoryImplTest {
         val expected = Unit.right()
         expectLoadingAttachmentStateLoadsLocalStateSuccessful()
         expectCancelAttachmentWorkerSucceeds()
-        expectDeleteAttachmentLocalSuccessful()
+        expectDeleteAttachmentWithFileLocalSuccessful()
 
         // When
         val actual = attachmentRepositoryImpl.deleteAttachment(userId, messageId, attachmentId)
@@ -91,7 +113,7 @@ class AttachmentRepositoryImplTest {
         coVerifyOrder {
             attachmentStateLocalDataSource.getAttachmentState(userId, messageId, attachmentId)
             attachmentRemoteDataSource.cancelAttachmentUpload(attachmentId)
-            attachmentLocalDataSource.deleteAttachment(userId, messageId, attachmentId)
+            attachmentLocalDataSource.deleteAttachmentWithFile(userId, messageId, attachmentId)
         }
     }
 
@@ -110,7 +132,7 @@ class AttachmentRepositoryImplTest {
         coVerifyOrder {
             attachmentStateLocalDataSource.getAttachmentState(userId, messageId, attachmentId)
             attachmentRemoteDataSource.deleteAttachmentFromDraft(userId, attachmentId)
-            attachmentLocalDataSource.deleteAttachment(userId, messageId, attachmentId)
+            attachmentLocalDataSource.deleteAttachmentWithFile(userId, messageId, attachmentId)
         }
     }
 
@@ -136,6 +158,12 @@ class AttachmentRepositoryImplTest {
         } returns AttachmentStateSample.RemoteAttachmentState.right()
     }
 
+    private fun expectLoadingAttachmentStateLoadsParentUploadedStateSuccessful() {
+        coEvery {
+            attachmentStateLocalDataSource.getAttachmentState(userId, messageId, attachmentId)
+        } returns AttachmentStateSample.RemoteAttachmentState.copy(state = AttachmentSyncState.ParentUploaded).right()
+    }
+
     private fun expectLoadingAttachmentStateLoadsLocalStateSuccessful() {
         coEvery {
             attachmentStateLocalDataSource.getAttachmentState(userId, messageId, attachmentId)
@@ -152,13 +180,25 @@ class AttachmentRepositoryImplTest {
         } returns DataError.Local.NoDataCached.left()
     }
 
+    private fun expectDeleteAttachmentWithFileLocalSuccessful() {
+        coEvery {
+            attachmentLocalDataSource.deleteAttachmentWithFile(
+                userId,
+                messageId,
+                attachmentId
+            )
+        } returns Unit.right()
+    }
+
     private fun expectDeleteAttachmentLocalSuccessful() {
-        coEvery { attachmentLocalDataSource.deleteAttachment(userId, messageId, attachmentId) } returns Unit.right()
+        coEvery {
+            attachmentLocalDataSource.deleteAttachment(userId, messageId, attachmentId)
+        } returns Unit.right()
     }
 
     private fun expectDeleteAttachmentLocalFailed() {
         coEvery {
-            attachmentLocalDataSource.deleteAttachment(userId, messageId, attachmentId)
+            attachmentLocalDataSource.deleteAttachmentWithFile(userId, messageId, attachmentId)
         } returns DataError.Local.FailedToDeleteFile.left()
     }
 }

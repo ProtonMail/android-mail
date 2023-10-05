@@ -44,9 +44,19 @@ class AttachmentRepositoryImpl @Inject constructor(
     ): Either<DataError, Unit> = either {
         val attachmentState = attachmentStateLocalDataSource.getAttachmentState(userId, messageId, attachmentId).bind()
         when (attachmentState.state) {
+            AttachmentSyncState.ParentUploaded,
             AttachmentSyncState.Uploaded -> attachmentRemoteDataSource.deleteAttachmentFromDraft(userId, attachmentId)
+
             else -> attachmentRemoteDataSource.cancelAttachmentUpload(attachmentId)
         }
-        attachmentLocalDataSource.deleteAttachment(userId, messageId, attachmentId).bind()
+        when (attachmentState.state) {
+            AttachmentSyncState.ParentUploaded,
+            AttachmentSyncState.Parent ->
+                attachmentLocalDataSource
+                    .deleteAttachment(userId, messageId, attachmentId)
+                    .bind()
+
+            else -> attachmentLocalDataSource.deleteAttachmentWithFile(userId, messageId, attachmentId).bind()
+        }
     }
 }
