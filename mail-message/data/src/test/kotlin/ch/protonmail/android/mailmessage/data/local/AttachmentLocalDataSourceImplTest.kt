@@ -42,6 +42,7 @@ import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.testdata.message.MessageAttachmentEntityTestData
 import ch.protonmail.android.testdata.message.MessageAttachmentMetadataEntityTestData
+import io.mockk.Called
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -569,10 +570,51 @@ class AttachmentLocalDataSourceImplTest {
     }
 
     @Test
-    fun `delete attachment deletes entry from db and file from local storage`() = runTest {
+    fun `delete attachment with file deletes entry from db and file from local storage`() = runTest {
         // Given
         coEvery { attachmentDao.deleteMessageAttachment(userId, messageId, attachmentId) } just Runs
         coEvery { attachmentFileStorage.deleteAttachment(userId, messageId.id, attachmentId.id) } returns true
+
+        // When
+        val actual = attachmentLocalDataSource.deleteAttachmentWithFile(userId, messageId, attachmentId)
+
+        // Then
+        assertEquals(Unit.right(), actual)
+        coVerifyOrder {
+            attachmentDao.deleteMessageAttachment(userId, messageId, attachmentId)
+            attachmentFileStorage.deleteAttachment(userId, messageId.id, attachmentId.id)
+        }
+    }
+
+    @Test
+    fun `delete attachment with file returns unknown error when db delete fails`() = runTest {
+        // Given
+        coEvery { attachmentDao.deleteMessageAttachment(userId, messageId, attachmentId) } throws Exception()
+
+        // When
+        val actual = attachmentLocalDataSource.deleteAttachmentWithFile(userId, messageId, attachmentId)
+
+        // Then
+        assertEquals(DataError.Local.Unknown.left(), actual)
+    }
+
+    @Test
+    fun `delete attachment with file returns unknown error when file delete fails`() = runTest {
+        // Given
+        coEvery { attachmentDao.deleteMessageAttachment(userId, messageId, attachmentId) } just Runs
+        coEvery { attachmentFileStorage.deleteAttachment(userId, messageId.id, attachmentId.id) } returns false
+
+        // When
+        val actual = attachmentLocalDataSource.deleteAttachmentWithFile(userId, messageId, attachmentId)
+
+        // Then
+        assertEquals(DataError.Local.FailedToDeleteFile.left(), actual)
+    }
+
+    @Test
+    fun `delete attachment deletes entry from db`() = runTest {
+        // Given
+        coEvery { attachmentDao.deleteMessageAttachment(userId, messageId, attachmentId) } just Runs
 
         // When
         val actual = attachmentLocalDataSource.deleteAttachment(userId, messageId, attachmentId)
@@ -581,7 +623,7 @@ class AttachmentLocalDataSourceImplTest {
         assertEquals(Unit.right(), actual)
         coVerifyOrder {
             attachmentDao.deleteMessageAttachment(userId, messageId, attachmentId)
-            attachmentFileStorage.deleteAttachment(userId, messageId.id, attachmentId.id)
+            attachmentFileStorage wasNot Called
         }
     }
 
@@ -595,18 +637,5 @@ class AttachmentLocalDataSourceImplTest {
 
         // Then
         assertEquals(DataError.Local.Unknown.left(), actual)
-    }
-
-    @Test
-    fun `delete attachment returns unknown error when file delete fails`() = runTest {
-        // Given
-        coEvery { attachmentDao.deleteMessageAttachment(userId, messageId, attachmentId) } just Runs
-        coEvery { attachmentFileStorage.deleteAttachment(userId, messageId.id, attachmentId.id) } returns false
-
-        // When
-        val actual = attachmentLocalDataSource.deleteAttachment(userId, messageId, attachmentId)
-
-        // Then
-        assertEquals(DataError.Local.FailedToDeleteFile.left(), actual)
     }
 }

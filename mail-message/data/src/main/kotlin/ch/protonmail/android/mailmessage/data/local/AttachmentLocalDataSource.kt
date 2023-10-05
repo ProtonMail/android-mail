@@ -130,6 +130,12 @@ interface AttachmentLocalDataSource {
         attachment: MessageAttachment
     ): Either<DataError.Local, Unit>
 
+    suspend fun deleteAttachmentWithFile(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId
+    ): Either<DataError.Local, Unit>
+
     suspend fun deleteAttachment(
         userId: UserId,
         messageId: MessageId,
