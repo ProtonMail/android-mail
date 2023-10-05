@@ -24,12 +24,14 @@ import ch.protonmail.android.composer.data.remote.DraftRemoteDataSource
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.ProtonError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.mailcomposer.domain.model.AttachmentSyncState
 import ch.protonmail.android.mailcomposer.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftState
 import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailcomposer.domain.sample.DraftStateSample
-import ch.protonmail.android.mailcomposer.domain.usecase.IsDraftKnownToApi
 import ch.protonmail.android.mailcomposer.domain.usecase.FindLocalDraft
+import ch.protonmail.android.mailcomposer.domain.usecase.IsDraftKnownToApi
+import ch.protonmail.android.mailcomposer.domain.usecase.StoreParentAttachments
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -42,6 +44,7 @@ import ch.protonmail.android.test.utils.FakeTransactor
 import ch.protonmail.android.test.utils.rule.LoggingTestRule
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.coVerifySequence
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -64,6 +67,7 @@ class UploadDraftTest {
     private val isDraftKnownToApi = mockk<IsDraftKnownToApi>()
     private val fakeTransactor = FakeTransactor()
     private val attachmentRepository = mockk<AttachmentRepository>()
+    private val storeParentAttachments = mockk<StoreParentAttachments>()
 
     private val draftRepository = UploadDraft(
         fakeTransactor,
@@ -72,7 +76,8 @@ class UploadDraftTest {
         draftStateRepository,
         draftRemoteDataSource,
         isDraftKnownToApi,
-        attachmentRepository
+        attachmentRepository,
+        storeParentAttachments
     )
 
     @Test
@@ -267,18 +272,27 @@ class UploadDraftTest {
         expectAttachmentUpdateSuccess(
             userId, apiAssignedMessageId, expectedLocalAttachment.attachmentId, expectedUpdatedAttachment
         )
+        expectStoreParentAttachmentSucceeds(
+            userId, apiAssignedMessageId, listOf(expectedUpdatedAttachment.attachmentId)
+        )
 
         // When
         val actual = draftRepository(userId, messageId)
 
         // Then
         assertEquals(Unit.right(), actual)
-        coVerify {
+        coVerifySequence {
             attachmentRepository.updateMessageAttachment(
                 userId,
                 apiAssignedMessageId,
                 expectedLocalAttachment.attachmentId,
                 expectedUpdatedAttachment
+            )
+            storeParentAttachments(
+                userId,
+                apiAssignedMessageId,
+                listOf(expectedUpdatedAttachment.attachmentId),
+                AttachmentSyncState.ParentUploaded
             )
         }
     }
@@ -370,4 +384,15 @@ class UploadDraftTest {
     ) {
         coEvery { draftStateRepository.observe(userId, messageId) } returns flowOf(error.left())
     }
+
+    private fun expectStoreParentAttachmentSucceeds(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentIds: List<AttachmentId>
+    ) {
+        coEvery {
+            storeParentAttachments(userId, messageId, attachmentIds, AttachmentSyncState.ParentUploaded)
+        } returns Unit.right()
+    }
+
 }
