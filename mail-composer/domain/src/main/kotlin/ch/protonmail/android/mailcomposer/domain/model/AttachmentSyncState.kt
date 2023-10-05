@@ -20,7 +20,9 @@ package ch.protonmail.android.mailcomposer.domain.model
 
 enum class AttachmentSyncState(val value: Int) {
     Local(0),
-    Uploaded(1);
+    Uploaded(1),
+    Parent(2),
+    ParentUploaded(3);
 
     companion object {
 

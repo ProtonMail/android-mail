@@ -22,6 +22,7 @@ import arrow.core.Either
 import arrow.core.continuations.either
 import ch.protonmail.android.mailcommon.domain.util.mapFalse
 import ch.protonmail.android.mailcomposer.domain.Transactor
+import ch.protonmail.android.mailcomposer.domain.model.AttachmentSyncState
 import ch.protonmail.android.mailcomposer.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -33,6 +34,7 @@ import javax.inject.Inject
 class StoreDraftWithParentAttachments @Inject constructor(
     private val getLocalDraft: GetLocalDraft,
     private val saveDraft: SaveDraft,
+    private val storeParentAttachmentStates: StoreParentAttachmentStates,
     private val transactor: Transactor
 ) {
 
@@ -49,6 +51,7 @@ class StoreDraftWithParentAttachments @Inject constructor(
                 is DraftAction.Forward -> parentMessage.messageBody.attachments
                 is DraftAction.Reply,
                 is DraftAction.ReplyAll -> parentMessage.messageBody.attachments.filter { it.disposition == "inline" }
+
                 is DraftAction.Compose -> {
                     Timber.w("Store Draft with parent attachments for a Compose action. This shouldn't happen.")
                     shift(Error.ActionWithNoParent)
@@ -76,12 +79,21 @@ class StoreDraftWithParentAttachments @Inject constructor(
             saveDraft(updatedDraft, userId)
                 .mapFalse { Error.DraftDataError }
                 .bind()
+            storeParentAttachmentStates(
+                userId = userId,
+                messageId = messageId,
+                attachmentIds = parentAttachments.map { it.attachmentId },
+                syncState = AttachmentSyncState.Parent
+            )
+                .mapLeft { Error.DraftAttachmentError }
+                .bind()
         }
 
     }
 
     sealed interface Error {
         object DraftDataError : Error
+        object DraftAttachmentError : Error
         object ActionWithNoParent : Error
         object NoAttachmentsToBeStored : Error
     }

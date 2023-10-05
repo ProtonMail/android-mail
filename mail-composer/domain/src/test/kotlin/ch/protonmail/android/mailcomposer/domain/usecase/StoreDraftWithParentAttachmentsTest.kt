@@ -22,8 +22,10 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.mailcomposer.domain.model.AttachmentSyncState
 import ch.protonmail.android.mailcomposer.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
@@ -33,6 +35,8 @@ import ch.protonmail.android.test.utils.rule.LoggingTestRule
 import io.mockk.Called
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.coVerifyOrder
+import io.mockk.coVerifySequence
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
@@ -51,11 +55,13 @@ class StoreDraftWithParentAttachmentsTest {
 
     private val saveDraftMock = mockk<SaveDraft>()
     private val getLocalDraftMock = mockk<GetLocalDraft>()
+    private val storeParentAttachmentStates = mockk<StoreParentAttachmentStates>()
     private val fakeTransactor = FakeTransactor()
 
     private val storeDraftWithParentAttachments = StoreDraftWithParentAttachments(
         getLocalDraftMock,
         saveDraftMock,
+        storeParentAttachmentStates,
         fakeTransactor
     )
 
@@ -71,6 +77,11 @@ class StoreDraftWithParentAttachmentsTest {
             messageBody = draftWithBody.messageBody.copy(attachments = expectedParentMessage.messageBody.attachments)
         )
         givenSaveDraftSucceeds(expectedSavedDraft, userId)
+        givenStoreParentAttachmentsSucceeds(
+            userId,
+            expectedSavedDraft.message.messageId,
+            expectedSavedDraft.messageBody.attachments.map { it.attachmentId }
+        )
 
         // When
         val result = storeDraftWithParentAttachments(
@@ -82,7 +93,15 @@ class StoreDraftWithParentAttachmentsTest {
         )
 
         // Then
-        coVerify { saveDraftMock(expectedSavedDraft, userId) }
+        coVerifyOrder {
+            saveDraftMock(expectedSavedDraft, userId)
+            storeParentAttachmentStates(
+                userId = userId,
+                messageId = expectedSavedDraft.message.messageId,
+                attachmentIds = expectedSavedDraft.messageBody.attachments.map { it.attachmentId },
+                syncState = AttachmentSyncState.Parent
+            )
+        }
         assertEquals(Unit.right(), result)
     }
 
@@ -95,10 +114,12 @@ class StoreDraftWithParentAttachmentsTest {
             MessageWithBodySample.EmptyDraft
         }
         val expectedAttachments = expectedParentMessage.messageBody.attachments.filter { it.disposition == "inline" }
+        val expectedAttachmentIds = expectedAttachments.map { it.attachmentId }
         val expectedSavedDraft = draftWithBody.copy(
             messageBody = draftWithBody.messageBody.copy(attachments = expectedAttachments)
         )
         givenSaveDraftSucceeds(expectedSavedDraft, userId)
+        givenStoreParentAttachmentsSucceeds(userId, expectedSavedDraft.message.messageId, expectedAttachmentIds)
 
         // When
         val result = storeDraftWithParentAttachments(
@@ -110,7 +131,15 @@ class StoreDraftWithParentAttachmentsTest {
         )
 
         // Then
-        coVerify { saveDraftMock(expectedSavedDraft, userId) }
+        coVerifyOrder {
+            saveDraftMock(expectedSavedDraft, userId)
+            storeParentAttachmentStates(
+                userId = userId,
+                messageId = expectedSavedDraft.message.messageId,
+                attachmentIds = expectedAttachmentIds,
+                syncState = AttachmentSyncState.Parent
+            )
+        }
         assertEquals(Unit.right(), result)
     }
 
@@ -197,6 +226,11 @@ class StoreDraftWithParentAttachmentsTest {
             messageBody = draftWithBody.messageBody.copy(attachments = expectedAttachments)
         )
         givenSaveDraftSucceeds(expectedSavedDraft, userId)
+        givenStoreParentAttachmentsSucceeds(
+            userId = userId,
+            messageId = expectedSavedDraft.message.messageId,
+            attachments = expectedAttachments.map { it.attachmentId }
+        )
 
         // When
         val result = storeDraftWithParentAttachments(
@@ -208,7 +242,15 @@ class StoreDraftWithParentAttachmentsTest {
         )
 
         // Then
-        coVerify { saveDraftMock(expectedSavedDraft, userId) }
+        coVerifySequence {
+            saveDraftMock(expectedSavedDraft, userId)
+            storeParentAttachmentStates(
+                userId = userId,
+                messageId = expectedSavedDraft.message.messageId,
+                attachmentIds = expectedAttachments.map { it.attachmentId },
+                syncState = AttachmentSyncState.Parent
+            )
+        }
         assertEquals(Unit.right(), result)
     }
 
@@ -227,5 +269,15 @@ class StoreDraftWithParentAttachmentsTest {
 
     private fun givenSaveDraftFails(messageWithBody: MessageWithBody, userId: UserId) {
         coEvery { saveDraftMock(messageWithBody, userId) } returns false
+    }
+
+    private fun givenStoreParentAttachmentsSucceeds(
+        userId: UserId,
+        messageId: MessageId,
+        attachments: List<AttachmentId>
+    ) {
+        coEvery {
+            storeParentAttachmentStates(userId, messageId, attachments, AttachmentSyncState.Parent)
+        } returns Unit.right()
     }
 }
