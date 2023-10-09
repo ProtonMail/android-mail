@@ -55,6 +55,7 @@ import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
 import ch.protonmail.android.mailcomposer.domain.usecase.SendMessage
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreAttachments
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithAllFields
+import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithAttachmentError
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithBody
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithBodyError
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithParentAttachments
@@ -1302,6 +1303,55 @@ class ComposerViewModelTest {
         coVerify { deleteAttachment(expectedUserId, expectedSenderEmail, messageId, expectedAttachmentId) }
     }
 
+    @Test
+    fun `emit state with effect when attachment file size exceeded`() = runTest {
+        // Given
+        val uri = mockk<Uri>()
+        val primaryAddress = UserAddressSample.PrimaryAddress
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val messageId = MessageIdSample.Invoice
+        val expectedSubject = Subject("Subject for the message")
+        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+        val expectedDraftBody = DraftBody("I am plaintext")
+        val recipientsTo = RecipientsTo(listOf(RecipientSample.John))
+        val recipientsCc = RecipientsCc(listOf(RecipientSample.John))
+        val recipientsBcc = RecipientsBcc(listOf(RecipientSample.John))
+        val expectedFields = DraftFields(
+            expectedSenderEmail,
+            expectedSubject,
+            expectedDraftBody,
+            recipientsTo,
+            recipientsCc,
+            recipientsBcc,
+            null
+        )
+        expectedPrimaryAddress(expectedUserId) { primaryAddress }
+        expectInputDraftMessageId { messageId }
+        expectStoreAllDraftFieldsSucceeds(expectedUserId, messageId, expectedFields)
+        expectStoreAttachmentsFailed(
+            expectedUserId = expectedUserId,
+            expectedMessageId = messageId,
+            expectedSenderEmail = expectedSenderEmail,
+            expectedUriList = listOf(uri),
+            storeAttachmentError = StoreDraftWithAttachmentError.FileSizeExceedsLimit
+        )
+        expectDecryptedDraftDataSuccess(expectedUserId, messageId) { expectedFields }
+        expectStartDraftSync(expectedUserId, messageId)
+        expectObservedMessageAttachments(expectedUserId, messageId)
+        expectNoInputDraftAction()
+
+
+        // When
+        viewModel.submit(ComposerAction.AttachmentsAdded(listOf(uri)))
+
+        // Then
+        viewModel.state.test {
+            val expected = Effect.of(Unit)
+            val actual = awaitItem().attachmentsFileSizeExceeded
+            assertEquals(expected, actual)
+        }
+    }
+
     @AfterTest
     fun tearDown() {
         unmockkObject(ComposerDraftState.Companion)
@@ -1436,7 +1486,8 @@ class ComposerViewModelTest {
             isLoading = false,
             isAddAttachmentsButtonVisible = false,
             closeComposerWithMessageSending = Effect.empty(),
-            closeComposerWithMessageSendingOffline = Effect.empty()
+            closeComposerWithMessageSendingOffline = Effect.empty(),
+            attachmentsFileSizeExceeded = Effect.empty()
         )
 
         mockkObject(ComposerDraftState.Companion)
@@ -1614,6 +1665,18 @@ class ComposerViewModelTest {
         coEvery {
             storeAttachments(expectedUserId, expectedMessageId, expectedSenderEmail, expectedUriList)
         } returns Unit.right()
+    }
+
+    private fun expectStoreAttachmentsFailed(
+        expectedUserId: UserId,
+        expectedMessageId: MessageId,
+        expectedSenderEmail: SenderEmail,
+        expectedUriList: List<Uri>,
+        storeAttachmentError: StoreDraftWithAttachmentError
+    ) {
+        coEvery {
+            storeAttachments(expectedUserId, expectedMessageId, expectedSenderEmail, expectedUriList)
+        } returns storeAttachmentError.left()
     }
 
     private fun expectContacts(): List<Contact> {

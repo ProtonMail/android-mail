@@ -48,6 +48,7 @@ import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
 import ch.protonmail.android.mailcomposer.domain.usecase.SendMessage
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreAttachments
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithAllFields
+import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithAttachmentError
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithBody
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithParentAttachments
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithRecipients
@@ -239,7 +240,11 @@ class ComposerViewModel @Inject constructor(
 
     private fun onAttachmentsAdded(action: ComposerAction.AttachmentsAdded) {
         viewModelScope.launch {
-            storeAttachments(primaryUserId(), currentMessageId(), currentSenderEmail(), action.uriList)
+            storeAttachments(primaryUserId(), currentMessageId(), currentSenderEmail(), action.uriList).onLeft {
+                if (it is StoreDraftWithAttachmentError.FileSizeExceedsLimit) {
+                    emitNewStateFor(ComposerEvent.ErrorAttachmentsExceedSizeLimit)
+                }
+            }
         }
     }
 
