@@ -30,8 +30,11 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.R
@@ -112,7 +115,7 @@ fun Avatar(
                         .background(
                             color = when (avatarUiModel.selected) {
                                 true -> ProtonTheme.colors.interactionNorm
-                                false -> ProtonTheme.colors.backgroundNorm
+                                false -> ProtonTheme.colors.backgroundSecondary
                             },
                             shape = ProtonTheme.shapes.medium
                         )
@@ -121,7 +124,8 @@ fun Avatar(
                 ) {
                     if (avatarUiModel.selected) {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_proton_checkmark),
+                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_proton_checkmark),
+                            tint = Color.White,
                             contentDescription = NO_CONTENT_DESCRIPTION,
                             modifier = Modifier.size(MailDimens.AvatarCheckmarkSize)
                         )
