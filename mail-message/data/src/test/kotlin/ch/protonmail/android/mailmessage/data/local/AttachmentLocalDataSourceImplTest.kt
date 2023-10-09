@@ -26,6 +26,7 @@ import android.net.Uri
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.data.file.FileInformation
+import ch.protonmail.android.mailcommon.data.file.UriHelper
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailmessage.data.local.dao.MessageAttachmentDao
@@ -95,6 +96,7 @@ class AttachmentLocalDataSourceImplTest {
     }
     private val decryptAttachmentByteArray = mockk<DecryptAttachmentByteArray>()
     private val prepareAttachmentForSharing = mockk<PrepareAttachmentForSharing>()
+    private val uriHelper = mockk<UriHelper>()
 
     private val attachmentLocalDataSource = AttachmentLocalDataSourceImpl(
         db = messageDatabase,
@@ -103,7 +105,8 @@ class AttachmentLocalDataSourceImplTest {
         decryptAttachmentByteArray = decryptAttachmentByteArray,
         prepareAttachmentForSharing = prepareAttachmentForSharing,
         messageAttachmentEntityMapper = MessageAttachmentEntityMapper(),
-        ioDispatcher = Dispatchers.Unconfined
+        ioDispatcher = Dispatchers.Unconfined,
+        uriHelper = uriHelper
     )
 
     @BeforeTest
@@ -637,5 +640,32 @@ class AttachmentLocalDataSourceImplTest {
 
         // Then
         assertEquals(DataError.Local.Unknown.left(), actual)
+    }
+
+    @Test
+    fun `return file size when resolving uri is successful`() = runTest {
+        // Given
+        val uri = mockk<Uri>()
+        val expectedSize = 123L
+        coEvery { uriHelper.getFileInformationFromUri(uri) } returns FileInformation("name", expectedSize, "mimeType")
+
+        // When
+        val actual = attachmentLocalDataSource.getFileSizeFromUri(uri)
+
+        // Then
+        assertEquals(expectedSize.right(), actual)
+    }
+
+    @Test
+    fun `return local error when resolving uri is not successful`() = runTest {
+        // Given
+        val uri = mockk<Uri>()
+        coEvery { uriHelper.getFileInformationFromUri(uri) } returns null
+
+        // When
+        val actual = attachmentLocalDataSource.getFileSizeFromUri(uri)
+
+        // Then
+        assertEquals(DataError.Local.NoDataCached.left(), actual)
     }
 }

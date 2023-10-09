@@ -26,6 +26,7 @@ import arrow.core.Either
 import arrow.core.getOrElse
 import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailcommon.data.file.UriHelper
 import ch.protonmail.android.mailcommon.domain.coroutines.IODispatcher
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.data.local.entity.MessageAttachmentEntity
@@ -55,7 +56,8 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
     private val decryptAttachmentByteArray: DecryptAttachmentByteArray,
     private val prepareAttachmentForSharing: PrepareAttachmentForSharing,
     private val messageAttachmentEntityMapper: MessageAttachmentEntityMapper,
-    @IODispatcher private val ioDispatcher: CoroutineDispatcher
+    @IODispatcher private val ioDispatcher: CoroutineDispatcher,
+    private val uriHelper: UriHelper
 ) : AttachmentLocalDataSource {
 
     private val attachmentMetadataDao by lazy { db.messageAttachmentMetadataDao() }
@@ -303,6 +305,9 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
             Timber.e(it, "Failed to delete message attachment")
             DataError.Local.Unknown
         }
+
+    override suspend fun getFileSizeFromUri(uri: Uri) =
+        uriHelper.getFileInformationFromUri(uri)?.size?.right() ?: DataError.Local.NoDataCached.left()
 
     private fun isAttachmentFileAvailable(uri: Uri): Boolean {
         val doesFileExist = try {

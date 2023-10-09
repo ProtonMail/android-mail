@@ -119,6 +119,8 @@ class AttachmentRepositoryImpl @Inject constructor(
         uri: Uri
     ): Either<DataError, Unit> = localDataSource.upsertAttachment(userId, messageId, attachmentId, uri)
 
+    override suspend fun getFileSizeFromUri(uri: Uri) = localDataSource.getFileSizeFromUri(uri)
+
     override suspend fun readFileFromStorage(
         userId: UserId,
         messageId: MessageId,

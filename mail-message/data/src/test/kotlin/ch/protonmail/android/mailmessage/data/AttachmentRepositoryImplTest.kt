@@ -482,4 +482,34 @@ class AttachmentRepositoryImplTest {
         assertEquals(expected, actual)
         coVerify { remoteDataSource wasNot Called }
     }
+
+    @Test
+    fun `should return file size from local storage`() = runTest {
+        // Given
+        val expected = 100L.right()
+        val uri = mockk<Uri>()
+        coEvery { localDataSource.getFileSizeFromUri(uri) } returns expected
+
+        // When
+        val actual = repository.getFileSizeFromUri(uri)
+
+        // Then
+        assertEquals(expected, actual)
+        coVerify { localDataSource.getFileSizeFromUri(any()) }
+    }
+
+    @Test
+    fun `should return local error when file size from local storage is not available`() = runTest {
+        // Given
+        val expected = DataError.Local.NoDataCached.left()
+        val uri = mockk<Uri>()
+        coEvery { localDataSource.getFileSizeFromUri(uri) } returns expected
+
+        // When
+        val actual = repository.getFileSizeFromUri(uri)
+
+        // Then
+        assertEquals(expected, actual)
+        coVerify { localDataSource.getFileSizeFromUri(any()) }
+    }
 }
