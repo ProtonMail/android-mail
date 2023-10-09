@@ -103,6 +103,8 @@ object SendMessageSample {
 
         val ProtonMailWithEmptyPublicKey = ProtonMail.copy(publicKey = null)
 
+        val ProtonMailWithHtmlMime = ProtonMail.copy(mimeType = MimeType.Html)
+
         val PgpMime = ProtonMail.copy(pgpScheme = PackageType.PgpMime)
 
         val ClearMime = ProtonMail.copy(pgpScheme = PackageType.ClearMime, encrypt = false, sign = true)

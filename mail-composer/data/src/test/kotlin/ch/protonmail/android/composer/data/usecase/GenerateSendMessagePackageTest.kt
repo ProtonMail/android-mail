@@ -324,6 +324,47 @@ class GenerateSendMessagePackageTest {
         assertEquals(expected, actual)
     }
 
+    @Test
+    fun `generate package for ProtonMail always uses PlainText MimeType when body is plain text`() = runTest {
+        // Given
+        val sendPreferences = SendMessageSample.SendPreferences.ProtonMailWithHtmlMime.copy(
+            publicKey = expectPublicKeyEncryptSessionKey()
+        )
+
+        // When
+        val actual = sut(
+            SendMessageSample.RecipientEmail,
+            sendPreferences,
+            SendMessageSample.BodySessionKey,
+            SendMessageSample.EncryptedBodyDataPacket,
+            SendMessageSample.MimeBodySessionKey,
+            SendMessageSample.EncryptedMimeBodyDataPacket,
+            MimeType.PlainText,
+            SendMessageSample.SignedEncryptedMimeBody,
+            emptyMap(),
+            areAllAttachmentsSigned = true
+        )
+
+        // Then
+        val expected = SendMessagePackage(
+            addresses = mapOf(
+                SendMessageSample.RecipientEmail to SendMessagePackage.Address.Internal(
+                    signature = true.toInt(),
+                    bodyKeyPacket = Base64.encode(SendMessageSample.RecipientBodyKeyPacket),
+                    attachmentKeyPackets = emptyMap()
+                )
+            ),
+            mimeType = MimeType.PlainText.value,
+            body = Base64.encode(SendMessageSample.EncryptedBodyDataPacket),
+            type = PackageType.ProtonMail.type
+        )
+
+        assertEquals(expected, actual)
+
+        // make sure we don't leak keys, because everything should be encrypted
+        assertEquals(expected.attachmentKeys, null)
+        assertEquals(expected.bodyKey, null)
+    }
 
     private fun expectPublicKeyEncryptSessionKey(): PublicKey {
         mockkStatic(PublicKey::encryptSessionKey)

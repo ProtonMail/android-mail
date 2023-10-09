@@ -20,6 +20,7 @@ package ch.protonmail.android.composer.data.usecase
 
 import ch.protonmail.android.composer.data.remote.resource.SendMessagePackage
 import ch.protonmail.android.mailmessage.domain.model.MimeType
+import me.proton.core.mailsettings.domain.entity.MimeType as MailSettingsMimeType
 import me.proton.core.crypto.common.context.CryptoContext
 import me.proton.core.crypto.common.pgp.DataPacket
 import me.proton.core.crypto.common.pgp.KeyPacket
@@ -63,14 +64,19 @@ class GenerateSendMessagePackage @Inject constructor(
                     Timber.e("GenerateSendMessagePackage: publicKey for ${sendPreferences.pgpScheme.name} was null")
                 }
 
+                val mimeType = if (bodyContentType == MimeType.PlainText) {
+                    MailSettingsMimeType.PlainText
+                } else {
+                    sendPreferences.mimeType
+                }
                 generateProtonMail(
                     publicKey,
                     decryptedBodySessionKey,
                     decryptedAttachmentSessionKeys,
                     recipientEmail,
-                    sendPreferences,
                     encryptedBodyDataPacket,
-                    areAllAttachmentsSigned
+                    areAllAttachmentsSigned,
+                    mimeType
                 )
 
             } else {
@@ -166,9 +172,9 @@ class GenerateSendMessagePackage @Inject constructor(
         decryptedBodySessionKey: SessionKey,
         decryptedAttachmentSessionKeys: Map<String, SessionKey>,
         recipientEmail: Email,
-        sendPreferences: SendPreferences,
         encryptedBodyDataPacket: ByteArray,
-        areAllAttachmentsSigned: Boolean
+        areAllAttachmentsSigned: Boolean,
+        mimeType: MailSettingsMimeType
     ): SendMessagePackage {
         val recipientBodyKeyPacket = publicKey.encryptSessionKey(cryptoContext, decryptedBodySessionKey)
 
@@ -184,7 +190,7 @@ class GenerateSendMessagePackage @Inject constructor(
                     attachmentKeyPackets = encryptedAttachmentKeyPackets
                 )
             ),
-            mimeType = sendPreferences.mimeType.value,
+            mimeType = mimeType.value,
             body = Base64.encode(encryptedBodyDataPacket),
             type = PackageType.ProtonMail.type
         )
