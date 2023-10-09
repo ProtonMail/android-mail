@@ -42,4 +42,7 @@
     <string name="composer_error_loading_parent_message">Could not load the message\'s information</string>
     <string name="composer_original_message_quote">Original Message</string>
     <string name="composer_sender_quote">On %s, %s &lt;%s&gt; wrote:</string>
+    <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
+    <string name="composer_attachment_size_exceeded_dialog_title">Attachment limit reached</string>
+    <string name="composer_attachment_size_exceeded_dialog_message">The size limit for attachments is %1$s</string>
 </resources>

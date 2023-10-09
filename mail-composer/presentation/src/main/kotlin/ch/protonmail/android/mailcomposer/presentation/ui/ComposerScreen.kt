@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcomposer.presentation.ui
 
+import android.text.format.Formatter
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -45,6 +46,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
@@ -53,9 +55,14 @@ import ch.protonmail.android.mailcommon.presentation.compose.dismissKeyboard
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.Subject
+import ch.protonmail.android.mailcomposer.domain.usecase.StoreAttachments
+import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
 import ch.protonmail.android.mailcomposer.presentation.viewmodel.ComposerViewModel
 import ch.protonmail.android.mailmessage.presentation.ui.AttachmentFooter
+import me.proton.core.compose.component.ProtonAlertDialog
+import me.proton.core.compose.component.ProtonAlertDialogButton
+import me.proton.core.compose.component.ProtonAlertDialogText
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonModalBottomSheetLayout
 import me.proton.core.compose.component.ProtonSnackbarHost
@@ -77,6 +84,7 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
     val snackbarHostState = remember { ProtonSnackbarHostState() }
     val bottomSheetType = rememberSaveable { mutableStateOf(BottomSheetType.AddAttachments) }
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+    val attachmentSizeDialogState = remember { mutableStateOf(false) }
 
     val imagePicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetMultipleContents(),
@@ -157,6 +165,29 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
                 hostState = snackbarHostState
             )
 
+            if (attachmentSizeDialogState.value) {
+                ProtonAlertDialog(
+                    onDismissRequest = { attachmentSizeDialogState.value = false },
+                    confirmButton = {
+                        ProtonAlertDialogButton(R.string.composer_attachment_size_exceeded_dialog_confirm_button) {
+                            attachmentSizeDialogState.value = false
+                        }
+                    },
+                    title = stringResource(id = R.string.composer_attachment_size_exceeded_dialog_title),
+                    text = {
+                        ProtonAlertDialogText(
+                            stringResource(
+                                id = R.string.composer_attachment_size_exceeded_dialog_message,
+                                Formatter.formatShortFileSize(
+                                    LocalContext.current,
+                                    StoreAttachments.MAX_ATTACHMENTS_SIZE
+                                )
+                            )
+                        )
+                    }
+                )
+            }
+
             if (state.isLoading) {
                 @Suppress("MagicNumber")
                 Surface(
@@ -207,6 +238,8 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
         actions.onCloseComposerClick()
         actions.showMessageSendingOfflineSnackbar()
     }
+
+    ConsumableLaunchedEffect(effect = state.attachmentsFileSizeExceeded) { attachmentSizeDialogState.value = true }
 
     BackHandler(true) {
         viewModel.submit(ComposerAction.OnCloseComposer)
