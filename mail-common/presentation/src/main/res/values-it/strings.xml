@@ -32,7 +32,7 @@
   <string name="action_forward_content_description">Inoltra</string>
   <string name="action_mark_read_content_description">Segna come letto</string>
   <string name="action_mark_unread_content_description">Segna come non letto</string>
-  <string name="action_star_content_description">Preferito</string>
+  <string name="action_star_content_description">Aggiungi alla posta preferita</string>
   <string name="action_unstar_content_description">Rimuovi dai preferiti</string>
   <string name="action_label_content_description">Etichetta come</string>
   <string name="action_move_content_description">Sposta in</string>

@@ -28,6 +28,6 @@
   <string name="mailbox_message_sending_offline">Офлайн, сообщение добавлено в очередь на отправку</string>
   <string name="mailbox_message_sending_success">Сообщение отправлено</string>
   <string name="mailbox_message_sending_error">Ошибка при отправке сообщения</string>
-  <string name="mailbox_attachment_uploading_error">Error uploading attachment</string>
+  <string name="mailbox_attachment_uploading_error">Ошибка загрузки вложения</string>
   <string name="notification_switched_account">Переключено на аккаунт: %s</string>
 </resources>

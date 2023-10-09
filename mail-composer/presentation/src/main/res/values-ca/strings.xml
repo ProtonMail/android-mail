@@ -36,10 +36,10 @@
   <string name="composer_error_duplicate_recipient">Destinatari duplicat eliminat: %1$s</string>
   <string name="composer_error_store_draft_subject">S\'ha produït un error en desar l\'assumpte de l\'esborrany.</string>
   <string name="composer_error_store_draft_recipients">S\'ha produït un error en desar els destinataris de l\'esborrany.</string>
-  <string name="composer_error_loading_draft">The content of this draft is not available at this time. Editing will override any pre-existing content.</string>
+  <string name="composer_error_loading_draft">El contingut d\'aquest esborrany no està disponible en aquest moment. L\'edició substituirà qualsevol contingut preexistent.</string>
   <string name="composer_add_attachments_content_description">Afegiu fitxers adjunts</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Importar des de…</string>
-  <string name="composer_error_loading_parent_message">Could not load the message\'s information</string>
-  <string name="composer_original_message_quote">Original Message</string>
-  <string name="composer_sender_quote">On %s, %s &lt;%s&gt; wrote:</string>
+  <string name="composer_error_loading_parent_message">No s\'ha pogut carregar la informació del missatge.</string>
+  <string name="composer_original_message_quote">Missatge original</string>
+  <string name="composer_sender_quote">El %s, %s &lt;%s&gt; va escriure:</string>
 </resources>

@@ -18,26 +18,26 @@
   -->
 <resources>
   <plurals name="attachment_count_label">
-    <item quantity="one">%d file</item>
+    <item quantity="one">%d файл</item>
     <item quantity="few">%d files</item>
     <item quantity="many">%d files</item>
     <item quantity="other">%d files</item>
   </plurals>
-  <string name="attachment_show_more_label">+%1$d more</string>
-  <string name="attachment_permission_dialog_title">Permission required</string>
-  <string name="attachment_permission_dialog_message">Proton Mail needs permission to access your storage to download the attachment.</string>
-  <string name="attachment_permission_dialog_dismiss_button">OK</string>
-  <string name="attachment_permission_dialog_action_button">Settings</string>
-  <string name="attachment_type_description">%1$s file</string>
+  <string name="attachment_show_more_label">+ ще %1$d</string>
+  <string name="attachment_permission_dialog_title">Потрібен дозвіл</string>
+  <string name="attachment_permission_dialog_message">Щоб завантажити вкладення, Proton Mail потрібен дозвіл доступу до вашого сховища.</string>
+  <string name="attachment_permission_dialog_dismiss_button">Гаразд</string>
+  <string name="attachment_permission_dialog_action_button">Налаштування</string>
+  <string name="attachment_type_description">%1$s файл</string>
   <!-- Attachment Types -->
-  <string name="attachment_type_archive">Archive</string>
-  <string name="attachment_type_image">Image</string>
-  <string name="attachment_type_video">Video</string>
-  <string name="attachment_type_audio">Audio</string>
-  <string name="attachment_type_unknown">Unknown</string>
+  <string name="attachment_type_archive">Архів</string>
+  <string name="attachment_type_image">Зображення</string>
+  <string name="attachment_type_video">Відео</string>
+  <string name="attachment_type_audio">Аудіо</string>
+  <string name="attachment_type_unknown">Невідомо</string>
   <string name="attachment_type_pdf">PDF</string>
-  <string name="attachment_type_text">Text</string>
-  <string name="attachment_type_document">Document</string>
-  <string name="attachment_type_spreadsheet">Spreadsheet</string>
-  <string name="attachment_type_presentation">Presentation</string>
+  <string name="attachment_type_text">Текст</string>
+  <string name="attachment_type_document">Документ</string>
+  <string name="attachment_type_spreadsheet">Таблиця</string>
+  <string name="attachment_type_presentation">Презентація</string>
 </resources>

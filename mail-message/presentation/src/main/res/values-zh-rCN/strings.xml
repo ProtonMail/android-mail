@@ -28,7 +28,7 @@
   <string name="attachment_type_description">%1$s 文件</string>
   <!-- Attachment Types -->
   <string name="attachment_type_archive">压缩文件</string>
-  <string name="attachment_type_image">Image</string>
+  <string name="attachment_type_image">图片</string>
   <string name="attachment_type_video">视频</string>
   <string name="attachment_type_audio">音频</string>
   <string name="attachment_type_unknown">未知</string>

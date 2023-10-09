@@ -39,7 +39,7 @@
   <string name="composer_error_loading_draft">Вміст цієї чернетки недоступний в цей момент. Редагування перезапише будь-який попередній вміст.</string>
   <string name="composer_add_attachments_content_description">Додати вкладення</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Імпортувати з…</string>
-  <string name="composer_error_loading_parent_message">Could not load the message\'s information</string>
-  <string name="composer_original_message_quote">Original Message</string>
-  <string name="composer_sender_quote">On %s, %s &lt;%s&gt; wrote:</string>
+  <string name="composer_error_loading_parent_message">Неможливо завантажити інформацію про повідомлення</string>
+  <string name="composer_original_message_quote">Оригінал повідомлення</string>
+  <string name="composer_sender_quote">%s, %s &lt;%s&gt; написав(-ла):</string>
 </resources>

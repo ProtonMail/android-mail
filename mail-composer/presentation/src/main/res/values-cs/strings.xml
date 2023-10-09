@@ -39,7 +39,7 @@
   <string name="composer_error_loading_draft">Obsah tohoto návrhu není v tuto chvíli k dispozici. Úpravy přepíší veškerý již existující obsah.</string>
   <string name="composer_add_attachments_content_description">Přidat přílohy</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Importovat z…</string>
-  <string name="composer_error_loading_parent_message">Could not load the message\'s information</string>
-  <string name="composer_original_message_quote">Original Message</string>
+  <string name="composer_error_loading_parent_message">Nelze načíst informace zprávy</string>
+  <string name="composer_original_message_quote">Původní zpráva</string>
   <string name="composer_sender_quote">On %s, %s &lt;%s&gt; wrote:</string>
 </resources>

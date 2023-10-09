@@ -28,6 +28,6 @@
   <string name="mailbox_message_sending_offline">Vous êtes hors ligne, le message est en file d\'attente pour l\'envoi.</string>
   <string name="mailbox_message_sending_success">Le message a été envoyé.</string>
   <string name="mailbox_message_sending_error">Une erreur s\'est produite lors de l\'envoi du message.</string>
-  <string name="mailbox_attachment_uploading_error">Une erreur s\'est produite lors de l\'envoi d\'une pièce jointe.</string>
+  <string name="mailbox_attachment_uploading_error">La pièce jointe n\'a pas pu être chargée.</string>
   <string name="notification_switched_account">Basculé sur le compte %s</string>
 </resources>

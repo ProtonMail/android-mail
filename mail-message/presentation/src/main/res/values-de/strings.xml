@@ -23,7 +23,7 @@
   </plurals>
   <string name="attachment_show_more_label">+%1$d mehr</string>
   <string name="attachment_permission_dialog_title">Berechtigung benötigt</string>
-  <string name="attachment_permission_dialog_message">Proton Mail benötigt die Erlaubnis, auf Ihren Speicher zuzugreifen, um den Anhang herunterzuladen.</string>
+  <string name="attachment_permission_dialog_message">Proton Mail benötigt die Erlaubnis, auf deinen Speicher zuzugreifen, um den Anhang herunterzuladen.</string>
   <string name="attachment_permission_dialog_dismiss_button">OK</string>
   <string name="attachment_permission_dialog_action_button">Einstellungen</string>
   <string name="attachment_type_description">%1$s-Datei</string>

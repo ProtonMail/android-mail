@@ -28,7 +28,7 @@
   <string name="attachment_type_description">%1$s berkas</string>
   <!-- Attachment Types -->
   <string name="attachment_type_archive">Arsip</string>
-  <string name="attachment_type_image">Image</string>
+  <string name="attachment_type_image">Gambar</string>
   <string name="attachment_type_video">Video</string>
   <string name="attachment_type_audio">Audio</string>
   <string name="attachment_type_unknown">Tidak diketahui</string>

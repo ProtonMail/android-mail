@@ -30,7 +30,7 @@
   <string name="mail_settings_combined_contacts">Contatti combinati</string>
   <string name="mail_settings_swipe_actions">Azioni di scorrimento</string>
   <string name="mail_settings_combined_contacts_hint">Attiva questa funzionalità per il completamento automatico degli indirizzi email, usando i contatti di tutti i tuoi profili collegati.</string>
-  <string name="mail_settings_alternative_routing_hint">Nel caso in cui i siti Proton siano bloccati, questa impostazione consente all\'app di provare l\'instradamento di rete alternativo per raggiungere Proton, che può essere utile per aggirare i firewall o problemi di rete: Consigliamo di mantenere questa impostazione per una maggiore affidabilità.</string>
+  <string name="mail_settings_alternative_routing_hint">Nel caso in cui i siti di Proton siano bloccati, questa impostazione consente all\'app di provare l\'indirizzamento di rete alternativo per raggiungere Proton, che potrebbe esser utile per evitare firewall o problemi di rete. Consigliamo di mantenere questa impostazione attiva per una maggiore affidabilità.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Predefinito di sistema</string>
   <string name="mail_settings_theme_light">Chiaro</string>
@@ -49,11 +49,11 @@
   <string name="mail_settings_subscription">Abbonamento</string>
   <string name="mail_settings_password_management">Gestione password</string>
   <string name="mail_settings_recovery_email">Email di recupero</string>
-  <string name="mail_settings_mailbox_size">Spazio della casella email</string>
+  <string name="mail_settings_mailbox_size">Spazio della casella di posta</string>
   <string name="mail_settings_addresses">Indirizzi</string>
   <string name="mail_settings_default_email_address">Indirizzo email predefinito</string>
   <string name="mail_settings_display_name_and_signature">Nome visualizzato e firma</string>
-  <string name="mail_settings_mailbox">Casella email</string>
+  <string name="mail_settings_mailbox">Casella di posta</string>
   <string name="mail_settings_privacy">Privacy</string>
   <string name="mail_settings_search_message_content">Cerca il contenuto del messaggio</string>
   <string name="mail_settings_labels_and_folders">Etichette e cartelle</string>
@@ -71,12 +71,12 @@
   <string name="mail_settings_swipe_action_archive_title">Archivio</string>
   <string name="mail_settings_swipe_action_read_title">Non letto</string>
   <string name="mail_settings_swipe_action_spam_title">Spam</string>
-  <string name="mail_settings_swipe_action_star_title">Preferito</string>
+  <string name="mail_settings_swipe_action_star_title">Aggiungi alla posta preferita</string>
   <string name="mail_settings_swipe_action_trash_title">Cestino</string>
   <string name="mail_settings_swipe_action_archive_description">Sposta in archivio</string>
   <string name="mail_settings_swipe_action_read_description">Segna come non letto/letto</string>
   <string name="mail_settings_swipe_action_spam_description">Sposta in spam</string>
-  <string name="mail_settings_swipe_action_star_description">Aggiungi/rimuovi preferiti</string>
+  <string name="mail_settings_swipe_action_star_description">Aggiungi/rimuovi preferenza</string>
   <string name="mail_settings_swipe_action_trash_description">Sposta nel cestino</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Si è verificato un errore. Riprovare.</string>

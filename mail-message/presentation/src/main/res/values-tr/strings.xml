@@ -29,7 +29,7 @@
   <string name="attachment_type_description">%1$s dosya</string>
   <!-- Attachment Types -->
   <string name="attachment_type_archive">Arşiv</string>
-  <string name="attachment_type_image">Image</string>
+  <string name="attachment_type_image">Görsel</string>
   <string name="attachment_type_video">Görüntü</string>
   <string name="attachment_type_audio">Ses</string>
   <string name="attachment_type_unknown">Bilinmiyor</string>

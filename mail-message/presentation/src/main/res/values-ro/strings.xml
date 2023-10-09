@@ -30,7 +30,7 @@
   <string name="attachment_type_description">Fișier %1$s</string>
   <!-- Attachment Types -->
   <string name="attachment_type_archive">arhivă</string>
-  <string name="attachment_type_image">Image</string>
+  <string name="attachment_type_image">Imagine</string>
   <string name="attachment_type_video">video</string>
   <string name="attachment_type_audio">audio</string>
   <string name="attachment_type_unknown">necunoscut</string>

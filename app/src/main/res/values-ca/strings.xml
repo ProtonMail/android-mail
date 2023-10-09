@@ -28,6 +28,6 @@
   <string name="mailbox_message_sending_offline">Fora de línia, missatge a la cua per enviar</string>
   <string name="mailbox_message_sending_success">S\'ha enviat el missatge.</string>
   <string name="mailbox_message_sending_error">Error enviant el missatge</string>
-  <string name="mailbox_attachment_uploading_error">Error uploading attachment</string>
+  <string name="mailbox_attachment_uploading_error">Error en carregar l\'adjunt.</string>
   <string name="notification_switched_account">Canviat al compte: %s</string>
 </resources>

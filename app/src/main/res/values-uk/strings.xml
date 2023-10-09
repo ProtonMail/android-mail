@@ -28,6 +28,6 @@
   <string name="mailbox_message_sending_offline">Повідомлення поставлено в чергу через відсутність мережевого з\'єднання</string>
   <string name="mailbox_message_sending_success">Повідомлення надіслано</string>
   <string name="mailbox_message_sending_error">Помилка надсилання повідомлення</string>
-  <string name="mailbox_attachment_uploading_error">Error uploading attachment</string>
+  <string name="mailbox_attachment_uploading_error">Помилка при завантаженні вкладення.</string>
   <string name="notification_switched_account">Змінено на обліковий запис: %s</string>
 </resources>

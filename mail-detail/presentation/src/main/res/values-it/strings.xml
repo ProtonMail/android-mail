@@ -32,8 +32,8 @@
   <string name="hide_details">Nascondi dettagli</string>
   <string name="undisclosed_recipients">Destinatari nascosti</string>
   <string name="error_mark_as_unread_failed">Impossibile contrassegnare come non letto. Per favore riprova.</string>
-  <string name="error_star_operation_failed">Aggiunta ai preferiti non riuscita. Per favore riprova.</string>
-  <string name="error_unstar_operation_failed">Rimozione dai preferiti non riuscita. Per favore riprova.</string>
+  <string name="error_star_operation_failed">Aggiunta alla posta preferita non riuscita. Per favore riprova.</string>
+  <string name="error_unstar_operation_failed">Rimozione dalla posta preferita non riuscita. Per favore riprova.</string>
   <string name="error_move_to_trash_failed">Spostamento nel cestino non riuscito. Per favore riprova.</string>
   <string name="message_moved_to_trash">Messaggio spostato nel cestino</string>
   <string name="message_moved_to_archive">Messaggio spostato in archivio</string>

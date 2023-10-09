@@ -23,11 +23,11 @@
   <string name="user_select_other_account_content_description">选择其他账户</string>
   <string name="you_are_offline">网络未连接</string>
   <string name="feature_coming_soon">功能即将推出…</string>
-  <string name="mailbox_draft_saved">Draft saved</string>
+  <string name="mailbox_draft_saved">草稿已保存</string>
   <string name="mailbox_message_sending">正在发送邮件…</string>
-  <string name="mailbox_message_sending_offline">Offline, message queued for sending</string>
+  <string name="mailbox_message_sending_offline">网络尚未连接，邮件将稍后发送</string>
   <string name="mailbox_message_sending_success">邮件已发送</string>
   <string name="mailbox_message_sending_error">Error sending message</string>
-  <string name="mailbox_attachment_uploading_error">Error uploading attachment</string>
+  <string name="mailbox_attachment_uploading_error">上传附件时出错</string>
   <string name="notification_switched_account">已转至 %s</string>
 </resources>

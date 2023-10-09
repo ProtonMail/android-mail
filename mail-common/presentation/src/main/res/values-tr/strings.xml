@@ -24,9 +24,9 @@
   <string name="retry">Yeniden dene</string>
   <string name="toolbar_back_content_description">Önceki ekrana dön</string>
   <string name="x_error_not_logged_in">Oturum açılmamış</string>
-  <string name="action_reply">Reply</string>
-  <string name="action_reply_all">Reply all</string>
-  <string name="action_forward">Forward</string>
+  <string name="action_reply">Yanıtla</string>
+  <string name="action_reply_all">Tümünü yanıtla</string>
+  <string name="action_forward">İlet</string>
   <string name="action_reply_content_description">Yanıtla</string>
   <string name="action_reply_all_content_description">Tümünü yanıtla</string>
   <string name="action_forward_content_description">İlet</string>

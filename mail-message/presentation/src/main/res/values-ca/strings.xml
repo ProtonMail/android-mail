@@ -22,8 +22,8 @@
     <item quantity="other">%d fitxers</item>
   </plurals>
   <string name="attachment_show_more_label">%1$d més</string>
-  <string name="attachment_permission_dialog_title">Permission required</string>
-  <string name="attachment_permission_dialog_message">Proton Mail needs permission to access your storage to download the attachment.</string>
+  <string name="attachment_permission_dialog_title">Es requereix permís.</string>
+  <string name="attachment_permission_dialog_message">Proton Mail necessita permís per accedir a l\'emmagatzematge per a descarregar l\'adjunt.</string>
   <string name="attachment_permission_dialog_dismiss_button">OK</string>
   <string name="attachment_permission_dialog_action_button">Preferències</string>
   <string name="attachment_type_description">Tipus de fitxer: %1$s</string>
@@ -37,5 +37,5 @@
   <string name="attachment_type_text">Text</string>
   <string name="attachment_type_document">Document</string>
   <string name="attachment_type_spreadsheet">Full de càlcul</string>
-  <string name="attachment_type_presentation">Presentation</string>
+  <string name="attachment_type_presentation">Presentació</string>
 </resources>

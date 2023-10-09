@@ -29,7 +29,7 @@
   <string name="attachment_type_description">%1$s-bestand</string>
   <!-- Attachment Types -->
   <string name="attachment_type_archive">Archiveren</string>
-  <string name="attachment_type_image">Image</string>
+  <string name="attachment_type_image">Afbeelding</string>
   <string name="attachment_type_video">Video</string>
   <string name="attachment_type_audio">Audio</string>
   <string name="attachment_type_unknown">Onbekend</string>

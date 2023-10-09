@@ -26,7 +26,7 @@
   <string name="x_error_not_logged_in">Niet ingelogd</string>
   <string name="action_reply">Beantwoorden</string>
   <string name="action_reply_all">Allen beantwoorden</string>
-  <string name="action_forward">Forward</string>
+  <string name="action_forward">Doorsturen</string>
   <string name="action_reply_content_description">Beantwoorden</string>
   <string name="action_reply_all_content_description">Allen beantwoorden</string>
   <string name="action_forward_content_description">Doorsturen</string>

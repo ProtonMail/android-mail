@@ -24,9 +24,9 @@
   <string name="retry">თავიდან</string>
   <string name="toolbar_back_content_description">წინა ეკრანზე გადასვლა</string>
   <string name="x_error_not_logged_in">შესული არ ბრძანდებით</string>
-  <string name="action_reply">Reply</string>
-  <string name="action_reply_all">Reply all</string>
-  <string name="action_forward">Forward</string>
+  <string name="action_reply">პასუხი</string>
+  <string name="action_reply_all">ყველასთვის პასუხი</string>
+  <string name="action_forward">გადაგზავნა</string>
   <string name="action_reply_content_description">პასუხი</string>
   <string name="action_reply_all_content_description">ყველასთვის პასუხი</string>
   <string name="action_forward_content_description">გადაგზავნა</string>

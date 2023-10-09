@@ -41,5 +41,5 @@
   <string name="composer_add_attachments_bottom_sheet_import_from">Імпартаваць з…</string>
   <string name="composer_error_loading_parent_message">Немагчыма загрузіць звесткі паведамлення</string>
   <string name="composer_original_message_quote">Арыгінальнае паведамленне</string>
-  <string name="composer_sender_quote">On %s, %s &lt;%s&gt; напісаў(-ла):</string>
+  <string name="composer_sender_quote">%s, %s &lt;%s&gt; напісаў(-ла):</string>
 </resources>

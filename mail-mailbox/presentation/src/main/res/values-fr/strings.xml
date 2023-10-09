@@ -24,7 +24,7 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Quitter le mode sélection</string>
   <string name="mailbox_toolbar_menu_button_content_description">Menu</string>
   <string name="mailbox_toolbar_search_button_content_description">Rechercher</string>
-  <string name="mailbox_toolbar_selected_count">%d Sélectionné(s)</string>
+  <string name="mailbox_toolbar_selected_count">Sélection : %d</string>
   <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
   <string name="filter_unread_button_text_without_counter">Non lus</string>
   <plurals name="filter_unread_button_text">
