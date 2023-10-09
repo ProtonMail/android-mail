@@ -82,6 +82,7 @@ class StoreAttachmentsTest {
         expectedDraftSaving(expectedMessageBody, true)
         expectAttachmentSavingSuccessful(expectedMessageId)
         expectAttachmentStateSavingSuccess(expectedMessageId)
+        expectGetFileSizeFromUriSuccess()
 
         // When
         val actual = storeAttachments(userId, expectedMessageId, senderEmail, listOf(uri))
@@ -101,6 +102,7 @@ class StoreAttachmentsTest {
         expectedLocalMessageBody(expectedMessageId, expectedMessageBody)
         expectAttachmentSavingSuccessful(expectedMessageId)
         expectAttachmentStateSavingSuccess(expectedMessageId)
+        expectGetFileSizeFromUriSuccess()
 
         // When
         val actual = storeAttachments(userId, expectedMessageId, senderEmail, listOf(uri))
@@ -156,6 +158,7 @@ class StoreAttachmentsTest {
         expectedLocalDraft(expectedMessageId, MessageWithBodySample.Invoice)
         expectedLocalMessageBody(expectedMessageId, MessageWithBodySample.Invoice)
         expectAttachmentSavingFailed(expectedMessageId, uri)
+        expectGetFileSizeFromUriSuccess()
 
         val expectedError = StoreDraftWithAttachmentError.FailedToStoreAttachments.left()
 
@@ -176,11 +179,55 @@ class StoreAttachmentsTest {
         expectAttachmentSavingSuccessful(expectedMessageId)
         expectAttachmentSavingFailed(expectedMessageId, uri2)
         expectAttachmentStateSavingSuccess(expectedMessageId)
+        expectGetFileSizeFromUriSuccess()
+        expectGetFileSizeFromUriSuccess(uri2)
 
         val expectedError = StoreDraftWithAttachmentError.FailedToStoreAttachments.left()
 
         // When
         val actual = storeAttachments(userId, expectedMessageId, senderEmail, listOf(uri, uri2))
+
+        // Then
+        assertEquals(expectedError, actual)
+    }
+
+    @Test
+    fun `should return file size exceeds limit when file exceeds the limit`() = runTest {
+        // Given
+        val expectedMessageId = MessageIdSample.Invoice
+        val expectedMessageBody = MessageWithBodySample.Invoice
+        expectedLocalDraft(expectedMessageId, expectedMessageBody)
+        expectedLocalMessageBody(expectedMessageId, null)
+        expectedDraftSaving(expectedMessageBody, true)
+        expectAttachmentSavingSuccessful(expectedMessageId)
+        expectAttachmentStateSavingSuccess(expectedMessageId)
+        expectGetFileSizeExceedsLimit()
+
+        val expectedError = StoreDraftWithAttachmentError.FileSizeExceedsLimit.left()
+
+        // When
+        val actual = storeAttachments(userId, expectedMessageId, senderEmail, listOf(uri))
+
+        // Then
+        assertEquals(expectedError, actual)
+    }
+
+    @Test
+    fun `should return attachment file missing when file size cannot be retrieved`() = runTest {
+        // Given
+        val expectedMessageId = MessageIdSample.Invoice
+        val expectedMessageBody = MessageWithBodySample.Invoice
+        expectedLocalDraft(expectedMessageId, expectedMessageBody)
+        expectedLocalMessageBody(expectedMessageId, null)
+        expectedDraftSaving(expectedMessageBody, true)
+        expectAttachmentSavingSuccessful(expectedMessageId)
+        expectAttachmentStateSavingSuccess(expectedMessageId)
+        expectGetFileSizeFromUriFailed()
+
+        val expectedError = StoreDraftWithAttachmentError.AttachmentFileMissing.left()
+
+        // When
+        val actual = storeAttachments(userId, expectedMessageId, senderEmail, listOf(uri))
 
         // Then
         assertEquals(expectedError, actual)
@@ -221,5 +268,17 @@ class StoreAttachmentsTest {
         coEvery {
             attachmentStateRepository.createOrUpdateLocalState(userId, messageId, localAttachmentId)
         } returns Unit.right()
+    }
+
+    private fun expectGetFileSizeFromUriSuccess(expectedUri: Uri = uri) {
+        coEvery { attachmentRepository.getFileSizeFromUri(expectedUri) } returns 1L.right()
+    }
+
+    private fun expectGetFileSizeFromUriFailed() {
+        coEvery { attachmentRepository.getFileSizeFromUri(uri) } returns DataError.Local.NoDataCached.left()
+    }
+
+    private fun expectGetFileSizeExceedsLimit() {
+        coEvery { attachmentRepository.getFileSizeFromUri(uri) } returns (30 * 1000 * 1000L).right()
     }
 }

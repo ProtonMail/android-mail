@@ -20,7 +20,7 @@ package ch.protonmail.android.mailcomposer.domain.usecase
 
 import android.net.Uri
 import arrow.core.Either
-import arrow.core.continuations.either
+import arrow.core.raise.either
 import ch.protonmail.android.mailcomposer.domain.Transactor
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.domain.repository.AttachmentStateRepository
@@ -46,11 +46,12 @@ class StoreAttachments @Inject constructor(
         messageId: MessageId,
         senderEmail: SenderEmail,
         uriList: List<Uri>
-    ): Either<StoreDraftWithAttachmentError, Unit> = either {
-        if (uriList.isEmpty()) {
-            shift<StoreDraftWithAttachmentError>(StoreDraftWithAttachmentError.AttachmentsMissing)
-        }
-        transactor.performTransaction {
+    ): Either<StoreDraftWithAttachmentError, Unit> = transactor.performTransaction {
+        either {
+            if (uriList.isEmpty()) {
+                shift<StoreDraftWithAttachmentError>(StoreDraftWithAttachmentError.AttachmentsMissing)
+            }
+
             val draft = getLocalDraft(userId, messageId, senderEmail)
                 .mapLeft { StoreDraftWithAttachmentError.FailedReceivingDraft }
                 .bind()
@@ -66,7 +67,15 @@ class StoreAttachments @Inject constructor(
                 }
             }
             var attachmentFailedToStore = false
+            var sumAttachmentSize = messageWithBody?.messageBody?.attachments?.sumOf { it.size } ?: 0L
             uriList.forEach {
+                val fileSize = attachmentRepository.getFileSizeFromUri(it)
+                    .mapLeft { StoreDraftWithAttachmentError.AttachmentFileMissing }
+                    .bind()
+                sumAttachmentSize += fileSize
+                if (sumAttachmentSize > MAX_ATTACHMENTS_SIZE) {
+                    shift<StoreDraftWithAttachmentError>(StoreDraftWithAttachmentError.FileSizeExceedsLimit)
+                }
                 val attachmentId = provideNewAttachmentId()
                 attachmentRepository.saveAttachment(userId, draft.message.messageId, attachmentId, it)
                     .onLeft { attachmentFailedToStore = true }
@@ -81,10 +90,17 @@ class StoreAttachments @Inject constructor(
             }
         }
     }
+
+    companion object {
+
+        const val MAX_ATTACHMENTS_SIZE = 25 * 1000 * 1000L
+    }
 }
 
 sealed interface StoreDraftWithAttachmentError {
     object AttachmentsMissing : StoreDraftWithAttachmentError
     object FailedReceivingDraft : StoreDraftWithAttachmentError
     object FailedToStoreAttachments : StoreDraftWithAttachmentError
+    object FileSizeExceedsLimit : StoreDraftWithAttachmentError
+    object AttachmentFileMissing : StoreDraftWithAttachmentError
 }
