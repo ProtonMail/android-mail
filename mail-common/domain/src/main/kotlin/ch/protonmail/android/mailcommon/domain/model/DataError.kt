@@ -81,6 +81,8 @@ sealed interface DataError {
 
         object GeneratingPackages : MessageSending
     }
+
+    object AddressNotFound : DataError
 }
 
 fun DataError.isOfflineError() = this is DataError.Remote.Http && this.networkError is NetworkError.NoNetwork
