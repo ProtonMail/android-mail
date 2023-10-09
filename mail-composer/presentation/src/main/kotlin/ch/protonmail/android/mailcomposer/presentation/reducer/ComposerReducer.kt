@@ -109,6 +109,7 @@ class ComposerReducer @Inject constructor(
             error = Effect.of(TextUiModel(R.string.composer_error_loading_parent_message)),
             isLoading = false
         )
+        is ComposerEvent.ErrorAttachmentsExceedSizeLimit -> updateStateForAttachmentsExceedSizeLimit(currentState)
     }
 
     private fun updateBottomSheetVisibility(currentState: ComposerDraftState, bottomSheetVisibility: Boolean) =
@@ -174,6 +175,9 @@ class ComposerReducer @Inject constructor(
         fields = currentState.fields.copy(sender = SenderUiModel("")),
         error = Effect.of(TextUiModel(R.string.composer_error_invalid_sender))
     )
+
+    private fun updateStateForAttachmentsExceedSizeLimit(currentState: ComposerDraftState) =
+        currentState.copy(attachmentsFileSizeExceeded = Effect.of(Unit))
 
     private fun updateSenderTo(currentState: ComposerDraftState, sender: SenderUiModel) = currentState.copy(
         fields = currentState.fields.copy(sender = sender),

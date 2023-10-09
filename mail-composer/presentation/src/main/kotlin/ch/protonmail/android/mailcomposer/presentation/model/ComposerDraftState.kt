@@ -37,7 +37,8 @@ data class ComposerDraftState(
     val closeComposerWithMessageSending: Effect<Unit>,
     val closeComposerWithMessageSendingOffline: Effect<Unit>,
     val isLoading: Boolean,
-    val isAddAttachmentsButtonVisible: Boolean
+    val isAddAttachmentsButtonVisible: Boolean,
+    val attachmentsFileSizeExceeded: Effect<Unit>
 ) {
 
     companion object {
@@ -71,7 +72,8 @@ data class ComposerDraftState(
             closeComposerWithMessageSending = Effect.empty(),
             closeComposerWithMessageSendingOffline = Effect.empty(),
             isLoading = false,
-            isAddAttachmentsButtonVisible = false
+            isAddAttachmentsButtonVisible = false,
+            attachmentsFileSizeExceeded = Effect.empty()
         )
     }
 }

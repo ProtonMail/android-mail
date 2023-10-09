@@ -63,4 +63,5 @@ sealed interface ComposerEvent : ComposerOperation {
     object OnSendMessageOffline : ComposerEvent
     object ErrorLoadingDraftData : ComposerEvent
     object ErrorLoadingParentMessageData : ComposerEvent
+    object ErrorAttachmentsExceedSizeLimit : ComposerEvent
 }
