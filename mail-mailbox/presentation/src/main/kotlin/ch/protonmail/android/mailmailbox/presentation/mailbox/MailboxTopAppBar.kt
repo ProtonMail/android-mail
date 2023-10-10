@@ -54,7 +54,11 @@ fun MailboxTopAppBar(
         )
 
         is MailboxTopAppBarState.Data.SelectionMode -> UiModel(
-            title = pluralStringResource(id = R.plurals.mailbox_toolbar_selected_count, state.selectedCount),
+            title = pluralStringResource(
+                id = R.plurals.mailbox_toolbar_selected_count,
+                state.selectedCount,
+                state.selectedCount
+            ),
             navigationIconRes = R.drawable.ic_proton_arrow_left,
             navigationIconContentDescription =
             stringResource(id = R.string.mailbox_toolbar_exit_selection_mode_button_content_description),

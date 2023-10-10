@@ -18,22 +18,21 @@
 
 package ch.protonmail.android.uitest.screen.mailbox
 
-import android.content.Context
 import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
 import androidx.compose.ui.test.assertHasClickAction
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
-import androidx.test.core.app.ApplicationProvider
+import ch.protonmail.android.R
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.text
-import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxTopAppBar
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState.Data
 import ch.protonmail.android.test.annotations.suite.RegressionTest
 import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
+import ch.protonmail.android.uitest.util.InstrumentationHolder
 import me.proton.core.compose.theme.ProtonTheme
 import org.junit.Rule
 import org.junit.Test
@@ -44,7 +43,7 @@ internal class MailboxTopAppBarTest {
 
     @get:Rule
     val composeTestRule: ComposeContentTestRule = ComposeTestRuleHolder.createAndGetComposeRule()
-    private val context = ApplicationProvider.getApplicationContext<Context>()
+    private val context = InstrumentationHolder.instrumentation.targetContext
 
     @Test
     fun hamburgerIconIsShownInDefaultMode() {
@@ -95,7 +94,13 @@ internal class MailboxTopAppBarTest {
         setupScreenWithSelectionMode(MAIL_LABEL_INBOX, selectedCount = SELECTED_COUNT_TEN)
 
         composeTestRule
-            .onNodeWithText(context.getString(R.plurals.mailbox_toolbar_selected_count, SELECTED_COUNT_TEN))
+            .onNodeWithText(
+                context.resources.getQuantityString(
+                    R.plurals.mailbox_toolbar_selected_count,
+                    SELECTED_COUNT_TEN,
+                    SELECTED_COUNT_TEN
+                )
+            )
             .assertIsDisplayed()
     }
 
