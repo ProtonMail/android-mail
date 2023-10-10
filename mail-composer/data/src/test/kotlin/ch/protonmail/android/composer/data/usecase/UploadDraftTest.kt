@@ -24,14 +24,13 @@ import ch.protonmail.android.composer.data.remote.DraftRemoteDataSource
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.ProtonError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
-import ch.protonmail.android.mailcomposer.domain.model.AttachmentSyncState
 import ch.protonmail.android.mailcomposer.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftState
 import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailcomposer.domain.sample.DraftStateSample
+import ch.protonmail.android.mailcomposer.domain.usecase.CreateOrUpdateParentAttachmentStates
 import ch.protonmail.android.mailcomposer.domain.usecase.FindLocalDraft
 import ch.protonmail.android.mailcomposer.domain.usecase.IsDraftKnownToApi
-import ch.protonmail.android.mailcomposer.domain.usecase.StoreParentAttachments
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -43,6 +42,7 @@ import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
 import ch.protonmail.android.test.utils.FakeTransactor
 import ch.protonmail.android.test.utils.rule.LoggingTestRule
 import io.mockk.coEvery
+import io.mockk.coJustRun
 import io.mockk.coVerify
 import io.mockk.coVerifySequence
 import io.mockk.mockk
@@ -67,7 +67,7 @@ class UploadDraftTest {
     private val isDraftKnownToApi = mockk<IsDraftKnownToApi>()
     private val fakeTransactor = FakeTransactor()
     private val attachmentRepository = mockk<AttachmentRepository>()
-    private val storeParentAttachments = mockk<StoreParentAttachments>()
+    private val updatedAttachmentStates = mockk<CreateOrUpdateParentAttachmentStates>()
 
     private val draftRepository = UploadDraft(
         fakeTransactor,
@@ -77,7 +77,7 @@ class UploadDraftTest {
         draftRemoteDataSource,
         isDraftKnownToApi,
         attachmentRepository,
-        storeParentAttachments
+        updatedAttachmentStates
     )
 
     @Test
@@ -288,11 +288,10 @@ class UploadDraftTest {
                 expectedLocalAttachment.attachmentId,
                 expectedUpdatedAttachment
             )
-            storeParentAttachments(
+            updatedAttachmentStates(
                 userId,
                 apiAssignedMessageId,
-                listOf(expectedUpdatedAttachment.attachmentId),
-                AttachmentSyncState.ParentUploaded
+                listOf(expectedUpdatedAttachment.attachmentId)
             )
         }
     }
@@ -390,9 +389,7 @@ class UploadDraftTest {
         messageId: MessageId,
         attachmentIds: List<AttachmentId>
     ) {
-        coEvery {
-            storeParentAttachments(userId, messageId, attachmentIds, AttachmentSyncState.ParentUploaded)
-        } returns Unit.right()
+        coJustRun { updatedAttachmentStates(userId, messageId, attachmentIds) }
     }
 
 }
