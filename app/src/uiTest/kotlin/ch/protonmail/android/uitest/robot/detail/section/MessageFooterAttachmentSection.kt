@@ -27,6 +27,7 @@ import ch.protonmail.android.mailmessage.presentation.ui.AttachmentFooterTestTag
 import ch.protonmail.android.test.ksp.annotations.AttachTo
 import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
 import ch.protonmail.android.uitest.robot.ComposeSectionRobot
+import ch.protonmail.android.uitest.robot.composer.ComposerRobot
 import ch.protonmail.android.uitest.robot.detail.ConversationDetailRobot
 import ch.protonmail.android.uitest.robot.detail.MessageDetailRobot
 import ch.protonmail.android.uitest.robot.detail.model.attachments.AttachmentDetailItemEntry
@@ -35,7 +36,14 @@ import ch.protonmail.android.uitest.robot.detail.model.attachments.AttachmentDet
 import ch.protonmail.android.uitest.util.awaitDisplayed
 import ch.protonmail.android.uitest.util.child
 
-@AttachTo(targets = [ConversationDetailRobot::class, MessageDetailRobot::class], identifier = "attachmentsSection")
+@AttachTo(
+    targets = [
+        ComposerRobot::class,
+        ConversationDetailRobot::class,
+        MessageDetailRobot::class
+    ],
+    identifier = "attachmentsSection"
+)
 internal class MessageFooterAttachmentSection : ComposeSectionRobot() {
 
     private val rootItem = composeTestRule.onNodeWithTag(
@@ -87,9 +95,13 @@ internal class MessageFooterAttachmentSection : ComposeSectionRobot() {
         fun hasAttachments(vararg entries: AttachmentDetailItemEntry) {
             for (entry in entries) {
                 withItemEntryModel(entry.index) {
-                    hasIcon()
+                    waitUntilShown()
+                        .hasIcon()
                         .hasName(entry.fileName)
                         .hasSize(entry.fileSize)
+                        .also {
+                            if (entry.hasDeleteIcon) it.hasDeleteIcon() else it.hasNoDeleteIcon()
+                        }
                 }
             }
         }

@@ -47,12 +47,20 @@ internal class ComposerTopBarAppSection : ComposeSectionRobot() {
         hasTestTag(ComposerTestTags.CloseButton)
     }
 
+    private val attachmentsButton = rootItem.child {
+        hasTestTag(ComposerTestTags.AttachmentsButton)
+    }
+
     private val sendButton = rootItem.child {
         hasTestTag(ComposerTestTags.SendButton)
     }
 
     fun tapCloseButton() = apply {
         closeButton.performScrollTo().performClick()
+    }
+
+    fun tapAttachmentsButton() = apply {
+        attachmentsButton.performScrollTo().performClick()
     }
 
     fun tapSendButton() = apply {

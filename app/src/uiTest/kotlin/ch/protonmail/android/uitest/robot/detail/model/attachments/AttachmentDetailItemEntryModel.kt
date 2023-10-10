@@ -51,6 +51,10 @@ internal class AttachmentDetailItemEntryModel(index: Int, parent: SemanticsNodeI
         hasTestTag(AttachmentItemTestTags.Extension)
     }
 
+    private val deleteIcon = item.child {
+        hasTestTag(AttachmentItemTestTags.Delete)
+    }
+
     private val size = item.child {
         hasTestTag(AttachmentItemTestTags.Size)
     }
@@ -83,8 +87,22 @@ internal class AttachmentDetailItemEntryModel(index: Int, parent: SemanticsNodeI
         extension.assertTextEquals(".$fileExtension")
     }
 
+    fun hasDeleteIcon(): AttachmentDetailItemEntryModel = apply {
+        deleteIcon.assertIsDisplayed()
+    }
+
+    fun hasNoDeleteIcon(): AttachmentDetailItemEntryModel = apply {
+        deleteIcon.assertDoesNotExist()
+    }
+
     fun hasSize(value: String): AttachmentDetailItemEntryModel = apply {
         size.assertTextEquals(value)
+    }
+    // endregion
+
+    // region utility
+    fun waitUntilShown() = apply {
+        item.awaitDisplayed()
     }
     // endregion
 }

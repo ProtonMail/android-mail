@@ -34,7 +34,7 @@ internal class MockIntentsRule(private val captureIntents: Boolean) : ExternalRe
 
         Intents.init()
 
-        // Attachment handling
+        // Attachment viewing
         Intents.intending(hasAction(Intent.ACTION_VIEW)).respondWith(fakeActivityResult)
     }
 

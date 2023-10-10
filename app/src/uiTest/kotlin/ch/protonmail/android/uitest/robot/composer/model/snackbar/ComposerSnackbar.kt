@@ -25,6 +25,10 @@ import ch.protonmail.android.uitest.util.getTestString
 
 internal sealed class ComposerSnackbar(value: String, type: SnackbarType) : SnackbarEntry(value, type) {
 
+    object AttachmentUploadError : ComposerSnackbar(
+        getTestString(R.string.test_mailbox_attachment_uploading_error), SnackbarType.Error
+    )
+
     object DraftSaved : ComposerSnackbar(
         getTestString(R.string.test_mailbox_draft_saved), SnackbarType.Success
     )

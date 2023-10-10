@@ -21,5 +21,6 @@ package ch.protonmail.android.uitest.robot.detail.model.attachments
 internal data class AttachmentDetailItemEntry(
     val index: Int,
     val fileName: String,
-    val fileSize: String
+    val fileSize: String,
+    val hasDeleteIcon: Boolean = false
 )

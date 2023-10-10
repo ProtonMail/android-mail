@@ -25,25 +25,36 @@ import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasType
 import ch.protonmail.android.test.ksp.annotations.AttachTo
 import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
-import ch.protonmail.android.test.robot.ProtonMailSectionRobot
+import ch.protonmail.android.uitest.robot.ComposeSectionRobot
 import ch.protonmail.android.uitest.robot.helpers.DeviceRobot
-import me.proton.core.test.android.instrumented.utils.waitUntil
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.any
 import org.hamcrest.Matcher
 
 @AttachTo(targets = [DeviceRobot::class], identifier = "intents")
-internal class DeviceRobotIntentsSection : ProtonMailSectionRobot {
+internal class DeviceRobotIntentsSection : ComposeSectionRobot() {
 
     @VerifiesOuter
     inner class Verify {
+
+        fun filePickerIntentWasLaunched(
+            times: Int = 1,
+            mimeType: String = "*/*",
+            timeout: Long = 5000L
+        ) {
+            composeTestRule.waitUntil(timeout) {
+                runCatching {
+                    intended(allOf(hasAction(Intent.ACTION_GET_CONTENT), mimeType.asMimeTypeMatcher()), times(times))
+                }.isSuccess
+            }
+        }
 
         fun actionViewIntentWasLaunched(
             times: Int = 1,
             mimeType: String? = null,
             timeout: Long = 5000L
         ) {
-            waitUntil(timeout) {
+            composeTestRule.waitUntil(timeout) {
                 runCatching {
                     intended(allOf(hasAction(Intent.ACTION_VIEW), mimeType.asMimeTypeMatcher()), times(times))
                 }.isSuccess
