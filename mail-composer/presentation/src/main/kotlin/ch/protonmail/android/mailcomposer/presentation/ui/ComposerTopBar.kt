@@ -61,6 +61,7 @@ internal fun ComposerTopBar(
         actions = {
             if (isAddAttachmentsButtonVisible) {
                 IconButton(
+                    modifier = Modifier.testTag(ComposerTestTags.AttachmentsButton),
                     onClick = onAddAttachmentsClick
                 ) {
                     Icon(

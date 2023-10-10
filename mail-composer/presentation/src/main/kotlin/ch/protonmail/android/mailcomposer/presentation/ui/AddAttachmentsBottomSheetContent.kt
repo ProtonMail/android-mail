@@ -28,6 +28,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -38,24 +39,40 @@ import me.proton.core.compose.theme.ProtonDimens
 
 @Composable
 fun AddAttachmentsBottomSheetContent(onImportFromSelected: () -> Unit, modifier: Modifier = Modifier) {
-    Column(modifier = modifier.padding(vertical = ProtonDimens.DefaultSpacing)) {
+    Column(
+        modifier = modifier
+            .testTag(AddAttachmentsBottomSheetTestTags.RootItem)
+            .padding(vertical = ProtonDimens.DefaultSpacing)
+    ) {
         ProtonRawListItem(
             modifier = Modifier
+                .testTag(AddAttachmentsBottomSheetTestTags.ImportEntry)
                 .clickable { onImportFromSelected() }
                 .height(ProtonDimens.ListItemHeight)
                 .padding(horizontal = ProtonDimens.DefaultSpacing)
         ) {
             Icon(
+                modifier = Modifier.testTag(AddAttachmentsBottomSheetTestTags.ImportIcon),
                 painter = painterResource(id = R.drawable.ic_proton_folder_open),
                 contentDescription = NO_CONTENT_DESCRIPTION
             )
             Spacer(modifier = Modifier.width(ProtonDimens.DefaultSpacing))
             Text(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier
+                    .testTag(AddAttachmentsBottomSheetTestTags.ImportText)
+                    .weight(1f),
                 text = stringResource(id = R.string.composer_add_attachments_bottom_sheet_import_from),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
         }
     }
+}
+
+object AddAttachmentsBottomSheetTestTags {
+
+    const val RootItem = "AttachmentsBottomSheetRootItem"
+    const val ImportEntry = "ImportEntry"
+    const val ImportIcon = "ImportIcon"
+    const val ImportText = "ImportText"
 }
