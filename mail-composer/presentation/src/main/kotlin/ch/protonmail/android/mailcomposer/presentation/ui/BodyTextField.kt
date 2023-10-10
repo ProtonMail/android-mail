@@ -46,6 +46,7 @@ import me.proton.core.compose.theme.defaultNorm
 @Composable
 internal fun BodyTextField(
     initialValue: String,
+    hasQuotedBody: Boolean,
     onBodyChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -79,6 +80,7 @@ internal fun BodyTextField(
     )
 
     LaunchedEffect(initialValue) {
-        if (initialValue.isNotEmpty()) { focusRequester.requestFocus() }
+        val shouldGetFocus = initialValue.isNotEmpty() || hasQuotedBody
+        if (shouldGetFocus) { focusRequester.requestFocus() }
     }
 }

@@ -180,6 +180,7 @@ internal fun ComposerForm(
             MailDivider()
             BodyTextField(
                 initialValue = fields.body,
+                hasQuotedBody = fields.quotedBody != null,
                 onBodyChange = actions.onBodyChanged,
                 modifier = maxWidthModifier
                     .testTag(ComposerTestTags.MessageBody)
