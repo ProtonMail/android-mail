@@ -26,6 +26,8 @@ internal sealed class Destination {
     object Inbox : Destination()
     object Drafts : Destination()
     object Archive : Destination()
+    object Spam : Destination()
+    object Trash : Destination()
     object Composer : Destination()
     class MailDetail(val messagePosition: Int = 0) : Destination()
     class EditDraft(val draftPosition: Int = 0) : Destination()

@@ -82,6 +82,16 @@ internal class Navigator {
                 openArchive()
             }
 
+            is Destination.Spam -> menuRobot {
+                swipeOpenSidebarMenu()
+                openSpam()
+            }
+
+            is Destination.Trash -> menuRobot {
+                swipeOpenSidebarMenu()
+                openTrash()
+            }
+
             is Destination.Composer -> mailboxRobot {
                 topAppBarSection { tapComposerIcon() }
             }

@@ -15,7 +15,7 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
     <!-- Mailbox -->
     <string name="test_label_title_inbox">Inbox</string>
@@ -46,6 +46,7 @@
     <string name="test_message_body_embedded_images_banner_text">Automatic loading of embedded images is turned off. This can be changed in the settings.</string>
     <string name="test_message_body_remote_content_banner_text">Automatic loading of remote content is turned off. This can be changed in the settings.</string>
     <string name="test_message_body_embedded_and_remote_content_banner_text">Automatic loading of embedded images and remote content is turned off. These can be changed in the settings.</string>
+
     <!-- Composer -->
     <string name="test_composer_sender_label">From:</string>
     <string name="test_composer_to_recipient_label">To:</string>
@@ -58,6 +59,19 @@
     <string name="test_composer_change_sender_paid_feature">Upgrade to a paid plan to change the sender address</string>
     <string name="test_composer_error_loading_draft">The content of this draft is not available at this time. Editing will override any pre-existing content.</string>
     <string name="test_mailbox_attachment_uploading_error">Error uploading attachment</string>
+
+    <!-- Bottom bar -->
+    <string name="test_action_mark_read_content_description">Mark read</string>
+    <string name="test_action_mark_unread_content_description">Mark unread</string>
+    <string name="test_action_star_content_description">Star</string>
+    <string name="test_action_unstar_content_description">Unstar</string>
+    <string name="test_action_label_content_description">Label as</string>
+    <string name="test_action_move_content_description">Move to</string>
+    <string name="test_action_trash_content_description">Trash</string>
+    <string name="test_action_delete_content_description">Delete</string>
+    <string name="test_action_archive_content_description">Archive</string>
+    <string name="test_action_spam_content_description">Spam</string>
+    <string name="test_action_more_content_description">More</string>
 
     <!-- Bottom sheets -->
     <string name="test_bottom_sheet_done_action">Done</string>

@@ -69,6 +69,10 @@ internal class MailboxListItemEntryModel(
         hasTestTag(AvatarTestTags.AvatarDraft)
     }
 
+    private val avatarSelected = avatarRootItem.child {
+        hasTestTag(AvatarTestTags.AvatarSelectionMode)
+    }
+
     private val locations = item.child {
         hasTestTag(MailboxItemTestTags.LocationIcons)
     }
@@ -96,6 +100,14 @@ internal class MailboxListItemEntryModel(
     // region actions
     fun click() = apply {
         item.performClick()
+    }
+
+    fun selectEntry() = apply {
+        avatar.performClick()
+    }
+
+    fun unselectEntry() = apply {
+        avatarSelected.performClick()
     }
     // endregion
 

@@ -41,10 +41,16 @@ internal class MailboxListSection : ComposeSectionRobot(), RefreshableSection {
         messagesList.performTouchInput { swipeDown() }
     }
 
-    fun clickMessageByPosition(position: Int) = apply {
-        val model = MailboxListItemEntryModel(position)
+    fun selectItemAtPosition(position: Int) = onListItemEntryModel(position) {
+        selectEntry()
+    }
 
-        model.click()
+    fun unselectItemAtPosition(position: Int) = onListItemEntryModel(position) {
+        unselectEntry()
+    }
+
+    fun clickMessageByPosition(position: Int) = onListItemEntryModel(position) {
+        click()
     }
 
     fun scrollToItemAtIndex(index: Int) {
@@ -64,29 +70,28 @@ internal class MailboxListSection : ComposeSectionRobot(), RefreshableSection {
 
         fun listItemsAreShown(vararg mailboxItemEntries: MailboxListItemEntry) {
             for (entry in mailboxItemEntries) {
-                val model = MailboxListItemEntryModel(entry.index)
+                onListItemEntryModel(entry.index) {
+                    hasAvatar(entry.avatarInitial)
+                        .hasParticipants(entry.participants)
+                        .hasSubject(entry.subject)
+                        .hasDate(entry.date)
 
-                model.hasAvatar(entry.avatarInitial)
-                    .hasParticipants(entry.participants)
-                    .hasSubject(entry.subject)
-                    .hasDate(entry.date)
-
-                entry.locationIcons?.let { model.hasLocationIcons(it) } ?: model.hasNoLocationIcons()
-                entry.labels?.let { model.hasLabels(it) } ?: model.hasNoLabels()
-                entry.count?.let { model.hasCount(it) } ?: model.hasNoCount()
+                    entry.locationIcons?.let { hasLocationIcons(it) } ?: hasNoLocationIcons()
+                    entry.labels?.let { hasLabels(it) } ?: hasNoLabels()
+                    entry.count?.let { hasCount(it) } ?: hasNoCount()
+                }
             }
         }
 
-        fun unreadItemAtPosition(position: Int) {
-            val model = MailboxListItemEntryModel(position)
-
-            model.assertUnread()
+        fun unreadItemAtPosition(position: Int) = onListItemEntryModel(position) {
+            assertUnread()
         }
 
-        fun readItemAtPosition(position: Int) {
-            val model = MailboxListItemEntryModel(position)
-
-            model.assertRead()
+        fun readItemAtPosition(position: Int) = onListItemEntryModel(position) {
+            assertRead()
         }
     }
+
+    private fun onListItemEntryModel(position: Int, block: MailboxListItemEntryModel.() -> Unit) =
+        block(MailboxListItemEntryModel(position))
 }
