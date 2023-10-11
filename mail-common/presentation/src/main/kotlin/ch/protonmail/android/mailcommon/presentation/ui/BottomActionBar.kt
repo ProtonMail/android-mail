@@ -33,6 +33,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -56,8 +57,11 @@ fun BottomActionBar(
     modifier: Modifier = Modifier
 ) {
     if (state is BottomBarState.Data.Hidden) return
-    Column(modifier = modifier.background(ProtonTheme.colors.backgroundNorm)) {
-
+    Column(
+        modifier = modifier
+            .testTag(BottomActionBarTestTags.RootItem)
+            .background(ProtonTheme.colors.backgroundNorm)
+    ) {
         Divider(color = ProtonTheme.colors.separatorNorm, thickness = MailDimens.SeparatorHeight)
 
         Row(
@@ -82,6 +86,7 @@ fun BottomActionBar(
                             return@forEachIndexed
                         }
                         BottomBarIcon(
+                            modifier = Modifier.testTag("${BottomActionBarTestTags.Button}$index"),
                             iconId = uiModel.icon,
                             descriptionId = uiModel.description,
                             onClick = callbackForAction(uiModel.action, viewActionCallbacks)
@@ -127,12 +132,13 @@ private fun Int.exceedsMaxActionsShowed() = this > BottomActionBar.MAX_ACTIONS_C
 
 @Composable
 private fun BottomBarIcon(
+    modifier: Modifier = Modifier,
     @DrawableRes iconId: Int,
     @StringRes descriptionId: Int,
     onClick: () -> Unit
 ) {
     IconButton(
-        modifier = Modifier.size(ProtonDimens.DefaultIconSize),
+        modifier = modifier.size(ProtonDimens.DefaultIconSize),
         onClick = onClick
     ) {
         Icon(
@@ -208,4 +214,10 @@ private fun BottomActionPreview(@PreviewParameter(BottomActionBarPreviewProvider
     ProtonTheme {
         BottomActionBar(state = state, viewActionCallbacks = BottomActionBar.Actions.Empty)
     }
+}
+
+object BottomActionBarTestTags {
+
+    const val RootItem = "BottomActionBarRootItem"
+    const val Button = "BottomActionBarIcon"
 }
