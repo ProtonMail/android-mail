@@ -100,6 +100,7 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import me.proton.core.domain.entity.UserId
 import me.proton.core.featureflag.domain.entity.FeatureFlag
 import me.proton.core.mailsettings.domain.entity.ViewMode.ConversationGrouping
 import me.proton.core.mailsettings.domain.entity.ViewMode.NoConversationGrouping
@@ -1413,6 +1414,39 @@ class MailboxViewModelTest {
                 markConversationsAsUnread(userId, listOf(ConversationId(item.id)))
                 markConversationsAsUnread(userId1, listOf(ConversationId(secondItem.id)))
             }
+        }
+    }
+
+    @Test
+    fun `mailbox items are not requested when a user account is removed`() = runTest {
+        // Given
+        val currentLocationFlow = MutableStateFlow<MailLabelId>(initialLocationMailLabelId)
+        val initialMailboxState = createMailboxDataState()
+        val expectedState = createMailboxDataState()
+        val userIds = listOf(userId)
+        val primaryUserFlow = MutableStateFlow<UserId?>(userId)
+        coEvery {
+            observeCurrentViewMode(userId = userId, initialLocationMailLabelId)
+        } returns flowOf(ConversationGrouping)
+        every { observePrimaryUserId.invoke() } returns primaryUserFlow
+        every { selectedMailLabelId.flow } returns currentLocationFlow
+        every { pagerFactory.create(userIds, any(), false, Conversation) } returns mockk mockPager@{
+            every { this@mockPager.flow } returns flowOf(PagingData.from(listOf(unreadMailboxItem)))
+        }
+        every { mailboxReducer.newStateFrom(any(), any()) } returns initialMailboxState
+        returnExpectedStateForBottomBarEvent(expectedState = expectedState)
+
+        mailboxViewModel.items.test {
+            // Then
+            awaitItem()
+            verify { pagerFactory.create(userIds, initialLocationMailLabelId, false, Conversation) }
+
+            // When
+            primaryUserFlow.emit(null)
+
+            // Then
+            verify(exactly = 0) { pagerFactory.create(userIds, initialLocationMailLabelId, false, Message) }
+            cancelAndIgnoreRemainingEvents()
         }
     }
 

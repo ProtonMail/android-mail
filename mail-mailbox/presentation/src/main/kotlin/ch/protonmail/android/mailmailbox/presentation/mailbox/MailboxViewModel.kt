@@ -334,12 +334,8 @@ class MailboxViewModel @Inject constructor(
         }
     }
 
-    private fun observeViewModeByLocation(): Flow<ViewMode> = primaryUserId.flatMapLatest { userId ->
-        if (userId == null) {
-            flowOf(ObserveCurrentViewMode.DefaultViewMode)
-        } else {
-            selectedMailLabelId.flow.flatMapLatest { observeCurrentViewMode(userId, it) }.distinctUntilChanged()
-        }
+    private fun observeViewModeByLocation(): Flow<ViewMode> = primaryUserId.filterNotNull().flatMapLatest { userId ->
+        selectedMailLabelId.flow.flatMapLatest { observeCurrentViewMode(userId, it) }.distinctUntilChanged()
     }
 
     private fun observeMailLabels() = primaryUserId.flatMapLatest { userId ->

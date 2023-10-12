@@ -23,6 +23,7 @@ import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailSettings
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.mapLatest
 import me.proton.core.domain.entity.UserId
@@ -45,7 +46,8 @@ class ObserveCurrentViewMode @Inject constructor(
         else invoke(userId)
 
     operator fun invoke(userId: UserId): Flow<ViewMode> = observeMailSettings(userId)
-        .mapLatest { it?.viewMode?.enum ?: DefaultViewMode }
+        .filterNotNull()
+        .mapLatest { it.viewMode?.enum ?: DefaultViewMode }
         .distinctUntilChanged()
 
     companion object {
