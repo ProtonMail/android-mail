@@ -19,63 +19,78 @@
 package ch.protonmail.android.feature.account
 
 import app.cash.turbine.test
+import ch.protonmail.android.mailcommon.data.worker.Enqueuer
+import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import ch.protonmail.android.testdata.user.UserIdTestData
+import io.mockk.Runs
 import io.mockk.coVerify
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.take
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.test.kotlin.TestDispatcherProvider
-import org.junit.After
-import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import kotlin.test.assertEquals
 
 class RemoveAccountViewModelTest {
 
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule(TestDispatcherProvider().Main)
+
     private val accountManager = mockk<AccountManager>(relaxUnitFun = true) {
-        every { this@mockk.getPrimaryUserId() } returns flowOf(UserIdTestData.userId)
+        every { this@mockk.getPrimaryUserId() } returns flowOf(UserIdTestData.Primary)
     }
+    private val enqueuer = mockk<Enqueuer>()
 
-    lateinit var viewModel: RemoveAccountViewModel
-
-    @Before
-    fun setUp() {
-        Dispatchers.setMain(TestDispatcherProvider().Main)
-        viewModel = RemoveAccountViewModel(
-            accountManager
-        )
-    }
-
-    @After
-    fun tearDown() {
-        Dispatchers.resetMain()
-    }
+    private val viewModel = RemoveAccountViewModel(accountManager, enqueuer)
 
     @Test
     fun `when initialized emits Initial state`() = runTest {
-        // WHEN
+        // When
         val actual = viewModel.state.take(1).first()
-        // THEN
+
+        // Then
         assertEquals(RemoveAccountViewModel.State.Initial, actual)
     }
 
     @Test
-    fun `when signout emits SigningOut and then SignedOut when completed`() = runTest {
-        // WHEN
+    fun `when remove is called emits Removing and then Removed when completed`() = runTest {
+        // Given
+        every { enqueuer.cancelAllWork(UserIdTestData.Primary) } just Runs
+
+        // When
         viewModel.remove()
-        // THEN
+
+        // Then
         viewModel.state.test {
             assertEquals(RemoveAccountViewModel.State.Initial, awaitItem())
             assertEquals(RemoveAccountViewModel.State.Removing, awaitItem())
             assertEquals(RemoveAccountViewModel.State.Removed, awaitItem())
             coVerify { accountManager.removeAccount(any()) }
+        }
+    }
+
+    @Test
+    fun `when remove is called cancel all work related to this user`() = runTest {
+        // Given
+        val userId = UserIdTestData.userId
+        every { enqueuer.cancelAllWork(userId) } just Runs
+
+        // When
+        viewModel.remove(userId)
+
+        // Then
+        viewModel.state.test {
+            assertEquals(RemoveAccountViewModel.State.Initial, awaitItem())
+            assertEquals(RemoveAccountViewModel.State.Removing, awaitItem())
+            coVerify { enqueuer.cancelAllWork(userId) }
+            coVerify { accountManager.removeAccount(any()) }
+            assertEquals(RemoveAccountViewModel.State.Removed, awaitItem())
         }
     }
 }

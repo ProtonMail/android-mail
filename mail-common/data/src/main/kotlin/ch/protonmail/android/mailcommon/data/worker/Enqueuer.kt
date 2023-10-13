@@ -25,6 +25,7 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import androidx.work.workDataOf
+import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 class Enqueuer @Inject constructor(private val workManager: WorkManager) {
@@ -128,6 +129,10 @@ class Enqueuer @Inject constructor(private val workManager: WorkManager) {
             .then(createRequest(worker2, params2, constraints))
             .then(createRequest(worker3, params3, constraints))
             .enqueue()
+    }
+
+    fun cancelAllWork(userId: UserId) {
+        workManager.cancelAllWorkByTag(userId.id)
     }
 
     fun enqueueUniqueWork(

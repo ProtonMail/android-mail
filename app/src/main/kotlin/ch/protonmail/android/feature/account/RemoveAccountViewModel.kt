@@ -23,6 +23,7 @@ import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.feature.account.RemoveAccountViewModel.State.Initial
 import ch.protonmail.android.feature.account.RemoveAccountViewModel.State.Removed
 import ch.protonmail.android.feature.account.RemoveAccountViewModel.State.Removing
+import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -34,7 +35,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RemoveAccountViewModel @Inject constructor(
-    val accountManager: AccountManager
+    private val accountManager: AccountManager,
+    private val enqueuer: Enqueuer
 ) : ViewModel() {
 
     private val mutableState = MutableStateFlow<State>(Initial)
@@ -43,7 +45,11 @@ class RemoveAccountViewModel @Inject constructor(
 
     fun remove(userId: UserId? = null) = viewModelScope.launch {
         mutableState.emit(Removing)
-        accountManager.removeAccount(requireNotNull(userId ?: getPrimaryUserIdOrNull()))
+
+        val resolvedUserId = requireNotNull(userId ?: getPrimaryUserIdOrNull())
+        enqueuer.cancelAllWork(resolvedUserId)
+        accountManager.removeAccount(resolvedUserId)
+
         mutableState.emit(Removed)
     }
 

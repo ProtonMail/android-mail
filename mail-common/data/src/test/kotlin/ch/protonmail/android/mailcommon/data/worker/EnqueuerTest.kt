@@ -22,11 +22,13 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.ListenableWorker
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
+import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
 import kotlinx.coroutines.test.runTest
+import me.proton.core.domain.entity.UserId
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -67,6 +69,23 @@ class EnqueuerTest {
         val workPolicySlot = slot<ExistingWorkPolicy>()
         coVerify { workManager.enqueueUniqueWork(workId, capture(workPolicySlot), any<OneTimeWorkRequest>()) }
         assertEquals(existingWorkPolicy, workPolicySlot.captured)
+    }
+
+    @Test
+    fun `cancel all work cancels work by tag for the given user Id`() = runTest {
+        // Given
+        val userId = UserIdSample.Primary
+        givenCancelWorkSucceeds(userId)
+
+        // When
+        enqueuer.cancelAllWork(userId)
+
+        // Then
+        coVerify { workManager.cancelAllWorkByTag(userId.id) }
+    }
+
+    private fun givenCancelWorkSucceeds(userId: UserId) {
+        every { workManager.cancelAllWorkByTag(userId.id) } returns mockk()
     }
 
     private fun givenEnqueueWorkSucceeds(workId: String, existingWorkPolicy: ExistingWorkPolicy) {
