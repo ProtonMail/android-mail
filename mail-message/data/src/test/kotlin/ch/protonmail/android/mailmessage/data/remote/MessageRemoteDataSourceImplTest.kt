@@ -77,7 +77,7 @@ class MessageRemoteDataSourceImplTest {
     }
 
     private val enqueuer: Enqueuer = mockk {
-        every { this@mockk.enqueue(any(), any()) } returns mockk()
+        every { this@mockk.enqueue(userId, any(), any()) } returns mockk()
     }
 
     private val apiProvider = ApiProvider(
@@ -273,6 +273,7 @@ class MessageRemoteDataSourceImplTest {
         // Then
         verify {
             enqueuer.enqueue<AddLabelMessageWorker>(
+                userId,
                 AddLabelMessageWorker.params(
                     userId,
                     listOf(messageId, messageId2),
@@ -294,11 +295,13 @@ class MessageRemoteDataSourceImplTest {
             // Then
             verifySequence {
                 enqueuer.enqueue<AddLabelMessageWorker>(
+                    userId,
                     AddLabelMessageWorker.params(
                         userId, messageIds.take(MAX_ACTION_WORKER_PARAMETER_COUNT), LabelId("10")
                     )
                 )
                 enqueuer.enqueue<AddLabelMessageWorker>(
+                    userId,
                     AddLabelMessageWorker.params(
                         userId, messageIds.drop(MAX_ACTION_WORKER_PARAMETER_COUNT), LabelId("10")
                     )
@@ -317,11 +320,13 @@ class MessageRemoteDataSourceImplTest {
         // Then
         verify {
             enqueuer.enqueue<AddLabelMessageWorker>(
+                userId,
                 AddLabelMessageWorker.params(userId, listOf(messageId), labelId)
             )
         }
         verify {
             enqueuer.enqueue<AddLabelMessageWorker>(
+                userId,
                 AddLabelMessageWorker.params(userId, listOf(messageId), labelId2)
             )
         }
@@ -337,6 +342,7 @@ class MessageRemoteDataSourceImplTest {
         // Then
         verify {
             enqueuer.enqueue<RemoveLabelMessageWorker>(
+                userId,
                 RemoveLabelMessageWorker.params(userId, listOf(messageId), labelId)
             )
         }
@@ -353,9 +359,11 @@ class MessageRemoteDataSourceImplTest {
         // Then
         verifySequence {
             enqueuer.enqueue<RemoveLabelMessageWorker>(
+                userId,
                 RemoveLabelMessageWorker.params(userId, listOf(messageId), labelId)
             )
             enqueuer.enqueue<RemoveLabelMessageWorker>(
+                userId,
                 RemoveLabelMessageWorker.params(userId, listOf(messageId), labelId2)
             )
         }
@@ -370,7 +378,9 @@ class MessageRemoteDataSourceImplTest {
         messageRemoteDataSource.markUnread(userId, messageId)
 
         // then
-        verify { enqueuer.enqueue<MarkMessageAsUnreadWorker>(MarkMessageAsUnreadWorker.params(userId, messageId)) }
+        verify {
+            enqueuer.enqueue<MarkMessageAsUnreadWorker>(userId, MarkMessageAsUnreadWorker.params(userId, messageId))
+        }
     }
 
     @Test
@@ -384,9 +394,11 @@ class MessageRemoteDataSourceImplTest {
         // Then
         verifySequence {
             enqueuer.enqueue<MarkMessageAsUnreadWorker>(
+                userId,
                 MarkMessageAsUnreadWorker.params(userId, messageIds.take(MAX_ACTION_WORKER_PARAMETER_COUNT))
             )
             enqueuer.enqueue<MarkMessageAsUnreadWorker>(
+                userId,
                 MarkMessageAsUnreadWorker.params(userId, messageIds.drop(MAX_ACTION_WORKER_PARAMETER_COUNT))
             )
         }
@@ -401,7 +413,9 @@ class MessageRemoteDataSourceImplTest {
         messageRemoteDataSource.markRead(userId, messageId)
 
         // then
-        verify { enqueuer.enqueue<MarkMessageAsReadWorker>(MarkMessageAsReadWorker.params(userId, messageId)) }
+        verify {
+            enqueuer.enqueue<MarkMessageAsReadWorker>(userId, MarkMessageAsReadWorker.params(userId, messageId))
+        }
     }
 
     @Test
@@ -415,9 +429,11 @@ class MessageRemoteDataSourceImplTest {
         // Then
         verifySequence {
             enqueuer.enqueue<MarkMessageAsReadWorker>(
+                userId,
                 MarkMessageAsReadWorker.params(userId, messageIds.take(MAX_ACTION_WORKER_PARAMETER_COUNT))
             )
             enqueuer.enqueue<MarkMessageAsReadWorker>(
+                userId,
                 MarkMessageAsReadWorker.params(userId, messageIds.drop(MAX_ACTION_WORKER_PARAMETER_COUNT))
             )
         }

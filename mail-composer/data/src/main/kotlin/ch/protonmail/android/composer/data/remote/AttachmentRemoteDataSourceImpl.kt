@@ -74,6 +74,7 @@ class AttachmentRemoteDataSourceImpl @Inject constructor(
 
     override fun deleteAttachmentFromDraft(userId: UserId, attachmentId: AttachmentId) {
         enqueuer.enqueueUniqueWork<DeleteAttachmentWorker>(
+            userId = userId,
             workerId = attachmentId.id,
             params = DeleteAttachmentWorker.params(userId, attachmentId)
         )

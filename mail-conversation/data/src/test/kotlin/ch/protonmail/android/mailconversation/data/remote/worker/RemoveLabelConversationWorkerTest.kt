@@ -97,6 +97,7 @@ internal class RemoveLabelConversationWorkerTest {
     fun `worker is enqueued with given parameters`() {
         // When
         Enqueuer(workManager).enqueue<RemoveLabelConversationWorker>(
+            userId,
             RemoveLabelConversationWorker.params(
                 userId,
                 conversationIds,

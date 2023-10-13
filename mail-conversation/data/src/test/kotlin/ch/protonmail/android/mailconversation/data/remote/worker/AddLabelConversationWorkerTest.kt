@@ -97,6 +97,7 @@ internal class AddLabelConversationWorkerTest {
     fun `worker is enqueued with given parameters`() {
         // When
         Enqueuer(workManager).enqueue<AddLabelConversationWorker>(
+            userId,
             AddLabelConversationWorker.params(
                 userId,
                 conversationIds,

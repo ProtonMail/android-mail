@@ -68,6 +68,7 @@ class AttachmentRemoteDataSourceImplTest {
     private val enqueuer: Enqueuer = mockk {
         every {
             this@mockk.enqueueUniqueWork<DeleteAttachmentWorker>(
+                userId = userId,
                 workerId = attachmentId.id,
                 params = DeleteAttachmentWorker.params(userId, attachmentId)
             )
@@ -148,6 +149,7 @@ class AttachmentRemoteDataSourceImplTest {
         // Then
         coVerify {
             enqueuer.enqueueUniqueWork<DeleteAttachmentWorker>(
+                userId = userId,
                 workerId = attachmentId.id,
                 params = DeleteAttachmentWorker.params(userId, attachmentId)
             )

@@ -90,6 +90,7 @@ internal class MarkMessageAsReadWorkerTest {
 
         // when
         Enqueuer(workManager).enqueue<MarkMessageAsReadWorker>(
+            userId,
             MarkMessageAsReadWorker.params(userId, listOf(messageId))
         )
 
@@ -103,6 +104,7 @@ internal class MarkMessageAsReadWorkerTest {
     fun `worker is enqueued with correct parameters`() {
         // when
         Enqueuer(workManager).enqueue<MarkMessageAsReadWorker>(
+            userId,
             MarkMessageAsReadWorker.params(userId, listOf(messageId))
         )
 

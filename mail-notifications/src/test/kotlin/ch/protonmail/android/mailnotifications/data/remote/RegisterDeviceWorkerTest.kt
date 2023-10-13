@@ -85,9 +85,7 @@ internal class RegisterDeviceWorkerTest {
         val expectedNetworkType = NetworkType.CONNECTED
 
         // when
-        Enqueuer(workManager).enqueue<RegisterDeviceWorker>(
-            RegisterDeviceWorker.params(userId, token)
-        )
+        Enqueuer(workManager).enqueue<RegisterDeviceWorker>(userId, RegisterDeviceWorker.params(userId, token))
 
         // then
         val requestSlot = slot<OneTimeWorkRequest>()

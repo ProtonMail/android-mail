@@ -28,6 +28,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.test.runTest
+import me.proton.core.domain.entity.UserId
 import kotlin.test.Test
 
 class DraftRepositoryImplTest {
@@ -44,7 +45,7 @@ class DraftRepositoryImplTest {
         val expectedParams = UploadDraftWorker.params(userId, messageId)
         val expectedWorkerId = UploadDraftWorker.id(messageId)
         val expectedWorkPolicy = ExistingWorkPolicy.KEEP
-        givenEnqueuerSucceeds(expectedWorkerId, expectedParams, expectedWorkPolicy)
+        givenEnqueuerSucceeds(userId, expectedWorkerId, expectedParams, expectedWorkPolicy)
 
         // When
         draftRepository.upload(userId, messageId)
@@ -52,6 +53,7 @@ class DraftRepositoryImplTest {
         // Then
         verify {
             enqueuer.enqueueUniqueWork<UploadDraftWorker>(
+                userId,
                 workerId = expectedWorkerId,
                 params = expectedParams,
                 existingWorkPolicy = expectedWorkPolicy
@@ -70,6 +72,7 @@ class DraftRepositoryImplTest {
         // This work should happen independently on the outcome of the previous one
         val expectedWorkPolicy = ExistingWorkPolicy.APPEND_OR_REPLACE
         givenChainEnqueuerSucceeds(
+            userId = userId,
             workId = expectedWorkerId,
             expectedParams1 = expectedParamsDraftWorker,
             expectedParams2 = expectedParamsAttachmentsWorker,
@@ -82,6 +85,7 @@ class DraftRepositoryImplTest {
         // Then
         verify {
             enqueuer.enqueueInChain<UploadDraftWorker, UploadAttachmentsWorker>(
+                userId = userId,
                 uniqueWorkId = expectedWorkerId,
                 params1 = expectedParamsDraftWorker,
                 params2 = expectedParamsAttachmentsWorker,
@@ -91,12 +95,14 @@ class DraftRepositoryImplTest {
     }
 
     private fun givenEnqueuerSucceeds(
+        userId: UserId,
         workId: String,
         expectedParams: Map<String, String>,
         existingWorkPolicy: ExistingWorkPolicy
     ) {
         every {
             enqueuer.enqueueUniqueWork<UploadDraftWorker>(
+                userId = userId,
                 workerId = workId,
                 params = expectedParams,
                 existingWorkPolicy = existingWorkPolicy
@@ -105,6 +111,7 @@ class DraftRepositoryImplTest {
     }
 
     private fun givenChainEnqueuerSucceeds(
+        userId: UserId,
         workId: String,
         expectedParams1: Map<String, String>,
         expectedParams2: Map<String, String>,
@@ -112,6 +119,7 @@ class DraftRepositoryImplTest {
     ) {
         every {
             enqueuer.enqueueInChain<UploadDraftWorker, UploadAttachmentsWorker>(
+                userId = userId,
                 uniqueWorkId = workId,
                 params1 = expectedParams1,
                 params2 = expectedParams2,

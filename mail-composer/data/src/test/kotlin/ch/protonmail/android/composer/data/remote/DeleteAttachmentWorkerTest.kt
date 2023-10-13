@@ -89,6 +89,7 @@ class DeleteAttachmentWorkerTest {
     fun `worker is enqueued with given parameters`() {
         // When
         Enqueuer(workerManager).enqueue<DeleteAttachmentWorker>(
+            userId,
             DeleteAttachmentWorker.params(
                 userId,
                 attachmentId

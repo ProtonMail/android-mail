@@ -37,7 +37,7 @@ internal class NotificationTokenRemoteDataSourceImpl @Inject constructor(
     override suspend fun fetchToken() = fetchFirebaseToken()
 
     override suspend fun bindTokenToUser(userId: UserId, token: String) {
-        enqueuer.enqueue<RegisterDeviceWorker>(RegisterDeviceWorker.params(userId, token))
+        enqueuer.enqueue<RegisterDeviceWorker>(userId, RegisterDeviceWorker.params(userId, token))
     }
 
     private suspend fun fetchFirebaseToken(): Either<DataError.Remote, String> {

@@ -101,6 +101,7 @@ class RemoveLabelMessageWorkerTest {
     fun `worker is enqueued with given parameters`() {
         // When
         Enqueuer(workManager).enqueue<RemoveLabelMessageWorker>(
+            userId,
             RemoveLabelMessageWorker.params(
                 userId,
                 listOf(messageId),

@@ -40,6 +40,7 @@ class MessageRepositoryImpl @Inject constructor(
         Timber.d("MessageRepository send $messageId")
 
         enqueuer.enqueueInChain<UploadDraftWorker, UploadAttachmentsWorker, SendMessageWorker>(
+            userId = userId,
             uniqueWorkId = UploadDraftWorker.id(messageId),
             params1 = UploadDraftWorker.params(userId, messageId),
             params2 = UploadAttachmentsWorker.params(userId, messageId),

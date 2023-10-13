@@ -36,6 +36,7 @@ class DraftRepositoryImpl @Inject constructor(
         val uniqueWorkId = UploadDraftWorker.id(messageId)
 
         enqueuer.enqueueUniqueWork<UploadDraftWorker>(
+            userId = userId,
             workerId = uniqueWorkId,
             params = UploadDraftWorker.params(userId, messageId),
             existingWorkPolicy = ExistingWorkPolicy.KEEP
@@ -47,6 +48,7 @@ class DraftRepositoryImpl @Inject constructor(
         val uniqueWorkId = UploadDraftWorker.id(messageId)
 
         enqueuer.enqueueInChain<UploadDraftWorker, UploadAttachmentsWorker>(
+            userId = userId,
             uniqueWorkId = uniqueWorkId,
             params1 = UploadDraftWorker.params(userId, messageId),
             params2 = UploadAttachmentsWorker.params(userId, messageId),

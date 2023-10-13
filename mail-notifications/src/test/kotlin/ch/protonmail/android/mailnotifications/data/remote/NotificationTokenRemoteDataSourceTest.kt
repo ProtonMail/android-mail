@@ -40,7 +40,7 @@ internal class NotificationTokenRemoteDataSourceTest {
 
         // Then
         coVerify(exactly = 1) {
-            enqueuer.enqueue<RegisterDeviceWorker>(RegisterDeviceWorker.params(userId, token))
+            enqueuer.enqueue<RegisterDeviceWorker>(userId, RegisterDeviceWorker.params(userId, token))
         }
     }
 }

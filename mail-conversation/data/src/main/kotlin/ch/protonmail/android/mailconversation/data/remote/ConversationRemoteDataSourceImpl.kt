@@ -100,6 +100,7 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
         conversationIds.chunked(MAX_CONVERSATION_IDS_API_LIMIT).forEach { conversationIdsChunk ->
             labelIds.forEach { labelId ->
                 enqueuer.enqueue<AddLabelConversationWorker>(
+                    userId,
                     AddLabelConversationWorker.params(
                         userId = userId,
                         conversationIds = conversationIdsChunk,
@@ -126,6 +127,7 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
         conversationIds.chunked(MAX_CONVERSATION_IDS_API_LIMIT).forEach { conversationIdsChunk ->
             labelIds.forEach { labelId ->
                 enqueuer.enqueue<RemoveLabelConversationWorker>(
+                    userId,
                     RemoveLabelConversationWorker.params(
                         userId = userId,
                         conversationIds = conversationIdsChunk,
@@ -143,6 +145,7 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
     ) {
         conversationIds.chunked(MAX_CONVERSATION_IDS_API_LIMIT).forEach { conversationIdsChunk ->
             enqueuer.enqueue<MarkConversationAsUnreadWorker>(
+                userId,
                 MarkConversationAsUnreadWorker.params(
                     userId,
                     conversationIdsChunk,
@@ -155,6 +158,7 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
     override suspend fun markRead(userId: UserId, conversationIds: List<ConversationId>) {
         conversationIds.chunked(MAX_CONVERSATION_IDS_API_LIMIT).forEach { conversationIdsChunk ->
             enqueuer.enqueue<MarkConversationAsReadWorker>(
+                userId,
                 MarkConversationAsReadWorker.params(
                     userId,
                     conversationIdsChunk

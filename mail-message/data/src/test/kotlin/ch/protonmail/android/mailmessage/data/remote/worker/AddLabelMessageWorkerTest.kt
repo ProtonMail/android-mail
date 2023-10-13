@@ -98,6 +98,7 @@ internal class AddLabelMessageWorkerTest {
     fun `worker is enqueued with given parameters`() {
         // When
         Enqueuer(workManager).enqueue<AddLabelMessageWorker>(
+            userId,
             AddLabelMessageWorker.params(
                 userId,
                 listOf(messageId),

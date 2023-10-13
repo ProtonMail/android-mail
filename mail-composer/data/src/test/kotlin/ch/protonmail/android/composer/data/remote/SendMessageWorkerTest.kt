@@ -77,7 +77,7 @@ class SendMessageWorkerTest {
         givenInputData(userId, messageId)
 
         // When
-        Enqueuer(workManager).enqueue<SendMessageWorker>(SendMessageWorker.params(userId, messageId))
+        Enqueuer(workManager).enqueue<SendMessageWorker>(userId, SendMessageWorker.params(userId, messageId))
 
         // Then
         val requestSlot = slot<OneTimeWorkRequest>()

@@ -64,7 +64,7 @@ class UploadDraftWorkerTest {
         givenInputData(userId, messageId)
 
         // When
-        Enqueuer(workManager).enqueue<UploadDraftWorker>(UploadDraftWorker.params(userId, messageId))
+        Enqueuer(workManager).enqueue<UploadDraftWorker>(userId, UploadDraftWorker.params(userId, messageId))
 
         // Then
         val requestSlot = slot<OneTimeWorkRequest>()

@@ -90,6 +90,7 @@ internal class MarkMessageAsUnreadWorkerTest {
 
         // when
         Enqueuer(workManager).enqueue<MarkMessageAsUnreadWorker>(
+            userId,
             MarkMessageAsUnreadWorker.params(userId, listOf(messageId))
         )
 
@@ -103,6 +104,7 @@ internal class MarkMessageAsUnreadWorkerTest {
     fun `worker is enqueued with correct parameters`() {
         // when
         Enqueuer(workManager).enqueue<MarkMessageAsUnreadWorker>(
+            userId,
             MarkMessageAsUnreadWorker.params(
                 userId,
                 listOf(messageId)

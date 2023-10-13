@@ -30,6 +30,7 @@ import io.mockk.slot
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import kotlin.test.Test
+import kotlin.test.assertContains
 import kotlin.test.assertEquals
 
 class EnqueuerTest {
@@ -43,10 +44,10 @@ class EnqueuerTest {
         // Given
         val workId = "SyncDraftWork-test-message-id"
         val params = mapOf("messageId" to "test-message-id")
-        givenEnqueueWorkSucceeds(workId, ExistingWorkPolicy.KEEP)
+        givenEnqueueUniqueWorkSucceeds(workId, ExistingWorkPolicy.KEEP)
 
         // When
-        enqueuer.enqueueUniqueWork<ListenableWorker>(workId, params)
+        enqueuer.enqueueUniqueWork<ListenableWorker>(TestData.UserId, workId, params)
 
         // Then
         val workPolicySlot = slot<ExistingWorkPolicy>()
@@ -60,15 +61,83 @@ class EnqueuerTest {
         val workId = "SyncDraftWork-test-message-id"
         val params = mapOf("messageId" to "test-message-id")
         val existingWorkPolicy = ExistingWorkPolicy.APPEND
-        givenEnqueueWorkSucceeds(workId, existingWorkPolicy)
+        givenEnqueueUniqueWorkSucceeds(workId, existingWorkPolicy)
 
         // When
-        enqueuer.enqueueUniqueWork<ListenableWorker>(workId, params, existingWorkPolicy = existingWorkPolicy)
+        enqueuer.enqueueUniqueWork<ListenableWorker>(
+            TestData.UserId,
+            workId,
+            params,
+            existingWorkPolicy = existingWorkPolicy
+        )
 
         // Then
         val workPolicySlot = slot<ExistingWorkPolicy>()
         coVerify { workManager.enqueueUniqueWork(workId, capture(workPolicySlot), any<OneTimeWorkRequest>()) }
         assertEquals(existingWorkPolicy, workPolicySlot.captured)
+    }
+
+    @Test
+    fun `enqueue tags work with userId`() = runTest {
+        // Given
+        val params = mapOf("messageId" to "test-message-id")
+        givenEnqueueWorkSucceeds()
+
+        // When
+        enqueuer.enqueue<ListenableWorker>(TestData.UserId, params)
+
+        // Then
+        val workRequestSlot = slot<OneTimeWorkRequest>()
+        coVerify { workManager.enqueue(capture(workRequestSlot)) }
+        assertContains(workRequestSlot.captured.tags, TestData.UserId.id)
+    }
+
+    @Test
+    fun `enqueue unique work tags work with userId`() = runTest {
+        // Given
+        val workId = "SyncDraftWork-test-message-id"
+        val params = mapOf("messageId" to "test-message-id")
+        val existingWorkPolicy = ExistingWorkPolicy.APPEND
+        givenEnqueueUniqueWorkSucceeds(workId, existingWorkPolicy)
+
+        // When
+        enqueuer.enqueueUniqueWork<ListenableWorker>(
+            TestData.UserId,
+            workId,
+            params,
+            existingWorkPolicy = existingWorkPolicy
+        )
+
+
+        // Then
+        val workRequestSlot = slot<OneTimeWorkRequest>()
+        coVerify { workManager.enqueueUniqueWork(workId, existingWorkPolicy, capture(workRequestSlot)) }
+        assertContains(workRequestSlot.captured.tags, TestData.UserId.id)
+    }
+
+    @Test
+    fun `enqueue in chain tags work with userId`() = runTest {
+        // Given
+        val workId = "SyncDraftWork-test-message-id"
+        val params1 = mapOf("messageId" to "test-message-id")
+        val params2 = mapOf("messageId" to "test-message-id")
+        val existingWorkPolicy = ExistingWorkPolicy.APPEND
+        givenEnqueueWorkInChainSucceeds(workId, existingWorkPolicy)
+
+        // When
+        enqueuer.enqueueInChain<ListenableWorker, ListenableWorker>(
+            TestData.UserId,
+            workId,
+            params1,
+            params2,
+            existingWorkPolicy = existingWorkPolicy
+        )
+
+
+        // Then
+        val work1RequestSlot = slot<OneTimeWorkRequest>()
+        coVerify { workManager.beginUniqueWork(workId, existingWorkPolicy, capture(work1RequestSlot)) }
+        assertContains(work1RequestSlot.captured.tags, TestData.UserId.id)
     }
 
     @Test
@@ -88,10 +157,30 @@ class EnqueuerTest {
         every { workManager.cancelAllWorkByTag(userId.id) } returns mockk()
     }
 
-    private fun givenEnqueueWorkSucceeds(workId: String, existingWorkPolicy: ExistingWorkPolicy) {
+    private fun givenEnqueueWorkSucceeds() {
+        every { workManager.enqueue(any<OneTimeWorkRequest>()) } returns mockk()
+    }
+
+    private fun givenEnqueueWorkInChainSucceeds(workId: String, existingWorkPolicy: ExistingWorkPolicy) {
+        every {
+            workManager.beginUniqueWork(workId, existingWorkPolicy, any<OneTimeWorkRequest>())
+        } returns mockk {
+            every { then(any<OneTimeWorkRequest>()) } returns mockk {
+                every { enqueue() } returns mockk()
+            }
+        }
+    }
+
+    private fun givenEnqueueUniqueWorkSucceeds(workId: String, existingWorkPolicy: ExistingWorkPolicy) {
         every {
             workManager.enqueueUniqueWork(workId, existingWorkPolicy, any<OneTimeWorkRequest>())
         } returns mockk()
+    }
+
+    companion object {
+        object TestData {
+            val UserId = UserIdSample.Primary
+        }
     }
 
 }

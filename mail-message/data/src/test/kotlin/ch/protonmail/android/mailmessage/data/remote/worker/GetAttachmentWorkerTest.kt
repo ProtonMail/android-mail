@@ -116,7 +116,10 @@ class GetAttachmentWorkerTest {
     @Test
     fun `worker is enqueued with given parameters`() {
         // When
-        Enqueuer(workManager).enqueue<GetAttachmentWorker>(GetAttachmentWorker.params(userId, messageId, attachmentId))
+        Enqueuer(workManager).enqueue<GetAttachmentWorker>(
+            userId,
+            GetAttachmentWorker.params(userId, messageId, attachmentId)
+        )
 
         // Then
         val requestSlot = slot<OneTimeWorkRequest>()

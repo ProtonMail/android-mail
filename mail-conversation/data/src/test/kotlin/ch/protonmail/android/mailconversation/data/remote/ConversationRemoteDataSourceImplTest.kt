@@ -78,7 +78,7 @@ class ConversationRemoteDataSourceImplTest {
         every { create(any(), ConversationApi::class) } returns TestApiManager(conversationApi)
     }
     private val enqueuer: Enqueuer = mockk {
-        every { this@mockk.enqueue(any(), any()) } returns mockk()
+        every { this@mockk.enqueue(userId, any(), any()) } returns mockk()
     }
 
     private lateinit var apiProvider: ApiProvider
@@ -274,9 +274,7 @@ class ConversationRemoteDataSourceImplTest {
             labelId
         )
         verify {
-            enqueuer.enqueue<AddLabelConversationWorker>(
-                match { mapDeepEquals(it, expectedParams) }
-            )
+            enqueuer.enqueue<AddLabelConversationWorker>(userId, match { mapDeepEquals(it, expectedParams) })
         }
     }
 
@@ -296,17 +294,13 @@ class ConversationRemoteDataSourceImplTest {
                 listOf(conversationId),
                 labelList.first()
             )
-            enqueuer.enqueue<AddLabelConversationWorker>(
-                match { mapDeepEquals(it, expectedFirst) }
-            )
+            enqueuer.enqueue<AddLabelConversationWorker>(userId, match { mapDeepEquals(it, expectedFirst) })
             val expectedLast = AddLabelConversationWorker.params(
                 userId,
                 listOf(conversationId),
                 labelList.last()
             )
-            enqueuer.enqueue<AddLabelConversationWorker>(
-                match { mapDeepEquals(it, expectedLast) }
-            )
+            enqueuer.enqueue<AddLabelConversationWorker>(userId, match { mapDeepEquals(it, expectedLast) })
         }
     }
 
@@ -326,17 +320,13 @@ class ConversationRemoteDataSourceImplTest {
                 conversationIds.take(MAX_CONVERSATION_IDS_API_LIMIT),
                 labelId
             )
-            enqueuer.enqueue<AddLabelConversationWorker>(
-                match { mapDeepEquals(it, expectedFirst) }
-            )
+            enqueuer.enqueue<AddLabelConversationWorker>(userId, match { mapDeepEquals(it, expectedFirst) })
             val expectedSecond = AddLabelConversationWorker.params(
                 userId,
                 conversationIds.drop(MAX_CONVERSATION_IDS_API_LIMIT),
                 labelId
             )
-            enqueuer.enqueue<AddLabelConversationWorker>(
-                match { mapDeepEquals(it, expectedSecond) }
-            )
+            enqueuer.enqueue<AddLabelConversationWorker>(userId, match { mapDeepEquals(it, expectedSecond) })
         }
     }
 
@@ -354,16 +344,12 @@ class ConversationRemoteDataSourceImplTest {
                 userId,
                 conversationIds.take(MAX_CONVERSATION_IDS_API_LIMIT)
             )
-            enqueuer.enqueue<MarkConversationAsReadWorker>(
-                match { mapDeepEquals(it, expectedFirst) }
-            )
+            enqueuer.enqueue<MarkConversationAsReadWorker>(userId, match { mapDeepEquals(it, expectedFirst) })
             val expectedSecond = MarkConversationAsReadWorker.params(
                 userId,
                 conversationIds.drop(MAX_CONVERSATION_IDS_API_LIMIT)
             )
-            enqueuer.enqueue<MarkConversationAsReadWorker>(
-                match { mapDeepEquals(it, expectedSecond) }
-            )
+            enqueuer.enqueue<MarkConversationAsReadWorker>(userId, match { mapDeepEquals(it, expectedSecond) })
         }
     }
 
@@ -383,17 +369,13 @@ class ConversationRemoteDataSourceImplTest {
                     conversationIds.take(MAX_CONVERSATION_IDS_API_LIMIT),
                     contextLabelId
                 )
-                enqueuer.enqueue<MarkConversationAsUnreadWorker>(
-                    match { mapDeepEquals(it, expectedFirst) }
-                )
+                enqueuer.enqueue<MarkConversationAsUnreadWorker>(userId, match { mapDeepEquals(it, expectedFirst) })
                 val expectedSecond = MarkConversationAsUnreadWorker.params(
                     userId,
                     conversationIds.drop(MAX_CONVERSATION_IDS_API_LIMIT),
                     contextLabelId
                 )
-                enqueuer.enqueue<MarkConversationAsUnreadWorker>(
-                    match { mapDeepEquals(it, expectedSecond) }
-                )
+                enqueuer.enqueue<MarkConversationAsUnreadWorker>(userId, match { mapDeepEquals(it, expectedSecond) })
             }
         }
 
@@ -413,9 +395,7 @@ class ConversationRemoteDataSourceImplTest {
             labelId
         )
         verify {
-            enqueuer.enqueue<RemoveLabelConversationWorker>(
-                match { mapDeepEquals(it, expected) }
-            )
+            enqueuer.enqueue<RemoveLabelConversationWorker>(userId, match { mapDeepEquals(it, expected) })
         }
     }
 
@@ -435,17 +415,13 @@ class ConversationRemoteDataSourceImplTest {
                 listOf(conversationId),
                 labelList.first()
             )
-            enqueuer.enqueue<RemoveLabelConversationWorker>(
-                match { mapDeepEquals(it, expectedFirst) }
-            )
+            enqueuer.enqueue<RemoveLabelConversationWorker>(userId, match { mapDeepEquals(it, expectedFirst) })
             val expectedLast = RemoveLabelConversationWorker.params(
                 userId,
                 listOf(conversationId),
                 labelList.last()
             )
-            enqueuer.enqueue<RemoveLabelConversationWorker>(
-                match { mapDeepEquals(it, expectedLast) }
-            )
+            enqueuer.enqueue<RemoveLabelConversationWorker>(userId, match { mapDeepEquals(it, expectedLast) })
         }
     }
 
@@ -466,17 +442,13 @@ class ConversationRemoteDataSourceImplTest {
                     conversationIds.take(MAX_CONVERSATION_IDS_API_LIMIT),
                     labelId
                 )
-                enqueuer.enqueue<RemoveLabelConversationWorker>(
-                    match { mapDeepEquals(it, expectedFirst) }
-                )
+                enqueuer.enqueue<RemoveLabelConversationWorker>(userId, match { mapDeepEquals(it, expectedFirst) })
                 val expectedSecond = RemoveLabelConversationWorker.params(
                     userId,
                     conversationIds.drop(MAX_CONVERSATION_IDS_API_LIMIT),
                     labelId
                 )
-                enqueuer.enqueue<RemoveLabelConversationWorker>(
-                    match { mapDeepEquals(it, expectedSecond) }
-                )
+                enqueuer.enqueue<RemoveLabelConversationWorker>(userId, match { mapDeepEquals(it, expectedSecond) })
             }
         }
 
@@ -495,9 +467,7 @@ class ConversationRemoteDataSourceImplTest {
             contextLabelId
         )
         verify {
-            enqueuer.enqueue<MarkConversationAsUnreadWorker>(
-                match { mapDeepEquals(it, expected) }
-            )
+            enqueuer.enqueue<MarkConversationAsUnreadWorker>(userId, match { mapDeepEquals(it, expected) })
         }
     }
 
@@ -515,9 +485,7 @@ class ConversationRemoteDataSourceImplTest {
             listOf(conversationId)
         )
         verify {
-            enqueuer.enqueue<MarkConversationAsReadWorker>(
-                match { mapDeepEquals(it, expected) }
-            )
+            enqueuer.enqueue<MarkConversationAsReadWorker>(userId, match { mapDeepEquals(it, expected) })
         }
     }
 

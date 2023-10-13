@@ -73,7 +73,9 @@ class UploadAttachmentsWorkerTest {
         givenInputData(userId, messageId)
 
         // When
-        Enqueuer(workManager).enqueue<UploadAttachmentsWorker>(UploadAttachmentsWorker.params(userId, messageId))
+        Enqueuer(workManager).enqueue<UploadAttachmentsWorker>(
+            userId, UploadAttachmentsWorker.params(userId, messageId)
+        )
 
         // Then
         val requestSlot = slot<OneTimeWorkRequest>()
