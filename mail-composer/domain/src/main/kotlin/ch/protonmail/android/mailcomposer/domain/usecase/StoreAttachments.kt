@@ -27,6 +27,7 @@ import ch.protonmail.android.mailcomposer.domain.repository.AttachmentStateRepos
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.AttachmentRepository
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
+import ch.protonmail.android.mailmessage.domain.usecase.ProvideNewAttachmentId
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import javax.inject.Inject

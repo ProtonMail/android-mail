@@ -16,11 +16,11 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcomposer.domain.usecase
+package ch.protonmail.android.mailmessage.domain.usecase
 
 import java.util.UUID
-import javax.inject.Inject
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
+import javax.inject.Inject
 
 class ProvideNewAttachmentId @Inject constructor() {
 

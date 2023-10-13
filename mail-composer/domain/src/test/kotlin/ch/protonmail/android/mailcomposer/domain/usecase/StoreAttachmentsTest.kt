@@ -33,6 +33,7 @@ import ch.protonmail.android.mailmessage.domain.repository.AttachmentRepository
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
+import ch.protonmail.android.mailmessage.domain.usecase.ProvideNewAttachmentId
 import ch.protonmail.android.test.utils.FakeTransactor
 import io.mockk.Called
 import io.mockk.coEvery
