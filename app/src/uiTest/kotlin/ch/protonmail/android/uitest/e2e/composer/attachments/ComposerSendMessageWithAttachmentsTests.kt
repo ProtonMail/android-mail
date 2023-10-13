@@ -55,7 +55,7 @@ import kotlin.test.Test
 
 @RegressionTest
 @HiltAndroidTest
-@SdkSuppress(minSdkVersion = 30)
+@SdkSuppress(minSdkVersion = 30, maxSdkVersion = 32)
 @UninstallModules(ServerProofModule::class)
 internal class ComposerSendMessageWithAttachmentsTests : MockedNetworkTest(
     loginType = LoginTestUserTypes.Paid.FancyCapybara

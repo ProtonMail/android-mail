@@ -49,7 +49,7 @@ import org.junit.Ignore
 import org.junit.Test
 
 @RegressionTest
-@SdkSuppress(minSdkVersion = 30)
+@SdkSuppress(minSdkVersion = 30, maxSdkVersion = 32)
 @HiltAndroidTest
 @UninstallModules(ServerProofModule::class)
 internal class ComposerAttachmentsBottomSheetTests : MockedNetworkTest(), ComposerAttachmentsTests {
