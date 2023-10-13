@@ -16,18 +16,19 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.domain.usecase
+package ch.protonmail.android.mailmessage.domain.usecase
 
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.model.GetDecryptedMessageBodyError
+import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
-import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.testdata.message.MessageBodyTestData
 import ch.protonmail.android.testdata.message.MessageTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
@@ -35,9 +36,12 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import me.proton.core.crypto.common.context.CryptoContext
 import me.proton.core.crypto.common.keystore.EncryptedByteArray
 import me.proton.core.crypto.common.keystore.PlainByteArray
+import me.proton.core.crypto.common.pgp.DecryptedMimeAttachment
 import me.proton.core.crypto.common.pgp.DecryptedMimeBody
 import me.proton.core.crypto.common.pgp.DecryptedMimeMessage
 import me.proton.core.crypto.common.pgp.PGPCrypto
@@ -92,9 +96,21 @@ class GetDecryptedMessageBodyTest(
             every { keys } returns listOf(userAddressKey)
         }
     }
+    private val parseMimeAttachmentHeaders = mockk<ParseMimeAttachmentHeaders> {
+        every { this@mockk.invoke(decryptedMimeAttachment.headers) } returns parsedMimeAttachmentHeaders
+    }
+    private val provideNewAttachmentId = mockk<ProvideNewAttachmentId> {
+        every { this@mockk.invoke() } returns mimeAttachmentId
+    }
     private val messageRepository = mockk<MessageRepository>()
 
-    private val getDecryptedMessageBody = GetDecryptedMessageBody(cryptoContext, messageRepository, userAddressManager)
+    private val getDecryptedMessageBody = GetDecryptedMessageBody(
+        cryptoContext,
+        messageRepository,
+        parseMimeAttachmentHeaders,
+        provideNewAttachmentId,
+        userAddressManager
+    )
 
     @Test
     fun `when repository gets message body and decryption is successful then the decrypted message body is returned`() =
@@ -103,7 +119,8 @@ class GetDecryptedMessageBodyTest(
             val expected = DecryptedMessageBody(
                 testInput.messageWithBody.message.messageId,
                 decryptedMessageBody,
-                testInput.mimeType
+                testInput.mimeType,
+                testInput.mimeAttachments
             ).right()
             coEvery {
                 messageRepository.getMessageWithBody(UserIdTestData.userId, messageId)
@@ -181,7 +198,7 @@ class GetDecryptedMessageBodyTest(
             } returns DecryptedMimeMessage(
                 emptyList(),
                 DecryptedMimeBody(testInput.mimeType.value, decryptedMessageBody),
-                emptyList()
+                listOf(decryptedMimeAttachment)
             )
         } else {
             every {
@@ -213,6 +230,31 @@ class GetDecryptedMessageBodyTest(
 
     companion object {
 
+        private val mimeAttachmentId = AttachmentId("attachmentId")
+        private const val mimeAttachmentHeaders = "mimeAttachmentHeaders"
+        private val mimeAttachmentContent = "mimeAttachmentContent".encodeToByteArray()
+        private val decryptedMimeAttachment = DecryptedMimeAttachment(mimeAttachmentHeaders, mimeAttachmentContent)
+        private val mimeMessageAttachment = MessageAttachment(
+            attachmentId = mimeAttachmentId,
+            name = "image.png",
+            size = mimeAttachmentContent.size.toLong(),
+            mimeType = "image/png",
+            disposition = "attachment",
+            keyPackets = null,
+            signature = null,
+            encSignature = null,
+            headers = emptyMap()
+        )
+        private val parsedMimeAttachmentHeaders = JsonObject(
+            mapOf(
+                "Content-Disposition" to JsonPrimitive("attachment"),
+                "filename" to JsonPrimitive("image.png"),
+                "Content-Transfer-Encoding" to JsonPrimitive("base64"),
+                "Content-Type" to JsonPrimitive("image/png"),
+                "name" to JsonPrimitive("image.png")
+            )
+        )
+
         private val testInputList = listOf(
             TestInput(
                 MimeType.Html,
@@ -220,7 +262,8 @@ class GetDecryptedMessageBodyTest(
             ),
             TestInput(
                 MimeType.MultipartMixed,
-                MessageWithBody(MessageTestData.message, MessageBodyTestData.multipartMixedMessageBody)
+                MessageWithBody(MessageTestData.message, MessageBodyTestData.multipartMixedMessageBody),
+                listOf(mimeMessageAttachment)
             )
         )
 
@@ -239,6 +282,7 @@ class GetDecryptedMessageBodyTest(
 
     data class TestInput(
         val mimeType: MimeType,
-        val messageWithBody: MessageWithBody
+        val messageWithBody: MessageWithBody,
+        val mimeAttachments: List<MessageAttachment> = emptyList()
     )
 }

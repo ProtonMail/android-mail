@@ -24,11 +24,15 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.model.GetDecryptedMessageBodyError
+import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.model.MessageBody
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MimeType
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.jsonPrimitive
 import me.proton.core.crypto.common.context.CryptoContext
+import me.proton.core.crypto.common.pgp.DecryptedMimeAttachment
 import me.proton.core.crypto.common.pgp.exception.CryptoException
 import me.proton.core.domain.entity.UserId
 import me.proton.core.key.domain.decryptMimeMessage
@@ -36,12 +40,15 @@ import me.proton.core.key.domain.decryptText
 import me.proton.core.key.domain.entity.keyholder.KeyHolderContext
 import me.proton.core.key.domain.useKeys
 import me.proton.core.user.domain.UserAddressManager
+import me.proton.core.util.kotlin.EMPTY_STRING
 import timber.log.Timber
 import javax.inject.Inject
 
 class GetDecryptedMessageBody @Inject constructor(
     private val cryptoContext: CryptoContext,
     private val messageRepository: MessageRepository,
+    private val parseMimeAttachmentHeaders: ParseMimeAttachmentHeaders,
+    private val provideNewAttachmentId: ProvideNewAttachmentId,
     private val userAddressManager: UserAddressManager
 ) {
 
@@ -75,13 +82,42 @@ class GetDecryptedMessageBody @Inject constructor(
     private fun KeyHolderContext.decryptMessageBody(messageBody: MessageBody): DecryptedMessageBody {
         return if (messageBody.mimeType == MimeType.MultipartMixed) {
             decryptMimeMessage(messageBody.body).run {
-                // PGP/MIME attachments are not supported yet
-                DecryptedMessageBody(messageBody.messageId, body.content, MimeType.from(body.mimeType), emptyList())
+                val attachments = this.attachments.map { it.toMessageAttachment() }
+                DecryptedMessageBody(messageBody.messageId, body.content, MimeType.from(body.mimeType), attachments)
             }
         } else {
             decryptText(messageBody.body).run {
                 DecryptedMessageBody(messageBody.messageId, this, messageBody.mimeType, messageBody.attachments)
             }
         }
+    }
+
+    private fun DecryptedMimeAttachment.toMessageAttachment(): MessageAttachment {
+        val size = content.size.toLong()
+        return parseMimeAttachmentHeaders(headers).run {
+            val name = getOrElse(FilenameKey) {
+                getOrDefault(NameKey, JsonPrimitive(EMPTY_STRING))
+            }.jsonPrimitive.content
+            val mimeType = getOrDefault(ContentTypeKey, JsonPrimitive(EMPTY_STRING)).jsonPrimitive.content
+            val disposition = getOrDefault(ContentDispositionKey, JsonPrimitive(EMPTY_STRING)).jsonPrimitive.content
+            MessageAttachment(
+                attachmentId = provideNewAttachmentId(),
+                name = name,
+                size = size,
+                mimeType = mimeType,
+                disposition = disposition,
+                keyPackets = null,
+                signature = null,
+                encSignature = null,
+                headers = emptyMap()
+            )
+        }
+    }
+
+    companion object {
+        private const val FilenameKey = "filename"
+        private const val NameKey = "name"
+        private const val ContentTypeKey = "Content-Type"
+        private const val ContentDispositionKey = "Content-Disposition"
     }
 }
