@@ -18,16 +18,19 @@
 
 package ch.protonmail.android.mailnotifications.data.remote.fcm
 
+import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
 import ch.protonmail.android.mailnotifications.data.repository.NotificationTokenRepository
 import ch.protonmail.android.mailnotifications.domain.usecase.ProcessPushNotificationMessage
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import me.proton.core.account.domain.entity.isReady
 import me.proton.core.accountmanager.domain.AccountManager
+import me.proton.core.network.domain.session.SessionId
 import me.proton.core.util.kotlin.CoroutineScopeProvider
 import javax.inject.Inject
 
@@ -42,6 +45,10 @@ class PMFirebaseMessagingService : FirebaseMessagingService() {
 
     @Inject
     lateinit var scopeProvider: CoroutineScopeProvider
+
+    @Inject
+    @AppScope
+    lateinit var appScope: CoroutineScope
 
     @Inject
     lateinit var accountManager: AccountManager
@@ -69,7 +76,7 @@ class PMFirebaseMessagingService : FirebaseMessagingService() {
         val uid = remoteMessage.data["UID"]
         val encryptedMessage = remoteMessage.data["encryptedMessage"]
         if (uid != null && encryptedMessage != null) {
-            processPushNotificationMessage(uid, encryptedMessage)
+            appScope.launch { processPushNotificationMessage(SessionId(uid), encryptedMessage) }
         }
     }
 

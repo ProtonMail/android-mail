@@ -20,15 +20,26 @@ package ch.protonmail.android.mailnotifications.domain.usecase
 
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailnotifications.data.local.ProcessPushNotificationDataWorker
+import me.proton.core.accountmanager.domain.SessionManager
+import me.proton.core.network.domain.session.SessionId
+import timber.log.Timber
 import javax.inject.Inject
 
 class ProcessPushNotificationMessage @Inject constructor(
-    private val enqueuer: Enqueuer
+    private val enqueuer: Enqueuer,
+    private val sessionManager: SessionManager
 ) {
 
-    operator fun invoke(uid: String, encryptedMessage: String) {
+    suspend operator fun invoke(sessionId: SessionId, encryptedMessage: String) {
+        val userId = sessionManager.getUserId(sessionId)
+        if (userId == null) {
+            Timber.w("No user id found for notification's sessionId $sessionId. Not displaying notification.")
+            return
+        }
+
         enqueuer.enqueue<ProcessPushNotificationDataWorker>(
-            ProcessPushNotificationDataWorker.params(uid, encryptedMessage)
+            userId,
+            ProcessPushNotificationDataWorker.params(sessionId.id, encryptedMessage)
         )
     }
 }
