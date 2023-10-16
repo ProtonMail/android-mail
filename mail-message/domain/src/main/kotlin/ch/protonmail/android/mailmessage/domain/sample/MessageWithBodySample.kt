@@ -66,6 +66,15 @@ object MessageWithBodySample {
         )
     )
 
+    val MessageWithEncryptedAttachments = build(
+        message = MessageSample.MessageWithAttachments,
+        attachments = listOf(
+            MessageAttachmentSample.document.copy(keyPackets = "encryptedKeyPackets"),
+            MessageAttachmentSample.documentWithReallyLongFileName.copy(keyPackets = "encryptedKeyPackets"),
+            MessageAttachmentSample.embeddedImageAttachment.copy(keyPackets = "encryptedKeyPackets")
+        )
+    )
+
     val MessageWithSignedAttachments = build(
         message = MessageSample.MessageWithAttachments,
         attachments = listOf(MessageAttachmentSample.signedDocument)
