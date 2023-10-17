@@ -45,6 +45,7 @@ import ch.protonmail.android.mailcomposer.domain.usecase.GetPrimaryAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.IsValidEmailAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessageAttachments
 import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
+import ch.protonmail.android.mailcomposer.domain.usecase.ReEncryptAttachments
 import ch.protonmail.android.mailcomposer.domain.usecase.SendMessage
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreAttachments
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithAllFields
@@ -113,6 +114,7 @@ class ComposerViewModel @Inject constructor(
     private val styleQuotedHtml: StyleQuotedHtml,
     private val storeDraftWithParentAttachments: StoreDraftWithParentAttachments,
     private val deleteAttachment: DeleteAttachment,
+    private val reEncryptAttachments: ReEncryptAttachments,
     getDecryptedDraftFields: GetDecryptedDraftFields,
     savedStateHandle: SavedStateHandle,
     observePrimaryUserId: ObservePrimaryUserId,
@@ -319,13 +321,24 @@ class ComposerViewModel @Inject constructor(
         currentDraftQuotedHtmlBody(),
         SenderEmail(action.sender.email),
         primaryUserId()
-    ).fold(
-        ifLeft = {
-            Timber.e("Store draft ${currentMessageId()} with new sender ${action.sender.email} failed")
-            ComposerEvent.ErrorStoringDraftSenderAddress
-        },
-        ifRight = { action }
     )
+        .onRight {
+            reEncryptAttachments(
+                userId = primaryUserId(),
+                messageId = currentMessageId(),
+                previousSender = SenderEmail(state.value.fields.sender.email),
+                newSenderEmail = SenderEmail(action.sender.email)
+            )
+        }
+        .fold(
+            ifLeft = {
+                Timber.e("Store draft ${currentMessageId()} with new sender ${action.sender.email} failed")
+                ComposerEvent.ErrorStoringDraftSenderAddress
+            },
+            ifRight = {
+                action
+            }
+        )
 
     private suspend fun onDraftBodyChanged(action: ComposerAction.DraftBodyChanged): ComposerOperation =
         storeDraftWithBody(

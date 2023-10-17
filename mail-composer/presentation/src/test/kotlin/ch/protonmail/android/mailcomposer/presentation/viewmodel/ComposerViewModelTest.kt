@@ -52,6 +52,7 @@ import ch.protonmail.android.mailcomposer.domain.usecase.GetPrimaryAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.IsValidEmailAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessageAttachments
 import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
+import ch.protonmail.android.mailcomposer.domain.usecase.ReEncryptAttachments
 import ch.protonmail.android.mailcomposer.domain.usecase.SendMessage
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreAttachments
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithAllFields
@@ -165,6 +166,7 @@ class ComposerViewModelTest {
         )
     }
     private val observeMessageAttachments = mockk<ObserveMessageAttachments>()
+    private val reEncryptAttachments = mockk<ReEncryptAttachments>()
 
     private val attachmentUiModelMapper = AttachmentUiModelMapper()
     private val reducer = ComposerReducer(attachmentUiModelMapper)
@@ -193,6 +195,7 @@ class ComposerViewModelTest {
             styleQuotedHtml,
             storeDraftWithParentAttachments,
             deleteAttachment,
+            reEncryptAttachments,
             getDecryptedDraftFields,
             savedStateHandle,
             observePrimaryUserIdMock,
@@ -279,10 +282,11 @@ class ComposerViewModelTest {
     }
 
     @Test
-    fun `should store draft with sender and current draft body when sender changes`() = runTest {
+    fun `should store draft with sender, current draft body and reecnrypt attachments when sender changes`() = runTest {
         // Given
         val expectedDraftBody = DraftBody(RawDraftBody)
         val expectedQuotedDraftBody = null
+        val previousSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
         val expectedSenderEmail = SenderEmail(UserAddressSample.AliasAddress.email)
         val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
         val expectedUserId = expectedUserId { UserIdSample.Primary }
@@ -300,6 +304,7 @@ class ComposerViewModelTest {
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
+        expectReEncryptAttachmentSucceeds(expectedUserId, expectedMessageId, previousSenderEmail, expectedSenderEmail)
 
         // Change internal state of the View Model to simulate an existing draft body before changing sender
         expectedViewModelInitialState(messageId = expectedMessageId, draftBody = expectedDraftBody)
@@ -815,6 +820,7 @@ class ComposerViewModelTest {
     fun `emits state with new sender address when sender changed`() = runTest {
         // Given
         val expectedDraftBody = DraftBody("")
+        val previousSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
         val expectedSenderEmail = SenderEmail(UserAddressSample.AliasAddress.email)
         val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
         val expectedUserId = expectedUserId { UserIdSample.Primary }
@@ -826,6 +832,7 @@ class ComposerViewModelTest {
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
+        expectReEncryptAttachmentSucceeds(expectedUserId, expectedMessageId, previousSenderEmail, expectedSenderEmail)
 
         // When
         viewModel.submit(action)
@@ -833,6 +840,9 @@ class ComposerViewModelTest {
         // Then
         val currentState = viewModel.state.value
         assertEquals(SenderUiModel(expectedSenderEmail.value), currentState.fields.sender)
+        coVerify(exactly = 1) {
+            reEncryptAttachments(expectedUserId, expectedMessageId, previousSenderEmail, expectedSenderEmail)
+        }
     }
 
     @Test
@@ -1700,6 +1710,15 @@ class ComposerViewModelTest {
         coEvery { deleteAttachment(userId, senderEmail, messageId, attachmentId) } returns Unit.right()
     }
 
+
+    private fun expectReEncryptAttachmentSucceeds(
+        userId: UserId,
+        messageId: MessageId,
+        previousSenderEmail: SenderEmail,
+        newSenderEmail: SenderEmail
+    ) {
+        coEvery { reEncryptAttachments(userId, messageId, previousSenderEmail, newSenderEmail) } returns Unit.right()
+    }
 
     private fun mockParticipantMapper() {
         val expectedContacts = expectContacts()
