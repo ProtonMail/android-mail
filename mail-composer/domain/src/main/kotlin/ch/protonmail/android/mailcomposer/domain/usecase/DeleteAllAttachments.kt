@@ -22,6 +22,7 @@ import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.domain.repository.AttachmentRepository
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import me.proton.core.domain.entity.UserId
+import timber.log.Timber
 import javax.inject.Inject
 
 class DeleteAllAttachments @Inject constructor(
@@ -30,7 +31,12 @@ class DeleteAllAttachments @Inject constructor(
 ) {
 
     suspend operator fun invoke(userId: UserId, senderEmail: SenderEmail, messageId: MessageId) {
-        val localDraft = localDraft(userId, messageId, senderEmail).getOrNull() ?: return
+        val localDraft = localDraft(userId, messageId, senderEmail).getOrNull()
+
+        if (localDraft == null) {
+            Timber.e("Failed to load local draft")
+            return
+        }
 
         localDraft.messageBody.attachments.forEach {
             attachmentRepository.deleteAttachment(userId, localDraft.message.messageId, it.attachmentId)

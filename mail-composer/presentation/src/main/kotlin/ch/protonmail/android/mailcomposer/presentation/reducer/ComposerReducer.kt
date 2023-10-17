@@ -110,6 +110,7 @@ class ComposerReducer @Inject constructor(
             isLoading = false
         )
         is ComposerEvent.ErrorAttachmentsExceedSizeLimit -> updateStateForAttachmentsExceedSizeLimit(currentState)
+        is ComposerEvent.ErrorAttachmentsReEncryption -> updateStateForDeleteAllAttachment(currentState)
     }
 
     private fun updateBottomSheetVisibility(currentState: ComposerDraftState, bottomSheetVisibility: Boolean) =
@@ -178,6 +179,9 @@ class ComposerReducer @Inject constructor(
 
     private fun updateStateForAttachmentsExceedSizeLimit(currentState: ComposerDraftState) =
         currentState.copy(attachmentsFileSizeExceeded = Effect.of(Unit))
+
+    private fun updateStateForDeleteAllAttachment(currentState: ComposerDraftState) =
+        currentState.copy(attachmentsReEncryptionFailed = Effect.of(Unit))
 
     private fun updateSenderTo(currentState: ComposerDraftState, sender: SenderUiModel) = currentState.copy(
         fields = currentState.fields.copy(sender = sender),

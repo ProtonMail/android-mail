@@ -599,6 +599,15 @@ class ComposerReducerTest(
             )
         )
 
+        private val EmptyToAttachmentReEncryptionFailed = TestTransition(
+            name = "Should emit attachment exceeded file limit",
+            currentState = ComposerDraftState.initial(messageId),
+            operation = ComposerEvent.ErrorAttachmentsReEncryption,
+            expectedState = ComposerDraftState.initial(messageId).copy(
+                attachmentsReEncryptionFailed = Effect.of(Unit)
+            )
+        )
+
         private val transitions = listOf(
             EmptyToSubmittableToField,
             EmptyToNotSubmittableToField,
@@ -638,6 +647,7 @@ class ComposerReducerTest(
             EmptyToBottomSheetClosed,
             EmptyToAttachmentsUpdated,
             EmptyToAttachmentFileExceeded,
+            EmptyToAttachmentReEncryptionFailed
         )
 
         private fun aSubmittableState(
@@ -651,7 +661,8 @@ class ComposerReducerTest(
             error: Effect<TextUiModel> = Effect.empty(),
             closeComposerWithMessageSending: Effect<Unit> = Effect.empty(),
             closeComposerWithMessageSendingOffline: Effect<Unit> = Effect.empty(),
-            attachmentsFileSizeExceeded: Effect<Unit> = Effect.empty()
+            attachmentsFileSizeExceeded: Effect<Unit> = Effect.empty(),
+            attachmentReEncryptionFailed: Effect<Unit> = Effect.empty()
         ) = ComposerDraftState(
             fields = ComposerFields(
                 draftId = draftId,
@@ -675,7 +686,8 @@ class ComposerReducerTest(
             isAddAttachmentsButtonVisible = false,
             closeComposerWithMessageSending = closeComposerWithMessageSending,
             closeComposerWithMessageSendingOffline = closeComposerWithMessageSendingOffline,
-            attachmentsFileSizeExceeded = attachmentsFileSizeExceeded
+            attachmentsFileSizeExceeded = attachmentsFileSizeExceeded,
+            attachmentsReEncryptionFailed = attachmentReEncryptionFailed
         )
 
         private fun aNotSubmittableState(
@@ -693,7 +705,8 @@ class ComposerReducerTest(
             closeComposer: Effect<Unit> = Effect.empty(),
             closeComposerWithDraftSaved: Effect<Unit> = Effect.empty(),
             isLoading: Boolean = false,
-            attachmentsFileSizeExceeded: Effect<Unit> = Effect.empty()
+            attachmentsFileSizeExceeded: Effect<Unit> = Effect.empty(),
+            attachmentReEncryptionFailed: Effect<Unit> = Effect.empty()
         ) = ComposerDraftState(
             fields = ComposerFields(
                 draftId = draftId,
@@ -717,7 +730,8 @@ class ComposerReducerTest(
             isAddAttachmentsButtonVisible = false,
             closeComposerWithMessageSending = Effect.empty(),
             closeComposerWithMessageSendingOffline = Effect.empty(),
-            attachmentsFileSizeExceeded = attachmentsFileSizeExceeded
+            attachmentsFileSizeExceeded = attachmentsFileSizeExceeded,
+            attachmentsReEncryptionFailed = attachmentReEncryptionFailed
         )
 
         private fun aPositiveRandomInt(bound: Int = 10) = Random().nextInt(bound)
