@@ -91,6 +91,13 @@ interface AttachmentLocalDataSource {
         uri: Uri
     ): Either<DataError.Local, Unit>
 
+    suspend fun upsertMimeAttachment(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId,
+        content: ByteArray
+    ): Either<DataError.Local, Unit>
+
     suspend fun updateAttachmentDownloadStatus(
         userId: UserId,
         messageId: MessageId,

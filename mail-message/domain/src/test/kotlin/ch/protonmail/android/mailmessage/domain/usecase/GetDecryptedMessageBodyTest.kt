@@ -28,6 +28,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.model.MimeType
+import ch.protonmail.android.mailmessage.domain.repository.AttachmentRepository
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.testdata.message.MessageBodyTestData
 import ch.protonmail.android.testdata.message.MessageTestData
@@ -102,9 +103,20 @@ class GetDecryptedMessageBodyTest(
     private val provideNewAttachmentId = mockk<ProvideNewAttachmentId> {
         every { this@mockk.invoke() } returns mimeAttachmentId
     }
+    private val attachmentRepository = mockk<AttachmentRepository> {
+        coEvery {
+            saveMimeAttachment(
+                UserIdTestData.userId,
+                MessageBodyTestData.multipartMixedMessageBody.messageId,
+                mimeAttachmentId,
+                mimeAttachmentContent
+            )
+        } returns Unit.right()
+    }
     private val messageRepository = mockk<MessageRepository>()
 
     private val getDecryptedMessageBody = GetDecryptedMessageBody(
+        attachmentRepository,
         cryptoContext,
         messageRepository,
         parseMimeAttachmentHeaders,

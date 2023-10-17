@@ -22,6 +22,7 @@ import arrow.core.Either
 import arrow.core.flatMap
 import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.model.GetDecryptedMessageBodyError
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
@@ -29,6 +30,7 @@ import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.model.MessageBody
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MimeType
+import ch.protonmail.android.mailmessage.domain.repository.AttachmentRepository
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonPrimitive
 import me.proton.core.crypto.common.context.CryptoContext
@@ -45,6 +47,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class GetDecryptedMessageBody @Inject constructor(
+    private val attachmentRepository: AttachmentRepository,
     private val cryptoContext: CryptoContext,
     private val messageRepository: MessageRepository,
     private val parseMimeAttachmentHeaders: ParseMimeAttachmentHeaders,
@@ -79,10 +82,14 @@ class GetDecryptedMessageBody @Inject constructor(
             }
     }
 
-    private fun KeyHolderContext.decryptMessageBody(messageBody: MessageBody): DecryptedMessageBody {
+    private suspend fun KeyHolderContext.decryptMessageBody(messageBody: MessageBody): DecryptedMessageBody {
         return if (messageBody.mimeType == MimeType.MultipartMixed) {
             decryptMimeMessage(messageBody.body).run {
-                val attachments = this.attachments.map { it.toMessageAttachment() }
+                val attachments = this.attachments.map {
+                    val attachmentId = provideNewAttachmentId()
+                    it.saveAttachmentToCache(messageBody.userId, messageBody.messageId, attachmentId)
+                    it.toMessageAttachment(attachmentId)
+                }
                 DecryptedMessageBody(messageBody.messageId, body.content, MimeType.from(body.mimeType), attachments)
             }
         } else {
@@ -92,7 +99,15 @@ class GetDecryptedMessageBody @Inject constructor(
         }
     }
 
-    private fun DecryptedMimeAttachment.toMessageAttachment(): MessageAttachment {
+    private suspend fun DecryptedMimeAttachment.saveAttachmentToCache(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId
+    ) {
+        attachmentRepository.saveMimeAttachment(userId, messageId, attachmentId, content)
+    }
+
+    private fun DecryptedMimeAttachment.toMessageAttachment(attachmentId: AttachmentId): MessageAttachment {
         val size = content.size.toLong()
         return parseMimeAttachmentHeaders(headers).run {
             val name = getOrElse(FilenameKey) {
@@ -101,7 +116,7 @@ class GetDecryptedMessageBody @Inject constructor(
             val mimeType = getOrDefault(ContentTypeKey, JsonPrimitive(EMPTY_STRING)).jsonPrimitive.content
             val disposition = getOrDefault(ContentDispositionKey, JsonPrimitive(EMPTY_STRING)).jsonPrimitive.content
             MessageAttachment(
-                attachmentId = provideNewAttachmentId(),
+                attachmentId = attachmentId,
                 name = name,
                 size = size,
                 mimeType = mimeType,

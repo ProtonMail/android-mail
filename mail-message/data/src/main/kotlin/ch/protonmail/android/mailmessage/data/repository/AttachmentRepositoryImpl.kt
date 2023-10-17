@@ -119,6 +119,13 @@ class AttachmentRepositoryImpl @Inject constructor(
         uri: Uri
     ): Either<DataError, Unit> = localDataSource.upsertAttachment(userId, messageId, attachmentId, uri)
 
+    override suspend fun saveMimeAttachment(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId,
+        content: ByteArray
+    ): Either<DataError, Unit> = localDataSource.upsertMimeAttachment(userId, messageId, attachmentId, content)
+
     override suspend fun getFileSizeFromUri(uri: Uri) = localDataSource.getFileSizeFromUri(uri)
 
     override suspend fun readFileFromStorage(

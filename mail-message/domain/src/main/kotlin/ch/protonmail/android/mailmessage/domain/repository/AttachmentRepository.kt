@@ -70,6 +70,13 @@ interface AttachmentRepository {
         uri: Uri
     ): Either<DataError, Unit>
 
+    suspend fun saveMimeAttachment(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId,
+        content: ByteArray
+    ): Either<DataError, Unit>
+
     suspend fun getFileSizeFromUri(uri: Uri): Either<DataError, Long>
 
     suspend fun readFileFromStorage(

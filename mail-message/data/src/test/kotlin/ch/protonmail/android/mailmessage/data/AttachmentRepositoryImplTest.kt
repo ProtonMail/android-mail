@@ -50,6 +50,7 @@ import io.mockk.unmockkStatic
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -511,5 +512,35 @@ class AttachmentRepositoryImplTest {
         // Then
         assertEquals(expected, actual)
         coVerify { localDataSource.getFileSizeFromUri(any()) }
+    }
+
+    @Test
+    fun `should return unit when upserting mime attachment was successful`() = runTest {
+        // Given
+        val attachmentContent = "attachmentContent".encodeToByteArray()
+        coEvery {
+            localDataSource.upsertMimeAttachment(userId, messageId, attachmentId, attachmentContent)
+        } returns Unit.right()
+
+        // When
+        val actual = repository.saveMimeAttachment(userId, messageId, attachmentId, attachmentContent)
+
+        // Then
+        Assert.assertEquals(Unit.right(), actual)
+    }
+
+    @Test
+    fun `should return a local error when upserting mime attachment has failed`() = runTest {
+        // Given
+        val attachmentContent = "attachmentContent".encodeToByteArray()
+        coEvery {
+            localDataSource.upsertMimeAttachment(userId, messageId, attachmentId, attachmentContent)
+        } returns DataError.Local.FailedToStoreFile.left()
+
+        // When
+        val actual = repository.saveMimeAttachment(userId, messageId, attachmentId, attachmentContent)
+
+        // Then
+        Assert.assertEquals(DataError.Local.FailedToStoreFile.left(), actual)
     }
 }

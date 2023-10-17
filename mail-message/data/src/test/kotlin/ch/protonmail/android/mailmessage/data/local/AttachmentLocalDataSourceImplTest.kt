@@ -668,4 +668,37 @@ class AttachmentLocalDataSourceImplTest {
         // Then
         assertEquals(DataError.Local.NoDataCached.left(), actual)
     }
+
+    @Test
+    fun `should return unit when upserting mime attachment was successful`() = runTest {
+        // Given
+        val attachmentContent = "attachmentContent".encodeToByteArray()
+        coEvery {
+            attachmentFileStorage.saveAttachmentCached(userId, messageId, attachmentId, attachmentContent)
+        } returns mockk()
+
+        // When
+        val actual = attachmentLocalDataSource.upsertMimeAttachment(userId, messageId, attachmentId, attachmentContent)
+
+        // Then
+        assertEquals(Unit.right(), actual)
+        coVerify {
+            attachmentFileStorage.saveAttachmentCached(userId, messageId, attachmentId, attachmentContent)
+        }
+    }
+
+    @Test
+    fun `should return a local error when upserting mime attachment has failed`() = runTest {
+        // Given
+        val attachmentContent = "attachmentContent".encodeToByteArray()
+        coEvery {
+            attachmentFileStorage.saveAttachmentCached(userId, messageId, attachmentId, attachmentContent)
+        } returns null
+
+        // When
+        val actual = attachmentLocalDataSource.upsertMimeAttachment(userId, messageId, attachmentId, attachmentContent)
+
+        // Then
+        assertEquals(DataError.Local.FailedToStoreFile.left(), actual)
+    }
 }
