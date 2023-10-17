@@ -104,8 +104,9 @@ internal class SendMessage @Inject constructor(
             .filterValues(ObtainSendPreferences.Result.Success::class.java)
             .mapValues { it.value.sendPreferences }
 
+        val uniqueEmails = emails.distinctBy { it.lowercase() }
         // we failed getting send preferences for all recipients
-        return if (sendPreferences.size != emails.size) {
+        return if (sendPreferences.size != uniqueEmails.size) {
             DataError.MessageSending.SendPreferences.left()
         } else sendPreferences.right()
     }

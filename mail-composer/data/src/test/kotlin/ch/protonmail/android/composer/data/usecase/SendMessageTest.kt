@@ -290,6 +290,59 @@ class SendMessageTest {
         assertEquals(Unit.right(), result)
     }
 
+    @Test
+    fun `when requiring send preference passing the same address multiple times only one preference is returned`() =
+        runTest {
+            // Given
+            val recipient = Participant("duplicatedRecipient@pm.me", "name")
+            val expectedMessage = expectFindLocalDraftSucceeds {
+                generateDraftMessage(listOf(recipient), listOf(recipient))
+            }
+            val addresses = expectedMessage.message.run { toList + ccList + bccList }.map { it.address }
+            val sendPreferences = expectObtainSendPreferencesSucceeds(recipientAddresses = addresses) {
+                generateSendPreferences(emailAddress = recipient.address)
+            }
+            expectResolveUserAddressSucceeds(addressId = expectedMessage.message.addressId)
+            expectObserveMailSettingsReturnsNull()
+            val messagePackages = expectGenerateMessagePackagesSucceeds(
+                sendPreferences = sendPreferences, expectedMessage = expectedMessage
+            )
+            expectSendOperationSucceeds(messagePackages)
+
+            // When
+            val result = sendMessage(userId, messageId)
+
+            // Then
+            assertEquals(Unit.right(), result)
+        }
+
+    @Test
+    fun `when requiring send preference passing the same canonical address multiple times only one pref is returned`() =
+        runTest {
+            // Given
+            val recipientUppercase = Participant("DUPLICATEDRECIPIENT@pm.me", "name")
+            val recipientLowercase = Participant("duplicatedrecipient@pm.me", "name")
+            val expectedMessage = expectFindLocalDraftSucceeds {
+                generateDraftMessage(listOf(recipientUppercase), listOf(recipientLowercase))
+            }
+            val addresses = expectedMessage.message.run { toList + ccList + bccList }.map { it.address }
+            val sendPreferences = expectObtainSendPreferencesSucceeds(recipientAddresses = addresses) {
+                generateSendPreferences(emailAddress = recipientLowercase.address)
+            }
+            expectResolveUserAddressSucceeds(addressId = expectedMessage.message.addressId)
+            expectObserveMailSettingsReturnsNull()
+            val messagePackages = expectGenerateMessagePackagesSucceeds(
+                sendPreferences = sendPreferences, expectedMessage = expectedMessage
+            )
+            expectSendOperationSucceeds(messagePackages)
+
+            // When
+            val result = sendMessage(userId, messageId)
+
+            // Then
+            assertEquals(Unit.right(), result)
+        }
+
     private fun expectFindLocalDraftSucceeds(expected: () -> MessageWithBody = { sampleMessage }) = expected().also {
         coEvery { findLocalDraft.invoke(userId, messageId) } returns it
     }
