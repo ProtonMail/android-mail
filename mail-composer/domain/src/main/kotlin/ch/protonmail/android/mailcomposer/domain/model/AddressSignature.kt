@@ -21,4 +21,13 @@ package ch.protonmail.android.mailcomposer.domain.model
 data class AddressSignature(
     val html: String,
     val plaintext: String
-)
+) {
+
+    companion object {
+
+        const val SeparatorPlaintext = "\n\n\n"
+
+        val BlankSignature = AddressSignature("", "")
+    }
+
+}

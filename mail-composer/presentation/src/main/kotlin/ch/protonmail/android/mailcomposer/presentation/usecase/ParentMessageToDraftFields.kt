@@ -20,11 +20,13 @@ package ch.protonmail.android.mailcomposer.presentation.usecase
 
 import android.content.Context
 import arrow.core.Either
+import arrow.core.getOrElse
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatExtendedTime
+import ch.protonmail.android.mailcomposer.domain.model.AddressSignature
 import ch.protonmail.android.mailcomposer.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
@@ -35,6 +37,7 @@ import ch.protonmail.android.mailcomposer.domain.model.RecipientsCc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsTo
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.domain.model.Subject
+import ch.protonmail.android.mailcomposer.domain.usecase.GetAddressSignature
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveUserAddresses
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
@@ -53,7 +56,8 @@ import kotlin.time.Duration.Companion.seconds
 class ParentMessageToDraftFields @Inject constructor(
     @ApplicationContext private val context: Context,
     private val observeUserAddresses: ObserveUserAddresses,
-    private val formatExtendedTime: FormatExtendedTime
+    private val formatExtendedTime: FormatExtendedTime,
+    private val getAddressSignature: GetAddressSignature
 ) {
 
     suspend operator fun invoke(
@@ -65,11 +69,12 @@ class ParentMessageToDraftFields @Inject constructor(
         val decryptedBody = messageWithDecryptedBody.decryptedMessageBody
         val userAddresses = observeUserAddresses(userId).firstOrNull() ?: return DataError.Local.NoDataCached.left()
         val sender = getSenderEmail(userAddresses, message)
+        val senderAddressSignature = getAddressSignature(userId, sender).getOrElse { AddressSignature.BlankSignature }
 
         return DraftFields(
             sender,
             Subject("${subjectPrefixForAction(action)} ${message.subject}"),
-            buildQuotedPlainTextBody(message, decryptedBody),
+            buildQuotedPlainTextBody(message, decryptedBody, senderAddressSignature),
             RecipientsTo(recipientsForAction(action, messageWithDecryptedBody.messageWithBody, sender)),
             RecipientsCc(ccRecipientsForAction(action, message)),
             RecipientsBcc(emptyList()),
@@ -77,8 +82,15 @@ class ParentMessageToDraftFields @Inject constructor(
         ).right()
     }
 
-    private fun buildQuotedPlainTextBody(message: Message, decryptedBody: DecryptedMessageBody): DraftBody {
-        if (decryptedBody.mimeType != MimeType.PlainText) {
+    private fun buildQuotedPlainTextBody(
+        message: Message,
+        decryptedBody: DecryptedMessageBody,
+        senderAddressSignature: AddressSignature
+    ): DraftBody {
+        if (decryptedBody.mimeType != MimeType.PlainText && senderAddressSignature.plaintext.isNotBlank()) {
+            // HTML quote is fully created elsewhere, but we still need to inject signature into editable body
+            return DraftBody("${AddressSignature.SeparatorPlaintext}${senderAddressSignature.plaintext}")
+        } else if (decryptedBody.mimeType != MimeType.PlainText) {
             return DraftBody("")
         }
 
@@ -88,6 +100,8 @@ class ParentMessageToDraftFields @Inject constructor(
             .joinToString(separator = PlainTextNewLine) { "$PlainTextQuotePrefix $it" }
 
         val raw = StringBuilder()
+            .append(if (senderAddressSignature.plaintext.isNotBlank()) AddressSignature.SeparatorPlaintext else "")
+            .append(if (senderAddressSignature.plaintext.isNotBlank()) senderAddressSignature.plaintext else "")
             .append(PlainTextNewLine)
             .append(PlainTextNewLine)
             .append(PlainTextNewLine)
