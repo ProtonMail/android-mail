@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.testdata.notifications
+package ch.protonmail.android.notifications
 
 import ch.protonmail.android.mailnotifications.domain.model.NotificationAction
 import ch.protonmail.android.mailnotifications.domain.model.PushNotification
