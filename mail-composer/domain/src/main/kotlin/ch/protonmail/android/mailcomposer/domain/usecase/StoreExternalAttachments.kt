@@ -34,7 +34,7 @@ class StoreExternalAttachments @Inject constructor(
     suspend operator fun invoke(
         userId: UserId,
         messageId: MessageId,
-        syncState: AttachmentSyncState = AttachmentSyncState.ParentUploaded
+        syncState: AttachmentSyncState = AttachmentSyncState.ExternalUploaded
     ) {
         val messageBody = messageRepository.getMessageWithBody(userId, messageId).getOrNull()?.messageBody
 

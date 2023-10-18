@@ -161,7 +161,7 @@ class AttachmentRepositoryImplTest {
     private fun expectLoadingAttachmentStateLoadsParentUploadedStateSuccessful() {
         coEvery {
             attachmentStateLocalDataSource.getAttachmentState(userId, messageId, attachmentId)
-        } returns AttachmentStateSample.RemoteAttachmentState.copy(state = AttachmentSyncState.ParentUploaded).right()
+        } returns AttachmentStateSample.RemoteAttachmentState.copy(state = AttachmentSyncState.ExternalUploaded).right()
     }
 
     private fun expectLoadingAttachmentStateLoadsLocalStateSuccessful() {

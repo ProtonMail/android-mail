@@ -23,6 +23,7 @@ import ch.protonmail.android.mailcomposer.domain.repository.AttachmentStateRepos
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import me.proton.core.domain.entity.UserId
+import timber.log.Timber
 import javax.inject.Inject
 
 class CreateOrUpdateParentAttachmentStates @Inject constructor(
@@ -35,17 +36,20 @@ class CreateOrUpdateParentAttachmentStates @Inject constructor(
         attachmentIds: List<AttachmentId>
     ) {
         attachmentIds
-            .map { it to attachmentStateRepository.getAttachmentState(userId, messageId, it) }
-            .map { it to it.second.getOrNull() }
-            .filter { it.second == null || it.second?.state == AttachmentSyncState.Parent }
-            .map { it.first.first }
+            .map { attachmentId ->
+                attachmentId to attachmentStateRepository.getAttachmentState(userId, messageId, attachmentId)
+                    .mapLeft { Timber.e("Failed to load attachmentId: $it") }
+                    .getOrNull()
+            }
+            .filter { it.second == null || it.second?.state == AttachmentSyncState.External }
+            .map { it.first }
             .let { filteredAttachmentIds ->
                 attachmentStateRepository.createOrUpdateLocalStates(
                     userId,
                     messageId,
                     filteredAttachmentIds,
-                    AttachmentSyncState.ParentUploaded
-                )
+                    AttachmentSyncState.ExternalUploaded
+                ).mapLeft { Timber.e("Failed to create or update local attachment state: $it") }
             }
     }
 }

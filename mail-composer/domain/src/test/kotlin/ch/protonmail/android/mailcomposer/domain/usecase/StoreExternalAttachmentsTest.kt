@@ -34,7 +34,7 @@ class StoreExternalAttachmentsTest {
             expectGetMessageWithBodySucceeds()
             expectGetAllAttachmentStatesForMessageSucceeds()
             val expectedAttachmentList = listOf(AttachmentId("embeddedImageId"))
-            expectCreateOrUpdateStatesSucceeds(expectedAttachmentList, AttachmentSyncState.ParentUploaded)
+            expectCreateOrUpdateStatesSucceeds(expectedAttachmentList, AttachmentSyncState.ExternalUploaded)
 
             // When
             storeExternalAttachments(userId, messageId)
@@ -45,7 +45,7 @@ class StoreExternalAttachmentsTest {
                     userId,
                     messageId,
                     expectedAttachmentList,
-                    AttachmentSyncState.ParentUploaded
+                    AttachmentSyncState.ExternalUploaded
                 )
             }
         }

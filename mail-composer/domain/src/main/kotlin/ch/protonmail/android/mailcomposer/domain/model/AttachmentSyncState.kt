@@ -21,8 +21,13 @@ package ch.protonmail.android.mailcomposer.domain.model
 enum class AttachmentSyncState(val value: Int) {
     Local(0),
     Uploaded(1),
-    Parent(2),
-    ParentUploaded(3);
+
+    /**
+     * External can be used for attachments coming from a forwarded messages or
+     * from an attachment which was added via a different client
+     */
+    External(2),
+    ExternalUploaded(3);
 
     companion object {
 

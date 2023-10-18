@@ -83,7 +83,7 @@ class StoreDraftWithParentAttachments @Inject constructor(
                 userId = userId,
                 messageId = messageId,
                 attachmentIds = parentAttachments.map { it.attachmentId },
-                syncState = AttachmentSyncState.Parent
+                syncState = AttachmentSyncState.External
             )
                 .mapLeft { Error.DraftAttachmentError }
                 .bind()

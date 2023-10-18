@@ -264,7 +264,7 @@ class UploadAttachmentsTest {
         // Given
         expectFindLocalDraftSuccessful()
         expectGetAllAttachmentStatesSuccessful(
-            listOf(AttachmentStateSample.LocalAttachmentState.copy(state = AttachmentSyncState.ParentUploaded))
+            listOf(AttachmentStateSample.LocalAttachmentState.copy(state = AttachmentSyncState.ExternalUploaded))
         )
 
         // When
@@ -283,7 +283,7 @@ class UploadAttachmentsTest {
         // Given
         expectFindLocalDraftSuccessful()
         expectGetAllAttachmentStatesSuccessful(
-            listOf(AttachmentStateSample.LocalAttachmentState.copy(state = AttachmentSyncState.Parent))
+            listOf(AttachmentStateSample.LocalAttachmentState.copy(state = AttachmentSyncState.External))
         )
 
         // When

@@ -41,7 +41,7 @@ class UpdateParentAttachmentStatesTest {
                     userId,
                     messageId,
                     attachmentIds,
-                    AttachmentSyncState.ParentUploaded
+                    AttachmentSyncState.ExternalUploaded
                 )
             }
         }
@@ -63,7 +63,7 @@ class UpdateParentAttachmentStatesTest {
                     userId,
                     messageId,
                     listOf(attachmentIds[0]),
-                    AttachmentSyncState.ParentUploaded
+                    AttachmentSyncState.ExternalUploaded
                 )
             }
         }
@@ -71,7 +71,7 @@ class UpdateParentAttachmentStatesTest {
     private fun expectAttachmentStateIsParent(attachmentId: AttachmentId) {
         coEvery {
             attachmentStateRepository.getAttachmentState(userId, messageId, attachmentId)
-        } returns AttachmentState(userId, messageId, attachmentId, AttachmentSyncState.Parent).right()
+        } returns AttachmentState(userId, messageId, attachmentId, AttachmentSyncState.External).right()
     }
 
     private fun expectAttachmentStateIsNull(attachmentId: AttachmentId) {
@@ -92,7 +92,7 @@ class UpdateParentAttachmentStatesTest {
                 userId,
                 messageId,
                 ids,
-                AttachmentSyncState.ParentUploaded
+                AttachmentSyncState.ExternalUploaded
             )
         } returns Unit.right()
     }

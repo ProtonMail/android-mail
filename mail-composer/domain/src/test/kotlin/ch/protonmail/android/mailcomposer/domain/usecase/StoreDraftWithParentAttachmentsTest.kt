@@ -99,7 +99,7 @@ class StoreDraftWithParentAttachmentsTest {
                 userId = userId,
                 messageId = expectedSavedDraft.message.messageId,
                 attachmentIds = expectedSavedDraft.messageBody.attachments.map { it.attachmentId },
-                syncState = AttachmentSyncState.Parent
+                syncState = AttachmentSyncState.External
             )
         }
         assertEquals(Unit.right(), result)
@@ -137,7 +137,7 @@ class StoreDraftWithParentAttachmentsTest {
                 userId = userId,
                 messageId = expectedSavedDraft.message.messageId,
                 attachmentIds = expectedAttachmentIds,
-                syncState = AttachmentSyncState.Parent
+                syncState = AttachmentSyncState.External
             )
         }
         assertEquals(Unit.right(), result)
@@ -248,7 +248,7 @@ class StoreDraftWithParentAttachmentsTest {
                 userId = userId,
                 messageId = expectedSavedDraft.message.messageId,
                 attachmentIds = expectedAttachments.map { it.attachmentId },
-                syncState = AttachmentSyncState.Parent
+                syncState = AttachmentSyncState.External
             )
         }
         assertEquals(Unit.right(), result)
@@ -277,7 +277,7 @@ class StoreDraftWithParentAttachmentsTest {
         attachments: List<AttachmentId>
     ) {
         coEvery {
-            storeParentAttachmentStates(userId, messageId, attachments, AttachmentSyncState.Parent)
+            storeParentAttachmentStates(userId, messageId, attachments, AttachmentSyncState.External)
         } returns Unit.right()
     }
 }
