@@ -18,24 +18,42 @@
 
 package ch.protonmail.android.mailcomposer.domain.usecase
 
-import arrow.core.Either
-import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcomposer.domain.model.AttachmentSyncState
 import ch.protonmail.android.mailcomposer.domain.repository.AttachmentStateRepository
-import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import me.proton.core.domain.entity.UserId
+import timber.log.Timber
 import javax.inject.Inject
 
-class StoreParentAttachmentStates @Inject constructor(
+class StoreExternalAttachments @Inject constructor(
+    private val messageRepository: MessageRepository,
     private val attachmentStateRepository: AttachmentStateRepository
 ) {
 
     suspend operator fun invoke(
         userId: UserId,
         messageId: MessageId,
-        attachmentIds: List<AttachmentId>,
-        syncState: AttachmentSyncState
-    ): Either<DataError, Unit> =
-        attachmentStateRepository.createOrUpdateLocalStates(userId, messageId, attachmentIds, syncState)
+        syncState: AttachmentSyncState = AttachmentSyncState.ParentUploaded
+    ) {
+        val messageBody = messageRepository.getMessageWithBody(userId, messageId).getOrNull()?.messageBody
+
+        if (messageBody == null) {
+            Timber.e("Failed to get message with body")
+            return
+        }
+
+        messageBody.attachments.let { attachments ->
+            val states = attachmentStateRepository.getAllAttachmentStatesForMessage(userId, messageId)
+            attachments
+                .filterNot { attachment -> attachment.attachmentId in states.map { it.attachmentId } }
+                .takeIf { it.isNotEmpty() }
+                ?.map { it.attachmentId }
+                ?.let { attachmentIds ->
+                    attachmentStateRepository.createOrUpdateLocalStates(userId, messageId, attachmentIds, syncState)
+                        .onLeft { Timber.e("Failed to create or update local states: $it") }
+                }
+        }
+
+    }
 }

@@ -26,7 +26,7 @@ class StoreParentAttachmentStatesTest {
     @Test
     fun `when store parent attachments is called then the attachment state repository is called`() = runTest {
         // Given
-        expectCreateOrUpdateStatesSucceeds()
+        expectCreateOrUpdateStatesSucceeds(expectedSyncState = AttachmentSyncState.Parent)
 
         // When
         val actual = storeParentAttachmentStates(userId, messageId, attachmentIds, AttachmentSyncState.Parent)
@@ -47,13 +47,16 @@ class StoreParentAttachmentStatesTest {
         assertEquals(DataError.Local.Unknown.left(), actual)
     }
 
-    private fun expectCreateOrUpdateStatesSucceeds() {
+    private fun expectCreateOrUpdateStatesSucceeds(
+        ids: List<AttachmentId> = attachmentIds,
+        expectedSyncState: AttachmentSyncState
+    ) {
         coEvery {
             attachmentStateRepository.createOrUpdateLocalStates(
                 userId,
                 messageId,
-                attachmentIds,
-                AttachmentSyncState.Parent
+                ids,
+                expectedSyncState
             )
         } returns Unit.right()
     }
@@ -68,5 +71,4 @@ class StoreParentAttachmentStatesTest {
             )
         } returns DataError.Local.Unknown.left()
     }
-
 }
