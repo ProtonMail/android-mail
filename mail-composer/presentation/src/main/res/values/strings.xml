@@ -45,4 +45,5 @@
     <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
     <string name="composer_attachment_size_exceeded_dialog_title">Attachment limit reached</string>
     <string name="composer_attachment_size_exceeded_dialog_message">The size limit for attachments is %1$s</string>
+    <string name="composer_attachment_reencryption_failed_message">Reencryption of attachment failed. For security reasons all attachments got removed.</string>
 </resources>

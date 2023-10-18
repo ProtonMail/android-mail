@@ -35,6 +35,7 @@ import ch.protonmail.android.mailcomposer.domain.model.RecipientsCc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsTo
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.domain.model.Subject
+import ch.protonmail.android.mailcomposer.domain.usecase.DeleteAllAttachments
 import ch.protonmail.android.mailcomposer.domain.usecase.DeleteAttachment
 import ch.protonmail.android.mailcomposer.domain.usecase.DraftUploader
 import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses
@@ -114,6 +115,7 @@ class ComposerViewModel @Inject constructor(
     private val styleQuotedHtml: StyleQuotedHtml,
     private val storeDraftWithParentAttachments: StoreDraftWithParentAttachments,
     private val deleteAttachment: DeleteAttachment,
+    private val deleteAllAttachments: DeleteAllAttachments,
     private val reEncryptAttachments: ReEncryptAttachments,
     getDecryptedDraftFields: GetDecryptedDraftFields,
     savedStateHandle: SavedStateHandle,
@@ -328,7 +330,10 @@ class ComposerViewModel @Inject constructor(
                 messageId = currentMessageId(),
                 previousSender = SenderEmail(state.value.fields.sender.email),
                 newSenderEmail = SenderEmail(action.sender.email)
-            )
+            ).onLeft {
+                Timber.e("Failed to re-encrypt attachments: $it")
+                handleReEncryptionFailed()
+            }
         }
         .fold(
             ifLeft = {
@@ -440,6 +445,11 @@ class ComposerViewModel @Inject constructor(
                 ifRight = { action }
             )
         } ?: action
+
+    private suspend fun handleReEncryptionFailed() {
+        deleteAllAttachments(primaryUserId(), currentSenderEmail(), currentMessageId())
+        emitNewStateFor(ComposerEvent.ErrorAttachmentsReEncryption)
+    }
 
     private fun emitNewStateFor(operation: ComposerOperation) {
         val currentState = state.value

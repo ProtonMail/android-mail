@@ -207,6 +207,11 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
         snackbarHostState.showSnackbar(type = ProtonSnackbarType.ERROR, message = error)
     }
 
+    val errorAttachmentReEncryption = stringResource(id = R.string.composer_attachment_reencryption_failed_message)
+    ConsumableLaunchedEffect(effect = state.attachmentsReEncryptionFailed) {
+        snackbarHostState.showSnackbar(type = ProtonSnackbarType.ERROR, message = errorAttachmentReEncryption)
+    }
+
     ConsumableLaunchedEffect(effect = state.changeBottomSheetVisibility) { show ->
         if (show) {
             dismissKeyboard(context, view, keyboardController)

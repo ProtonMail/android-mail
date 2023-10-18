@@ -36,6 +36,7 @@ import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiMod
 import ch.protonmail.android.mailmessage.presentation.model.NO_ATTACHMENT_LIMIT
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 class ComposerReducer @Inject constructor(
     private val attachmentUiModelMapper: AttachmentUiModelMapper
 ) {

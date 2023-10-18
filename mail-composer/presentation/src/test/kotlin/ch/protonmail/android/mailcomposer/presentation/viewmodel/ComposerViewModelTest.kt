@@ -43,6 +43,8 @@ import ch.protonmail.android.mailcomposer.domain.model.RecipientsTo
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.domain.model.StyledHtmlQuote
 import ch.protonmail.android.mailcomposer.domain.model.Subject
+import ch.protonmail.android.mailcomposer.domain.usecase.AttachmentReEncryptionError
+import ch.protonmail.android.mailcomposer.domain.usecase.DeleteAllAttachments
 import ch.protonmail.android.mailcomposer.domain.usecase.DeleteAttachment
 import ch.protonmail.android.mailcomposer.domain.usecase.DraftUploader
 import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses
@@ -93,6 +95,7 @@ import ch.protonmail.android.testdata.contact.ContactSample
 import ch.protonmail.android.testdata.message.DecryptedMessageBodyTestData
 import io.mockk.Called
 import io.mockk.coEvery
+import io.mockk.coJustRun
 import io.mockk.coVerify
 import io.mockk.coVerifyOrder
 import io.mockk.every
@@ -152,6 +155,7 @@ class ComposerViewModelTest {
     private val parentMessageToDraftFields = mockk<ParentMessageToDraftFields>()
     private val storeDraftWithParentAttachments = mockk<StoreDraftWithParentAttachments>()
     private val deleteAttachment = mockk<DeleteAttachment>()
+    private val deleteAllAttachments = mockk<DeleteAllAttachments>()
     private val observeMailFeature = mockk<ObserveMailFeature> {
         coEvery {
             this@mockk.invoke(any(), MailFeatureId.AddAttachmentsToDraft)
@@ -195,6 +199,7 @@ class ComposerViewModelTest {
             styleQuotedHtml,
             storeDraftWithParentAttachments,
             deleteAttachment,
+            deleteAllAttachments,
             reEncryptAttachments,
             getDecryptedDraftFields,
             savedStateHandle,
@@ -843,6 +848,33 @@ class ComposerViewModelTest {
         coVerify(exactly = 1) {
             reEncryptAttachments(expectedUserId, expectedMessageId, previousSenderEmail, expectedSenderEmail)
         }
+    }
+
+    @Test
+    fun `emits all attachment deleted when re-encryption of attachment failed`() = runTest {
+        // Given
+        val expectedDraftBody = DraftBody("")
+        val previousSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+        val expectedSenderEmail = SenderEmail(UserAddressSample.AliasAddress.email)
+        val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val action = ComposerAction.SenderChanged(SenderUiModel(expectedSenderEmail.value))
+        expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        expectStoreDraftBodySucceeds(expectedMessageId, expectedDraftBody, null, expectedSenderEmail, expectedUserId)
+        expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
+        expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
+        expectObserveMailFeature(expectedUserId) { emptyFlow() }
+        expectObservedMessageAttachments(expectedUserId, expectedMessageId)
+        expectReEncryptAttachmentFails(expectedUserId, expectedMessageId, previousSenderEmail, expectedSenderEmail)
+        expectDeleteAllAttachmentsSucceeds(expectedUserId, previousSenderEmail, expectedMessageId)
+
+        // When
+        viewModel.submit(action)
+
+        // Then
+        val currentState = viewModel.state.value
+        assertEquals(Effect.of(Unit), currentState.attachmentsReEncryptionFailed)
     }
 
     @Test
@@ -1497,7 +1529,8 @@ class ComposerViewModelTest {
             isAddAttachmentsButtonVisible = false,
             closeComposerWithMessageSending = Effect.empty(),
             closeComposerWithMessageSendingOffline = Effect.empty(),
-            attachmentsFileSizeExceeded = Effect.empty()
+            attachmentsFileSizeExceeded = Effect.empty(),
+            attachmentsReEncryptionFailed = Effect.empty()
         )
 
         mockkObject(ComposerDraftState.Companion)
@@ -1718,6 +1751,21 @@ class ComposerViewModelTest {
         newSenderEmail: SenderEmail
     ) {
         coEvery { reEncryptAttachments(userId, messageId, previousSenderEmail, newSenderEmail) } returns Unit.right()
+    }
+
+    private fun expectReEncryptAttachmentFails(
+        userId: UserId,
+        messageId: MessageId,
+        previousSenderEmail: SenderEmail,
+        newSenderEmail: SenderEmail
+    ) {
+        coEvery {
+            reEncryptAttachments(userId, messageId, previousSenderEmail, newSenderEmail)
+        } returns AttachmentReEncryptionError.FailedToEncryptAttachmentKeyPackets.left()
+    }
+
+    private fun expectDeleteAllAttachmentsSucceeds(userId: UserId, senderEmail: SenderEmail, messageId: MessageId) {
+        coJustRun { deleteAllAttachments(userId, senderEmail, messageId) }
     }
 
     private fun mockParticipantMapper() {
