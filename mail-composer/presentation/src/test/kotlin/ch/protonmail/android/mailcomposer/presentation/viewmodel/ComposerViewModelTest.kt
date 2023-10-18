@@ -64,6 +64,7 @@ import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithBodyError
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithParentAttachments
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithRecipients
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithSubject
+import ch.protonmail.android.mailcomposer.domain.usecase.StoreExternalAttachments
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailcomposer.presentation.mapper.ParticipantMapper
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
@@ -135,6 +136,7 @@ class ComposerViewModelTest {
     private val storeDraftWithBodyMock = mockk<StoreDraftWithBody>()
     private val storeDraftWithSubjectMock = mockk<StoreDraftWithSubject>()
     private val storeDraftWithRecipientsMock = mockk<StoreDraftWithRecipients>()
+    private val storeExternalAttachmentStates = mockk<StoreExternalAttachments>()
     private val sendMessageMock = mockk<SendMessage>()
     private val networkManagerMock = mockk<NetworkManager>()
     private val getContactsMock = mockk<GetContacts>()
@@ -182,6 +184,7 @@ class ComposerViewModelTest {
             storeDraftWithSubjectMock,
             storeDraftWithAllFields,
             storeDraftWithRecipientsMock,
+            storeExternalAttachmentStates,
             getContactsMock,
             participantMapperMock,
             reducer,
@@ -238,6 +241,7 @@ class ComposerViewModelTest {
         expectStartDraftSync(expectedUserId, messageId)
         expectObservedMessageAttachments(expectedUserId, messageId)
         expectNoInputDraftAction()
+        expectStoreParentAttachmentSucceeds(expectedUserId, messageId)
 
 
         // When
@@ -1082,6 +1086,7 @@ class ComposerViewModelTest {
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedDraftId)
         expectNoInputDraftAction()
+        expectStoreParentAttachmentSucceeds(expectedUserId, expectedDraftId)
 
         // When
         val actual = viewModel.state.value
@@ -1102,6 +1107,7 @@ class ComposerViewModelTest {
         expectStartDraftSync(expectedUserId, expectedDraftId)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedDraftId)
+        expectStoreParentAttachmentSucceeds(expectedUserId, expectedDraftId)
         expectNoInputDraftAction()
 
         // When
@@ -1119,6 +1125,7 @@ class ComposerViewModelTest {
             null
         )
         assertEquals(expectedComposerFields, actual.fields)
+        coVerify { storeExternalAttachmentStates(expectedUserId, expectedDraftId) }
     }
 
     @Test
@@ -1238,6 +1245,7 @@ class ComposerViewModelTest {
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectNoInputDraftAction()
         expectObservedMessageAttachments(expectedUserId, expectedDraftId)
+        expectStoreParentAttachmentSucceeds(expectedUserId, expectedDraftId)
 
         // When
         viewModel.submit(ComposerAction.OnAddAttachments)
@@ -1258,6 +1266,7 @@ class ComposerViewModelTest {
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectNoInputDraftAction()
         expectObservedMessageAttachments(expectedUserId, expectedDraftId)
+        expectStoreParentAttachmentSucceeds(expectedUserId, expectedDraftId)
 
         // When
         viewModel.submit(ComposerAction.OnBottomSheetOptionSelected)
@@ -1293,6 +1302,7 @@ class ComposerViewModelTest {
         expectDecryptedDraftDataSuccess(expectedUserId, expectedDraftId) { expectedFields }
         expectStartDraftSync(expectedUserId, expectedDraftId)
         expectObservedMessageAttachments(expectedUserId, expectedDraftId)
+        expectStoreParentAttachmentSucceeds(expectedUserId, expectedDraftId)
 
         // When
         viewModel.state.test {
@@ -1337,6 +1347,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, messageId)
         expectNoInputDraftAction()
         expectAttachmentDeleteSucceeds(expectedUserId, expectedSenderEmail, messageId, expectedAttachmentId)
+        expectStoreParentAttachmentSucceeds(expectedUserId, messageId)
 
         // When
         viewModel.submit(ComposerAction.RemoveAttachment(expectedAttachmentId))
@@ -1381,6 +1392,7 @@ class ComposerViewModelTest {
         expectStartDraftSync(expectedUserId, messageId)
         expectObservedMessageAttachments(expectedUserId, messageId)
         expectNoInputDraftAction()
+        expectStoreParentAttachmentSucceeds(expectedUserId, messageId)
 
 
         // When
@@ -1743,6 +1755,9 @@ class ComposerViewModelTest {
         coEvery { deleteAttachment(userId, senderEmail, messageId, attachmentId) } returns Unit.right()
     }
 
+    private fun expectStoreParentAttachmentSucceeds(userId: UserId, messageId: MessageId) {
+        coJustRun { storeExternalAttachmentStates(userId, messageId) }
+    }
 
     private fun expectReEncryptAttachmentSucceeds(
         userId: UserId,

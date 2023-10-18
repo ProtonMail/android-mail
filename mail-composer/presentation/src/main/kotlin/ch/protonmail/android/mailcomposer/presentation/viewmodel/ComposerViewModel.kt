@@ -55,6 +55,7 @@ import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithBody
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithParentAttachments
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithRecipients
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithSubject
+import ch.protonmail.android.mailcomposer.domain.usecase.StoreExternalAttachments
 import ch.protonmail.android.mailcomposer.presentation.mapper.ParticipantMapper
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState
@@ -98,6 +99,7 @@ class ComposerViewModel @Inject constructor(
     private val storeDraftWithSubject: StoreDraftWithSubject,
     private val storeDraftWithAllFields: StoreDraftWithAllFields,
     private val storeDraftWithRecipients: StoreDraftWithRecipients,
+    private val storeExternalAttachments: StoreExternalAttachments,
     private val getContacts: GetContacts,
     private val participantMapper: ParticipantMapper,
     private val reducer: ComposerReducer,
@@ -189,6 +191,7 @@ class ComposerViewModel @Inject constructor(
             getDecryptedDraftFields(primaryUserId(), currentMessageId())
                 .onRight { draftFields ->
                     Timber.d("Opening existing draft with body $draftFields")
+                    storeExternalAttachments(primaryUserId(), currentMessageId())
                     startDraftContinuousUpload()
                     emitNewStateFor(ComposerEvent.PrefillDraftDataReceived(draftFields.toDraftUiModel()))
                 }
