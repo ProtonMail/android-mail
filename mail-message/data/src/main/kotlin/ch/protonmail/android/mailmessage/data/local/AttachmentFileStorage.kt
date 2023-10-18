@@ -156,6 +156,19 @@ class AttachmentFileStorage @Inject constructor(
 
     suspend fun deleteCachedAttachmentsOfMessage(userId: UserId, messageId: String): Boolean =
         internalFileStorage.deleteCachedFolder(userId, InternalFileStorage.Folder.MessageAttachments(messageId))
+
+    suspend fun copyCachedAttachmentToMessage(
+        userId: UserId,
+        sourceMessageId: String,
+        targetMessageId: String,
+        attachmentId: String
+    ) = internalFileStorage.copyCachedFileToNonCachedFolder(
+        userId,
+        InternalFileStorage.Folder.MessageAttachments(sourceMessageId),
+        InternalFileStorage.FileIdentifier(attachmentId),
+        InternalFileStorage.Folder.MessageAttachments(targetMessageId),
+        InternalFileStorage.FileIdentifier(attachmentId)
+    )
 }
 
 object AttachmentFileReadException : RuntimeException()

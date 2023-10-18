@@ -43,7 +43,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
-import org.junit.Test
+import kotlin.test.Test
 import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -384,6 +384,67 @@ internal class AttachmentFileStorageTest {
 
         // Then
         assertTrue(result)
+    }
+
+    @Test
+    fun `should copy cached attachment from one message to another`() = runTest {
+        // Given
+        val newMessageId = MessageId + "_new"
+        val resultFileMock = mockk<File>()
+        coEvery {
+            internalFileStorageMock.copyCachedFileToNonCachedFolder(
+                userId = UserId,
+                sourceFolder = InternalFileStorage.Folder.MessageAttachments(MessageId),
+                sourceFileIdentifier = InternalFileStorage.FileIdentifier(AttachmentId),
+                targetFolder = InternalFileStorage.Folder.MessageAttachments(newMessageId),
+                targetFileIdentifier = InternalFileStorage.FileIdentifier(AttachmentId)
+            )
+        } returns resultFileMock
+
+        // When
+        val result = attachmentFileStorage.copyCachedAttachmentToMessage(UserId, MessageId, newMessageId, AttachmentId)
+
+        // Then
+        coVerify {
+            internalFileStorageMock.copyCachedFileToNonCachedFolder(
+                userId = UserId,
+                sourceFolder = InternalFileStorage.Folder.MessageAttachments(MessageId),
+                sourceFileIdentifier = InternalFileStorage.FileIdentifier(AttachmentId),
+                targetFolder = InternalFileStorage.Folder.MessageAttachments(newMessageId),
+                targetFileIdentifier = InternalFileStorage.FileIdentifier(AttachmentId)
+            )
+        }
+        assertEquals(resultFileMock, result)
+    }
+
+    @Test
+    fun `should return null when copying cached attachment from one message to another fails`() = runTest {
+        // Given
+        val newMessageId = MessageId + "_new"
+        coEvery {
+            internalFileStorageMock.copyCachedFileToNonCachedFolder(
+                userId = UserId,
+                sourceFolder = InternalFileStorage.Folder.MessageAttachments(MessageId),
+                sourceFileIdentifier = InternalFileStorage.FileIdentifier(AttachmentId),
+                targetFolder = InternalFileStorage.Folder.MessageAttachments(newMessageId),
+                targetFileIdentifier = InternalFileStorage.FileIdentifier(AttachmentId)
+            )
+        } returns null
+
+        // When
+        val result = attachmentFileStorage.copyCachedAttachmentToMessage(UserId, MessageId, newMessageId, AttachmentId)
+
+        // Then
+        coVerify {
+            internalFileStorageMock.copyCachedFileToNonCachedFolder(
+                userId = UserId,
+                sourceFolder = InternalFileStorage.Folder.MessageAttachments(MessageId),
+                sourceFileIdentifier = InternalFileStorage.FileIdentifier(AttachmentId),
+                targetFolder = InternalFileStorage.Folder.MessageAttachments(newMessageId),
+                targetFileIdentifier = InternalFileStorage.FileIdentifier(AttachmentId)
+            )
+        }
+        assertNull(result)
     }
 
     object TestData {

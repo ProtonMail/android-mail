@@ -22,6 +22,7 @@ import java.io.ByteArrayInputStream
 import java.io.File
 import android.content.Context
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
@@ -36,7 +37,7 @@ import me.proton.core.domain.entity.UserId
 import me.proton.core.util.kotlin.HashUtils
 import org.junit.After
 import org.junit.Before
-import org.junit.Test
+import kotlin.test.Test
 
 class InternalFileStorageTest {
 
@@ -652,7 +653,7 @@ class InternalFileStorageTest {
         // Given
         coEvery {
             fileHelperMock.renameFile(
-                folder = FileHelper.Folder(CompleteAttachmentFolderPath),
+                folder = FileHelper.Folder("$CompleteAttachmentFolderPath${MessageId.Raw}/"),
                 oldFilename = FileHelper.Filename(FileIdentifier.EncodedDigestFileIdentifier),
                 newFilename = FileHelper.Filename(FileIdentifier.EncodedDigestFileIdentifierNew)
             )
@@ -670,12 +671,51 @@ class InternalFileStorageTest {
         assertTrue(fileDeleted)
     }
 
+    @Test
+    fun `should copy a file using correct sanitized source and target folders and files`() = runTest {
+        // Given
+        val sourceFolder = MessageId.Raw
+        val targetFolder = MessageId.RawNew
+        val sourceFile = FileIdentifier.RawFileIdentifier
+        val targetFile = FileIdentifier.RawFileIdentifierNew
+        val resultFileMock = mockk<File>()
+        coEvery {
+            fileHelperMock.copyFile(
+                sourceFolder = FileHelper.Folder("$CompleteCachedAttachmentFolderPath$sourceFolder/"),
+                sourceFilename = FileHelper.Filename(FileIdentifier.EncodedDigestFileIdentifier),
+                targetFolder = FileHelper.Folder("$CompleteAttachmentFolderPath$targetFolder/"),
+                targetFilename = FileHelper.Filename(FileIdentifier.EncodedDigestFileIdentifierNew)
+            )
+        } returns resultFileMock
+
+        // When
+        val fileCopied = internalFileStorage.copyCachedFileToNonCachedFolder(
+            userId = UserId.Object,
+            sourceFolder = InternalFileStorage.Folder.MessageAttachments(sourceFolder),
+            sourceFileIdentifier = InternalFileStorage.FileIdentifier(sourceFile),
+            targetFolder = InternalFileStorage.Folder.MessageAttachments(targetFolder),
+            targetFileIdentifier = InternalFileStorage.FileIdentifier(targetFile)
+        )
+
+        // Then
+        coVerify {
+            fileHelperMock.copyFile(
+                sourceFolder = FileHelper.Folder("$CompleteCachedAttachmentFolderPath$sourceFolder/"),
+                sourceFilename = FileHelper.Filename(FileIdentifier.EncodedDigestFileIdentifier),
+                targetFolder = FileHelper.Folder("$CompleteAttachmentFolderPath$targetFolder/"),
+                targetFilename = FileHelper.Filename(FileIdentifier.EncodedDigestFileIdentifierNew)
+            )
+        }
+        assertEquals(resultFileMock, fileCopied)
+    }
+
     @Suppress("MaxLineLength")
     private companion object TestData {
 
         object MessageId {
 
             const val Raw = "message_id"
+            const val RawNew = "message_id_new"
             const val EncodedDigest = "message_id_encoded_digest"
         }
 
@@ -696,10 +736,11 @@ class InternalFileStorageTest {
 
         const val InternalStoragePath = "/some/path/to/internal/storage"
         const val CompleteFolderPath = "$InternalStoragePath/${UserId.EncodedDigest}/message_bodies/"
-        const val CompleteAttachmentFolderPath = "$InternalStoragePath/${UserId.EncodedDigest}/attachments/${MessageId.Raw}/"
+        const val CompleteAttachmentFolderPath = "$InternalStoragePath/${UserId.EncodedDigest}/attachments/"
 
         const val CachedStoragePath = "/some/path/to/cache/storage"
         const val CompleteCachedFolderPath = "$CachedStoragePath/${UserId.EncodedDigest}/message_bodies/"
+        const val CompleteCachedAttachmentFolderPath = "$CachedStoragePath/${UserId.EncodedDigest}/attachments/"
 
         const val MessageBody = "I am a message body"
     }

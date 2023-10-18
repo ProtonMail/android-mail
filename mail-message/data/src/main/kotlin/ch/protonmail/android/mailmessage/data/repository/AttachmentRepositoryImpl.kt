@@ -150,4 +150,12 @@ class AttachmentRepositoryImpl @Inject constructor(
     ): Either<DataError, Unit> = localDataSource.updateMessageAttachment(
         userId, messageId, localAttachmentId, attachment
     )
+
+    override suspend fun copyMimeAttachmentsToMessage(
+        userId: UserId,
+        sourceMessageId: MessageId,
+        targetMessageId: MessageId,
+        attachmentIds: List<AttachmentId>
+    ): Either<DataError.Local, Unit> =
+        localDataSource.copyMimeAttachmentsToMessage(userId, sourceMessageId, targetMessageId, attachmentIds)
 }

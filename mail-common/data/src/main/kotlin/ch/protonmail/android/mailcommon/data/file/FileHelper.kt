@@ -110,6 +110,18 @@ class FileHelper @Inject constructor(
         }
     }
 
+    suspend fun copyFile(
+        sourceFolder: Folder,
+        sourceFilename: Filename,
+        targetFolder: Folder,
+        targetFilename: Filename
+    ): File? = fileOperationIn(sourceFolder, targetFolder) {
+        runCatching {
+            fileFactory.fileFrom(sourceFolder, sourceFilename)
+                .copyTo(fileFactory.fileFrom(targetFolder, targetFilename))
+        }.getOrNull()
+    }
+
     suspend fun deleteFile(folder: Folder, filename: Filename): Boolean = fileOperationIn(folder) {
         runCatching {
             fileFactory.fileFrom(folder, filename).delete()
@@ -122,10 +134,10 @@ class FileHelper @Inject constructor(
         }.getOrNull()
     } ?: false
 
-    private suspend fun <T> fileOperationIn(folder: Folder, operation: () -> T): T? =
+    private suspend fun <T> fileOperationIn(vararg folders: Folder, operation: () -> T): T? =
         withContext(dispatcherProvider.Io) {
-            if (folder.isBlacklisted()) {
-                Timber.w("Trying to access a blacklisted file directory: ${folder.path}")
+            if (folders.any { it.isBlacklisted() }) {
+                Timber.w("Trying to access a blacklisted file directory: ${folders.map { it.path }}")
                 null
             } else {
                 operation()
@@ -144,11 +156,9 @@ class FileHelper @Inject constructor(
 
     private fun String.normalised() = File(this).normalize().path
 
-    @JvmInline
-    value class Folder(val path: String)
+    data class Folder(val path: String)
 
-    @JvmInline
-    value class Filename(val value: String)
+    data class Filename(val value: String)
 
     class FileStreamFactory @Inject constructor() {
 

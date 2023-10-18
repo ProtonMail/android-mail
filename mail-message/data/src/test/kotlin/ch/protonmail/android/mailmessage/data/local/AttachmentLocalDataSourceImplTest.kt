@@ -39,6 +39,7 @@ import ch.protonmail.android.mailmessage.data.mapper.MessageAttachmentEntityMapp
 import ch.protonmail.android.mailmessage.data.mapper.toMessageAttachmentMetadata
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.testdata.message.MessageAttachmentEntityTestData
@@ -697,6 +698,64 @@ class AttachmentLocalDataSourceImplTest {
 
         // When
         val actual = attachmentLocalDataSource.upsertMimeAttachment(userId, messageId, attachmentId, attachmentContent)
+
+        // Then
+        assertEquals(DataError.Local.FailedToStoreFile.left(), actual)
+    }
+
+    @Test
+    fun `should return Unit when copying mime attachments to message was successful`() = runTest {
+        // Given
+        val targetMessageId = MessageId(messageId.id + "_new")
+        coEvery {
+            attachmentFileStorage.copyCachedAttachmentToMessage(
+                userId = userId,
+                sourceMessageId = messageId.id,
+                targetMessageId = targetMessageId.id,
+                attachmentId = attachmentId.id
+            )
+        } returns mockk()
+
+        // When
+        val actual = attachmentLocalDataSource.copyMimeAttachmentsToMessage(
+            userId = userId,
+            sourceMessageId = messageId,
+            targetMessageId = targetMessageId,
+            attachmentIds = listOf(attachmentId)
+        )
+
+        // Then
+        assertEquals(Unit.right(), actual)
+        coVerify(exactly = 1) {
+            attachmentFileStorage.copyCachedAttachmentToMessage(
+                userId = userId,
+                sourceMessageId = messageId.id,
+                targetMessageId = targetMessageId.id,
+                attachmentId = attachmentId.id
+            )
+        }
+    }
+
+    @Test
+    fun `should return local error when copying mime attachments to message has failed`() = runTest {
+        // Given
+        val targetMessageId = MessageId(messageId.id + "_new")
+        coEvery {
+            attachmentFileStorage.copyCachedAttachmentToMessage(
+                userId = userId,
+                sourceMessageId = messageId.id,
+                targetMessageId = targetMessageId.id,
+                attachmentId = attachmentId.id
+            )
+        } returns null
+
+        // When
+        val actual = attachmentLocalDataSource.copyMimeAttachmentsToMessage(
+            userId = userId,
+            sourceMessageId = messageId,
+            targetMessageId = targetMessageId,
+            attachmentIds = listOf(attachmentId)
+        )
 
         // Then
         assertEquals(DataError.Local.FailedToStoreFile.left(), actual)

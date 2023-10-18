@@ -317,6 +317,23 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
             DataError.Local.Unknown
         }
 
+    override suspend fun copyMimeAttachmentsToMessage(
+        userId: UserId,
+        sourceMessageId: MessageId,
+        targetMessageId: MessageId,
+        attachmentIds: List<AttachmentId>
+    ): Either<DataError.Local, Unit> {
+        attachmentIds.forEach {
+            attachmentFileStorage.copyCachedAttachmentToMessage(
+                userId,
+                sourceMessageId.id,
+                targetMessageId.id,
+                it.id
+            ) ?: return DataError.Local.FailedToStoreFile.left()
+        }
+        return Unit.right()
+    }
+
     override suspend fun getFileSizeFromUri(uri: Uri) =
         uriHelper.getFileInformationFromUri(uri)?.size?.right() ?: DataError.Local.NoDataCached.left()
 

@@ -173,6 +173,19 @@ class InternalFileStorage @Inject constructor(
         folder = FileHelper.Folder("${userId.asRootCacheDirectory()}${folder.path}")
     )
 
+    suspend fun copyCachedFileToNonCachedFolder(
+        userId: UserId,
+        sourceFolder: Folder,
+        sourceFileIdentifier: FileIdentifier,
+        targetFolder: Folder,
+        targetFileIdentifier: FileIdentifier
+    ): File? = fileHelper.copyFile(
+        sourceFolder = FileHelper.Folder("${userId.asRootCacheDirectory()}${sourceFolder.path}"),
+        sourceFilename = FileHelper.Filename(sourceFileIdentifier.value.asSanitisedPath()),
+        targetFolder = FileHelper.Folder("${userId.asRootDirectory()}${targetFolder.path}"),
+        targetFilename = FileHelper.Filename(targetFileIdentifier.value.asSanitisedPath())
+    )
+
     private suspend fun UserId.asRootDirectory() = withContext(ioDispatcher) {
         "${applicationContext.filesDir}/${id.asSanitisedPath()}/"
     }

@@ -97,4 +97,11 @@ interface AttachmentRepository {
         localAttachmentId: AttachmentId,
         attachment: MessageAttachment
     ): Either<DataError, Unit>
+
+    suspend fun copyMimeAttachmentsToMessage(
+        userId: UserId,
+        sourceMessageId: MessageId,
+        targetMessageId: MessageId,
+        attachmentIds: List<AttachmentId>
+    ): Either<DataError.Local, Unit>
 }

@@ -149,6 +149,13 @@ interface AttachmentLocalDataSource {
         attachmentId: AttachmentId
     ): Either<DataError.Local, Unit>
 
+    suspend fun copyMimeAttachmentsToMessage(
+        userId: UserId,
+        sourceMessageId: MessageId,
+        targetMessageId: MessageId,
+        attachmentIds: List<AttachmentId>
+    ): Either<DataError.Local, Unit>
+
     suspend fun getFileSizeFromUri(uri: Uri): Either<DataError, Long>
 
 }

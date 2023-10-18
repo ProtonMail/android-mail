@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcommon.data.file
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 import android.content.Context
@@ -40,9 +41,9 @@ import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.test.runTest
 import me.proton.core.test.kotlin.TestDispatcherProvider
 import me.proton.core.util.kotlin.EMPTY_STRING
-import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
+import kotlin.test.Test
 import kotlin.test.assertNull
 
 internal open class FileHelperTest(folderPath: String) {
@@ -343,6 +344,54 @@ internal class AllowedFoldersFileHelperTest(folderPath: String) : FileHelperTest
             unmockkStatic(File::renameTo)
         }
 
+    @Test
+    fun `should return file when copying it from a source folder to a target folder was successful`() =
+        runTest(testDispatcherProvider.Main) {
+            // Given
+            mockkStatic(File::copyTo)
+            val sourceFolder = FileHelper.Folder(folder.path + "_source")
+            val sourceFilename = FileHelper.Filename(filename.value + "_source")
+            val targetFolder = FileHelper.Folder(folder.path + "_target")
+            val targetFilename = FileHelper.Filename(filename.value + "_target")
+            val sourceFileMock = mockk<File>()
+            val targetFileMock = mockk<File>()
+            every { sourceFileMock.copyTo(targetFileMock) } returns targetFileMock
+            every { fileFactoryMock.fileFrom(sourceFolder, sourceFilename) } returns sourceFileMock
+            every { fileFactoryMock.fileFrom(targetFolder, targetFilename) } returns targetFileMock
+
+            // When
+            val copiedFile = fileHelper.copyFile(sourceFolder, sourceFilename, targetFolder, targetFilename)
+
+            // Then
+            assertEquals(targetFileMock, copiedFile)
+            verify { sourceFileMock.copyTo(targetFileMock) }
+            mockkStatic(File::copyTo)
+        }
+
+    @Test
+    fun `should return null when copying file from a source folder to a target folder has failed`() =
+        runTest(testDispatcherProvider.Main) {
+            // Given
+            mockkStatic(File::copyTo)
+            val sourceFolder = FileHelper.Folder(folder.path + "_source")
+            val sourceFilename = FileHelper.Filename(filename.value + "_source")
+            val targetFolder = FileHelper.Folder(folder.path + "_target")
+            val targetFilename = FileHelper.Filename(filename.value + "_target")
+            val sourceFileMock = mockk<File>()
+            val targetFileMock = mockk<File>()
+            every { sourceFileMock.copyTo(targetFileMock) } throws IOException()
+            every { fileFactoryMock.fileFrom(sourceFolder, sourceFilename) } returns sourceFileMock
+            every { fileFactoryMock.fileFrom(targetFolder, targetFilename) } returns targetFileMock
+
+            // When
+            val copiedFile = fileHelper.copyFile(sourceFolder, sourceFilename, targetFolder, targetFilename)
+
+            // Then
+            assertNull(copiedFile)
+            verify { sourceFileMock.copyTo(targetFileMock) }
+            mockkStatic(File::copyTo)
+        }
+
     companion object {
 
         private val allowedFolders = listOf(
@@ -498,6 +547,27 @@ internal class BlacklistedFoldersFileHelperTest(folderPath: String) : FileHelper
             assertFalse(fileRenamed)
             verify(exactly = 0) { fileMock.renameTo(newFileMock) }
             unmockkStatic(File::renameTo)
+        }
+
+    @Test
+    fun `should return null when trying to copy a file from a restricted folder`() =
+        runTest(testDispatcherProvider.Main) {
+            // Given
+            mockkStatic(File::copyTo)
+            val sourceFolder = FileHelper.Folder(folder.path + "_source")
+            val sourceFilename = FileHelper.Filename(filename.value + "_source")
+            val targetFolder = FileHelper.Folder(folder.path + "_target")
+            val targetFilename = FileHelper.Filename(filename.value + "_target")
+            val sourceFileMock = mockk<File>()
+            val targetFileMock = mockk<File>()
+
+            // When
+            val copiedFile = fileHelper.copyFile(sourceFolder, sourceFilename, targetFolder, targetFilename)
+
+            // Then
+            assertNull(copiedFile)
+            verify(exactly = 0) { sourceFileMock.copyTo(targetFileMock) }
+            mockkStatic(File::copyTo)
         }
 
     companion object {
