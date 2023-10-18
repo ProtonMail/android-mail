@@ -48,12 +48,15 @@ import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
 import ch.protonmail.android.mailmailbox.domain.usecase.GetMailboxActions
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkConversationsAsRead
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkConversationsAsUnread
+import ch.protonmail.android.mailmailbox.domain.usecase.MarkMessagesAsRead
+import ch.protonmail.android.mailmailbox.domain.usecase.MarkMessagesAsUnread
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
 import ch.protonmail.android.mailmailbox.presentation.helper.MailboxAsyncPagingDataDiffer
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxViewModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.MailboxItemUiModelMapper
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
@@ -62,6 +65,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilter
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxStateSampleData
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxReducer
 import ch.protonmail.android.mailmailbox.presentation.paging.MailboxPagerFactory
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.testdata.contact.ContactTestData
@@ -102,6 +106,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import me.proton.core.domain.entity.UserId
 import me.proton.core.featureflag.domain.entity.FeatureFlag
+import me.proton.core.mailsettings.domain.entity.ViewMode
 import me.proton.core.mailsettings.domain.entity.ViewMode.ConversationGrouping
 import me.proton.core.mailsettings.domain.entity.ViewMode.NoConversationGrouping
 import me.proton.core.test.kotlin.TestDispatcherProvider
@@ -110,6 +115,7 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 import ch.protonmail.android.mailconversation.domain.entity.Conversation as DomainConversation
+import ch.protonmail.android.mailmessage.domain.model.Message as DomainMessage
 
 class MailboxViewModelTest {
 
@@ -169,6 +175,8 @@ class MailboxViewModelTest {
 
     private val markConversationsAsRead = mockk<MarkConversationsAsRead>()
     private val markConversationsAsUnread = mockk<MarkConversationsAsUnread>()
+    private val markMessagesAsRead = mockk<MarkMessagesAsRead>()
+    private val markMessagesAsUnread = mockk<MarkMessagesAsUnread>()
 
     private val mailboxViewModel by lazy {
         MailboxViewModel(
@@ -185,6 +193,8 @@ class MailboxViewModelTest {
             getContacts = getContacts,
             markConversationsAsRead = markConversationsAsRead,
             markConversationsAsUnread = markConversationsAsUnread,
+            markMessagesAsRead = markMessagesAsRead,
+            markMessagesAsUnread = markMessagesAsUnread,
             mailboxReducer = mailboxReducer,
             observeMailFeature = observeMailFeature,
             dispatchersProvider = TestDispatcherProvider()
@@ -424,12 +434,8 @@ class MailboxViewModelTest {
                     listOf(ActionUiModelSample.Archive, ActionUiModelSample.Trash)
                 )
             )
-            every {
-                mailboxReducer.newStateFrom(any(), MailboxEvent.SelectedLabelCountChanged(5))
-            } returns intermediateState
-            every {
-                mailboxReducer.newStateFrom(intermediateState, MailboxEvent.EnterSelectionMode(item))
-            } returns expectedSelectionState
+            expectedSelectedLabelCountStateChange(intermediateState)
+            returnExpectedStateWhenEnterSelectionMode(intermediateState, item, expectedSelectionState)
             returnExpectedStateForBottomBarEvent(expectedSelectionState, expectedBottomBarState)
 
             mailboxViewModel.state.test {
@@ -457,12 +463,8 @@ class MailboxViewModelTest {
                     listOf(ActionUiModelSample.Archive, ActionUiModelSample.Trash)
                 )
             )
-            every {
-                mailboxReducer.newStateFrom(any(), MailboxEvent.SelectedLabelCountChanged(5))
-            } returns intermediateState
-            every {
-                mailboxReducer.newStateFrom(intermediateState, MailboxEvent.EnterSelectionMode(item))
-            } returns expectedSelectionState
+            expectedSelectedLabelCountStateChange(intermediateState)
+            returnExpectedStateWhenEnterSelectionMode(intermediateState, item, expectedSelectionState)
             returnExpectedStateForBottomBarEvent(expectedSelectionState, expectedBottomBarState)
 
             mailboxViewModel.state.test {
@@ -495,12 +497,8 @@ class MailboxViewModelTest {
             selectedMailboxItemUiModels = listOf(item),
             bottomBarAction = expectedBottomBarActions
         )
-        every {
-            mailboxReducer.newStateFrom(any(), MailboxEvent.SelectedLabelCountChanged(5))
-        } returns intermediateState
-        every {
-            mailboxReducer.newStateFrom(intermediateState, MailboxEvent.EnterSelectionMode(item))
-        } returns expectedState
+        expectedSelectedLabelCountStateChange(intermediateState)
+        returnExpectedStateWhenEnterSelectionMode(intermediateState, item, expectedState)
         every {
             mailboxReducer.newStateFrom(
                 currentState = expectedState,
@@ -539,12 +537,8 @@ class MailboxViewModelTest {
             selectedMailboxItemUiModels = listOf(item),
             bottomBarAction = expectedBottomBarActions
         )
-        every {
-            mailboxReducer.newStateFrom(any(), MailboxEvent.SelectedLabelCountChanged(5))
-        } returns dataState
-        every {
-            mailboxReducer.newStateFrom(dataState, MailboxEvent.EnterSelectionMode(item))
-        } returns intermediateSelectionState
+        expectedSelectedLabelCountStateChange(dataState)
+        returnExpectedStateWhenEnterSelectionMode(dataState, item, intermediateSelectionState)
         every {
             mailboxReducer.newStateFrom(
                 currentState = intermediateSelectionState,
@@ -587,12 +581,8 @@ class MailboxViewModelTest {
             val item = readMailboxItemUiModel
             val initialState = createMailboxDataState()
             val intermediateState = MailboxStateSampleData.createSelectionMode(listOf(item))
-            every {
-                mailboxReducer.newStateFrom(any(), MailboxEvent.SelectedLabelCountChanged(5))
-            } returns initialState
-            every {
-                mailboxReducer.newStateFrom(initialState, MailboxEvent.EnterSelectionMode(item))
-            } returns intermediateState
+            expectedSelectedLabelCountStateChange(initialState)
+            returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
             returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
             every {
                 mailboxReducer.newStateFrom(
@@ -637,12 +627,8 @@ class MailboxViewModelTest {
             val initialState = createMailboxDataState()
             val intermediateState = MailboxStateSampleData.createSelectionMode(listOf(item, secondItem))
             val expectedState = MailboxStateSampleData.createSelectionMode(listOf(secondItem))
-            every {
-                mailboxReducer.newStateFrom(any(), MailboxEvent.SelectedLabelCountChanged(5))
-            } returns initialState
-            every {
-                mailboxReducer.newStateFrom(initialState, MailboxEvent.EnterSelectionMode(item))
-            } returns intermediateState
+            expectedSelectedLabelCountStateChange(initialState)
+            returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
             returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
             every {
                 mailboxReducer.newStateFrom(
@@ -849,10 +835,8 @@ class MailboxViewModelTest {
         val expectedState = createMailboxDataState(
             openEffect = Effect.of(OpenMailboxItemRequest(MailboxItemId(item.id), Conversation, false))
         )
-        every { observeCurrentViewMode(userId = any()) } returns flowOf(NoConversationGrouping)
-        every {
-            mailboxReducer.newStateFrom(any(), MailboxEvent.SelectedLabelCountChanged(5))
-        } returns intermediateState
+        expectViewMode(NoConversationGrouping)
+        expectedSelectedLabelCountStateChange(intermediateState)
         every {
             mailboxReducer.newStateFrom(
                 intermediateState,
@@ -877,10 +861,8 @@ class MailboxViewModelTest {
             selectedMailLabelId = MailLabelId.System.Drafts,
             openEffect = Effect.of(OpenMailboxItemRequest(MailboxItemId(item.id), Conversation, true))
         )
-        every { observeCurrentViewMode(userId = any()) } returns flowOf(NoConversationGrouping)
-        every {
-            mailboxReducer.newStateFrom(any(), MailboxEvent.SelectedLabelCountChanged(5))
-        } returns intermediateState
+        expectViewMode(NoConversationGrouping)
+        expectedSelectedLabelCountStateChange(intermediateState)
         every {
             mailboxReducer.newStateFrom(
                 intermediateState,
@@ -994,9 +976,7 @@ class MailboxViewModelTest {
 
         every { observeCurrentViewMode(userId = any()) } returns flowOf(ConversationGrouping)
 
-        every {
-            mailboxReducer.newStateFrom(any(), MailboxEvent.SelectedLabelCountChanged(5))
-        } returns intermediateState
+        expectedSelectedLabelCountStateChange(intermediateState)
         every {
             mailboxReducer.newStateFrom(
                 intermediateState,
@@ -1230,18 +1210,12 @@ class MailboxViewModelTest {
             val expectedState = MailboxStateSampleData.createSelectionMode(
                 listOf(item.copy(isRead = true), secondItem.copy(isRead = true))
             )
-            every { observeCurrentViewMode(any()) } returns flowOf(ConversationGrouping)
-            every {
-                mailboxReducer.newStateFrom(any(), MailboxEvent.SelectedLabelCountChanged(5))
-            } returns initialState
-            every {
-                mailboxReducer.newStateFrom(initialState, MailboxEvent.EnterSelectionMode(item))
-            } returns intermediateState
+            expectViewMode(ConversationGrouping)
+            expectedSelectedLabelCountStateChange(initialState)
+            returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
             returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
-            every { mailboxReducer.newStateFrom(intermediateState, MailboxViewAction.MarkAsRead) } returns expectedState
-            coEvery {
-                markConversationsAsRead(userId, listOf(ConversationId(item.id), ConversationId(secondItem.id)))
-            } returns emptyList<DomainConversation>().right()
+            returnExpectedStateForMarkAsRead(intermediateState, expectedState)
+            expectMarkConversationsAsReadSucceeds(userId, listOf(item, secondItem))
 
             mailboxViewModel.state.test {
                 // Given
@@ -1262,10 +1236,9 @@ class MailboxViewModelTest {
                 // Then
                 assertEquals(expectedState, awaitItem())
                 coVerify(exactly = 1) {
-                    markConversationsAsRead(
-                        userId, listOf(ConversationId(item.id), ConversationId(secondItem.id))
-                    )
+                    markConversationsAsRead(userId, listOf(ConversationId(item.id), ConversationId(secondItem.id)))
                 }
+                coVerify { markMessagesAsRead wasNot Called }
             }
         }
 
@@ -1279,21 +1252,13 @@ class MailboxViewModelTest {
         val expectedState = MailboxStateSampleData.createSelectionMode(
             listOf(item.copy(isRead = true), secondItem.copy(isRead = true))
         )
-        every { observeCurrentViewMode(any()) } returns flowOf(ConversationGrouping)
-        every {
-            mailboxReducer.newStateFrom(any(), MailboxEvent.SelectedLabelCountChanged(5))
-        } returns initialState
-        every {
-            mailboxReducer.newStateFrom(initialState, MailboxEvent.EnterSelectionMode(item))
-        } returns intermediateState
+        expectViewMode(ConversationGrouping)
+        expectedSelectedLabelCountStateChange(initialState)
+        returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
         returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
-        every { mailboxReducer.newStateFrom(intermediateState, MailboxViewAction.MarkAsRead) } returns expectedState
-        coEvery {
-            markConversationsAsRead(userId, listOf(ConversationId(item.id)))
-        } returns emptyList<DomainConversation>().right()
-        coEvery {
-            markConversationsAsRead(userId1, listOf(ConversationId(secondItem.id)))
-        } returns emptyList<DomainConversation>().right()
+        returnExpectedStateForMarkAsRead(intermediateState, expectedState)
+        expectMarkConversationsAsReadSucceeds(userId, listOf(item))
+        expectMarkConversationsAsReadSucceeds(userId1, listOf(secondItem))
 
         mailboxViewModel.state.test {
             // Given
@@ -1331,23 +1296,12 @@ class MailboxViewModelTest {
             val expectedState = MailboxStateSampleData.createSelectionMode(
                 listOf(item.copy(isRead = false), secondItem.copy(isRead = false))
             )
-            every { observeCurrentViewMode(any()) } returns flowOf(ConversationGrouping)
-            every {
-                mailboxReducer.newStateFrom(any(), MailboxEvent.SelectedLabelCountChanged(5))
-            } returns initialState
-            every {
-                mailboxReducer.newStateFrom(initialState, MailboxEvent.EnterSelectionMode(item))
-            } returns intermediateState
+            expectViewMode(ConversationGrouping)
+            expectedSelectedLabelCountStateChange(initialState)
+            returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
             returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
-            every {
-                mailboxReducer.newStateFrom(
-                    intermediateState,
-                    MailboxViewAction.MarkAsUnread
-                )
-            } returns expectedState
-            coEvery {
-                markConversationsAsUnread(userId, listOf(ConversationId(item.id), ConversationId(secondItem.id)))
-            } returns emptyList<DomainConversation>().right()
+            returnExpectedStateForMarkAsUnread(intermediateState, expectedState)
+            expectMarkConversationsAsUnreadSucceeds(userId, listOf(item, secondItem))
 
             mailboxViewModel.state.test {
                 // Given
@@ -1370,6 +1324,7 @@ class MailboxViewModelTest {
                 coVerify(exactly = 1) {
                     markConversationsAsUnread(userId, listOf(ConversationId(item.id), ConversationId(secondItem.id)))
                 }
+                coVerify { markMessagesAsUnread wasNot Called }
             }
         }
 
@@ -1384,26 +1339,13 @@ class MailboxViewModelTest {
             val expectedState = MailboxStateSampleData.createSelectionMode(
                 listOf(item.copy(isRead = false), secondItem.copy(isRead = false))
             )
-            every { observeCurrentViewMode(any()) } returns flowOf(ConversationGrouping)
-            every {
-                mailboxReducer.newStateFrom(any(), MailboxEvent.SelectedLabelCountChanged(5))
-            } returns initialState
-            every {
-                mailboxReducer.newStateFrom(initialState, MailboxEvent.EnterSelectionMode(item))
-            } returns intermediateState
+            expectViewMode(ConversationGrouping)
+            expectedSelectedLabelCountStateChange(initialState)
+            returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
             returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
-            every {
-                mailboxReducer.newStateFrom(
-                    intermediateState,
-                    MailboxViewAction.MarkAsUnread
-                )
-            } returns expectedState
-            coEvery {
-                markConversationsAsUnread(userId, listOf(ConversationId(item.id)))
-            } returns emptyList<DomainConversation>().right()
-            coEvery {
-                markConversationsAsUnread(userId1, listOf(ConversationId(secondItem.id)))
-            } returns emptyList<DomainConversation>().right()
+            returnExpectedStateForMarkAsUnread(intermediateState, expectedState)
+            expectMarkConversationsAsUnreadSucceeds(userId, listOf(item))
+            expectMarkConversationsAsUnreadSucceeds(userId1, listOf(secondItem))
 
             mailboxViewModel.state.test {
                 // Given
@@ -1429,6 +1371,178 @@ class MailboxViewModelTest {
                 }
             }
         }
+
+    @Test
+    fun `when mark as read is triggered for no conversation grouping then mark messages as read use case is called`() =
+        runTest {
+            // Given
+            val item = readMailboxItemUiModel
+            val secondItem = unreadMailboxItemUiModel
+            val initialState = createMailboxDataState()
+            val intermediateState = MailboxStateSampleData.createSelectionMode(listOf(item, secondItem))
+            val expectedState = MailboxStateSampleData.createSelectionMode(
+                listOf(item.copy(isRead = true), secondItem.copy(isRead = true))
+            )
+            expectViewMode(NoConversationGrouping)
+            expectedSelectedLabelCountStateChange(initialState)
+            returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
+            returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
+            returnExpectedStateForMarkAsRead(intermediateState, expectedState)
+            expectMarkMessagesAsReadSucceeds(userId, listOf(item, secondItem))
+
+            mailboxViewModel.state.test {
+                // Given
+                awaitItem() // First emission for selected user
+
+                // When
+                mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
+
+                // Then
+                assertEquals(intermediateState, awaitItem())
+                verify(exactly = 1) {
+                    mailboxReducer.newStateFrom(initialState, MailboxEvent.EnterSelectionMode(item))
+                }
+
+                // When
+                mailboxViewModel.submit(MailboxViewAction.MarkAsRead)
+
+                // Then
+                assertEquals(expectedState, awaitItem())
+                coVerify(exactly = 1) {
+                    markMessagesAsRead(userId, listOf(MessageId(item.id), MessageId(secondItem.id)))
+                }
+                coVerify { markConversationsAsRead wasNot Called }
+            }
+        }
+
+    @Test
+    fun `verify mark messages read action triggers mark messages read use case for each user id`() = runTest {
+        // Given
+        val item = readMailboxItemUiModel.copy(userId = userId)
+        val secondItem = unreadMailboxItemUiModel.copy(userId = userId1)
+        val initialState = createMailboxDataState()
+        val intermediateState = MailboxStateSampleData.createSelectionMode(listOf(item, secondItem))
+        val expectedState = MailboxStateSampleData.createSelectionMode(
+            listOf(item.copy(isRead = true), secondItem.copy(isRead = true))
+        )
+        expectViewMode(NoConversationGrouping)
+        expectedSelectedLabelCountStateChange(initialState)
+        returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
+        returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
+        returnExpectedStateForMarkAsRead(intermediateState, expectedState)
+        expectMarkMessagesAsReadSucceeds(userId, listOf(item))
+        expectMarkMessagesAsReadSucceeds(userId1, listOf(secondItem))
+
+        mailboxViewModel.state.test {
+            // Given
+            awaitItem() // First emission for selected user
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
+
+            // Then
+            assertEquals(intermediateState, awaitItem())
+            verify(exactly = 1) {
+                mailboxReducer.newStateFrom(initialState, MailboxEvent.EnterSelectionMode(item))
+            }
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.MarkAsRead)
+
+            // Then
+            assertEquals(expectedState, awaitItem())
+            coVerifySequence {
+                markMessagesAsRead(userId, listOf(MessageId(item.id)))
+                markMessagesAsRead(userId1, listOf(MessageId(secondItem.id)))
+            }
+        }
+    }
+
+    @Test
+    fun `when mark as unread is triggered for no conversation grouping then mark messages as unread is called`() =
+        runTest {
+            // Given
+            val item = readMailboxItemUiModel
+            val secondItem = unreadMailboxItemUiModel
+            val initialState = createMailboxDataState()
+            val intermediateState = MailboxStateSampleData.createSelectionMode(listOf(item, secondItem))
+            val expectedState = MailboxStateSampleData.createSelectionMode(
+                listOf(item.copy(isRead = true), secondItem.copy(isRead = true))
+            )
+            expectViewMode(NoConversationGrouping)
+            expectedSelectedLabelCountStateChange(initialState)
+            returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
+            returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
+            returnExpectedStateForMarkAsUnread(intermediateState, expectedState)
+            expectMarkMessagesAsUnreadSucceeds(userId, listOf(item, secondItem))
+
+            mailboxViewModel.state.test {
+                // Given
+                awaitItem() // First emission for selected user
+
+                // When
+                mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
+
+                // Then
+                assertEquals(intermediateState, awaitItem())
+                verify(exactly = 1) {
+                    mailboxReducer.newStateFrom(initialState, MailboxEvent.EnterSelectionMode(item))
+                }
+
+                // When
+                mailboxViewModel.submit(MailboxViewAction.MarkAsUnread)
+
+                // Then
+                assertEquals(expectedState, awaitItem())
+                coVerify(exactly = 1) {
+                    markMessagesAsUnread(userId, listOf(MessageId(item.id), MessageId(secondItem.id)))
+                }
+                coVerify { markConversationsAsUnread wasNot Called }
+            }
+        }
+
+    @Test
+    fun `verify mark messages unread action triggers mark messages unread use case for each user id`() = runTest {
+        // Given
+        val item = readMailboxItemUiModel.copy(userId = userId)
+        val secondItem = unreadMailboxItemUiModel.copy(userId = userId1)
+        val initialState = createMailboxDataState()
+        val intermediateState = MailboxStateSampleData.createSelectionMode(listOf(item, secondItem))
+        val expectedState = MailboxStateSampleData.createSelectionMode(
+            listOf(item.copy(isRead = true), secondItem.copy(isRead = true))
+        )
+        expectViewMode(NoConversationGrouping)
+        expectedSelectedLabelCountStateChange(initialState)
+        returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
+        returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
+        returnExpectedStateForMarkAsUnread(intermediateState, expectedState)
+        expectMarkMessagesAsUnreadSucceeds(userId, listOf(item))
+        expectMarkMessagesAsUnreadSucceeds(userId1, listOf(secondItem))
+
+        mailboxViewModel.state.test {
+            // Given
+            awaitItem() // First emission for selected user
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
+
+            // Then
+            assertEquals(intermediateState, awaitItem())
+            verify(exactly = 1) {
+                mailboxReducer.newStateFrom(initialState, MailboxEvent.EnterSelectionMode(item))
+            }
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.MarkAsUnread)
+
+            // Then
+            assertEquals(expectedState, awaitItem())
+            coVerifySequence {
+                markMessagesAsUnread(userId, listOf(MessageId(item.id)))
+                markMessagesAsUnread(userId1, listOf(MessageId(secondItem.id)))
+            }
+        }
+    }
 
     @Test
     fun `mailbox items are not requested when a user account is removed`() = runTest {
@@ -1500,5 +1614,65 @@ class MailboxViewModelTest {
                 )
             )
         } returns expectedState
+    }
+
+    private fun returnExpectedStateForMarkAsUnread(
+        intermediateState: MailboxState,
+        expectedState: MailboxState
+    ) {
+        every {
+            mailboxReducer.newStateFrom(intermediateState, MailboxViewAction.MarkAsUnread)
+        } returns expectedState
+    }
+
+    private fun returnExpectedStateWhenEnterSelectionMode(
+        initialState: MailboxState,
+        item: MailboxItemUiModel,
+        intermediateState: MailboxState
+    ) {
+        every {
+            mailboxReducer.newStateFrom(initialState, MailboxEvent.EnterSelectionMode(item))
+        } returns intermediateState
+    }
+
+    private fun expectedSelectedLabelCountStateChange(initialState: MailboxState) {
+        every {
+            mailboxReducer.newStateFrom(any(), MailboxEvent.SelectedLabelCountChanged(5))
+        } returns initialState
+    }
+
+    private fun expectViewMode(viewMode: ViewMode) {
+        every { observeCurrentViewMode(any()) } returns flowOf(viewMode)
+    }
+
+    private fun returnExpectedStateForMarkAsRead(
+        intermediateState: MailboxState,
+        expectedState: MailboxState
+    ) {
+        every { mailboxReducer.newStateFrom(intermediateState, MailboxViewAction.MarkAsRead) } returns expectedState
+    }
+
+    private fun expectMarkConversationsAsReadSucceeds(userId: UserId, items: List<MailboxItemUiModel>) {
+        coEvery {
+            markConversationsAsRead(userId, items.map { ConversationId(it.id) })
+        } returns emptyList<DomainConversation>().right()
+    }
+
+    private fun expectMarkConversationsAsUnreadSucceeds(userId: UserId, items: List<MailboxItemUiModel>) {
+        coEvery {
+            markConversationsAsUnread(userId, items.map { ConversationId(it.id) })
+        } returns emptyList<DomainConversation>().right()
+    }
+
+    private fun expectMarkMessagesAsReadSucceeds(userId: UserId, items: List<MailboxItemUiModel>) {
+        coEvery {
+            markMessagesAsRead(userId, items.map { MessageId(it.id) })
+        } returns emptyList<DomainMessage>().right()
+    }
+
+    private fun expectMarkMessagesAsUnreadSucceeds(userId: UserId, items: List<MailboxItemUiModel>) {
+        coEvery {
+            markMessagesAsUnread(userId, items.map { MessageId(it.id) })
+        } returns emptyList<DomainMessage>().right()
     }
 }
