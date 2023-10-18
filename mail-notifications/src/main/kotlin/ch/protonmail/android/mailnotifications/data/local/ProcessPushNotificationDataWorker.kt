@@ -18,21 +18,24 @@
 
 package ch.protonmail.android.mailnotifications.data.local
 
+import java.time.Instant
 import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import ch.protonmail.android.mailcommon.presentation.system.NotificationProvider
 import ch.protonmail.android.mailnotifications.R
+import ch.protonmail.android.mailnotifications.data.local.ProcessPushNotificationDataWorkerUtils.getNewLoginNotificationGroupForUserId
+import ch.protonmail.android.mailnotifications.data.local.ProcessPushNotificationDataWorkerUtils.getNewLoginNotificationIdForUserId
+import ch.protonmail.android.mailnotifications.data.local.ProcessPushNotificationDataWorkerUtils.isNewLoginNotification
+import ch.protonmail.android.mailnotifications.data.local.ProcessPushNotificationDataWorkerUtils.isNewMessageNotification
 import ch.protonmail.android.mailnotifications.domain.AppInBackgroundState
 import ch.protonmail.android.mailnotifications.domain.NotificationsDeepLinkHelper
-import ch.protonmail.android.mailnotifications.domain.model.NotificationAction
-import ch.protonmail.android.mailnotifications.domain.model.NotificationType
-import ch.protonmail.android.mailnotifications.domain.model.PushNotification
 import ch.protonmail.android.mailnotifications.domain.model.PushNotificationData
-import ch.protonmail.android.mailnotifications.domain.model.PushNotificationSender
 import ch.protonmail.android.mailnotifications.domain.proxy.NotificationManagerCompatProxy
 import ch.protonmail.android.mailnotifications.domain.usecase.DecryptNotificationContent
 import dagger.assisted.Assisted
@@ -57,22 +60,16 @@ class ProcessPushNotificationDataWorker @AssistedInject constructor(
     private val notificationManagerCompatProxy: NotificationManagerCompatProxy
 ) : CoroutineWorker(context, workerParameters) {
 
-    override suspend fun doWork(): Result = if (appInBackgroundState.isAppInBackground()) {
-        processNotification(super.getApplicationContext())
-    } else {
-        Result.success()
-    }
-
-    private suspend fun processNotification(context: Context): Result {
-        val sessionId = inputData.getString(KEY_PUSH_NOTIFICATION_UID)
-        val encryptedNotification = inputData.getString(KEY_PUSH_NOTIFICATION_ENCRYPTED_MESSAGE)
+    override suspend fun doWork(): Result {
+        val sessionId = inputData.getString(KeyPushNotificationUid)
+        val encryptedNotification = inputData.getString(KeyPushNotificationEncryptedMessage)
 
         return if (sessionId.isNullOrEmpty() || encryptedNotification.isNullOrEmpty()) {
             Result.failure(
-                workDataOf(KEY_PROCESS_PUSH_NOTIFICATION_DATA_ERROR to "Input data is missing")
+                workDataOf(KeyProcessPushNotificationDataError to "Input data is missing")
             )
         } else {
-            processNotification(context, SessionId(sessionId), encryptedNotification)
+            processNotification(applicationContext, SessionId(sessionId), encryptedNotification)
         }
     }
 
@@ -83,46 +80,99 @@ class ProcessPushNotificationDataWorker @AssistedInject constructor(
     ): Result {
         val notificationUserId = sessionManager.getUserId(sessionId)
             ?: return Result.failure(
-                workDataOf(
-                    KEY_PROCESS_PUSH_NOTIFICATION_DATA_ERROR to "User is unknown or inactive"
-                )
+                workDataOf(KeyProcessPushNotificationDataError to "User is unknown or inactive")
             )
 
         val userId = UserId(notificationUserId.id)
         val user = userManager.getUser(userId)
         val decryptedNotification = decryptNotificationContent(userId, encryptedNotification).getOrNull()
+            ?: return Result.failure(
+                workDataOf(KeyProcessPushNotificationDataError to "Unable to decrypt notification content.")
+            )
+
+        val data = decryptedNotification.value.data ?: return Result.failure(
+            workDataOf(KeyProcessPushNotificationDataError to "Push Notification data is null.")
+        )
 
         Timber.d("Decrypted data: $decryptedNotification")
 
         return when {
-            decryptedNotification == null -> Result.failure(
-                workDataOf(
-                    KEY_PROCESS_PUSH_NOTIFICATION_DATA_ERROR to "Error decrypting the notification content."
-                )
-            )
-
-            !isCreatedMessageNotification(decryptedNotification.value) ||
-                decryptedNotification.value.data == null ||
-                decryptedNotification.value.data.sender == null -> Result.success()
-
-            else -> processNotification(
+            isNewMessageNotification(decryptedNotification.value) &&
+                appInBackgroundState.isAppInBackground() -> processNewMessageNotification(
                 context,
                 user,
-                decryptedNotification.value.data.sender,
-                decryptedNotification.value.data
+                data
             )
+
+            isNewLoginNotification(decryptedNotification.value) -> {
+                processNewLoginNotification(
+                    context,
+                    user,
+                    data
+                )
+            }
+
+            else -> Result.success()
         }
     }
 
-    private fun processNotification(
+    private fun processNewLoginNotification(
         context: Context,
         user: User,
-        sender: PushNotificationSender,
         notificationData: PushNotificationData
     ): Result {
+        val notificationTitle = notificationData.sender?.senderName
+            ?: context.getString(R.string.notification_title_text_new_login_alerts_fallback)
+
+        val notificationUrl = notificationData.url
+        val notificationGroup = getNewLoginNotificationGroupForUserId(user.userId)
+        val viewIntent = Intent(Intent.ACTION_VIEW, Uri.parse(notificationUrl))
+        val contentPendingIntent = PendingIntent.getActivities(
+            context,
+            notificationUrl.hashCode(),
+            arrayOf(viewIntent),
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        val notification = notificationProvider.provideLoginNotificationBuilder(
+            context = context,
+            userAddress = user.email ?: "",
+            contentTitle = notificationTitle,
+            contentText = notificationData.body,
+            group = notificationGroup,
+            autoCancel = true
+        ).apply { setContentIntent(contentPendingIntent) }.build()
+
+        val groupNotification = notificationProvider.provideLoginNotificationBuilder(
+            context = context,
+            userAddress = user.email ?: "",
+            contentTitle = notificationTitle,
+            contentText = context.getString(R.string.notification_summary_text_new_login_alerts),
+            group = notificationGroup,
+            isGroupSummary = true,
+            autoCancel = true
+        ).apply { setContentIntent(contentPendingIntent) }.build()
+
+        notificationManagerCompatProxy.run {
+            showNotification(Instant.now().hashCode(), notification)
+            showNotification(getNewLoginNotificationIdForUserId(user.userId), groupNotification)
+        }
+
+        return Result.success()
+    }
+
+    private fun processNewMessageNotification(
+        context: Context,
+        user: User,
+        notificationData: PushNotificationData
+    ): Result {
+        val sender = notificationData.sender
+        val notificationTitle = sender?.senderName?.ifEmpty { sender.senderAddress }
+            ?: context.getString(R.string.notification_title_text_new_message_fallback)
+
         val notification = notificationProvider.provideEmailNotificationBuilder(
             context = context,
-            contentTitle = sender.senderName.ifEmpty { sender.senderAddress },
+            contentTitle = notificationTitle,
             subText = user.email ?: "",
             contentText = notificationData.body,
             group = user.userId.id,
@@ -141,9 +191,10 @@ class ProcessPushNotificationDataWorker @AssistedInject constructor(
                 )
             )
         }.build()
+
         val groupNotification = notificationProvider.provideEmailNotificationBuilder(
             context = context,
-            contentTitle = sender.senderName,
+            contentTitle = notificationTitle,
             subText = user.email ?: "",
             contentText = context.getString(R.string.notification_summary_text_new_messages),
             group = user.userId.id,
@@ -162,27 +213,24 @@ class ProcessPushNotificationDataWorker @AssistedInject constructor(
                 )
             )
         }.build()
+
         notificationManagerCompatProxy.run {
             showNotification(notificationData.messageId.hashCode(), notification)
             showNotification(user.userId.id.hashCode(), groupNotification)
         }
-        return Result.success()
-    }
 
-    private fun isCreatedMessageNotification(pushNotification: PushNotification): Boolean {
-        return NotificationType.fromStringOrNull(pushNotification.type) == NotificationType.EMAIL &&
-            pushNotification.data?.action == NotificationAction.CREATED
+        return Result.success()
     }
 
     companion object {
 
-        private const val KEY_PUSH_NOTIFICATION_UID = "UID"
-        private const val KEY_PUSH_NOTIFICATION_ENCRYPTED_MESSAGE = "encryptedMessage"
-        private const val KEY_PROCESS_PUSH_NOTIFICATION_DATA_ERROR = "ProcessPushNotificationDataError"
+        const val KeyPushNotificationUid = "UID"
+        const val KeyPushNotificationEncryptedMessage = "encryptedMessage"
+        const val KeyProcessPushNotificationDataError = "ProcessPushNotificationDataError"
 
         fun params(uid: String, encryptedNotification: String) = mapOf(
-            KEY_PUSH_NOTIFICATION_UID to uid,
-            KEY_PUSH_NOTIFICATION_ENCRYPTED_MESSAGE to encryptedNotification
+            KeyPushNotificationUid to uid,
+            KeyPushNotificationEncryptedMessage to encryptedNotification
         )
     }
 }

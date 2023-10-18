@@ -53,11 +53,19 @@ class NotificationProvider @Inject constructor(
             channelName = R.string.email_notification_channel_name,
             channelDescription = R.string.email_notification_channel_description
         )
+
+        // New logins
+        createNotificationChannel(
+            context = context,
+            channelId = LOGIN_CHANNEL_ID,
+            channelName = R.string.login_notification_channel_name,
+            channelDescription = R.string.login_notification_channel_description,
+            importance = NotificationManager.IMPORTANCE_HIGH
+        )
     }
 
     fun provideNotificationChannel(channelId: ChannelId): NotificationChannel =
         notificationManager.getNotificationChannel(channelId)
-
 
     fun provideNotification(
         context: Context,
@@ -92,6 +100,31 @@ class NotificationProvider @Inject constructor(
         }
     }
 
+    fun provideLoginNotificationBuilder(
+        context: Context,
+        userAddress: String,
+        contentTitle: String,
+        contentText: String,
+        group: String,
+        isGroupSummary: Boolean = false,
+        autoCancel: Boolean = false
+    ): NotificationCompat.Builder {
+        val channel = provideNotificationChannel(LOGIN_CHANNEL_ID)
+        val style = NotificationCompat.BigTextStyle().run {
+            setSummaryText(userAddress)
+            bigText(contentText)
+        }
+        return NotificationCompat.Builder(context, channel.id).apply {
+            setStyle(style)
+            setContentTitle(contentTitle)
+            setSmallIcon(R.drawable.ic_proton_brand_proton_mail)
+            setContentText(contentText)
+            setGroup(group)
+            setGroupSummary(isGroupSummary)
+            setAutoCancel(autoCancel)
+        }
+    }
+
     private fun createNotificationChannel(
         context: Context,
         channelId: ChannelId,
@@ -111,5 +144,6 @@ class NotificationProvider @Inject constructor(
 
         const val ATTACHMENT_CHANNEL_ID: ChannelId = "attachment_channel_id"
         const val EMAIL_CHANNEL_ID: ChannelId = "email_channel_id"
+        const val LOGIN_CHANNEL_ID: ChannelId = "login_channel_id"
     }
 }

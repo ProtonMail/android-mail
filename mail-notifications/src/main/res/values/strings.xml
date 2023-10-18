@@ -18,4 +18,7 @@
 
 <resources>
     <string name="notification_summary_text_new_messages">New messages</string>
+    <string name="notification_summary_text_new_login_alerts">New login alerts</string>
+    <string name="notification_title_text_new_login_alerts_fallback">Proton Mail</string>
+    <string name="notification_title_text_new_message_fallback">New message</string>
 </resources>
