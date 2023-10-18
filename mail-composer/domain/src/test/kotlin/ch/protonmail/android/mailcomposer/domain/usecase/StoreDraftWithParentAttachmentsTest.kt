@@ -24,14 +24,17 @@ import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcomposer.domain.model.AttachmentSyncState
 import ch.protonmail.android.mailcomposer.domain.model.DraftAction
+import ch.protonmail.android.mailcomposer.domain.model.MessageWithDecryptedBody
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
+import ch.protonmail.android.mailmessage.domain.repository.AttachmentRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
 import ch.protonmail.android.test.utils.FakeTransactor
 import ch.protonmail.android.test.utils.rule.LoggingTestRule
+import ch.protonmail.android.testdata.message.DecryptedMessageBodyTestData
 import io.mockk.Called
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -41,7 +44,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import org.junit.Rule
-import org.junit.Test
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class StoreDraftWithParentAttachmentsTest {
@@ -53,12 +56,14 @@ class StoreDraftWithParentAttachmentsTest {
     private val draftMessageId = MessageIdSample.build()
     private val senderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
 
+    private val attachmentRepository = mockk<AttachmentRepository>()
     private val saveDraftMock = mockk<SaveDraft>()
     private val getLocalDraftMock = mockk<GetLocalDraft>()
     private val storeParentAttachmentStates = mockk<StoreParentAttachmentStates>()
     private val fakeTransactor = FakeTransactor()
 
     private val storeDraftWithParentAttachments = StoreDraftWithParentAttachments(
+        attachmentRepository,
         getLocalDraftMock,
         saveDraftMock,
         storeParentAttachmentStates,
@@ -68,19 +73,25 @@ class StoreDraftWithParentAttachmentsTest {
     @Test
     fun `store draft with all attachments when action is forward`() = runTest {
         // Given
-        val expectedParentMessage = MessageWithBodySample.MessageWithAttachments
-        val expectedAction = DraftAction.Forward(expectedParentMessage.message.messageId)
+        val expectedParentMessage = MessageWithDecryptedBody(
+            MessageWithBodySample.MessageWithAttachments,
+            DecryptedMessageBodyTestData.MessageWithAttachments
+        )
+        val expectedAction = DraftAction.Forward(expectedParentMessage.messageWithBody.message.messageId)
         val draftWithBody = expectedGetLocalDraft(userId, draftMessageId, senderEmail) {
             MessageWithBodySample.EmptyDraft
         }
         val expectedSavedDraft = draftWithBody.copy(
-            messageBody = draftWithBody.messageBody.copy(attachments = expectedParentMessage.messageBody.attachments)
+            messageBody = draftWithBody.messageBody.copy(
+                attachments = expectedParentMessage.decryptedMessageBody.attachments
+            )
         )
         givenSaveDraftSucceeds(expectedSavedDraft, userId)
         givenStoreParentAttachmentsSucceeds(
-            userId,
-            expectedSavedDraft.message.messageId,
-            expectedSavedDraft.messageBody.attachments.map { it.attachmentId }
+            userId = userId,
+            messageId = expectedSavedDraft.message.messageId,
+            attachments = expectedSavedDraft.messageBody.attachments.map { it.attachmentId },
+            syncState = AttachmentSyncState.External
         )
 
         // When
@@ -108,18 +119,28 @@ class StoreDraftWithParentAttachmentsTest {
     @Test
     fun `store draft with inline attachments only when action is reply or reply all`() = runTest {
         // Given
-        val expectedParentMessage = MessageWithBodySample.MessageWithAttachments
-        val expectedAction = DraftAction.Reply(expectedParentMessage.message.messageId)
+        val expectedParentMessage = MessageWithDecryptedBody(
+            MessageWithBodySample.MessageWithAttachments,
+            DecryptedMessageBodyTestData.MessageWithAttachments
+        )
+        val expectedAction = DraftAction.Reply(expectedParentMessage.messageWithBody.message.messageId)
         val draftWithBody = expectedGetLocalDraft(userId, draftMessageId, senderEmail) {
             MessageWithBodySample.EmptyDraft
         }
-        val expectedAttachments = expectedParentMessage.messageBody.attachments.filter { it.disposition == "inline" }
+        val expectedAttachments = expectedParentMessage.decryptedMessageBody.attachments.filter {
+            it.disposition == "inline"
+        }
         val expectedAttachmentIds = expectedAttachments.map { it.attachmentId }
         val expectedSavedDraft = draftWithBody.copy(
             messageBody = draftWithBody.messageBody.copy(attachments = expectedAttachments)
         )
         givenSaveDraftSucceeds(expectedSavedDraft, userId)
-        givenStoreParentAttachmentsSucceeds(userId, expectedSavedDraft.message.messageId, expectedAttachmentIds)
+        givenStoreParentAttachmentsSucceeds(
+            userId = userId,
+            messageId = expectedSavedDraft.message.messageId,
+            attachments = expectedAttachmentIds,
+            syncState = AttachmentSyncState.External
+        )
 
         // When
         val result = storeDraftWithParentAttachments(
@@ -146,8 +167,11 @@ class StoreDraftWithParentAttachmentsTest {
     @Test
     fun `returns no attachment to be stored when parent has no attachments to store for the given action`() = runTest {
         // Given
-        val expectedParentMessage = MessageWithBodySample.Invoice
-        val expectedAction = DraftAction.ReplyAll(expectedParentMessage.message.messageId)
+        val expectedParentMessage = MessageWithDecryptedBody(
+            MessageWithBodySample.Invoice,
+            DecryptedMessageBodyTestData.buildDecryptedMessageBody(messageId = MessageIdSample.Invoice)
+        )
+        val expectedAction = DraftAction.ReplyAll(expectedParentMessage.messageWithBody.message.messageId)
 
         // When
         val result = storeDraftWithParentAttachments(
@@ -166,7 +190,10 @@ class StoreDraftWithParentAttachmentsTest {
     @Test
     fun `returns action with no parent error when called with Compose action`() = runTest {
         // Given
-        val expectedParentMessage = MessageWithBodySample.Invoice
+        val expectedParentMessage = MessageWithDecryptedBody(
+            MessageWithBodySample.Invoice,
+            DecryptedMessageBodyTestData.buildDecryptedMessageBody(messageId = MessageIdSample.Invoice)
+        )
         val expectedAction = DraftAction.Compose
 
         // When
@@ -186,12 +213,17 @@ class StoreDraftWithParentAttachmentsTest {
     @Test
     fun `returns draft data error when failing to store the draft`() = runTest {
         // Given
-        val expectedParentMessage = MessageWithBodySample.MessageWithAttachments
-        val expectedAction = DraftAction.ReplyAll(expectedParentMessage.message.messageId)
+        val expectedParentMessage = MessageWithDecryptedBody(
+            MessageWithBodySample.MessageWithAttachments,
+            DecryptedMessageBodyTestData.MessageWithAttachments
+        )
+        val expectedAction = DraftAction.ReplyAll(expectedParentMessage.messageWithBody.message.messageId)
         val draftWithBody = expectedGetLocalDraft(userId, draftMessageId, senderEmail) {
             MessageWithBodySample.EmptyDraft
         }
-        val expectedAttachments = expectedParentMessage.messageBody.attachments.filter { it.disposition == "inline" }
+        val expectedAttachments = expectedParentMessage.decryptedMessageBody.attachments.filter {
+            it.disposition == "inline"
+        }
         val expectedSavedDraft = draftWithBody.copy(
             messageBody = draftWithBody.messageBody.copy(attachments = expectedAttachments)
         )
@@ -214,12 +246,15 @@ class StoreDraftWithParentAttachmentsTest {
     @Test
     fun `removes signature and encrypted signature from parent attachments before storing them`() = runTest {
         // Given
-        val expectedParentMessage = MessageWithBodySample.MessageWithSignedAttachments
-        val expectedAction = DraftAction.Forward(expectedParentMessage.message.messageId)
+        val expectedParentMessage = MessageWithDecryptedBody(
+            MessageWithBodySample.MessageWithSignedAttachments,
+            DecryptedMessageBodyTestData.MessageWithSignedAttachments
+        )
+        val expectedAction = DraftAction.Forward(expectedParentMessage.messageWithBody.message.messageId)
         val draftWithBody = expectedGetLocalDraft(userId, draftMessageId, senderEmail) {
             MessageWithBodySample.EmptyDraft
         }
-        val expectedAttachments = expectedParentMessage.messageBody.attachments.map {
+        val expectedAttachments = expectedParentMessage.decryptedMessageBody.attachments.map {
             it.copy(signature = null, encSignature = null)
         }
         val expectedSavedDraft = draftWithBody.copy(
@@ -229,7 +264,8 @@ class StoreDraftWithParentAttachmentsTest {
         givenStoreParentAttachmentsSucceeds(
             userId = userId,
             messageId = expectedSavedDraft.message.messageId,
-            attachments = expectedAttachments.map { it.attachmentId }
+            attachments = expectedAttachments.map { it.attachmentId },
+            syncState = AttachmentSyncState.External
         )
 
         // When
@@ -254,6 +290,124 @@ class StoreDraftWithParentAttachmentsTest {
         assertEquals(Unit.right(), result)
     }
 
+    @Test
+    fun `should copy embedded attachments from parent pgp mime message and set their status to local when replying`() =
+        runTest {
+            // Given
+            val expectedParentMessage = MessageWithDecryptedBody(
+                MessageWithBodySample.PgpMimeMessage,
+                DecryptedMessageBodyTestData.PgpMimeMessage
+            )
+            val expectedAction = DraftAction.Reply(expectedParentMessage.messageWithBody.message.messageId)
+            val draftWithBody = expectedGetLocalDraft(userId, draftMessageId, senderEmail) {
+                MessageWithBodySample.EmptyDraft
+            }
+            val expectedAttachments = expectedParentMessage.decryptedMessageBody.attachments.filter {
+                it.disposition == "inline"
+            }
+            val expectedSavedDraft = draftWithBody.copy(
+                messageBody = draftWithBody.messageBody.copy(attachments = expectedAttachments)
+            )
+            givenSaveDraftSucceeds(expectedSavedDraft, userId)
+            givenCopyAttachmentsFromParentMessageSucceeds(
+                userId = userId,
+                sourceMessageId = expectedParentMessage.messageWithBody.message.messageId,
+                targetMessageId = draftMessageId,
+                attachmentIds = expectedAttachments.map { it.attachmentId }
+            )
+            givenStoreParentAttachmentsSucceeds(
+                userId = userId,
+                messageId = expectedSavedDraft.message.messageId,
+                attachments = expectedAttachments.map { it.attachmentId },
+                syncState = AttachmentSyncState.Local
+            )
+
+            // When
+            val result = storeDraftWithParentAttachments(
+                userId,
+                draftMessageId,
+                expectedParentMessage,
+                senderEmail,
+                expectedAction
+            )
+
+            // Then
+            coVerifySequence {
+                saveDraftMock(expectedSavedDraft, userId)
+                attachmentRepository.copyMimeAttachmentsToMessage(
+                    userId = userId,
+                    sourceMessageId = expectedParentMessage.messageWithBody.message.messageId,
+                    targetMessageId = draftMessageId,
+                    attachmentIds = expectedAttachments.map { it.attachmentId }
+                )
+                storeParentAttachmentStates(
+                    userId = userId,
+                    messageId = expectedSavedDraft.message.messageId,
+                    attachmentIds = expectedAttachments.map { it.attachmentId },
+                    syncState = AttachmentSyncState.Local
+                )
+            }
+            assertEquals(Unit.right(), result)
+        }
+
+    @Test
+    fun `should copy all attachments from parent pgp mime message and set their status to local when forwarding`() =
+        runTest {
+            // Given
+            val expectedParentMessage = MessageWithDecryptedBody(
+                MessageWithBodySample.PgpMimeMessage,
+                DecryptedMessageBodyTestData.PgpMimeMessage
+            )
+            val expectedAction = DraftAction.Forward(expectedParentMessage.messageWithBody.message.messageId)
+            val draftWithBody = expectedGetLocalDraft(userId, draftMessageId, senderEmail) {
+                MessageWithBodySample.EmptyDraft
+            }
+            val expectedAttachments = expectedParentMessage.decryptedMessageBody.attachments
+            val expectedSavedDraft = draftWithBody.copy(
+                messageBody = draftWithBody.messageBody.copy(attachments = expectedAttachments)
+            )
+            givenSaveDraftSucceeds(expectedSavedDraft, userId)
+            givenCopyAttachmentsFromParentMessageSucceeds(
+                userId = userId,
+                sourceMessageId = expectedParentMessage.messageWithBody.message.messageId,
+                targetMessageId = draftMessageId,
+                attachmentIds = expectedAttachments.map { it.attachmentId }
+            )
+            givenStoreParentAttachmentsSucceeds(
+                userId = userId,
+                messageId = expectedSavedDraft.message.messageId,
+                attachments = expectedAttachments.map { it.attachmentId },
+                syncState = AttachmentSyncState.Local
+            )
+
+            // When
+            val result = storeDraftWithParentAttachments(
+                userId,
+                draftMessageId,
+                expectedParentMessage,
+                senderEmail,
+                expectedAction
+            )
+
+            // Then
+            coVerifySequence {
+                saveDraftMock(expectedSavedDraft, userId)
+                attachmentRepository.copyMimeAttachmentsToMessage(
+                    userId = userId,
+                    sourceMessageId = expectedParentMessage.messageWithBody.message.messageId,
+                    targetMessageId = draftMessageId,
+                    attachmentIds = expectedAttachments.map { it.attachmentId }
+                )
+                storeParentAttachmentStates(
+                    userId = userId,
+                    messageId = expectedSavedDraft.message.messageId,
+                    attachmentIds = expectedAttachments.map { it.attachmentId },
+                    syncState = AttachmentSyncState.Local
+                )
+            }
+            assertEquals(Unit.right(), result)
+        }
+
     private fun expectedGetLocalDraft(
         userId: UserId,
         messageId: MessageId,
@@ -271,13 +425,25 @@ class StoreDraftWithParentAttachmentsTest {
         coEvery { saveDraftMock(messageWithBody, userId) } returns false
     }
 
+    private fun givenCopyAttachmentsFromParentMessageSucceeds(
+        userId: UserId,
+        sourceMessageId: MessageId,
+        targetMessageId: MessageId,
+        attachmentIds: List<AttachmentId>
+    ) {
+        coEvery {
+            attachmentRepository.copyMimeAttachmentsToMessage(userId, sourceMessageId, targetMessageId, attachmentIds)
+        } returns Unit.right()
+    }
+
     private fun givenStoreParentAttachmentsSucceeds(
         userId: UserId,
         messageId: MessageId,
-        attachments: List<AttachmentId>
+        attachments: List<AttachmentId>,
+        syncState: AttachmentSyncState
     ) {
         coEvery {
-            storeParentAttachmentStates(userId, messageId, attachments, AttachmentSyncState.External)
+            storeParentAttachmentStates(userId, messageId, attachments, syncState)
         } returns Unit.right()
     }
 }

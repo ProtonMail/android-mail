@@ -24,14 +24,17 @@ import ch.protonmail.android.mailcommon.domain.util.mapFalse
 import ch.protonmail.android.mailcomposer.domain.Transactor
 import ch.protonmail.android.mailcomposer.domain.model.AttachmentSyncState
 import ch.protonmail.android.mailcomposer.domain.model.DraftAction
+import ch.protonmail.android.mailcomposer.domain.model.MessageWithDecryptedBody
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailmessage.domain.model.MessageId
-import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
+import ch.protonmail.android.mailmessage.domain.model.MimeType
+import ch.protonmail.android.mailmessage.domain.repository.AttachmentRepository
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import javax.inject.Inject
 
 class StoreDraftWithParentAttachments @Inject constructor(
+    private val attachmentRepository: AttachmentRepository,
     private val getLocalDraft: GetLocalDraft,
     private val saveDraft: SaveDraft,
     private val storeParentAttachmentStates: StoreParentAttachmentStates,
@@ -41,16 +44,18 @@ class StoreDraftWithParentAttachments @Inject constructor(
     suspend operator fun invoke(
         userId: UserId,
         messageId: MessageId,
-        parentMessage: MessageWithBody,
+        parentMessage: MessageWithDecryptedBody,
         senderEmail: SenderEmail,
         draftAction: DraftAction
     ): Either<Error, Unit> = either {
         transactor.performTransaction {
 
             val parentAttachments = when (draftAction) {
-                is DraftAction.Forward -> parentMessage.messageBody.attachments
+                is DraftAction.Forward -> parentMessage.decryptedMessageBody.attachments
                 is DraftAction.Reply,
-                is DraftAction.ReplyAll -> parentMessage.messageBody.attachments.filter { it.disposition == "inline" }
+                is DraftAction.ReplyAll -> parentMessage.decryptedMessageBody.attachments.filter {
+                    it.disposition == "inline"
+                }
 
                 is DraftAction.Compose -> {
                     Timber.w("Store Draft with parent attachments for a Compose action. This shouldn't happen.")
@@ -79,11 +84,27 @@ class StoreDraftWithParentAttachments @Inject constructor(
             saveDraft(updatedDraft, userId)
                 .mapFalse { Error.DraftDataError }
                 .bind()
+
+            val parentAttachmentIds = parentAttachments.map { it.attachmentId }
+            if (parentMessage.messageWithBody.messageBody.mimeType == MimeType.MultipartMixed) {
+                attachmentRepository.copyMimeAttachmentsToMessage(
+                    userId = userId,
+                    sourceMessageId = parentMessage.decryptedMessageBody.messageId,
+                    targetMessageId = messageId,
+                    attachmentIds = parentAttachmentIds
+                )
+            }
+
+            val syncState = if (parentMessage.messageWithBody.messageBody.mimeType == MimeType.MultipartMixed) {
+                AttachmentSyncState.Local
+            } else {
+                AttachmentSyncState.External
+            }
             storeParentAttachmentStates(
                 userId = userId,
                 messageId = messageId,
-                attachmentIds = parentAttachments.map { it.attachmentId },
-                syncState = AttachmentSyncState.External
+                attachmentIds = parentAttachmentIds,
+                syncState = syncState
             )
                 .mapLeft { Error.DraftAttachmentError }
                 .bind()

@@ -53,6 +53,22 @@ object DecryptedMessageBodyTestData {
         )
     )
 
+    val MessageWithAttachments = buildDecryptedMessageBody(
+        messageId = MessageIdSample.MessageWithAttachments,
+        attachments = listOf(
+            MessageAttachmentSample.document,
+            MessageAttachmentSample.documentWithReallyLongFileName,
+            MessageAttachmentSample.embeddedImageAttachment
+        )
+    )
+
+    val MessageWithSignedAttachments = buildDecryptedMessageBody(
+        messageId = MessageIdSample.MessageWithAttachments,
+        attachments = listOf(
+            MessageAttachmentSample.signedDocument
+        )
+    )
+
     val htmlInvoice = buildDecryptedMessageBody(
         messageId = MessageIdSample.HtmlInvoice,
         value = "<div>Decrypted invoice message HTML body</div>",
@@ -65,6 +81,14 @@ object DecryptedMessageBodyTestData {
         value = "Plain text message",
         mimeType = MimeType.PlainText,
         attachments = emptyList()
+    )
+
+    val PgpMimeMessage = buildDecryptedMessageBody(
+        messageId = MessageIdSample.PgpMimeMessage,
+        attachments = listOf(
+            MessageAttachmentSample.embeddedImageAttachment,
+            MessageAttachmentSample.image
+        )
     )
 
     fun buildDecryptedMessageBody(

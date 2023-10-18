@@ -86,6 +86,11 @@ object MessageWithBodySample {
         body = "non-empty-body"
     )
 
+    val PgpMimeMessage = build(
+        message = MessageSample.PgpMimeMessage,
+        mimeType = MimeType.MultipartMixed
+    )
+
     private fun build(
         message: Message = MessageSample.EmptyDraft,
         replyTo: Recipient = RecipientSample.John,

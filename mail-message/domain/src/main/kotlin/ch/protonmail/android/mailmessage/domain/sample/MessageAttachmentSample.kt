@@ -76,7 +76,7 @@ object MessageAttachmentSample {
         name = "image.png",
         size = 1234,
         mimeType = "image/png",
-        disposition = null,
+        disposition = "attachment",
         keyPackets = null,
         signature = null,
         encSignature = null,

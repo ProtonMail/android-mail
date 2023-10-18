@@ -175,6 +175,10 @@ object MessageSample {
         subject = "Sending some documents"
     )
 
+    val PgpMimeMessage = build(
+        messageId = MessageIdSample.PgpMimeMessage
+    )
+
     private val Aug2022 get() = 1_659_312_000L
     private val Oct2022 get() = 1_664_582_400L
     private val Sep2022 get() = 1_661_990_400L

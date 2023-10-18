@@ -80,7 +80,6 @@ import ch.protonmail.android.mailcomposer.presentation.usecase.StyleQuotedHtml
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
-import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.model.Recipient
 import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
@@ -1262,7 +1261,7 @@ class ComposerViewModelTest {
             expectStoreDraftWithParentAttachmentsSucceeds(
                 expectedUserId,
                 expectedDraftId,
-                expectedMessageDecrypted.messageWithBody,
+                expectedMessageDecrypted,
                 expectedDraftFields.sender,
                 expectedAction
             )
@@ -1703,12 +1702,12 @@ class ComposerViewModelTest {
     private fun expectStoreDraftWithParentAttachmentsSucceeds(
         userId: UserId,
         messageId: MessageId,
-        messageBody: MessageWithBody,
+        messageWithDecryptedBody: MessageWithDecryptedBody,
         senderEmail: SenderEmail,
         action: DraftAction
     ) {
         coEvery {
-            storeDraftWithParentAttachments(userId, messageId, messageBody, senderEmail, action)
+            storeDraftWithParentAttachments(userId, messageId, messageWithDecryptedBody, senderEmail, action)
         } returns Unit.right()
     }
 

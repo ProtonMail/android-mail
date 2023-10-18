@@ -183,7 +183,7 @@ class ComposerViewModel @Inject constructor(
                     storeDraftWithParentAttachments.invoke(
                         primaryUserId(),
                         currentMessageId(),
-                        parentMessage.messageWithBody,
+                        parentMessage,
                         draftFields.sender,
                         draftAction
                     )

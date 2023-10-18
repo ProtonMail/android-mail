@@ -39,6 +39,7 @@ object MessageIdSample {
     val AlphaAppInfoRequest = MessageId("alpha_app_info_request")
     val PlainTextMessage = MessageId("plain_text_message")
     val MessageWithAttachments = MessageId("Message_with_attachments")
+    val PgpMimeMessage = MessageId("pgp_mime_message")
 
     fun build() = MessageId("message")
 }
