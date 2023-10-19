@@ -273,7 +273,7 @@ class ComposerViewModel @Inject constructor(
     private suspend fun onCloseComposer(action: ComposerAction.OnCloseComposer): ComposerOperation {
         val draftFields = buildDraftFields()
         return when {
-            draftFields.areBlank() -> action
+            draftFields.areBlank() || isDraftBodyOnlySignature() -> action
             else -> {
                 viewModelScope.launch {
                     withContext(NonCancellable) {
@@ -377,6 +377,12 @@ class ComposerViewModel @Inject constructor(
             emitNewStateFor(ComposerEvent.ReplaceDraftBody(it))
         }
     }
+
+    private suspend fun isDraftBodyOnlySignature() = injectAddressSignature(
+        primaryUserId(),
+        DraftBody(""),
+        currentSenderEmail()
+    ).getOrNull() == currentDraftBody()
 
     private suspend fun CoroutineScope.startDraftContinuousUpload(draftAction: DraftAction = DraftAction.Compose) =
         draftUploader.startContinuousUpload(

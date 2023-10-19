@@ -277,6 +277,7 @@ class ComposerViewModelTest {
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature())
 
         // When
         viewModel.submit(action)
@@ -720,6 +721,35 @@ class ComposerViewModelTest {
     }
 
     @Test
+    fun `should not store draft when body contains only signature and composer is closed`() = runTest {
+        // Given
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
+        expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
+        expectObserveMailFeature(expectedUserId) { emptyFlow() }
+        expectObservedMessageAttachments(expectedUserId, expectedMessageId)
+        val expectedDraftBody = expectDraftBodyWithSignature()
+        expectInjectAddressSignature(expectedUserId, expectedDraftBody)
+
+        // Change internal state of the View Model to simulate an existing draft body before closing composer
+        expectedViewModelInitialState(
+            messageId = expectedMessageId,
+            draftBody = expectedDraftBody
+        )
+
+        // When
+        viewModel.submit(ComposerAction.OnCloseComposer)
+
+        // Then
+        coVerify { storeDraftWithAllFields wasNot Called }
+        coVerify(exactly = 0) { draftUploaderMock.upload(any(), any()) }
+        assertEquals(Effect.of(Unit), viewModel.state.value.closeComposer)
+    }
+
+    @Test
     fun `should store and upload draft when any field which requires user input is not empty and composer is closed`() =
         runTest {
             // Given
@@ -898,6 +928,7 @@ class ComposerViewModelTest {
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectReEncryptAttachmentSucceeds(expectedUserId, expectedMessageId, previousSenderEmail, expectedSenderEmail)
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature())
 
         // When
         viewModel.submit(action)
