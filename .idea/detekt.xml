@@ -12,6 +12,7 @@
         <option value="$PROJECT_DIR$/config/detekt/config.yml" />
       </list>
     </option>
+    <option name="enableDetekt" value="true" />
     <option name="enableFormatting" value="true" />
     <option name="pluginJarPaths">
       <set>
