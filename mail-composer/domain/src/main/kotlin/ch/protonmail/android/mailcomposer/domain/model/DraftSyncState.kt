@@ -24,7 +24,8 @@ enum class DraftSyncState(val value: Int) {
     Sending(2),
     ErrorSending(3),
     Sent(4),
-    ErrorUploadAttachments(5);
+    ErrorUploadAttachments(5),
+    ErrorUploadDraft(6);
 
     companion object {
 

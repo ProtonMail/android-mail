@@ -25,8 +25,7 @@ import androidx.work.WorkerParameters
 import ch.protonmail.android.composer.data.usecase.UploadAttachments
 import ch.protonmail.android.mailcommon.domain.util.requireNotBlank
 import ch.protonmail.android.mailcomposer.domain.model.DraftSyncState
-import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
-import ch.protonmail.android.mailcomposer.domain.repository.MessageRepository
+import ch.protonmail.android.mailcomposer.domain.usecase.UpdateDraftStateForError
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -38,8 +37,7 @@ class UploadAttachmentsWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted workerParameters: WorkerParameters,
     private val uploadAttachments: UploadAttachments,
-    private val draftStateRepository: DraftStateRepository,
-    private val messageRepository: MessageRepository
+    private val updateDraftStateForError: UpdateDraftStateForError
 ) : CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {
@@ -51,8 +49,7 @@ class UploadAttachmentsWorker @AssistedInject constructor(
         return uploadAttachments(userId, messageId).fold(
             ifLeft = {
                 Timber.e("UploadAttachmentsWorker doWork failed: $it")
-                draftStateRepository.updateDraftSyncState(userId, messageId, DraftSyncState.ErrorUploadAttachments)
-                messageRepository.moveMessageBackFromSentToDrafts(userId, messageId)
+                updateDraftStateForError(userId, messageId, DraftSyncState.ErrorUploadAttachments)
                 Result.failure()
             },
             ifRight = { Result.success() }

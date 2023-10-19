@@ -24,14 +24,20 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
+import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.composer.data.usecase.UploadDraft
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
+import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.mailcomposer.domain.model.DraftSyncState
+import ch.protonmail.android.mailcomposer.domain.usecase.UpdateDraftStateForError
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import io.mockk.Called
 import io.mockk.coEvery
+import io.mockk.coJustRun
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
@@ -53,8 +59,14 @@ class UploadDraftWorkerTest {
     }
     private val context: Context = mockk()
     private val uploadDraft: UploadDraft = mockk()
+    private val updateDraftStateForError: UpdateDraftStateForError = mockk()
 
-    private val uploadDraftWorker = UploadDraftWorker(context, parameters, uploadDraft)
+    private val uploadDraftWorker = UploadDraftWorker(
+        context,
+        parameters,
+        uploadDraft,
+        updateDraftStateForError
+    )
 
     @Test
     fun `worker is enqueued with given parameters`() {
@@ -85,7 +97,7 @@ class UploadDraftWorkerTest {
         val userId = UserIdSample.Primary
         val messageId = MessageIdSample.LocalDraft
         givenInputData(userId, messageId)
-        givenSyncDraftSucceeds(userId, messageId)
+        givenUploadDraftSucceeds(userId, messageId)
 
         // When
         val actual = uploadDraftWorker.doWork()
@@ -119,11 +131,36 @@ class UploadDraftWorkerTest {
         coVerify { uploadDraft wasNot Called }
     }
 
-    private fun givenSyncDraftSucceeds(userId: UserId, messageId: MessageId) {
+    @Test
+    fun `worker fails and updates draft state for error when upload draft fails`() = runTest {
+        // Given
+        val userId = UserIdSample.Primary
+        val messageId = MessageIdSample.LocalDraft
+        givenInputData(userId, messageId)
+        givenUploadDraftFails(userId, messageId)
+        givenUpdateDraftStateForErrorSucceeds(userId, messageId)
+
+        // When
+        uploadDraftWorker.doWork()
+
+        // Then
+        coVerify { updateDraftStateForError(userId, messageId, DraftSyncState.ErrorUploadDraft) }
+    }
+
+    private fun givenUploadDraftSucceeds(userId: UserId, messageId: MessageId) {
         coEvery { uploadDraft(userId, messageId) } returns Unit.right()
     }
+
+    private fun givenUploadDraftFails(userId: UserId, messageId: MessageId) {
+        coEvery { uploadDraft(userId, messageId) } returns DataError.Remote.Http(NetworkError.ServerError).left()
+    }
+
     private fun givenInputData(userId: UserId?, messageId: MessageId?) {
         every { parameters.inputData.getString(UploadDraftWorker.RawUserIdKey) } returns userId?.id
         every { parameters.inputData.getString(UploadDraftWorker.RawMessageIdKey) } returns messageId?.id
+    }
+
+    private fun givenUpdateDraftStateForErrorSucceeds(userId: UserId, messageId: MessageId) {
+        coJustRun { updateDraftStateForError(userId, messageId, DraftSyncState.ErrorUploadDraft) }
     }
 }

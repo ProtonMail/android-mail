@@ -32,11 +32,12 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcomposer.domain.model.DraftSyncState
 import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
-import ch.protonmail.android.mailcomposer.domain.repository.MessageRepository
+import ch.protonmail.android.mailcomposer.domain.usecase.UpdateDraftStateForError
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import io.mockk.Called
 import io.mockk.coEvery
+import io.mockk.coJustRun
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
@@ -59,14 +60,14 @@ class SendMessageWorkerTest {
     private val context: Context = mockk()
     private val sendMessageMock: SendMessage = mockk()
     private val draftStateRepositoryMock: DraftStateRepository = mockk()
-    private val messageRepositoryMock: MessageRepository = mockk()
+    private val updateDraftStateForErrorMock: UpdateDraftStateForError = mockk()
 
     private val sendMessageWorker = SendMessageWorker(
         context,
         parameters,
         sendMessageMock,
         draftStateRepositoryMock,
-        messageRepositoryMock
+        updateDraftStateForErrorMock
     )
 
     @Test
@@ -93,24 +94,22 @@ class SendMessageWorkerTest {
     }
 
     @Test
-    fun `worker returns failure, updates DraftSyncState and moves message to Drafts when sendMessage fails`() =
-        runTest {
-            // Given
-            val userId = UserIdSample.Primary
-            val messageId = MessageIdSample.LocalDraft
-            givenInputData(userId, messageId)
-            givenSendMessageFailsWithDraftNotFound(userId, messageId)
-            givenUpdateDraftSyncStateSucceeds(userId, messageId, DraftSyncState.ErrorSending)
-            givenMoveMessageBackFromSentToDrafts(userId, messageId)
+    fun `worker returns failure and updates draft state for error when sendMessage fails`() = runTest {
+        // Given
+        val userId = UserIdSample.Primary
+        val messageId = MessageIdSample.LocalDraft
+        givenInputData(userId, messageId)
+        givenSendMessageFailsWithDraftNotFound(userId, messageId)
+        givenUpdateDraftSyncStateSucceeds(userId, messageId, DraftSyncState.ErrorSending)
+        givenUpdateDraftStateForErrorSucceeds(userId, messageId)
 
-            // When
-            val actual = sendMessageWorker.doWork()
+        // When
+        val actual = sendMessageWorker.doWork()
 
-            // Then
-            coVerify { draftStateRepositoryMock.updateDraftSyncState(userId, messageId, DraftSyncState.ErrorSending) }
-            coVerify { messageRepositoryMock.moveMessageBackFromSentToDrafts(userId, messageId) }
-            assertEquals(Result.failure(), actual)
-        }
+        // Then
+        coVerify { updateDraftStateForErrorMock(userId, messageId, DraftSyncState.ErrorSending) }
+        assertEquals(Result.failure(), actual)
+    }
 
     @Test
     fun `worker returns success and updates DraftSyncState when sendMessage succeeds`() = runTest {
@@ -161,8 +160,8 @@ class SendMessageWorkerTest {
         coEvery { draftStateRepositoryMock.updateDraftSyncState(userId, messageId, syncState) } returns Unit.right()
     }
 
-    private fun givenMoveMessageBackFromSentToDrafts(userId: UserId, messageId: MessageId) {
-        coEvery { messageRepositoryMock.moveMessageBackFromSentToDrafts(userId, messageId) } returns Unit
+    private fun givenUpdateDraftStateForErrorSucceeds(userId: UserId, messageId: MessageId) {
+        coJustRun { updateDraftStateForErrorMock(userId, messageId, DraftSyncState.ErrorSending) }
     }
 
     private fun givenSendMessageFailsWithDraftNotFound(userId: UserId, messageId: MessageId) {

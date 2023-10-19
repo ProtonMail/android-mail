@@ -24,6 +24,8 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import ch.protonmail.android.composer.data.usecase.UploadDraft
 import ch.protonmail.android.mailcommon.domain.util.requireNotBlank
+import ch.protonmail.android.mailcomposer.domain.model.DraftSyncState
+import ch.protonmail.android.mailcomposer.domain.usecase.UpdateDraftStateForError
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -33,7 +35,8 @@ import me.proton.core.domain.entity.UserId
 internal class UploadDraftWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted workerParameters: WorkerParameters,
-    private val uploadDraft: UploadDraft
+    private val uploadDraft: UploadDraft,
+    private val updateDraftStateForError: UpdateDraftStateForError
 ) : CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {
@@ -41,7 +44,10 @@ internal class UploadDraftWorker @AssistedInject constructor(
         val messageId = MessageId(requireNotBlank(inputData.getString(RawMessageIdKey), fieldName = "Message ids"))
 
         return uploadDraft(userId, messageId).fold(
-            ifLeft = { Result.failure() },
+            ifLeft = {
+                updateDraftStateForError(userId, messageId, DraftSyncState.ErrorUploadDraft)
+                Result.failure()
+            },
             ifRight = { Result.success() }
         )
     }
