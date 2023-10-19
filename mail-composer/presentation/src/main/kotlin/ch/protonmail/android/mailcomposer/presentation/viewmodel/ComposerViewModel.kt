@@ -43,6 +43,7 @@ import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddres
 import ch.protonmail.android.mailcomposer.domain.usecase.GetDecryptedDraftFields
 import ch.protonmail.android.mailcomposer.domain.usecase.GetLocalMessageDecrypted
 import ch.protonmail.android.mailcomposer.domain.usecase.GetPrimaryAddress
+import ch.protonmail.android.mailcomposer.domain.usecase.InjectAddressSignature
 import ch.protonmail.android.mailcomposer.domain.usecase.IsValidEmailAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessageAttachments
 import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
@@ -113,6 +114,7 @@ class ComposerViewModel @Inject constructor(
     private val sendMessage: SendMessage,
     private val networkManager: NetworkManager,
     private val getLocalMessageDecrypted: GetLocalMessageDecrypted,
+    private val injectAddressSignature: InjectAddressSignature,
     private val parentMessageToDraftFields: ParentMessageToDraftFields,
     private val styleQuotedHtml: StyleQuotedHtml,
     private val storeDraftWithParentAttachments: StoreDraftWithParentAttachments,
@@ -136,15 +138,21 @@ class ComposerViewModel @Inject constructor(
     val state: StateFlow<ComposerDraftState> = mutableState
 
     init {
-        primaryUserId.onEach { userId ->
-            getPrimaryAddress(userId)
-                .onLeft { emitNewStateFor(ComposerEvent.ErrorLoadingDefaultSenderAddress) }
-                .onRight { emitNewStateFor(ComposerEvent.DefaultSenderReceived(SenderUiModel(it.email))) }
-        }.launchIn(viewModelScope)
-
         val inputDraftId = savedStateHandle.get<String>(ComposerScreen.DraftMessageIdKey)
         val draftAction = savedStateHandle.get<String>(ComposerScreen.SerializedDraftActionKey)
             ?.deserialize<DraftAction>()
+
+        primaryUserId.onEach { userId ->
+            getPrimaryAddress(userId)
+                .onLeft { emitNewStateFor(ComposerEvent.ErrorLoadingDefaultSenderAddress) }
+                .onRight {
+                    emitNewStateFor(ComposerEvent.DefaultSenderReceived(SenderUiModel(it.email)))
+                    if (inputDraftId == null && draftAction == null) { // opening a new empty Draft
+                        injectAddressSignature(SenderEmail(it.email))
+                    }
+                }
+        }.launchIn(viewModelScope)
+
         when {
             inputDraftId != null -> prefillWithExistingDraft(inputDraftId, getDecryptedDraftFields)
             draftAction != null -> prefillForDraftAction(draftAction)
@@ -344,6 +352,10 @@ class ComposerViewModel @Inject constructor(
                 ComposerEvent.ErrorStoringDraftSenderAddress
             },
             ifRight = {
+                injectAddressSignature(
+                    senderEmail = SenderEmail(action.sender.email),
+                    previousSenderEmail = currentSenderEmail()
+                )
                 action
             }
         )
@@ -359,6 +371,12 @@ class ComposerViewModel @Inject constructor(
             ifLeft = { ComposerEvent.ErrorStoringDraftBody },
             ifRight = { ComposerAction.DraftBodyChanged(action.draftBody) }
         )
+
+    private suspend fun injectAddressSignature(senderEmail: SenderEmail, previousSenderEmail: SenderEmail? = null) {
+        injectAddressSignature(primaryUserId(), currentDraftBody(), senderEmail, previousSenderEmail).getOrNull()?.let {
+            emitNewStateFor(ComposerEvent.ReplaceDraftBody(it))
+        }
+    }
 
     private suspend fun CoroutineScope.startDraftContinuousUpload(draftAction: DraftAction = DraftAction.Compose) =
         draftUploader.startContinuousUpload(

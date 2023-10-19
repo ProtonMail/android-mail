@@ -39,6 +39,9 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
+import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
+import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.presentation.R
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultNorm
@@ -47,6 +50,7 @@ import me.proton.core.compose.theme.defaultNorm
 internal fun BodyTextField(
     initialValue: String,
     hasQuotedBody: Boolean,
+    replaceDraftBody: Effect<TextUiModel>,
     onBodyChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -82,5 +86,10 @@ internal fun BodyTextField(
     LaunchedEffect(initialValue) {
         val shouldGetFocus = initialValue.isNotEmpty() || hasQuotedBody
         if (shouldGetFocus) { focusRequester.requestFocus() }
+    }
+
+    ConsumableTextEffect(effect = replaceDraftBody) {
+        text = TextFieldValue(it)
+        onBodyChange(it)
     }
 }

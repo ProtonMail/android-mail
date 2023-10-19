@@ -139,6 +139,7 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
                         recipientsOpen = recipientsOpen,
                         initialFocus = focusedField,
                         fields = state.fields,
+                        replaceDraftBody = state.replaceDraftBody,
                         actions = buildActions(
                             viewModel,
                             { recipientsOpen = it },

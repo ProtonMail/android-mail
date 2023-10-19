@@ -42,7 +42,9 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.compose.FocusableForm
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerFields
@@ -60,6 +62,7 @@ internal fun ComposerForm(
     recipientsOpen: Boolean,
     initialFocus: FocusedFieldType,
     fields: ComposerFields,
+    replaceDraftBody: Effect<TextUiModel>,
     actions: ComposerFormActions
 ) {
     val maxWidthModifier = Modifier.fillMaxWidth()
@@ -181,6 +184,7 @@ internal fun ComposerForm(
             BodyTextField(
                 initialValue = fields.body,
                 hasQuotedBody = fields.quotedBody != null,
+                replaceDraftBody = replaceDraftBody,
                 onBodyChange = actions.onBodyChanged,
                 modifier = maxWidthModifier
                     .testTag(ComposerTestTags.MessageBody)

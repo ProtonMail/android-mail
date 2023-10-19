@@ -549,6 +549,17 @@ class ComposerReducerTest(
             )
         )
 
+        @Suppress("VariableMaxLength")
+        private val EmptyToStateWhenReplaceDraftBody = TestTransition(
+            name = "Should update the state with new DraftBody Effect when ReplaceDraftBody was emitted",
+            currentState = aNotSubmittableState(draftId = messageId),
+            operation = ComposerEvent.ReplaceDraftBody(draftFieldsWithoutRecipients.body),
+            expectedState = aNotSubmittableState(
+                draftId = messageId,
+                replaceDraftBody = Effect.of(TextUiModel(draftFieldsWithoutRecipients.body.value))
+            )
+        )
+
         private val LoadingToErrorWhenErrorLoadingDraftData = TestTransition(
             name = "Should stop loading and display error when failing to receive draft data",
             currentState = ComposerDraftState.initial(messageId).copy(isLoading = true),
@@ -637,6 +648,7 @@ class ComposerReducerTest(
             EmptyToUpdatedSubject,
             EmptyToCloseComposer,
             EmptyToCloseComposerWithDraftSaved,
+            EmptyToStateWhenReplaceDraftBody,
             SubmittableToSendMessage,
             SubmittableToOnSendMessageOffline,
             EmptyToLoadingWithOpenExistingDraft,
@@ -687,7 +699,8 @@ class ComposerReducerTest(
             closeComposerWithMessageSending = closeComposerWithMessageSending,
             closeComposerWithMessageSendingOffline = closeComposerWithMessageSendingOffline,
             attachmentsFileSizeExceeded = attachmentsFileSizeExceeded,
-            attachmentsReEncryptionFailed = attachmentReEncryptionFailed
+            attachmentsReEncryptionFailed = attachmentReEncryptionFailed,
+            replaceDraftBody = Effect.empty()
         )
 
         private fun aNotSubmittableState(
@@ -706,7 +719,8 @@ class ComposerReducerTest(
             closeComposerWithDraftSaved: Effect<Unit> = Effect.empty(),
             isLoading: Boolean = false,
             attachmentsFileSizeExceeded: Effect<Unit> = Effect.empty(),
-            attachmentReEncryptionFailed: Effect<Unit> = Effect.empty()
+            attachmentReEncryptionFailed: Effect<Unit> = Effect.empty(),
+            replaceDraftBody: Effect<TextUiModel> = Effect.empty()
         ) = ComposerDraftState(
             fields = ComposerFields(
                 draftId = draftId,
@@ -731,7 +745,8 @@ class ComposerReducerTest(
             closeComposerWithMessageSending = Effect.empty(),
             closeComposerWithMessageSendingOffline = Effect.empty(),
             attachmentsFileSizeExceeded = attachmentsFileSizeExceeded,
-            attachmentsReEncryptionFailed = attachmentReEncryptionFailed
+            attachmentsReEncryptionFailed = attachmentReEncryptionFailed,
+            replaceDraftBody = replaceDraftBody
         )
 
         private fun aPositiveRandomInt(bound: Int = 10) = Random().nextInt(bound)

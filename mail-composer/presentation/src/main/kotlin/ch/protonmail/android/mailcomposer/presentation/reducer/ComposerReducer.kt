@@ -99,6 +99,9 @@ class ComposerReducer @Inject constructor(
         is ComposerEvent.OpenExistingDraft -> currentState.copy(isLoading = true)
         is ComposerEvent.OpenWithMessageAction -> currentState.copy(isLoading = true)
         is ComposerEvent.PrefillDraftDataReceived -> updateComposerFieldsState(currentState, this.draftUiModel)
+        is ComposerEvent.ReplaceDraftBody -> {
+            updateReplaceDraftBodyEffect(currentState, this.draftBody)
+        }
         is ComposerEvent.ErrorLoadingDraftData -> currentState.copy(
             error = Effect.of(TextUiModel(R.string.composer_error_loading_draft)),
             isLoading = false
@@ -188,6 +191,11 @@ class ComposerReducer @Inject constructor(
         fields = currentState.fields.copy(sender = sender),
         changeBottomSheetVisibility = Effect.of(false)
     )
+
+    private fun updateReplaceDraftBodyEffect(currentState: ComposerDraftState, draftBody: DraftBody) =
+        currentState.copy(
+            replaceDraftBody = Effect.of(TextUiModel(draftBody.value))
+        )
 
     private fun updateRecipientsTo(
         currentState: ComposerDraftState,
