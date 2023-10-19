@@ -38,12 +38,12 @@ import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSource
 import ch.protonmail.android.mailmessage.data.repository.MessageRepositoryImpl
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
+import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
 import ch.protonmail.android.mailpagination.domain.model.PageFilter
 import ch.protonmail.android.mailpagination.domain.model.PageKey
-import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
 import ch.protonmail.android.testdata.message.MessageBodyTestData
 import ch.protonmail.android.testdata.message.MessageTestData
 import io.mockk.Called
@@ -119,6 +119,21 @@ class MessageRepositoryImplTest {
         // Then
         assertEquals(expected, messages)
         coVerify(exactly = 1) { localDataSource.getMessages(userId, pageKey) }
+    }
+
+    @Test
+    fun `get local messages returns local data`() = runTest {
+        // Given
+        val messageIds = listOf(MessageIdSample.AugWeatherForecast, MessageIdSample.Invoice)
+        val expected = listOf(MessageSample.AugWeatherForecast, MessageSample.Invoice)
+        coEvery { localDataSource.observeMessages(userId, messageIds) } returns flowOf(expected)
+
+        // When
+        val actual = messageRepository.getLocalMessages(userId, messageIds)
+
+        // Then
+        assertEquals(expected, actual)
+        coVerify(exactly = 1) { localDataSource.observeMessages(userId, messageIds) }
     }
 
     @Test

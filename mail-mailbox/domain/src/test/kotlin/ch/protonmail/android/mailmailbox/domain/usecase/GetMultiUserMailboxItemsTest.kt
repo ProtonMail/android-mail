@@ -51,13 +51,13 @@ import kotlin.test.assertEquals
 class GetMultiUserMailboxItemsTest {
 
     private val messageRepository = mockk<MessageRepository> {
-        coEvery { this@mockk.getLocalMessages(userId, any()) } returns listOf(
+        coEvery { this@mockk.getLocalMessages(userId, any<PageKey>()) } returns listOf(
             // userId
             buildMessage(userId, "1", time = 1000, labelIds = emptyList()),
             buildMessage(userId, "2", time = 2000, labelIds = listOf("4")),
             buildMessage(userId, "3", time = 3000, labelIds = listOf("0", "1"))
         )
-        coEvery { this@mockk.getLocalMessages(userId1, any()) } returns listOf(
+        coEvery { this@mockk.getLocalMessages(userId1, any<PageKey>()) } returns listOf(
             // userId
             buildMessage(userId1, "1", time = 1000, labelIds = emptyList()),
             buildMessage(userId1, "2", time = 2000, labelIds = listOf("4")),
