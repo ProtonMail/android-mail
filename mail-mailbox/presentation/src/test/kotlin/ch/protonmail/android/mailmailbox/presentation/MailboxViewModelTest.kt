@@ -243,7 +243,8 @@ class MailboxViewModelTest {
                 topAppBarState = MailboxTopAppBarState.Loading,
                 unreadFilterState = UnreadFilterState.Loading,
                 bottomAppBarState = BottomBarState.Data.Hidden(emptyList()),
-                onboardingState = OnboardingState.Hidden
+                onboardingState = OnboardingState.Hidden,
+                actionMessage = Effect.empty()
             )
 
             assertEquals(expected, actual)

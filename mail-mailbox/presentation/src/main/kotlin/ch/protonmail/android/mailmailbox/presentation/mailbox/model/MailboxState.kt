@@ -19,7 +19,9 @@
 package ch.protonmail.android.mailmailbox.presentation.mailbox.model
 
 import androidx.compose.runtime.Stable
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 
 @Stable
 data class MailboxState(
@@ -27,5 +29,6 @@ data class MailboxState(
     val topAppBarState: MailboxTopAppBarState,
     val unreadFilterState: UnreadFilterState,
     val bottomAppBarState: BottomBarState,
-    val onboardingState: OnboardingState
+    val onboardingState: OnboardingState,
+    val actionMessage: Effect<TextUiModel>
 )

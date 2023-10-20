@@ -201,7 +201,8 @@ internal class MailboxScreenTest {
                 ),
                 unreadFilterState = UnreadFilterState.Loading,
                 bottomAppBarState = BottomBarState.Data.Hidden(emptyList()),
-                onboardingState = OnboardingState.Hidden
+                onboardingState = OnboardingState.Hidden,
+                actionMessage = Effect.empty()
             )
         }
 

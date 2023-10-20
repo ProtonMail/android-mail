@@ -29,6 +29,7 @@ import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
@@ -338,7 +339,7 @@ class MailboxViewModel @Inject constructor(
         emitNewStateFrom(markAsReadOperation)
     }
 
-    private suspend fun handleCloseOnboarding() = viewModelScope.launch {
+    private suspend fun handleCloseOnboarding() {
         saveOnboarding(display = false)
         emitNewStateFrom(MailboxViewAction.CloseOnboarding)
     }
@@ -440,7 +441,8 @@ class MailboxViewModel @Inject constructor(
             topAppBarState = MailboxTopAppBarState.Loading,
             unreadFilterState = UnreadFilterState.Loading,
             bottomAppBarState = BottomBarState.Data.Hidden(emptyList()),
-            onboardingState = OnboardingState.Hidden
+            onboardingState = OnboardingState.Hidden,
+            actionMessage = Effect.empty()
         )
     }
 }

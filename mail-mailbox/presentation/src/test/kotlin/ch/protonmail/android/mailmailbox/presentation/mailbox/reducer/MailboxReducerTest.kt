@@ -136,7 +136,8 @@ internal class MailboxReducerTest(
                 isFilterEnabled = false
             ),
             bottomAppBarState = BottomBarState.Loading,
-            onboardingState = OnboardingState.Hidden
+            onboardingState = OnboardingState.Hidden,
+            actionMessage = Effect.empty()
         )
 
         private val actions = listOf(
