@@ -39,7 +39,10 @@
   <string name="composer_error_loading_draft">De inhoud van deze conceptversie is op dit moment niet beschikbaar. Bewerking zal eventuele al bestaande inhoud overschrijven.</string>
   <string name="composer_add_attachments_content_description">Bestanden toevoegen</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Importeren van…</string>
-  <string name="composer_error_loading_parent_message">Could not load the message\'s information</string>
+  <string name="composer_error_loading_parent_message">Kon de informatie van het bericht niet laden</string>
   <string name="composer_original_message_quote">Oorspronkelijk bericht</string>
-  <string name="composer_sender_quote">On %s, %s &lt;%s&gt; wrote:</string>
+  <string name="composer_sender_quote">Op %s, schreef %s &lt;%s&gt;:</string>
+  <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
+  <string name="composer_attachment_size_exceeded_dialog_title">Bijlage-limiet bereikt</string>
+  <string name="composer_attachment_size_exceeded_dialog_message">De maximale grootte voor bijlagen is 1%1$s</string>
 </resources>

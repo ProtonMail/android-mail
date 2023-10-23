@@ -24,6 +24,11 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Ieșire din modul de selecție</string>
   <string name="mailbox_toolbar_menu_button_content_description">Meniu</string>
   <string name="mailbox_toolbar_search_button_content_description">Căutare</string>
+  <plurals name="mailbox_toolbar_selected_count">
+    <item quantity="one">Selectate: %d</item>
+    <item quantity="few">Selectate: %d</item>
+    <item quantity="other">Selectate: %d</item>
+  </plurals>
   <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
   <string name="filter_unread_button_text_without_counter">Necitit</string>
   <plurals name="filter_unread_button_text">

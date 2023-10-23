@@ -30,16 +30,19 @@
   <string name="composer_error_invalid_sender">Адреса відправника недійсна</string>
   <string name="change_sender_button_content_description">Змінити відправника</string>
   <string name="composer_change_sender_paid_feature">Перейдіть на платний тарифний план, щоб змінити адресу відправника</string>
-  <string name="composer_error_change_sender_failed_getting_subscription">Неможливо змінити відправника, оскільки не вдалося отримати підписку користувача. Спробуйте ще раз.</string>
+  <string name="composer_error_change_sender_failed_getting_subscription">Неможливо змінити відправника, оскільки не вдалося отримати дані про передплату користувача. Спробуйте ще раз.</string>
   <string name="composer_error_store_draft_sender_address">Не вдалося зберегти адресу відправника цієї чернетки</string>
-  <string name="composer_error_store_draft_body">Не вдалося зберегти тіло цієї чернетки</string>
-  <string name="composer_error_duplicate_recipient">Видалено дублікат одержувача: %1$s</string>
-  <string name="composer_error_store_draft_subject">Не вдалося зберегти об\'єкт ескізу</string>
+  <string name="composer_error_store_draft_body">Не вдалося зберегти вміст цієї чернетки</string>
+  <string name="composer_error_duplicate_recipient">Вилучено дублікат отримувача: %1$s</string>
+  <string name="composer_error_store_draft_subject">Не вдалося зберегти тему цієї чернетки</string>
   <string name="composer_error_store_draft_recipients">Не вдалося зберегти отримувачів цієї чернетки</string>
-  <string name="composer_error_loading_draft">Вміст цієї чернетки недоступний в цей момент. Редагування перезапише будь-який попередній вміст.</string>
+  <string name="composer_error_loading_draft">Наразі вміст цієї чернетки недоступний. Редагування перезапише будь-який попередній вміст.</string>
   <string name="composer_add_attachments_content_description">Додати вкладення</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Імпортувати з…</string>
   <string name="composer_error_loading_parent_message">Неможливо завантажити інформацію про повідомлення</string>
-  <string name="composer_original_message_quote">Оригінал повідомлення</string>
-  <string name="composer_sender_quote">%s, %s &lt;%s&gt; написав(-ла):</string>
+  <string name="composer_original_message_quote">Оригінальне повідомлення</string>
+  <string name="composer_sender_quote">%s, %s &lt;%s&gt; пише:</string>
+  <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
+  <string name="composer_attachment_size_exceeded_dialog_title">Attachment limit reached</string>
+  <string name="composer_attachment_size_exceeded_dialog_message">The size limit for attachments is %1$s</string>
 </resources>

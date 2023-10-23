@@ -41,5 +41,8 @@
   <string name="composer_add_attachments_bottom_sheet_import_from">Importovat z…</string>
   <string name="composer_error_loading_parent_message">Nelze načíst informace zprávy</string>
   <string name="composer_original_message_quote">Původní zpráva</string>
-  <string name="composer_sender_quote">On %s, %s &lt;%s&gt; wrote:</string>
+  <string name="composer_sender_quote">%s, %s &lt;%s&gt; napsal/a:</string>
+  <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
+  <string name="composer_attachment_size_exceeded_dialog_title">Byl dosažen limit velikosti příloh</string>
+  <string name="composer_attachment_size_exceeded_dialog_message">Velikost příloh je omezena na %1$s</string>
 </resources>

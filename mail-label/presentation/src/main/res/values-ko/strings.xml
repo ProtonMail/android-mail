@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="label_title_inbox">받은 편지함</string>
+  <string name="label_title_drafts">임시보관함</string>
+  <string name="label_title_sent">보낸메일함</string>
+  <string name="label_title_starred">별표 표시됨</string>
+  <string name="label_title_archive">보관함</string>
+  <string name="label_title_spam">스팸</string>
+  <string name="label_title_trash">휴지통</string>
+  <string name="label_title_outbox">보낼편지함</string>
+  <string name="label_title_all_mail">모든 메일</string>
+  <string name="label_title_all_drafts">모든 초안</string>
+  <string name="label_title_all_sent">모든 보낸 메일</string>
+  <string name="label_title_folders">폴더</string>
+  <string name="label_title_labels">라벨</string>
+  <string name="label_title_add_folder">폴더 추가</string>
+  <string name="label_title_add_label">라벨 추가</string>
+</resources>

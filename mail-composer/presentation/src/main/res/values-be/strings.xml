@@ -42,4 +42,7 @@
   <string name="composer_error_loading_parent_message">Немагчыма загрузіць звесткі паведамлення</string>
   <string name="composer_original_message_quote">Арыгінальнае паведамленне</string>
   <string name="composer_sender_quote">%s, %s &lt;%s&gt; напісаў(-ла):</string>
+  <string name="composer_attachment_size_exceeded_dialog_confirm_button">Добра</string>
+  <string name="composer_attachment_size_exceeded_dialog_title">Перавышана абмежаванне па колькасці далучэнняў</string>
+  <string name="composer_attachment_size_exceeded_dialog_message">Максімальны памер далучэння складае: %1$s</string>
 </resources>

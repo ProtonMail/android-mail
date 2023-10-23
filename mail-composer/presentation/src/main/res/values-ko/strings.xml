@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="from_prefix">보낸사람:</string>
+  <string name="to_prefix">받는사람:</string>
+  <string name="cc_prefix">참조:</string>
+  <string name="bcc_prefix">숨은 참조:</string>
+  <string name="subject_placeholder">제목</string>
+  <string name="compose_message_placeholder">이메일 작성</string>
+  <string name="close_composer_content_description">작성기 닫기</string>
+  <string name="send_message_content_description">메시지 보내기</string>
+  <string name="composer_expand_recipients_button">다른 수신인 보기</string>
+  <string name="composer_error_invalid_email">올바르지 않은 이메일 주소입니다</string>
+  <string name="composer_error_invalid_sender">보낸 이의 주소가 잘못되었습니다</string>
+  <string name="change_sender_button_content_description">보낸 사람 변경</string>
+  <string name="composer_change_sender_paid_feature">보낸 사람의 주소를 변경하려면 유료 플랜으로 업그레이드 하세요</string>
+  <string name="composer_error_change_sender_failed_getting_subscription">사용자의 구독을 실패했기 때문에 발신자를 변경할 수 없습니다. 다시 시도하십시오.</string>
+  <string name="composer_error_store_draft_sender_address">이 초안의 발신자 주소를 저장하는 데 실패했습니다.</string>
+  <string name="composer_error_store_draft_body">이 초안의 본문을 저장하는 것을 실패했습니다.</string>
+  <string name="composer_error_duplicate_recipient">중복된 수신자를 삭제했습니다: %1$s</string>
+  <string name="composer_error_store_draft_subject">이 초안의 제목을 저장하는 것을 실패했습니다.</string>
+  <string name="composer_error_store_draft_recipients">이 초안의 수신자를 저장하는 것을 실패했습니다.</string>
+  <string name="composer_error_loading_draft">이 초안의 내용은 현재 사용할 수 없습니다. 기존 내용의 편집을 사용할 수 없습니댜.</string>
+  <string name="composer_add_attachments_content_description">첨부 파일 추가</string>
+  <string name="composer_add_attachments_bottom_sheet_import_from">다음에서 가져오기…</string>
+  <string name="composer_error_loading_parent_message">메시지 정보를 불러올 수 없습니다.</string>
+  <string name="composer_original_message_quote">원본 메시지</string>
+  <string name="composer_sender_quote">%s에 %s &lt; %s&gt; 님이 작성함:</string>
+  <string name="composer_attachment_size_exceeded_dialog_confirm_button">확인</string>
+  <string name="composer_attachment_size_exceeded_dialog_title">첨부파일 한도 도달</string>
+  <string name="composer_attachment_size_exceeded_dialog_message">첨부 파일의 최대 크기는 %1$s 입니다</string>
+</resources>

@@ -34,12 +34,15 @@
   <string name="composer_error_store_draft_sender_address">Alamat pengirim draf gagal disimpan</string>
   <string name="composer_error_store_draft_body">Isi draf gagal disimpan</string>
   <string name="composer_error_duplicate_recipient">Penerima duplikat dihapus: %1$s</string>
-  <string name="composer_error_store_draft_subject">Menyimpan subjek draf gagal</string>
-  <string name="composer_error_store_draft_recipients">Menyimpan penerima draf gagal</string>
+  <string name="composer_error_store_draft_subject">Subjek draf gagal disimpan</string>
+  <string name="composer_error_store_draft_recipients">Penerima draf gagal disimpan</string>
   <string name="composer_error_loading_draft">Konten draf ini sedang tidak tersedia. Dengan menyunting pesan, isi draf yang telah ada sebelumnya akan tertimpa.</string>
   <string name="composer_add_attachments_content_description">Tambah lampiran</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Impor dari…</string>
   <string name="composer_error_loading_parent_message">Informasi pesan tidak dapat dimuat</string>
   <string name="composer_original_message_quote">Pesan Asli</string>
   <string name="composer_sender_quote">Pada %s, %s &lt;%s&gt; menulis:</string>
+  <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
+  <string name="composer_attachment_size_exceeded_dialog_title">Batas lampiran tercapai</string>
+  <string name="composer_attachment_size_exceeded_dialog_message">Batas ukuran lampiran adalah %1$s</string>
 </resources>

@@ -31,7 +31,7 @@
   <string name="attachment_type_description">Soubor %1$s</string>
   <!-- Attachment Types -->
   <string name="attachment_type_archive">Archiv</string>
-  <string name="attachment_type_image">Image</string>
+  <string name="attachment_type_image">Obrázek</string>
   <string name="attachment_type_video">Video</string>
   <string name="attachment_type_audio">Audio</string>
   <string name="attachment_type_unknown">Neznámý</string>

@@ -59,9 +59,9 @@
   <string name="please_go_back_online_to_load_messages">Ön jelenleg offline. Kérjük csatlakozzon újra internethez az üzenetek betöltéséhez</string>
   <string name="decryption_error">Az üzenet visszafejtése sikertelen.</string>
   <string name="detail_error_retrieving_message_body">Az üzenet betöltése sikertelen</string>
-  <string name="message_body_error_no_webview">You need to have a WebView installed to see this message\'s content.</string>
+  <string name="message_body_error_no_webview">Az üzenet a megjelenítéséhez az Android System WebView telepítve kell, hogy legyen.</string>
   <!-- Banners -->
   <string name="message_body_embedded_images_banner_text">A beágyazott képek automatikus letöltése ki van kapcsolva. A beállításoknál lehet ezt megváltoztatni.</string>
-  <string name="message_body_remote_content_banner_text">Automatic loading of remote content is turned off. This can be changed in the settings.</string>
-  <string name="message_body_embedded_and_remote_content_banner_text">Automatic loading of embedded images and remote content is turned off. These can be changed in the settings.</string>
+  <string name="message_body_remote_content_banner_text">A távoli tartalom automatikus letöltése ki van kapcsolva. A beállításoknál lehet ezt megváltoztatni.</string>
+  <string name="message_body_embedded_and_remote_content_banner_text">A beágyazott képek és távoli tartalom automatikus letöltése ki van kapcsolva. A beállításoknál lehet ezt megváltoztatni.</string>
 </resources>

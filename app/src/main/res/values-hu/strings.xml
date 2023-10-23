@@ -22,12 +22,12 @@
   <string name="description_remove_account">Kijelentkezik és eltávolítja a fiókkal kapcsolatos összes adatot.</string>
   <string name="user_select_other_account_content_description">Másik fiók választása</string>
   <string name="you_are_offline">Nincs internetkapcsolat</string>
-  <string name="feature_coming_soon">Feature coming soon…</string>
-  <string name="mailbox_draft_saved">Draft saved</string>
-  <string name="mailbox_message_sending">Sending message…</string>
-  <string name="mailbox_message_sending_offline">Offline, message queued for sending</string>
-  <string name="mailbox_message_sending_success">Message sent</string>
-  <string name="mailbox_message_sending_error">Error sending message</string>
-  <string name="mailbox_attachment_uploading_error">Error uploading attachment</string>
+  <string name="feature_coming_soon">A funkció hamarosan érkezik...</string>
+  <string name="mailbox_draft_saved">Piszkozat mentve</string>
+  <string name="mailbox_message_sending">Üzenet küldése…</string>
+  <string name="mailbox_message_sending_offline">Offline, az üzenet sorba van állítva küldésre</string>
+  <string name="mailbox_message_sending_success">Üzenet elküldve</string>
+  <string name="mailbox_message_sending_error">Hiba az üzenet küldése közben</string>
+  <string name="mailbox_attachment_uploading_error">Hiba csatolmányok feltöltésénél</string>
   <string name="notification_switched_account">Átlépve a fiókba: %s</string>
 </resources>

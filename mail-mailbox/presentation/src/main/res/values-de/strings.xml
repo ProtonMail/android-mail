@@ -24,6 +24,10 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Auswahlmodus beenden</string>
   <string name="mailbox_toolbar_menu_button_content_description">Menü</string>
   <string name="mailbox_toolbar_search_button_content_description">Suche</string>
+  <plurals name="mailbox_toolbar_selected_count">
+    <item quantity="one">%d ausgewählt</item>
+    <item quantity="other">%d ausgewählt</item>
+  </plurals>
   <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
   <string name="filter_unread_button_text_without_counter">Ungelesen</string>
   <plurals name="filter_unread_button_text">

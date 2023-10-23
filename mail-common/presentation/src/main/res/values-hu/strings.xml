@@ -24,9 +24,9 @@
   <string name="retry">Újra</string>
   <string name="toolbar_back_content_description">Vissza az előző képernyőre</string>
   <string name="x_error_not_logged_in">Nincs bejelentkezve</string>
-  <string name="action_reply">Reply</string>
-  <string name="action_reply_all">Reply all</string>
-  <string name="action_forward">Forward</string>
+  <string name="action_reply">Válasz</string>
+  <string name="action_reply_all">Válasz mindenkinek</string>
+  <string name="action_forward">Továbbítás</string>
   <string name="action_reply_content_description">Válasz</string>
   <string name="action_reply_all_content_description">Válasz mindenkinek</string>
   <string name="action_forward_content_description">Továbbítás</string>
@@ -50,7 +50,7 @@
   <string name="action_save_pdf_content_description">Mentés PDF-ként</string>
   <string name="action_sender_emails_content_description">A feladó jövőbeli e-mailjeihez tartozó művelet beállítása</string>
   <string name="action_save_attachments_content_description">Mellékletek mentése</string>
-  <string name="action_more_content_description">More</string>
+  <string name="action_more_content_description">Továbbiak</string>
   <string name="common_error_loading_actions">Töltés sikertelen</string>
   <string name="yesterday">Tegnap</string>
   <!-- notification channels -->

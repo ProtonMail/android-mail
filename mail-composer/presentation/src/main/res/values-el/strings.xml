@@ -42,4 +42,7 @@
   <string name="composer_error_loading_parent_message">Δεν ήταν δυνατή η φόρτωση των πληροφοριών του μηνύματος</string>
   <string name="composer_original_message_quote">Αρχικό Μήνυμα</string>
   <string name="composer_sender_quote">Την %s, %s ο/η &lt;%s&gt; έγραψε:</string>
+  <string name="composer_attachment_size_exceeded_dialog_confirm_button">ΟΚ</string>
+  <string name="composer_attachment_size_exceeded_dialog_title">Συμπλήρωση ορίου συνημμένων</string>
+  <string name="composer_attachment_size_exceeded_dialog_message">Το όριο μεγέθους για τα συνημμένα είναι %1$s</string>
 </resources>

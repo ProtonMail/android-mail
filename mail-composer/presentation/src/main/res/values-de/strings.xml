@@ -41,5 +41,8 @@
   <string name="composer_add_attachments_bottom_sheet_import_from">Importieren aus…</string>
   <string name="composer_error_loading_parent_message">Die Informationen der Nachricht konnten nicht geladen werden.</string>
   <string name="composer_original_message_quote">Ursprüngliche Nachricht</string>
-  <string name="composer_sender_quote">On %s, %s &lt;%s&gt; wrote:</string>
+  <string name="composer_sender_quote">Am %s, schrieb %s &lt; %s&gt;:</string>
+  <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
+  <string name="composer_attachment_size_exceeded_dialog_title">Limit für Anhänge erreicht</string>
+  <string name="composer_attachment_size_exceeded_dialog_message">Die maximale Größe für Anhänge beträgt %1$s</string>
 </resources>

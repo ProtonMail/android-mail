@@ -23,12 +23,12 @@
   <string name="mail_settings_account_settings">Pengaturan akun</string>
   <string name="mail_settings_app_settings">Pengaturan aplikasi</string>
   <string name="mail_settings_theme">Tema</string>
-  <string name="mail_settings_push_notifications">Notifikasi</string>
+  <string name="mail_settings_push_notifications">Notifikasi push</string>
   <string name="mail_settings_auto_lock">Kunci Otomatis</string>
-  <string name="mail_settings_alternative_routing">Pengalihan lalu lintas data alternatif</string>
+  <string name="mail_settings_alternative_routing">Pengalihan lalu lintas alternatif</string>
   <string name="mail_settings_app_language">Bahasa aplikasi</string>
   <string name="mail_settings_combined_contacts">Kontak gabungan</string>
-  <string name="mail_settings_swipe_actions">Tindakan geser</string>
+  <string name="mail_settings_swipe_actions">Tindakan usap</string>
   <string name="mail_settings_combined_contacts_hint">Aktifkan fitur ini agar alamat surel yang Anda ketik dapat dilengkapi secara otomatis dengan data kontak dari seluruh akun yang terhubung masuk.</string>
   <string name="mail_settings_alternative_routing_hint">Apabila situs Proton diblokir, pengaturan ini akan memungkinkan aplikasi kami untuk dapat terhubung dengan Proton melalui lalu lintas jaringan alternatif, yang dapat berguna untuk melewati hadangan firewall atau masalah jaringan: Kami sarankan agar pengaturan ini selalu aktif untuk koneksi yang lebih andal.</string>
   <!-- Theme settings -->
@@ -71,7 +71,7 @@
   <string name="mail_settings_swipe_action_archive_title">Arsip</string>
   <string name="mail_settings_swipe_action_read_title">Belum dibaca</string>
   <string name="mail_settings_swipe_action_spam_title">Spam</string>
-  <string name="mail_settings_swipe_action_star_title">Berbintang</string>
+  <string name="mail_settings_swipe_action_star_title">Bintang</string>
   <string name="mail_settings_swipe_action_trash_title">Sampah</string>
   <string name="mail_settings_swipe_action_archive_description">Pindahkan ke arsip</string>
   <string name="mail_settings_swipe_action_read_description">Tandai belum/telah dibaca</string>

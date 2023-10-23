@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="mail_settings_settings">설정</string>
+  <string name="mail_settings_toolbar_button_content_description">돌아가기</string>
+  <!-- Settings items -->
+  <string name="mail_settings_account_settings">계정 설정</string>
+  <string name="mail_settings_app_settings">앱 설정</string>
+  <string name="mail_settings_theme">테마</string>
+  <string name="mail_settings_push_notifications">푸시 알림</string>
+  <string name="mail_settings_auto_lock">자동 잠금</string>
+  <string name="mail_settings_alternative_routing">대체 라우팅</string>
+  <string name="mail_settings_app_language">앱 언어</string>
+  <string name="mail_settings_combined_contacts">병합된 연락처</string>
+  <string name="mail_settings_swipe_actions">스와이프 동작</string>
+  <string name="mail_settings_combined_contacts_hint">로그인된 모든 계정의 연락처를 사용하여 이메일 주소를 자동 완성하려면 이 기능을 켜십시오.</string>
+  <string name="mail_settings_alternative_routing_hint">Proton 사이트가 차단되었을 경우 이 설정을 통한 대체 네트워크 라우팅으로 방화벽을 우회하거나 네트워크 문제가 발생했을 때 Proton에 접근할 수 있습니다. 더 나은 신뢰성을 위해 이 설정을 계속 켜두는 것을 권장합니다.</string>
+  <!-- Theme settings -->
+  <string name="mail_settings_system_default">시스템</string>
+  <string name="mail_settings_theme_light">라이트</string>
+  <string name="mail_settings_theme_dark">다크</string>
+  <!-- Settings item states -->
+  <string name="mail_settings_no_information_available">사용 가능한 정보 없음</string>
+  <string name="mail_settings_enabled">활성화됨</string>
+  <string name="mail_settings_disabled">비활성화됨</string>
+  <string name="mail_settings_allowed">허용됨</string>
+  <string name="mail_settings_denied">거부됨</string>
+  <string name="mail_settings_auto_detect">자동 감지</string>
+  <string name="mail_settings_app_information">앱 정보</string>
+  <string name="mail_settings_app_version">앱 버전</string>
+  <string name="mail_settings_account">계정</string>
+  <!-- Account Settings items -->
+  <string name="mail_settings_subscription">구독</string>
+  <string name="mail_settings_password_management">비밀번호 관리</string>
+  <string name="mail_settings_recovery_email">복구 이메일</string>
+  <string name="mail_settings_mailbox_size">메일함 크기</string>
+  <string name="mail_settings_addresses">주소</string>
+  <string name="mail_settings_default_email_address">기본 이메일 주소</string>
+  <string name="mail_settings_display_name_and_signature">이름과 서명 표시</string>
+  <string name="mail_settings_mailbox">메일함</string>
+  <string name="mail_settings_privacy">개인정보 보호</string>
+  <string name="mail_settings_search_message_content">메시지 내용 검색</string>
+  <string name="mail_settings_labels_and_folders">라벨과 폴더</string>
+  <string name="mail_settings_local_storage">로컬 저장소</string>
+  <string name="mail_settings_snooze">방해 금지</string>
+  <string name="mail_settings_snooze_notifications">방해금지 모드</string>
+  <string name="mail_settings_conversation_mode">대화 모드</string>
+  <string name="mail_settings_not_set">미설정</string>
+  <string name="mail_settings_conversation_mode_hint">받은 편지함에 있는 동일한 메일을 함께 그룹화하거나 별도로 표시</string>
+  <!-- Swipe Actions -->
+  <string name="mail_settings_swipe_actions_title">스와이프 동작</string>
+  <string name="mail_settings_swipe_actions_subtitle">스와이프 제스처를 설정하여 가장 많이 사용하는 작업에 액세스하세요.</string>
+  <string name="mail_settings_swipe_right_name">왼쪽에서 오른쪽으로</string>
+  <string name="mail_settings_swipe_left_name">오른쪽에서 왼쪽으로</string>
+  <string name="mail_settings_swipe_action_archive_title">보관</string>
+  <string name="mail_settings_swipe_action_read_title">읽지 않음</string>
+  <string name="mail_settings_swipe_action_spam_title">스팸</string>
+  <string name="mail_settings_swipe_action_star_title">별표</string>
+  <string name="mail_settings_swipe_action_trash_title">휴지통</string>
+  <string name="mail_settings_swipe_action_archive_description">보관함으로 이동</string>
+  <string name="mail_settings_swipe_action_read_description">읽음/읽지 않음으로 표시</string>
+  <string name="mail_settings_swipe_action_spam_description">스팸으로 이동</string>
+  <string name="mail_settings_swipe_action_star_description">별표 표시/삭제</string>
+  <string name="mail_settings_swipe_action_trash_description">휴지통으로 이동</string>
+  <!-- Error messages -->
+  <string name="mail_settings_generic_error_message">오류 발생. 다시 시도하세요.</string>
+</resources>

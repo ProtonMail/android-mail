@@ -42,4 +42,7 @@
   <string name="composer_error_loading_parent_message">無法載入訊息資訊</string>
   <string name="composer_original_message_quote">原始訊息</string>
   <string name="composer_sender_quote">在 %s，%s &lt;%s&gt; 寫道：</string>
+  <string name="composer_attachment_size_exceeded_dialog_confirm_button">確定</string>
+  <string name="composer_attachment_size_exceeded_dialog_title">已達附件上限</string>
+  <string name="composer_attachment_size_exceeded_dialog_message">附件大小上限為 %1$s</string>
 </resources>

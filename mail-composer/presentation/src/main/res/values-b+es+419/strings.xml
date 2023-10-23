@@ -42,4 +42,7 @@
   <string name="composer_error_loading_parent_message">No se pudo cargar la información del mensaje</string>
   <string name="composer_original_message_quote">Mensaje original</string>
   <string name="composer_sender_quote">El %s, %s &lt;%s&gt; escribió:</string>
+  <string name="composer_attachment_size_exceeded_dialog_confirm_button">Aceptar</string>
+  <string name="composer_attachment_size_exceeded_dialog_title">Se alcanzó el límite de archivos adjuntos.</string>
+  <string name="composer_attachment_size_exceeded_dialog_message">El límite del tamaño para los archivos adjuntos es de %1$s.</string>
 </resources>

@@ -42,4 +42,7 @@
   <string name="composer_error_loading_parent_message">Kunne ikke indlæse beskedens oplysninger</string>
   <string name="composer_original_message_quote">Oprindelig besked</string>
   <string name="composer_sender_quote">%s, %s &lt;%s&gt; skrev:</string>
+  <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
+  <string name="composer_attachment_size_exceeded_dialog_title">Grænse for vedhæftning nået</string>
+  <string name="composer_attachment_size_exceeded_dialog_message">Størrelsesgrænsen for vedhæftede filer er %1$s</string>
 </resources>

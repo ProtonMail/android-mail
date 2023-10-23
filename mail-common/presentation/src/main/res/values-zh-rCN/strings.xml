@@ -25,7 +25,7 @@
   <string name="toolbar_back_content_description">返回前一界面</string>
   <string name="x_error_not_logged_in">未登录</string>
   <string name="action_reply">回复</string>
-  <string name="action_reply_all">全部回复</string>
+  <string name="action_reply_all">回复所有人</string>
   <string name="action_forward">转发</string>
   <string name="action_reply_content_description">回复</string>
   <string name="action_reply_all_content_description">回复所有人</string>

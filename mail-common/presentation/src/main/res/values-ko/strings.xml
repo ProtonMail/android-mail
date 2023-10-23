@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="expiration_expired">만료됨</string>
+  <string name="expiration_days_arg">%d일</string>
+  <string name="expiration_hours_arg">%d시</string>
+  <string name="expiration_minutes_arg">%d분</string>
+  <string name="retry">재시도</string>
+  <string name="toolbar_back_content_description">이전 화면으로 돌아가기</string>
+  <string name="x_error_not_logged_in">로그인하지 않음</string>
+  <string name="action_reply">회신</string>
+  <string name="action_reply_all">전체 회신</string>
+  <string name="action_forward">전달</string>
+  <string name="action_reply_content_description">답장</string>
+  <string name="action_reply_all_content_description">전체 답장</string>
+  <string name="action_forward_content_description">전달</string>
+  <string name="action_mark_read_content_description">읽음으로 표시</string>
+  <string name="action_mark_unread_content_description">읽지 않음으로 표시</string>
+  <string name="action_star_content_description">별표 표시</string>
+  <string name="action_unstar_content_description">별표 삭제</string>
+  <string name="action_label_content_description">라벨 추가</string>
+  <string name="action_move_content_description">이동</string>
+  <string name="action_trash_content_description">휴지통</string>
+  <string name="action_delete_content_description">삭제</string>
+  <string name="action_archive_content_description">보관함</string>
+  <string name="action_spam_content_description">스팸함</string>
+  <string name="action_view_in_light_mode_content_description">밝은 테마로 보기</string>
+  <string name="action_view_in_dark_mode_content_description">어두운 테마로 보기</string>
+  <string name="action_print_content_description">인쇄</string>
+  <string name="action_view_headers_content_description">헤더 보기</string>
+  <string name="action_view_html_content_description">HTML 보기</string>
+  <string name="action_report_phishing_content_description">피싱 신고</string>
+  <string name="action_remind_content_description">다시 알림</string>
+  <string name="action_save_pdf_content_description">PDF로 저장</string>
+  <string name="action_sender_emails_content_description">이 발신자의 향후 이메일에 대한 작업 설정</string>
+  <string name="action_save_attachments_content_description">첨부 파일 저장</string>
+  <string name="action_more_content_description">더 보기</string>
+  <string name="common_error_loading_actions">동작을 불러오는 데 실패했습니다</string>
+  <string name="yesterday">어제</string>
+  <!-- notification channels -->
+  <string name="attachment_download_notification_channel_name">첨부파일</string>
+  <string name="attachment_download_notification_channel_description">첨부파일 다운로드 알림</string>
+  <string name="email_notification_channel_name">이메일</string>
+  <string name="email_notification_channel_description">수신 이메일 알림</string>
+  <string name="auth_badge_official">공식</string>
+</resources>

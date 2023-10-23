@@ -42,4 +42,7 @@
   <string name="composer_error_loading_parent_message">Nie można załadować danych wiadomości</string>
   <string name="composer_original_message_quote">Oryginalna wiadomość</string>
   <string name="composer_sender_quote">%s, %s &lt;%s&gt; napisał(a):</string>
+  <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
+  <string name="composer_attachment_size_exceeded_dialog_title">Limit załączników został osiągnięty</string>
+  <string name="composer_attachment_size_exceeded_dialog_message">Maksymalny rozmiar załączników wynosi %1$s</string>
 </resources>

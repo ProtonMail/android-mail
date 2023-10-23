@@ -42,4 +42,7 @@
   <string name="composer_error_loading_parent_message">შეტყობინების ინფორმაციის ჩატვირთვა შეუძლებელია</string>
   <string name="composer_original_message_quote">ორიგინალური შეტყობინება</string>
   <string name="composer_sender_quote">%s, %s &lt; %s&gt; დაწერა:</string>
+  <string name="composer_attachment_size_exceeded_dialog_confirm_button">დიახ</string>
+  <string name="composer_attachment_size_exceeded_dialog_title">მიმაგრების ლიმიტი მიღწეულია</string>
+  <string name="composer_attachment_size_exceeded_dialog_message">მიმაგრებული ფაილების მაქსიმალური ზომაა %1$s</string>
 </resources>

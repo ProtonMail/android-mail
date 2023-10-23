@@ -22,7 +22,7 @@
   <string name="description_remove_account">Odhlásíte se a odstraníte všechny informace spojené s tímto účtem.</string>
   <string name="user_select_other_account_content_description">Vybrat jiný účet</string>
   <string name="you_are_offline">Jste v režimu offline</string>
-  <string name="feature_coming_soon">Funkce bude brzy k dispozici</string>
+  <string name="feature_coming_soon">Funkce bude brzy k dispozici…</string>
   <string name="mailbox_draft_saved">Koncept uložen</string>
   <string name="mailbox_message_sending">Odesílání zprávy…</string>
   <string name="mailbox_message_sending_offline">Offline, zpráva je ve frontě k odeslání</string>

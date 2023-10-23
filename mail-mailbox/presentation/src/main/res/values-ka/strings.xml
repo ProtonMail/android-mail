@@ -24,6 +24,10 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">მონიშვნის რეჟიმიდან გამოსვლა</string>
   <string name="mailbox_toolbar_menu_button_content_description">მენიუ</string>
   <string name="mailbox_toolbar_search_button_content_description">ძებნა</string>
+  <plurals name="mailbox_toolbar_selected_count">
+    <item quantity="one">მონიშნულია %d</item>
+    <item quantity="other">მონიშნულია %d</item>
+  </plurals>
   <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
   <string name="filter_unread_button_text_without_counter">წაუკითხავი</string>
   <plurals name="filter_unread_button_text">

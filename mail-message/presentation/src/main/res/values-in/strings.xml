@@ -21,9 +21,9 @@
     <item quantity="other">%d berkas</item>
   </plurals>
   <string name="attachment_show_more_label">+%1$d lainnya</string>
-  <string name="attachment_permission_dialog_title">Perizinan diperlukan</string>
+  <string name="attachment_permission_dialog_title">Izin dibutuhkan</string>
   <string name="attachment_permission_dialog_message">Proton Mail memerlukan izin akses ke media penyimpanan Anda untuk mengunduh lampiran.</string>
-  <string name="attachment_permission_dialog_dismiss_button">Oke</string>
+  <string name="attachment_permission_dialog_dismiss_button">OK</string>
   <string name="attachment_permission_dialog_action_button">Pengaturan</string>
   <string name="attachment_type_description">%1$s berkas</string>
   <!-- Attachment Types -->
