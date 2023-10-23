@@ -27,3 +27,5 @@ internal val Notification.summaryText: String? get() = extras.getString("android
 internal val Notification.text: String? get() = extras.getString("android.text")
 
 internal val Notification.bigText: String? get() = this.extras.getString("android.bigText")
+
+internal val Notification.subText: String? get() = this.extras.getString("android.subText")
