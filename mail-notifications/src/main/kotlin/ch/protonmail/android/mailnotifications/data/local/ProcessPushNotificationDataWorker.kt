@@ -18,25 +18,22 @@
 
 package ch.protonmail.android.mailnotifications.data.local
 
-import java.time.Instant
-import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
-import ch.protonmail.android.mailcommon.presentation.system.NotificationProvider
 import ch.protonmail.android.mailnotifications.R
-import ch.protonmail.android.mailnotifications.data.local.ProcessPushNotificationDataWorkerUtils.getNewLoginNotificationGroupForUserId
-import ch.protonmail.android.mailnotifications.data.local.ProcessPushNotificationDataWorkerUtils.getNewLoginNotificationIdForUserId
 import ch.protonmail.android.mailnotifications.data.local.ProcessPushNotificationDataWorkerUtils.isNewLoginNotification
 import ch.protonmail.android.mailnotifications.data.local.ProcessPushNotificationDataWorkerUtils.isNewMessageNotification
 import ch.protonmail.android.mailnotifications.data.remote.resource.PushNotificationData
 import ch.protonmail.android.mailnotifications.domain.AppInBackgroundState
-import ch.protonmail.android.mailnotifications.domain.NotificationsDeepLinkHelper
-import ch.protonmail.android.mailnotifications.domain.proxy.NotificationManagerCompatProxy
+import ch.protonmail.android.mailnotifications.domain.model.LocalPushNotificationData
+import ch.protonmail.android.mailnotifications.domain.model.NewLoginPushData
+import ch.protonmail.android.mailnotifications.domain.model.NewMessagePushData
+import ch.protonmail.android.mailnotifications.domain.model.UserPushData
+import ch.protonmail.android.mailnotifications.domain.usecase.ProcessNewLoginPushNotification
+import ch.protonmail.android.mailnotifications.domain.usecase.ProcessNewMessagePushNotification
 import ch.protonmail.android.mailnotifications.domain.usecase.content.DecryptNotificationContent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -44,7 +41,6 @@ import me.proton.core.accountmanager.domain.SessionManager
 import me.proton.core.domain.entity.UserId
 import me.proton.core.network.domain.session.SessionId
 import me.proton.core.user.domain.UserManager
-import me.proton.core.user.domain.entity.User
 import timber.log.Timber
 
 @HiltWorker
@@ -54,10 +50,9 @@ internal class ProcessPushNotificationDataWorker @AssistedInject constructor(
     private val sessionManager: SessionManager,
     private val decryptNotificationContent: DecryptNotificationContent,
     private val appInBackgroundState: AppInBackgroundState,
-    private val notificationProvider: NotificationProvider,
     private val userManager: UserManager,
-    private val notificationsDeepLinkHelper: NotificationsDeepLinkHelper,
-    private val notificationManagerCompatProxy: NotificationManagerCompatProxy
+    private val processNewMessagePushNotification: ProcessNewMessagePushNotification,
+    private val processNewLoginPushNotification: ProcessNewLoginPushNotification
 ) : CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {
@@ -98,129 +93,46 @@ internal class ProcessPushNotificationDataWorker @AssistedInject constructor(
 
         return when {
             isNewMessageNotification(decryptedNotification.value) &&
-                appInBackgroundState.isAppInBackground() -> processNewMessageNotification(
-                context,
-                user,
-                data
-            )
+                appInBackgroundState.isAppInBackground() -> {
+                val notificationData = data.toLocalEmailNotificationData(context, userId.id, user.email ?: "")
+                processNewMessagePushNotification(notificationData)
+            }
 
             isNewLoginNotification(decryptedNotification.value) -> {
-                processNewLoginNotification(
-                    context,
-                    user,
-                    data
-                )
+                val notificationData = data.toLocalNewLoginNotificationData(context, userId.id, user.email ?: "")
+                processNewLoginPushNotification(notificationData)
             }
 
             else -> Result.success()
         }
     }
 
-    private fun processNewLoginNotification(
+    private fun PushNotificationData.toLocalEmailNotificationData(
         context: Context,
-        user: User,
-        notificationData: PushNotificationData
-    ): Result {
-        val notificationTitle = notificationData.sender?.senderName
-            ?: context.getString(R.string.notification_title_text_new_login_alerts_fallback)
-
-        val notificationUrl = notificationData.url
-        val notificationGroup = getNewLoginNotificationGroupForUserId(user.userId)
-        val viewIntent = Intent(Intent.ACTION_VIEW, Uri.parse(notificationUrl))
-        val contentPendingIntent = PendingIntent.getActivities(
-            context,
-            notificationUrl.hashCode(),
-            arrayOf(viewIntent),
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
-
-        val notification = notificationProvider.provideLoginNotificationBuilder(
-            context = context,
-            userAddress = user.email ?: "",
-            contentTitle = notificationTitle,
-            contentText = notificationData.body,
-            group = notificationGroup,
-            autoCancel = true
-        ).apply { setContentIntent(contentPendingIntent) }.build()
-
-        val groupNotification = notificationProvider.provideLoginNotificationBuilder(
-            context = context,
-            userAddress = user.email ?: "",
-            contentTitle = notificationTitle,
-            contentText = context.getString(R.string.notification_summary_text_new_login_alerts),
-            group = notificationGroup,
-            isGroupSummary = true,
-            autoCancel = true
-        ).apply { setContentIntent(contentPendingIntent) }.build()
-
-        notificationManagerCompatProxy.run {
-            showNotification(Instant.now().hashCode(), notification)
-            showNotification(getNewLoginNotificationIdForUserId(user.userId), groupNotification)
-        }
-
-        return Result.success()
-    }
-
-    private fun processNewMessageNotification(
-        context: Context,
-        user: User,
-        notificationData: PushNotificationData
-    ): Result {
-        val sender = notificationData.sender
-        val notificationTitle = sender?.senderName?.ifEmpty { sender.senderAddress }
+        userId: String,
+        userEmail: String
+    ): LocalPushNotificationData.Email {
+        val userData = UserPushData(userId, userEmail)
+        val sender = sender?.senderName?.ifEmpty { sender.senderAddress }
             ?: context.getString(R.string.notification_title_text_new_message_fallback)
+        val pushData = NewMessagePushData(sender, messageId, body)
 
-        val notification = notificationProvider.provideEmailNotificationBuilder(
-            context = context,
-            contentTitle = notificationTitle,
-            subText = user.email ?: "",
-            contentText = notificationData.body,
-            group = user.userId.id,
-            autoCancel = true
-        ).apply {
-            setContentIntent(
-                PendingIntent.getActivity(
-                    context,
-                    notificationData.messageId.hashCode(),
-                    notificationsDeepLinkHelper.buildMessageDeepLinkIntent(
-                        notificationData.messageId.hashCode().toString(),
-                        notificationData.messageId,
-                        user.userId.id
-                    ),
-                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-                )
-            )
-        }.build()
-
-        val groupNotification = notificationProvider.provideEmailNotificationBuilder(
-            context = context,
-            contentTitle = notificationTitle,
-            subText = user.email ?: "",
-            contentText = context.getString(R.string.notification_summary_text_new_messages),
-            group = user.userId.id,
-            isGroupSummary = true,
-            autoCancel = true
-        ).apply {
-            setContentIntent(
-                PendingIntent.getActivity(
-                    context,
-                    notificationData.messageId.hashCode(),
-                    notificationsDeepLinkHelper.buildMessageGroupDeepLinkIntent(
-                        user.userId.id.hashCode().toString(),
-                        user.userId.id
-                    ),
-                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-                )
-            )
-        }.build()
-
-        notificationManagerCompatProxy.run {
-            showNotification(notificationData.messageId.hashCode(), notification)
-            showNotification(user.userId.id.hashCode(), groupNotification)
-        }
-
-        return Result.success()
+        return LocalPushNotificationData.Email(userData, pushData)
     }
+
+    private fun PushNotificationData.toLocalNewLoginNotificationData(
+        context: Context,
+        userId: String,
+        userEmail: String
+    ): LocalPushNotificationData.Login {
+        val userData = UserPushData(userId, userEmail)
+        val sender = sender?.senderName?.ifEmpty { sender.senderAddress }
+            ?: context.getString(R.string.notification_title_text_new_login_alerts_fallback)
+        val pushData = NewLoginPushData(sender, body, url)
+
+        return LocalPushNotificationData.Login(userData, pushData)
+    }
+
 
     companion object {
 

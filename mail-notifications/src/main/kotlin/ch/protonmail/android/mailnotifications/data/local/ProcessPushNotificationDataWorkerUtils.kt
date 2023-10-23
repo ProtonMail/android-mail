@@ -21,7 +21,6 @@ package ch.protonmail.android.mailnotifications.data.local
 import ch.protonmail.android.mailnotifications.data.remote.resource.NotificationAction
 import ch.protonmail.android.mailnotifications.data.remote.resource.NotificationType
 import ch.protonmail.android.mailnotifications.data.remote.resource.PushNotification
-import me.proton.core.domain.entity.UserId
 
 internal object ProcessPushNotificationDataWorkerUtils {
 
@@ -35,7 +34,7 @@ internal object ProcessPushNotificationDataWorkerUtils {
             pushNotification.data?.action == NotificationAction.CREATED
     }
 
-    fun getNewLoginNotificationGroupForUserId(userId: UserId) = "${userId.id}-openurl"
+    fun getNewLoginNotificationGroupForUserId(userId: String) = "$userId-openurl"
 
-    fun getNewLoginNotificationIdForUserId(userId: UserId) = getNewLoginNotificationGroupForUserId(userId).hashCode()
+    fun getNewLoginNotificationIdForUserId(userId: String) = getNewLoginNotificationGroupForUserId(userId).hashCode()
 }
