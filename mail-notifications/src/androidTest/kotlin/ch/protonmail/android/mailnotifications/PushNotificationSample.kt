@@ -16,14 +16,14 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.notifications
+package ch.protonmail.android.mailnotifications
 
-import ch.protonmail.android.mailnotifications.domain.model.NotificationAction
-import ch.protonmail.android.mailnotifications.domain.model.PushNotification
-import ch.protonmail.android.mailnotifications.domain.model.PushNotificationData
-import ch.protonmail.android.mailnotifications.domain.model.PushNotificationSender
+import ch.protonmail.android.mailnotifications.data.remote.resource.NotificationAction
+import ch.protonmail.android.mailnotifications.data.remote.resource.PushNotification
+import ch.protonmail.android.mailnotifications.data.remote.resource.PushNotificationData
+import ch.protonmail.android.mailnotifications.data.remote.resource.PushNotificationSender
 
-object PushNotificationSample {
+internal object PushNotificationSample {
 
     private val SampleEmailPushNotificationData = PushNotificationData(
         title = "ProtonMail",

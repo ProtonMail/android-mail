@@ -25,12 +25,12 @@ import androidx.work.workDataOf
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
 import ch.protonmail.android.mailcommon.presentation.system.NotificationProvider
+import ch.protonmail.android.mailnotifications.data.remote.resource.PushNotification
+import ch.protonmail.android.mailnotifications.data.remote.resource.PushNotificationData
 import ch.protonmail.android.mailnotifications.domain.AppInBackgroundState
 import ch.protonmail.android.mailnotifications.domain.NotificationsDeepLinkHelper
-import ch.protonmail.android.mailnotifications.domain.model.PushNotification
-import ch.protonmail.android.mailnotifications.domain.model.PushNotificationData
 import ch.protonmail.android.mailnotifications.domain.proxy.NotificationManagerCompatProxy
-import ch.protonmail.android.mailnotifications.domain.usecase.DecryptNotificationContent
+import ch.protonmail.android.mailnotifications.domain.usecase.content.DecryptNotificationContent
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk

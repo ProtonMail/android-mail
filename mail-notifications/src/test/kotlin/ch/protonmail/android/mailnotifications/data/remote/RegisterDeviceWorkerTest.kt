@@ -27,8 +27,8 @@ import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
-import ch.protonmail.android.mailnotifications.data.remote.resource.RegisterDeviceRequest
-import ch.protonmail.android.mailnotifications.data.remote.resource.RegisterDeviceResponse
+import ch.protonmail.android.mailnotifications.data.remote.resource.device.RegisterDeviceRequest
+import ch.protonmail.android.mailnotifications.data.remote.resource.device.RegisterDeviceResponse
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every

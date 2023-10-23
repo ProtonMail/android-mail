@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.notifications
+package ch.protonmail.android.mailnotifications
 
 import android.app.Notification
 

@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.notifications
+package ch.protonmail.android.mailnotifications
 
 import java.time.Instant
 import android.app.Notification
@@ -28,12 +28,12 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
 import ch.protonmail.android.mailcommon.presentation.system.NotificationProvider
 import ch.protonmail.android.mailcommon.presentation.system.NotificationProvider.Companion.LOGIN_CHANNEL_ID
+import ch.protonmail.android.mailnotifications.PushNotificationSample.getSampleLoginAlertNotification
 import ch.protonmail.android.mailnotifications.data.local.ProcessPushNotificationDataWorker
 import ch.protonmail.android.mailnotifications.domain.AppInBackgroundState
 import ch.protonmail.android.mailnotifications.domain.NotificationsDeepLinkHelper
 import ch.protonmail.android.mailnotifications.domain.proxy.NotificationManagerCompatProxy
-import ch.protonmail.android.mailnotifications.domain.usecase.DecryptNotificationContent
-import ch.protonmail.android.notifications.PushNotificationSample.getSampleLoginAlertNotification
+import ch.protonmail.android.mailnotifications.domain.usecase.content.DecryptNotificationContent
 import ch.protonmail.android.test.annotations.suite.SmokeTest
 import io.mockk.CapturingSlot
 import io.mockk.coEvery
@@ -54,7 +54,7 @@ import org.junit.Test
 import kotlin.test.assertEquals
 
 @SmokeTest
-class ProcessPushNotificationDataWorkerLoginTest {
+internal class ProcessPushNotificationDataWorkerLoginTest {
 
     private val context = InstrumentationRegistry.getInstrumentation().targetContext
     private val sessionManager = mockk<SessionManager>()
