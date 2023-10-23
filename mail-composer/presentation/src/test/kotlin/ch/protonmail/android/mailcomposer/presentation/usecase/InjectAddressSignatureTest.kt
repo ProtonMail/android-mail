@@ -102,12 +102,39 @@ class InjectAddressSignatureTest {
         assertEquals(expectedBodyWithSignature, actual)
     }
 
+    @Test
+    fun `returns draft body with injected blank signature into blank draft body`() = runTest {
+        // Given
+        val userId = UserIdSample.Primary
+        val senderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+        val expectedSignature = expectBlankSignatureForSenderAddress(userId, senderEmail)
+        val existingBody = DraftBody("")
+
+        // When
+        val actual = injectAddressSignature(userId, existingBody, senderEmail).getOrNull()!!
+
+        // Then
+        val expectedBodyWithSignature = DraftBody("")
+
+        assertEquals(expectedBodyWithSignature, actual)
+    }
+
     private fun expectSignatureForSenderAddress(
         expectedUserId: UserId,
         expectedSenderEmail: SenderEmail
     ): AddressSignature = AddressSignature(
         "<div>HTML signature ($expectedSenderEmail)</div>",
         "Plaintext signature ($expectedSenderEmail)"
+    ).also {
+        coEvery { getAddressSignatureMock(expectedUserId, expectedSenderEmail) } returns it.right()
+    }
+
+    private fun expectBlankSignatureForSenderAddress(
+        expectedUserId: UserId,
+        expectedSenderEmail: SenderEmail
+    ): AddressSignature = AddressSignature(
+        "<div></div>",
+        ""
     ).also {
         coEvery { getAddressSignatureMock(expectedUserId, expectedSenderEmail) } returns it.right()
     }

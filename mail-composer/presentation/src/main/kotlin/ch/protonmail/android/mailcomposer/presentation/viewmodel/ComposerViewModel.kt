@@ -378,7 +378,7 @@ class ComposerViewModel @Inject constructor(
         }
     }
 
-    private suspend fun isDraftBodyOnlySignature() = injectAddressSignature(
+    private suspend fun isDraftBodyOnlySignature() = currentDraftBody().value.isNotBlank() && injectAddressSignature(
         primaryUserId(),
         DraftBody(""),
         currentSenderEmail()

@@ -65,8 +65,11 @@ class InjectAddressSignature @Inject constructor(
             }
         } else null
 
-        return@either draftBodyWithReplacedSignature
-            ?: DraftBody("${draftBody.value}${AddressSignature.SeparatorPlaintext}${addressSignature.plaintext}")
+        val draftBodyWithAddressSignature = if (addressSignature.plaintext.isNotBlank()) {
+            DraftBody("${draftBody.value}${AddressSignature.SeparatorPlaintext}${addressSignature.plaintext}")
+        } else draftBody
+
+        return@either draftBodyWithReplacedSignature ?: draftBodyWithAddressSignature
     }
 
 }
