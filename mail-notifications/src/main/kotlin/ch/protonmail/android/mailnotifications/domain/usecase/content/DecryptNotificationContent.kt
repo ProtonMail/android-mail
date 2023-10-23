@@ -16,12 +16,12 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailnotifications.domain.usecase
+package ch.protonmail.android.mailnotifications.domain.usecase.content
 
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
-import ch.protonmail.android.mailnotifications.domain.model.PushNotification
+import ch.protonmail.android.mailnotifications.data.remote.resource.PushNotification
 import me.proton.core.crypto.common.context.CryptoContext
 import me.proton.core.crypto.common.pgp.exception.CryptoException
 import me.proton.core.domain.entity.UserId
@@ -33,7 +33,7 @@ import me.proton.core.util.kotlin.deserialize
 import timber.log.Timber
 import javax.inject.Inject
 
-class DecryptNotificationContent @Inject constructor(
+internal class DecryptNotificationContent @Inject constructor(
     private val cryptoContext: CryptoContext,
     private val userManager: UserManager
 ) {

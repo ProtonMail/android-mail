@@ -18,9 +18,9 @@
 
 package ch.protonmail.android.mailnotifications.data.local
 
-import ch.protonmail.android.mailnotifications.domain.model.NotificationAction
-import ch.protonmail.android.mailnotifications.domain.model.NotificationType
-import ch.protonmail.android.mailnotifications.domain.model.PushNotification
+import ch.protonmail.android.mailnotifications.data.remote.resource.NotificationAction
+import ch.protonmail.android.mailnotifications.data.remote.resource.NotificationType
+import ch.protonmail.android.mailnotifications.data.remote.resource.PushNotification
 import me.proton.core.domain.entity.UserId
 
 internal object ProcessPushNotificationDataWorkerUtils {

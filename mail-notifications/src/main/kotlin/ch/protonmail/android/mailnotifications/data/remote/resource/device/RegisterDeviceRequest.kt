@@ -1,6 +1,7 @@
 /*
- * Copyright (c) 2022 Proton Technologies AG
- * This file is part of Proton Technologies AG and Proton Mail.
+ * Copyright (c) 2022 Proton AG
+ *
+ * This file is part of Proton Mail.
  *
  * Proton Mail is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,19 +14,18 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+ * along with Proton Mail. If not, see https://www.gnu.org/licenses/.
  */
 
-package ch.protonmail.android.mailnotifications.data.remote.resource
+package ch.protonmail.android.mailnotifications.data.remote.resource.device
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class RegisterDeviceResponse(
-    @SerialName("Code")
-    val code: Int = 0,
-
-    @SerialName("Error")
-    val error: String? = null
+data class RegisterDeviceRequest(
+    @SerialName("DeviceToken")
+    val deviceToken: String,
+    @SerialName("Environment")
+    val environment: Int
 )

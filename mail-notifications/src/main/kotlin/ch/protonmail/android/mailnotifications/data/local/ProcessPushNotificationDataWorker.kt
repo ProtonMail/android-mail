@@ -33,11 +33,11 @@ import ch.protonmail.android.mailnotifications.data.local.ProcessPushNotificatio
 import ch.protonmail.android.mailnotifications.data.local.ProcessPushNotificationDataWorkerUtils.getNewLoginNotificationIdForUserId
 import ch.protonmail.android.mailnotifications.data.local.ProcessPushNotificationDataWorkerUtils.isNewLoginNotification
 import ch.protonmail.android.mailnotifications.data.local.ProcessPushNotificationDataWorkerUtils.isNewMessageNotification
+import ch.protonmail.android.mailnotifications.data.remote.resource.PushNotificationData
 import ch.protonmail.android.mailnotifications.domain.AppInBackgroundState
 import ch.protonmail.android.mailnotifications.domain.NotificationsDeepLinkHelper
-import ch.protonmail.android.mailnotifications.domain.model.PushNotificationData
 import ch.protonmail.android.mailnotifications.domain.proxy.NotificationManagerCompatProxy
-import ch.protonmail.android.mailnotifications.domain.usecase.DecryptNotificationContent
+import ch.protonmail.android.mailnotifications.domain.usecase.content.DecryptNotificationContent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.proton.core.accountmanager.domain.SessionManager
@@ -48,7 +48,7 @@ import me.proton.core.user.domain.entity.User
 import timber.log.Timber
 
 @HiltWorker
-class ProcessPushNotificationDataWorker @AssistedInject constructor(
+internal class ProcessPushNotificationDataWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted workerParameters: WorkerParameters,
     private val sessionManager: SessionManager,

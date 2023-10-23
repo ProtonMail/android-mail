@@ -24,7 +24,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import ch.protonmail.android.mailnotifications.data.remote.fcm.model.KEY_PM_REGISTRATION_WORKER_ERROR
-import ch.protonmail.android.mailnotifications.data.remote.resource.RegisterDeviceRequest
+import ch.protonmail.android.mailnotifications.data.remote.resource.device.RegisterDeviceRequest
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.proton.core.domain.entity.UserId

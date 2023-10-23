@@ -18,8 +18,8 @@
  */
 package ch.protonmail.android.mailnotifications.data.remote
 
-import ch.protonmail.android.mailnotifications.data.remote.resource.RegisterDeviceRequest
-import ch.protonmail.android.mailnotifications.data.remote.resource.RegisterDeviceResponse
+import ch.protonmail.android.mailnotifications.data.remote.resource.device.RegisterDeviceRequest
+import ch.protonmail.android.mailnotifications.data.remote.resource.device.RegisterDeviceResponse
 import me.proton.core.network.data.protonApi.BaseRetrofitApi
 import retrofit2.http.Body
 import retrofit2.http.POST

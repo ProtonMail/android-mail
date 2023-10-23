@@ -20,7 +20,7 @@ package ch.protonmail.android.mailnotifications.data.remote.fcm
 
 import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
 import ch.protonmail.android.mailnotifications.data.repository.NotificationTokenRepository
-import ch.protonmail.android.mailnotifications.domain.usecase.ProcessPushNotificationMessage
+import ch.protonmail.android.mailnotifications.domain.usecase.content.ProcessPushNotificationMessage
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,7 +35,7 @@ import me.proton.core.util.kotlin.CoroutineScopeProvider
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class PMFirebaseMessagingService : FirebaseMessagingService() {
+internal class PMFirebaseMessagingService : FirebaseMessagingService() {
 
     @Inject
     lateinit var notificationTokenRepository: NotificationTokenRepository

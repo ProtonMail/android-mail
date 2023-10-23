@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailnotifications.domain.usecase
+package ch.protonmail.android.mailnotifications.domain.usecase.content
 
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailnotifications.data.local.ProcessPushNotificationDataWorker
@@ -25,7 +25,7 @@ import me.proton.core.network.domain.session.SessionId
 import timber.log.Timber
 import javax.inject.Inject
 
-class ProcessPushNotificationMessage @Inject constructor(
+internal class ProcessPushNotificationMessage @Inject constructor(
     private val enqueuer: Enqueuer,
     private val sessionManager: SessionManager
 ) {

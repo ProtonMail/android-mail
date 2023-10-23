@@ -16,29 +16,14 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailnotifications.domain.model
+package ch.protonmail.android.mailnotifications.data.remote.resource
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-enum class NotificationAction(val action: String) {
-
-    @SerialName(NOTIFICATION_ACTION_MESSAGE_CREATED)
-    CREATED("message_created"),
-
-    @SerialName(NOTIFICATION_ACTION_MESSAGE_TOUCHED)
-    TOUCHED("message_touched");
-
-    companion object {
-
-        private const val NOTIFICATION_ACTION_MESSAGE_CREATED = "message_created"
-        private const val NOTIFICATION_ACTION_MESSAGE_TOUCHED = "message_touched"
-
-        fun fromStringOrNull(action: String): NotificationAction? {
-            return values().find {
-                it.action == action
-            }
-        }
-    }
-}
+internal data class PushNotification(
+    @SerialName("type") val type: String,
+    @SerialName("version") val version: Int,
+    @SerialName("data") val data: PushNotificationData?
+)
