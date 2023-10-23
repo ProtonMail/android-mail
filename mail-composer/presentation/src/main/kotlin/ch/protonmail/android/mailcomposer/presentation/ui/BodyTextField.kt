@@ -90,6 +90,6 @@ internal fun BodyTextField(
 
     ConsumableTextEffect(effect = replaceDraftBody) {
         text = TextFieldValue(it)
-        onBodyChange(it)
+        // this is not user's deliberate action so we don't trigger onBodyChange(it)
     }
 }
