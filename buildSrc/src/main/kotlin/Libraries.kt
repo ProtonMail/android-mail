@@ -77,6 +77,7 @@ object AndroidX {
 
     object Core {
 
+        const val core = "androidx.core:core-ktx:${Versions.AndroidX.core}"
         const val annotation = "androidx.annotation:annotation:${Versions.AndroidX.annotation}"
         const val splashscreen = "androidx.core:core-splashscreen:${Versions.AndroidX.splashscreen}"
     }
@@ -101,6 +102,7 @@ object AndroidX {
 
         private const val version = Versions.AndroidX.hilt
 
+        const val android = "com.google.dagger:hilt-android:$version"
         const val compiler = "androidx.hilt:hilt-compiler:$version"
         const val navigationCompose = "androidx.hilt:hilt-navigation-compose:$version"
         const val work = "androidx.hilt:hilt-work:$version"

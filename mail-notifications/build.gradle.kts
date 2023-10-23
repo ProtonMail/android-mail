@@ -31,6 +31,8 @@ android {
 
     defaultConfig {
         minSdk = Config.minSdk
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments["clearPackageData"] = "true"
     }
 
     compileOptions {
@@ -45,6 +47,15 @@ android {
     buildFeatures {
         buildConfig = true
     }
+
+    packaging {
+        resources.excludes.add("MANIFEST.MF")
+        resources.excludes.add("META-INF/LICENSE*")
+        resources.excludes.add("META-INF/licenses/**")
+        resources.excludes.add("META-INF/AL2.0")
+        resources.excludes.add("META-INF/LGPL2.1")
+        resources.excludes.add("META-INF/gradle/incremental.annotation.processors")
+    }
 }
 
 kapt {
@@ -56,10 +67,21 @@ dependencies {
     api(Firebase.messaging)
 
     implementation(project(":mail-common"))
-    implementation(Dependencies.appLibs)
-    implementation(Dependencies.moduleDataLibs)
-    implementation(Dependencies.modulePresentationLibs)
+    implementation(project(":mail-label:domain"))
+    implementation(project(":mail-message:domain"))
+    implementation(AndroidX.Core.core)
+    implementation(AndroidX.DataStore.preferences)
+    implementation(AndroidX.Hilt.android)
+    implementation(AndroidX.Hilt.work)
+    implementation(AndroidX.Work.runtimeKtx)
+    implementation(Arrow.core)
+    implementation(JakeWharton.timber)
+    implementation(Proton.Core.label)
+    implementation(Proton.Core.accountManager)
+    kapt(Dependencies.hiltAnnotationProcessors)
 
     testImplementation(project(":test:test-data"))
     testImplementation(Dependencies.testLibs)
+    androidTestImplementation(Dependencies.androidTestLibs)
+    androidTestImplementation(project(":test:annotations"))
 }

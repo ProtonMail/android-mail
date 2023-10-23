@@ -37,6 +37,7 @@ object Versions {
         const val composeCompiler = "1.4.3"
         const val composeFoundation = "1.4.3"
         const val composeMaterial = "1.4.3"
+        const val core = "1.11.0-beta02"
         const val constraintLayoutCompose = "1.0.1"
         const val customView = "1.2.0-alpha02"
         const val customViewPoolingContainer = "1.0.0"
