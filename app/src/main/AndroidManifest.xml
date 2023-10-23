@@ -150,6 +150,8 @@
             </intent-filter>
         </service>
 
+        <receiver android:name=".mailnotifications.data.local.PushNotificationActionsBroadcastReceiver" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
