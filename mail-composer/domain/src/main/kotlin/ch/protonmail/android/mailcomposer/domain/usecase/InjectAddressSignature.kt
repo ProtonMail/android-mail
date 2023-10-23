@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailcomposer.domain.usecase
 
 import arrow.core.Either
-import arrow.core.continuations.either
+import arrow.core.raise.either
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcomposer.domain.model.AddressSignature
@@ -45,31 +45,39 @@ class InjectAddressSignature @Inject constructor(
             AddressSignature.BlankSignature
         }
 
-        val previousAddressSignature = previousSenderEmail?.let {
-            getAddressSignature(userId, it).getOrElse {
-                Timber.e("InjectAddressSignature: error getting previous address signature: $it")
-                null
-            }
+        previousSenderEmail?.let { senderEmail ->
+            getAddressSignature(userId, senderEmail).fold(
+                ifLeft = { Timber.e("Error getting previous address signature: $senderEmail") },
+                ifRight = { previousAddressSignature ->
+                    getBodyWithReplacedSignature(draftBody, previousAddressSignature, addressSignature)?.let {
+                        return@either it
+                    }
+                }
+            )
         }
-
-        // if previous signature exists in the body, replace it with the new one
-        val draftBodyWithReplacedSignature = if (previousAddressSignature != null) {
-            draftBody.value.lastIndexOf(previousAddressSignature.plaintext).takeIf { it != -1 }?.let { lastIndex ->
-                val bodyStringBuilder: StringBuilder = StringBuilder(draftBody.value)
-                bodyStringBuilder.replace(
-                    lastIndex,
-                    previousAddressSignature.plaintext.length + lastIndex,
-                    addressSignature.plaintext
-                )
-                DraftBody(bodyStringBuilder.toString())
-            }
-        } else null
 
         val draftBodyWithAddressSignature = if (addressSignature.plaintext.isNotBlank()) {
             DraftBody("${draftBody.value}${AddressSignature.SeparatorPlaintext}${addressSignature.plaintext}")
         } else draftBody
 
-        return@either draftBodyWithReplacedSignature ?: draftBodyWithAddressSignature
+        return@either draftBodyWithAddressSignature
     }
+
+    private fun getBodyWithReplacedSignature(
+        draftBody: DraftBody,
+        previousAddressSignature: AddressSignature,
+        addressSignature: AddressSignature
+    ): DraftBody? {
+        return draftBody.value.lastIndexOf(previousAddressSignature.plaintext).takeIf { it != -1 }?.let { lastIndex ->
+            val bodyStringBuilder: StringBuilder = StringBuilder(draftBody.value)
+            bodyStringBuilder.replace(
+                lastIndex,
+                previousAddressSignature.plaintext.length + lastIndex,
+                addressSignature.plaintext
+            )
+            DraftBody(bodyStringBuilder.toString())
+        }
+    }
+
 
 }

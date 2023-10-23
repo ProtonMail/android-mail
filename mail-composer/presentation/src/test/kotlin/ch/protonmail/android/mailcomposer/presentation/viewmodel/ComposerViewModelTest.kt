@@ -277,7 +277,7 @@ class ComposerViewModelTest {
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
-        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature())
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
 
         // When
         viewModel.submit(action)
@@ -299,6 +299,7 @@ class ComposerViewModelTest {
         // Given
         val expectedDraftBody = DraftBody(RawDraftBody)
         val expectedQuotedDraftBody = null
+        val originalSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
         val expectedSenderEmail = SenderEmail(UserAddressSample.AliasAddress.email)
         val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
         val expectedUserId = expectedUserId { UserIdSample.Primary }
@@ -316,7 +317,9 @@ class ComposerViewModelTest {
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
-        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature())
+        expectReEncryptAttachmentSucceeds(expectedUserId, expectedMessageId, originalSenderEmail, expectedSenderEmail)
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), originalSenderEmail)
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
 
         // Change internal state of the View Model to simulate an existing draft body before changing sender
         expectedViewModelInitialState(messageId = expectedMessageId, draftBody = expectedDraftBody)
@@ -357,7 +360,8 @@ class ComposerViewModelTest {
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectReEncryptAttachmentSucceeds(expectedUserId, expectedMessageId, previousSenderEmail, expectedSenderEmail)
-        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature())
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), previousSenderEmail)
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
 
         // Change internal state of the View Model to simulate an existing draft body before changing sender
         expectedViewModelInitialState(messageId = expectedMessageId, draftBody = expectedDraftBody)
@@ -392,7 +396,7 @@ class ComposerViewModelTest {
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
-        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature())
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
 
         // When
         viewModel.submit(action)
@@ -435,7 +439,7 @@ class ComposerViewModelTest {
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
-        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature())
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
 
         // When
         viewModel.submit(action)
@@ -478,7 +482,7 @@ class ComposerViewModelTest {
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
-        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature())
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
 
         // When
         viewModel.submit(action)
@@ -521,7 +525,7 @@ class ComposerViewModelTest {
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
-        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature())
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
 
         // When
         viewModel.submit(action)
@@ -567,7 +571,7 @@ class ComposerViewModelTest {
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
-        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature())
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
 
         // Change internal state of the View Model to simulate the existence of all fields before closing the composer
         expectedViewModelInitialState(
@@ -621,7 +625,7 @@ class ComposerViewModelTest {
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
-        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature())
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
 
         // Change internal state of the View Model to simulate the existence of all fields before closing the composer
         expectedViewModelInitialState(
@@ -675,7 +679,7 @@ class ComposerViewModelTest {
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
-        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature())
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
 
         // Change internal state of the View Model to simulate the existence of all fields before closing the composer
         expectedViewModelInitialState(
@@ -703,13 +707,14 @@ class ComposerViewModelTest {
         // Given
         val expectedUserId = expectedUserId { UserIdSample.Primary }
         val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
         expectNoInputDraftMessageId()
         expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
-        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature())
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
 
         // When
         viewModel.submit(ComposerAction.OnCloseComposer)
@@ -725,6 +730,7 @@ class ComposerViewModelTest {
         // Given
         val expectedUserId = expectedUserId { UserIdSample.Primary }
         val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
         expectNoInputDraftMessageId()
         expectNoInputDraftAction()
@@ -732,7 +738,7 @@ class ComposerViewModelTest {
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         val expectedDraftBody = expectDraftBodyWithSignature()
-        expectInjectAddressSignature(expectedUserId, expectedDraftBody)
+        expectInjectAddressSignature(expectedUserId, expectedDraftBody, expectedSenderEmail)
 
         // Change internal state of the View Model to simulate an existing draft body before closing composer
         expectedViewModelInitialState(
@@ -780,7 +786,7 @@ class ComposerViewModelTest {
             expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
             expectObserveMailFeature(expectedUserId) { emptyFlow() }
             expectObservedMessageAttachments(expectedUserId, expectedMessageId)
-            expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature())
+            expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
 
             // Change internal state of the View Model to simulate the
             // existence of all fields before closing the composer
@@ -808,12 +814,13 @@ class ComposerViewModelTest {
         val expectedUserId = expectedUserId { UserIdSample.Primary }
         val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
         val primaryAddress = expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
         expectNoInputDraftMessageId()
         expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
-        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature())
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
 
         // When
         val actual = viewModel.state.value
@@ -847,6 +854,7 @@ class ComposerViewModelTest {
         val expectedUserId = expectedUserId { UserIdSample.Primary }
         val addresses = listOf(UserAddressSample.PrimaryAddress, UserAddressSample.AliasAddress)
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
         val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
         expectedGetComposerSenderAddresses { addresses }
         expectNoInputDraftMessageId()
@@ -854,7 +862,7 @@ class ComposerViewModelTest {
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
-        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature())
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
 
         // When
         viewModel.submit(ComposerAction.ChangeSenderRequested)
@@ -870,6 +878,7 @@ class ComposerViewModelTest {
         // Given
         val expectedUserId = expectedUserId { UserIdSample.Primary }
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
         val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
         expectedGetComposerSenderAddressesError { GetComposerSenderAddresses.Error.UpgradeToChangeSender }
         expectNoInputDraftMessageId()
@@ -877,7 +886,7 @@ class ComposerViewModelTest {
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
-        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature())
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
 
         // When
         viewModel.submit(ComposerAction.ChangeSenderRequested)
@@ -893,6 +902,7 @@ class ComposerViewModelTest {
         // Given
         val expectedUserId = expectedUserId { UserIdSample.Primary }
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
         val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
         expectedGetComposerSenderAddressesError { GetComposerSenderAddresses.Error.FailedDeterminingUserSubscription }
         expectNoInputDraftMessageId()
@@ -900,7 +910,7 @@ class ComposerViewModelTest {
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
-        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature())
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
 
         // When
         viewModel.submit(ComposerAction.ChangeSenderRequested)
@@ -915,7 +925,7 @@ class ComposerViewModelTest {
     fun `emits state with new sender address when sender changed`() = runTest {
         // Given
         val expectedDraftBody = DraftBody("")
-        val previousSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+        val originalSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
         val expectedSenderEmail = SenderEmail(UserAddressSample.AliasAddress.email)
         val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
         val expectedUserId = expectedUserId { UserIdSample.Primary }
@@ -927,8 +937,9 @@ class ComposerViewModelTest {
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
-        expectReEncryptAttachmentSucceeds(expectedUserId, expectedMessageId, previousSenderEmail, expectedSenderEmail)
-        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature())
+        expectReEncryptAttachmentSucceeds(expectedUserId, expectedMessageId, originalSenderEmail, expectedSenderEmail)
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), originalSenderEmail)
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
 
         // When
         viewModel.submit(action)
@@ -937,7 +948,7 @@ class ComposerViewModelTest {
         val currentState = viewModel.state.value
         assertEquals(SenderUiModel(expectedSenderEmail.value), currentState.fields.sender)
         coVerify(exactly = 1) {
-            reEncryptAttachments(expectedUserId, expectedMessageId, previousSenderEmail, expectedSenderEmail)
+            reEncryptAttachments(expectedUserId, expectedMessageId, originalSenderEmail, expectedSenderEmail)
         }
     }
 
@@ -959,6 +970,8 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectReEncryptAttachmentFails(expectedUserId, expectedMessageId, previousSenderEmail, expectedSenderEmail)
         expectDeleteAllAttachmentsSucceeds(expectedUserId, previousSenderEmail, expectedMessageId)
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), previousSenderEmail)
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
 
         // When
         viewModel.submit(action)
@@ -972,6 +985,7 @@ class ComposerViewModelTest {
     fun `emits state with saving draft with new sender error when save draft with sender returns error`() = runTest {
         // Given
         val expectedDraftBody = DraftBody("")
+        val originalSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
         val expectedSenderEmail = SenderEmail(UserAddressSample.AliasAddress.email)
         val expectedUserId = expectedUserId { UserIdSample.Primary }
         val action = ComposerAction.SenderChanged(SenderUiModel(expectedSenderEmail.value))
@@ -985,7 +999,8 @@ class ComposerViewModelTest {
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
-        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature())
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), originalSenderEmail)
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
 
         // When
         viewModel.submit(action)
@@ -1015,7 +1030,7 @@ class ComposerViewModelTest {
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
-        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature())
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
 
         // When
         viewModel.submit(action)
@@ -1042,7 +1057,7 @@ class ComposerViewModelTest {
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
-        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature())
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
 
         // When
         viewModel.submit(action)
@@ -1083,7 +1098,7 @@ class ComposerViewModelTest {
         expectObserveMailFeature(UserIdSample.Primary) { emptyFlow() }
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
-        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature())
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
 
         // When
         viewModel.submit(action)
@@ -1120,7 +1135,7 @@ class ComposerViewModelTest {
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
-        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature())
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
 
         // When
         viewModel.submit(action)
@@ -1157,7 +1172,7 @@ class ComposerViewModelTest {
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
-        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature())
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
 
         // When
         viewModel.submit(action)
@@ -1312,13 +1327,14 @@ class ComposerViewModelTest {
         // Given
         val userId = expectedUserId { UserIdSample.Primary }
         val messageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
         expectedPrimaryAddress(userId) { UserAddressSample.PrimaryAddress }
         expectStartDraftSync(userId, messageId)
         expectNoInputDraftMessageId()
         expectNoInputDraftAction()
         expectObserveMailFeature(userId) { emptyFlow() }
         expectObservedMessageAttachments(userId, messageId)
-        expectInjectAddressSignature(userId, expectDraftBodyWithSignature())
+        expectInjectAddressSignature(userId, expectDraftBodyWithSignature(), expectedSenderEmail)
 
         // When
         val actual = viewModel.state.value
@@ -1574,8 +1590,12 @@ class ComposerViewModelTest {
         """.trimIndent()
     )
 
-    private fun expectInjectAddressSignature(expectedUserId: UserId, expectedDraftBody: DraftBody) {
-        coEvery { injectAddressSignature(expectedUserId, any(), any(), any()) } returns expectedDraftBody.right()
+    private fun expectInjectAddressSignature(
+        expectedUserId: UserId,
+        expectedDraftBody: DraftBody,
+        senderEmail: SenderEmail
+    ) {
+        coEvery { injectAddressSignature(expectedUserId, any(), senderEmail, any()) } returns expectedDraftBody.right()
     }
 
     private fun expectInputDraftMessageId(draftId: () -> MessageId) = draftId().also {

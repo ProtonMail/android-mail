@@ -147,7 +147,8 @@ class ComposerViewModel @Inject constructor(
                 .onLeft { emitNewStateFor(ComposerEvent.ErrorLoadingDefaultSenderAddress) }
                 .onRight {
                     emitNewStateFor(ComposerEvent.DefaultSenderReceived(SenderUiModel(it.email)))
-                    if (inputDraftId == null && draftAction == null) { // opening a new empty Draft
+                    val isCreatingNewEmptyDraft = inputDraftId == null && draftAction == null
+                    if (isCreatingNewEmptyDraft) {
                         injectAddressSignature(SenderEmail(it.email))
                     }
                 }
