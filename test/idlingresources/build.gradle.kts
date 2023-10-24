@@ -44,6 +44,8 @@ android {
 }
 
 dependencies {
+    implementation(JakeWharton.timber)
+
     api(AndroidX.Compose.uiTest) {
         exclude(group = "androidx.test.espresso", module = "espresso-core")
         exclude(group = "androidx.test", module = "monitor")

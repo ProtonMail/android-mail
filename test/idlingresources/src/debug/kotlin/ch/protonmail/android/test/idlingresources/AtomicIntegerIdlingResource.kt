@@ -19,6 +19,7 @@
 package ch.protonmail.android.test.idlingresources
 
 import java.util.concurrent.atomic.AtomicInteger
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -40,8 +41,9 @@ open class AtomicIntegerIdlingResource @Inject constructor() : ComposeIdlingReso
     }
 
     fun decrement() {
-        require(atomicIntegerCounter.get() > 0) {
-            "Invalid state: idle resource count is not greater than 0."
+        if (atomicIntegerCounter.get() <= 0) {
+            Timber.w("Invalid state: idle resource count is not greater than 0.")
+            return
         }
 
         atomicIntegerCounter.getAndDecrement()
