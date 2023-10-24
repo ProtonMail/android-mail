@@ -24,12 +24,11 @@ import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
-import ch.protonmail.android.mailcommon.presentation.system.NotificationProvider
 import ch.protonmail.android.mailnotifications.data.remote.resource.PushNotification
 import ch.protonmail.android.mailnotifications.data.remote.resource.PushNotificationData
 import ch.protonmail.android.mailnotifications.domain.AppInBackgroundState
-import ch.protonmail.android.mailnotifications.domain.NotificationsDeepLinkHelper
-import ch.protonmail.android.mailnotifications.domain.proxy.NotificationManagerCompatProxy
+import ch.protonmail.android.mailnotifications.domain.usecase.ProcessNewLoginPushNotification
+import ch.protonmail.android.mailnotifications.domain.usecase.ProcessNewMessagePushNotification
 import ch.protonmail.android.mailnotifications.domain.usecase.content.DecryptNotificationContent
 import io.mockk.coEvery
 import io.mockk.every
@@ -49,10 +48,9 @@ internal class ProcessPushNotificationDataWorkerParsingTest {
     private val sessionManager = mockk<SessionManager>()
     private val decryptNotificationContent = mockk<DecryptNotificationContent>()
     private val appInBackgroundState = mockk<AppInBackgroundState>()
-    private val notificationProvider = mockk<NotificationProvider>()
     private val userManager = mockk<UserManager>()
-    private val notificationsDeepLinkHelper = mockk<NotificationsDeepLinkHelper>()
-    private val notificationManagerCompatProxy = mockk<NotificationManagerCompatProxy>()
+    private val processNewMessagePushNotification = mockk<ProcessNewMessagePushNotification>()
+    private val processNewLoginPushNotification = mockk<ProcessNewLoginPushNotification>()
 
     private val params: WorkerParameters = mockk {
         every { taskExecutor } returns mockk(relaxed = true)
@@ -75,10 +73,9 @@ internal class ProcessPushNotificationDataWorkerParsingTest {
         sessionManager,
         decryptNotificationContent,
         appInBackgroundState,
-        notificationProvider,
         userManager,
-        notificationsDeepLinkHelper,
-        notificationManagerCompatProxy
+        processNewMessagePushNotification,
+        processNewLoginPushNotification
     )
 
     @Before
