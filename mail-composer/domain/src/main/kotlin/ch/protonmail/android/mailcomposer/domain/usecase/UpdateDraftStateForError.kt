@@ -28,7 +28,7 @@ import javax.inject.Inject
 
 /**
  * Updates the [DraftState] for the given messageId.
- * When the any error happens while a message is being sent, state is updated to "error sending"
+ * When any error happens while a message is being sent, state is updated to "error sending"
  * and the message is moved back to drafts folder
  * In all other cases, the given newState is applied.
  */

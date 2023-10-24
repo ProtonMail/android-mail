@@ -252,7 +252,6 @@ internal class ComposerSendMessageNetworkErrors : MockedNetworkTest(
 
     @Test
     @TestId("219656")
-    @Ignore("To be enabled again when MAILANDR-951 is addressed.")
     fun testMessageSendingWithServerErrorOnDraftUploadsButSuccessOnSend() {
         mockWebServer.dispatcher combineWith composerMockNetworkDispatcher(
             useDefaultDraftUploadResponse = false,
@@ -284,7 +283,6 @@ internal class ComposerSendMessageNetworkErrors : MockedNetworkTest(
 
     @Test
     @TestId("219657")
-    @Ignore("To be enabled again when MAILANDR-951 is addressed.")
     fun testMessageSendingWithServerErrorOnDraftCreation() {
         mockWebServer.dispatcher combineWith composerMockNetworkDispatcher(
             useDefaultDraftUploadResponse = false,
