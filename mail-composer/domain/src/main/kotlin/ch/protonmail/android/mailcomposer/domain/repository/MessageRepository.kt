@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailcomposer.domain.repository
 
+import arrow.core.Either
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import me.proton.core.domain.entity.UserId
 
@@ -25,7 +27,7 @@ interface MessageRepository {
 
     suspend fun send(userId: UserId, messageId: MessageId)
 
-    suspend fun moveMessageFromDraftsToSent(userId: UserId, messageId: MessageId)
+    suspend fun moveMessageFromDraftsToSent(userId: UserId, messageId: MessageId): Either<DataError, Unit>
 
     suspend fun moveMessageBackFromSentToDrafts(userId: UserId, messageId: MessageId)
 

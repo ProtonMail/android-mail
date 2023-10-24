@@ -19,10 +19,13 @@
 package ch.protonmail.android.composer.data.repository
 
 import androidx.work.ExistingWorkPolicy
+import arrow.core.Either
+import arrow.core.right
 import ch.protonmail.android.composer.data.remote.SendMessageWorker
 import ch.protonmail.android.composer.data.remote.UploadAttachmentsWorker
 import ch.protonmail.android.composer.data.remote.UploadDraftWorker
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcomposer.domain.repository.MessageRepository
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
@@ -49,15 +52,14 @@ class MessageRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun moveMessageFromDraftsToSent(userId: UserId, messageId: MessageId) {
-
+    override suspend fun moveMessageFromDraftsToSent(userId: UserId, messageId: MessageId): Either<DataError, Unit> {
         // optimistically move message to "Sent folder", but only in local DB (for the time of sending)
-        messageLocalDataSource.relabelMessages(
+        return messageLocalDataSource.relabelMessages(
             userId,
             listOf(messageId),
             labelIdsToAdd = setOf(SystemLabelId.Sent.labelId, SystemLabelId.AllSent.labelId),
             labelIdsToRemove = setOf(SystemLabelId.Drafts.labelId, SystemLabelId.AllDrafts.labelId)
-        )
+        ).map { Unit.right() }
     }
 
     override suspend fun moveMessageBackFromSentToDrafts(userId: UserId, messageId: MessageId) {
