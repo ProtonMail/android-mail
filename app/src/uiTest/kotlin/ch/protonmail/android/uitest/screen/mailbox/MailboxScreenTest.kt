@@ -35,6 +35,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemU
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.SpotlightState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxStateSampleData
 import ch.protonmail.android.test.annotations.suite.RegressionTest
@@ -199,7 +200,8 @@ internal class MailboxScreenTest {
                     currentLabelName = MailLabel.System(systemLabel).text()
                 ),
                 unreadFilterState = UnreadFilterState.Loading,
-                bottomAppBarState = BottomBarState.Data.Hidden(emptyList())
+                bottomAppBarState = BottomBarState.Data.Hidden(emptyList()),
+                spotlightState = SpotlightState.Hidden
             )
         }
 

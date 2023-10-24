@@ -47,5 +47,9 @@ dependencies {
 
     implementation(Dependencies.moduleDataLibs)
 
+    implementation(project(":mail-mailbox:domain"))
+    implementation(project(":mail-common:data"))
+    implementation(project(":mail-common:domain"))
+
     testImplementation(Dependencies.testLibs)
 }

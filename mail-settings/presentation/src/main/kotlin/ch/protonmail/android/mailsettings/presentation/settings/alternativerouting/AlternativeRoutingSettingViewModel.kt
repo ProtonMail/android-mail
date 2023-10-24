@@ -52,9 +52,9 @@ class AlternativeRoutingSettingViewModel @Inject constructor(
                     alternativeRoutingSettingErrorEffect = Effect.of(Unit)
                 )
             },
-            ifRight = { combinedContactsPreference ->
+            ifRight = { alternativeRoutingPreference ->
                 AlternativeRoutingSettingState.Data(
-                    isEnabled = combinedContactsPreference.isEnabled,
+                    isEnabled = alternativeRoutingPreference.isEnabled,
                     alternativeRoutingSettingErrorEffect = alternativeRoutingSettingErrorEffect
                 )
             }

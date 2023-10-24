@@ -30,6 +30,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListS
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState.Data.SelectionMode.SelectedMailboxItem
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.SpotlightState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 
 object MailboxStateSampleData {
@@ -38,7 +39,8 @@ object MailboxStateSampleData {
         mailboxListState = MailboxListState.Loading(selectionModeEnabled = false),
         topAppBarState = MailboxTopAppBarState.Loading,
         unreadFilterState = UnreadFilterState.Loading,
-        bottomAppBarState = BottomBarState.Loading
+        bottomAppBarState = BottomBarState.Loading,
+        spotlightState = SpotlightState.Hidden
     )
 
     val Inbox = MailboxState(
@@ -60,7 +62,8 @@ object MailboxStateSampleData {
         ),
         bottomAppBarState = BottomBarState.Data.Hidden(
             actions = listOf(ActionUiModelSample.Archive)
-        )
+        ),
+        spotlightState = SpotlightState.Hidden
     )
 
     val AllMail = MailboxState(
@@ -82,7 +85,8 @@ object MailboxStateSampleData {
         ),
         bottomAppBarState = BottomBarState.Data.Hidden(
             actions = listOf(ActionUiModelSample.Archive)
-        )
+        ),
+        spotlightState = SpotlightState.Hidden
     )
 
     fun createSelectionMode(
@@ -107,6 +111,7 @@ object MailboxStateSampleData {
         ),
         bottomAppBarState = BottomBarState.Data.Hidden(
             actions = bottomBarAction
-        )
+        ),
+        spotlightState = SpotlightState.Hidden
     )
 }

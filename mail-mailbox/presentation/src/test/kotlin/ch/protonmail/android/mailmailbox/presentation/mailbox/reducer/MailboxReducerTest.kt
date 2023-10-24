@@ -30,6 +30,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOpera
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.SpotlightState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxStateSampleData
 import ch.protonmail.android.testdata.label.LabelTestData
@@ -62,11 +63,15 @@ internal class MailboxReducerTest(
     private val bottomAppBarReducer: BottomBarReducer = mockk {
         every { newStateFrom(any(), any()) } returns reducedState.bottomAppBarState
     }
+    private val spotlightReducer: SpotlightReducer = mockk {
+        every { newStateFrom(any(), any()) } returns reducedState.spotlightState
+    }
     private val mailboxReducer = MailboxReducer(
         mailboxListReducer,
         topAppBarReducer,
         unreadFilterReducer,
-        bottomAppBarReducer
+        bottomAppBarReducer,
+        spotlightReducer
     )
 
     @Test
@@ -130,7 +135,8 @@ internal class MailboxReducerTest(
                 numUnread = 42,
                 isFilterEnabled = false
             ),
-            bottomAppBarState = BottomBarState.Loading
+            bottomAppBarState = BottomBarState.Loading,
+            spotlightState = SpotlightState.Hidden
         )
 
         private val actions = listOf(

@@ -16,16 +16,8 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.presentation.mailbox.model
+package ch.protonmail.android.mailmailbox.domain.model
 
-import androidx.compose.runtime.Stable
-import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
-
-@Stable
-data class MailboxState(
-    val mailboxListState: MailboxListState,
-    val topAppBarState: MailboxTopAppBarState,
-    val unreadFilterState: UnreadFilterState,
-    val bottomAppBarState: BottomBarState,
-    val spotlightState: SpotlightState
+data class SpotlightPreference(
+    val display: Boolean
 )

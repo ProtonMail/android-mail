@@ -48,7 +48,9 @@ import ch.protonmail.android.mailmailbox.domain.usecase.MarkConversationsAsUnrea
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkMessagesAsRead
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkMessagesAsUnread
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
+import ch.protonmail.android.mailmailbox.domain.usecase.ObserveSpotlight
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
+import ch.protonmail.android.mailmailbox.domain.usecase.SaveSpotlight
 import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.MailboxItemUiModelMapper
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
@@ -57,6 +59,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOpera
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.SpotlightState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxReducer
 import ch.protonmail.android.mailmailbox.presentation.paging.MailboxPagerFactory
@@ -89,7 +92,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-@SuppressWarnings("LongParameterList")
+@SuppressWarnings("LongParameterList", "TooManyFunctions")
 class MailboxViewModel @Inject constructor(
     private val mailboxPagerFactory: MailboxPagerFactory,
     private val observeCurrentViewMode: ObserveCurrentViewMode,
@@ -108,7 +111,9 @@ class MailboxViewModel @Inject constructor(
     private val markMessagesAsUnread: MarkMessagesAsUnread,
     private val mailboxReducer: MailboxReducer,
     private val observeMailFeature: ObserveMailFeature,
-    private val dispatchersProvider: DispatcherProvider
+    private val dispatchersProvider: DispatcherProvider,
+    private val observeSpotlight: ObserveSpotlight,
+    private val saveSpotlight: SaveSpotlight
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId()
@@ -118,6 +123,12 @@ class MailboxViewModel @Inject constructor(
     val items: Flow<PagingData<MailboxItemUiModel>> = observePagingData().cachedIn(viewModelScope)
 
     init {
+        observeSpotlight()
+            .onEach { display ->
+                emitNewStateFrom(if (display) MailboxEvent.ShowSpotlight else MailboxEvent.HideSpotlight)
+            }
+            .launchIn(viewModelScope)
+
         observeCurrentMailLabel()
             .onEach { currentMailLabel -> emitNewStateFrom(MailboxEvent.SelectedLabelChanged(currentMailLabel)) }
             .launchIn(viewModelScope)
@@ -177,6 +188,7 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.OnErrorWithData -> emitNewStateFrom(viewAction)
                 is MailboxViewAction.MarkAsRead -> handleMarkAsReadAction(viewAction)
                 is MailboxViewAction.MarkAsUnread -> handleMarkAsUnreadAction(viewAction)
+                is MailboxViewAction.SpotlightClosed -> handleSpotlightClosed()
             }.exhaustive
         }
     }
@@ -325,6 +337,18 @@ class MailboxViewModel @Inject constructor(
         emitNewStateFrom(markAsReadOperation)
     }
 
+    private suspend fun handleSpotlightClosed() = viewModelScope.launch {
+        saveSpotlight.invoke(display = false)
+        emitNewStateFrom(MailboxEvent.HideSpotlight)
+    }
+
+    private fun observeSpotlight() = observeSpotlight.invoke().map {
+        it.fold(
+            ifLeft = { false },
+            ifRight = { spotlightPreference -> spotlightPreference.display }
+        )
+    }
+
     private fun observeCurrentMailLabel() = observeMailLabels()
         .map { mailLabels ->
             mailLabels.allById[selectedMailLabelId.flow.value]
@@ -413,7 +437,8 @@ class MailboxViewModel @Inject constructor(
             mailboxListState = MailboxListState.Loading(selectionModeEnabled = false),
             topAppBarState = MailboxTopAppBarState.Loading,
             unreadFilterState = UnreadFilterState.Loading,
-            bottomAppBarState = BottomBarState.Data.Hidden(emptyList())
+            bottomAppBarState = BottomBarState.Data.Hidden(emptyList()),
+            spotlightState = SpotlightState.Hidden
         )
     }
 }

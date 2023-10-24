@@ -31,6 +31,7 @@ internal sealed interface MailboxOperation {
     sealed interface AffectingUnreadFilter
     sealed interface AffectingMailboxList
     sealed interface AffectingBottomAppBar
+    sealed interface AffectingSpotlight
 }
 
 internal sealed interface MailboxViewAction : MailboxOperation {
@@ -60,6 +61,7 @@ internal sealed interface MailboxViewAction : MailboxOperation {
      */
     object OnOfflineWithData : MailboxViewAction, AffectingMailboxList
     object OnErrorWithData : MailboxViewAction, AffectingMailboxList
+    object SpotlightClosed : MailboxViewAction, MailboxOperation.AffectingSpotlight
 }
 
 internal sealed interface MailboxEvent : MailboxOperation {
@@ -84,6 +86,10 @@ internal sealed interface MailboxEvent : MailboxOperation {
     data class EnterSelectionMode(
         val item: MailboxItemUiModel
     ) : MailboxEvent, AffectingTopAppBar, AffectingMailboxList, AffectingBottomAppBar
+
+    object ShowSpotlight : MailboxEvent, MailboxOperation.AffectingSpotlight
+
+    object HideSpotlight : MailboxEvent, MailboxOperation.AffectingSpotlight
 
     sealed interface ItemClicked : MailboxEvent {
 

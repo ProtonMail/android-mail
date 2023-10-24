@@ -16,16 +16,37 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.presentation.mailbox.model
+plugins {
+    id("com.android.library")
+    kotlin("android")
+    kotlin("kapt")
+}
 
-import androidx.compose.runtime.Stable
-import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
+setAsHiltModule()
 
-@Stable
-data class MailboxState(
-    val mailboxListState: MailboxListState,
-    val topAppBarState: MailboxTopAppBarState,
-    val unreadFilterState: UnreadFilterState,
-    val bottomAppBarState: BottomBarState,
-    val spotlightState: SpotlightState
-)
+android {
+    namespace = "ch.protonmail.android.mailmailbox.dagger"
+    compileSdk = Config.compileSdk
+
+    defaultConfig {
+        minSdk = Config.minSdk
+        targetSdk = Config.targetSdk
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17.toString()
+    }
+}
+
+dependencies {
+    implementation(project(":mail-mailbox:data"))
+    implementation(project(":mail-mailbox:domain"))
+    implementation(project(":mail-mailbox:presentation"))
+
+    implementation(KotlinX.coroutinesCore)
+}

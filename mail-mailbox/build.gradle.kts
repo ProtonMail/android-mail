@@ -33,6 +33,7 @@ android {
 
 dependencies {
     api(project(":mail-mailbox:data"))
+    api(project(":mail-mailbox:dagger"))
     api(project(":mail-mailbox:domain"))
     api(project(":mail-mailbox:presentation"))
 }

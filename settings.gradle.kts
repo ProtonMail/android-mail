@@ -70,6 +70,7 @@ include(":mail-label:data")
 include(":mail-label:domain")
 include(":mail-label:presentation")
 
+include(":mail-mailbox:dagger")
 include(":mail-mailbox:data")
 include(":mail-mailbox:domain")
 include(":mail-mailbox:presentation")

@@ -51,7 +51,9 @@ import ch.protonmail.android.mailmailbox.domain.usecase.MarkConversationsAsUnrea
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkMessagesAsRead
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkMessagesAsUnread
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
+import ch.protonmail.android.mailmailbox.domain.usecase.ObserveSpotlight
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
+import ch.protonmail.android.mailmailbox.domain.usecase.SaveSpotlight
 import ch.protonmail.android.mailmailbox.presentation.helper.MailboxAsyncPagingDataDiffer
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxViewModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.MailboxItemUiModelMapper
@@ -61,6 +63,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListS
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.SpotlightState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxStateSampleData
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxReducer
@@ -173,6 +176,12 @@ class MailboxViewModelTest {
         coEvery { this@mockk(any(), any()) } returns listOf(Action.Archive, Action.Trash).right()
     }
 
+    private val observeSpotlight = mockk<ObserveSpotlight> {
+        every { this@mockk() } returns flowOf()
+    }
+
+    private val saveSpotlight: SaveSpotlight = mockk()
+
     private val markConversationsAsRead = mockk<MarkConversationsAsRead>()
     private val markConversationsAsUnread = mockk<MarkConversationsAsUnread>()
     private val markMessagesAsRead = mockk<MarkMessagesAsRead>()
@@ -197,7 +206,9 @@ class MailboxViewModelTest {
             markMessagesAsUnread = markMessagesAsUnread,
             mailboxReducer = mailboxReducer,
             observeMailFeature = observeMailFeature,
-            dispatchersProvider = TestDispatcherProvider()
+            dispatchersProvider = TestDispatcherProvider(),
+            observeSpotlight = observeSpotlight,
+            saveSpotlight = saveSpotlight
         )
     }
 
@@ -228,7 +239,8 @@ class MailboxViewModelTest {
                 mailboxListState = MailboxListState.Loading(selectionModeEnabled = false),
                 topAppBarState = MailboxTopAppBarState.Loading,
                 unreadFilterState = UnreadFilterState.Loading,
-                bottomAppBarState = BottomBarState.Data.Hidden(emptyList())
+                bottomAppBarState = BottomBarState.Data.Hidden(emptyList()),
+                spotlightState = SpotlightState.Hidden
             )
 
             assertEquals(expected, actual)

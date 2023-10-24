@@ -16,16 +16,20 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.presentation.mailbox.model
+package ch.protonmail.android.mailmailbox.data
 
-import androidx.compose.runtime.Stable
-import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
+import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
+import javax.inject.Inject
 
-@Stable
-data class MailboxState(
-    val mailboxListState: MailboxListState,
-    val topAppBarState: MailboxTopAppBarState,
-    val unreadFilterState: UnreadFilterState,
-    val bottomAppBarState: BottomBarState,
-    val spotlightState: SpotlightState
-)
+class MailMailboxDataStoreProvider @Inject constructor(
+    context: Context
+) {
+
+    private val Context.spotlightDataStore: DataStore<Preferences> by preferencesDataStore(
+        name = "spotlightPrefDataStore"
+    )
+    val spotlightDataStore = context.spotlightDataStore
+}

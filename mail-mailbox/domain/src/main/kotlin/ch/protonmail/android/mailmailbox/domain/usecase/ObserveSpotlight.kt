@@ -16,16 +16,14 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.presentation.mailbox.model
+package ch.protonmail.android.mailmailbox.domain.usecase
 
-import androidx.compose.runtime.Stable
-import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
+import ch.protonmail.android.mailmailbox.domain.repository.SpotlightRepository
+import javax.inject.Inject
 
-@Stable
-data class MailboxState(
-    val mailboxListState: MailboxListState,
-    val topAppBarState: MailboxTopAppBarState,
-    val unreadFilterState: UnreadFilterState,
-    val bottomAppBarState: BottomBarState,
-    val spotlightState: SpotlightState
-)
+class ObserveSpotlight @Inject constructor(
+    private val spotlightRepository: SpotlightRepository
+) {
+
+    operator fun invoke() = spotlightRepository.observe()
+}

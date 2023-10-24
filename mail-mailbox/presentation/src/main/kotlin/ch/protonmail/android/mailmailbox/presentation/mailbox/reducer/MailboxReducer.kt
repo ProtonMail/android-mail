@@ -27,6 +27,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOpera
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.SpotlightState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import javax.inject.Inject
 
@@ -34,7 +35,8 @@ class MailboxReducer @Inject constructor(
     private val mailboxListReducer: MailboxListReducer,
     private val topAppBarReducer: MailboxTopAppBarReducer,
     private val unreadFilterReducer: MailboxUnreadFilterReducer,
-    private val bottomAppBarReducer: BottomBarReducer
+    private val bottomAppBarReducer: BottomBarReducer,
+    private val spotlightReducer: SpotlightReducer
 ) {
 
     internal fun newStateFrom(currentState: MailboxState, operation: MailboxOperation): MailboxState =
@@ -42,7 +44,8 @@ class MailboxReducer @Inject constructor(
             mailboxListState = currentState.toNewMailboxListStateFrom(operation),
             topAppBarState = currentState.toNewTopAppBarStateFrom(operation),
             unreadFilterState = currentState.toNewUnreadFilterStateFrom(operation),
-            bottomAppBarState = currentState.toNewBottomAppBarStateFrom(operation)
+            bottomAppBarState = currentState.toNewBottomAppBarStateFrom(operation),
+            spotlightState = currentState.toNewSpotlightStateFrom(operation)
         )
 
     private fun MailboxState.toNewMailboxListStateFrom(operation: MailboxOperation): MailboxListState {
@@ -79,6 +82,14 @@ class MailboxReducer @Inject constructor(
             bottomAppBarReducer.newStateFrom(bottomAppBarState, bottomBarOperation)
         } else {
             bottomAppBarState
+        }
+    }
+
+    private fun MailboxState.toNewSpotlightStateFrom(operation: MailboxOperation): SpotlightState {
+        return if (operation is MailboxOperation.AffectingSpotlight) {
+            spotlightReducer.newStateFrom(spotlightState, operation)
+        } else {
+            spotlightState
         }
     }
 }
