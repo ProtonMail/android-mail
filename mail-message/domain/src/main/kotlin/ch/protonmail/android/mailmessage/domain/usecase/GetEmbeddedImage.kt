@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailmessage.domain.usecase
 
 import arrow.core.Either
-import arrow.core.continuations.either
+import arrow.core.raise.either
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.extension.hasAllowedEmbeddedImageMimeType

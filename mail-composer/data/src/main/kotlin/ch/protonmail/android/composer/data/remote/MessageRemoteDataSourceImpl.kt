@@ -19,7 +19,7 @@
 package ch.protonmail.android.composer.data.remote
 
 import arrow.core.Either
-import arrow.core.continuations.either
+import arrow.core.raise.either
 import ch.protonmail.android.composer.data.remote.resource.SendMessageBody
 import ch.protonmail.android.composer.data.remote.response.SendMessageResponse
 import ch.protonmail.android.mailcommon.data.mapper.toEither

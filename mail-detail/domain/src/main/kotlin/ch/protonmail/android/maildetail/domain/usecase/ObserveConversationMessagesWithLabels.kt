@@ -20,7 +20,7 @@ package ch.protonmail.android.maildetail.domain.usecase
 
 import arrow.core.Either
 import arrow.core.NonEmptyList
-import arrow.core.continuations.either
+import arrow.core.raise.either
 import ch.protonmail.android.mailcommon.domain.mapper.mapToEither
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError

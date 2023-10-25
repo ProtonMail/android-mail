@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailcomposer.domain.usecase
 
 import arrow.core.Either
-import arrow.core.continuations.either
+import arrow.core.raise.either
 import ch.protonmail.android.mailcommon.domain.util.mapFalse
 import ch.protonmail.android.mailcomposer.domain.Transactor
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody

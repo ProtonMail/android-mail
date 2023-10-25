@@ -21,7 +21,7 @@ package ch.protonmail.android.mailmessage.data.repository
 import java.io.File
 import android.net.Uri
 import arrow.core.Either
-import arrow.core.continuations.either
+import arrow.core.raise.either
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.coroutines.IODispatcher
