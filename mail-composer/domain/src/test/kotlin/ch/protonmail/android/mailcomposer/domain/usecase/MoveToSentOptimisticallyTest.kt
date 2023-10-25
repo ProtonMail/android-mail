@@ -20,54 +20,54 @@ package ch.protonmail.android.mailcomposer.domain.usecase
 
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
-import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailcomposer.domain.repository.MessageRepository
-import ch.protonmail.android.mailcomposer.domain.sample.DraftStateSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
+import ch.protonmail.android.test.utils.rule.LoggingTestRule
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
+import org.junit.Rule
 import org.junit.Test
 
 class MoveToSentOptimisticallyTest {
 
+    @get:Rule
+    val loggerRule = LoggingTestRule()
+
     private val messageRepository: MessageRepository = mockk()
-    private val draftStateRepository: DraftStateRepository = mockk()
+    private val findLocalDraft = mockk<FindLocalDraft>()
 
     private val moveToSentOptimistically = MoveToSentOptimistically(
         messageRepository,
-        draftStateRepository
+        findLocalDraft
     )
 
     @Test
-    fun `moves message to draft folder using draft state's api message id when existing`() = runTest {
+    fun `moves message to draft folder using local draft's message id`() = runTest {
         // Given
         val userId = UserIdSample.Primary
         val messageId = MessageIdSample.PlainTextMessage
-        val draftState = DraftStateSample.LocalDraftThatWasSyncedOnce
-        every { draftStateRepository.observe(userId, messageId) } returns flowOf(draftState.right())
+        val expectedLocalDraft = MessageWithBodySample.RemoteDraft
+        coEvery { findLocalDraft(userId, messageId) } returns expectedLocalDraft
         coEvery {
-            messageRepository.moveMessageFromDraftsToSent(userId, draftState.apiMessageId!!)
+            messageRepository.moveMessageFromDraftsToSent(userId, expectedLocalDraft.message.messageId)
         } returns Unit.right()
 
         // When
         moveToSentOptimistically(userId, messageId)
 
         // Then
-        val expectedMessageId = draftState.apiMessageId!!
-        coVerify { messageRepository.moveMessageFromDraftsToSent(userId, expectedMessageId) }
+        coVerify { messageRepository.moveMessageFromDraftsToSent(userId, expectedLocalDraft.message.messageId) }
     }
 
     @Test
-    fun `moves message to draft folder using given message id when draft state has no api message id`() = runTest {
+    fun `moves message to draft folder using given message id when local draft is not found exist`() = runTest {
         // Given
         val userId = UserIdSample.Primary
         val messageId = MessageIdSample.PlainTextMessage
-        val draftState = DraftStateSample.LocalDraftNeverSynced
-        every { draftStateRepository.observe(userId, messageId) } returns flowOf(draftState.right())
+        coEvery { findLocalDraft(userId, messageId) } returns null
         coEvery { messageRepository.moveMessageFromDraftsToSent(userId, messageId) } returns Unit.right()
 
         // When
@@ -75,5 +75,6 @@ class MoveToSentOptimisticallyTest {
 
         // Then
         coVerify { messageRepository.moveMessageFromDraftsToSent(userId, messageId) }
+        loggerRule.assertErrorLogged("Local draft not found while trying to move sending message to sent $messageId")
     }
 }

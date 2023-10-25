@@ -18,24 +18,27 @@
 
 package ch.protonmail.android.mailcomposer.domain.usecase
 
-import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailcomposer.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.model.MessageId
-import kotlinx.coroutines.flow.first
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import javax.inject.Inject
 
 class MoveToSentOptimistically @Inject constructor(
     private val messageRepository: MessageRepository,
-    private val draftStateRepository: DraftStateRepository
+    private val findLocalDraft: FindLocalDraft
 ) {
 
     suspend operator fun invoke(userId: UserId, messageId: MessageId) {
-        val draftState = draftStateRepository.observe(userId, messageId).first().getOrNull()
-        val draftMessageId = draftState?.apiMessageId ?: messageId
+        val localDraft = findLocalDraft(userId, messageId)
+        val localDraftMessageId = if (localDraft != null) {
+            localDraft.message.messageId
+        } else {
+            Timber.e("Local draft not found while trying to move sending message to sent $messageId")
+            messageId
+        }
 
-        messageRepository.moveMessageFromDraftsToSent(userId, draftMessageId).onLeft {
+        messageRepository.moveMessageFromDraftsToSent(userId, localDraftMessageId).onLeft {
             Timber.e("Failed moving sending message to sent folder optimistically: $it")
         }
     }
