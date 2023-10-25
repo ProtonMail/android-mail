@@ -82,6 +82,7 @@ class MailboxReducer @Inject constructor(
                 is MailboxEvent.EnterSelectionMode -> BottomBarEvent.ShowBottomSheet
                 is MailboxViewAction.ExitSelectionMode -> BottomBarEvent.HideBottomSheet
                 is MailboxEvent.MessageBottomBarEvent -> operation.bottomBarEvent
+                is MailboxEvent.Trash -> BottomBarEvent.HideBottomSheet
             }
             bottomAppBarReducer.newStateFrom(bottomAppBarState, bottomBarOperation)
         } else {

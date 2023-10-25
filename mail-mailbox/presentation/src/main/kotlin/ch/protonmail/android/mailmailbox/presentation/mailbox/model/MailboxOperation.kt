@@ -93,7 +93,12 @@ internal sealed interface MailboxEvent : MailboxOperation {
 
     object ShowOnboarding : MailboxEvent, MailboxOperation.AffectingOnboarding
 
-    data class Trash(val numAffectedMessages: Int) : MailboxEvent, AffectingMailboxList, AffectingActionMessage
+    data class Trash(val numAffectedMessages: Int) :
+        MailboxEvent,
+        AffectingMailboxList,
+        AffectingTopAppBar,
+        AffectingBottomAppBar,
+        AffectingActionMessage
 
     sealed interface ItemClicked : MailboxEvent {
 

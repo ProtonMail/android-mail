@@ -280,9 +280,9 @@ internal class MailboxReducerTest(
             TestInput(
                 MailboxEvent.Trash(5),
                 shouldReduceMailboxListState = true,
-                shouldReduceTopAppBarState = false,
+                shouldReduceTopAppBarState = true,
                 shouldReduceUnreadFilterState = false,
-                shouldReduceBottomAppBarState = false,
+                shouldReduceBottomAppBarState = true,
                 shouldReduceActionMessage = true
             )
         )

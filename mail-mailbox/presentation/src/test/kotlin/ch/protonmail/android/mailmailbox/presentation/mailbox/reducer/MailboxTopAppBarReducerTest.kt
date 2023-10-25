@@ -138,6 +138,11 @@ internal class MailboxTopAppBarReducerTest(
                 currentState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 42),
                 operation = MailboxEvent.SelectedLabelChanged(trashLabel),
                 expectedState = MailboxTopAppBarState.Data.SelectionMode(trashLabel.text(), selectedCount = 42)
+            ),
+            TestInput(
+                currentState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 42),
+                operation = MailboxEvent.Trash(42),
+                expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text())
             )
         )
 

@@ -67,8 +67,10 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
+import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
+import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
@@ -82,6 +84,9 @@ import ch.protonmail.android.mailmailbox.presentation.paging.mapAppendToUiStates
 import ch.protonmail.android.mailmailbox.presentation.paging.mapToUiStates
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
+import me.proton.core.compose.component.ProtonSnackbarHost
+import me.proton.core.compose.component.ProtonSnackbarHostState
+import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
@@ -123,7 +128,8 @@ fun MailboxScreen(
         },
         onRefreshList = { viewModel.submit(MailboxViewAction.Refresh) },
         markAsRead = { viewModel.submit(MailboxViewAction.MarkAsRead) },
-        markAsUnread = { viewModel.submit(MailboxViewAction.MarkAsUnread) }
+        markAsUnread = { viewModel.submit(MailboxViewAction.MarkAsUnread) },
+        trash = { viewModel.submit(MailboxViewAction.Trash) }
     )
 
     MailboxScreen(
@@ -144,6 +150,11 @@ fun MailboxScreen(
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     val lazyListState = rememberLazyListState()
+    val snackbarHostState = remember { ProtonSnackbarHostState() }
+
+    ConsumableTextEffect(effect = mailboxState.actionMessage) {
+        snackbarHostState.showSnackbar(message = it, type = ProtonSnackbarType.NORM)
+    }
 
     Scaffold(
         modifier = modifier.testTag(MailboxScreenTestTags.Root),
@@ -177,7 +188,7 @@ fun MailboxScreen(
                 viewActionCallbacks = BottomActionBar.Actions(
                     onMove = { Timber.d("mailbox onMove clicked") },
                     onLabel = { Timber.d("mailbox onLabel clicked") },
-                    onTrash = { Timber.d("mailbox onTrash clicked") },
+                    onTrash = actions.trash,
                     onDelete = { Timber.d("mailbox onDelete clicked") },
                     onArchive = { Timber.d("mailbox onArchive clicked") },
                     onSpam = { Timber.d("mailbox onSpam clicked") },
@@ -197,6 +208,12 @@ fun MailboxScreen(
                     onStar = { Timber.d("mailbox onStar clicked") },
                     onUnstar = { Timber.d("mailbox onUnstar clicked") }
                 )
+            )
+        },
+        snackbarHost = {
+            ProtonSnackbarHost(
+                modifier = Modifier.testTag(CommonTestTags.SnackbarHostSuccess),
+                hostState = snackbarHostState
             )
         }
     ) { paddingValues ->
@@ -521,7 +538,8 @@ object MailboxScreen {
         val onOfflineWithData: () -> Unit,
         val onErrorWithData: () -> Unit,
         val markAsRead: () -> Unit,
-        val markAsUnread: () -> Unit
+        val markAsUnread: () -> Unit,
+        val trash: () -> Unit
     ) {
 
         companion object {
@@ -544,7 +562,8 @@ object MailboxScreen {
                 onOfflineWithData = {},
                 onErrorWithData = {},
                 markAsRead = {},
-                markAsUnread = {}
+                markAsUnread = {},
+                trash = {}
             )
         }
     }
