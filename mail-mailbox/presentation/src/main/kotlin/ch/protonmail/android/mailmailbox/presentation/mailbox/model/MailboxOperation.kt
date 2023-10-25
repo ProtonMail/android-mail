@@ -20,6 +20,7 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.model
 
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.maillabel.domain.model.MailLabel
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingActionMessage
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingBottomAppBar
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingMailboxList
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingTopAppBar
@@ -32,6 +33,7 @@ internal sealed interface MailboxOperation {
     sealed interface AffectingMailboxList
     sealed interface AffectingBottomAppBar
     sealed interface AffectingOnboarding
+    sealed interface AffectingActionMessage
 }
 
 internal sealed interface MailboxViewAction : MailboxOperation {
@@ -54,6 +56,7 @@ internal sealed interface MailboxViewAction : MailboxOperation {
 
     object MarkAsRead : MailboxViewAction, AffectingMailboxList
     object MarkAsUnread : MailboxViewAction, AffectingMailboxList
+    object Trash : MailboxViewAction
 
     /*
      *`OnOfflineWithData` and `OnErrorWithData` are not actual Actions which are actively performed by the user
@@ -89,6 +92,8 @@ internal sealed interface MailboxEvent : MailboxOperation {
     ) : MailboxEvent, AffectingTopAppBar, AffectingMailboxList, AffectingBottomAppBar
 
     object ShowOnboarding : MailboxEvent, MailboxOperation.AffectingOnboarding
+
+    data class Trash(val numAffectedMessages: Int) : MailboxEvent, AffectingMailboxList, AffectingActionMessage
 
     sealed interface ItemClicked : MailboxEvent {
 

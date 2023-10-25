@@ -55,7 +55,7 @@ internal class ExpirationTimeMapperTest {
     fun `when expiration in 10 minutes, then 10 minutes is returned`() {
         // given
         val expiration = now + 10.minutes
-        val expected = TextUiModel(string.expiration_minutes_arg, 10)
+        val expected = TextUiModel(value = string.expiration_minutes_arg, 10)
 
         // when
         val actual = mapper.toUiModel(expiration)
@@ -68,7 +68,7 @@ internal class ExpirationTimeMapperTest {
     fun `when expiration in 1 hour, then 1 hour is returned`() {
         // given
         val expiration = now + 1.hours
-        val expected = TextUiModel(string.expiration_hours_arg, 1)
+        val expected = TextUiModel(value = string.expiration_hours_arg, 1)
 
         // when
         val actual = mapper.toUiModel(expiration)
@@ -81,7 +81,7 @@ internal class ExpirationTimeMapperTest {
     fun `when expiration in 1 hour 10 minutes, then 1 hour is returned`() {
         // given
         val expiration = now + 1.hours + 10.minutes
-        val expected = TextUiModel(string.expiration_hours_arg, 1)
+        val expected = TextUiModel(value = string.expiration_hours_arg, 1)
 
         // when
         val actual = mapper.toUiModel(expiration)
@@ -94,7 +94,7 @@ internal class ExpirationTimeMapperTest {
     fun `when expiration is 1 day, then 1 day is returned`() {
         // given
         val expiration = now + 1.days
-        val expected = TextUiModel(string.expiration_days_arg, 1)
+        val expected = TextUiModel(value = string.expiration_days_arg, 1)
 
         // when
         val actual = mapper.toUiModel(expiration)
@@ -107,7 +107,7 @@ internal class ExpirationTimeMapperTest {
     fun `when expiration is 1 year, then 365 days is returned`() {
         // given
         val expiration = now + 365.days
-        val expected = TextUiModel(string.expiration_days_arg, 365)
+        val expected = TextUiModel(value = string.expiration_days_arg, 365)
 
         // when
         val actual = mapper.toUiModel(expiration)

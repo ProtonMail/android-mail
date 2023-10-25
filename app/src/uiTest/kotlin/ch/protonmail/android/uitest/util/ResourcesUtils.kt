@@ -19,6 +19,7 @@
 package ch.protonmail.android.uitest.util
 
 import android.app.Application
+import androidx.annotation.PluralsRes
 import androidx.annotation.StringRes
 import androidx.test.core.app.ApplicationProvider
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
@@ -28,6 +29,7 @@ fun getString(text: TextUiModel): String = when (text) {
     is TextUiModel.Text -> text.value
     is TextUiModel.TextRes -> getString(text.value)
     is TextUiModel.TextResWithArgs -> getString(text.value, *text.formatArgs.toTypedArray())
+    is TextUiModel.PluralisedText -> getTestString(text.value, text.value)
 }
 
 fun getString(@StringRes resId: Int): String = ApplicationProvider.getApplicationContext<Application>().getString(resId)
@@ -37,3 +39,6 @@ fun getString(@StringRes resId: Int, vararg formatArgs: Any): String =
 
 fun getTestString(@StringRes resId: Int, vararg formatArgs: Any): String =
     instrumentation.context.getString(resId, *formatArgs)
+
+fun getTestString(@PluralsRes pluralResId: Int, value: Int): String =
+    instrumentation.context.resources.getQuantityString(pluralResId, value, value)

@@ -66,12 +66,17 @@ internal class MailboxReducerTest(
     private val onboardingReducer: OnboardingReducer = mockk {
         every { newStateFrom(any()) } returns reducedState.onboardingState
     }
+    private val actionMessageReducer: MailboxActionMessageReducer = mockk {
+        every { newStateFrom(any()) } returns reducedState.actionMessage
+    }
+
     private val mailboxReducer = MailboxReducer(
         mailboxListReducer,
         topAppBarReducer,
         unreadFilterReducer,
         bottomAppBarReducer,
-        onboardingReducer
+        onboardingReducer,
+        actionMessageReducer
     )
 
     @Test
@@ -112,6 +117,12 @@ internal class MailboxReducerTest(
         } else {
             assertEquals(currentState.unreadFilterState, nextState.unreadFilterState, testName)
         }
+
+        if (shouldReduceActionMessage) {
+            verify { actionMessageReducer.newStateFrom(operation as MailboxOperation.AffectingActionMessage) }
+        } else {
+            assertEquals(currentState.actionMessage, nextState.actionMessage)
+        }
     }
 
     companion object {
@@ -146,42 +157,48 @@ internal class MailboxReducerTest(
                 shouldReduceMailboxListState = false,
                 shouldReduceTopAppBarState = false,
                 shouldReduceUnreadFilterState = false,
-                shouldReduceBottomAppBarState = false
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false
             ),
             TestInput(
                 MailboxViewAction.OnItemAvatarClicked(MailboxItemUiModelTestData.readMailboxItemUiModel),
                 shouldReduceMailboxListState = false,
                 shouldReduceTopAppBarState = false,
                 shouldReduceUnreadFilterState = false,
-                shouldReduceBottomAppBarState = false
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false
             ),
             TestInput(
                 MailboxViewAction.ExitSelectionMode,
                 shouldReduceMailboxListState = true,
                 shouldReduceTopAppBarState = true,
                 shouldReduceUnreadFilterState = false,
-                shouldReduceBottomAppBarState = true
+                shouldReduceBottomAppBarState = true,
+                shouldReduceActionMessage = false
             ),
             TestInput(
                 MailboxViewAction.ItemClicked(MailboxItemUiModelTestData.readMailboxItemUiModel),
                 shouldReduceMailboxListState = false,
                 shouldReduceTopAppBarState = false,
                 shouldReduceUnreadFilterState = false,
-                shouldReduceBottomAppBarState = false
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false
             ),
             TestInput(
                 MailboxViewAction.EnableUnreadFilter,
                 shouldReduceMailboxListState = false,
                 shouldReduceTopAppBarState = false,
                 shouldReduceUnreadFilterState = true,
-                shouldReduceBottomAppBarState = false
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false
             ),
             TestInput(
                 MailboxViewAction.DisableUnreadFilter,
                 shouldReduceMailboxListState = false,
                 shouldReduceTopAppBarState = false,
                 shouldReduceUnreadFilterState = true,
-                shouldReduceBottomAppBarState = false
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false
             )
         )
 
@@ -194,7 +211,8 @@ internal class MailboxReducerTest(
                 shouldReduceMailboxListState = true,
                 shouldReduceTopAppBarState = false,
                 shouldReduceUnreadFilterState = false,
-                shouldReduceBottomAppBarState = false
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false
             ),
             TestInput(
                 MailboxEvent.ItemClicked.ItemAddedToSelection(
@@ -203,7 +221,8 @@ internal class MailboxReducerTest(
                 shouldReduceMailboxListState = true,
                 shouldReduceTopAppBarState = true,
                 shouldReduceUnreadFilterState = false,
-                shouldReduceBottomAppBarState = false
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false
             ),
             TestInput(
                 MailboxEvent.ItemClicked.ItemRemovedFromSelection(
@@ -212,7 +231,8 @@ internal class MailboxReducerTest(
                 shouldReduceMailboxListState = true,
                 shouldReduceTopAppBarState = true,
                 shouldReduceUnreadFilterState = false,
-                shouldReduceBottomAppBarState = false
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false
             ),
             TestInput(
                 MailboxEvent.NewLabelSelected(
@@ -222,35 +242,48 @@ internal class MailboxReducerTest(
                 shouldReduceMailboxListState = true,
                 shouldReduceTopAppBarState = true,
                 shouldReduceUnreadFilterState = true,
-                shouldReduceBottomAppBarState = false
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false
             ),
             TestInput(
                 MailboxEvent.SelectedLabelChanged(LabelTestData.systemLabels.first()),
                 shouldReduceMailboxListState = true,
                 shouldReduceTopAppBarState = true,
                 shouldReduceUnreadFilterState = false,
-                shouldReduceBottomAppBarState = false
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false
             ),
             TestInput(
                 MailboxEvent.SelectedLabelCountChanged(UnreadCountersTestData.systemUnreadCounters.first().count),
                 shouldReduceMailboxListState = false,
                 shouldReduceTopAppBarState = false,
                 shouldReduceUnreadFilterState = true,
-                shouldReduceBottomAppBarState = false
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false
             ),
             TestInput(
                 MailboxEvent.SelectionModeEnabledChanged(selectionModeEnabled = false),
                 shouldReduceMailboxListState = true,
                 shouldReduceTopAppBarState = false,
                 shouldReduceUnreadFilterState = false,
-                shouldReduceBottomAppBarState = false
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false
             ),
             TestInput(
                 MailboxEvent.EnterSelectionMode(MailboxItemUiModelTestData.readMailboxItemUiModel),
                 shouldReduceMailboxListState = true,
                 shouldReduceTopAppBarState = true,
                 shouldReduceUnreadFilterState = false,
-                shouldReduceBottomAppBarState = true
+                shouldReduceBottomAppBarState = true,
+                shouldReduceActionMessage = false
+            ),
+            TestInput(
+                MailboxEvent.Trash(5),
+                shouldReduceMailboxListState = true,
+                shouldReduceTopAppBarState = false,
+                shouldReduceUnreadFilterState = false,
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = true
             )
         )
 
@@ -273,6 +306,7 @@ internal class MailboxReducerTest(
         val shouldReduceMailboxListState: Boolean,
         val shouldReduceTopAppBarState: Boolean,
         val shouldReduceUnreadFilterState: Boolean,
-        val shouldReduceBottomAppBarState: Boolean
+        val shouldReduceBottomAppBarState: Boolean,
+        val shouldReduceActionMessage: Boolean
     )
 }

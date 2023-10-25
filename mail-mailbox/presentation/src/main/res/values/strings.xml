@@ -40,4 +40,8 @@
     <string name="mailbox_error_message_generic">Loading mailbox failed</string>
     <string name="mailbox_error_message_unexpected">Something went unexpectedly wrong</string>
     <string name="mailbox_is_empty_message">This mailbox is empty</string>
+    <plurals name="mailbox_action_trash">
+        <item quantity="one">Message moved to Trash</item>
+        <item quantity="other">%d messages moved to Trash</item>
+    </plurals>
 </resources>

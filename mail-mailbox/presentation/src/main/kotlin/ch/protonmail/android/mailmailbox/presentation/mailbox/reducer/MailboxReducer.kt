@@ -18,8 +18,10 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
@@ -36,7 +38,8 @@ class MailboxReducer @Inject constructor(
     private val topAppBarReducer: MailboxTopAppBarReducer,
     private val unreadFilterReducer: MailboxUnreadFilterReducer,
     private val bottomAppBarReducer: BottomBarReducer,
-    private val onboardingReducer: OnboardingReducer
+    private val onboardingReducer: OnboardingReducer,
+    private val actionMessageReducer: MailboxActionMessageReducer
 ) {
 
     internal fun newStateFrom(currentState: MailboxState, operation: MailboxOperation): MailboxState =
@@ -45,7 +48,8 @@ class MailboxReducer @Inject constructor(
             topAppBarState = currentState.toNewTopAppBarStateFrom(operation),
             unreadFilterState = currentState.toNewUnreadFilterStateFrom(operation),
             bottomAppBarState = currentState.toNewBottomAppBarStateFrom(operation),
-            onboardingState = currentState.toNewOnboardingStateFrom(operation)
+            onboardingState = currentState.toNewOnboardingStateFrom(operation),
+            actionMessage = currentState.toNewActionMessageStateFrom(operation)
         )
 
     private fun MailboxState.toNewMailboxListStateFrom(operation: MailboxOperation): MailboxListState {
@@ -90,6 +94,14 @@ class MailboxReducer @Inject constructor(
             onboardingReducer.newStateFrom(operation)
         } else {
             onboardingState
+        }
+    }
+
+    private fun MailboxState.toNewActionMessageStateFrom(operation: MailboxOperation): Effect<TextUiModel> {
+        return if (operation is MailboxOperation.AffectingActionMessage) {
+            actionMessageReducer.newStateFrom(operation)
+        } else {
+            actionMessage
         }
     }
 }

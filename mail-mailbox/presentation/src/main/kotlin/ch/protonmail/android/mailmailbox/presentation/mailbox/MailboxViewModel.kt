@@ -191,6 +191,7 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.MarkAsRead -> handleMarkAsReadAction(viewAction)
                 is MailboxViewAction.MarkAsUnread -> handleMarkAsUnreadAction(viewAction)
                 is MailboxViewAction.CloseOnboarding -> handleCloseOnboarding()
+                is MailboxViewAction.Trash -> {}
             }.exhaustive
         }
     }
