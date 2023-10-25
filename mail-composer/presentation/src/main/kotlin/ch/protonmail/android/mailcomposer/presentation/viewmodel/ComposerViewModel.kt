@@ -43,7 +43,6 @@ import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddres
 import ch.protonmail.android.mailcomposer.domain.usecase.GetDecryptedDraftFields
 import ch.protonmail.android.mailcomposer.domain.usecase.GetLocalMessageDecrypted
 import ch.protonmail.android.mailcomposer.domain.usecase.GetPrimaryAddress
-import ch.protonmail.android.mailcomposer.presentation.usecase.InjectAddressSignature
 import ch.protonmail.android.mailcomposer.domain.usecase.IsValidEmailAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessageAttachments
 import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
@@ -67,6 +66,7 @@ import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
 import ch.protonmail.android.mailcomposer.presentation.reducer.ComposerReducer
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen
+import ch.protonmail.android.mailcomposer.presentation.usecase.InjectAddressSignature
 import ch.protonmail.android.mailcomposer.presentation.usecase.ParentMessageToDraftFields
 import ch.protonmail.android.mailcomposer.presentation.usecase.StyleQuotedHtml
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
@@ -274,7 +274,7 @@ class ComposerViewModel @Inject constructor(
     private suspend fun onCloseComposer(action: ComposerAction.OnCloseComposer): ComposerOperation {
         val draftFields = buildDraftFields()
         return when {
-            draftFields.areBlank() || isDraftBodyOnlySignature() -> action
+            draftFields.areBlank() || isDraftBodyOnlySignatureOrMobileFooter() -> action
             else -> {
                 viewModelScope.launch {
                     withContext(NonCancellable) {
@@ -379,11 +379,16 @@ class ComposerViewModel @Inject constructor(
         }
     }
 
-    private suspend fun isDraftBodyOnlySignature() = currentDraftBody().value.isNotBlank() && injectAddressSignature(
-        primaryUserId(),
-        DraftBody(""),
-        currentSenderEmail()
-    ).getOrNull() == currentDraftBody()
+    private suspend fun isDraftBodyOnlySignatureOrMobileFooter(): Boolean {
+
+        val isBodyEqualSignature = injectAddressSignature(
+            primaryUserId(),
+            DraftBody(""),
+            currentSenderEmail()
+        ).getOrNull() == currentDraftBody()
+
+        return currentDraftBody().value.isNotBlank() && isBodyEqualSignature
+    }
 
     private suspend fun CoroutineScope.startDraftContinuousUpload(draftAction: DraftAction = DraftAction.Compose) =
         draftUploader.startContinuousUpload(

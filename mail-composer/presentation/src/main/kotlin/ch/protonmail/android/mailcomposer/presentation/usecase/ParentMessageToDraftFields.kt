@@ -57,7 +57,8 @@ class ParentMessageToDraftFields @Inject constructor(
     @ApplicationContext private val context: Context,
     private val observeUserAddresses: ObserveUserAddresses,
     private val formatExtendedTime: FormatExtendedTime,
-    private val getAddressSignature: GetAddressSignature
+    private val getAddressSignature: GetAddressSignature,
+    private val getMobileFooter: GetMobileFooter
 ) {
 
     suspend operator fun invoke(
@@ -70,11 +71,12 @@ class ParentMessageToDraftFields @Inject constructor(
         val userAddresses = observeUserAddresses(userId).firstOrNull() ?: return DataError.Local.NoDataCached.left()
         val sender = getSenderEmail(userAddresses, message)
         val senderAddressSignature = getAddressSignature(userId, sender).getOrElse { AddressSignature.BlankSignature }
+        val mobileFooter = getMobileFooter(userId).getOrNull() ?: return DataError.Local.Unknown.left()
 
         return DraftFields(
             sender,
             Subject("${subjectPrefixForAction(action)} ${message.subject}"),
-            buildQuotedPlainTextBody(message, decryptedBody, senderAddressSignature),
+            buildQuotedPlainTextBody(message, decryptedBody, senderAddressSignature, mobileFooter),
             RecipientsTo(recipientsForAction(action, messageWithDecryptedBody.messageWithBody, sender)),
             RecipientsCc(ccRecipientsForAction(action, message)),
             RecipientsBcc(emptyList()),
@@ -85,11 +87,15 @@ class ParentMessageToDraftFields @Inject constructor(
     private fun buildQuotedPlainTextBody(
         message: Message,
         decryptedBody: DecryptedMessageBody,
-        senderAddressSignature: AddressSignature
+        senderAddressSignature: AddressSignature,
+        mobileFooter: String
     ): DraftBody {
-        if (decryptedBody.mimeType != MimeType.PlainText && senderAddressSignature.plaintext.isNotBlank()) {
-            // HTML quote is fully created elsewhere, but we still need to inject signature into editable body
-            return DraftBody("${AddressSignature.SeparatorPlaintext}${senderAddressSignature.plaintext}")
+        if (decryptedBody.mimeType != MimeType.PlainText &&
+            (senderAddressSignature.plaintext.isNotBlank() || mobileFooter.isNotBlank())
+        ) {
+            // HTML quote is fully created elsewhere, but we still need to inject signature
+            //  and mobile footer into editable body
+            return DraftBody(senderAddressSignature.plaintext + mobileFooter)
         } else if (decryptedBody.mimeType != MimeType.PlainText) {
             return DraftBody("")
         }
@@ -100,8 +106,8 @@ class ParentMessageToDraftFields @Inject constructor(
             .joinToString(separator = PlainTextNewLine) { "$PlainTextQuotePrefix $it" }
 
         val raw = StringBuilder()
-            .append(if (senderAddressSignature.plaintext.isNotBlank()) AddressSignature.SeparatorPlaintext else "")
-            .append(if (senderAddressSignature.plaintext.isNotBlank()) senderAddressSignature.plaintext else "")
+            .append(senderAddressSignature.plaintext.ifBlank { "" })
+            .append(mobileFooter.ifBlank { "" })
             .append(PlainTextNewLine)
             .append(PlainTextNewLine)
             .append(PlainTextNewLine)

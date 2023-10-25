@@ -41,7 +41,11 @@ class GetAddressSignature @Inject constructor(
 
         val plaintextSignature = HtmlCompat.fromHtml(htmlSignature, HtmlCompat.FROM_HTML_MODE_COMPACT).toString()
 
-        return@either AddressSignature(htmlSignature, plaintextSignature.trimEnd())
+        return@either AddressSignature(
+            htmlSignature,
+            "${if (plaintextSignature.isNotBlank()) AddressSignature.SeparatorPlaintext else ""}$plaintextSignature"
+                .trimEnd()
+        )
     }
 
 }

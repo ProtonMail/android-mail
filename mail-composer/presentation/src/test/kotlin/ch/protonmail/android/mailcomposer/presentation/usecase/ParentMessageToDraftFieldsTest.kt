@@ -62,6 +62,7 @@ class ParentMessageToDraftFieldsTest {
     private val context = mockk<Context>()
     private val formatTime = mockk<FormatExtendedTime>()
     private val getAddressSignatureMock = mockk<GetAddressSignature>()
+    private val getMobileFooterMock = mockk<GetMobileFooter>()
 
     private val expectedOriginalMessageRes = expectStringRes(R.string.composer_original_message_quote) {
         "Original Message"
@@ -70,11 +71,15 @@ class ParentMessageToDraftFieldsTest {
         "On %s, %s &lt; %s&gt; wrote:"
     }
 
+    private val paidMobileFooter = ""
+    private val freeMobileFooter = "\n\nSent from Proton Mail mobile"
+
     private val parentMessageToDraftFields = ParentMessageToDraftFields(
         context,
         observeUserAddresses,
         formatTime,
-        getAddressSignatureMock
+        getAddressSignatureMock,
+        getMobileFooterMock
     )
 
     @Test
@@ -98,6 +103,7 @@ class ParentMessageToDraftFieldsTest {
         expectedUserAddresses(userId) { listOf(UserAddressSample.PrimaryAddress) }
         val expectedBody = expectedDecryptedMessage.decryptedMessageBody.value
         expectBlankSignatureForSenderAddress(userId, SenderEmail(UserAddressSample.PrimaryAddress.email))
+        expectMobileFooter(userId, isUserPaid = true)
 
         // When
         val actual = parentMessageToDraftFields(userId, expectedDecryptedMessage, expectedAction).getOrNull()!!
@@ -120,7 +126,7 @@ class ParentMessageToDraftFieldsTest {
     }
 
     @Test
-    fun `returns draft body with injected sender signature for plaintext message`() = runTest {
+    fun `returns draft body with injected sender signature for plaintext message, paid user`() = runTest {
         // Given
         val userId = UserIdSample.Primary
         val expectedAction = DraftAction.Reply(MessageIdSample.Invoice)
@@ -144,16 +150,62 @@ class ParentMessageToDraftFieldsTest {
             userId,
             SenderEmail(UserAddressSample.PrimaryAddress.email)
         )
+        expectMobileFooter(userId, isUserPaid = true)
 
         // When
         val actual = parentMessageToDraftFields(userId, expectedDecryptedMessage, expectedAction).getOrNull()!!
 
         // Then
         val expectedQuotedPlaintextBody = StringBuilder()
-            .append(ParentMessageToDraftFields.PlainTextNewLine)
-            .append(ParentMessageToDraftFields.PlainTextNewLine)
-            .append(ParentMessageToDraftFields.PlainTextNewLine)
             .append(expectedSignature.plaintext)
+            .append(ParentMessageToDraftFields.PlainTextNewLine)
+            .append(ParentMessageToDraftFields.PlainTextNewLine)
+            .append(ParentMessageToDraftFields.PlainTextNewLine)
+            .append(expectedOriginalMessageQuote)
+            .append(ParentMessageToDraftFields.PlainTextNewLine)
+            .append(expectedSenderQuote)
+            .append(ParentMessageToDraftFields.PlainTextNewLine)
+            .append(ParentMessageToDraftFields.PlainTextNewLine)
+            .append(expectedBody)
+            .toString()
+
+        assertEquals(expectedQuotedPlaintextBody, actual.body.value)
+    }
+
+    @Test
+    fun `returns draft body with injected sender signature for plaintext message, free user`() = runTest {
+        // Given
+        val userId = UserIdSample.Primary
+        val expectedAction = DraftAction.Reply(MessageIdSample.Invoice)
+        val expectedDecryptedMessage = MessageWithDecryptedBody(
+            MessageWithBodySample.Invoice,
+            DecryptedMessageBodyTestData.PlainTextDecryptedBody
+        )
+        val expectedTime = expectFormattedTime(MessageSample.Invoice.time.seconds) {
+            TextUiModel.Text("Sep 13, 2023 3:36 PM")
+        }
+        val expectedOriginalMessageQuote = "-------- $expectedOriginalMessageRes --------"
+        val expectedSenderQuote = expectedSenderQuoteRes.format(
+            expectedTime.value,
+            expectedDecryptedMessage.messageWithBody.message.sender.name,
+            expectedDecryptedMessage.messageWithBody.message.sender.address
+        )
+        expectedUserAddresses(userId) { listOf(UserAddressSample.PrimaryAddress) }
+        val expectedBody = "${ParentMessageToDraftFields.PlainTextQuotePrefix} " +
+            expectedDecryptedMessage.decryptedMessageBody.value
+        val expectedSignature = expectSignatureForSenderAddress(
+            userId,
+            SenderEmail(UserAddressSample.PrimaryAddress.email)
+        )
+        val expectedMobileFooter = expectMobileFooter(userId, isUserPaid = false)
+
+        // When
+        val actual = parentMessageToDraftFields(userId, expectedDecryptedMessage, expectedAction).getOrNull()!!
+
+        // Then
+        val expectedQuotedPlaintextBody = StringBuilder()
+            .append(expectedSignature.plaintext)
+            .append(expectedMobileFooter)
             .append(ParentMessageToDraftFields.PlainTextNewLine)
             .append(ParentMessageToDraftFields.PlainTextNewLine)
             .append(ParentMessageToDraftFields.PlainTextNewLine)
@@ -193,6 +245,7 @@ class ParentMessageToDraftFieldsTest {
             userId,
             SenderEmail(UserAddressSample.PrimaryAddress.email)
         )
+        expectMobileFooter(userId, isUserPaid = true)
 
         // When
         val actual = parentMessageToDraftFields(userId, expectedDecryptedMessage, expectedAction).getOrNull()!!
@@ -230,7 +283,8 @@ class ParentMessageToDraftFieldsTest {
             userId,
             SenderEmail(UserAddressSample.PrimaryAddress.email)
         )
-        val expectedBody = "${AddressSignature.SeparatorPlaintext}${expectedSignature.plaintext}"
+        expectMobileFooter(userId, isUserPaid = true)
+        val expectedBody = expectedSignature.plaintext
 
         // When
         val actual = parentMessageToDraftFields(userId, expectedDecryptedMessage, expectedAction).getOrNull()!!
@@ -256,6 +310,7 @@ class ParentMessageToDraftFieldsTest {
             userId,
             SenderEmail(UserAddressSample.PrimaryAddress.email)
         )
+        expectMobileFooter(userId, isUserPaid = true)
         val expectedBody = ""
 
         // When
@@ -277,6 +332,7 @@ class ParentMessageToDraftFieldsTest {
         expectedUserAddresses(userId) { listOf(UserAddressSample.PrimaryAddress) }
         expectFormattedTime(MessageSample.HtmlInvoice.time.seconds) { TextUiModel.Text("Sep 13, 2023 3:36 PM") }
         expectBlankSignatureForSenderAddress(userId, SenderEmail(UserAddressSample.PrimaryAddress.email))
+        expectMobileFooter(userId, isUserPaid = true)
 
         // When
         val actual = parentMessageToDraftFields(userId, expectedDecryptedMessage, expectedAction).getOrNull()!!
@@ -298,6 +354,7 @@ class ParentMessageToDraftFieldsTest {
         expectedUserAddresses(userId) { listOf(UserAddressSample.PrimaryAddress) }
         expectFormattedTime(MessageSample.HtmlInvoice.time.seconds) { TextUiModel.Text("Sep 13, 2023 3:36 PM") }
         expectBlankSignatureForSenderAddress(userId, SenderEmail(UserAddressSample.PrimaryAddress.email))
+        expectMobileFooter(userId, isUserPaid = true)
 
         // When
         val actual = parentMessageToDraftFields(userId, expectedDecryptedMessage, expectedAction).getOrNull()!!
@@ -325,6 +382,7 @@ class ParentMessageToDraftFieldsTest {
         expectedUserAddresses(userId) { listOf(UserAddressSample.PrimaryAddress) }
         expectFormattedTime(MessageSample.HtmlInvoice.time.seconds) { TextUiModel.Text("Sep 13, 2023 3:36 PM") }
         expectBlankSignatureForSenderAddress(userId, SenderEmail(UserAddressSample.PrimaryAddress.email))
+        expectMobileFooter(userId, isUserPaid = true)
 
         // When
         val actual = parentMessageToDraftFields(userId, expectedDecryptedMessage, expectedAction).getOrNull()!!
@@ -354,6 +412,7 @@ class ParentMessageToDraftFieldsTest {
         expectedUserAddresses(userId) { listOf(johnUserAddress) }
         expectFormattedTime(MessageSample.HtmlInvoice.time.seconds) { TextUiModel.Text("Sep 13, 2023 3:36 PM") }
         expectBlankSignatureForSenderAddress(userId, SenderEmail(johnUserAddress.email))
+        expectMobileFooter(userId, isUserPaid = true)
 
         // When
         val actual = parentMessageToDraftFields(userId, expectedDecryptedMessage, expectedAction).getOrNull()!!
@@ -393,4 +452,9 @@ class ParentMessageToDraftFieldsTest {
         "",
         ""
     ).also { coEvery { getAddressSignatureMock(expectedUserId, expectedSenderEmail) } returns it.right() }
+
+    private fun expectMobileFooter(expectedUserId: UserId, isUserPaid: Boolean): String =
+        (if (isUserPaid) paidMobileFooter else freeMobileFooter).also {
+            coEvery { getMobileFooterMock(expectedUserId) } returns it.right()
+        }
 }

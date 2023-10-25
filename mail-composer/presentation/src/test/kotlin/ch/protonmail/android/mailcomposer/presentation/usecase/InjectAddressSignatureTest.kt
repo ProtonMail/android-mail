@@ -35,24 +35,26 @@ import kotlin.test.assertEquals
 class InjectAddressSignatureTest {
 
     private val getAddressSignatureMock = mockk<GetAddressSignature>()
+    private val getMobileFooterMock = mockk<GetMobileFooter>()
 
-    private val injectAddressSignature = InjectAddressSignature(getAddressSignatureMock)
+    private val injectAddressSignature = InjectAddressSignature(getAddressSignatureMock, getMobileFooterMock)
+
+    private val paidMobileFooter = ""
+    private val freeMobileFooter = "\n\nSent from Proton Mail mobile"
 
     @Test
-    fun `returns draft body with injected signature when previous signature was found`() = runTest {
+    fun `returns draft body with injected signature when previous signature was found, free user`() = runTest {
         // Given
         val userId = UserIdSample.Primary
         val senderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
         val previousSenderEmail = SenderEmail(UserAddressSample.AliasAddress.email)
         val expectedSignature = expectSignatureForSenderAddress(userId, senderEmail)
         val expectedPreviousSignature = expectSignatureForSenderAddress(userId, previousSenderEmail)
+        val expectedMobileFooter = expectMobileFooter(userId, isUserPaid = false)
         val existingBody = DraftBody(
-            """
-                The body of my important message, originally with signature of previous sender.
-                
-                
-                ${expectedPreviousSignature.plaintext}
-            """.trimIndent()
+            "The body of my important message, originally with signature of previous sender." +
+                expectedPreviousSignature.plaintext +
+                expectedMobileFooter
         )
 
         // When
@@ -60,29 +62,25 @@ class InjectAddressSignatureTest {
 
         // Then
         val expectedBodyWithSignature = DraftBody(
-            """
-                The body of my important message, originally with signature of previous sender.
-                
-                
-                ${expectedSignature.plaintext}
-            """.trimIndent()
+            "The body of my important message, originally with signature of previous sender." +
+                expectedSignature.plaintext +
+                expectedMobileFooter
         )
 
         assertEquals(expectedBodyWithSignature, actual)
     }
 
     @Test
-    fun `returns draft body with injected signature when previous signature was not found`() = runTest {
+    fun `returns draft body with injected signature when previous signature was not found, free user`() = runTest {
         // Given
         val userId = UserIdSample.Primary
         val senderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
         val previousSenderEmail = SenderEmail(UserAddressSample.AliasAddress.email)
         val expectedSignature = expectSignatureForSenderAddress(userId, senderEmail)
         expectSignatureForSenderAddress(userId, previousSenderEmail)
+        val expectedMobileFooter = expectMobileFooter(userId, isUserPaid = false)
         val existingBody = DraftBody(
-            """
-                The body of my important message.
-            """.trimIndent()
+            "The body of my important message."
         )
 
         // When
@@ -90,30 +88,46 @@ class InjectAddressSignatureTest {
 
         // Then
         val expectedBodyWithSignature = DraftBody(
-            """
-                The body of my important message.
-                
-                
-                ${expectedSignature.plaintext}
-            """.trimIndent()
+            "The body of my important message." +
+                expectedSignature.plaintext +
+                expectedMobileFooter
         )
 
         assertEquals(expectedBodyWithSignature, actual)
     }
 
     @Test
-    fun `returns draft body with injected blank signature into blank draft body`() = runTest {
+    fun `returns draft body with injected blank signature into blank draft body, paid user`() = runTest {
         // Given
         val userId = UserIdSample.Primary
         val senderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
         val expectedSignature = expectBlankSignatureForSenderAddress(userId, senderEmail)
         val existingBody = DraftBody("")
+        expectMobileFooter(userId, isUserPaid = true)
 
         // When
         val actual = injectAddressSignature(userId, existingBody, senderEmail).getOrNull()!!
 
         // Then
-        val expectedBodyWithSignature = DraftBody("")
+        val expectedBodyWithSignature = DraftBody(paidMobileFooter)
+
+        assertEquals(expectedBodyWithSignature, actual)
+    }
+
+    @Test
+    fun `returns draft body with injected blank signature into blank draft body, free user`() = runTest {
+        // Given
+        val userId = UserIdSample.Primary
+        val senderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+        val expectedSignature = expectBlankSignatureForSenderAddress(userId, senderEmail)
+        val existingBody = DraftBody("")
+        expectMobileFooter(userId, isUserPaid = false)
+
+        // When
+        val actual = injectAddressSignature(userId, existingBody, senderEmail).getOrNull()!!
+
+        // Then
+        val expectedBodyWithSignature = DraftBody(freeMobileFooter)
 
         assertEquals(expectedBodyWithSignature, actual)
     }
@@ -123,7 +137,7 @@ class InjectAddressSignatureTest {
         expectedSenderEmail: SenderEmail
     ): AddressSignature = AddressSignature(
         "<div>HTML signature ($expectedSenderEmail)</div>",
-        "Plaintext signature ($expectedSenderEmail)"
+        "${AddressSignature.SeparatorPlaintext}Plaintext signature ($expectedSenderEmail)"
     ).also {
         coEvery { getAddressSignatureMock(expectedUserId, expectedSenderEmail) } returns it.right()
     }
@@ -137,5 +151,10 @@ class InjectAddressSignatureTest {
     ).also {
         coEvery { getAddressSignatureMock(expectedUserId, expectedSenderEmail) } returns it.right()
     }
+
+    private fun expectMobileFooter(expectedUserId: UserId, isUserPaid: Boolean): String =
+        (if (isUserPaid) paidMobileFooter else freeMobileFooter).also {
+            coEvery { getMobileFooterMock(expectedUserId) } returns it.right()
+        }
 
 }

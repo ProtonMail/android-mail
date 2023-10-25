@@ -31,7 +31,8 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class InjectAddressSignature @Inject constructor(
-    private val getAddressSignature: GetAddressSignature
+    private val getAddressSignature: GetAddressSignature,
+    private val getMobileFooter: GetMobileFooter
 ) {
 
     suspend operator fun invoke(
@@ -46,6 +47,8 @@ class InjectAddressSignature @Inject constructor(
             AddressSignature.BlankSignature
         }
 
+        val mobileFooter = getMobileFooter(userId).bind()
+
         previousSenderEmail?.let { senderEmail ->
             getAddressSignature(userId, senderEmail).fold(
                 ifLeft = { Timber.e("Error getting previous address signature: $senderEmail") },
@@ -57,8 +60,12 @@ class InjectAddressSignature @Inject constructor(
             )
         }
 
-        val draftBodyWithAddressSignature = if (addressSignature.plaintext.isNotBlank()) {
-            DraftBody("${draftBody.value}${AddressSignature.SeparatorPlaintext}${addressSignature.plaintext}")
+        val draftBodyWithAddressSignature = if (addressSignature.plaintext.isNotBlank() || mobileFooter.isNotBlank()) {
+            DraftBody(
+                draftBody.value +
+                    addressSignature.plaintext +
+                    mobileFooter
+            )
         } else draftBody
 
         return@either draftBodyWithAddressSignature
