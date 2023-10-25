@@ -87,7 +87,7 @@ class MailboxReducer @Inject constructor(
 
     private fun MailboxState.toNewSpotlightStateFrom(operation: MailboxOperation): SpotlightState {
         return if (operation is MailboxOperation.AffectingSpotlight) {
-            spotlightReducer.newStateFrom(spotlightState, operation)
+            spotlightReducer.newStateFrom(operation)
         } else {
             spotlightState
         }

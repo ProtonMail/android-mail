@@ -35,13 +35,13 @@ class SpotlightLocalDataSourceImpl @Inject constructor(
     private val dataStoreProvider: MailMailboxDataStoreProvider
 ) : SpotlightLocalDataSource {
 
-    private val hasSpotlightKey = booleanPreferencesKey("hasSpotlightPrefKey")
+    private val shouldDisplaySpotlightPrefKey = booleanPreferencesKey("shouldDisplaySpotlightPrefKey")
 
     override fun observe(): Flow<Either<PreferencesError, SpotlightPreference>> =
         dataStoreProvider.spotlightDataStore.safeData.map { prefsEither ->
             prefsEither.map { prefs ->
-                val hasSpotlight = prefs[hasSpotlightKey] ?: DEFAULT_VALUE
-                SpotlightPreference(hasSpotlight)
+                val shouldDisplaySpotlight = prefs[shouldDisplaySpotlightPrefKey] ?: DEFAULT_VALUE
+                SpotlightPreference(shouldDisplaySpotlight)
             }
         }
 
@@ -49,6 +49,6 @@ class SpotlightLocalDataSourceImpl @Inject constructor(
         spotlightPreference: SpotlightPreference
     ): Either<PreferencesError, Unit> =
         dataStoreProvider.spotlightDataStore.safeEdit { mutablePreferences ->
-            mutablePreferences[hasSpotlightKey] = spotlightPreference.display
+            mutablePreferences[shouldDisplaySpotlightPrefKey] = spotlightPreference.display
         }.void()
 }

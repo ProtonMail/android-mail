@@ -89,8 +89,6 @@ internal sealed interface MailboxEvent : MailboxOperation {
 
     object ShowSpotlight : MailboxEvent, MailboxOperation.AffectingSpotlight
 
-    object HideSpotlight : MailboxEvent, MailboxOperation.AffectingSpotlight
-
     sealed interface ItemClicked : MailboxEvent {
 
         val item: MailboxItemUiModel

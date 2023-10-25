@@ -20,6 +20,7 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.SpotlightState
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -36,7 +37,7 @@ internal class SpotlightReducerTest(
 
     @Test
     fun `should produce the expected new state`() = with(testInput) {
-        val actualState = spotlightReducer.newStateFrom(currentState, operation)
+        val actualState = spotlightReducer.newStateFrom(operation)
 
         assertEquals(expectedState, actualState, testName)
     }
@@ -51,7 +52,7 @@ internal class SpotlightReducerTest(
             ),
             TestInput(
                 currentState = SpotlightState.Hidden,
-                operation = MailboxEvent.HideSpotlight,
+                operation = MailboxViewAction.SpotlightClosed,
                 expectedState = SpotlightState.Hidden
             )
         )
@@ -59,7 +60,7 @@ internal class SpotlightReducerTest(
         private val transitionsFromShownState = listOf(
             TestInput(
                 currentState = SpotlightState.Shown,
-                operation = MailboxEvent.HideSpotlight,
+                operation = MailboxViewAction.SpotlightClosed,
                 expectedState = SpotlightState.Hidden
             ),
             TestInput(

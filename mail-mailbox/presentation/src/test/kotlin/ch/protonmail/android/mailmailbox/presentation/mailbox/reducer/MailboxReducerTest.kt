@@ -64,7 +64,7 @@ internal class MailboxReducerTest(
         every { newStateFrom(any(), any()) } returns reducedState.bottomAppBarState
     }
     private val spotlightReducer: SpotlightReducer = mockk {
-        every { newStateFrom(any(), any()) } returns reducedState.spotlightState
+        every { newStateFrom(any()) } returns reducedState.spotlightState
     }
     private val mailboxReducer = MailboxReducer(
         mailboxListReducer,

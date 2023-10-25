@@ -180,7 +180,7 @@ class MailboxViewModelTest {
     }
 
     private val observeSpotlight = mockk<ObserveSpotlight> {
-        every { this@mockk() } returns flowOf()
+        every { this@mockk() } returns flowOf(SpotlightPreference(display = false).right())
     }
 
     private val saveSpotlight: SaveSpotlight = mockk()
@@ -1619,7 +1619,7 @@ class MailboxViewModelTest {
     fun `spotlight state should be shown when repository emits the preference with value true`() = runTest {
         // When
         coEvery {
-            observeSpotlight.invoke()
+            observeSpotlight()
         } returns flowOf(SpotlightPreference(display = true).right())
         every {
             mailboxReducer.newStateFrom(
@@ -1660,12 +1660,6 @@ class MailboxViewModelTest {
         coEvery {
             saveSpotlight(display = false)
         } returns Unit.right()
-        every {
-            mailboxReducer.newStateFrom(
-                any(),
-                MailboxEvent.HideSpotlight
-            )
-        } returns MailboxStateSampleData.Loading
 
         // When
         mailboxViewModel.submit(MailboxViewAction.SpotlightClosed)

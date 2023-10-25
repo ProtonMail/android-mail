@@ -66,7 +66,7 @@ class SpotlightLocalDataSourceImplTest {
     @Test
     fun `returns locally stored preference from data store when available`() = runTest {
         // Given
-        coEvery { preferences[booleanPreferencesKey("hasSpotlightPrefKey")] } returns false
+        coEvery { preferences[booleanPreferencesKey("shouldDisplaySpotlightPrefKey")] } returns false
         every { spotlightDataStoreMock.data } returns flowOf(preferences)
 
         // When

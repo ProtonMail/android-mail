@@ -30,7 +30,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class SaveSpotlightSettingTest {
+class SaveSpotlightTest {
 
     private val spotlightPreference = SpotlightPreference(display = true)
 

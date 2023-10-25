@@ -27,34 +27,11 @@ import javax.inject.Inject
 class SpotlightReducer @Inject constructor() {
 
     internal fun newStateFrom(
-        currentState: SpotlightState,
         operation: MailboxOperation.AffectingSpotlight
     ): SpotlightState {
         return when (operation) {
-            is MailboxEvent.ShowSpotlight -> currentState.toNewStateForSpotlightShowChanged()
-            is MailboxEvent.HideSpotlight -> currentState.toNewStateForSpotlightHideChanged()
-            is MailboxViewAction.SpotlightClosed -> currentState.toNewStateForSpotlightClosedChanged()
-        }
-    }
-
-    private fun SpotlightState.toNewStateForSpotlightShowChanged(): SpotlightState {
-        return when (this) {
-            is SpotlightState.Hidden -> SpotlightState.Shown
-            is SpotlightState.Shown -> this
-        }
-    }
-
-    private fun SpotlightState.toNewStateForSpotlightHideChanged(): SpotlightState {
-        return when (this) {
-            is SpotlightState.Hidden -> this
-            is SpotlightState.Shown -> SpotlightState.Hidden
-        }
-    }
-
-    private fun SpotlightState.toNewStateForSpotlightClosedChanged(): SpotlightState {
-        return when (this) {
-            is SpotlightState.Hidden -> this
-            is SpotlightState.Shown -> SpotlightState.Hidden
+            is MailboxEvent.ShowSpotlight -> SpotlightState.Shown
+            is MailboxViewAction.SpotlightClosed -> SpotlightState.Hidden
         }
     }
 }

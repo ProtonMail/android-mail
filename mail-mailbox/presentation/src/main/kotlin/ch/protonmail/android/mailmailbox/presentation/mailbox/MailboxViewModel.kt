@@ -123,11 +123,11 @@ class MailboxViewModel @Inject constructor(
     val items: Flow<PagingData<MailboxItemUiModel>> = observePagingData().cachedIn(viewModelScope)
 
     init {
-        observeSpotlight()
-            .onEach { display ->
-                emitNewStateFrom(if (display) MailboxEvent.ShowSpotlight else MailboxEvent.HideSpotlight)
+        viewModelScope.launch {
+            if (shouldDisplaySpotlight()) {
+                emitNewStateFrom(MailboxEvent.ShowSpotlight)
             }
-            .launchIn(viewModelScope)
+        }
 
         observeCurrentMailLabel()
             .onEach { currentMailLabel -> emitNewStateFrom(MailboxEvent.SelectedLabelChanged(currentMailLabel)) }
@@ -339,11 +339,12 @@ class MailboxViewModel @Inject constructor(
 
     private suspend fun handleSpotlightClosed() = viewModelScope.launch {
         saveSpotlight.invoke(display = false)
-        emitNewStateFrom(MailboxEvent.HideSpotlight)
+        emitNewStateFrom(MailboxViewAction.SpotlightClosed)
     }
 
-    private fun observeSpotlight() = observeSpotlight.invoke().map {
-        it.fold(
+    private suspend fun shouldDisplaySpotlight(): Boolean {
+        val showSpotlightEither = observeSpotlight.invoke().first()
+        return showSpotlightEither.fold(
             ifLeft = { false },
             ifRight = { spotlightPreference -> spotlightPreference.display }
         )
