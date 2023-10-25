@@ -43,7 +43,7 @@ import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddres
 import ch.protonmail.android.mailcomposer.domain.usecase.GetDecryptedDraftFields
 import ch.protonmail.android.mailcomposer.domain.usecase.GetLocalMessageDecrypted
 import ch.protonmail.android.mailcomposer.domain.usecase.GetPrimaryAddress
-import ch.protonmail.android.mailcomposer.domain.usecase.InjectAddressSignature
+import ch.protonmail.android.mailcomposer.presentation.usecase.InjectAddressSignature
 import ch.protonmail.android.mailcomposer.domain.usecase.IsValidEmailAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessageAttachments
 import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId

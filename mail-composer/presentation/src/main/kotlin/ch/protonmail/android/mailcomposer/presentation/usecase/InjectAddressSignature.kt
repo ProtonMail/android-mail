@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcomposer.domain.usecase
+package ch.protonmail.android.mailcomposer.presentation.usecase
 
 import arrow.core.Either
 import arrow.core.raise.either
@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcomposer.domain.model.AddressSignature
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
+import ch.protonmail.android.mailcomposer.domain.usecase.GetAddressSignature
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import javax.inject.Inject

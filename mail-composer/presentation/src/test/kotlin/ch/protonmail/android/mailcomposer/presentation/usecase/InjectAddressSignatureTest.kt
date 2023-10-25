@@ -25,7 +25,6 @@ import ch.protonmail.android.mailcomposer.domain.model.AddressSignature
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.domain.usecase.GetAddressSignature
-import ch.protonmail.android.mailcomposer.domain.usecase.InjectAddressSignature
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
