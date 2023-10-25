@@ -252,10 +252,10 @@ internal class ComposerSendMessageNetworkErrors : MockedNetworkTest(
 
     @Test
     @TestId("219656")
-    fun testMessageSendingWithServerErrorOnDraftUploadsButSuccessOnSend() {
+    fun testMessageSendingWithServerErrorOnDraftUpload() {
         mockWebServer.dispatcher combineWith composerMockNetworkDispatcher(
             useDefaultDraftUploadResponse = false,
-            useDefaultSendMessageResponse = true
+            useDefaultSendMessageResponse = false
         ) {
             addMockRequests(
                 post("/mail/v4/messages")
@@ -277,7 +277,7 @@ internal class ComposerSendMessageNetworkErrors : MockedNetworkTest(
         }
 
         mailboxRobot {
-            snackbarSection { verify { isDisplaying(ComposerSnackbar.MessageSent) } }
+            snackbarSection { verify { isDisplaying(ComposerSnackbar.MessageSentError) } }
         }
     }
 
