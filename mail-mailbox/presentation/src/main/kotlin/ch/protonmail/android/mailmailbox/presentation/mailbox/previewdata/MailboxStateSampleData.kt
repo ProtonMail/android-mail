@@ -89,6 +89,14 @@ object MailboxStateSampleData {
         spotlightState = SpotlightState.Hidden
     )
 
+    val SpotlightShown = MailboxState(
+        mailboxListState = MailboxListState.Loading(selectionModeEnabled = false),
+        topAppBarState = MailboxTopAppBarState.Loading,
+        unreadFilterState = UnreadFilterState.Loading,
+        bottomAppBarState = BottomBarState.Loading,
+        spotlightState = SpotlightState.Shown
+    )
+
     fun createSelectionMode(
         selectedMailboxItemUiModels: List<MailboxItemUiModel>,
         bottomBarAction: List<ActionUiModel> = listOf(ActionUiModelSample.Archive),

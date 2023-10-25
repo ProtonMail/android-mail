@@ -22,10 +22,12 @@ import android.util.Log
 import androidx.paging.PagingData
 import app.cash.turbine.test
 import arrow.core.Either
+import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
@@ -45,6 +47,7 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Conversation
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Message
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
+import ch.protonmail.android.mailmailbox.domain.model.SpotlightPreference
 import ch.protonmail.android.mailmailbox.domain.usecase.GetMailboxActions
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkConversationsAsRead
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkConversationsAsUnread
@@ -1610,6 +1613,69 @@ class MailboxViewModelTest {
                 isFilterEnabled = unreadFilterState
             )
         )
+    }
+
+    @Test
+    fun `spotlight state should be shown when repository emits the preference with value true`() = runTest {
+        // When
+        coEvery {
+            observeSpotlight.invoke()
+        } returns flowOf(SpotlightPreference(display = true).right())
+        every {
+            mailboxReducer.newStateFrom(
+                any(),
+                any()
+            )
+        } returns MailboxStateSampleData.SpotlightShown
+
+        mailboxViewModel.state.test {
+            val currentState = awaitItem()
+
+            // Then
+            verify(exactly = 1) {
+                mailboxReducer.newStateFrom(any(), MailboxEvent.ShowSpotlight)
+            }
+            assertEquals(SpotlightState.Shown, currentState.spotlightState)
+        }
+    }
+
+    @Test
+    fun `spotlight state should be hidden when an error occurs while observing the preference`() = runTest {
+        // Given
+        coEvery {
+            observeSpotlight()
+        } returns flowOf(PreferencesError.left())
+        val expectedSpotlightState = SpotlightState.Hidden
+
+        // When
+        mailboxViewModel.state.test {
+            // Then
+            assertEquals(expectedSpotlightState, awaitItem().spotlightState)
+        }
+    }
+
+    @Test
+    fun `should call repository save method when closing spotlight`() = runTest {
+        // Given
+        coEvery {
+            saveSpotlight(display = false)
+        } returns Unit.right()
+        every {
+            mailboxReducer.newStateFrom(
+                any(),
+                MailboxEvent.HideSpotlight
+            )
+        } returns MailboxStateSampleData.Loading
+
+        // When
+        mailboxViewModel.submit(MailboxViewAction.SpotlightClosed)
+
+        // When
+        mailboxViewModel.state.test {
+            // Then
+            coVerify { saveSpotlight(display = false) }
+            assertEquals(SpotlightState.Hidden, awaitItem().spotlightState)
+        }
     }
 
     private fun returnExpectedStateForBottomBarEvent(
