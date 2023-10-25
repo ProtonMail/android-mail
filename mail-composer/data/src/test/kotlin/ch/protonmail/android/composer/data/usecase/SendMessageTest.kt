@@ -343,6 +343,21 @@ class SendMessageTest {
             assertEquals(Unit.right(), result)
         }
 
+    @Test
+    fun `when obtain send preferences throws an exception, the error is propagated to the calling site`() = runTest {
+        // Given
+        expectFindLocalDraftSucceeds()
+        expectResolveUserAddressSucceeds()
+        expectObserveMailSettingsReturnsNull()
+        expectObtainSendPreferencesThrows(recipients) { Exception("Unexpected exception from core lib") }
+
+        // When
+        val result = sendMessage(userId, messageId)
+
+        // Then
+        assertEquals(DataError.MessageSending.SendPreferences.left(), result)
+    }
+
     private fun expectFindLocalDraftSucceeds(expected: () -> MessageWithBody = { sampleMessage }) = expected().also {
         coEvery { findLocalDraft.invoke(userId, messageId) } returns it
     }
@@ -356,6 +371,13 @@ class SendMessageTest {
 
     private fun expectObserveMailSettingsReturnsNull() {
         coEvery { observeMailSettings.invoke(userId) } returns flowOf(null)
+    }
+
+    private fun expectObtainSendPreferencesThrows(
+        recipientAddresses: List<String> = this.recipients,
+        expected: () -> Exception
+    ) = expected().also { exception ->
+        coEvery { obtainSendPreferences(userId, recipientAddresses) } answers { throw exception }
     }
 
     private fun expectObtainSendPreferencesSucceeds(

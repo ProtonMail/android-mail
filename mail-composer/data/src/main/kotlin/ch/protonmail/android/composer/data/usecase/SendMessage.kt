@@ -100,9 +100,14 @@ internal class SendMessage @Inject constructor(
         emails: List<Email>
     ): Either<DataError.MessageSending.SendPreferences, Map<Email, SendPreferences>> {
 
-        val sendPreferences = obtainSendPreferences(userId, emails)
-            .filterValues(ObtainSendPreferences.Result.Success::class.java)
-            .mapValues { it.value.sendPreferences }
+        val sendPreferences = runCatching {
+            obtainSendPreferences(userId, emails)
+                .filterValues(ObtainSendPreferences.Result.Success::class.java)
+                .mapValues { it.value.sendPreferences }
+        }.getOrElse {
+            Timber.e("Unexpected exception ${it.message} while obtaining send preferences for $userId")
+            return DataError.MessageSending.SendPreferences.left()
+        }
 
         val uniqueEmails = emails.distinctBy { it.lowercase() }
         // we failed getting send preferences for all recipients
