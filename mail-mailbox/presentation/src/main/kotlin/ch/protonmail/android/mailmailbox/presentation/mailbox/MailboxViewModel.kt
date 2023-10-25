@@ -38,6 +38,7 @@ import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabels
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
@@ -48,6 +49,8 @@ import ch.protonmail.android.mailmailbox.domain.usecase.MarkConversationsAsRead
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkConversationsAsUnread
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkMessagesAsRead
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkMessagesAsUnread
+import ch.protonmail.android.mailmailbox.domain.usecase.MoveConversations
+import ch.protonmail.android.mailmailbox.domain.usecase.MoveMessages
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveOnboarding
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
@@ -110,6 +113,8 @@ class MailboxViewModel @Inject constructor(
     private val markConversationsAsUnread: MarkConversationsAsUnread,
     private val markMessagesAsRead: MarkMessagesAsRead,
     private val markMessagesAsUnread: MarkMessagesAsUnread,
+    private val moveConversations: MoveConversations,
+    private val moveMessages: MoveMessages,
     private val mailboxReducer: MailboxReducer,
     private val observeMailFeature: ObserveMailFeature,
     private val dispatchersProvider: DispatcherProvider,
@@ -191,7 +196,7 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.MarkAsRead -> handleMarkAsReadAction(viewAction)
                 is MailboxViewAction.MarkAsUnread -> handleMarkAsUnreadAction(viewAction)
                 is MailboxViewAction.CloseOnboarding -> handleCloseOnboarding()
-                is MailboxViewAction.Trash -> {}
+                is MailboxViewAction.Trash -> handleTrashAction()
             }.exhaustive
         }
     }
@@ -351,6 +356,31 @@ class MailboxViewModel @Inject constructor(
             ifLeft = { false },
             ifRight = { onboardingPreference -> onboardingPreference.display }
         )
+    }
+
+    private suspend fun handleTrashAction() {
+        val selectionModeDataState = state.value.mailboxListState as? MailboxListState.Data.SelectionMode
+        if (selectionModeDataState == null) {
+            Timber.d("MailboxListState is not in SelectionMode")
+            return
+        }
+        val selectedItemsByUserId = selectionModeDataState.selectedMailboxItems.groupBy { it.userId }
+        selectedItemsByUserId.keys.forEach { userId ->
+            when (getPreferredViewMode()) {
+                ViewMode.ConversationGrouping -> moveConversations(
+                    userId = userId,
+                    conversationIds = selectedItemsByUserId[userId]?.map { ConversationId(it.id) } ?: emptyList(),
+                    labelId = SystemLabelId.Trash.labelId
+                )
+
+                ViewMode.NoConversationGrouping -> moveMessages(
+                    userId = userId,
+                    messageIds = selectedItemsByUserId[userId]?.map { MessageId(it.id) } ?: emptyList(),
+                    labelId = SystemLabelId.Trash.labelId
+                )
+            }
+        }
+        emitNewStateFrom(MailboxEvent.Trash(selectionModeDataState.selectedMailboxItems.size))
     }
 
     private fun observeCurrentMailLabel() = observeMailLabels()
