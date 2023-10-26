@@ -31,12 +31,14 @@ interface NotificationsDeepLinkHelper {
 
     fun buildMessageGroupDeepLinkIntent(notificationId: String, userId: String): Intent
 
+    fun buildReplyToDeepLinkIntent(messageId: String, userId: String): Intent
+
     fun NotificationsDeepLinkHelper.buildMessageDeepLinkUri(
         notificationId: String,
         messageId: String,
         userId: String
     ): Uri = Uri.parse(
-        DEEP_LINK_MESSAGE_TEMPLATE
+        DeepLinkMessageTemplate
             .replace("{messageId}", messageId)
             .replace("{userId}", userId)
             .replace("{notificationId}", notificationId)
@@ -44,17 +46,27 @@ interface NotificationsDeepLinkHelper {
 
     fun NotificationsDeepLinkHelper.buildMessageGroupDeepLinkUri(notificationId: String, userId: String): Uri =
         Uri.parse(
-            DEEP_LINK_MESSAGE_GROUP_TEMPLATE
+            DeepLinkMessageGroupTemplate
                 .replace("{notificationId}", notificationId)
                 .replace("{userId}", userId)
         )
 
+    fun NotificationsDeepLinkHelper.buildReplyDeepLinkUri(messageId: String, userId: String): Uri = Uri.parse(
+        DeepLinkNotificationActionTemplate
+            .replace("{messageId}", messageId)
+            .replace("{userId}", userId)
+            .replace("{action}", ReplyActionValue)
+    )
+
     companion object {
 
-        private const val DEEP_LINK_BASE_URI = "proton://notification/"
-        private const val DEEP_LINK_MESSAGE_BASE = "${DEEP_LINK_BASE_URI}mailbox/message/"
-        const val DEEP_LINK_MESSAGE_TEMPLATE = "$DEEP_LINK_MESSAGE_BASE{messageId}/{userId}/{notificationId}"
-        private const val DEEP_LINK_MESSAGE_GROUP_BASE = "${DEEP_LINK_BASE_URI}mailbox/"
-        const val DEEP_LINK_MESSAGE_GROUP_TEMPLATE = "$DEEP_LINK_MESSAGE_GROUP_BASE{notificationId}/{userId}"
+        private const val ReplyActionValue = "reply"
+        private const val DeepLinkBaseUri = "proton://notification/"
+        private const val DeepLinkMessageBase = "${DeepLinkBaseUri}mailbox/message/"
+        const val DeepLinkMessageTemplate = "$DeepLinkMessageBase{messageId}/{userId}/{notificationId}"
+        private const val DeepLinkMessageGroupBase = "${DeepLinkBaseUri}mailbox/"
+        const val DeepLinkMessageGroupTemplate = "$DeepLinkMessageGroupBase{notificationId}/{userId}"
+        private const val DeepLinkNotificationActionBase = "${DeepLinkBaseUri}composer/action/"
+        const val DeepLinkNotificationActionTemplate = "$DeepLinkNotificationActionBase{messageId}/{userId}/{action}"
     }
 }

@@ -46,4 +46,11 @@ class NotificationsDeepLinkHelperImpl @Inject constructor(
         context,
         MainActivity::class.java
     )
+
+    override fun buildReplyToDeepLinkIntent(messageId: String, userId: String): Intent = Intent(
+        Intent.ACTION_VIEW,
+        buildReplyDeepLinkUri(messageId, userId),
+        context,
+        MainActivity::class.java
+    )
 }
