@@ -32,7 +32,11 @@ internal class CreateNewMessageNavigationIntent @Inject constructor(
     /**
      * Creates a [PendingIntent] that navigates to the given messageId.
      */
-    operator fun invoke(notificationId: Int, messageId: String, userId: String): PendingIntent {
+    operator fun invoke(
+        notificationId: Int,
+        messageId: String,
+        userId: String
+    ): PendingIntent {
 
         return PendingIntent.getActivity(
             context,

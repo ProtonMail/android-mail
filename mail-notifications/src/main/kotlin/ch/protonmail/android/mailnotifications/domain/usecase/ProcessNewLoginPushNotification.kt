@@ -35,7 +35,7 @@ import javax.inject.Inject
 internal class ProcessNewLoginPushNotification @Inject constructor(
     @ApplicationContext private val context: Context,
     private val notificationProvider: NotificationProvider,
-    private val notificationManagerCompatProxy: NotificationManagerCompatProxy,
+    private val notificationManagerCompatProxy: NotificationManagerCompatProxy
 ) {
 
     operator fun invoke(notificationData: LocalPushNotificationData.Login): ListenableWorker.Result {
