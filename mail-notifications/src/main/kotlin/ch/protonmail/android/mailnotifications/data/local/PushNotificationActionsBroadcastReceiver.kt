@@ -27,7 +27,7 @@ import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailnotifications.domain.model.LocalNotificationAction
 import ch.protonmail.android.mailnotifications.domain.model.PushNotificationPendingIntentPayloadData
 import ch.protonmail.android.mailnotifications.domain.proxy.NotificationManagerCompatProxy
-import ch.protonmail.android.mailnotifications.domain.usecase.intents.CreateNotificationActionPendingIntent.Companion.NotificationActionIntentExtraKey
+import ch.protonmail.android.mailnotifications.domain.usecase.actions.CreateNotificationAction.Companion.NotificationActionIntentExtraKey
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
@@ -65,23 +65,23 @@ internal class PushNotificationActionsBroadcastReceiver @Inject constructor() : 
         val actionData = rawAction.deserialize<PushNotificationPendingIntentPayloadData>()
 
         coroutineScope.launch {
-            val result = when (val action = actionData.action) {
+            when (val action = actionData.action) {
                 is LocalNotificationAction.MoveTo -> {
-                    messageRepository.moveTo(
+                    val result = messageRepository.moveTo(
                         userId = UserId(actionData.userId),
                         messageId = MessageId(actionData.messageId),
                         fromLabel = null,
                         toLabel = action.destinationLabel
                     )
+
+                    result.onLeft {
+                        Timber.e("Error moving message from notification action: $it")
+                    }.onRight {
+                        Timber.d("Message moved successfully from notification action: $it")
+                    }
                 }
 
-                is LocalNotificationAction.Reply -> TODO("MAILANDR-1135")
-            }
-
-            result.onLeft {
-                Timber.d("Error moving message from notification action: $it")
-            }.onRight {
-                Timber.d("Message moved successfully from notification action: $it")
+                else -> Timber.w("Unsupported action via BroadcastReceiver: $action")
             }
         }
 
