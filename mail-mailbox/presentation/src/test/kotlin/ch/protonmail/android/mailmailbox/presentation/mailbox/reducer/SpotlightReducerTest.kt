@@ -52,7 +52,7 @@ internal class SpotlightReducerTest(
             ),
             TestInput(
                 currentState = SpotlightState.Hidden,
-                operation = MailboxViewAction.SpotlightClosed,
+                operation = MailboxViewAction.CloseSpotlight,
                 expectedState = SpotlightState.Hidden
             )
         )
@@ -60,7 +60,7 @@ internal class SpotlightReducerTest(
         private val transitionsFromShownState = listOf(
             TestInput(
                 currentState = SpotlightState.Shown,
-                operation = MailboxViewAction.SpotlightClosed,
+                operation = MailboxViewAction.CloseSpotlight,
                 expectedState = SpotlightState.Hidden
             ),
             TestInput(

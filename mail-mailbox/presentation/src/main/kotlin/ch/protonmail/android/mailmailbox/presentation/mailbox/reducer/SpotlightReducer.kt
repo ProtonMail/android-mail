@@ -31,7 +31,7 @@ class SpotlightReducer @Inject constructor() {
     ): SpotlightState {
         return when (operation) {
             is MailboxEvent.ShowSpotlight -> SpotlightState.Shown
-            is MailboxViewAction.SpotlightClosed -> SpotlightState.Hidden
+            is MailboxViewAction.CloseSpotlight -> SpotlightState.Hidden
         }
     }
 }

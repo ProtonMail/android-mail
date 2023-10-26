@@ -1662,7 +1662,7 @@ class MailboxViewModelTest {
         } returns Unit.right()
 
         // When
-        mailboxViewModel.submit(MailboxViewAction.SpotlightClosed)
+        mailboxViewModel.submit(MailboxViewAction.CloseSpotlight)
 
         // When
         mailboxViewModel.state.test {

@@ -188,7 +188,7 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.OnErrorWithData -> emitNewStateFrom(viewAction)
                 is MailboxViewAction.MarkAsRead -> handleMarkAsReadAction(viewAction)
                 is MailboxViewAction.MarkAsUnread -> handleMarkAsUnreadAction(viewAction)
-                is MailboxViewAction.SpotlightClosed -> handleSpotlightClosed()
+                is MailboxViewAction.CloseSpotlight -> handleCloseSpotlight()
             }.exhaustive
         }
     }
@@ -337,13 +337,13 @@ class MailboxViewModel @Inject constructor(
         emitNewStateFrom(markAsReadOperation)
     }
 
-    private suspend fun handleSpotlightClosed() = viewModelScope.launch {
-        saveSpotlight.invoke(display = false)
-        emitNewStateFrom(MailboxViewAction.SpotlightClosed)
+    private suspend fun handleCloseSpotlight() = viewModelScope.launch {
+        saveSpotlight(display = false)
+        emitNewStateFrom(MailboxViewAction.CloseSpotlight)
     }
 
     private suspend fun shouldDisplaySpotlight(): Boolean {
-        val showSpotlightEither = observeSpotlight.invoke().first()
+        val showSpotlightEither = observeSpotlight().first()
         return showSpotlightEither.fold(
             ifLeft = { false },
             ifRight = { spotlightPreference -> spotlightPreference.display }

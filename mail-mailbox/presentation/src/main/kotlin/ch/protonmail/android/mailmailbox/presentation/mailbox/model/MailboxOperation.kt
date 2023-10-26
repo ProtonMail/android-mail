@@ -61,7 +61,7 @@ internal sealed interface MailboxViewAction : MailboxOperation {
      */
     object OnOfflineWithData : MailboxViewAction, AffectingMailboxList
     object OnErrorWithData : MailboxViewAction, AffectingMailboxList
-    object SpotlightClosed : MailboxViewAction, MailboxOperation.AffectingSpotlight
+    object CloseSpotlight : MailboxViewAction, MailboxOperation.AffectingSpotlight
 }
 
 internal sealed interface MailboxEvent : MailboxOperation {
