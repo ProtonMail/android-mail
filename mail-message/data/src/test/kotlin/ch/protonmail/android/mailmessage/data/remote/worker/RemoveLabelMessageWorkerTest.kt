@@ -27,7 +27,7 @@ import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailmessage.data.remote.MessageApi
-import ch.protonmail.android.mailmessage.data.remote.resource.PutLabelBody
+import ch.protonmail.android.mailmessage.data.remote.resource.MessageActionBody
 import ch.protonmail.android.mailmessage.data.sample.PutLabelResponseSample
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
@@ -129,7 +129,7 @@ class RemoveLabelMessageWorkerTest {
         // When
         removeLabelMessageWorker.doWork()
         // Then
-        coVerify { messageApi.removeLabel(PutLabelBody(labelId.id, listOf(messageId.id))) }
+        coVerify { messageApi.removeLabel(MessageActionBody(labelId.id, listOf(messageId.id))) }
     }
 
     @Test
@@ -185,7 +185,7 @@ class RemoveLabelMessageWorkerTest {
         assertEquals(Result.success(), result)
         coVerify {
             messageApi.removeLabel(
-                PutLabelBody(labelId.id, messageList)
+                MessageActionBody(labelId.id, messageList)
             )
         }
     }

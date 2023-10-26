@@ -20,7 +20,7 @@ package ch.protonmail.android.mailmessage.data.remote
 
 import ch.protonmail.android.mailmessage.data.remote.resource.MarkMessageAsReadBody
 import ch.protonmail.android.mailmessage.data.remote.resource.MarkMessageAsUnreadBody
-import ch.protonmail.android.mailmessage.data.remote.resource.PutLabelBody
+import ch.protonmail.android.mailmessage.data.remote.resource.MessageActionBody
 import ch.protonmail.android.mailmessage.data.remote.response.GetMessageResponse
 import ch.protonmail.android.mailmessage.data.remote.response.GetMessagesResponse
 import ch.protonmail.android.mailmessage.data.remote.response.MarkReadResponse
@@ -58,16 +58,19 @@ interface MessageApi : BaseRetrofitApi {
     suspend fun getMessage(@Path("messageId") messageId: String): GetMessageResponse
 
     @PUT("mail/v4/messages/label")
-    suspend fun addLabel(@Body putLabelBody: PutLabelBody): PutLabelResponse
+    suspend fun addLabel(@Body messageActionBody: MessageActionBody): PutLabelResponse
 
     @PUT("mail/v4/messages/unlabel")
-    suspend fun removeLabel(@Body putLabelBody: PutLabelBody): PutLabelResponse
+    suspend fun removeLabel(@Body messageActionBody: MessageActionBody): PutLabelResponse
 
     @PUT("mail/v4/messages/unread")
     suspend fun markAsUnread(@Body markUnreadBody: MarkMessageAsUnreadBody): MarkUnreadResponse
 
     @PUT("mail/v4/messages/read")
     suspend fun markAsRead(@Body markReadBody: MarkMessageAsReadBody): MarkReadResponse
+
+    @PUT("mail/v4/messages/delete")
+    suspend fun deleteMessages(@Body messageActionBody: MessageActionBody): PutLabelResponse
 
     companion object {
 

@@ -22,7 +22,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class PutLabelBody(
+data class MessageActionBody(
     @SerialName("LabelID")
     val labelId: String,
     @SerialName("IDs")

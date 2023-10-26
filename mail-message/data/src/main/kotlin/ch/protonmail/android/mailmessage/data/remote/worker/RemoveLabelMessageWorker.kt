@@ -24,7 +24,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import ch.protonmail.android.mailcommon.domain.util.requireNotBlank
 import ch.protonmail.android.mailmessage.data.remote.MessageApi
-import ch.protonmail.android.mailmessage.data.remote.resource.PutLabelBody
+import ch.protonmail.android.mailmessage.data.remote.resource.MessageActionBody
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -51,7 +51,7 @@ class RemoveLabelMessageWorker @AssistedInject constructor(
 
         val result = apiProvider.get<MessageApi>(UserId(userId)).invoke {
             removeLabel(
-                PutLabelBody(
+                MessageActionBody(
                     labelId = labelId,
                     messageIds = messageIds
                 )
