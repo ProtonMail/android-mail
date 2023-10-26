@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.domain.benchmark.BenchmarkTracer
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.data.remote.worker.AddLabelConversationWorker
+import ch.protonmail.android.mailconversation.data.remote.worker.DeleteConversationsWorker
 import ch.protonmail.android.mailconversation.data.remote.worker.MarkConversationAsReadWorker
 import ch.protonmail.android.mailconversation.data.remote.worker.MarkConversationAsUnreadWorker
 import ch.protonmail.android.mailconversation.data.remote.worker.RemoveLabelConversationWorker
@@ -168,6 +169,19 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
                     userId,
                     conversationIdsChunk
                 )
+            )
+        }
+    }
+
+    override fun deleteConversations(
+        userId: UserId,
+        conversationIds: List<ConversationId>,
+        currentLabelId: LabelId
+    ) {
+        conversationIds.chunked(MAX_CONVERSATION_IDS_API_LIMIT).forEach {
+            enqueuer.enqueue<DeleteConversationsWorker>(
+                userId = userId,
+                params = DeleteConversationsWorker.params(userId, it, currentLabelId)
             )
         }
     }

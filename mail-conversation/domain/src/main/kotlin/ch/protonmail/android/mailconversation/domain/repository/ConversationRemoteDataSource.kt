@@ -38,10 +38,7 @@ interface ConversationRemoteDataSource {
         pageKey: PageKey
     ): Either<DataError.Remote, List<ConversationWithContext>>
 
-    suspend fun getConversationWithMessages(
-        userId: UserId,
-        conversationId: ConversationId
-    ): ConversationWithMessages
+    suspend fun getConversationWithMessages(userId: UserId, conversationId: ConversationId): ConversationWithMessages
 
     /**
      * Add [labelId] to the given [conversationIds]
@@ -86,4 +83,14 @@ interface ConversationRemoteDataSource {
     )
 
     suspend fun markRead(userId: UserId, conversationIds: List<ConversationId>)
+
+    /**
+     * Delete conversations with the given [conversationIds]
+     * @param currentLabelId the current label id of the conversations (only valid for system folders)
+     */
+    fun deleteConversations(
+        userId: UserId,
+        conversationIds: List<ConversationId>,
+        currentLabelId: LabelId
+    )
 }

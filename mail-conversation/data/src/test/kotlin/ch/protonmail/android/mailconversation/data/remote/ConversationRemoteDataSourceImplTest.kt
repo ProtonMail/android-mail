@@ -27,10 +27,12 @@ import ch.protonmail.android.mailconversation.data.getConversationResource
 import ch.protonmail.android.mailconversation.data.remote.ConversationRemoteDataSourceImpl.Companion.MAX_CONVERSATION_IDS_API_LIMIT
 import ch.protonmail.android.mailconversation.data.remote.response.GetConversationsResponse
 import ch.protonmail.android.mailconversation.data.remote.worker.AddLabelConversationWorker
+import ch.protonmail.android.mailconversation.data.remote.worker.DeleteConversationsWorker
 import ch.protonmail.android.mailconversation.data.remote.worker.MarkConversationAsReadWorker
 import ch.protonmail.android.mailconversation.data.remote.worker.MarkConversationAsUnreadWorker
 import ch.protonmail.android.mailconversation.data.remote.worker.RemoveLabelConversationWorker
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailpagination.domain.model.OrderBy
 import ch.protonmail.android.mailpagination.domain.model.OrderDirection
 import ch.protonmail.android.mailpagination.domain.model.PageFilter
@@ -490,6 +492,42 @@ class ConversationRemoteDataSourceImplTest {
         )
         verify {
             enqueuer.enqueue<MarkConversationAsReadWorker>(userId, match { mapDeepEquals(it, expected) })
+        }
+    }
+
+    @Test
+    fun `enqueues worker to delete conversation`() {
+        // Given
+        val conversationId = listOf(ConversationIdSample.Invoices)
+
+        // When
+        conversationRemoteDataSource.deleteConversations(userId, conversationId, SystemLabelId.Trash.labelId)
+
+        // Then
+        val expected = DeleteConversationsWorker.params(userId, conversationId, SystemLabelId.Trash.labelId)
+        verify { enqueuer.enqueue<DeleteConversationsWorker>(userId, match { mapDeepEquals(it, expected) }) }
+    }
+
+    @Test
+    fun `enqueues worker to delete conversations twice if message id count exceeds limit`() {
+        // Given
+        val conversationIds = List(MAX_CONVERSATION_IDS_API_LIMIT + 1) { ConversationIdSample.WeatherForecast }
+        val currentLabelId = LabelId("10")
+
+        // When
+        conversationRemoteDataSource.deleteConversations(userId, conversationIds, currentLabelId)
+
+        // Then
+        verifySequence {
+            val expectedFirst = DeleteConversationsWorker.params(
+                userId, conversationIds.take(MAX_CONVERSATION_IDS_API_LIMIT), currentLabelId
+            )
+            enqueuer.enqueue<DeleteConversationsWorker>(userId, match { mapDeepEquals(it, expectedFirst) })
+
+            val expectedSecond = DeleteConversationsWorker.params(
+                userId, conversationIds.drop(MAX_CONVERSATION_IDS_API_LIMIT), currentLabelId
+            )
+            enqueuer.enqueue<DeleteConversationsWorker>(userId, match { mapDeepEquals(it, expectedSecond) })
         }
     }
 
