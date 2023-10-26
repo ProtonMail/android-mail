@@ -62,7 +62,7 @@ class NotificationsDeepLinksViewModel @Inject constructor(
     private val _state = MutableStateFlow<State>(State.None)
     val state: StateFlow<State> = _state
 
-    private var navigateToMessageJob: Job? = null
+    private var navigateJob: Job? = null
 
     fun navigateToMessage(messageId: String, userId: String) {
         if (isOffline()) {
@@ -70,6 +70,32 @@ class NotificationsDeepLinksViewModel @Inject constructor(
         } else {
             navigateToMessageOrConversation(messageId, UserId(userId))
         }
+    }
+
+    fun navigateToComposer(messageId: String, userId: String) {
+        navigateJob?.cancel()
+
+        navigateJob = viewModelScope.launch {
+            when (val switchAccountResult = switchActiveUserIfRequiredTo(userId)) {
+                AccountSwitchResult.AccountSwitchError -> navigateToInbox(userId)
+                is AccountSwitchResult.AccountSwitched -> navigateToComposer(
+                    coroutineContext,
+                    messageId,
+                    switchAccountResult.newEmail
+                )
+
+                AccountSwitchResult.NotRequired -> navigateToComposer(coroutineContext, messageId)
+            }
+        }
+    }
+
+    private fun navigateToComposer(
+        coroutineContext: CoroutineContext,
+        messageId: String,
+        switchedAccountEmail: String? = null
+    ) {
+        _state.value = State.NavigateToComposerForReply(MessageId(messageId), switchedAccountEmail)
+        coroutineContext.cancel()
     }
 
     fun navigateToInbox(userId: String) {
@@ -94,8 +120,8 @@ class NotificationsDeepLinksViewModel @Inject constructor(
 
     private fun navigateToMessageOrConversation(messageId: String, userId: UserId) {
         Timber.d("navigateToMessage: $messageId, $userId")
-        navigateToMessageJob?.cancel()
-        navigateToMessageJob = viewModelScope.launch {
+        navigateJob?.cancel()
+        navigateJob = viewModelScope.launch {
             when (val switchAccountResult = switchActiveUserIfRequiredTo(userId.id)) {
                 AccountSwitchResult.AccountSwitchError -> navigateToInbox(userId.id)
                 is AccountSwitchResult.AccountSwitched -> navigateToMessageOrConversation(
@@ -196,6 +222,11 @@ class NotificationsDeepLinksViewModel @Inject constructor(
 
         data class NavigateToConversation(
             val conversationId: ConversationId,
+            val userSwitchedEmail: String? = null
+        ) : State
+
+        data class NavigateToComposerForReply(
+            val messageId: MessageId,
             val userSwitchedEmail: String? = null
         ) : State
     }

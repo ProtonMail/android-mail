@@ -19,17 +19,10 @@
 package ch.protonmail.android.navigation.route
 
 import android.net.Uri
-import android.widget.Toast
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
-import androidx.navigation.navDeepLink
-import ch.protonmail.android.R
 import ch.protonmail.android.feature.account.RemoveAccountDialog
 import ch.protonmail.android.feature.account.RemoveAccountDialog.USER_ID_KEY
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
@@ -43,15 +36,11 @@ import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreen
 import ch.protonmail.android.mailmessage.domain.model.MessageId
-import ch.protonmail.android.mailnotifications.domain.NotificationsDeepLinkHelper.Companion.DEEP_LINK_MESSAGE_GROUP_TEMPLATE
-import ch.protonmail.android.mailnotifications.domain.NotificationsDeepLinkHelper.Companion.DEEP_LINK_MESSAGE_TEMPLATE
 import ch.protonmail.android.mailsettings.presentation.settings.MainSettingsScreen
-import ch.protonmail.android.navigation.deeplinks.NotificationsDeepLinksViewModel
 import ch.protonmail.android.navigation.model.Destination
 import me.proton.core.compose.navigation.get
 import me.proton.core.domain.entity.UserId
 import me.proton.core.util.kotlin.takeIfNotBlank
-import timber.log.Timber
 
 internal fun NavGraphBuilder.addConversationDetail(
     navController: NavHostController,
@@ -203,91 +192,5 @@ internal fun NavGraphBuilder.addSettings(navController: NavHostController, showF
                 }
             )
         )
-    }
-}
-
-@Suppress("ComplexMethod")
-internal fun NavGraphBuilder.addDeepLinkHandler(navController: NavHostController) {
-    composable(
-        route = Destination.Screen.DeepLinksHandler.route,
-        deepLinks = listOf(
-            navDeepLink { uriPattern = DEEP_LINK_MESSAGE_TEMPLATE },
-            navDeepLink { uriPattern = DEEP_LINK_MESSAGE_GROUP_TEMPLATE }
-        )
-    ) {
-        val context = LocalContext.current
-        val viewModel: NotificationsDeepLinksViewModel = hiltViewModel()
-        val state = viewModel.state.collectAsState().value
-
-        fun onGroupNotification(
-            messageId: String?,
-            userId: String?,
-            action: (userId: String) -> Unit
-        ) = when {
-            userId != null && messageId == null -> action(userId)
-            else -> Unit
-        }
-
-        fun onMessageNotification(
-            messageId: String?,
-            userId: String?,
-            action: (messageId: String, userId: String) -> Unit
-        ) = when {
-            messageId != null && userId != null -> action(messageId, userId)
-            else -> Unit
-        }
-
-        fun showUserSwitchedEmailIfRequired(email: String?) {
-            if (email.isNullOrBlank()) return
-
-            Toast.makeText(
-                context,
-                context.getString(R.string.notification_switched_account, email),
-                Toast.LENGTH_LONG
-            ).show()
-        }
-
-        LaunchedEffect(key1 = state) {
-            when (state) {
-                is NotificationsDeepLinksViewModel.State.None -> {
-                    Timber.d("Deep link state is None")
-                }
-
-                is NotificationsDeepLinksViewModel.State.NavigateToInbox.ActiveUser -> {
-                    navController.navigate(Destination.Screen.Mailbox.route) {
-                        popUpTo(navController.graph.id) { inclusive = false }
-                    }
-                }
-
-                is NotificationsDeepLinksViewModel.State.NavigateToInbox.ActiveUserSwitched -> {
-                    navController.navigate(Destination.Screen.Mailbox.route) {
-                        popUpTo(navController.graph.id) { inclusive = true }
-                    }
-                    showUserSwitchedEmailIfRequired(state.email)
-                }
-
-                is NotificationsDeepLinksViewModel.State.NavigateToMessageDetails -> {
-                    navController.navigate(Destination.Screen.Message(state.messageId)) {
-                        popUpTo(Destination.Screen.Mailbox.route) { inclusive = false }
-                    }
-                    showUserSwitchedEmailIfRequired(state.userSwitchedEmail)
-                }
-
-                is NotificationsDeepLinksViewModel.State.NavigateToConversation -> {
-                    navController.navigate(Destination.Screen.Conversation(state.conversationId)) {
-                        popUpTo(Destination.Screen.Mailbox.route) { inclusive = false }
-                    }
-                    showUserSwitchedEmailIfRequired(state.userSwitchedEmail)
-                }
-            }
-            val messageIdArg = it.arguments?.getString("messageId")
-            val userIdArg = it.arguments?.getString("userId")
-            onGroupNotification(messageIdArg, userIdArg) { userId ->
-                viewModel.navigateToInbox(userId = userId)
-            }
-            onMessageNotification(messageIdArg, userIdArg) { messageId, userId ->
-                viewModel.navigateToMessage(messageId = messageId, userId = userId)
-            }
-        }
     }
 }
