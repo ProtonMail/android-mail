@@ -35,8 +35,8 @@ import ch.protonmail.android.mailnotifications.domain.model.PushNotificationPend
 import ch.protonmail.android.mailnotifications.domain.model.UserPushData
 import ch.protonmail.android.mailnotifications.domain.proxy.NotificationManagerCompatProxy
 import ch.protonmail.android.mailnotifications.domain.usecase.ProcessNewMessagePushNotification
+import ch.protonmail.android.mailnotifications.domain.usecase.actions.CreateNotificationAction
 import ch.protonmail.android.mailnotifications.domain.usecase.intents.CreateNewMessageNavigationIntent
-import ch.protonmail.android.mailnotifications.domain.usecase.intents.CreateNotificationActionPendingIntent
 import ch.protonmail.android.mailnotifications.subText
 import ch.protonmail.android.mailnotifications.text
 import ch.protonmail.android.mailnotifications.title
@@ -68,16 +68,18 @@ internal class ProcessNewMessagePushNotificationTest {
     private val notificationManagerCompatProxy = mockk<NotificationManagerCompatProxy>(relaxUnitFun = true)
     private val messageRepository = mockk<MessageRepository>()
     private val notificationsDeepLinkHelper = mockk<NotificationsDeepLinkHelper>()
-    private val createNotificationActionPendingIntent = spyk(CreateNotificationActionPendingIntent(context))
-    private val createNewMessageNavigationIntent =
-        spyk(CreateNewMessageNavigationIntent(context, notificationsDeepLinkHelper))
+    private val createNotificationAction = spyk(CreateNotificationAction(context, notificationsDeepLinkHelper))
+    private val createNewMessageNavigationIntent = spyk(
+        CreateNewMessageNavigationIntent(context, notificationsDeepLinkHelper)
+    )
+
     private val processNewMessagePushNotification = ProcessNewMessagePushNotification(
         context,
         messageRepository,
         notificationProvider,
         notificationManagerCompatProxy,
         createNewMessageNavigationIntent,
-        createNotificationActionPendingIntent,
+        createNotificationAction,
         TestScope()
     )
 
@@ -88,6 +90,7 @@ internal class ProcessNewMessagePushNotificationTest {
     @Before
     fun setup() {
         initializeCommonMocks()
+        notificationProvider.initNotificationChannels()
     }
 
     @After
@@ -119,6 +122,7 @@ internal class ProcessNewMessagePushNotificationTest {
             LocalNotificationAction.MoveTo.Archive
         )
         val expectedTrashPayload = expectedArchivePayload.copy(action = LocalNotificationAction.MoveTo.Trash)
+        val expectedReplyPayload = expectedArchivePayload.copy(action = LocalNotificationAction.Reply)
 
         // When
         val result = processNewMessagePushNotification(newMessageData)
@@ -126,11 +130,12 @@ internal class ProcessNewMessagePushNotificationTest {
         // Then
         assertEquals(ListenableWorker.Result.success(), result)
         verify(exactly = 1) {
-            createNotificationActionPendingIntent(expectedArchivePayload)
-            createNotificationActionPendingIntent(expectedTrashPayload)
+            createNotificationAction(expectedArchivePayload)
+            createNotificationAction(expectedTrashPayload)
+            createNotificationAction(expectedReplyPayload)
         }
 
-        confirmVerified(createNotificationActionPendingIntent)
+        confirmVerified(createNotificationAction)
     }
 
     @Test
@@ -168,6 +173,7 @@ internal class ProcessNewMessagePushNotificationTest {
             assertTrue(actions.isNotEmpty())
             assertEquals("Archive", actions[0].title)
             assertEquals("Trash", actions[1].title)
+            assertEquals("Reply", actions[2].title)
         }
     }
 
@@ -187,6 +193,7 @@ internal class ProcessNewMessagePushNotificationTest {
         val mockedIntent = Intent(Intent.ACTION_VIEW, Uri.EMPTY, context, this::class.java)
         every { notificationsDeepLinkHelper.buildMessageDeepLinkIntent(any(), any(), any()) } returns mockedIntent
         every { notificationsDeepLinkHelper.buildMessageGroupDeepLinkIntent(any(), any()) } returns mockedIntent
+        every { notificationsDeepLinkHelper.buildReplyToDeepLinkIntent(any(), any()) } returns mockedIntent
     }
 
     private companion object {

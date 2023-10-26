@@ -31,6 +31,7 @@ import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample.AlphaAppQAReport
+import ch.protonmail.android.navigation.deeplinks.NotificationsDeepLinksViewModel.State.NavigateToComposerForReply
 import ch.protonmail.android.navigation.deeplinks.NotificationsDeepLinksViewModel.State.NavigateToConversation
 import ch.protonmail.android.navigation.deeplinks.NotificationsDeepLinksViewModel.State.NavigateToInbox
 import ch.protonmail.android.navigation.deeplinks.NotificationsDeepLinksViewModel.State.NavigateToMessageDetails
@@ -267,6 +268,53 @@ class NotificationsDeepLinksViewModelTest {
             coVerify { accountManager.setAsPrimary(secondaryAccount.userId) }
         }
     }
+
+    @Test
+    fun `Should emit navigate to composer for reply when the user taps the reply quick action`() = runTest {
+        // Given
+        val messageId = UUID.randomUUID().toString()
+        val userId = UUID.randomUUID().toString()
+        val viewModel = buildViewModel()
+        val expectedState = NavigateToComposerForReply(MessageId(messageId), null)
+
+        coEvery { accountManager.getPrimaryUserId() } returns flowOf(UserId(userId))
+
+        // When
+        viewModel.navigateToComposer(messageId, userId)
+
+        // Then
+        viewModel.state.test {
+            assertEquals(expectedState, awaitItem())
+        }
+    }
+
+    @Test
+    fun `Should emit navigate to composer for reply and switch account when the user replies from secondary account`() =
+        runTest {
+            // Given
+            val activeAccount = AccountSample.Primary.copy(email = "test@email.com")
+            val notificationUserId = UserId(UUID.randomUUID().toString())
+            val secondaryAccount = AccountSample.Primary.copy(userId = notificationUserId)
+            val messageId = UUID.randomUUID().toString()
+            val viewModel = buildViewModel()
+
+            coEvery { accountManager.getPrimaryUserId() } returns flowOf(activeAccount.userId)
+            coEvery { accountManager.getAccounts() } returns flowOf(listOf(activeAccount, secondaryAccount))
+            coEvery {
+                getPrimaryAddress.invoke(secondaryAccount.userId)
+            } returns UserAddressSample.PrimaryAddress.right()
+
+            val expectedState = NavigateToComposerForReply(MessageId(messageId), secondaryAccount.email)
+
+            // When
+            viewModel.navigateToComposer(messageId, secondaryAccount.userId.id)
+
+            // Then
+            viewModel.state.test {
+                assertEquals(expectedState, awaitItem())
+            }
+            coVerify { accountManager.setAsPrimary(secondaryAccount.userId) }
+        }
 
     private fun buildViewModel() = NotificationsDeepLinksViewModel(
         networkManager = networkManager,
