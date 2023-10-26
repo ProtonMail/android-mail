@@ -48,9 +48,9 @@ import ch.protonmail.android.mailmailbox.domain.usecase.MarkConversationsAsUnrea
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkMessagesAsRead
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkMessagesAsUnread
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
-import ch.protonmail.android.mailmailbox.domain.usecase.ObserveSpotlight
+import ch.protonmail.android.mailmailbox.domain.usecase.ObserveOnboarding
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
-import ch.protonmail.android.mailmailbox.domain.usecase.SaveSpotlight
+import ch.protonmail.android.mailmailbox.domain.usecase.SaveOnboarding
 import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.MailboxItemUiModelMapper
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
@@ -59,7 +59,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOpera
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.SpotlightState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxReducer
 import ch.protonmail.android.mailmailbox.presentation.paging.MailboxPagerFactory
@@ -112,8 +112,8 @@ class MailboxViewModel @Inject constructor(
     private val mailboxReducer: MailboxReducer,
     private val observeMailFeature: ObserveMailFeature,
     private val dispatchersProvider: DispatcherProvider,
-    private val observeSpotlight: ObserveSpotlight,
-    private val saveSpotlight: SaveSpotlight
+    private val observeOnboarding: ObserveOnboarding,
+    private val saveOnboarding: SaveOnboarding
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId()
@@ -124,8 +124,8 @@ class MailboxViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            if (shouldDisplaySpotlight()) {
-                emitNewStateFrom(MailboxEvent.ShowSpotlight)
+            if (shouldDisplayOnboarding()) {
+                emitNewStateFrom(MailboxEvent.ShowOnboarding)
             }
         }
 
@@ -188,7 +188,7 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.OnErrorWithData -> emitNewStateFrom(viewAction)
                 is MailboxViewAction.MarkAsRead -> handleMarkAsReadAction(viewAction)
                 is MailboxViewAction.MarkAsUnread -> handleMarkAsUnreadAction(viewAction)
-                is MailboxViewAction.CloseSpotlight -> handleCloseSpotlight()
+                is MailboxViewAction.CloseOnboarding -> handleCloseOnboarding()
             }.exhaustive
         }
     }
@@ -337,16 +337,16 @@ class MailboxViewModel @Inject constructor(
         emitNewStateFrom(markAsReadOperation)
     }
 
-    private suspend fun handleCloseSpotlight() = viewModelScope.launch {
-        saveSpotlight(display = false)
-        emitNewStateFrom(MailboxViewAction.CloseSpotlight)
+    private suspend fun handleCloseOnboarding() = viewModelScope.launch {
+        saveOnboarding(display = false)
+        emitNewStateFrom(MailboxViewAction.CloseOnboarding)
     }
 
-    private suspend fun shouldDisplaySpotlight(): Boolean {
-        val showSpotlightEither = observeSpotlight().first()
-        return showSpotlightEither.fold(
+    private suspend fun shouldDisplayOnboarding(): Boolean {
+        val showOnboardingEither = observeOnboarding().first()
+        return showOnboardingEither.fold(
             ifLeft = { false },
-            ifRight = { spotlightPreference -> spotlightPreference.display }
+            ifRight = { onboardingPreference -> onboardingPreference.display }
         )
     }
 
@@ -439,7 +439,7 @@ class MailboxViewModel @Inject constructor(
             topAppBarState = MailboxTopAppBarState.Loading,
             unreadFilterState = UnreadFilterState.Loading,
             bottomAppBarState = BottomBarState.Data.Hidden(emptyList()),
-            spotlightState = SpotlightState.Hidden
+            onboardingState = OnboardingState.Hidden
         )
     }
 }

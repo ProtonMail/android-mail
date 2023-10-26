@@ -28,8 +28,8 @@ class MailMailboxDataStoreProvider @Inject constructor(
     context: Context
 ) {
 
-    private val Context.spotlightDataStore: DataStore<Preferences> by preferencesDataStore(
-        name = "spotlightPrefDataStore"
+    private val Context.onboardingDataStore: DataStore<Preferences> by preferencesDataStore(
+        name = "onboardingPrefDataStore"
     )
-    val spotlightDataStore = context.spotlightDataStore
+    val onboardingDataStore = context.onboardingDataStore
 }

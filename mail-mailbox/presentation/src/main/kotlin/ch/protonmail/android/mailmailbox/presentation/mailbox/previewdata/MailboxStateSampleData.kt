@@ -30,7 +30,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListS
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState.Data.SelectionMode.SelectedMailboxItem
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.SpotlightState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 
 object MailboxStateSampleData {
@@ -40,7 +40,7 @@ object MailboxStateSampleData {
         topAppBarState = MailboxTopAppBarState.Loading,
         unreadFilterState = UnreadFilterState.Loading,
         bottomAppBarState = BottomBarState.Loading,
-        spotlightState = SpotlightState.Hidden
+        onboardingState = OnboardingState.Hidden
     )
 
     val Inbox = MailboxState(
@@ -63,7 +63,7 @@ object MailboxStateSampleData {
         bottomAppBarState = BottomBarState.Data.Hidden(
             actions = listOf(ActionUiModelSample.Archive)
         ),
-        spotlightState = SpotlightState.Hidden
+        onboardingState = OnboardingState.Hidden
     )
 
     val AllMail = MailboxState(
@@ -86,15 +86,15 @@ object MailboxStateSampleData {
         bottomAppBarState = BottomBarState.Data.Hidden(
             actions = listOf(ActionUiModelSample.Archive)
         ),
-        spotlightState = SpotlightState.Hidden
+        onboardingState = OnboardingState.Hidden
     )
 
-    val SpotlightShown = MailboxState(
+    val OnboardingShown = MailboxState(
         mailboxListState = MailboxListState.Loading(selectionModeEnabled = false),
         topAppBarState = MailboxTopAppBarState.Loading,
         unreadFilterState = UnreadFilterState.Loading,
         bottomAppBarState = BottomBarState.Loading,
-        spotlightState = SpotlightState.Shown
+        onboardingState = OnboardingState.Shown
     )
 
     fun createSelectionMode(
@@ -120,6 +120,6 @@ object MailboxStateSampleData {
         bottomAppBarState = BottomBarState.Data.Hidden(
             actions = bottomBarAction
         ),
-        spotlightState = SpotlightState.Hidden
+        onboardingState = OnboardingState.Hidden
     )
 }

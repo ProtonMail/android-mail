@@ -18,12 +18,13 @@
 
 package ch.protonmail.android.mailmailbox.domain.usecase
 
-import ch.protonmail.android.mailmailbox.domain.repository.SpotlightRepository
+import ch.protonmail.android.mailmailbox.domain.model.OnboardingPreference
+import ch.protonmail.android.mailmailbox.domain.repository.OnboardingRepository
 import javax.inject.Inject
 
-class ObserveSpotlight @Inject constructor(
-    private val spotlightRepository: SpotlightRepository
+class SaveOnboarding @Inject constructor(
+    private val onboardingRepository: OnboardingRepository
 ) {
 
-    operator fun invoke() = spotlightRepository.observe()
+    suspend operator fun invoke(display: Boolean) = onboardingRepository.save(OnboardingPreference(display = display))
 }

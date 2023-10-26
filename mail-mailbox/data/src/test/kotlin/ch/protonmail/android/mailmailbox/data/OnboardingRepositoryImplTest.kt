@@ -20,9 +20,9 @@ package ch.protonmail.android.mailmailbox.data
 
 import app.cash.turbine.test
 import arrow.core.right
-import ch.protonmail.android.mailmailbox.data.repository.SpotlightRepositoryImpl
-import ch.protonmail.android.mailmailbox.data.repository.local.SpotlightLocalDataSource
-import ch.protonmail.android.mailmailbox.domain.model.SpotlightPreference
+import ch.protonmail.android.mailmailbox.data.repository.OnboardingRepositoryImpl
+import ch.protonmail.android.mailmailbox.data.repository.local.OnboardingLocalDataSource
+import ch.protonmail.android.mailmailbox.domain.model.OnboardingPreference
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -32,24 +32,24 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Test
 
-class SpotlightRepositoryImplTest {
+class OnboardingRepositoryImplTest {
 
-    private val spotlightPreference = SpotlightPreference(display = true).right()
-    private val spotlightPreferenceFlow = flowOf(spotlightPreference)
+    private val onboardingPreference = OnboardingPreference(display = true).right()
+    private val onboardingPreferenceFlow = flowOf(onboardingPreference)
 
-    private val spotlightLocalDataSource: SpotlightLocalDataSource = mockk {
-        every { observe() } returns spotlightPreferenceFlow
+    private val onboardingLocalDataSource: OnboardingLocalDataSource = mockk {
+        every { observe() } returns onboardingPreferenceFlow
         coEvery { save(any()) } returns Unit.right()
     }
 
-    private val spotlightRepository = SpotlightRepositoryImpl(spotlightLocalDataSource)
+    private val onboardingRepository = OnboardingRepositoryImpl(onboardingLocalDataSource)
 
     @Test
     fun `returns value from the local data source`() = runTest {
         // When
-        spotlightRepository.observe().test {
+        onboardingRepository.observe().test {
             // Then
-            Assert.assertEquals(SpotlightPreference(display = true).right(), awaitItem())
+            Assert.assertEquals(OnboardingPreference(display = true).right(), awaitItem())
             awaitComplete()
         }
     }
@@ -57,12 +57,12 @@ class SpotlightRepositoryImplTest {
     @Test
     fun `calls the local data source save method with the correct preference`() = runTest {
         // Given
-        val spotlightPreference = SpotlightPreference(display = true)
+        val onboardingPreference = OnboardingPreference(display = true)
 
         // When
-        spotlightRepository.save(spotlightPreference)
+        onboardingRepository.save(onboardingPreference)
 
         // Then
-        coVerify { spotlightLocalDataSource.save(spotlightPreference) }
+        coVerify { onboardingLocalDataSource.save(onboardingPreference) }
     }
 }

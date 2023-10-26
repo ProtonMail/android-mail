@@ -24,31 +24,29 @@ import ch.protonmail.android.mailcommon.data.mapper.safeData
 import ch.protonmail.android.mailcommon.data.mapper.safeEdit
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailmailbox.data.MailMailboxDataStoreProvider
-import ch.protonmail.android.mailmailbox.domain.model.SpotlightPreference
+import ch.protonmail.android.mailmailbox.domain.model.OnboardingPreference
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 private const val DEFAULT_VALUE = true
 
-class SpotlightLocalDataSourceImpl @Inject constructor(
+class OnboardingLocalDataSourceImpl @Inject constructor(
     private val dataStoreProvider: MailMailboxDataStoreProvider
-) : SpotlightLocalDataSource {
+) : OnboardingLocalDataSource {
 
-    private val shouldDisplaySpotlightPrefKey = booleanPreferencesKey("shouldDisplaySpotlightPrefKey")
+    private val shouldDisplayOnboardingPrefKey = booleanPreferencesKey("shouldDisplayOnboardingPrefKey")
 
-    override fun observe(): Flow<Either<PreferencesError, SpotlightPreference>> =
-        dataStoreProvider.spotlightDataStore.safeData.map { prefsEither ->
+    override fun observe(): Flow<Either<PreferencesError, OnboardingPreference>> =
+        dataStoreProvider.onboardingDataStore.safeData.map { prefsEither ->
             prefsEither.map { prefs ->
-                val shouldDisplaySpotlight = prefs[shouldDisplaySpotlightPrefKey] ?: DEFAULT_VALUE
-                SpotlightPreference(shouldDisplaySpotlight)
+                val shouldDisplayOnboarding = prefs[shouldDisplayOnboardingPrefKey] ?: DEFAULT_VALUE
+                OnboardingPreference(shouldDisplayOnboarding)
             }
         }
 
-    override suspend fun save(
-        spotlightPreference: SpotlightPreference
-    ): Either<PreferencesError, Unit> =
-        dataStoreProvider.spotlightDataStore.safeEdit { mutablePreferences ->
-            mutablePreferences[shouldDisplaySpotlightPrefKey] = spotlightPreference.display
+    override suspend fun save(onboardingPreference: OnboardingPreference): Either<PreferencesError, Unit> =
+        dataStoreProvider.onboardingDataStore.safeEdit { mutablePreferences ->
+            mutablePreferences[shouldDisplayOnboardingPrefKey] = onboardingPreference.display
         }.void()
 }

@@ -31,7 +31,7 @@ internal sealed interface MailboxOperation {
     sealed interface AffectingUnreadFilter
     sealed interface AffectingMailboxList
     sealed interface AffectingBottomAppBar
-    sealed interface AffectingSpotlight
+    sealed interface AffectingOnboarding
 }
 
 internal sealed interface MailboxViewAction : MailboxOperation {
@@ -61,7 +61,7 @@ internal sealed interface MailboxViewAction : MailboxOperation {
      */
     object OnOfflineWithData : MailboxViewAction, AffectingMailboxList
     object OnErrorWithData : MailboxViewAction, AffectingMailboxList
-    object CloseSpotlight : MailboxViewAction, MailboxOperation.AffectingSpotlight
+    object CloseOnboarding : MailboxViewAction, MailboxOperation.AffectingOnboarding
 }
 
 internal sealed interface MailboxEvent : MailboxOperation {
@@ -87,7 +87,7 @@ internal sealed interface MailboxEvent : MailboxOperation {
         val item: MailboxItemUiModel
     ) : MailboxEvent, AffectingTopAppBar, AffectingMailboxList, AffectingBottomAppBar
 
-    object ShowSpotlight : MailboxEvent, MailboxOperation.AffectingSpotlight
+    object ShowOnboarding : MailboxEvent, MailboxOperation.AffectingOnboarding
 
     sealed interface ItemClicked : MailboxEvent {
 

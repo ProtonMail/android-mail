@@ -21,23 +21,23 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.SpotlightState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingState
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import kotlin.test.assertEquals
 
 @RunWith(Parameterized::class)
-internal class SpotlightReducerTest(
+internal class OnboardingReducerTest(
     private val testName: String,
     private val testInput: TestInput
 ) {
 
-    private val spotlightReducer = SpotlightReducer()
+    private val onboardingReducer = OnboardingReducer()
 
     @Test
     fun `should produce the expected new state`() = with(testInput) {
-        val actualState = spotlightReducer.newStateFrom(operation)
+        val actualState = onboardingReducer.newStateFrom(operation)
 
         assertEquals(expectedState, actualState, testName)
     }
@@ -46,27 +46,27 @@ internal class SpotlightReducerTest(
 
         private val transitionsFromHiddenState = listOf(
             TestInput(
-                currentState = SpotlightState.Hidden,
-                operation = MailboxEvent.ShowSpotlight,
-                expectedState = SpotlightState.Shown
+                currentState = OnboardingState.Hidden,
+                operation = MailboxEvent.ShowOnboarding,
+                expectedState = OnboardingState.Shown
             ),
             TestInput(
-                currentState = SpotlightState.Hidden,
-                operation = MailboxViewAction.CloseSpotlight,
-                expectedState = SpotlightState.Hidden
+                currentState = OnboardingState.Hidden,
+                operation = MailboxViewAction.CloseOnboarding,
+                expectedState = OnboardingState.Hidden
             )
         )
 
         private val transitionsFromShownState = listOf(
             TestInput(
-                currentState = SpotlightState.Shown,
-                operation = MailboxViewAction.CloseSpotlight,
-                expectedState = SpotlightState.Hidden
+                currentState = OnboardingState.Shown,
+                operation = MailboxViewAction.CloseOnboarding,
+                expectedState = OnboardingState.Hidden
             ),
             TestInput(
-                currentState = SpotlightState.Shown,
-                operation = MailboxEvent.ShowSpotlight,
-                expectedState = SpotlightState.Shown
+                currentState = OnboardingState.Shown,
+                operation = MailboxEvent.ShowOnboarding,
+                expectedState = OnboardingState.Shown
             )
         )
 
@@ -85,8 +85,8 @@ internal class SpotlightReducerTest(
     }
 
     data class TestInput(
-        val currentState: SpotlightState,
-        val operation: MailboxOperation.AffectingSpotlight,
-        val expectedState: SpotlightState
+        val currentState: OnboardingState,
+        val operation: MailboxOperation.AffectingOnboarding,
+        val expectedState: OnboardingState
     )
 }

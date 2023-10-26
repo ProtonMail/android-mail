@@ -27,5 +27,5 @@ data class MailboxState(
     val topAppBarState: MailboxTopAppBarState,
     val unreadFilterState: UnreadFilterState,
     val bottomAppBarState: BottomBarState,
-    val spotlightState: SpotlightState
+    val onboardingState: OnboardingState
 )

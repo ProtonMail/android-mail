@@ -16,16 +16,8 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.domain.usecase
+package ch.protonmail.android.mailmailbox.domain.model
 
-import ch.protonmail.android.mailmailbox.domain.model.SpotlightPreference
-import ch.protonmail.android.mailmailbox.domain.repository.SpotlightRepository
-import javax.inject.Inject
-
-class SaveSpotlight @Inject constructor(
-    private val spotlightRepository: SpotlightRepository
-) {
-
-    suspend operator fun invoke(display: Boolean) =
-        spotlightRepository.save(SpotlightPreference(display = display))
-}
+data class OnboardingPreference(
+    val display: Boolean
+)

@@ -16,11 +16,14 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.presentation.mailbox.model
+package ch.protonmail.android.mailmailbox.domain.usecase
 
-sealed interface SpotlightState {
+import ch.protonmail.android.mailmailbox.domain.repository.OnboardingRepository
+import javax.inject.Inject
 
-    object Hidden : SpotlightState
+class ObserveOnboarding @Inject constructor(
+    private val onboardingRepository: OnboardingRepository
+) {
 
-    object Shown : SpotlightState
+    operator fun invoke() = onboardingRepository.observe()
 }

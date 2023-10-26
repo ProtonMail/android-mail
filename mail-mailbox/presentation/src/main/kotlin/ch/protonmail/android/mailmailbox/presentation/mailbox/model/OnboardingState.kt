@@ -16,16 +16,11 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.data.repository.local
+package ch.protonmail.android.mailmailbox.presentation.mailbox.model
 
-import arrow.core.Either
-import ch.protonmail.android.mailcommon.domain.model.PreferencesError
-import ch.protonmail.android.mailmailbox.domain.model.SpotlightPreference
-import kotlinx.coroutines.flow.Flow
+sealed interface OnboardingState {
 
-interface SpotlightLocalDataSource {
+    object Hidden : OnboardingState
 
-    fun observe(): Flow<Either<PreferencesError, SpotlightPreference>>
-
-    suspend fun save(spotlightPreference: SpotlightPreference): Either<PreferencesError, Unit>
+    object Shown : OnboardingState
 }

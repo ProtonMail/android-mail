@@ -47,16 +47,16 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Conversation
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Message
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
-import ch.protonmail.android.mailmailbox.domain.model.SpotlightPreference
+import ch.protonmail.android.mailmailbox.domain.model.OnboardingPreference
 import ch.protonmail.android.mailmailbox.domain.usecase.GetMailboxActions
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkConversationsAsRead
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkConversationsAsUnread
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkMessagesAsRead
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkMessagesAsUnread
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
-import ch.protonmail.android.mailmailbox.domain.usecase.ObserveSpotlight
+import ch.protonmail.android.mailmailbox.domain.usecase.ObserveOnboarding
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
-import ch.protonmail.android.mailmailbox.domain.usecase.SaveSpotlight
+import ch.protonmail.android.mailmailbox.domain.usecase.SaveOnboarding
 import ch.protonmail.android.mailmailbox.presentation.helper.MailboxAsyncPagingDataDiffer
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxViewModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.MailboxItemUiModelMapper
@@ -66,7 +66,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListS
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.SpotlightState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxStateSampleData
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxReducer
@@ -179,11 +179,11 @@ class MailboxViewModelTest {
         coEvery { this@mockk(any(), any()) } returns listOf(Action.Archive, Action.Trash).right()
     }
 
-    private val observeSpotlight = mockk<ObserveSpotlight> {
-        every { this@mockk() } returns flowOf(SpotlightPreference(display = false).right())
+    private val observeOnboarding = mockk<ObserveOnboarding> {
+        every { this@mockk() } returns flowOf(OnboardingPreference(display = false).right())
     }
 
-    private val saveSpotlight: SaveSpotlight = mockk()
+    private val saveOnboarding: SaveOnboarding = mockk()
 
     private val markConversationsAsRead = mockk<MarkConversationsAsRead>()
     private val markConversationsAsUnread = mockk<MarkConversationsAsUnread>()
@@ -210,8 +210,8 @@ class MailboxViewModelTest {
             mailboxReducer = mailboxReducer,
             observeMailFeature = observeMailFeature,
             dispatchersProvider = TestDispatcherProvider(),
-            observeSpotlight = observeSpotlight,
-            saveSpotlight = saveSpotlight
+            observeOnboarding = observeOnboarding,
+            saveOnboarding = saveOnboarding
         )
     }
 
@@ -243,7 +243,7 @@ class MailboxViewModelTest {
                 topAppBarState = MailboxTopAppBarState.Loading,
                 unreadFilterState = UnreadFilterState.Loading,
                 bottomAppBarState = BottomBarState.Data.Hidden(emptyList()),
-                spotlightState = SpotlightState.Hidden
+                onboardingState = OnboardingState.Hidden
             )
 
             assertEquals(expected, actual)
@@ -1616,59 +1616,59 @@ class MailboxViewModelTest {
     }
 
     @Test
-    fun `spotlight state should be shown when repository emits the preference with value true`() = runTest {
+    fun `onboarding state should be shown when repository emits the preference with value true`() = runTest {
         // When
         coEvery {
-            observeSpotlight()
-        } returns flowOf(SpotlightPreference(display = true).right())
+            observeOnboarding()
+        } returns flowOf(OnboardingPreference(display = true).right())
         every {
             mailboxReducer.newStateFrom(
                 any(),
                 any()
             )
-        } returns MailboxStateSampleData.SpotlightShown
+        } returns MailboxStateSampleData.OnboardingShown
 
         mailboxViewModel.state.test {
             val currentState = awaitItem()
 
             // Then
             verify(exactly = 1) {
-                mailboxReducer.newStateFrom(any(), MailboxEvent.ShowSpotlight)
+                mailboxReducer.newStateFrom(any(), MailboxEvent.ShowOnboarding)
             }
-            assertEquals(SpotlightState.Shown, currentState.spotlightState)
+            assertEquals(OnboardingState.Shown, currentState.onboardingState)
         }
     }
 
     @Test
-    fun `spotlight state should be hidden when an error occurs while observing the preference`() = runTest {
+    fun `onboarding state should be hidden when an error occurs while observing the preference`() = runTest {
         // Given
         coEvery {
-            observeSpotlight()
+            observeOnboarding()
         } returns flowOf(PreferencesError.left())
-        val expectedSpotlightState = SpotlightState.Hidden
+        val expectedOnboardingState = OnboardingState.Hidden
 
         // When
         mailboxViewModel.state.test {
             // Then
-            assertEquals(expectedSpotlightState, awaitItem().spotlightState)
+            assertEquals(expectedOnboardingState, awaitItem().onboardingState)
         }
     }
 
     @Test
-    fun `should call repository save method when closing spotlight`() = runTest {
+    fun `should call repository save method when closing onboarding`() = runTest {
         // Given
         coEvery {
-            saveSpotlight(display = false)
+            saveOnboarding(display = false)
         } returns Unit.right()
 
         // When
-        mailboxViewModel.submit(MailboxViewAction.CloseSpotlight)
+        mailboxViewModel.submit(MailboxViewAction.CloseOnboarding)
 
         // When
         mailboxViewModel.state.test {
             // Then
-            coVerify { saveSpotlight(display = false) }
-            assertEquals(SpotlightState.Hidden, awaitItem().spotlightState)
+            coVerify { saveOnboarding(display = false) }
+            assertEquals(OnboardingState.Hidden, awaitItem().onboardingState)
         }
     }
 

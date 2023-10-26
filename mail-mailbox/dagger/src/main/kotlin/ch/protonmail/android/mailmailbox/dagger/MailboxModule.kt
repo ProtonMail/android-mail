@@ -20,10 +20,10 @@ package ch.protonmail.android.mailmailbox.dagger
 
 import android.content.Context
 import ch.protonmail.android.mailmailbox.data.MailMailboxDataStoreProvider
-import ch.protonmail.android.mailmailbox.data.repository.SpotlightRepositoryImpl
-import ch.protonmail.android.mailmailbox.data.repository.local.SpotlightLocalDataSource
-import ch.protonmail.android.mailmailbox.data.repository.local.SpotlightLocalDataSourceImpl
-import ch.protonmail.android.mailmailbox.domain.repository.SpotlightRepository
+import ch.protonmail.android.mailmailbox.data.repository.OnboardingRepositoryImpl
+import ch.protonmail.android.mailmailbox.data.repository.local.OnboardingLocalDataSource
+import ch.protonmail.android.mailmailbox.data.repository.local.OnboardingLocalDataSourceImpl
+import ch.protonmail.android.mailmailbox.domain.repository.OnboardingRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -43,13 +43,13 @@ object SettingsModule {
 
     @Provides
     @Singleton
-    fun provideSpotlightLocalDataSource(
+    fun provideOnboardingLocalDataSource(
         dataStoreProvider: MailMailboxDataStoreProvider
-    ): SpotlightLocalDataSource = SpotlightLocalDataSourceImpl(dataStoreProvider)
+    ): OnboardingLocalDataSource = OnboardingLocalDataSourceImpl(dataStoreProvider)
 
     @Provides
     @Singleton
-    fun provideSpotlightRepository(
-        spotlightLocalDataSource: SpotlightLocalDataSource
-    ): SpotlightRepository = SpotlightRepositoryImpl(spotlightLocalDataSource)
+    fun provideOnboardingRepository(
+        onboardingLocalDataSource: OnboardingLocalDataSource
+    ): OnboardingRepository = OnboardingRepositoryImpl(onboardingLocalDataSource)
 }

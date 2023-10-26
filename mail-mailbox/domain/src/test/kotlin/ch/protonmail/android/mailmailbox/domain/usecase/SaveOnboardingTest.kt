@@ -21,8 +21,8 @@ package ch.protonmail.android.mailmailbox.domain.usecase
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
-import ch.protonmail.android.mailmailbox.domain.model.SpotlightPreference
-import ch.protonmail.android.mailmailbox.domain.repository.SpotlightRepository
+import ch.protonmail.android.mailmailbox.domain.model.OnboardingPreference
+import ch.protonmail.android.mailmailbox.domain.repository.OnboardingRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -30,25 +30,25 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class SaveSpotlightTest {
+class SaveOnboardingTest {
 
-    private val spotlightPreference = SpotlightPreference(display = true)
+    private val onboardingPreference = OnboardingPreference(display = true)
 
-    private val spotlightRepository: SpotlightRepository = mockk()
+    private val onboardingRepository: OnboardingRepository = mockk()
 
-    private val saveSpotlight = SaveSpotlight(spotlightRepository)
+    private val saveOnboarding = SaveOnboarding(onboardingRepository)
 
     @Test
     fun `should return success when preference is saved successfully`() = runTest {
         // Given
         val expectedResult = Unit.right()
-        coEvery { spotlightRepository.save(spotlightPreference) } returns expectedResult
+        coEvery { onboardingRepository.save(onboardingPreference) } returns expectedResult
 
         // When
-        val result = saveSpotlight(spotlightPreference.display)
+        val result = saveOnboarding(onboardingPreference.display)
 
         // Then
-        coVerify { spotlightRepository.save(spotlightPreference) }
+        coVerify { onboardingRepository.save(onboardingPreference) }
         assertEquals(expectedResult, result)
     }
 
@@ -56,10 +56,10 @@ class SaveSpotlightTest {
     fun `should return failure when preference is not saved successfully`() = runTest {
         // Given
         val expectedResult = PreferencesError.left()
-        coEvery { spotlightRepository.save(spotlightPreference) } returns expectedResult
+        coEvery { onboardingRepository.save(onboardingPreference) } returns expectedResult
 
         // When
-        val result = saveSpotlight(spotlightPreference.display)
+        val result = saveOnboarding(onboardingPreference.display)
 
         // Then
         assertEquals(expectedResult, result)

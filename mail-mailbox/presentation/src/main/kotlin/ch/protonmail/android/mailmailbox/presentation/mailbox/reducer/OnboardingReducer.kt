@@ -21,17 +21,17 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.SpotlightState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingState
 import javax.inject.Inject
 
-class SpotlightReducer @Inject constructor() {
+class OnboardingReducer @Inject constructor() {
 
     internal fun newStateFrom(
-        operation: MailboxOperation.AffectingSpotlight
-    ): SpotlightState {
+        operation: MailboxOperation.AffectingOnboarding
+    ): OnboardingState {
         return when (operation) {
-            is MailboxEvent.ShowSpotlight -> SpotlightState.Shown
-            is MailboxViewAction.CloseSpotlight -> SpotlightState.Hidden
+            is MailboxEvent.ShowOnboarding -> OnboardingState.Shown
+            is MailboxViewAction.CloseOnboarding -> OnboardingState.Hidden
         }
     }
 }

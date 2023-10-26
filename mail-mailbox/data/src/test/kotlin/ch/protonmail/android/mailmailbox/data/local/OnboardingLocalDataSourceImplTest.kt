@@ -27,8 +27,8 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailmailbox.data.MailMailboxDataStoreProvider
-import ch.protonmail.android.mailmailbox.data.repository.local.SpotlightLocalDataSourceImpl
-import ch.protonmail.android.mailmailbox.domain.model.SpotlightPreference
+import ch.protonmail.android.mailmailbox.data.repository.local.OnboardingLocalDataSourceImpl
+import ch.protonmail.android.mailmailbox.domain.model.OnboardingPreference
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -39,26 +39,26 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Test
 
-class SpotlightLocalDataSourceImplTest {
+class OnboardingLocalDataSourceImplTest {
 
     private val preferences = mockk<Preferences>()
-    private val spotlightDataStoreMock = mockk<DataStore<Preferences>>()
+    private val onboardingDataStoreMock = mockk<DataStore<Preferences>>()
     private val dataStoreProvider = mockk<MailMailboxDataStoreProvider> {
-        every { this@mockk.spotlightDataStore } returns spotlightDataStoreMock
+        every { this@mockk.onboardingDataStore } returns onboardingDataStoreMock
     }
 
-    private val spotlightLocalDataSource = SpotlightLocalDataSourceImpl(dataStoreProvider)
+    private val onboardingLocalDataSource = OnboardingLocalDataSourceImpl(dataStoreProvider)
 
     @Test
     fun `returns true when no preference is stored locally`() = runTest {
         // Given
         coEvery { preferences.get<Boolean>(any()) } returns null
-        every { spotlightDataStoreMock.data } returns flowOf(preferences)
+        every { onboardingDataStoreMock.data } returns flowOf(preferences)
 
         // When
-        spotlightLocalDataSource.observe().test {
+        onboardingLocalDataSource.observe().test {
             // Then
-            Assert.assertEquals(SpotlightPreference(true).right(), awaitItem())
+            Assert.assertEquals(OnboardingPreference(true).right(), awaitItem())
             awaitComplete()
         }
     }
@@ -66,13 +66,13 @@ class SpotlightLocalDataSourceImplTest {
     @Test
     fun `returns locally stored preference from data store when available`() = runTest {
         // Given
-        coEvery { preferences[booleanPreferencesKey("shouldDisplaySpotlightPrefKey")] } returns false
-        every { spotlightDataStoreMock.data } returns flowOf(preferences)
+        coEvery { preferences[booleanPreferencesKey("shouldDisplayOnboardingPrefKey")] } returns false
+        every { onboardingDataStoreMock.data } returns flowOf(preferences)
 
         // When
-        spotlightLocalDataSource.observe().test {
+        onboardingLocalDataSource.observe().test {
             // Then
-            Assert.assertEquals(SpotlightPreference(false).right(), awaitItem())
+            Assert.assertEquals(OnboardingPreference(false).right(), awaitItem())
             awaitComplete()
         }
     }
@@ -80,10 +80,10 @@ class SpotlightLocalDataSourceImplTest {
     @Test
     fun `should return error when an exception is thrown while observing preference`() = runTest {
         // Given
-        every { spotlightDataStoreMock.data } returns flow { throw IOException() }
+        every { onboardingDataStoreMock.data } returns flow { throw IOException() }
 
         // When
-        spotlightLocalDataSource.observe().test {
+        onboardingLocalDataSource.observe().test {
             // Then
             Assert.assertEquals(PreferencesError.left(), awaitItem())
             awaitComplete()
@@ -93,25 +93,25 @@ class SpotlightLocalDataSourceImplTest {
     @Test
     fun `should return success when preference is saved`() = runTest {
         // Given
-        val spotlightPreference = SpotlightPreference(display = true)
-        coEvery { spotlightDataStoreMock.updateData(any()) } returns mockk()
+        val onboardingPreference = OnboardingPreference(display = true)
+        coEvery { onboardingDataStoreMock.updateData(any()) } returns mockk()
 
         // When
-        val result = spotlightLocalDataSource.save(spotlightPreference)
+        val result = onboardingLocalDataSource.save(onboardingPreference)
 
         // Then
-        coVerify { spotlightDataStoreMock.updateData(any()) }
+        coVerify { onboardingDataStoreMock.updateData(any()) }
         Assert.assertEquals(Unit.right(), result)
     }
 
     @Test
     fun `should return failure when an exception is thrown while saving preference`() = runTest {
         // Given
-        val spotlightPreference = SpotlightPreference(display = true)
-        coEvery { spotlightDataStoreMock.updateData(any()) } throws IOException()
+        val onboardingPreference = OnboardingPreference(display = true)
+        coEvery { onboardingDataStoreMock.updateData(any()) } throws IOException()
 
         // When
-        val result = spotlightLocalDataSource.save(spotlightPreference)
+        val result = onboardingLocalDataSource.save(onboardingPreference)
 
         // Then
         Assert.assertEquals(PreferencesError.left(), result)

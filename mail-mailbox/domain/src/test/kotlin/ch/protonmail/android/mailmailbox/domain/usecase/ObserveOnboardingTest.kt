@@ -20,8 +20,8 @@ package ch.protonmail.android.mailmailbox.domain.usecase
 
 import app.cash.turbine.test
 import arrow.core.right
-import ch.protonmail.android.mailmailbox.domain.model.SpotlightPreference
-import ch.protonmail.android.mailmailbox.domain.repository.SpotlightRepository
+import ch.protonmail.android.mailmailbox.domain.model.OnboardingPreference
+import ch.protonmail.android.mailmailbox.domain.repository.OnboardingRepository
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -30,26 +30,26 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class ObserveSpotlightTest {
+class ObserveOnboardingTest {
 
-    private val spotlightPreference = SpotlightPreference(display = true).right()
+    private val onboardingPreference = OnboardingPreference(display = true).right()
 
-    private val spotlightRepository: SpotlightRepository = mockk {
-        every { observe() } returns flowOf(spotlightPreference)
+    private val onboardingRepository: OnboardingRepository = mockk {
+        every { observe() } returns flowOf(onboardingPreference)
     }
 
-    private val observeSpotlight = ObserveSpotlight(spotlightRepository)
+    private val observeOnboarding = ObserveOnboarding(onboardingRepository)
 
     @Test
     fun `should call observe method from repository when use case is invoked`() = runTest {
         // When
-        observeSpotlight().test {
+        observeOnboarding().test {
             val actual = awaitItem()
             awaitComplete()
 
             // Then
-            verify { spotlightRepository.observe() }
-            assertEquals(spotlightPreference, actual)
+            verify { onboardingRepository.observe() }
+            assertEquals(onboardingPreference, actual)
         }
     }
 }
