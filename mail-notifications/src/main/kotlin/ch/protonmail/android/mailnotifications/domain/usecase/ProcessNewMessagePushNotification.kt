@@ -29,8 +29,8 @@ import ch.protonmail.android.mailnotifications.domain.model.LocalNotificationAct
 import ch.protonmail.android.mailnotifications.domain.model.LocalPushNotificationData
 import ch.protonmail.android.mailnotifications.domain.model.PushNotificationPendingIntentPayloadData
 import ch.protonmail.android.mailnotifications.domain.proxy.NotificationManagerCompatProxy
+import ch.protonmail.android.mailnotifications.domain.usecase.actions.CreateNotificationAction
 import ch.protonmail.android.mailnotifications.domain.usecase.intents.CreateNewMessageNavigationIntent
-import ch.protonmail.android.mailnotifications.domain.usecase.intents.CreateNotificationActionPendingIntent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -44,7 +44,7 @@ internal class ProcessNewMessagePushNotification @Inject constructor(
     private val notificationProvider: NotificationProvider,
     private val notificationManagerCompatProxy: NotificationManagerCompatProxy,
     private val createNewMessageNavigationIntent: CreateNewMessageNavigationIntent,
-    private val createNotificationActionPendingIntent: CreateNotificationActionPendingIntent,
+    private val createNotificationAction: CreateNotificationAction,
     @AppScope private val coroutineScope: CoroutineScope
 ) {
 
@@ -88,18 +88,11 @@ internal class ProcessNewMessagePushNotification @Inject constructor(
             )
 
             val trashAction = archiveAction.copy(action = LocalNotificationAction.MoveTo.Trash)
+            val replyAction = archiveAction.copy(action = LocalNotificationAction.Reply)
 
-            addAction(
-                0,
-                context.getString(R.string.notification_actions_archive_description),
-                createNotificationActionPendingIntent(archiveAction)
-            )
-
-            addAction(
-                0,
-                context.getString(R.string.notification_actions_trash_description),
-                createNotificationActionPendingIntent(trashAction)
-            )
+            addAction(createNotificationAction(archiveAction))
+            addAction(createNotificationAction(trashAction))
+            addAction(createNotificationAction(replyAction))
         }.build()
 
         val groupNotification = notificationProvider.provideEmailNotificationBuilder(
