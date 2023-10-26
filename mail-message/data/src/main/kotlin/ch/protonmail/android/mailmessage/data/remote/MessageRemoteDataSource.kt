@@ -28,6 +28,7 @@ import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 
 interface MessageRemoteDataSource {
+
     /**
      * Get all [Message] for [userId].
      */
@@ -66,4 +67,14 @@ interface MessageRemoteDataSource {
      */
     fun markRead(userId: UserId, messageIds: List<MessageId>)
     suspend fun getMessage(userId: UserId, messageId: MessageId): Either<DataError, MessageWithBody>
+
+    /**
+     * Delete messages with the given [messageIds]
+     * @param currentLabelId the current label id of the messages (only valid for system folders)
+     */
+    fun deleteMessages(
+        userId: UserId,
+        messageIds: List<MessageId>,
+        currentLabelId: LabelId
+    )
 }

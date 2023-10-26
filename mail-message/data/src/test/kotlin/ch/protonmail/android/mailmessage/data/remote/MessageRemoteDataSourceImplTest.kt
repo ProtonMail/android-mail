@@ -21,11 +21,13 @@ package ch.protonmail.android.mailmessage.data.remote
 import arrow.core.right
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcommon.domain.benchmark.BenchmarkTracerImpl
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.data.getMessage
 import ch.protonmail.android.mailmessage.data.getMessageResource
 import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSourceImpl.Companion.MAX_ACTION_WORKER_PARAMETER_COUNT
 import ch.protonmail.android.mailmessage.data.remote.response.GetMessagesResponse
 import ch.protonmail.android.mailmessage.data.remote.worker.AddLabelMessageWorker
+import ch.protonmail.android.mailmessage.data.remote.worker.DeleteMessagesWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.MarkMessageAsReadWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.MarkMessageAsUnreadWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.RemoveLabelMessageWorker
@@ -443,4 +445,42 @@ class MessageRemoteDataSourceImplTest {
         }
     }
 
+    @Test
+    fun `enqueues worker to delete message`() {
+        // given
+        val messageId = listOf(MessageIdSample.Invoice)
+
+        // when
+        messageRemoteDataSource.deleteMessages(userId, messageId, SystemLabelId.Trash.labelId)
+
+        // then
+        verify {
+            enqueuer.enqueue<DeleteMessagesWorker>(
+                userId,
+                DeleteMessagesWorker.params(userId, messageId, SystemLabelId.Trash.labelId)
+            )
+        }
+    }
+
+    @Test
+    fun `enqueues worker to delete messages twice if message id count exceeds limit`() {
+        // Given
+        val messageIds = List(MAX_ACTION_WORKER_PARAMETER_COUNT + 1) { MessageIdSample.Invoice }
+        val expectedLabel = SystemLabelId.Trash.labelId
+
+        // When
+        messageRemoteDataSource.deleteMessages(userId, messageIds, expectedLabel)
+
+        // Then
+        verifySequence {
+            enqueuer.enqueue<DeleteMessagesWorker>(
+                userId,
+                DeleteMessagesWorker.params(userId, messageIds.take(MAX_ACTION_WORKER_PARAMETER_COUNT), expectedLabel)
+            )
+            enqueuer.enqueue<DeleteMessagesWorker>(
+                userId,
+                DeleteMessagesWorker.params(userId, messageIds.drop(MAX_ACTION_WORKER_PARAMETER_COUNT), expectedLabel)
+            )
+        }
+    }
 }
