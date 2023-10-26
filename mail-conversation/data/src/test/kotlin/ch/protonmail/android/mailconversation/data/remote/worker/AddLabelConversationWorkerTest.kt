@@ -28,7 +28,7 @@ import androidx.work.WorkerParameters
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailconversation.data.remote.ConversationApi
-import ch.protonmail.android.mailconversation.data.remote.resource.PutConversationLabelBody
+import ch.protonmail.android.mailconversation.data.remote.resource.ConversationActionBody
 import ch.protonmail.android.mailmessage.data.sample.PutLabelResponseSample
 import ch.protonmail.android.testdata.conversation.ConversationTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
@@ -126,7 +126,7 @@ internal class AddLabelConversationWorkerTest {
         addLabelMessageWorker.doWork()
 
         // Then
-        coVerify { conversationApi.addLabel(PutConversationLabelBody(labelId.id, conversationIds.map { it.id })) }
+        coVerify { conversationApi.addLabel(ConversationActionBody(labelId.id, conversationIds.map { it.id })) }
     }
 
     @Test

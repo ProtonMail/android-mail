@@ -24,7 +24,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailconversation.data.remote.ConversationApi
-import ch.protonmail.android.mailconversation.data.remote.resource.PutConversationLabelBody
+import ch.protonmail.android.mailconversation.data.remote.resource.ConversationActionBody
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.proton.core.domain.entity.UserId
@@ -52,7 +52,7 @@ class AddLabelConversationWorker @AssistedInject constructor(
 
         val result = apiProvider.get<ConversationApi>(UserId(userId)).invoke {
             addLabel(
-                PutConversationLabelBody(
+                ConversationActionBody(
                     labelId = labelId,
                     conversationIds = conversationIds
                 )

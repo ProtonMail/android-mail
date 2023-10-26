@@ -18,9 +18,9 @@
 
 package ch.protonmail.android.mailconversation.data.remote
 
+import ch.protonmail.android.mailconversation.data.remote.resource.ConversationActionBody
 import ch.protonmail.android.mailconversation.data.remote.resource.MarkConversationAsReadBody
 import ch.protonmail.android.mailconversation.data.remote.resource.MarkConversationAsUnreadBody
-import ch.protonmail.android.mailconversation.data.remote.resource.PutConversationLabelBody
 import ch.protonmail.android.mailconversation.data.remote.response.GetConversationResponse
 import ch.protonmail.android.mailconversation.data.remote.response.GetConversationsResponse
 import ch.protonmail.android.mailconversation.data.remote.response.MarkConversationReadResponse
@@ -54,29 +54,22 @@ interface ConversationApi : BaseRetrofitApi {
     ): GetConversationsResponse
 
     @GET("mail/v4/conversations/{conversationId}")
-    suspend fun getConversation(
-        @Path("conversationId") conversationId: String
-    ): GetConversationResponse
+    suspend fun getConversation(@Path("conversationId") conversationId: String): GetConversationResponse
 
     @PUT("mail/v4/conversations/label")
-    suspend fun addLabel(
-        @Body labelBody: PutConversationLabelBody
-    ): PutLabelResponse
+    suspend fun addLabel(@Body labelBody: ConversationActionBody): PutLabelResponse
 
     @PUT("mail/v4/conversations/unlabel")
-    suspend fun removeLabel(
-        @Body labelBody: PutConversationLabelBody
-    ): PutLabelResponse
+    suspend fun removeLabel(@Body labelBody: ConversationActionBody): PutLabelResponse
 
     @PUT("mail/v4/conversations/unread")
-    suspend fun markAsUnread(
-        @Body markUnreadBody: MarkConversationAsUnreadBody
-    ): MarkUnreadResponse
+    suspend fun markAsUnread(@Body markUnreadBody: MarkConversationAsUnreadBody): MarkUnreadResponse
 
     @PUT("mail/v4/conversations/read")
-    suspend fun markConversationAsRead(
-        @Body markReadBody: MarkConversationAsReadBody
-    ): MarkConversationReadResponse
+    suspend fun markConversationAsRead(@Body markReadBody: MarkConversationAsReadBody): MarkConversationReadResponse
+
+    @PUT("mail/v4/conversations/delete")
+    suspend fun deleteConversations(@Body deleteBody: ConversationActionBody): PutLabelResponse
 
     companion object {
 
