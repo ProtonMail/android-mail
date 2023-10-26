@@ -65,7 +65,7 @@ internal class ComposerDraftsMainTests : MockedNetworkTest(), ComposerDraftsTest
     @TestId("190296", "207367")
     fun testDraftSavedWithSubjectOnlyUponEmptyBody() {
         composerRobot {
-            prepareDraft(toRecipients = emptyList(), subject = subject, body = "")
+            prepareDraft(toRecipients = emptyList(), subject = subject, body = null)
             topAppBarSection { tapCloseButton() }
         }
 
