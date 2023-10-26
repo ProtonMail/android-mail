@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcomposer.domain.usecase
 
 import arrow.core.Either
+import arrow.core.raise.Raise
 import arrow.core.raise.either
 import ch.protonmail.android.mailcommon.domain.util.mapFalse
 import ch.protonmail.android.mailcomposer.domain.Transactor
@@ -26,6 +27,8 @@ import ch.protonmail.android.mailcomposer.domain.model.AttachmentSyncState
 import ch.protonmail.android.mailcomposer.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.MessageWithDecryptedBody
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
+import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.repository.AttachmentRepository
@@ -50,42 +53,17 @@ class StoreDraftWithParentAttachments @Inject constructor(
     ): Either<Error, Unit> = either {
         transactor.performTransaction {
 
-            val parentAttachments = when (draftAction) {
-                is DraftAction.Forward -> parentMessage.decryptedMessageBody.attachments
-                is DraftAction.Reply,
-                is DraftAction.ReplyAll -> parentMessage.decryptedMessageBody.attachments.filter {
-                    it.disposition == "inline"
-                }
-
-                is DraftAction.Compose -> {
-                    Timber.w("Store Draft with parent attachments for a Compose action. This shouldn't happen.")
-                    shift(Error.ActionWithNoParent)
-                }
-            }
+            val parentAttachments = getParentAttachments(draftAction, parentMessage.decryptedMessageBody.attachments)
             if (parentAttachments.isEmpty()) {
                 Timber.d("No attachments to be stored from parent message")
-                shift<Error>(Error.NoAttachmentsToBeStored)
+                raise(Error.NoAttachmentsToBeStored)
             }
 
             Timber.d("Storing draft for action: $draftAction with parent attachments: $parentAttachments")
-
-            val draftWithBody = getLocalDraft(userId, messageId, senderEmail)
-                .mapLeft { Error.DraftDataError }
-                .bind()
-
-            val parentAttachmentsWithoutSignature = parentAttachments.map {
-                it.copy(signature = null, encSignature = null)
-            }
-            val updatedDraft = draftWithBody.copy(
-                messageBody = draftWithBody.messageBody.copy(
-                    attachments = draftWithBody.messageBody.attachments + parentAttachmentsWithoutSignature
-                )
-            )
-            saveDraft(updatedDraft, userId)
-                .mapFalse { Error.DraftDataError }
-                .bind()
+            saveDraftWithParentAttachments(userId, messageId, senderEmail, parentAttachments)
 
             val parentAttachmentIds = parentAttachments.map { it.attachmentId }
+
             if (parentMessage.messageWithBody.messageBody.mimeType == MimeType.MultipartMixed) {
                 attachmentRepository.copyMimeAttachmentsToMessage(
                     userId = userId,
@@ -95,21 +73,62 @@ class StoreDraftWithParentAttachments @Inject constructor(
                 )
             }
 
-            val syncState = if (parentMessage.messageWithBody.messageBody.mimeType == MimeType.MultipartMixed) {
-                AttachmentSyncState.Local
-            } else {
-                AttachmentSyncState.External
-            }
-            storeParentAttachmentStates(
+            storeParentAttachmentSyncStates(
                 userId = userId,
                 messageId = messageId,
-                attachmentIds = parentAttachmentIds,
-                syncState = syncState
+                parentMessageMimeType = parentMessage.messageWithBody.messageBody.mimeType,
+                parentAttachmentIds = parentAttachmentIds
             )
-                .mapLeft { Error.DraftAttachmentError }
-                .bind()
         }
+    }
 
+    private fun Raise<Error>.getParentAttachments(
+        draftAction: DraftAction,
+        parentMessageAttachments: List<MessageAttachment>
+    ): List<MessageAttachment> = when (draftAction) {
+        is DraftAction.Forward -> parentMessageAttachments
+        is DraftAction.Reply,
+        is DraftAction.ReplyAll -> parentMessageAttachments.filter { it.disposition == "inline" }
+        is DraftAction.Compose -> {
+            Timber.w("Store Draft with parent attachments for a Compose action. This shouldn't happen.")
+            raise(Error.ActionWithNoParent)
+        }
+    }
+
+    private suspend fun Raise<Error>.saveDraftWithParentAttachments(
+        userId: UserId,
+        messageId: MessageId,
+        senderEmail: SenderEmail,
+        parentAttachments: List<MessageAttachment>
+    ) {
+        val draftWithBody = getLocalDraft(userId, messageId, senderEmail)
+            .mapLeft { Error.DraftDataError }
+            .bind()
+        val parentAttachmentsWithoutSignature = parentAttachments.map { it.copy(signature = null, encSignature = null) }
+        val updatedDraft = draftWithBody.copy(
+            messageBody = draftWithBody.messageBody.copy(
+                attachments = draftWithBody.messageBody.attachments + parentAttachmentsWithoutSignature
+            )
+        )
+        saveDraft(updatedDraft, userId)
+            .mapFalse { Error.DraftDataError }
+            .bind()
+    }
+
+    private suspend fun Raise<Error>.storeParentAttachmentSyncStates(
+        userId: UserId,
+        messageId: MessageId,
+        parentMessageMimeType: MimeType,
+        parentAttachmentIds: List<AttachmentId>
+    ) {
+        val syncState = if (parentMessageMimeType == MimeType.MultipartMixed) {
+            AttachmentSyncState.Local
+        } else {
+            AttachmentSyncState.External
+        }
+        storeParentAttachmentStates(userId, messageId, parentAttachmentIds, syncState)
+            .mapLeft { Error.DraftAttachmentError }
+            .bind()
     }
 
     sealed interface Error {
