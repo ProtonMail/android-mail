@@ -38,6 +38,7 @@ import javax.inject.Inject
 
 class StoreDraftWithParentAttachments @Inject constructor(
     private val attachmentRepository: AttachmentRepository,
+    private val deleteAllAttachments: DeleteAllAttachments,
     private val getLocalDraft: GetLocalDraft,
     private val saveDraft: SaveDraft,
     private val storeParentAttachmentStates: StoreParentAttachmentStates,
@@ -65,11 +66,12 @@ class StoreDraftWithParentAttachments @Inject constructor(
             val parentAttachmentIds = parentAttachments.map { it.attachmentId }
 
             if (parentMessage.messageWithBody.messageBody.mimeType == MimeType.MultipartMixed) {
-                attachmentRepository.copyMimeAttachmentsToMessage(
+                copyParentAttachmentsToDraft(
                     userId = userId,
-                    sourceMessageId = parentMessage.decryptedMessageBody.messageId,
-                    targetMessageId = messageId,
-                    attachmentIds = parentAttachmentIds
+                    senderEmail = senderEmail,
+                    parentMessageId = parentMessage.decryptedMessageBody.messageId,
+                    draftMessageId = messageId,
+                    parentAttachmentIds = parentAttachmentIds
                 )
             }
 
@@ -113,6 +115,24 @@ class StoreDraftWithParentAttachments @Inject constructor(
         saveDraft(updatedDraft, userId)
             .mapFalse { Error.DraftDataError }
             .bind()
+    }
+
+    private suspend fun Raise<Error>.copyParentAttachmentsToDraft(
+        userId: UserId,
+        senderEmail: SenderEmail,
+        parentMessageId: MessageId,
+        draftMessageId: MessageId,
+        parentAttachmentIds: List<AttachmentId>
+    ) {
+        attachmentRepository.copyMimeAttachmentsToMessage(
+            userId = userId,
+            sourceMessageId = parentMessageId,
+            targetMessageId = draftMessageId,
+            attachmentIds = parentAttachmentIds
+        ).onLeft {
+            deleteAllAttachments(userId, senderEmail, draftMessageId)
+            raise(Error.DraftAttachmentError)
+        }
     }
 
     private suspend fun Raise<Error>.storeParentAttachmentSyncStates(

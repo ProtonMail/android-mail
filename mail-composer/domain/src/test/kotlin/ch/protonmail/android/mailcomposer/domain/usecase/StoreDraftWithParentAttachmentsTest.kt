@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcomposer.domain.usecase
 
 import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcomposer.domain.model.AttachmentSyncState
@@ -36,10 +37,12 @@ import ch.protonmail.android.test.utils.FakeTransactor
 import ch.protonmail.android.test.utils.rule.LoggingTestRule
 import ch.protonmail.android.testdata.message.DecryptedMessageBodyTestData
 import io.mockk.Called
+import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.coVerifyOrder
 import io.mockk.coVerifySequence
+import io.mockk.just
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
@@ -57,17 +60,19 @@ class StoreDraftWithParentAttachmentsTest {
     private val senderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
 
     private val attachmentRepository = mockk<AttachmentRepository>()
+    private val deleteAllAttachments = mockk<DeleteAllAttachments>()
     private val saveDraftMock = mockk<SaveDraft>()
     private val getLocalDraftMock = mockk<GetLocalDraft>()
     private val storeParentAttachmentStates = mockk<StoreParentAttachmentStates>()
     private val fakeTransactor = FakeTransactor()
 
     private val storeDraftWithParentAttachments = StoreDraftWithParentAttachments(
-        attachmentRepository,
-        getLocalDraftMock,
-        saveDraftMock,
-        storeParentAttachmentStates,
-        fakeTransactor
+        attachmentRepository = attachmentRepository,
+        deleteAllAttachments = deleteAllAttachments,
+        getLocalDraft = getLocalDraftMock,
+        saveDraft = saveDraftMock,
+        storeParentAttachmentStates = storeParentAttachmentStates,
+        transactor = fakeTransactor
     )
 
     @Test
@@ -408,6 +413,53 @@ class StoreDraftWithParentAttachmentsTest {
             assertEquals(Unit.right(), result)
         }
 
+    @Test
+    fun `should delete all parent attachments when copying them from parent pgp mime message fails`() = runTest {
+        // Given
+        val expectedParentMessage = MessageWithDecryptedBody(
+            MessageWithBodySample.PgpMimeMessage,
+            DecryptedMessageBodyTestData.PgpMimeMessage
+        )
+        val expectedAction = DraftAction.Forward(expectedParentMessage.messageWithBody.message.messageId)
+        val draftWithBody = expectedGetLocalDraft(userId, draftMessageId, senderEmail) {
+            MessageWithBodySample.EmptyDraft
+        }
+        val expectedAttachments = expectedParentMessage.decryptedMessageBody.attachments
+        val expectedSavedDraft = draftWithBody.copy(
+            messageBody = draftWithBody.messageBody.copy(attachments = expectedAttachments)
+        )
+        givenSaveDraftSucceeds(expectedSavedDraft, userId)
+        givenCopyAttachmentsFromParentMessageFails(
+            userId = userId,
+            sourceMessageId = expectedParentMessage.messageWithBody.message.messageId,
+            targetMessageId = draftMessageId,
+            attachmentIds = expectedAttachments.map { it.attachmentId }
+        )
+        givenDeleteAllAttachmentsSucceeds(userId, senderEmail, draftMessageId)
+
+        // When
+        val result = storeDraftWithParentAttachments(
+            userId,
+            draftMessageId,
+            expectedParentMessage,
+            senderEmail,
+            expectedAction
+        )
+
+        // Then
+        coVerifySequence {
+            saveDraftMock(expectedSavedDraft, userId)
+            attachmentRepository.copyMimeAttachmentsToMessage(
+                userId = userId,
+                sourceMessageId = expectedParentMessage.messageWithBody.message.messageId,
+                targetMessageId = draftMessageId,
+                attachmentIds = expectedAttachments.map { it.attachmentId }
+            )
+            deleteAllAttachments(userId, senderEmail, draftMessageId)
+        }
+        assertEquals(StoreDraftWithParentAttachments.Error.DraftAttachmentError.left(), result)
+    }
+
     private fun expectedGetLocalDraft(
         userId: UserId,
         messageId: MessageId,
@@ -434,6 +486,25 @@ class StoreDraftWithParentAttachmentsTest {
         coEvery {
             attachmentRepository.copyMimeAttachmentsToMessage(userId, sourceMessageId, targetMessageId, attachmentIds)
         } returns Unit.right()
+    }
+
+    private fun givenCopyAttachmentsFromParentMessageFails(
+        userId: UserId,
+        sourceMessageId: MessageId,
+        targetMessageId: MessageId,
+        attachmentIds: List<AttachmentId>
+    ) {
+        coEvery {
+            attachmentRepository.copyMimeAttachmentsToMessage(userId, sourceMessageId, targetMessageId, attachmentIds)
+        } returns DataError.Local.FailedToStoreFile.left()
+    }
+
+    private fun givenDeleteAllAttachmentsSucceeds(
+        userId: UserId,
+        senderEmail: SenderEmail,
+        messageId: MessageId
+    ) {
+        coEvery { deleteAllAttachments(userId, senderEmail, messageId) } just Runs
     }
 
     private fun givenStoreParentAttachmentsSucceeds(
