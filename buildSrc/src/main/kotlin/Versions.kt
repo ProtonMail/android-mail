@@ -48,7 +48,7 @@ object Versions {
         const val navigation = "2.6.0-rc02"
         const val paging = "3.1.1"
         const val pagingCompose = "3.2.0"
-        const val room = "2.4.3"
+        const val room = "2.6.0"
         const val splashscreen = "1.0.1"
         const val testAndroidJUnit = "1.1.5"
         const val testCore = "1.5.0"
@@ -59,7 +59,7 @@ object Versions {
         const val testOrchestrator = "1.4.2"
         const val testEspresso = "3.5.1"
         const val testUiautomator = "2.2.0"
-        const val work = "2.7.1"
+        const val work = "2.9.0-rc01"
     }
 
     object Arrow {
@@ -89,7 +89,7 @@ object Versions {
 
     object Gradle {
 
-        const val androidGradlePlugin = "8.0.2"
+        const val androidGradlePlugin = "8.1.2"
         const val benManesVersionsPlugin = "0.48.0"
         const val googleServicesPlugin = "4.3.15"
         const val hiltAndroidGradlePlugin = Dagger.dagger
