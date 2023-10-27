@@ -33,6 +33,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
 
 class MessageRepositoryImpl @Inject constructor(
     private val messageLocalDataSource: MessageLocalDataSource,
@@ -48,7 +49,8 @@ class MessageRepositoryImpl @Inject constructor(
             params1 = UploadDraftWorker.params(userId, messageId),
             params2 = UploadAttachmentsWorker.params(userId, messageId),
             params3 = SendMessageWorker.params(userId, messageId),
-            existingWorkPolicy = ExistingWorkPolicy.APPEND_OR_REPLACE
+            existingWorkPolicy = ExistingWorkPolicy.APPEND_OR_REPLACE,
+            initialDelay = 5.seconds
         )
     }
 

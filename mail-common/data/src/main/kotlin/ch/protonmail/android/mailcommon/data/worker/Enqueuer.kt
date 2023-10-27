@@ -27,6 +27,9 @@ import androidx.work.WorkManager
 import androidx.work.workDataOf
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.toJavaDuration
 
 class Enqueuer @Inject constructor(private val workManager: WorkManager) {
 
@@ -75,7 +78,8 @@ class Enqueuer @Inject constructor(private val workManager: WorkManager) {
         params2: Map<String, Any>,
         params3: Map<String, Any>,
         constraints: Constraints = buildDefaultConstraints(),
-        existingWorkPolicy: ExistingWorkPolicy = ExistingWorkPolicy.KEEP
+        existingWorkPolicy: ExistingWorkPolicy = ExistingWorkPolicy.KEEP,
+        initialDelay: Duration = 0.milliseconds
     ) {
         enqueueInChain(
             userId,
@@ -87,11 +91,16 @@ class Enqueuer @Inject constructor(private val workManager: WorkManager) {
             R::class.java,
             params3,
             constraints,
-            existingWorkPolicy
+            existingWorkPolicy,
+            initialDelay
         )
     }
 
-    fun enqueue(userId: UserId, worker: Class<out ListenableWorker>, params: Map<String, Any>) {
+    fun enqueue(
+        userId: UserId,
+        worker: Class<out ListenableWorker>,
+        params: Map<String, Any>
+    ) {
         workManager.enqueue(createRequest(userId, worker, params, buildDefaultConstraints()))
     }
 
@@ -126,12 +135,13 @@ class Enqueuer @Inject constructor(private val workManager: WorkManager) {
         worker3: Class<out ListenableWorker>,
         params3: Map<String, Any>,
         constraints: Constraints,
-        existingWorkPolicy: ExistingWorkPolicy
+        existingWorkPolicy: ExistingWorkPolicy,
+        initialDelay: Duration
     ) {
         workManager.beginUniqueWork(
             uniqueWorkId,
             existingWorkPolicy,
-            createRequest(userId, worker1, params1, constraints)
+            createRequest(userId, worker1, params1, constraints, initialDelay)
         )
             .then(createRequest(userId, worker2, params2, constraints))
             .then(createRequest(userId, worker3, params3, constraints))
@@ -158,7 +168,8 @@ class Enqueuer @Inject constructor(private val workManager: WorkManager) {
         userId: UserId,
         worker: Class<out ListenableWorker>,
         params: Map<String, Any>,
-        constraints: Constraints?
+        constraints: Constraints?,
+        initialDelay: Duration = 0.milliseconds
     ): OneTimeWorkRequest {
 
         val data = workDataOf(*params.map { Pair(it.key, it.value) }.toTypedArray())
@@ -166,6 +177,7 @@ class Enqueuer @Inject constructor(private val workManager: WorkManager) {
         return OneTimeWorkRequest.Builder(worker).run {
             setInputData(data)
             addTag(userId.id)
+            setInitialDelay(initialDelay.toJavaDuration())
             if (constraints != null) setConstraints(constraints)
             build()
         }
