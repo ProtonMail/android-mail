@@ -55,7 +55,6 @@
     <string name="mail_settings_display_name_and_signature">Display name and signature</string>
     <string name="mail_settings_mailbox">Mailbox</string>
     <string name="mail_settings_privacy">Privacy</string>
-    <string name="mail_settings_search_message_content">Search message content</string>
     <string name="mail_settings_labels_and_folders">Labels and folders</string>
     <string name="mail_settings_local_storage">Local storage</string>
     <string name="mail_settings_snooze">Snooze</string>

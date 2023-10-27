@@ -144,13 +144,6 @@ fun AccountSettingScreen(
                 }
                 item {
                     ProtonSettingsItem(
-                        name = stringResource(id = string.mail_settings_search_message_content),
-                        onClick = actions.onSearchMessageContentClick
-                    )
-                    Divider()
-                }
-                item {
-                    ProtonSettingsItem(
                         name = stringResource(id = string.mail_settings_labels_and_folders),
                         onClick = actions.onLabelsFoldersClick
                     )
@@ -240,7 +233,6 @@ object AccountSettingScreen {
         val onDefaultEmailAddressClick: () -> Unit,
         val onDisplayNameClick: () -> Unit,
         val onPrivacyClick: () -> Unit,
-        val onSearchMessageContentClick: () -> Unit,
         val onLabelsFoldersClick: () -> Unit,
         val onLocalStorageClick: () -> Unit,
         val onSnoozeNotificationsClick: () -> Unit
@@ -275,7 +267,6 @@ fun AccountSettingsScreenPreview() {
             onDefaultEmailAddressClick = {},
             onDisplayNameClick = {},
             onPrivacyClick = {},
-            onSearchMessageContentClick = {},
             onLabelsFoldersClick = {},
             onLocalStorageClick = {},
             onSnoozeNotificationsClick = {}

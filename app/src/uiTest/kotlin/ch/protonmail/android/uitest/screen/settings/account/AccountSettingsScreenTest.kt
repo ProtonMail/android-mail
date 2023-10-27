@@ -66,7 +66,6 @@ internal class AccountSettingsScreenTest {
                         onDefaultEmailAddressClick = {},
                         onDisplayNameClick = {},
                         onPrivacyClick = {},
-                        onSearchMessageContentClick = {},
                         onLabelsFoldersClick = {},
                         onLocalStorageClick = {},
                         onSnoozeNotificationsClick = {}
@@ -132,12 +131,6 @@ internal class AccountSettingsScreenTest {
             .onNodeWithTag(TEST_TAG_ACCOUNT_SETTINGS_LIST)
             .onChild()
             .performScrollToNode(hasText(string.mail_settings_privacy))
-            .assertIsDisplayed()
-
-        composeTestRule
-            .onNodeWithTag(TEST_TAG_ACCOUNT_SETTINGS_LIST)
-            .onChild()
-            .performScrollToNode(hasText(string.mail_settings_search_message_content))
             .assertIsDisplayed()
 
         composeTestRule
