@@ -34,6 +34,11 @@ internal object ProcessPushNotificationDataWorkerUtils {
             pushNotification.data?.action == NotificationAction.CREATED
     }
 
+    fun isMessageReadNotification(pushNotification: PushNotification): Boolean {
+        return NotificationType.fromStringOrNull(pushNotification.type) == NotificationType.EMAIL &&
+            pushNotification.data?.action == NotificationAction.TOUCHED
+    }
+
     fun getNewLoginNotificationGroupForUserId(userId: String) = "$userId-openurl"
 
     fun getNewLoginNotificationIdForUserId(userId: String) = getNewLoginNotificationGroupForUserId(userId).hashCode()

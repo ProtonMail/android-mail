@@ -20,14 +20,18 @@ package ch.protonmail.android.mailnotifications.domain.model
 
 internal sealed class LocalPushNotificationData {
 
-    data class Email(
+    data class MessageRead(
+        val pushData: MessageReadPushData
+    )
+
+    data class NewMessage(
         val userData: UserPushData,
         val pushData: NewMessagePushData
     ) : LocalPushNotificationData()
 
     data class Login(
         val userData: UserPushData,
-        val pushData: NewLoginPushData,
+        val pushData: NewLoginPushData
     ) : LocalPushNotificationData()
 }
 
@@ -46,4 +50,8 @@ internal data class NewLoginPushData(
     val sender: String,
     val content: String,
     val url: String
+)
+
+internal data class MessageReadPushData(
+    val messageId: String
 )

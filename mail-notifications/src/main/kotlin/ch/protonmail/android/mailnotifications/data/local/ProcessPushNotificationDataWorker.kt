@@ -24,14 +24,17 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import ch.protonmail.android.mailnotifications.R
+import ch.protonmail.android.mailnotifications.data.local.ProcessPushNotificationDataWorkerUtils.isMessageReadNotification
 import ch.protonmail.android.mailnotifications.data.local.ProcessPushNotificationDataWorkerUtils.isNewLoginNotification
 import ch.protonmail.android.mailnotifications.data.local.ProcessPushNotificationDataWorkerUtils.isNewMessageNotification
 import ch.protonmail.android.mailnotifications.data.remote.resource.PushNotificationData
 import ch.protonmail.android.mailnotifications.domain.AppInBackgroundState
 import ch.protonmail.android.mailnotifications.domain.model.LocalPushNotificationData
+import ch.protonmail.android.mailnotifications.domain.model.MessageReadPushData
 import ch.protonmail.android.mailnotifications.domain.model.NewLoginPushData
 import ch.protonmail.android.mailnotifications.domain.model.NewMessagePushData
 import ch.protonmail.android.mailnotifications.domain.model.UserPushData
+import ch.protonmail.android.mailnotifications.domain.usecase.ProcessMessageReadPushNotification
 import ch.protonmail.android.mailnotifications.domain.usecase.ProcessNewLoginPushNotification
 import ch.protonmail.android.mailnotifications.domain.usecase.ProcessNewMessagePushNotification
 import ch.protonmail.android.mailnotifications.domain.usecase.content.DecryptNotificationContent
@@ -52,7 +55,8 @@ internal class ProcessPushNotificationDataWorker @AssistedInject constructor(
     private val appInBackgroundState: AppInBackgroundState,
     private val userManager: UserManager,
     private val processNewMessagePushNotification: ProcessNewMessagePushNotification,
-    private val processNewLoginPushNotification: ProcessNewLoginPushNotification
+    private val processNewLoginPushNotification: ProcessNewLoginPushNotification,
+    private val processMessageReadPushNotification: ProcessMessageReadPushNotification
 ) : CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {
@@ -98,6 +102,11 @@ internal class ProcessPushNotificationDataWorker @AssistedInject constructor(
                 processNewMessagePushNotification(notificationData)
             }
 
+            isMessageReadNotification(decryptedNotification.value) -> {
+                val notificationData = data.toLocalMessageReadNotificationData()
+                processMessageReadPushNotification(notificationData)
+            }
+
             isNewLoginNotification(decryptedNotification.value) -> {
                 val notificationData = data.toLocalNewLoginNotificationData(context, userId.id, user.email ?: "")
                 processNewLoginPushNotification(notificationData)
@@ -111,13 +120,18 @@ internal class ProcessPushNotificationDataWorker @AssistedInject constructor(
         context: Context,
         userId: String,
         userEmail: String
-    ): LocalPushNotificationData.Email {
+    ): LocalPushNotificationData.NewMessage {
         val userData = UserPushData(userId, userEmail)
         val sender = sender?.senderName?.ifEmpty { sender.senderAddress }
             ?: context.getString(R.string.notification_title_text_new_message_fallback)
         val pushData = NewMessagePushData(sender, messageId, body)
 
-        return LocalPushNotificationData.Email(userData, pushData)
+        return LocalPushNotificationData.NewMessage(userData, pushData)
+    }
+
+    private fun PushNotificationData.toLocalMessageReadNotificationData(): LocalPushNotificationData.MessageRead {
+        val pushData = MessageReadPushData(messageId)
+        return LocalPushNotificationData.MessageRead(pushData)
     }
 
     private fun PushNotificationData.toLocalNewLoginNotificationData(

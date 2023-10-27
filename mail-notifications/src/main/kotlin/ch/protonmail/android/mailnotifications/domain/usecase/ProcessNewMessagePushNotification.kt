@@ -49,7 +49,7 @@ internal class ProcessNewMessagePushNotification @Inject constructor(
 ) {
 
     @Suppress("LongMethod")
-    operator fun invoke(notificationData: LocalPushNotificationData.Email): ListenableWorker.Result {
+    operator fun invoke(notificationData: LocalPushNotificationData.NewMessage): ListenableWorker.Result {
 
         val userData = notificationData.userData
         val pushData = notificationData.pushData
