@@ -47,6 +47,7 @@ internal class ProcessPushNotificationDataWorkerParamsErrorTest(private val test
         mockk(),
         mockk(),
         mockk(),
+        mockk()
     )
 
     @Before

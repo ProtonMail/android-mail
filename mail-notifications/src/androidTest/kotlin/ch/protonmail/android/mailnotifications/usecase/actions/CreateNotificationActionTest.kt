@@ -19,11 +19,14 @@
 package ch.protonmail.android.mailnotifications.usecase.actions
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.test.platform.app.InstrumentationRegistry
 import ch.protonmail.android.mailnotifications.domain.NotificationsDeepLinkHelper
 import ch.protonmail.android.mailnotifications.domain.model.LocalNotificationAction
 import ch.protonmail.android.mailnotifications.domain.model.PushNotificationPendingIntentPayloadData
 import ch.protonmail.android.mailnotifications.domain.usecase.actions.CreateNotificationAction
+import io.mockk.every
 import io.mockk.mockk
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -59,6 +62,10 @@ internal class CreateNotificationActionTest {
 
     @Test
     fun replyNotificationActionRequiresAuthentication() {
+        // Given
+        val mockedIntent = Intent(Intent.ACTION_VIEW, Uri.EMPTY, context, this::class.java)
+        every { notificationsDeepLinkHelper.buildReplyToDeepLinkIntent(any(), any()) } returns mockedIntent
+
         // When
         val result = createNotificationAction(replyPayloadData)
 

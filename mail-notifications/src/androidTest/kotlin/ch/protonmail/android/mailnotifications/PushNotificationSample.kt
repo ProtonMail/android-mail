@@ -25,7 +25,7 @@ import ch.protonmail.android.mailnotifications.data.remote.resource.PushNotifica
 
 internal object PushNotificationSample {
 
-    private val SampleEmailPushNotificationData = PushNotificationData(
+    private val SampleNewMessagePushNotificationData = PushNotificationData(
         title = "ProtonMail",
         subtitle = "",
         body = "Notification",
@@ -38,6 +38,21 @@ internal object PushNotificationSample {
         messageId = "aMessageId",
         customId = "aCustomId",
         action = NotificationAction.CREATED
+    )
+
+    private val SampleMessageReadPushNotificationData = PushNotificationData(
+        title = "ProtonMail",
+        subtitle = "",
+        body = "",
+        sender = PushNotificationSender("SenderEmail", "Sender", ""),
+        vibrate = 1,
+        sound = 1,
+        largeIcon = "large_icon",
+        smallIcon = "small_icon",
+        badge = 1,
+        messageId = "messageId",
+        customId = "",
+        action = NotificationAction.TOUCHED
     )
 
     private val SampleLoginPushNotificationData = PushNotificationData(
@@ -58,9 +73,15 @@ internal object PushNotificationSample {
     fun getSampleLoginAlertNotification() =
         PushNotification(type = "open_url", version = 2, SampleLoginPushNotificationData)
 
+    fun getSampleMessageReadNotification() =
+        PushNotification(type = "email", version = 2, SampleMessageReadPushNotificationData)
+
+    fun getSampleNewMessageNotification() =
+        PushNotification(type = "email", version = 2, SampleNewMessagePushNotificationData)
+
     fun getSampleNotification(
         type: String,
         version: Int = 2,
-        data: PushNotificationData = SampleEmailPushNotificationData
+        data: PushNotificationData = SampleNewMessagePushNotificationData
     ) = PushNotification(type, version, data)
 }

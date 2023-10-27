@@ -41,7 +41,9 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.slot
+import io.mockk.unmockkAll
 import io.mockk.verify
+import org.junit.After
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -70,6 +72,11 @@ internal class ProcessNewLoginPushNotificationTest {
         mockkStatic(Instant::class)
         notificationProvider.initNotificationChannels() // Do not rely on initializers.
         mockInstant()
+    }
+
+    @After
+    fun teardown() {
+        unmockkAll()
     }
 
     @Test

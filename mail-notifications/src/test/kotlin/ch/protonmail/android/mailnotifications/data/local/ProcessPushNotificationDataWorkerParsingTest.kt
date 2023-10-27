@@ -27,6 +27,7 @@ import ch.protonmail.android.mailcommon.domain.sample.UserSample
 import ch.protonmail.android.mailnotifications.data.remote.resource.PushNotification
 import ch.protonmail.android.mailnotifications.data.remote.resource.PushNotificationData
 import ch.protonmail.android.mailnotifications.domain.AppInBackgroundState
+import ch.protonmail.android.mailnotifications.domain.usecase.ProcessMessageReadPushNotification
 import ch.protonmail.android.mailnotifications.domain.usecase.ProcessNewLoginPushNotification
 import ch.protonmail.android.mailnotifications.domain.usecase.ProcessNewMessagePushNotification
 import ch.protonmail.android.mailnotifications.domain.usecase.content.DecryptNotificationContent
@@ -51,6 +52,7 @@ internal class ProcessPushNotificationDataWorkerParsingTest {
     private val userManager = mockk<UserManager>()
     private val processNewMessagePushNotification = mockk<ProcessNewMessagePushNotification>()
     private val processNewLoginPushNotification = mockk<ProcessNewLoginPushNotification>()
+    private val processMessageReadPushNotification = mockk<ProcessMessageReadPushNotification>()
 
     private val params: WorkerParameters = mockk {
         every { taskExecutor } returns mockk(relaxed = true)
@@ -75,7 +77,8 @@ internal class ProcessPushNotificationDataWorkerParsingTest {
         appInBackgroundState,
         userManager,
         processNewMessagePushNotification,
-        processNewLoginPushNotification
+        processNewLoginPushNotification,
+        processMessageReadPushNotification
     )
 
     @Before

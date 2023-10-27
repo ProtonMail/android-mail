@@ -85,7 +85,7 @@ internal class ProcessNewMessagePushNotificationTest {
 
     private val userData = UserPushData(UserId, UserEmail)
     private val pushData = NewMessagePushData(Sender, MessageId, Content)
-    private val newMessageData = LocalPushNotificationData.Email(userData, pushData)
+    private val newMessageData = LocalPushNotificationData.NewMessage(userData, pushData)
 
     @Before
     fun setup() {
