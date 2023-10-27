@@ -39,6 +39,14 @@ internal class NotificationManagerCompatProxyImpl @Inject constructor(
         if (notifications.size == 1) dismissNotification(notifications.first().id)
     }
 
+    override fun getGroupKeyForNotification(notificationId: Int): String? {
+        val notification = notificationManagerCompat.activeNotifications.firstOrNull {
+            it.id == notificationId
+        }
+
+        return notification?.groupKey
+    }
+
     @SuppressLint("MissingPermission")
     override fun showNotification(notificationId: Int, notification: Notification) {
         notificationManagerCompat.notify(notificationId, notification)
