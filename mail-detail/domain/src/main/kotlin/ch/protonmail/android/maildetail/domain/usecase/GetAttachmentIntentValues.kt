@@ -24,6 +24,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.repository.AttachmentRepository
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import me.proton.core.domain.entity.UserId
@@ -39,8 +40,12 @@ class GetAttachmentIntentValues @Inject constructor(
         messageId: MessageId,
         attachmentId: AttachmentId
     ): Either<DataError, OpenAttachmentIntentValues> = either {
-        val attachmentMetadata = attachmentRepository.getAttachment(userId, messageId, attachmentId).bind()
         val messageWithBody = messageRepository.getMessageWithBody(userId, messageId).bind()
+        if (messageWithBody.messageBody.mimeType == MimeType.MultipartMixed) {
+            shift<DataError>(DataError.Local.Unknown)
+        }
+
+        val attachmentMetadata = attachmentRepository.getAttachment(userId, messageId, attachmentId).bind()
 
         val attachment = messageWithBody.messageBody.attachments.firstOrNull { it.attachmentId == attachmentId }
             ?: shift(DataError.Local.NoDataCached)

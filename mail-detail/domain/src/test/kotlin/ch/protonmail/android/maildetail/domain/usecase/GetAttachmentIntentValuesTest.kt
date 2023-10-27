@@ -155,6 +155,7 @@ class GetAttachmentIntentValuesTest {
                 attachmentId = attachmentId
             )
         } returns DataError.Local.OutOfMemory.left()
+        coEvery { messageRepository.getMessageWithBody(userId, messageId) } returns messageWithBody.right()
 
         // When
         val result = getAttachmentIntentValues(userId, messageId, attachmentId)
