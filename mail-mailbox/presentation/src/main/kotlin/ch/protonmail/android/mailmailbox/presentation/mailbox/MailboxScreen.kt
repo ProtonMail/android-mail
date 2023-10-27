@@ -21,20 +21,29 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox
 import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.ReportDrawn
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.rememberScrollableState
 import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.Button
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
@@ -57,13 +66,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -72,6 +85,7 @@ import androidx.paging.compose.itemKey
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
+import ch.protonmail.android.mailcommon.presentation.compose.MailDimens.pagerDotsCircleSize
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
@@ -81,6 +95,8 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemU
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxPreview
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxPreviewProvider
@@ -101,9 +117,13 @@ import me.proton.core.compose.component.ProtonModalBottomSheetLayout
 import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
+import me.proton.core.compose.component.ProtonSolidButton
+import me.proton.core.compose.component.ProtonTextButton
 import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
+import me.proton.core.compose.theme.defaultWeak
+import me.proton.core.compose.theme.headlineNorm
 import timber.log.Timber
 import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 
@@ -134,101 +154,292 @@ fun MailboxScreen(
 
     Timber.d("BottomState: ${mailboxState.bottomAppBarState}")
 
-    val completeActions = actions.copy(
-        onDisableUnreadFilter = { viewModel.submit(MailboxViewAction.DisableUnreadFilter) },
-        onEnableUnreadFilter = { viewModel.submit(MailboxViewAction.EnableUnreadFilter) },
-        onExitSelectionMode = { viewModel.submit(MailboxViewAction.ExitSelectionMode) },
-        onOfflineWithData = { viewModel.submit(MailboxViewAction.OnOfflineWithData) },
-        onErrorWithData = { viewModel.submit(MailboxViewAction.OnErrorWithData) },
-        onItemClicked = { item -> viewModel.submit(MailboxViewAction.ItemClicked(item)) },
-        onItemLongClicked = {
-            if (mailboxState.mailboxListState.selectionModeEnabled) {
-                viewModel.submit(MailboxViewAction.OnItemLongClicked(it))
-            } else {
-                actions.showFeatureMissingSnackbar()
-            }
-        },
-        onAvatarClicked = {
-            if (mailboxState.mailboxListState.selectionModeEnabled) {
-                viewModel.submit(MailboxViewAction.OnItemAvatarClicked(it))
-            } else {
-                actions.showFeatureMissingSnackbar()
-            }
-        },
-        onRefreshList = { viewModel.submit(MailboxViewAction.Refresh) },
-        onRefreshListCompleted = { viewModel.submit(MailboxViewAction.RefreshCompleted) },
-        markAsRead = { viewModel.submit(MailboxViewAction.MarkAsRead) },
-        markAsUnread = { viewModel.submit(MailboxViewAction.MarkAsUnread) },
-        trash = { viewModel.submit(MailboxViewAction.Trash) },
-        delete = { viewModel.submit(MailboxViewAction.Delete) },
-        deleteConfirmed = { viewModel.submit(MailboxViewAction.DeleteConfirmed) },
-        deleteDialogDismissed = { viewModel.submit(MailboxViewAction.DeleteDialogDismissed) },
-        onLabelAsClicked = { viewModel.submit(MailboxViewAction.RequestLabelAsBottomSheet) },
-        onMoveToClicked = { viewModel.submit(MailboxViewAction.RequestMoveToBottomSheet) },
-        onMoreClicked = { viewModel.submit(MailboxViewAction.RequestMoreActionsBottomSheet) }
-    )
+    if (mailboxState.onboardingState is OnboardingState.Shown) {
+        val completeActions = actions.copy(
+            closeOnboarding = { viewModel.submit(MailboxViewAction.CloseOnboarding) }
+        )
+        OnboardingScreen(
+            actions = completeActions
+        )
+    } else {
+        val completeActions = actions.copy(
+            onDisableUnreadFilter = { viewModel.submit(MailboxViewAction.DisableUnreadFilter) },
+            onEnableUnreadFilter = { viewModel.submit(MailboxViewAction.EnableUnreadFilter) },
+            onExitSelectionMode = { viewModel.submit(MailboxViewAction.ExitSelectionMode) },
+            onOfflineWithData = { viewModel.submit(MailboxViewAction.OnOfflineWithData) },
+            onErrorWithData = { viewModel.submit(MailboxViewAction.OnErrorWithData) },
+            onItemClicked = { item -> viewModel.submit(MailboxViewAction.ItemClicked(item)) },
+            onItemLongClicked = {
+                if (mailboxState.mailboxListState.selectionModeEnabled) {
+                    viewModel.submit(MailboxViewAction.OnItemLongClicked(it))
+                } else {
+                    actions.showFeatureMissingSnackbar()
+                }
+            },
+            onAvatarClicked = {
+                if (mailboxState.mailboxListState.selectionModeEnabled) {
+                    viewModel.submit(MailboxViewAction.OnItemAvatarClicked(it))
+                } else {
+                    actions.showFeatureMissingSnackbar()
+                }
+            },
+            onRefreshList = { viewModel.submit(MailboxViewAction.Refresh) },
+            onRefreshListCompleted = { viewModel.submit(MailboxViewAction.RefreshCompleted) },
+            markAsRead = { viewModel.submit(MailboxViewAction.MarkAsRead) },
+            markAsUnread = { viewModel.submit(MailboxViewAction.MarkAsUnread) },
+            trash = { viewModel.submit(MailboxViewAction.Trash) },
+            delete = { viewModel.submit(MailboxViewAction.Delete) },
+            deleteConfirmed = { viewModel.submit(MailboxViewAction.DeleteConfirmed) },
+            deleteDialogDismissed = { viewModel.submit(MailboxViewAction.DeleteDialogDismissed) },
+            onLabelAsClicked = { viewModel.submit(MailboxViewAction.RequestLabelAsBottomSheet) },
+            onMoveToClicked = { viewModel.submit(MailboxViewAction.RequestMoveToBottomSheet) },
+            onMoreClicked = { viewModel.submit(MailboxViewAction.RequestMoreActionsBottomSheet) }
+        )
 
-    mailboxState.bottomSheetState?.let {
-        // Avoids a "jumping" of the bottom sheet
-        if (it.isShowEffectWithoutContent()) return@let
+        mailboxState.bottomSheetState?.let {
+            // Avoids a "jumping" of the bottom sheet
+            if (it.isShowEffectWithoutContent()) return@let
 
-        ConsumableLaunchedEffect(effect = it.bottomSheetVisibilityEffect) { bottomSheetEffect ->
-            when (bottomSheetEffect) {
-                BottomSheetVisibilityEffect.Hide -> scope.launch { bottomSheetState.hide() }
-                BottomSheetVisibilityEffect.Show -> scope.launch { bottomSheetState.show() }
-            }
-        }
-    }
-
-    if (bottomSheetState.currentValue != ModalBottomSheetValue.Hidden) {
-        DisposableEffect(Unit) { onDispose { viewModel.submit(MailboxViewAction.DismissBottomSheet) } }
-    }
-
-    ProtonModalBottomSheetLayout(
-        sheetState = bottomSheetState,
-        sheetContent = {
-            when (val bottomSheetContentState = mailboxState.bottomSheetState?.contentState) {
-                is MoveToBottomSheetState -> MoveToBottomSheetContent(
-                    state = bottomSheetContentState,
-                    actions = MoveToBottomSheetContent.Actions(
-                        onAddFolderClick = actions.onAddFolder,
-                        onFolderSelected = { viewModel.submit(MailboxViewAction.MoveToDestinationSelected(it)) },
-                        onDoneClick = { viewModel.submit(MailboxViewAction.MoveToConfirmed) }
-                    )
-                )
-
-                is LabelAsBottomSheetState -> LabelAsBottomSheetContent(
-                    state = bottomSheetContentState,
-                    actions = LabelAsBottomSheetContent.Actions(
-                        onAddLabelClick = { actions.onAddLabel },
-                        onLabelAsSelected = { viewModel.submit(MailboxViewAction.LabelAsToggleAction(it)) },
-                        onDoneClick = { viewModel.submit(MailboxViewAction.LabelAsConfirmed(it)) }
-                    )
-                )
-
-                is MoreActionsBottomSheetState -> MoreActionBottomSheetContent(
-                    state = bottomSheetContentState,
-                    actionCallbacks = MoreActionBottomSheetContent.Actions(
-                        onStar = { viewModel.submit(MailboxViewAction.Star) },
-                        onUnStar = { viewModel.submit(MailboxViewAction.UnStar) },
-                        onArchive = { viewModel.submit(MailboxViewAction.MoveToArchive) },
-                        onSpam = { viewModel.submit(MailboxViewAction.MoveToSpam) }
-                    )
-                )
-
-                else -> {
-                    if (bottomSheetState.isVisible) {
-                        ProtonCenteredProgress()
-                    }
+            ConsumableLaunchedEffect(effect = it.bottomSheetVisibilityEffect) { bottomSheetEffect ->
+                when (bottomSheetEffect) {
+                    BottomSheetVisibilityEffect.Hide -> scope.launch { bottomSheetState.hide() }
+                    BottomSheetVisibilityEffect.Show -> scope.launch { bottomSheetState.show() }
                 }
             }
         }
+
+        if (bottomSheetState.currentValue != ModalBottomSheetValue.Hidden) {
+            DisposableEffect(Unit) { onDispose { viewModel.submit(MailboxViewAction.DismissBottomSheet) } }
+        }
+
+        ProtonModalBottomSheetLayout(
+            sheetState = bottomSheetState,
+            sheetContent = {
+                when (val bottomSheetContentState = mailboxState.bottomSheetState?.contentState) {
+                    is MoveToBottomSheetState -> MoveToBottomSheetContent(
+                        state = bottomSheetContentState,
+                        actions = MoveToBottomSheetContent.Actions(
+                            onAddFolderClick = actions.onAddFolder,
+                            onFolderSelected = { viewModel.submit(MailboxViewAction.MoveToDestinationSelected(it)) },
+                            onDoneClick = { viewModel.submit(MailboxViewAction.MoveToConfirmed) }
+                        )
+                    )
+
+                    is LabelAsBottomSheetState -> LabelAsBottomSheetContent(
+                        state = bottomSheetContentState,
+                        actions = LabelAsBottomSheetContent.Actions(
+                            onAddLabelClick = { actions.onAddLabel },
+                            onLabelAsSelected = { viewModel.submit(MailboxViewAction.LabelAsToggleAction(it)) },
+                            onDoneClick = { viewModel.submit(MailboxViewAction.LabelAsConfirmed(it)) }
+                        )
+                    )
+
+                    is MoreActionsBottomSheetState -> MoreActionBottomSheetContent(
+                        state = bottomSheetContentState,
+                        actionCallbacks = MoreActionBottomSheetContent.Actions(
+                            onStar = { viewModel.submit(MailboxViewAction.Star) },
+                            onUnStar = { viewModel.submit(MailboxViewAction.UnStar) },
+                            onArchive = { viewModel.submit(MailboxViewAction.MoveToArchive) },
+                            onSpam = { viewModel.submit(MailboxViewAction.MoveToSpam) }
+                        )
+                    )
+
+                    else -> {
+                        if (bottomSheetState.isVisible) {
+                            ProtonCenteredProgress()
+                        }
+                    }
+                }
+            }
+        ) {
+            MailboxScreen(
+                mailboxState = mailboxState,
+                mailboxListItems = mailboxListItems,
+                actions = completeActions,
+                modifier = modifier.semantics { testTagsAsResourceId = true }
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun OnboardingScreen(actions: MailboxScreen.Actions) {
+    val scope = rememberCoroutineScope()
+    val pagerState = rememberPagerState()
+
+    val contentMap = listOf(
+        OnboardingUiModel(
+            illustrationId = R.drawable.illustration_onboarding_beta,
+            headlineId = R.string.onboarding_headline_beta,
+            descriptionId = R.string.onboarding_description_beta
+        ),
+        OnboardingUiModel(
+            illustrationId = R.drawable.illustration_privacy_for_all,
+            headlineId = R.string.onboarding_privacy_for_all_headline,
+            descriptionId = R.string.onboarding_privacy_for_all_description
+        ),
+        OnboardingUiModel(
+            illustrationId = R.drawable.illustration_easily_up_to_date,
+            headlineId = R.string.onboarding_easily_up_to_date_headline,
+            descriptionId = R.string.onboarding_easily_up_to_date_description
+        ),
+        OnboardingUiModel(
+            illustrationId = R.drawable.illustration_neat_and_tidy,
+            headlineId = R.string.onboarding_neat_and_tidy_headline,
+            descriptionId = R.string.onboarding_neat_and_tidy_description
+        )
+    )
+    val viewCount = contentMap.size
+
+    ConstraintLayout(
+        modifier = Modifier
+            .fillMaxHeight()
+            .fillMaxWidth()
+            .background(ProtonTheme.colors.backgroundNorm)
     ) {
-        MailboxScreen(
-            mailboxState = mailboxState,
-            mailboxListItems = mailboxListItems,
-            actions = completeActions,
-            modifier = modifier.semantics { testTagsAsResourceId = true }
+        val (pager, positiveButton, dismissButton, dots) = createRefs()
+
+        HorizontalPager(
+            state = pagerState,
+            pageCount = viewCount,
+            modifier = Modifier
+                .constrainAs(pager) {
+                    width = Dimension.fillToConstraints
+                    height = Dimension.fillToConstraints
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    bottom.linkTo(parent.bottom)
+                }
+        ) { pageIndex ->
+            OnboardingContent(
+                content = contentMap[pageIndex]
+            )
+        }
+
+        ProtonSolidButton(
+            modifier = Modifier
+                .constrainAs(positiveButton) {
+                    width = Dimension.fillToConstraints
+                    start.linkTo(parent.start, margin = ProtonDimens.MediumSpacing)
+                    end.linkTo(parent.end, margin = ProtonDimens.MediumSpacing)
+                    bottom.linkTo(dots.top, margin = ProtonDimens.DefaultSpacing)
+                }
+                .horizontalScroll(state = ScrollState(0), enabled = true),
+            onClick = {
+                val nextPageIndex = pagerState.currentPage.plus(1)
+                if (nextPageIndex == viewCount) {
+                    actions.closeOnboarding()
+                } else {
+                    scope.launch {
+                        pagerState.animateScrollToPage(nextPageIndex)
+                    }
+                }
+            }
+        ) {
+            val positiveButtonTextId =
+                if (pagerState.currentPage == viewCount.minus(1)) R.string.onboarding_get_started
+                else R.string.onboarding_next
+            Text(text = stringResource(id = positiveButtonTextId))
+        }
+
+        if (pagerState.currentPage != viewCount.minus(1)) {
+            ProtonTextButton(
+                modifier = Modifier
+                    .constrainAs(dismissButton) {
+                        width = Dimension.fillToConstraints
+                        top.linkTo(parent.top)
+                        end.linkTo(parent.end)
+                    }
+                    .horizontalScroll(state = ScrollState(0), enabled = true),
+                onClick = {
+                    actions.closeOnboarding()
+                }
+            ) {
+                Text(text = stringResource(id = R.string.onboarding_skip))
+            }
+        }
+
+        val highlightedDotColor = ProtonTheme.colors.brandNorm
+        val defaultDotColor = ProtonTheme.colors.separatorNorm
+        Canvas(
+            modifier = Modifier
+                .size(pagerDotsCircleSize)
+                .constrainAs(dots) {
+                    width = Dimension.fillToConstraints
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    bottom.linkTo(parent.bottom, margin = ProtonDimens.LargeSpacing)
+                },
+            onDraw = {
+                var centerOffset = Offset(
+                    size.width.div(2).minus(pagerDotsCircleSize.toPx().times(viewCount.minus(1))),
+                    this.center.y
+                )
+                for (i in 0 until viewCount) {
+                    drawCircle(
+                        color = if (i == pagerState.currentPage) highlightedDotColor else defaultDotColor,
+                        center = centerOffset
+                    )
+                    centerOffset = Offset(
+                        centerOffset.x.plus(pagerDotsCircleSize.toPx().times(2)),
+                        centerOffset.y
+                    )
+                }
+            }
+        )
+    }
+}
+
+@Composable
+fun OnboardingContent(content: OnboardingUiModel) {
+    ConstraintLayout(
+        modifier = Modifier
+            .fillMaxHeight()
+            .fillMaxWidth()
+            .background(ProtonTheme.colors.backgroundNorm)
+    ) {
+        val (illustration, headline, description) = createRefs()
+
+        Image(
+            modifier = Modifier
+                .fillMaxHeight(MailDimens.OnboardingIllustrationWeight)
+                .constrainAs(illustration) {
+                    top.linkTo(parent.top, margin = ProtonDimens.DefaultSpacing)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                },
+            painter = painterResource(id = content.illustrationId),
+            contentDescription = stringResource(id = R.string.onboarding_illustration_content_description)
+        )
+        Text(
+            modifier = Modifier
+                .constrainAs(headline) {
+                    width = Dimension.fillToConstraints
+                    top.linkTo(illustration.bottom, margin = ProtonDimens.DefaultSpacing)
+                    start.linkTo(parent.start, margin = ProtonDimens.LargeSpacing)
+                    end.linkTo(parent.end, margin = ProtonDimens.LargeSpacing)
+                },
+            textAlign = TextAlign.Center,
+            text = stringResource(id = content.headlineId),
+            style = ProtonTheme.typography.headlineNorm,
+            color = ProtonTheme.colors.textNorm
+        )
+        Text(
+            modifier = Modifier
+                .constrainAs(description) {
+                    width = Dimension.fillToConstraints
+                    height = Dimension.fillToConstraints
+                    top.linkTo(headline.bottom, margin = ProtonDimens.DefaultSpacing)
+                    start.linkTo(parent.start, margin = ProtonDimens.LargeSpacing)
+                    end.linkTo(parent.end, margin = ProtonDimens.LargeSpacing)
+                    bottom.linkTo(parent.bottom, margin = ProtonDimens.DefaultSpacing)
+                },
+            textAlign = TextAlign.Center,
+            text = stringResource(id = content.descriptionId),
+            style = ProtonTheme.typography.defaultWeak,
+            color = ProtonTheme.colors.textWeak
         )
     }
 }
@@ -644,7 +855,8 @@ object MailboxScreen {
         val onMoveToClicked: () -> Unit,
         val onMoreClicked: () -> Unit,
         val onAddLabel: () -> Unit,
-        val onAddFolder: () -> Unit
+        val onAddFolder: () -> Unit,
+        val closeOnboarding: () -> Unit
     ) {
 
         companion object {
@@ -676,7 +888,8 @@ object MailboxScreen {
                 onMoveToClicked = {},
                 onMoreClicked = {},
                 onAddLabel = {},
-                onAddFolder = {}
+                onAddFolder = {},
+                closeOnboarding = {}
             )
         }
     }
@@ -712,6 +925,17 @@ private fun MailboxErrorPreview() {
 private fun MailboxAppendErrorPreview() {
     ProtonTheme {
         AppendError(message = stringResource(id = R.string.mailbox_error_message_offline), onClick = {})
+    }
+}
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@Composable
+private fun OnboardingScreenPreview() {
+    ProtonTheme {
+        OnboardingScreen(
+            actions = MailboxScreen.Actions.Empty
+        )
     }
 }
 

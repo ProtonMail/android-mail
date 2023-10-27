@@ -689,8 +689,7 @@ class MailboxViewModel @Inject constructor(
     }
 
     private suspend fun shouldDisplayOnboarding(): Boolean {
-        val showOnboardingEither = observeOnboarding().first()
-        return showOnboardingEither.fold(
+        return observeOnboarding().first().fold(
             ifLeft = { false },
             ifRight = { onboardingPreference -> onboardingPreference.display }
         )

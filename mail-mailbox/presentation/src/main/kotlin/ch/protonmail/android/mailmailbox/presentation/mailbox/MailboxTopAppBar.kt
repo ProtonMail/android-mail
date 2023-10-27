@@ -87,11 +87,13 @@ fun MailboxTopAppBar(
             )
         },
         navigationIcon = {
-            IconButton(onClick = onNavigationIconClick) {
-                Icon(
-                    painter = painterResource(id = uiModel.navigationIconRes),
-                    contentDescription = uiModel.navigationIconContentDescription
-                )
+            if (state !is MailboxTopAppBarState.Loading) {
+                IconButton(onClick = onNavigationIconClick) {
+                    Icon(
+                        painter = painterResource(id = uiModel.navigationIconRes),
+                        contentDescription = uiModel.navigationIconContentDescription
+                    )
+                }
             }
         },
         actions = {
