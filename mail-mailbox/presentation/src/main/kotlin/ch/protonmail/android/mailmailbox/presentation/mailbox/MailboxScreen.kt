@@ -70,7 +70,6 @@ import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
-import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
@@ -210,12 +209,7 @@ fun MailboxScreen(
                 )
             )
         },
-        snackbarHost = {
-            ProtonSnackbarHost(
-                modifier = Modifier.testTag(CommonTestTags.SnackbarHostSuccess),
-                hostState = snackbarHostState
-            )
-        }
+        snackbarHost = { ProtonSnackbarHost(hostState = snackbarHostState) }
     ) { paddingValues ->
         when (val mailboxListState = mailboxState.mailboxListState) {
             is MailboxListState.Data -> {
