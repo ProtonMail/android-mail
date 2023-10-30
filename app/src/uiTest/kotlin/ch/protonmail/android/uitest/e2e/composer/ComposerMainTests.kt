@@ -25,6 +25,7 @@ import ch.protonmail.android.uitest.MockedNetworkTest
 import ch.protonmail.android.uitest.helpers.core.TestId
 import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
+import ch.protonmail.android.uitest.helpers.login.LoginTestUserTypes
 import ch.protonmail.android.uitest.robot.common.section.keyboardSection
 import ch.protonmail.android.uitest.robot.common.section.verify
 import ch.protonmail.android.uitest.robot.composer.composerRobot
@@ -52,7 +53,7 @@ import org.junit.Test
 @RegressionTest
 @HiltAndroidTest
 @UninstallModules(ServerProofModule::class)
-internal class ComposerMainTests : MockedNetworkTest(), ComposerTests {
+internal class ComposerMainTests : MockedNetworkTest(loginType = LoginTestUserTypes.Paid.FancyCapybara), ComposerTests {
 
     @JvmField
     @BindValue
@@ -66,8 +67,8 @@ internal class ComposerMainTests : MockedNetworkTest(), ComposerTests {
     @Test
     @TestId("79036")
     fun checkComposerMainFieldsAndInteractions() {
-        val expectedSender = "mobile.apps.uitesting@proton.black"
-        val expectedRecipient = "Recipient"
+        val expectedSender = "fancycapybara@proton.black"
+        val expectedRecipient = "test@example.com"
         val expectedSubject = "Subject"
         val expectedBody = "Text message"
 
