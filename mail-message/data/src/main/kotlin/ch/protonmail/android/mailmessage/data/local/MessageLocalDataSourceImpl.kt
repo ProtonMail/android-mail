@@ -73,6 +73,16 @@ class MessageLocalDataSourceImpl @Inject constructor(
         ids.forEach { messageBodyFileStorage.deleteMessageBody(userId, it) }
     }
 
+    override suspend fun deleteMessagesInConversations(
+        userId: UserId,
+        conversationIds: List<ConversationId>,
+        contextLabelId: LabelId
+    ) {
+        messageDao.getMessageWithLabelsInConversations(userId, conversationIds)
+            .filter { it.labelIds.contains(contextLabelId) }
+            .let { messageWithLabelIds -> deleteMessages(userId, messageWithLabelIds.map { it.message.messageId }) }
+    }
+
     override suspend fun getClippedPageKey(userId: UserId, pageKey: PageKey): PageKey? =
         pageIntervalDao.getClippedPageKey(userId, PageItemType.Message, pageKey)
 

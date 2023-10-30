@@ -192,6 +192,13 @@ abstract class MessageDao : BaseDao<MessageEntity>() {
         conversationIds: List<ConversationId>
     ): List<MessageId>
 
+    @Query("SELECT * FROM MessageEntity WHERE userId = :userId AND conversationId IN (:conversationIds)")
+    @Transaction
+    abstract suspend fun getMessageWithLabelsInConversations(
+        userId: UserId,
+        conversationIds: List<ConversationId>
+    ): List<MessageWithLabelIds>
+
     @Query("UPDATE MessageEntity SET messageId = :apiAssignedId WHERE userId = :userId AND messageId = :localDraftId")
     abstract suspend fun updateDraftMessageId(
         userId: UserId,

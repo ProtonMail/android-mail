@@ -228,6 +228,33 @@ class MessageLocalDataSourceImplTest {
     }
 
     @Test
+    fun `should delete only messages with given label from db and corresponding message body files`() = runTest {
+        // Given
+        val deletedConversationIds = listOf(
+            ConversationIdSample.Invoices,
+            ConversationIdSample.AlphaAppFeedback,
+            ConversationIdSample.WeatherForecast
+        )
+        val expectedRawIds = listOf(MessageIdSample.Invoice.id)
+        val expectedMessages = listOf(
+            MessageWithLabelIdsSample.Invoice,
+            MessageWithLabelIdsSample.AugWeatherForecast,
+            MessageWithLabelIdsSample.SepWeatherForecast
+        )
+        coEvery {
+            messageDao.getMessageWithLabelsInConversations(userId1, deletedConversationIds)
+        } returns expectedMessages
+        coEvery { messageBodyFileStorage.deleteMessageBody(userId1, MessageIdSample.Invoice) } returns true
+
+        // When
+        messageLocalDataSource.deleteMessagesInConversations(userId1, deletedConversationIds, LabelIdSample.Document)
+
+        // Then
+        coVerify { messageDao.delete(userId1, expectedRawIds) }
+        coVerifySequence { messageBodyFileStorage.deleteMessageBody(userId1, MessageIdSample.Invoice) }
+    }
+
+    @Test
     fun `markAsStale call pageIntervalDao deleteAll`() = runTest {
         // Given
         val labelId = LabelId("1")

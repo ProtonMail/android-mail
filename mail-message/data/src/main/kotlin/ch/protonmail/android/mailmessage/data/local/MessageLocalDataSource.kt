@@ -44,6 +44,15 @@ interface MessageLocalDataSource {
     suspend fun deleteMessages(userId: UserId, ids: List<MessageId>)
 
     /**
+     * Delete Message(s) for [userId], by [ids], only messages with the given [contextLabelId] will be deleted.
+     */
+    suspend fun deleteMessagesInConversations(
+        userId: UserId,
+        conversationIds: List<ConversationId>,
+        contextLabelId: LabelId
+    )
+
+    /**
      * Return clipped [PageKey] according already persisted intervals.
      *
      * Note: Usually used to trim unnecessary interval from the [PageKey] before fetching.
@@ -208,5 +217,9 @@ interface MessageLocalDataSource {
 
     suspend fun isMessageRead(userId: UserId, messageId: MessageId): Either<DataError.Local, Boolean>
 
-    suspend fun updateDraftMessageId(userId: UserId, localDraftId: MessageId, apiAssignedId: MessageId)
+    suspend fun updateDraftMessageId(
+        userId: UserId,
+        localDraftId: MessageId,
+        apiAssignedId: MessageId
+    )
 }
