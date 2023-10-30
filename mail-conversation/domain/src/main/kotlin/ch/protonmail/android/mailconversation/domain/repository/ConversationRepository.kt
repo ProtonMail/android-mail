@@ -34,10 +34,7 @@ interface ConversationRepository {
     /**
      * Load all [Conversation] from local cache for [userId].
      */
-    suspend fun getLocalConversations(
-        userId: UserId,
-        pageKey: PageKey = PageKey()
-    ): List<ConversationWithContext>
+    suspend fun getLocalConversations(userId: UserId, pageKey: PageKey = PageKey()): List<ConversationWithContext>
 
     /**
      * Return true if all [Conversation] are considered locally valid according the given [pageKey].
@@ -59,10 +56,7 @@ interface ConversationRepository {
     /**
      * Mark local data as stale for [userId], by [labelId].
      */
-    suspend fun markAsStale(
-        userId: UserId,
-        labelId: LabelId
-    )
+    suspend fun markAsStale(userId: UserId, labelId: LabelId)
 
     /**
      * Get a conversation.
@@ -75,10 +69,7 @@ interface ConversationRepository {
         refreshData: Boolean
     ): Flow<Either<DataError, Conversation>>
 
-    fun observeConversationCacheUpToDate(
-        userId: UserId,
-        id: ConversationId
-    ): Flow<Either<DataError, Unit>>
+    fun observeConversationCacheUpToDate(userId: UserId, id: ConversationId): Flow<Either<DataError, Unit>>
 
     /**
      * Adds the given [labelId] to the message with the given [conversationId]
@@ -159,10 +150,7 @@ interface ConversationRepository {
         contextLabelId: LabelId
     ): Either<DataError, List<Conversation>>
 
-    suspend fun isCachedConversationRead(
-        userId: UserId,
-        conversationId: ConversationId
-    ): Either<DataError, Boolean>
+    suspend fun isCachedConversationRead(userId: UserId, conversationId: ConversationId): Either<DataError, Boolean>
 
     suspend fun relabel(
         userId: UserId,
@@ -177,4 +165,10 @@ interface ConversationRepository {
         labelsToBeRemoved: List<LabelId>,
         labelsToBeAdded: List<LabelId>
     ): Either<DataError, List<Conversation>>
+
+    suspend fun deleteConversations(
+        userId: UserId,
+        conversationIds: List<ConversationId>,
+        contextLabelId: LabelId
+    ): Either<DataError, Unit>
 }

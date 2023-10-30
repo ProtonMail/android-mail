@@ -52,6 +52,7 @@ import me.proton.core.domain.arch.ResponseSource
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.util.kotlin.CoroutineScopeProvider
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.math.min
@@ -292,6 +293,29 @@ class ConversationRepositoryImpl @Inject constructor(
         if (removeOperation.isLeft()) return removeOperation
 
         return addLabels(userId, conversationIds, labelsToBeAdded)
+    }
+
+    @Suppress("TooGenericExceptionCaught")
+    override suspend fun deleteConversations(
+        userId: UserId,
+        conversationIds: List<ConversationId>,
+        contextLabelId: LabelId
+    ): Either<DataError, Unit> {
+        try {
+            conversationLocalDataSource.deleteConversation(userId, conversationIds)
+            messageLocalDataSource.deleteMessagesInConversations(userId, conversationIds, contextLabelId)
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to delete conversation or messages locally")
+            return DataError.Local.Unknown.left()
+        }
+        try {
+            conversationRemoteDataSource.deleteConversations(userId, conversationIds, contextLabelId)
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to delete conversation or messages remotely")
+            return DataError.Remote.Unknown.left()
+        }
+
+        return Unit.right()
     }
 
     private suspend fun moveToTrashOrSpam(
