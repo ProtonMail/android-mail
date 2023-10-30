@@ -57,6 +57,8 @@
   <string name="attachment_download_notification_channel_name">Pièces jointes</string>
   <string name="attachment_download_notification_channel_description">Notifications pour les téléchargements de pièces jointes</string>
   <string name="email_notification_channel_name">Messages</string>
+  <string name="login_notification_channel_name">Alertes de connexion</string>
   <string name="email_notification_channel_description">Notifications de réception de messages</string>
+  <string name="login_notification_channel_description">Notifications de nouvelles connexions</string>
   <string name="auth_badge_official">Officiel</string>
 </resources>

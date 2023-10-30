@@ -55,7 +55,6 @@
   <string name="mail_settings_display_name_and_signature">Visningsnavn og signatur</string>
   <string name="mail_settings_mailbox">Postkasse</string>
   <string name="mail_settings_privacy">Privatliv</string>
-  <string name="mail_settings_search_message_content">Søg i beskedindhold</string>
   <string name="mail_settings_labels_and_folders">Etiketter og mapper</string>
   <string name="mail_settings_local_storage">Lokalt lager</string>
   <string name="mail_settings_snooze">Udsæt</string>

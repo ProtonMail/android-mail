@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="from_prefix">Od:</string>
+  <string name="to_prefix">Komu:</string>
+  <string name="cc_prefix">Kópia (Cc):</string>
+  <string name="bcc_prefix">Skrytá kópia (Bcc):</string>
+  <string name="subject_placeholder">Predmet</string>
+  <string name="compose_message_placeholder">Napísať e-mail</string>
+  <string name="close_composer_content_description">Zatvoriť editor</string>
+  <string name="send_message_content_description">Odoslať správu</string>
+  <string name="composer_expand_recipients_button">Zobraziť ostatných príjemcov</string>
+  <string name="composer_error_invalid_email">E-mailová adresa je neplatná</string>
+  <string name="composer_error_invalid_sender">Adresa odosielateľa je neplatná</string>
+  <string name="change_sender_button_content_description">Zmeniť odosielateľa</string>
+  <string name="composer_change_sender_paid_feature">Prejdite na platenú verziu, aby ste mohli zmeniť adresu odosielateľa</string>
+  <string name="composer_error_change_sender_failed_getting_subscription">Nepodarilo sa zmeniť adresu odosielateľa, pretože získanie predplatného zlyhalo. Skúste znova.</string>
+  <string name="composer_error_store_draft_sender_address">Uloženie adresy odosielateľa tohto konceptu zlyhalo</string>
+  <string name="composer_error_store_draft_body">Uloženie obsahu tohto konceptu zlyhalo</string>
+  <string name="composer_error_duplicate_recipient"> Duplicitný príjemca odstránený: %1$s</string>
+  <string name="composer_error_store_draft_subject">Uloženie predmetu tohto konceptu sa nepodarilo</string>
+  <string name="composer_error_store_draft_recipients">Uloženie príjemcov tohto konceptu zlyhalo</string>
+  <string name="composer_error_loading_draft">Obsah tohto konceptu nie je momentálne dostupný. Úpravou sa prepíše akýkoľvek už existujúci obsah.</string>
+  <string name="composer_add_attachments_content_description">Pripojiť prílohy</string>
+  <string name="composer_add_attachments_bottom_sheet_import_from">Importovať z…</string>
+  <string name="composer_error_loading_parent_message">Nebolo možné načítať informácie o správe</string>
+  <string name="composer_original_message_quote">Pôvodná správa</string>
+  <string name="composer_sender_quote">%s, %s &lt;%s&gt; napísal/a:</string>
+  <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
+  <string name="composer_attachment_size_exceeded_dialog_title">Bol dosiahnutý limit príloh</string>
+  <string name="composer_attachment_size_exceeded_dialog_message">Limit veľkosti príloh je %1$s</string>
+  <string name="composer_attachment_reencryption_failed_message">Opätovné zašifrovanie prílohy zlyhalo. Z bezpečnostných dôvodov boli všetky prílohy odstránené.</string>
+  <string name="message_footer_text">Odoslané z mobilnej verzie Proton Mail</string>
+</resources>

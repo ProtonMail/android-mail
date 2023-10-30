@@ -45,4 +45,6 @@
   <string name="composer_attachment_size_exceeded_dialog_confirm_button">Tamam</string>
   <string name="composer_attachment_size_exceeded_dialog_title">Ek dosya sınırına ulaşıldı</string>
   <string name="composer_attachment_size_exceeded_dialog_message">Ek dosyaların boyutu %1$s ile sınırlıdır</string>
+  <string name="composer_attachment_reencryption_failed_message">Ek dosya yeniden şifrelenemedi. Güvenlik nedeniyle tüm ek dosyalar kaldırıldı.</string>
+  <string name="message_footer_text">Proton Mail mobil ile gönderildi</string>
 </resources>

@@ -55,7 +55,6 @@
   <string name="mail_settings_display_name_and_signature">Nama tampilan dan tanda tangan</string>
   <string name="mail_settings_mailbox">Kotak Surat</string>
   <string name="mail_settings_privacy">Privasi</string>
-  <string name="mail_settings_search_message_content">Cari konten pesan</string>
   <string name="mail_settings_labels_and_folders">Label dan folder</string>
   <string name="mail_settings_local_storage">Penyimpanan lokal</string>
   <string name="mail_settings_snooze">Tunda</string>

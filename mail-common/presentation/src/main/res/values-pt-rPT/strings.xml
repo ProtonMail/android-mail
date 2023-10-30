@@ -24,9 +24,9 @@
   <string name="retry">Repetir</string>
   <string name="toolbar_back_content_description">Voltar ao ecrã anterior</string>
   <string name="x_error_not_logged_in">Sem sessão iniciada</string>
-  <string name="action_reply">Reply</string>
-  <string name="action_reply_all">Reply all</string>
-  <string name="action_forward">Forward</string>
+  <string name="action_reply">Responder</string>
+  <string name="action_reply_all">Responder a todos</string>
+  <string name="action_forward">Reencaminhar</string>
   <string name="action_reply_content_description">Responder</string>
   <string name="action_reply_all_content_description">Responder a todos</string>
   <string name="action_forward_content_description">Reencaminhar</string>
@@ -57,6 +57,8 @@
   <string name="attachment_download_notification_channel_name">Anexos</string>
   <string name="attachment_download_notification_channel_description">Notificações para as transferências de anexos</string>
   <string name="email_notification_channel_name">E-mails</string>
+  <string name="login_notification_channel_name">Login Alerts</string>
   <string name="email_notification_channel_description">Notificações de e-mail recebido</string>
+  <string name="login_notification_channel_description">New logins notifications</string>
   <string name="auth_badge_official">Oficial</string>
 </resources>

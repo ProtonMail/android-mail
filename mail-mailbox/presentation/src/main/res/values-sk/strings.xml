@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="drawer_title_more">Viac</string>
+  <string name="drawer_title_contacts">Kontakty</string>
+  <string name="drawer_title_subscription">Predplatné</string>
+  <string name="mailbox_toolbar_compose_button_content_description">Napísať novú správu</string>
+  <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Ukončiť režim výberu</string>
+  <string name="mailbox_toolbar_menu_button_content_description">Menu</string>
+  <string name="mailbox_toolbar_search_button_content_description">Hľadať</string>
+  <plurals name="mailbox_toolbar_selected_count">
+    <item quantity="one">%d vybraný</item>
+    <item quantity="few">%d vybrané</item>
+    <item quantity="many">%d vybraných</item>
+    <item quantity="other">%d vybraných</item>
+  </plurals>
+  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
+  <string name="filter_unread_button_text_without_counter">Neprečítané</string>
+  <plurals name="filter_unread_button_text">
+    <item quantity="one">%d neprečítaná</item>
+    <item quantity="few">%d neprečítané</item>
+    <item quantity="many">%d neprečítaných</item>
+    <item quantity="other">%d neprečítaných</item>
+  </plurals>
+  <string name="mailbox_default_recipient">(Žiaden príjemca)</string>
+  <string name="mailbox_default_sender">(Žiaden odosielateľ)</string>
+  <string name="mailbox_error_message_offline">Ste odhlásený, nemôžete načítať položky</string>
+  <string name="mailbox_error_message_generic">Načítanie poštovej schránky zlyhalo</string>
+  <string name="mailbox_error_message_unexpected">Niečo sa nečakane pokazilo</string>
+  <string name="mailbox_is_empty_message">Táto poštová schránka je prázdna</string>
+</resources>

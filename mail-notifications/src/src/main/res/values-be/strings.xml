@@ -18,4 +18,9 @@
   -->
 <resources>
   <string name="notification_summary_text_new_messages">Новыя паведамленні</string>
+  <string name="notification_summary_text_new_login_alerts">Новыя папярэджанні ўваходу</string>
+  <string name="notification_title_text_new_login_alerts_fallback">Proton Mail</string>
+  <string name="notification_title_text_new_message_fallback">Новае паведамленне</string>
+  <string name="notification_actions_archive_description">Архіваваць</string>
+  <string name="notification_actions_trash_description">Перамясціць у сметніцу</string>
 </resources>

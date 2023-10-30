@@ -45,4 +45,6 @@
   <string name="composer_attachment_size_exceeded_dialog_confirm_button">Добра</string>
   <string name="composer_attachment_size_exceeded_dialog_title">Перавышана абмежаванне па колькасці далучэнняў</string>
   <string name="composer_attachment_size_exceeded_dialog_message">Максімальны памер далучэння складае: %1$s</string>
+  <string name="composer_attachment_reencryption_failed_message">Збой паўторнага шыфравання. У мэтах бяспекі ўсе далучэнні былі выдалены.</string>
+  <string name="message_footer_text">Адпраўлена з мабільнага кліента ProtonMail</string>
 </resources>

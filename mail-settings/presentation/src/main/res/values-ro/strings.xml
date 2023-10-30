@@ -55,7 +55,6 @@
   <string name="mail_settings_display_name_and_signature">Numele afișat și semnătura</string>
   <string name="mail_settings_mailbox">Mesaje</string>
   <string name="mail_settings_privacy">Confidențialitate</string>
-  <string name="mail_settings_search_message_content">Căutare în conținut mesaj</string>
   <string name="mail_settings_labels_and_folders">Etichete și foldere</string>
   <string name="mail_settings_local_storage">Stocare locală</string>
   <string name="mail_settings_snooze">Amânare</string>

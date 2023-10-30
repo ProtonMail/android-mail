@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="detail_error_loading_contacts">Načítanie kontaktov zlyhalo</string>
+  <string name="detail_error_loading_conversation">Načítanie konverzácie zlyhalo</string>
+  <string name="detail_error_loading_messages">Načítanie správ zlyhalo</string>
+  <string name="error_mark_unread_failed">Označiť za neprečítané zlyhalo. Prosím skúste znova.</string>
+  <plurals name="message_count_label_text">
+    <item quantity="one">%d správa</item>
+    <item quantity="few">%d správy</item>
+    <item quantity="many">%d správ</item>
+    <item quantity="other">%d správ</item>
+  </plurals>
+  <string name="more_button_content_description">Viac</string>
+  <string name="to">Komu:</string>
+  <string name="cc">Kópia:</string>
+  <string name="bcc">Skrytá kópia:</string>
+  <string name="hide_details">Skryť detaily</string>
+  <string name="undisclosed_recipients">Skrytí príjemcovia</string>
+  <string name="error_mark_as_unread_failed">Operácia označenia ako neprečítaná zlyhala. Skúste to znova.</string>
+  <string name="error_star_operation_failed">Pridanie hviezdičky zlyhalo. Skúste to znova, prosím.</string>
+  <string name="error_unstar_operation_failed">Odobratie hviezdičky zlyhalo. Skúste to znova, prosím.</string>
+  <string name="error_move_to_trash_failed">Presun do koša zlyhal. Skúste to znova.</string>
+  <string name="message_moved_to_trash">Správa bola presunutá do koša</string>
+  <string name="message_moved_to_archive">Správa bola presunutá do archívu</string>
+  <string name="message_moved_to_selected_destination">Správa presunutá do %1$s</string>
+  <string name="error_move_message_failed">Presun správy zlyhal. Skúste to znova.</string>
+  <string name="conversation_moved_to_trash">Konverzácia bola presunutá do koša</string>
+  <string name="conversation_moved_to_selected_destination">Konverzácia bola presunutá do %1$s</string>
+  <string name="conversation_moved_to_archive">Konverzácia bola presunutá do archívu</string>
+  <string name="error_move_conversation_failed">Presun správy zlyhal. Skúste to znova.</string>
+  <string name="error_loading_message">Niečo sa pokazilo, skúste to znova.</string>
+  <string name="error_offline_loading_message">Ste offline. Na zobrazenie obsahu tejto správy je potrebné internetové pripojenie.</string>
+  <string name="error_get_attachment_failed">Nepodarilo sa získať prílohu.</string>
+  <string name="error_attachment_download_in_progress">Prebiehajúce sťahovanie musí byť dokončené pred začatím nového.</string>
+  <string name="error_get_attachment_not_enough_memory">Prílohu sa nepodarilo získať pre nedostatok pamäte</string>
+  <string name="reload">Obnoviť</string>
+  <!-- Bottom Sheet -->
+  <string name="bottom_sheet_move_to_title">Presunúť do...</string>
+  <string name="bottom_sheet_done_action">Hotovo</string>
+  <string name="bottom_sheet_archive_action">Taktiež archivovať?</string>
+  <string name="bottom_sheet_label_as_title">Označiť ako...</string>
+  <string name="error_relabel_message_failed">Nepodarilo sa zmeniť označenie správy. Skúste znovu, prosím</string>
+  <string name="error_relabel_conversation_failed">Nepodarilo sa zmeniť označenie konverzácie. Skúste znovu, prosím</string>
+  <string name="please_go_back_online_to_load_messages">Nie ste pripojení. Na načítanie správ sa znovu pripojte, prosím</string>
+  <string name="decryption_error">Dešifrovanie správy zlyhalo.</string>
+  <string name="detail_error_retrieving_message_body">Nepodarilo sa načítať správy</string>
+  <string name="message_body_error_no_webview">Pre zobrazenie obsahu tejto správy musíte mať nainštalovaný WebView.</string>
+  <!-- Banners -->
+  <string name="message_body_embedded_images_banner_text">Automatické načítanie vložených obrázkov je vypnuté. Toto je možné zmeniť v nastaveniach.</string>
+  <string name="message_body_remote_content_banner_text">Automatické načítanie vzdialeného obsahu je vypnuté. Toto je možné zmeniť v nastaveniach.</string>
+  <string name="message_body_embedded_and_remote_content_banner_text">Automatické načítanie vložených obrázkov a vzdialeného obsahu je vypnuté. Tie je možné zmeniť v nastaveniach.</string>
+</resources>

@@ -45,4 +45,6 @@
   <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
   <string name="composer_attachment_size_exceeded_dialog_title">Limite de anexos alcançado</string>
   <string name="composer_attachment_size_exceeded_dialog_message">O limite de tamanho para anexos é de %1$s</string>
+  <string name="composer_attachment_reencryption_failed_message">A recriptografia do anexo falhou. Por motivos de segurança, todos os anexos foram removidos.</string>
+  <string name="message_footer_text">Enviado via Proton Mail para dispositivos móveis</string>
 </resources>

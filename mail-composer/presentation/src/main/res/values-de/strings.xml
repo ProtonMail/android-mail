@@ -45,4 +45,6 @@
   <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
   <string name="composer_attachment_size_exceeded_dialog_title">Limit für Anhänge erreicht</string>
   <string name="composer_attachment_size_exceeded_dialog_message">Die maximale Größe für Anhänge beträgt %1$s</string>
+  <string name="composer_attachment_reencryption_failed_message">Die erneute Verschlüsselung des Anhangs ist fehlgeschlagen. Aus Sicherheitsgründen wurden alle Anhänge entfernt.</string>
+  <string name="message_footer_text">Gesendet von Proton Mail für Mobilgeräte</string>
 </resources>

@@ -18,4 +18,9 @@
   -->
 <resources>
   <string name="notification_summary_text_new_messages">Nowe wiadomości</string>
+  <string name="notification_summary_text_new_login_alerts">Nowe alerty logowania</string>
+  <string name="notification_title_text_new_login_alerts_fallback">Proton Mail</string>
+  <string name="notification_title_text_new_message_fallback">Nowa wiadomość</string>
+  <string name="notification_actions_archive_description">Archiwizuj</string>
+  <string name="notification_actions_trash_description">Przenieś do Kosza</string>
 </resources>

@@ -25,7 +25,7 @@
   <string name="mailbox_toolbar_menu_button_content_description">Menu</string>
   <string name="mailbox_toolbar_search_button_content_description">Pesquisar</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">%d Selecionado</item>
+    <item quantity="one">%d selecionado</item>
     <item quantity="other">%d selecionados</item>
   </plurals>
   <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->

@@ -57,6 +57,8 @@
   <string name="attachment_download_notification_channel_name">Вкладення</string>
   <string name="attachment_download_notification_channel_description">Сповіщення про завантаження вкладень</string>
   <string name="email_notification_channel_name">Листи</string>
+  <string name="login_notification_channel_name">Login Alerts</string>
   <string name="email_notification_channel_description">Сповіщення про вхідну пошту</string>
+  <string name="login_notification_channel_description">New logins notifications</string>
   <string name="auth_badge_official">Офіційний</string>
 </resources>

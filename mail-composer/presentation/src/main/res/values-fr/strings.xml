@@ -45,4 +45,6 @@
   <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
   <string name="composer_attachment_size_exceeded_dialog_title">Limite de pièces jointes atteinte</string>
   <string name="composer_attachment_size_exceeded_dialog_message">La taille limite pour les pièces jointes est de %1$s.</string>
+  <string name="composer_attachment_reencryption_failed_message">Chiffrer à nouveau la pièce jointe n\'a pas abouti. Pour des raisons de sécurité, toutes les pièces jointes ont été supprimées.</string>
+  <string name="message_footer_text">Envoyé depuis Proton Mail mobile</string>
 </resources>

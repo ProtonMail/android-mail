@@ -55,7 +55,6 @@
   <string name="mail_settings_display_name_and_signature">Zaslonsko ime i potpis</string>
   <string name="mail_settings_mailbox">Poštanski sandučić</string>
   <string name="mail_settings_privacy">Privatnost</string>
-  <string name="mail_settings_search_message_content">Pretraži sadržaj poruka</string>
   <string name="mail_settings_labels_and_folders">Oznake i mape</string>
   <string name="mail_settings_local_storage">Lokalna pohrana</string>
   <string name="mail_settings_snooze">Utišaj</string>

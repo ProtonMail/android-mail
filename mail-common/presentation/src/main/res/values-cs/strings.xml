@@ -57,6 +57,8 @@
   <string name="attachment_download_notification_channel_name">Přílohy</string>
   <string name="attachment_download_notification_channel_description">Upozornění na stahování příloh</string>
   <string name="email_notification_channel_name">E-maily</string>
+  <string name="login_notification_channel_name">Upozornění na přihlášení</string>
   <string name="email_notification_channel_description">Oznámení příchozích e-mailů</string>
+  <string name="login_notification_channel_description">Upozornění na nová přihlášení</string>
   <string name="auth_badge_official">Oficiální</string>
 </resources>

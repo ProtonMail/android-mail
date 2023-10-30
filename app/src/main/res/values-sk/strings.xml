@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="title_remove">Odstrániť</string>
+  <string name="title_remove_account">Odstrániť účet</string>
+  <string name="description_remove_account">Odhlásite sa a odstránite všetky informácie spojené s týmto účtom.</string>
+  <string name="user_select_other_account_content_description">Vyberte iný účet</string>
+  <string name="you_are_offline">Ste v režime offline</string>
+  <string name="feature_coming_soon">Funkcia už čoskoro…</string>
+  <string name="mailbox_draft_saved">Koncept bol uložený</string>
+  <string name="mailbox_message_sending">Odosiela sa správa…</string>
+  <string name="mailbox_message_sending_offline">Offline, správa vo fronte na odoslanie</string>
+  <string name="mailbox_message_sending_success">Správa odoslaná</string>
+  <string name="mailbox_message_sending_error">Chyba pri odosielaní správy</string>
+  <string name="mailbox_attachment_uploading_error">Chyba pri nahrávaní prílohy</string>
+  <string name="notification_switched_account">Prepnuté na účet: %s</string>
+</resources>

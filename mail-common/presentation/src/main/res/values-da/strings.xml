@@ -57,6 +57,8 @@
   <string name="attachment_download_notification_channel_name">Vedhæftninger</string>
   <string name="attachment_download_notification_channel_description">Notifikationer ved download af vedhæftninger</string>
   <string name="email_notification_channel_name">E-mails</string>
+  <string name="login_notification_channel_name">Login Alerts</string>
   <string name="email_notification_channel_description">Indgående e-mailnotifikationer</string>
+  <string name="login_notification_channel_description">New logins notifications</string>
   <string name="auth_badge_official">Officiel</string>
 </resources>

@@ -57,6 +57,8 @@
   <string name="attachment_download_notification_channel_name">添付ファイル</string>
   <string name="attachment_download_notification_channel_description">添付ファイルのダウンロードに関する通知</string>
   <string name="email_notification_channel_name">メール</string>
+  <string name="login_notification_channel_name">ログインアラート</string>
   <string name="email_notification_channel_description">受信メール通知</string>
+  <string name="login_notification_channel_description">新規ログインの通知</string>
   <string name="auth_badge_official">公式</string>
 </resources>

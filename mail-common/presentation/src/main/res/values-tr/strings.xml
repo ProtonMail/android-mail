@@ -57,6 +57,8 @@
   <string name="attachment_download_notification_channel_name">Ek dosyalar</string>
   <string name="attachment_download_notification_channel_description">Ek dosya indirmeleri için bildirimler</string>
   <string name="email_notification_channel_name">E-postalar</string>
+  <string name="login_notification_channel_name">Oturum açma uyarıları</string>
   <string name="email_notification_channel_description">Gelen e-posta bildirimleri</string>
+  <string name="login_notification_channel_description">Yeni oturumların bildirimleri</string>
   <string name="auth_badge_official">Resmi</string>
 </resources>

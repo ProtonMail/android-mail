@@ -18,4 +18,9 @@
   -->
 <resources>
   <string name="notification_summary_text_new_messages">새 메시지</string>
+  <string name="notification_summary_text_new_login_alerts">새 로그인 알림</string>
+  <string name="notification_title_text_new_login_alerts_fallback">Proton Mail</string>
+  <string name="notification_title_text_new_message_fallback">새 메시지</string>
+  <string name="notification_actions_archive_description">보관함</string>
+  <string name="notification_actions_trash_description">휴지통</string>
 </resources>

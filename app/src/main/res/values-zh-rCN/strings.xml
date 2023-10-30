@@ -27,7 +27,7 @@
   <string name="mailbox_message_sending">正在发送邮件…</string>
   <string name="mailbox_message_sending_offline">网络尚未连接，邮件将稍后发送</string>
   <string name="mailbox_message_sending_success">邮件已发送</string>
-  <string name="mailbox_message_sending_error">Error sending message</string>
+  <string name="mailbox_message_sending_error">发送信息时出错</string>
   <string name="mailbox_attachment_uploading_error">上传附件时出错</string>
   <string name="notification_switched_account">已转至 %s</string>
 </resources>

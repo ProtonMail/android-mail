@@ -57,6 +57,8 @@
   <string name="attachment_download_notification_channel_name">Далучэнні</string>
   <string name="attachment_download_notification_channel_description">Апавяшчэнні аб спампоўванні далучэнняў</string>
   <string name="email_notification_channel_name">Лісты</string>
+  <string name="login_notification_channel_name">Папярэджанні ўваходу</string>
   <string name="email_notification_channel_description">Апавяшчэнні пра ўваходную электронную пошту</string>
+  <string name="login_notification_channel_description">Новыя апавяшчэнні пра ўваходы</string>
   <string name="auth_badge_official">Афіцыйны</string>
 </resources>

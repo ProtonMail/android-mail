@@ -57,6 +57,8 @@
   <string name="attachment_download_notification_channel_name">첨부파일</string>
   <string name="attachment_download_notification_channel_description">첨부파일 다운로드 알림</string>
   <string name="email_notification_channel_name">이메일</string>
+  <string name="login_notification_channel_name">로그인 알림</string>
   <string name="email_notification_channel_description">수신 이메일 알림</string>
+  <string name="login_notification_channel_description">새로운 로그인 알림</string>
   <string name="auth_badge_official">공식</string>
 </resources>

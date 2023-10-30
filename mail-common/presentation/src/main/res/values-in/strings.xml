@@ -57,6 +57,8 @@
   <string name="attachment_download_notification_channel_name">Lampiran</string>
   <string name="attachment_download_notification_channel_description">Notifikasi untuk unduhan lampiran</string>
   <string name="email_notification_channel_name">Surel</string>
+  <string name="login_notification_channel_name">Peringatan masuk</string>
   <string name="email_notification_channel_description">Notifikasi surel masuk</string>
+  <string name="login_notification_channel_description">Pemberitahuan masuk terbaru</string>
   <string name="auth_badge_official">Resmi</string>
 </resources>

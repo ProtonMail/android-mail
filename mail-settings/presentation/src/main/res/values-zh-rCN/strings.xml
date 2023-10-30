@@ -55,7 +55,6 @@
   <string name="mail_settings_display_name_and_signature">称呼与落款</string>
   <string name="mail_settings_mailbox">邮箱</string>
   <string name="mail_settings_privacy">隐私</string>
-  <string name="mail_settings_search_message_content">搜索邮件全文</string>
   <string name="mail_settings_labels_and_folders">标签和文件夹</string>
   <string name="mail_settings_local_storage">本机存储空间</string>
   <string name="mail_settings_snooze">免打扰</string>

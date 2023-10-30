@@ -45,4 +45,6 @@
   <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
   <string name="composer_attachment_size_exceeded_dialog_title">添付ファイルの制限に達しました。</string>
   <string name="composer_attachment_size_exceeded_dialog_message">添付ファイルのサイズ制限は%1$sです。</string>
+  <string name="composer_attachment_reencryption_failed_message">Reencryption of attachment failed. For security reasons all attachments got removed.</string>
+  <string name="message_footer_text">Sent from Proton Mail mobile</string>
 </resources>

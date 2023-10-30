@@ -57,6 +57,8 @@
   <string name="attachment_download_notification_channel_name">Συνημμένα</string>
   <string name="attachment_download_notification_channel_description">Ειδοποιήσεις για λήψεις συνημμένων</string>
   <string name="email_notification_channel_name">Μηνύματα</string>
+  <string name="login_notification_channel_name">Ειδοποιήσεις σύνδεσης</string>
   <string name="email_notification_channel_description">Ειδοποιήσεις εισερχόμενων E-mail</string>
+  <string name="login_notification_channel_description">Ειδοποιήσεις νέων συνδέσεων</string>
   <string name="auth_badge_official">Επίσημο</string>
 </resources>

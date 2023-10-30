@@ -57,6 +57,8 @@
   <string name="attachment_download_notification_channel_name">Allegati</string>
   <string name="attachment_download_notification_channel_description">Notifiche per il download degli allegati</string>
   <string name="email_notification_channel_name">Email</string>
+  <string name="login_notification_channel_name">Avvisi di accesso</string>
   <string name="email_notification_channel_description">Notifiche email in arrivo</string>
+  <string name="login_notification_channel_description">Notifiche di nuovi accessi</string>
   <string name="auth_badge_official">Ufficiale</string>
 </resources>
