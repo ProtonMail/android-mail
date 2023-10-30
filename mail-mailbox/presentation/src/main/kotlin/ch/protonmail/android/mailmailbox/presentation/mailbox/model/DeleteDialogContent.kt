@@ -18,18 +18,9 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox.model
 
-import androidx.compose.runtime.Stable
-import ch.protonmail.android.mailcommon.presentation.Effect
-import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 
-@Stable
-data class MailboxState(
-    val mailboxListState: MailboxListState,
-    val topAppBarState: MailboxTopAppBarState,
-    val unreadFilterState: UnreadFilterState,
-    val bottomAppBarState: BottomBarState,
-    val onboardingState: OnboardingState,
-    val actionMessage: Effect<TextUiModel>,
-    val deleteDialogState: Effect<DeleteDialogState>
+data class DeleteDialogState(
+    val title: TextUiModel,
+    val message: TextUiModel
 )

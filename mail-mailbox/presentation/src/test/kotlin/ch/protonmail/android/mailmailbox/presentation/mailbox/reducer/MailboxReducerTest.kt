@@ -148,7 +148,8 @@ internal class MailboxReducerTest(
             ),
             bottomAppBarState = BottomBarState.Loading,
             onboardingState = OnboardingState.Hidden,
-            actionMessage = Effect.empty()
+            actionMessage = Effect.empty(),
+            deleteDialogState = Effect.empty()
         )
 
         private val actions = listOf(

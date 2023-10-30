@@ -68,10 +68,13 @@ import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
+import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
 import ch.protonmail.android.mailmailbox.presentation.R
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.DeleteDialogState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
@@ -82,6 +85,9 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.Mailbo
 import ch.protonmail.android.mailmailbox.presentation.paging.mapAppendToUiStates
 import ch.protonmail.android.mailmailbox.presentation.paging.mapToUiStates
 import kotlinx.coroutines.launch
+import me.proton.core.compose.component.ProtonAlertDialog
+import me.proton.core.compose.component.ProtonAlertDialogButton
+import me.proton.core.compose.component.ProtonAlertDialogText
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
@@ -154,6 +160,8 @@ fun MailboxScreen(
     ConsumableTextEffect(effect = mailboxState.actionMessage) {
         snackbarHostState.showSnackbar(message = it, type = ProtonSnackbarType.NORM)
     }
+
+    MailboxDeleteDialog(state = mailboxState.deleteDialogState, actions.deleteConfirmed)
 
     Scaffold(
         modifier = modifier.testTag(MailboxScreenTestTags.Root),
@@ -512,6 +520,34 @@ private fun MailboxError(modifier: Modifier = Modifier, errorMessage: String) {
     }
 }
 
+@Composable
+private fun MailboxDeleteDialog(state: Effect<DeleteDialogState>, confirm: () -> Unit) {
+    val deleteDialogState = remember { mutableStateOf<DeleteDialogState?>(null) }
+
+    ConsumableLaunchedEffect(effect = state) {
+        deleteDialogState.value = it
+    }
+
+    deleteDialogState.value?.let {
+        ProtonAlertDialog(
+            onDismissRequest = { deleteDialogState.value = null },
+            confirmButton = {
+                ProtonAlertDialogButton(R.string.mailbox_action_delete_dialog_button_delete) {
+                    confirm()
+                    deleteDialogState.value = null
+                }
+            },
+            dismissButton = {
+                ProtonAlertDialogButton(R.string.mailbox_action_delete_dialog_button_cancel) {
+                    deleteDialogState.value = null
+                }
+            },
+            title = it.title.string(),
+            text = { ProtonAlertDialogText(it.message.string()) }
+        )
+    }
+}
+
 object MailboxScreen {
 
     data class Actions(
@@ -533,7 +569,9 @@ object MailboxScreen {
         val onErrorWithData: () -> Unit,
         val markAsRead: () -> Unit,
         val markAsUnread: () -> Unit,
-        val trash: () -> Unit
+        val trash: () -> Unit,
+        val delete: () -> Unit,
+        val deleteConfirmed: () -> Unit
     ) {
 
         companion object {
@@ -557,7 +595,9 @@ object MailboxScreen {
                 onErrorWithData = {},
                 markAsRead = {},
                 markAsUnread = {},
-                trash = {}
+                trash = {},
+                delete = {},
+                deleteConfirmed = {}
             )
         }
     }

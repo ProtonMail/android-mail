@@ -473,7 +473,8 @@ class MailboxViewModel @Inject constructor(
             unreadFilterState = UnreadFilterState.Loading,
             bottomAppBarState = BottomBarState.Data.Hidden(emptyList()),
             onboardingState = OnboardingState.Hidden,
-            actionMessage = Effect.empty()
+            actionMessage = Effect.empty(),
+            deleteDialogState = Effect.empty()
         )
     }
 }
