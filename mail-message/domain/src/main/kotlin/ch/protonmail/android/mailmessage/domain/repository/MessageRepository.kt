@@ -175,4 +175,13 @@ interface MessageRepository {
         localDraftId: MessageId,
         apiAssignedId: MessageId
     )
+
+    /**
+     * Delete the message with the given [messageId]
+     */
+    suspend fun deleteMessages(
+        userId: UserId,
+        messageIds: List<MessageId>,
+        currentLabelId: LabelId
+    ): Either<DataError, Unit>
 }

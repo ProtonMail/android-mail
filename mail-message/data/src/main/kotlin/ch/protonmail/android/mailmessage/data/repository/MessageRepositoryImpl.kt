@@ -61,6 +61,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.math.min
 
+@SuppressWarnings("TooManyFunctions")
 @Singleton
 class MessageRepositoryImpl @Inject constructor(
     private val remoteDataSource: MessageRemoteDataSource,
@@ -247,6 +248,22 @@ class MessageRepositoryImpl @Inject constructor(
         apiAssignedId: MessageId
     ) {
         localDataSource.updateDraftMessageId(userId, localDraftId, apiAssignedId)
+    }
+
+    override suspend fun deleteMessages(
+        userId: UserId,
+        messageIds: List<MessageId>,
+        currentLabelId: LabelId
+    ): Either<DataError, Unit> {
+        runCatching { localDataSource.deleteMessages(userId, messageIds) }.getOrElse {
+            Timber.e(it, "Failed to delete messages")
+            return DataError.Local.Unknown.left()
+        }
+        runCatching { remoteDataSource.deleteMessages(userId, messageIds, currentLabelId) }.getOrElse {
+            Timber.e(it, "Failed to delete messages")
+            return DataError.Remote.Unknown.left()
+        }
+        return Unit.right()
     }
 
     private suspend fun moveToTrashOrSpam(

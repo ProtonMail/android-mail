@@ -49,6 +49,7 @@ import ch.protonmail.android.testdata.message.MessageTestData
 import io.mockk.Called
 import io.mockk.Ordering
 import io.mockk.coEvery
+import io.mockk.coJustRun
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
@@ -1000,5 +1001,22 @@ class MessageRepositoryImplTest {
         // Then
         assertEquals(expectedMessageWithBody, actual)
         coVerify(exactly = 0) { localDataSource.upsertMessageWithBody(userId, expectedMessageWithBody) }
+    }
+
+    @Test
+    fun `verify delete messages calls local and remote data sources`() = runTest {
+        // Given
+        val messageIds = listOf(MessageId("1"), MessageId("2"))
+        val expectedLabel = SystemLabelId.Trash.labelId
+        coJustRun { localDataSource.deleteMessages(userId, messageIds) }
+        coJustRun { remoteDataSource.deleteMessages(userId, messageIds, expectedLabel) }
+
+        // When
+        val actual = messageRepository.deleteMessages(userId, messageIds, expectedLabel)
+
+        // Then
+        assertEquals(Unit.right(), actual)
+        coVerify { localDataSource.deleteMessages(userId, messageIds) }
+        coVerify { remoteDataSource.deleteMessages(userId, messageIds, expectedLabel) }
     }
 }
