@@ -52,10 +52,10 @@ fun PrivacySettingsScreen(
         mutableStateOf(
             PrivacySettingsScreen.Actions(
                 onBackClick = onBackClick,
-                onShowRemoteContent = {},
-                onShowEmbeddedImages = {},
-                onRequestLinkConfirmation = {},
-                onPreventScreenshots = {}
+                onShowRemoteContent = viewModel::onAutoShowRemoteContentToggled,
+                onShowEmbeddedImages = viewModel::onAutoShowEmbeddedImagesToggled,
+                onRequestLinkConfirmation = viewModel::onConfirmLinkToggled,
+                onPreventScreenshots = {} // MAILANDR-1059
             )
         )
     }

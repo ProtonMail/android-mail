@@ -23,6 +23,9 @@ import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailsettings.domain.model.PrivacySettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailSettings
+import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdateAutoShowEmbeddedImagesSetting
+import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdateLinkConfirmationSetting
+import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdateShowRemoteContentSetting
 import ch.protonmail.android.mailsettings.presentation.settings.privacy.reducer.PrivacySettingsReducer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,6 +34,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import me.proton.core.domain.type.IntEnum
 import me.proton.core.mailsettings.domain.entity.MailSettings
 import me.proton.core.mailsettings.domain.entity.ShowImage
@@ -40,6 +44,9 @@ import javax.inject.Inject
 class PrivacySettingsViewModel @Inject constructor(
     observePrimaryUserId: ObservePrimaryUserId,
     private val observeMailSettings: ObserveMailSettings,
+    private val updateShowRemoteContentSetting: UpdateShowRemoteContentSetting,
+    private val updateAutoShowEmbeddedImagesSetting: UpdateAutoShowEmbeddedImagesSetting,
+    private val updateLinkConfirmationSetting: UpdateLinkConfirmationSetting,
     private val privacySettingsReducer: PrivacySettingsReducer
 ) : ViewModel() {
 
@@ -55,6 +62,30 @@ class PrivacySettingsViewModel @Inject constructor(
 
             emitNewStateFrom(PrivacySettingsEvent.Data.ContentLoaded(settings.toPrivacySettings()))
         }.launchIn(viewModelScope)
+    }
+
+    fun onAutoShowRemoteContentToggled(newValue: Boolean) {
+        viewModelScope.launch {
+            updateShowRemoteContentSetting(newValue)
+                .onLeft { emitNewStateFrom(PrivacySettingsEvent.Error.UpdateError) }
+                .onRight { emitNewStateFrom(PrivacySettingsEvent.Data.AutoLoadRemoteContentChanged(newValue)) }
+        }
+    }
+
+    fun onAutoShowEmbeddedImagesToggled(newValue: Boolean) {
+        viewModelScope.launch {
+            updateAutoShowEmbeddedImagesSetting(newValue)
+                .onLeft { emitNewStateFrom(PrivacySettingsEvent.Error.UpdateError) }
+                .onRight { emitNewStateFrom(PrivacySettingsEvent.Data.AutoShowEmbeddedImagesChanged(newValue)) }
+        }
+    }
+
+    fun onConfirmLinkToggled(newValue: Boolean) {
+        viewModelScope.launch {
+            updateLinkConfirmationSetting(newValue)
+                .onLeft { emitNewStateFrom(PrivacySettingsEvent.Error.UpdateError) }
+                .onRight { emitNewStateFrom(PrivacySettingsEvent.Data.RequestLinkConfirmationChanged(newValue)) }
+        }
     }
 
     private fun emitNewStateFrom(event: PrivacySettingsEvent) = mutableState.update {
