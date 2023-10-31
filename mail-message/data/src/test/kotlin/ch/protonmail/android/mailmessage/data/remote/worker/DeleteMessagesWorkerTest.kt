@@ -49,17 +49,14 @@ import me.proton.core.network.domain.session.SessionId
 import me.proton.core.network.domain.session.SessionProvider
 import me.proton.core.test.android.api.TestApiManager
 import me.proton.core.util.kotlin.DefaultDispatcherProvider
-import me.proton.core.util.kotlin.serialize
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 
 class DeleteMessagesWorkerTest {
 
-    private val messageId = MessageId(MessageTestData.RAW_MESSAGE_ID)
+    private val messageIds = listOf(MessageId(MessageTestData.RAW_MESSAGE_ID))
     private val labelId = LabelId("10")
-    private val expectedMessageListParams = listOf(messageId.id).serialize()
 
     private val workManager: WorkManager = mockk {
         coEvery { enqueue(any<OneTimeWorkRequest>()) } returns mockk()
@@ -68,8 +65,8 @@ class DeleteMessagesWorkerTest {
         every { taskExecutor } returns mockk(relaxed = true)
         every { inputData.getString(DeleteMessagesWorker.RawUserIdKey) } returns userId.id
         every {
-            inputData.getString(DeleteMessagesWorker.RawMessageIdsKey)
-        } returns expectedMessageListParams
+            inputData.getStringArray(DeleteMessagesWorker.RawMessageIdsKey)
+        } returns arrayOf(MessageTestData.RAW_MESSAGE_ID)
         every { inputData.getString(DeleteMessagesWorker.RawLabelIdKey) } returns labelId.id
     }
     private val context: Context = mockk()
@@ -102,11 +99,7 @@ class DeleteMessagesWorkerTest {
         // When
         Enqueuer(workManager).enqueue<DeleteMessagesWorker>(
             userId,
-            DeleteMessagesWorker.params(
-                userId,
-                listOf(messageId),
-                labelId
-            )
+            DeleteMessagesWorker.params(userId, messageIds, labelId)
         )
 
         // Then
@@ -116,55 +109,64 @@ class DeleteMessagesWorkerTest {
         val constraints = workSpec.constraints
         val inputData = workSpec.input
         val actualUserId = inputData.getString(DeleteMessagesWorker.RawUserIdKey)
-        val actualMessageId = inputData.getString(DeleteMessagesWorker.RawMessageIdsKey)
+        val actualMessageId = inputData.getStringArray(DeleteMessagesWorker.RawMessageIdsKey)
         val actualLabelId = inputData.getString(DeleteMessagesWorker.RawLabelIdKey)
         assertEquals(userId.id, actualUserId)
-        assertEquals(expectedMessageListParams, actualMessageId)
+        assertEquals(messageIds, actualMessageId?.toList()?.map { MessageId(it) })
         assertEquals(labelId.id, actualLabelId)
         assertEquals(NetworkType.CONNECTED, constraints.requiredNetworkType)
     }
 
     @Test
-    fun `when remove label worker is started then api is called with the given parameters`() = runTest {
+    fun `when delete messages worker is started then api is called with the given parameters`() = runTest {
         // When
         deleteMessagesWorker.doWork()
 
         // Then
-        coVerify { messageApi.deleteMessages(MessageActionBody(labelId.id, listOf(messageId.id))) }
+        coVerify { messageApi.deleteMessages(MessageActionBody(labelId.id, messageIds.map { it.id })) }
     }
 
     @Test
-    fun `remove label worker fails when userid parameter is missing`() = runTest {
+    fun `delete messages worker fails when userid parameter is missing`() = runTest {
         // Given
         every { parameters.inputData.getString(DeleteMessagesWorker.RawUserIdKey) } returns null
 
-        // When - Then
-        assertFailsWith<IllegalArgumentException> { deleteMessagesWorker.doWork() }
+        // When
+        val result = deleteMessagesWorker.doWork()
+
+        // Then
         coVerify { messageApi wasNot Called }
+        assertEquals(Result.failure(), result)
     }
 
     @Test
-    fun `remove label worker fails when messageId parameter is empty`() = runTest {
+    fun `delete messages worker fails when messageId parameter is null`() = runTest {
         // Given
-        every { parameters.inputData.getString(DeleteMessagesWorker.RawMessageIdsKey) } returns ""
+        every { parameters.inputData.getStringArray(DeleteMessagesWorker.RawMessageIdsKey) } returns null
 
-        // When - Then
-        assertFailsWith<IllegalArgumentException> { deleteMessagesWorker.doWork() }
+        // When
+        val result = deleteMessagesWorker.doWork()
+
+        // Then
         coVerify { messageApi wasNot Called }
+        assertEquals(Result.failure(), result)
     }
 
     @Test
-    fun `remove label worker returns fails when labelId parameter is blank`() = runTest {
+    fun `delete messages worker returns fails when labelId parameter is blank`() = runTest {
         // Given
         every { parameters.inputData.getString(DeleteMessagesWorker.RawLabelIdKey) } returns " "
 
-        // When - Then
-        assertFailsWith<IllegalArgumentException> { deleteMessagesWorker.doWork() }
+        // When
+        val result = deleteMessagesWorker.doWork()
+
+        // Then
         coVerify { messageApi wasNot Called }
+        assertEquals(Result.failure(), result)
     }
 
     @Test
-    fun `remove label worker returns success when api call was successful`() = runTest {
+    fun `delete messages worker returns success when api call was successful`() = runTest {
         // When
         val result = deleteMessagesWorker.doWork()
 
@@ -173,15 +175,15 @@ class DeleteMessagesWorkerTest {
     }
 
     @Test
-    fun `remove label worker removes label from multiple messages within one call`() = runTest {
+    fun `delete messages worker deletes multiple messages within one call`() = runTest {
         // Given
         val messageList = listOf(
             MessageIdSample.SepWeatherForecast.id,
             MessageIdSample.OctWeatherForecast.id
         )
         every {
-            parameters.inputData.getString(DeleteMessagesWorker.RawMessageIdsKey)
-        } returns messageList.serialize()
+            parameters.inputData.getStringArray(DeleteMessagesWorker.RawMessageIdsKey)
+        } returns messageList.toTypedArray()
 
         // When
         val result = deleteMessagesWorker.doWork()
@@ -192,7 +194,7 @@ class DeleteMessagesWorkerTest {
     }
 
     @Test
-    fun `remove label worker returns retry when api call fails due to connection error`() = runTest {
+    fun `delete messages worker returns retry when api call fails due to connection error`() = runTest {
         // Given
         coEvery { messageApi.deleteMessages(any()) } throws UnknownHostException()
 
@@ -204,7 +206,7 @@ class DeleteMessagesWorkerTest {
     }
 
     @Test
-    fun `remove label worker returns failure when api call fails due to serializationException error`() = runTest {
+    fun `delete messages worker returns failure when api call fails due to serializationException error`() = runTest {
         // Given
         coEvery { messageApi.deleteMessages(any()) } throws SerializationException()
 

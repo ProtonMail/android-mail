@@ -22,7 +22,6 @@ import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import ch.protonmail.android.mailcommon.domain.util.requireNotBlank
 import ch.protonmail.android.mailmessage.data.remote.MessageApi
 import ch.protonmail.android.mailmessage.data.remote.resource.MessageActionBody
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -33,8 +32,7 @@ import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.network.data.ApiProvider
 import me.proton.core.network.domain.ApiResult
 import me.proton.core.network.domain.isRetryable
-import me.proton.core.util.kotlin.deserializeList
-import me.proton.core.util.kotlin.serialize
+import me.proton.core.util.kotlin.takeIfNotBlank
 
 @HiltWorker
 class DeleteMessagesWorker @AssistedInject constructor(
@@ -44,10 +42,13 @@ class DeleteMessagesWorker @AssistedInject constructor(
 ) : CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {
-        val userId = requireNotBlank(inputData.getString(RawUserIdKey), fieldName = "User id")
-        val messageIds = requireNotBlank(inputData.getString(RawMessageIdsKey), fieldName = "Message ids")
-            .deserializeList<String>()
-        val labelId = requireNotBlank(inputData.getString(RawLabelIdKey), fieldName = "Label id")
+        val userId = inputData.getString(RawUserIdKey)?.takeIfNotBlank()
+        val messageIds = inputData.getStringArray(RawMessageIdsKey)?.toList()
+        val labelId = inputData.getString(RawLabelIdKey)?.takeIfNotBlank()
+
+        if (userId == null || messageIds == null || labelId == null) {
+            return Result.failure()
+        }
 
         val result = apiProvider.get<MessageApi>(UserId(userId)).invoke {
             deleteMessages(
@@ -79,7 +80,7 @@ class DeleteMessagesWorker @AssistedInject constructor(
             labelId: LabelId
         ) = mapOf(
             RawUserIdKey to userId.id,
-            RawMessageIdsKey to messageIds.map { it.id }.serialize(),
+            RawMessageIdsKey to messageIds.map { it.id }.toTypedArray(),
             RawLabelIdKey to labelId.id
         )
     }

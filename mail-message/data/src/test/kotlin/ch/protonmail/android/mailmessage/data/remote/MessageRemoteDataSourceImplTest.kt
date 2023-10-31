@@ -455,10 +455,8 @@ class MessageRemoteDataSourceImplTest {
 
         // then
         verify {
-            enqueuer.enqueue<DeleteMessagesWorker>(
-                userId,
-                DeleteMessagesWorker.params(userId, messageId, SystemLabelId.Trash.labelId)
-            )
+            val expectedFirst = DeleteMessagesWorker.params(userId, messageId, SystemLabelId.Trash.labelId)
+            enqueuer.enqueue<DeleteMessagesWorker>(userId, match { mapDeepEquals(it, expectedFirst) })
         }
     }
 
@@ -473,14 +471,20 @@ class MessageRemoteDataSourceImplTest {
 
         // Then
         verifySequence {
-            enqueuer.enqueue<DeleteMessagesWorker>(
-                userId,
-                DeleteMessagesWorker.params(userId, messageIds.take(MAX_ACTION_WORKER_PARAMETER_COUNT), expectedLabel)
+
+            val expectedFirst = DeleteMessagesWorker.params(
+                userId, messageIds.take(MAX_ACTION_WORKER_PARAMETER_COUNT), expectedLabel
             )
-            enqueuer.enqueue<DeleteMessagesWorker>(
-                userId,
-                DeleteMessagesWorker.params(userId, messageIds.drop(MAX_ACTION_WORKER_PARAMETER_COUNT), expectedLabel)
+            enqueuer.enqueue<DeleteMessagesWorker>(userId, match { mapDeepEquals(it, expectedFirst) })
+
+            val expectedSecond = DeleteMessagesWorker.params(
+                userId, messageIds.drop(MAX_ACTION_WORKER_PARAMETER_COUNT), expectedLabel
             )
+            enqueuer.enqueue<DeleteMessagesWorker>(userId, match { mapDeepEquals(it, expectedSecond) })
         }
     }
+
+    private fun mapDeepEquals(expected: Map<String, Any?>, actual: Map<String, Any?>): Boolean =
+        expected.keys == actual.keys &&
+            expected.values.toTypedArray().contentDeepEquals(actual.values.toTypedArray())
 }
