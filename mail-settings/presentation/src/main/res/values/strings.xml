@@ -62,6 +62,13 @@
     <string name="mail_settings_conversation_mode">Conversation mode</string>
     <string name="mail_settings_not_set">Not set</string>
     <string name="mail_settings_conversation_mode_hint">Group emails in the same conversation together in your inbox or display them separately</string>
+    <!-- Privacy settings -->
+    <string name="mail_settings_privacy_auto_show_remote_content">Auto show remote content</string>
+    <string name="mail_settings_privacy_auto_show_embedded_images">Auto show embedded images</string>
+    <string name="mail_settings_privacy_prevent_taking_screenshots">Prevent taking screenshots</string>
+    <string name="mail_settings_privacy_request_link_confirmation">Request link confirmation</string>
+    <string name="mail_settings_privacy_error_updating">Error updating settings</string>
+    <string name="mail_settings_privacy_error_loading">Error loading settings</string>
     <!-- Swipe Actions -->
     <string name="mail_settings_swipe_actions_title">Swipe actions</string>
     <string name="mail_settings_swipe_actions_subtitle">Set up swipe gestures to access most used actions.</string>
