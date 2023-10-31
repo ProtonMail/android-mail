@@ -24,6 +24,7 @@ import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
+import ch.protonmail.android.BuildConfig
 import me.proton.core.featureflag.data.FeatureFlagRefreshStarter
 
 class FeatureFlagInitializer : Initializer<Unit> {
@@ -32,7 +33,7 @@ class FeatureFlagInitializer : Initializer<Unit> {
         EntryPointAccessors.fromApplication(
             context.applicationContext,
             FeatureFlagInitializerEntryPoint::class.java
-        ).featureFlagRefreshStarter().start()
+        ).featureFlagRefreshStarter().start(BuildConfig.DEBUG)
     }
 
     override fun dependencies(): List<Class<out Initializer<*>?>> = listOf(
