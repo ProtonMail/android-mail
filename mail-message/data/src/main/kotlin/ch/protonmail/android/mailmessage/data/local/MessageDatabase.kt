@@ -214,5 +214,31 @@ interface MessageDatabase : Database, PageIntervalDatabase {
 
             }
         }
+
+        val MIGRATION_5 = object : DatabaseMigration {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.dropTable("MessageBodyEntity")
+                // Create a MessageBody table with the new foreign key constraint
+                database.execSQL(
+                    """
+                        CREATE TABLE IF NOT EXISTS `MessageBodyEntity` (
+                        `userId` TEXT NOT NULL,
+                        `messageId` TEXT NOT NULL,
+                        `body` TEXT,
+                        `header` TEXT NOT NULL,
+                        `mimeType` TEXT NOT NULL,
+                        `spamScore` TEXT NOT NULL,
+                        `replyTo` TEXT NOT NULL,
+                        `replyTos` TEXT NOT NULL,
+                        `unsubscribeMethodsEntity` TEXT,
+                         PRIMARY KEY(`userId`, `messageId`),
+                         FOREIGN KEY(`userId`) REFERENCES `UserEntity`(`userId`) ON UPDATE NO ACTION ON DELETE CASCADE,
+                         FOREIGN KEY(`userId`, `messageId`) REFERENCES `MessageEntity`(`userId`, `messageId`) ON UPDATE CASCADE ON DELETE CASCADE )
+                    """.trimIndent()
+                )
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageBodyEntity_userId` ON `MessageBodyEntity` (`userId`)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageBodyEntity_messageId` ON `MessageBodyEntity` (`messageId`)")
+            }
+        }
     }
 }
