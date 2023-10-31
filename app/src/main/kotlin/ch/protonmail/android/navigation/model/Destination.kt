@@ -21,8 +21,8 @@ package ch.protonmail.android.navigation.model
 import ch.protonmail.android.feature.account.RemoveAccountDialog.USER_ID_KEY
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcomposer.domain.model.DraftAction
-import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.SerializedDraftActionKey
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.DraftMessageIdKey
+import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.SerializedDraftActionKey
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.ConversationIdKey
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen.MESSAGE_ID_KEY
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -61,6 +61,7 @@ sealed class Destination(val route: String) {
         object AlternativeRoutingSettings : Destination("settings/alternativeRouting")
         object CombinedContactsSettings : Destination("settings/combinedContacts")
         object ConversationModeSettings : Destination("settings/account/conversationMode")
+        object PrivacySettings : Destination("settings/account/privacy")
         object LanguageSettings : Destination("settings/appLanguage")
         object SwipeActionsSettings : Destination("settings/swipeActions")
         object EditSwipeActionSettings : Destination("settings/swipeActions/edit/${SWIPE_DIRECTION_KEY.wrap()}") {

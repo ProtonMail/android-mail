@@ -52,6 +52,7 @@ import ch.protonmail.android.navigation.route.addEditSwipeActionsSettings
 import ch.protonmail.android.navigation.route.addLanguageSettings
 import ch.protonmail.android.navigation.route.addMailbox
 import ch.protonmail.android.navigation.route.addMessageDetail
+import ch.protonmail.android.navigation.route.addPrivacySettings
 import ch.protonmail.android.navigation.route.addRemoveAccountDialog
 import ch.protonmail.android.navigation.route.addSettings
 import ch.protonmail.android.navigation.route.addSwipeActionsSettings
@@ -241,6 +242,7 @@ fun Home(
                 addConversationModeSettings(navController)
                 addEditSwipeActionsSettings(navController)
                 addLanguageSettings(navController)
+                addPrivacySettings(navController)
                 addSwipeActionsSettings(navController)
                 addThemeSettings(navController)
                 addDeepLinkHandler(navController)

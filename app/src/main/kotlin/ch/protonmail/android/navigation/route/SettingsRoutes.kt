@@ -28,6 +28,7 @@ import ch.protonmail.android.mailsettings.presentation.accountsettings.conversat
 import ch.protonmail.android.mailsettings.presentation.settings.alternativerouting.AlternativeRoutingSettingScreen
 import ch.protonmail.android.mailsettings.presentation.settings.combinedcontacts.CombinedContactsSettingScreen
 import ch.protonmail.android.mailsettings.presentation.settings.language.LanguageSettingsScreen
+import ch.protonmail.android.mailsettings.presentation.settings.privacy.PrivacySettingsScreen
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.EditSwipeActionPreferenceScreen
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.EditSwipeActionPreferenceScreen.SWIPE_DIRECTION_KEY
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.SwipeActionsPreferenceScreen
@@ -50,7 +51,7 @@ fun NavGraphBuilder.addAccountSettings(
                 onConversationModeClick = { navController.navigate(Screen.ConversationModeSettings.route) },
                 onDefaultEmailAddressClick = { showFeatureMissingSnackbar() },
                 onDisplayNameClick = { showFeatureMissingSnackbar() },
-                onPrivacyClick = { showFeatureMissingSnackbar() },
+                onPrivacyClick = { navController.navigate(Screen.PrivacySettings.route) },
                 onLabelsFoldersClick = { showFeatureMissingSnackbar() },
                 onLocalStorageClick = { showFeatureMissingSnackbar() },
                 onSnoozeNotificationsClick = { showFeatureMissingSnackbar() }
@@ -80,6 +81,15 @@ internal fun NavGraphBuilder.addCombinedContactsSetting(navController: NavHostCo
 internal fun NavGraphBuilder.addConversationModeSettings(navController: NavHostController) {
     composable(route = Screen.ConversationModeSettings.route) {
         ConversationModeSettingScreen(
+            modifier = Modifier,
+            onBackClick = { navController.popBackStack() }
+        )
+    }
+}
+
+internal fun NavGraphBuilder.addPrivacySettings(navController: NavHostController) {
+    composable(route = Screen.PrivacySettings.route) {
+        PrivacySettingsScreen(
             modifier = Modifier,
             onBackClick = { navController.popBackStack() }
         )
