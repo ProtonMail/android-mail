@@ -86,7 +86,7 @@ fun Sidebar(
                     when (sidebarLabelAction) {
                         is SidebarLabelAction.Add -> {
                             close()
-                            navigationActions.onLabelsSettings()
+                            navigationActions.onLabelList()
                         }
 
                         is SidebarLabelAction.Select -> {
@@ -215,7 +215,8 @@ object Sidebar {
         val onRemoveAccount: (UserId?) -> Unit,
         val onSwitchAccount: (UserId) -> Unit,
         val onSettings: () -> Unit,
-        val onLabelsSettings: () -> Unit,
+        val onLabelList: () -> Unit,
+        val onFolderList: () -> Unit,
         val onSubscription: () -> Unit,
         val onReportBug: () -> Unit
     ) {
@@ -266,7 +267,8 @@ object Sidebar {
                 onRemoveAccount = {},
                 onSwitchAccount = {},
                 onSettings = {},
-                onLabelsSettings = {},
+                onLabelList = {},
+                onFolderList = {},
                 onSubscription = {},
                 onReportBug = {}
             )

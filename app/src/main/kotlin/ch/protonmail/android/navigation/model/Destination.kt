@@ -70,6 +70,8 @@ sealed class Destination(val route: String) {
         }
         object ThemeSettings : Destination("settings/theme")
         object DeepLinksHandler : Destination("deepLinksHandler")
+        object LabelList : Destination("labelList")
+        object LabelForm : Destination("labelForm")
     }
 
     object Dialog {

@@ -16,36 +16,17 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcommon.presentation.compose
+package ch.protonmail.android.maillabel.presentation.labellist
 
-import androidx.compose.ui.unit.dp
+import ch.protonmail.android.maillabel.domain.model.MailLabel
 
-object MailDimens {
+sealed class LabelListState {
 
-    val ThinBorder = 0.5.dp
-    val DefaultBorder = 1.dp
-    val AvatarBorderLine = 1.5.dp
+    object Loading : LabelListState()
 
-    val TinySpacing = 2.dp
+    object EmptyLabelList : LabelListState()
 
-    val SeparatorHeight = 1.dp
-
-    val DefaultTouchTargetSize = 32.dp
-
-    val AvatarMinSize = 28.dp
-    val AvatarCheckmarkSize = 20.dp
-
-    val ProgressDefaultSize = 24.dp
-
-    val TinyIcon = 12.dp
-
-    val ExtraLargeSpacing = 48.dp
-
-    val ErrorIconBoxSize = 80.dp
-
-    val ConversationMessageCollapseBarHeight = 16.dp
-
-    val IconWeakRoundBackgroundRadius = 28.dp
-
-    const val ActionButtonShapeRadius = 100
+    data class Data(
+        val mailLabels: List<MailLabel.Custom>
+    ) : LabelListState()
 }

@@ -49,6 +49,8 @@ import ch.protonmail.android.navigation.route.addConversationDetail
 import ch.protonmail.android.navigation.route.addConversationModeSettings
 import ch.protonmail.android.navigation.route.addDeepLinkHandler
 import ch.protonmail.android.navigation.route.addEditSwipeActionsSettings
+import ch.protonmail.android.navigation.route.addLabelForm
+import ch.protonmail.android.navigation.route.addLabelList
 import ch.protonmail.android.navigation.route.addLanguageSettings
 import ch.protonmail.android.navigation.route.addMailbox
 import ch.protonmail.android.navigation.route.addMessageDetail
@@ -229,6 +231,15 @@ fun Home(
                         showFeatureMissingSnackbar()
                     }
                 )
+                addLabelList(
+                    navController,
+                    showFeatureMissingSnackbar = {
+                        showFeatureMissingSnackbar()
+                    }
+                )
+                addLabelForm(
+                    navController
+                )
                 // settings
                 addAccountSettings(
                     navController,
@@ -258,7 +269,8 @@ private fun buildSidebarActions(navController: NavHostController, launcherAction
         onRemoveAccount = { navController.navigate(Dialog.RemoveAccount(it)) },
         onSwitchAccount = launcherActions.onSwitchAccount,
         onSettings = { navController.navigate(Screen.Settings.route) },
-        onLabelsSettings = {},
+        onLabelList = { navController.navigate(Screen.LabelList.route) },
+        onFolderList = { },
         onSubscription = launcherActions.onSubscription,
         onReportBug = launcherActions.onReportBug
     )

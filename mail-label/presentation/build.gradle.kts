@@ -59,9 +59,9 @@ android {
 
 dependencies {
     kapt(Dependencies.appAnnotationProcessors)
+    debugImplementation(Dependencies.composeDebugLibs)
 
     implementation(Dependencies.modulePresentationLibs)
-
     implementation(Proton.Core.label)
     implementation(Proton.Core.mailSettings)
 
@@ -72,4 +72,7 @@ dependencies {
 
     testImplementation(Dependencies.testLibs)
     testImplementation(project(":test:test-data"))
+
+    androidTestImplementation(Dependencies.androidTestLibs)
+    androidTestImplementation(project(":test:annotations"))
 }
