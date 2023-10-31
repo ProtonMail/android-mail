@@ -42,7 +42,8 @@ object MailSettingsTestData {
         swipeLeft: SwipeAction? = null,
         swipeRight: SwipeAction? = null,
         enableFolderColor: Boolean = true,
-        inheritParentFolderColor: Boolean = true
+        inheritParentFolderColor: Boolean = true,
+        confirmLink: Boolean = true
     ) = MailSettings(
         userId = UserIdTestData.userId,
         displayName = "displayName",
@@ -70,6 +71,6 @@ object MailSettingsTestData {
         pgpScheme = IntEnum(1, PackageType.ProtonMail),
         promptPin = true,
         stickyLabels = true,
-        confirmLink = true
+        confirmLink = confirmLink
     )
 }
