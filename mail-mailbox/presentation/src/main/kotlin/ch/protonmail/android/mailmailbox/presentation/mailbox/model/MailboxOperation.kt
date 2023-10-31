@@ -57,6 +57,8 @@ internal sealed interface MailboxViewAction : MailboxOperation {
     object MarkAsRead : MailboxViewAction, AffectingMailboxList
     object MarkAsUnread : MailboxViewAction, AffectingMailboxList
     object Trash : MailboxViewAction
+    object Delete : MailboxViewAction
+    object DeleteConfirmed : MailboxViewAction
 
     /*
      *`OnOfflineWithData` and `OnErrorWithData` are not actual Actions which are actively performed by the user
@@ -94,6 +96,14 @@ internal sealed interface MailboxEvent : MailboxOperation {
     object ShowOnboarding : MailboxEvent, MailboxOperation.AffectingOnboarding
 
     data class Trash(val numAffectedMessages: Int) :
+        MailboxEvent,
+        AffectingMailboxList,
+        AffectingTopAppBar,
+        AffectingBottomAppBar,
+        AffectingActionMessage
+
+    data class Delete(val viewMode: ViewMode, val numAffectedMessages: Int) : MailboxEvent
+    data class DeleteConfirmed(val viewMode: ViewMode, val numAffectedMessages: Int) :
         MailboxEvent,
         AffectingMailboxList,
         AffectingTopAppBar,

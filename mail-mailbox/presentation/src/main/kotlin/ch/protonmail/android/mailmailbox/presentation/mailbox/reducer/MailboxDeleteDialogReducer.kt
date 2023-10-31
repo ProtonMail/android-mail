@@ -20,27 +20,27 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import ch.protonmail.android.mailcommon.presentation.model.TextUiModel.PluralisedText
 import ch.protonmail.android.mailmailbox.presentation.R
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.DeleteDialogState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
 import me.proton.core.mailsettings.domain.entity.ViewMode
 import javax.inject.Inject
 
-class MailboxActionMessageReducer @Inject constructor() {
+class MailboxDeleteDialogReducer @Inject constructor() {
 
-    internal fun newStateFrom(operation: MailboxOperation.AffectingActionMessage): Effect<TextUiModel> {
-        return when (operation) {
-            is MailboxEvent.Trash ->
-                Effect.of(TextUiModel(R.plurals.mailbox_action_trash, operation.numAffectedMessages))
+    internal fun newStateFrom(operation: MailboxEvent.Delete): Effect<DeleteDialogState> {
 
-            is MailboxEvent.DeleteConfirmed -> {
-                val resource = when (operation.viewMode) {
-                    ViewMode.ConversationGrouping -> R.plurals.mailbox_action_delete_conversation
-                    ViewMode.NoConversationGrouping -> R.plurals.mailbox_action_delete_message
-                }
-                Effect.of(PluralisedText(resource, operation.numAffectedMessages))
-            }
+        val titleRes = when (operation.viewMode) {
+            ViewMode.ConversationGrouping -> R.plurals.mailbox_action_delete_conversation_dialog_title
+            ViewMode.NoConversationGrouping -> R.plurals.mailbox_action_delete_message_dialog_title
         }
+        val messageRes = when (operation.viewMode) {
+            ViewMode.ConversationGrouping -> R.plurals.mailbox_action_delete_conversation_dialog_message
+            ViewMode.NoConversationGrouping -> R.plurals.mailbox_action_delete_message_dialog_message
+        }
+        val titleText = TextUiModel.PluralisedText(value = titleRes, count = operation.numAffectedMessages)
+        val messageText = TextUiModel.PluralisedText(value = messageRes, count = operation.numAffectedMessages)
+        return Effect.of(DeleteDialogState(titleText, messageText))
     }
+
 }

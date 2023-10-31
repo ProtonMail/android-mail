@@ -23,6 +23,7 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.DeleteDialogState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
@@ -39,7 +40,8 @@ class MailboxReducer @Inject constructor(
     private val unreadFilterReducer: MailboxUnreadFilterReducer,
     private val bottomAppBarReducer: BottomBarReducer,
     private val onboardingReducer: OnboardingReducer,
-    private val actionMessageReducer: MailboxActionMessageReducer
+    private val actionMessageReducer: MailboxActionMessageReducer,
+    private val deleteDialogReducer: MailboxDeleteDialogReducer
 ) {
 
     internal fun newStateFrom(currentState: MailboxState, operation: MailboxOperation): MailboxState =
@@ -49,7 +51,8 @@ class MailboxReducer @Inject constructor(
             unreadFilterState = currentState.toNewUnreadFilterStateFrom(operation),
             bottomAppBarState = currentState.toNewBottomAppBarStateFrom(operation),
             onboardingState = currentState.toNewOnboardingStateFrom(operation),
-            actionMessage = currentState.toNewActionMessageStateFrom(operation)
+            actionMessage = currentState.toNewActionMessageStateFrom(operation),
+            deleteDialogState = currentState.toNewDeleteActionStateFrom(operation)
         )
 
     private fun MailboxState.toNewMailboxListStateFrom(operation: MailboxOperation): MailboxListState {
@@ -82,6 +85,7 @@ class MailboxReducer @Inject constructor(
                 is MailboxEvent.EnterSelectionMode -> BottomBarEvent.ShowBottomSheet
                 is MailboxViewAction.ExitSelectionMode -> BottomBarEvent.HideBottomSheet
                 is MailboxEvent.MessageBottomBarEvent -> operation.bottomBarEvent
+                is MailboxEvent.DeleteConfirmed,
                 is MailboxEvent.Trash -> BottomBarEvent.HideBottomSheet
             }
             bottomAppBarReducer.newStateFrom(bottomAppBarState, bottomBarOperation)
@@ -105,4 +109,13 @@ class MailboxReducer @Inject constructor(
             actionMessage
         }
     }
+
+    private fun MailboxState.toNewDeleteActionStateFrom(operation: MailboxOperation): Effect<DeleteDialogState> {
+        return if (operation is MailboxEvent.Delete) {
+            deleteDialogReducer.newStateFrom(operation)
+        } else {
+            deleteDialogState
+        }
+    }
+
 }

@@ -26,6 +26,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOpera
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData.readMailboxItemUiModel
+import me.proton.core.mailsettings.domain.entity.ViewMode
 import me.proton.core.util.kotlin.EMPTY_STRING
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -142,6 +143,16 @@ internal class MailboxTopAppBarReducerTest(
             TestInput(
                 currentState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 42),
                 operation = MailboxEvent.Trash(42),
+                expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text())
+            ),
+            TestInput(
+                currentState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 42),
+                operation = MailboxEvent.DeleteConfirmed(ViewMode.ConversationGrouping, 42),
+                expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text())
+            ),
+            TestInput(
+                currentState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 42),
+                operation = MailboxEvent.DeleteConfirmed(ViewMode.NoConversationGrouping, 42),
                 expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text())
             )
         )

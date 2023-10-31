@@ -197,6 +197,8 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.MarkAsUnread -> handleMarkAsUnreadAction(viewAction)
                 is MailboxViewAction.CloseOnboarding -> handleCloseOnboarding()
                 is MailboxViewAction.Trash -> handleTrashAction()
+                is MailboxViewAction.Delete -> handleDeleteAction()
+                is MailboxViewAction.DeleteConfirmed -> handleDeleteConfirmedAction()
             }.exhaustive
         }
     }
@@ -381,6 +383,12 @@ class MailboxViewModel @Inject constructor(
             }
         }
         emitNewStateFrom(MailboxEvent.Trash(selectionModeDataState.selectedMailboxItems.size))
+    }
+
+    private suspend fun handleDeleteAction() {
+    }
+
+    private suspend fun handleDeleteConfirmedAction() {
     }
 
     private fun observeCurrentMailLabel() = observeMailLabels()

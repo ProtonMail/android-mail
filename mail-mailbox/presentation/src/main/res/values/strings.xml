@@ -62,4 +62,12 @@
     </plurals>
     <string name="mailbox_action_delete_dialog_button_cancel">Cancel</string>
     <string name="mailbox_action_delete_dialog_button_delete">Delete</string>
+    <plurals name="mailbox_action_delete_message">
+        <item quantity="one">Message permanently deleted</item>
+        <item quantity="other">%d messages permanently deleted</item>
+    </plurals>
+    <plurals name="mailbox_action_delete_conversation">
+        <item quantity="one">Conversation permanently deleted</item>
+        <item quantity="other">%d conversations permanently deleted</item>
+    </plurals>
 </resources>

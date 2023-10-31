@@ -39,6 +39,7 @@ class MailboxTopAppBarReducer @Inject constructor() {
             is MailboxEvent.EnterSelectionMode -> currentState.toNewStateForEnterSelectionMode()
             is MailboxEvent.ItemClicked.ItemAddedToSelection -> currentState.toNewStateForItemAddedToSelection()
             is MailboxEvent.ItemClicked.ItemRemovedFromSelection -> currentState.toNewStateForItemRemovedFromSelection()
+            is MailboxEvent.DeleteConfirmed,
             is MailboxEvent.Trash -> currentState.toNewStateForExitSelectionMode()
         }
     }
