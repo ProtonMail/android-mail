@@ -36,6 +36,7 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.sample.ActionUiModelSample
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
+import ch.protonmail.android.mailconversation.domain.usecase.DeleteConversations
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
@@ -75,6 +76,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.Mailbo
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxReducer
 import ch.protonmail.android.mailmailbox.presentation.paging.MailboxPagerFactory
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.usecase.DeleteMessages
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.testdata.contact.ContactTestData
@@ -95,6 +97,7 @@ import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import ch.protonmail.android.testdata.user.UserIdTestData.userId1
 import io.mockk.Called
 import io.mockk.coEvery
+import io.mockk.coJustRun
 import io.mockk.coVerify
 import io.mockk.coVerifySequence
 import io.mockk.confirmVerified
@@ -195,6 +198,8 @@ class MailboxViewModelTest {
     private val markMessagesAsUnread = mockk<MarkMessagesAsUnread>()
     private val moveConversations = mockk<MoveConversations>()
     private val moveMessages = mockk<MoveMessages>()
+    private val deleteConversations = mockk<DeleteConversations>()
+    private val deleteMessages = mockk<DeleteMessages>()
 
     private val mailboxViewModel by lazy {
         MailboxViewModel(
@@ -215,6 +220,8 @@ class MailboxViewModelTest {
             markMessagesAsUnread = markMessagesAsUnread,
             moveConversations = moveConversations,
             moveMessages = moveMessages,
+            deleteConversations = deleteConversations,
+            deleteMessages = deleteMessages,
             mailboxReducer = mailboxReducer,
             observeMailFeature = observeMailFeature,
             dispatchersProvider = TestDispatcherProvider(),
@@ -1570,7 +1577,7 @@ class MailboxViewModelTest {
     }
 
     @Test
-    fun `when trash is triggered for conversation grouping then move conversations is called `() = runTest {
+    fun `when trash is triggered for conversation grouping then move conversations is called`() = runTest {
         // Given
         val item = readMailboxItemUiModel
         val secondItem = unreadMailboxItemUiModel
@@ -1731,6 +1738,183 @@ class MailboxViewModelTest {
     }
 
     @Test
+    fun `when delete is triggered for conversation grouping then delete conversations is called `() = runTest {
+        // Given
+        val item = readMailboxItemUiModel
+        val secondItem = unreadMailboxItemUiModel
+        val initialState = createMailboxDataState()
+        val intermediateState = MailboxStateSampleData.createSelectionMode(
+            listOf(item, secondItem),
+            currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
+        )
+        expectViewMode(ConversationGrouping)
+        expectedSelectedLabelCountStateChange(initialState)
+        returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
+        returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
+        returnExpectedStateForDeleteConfirmed(intermediateState, initialState, ConversationGrouping, 2)
+        expectDeleteConversationsSucceeds(userId, listOf(item, secondItem), SystemLabelId.Trash.labelId)
+
+        mailboxViewModel.state.test {
+            // Given
+            awaitItem() // First emission for selected user
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
+
+            // Then
+            assertEquals(intermediateState, awaitItem())
+            verify(exactly = 1) {
+                mailboxReducer.newStateFrom(initialState, MailboxEvent.EnterSelectionMode(item))
+            }
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.DeleteConfirmed)
+
+            // Then
+            assertEquals(initialState, awaitItem())
+            coVerify(exactly = 1) {
+                deleteConversations(
+                    userId,
+                    listOf(ConversationId(item.id), ConversationId(secondItem.id)),
+                    SystemLabelId.Trash.labelId
+                )
+            }
+            coVerify { deleteMessages wasNot Called }
+        }
+    }
+
+    @Test
+    fun `verify delete action triggers delete conversations use case for each user id`() = runTest {
+        // Given
+        val item = readMailboxItemUiModel.copy(userId = userId)
+        val secondItem = unreadMailboxItemUiModel.copy(userId = userId1)
+        val initialState = createMailboxDataState()
+        val intermediateState = MailboxStateSampleData.createSelectionMode(
+            listOf(item, secondItem),
+            currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
+        )
+        expectViewMode(ConversationGrouping)
+        expectedSelectedLabelCountStateChange(initialState)
+        returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
+        returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
+        returnExpectedStateForDeleteConfirmed(intermediateState, initialState, ConversationGrouping, 2)
+        expectDeleteConversationsSucceeds(userId, listOf(item), SystemLabelId.Trash.labelId)
+        expectDeleteConversationsSucceeds(userId1, listOf(secondItem), SystemLabelId.Trash.labelId)
+
+        mailboxViewModel.state.test {
+            // Given
+            awaitItem() // First emission for selected user
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
+
+            // Then
+            assertEquals(intermediateState, awaitItem())
+            verify(exactly = 1) {
+                mailboxReducer.newStateFrom(initialState, MailboxEvent.EnterSelectionMode(item))
+            }
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.DeleteConfirmed)
+
+            // Then
+            assertEquals(initialState, awaitItem())
+            coVerifySequence {
+                deleteConversations(userId, listOf(ConversationId(item.id)), SystemLabelId.Trash.labelId)
+                deleteConversations(userId1, listOf(ConversationId(secondItem.id)), SystemLabelId.Trash.labelId)
+            }
+        }
+    }
+
+    @Test
+    fun `when delete is triggered for no conversation grouping then delete messages is called `() = runTest {
+        val item = readMailboxItemUiModel
+        val secondItem = unreadMailboxItemUiModel
+        val initialState = createMailboxDataState()
+        val intermediateState = MailboxStateSampleData.createSelectionMode(
+            listOf(item, secondItem),
+            currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
+        )
+        expectViewMode(NoConversationGrouping)
+        expectedSelectedLabelCountStateChange(initialState)
+        returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
+        returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
+        returnExpectedStateForDeleteConfirmed(intermediateState, initialState, NoConversationGrouping, 2)
+        expectDeleteMessagesSucceeds(userId, listOf(item, secondItem), SystemLabelId.Trash.labelId)
+
+        mailboxViewModel.state.test {
+            // Given
+            awaitItem() // First emission for selected user
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
+
+            // Then
+            assertEquals(intermediateState, awaitItem())
+            verify(exactly = 1) {
+                mailboxReducer.newStateFrom(initialState, MailboxEvent.EnterSelectionMode(item))
+            }
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.DeleteConfirmed)
+
+            // Then
+            assertEquals(initialState, awaitItem())
+            coVerify(exactly = 1) {
+                deleteMessages(
+                    userId,
+                    listOf(MessageId(item.id), MessageId(secondItem.id)),
+                    SystemLabelId.Trash.labelId
+                )
+            }
+            coVerify { deleteConversations wasNot Called }
+        }
+    }
+
+    @Test
+    fun `verify delete action triggers delete messages use case for each user id`() = runTest {
+        // Given
+        val item = readMailboxItemUiModel.copy(userId = userId)
+        val secondItem = unreadMailboxItemUiModel.copy(userId = userId1)
+        val initialState = createMailboxDataState()
+        val intermediateState = MailboxStateSampleData.createSelectionMode(
+            listOf(item, secondItem),
+            currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
+        )
+        expectViewMode(NoConversationGrouping)
+        expectedSelectedLabelCountStateChange(initialState)
+        returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
+        returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
+        returnExpectedStateForDeleteConfirmed(intermediateState, initialState, NoConversationGrouping, 2)
+        expectDeleteMessagesSucceeds(userId, listOf(item), SystemLabelId.Trash.labelId)
+        expectDeleteMessagesSucceeds(userId1, listOf(secondItem), SystemLabelId.Trash.labelId)
+
+        mailboxViewModel.state.test {
+            // Given
+            awaitItem() // First emission for selected user
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
+
+            // Then
+            assertEquals(intermediateState, awaitItem())
+            verify(exactly = 1) {
+                mailboxReducer.newStateFrom(initialState, MailboxEvent.EnterSelectionMode(item))
+            }
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.DeleteConfirmed)
+
+            // Then
+            assertEquals(initialState, awaitItem())
+            coVerifySequence {
+                deleteMessages(userId, listOf(MessageId(item.id)), SystemLabelId.Trash.labelId)
+                deleteMessages(userId1, listOf(MessageId(secondItem.id)), SystemLabelId.Trash.labelId)
+            }
+        }
+    }
+
+    @Test
     fun `mailbox items are not requested when a user account is removed`() = runTest {
         // Given
         val currentLocationFlow = MutableStateFlow<MailLabelId>(initialLocationMailLabelId)
@@ -1859,10 +2043,7 @@ class MailboxViewModelTest {
         } returns expectedState
     }
 
-    private fun returnExpectedStateForMarkAsUnread(
-        intermediateState: MailboxState,
-        expectedState: MailboxState
-    ) {
+    private fun returnExpectedStateForMarkAsUnread(intermediateState: MailboxState, expectedState: MailboxState) {
         every {
             mailboxReducer.newStateFrom(intermediateState, MailboxViewAction.MarkAsUnread)
         } returns expectedState
@@ -1888,10 +2069,7 @@ class MailboxViewModelTest {
         every { observeCurrentViewMode(any()) } returns flowOf(viewMode)
     }
 
-    private fun returnExpectedStateForMarkAsRead(
-        intermediateState: MailboxState,
-        expectedState: MailboxState
-    ) {
+    private fun returnExpectedStateForMarkAsRead(intermediateState: MailboxState, expectedState: MailboxState) {
         every { mailboxReducer.newStateFrom(intermediateState, MailboxViewAction.MarkAsRead) } returns expectedState
     }
 
@@ -1902,6 +2080,17 @@ class MailboxViewModelTest {
     ) {
         every {
             mailboxReducer.newStateFrom(intermediateState, MailboxEvent.Trash(expectedItemCount))
+        } returns expectedState
+    }
+
+    private fun returnExpectedStateForDeleteConfirmed(
+        intermediateState: MailboxState,
+        expectedState: MailboxState,
+        viewMode: ViewMode,
+        expectedItemCount: Int
+    ) {
+        every {
+            mailboxReducer.newStateFrom(intermediateState, MailboxEvent.DeleteConfirmed(viewMode, expectedItemCount))
         } returns expectedState
     }
 
@@ -1929,11 +2118,35 @@ class MailboxViewModelTest {
         } returns emptyList<DomainMessage>().right()
     }
 
-    private fun expectMoveConversationsSucceeds(userId: UserId, items: List<MailboxItemUiModel>, labelId: LabelId) {
+    private fun expectMoveConversationsSucceeds(
+        userId: UserId,
+        items: List<MailboxItemUiModel>,
+        labelId: LabelId
+    ) {
         coEvery { moveConversations(userId, items.map { ConversationId(it.id) }, labelId) } returns Unit.right()
     }
 
-    private fun expectMoveMessagesSucceeds(userId: UserId, items: List<MailboxItemUiModel>, labelId: LabelId) {
+    private fun expectMoveMessagesSucceeds(
+        userId: UserId,
+        items: List<MailboxItemUiModel>,
+        labelId: LabelId
+    ) {
         coEvery { moveMessages(userId, items.map { MessageId(it.id) }, labelId) } returns Unit.right()
+    }
+
+    private fun expectDeleteConversationsSucceeds(
+        userId: UserId,
+        items: List<MailboxItemUiModel>,
+        labelId: LabelId
+    ) {
+        coJustRun { deleteConversations(userId, items.map { ConversationId(it.id) }, labelId) }
+    }
+
+    private fun expectDeleteMessagesSucceeds(
+        userId: UserId,
+        items: List<MailboxItemUiModel>,
+        labelId: LabelId
+    ) {
+        coJustRun { deleteMessages(userId, items.map { MessageId(it.id) }, labelId) }
     }
 }

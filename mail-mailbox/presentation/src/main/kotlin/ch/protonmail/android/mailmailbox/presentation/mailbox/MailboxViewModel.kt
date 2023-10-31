@@ -34,6 +34,7 @@ import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
+import ch.protonmail.android.mailconversation.domain.usecase.DeleteConversations
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
@@ -68,6 +69,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilter
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxReducer
 import ch.protonmail.android.mailmailbox.presentation.paging.MailboxPagerFactory
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.usecase.DeleteMessages
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -115,6 +117,8 @@ class MailboxViewModel @Inject constructor(
     private val markMessagesAsUnread: MarkMessagesAsUnread,
     private val moveConversations: MoveConversations,
     private val moveMessages: MoveMessages,
+    private val deleteConversations: DeleteConversations,
+    private val deleteMessages: DeleteMessages,
     private val mailboxReducer: MailboxReducer,
     private val observeMailFeature: ObserveMailFeature,
     private val dispatchersProvider: DispatcherProvider,
@@ -386,9 +390,43 @@ class MailboxViewModel @Inject constructor(
     }
 
     private suspend fun handleDeleteAction() {
+        val selectionModeDataState = state.value.mailboxListState as? MailboxListState.Data.SelectionMode
+        if (selectionModeDataState == null) {
+            Timber.d("MailboxListState is not in SelectionMode")
+            return
+        }
+        val event = MailboxEvent.Delete(
+            viewMode = getPreferredViewMode(),
+            numAffectedMessages = selectionModeDataState.selectedMailboxItems.size
+        )
+        emitNewStateFrom(event)
     }
 
     private suspend fun handleDeleteConfirmedAction() {
+        val selectionModeDataState = state.value.mailboxListState as? MailboxListState.Data.SelectionMode
+        if (selectionModeDataState == null) {
+            Timber.d("MailboxListState is not in SelectionMode")
+            return
+        }
+
+        val selectedItemsByUserId = selectionModeDataState.selectedMailboxItems.groupBy { it.userId }
+        val viewMode = getPreferredViewMode()
+        selectedItemsByUserId.keys.forEach { userId ->
+            when (viewMode) {
+                ViewMode.ConversationGrouping -> deleteConversations(
+                    userId = userId,
+                    conversationIds = selectedItemsByUserId[userId]?.map { ConversationId(it.id) } ?: emptyList(),
+                    currentLabelId = selectionModeDataState.currentMailLabel.id.labelId
+                )
+
+                ViewMode.NoConversationGrouping -> deleteMessages(
+                    userId = userId,
+                    messageIds = selectedItemsByUserId[userId]?.map { MessageId(it.id) } ?: emptyList(),
+                    currentLabelId = selectionModeDataState.currentMailLabel.id.labelId
+                )
+            }
+        }
+        emitNewStateFrom(MailboxEvent.DeleteConfirmed(viewMode, selectionModeDataState.selectedMailboxItems.size))
     }
 
     private fun observeCurrentMailLabel() = observeMailLabels()

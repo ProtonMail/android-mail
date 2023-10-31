@@ -134,7 +134,9 @@ fun MailboxScreen(
         onRefreshList = { viewModel.submit(MailboxViewAction.Refresh) },
         markAsRead = { viewModel.submit(MailboxViewAction.MarkAsRead) },
         markAsUnread = { viewModel.submit(MailboxViewAction.MarkAsUnread) },
-        trash = { viewModel.submit(MailboxViewAction.Trash) }
+        trash = { viewModel.submit(MailboxViewAction.Trash) },
+        delete = { viewModel.submit(MailboxViewAction.Delete) },
+        deleteConfirmed = { viewModel.submit(MailboxViewAction.DeleteConfirmed) }
     )
 
     MailboxScreen(
@@ -196,7 +198,7 @@ fun MailboxScreen(
                     onMove = { Timber.d("mailbox onMove clicked") },
                     onLabel = { Timber.d("mailbox onLabel clicked") },
                     onTrash = actions.trash,
-                    onDelete = { Timber.d("mailbox onDelete clicked") },
+                    onDelete = actions.delete,
                     onArchive = { Timber.d("mailbox onArchive clicked") },
                     onSpam = { Timber.d("mailbox onSpam clicked") },
                     onViewInLightMode = { Timber.d("mailbox onViewInLightMode clicked") },
