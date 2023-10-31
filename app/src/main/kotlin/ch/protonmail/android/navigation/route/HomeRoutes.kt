@@ -205,7 +205,11 @@ internal fun NavGraphBuilder.addLabelList(navController: NavHostController, show
                 onBackClick = {
                     navController.popBackStack()
                 },
-                onLabelSelected = {
+                onLabelSelected = { mailLabel ->
+                    // TODO Pass mailLabel.id
+                    navController.navigate(Destination.Screen.LabelForm.route)
+                },
+                onAddLabelClick = {
                     navController.navigate(Destination.Screen.LabelForm.route)
                 }
             )

@@ -55,6 +55,7 @@ import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.LabelType
 
 @Composable
 @Suppress("ComplexMethod")
@@ -86,7 +87,11 @@ fun Sidebar(
                     when (sidebarLabelAction) {
                         is SidebarLabelAction.Add -> {
                             close()
-                            navigationActions.onLabelList()
+                            if (sidebarLabelAction.type == LabelType.MessageLabel) {
+                                navigationActions.onLabelList()
+                            } else if (sidebarLabelAction.type == LabelType.MessageFolder) {
+                                navigationActions.onFolderList()
+                            }
                         }
 
                         is SidebarLabelAction.Select -> {
