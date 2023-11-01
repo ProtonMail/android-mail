@@ -19,6 +19,7 @@
 package ch.protonmail.android.composer.data.sample
 
 import ch.protonmail.android.composer.data.remote.resource.SendMessagePackage
+import ch.protonmail.android.composer.data.usecase.GenerateSendMessagePackages
 import me.proton.core.crypto.common.keystore.EncryptedByteArray
 import me.proton.core.crypto.common.pgp.DataPacket
 import me.proton.core.crypto.common.pgp.EncryptedPacket
@@ -37,6 +38,7 @@ import kotlin.io.encoding.ExperimentalEncodingApi
 object SendMessageSample {
 
     const val RecipientEmail = "recipient@email.com"
+    const val RecipientAliasEmail = "recipient+alias@email.com"
 
     const val CleartextBody = "Cleartext body of the message"
     const val PlaintextMimeBodyEncryptedAndSigned = "Plaintext Mime Body, encrypted and signed"
@@ -52,11 +54,11 @@ object SendMessageSample {
     )
     val CleartextBodyKey = SendMessagePackage.Key(
         Base64.encode(BodySessionKey.key),
-        GenerateSendMessagePackage.SessionKeyAlgorithm
+        GenerateSendMessagePackages.SessionKeyAlgorithm
     )
     val CleartextMimeBodyKey = SendMessagePackage.Key(
         Base64.encode(MimeBodySessionKey.key),
-        GenerateSendMessagePackage.SessionKeyAlgorithm
+        GenerateSendMessagePackages.SessionKeyAlgorithm
     )
     val EncryptedPlaintextBodySplit = listOf(
         EncryptedPacket(

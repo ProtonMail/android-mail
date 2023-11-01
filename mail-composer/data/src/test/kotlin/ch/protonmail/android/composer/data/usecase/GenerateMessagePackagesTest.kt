@@ -67,7 +67,7 @@ class GenerateMessagePackagesTest {
         )
     )
 
-    private val generateSendMessagePackageMock = mockk<GenerateSendMessagePackage>()
+    private val generateSendMessagePackagesMock = mockk<GenerateSendMessagePackages>()
 
     private val armoredPrivateKey = "armoredPrivateKey"
     private val armoredPublicKey = "armoredPublicKey"
@@ -121,6 +121,13 @@ class GenerateMessagePackagesTest {
         every {
             encryptAndSignText(any(), armoredPublicKey, unlockedPrivateKey)
         } returns SendMessageSample.PlaintextMimeBodyEncryptedAndSigned
+        every {
+            encryptAndSignText(
+                any(),
+                SendMessageSample.SendPreferences.PgpMime.publicKey!!.key,
+                unlockedPrivateKey
+            )
+        } returns SendMessageSample.PlaintextMimeBodyEncryptedAndSigned
     }
 
     private val cryptoContextMock = mockk<CryptoContext> {
@@ -132,7 +139,7 @@ class GenerateMessagePackagesTest {
 
     private val sut = GenerateMessagePackages(
         cryptoContextMock,
-        generateSendMessagePackageMock
+        generateSendMessagePackagesMock
     )
 
     @Test
@@ -150,10 +157,7 @@ class GenerateMessagePackagesTest {
             recipient4 to SendMessageSample.SendPreferences.PgpMime
         )
 
-        givenRecipientProtonMail(recipient1)
-        givenRecipientClearMime(recipient2)
-        givenRecipientCleartext(recipient3)
-        givenRecipientPgpMime(recipient4)
+        givenAllRecipients(recipient1, recipient2, recipient3, recipient4)
 
         // When
         val actual = sut(
@@ -164,8 +168,8 @@ class GenerateMessagePackagesTest {
         )
 
         // Then
-        val emailsWithGeneratedPackages = actual.getOrNull()?.map {
-            it.addresses.keys.first()
+        val emailsWithGeneratedPackages = actual.getOrNull()?.flatMap {
+            it.addresses.keys
         }
 
         assertTrue(
@@ -181,121 +185,74 @@ class GenerateMessagePackagesTest {
 
     }
 
-    private fun givenRecipientPgpMime(recipient4: String) {
+    /**
+     * Returns expected list of top-level Mail Packages for all recipients combined.
+     */
+    private fun givenAllRecipients(
+        recipient1: String,
+        recipient2: String,
+        recipient3: String,
+        recipient4: String
+    ) {
         every {
-            pgpCryptoMock.encryptAndSignText(
-                any(),
-                SendMessageSample.SendPreferences.PgpMime.publicKey!!.key,
-                unlockedPrivateKey
-            )
-        } returns SendMessageSample.PlaintextMimeBodyEncryptedAndSigned
-
-        every {
-            generateSendMessagePackageMock.invoke(
-                recipient4,
-                SendMessageSample.SendPreferences.PgpMime,
+            generateSendMessagePackagesMock.invoke(
+                mapOf(
+                    recipient1 to SendMessageSample.SendPreferences.ProtonMail,
+                    recipient2 to SendMessageSample.SendPreferences.ClearMime,
+                    recipient3 to SendMessageSample.SendPreferences.Cleartext,
+                    recipient4 to SendMessageSample.SendPreferences.PgpMime
+                ),
                 SendMessageSample.BodySessionKey,
                 SendMessageSample.EncryptedPlaintextBodySplit.dataPacket(),
                 SendMessageSample.MimeBodySessionKey,
                 SendMessageSample.PlaintextMimeBodyEncryptedAndSignedSplit.dataPacket(),
                 MimeType.PlainText,
-                Pair(
-                    SendMessageSample.PlaintextMimeBodyEncryptedAndSignedSplit.keyPacket(),
-                    SendMessageSample.PlaintextMimeBodyEncryptedAndSignedSplit.dataPacket()
+                mapOf(
+                    recipient4 to Pair(
+                        SendMessageSample.PlaintextMimeBodyEncryptedAndSignedSplit.keyPacket(),
+                        SendMessageSample.PlaintextMimeBodyEncryptedAndSignedSplit.dataPacket()
+                    )
                 ),
                 mapOf(MessageAttachmentSample.document.attachmentId.id to SendMessageSample.AttachmentSessionKey),
                 areAllAttachmentsSigned = false
             )
-        } returns SendMessagePackage(
-            addresses = mapOf(
-                recipient4 to SendMessagePackage.Address.ExternalEncrypted(
-                    signature = true.toInt(),
-                    bodyKeyPacket = Base64.encode(SendMessageSample.EncryptedMimeBodyDataPacket)
-                )
+        } returns listOf(
+            SendMessagePackage(
+                addresses = mapOf(
+                    recipient1 to SendMessagePackage.Address.Internal(
+                        signature = true.toInt(),
+                        bodyKeyPacket = Base64.encode(SendMessageSample.RecipientBodyKeyPacket),
+                        attachmentKeyPackets = emptyMap()
+                    ),
+                    recipient3 to SendMessagePackage.Address.ExternalCleartext(
+                        signature = false.toInt()
+                    )
+                ),
+                mimeType = draft.messageBody.mimeType.value,
+                body = Base64.encode(SendMessageSample.EncryptedBodyDataPacket),
+                type = PackageType.ProtonMail.type + PackageType.Cleartext.type
             ),
-            mimeType = MimeType.MultipartMixed.value,
-            body = Base64.encode(SendMessageSample.EncryptedMimeBodyDataPacket),
-            type = PackageType.PgpMime.type
-        )
-    }
-
-    private fun givenRecipientCleartext(recipient3: String) {
-        every {
-            generateSendMessagePackageMock.invoke(
-                recipient3,
-                SendMessageSample.SendPreferences.Cleartext,
-                SendMessageSample.BodySessionKey,
-                SendMessageSample.EncryptedPlaintextBodySplit.dataPacket(),
-                SendMessageSample.MimeBodySessionKey,
-                SendMessageSample.PlaintextMimeBodyEncryptedAndSignedSplit.dataPacket(),
-                MimeType.PlainText,
-                null, // Cleartext package type doesn't need this
-                mapOf(MessageAttachmentSample.document.attachmentId.id to SendMessageSample.AttachmentSessionKey),
-                areAllAttachmentsSigned = false
+            SendMessagePackage(
+                addresses = mapOf(
+                    recipient2 to SendMessagePackage.Address.ExternalSigned(
+                        signature = true.toInt()
+                    )
+                ),
+                mimeType = MimeType.MultipartMixed.value,
+                body = Base64.encode(SendMessageSample.EncryptedMimeBodyDataPacket),
+                type = PackageType.ClearMime.type
+            ),
+            SendMessagePackage(
+                addresses = mapOf(
+                    recipient4 to SendMessagePackage.Address.ExternalEncrypted(
+                        signature = true.toInt(),
+                        bodyKeyPacket = Base64.encode(SendMessageSample.EncryptedMimeBodyDataPacket)
+                    )
+                ),
+                mimeType = MimeType.MultipartMixed.value,
+                body = Base64.encode(SendMessageSample.EncryptedMimeBodyDataPacket),
+                type = PackageType.PgpMime.type
             )
-        } returns SendMessagePackage(
-            addresses = mapOf(
-                recipient3 to SendMessagePackage.Address.ExternalCleartext(
-                    signature = false.toInt()
-                )
-            ),
-            mimeType = SendMessageSample.SendPreferences.Cleartext.mimeType.value,
-            body = Base64.encode(SendMessageSample.EncryptedBodyDataPacket),
-            type = PackageType.Cleartext.type
-        )
-    }
-
-    private fun givenRecipientClearMime(recipient2: String) {
-        every {
-            generateSendMessagePackageMock.invoke(
-                recipient2,
-                SendMessageSample.SendPreferences.ClearMime,
-                SendMessageSample.BodySessionKey,
-                SendMessageSample.EncryptedPlaintextBodySplit.dataPacket(),
-                SendMessageSample.MimeBodySessionKey,
-                SendMessageSample.PlaintextMimeBodyEncryptedAndSignedSplit.dataPacket(),
-                MimeType.PlainText,
-                null, // ClearMime package type doesn't need this
-                mapOf(MessageAttachmentSample.document.attachmentId.id to SendMessageSample.AttachmentSessionKey),
-                areAllAttachmentsSigned = false
-            )
-        } returns SendMessagePackage(
-            addresses = mapOf(
-                recipient2 to SendMessagePackage.Address.ExternalSigned(
-                    signature = true.toInt()
-                )
-            ),
-            mimeType = MimeType.MultipartMixed.value,
-            body = Base64.encode(SendMessageSample.EncryptedMimeBodyDataPacket),
-            type = PackageType.ClearMime.type
-        )
-    }
-
-    private fun givenRecipientProtonMail(recipient1: String) {
-        every {
-            generateSendMessagePackageMock.invoke(
-                recipient1,
-                SendMessageSample.SendPreferences.ProtonMail,
-                SendMessageSample.BodySessionKey,
-                SendMessageSample.EncryptedPlaintextBodySplit.dataPacket(),
-                SendMessageSample.MimeBodySessionKey,
-                SendMessageSample.PlaintextMimeBodyEncryptedAndSignedSplit.dataPacket(),
-                MimeType.PlainText,
-                null, // ProtonMail package type doesn't need this
-                mapOf(MessageAttachmentSample.document.attachmentId.id to SendMessageSample.AttachmentSessionKey),
-                areAllAttachmentsSigned = false
-            )
-        } returns SendMessagePackage(
-            addresses = mapOf(
-                recipient1 to SendMessagePackage.Address.Internal(
-                    signature = true.toInt(),
-                    bodyKeyPacket = Base64.encode(SendMessageSample.RecipientBodyKeyPacket),
-                    attachmentKeyPackets = emptyMap()
-                )
-            ),
-            mimeType = SendMessageSample.SendPreferences.ProtonMail.mimeType.value,
-            body = Base64.encode(SendMessageSample.EncryptedBodyDataPacket),
-            type = PackageType.ProtonMail.type
         )
     }
 
