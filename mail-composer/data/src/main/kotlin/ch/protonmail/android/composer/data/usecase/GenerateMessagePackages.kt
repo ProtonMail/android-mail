@@ -58,7 +58,7 @@ import kotlin.random.Random
 @Suppress("LongParameterList")
 class GenerateMessagePackages @Inject constructor(
     private val cryptoContext: CryptoContext,
-    private val generateSendMessagePackage: GenerateSendMessagePackage
+    private val generateSendMessagePackages: GenerateSendMessagePackages
 ) {
 
     @Suppress("LongMethod")
@@ -121,23 +121,22 @@ class GenerateMessagePackages @Inject constructor(
 
         val areAllAttachmentsSigned = localDraft.messageBody.attachments.all { it.signature != null }
 
-        val packages = sendPreferences.map { entry ->
-            generateSendMessagePackage(
-                entry.key,
-                entry.value,
-                decryptedPlaintextBodySessionKey,
-                encryptedPlaintextBodyDataPacket,
-                decryptedMimeBodySessionKey,
-                encryptedMimeBodyDataPacket,
-                localDraft.messageBody.mimeType,
-                signedAndEncryptedMimeBodyForRecipients[entry.key],
-                decryptedAttachmentSessionKeys,
-                areAllAttachmentsSigned
-            )
-        }.filterNotNull()
+        val packages = generateSendMessagePackages(
+            sendPreferences,
+            decryptedPlaintextBodySessionKey,
+            encryptedPlaintextBodyDataPacket,
+            decryptedMimeBodySessionKey,
+            encryptedMimeBodyDataPacket,
+            localDraft.messageBody.mimeType,
+            signedAndEncryptedMimeBodyForRecipients,
+            decryptedAttachmentSessionKeys,
+            areAllAttachmentsSigned
+        )
 
-        return if (packages.size == sendPreferences.size) {
-            packages.right()
+        val areAllSubpackagesGenerated = packages.sumOf { it.addresses.size } == sendPreferences.size
+
+        return if (areAllSubpackagesGenerated) {
+            return packages.right()
         } else DataError.MessageSending.GeneratingPackages.left()
     }
 

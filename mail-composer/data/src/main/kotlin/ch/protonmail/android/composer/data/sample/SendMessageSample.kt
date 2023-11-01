@@ -19,7 +19,6 @@
 package ch.protonmail.android.composer.data.sample
 
 import ch.protonmail.android.composer.data.remote.resource.SendMessagePackage
-import ch.protonmail.android.composer.data.usecase.GenerateSendMessagePackage
 import me.proton.core.crypto.common.keystore.EncryptedByteArray
 import me.proton.core.crypto.common.pgp.DataPacket
 import me.proton.core.crypto.common.pgp.EncryptedPacket
