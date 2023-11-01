@@ -54,6 +54,7 @@ class MailboxListReducer @Inject constructor() {
             is MailboxViewAction.OnOfflineWithData -> reduceOfflineWithData(currentState)
             is MailboxViewAction.OnErrorWithData -> reduceErrorWithData(currentState)
             is MailboxViewAction.Refresh -> reduceRefresh(currentState)
+            is MailboxViewAction.RefreshCompleted -> reduceRefreshCompleted(currentState)
             is MailboxViewAction.ExitSelectionMode -> reduceExitSelectionMode(currentState)
             is MailboxViewAction.MarkAsRead -> reduceMarkAsRead(currentState)
             is MailboxViewAction.MarkAsUnread -> reduceMarkAsUnread(currentState)
@@ -155,6 +156,11 @@ class MailboxListReducer @Inject constructor() {
 
     private fun reduceRefresh(currentState: MailboxListState) = when (currentState) {
         is MailboxListState.Data.ViewMode -> currentState.copy(refreshRequested = true)
+        else -> currentState
+    }
+
+    private fun reduceRefreshCompleted(currentState: MailboxListState) = when (currentState) {
+        is MailboxListState.Data.ViewMode -> currentState.copy(refreshRequested = false)
         else -> currentState
     }
 

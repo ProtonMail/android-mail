@@ -183,6 +183,7 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.OnItemAvatarClicked -> handleOnAvatarClicked(viewAction.item)
                 is MailboxViewAction.OnItemLongClicked -> handleItemLongClick(viewAction.item)
                 is MailboxViewAction.Refresh -> emitNewStateFrom(viewAction)
+                is MailboxViewAction.RefreshCompleted -> emitNewStateFrom(viewAction)
                 is MailboxViewAction.ItemClicked -> handleItemClick(viewAction.item)
                 is MailboxViewAction.OnOfflineWithData -> emitNewStateFrom(viewAction)
                 is MailboxViewAction.OnErrorWithData -> emitNewStateFrom(viewAction)

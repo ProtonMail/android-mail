@@ -48,6 +48,7 @@ internal sealed interface MailboxViewAction : MailboxOperation {
     data class ItemClicked(val item: MailboxItemUiModel) : MailboxViewAction
 
     object Refresh : MailboxViewAction, AffectingMailboxList
+    object RefreshCompleted : MailboxViewAction, AffectingMailboxList
     object EnableUnreadFilter : MailboxViewAction, AffectingUnreadFilter
     object DisableUnreadFilter : MailboxViewAction, AffectingUnreadFilter
 
