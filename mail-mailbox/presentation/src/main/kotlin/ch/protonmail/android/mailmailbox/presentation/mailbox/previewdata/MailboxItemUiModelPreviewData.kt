@@ -30,6 +30,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemU
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.ParticipantUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.ParticipantsUiModel
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import me.proton.core.domain.entity.UserId
 
 object MailboxItemUiModelPreviewData {
@@ -52,7 +53,7 @@ object MailboxItemUiModelPreviewData {
             labels = persistentListOf(),
             subject = "DroidCon London",
             participants = ParticipantsUiModel.Participants(
-                listOf(ParticipantUiModel(name = "DroidCon", shouldShowOfficialBadge = false))
+                listOf(ParticipantUiModel(name = "DroidCon", shouldShowOfficialBadge = false)).toImmutableList()
             ),
             shouldShowRepliedIcon = false,
             shouldShowRepliedAllIcon = false,
@@ -77,7 +78,7 @@ object MailboxItemUiModelPreviewData {
             labels = persistentListOf(),
             subject = "DroidCon London",
             participants = ParticipantsUiModel.Participants(
-                listOf(ParticipantUiModel(name = "DroidCon", shouldShowOfficialBadge = false))
+                listOf(ParticipantUiModel(name = "DroidCon", shouldShowOfficialBadge = false)).toImmutableList()
             ),
             shouldShowRepliedIcon = false,
             shouldShowRepliedAllIcon = false,
@@ -102,7 +103,7 @@ object MailboxItemUiModelPreviewData {
             labels = persistentListOf(),
             subject = "Weather Forecast",
             participants = ParticipantsUiModel.Participants(
-                listOf(ParticipantUiModel(name = AccuWeatherName, shouldShowOfficialBadge = false))
+                listOf(ParticipantUiModel(name = AccuWeatherName, shouldShowOfficialBadge = false)).toImmutableList()
             ),
             shouldShowRepliedIcon = false,
             shouldShowRepliedAllIcon = false,
@@ -141,7 +142,7 @@ object MailboxItemUiModelPreviewData {
                     ParticipantUiModel(name = "FirstRecipient", shouldShowOfficialBadge = false),
                     ParticipantUiModel(name = "SecondRecipient", shouldShowOfficialBadge = false),
                     ParticipantUiModel(name = "ThirdRecipient", shouldShowOfficialBadge = false)
-                )
+                ).toImmutableList()
             ),
             shouldShowRepliedIcon = true,
             shouldShowRepliedAllIcon = true,
@@ -166,7 +167,7 @@ object MailboxItemUiModelPreviewData {
             labels = persistentListOf(),
             subject = "This is a really long subject without any information",
             participants = ParticipantsUiModel.Participants(
-                listOf(ParticipantUiModel(name = AccuWeatherName, shouldShowOfficialBadge = false))
+                listOf(ParticipantUiModel(name = AccuWeatherName, shouldShowOfficialBadge = false)).toImmutableList()
             ),
             shouldShowRepliedIcon = false,
             shouldShowRepliedAllIcon = false,
@@ -194,7 +195,7 @@ object MailboxItemUiModelPreviewData {
             labels = persistentListOf(),
             subject = "This is a really long subject without any information",
             participants = ParticipantsUiModel.Participants(
-                listOf(ParticipantUiModel(name = AccuWeatherName, shouldShowOfficialBadge = false))
+                listOf(ParticipantUiModel(name = AccuWeatherName, shouldShowOfficialBadge = false)).toImmutableList()
             ),
             shouldShowRepliedIcon = false,
             shouldShowRepliedAllIcon = false,
@@ -245,7 +246,7 @@ object MailboxItemUiModelPreviewData {
             labels = persistentListOf(),
             subject = "Weather Forecast for August 2022",
             participants = ParticipantsUiModel.Participants(
-                listOf(ParticipantUiModel(name = AccuWeatherName, shouldShowOfficialBadge = false))
+                listOf(ParticipantUiModel(name = AccuWeatherName, shouldShowOfficialBadge = false)).toImmutableList()
             ),
             shouldShowRepliedIcon = false,
             shouldShowRepliedAllIcon = false,
@@ -270,7 +271,7 @@ object MailboxItemUiModelPreviewData {
             labels = persistentListOf(),
             subject = "Weather Forecast for September 2022",
             participants = ParticipantsUiModel.Participants(
-                listOf(ParticipantUiModel(name = AccuWeatherName, shouldShowOfficialBadge = false))
+                listOf(ParticipantUiModel(name = AccuWeatherName, shouldShowOfficialBadge = false)).toImmutableList()
             ),
             shouldShowRepliedIcon = false,
             shouldShowRepliedAllIcon = false,

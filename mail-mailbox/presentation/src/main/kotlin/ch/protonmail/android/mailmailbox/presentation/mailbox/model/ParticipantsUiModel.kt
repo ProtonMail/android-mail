@@ -19,11 +19,12 @@
 package ch.protonmail.android.mailmailbox.presentation.mailbox.model
 
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import kotlinx.collections.immutable.ImmutableList
 
 sealed interface ParticipantsUiModel {
 
     data class Participants(
-        val list: List<ParticipantUiModel>
+        val list: ImmutableList<ParticipantUiModel>
     ) : ParticipantsUiModel
 
     data class NoParticipants(

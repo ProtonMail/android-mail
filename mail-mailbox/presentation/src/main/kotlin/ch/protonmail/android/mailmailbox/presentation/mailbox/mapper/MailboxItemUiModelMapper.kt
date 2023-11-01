@@ -130,7 +130,7 @@ class MailboxItemUiModelMapper @Inject constructor(
 
     private fun ParticipantsResolvedNamesResult.toParticipantsUiModel(): ParticipantsUiModel {
         return if (this.list.any { it.name.isNotBlank() }) {
-            ParticipantsUiModel.Participants(this.list.map { ParticipantUiModel(it.name, it.isProton) })
+            ParticipantsUiModel.Participants(this.list.map { ParticipantUiModel(it.name, it.isProton) }.toImmutableList())
         } else {
             when (this) {
                 is ParticipantsResolvedNamesResult.Recipients -> ParticipantsUiModel.NoParticipants(
