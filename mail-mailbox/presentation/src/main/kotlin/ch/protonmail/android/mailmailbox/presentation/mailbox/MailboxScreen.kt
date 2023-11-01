@@ -69,7 +69,6 @@ import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
-import ch.protonmail.android.mailmailbox.presentation.BuildConfig
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
@@ -341,19 +340,22 @@ private fun MailboxSwipeRefresh(
 
             is MailboxScreenState.OfflineWithData -> {
                 actions.onOfflineWithData()
-                MailboxItemsList(state, listState, currentViewState, items, actions, appendLoadingStateChanged)
+                MailboxItemsList(state, listState, items, actions, appendLoadingStateChanged)
             }
 
             is MailboxScreenState.ErrorWithData -> {
                 actions.onErrorWithData()
-                MailboxItemsList(state, listState, currentViewState, items, actions, appendLoadingStateChanged)
+                MailboxItemsList(state, listState, items, actions, appendLoadingStateChanged)
             }
 
             is MailboxScreenState.LoadingWithData,
             is MailboxScreenState.AppendLoading,
             is MailboxScreenState.AppendError,
             is MailboxScreenState.AppendOfflineError,
-            is MailboxScreenState.Data -> MailboxItemsList(state, listState, currentViewState, items, actions, appendLoadingStateChanged)
+            is MailboxScreenState.Data -> MailboxItemsList(
+                state, listState, items, actions,
+                appendLoadingStateChanged
+            )
         }
         PullRefreshIndicator(
             refreshing = refreshing,
@@ -368,7 +370,6 @@ private fun MailboxSwipeRefresh(
 private fun MailboxItemsList(
     state: MailboxListState,
     listState: LazyListState,
-    viewState: MailboxScreenState,
     items: LazyPagingItems<MailboxItemUiModel>,
     actions: MailboxScreen.Actions,
     appendLoadingStateChanged: (MailboxScreenState) -> Unit
@@ -413,26 +414,26 @@ private fun MailboxItemsList(
 
                 is MailboxScreenState.AppendLoading -> {
                     ProtonCenteredProgress(
-                    modifier = Modifier
-                        .testTag(MailboxScreenTestTags.MailboxAppendLoader)
-                        .padding(ProtonDimens.DefaultSpacing)
-                )
+                        modifier = Modifier
+                            .testTag(MailboxScreenTestTags.MailboxAppendLoader)
+                            .padding(ProtonDimens.DefaultSpacing)
+                    )
                     appendLoadingStateChanged(MailboxScreenState.AppendLoading)
                 }
 
                 is MailboxScreenState.AppendOfflineError -> {
                     AppendError(
-                    message = stringResource(id = R.string.mailbox_error_message_offline),
-                    onClick = { items.retry() }
-                )
+                        message = stringResource(id = R.string.mailbox_error_message_offline),
+                        onClick = { items.retry() }
+                    )
                     appendLoadingStateChanged(MailboxScreenState.AppendOfflineError)
                 }
 
                 is MailboxScreenState.AppendError -> {
                     AppendError(
-                    message = stringResource(id = R.string.mailbox_error_message_generic),
-                    onClick = { items.retry() }
-                )
+                        message = stringResource(id = R.string.mailbox_error_message_generic),
+                        onClick = { items.retry() }
+                    )
                     appendLoadingStateChanged(MailboxScreenState.AppendError)
 
                 }

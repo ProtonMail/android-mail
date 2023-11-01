@@ -45,6 +45,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkConstructor
 import io.mockk.unmockkConstructor
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.test.runTest
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
@@ -160,7 +161,7 @@ class MailboxItemUiModelMapperTest {
             listOf(
                 ParticipantUiModel("contact name", shouldShowOfficialBadge = false),
                 ParticipantUiModel("display name", shouldShowOfficialBadge = true)
-            )
+            ).toImmutableList()
         )
         every {
             getParticipantsResolvedNames.invoke(mailboxItem, ContactTestData.contacts)
