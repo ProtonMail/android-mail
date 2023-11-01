@@ -18,28 +18,81 @@
 
 package ch.protonmail.android.mailmailbox.presentation.paging
 
-import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import ch.protonmail.android.mailcommon.domain.model.isOfflineError
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreenState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.paging.exception.DataErrorException
 import timber.log.Timber
 
-fun LazyPagingItems<MailboxItemUiModel>.mapToUiStates(): MailboxScreenState {
+/**
+ * Maps the [MailboxListState] to the [MailboxScreenState]
+ */
+fun LazyPagingItems<MailboxItemUiModel>.mapToUiStates(
+    listState: MailboxListState,
+    refreshRequested: Boolean,
+    userInitiatedAppendState: MailboxScreenState
+): MailboxScreenState {
+    return when (listState) {
+        is MailboxListState.Data.ViewMode -> {
+            this.mapToUiStateInViewMode(refreshRequested, userInitiatedAppendState)
+        }
+
+        is MailboxListState.Data.SelectionMode -> {
+            MailboxScreenState.Data(this)
+        }
+
+        is MailboxListState.Loading -> {
+            MailboxScreenState.Loading
+        }
+    }
+}
+
+/**
+ * Maps the [MailboxListState] to the [MailboxScreenState] only when user scroll downs the bottom
+ * of the list for Appending a new page
+ *
+ * We keep this function separate from [mapToUiState] because we do not want to access LazyPagingItems.loadState.append
+ * in [mapToUiState] function. Because it will cause background page loading changes loadState.append then it
+ * causes redundant recomposition of the whole MailboxList.
+ *
+ * This function need to be called only locally at the end of the LazyColumn scope. So
+ * it will not cause redundant recompositions
+ */
+fun LazyPagingItems<MailboxItemUiModel>.mapAppendToUiStates(listState: MailboxListState): MailboxScreenState {
+    return when (listState) {
+        is MailboxListState.Data.ViewMode -> this.mapAppendToUiStateInViewMode()
+        else -> MailboxScreenState.Data(this)
+    }
+}
+
+private fun LazyPagingItems<MailboxItemUiModel>.mapToUiStateInViewMode(
+    refreshRequested: Boolean,
+    userInitiatedAppendState: MailboxScreenState
+): MailboxScreenState {
     return when {
-        this.loadState.isLoading() -> {
+        this.loadState.refresh is LoadState.Loading -> {
             if (this.itemCount == 0) {
                 MailboxScreenState.Loading
             } else {
-                MailboxScreenState.LoadingWithData
+                MailboxScreenState.LoadingWithData(refreshRequested)
             }
         }
-        this.loadState.isAppendLoading() -> MailboxScreenState.AppendLoading
-        this.loadState.append is LoadState.Error -> appendErrorToUiState(this)
+
+        userInitiatedAppendState is MailboxScreenState.AppendLoading -> MailboxScreenState.AppendLoading
         this.loadState.refresh is LoadState.Error -> refreshErrorToUiState(this)
         this.itemCount == 0 -> MailboxScreenState.Empty
+        else -> MailboxScreenState.Data(this)
+    }
+
+}
+
+private fun LazyPagingItems<MailboxItemUiModel>.mapAppendToUiStateInViewMode(): MailboxScreenState {
+    return when (this.loadState.append) {
+        is LoadState.Loading -> MailboxScreenState.AppendLoading
+        is LoadState.Error -> appendErrorToUiState(this)
         else -> MailboxScreenState.Data(this)
     }
 }
@@ -76,9 +129,3 @@ private fun refreshErrorToUiState(pagingItems: LazyPagingItems<MailboxItemUiMode
         else -> MailboxScreenState.Error
     }
 }
-
-private fun CombinedLoadStates.isLoading() = this.isSourceLoading() || this.isMediatorLoading()
-
-private fun CombinedLoadStates.isSourceLoading() = this.source.refresh is LoadState.Loading
-private fun CombinedLoadStates.isMediatorLoading() = this.mediator?.refresh is LoadState.Loading
-private fun CombinedLoadStates.isAppendLoading() = this.append is LoadState.Loading

@@ -43,6 +43,12 @@ import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -72,8 +78,8 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewA
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxPreview
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxPreviewProvider
+import ch.protonmail.android.mailmailbox.presentation.paging.mapAppendToUiStates
 import ch.protonmail.android.mailmailbox.presentation.paging.mapToUiStates
-import ch.protonmail.android.mailpagination.presentation.paging.verticalScrollbar
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.flow.rememberAsState
@@ -266,10 +272,38 @@ private fun MailboxSwipeRefresh(
     actions: MailboxScreen.Actions,
     modifier: Modifier = Modifier
 ) {
-    val currentViewState = items.mapToUiStates()
-    Timber.d("view state = $currentViewState")
+    val refreshRequested = (state as? MailboxListState.Data.ViewMode)?.refreshRequested ?: false
+    val appendLoadingState: MutableState<MailboxScreenState> =
+        remember { mutableStateOf(MailboxScreenState.Data(items)) }
+
+    val appendLoadingStateChanged: (MailboxScreenState) -> Unit = {
+        // View state is refreshed from the Append part of the LazyColumn (user scrolls down and tries to load older
+        // emails , we need to trigger derivedStateOf to calculate the state again and refresh the list accordingly
+        appendLoadingState.value = it
+    }
+
+    // Here we use derivedStateOf to discard LazyPagingItems's loadState changes in the background while the user
+    // scrolls down the mail list. Paging library produces loadState.append = Loading state in the background and this
+    // was causing recomposition of MailboxSwipeRefresh composable
+    val currentViewState by remember {
+        derivedStateOf {
+            items.mapToUiStates(
+                state,
+                refreshRequested,
+                appendLoadingState.value
+            )
+        }
+    }
 
     val refreshing = currentViewState is MailboxScreenState.LoadingWithData
+
+    LaunchedEffect(refreshing) {
+        // We need to clear the refreshRequestedState after the refresh is done
+        if (refreshRequested && !refreshing) {
+            actions.onRefreshListCompleted()
+        }
+    }
+
     val pullRefreshState = rememberPullRefreshState(
         refreshing = refreshing,
         onRefresh = {
@@ -307,19 +341,19 @@ private fun MailboxSwipeRefresh(
 
             is MailboxScreenState.OfflineWithData -> {
                 actions.onOfflineWithData()
-                MailboxItemsList(state, listState, currentViewState, items, actions)
+                MailboxItemsList(state, listState, currentViewState, items, actions, appendLoadingStateChanged)
             }
 
             is MailboxScreenState.ErrorWithData -> {
                 actions.onErrorWithData()
-                MailboxItemsList(state, listState, currentViewState, items, actions)
+                MailboxItemsList(state, listState, currentViewState, items, actions, appendLoadingStateChanged)
             }
 
             is MailboxScreenState.LoadingWithData,
             is MailboxScreenState.AppendLoading,
             is MailboxScreenState.AppendError,
             is MailboxScreenState.AppendOfflineError,
-            is MailboxScreenState.Data -> MailboxItemsList(state, listState, currentViewState, items, actions)
+            is MailboxScreenState.Data -> MailboxItemsList(state, listState, currentViewState, items, actions, appendLoadingStateChanged)
         }
         PullRefreshIndicator(
             refreshing = refreshing,
@@ -336,7 +370,8 @@ private fun MailboxItemsList(
     listState: LazyListState,
     viewState: MailboxScreenState,
     items: LazyPagingItems<MailboxItemUiModel>,
-    actions: MailboxScreen.Actions
+    actions: MailboxScreen.Actions,
+    appendLoadingStateChanged: (MailboxScreenState) -> Unit
 ) {
     val itemActions = ComposeMailboxItem.Actions(
         onItemClicked = actions.onItemClicked,
@@ -349,7 +384,6 @@ private fun MailboxItemsList(
         modifier = Modifier
             .testTag(MailboxScreenTestTags.List)
             .fillMaxSize()
-            .let { if (BuildConfig.DEBUG) it.verticalScrollbar(listState) else it }
     ) {
         items(
             count = items.itemCount,
@@ -374,24 +408,36 @@ private fun MailboxItemsList(
             }
         }
         item {
-            when (viewState) {
-                is MailboxScreenState.AppendLoading -> ProtonCenteredProgress(
+
+            when (items.mapAppendToUiStates(state)) {
+
+                is MailboxScreenState.AppendLoading -> {
+                    ProtonCenteredProgress(
                     modifier = Modifier
                         .testTag(MailboxScreenTestTags.MailboxAppendLoader)
                         .padding(ProtonDimens.DefaultSpacing)
                 )
+                    appendLoadingStateChanged(MailboxScreenState.AppendLoading)
+                }
 
-                is MailboxScreenState.AppendOfflineError -> AppendError(
+                is MailboxScreenState.AppendOfflineError -> {
+                    AppendError(
                     message = stringResource(id = R.string.mailbox_error_message_offline),
                     onClick = { items.retry() }
                 )
+                    appendLoadingStateChanged(MailboxScreenState.AppendOfflineError)
+                }
 
-                is MailboxScreenState.AppendError -> AppendError(
+                is MailboxScreenState.AppendError -> {
+                    AppendError(
                     message = stringResource(id = R.string.mailbox_error_message_generic),
                     onClick = { items.retry() }
                 )
+                    appendLoadingStateChanged(MailboxScreenState.AppendError)
 
-                else -> Unit
+                }
+
+                else -> appendLoadingStateChanged(MailboxScreenState.Data(items))
             }
         }
     }
@@ -462,6 +508,7 @@ object MailboxScreen {
         val onItemLongClicked: (MailboxItemUiModel) -> Unit,
         val onAvatarClicked: (MailboxItemUiModel) -> Unit,
         val onRefreshList: () -> Unit,
+        val onRefreshListCompleted: () -> Unit,
         val openDrawerMenu: () -> Unit,
         val showOfflineSnackbar: () -> Unit,
         val showRefreshErrorSnackbar: () -> Unit,
@@ -484,6 +531,7 @@ object MailboxScreen {
                 onItemLongClicked = {},
                 onAvatarClicked = {},
                 onRefreshList = {},
+                onRefreshListCompleted = {},
                 openDrawerMenu = {},
                 showOfflineSnackbar = {},
                 showRefreshErrorSnackbar = {},
