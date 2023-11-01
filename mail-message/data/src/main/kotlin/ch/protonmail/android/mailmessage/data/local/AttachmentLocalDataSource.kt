@@ -95,7 +95,8 @@ interface AttachmentLocalDataSource {
         userId: UserId,
         messageId: MessageId,
         attachmentId: AttachmentId,
-        content: ByteArray
+        content: ByteArray,
+        attachment: MessageAttachment
     ): Either<DataError.Local, Unit>
 
     suspend fun updateAttachmentDownloadStatus(

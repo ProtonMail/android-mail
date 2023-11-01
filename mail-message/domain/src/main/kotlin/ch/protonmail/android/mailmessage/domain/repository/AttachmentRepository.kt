@@ -74,7 +74,8 @@ interface AttachmentRepository {
         userId: UserId,
         messageId: MessageId,
         attachmentId: AttachmentId,
-        content: ByteArray
+        content: ByteArray,
+        attachment: MessageAttachment
     ): Either<DataError, Unit>
 
     suspend fun getFileSizeFromUri(uri: Uri): Either<DataError, Long>

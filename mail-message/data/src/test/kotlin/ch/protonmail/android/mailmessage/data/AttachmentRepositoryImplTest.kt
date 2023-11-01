@@ -519,12 +519,13 @@ class AttachmentRepositoryImplTest {
     fun `should return unit when upserting mime attachment was successful`() = runTest {
         // Given
         val attachmentContent = "attachmentContent".encodeToByteArray()
+        val attachment = MessageAttachmentSample.embeddedImageAttachment
         coEvery {
-            localDataSource.upsertMimeAttachment(userId, messageId, attachmentId, attachmentContent)
+            localDataSource.upsertMimeAttachment(userId, messageId, attachmentId, attachmentContent, attachment)
         } returns Unit.right()
 
         // When
-        val actual = repository.saveMimeAttachment(userId, messageId, attachmentId, attachmentContent)
+        val actual = repository.saveMimeAttachment(userId, messageId, attachmentId, attachmentContent, attachment)
 
         // Then
         Assert.assertEquals(Unit.right(), actual)
@@ -534,12 +535,13 @@ class AttachmentRepositoryImplTest {
     fun `should return a local error when upserting mime attachment has failed`() = runTest {
         // Given
         val attachmentContent = "attachmentContent".encodeToByteArray()
+        val attachment = MessageAttachmentSample.embeddedImageAttachment
         coEvery {
-            localDataSource.upsertMimeAttachment(userId, messageId, attachmentId, attachmentContent)
+            localDataSource.upsertMimeAttachment(userId, messageId, attachmentId, attachmentContent, attachment)
         } returns DataError.Local.FailedToStoreFile.left()
 
         // When
-        val actual = repository.saveMimeAttachment(userId, messageId, attachmentId, attachmentContent)
+        val actual = repository.saveMimeAttachment(userId, messageId, attachmentId, attachmentContent, attachment)
 
         // Then
         Assert.assertEquals(DataError.Local.FailedToStoreFile.left(), actual)

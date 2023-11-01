@@ -109,7 +109,8 @@ class GetDecryptedMessageBodyTest(
                 UserIdTestData.userId,
                 MessageBodyTestData.multipartMixedMessageBody.messageId,
                 mimeAttachmentId,
-                mimeAttachmentContent
+                mimeAttachmentContent,
+                mimeMessageAttachment
             )
         } returns Unit.right()
     }

@@ -192,10 +192,14 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
         userId: UserId,
         messageId: MessageId,
         attachmentId: AttachmentId,
-        content: ByteArray
+        content: ByteArray,
+        attachment: MessageAttachment
     ): Either<DataError.Local, Unit> {
         attachmentFileStorage.saveAttachmentCached(userId, messageId, attachmentId, content)
             ?: return DataError.Local.FailedToStoreFile.left()
+        attachmentDao.insertOrUpdate(
+            messageAttachmentEntityMapper.toMessageAttachmentEntity(userId, messageId, attachment)
+        )
         return Unit.right()
     }
 

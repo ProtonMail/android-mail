@@ -123,8 +123,10 @@ class AttachmentRepositoryImpl @Inject constructor(
         userId: UserId,
         messageId: MessageId,
         attachmentId: AttachmentId,
-        content: ByteArray
-    ): Either<DataError, Unit> = localDataSource.upsertMimeAttachment(userId, messageId, attachmentId, content)
+        content: ByteArray,
+        attachment: MessageAttachment
+    ): Either<DataError, Unit> =
+        localDataSource.upsertMimeAttachment(userId, messageId, attachmentId, content, attachment)
 
     override suspend fun getFileSizeFromUri(uri: Uri) = localDataSource.getFileSizeFromUri(uri)
 

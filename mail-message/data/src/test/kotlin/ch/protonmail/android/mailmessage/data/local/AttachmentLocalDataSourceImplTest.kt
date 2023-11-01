@@ -49,6 +49,7 @@ import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.coVerifyOrder
+import io.mockk.coVerifySequence
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
@@ -98,6 +99,7 @@ class AttachmentLocalDataSourceImplTest {
     private val decryptAttachmentByteArray = mockk<DecryptAttachmentByteArray>()
     private val prepareAttachmentForSharing = mockk<PrepareAttachmentForSharing>()
     private val uriHelper = mockk<UriHelper>()
+    private val messageAttachmentEntityMapper = MessageAttachmentEntityMapper()
 
     private val attachmentLocalDataSource = AttachmentLocalDataSourceImpl(
         db = messageDatabase,
@@ -105,7 +107,7 @@ class AttachmentLocalDataSourceImplTest {
         context = context,
         decryptAttachmentByteArray = decryptAttachmentByteArray,
         prepareAttachmentForSharing = prepareAttachmentForSharing,
-        messageAttachmentEntityMapper = MessageAttachmentEntityMapper(),
+        messageAttachmentEntityMapper = messageAttachmentEntityMapper,
         ioDispatcher = Dispatchers.Unconfined,
         uriHelper = uriHelper
     )
@@ -674,17 +676,27 @@ class AttachmentLocalDataSourceImplTest {
     fun `should return unit when upserting mime attachment was successful`() = runTest {
         // Given
         val attachmentContent = "attachmentContent".encodeToByteArray()
+        val attachment = MessageAttachmentSample.embeddedImageAttachment
         coEvery {
             attachmentFileStorage.saveAttachmentCached(userId, messageId, attachmentId, attachmentContent)
         } returns mockk()
 
         // When
-        val actual = attachmentLocalDataSource.upsertMimeAttachment(userId, messageId, attachmentId, attachmentContent)
+        val actual = attachmentLocalDataSource.upsertMimeAttachment(
+            userId = userId,
+            messageId = messageId,
+            attachmentId = attachmentId,
+            content = attachmentContent,
+            attachment = attachment
+        )
 
         // Then
         assertEquals(Unit.right(), actual)
-        coVerify {
+        coVerifySequence {
             attachmentFileStorage.saveAttachmentCached(userId, messageId, attachmentId, attachmentContent)
+            attachmentDao.insertOrUpdate(
+                messageAttachmentEntityMapper.toMessageAttachmentEntity(userId, messageId, attachment)
+            )
         }
     }
 
@@ -692,12 +704,19 @@ class AttachmentLocalDataSourceImplTest {
     fun `should return a local error when upserting mime attachment has failed`() = runTest {
         // Given
         val attachmentContent = "attachmentContent".encodeToByteArray()
+        val attachment = MessageAttachmentSample.embeddedImageAttachment
         coEvery {
             attachmentFileStorage.saveAttachmentCached(userId, messageId, attachmentId, attachmentContent)
         } returns null
 
         // When
-        val actual = attachmentLocalDataSource.upsertMimeAttachment(userId, messageId, attachmentId, attachmentContent)
+        val actual = attachmentLocalDataSource.upsertMimeAttachment(
+            userId = userId,
+            messageId = messageId,
+            attachmentId = attachmentId,
+            content = attachmentContent,
+            attachment = attachment
+        )
 
         // Then
         assertEquals(DataError.Local.FailedToStoreFile.left(), actual)

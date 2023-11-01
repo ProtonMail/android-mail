@@ -88,7 +88,6 @@ class GetDecryptedMessageBody @Inject constructor(
                 val attachments = this.attachments.map {
                     val attachmentId = provideNewAttachmentId()
                     it.saveAttachmentToCache(messageBody.userId, messageBody.messageId, attachmentId)
-                    it.toMessageAttachment(attachmentId)
                 }
                 DecryptedMessageBody(messageBody.messageId, body.content, MimeType.from(body.mimeType), attachments)
             }
@@ -103,8 +102,8 @@ class GetDecryptedMessageBody @Inject constructor(
         userId: UserId,
         messageId: MessageId,
         attachmentId: AttachmentId
-    ) {
-        attachmentRepository.saveMimeAttachment(userId, messageId, attachmentId, content)
+    ): MessageAttachment = toMessageAttachment(attachmentId).also {
+        attachmentRepository.saveMimeAttachment(userId, messageId, attachmentId, content, it)
     }
 
     private fun DecryptedMimeAttachment.toMessageAttachment(attachmentId: AttachmentId): MessageAttachment {
