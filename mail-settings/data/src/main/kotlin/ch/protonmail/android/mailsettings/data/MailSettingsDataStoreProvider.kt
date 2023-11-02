@@ -40,8 +40,12 @@ class MailSettingsDataStoreProvider @Inject constructor(
     private val Context.themeDataStore: DataStore<Preferences> by preferencesDataStore(
         name = "themePrefDataStore"
     )
+    private val Context.preventScreenshotsDataStore: DataStore<Preferences> by preferencesDataStore(
+        name = "preventScreenshotsPrefDataStore"
+    )
     val autoLockDataStore = context.autoLockDataStore
     val alternativeRoutingDataStore = context.alternativeRoutingDataStore
     val combinedContactsDataStore = context.combinedContactsDataStore
     val themeDataStore = context.themeDataStore
+    val preventScreenshotsDataStore = context.preventScreenshotsDataStore
 }

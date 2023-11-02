@@ -24,13 +24,15 @@ import ch.protonmail.android.mailsettings.data.repository.AlternativeRoutingRepo
 import ch.protonmail.android.mailsettings.data.repository.AppLanguageRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.AutoLockRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.CombinedContactsRepositoryImpl
+import ch.protonmail.android.mailsettings.data.repository.PreventScreenshotsRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.ThemeRepositoryImpl
-import ch.protonmail.android.mailsettings.data.repository.local.AlternativeRoutingLocalDataSourceImpl
 import ch.protonmail.android.mailsettings.data.repository.local.AlternativeRoutingLocalDataSource
+import ch.protonmail.android.mailsettings.data.repository.local.AlternativeRoutingLocalDataSourceImpl
 import ch.protonmail.android.mailsettings.domain.repository.AlternativeRoutingRepository
 import ch.protonmail.android.mailsettings.domain.repository.AppLanguageRepository
 import ch.protonmail.android.mailsettings.domain.repository.AutoLockRepository
 import ch.protonmail.android.mailsettings.domain.repository.CombinedContactsRepository
+import ch.protonmail.android.mailsettings.domain.repository.PreventScreenshotsRepository
 import ch.protonmail.android.mailsettings.domain.repository.ThemeRepository
 import ch.protonmail.android.mailsettings.presentation.settings.theme.ThemeObserverCoroutineScope
 import dagger.Module
@@ -49,15 +51,13 @@ object SettingsModule {
 
     @Provides
     @Singleton
-    fun provideDataStoreProvider(
-        @ApplicationContext context: Context
-    ): MailSettingsDataStoreProvider = MailSettingsDataStoreProvider(context)
+    fun provideDataStoreProvider(@ApplicationContext context: Context): MailSettingsDataStoreProvider =
+        MailSettingsDataStoreProvider(context)
 
     @Provides
     @Singleton
-    fun provideAutoLockRepository(
-        dataStoreProvider: MailSettingsDataStoreProvider
-    ): AutoLockRepository = AutoLockRepositoryImpl(dataStoreProvider)
+    fun provideAutoLockRepository(dataStoreProvider: MailSettingsDataStoreProvider): AutoLockRepository =
+        AutoLockRepositoryImpl(dataStoreProvider)
 
     @Provides
     @Singleton
@@ -79,18 +79,21 @@ object SettingsModule {
 
     @Provides
     @Singleton
-    fun provideAppLanguageRepository(): AppLanguageRepository =
-        AppLanguageRepositoryImpl()
+    fun provideAppLanguageRepository(): AppLanguageRepository = AppLanguageRepositoryImpl()
 
     @Provides
     @Singleton
-    fun provideThemeRepository(
+    fun provideThemeRepository(dataStoreProvider: MailSettingsDataStoreProvider): ThemeRepository =
+        ThemeRepositoryImpl(dataStoreProvider)
+
+    @Provides
+    @Singleton
+    fun providePreventScreenshotsRepository(
         dataStoreProvider: MailSettingsDataStoreProvider
-    ): ThemeRepository = ThemeRepositoryImpl(dataStoreProvider)
+    ): PreventScreenshotsRepository = PreventScreenshotsRepositoryImpl(dataStoreProvider)
 
     @Provides
     @Singleton
     @ThemeObserverCoroutineScope
-    fun provideThemeObserverCoroutineScope(): CoroutineScope =
-        CoroutineScope(Dispatchers.IO + SupervisorJob())
+    fun provideThemeObserverCoroutineScope(): CoroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 }
