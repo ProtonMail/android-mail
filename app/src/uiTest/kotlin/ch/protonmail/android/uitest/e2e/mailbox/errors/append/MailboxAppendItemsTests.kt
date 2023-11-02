@@ -55,6 +55,8 @@ internal interface MailboxAppendItemsTests {
             appendLoadingSection { verify { isHidden() } }
 
             listSection {
+                // Re-scroll if needed on small screen devices.
+                scrollToItemAtIndex(SecondScrollThreshold)
                 verify { listItemsAreShown(lastExpectedMailboxItem) }
             }
         }
