@@ -80,6 +80,10 @@
                 android:value="androidx.startup"
                 tools:node="remove" />
             <meta-data
+                android:name="ch.protonmail.android.initializer.MainInitializer.MainAsyncInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+            <meta-data
                 android:name="ch.protonmail.android.initializer.strictmode.StrictModeInitializer"
                 android:value="androidx.startup"
                 tools:node="remove" />

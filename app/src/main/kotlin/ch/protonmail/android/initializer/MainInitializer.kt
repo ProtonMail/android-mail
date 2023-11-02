@@ -23,6 +23,10 @@ import androidx.startup.AppInitializer
 import androidx.startup.Initializer
 import ch.protonmail.android.BuildConfig
 import ch.protonmail.android.initializer.strictmode.StrictModeInitializer
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import me.proton.core.auth.presentation.MissingScopeInitializer
 import me.proton.core.crypto.validator.presentation.init.CryptoValidatorInitializer
 import me.proton.core.humanverification.presentation.HumanVerificationInitializer
@@ -31,14 +35,31 @@ import me.proton.core.plan.presentation.UnredeemedPurchaseInitializer
 
 class MainInitializer : Initializer<Unit> {
 
+    // create a nested class to initialise some of the non-essential time consuming dependencies in a background thread
+    class MainAsyncInitializer : Initializer<Unit> {
+        override fun create(context: Context) {
+            // No-op needed
+        }
+
+        override fun dependencies() = coreDependencies() + mailDependencies() + releaseOnlyDependenciesIfNeeded()
+
+        private fun coreDependencies() = listOf(
+            FeatureFlagInitializer::class.java
+        )
+
+        private fun mailDependencies(): List<Class<out Initializer<*>?>> = emptyList()
+
+        private fun releaseOnlyDependenciesIfNeeded() =
+            if (BuildConfig.DEBUG) emptyList() else listOf(SentryInitializer::class.java)
+    }
+
     override fun create(context: Context) {
         // No-op needed
     }
 
-    override fun dependencies() = coreDependencies() + mailDependencies() + releaseOnlyDependenciesIfNeeded()
+    override fun dependencies() = coreDependencies() + mailDependencies()
 
     private fun coreDependencies() = listOf(
-        FeatureFlagInitializer::class.java,
         CryptoValidatorInitializer::class.java,
         HumanVerificationInitializer::class.java,
         MissingScopeInitializer::class.java,
@@ -56,9 +77,6 @@ class MainInitializer : Initializer<Unit> {
         NotificationHandlersInitializer::class.java
     )
 
-    private fun releaseOnlyDependenciesIfNeeded() =
-        if (BuildConfig.DEBUG) emptyList() else listOf(SentryInitializer::class.java)
-
     companion object {
 
         fun init(appContext: Context) {
@@ -67,6 +85,14 @@ class MainInitializer : Initializer<Unit> {
                 initializeComponent(WorkManagerInitializer::class.java)
                 initializeComponent(MainInitializer::class.java)
             }
+
+            // Initialize some non-essential initializers in a background thread. They are taking most
+            // time to initialize. This line must be after initialisation of MainInitializer above, because
+            // AppInitializer has an internal lock, which prevents simultaneous initialisation
+            CoroutineScope(Dispatchers.Default + SupervisorJob()).launch {
+                AppInitializer.getInstance(appContext).initializeComponent(MainAsyncInitializer::class.java)
+            }
+
         }
     }
 }

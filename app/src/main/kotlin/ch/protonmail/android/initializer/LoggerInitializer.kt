@@ -36,11 +36,6 @@ class LoggerInitializer : Initializer<Unit> {
         CoreLogger.set(TimberLogger)
     }
 
-    override fun dependencies(): List<Class<out Initializer<*>>> {
-        return if (BuildConfig.DEBUG) {
-            emptyList()
-        } else {
-            listOf(SentryInitializer::class.java)
-        }
-    }
+    override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()
+
 }
