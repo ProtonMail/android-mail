@@ -35,4 +35,11 @@
     <string name="label_list_no_labels_found">No labels found.</string>
     <string name="label_list_create_label_placeholder_description">Create a label to enhance your email experience.</string>
     <string name="add_label_content_description">Add label</string>
+    <string name="label_form_create_label">Create label</string>
+    <string name="label_form_edit_label">Edit label</string>
+    <string name="label_form_save">Save</string>
+    <string name="label_name_title">Name</string>
+    <string name="add_a_label_name_hint">Add a label name</string>
+    <string name="input_field_max_characters_count">%1d / %2d characters</string>
+    <string name="color_picker_title">Color</string>
 </resources>

@@ -19,7 +19,6 @@
 package ch.protonmail.android.navigation.route
 
 import android.net.Uri
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -34,12 +33,12 @@ import ch.protonmail.android.maildetail.presentation.ui.ConversationDetail
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetail
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
+import ch.protonmail.android.maillabel.presentation.labelform.LabelFormScreen
 import ch.protonmail.android.maillabel.presentation.labellist.LabelListScreen
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreen
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailsettings.presentation.settings.MainSettingsScreen
-import ch.protonmail.android.mailsettings.presentation.settings.language.LanguageSettingsScreen
 import ch.protonmail.android.navigation.model.Destination
 import me.proton.core.compose.navigation.get
 import me.proton.core.domain.entity.UserId
@@ -198,19 +197,18 @@ internal fun NavGraphBuilder.addSettings(navController: NavHostController, showF
     }
 }
 
-internal fun NavGraphBuilder.addLabelList(navController: NavHostController, showFeatureMissingSnackbar: () -> Unit) {
+internal fun NavGraphBuilder.addLabelList(navController: NavHostController) {
     composable(route = Destination.Screen.LabelList.route) {
         LabelListScreen(
             actions = LabelListScreen.Actions(
                 onBackClick = {
                     navController.popBackStack()
                 },
-                onLabelSelected = { mailLabel ->
-                    // TODO Pass mailLabel.id
-                    navController.navigate(Destination.Screen.LabelForm.route)
+                onLabelSelected = { label ->
+                    navController.navigate(Destination.Screen.EditLabel(label.labelId))
                 },
                 onAddLabelClick = {
-                    navController.navigate(Destination.Screen.LabelForm.route)
+                    navController.navigate(Destination.Screen.CreateLabel.route)
                 }
             )
         )
@@ -218,7 +216,11 @@ internal fun NavGraphBuilder.addLabelList(navController: NavHostController, show
 }
 
 internal fun NavGraphBuilder.addLabelForm(navController: NavHostController) {
-    composable(route = Destination.Screen.LabelForm.route) {
-        // TODO
-    }
+    val actions = LabelFormScreen.Actions.Empty.copy(
+        onBackClick = {
+            navController.popBackStack()
+        }
+    )
+    composable(route = Destination.Screen.CreateLabel.route) { LabelFormScreen(actions) }
+    composable(route = Destination.Screen.EditLabel.route) { LabelFormScreen(actions) }
 }

@@ -25,10 +25,12 @@ import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.DraftMe
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.SerializedDraftActionKey
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.ConversationIdKey
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen.MESSAGE_ID_KEY
+import ch.protonmail.android.maillabel.presentation.labelform.LabelFormScreen.LabelIdKey
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailsettings.domain.model.SwipeActionDirection
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.EditSwipeActionPreferenceScreen.SWIPE_DIRECTION_KEY
 import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.util.kotlin.serialize
 
 sealed class Destination(val route: String) {
@@ -71,7 +73,10 @@ sealed class Destination(val route: String) {
         object ThemeSettings : Destination("settings/theme")
         object DeepLinksHandler : Destination("deepLinksHandler")
         object LabelList : Destination("labelList")
-        object LabelForm : Destination("labelForm")
+        object CreateLabel : Destination("labelForm")
+        object EditLabel : Destination("labelForm/${LabelIdKey.wrap()}") {
+            operator fun invoke(labelId: LabelId) = route.replace(LabelIdKey.wrap(), labelId.id)
+        }
     }
 
     object Dialog {

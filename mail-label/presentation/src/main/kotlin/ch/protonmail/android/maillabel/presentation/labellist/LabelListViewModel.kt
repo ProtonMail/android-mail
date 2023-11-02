@@ -20,9 +20,9 @@ package ch.protonmail.android.maillabel.presentation.labellist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
-import ch.protonmail.android.maillabel.domain.model.MailLabel
-import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
+import ch.protonmail.android.maillabel.domain.usecase.ObserveLabels
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
@@ -31,13 +31,13 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 import me.proton.core.compose.viewmodel.stopTimeoutMillis
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class LabelListViewModel @Inject constructor(
-    private val observeMailLabels: ObserveMailLabels,
+    private val observeLabels: ObserveLabels,
     observePrimaryUserId: ObservePrimaryUserId
 ) : ViewModel() {
 
@@ -56,21 +56,20 @@ class LabelListViewModel @Inject constructor(
     private fun observeMailLabels(): Flow<LabelListState> {
         return primaryUserId.flatMapLatest { userId ->
             if (userId == null) {
-                // TODO Handle error here
                 flowOf(LabelListState.EmptyLabelList)
             } else {
-                observeMailLabels(userId).map { mailLabels ->
-                    if (mailLabels.labels.isEmpty()) {
+                observeLabels(userId).map { labels ->
+                    val customMailLabels = labels.onLeft {
+                        // TODO Show error in UI ?
+                        Timber.e("Error while observing custom labels")
+                    }.getOrElse { emptyList() }
+                    if (customMailLabels.isEmpty()) {
                         LabelListState.EmptyLabelList
                     } else {
-                        LabelListState.Data(mailLabels.labels)
+                        LabelListState.Data(customMailLabels)
                     }
                 }
             }
         }
-    }
-
-    fun onLabelSelected(mailLabel: MailLabel) = viewModelScope.launch {
-        // TODO
     }
 }

@@ -58,6 +58,7 @@ android {
 }
 
 dependencies {
+    implementation(project(mapOf("path" to ":test:idlingresources")))
     kapt(Dependencies.appAnnotationProcessors)
     debugImplementation(Dependencies.composeDebugLibs)
 

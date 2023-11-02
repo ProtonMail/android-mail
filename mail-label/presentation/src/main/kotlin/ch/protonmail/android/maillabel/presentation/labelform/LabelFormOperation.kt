@@ -16,17 +16,24 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maillabel.presentation.labellist
+package ch.protonmail.android.maillabel.presentation.labelform
 
-import me.proton.core.label.domain.entity.Label
+import androidx.compose.ui.graphics.Color
 
-sealed class LabelListState {
+sealed interface LabelFormOperation
 
-    object Loading : LabelListState()
+internal sealed interface LabelFormAction : LabelFormOperation {
+    data class LabelNameChanged(val labelName: String) : LabelFormAction
+    data class LabelColorChanged(val labelColor: Color) : LabelFormAction
+    object OnSaveClick : LabelFormAction
+    object OnDeleteClick : LabelFormAction
+    object OnCloseLabelForm : LabelFormAction
+}
 
-    object EmptyLabelList : LabelListState()
-
-    data class Data(
-        val labels: List<Label>
-    ) : LabelListState()
+sealed interface LabelFormEvent : LabelFormOperation {
+    object EnableSaveButton : LabelFormEvent
+    object DisableSaveButton : LabelFormEvent
+    object LabelCreated: LabelFormEvent
+    object LabelUpdated: LabelFormEvent
+    object LabelDeleted: LabelFormEvent
 }

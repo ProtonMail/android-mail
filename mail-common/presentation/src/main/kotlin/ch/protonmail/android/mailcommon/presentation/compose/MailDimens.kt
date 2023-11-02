@@ -47,5 +47,17 @@ object MailDimens {
 
     val IconWeakRoundBackgroundRadius = 28.dp
 
+    val ListItemCircleFilledSize = 15.dp
+    val ListItemCircleFilledPadding = 20.dp
+
+    val ColorPickerCircleSize = 20.dp
+    val ColorPickerCircleHorizontalPadding = 17.dp
+    val ColorPickerCircleVerticalPadding = 10.dp
+
+    val ColorPickerSelectedCircleSize = 40.dp
+    val ColorPickerSelectedCircleBorderSize = 2.dp
+    val ColorPickerSelectedCircleHorizontalPadding = 7.dp
+    val ColorPickerSelectedCircleInternalMargin = 10.dp
+
     const val ActionButtonShapeRadius = 100
 }

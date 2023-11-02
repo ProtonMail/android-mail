@@ -16,17 +16,20 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maillabel.presentation.labellist
+package ch.protonmail.android.maillabel.presentation.labelform
 
 import me.proton.core.label.domain.entity.Label
+import me.proton.core.label.domain.entity.NewLabel
 
-sealed class LabelListState {
+sealed class LabelFormState {
 
-    object Loading : LabelListState()
+    object Loading : LabelFormState()
 
-    object EmptyLabelList : LabelListState()
+    data class CreateLabel(
+        val newLabel: NewLabel
+    ) : LabelFormState()
 
-    data class Data(
-        val labels: List<Label>
-    ) : LabelListState()
+    data class EditLabel(
+        val label: Label
+    ) : LabelFormState()
 }

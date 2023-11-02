@@ -22,6 +22,7 @@ import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -30,22 +31,24 @@ import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
-import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.colorResource
@@ -55,9 +58,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
-import ch.protonmail.android.maillabel.domain.model.MailLabel
-import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.R
+import ch.protonmail.android.maillabel.presentation.getColorFromHexString
 import me.proton.core.compose.component.ProtonSecondaryButton
 import me.proton.core.compose.component.appbar.ProtonTopAppBar
 import me.proton.core.compose.flow.rememberAsState
@@ -67,7 +69,11 @@ import me.proton.core.compose.theme.captionNorm
 import me.proton.core.compose.theme.defaultNorm
 import me.proton.core.compose.theme.defaultSmallWeak
 import me.proton.core.compose.theme.defaultStrongNorm
+import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.Label
 import me.proton.core.label.domain.entity.LabelId
+import me.proton.core.label.domain.entity.LabelType
+import okhttp3.internal.toHexString
 
 @Composable
 fun LabelListScreen(actions: LabelListScreen.Actions, viewModel: LabelListViewModel = hiltViewModel()) {
@@ -115,26 +121,29 @@ fun LabelListScreen(state: LabelListState.Data, actions: LabelListScreen.Actions
                         )
                     )
             ) {
-                items(state.mailLabels) { mailLabel ->
+                items(state.labels) { label ->
                     Column(
                         modifier = Modifier
                             .animateItemPlacement()
                             .selectable(selected = false) {
-                                actions.onLabelSelected(mailLabel)
+                                actions.onLabelSelected(label)
                             }
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(
-                                modifier = Modifier.padding(ProtonDimens.DefaultSpacing),
-                                painter = painterResource(id = R.drawable.ic_proton_circle_filled),
-                                tint = Color(mailLabel.color),
-                                contentDescription = NO_CONTENT_DESCRIPTION
+                            Box(
+                                modifier = Modifier
+                                    .padding(MailDimens.ListItemCircleFilledPadding)
+                                    .size(MailDimens.ListItemCircleFilledSize)
+                                    .clip(CircleShape)
+                                    .background(label.color.getColorFromHexString())
                             )
                             Text(
-                                text = mailLabel.text,
+                                text = label.name,
                                 modifier = Modifier.padding(
                                     start = ProtonDimens.ExtraSmallSpacing,
-                                    end = ProtonDimens.DefaultSpacing
+                                    top = ProtonDimens.DefaultSpacing,
+                                    end = ProtonDimens.DefaultSpacing,
+                                    bottom = ProtonDimens.DefaultSpacing
                                 ),
                                 style = ProtonTheme.typography.defaultNorm
                             )
@@ -222,7 +231,8 @@ fun LabelListTopBar(isAddLabelButtonVisible: Boolean, actions: LabelListScreen.A
         modifier = Modifier.fillMaxWidth(),
         title = {
             Text(
-                stringResource(id = R.string.label_title_labels)
+                text = stringResource(id = R.string.label_title_labels),
+                style = ProtonTheme.typography.defaultStrongNorm
             )
         },
         navigationIcon = {
@@ -251,7 +261,7 @@ object LabelListScreen {
 
     data class Actions(
         val onBackClick: () -> Unit,
-        val onLabelSelected: (MailLabel) -> Unit,
+        val onLabelSelected: (Label) -> Unit,
         val onAddLabelClick: () -> Unit
     ) {
 
@@ -271,18 +281,18 @@ object LabelListScreen {
 private fun LabelListScreenPreview() {
     LabelListScreen(
         state = LabelListState.Data(
-            mailLabels = listOf(
-                buildSampleMailLabelCustom(
+            labels = listOf(
+                buildSampleLabel(
                     name = "Label 1",
-                    color = colorResource(id = R.color.chambray).toArgb()
+                    color = colorResource(id = R.color.chambray).toArgb().toHexString()
                 ),
-                buildSampleMailLabelCustom(
+                buildSampleLabel(
                     name = "Label 2",
-                    color = colorResource(id = R.color.goblin).toArgb()
+                    color = colorResource(id = R.color.goblin).toArgb().toHexString()
                 ),
-                buildSampleMailLabelCustom(
+                buildSampleLabel(
                     name = "Label 3",
-                    color = colorResource(id = R.color.copper_intense).toArgb()
+                    color = colorResource(id = R.color.copper_intense).toArgb().toHexString()
                 )
             )
         ),
@@ -303,11 +313,7 @@ private fun EmptyLabelListScreenPreview() {
 private fun LabelListTopBarPreview() {
     LabelListTopBar(
         isAddLabelButtonVisible = true,
-        actions = LabelListScreen.Actions(
-            onBackClick = {},
-            onLabelSelected = {},
-            onAddLabelClick = {}
-        )
+        actions = LabelListScreen.Actions.Empty
     )
 }
 
@@ -316,23 +322,22 @@ private fun LabelListTopBarPreview() {
 private fun EmptyLabelListTopBarPreview() {
     LabelListTopBar(
         isAddLabelButtonVisible = false,
-        actions = LabelListScreen.Actions(
-            onBackClick = {},
-            onLabelSelected = {},
-            onAddLabelClick = {}
-        )
+        actions = LabelListScreen.Actions.Empty
     )
 }
 
-private fun buildSampleMailLabelCustom(name: String, color: Int): MailLabel.Custom {
-    return MailLabel.Custom(
-        id = MailLabelId.Custom.Label(LabelId("id$name")),
-        text = name,
+private fun buildSampleLabel(name: String, color: String): Label {
+    return Label(
+        userId = UserId("userId"),
+        labelId = LabelId("labelId"),
+        parentId = null,
+        name = name,
+        type = LabelType.MessageLabel,
+        path = "path",
         color = color,
-        parent = null,
-        isExpanded = false,
-        level = 0,
         order = 0,
-        children = listOf()
+        isNotified = null,
+        isExpanded = null,
+        isSticky = null
     )
 }

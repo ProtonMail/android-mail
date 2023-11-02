@@ -232,10 +232,7 @@ fun Home(
                     }
                 )
                 addLabelList(
-                    navController,
-                    showFeatureMissingSnackbar = {
-                        showFeatureMissingSnackbar()
-                    }
+                    navController
                 )
                 addLabelForm(
                     navController
