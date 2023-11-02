@@ -19,13 +19,17 @@
 package ch.protonmail.android
 
 import android.app.Application
+import ch.protonmail.android.callbacks.SecureActivityLifecycleCallbacks
 import ch.protonmail.android.initializer.MainInitializer
 import ch.protonmail.android.mailcommon.domain.benchmark.BenchmarkTracer
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 
 @HiltAndroidApp
-class App : Application() {
+internal class App : Application() {
+
+    @Inject
+    lateinit var secureActivityLifecycleCallbacks: SecureActivityLifecycleCallbacks
 
     @Inject
     lateinit var benchmarkTracer: BenchmarkTracer
@@ -36,6 +40,7 @@ class App : Application() {
         benchmarkTracer.begin("proton-app-init")
 
         MainInitializer.init(this)
+        registerActivityLifecycleCallbacks(secureActivityLifecycleCallbacks)
 
         benchmarkTracer.end()
     }
