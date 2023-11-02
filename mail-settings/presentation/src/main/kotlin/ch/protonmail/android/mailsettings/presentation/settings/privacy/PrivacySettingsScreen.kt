@@ -55,7 +55,7 @@ fun PrivacySettingsScreen(
                 onShowRemoteContent = viewModel::onAutoShowRemoteContentToggled,
                 onShowEmbeddedImages = viewModel::onAutoShowEmbeddedImagesToggled,
                 onRequestLinkConfirmation = viewModel::onConfirmLinkToggled,
-                onPreventScreenshots = {} // MAILANDR-1059
+                onPreventScreenshots = viewModel::onPreventScreenshotsToggled
             )
         )
     }

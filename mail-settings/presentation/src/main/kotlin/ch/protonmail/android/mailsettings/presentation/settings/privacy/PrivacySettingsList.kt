@@ -54,6 +54,14 @@ fun PrivacySettingsList(
         item { Divider() }
         item {
             ProtonSettingsToggleItem(
+                name = stringResource(id = R.string.mail_settings_privacy_prevent_taking_screenshots),
+                value = state.settings.preventTakingScreenshots,
+                onToggle = actions.onPreventScreenshots
+            )
+        }
+        item { Divider() }
+        item {
+            ProtonSettingsToggleItem(
                 name = stringResource(id = R.string.mail_settings_privacy_request_link_confirmation),
                 value = state.settings.requestLinkConfirmation,
                 onToggle = actions.onRequestLinkConfirmation
