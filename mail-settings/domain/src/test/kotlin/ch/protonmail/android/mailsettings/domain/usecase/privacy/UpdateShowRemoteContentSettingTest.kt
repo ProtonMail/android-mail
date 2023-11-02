@@ -28,6 +28,7 @@ import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
+import io.mockk.unmockkAll
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
@@ -35,6 +36,7 @@ import me.proton.core.domain.type.IntEnum
 import me.proton.core.mailsettings.domain.entity.MailSettings
 import me.proton.core.mailsettings.domain.entity.ShowImage
 import me.proton.core.mailsettings.domain.repository.MailSettingsRepository
+import org.junit.After
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -46,6 +48,11 @@ internal class UpdateShowRemoteContentSettingTest {
         observePrimaryUserId,
         mailSettingsRepository
     )
+
+    @After
+    fun teardown() {
+        unmockkAll()
+    }
 
     @Test
     fun `when user id is null an error is returned`() = runTest {

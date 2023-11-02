@@ -25,12 +25,12 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailsettings.domain.model.PrivacySettings
-import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailSettings
+import ch.protonmail.android.mailsettings.domain.usecase.privacy.ObservePrivacySettings
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdateAutoShowEmbeddedImagesSetting
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdateLinkConfirmationSetting
+import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdatePreventScreenshotsSetting
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdateShowRemoteContentSetting
 import ch.protonmail.android.mailsettings.presentation.settings.privacy.reducer.PrivacySettingsReducer
-import ch.protonmail.android.testdata.mailsettings.MailSettingsTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.called
 import io.mockk.coEvery
@@ -48,8 +48,6 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import me.proton.core.domain.entity.UserId
-import me.proton.core.domain.type.IntEnum
-import me.proton.core.mailsettings.domain.entity.ShowImage
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -58,18 +56,20 @@ import kotlin.test.assertEquals
 internal class PrivacySettingsViewModelTest {
 
     private val observePrimaryUserId = mockk<ObservePrimaryUserId>()
-    private val observeMailSettings = mockk<ObserveMailSettings>()
+    private val observePrivacySettings = mockk<ObservePrivacySettings>()
     private val updateShowRemoteContentSettings = mockk<UpdateShowRemoteContentSetting>()
     private val updateAutoShowEmbeddedImagesSetting = mockk<UpdateAutoShowEmbeddedImagesSetting>()
+    private val updatePreventScreenshotsSetting = mockk<UpdatePreventScreenshotsSetting>()
     private val updateLinkConfirmationSetting = mockk<UpdateLinkConfirmationSetting>()
     private val privacySettingsReducer = spyk<PrivacySettingsReducer>()
     private val viewModel: PrivacySettingsViewModel by lazy {
         PrivacySettingsViewModel(
             observePrimaryUserId,
-            observeMailSettings,
+            observePrivacySettings,
             updateShowRemoteContentSettings,
             updateAutoShowEmbeddedImagesSetting,
             updateLinkConfirmationSetting,
+            updatePreventScreenshotsSetting,
             privacySettingsReducer
         )
     }
@@ -120,7 +120,7 @@ internal class PrivacySettingsViewModelTest {
         // Given
         val userId = UserId("123")
         every { observePrimaryUserId.invoke() } returns flowOf(userId)
-        every { observeMailSettings.invoke(userId) } returns flowOf(null)
+        every { observePrivacySettings.invoke(userId) } returns flowOf(DataError.Local.NoDataCached.left())
 
         // Then
         viewModel.state.test {
@@ -218,6 +218,7 @@ internal class PrivacySettingsViewModelTest {
         verify {
             updateAutoShowEmbeddedImagesSetting wasNot called
             updateLinkConfirmationSetting wasNot called
+            updatePreventScreenshotsSetting wasNot called
         }
     }
 
@@ -250,6 +251,7 @@ internal class PrivacySettingsViewModelTest {
         verify {
             updateShowRemoteContentSettings wasNot called
             updateLinkConfirmationSetting wasNot called
+            updatePreventScreenshotsSetting wasNot called
         }
     }
 
@@ -278,10 +280,44 @@ internal class PrivacySettingsViewModelTest {
         coVerify(exactly = 1) {
             updateLinkConfirmationSetting(false)
         }
-        confirmVerified(updateAutoShowEmbeddedImagesSetting)
+        confirmVerified(updateLinkConfirmationSetting)
         verify {
             updateShowRemoteContentSettings wasNot called
             updateAutoShowEmbeddedImagesSetting wasNot called
+            updatePreventScreenshotsSetting wasNot called
+        }
+    }
+
+    @Test
+    fun `should call the correct use case and update state when disable screenshots update is done`() = runTest {
+        // Given
+        expectValidSettingsLoaded()
+        val expectedFinalState = PrivacySettingsState.WithData(
+            basePrivacySettings.copy(preventTakingScreenshots = true),
+            Effect.empty()
+        )
+        coEvery { updatePreventScreenshotsSetting(any()) } returns Unit.right()
+
+        // When
+        viewModel.state.test {
+            skipItems(1)
+
+            // When
+            viewModel.onPreventScreenshotsToggled(true)
+
+            // Then
+            assertEquals(expectedFinalState, awaitItem())
+        }
+
+        // Then
+        coVerify(exactly = 1) {
+            updatePreventScreenshotsSetting(true)
+        }
+        confirmVerified(updatePreventScreenshotsSetting)
+        verify {
+            updateShowRemoteContentSettings wasNot called
+            updateAutoShowEmbeddedImagesSetting wasNot called
+            updateLinkConfirmationSetting wasNot called
         }
     }
 
@@ -308,16 +344,12 @@ internal class PrivacySettingsViewModelTest {
 
     private fun expectValidSettingsLoaded() {
         every { observePrimaryUserId.invoke() } returns flowOf(userId)
-        every { observeMailSettings.invoke(userId) } returns flowOf(mailSettings)
+        every { observePrivacySettings.invoke(userId) } returns flowOf(basePrivacySettings.right())
     }
 
     private companion object {
 
         val userId = UserIdTestData.userId
-        val mailSettings = MailSettingsTestData.buildMailSettings(
-            showImages = IntEnum(3, ShowImage.Both),
-            confirmLink = true
-        )
         val basePrivacySettings = PrivacySettings(
             autoShowRemoteContent = true,
             autoShowEmbeddedImages = true,
