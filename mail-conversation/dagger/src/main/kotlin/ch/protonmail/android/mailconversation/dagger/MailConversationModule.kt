@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailconversation.dagger
 
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
+import ch.protonmail.android.mailcommon.domain.benchmark.BenchmarkTracer
 import ch.protonmail.android.mailconversation.data.local.ConversationDatabase
 import ch.protonmail.android.mailconversation.data.local.ConversationLocalDataSourceImpl
 import ch.protonmail.android.mailconversation.data.remote.ConversationRemoteDataSourceImpl
@@ -58,9 +59,11 @@ object MailConversationModule {
     fun provideConversationRemoteDataSource(
         apiProvider: ApiProvider,
         enqueuer: Enqueuer,
+        benchmarkTracer: BenchmarkTracer
     ): ConversationRemoteDataSource = ConversationRemoteDataSourceImpl(
         apiProvider = apiProvider,
-        enqueuer = enqueuer
+        enqueuer = enqueuer,
+        benchmarkTracer = benchmarkTracer
     )
 
     @Provides

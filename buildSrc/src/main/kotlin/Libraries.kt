@@ -163,6 +163,30 @@ object AndroidX {
         const val uiautomator = "androidx.test.uiautomator:uiautomator:${Versions.AndroidX.testUiautomator}"
     }
 
+    object Profile{
+        object Tracing {
+
+            private const val version = Versions.AndroidX.tracing
+
+            const val tracing = "androidx.tracing:tracing:$version"
+        }
+
+        object ComposeTracing {
+
+            private const val version = Versions.AndroidX.composeTracing
+
+            const val composeTracing = "androidx.compose.runtime:runtime-tracing:$version"
+        }
+
+        object Perfetto {
+
+            private const val version = Versions.AndroidX.perfetto
+
+            const val perfetto = "androidx.tracing:tracing-perfetto:$version"
+            const val perfettoBinary = "androidx.tracing:tracing-perfetto-binary:$version"
+        }
+    }
+
     object Work {
 
         private const val version = Versions.AndroidX.work

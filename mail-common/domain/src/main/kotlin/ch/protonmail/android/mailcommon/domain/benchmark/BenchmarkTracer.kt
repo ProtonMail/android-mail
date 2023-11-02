@@ -16,27 +16,11 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android
+package ch.protonmail.android.mailcommon.domain.benchmark
 
-import android.app.Application
-import ch.protonmail.android.initializer.MainInitializer
-import ch.protonmail.android.mailcommon.domain.benchmark.BenchmarkTracer
-import dagger.hilt.android.HiltAndroidApp
-import javax.inject.Inject
-
-@HiltAndroidApp
-class App : Application() {
-
-    @Inject
-    lateinit var benchmarkTracer: BenchmarkTracer
-
-    override fun onCreate() {
-        super.onCreate()
-
-        benchmarkTracer.begin("proton-app-init")
-
-        MainInitializer.init(this)
-
-        benchmarkTracer.end()
-    }
+interface BenchmarkTracer {
+    fun begin(name: String)
+    fun end()
+    fun beginAsync(name: String)
+    fun endAsync(name: String)
 }

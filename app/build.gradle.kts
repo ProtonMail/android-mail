@@ -127,6 +127,9 @@ android {
                 isObfuscate = false
             }
             manifestPlaceholders["isFcmServiceEnabled"] = false
+            defaultConfig {
+                testInstrumentationRunnerArguments["androidx.benchmark.fullTracing.enable"] = "true"
+            }
         }
     }
 
@@ -224,6 +227,15 @@ dependencies {
     kapt(Dependencies.appAnnotationProcessors)
 
     coreLibraryDesugaring(AndroidTools.desugarJdkLibs)
+
+    // To see the traces as results we need to include perfetto. We should not include in the production
+    // as it increases the Apk size.
+    if (android.defaultConfig.name.contains("benchmark", true)) {
+        // Add dependencies specifically for the "benchmark" build type
+        implementation(AndroidX.Profile.Tracing.tracing)
+        implementation(AndroidX.Profile.Perfetto.perfetto)
+        implementation(AndroidX.Profile.Perfetto.perfettoBinary)
+    }
 
     testImplementation(Dependencies.testLibs)
     testImplementation(project(":test:test-data"))

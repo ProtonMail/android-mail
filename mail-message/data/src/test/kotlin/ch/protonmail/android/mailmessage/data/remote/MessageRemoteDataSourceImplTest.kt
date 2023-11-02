@@ -20,6 +20,7 @@ package ch.protonmail.android.mailmessage.data.remote
 
 import arrow.core.right
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
+import ch.protonmail.android.mailcommon.domain.benchmark.BenchmarkTracerImpl
 import ch.protonmail.android.mailmessage.data.getMessage
 import ch.protonmail.android.mailmessage.data.getMessageResource
 import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSourceImpl.Companion.MAX_ACTION_WORKER_PARAMETER_COUNT
@@ -80,6 +81,8 @@ class MessageRemoteDataSourceImplTest {
         every { this@mockk.enqueue(userId, any(), any()) } returns mockk()
     }
 
+    private val benchmarkTracer = BenchmarkTracerImpl(false)
+
     private val apiProvider = ApiProvider(
         apiManagerFactory = apiManagerFactory,
         sessionProvider = sessionProvider,
@@ -88,7 +91,8 @@ class MessageRemoteDataSourceImplTest {
 
     private val messageRemoteDataSource = MessageRemoteDataSourceImpl(
         apiProvider = apiProvider,
-        enqueuer = enqueuer
+        enqueuer = enqueuer,
+        benchmarkTracer = benchmarkTracer
     )
 
     @Test(expected = IllegalArgumentException::class)

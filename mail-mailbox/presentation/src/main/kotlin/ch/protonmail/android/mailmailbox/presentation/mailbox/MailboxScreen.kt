@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailmailbox.presentation.mailbox
 
 import android.content.res.Configuration
+import androidx.activity.compose.ReportDrawn
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.rememberScrollableState
@@ -201,6 +202,9 @@ fun MailboxScreen(
     ) { paddingValues ->
         when (val mailboxListState = mailboxState.mailboxListState) {
             is MailboxListState.Data -> {
+
+                // Report for benchmarking that the mailbox is visible and emails are loaded.
+                ReportDrawn()
 
                 if (mailboxListState is MailboxListState.Data.ViewMode) {
                     ConsumableLaunchedEffect(mailboxListState.scrollToMailboxTop) {

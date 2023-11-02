@@ -16,27 +16,10 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android
+package ch.protonmail.android.benchmark.common
 
-import android.app.Application
-import ch.protonmail.android.initializer.MainInitializer
-import ch.protonmail.android.mailcommon.domain.benchmark.BenchmarkTracer
-import dagger.hilt.android.HiltAndroidApp
-import javax.inject.Inject
-
-@HiltAndroidApp
-class App : Application() {
-
-    @Inject
-    lateinit var benchmarkTracer: BenchmarkTracer
-
-    override fun onCreate() {
-        super.onCreate()
-
-        benchmarkTracer.begin("proton-app-init")
-
-        MainInitializer.init(this)
-
-        benchmarkTracer.end()
-    }
+object BenchmarkConfig {
+    const val PackageName = "ch.protonmail.android.alpha"
+    const val WaitForMailboxTimeout = 20_000L
+    const val DefaultIterations = 3
 }

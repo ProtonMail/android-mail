@@ -20,6 +20,7 @@ package ch.protonmail.android.mailconversation.data.remote
 
 import arrow.core.right
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
+import ch.protonmail.android.mailcommon.domain.benchmark.BenchmarkTracerImpl
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailconversation.data.getConversationResource
@@ -83,13 +84,16 @@ class ConversationRemoteDataSourceImplTest {
 
     private lateinit var apiProvider: ApiProvider
     private lateinit var conversationRemoteDataSource: ConversationRemoteDataSourceImpl
+    private lateinit var benchmarkTracer: BenchmarkTracerImpl
 
     @Before
     fun setUp() {
+        benchmarkTracer = BenchmarkTracerImpl(false)
         apiProvider = ApiProvider(apiManagerFactory, sessionProvider, DefaultDispatcherProvider())
         conversationRemoteDataSource = ConversationRemoteDataSourceImpl(
             apiProvider,
-            enqueuer
+            enqueuer,
+            benchmarkTracer
         )
     }
 

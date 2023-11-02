@@ -36,6 +36,10 @@ object BuildConfigModule {
     @Provides
     @BuildDebug
     fun provideBuildDebug() = BuildConfig.DEBUG
+
+    @Provides
+    @BuildType
+    fun provideBuildType() = BuildConfig.BUILD_TYPE
 }
 
 @Qualifier
@@ -45,3 +49,7 @@ annotation class BuildFlavor
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class BuildDebug
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class BuildType

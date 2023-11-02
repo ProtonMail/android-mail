@@ -38,6 +38,7 @@ object Versions {
         const val composeFoundation = "1.4.3"
         const val composeMaterial = "1.4.3"
         const val core = "1.11.0-beta02"
+        const val composeTracing = "1.0.0-alpha03"
         const val constraintLayoutCompose = "1.0.1"
         const val customView = "1.2.0-alpha02"
         const val customViewPoolingContainer = "1.0.0"
@@ -48,6 +49,7 @@ object Versions {
         const val navigation = "2.6.0-rc02"
         const val paging = "3.1.1"
         const val pagingCompose = "3.2.0"
+        const val perfetto = "1.0.0-beta03"
         const val room = "2.6.0"
         const val splashscreen = "1.0.1"
         const val testAndroidJUnit = "1.1.5"
@@ -59,6 +61,7 @@ object Versions {
         const val testOrchestrator = "1.4.2"
         const val testEspresso = "3.5.1"
         const val testUiautomator = "2.2.0"
+        const val tracing = "1.2.0-rc01"
         const val work = "2.9.0-rc01"
     }
 

@@ -21,6 +21,7 @@ package ch.protonmail.android.mailmessage.data.remote
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.data.mapper.toEither
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
+import ch.protonmail.android.mailcommon.domain.benchmark.BenchmarkTracer
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.data.remote.worker.AddLabelMessageWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.MarkMessageAsReadWorker
@@ -41,12 +42,15 @@ import javax.inject.Inject
 
 class MessageRemoteDataSourceImpl @Inject constructor(
     private val apiProvider: ApiProvider,
-    private val enqueuer: Enqueuer
+    private val enqueuer: Enqueuer,
+    private val benchmarkTracer: BenchmarkTracer
 ) : MessageRemoteDataSource {
 
     override suspend fun getMessages(userId: UserId, pageKey: PageKey): Either<DataError.Remote, List<Message>> =
         apiProvider.get<MessageApi>(userId).invoke {
             require(pageKey.size <= MessageApi.maxPageSize)
+            benchmarkTracer.begin("proton-api-get-messages")
+
             getMessages(
                 labelIds = listOf(pageKey.filter.labelId).map { it.id },
                 beginTime = pageKey.filter.minTime.takeIf { it != Long.MIN_VALUE },
@@ -67,7 +71,9 @@ class MessageRemoteDataSourceImpl @Inject constructor(
                     OrderDirection.Descending -> 1
                 },
                 pageSize = pageKey.size
-            ).messages.map { it.toMessage(userId) }
+            ).messages.map { it.toMessage(userId) }.also {
+                benchmarkTracer.end()
+            }
         }.toEither()
 
     /**
