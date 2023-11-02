@@ -40,7 +40,7 @@ class InjectAddressSignatureTest {
     private val injectAddressSignature = InjectAddressSignature(getAddressSignatureMock, getMobileFooterMock)
 
     private val paidMobileFooter = ""
-    private val freeMobileFooter = "\n\nSent from Proton Mail mobile"
+    private val freeMobileFooter = "\n\nSent from Proton Mail Android"
 
     @Test
     fun `returns draft body with injected signature when previous signature was found, free user`() = runTest {

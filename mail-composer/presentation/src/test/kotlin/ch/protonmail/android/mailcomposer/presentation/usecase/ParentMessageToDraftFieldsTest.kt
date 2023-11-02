@@ -72,7 +72,7 @@ class ParentMessageToDraftFieldsTest {
     }
 
     private val paidMobileFooter = ""
-    private val freeMobileFooter = "\n\nSent from Proton Mail mobile"
+    private val freeMobileFooter = "\n\nSent from Proton Mail Android"
 
     private val parentMessageToDraftFields = ParentMessageToDraftFields(
         context,
