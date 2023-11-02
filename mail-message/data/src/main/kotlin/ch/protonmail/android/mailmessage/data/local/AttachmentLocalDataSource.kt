@@ -157,6 +157,12 @@ interface AttachmentLocalDataSource {
         attachmentIds: List<AttachmentId>
     ): Either<DataError.Local, Unit>
 
+    suspend fun saveMimeAttachmentToPublicStorage(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId
+    ): Either<DataError.Local, Uri>
+
     suspend fun getFileSizeFromUri(uri: Uri): Either<DataError, Long>
 
 }

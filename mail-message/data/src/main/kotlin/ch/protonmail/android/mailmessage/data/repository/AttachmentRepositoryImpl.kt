@@ -82,6 +82,13 @@ class AttachmentRepositoryImpl @Inject constructor(
             ?: DataError.Remote.Unknown.left()
     }
 
+    override suspend fun saveMimeAttachmentToPublicStorage(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId
+    ): Either<DataError, Uri> =
+        localDataSource.saveMimeAttachmentToPublicStorage(userId, messageId, attachmentId)
+
     override suspend fun getEmbeddedImage(
         userId: UserId,
         messageId: MessageId,

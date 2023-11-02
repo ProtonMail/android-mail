@@ -41,20 +41,20 @@ class GetAttachmentIntentValues @Inject constructor(
         attachmentId: AttachmentId
     ): Either<DataError, OpenAttachmentIntentValues> = either {
         val messageWithBody = messageRepository.getMessageWithBody(userId, messageId).bind()
-        if (messageWithBody.messageBody.mimeType == MimeType.MultipartMixed) {
-            shift<DataError>(DataError.Local.Unknown)
+        val uri = if (messageWithBody.messageBody.mimeType == MimeType.MultipartMixed) {
+            attachmentRepository.saveMimeAttachmentToPublicStorage(userId, messageId, attachmentId).bind()
+        } else {
+            attachmentRepository.getAttachment(userId, messageId, attachmentId).bind().uri
         }
 
-        val attachmentMetadata = attachmentRepository.getAttachment(userId, messageId, attachmentId).bind()
-
         val attachment = messageWithBody.messageBody.attachments.firstOrNull { it.attachmentId == attachmentId }
-            ?: shift(DataError.Local.NoDataCached)
+            ?: raise(DataError.Local.NoDataCached)
 
-        return@either attachmentMetadata.uri?.let {
+        return@either uri?.let {
             OpenAttachmentIntentValues(
                 mimeType = attachment.mimeType,
                 uri = it
             )
-        } ?: shift(DataError.Local.NoDataCached)
+        } ?: raise(DataError.Local.NoDataCached)
     }
 }

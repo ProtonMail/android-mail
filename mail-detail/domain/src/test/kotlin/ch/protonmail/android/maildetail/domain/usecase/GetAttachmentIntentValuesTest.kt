@@ -31,6 +31,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.repository.AttachmentRepository
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
 import ch.protonmail.android.testdata.message.MessageBodyTestData
 import ch.protonmail.android.testdata.message.MessageTestData
 import io.mockk.coEvery
@@ -41,7 +42,7 @@ import io.mockk.unmockkStatic
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
-import org.junit.Test
+import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -68,6 +69,7 @@ class GetAttachmentIntentValuesTest {
         message = MessageTestData.message,
         messageBody = MessageBodyTestData.messageBodyWithAttachment
     )
+    private val pgpMimeMessageWithBody = MessageWithBodySample.PgpMimeMessageWithAttachment
 
     private val attachmentRepository = mockk<AttachmentRepository>()
     private val messageRepository = mockk<MessageRepository>()
@@ -128,13 +130,6 @@ class GetAttachmentIntentValuesTest {
     @Test
     fun `should return no data cached when message is not locally available`() = runTest {
         // Given
-        coEvery {
-            attachmentRepository.getAttachment(
-                userId = userId,
-                messageId = messageId,
-                attachmentId = attachmentId
-            )
-        } returns messageAttachmentMetadata.right()
         coEvery { messageRepository.getMessageWithBody(userId, messageId) } returns DataError.Local.NoDataCached.left()
 
         // When
@@ -164,4 +159,41 @@ class GetAttachmentIntentValuesTest {
         assertEquals(DataError.Local.OutOfMemory.left(), result)
     }
 
+    @Test
+    fun `should return intent values when mime attachment is successfully saved and metadata is available`() = runTest {
+        // Given
+        coEvery { messageRepository.getMessageWithBody(userId, messageId) } returns pgpMimeMessageWithBody.right()
+        coEvery {
+            attachmentRepository.saveMimeAttachmentToPublicStorage(
+                userId = userId,
+                messageId = messageId,
+                attachmentId = AttachmentId("image")
+            )
+        } returns uri.right()
+
+        // When
+        val result = getAttachmentIntentValues(userId, messageId, AttachmentId("image"))
+
+        // Then
+        assertEquals(OpenAttachmentIntentValues("image/png", uri).right(), result)
+    }
+
+    @Test
+    fun `should return error if saving mime attachment to public storage fails`() = runTest {
+        // Given
+        coEvery { messageRepository.getMessageWithBody(userId, messageId) } returns pgpMimeMessageWithBody.right()
+        coEvery {
+            attachmentRepository.saveMimeAttachmentToPublicStorage(
+                userId = userId,
+                messageId = messageId,
+                attachmentId = AttachmentId("image")
+            )
+        } returns DataError.Local.NoDataCached.left()
+
+        // When
+        val result = getAttachmentIntentValues(userId, messageId, AttachmentId("image"))
+
+        // Then
+        assertEquals(DataError.Local.NoDataCached.left(), result)
+    }
 }

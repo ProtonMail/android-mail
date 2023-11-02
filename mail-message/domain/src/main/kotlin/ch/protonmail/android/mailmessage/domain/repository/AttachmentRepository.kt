@@ -40,6 +40,12 @@ interface AttachmentRepository {
         attachmentId: AttachmentId
     ): Either<DataError, MessageAttachmentMetadata>
 
+    suspend fun saveMimeAttachmentToPublicStorage(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId
+    ): Either<DataError, Uri>
+
     /**
      * Get the embedded image for the given [userId], [messageId] and [attachmentId].
      * This method will fetch and store the embedded image if it is not yet stored locally.

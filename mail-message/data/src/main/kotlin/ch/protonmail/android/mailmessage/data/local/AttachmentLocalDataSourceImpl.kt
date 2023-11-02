@@ -338,6 +338,19 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
         return Unit.right()
     }
 
+    override suspend fun saveMimeAttachmentToPublicStorage(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId
+    ): Either<DataError.Local, Uri> {
+        val attachment = runCatching {
+            attachmentFileStorage.readCachedAttachment(userId, messageId, attachmentId)
+        }.getOrElse { return DataError.Local.NoDataCached.left() }
+        return prepareAttachmentForSharing(userId, messageId, attachmentId, attachment.readBytes()).getOrElse {
+            return DataError.Local.FailedToStoreFile.left()
+        }.right()
+    }
+
     override suspend fun getFileSizeFromUri(uri: Uri) =
         uriHelper.getFileInformationFromUri(uri)?.size?.right() ?: DataError.Local.NoDataCached.left()
 

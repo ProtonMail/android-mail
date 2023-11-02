@@ -35,6 +35,7 @@ import ch.protonmail.android.mailmessage.data.local.entity.MessageAttachmentMeta
 import ch.protonmail.android.mailmessage.data.local.usecase.AttachmentDecryptionError
 import ch.protonmail.android.mailmessage.data.local.usecase.DecryptAttachmentByteArray
 import ch.protonmail.android.mailmessage.data.local.usecase.PrepareAttachmentForSharing
+import ch.protonmail.android.mailmessage.data.local.usecase.PrepareAttachmentForSharingError
 import ch.protonmail.android.mailmessage.data.mapper.MessageAttachmentEntityMapper
 import ch.protonmail.android.mailmessage.data.mapper.toMessageAttachmentMetadata
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
@@ -116,11 +117,13 @@ class AttachmentLocalDataSourceImplTest {
     fun setUp() {
         mockkStatic(Uri::class)
         every { Uri.parse(any()) } returns mockUri
+        mockkStatic("kotlin.io.FilesKt__FileReadWriteKt")
     }
 
     @AfterTest
     fun tearDown() {
         unmockkStatic(Uri::class)
+        unmockkStatic("kotlin.io.FilesKt__FileReadWriteKt")
     }
 
     @Test
@@ -778,5 +781,51 @@ class AttachmentLocalDataSourceImplTest {
 
         // Then
         assertEquals(DataError.Local.FailedToStoreFile.left(), actual)
+    }
+
+    @Test
+    fun `should return uri when mime attachment was saved to public storage successfully`() = runTest {
+        // Given
+        val fileContent = "fileContent".encodeToByteArray()
+        val file = mockk<File> { every { readBytes() } returns fileContent }
+        coEvery { attachmentFileStorage.readCachedAttachment(userId, messageId, attachmentId) } returns file
+        coEvery { prepareAttachmentForSharing(userId, messageId, attachmentId, fileContent) } returns mockUri.right()
+
+        // When
+        val result = attachmentLocalDataSource.saveMimeAttachmentToPublicStorage(userId, messageId, attachmentId)
+
+        // Then
+        assertEquals(mockUri.right(), result)
+    }
+
+    @Test
+    fun `should return error when mime attachment wasn't found in the internal app storage`() = runTest {
+        // Given
+        coEvery {
+            attachmentFileStorage.readCachedAttachment(userId, messageId, attachmentId)
+        } throws AttachmentFileReadException
+
+        // When
+        val result = attachmentLocalDataSource.saveMimeAttachmentToPublicStorage(userId, messageId, attachmentId)
+
+        // Then
+        assertEquals(DataError.Local.NoDataCached.left(), result)
+    }
+
+    @Test
+    fun `should return error when saving mime attachment to public storage failed`() = runTest {
+        // Given
+        val fileContent = "fileContent".encodeToByteArray()
+        val file = mockk<File> { every { readBytes() } returns fileContent }
+        coEvery { attachmentFileStorage.readCachedAttachment(userId, messageId, attachmentId) } returns file
+        coEvery {
+            prepareAttachmentForSharing(userId, messageId, attachmentId, fileContent)
+        } returns PrepareAttachmentForSharingError.PreparingAttachmentFailed.left()
+
+        // When
+        val result = attachmentLocalDataSource.saveMimeAttachmentToPublicStorage(userId, messageId, attachmentId)
+
+        // Then
+        assertEquals(DataError.Local.FailedToStoreFile.left(), result)
     }
 }

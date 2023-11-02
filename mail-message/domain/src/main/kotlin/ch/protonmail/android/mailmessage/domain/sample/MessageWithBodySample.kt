@@ -91,6 +91,12 @@ object MessageWithBodySample {
         mimeType = MimeType.MultipartMixed
     )
 
+    val PgpMimeMessageWithAttachment = build(
+        message = MessageSample.PgpMimeMessage,
+        mimeType = MimeType.MultipartMixed,
+        attachments = listOf(MessageAttachmentSample.image)
+    )
+
     private fun build(
         message: Message = MessageSample.EmptyDraft,
         replyTo: Recipient = RecipientSample.John,

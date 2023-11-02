@@ -604,4 +604,33 @@ class AttachmentRepositoryImplTest {
         // Then
         assertEquals(DataError.Local.FailedToStoreFile.left(), actual)
     }
+
+    @Test
+    fun `should return uri when saving mime attachment to public storage was successful`() = runTest {
+        // Given
+        val uri = mockk<Uri>()
+        coEvery {
+            localDataSource.saveMimeAttachmentToPublicStorage(userId, messageId, attachmentId)
+        } returns uri.right()
+
+        // When
+        val result = repository.saveMimeAttachmentToPublicStorage(userId, messageId, attachmentId)
+
+        // Then
+        assertEquals(uri.right(), result)
+    }
+
+    @Test
+    fun `should return error when saving mime attachment to public storage failed`() = runTest {
+        // Given
+        coEvery {
+            localDataSource.saveMimeAttachmentToPublicStorage(userId, messageId, attachmentId)
+        } returns DataError.Local.NoDataCached.left()
+
+        // When
+        val result = repository.saveMimeAttachmentToPublicStorage(userId, messageId, attachmentId)
+
+        // Then
+        assertEquals(DataError.Local.NoDataCached.left(), result)
+    }
 }
