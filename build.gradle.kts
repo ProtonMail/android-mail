@@ -43,7 +43,7 @@ plugins {
     id("me.proton.core.gradle-plugins.detekt") version Versions.Proton.corePlugin
     id("me.proton.core.gradle-plugins.jacoco") version Versions.Proton.corePlugin
     id("com.github.ben-manes.versions") version Versions.Gradle.benManesVersionsPlugin
-    id("com.google.devtools.ksp") version "1.8.10-1.0.9" apply false
+    id("com.google.devtools.ksp") version "1.9.22-1.0.17" apply false
 }
 
 subprojects {

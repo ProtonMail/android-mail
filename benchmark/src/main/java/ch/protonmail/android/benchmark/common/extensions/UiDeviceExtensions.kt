@@ -23,14 +23,12 @@ import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.UiSelector
 import androidx.test.uiautomator.Until
 
-internal fun UiDevice.findUiObjectByText(text: String) =
-    findObject(UiSelector().text(text))
+internal fun UiDevice.findUiObjectByText(text: String) = findObject(UiSelector().text(text))
 
-internal fun UiDevice.findUiObjectByResource(resId: String) =
-    findObject(UiSelector().resourceId(resId))
+internal fun UiDevice.findUiObjectByResource(resId: String) = findObject(UiSelector().resourceId(resId))
 
-internal fun UiDevice.findUiObjectByClassWithParent(childClass: Class<*>, parentResourceId: String) =
-    findObject(UiSelector().resourceId(parentResourceId).childSelector(UiSelector().className(childClass)))
+internal fun UiDevice.findUiObjectByClassWithParent(childClass: Class<*>, parentResourceId: String) = findObject(
+    UiSelector().resourceId(parentResourceId).childSelector(UiSelector().className(childClass))
+)
 
-internal fun UiDevice.waitUntilGone(resId: String, timeout: Long) =
-    wait(Until.gone(By.res(resId)), timeout)
+internal fun UiDevice.waitUntilGone(resId: String, timeout: Long) = wait(Until.gone(By.res(resId)), timeout)

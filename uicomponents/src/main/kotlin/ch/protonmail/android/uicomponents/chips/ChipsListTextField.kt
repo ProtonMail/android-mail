@@ -3,6 +3,7 @@ package ch.protonmail.android.uicomponents.chips
 import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
@@ -125,7 +126,7 @@ fun ChipsListTextField(
                     textMaxWidth = with(localDensity) { size.width.toDp() }
                 }
             },
-        verticalAlignment = Alignment.CenterVertically
+        verticalArrangement = Arrangement.Center
     ) {
 
         when (val items = state.getItems()) {

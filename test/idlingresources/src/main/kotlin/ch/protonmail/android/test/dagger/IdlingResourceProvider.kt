@@ -32,5 +32,5 @@ interface IdlingResourceProvider {
 
     @Binds
     @IntoSet
-    fun ComposerIdlingResource.bindComposerIdlingResource(): ComposeIdlingResource
+    fun bindComposerIdlingResource(composerIdlingResource: ComposerIdlingResource): ComposeIdlingResource
 }

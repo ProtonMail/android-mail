@@ -270,11 +270,11 @@ fun ContactTabLayout(
     actions: ContactListScreen.Actions,
     state: ContactListState.ListLoaded.Data
 ) {
-    val pagerState = rememberPagerState()
     val pages = listOf(
         stringResource(R.string.all_contacts_tab),
         stringResource(R.string.contact_groups_tab)
     )
+    val pagerState = rememberPagerState(pageCount = { pages.size })
 
     Column {
         TabRow(
@@ -307,7 +307,6 @@ fun ContactTabLayout(
         }
 
         HorizontalPager(
-            pageCount = pages.size,
             state = pagerState
         ) { index ->
             when (index) {

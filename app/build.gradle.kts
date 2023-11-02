@@ -204,6 +204,12 @@ android {
     }
 }
 
+configurations {
+    // Remove duplicate classes (keep "org.jetbrains").
+    implementation.get().exclude(mapOf("group" to "com.intellij", "module" to "annotations"))
+    implementation.get().exclude(mapOf("group" to "org.intellij", "module" to "annotations"))
+}
+
 dependencies {
     implementation(files("../../proton-libs/gopenpgp/gopenpgp.aar"))
     implementation(Dependencies.appLibs)

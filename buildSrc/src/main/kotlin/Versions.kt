@@ -34,24 +34,24 @@ object Versions {
         const val annotation = "1.2.0"
         const val appCompat = "1.6.1"
         const val biometrics = "1.2.0-alpha05"
-        const val compose = "1.4.3"
-        const val composeCompiler = "1.4.3"
-        const val composeFoundation = "1.4.3"
-        const val composeMaterial = "1.4.3"
+        const val compose = "1.6.2"
+        const val composeCompiler = "1.5.10"
+        const val composeFoundation = "1.6.2"
+        const val composeMaterial = "1.6.2"
         const val core = "1.11.0-beta02"
         const val composeTracing = "1.0.0-beta01"
         const val constraintLayoutCompose = "1.0.1"
         const val customView = "1.2.0-alpha02"
         const val customViewPoolingContainer = "1.0.0"
         const val datastore = "1.0.0"
-        const val hilt = "1.0.0"
+        const val hilt = "1.2.0"
         const val lifecycle = "2.6.1"
-        const val material3 = "1.1.0"
+        const val material3 = "1.1.2"
         const val navigation = "2.6.0-rc02"
         const val paging = "3.2.1"
         const val pagingCompose = "3.2.1"
         const val perfetto = "1.0.0"
-        const val room = "2.6.0"
+        const val room = "2.6.1"
         const val splashscreen = "1.0.1"
         const val testAndroidJUnit = "1.1.5"
         const val testCore = "1.5.0"
@@ -78,12 +78,12 @@ object Versions {
 
     object Dagger {
 
-        const val dagger = "2.46.1"
+        const val dagger = "2.49"
     }
 
     object Detekt {
 
-        const val detekt = "1.23.0"
+        const val detekt = "1.23.5"
     }
 
     object Firebase {
@@ -93,7 +93,7 @@ object Versions {
 
     object Gradle {
 
-        const val androidGradlePlugin = "8.1.3"
+        const val androidGradlePlugin = "8.2.2"
         const val benManesVersionsPlugin = "0.48.0"
         const val googleServicesPlugin = "4.3.15"
         const val hiltAndroidGradlePlugin = Dagger.dagger
@@ -124,12 +124,12 @@ object Versions {
 
     object Ksp {
 
-        const val symbolProcessingApi = "1.8.10-1.0.9"
+        const val symbolProcessingApi = "1.9.22-1.0.17"
     }
 
     object Kotlin {
 
-        const val kotlin = "1.8.10"
+        const val kotlin = "1.9.22"
     }
 
     object KotlinCompileTesting {
@@ -139,9 +139,9 @@ object Versions {
 
     object KotlinX {
 
-        const val coroutines = "1.6.4"
+        const val coroutines = "1.8.0"
         const val immutableCollections = "0.3.5"
-        const val serializationJson = "1.4.1"
+        const val serializationJson = "1.6.3"
     }
 
     object Material {
@@ -156,8 +156,8 @@ object Versions {
 
     object Proton {
 
-        const val core = "19.1.0"
-        const val corePlugin = "1.1.1"
+        const val core = "21.0.0"
+        const val corePlugin = "1.3.0"
     }
 
     object ProfileInstaller {

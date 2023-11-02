@@ -67,8 +67,6 @@ import me.proton.core.compose.theme.headlineNorm
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnboardingScreen(actions: MailboxScreen.Actions) {
-    val pagerState = rememberPagerState()
-
     val contentMap = listOf(
         OnboardingUiModel(
             illustrationId = R.drawable.illustration_onboarding_ga,
@@ -92,6 +90,7 @@ fun OnboardingScreen(actions: MailboxScreen.Actions) {
         )
     )
     val viewCount = contentMap.size
+    val pagerState = rememberPagerState(pageCount = { viewCount })
 
     Column(
         modifier = Modifier
@@ -123,7 +122,6 @@ fun OnboardingScreen(actions: MailboxScreen.Actions) {
 
         HorizontalPager(
             state = pagerState,
-            pageCount = viewCount,
             modifier = Modifier.weight(1f)
         ) { pageIndex ->
             OnboardingContent(content = contentMap[pageIndex])

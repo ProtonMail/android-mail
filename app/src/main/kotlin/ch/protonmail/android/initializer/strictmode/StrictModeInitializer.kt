@@ -64,9 +64,7 @@ class StrictModeInitializer : Initializer<Unit> {
         field.set(
             null,
             object : ThreadLocal<ArrayList<out Any>>() {
-                override fun get(): ArrayList<out Any> {
-                    return StrictModeHackArrayList()
-                }
+                override fun get(): ArrayList<out Any> = StrictModeHackArrayList()
             }
         )
     }
