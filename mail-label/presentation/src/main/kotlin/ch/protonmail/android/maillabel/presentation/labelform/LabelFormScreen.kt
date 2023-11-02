@@ -19,9 +19,12 @@
 package ch.protonmail.android.maillabel.presentation.labelform
 
 import android.content.res.Configuration
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -29,6 +32,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
@@ -40,10 +44,14 @@ import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.maillabel.presentation.getColorFromHexString
 import ch.protonmail.android.maillabel.presentation.ui.ColorPicker
 import ch.protonmail.android.maillabel.presentation.ui.FormInputField
+import me.proton.core.compose.component.ProtonButton
 import me.proton.core.compose.component.ProtonTextButton
 import me.proton.core.compose.component.appbar.ProtonTopAppBar
+import me.proton.core.compose.component.protonOutlinedButtonColors
 import me.proton.core.compose.flow.rememberAsState
+import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
+import me.proton.core.compose.theme.defaultNorm
 import me.proton.core.compose.theme.defaultStrongNorm
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.Label
@@ -148,6 +156,35 @@ fun EditLabelFormScreen(state: LabelFormState.EditLabel, actions: LabelFormScree
                         actions.onLabelColorChanged(it)
                     }
                 )
+                ProtonButton(
+                    onClick = actions.onDeleteClick,
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .heightIn(min = ButtonDefaults.MinHeight)
+                        .padding(top = ProtonDimens.LargerSpacing),
+                    elevation = null,
+                    shape = ProtonTheme.shapes.medium,
+                    border = BorderStroke(
+                        ButtonDefaults.OutlinedBorderSize,
+                        ProtonTheme.colors.notificationError
+                    ),
+                    colors = ButtonDefaults.protonOutlinedButtonColors(
+                        contentColor = ProtonTheme.colors.notificationError
+                    ),
+                    contentPadding = ButtonDefaults.ContentPadding
+                ) {
+                    Text(
+                        modifier = Modifier.padding(
+                            start = ProtonDimens.MediumSpacing,
+                            top = ProtonDimens.ExtraSmallSpacing,
+                            end = ProtonDimens.MediumSpacing,
+                            bottom = ProtonDimens.ExtraSmallSpacing
+                        ),
+                        text = stringResource(id = R.string.label_form_delete),
+                        style = ProtonTheme.typography.defaultNorm,
+                        color = ProtonTheme.colors.notificationError
+                    )
+                }
             }
         }
     )
@@ -189,20 +226,20 @@ object LabelFormScreen {
 
     data class Actions(
         val onBackClick: () -> Unit,
-        val onDeleteClick: () -> Unit,
         val onLabelNameChanged: (String) -> Unit,
         val onLabelColorChanged: (Color) -> Unit,
-        val onSaveClick: () -> Unit
+        val onSaveClick: () -> Unit,
+        val onDeleteClick: () -> Unit
     ) {
 
         companion object {
 
             val Empty = Actions(
                 onBackClick = {},
-                onDeleteClick = {},
                 onLabelNameChanged = {},
                 onLabelColorChanged = {},
-                onSaveClick = {}
+                onSaveClick = {},
+                onDeleteClick = {}
             )
         }
     }

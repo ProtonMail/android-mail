@@ -33,9 +33,9 @@ class LabelFormReducer @Inject constructor() {
             is LabelFormAction.LabelNameChanged -> updateLabelNameTo(currentState, operation.labelName)
             LabelFormAction.OnDeleteClick -> TODO()
             LabelFormAction.OnSaveClick -> TODO()
-            LabelFormEvent.LabelCreated -> TODO()
-            LabelFormEvent.LabelDeleted -> TODO()
-            LabelFormEvent.LabelUpdated -> TODO()
+            LabelFormEvent.LabelCreated -> currentState // TODO
+            LabelFormEvent.LabelDeleted -> currentState // TODO
+            LabelFormEvent.LabelUpdated -> currentState // TODO
         }
     }
 
