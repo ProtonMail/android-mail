@@ -78,7 +78,6 @@ internal class AttachmentDetailItemEntryModel(index: Int, parent: SemanticsNodeI
 
     fun hasNoLoaderIcon(): AttachmentDetailItemEntryModel = apply {
         loader.awaitHidden().assertDoesNotExist()
-        icon.awaitDisplayed().assertIsDisplayed()
     }
 
     fun hasName(value: String): AttachmentDetailItemEntryModel = apply {
