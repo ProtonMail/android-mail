@@ -21,6 +21,7 @@ package ch.protonmail.android.maillabel.presentation.labelform
 import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
@@ -32,19 +33,30 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
+import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
+import ch.protonmail.android.mailcommon.presentation.compose.dismissKeyboard
 import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.maillabel.presentation.getColorFromHexString
 import ch.protonmail.android.maillabel.presentation.ui.ColorPicker
 import ch.protonmail.android.maillabel.presentation.ui.FormInputField
 import me.proton.core.compose.component.ProtonButton
+import me.proton.core.compose.component.ProtonSnackbarHostState
+import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.component.ProtonTextButton
 import me.proton.core.compose.component.appbar.ProtonTopAppBar
 import me.proton.core.compose.component.protonOutlinedButtonColors
@@ -60,26 +72,15 @@ import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.label.domain.entity.NewLabel
 import okhttp3.internal.toHexString
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewModel = hiltViewModel()) {
-    when (
-        val state = rememberAsState(
-            flow = viewModel.state,
-            initial = LabelFormState.Loading
-        ).value
-    ) {
-        is LabelFormState.CreateLabel -> {
-            CreateLabelFormScreen(state = state, actions = actions.buildActions(viewModel))
-        }
-        is LabelFormState.EditLabel -> {
-            EditLabelFormScreen(state = state, actions = actions.buildActions(viewModel))
-        }
-        is LabelFormState.Loading -> { }
-    }
-}
+    val context = LocalContext.current
+    val view = LocalView.current
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val snackBarHostState = remember { ProtonSnackbarHostState() }
 
-private fun LabelFormScreen.Actions.buildActions(viewModel: LabelFormViewModel): LabelFormScreen.Actions {
-    return this.copy(
+    val customActions = actions.copy(
         onLabelNameChanged = {
             viewModel.submit(LabelFormAction.LabelNameChanged(it))
         },
@@ -87,111 +88,167 @@ private fun LabelFormScreen.Actions.buildActions(viewModel: LabelFormViewModel):
             viewModel.submit(LabelFormAction.LabelColorChanged(it))
         },
         onSaveClick = {
+            dismissKeyboard(context, view, keyboardController)
             viewModel.submit(LabelFormAction.OnSaveClick)
         },
         onDeleteClick = {
+            dismissKeyboard(context, view, keyboardController)
             viewModel.submit(LabelFormAction.OnDeleteClick)
         }
     )
-}
 
-@Composable
-fun CreateLabelFormScreen(state: LabelFormState.CreateLabel, actions: LabelFormScreen.Actions) {
-    Scaffold(
-        topBar = {
-            LabelFormTopBar(
-                actions,
-                title = stringResource(id = R.string.label_form_create_label)
-            )
-        },
-        content = { paddingValues ->
-            Column(
-                modifier = Modifier
-                    .padding(paddingValues)
-            ) {
-                FormInputField(
-                    initialValue = state.newLabel.name,
-                    title = stringResource(R.string.label_name_title),
-                    hint = stringResource(R.string.add_a_label_name_hint),
-                    onTextChange = {
-                        actions.onLabelNameChanged(it)
-                    }
-                )
-                ColorPicker(
-                    selectedColor = state.newLabel.color.getColorFromHexString(),
-                    onColorClicked = {
-                        actions.onLabelColorChanged(it)
-                    }
-                )
-            }
-        }
-    )
-}
+    val state = rememberAsState(
+        flow = viewModel.state,
+        initial = LabelFormState.initial()
+    ).value
 
-@Composable
-fun EditLabelFormScreen(state: LabelFormState.EditLabel, actions: LabelFormScreen.Actions) {
-    Scaffold(
-        topBar = {
-            LabelFormTopBar(
-                actions,
-                title = stringResource(id = R.string.label_form_edit_label)
-            )
-        },
-        content = { paddingValues ->
-            Column(
-                modifier = Modifier
-                    .padding(paddingValues)
-            ) {
-                FormInputField(
-                    initialValue = state.label.name,
-                    title = stringResource(R.string.label_name_title),
-                    hint = stringResource(R.string.add_a_label_name_hint),
-                    onTextChange = {
-                        actions.onLabelNameChanged(it)
+    if (state.isLoading) {
+        // Loading do nothing
+    } else {
+        Scaffold(
+            topBar = {
+                LabelFormTopBar(
+                    title = stringResource(
+                        id = if (state.newLabel != null) R.string.label_form_create_label
+                        else R.string.label_form_edit_label
+                    ),
+                    isSaveEnabled = state.isSaveEnabled,
+                    onCloseLabelFormClick = {
+                        viewModel.submit(LabelFormAction.OnCloseLabelForm)
+                    },
+                    onSaveLabelClick = {
+                        viewModel.submit(LabelFormAction.OnSaveClick)
                     }
                 )
-                ColorPicker(
-                    selectedColor = state.label.color.getColorFromHexString(),
-                    onColorClicked = {
-                        actions.onLabelColorChanged(it)
-                    }
-                )
-                ProtonButton(
-                    onClick = actions.onDeleteClick,
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
-                        .heightIn(min = ButtonDefaults.MinHeight)
-                        .padding(top = ProtonDimens.LargerSpacing),
-                    elevation = null,
-                    shape = ProtonTheme.shapes.medium,
-                    border = BorderStroke(
-                        ButtonDefaults.OutlinedBorderSize,
-                        ProtonTheme.colors.notificationError
-                    ),
-                    colors = ButtonDefaults.protonOutlinedButtonColors(
-                        contentColor = ProtonTheme.colors.notificationError
-                    ),
-                    contentPadding = ButtonDefaults.ContentPadding
-                ) {
-                    Text(
-                        modifier = Modifier.padding(
-                            start = ProtonDimens.MediumSpacing,
-                            top = ProtonDimens.ExtraSmallSpacing,
-                            end = ProtonDimens.MediumSpacing,
-                            bottom = ProtonDimens.ExtraSmallSpacing
-                        ),
-                        text = stringResource(id = R.string.label_form_delete),
-                        style = ProtonTheme.typography.defaultNorm,
-                        color = ProtonTheme.colors.notificationError
+            },
+            content = { paddingValues ->
+                if (state.newLabel != null) {
+                    CreateLabelFormContent(
+                        newLabel = state.newLabel,
+                        paddingValues = paddingValues,
+                        actions = customActions
+                    )
+                } else if (state.label != null) {
+                    EditLabelFormContent(
+                        label = state.label,
+                        paddingValues = paddingValues,
+                        actions = customActions
                     )
                 }
             }
-        }
-    )
+        )
+    }
+
+    ConsumableLaunchedEffect(effect = state.close) {
+        dismissKeyboard(context, view, keyboardController)
+        customActions.onBackClick()
+    }
+    ConsumableLaunchedEffect(effect = state.closeWithSaveSuccess) {
+        customActions.onBackClick()
+        actions.showLabelSavedSnackbar()
+    }
+    ConsumableLaunchedEffect(effect = state.closeWithDeleteSuccess) {
+        customActions.onBackClick()
+        actions.showLabelDeletedSnackbar()
+    }
+    ConsumableTextEffect(effect = state.saveError) { message ->
+        snackBarHostState.showSnackbar(type = ProtonSnackbarType.NORM, message = message)
+    }
+    ConsumableTextEffect(effect = state.deleteError) { message ->
+        snackBarHostState.showSnackbar(type = ProtonSnackbarType.NORM, message = message)
+    }
 }
 
 @Composable
-fun LabelFormTopBar(actions: LabelFormScreen.Actions, title: String) {
+fun CreateLabelFormContent(
+    newLabel: NewLabel,
+    paddingValues: PaddingValues,
+    actions: LabelFormScreen.Actions
+) {
+    Column(
+        modifier = Modifier
+            .padding(paddingValues)
+    ) {
+        FormInputField(
+            initialValue = newLabel.name,
+            title = stringResource(R.string.label_name_title),
+            hint = stringResource(R.string.add_a_label_name_hint),
+            onTextChange = {
+                actions.onLabelNameChanged(it)
+            }
+        )
+        ColorPicker(
+            selectedColor = newLabel.color.getColorFromHexString(),
+            onColorClicked = {
+                actions.onLabelColorChanged(it)
+            }
+        )
+    }
+}
+
+@Composable
+fun EditLabelFormContent(
+    label: Label,
+    paddingValues: PaddingValues,
+    actions: LabelFormScreen.Actions
+) {
+    Column(
+        modifier = Modifier
+            .padding(paddingValues)
+    ) {
+        FormInputField(
+            initialValue = label.name,
+            title = stringResource(R.string.label_name_title),
+            hint = stringResource(R.string.add_a_label_name_hint),
+            onTextChange = {
+                actions.onLabelNameChanged(it)
+            }
+        )
+        ColorPicker(
+            selectedColor = label.color.getColorFromHexString(),
+            onColorClicked = {
+                actions.onLabelColorChanged(it)
+            }
+        )
+        ProtonButton(
+            onClick = actions.onDeleteClick,
+            modifier = Modifier
+                .heightIn(min = ButtonDefaults.MinHeight)
+                .padding(top = ProtonDimens.LargerSpacing)
+                .align(Alignment.CenterHorizontally),
+            elevation = null,
+            shape = ProtonTheme.shapes.medium,
+            border = BorderStroke(
+                ButtonDefaults.OutlinedBorderSize,
+                ProtonTheme.colors.notificationError
+            ),
+            colors = ButtonDefaults.protonOutlinedButtonColors(
+                contentColor = ProtonTheme.colors.notificationError
+            ),
+            contentPadding = ButtonDefaults.ContentPadding
+        ) {
+            Text(
+                modifier = Modifier.padding(
+                    start = ProtonDimens.MediumSpacing,
+                    top = ProtonDimens.ExtraSmallSpacing,
+                    end = ProtonDimens.MediumSpacing,
+                    bottom = ProtonDimens.ExtraSmallSpacing
+                ),
+                text = stringResource(id = R.string.label_form_delete),
+                style = ProtonTheme.typography.defaultNorm,
+                color = ProtonTheme.colors.notificationError
+            )
+        }
+    }
+}
+
+@Composable
+fun LabelFormTopBar(
+    title: String,
+    isSaveEnabled: Boolean,
+    onCloseLabelFormClick: () -> Unit,
+    onSaveLabelClick: () -> Unit
+) {
     ProtonTopAppBar(
         modifier = Modifier.fillMaxWidth(),
         title = {
@@ -201,7 +258,7 @@ fun LabelFormTopBar(actions: LabelFormScreen.Actions, title: String) {
             )
         },
         navigationIcon = {
-            IconButton(onClick = actions.onBackClick) {
+            IconButton(onClick = onCloseLabelFormClick) {
                 Icon(
                     imageVector = Icons.Filled.Close,
                     contentDescription = stringResource(id = R.string.presentation_close)
@@ -209,10 +266,14 @@ fun LabelFormTopBar(actions: LabelFormScreen.Actions, title: String) {
             }
         },
         actions = {
-            ProtonTextButton(onClick = actions.onSaveClick) {
+            ProtonTextButton(
+                onClick = onSaveLabelClick,
+                enabled = isSaveEnabled
+            ) {
                 Text(
                     text = stringResource(id = R.string.label_form_save),
-                    color = ProtonTheme.colors.textAccent,
+                    color = if (isSaveEnabled) ProtonTheme.colors.textAccent
+                    else ProtonTheme.colors.interactionDisabled,
                     style = ProtonTheme.typography.defaultStrongNorm
                 )
             }
@@ -226,6 +287,8 @@ object LabelFormScreen {
 
     data class Actions(
         val onBackClick: () -> Unit,
+        val showLabelSavedSnackbar: () -> Unit,
+        val showLabelDeletedSnackbar: () -> Unit,
         val onLabelNameChanged: (String) -> Unit,
         val onLabelColorChanged: (Color) -> Unit,
         val onSaveClick: () -> Unit,
@@ -236,6 +299,8 @@ object LabelFormScreen {
 
             val Empty = Actions(
                 onBackClick = {},
+                showLabelSavedSnackbar = {},
+                showLabelDeletedSnackbar = {},
                 onLabelNameChanged = {},
                 onLabelColorChanged = {},
                 onSaveClick = {},
@@ -248,8 +313,9 @@ object LabelFormScreen {
 @Composable
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 private fun CreateLabelFormScreenPreview() {
-    CreateLabelFormScreen(
-        state = LabelFormState.CreateLabel(buildSampleNewLabel()),
+    CreateLabelFormContent(
+        newLabel = buildSampleNewLabel(),
+        paddingValues = PaddingValues(0.dp),
         actions = LabelFormScreen.Actions.Empty
     )
 }
@@ -257,13 +323,12 @@ private fun CreateLabelFormScreenPreview() {
 @Composable
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 private fun EditLabelFormScreenPreview() {
-    EditLabelFormScreen(
-        state = LabelFormState.EditLabel(
-            buildSampleLabel(
-                name = "Label name",
-                color = colorResource(id = R.color.chambray).toArgb().toHexString()
-            )
+    EditLabelFormContent(
+        label = buildSampleLabel(
+            name = "Label name",
+            color = colorResource(id = R.color.chambray).toArgb().toHexString()
         ),
+        paddingValues = PaddingValues(0.dp),
         actions = LabelFormScreen.Actions.Empty
     )
 }
@@ -272,8 +337,10 @@ private fun EditLabelFormScreenPreview() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 private fun CreateLabelFormTopBarPreview() {
     LabelFormTopBar(
-        actions = LabelFormScreen.Actions.Empty,
-        title = stringResource(id = R.string.label_form_create_label)
+        title = stringResource(id = R.string.label_form_create_label),
+        isSaveEnabled = false,
+        onCloseLabelFormClick = {},
+        onSaveLabelClick = {}
     )
 }
 
@@ -281,8 +348,10 @@ private fun CreateLabelFormTopBarPreview() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 private fun EditLabelFormTopBarPreview() {
     LabelFormTopBar(
-        actions = LabelFormScreen.Actions.Empty,
-        title = stringResource(id = R.string.label_form_edit_label)
+        title = stringResource(id = R.string.label_form_edit_label),
+        isSaveEnabled = true,
+        onCloseLabelFormClick = {},
+        onSaveLabelClick = {}
     )
 }
 

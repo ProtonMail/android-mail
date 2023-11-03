@@ -31,9 +31,9 @@ internal sealed interface LabelFormAction : LabelFormOperation {
 }
 
 sealed interface LabelFormEvent : LabelFormOperation {
-    object EnableSaveButton : LabelFormEvent
-    object DisableSaveButton : LabelFormEvent
-    object LabelCreated: LabelFormEvent
-    object LabelUpdated: LabelFormEvent
-    object LabelDeleted: LabelFormEvent
+    object LabelCreated : LabelFormEvent
+    object LabelUpdated : LabelFormEvent
+    object LabelDeleted : LabelFormEvent
+    object SaveError : LabelFormEvent
+    object DeleteError : LabelFormEvent
 }

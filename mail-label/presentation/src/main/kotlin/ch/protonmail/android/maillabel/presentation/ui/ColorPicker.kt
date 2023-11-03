@@ -48,6 +48,7 @@ import me.proton.core.compose.theme.defaultSmallStrongNorm
 import kotlin.math.ceil
 import kotlin.math.floor
 
+@SuppressWarnings("UnusedPrivateMember")
 @Composable
 fun ColorPicker(selectedColor: Color, onColorClicked: (Color) -> Unit) {
     Column {
@@ -63,8 +64,8 @@ fun ColorPicker(selectedColor: Color, onColorClicked: (Color) -> Unit) {
 
         val colors = getLabelColors()
         val screenWidth = LocalConfiguration.current.screenWidthDp.dp
-        val circleRadius = MailDimens.ColorPickerCircleSize.div(2)
-        val padding = MailDimens.ColorPickerCircleHorizontalPadding.times(2)
+        val circleRadius = MailDimens.ColorPicker.CircleSize.div(2)
+        val padding = MailDimens.ColorPicker.CircleHorizontalPadding.times(2)
         val boxSize = circleRadius.plus(padding)
         val columnsCount = floor(screenWidth.div(boxSize)).toInt()
         val rowsCount = ceil(colors.size.toDouble().div(columnsCount.toDouble())).toInt()
@@ -97,12 +98,12 @@ fun ColorItem(color: Color, onColorClicked: (Color) -> Unit) {
     Box(
         modifier = Modifier
             .padding(
-                start = MailDimens.ColorPickerCircleHorizontalPadding,
-                top = MailDimens.ColorPickerCircleVerticalPadding,
-                end = MailDimens.ColorPickerCircleHorizontalPadding,
-                bottom = MailDimens.ColorPickerCircleVerticalPadding
+                start = MailDimens.ColorPicker.CircleHorizontalPadding,
+                top = MailDimens.ColorPicker.CircleVerticalPadding,
+                end = MailDimens.ColorPicker.CircleHorizontalPadding,
+                bottom = MailDimens.ColorPicker.CircleVerticalPadding
             )
-            .size(MailDimens.ColorPickerCircleSize)
+            .size(MailDimens.ColorPicker.CircleSize)
             .clip(CircleShape)
             .background(color)
             .clickable {
@@ -119,8 +120,8 @@ fun SelectedColorItem(color: Color, onColorClicked: (Color) -> Unit) {
         Box(
             modifier = Modifier
                 .padding(
-                    start = MailDimens.ColorPickerSelectedCircleHorizontalPadding,
-                    end = MailDimens.ColorPickerSelectedCircleHorizontalPadding
+                    start = MailDimens.ColorPicker.SelectedCircleHorizontalPadding,
+                    end = MailDimens.ColorPicker.SelectedCircleHorizontalPadding
                 )
                 .constrainAs(selectedItem) {
                     top.linkTo(parent.top)
@@ -128,9 +129,9 @@ fun SelectedColorItem(color: Color, onColorClicked: (Color) -> Unit) {
                     end.linkTo(parent.end)
                     bottom.linkTo(parent.bottom)
                 }
-                .size(MailDimens.ColorPickerSelectedCircleSize)
+                .size(MailDimens.ColorPicker.SelectedCircleSize)
                 .clip(CircleShape)
-                .border(MailDimens.ColorPickerSelectedCircleBorderSize, color, CircleShape)
+                .border(MailDimens.ColorPicker.SelectedCircleBorderSize, color, CircleShape)
                 .background(ProtonTheme.colors.backgroundNorm)
                 .clickable {
                     onColorClicked(color)
@@ -139,16 +140,16 @@ fun SelectedColorItem(color: Color, onColorClicked: (Color) -> Unit) {
         Box(
             modifier = Modifier
                 .padding(
-                    start = MailDimens.ColorPickerSelectedCircleHorizontalPadding,
-                    end = MailDimens.ColorPickerSelectedCircleHorizontalPadding
+                    start = MailDimens.ColorPicker.SelectedCircleHorizontalPadding,
+                    end = MailDimens.ColorPicker.SelectedCircleHorizontalPadding
                 )
                 .constrainAs(item) {
-                    top.linkTo(parent.top, margin = MailDimens.ColorPickerSelectedCircleInternalMargin)
-                    start.linkTo(parent.start, margin = MailDimens.ColorPickerSelectedCircleInternalMargin)
-                    end.linkTo(parent.end, margin = MailDimens.ColorPickerSelectedCircleInternalMargin)
-                    bottom.linkTo(parent.bottom, margin = MailDimens.ColorPickerSelectedCircleInternalMargin)
+                    top.linkTo(parent.top, margin = MailDimens.ColorPicker.SelectedCircleInternalMargin)
+                    start.linkTo(parent.start, margin = MailDimens.ColorPicker.SelectedCircleInternalMargin)
+                    end.linkTo(parent.end, margin = MailDimens.ColorPicker.SelectedCircleInternalMargin)
+                    bottom.linkTo(parent.bottom, margin = MailDimens.ColorPicker.SelectedCircleInternalMargin)
                 }
-                .size(MailDimens.ColorPickerCircleSize)
+                .size(MailDimens.ColorPicker.CircleSize)
                 .clip(CircleShape)
                 .background(color)
                 .clickable {

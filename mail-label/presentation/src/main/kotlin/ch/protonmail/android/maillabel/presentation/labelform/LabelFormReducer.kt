@@ -19,6 +19,9 @@
 package ch.protonmail.android.maillabel.presentation.labelform
 
 import androidx.compose.ui.graphics.Color
+import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
 import javax.inject.Inject
 
@@ -26,40 +29,62 @@ class LabelFormReducer @Inject constructor() {
 
     internal fun newStateFrom(currentState: LabelFormState, operation: LabelFormOperation): LabelFormState {
         return when (operation) {
-            is LabelFormEvent.EnableSaveButton -> TODO()
-            is LabelFormEvent.DisableSaveButton -> TODO()
-            is LabelFormAction.OnCloseLabelForm -> TODO()
-            is LabelFormAction.LabelColorChanged -> updateLabelColorTo(currentState, operation.labelColor)
-            is LabelFormAction.LabelNameChanged -> updateLabelNameTo(currentState, operation.labelName)
-            LabelFormAction.OnDeleteClick -> TODO()
-            LabelFormAction.OnSaveClick -> TODO()
-            LabelFormEvent.LabelCreated -> currentState // TODO
-            LabelFormEvent.LabelDeleted -> currentState // TODO
-            LabelFormEvent.LabelUpdated -> currentState // TODO
+            is LabelFormAction.LabelColorChanged -> {
+                updateLabelColorTo(currentState, operation.labelColor)
+            }
+            is LabelFormAction.LabelNameChanged -> {
+                updateLabelNameTo(currentState, operation.labelName)
+            }
+            LabelFormAction.OnCloseLabelForm -> {
+                currentState.copy(close = Effect.of(Unit))
+            }
+            LabelFormAction.OnDeleteClick -> {
+                currentState.copy(closeWithDeleteSuccess = Effect.of(Unit))
+            }
+            LabelFormAction.OnSaveClick -> {
+                currentState.copy(closeWithSaveSuccess = Effect.of(Unit))
+            }
+            LabelFormEvent.LabelCreated -> {
+                currentState.copy(closeWithSaveSuccess = Effect.of(Unit))
+            }
+            LabelFormEvent.LabelDeleted -> {
+                currentState.copy(closeWithDeleteSuccess = Effect.of(Unit))
+            }
+            LabelFormEvent.LabelUpdated -> {
+                currentState.copy(closeWithSaveSuccess = Effect.of(Unit))
+            }
+            LabelFormEvent.DeleteError -> {
+                currentState.copy(deleteError = Effect.of(TextUiModel(R.string.delete_label_error)))
+            }
+            LabelFormEvent.SaveError -> {
+                currentState.copy(saveError = Effect.of(TextUiModel(R.string.save_label_error)))
+            }
         }
     }
 
     private fun updateLabelNameTo(currentState: LabelFormState, labelName: String): LabelFormState {
-        return when (currentState) {
-            is LabelFormState.CreateLabel -> LabelFormState.CreateLabel(
-                currentState.newLabel.copy(name = labelName)
+        return if (currentState.label != null) {
+            currentState.copy(
+                isSaveEnabled = labelName.isNotEmpty(),
+                label = currentState.label.copy(name = labelName)
             )
-            is LabelFormState.EditLabel -> LabelFormState.EditLabel(
-                currentState.label.copy(name = labelName)
+        } else if (currentState.newLabel != null) {
+            currentState.copy(
+                isSaveEnabled = labelName.isNotEmpty(),
+                newLabel = currentState.newLabel.copy(name = labelName)
             )
-            LabelFormState.Loading -> LabelFormState.Loading
-        }
+        } else currentState
     }
 
     private fun updateLabelColorTo(currentState: LabelFormState, labelColor: Color): LabelFormState {
-        return when (currentState) {
-            is LabelFormState.CreateLabel -> LabelFormState.CreateLabel(
-                currentState.newLabel.copy(color = labelColor.getHexStringFromColor())
+        return if (currentState.label != null) {
+            currentState.copy(
+                label = currentState.label.copy(color = labelColor.getHexStringFromColor())
             )
-            is LabelFormState.EditLabel -> LabelFormState.EditLabel(
-                currentState.label.copy(color = labelColor.getHexStringFromColor())
+        } else if (currentState.newLabel != null) {
+            currentState.copy(
+                newLabel = currentState.newLabel.copy(color = labelColor.getHexStringFromColor())
             )
-            LabelFormState.Loading -> LabelFormState.Loading
-        }
+        } else currentState
     }
 }

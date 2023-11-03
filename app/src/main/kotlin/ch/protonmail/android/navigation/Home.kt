@@ -135,6 +135,14 @@ fun Home(
     fun showErrorUploadAttachmentSnackbar() = scope.launch {
         snackbarHostErrorState.showSnackbar(message = errorUploadAttachmentText, type = ProtonSnackbarType.ERROR)
     }
+    val labelSavedText = stringResource(id = R.string.label_saved)
+    fun showLabelSavedSnackbar() = scope.launch {
+        snackbarHostSuccessState.showSnackbar(message = labelSavedText, type = ProtonSnackbarType.SUCCESS)
+    }
+    val labelDeletedText = stringResource(id = R.string.label_deleted)
+    fun showLabelDeletedSnackbar() = scope.launch {
+        snackbarHostSuccessState.showSnackbar(message = labelDeletedText, type = ProtonSnackbarType.SUCCESS)
+    }
     ConsumableLaunchedEffect(state.value.messageSendingStatusEffect) { sendingStatus ->
         when (sendingStatus) {
             is MessageSendingStatus.MessageSent -> showSuccessSendingMessageSnackbar()
@@ -235,7 +243,9 @@ fun Home(
                     navController
                 )
                 addLabelForm(
-                    navController
+                    navController,
+                    showLabelSavedSnackbar = { showLabelSavedSnackbar() },
+                    showLabelDeletedSnackbar = { showLabelDeletedSnackbar() }
                 )
                 // settings
                 addAccountSettings(

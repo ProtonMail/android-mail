@@ -60,7 +60,6 @@ class LabelListViewModel @Inject constructor(
             } else {
                 observeLabels(userId).map { labels ->
                     val customMailLabels = labels.onLeft {
-                        // TODO Show error in UI ?
                         Timber.e("Error while observing custom labels")
                     }.getOrElse { emptyList() }
                     if (customMailLabels.isEmpty()) {

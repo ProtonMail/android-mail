@@ -43,4 +43,6 @@
     <string name="add_a_label_name_hint">Add a label name</string>
     <string name="input_field_max_characters_count">%1d / %2d characters</string>
     <string name="color_picker_title">Color</string>
+    <string name="save_label_error">Error saving label</string>
+    <string name="delete_label_error">Error deleting label</string>
 </resources>

@@ -215,11 +215,17 @@ internal fun NavGraphBuilder.addLabelList(navController: NavHostController) {
     }
 }
 
-internal fun NavGraphBuilder.addLabelForm(navController: NavHostController) {
+internal fun NavGraphBuilder.addLabelForm(
+    navController: NavHostController,
+    showLabelSavedSnackbar: () -> Unit,
+    showLabelDeletedSnackbar: () -> Unit
+) {
     val actions = LabelFormScreen.Actions.Empty.copy(
         onBackClick = {
             navController.popBackStack()
-        }
+        },
+        showLabelSavedSnackbar = showLabelSavedSnackbar,
+        showLabelDeletedSnackbar = showLabelDeletedSnackbar
     )
     composable(route = Destination.Screen.CreateLabel.route) { LabelFormScreen(actions) }
     composable(route = Destination.Screen.EditLabel.route) { LabelFormScreen(actions) }

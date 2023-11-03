@@ -18,18 +18,35 @@
 
 package ch.protonmail.android.maillabel.presentation.labelform
 
+import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import me.proton.core.label.domain.entity.Label
 import me.proton.core.label.domain.entity.NewLabel
 
-sealed class LabelFormState {
+data class LabelFormState(
+    val isLoading: Boolean,
+    val isSaveEnabled: Boolean,
+    val label: Label?,
+    val newLabel: NewLabel?,
+    val close: Effect<Unit>,
+    val closeWithSaveSuccess: Effect<Unit>,
+    val saveError: Effect<TextUiModel>,
+    val closeWithDeleteSuccess: Effect<Unit>,
+    val deleteError: Effect<TextUiModel>
+) {
 
-    object Loading : LabelFormState()
+    companion object {
 
-    data class CreateLabel(
-        val newLabel: NewLabel
-    ) : LabelFormState()
-
-    data class EditLabel(
-        val label: Label
-    ) : LabelFormState()
+        fun initial(): LabelFormState = LabelFormState(
+            isLoading = true,
+            isSaveEnabled = false,
+            label = null,
+            newLabel = null,
+            close = Effect.empty(),
+            closeWithSaveSuccess = Effect.empty(),
+            saveError = Effect.empty(),
+            closeWithDeleteSuccess = Effect.empty(),
+            deleteError = Effect.empty()
+        )
+    }
 }

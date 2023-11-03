@@ -37,7 +37,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.label.domain.entity.Label
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
@@ -50,7 +49,6 @@ class LabelFormViewModel @Inject constructor(
     private val createLabel: CreateLabel,
     private val updateLabel: UpdateLabel,
     private val deleteLabel: DeleteLabel,
-    private val accountManager: AccountManager,
     private val composerIdlingResource: ComposerIdlingResource,
     private val reducer: LabelFormReducer,
     observePrimaryUserId: ObservePrimaryUserId,
@@ -58,7 +56,7 @@ class LabelFormViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val actionMutex = Mutex()
-    private val mutableState = MutableStateFlow<LabelFormState>(LabelFormState.Loading)
+    private val mutableState = MutableStateFlow(LabelFormState.initial())
     private val primaryUserId = observePrimaryUserId().filterNotNull()
 
     val state: StateFlow<LabelFormState> = mutableState
@@ -68,10 +66,23 @@ class LabelFormViewModel @Inject constructor(
         viewModelScope.launch {
             if (labelId != null) {
                 getLabel(userId = primaryUserId(), labelId = LabelId(labelId)).getOrNull()?.let { label ->
-                    mutableState.emit(LabelFormState.EditLabel(label))
+                    mutableState.emit(
+                        state.value.copy(
+                            isLoading = false,
+                            isSaveEnabled = true,
+                            label = label
+                        )
+                    )
                 }
             } else {
-                mutableState.emit(LabelFormState.CreateLabel(createNewLabel()))
+                mutableState.emit(
+                    state.value.copy(
+                        isLoading = false,
+                        newLabel = buildNewLabel(
+                            getLabelColors().random().getHexStringFromColor()
+                        )
+                    )
+                )
             }
         }
     }
@@ -88,53 +99,71 @@ class LabelFormViewModel @Inject constructor(
                 when (action) {
                     is LabelFormAction.LabelColorChanged -> emitNewStateFor(action)
                     is LabelFormAction.LabelNameChanged -> emitNewStateFor(action)
-                    LabelFormAction.OnCloseLabelForm -> TODO()
-                    LabelFormAction.OnSaveClick -> {
-                        when (val currentState = state.value) {
-                            is LabelFormState.CreateLabel -> createLabel(currentState.newLabel)
-                            is LabelFormState.EditLabel -> editLabel(currentState.label)
-                            LabelFormState.Loading -> {}
-                        }
-                    }
-                    LabelFormAction.OnDeleteClick -> {
-                        when (val currentState = state.value) {
-                            is LabelFormState.CreateLabel -> {}
-                            is LabelFormState.EditLabel -> deleteLabel(currentState.label.labelId)
-                            LabelFormState.Loading -> {}
-                        }
-                    }
+                    LabelFormAction.OnCloseLabelForm -> emitNewStateFor(action)
+                    LabelFormAction.OnDeleteClick -> handleOnDeleteClick()
+                    LabelFormAction.OnSaveClick -> handleOnSaveClick()
                 }
                 composerIdlingResource.decrement()
             }
         }
     }
 
+    private suspend fun handleOnSaveClick() {
+        val currentState = state.value
+        if (currentState.newLabel != null) {
+            createLabel(currentState.newLabel)
+        } else if (currentState.label != null) {
+            editLabel(currentState.label)
+        }
+    }
+
+    private suspend fun handleOnDeleteClick() {
+        state.value.label?.labelId?.let {
+            deleteLabel(it)
+        }
+    }
+
     private suspend fun createLabel(newLabel: NewLabel) {
-        // TODO Handle create error
-        createLabel(primaryUserId(), newLabel)
-        emitNewStateFor(LabelFormEvent.LabelCreated)
+        createLabel(primaryUserId(), newLabel).fold(
+            ifLeft = {
+                emitNewStateFor(LabelFormEvent.SaveError)
+            },
+            ifRight = {
+                emitNewStateFor(LabelFormEvent.LabelCreated)
+            }
+        )
     }
 
     private suspend fun editLabel(label: Label) {
-        // TODO Handle update error
-        updateLabel(primaryUserId(), label)
-        emitNewStateFor(LabelFormEvent.LabelUpdated)
+        updateLabel(primaryUserId(), label).fold(
+            ifLeft = {
+                emitNewStateFor(LabelFormEvent.SaveError)
+            },
+            ifRight = {
+                emitNewStateFor(LabelFormEvent.LabelUpdated)
+            }
+        )
     }
 
     private suspend fun deleteLabel(labelId: LabelId) {
-        // TODO Handle update error
-        deleteLabel(primaryUserId(), labelId)
-        emitNewStateFor(LabelFormEvent.LabelDeleted)
+        deleteLabel(primaryUserId(), labelId).fold(
+            ifLeft = {
+                emitNewStateFor(LabelFormEvent.DeleteError)
+            },
+            ifRight = {
+                emitNewStateFor(LabelFormEvent.LabelDeleted)
+            }
+        )
     }
 
     private suspend fun primaryUserId() = primaryUserId.first()
 
-    private fun createNewLabel(): NewLabel {
+    private fun buildNewLabel(color: String): NewLabel {
         return NewLabel(
             parentId = null,
             name = "",
             type = LabelType.MessageLabel,
-            color = getLabelColors().random().getHexStringFromColor(),
+            color = color,
             isNotified = null,
             isExpanded = null,
             isSticky = null
