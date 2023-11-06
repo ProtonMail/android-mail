@@ -55,7 +55,6 @@
   <string name="mail_settings_display_name_and_signature">Visningsnamn och signatur</string>
   <string name="mail_settings_mailbox">Brevlåda</string>
   <string name="mail_settings_privacy">Integritet</string>
-  <string name="mail_settings_labels_and_folders">Etiketter och mappar</string>
   <string name="mail_settings_local_storage">Lokalt lagringsutrymme</string>
   <string name="mail_settings_snooze">Snooza</string>
   <string name="mail_settings_snooze_notifications">Snooza aviseringar</string>

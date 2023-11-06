@@ -57,7 +57,6 @@ import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
-import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.BottomSheetVisibilityEffect
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
@@ -71,6 +70,7 @@ import ch.protonmail.android.maildetail.presentation.previewdata.ConversationDet
 import ch.protonmail.android.maildetail.presentation.viewmodel.ConversationDetailViewModel
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
@@ -129,8 +129,11 @@ fun ConversationDetailScreen(
 
                 is LabelAsBottomSheetState -> LabelAsBottomSheetContent(
                     state = bottomSheetContentState,
-                    onLabelAsSelected = { viewModel.submit(ConversationDetailViewAction.LabelAsToggleAction(it)) },
-                    onDoneClick = { viewModel.submit(ConversationDetailViewAction.LabelAsConfirmed(it)) }
+                    actions = LabelAsBottomSheetContent.Actions(
+                        onAddLabelClick = actions.onAddLabel,
+                        onLabelAsSelected = { viewModel.submit(ConversationDetailViewAction.LabelAsToggleAction(it)) },
+                        onDoneClick = { viewModel.submit(ConversationDetailViewAction.LabelAsConfirmed(it)) }
+                    )
                 )
 
                 null -> {
@@ -385,6 +388,7 @@ object ConversationDetail {
         val onExit: (notifyUserMessage: String?) -> Unit,
         val openMessageBodyLink: (url: String) -> Unit,
         val openAttachment: (values: OpenAttachmentIntentValues) -> Unit,
+        val onAddLabel: () -> Unit,
         val showFeatureMissingSnackbar: () -> Unit,
         val onReply: (MessageId) -> Unit,
         val onReplyAll: (MessageId) -> Unit,

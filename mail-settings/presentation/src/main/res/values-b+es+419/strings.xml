@@ -55,7 +55,6 @@
   <string name="mail_settings_display_name_and_signature">Nombre a mostrar y firma</string>
   <string name="mail_settings_mailbox">Buzón</string>
   <string name="mail_settings_privacy">Privacidad</string>
-  <string name="mail_settings_labels_and_folders">Etiquetas y carpetas</string>
   <string name="mail_settings_local_storage">Almacenamiento local</string>
   <string name="mail_settings_snooze">Silenciar</string>
   <string name="mail_settings_snooze_notifications">Silenciar notificaciones</string>

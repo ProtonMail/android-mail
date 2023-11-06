@@ -55,7 +55,6 @@
   <string name="mail_settings_display_name_and_signature">Megjelenített név és aláírás</string>
   <string name="mail_settings_mailbox">Postafiók</string>
   <string name="mail_settings_privacy">Adatvédelem</string>
-  <string name="mail_settings_labels_and_folders">Címkék és Mappák</string>
   <string name="mail_settings_local_storage">Helyi tárhely</string>
   <string name="mail_settings_snooze">Szüneteltetés</string>
   <string name="mail_settings_snooze_notifications">Értesítések szüneteltetése</string>

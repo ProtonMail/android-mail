@@ -55,7 +55,6 @@
   <string name="mail_settings_display_name_and_signature">Отображаемое имя и подпись</string>
   <string name="mail_settings_mailbox">Почтовый ящик</string>
   <string name="mail_settings_privacy">Конфиденциальность</string>
-  <string name="mail_settings_labels_and_folders">Ярлыки и папки</string>
   <string name="mail_settings_local_storage">Локальное хранилище</string>
   <string name="mail_settings_snooze">Отложить</string>
   <string name="mail_settings_snooze_notifications">Отложить уведомления</string>

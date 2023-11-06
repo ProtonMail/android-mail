@@ -55,7 +55,6 @@
   <string name="mail_settings_display_name_and_signature">Zobrazované meno a podpis</string>
   <string name="mail_settings_mailbox">Poštová schránka</string>
   <string name="mail_settings_privacy">Súkromie</string>
-  <string name="mail_settings_labels_and_folders">Štítky a priečinky</string>
   <string name="mail_settings_local_storage">Lokálne úložisko</string>
   <string name="mail_settings_snooze">Odložiť</string>
   <string name="mail_settings_snooze_notifications">Odložiť notifikácie</string>

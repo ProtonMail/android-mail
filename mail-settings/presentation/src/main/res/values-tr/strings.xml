@@ -55,7 +55,6 @@
   <string name="mail_settings_display_name_and_signature">Görüntülenecek ad ve imza</string>
   <string name="mail_settings_mailbox">Posta kutusu</string>
   <string name="mail_settings_privacy">Gizlilik</string>
-  <string name="mail_settings_labels_and_folders">Etiketler ve klasörler</string>
   <string name="mail_settings_local_storage">Yerel depolama alanı</string>
   <string name="mail_settings_snooze">Ertele</string>
   <string name="mail_settings_snooze_notifications">Bildirimleri ertele</string>

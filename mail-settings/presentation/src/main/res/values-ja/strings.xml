@@ -55,7 +55,6 @@
   <string name="mail_settings_display_name_and_signature">表示名と署名</string>
   <string name="mail_settings_mailbox">受信トレイ</string>
   <string name="mail_settings_privacy">プライバシー</string>
-  <string name="mail_settings_labels_and_folders">ラベルとフォルダー</string>
   <string name="mail_settings_local_storage">端末のストレージ</string>
   <string name="mail_settings_snooze">通知の休止</string>
   <string name="mail_settings_snooze_notifications">通知を休止</string>

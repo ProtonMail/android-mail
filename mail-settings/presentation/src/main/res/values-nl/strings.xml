@@ -55,7 +55,6 @@
   <string name="mail_settings_display_name_and_signature">Weergavenaam en handtekening</string>
   <string name="mail_settings_mailbox">Mailbox</string>
   <string name="mail_settings_privacy">Privacy</string>
-  <string name="mail_settings_labels_and_folders">Labels en mappen</string>
   <string name="mail_settings_local_storage">Lokale opslag</string>
   <string name="mail_settings_snooze">Uitstellen</string>
   <string name="mail_settings_snooze_notifications">Snooze meldingen</string>

@@ -42,6 +42,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.text.style.TextOverflow
@@ -62,16 +63,11 @@ import me.proton.core.compose.theme.interactionNorm
 import me.proton.core.label.domain.entity.LabelId
 
 @Composable
-fun LabelAsBottomSheetContent(
-    state: LabelAsBottomSheetState,
-    onLabelAsSelected: (LabelId) -> Unit,
-    onDoneClick: (archiveSelected: Boolean) -> Unit
-) {
+fun LabelAsBottomSheetContent(state: LabelAsBottomSheetState, actions: LabelAsBottomSheetContent.Actions) {
     when (state) {
         is LabelAsBottomSheetState.Data -> LabelAsBottomSheetContent(
             labelAsDataState = state,
-            onLabelAsSelected = onLabelAsSelected,
-            onDoneClick = onDoneClick
+            actions = actions
         )
 
         else -> ProtonCenteredProgress()
@@ -81,8 +77,7 @@ fun LabelAsBottomSheetContent(
 @Composable
 fun LabelAsBottomSheetContent(
     labelAsDataState: LabelAsBottomSheetState.Data,
-    onLabelAsSelected: (LabelId) -> Unit,
-    onDoneClick: (archiveSelected: Boolean) -> Unit
+    actions: LabelAsBottomSheetContent.Actions
 ) {
     var archiveSelectedState by remember { mutableStateOf(false) }
 
@@ -102,7 +97,7 @@ fun LabelAsBottomSheetContent(
             Text(
                 modifier = Modifier
                     .testTag(LabelAsBottomSheetTestTags.DoneButton)
-                    .clickable { onDoneClick(archiveSelectedState) },
+                    .clickable { actions.onDoneClick(archiveSelectedState) },
                 text = stringResource(id = R.string.bottom_sheet_done_action),
                 style = ProtonTheme.typography.default,
                 color = ProtonTheme.colors.interactionNorm()
@@ -115,12 +110,43 @@ fun LabelAsBottomSheetContent(
             value = archiveSelectedState,
             onToggle = { archiveSelectedState = !archiveSelectedState }
         )
+        Row(
+            modifier = Modifier
+                .testTag(LabelAsBottomSheetTestTags.AddLabelRow)
+                .fillMaxWidth()
+                .clickable(
+                    onClickLabel = stringResource(id = R.string.add_label_content_description),
+                    role = Role.Button,
+                    onClick = actions.onAddLabelClick
+                ),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_proton_plus),
+                contentDescription = stringResource(
+                    id = R.string.label_title_add_label
+                ),
+                modifier = Modifier
+                    .testTag(LabelAsBottomSheetTestTags.AddLabelIcon)
+                    .padding(ProtonDimens.DefaultSpacing),
+                tint = ProtonTheme.colors.iconNorm
+            )
+            Text(
+                modifier = Modifier
+                    .testTag(LabelAsBottomSheetTestTags.AddLabelText)
+                    .weight(1f)
+                    .padding(vertical = ProtonDimens.DefaultSpacing),
+                text = stringResource(id = R.string.label_title_add_label),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
         LazyColumn {
             items(labelAsDataState.labelUiModelsWithSelectedState) { itemLabel ->
                 ProtonRawListItem(
                     modifier = Modifier
                         .testTag(LabelAsBottomSheetTestTags.LabelItem)
-                        .clickable { onLabelAsSelected(itemLabel.labelUiModel.id.labelId) }
+                        .clickable { actions.onLabelAsSelected(itemLabel.labelUiModel.id.labelId) }
                         .height(ProtonDimens.ListItemHeight)
                 ) {
                     Icon(
@@ -154,12 +180,21 @@ fun LabelAsBottomSheetContent(
                             LabelSelectedState.NotSelected -> ToggleableState.Off
                             LabelSelectedState.PartiallySelected -> ToggleableState.Indeterminate
                         },
-                        onClick = { onLabelAsSelected(itemLabel.labelUiModel.id.labelId) }
+                        onClick = { actions.onLabelAsSelected(itemLabel.labelUiModel.id.labelId) }
                     )
                 }
             }
         }
     }
+}
+
+object LabelAsBottomSheetContent {
+
+    data class Actions(
+        val onAddLabelClick: () -> Unit,
+        val onLabelAsSelected: (LabelId) -> Unit,
+        val onDoneClick: (archiveSelected: Boolean) -> Unit
+    )
 }
 
 @Preview(showBackground = true)
@@ -170,8 +205,11 @@ fun LabelAsBottomSheetContentPreview() {
             labelAsDataState = LabelAsBottomSheetState.Data(
                 labelUiModelsWithSelectedState = LabelUiModelWithSelectedStateSample.customLabelListWithSelection
             ),
-            onLabelAsSelected = {},
-            onDoneClick = { }
+            actions = LabelAsBottomSheetContent.Actions(
+                onAddLabelClick = {},
+                onLabelAsSelected = {},
+                onDoneClick = {}
+            )
         )
     }
 }
@@ -183,6 +221,9 @@ object LabelAsBottomSheetTestTags {
     const val DoneButton = "DoneButton"
     const val Divider = "LabelAsBottomSheetDivider"
     const val AlsoArchiveToggle = "AlsoArchiveToggle"
+    const val AddLabelText = "AddLabelText"
+    const val AddLabelIcon = "AddLabelIcon"
+    const val AddLabelRow = "AddLabelRow"
     const val LabelItem = "LabelItem"
     const val LabelIcon = "LabelIcon"
     const val LabelNameText = "LabelNameText"

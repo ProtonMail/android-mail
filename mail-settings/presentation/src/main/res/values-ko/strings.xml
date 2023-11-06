@@ -55,7 +55,6 @@
   <string name="mail_settings_display_name_and_signature">이름과 서명 표시</string>
   <string name="mail_settings_mailbox">메일함</string>
   <string name="mail_settings_privacy">개인정보 보호</string>
-  <string name="mail_settings_labels_and_folders">라벨과 폴더</string>
   <string name="mail_settings_local_storage">로컬 저장소</string>
   <string name="mail_settings_snooze">방해 금지</string>
   <string name="mail_settings_snooze_notifications">방해금지 모드</string>

@@ -116,8 +116,11 @@ fun MessageDetailScreen(
 
                 is LabelAsBottomSheetState -> LabelAsBottomSheetContent(
                     state = bottomSheetContentState,
-                    onLabelAsSelected = { viewModel.submit(MessageViewAction.LabelAsToggleAction(it)) },
-                    onDoneClick = { viewModel.submit(MessageViewAction.LabelAsConfirmed(it)) }
+                    actions = LabelAsBottomSheetContent.Actions(
+                        onAddLabelClick = actions.onAddLabel,
+                        onLabelAsSelected = { viewModel.submit(MessageViewAction.LabelAsToggleAction(it)) },
+                        onDoneClick = { viewModel.submit(MessageViewAction.LabelAsConfirmed(it)) }
+                    )
                 )
 
                 null -> {
@@ -330,6 +333,7 @@ object MessageDetail {
         val onExit: (message: String?) -> Unit,
         val openMessageBodyLink: (uri: Uri) -> Unit,
         val openAttachment: (values: OpenAttachmentIntentValues) -> Unit,
+        val onAddLabel: () -> Unit,
         val showFeatureMissingSnackbar: () -> Unit,
         val onReply: (MessageId) -> Unit,
         val onReplyAll: (MessageId) -> Unit,

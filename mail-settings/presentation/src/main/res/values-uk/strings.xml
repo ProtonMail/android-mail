@@ -55,7 +55,6 @@
   <string name="mail_settings_display_name_and_signature">Ім\'я та підпис</string>
   <string name="mail_settings_mailbox">Поштова скринька</string>
   <string name="mail_settings_privacy">Приватність</string>
-  <string name="mail_settings_labels_and_folders">Мітки й теки</string>
   <string name="mail_settings_local_storage">Локальне сховище</string>
   <string name="mail_settings_snooze">Відкласти</string>
   <string name="mail_settings_snooze_notifications">Відкласти сповіщення</string>

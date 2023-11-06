@@ -55,7 +55,6 @@
   <string name="mail_settings_display_name_and_signature">Nazwa wyświetlana i podpis</string>
   <string name="mail_settings_mailbox">Skrzynka pocztowa</string>
   <string name="mail_settings_privacy">Prywatność</string>
-  <string name="mail_settings_labels_and_folders">Etykiety i foldery</string>
   <string name="mail_settings_local_storage">Magazyn lokalny</string>
   <string name="mail_settings_snooze">Usypianie powiadomień</string>
   <string name="mail_settings_snooze_notifications">Uśpij powiadomienia</string>

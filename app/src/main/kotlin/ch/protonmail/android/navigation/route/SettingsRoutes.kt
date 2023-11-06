@@ -52,7 +52,8 @@ fun NavGraphBuilder.addAccountSettings(
                 onDefaultEmailAddressClick = { showFeatureMissingSnackbar() },
                 onDisplayNameClick = { showFeatureMissingSnackbar() },
                 onPrivacyClick = { navController.navigate(Screen.PrivacySettings.route) },
-                onLabelsFoldersClick = { showFeatureMissingSnackbar() },
+                onLabelsClick = { navController.navigate(Screen.LabelList.route) },
+                onFoldersClick = { showFeatureMissingSnackbar() },
                 onLocalStorageClick = { showFeatureMissingSnackbar() },
                 onSnoozeNotificationsClick = { showFeatureMissingSnackbar() }
             )
