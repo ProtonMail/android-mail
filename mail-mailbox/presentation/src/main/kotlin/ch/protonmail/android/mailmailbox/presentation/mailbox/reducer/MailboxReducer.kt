@@ -110,8 +110,8 @@ class MailboxReducer @Inject constructor(
         }
     }
 
-    private fun MailboxState.toNewDeleteActionStateFrom(operation: MailboxOperation): Effect<DeleteDialogState> {
-        return if (operation is MailboxEvent.Delete) {
+    private fun MailboxState.toNewDeleteActionStateFrom(operation: MailboxOperation): DeleteDialogState {
+        return if (operation is MailboxOperation.AffectingDeleteDialog) {
             deleteDialogReducer.newStateFrom(operation)
         } else {
             deleteDialogState

@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.presentation.sample.ActionUiModelSample
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.text
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.DeleteDialogState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState.Data.SelectionMode.SelectedMailboxItem
@@ -42,7 +43,7 @@ object MailboxStateSampleData {
         bottomAppBarState = BottomBarState.Loading,
         onboardingState = OnboardingState.Hidden,
         actionMessage = Effect.empty(),
-        deleteDialogState = Effect.empty()
+        deleteDialogState = DeleteDialogState.Hidden
     )
 
     val Inbox = MailboxState(
@@ -67,7 +68,7 @@ object MailboxStateSampleData {
         ),
         onboardingState = OnboardingState.Hidden,
         actionMessage = Effect.empty(),
-        deleteDialogState = Effect.empty()
+        deleteDialogState = DeleteDialogState.Hidden
     )
 
     val AllMail = MailboxState(
@@ -92,7 +93,7 @@ object MailboxStateSampleData {
         ),
         onboardingState = OnboardingState.Hidden,
         actionMessage = Effect.empty(),
-        deleteDialogState = Effect.empty()
+        deleteDialogState = DeleteDialogState.Hidden
     )
 
     val OnboardingShown = MailboxState(
@@ -102,7 +103,7 @@ object MailboxStateSampleData {
         bottomAppBarState = BottomBarState.Loading,
         onboardingState = OnboardingState.Shown,
         actionMessage = Effect.empty(),
-        deleteDialogState = Effect.empty()
+        deleteDialogState = DeleteDialogState.Hidden
     )
 
     fun createSelectionMode(
@@ -130,6 +131,6 @@ object MailboxStateSampleData {
         ),
         onboardingState = OnboardingState.Hidden,
         actionMessage = Effect.empty(),
-        deleteDialogState = Effect.empty()
+        deleteDialogState = DeleteDialogState.Hidden
     )
 }

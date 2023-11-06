@@ -1,10 +1,11 @@
 package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 
-import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.DeleteDialogState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingDeleteDialog
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import me.proton.core.mailsettings.domain.entity.ViewMode
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -31,33 +32,43 @@ internal class MailboxDeleteDialogReducerTest(
         private val transitions = listOf(
             TestInput(
                 operation = MailboxEvent.Delete(ViewMode.ConversationGrouping, 5),
-                expectedState = Effect.of(
-                    DeleteDialogState(
-                        title = TextUiModel.PluralisedText(
-                            value = R.plurals.mailbox_action_delete_conversation_dialog_title,
-                            count = 5
-                        ),
-                        message = TextUiModel.PluralisedText(
-                            value = R.plurals.mailbox_action_delete_conversation_dialog_message,
-                            count = 5
-                        )
+                expectedState =
+                DeleteDialogState.Shown(
+                    title = TextUiModel.PluralisedText(
+                        value = R.plurals.mailbox_action_delete_conversation_dialog_title,
+                        count = 5
+                    ),
+                    message = TextUiModel.PluralisedText(
+                        value = R.plurals.mailbox_action_delete_conversation_dialog_message,
+                        count = 5
                     )
                 )
             ),
             TestInput(
                 operation = MailboxEvent.Delete(ViewMode.NoConversationGrouping, 5),
-                expectedState = Effect.of(
-                    DeleteDialogState(
-                        title = TextUiModel.PluralisedText(
-                            value = R.plurals.mailbox_action_delete_message_dialog_title,
-                            count = 5
-                        ),
-                        message = TextUiModel.PluralisedText(
-                            value = R.plurals.mailbox_action_delete_message_dialog_message,
-                            count = 5
-                        )
+                expectedState =
+                DeleteDialogState.Shown(
+                    title = TextUiModel.PluralisedText(
+                        value = R.plurals.mailbox_action_delete_message_dialog_title,
+                        count = 5
+                    ),
+                    message = TextUiModel.PluralisedText(
+                        value = R.plurals.mailbox_action_delete_message_dialog_message,
+                        count = 5
                     )
                 )
+            ),
+            TestInput(
+                operation = MailboxEvent.DeleteConfirmed(ViewMode.NoConversationGrouping, 5),
+                expectedState = DeleteDialogState.Hidden
+            ),
+            TestInput(
+                operation = MailboxEvent.DeleteConfirmed(ViewMode.ConversationGrouping, 5),
+                expectedState = DeleteDialogState.Hidden
+            ),
+            TestInput(
+                operation = MailboxViewAction.DeleteDialogDismissed,
+                expectedState = DeleteDialogState.Hidden
             )
         )
 
@@ -77,8 +88,8 @@ internal class MailboxDeleteDialogReducerTest(
     }
 
     data class TestInput(
-        val operation: MailboxEvent.Delete,
-        val expectedState: Effect<DeleteDialogState>
+        val operation: AffectingDeleteDialog,
+        val expectedState: DeleteDialogState
     )
 
 }

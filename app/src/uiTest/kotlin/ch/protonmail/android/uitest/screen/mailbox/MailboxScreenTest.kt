@@ -31,6 +31,7 @@ import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelSample
 import ch.protonmail.android.maillabel.presentation.text
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreen
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.DeleteDialogState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
@@ -203,7 +204,7 @@ internal class MailboxScreenTest {
                 bottomAppBarState = BottomBarState.Data.Hidden(emptyList()),
                 onboardingState = OnboardingState.Hidden,
                 actionMessage = Effect.empty(),
-                deleteDialogState = Effect.empty()
+                deleteDialogState = DeleteDialogState.Hidden
             )
         }
 

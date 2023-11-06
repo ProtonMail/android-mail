@@ -64,6 +64,7 @@ import ch.protonmail.android.mailmailbox.domain.usecase.SaveOnboarding
 import ch.protonmail.android.mailmailbox.presentation.helper.MailboxAsyncPagingDataDiffer
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxViewModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.MailboxItemUiModelMapper
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.DeleteDialogState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
@@ -260,7 +261,7 @@ class MailboxViewModelTest {
                 bottomAppBarState = BottomBarState.Data.Hidden(emptyList()),
                 onboardingState = OnboardingState.Hidden,
                 actionMessage = Effect.empty(),
-                deleteDialogState = Effect.empty()
+                deleteDialogState = DeleteDialogState.Hidden
             )
 
             assertEquals(expected, actual)
@@ -1915,6 +1916,28 @@ class MailboxViewModelTest {
     }
 
     @Test
+    fun `verify dismiss delete dialog calls reducer`() = runTest {
+        // Given
+        val initialState = createMailboxDataState()
+        expectViewMode(NoConversationGrouping)
+        expectedSelectedLabelCountStateChange(initialState)
+        returnExpectedStateForDeleteDismissed(initialState, initialState)
+
+        mailboxViewModel.state.test {
+            // Given
+            awaitItem() // First emission for selected user
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.DeleteDialogDismissed)
+
+            // Then
+            verify(exactly = 1) {
+                mailboxReducer.newStateFrom(initialState, MailboxViewAction.DeleteDialogDismissed)
+            }
+        }
+    }
+
+    @Test
     fun `mailbox items are not requested when a user account is removed`() = runTest {
         // Given
         val currentLocationFlow = MutableStateFlow<MailLabelId>(initialLocationMailLabelId)
@@ -2091,6 +2114,15 @@ class MailboxViewModelTest {
     ) {
         every {
             mailboxReducer.newStateFrom(intermediateState, MailboxEvent.DeleteConfirmed(viewMode, expectedItemCount))
+        } returns expectedState
+    }
+
+    private fun returnExpectedStateForDeleteDismissed(
+        intermediateState: MailboxState,
+        expectedState: MailboxState
+    ) {
+        every {
+            mailboxReducer.newStateFrom(intermediateState, MailboxViewAction.DeleteDialogDismissed)
         } returns expectedState
     }
 

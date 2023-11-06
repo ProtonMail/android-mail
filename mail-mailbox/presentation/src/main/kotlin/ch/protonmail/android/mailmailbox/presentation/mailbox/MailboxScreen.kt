@@ -68,7 +68,6 @@ import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
-import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
@@ -136,7 +135,8 @@ fun MailboxScreen(
         markAsUnread = { viewModel.submit(MailboxViewAction.MarkAsUnread) },
         trash = { viewModel.submit(MailboxViewAction.Trash) },
         delete = { viewModel.submit(MailboxViewAction.Delete) },
-        deleteConfirmed = { viewModel.submit(MailboxViewAction.DeleteConfirmed) }
+        deleteConfirmed = { viewModel.submit(MailboxViewAction.DeleteConfirmed) },
+        deleteDialogDismissed = { viewModel.submit(MailboxViewAction.DeleteDialogDismissed) }
     )
 
     MailboxScreen(
@@ -163,7 +163,7 @@ fun MailboxScreen(
         snackbarHostState.showSnackbar(message = it, type = ProtonSnackbarType.NORM)
     }
 
-    MailboxDeleteDialog(state = mailboxState.deleteDialogState, actions.deleteConfirmed)
+    MailboxDeleteDialog(state = mailboxState.deleteDialogState, actions.deleteConfirmed, actions.deleteDialogDismissed)
 
     Scaffold(
         modifier = modifier.testTag(MailboxScreenTestTags.Root),
@@ -523,29 +523,26 @@ private fun MailboxError(modifier: Modifier = Modifier, errorMessage: String) {
 }
 
 @Composable
-private fun MailboxDeleteDialog(state: Effect<DeleteDialogState>, confirm: () -> Unit) {
-    val deleteDialogState = remember { mutableStateOf<DeleteDialogState?>(null) }
-
-    ConsumableLaunchedEffect(effect = state) {
-        deleteDialogState.value = it
-    }
-
-    deleteDialogState.value?.let {
+private fun MailboxDeleteDialog(
+    state: DeleteDialogState,
+    confirm: () -> Unit,
+    dismiss: () -> Unit
+) {
+    if (state is DeleteDialogState.Shown) {
         ProtonAlertDialog(
-            onDismissRequest = { deleteDialogState.value = null },
+            onDismissRequest = dismiss,
             confirmButton = {
                 ProtonAlertDialogButton(R.string.mailbox_action_delete_dialog_button_delete) {
                     confirm()
-                    deleteDialogState.value = null
                 }
             },
             dismissButton = {
                 ProtonAlertDialogButton(R.string.mailbox_action_delete_dialog_button_cancel) {
-                    deleteDialogState.value = null
+                    dismiss()
                 }
             },
-            title = it.title.string(),
-            text = { ProtonAlertDialogText(it.message.string()) }
+            title = state.title.string(),
+            text = { ProtonAlertDialogText(state.message.string()) }
         )
     }
 }
@@ -573,7 +570,8 @@ object MailboxScreen {
         val markAsUnread: () -> Unit,
         val trash: () -> Unit,
         val delete: () -> Unit,
-        val deleteConfirmed: () -> Unit
+        val deleteConfirmed: () -> Unit,
+        val deleteDialogDismissed: () -> Unit
     ) {
 
         companion object {
@@ -599,7 +597,8 @@ object MailboxScreen {
                 markAsUnread = {},
                 trash = {},
                 delete = {},
-                deleteConfirmed = {}
+                deleteConfirmed = {},
+                deleteDialogDismissed = {}
             )
         }
     }

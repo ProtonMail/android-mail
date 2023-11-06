@@ -31,5 +31,5 @@ data class MailboxState(
     val bottomAppBarState: BottomBarState,
     val onboardingState: OnboardingState,
     val actionMessage: Effect<TextUiModel>,
-    val deleteDialogState: Effect<DeleteDialogState>
+    val deleteDialogState: DeleteDialogState
 )

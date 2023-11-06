@@ -22,6 +22,7 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingActionMessage
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingBottomAppBar
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingDeleteDialog
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingMailboxList
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingTopAppBar
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingUnreadFilter
@@ -34,6 +35,7 @@ internal sealed interface MailboxOperation {
     sealed interface AffectingBottomAppBar
     sealed interface AffectingOnboarding
     sealed interface AffectingActionMessage
+    sealed interface AffectingDeleteDialog
 }
 
 internal sealed interface MailboxViewAction : MailboxOperation {
@@ -59,6 +61,7 @@ internal sealed interface MailboxViewAction : MailboxOperation {
     object Trash : MailboxViewAction
     object Delete : MailboxViewAction
     object DeleteConfirmed : MailboxViewAction
+    object DeleteDialogDismissed : MailboxViewAction, AffectingDeleteDialog
 
     /*
      *`OnOfflineWithData` and `OnErrorWithData` are not actual Actions which are actively performed by the user
@@ -102,13 +105,14 @@ internal sealed interface MailboxEvent : MailboxOperation {
         AffectingBottomAppBar,
         AffectingActionMessage
 
-    data class Delete(val viewMode: ViewMode, val numAffectedMessages: Int) : MailboxEvent
+    data class Delete(val viewMode: ViewMode, val numAffectedMessages: Int) : MailboxEvent, AffectingDeleteDialog
     data class DeleteConfirmed(val viewMode: ViewMode, val numAffectedMessages: Int) :
         MailboxEvent,
         AffectingMailboxList,
         AffectingTopAppBar,
         AffectingBottomAppBar,
-        AffectingActionMessage
+        AffectingActionMessage,
+        AffectingDeleteDialog
 
     sealed interface ItemClicked : MailboxEvent {
 

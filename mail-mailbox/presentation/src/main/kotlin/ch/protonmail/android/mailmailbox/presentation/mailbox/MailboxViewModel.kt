@@ -57,6 +57,7 @@ import ch.protonmail.android.mailmailbox.domain.usecase.ObserveOnboarding
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
 import ch.protonmail.android.mailmailbox.domain.usecase.SaveOnboarding
 import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.MailboxItemUiModelMapper
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.DeleteDialogState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
@@ -183,6 +184,7 @@ class MailboxViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
+    @SuppressWarnings("ComplexMethod")
     internal fun submit(viewAction: MailboxViewAction) {
         viewModelScope.launch {
             when (viewAction) {
@@ -203,6 +205,7 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.Trash -> handleTrashAction()
                 is MailboxViewAction.Delete -> handleDeleteAction()
                 is MailboxViewAction.DeleteConfirmed -> handleDeleteConfirmedAction()
+                is MailboxViewAction.DeleteDialogDismissed -> handleDeleteDialogDismissed()
             }.exhaustive
         }
     }
@@ -429,6 +432,10 @@ class MailboxViewModel @Inject constructor(
         emitNewStateFrom(MailboxEvent.DeleteConfirmed(viewMode, selectionModeDataState.selectedMailboxItems.size))
     }
 
+    private fun handleDeleteDialogDismissed() {
+        emitNewStateFrom(MailboxViewAction.DeleteDialogDismissed)
+    }
+
     private fun observeCurrentMailLabel() = observeMailLabels()
         .map { mailLabels ->
             mailLabels.allById[selectedMailLabelId.flow.value]
@@ -520,7 +527,7 @@ class MailboxViewModel @Inject constructor(
             bottomAppBarState = BottomBarState.Data.Hidden(emptyList()),
             onboardingState = OnboardingState.Hidden,
             actionMessage = Effect.empty(),
-            deleteDialogState = Effect.empty()
+            deleteDialogState = DeleteDialogState.Hidden
         )
     }
 }

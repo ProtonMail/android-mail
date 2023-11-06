@@ -18,18 +18,24 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 
-import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.DeleteDialogState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingDeleteDialog
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import me.proton.core.mailsettings.domain.entity.ViewMode
 import javax.inject.Inject
 
 class MailboxDeleteDialogReducer @Inject constructor() {
 
-    internal fun newStateFrom(operation: MailboxEvent.Delete): Effect<DeleteDialogState> {
+    internal fun newStateFrom(operation: AffectingDeleteDialog) = when (operation) {
+        is MailboxEvent.Delete -> newStateFromDelete(operation)
+        is MailboxEvent.DeleteConfirmed -> DeleteDialogState.Hidden
+        is MailboxViewAction.DeleteDialogDismissed -> DeleteDialogState.Hidden
+    }
 
+    private fun newStateFromDelete(operation: MailboxEvent.Delete): DeleteDialogState {
         val titleRes = when (operation.viewMode) {
             ViewMode.ConversationGrouping -> R.plurals.mailbox_action_delete_conversation_dialog_title
             ViewMode.NoConversationGrouping -> R.plurals.mailbox_action_delete_message_dialog_title
@@ -40,7 +46,7 @@ class MailboxDeleteDialogReducer @Inject constructor() {
         }
         val titleText = TextUiModel.PluralisedText(value = titleRes, count = operation.numAffectedMessages)
         val messageText = TextUiModel.PluralisedText(value = messageRes, count = operation.numAffectedMessages)
-        return Effect.of(DeleteDialogState(titleText, messageText))
+        return DeleteDialogState.Shown(titleText, messageText)
     }
 
 }

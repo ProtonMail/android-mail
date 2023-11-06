@@ -20,7 +20,13 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.model
 
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 
-data class DeleteDialogState(
-    val title: TextUiModel,
-    val message: TextUiModel
-)
+sealed interface DeleteDialogState {
+
+    object Hidden : DeleteDialogState
+
+    data class Shown(
+        val title: TextUiModel,
+        val message: TextUiModel
+    ) : DeleteDialogState
+
+}

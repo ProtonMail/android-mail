@@ -24,9 +24,11 @@ import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.text
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.DeleteDialogState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingDeleteDialog
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
@@ -129,7 +131,7 @@ internal class MailboxReducerTest(
         }
 
         if (shouldReduceDeleteDialog) {
-            verify { deleteDialogReducer.newStateFrom(operation as MailboxEvent.Delete) }
+            verify { deleteDialogReducer.newStateFrom(operation as AffectingDeleteDialog) }
         } else {
             assertEquals(currentState.deleteDialogState, nextState.deleteDialogState)
         }
@@ -159,7 +161,7 @@ internal class MailboxReducerTest(
             bottomAppBarState = BottomBarState.Loading,
             onboardingState = OnboardingState.Hidden,
             actionMessage = Effect.empty(),
-            deleteDialogState = Effect.empty()
+            deleteDialogState = DeleteDialogState.Hidden
         )
 
         private val actions = listOf(
@@ -346,6 +348,15 @@ internal class MailboxReducerTest(
                 shouldReduceBottomAppBarState = true,
                 shouldReduceActionMessage = false,
                 shouldReduceDeleteDialog = false
+            ),
+            TestInput(
+                MailboxViewAction.DeleteDialogDismissed,
+                shouldReduceMailboxListState = false,
+                shouldReduceTopAppBarState = false,
+                shouldReduceUnreadFilterState = false,
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false,
+                shouldReduceDeleteDialog = true
             )
         )
 
