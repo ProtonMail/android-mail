@@ -124,36 +124,18 @@ class LabelFormViewModel @Inject constructor(
     }
 
     private suspend fun createLabel(newLabel: NewLabel) {
-        createLabel(primaryUserId(), newLabel).fold(
-            ifLeft = {
-                emitNewStateFor(LabelFormEvent.SaveError)
-            },
-            ifRight = {
-                emitNewStateFor(LabelFormEvent.LabelCreated)
-            }
-        )
+        createLabel(primaryUserId(), newLabel)
+        emitNewStateFor(LabelFormEvent.LabelCreated)
     }
 
     private suspend fun editLabel(label: Label) {
-        updateLabel(primaryUserId(), label).fold(
-            ifLeft = {
-                emitNewStateFor(LabelFormEvent.SaveError)
-            },
-            ifRight = {
-                emitNewStateFor(LabelFormEvent.LabelUpdated)
-            }
-        )
+        updateLabel(primaryUserId(), label)
+        emitNewStateFor(LabelFormEvent.LabelUpdated)
     }
 
     private suspend fun deleteLabel(labelId: LabelId) {
-        deleteLabel(primaryUserId(), labelId).fold(
-            ifLeft = {
-                emitNewStateFor(LabelFormEvent.DeleteError)
-            },
-            ifRight = {
-                emitNewStateFor(LabelFormEvent.LabelDeleted)
-            }
-        )
+        deleteLabel(primaryUserId(), labelId)
+        emitNewStateFor(LabelFormEvent.LabelDeleted)
     }
 
     private suspend fun primaryUserId() = primaryUserId.first()

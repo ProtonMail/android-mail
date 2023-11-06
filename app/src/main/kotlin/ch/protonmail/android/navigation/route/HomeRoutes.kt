@@ -60,7 +60,7 @@ internal fun NavGraphBuilder.addConversationDetail(
                 },
                 openMessageBodyLink = { url -> openMessageBodyLink(Uri.parse(url)) },
                 openAttachment = openAttachment,
-                onAddLabel = { navController.navigate(Destination.Screen.LabelList.route) },
+                onAddLabel = { navController.navigate(Destination.Screen.CreateLabel.route) },
                 showFeatureMissingSnackbar = showFeatureMissingSnackbar,
                 onReply = { navController.navigate(Destination.Screen.MessageActionComposer(DraftAction.Reply(it))) },
                 onReplyAll = {
@@ -122,7 +122,7 @@ internal fun NavGraphBuilder.addMessageDetail(
                 },
                 openMessageBodyLink = openMessageBodyLink,
                 openAttachment = openAttachment,
-                onAddLabel = { navController.navigate(Destination.Screen.LabelList.route) },
+                onAddLabel = { navController.navigate(Destination.Screen.CreateLabel.route) },
                 showFeatureMissingSnackbar = showFeatureMissingSnackbar,
                 onReply = { navController.navigate(Destination.Screen.MessageActionComposer(DraftAction.Reply(it))) },
                 onReplyAll = {

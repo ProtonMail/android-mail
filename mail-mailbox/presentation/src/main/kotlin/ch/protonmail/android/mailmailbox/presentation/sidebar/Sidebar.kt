@@ -85,12 +85,21 @@ fun Sidebar(
                 close = ::close,
                 onLabelAction = { sidebarLabelAction ->
                     when (sidebarLabelAction) {
-                        is SidebarLabelAction.Add -> {
+                        is SidebarLabelAction.List -> {
                             close()
                             if (sidebarLabelAction.type == LabelType.MessageLabel) {
                                 navigationActions.onLabelList()
                             } else if (sidebarLabelAction.type == LabelType.MessageFolder) {
                                 navigationActions.onFolderList()
+                            }
+                        }
+
+                        is SidebarLabelAction.Add -> {
+                            close()
+                            if (sidebarLabelAction.type == LabelType.MessageLabel) {
+                                navigationActions.onLabelAdd()
+                            } else if (sidebarLabelAction.type == LabelType.MessageFolder) {
+                                navigationActions.onFolderAdd()
                             }
                         }
 
@@ -167,19 +176,14 @@ private fun SidebarMoreTitleItem() {
 }
 
 @Composable
-private fun SidebarSubscriptionItem(
-    isVisible: Boolean,
-    onSubscription: () -> Unit
-) {
+private fun SidebarSubscriptionItem(isVisible: Boolean, onSubscription: () -> Unit) {
     if (isVisible) {
         ProtonSidebarSubscriptionItem { onSubscription() }
     }
 }
 
 @Composable
-private fun SidebarAppVersionItem(
-    appInformation: AppInformation
-) {
+private fun SidebarAppVersionItem(appInformation: AppInformation) {
     ProtonSidebarAppVersionItem(
         name = appInformation.appName,
         version = "${appInformation.appVersionName} (${appInformation.appVersionCode})"
@@ -222,14 +226,13 @@ object Sidebar {
         val onSettings: () -> Unit,
         val onLabelList: () -> Unit,
         val onFolderList: () -> Unit,
+        val onLabelAdd: () -> Unit,
+        val onFolderAdd: () -> Unit,
         val onSubscription: () -> Unit,
         val onReportBug: () -> Unit
     ) {
 
-        fun toSidebarActions(
-            close: () -> Unit,
-            onLabelAction: (SidebarLabelAction) -> Unit
-        ) = Actions(
+        fun toSidebarActions(close: () -> Unit, onLabelAction: (SidebarLabelAction) -> Unit) = Actions(
             onSignIn = {
                 onSignIn(it)
                 close()
@@ -274,6 +277,8 @@ object Sidebar {
                 onSettings = {},
                 onLabelList = {},
                 onFolderList = {},
+                onLabelAdd = {},
+                onFolderAdd = {},
                 onSubscription = {},
                 onReportBug = {}
             )

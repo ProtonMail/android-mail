@@ -94,6 +94,7 @@ class SidebarViewModel @Inject constructor(
 
     private fun onSidebarLabelAction(action: SidebarLabelAction) {
         when (action) {
+            is SidebarLabelAction.List -> Unit
             is SidebarLabelAction.Add -> Unit
             is SidebarLabelAction.Collapse -> onUpdateLabelExpandedState(action.labelId, false)
             is SidebarLabelAction.Expand -> onUpdateLabelExpandedState(action.labelId, true)
@@ -101,10 +102,7 @@ class SidebarViewModel @Inject constructor(
         }
     }
 
-    private fun onUpdateLabelExpandedState(
-        labelId: MailLabelId,
-        isExpanded: Boolean
-    ) = viewModelScope.launch {
+    private fun onUpdateLabelExpandedState(labelId: MailLabelId, isExpanded: Boolean) = viewModelScope.launch {
         primaryUser.value?.let {
             updateLabelExpandedState(it.userId, labelId, isExpanded)
         }

@@ -23,6 +23,13 @@ package ch.protonmail.android.maillabel.presentation.sidebar
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyListScope
@@ -31,11 +38,13 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -47,6 +56,7 @@ import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.maillabel.presentation.labelAddTitleRes
 import ch.protonmail.android.maillabel.presentation.labelTitleRes
 import ch.protonmail.android.maillabel.presentation.sidebar.SidebarLabelAction.Add
+import ch.protonmail.android.maillabel.presentation.sidebar.SidebarLabelAction.List
 import ch.protonmail.android.maillabel.presentation.sidebar.SidebarLabelAction.Select
 import ch.protonmail.android.maillabel.presentation.testTag
 import me.proton.core.compose.component.ProtonSidebarItem
@@ -59,25 +69,26 @@ import me.proton.core.label.domain.entity.LabelType.MessageFolder
 import me.proton.core.label.domain.entity.LabelType.MessageLabel
 
 fun LazyListScope.sidebarLabelItems(
-    items: List<MailLabelUiModel.Custom>,
+    items: kotlin.collections.List<MailLabelUiModel.Custom>,
     onLabelAction: (SidebarLabelAction) -> Unit
 ) = sidebarCustomLabelItems(MessageLabel, items, onLabelAction)
 
 fun LazyListScope.sidebarFolderItems(
-    items: List<MailLabelUiModel.Custom>,
+    items: kotlin.collections.List<MailLabelUiModel.Custom>,
     onLabelAction: (SidebarLabelAction) -> Unit
 ) = sidebarCustomLabelItems(MessageFolder, items, onLabelAction)
 
 private fun LazyListScope.sidebarCustomLabelItems(
     type: LabelType,
-    items: List<MailLabelUiModel.Custom>,
+    items: kotlin.collections.List<MailLabelUiModel.Custom>,
     onLabelAction: (SidebarLabelAction) -> Unit
 ) {
     item {
         SidebarCustomLabelTitleItem(
             type = type,
             showAddIcon = items.isNotEmpty(),
-            onAddClick = { onLabelAction(Add(type)) }
+            onAddClick = { onLabelAction(Add(type)) },
+            onLabelsClick = { onLabelAction(List(type)) }
         )
     }
     when {
@@ -88,6 +99,7 @@ private fun LazyListScope.sidebarCustomLabelItems(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun LazyItemScope.SidebarCustomLabel(
     item: MailLabelUiModel.Custom,
@@ -116,35 +128,76 @@ private fun LazyItemScope.SidebarCustomLabel(
 private fun SidebarCustomLabelTitleItem(
     type: LabelType,
     showAddIcon: Boolean,
-    onAddClick: () -> Unit
+    onAddClick: () -> Unit,
+    onLabelsClick: () -> Unit
 ) {
-    ProtonSidebarItem(
-        modifier = Modifier.background(ProtonTheme.colors.backgroundNorm),
-        isClickable = showAddIcon,
-        onClick = onAddClick
+    Row(
+        modifier = Modifier
+            .height(height = ProtonDimens.ListItemHeight)
+            .fillMaxWidth()
+            .background(ProtonTheme.colors.backgroundNorm)
     ) {
-        Text(
-            modifier = Modifier.weight(1f, fill = true),
-            text = stringResource(type.labelTitleRes()),
-            color = ProtonTheme.colors.textWeak
-        )
-        if (showAddIcon) {
-            Icon(
-                painter = painterResource(R.drawable.ic_proton_plus),
-                contentDescription = stringResource(
-                    id = if (type == MessageLabel) R.string.label_title_add_label else R.string.label_title_add_folder
+        Column(
+            modifier = Modifier
+                .align(Alignment.CenterVertically)
+                .fillMaxHeight()
+                .fillMaxWidth()
+                .weight(1f, fill = true)
+                .clickable(
+                    onClickLabel = stringResource(
+                        id = if (type == MessageLabel) R.string.label_title_label_list
+                        else R.string.label_title_folder_list
+                    ),
+                    role = Role.Button,
+                    onClick = onLabelsClick
                 ),
-                tint = ProtonTheme.colors.iconWeak
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                modifier = Modifier
+                    .padding(
+                        start = ProtonDimens.DefaultSpacing,
+                        end = ProtonDimens.DefaultSpacing
+                    ),
+                text = stringResource(type.labelTitleRes()),
+                color = ProtonTheme.colors.textWeak
             )
+        }
+        if (showAddIcon) {
+            Column(
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .fillMaxHeight()
+                    .clickable(
+                        onClickLabel = stringResource(
+                            id = if (type == MessageLabel) R.string.label_title_add_label
+                            else R.string.label_title_add_folder
+                        ),
+                        role = Role.Button,
+                        onClick = onAddClick
+                    ),
+                verticalArrangement = Arrangement.Center
+            ) {
+                Icon(
+                    modifier = Modifier
+                        .padding(
+                            start = ProtonDimens.DefaultSpacing,
+                            end = ProtonDimens.DefaultSpacing
+                        ),
+                    painter = painterResource(R.drawable.ic_proton_plus),
+                    contentDescription = stringResource(
+                        id = if (type == MessageLabel) R.string.label_title_add_label
+                        else R.string.label_title_add_folder
+                    ),
+                    tint = ProtonTheme.colors.iconWeak
+                )
+            }
         }
     }
 }
 
 @Composable
-private fun SidebarAddCustomLabelItem(
-    type: LabelType,
-    onClick: () -> Unit
-) {
+private fun SidebarAddCustomLabelItem(type: LabelType, onClick: () -> Unit) {
     ProtonSidebarItem(
         isClickable = true,
         onClick = onClick,

@@ -19,7 +19,6 @@
 package ch.protonmail.android.maillabel.presentation.labelform
 
 import ch.protonmail.android.mailcommon.presentation.Effect
-import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import me.proton.core.label.domain.entity.Label
 import me.proton.core.label.domain.entity.NewLabel
 
@@ -29,10 +28,8 @@ data class LabelFormState(
     val label: Label?,
     val newLabel: NewLabel?,
     val close: Effect<Unit>,
-    val closeWithSaveSuccess: Effect<Unit>,
-    val saveError: Effect<TextUiModel>,
-    val closeWithDeleteSuccess: Effect<Unit>,
-    val deleteError: Effect<TextUiModel>
+    val closeWithSave: Effect<Unit>,
+    val closeWithDelete: Effect<Unit>,
 ) {
 
     companion object {
@@ -43,10 +40,8 @@ data class LabelFormState(
             label = null,
             newLabel = null,
             close = Effect.empty(),
-            closeWithSaveSuccess = Effect.empty(),
-            saveError = Effect.empty(),
-            closeWithDeleteSuccess = Effect.empty(),
-            deleteError = Effect.empty()
+            closeWithSave = Effect.empty(),
+            closeWithDelete = Effect.empty()
         )
     }
 }

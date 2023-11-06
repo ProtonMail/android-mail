@@ -22,6 +22,7 @@ import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import me.proton.core.label.domain.entity.LabelType
 
 sealed interface SidebarLabelAction {
+    data class List(val type: LabelType) : SidebarLabelAction
     data class Add(val type: LabelType) : SidebarLabelAction
     data class Select(val labelId: MailLabelId) : SidebarLabelAction
     data class Collapse(val labelId: MailLabelId) : SidebarLabelAction

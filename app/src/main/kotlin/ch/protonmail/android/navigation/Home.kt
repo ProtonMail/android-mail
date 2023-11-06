@@ -278,6 +278,8 @@ private fun buildSidebarActions(navController: NavHostController, launcherAction
         onSettings = { navController.navigate(Screen.Settings.route) },
         onLabelList = { navController.navigate(Screen.LabelList.route) },
         onFolderList = { },
+        onLabelAdd = { navController.navigate(Screen.CreateLabel.route) },
+        onFolderAdd = { },
         onSubscription = launcherActions.onSubscription,
         onReportBug = launcherActions.onReportBug
     )

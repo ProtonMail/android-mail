@@ -33,7 +33,6 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -48,15 +47,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
-import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.compose.dismissKeyboard
 import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.maillabel.presentation.getColorFromHexString
 import ch.protonmail.android.maillabel.presentation.ui.ColorPicker
 import ch.protonmail.android.maillabel.presentation.ui.FormInputField
 import me.proton.core.compose.component.ProtonButton
-import me.proton.core.compose.component.ProtonSnackbarHostState
-import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.component.ProtonTextButton
 import me.proton.core.compose.component.appbar.ProtonTopAppBar
 import me.proton.core.compose.component.protonOutlinedButtonColors
@@ -78,7 +74,6 @@ fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewMo
     val context = LocalContext.current
     val view = LocalView.current
     val keyboardController = LocalSoftwareKeyboardController.current
-    val snackBarHostState = remember { ProtonSnackbarHostState() }
 
     val customActions = actions.copy(
         onLabelNameChanged = {
@@ -143,19 +138,13 @@ fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewMo
         dismissKeyboard(context, view, keyboardController)
         customActions.onBackClick()
     }
-    ConsumableLaunchedEffect(effect = state.closeWithSaveSuccess) {
+    ConsumableLaunchedEffect(effect = state.closeWithSave) {
         customActions.onBackClick()
         actions.showLabelSavedSnackbar()
     }
-    ConsumableLaunchedEffect(effect = state.closeWithDeleteSuccess) {
+    ConsumableLaunchedEffect(effect = state.closeWithDelete) {
         customActions.onBackClick()
         actions.showLabelDeletedSnackbar()
-    }
-    ConsumableTextEffect(effect = state.saveError) { message ->
-        snackBarHostState.showSnackbar(type = ProtonSnackbarType.NORM, message = message)
-    }
-    ConsumableTextEffect(effect = state.deleteError) { message ->
-        snackBarHostState.showSnackbar(type = ProtonSnackbarType.NORM, message = message)
     }
 }
 

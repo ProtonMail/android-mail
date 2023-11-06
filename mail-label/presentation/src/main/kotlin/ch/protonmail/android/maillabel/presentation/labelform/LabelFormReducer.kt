@@ -20,8 +20,6 @@ package ch.protonmail.android.maillabel.presentation.labelform
 
 import androidx.compose.ui.graphics.Color
 import ch.protonmail.android.mailcommon.presentation.Effect
-import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
 import javax.inject.Inject
 
@@ -39,25 +37,19 @@ class LabelFormReducer @Inject constructor() {
                 currentState.copy(close = Effect.of(Unit))
             }
             LabelFormAction.OnDeleteClick -> {
-                currentState.copy(closeWithDeleteSuccess = Effect.of(Unit))
+                currentState.copy(closeWithDelete = Effect.of(Unit))
             }
             LabelFormAction.OnSaveClick -> {
-                currentState.copy(closeWithSaveSuccess = Effect.of(Unit))
+                currentState.copy(closeWithSave = Effect.of(Unit))
             }
             LabelFormEvent.LabelCreated -> {
-                currentState.copy(closeWithSaveSuccess = Effect.of(Unit))
+                currentState.copy(closeWithSave = Effect.of(Unit))
             }
             LabelFormEvent.LabelDeleted -> {
-                currentState.copy(closeWithDeleteSuccess = Effect.of(Unit))
+                currentState.copy(closeWithDelete = Effect.of(Unit))
             }
             LabelFormEvent.LabelUpdated -> {
-                currentState.copy(closeWithSaveSuccess = Effect.of(Unit))
-            }
-            LabelFormEvent.DeleteError -> {
-                currentState.copy(deleteError = Effect.of(TextUiModel(R.string.delete_label_error)))
-            }
-            LabelFormEvent.SaveError -> {
-                currentState.copy(saveError = Effect.of(TextUiModel(R.string.save_label_error)))
+                currentState.copy(closeWithSave = Effect.of(Unit))
             }
         }
     }
