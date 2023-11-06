@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.uitest.e2e.mailbox.errors.append
 
-import androidx.test.filters.SdkSuppress
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.networkmocks.mockwebserver.combineWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MockPriority
@@ -46,7 +45,6 @@ import org.junit.Test
 
 @SmokeTest
 @HiltAndroidTest
-@SdkSuppress(minSdkVersion = 30)
 @UninstallModules(ServerProofModule::class)
 internal class ConversationModeAppendItemsTests : MockedNetworkTest(), MailboxAppendItemsTests {
 

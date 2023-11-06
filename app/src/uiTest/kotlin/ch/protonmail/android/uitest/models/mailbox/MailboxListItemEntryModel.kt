@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.uitest.models.mailbox
 
+import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
@@ -27,7 +28,7 @@ import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onChildAt
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performScrollToIndex
+import androidx.compose.ui.test.performScrollToNode
 import ch.protonmail.android.mailcommon.presentation.compose.AvatarTestTags
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxItemTestTags
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreenTestTags
@@ -51,11 +52,10 @@ internal class MailboxListItemEntryModel(
         useUnmergedTree = true
     )
 
-    // Consider the item as a computed property, as it might not always be there.
-    private val item: SemanticsNodeInteraction
-        get() = parent.child {
-            hasTestTag("${MailboxItemTestTags.ItemRow}$position")
-        }
+    private val itemMatcher: SemanticsMatcher
+        get() = hasTestTag("${MailboxItemTestTags.ItemRow}$position")
+
+    private val item: SemanticsNodeInteraction = parent.child { itemMatcher }
 
     private val avatarRootItem = item.child {
         hasTestTag(AvatarTestTags.AvatarRootItem)
@@ -186,9 +186,7 @@ internal class MailboxListItemEntryModel(
     private fun waitForItemToBeShown() = apply {
         parent
             .awaitDisplayed(timeout = 30.seconds)
-            .performScrollToIndex(position)
-
-        item.awaitDisplayed()
+            .performScrollToNode(itemMatcher)
     }
     // endregion
 }
