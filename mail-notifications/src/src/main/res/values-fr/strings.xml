@@ -23,4 +23,5 @@
   <string name="notification_title_text_new_message_fallback">Nouveau message</string>
   <string name="notification_actions_archive_description">Archive</string>
   <string name="notification_actions_trash_description">Corbeille</string>
+  <string name="notification_actions_reply_description">Répondre</string>
 </resources>

@@ -62,6 +62,13 @@
   <string name="mail_settings_conversation_mode">Način razgovora</string>
   <string name="mail_settings_not_set">Nije postavljeno</string>
   <string name="mail_settings_conversation_mode_hint">Grupirajte e-poštu u istom razgovoru u pristigloj pošti ili ih prikažite zasebno</string>
+  <!-- Privacy settings -->
+  <string name="mail_settings_privacy_auto_show_remote_content">Auto show remote content</string>
+  <string name="mail_settings_privacy_auto_show_embedded_images">Auto show embedded images</string>
+  <string name="mail_settings_privacy_prevent_taking_screenshots">Prevent taking screenshots</string>
+  <string name="mail_settings_privacy_request_link_confirmation">Request link confirmation</string>
+  <string name="mail_settings_privacy_error_updating">Error updating settings</string>
+  <string name="mail_settings_privacy_error_loading">Error loading settings</string>
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Swipe akcije</string>
   <string name="mail_settings_swipe_actions_subtitle">Postavite pokrete povlačenja za pristup najčešće korištenim radnjama.</string>

@@ -62,6 +62,13 @@
   <string name="mail_settings_conversation_mode">Mode conversation</string>
   <string name="mail_settings_not_set">Non défini</string>
   <string name="mail_settings_conversation_mode_hint">Regroupez les messages d\'une même conversation dans votre boite de réception ou affichez-les séparément.</string>
+  <!-- Privacy settings -->
+  <string name="mail_settings_privacy_auto_show_remote_content">Charger automatiquement le contenu distant</string>
+  <string name="mail_settings_privacy_auto_show_embedded_images">Afficher automatiquement les images intégrées</string>
+  <string name="mail_settings_privacy_prevent_taking_screenshots">Empêcher la prise de captures d\'écran</string>
+  <string name="mail_settings_privacy_request_link_confirmation">Demander une confirmation pour l\'ouverture de liens</string>
+  <string name="mail_settings_privacy_error_updating">Erreur lors de la mise à jour des paramètres</string>
+  <string name="mail_settings_privacy_error_loading">Erreur lors du chargement des paramètres</string>
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Actions de balayage</string>
   <string name="mail_settings_swipe_actions_subtitle">Configurez des gestes de balayage pour accéder aux actions les plus utilisées.</string>

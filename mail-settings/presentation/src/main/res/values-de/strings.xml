@@ -62,6 +62,13 @@
   <string name="mail_settings_conversation_mode">Unterhaltungsmodus</string>
   <string name="mail_settings_not_set">Nicht festgelegt</string>
   <string name="mail_settings_conversation_mode_hint">Gruppiere E-Mails zum gleichen Thema in deinem Posteingang oder zeige diese getrennt an</string>
+  <!-- Privacy settings -->
+  <string name="mail_settings_privacy_auto_show_remote_content">Inhalte aus externen Quellen automatisch anzeigen</string>
+  <string name="mail_settings_privacy_auto_show_embedded_images">Eingebettete Bilder automatisch anzeigen</string>
+  <string name="mail_settings_privacy_prevent_taking_screenshots">Das Erstellen von Bildschirmfotos verhindern</string>
+  <string name="mail_settings_privacy_request_link_confirmation">Link-Bestätigung anfordern</string>
+  <string name="mail_settings_privacy_error_updating">Fehler beim Aktualisieren der Einstellungen.</string>
+  <string name="mail_settings_privacy_error_loading">Fehler beim Laden der Einstellungen.</string>
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Wischgesten</string>
   <string name="mail_settings_swipe_actions_subtitle">Richte Wischgesten für den Zugriff auf die am häufigsten verwendeten Aktionen ein.</string>

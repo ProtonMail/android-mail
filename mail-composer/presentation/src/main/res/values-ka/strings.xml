@@ -46,5 +46,5 @@
   <string name="composer_attachment_size_exceeded_dialog_title">მიმაგრების ლიმიტი მიღწეულია</string>
   <string name="composer_attachment_size_exceeded_dialog_message">მიმაგრებული ფაილების მაქსიმალური ზომაა %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">მიმაგრებული ფაილის თავიდან დაშიფვრა ჩავარდა. უსაფრთხოების მიზნით, ყველა მიმაგრებული ფაილი წაიშალა.</string>
-  <string name="message_footer_text">გამოგზავნილია Proton Mail-ის მობილური ვერსიიდან</string>
+  <string name="message_footer_text">Sent from Proton Mail Android</string>
 </resources>

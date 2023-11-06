@@ -62,6 +62,13 @@
   <string name="mail_settings_conversation_mode">Modo de conversación</string>
   <string name="mail_settings_not_set">No definido</string>
   <string name="mail_settings_conversation_mode_hint">Agrupa correos electrónicos en la misma conversación juntos en su bandeja de entrada o los muestra por separado</string>
+  <!-- Privacy settings -->
+  <string name="mail_settings_privacy_auto_show_remote_content">Mostrar contenido remoto automáticamente</string>
+  <string name="mail_settings_privacy_auto_show_embedded_images">Mostrar imágenes incrustadas automáticamente</string>
+  <string name="mail_settings_privacy_prevent_taking_screenshots">Prevenir capturas de pantalla</string>
+  <string name="mail_settings_privacy_request_link_confirmation">Solicitar confirmación de enlace</string>
+  <string name="mail_settings_privacy_error_updating">Error al actualizar los ajustes</string>
+  <string name="mail_settings_privacy_error_loading">Error al cargar los ajustes</string>
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Acciones al deslizar</string>
   <string name="mail_settings_swipe_actions_subtitle">Definir gestos de deslizamiento para acceder a las acciones más usadas.</string>

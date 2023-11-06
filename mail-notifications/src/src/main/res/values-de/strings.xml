@@ -23,4 +23,5 @@
   <string name="notification_title_text_new_message_fallback">Neue Nachricht</string>
   <string name="notification_actions_archive_description">Archivieren</string>
   <string name="notification_actions_trash_description">Papierkorb</string>
+  <string name="notification_actions_reply_description">Antworten</string>
 </resources>

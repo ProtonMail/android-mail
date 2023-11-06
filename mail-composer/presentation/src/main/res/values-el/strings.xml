@@ -46,5 +46,5 @@
   <string name="composer_attachment_size_exceeded_dialog_title">Συμπλήρωση ορίου συνημμένων</string>
   <string name="composer_attachment_size_exceeded_dialog_message">Το όριο μεγέθους για τα συνημμένα είναι %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Απέτυχε η εκ νέου κρυπτογράφηση του συνημμένου. Για λόγους ασφαλείας, όλα τα συνημμένα καταργήθηκαν.</string>
-  <string name="message_footer_text">Στάλθηκε από το Proton Mail mobile</string>
+  <string name="message_footer_text">Στάλθηκε από το Proton Mail Android</string>
 </resources>

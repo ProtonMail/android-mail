@@ -46,5 +46,5 @@
   <string name="composer_attachment_size_exceeded_dialog_title">Se alcanzó el límite de archivos adjuntos.</string>
   <string name="composer_attachment_size_exceeded_dialog_message">El límite del tamaño para los archivos adjuntos es de %1$s.</string>
   <string name="composer_attachment_reencryption_failed_message">Error al volver a cifrar el archivo adjunto. Por seguridad se eliminaron todos los archivos adjuntos.</string>
-  <string name="message_footer_text">Enviado desde Proton Mail móvil</string>
+  <string name="message_footer_text">Enviado desde Proton Mail para Android</string>
 </resources>

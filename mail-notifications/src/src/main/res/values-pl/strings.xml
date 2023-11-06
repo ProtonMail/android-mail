@@ -23,4 +23,5 @@
   <string name="notification_title_text_new_message_fallback">Nowa wiadomość</string>
   <string name="notification_actions_archive_description">Archiwizuj</string>
   <string name="notification_actions_trash_description">Przenieś do Kosza</string>
+  <string name="notification_actions_reply_description">Odpowiedz</string>
 </resources>

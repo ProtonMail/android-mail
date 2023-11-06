@@ -23,4 +23,5 @@
   <string name="notification_title_text_new_message_fallback">Новае паведамленне</string>
   <string name="notification_actions_archive_description">Архіваваць</string>
   <string name="notification_actions_trash_description">Перамясціць у сметніцу</string>
+  <string name="notification_actions_reply_description">Адказаць</string>
 </resources>

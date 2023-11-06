@@ -62,6 +62,13 @@
   <string name="mail_settings_conversation_mode">Konversationsläge</string>
   <string name="mail_settings_not_set">Inte inställd</string>
   <string name="mail_settings_conversation_mode_hint">Gruppera e-postmeddelanden i samma konversation tillsammans i din inkorg eller visa dem separat</string>
+  <!-- Privacy settings -->
+  <string name="mail_settings_privacy_auto_show_remote_content">Visa fjärrinnehåll automatiskt</string>
+  <string name="mail_settings_privacy_auto_show_embedded_images">Visa inbäddade bilder automatiskt</string>
+  <string name="mail_settings_privacy_prevent_taking_screenshots">Förhindra att ta skärmdumpar</string>
+  <string name="mail_settings_privacy_request_link_confirmation">Begär länkbekräftelse</string>
+  <string name="mail_settings_privacy_error_updating">Fel vid uppdatering av inställningar</string>
+  <string name="mail_settings_privacy_error_loading">Fel vid laddning av inställningar</string>
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Svepåtgärder</string>
   <string name="mail_settings_swipe_actions_subtitle">Ställ in svepgester för att komma åt de mest använda åtgärderna.</string>

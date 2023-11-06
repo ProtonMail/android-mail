@@ -23,4 +23,5 @@
   <string name="notification_title_text_new_message_fallback">Νέο μήνυμα</string>
   <string name="notification_actions_archive_description">Αρχειοθετημένα</string>
   <string name="notification_actions_trash_description">Κάδος Απορριμμάτων</string>
+  <string name="notification_actions_reply_description">Απάντηση</string>
 </resources>

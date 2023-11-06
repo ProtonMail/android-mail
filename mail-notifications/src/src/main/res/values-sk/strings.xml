@@ -23,4 +23,5 @@
   <string name="notification_title_text_new_message_fallback">Nová správa</string>
   <string name="notification_actions_archive_description">Archivovať</string>
   <string name="notification_actions_trash_description">Presunúť do koša</string>
+  <string name="notification_actions_reply_description">Odpovedať</string>
 </resources>

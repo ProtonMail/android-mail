@@ -46,5 +46,5 @@
   <string name="composer_attachment_size_exceeded_dialog_title">Batas lampiran tercapai</string>
   <string name="composer_attachment_size_exceeded_dialog_message">Batas ukuran lampiran adalah %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Lampiran gagal dienkripsi ulang. Demi alasan keamanan, seluruh lampiran telah dihapus.</string>
-  <string name="message_footer_text">Dikirim dari Proton Mail versi mobile</string>
+  <string name="message_footer_text">Dikirim dari Proton Mail Android</string>
 </resources>

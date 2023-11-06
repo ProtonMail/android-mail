@@ -62,6 +62,13 @@
   <string name="mail_settings_conversation_mode">Režim konverzace</string>
   <string name="mail_settings_not_set">Nenastaveno</string>
   <string name="mail_settings_conversation_mode_hint">E-maily stejné konverzace v doručené poště seskupit a nebo zobrazit samostatně</string>
+  <!-- Privacy settings -->
+  <string name="mail_settings_privacy_auto_show_remote_content">Automaticky zobrazovat vzdálený obsah</string>
+  <string name="mail_settings_privacy_auto_show_embedded_images">Automaticky zobrazovat vložené obrázky</string>
+  <string name="mail_settings_privacy_prevent_taking_screenshots">Zabránit pořízení snímků obrazovky</string>
+  <string name="mail_settings_privacy_request_link_confirmation">Požadovat potvrzení při otevírání odkazů</string>
+  <string name="mail_settings_privacy_error_updating">Chyba při aktualizaci nastavení</string>
+  <string name="mail_settings_privacy_error_loading">Chyba při načítání nastavení</string>
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Akce po přejetí prstem</string>
   <string name="mail_settings_swipe_actions_subtitle">Nastavte gesta pro přístup k nejpoužívanějším akcím.</string>

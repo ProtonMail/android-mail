@@ -23,4 +23,5 @@
   <string name="notification_title_text_new_message_fallback">ახალი შეტყობინება</string>
   <string name="notification_actions_archive_description">დაარქივება</string>
   <string name="notification_actions_trash_description">ნაგვის ყუთი</string>
+  <string name="notification_actions_reply_description">პასუხი</string>
 </resources>

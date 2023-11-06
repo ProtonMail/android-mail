@@ -43,8 +43,8 @@
   <string name="composer_original_message_quote">Původní zpráva</string>
   <string name="composer_sender_quote">%s, %s &lt;%s&gt; napsal/a:</string>
   <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
-  <string name="composer_attachment_size_exceeded_dialog_title">Byl dosažen maximální počet příloh</string>
+  <string name="composer_attachment_size_exceeded_dialog_title">Byl dosažen limit velikosti příloh</string>
   <string name="composer_attachment_size_exceeded_dialog_message">Velikost příloh je omezena na %1$s</string>
-  <string name="composer_attachment_reencryption_failed_message">Opětovné zašifrování přílohy se nezdařilo. Z bezpečnostních důvodů byly všechny přílohy odstraněny.</string>
-  <string name="message_footer_text">Odesláno z mobilní verze Proton Mail</string>
+  <string name="composer_attachment_reencryption_failed_message">Opětovné zašifrování přílohy selhalo. Z bezpečnostních důvodů byly všechny přílohy odebrány.</string>
+  <string name="message_footer_text">Odesláno z Proton Mailu pro Android</string>
 </resources>

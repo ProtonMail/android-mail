@@ -46,5 +46,5 @@
   <string name="composer_attachment_size_exceeded_dialog_title">Bol dosiahnutý limit príloh</string>
   <string name="composer_attachment_size_exceeded_dialog_message">Limit veľkosti príloh je %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Opätovné zašifrovanie prílohy zlyhalo. Z bezpečnostných dôvodov boli všetky prílohy odstránené.</string>
-  <string name="message_footer_text">Odoslané z mobilnej verzie Proton Mail</string>
+  <string name="message_footer_text">Odoslané z Proton Mail pre Android</string>
 </resources>

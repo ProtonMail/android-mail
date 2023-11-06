@@ -46,7 +46,7 @@
   <string name="error_loading_message">Qualcosa è andato storto. Per favore riprova.</string>
   <string name="error_offline_loading_message">Sei offline. Una connessione a Internet è necessaria per mostrare i contenuti di questo messaggio.</string>
   <string name="error_get_attachment_failed">Impossibile ottenere l\'allegato.</string>
-  <string name="error_attachment_download_in_progress">Il download corrente deve essere completato prima di avviarne uno nuovo.</string>
+  <string name="error_attachment_download_in_progress">Il download attuale deve giungere a termine prima di avviarne uno nuovo.</string>
   <string name="error_get_attachment_not_enough_memory">Impossibile scaricare l\'allegato a causa della memoria insufficiente</string>
   <string name="reload">Ricarica</string>
   <!-- Bottom Sheet -->
@@ -61,7 +61,7 @@
   <string name="detail_error_retrieving_message_body">Impossibile recuperare il messaggio</string>
   <string name="message_body_error_no_webview">Per visualizzare il contenuto di questo messaggio è necessario che sia installata una WebView.</string>
   <!-- Banners -->
-  <string name="message_body_embedded_images_banner_text">Il caricamento automatico delle immagini incorporate è disattivato. Questo può essere modificato nelle impostazioni.</string>
-  <string name="message_body_remote_content_banner_text">Il caricamento automatico dei contenuti remoti è disattivato. Puoi modificare questa scelta nelle impostazioni.</string>
-  <string name="message_body_embedded_and_remote_content_banner_text">Il caricamento automatico delle immagini incorporate e dei contenuti remoti è disattivato. Puoi modificare queste scelte nelle impostazioni.</string>
+  <string name="message_body_embedded_images_banner_text">Il caricamento automatico delle immagini incorporate è disattivato. Questo può essere cambiato nelle impostazioni.</string>
+  <string name="message_body_remote_content_banner_text">Il caricamento automatico dei contenuti remoti è disattivato. Questo può essere cambiato nelle impostazioni.</string>
+  <string name="message_body_embedded_and_remote_content_banner_text">Il caricamento automatico delle immagini incorporate e dei contenuti remoti è disattivato. Questo può essere cambiato nelle impostazioni.</string>
 </resources>

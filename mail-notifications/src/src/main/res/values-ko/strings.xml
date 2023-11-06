@@ -23,4 +23,5 @@
   <string name="notification_title_text_new_message_fallback">새 메시지</string>
   <string name="notification_actions_archive_description">보관함</string>
   <string name="notification_actions_trash_description">휴지통</string>
+  <string name="notification_actions_reply_description">회신</string>
 </resources>

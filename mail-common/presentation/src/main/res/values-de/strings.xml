@@ -57,7 +57,7 @@
   <string name="attachment_download_notification_channel_name">Anhänge</string>
   <string name="attachment_download_notification_channel_description">Benachrichtigungen für Anhang-Downloads</string>
   <string name="email_notification_channel_name">E-Mails</string>
-  <string name="login_notification_channel_name">Anmeldungswarnungen</string>
+  <string name="login_notification_channel_name">Login-Warnungen</string>
   <string name="email_notification_channel_description">Benachrichtigungen über eingehende Nachrichten</string>
   <string name="login_notification_channel_description">Benachrichtigungen zu neuen Anmeldungen</string>
   <string name="auth_badge_official">Offiziell</string>

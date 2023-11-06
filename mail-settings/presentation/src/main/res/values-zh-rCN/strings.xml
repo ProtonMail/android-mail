@@ -62,6 +62,13 @@
   <string name="mail_settings_conversation_mode">会话模式</string>
   <string name="mail_settings_not_set">未设置</string>
   <string name="mail_settings_conversation_mode_hint">将收件箱中同一主题关联的往来邮件合并或单独显示</string>
+  <!-- Privacy settings -->
+  <string name="mail_settings_privacy_auto_show_remote_content">Auto show remote content</string>
+  <string name="mail_settings_privacy_auto_show_embedded_images">Auto show embedded images</string>
+  <string name="mail_settings_privacy_prevent_taking_screenshots">Prevent taking screenshots</string>
+  <string name="mail_settings_privacy_request_link_confirmation">Request link confirmation</string>
+  <string name="mail_settings_privacy_error_updating">Error updating settings</string>
+  <string name="mail_settings_privacy_error_loading">Error loading settings</string>
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">滑动操作</string>
   <string name="mail_settings_swipe_actions_subtitle">设置滑动手势来执行常用操作。</string>

@@ -44,7 +44,7 @@
   <string name="action_view_in_dark_mode_content_description">Visualizza il messaggio in modalità Scura</string>
   <string name="action_print_content_description">Stampa</string>
   <string name="action_view_headers_content_description">Visualizza intestazioni</string>
-  <string name="action_view_html_content_description">Mostra HTML</string>
+  <string name="action_view_html_content_description">Visualizza HTML</string>
   <string name="action_report_phishing_content_description">Segnala phishing</string>
   <string name="action_remind_content_description">Ricordami</string>
   <string name="action_save_pdf_content_description">Salva come PDF</string>

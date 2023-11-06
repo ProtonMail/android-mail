@@ -59,6 +59,6 @@
   <string name="email_notification_channel_name">E-mails</string>
   <string name="login_notification_channel_name">Login Waarschuwingen</string>
   <string name="email_notification_channel_description">Binnenkomende e-mailnotificaties</string>
-  <string name="login_notification_channel_description">New logins notifications</string>
+  <string name="login_notification_channel_description">Nieuwe inlogmeldingen</string>
   <string name="auth_badge_official">Officieel</string>
 </resources>

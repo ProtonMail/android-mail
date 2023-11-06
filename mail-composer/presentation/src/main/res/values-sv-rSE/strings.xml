@@ -41,10 +41,10 @@
   <string name="composer_add_attachments_bottom_sheet_import_from">Importera från…</string>
   <string name="composer_error_loading_parent_message">Kunde inte ladda meddelandets information</string>
   <string name="composer_original_message_quote">Ursprungligt meddelande</string>
-  <string name="composer_sender_quote">On %s, %s &lt;%s&gt; wrote:</string>
+  <string name="composer_sender_quote">Den %s, %s &lt;%s&gt; skrev:</string>
   <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
   <string name="composer_attachment_size_exceeded_dialog_title">Gräns för bilagor har uppnåtts</string>
   <string name="composer_attachment_size_exceeded_dialog_message">Storleksgränsen för bilagor är %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Omkryptering av bilaga misslyckades. Av säkerhetsskäl har alla bilagor tagits bort.</string>
-  <string name="message_footer_text">Skickat från Proton Mail-mobil</string>
+  <string name="message_footer_text">Skickat från Proton Mail Android</string>
 </resources>

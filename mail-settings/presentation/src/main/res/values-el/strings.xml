@@ -62,6 +62,13 @@
   <string name="mail_settings_conversation_mode">Λειτουργία συνομιλίας</string>
   <string name="mail_settings_not_set">Μη ορισμένο</string>
   <string name="mail_settings_conversation_mode_hint">Ομαδοποιήστε τα μηνύματα της ίδιας συνομιλίας στα εισερχόμενά σας ή εμφανίστε τα ξεχωριστά</string>
+  <!-- Privacy settings -->
+  <string name="mail_settings_privacy_auto_show_remote_content">Αυτόματη εμφάνιση απομακρυσμένου περιεχομένου</string>
+  <string name="mail_settings_privacy_auto_show_embedded_images">Αυτόματη εμφάνιση ενσωματωμένων εικόνων</string>
+  <string name="mail_settings_privacy_prevent_taking_screenshots">Αποφύγετε τη λήψη στιγμιότυπων οθόνης</string>
+  <string name="mail_settings_privacy_request_link_confirmation">Ζητήστε σύνδεσμο επιβεβαίωσης</string>
+  <string name="mail_settings_privacy_error_updating">Σφάλμα κατά την ενημέρωση ρυθμίσεων</string>
+  <string name="mail_settings_privacy_error_loading">Σφάλμα κατά τη φόρτωση ρυθμίσεων</string>
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Ενέργειες ολίσθησης</string>
   <string name="mail_settings_swipe_actions_subtitle">Ρύθμιση χειρονομιών συρσίματος για πρόσβαση στις πιο χρησιμοποιούμενες ενέργειες.</string>

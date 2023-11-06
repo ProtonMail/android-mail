@@ -29,7 +29,7 @@
   <string name="attachment_type_description">%1$s ficheiro</string>
   <!-- Attachment Types -->
   <string name="attachment_type_archive">Arquivo</string>
-  <string name="attachment_type_image">Image</string>
+  <string name="attachment_type_image">Imagem</string>
   <string name="attachment_type_video">Vídeo</string>
   <string name="attachment_type_audio">Áudio</string>
   <string name="attachment_type_unknown">Desconhecido</string>

@@ -62,6 +62,13 @@
   <string name="mail_settings_conversation_mode">Mode percakapan</string>
   <string name="mail_settings_not_set">Belum ditentukan</string>
   <string name="mail_settings_conversation_mode_hint">Tentukan apakah surel yang terhubung dalam suatu rantai percakapan akan saling dikelompokkan atau ditampilkan secara terpisah</string>
+  <!-- Privacy settings -->
+  <string name="mail_settings_privacy_auto_show_remote_content">Tampilkan remote content secara otomatis</string>
+  <string name="mail_settings_privacy_auto_show_embedded_images">Tampilkan gambar tersemat secara otomatis</string>
+  <string name="mail_settings_privacy_prevent_taking_screenshots">Cegah pengambilan tangkapan layar</string>
+  <string name="mail_settings_privacy_request_link_confirmation">Minta tautan konfirmasi</string>
+  <string name="mail_settings_privacy_error_updating">Terdapat kesalahan dalam memperbarui pengaturan</string>
+  <string name="mail_settings_privacy_error_loading">Terdapat kesalahan dalam memuat pengaturan</string>
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Tindakan usap</string>
   <string name="mail_settings_swipe_actions_subtitle">Atur gestur usap untuk mengakses tindakan yang paling sering digunakan.</string>

@@ -23,4 +23,5 @@
   <string name="notification_title_text_new_message_fallback">Nytt meddelande</string>
   <string name="notification_actions_archive_description">Arkivera</string>
   <string name="notification_actions_trash_description">Lägg i papperskorg</string>
+  <string name="notification_actions_reply_description">Svara</string>
 </resources>

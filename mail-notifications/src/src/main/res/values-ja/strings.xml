@@ -21,6 +21,7 @@
   <string name="notification_summary_text_new_login_alerts">新規ログインアラート</string>
   <string name="notification_title_text_new_login_alerts_fallback">Proton Mail</string>
   <string name="notification_title_text_new_message_fallback">新規メッセージ</string>
-  <string name="notification_actions_archive_description">Archive</string>
-  <string name="notification_actions_trash_description">Trash</string>
+  <string name="notification_actions_archive_description">アーカイブ</string>
+  <string name="notification_actions_trash_description">ごみ箱</string>
+  <string name="notification_actions_reply_description">返信</string>
 </resources>

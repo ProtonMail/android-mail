@@ -23,4 +23,5 @@
   <string name="notification_title_text_new_message_fallback">Nova mensagem</string>
   <string name="notification_actions_archive_description">Arquivo</string>
   <string name="notification_actions_trash_description">Lixeira</string>
+  <string name="notification_actions_reply_description">Responder</string>
 </resources>
