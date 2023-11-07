@@ -1008,7 +1008,7 @@ class MessageRepositoryImplTest {
         // Given
         val messageIds = listOf(MessageId("1"), MessageId("2"))
         val expectedLabel = SystemLabelId.Trash.labelId
-        coJustRun { localDataSource.deleteMessages(userId, messageIds) }
+        coEvery { localDataSource.deleteMessagesWithId(userId, messageIds) } returns Unit.right()
         coJustRun { remoteDataSource.deleteMessages(userId, messageIds, expectedLabel) }
 
         // When
@@ -1016,7 +1016,24 @@ class MessageRepositoryImplTest {
 
         // Then
         assertEquals(Unit.right(), actual)
-        coVerify { localDataSource.deleteMessages(userId, messageIds) }
+        coVerify { localDataSource.deleteMessagesWithId(userId, messageIds) }
         coVerify { remoteDataSource.deleteMessages(userId, messageIds, expectedLabel) }
+    }
+
+    @Test
+    fun `verify delete messages returns local error when deleting fails locally`() = runTest {
+        // Given
+        val messageIds = listOf(MessageId("1"), MessageId("2"))
+        val expectedLabel = SystemLabelId.Trash.labelId
+        val expected = DataError.Local.DeletingFailed.left()
+        coEvery { localDataSource.deleteMessagesWithId(userId, messageIds) } returns expected
+
+        // When
+        val actual = messageRepository.deleteMessages(userId, messageIds, expectedLabel)
+
+        // Then
+        assertEquals(expected, actual)
+        coVerify { localDataSource.deleteMessagesWithId(userId, messageIds) }
+        coVerify { remoteDataSource wasNot Called }
     }
 }

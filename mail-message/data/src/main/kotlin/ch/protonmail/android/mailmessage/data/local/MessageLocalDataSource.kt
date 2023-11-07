@@ -44,6 +44,11 @@ interface MessageLocalDataSource {
     suspend fun deleteMessages(userId: UserId, ids: List<MessageId>)
 
     /**
+     * Delete messages for [userId], by [messageIds]. Returns [DataError.Local] if the operation fails.
+     */
+    suspend fun deleteMessagesWithId(userId: UserId, messageIds: List<MessageId>): Either<DataError.Local, Unit>
+
+    /**
      * Delete Message(s) for [userId], by [ids], only messages with the given [contextLabelId] will be deleted.
      */
     suspend fun deleteMessagesInConversations(

@@ -255,15 +255,9 @@ class MessageRepositoryImpl @Inject constructor(
         messageIds: List<MessageId>,
         currentLabelId: LabelId
     ): Either<DataError, Unit> {
-        runCatching { localDataSource.deleteMessages(userId, messageIds) }.getOrElse {
-            Timber.e(it, "Failed to delete messages")
-            return DataError.Local.Unknown.left()
+        return localDataSource.deleteMessagesWithId(userId, messageIds).onRight {
+            remoteDataSource.deleteMessages(userId, messageIds, currentLabelId)
         }
-        runCatching { remoteDataSource.deleteMessages(userId, messageIds, currentLabelId) }.getOrElse {
-            Timber.e(it, "Failed to delete messages")
-            return DataError.Remote.Unknown.left()
-        }
-        return Unit.right()
     }
 
     private suspend fun moveToTrashOrSpam(

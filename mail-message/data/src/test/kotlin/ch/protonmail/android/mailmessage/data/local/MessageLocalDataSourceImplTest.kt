@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailmessage.data.local
 
 import java.util.UUID
+import android.database.sqlite.SQLiteConstraintException
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
@@ -59,6 +60,7 @@ import ch.protonmail.android.testdata.message.MessageBodyTestData
 import ch.protonmail.android.testdata.message.MessageEntityTestData
 import ch.protonmail.android.testdata.message.MessageTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
+import io.mockk.Called
 import io.mockk.called
 import io.mockk.coEvery
 import io.mockk.coInvoke
@@ -225,6 +227,50 @@ class MessageLocalDataSourceImplTest {
         coVerify { messageBodyFileStorage.deleteMessageBody(userId1, MessageIdSample.Invoice) }
         coVerify { messageBodyFileStorage.deleteMessageBody(userId1, MessageIdSample.EmptyDraft) }
         coVerify { messageBodyFileStorage.deleteMessageBody(userId1, MessageIdSample.OctWeatherForecast) }
+    }
+
+    @Test
+    fun `returns Unit when delete messages from the db and corresponding message body files is successful`() = runTest {
+        // Given
+        val deletedIds = listOf(
+            MessageIdSample.Invoice,
+            MessageIdSample.EmptyDraft,
+            MessageIdSample.OctWeatherForecast
+        )
+        val deletedRawIds = deletedIds.map { it.id }
+        coEvery { messageBodyFileStorage.deleteMessageBody(userId1, MessageIdSample.Invoice) } returns true
+        coEvery { messageBodyFileStorage.deleteMessageBody(userId1, MessageIdSample.EmptyDraft) } returns true
+        coEvery { messageBodyFileStorage.deleteMessageBody(userId1, MessageIdSample.OctWeatherForecast) } returns true
+
+        // When
+        val result = messageLocalDataSource.deleteMessagesWithId(userId1, deletedIds)
+
+        // Then
+        coVerify { messageDao.delete(userId1, deletedRawIds) }
+        coVerify { messageBodyFileStorage.deleteMessageBody(userId1, MessageIdSample.Invoice) }
+        coVerify { messageBodyFileStorage.deleteMessageBody(userId1, MessageIdSample.EmptyDraft) }
+        coVerify { messageBodyFileStorage.deleteMessageBody(userId1, MessageIdSample.OctWeatherForecast) }
+        assertEquals(Unit.right(), result)
+    }
+
+    @Test
+    fun `returns data error deleting failed when delete messages from the db failed`() = runTest {
+        // Given
+        val deletedIds = listOf(
+            MessageIdSample.Invoice,
+            MessageIdSample.EmptyDraft,
+            MessageIdSample.OctWeatherForecast
+        )
+        val deletedRawIds = deletedIds.map { it.id }
+        coEvery { messageDao.delete(userId1, deletedRawIds) } throws SQLiteConstraintException()
+
+        // When
+        val result = messageLocalDataSource.deleteMessagesWithId(userId1, deletedIds)
+
+        // Then
+        coVerify { messageDao.delete(userId1, deletedRawIds) }
+        coVerify { messageBodyFileStorage wasNot Called }
+        assertEquals(DataError.Local.DeletingFailed.left(), result)
     }
 
     @Test
