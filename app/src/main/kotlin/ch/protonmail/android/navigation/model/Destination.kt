@@ -63,6 +63,7 @@ sealed class Destination(val route: String) {
         object AlternativeRoutingSettings : Destination("settings/alternativeRouting")
         object CombinedContactsSettings : Destination("settings/combinedContacts")
         object ConversationModeSettings : Destination("settings/account/conversationMode")
+        object DefaultEmailSettings : Destination("settings/account/defaultEmail")
         object PrivacySettings : Destination("settings/account/privacy")
         object LanguageSettings : Destination("settings/appLanguage")
         object SwipeActionsSettings : Destination("settings/swipeActions")

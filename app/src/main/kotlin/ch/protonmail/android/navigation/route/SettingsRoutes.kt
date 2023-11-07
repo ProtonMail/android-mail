@@ -25,6 +25,7 @@ import androidx.navigation.compose.composable
 import ch.protonmail.android.mailsettings.domain.model.SwipeActionDirection
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingScreen
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingScreen
+import ch.protonmail.android.mailsettings.presentation.accountsettings.defaultaddress.ui.EditDefaultAddressScreen
 import ch.protonmail.android.mailsettings.presentation.settings.alternativerouting.AlternativeRoutingSettingScreen
 import ch.protonmail.android.mailsettings.presentation.settings.combinedcontacts.CombinedContactsSettingScreen
 import ch.protonmail.android.mailsettings.presentation.settings.language.LanguageSettingsScreen
@@ -49,7 +50,7 @@ fun NavGraphBuilder.addAccountSettings(
                 onPasswordManagementClick = launcherActions.onPasswordManagement,
                 onRecoveryEmailClick = launcherActions.onRecoveryEmail,
                 onConversationModeClick = { navController.navigate(Screen.ConversationModeSettings.route) },
-                onDefaultEmailAddressClick = { showFeatureMissingSnackbar() },
+                onDefaultEmailAddressClick = { navController.navigate(Screen.DefaultEmailSettings.route) },
                 onDisplayNameClick = { showFeatureMissingSnackbar() },
                 onPrivacyClick = { navController.navigate(Screen.PrivacySettings.route) },
                 onLabelsClick = { navController.navigate(Screen.LabelList.route) },
@@ -82,6 +83,15 @@ internal fun NavGraphBuilder.addCombinedContactsSetting(navController: NavHostCo
 internal fun NavGraphBuilder.addConversationModeSettings(navController: NavHostController) {
     composable(route = Screen.ConversationModeSettings.route) {
         ConversationModeSettingScreen(
+            modifier = Modifier,
+            onBackClick = { navController.popBackStack() }
+        )
+    }
+}
+
+internal fun NavGraphBuilder.addDefaultEmailSettings(navController: NavHostController) {
+    composable(route = Screen.DefaultEmailSettings.route) {
+        EditDefaultAddressScreen(
             modifier = Modifier,
             onBackClick = { navController.popBackStack() }
         )
