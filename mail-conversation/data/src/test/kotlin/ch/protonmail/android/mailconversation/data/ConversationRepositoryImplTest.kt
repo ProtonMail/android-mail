@@ -47,7 +47,6 @@ import ch.protonmail.android.testdata.message.MessageTestData
 import io.mockk.Called
 import io.mockk.Ordering
 import io.mockk.coEvery
-import io.mockk.coJustRun
 import io.mockk.coVerify
 import io.mockk.coVerifyOrder
 import io.mockk.mockk
@@ -903,7 +902,10 @@ class ConversationRepositoryImplTest {
         // Given
         val conversationIds = listOf(ConversationId("conversationId"))
         val expectedLabel = SystemLabelId.Inbox.labelId
-        coJustRun { conversationLocalDataSource.deleteConversation(userId, conversationIds) }
+        coEvery { conversationLocalDataSource.deleteConversations(userId, conversationIds) } returns Unit.right()
+        coEvery {
+            messageLocalDataSource.deleteMessagesInConversations(userId, conversationIds, contextLabelId)
+        } returns Unit.right()
 
         // When
         val actual = conversationRepository.deleteConversations(userId, conversationIds, expectedLabel)
@@ -911,9 +913,31 @@ class ConversationRepositoryImplTest {
         // Then
         assertEquals(Unit.right(), actual)
         coVerifyOrder {
-            conversationLocalDataSource.deleteConversation(userId, conversationIds)
+            conversationLocalDataSource.deleteConversations(userId, conversationIds)
             messageLocalDataSource.deleteMessagesInConversations(userId, conversationIds, expectedLabel)
             conversationRemoteDataSource.deleteConversations(userId, conversationIds, expectedLabel)
+        }
+    }
+
+    @Test
+    fun `should return data error local if deletion of conversations failed`() = runTest {
+        // Given
+        val conversationIds = listOf(ConversationId("conversationId"))
+        val expectedLabel = SystemLabelId.Inbox.labelId
+        val expected = DataError.Local.Unknown.left()
+        coEvery {
+            conversationLocalDataSource.deleteConversations(userId, conversationIds)
+        } returns expected
+
+        // When
+        val actual = conversationRepository.deleteConversations(userId, conversationIds, expectedLabel)
+
+        // Then
+        assertEquals(expected, actual)
+        coVerifyOrder {
+            conversationLocalDataSource.deleteConversations(userId, conversationIds)
+            messageLocalDataSource wasNot Called
+            conversationRemoteDataSource wasNot Called
         }
     }
 

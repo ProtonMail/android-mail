@@ -91,10 +91,16 @@ class MessageLocalDataSourceImpl @Inject constructor(
         userId: UserId,
         conversationIds: List<ConversationId>,
         contextLabelId: LabelId
-    ) {
-        messageDao.getMessageWithLabelsInConversations(userId, conversationIds)
-            .filter { it.labelIds.contains(contextLabelId) }
-            .let { messageWithLabelIds -> deleteMessages(userId, messageWithLabelIds.map { it.message.messageId }) }
+    ): Either<DataError.Local, Unit> {
+        runCatching {
+            messageDao.getMessageWithLabelsInConversations(userId, conversationIds)
+                .filter { it.labelIds.contains(contextLabelId) }
+                .let { messageWithLabelIds -> deleteMessages(userId, messageWithLabelIds.map { it.message.messageId }) }
+        }.getOrElse {
+            Timber.e(it, "Failed to delete messages")
+            return DataError.Local.DeletingFailed.left()
+        }
+        return Unit.right()
     }
 
     override suspend fun getClippedPageKey(userId: UserId, pageKey: PageKey): PageKey? =

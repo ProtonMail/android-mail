@@ -39,6 +39,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.mapLatest
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
+import timber.log.Timber
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
@@ -82,6 +83,16 @@ class ConversationLocalDataSourceImpl @Inject constructor(
         userId: UserId,
         ids: List<ConversationId>
     ) = conversationDao.delete(userId, ids.map { it.id })
+
+    override suspend fun deleteConversations(userId: UserId, ids: List<ConversationId>): Either<DataError, Unit> {
+        runCatching {
+            conversationDao.delete(userId, ids.map { it.id })
+        }.getOrElse {
+            Timber.e(it, "Failed to delete conversations")
+            return DataError.Local.DeletingFailed.left()
+        }
+        return Unit.right()
+    }
 
     override suspend fun deleteAllConversations(
         userId: UserId

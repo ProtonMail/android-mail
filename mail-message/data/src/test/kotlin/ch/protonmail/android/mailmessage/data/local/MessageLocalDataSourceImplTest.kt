@@ -293,11 +293,42 @@ class MessageLocalDataSourceImplTest {
         coEvery { messageBodyFileStorage.deleteMessageBody(userId1, MessageIdSample.Invoice) } returns true
 
         // When
-        messageLocalDataSource.deleteMessagesInConversations(userId1, deletedConversationIds, LabelIdSample.Document)
+        val result = messageLocalDataSource
+            .deleteMessagesInConversations(userId1, deletedConversationIds, LabelIdSample.Document)
 
         // Then
         coVerify { messageDao.delete(userId1, expectedRawIds) }
         coVerifySequence { messageBodyFileStorage.deleteMessageBody(userId1, MessageIdSample.Invoice) }
+        assertEquals(Unit.right(), result)
+    }
+
+    @Test
+    fun `should return data error when delete only messages with given label fails`() = runTest {
+        // Given
+        val deletedConversationIds = listOf(
+            ConversationIdSample.Invoices,
+            ConversationIdSample.AlphaAppFeedback,
+            ConversationIdSample.WeatherForecast
+        )
+        val expectedRawIds = listOf(MessageIdSample.Invoice.id)
+        val expectedMessages = listOf(
+            MessageWithLabelIdsSample.Invoice,
+            MessageWithLabelIdsSample.AugWeatherForecast,
+            MessageWithLabelIdsSample.SepWeatherForecast
+        )
+        coEvery {
+            messageDao.getMessageWithLabelsInConversations(userId1, deletedConversationIds)
+        } returns expectedMessages
+        coEvery { messageDao.delete(userId1, expectedRawIds) } throws SQLiteConstraintException()
+
+        // When
+        val result = messageLocalDataSource
+            .deleteMessagesInConversations(userId1, deletedConversationIds, LabelIdSample.Document)
+
+        // Then
+        coVerify { messageDao.delete(userId1, expectedRawIds) }
+        coVerify { messageBodyFileStorage wasNot Called }
+        assertEquals(DataError.Local.DeletingFailed.left(), result)
     }
 
     @Test

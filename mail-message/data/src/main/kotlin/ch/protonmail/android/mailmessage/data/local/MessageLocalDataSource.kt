@@ -55,7 +55,7 @@ interface MessageLocalDataSource {
         userId: UserId,
         conversationIds: List<ConversationId>,
         contextLabelId: LabelId
-    )
+    ): Either<DataError.Local, Unit>
 
     /**
      * Return clipped [PageKey] according already persisted intervals.

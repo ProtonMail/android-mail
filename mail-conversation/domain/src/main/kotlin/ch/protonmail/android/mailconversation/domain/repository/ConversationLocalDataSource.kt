@@ -61,6 +61,11 @@ interface ConversationLocalDataSource {
     suspend fun deleteConversation(userId: UserId, ids: List<ConversationId>)
 
     /**
+     * Delete Conversation(s) for [userId], by [ids].
+     */
+    suspend fun deleteConversations(userId: UserId, ids: List<ConversationId>): Either<DataError, Unit>
+
+    /**
      * Delete all conversations for [userId].
      */
     suspend fun deleteAllConversations(userId: UserId)

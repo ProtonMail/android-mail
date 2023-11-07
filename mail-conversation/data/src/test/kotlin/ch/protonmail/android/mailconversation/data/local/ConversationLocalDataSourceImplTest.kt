@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailconversation.data.local
 
 import java.util.UUID
+import android.database.sqlite.SQLiteConstraintException
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
@@ -50,6 +51,7 @@ import ch.protonmail.android.testdata.user.UserIdTestData.userId1
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coInvoke
+import io.mockk.coJustRun
 import io.mockk.coVerify
 import io.mockk.coVerifySequence
 import io.mockk.every
@@ -158,6 +160,42 @@ class ConversationLocalDataSourceImplTest {
         coVerify(exactly = 1) { db.inTransaction(any()) }
         coVerify(exactly = 1) { conversationDao.deleteAll(userId) }
         coVerify(exactly = 1) { pageIntervalDao.deleteAll(userId, PageItemType.Conversation) }
+    }
+
+    @Test
+    fun `returns Unit when delete conversations from db is successful`() = runTest {
+        val deletedIds = listOf(
+            ConversationIdSample.Invoices,
+            ConversationIdSample.WeatherForecast,
+            ConversationIdSample.AlphaAppFeedback
+        )
+        val deletedRawIds = deletedIds.map { it.id }
+        coJustRun { conversationDao.delete(userId, deletedRawIds) }
+
+        // When
+        val result = conversationLocalDataSource.deleteConversations(userId, deletedIds)
+
+        // Then
+        coVerify { conversationDao.delete(userId, deletedRawIds) }
+        assertEquals(Unit.right(), result)
+    }
+
+    @Test
+    fun `returns data err deleting failed when delete conversations from db failed`() = runTest {
+        val deletedIds = listOf(
+            ConversationIdSample.Invoices,
+            ConversationIdSample.WeatherForecast,
+            ConversationIdSample.AlphaAppFeedback
+        )
+        val deletedRawIds = deletedIds.map { it.id }
+        coEvery { conversationDao.delete(userId, deletedRawIds) } throws SQLiteConstraintException()
+
+        // When
+        val result = conversationLocalDataSource.deleteConversations(userId, deletedIds)
+
+        // Then
+        coVerify { conversationDao.delete(userId, deletedRawIds) }
+        assertEquals(DataError.Local.DeletingFailed.left(), result)
     }
 
     @Test
