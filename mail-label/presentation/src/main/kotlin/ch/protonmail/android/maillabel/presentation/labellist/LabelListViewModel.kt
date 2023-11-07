@@ -25,13 +25,15 @@ import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.maillabel.domain.usecase.ObserveLabels
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
-import me.proton.core.compose.viewmodel.stopTimeoutMillis
+import kotlinx.coroutines.flow.onEach
+import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -43,31 +45,29 @@ class LabelListViewModel @Inject constructor(
 
     private val primaryUserId = observePrimaryUserId()
 
-    val initialState = LabelListState.Loading
+    val initialState: LabelListState = LabelListState.Loading
+    private val mutableState = MutableStateFlow(initialState)
+    val state: StateFlow<LabelListState> = mutableState.asStateFlow()
 
-    val state: StateFlow<LabelListState> =
-        observeMailLabels()
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(stopTimeoutMillis),
-                initialValue = initialState
-            )
+    init {
+        primaryUserId
+            .filterNotNull()
+            .flatMapLatest { userId ->
+                flowLabelListState(userId)
+            }
+            .onEach { labelListState -> mutableState.value = labelListState }
+            .launchIn(viewModelScope)
+    }
 
-    private fun observeMailLabels(): Flow<LabelListState> {
-        return primaryUserId.flatMapLatest { userId ->
-            if (userId == null) {
-                flowOf(LabelListState.EmptyLabelList)
+    private fun flowLabelListState(userId: UserId): Flow<LabelListState> {
+        return observeLabels(userId).map { labels ->
+            val customMailLabels = labels.onLeft {
+                Timber.e("Error while observing custom labels")
+            }.getOrElse { emptyList() }
+            if (customMailLabels.isEmpty()) {
+                LabelListState.EmptyLabelList
             } else {
-                observeLabels(userId).map { labels ->
-                    val customMailLabels = labels.onLeft {
-                        Timber.e("Error while observing custom labels")
-                    }.getOrElse { emptyList() }
-                    if (customMailLabels.isEmpty()) {
-                        LabelListState.EmptyLabelList
-                    } else {
-                        LabelListState.Data(customMailLabels)
-                    }
-                }
+                LabelListState.Data(customMailLabels)
             }
         }
     }

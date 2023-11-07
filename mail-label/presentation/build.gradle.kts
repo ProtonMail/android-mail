@@ -30,7 +30,7 @@ android {
     defaultConfig {
         minSdk = Config.minSdk
         targetSdk = Config.targetSdk
-        testInstrumentationRunner = Config.testInstrumentationRunner
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     compileOptions {
@@ -58,7 +58,6 @@ android {
 }
 
 dependencies {
-    implementation(project(mapOf("path" to ":test:idlingresources")))
     kapt(Dependencies.appAnnotationProcessors)
     debugImplementation(Dependencies.composeDebugLibs)
 

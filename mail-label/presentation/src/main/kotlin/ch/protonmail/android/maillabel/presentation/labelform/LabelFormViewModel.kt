@@ -28,7 +28,6 @@ import ch.protonmail.android.maillabel.domain.usecase.GetLabel
 import ch.protonmail.android.maillabel.domain.usecase.UpdateLabel
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
 import ch.protonmail.android.maillabel.presentation.getLabelColors
-import ch.protonmail.android.test.idlingresources.ComposerIdlingResource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -49,7 +48,6 @@ class LabelFormViewModel @Inject constructor(
     private val createLabel: CreateLabel,
     private val updateLabel: UpdateLabel,
     private val deleteLabel: DeleteLabel,
-    private val composerIdlingResource: ComposerIdlingResource,
     private val reducer: LabelFormReducer,
     observePrimaryUserId: ObservePrimaryUserId,
     savedStateHandle: SavedStateHandle
@@ -87,15 +85,9 @@ class LabelFormViewModel @Inject constructor(
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        composerIdlingResource.clear()
-    }
-
     internal fun submit(action: LabelFormAction) {
         viewModelScope.launch {
             actionMutex.withLock {
-                composerIdlingResource.increment()
                 when (action) {
                     is LabelFormAction.LabelColorChanged -> emitNewStateFor(action)
                     is LabelFormAction.LabelNameChanged -> emitNewStateFor(action)
@@ -103,7 +95,6 @@ class LabelFormViewModel @Inject constructor(
                     LabelFormAction.OnDeleteClick -> handleOnDeleteClick()
                     LabelFormAction.OnSaveClick -> handleOnSaveClick()
                 }
-                composerIdlingResource.decrement()
             }
         }
     }
