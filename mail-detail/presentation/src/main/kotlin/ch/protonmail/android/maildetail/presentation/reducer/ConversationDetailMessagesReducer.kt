@@ -24,8 +24,9 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEve
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
+import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
-import ch.protonmail.android.mailmessage.domain.model.MessageId
+import kotlinx.collections.immutable.toImmutableList
 import javax.inject.Inject
 
 class ConversationDetailMessagesReducer @Inject constructor() {
@@ -102,7 +103,7 @@ class ConversationDetailMessagesReducer @Inject constructor() {
     }
 
     private fun ConversationDetailsMessagesState.toNewExpandCollapseState(
-        messageId: MessageId,
+        messageId: MessageIdUiModel,
         conversationDetailMessageUiModel: ConversationDetailMessageUiModel
     ): ConversationDetailsMessagesState = when (this) {
         is ConversationDetailsMessagesState.Data -> ConversationDetailsMessagesState.Data(
@@ -112,14 +113,14 @@ class ConversationDetailMessagesReducer @Inject constructor() {
                 } else {
                     it
                 }
-            }
+            }.toImmutableList()
         )
 
         else -> this
     }
 
     private fun ConversationDetailsMessagesState.toNewExpandingState(
-        messageId: MessageId,
+        messageId: MessageIdUiModel,
         conversationDetailMessageUiModel: ConversationDetailMessageUiModel.Collapsed
     ): ConversationDetailsMessagesState = when (this) {
         is ConversationDetailsMessagesState.Data -> ConversationDetailsMessagesState.Data(
@@ -132,14 +133,14 @@ class ConversationDetailMessagesReducer @Inject constructor() {
                 } else {
                     it
                 }
-            }
+            }.toImmutableList()
         )
 
         else -> this
     }
 
     private fun ConversationDetailsMessagesState.toCollapsedState(
-        messageId: MessageId
+        messageId: MessageIdUiModel
     ): ConversationDetailsMessagesState = when (this) {
         is ConversationDetailsMessagesState.Data -> ConversationDetailsMessagesState.Data(
             messages = messages.map {
@@ -148,7 +149,7 @@ class ConversationDetailMessagesReducer @Inject constructor() {
                 } else {
                     it
                 }
-            }
+            }.toImmutableList()
         )
 
         else -> this
@@ -165,7 +166,7 @@ class ConversationDetailMessagesReducer @Inject constructor() {
                             it.copy(messageBodyUiModel = createMessageBodyState(it.messageBodyUiModel, operation))
                         } else
                             it
-                    }
+                    }.toImmutableList()
                 )
             }
 

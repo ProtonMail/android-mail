@@ -53,6 +53,7 @@ import ch.protonmail.android.maildetail.domain.usecase.StarConversation
 import ch.protonmail.android.maildetail.domain.usecase.UnStarConversation
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMessageUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMetadataUiModelMapper
+import ch.protonmail.android.maildetail.presentation.mapper.MessageIdUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
@@ -76,6 +77,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailVie
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.UnStar
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
 import ch.protonmail.android.maildetail.presentation.model.LabelAsBottomSheetState
+import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
 import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailReducer
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
@@ -97,6 +99,7 @@ import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -125,6 +128,7 @@ import javax.inject.Inject
 @Suppress("LongParameterList", "TooManyFunctions", "LargeClass")
 class ConversationDetailViewModel @Inject constructor(
     observePrimaryUserId: ObservePrimaryUserId,
+    private val messageIdUiModelMapper: MessageIdUiModelMapper,
     private val actionUiModelMapper: ActionUiModelMapper,
     private val conversationMessageMapper: ConversationDetailMessageUiModelMapper,
     private val conversationMetadataMapper: ConversationDetailMetadataUiModelMapper,
@@ -259,7 +263,7 @@ class ConversationDetailViewModel @Inject constructor(
                             contacts = contacts,
                             folderColorSettings = folderColorSettings,
                             currentViewState = conversationViewState
-                        )
+                        ).toImmutableList()
                         val requestScrollTo = requestScrollToMessageId(conversationViewState)
                         ConversationDetailEvent.MessagesData(messagesUiModels, requestScrollTo)
                     }
@@ -279,12 +283,16 @@ class ConversationDetailViewModel @Inject constructor(
     private fun allCollapsed(viewState: Map<MessageId, InMemoryConversationStateRepository.MessageState>): Boolean =
         viewState.values.all { it == InMemoryConversationStateRepository.MessageState.Collapsed }
 
-    private fun getFirstNonDraftMessageId(messages: List<MessageWithLabels>): MessageId? = messages
-        .filterNot { it.message.isDraft() }
-        .sortedByDescending { it.message.order }
-        .maxByOrNull { it.message.time }
-        ?.message
-        ?.messageId
+    private fun getFirstNonDraftMessageId(messages: List<MessageWithLabels>): MessageIdUiModel? {
+        val messageId = messages
+            .filterNot { it.message.isDraft() }
+            .sortedByDescending { it.message.order }
+            .maxByOrNull { it.message.time }
+            ?.message
+            ?.messageId
+
+        return messageId?.let { messageIdUiModelMapper.toUiModel(it) }
+    }
 
     private suspend fun buildMessagesUiModels(
         messages: NonEmptyList<MessageWithLabels>,
@@ -312,13 +320,13 @@ class ConversationDetailViewModel @Inject constructor(
 
     private fun requestScrollToMessageId(
         conversationViewState: Map<MessageId, InMemoryConversationStateRepository.MessageState>
-    ): MessageId? {
+    ): MessageIdUiModel? {
         val expandedMessageIds = conversationViewState
             .filterValues { it is InMemoryConversationStateRepository.MessageState.Expanded }
             .keys
 
         val requestScrollTo = if (conversationViewState.size == 1 && expandedMessageIds.size == 1) {
-            expandedMessageIds.first()
+            messageIdUiModelMapper.toUiModel(expandedMessageIds.first())
         } else {
             null
         }
@@ -359,7 +367,7 @@ class ConversationDetailViewModel @Inject constructor(
                 either.fold(
                     ifLeft = { ConversationDetailEvent.ConversationBottomBarEvent(BottomBarEvent.ErrorLoadingActions) },
                     ifRight = { actions ->
-                        val actionUiModels = actions.map { actionUiModelMapper.toUiModel(it) }
+                        val actionUiModels = actions.map { actionUiModelMapper.toUiModel(it) }.toImmutableList()
                         ConversationDetailEvent.ConversationBottomBarEvent(
                             BottomBarEvent.ShowAndUpdateActionsData(actionUiModels)
                         )
@@ -379,7 +387,7 @@ class ConversationDetailViewModel @Inject constructor(
             ) { folders, color ->
                 ConversationDetailEvent.ConversationBottomSheetEvent(
                     MoveToBottomSheetState.MoveToBottomSheetEvent.ActionData(
-                        folders.toUiModels(color).let { it.folders + it.systems }
+                        folders.toUiModels(color).let { it.folders + it.systems }.toImmutableList()
                     )
                 )
             }
@@ -411,9 +419,10 @@ class ConversationDetailViewModel @Inject constructor(
 
             val event = ConversationDetailEvent.ConversationBottomSheetEvent(
                 LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
-                    customLabelList = mappedLabels.map { it.toCustomUiModel(color, emptyMap(), null) },
-                    selectedLabels = selectedLabels,
-                    partiallySelectedLabels = partiallySelectedLabels
+                    customLabelList = mappedLabels.map { it.toCustomUiModel(color, emptyMap(), null) }
+                        .toImmutableList(),
+                    selectedLabels = selectedLabels.toImmutableList(),
+                    partiallySelectedLabels = partiallySelectedLabels.toImmutableList()
                 )
             )
             emitNewStateFrom(event)
@@ -588,25 +597,26 @@ class ConversationDetailViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    private fun onExpandMessage(messageId: MessageId) {
+    private fun onExpandMessage(messageId: MessageIdUiModel) {
         viewModelScope.launch(ioDispatcher) {
-            setMessageViewState.expanding(messageId)
-            getDecryptedMessageBody(primaryUserId.first(), messageId)
+            val domainMsgId = MessageId(messageId.id)
+            setMessageViewState.expanding(domainMsgId)
+            getDecryptedMessageBody(primaryUserId.first(), domainMsgId)
                 .onRight {
                     observeAttachments(messageId, it.attachments)
-                    markMessageAndConversationReadIfAllMessagesRead(primaryUserId.first(), messageId, conversationId)
-                    setMessageViewState.expanded(messageId, it)
+                    markMessageAndConversationReadIfAllMessagesRead(primaryUserId.first(), domainMsgId, conversationId)
+                    setMessageViewState.expanded(domainMsgId, it)
                 }
                 .onLeft {
                     emitMessageBodyDecryptError(it, messageId)
-                    setMessageViewState.collapsed(messageId)
+                    setMessageViewState.collapsed(domainMsgId)
                 }
                 .getOrNull()
         }
     }
 
-    private fun onCollapseMessage(messageId: MessageId) {
-        viewModelScope.launch { setMessageViewState.collapsed(messageId) }
+    private fun onCollapseMessage(messageId: MessageIdUiModel) {
+        viewModelScope.launch { setMessageViewState.collapsed(MessageId(messageId.id)) }
     }
 
     private fun onMessageBodyLinkClicked(action: MessageBodyLinkClicked) {
@@ -617,7 +627,7 @@ class ConversationDetailViewModel @Inject constructor(
         viewModelScope.launch { emitNewStateFrom(action) }
     }
 
-    private suspend fun emitMessageBodyDecryptError(error: GetDecryptedMessageBodyError, messageId: MessageId) {
+    private suspend fun emitMessageBodyDecryptError(error: GetDecryptedMessageBodyError, messageId: MessageIdUiModel) {
         val errorState = when (error) {
             is GetDecryptedMessageBodyError.Data -> if (error.dataError.isOfflineError()) {
                 ConversationDetailEvent.ErrorExpandingRetrievingMessageOffline(messageId)
@@ -632,7 +642,7 @@ class ConversationDetailViewModel @Inject constructor(
         emitNewStateFrom(errorState)
     }
 
-    private fun showAllAttachmentsForMessage(messageId: MessageId) {
+    private fun showAllAttachmentsForMessage(messageId: MessageIdUiModel) {
         val dataState = state.value.messagesState as? ConversationDetailsMessagesState.Data
         if (dataState == null) {
             Timber.e("Messages state is not data to perform show all attachments operation")
@@ -657,11 +667,12 @@ class ConversationDetailViewModel @Inject constructor(
             }
     }
 
-    private suspend fun observeAttachments(messageId: MessageId, attachments: List<MessageAttachment>) {
+    private suspend fun observeAttachments(messageId: MessageIdUiModel, attachments: List<MessageAttachment>) {
+        val domainMsgId = MessageId(messageId.id)
         attachments.map { it.attachmentId }.filterNot { observedAttachments.contains(it) }.forEach { attachmentId ->
             primaryUserId.flatMapLatest { userId ->
                 observedAttachments.add(attachmentId)
-                observeMessageAttachmentStatus(userId, messageId, attachmentId).mapLatest {
+                observeMessageAttachmentStatus(userId, domainMsgId, attachmentId).mapLatest {
                     ConversationDetailEvent.AttachmentStatusChanged(messageId, attachmentId, it.status)
                 }
             }.onEach { event ->
@@ -670,11 +681,12 @@ class ConversationDetailViewModel @Inject constructor(
         }
     }
 
-    private fun onOpenAttachmentClicked(messageId: MessageId, attachmentId: AttachmentId) {
+    private fun onOpenAttachmentClicked(messageId: MessageIdUiModel, attachmentId: AttachmentId) {
+        val domainMsgId = MessageId(messageId.id)
         viewModelScope.launch {
             if (isAttachmentDownloadInProgress().not()) {
                 val userId = primaryUserId.first()
-                getAttachmentIntentValues(userId, messageId, attachmentId).fold(
+                getAttachmentIntentValues(userId, domainMsgId, attachmentId).fold(
                     ifLeft = {
                         Timber.d("Failed to download attachment: $it")
                         val event = when (it) {
@@ -697,7 +709,8 @@ class ConversationDetailViewModel @Inject constructor(
         val userId = primaryUserId.first()
         val messagesState = mutableDetailState.value.messagesState
         return if (messagesState is ConversationDetailsMessagesState.Data) {
-            getDownloadingAttachmentsForMessages(userId, messagesState.messages.map { it.messageId }).isNotEmpty()
+            getDownloadingAttachmentsForMessages(userId, messagesState.messages.map { MessageId(it.messageId.id) })
+                .isNotEmpty()
         } else false
     }
 

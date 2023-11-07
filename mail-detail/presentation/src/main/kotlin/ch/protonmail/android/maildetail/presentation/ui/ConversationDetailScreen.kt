@@ -65,12 +65,14 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailSta
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
 import ch.protonmail.android.maildetail.presentation.model.LabelAsBottomSheetState
+import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
 import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
 import ch.protonmail.android.maildetail.presentation.previewdata.ConversationDetailsPreviewProvider
 import ch.protonmail.android.maildetail.presentation.viewmodel.ConversationDetailViewModel
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
@@ -317,7 +319,7 @@ fun ConversationDetailScreen(
 @Composable
 @Suppress("LongParameterList")
 private fun MessagesContent(
-    uiModels: List<ConversationDetailMessageUiModel>,
+    uiModels: ImmutableList<ConversationDetailMessageUiModel>,
     padding: PaddingValues,
     scrollToMessageId: String?,
     modifier: Modifier = Modifier,
@@ -408,13 +410,13 @@ object ConversationDetailScreen {
         val onUnreadClick: () -> Unit,
         val onMoveToClick: () -> Unit,
         val onLabelAsClick: () -> Unit,
-        val onExpandMessage: (MessageId) -> Unit,
-        val onCollapseMessage: (MessageId) -> Unit,
+        val onExpandMessage: (MessageIdUiModel) -> Unit,
+        val onCollapseMessage: (MessageIdUiModel) -> Unit,
         val onMessageBodyLinkClicked: (url: String) -> Unit,
         val onOpenMessageBodyLink: (url: String) -> Unit,
-        val onRequestScrollTo: (MessageId) -> Unit,
-        val onShowAllAttachmentsForMessage: (MessageId) -> Unit,
-        val onAttachmentClicked: (MessageId, AttachmentId) -> Unit,
+        val onRequestScrollTo: (MessageIdUiModel) -> Unit,
+        val onShowAllAttachmentsForMessage: (MessageIdUiModel) -> Unit,
+        val onAttachmentClicked: (MessageIdUiModel, AttachmentId) -> Unit,
         val openAttachment: (values: OpenAttachmentIntentValues) -> Unit,
         val showFeatureMissingSnackbar: () -> Unit,
         val loadEmbeddedImage: (messageId: MessageId?, contentId: String) -> GetEmbeddedImageResult?,

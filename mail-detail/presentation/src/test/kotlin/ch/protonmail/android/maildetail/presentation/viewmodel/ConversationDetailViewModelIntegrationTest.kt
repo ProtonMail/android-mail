@@ -77,6 +77,7 @@ import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMe
 import ch.protonmail.android.maildetail.presentation.mapper.DetailAvatarUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageBodyUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailHeaderUiModelMapper
+import ch.protonmail.android.maildetail.presentation.mapper.MessageIdUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageLocationUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ParticipantUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel.Collapsed
@@ -243,6 +244,7 @@ class ConversationDetailViewModelIntegrationTest {
     private val shouldShowRemoteContent = mockk<ShouldShowRemoteContent> {
         coEvery { this@mockk.invoke(userId) } returns true
     }
+    private val messageIdUiModelMapper = MessageIdUiModelMapper()
     private val attachmentUiModelMapper = AttachmentUiModelMapper()
     private val doesMessageBodyHaveEmbeddedImages = DoesMessageBodyHaveEmbeddedImages()
     private val doesMessageBodyHaveRemoteContent = DoesMessageBodyHaveRemoteContent()
@@ -294,7 +296,8 @@ class ConversationDetailViewModelIntegrationTest {
             shouldShowEmbeddedImages = shouldShowEmbeddedImages,
             shouldShowRemoteContent = shouldShowRemoteContent
         ),
-        participantUiModelMapper = ParticipantUiModelMapper(resolveParticipantName)
+        participantUiModelMapper = ParticipantUiModelMapper(resolveParticipantName),
+        messageIdUiModelMapper = messageIdUiModelMapper
     )
 
     private val conversationMetadataMapper = ConversationDetailMetadataUiModelMapper()
@@ -340,7 +343,7 @@ class ConversationDetailViewModelIntegrationTest {
         val messages = nonEmptyListOf(
             ConversationDetailMessageUiModelSample.invoiceExpandedWithAttachments(3)
         )
-        val messageId = messages.first().messageId
+        val messageId = MessageId(messages.first().messageId.id)
 
         coEvery { getDecryptedMessageBody.invoke(userId, any()) } returns DecryptedMessageBody(
             messageId = messageId,
@@ -397,7 +400,7 @@ class ConversationDetailViewModelIntegrationTest {
         fun assertCorrectMessagesEmitted(actual: ConversationDetailsMessagesState.Data, expected: MessageWithLabels) {
             assertEquals(1, actual.messages.size)
             with(actual.messages.first() as Expanded) {
-                assertEquals(expected.message.messageId, messageId)
+                assertEquals(expected.message.messageId.id, messageId.id)
                 assertEquals(expected.message.unread, isUnread)
                 assertEquals(expected.labels.size, messageDetailHeaderUiModel.labels.size)
             }
@@ -505,13 +508,13 @@ class ConversationDetailViewModelIntegrationTest {
             val expandingState = awaitItem()
             val expandingMessage = (expandingState.messagesState as ConversationDetailsMessagesState.Data)
                 .messages
-                .first { it.messageId == expectedExpanded.message.messageId }
+                .first { it.messageId.id == expectedExpanded.message.messageId.id }
             assertIs<Expanding>(expandingMessage)
 
             val expandedState = awaitItem()
             val expandedMessage = (expandedState.messagesState as ConversationDetailsMessagesState.Data)
                 .messages
-                .first { it.messageId == expectedExpanded.message.messageId }
+                .first { it.messageId.id == expectedExpanded.message.messageId.id }
             assertIs<Expanded>(expandedMessage)
             cancelAndIgnoreRemainingEvents()
         }
@@ -537,18 +540,24 @@ class ConversationDetailViewModelIntegrationTest {
             var conversationState: ConversationDetailState = awaitItem()
             val expandedMessage = (conversationState.messagesState as ConversationDetailsMessagesState.Data)
                 .messages
-                .first { it.messageId == expectedScrolledTo.message.messageId }
+                .first { it.messageId.id == expectedScrolledTo.message.messageId.id }
             assertIs<Expanded>(expandedMessage)
-            assertTrue { conversationState.scrollToMessage == expectedScrolledTo.message.messageId }
+            assertTrue { conversationState.scrollToMessage?.id == expectedScrolledTo.message.messageId.id }
 
             // when
-            viewModel.submit(ExpandMessage(MessageWithLabelsSample.InvoiceWithLabel.message.messageId))
+            viewModel.submit(
+                ExpandMessage(
+                    messageIdUiModelMapper.toUiModel(
+                        MessageWithLabelsSample.InvoiceWithLabel.message.messageId
+                    )
+                )
+            )
 
             // then
             conversationState = awaitItem()
             val expandMessage = (conversationState.messagesState as ConversationDetailsMessagesState.Data)
                 .messages
-                .first { it.messageId == expectedExpandedNotScrolled.message.messageId }
+                .first { it.messageId.id == expectedExpandedNotScrolled.message.messageId.id }
             assertIs<Expanded>(expandMessage)
             assertTrue { conversationState.scrollToMessage == null }
 
@@ -576,7 +585,7 @@ class ConversationDetailViewModelIntegrationTest {
         val viewModel = buildConversationDetailViewModel()
 
         // when
-        viewModel.submit(ExpandMessage(expectedExpanded.message.messageId))
+        viewModel.submit(ExpandMessage(messageIdUiModelMapper.toUiModel(expectedExpanded.message.messageId)))
 
         viewModel.state.test {
             skipItems(3)
@@ -585,14 +594,14 @@ class ConversationDetailViewModelIntegrationTest {
             val expandingState = awaitItem()
             val expandingMessage = (expandingState.messagesState as ConversationDetailsMessagesState.Data)
                 .messages
-                .first { it.messageId == expectedExpanded.message.messageId }
+                .first { it.messageId.id == expectedExpanded.message.messageId.id }
             assertIs<Expanding>(expandingMessage)
 
             val expandedState = awaitItem()
             println(expandedState)
             val expandedMessage = (expandedState.messagesState as ConversationDetailsMessagesState.Data)
                 .messages
-                .first { it.messageId == expectedExpanded.message.messageId }
+                .first { it.messageId.id == expectedExpanded.message.messageId.id }
             assertIs<Expanded>(expandedMessage)
             cancelAndIgnoreRemainingEvents()
         }
@@ -614,13 +623,17 @@ class ConversationDetailViewModelIntegrationTest {
             skipItems(4)
 
             // when
-            viewModel.submit(ConversationDetailViewAction.CollapseMessage(defaultExpanded.message.messageId))
+            viewModel.submit(
+                ConversationDetailViewAction.CollapseMessage(
+                    messageIdUiModelMapper.toUiModel(defaultExpanded.message.messageId)
+                )
+            )
 
             // then
             val collapsedState = awaitItem()
             val collapsedMessage = (collapsedState.messagesState as ConversationDetailsMessagesState.Data)
                 .messages
-                .first { it.messageId == defaultExpanded.message.messageId }
+                .first { it.messageId.id == defaultExpanded.message.messageId.id }
             assertIs<Collapsed>(collapsedMessage)
 
             cancelAndIgnoreRemainingEvents()
@@ -642,7 +655,7 @@ class ConversationDetailViewModelIntegrationTest {
         viewModel.state.test {
             skipItems(3)
             // when
-            viewModel.submit(RequestScrollTo(defaultExpanded.message.messageId))
+            viewModel.submit(RequestScrollTo(messageIdUiModelMapper.toUiModel(defaultExpanded.message.messageId)))
 
             // then
             assertEquals(defaultExpanded.message.id, awaitItem().scrollToMessage?.id)
@@ -676,17 +689,24 @@ class ConversationDetailViewModelIntegrationTest {
 
         viewModel.state.test {
             skipItems(4)
-            viewModel.submit(ExpandMessage(expectedExpanded.message.messageId))
+            viewModel.submit(ExpandMessage(messageIdUiModelMapper.toUiModel(expectedExpanded.message.messageId)))
             advanceUntilIdle()
 
             // When
-            viewModel.submit(ShowAllAttachmentsForMessage(expectedExpanded.message.messageId))
+            viewModel.submit(
+                ShowAllAttachmentsForMessage(
+                    messageIdUiModelMapper.toUiModel(
+                        expectedExpanded.message.messageId
+                    )
+                )
+            )
             advanceUntilIdle()
             val newItem = awaitItem()
 
             // Then
             val messagesState = (newItem.messagesState as ConversationDetailsMessagesState.Data).messages
-            val expandedInvoice = messagesState.first { it.messageId == expectedExpanded.message.messageId } as Expanded
+            val expandedInvoice =
+                messagesState.first { it.messageId.id == expectedExpanded.message.messageId.id } as Expanded
             assertEquals(expectedAttachmentCount, expandedInvoice.messageBodyUiModel.attachments!!.attachments.size)
             cancelAndIgnoreRemainingEvents()
         }
@@ -728,10 +748,15 @@ class ConversationDetailViewModelIntegrationTest {
 
         viewModel.state.test {
             skipItems(4)
-            viewModel.submit(ExpandMessage(expectedExpanded.message.messageId))
+            viewModel.submit(ExpandMessage(messageIdUiModelMapper.toUiModel(expectedExpanded.message.messageId)))
 
             // When
-            viewModel.submit(OnAttachmentClicked(expectedExpanded.message.messageId, AttachmentId(0.toString())))
+            viewModel.submit(
+                OnAttachmentClicked(
+                    messageIdUiModelMapper.toUiModel(expectedExpanded.message.messageId),
+                    AttachmentId(0.toString())
+                )
+            )
             awaitItem()
 
             // Then
@@ -776,10 +801,15 @@ class ConversationDetailViewModelIntegrationTest {
 
             viewModel.state.test {
                 skipItems(4)
-                viewModel.submit(ExpandMessage(expectedExpanded.message.messageId))
+                viewModel.submit(ExpandMessage(messageIdUiModelMapper.toUiModel(expectedExpanded.message.messageId)))
                 skipItems(1)
                 // When
-                viewModel.submit(OnAttachmentClicked(expectedExpanded.message.messageId, AttachmentId(0.toString())))
+                viewModel.submit(
+                    OnAttachmentClicked(
+                        messageIdUiModelMapper.toUiModel(expectedExpanded.message.messageId),
+                        AttachmentId(0.toString())
+                    )
+                )
                 val actualState = awaitItem()
 
                 // Then
@@ -812,11 +842,16 @@ class ConversationDetailViewModelIntegrationTest {
 
         viewModel.state.test {
             skipItems(4)
-            viewModel.submit(ExpandMessage(expectedExpanded.message.messageId))
+            viewModel.submit(ExpandMessage(messageIdUiModelMapper.toUiModel(expectedExpanded.message.messageId)))
             skipItems(1)
 
             // When
-            viewModel.submit(OnAttachmentClicked(expectedExpanded.message.messageId, AttachmentId(0.toString())))
+            viewModel.submit(
+                OnAttachmentClicked(
+                    messageIdUiModelMapper.toUiModel(expectedExpanded.message.messageId),
+                    AttachmentId(0.toString())
+                )
+            )
             val actualState = awaitItem()
 
             // Then
@@ -852,11 +887,16 @@ class ConversationDetailViewModelIntegrationTest {
 
             viewModel.state.test {
                 skipItems(4)
-                viewModel.submit(ExpandMessage(expectedExpanded.message.messageId))
+                viewModel.submit(ExpandMessage(messageIdUiModelMapper.toUiModel(expectedExpanded.message.messageId)))
                 skipItems(1)
 
                 // When
-                viewModel.submit(OnAttachmentClicked(expectedExpanded.message.messageId, AttachmentId(0.toString())))
+                viewModel.submit(
+                    OnAttachmentClicked(
+                        messageIdUiModelMapper.toUiModel(expectedExpanded.message.messageId),
+                        AttachmentId(0.toString())
+                    )
+                )
                 val actualState = awaitItem()
 
                 // Then
@@ -919,13 +959,13 @@ class ConversationDetailViewModelIntegrationTest {
             // Then
             var message = (expandingState.messagesState as ConversationDetailsMessagesState.Data)
                 .messages
-                .first { it.messageId == defaultExpanded.message.messageId }
+                .first { it.messageId.id == defaultExpanded.message.messageId.id }
             assertIs<Expanding>(message)
 
             val collapsedState = awaitItem()
             message = (collapsedState.messagesState as ConversationDetailsMessagesState.Data)
                 .messages
-                .first { it.messageId == defaultExpanded.message.messageId }
+                .first { it.messageId.id == defaultExpanded.message.messageId.id }
             assertIs<Collapsed>(message)
 
             cancelAndIgnoreRemainingEvents()
@@ -1024,7 +1064,8 @@ class ConversationDetailViewModelIntegrationTest {
         getAttachmentIntentValues = getIntentValues,
         getEmbeddedImageAvoidDuplicatedExecution = getEmbeddedImageAvoidDuplicatedExecution,
         ioDispatcher = ioDispatcher,
-        observeMailFeature = observeMailFeature
+        observeMailFeature = observeMailFeature,
+        messageIdUiModelMapper = messageIdUiModelMapper
     )
 
     private fun aMessageAttachment(id: String): MessageAttachment = MessageAttachment(

@@ -22,6 +22,8 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModelWithSelectedState
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import me.proton.core.label.domain.entity.LabelId
 
 data class BottomSheetState(
@@ -48,7 +50,7 @@ sealed interface BottomSheetOperation {
 sealed interface MoveToBottomSheetState : BottomSheetContentState {
 
     data class Data(
-        val moveToDestinations: List<MailLabelUiModel>,
+        val moveToDestinations: ImmutableList<MailLabelUiModel>,
         val selected: MailLabelUiModel?
     ) : MoveToBottomSheetState
 
@@ -57,7 +59,7 @@ sealed interface MoveToBottomSheetState : BottomSheetContentState {
     sealed interface MoveToBottomSheetOperation : BottomSheetOperation
 
     sealed interface MoveToBottomSheetEvent : MoveToBottomSheetOperation {
-        data class ActionData(val moveToDestinations: List<MailLabelUiModel>) : MoveToBottomSheetEvent
+        data class ActionData(val moveToDestinations: ImmutableList<MailLabelUiModel>) : MoveToBottomSheetEvent
     }
 
     sealed interface MoveToBottomSheetAction : MoveToBottomSheetOperation {
@@ -68,7 +70,7 @@ sealed interface MoveToBottomSheetState : BottomSheetContentState {
 sealed interface LabelAsBottomSheetState : BottomSheetContentState {
 
     data class Data(
-        val labelUiModelsWithSelectedState: List<LabelUiModelWithSelectedState>
+        val labelUiModelsWithSelectedState: ImmutableList<LabelUiModelWithSelectedState>
     ) : LabelAsBottomSheetState
 
     object Loading : LabelAsBottomSheetState
@@ -77,9 +79,9 @@ sealed interface LabelAsBottomSheetState : BottomSheetContentState {
 
     sealed interface LabelAsBottomSheetEvent : LabelAsBottomSheetOperation {
         data class ActionData(
-            val customLabelList: List<MailLabelUiModel.Custom>,
-            val selectedLabels: List<LabelId>,
-            val partiallySelectedLabels: List<LabelId> = emptyList()
+            val customLabelList: ImmutableList<MailLabelUiModel.Custom>,
+            val selectedLabels: ImmutableList<LabelId>,
+            val partiallySelectedLabels: ImmutableList<LabelId> = emptyList<LabelId>().toImmutableList()
         ) : LabelAsBottomSheetEvent
     }
 

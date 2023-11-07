@@ -45,6 +45,7 @@ import ch.protonmail.android.testdata.message.MessageDetailActionBarUiModelTestD
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.collections.immutable.toImmutableList
 import me.proton.core.label.domain.entity.LabelId
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -162,7 +163,7 @@ class MessageDetailReducerTest(
         private val reducedState = MessageDetailState(
             messageMetadataState = MessageMetadataState.Data(actionBarUiModel, detailHeaderUiModel),
             messageBodyState = MessageBodyState.Data(messageBodyUiModel),
-            bottomBarState = BottomBarState.Data.Shown(listOf(ActionUiModelTestData.markUnread)),
+            bottomBarState = BottomBarState.Data.Shown(listOf(ActionUiModelTestData.markUnread).toImmutableList()),
             bottomSheetState = BottomSheetState(
                 MoveToBottomSheetState.Data(
                     MailLabelUiModelTestData.spamAndCustomFolder,
@@ -407,7 +408,7 @@ class MessageDetailReducerTest(
                 MessageDetailEvent.MessageBottomSheetEvent(
                     LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
                         customLabelList = MailLabelUiModelTestData.customLabelList,
-                        selectedLabels = listOf()
+                        selectedLabels = listOf<LabelId>().toImmutableList()
                     )
                 ),
                 shouldReduceMessageMetadataState = false,

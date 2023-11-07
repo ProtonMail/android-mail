@@ -53,6 +53,7 @@ import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
 import ch.protonmail.android.maillabel.presentation.iconRes
 import ch.protonmail.android.maillabel.presentation.textRes
+import kotlinx.collections.immutable.toImmutableList
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonRawListItem
 import me.proton.core.compose.theme.ProtonDimens
@@ -212,7 +213,7 @@ fun MoveToBottomSheetContentPreview() {
                     isExpanded = true,
                     iconPaddingStart = 0.dp
                 )
-            )
+            ).toImmutableList()
         ),
         onFolderSelected = {},
         onDoneClick = {}

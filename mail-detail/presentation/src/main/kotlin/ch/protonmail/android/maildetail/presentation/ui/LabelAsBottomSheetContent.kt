@@ -53,6 +53,7 @@ import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.LabelAsBottomSheetState
 import ch.protonmail.android.maillabel.presentation.model.LabelSelectedState
 import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelWithSelectedStateSample
+import kotlinx.collections.immutable.toImmutableList
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonRawListItem
 import me.proton.core.compose.component.ProtonSettingsToggleItem
@@ -202,6 +203,7 @@ fun LabelAsBottomSheetContentPreview() {
         LabelAsBottomSheetContent(
             labelAsDataState = LabelAsBottomSheetState.Data(
                 labelUiModelsWithSelectedState = LabelUiModelWithSelectedStateSample.customLabelListWithSelection
+                    .toImmutableList()
             ),
             actions = LabelAsBottomSheetContent.Actions(
                 onAddLabelClick = {},

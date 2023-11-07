@@ -22,6 +22,7 @@ import arrow.core.nonEmptyListOf
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
+import kotlinx.collections.immutable.toImmutableList
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -44,8 +45,8 @@ internal class BottomBarReducerTest(
 
     companion object {
 
-        private val actions = nonEmptyListOf(ActionUiModelTestData.markUnread)
-        private val updatedActions = listOf(ActionUiModelTestData.archive)
+        private val actions = nonEmptyListOf(ActionUiModelTestData.markUnread).toImmutableList()
+        private val updatedActions = listOf(ActionUiModelTestData.archive).toImmutableList()
 
         private val transitionsFromLoadingState = listOf(
             TestInput(

@@ -22,6 +22,7 @@ import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.LabelAsBottomSheetState
 import ch.protonmail.android.maillabel.presentation.model.LabelSelectedState
 import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelWithSelectedStateSample
+import kotlinx.collections.immutable.toImmutableList
 import me.proton.core.label.domain.entity.LabelId
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -57,8 +58,8 @@ class LabelAsBottomSheetReducerTest(
             TestInput(
                 currentState = BottomSheetState(LabelAsBottomSheetState.Loading),
                 operation = LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
-                    customLabelList = labelListWithoutSelection.map { it.labelUiModel },
-                    selectedLabels = emptyList()
+                    customLabelList = labelListWithoutSelection.map { it.labelUiModel }.toImmutableList(),
+                    selectedLabels = emptyList<LabelId>().toImmutableList()
                 ),
                 expectedState = BottomSheetState(
                     LabelAsBottomSheetState.Data(labelListWithoutSelection)
@@ -67,10 +68,11 @@ class LabelAsBottomSheetReducerTest(
             TestInput(
                 currentState = BottomSheetState(LabelAsBottomSheetState.Loading),
                 operation = LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
-                    customLabelList = labelListWithSelection.map { it.labelUiModel },
+                    customLabelList = labelListWithSelection.map { it.labelUiModel }.toImmutableList(),
                     selectedLabels = labelListWithSelection
                         .filter { it.selectedState == LabelSelectedState.Selected }
                         .map { it.labelUiModel.id.labelId }
+                        .toImmutableList()
                 ),
                 expectedState = BottomSheetState(
                     LabelAsBottomSheetState.Data(labelListWithSelection)
@@ -84,13 +86,15 @@ class LabelAsBottomSheetReducerTest(
             TestInput(
                 currentState = BottomSheetState(LabelAsBottomSheetState.Loading),
                 operation = LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
-                    customLabelList = labelListWithPartialSelection.map { it.labelUiModel },
+                    customLabelList = labelListWithPartialSelection.map { it.labelUiModel }.toImmutableList(),
                     selectedLabels = labelListWithPartialSelection
                         .filter { it.selectedState == LabelSelectedState.Selected }
-                        .map { it.labelUiModel.id.labelId },
+                        .map { it.labelUiModel.id.labelId }
+                        .toImmutableList(),
                     partiallySelectedLabels = labelListWithPartialSelection
                         .filter { it.selectedState == LabelSelectedState.PartiallySelected }
                         .map { it.labelUiModel.id.labelId }
+                        .toImmutableList()
                 ),
                 expectedState = BottomSheetState(
                     LabelAsBottomSheetState.Data(labelListWithPartialSelection)

@@ -27,7 +27,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOpe
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
-import ch.protonmail.android.mailmessage.domain.model.MessageId
+import kotlinx.collections.immutable.ImmutableList
 import me.proton.core.label.domain.entity.LabelId
 
 sealed interface ConversationDetailOperation {
@@ -52,8 +52,8 @@ sealed interface ConversationDetailEvent : ConversationDetailOperation {
     object NoNetworkError : ConversationDetailEvent, AffectingMessages
 
     data class MessagesData(
-        val messagesUiModels: List<ConversationDetailMessageUiModel>,
-        val requestScrollToMessageId: MessageId?
+        val messagesUiModels: ImmutableList<ConversationDetailMessageUiModel>,
+        val requestScrollToMessageId: MessageIdUiModel?
     ) : ConversationDetailEvent, AffectingMessages
 
     data class ConversationBottomSheetEvent(
@@ -71,36 +71,36 @@ sealed interface ConversationDetailEvent : ConversationDetailOperation {
     object ErrorAttachmentDownloadInProgress : ConversationDetailEvent, AffectingErrorBar
 
     data class ExpandDecryptedMessage(
-        val messageId: MessageId,
+        val messageId: MessageIdUiModel,
         val conversationDetailMessageUiModel: ConversationDetailMessageUiModel.Expanded
     ) : ConversationDetailEvent, AffectingMessages
 
     data class CollapseDecryptedMessage(
-        val messageId: MessageId,
+        val messageId: MessageIdUiModel,
         val conversationDetailMessageUiModel: ConversationDetailMessageUiModel.Collapsed
     ) : ConversationDetailEvent, AffectingMessages
 
     data class ShowAllAttachmentsForMessage(
-        val messageId: MessageId,
+        val messageId: MessageIdUiModel,
         val conversationDetailMessageUiModel: ConversationDetailMessageUiModel.Expanded
     ) : ConversationDetailEvent, AffectingMessages
 
-    data class ErrorExpandingDecryptMessageError(val messageId: MessageId) :
+    data class ErrorExpandingDecryptMessageError(val messageId: MessageIdUiModel) :
         ConversationDetailEvent, AffectingMessages, AffectingErrorBar
 
-    data class ErrorExpandingRetrieveMessageError(val messageId: MessageId) :
+    data class ErrorExpandingRetrieveMessageError(val messageId: MessageIdUiModel) :
         ConversationDetailEvent, AffectingMessages, AffectingErrorBar
 
-    data class ErrorExpandingRetrievingMessageOffline(val messageId: MessageId) :
+    data class ErrorExpandingRetrievingMessageOffline(val messageId: MessageIdUiModel) :
         ConversationDetailEvent, AffectingMessages, AffectingErrorBar
 
     data class ExpandingMessage(
-        val messageId: MessageId,
+        val messageId: MessageIdUiModel,
         val conversationDetailMessageUiModel: ConversationDetailMessageUiModel.Collapsed
     ) : ConversationDetailEvent, AffectingMessages
 
     data class AttachmentStatusChanged(
-        val messageId: MessageId,
+        val messageId: MessageIdUiModel,
         val attachmentId: AttachmentId,
         val status: AttachmentWorkerStatus
     ) : MessageDetailEvent, AffectingMessages
@@ -124,11 +124,11 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
     object RequestLabelAsBottomSheet : ConversationDetailViewAction, AffectingBottomSheet
     data class LabelAsToggleAction(val labelId: LabelId) : ConversationDetailViewAction, AffectingBottomSheet
     data class LabelAsConfirmed(val archiveSelected: Boolean) : ConversationDetailViewAction, AffectingBottomSheet
-    data class ExpandMessage(val messageId: MessageId) : ConversationDetailViewAction
-    data class CollapseMessage(val messageId: MessageId) : ConversationDetailViewAction
+    data class ExpandMessage(val messageId: MessageIdUiModel) : ConversationDetailViewAction
+    data class CollapseMessage(val messageId: MessageIdUiModel) : ConversationDetailViewAction
     data class MessageBodyLinkClicked(val url: String) : ConversationDetailViewAction
-    data class RequestScrollTo(val messageId: MessageId) : ConversationDetailViewAction
-    data class ShowAllAttachmentsForMessage(val messageId: MessageId) : ConversationDetailViewAction
-    data class OnAttachmentClicked(val messageId: MessageId, val attachmentId: AttachmentId) :
+    data class RequestScrollTo(val messageId: MessageIdUiModel) : ConversationDetailViewAction
+    data class ShowAllAttachmentsForMessage(val messageId: MessageIdUiModel) : ConversationDetailViewAction
+    data class OnAttachmentClicked(val messageId: MessageIdUiModel, val attachmentId: AttachmentId) :
         ConversationDetailViewAction
 }

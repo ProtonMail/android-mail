@@ -545,7 +545,7 @@ private fun AllRecipients(modifier: Modifier = Modifier, allRecipients: TextUiMo
 @Composable
 private fun Recipients(
     modifier: Modifier = Modifier,
-    recipients: List<ParticipantUiModel>,
+    recipients: ImmutableList<ParticipantUiModel>,
     hasUndisclosedRecipients: Boolean = false,
     showFeatureMissingSnackbar: () -> Unit
 ) {
@@ -689,7 +689,7 @@ private fun HideDetails(modifier: Modifier = Modifier) {
 
 private fun ConstrainScope.constrainRecipientsTitle(
     reference: ConstrainedLayoutReference,
-    recipients: List<ParticipantUiModel>,
+    recipients: ImmutableList<ParticipantUiModel>,
     isExpanded: Boolean,
     hasUndisclosedRecipients: Boolean = false
 ) {
@@ -702,7 +702,7 @@ private fun ConstrainScope.constrainRecipients(
     topReference: ConstrainedLayoutReference,
     startReference: ConstrainedLayoutReference,
     endReference: ConstrainedLayoutReference,
-    recipients: List<ParticipantUiModel>,
+    recipients: ImmutableList<ParticipantUiModel>,
     isExpanded: Boolean,
     hasUndisclosedRecipients: Boolean = false
 ) {

@@ -49,6 +49,7 @@ import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.system.LocalDeviceCapabilitiesProvider
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
+import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
@@ -104,14 +105,14 @@ fun MessageBody(
     }
 
     if (showReplyActionsFeatureFlag) {
-        MessageActionButtons(messageId = messageBodyUiModel.messageId, callbacks = actions)
+        MessageActionButtons(messageId = MessageIdUiModel(messageBodyUiModel.messageId.id), callbacks = actions)
     }
 }
 
 @Composable
 private fun MessageActionButtons(
     modifier: Modifier = Modifier,
-    messageId: MessageId,
+    messageId: MessageIdUiModel,
     callbacks: MessageBody.Actions
 ) {
     Row(
@@ -123,19 +124,19 @@ private fun MessageActionButtons(
     ) {
         MessageActionButton(
             modifier = Modifier.weight(1f, false),
-            onClick = { callbacks.onReply(messageId) },
+            onClick = { callbacks.onReply(MessageId(messageId.id)) },
             iconResource = R.drawable.ic_proton_reply,
             textResource = R.string.action_reply
         )
         MessageActionButton(
             modifier = Modifier.weight(1f, false),
-            onClick = { callbacks.onReplyAll(messageId) },
+            onClick = { callbacks.onReplyAll(MessageId(messageId.id)) },
             iconResource = R.drawable.ic_proton_reply_all,
             textResource = R.string.action_reply_all
         )
         MessageActionButton(
             modifier = Modifier.weight(1f, false),
-            onClick = { callbacks.onForward(messageId) },
+            onClick = { callbacks.onForward(MessageId(messageId.id)) },
             iconResource = R.drawable.ic_proton_forward,
             textResource = R.string.action_forward
         )

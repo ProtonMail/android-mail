@@ -28,14 +28,12 @@ import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetStat
 import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState.MoveToBottomSheetOperation
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
+import kotlinx.collections.immutable.toImmutableList
 import javax.inject.Inject
 
 class MoveToBottomSheetReducer @Inject constructor() {
 
-    fun newStateFrom(
-        currentState: BottomSheetState?,
-        operation: MoveToBottomSheetOperation
-    ): BottomSheetState? {
+    fun newStateFrom(currentState: BottomSheetState?, operation: MoveToBottomSheetOperation): BottomSheetState? {
         return when (operation) {
             is MoveToBottomSheetAction.MoveToDestinationSelected -> when (
                 val contentState = currentState?.contentState
@@ -44,8 +42,10 @@ class MoveToBottomSheetReducer @Inject constructor() {
                     contentState.toNewSelectedState(operation.mailLabelId),
                     currentState.bottomSheetVisibilityEffect
                 )
+
                 else -> currentState
             }
+
             is MoveToBottomSheetEvent.ActionData -> when (val contentState = currentState?.contentState) {
                 is Data -> BottomSheetState(
                     contentState.copy(
@@ -53,6 +53,7 @@ class MoveToBottomSheetReducer @Inject constructor() {
                     ).let { if (it.selected != null) it.toNewSelectedState(it.selected.id) else it },
                     currentState.bottomSheetVisibilityEffect
                 )
+
                 else -> BottomSheetState(
                     Data(operation.moveToDestinations, null),
                     currentState?.bottomSheetVisibilityEffect ?: Effect.empty()
@@ -66,6 +67,7 @@ class MoveToBottomSheetReducer @Inject constructor() {
             is Loading -> this
             is Data -> {
                 val listWithSelectedLabel = moveToDestinations.map { it.setSelectedIfLabelIdMatch(mailLabelId) }
+                    .toImmutableList()
                 this.copy(
                     moveToDestinations = listWithSelectedLabel,
                     selected = listWithSelectedLabel.firstOrNull { it.id == mailLabelId }
@@ -74,10 +76,9 @@ class MoveToBottomSheetReducer @Inject constructor() {
         }
     }
 
-    private fun MailLabelUiModel.setSelectedIfLabelIdMatch(mailLabelId: MailLabelId) =
-        when (this) {
-            is MailLabelUiModel.Custom -> copy(isSelected = id == mailLabelId)
-            is MailLabelUiModel.System -> copy(isSelected = id == mailLabelId)
-        }
+    private fun MailLabelUiModel.setSelectedIfLabelIdMatch(mailLabelId: MailLabelId) = when (this) {
+        is MailLabelUiModel.Custom -> copy(isSelected = id == mailLabelId)
+        is MailLabelUiModel.System -> copy(isSelected = id == mailLabelId)
+    }
 
 }

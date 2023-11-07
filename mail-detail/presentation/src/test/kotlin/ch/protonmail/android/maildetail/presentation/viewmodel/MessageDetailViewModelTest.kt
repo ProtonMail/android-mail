@@ -109,6 +109,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.unmockkStatic
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.emptyFlow
@@ -472,7 +473,7 @@ class MessageDetailViewModelTest {
         viewModel.state.test {
             advanceUntilIdle()
             // Then
-            val actionUiModels = listOf(ActionUiModelTestData.archive)
+            val actionUiModels = listOf(ActionUiModelTestData.archive).toImmutableList()
             val expected = BottomBarState.Data.Shown(actionUiModels)
             assertEquals(expected, lastEmittedItem().bottomBarState)
         }
@@ -648,7 +649,7 @@ class MessageDetailViewModelTest {
                     listOf(
                         ActionUiModelTestData.archive,
                         ActionUiModelTestData.markUnread
-                    )
+                    ).toImmutableList()
                 )
             )
             assertEquals(bottomState, awaitItem())

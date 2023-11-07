@@ -42,6 +42,7 @@ import ch.protonmail.android.uitest.robot.detail.section.messageBodySection
 import ch.protonmail.android.uitest.robot.detail.section.messageHeaderSection
 import ch.protonmail.android.uitest.robot.detail.section.verify
 import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
+import kotlinx.collections.immutable.toImmutableList
 import org.junit.Rule
 import kotlin.test.Test
 import kotlin.test.assertTrue
@@ -228,7 +229,7 @@ internal class MessageDetailScreenTest {
         // given
         val state = MessageDetailsPreviewData.Message.copy(
             bottomBarState = BottomBarState.Data.Shown(
-                actions = listOf(ActionUiModelSample.Trash)
+                actions = listOf(ActionUiModelSample.Trash).toImmutableList()
             )
         )
 
@@ -269,7 +270,7 @@ internal class MessageDetailScreenTest {
         // given
         val state = MessageDetailsPreviewData.Message.copy(
             bottomBarState = BottomBarState.Data.Shown(
-                actions = listOf(ActionUiModelSample.MarkUnread)
+                actions = listOf(ActionUiModelSample.MarkUnread).toImmutableList()
             )
         )
         var unreadClicked = false

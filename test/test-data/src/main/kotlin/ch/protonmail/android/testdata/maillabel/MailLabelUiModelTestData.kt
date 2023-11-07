@@ -26,6 +26,7 @@ import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
 import ch.protonmail.android.maillabel.presentation.iconRes
 import ch.protonmail.android.maillabel.presentation.textRes
+import kotlinx.collections.immutable.toImmutableList
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.label.domain.entity.LabelId
 
@@ -51,7 +52,7 @@ object MailLabelUiModelTestData {
             isExpanded = true,
             iconPaddingStart = 0.dp
         )
-    )
+    ).toImmutableList()
     val spamAndCustomFolderWithSpamSelected = listOf(
         MailLabelUiModel.System(
             id = MailLabelId.System.Spam,
@@ -72,7 +73,7 @@ object MailLabelUiModelTestData {
             isExpanded = true,
             iconPaddingStart = 0.dp
         )
-    )
+    ).toImmutableList()
     val spamAndCustomFolderWithCustomSelected = listOf(
         MailLabelUiModel.System(
             id = MailLabelId.System.Spam,
@@ -93,7 +94,7 @@ object MailLabelUiModelTestData {
             isExpanded = true,
             iconPaddingStart = 0.dp
         )
-    )
+    ).toImmutableList()
     val systemAndTwoCustomFolders = listOf(
         MailLabelUiModel.System(
             id = MailLabelId.System.Spam,
@@ -125,7 +126,7 @@ object MailLabelUiModelTestData {
             isExpanded = true,
             iconPaddingStart = ProtonDimens.DefaultSpacing * 1
         )
-    )
+    ).toImmutableList()
     val archiveAndCustomFolder = listOf(
         MailLabelUiModel.System(
             id = MailLabelId.System.Archive,
@@ -146,7 +147,7 @@ object MailLabelUiModelTestData {
             isExpanded = true,
             iconPaddingStart = 0.dp
         )
-    )
+    ).toImmutableList()
     val customLabelList = MailLabelTestData.listOfCustomLabels.map {
         MailLabelUiModel.Custom(
             id = it.id,
@@ -159,5 +160,5 @@ object MailLabelUiModelTestData {
             isExpanded = true,
             iconPaddingStart = 0.dp
         )
-    }
+    }.toImmutableList()
 }

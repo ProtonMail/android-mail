@@ -25,17 +25,19 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.maildetail.presentation.R.string
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
+import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMetadataUiModelSample
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.model.toMailLabelSystem
-import ch.protonmail.android.mailmessage.domain.model.MessageId
 import io.mockk.Called
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.collections.immutable.toImmutableList
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import kotlin.test.Test
@@ -160,7 +162,11 @@ class ConversationDetailReducerTest(
                 ExitWithMessage(TextUiModel(string.conversation_moved_to_archive))
             ),
             ConversationDetailViewAction.MessageBodyLinkClicked(UUID.randomUUID().toString()) affects LinkClick,
-            ConversationDetailViewAction.RequestScrollTo(MessageId(UUID.randomUUID().toString())) affects MessageScroll
+            ConversationDetailViewAction.RequestScrollTo(
+                MessageIdUiModel(
+                    UUID.randomUUID().toString()
+                )
+            ) affects MessageScroll
         )
 
         val events = listOf(
@@ -175,27 +181,31 @@ class ConversationDetailReducerTest(
             ConversationDetailEvent.ErrorMovingConversation affects ErrorBar,
             ConversationDetailEvent.ErrorMovingToTrash affects ErrorBar,
             ConversationDetailEvent.ErrorLabelingConversation affects ErrorBar,
-            ConversationDetailEvent.MessagesData(emptyList(), null) affects Messages,
+            ConversationDetailEvent.MessagesData(
+                emptyList<ConversationDetailMessageUiModel>()
+                    .toImmutableList(),
+                null
+            ) affects Messages,
             ConversationDetailEvent.MessagesData(
                 allMessagesFirstExpanded,
                 allMessagesFirstExpanded.first().messageId
             ) affects listOf(Messages, MessageScroll),
             ConversationDetailEvent.ExpandDecryptedMessage(
-                MessageId(UUID.randomUUID().toString()),
+                MessageIdUiModel(UUID.randomUUID().toString()),
                 ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded
             ) affects Messages,
             ConversationDetailEvent.CollapseDecryptedMessage(
-                MessageId(UUID.randomUUID().toString()),
+                MessageIdUiModel(UUID.randomUUID().toString()),
                 ConversationDetailMessageUiModelSample.AugWeatherForecast
             ) affects Messages,
             ConversationDetailEvent.ErrorExpandingDecryptMessageError(
-                MessageId(UUID.randomUUID().toString())
+                MessageIdUiModel(UUID.randomUUID().toString())
             ) affects listOf(ErrorBar, Messages),
             ConversationDetailEvent.ErrorExpandingRetrieveMessageError(
-                MessageId(UUID.randomUUID().toString())
+                MessageIdUiModel(UUID.randomUUID().toString())
             ) affects listOf(ErrorBar, Messages),
             ConversationDetailEvent.ErrorExpandingRetrievingMessageOffline(
-                MessageId(UUID.randomUUID().toString())
+                MessageIdUiModel(UUID.randomUUID().toString())
             ) affects listOf(ErrorBar, Messages),
             ConversationDetailEvent.ErrorGettingAttachment affects ErrorBar
         )
@@ -239,4 +249,4 @@ private object MessageScroll : Entity
 private val allMessagesFirstExpanded = listOf(
     ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded,
     ConversationDetailMessageUiModelSample.SepWeatherForecast
-)
+).toImmutableList()

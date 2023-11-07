@@ -25,13 +25,16 @@ import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
+import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageLocationUiModel
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
+import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
 import ch.protonmail.android.mailmessage.domain.model.Message
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
 import ch.protonmail.android.mailmessage.presentation.sample.AttachmentUiModelSample
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 
 object ConversationDetailMessageUiModelSample {
 
@@ -158,8 +161,8 @@ object ConversationDetailMessageUiModelSample {
         repliedIcon = repliedIcon,
         sender = ParticipantUiModel(message.sender.name, message.sender.address, R.drawable.ic_proton_lock, false),
         shortTime = TextUiModel("10:00"),
-        labels = emptyList(),
-        messageId = message.messageId
+        labels = emptyList<LabelUiModel>().toImmutableList(),
+        messageId = MessageIdUiModel(message.messageId.id)
     )
 
     private fun buildExpanded(
@@ -171,7 +174,7 @@ object ConversationDetailMessageUiModelSample {
         locationUiModel: MessageLocationUiModel = MessageLocationUiModelSample.AllMail
     ): ConversationDetailMessageUiModel.Expanded = ConversationDetailMessageUiModel.Expanded(
         isUnread = message.unread,
-        messageId = message.messageId,
+        messageId = MessageIdUiModel(message.messageId.id),
         messageDetailHeaderUiModel = MessageDetailHeaderUiModelSample.build(
             avatar = avatar,
             sender = ParticipantUiModel(
@@ -185,9 +188,9 @@ object ConversationDetailMessageUiModelSample {
             time = TextUiModel("10:00"),
             extendedTime = TextUiModel("10:00"),
             allRecipients = TextUiModel("Recipients"),
-            toRecipients = emptyList(),
-            ccRecipients = emptyList(),
-            bccRecipients = emptyList(),
+            toRecipients = emptyList<ParticipantUiModel>().toImmutableList(),
+            ccRecipients = emptyList<ParticipantUiModel>().toImmutableList(),
+            bccRecipients = emptyList<ParticipantUiModel>().toImmutableList(),
             labels = persistentListOf()
         ),
         messageBodyUiModel = messageBodyUiModel

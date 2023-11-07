@@ -24,6 +24,7 @@ import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import arrow.core.nonEmptyListOf
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
@@ -55,6 +56,7 @@ import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import ch.protonmail.android.uitest.util.ManagedState
 import ch.protonmail.android.uitest.util.StateManager
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Ignore
 import org.junit.Rule
@@ -201,7 +203,7 @@ internal class MailboxScreenTest {
                     currentLabelName = MailLabel.System(systemLabel).text()
                 ),
                 unreadFilterState = UnreadFilterState.Loading,
-                bottomAppBarState = BottomBarState.Data.Hidden(emptyList()),
+                bottomAppBarState = BottomBarState.Data.Hidden(emptyList<ActionUiModel>().toImmutableList()),
                 onboardingState = OnboardingState.Hidden,
                 actionMessage = Effect.empty(),
                 deleteDialogState = DeleteDialogState.Hidden

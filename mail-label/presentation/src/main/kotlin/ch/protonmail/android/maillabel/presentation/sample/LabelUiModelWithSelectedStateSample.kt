@@ -27,6 +27,7 @@ import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
 import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.maillabel.presentation.model.LabelSelectedState
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModelWithSelectedState
+import kotlinx.collections.immutable.toImmutableList
 import me.proton.core.label.domain.entity.LabelId
 
 object LabelUiModelWithSelectedStateSample {
@@ -74,7 +75,7 @@ object LabelUiModelWithSelectedStateSample {
             ),
             selectedState = LabelSelectedState.NotSelected
         )
-    )
+    ).toImmutableList()
 
     val customLabelListWithSelection = listOf(
         LabelUiModelWithSelectedState(
@@ -119,7 +120,7 @@ object LabelUiModelWithSelectedStateSample {
             ),
             selectedState = LabelSelectedState.NotSelected
         )
-    )
+    ).toImmutableList()
 
     val customLabelListWithPartialSelection = listOf(
         LabelUiModelWithSelectedState(
@@ -164,7 +165,7 @@ object LabelUiModelWithSelectedStateSample {
             ),
             selectedState = LabelSelectedState.NotSelected
         )
-    )
+    ).toImmutableList()
 
     val customLabelListWithDocumentSelected = listOf(
         LabelUiModelWithSelectedState(
@@ -209,7 +210,7 @@ object LabelUiModelWithSelectedStateSample {
             ),
             selectedState = LabelSelectedState.NotSelected
         )
-    )
+    ).toImmutableList()
 
     val customLabelListWithVariousStates = listOf(
         LabelUiModelWithSelectedState(
@@ -254,7 +255,7 @@ object LabelUiModelWithSelectedStateSample {
             ),
             selectedState = LabelSelectedState.PartiallySelected
         )
-    )
+    ).toImmutableList()
 
     val customLabelListAllSelected = listOf(
         LabelUiModelWithSelectedState(
@@ -299,5 +300,5 @@ object LabelUiModelWithSelectedStateSample {
             ),
             selectedState = LabelSelectedState.Selected
         )
-    )
+    ).toImmutableList()
 }

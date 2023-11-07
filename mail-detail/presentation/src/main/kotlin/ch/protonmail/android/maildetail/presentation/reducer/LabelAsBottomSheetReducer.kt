@@ -27,6 +27,7 @@ import ch.protonmail.android.maildetail.presentation.model.LabelAsBottomSheetSta
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.model.LabelSelectedState
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModelWithSelectedState
+import kotlinx.collections.immutable.toImmutableList
 import me.proton.core.label.domain.entity.LabelId
 import javax.inject.Inject
 
@@ -50,7 +51,7 @@ class LabelAsBottomSheetReducer @Inject constructor() {
                         labelUiModel = label,
                         selectedState = label.id.toLabelSelectedState(selectedLabels, partiallySelectedLabels)
                     )
-                }
+                }.toImmutableList()
             ),
             bottomSheetVisibilityEffect = currentState?.bottomSheetVisibilityEffect ?: Effect.empty()
         )
@@ -71,7 +72,7 @@ class LabelAsBottomSheetReducer @Inject constructor() {
                     } else {
                         labelUiModelWithSelectedState
                     }
-                }
+                }.toImmutableList()
                 BottomSheetState(
                     contentState = Data(newLabelList),
                     bottomSheetVisibilityEffect = currentState.bottomSheetVisibilityEffect

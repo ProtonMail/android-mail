@@ -37,9 +37,9 @@ object MessageDetailHeaderUiModelSample {
         time: TextUiModel,
         extendedTime: TextUiModel,
         allRecipients: TextUiModel,
-        toRecipients: List<ParticipantUiModel>,
-        ccRecipients: List<ParticipantUiModel>,
-        bccRecipients: List<ParticipantUiModel>,
+        toRecipients: ImmutableList<ParticipantUiModel>,
+        ccRecipients: ImmutableList<ParticipantUiModel>,
+        bccRecipients: ImmutableList<ParticipantUiModel>,
         labels: ImmutableList<LabelUiModel>
     ): MessageDetailHeaderUiModel = MessageDetailHeaderUiModel(
         avatar = avatar,

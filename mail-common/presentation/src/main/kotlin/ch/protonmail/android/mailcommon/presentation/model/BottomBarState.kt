@@ -18,14 +18,18 @@
 
 package ch.protonmail.android.mailcommon.presentation.model
 
+import androidx.compose.runtime.Immutable
+import kotlinx.collections.immutable.ImmutableList
+
+@Immutable
 sealed interface BottomBarState {
 
     sealed interface Data : BottomBarState {
 
-        val actions: List<ActionUiModel>
+        val actions: ImmutableList<ActionUiModel>
 
-        data class Hidden(override val actions: List<ActionUiModel>) : Data
-        data class Shown(override val actions: List<ActionUiModel>) : Data
+        data class Hidden(override val actions: ImmutableList<ActionUiModel>) : Data
+        data class Shown(override val actions: ImmutableList<ActionUiModel>) : Data
     }
 
     object Loading : BottomBarState
@@ -37,9 +41,9 @@ sealed interface BottomBarState {
 
 sealed interface BottomBarEvent {
 
-    data class ActionsData(val actionUiModels: List<ActionUiModel>) : BottomBarEvent
+    data class ActionsData(val actionUiModels: ImmutableList<ActionUiModel>) : BottomBarEvent
 
-    data class ShowAndUpdateActionsData(val actionUiModels: List<ActionUiModel>) : BottomBarEvent
+    data class ShowAndUpdateActionsData(val actionUiModels: ImmutableList<ActionUiModel>) : BottomBarEvent
 
     object ShowBottomSheet : BottomBarEvent
     object HideBottomSheet : BottomBarEvent

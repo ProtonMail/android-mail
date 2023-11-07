@@ -31,6 +31,7 @@ import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
+import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
@@ -73,6 +74,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.usecase.DeleteMessages
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -158,7 +160,10 @@ class MailboxViewModel @Inject constructor(
                     ifLeft = { MailboxEvent.MessageBottomBarEvent(BottomBarEvent.ErrorLoadingActions) },
                     ifRight = { actions ->
                         MailboxEvent.MessageBottomBarEvent(
-                            BottomBarEvent.ActionsData(actions.map { action -> actionUiModelMapper.toUiModel(action) })
+                            BottomBarEvent.ActionsData(
+                                actions.map { action -> actionUiModelMapper.toUiModel(action) }
+                                    .toImmutableList()
+                            )
                         )
                     }
                 )
@@ -528,7 +533,7 @@ class MailboxViewModel @Inject constructor(
             mailboxListState = MailboxListState.Loading(selectionModeEnabled = false),
             topAppBarState = MailboxTopAppBarState.Loading,
             unreadFilterState = UnreadFilterState.Loading,
-            bottomAppBarState = BottomBarState.Data.Hidden(emptyList()),
+            bottomAppBarState = BottomBarState.Data.Hidden(emptyList<ActionUiModel>().toImmutableList()),
             onboardingState = OnboardingState.Hidden,
             actionMessage = Effect.empty(),
             deleteDialogState = DeleteDialogState.Hidden

@@ -94,9 +94,9 @@ class MessageDetailHeaderUiModelMapperTest {
         extendedTime = extendedTimeTestUiModel,
         shouldShowUndisclosedRecipients = false,
         allRecipients = TextUiModel.Text("Recipient1, Recipient2, Recipient3"),
-        toRecipients = listOf(participant1UiModel, participant2UiModel),
-        ccRecipients = listOf(participant3UiModel),
-        bccRecipients = emptyList(),
+        toRecipients = listOf(participant1UiModel, participant2UiModel).toImmutableList(),
+        ccRecipients = listOf(participant3UiModel).toImmutableList(),
+        bccRecipients = emptyList<ParticipantUiModel>().toImmutableList(),
         labels = labels.map(LabelUiModelSample::build).toImmutableList(),
         size = "12 MB",
         encryptionPadlock = ic_proton_lock,
@@ -241,8 +241,8 @@ class MessageDetailHeaderUiModelMapperTest {
         val expectedResult = expectedResult.copy(
             shouldShowUndisclosedRecipients = true,
             allRecipients = TextUiModel.TextRes(undisclosed_recipients),
-            toRecipients = emptyList(),
-            ccRecipients = emptyList()
+            toRecipients = emptyList<ParticipantUiModel>().toImmutableList(),
+            ccRecipients = emptyList<ParticipantUiModel>().toImmutableList()
         )
         // When
         val result = messageDetailHeaderUiModelMapper.toUiModel(

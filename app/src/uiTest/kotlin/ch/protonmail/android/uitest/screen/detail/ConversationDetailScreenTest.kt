@@ -44,6 +44,7 @@ import ch.protonmail.android.uitest.robot.detail.section.verify
 import ch.protonmail.android.uitest.robot.detail.verify
 import ch.protonmail.android.uitest.util.ComposeTestRuleHolder.createAndGetComposeRule
 import ch.protonmail.android.uitest.util.getString
+import kotlinx.collections.immutable.toImmutableList
 import org.junit.Ignore
 import org.junit.Rule
 import kotlin.test.Test
@@ -134,7 +135,7 @@ internal class ConversationDetailScreenTest {
             messagesState = ConversationDetailsMessagesState.Data(
                 messages = listOf(
                     ConversationDetailMessageUiModelSample.EmptyDraft
-                )
+                ).toImmutableList()
             )
         )
 
@@ -154,7 +155,7 @@ internal class ConversationDetailScreenTest {
             messagesState = ConversationDetailsMessagesState.Data(
                 messages = listOf(
                     ConversationDetailMessageUiModelSample.InvoiceReplied
-                )
+                ).toImmutableList()
             )
         )
 
@@ -174,7 +175,7 @@ internal class ConversationDetailScreenTest {
             messagesState = ConversationDetailsMessagesState.Data(
                 messages = listOf(
                     ConversationDetailMessageUiModelSample.InvoiceRepliedAll
-                )
+                ).toImmutableList()
             )
         )
 
@@ -194,7 +195,7 @@ internal class ConversationDetailScreenTest {
             messagesState = ConversationDetailsMessagesState.Data(
                 messages = listOf(
                     ConversationDetailMessageUiModelSample.InvoiceForwarded
-                )
+                ).toImmutableList()
             )
         )
 
@@ -244,7 +245,7 @@ internal class ConversationDetailScreenTest {
             messagesState = ConversationDetailsMessagesState.Data(
                 messages = listOf(
                     ConversationDetailMessageUiModelSample.ExpiringInvitation
-                )
+                ).toImmutableList()
             )
         )
 
@@ -264,7 +265,7 @@ internal class ConversationDetailScreenTest {
             messagesState = ConversationDetailsMessagesState.Data(
                 messages = listOf(
                     ConversationDetailMessageUiModelSample.StarredInvoice
-                )
+                ).toImmutableList()
             )
         )
 
@@ -301,7 +302,7 @@ internal class ConversationDetailScreenTest {
         // given
         val state = ConversationDetailsPreviewData.SuccessWithRandomMessageIds.copy(
             bottomBarState = BottomBarState.Data.Shown(
-                actions = listOf(ActionUiModelSample.Trash)
+                actions = listOf(ActionUiModelSample.Trash).toImmutableList()
             )
         )
 
@@ -342,7 +343,7 @@ internal class ConversationDetailScreenTest {
         // given
         val state = ConversationDetailsPreviewData.SuccessWithRandomMessageIds.copy(
             bottomBarState = BottomBarState.Data.Shown(
-                actions = listOf(ActionUiModelSample.MarkUnread)
+                actions = listOf(ActionUiModelSample.MarkUnread).toImmutableList()
             )
         )
         var unreadClicked = false
@@ -405,7 +406,7 @@ internal class ConversationDetailScreenTest {
             messagesState = ConversationDetailsMessagesState.Data(
                 messages = listOf(
                     ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded
-                )
+                ).toImmutableList()
             )
         )
 
@@ -425,7 +426,7 @@ internal class ConversationDetailScreenTest {
             messagesState = ConversationDetailsMessagesState.Data(
                 messages = listOf(
                     ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded
-                )
+                ).toImmutableList()
             )
         )
 
@@ -449,7 +450,7 @@ internal class ConversationDetailScreenTest {
             messagesState = ConversationDetailsMessagesState.Data(
                 messages = listOf(
                     ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded
-                )
+                ).toImmutableList()
             )
         )
 

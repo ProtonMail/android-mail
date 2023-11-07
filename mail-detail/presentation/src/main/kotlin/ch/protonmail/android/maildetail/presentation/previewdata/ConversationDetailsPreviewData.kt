@@ -31,9 +31,11 @@ import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
+import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
 import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
-import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
+import kotlinx.collections.immutable.toImmutableList
 
 object ConversationDetailsPreviewData {
 
@@ -45,20 +47,20 @@ object ConversationDetailsPreviewData {
             messages = listOf(
                 ConversationDetailMessageUiModelSample.AugWeatherForecast,
                 ConversationDetailMessageUiModelSample.InvoiceRepliedAll
-                    .copy(messageId = MessageId(UUID.randomUUID().toString())),
+                    .copy(messageId = MessageIdUiModel(UUID.randomUUID().toString())),
                 ConversationDetailMessageUiModelSample.InvoiceForwarded
-                    .copy(messageId = MessageId(UUID.randomUUID().toString())),
+                    .copy(messageId = MessageIdUiModel(UUID.randomUUID().toString())),
                 ConversationDetailMessageUiModelSample.ExpiringInvitation
-            )
+            ).toImmutableList()
         ),
         bottomBarState = BottomBarState.Data.Shown(
             actions = listOf(
                 ActionUiModel(Action.Archive, Action.Archive.iconDrawable(), Action.Archive.contentDescription())
-            )
+            ).toImmutableList()
         ),
         bottomSheetState = BottomSheetState(
             MoveToBottomSheetState.Data(
-                moveToDestinations = emptyList(),
+                moveToDestinations = emptyList<MailLabelUiModel>().toImmutableList(),
                 selected = null
             )
         ),
@@ -78,27 +80,27 @@ object ConversationDetailsPreviewData {
         messagesState = ConversationDetailsMessagesState.Data(
             messages = listOf(
                 ConversationDetailMessageUiModelSample.AugWeatherForecast.copy(
-                    messageId = MessageId(UUID.randomUUID().toString())
+                    messageId = MessageIdUiModel(UUID.randomUUID().toString())
                 ),
                 ConversationDetailMessageUiModelSample.InvoiceRepliedAll.copy(
-                    messageId = MessageId(UUID.randomUUID().toString())
+                    messageId = MessageIdUiModel(UUID.randomUUID().toString())
                 ),
                 ConversationDetailMessageUiModelSample.InvoiceForwarded.copy(
-                    messageId = MessageId(UUID.randomUUID().toString())
+                    messageId = MessageIdUiModel(UUID.randomUUID().toString())
                 ),
                 ConversationDetailMessageUiModelSample.ExpiringInvitation.copy(
-                    messageId = MessageId(UUID.randomUUID().toString())
+                    messageId = MessageIdUiModel(UUID.randomUUID().toString())
                 )
-            )
+            ).toImmutableList()
         ),
         bottomBarState = BottomBarState.Data.Shown(
             actions = listOf(
                 ActionUiModel(Action.Archive, Action.Archive.iconDrawable(), Action.Archive.contentDescription())
-            )
+            ).toImmutableList()
         ),
         bottomSheetState = BottomSheetState(
             MoveToBottomSheetState.Data(
-                moveToDestinations = emptyList(),
+                moveToDestinations = emptyList<MailLabelUiModel>().toImmutableList(),
                 selected = null
             )
         ),

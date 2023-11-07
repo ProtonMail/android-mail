@@ -18,17 +18,4 @@
 
 package ch.protonmail.android.maildetail.presentation.model
 
-import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import kotlinx.collections.immutable.ImmutableList
-
-sealed interface ConversationDetailsMessagesState {
-
-    data class Data(
-        val messages: ImmutableList<ConversationDetailMessageUiModel>
-    ) : ConversationDetailsMessagesState
-
-    object Loading : ConversationDetailsMessagesState
-    object Offline : ConversationDetailsMessagesState
-
-    data class Error(val message: TextUiModel) : ConversationDetailsMessagesState
-}
+data class MessageIdUiModel(val id: String)

@@ -18,6 +18,9 @@
 
 package ch.protonmail.android.mailcommon.presentation.model
 
+import androidx.compose.runtime.Immutable
+
+@Immutable
 sealed class AvatarUiModel {
     data class ParticipantInitial(val value: String) : AvatarUiModel()
     data class SelectionMode(val selected: Boolean) : AvatarUiModel()

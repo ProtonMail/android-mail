@@ -24,9 +24,12 @@ import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.BottomSheetVisibilityEffect
 import ch.protonmail.android.maildetail.presentation.model.LabelAsBottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
+import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
+import ch.protonmail.android.maillabel.presentation.model.LabelUiModelWithSelectedState
 import io.mockk.Called
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.collections.immutable.toImmutableList
 import me.proton.core.label.domain.entity.LabelId
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -86,7 +89,12 @@ internal class BottomSheetReducerTest(
                 reducesLabelAs = false
             ),
             TestInput(
-                currentState = BottomSheetState(MoveToBottomSheetState.Data(listOf(), null)),
+                currentState = BottomSheetState(
+                    MoveToBottomSheetState.Data(
+                        listOf<MailLabelUiModel>().toImmutableList(),
+                        null
+                    )
+                ),
                 operation = BottomSheetOperation.Dismiss,
                 expectedState = BottomSheetState(null, Effect.of(BottomSheetVisibilityEffect.Hide)),
                 reducesBottomSheetVisibilityEffects = true,
@@ -98,8 +106,17 @@ internal class BottomSheetReducerTest(
         private val moveToBottomSheetOperation = listOf(
             TestInput(
                 currentState = BottomSheetState(null, Effect.empty()),
-                operation = MoveToBottomSheetState.MoveToBottomSheetEvent.ActionData(listOf()),
-                expectedState = BottomSheetState(MoveToBottomSheetState.Data(listOf(), null)),
+                operation = MoveToBottomSheetState.MoveToBottomSheetEvent.ActionData(
+                    listOf<MailLabelUiModel>()
+                        .toImmutableList()
+                ),
+                expectedState = BottomSheetState(
+                    MoveToBottomSheetState.Data(
+                        listOf<MailLabelUiModel>()
+                            .toImmutableList(),
+                        null
+                    )
+                ),
                 reducesBottomSheetVisibilityEffects = false,
                 reducesMoveTo = true,
                 reducesLabelAs = false
@@ -109,16 +126,35 @@ internal class BottomSheetReducerTest(
         private val labelAsBottomSheetOperation = listOf(
             TestInput(
                 currentState = BottomSheetState(null, Effect.empty()),
-                operation = LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(listOf(), listOf()),
-                expectedState = BottomSheetState(LabelAsBottomSheetState.Data(listOf())),
+                operation = LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
+                    listOf<MailLabelUiModel.Custom>()
+                        .toImmutableList(),
+                    listOf<LabelId>().toImmutableList()
+                ),
+                expectedState = BottomSheetState(
+                    LabelAsBottomSheetState.Data(
+                        listOf<LabelUiModelWithSelectedState>()
+                            .toImmutableList()
+                    )
+                ),
                 reducesBottomSheetVisibilityEffects = false,
                 reducesLabelAs = true,
                 reducesMoveTo = false
             ),
             TestInput(
-                currentState = BottomSheetState(LabelAsBottomSheetState.Data(listOf())),
+                currentState = BottomSheetState(
+                    LabelAsBottomSheetState.Data(
+                        listOf<LabelUiModelWithSelectedState>()
+                            .toImmutableList()
+                    )
+                ),
                 operation = LabelAsBottomSheetState.LabelAsBottomSheetAction.LabelToggled(LabelId("labelId")),
-                expectedState = BottomSheetState(LabelAsBottomSheetState.Data(listOf())),
+                expectedState = BottomSheetState(
+                    LabelAsBottomSheetState.Data(
+                        listOf<LabelUiModelWithSelectedState>()
+                            .toImmutableList()
+                    )
+                ),
                 reducesBottomSheetVisibilityEffects = false,
                 reducesLabelAs = true,
                 reducesMoveTo = false
@@ -127,21 +163,20 @@ internal class BottomSheetReducerTest(
 
         @JvmStatic
         @Parameterized.Parameters(name = "{0}")
-        fun data() =
-            (
-                bottomSheetVisibilityOperations +
-                    moveToBottomSheetOperation +
-                    labelAsBottomSheetOperation
-                )
-                .map { testInput ->
-                    val testName = """
-                        Current state: ${testInput.currentState}
-                        Operation: ${testInput.operation}
-                        Next state: ${testInput.expectedState}
+        fun data() = (
+            bottomSheetVisibilityOperations +
+                moveToBottomSheetOperation +
+                labelAsBottomSheetOperation
+            )
+            .map { testInput ->
+                val testName = """
+                    Current state: ${testInput.currentState}
+                    Operation: ${testInput.operation}
+                    Next state: ${testInput.expectedState}
                         
-                    """.trimIndent()
-                    arrayOf(testName, testInput)
-                }
+                """.trimIndent()
+                arrayOf(testName, testInput)
+            }
     }
 
     data class TestInput(

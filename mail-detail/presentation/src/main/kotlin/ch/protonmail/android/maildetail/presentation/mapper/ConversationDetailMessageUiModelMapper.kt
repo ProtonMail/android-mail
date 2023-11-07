@@ -30,6 +30,8 @@ import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.label.domain.entity.Label
 import me.proton.core.label.domain.entity.LabelType
@@ -38,6 +40,7 @@ import kotlin.time.Duration.Companion.seconds
 
 @Suppress("LongParameterList")
 class ConversationDetailMessageUiModelMapper @Inject constructor(
+    private val messageIdUiModelMapper: MessageIdUiModelMapper,
     private val avatarUiModelMapper: DetailAvatarUiModelMapper,
     private val expirationTimeMapper: ExpirationTimeMapper,
     private val colorMapper: ColorMapper,
@@ -71,7 +74,7 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
             sender = participantUiModelMapper.senderToUiModel(message.sender, contacts),
             shortTime = formatShortTime(message.time.seconds),
             labels = toLabelUiModels(messageWithLabels.labels),
-            messageId = message.messageId
+            messageId = messageIdUiModelMapper.toUiModel(message.messageId)
         )
     }
 
@@ -83,7 +86,7 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
     ): ConversationDetailMessageUiModel.Expanded {
         val (message, _) = messageWithLabels
         return ConversationDetailMessageUiModel.Expanded(
-            messageId = message.messageId,
+            messageId = messageIdUiModelMapper.toUiModel(message.messageId),
             isUnread = message.unread,
             messageDetailHeaderUiModel = messageDetailHeaderUiModelMapper.toUiModel(
                 messageWithLabels,
@@ -131,12 +134,12 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
         else -> ConversationDetailMessageUiModel.RepliedIcon.None
     }
 
-    private fun toLabelUiModels(labels: List<Label>): List<LabelUiModel> =
+    private fun toLabelUiModels(labels: List<Label>): ImmutableList<LabelUiModel> =
         labels.filter { it.type == LabelType.MessageLabel }.map { label ->
             LabelUiModel(
                 name = label.name,
                 color = colorMapper.toColor(label.color).getOrElse { Color.Unspecified }
             )
-        }
+        }.toImmutableList()
 }
 

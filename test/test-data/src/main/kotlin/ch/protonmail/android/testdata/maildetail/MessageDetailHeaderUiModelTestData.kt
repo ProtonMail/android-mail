@@ -25,6 +25,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageDetailHeaderUi
 import ch.protonmail.android.maildetail.presentation.model.MessageLocationUiModel
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 
 object MessageDetailHeaderUiModelTestData {
 
@@ -57,7 +58,7 @@ object MessageDetailHeaderUiModelTestData {
                 R.drawable.ic_proton_lock,
                 shouldShowOfficialBadge = false
             )
-        ),
+        ).toImmutableList(),
         ccRecipients = listOf(
             ParticipantUiModel(
                 "Recipient3",
@@ -65,8 +66,8 @@ object MessageDetailHeaderUiModelTestData {
                 R.drawable.ic_proton_lock,
                 shouldShowOfficialBadge = false
             )
-        ),
-        bccRecipients = emptyList(),
+        ).toImmutableList(),
+        bccRecipients = emptyList<ParticipantUiModel>().toImmutableList(),
         labels = persistentListOf(),
         size = "12 MB",
         encryptionPadlock = R.drawable.ic_proton_lock,

@@ -21,9 +21,11 @@ package ch.protonmail.android.maildetail.presentation.reducer
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maildetail.presentation.R.string
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
+import kotlinx.collections.immutable.toImmutableList
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import kotlin.test.Test
@@ -54,17 +56,17 @@ class ConversationDetailMessagesReducerTest(
         private val allMessages = listOf(
             ConversationDetailMessageUiModelSample.AugWeatherForecast,
             ConversationDetailMessageUiModelSample.SepWeatherForecast
-        )
+        ).toImmutableList()
 
         private val allMessagesFirstExpanded = listOf(
             ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded,
             ConversationDetailMessageUiModelSample.SepWeatherForecast
-        )
+        ).toImmutableList()
 
         private val allMessagesFirstExpanding = listOf(
             ConversationDetailMessageUiModelSample.AugWeatherForecastExpanding,
             ConversationDetailMessageUiModelSample.SepWeatherForecast
-        )
+        ).toImmutableList()
 
         private val fromLoadingState = listOf(
 
@@ -112,7 +114,7 @@ class ConversationDetailMessagesReducerTest(
                 ),
                 expectedState = ConversationDetailsMessagesState.Data(messages = allMessagesFirstExpanded)
             ),
-        )
+        ).toImmutableList()
 
         private val fromErrorState = listOf(
 
@@ -149,7 +151,7 @@ class ConversationDetailMessagesReducerTest(
 
             Input(
                 currentState = ConversationDetailsMessagesState.Data(
-                    messages = emptyList()
+                    messages = emptyList<ConversationDetailMessageUiModel>().toImmutableList()
                 ),
                 operation = ConversationDetailEvent.ErrorLoadingContacts,
                 expectedState = ConversationDetailsMessagesState.Error(
@@ -159,7 +161,7 @@ class ConversationDetailMessagesReducerTest(
 
             Input(
                 currentState = ConversationDetailsMessagesState.Data(
-                    messages = emptyList()
+                    messages = emptyList<ConversationDetailMessageUiModel>().toImmutableList()
                 ),
                 operation = ConversationDetailEvent.ErrorLoadingMessages,
                 expectedState = ConversationDetailsMessagesState.Error(
@@ -168,7 +170,9 @@ class ConversationDetailMessagesReducerTest(
             ),
 
             Input(
-                currentState = ConversationDetailsMessagesState.Data(messages = emptyList()),
+                currentState = ConversationDetailsMessagesState.Data(
+                    messages = emptyList<ConversationDetailMessageUiModel>().toImmutableList()
+                ),
                 operation = ConversationDetailEvent.MessagesData(messagesUiModels = allMessages, null),
                 expectedState = ConversationDetailsMessagesState.Data(messages = allMessages)
             ),
@@ -241,7 +245,7 @@ class ConversationDetailMessagesReducerTest(
                     messages = listOf(
                         ConversationDetailMessageUiModelSample.invoiceExpandedWithAttachments(3),
                         ConversationDetailMessageUiModelSample.SepWeatherForecast
-                    )
+                    ).toImmutableList()
                 ),
                 operation = ConversationDetailEvent.ShowAllAttachmentsForMessage(
                     messageId = ConversationDetailMessageUiModelSample.invoiceExpandedWithAttachments(3).messageId,
@@ -252,7 +256,7 @@ class ConversationDetailMessagesReducerTest(
                     messages = listOf(
                         ConversationDetailMessageUiModelSample.invoiceExpandedWithAttachments(4),
                         ConversationDetailMessageUiModelSample.SepWeatherForecast
-                    )
+                    ).toImmutableList()
                 )
             )
         )

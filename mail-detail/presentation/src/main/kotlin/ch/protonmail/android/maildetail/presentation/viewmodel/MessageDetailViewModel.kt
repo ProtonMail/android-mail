@@ -70,6 +70,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -319,7 +320,7 @@ class MessageDetailViewModel @Inject constructor(
                 either.fold(
                     ifLeft = { MessageDetailEvent.MessageBottomBarEvent(BottomBarEvent.ErrorLoadingActions) },
                     ifRight = { actions ->
-                        val actionUiModels = actions.map { actionUiModelMapper.toUiModel(it) }
+                        val actionUiModels = actions.map { actionUiModelMapper.toUiModel(it) }.toImmutableList()
                         MessageDetailEvent.MessageBottomBarEvent(
                             BottomBarEvent.ShowAndUpdateActionsData(actionUiModels)
                         )
@@ -351,7 +352,7 @@ class MessageDetailViewModel @Inject constructor(
             ) { folders, color ->
                 MessageDetailEvent.MessageBottomSheetEvent(
                     MoveToBottomSheetState.MoveToBottomSheetEvent.ActionData(
-                        folders.toUiModels(color).let { it.folders + it.systems }
+                        folders.toUiModels(color).let { it.folders + it.systems }.toImmutableList()
                     )
                 )
             }
@@ -386,8 +387,9 @@ class MessageDetailViewModel @Inject constructor(
 
             val event = MessageDetailEvent.MessageBottomSheetEvent(
                 LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
-                    customLabelList = mappedLabels.map { it.toCustomUiModel(color, emptyMap(), null) },
-                    selectedLabels = selectedLabels
+                    customLabelList = mappedLabels.map { it.toCustomUiModel(color, emptyMap(), null) }
+                        .toImmutableList(),
+                    selectedLabels = selectedLabels.toImmutableList()
                 )
             )
             emitNewStateFrom(event)
@@ -498,7 +500,7 @@ class MessageDetailViewModel @Inject constructor(
     }
 
     private suspend fun isAttachmentDownloadInProgress() =
-        getDownloadingAttachmentsForMessages(primaryUserId.first(), listOf(messageId)).isNotEmpty()
+        getDownloadingAttachmentsForMessages(primaryUserId.first(), listOf(MessageId(messageId.id))).isNotEmpty()
 
     companion object {
 

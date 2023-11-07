@@ -27,6 +27,7 @@ import ch.protonmail.android.testdata.action.ActionUiModelTestData
 import ch.protonmail.android.uitest.robot.common.BottomActionBarRobot
 import ch.protonmail.android.uitest.robot.common.verify
 import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
+import kotlinx.collections.immutable.toImmutableList
 import org.junit.Rule
 import org.junit.Test
 
@@ -72,7 +73,7 @@ internal class BottomActionBarTest {
                 ActionUiModelTestData.label,
                 ActionUiModelTestData.markUnread,
                 ActionUiModelTestData.reportPhishing
-            )
+            ).toImmutableList()
         )
 
         // when

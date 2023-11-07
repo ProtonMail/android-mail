@@ -66,6 +66,7 @@ import ch.protonmail.android.maildetail.presentation.R.string
 import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMessageUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMetadataUiModelMapper
+import ch.protonmail.android.maildetail.presentation.mapper.MessageIdUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
@@ -74,6 +75,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailSta
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
 import ch.protonmail.android.maildetail.presentation.model.LabelAsBottomSheetState
+import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
 import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailReducer
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
@@ -105,6 +107,7 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
@@ -116,6 +119,7 @@ import kotlinx.coroutines.test.setMain
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.featureflag.domain.entity.FeatureFlag
 import me.proton.core.featureflag.domain.entity.Scope
+import me.proton.core.label.domain.entity.LabelId
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -136,6 +140,7 @@ class ConversationDetailViewModelTest {
     private val defaultFolderColorSettings = FolderColorSettings()
 
     private val actionUiModelMapper = ActionUiModelMapper()
+    private val messageIdUiModelMapper = MessageIdUiModelMapper()
     private val conversationMetadataMapper: ConversationDetailMetadataUiModelMapper = mockk {
         every { toUiModel(ConversationSample.WeatherForecast) } returns
             ConversationDetailMetadataUiModelSample.WeatherForecast
@@ -293,7 +298,8 @@ class ConversationDetailViewModelTest {
             getAttachmentIntentValues = getAttachmentIntentValues,
             getEmbeddedImageAvoidDuplicatedExecution = getEmbeddedImageAvoidDuplicatedExecution,
             ioDispatcher = Dispatchers.Unconfined,
-            observeMailFeature = observeMailFeature
+            observeMailFeature = observeMailFeature,
+            messageIdUiModelMapper = messageIdUiModelMapper
         )
     }
 
@@ -456,7 +462,7 @@ class ConversationDetailViewModelTest {
         val messagesUiModels = listOf(
             ConversationDetailMessageUiModelSample.InvoiceWithLabel,
             ConversationDetailMessageUiModelSample.InvoiceWithTwoLabels
-        )
+        ).toImmutableList()
         val expectedState = initialState.copy(
             messagesState = ConversationDetailsMessagesState.Data(messagesUiModels)
         )
@@ -492,7 +498,7 @@ class ConversationDetailViewModelTest {
         val messagesUiModels = listOf(
             ConversationDetailMessageUiModelSample.InvoiceWithLabel,
             ConversationDetailMessageUiModelSample.InvoiceWithTwoLabels
-        )
+        ).toImmutableList()
         val expectedState = initialState.copy(
             messagesState = ConversationDetailsMessagesState.Data(messagesUiModels)
         )
@@ -586,7 +592,7 @@ class ConversationDetailViewModelTest {
             )
         } returns messages.first()
         val actions = listOf(Action.Archive)
-        val actionUiModels = listOf(ActionUiModelTestData.archive)
+        val actionUiModels = listOf(ActionUiModelTestData.archive).toImmutableList()
         val expected = initialState.copy(bottomBarState = BottomBarState.Data.Shown(actionUiModels))
         every {
             observeConversationDetailActions(UserIdSample.Primary, ConversationIdSample.WeatherForecast, any())
@@ -683,7 +689,7 @@ class ConversationDetailViewModelTest {
         val actionUiModels = listOf(
             ActionUiModelTestData.archive,
             ActionUiModelTestData.markUnread
-        )
+        ).toImmutableList()
         givenReducerReturnsStarredUiModel()
         givenReducerReturnsBottomActions()
         givenReducerReturnsBottomSheetActions()
@@ -969,14 +975,14 @@ class ConversationDetailViewModelTest {
         } returns messages.first()
         val event = LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
             customLabelList = MailLabelUiModelTestData.customLabelList,
-            selectedLabels = listOf(LabelSample.Document.labelId, LabelSample.Label2021.labelId),
-            partiallySelectedLabels = listOf(LabelSample.Label2022.labelId)
+            selectedLabels = listOf(LabelSample.Document.labelId, LabelSample.Label2021.labelId).toImmutableList(),
+            partiallySelectedLabels = listOf(LabelSample.Label2022.labelId).toImmutableList()
         )
 
         val expectedResult = ConversationDetailState.Loading.copy(
             bottomSheetState = BottomSheetState(
                 LabelAsBottomSheetState.Data(
-                    LabelUiModelWithSelectedStateSample.customLabelListWithPartialSelection
+                    LabelUiModelWithSelectedStateSample.customLabelListWithPartialSelection.toImmutableList()
                 )
             )
         )
@@ -1022,8 +1028,8 @@ class ConversationDetailViewModelTest {
         } returns messages.first()
         val event = LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
             customLabelList = MailLabelUiModelTestData.customLabelList,
-            selectedLabels = listOf(),
-            partiallySelectedLabels = listOf()
+            selectedLabels = listOf<LabelId>().toImmutableList(),
+            partiallySelectedLabels = listOf<LabelId>().toImmutableList()
         )
 
         val dataState = ConversationDetailState.Loading.copy(
@@ -1114,8 +1120,8 @@ class ConversationDetailViewModelTest {
             } returns messages.first()
             val event = LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
                 customLabelList = MailLabelUiModelTestData.customLabelList,
-                selectedLabels = listOf(),
-                partiallySelectedLabels = listOf()
+                selectedLabels = listOf<LabelId>().toImmutableList(),
+                partiallySelectedLabels = listOf<LabelId>().toImmutableList()
             )
 
             val dataState = ConversationDetailState.Loading.copy(
@@ -1221,8 +1227,8 @@ class ConversationDetailViewModelTest {
         } returns messages.first()
         val event = LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
             customLabelList = MailLabelUiModelTestData.customLabelList,
-            selectedLabels = listOf(LabelSample.Document.labelId, LabelSample.Label2021.labelId),
-            partiallySelectedLabels = listOf(LabelSample.Label2022.labelId)
+            selectedLabels = listOf(LabelSample.Document.labelId, LabelSample.Label2021.labelId).toImmutableList(),
+            partiallySelectedLabels = listOf(LabelSample.Label2022.labelId).toImmutableList()
         )
 
         val dataState = ConversationDetailState.Loading.copy(
@@ -1409,7 +1415,12 @@ class ConversationDetailViewModelTest {
             advanceUntilIdle()
 
             // then
-            coVerify { markMessageAndConversationReadIfAllRead(userId, expectedExpanded.messageId, any()) }
+            coVerify {
+                markMessageAndConversationReadIfAllRead(
+                    userId, MessageId(expectedExpanded.messageId.id),
+                    any()
+                )
+            }
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -1447,9 +1458,9 @@ class ConversationDetailViewModelTest {
         coEvery {
             getDecryptedMessageBody(
                 userId,
-                messageIds.first()
+                MessageId(messageIds.first().id)
             )
-        } returns GetDecryptedMessageBodyError.Decryption(messageIds.first(), "").left()
+        } returns GetDecryptedMessageBodyError.Decryption(MessageId(messageIds.first().id), "").left()
 
         viewModel.state.test {
             conversationMessagesEmitted()
@@ -1478,7 +1489,7 @@ class ConversationDetailViewModelTest {
             coEvery {
                 getDecryptedMessageBody(
                     userId,
-                    messageIds.first()
+                    MessageId(messageIds.first().id)
                 )
             } returns GetDecryptedMessageBodyError.Data(DataErrorSample.Unreachable).left()
 
@@ -1509,7 +1520,7 @@ class ConversationDetailViewModelTest {
             coEvery {
                 getDecryptedMessageBody(
                     userId,
-                    messageIds.first()
+                    MessageId(messageIds.first().id)
                 )
             } returns GetDecryptedMessageBodyError.Data(DataErrorSample.Offline).left()
 
@@ -1538,7 +1549,7 @@ class ConversationDetailViewModelTest {
         // given
         val messages = nonEmptyListOf(
             InvoiceWithLabelExpanded
-        )
+        ).toImmutableList()
         coEvery {
             conversationMessageMapper.toUiModel(
                 messageWithLabels = any(),
@@ -1622,7 +1633,7 @@ class ConversationDetailViewModelTest {
     @Suppress("LongMethod")
     private fun setupCollapsedToExpandMessagesState(
         withUnreadMessage: Boolean = false
-    ): Pair<List<MessageId>, ConversationDetailMessageUiModel> {
+    ): Pair<List<MessageIdUiModel>, ConversationDetailMessageUiModel> {
         val (invoiceUiMessage, invoiceMessage) = if (withUnreadMessage) {
             Pair(ConversationDetailMessageUiModelSample.UnreadInvoice, MessageWithLabelsSample.UnreadInvoice)
         } else {
@@ -1631,11 +1642,11 @@ class ConversationDetailViewModelTest {
         val allCollapsed = nonEmptyListOf(
             invoiceUiMessage,
             ConversationDetailMessageUiModelSample.AugWeatherForecast
-        )
+        ).toImmutableList()
         val firstExpanded = nonEmptyListOf(
             InvoiceWithLabelExpanded,
             ConversationDetailMessageUiModelSample.AugWeatherForecast
-        )
+        ).toImmutableList()
         val firstExpanding = nonEmptyListOf(
             if (withUnreadMessage) {
                 ConversationDetailMessageUiModelSample.InvoiceWithLabelExpandingUnread
@@ -1643,7 +1654,7 @@ class ConversationDetailViewModelTest {
                 InvoiceWithLabelExpanding
             },
             ConversationDetailMessageUiModelSample.AugWeatherForecast
-        )
+        ).toImmutableList()
         every {
             observeConversationMessagesWithLabels(
                 UserIdSample.Primary,
@@ -1701,7 +1712,7 @@ class ConversationDetailViewModelTest {
                 operation = ofType<ConversationDetailViewAction.RequestScrollTo>()
             )
         } returns ConversationDetailState.Loading.copy(
-            scrollToMessage = MessageId(allCollapsed.first().messageId.id)
+            scrollToMessage = MessageIdUiModel(allCollapsed.first().messageId.id)
         )
         every {
             reducer.newStateFrom(
@@ -1744,7 +1755,7 @@ class ConversationDetailViewModelTest {
         val actionUiModels = listOf(
             ActionUiModelTestData.archive,
             ActionUiModelTestData.markUnread
-        )
+        ).toImmutableList()
         every {
             reducer.newStateFrom(
                 currentState = any(),

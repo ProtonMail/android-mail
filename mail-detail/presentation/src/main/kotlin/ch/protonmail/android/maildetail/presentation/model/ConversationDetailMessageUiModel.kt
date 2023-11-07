@@ -21,16 +21,16 @@ package ch.protonmail.android.maildetail.presentation.model
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
-import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
+import kotlinx.collections.immutable.ImmutableList
 
 sealed interface ConversationDetailMessageUiModel {
 
-    val messageId: MessageId
+    val messageId: MessageIdUiModel
     val isUnread: Boolean
 
     data class Collapsed(
-        override val messageId: MessageId,
+        override val messageId: MessageIdUiModel,
         val avatar: AvatarUiModel,
         val expiration: TextUiModel?,
         val forwardedIcon: ForwardedIcon,
@@ -41,17 +41,17 @@ sealed interface ConversationDetailMessageUiModel {
         val repliedIcon: RepliedIcon,
         val sender: ParticipantUiModel,
         val shortTime: TextUiModel,
-        val labels: List<LabelUiModel>
+        val labels: ImmutableList<LabelUiModel>
     ) : ConversationDetailMessageUiModel
 
     data class Expanding(
-        override val messageId: MessageId,
+        override val messageId: MessageIdUiModel,
         val collapsed: Collapsed,
         override val isUnread: Boolean = collapsed.isUnread
     ) : ConversationDetailMessageUiModel
 
     data class Expanded(
-        override val messageId: MessageId,
+        override val messageId: MessageIdUiModel,
         override val isUnread: Boolean,
         val messageDetailHeaderUiModel: MessageDetailHeaderUiModel,
         val messageBodyUiModel: MessageBodyUiModel

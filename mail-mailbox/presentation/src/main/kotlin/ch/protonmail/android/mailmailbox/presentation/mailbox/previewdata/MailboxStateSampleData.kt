@@ -33,6 +33,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
+import kotlinx.collections.immutable.toImmutableList
 
 object MailboxStateSampleData {
 
@@ -64,7 +65,7 @@ object MailboxStateSampleData {
             numUnread = 1
         ),
         bottomAppBarState = BottomBarState.Data.Hidden(
-            actions = listOf(ActionUiModelSample.Archive)
+            actions = listOf(ActionUiModelSample.Archive).toImmutableList()
         ),
         onboardingState = OnboardingState.Hidden,
         actionMessage = Effect.empty(),
@@ -89,7 +90,7 @@ object MailboxStateSampleData {
             numUnread = 1
         ),
         bottomAppBarState = BottomBarState.Data.Hidden(
-            actions = listOf(ActionUiModelSample.Archive)
+            actions = listOf(ActionUiModelSample.Archive).toImmutableList()
         ),
         onboardingState = OnboardingState.Hidden,
         actionMessage = Effect.empty(),
@@ -127,7 +128,7 @@ object MailboxStateSampleData {
             numUnread = 1
         ),
         bottomAppBarState = BottomBarState.Data.Hidden(
-            actions = bottomBarAction
+            actions = bottomBarAction.toImmutableList()
         ),
         onboardingState = OnboardingState.Hidden,
         actionMessage = Effect.empty(),

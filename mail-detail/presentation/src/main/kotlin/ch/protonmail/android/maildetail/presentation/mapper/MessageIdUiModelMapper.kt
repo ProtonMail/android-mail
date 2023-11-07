@@ -16,19 +16,13 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.model
+package ch.protonmail.android.maildetail.presentation.mapper
 
-import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import kotlinx.collections.immutable.ImmutableList
+import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
+import ch.protonmail.android.mailmessage.domain.model.MessageId
+import javax.inject.Inject
 
-sealed interface ConversationDetailsMessagesState {
+class MessageIdUiModelMapper @Inject constructor() {
 
-    data class Data(
-        val messages: ImmutableList<ConversationDetailMessageUiModel>
-    ) : ConversationDetailsMessagesState
-
-    object Loading : ConversationDetailsMessagesState
-    object Offline : ConversationDetailsMessagesState
-
-    data class Error(val message: TextUiModel) : ConversationDetailsMessagesState
+    fun toUiModel(messageId: MessageId) = MessageIdUiModel(messageId.id)
 }

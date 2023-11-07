@@ -29,8 +29,8 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOpe
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
 import ch.protonmail.android.maildetail.presentation.model.LabelAsBottomSheetState.LabelAsBottomSheetAction.LabelToggled
+import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
 import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState.MoveToBottomSheetAction.MoveToDestinationSelected
-import ch.protonmail.android.mailmessage.domain.model.MessageId
 import javax.inject.Inject
 
 class ConversationDetailReducer @Inject constructor(
@@ -183,12 +183,13 @@ class ConversationDetailReducer @Inject constructor(
         else -> openMessageBodyLinkEffect
     }
 
-    private fun ConversationDetailState.toScrollToMessageState(operation: ConversationDetailOperation): MessageId? =
-        when (operation) {
-            is ConversationDetailViewAction.RequestScrollTo -> operation.messageId
-            is ConversationDetailEvent.MessagesData -> operation.requestScrollToMessageId
-            else -> scrollToMessage
-        }
+    private fun ConversationDetailState.toScrollToMessageState(
+        operation: ConversationDetailOperation
+    ): MessageIdUiModel? = when (operation) {
+        is ConversationDetailViewAction.RequestScrollTo -> operation.messageId
+        is ConversationDetailEvent.MessagesData -> operation.requestScrollToMessageId
+        else -> scrollToMessage
+    }
 
     private fun ConversationDetailState.toNewOpenAttachmentStateFrom(
         operation: ConversationDetailOperation

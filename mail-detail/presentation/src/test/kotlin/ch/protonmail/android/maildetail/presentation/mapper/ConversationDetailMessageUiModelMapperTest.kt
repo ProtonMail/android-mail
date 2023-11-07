@@ -101,6 +101,8 @@ internal class ConversationDetailMessageUiModelMapperTest {
             resolveParticipantName = resolveParticipantName
         )
     )
+    private val messageIdUiModelMapper = MessageIdUiModelMapper()
+
     private val messageBodyUiModelMapper: MessageBodyUiModelMapper = mockk {
         coEvery { toUiModel(any(), any<DecryptedMessageBody>()) } returns mockk()
     }
@@ -127,7 +129,8 @@ internal class ConversationDetailMessageUiModelMapperTest {
         resolveParticipantName = resolveParticipantName,
         messageDetailHeaderUiModelMapper = messageDetailHeaderUiModelMapper,
         messageBodyUiModelMapper = messageBodyUiModelMapper,
-        participantUiModelMapper = participantUiModelMapper
+        participantUiModelMapper = participantUiModelMapper,
+        messageIdUiModelMapper = messageIdUiModelMapper
     )
 
     @BeforeTest
@@ -179,7 +182,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
 
         // then
         assertEquals(result.isUnread, messageWithLabels.message.unread)
-        assertEquals(result.messageId, messageWithLabels.message.messageId)
+        assertEquals(result.messageId.id, messageWithLabels.message.messageId.id)
         coVerify { messageDetailHeaderUiModelMapper.toUiModel(messageWithLabels, contactsList, folderColorSettings) }
         coVerify { messageBodyUiModelMapper.toUiModel(messageWithLabels.message.userId, decryptedMessageBody) }
     }

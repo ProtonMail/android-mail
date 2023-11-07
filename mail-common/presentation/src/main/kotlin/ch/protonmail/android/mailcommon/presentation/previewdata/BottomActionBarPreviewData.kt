@@ -24,6 +24,7 @@ import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.contentDescription
 import ch.protonmail.android.mailcommon.presentation.model.iconDrawable
+import kotlinx.collections.immutable.toImmutableList
 
 object BottomActionBarsPreviewData {
 
@@ -33,7 +34,7 @@ object BottomActionBarsPreviewData {
             ActionUiModel(Action.Archive, Action.Archive.iconDrawable(), Action.Archive.contentDescription()),
             ActionUiModel(Action.Trash, Action.Trash.iconDrawable(), Action.Trash.contentDescription()),
             ActionUiModel(Action.Move, Action.Move.iconDrawable(), Action.Move.contentDescription())
-        )
+        ).toImmutableList()
     )
 
     val Loading = BottomBarState.Loading

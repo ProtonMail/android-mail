@@ -78,13 +78,13 @@ class MessageDetailHeaderUiModelMapper @Inject constructor(
             allRecipients = messageWithLabels.message.allRecipients(contacts),
             toRecipients = messageWithLabels.message.toList.map {
                 participantUiModelMapper.recipientToUiModel(it, contacts)
-            },
+            }.toImmutableList(),
             ccRecipients = messageWithLabels.message.ccList.map {
                 participantUiModelMapper.recipientToUiModel(it, contacts)
-            },
+            }.toImmutableList(),
             bccRecipients = messageWithLabels.message.bccList.map {
                 participantUiModelMapper.recipientToUiModel(it, contacts)
-            },
+            }.toImmutableList(),
             labels = toLabelUiModels(messageWithLabels.labels),
             size = Formatter.formatShortFileSize(context, messageWithLabels.message.size),
             encryptionPadlock = R.drawable.ic_proton_lock,

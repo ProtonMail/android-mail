@@ -35,6 +35,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMes
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel.Collapsed
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel.Expanded
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel.Expanding
+import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
@@ -139,12 +140,12 @@ private fun ConversationDetailExpandedItem(
 
 object ConversationDetailItem {
     data class Actions(
-        val onCollapse: (MessageId) -> Unit,
-        val onExpand: (MessageId) -> Unit,
+        val onCollapse: (MessageIdUiModel) -> Unit,
+        val onExpand: (MessageIdUiModel) -> Unit,
         val onMessageBodyLinkClicked: (url: String) -> Unit,
         val onOpenMessageBodyLink: (url: String) -> Unit,
-        val onShowAllAttachmentsForMessage: (MessageId) -> Unit,
-        val onAttachmentClicked: (MessageId, AttachmentId) -> Unit,
+        val onShowAllAttachmentsForMessage: (MessageIdUiModel) -> Unit,
+        val onAttachmentClicked: (MessageIdUiModel, AttachmentId) -> Unit,
         val showFeatureMissingSnackbar: () -> Unit,
         val loadEmbeddedImage: (messageId: MessageId?, contentId: String) -> GetEmbeddedImageResult?,
         val onReply: (MessageId) -> Unit,

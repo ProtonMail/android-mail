@@ -32,9 +32,11 @@ import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
 import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
+import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
 import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelSample
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 
 object MessageDetailsPreviewData {
 
@@ -58,11 +60,11 @@ object MessageDetailsPreviewData {
         bottomBarState = BottomBarState.Data.Shown(
             listOf(
                 ActionUiModel(Action.Archive, Action.Archive.iconDrawable(), Action.Archive.contentDescription())
-            )
+            ).toImmutableList()
         ),
         bottomSheetState = BottomSheetState(
             MoveToBottomSheetState.Data(
-                moveToDestinations = listOf(),
+                moveToDestinations = emptyList<MailLabelUiModel>().toImmutableList(),
                 selected = null
             )
         ),
