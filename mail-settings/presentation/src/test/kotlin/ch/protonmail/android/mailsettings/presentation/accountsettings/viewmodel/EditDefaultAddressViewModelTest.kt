@@ -36,6 +36,7 @@ import io.mockk.coEvery
 import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.slot
 import io.mockk.spyk
 import io.mockk.unmockkAll
 import io.mockk.verify
@@ -52,6 +53,7 @@ import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
+import kotlin.time.Duration.Companion.seconds
 
 internal class EditDefaultAddressViewModelTest {
 
@@ -182,7 +184,11 @@ internal class EditDefaultAddressViewModelTest {
         coEvery { setDefaultEmailAddress(any(), any()) } returns SetDefaultAddress.Error.UpdateFailed.left()
 
         // When + Then
-        verifyUpdateError(updateError = Effect.of(Unit), subscriptionError = Effect.empty())
+        verifyUpdateError(
+            updateError = Effect.of(Unit),
+            subscriptionError = Effect.empty(),
+            event = EditDefaultAddressEvent.Error.Update.Recoverable.Generic(baseAddressId.id)
+        )
     }
 
     @Test
@@ -193,11 +199,17 @@ internal class EditDefaultAddressViewModelTest {
         coEvery { setDefaultEmailAddress(any(), any()) } returns SetDefaultAddress.Error.AddressNotFound.left()
 
         // When + Then
-        verifyUpdateError(updateError = Effect.of(Unit), subscriptionError = Effect.empty())
+        verifyUpdateError(
+            updateError = Effect.of(Unit),
+            subscriptionError = Effect.empty(),
+            event = EditDefaultAddressEvent.Error.Update.Recoverable.Generic(baseAddressId.id)
+        )
     }
 
     @Test
-    fun `should return a subscription related error when the address needs a paid account to be set`() = runTest {
+    fun `should return a subscription related error when the address needs a paid account to be set`() = runTest(
+        timeout = 100.seconds
+    ) {
         // Given
         expectValidUserIdFetched()
         expectValidAddressesLoaded()
@@ -207,21 +219,22 @@ internal class EditDefaultAddressViewModelTest {
         verifyUpdateError(
             updateError = Effect.empty(),
             subscriptionError = Effect.of(Unit),
-            updateErrorEvent = EditDefaultAddressEvent.Error.UpgradeRequired
+            event = EditDefaultAddressEvent.Error.Update.Recoverable.UpgradeRequired(baseAddressId.id)
         )
     }
 
     @Test
-    fun `should not force update the state when a new address is set as default`() = runTest {
+    fun `should update the state when a new address is set as default`() = runTest {
         // Given
         expectValidUserIdFetched()
         expectValidAddressesLoaded()
-        coEvery { setDefaultEmailAddress(any(), any()) } returns addresses.right()
+        coEvery { setDefaultEmailAddress(any(), any()) } returns updatedAddresses.right()
 
         // When + Then
         viewModel.state.test {
             skipItems(1)
-            viewModel.setPrimaryAddress(baseAddressId.id)
+            viewModel.setPrimaryAddress(baseSecondaryId.id)
+            assertEquals(baseExpectedLocalUpdateDataState, awaitItem())
         }
         verify {
             reducer.newStateFrom(
@@ -230,7 +243,11 @@ internal class EditDefaultAddressViewModelTest {
             )
             reducer.newStateFrom(
                 baseExpectedDataState,
-                EditDefaultAddressEvent.Data.ContentUpdated(addresses)
+                EditDefaultAddressEvent.Update(baseSecondaryId.id)
+            )
+            reducer.newStateFrom(
+                baseExpectedLocalUpdateDataState,
+                EditDefaultAddressEvent.Data.ContentUpdated(updatedAddresses)
             )
         }
         confirmVerified(reducer)
@@ -239,8 +256,9 @@ internal class EditDefaultAddressViewModelTest {
     private suspend fun verifyUpdateError(
         updateError: Effect<Unit>,
         subscriptionError: Effect<Unit>,
-        updateErrorEvent: EditDefaultAddressEvent.Error = EditDefaultAddressEvent.Error.UpdateError
+        event: EditDefaultAddressEvent.Error = EditDefaultAddressEvent.Error.Update.Generic
     ) {
+        val error = slot<EditDefaultAddressEvent.Error.Update.Recoverable>()
         val expectedFinalState = baseExpectedDataState.copy(
             updateErrorState = EditDefaultAddressState.WithData.UpdateErrorState(
                 updateError = updateError,
@@ -250,7 +268,7 @@ internal class EditDefaultAddressViewModelTest {
 
         viewModel.state.test {
             skipItems(1) // Skip loading state
-            viewModel.setPrimaryAddress(baseAddressId.id)
+            viewModel.setPrimaryAddress(baseSecondaryId.id)
             assertEquals(expectedFinalState, awaitItem())
         }
 
@@ -262,10 +280,16 @@ internal class EditDefaultAddressViewModelTest {
             )
             reducer.newStateFrom(
                 baseExpectedDataState,
-                updateErrorEvent
+                EditDefaultAddressEvent.Update(baseSecondaryId.id)
+            )
+            reducer.newStateFrom(
+                baseExpectedLocalUpdateDataState,
+                capture(error)
             )
         }
         confirmVerified(reducer)
+        assertEquals(baseAddressId.id, error.captured.previouslySelectedAddressId)
+        assertEquals(error.captured::class, event::class)
     }
 
     private fun expectInvalidUserIsFetched() {
@@ -287,30 +311,43 @@ internal class EditDefaultAddressViewModelTest {
 
         val userId = UserIdTestData.userId
         val baseAddressId = AddressId("123")
-        val baseInactiveAddressId = AddressId("456")
+        val baseSecondaryId = AddressId("456")
+        val baseInactiveId = AddressId("789")
+
         val addresses = listOf(
-            UserAddressSample.build(
-                addressId = baseAddressId,
-                email = "email@proton.me",
-                order = 1,
-                enabled = true
-            ),
-            UserAddressSample.build(
-                addressId = baseInactiveAddressId,
-                email = "email2@proton.me",
-                order = 2,
-                enabled = false
-            )
+            UserAddressSample.build(addressId = baseAddressId, email = "email@proton.me", order = 1, enabled = true),
+            UserAddressSample.build(addressId = baseSecondaryId, email = "email2@proton.me", order = 2, enabled = true),
+            UserAddressSample.build(addressId = baseInactiveId, email = "email3@proton.me", order = 3, enabled = false)
         )
 
+        val updatedAddresses = listOf(
+            UserAddressSample.build(addressId = baseAddressId, email = "email@proton.me", order = 2, enabled = true),
+            UserAddressSample.build(addressId = baseSecondaryId, email = "email2@proton.me", order = 1, enabled = true),
+            UserAddressSample.build(addressId = baseInactiveId, email = "email3@proton.me", order = 3, enabled = false)
+        )
+
+        val uiModelInactiveList = listOf(
+            DefaultAddressUiModel.Inactive("email3@proton.me")
+        ).toImmutableList()
+
+        val uiModelActiveList = listOf(
+            DefaultAddressUiModel.Active(default = true, addressId = "123", "email@proton.me"),
+            DefaultAddressUiModel.Active(default = false, addressId = "456", "email2@proton.me")
+        ).toImmutableList()
+
+        val uiModelActiveListUpdated = listOf(
+            DefaultAddressUiModel.Active(default = false, addressId = "123", "email@proton.me"),
+            DefaultAddressUiModel.Active(default = true, addressId = "456", "email2@proton.me")
+        ).toImmutableList()
+
         val baseExpectedDataState = EditDefaultAddressState.WithData(
-            activeAddressesState = EditDefaultAddressState.WithData.ActiveAddressesState(
-                listOf(DefaultAddressUiModel.Active(order = 1, addressId = "123", "email@proton.me")).toImmutableList()
-            ),
-            inactiveAddressesState = EditDefaultAddressState.WithData.InactiveAddressesState(
-                listOf(DefaultAddressUiModel.Inactive("email2@proton.me")).toImmutableList()
-            ),
+            activeAddressesState = EditDefaultAddressState.WithData.ActiveAddressesState(uiModelActiveList),
+            inactiveAddressesState = EditDefaultAddressState.WithData.InactiveAddressesState(uiModelInactiveList),
             updateErrorState = EditDefaultAddressState.WithData.UpdateErrorState(Effect.empty(), Effect.empty())
+        )
+
+        val baseExpectedLocalUpdateDataState = baseExpectedDataState.copy(
+            activeAddressesState = EditDefaultAddressState.WithData.ActiveAddressesState(uiModelActiveListUpdated)
         )
     }
 }

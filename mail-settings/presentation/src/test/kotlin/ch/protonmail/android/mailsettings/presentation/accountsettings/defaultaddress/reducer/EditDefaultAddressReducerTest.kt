@@ -23,6 +23,7 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailsettings.presentation.accountsettings.defaultaddress.mapper.EditDefaultAddressUiMapper
 import ch.protonmail.android.mailsettings.presentation.accountsettings.defaultaddress.model.DefaultAddressUiModel
 import ch.protonmail.android.mailsettings.presentation.accountsettings.defaultaddress.model.EditDefaultAddressEvent
+import ch.protonmail.android.mailsettings.presentation.accountsettings.defaultaddress.model.EditDefaultAddressEvent.Error
 import ch.protonmail.android.mailsettings.presentation.accountsettings.defaultaddress.model.EditDefaultAddressState
 import io.mockk.spyk
 import kotlinx.collections.immutable.toImmutableList
@@ -68,9 +69,9 @@ internal class EditDefaultAddressReducerTest(
         private val baseState = EditDefaultAddressState.WithData(
             activeAddressesState = EditDefaultAddressState.WithData.ActiveAddressesState(
                 listOf(
-                    DefaultAddressUiModel.Active(order = 1, addressId = "123", address = "address1@proton.me"),
-                    DefaultAddressUiModel.Active(order = 2, addressId = "456", address = "address2@proton.me"),
-                    DefaultAddressUiModel.Active(order = 3, addressId = "789", address = "address3@proton.me")
+                    DefaultAddressUiModel.Active(default = true, addressId = "123", address = "address1@proton.me"),
+                    DefaultAddressUiModel.Active(default = false, addressId = "456", address = "address2@proton.me"),
+                    DefaultAddressUiModel.Active(default = false, addressId = "789", address = "address3@proton.me")
                 ).toImmutableList()
             ),
             inactiveAddressesState = EditDefaultAddressState.WithData.InactiveAddressesState(
@@ -82,9 +83,9 @@ internal class EditDefaultAddressReducerTest(
         private val updatedState = EditDefaultAddressState.WithData(
             activeAddressesState = EditDefaultAddressState.WithData.ActiveAddressesState(
                 listOf(
-                    DefaultAddressUiModel.Active(order = 1, addressId = "456", address = "address2@proton.me"),
-                    DefaultAddressUiModel.Active(order = 2, addressId = "123", address = "address1@proton.me"),
-                    DefaultAddressUiModel.Active(order = 3, addressId = "789", address = "address3@proton.me")
+                    DefaultAddressUiModel.Active(default = true, addressId = "456", address = "address2@proton.me"),
+                    DefaultAddressUiModel.Active(default = false, addressId = "123", address = "address1@proton.me"),
+                    DefaultAddressUiModel.Active(default = false, addressId = "789", address = "address3@proton.me")
                 ).toImmutableList()
             ),
             inactiveAddressesState = EditDefaultAddressState.WithData.InactiveAddressesState(
@@ -113,7 +114,7 @@ internal class EditDefaultAddressReducerTest(
             ),
             TestInput(
                 currentState = EditDefaultAddressState.Loading,
-                event = EditDefaultAddressEvent.Error.LoadingError,
+                event = Error.LoadingError,
                 expectedState = errorState
             )
         )
@@ -126,13 +127,18 @@ internal class EditDefaultAddressReducerTest(
             ),
             TestInput(
                 currentState = baseState,
-                event = EditDefaultAddressEvent.Error.UpdateError,
+                event = Error.Update.Recoverable.Generic(previouslySelectedAddressId = "123"),
                 expectedState = updateErrorState
             ),
             TestInput(
                 currentState = baseState,
-                event = EditDefaultAddressEvent.Error.UpgradeRequired,
+                event = Error.Update.Recoverable.UpgradeRequired(previouslySelectedAddressId = "123"),
                 expectedState = upgradeErrorState
+            ),
+            TestInput(
+                currentState = baseState,
+                event = Error.Update.Generic,
+                expectedState = updateErrorState
             )
         )
 
