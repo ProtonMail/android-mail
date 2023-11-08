@@ -35,6 +35,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import me.proton.core.domain.entity.UserId
 import me.proton.core.user.domain.UserAddressManager
 import me.proton.core.user.domain.entity.AddressId
 import javax.inject.Inject
@@ -65,19 +66,30 @@ class EditDefaultAddressViewModel @Inject constructor(
     fun setPrimaryAddress(addressId: String) {
         viewModelScope.launch {
             val userId = observePrimaryUserId().first()
-                ?: return@launch emitNewStateFrom(Error.UpdateError)
+                ?: return@launch emitNewStateFrom(Error.Update.Generic)
+
+            emitNewStateFrom(EditDefaultAddressEvent.Update(addressId))
+
+            val previouslySelectedItem = getCurrentDefaultAddressId(userId).also {
+                if (it == addressId) return@launch
+            } ?: return@launch emitNewStateFrom(Error.Update.Generic)
 
             setDefaultEmailAddress(userId, AddressId(addressId))
                 .onLeft {
                     val event = when (it) {
-                        is SetDefaultAddress.Error.UpgradeRequired -> Error.UpgradeRequired
-                        else -> Error.UpdateError
+                        is SetDefaultAddress.Error.UpgradeRequired ->
+                            Error.Update.Recoverable.UpgradeRequired(previouslySelectedItem)
+
+                        else -> Error.Update.Recoverable.Generic(previouslySelectedItem)
                     }
                     emitNewStateFrom(event)
                 }
                 .onRight { emitNewStateFrom(Data.ContentUpdated(it)) }
         }
     }
+
+    private suspend fun getCurrentDefaultAddressId(userId: UserId): String? =
+        userAddressManager.observeAddresses(userId).first().find { it.order == 1 }?.addressId?.id
 
     private fun emitNewStateFrom(event: EditDefaultAddressEvent) = mutableState.update {
         reducer.newStateFrom(it, event)

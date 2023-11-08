@@ -26,19 +26,15 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.RadioButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
-import ch.protonmail.android.mailsettings.presentation.accountsettings.defaultaddress.model.DefaultAddressUiModel
 import ch.protonmail.android.mailsettings.presentation.accountsettings.defaultaddress.model.EditDefaultAddressState
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
@@ -51,29 +47,19 @@ fun ActiveAddressesList(
     updateErrorState: EditDefaultAddressState.WithData.UpdateErrorState,
     actions: ActiveAddressesList.Actions
 ) {
-    var selected by remember { mutableStateOf(state.addresses.first { it.isDefault() }.addressId) }
-    var previouslySelected by remember { mutableStateOf(state.addresses.first { it.isDefault() }.addressId) }
-
     LazyColumn(
-        modifier = modifier,
+        modifier = modifier.selectableGroup(),
         contentPadding = PaddingValues(top = ProtonDimens.SmallSpacing)
     ) {
-
-        fun onItemSelected(item: DefaultAddressUiModel.Active) {
-            if (selected == item.addressId) return
-            previouslySelected = selected
-            selected = item.addressId
-            actions.onAddressSelected(item.addressId)
-        }
 
         items(state.addresses) {
             Row(
                 modifier = Modifier
-                    .selectable(selected == it.addressId, role = Role.RadioButton) { onItemSelected(it) }
+                    .selectable(it.isDefault, role = Role.RadioButton) { actions.onAddressSelected(it.addressId) }
                     .padding(ProtonDimens.DefaultSpacing),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                RadioButton(selected = selected == it.addressId, onClick = null)
+                RadioButton(selected = it.isDefault, onClick = null)
                 Spacer(modifier = Modifier.width(ProtonDimens.DefaultSpacing))
                 Text(
                     modifier = Modifier.weight(1f, fill = true),
@@ -83,11 +69,9 @@ fun ActiveAddressesList(
             }
             MailDivider()
             ConsumableLaunchedEffect(updateErrorState.updateError) {
-                selected = previouslySelected
                 actions.showGenericUpdateError()
             }
             ConsumableLaunchedEffect(effect = updateErrorState.incompatibleSubscriptionError) {
-                selected = previouslySelected
                 actions.showSubscriptionUpdateError()
             }
         }

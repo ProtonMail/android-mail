@@ -28,9 +28,9 @@ object EditDefaultAddressPreviewData {
     val NoErrorState = EditDefaultAddressState.WithData.UpdateErrorState(Effect.empty(), Effect.empty())
     val ActiveAddressesState = EditDefaultAddressState.WithData.ActiveAddressesState(
         listOf(
-            DefaultAddressUiModel.Active(0, "id1", "address1@proton.me"),
-            DefaultAddressUiModel.Active(1, "id2", "address2@proton.me"),
-            DefaultAddressUiModel.Active(2, "id3", "address3@proton.me")
+            DefaultAddressUiModel.Active(true, "id1", "address1@proton.me"),
+            DefaultAddressUiModel.Active(false, "id2", "address2@proton.me"),
+            DefaultAddressUiModel.Active(false, "id3", "address3@proton.me")
         ).toImmutableList()
     )
     val InactiveAddressesState = EditDefaultAddressState.WithData.InactiveAddressesState(

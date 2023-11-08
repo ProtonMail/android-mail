@@ -23,15 +23,7 @@ import androidx.compose.runtime.Immutable
 sealed interface DefaultAddressUiModel {
 
     @Immutable
-    data class Active(val order: Int, val addressId: String, val address: String) : DefaultAddressUiModel {
-
-        fun isDefault(): Boolean = order == DefaultAccountSelectedIndex
-
-        private companion object {
-
-            const val DefaultAccountSelectedIndex = 1
-        }
-    }
+    data class Active(val default: Boolean, val addressId: String, val address: String) : DefaultAddressUiModel
 
     @Immutable
     data class Inactive(val address: String) : DefaultAddressUiModel

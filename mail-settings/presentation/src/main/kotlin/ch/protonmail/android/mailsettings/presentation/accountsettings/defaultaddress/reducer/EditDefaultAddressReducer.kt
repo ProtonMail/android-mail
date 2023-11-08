@@ -20,9 +20,12 @@ package ch.protonmail.android.mailsettings.presentation.accountsettings.defaulta
 
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailsettings.presentation.accountsettings.defaultaddress.mapper.EditDefaultAddressUiMapper
+import ch.protonmail.android.mailsettings.presentation.accountsettings.defaultaddress.model.DefaultAddressUiModel
 import ch.protonmail.android.mailsettings.presentation.accountsettings.defaultaddress.model.EditDefaultAddressEvent
 import ch.protonmail.android.mailsettings.presentation.accountsettings.defaultaddress.model.EditDefaultAddressOperation
 import ch.protonmail.android.mailsettings.presentation.accountsettings.defaultaddress.model.EditDefaultAddressState
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import me.proton.core.user.domain.entity.UserAddress
 import me.proton.core.user.domain.entity.isInternal
 import javax.inject.Inject
@@ -42,14 +45,18 @@ class EditDefaultAddressReducer @Inject constructor(
             is EditDefaultAddressState.WithData -> when (event) {
                 is EditDefaultAddressEvent.Data.ContentLoaded -> this
                 is EditDefaultAddressEvent.Data.ContentUpdated -> event.toDataState()
+                is EditDefaultAddressEvent.Update -> updateSelectedAddress(event.newAddressId)
 
-                is EditDefaultAddressEvent.Error.UpgradeRequired ->
-                    copy(
-                        updateErrorState = EditDefaultAddressState.WithData.UpdateErrorState(
-                            updateError = Effect.empty(),
-                            incompatibleSubscriptionError = Effect.of(Unit)
-                        )
+                is EditDefaultAddressEvent.Error.Update.Recoverable.UpgradeRequired ->
+                    revertDefaultAddressSelection(
+                        addressId = event.previouslySelectedAddressId,
+                        subscriptionError = Effect.of(Unit)
                     )
+
+                is EditDefaultAddressEvent.Error.Update.Recoverable.Generic -> revertDefaultAddressSelection(
+                    addressId = event.previouslySelectedAddressId,
+                    error = Effect.of(Unit)
+                )
 
                 is EditDefaultAddressEvent.Error -> copy(
                     updateErrorState = EditDefaultAddressState.WithData.UpdateErrorState(
@@ -61,12 +68,44 @@ class EditDefaultAddressReducer @Inject constructor(
 
             is EditDefaultAddressState.Loading -> when (event) {
                 is EditDefaultAddressEvent.Data.ContentLoaded -> event.toDataState()
+                is EditDefaultAddressEvent.Data.ContentUpdated -> event.toDataState()
                 is EditDefaultAddressEvent.Error -> EditDefaultAddressState.LoadingError
                 else -> this
             }
 
             else -> this
         }
+    }
+
+    private fun EditDefaultAddressState.WithData.updateSelectedAddress(
+        addressId: String
+    ): EditDefaultAddressState.WithData {
+        val addresses = getActiveAddressesListWithNewDefault(addressId)
+
+        return copy(
+            activeAddressesState = EditDefaultAddressState.WithData.ActiveAddressesState(addresses = addresses)
+        )
+    }
+
+    private fun EditDefaultAddressState.WithData.revertDefaultAddressSelection(
+        addressId: String,
+        error: Effect<Unit> = Effect.empty(),
+        subscriptionError: Effect<Unit> = Effect.empty()
+    ): EditDefaultAddressState.WithData {
+        val addresses = getActiveAddressesListWithNewDefault(addressId)
+
+        return copy(
+            activeAddressesState = EditDefaultAddressState.WithData.ActiveAddressesState(addresses = addresses),
+            updateErrorState = EditDefaultAddressState.WithData.UpdateErrorState(error, subscriptionError)
+        )
+    }
+
+    private fun EditDefaultAddressState.WithData.getActiveAddressesListWithNewDefault(
+        addressId: String
+    ): ImmutableList<DefaultAddressUiModel.Active> {
+        return activeAddressesState.addresses.map {
+            it.copy(default = it.addressId == addressId)
+        }.toImmutableList()
     }
 
     private fun EditDefaultAddressEvent.Data.toDataState(): EditDefaultAddressState.WithData {

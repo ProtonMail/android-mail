@@ -27,9 +27,22 @@ sealed interface EditDefaultAddressEvent : EditDefaultAddressOperation {
     sealed interface Error : EditDefaultAddressEvent {
 
         object LoadingError : Error
-        object UpdateError : Error
-        object UpgradeRequired : Error
+
+        sealed interface Update : Error {
+
+            object Generic :
+                Update
+
+            sealed class Recoverable(val previouslySelectedAddressId: String) :
+                Update {
+
+                class Generic(previouslySelectedAddressId: String) : Recoverable(previouslySelectedAddressId)
+                class UpgradeRequired(previouslySelectedAddressId: String) : Recoverable(previouslySelectedAddressId)
+            }
+        }
     }
+
+    data class Update(val newAddressId: String) : EditDefaultAddressEvent
 
     sealed class Data(val addresses: List<UserAddress>) : EditDefaultAddressEvent {
 
