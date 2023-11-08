@@ -28,12 +28,14 @@ import ch.protonmail.android.mailsettings.presentation.accountsettings.defaultad
 import ch.protonmail.android.mailsettings.presentation.accountsettings.defaultaddress.model.EditDefaultAddressState
 import ch.protonmail.android.mailsettings.presentation.accountsettings.defaultaddress.reducer.EditDefaultAddressReducer
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import me.proton.core.domain.entity.UserId
 import me.proton.core.user.domain.UserAddressManager
@@ -51,6 +53,7 @@ class EditDefaultAddressViewModel @Inject constructor(
     private val mutableState =
         MutableStateFlow<EditDefaultAddressState>(EditDefaultAddressState.Loading)
     val state = mutableState.asStateFlow()
+    private var updateJob: Job? = null
 
     init {
         observePrimaryUserId().mapLatest { userId ->
@@ -64,7 +67,8 @@ class EditDefaultAddressViewModel @Inject constructor(
     }
 
     fun setPrimaryAddress(addressId: String) {
-        viewModelScope.launch {
+        updateJob?.cancel()
+        updateJob = viewModelScope.launch {
             val userId = observePrimaryUserId().first()
                 ?: return@launch emitNewStateFrom(Error.Update.Generic)
 
@@ -76,12 +80,16 @@ class EditDefaultAddressViewModel @Inject constructor(
 
             setDefaultEmailAddress(userId, AddressId(addressId))
                 .onLeft {
+                    // Do not propagate errors if the job has been cancelled.
+                    if (!isActive) return@launch
+
                     val event = when (it) {
                         is SetDefaultAddress.Error.UpgradeRequired ->
                             Error.Update.Recoverable.UpgradeRequired(previouslySelectedItem)
 
                         else -> Error.Update.Recoverable.Generic(previouslySelectedItem)
                     }
+
                     emitNewStateFrom(event)
                 }
                 .onRight { emitNewStateFrom(Data.ContentUpdated(it)) }
