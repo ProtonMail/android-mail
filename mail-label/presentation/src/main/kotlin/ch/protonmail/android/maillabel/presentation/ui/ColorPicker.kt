@@ -24,19 +24,19 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.maillabel.presentation.LabelColors
@@ -45,8 +45,6 @@ import ch.protonmail.android.maillabel.presentation.getLabelColors
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultSmallStrongNorm
-import kotlin.math.ceil
-import kotlin.math.floor
 
 @SuppressWarnings("UnusedPrivateMember")
 @Composable
@@ -57,88 +55,56 @@ fun ColorPicker(selectedColor: Color, onColorClicked: (Color) -> Unit) {
             modifier = Modifier.padding(
                 top = ProtonDimens.MediumSpacing,
                 start = ProtonDimens.DefaultSpacing,
-                bottom = ProtonDimens.DefaultSpacing
+                bottom = ProtonDimens.SmallSpacing
             ),
             style = ProtonTheme.typography.defaultSmallStrongNorm
         )
 
-        val colors = getLabelColors()
-        val screenWidth = LocalConfiguration.current.screenWidthDp.dp
-        val circleRadius = MailDimens.ColorPicker.CircleSize.div(2)
-        val padding = MailDimens.ColorPicker.CircleHorizontalPadding.times(2)
-        val boxSize = circleRadius.plus(padding)
-        val columnsCount = floor(screenWidth.div(boxSize)).toInt()
-        val rowsCount = ceil(colors.size.toDouble().div(columnsCount.toDouble())).toInt()
-        var colorIndex = 0
-        for (rowIndex in 0 until rowsCount) {
-            Row {
-                for (columnIndex in 0 until columnsCount - 1) {
-                    val color = colors[colorIndex]
-                    if (color == selectedColor) {
-                        SelectedColorItem(
-                            color = color,
-                            onColorClicked = onColorClicked
-                        )
-                    } else {
-                        ColorItem(
-                            color = color,
-                            onColorClicked = onColorClicked
-                        )
-                    }
-                    if (colorIndex == colors.lastIndex) return
-                    colorIndex++
-                }
+        LazyVerticalGrid(
+            columns = GridCells.Adaptive(minSize = MailDimens.ColorPicker.CircleBoxSize)
+        ) {
+            items(getLabelColors()) { color ->
+                ColorItem(
+                    color = color,
+                    isSelected = color == selectedColor,
+                    onColorClicked = onColorClicked
+                )
             }
         }
     }
 }
 
 @Composable
-fun ColorItem(color: Color, onColorClicked: (Color) -> Unit) {
-    Box(
-        modifier = Modifier
-            .padding(
-                horizontal = MailDimens.ColorPicker.CircleHorizontalPadding,
-                vertical = MailDimens.ColorPicker.CircleVerticalPadding
-            )
-            .size(MailDimens.ColorPicker.CircleSize)
-            .clip(CircleShape)
-            .background(color)
-            .clickable {
-                onColorClicked(color)
-            }
-    )
-}
-
-@Composable
-fun SelectedColorItem(color: Color, onColorClicked: (Color) -> Unit) {
-    ConstraintLayout {
+fun ColorItem(
+    color: Color,
+    isSelected: Boolean,
+    onColorClicked: (Color) -> Unit
+) {
+    ConstraintLayout(
+        modifier = Modifier.padding(
+            horizontal = ProtonDimens.ExtraSmallSpacing,
+            vertical = ProtonDimens.SmallSpacing
+        )
+    ) {
         val (item, selectedItem) = createRefs()
 
+        if (isSelected) {
+            Box(
+                modifier = Modifier
+                    .constrainAs(selectedItem) {
+                        centerTo(parent)
+                    }
+                    .size(MailDimens.ColorPicker.SelectedCircleSize)
+                    .clip(CircleShape)
+                    .border(MailDimens.ColorPicker.SelectedCircleBorderSize, color, CircleShape)
+                    .background(ProtonTheme.colors.backgroundNorm)
+                    .clickable {
+                        onColorClicked(color)
+                    }
+            )
+        }
         Box(
             modifier = Modifier
-                .padding(
-                    horizontal = MailDimens.ColorPicker.SelectedCircleHorizontalPadding
-                )
-                .constrainAs(selectedItem) {
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(parent.bottom)
-                }
-                .size(MailDimens.ColorPicker.SelectedCircleSize)
-                .clip(CircleShape)
-                .border(MailDimens.ColorPicker.SelectedCircleBorderSize, color, CircleShape)
-                .background(ProtonTheme.colors.backgroundNorm)
-                .clickable {
-                    onColorClicked(color)
-                }
-        )
-        Box(
-            modifier = Modifier
-                .padding(
-                    horizontal = MailDimens.ColorPicker.SelectedCircleHorizontalPadding
-                )
                 .constrainAs(item) {
                     top.linkTo(parent.top, margin = MailDimens.ColorPicker.SelectedCircleInternalMargin)
                     start.linkTo(parent.start, margin = MailDimens.ColorPicker.SelectedCircleInternalMargin)
@@ -170,6 +136,7 @@ private fun ColorPickerPreview() {
 private fun ColorItemPreview() {
     ColorItem(
         color = LabelColors.PlumBase,
+        isSelected = false,
         onColorClicked = {}
     )
 }
@@ -177,8 +144,9 @@ private fun ColorItemPreview() {
 @Composable
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 private fun SelectedColorItemPreview() {
-    SelectedColorItem(
+    ColorItem(
         color = LabelColors.PlumBase,
+        isSelected = true,
         onColorClicked = {}
     )
 }

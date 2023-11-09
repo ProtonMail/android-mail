@@ -51,13 +51,10 @@ object MailDimens {
     val ListItemCircleFilledPadding = 20.dp
 
     object ColorPicker {
+        val CircleBoxSize = 56.dp
         val CircleSize = 20.dp
-        val CircleHorizontalPadding = 17.dp
-        val CircleVerticalPadding = 10.dp
-
         val SelectedCircleSize = 40.dp
         val SelectedCircleBorderSize = 2.dp
-        val SelectedCircleHorizontalPadding = 7.dp
         val SelectedCircleInternalMargin = 10.dp
     }
 
