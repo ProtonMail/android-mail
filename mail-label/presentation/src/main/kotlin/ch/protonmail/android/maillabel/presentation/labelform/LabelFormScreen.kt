@@ -244,10 +244,7 @@ fun LabelFormTopBar(
     ProtonTopAppBar(
         modifier = Modifier.fillMaxWidth(),
         title = {
-            Text(
-                text = title,
-                style = ProtonTheme.typography.defaultStrongNorm
-            )
+            Text(text = title)
         },
         navigationIcon = {
             IconButton(onClick = onCloseLabelFormClick) {

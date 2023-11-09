@@ -46,7 +46,6 @@ import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultSmallStrongNorm
 
-@SuppressWarnings("UnusedPrivateMember")
 @Composable
 fun ColorPicker(selectedColor: Color, onColorClicked: (Color) -> Unit) {
     Column {

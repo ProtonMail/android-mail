@@ -230,10 +230,7 @@ fun LabelListTopBar(isAddLabelButtonVisible: Boolean, actions: LabelListScreen.A
     ProtonTopAppBar(
         modifier = Modifier.fillMaxWidth(),
         title = {
-            Text(
-                text = stringResource(id = R.string.label_title_labels),
-                style = ProtonTheme.typography.defaultStrongNorm
-            )
+            Text(text = stringResource(id = R.string.label_title_labels))
         },
         navigationIcon = {
             IconButton(onClick = actions.onBackClick) {
