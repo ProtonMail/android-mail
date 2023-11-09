@@ -18,14 +18,14 @@
 
 package ch.protonmail.android.maillabel.presentation.ui
 
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.TextFieldColors
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import me.proton.core.compose.theme.ProtonTheme
 
 @Composable
-internal fun TextFieldDefaults.formTextFieldColors(): TextFieldColors = colors(
+internal fun formTextFieldColors(): TextFieldColors = OutlinedTextFieldDefaults.colors(
     focusedTextColor = ProtonTheme.colors.textNorm,
     focusedContainerColor = ProtonTheme.colors.backgroundSecondary,
     unfocusedContainerColor = ProtonTheme.colors.backgroundSecondary,
@@ -33,6 +33,7 @@ internal fun TextFieldDefaults.formTextFieldColors(): TextFieldColors = colors(
     unfocusedLabelColor = ProtonTheme.colors.textNorm,
     disabledLabelColor = ProtonTheme.colors.textDisabled,
     errorLabelColor = ProtonTheme.colors.notificationError,
-    focusedIndicatorColor = Color.Transparent,
-    unfocusedIndicatorColor = Color.Transparent
+    unfocusedBorderColor = Color.Transparent,
+    errorBorderColor = ProtonTheme.colors.notificationError,
+    focusedBorderColor = ProtonTheme.colors.brandNorm
 )

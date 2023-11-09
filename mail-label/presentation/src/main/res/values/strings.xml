@@ -47,4 +47,5 @@
     <string name="color_picker_title">Color</string>
     <string name="save_label_error">Error saving label</string>
     <string name="delete_label_error">Error deleting label</string>
+    <string name="input_field_clear_content_description">Clear text</string>
 </resources>

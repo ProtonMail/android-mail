@@ -22,18 +22,22 @@ import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
@@ -68,7 +72,7 @@ fun FormInputField(
         var textFieldValue by rememberSaveable(stateSaver = TextFieldValue.Saver) {
             mutableStateOf(TextFieldValue(initialValue))
         }
-        TextField(
+        OutlinedTextField(
             value = textFieldValue,
             onValueChange = {
                 if (it.text.length <= maxCharacters) {
@@ -84,13 +88,30 @@ fun FormInputField(
                 )
             },
             shape = RoundedCornerShape(ProtonDimens.LargeCornerRadius),
-            colors = TextFieldDefaults.formTextFieldColors(),
+            colors = formTextFieldColors(),
             maxLines = 1,
             textStyle = ProtonTheme.typography.defaultNorm,
             keyboardOptions = KeyboardOptions.Default.copy(
                 capitalization = KeyboardCapitalization.Sentences,
                 imeAction = ImeAction.Done
             ),
+            trailingIcon = {
+                if (textFieldValue.text.isNotBlank()) {
+                    IconButton(
+                        modifier = Modifier.size(ProtonDimens.DefaultIconSize),
+                        content = {
+                            Icon(
+                                imageVector = ImageVector.vectorResource(id = R.drawable.ic_proton_cross),
+                                contentDescription = stringResource(R.string.input_field_clear_content_description),
+                                tint = ProtonTheme.colors.iconNorm
+                            )
+                        }, onClick = {
+                            textFieldValue = TextFieldValue("")
+                            onTextChange("")
+                        }
+                    )
+                }
+            },
             modifier = Modifier
                 .fillMaxWidth()
         )
