@@ -19,29 +19,29 @@
 package ch.protonmail.android.maillabel.presentation.labelform
 
 import ch.protonmail.android.mailcommon.presentation.Effect
-import me.proton.core.label.domain.entity.Label
-import me.proton.core.label.domain.entity.NewLabel
+import me.proton.core.label.domain.entity.LabelId
 
-data class LabelFormState(
-    val isLoading: Boolean,
-    val isSaveEnabled: Boolean,
-    val label: Label?,
-    val newLabel: NewLabel?,
-    val close: Effect<Unit>,
-    val closeWithSave: Effect<Unit>,
-    val closeWithDelete: Effect<Unit>,
-) {
+sealed class LabelFormState {
 
-    companion object {
+    object Loading : LabelFormState()
 
-        fun initial(): LabelFormState = LabelFormState(
-            isLoading = true,
-            isSaveEnabled = false,
-            label = null,
-            newLabel = null,
-            close = Effect.empty(),
-            closeWithSave = Effect.empty(),
-            closeWithDelete = Effect.empty()
-        )
-    }
+    data class Create(
+        val isSaveEnabled: Boolean,
+        val name: String,
+        val color: String,
+        val close: Effect<Unit>,
+        val closeWithSave: Effect<Unit>
+    ) : LabelFormState()
+
+    data class Update(
+        val isSaveEnabled: Boolean,
+        val labelId: LabelId,
+        val name: String,
+        val color: String,
+        val close: Effect<Unit>,
+        val closeWithSave: Effect<Unit>,
+        val closeWithDelete: Effect<Unit>
+    ) : LabelFormState()
 }
+
+

@@ -24,6 +24,7 @@ import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.label.domain.entity.NewLabel
 import me.proton.core.label.domain.repository.LabelRepository
 import timber.log.Timber
@@ -31,8 +32,12 @@ import javax.inject.Inject
 
 class CreateLabel @Inject constructor(private val labelRepository: LabelRepository) {
 
-    suspend operator fun invoke(userId: UserId, newLabel: NewLabel): Either<DataError, Unit> = Either.catch {
-        labelRepository.createLabel(userId, newLabel)
+    suspend operator fun invoke(
+        userId: UserId,
+        name: String,
+        color: String
+    ): Either<DataError, Unit> = Either.catch {
+        labelRepository.createLabel(userId, buildNewLabel(name, color))
     }.mapLeft {
         val error = when (it) {
             is UnknownHostException -> NetworkError.NoNetwork
@@ -44,5 +49,17 @@ class CreateLabel @Inject constructor(private val labelRepository: LabelReposito
         }
 
         DataError.Remote.Http(error)
+    }
+
+    private fun buildNewLabel(name: String, color: String): NewLabel {
+        return NewLabel(
+            parentId = null,
+            name = name,
+            type = LabelType.MessageLabel,
+            color = color,
+            isNotified = null,
+            isExpanded = null,
+            isSticky = null
+        )
     }
 }

@@ -19,6 +19,7 @@
 package ch.protonmail.android.maillabel.presentation.labelform
 
 import androidx.compose.ui.graphics.Color
+import me.proton.core.label.domain.entity.LabelId
 
 sealed interface LabelFormOperation
 
@@ -31,6 +32,11 @@ internal sealed interface LabelFormViewAction : LabelFormOperation {
 }
 
 sealed interface LabelFormEvent : LabelFormOperation {
+    data class LabelLoaded(
+        val labelId: LabelId?,
+        val name: String,
+        val color: String
+    ) : LabelFormEvent
     object LabelCreated : LabelFormEvent
     object LabelUpdated : LabelFormEvent
     object LabelDeleted : LabelFormEvent
