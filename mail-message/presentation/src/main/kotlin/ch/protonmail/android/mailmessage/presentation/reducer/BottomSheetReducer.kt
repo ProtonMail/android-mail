@@ -16,14 +16,14 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.reducer
+package ch.protonmail.android.mailmessage.presentation.reducer
 
 import ch.protonmail.android.mailcommon.presentation.Effect
-import ch.protonmail.android.maildetail.presentation.model.BottomSheetOperation
-import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
-import ch.protonmail.android.maildetail.presentation.model.BottomSheetVisibilityEffect
-import ch.protonmail.android.maildetail.presentation.model.LabelAsBottomSheetState
-import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetOperation
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetVisibilityEffect
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import javax.inject.Inject
 
 class BottomSheetReducer @Inject constructor(

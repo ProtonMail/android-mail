@@ -23,6 +23,7 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
 
 data class MessageDetailState(
     val messageMetadataState: MessageMetadataState,

@@ -34,6 +34,7 @@ import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMe
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMetadataUiModelSample
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.model.toMailLabelSystem
+import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
 import io.mockk.Called
 import io.mockk.mockk
 import io.mockk.verify

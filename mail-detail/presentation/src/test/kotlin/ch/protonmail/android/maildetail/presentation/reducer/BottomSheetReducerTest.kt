@@ -19,13 +19,16 @@
 package ch.protonmail.android.maildetail.presentation.reducer
 
 import ch.protonmail.android.mailcommon.presentation.Effect
-import ch.protonmail.android.maildetail.presentation.model.BottomSheetOperation
-import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
-import ch.protonmail.android.maildetail.presentation.model.BottomSheetVisibilityEffect
-import ch.protonmail.android.maildetail.presentation.model.LabelAsBottomSheetState
-import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetOperation
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetVisibilityEffect
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModelWithSelectedState
+import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
+import ch.protonmail.android.mailmessage.presentation.reducer.LabelAsBottomSheetReducer
+import ch.protonmail.android.mailmessage.presentation.reducer.MoveToBottomSheetReducer
 import io.mockk.Called
 import io.mockk.mockk
 import io.mockk.verify

@@ -88,12 +88,12 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailVie
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.RequestScrollTo
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.ShowAllAttachmentsForMessage
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
-import ch.protonmail.android.maildetail.presentation.reducer.BottomSheetReducer
+import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailMessagesReducer
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailMetadataReducer
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailReducer
-import ch.protonmail.android.maildetail.presentation.reducer.LabelAsBottomSheetReducer
-import ch.protonmail.android.maildetail.presentation.reducer.MoveToBottomSheetReducer
+import ch.protonmail.android.mailmessage.presentation.reducer.LabelAsBottomSheetReducer
+import ch.protonmail.android.mailmessage.presentation.reducer.MoveToBottomSheetReducer
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.maildetail.presentation.usecase.GetEmbeddedImageAvoidDuplicatedExecution

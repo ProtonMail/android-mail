@@ -16,18 +16,18 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.reducer
+package ch.protonmail.android.mailmessage.presentation.reducer
 
 import ch.protonmail.android.mailcommon.presentation.Effect
-import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
-import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
-import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState.Data
-import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState.Loading
-import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState.MoveToBottomSheetAction
-import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState.MoveToBottomSheetEvent
-import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState.MoveToBottomSheetOperation
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState.Data
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState.Loading
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState.MoveToBottomSheetAction
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState.MoveToBottomSheetEvent
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState.MoveToBottomSheetOperation
 import kotlinx.collections.immutable.toImmutableList
 import javax.inject.Inject
 
