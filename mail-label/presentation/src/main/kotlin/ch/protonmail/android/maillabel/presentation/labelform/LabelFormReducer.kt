@@ -46,6 +46,7 @@ class LabelFormReducer @Inject constructor() {
                 labelId = operation.labelId,
                 name = operation.name,
                 color = operation.color,
+                colorList = operation.colorList,
                 close = Effect.empty(),
                 closeWithSave = Effect.empty(),
                 closeWithDelete = Effect.empty()
@@ -55,6 +56,7 @@ class LabelFormReducer @Inject constructor() {
                 isSaveEnabled = operation.name.isNotEmpty(),
                 name = operation.name,
                 color = operation.color,
+                colorList = operation.colorList,
                 close = Effect.empty(),
                 closeWithSave = Effect.empty()
             )

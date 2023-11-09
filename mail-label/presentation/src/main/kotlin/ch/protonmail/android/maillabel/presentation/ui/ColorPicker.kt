@@ -39,15 +39,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.constraintlayout.compose.ConstraintLayout
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
-import ch.protonmail.android.maillabel.presentation.LabelColors
 import ch.protonmail.android.maillabel.presentation.R
-import ch.protonmail.android.maillabel.presentation.getLabelColors
+import ch.protonmail.android.maillabel.presentation.sample.LabelColorListSample.colorListSample
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultSmallStrongNorm
 
 @Composable
-fun ColorPicker(selectedColor: Color, onColorClicked: (Color) -> Unit) {
+fun ColorPicker(
+    colors: List<Color>,
+    selectedColor: Color,
+    onColorClicked: (Color) -> Unit
+) {
     Column {
         Text(
             text = stringResource(id = R.string.color_picker_title),
@@ -62,7 +65,7 @@ fun ColorPicker(selectedColor: Color, onColorClicked: (Color) -> Unit) {
         LazyVerticalGrid(
             columns = GridCells.Adaptive(minSize = MailDimens.ColorPicker.CircleBoxSize)
         ) {
-            items(getLabelColors()) { color ->
+            items(colors) { color ->
                 ColorItem(
                     color = color,
                     isSelected = color == selectedColor,
@@ -125,7 +128,8 @@ fun ColorItem(
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 private fun ColorPickerPreview() {
     ColorPicker(
-        selectedColor = LabelColors.PlumBase,
+        colors = colorListSample(),
+        selectedColor = colorListSample().random(),
         onColorClicked = {}
     )
 }
@@ -134,7 +138,7 @@ private fun ColorPickerPreview() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 private fun ColorItemPreview() {
     ColorItem(
-        color = LabelColors.PlumBase,
+        color = colorListSample().random(),
         isSelected = false,
         onColorClicked = {}
     )
@@ -144,9 +148,8 @@ private fun ColorItemPreview() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 private fun SelectedColorItemPreview() {
     ColorItem(
-        color = LabelColors.PlumBase,
+        color = colorListSample().random(),
         isSelected = true,
         onColorClicked = {}
     )
 }
-

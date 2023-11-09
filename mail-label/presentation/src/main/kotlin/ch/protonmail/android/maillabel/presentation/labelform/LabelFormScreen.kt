@@ -49,6 +49,7 @@ import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.compose.dismissKeyboard
 import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.maillabel.presentation.getColorFromHexString
+import ch.protonmail.android.maillabel.presentation.sample.LabelColorListSample.colorListSample
 import ch.protonmail.android.maillabel.presentation.ui.ColorPicker
 import ch.protonmail.android.maillabel.presentation.ui.FormInputField
 import me.proton.core.compose.component.ProtonButton
@@ -96,6 +97,7 @@ fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewMo
             CreateLabelFormContent(
                 name = state.name,
                 color = state.color,
+                colorList = state.colorList,
                 isSaveEnabled = state.isSaveEnabled,
                 actions = customActions,
                 onCloseLabelFormClick = {
@@ -119,6 +121,7 @@ fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewMo
             EditLabelFormContent(
                 name = state.name,
                 color = state.color,
+                colorList = state.colorList,
                 isSaveEnabled = state.isSaveEnabled,
                 actions = customActions,
                 onCloseLabelFormClick = {
@@ -152,6 +155,7 @@ fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewMo
 fun CreateLabelFormContent(
     name: String,
     color: String,
+    colorList: List<Color>,
     isSaveEnabled: Boolean,
     actions: LabelFormScreen.Actions,
     onCloseLabelFormClick: () -> Unit,
@@ -181,6 +185,7 @@ fun CreateLabelFormContent(
                 )
                 Divider()
                 ColorPicker(
+                    colors = colorList,
                     selectedColor = color.getColorFromHexString(),
                     onColorClicked = {
                         actions.onLabelColorChanged(it)
@@ -195,6 +200,7 @@ fun CreateLabelFormContent(
 fun EditLabelFormContent(
     name: String,
     color: String,
+    colorList: List<Color>,
     isSaveEnabled: Boolean,
     actions: LabelFormScreen.Actions,
     onCloseLabelFormClick: () -> Unit,
@@ -224,6 +230,7 @@ fun EditLabelFormContent(
                 )
                 Divider()
                 ColorPicker(
+                    colors = colorList,
                     selectedColor = color.getColorFromHexString(),
                     onColorClicked = {
                         actions.onLabelColorChanged(it)
@@ -335,6 +342,7 @@ private fun CreateLabelFormScreenPreview() {
     CreateLabelFormContent(
         name = "Label name",
         color = colorResource(id = R.color.chambray).toArgb().toHexString(),
+        colorList = colorListSample(),
         isSaveEnabled = true,
         actions = LabelFormScreen.Actions.Empty,
         onCloseLabelFormClick = {},
@@ -348,6 +356,7 @@ private fun EditLabelFormScreenPreview() {
     EditLabelFormContent(
         name = "Label name",
         color = colorResource(id = R.color.chambray).toArgb().toHexString(),
+        colorList = colorListSample(),
         isSaveEnabled = true,
         actions = LabelFormScreen.Actions.Empty,
         onCloseLabelFormClick = {},

@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maillabel.presentation.labelform
 
+import androidx.compose.ui.graphics.Color
 import ch.protonmail.android.mailcommon.presentation.Effect
 import me.proton.core.label.domain.entity.LabelId
 
@@ -29,6 +30,7 @@ sealed class LabelFormState {
         val isSaveEnabled: Boolean,
         val name: String,
         val color: String,
+        val colorList: List<Color>,
         val close: Effect<Unit>,
         val closeWithSave: Effect<Unit>
     ) : LabelFormState()
@@ -38,6 +40,7 @@ sealed class LabelFormState {
         val labelId: LabelId,
         val name: String,
         val color: String,
+        val colorList: List<Color>,
         val close: Effect<Unit>,
         val closeWithSave: Effect<Unit>,
         val closeWithDelete: Effect<Unit>

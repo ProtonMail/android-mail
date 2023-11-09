@@ -35,7 +35,8 @@ sealed interface LabelFormEvent : LabelFormOperation {
     data class LabelLoaded(
         val labelId: LabelId?,
         val name: String,
-        val color: String
+        val color: String,
+        val colorList: List<Color>
     ) : LabelFormEvent
     object LabelCreated : LabelFormEvent
     object LabelUpdated : LabelFormEvent

@@ -55,6 +55,8 @@ dependencies {
 
     implementation(project(":mail-common:domain"))
 
+    implementation("androidx.compose.ui:ui-graphics-android:1.5.4")
+
     testImplementation(Dependencies.testLibs)
     testImplementation(project(":test:test-data"))
     testImplementation(project(":test:utils"))

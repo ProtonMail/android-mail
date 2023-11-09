@@ -25,9 +25,9 @@ import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.maillabel.domain.usecase.CreateLabel
 import ch.protonmail.android.maillabel.domain.usecase.DeleteLabel
 import ch.protonmail.android.maillabel.domain.usecase.GetLabel
+import ch.protonmail.android.maillabel.domain.usecase.GetLabelColors
 import ch.protonmail.android.maillabel.domain.usecase.UpdateLabel
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
-import ch.protonmail.android.maillabel.presentation.getLabelColors
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -45,6 +45,7 @@ class LabelFormViewModel @Inject constructor(
     private val createLabel: CreateLabel,
     private val updateLabel: UpdateLabel,
     private val deleteLabel: DeleteLabel,
+    private val getLabelColors: GetLabelColors,
     private val reducer: LabelFormReducer,
     observePrimaryUserId: ObservePrimaryUserId,
     savedStateHandle: SavedStateHandle
@@ -60,13 +61,15 @@ class LabelFormViewModel @Inject constructor(
     init {
         val labelId = savedStateHandle.get<String>(LabelFormScreen.LabelIdKey)
         viewModelScope.launch {
+            val colors = getLabelColors()
             if (labelId != null) {
                 getLabel(userId = primaryUserId(), labelId = LabelId(labelId)).getOrNull()?.let { label ->
                     emitNewStateFor(
                         LabelFormEvent.LabelLoaded(
                             labelId = label.labelId,
                             name = label.name,
-                            color = label.color
+                            color = label.color,
+                            colorList = colors
                         )
                     )
                 }
@@ -75,7 +78,8 @@ class LabelFormViewModel @Inject constructor(
                     LabelFormEvent.LabelLoaded(
                         labelId = null,
                         name = "",
-                        color = getLabelColors().random().getHexStringFromColor()
+                        color = colors.random().getHexStringFromColor(),
+                        colorList = colors
                     )
                 )
             }
@@ -120,7 +124,11 @@ class LabelFormViewModel @Inject constructor(
         emitNewStateFor(LabelFormEvent.LabelCreated)
     }
 
-    private suspend fun editLabel(labelId: LabelId, name: String, color: String) {
+    private suspend fun editLabel(
+        labelId: LabelId,
+        name: String,
+        color: String
+    ) {
         getLabel(primaryUserId(), labelId).getOrNull()?.let { label ->
             updateLabel(
                 primaryUserId(),
@@ -139,7 +147,6 @@ class LabelFormViewModel @Inject constructor(
     }
 
     private suspend fun primaryUserId() = primaryUserId.first()
-
 
     private fun emitNewStateFor(operation: LabelFormOperation) {
         val currentState = state.value
