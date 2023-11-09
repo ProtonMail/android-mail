@@ -85,15 +85,15 @@ class LabelFormViewModel @Inject constructor(
         }
     }
 
-    internal fun submit(action: LabelFormAction) {
+    internal fun submit(action: LabelFormViewAction) {
         viewModelScope.launch {
             actionMutex.withLock {
                 when (action) {
-                    is LabelFormAction.LabelColorChanged -> emitNewStateFor(action)
-                    is LabelFormAction.LabelNameChanged -> emitNewStateFor(action)
-                    LabelFormAction.OnCloseLabelForm -> emitNewStateFor(action)
-                    LabelFormAction.OnDeleteClick -> handleOnDeleteClick()
-                    LabelFormAction.OnSaveClick -> handleOnSaveClick()
+                    is LabelFormViewAction.LabelColorChanged -> emitNewStateFor(action)
+                    is LabelFormViewAction.LabelNameChanged -> emitNewStateFor(action)
+                    LabelFormViewAction.OnCloseLabelForm -> emitNewStateFor(action)
+                    LabelFormViewAction.OnDeleteClick -> handleOnDeleteClick()
+                    LabelFormViewAction.OnSaveClick -> handleOnSaveClick()
                 }
             }
         }

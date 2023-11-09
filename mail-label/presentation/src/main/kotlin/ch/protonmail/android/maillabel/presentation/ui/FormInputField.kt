@@ -24,7 +24,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -56,10 +55,8 @@ fun FormInputField(
 ) {
     Column(
         Modifier.padding(
-            start = ProtonDimens.DefaultSpacing,
-            top = ProtonDimens.MediumSpacing,
-            end = ProtonDimens.DefaultSpacing,
-            bottom = ProtonDimens.MediumSpacing
+            horizontal = ProtonDimens.DefaultSpacing,
+            vertical = ProtonDimens.MediumSpacing
         )
     ) {
         Text(
@@ -110,7 +107,6 @@ fun FormInputField(
             style = ProtonTheme.typography.captionWeak
         )
     }
-    Divider()
 }
 
 @Composable

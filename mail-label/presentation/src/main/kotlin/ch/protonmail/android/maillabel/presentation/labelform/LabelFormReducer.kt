@@ -27,30 +27,14 @@ class LabelFormReducer @Inject constructor() {
 
     internal fun newStateFrom(currentState: LabelFormState, operation: LabelFormOperation): LabelFormState {
         return when (operation) {
-            is LabelFormAction.LabelColorChanged -> {
-                updateLabelColorTo(currentState, operation.labelColor)
-            }
-            is LabelFormAction.LabelNameChanged -> {
-                updateLabelNameTo(currentState, operation.labelName)
-            }
-            LabelFormAction.OnCloseLabelForm -> {
-                currentState.copy(close = Effect.of(Unit))
-            }
-            LabelFormAction.OnDeleteClick -> {
-                currentState.copy(closeWithDelete = Effect.of(Unit))
-            }
-            LabelFormAction.OnSaveClick -> {
-                currentState.copy(closeWithSave = Effect.of(Unit))
-            }
-            LabelFormEvent.LabelCreated -> {
-                currentState.copy(closeWithSave = Effect.of(Unit))
-            }
-            LabelFormEvent.LabelDeleted -> {
-                currentState.copy(closeWithDelete = Effect.of(Unit))
-            }
-            LabelFormEvent.LabelUpdated -> {
-                currentState.copy(closeWithSave = Effect.of(Unit))
-            }
+            is LabelFormViewAction.LabelColorChanged -> updateLabelColorTo(currentState, operation.labelColor)
+            is LabelFormViewAction.LabelNameChanged -> updateLabelNameTo(currentState, operation.labelName)
+            LabelFormViewAction.OnCloseLabelForm -> currentState.copy(close = Effect.of(Unit))
+            LabelFormViewAction.OnDeleteClick -> currentState.copy(closeWithDelete = Effect.of(Unit))
+            LabelFormViewAction.OnSaveClick -> currentState.copy(closeWithSave = Effect.of(Unit))
+            LabelFormEvent.LabelCreated -> currentState.copy(closeWithSave = Effect.of(Unit))
+            LabelFormEvent.LabelDeleted -> currentState.copy(closeWithDelete = Effect.of(Unit))
+            LabelFormEvent.LabelUpdated -> currentState.copy(closeWithSave = Effect.of(Unit))
         }
     }
 

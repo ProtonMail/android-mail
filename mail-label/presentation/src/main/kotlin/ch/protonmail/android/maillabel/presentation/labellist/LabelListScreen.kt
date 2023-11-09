@@ -126,7 +126,7 @@ fun LabelListScreen(state: LabelListState.Data, actions: LabelListScreen.Actions
                         modifier = Modifier
                             .animateItemPlacement()
                             .selectable(selected = false) {
-                                actions.onLabelSelected(label)
+                                actions.onLabelSelected(label.labelId)
                             }
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -238,6 +238,7 @@ fun LabelListTopBar(isAddLabelButtonVisible: Boolean, actions: LabelListScreen.A
         navigationIcon = {
             IconButton(onClick = actions.onBackClick) {
                 Icon(
+                    tint = ProtonTheme.colors.iconNorm,
                     imageVector = Icons.Filled.ArrowBack,
                     contentDescription = stringResource(id = R.string.presentation_back)
                 )
@@ -261,7 +262,7 @@ object LabelListScreen {
 
     data class Actions(
         val onBackClick: () -> Unit,
-        val onLabelSelected: (Label) -> Unit,
+        val onLabelSelected: (LabelId) -> Unit,
         val onAddLabelClick: () -> Unit
     ) {
 

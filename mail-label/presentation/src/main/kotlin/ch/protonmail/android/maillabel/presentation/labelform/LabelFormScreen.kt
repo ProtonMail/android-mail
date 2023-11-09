@@ -30,6 +30,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -77,18 +78,18 @@ fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewMo
 
     val customActions = actions.copy(
         onLabelNameChanged = {
-            viewModel.submit(LabelFormAction.LabelNameChanged(it))
+            viewModel.submit(LabelFormViewAction.LabelNameChanged(it))
         },
         onLabelColorChanged = {
-            viewModel.submit(LabelFormAction.LabelColorChanged(it))
+            viewModel.submit(LabelFormViewAction.LabelColorChanged(it))
         },
         onSaveClick = {
             dismissKeyboard(context, view, keyboardController)
-            viewModel.submit(LabelFormAction.OnSaveClick)
+            viewModel.submit(LabelFormViewAction.OnSaveClick)
         },
         onDeleteClick = {
             dismissKeyboard(context, view, keyboardController)
-            viewModel.submit(LabelFormAction.OnDeleteClick)
+            viewModel.submit(LabelFormViewAction.OnDeleteClick)
         }
     )
 
@@ -109,10 +110,10 @@ fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewMo
                     ),
                     isSaveEnabled = state.isSaveEnabled,
                     onCloseLabelFormClick = {
-                        viewModel.submit(LabelFormAction.OnCloseLabelForm)
+                        viewModel.submit(LabelFormViewAction.OnCloseLabelForm)
                     },
                     onSaveLabelClick = {
-                        viewModel.submit(LabelFormAction.OnSaveClick)
+                        viewModel.submit(LabelFormViewAction.OnSaveClick)
                     }
                 )
             },
@@ -166,6 +167,7 @@ fun CreateLabelFormContent(
                 actions.onLabelNameChanged(it)
             }
         )
+        Divider()
         ColorPicker(
             selectedColor = newLabel.color.getColorFromHexString(),
             onColorClicked = {
@@ -193,6 +195,7 @@ fun EditLabelFormContent(
                 actions.onLabelNameChanged(it)
             }
         )
+        Divider()
         ColorPicker(
             selectedColor = label.color.getColorFromHexString(),
             onColorClicked = {
@@ -249,6 +252,7 @@ fun LabelFormTopBar(
         navigationIcon = {
             IconButton(onClick = onCloseLabelFormClick) {
                 Icon(
+                    tint = ProtonTheme.colors.iconNorm,
                     imageVector = Icons.Filled.Close,
                     contentDescription = stringResource(id = R.string.presentation_close)
                 )

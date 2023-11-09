@@ -206,8 +206,8 @@ internal fun NavGraphBuilder.addLabelList(navController: NavHostController) {
                 onBackClick = {
                     navController.popBackStack()
                 },
-                onLabelSelected = { label ->
-                    navController.navigate(Destination.Screen.EditLabel(label.labelId))
+                onLabelSelected = { labelId ->
+                    navController.navigate(Destination.Screen.EditLabel(labelId))
                 },
                 onAddLabelClick = {
                     navController.navigate(Destination.Screen.CreateLabel.route)

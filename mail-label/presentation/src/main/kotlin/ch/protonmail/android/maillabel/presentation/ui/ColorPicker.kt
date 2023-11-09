@@ -98,10 +98,8 @@ fun ColorItem(color: Color, onColorClicked: (Color) -> Unit) {
     Box(
         modifier = Modifier
             .padding(
-                start = MailDimens.ColorPicker.CircleHorizontalPadding,
-                top = MailDimens.ColorPicker.CircleVerticalPadding,
-                end = MailDimens.ColorPicker.CircleHorizontalPadding,
-                bottom = MailDimens.ColorPicker.CircleVerticalPadding
+                horizontal = MailDimens.ColorPicker.CircleHorizontalPadding,
+                vertical = MailDimens.ColorPicker.CircleVerticalPadding
             )
             .size(MailDimens.ColorPicker.CircleSize)
             .clip(CircleShape)
@@ -120,8 +118,7 @@ fun SelectedColorItem(color: Color, onColorClicked: (Color) -> Unit) {
         Box(
             modifier = Modifier
                 .padding(
-                    start = MailDimens.ColorPicker.SelectedCircleHorizontalPadding,
-                    end = MailDimens.ColorPicker.SelectedCircleHorizontalPadding
+                    horizontal = MailDimens.ColorPicker.SelectedCircleHorizontalPadding
                 )
                 .constrainAs(selectedItem) {
                     top.linkTo(parent.top)
@@ -140,8 +137,7 @@ fun SelectedColorItem(color: Color, onColorClicked: (Color) -> Unit) {
         Box(
             modifier = Modifier
                 .padding(
-                    start = MailDimens.ColorPicker.SelectedCircleHorizontalPadding,
-                    end = MailDimens.ColorPicker.SelectedCircleHorizontalPadding
+                    horizontal = MailDimens.ColorPicker.SelectedCircleHorizontalPadding
                 )
                 .constrainAs(item) {
                     top.linkTo(parent.top, margin = MailDimens.ColorPicker.SelectedCircleInternalMargin)

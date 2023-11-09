@@ -22,12 +22,12 @@ import androidx.compose.ui.graphics.Color
 
 sealed interface LabelFormOperation
 
-internal sealed interface LabelFormAction : LabelFormOperation {
-    data class LabelNameChanged(val labelName: String) : LabelFormAction
-    data class LabelColorChanged(val labelColor: Color) : LabelFormAction
-    object OnSaveClick : LabelFormAction
-    object OnDeleteClick : LabelFormAction
-    object OnCloseLabelForm : LabelFormAction
+internal sealed interface LabelFormViewAction : LabelFormOperation {
+    data class LabelNameChanged(val labelName: String) : LabelFormViewAction
+    data class LabelColorChanged(val labelColor: Color) : LabelFormViewAction
+    object OnSaveClick : LabelFormViewAction
+    object OnDeleteClick : LabelFormViewAction
+    object OnCloseLabelForm : LabelFormViewAction
 }
 
 sealed interface LabelFormEvent : LabelFormOperation {

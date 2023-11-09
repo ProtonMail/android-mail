@@ -239,9 +239,7 @@ fun Home(
                         showFeatureMissingSnackbar()
                     }
                 )
-                addLabelList(
-                    navController
-                )
+                addLabelList(navController)
                 addLabelForm(
                     navController,
                     showLabelSavedSnackbar = { showLabelSavedSnackbar() },
