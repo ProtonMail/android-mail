@@ -315,7 +315,23 @@ internal class ChipsListState(
         when {
             typedText.value + newValue.trim() == EMPTY_STRING -> clearTypedText()
             newValue.endsWith(WORD_SEPARATOR) -> {
-                add(typedText.value)
+
+                val words = typedText.value.trim().split(
+
+                    WORD_SEPARATOR, NewLineDelimiter, CarriageReturnNewLineDelimiter,
+                    CommaDelimiter, SemiColonDelimiter, TabDelimiter
+
+                )
+
+                for (token in words) {
+                    if (token.trim().isNotBlank()) {
+                        add(token.trim())
+                    }
+                }
+
+                // added here so we only check for duplicated after pasting all the words
+                onListChanged(items)
+
                 clearTypedText()
             }
 
@@ -336,8 +352,9 @@ internal class ChipsListState(
         } else {
             ChipItem.Invalid(item)
         }
+
         items.add(chipContent)
-        onListChanged(items)
+
     }
 
     fun onDelete() {
@@ -364,6 +381,11 @@ internal class ChipsListState(
 
         private const val WORD_SEPARATOR = " "
         private const val EMPTY_STRING = ""
+        private const val NewLineDelimiter = "\n"
+        private const val CarriageReturnNewLineDelimiter = "\r\n"
+        private const val SemiColonDelimiter = ";"
+        private const val CommaDelimiter = ","
+        private const val TabDelimiter = "\t"
     }
 }
 
