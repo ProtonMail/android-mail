@@ -19,11 +19,10 @@
 package ch.protonmail.android.maillabel.domain.usecase
 
 import javax.inject.Inject
-import androidx.compose.ui.graphics.Color
 
 class GetLabelColors @Inject constructor() {
 
-    operator fun invoke(): List<Color> {
+    operator fun invoke(): List<String> {
         return listOf(
             LabelColors.PurpleBase,
             LabelColors.EnzianBase,
@@ -49,25 +48,25 @@ class GetLabelColors @Inject constructor() {
     }
 
     object LabelColors {
-        val PurpleBase = Color(0xFF8080FF)
-        val EnzianBase = Color(0xFF5252CC)
-        val PinkBase = Color(0xFFDB60D6)
-        val PlumBase = Color(0xFFA839A4)
-        val StrawberryBase = Color(0xFFEC3E7C)
-        val CeriseBase = Color(0xFFBA1E55)
-        val CarrotBase = Color(0xFFF78400)
-        val CopperBase = Color(0xFFC44800)
-        val SaharaBase = Color(0xFF936D58)
-        val SoilBase = Color(0xFF54473F)
-        val SlateBlueBase = Color(0xFF415DF0)
-        val CobaltBase = Color(0xFF273EB2)
-        val PacificBase = Color(0xFF179FD9)
-        val OceanBase = Color(0xFF0A77A6)
-        val ReefBase = Color(0xFF1DA583)
-        val PineBase = Color(0xFF0F735A)
-        val FernBase = Color(0xFF3CBB3A)
-        val ForestBase = Color(0xFF258723)
-        val OliveBase = Color(0xFFB4A40E)
-        val PickleBase = Color(0xFF807304)
+        const val PurpleBase = "#FF8080FF"
+        const val EnzianBase = "#FF5252CC"
+        const val PinkBase = "#FFDB60D6"
+        const val PlumBase = "#FFA839A4"
+        const val StrawberryBase = "#FFEC3E7C"
+        const val CeriseBase = "#FFBA1E55"
+        const val CarrotBase = "#FFF78400"
+        const val CopperBase = "#FFC44800"
+        const val SaharaBase = "#FF936D58"
+        const val SoilBase = "#FF54473F"
+        const val SlateBlueBase = "#FF415DF0"
+        const val CobaltBase = "#FF273EB2"
+        const val PacificBase = "#FF179FD9"
+        const val OceanBase = "#FF0A77A6"
+        const val ReefBase = "#FF1DA583"
+        const val PineBase = "#FF0F735A"
+        const val FernBase = "#FF3CBB3A"
+        const val ForestBase = "#FF258723"
+        const val OliveBase = "#FFB4A40E"
+        const val PickleBase = "#FF807304"
     }
 }

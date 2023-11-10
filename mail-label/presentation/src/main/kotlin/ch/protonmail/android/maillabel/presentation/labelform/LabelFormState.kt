@@ -22,29 +22,39 @@ import androidx.compose.ui.graphics.Color
 import ch.protonmail.android.mailcommon.presentation.Effect
 import me.proton.core.label.domain.entity.LabelId
 
-sealed class LabelFormState {
+sealed interface LabelFormState {
 
-    object Loading : LabelFormState()
+    object Loading : LabelFormState
 
-    data class Create(
-        val isSaveEnabled: Boolean,
-        val name: String,
-        val color: String,
-        val colorList: List<Color>,
-        val close: Effect<Unit>,
+    sealed interface Data : LabelFormState {
+
+        val isSaveEnabled: Boolean
+        val name: String
+        val color: String
+        val colorList: List<Color>
+        val close: Effect<Unit>
         val closeWithSave: Effect<Unit>
-    ) : LabelFormState()
 
-    data class Update(
-        val isSaveEnabled: Boolean,
-        val labelId: LabelId,
-        val name: String,
-        val color: String,
-        val colorList: List<Color>,
-        val close: Effect<Unit>,
-        val closeWithSave: Effect<Unit>,
-        val closeWithDelete: Effect<Unit>
-    ) : LabelFormState()
+        data class Create(
+            override val isSaveEnabled: Boolean,
+            override val name: String,
+            override val color: String,
+            override val colorList: List<Color>,
+            override val close: Effect<Unit>,
+            override val closeWithSave: Effect<Unit>
+        ) : Data
+
+        data class Update(
+            override val isSaveEnabled: Boolean,
+            override val name: String,
+            override val color: String,
+            override val colorList: List<Color>,
+            override val close: Effect<Unit>,
+            override val closeWithSave: Effect<Unit>,
+            val labelId: LabelId,
+            val closeWithDelete: Effect<Unit>
+        ) : Data
+    }
 }
 
 

@@ -27,6 +27,7 @@ import ch.protonmail.android.maillabel.domain.usecase.DeleteLabel
 import ch.protonmail.android.maillabel.domain.usecase.GetLabel
 import ch.protonmail.android.maillabel.domain.usecase.GetLabelColors
 import ch.protonmail.android.maillabel.domain.usecase.UpdateLabel
+import ch.protonmail.android.maillabel.presentation.getColorFromHexString
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -61,7 +62,9 @@ class LabelFormViewModel @Inject constructor(
     init {
         val labelId = savedStateHandle.get<String>(LabelFormScreen.LabelIdKey)
         viewModelScope.launch {
-            val colors = getLabelColors()
+            val colors = getLabelColors().map {
+                it.getColorFromHexString()
+            }
             if (labelId != null) {
                 getLabel(userId = primaryUserId(), labelId = LabelId(labelId)).getOrNull()?.let { label ->
                     emitNewStateFor(
@@ -102,10 +105,10 @@ class LabelFormViewModel @Inject constructor(
 
     private suspend fun handleOnSaveClick() {
         when (val currentState = state.value) {
-            is LabelFormState.Create -> {
+            is LabelFormState.Data.Create -> {
                 createLabel(currentState.name, currentState.color)
             }
-            is LabelFormState.Update -> {
+            is LabelFormState.Data.Update -> {
                 editLabel(currentState.labelId, currentState.name, currentState.color)
             }
             LabelFormState.Loading -> {}
@@ -114,7 +117,7 @@ class LabelFormViewModel @Inject constructor(
 
     private suspend fun handleOnDeleteClick() {
         val currentState = state.value
-        if (currentState is LabelFormState.Update) {
+        if (currentState is LabelFormState.Data.Update) {
             deleteLabel(currentState.labelId)
         }
     }

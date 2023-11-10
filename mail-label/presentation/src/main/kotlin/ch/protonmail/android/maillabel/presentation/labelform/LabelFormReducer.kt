@@ -41,7 +41,7 @@ class LabelFormReducer @Inject constructor() {
 
     private fun reduceLabelLoaded(operation: LabelFormEvent.LabelLoaded): LabelFormState {
         return if (operation.labelId != null) {
-            LabelFormState.Update(
+            LabelFormState.Data.Update(
                 isSaveEnabled = operation.name.isNotEmpty(),
                 labelId = operation.labelId,
                 name = operation.name,
@@ -52,7 +52,7 @@ class LabelFormReducer @Inject constructor() {
                 closeWithDelete = Effect.empty()
             )
         } else {
-            LabelFormState.Create(
+            LabelFormState.Data.Create(
                 isSaveEnabled = operation.name.isNotEmpty(),
                 name = operation.name,
                 color = operation.color,
@@ -65,64 +65,64 @@ class LabelFormReducer @Inject constructor() {
 
     private fun reduceLabelNameChanged(currentState: LabelFormState, labelName: String): LabelFormState {
         return when (currentState) {
-            is LabelFormState.Create -> currentState.copy(isSaveEnabled = labelName.isNotEmpty(), name = labelName)
-            is LabelFormState.Update -> currentState.copy(isSaveEnabled = labelName.isNotEmpty(), name = labelName)
+            is LabelFormState.Data.Create -> currentState.copy(isSaveEnabled = labelName.isNotEmpty(), name = labelName)
+            is LabelFormState.Data.Update -> currentState.copy(isSaveEnabled = labelName.isNotEmpty(), name = labelName)
             LabelFormState.Loading -> currentState
         }
     }
 
     private fun reduceLabelColorChanged(currentState: LabelFormState, labelColor: Color): LabelFormState {
         return when (currentState) {
-            is LabelFormState.Create -> currentState.copy(color = labelColor.getHexStringFromColor())
-            is LabelFormState.Update -> currentState.copy(color = labelColor.getHexStringFromColor())
+            is LabelFormState.Data.Create -> currentState.copy(color = labelColor.getHexStringFromColor())
+            is LabelFormState.Data.Update -> currentState.copy(color = labelColor.getHexStringFromColor())
             LabelFormState.Loading -> currentState
         }
     }
 
     private fun reduceOnCloseLabelForm(currentState: LabelFormState): LabelFormState {
         return when (currentState) {
-            is LabelFormState.Create -> currentState.copy(close = Effect.of(Unit))
-            is LabelFormState.Update -> currentState.copy(close = Effect.of(Unit))
+            is LabelFormState.Data.Create -> currentState.copy(close = Effect.of(Unit))
+            is LabelFormState.Data.Update -> currentState.copy(close = Effect.of(Unit))
             LabelFormState.Loading -> currentState
         }
     }
 
     private fun reduceOnDeleteClick(currentState: LabelFormState): LabelFormState {
         return when (currentState) {
-            is LabelFormState.Create -> currentState
-            is LabelFormState.Update -> currentState.copy(closeWithDelete = Effect.of(Unit))
+            is LabelFormState.Data.Create -> currentState
+            is LabelFormState.Data.Update -> currentState.copy(closeWithDelete = Effect.of(Unit))
             LabelFormState.Loading -> currentState
         }
     }
 
     private fun reduceOnSaveClick(currentState: LabelFormState): LabelFormState {
         return when (currentState) {
-            is LabelFormState.Create -> currentState.copy(closeWithSave = Effect.of(Unit))
-            is LabelFormState.Update -> currentState.copy(closeWithSave = Effect.of(Unit))
+            is LabelFormState.Data.Create -> currentState.copy(closeWithSave = Effect.of(Unit))
+            is LabelFormState.Data.Update -> currentState.copy(closeWithSave = Effect.of(Unit))
             LabelFormState.Loading -> currentState
         }
     }
 
     private fun reduceLabelCreated(currentState: LabelFormState): LabelFormState {
         return when (currentState) {
-            is LabelFormState.Create -> currentState.copy(closeWithSave = Effect.of(Unit))
-            is LabelFormState.Update -> currentState.copy(closeWithSave = Effect.of(Unit))
+            is LabelFormState.Data.Create -> currentState.copy(closeWithSave = Effect.of(Unit))
+            is LabelFormState.Data.Update -> currentState.copy(closeWithSave = Effect.of(Unit))
             LabelFormState.Loading -> currentState
         }
     }
 
     private fun reduceLabelDeleted(currentState: LabelFormState): LabelFormState {
         return when (currentState) {
-            is LabelFormState.Create -> currentState
-            is LabelFormState.Update -> currentState.copy(closeWithDelete = Effect.of(Unit))
+            is LabelFormState.Data.Create -> currentState
+            is LabelFormState.Data.Update -> currentState.copy(closeWithDelete = Effect.of(Unit))
             LabelFormState.Loading -> currentState
         }
     }
 
     private fun reduceLabelUpdated(currentState: LabelFormState): LabelFormState {
         return when (currentState) {
-            is LabelFormState.Create -> currentState.copy(closeWithSave = Effect.of(Unit))
-            is LabelFormState.Update -> currentState.copy(closeWithSave = Effect.of(Unit))
+            is LabelFormState.Data.Create -> currentState.copy(closeWithSave = Effect.of(Unit))
+            is LabelFormState.Data.Update -> currentState.copy(closeWithSave = Effect.of(Unit))
             LabelFormState.Loading -> currentState
         }
     }
