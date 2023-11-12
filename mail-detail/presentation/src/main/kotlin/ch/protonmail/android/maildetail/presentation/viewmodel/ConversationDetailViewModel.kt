@@ -281,6 +281,7 @@ class ConversationDetailViewModel @Inject constructor(
 
     private fun getFirstNonDraftMessageId(messages: List<MessageWithLabels>): MessageId? = messages
         .filterNot { it.message.isDraft() }
+        .sortedByDescending { it.message.order }
         .maxByOrNull { it.message.time }
         ?.message
         ?.messageId
