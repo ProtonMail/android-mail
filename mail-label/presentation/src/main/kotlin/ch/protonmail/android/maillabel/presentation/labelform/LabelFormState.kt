@@ -24,15 +24,19 @@ import me.proton.core.label.domain.entity.LabelId
 
 sealed interface LabelFormState {
 
-    object Loading : LabelFormState
+    val close: Effect<Unit>
+    val isSaveEnabled: Boolean
+
+    data class Loading(
+        override val close: Effect<Unit> = Effect.empty(),
+        override val isSaveEnabled: Boolean = false
+    ) : LabelFormState
 
     sealed interface Data : LabelFormState {
 
-        val isSaveEnabled: Boolean
         val name: String
         val color: String
         val colorList: List<Color>
-        val close: Effect<Unit>
         val closeWithSave: Effect<Unit>
 
         data class Create(

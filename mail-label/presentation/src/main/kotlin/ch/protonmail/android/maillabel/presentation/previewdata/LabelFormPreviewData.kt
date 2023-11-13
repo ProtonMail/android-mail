@@ -45,4 +45,6 @@ object LabelFormPreviewData {
         labelId = LabelId("Label Id"),
         closeWithDelete = Effect.empty()
     )
+
+    val loadingLabelFormState = LabelFormState.Loading()
 }

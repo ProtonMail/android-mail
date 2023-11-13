@@ -67,7 +67,7 @@ class LabelFormReducer @Inject constructor() {
         return when (currentState) {
             is LabelFormState.Data.Create -> currentState.copy(isSaveEnabled = labelName.isNotEmpty(), name = labelName)
             is LabelFormState.Data.Update -> currentState.copy(isSaveEnabled = labelName.isNotEmpty(), name = labelName)
-            LabelFormState.Loading -> currentState
+            is LabelFormState.Loading -> currentState
         }
     }
 
@@ -75,7 +75,7 @@ class LabelFormReducer @Inject constructor() {
         return when (currentState) {
             is LabelFormState.Data.Create -> currentState.copy(color = labelColor.getHexStringFromColor())
             is LabelFormState.Data.Update -> currentState.copy(color = labelColor.getHexStringFromColor())
-            LabelFormState.Loading -> currentState
+            is LabelFormState.Loading -> currentState
         }
     }
 
@@ -83,7 +83,7 @@ class LabelFormReducer @Inject constructor() {
         return when (currentState) {
             is LabelFormState.Data.Create -> currentState.copy(close = Effect.of(Unit))
             is LabelFormState.Data.Update -> currentState.copy(close = Effect.of(Unit))
-            LabelFormState.Loading -> currentState
+            is LabelFormState.Loading -> currentState.copy(close = Effect.of(Unit))
         }
     }
 
@@ -91,7 +91,7 @@ class LabelFormReducer @Inject constructor() {
         return when (currentState) {
             is LabelFormState.Data.Create -> currentState
             is LabelFormState.Data.Update -> currentState.copy(closeWithDelete = Effect.of(Unit))
-            LabelFormState.Loading -> currentState
+            is LabelFormState.Loading -> currentState
         }
     }
 
@@ -99,7 +99,7 @@ class LabelFormReducer @Inject constructor() {
         return when (currentState) {
             is LabelFormState.Data.Create -> currentState.copy(closeWithSave = Effect.of(Unit))
             is LabelFormState.Data.Update -> currentState.copy(closeWithSave = Effect.of(Unit))
-            LabelFormState.Loading -> currentState
+            is LabelFormState.Loading -> currentState
         }
     }
 
@@ -107,7 +107,7 @@ class LabelFormReducer @Inject constructor() {
         return when (currentState) {
             is LabelFormState.Data.Create -> currentState.copy(closeWithSave = Effect.of(Unit))
             is LabelFormState.Data.Update -> currentState.copy(closeWithSave = Effect.of(Unit))
-            LabelFormState.Loading -> currentState
+            is LabelFormState.Loading -> currentState
         }
     }
 
@@ -115,7 +115,7 @@ class LabelFormReducer @Inject constructor() {
         return when (currentState) {
             is LabelFormState.Data.Create -> currentState
             is LabelFormState.Data.Update -> currentState.copy(closeWithDelete = Effect.of(Unit))
-            LabelFormState.Loading -> currentState
+            is LabelFormState.Loading -> currentState
         }
     }
 
@@ -123,7 +123,7 @@ class LabelFormReducer @Inject constructor() {
         return when (currentState) {
             is LabelFormState.Data.Create -> currentState.copy(closeWithSave = Effect.of(Unit))
             is LabelFormState.Data.Update -> currentState.copy(closeWithSave = Effect.of(Unit))
-            LabelFormState.Loading -> currentState
+            is LabelFormState.Loading -> currentState
         }
     }
 }

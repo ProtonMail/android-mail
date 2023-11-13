@@ -52,8 +52,8 @@ class LabelFormViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    val initialState: LabelFormState = LabelFormState.Loading
-    private val mutableState = MutableStateFlow<LabelFormState>(LabelFormState.Loading)
+    val initialState: LabelFormState = LabelFormState.Loading()
+    private val mutableState = MutableStateFlow<LabelFormState>(LabelFormState.Loading())
     private val primaryUserId = observePrimaryUserId().filterNotNull()
     private val actionMutex = Mutex()
 
@@ -111,7 +111,7 @@ class LabelFormViewModel @Inject constructor(
             is LabelFormState.Data.Update -> {
                 editLabel(currentState.labelId, currentState.name, currentState.color)
             }
-            LabelFormState.Loading -> {}
+            is LabelFormState.Loading -> {}
         }
     }
 

@@ -19,7 +19,9 @@
 package ch.protonmail.android.maillabel.presentation.labelform
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
@@ -41,14 +43,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.compose.dismissKeyboard
 import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.maillabel.presentation.getColorFromHexString
 import ch.protonmail.android.maillabel.presentation.previewdata.LabelFormPreviewData.createLabelFormState
 import ch.protonmail.android.maillabel.presentation.previewdata.LabelFormPreviewData.editLabelFormState
+import ch.protonmail.android.maillabel.presentation.previewdata.LabelFormPreviewData.loadingLabelFormState
 import ch.protonmail.android.maillabel.presentation.ui.ColorPicker
 import ch.protonmail.android.maillabel.presentation.ui.FormDeleteButton
 import ch.protonmail.android.maillabel.presentation.ui.FormInputField
+import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonTextButton
 import me.proton.core.compose.component.appbar.ProtonTopAppBar
 import me.proton.core.compose.flow.rememberAsState
@@ -79,14 +84,14 @@ fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewMo
         }
     )
 
-    when (
-        val state = rememberAsState(
-            flow = viewModel.state,
-            initial = LabelFormState.Loading
-        ).value
-    ) {
+    val state = rememberAsState(
+        flow = viewModel.state,
+        initial = LabelFormState.Loading(Effect.empty())
+    ).value
+
+    when (state) {
         is LabelFormState.Data -> {
-            LabelFormContent(
+            LabelFormScreen(
                 state = state,
                 actions = customActions,
                 onCloseLabelFormClick = {
@@ -96,11 +101,6 @@ fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewMo
                     viewModel.submit(LabelFormViewAction.OnSaveClick)
                 }
             )
-
-            ConsumableLaunchedEffect(effect = state.close) {
-                dismissKeyboard(context, view, keyboardController)
-                customActions.onBackClick()
-            }
             ConsumableLaunchedEffect(effect = state.closeWithSave) {
                 customActions.onBackClick()
                 actions.showLabelSavedSnackbar()
@@ -112,14 +112,24 @@ fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewMo
                 }
             }
         }
-        LabelFormState.Loading -> {
-            // Loading do nothing
+        is LabelFormState.Loading -> {
+            LoadingLabelFormScreen(
+                state = state,
+                onCloseLabelFormClick = {
+                    viewModel.submit(LabelFormViewAction.OnCloseLabelForm)
+                }
+            )
         }
+    }
+
+    ConsumableLaunchedEffect(effect = state.close) {
+        dismissKeyboard(context, view, keyboardController)
+        customActions.onBackClick()
     }
 }
 
 @Composable
-fun LabelFormContent(
+fun LabelFormScreen(
     state: LabelFormState.Data,
     actions: LabelFormScreen.Actions,
     onCloseLabelFormClick: () -> Unit,
@@ -168,19 +178,44 @@ fun LabelFormContent(
 }
 
 @Composable
+fun LoadingLabelFormScreen(state: LabelFormState.Loading, onCloseLabelFormClick: () -> Unit) {
+    Scaffold(
+        topBar = {
+            LabelFormTopBar(
+                state = state,
+                onCloseLabelFormClick = onCloseLabelFormClick,
+                onSaveLabelClick = {}
+            )
+        },
+        content = { paddingValues ->
+            Column(
+                modifier = Modifier
+                    .padding(paddingValues)
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                ProtonCenteredProgress()
+            }
+        }
+    )
+}
+
+@Composable
 fun LabelFormTopBar(
-    state: LabelFormState.Data,
+    state: LabelFormState,
     onCloseLabelFormClick: () -> Unit,
     onSaveLabelClick: () -> Unit
 ) {
     ProtonTopAppBar(
         modifier = Modifier.fillMaxWidth(),
         title = {
-            val titleResId = when (state) {
-                is LabelFormState.Data.Create -> R.string.label_form_create_label
-                is LabelFormState.Data.Update -> R.string.label_form_edit_label
+            val title = when (state) {
+                is LabelFormState.Data.Create -> stringResource(id = R.string.label_form_create_label)
+                is LabelFormState.Data.Update -> stringResource(id = R.string.label_form_edit_label)
+                is LabelFormState.Loading -> ""
             }
-            Text(text = stringResource(id = titleResId))
+            Text(text = title)
         },
         navigationIcon = {
             IconButton(onClick = onCloseLabelFormClick) {
@@ -241,7 +276,7 @@ object LabelFormScreen {
 @Composable
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 private fun CreateLabelFormScreenPreview() {
-    LabelFormContent(
+    LabelFormScreen(
         state = createLabelFormState,
         actions = LabelFormScreen.Actions.Empty,
         onCloseLabelFormClick = {},
@@ -252,11 +287,20 @@ private fun CreateLabelFormScreenPreview() {
 @Composable
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 private fun EditLabelFormScreenPreview() {
-    LabelFormContent(
+    LabelFormScreen(
         state = editLabelFormState,
         actions = LabelFormScreen.Actions.Empty,
         onCloseLabelFormClick = {},
         onSaveLabelClick = {}
+    )
+}
+
+@Composable
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
+private fun LoadingLabelFormTopBarPreview() {
+    LoadingLabelFormScreen(
+        state = loadingLabelFormState,
+        onCloseLabelFormClick = {}
     )
 }
 
