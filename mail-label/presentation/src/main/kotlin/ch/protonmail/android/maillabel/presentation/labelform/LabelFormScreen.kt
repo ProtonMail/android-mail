@@ -19,7 +19,6 @@
 package ch.protonmail.android.maillabel.presentation.labelform
 
 import android.content.res.Configuration
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -49,7 +48,6 @@ import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.maillabel.presentation.getColorFromHexString
 import ch.protonmail.android.maillabel.presentation.previewdata.LabelFormPreviewData.createLabelFormState
 import ch.protonmail.android.maillabel.presentation.previewdata.LabelFormPreviewData.editLabelFormState
-import ch.protonmail.android.maillabel.presentation.previewdata.LabelFormPreviewData.loadingLabelFormState
 import ch.protonmail.android.maillabel.presentation.ui.ColorPicker
 import ch.protonmail.android.maillabel.presentation.ui.FormDeleteButton
 import ch.protonmail.android.maillabel.presentation.ui.FormInputField
@@ -89,11 +87,10 @@ fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewMo
         initial = LabelFormState.Loading(Effect.empty())
     ).value
 
-    when (state) {
-        is LabelFormState.Data -> {
-            LabelFormScreen(
+    Scaffold(
+        topBar = {
+            LabelFormTopBar(
                 state = state,
-                actions = customActions,
                 onCloseLabelFormClick = {
                     viewModel.submit(LabelFormViewAction.OnCloseLabelForm)
                 },
@@ -101,26 +98,37 @@ fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewMo
                     viewModel.submit(LabelFormViewAction.OnSaveClick)
                 }
             )
-            ConsumableLaunchedEffect(effect = state.closeWithSave) {
-                customActions.onBackClick()
-                actions.showLabelSavedSnackbar()
-            }
-            if (state is LabelFormState.Data.Update) {
-                ConsumableLaunchedEffect(effect = state.closeWithDelete) {
-                    customActions.onBackClick()
-                    actions.showLabelDeletedSnackbar()
+        },
+        content = { paddingValues ->
+            when (state) {
+                is LabelFormState.Data -> {
+                    LabelFormContent(
+                        state = state,
+                        actions = customActions,
+                        modifier = Modifier.padding(paddingValues)
+                    )
+
+                    ConsumableLaunchedEffect(effect = state.closeWithSave) {
+                        customActions.onBackClick()
+                        actions.showLabelSavedSnackbar()
+                    }
+                    if (state is LabelFormState.Data.Update) {
+                        ConsumableLaunchedEffect(effect = state.closeWithDelete) {
+                            customActions.onBackClick()
+                            actions.showLabelDeletedSnackbar()
+                        }
+                    }
+                }
+                is LabelFormState.Loading -> {
+                    ProtonCenteredProgress(
+                        modifier = Modifier
+                            .padding(paddingValues)
+                            .fillMaxSize()
+                    )
                 }
             }
         }
-        is LabelFormState.Loading -> {
-            LoadingLabelFormScreen(
-                state = state,
-                onCloseLabelFormClick = {
-                    viewModel.submit(LabelFormViewAction.OnCloseLabelForm)
-                }
-            )
-        }
-    }
+    )
 
     ConsumableLaunchedEffect(effect = state.close) {
         dismissKeyboard(context, view, keyboardController)
@@ -129,76 +137,39 @@ fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewMo
 }
 
 @Composable
-fun LabelFormScreen(
+fun LabelFormContent(
     state: LabelFormState.Data,
     actions: LabelFormScreen.Actions,
-    onCloseLabelFormClick: () -> Unit,
-    onSaveLabelClick: () -> Unit
+    modifier: Modifier = Modifier
 ) {
-    Scaffold(
-        topBar = {
-            LabelFormTopBar(
-                state = state,
-                onCloseLabelFormClick = onCloseLabelFormClick,
-                onSaveLabelClick = onSaveLabelClick
-            )
-        },
-        content = { paddingValues ->
-            Column(
-                modifier = Modifier
-                    .padding(paddingValues)
-            ) {
-                FormInputField(
-                    initialValue = state.name,
-                    title = stringResource(R.string.label_name_title),
-                    hint = stringResource(R.string.add_a_label_name_hint),
-                    onTextChange = {
-                        actions.onLabelNameChanged(it)
-                    }
-                )
-                Divider()
-                ColorPicker(
-                    colors = state.colorList,
-                    selectedColor = state.color.getColorFromHexString(),
-                    onColorClicked = {
-                        actions.onLabelColorChanged(it)
-                    }
-                )
-                if (state is LabelFormState.Data.Update) {
-                    FormDeleteButton(
-                        modifier = Modifier
-                            .align(Alignment.CenterHorizontally),
-                        text = stringResource(id = R.string.label_form_delete),
-                        onClick = actions.onDeleteClick
-                    )
-                }
+    Column(
+        modifier = modifier
+    ) {
+        FormInputField(
+            initialValue = state.name,
+            title = stringResource(R.string.label_name_title),
+            hint = stringResource(R.string.add_a_label_name_hint),
+            onTextChange = {
+                actions.onLabelNameChanged(it)
             }
-        }
-    )
-}
-
-@Composable
-fun LoadingLabelFormScreen(state: LabelFormState.Loading, onCloseLabelFormClick: () -> Unit) {
-    Scaffold(
-        topBar = {
-            LabelFormTopBar(
-                state = state,
-                onCloseLabelFormClick = onCloseLabelFormClick,
-                onSaveLabelClick = {}
-            )
-        },
-        content = { paddingValues ->
-            Column(
-                modifier = Modifier
-                    .padding(paddingValues)
-                    .fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                ProtonCenteredProgress()
+        )
+        Divider()
+        ColorPicker(
+            colors = state.colorList,
+            selectedColor = state.color.getColorFromHexString(),
+            onColorClicked = {
+                actions.onLabelColorChanged(it)
             }
+        )
+        if (state is LabelFormState.Data.Update) {
+            FormDeleteButton(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally),
+                text = stringResource(id = R.string.label_form_delete),
+                onClick = actions.onDeleteClick
+            )
         }
-    )
+    }
 }
 
 @Composable
@@ -276,31 +247,18 @@ object LabelFormScreen {
 @Composable
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 private fun CreateLabelFormScreenPreview() {
-    LabelFormScreen(
+    LabelFormContent(
         state = createLabelFormState,
-        actions = LabelFormScreen.Actions.Empty,
-        onCloseLabelFormClick = {},
-        onSaveLabelClick = {}
+        actions = LabelFormScreen.Actions.Empty
     )
 }
 
 @Composable
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 private fun EditLabelFormScreenPreview() {
-    LabelFormScreen(
+    LabelFormContent(
         state = editLabelFormState,
-        actions = LabelFormScreen.Actions.Empty,
-        onCloseLabelFormClick = {},
-        onSaveLabelClick = {}
-    )
-}
-
-@Composable
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
-private fun LoadingLabelFormTopBarPreview() {
-    LoadingLabelFormScreen(
-        state = loadingLabelFormState,
-        onCloseLabelFormClick = {}
+        actions = LabelFormScreen.Actions.Empty
     )
 }
 

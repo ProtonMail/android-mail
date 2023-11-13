@@ -101,8 +101,10 @@ fun LabelListScreen(actions: LabelListScreen.Actions, viewModel: LabelListViewMo
                     )
                 }
                 is LabelListState.Loading -> {
-                    LoadingLabelListScreen(
-                        paddingValues = paddingValues
+                    ProtonCenteredProgress(
+                        modifier = Modifier
+                            .padding(paddingValues)
+                            .fillMaxSize()
                     )
                 }
             }
@@ -219,19 +221,6 @@ fun EmptyLabelListScreen(actions: LabelListScreen.Actions, paddingValues: Paddin
 }
 
 @Composable
-fun LoadingLabelListScreen(paddingValues: PaddingValues) {
-    Column(
-        modifier = Modifier
-            .padding(paddingValues)
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        ProtonCenteredProgress()
-    }
-}
-
-@Composable
 fun LabelListTopBar(isAddLabelButtonVisible: Boolean, actions: LabelListScreen.Actions) {
     ProtonTopAppBar(
         modifier = Modifier.fillMaxWidth(),
@@ -301,14 +290,6 @@ private fun LabelListScreenPreview() {
 private fun EmptyLabelListScreenPreview() {
     EmptyLabelListScreen(
         actions = LabelListScreen.Actions.Empty,
-        paddingValues = PaddingValues()
-    )
-}
-
-@Composable
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
-private fun LoadingLabelListScreenPreview() {
-    LoadingLabelListScreen(
         paddingValues = PaddingValues()
     )
 }
