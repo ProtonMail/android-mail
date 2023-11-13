@@ -37,11 +37,13 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Button
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -81,11 +83,17 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilter
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxPreview
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxPreviewProvider
 import ch.protonmail.android.mailmailbox.presentation.paging.mapToUiStates
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetVisibilityEffect
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.LabelAsBottomSheetContent
+import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MoveToBottomSheetContent
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonAlertDialog
 import me.proton.core.compose.component.ProtonAlertDialogButton
 import me.proton.core.compose.component.ProtonAlertDialogText
 import me.proton.core.compose.component.ProtonCenteredProgress
+import me.proton.core.compose.component.ProtonModalBottomSheetLayout
 import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
@@ -95,7 +103,7 @@ import me.proton.core.compose.theme.ProtonTheme
 import timber.log.Timber
 import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun MailboxScreen(
     modifier: Modifier = Modifier,
@@ -104,6 +112,8 @@ fun MailboxScreen(
 ) {
     val mailboxState = rememberAsState(viewModel.state, MailboxViewModel.initialState).value
     val mailboxListItems = viewModel.items.collectAsLazyPagingItems()
+    val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+    val scope = rememberCoroutineScope()
 
     Timber.d("BottomState: ${mailboxState.bottomAppBarState}")
 
@@ -138,12 +148,51 @@ fun MailboxScreen(
         deleteDialogDismissed = { viewModel.submit(MailboxViewAction.DeleteDialogDismissed) }
     )
 
-    MailboxScreen(
-        mailboxState = mailboxState,
-        mailboxListItems = mailboxListItems,
-        actions = completeActions,
-        modifier = modifier.semantics { testTagsAsResourceId = true }
-    )
+    mailboxState.bottomSheetState?.let {
+        // Avoids a "jumping" of the bottom sheet
+        if (it.isShowEffectWithoutContent()) return@let
+
+        ConsumableLaunchedEffect(effect = it.bottomSheetVisibilityEffect) { bottomSheetEffect ->
+            when (bottomSheetEffect) {
+                BottomSheetVisibilityEffect.Hide -> scope.launch { bottomSheetState.hide() }
+                BottomSheetVisibilityEffect.Show -> scope.launch { bottomSheetState.show() }
+            }
+        }
+    }
+
+    ProtonModalBottomSheetLayout(
+        sheetState = bottomSheetState,
+        sheetContent = {
+            when (val bottomSheetContentState = mailboxState.bottomSheetState?.contentState) {
+                is MoveToBottomSheetState -> MoveToBottomSheetContent(
+                    state = bottomSheetContentState,
+                    onFolderSelected = { Timber.d("Folder selected") },
+                    onDoneClick = { Timber.d("Folder selected Done clicked") })
+
+                is LabelAsBottomSheetState -> LabelAsBottomSheetContent(
+                    state = bottomSheetContentState,
+                    actions = LabelAsBottomSheetContent.Actions(
+                        onAddLabelClick = { Timber.d("Add label clicked") },
+                        onLabelAsSelected = { Timber.d("Label selected") },
+                        onDoneClick = { Timber.d("Label selected Done clicked") }
+                    )
+                )
+
+                null -> {
+                    if (bottomSheetState.isVisible) {
+                        ProtonCenteredProgress()
+                    }
+                }
+            }
+        }
+    ) {
+        MailboxScreen(
+            mailboxState = mailboxState,
+            mailboxListItems = mailboxListItems,
+            actions = completeActions,
+            modifier = modifier.semantics { testTagsAsResourceId = true }
+        )
+    }
 }
 
 @Composable
@@ -436,6 +485,7 @@ private fun MailboxItemsList(
                     message = stringResource(id = R.string.mailbox_error_message_generic),
                     onClick = { items.retry() }
                 )
+
                 else -> Unit
             }
         }
