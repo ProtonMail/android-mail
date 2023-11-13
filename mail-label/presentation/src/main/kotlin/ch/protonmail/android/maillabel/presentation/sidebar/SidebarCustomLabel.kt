@@ -49,6 +49,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.extension.tintColor
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
@@ -183,10 +184,7 @@ private fun SidebarCustomLabelTitleItem(
                             horizontal = ProtonDimens.DefaultSpacing
                         ),
                     painter = painterResource(R.drawable.ic_proton_plus),
-                    contentDescription = stringResource(
-                        id = if (type == MessageLabel) R.string.label_title_add_label
-                        else R.string.label_title_add_folder
-                    ),
+                    contentDescription = NO_CONTENT_DESCRIPTION,
                     tint = ProtonTheme.colors.iconWeak
                 )
             }
