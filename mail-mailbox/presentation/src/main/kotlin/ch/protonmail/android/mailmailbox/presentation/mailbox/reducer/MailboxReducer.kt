@@ -32,6 +32,8 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAp
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
+import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
 import javax.inject.Inject
 
 class MailboxReducer @Inject constructor(
@@ -41,7 +43,8 @@ class MailboxReducer @Inject constructor(
     private val bottomAppBarReducer: BottomBarReducer,
     private val onboardingReducer: OnboardingReducer,
     private val actionMessageReducer: MailboxActionMessageReducer,
-    private val deleteDialogReducer: MailboxDeleteDialogReducer
+    private val deleteDialogReducer: MailboxDeleteDialogReducer,
+    private val bottomSheetReducer: BottomSheetReducer
 ) {
 
     internal fun newStateFrom(currentState: MailboxState, operation: MailboxOperation): MailboxState =
@@ -52,7 +55,8 @@ class MailboxReducer @Inject constructor(
             bottomAppBarState = currentState.toNewBottomAppBarStateFrom(operation),
             onboardingState = currentState.toNewOnboardingStateFrom(operation),
             actionMessage = currentState.toNewActionMessageStateFrom(operation),
-            deleteDialogState = currentState.toNewDeleteActionStateFrom(operation)
+            deleteDialogState = currentState.toNewDeleteActionStateFrom(operation),
+            bottomSheetState = currentState.toNewBottomSheetState(operation)
         )
 
     private fun MailboxState.toNewMailboxListStateFrom(operation: MailboxOperation): MailboxListState {
@@ -118,4 +122,14 @@ class MailboxReducer @Inject constructor(
         }
     }
 
+    private fun MailboxState.toNewBottomSheetState(operation: MailboxOperation): BottomSheetState? {
+        return if (operation is MailboxOperation.AffectingBottomSheet) {
+            val bottomSheetOperation = when (operation) {
+                is MailboxEvent.MailboxBottomSheetEvent -> operation.bottomSheetOperation
+            }
+            bottomSheetReducer.newStateFrom(bottomSheetState, bottomSheetOperation)
+        } else {
+            bottomSheetState
+        }
+    }
 }

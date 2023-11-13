@@ -35,6 +35,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewA
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxStateSampleData
+import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
 import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData
 import ch.protonmail.android.testdata.mailbox.UnreadCountersTestData
@@ -75,6 +76,9 @@ internal class MailboxReducerTest(
         every { newStateFrom(any()) } returns reducedState.deleteDialogState
     }
 
+    private val bottomSheetReducer: BottomSheetReducer = mockk {
+        every { newStateFrom(any(), any()) } returns reducedState.bottomSheetState
+    }
     private val mailboxReducer = MailboxReducer(
         mailboxListReducer,
         topAppBarReducer,
@@ -82,7 +86,8 @@ internal class MailboxReducerTest(
         bottomAppBarReducer,
         onboardingReducer,
         actionMessageReducer,
-        deleteDialogReducer
+        deleteDialogReducer,
+        bottomSheetReducer
     )
 
     @Test
@@ -161,7 +166,8 @@ internal class MailboxReducerTest(
             bottomAppBarState = BottomBarState.Loading,
             onboardingState = OnboardingState.Hidden,
             actionMessage = Effect.empty(),
-            deleteDialogState = DeleteDialogState.Hidden
+            deleteDialogState = DeleteDialogState.Hidden,
+            bottomSheetState = null
         )
 
         private val actions = listOf(

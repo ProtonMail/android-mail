@@ -26,6 +26,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOpera
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingMailboxList
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingTopAppBar
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingUnreadFilter
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetOperation
 import me.proton.core.mailsettings.domain.entity.ViewMode
 
 internal sealed interface MailboxOperation {
@@ -36,6 +37,7 @@ internal sealed interface MailboxOperation {
     sealed interface AffectingOnboarding
     sealed interface AffectingActionMessage
     sealed interface AffectingDeleteDialog
+    sealed interface AffectingBottomSheet
 }
 
 internal sealed interface MailboxViewAction : MailboxOperation {
@@ -140,6 +142,10 @@ internal sealed interface MailboxEvent : MailboxOperation {
     data class MessageBottomBarEvent(
         val bottomBarEvent: BottomBarEvent
     ) : MailboxEvent, AffectingBottomAppBar
+
+    data class MailboxBottomSheetEvent(
+        val bottomSheetOperation: BottomSheetOperation
+    ) : MailboxEvent, MailboxOperation.AffectingBottomSheet
 }
 
 

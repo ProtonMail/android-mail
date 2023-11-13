@@ -206,7 +206,8 @@ internal class MailboxScreenTest {
                 bottomAppBarState = BottomBarState.Data.Hidden(emptyList<ActionUiModel>().toImmutableList()),
                 onboardingState = OnboardingState.Hidden,
                 actionMessage = Effect.empty(),
-                deleteDialogState = DeleteDialogState.Hidden
+                deleteDialogState = DeleteDialogState.Hidden,
+                bottomSheetState = null
             )
         }
 

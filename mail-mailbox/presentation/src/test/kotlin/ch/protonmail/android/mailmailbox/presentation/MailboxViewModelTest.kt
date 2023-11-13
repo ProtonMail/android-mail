@@ -49,8 +49,8 @@ import ch.protonmail.android.maillabel.presentation.text
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Conversation
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Message
-import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
 import ch.protonmail.android.mailmailbox.domain.model.OnboardingPreference
+import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
 import ch.protonmail.android.mailmailbox.domain.usecase.GetMailboxActions
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkConversationsAsRead
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkConversationsAsUnread
@@ -263,7 +263,8 @@ class MailboxViewModelTest {
                 bottomAppBarState = BottomBarState.Data.Hidden(emptyList<ActionUiModel>().toImmutableList()),
                 onboardingState = OnboardingState.Hidden,
                 actionMessage = Effect.empty(),
-                deleteDialogState = DeleteDialogState.Hidden
+                deleteDialogState = DeleteDialogState.Hidden,
+                bottomSheetState = null
             )
 
             assertEquals(expected, actual)

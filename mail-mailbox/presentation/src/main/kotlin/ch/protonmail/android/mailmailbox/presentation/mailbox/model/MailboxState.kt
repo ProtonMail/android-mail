@@ -22,6 +22,7 @@ import androidx.compose.runtime.Stable
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
 
 @Stable
 data class MailboxState(
@@ -31,5 +32,6 @@ data class MailboxState(
     val bottomAppBarState: BottomBarState,
     val onboardingState: OnboardingState,
     val actionMessage: Effect<TextUiModel>,
-    val deleteDialogState: DeleteDialogState
+    val deleteDialogState: DeleteDialogState,
+    val bottomSheetState: BottomSheetState?
 )
