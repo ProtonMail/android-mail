@@ -44,15 +44,15 @@ import kotlin.test.assertEquals
 
 class LabelListViewModelTest {
 
+    private val defaultTestLabel = LabelTestData.buildLabel(id = "LabelID")
+
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
         every { this@mockk.invoke() } returns flowOf(userId)
     }
 
     private val observeLabels = mockk<ObserveLabels> {
         every { this@mockk.invoke(userId) } returns flowOf(
-            listOf(
-                LabelTestData.buildLabel(id = "LabelID")
-            ).right()
+            listOf(defaultTestLabel).right()
         )
     }
 
@@ -77,7 +77,7 @@ class LabelListViewModelTest {
     }
 
     @Test
-    fun `emits initial empty state when initialized`() = runTest {
+    fun `emits empty state`() = runTest {
         // Given
         coEvery { observePrimaryUserId() } returns flowOf(userId)
         coEvery { observeLabels(userId = any()) } returns flowOf(emptyList<Label>().right())
@@ -93,13 +93,13 @@ class LabelListViewModelTest {
     }
 
     @Test
-    fun `emits initial data state when initialized`() = runTest {
+    fun `emits data state`() = runTest {
         // When
         labelListViewModel.state.test {
             // Then
             val actual = awaitItem()
             val expected = LabelListState.Data(
-                listOf(LabelTestData.buildLabel(id = "LabelID"))
+                listOf(defaultTestLabel)
             )
 
             assertEquals(expected, actual)
