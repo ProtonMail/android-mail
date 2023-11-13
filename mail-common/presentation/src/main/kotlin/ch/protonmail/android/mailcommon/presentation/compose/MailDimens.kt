@@ -55,6 +55,7 @@ object MailDimens {
         val CircleSize = 20.dp
         val SelectedCircleSize = 40.dp
         val SelectedCircleBorderSize = 2.dp
+        val SelectedCircleInternalMargin = 10.dp
     }
 
     const val ActionButtonShapeRadius = 100

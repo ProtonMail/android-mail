@@ -108,10 +108,10 @@ fun ColorItem(
         Box(
             modifier = Modifier
                 .constrainAs(item) {
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(parent.bottom)
+                    top.linkTo(parent.top, margin = MailDimens.ColorPicker.SelectedCircleInternalMargin)
+                    start.linkTo(parent.start, margin = MailDimens.ColorPicker.SelectedCircleInternalMargin)
+                    end.linkTo(parent.end, margin = MailDimens.ColorPicker.SelectedCircleInternalMargin)
+                    bottom.linkTo(parent.bottom, margin = MailDimens.ColorPicker.SelectedCircleInternalMargin)
                 }
                 .size(MailDimens.ColorPicker.CircleSize)
                 .clip(CircleShape)
