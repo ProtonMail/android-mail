@@ -28,7 +28,7 @@ object LabelFormPreviewData {
 
     val createLabelFormState = LabelFormState.Data.Create(
         isSaveEnabled = true,
-        name = "Label name",
+        name = "",
         color = colorListSample().random().getHexStringFromColor(),
         colorList = colorListSample(),
         close = Effect.empty(),
