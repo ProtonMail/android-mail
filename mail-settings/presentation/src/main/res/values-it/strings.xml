@@ -20,8 +20,8 @@
   <string name="mail_settings_settings">Impostazioni</string>
   <string name="mail_settings_toolbar_button_content_description">Indietro</string>
   <!-- Settings items -->
-  <string name="mail_settings_account_settings">Impostazioni account</string>
-  <string name="mail_settings_app_settings">Impostazioni applicazione</string>
+  <string name="mail_settings_account_settings">Impostazioni dell\'account</string>
+  <string name="mail_settings_app_settings">Impostazioni dell\'app</string>
   <string name="mail_settings_theme">Tema</string>
   <string name="mail_settings_push_notifications">Notifiche push</string>
   <string name="mail_settings_auto_lock">Blocco automatico</string>
@@ -29,7 +29,7 @@
   <string name="mail_settings_app_language">Lingua dell\'app</string>
   <string name="mail_settings_combined_contacts">Contatti combinati</string>
   <string name="mail_settings_swipe_actions">Azioni di scorrimento</string>
-  <string name="mail_settings_combined_contacts_hint">Attiva questa funzionalità per il completamento automatico degli indirizzi email, usando i contatti di tutti i tuoi profili collegati.</string>
+  <string name="mail_settings_combined_contacts_hint">Attiva questa funzionalità per completare automaticamente gli indirizzi email usando i contatti di tutti i tuoi account connessi.</string>
   <string name="mail_settings_alternative_routing_hint">Nel caso in cui i siti di Proton siano bloccati, questa impostazione consente all\'app di provare l\'indirizzamento di rete alternativo per raggiungere Proton, che potrebbe esser utile per evitare firewall o problemi di rete. Consigliamo di mantenere questa impostazione attiva per una maggiore affidabilità.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Predefinito di sistema</string>
@@ -40,14 +40,14 @@
   <string name="mail_settings_enabled">Abilitata</string>
   <string name="mail_settings_disabled">Disabilitata</string>
   <string name="mail_settings_allowed">Consentito</string>
-  <string name="mail_settings_denied">Rifiutato</string>
+  <string name="mail_settings_denied">Negato</string>
   <string name="mail_settings_auto_detect">Riconoscimento automatico</string>
-  <string name="mail_settings_app_information">Informazioni sull\'App</string>
-  <string name="mail_settings_app_version">Versione applicazione</string>
+  <string name="mail_settings_app_information">Informazioni sull\'app</string>
+  <string name="mail_settings_app_version">Versione dell\'app</string>
   <string name="mail_settings_account">Account</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Abbonamento</string>
-  <string name="mail_settings_password_management">Gestione password</string>
+  <string name="mail_settings_password_management">Gestione delle password</string>
   <string name="mail_settings_recovery_email">Email di recupero</string>
   <string name="mail_settings_mailbox_size">Spazio della casella di posta</string>
   <string name="mail_settings_addresses">Indirizzi</string>
@@ -56,34 +56,34 @@
   <string name="mail_settings_mailbox">Casella di posta</string>
   <string name="mail_settings_privacy">Privacy</string>
   <string name="mail_settings_labels_and_folders">Etichette e cartelle</string>
-  <string name="mail_settings_local_storage">Memoria locale</string>
+  <string name="mail_settings_local_storage">Spazio locale</string>
   <string name="mail_settings_snooze">Posticipa</string>
   <string name="mail_settings_snooze_notifications">Posticipa le notifiche</string>
   <string name="mail_settings_conversation_mode">Modalità conversazione</string>
   <string name="mail_settings_not_set">Non impostato</string>
-  <string name="mail_settings_conversation_mode_hint">Raggruppa o visualizza separatamente nella tua Posta in arrivo le email nella stessa conversazione</string>
+  <string name="mail_settings_conversation_mode_hint">Raggruppa o visualizza separatamente le email nella stessa conversazione</string>
   <!-- Privacy settings -->
   <string name="mail_settings_privacy_auto_show_remote_content">Mostra automaticamente i contenuti remoti</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">Mostra automaticamente le immagini incorporate</string>
   <string name="mail_settings_privacy_prevent_taking_screenshots">Blocca gli screenshot</string>
   <string name="mail_settings_privacy_request_link_confirmation">Richiedi la conferma dei link</string>
-  <string name="mail_settings_privacy_error_updating">Errore durante l\'aggiornamento delle impostazioni</string>
-  <string name="mail_settings_privacy_error_loading">Errore durante il caricamento delle impostazioni</string>
+  <string name="mail_settings_privacy_error_updating">Errore nell\'aggiornamento delle impostazioni</string>
+  <string name="mail_settings_privacy_error_loading">Errore nel caricamento delle impostazioni</string>
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Azioni di scorrimento</string>
   <string name="mail_settings_swipe_actions_subtitle">Configura i gesti di scorrimento per accedere alle azioni più usate.</string>
   <string name="mail_settings_swipe_right_name">Da sinistra a destra</string>
   <string name="mail_settings_swipe_left_name">Da destra a sinistra</string>
   <string name="mail_settings_swipe_action_archive_title">Archivio</string>
-  <string name="mail_settings_swipe_action_read_title">Non letto</string>
+  <string name="mail_settings_swipe_action_read_title">Non letta</string>
   <string name="mail_settings_swipe_action_spam_title">Spam</string>
-  <string name="mail_settings_swipe_action_star_title">Aggiungi alla posta preferita</string>
+  <string name="mail_settings_swipe_action_star_title">Importante</string>
   <string name="mail_settings_swipe_action_trash_title">Cestino</string>
-  <string name="mail_settings_swipe_action_archive_description">Sposta in archivio</string>
-  <string name="mail_settings_swipe_action_read_description">Segna come non letto/letto</string>
+  <string name="mail_settings_swipe_action_archive_description">Sposta nell\'archivio</string>
+  <string name="mail_settings_swipe_action_read_description">Segna come letta/non letta</string>
   <string name="mail_settings_swipe_action_spam_description">Sposta in spam</string>
-  <string name="mail_settings_swipe_action_star_description">Aggiungi/rimuovi preferenza</string>
+  <string name="mail_settings_swipe_action_star_description">Segna come importante/non importante</string>
   <string name="mail_settings_swipe_action_trash_description">Sposta nel cestino</string>
   <!-- Error messages -->
-  <string name="mail_settings_generic_error_message">Si è verificato un errore. Riprovare.</string>
+  <string name="mail_settings_generic_error_message">Si è verificato un errore. Riprova.</string>
 </resources>

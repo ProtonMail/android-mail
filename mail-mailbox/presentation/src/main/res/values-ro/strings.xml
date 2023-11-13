@@ -42,4 +42,41 @@
   <string name="mailbox_error_message_generic">Eroare la încărcarea mesajelor.</string>
   <string name="mailbox_error_message_unexpected">Ceva nu a funcționat bine.</string>
   <string name="mailbox_is_empty_message">Acest cont nu are mesaje</string>
+  <plurals name="mailbox_action_trash">
+    <item quantity="one">Mesajul a fost mutat în «Gunoi».</item>
+    <item quantity="few">S-au mutat %d mesaje în «Gunoi».</item>
+    <item quantity="other">S-au mutat %d de mesaje în «Gunoi».</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_title">
+    <item quantity="one">Ștergere conversație</item>
+    <item quantity="few">Ștergere %d conversații</item>
+    <item quantity="other">Ștergere %d de conversații</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_title">
+    <item quantity="one">Ștergere mesaj</item>
+    <item quantity="few">Ștergere %d mesaje</item>
+    <item quantity="other">Ștergere %d de mesaje</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_message">
+    <item quantity="one">Sigur doriți să ștergeți definitiv această conversație?</item>
+    <item quantity="few">Sigur doriți să ștergeți definitiv aceste conversații?</item>
+    <item quantity="other">Sigur doriți să ștergeți definitiv aceste conversații?</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_message">
+    <item quantity="one">Sigur doriți să ștergeți definitiv acest mesaj?</item>
+    <item quantity="few">Sigur doriți să ștergeți permanent aceste mesaje?</item>
+    <item quantity="other">Sigur doriți să ștergeți permanent aceste mesaje?</item>
+  </plurals>
+  <string name="mailbox_action_delete_dialog_button_cancel">Anulare</string>
+  <string name="mailbox_action_delete_dialog_button_delete">Ștergere</string>
+  <plurals name="mailbox_action_delete_message">
+    <item quantity="one">Mesajul a fost șters definitiv.</item>
+    <item quantity="few">%d mesaje au fost șterse definitiv.</item>
+    <item quantity="other">%d de mesaje au fost șterse definitiv.</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation">
+    <item quantity="one">Conversația a fost ștearsă permanent.</item>
+    <item quantity="few">%d conversații au fost șterse permanent.</item>
+    <item quantity="other">%d de conversații au fost șterse permanent.</item>
+  </plurals>
 </resources>

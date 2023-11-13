@@ -26,16 +26,16 @@
   <string name="attachment_permission_dialog_message">Proton Mail ha bisogno dell\'autorizzazione all\'accesso al tuo spazio di archiviazione per scaricare l\'allegato.</string>
   <string name="attachment_permission_dialog_dismiss_button">OK</string>
   <string name="attachment_permission_dialog_action_button">Impostazioni</string>
-  <string name="attachment_type_description">File %1$s</string>
+  <string name="attachment_type_description">%1$s</string>
   <!-- Attachment Types -->
   <string name="attachment_type_archive">Archivio</string>
   <string name="attachment_type_image">Immagine</string>
   <string name="attachment_type_video">Video</string>
   <string name="attachment_type_audio">Audio</string>
-  <string name="attachment_type_unknown">Sconosciuto</string>
+  <string name="attachment_type_unknown">File sconosciuto</string>
   <string name="attachment_type_pdf">PDF</string>
-  <string name="attachment_type_text">Testo</string>
+  <string name="attachment_type_text">File di testo</string>
   <string name="attachment_type_document">Documento</string>
-  <string name="attachment_type_spreadsheet">Foglio di calcolo</string>
+  <string name="attachment_type_spreadsheet">Foglio elettronico</string>
   <string name="attachment_type_presentation">Presentazione</string>
 </resources>

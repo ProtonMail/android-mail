@@ -40,4 +40,34 @@
   <string name="mailbox_error_message_generic">Η φόρτωση του γραμματοκιβωτίου απέτυχε</string>
   <string name="mailbox_error_message_unexpected">Κάτι πήγε απροσδόκητα στραβά</string>
   <string name="mailbox_is_empty_message">Αυτό το γραμματοκιβώτιο είναι κενό</string>
+  <plurals name="mailbox_action_trash">
+    <item quantity="one">Το μήνυμα μετακινήθηκε στα Διαγραμμένα</item>
+    <item quantity="other">%d μηνύματα μετακινήθηκαν στα Διαγραμμένα</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_title">
+    <item quantity="one">Διαγραφή συνομιλίας</item>
+    <item quantity="other">Διαγραφή %d συνομιλιών</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_title">
+    <item quantity="one">Διαγραφή μηνύματος</item>
+    <item quantity="other">Διαγραφή %d μηνυμάτων</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_message">
+    <item quantity="one">Θέλετε σίγουρα να διαγράψετε οριστικά αυτήν τη συνομιλία;</item>
+    <item quantity="other">Θέλετε σίγουρα να διαγράψετε οριστικά αυτές τις συνομιλίες;</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_message">
+    <item quantity="one">Θέλετε σίγουρα να διαγράψετε οριστικά αυτό το μήνυμα;</item>
+    <item quantity="other">Θέλετε σίγουρα να διαγράψετε οριστικά αυτά τα μηνύματα;</item>
+  </plurals>
+  <string name="mailbox_action_delete_dialog_button_cancel">Ακύρωση</string>
+  <string name="mailbox_action_delete_dialog_button_delete">Διαγραφή</string>
+  <plurals name="mailbox_action_delete_message">
+    <item quantity="one">Το μήνυμα διαγράφηκε οριστικά</item>
+    <item quantity="other">%d μηνύματα διαγράφηκαν οριστικά</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation">
+    <item quantity="one">Η συνομιλία διαγράφηκε οριστικά</item>
+    <item quantity="other">%d συνομιλίες διαγράφηκαν οριστικά</item>
+  </plurals>
 </resources>

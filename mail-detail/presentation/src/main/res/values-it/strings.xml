@@ -17,47 +17,47 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="detail_error_loading_contacts">Impossibile caricare i contatti</string>
-  <string name="detail_error_loading_conversation">Il caricamento della conversazione non è andato a buon fine</string>
-  <string name="detail_error_loading_messages">Non è stato possibile caricare l\'elenco dei messaggi</string>
-  <string name="error_mark_unread_failed">Impossibile contrassegnare come non letto. Per favore riprova.</string>
+  <string name="detail_error_loading_contacts">Caricamento dei contatti non riuscito</string>
+  <string name="detail_error_loading_conversation">Caricamento della conversazione non riuscito</string>
+  <string name="detail_error_loading_messages">Caricamento dei messaggi non riuscito</string>
+  <string name="error_mark_unread_failed">Contrassegnazione come non letta non riuscita. Riprova.</string>
   <plurals name="message_count_label_text">
     <item quantity="one">%d messaggio</item>
     <item quantity="other">%d messaggi</item>
   </plurals>
   <string name="more_button_content_description">Altro</string>
   <string name="to">A:</string>
-  <string name="cc">CC:</string>
+  <string name="cc">Cc:</string>
   <string name="bcc">Ccn:</string>
-  <string name="hide_details">Nascondi dettagli</string>
+  <string name="hide_details">Nascondi i dettagli</string>
   <string name="undisclosed_recipients">Destinatari nascosti</string>
-  <string name="error_mark_as_unread_failed">Impossibile contrassegnare come non letto. Per favore riprova.</string>
-  <string name="error_star_operation_failed">Aggiunta alla posta preferita non riuscita. Per favore riprova.</string>
-  <string name="error_unstar_operation_failed">Rimozione dalla posta preferita non riuscita. Per favore riprova.</string>
-  <string name="error_move_to_trash_failed">Spostamento nel cestino non riuscito. Per favore riprova.</string>
+  <string name="error_mark_as_unread_failed">Contrassegnazione come non letta non riuscita. Riprova.</string>
+  <string name="error_star_operation_failed">Contrassegnazione come importante non riuscita. Riprova.</string>
+  <string name="error_unstar_operation_failed">Contrassegnazione come non importante non riuscita. Riprova.</string>
+  <string name="error_move_to_trash_failed">Spostamento nel cestino non riuscito. Riprova.</string>
   <string name="message_moved_to_trash">Messaggio spostato nel cestino</string>
-  <string name="message_moved_to_archive">Messaggio spostato in archivio</string>
-  <string name="message_moved_to_selected_destination">Il messaggio è stato spostato in %1$s</string>
-  <string name="error_move_message_failed">Spostamento del messaggio non riuscito. Per favore riprova.</string>
+  <string name="message_moved_to_archive">Messaggio spostato nell\'archivio</string>
+  <string name="message_moved_to_selected_destination">Messaggio spostato in %1$s</string>
+  <string name="error_move_message_failed">Spostamento del messaggio non riuscito. Riprova.</string>
   <string name="conversation_moved_to_trash">Conversazione spostata nel cestino</string>
   <string name="conversation_moved_to_selected_destination">Conversazione spostata in %1$s</string>
-  <string name="conversation_moved_to_archive">Conversazione spostata nell\'Archivio</string>
+  <string name="conversation_moved_to_archive">Conversazione spostata nell\'archivio</string>
   <string name="error_move_conversation_failed">Spostamento della conversazione non riuscito. Riprova.</string>
-  <string name="error_loading_message">Qualcosa è andato storto. Per favore riprova.</string>
+  <string name="error_loading_message">Si è verificato un errore. Riprova.</string>
   <string name="error_offline_loading_message">Sei offline. Una connessione a Internet è necessaria per mostrare i contenuti di questo messaggio.</string>
-  <string name="error_get_attachment_failed">Impossibile ottenere l\'allegato.</string>
-  <string name="error_attachment_download_in_progress">Il download attuale deve giungere a termine prima di avviarne uno nuovo.</string>
-  <string name="error_get_attachment_not_enough_memory">Impossibile scaricare l\'allegato a causa della memoria insufficiente</string>
+  <string name="error_get_attachment_failed">Recupero dell\'allegato non riuscito.</string>
+  <string name="error_attachment_download_in_progress">Lo scaricamento dell\'allegato attuale deve giungere a termine prima di avviarne uno nuovo.</string>
+  <string name="error_get_attachment_not_enough_memory">Recupero dell\'allegato non riuscito a causa di memoria insufficiente</string>
   <string name="reload">Ricarica</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Sposta in...</string>
   <string name="bottom_sheet_done_action">Fatto</string>
   <string name="bottom_sheet_archive_action">Vuoi anche archiviare?</string>
   <string name="bottom_sheet_label_as_title">Etichetta come...</string>
-  <string name="error_relabel_message_failed">Impossibile rietichettare il messaggio. Per favore riprova</string>
-  <string name="error_relabel_conversation_failed">Impossibile rietichettare la conversazione. Per favore riprova</string>
-  <string name="please_go_back_online_to_load_messages">Sei offline. Ritorna online per caricare i messaggi</string>
-  <string name="decryption_error">Decriptazione del messaggio non riuscita.</string>
+  <string name="error_relabel_message_failed">Nuova etichettatura del messaggio non riuscita. Riprova</string>
+  <string name="error_relabel_conversation_failed">Nuova etichettatura della conversazione non riuscita. Riprova</string>
+  <string name="please_go_back_online_to_load_messages">Sei offline. Torna online per caricare i messaggi</string>
+  <string name="decryption_error">Decrittografia del messaggio non riuscita.</string>
   <string name="detail_error_retrieving_message_body">Impossibile recuperare il messaggio</string>
   <string name="message_body_error_no_webview">Per visualizzare il contenuto di questo messaggio è necessario che sia installata una WebView.</string>
   <!-- Banners -->

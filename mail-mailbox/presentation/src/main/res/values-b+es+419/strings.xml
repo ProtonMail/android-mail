@@ -40,4 +40,34 @@
   <string name="mailbox_error_message_generic">Error al cargar el buzón</string>
   <string name="mailbox_error_message_unexpected">Se produjo un error imprevisto</string>
   <string name="mailbox_is_empty_message">Este buzón está vacío</string>
+  <plurals name="mailbox_action_trash">
+    <item quantity="one">Mensaje movido a la papelera</item>
+    <item quantity="other">%d mensajes movidos a la papelera</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_title">
+    <item quantity="one">Eliminar conversación</item>
+    <item quantity="other">Eliminar %d conversaciones</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_title">
+    <item quantity="one">Eliminar mensaje</item>
+    <item quantity="other">Eliminar %d mensajes</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_message">
+    <item quantity="one">¿En verdad desea eliminar permanentemente esta conversación?</item>
+    <item quantity="other">¿En verdad desea eliminar permanentemente estas conversaciones?</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_message">
+    <item quantity="one">¿En verdad desea eliminar permanentemente este mensaje?</item>
+    <item quantity="other">¿En verdad desea eliminar permanentemente estos mensajes?</item>
+  </plurals>
+  <string name="mailbox_action_delete_dialog_button_cancel">Cancelar</string>
+  <string name="mailbox_action_delete_dialog_button_delete">Eliminar</string>
+  <plurals name="mailbox_action_delete_message">
+    <item quantity="one">Mensaje eliminado permanentemente</item>
+    <item quantity="other">%d mensajes eliminados permanentemente</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation">
+    <item quantity="one">Conversación eliminada permanentemente</item>
+    <item quantity="other">%d conversaciones eliminadas permanentemente</item>
+  </plurals>
 </resources>

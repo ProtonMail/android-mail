@@ -46,5 +46,5 @@
   <string name="composer_attachment_size_exceeded_dialog_title">첨부파일 한도 도달</string>
   <string name="composer_attachment_size_exceeded_dialog_message">첨부 파일의 최대 크기는 %1$s 입니다</string>
   <string name="composer_attachment_reencryption_failed_message">첨부 파일에 대한 복호화 실패. 보안 상의 이유로 전체 첨부 파일이 삭제되었습니다.</string>
-  <string name="message_footer_text">Sent from Proton Mail Android</string>
+  <string name="message_footer_text">Proton Mail Android에서 발송됨</string>
 </resources>

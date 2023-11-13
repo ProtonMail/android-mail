@@ -63,12 +63,12 @@
   <string name="mail_settings_not_set">Ikke indstillet</string>
   <string name="mail_settings_conversation_mode_hint">Gruppér e-mails i den samme samtale sammen i din indbakke, eller vis dem hver for sig</string>
   <!-- Privacy settings -->
-  <string name="mail_settings_privacy_auto_show_remote_content">Auto show remote content</string>
-  <string name="mail_settings_privacy_auto_show_embedded_images">Auto show embedded images</string>
-  <string name="mail_settings_privacy_prevent_taking_screenshots">Prevent taking screenshots</string>
-  <string name="mail_settings_privacy_request_link_confirmation">Request link confirmation</string>
-  <string name="mail_settings_privacy_error_updating">Error updating settings</string>
-  <string name="mail_settings_privacy_error_loading">Error loading settings</string>
+  <string name="mail_settings_privacy_auto_show_remote_content">Vis automatisk eksternt indhold</string>
+  <string name="mail_settings_privacy_auto_show_embedded_images">Vis automatisk indlejrede billeder</string>
+  <string name="mail_settings_privacy_prevent_taking_screenshots">Forhindre skærmbilleder</string>
+  <string name="mail_settings_privacy_request_link_confirmation">Anmod om linkbekræftelse</string>
+  <string name="mail_settings_privacy_error_updating">Fejl ved opdatering af indstillinger</string>
+  <string name="mail_settings_privacy_error_loading">Fejl ved indlæsning af indstillinger</string>
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Strygehandlinger</string>
   <string name="mail_settings_swipe_actions_subtitle">Indstil strygebevægelser som adgang til de mest brugte handlinger.</string>

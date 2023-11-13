@@ -44,4 +44,48 @@
   <string name="mailbox_error_message_generic">Ładowanie skrzynki pocztowej nie powiodło się</string>
   <string name="mailbox_error_message_unexpected">Coś poszło nie tak</string>
   <string name="mailbox_is_empty_message">Skrzynka pocztowa jest pusta</string>
+  <plurals name="mailbox_action_trash">
+    <item quantity="one">Wiadomość została przeniesiona do Kosza</item>
+    <item quantity="few">%d wiadomości zostały przeniesione do Kosza</item>
+    <item quantity="many">%d wiadomości zostało przeniesionych do Kosza</item>
+    <item quantity="other">%d wiadomości zostało przeniesionych do Kosza</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_title">
+    <item quantity="one">Usuń wątek</item>
+    <item quantity="few">Usuń %d wątki</item>
+    <item quantity="many">Usuń %d wątków</item>
+    <item quantity="other">Usuń %d wątków</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_title">
+    <item quantity="one">Usuń wiadomość</item>
+    <item quantity="few">Usuń %d wiadomości</item>
+    <item quantity="many">Usuń %d wiadomości</item>
+    <item quantity="other">Usuń %d wiadomości</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_message">
+    <item quantity="one">Czy na pewno chcesz trwale usunąć ten wątek?</item>
+    <item quantity="few">Czy na pewno chcesz trwale usunąć te wątki?</item>
+    <item quantity="many">Czy na pewno chcesz trwale usunąć te wątki?</item>
+    <item quantity="other">Czy na pewno chcesz trwale usunąć te wątki?</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_message">
+    <item quantity="one">Czy na pewno chcesz trwale usunąć tę wiadomość?</item>
+    <item quantity="few">Czy na pewno chcesz trwale usunąć te wiadomości?</item>
+    <item quantity="many">Czy na pewno chcesz trwale usunąć te wiadomości?</item>
+    <item quantity="other">Czy na pewno chcesz trwale usunąć te wiadomości?</item>
+  </plurals>
+  <string name="mailbox_action_delete_dialog_button_cancel">Anuluj</string>
+  <string name="mailbox_action_delete_dialog_button_delete">Usuń</string>
+  <plurals name="mailbox_action_delete_message">
+    <item quantity="one">Wiadomość została trwale usunięta</item>
+    <item quantity="few">%d wiadomości zostały trwale usunięte</item>
+    <item quantity="many">%d wiadomości zostało trwale usuniętych</item>
+    <item quantity="other">%d wiadomości zostało trwale usuniętych</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation">
+    <item quantity="one">Wątek został trwale usunięty</item>
+    <item quantity="few">%d wątki zostały trwale usunięte</item>
+    <item quantity="many">%d wątków zostało trwale usuniętych</item>
+    <item quantity="other">%d wątków zostało trwale usuniętych</item>
+  </plurals>
 </resources>

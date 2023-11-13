@@ -46,5 +46,5 @@
   <string name="composer_attachment_size_exceeded_dialog_title">Bijlage-limiet bereikt</string>
   <string name="composer_attachment_size_exceeded_dialog_message">De maximale grootte voor bijlagen is 1%1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Herversleuteling van bijlage mislukt. Wegens veiligheidsredenen werden alle bijlagen verwijderd.</string>
-  <string name="message_footer_text">Sent from Proton Mail Android</string>
+  <string name="message_footer_text">Verzonden met Proton Mail Android</string>
 </resources>

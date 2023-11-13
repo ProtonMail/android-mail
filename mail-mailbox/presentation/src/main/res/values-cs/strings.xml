@@ -44,4 +44,48 @@
   <string name="mailbox_error_message_generic">Načítání e-mailové schránky selhalo</string>
   <string name="mailbox_error_message_unexpected">Něco se nečekaně zvrtlo</string>
   <string name="mailbox_is_empty_message">Tato e-mailová schránka je prázdná</string>
+  <plurals name="mailbox_action_trash">
+    <item quantity="one">Zpráva přesunuta do koše</item>
+    <item quantity="few">%d zprávy přesunuty do koše</item>
+    <item quantity="many">%d zpráv přesunuto do koše</item>
+    <item quantity="other">%d zpráv přesunuto do koše</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_title">
+    <item quantity="one">Smazat konverzaci</item>
+    <item quantity="few">Smazat %d konverzace</item>
+    <item quantity="many">Smazat %d konverzací</item>
+    <item quantity="other">Smazat %d konverzací</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_title">
+    <item quantity="one">Smazat zprávu</item>
+    <item quantity="few">Smazat %d zprávy</item>
+    <item quantity="many">Smazat %d zpráv</item>
+    <item quantity="other">Smazat %d zpráv</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_message">
+    <item quantity="one">Jste si jisti, že chcete trvale smazat tuto konverzaci?</item>
+    <item quantity="few">Jste si jisti, že chcete trvale smazat tyto konverzace?</item>
+    <item quantity="many">Jste si jisti, že chcete trvale smazat tyto konverzace?</item>
+    <item quantity="other">Jste si jisti, že chcete trvale smazat tyto konverzace?</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_message">
+    <item quantity="one">Jste si jisti, že chcete trvale smazat tuto zprávu?</item>
+    <item quantity="few">Jste si jisti, že chcete trvale smazat tyto zprávy?</item>
+    <item quantity="many">Jste si jisti, že chcete trvale smazat tyto zprávy?</item>
+    <item quantity="other">Jste si jisti, že chcete trvale smazat tyto zprávy?</item>
+  </plurals>
+  <string name="mailbox_action_delete_dialog_button_cancel">Zrušit</string>
+  <string name="mailbox_action_delete_dialog_button_delete">Smazat</string>
+  <plurals name="mailbox_action_delete_message">
+    <item quantity="one">Zpráva trvale smazána</item>
+    <item quantity="few">%d zprávy trvale smazány</item>
+    <item quantity="many">%d zpráv trvale smazáno</item>
+    <item quantity="other">%d zpráv trvale smazáno</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation">
+    <item quantity="one">Konverzace trvale smazána</item>
+    <item quantity="few">%d konverzace trvale smazány</item>
+    <item quantity="many">%d konverzací trvale smazáno</item>
+    <item quantity="other">%d konverzací trvale smazáno</item>
+  </plurals>
 </resources>

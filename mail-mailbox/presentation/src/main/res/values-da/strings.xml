@@ -40,4 +40,34 @@
   <string name="mailbox_error_message_generic">Indlæsning af postkasse mislykkedes</string>
   <string name="mailbox_error_message_unexpected">Noget gik uventet galt</string>
   <string name="mailbox_is_empty_message">Denne postkasse er tom</string>
+  <plurals name="mailbox_action_trash">
+    <item quantity="one">Besked flyttet til papirkurv</item>
+    <item quantity="other">%d beskeder flyttet til papirkurv</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_title">
+    <item quantity="one">Slet samtale</item>
+    <item quantity="other">Slet %d samtaler</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_title">
+    <item quantity="one">Slet besked</item>
+    <item quantity="other">Slet %d beskeder</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_message">
+    <item quantity="one">Er du sikker på, at du vil slette denne samtale permanent?</item>
+    <item quantity="other">Er du sikker på, at du vil slette disse samtaler permanent?</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_message">
+    <item quantity="one">Er du sikker på, at du vil slette denne besked permanent?</item>
+    <item quantity="other">Er du sikker på, at du vil slette disse beskeder permanent?</item>
+  </plurals>
+  <string name="mailbox_action_delete_dialog_button_cancel">Annullér</string>
+  <string name="mailbox_action_delete_dialog_button_delete">Slet</string>
+  <plurals name="mailbox_action_delete_message">
+    <item quantity="one">Besked er slettet permanent</item>
+    <item quantity="other">%d beskeder er slettet permanent</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation">
+    <item quantity="one">Samtale er slettet permanent</item>
+    <item quantity="other">%d samtaler er slettet permanent</item>
+  </plurals>
 </resources>

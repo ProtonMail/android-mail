@@ -38,4 +38,27 @@
   <string name="mailbox_error_message_generic">邮箱数据加载失败</string>
   <string name="mailbox_error_message_unexpected">发生意外错误。</string>
   <string name="mailbox_is_empty_message">此邮箱为空</string>
+  <plurals name="mailbox_action_trash">
+    <item quantity="other">%d messages moved to Trash</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_title">
+    <item quantity="other">Delete %d conversations</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_title">
+    <item quantity="other">Delete %d messages</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_message">
+    <item quantity="other">Are you sure you want to permanently delete these conversations?</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_message">
+    <item quantity="other">Are you sure you want to permanently delete these message?</item>
+  </plurals>
+  <string name="mailbox_action_delete_dialog_button_cancel">Cancel</string>
+  <string name="mailbox_action_delete_dialog_button_delete">Delete</string>
+  <plurals name="mailbox_action_delete_message">
+    <item quantity="other">%d messages permanently deleted</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation">
+    <item quantity="other">%d conversations permanently deleted</item>
+  </plurals>
 </resources>

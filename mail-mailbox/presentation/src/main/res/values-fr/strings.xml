@@ -40,4 +40,34 @@
   <string name="mailbox_error_message_generic">Le chargement de la messagerie n\'a pas abouti.</string>
   <string name="mailbox_error_message_unexpected">Une erreur imprévue s\'est produite.</string>
   <string name="mailbox_is_empty_message">Cette messagerie est vide.</string>
+  <plurals name="mailbox_action_trash">
+    <item quantity="one">Le message a été déplacé dans le dossier Corbeille.</item>
+    <item quantity="other">%d messages ont été déplacés dans le dossier Corbeille.</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_title">
+    <item quantity="one">Supprimer la conversation</item>
+    <item quantity="other">Supprimer %d conversations</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_title">
+    <item quantity="one">Supprimer le message</item>
+    <item quantity="other">Supprimer %d messages</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_message">
+    <item quantity="one">Voulez-vous vraiment supprimer définitivement cette conversation ?</item>
+    <item quantity="other">Voulez-vous vraiment supprimer définitivement ces conversations ?</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_message">
+    <item quantity="one">Voulez-vous vraiment supprimer définitivement ce message ?</item>
+    <item quantity="other">Voulez-vous vraiment supprimer définitivement ces messages ?</item>
+  </plurals>
+  <string name="mailbox_action_delete_dialog_button_cancel">Annuler</string>
+  <string name="mailbox_action_delete_dialog_button_delete">Supprimer</string>
+  <plurals name="mailbox_action_delete_message">
+    <item quantity="one">Le message a été supprimé définitivement.</item>
+    <item quantity="other">%d messages ont été supprimés définitivement.</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation">
+    <item quantity="one">La conversation a été supprimée définitivement.</item>
+    <item quantity="other">%d conversations ont été supprimées définitivement.</item>
+  </plurals>
 </resources>

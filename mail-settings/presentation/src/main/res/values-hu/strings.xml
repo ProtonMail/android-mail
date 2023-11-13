@@ -65,7 +65,7 @@
   <!-- Privacy settings -->
   <string name="mail_settings_privacy_auto_show_remote_content">Auto show remote content</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">Auto show embedded images</string>
-  <string name="mail_settings_privacy_prevent_taking_screenshots">Prevent taking screenshots</string>
+  <string name="mail_settings_privacy_prevent_taking_screenshots">Képernyőkép készítés megakadályozása</string>
   <string name="mail_settings_privacy_request_link_confirmation">Request link confirmation</string>
   <string name="mail_settings_privacy_error_updating">Error updating settings</string>
   <string name="mail_settings_privacy_error_loading">Error loading settings</string>

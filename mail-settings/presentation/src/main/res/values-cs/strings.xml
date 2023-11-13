@@ -66,7 +66,7 @@
   <string name="mail_settings_privacy_auto_show_remote_content">Automaticky zobrazovat vzdálený obsah</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">Automaticky zobrazovat vložené obrázky</string>
   <string name="mail_settings_privacy_prevent_taking_screenshots">Zabránit pořízení snímků obrazovky</string>
-  <string name="mail_settings_privacy_request_link_confirmation">Požadovat potvrzení při otevírání odkazů</string>
+  <string name="mail_settings_privacy_request_link_confirmation">Požadovat potvrzení odkazů</string>
   <string name="mail_settings_privacy_error_updating">Chyba při aktualizaci nastavení</string>
   <string name="mail_settings_privacy_error_loading">Chyba při načítání nastavení</string>
   <!-- Swipe Actions -->

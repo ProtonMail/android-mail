@@ -20,24 +20,54 @@
   <string name="drawer_title_more">Altro</string>
   <string name="drawer_title_contacts">Contatti</string>
   <string name="drawer_title_subscription">Abbonamento</string>
-  <string name="mailbox_toolbar_compose_button_content_description">Componi nuovo messaggio</string>
+  <string name="mailbox_toolbar_compose_button_content_description">Scrivi un nuovo messaggio</string>
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Esci dalla modalità di selezione</string>
   <string name="mailbox_toolbar_menu_button_content_description">Menu</string>
-  <string name="mailbox_toolbar_search_button_content_description">Ricerca</string>
+  <string name="mailbox_toolbar_search_button_content_description">Cerca</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">%d selezionato</item>
-    <item quantity="other">%d selezionati</item>
+    <item quantity="one">%d selezionata</item>
+    <item quantity="other">%d selezionate</item>
   </plurals>
   <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
-  <string name="filter_unread_button_text_without_counter">Non letti</string>
+  <string name="filter_unread_button_text_without_counter">Non lette</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%d non letta</item>
     <item quantity="other">%d non lette</item>
   </plurals>
   <string name="mailbox_default_recipient">(Nessun Destinatario)</string>
   <string name="mailbox_default_sender">(Nessun Mittente)</string>
-  <string name="mailbox_error_message_offline">Connessione assente, impossibile recuperare gli elementi</string>
+  <string name="mailbox_error_message_offline">Sei offline. Impossibile recuperare gli elementi.</string>
   <string name="mailbox_error_message_generic">Caricamento della casella di posta non riuscito</string>
-  <string name="mailbox_error_message_unexpected">Si è verificato un errore imprevisto.</string>
+  <string name="mailbox_error_message_unexpected">Si è verificato un errore imprevisto</string>
   <string name="mailbox_is_empty_message">Questa casella di posta è vuota</string>
+  <plurals name="mailbox_action_trash">
+    <item quantity="one">Messaggio spostato nel cestino</item>
+    <item quantity="other">%d messaggi spostati nel cestino</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_title">
+    <item quantity="one">Elimina 1 conversazione</item>
+    <item quantity="other">Elimina %d conversazioni</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_title">
+    <item quantity="one">Elimina 1 messaggio</item>
+    <item quantity="other">Elimina %d messaggi</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_message">
+    <item quantity="one">Sei sicuro di voler eliminare definitivamente questa conversazione?</item>
+    <item quantity="other">Sei sicuro di voler eliminare definitivamente queste conversazioni?</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_message">
+    <item quantity="one">Sei sicuro di voler eliminare definitivamente questo messaggio?</item>
+    <item quantity="other">Sei sicuro di voler eliminare definitivamente questi messaggi?</item>
+  </plurals>
+  <string name="mailbox_action_delete_dialog_button_cancel">Annulla</string>
+  <string name="mailbox_action_delete_dialog_button_delete">Elimina</string>
+  <plurals name="mailbox_action_delete_message">
+    <item quantity="one">Messaggio eliminato definitivamente</item>
+    <item quantity="other">%d messaggi eliminati definitivamente</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation">
+    <item quantity="one">Conversazione eliminata definitivamente</item>
+    <item quantity="other">%d conversazioni eliminate definitivamente</item>
+  </plurals>
 </resources>

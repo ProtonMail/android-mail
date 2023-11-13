@@ -40,4 +40,34 @@
   <string name="mailbox_error_message_generic">Fehler beim Laden des Postfachs.</string>
   <string name="mailbox_error_message_unexpected">Etwas ging unerwartet schief</string>
   <string name="mailbox_is_empty_message">Dieses Postfach ist leer.</string>
+  <plurals name="mailbox_action_trash">
+    <item quantity="one">Nachricht in den Papierkorb verschoben</item>
+    <item quantity="other">%d Nachrichten in den Papierkorb verschoben</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_title">
+    <item quantity="one">Unterhaltung löschen</item>
+    <item quantity="other">%d Unterhaltungen löschen</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_title">
+    <item quantity="one">Nachricht löschen</item>
+    <item quantity="other">%d Nachrichten löschen</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_message">
+    <item quantity="one">Möchtest du diese Unterhaltung wirklich dauerhaft löschen?</item>
+    <item quantity="other">Möchtest du diese Unterhaltungen wirklich dauerhaft löschen?</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_message">
+    <item quantity="one">Möchtest du diese Nachricht wirklich löschen?</item>
+    <item quantity="other">Möchtest du diese Nachrichten wirklich löschen?</item>
+  </plurals>
+  <string name="mailbox_action_delete_dialog_button_cancel">Abbrechen</string>
+  <string name="mailbox_action_delete_dialog_button_delete">Löschen</string>
+  <plurals name="mailbox_action_delete_message">
+    <item quantity="one">Nachricht dauerhaft gelöscht</item>
+    <item quantity="other">%d Nachrichten dauerhaft gelöscht</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation">
+    <item quantity="one">Unterhaltung dauerhaft gelöscht</item>
+    <item quantity="other">%d Unterhaltungen dauerhaft gelöscht</item>
+  </plurals>
 </resources>

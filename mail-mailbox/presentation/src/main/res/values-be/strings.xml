@@ -44,4 +44,48 @@
   <string name="mailbox_error_message_generic">Збой загрузкі паштовай скрыні</string>
   <string name="mailbox_error_message_unexpected">Нешта пайшло не так</string>
   <string name="mailbox_is_empty_message">Гэта паштовая скрыня пустая</string>
+  <plurals name="mailbox_action_trash">
+    <item quantity="one">Паведамленне перамешчана ў Сметніцу</item>
+    <item quantity="few">%d паведамленні перамешчаны ў Сметніцу</item>
+    <item quantity="many">%d паведамленняў перамешчаны ў Сметніцу</item>
+    <item quantity="other">%d паведамленняў перамешчаны ў Сметніцу</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_title">
+    <item quantity="one">Выдаліць размову</item>
+    <item quantity="few">Выдалены %d размовы</item>
+    <item quantity="many">Выдалены %d размоў</item>
+    <item quantity="other">Выдалены %d размоў</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_title">
+    <item quantity="one">Выдаліць паведамленне</item>
+    <item quantity="few">Выдаліць %d паведамленні</item>
+    <item quantity="many">Выдаліць %d паведамленняў</item>
+    <item quantity="other">Выдаліць %d паведамленняў</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_message">
+    <item quantity="one">Вы сапраўды хочаце незваротна выдаліць гэту размову?</item>
+    <item quantity="few">Вы сапраўды хочаце незваротна выдаліць гэтыя размовы?</item>
+    <item quantity="many">Вы сапраўды хочаце незваротна выдаліць гэтыя размовы?</item>
+    <item quantity="other">Вы сапраўды хочаце незваротна выдаліць гэтыя размовы?</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_message">
+    <item quantity="one">Вы сапраўды хочаце незваротна выдаліць гэта паведамленне?</item>
+    <item quantity="few">Вы сапраўды хочаце незваротна выдаліць гэтыя паведамленні?</item>
+    <item quantity="many">Вы сапраўды хочаце незваротна выдаліць гэтыя паведамленні?</item>
+    <item quantity="other">Вы сапраўды хочаце незваротна выдаліць гэтыя паведамленні?</item>
+  </plurals>
+  <string name="mailbox_action_delete_dialog_button_cancel">Скасаваць</string>
+  <string name="mailbox_action_delete_dialog_button_delete">Выдаліць</string>
+  <plurals name="mailbox_action_delete_message">
+    <item quantity="one">Паведамленне незваротна выдалена</item>
+    <item quantity="few">%d паведамленні незваротна выдалены</item>
+    <item quantity="many">%d паведамленняў незваротна выдалены</item>
+    <item quantity="other">%d паведамленняў незваротна выдалены</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation">
+    <item quantity="one">Размова незваротна выдалена</item>
+    <item quantity="few">%d размовы незваротна выдалены</item>
+    <item quantity="many">%d размоў незваротна выдалены</item>
+    <item quantity="other">%d размоў незваротна выдалены</item>
+  </plurals>
 </resources>

@@ -46,5 +46,5 @@
   <string name="composer_attachment_size_exceeded_dialog_title">已達附件上限</string>
   <string name="composer_attachment_size_exceeded_dialog_message">附件大小上限為 %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Reencryption of attachment failed. For security reasons all attachments got removed.</string>
-  <string name="message_footer_text">Sent from Proton Mail Android</string>
+  <string name="message_footer_text">從 Proton Mail Android版送出</string>
 </resources>

@@ -50,15 +50,15 @@
   <string name="action_save_pdf_content_description">保存为 PDF 文件</string>
   <string name="action_sender_emails_content_description">对此发件人今后的邮件设置收信规则</string>
   <string name="action_save_attachments_content_description">保存附件</string>
-  <string name="action_more_content_description">More</string>
+  <string name="action_more_content_description">更多</string>
   <string name="common_error_loading_actions">加载操作失败</string>
   <string name="yesterday">昨天</string>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">附件</string>
   <string name="attachment_download_notification_channel_description">附件下载通知</string>
   <string name="email_notification_channel_name">电子邮箱</string>
-  <string name="login_notification_channel_name">Login Alerts</string>
+  <string name="login_notification_channel_name">登录警报</string>
   <string name="email_notification_channel_description">新邮件提醒</string>
-  <string name="login_notification_channel_description">New logins notifications</string>
+  <string name="login_notification_channel_description">新的登录通知</string>
   <string name="auth_badge_official">官方</string>
 </resources>

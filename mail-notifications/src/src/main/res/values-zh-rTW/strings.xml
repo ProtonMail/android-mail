@@ -18,10 +18,10 @@
   -->
 <resources>
   <string name="notification_summary_text_new_messages">新郵件</string>
-  <string name="notification_summary_text_new_login_alerts">New login alerts</string>
+  <string name="notification_summary_text_new_login_alerts">新登入警告</string>
   <string name="notification_title_text_new_login_alerts_fallback">Proton Mail</string>
-  <string name="notification_title_text_new_message_fallback">New message</string>
-  <string name="notification_actions_archive_description">Archive</string>
-  <string name="notification_actions_trash_description">Trash</string>
-  <string name="notification_actions_reply_description">Reply</string>
+  <string name="notification_title_text_new_message_fallback">新訊息</string>
+  <string name="notification_actions_archive_description">封存</string>
+  <string name="notification_actions_trash_description">垃圾桶</string>
+  <string name="notification_actions_reply_description">回覆</string>
 </resources>

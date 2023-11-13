@@ -18,9 +18,9 @@
   -->
 <resources>
   <string name="notification_summary_text_new_messages">Nieuwe berichten</string>
-  <string name="notification_summary_text_new_login_alerts">New login alerts</string>
+  <string name="notification_summary_text_new_login_alerts">Nieuwe login meldingen</string>
   <string name="notification_title_text_new_login_alerts_fallback">Proton Mail</string>
-  <string name="notification_title_text_new_message_fallback">New message</string>
+  <string name="notification_title_text_new_message_fallback">Nieuw bericht</string>
   <string name="notification_actions_archive_description">Archiveren</string>
   <string name="notification_actions_trash_description">Prullenbak</string>
   <string name="notification_actions_reply_description">Beantwoorden</string>

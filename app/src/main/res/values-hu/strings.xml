@@ -28,6 +28,6 @@
   <string name="mailbox_message_sending_offline">Offline, az üzenet sorba van állítva küldésre</string>
   <string name="mailbox_message_sending_success">Üzenet elküldve</string>
   <string name="mailbox_message_sending_error">Hiba az üzenet küldése közben</string>
-  <string name="mailbox_attachment_uploading_error">Hiba csatolmányok feltöltésénél</string>
+  <string name="mailbox_attachment_uploading_error">Hiba mellékletek feltöltésénél</string>
   <string name="notification_switched_account">Átlépve a fiókba: %s</string>
 </resources>

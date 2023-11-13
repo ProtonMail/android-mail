@@ -20,16 +20,16 @@
   <string name="label_title_inbox">Posta in arrivo</string>
   <string name="label_title_drafts">Bozze</string>
   <string name="label_title_sent">Inviata</string>
-  <string name="label_title_starred">Preferita</string>
+  <string name="label_title_starred">Importante</string>
   <string name="label_title_archive">Archivio</string>
   <string name="label_title_spam">Spam</string>
   <string name="label_title_trash">Cestino</string>
   <string name="label_title_outbox">Posta in uscita</string>
   <string name="label_title_all_mail">Tutta la posta</string>
   <string name="label_title_all_drafts">Tutte le bozze</string>
-  <string name="label_title_all_sent">Inviate</string>
+  <string name="label_title_all_sent">Tutta la posta inviata</string>
   <string name="label_title_folders">Cartelle</string>
   <string name="label_title_labels">Etichette</string>
-  <string name="label_title_add_folder">Aggiungi cartella</string>
-  <string name="label_title_add_label">Aggiungi etichetta</string>
+  <string name="label_title_add_folder">Aggiungi una cartella</string>
+  <string name="label_title_add_label">Aggiungi un\'etichetta</string>
 </resources>

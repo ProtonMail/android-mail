@@ -40,4 +40,34 @@
   <string name="mailbox_error_message_generic">Misslyckades att ladda brevlåda</string>
   <string name="mailbox_error_message_unexpected">Något gick oväntat fel</string>
   <string name="mailbox_is_empty_message">Denna brevlåda är tom</string>
+  <plurals name="mailbox_action_trash">
+    <item quantity="one">Meddelande flyttat till papperskorg</item>
+    <item quantity="other">%d meddelanden flyttades till papperskorg</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_title">
+    <item quantity="one">Ta bort konversation</item>
+    <item quantity="other">Ta bort %d konversationer</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_title">
+    <item quantity="one">Ta bort meddelande</item>
+    <item quantity="other">Ta bort %d meddelanden</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_message">
+    <item quantity="one">Är du säker på att du vill ta bort denna konversationen permanent?</item>
+    <item quantity="other">Är du säker på att du vill ta bort dessa konversationer permanent?</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_message">
+    <item quantity="one">Är du säker på att du vill ta bort detta meddelande permanent?</item>
+    <item quantity="other">Är du säker på att du vill ta bort dessa meddelanden permanent?</item>
+  </plurals>
+  <string name="mailbox_action_delete_dialog_button_cancel">Avbryt</string>
+  <string name="mailbox_action_delete_dialog_button_delete">Ta bort</string>
+  <plurals name="mailbox_action_delete_message">
+    <item quantity="one">Meddelandet permanent borttaget</item>
+    <item quantity="other">%d meddelanden permanent borttagna</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation">
+    <item quantity="one">Konversation permanent borttaget</item>
+    <item quantity="other">%d konversationer permanent borttagna</item>
+  </plurals>
 </resources>

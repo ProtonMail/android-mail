@@ -38,4 +38,27 @@
   <string name="mailbox_error_message_generic">載入電子信箱失敗</string>
   <string name="mailbox_error_message_unexpected">不明原因發生異常</string>
   <string name="mailbox_is_empty_message">電子郵件信箱是空的</string>
+  <plurals name="mailbox_action_trash">
+    <item quantity="other">%d 則訊息已移至垃圾桶</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_title">
+    <item quantity="other">刪除 %d 個對話</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_title">
+    <item quantity="other">刪除 %d 封訊息</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_message">
+    <item quantity="other">您確定要永久刪除此會話嗎？</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_message">
+    <item quantity="other">您是否確定要永久刪除此訊息？</item>
+  </plurals>
+  <string name="mailbox_action_delete_dialog_button_cancel">取消</string>
+  <string name="mailbox_action_delete_dialog_button_delete">刪除</string>
+  <plurals name="mailbox_action_delete_message">
+    <item quantity="other">%d訊息永久刪除</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation">
+    <item quantity="other">%d對話永久刪除</item>
+  </plurals>
 </resources>

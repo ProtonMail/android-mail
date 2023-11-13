@@ -46,5 +46,5 @@
   <string name="composer_attachment_size_exceeded_dialog_title">S\'ha assolit el límit de fitxers adjunts.</string>
   <string name="composer_attachment_size_exceeded_dialog_message">El límit de mida pels arxius adjunts és de %1$s.</string>
   <string name="composer_attachment_reencryption_failed_message">Reencryption of attachment failed. For security reasons all attachments got removed.</string>
-  <string name="message_footer_text">Sent from Proton Mail Android</string>
+  <string name="message_footer_text">Enviat des de Proton Mail Android</string>
 </resources>

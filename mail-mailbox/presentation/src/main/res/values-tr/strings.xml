@@ -40,4 +40,34 @@
   <string name="mailbox_error_message_generic">E-posta kutusu yüklenemedi</string>
   <string name="mailbox_error_message_unexpected">Beklenmeyen bir sorun çıktı</string>
   <string name="mailbox_is_empty_message">Bu e-posta kutusu boş</string>
+  <plurals name="mailbox_action_trash">
+    <item quantity="one">İleti çöpe atıldı</item>
+    <item quantity="other">%d ileti çöpe atıldı</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_title">
+    <item quantity="one">Yazışmayı sil</item>
+    <item quantity="other">%d yazışmayı sil</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_title">
+    <item quantity="one">İletiyi sil</item>
+    <item quantity="other">%d iletiyi sil</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_message">
+    <item quantity="one">Bu yazışmayı silmek istediğinize emin misiniz?</item>
+    <item quantity="other">Bu yazışmaları silmek istediğinize emin misiniz?</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_message">
+    <item quantity="one">Bu iletiyi silmek istediğinize emin misiniz?</item>
+    <item quantity="other">Bu iletileri silmek istediğinize emin misiniz?</item>
+  </plurals>
+  <string name="mailbox_action_delete_dialog_button_cancel">İptal</string>
+  <string name="mailbox_action_delete_dialog_button_delete">Sil</string>
+  <plurals name="mailbox_action_delete_message">
+    <item quantity="one">İleti kalıcı olarak silindi</item>
+    <item quantity="other">%d ileti kalıcı olarak silindi</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation">
+    <item quantity="one">Yazışma kalıcı olarak silindi</item>
+    <item quantity="other">%d yazışma kalıcı olarak silindi</item>
+  </plurals>
 </resources>

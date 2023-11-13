@@ -40,4 +40,34 @@
   <string name="mailbox_error_message_generic">No s\'ha pogut carregar la bústia de correu</string>
   <string name="mailbox_error_message_unexpected">Alguna cosa ha anat malament</string>
   <string name="mailbox_is_empty_message">Aquesta bústia de correu està buida</string>
+  <plurals name="mailbox_action_trash">
+    <item quantity="one">El missatge s\'ha mogut a la paperera.</item>
+    <item quantity="other">%d missatges s\'han mogut a la paperera.</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_title">
+    <item quantity="one">Eliminar la conversa</item>
+    <item quantity="other">Eliminar %d converses</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_title">
+    <item quantity="one">Eliminar el missatge</item>
+    <item quantity="other">Eliminar %d missatges</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_message">
+    <item quantity="one">Segur que voleu eliminar permanentment aquesta conversa?</item>
+    <item quantity="other">Està segur que vol esborrar permanentment aquestes converses?</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_message">
+    <item quantity="one">Segur que voleu eliminar aquest missatge permanentment?</item>
+    <item quantity="other">Segur que voleu eliminar aquests missatges permanentment?</item>
+  </plurals>
+  <string name="mailbox_action_delete_dialog_button_cancel">Cancel·la</string>
+  <string name="mailbox_action_delete_dialog_button_delete">Elimina</string>
+  <plurals name="mailbox_action_delete_message">
+    <item quantity="one">S\'ha eliminat el missatge de manera permanent.</item>
+    <item quantity="other">S\'han eliminat %d missatges de manera permanent.</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation">
+    <item quantity="one">S\'ha eliminat la conversa de manera permanent.</item>
+    <item quantity="other">S\'han eliminat %d converses de manera permanent.</item>
+  </plurals>
 </resources>

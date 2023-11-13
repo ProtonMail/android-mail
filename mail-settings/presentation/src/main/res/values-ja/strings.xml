@@ -63,12 +63,12 @@
   <string name="mail_settings_not_set">未設定</string>
   <string name="mail_settings_conversation_mode_hint">同じ会話のメールを受信トレイにまとめて表示するか、個別に表示するかを選択できます</string>
   <!-- Privacy settings -->
-  <string name="mail_settings_privacy_auto_show_remote_content">Auto show remote content</string>
-  <string name="mail_settings_privacy_auto_show_embedded_images">Auto show embedded images</string>
-  <string name="mail_settings_privacy_prevent_taking_screenshots">Prevent taking screenshots</string>
-  <string name="mail_settings_privacy_request_link_confirmation">Request link confirmation</string>
-  <string name="mail_settings_privacy_error_updating">Error updating settings</string>
-  <string name="mail_settings_privacy_error_loading">Error loading settings</string>
+  <string name="mail_settings_privacy_auto_show_remote_content">リモートコンテンツを自動表示</string>
+  <string name="mail_settings_privacy_auto_show_embedded_images">埋め込み画像を自動表示</string>
+  <string name="mail_settings_privacy_prevent_taking_screenshots">スクリーンショットの撮影を禁止する</string>
+  <string name="mail_settings_privacy_request_link_confirmation">リンク確認のリクエスト</string>
+  <string name="mail_settings_privacy_error_updating">設定更新エラー</string>
+  <string name="mail_settings_privacy_error_loading">設定の読み込みエラー</string>
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">スワイプ操作</string>
   <string name="mail_settings_swipe_actions_subtitle">スワイプ操作を登録するとよく使う機能に簡単にアクセスできます。</string>

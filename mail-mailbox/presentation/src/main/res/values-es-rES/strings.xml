@@ -40,4 +40,34 @@
   <string name="mailbox_error_message_generic">Error al cargar el buzón</string>
   <string name="mailbox_error_message_unexpected">Se ha producido un error imprevisto</string>
   <string name="mailbox_is_empty_message">Este buzón está vacío</string>
+  <plurals name="mailbox_action_trash">
+    <item quantity="one">El mensaje ha sido movido a la papelera.</item>
+    <item quantity="other">%d mensajes han sido movidos a la papelera.</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_title">
+    <item quantity="one">Eliminar la conversación</item>
+    <item quantity="other">Eliminar %d conversaciones</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_title">
+    <item quantity="one">Eliminar el mensaje</item>
+    <item quantity="other">Eliminar %d mensajes</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_message">
+    <item quantity="one">¿Estás seguro de que quieres eliminar permanentemente esta conversación?</item>
+    <item quantity="other">¿Estás seguro de que quieres eliminar permanentemente estas conversaciones?</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_message">
+    <item quantity="one">¿Estás seguro de que quieres eliminar permanentemente este mensaje?</item>
+    <item quantity="other">¿Estás seguro de que quieres eliminar permanentemente estos mensajes?</item>
+  </plurals>
+  <string name="mailbox_action_delete_dialog_button_cancel">Cancelar</string>
+  <string name="mailbox_action_delete_dialog_button_delete">Eliminar</string>
+  <plurals name="mailbox_action_delete_message">
+    <item quantity="one">El mensaje ha sido eliminado permanentemente.</item>
+    <item quantity="other">%d mensajes han sido eliminados permanentemente.</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation">
+    <item quantity="one">La conversación ha sido eliminada permanentemente.</item>
+    <item quantity="other">%d conversaciones han sido eliminadas permanentemente.</item>
+  </plurals>
 </resources>

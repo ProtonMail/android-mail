@@ -59,6 +59,6 @@
   <string name="email_notification_channel_name">Correus electrònics</string>
   <string name="login_notification_channel_name">Alertes d\'inici de sessió</string>
   <string name="email_notification_channel_description">Notificacions de correu electrònic entrant</string>
-  <string name="login_notification_channel_description">New logins notifications</string>
+  <string name="login_notification_channel_description">Noves notificacions d\'inici de sessió</string>
   <string name="auth_badge_official">Oficial</string>
 </resources>

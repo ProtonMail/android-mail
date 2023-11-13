@@ -38,4 +38,27 @@
   <string name="mailbox_error_message_generic">Kotak pesan gagal dimuat</string>
   <string name="mailbox_error_message_unexpected">Terdapat kesalahan yang tidak terduga</string>
   <string name="mailbox_is_empty_message">Kotak surat ini kosong</string>
+  <plurals name="mailbox_action_trash">
+    <item quantity="other">%d pesan dipindahkan ke Sampah</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_title">
+    <item quantity="other">Hapus %d percakapan</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_title">
+    <item quantity="other">Hapus %d pesan</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_message">
+    <item quantity="other">Apakah Anda yakin untuk menghapus percakapan ini secara permanen?</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_message">
+    <item quantity="other">Apakah Anda yakin untuk menghapus pesan ini secara permanen?</item>
+  </plurals>
+  <string name="mailbox_action_delete_dialog_button_cancel">Batalkan</string>
+  <string name="mailbox_action_delete_dialog_button_delete">Hapus</string>
+  <plurals name="mailbox_action_delete_message">
+    <item quantity="other">%d pesan dihapus secara permanen</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation">
+    <item quantity="other">%d percakapan dihapus secara permanen</item>
+  </plurals>
 </resources>

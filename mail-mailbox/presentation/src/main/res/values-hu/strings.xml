@@ -25,8 +25,8 @@
   <string name="mailbox_toolbar_menu_button_content_description">Menü</string>
   <string name="mailbox_toolbar_search_button_content_description">Keresés</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">%d Kiválasztva</item>
-    <item quantity="other">%d Kiválasztva</item>
+    <item quantity="one">%d kiválasztva</item>
+    <item quantity="other">%d kiválasztva</item>
   </plurals>
   <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
   <string name="filter_unread_button_text_without_counter">Olvasatlan</string>
@@ -40,4 +40,34 @@
   <string name="mailbox_error_message_generic">A postafiók betöltése sikertelen</string>
   <string name="mailbox_error_message_unexpected">Valami váratlanul rosszul történt</string>
   <string name="mailbox_is_empty_message">A postafiók üres</string>
+  <plurals name="mailbox_action_trash">
+    <item quantity="one">Message moved to Trash</item>
+    <item quantity="other">%d messages moved to Trash</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_title">
+    <item quantity="one">Delete conversation</item>
+    <item quantity="other">Delete %d conversations</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_title">
+    <item quantity="one">Üzenet törlése</item>
+    <item quantity="other">Delete %d messages</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_message">
+    <item quantity="one">Are you sure you want to permanently delete this conversation?</item>
+    <item quantity="other">Are you sure you want to permanently delete these conversations?</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_message">
+    <item quantity="one">Are you sure you want to permanently delete this message?</item>
+    <item quantity="other">Are you sure you want to permanently delete these message?</item>
+  </plurals>
+  <string name="mailbox_action_delete_dialog_button_cancel">Mégsem</string>
+  <string name="mailbox_action_delete_dialog_button_delete">Törlés</string>
+  <plurals name="mailbox_action_delete_message">
+    <item quantity="one">Message permanently deleted</item>
+    <item quantity="other">%d messages permanently deleted</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation">
+    <item quantity="one">Conversation permanently deleted</item>
+    <item quantity="other">%d conversations permanently deleted</item>
+  </plurals>
 </resources>

@@ -40,4 +40,34 @@
   <string name="mailbox_error_message_generic">Erro ao carregar a caixa de correio</string>
   <string name="mailbox_error_message_unexpected">Ocorreu um erro inesperado.</string>
   <string name="mailbox_is_empty_message">Esta caixa de correio está vazia</string>
+  <plurals name="mailbox_action_trash">
+    <item quantity="one">Mensagem movida para a lixeira</item>
+    <item quantity="other">%d mensagens movidas para lixeira</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_title">
+    <item quantity="one">Excluir conversa</item>
+    <item quantity="other">Excluir %d conversas</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_title">
+    <item quantity="one">Excluir mensagem</item>
+    <item quantity="other">Excluir %d mensagens</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_message">
+    <item quantity="one">Você tem certeza de que quer excluir permanentemente esta conversa?</item>
+    <item quantity="other">Are you sure you want to permanently delete these conversations?</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_message">
+    <item quantity="one">Você tem certeza de que deseja excluir permanentemente esta mensagem?</item>
+    <item quantity="other">Are you sure you want to permanently delete these message?</item>
+  </plurals>
+  <string name="mailbox_action_delete_dialog_button_cancel">Cancelar</string>
+  <string name="mailbox_action_delete_dialog_button_delete">Excluir</string>
+  <plurals name="mailbox_action_delete_message">
+    <item quantity="one">Mensagem excluída permanentemente</item>
+    <item quantity="other">%d mensagens excluídas permanentemente</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation">
+    <item quantity="one">Conversa excluída permanentemente</item>
+    <item quantity="other">%d conversas excluídas permanentemente</item>
+  </plurals>
 </resources>

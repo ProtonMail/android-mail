@@ -40,4 +40,34 @@
   <string name="mailbox_error_message_generic">საფოსტო ყუთის ჩატვირთვის შეცდომა</string>
   <string name="mailbox_error_message_unexpected">რაღაც, მოულოდნელად, გაფუჭდა</string>
   <string name="mailbox_is_empty_message">ეს საფოსტო ყუთი ცარიელია</string>
+  <plurals name="mailbox_action_trash">
+    <item quantity="one">შეტყობინება გადატანილია ნაგვის ყუთში</item>
+    <item quantity="other">%d შეტყობინება გადატანილია ნაგვის ყუთში</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_title">
+    <item quantity="one">საუბრის წაშლა</item>
+    <item quantity="other">%d საუბრის წაშლა</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_title">
+    <item quantity="one">შეტყობინების წაშლა</item>
+    <item quantity="other">%d შეტყობინების წაშლა</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_message">
+    <item quantity="one">დარწმუნებული ბრძანდებით, რომ გნებავთ, სამუდამოდ წაშალოთ ეს საუბარი?</item>
+    <item quantity="other">დარწმუნებული ბრძანდებით, რომ გნებავთ, სამუდამოდ წაშალოთ ეს საუბრები?</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_message">
+    <item quantity="one">დარწმუნებული ბრძანდებით, რომ გნებავთ, სამუდამოდ წაშალოთ ეს შეტყობინება?</item>
+    <item quantity="other">დარწმუნებული ბრძანდებით, რომ გნებავთ, სამუდამოდ წაშალოთ ეს შეტყობინებები?</item>
+  </plurals>
+  <string name="mailbox_action_delete_dialog_button_cancel">გაუქმება</string>
+  <string name="mailbox_action_delete_dialog_button_delete">წაშლა</string>
+  <plurals name="mailbox_action_delete_message">
+    <item quantity="one">შეტყობინება სამუდამოდ წაიშალა</item>
+    <item quantity="other">%d შეტყობინება სამუდამოდ წაიშალა</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation">
+    <item quantity="one">საუბარი სამუდამოდ წაიშალა</item>
+    <item quantity="other">%d საუბარი სამუდამოდ წაიშალა</item>
+  </plurals>
 </resources>

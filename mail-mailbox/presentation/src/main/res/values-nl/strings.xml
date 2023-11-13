@@ -40,4 +40,34 @@
   <string name="mailbox_error_message_generic">Postvak IN laden mislukt</string>
   <string name="mailbox_error_message_unexpected">Er is onverwacht iets fout gegaan</string>
   <string name="mailbox_is_empty_message">Dit postvak is leeg</string>
+  <plurals name="mailbox_action_trash">
+    <item quantity="one">Bericht verplaatst naar de prullenbak</item>
+    <item quantity="other">%d berichten verplaatst naar de prullenbak</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_title">
+    <item quantity="one">Gesprek verwijderen</item>
+    <item quantity="other">%d conversaties verwijderen</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_title">
+    <item quantity="one">Bericht verwijderen</item>
+    <item quantity="other">Verwijder %d berichten</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_message">
+    <item quantity="one">Weet u zeker dat u dit gesprek permanent wilt verwijderen?</item>
+    <item quantity="other">Weet u zeker dat u deze gesprekken permanent wilt verwijderen?</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_message">
+    <item quantity="one">Weet u zeker dat u dit bericht permanent wilt wissen?</item>
+    <item quantity="other">Weet u zeker dat u deze berichten permanent wilt wissen?</item>
+  </plurals>
+  <string name="mailbox_action_delete_dialog_button_cancel">Annuleren</string>
+  <string name="mailbox_action_delete_dialog_button_delete">Verwijderen</string>
+  <plurals name="mailbox_action_delete_message">
+    <item quantity="one">Bericht permanent verwijderd</item>
+    <item quantity="other">%d berichten permanent verwijderd</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation">
+    <item quantity="one">Gesprek permanent verwijderd</item>
+    <item quantity="other">%d gesprekken permanent verwijderd</item>
+  </plurals>
 </resources>
