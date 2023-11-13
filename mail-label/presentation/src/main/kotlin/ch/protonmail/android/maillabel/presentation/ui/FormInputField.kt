@@ -44,9 +44,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.maillabel.presentation.R
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
-import me.proton.core.compose.theme.captionStrongNorm
 import me.proton.core.compose.theme.captionWeak
 import me.proton.core.compose.theme.defaultNorm
+import me.proton.core.compose.theme.defaultSmallStrongNorm
 
 @Composable
 fun FormInputField(
@@ -65,7 +65,7 @@ fun FormInputField(
         Text(
             text = title,
             modifier = Modifier.padding(bottom = ProtonDimens.SmallSpacing),
-            style = ProtonTheme.typography.captionStrongNorm
+            style = ProtonTheme.typography.defaultSmallStrongNorm
         )
 
         var textFieldValue by rememberSaveable(stateSaver = TextFieldValue.Saver) {
