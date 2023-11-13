@@ -25,6 +25,7 @@ import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.Label
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
+import me.proton.core.label.domain.entity.NewLabel
 
 object LabelTestData {
 
@@ -63,5 +64,23 @@ object LabelTestData {
         isNotified = null,
         isExpanded = isExpanded,
         isSticky = null
+    )
+
+    fun buildNewLabel(
+        name: String,
+        parentId: String? = null,
+        type: LabelType = LabelType.MessageLabel,
+        color: String = "#338AF3",
+        isNotified: Boolean? = null,
+        isExpanded: Boolean? = null,
+        isSticky: Boolean? = null
+    ) = NewLabel(
+        parentId = parentId?.let { LabelId(it) },
+        name = name,
+        type = type,
+        color = color,
+        isNotified = isNotified,
+        isExpanded = isExpanded,
+        isSticky = isSticky
     )
 }
