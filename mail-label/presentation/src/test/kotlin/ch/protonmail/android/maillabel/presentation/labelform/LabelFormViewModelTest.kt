@@ -55,6 +55,25 @@ class LabelFormViewModelTest {
     private val defaultTestLabel = buildLabel(id = "LabelID", color = Color.Red.getHexStringFromColor())
     private val defaultTestUpdatedName = "UpdatedName"
 
+    private val loadedCreateState = LabelFormState.Data.Create(
+        isSaveEnabled = false,
+        name = "",
+        color = defaultTestLabel.color,
+        colorList = listOf(Color.Red),
+        close = Effect.empty(),
+        closeWithSave = Effect.empty()
+    )
+    private val loadedUpdateState = LabelFormState.Data.Update(
+        isSaveEnabled = true,
+        name = defaultTestLabel.name,
+        color = defaultTestLabel.color,
+        colorList = listOf(Color.Red),
+        close = Effect.empty(),
+        closeWithSave = Effect.empty(),
+        labelId = defaultTestLabel.labelId,
+        closeWithDelete = Effect.empty()
+    )
+
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
         every { this@mockk.invoke() } returns flowOf(userId)
     }
@@ -122,14 +141,7 @@ class LabelFormViewModelTest {
 
     @Test
     fun `emits create state`() = runTest {
-        val loadedState = LabelFormState.Data.Create(
-            isSaveEnabled = false,
-            name = "",
-            color = defaultTestLabel.color,
-            colorList = listOf(Color.Red),
-            close = Effect.empty(),
-            closeWithSave = Effect.empty()
-        )
+        val loadedState = loadedCreateState
         every { savedStateHandle.get<String>(LabelFormScreen.LabelIdKey) } returns null
         every {
             reducer.newStateFrom(
@@ -154,16 +166,7 @@ class LabelFormViewModelTest {
 
     @Test
     fun `emits update state`() = runTest {
-        val loadedState = LabelFormState.Data.Update(
-            isSaveEnabled = true,
-            name = defaultTestLabel.name,
-            color = defaultTestLabel.color,
-            colorList = listOf(Color.Red),
-            close = Effect.empty(),
-            closeWithSave = Effect.empty(),
-            labelId = defaultTestLabel.labelId,
-            closeWithDelete = Effect.empty()
-        )
+        val loadedState = loadedUpdateState
         every {
             reducer.newStateFrom(
                 LabelFormState.Loading(),
@@ -187,14 +190,7 @@ class LabelFormViewModelTest {
 
     @Test
     fun `when label is updated`() = runTest {
-        val loadedState = LabelFormState.Data.Create(
-            isSaveEnabled = false,
-            name = "",
-            color = defaultTestLabel.color,
-            colorList = listOf(Color.Red),
-            close = Effect.empty(),
-            closeWithSave = Effect.empty()
-        )
+        val loadedState = loadedCreateState
         every { savedStateHandle.get<String>(LabelFormScreen.LabelIdKey) } returns null
         every {
             reducer.newStateFrom(
@@ -230,14 +226,7 @@ class LabelFormViewModelTest {
 
     @Test
     fun `when color is updated`() = runTest {
-        val loadedState = LabelFormState.Data.Create(
-            isSaveEnabled = false,
-            name = "",
-            color = defaultTestLabel.color,
-            colorList = listOf(Color.Red),
-            close = Effect.empty(),
-            closeWithSave = Effect.empty()
-        )
+        val loadedState = loadedCreateState
         every { savedStateHandle.get<String>(LabelFormScreen.LabelIdKey) } returns null
         every {
             reducer.newStateFrom(
