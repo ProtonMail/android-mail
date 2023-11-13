@@ -123,9 +123,7 @@ fun LabelAsBottomSheetContent(
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_proton_plus),
-                contentDescription = stringResource(
-                    id = R.string.label_title_add_label
-                ),
+                contentDescription = NO_CONTENT_DESCRIPTION,
                 modifier = Modifier
                     .testTag(LabelAsBottomSheetTestTags.AddLabelIcon)
                     .padding(ProtonDimens.DefaultSpacing),

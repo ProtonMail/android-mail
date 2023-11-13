@@ -94,7 +94,7 @@ class SidebarViewModel @Inject constructor(
 
     private fun onSidebarLabelAction(action: SidebarLabelAction) {
         when (action) {
-            is SidebarLabelAction.List -> Unit
+            is SidebarLabelAction.ViewList -> Unit
             is SidebarLabelAction.Add -> Unit
             is SidebarLabelAction.Collapse -> onUpdateLabelExpandedState(action.labelId, false)
             is SidebarLabelAction.Expand -> onUpdateLabelExpandedState(action.labelId, true)

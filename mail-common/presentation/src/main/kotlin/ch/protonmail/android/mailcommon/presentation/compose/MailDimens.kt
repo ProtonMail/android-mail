@@ -47,7 +47,7 @@ object MailDimens {
 
     val IconWeakRoundBackgroundRadius = 28.dp
 
-    val ListItemCircleFilledSize = 15.dp
+    val ListItemCircleFilledSize = 16.dp
     val ListItemCircleFilledPadding = 20.dp
 
     object ColorPicker {

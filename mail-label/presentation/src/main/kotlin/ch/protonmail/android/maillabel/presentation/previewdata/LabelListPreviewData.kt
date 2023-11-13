@@ -16,15 +16,28 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maillabel.presentation.sidebar
+package ch.protonmail.android.maillabel.presentation.previewdata
 
-import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
+import ch.protonmail.android.maillabel.presentation.sample.LabelColorListSample.colorListSample
+import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.Label
+import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
 
-sealed interface SidebarLabelAction {
-    data class ViewList(val type: LabelType) : SidebarLabelAction
-    data class Add(val type: LabelType) : SidebarLabelAction
-    data class Select(val labelId: MailLabelId) : SidebarLabelAction
-    data class Collapse(val labelId: MailLabelId) : SidebarLabelAction
-    data class Expand(val labelId: MailLabelId) : SidebarLabelAction
+object LabelListPreviewData {
+
+    val labelSampleData = Label(
+        userId = UserId("userId"),
+        labelId = LabelId("labelId"),
+        parentId = null,
+        name = "Label Name",
+        type = LabelType.MessageLabel,
+        path = "path",
+        color = colorListSample().random().getHexStringFromColor(),
+        order = 0,
+        isNotified = null,
+        isExpanded = null,
+        isSticky = null
+    )
 }

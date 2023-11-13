@@ -28,6 +28,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -56,8 +57,8 @@ import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.maillabel.presentation.labelAddTitleRes
 import ch.protonmail.android.maillabel.presentation.labelTitleRes
 import ch.protonmail.android.maillabel.presentation.sidebar.SidebarLabelAction.Add
-import ch.protonmail.android.maillabel.presentation.sidebar.SidebarLabelAction.List
 import ch.protonmail.android.maillabel.presentation.sidebar.SidebarLabelAction.Select
+import ch.protonmail.android.maillabel.presentation.sidebar.SidebarLabelAction.ViewList
 import ch.protonmail.android.maillabel.presentation.testTag
 import me.proton.core.compose.component.ProtonSidebarItem
 import me.proton.core.compose.component.ProtonSidebarLazy
@@ -69,18 +70,18 @@ import me.proton.core.label.domain.entity.LabelType.MessageFolder
 import me.proton.core.label.domain.entity.LabelType.MessageLabel
 
 fun LazyListScope.sidebarLabelItems(
-    items: kotlin.collections.List<MailLabelUiModel.Custom>,
+    items: List<MailLabelUiModel.Custom>,
     onLabelAction: (SidebarLabelAction) -> Unit
 ) = sidebarCustomLabelItems(MessageLabel, items, onLabelAction)
 
 fun LazyListScope.sidebarFolderItems(
-    items: kotlin.collections.List<MailLabelUiModel.Custom>,
+    items: List<MailLabelUiModel.Custom>,
     onLabelAction: (SidebarLabelAction) -> Unit
 ) = sidebarCustomLabelItems(MessageFolder, items, onLabelAction)
 
 private fun LazyListScope.sidebarCustomLabelItems(
     type: LabelType,
-    items: kotlin.collections.List<MailLabelUiModel.Custom>,
+    items: List<MailLabelUiModel.Custom>,
     onLabelAction: (SidebarLabelAction) -> Unit
 ) {
     item {
@@ -88,7 +89,7 @@ private fun LazyListScope.sidebarCustomLabelItems(
             type = type,
             showAddIcon = items.isNotEmpty(),
             onAddClick = { onLabelAction(Add(type)) },
-            onLabelsClick = { onLabelAction(List(type)) }
+            onLabelsClick = { onLabelAction(ViewList(type)) }
         )
     }
     when {
@@ -140,8 +141,7 @@ private fun SidebarCustomLabelTitleItem(
         Column(
             modifier = Modifier
                 .align(Alignment.CenterVertically)
-                .fillMaxHeight()
-                .fillMaxWidth()
+                .fillMaxSize()
                 .weight(1f, fill = true)
                 .clickable(
                     onClickLabel = stringResource(
@@ -156,8 +156,7 @@ private fun SidebarCustomLabelTitleItem(
             Text(
                 modifier = Modifier
                     .padding(
-                        start = ProtonDimens.DefaultSpacing,
-                        end = ProtonDimens.DefaultSpacing
+                        horizontal = ProtonDimens.DefaultSpacing
                     ),
                 text = stringResource(type.labelTitleRes()),
                 color = ProtonTheme.colors.textWeak
@@ -181,8 +180,7 @@ private fun SidebarCustomLabelTitleItem(
                 Icon(
                     modifier = Modifier
                         .padding(
-                            start = ProtonDimens.DefaultSpacing,
-                            end = ProtonDimens.DefaultSpacing
+                            horizontal = ProtonDimens.DefaultSpacing
                         ),
                     painter = painterResource(R.drawable.ic_proton_plus),
                     contentDescription = stringResource(

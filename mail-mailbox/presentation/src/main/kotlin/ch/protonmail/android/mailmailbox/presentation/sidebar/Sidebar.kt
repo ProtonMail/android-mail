@@ -85,7 +85,7 @@ fun Sidebar(
                 close = ::close,
                 onLabelAction = { sidebarLabelAction ->
                     when (sidebarLabelAction) {
-                        is SidebarLabelAction.List -> {
+                        is SidebarLabelAction.ViewList -> {
                             close()
                             if (sidebarLabelAction.type == LabelType.MessageLabel) {
                                 navigationActions.onLabelList()

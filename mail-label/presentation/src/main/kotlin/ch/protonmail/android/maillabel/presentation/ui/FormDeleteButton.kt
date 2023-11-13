@@ -57,10 +57,8 @@ fun FormDeleteButton(
     ) {
         Text(
             modifier = Modifier.padding(
-                start = ProtonDimens.MediumSpacing,
-                top = ProtonDimens.ExtraSmallSpacing,
-                end = ProtonDimens.MediumSpacing,
-                bottom = ProtonDimens.ExtraSmallSpacing
+                horizontal = ProtonDimens.MediumSpacing,
+                vertical = ProtonDimens.ExtraSmallSpacing
             ),
             text = text,
             style = ProtonTheme.typography.defaultNorm,

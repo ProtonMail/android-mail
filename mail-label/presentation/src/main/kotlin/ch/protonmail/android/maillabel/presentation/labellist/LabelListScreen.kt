@@ -21,6 +21,7 @@ package ch.protonmail.android.maillabel.presentation.labellist
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,14 +29,12 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.selection.selectable
-import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
@@ -49,17 +48,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.maillabel.presentation.getColorFromHexString
+import ch.protonmail.android.maillabel.presentation.previewdata.LabelListPreviewData.labelSampleData
+import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonSecondaryButton
 import me.proton.core.compose.component.appbar.ProtonTopAppBar
 import me.proton.core.compose.flow.rememberAsState
@@ -69,160 +69,166 @@ import me.proton.core.compose.theme.captionNorm
 import me.proton.core.compose.theme.defaultNorm
 import me.proton.core.compose.theme.defaultSmallWeak
 import me.proton.core.compose.theme.defaultStrongNorm
-import me.proton.core.domain.entity.UserId
-import me.proton.core.label.domain.entity.Label
 import me.proton.core.label.domain.entity.LabelId
-import me.proton.core.label.domain.entity.LabelType
-import okhttp3.internal.toHexString
 
 @Composable
 fun LabelListScreen(actions: LabelListScreen.Actions, viewModel: LabelListViewModel = hiltViewModel()) {
-    when (
-        val state = rememberAsState(
-            flow = viewModel.state,
-            initial = viewModel.initialState
-        ).value
-    ) {
-        is LabelListState.Data -> {
-            LabelListScreen(
-                state = state,
-                actions = actions
+    val state = rememberAsState(
+        flow = viewModel.state,
+        initial = viewModel.initialState
+    ).value
+
+    Scaffold(
+        topBar = {
+            LabelListTopBar(
+                isAddLabelButtonVisible = state is LabelListState.Data,
+                actions
             )
+        },
+        content = { paddingValues ->
+            when (state) {
+                is LabelListState.Data -> {
+                    LabelListScreenContent(
+                        state = state,
+                        actions = actions,
+                        paddingValues = paddingValues
+                    )
+                }
+                is LabelListState.EmptyLabelList -> {
+                    EmptyLabelListScreen(
+                        actions = actions,
+                        paddingValues = paddingValues
+                    )
+                }
+                is LabelListState.Loading -> {
+                    LoadingLabelListScreen(
+                        paddingValues = paddingValues
+                    )
+                }
+            }
         }
-        is LabelListState.EmptyLabelList -> {
-            EmptyLabelListScreen(
-                actions = actions
-            )
-        }
-        is LabelListState.Loading -> { }
-    }
+    )
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun LabelListScreen(state: LabelListState.Data, actions: LabelListScreen.Actions) {
-    Scaffold(
-        topBar = {
-            LabelListTopBar(
-                isAddLabelButtonVisible = true,
-                actions
+fun LabelListScreenContent(
+    state: LabelListState.Data,
+    actions: LabelListScreen.Actions,
+    paddingValues: PaddingValues
+) {
+    LazyColumn(
+        modifier = Modifier
+            .padding(
+                PaddingValues(
+                    start = paddingValues.calculateStartPadding(LocalLayoutDirection.current),
+                    top = paddingValues.calculateTopPadding() + ProtonDimens.SmallSpacing,
+                    end = paddingValues.calculateEndPadding(LocalLayoutDirection.current),
+                    bottom = paddingValues.calculateBottomPadding()
+                )
             )
-        },
-        content = { paddingValues ->
-            LazyColumn(
+    ) {
+        items(state.labels) { label ->
+            Row(
                 modifier = Modifier
-                    .selectableGroup()
-                    .padding(
-                        PaddingValues(
-                            start = paddingValues.calculateStartPadding(LocalLayoutDirection.current),
-                            top = paddingValues.calculateTopPadding() + ProtonDimens.SmallSpacing,
-                            end = paddingValues.calculateEndPadding(LocalLayoutDirection.current),
-                            bottom = paddingValues.calculateBottomPadding()
-                        )
-                    )
-            ) {
-                items(state.labels) { label ->
-                    Column(
-                        modifier = Modifier
-                            .animateItemPlacement()
-                            .selectable(selected = false) {
-                                actions.onLabelSelected(label.labelId)
-                            }
-                    ) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Box(
-                                modifier = Modifier
-                                    .padding(MailDimens.ListItemCircleFilledPadding)
-                                    .size(MailDimens.ListItemCircleFilledSize)
-                                    .clip(CircleShape)
-                                    .background(label.color.getColorFromHexString())
-                            )
-                            Text(
-                                text = label.name,
-                                modifier = Modifier.padding(
-                                    start = ProtonDimens.ExtraSmallSpacing,
-                                    top = ProtonDimens.DefaultSpacing,
-                                    end = ProtonDimens.DefaultSpacing,
-                                    bottom = ProtonDimens.DefaultSpacing
-                                ),
-                                style = ProtonTheme.typography.defaultNorm
-                            )
+                    .fillMaxWidth()
+                    .animateItemPlacement()
+                    .clickable(
+                        onClickLabel = stringResource(R.string.label_list_item_content_description),
+                        role = Role.Button,
+                        onClick = {
+                            actions.onLabelSelected(label.labelId)
                         }
-                        Divider()
-                    }
-                }
+                    ),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .padding(MailDimens.ListItemCircleFilledPadding)
+                        .size(MailDimens.ListItemCircleFilledSize)
+                        .clip(CircleShape)
+                        .background(label.color.getColorFromHexString())
+                )
+                Text(
+                    text = label.name,
+                    modifier = Modifier.padding(
+                        start = ProtonDimens.ExtraSmallSpacing,
+                        top = ProtonDimens.DefaultSpacing,
+                        end = ProtonDimens.DefaultSpacing,
+                        bottom = ProtonDimens.DefaultSpacing
+                    ),
+                    style = ProtonTheme.typography.defaultNorm
+                )
             }
+            Divider()
         }
-    )
+    }
 }
 
 @Composable
-fun EmptyLabelListScreen(actions: LabelListScreen.Actions) {
-    Scaffold(
-        topBar = {
-            LabelListTopBar(
-                isAddLabelButtonVisible = false,
-                actions
+fun EmptyLabelListScreen(actions: LabelListScreen.Actions, paddingValues: PaddingValues) {
+    Column(
+        modifier = Modifier
+            .padding(paddingValues)
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Icon(
+            modifier = Modifier
+                .padding(start = ProtonDimens.ExtraSmallSpacing)
+                .background(
+                    color = ProtonTheme.colors.backgroundSecondary,
+                    shape = RoundedCornerShape(MailDimens.IconWeakRoundBackgroundRadius)
+                )
+                .padding(ProtonDimens.SmallSpacing),
+            painter = painterResource(id = R.drawable.ic_proton_tag_plus),
+            contentDescription = NO_CONTENT_DESCRIPTION
+        )
+        Text(
+            stringResource(R.string.label_list_no_labels_found),
+            Modifier.padding(
+                start = ProtonDimens.LargeSpacing,
+                top = ProtonDimens.MediumSpacing,
+                end = ProtonDimens.LargeSpacing
+            ),
+            style = ProtonTheme.typography.defaultStrongNorm
+        )
+        Text(
+            stringResource(R.string.label_list_create_label_placeholder_description),
+            Modifier.padding(
+                start = ProtonDimens.LargeSpacing,
+                top = MailDimens.TinySpacing,
+                end = ProtonDimens.LargeSpacing
+            ),
+            style = ProtonTheme.typography.defaultSmallWeak
+        )
+        ProtonSecondaryButton(
+            modifier = Modifier.padding(top = ProtonDimens.LargeSpacing),
+            onClick = actions.onAddLabelClick
+        ) {
+            Text(
+                text = stringResource(R.string.label_title_add_label),
+                Modifier.padding(
+                    horizontal = ProtonDimens.SmallSpacing
+                ),
+                style = ProtonTheme.typography.captionNorm
             )
-        },
-        content = { paddingValues ->
-            Column(
-                modifier = Modifier
-                    .selectableGroup()
-                    .padding(paddingValues)
-                    .fillMaxWidth()
-                    .fillMaxHeight(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Icon(
-                    modifier = Modifier
-                        .padding(start = ProtonDimens.ExtraSmallSpacing)
-                        .background(
-                            color = ProtonTheme.colors.backgroundSecondary,
-                            shape = RoundedCornerShape(MailDimens.IconWeakRoundBackgroundRadius)
-                        )
-                        .padding(
-                            horizontal = ProtonDimens.SmallSpacing,
-                            vertical = ProtonDimens.SmallSpacing
-                        ),
-                    painter = painterResource(id = R.drawable.ic_proton_tag_plus),
-                    contentDescription = NO_CONTENT_DESCRIPTION
-                )
-                Text(
-                    stringResource(R.string.label_list_no_labels_found),
-                    Modifier.padding(
-                        start = ProtonDimens.LargeSpacing,
-                        top = ProtonDimens.MediumSpacing,
-                        end = ProtonDimens.LargeSpacing
-                    ),
-                    style = ProtonTheme.typography.defaultStrongNorm
-                )
-                Text(
-                    stringResource(R.string.label_list_create_label_placeholder_description),
-                    Modifier.padding(
-                        start = ProtonDimens.LargeSpacing,
-                        top = MailDimens.TinySpacing,
-                        end = ProtonDimens.LargeSpacing
-                    ),
-                    style = ProtonTheme.typography.defaultSmallWeak
-                )
-                ProtonSecondaryButton(
-                    modifier = Modifier.padding(top = ProtonDimens.LargeSpacing),
-                    onClick = actions.onAddLabelClick
-                ) {
-                    Text(
-                        text = stringResource(R.string.label_title_add_label),
-                        Modifier.padding(
-                            start = ProtonDimens.SmallSpacing,
-                            end = ProtonDimens.SmallSpacing
-                        ),
-                        style = ProtonTheme.typography.captionNorm
-                    )
-                }
-            }
         }
-    )
+    }
+}
+
+@Composable
+fun LoadingLabelListScreen(paddingValues: PaddingValues) {
+    Column(
+        modifier = Modifier
+            .padding(paddingValues)
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        ProtonCenteredProgress()
+    }
 }
 
 @Composable
@@ -277,24 +283,16 @@ object LabelListScreen {
 @Composable
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 private fun LabelListScreenPreview() {
-    LabelListScreen(
+    LabelListScreenContent(
         state = LabelListState.Data(
             labels = listOf(
-                buildSampleLabel(
-                    name = "Label 1",
-                    color = colorResource(id = R.color.chambray).toArgb().toHexString()
-                ),
-                buildSampleLabel(
-                    name = "Label 2",
-                    color = colorResource(id = R.color.goblin).toArgb().toHexString()
-                ),
-                buildSampleLabel(
-                    name = "Label 3",
-                    color = colorResource(id = R.color.copper_intense).toArgb().toHexString()
-                )
+                labelSampleData,
+                labelSampleData,
+                labelSampleData
             )
         ),
-        actions = LabelListScreen.Actions.Empty
+        actions = LabelListScreen.Actions.Empty,
+        paddingValues = PaddingValues()
     )
 }
 
@@ -302,7 +300,16 @@ private fun LabelListScreenPreview() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 private fun EmptyLabelListScreenPreview() {
     EmptyLabelListScreen(
-        actions = LabelListScreen.Actions.Empty
+        actions = LabelListScreen.Actions.Empty,
+        paddingValues = PaddingValues()
+    )
+}
+
+@Composable
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
+private fun LoadingLabelListScreenPreview() {
+    LoadingLabelListScreen(
+        paddingValues = PaddingValues()
     )
 }
 
@@ -321,21 +328,5 @@ private fun EmptyLabelListTopBarPreview() {
     LabelListTopBar(
         isAddLabelButtonVisible = false,
         actions = LabelListScreen.Actions.Empty
-    )
-}
-
-private fun buildSampleLabel(name: String, color: String): Label {
-    return Label(
-        userId = UserId("userId"),
-        labelId = LabelId("labelId"),
-        parentId = null,
-        name = name,
-        type = LabelType.MessageLabel,
-        path = "path",
-        color = color,
-        order = 0,
-        isNotified = null,
-        isExpanded = null,
-        isSticky = null
     )
 }
