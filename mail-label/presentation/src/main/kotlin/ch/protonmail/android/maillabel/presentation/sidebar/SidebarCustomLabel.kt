@@ -23,33 +23,23 @@ package ch.protonmail.android.maillabel.presentation.sidebar
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.extension.tintColor
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
@@ -133,58 +123,26 @@ private fun SidebarCustomLabelTitleItem(
     onAddClick: () -> Unit,
     onLabelsClick: () -> Unit
 ) {
-    Row(
-        modifier = Modifier
-            .height(height = ProtonDimens.ListItemHeight)
-            .fillMaxWidth()
-            .background(ProtonTheme.colors.backgroundNorm)
+    ProtonSidebarItem(
+        modifier = Modifier.background(ProtonTheme.colors.backgroundNorm),
+        isClickable = showAddIcon,
+        onClick = onLabelsClick
     ) {
-        Column(
-            modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .fillMaxSize()
-                .weight(1f, fill = true)
-                .clickable(
-                    onClickLabel = stringResource(
-                        id = if (type == MessageLabel) R.string.label_title_label_list
-                        else R.string.label_title_folder_list
-                    ),
-                    role = Role.Button,
-                    onClick = onLabelsClick
-                ),
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(
-                modifier = Modifier
-                    .padding(
-                        horizontal = ProtonDimens.DefaultSpacing
-                    ),
-                text = stringResource(type.labelTitleRes()),
-                color = ProtonTheme.colors.textWeak
-            )
-        }
+        Text(
+            modifier = Modifier.weight(1f, fill = true),
+            text = stringResource(type.labelTitleRes()),
+            color = ProtonTheme.colors.textWeak
+        )
         if (showAddIcon) {
-            Column(
-                modifier = Modifier
-                    .align(Alignment.CenterVertically)
-                    .fillMaxHeight()
-                    .clickable(
-                        onClickLabel = stringResource(
-                            id = if (type == MessageLabel) R.string.label_title_add_label
-                            else R.string.label_title_add_folder
-                        ),
-                        role = Role.Button,
-                        onClick = onAddClick
-                    ),
-                verticalArrangement = Arrangement.Center
+            IconButton(
+                onClick = onAddClick
             ) {
                 Icon(
-                    modifier = Modifier
-                        .padding(
-                            horizontal = ProtonDimens.DefaultSpacing
-                        ),
                     painter = painterResource(R.drawable.ic_proton_plus),
-                    contentDescription = NO_CONTENT_DESCRIPTION,
+                    contentDescription = stringResource(
+                        id = if (type == MessageLabel) R.string.label_title_add_label
+                        else R.string.label_title_add_folder
+                    ),
                     tint = ProtonTheme.colors.iconWeak
                 )
             }
