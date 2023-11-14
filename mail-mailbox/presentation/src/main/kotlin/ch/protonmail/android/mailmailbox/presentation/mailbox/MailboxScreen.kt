@@ -175,7 +175,7 @@ fun MailboxScreen(
                     state = bottomSheetContentState,
                     actions = LabelAsBottomSheetContent.Actions(
                         onAddLabelClick = { Timber.d("Add label clicked") },
-                        onLabelAsSelected = { Timber.d("Label selected") },
+                        onLabelAsSelected = { viewModel.submit(MailboxViewAction.LabelAsToggleAction(it)) },
                         onDoneClick = { Timber.d("Label selected Done clicked") }
                     )
                 )

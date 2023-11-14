@@ -34,6 +34,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingSt
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetOperation
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState.LabelAsBottomSheetAction.LabelToggled
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
 import javax.inject.Inject
 
@@ -128,6 +129,7 @@ class MailboxReducer @Inject constructor(
             val bottomSheetOperation = when (operation) {
                 is MailboxEvent.MailboxBottomSheetEvent -> operation.bottomSheetOperation
                 is MailboxViewAction.RequestLabelAsBottomSheet -> BottomSheetOperation.Requested
+                is MailboxViewAction.LabelAsToggleAction -> LabelToggled(operation.label)
             }
             bottomSheetReducer.newStateFrom(bottomSheetState, bottomSheetOperation)
         } else {
