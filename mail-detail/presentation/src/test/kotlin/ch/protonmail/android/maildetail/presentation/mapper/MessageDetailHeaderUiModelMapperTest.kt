@@ -30,7 +30,7 @@ import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatExtendedTime
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatShortTime
-import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
+import ch.protonmail.android.mailmessage.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.presentation.R.string.undisclosed_recipients
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailHeaderUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageLocationUiModel

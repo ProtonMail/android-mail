@@ -18,8 +18,8 @@
 
 package ch.protonmail.android.maildetail.domain.mapper
 
-import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.mailmessage.domain.model.MessageWithLabels
 import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.message.MessageTestData
 import kotlin.test.Test

@@ -167,7 +167,8 @@ fun MailboxScreen(
                 is MoveToBottomSheetState -> MoveToBottomSheetContent(
                     state = bottomSheetContentState,
                     onFolderSelected = { Timber.d("Folder selected") },
-                    onDoneClick = { Timber.d("Folder selected Done clicked") })
+                    onDoneClick = { Timber.d("Folder selected Done clicked") }
+                )
 
                 is LabelAsBottomSheetState -> LabelAsBottomSheetContent(
                     state = bottomSheetContentState,

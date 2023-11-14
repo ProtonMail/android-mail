@@ -16,12 +16,11 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.domain.sample
+package ch.protonmail.android.mailmessage.domain.sample
 
 import ch.protonmail.android.mailcommon.domain.sample.LabelSample
-import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.mailmessage.domain.model.Message
-import ch.protonmail.android.mailmessage.domain.sample.MessageSample
+import ch.protonmail.android.mailmessage.domain.model.MessageWithLabels
 import me.proton.core.label.domain.entity.Label
 
 object MessageWithLabelsSample {

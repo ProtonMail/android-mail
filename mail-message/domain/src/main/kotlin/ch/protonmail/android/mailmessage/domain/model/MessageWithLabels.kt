@@ -16,9 +16,8 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.domain.model
+package ch.protonmail.android.mailmessage.domain.model
 
-import ch.protonmail.android.mailmessage.domain.model.Message
 import me.proton.core.label.domain.entity.Label
 
 data class MessageWithLabels(

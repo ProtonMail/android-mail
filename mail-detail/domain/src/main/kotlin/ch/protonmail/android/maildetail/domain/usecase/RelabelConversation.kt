@@ -23,7 +23,7 @@ import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
-import ch.protonmail.android.maildetail.domain.model.LabelSelectionList
+import ch.protonmail.android.mailmessage.domain.model.LabelSelectionList
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
