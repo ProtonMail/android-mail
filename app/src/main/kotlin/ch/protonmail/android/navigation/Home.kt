@@ -145,6 +145,10 @@ fun Home(
     fun showLabelDeletedSnackbar() = scope.launch {
         snackbarHostSuccessState.showSnackbar(message = labelDeletedText, type = ProtonSnackbarType.SUCCESS)
     }
+    val labelListLoadingErrorText = stringResource(id = R.string.label_list_loading_error)
+    fun showLabelListLoadingErrorSnackbar() = scope.launch {
+        snackbarHostErrorState.showSnackbar(message = labelListLoadingErrorText, type = ProtonSnackbarType.ERROR)
+    }
     ConsumableLaunchedEffect(state.value.messageSendingStatusEffect) { sendingStatus ->
         when (sendingStatus) {
             is MessageSendingStatus.MessageSent -> showSuccessSendingMessageSnackbar()
@@ -241,7 +245,10 @@ fun Home(
                         showFeatureMissingSnackbar()
                     }
                 )
-                addLabelList(navController)
+                addLabelList(
+                    navController,
+                    showLabelListLoadingErrorSnackbar = { showLabelListLoadingErrorSnackbar() }
+                )
                 addLabelForm(
                     navController,
                     showLabelSavedSnackbar = { showLabelSavedSnackbar() },

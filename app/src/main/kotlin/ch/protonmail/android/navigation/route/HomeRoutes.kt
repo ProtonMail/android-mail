@@ -199,7 +199,10 @@ internal fun NavGraphBuilder.addSettings(navController: NavHostController, showF
     }
 }
 
-internal fun NavGraphBuilder.addLabelList(navController: NavHostController) {
+internal fun NavGraphBuilder.addLabelList(
+    navController: NavHostController,
+    showLabelListLoadingErrorSnackbar: () -> Unit
+) {
     composable(route = Destination.Screen.LabelList.route) {
         LabelListScreen(
             actions = LabelListScreen.Actions(
@@ -211,7 +214,8 @@ internal fun NavGraphBuilder.addLabelList(navController: NavHostController) {
                 },
                 onAddLabelClick = {
                     navController.navigate(Destination.Screen.CreateLabel.route)
-                }
+                },
+                showLabelListLoadingErrorSnackbar = showLabelListLoadingErrorSnackbar
             )
         )
     }

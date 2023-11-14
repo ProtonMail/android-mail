@@ -18,16 +18,13 @@
 
 package ch.protonmail.android.maillabel.presentation.labellist
 
-import ch.protonmail.android.mailcommon.presentation.Effect
 import me.proton.core.label.domain.entity.Label
 
-sealed class LabelListState {
+sealed interface LabelListOperation
 
-    data class Loading(
-        val errorLoading: Effect<Unit> = Effect.empty()
-    ) : LabelListState()
-
-    data class Data(
-        val labels: List<Label>
-    ) : LabelListState()
+sealed interface LabelListEvent : LabelListOperation {
+    data class LabelListLoaded(
+        val labelList: List<Label>
+    ) : LabelListEvent
+    object ErrorLoadingLabelList : LabelListEvent
 }

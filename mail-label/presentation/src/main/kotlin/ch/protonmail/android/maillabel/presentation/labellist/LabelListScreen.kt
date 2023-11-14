@@ -54,6 +54,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.maillabel.presentation.R
@@ -88,17 +89,18 @@ fun LabelListScreen(actions: LabelListScreen.Actions, viewModel: LabelListViewMo
         content = { paddingValues ->
             when (state) {
                 is LabelListState.Data -> {
-                    LabelListScreenContent(
-                        state = state,
-                        actions = actions,
-                        paddingValues = paddingValues
-                    )
-                }
-                is LabelListState.EmptyLabelList -> {
-                    EmptyLabelListScreen(
-                        actions = actions,
-                        paddingValues = paddingValues
-                    )
+                    if (state.labels.isEmpty()) {
+                        EmptyLabelListScreen(
+                            actions = actions,
+                            paddingValues = paddingValues
+                        )
+                    } else {
+                        LabelListScreenContent(
+                            state = state,
+                            actions = actions,
+                            paddingValues = paddingValues
+                        )
+                    }
                 }
                 is LabelListState.Loading -> {
                     ProtonCenteredProgress(
@@ -106,6 +108,11 @@ fun LabelListScreen(actions: LabelListScreen.Actions, viewModel: LabelListViewMo
                             .padding(paddingValues)
                             .fillMaxSize()
                     )
+
+                    ConsumableLaunchedEffect(effect = state.errorLoading) {
+                        actions.onBackClick()
+                        actions.showLabelListLoadingErrorSnackbar()
+                    }
                 }
             }
         }
@@ -255,7 +262,8 @@ object LabelListScreen {
     data class Actions(
         val onBackClick: () -> Unit,
         val onLabelSelected: (LabelId) -> Unit,
-        val onAddLabelClick: () -> Unit
+        val onAddLabelClick: () -> Unit,
+        val showLabelListLoadingErrorSnackbar: () -> Unit
     ) {
 
         companion object {
@@ -263,7 +271,8 @@ object LabelListScreen {
             val Empty = Actions(
                 onBackClick = {},
                 onLabelSelected = {},
-                onAddLabelClick = {}
+                onAddLabelClick = {},
+                showLabelListLoadingErrorSnackbar = {}
             )
         }
     }

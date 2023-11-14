@@ -19,15 +19,24 @@
 package ch.protonmail.android.maillabel.presentation.labellist
 
 import ch.protonmail.android.mailcommon.presentation.Effect
-import me.proton.core.label.domain.entity.Label
+import javax.inject.Inject
 
-sealed class LabelListState {
+class LabelListReducer @Inject constructor() {
 
-    data class Loading(
-        val errorLoading: Effect<Unit> = Effect.empty()
-    ) : LabelListState()
+    internal fun newStateFrom(currentState: LabelListState, operation: LabelListOperation): LabelListState {
+        return when (operation) {
+            is LabelListEvent.LabelListLoaded -> reduceLabelListLoaded(currentState, operation)
+            is LabelListEvent.ErrorLoadingLabelList -> LabelListState.Loading(errorLoading = Effect.of(Unit))
+        }
+    }
 
-    data class Data(
-        val labels: List<Label>
-    ) : LabelListState()
+    private fun reduceLabelListLoaded(
+        currentState: LabelListState,
+        operation: LabelListEvent.LabelListLoaded
+    ): LabelListState {
+        return when (currentState) {
+            is LabelListState.Data -> currentState.copy(labels = operation.labelList)
+            is LabelListState.Loading -> LabelListState.Data(labels = operation.labelList)
+        }
+    }
 }

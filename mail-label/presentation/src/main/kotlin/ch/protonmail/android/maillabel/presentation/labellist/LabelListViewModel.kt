@@ -40,12 +40,13 @@ import javax.inject.Inject
 @HiltViewModel
 class LabelListViewModel @Inject constructor(
     private val observeLabels: ObserveLabels,
+    private val reducer: LabelListReducer,
     observePrimaryUserId: ObservePrimaryUserId
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId()
 
-    val initialState: LabelListState = LabelListState.Loading
+    val initialState: LabelListState = LabelListState.Loading()
     private val mutableState = MutableStateFlow(initialState)
     val state: StateFlow<LabelListState> = mutableState.asStateFlow()
 
@@ -53,22 +54,25 @@ class LabelListViewModel @Inject constructor(
         primaryUserId
             .filterNotNull()
             .flatMapLatest { userId ->
-                flowLabelListState(userId)
+                flowLabelListOperation(userId)
             }
-            .onEach { labelListState -> mutableState.value = labelListState }
+            .onEach { labelListOperation -> emitNewStateFor(labelListOperation) }
             .launchIn(viewModelScope)
     }
 
-    private fun flowLabelListState(userId: UserId): Flow<LabelListState> {
+    private fun flowLabelListOperation(userId: UserId): Flow<LabelListOperation> {
         return observeLabels(userId).map { labels ->
-            val customMailLabels = labels.onLeft {
-                Timber.e("Error while observing custom labels")
-            }.getOrElse { emptyList() }
-            if (customMailLabels.isEmpty()) {
-                LabelListState.EmptyLabelList
-            } else {
-                LabelListState.Data(customMailLabels)
-            }
+            LabelListEvent.LabelListLoaded(
+                labels.getOrElse {
+                    Timber.e("Error while observing custom labels")
+                    return@map LabelListEvent.ErrorLoadingLabelList
+                }
+            )
         }
+    }
+
+    private fun emitNewStateFor(operation: LabelListOperation) {
+        val currentState = state.value
+        mutableState.value = reducer.newStateFrom(currentState, operation)
     }
 }
