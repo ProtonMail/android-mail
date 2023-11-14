@@ -35,9 +35,9 @@ internal class EditDefaultAddressUiMapperTest {
         // Given
         val addresses = activeAddresses
         val expectedUiModels = listOf(
-            DefaultAddressUiModel.Active(default = true, addressId = "id1", address = "email1@proton.me"),
-            DefaultAddressUiModel.Active(default = false, addressId = "id2", address = "email2@proton.me"),
-            DefaultAddressUiModel.Active(default = false, addressId = "id3", address = "email3@proton.me")
+            DefaultAddressUiModel.Active(isDefault = true, addressId = "id1", address = "email1@proton.me"),
+            DefaultAddressUiModel.Active(isDefault = false, addressId = "id2", address = "email2@proton.me"),
+            DefaultAddressUiModel.Active(isDefault = false, addressId = "id3", address = "email3@proton.me")
         ).toImmutableList()
 
         // When
@@ -45,7 +45,7 @@ internal class EditDefaultAddressUiMapperTest {
 
         // Then
         assertEquals(expectedUiModels, result)
-        assertTrue(result.first().default)
+        assertTrue(result.first().isDefault)
     }
 
     @Test

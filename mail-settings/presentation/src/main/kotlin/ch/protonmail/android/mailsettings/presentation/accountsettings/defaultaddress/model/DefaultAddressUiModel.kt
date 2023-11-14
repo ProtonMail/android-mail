@@ -23,7 +23,7 @@ import androidx.compose.runtime.Immutable
 sealed interface DefaultAddressUiModel {
 
     @Immutable
-    data class Active(val default: Boolean, val addressId: String, val address: String) : DefaultAddressUiModel
+    data class Active(val isDefault: Boolean, val addressId: String, val address: String) : DefaultAddressUiModel
 
     @Immutable
     data class Inactive(val address: String) : DefaultAddressUiModel

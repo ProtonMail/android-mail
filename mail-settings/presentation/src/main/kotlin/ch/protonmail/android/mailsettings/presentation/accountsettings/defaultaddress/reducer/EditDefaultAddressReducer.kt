@@ -104,7 +104,7 @@ class EditDefaultAddressReducer @Inject constructor(
         addressId: String
     ): ImmutableList<DefaultAddressUiModel.Active> {
         return activeAddressesState.addresses.map {
-            it.copy(default = it.addressId == addressId)
+            it.copy(isDefault = it.addressId == addressId)
         }.toImmutableList()
     }
 

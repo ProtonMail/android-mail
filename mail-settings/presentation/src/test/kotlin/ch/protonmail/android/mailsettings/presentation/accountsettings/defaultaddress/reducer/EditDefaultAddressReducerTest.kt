@@ -69,9 +69,9 @@ internal class EditDefaultAddressReducerTest(
         private val baseState = EditDefaultAddressState.WithData(
             activeAddressesState = EditDefaultAddressState.WithData.ActiveAddressesState(
                 listOf(
-                    DefaultAddressUiModel.Active(default = true, addressId = "123", address = "address1@proton.me"),
-                    DefaultAddressUiModel.Active(default = false, addressId = "456", address = "address2@proton.me"),
-                    DefaultAddressUiModel.Active(default = false, addressId = "789", address = "address3@proton.me")
+                    DefaultAddressUiModel.Active(isDefault = true, addressId = "123", address = "address1@proton.me"),
+                    DefaultAddressUiModel.Active(isDefault = false, addressId = "456", address = "address2@proton.me"),
+                    DefaultAddressUiModel.Active(isDefault = false, addressId = "789", address = "address3@proton.me")
                 ).toImmutableList()
             ),
             inactiveAddressesState = EditDefaultAddressState.WithData.InactiveAddressesState(
@@ -83,9 +83,9 @@ internal class EditDefaultAddressReducerTest(
         private val updatedState = EditDefaultAddressState.WithData(
             activeAddressesState = EditDefaultAddressState.WithData.ActiveAddressesState(
                 listOf(
-                    DefaultAddressUiModel.Active(default = true, addressId = "456", address = "address2@proton.me"),
-                    DefaultAddressUiModel.Active(default = false, addressId = "123", address = "address1@proton.me"),
-                    DefaultAddressUiModel.Active(default = false, addressId = "789", address = "address3@proton.me")
+                    DefaultAddressUiModel.Active(isDefault = true, addressId = "456", address = "address2@proton.me"),
+                    DefaultAddressUiModel.Active(isDefault = false, addressId = "123", address = "address1@proton.me"),
+                    DefaultAddressUiModel.Active(isDefault = false, addressId = "789", address = "address3@proton.me")
                 ).toImmutableList()
             ),
             inactiveAddressesState = EditDefaultAddressState.WithData.InactiveAddressesState(

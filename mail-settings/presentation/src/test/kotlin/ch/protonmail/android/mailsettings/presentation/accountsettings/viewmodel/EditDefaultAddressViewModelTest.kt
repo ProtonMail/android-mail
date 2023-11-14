@@ -331,13 +331,13 @@ internal class EditDefaultAddressViewModelTest {
         ).toImmutableList()
 
         val uiModelActiveList = listOf(
-            DefaultAddressUiModel.Active(default = true, addressId = "123", "email@proton.me"),
-            DefaultAddressUiModel.Active(default = false, addressId = "456", "email2@proton.me")
+            DefaultAddressUiModel.Active(isDefault = true, addressId = "123", "email@proton.me"),
+            DefaultAddressUiModel.Active(isDefault = false, addressId = "456", "email2@proton.me")
         ).toImmutableList()
 
         val uiModelActiveListUpdated = listOf(
-            DefaultAddressUiModel.Active(default = false, addressId = "123", "email@proton.me"),
-            DefaultAddressUiModel.Active(default = true, addressId = "456", "email2@proton.me")
+            DefaultAddressUiModel.Active(isDefault = false, addressId = "123", "email@proton.me"),
+            DefaultAddressUiModel.Active(isDefault = true, addressId = "456", "email2@proton.me")
         ).toImmutableList()
 
         val baseExpectedDataState = EditDefaultAddressState.WithData(

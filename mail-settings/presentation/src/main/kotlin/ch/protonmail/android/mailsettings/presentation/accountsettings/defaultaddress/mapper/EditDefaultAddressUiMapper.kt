@@ -30,7 +30,7 @@ class EditDefaultAddressUiMapper @Inject constructor() : Mapper<UserAddress, Def
     fun toActiveAddressUiModel(addresses: List<UserAddress>): ImmutableList<DefaultAddressUiModel.Active> {
         return addresses.map {
             DefaultAddressUiModel.Active(
-                default = it.order == 1,
+                isDefault = it.order == 1,
                 addressId = it.addressId.id,
                 address = it.email
             )
