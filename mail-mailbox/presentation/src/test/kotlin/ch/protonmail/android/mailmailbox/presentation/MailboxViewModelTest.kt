@@ -44,6 +44,7 @@ import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.Archive
 import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.maillabel.domain.usecase.ObserveCustomMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
 import ch.protonmail.android.maillabel.presentation.text
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemId
@@ -79,6 +80,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxRed
 import ch.protonmail.android.mailmailbox.presentation.paging.MailboxPagerFactory
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.usecase.DeleteMessages
+import ch.protonmail.android.mailmessage.domain.usecase.GetMessagesWithLabels
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.testdata.contact.ContactTestData
@@ -156,6 +158,8 @@ class MailboxViewModelTest {
             )
         )
     }
+    private val observeCustomMailLabels = mockk<ObserveCustomMailLabels>()
+    private val getMessagesWithLabels = mockk<GetMessagesWithLabels>()
 
     private val observeCurrentViewMode = mockk<ObserveCurrentViewMode> {
         coEvery { this@mockk(userId = any()) } returns flowOf(NoConversationGrouping)
@@ -210,9 +214,11 @@ class MailboxViewModelTest {
             observeCurrentViewMode = observeCurrentViewMode,
             observePrimaryUserId = observePrimaryUserId,
             observeMailLabels = observeMailLabels,
+            observeCustomMailLabels = observeCustomMailLabels,
             selectedMailLabelId = selectedMailLabelId,
             observeUnreadCounters = observeUnreadCounters,
             observeFolderColorSettings = observeFolderColorSettings,
+            getMessagesWithLabels = getMessagesWithLabels,
             getMailboxActions = observeMailboxActions,
             actionUiModelMapper = actionUiModelMapper,
             mailboxItemMapper = mailboxItemMapper,

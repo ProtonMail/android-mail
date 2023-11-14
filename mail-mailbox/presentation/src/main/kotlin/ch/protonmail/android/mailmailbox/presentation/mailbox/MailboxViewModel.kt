@@ -41,7 +41,10 @@ import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.maillabel.domain.usecase.ObserveCustomMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
+import ch.protonmail.android.maillabel.presentation.model.LabelSelectedState
+import ch.protonmail.android.maillabel.presentation.toCustomUiModel
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
 import ch.protonmail.android.mailmailbox.domain.model.UnreadCounter
@@ -70,8 +73,12 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingSt
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxReducer
 import ch.protonmail.android.mailmailbox.presentation.paging.MailboxPagerFactory
+import ch.protonmail.android.mailmessage.domain.model.LabelSelectionList
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.usecase.DeleteMessages
+import ch.protonmail.android.mailmessage.domain.model.MessageWithLabels
+import ch.protonmail.android.mailmessage.domain.usecase.GetMessagesWithLabels
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
@@ -94,6 +101,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.mailsettings.domain.entity.ViewMode
 import me.proton.core.util.kotlin.DispatcherProvider
 import me.proton.core.util.kotlin.exhaustive
@@ -107,9 +115,11 @@ class MailboxViewModel @Inject constructor(
     private val observeCurrentViewMode: ObserveCurrentViewMode,
     observePrimaryUserId: ObservePrimaryUserId,
     private val observeMailLabels: ObserveMailLabels,
+    private val observeCustomMailLabels: ObserveCustomMailLabels,
     private val selectedMailLabelId: SelectedMailLabelId,
     private val observeUnreadCounters: ObserveUnreadCounters,
     private val observeFolderColorSettings: ObserveFolderColorSettings,
+    private val getMessagesWithLabels: GetMessagesWithLabels,
     private val getMailboxActions: GetMailboxActions,
     private val actionUiModelMapper: ActionUiModelMapper,
     private val mailboxItemMapper: MailboxItemUiModelMapper,
@@ -211,6 +221,7 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.Delete -> handleDeleteAction()
                 is MailboxViewAction.DeleteConfirmed -> handleDeleteConfirmedAction()
                 is MailboxViewAction.DeleteDialogDismissed -> handleDeleteDialogDismissed()
+                is MailboxViewAction.RequestLabelAsBottomSheet -> showLabelAsBottomSheetAndLoadData(viewAction)
             }.exhaustive
         }
     }
@@ -363,9 +374,52 @@ class MailboxViewModel @Inject constructor(
         emitNewStateFrom(markAsReadOperation)
     }
 
+    private fun showLabelAsBottomSheetAndLoadData(operation: MailboxViewAction) {
+        val selectionModeDataState = state.value.mailboxListState as? MailboxListState.Data.SelectionMode
+        if (selectionModeDataState == null) {
+            Timber.d("MailboxListState is not in SelectionMode")
+            return
+        }
+        viewModelScope.launch {
+            emitNewStateFrom(operation)
+
+            when (getPreferredViewMode()) {
+                ViewMode.ConversationGrouping -> TODO()
+                ViewMode.NoConversationGrouping -> loadDataForLabelMessages(selectionModeDataState)
+            }
+        }
+    }
+
+    private suspend fun loadDataForLabelMessages(selectionState: MailboxListState.Data.SelectionMode) {
+        val userId = primaryUserId.filterNotNull().first()
+        val labels = observeCustomMailLabels(userId).first()
+        val color = observeFolderColorSettings(userId).first()
+        val messages = getMessagesWithLabels(userId, selectionState.selectedMailboxItems.map { MessageId(it.id) })
+
+        val mappedLabels = labels.onLeft {
+            Timber.e("Error while observing custom labels")
+        }.getOrElse { emptyList() }
+
+        val messagesWithLabels = messages.onLeft {
+            Timber.e("Error while observing messages with labels")
+        }.getOrElse { emptyList() }
+
+        val (selectedLabels, partiallySelectedLabels) = mappedLabels.getLabelSelectionState(messagesWithLabels)
+        val event = MailboxEvent.MailboxBottomSheetEvent(
+            LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
+                customLabelList = mappedLabels.map { it.toCustomUiModel(color, emptyMap(), null) }.toImmutableList(),
+                selectedLabels = selectedLabels.toImmutableList(),
+                partiallySelectedLabels = partiallySelectedLabels.toImmutableList()
+            )
+        )
+        emitNewStateFrom(event)
+    }
+
     private suspend fun handleCloseOnboarding() {
-        saveOnboarding(display = false)
-        emitNewStateFrom(MailboxViewAction.CloseOnboarding)
+        viewModelScope.launch {
+            saveOnboarding(display = false)
+            emitNewStateFrom(MailboxViewAction.CloseOnboarding)
+        }
     }
 
     private suspend fun shouldDisplayOnboarding(): Boolean {
@@ -526,6 +580,48 @@ class MailboxViewModel @Inject constructor(
         this.map { it.mailboxListState as? MailboxListState.Data.SelectionMode }
             .mapNotNull { it?.selectedMailboxItems }
             .distinctUntilChanged()
+
+    private fun List<MailLabel.Custom>.getLabelSelectionState(messages: List<MessageWithLabels>): LabelSelectionList {
+        val previousSelectedLabels = mutableListOf<LabelId>()
+        val previousPartiallySelectedLabels = mutableListOf<LabelId>()
+        this.forEach { label ->
+            if (messages.allContainsLabel(label.id.labelId)) {
+                previousSelectedLabels.add(label.id.labelId)
+            } else if (messages.partiallyContainsLabel(label.id.labelId)) {
+                previousPartiallySelectedLabels.add(label.id.labelId)
+            }
+        }
+        return LabelSelectionList(
+            selectedLabels = previousSelectedLabels,
+            partiallySelectionLabels = previousPartiallySelectedLabels
+        )
+    }
+
+    private fun LabelAsBottomSheetState.Data.getLabelSelectionState(): LabelSelectionList {
+        val selectedLabels = this.labelUiModelsWithSelectedState
+            .filter { it.selectedState == LabelSelectedState.Selected }
+            .map { it.labelUiModel.id.labelId }
+
+        val partiallySelectedLabels = this.labelUiModelsWithSelectedState
+            .filter { it.selectedState == LabelSelectedState.PartiallySelected }
+            .map { it.labelUiModel.id.labelId }
+        return LabelSelectionList(
+            selectedLabels = selectedLabels,
+            partiallySelectionLabels = partiallySelectedLabels
+        )
+    }
+
+    private fun List<MessageWithLabels>.allContainsLabel(labelId: LabelId): Boolean {
+        return this.all { messageWithLabel ->
+            messageWithLabel.labels.any { it.labelId == labelId }
+        }
+    }
+
+    private fun List<MessageWithLabels>.partiallyContainsLabel(labelId: LabelId): Boolean {
+        return this.any { messageWithLabel ->
+            messageWithLabel.labels.any { it.labelId == labelId }
+        }
+    }
 
     companion object {
 

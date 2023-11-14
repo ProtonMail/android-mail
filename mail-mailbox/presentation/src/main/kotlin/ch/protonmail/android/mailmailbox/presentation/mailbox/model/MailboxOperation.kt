@@ -23,6 +23,7 @@ import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingActionMessage
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingBottomAppBar
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingDeleteDialog
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingBottomSheet
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingMailboxList
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingTopAppBar
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingUnreadFilter
@@ -64,6 +65,7 @@ internal sealed interface MailboxViewAction : MailboxOperation {
     object Delete : MailboxViewAction
     object DeleteConfirmed : MailboxViewAction
     object DeleteDialogDismissed : MailboxViewAction, AffectingDeleteDialog
+    object RequestLabelAsBottomSheet : MailboxViewAction, AffectingBottomSheet
 
     /*
      *`OnOfflineWithData` and `OnErrorWithData` are not actual Actions which are actively performed by the user
@@ -145,7 +147,7 @@ internal sealed interface MailboxEvent : MailboxOperation {
 
     data class MailboxBottomSheetEvent(
         val bottomSheetOperation: BottomSheetOperation
-    ) : MailboxEvent, MailboxOperation.AffectingBottomSheet
+    ) : MailboxEvent, AffectingBottomSheet
 }
 
 

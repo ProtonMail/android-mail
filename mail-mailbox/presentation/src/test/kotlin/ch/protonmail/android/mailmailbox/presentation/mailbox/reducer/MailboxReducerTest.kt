@@ -140,6 +140,12 @@ internal class MailboxReducerTest(
         } else {
             assertEquals(currentState.deleteDialogState, nextState.deleteDialogState)
         }
+
+        if (shouldReduceBottomSheetState) {
+            verify { bottomSheetReducer.newStateFrom(currentState.bottomSheetState, any()) }
+        } else {
+            assertEquals(currentState.bottomSheetState, nextState.bottomSheetState, testName)
+        }
     }
 
     companion object {
@@ -178,7 +184,8 @@ internal class MailboxReducerTest(
                 shouldReduceUnreadFilterState = false,
                 shouldReduceBottomAppBarState = false,
                 shouldReduceActionMessage = false,
-                shouldReduceDeleteDialog = false
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = false
             ),
             TestInput(
                 MailboxViewAction.OnItemAvatarClicked(MailboxItemUiModelTestData.readMailboxItemUiModel),
@@ -187,7 +194,8 @@ internal class MailboxReducerTest(
                 shouldReduceUnreadFilterState = false,
                 shouldReduceBottomAppBarState = false,
                 shouldReduceActionMessage = false,
-                shouldReduceDeleteDialog = false
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = false
             ),
             TestInput(
                 MailboxViewAction.ExitSelectionMode,
@@ -196,7 +204,8 @@ internal class MailboxReducerTest(
                 shouldReduceUnreadFilterState = false,
                 shouldReduceBottomAppBarState = true,
                 shouldReduceActionMessage = false,
-                shouldReduceDeleteDialog = false
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = false
             ),
             TestInput(
                 MailboxViewAction.ItemClicked(MailboxItemUiModelTestData.readMailboxItemUiModel),
@@ -205,7 +214,8 @@ internal class MailboxReducerTest(
                 shouldReduceUnreadFilterState = false,
                 shouldReduceBottomAppBarState = false,
                 shouldReduceActionMessage = false,
-                shouldReduceDeleteDialog = false
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = false
             ),
             TestInput(
                 MailboxViewAction.EnableUnreadFilter,
@@ -214,7 +224,8 @@ internal class MailboxReducerTest(
                 shouldReduceUnreadFilterState = true,
                 shouldReduceBottomAppBarState = false,
                 shouldReduceActionMessage = false,
-                shouldReduceDeleteDialog = false
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = false
             ),
             TestInput(
                 MailboxViewAction.DisableUnreadFilter,
@@ -223,7 +234,18 @@ internal class MailboxReducerTest(
                 shouldReduceUnreadFilterState = true,
                 shouldReduceBottomAppBarState = false,
                 shouldReduceActionMessage = false,
-                shouldReduceDeleteDialog = false
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = false
+            ),
+            TestInput(
+                MailboxViewAction.RequestLabelAsBottomSheet,
+                shouldReduceMailboxListState = false,
+                shouldReduceTopAppBarState = false,
+                shouldReduceUnreadFilterState = false,
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false,
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = true
             )
         )
 
@@ -238,7 +260,8 @@ internal class MailboxReducerTest(
                 shouldReduceUnreadFilterState = false,
                 shouldReduceBottomAppBarState = false,
                 shouldReduceActionMessage = false,
-                shouldReduceDeleteDialog = false
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = false
             ),
             TestInput(
                 MailboxEvent.ItemClicked.ItemAddedToSelection(
@@ -249,7 +272,8 @@ internal class MailboxReducerTest(
                 shouldReduceUnreadFilterState = false,
                 shouldReduceBottomAppBarState = false,
                 shouldReduceActionMessage = false,
-                shouldReduceDeleteDialog = false
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = false
             ),
             TestInput(
                 MailboxEvent.ItemClicked.ItemRemovedFromSelection(
@@ -260,7 +284,8 @@ internal class MailboxReducerTest(
                 shouldReduceUnreadFilterState = false,
                 shouldReduceBottomAppBarState = false,
                 shouldReduceActionMessage = false,
-                shouldReduceDeleteDialog = false
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = false
             ),
             TestInput(
                 MailboxEvent.NewLabelSelected(
@@ -272,7 +297,8 @@ internal class MailboxReducerTest(
                 shouldReduceUnreadFilterState = true,
                 shouldReduceBottomAppBarState = false,
                 shouldReduceActionMessage = false,
-                shouldReduceDeleteDialog = false
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = false
             ),
             TestInput(
                 MailboxEvent.SelectedLabelChanged(LabelTestData.systemLabels.first()),
@@ -281,7 +307,8 @@ internal class MailboxReducerTest(
                 shouldReduceUnreadFilterState = false,
                 shouldReduceBottomAppBarState = false,
                 shouldReduceActionMessage = false,
-                shouldReduceDeleteDialog = false
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = false
             ),
             TestInput(
                 MailboxEvent.SelectedLabelCountChanged(UnreadCountersTestData.systemUnreadCounters.first().count),
@@ -290,7 +317,8 @@ internal class MailboxReducerTest(
                 shouldReduceUnreadFilterState = true,
                 shouldReduceBottomAppBarState = false,
                 shouldReduceActionMessage = false,
-                shouldReduceDeleteDialog = false
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = false
             ),
             TestInput(
                 MailboxEvent.SelectionModeEnabledChanged(selectionModeEnabled = false),
@@ -299,7 +327,8 @@ internal class MailboxReducerTest(
                 shouldReduceUnreadFilterState = false,
                 shouldReduceBottomAppBarState = false,
                 shouldReduceActionMessage = false,
-                shouldReduceDeleteDialog = false
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = false
             ),
             TestInput(
                 MailboxEvent.EnterSelectionMode(MailboxItemUiModelTestData.readMailboxItemUiModel),
@@ -308,7 +337,8 @@ internal class MailboxReducerTest(
                 shouldReduceUnreadFilterState = false,
                 shouldReduceBottomAppBarState = true,
                 shouldReduceActionMessage = false,
-                shouldReduceDeleteDialog = false
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = false
             ),
             TestInput(
                 MailboxEvent.Trash(5),
@@ -317,7 +347,8 @@ internal class MailboxReducerTest(
                 shouldReduceUnreadFilterState = false,
                 shouldReduceBottomAppBarState = true,
                 shouldReduceActionMessage = true,
-                shouldReduceDeleteDialog = false
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = false
             ),
             TestInput(
                 MailboxEvent.Delete(ViewMode.ConversationGrouping, 5),
@@ -326,7 +357,8 @@ internal class MailboxReducerTest(
                 shouldReduceUnreadFilterState = false,
                 shouldReduceBottomAppBarState = false,
                 shouldReduceActionMessage = false,
-                shouldReduceDeleteDialog = true
+                shouldReduceDeleteDialog = true,
+                shouldReduceBottomSheetState = false
             ),
             TestInput(
                 MailboxEvent.Delete(ViewMode.NoConversationGrouping, 5),
@@ -335,7 +367,8 @@ internal class MailboxReducerTest(
                 shouldReduceUnreadFilterState = false,
                 shouldReduceBottomAppBarState = false,
                 shouldReduceActionMessage = false,
-                shouldReduceDeleteDialog = true
+                shouldReduceDeleteDialog = true,
+                shouldReduceBottomSheetState = false
             ),
             TestInput(
                 MailboxEvent.DeleteConfirmed(ViewMode.ConversationGrouping, 5),
@@ -344,7 +377,8 @@ internal class MailboxReducerTest(
                 shouldReduceUnreadFilterState = false,
                 shouldReduceBottomAppBarState = true,
                 shouldReduceActionMessage = false,
-                shouldReduceDeleteDialog = false
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = false
             ),
             TestInput(
                 MailboxEvent.DeleteConfirmed(ViewMode.NoConversationGrouping, 5),
@@ -353,7 +387,8 @@ internal class MailboxReducerTest(
                 shouldReduceUnreadFilterState = false,
                 shouldReduceBottomAppBarState = true,
                 shouldReduceActionMessage = false,
-                shouldReduceDeleteDialog = false
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = false
             ),
             TestInput(
                 MailboxViewAction.DeleteDialogDismissed,
@@ -362,7 +397,8 @@ internal class MailboxReducerTest(
                 shouldReduceUnreadFilterState = false,
                 shouldReduceBottomAppBarState = false,
                 shouldReduceActionMessage = false,
-                shouldReduceDeleteDialog = true
+                shouldReduceDeleteDialog = true,
+                shouldReduceBottomSheetState = false
             )
         )
 
@@ -387,6 +423,7 @@ internal class MailboxReducerTest(
         val shouldReduceUnreadFilterState: Boolean,
         val shouldReduceBottomAppBarState: Boolean,
         val shouldReduceActionMessage: Boolean,
-        val shouldReduceDeleteDialog: Boolean
+        val shouldReduceDeleteDialog: Boolean,
+        val shouldReduceBottomSheetState: Boolean
     )
 }
