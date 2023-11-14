@@ -146,8 +146,12 @@ fun Home(
         snackbarHostSuccessState.showSnackbar(message = labelDeletedText, type = ProtonSnackbarType.SUCCESS)
     }
     val labelListLoadingErrorText = stringResource(id = R.string.label_list_loading_error)
-    fun showLabelListLoadingErrorSnackbar() = scope.launch {
+    fun showLabelListLoadingSnackbar() = scope.launch {
         snackbarHostErrorState.showSnackbar(message = labelListLoadingErrorText, type = ProtonSnackbarType.ERROR)
+    }
+    val showLabelLimitReachedErrorText = stringResource(id = R.string.label_limit_reached_error)
+    fun showLabelLimitReachedSnackbar() = scope.launch {
+        snackbarHostErrorState.showSnackbar(message = showLabelLimitReachedErrorText, type = ProtonSnackbarType.ERROR)
     }
     ConsumableLaunchedEffect(state.value.messageSendingStatusEffect) { sendingStatus ->
         when (sendingStatus) {
@@ -247,7 +251,8 @@ fun Home(
                 )
                 addLabelList(
                     navController,
-                    showLabelListLoadingErrorSnackbar = { showLabelListLoadingErrorSnackbar() }
+                    showLabelListLoadingSnackbar = { showLabelListLoadingSnackbar() },
+                    showLabelLimitReachedSnackbar = { showLabelLimitReachedSnackbar() }
                 )
                 addLabelForm(
                     navController,

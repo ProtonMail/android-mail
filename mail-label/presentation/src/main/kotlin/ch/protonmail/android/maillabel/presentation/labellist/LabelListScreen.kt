@@ -82,8 +82,9 @@ fun LabelListScreen(actions: LabelListScreen.Actions, viewModel: LabelListViewMo
     Scaffold(
         topBar = {
             LabelListTopBar(
-                isAddLabelButtonVisible = state is LabelListState.Data,
-                actions
+                actions = actions,
+                onAddLabelClick = { viewModel.submit(LabelListViewAction.OnAddLabelClick) },
+                isAddLabelButtonVisible = state is LabelListState.Data
             )
         },
         content = { paddingValues ->
@@ -91,7 +92,7 @@ fun LabelListScreen(actions: LabelListScreen.Actions, viewModel: LabelListViewMo
                 is LabelListState.Data -> {
                     if (state.labels.isEmpty()) {
                         EmptyLabelListScreen(
-                            actions = actions,
+                            onAddLabelClick = { viewModel.submit(LabelListViewAction.OnAddLabelClick) },
                             paddingValues = paddingValues
                         )
                     } else {
@@ -100,6 +101,13 @@ fun LabelListScreen(actions: LabelListScreen.Actions, viewModel: LabelListViewMo
                             actions = actions,
                             paddingValues = paddingValues
                         )
+                    }
+
+                    ConsumableLaunchedEffect(effect = state.openLabelForm) {
+                        actions.onAddLabelClick()
+                    }
+                    ConsumableLaunchedEffect(effect = state.labelLimitReachedError) {
+                        actions.showLabelLimitReachedSnackbar()
                     }
                 }
                 is LabelListState.Loading -> {
@@ -111,7 +119,7 @@ fun LabelListScreen(actions: LabelListScreen.Actions, viewModel: LabelListViewMo
 
                     ConsumableLaunchedEffect(effect = state.errorLoading) {
                         actions.onBackClick()
-                        actions.showLabelListLoadingErrorSnackbar()
+                        actions.showLabelListLoadingSnackbar()
                     }
                 }
             }
@@ -175,7 +183,7 @@ fun LabelListScreenContent(
 }
 
 @Composable
-fun EmptyLabelListScreen(actions: LabelListScreen.Actions, paddingValues: PaddingValues) {
+fun EmptyLabelListScreen(onAddLabelClick: () -> Unit, paddingValues: PaddingValues) {
     Column(
         modifier = Modifier
             .padding(paddingValues)
@@ -214,7 +222,7 @@ fun EmptyLabelListScreen(actions: LabelListScreen.Actions, paddingValues: Paddin
         )
         ProtonSecondaryButton(
             modifier = Modifier.padding(top = ProtonDimens.LargeSpacing),
-            onClick = actions.onAddLabelClick
+            onClick = onAddLabelClick
         ) {
             Text(
                 text = stringResource(R.string.label_title_add_label),
@@ -228,7 +236,11 @@ fun EmptyLabelListScreen(actions: LabelListScreen.Actions, paddingValues: Paddin
 }
 
 @Composable
-fun LabelListTopBar(isAddLabelButtonVisible: Boolean, actions: LabelListScreen.Actions) {
+fun LabelListTopBar(
+    actions: LabelListScreen.Actions,
+    onAddLabelClick: () -> Unit,
+    isAddLabelButtonVisible: Boolean
+) {
     ProtonTopAppBar(
         modifier = Modifier.fillMaxWidth(),
         title = {
@@ -245,7 +257,7 @@ fun LabelListTopBar(isAddLabelButtonVisible: Boolean, actions: LabelListScreen.A
         },
         actions = {
             if (isAddLabelButtonVisible) {
-                IconButton(onClick = actions.onAddLabelClick) {
+                IconButton(onClick = onAddLabelClick) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_proton_plus),
                         tint = ProtonTheme.colors.iconNorm,
@@ -263,7 +275,8 @@ object LabelListScreen {
         val onBackClick: () -> Unit,
         val onLabelSelected: (LabelId) -> Unit,
         val onAddLabelClick: () -> Unit,
-        val showLabelListLoadingErrorSnackbar: () -> Unit
+        val showLabelListLoadingSnackbar: () -> Unit,
+        val showLabelLimitReachedSnackbar: () -> Unit
     ) {
 
         companion object {
@@ -272,7 +285,8 @@ object LabelListScreen {
                 onBackClick = {},
                 onLabelSelected = {},
                 onAddLabelClick = {},
-                showLabelListLoadingErrorSnackbar = {}
+                showLabelListLoadingSnackbar = {},
+                showLabelLimitReachedSnackbar = {}
             )
         }
     }
@@ -298,7 +312,7 @@ private fun LabelListScreenPreview() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 private fun EmptyLabelListScreenPreview() {
     EmptyLabelListScreen(
-        actions = LabelListScreen.Actions.Empty,
+        onAddLabelClick = {},
         paddingValues = PaddingValues()
     )
 }
@@ -307,8 +321,9 @@ private fun EmptyLabelListScreenPreview() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 private fun LabelListTopBarPreview() {
     LabelListTopBar(
+        actions = LabelListScreen.Actions.Empty,
+        onAddLabelClick = {},
         isAddLabelButtonVisible = true,
-        actions = LabelListScreen.Actions.Empty
     )
 }
 
@@ -316,7 +331,8 @@ private fun LabelListTopBarPreview() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 private fun EmptyLabelListTopBarPreview() {
     LabelListTopBar(
-        isAddLabelButtonVisible = false,
-        actions = LabelListScreen.Actions.Empty
+        actions = LabelListScreen.Actions.Empty,
+        onAddLabelClick = {},
+        isAddLabelButtonVisible = false
     )
 }

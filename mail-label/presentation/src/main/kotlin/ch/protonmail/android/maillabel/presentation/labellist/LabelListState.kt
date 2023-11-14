@@ -28,6 +28,8 @@ sealed class LabelListState {
     ) : LabelListState()
 
     data class Data(
-        val labels: List<Label>
+        val labels: List<Label>,
+        val openLabelForm: Effect<Unit> = Effect.empty(),
+        val labelLimitReachedError: Effect<Unit> = Effect.empty()
     ) : LabelListState()
 }

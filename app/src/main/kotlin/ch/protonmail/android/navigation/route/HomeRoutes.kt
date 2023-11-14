@@ -201,7 +201,8 @@ internal fun NavGraphBuilder.addSettings(navController: NavHostController, showF
 
 internal fun NavGraphBuilder.addLabelList(
     navController: NavHostController,
-    showLabelListLoadingErrorSnackbar: () -> Unit
+    showLabelListLoadingSnackbar: () -> Unit,
+    showLabelLimitReachedSnackbar: () -> Unit
 ) {
     composable(route = Destination.Screen.LabelList.route) {
         LabelListScreen(
@@ -215,7 +216,8 @@ internal fun NavGraphBuilder.addLabelList(
                 onAddLabelClick = {
                     navController.navigate(Destination.Screen.CreateLabel.route)
                 },
-                showLabelListLoadingErrorSnackbar = showLabelListLoadingErrorSnackbar
+                showLabelListLoadingSnackbar = showLabelListLoadingSnackbar,
+                showLabelLimitReachedSnackbar = showLabelLimitReachedSnackbar
             )
         )
     }

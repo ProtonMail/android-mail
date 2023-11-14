@@ -22,9 +22,15 @@ import me.proton.core.label.domain.entity.Label
 
 sealed interface LabelListOperation
 
+internal sealed interface LabelListViewAction : LabelListOperation {
+    object OnAddLabelClick : LabelListViewAction
+}
+
 sealed interface LabelListEvent : LabelListOperation {
     data class LabelListLoaded(
         val labelList: List<Label>
     ) : LabelListEvent
     object ErrorLoadingLabelList : LabelListEvent
+    object OpenLabelForm : LabelListEvent
+    object LabelLimitReached : LabelListEvent
 }

@@ -27,6 +27,19 @@ class LabelListReducer @Inject constructor() {
         return when (operation) {
             is LabelListEvent.LabelListLoaded -> reduceLabelListLoaded(currentState, operation)
             is LabelListEvent.ErrorLoadingLabelList -> LabelListState.Loading(errorLoading = Effect.of(Unit))
+            is LabelListEvent.OpenLabelForm,
+            is LabelListViewAction.OnAddLabelClick -> {
+                when (currentState) {
+                    is LabelListState.Data -> currentState.copy(openLabelForm = Effect.of(Unit))
+                    is LabelListState.Loading -> currentState
+                }
+            }
+            is LabelListEvent.LabelLimitReached -> {
+                when (currentState) {
+                    is LabelListState.Data -> currentState.copy(labelLimitReachedError = Effect.of(Unit))
+                    is LabelListState.Loading -> currentState
+                }
+            }
         }
     }
 
