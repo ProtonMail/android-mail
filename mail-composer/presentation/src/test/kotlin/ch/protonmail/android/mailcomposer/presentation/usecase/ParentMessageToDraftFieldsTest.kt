@@ -23,6 +23,7 @@ import androidx.annotation.StringRes
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.mailcommon.domain.usecase.ObserveUserAddresses
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatExtendedTime
 import ch.protonmail.android.mailcomposer.domain.model.AddressSignature
@@ -31,7 +32,6 @@ import ch.protonmail.android.mailcomposer.domain.model.MessageWithDecryptedBody
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.domain.model.Subject
 import ch.protonmail.android.mailcomposer.domain.usecase.GetAddressSignature
-import ch.protonmail.android.mailcomposer.domain.usecase.ObserveUserAddresses
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailcomposer.presentation.usecase.ParentMessageToDraftFields.Companion.CloseProtonMailBlockquote
 import ch.protonmail.android.mailcomposer.presentation.usecase.ParentMessageToDraftFields.Companion.CloseProtonMailQuote

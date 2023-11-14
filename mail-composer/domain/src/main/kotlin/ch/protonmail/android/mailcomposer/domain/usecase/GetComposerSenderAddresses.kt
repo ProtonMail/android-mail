@@ -23,6 +23,7 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.usecase.IsPaidUser
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailcommon.domain.usecase.ObserveUserAddresses
 import kotlinx.coroutines.flow.first
 import me.proton.core.user.domain.entity.UserAddress
 import me.proton.core.user.domain.entity.isExternal

@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcomposer.domain.usecase
+package ch.protonmail.android.mailcommon.domain.usecase
 
 import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample

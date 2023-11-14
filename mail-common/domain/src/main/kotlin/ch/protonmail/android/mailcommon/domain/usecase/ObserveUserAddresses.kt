@@ -16,29 +16,18 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcomposer.domain.usecase
+package ch.protonmail.android.mailcommon.domain.usecase
 
-import arrow.core.Either
-import arrow.core.left
-import arrow.core.right
-import ch.protonmail.android.mailcommon.domain.model.DataError
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
+import me.proton.core.user.domain.UserManager
 import me.proton.core.user.domain.entity.UserAddress
 import javax.inject.Inject
 
-class GetPrimaryAddress @Inject constructor(
-    private val observeUserAddresses: ObserveUserAddresses
+class ObserveUserAddresses @Inject constructor(
+    private val userManager: UserManager
 ) {
 
-    suspend operator fun invoke(userId: UserId): Either<DataError, UserAddress> {
-        val addresses = observeUserAddresses.invoke(userId).first()
-        if (addresses.isEmpty()) {
-            return DataError.Local.NoDataCached.left()
-        }
-
-        val primary = addresses.minBy { it.order }
-        return primary.right()
-    }
+    operator fun invoke(userId: UserId): Flow<List<UserAddress>> = userManager.observeAddresses(userId)
 
 }
