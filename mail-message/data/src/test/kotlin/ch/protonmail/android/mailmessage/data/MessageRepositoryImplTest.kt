@@ -240,6 +240,35 @@ class MessageRepositoryImplTest {
     }
 
     @Test
+    fun `observe cached messages emits messages when existing in cache`() = runTest {
+        // Given
+        val messageIds = listOf(MessageId("messageId"), MessageId("messageId2"))
+        val message = getMessage(userId, "1")
+        val message2 = getMessage(userId, "2")
+        val expected = listOf(message, message2)
+        every { localDataSource.observeMessages(userId, messageIds) } returns flowOf(expected)
+        // When
+        messageRepository.observeCachedMessages(userId, messageIds).test {
+            // Then
+            assertEquals(expected.right(), awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `observe cached messages emits no data cached error when messages do not exist in cache`() = runTest {
+        // Given
+        val messageIds = listOf(MessageId("messageId"), MessageId("messageId2"))
+        every { localDataSource.observeMessages(userId, messageIds) } returns flowOf(emptyList())
+        // When
+        messageRepository.observeCachedMessages(userId, messageIds).test {
+            // Then
+            assertEquals(DataError.Local.NoDataCached.left(), awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
     fun `observe cached messages for a conversation id calls the local source with correct parameters`() = runTest {
         // given
         val userId = UserIdSample.Primary

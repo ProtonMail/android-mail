@@ -118,6 +118,14 @@ class MessageRepositoryImpl @Inject constructor(
 
     override fun observeCachedMessages(
         userId: UserId,
+        messageIds: List<MessageId>
+    ): Flow<Either<DataError.Local, List<Message>>> =
+        localDataSource.observeMessages(userId, messageIds).mapLatest { list ->
+            list.toNonEmptyListOrNull()?.right() ?: DataError.Local.NoDataCached.left()
+        }
+
+    override fun observeCachedMessages(
+        userId: UserId,
         conversationId: ConversationId
     ): Flow<Either<DataError.Local, NonEmptyList<Message>>> =
         localDataSource.observeMessages(userId, conversationId).mapLatest { list ->
