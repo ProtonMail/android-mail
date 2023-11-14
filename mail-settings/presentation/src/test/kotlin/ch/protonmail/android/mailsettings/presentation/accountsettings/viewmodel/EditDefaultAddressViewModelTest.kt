@@ -187,7 +187,7 @@ internal class EditDefaultAddressViewModelTest {
         verifyUpdateError(
             updateError = Effect.of(Unit),
             subscriptionError = Effect.empty(),
-            event = EditDefaultAddressEvent.Error.Update.Recoverable.Generic(baseAddressId.id)
+            event = EditDefaultAddressEvent.Error.Update.Revertable.Generic(baseAddressId.id)
         )
     }
 
@@ -202,7 +202,7 @@ internal class EditDefaultAddressViewModelTest {
         verifyUpdateError(
             updateError = Effect.of(Unit),
             subscriptionError = Effect.empty(),
-            event = EditDefaultAddressEvent.Error.Update.Recoverable.Generic(baseAddressId.id)
+            event = EditDefaultAddressEvent.Error.Update.Revertable.Generic(baseAddressId.id)
         )
     }
 
@@ -219,7 +219,7 @@ internal class EditDefaultAddressViewModelTest {
         verifyUpdateError(
             updateError = Effect.empty(),
             subscriptionError = Effect.of(Unit),
-            event = EditDefaultAddressEvent.Error.Update.Recoverable.UpgradeRequired(baseAddressId.id)
+            event = EditDefaultAddressEvent.Error.Update.Revertable.UpgradeRequired(baseAddressId.id)
         )
     }
 
@@ -258,7 +258,7 @@ internal class EditDefaultAddressViewModelTest {
         subscriptionError: Effect<Unit>,
         event: EditDefaultAddressEvent.Error = EditDefaultAddressEvent.Error.Update.Generic
     ) {
-        val error = slot<EditDefaultAddressEvent.Error.Update.Recoverable>()
+        val error = slot<EditDefaultAddressEvent.Error.Update.Revertable>()
         val expectedFinalState = baseExpectedDataState.copy(
             updateErrorState = EditDefaultAddressState.WithData.UpdateErrorState(
                 updateError = updateError,

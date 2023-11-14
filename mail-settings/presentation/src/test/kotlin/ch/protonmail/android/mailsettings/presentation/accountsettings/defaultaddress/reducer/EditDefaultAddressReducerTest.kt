@@ -127,12 +127,12 @@ internal class EditDefaultAddressReducerTest(
             ),
             TestInput(
                 currentState = baseState,
-                event = Error.Update.Recoverable.Generic(previouslySelectedAddressId = "123"),
+                event = Error.Update.Revertable.Generic(previouslySelectedAddressId = "123"),
                 expectedState = updateErrorState
             ),
             TestInput(
                 currentState = baseState,
-                event = Error.Update.Recoverable.UpgradeRequired(previouslySelectedAddressId = "123"),
+                event = Error.Update.Revertable.UpgradeRequired(previouslySelectedAddressId = "123"),
                 expectedState = upgradeErrorState
             ),
             TestInput(

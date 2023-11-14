@@ -33,11 +33,10 @@ sealed interface EditDefaultAddressEvent : EditDefaultAddressOperation {
             object Generic :
                 Update
 
-            sealed class Recoverable(val previouslySelectedAddressId: String) :
-                Update {
+            sealed class Revertable(val previouslySelectedAddressId: String) : Update {
 
-                class Generic(previouslySelectedAddressId: String) : Recoverable(previouslySelectedAddressId)
-                class UpgradeRequired(previouslySelectedAddressId: String) : Recoverable(previouslySelectedAddressId)
+                class Generic(previouslySelectedAddressId: String) : Revertable(previouslySelectedAddressId)
+                class UpgradeRequired(previouslySelectedAddressId: String) : Revertable(previouslySelectedAddressId)
             }
         }
     }

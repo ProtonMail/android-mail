@@ -47,13 +47,13 @@ class EditDefaultAddressReducer @Inject constructor(
                 is EditDefaultAddressEvent.Data.ContentUpdated -> event.toDataState()
                 is EditDefaultAddressEvent.Update -> updateSelectedAddress(event.newAddressId)
 
-                is EditDefaultAddressEvent.Error.Update.Recoverable.UpgradeRequired ->
+                is EditDefaultAddressEvent.Error.Update.Revertable.UpgradeRequired ->
                     revertDefaultAddressSelection(
                         addressId = event.previouslySelectedAddressId,
                         subscriptionError = Effect.of(Unit)
                     )
 
-                is EditDefaultAddressEvent.Error.Update.Recoverable.Generic -> revertDefaultAddressSelection(
+                is EditDefaultAddressEvent.Error.Update.Revertable.Generic -> revertDefaultAddressSelection(
                     addressId = event.previouslySelectedAddressId,
                     error = Effect.of(Unit)
                 )

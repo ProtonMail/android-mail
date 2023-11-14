@@ -85,9 +85,9 @@ class EditDefaultAddressViewModel @Inject constructor(
 
                     val event = when (it) {
                         is SetDefaultAddress.Error.UpgradeRequired ->
-                            Error.Update.Recoverable.UpgradeRequired(previouslySelectedItem)
+                            Error.Update.Revertable.UpgradeRequired(previouslySelectedItem)
 
-                        else -> Error.Update.Recoverable.Generic(previouslySelectedItem)
+                        else -> Error.Update.Revertable.Generic(previouslySelectedItem)
                     }
 
                     emitNewStateFrom(event)
