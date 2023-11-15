@@ -92,7 +92,7 @@ object Versions {
 
     object Gradle {
 
-        const val androidGradlePlugin = "8.1.2"
+        const val androidGradlePlugin = "8.1.3"
         const val benManesVersionsPlugin = "0.48.0"
         const val googleServicesPlugin = "4.3.15"
         const val hiltAndroidGradlePlugin = Dagger.dagger
