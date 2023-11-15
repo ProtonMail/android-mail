@@ -22,4 +22,5 @@ import java.util.Locale
 
 interface AppLocaleRepository {
     fun current(): Locale
+    fun refresh()
 }

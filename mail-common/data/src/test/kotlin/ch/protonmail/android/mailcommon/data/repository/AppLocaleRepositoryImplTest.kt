@@ -19,10 +19,14 @@
 package ch.protonmail.android.mailcommon.data.repository
 
 import java.util.Locale
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
-import ch.protonmail.android.mailcommon.domain.repository.AppLocaleRepository
 import io.mockk.every
+import io.mockk.mockk
+import io.mockk.mockkConstructor
 import io.mockk.mockkStatic
 import io.mockk.unmockkStatic
 import org.junit.After
@@ -32,12 +36,16 @@ import kotlin.test.assertEquals
 
 class AppLocaleRepositoryImplTest {
 
-    private lateinit var localeRepository: AppLocaleRepository
+    private lateinit var localeRepository: AppLocaleRepositoryImpl
+    private lateinit var context: Context
 
     @Before
     fun setUp() {
+        mockkConstructor(IntentFilter::class)
+        every { anyConstructed<IntentFilter>().addAction(any()) } returns mockk()
         mockkStatic(AppCompatDelegate::class)
-        localeRepository = AppLocaleRepositoryImpl()
+        context = mockk(relaxed = true)
+        localeRepository = AppLocaleRepositoryImpl(context)
     }
 
     @After
@@ -77,5 +85,34 @@ class AppLocaleRepositoryImplTest {
         val actual = localeRepository.current()
         // Then
         assertEquals(systemLocale, actual)
+    }
+
+    @Test
+    fun `refresh() should refresh the cached locale`() {
+        // Given
+        val newLocale = Locale.CANADA
+        every { AppCompatDelegate.getApplicationLocales() } returns LocaleListCompat.create(newLocale)
+
+        // When
+        localeRepository.refresh()
+
+        // Then
+        val actual = localeRepository.current()
+        assertEquals(newLocale, actual)
+    }
+
+    @Test
+    fun `onReceive() should refresh the cached locale`() {
+        // Given
+        val newLocale = Locale.UK
+        every { AppCompatDelegate.getApplicationLocales() } returns LocaleListCompat.create(newLocale)
+
+        // When
+        localeRepository.onReceive(context, Intent())
+
+        // Then
+        // Ensure that the onReceive method correctly updates the cached locale
+        val actual = localeRepository.current()
+        assertEquals(newLocale, actual)
     }
 }

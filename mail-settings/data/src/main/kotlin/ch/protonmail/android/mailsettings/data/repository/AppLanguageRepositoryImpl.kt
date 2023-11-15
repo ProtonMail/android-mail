@@ -20,13 +20,15 @@ package ch.protonmail.android.mailsettings.data.repository
 
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
+import ch.protonmail.android.mailcommon.domain.repository.AppLocaleRepository
 import ch.protonmail.android.mailsettings.domain.model.AppLanguage
 import ch.protonmail.android.mailsettings.domain.repository.AppLanguageRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import javax.inject.Inject
 
-class AppLanguageRepositoryImpl @Inject constructor() : AppLanguageRepository {
+class AppLanguageRepositoryImpl @Inject constructor(private val appLocaleRepository: AppLocaleRepository) :
+    AppLanguageRepository {
 
     private val languagePreferenceFlow = MutableSharedFlow<AppLanguage?>(replay = 1)
 
@@ -43,12 +45,16 @@ class AppLanguageRepositoryImpl @Inject constructor() : AppLanguageRepository {
         val locales = LocaleListCompat.forLanguageTags(language.langTag)
         AppCompatDelegate.setApplicationLocales(locales)
         languagePreferenceFlow.tryEmit(language)
+
+        appLocaleRepository.refresh()
     }
 
     override fun clear() {
         val emptyLocales = LocaleListCompat.getEmptyLocaleList()
         AppCompatDelegate.setApplicationLocales(emptyLocales)
         languagePreferenceFlow.tryEmit(null)
+
+        appLocaleRepository.refresh()
     }
 
 }

@@ -40,17 +40,19 @@ import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import java.util.Locale
+import ch.protonmail.android.mailcommon.domain.repository.AppLocaleRepository
 
 class AppLanguageRepositoryImplTest {
 
     private lateinit var languageRepository: AppLanguageRepository
+    private lateinit var appLocaleRepository: AppLocaleRepository
 
     @Before
     fun setUp() {
         mockkStatic(AppCompatDelegate::class)
         every { AppCompatDelegate.setApplicationLocales(any()) } just Runs
-
-        languageRepository = AppLanguageRepositoryImpl()
+        appLocaleRepository = mockAppLocaleRepository()
+        languageRepository = AppLanguageRepositoryImpl(appLocaleRepository)
     }
 
     @After
@@ -77,6 +79,7 @@ class AppLanguageRepositoryImplTest {
         // Then
         val expected = LocaleListCompat.create(Locale.FRENCH)
         verify { AppCompatDelegate.setApplicationLocales(expected) }
+        verify { appLocaleRepository.refresh() }
     }
 
     @Test
@@ -87,6 +90,7 @@ class AppLanguageRepositoryImplTest {
             // Then
             val expected = LocaleListCompat.create(Locale.TRADITIONAL_CHINESE)
             verify { AppCompatDelegate.setApplicationLocales(expected) }
+            verify { appLocaleRepository.refresh() }
         }
 
     @Test
@@ -98,6 +102,7 @@ class AppLanguageRepositoryImplTest {
             languageRepository.save(BRAZILIAN)
             // Then
             assertEquals(BRAZILIAN, awaitItem())
+            verify { appLocaleRepository.refresh() }
         }
     }
 
@@ -117,6 +122,7 @@ class AppLanguageRepositoryImplTest {
         // to enter a restart loop** !!
         verify { LocaleListCompat.getEmptyLocaleList() }
         verify { AppCompatDelegate.setApplicationLocales(emptyLocaleList) }
+        verify { appLocaleRepository.refresh() }
     }
 
     @Test
@@ -131,7 +137,14 @@ class AppLanguageRepositoryImplTest {
             languageRepository.clear()
             // Then
             assertNull(awaitItem())
+            verify { appLocaleRepository.refresh() }
         }
     }
 
+    private fun mockAppLocaleRepository(): AppLocaleRepository {
+        mockkStatic(AppLocaleRepository::refresh)
+        return mockk {
+            every { refresh() } just Runs
+        }
+    }
 }

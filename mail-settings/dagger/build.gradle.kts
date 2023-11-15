@@ -47,6 +47,7 @@ dependencies {
     implementation(project(":mail-settings:data"))
     implementation(project(":mail-settings:domain"))
     implementation(project(":mail-settings:presentation"))
+    implementation(project(":mail-common:domain"))
 
     implementation(KotlinX.coroutinesCore)
 }

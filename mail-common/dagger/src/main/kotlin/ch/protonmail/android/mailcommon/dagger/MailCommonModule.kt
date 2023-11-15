@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcommon.dagger
 
+import android.content.Context
 import ch.protonmail.android.mailcommon.data.dagger.MailCommonDataModule
 import ch.protonmail.android.mailcommon.data.repository.AppLocaleRepositoryImpl
 import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
@@ -28,6 +29,7 @@ import ch.protonmail.android.mailcommon.domain.repository.AppLocaleRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -52,7 +54,8 @@ object MailCommonModule {
 
     @Provides
     @Singleton
-    fun provideAppLocaleRepository(): AppLocaleRepository = AppLocaleRepositoryImpl()
+    fun provideAppLocaleRepository(@ApplicationContext context: Context): AppLocaleRepository =
+        AppLocaleRepositoryImpl(context)
 
     @Provides
     @Singleton

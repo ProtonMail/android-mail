@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailsettings.dagger
 
 import android.content.Context
+import ch.protonmail.android.mailcommon.domain.repository.AppLocaleRepository
 import ch.protonmail.android.mailsettings.data.MailSettingsDataStoreProvider
 import ch.protonmail.android.mailsettings.data.repository.AlternativeRoutingRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.AppLanguageRepositoryImpl
@@ -79,7 +80,8 @@ object SettingsModule {
 
     @Provides
     @Singleton
-    fun provideAppLanguageRepository(): AppLanguageRepository = AppLanguageRepositoryImpl()
+    fun provideAppLanguageRepository(appLocaleRepository: AppLocaleRepository): AppLanguageRepository =
+        AppLanguageRepositoryImpl(appLocaleRepository)
 
     @Provides
     @Singleton
