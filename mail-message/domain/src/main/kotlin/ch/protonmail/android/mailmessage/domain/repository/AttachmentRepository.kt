@@ -40,6 +40,12 @@ interface AttachmentRepository {
         attachmentId: AttachmentId
     ): Either<DataError, MessageAttachmentMetadata>
 
+    suspend fun getAttachmentFromRemote(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId
+    ): Either<DataError, ByteArray>
+
     suspend fun saveMimeAttachmentToPublicStorage(
         userId: UserId,
         messageId: MessageId,
@@ -75,6 +81,13 @@ interface AttachmentRepository {
         attachmentId: AttachmentId,
         uri: Uri
     ): Either<DataError, Unit>
+
+    suspend fun saveAttachmentToFile(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId,
+        content: ByteArray
+    ): Either<DataError, File>
 
     suspend fun saveMimeAttachment(
         userId: UserId,

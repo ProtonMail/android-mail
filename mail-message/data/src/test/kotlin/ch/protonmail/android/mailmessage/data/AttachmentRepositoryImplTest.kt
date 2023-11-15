@@ -633,4 +633,62 @@ class AttachmentRepositoryImplTest {
         // Then
         assertEquals(DataError.Local.NoDataCached.left(), result)
     }
+
+    @Test
+    fun `should return byte array when getting attachment from remote was successful`() = runTest {
+        // Given
+        val attachmentByteArray = "attachmentByteArray".encodeToByteArray()
+        coEvery { remoteDataSource.getAttachment(userId, messageId, attachmentId) } returns attachmentByteArray.right()
+
+        // When
+        val result = repository.getAttachmentFromRemote(userId, messageId, attachmentId)
+
+        // Then
+        assertEquals(attachmentByteArray.right(), result)
+    }
+
+    @Test
+    fun `should return error when getting attachment from remote has failed`() = runTest {
+        // Given
+        coEvery {
+            remoteDataSource.getAttachment(userId, messageId, attachmentId)
+        } returns DataError.Remote.Unknown.left()
+
+        // When
+        val result = repository.getAttachmentFromRemote(userId, messageId, attachmentId)
+
+        // Then
+        assertEquals(DataError.Remote.Unknown.left(), result)
+    }
+
+    @Test
+    fun `should return file when saving attachment byte array was successful`() = runTest {
+        // Given
+        val attachmentByteArray = "attachmentByteArray".encodeToByteArray()
+        val file = mockk<File>()
+        coEvery {
+            localDataSource.saveAttachmentToFile(userId, messageId, attachmentId, attachmentByteArray)
+        } returns file.right()
+
+        // When
+        val result = repository.saveAttachmentToFile(userId, messageId, attachmentId, attachmentByteArray)
+
+        // Then
+        assertEquals(file.right(), result)
+    }
+
+    @Test
+    fun `should return error when saving attachment byte array has failed`() = runTest {
+        // Given
+        val attachmentByteArray = "attachmentByteArray".encodeToByteArray()
+        coEvery {
+            localDataSource.saveAttachmentToFile(userId, messageId, attachmentId, attachmentByteArray)
+        } returns DataError.Local.FailedToStoreFile.left()
+
+        // When
+        val result = repository.saveAttachmentToFile(userId, messageId, attachmentId, attachmentByteArray)
+
+        // Then
+        assertEquals(DataError.Local.FailedToStoreFile.left(), result)
+    }
 }

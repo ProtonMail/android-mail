@@ -82,6 +82,12 @@ class AttachmentRepositoryImpl @Inject constructor(
             ?: DataError.Remote.Unknown.left()
     }
 
+    override suspend fun getAttachmentFromRemote(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId
+    ): Either<DataError, ByteArray> = remoteDataSource.getAttachment(userId, messageId, attachmentId)
+
     override suspend fun saveMimeAttachmentToPublicStorage(
         userId: UserId,
         messageId: MessageId,
@@ -125,6 +131,13 @@ class AttachmentRepositoryImpl @Inject constructor(
         attachmentId: AttachmentId,
         uri: Uri
     ): Either<DataError, Unit> = localDataSource.upsertAttachment(userId, messageId, attachmentId, uri)
+
+    override suspend fun saveAttachmentToFile(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId,
+        content: ByteArray
+    ): Either<DataError, File> = localDataSource.saveAttachmentToFile(userId, messageId, attachmentId, content)
 
     override suspend fun saveMimeAttachment(
         userId: UserId,
