@@ -28,12 +28,14 @@ import javax.inject.Inject
 class SendMessage @Inject constructor(
     private val messageRepository: MessageRepository,
     private val draftStateRepository: DraftStateRepository,
-    private val moveToSentOptimistically: MoveToSentOptimistically
+    private val moveToSentOptimistically: MoveToSentOptimistically,
+    private val injectAddressPublicKeyIntoMessage: InjectAddressPublicKeyIntoMessage
 ) {
 
     suspend operator fun invoke(userId: UserId, messageId: MessageId) {
         draftStateRepository.updateDraftSyncState(userId, messageId, DraftSyncState.Sending)
         moveToSentOptimistically(userId, messageId)
+        injectAddressPublicKeyIntoMessage(userId, messageId)
         messageRepository.send(userId, messageId)
     }
 }
