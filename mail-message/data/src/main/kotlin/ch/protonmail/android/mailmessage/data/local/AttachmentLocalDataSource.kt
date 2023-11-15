@@ -91,6 +91,16 @@ interface AttachmentLocalDataSource {
         uri: Uri
     ): Either<DataError.Local, Unit>
 
+    @Suppress("LongParameterList")
+    suspend fun upsertAttachment(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId,
+        fileName: String,
+        mimeType: String,
+        content: ByteArray
+    ): Either<DataError.Local, Unit>
+
     suspend fun upsertMimeAttachment(
         userId: UserId,
         messageId: MessageId,

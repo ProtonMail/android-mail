@@ -35,6 +35,18 @@ object MessageAttachmentSample {
         headers = emptyMap()
     )
 
+    val publicKey = MessageAttachment(
+        attachmentId = AttachmentId("publicKey"),
+        name = "publickey - example@protonmail.com - 0x61DD734E.asc",
+        size = 666,
+        mimeType = "application/pgp-keys",
+        disposition = "attachment",
+        keyPackets = null,
+        signature = null,
+        encSignature = null,
+        headers = emptyMap()
+    )
+
     val document = MessageAttachment(
         attachmentId = AttachmentId("document"),
         name = "document.pdf",

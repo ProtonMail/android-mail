@@ -32,4 +32,14 @@ interface AttachmentRepository {
         attachmentId: AttachmentId
     ): Either<DataError, Unit>
 
+    @Suppress("LongParameterList")
+    suspend fun createAttachment(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId,
+        fileName: String,
+        mimeType: String,
+        content: ByteArray
+    ): Either<DataError, Unit>
+
 }

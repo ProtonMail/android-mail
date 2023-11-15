@@ -726,6 +726,37 @@ class AttachmentLocalDataSourceImplTest {
     }
 
     @Test
+    fun `should return unit when upserting attachment from ByteArray was successful`() = runTest {
+        // Given
+        val attachmentContent = "PUBLIC KEY".encodeToByteArray()
+        val attachment = MessageAttachmentSample.publicKey.copy(
+            size = attachmentContent.size.toLong()
+        )
+        coEvery {
+            attachmentFileStorage.saveAttachment(userId, messageId, attachment.attachmentId, attachmentContent)
+        } returns mockk()
+
+        // When
+        val actual = attachmentLocalDataSource.upsertAttachment(
+            userId = userId,
+            messageId = messageId,
+            attachmentId = attachment.attachmentId,
+            fileName = attachment.name,
+            mimeType = attachment.mimeType,
+            content = attachmentContent
+        )
+
+        // Then
+        assertEquals(Unit.right(), actual)
+        coVerifySequence {
+            attachmentFileStorage.saveAttachment(userId, messageId, attachment.attachmentId, attachmentContent)
+            attachmentDao.insertOrUpdate(
+                messageAttachmentEntityMapper.toMessageAttachmentEntity(userId, messageId, attachment)
+            )
+        }
+    }
+
+    @Test
     fun `should return Unit when copying mime attachments to message was successful`() = runTest {
         // Given
         val targetMessageId = MessageId(messageId.id + "_new")
@@ -777,6 +808,31 @@ class AttachmentLocalDataSourceImplTest {
             sourceMessageId = messageId,
             targetMessageId = targetMessageId,
             attachmentIds = listOf(attachmentId)
+        )
+
+        // Then
+        assertEquals(DataError.Local.FailedToStoreFile.left(), actual)
+    }
+
+    @Test
+    fun `should return local error when upserting attachment from ByteArray has failed`() = runTest {
+        // Given
+        val attachmentContent = "PUBLIC KEY".encodeToByteArray()
+        val attachment = MessageAttachmentSample.publicKey.copy(
+            size = attachmentContent.size.toLong()
+        )
+        coEvery {
+            attachmentFileStorage.saveAttachment(userId, messageId, attachment.attachmentId, attachmentContent)
+        } returns null
+
+        // When
+        val actual = attachmentLocalDataSource.upsertAttachment(
+            userId = userId,
+            messageId = messageId,
+            attachmentId = attachment.attachmentId,
+            fileName = attachment.name,
+            mimeType = attachment.mimeType,
+            content = attachmentContent
         )
 
         // Then

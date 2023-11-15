@@ -20,9 +20,11 @@ package ch.protonmail.android.composer.data.repository
 
 import arrow.core.Either
 import arrow.core.raise.either
+import arrow.core.right
 import ch.protonmail.android.composer.data.local.AttachmentStateLocalDataSource
 import ch.protonmail.android.composer.data.remote.AttachmentRemoteDataSource
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcomposer.domain.model.AttachmentState
 import ch.protonmail.android.mailcomposer.domain.model.AttachmentSyncState
 import ch.protonmail.android.mailcomposer.domain.repository.AttachmentRepository
 import ch.protonmail.android.mailmessage.data.local.AttachmentLocalDataSource
@@ -59,4 +61,35 @@ class AttachmentRepositoryImpl @Inject constructor(
             else -> attachmentLocalDataSource.deleteAttachmentWithFile(userId, messageId, attachmentId).bind()
         }
     }
+
+    override suspend fun createAttachment(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId,
+        fileName: String,
+        mimeType: String,
+        content: ByteArray
+    ): Either<DataError, Unit> = either {
+
+        attachmentLocalDataSource.upsertAttachment(
+            userId,
+            messageId,
+            attachmentId,
+            fileName,
+            mimeType,
+            content
+        ).bind()
+
+        attachmentStateLocalDataSource.createOrUpdate(
+            AttachmentState(
+                userId,
+                messageId,
+                attachmentId,
+                AttachmentSyncState.Local
+            )
+        ).bind()
+
+        return Unit.right()
+    }
+
 }

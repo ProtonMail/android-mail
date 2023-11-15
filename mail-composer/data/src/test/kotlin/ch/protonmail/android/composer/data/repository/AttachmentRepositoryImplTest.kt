@@ -24,6 +24,7 @@ import ch.protonmail.android.composer.data.local.AttachmentStateLocalDataSource
 import ch.protonmail.android.composer.data.remote.AttachmentRemoteDataSource
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.mailcomposer.domain.model.AttachmentState
 import ch.protonmail.android.mailcomposer.domain.model.AttachmentSyncState
 import ch.protonmail.android.mailcomposer.domain.sample.AttachmentStateSample
 import ch.protonmail.android.mailmessage.data.local.AttachmentLocalDataSource
@@ -44,6 +45,9 @@ class AttachmentRepositoryImplTest {
     private val userId = UserIdSample.Primary
     private val messageId = MessageIdSample.MessageWithAttachments
     private val attachmentId = AttachmentId("attachmentId")
+    private val fileName = "fileName.txt"
+    private val mimeType = "text/plain"
+    private val byteContent = "Content of a text file".toByteArray()
 
     private val attachmentStateLocalDataSource = mockk<AttachmentStateLocalDataSource>()
     private val attachmentRemoteDataSource = mockk<AttachmentRemoteDataSource> {
@@ -152,6 +156,91 @@ class AttachmentRepositoryImplTest {
         coVerify { attachmentLocalDataSource wasNot Called }
     }
 
+    @Test
+    fun `returns local error when storing file locally fails`() = runTest {
+        // Given
+        val expected = DataError.Local.FailedToStoreFile.left()
+        expectUpsertAttachmentLocalFailed()
+
+        // When
+        val actual = attachmentRepositoryImpl.createAttachment(
+            userId,
+            messageId,
+            attachmentId,
+            fileName,
+            mimeType,
+            byteContent
+        )
+
+        // Then
+        assertEquals(expected, actual)
+        coVerifyOrder {
+            attachmentLocalDataSource.upsertAttachment(userId, messageId, attachmentId, fileName, mimeType, byteContent)
+        }
+    }
+
+    @Test
+    fun `returns local error when createOrUpdate AttachmentState failed`() = runTest {
+        // Given
+        expectUpsertAttachmentLocalSuccessful()
+        val expectedAttachmentState = AttachmentStateSample.build(
+            userId,
+            messageId,
+            attachmentId,
+            AttachmentSyncState.Local
+        )
+        expectCreateOrUpdateAttachmentStateFailed(expectedAttachmentState)
+
+        // When
+        val actual = attachmentRepositoryImpl.createAttachment(
+            userId,
+            messageId,
+            attachmentId,
+            fileName,
+            mimeType,
+            byteContent
+        )
+
+        // Then
+        assert(actual.isLeft())
+        assert(actual.leftOrNull() is DataError.Local)
+        coVerifyOrder {
+            attachmentLocalDataSource.upsertAttachment(userId, messageId, attachmentId, fileName, mimeType, byteContent)
+            attachmentStateLocalDataSource.createOrUpdate(expectedAttachmentState)
+        }
+    }
+
+    @Test
+    fun `when creating Attachment, stores a file on disk and creates corresponding AttachmentState`() = runTest {
+        // Given
+        expectUpsertAttachmentLocalSuccessful()
+        val expectedAttachmentState = AttachmentStateSample.build(
+            userId,
+            messageId,
+            attachmentId,
+            AttachmentSyncState.Local
+        )
+        expectCreateOrUpdateAttachmentStateSuccessful(expectedAttachmentState)
+
+        // When
+        val actual = attachmentRepositoryImpl.createAttachment(
+            userId,
+            messageId,
+            attachmentId,
+            fileName,
+            mimeType,
+            byteContent
+        )
+
+        // Then
+        assertEquals(Unit.right(), actual)
+        coVerifyOrder {
+            attachmentLocalDataSource.upsertAttachment(userId, messageId, attachmentId, fileName, mimeType, byteContent)
+            attachmentStateLocalDataSource.createOrUpdate(expectedAttachmentState)
+        }
+    }
+
+
     private fun expectLoadingAttachmentStateLoadsUploadedStateSuccessful() {
         coEvery {
             attachmentStateLocalDataSource.getAttachmentState(userId, messageId, attachmentId)
@@ -200,6 +289,30 @@ class AttachmentRepositoryImplTest {
         coEvery {
             attachmentLocalDataSource.deleteAttachmentWithFile(userId, messageId, attachmentId)
         } returns DataError.Local.FailedToDeleteFile.left()
+    }
+
+    private fun expectUpsertAttachmentLocalFailed() {
+        coEvery {
+            attachmentLocalDataSource.upsertAttachment(userId, messageId, attachmentId, fileName, mimeType, byteContent)
+        } returns DataError.Local.FailedToStoreFile.left()
+    }
+
+    private fun expectUpsertAttachmentLocalSuccessful() {
+        coEvery {
+            attachmentLocalDataSource.upsertAttachment(userId, messageId, attachmentId, fileName, mimeType, byteContent)
+        } returns Unit.right()
+    }
+
+    private fun expectCreateOrUpdateAttachmentStateFailed(attachmentState: AttachmentState) {
+        coEvery {
+            attachmentStateLocalDataSource.createOrUpdate(attachmentState)
+        } returns DataError.Local.Unknown.left()
+    }
+
+    private fun expectCreateOrUpdateAttachmentStateSuccessful(attachmentState: AttachmentState) {
+        coEvery {
+            attachmentStateLocalDataSource.createOrUpdate(attachmentState)
+        } returns Unit.right()
     }
 }
 

@@ -188,6 +188,36 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
         }
     }
 
+    override suspend fun upsertAttachment(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId,
+        fileName: String,
+        mimeType: String,
+        content: ByteArray
+    ): Either<DataError.Local, Unit> {
+        attachmentFileStorage.saveAttachment(userId, messageId, attachmentId, content)
+            ?: return DataError.Local.FailedToStoreFile.left()
+        val messageAttachmentEntity = MessageAttachmentEntity(
+            userId = userId,
+            messageId = messageId,
+            attachmentId = attachmentId,
+            name = fileName,
+            size = content.size.toLong(),
+            mimeType = mimeType,
+            disposition = "attachment",
+            keyPackets = null,
+            signature = null,
+            encSignature = null,
+            headers = emptyMap()
+        )
+        val result = runCatching { attachmentDao.insertOrUpdate(messageAttachmentEntity) }
+        return when (result.isSuccess) {
+            true -> Unit.right()
+            false -> DataError.Local.FailedToStoreFile.left()
+        }
+    }
+
     override suspend fun upsertMimeAttachment(
         userId: UserId,
         messageId: MessageId,
