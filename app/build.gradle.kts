@@ -233,6 +233,7 @@ dependencies {
     if (android.defaultConfig.name.contains("benchmark", true)) {
         // Add dependencies specifically for the "benchmark" build type
         implementation(AndroidX.Profile.Tracing.tracing)
+        implementation(AndroidX.Profile.ComposeTracing.composeTracing)
         implementation(AndroidX.Profile.Perfetto.perfetto)
         implementation(AndroidX.Profile.Perfetto.perfettoBinary)
     }
