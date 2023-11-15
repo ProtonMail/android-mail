@@ -300,7 +300,11 @@ class MailboxViewModel @Inject constructor(
                 pager.flow.cachedIn(viewModelScope),
                 observeFolderColorSettings(userId)
             ) { pagingData, folderColorSettings ->
-                pagingData.map { mailboxItemMapper.toUiModel(it, contacts, folderColorSettings) }
+                pagingData.map {
+                    withContext(dispatchersProvider.Comp) {
+                        mailboxItemMapper.toUiModel(it, contacts, folderColorSettings)
+                    }
+                }
             }
         }
     }
