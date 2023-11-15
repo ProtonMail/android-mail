@@ -62,7 +62,7 @@ class AttachmentRepositoryImpl @Inject constructor(
         // Resets the status to running so that in case of a failure
         // observing is not emitting directly failure when retrying
         localDataSource.updateAttachmentDownloadStatus(userId, messageId, attachmentId, AttachmentWorkerStatus.Running)
-        remoteDataSource.getAttachment(userId, messageId, attachmentId)
+        remoteDataSource.enqueueGetAttachmentWorker(userId, messageId, attachmentId)
         return localDataSource.observeAttachmentMetadata(userId, messageId, attachmentId)
             .firstOrNull { it?.status?.finished() == true }
             ?.let {
@@ -101,7 +101,7 @@ class AttachmentRepositoryImpl @Inject constructor(
         }
 
         return either {
-            remoteDataSource.getEmbeddedImage(userId, messageId, attachmentId).bind().let {
+            remoteDataSource.getAttachment(userId, messageId, attachmentId).bind().let {
                 localDataSource.storeEmbeddedImage(userId, messageId, attachmentId, it)
                 decryptAttachmentByteArray(userId, messageId, attachmentId, it).mapLeft {
                     DataError.Local.DecryptionError

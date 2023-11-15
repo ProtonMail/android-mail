@@ -29,7 +29,7 @@ interface AttachmentRemoteDataSource {
     /**
      * Get the attachment for the given [userId] and [attachmentId].
      */
-    suspend fun getAttachment(
+    suspend fun enqueueGetAttachmentWorker(
         userId: UserId,
         messageId: MessageId,
         attachmentId: AttachmentId
@@ -38,7 +38,7 @@ interface AttachmentRemoteDataSource {
     /**
      * Get the embedded image for the given [userId] and [attachmentId].
      */
-    suspend fun getEmbeddedImage(
+    suspend fun getAttachment(
         userId: UserId,
         messageId: MessageId,
         attachmentId: AttachmentId

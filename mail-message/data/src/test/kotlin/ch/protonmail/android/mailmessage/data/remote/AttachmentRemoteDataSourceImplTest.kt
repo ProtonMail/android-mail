@@ -75,7 +75,7 @@ class AttachmentRemoteDataSourceImplTest {
     @Test
     fun `should enqueues work to get attachment`() = runTest {
         // When
-        attachmentRemoteDataSource.getAttachment(userId, messageId, attachmentId)
+        attachmentRemoteDataSource.enqueueGetAttachmentWorker(userId, messageId, attachmentId)
 
         // Then
         coVerify {
@@ -96,7 +96,7 @@ class AttachmentRemoteDataSourceImplTest {
         val expected = attachmentByteArray.right()
 
         // When
-        val actual = attachmentRemoteDataSource.getEmbeddedImage(userId, messageId, attachmentId)
+        val actual = attachmentRemoteDataSource.getAttachment(userId, messageId, attachmentId)
 
         // Then
         assertEquals(expected, actual)
@@ -109,7 +109,7 @@ class AttachmentRemoteDataSourceImplTest {
         val expected = DataError.Remote.Http(NetworkError.NoNetwork, "No error message found").left()
 
         // When
-        val actual = attachmentRemoteDataSource.getEmbeddedImage(userId, messageId, attachmentId)
+        val actual = attachmentRemoteDataSource.getAttachment(userId, messageId, attachmentId)
 
         // Then
         assertEquals(expected, actual)

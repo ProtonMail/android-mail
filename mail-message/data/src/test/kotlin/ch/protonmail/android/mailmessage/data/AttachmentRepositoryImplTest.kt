@@ -119,7 +119,7 @@ class AttachmentRepositoryImplTest {
             attachmentMetaData.right()
         )
         coEvery {
-            remoteDataSource.getAttachment(userId, messageId, attachmentId)
+            remoteDataSource.enqueueGetAttachmentWorker(userId, messageId, attachmentId)
         } returns Unit
         coEvery { localDataSource.observeAttachmentMetadata(userId, messageId, attachmentId) } returns flowOf(
             attachmentMetaData
@@ -154,7 +154,7 @@ class AttachmentRepositoryImplTest {
         coEvery {
             localDataSource.getAttachment(userId, messageId, attachmentId)
         } returns DataError.Local.NoDataCached.left()
-        coEvery { remoteDataSource.getAttachment(userId, messageId, attachmentId) } returns Unit
+        coEvery { remoteDataSource.enqueueGetAttachmentWorker(userId, messageId, attachmentId) } returns Unit
         coEvery { localDataSource.observeAttachmentMetadata(userId, messageId, attachmentId) } returns flowOf(
             attachmentMetaData.copy(
                 uri = null,
@@ -183,7 +183,7 @@ class AttachmentRepositoryImplTest {
         coEvery {
             localDataSource.getAttachment(userId, messageId, attachmentId)
         } returns DataError.Local.NoDataCached.left()
-        coEvery { remoteDataSource.getAttachment(userId, messageId, attachmentId) } returns Unit
+        coEvery { remoteDataSource.enqueueGetAttachmentWorker(userId, messageId, attachmentId) } returns Unit
         coEvery { localDataSource.observeAttachmentMetadata(userId, messageId, attachmentId) } returns flowOf(
             attachmentMetaData.copy(
                 uri = null,
@@ -239,7 +239,7 @@ class AttachmentRepositoryImplTest {
             localDataSource.getEmbeddedImage(userId, messageId, attachmentId)
         } returns DataError.Local.NoDataCached.left()
         coEvery {
-            remoteDataSource.getEmbeddedImage(userId, messageId, attachmentId)
+            remoteDataSource.getAttachment(userId, messageId, attachmentId)
         } returns encryptedByteArray.right()
         coEvery { localDataSource.storeEmbeddedImage(userId, messageId, attachmentId, encryptedByteArray) } just Runs
         coEvery {
@@ -263,7 +263,7 @@ class AttachmentRepositoryImplTest {
             localDataSource.getEmbeddedImage(userId, messageId, attachmentId)
         } returns DataError.Local.NoDataCached.left()
         coEvery {
-            remoteDataSource.getEmbeddedImage(userId, messageId, attachmentId)
+            remoteDataSource.getAttachment(userId, messageId, attachmentId)
         } returns expected
 
         // When
@@ -282,7 +282,7 @@ class AttachmentRepositoryImplTest {
             localDataSource.getEmbeddedImage(userId, messageId, attachmentId)
         } returns DataError.Local.NoDataCached.left()
         coEvery {
-            remoteDataSource.getEmbeddedImage(userId, messageId, attachmentId)
+            remoteDataSource.getAttachment(userId, messageId, attachmentId)
         } returns encryptedByteArray.right()
         coEvery {
             localDataSource.storeEmbeddedImage(userId, messageId, attachmentId, encryptedByteArray)

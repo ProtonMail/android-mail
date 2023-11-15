@@ -34,7 +34,7 @@ class AttachmentRemoteDataSourceImpl @Inject constructor(
     private val enqueuer: Enqueuer
 ) : AttachmentRemoteDataSource {
 
-    override suspend fun getAttachment(
+    override suspend fun enqueueGetAttachmentWorker(
         userId: UserId,
         messageId: MessageId,
         attachmentId: AttachmentId
@@ -47,7 +47,7 @@ class AttachmentRemoteDataSourceImpl @Inject constructor(
         )
     }
 
-    override suspend fun getEmbeddedImage(
+    override suspend fun getAttachment(
         userId: UserId,
         messageId: MessageId,
         attachmentId: AttachmentId
