@@ -26,6 +26,7 @@ import ch.protonmail.android.mailsettings.domain.model.SwipeActionDirection
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingScreen
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingScreen
 import ch.protonmail.android.mailsettings.presentation.accountsettings.defaultaddress.ui.EditDefaultAddressScreen
+import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.ui.EditAddressIdentityScreen
 import ch.protonmail.android.mailsettings.presentation.settings.alternativerouting.AlternativeRoutingSettingScreen
 import ch.protonmail.android.mailsettings.presentation.settings.combinedcontacts.CombinedContactsSettingScreen
 import ch.protonmail.android.mailsettings.presentation.settings.language.LanguageSettingsScreen
@@ -52,7 +53,7 @@ fun NavGraphBuilder.addAccountSettings(
                 onRecoveryEmailClick = launcherActions.onRecoveryEmail,
                 onConversationModeClick = { navController.navigate(Screen.ConversationModeSettings.route) },
                 onDefaultEmailAddressClick = { navController.navigate(Screen.DefaultEmailSettings.route) },
-                onDisplayNameClick = { showFeatureMissingSnackbar() },
+                onDisplayNameClick = { navController.navigate(Screen.DisplayNameSettings.route) },
                 onPrivacyClick = { navController.navigate(Screen.PrivacySettings.route) },
                 onLabelsClick = { navController.navigate(Screen.LabelList.route) },
                 onFoldersClick = { showFeatureMissingSnackbar() },
@@ -95,6 +96,16 @@ internal fun NavGraphBuilder.addDefaultEmailSettings(navController: NavHostContr
         EditDefaultAddressScreen(
             modifier = Modifier,
             onBackClick = { navController.popBackStack() }
+        )
+    }
+}
+
+internal fun NavGraphBuilder.addDisplayNameSettings(navController: NavHostController) {
+    composable(route = Screen.DisplayNameSettings.route) {
+        EditAddressIdentityScreen(
+            modifier = Modifier,
+            onBackClick = { navController.popBackStack() },
+            onCloseScreen = { navController.popBackStack() }
         )
     }
 }

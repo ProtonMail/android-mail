@@ -49,6 +49,7 @@ import ch.protonmail.android.navigation.route.addConversationDetail
 import ch.protonmail.android.navigation.route.addConversationModeSettings
 import ch.protonmail.android.navigation.route.addDeepLinkHandler
 import ch.protonmail.android.navigation.route.addDefaultEmailSettings
+import ch.protonmail.android.navigation.route.addDisplayNameSettings
 import ch.protonmail.android.navigation.route.addEditSwipeActionsSettings
 import ch.protonmail.android.navigation.route.addLabelForm
 import ch.protonmail.android.navigation.route.addLabelList
@@ -266,6 +267,7 @@ fun Home(
                 addCombinedContactsSetting(navController)
                 addConversationModeSettings(navController)
                 addDefaultEmailSettings(navController)
+                addDisplayNameSettings(navController)
                 addEditSwipeActionsSettings(navController)
                 addLanguageSettings(navController)
                 addPrivacySettings(navController)
