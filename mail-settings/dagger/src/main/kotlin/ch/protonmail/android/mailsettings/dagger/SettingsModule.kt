@@ -21,25 +21,37 @@ package ch.protonmail.android.mailsettings.dagger
 import android.content.Context
 import ch.protonmail.android.mailcommon.domain.repository.AppLocaleRepository
 import ch.protonmail.android.mailsettings.data.MailSettingsDataStoreProvider
+import ch.protonmail.android.mailsettings.data.repository.AddressIdentityRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.AlternativeRoutingRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.AppLanguageRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.AutoLockRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.CombinedContactsRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.NotificationsSettingsRepositoryImpl
+import ch.protonmail.android.mailsettings.data.repository.MobileFooterRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.PreventScreenshotsRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.ThemeRepositoryImpl
+import ch.protonmail.android.mailsettings.data.repository.local.AddressIdentityLocalDataSource
+import ch.protonmail.android.mailsettings.data.repository.local.AddressIdentityLocalDataSourceImpl
 import ch.protonmail.android.mailsettings.data.repository.local.AlternativeRoutingLocalDataSource
 import ch.protonmail.android.mailsettings.data.repository.local.AlternativeRoutingLocalDataSourceImpl
+import ch.protonmail.android.mailsettings.data.repository.local.MobileFooterLocalDataSource
+import ch.protonmail.android.mailsettings.data.repository.local.MobileFooterLocalDataSourceImpl
+import ch.protonmail.android.mailsettings.data.repository.remote.AddressIdentityRemoteDataSource
+import ch.protonmail.android.mailsettings.data.repository.remote.AddressIdentityRemoteDataSourceImpl
+import ch.protonmail.android.mailsettings.domain.repository.AddressIdentityRepository
 import ch.protonmail.android.mailsettings.domain.repository.AlternativeRoutingRepository
 import ch.protonmail.android.mailsettings.domain.repository.AppLanguageRepository
 import ch.protonmail.android.mailsettings.domain.repository.AutoLockRepository
 import ch.protonmail.android.mailsettings.domain.repository.CombinedContactsRepository
 import ch.protonmail.android.mailsettings.domain.repository.NotificationsSettingsRepository
+import ch.protonmail.android.mailsettings.domain.repository.MobileFooterRepository
 import ch.protonmail.android.mailsettings.domain.repository.PreventScreenshotsRepository
 import ch.protonmail.android.mailsettings.domain.repository.ThemeRepository
 import ch.protonmail.android.mailsettings.presentation.settings.theme.ThemeObserverCoroutineScope
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import dagger.Reusable
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
@@ -106,4 +118,32 @@ object SettingsModule {
     @Singleton
     @ThemeObserverCoroutineScope
     fun provideThemeObserverCoroutineScope(): CoroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+
+
+    @Module
+    @InstallIn(SingletonComponent::class)
+    interface BindsModule {
+
+        @Binds
+        @Reusable
+        fun bindAddressIdentityRemoteDataSource(
+            impl: AddressIdentityRemoteDataSourceImpl
+        ): AddressIdentityRemoteDataSource
+
+        @Binds
+        @Reusable
+        fun bindAddressIdentityLocalDataSource(impl: AddressIdentityLocalDataSourceImpl): AddressIdentityLocalDataSource
+
+        @Binds
+        @Reusable
+        fun bindAddressIdentityRepository(impl: AddressIdentityRepositoryImpl): AddressIdentityRepository
+
+        @Binds
+        @Reusable
+        fun bindMobileFooterRepository(impl: MobileFooterRepositoryImpl): MobileFooterRepository
+
+        @Binds
+        @Singleton
+        fun bindMobileLocalFooterLocalDataSource(impl: MobileFooterLocalDataSourceImpl): MobileFooterLocalDataSource
+    }
 }
