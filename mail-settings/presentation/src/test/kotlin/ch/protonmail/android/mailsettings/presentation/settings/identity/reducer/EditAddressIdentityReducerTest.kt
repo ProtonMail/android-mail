@@ -1,0 +1,185 @@
+/*
+ * Copyright (c) 2022 Proton Technologies AG
+ * This file is part of Proton Technologies AG and Proton Mail.
+ *
+ * Proton Mail is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Proton Mail is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package ch.protonmail.android.mailsettings.presentation.settings.identity.reducer
+
+import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailsettings.domain.model.DisplayName
+import ch.protonmail.android.mailsettings.domain.model.MobileFooter
+import ch.protonmail.android.mailsettings.domain.model.Signature
+import ch.protonmail.android.mailsettings.domain.model.SignatureValue
+import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.mapper.EditAddressIdentityMapper
+import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.AddressSignatureUiModel
+import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.DisplayNameUiModel
+import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.EditAddressIdentityEvent
+import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.EditAddressIdentityOperation
+import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.EditAddressIdentityState
+import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.EditAddressIdentityViewAction
+import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.MobileFooterUiModel
+import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.reducer.EditAddressIdentityReducer
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
+import kotlin.test.assertEquals
+
+@RunWith(Parameterized::class)
+internal class EditAddressIdentityReducerTest(
+    private val testName: String,
+    private val testInput: TestInput
+) {
+
+    private val editAddressIdentityMapper = EditAddressIdentityMapper()
+    private val editAddressIdentityReducer = EditAddressIdentityReducer(editAddressIdentityMapper)
+
+    @Test
+    fun `should produce the expected new state`() = with(testInput) {
+        val actualState = editAddressIdentityReducer.newStateFrom(currentState, event)
+        assertEquals(expectedState, actualState, testName)
+    }
+
+    companion object {
+
+        private val baseDisplayName = DisplayName("display-name")
+        private val baseSignature = Signature(enabled = true, SignatureValue("signature"))
+        private val baseFooter = MobileFooter.FreeUserMobileFooter("mobile-footer")
+
+        private val baseDisplayNameState = EditAddressIdentityState.DisplayNameState(
+            DisplayNameUiModel("display-name")
+        )
+        private val baseSignatureState = EditAddressIdentityState.SignatureState(
+            AddressSignatureUiModel("signature", enabled = true)
+        )
+        private val baseMobileFooterState = EditAddressIdentityState.MobileFooterState(
+            MobileFooterUiModel("mobile-footer", enabled = true, isFieldEnabled = false)
+        )
+        private val baseErrorState = EditAddressIdentityState.UpdateErrorState(
+            Effect.empty()
+        )
+        private val baseCloseState = EditAddressIdentityState.CloseState(
+            Effect.empty()
+        )
+
+        private val baseLoadedState = EditAddressIdentityState.DataLoaded(
+            baseDisplayNameState,
+            baseSignatureState,
+            baseMobileFooterState,
+            baseErrorState,
+            baseCloseState
+        )
+
+        private val transitionFromLoadingState = listOf(
+            TestInput(
+                currentState = EditAddressIdentityState.Loading,
+                event = EditAddressIdentityEvent.Data.ContentLoaded(baseDisplayName, baseSignature, baseFooter),
+                expectedState = baseLoadedState
+            ),
+            TestInput(
+                currentState = EditAddressIdentityState.Loading,
+                event = EditAddressIdentityEvent.Error.LoadingError,
+                expectedState = EditAddressIdentityState.LoadingError
+            )
+        )
+
+        private val transitionsFromLoadedState = listOf(
+            TestInput(
+                currentState = baseLoadedState,
+                event = EditAddressIdentityEvent.Error.UpdateError,
+                expectedState = baseLoadedState.copy(
+                    updateErrorState = EditAddressIdentityState.UpdateErrorState(Effect.of(Unit))
+                )
+            ),
+            TestInput(
+                currentState = baseLoadedState,
+                event = EditAddressIdentityViewAction.DisplayName.UpdateValue("display-name-2"),
+                expectedState = baseLoadedState.copy(
+                    baseDisplayNameState.copy(DisplayNameUiModel("display-name-2"))
+                )
+            ),
+            TestInput(
+                currentState = baseLoadedState,
+                event = EditAddressIdentityViewAction.Signature.UpdateValue("signature-2"),
+                expectedState = baseLoadedState.copy(
+                    signatureState = baseSignatureState.copy(AddressSignatureUiModel("signature-2", enabled = true))
+                )
+            ),
+            TestInput(
+                currentState = baseLoadedState,
+                event = EditAddressIdentityViewAction.Signature.ToggleState(false),
+                expectedState = baseLoadedState.copy(
+                    signatureState = baseSignatureState.copy(AddressSignatureUiModel("signature", enabled = false))
+                )
+            ),
+            TestInput(
+                currentState = baseLoadedState,
+                event = EditAddressIdentityViewAction.MobileFooter.UpdateValue("mobile-footer-2"),
+                expectedState = baseLoadedState.copy(
+                    mobileFooterState = baseMobileFooterState.copy(
+                        MobileFooterUiModel(
+                            "mobile-footer-2",
+                            enabled = true,
+                            isFieldEnabled = false
+                        )
+                    )
+                )
+            ),
+            TestInput(
+                currentState = baseLoadedState,
+                event = EditAddressIdentityViewAction.MobileFooter.ToggleState(false),
+                expectedState = baseLoadedState.copy(
+                    mobileFooterState = baseMobileFooterState.copy(
+                        MobileFooterUiModel(
+                            "mobile-footer",
+                            enabled = false,
+                            isFieldEnabled = false
+                        )
+                    )
+                )
+            ),
+            TestInput(
+                currentState = baseLoadedState,
+                event = EditAddressIdentityViewAction.Save,
+                expectedState = baseLoadedState
+            ),
+            TestInput(
+                currentState = baseLoadedState,
+                event = EditAddressIdentityEvent.Navigation.Close,
+                expectedState = baseLoadedState.copy(
+                    closeState = EditAddressIdentityState.CloseState(close = Effect.of(Unit))
+                )
+            )
+        )
+
+        @JvmStatic
+        @Parameterized.Parameters(name = "{0}")
+        fun data(): Collection<Array<Any>> = (transitionFromLoadingState + transitionsFromLoadedState)
+            .map { testInput ->
+                val testName = """
+                    Current state: ${testInput.currentState}
+                    Event: ${testInput.event}
+                    Next state: ${testInput.expectedState}        
+                """.trimIndent()
+                arrayOf(testName, testInput)
+            }
+    }
+
+    data class TestInput(
+        val currentState: EditAddressIdentityState,
+        val event: EditAddressIdentityOperation,
+        val expectedState: EditAddressIdentityState
+    )
+}
