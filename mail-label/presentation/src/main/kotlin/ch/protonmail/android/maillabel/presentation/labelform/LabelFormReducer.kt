@@ -36,6 +36,7 @@ class LabelFormReducer @Inject constructor() {
             LabelFormEvent.LabelCreated -> reduceLabelCreated(currentState)
             LabelFormEvent.LabelDeleted -> reduceLabelDeleted(currentState)
             LabelFormEvent.LabelUpdated -> reduceLabelUpdated(currentState)
+            LabelFormEvent.LabelAlreadyExists -> reduceLabelAlreadyExists(currentState)
         }
     }
 
@@ -46,19 +47,14 @@ class LabelFormReducer @Inject constructor() {
                 labelId = operation.labelId,
                 name = operation.name,
                 color = operation.color,
-                colorList = operation.colorList,
-                close = Effect.empty(),
-                closeWithSave = Effect.empty(),
-                closeWithDelete = Effect.empty()
+                colorList = operation.colorList
             )
         } else {
             LabelFormState.Data.Create(
                 isSaveEnabled = operation.name.isNotEmpty(),
                 name = operation.name,
                 color = operation.color,
-                colorList = operation.colorList,
-                close = Effect.empty(),
-                closeWithSave = Effect.empty()
+                colorList = operation.colorList
             )
         }
     }
@@ -123,6 +119,14 @@ class LabelFormReducer @Inject constructor() {
         return when (currentState) {
             is LabelFormState.Data.Create -> currentState.copy(closeWithSave = Effect.of(Unit))
             is LabelFormState.Data.Update -> currentState.copy(closeWithSave = Effect.of(Unit))
+            is LabelFormState.Loading -> currentState
+        }
+    }
+
+    private fun reduceLabelAlreadyExists(currentState: LabelFormState): LabelFormState {
+        return when (currentState) {
+            is LabelFormState.Data.Create -> currentState.copy(showLabelAlreadyExistsSnackbar = Effect.of(Unit))
+            is LabelFormState.Data.Update -> currentState.copy(showLabelAlreadyExistsSnackbar = Effect.of(Unit))
             is LabelFormState.Loading -> currentState
         }
     }

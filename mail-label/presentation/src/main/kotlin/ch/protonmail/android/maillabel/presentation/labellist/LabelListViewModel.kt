@@ -68,7 +68,7 @@ class LabelListViewModel @Inject constructor(
     private fun flowLabelListOperation(userId: UserId): Flow<LabelListOperation> {
         return observeLabels(userId).map { labels ->
             LabelListEvent.LabelListLoaded(
-                labels.getOrElse {
+                labelList = labels.getOrElse {
                     Timber.e("Error while observing custom labels")
                     return@map LabelListEvent.ErrorLoadingLabelList
                 }

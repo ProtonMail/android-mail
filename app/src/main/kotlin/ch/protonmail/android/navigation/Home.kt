@@ -145,13 +145,17 @@ fun Home(
     fun showLabelDeletedSnackbar() = scope.launch {
         snackbarHostSuccessState.showSnackbar(message = labelDeletedText, type = ProtonSnackbarType.SUCCESS)
     }
-    val labelListLoadingErrorText = stringResource(id = R.string.label_list_loading_error)
-    fun showLabelListLoadingSnackbar() = scope.launch {
-        snackbarHostErrorState.showSnackbar(message = labelListLoadingErrorText, type = ProtonSnackbarType.ERROR)
+    val showLabelAlreadyExistsText = stringResource(id = R.string.label_deleted)
+    fun showLabelAlreadyExistsSnackbar() = scope.launch {
+        snackbarHostErrorState.showSnackbar(message = showLabelAlreadyExistsText, type = ProtonSnackbarType.ERROR)
     }
-    val showLabelLimitReachedErrorText = stringResource(id = R.string.label_limit_reached_error)
+    val labelListLoadingText = stringResource(id = R.string.label_list_loading_error)
+    fun showLabelListLoadingSnackbar() = scope.launch {
+        snackbarHostErrorState.showSnackbar(message = labelListLoadingText, type = ProtonSnackbarType.ERROR)
+    }
+    val showLabelLimitReachedText = stringResource(id = R.string.label_limit_reached_error)
     fun showLabelLimitReachedSnackbar() = scope.launch {
-        snackbarHostErrorState.showSnackbar(message = showLabelLimitReachedErrorText, type = ProtonSnackbarType.ERROR)
+        snackbarHostErrorState.showSnackbar(message = showLabelLimitReachedText, type = ProtonSnackbarType.ERROR)
     }
     ConsumableLaunchedEffect(state.value.messageSendingStatusEffect) { sendingStatus ->
         when (sendingStatus) {
@@ -257,7 +261,8 @@ fun Home(
                 addLabelForm(
                     navController,
                     showLabelSavedSnackbar = { showLabelSavedSnackbar() },
-                    showLabelDeletedSnackbar = { showLabelDeletedSnackbar() }
+                    showLabelDeletedSnackbar = { showLabelDeletedSnackbar() },
+                    showLabelAlreadyExistsSnackbar = { showLabelAlreadyExistsSnackbar() }
                 )
                 // settings
                 addAccountSettings(

@@ -118,6 +118,9 @@ fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewMo
                             actions.showLabelDeletedSnackbar()
                         }
                     }
+                    ConsumableLaunchedEffect(effect = state.showLabelAlreadyExistsSnackbar) {
+                        actions.showLabelAlreadyExistsSnackbar()
+                    }
                 }
                 is LabelFormState.Loading -> {
                     ProtonCenteredProgress(
@@ -223,6 +226,7 @@ object LabelFormScreen {
         val onBackClick: () -> Unit,
         val showLabelSavedSnackbar: () -> Unit,
         val showLabelDeletedSnackbar: () -> Unit,
+        val showLabelAlreadyExistsSnackbar: () -> Unit,
         val onLabelNameChanged: (String) -> Unit,
         val onLabelColorChanged: (Color) -> Unit,
         val onSaveClick: () -> Unit,
@@ -235,6 +239,7 @@ object LabelFormScreen {
                 onBackClick = {},
                 showLabelSavedSnackbar = {},
                 showLabelDeletedSnackbar = {},
+                showLabelAlreadyExistsSnackbar = {},
                 onLabelNameChanged = {},
                 onLabelColorChanged = {},
                 onSaveClick = {},

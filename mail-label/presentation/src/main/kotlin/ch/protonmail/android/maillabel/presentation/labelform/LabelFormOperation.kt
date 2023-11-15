@@ -41,4 +41,5 @@ sealed interface LabelFormEvent : LabelFormOperation {
     object LabelCreated : LabelFormEvent
     object LabelUpdated : LabelFormEvent
     object LabelDeleted : LabelFormEvent
+    object LabelAlreadyExists : LabelFormEvent
 }

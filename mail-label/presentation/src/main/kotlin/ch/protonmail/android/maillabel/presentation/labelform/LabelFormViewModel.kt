@@ -123,6 +123,10 @@ class LabelFormViewModel @Inject constructor(
     }
 
     private suspend fun createLabel(name: String, color: String) {
+        val doesLabelExists = false // TODO Use case to check if name is allowed
+        if (doesLabelExists == true) {
+            return emitNewStateFor(LabelFormEvent.LabelAlreadyExists)
+        }
         createLabel(primaryUserId(), name, color)
         emitNewStateFor(LabelFormEvent.LabelCreated)
     }
@@ -132,6 +136,10 @@ class LabelFormViewModel @Inject constructor(
         name: String,
         color: String
     ) {
+        val doesLabelExists = false // TODO Use case to check if name is allowed
+        if (doesLabelExists == true) {
+            return emitNewStateFor(LabelFormEvent.LabelAlreadyExists)
+        }
         getLabel(primaryUserId(), labelId).getOrNull()?.let { label ->
             updateLabel(
                 primaryUserId(),
