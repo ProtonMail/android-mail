@@ -46,8 +46,12 @@ dependencies {
     kapt(Dependencies.appAnnotationProcessors)
 
     implementation(Dependencies.moduleDataLibs)
+    implementation(AndroidX.Hilt.work)
     implementation(Dagger.hiltAndroid)
+    implementation(Dagger.hiltCore)
     implementation(AndroidX.AppCompat.appCompat)
+    implementation(Proton.Core.mailSettings)
+    implementation(Proton.Core.user)
 
     implementation(project(":mail-common:data"))
     implementation(project(":mail-common:domain"))
