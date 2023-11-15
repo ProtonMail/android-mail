@@ -71,7 +71,18 @@
     <string name="mail_settings_default_email_address_error_update">Error updating settings</string>
     <string name="mail_settings_default_email_address_error_update_subscription">Upgrade to a paid plan to set this address as default</string>
     <!-- Display name, signature, mobile footer -->
+    <string name="mail_settings_identity_title">Display name &amp; signature</string>
+    <string name="mail_settings_identity_save_button">Save</string>
+    <string name="mail_settings_identity_display_name">Display name</string>
+    <string name="mail_settings_identity_display_name_hint">Display name</string>
+    <string name="mail_settings_identity_signature">Signature</string>
+    <string name="mail_settings_identity_signature_hint">Signature</string>
+    <string name="mail_settings_identity_mobile_footer">Mobile footer</string>
+    <string name="mail_settings_identity_mobile_footer_subtext">The footer is added after your signature.</string>
+    <string name="mail_settings_identity_mobile_footer_hint">Mobile footer</string>
     <string name="mail_settings_identity_mobile_footer_default_free">Sent from Proton Mail Android</string>
+    <string name="mail_settings_identity_error_updating">Error updating settings</string>
+    <string name="mail_settings_identity_error_loading">Error loading settings</string>
     <!-- Privacy settings -->
     <string name="mail_settings_privacy_auto_show_remote_content">Auto show remote content</string>
     <string name="mail_settings_privacy_auto_show_embedded_images">Auto show embedded images</string>
