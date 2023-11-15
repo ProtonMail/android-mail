@@ -39,6 +39,7 @@ sealed interface LabelFormState {
         val colorList: List<Color>
         val closeWithSave: Effect<Unit>
         val showLabelAlreadyExistsSnackbar: Effect<Unit>
+        val showSaveLabelErrorSnackbar: Effect<Unit>
 
         data class Create(
             override val isSaveEnabled: Boolean,
@@ -47,7 +48,8 @@ sealed interface LabelFormState {
             override val colorList: List<Color>,
             override val close: Effect<Unit> = Effect.empty(),
             override val closeWithSave: Effect<Unit> = Effect.empty(),
-            override val showLabelAlreadyExistsSnackbar: Effect<Unit> = Effect.empty()
+            override val showLabelAlreadyExistsSnackbar: Effect<Unit> = Effect.empty(),
+            override val showSaveLabelErrorSnackbar: Effect<Unit> = Effect.empty()
         ) : Data
 
         data class Update(
@@ -58,6 +60,7 @@ sealed interface LabelFormState {
             override val close: Effect<Unit> = Effect.empty(),
             override val closeWithSave: Effect<Unit> = Effect.empty(),
             override val showLabelAlreadyExistsSnackbar: Effect<Unit> = Effect.empty(),
+            override val showSaveLabelErrorSnackbar: Effect<Unit> = Effect.empty(),
             val labelId: LabelId,
             val closeWithDelete: Effect<Unit> = Effect.empty()
         ) : Data

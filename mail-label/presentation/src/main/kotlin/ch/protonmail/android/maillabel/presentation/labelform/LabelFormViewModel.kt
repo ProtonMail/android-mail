@@ -21,11 +21,13 @@ package ch.protonmail.android.maillabel.presentation.labelform
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.maillabel.domain.usecase.CreateLabel
 import ch.protonmail.android.maillabel.domain.usecase.DeleteLabel
 import ch.protonmail.android.maillabel.domain.usecase.GetLabel
 import ch.protonmail.android.maillabel.domain.usecase.GetLabelColors
+import ch.protonmail.android.maillabel.domain.usecase.IsLabelNameAllowed
 import ch.protonmail.android.maillabel.domain.usecase.UpdateLabel
 import ch.protonmail.android.maillabel.presentation.getColorFromHexString
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
@@ -47,6 +49,7 @@ class LabelFormViewModel @Inject constructor(
     private val updateLabel: UpdateLabel,
     private val deleteLabel: DeleteLabel,
     private val getLabelColors: GetLabelColors,
+    private val isLabelNameAllowed: IsLabelNameAllowed,
     private val reducer: LabelFormReducer,
     observePrimaryUserId: ObservePrimaryUserId,
     savedStateHandle: SavedStateHandle
@@ -123,10 +126,11 @@ class LabelFormViewModel @Inject constructor(
     }
 
     private suspend fun createLabel(name: String, color: String) {
-        val doesLabelExists = false // TODO Use case to check if name is allowed
-        if (doesLabelExists == true) {
-            return emitNewStateFor(LabelFormEvent.LabelAlreadyExists)
+        val isLabelNameAllowed = isLabelNameAllowed(primaryUserId(), name).getOrElse {
+            return emitNewStateFor(LabelFormEvent.SaveLabelError)
         }
+        if (isLabelNameAllowed) return emitNewStateFor(LabelFormEvent.LabelAlreadyExists)
+
         createLabel(primaryUserId(), name, color)
         emitNewStateFor(LabelFormEvent.LabelCreated)
     }
@@ -136,10 +140,11 @@ class LabelFormViewModel @Inject constructor(
         name: String,
         color: String
     ) {
-        val doesLabelExists = false // TODO Use case to check if name is allowed
-        if (doesLabelExists == true) {
-            return emitNewStateFor(LabelFormEvent.LabelAlreadyExists)
+        val isLabelNameAllowed = isLabelNameAllowed(primaryUserId(), name).getOrElse {
+            return emitNewStateFor(LabelFormEvent.SaveLabelError)
         }
+        if (isLabelNameAllowed) return emitNewStateFor(LabelFormEvent.LabelAlreadyExists)
+
         getLabel(primaryUserId(), labelId).getOrNull()?.let { label ->
             updateLabel(
                 primaryUserId(),

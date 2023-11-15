@@ -112,14 +112,17 @@ fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewMo
                         customActions.onBackClick()
                         actions.showLabelSavedSnackbar()
                     }
+                    ConsumableLaunchedEffect(effect = state.showLabelAlreadyExistsSnackbar) {
+                        actions.showLabelAlreadyExistsSnackbar()
+                    }
+                    ConsumableLaunchedEffect(effect = state.showSaveLabelErrorSnackbar) {
+                        actions.showSaveLabelErrorSnackbar()
+                    }
                     if (state is LabelFormState.Data.Update) {
                         ConsumableLaunchedEffect(effect = state.closeWithDelete) {
                             customActions.onBackClick()
                             actions.showLabelDeletedSnackbar()
                         }
-                    }
-                    ConsumableLaunchedEffect(effect = state.showLabelAlreadyExistsSnackbar) {
-                        actions.showLabelAlreadyExistsSnackbar()
                     }
                 }
                 is LabelFormState.Loading -> {
@@ -227,6 +230,7 @@ object LabelFormScreen {
         val showLabelSavedSnackbar: () -> Unit,
         val showLabelDeletedSnackbar: () -> Unit,
         val showLabelAlreadyExistsSnackbar: () -> Unit,
+        val showSaveLabelErrorSnackbar: () -> Unit,
         val onLabelNameChanged: (String) -> Unit,
         val onLabelColorChanged: (Color) -> Unit,
         val onSaveClick: () -> Unit,
@@ -240,6 +244,7 @@ object LabelFormScreen {
                 showLabelSavedSnackbar = {},
                 showLabelDeletedSnackbar = {},
                 showLabelAlreadyExistsSnackbar = {},
+                showSaveLabelErrorSnackbar = {},
                 onLabelNameChanged = {},
                 onLabelColorChanged = {},
                 onSaveClick = {},

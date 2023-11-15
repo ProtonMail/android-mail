@@ -37,6 +37,7 @@ class LabelFormReducer @Inject constructor() {
             LabelFormEvent.LabelDeleted -> reduceLabelDeleted(currentState)
             LabelFormEvent.LabelUpdated -> reduceLabelUpdated(currentState)
             LabelFormEvent.LabelAlreadyExists -> reduceLabelAlreadyExists(currentState)
+            LabelFormEvent.SaveLabelError -> reduceSaveLabelError(currentState)
         }
     }
 
@@ -127,6 +128,14 @@ class LabelFormReducer @Inject constructor() {
         return when (currentState) {
             is LabelFormState.Data.Create -> currentState.copy(showLabelAlreadyExistsSnackbar = Effect.of(Unit))
             is LabelFormState.Data.Update -> currentState.copy(showLabelAlreadyExistsSnackbar = Effect.of(Unit))
+            is LabelFormState.Loading -> currentState
+        }
+    }
+
+    private fun reduceSaveLabelError(currentState: LabelFormState): LabelFormState {
+        return when (currentState) {
+            is LabelFormState.Data.Create -> currentState.copy(showSaveLabelErrorSnackbar = Effect.of(Unit))
+            is LabelFormState.Data.Update -> currentState.copy(showSaveLabelErrorSnackbar = Effect.of(Unit))
             is LabelFormState.Loading -> currentState
         }
     }

@@ -227,7 +227,8 @@ internal fun NavGraphBuilder.addLabelForm(
     navController: NavHostController,
     showLabelSavedSnackbar: () -> Unit,
     showLabelDeletedSnackbar: () -> Unit,
-    showLabelAlreadyExistsSnackbar: () -> Unit
+    showLabelAlreadyExistsSnackbar: () -> Unit,
+    showSaveLabelErrorSnackbar: () -> Unit
 ) {
     val actions = LabelFormScreen.Actions.Empty.copy(
         onBackClick = {
@@ -235,7 +236,8 @@ internal fun NavGraphBuilder.addLabelForm(
         },
         showLabelSavedSnackbar = showLabelSavedSnackbar,
         showLabelDeletedSnackbar = showLabelDeletedSnackbar,
-        showLabelAlreadyExistsSnackbar = showLabelAlreadyExistsSnackbar
+        showLabelAlreadyExistsSnackbar = showLabelAlreadyExistsSnackbar,
+        showSaveLabelErrorSnackbar = showSaveLabelErrorSnackbar
     )
     composable(route = Destination.Screen.CreateLabel.route) { LabelFormScreen(actions) }
     composable(route = Destination.Screen.EditLabel.route) { LabelFormScreen(actions) }

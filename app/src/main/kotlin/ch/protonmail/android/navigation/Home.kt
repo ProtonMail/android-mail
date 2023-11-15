@@ -149,6 +149,10 @@ fun Home(
     fun showLabelAlreadyExistsSnackbar() = scope.launch {
         snackbarHostErrorState.showSnackbar(message = showLabelAlreadyExistsText, type = ProtonSnackbarType.ERROR)
     }
+    val showSaveLabelErrorText = stringResource(id = R.string.save_label_error)
+    fun showSaveLabelErrorSnackbar() = scope.launch {
+        snackbarHostErrorState.showSnackbar(message = showSaveLabelErrorText, type = ProtonSnackbarType.ERROR)
+    }
     val labelListLoadingText = stringResource(id = R.string.label_list_loading_error)
     fun showLabelListLoadingSnackbar() = scope.launch {
         snackbarHostErrorState.showSnackbar(message = labelListLoadingText, type = ProtonSnackbarType.ERROR)
@@ -262,7 +266,8 @@ fun Home(
                     navController,
                     showLabelSavedSnackbar = { showLabelSavedSnackbar() },
                     showLabelDeletedSnackbar = { showLabelDeletedSnackbar() },
-                    showLabelAlreadyExistsSnackbar = { showLabelAlreadyExistsSnackbar() }
+                    showLabelAlreadyExistsSnackbar = { showLabelAlreadyExistsSnackbar() },
+                    showSaveLabelErrorSnackbar = { showSaveLabelErrorSnackbar() }
                 )
                 // settings
                 addAccountSettings(
