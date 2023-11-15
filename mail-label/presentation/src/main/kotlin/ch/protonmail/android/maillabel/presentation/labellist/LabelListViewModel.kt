@@ -22,7 +22,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
-import ch.protonmail.android.mailcommon.domain.usecase.ObserveUser
 import ch.protonmail.android.maillabel.domain.usecase.ObserveLabels
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -38,7 +37,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import me.proton.core.domain.entity.UserId
-import me.proton.core.user.domain.extension.hasSubscription
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -46,7 +44,6 @@ import javax.inject.Inject
 class LabelListViewModel @Inject constructor(
     private val observeLabels: ObserveLabels,
     private val reducer: LabelListReducer,
-    private val observeUser: ObserveUser,
     observePrimaryUserId: ObservePrimaryUserId
 ) : ViewModel() {
 
@@ -80,25 +77,9 @@ class LabelListViewModel @Inject constructor(
         viewModelScope.launch {
             actionMutex.withLock {
                 when (action) {
-                    LabelListViewAction.OnAddLabelClick -> handleOnAddLabelClick()
+                    LabelListViewAction.OnAddLabelClick -> emitNewStateFor(LabelListEvent.OpenLabelForm)
                 }
             }
-        }
-    }
-
-    private suspend fun handleOnAddLabelClick() {
-        when (val currentState = state.value) {
-            is LabelListState.Data -> {
-                val isPaidUser = isPaidUser()
-                if (isPaidUser && currentState.labels.size >= 200) { // TODO UPDATE WITH REAL VALUES
-                    emitNewStateFor(LabelListEvent.LabelLimitReached)
-                } else if (!isPaidUser && currentState.labels.size >= 3) { // TODO UPDATE WITH REAL VALUES
-                    emitNewStateFor(LabelListEvent.LabelLimitReached)
-                } else {
-                    emitNewStateFor(LabelListEvent.OpenLabelForm)
-                }
-            }
-            is LabelListState.Loading -> {}
         }
     }
 
@@ -108,5 +89,4 @@ class LabelListViewModel @Inject constructor(
     }
 
     private suspend fun primaryUserId() = primaryUserId.first()
-    private suspend fun isPaidUser() = observeUser(primaryUserId()).filterNotNull().first().hasSubscription()
 }

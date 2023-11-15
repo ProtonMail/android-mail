@@ -27,6 +27,7 @@ import ch.protonmail.android.maillabel.domain.usecase.CreateLabel
 import ch.protonmail.android.maillabel.domain.usecase.DeleteLabel
 import ch.protonmail.android.maillabel.domain.usecase.GetLabel
 import ch.protonmail.android.maillabel.domain.usecase.GetLabelColors
+import ch.protonmail.android.maillabel.domain.usecase.IsLabelLimitReached
 import ch.protonmail.android.maillabel.domain.usecase.IsLabelNameAllowed
 import ch.protonmail.android.maillabel.domain.usecase.UpdateLabel
 import ch.protonmail.android.maillabel.presentation.getColorFromHexString
@@ -50,6 +51,7 @@ class LabelFormViewModel @Inject constructor(
     private val deleteLabel: DeleteLabel,
     private val getLabelColors: GetLabelColors,
     private val isLabelNameAllowed: IsLabelNameAllowed,
+    private val isLabelLimitReached: IsLabelLimitReached,
     private val reducer: LabelFormReducer,
     observePrimaryUserId: ObservePrimaryUserId,
     savedStateHandle: SavedStateHandle
@@ -125,11 +127,17 @@ class LabelFormViewModel @Inject constructor(
         }
     }
 
+    @SuppressWarnings("ReturnCount")
     private suspend fun createLabel(name: String, color: String) {
+        val isLabelLimitReached = isLabelLimitReached(primaryUserId()).getOrElse {
+            return emitNewStateFor(LabelFormEvent.SaveLabelError)
+        }
+        if (isLabelLimitReached) return emitNewStateFor(LabelFormEvent.LabelLimitReached)
+
         val isLabelNameAllowed = isLabelNameAllowed(primaryUserId(), name).getOrElse {
             return emitNewStateFor(LabelFormEvent.SaveLabelError)
         }
-        if (isLabelNameAllowed) return emitNewStateFor(LabelFormEvent.LabelAlreadyExists)
+        if (!isLabelNameAllowed) return emitNewStateFor(LabelFormEvent.LabelAlreadyExists)
 
         createLabel(primaryUserId(), name, color)
         emitNewStateFor(LabelFormEvent.LabelCreated)
@@ -143,7 +151,7 @@ class LabelFormViewModel @Inject constructor(
         val isLabelNameAllowed = isLabelNameAllowed(primaryUserId(), name).getOrElse {
             return emitNewStateFor(LabelFormEvent.SaveLabelError)
         }
-        if (isLabelNameAllowed) return emitNewStateFor(LabelFormEvent.LabelAlreadyExists)
+        if (!isLabelNameAllowed) return emitNewStateFor(LabelFormEvent.LabelAlreadyExists)
 
         getLabel(primaryUserId(), labelId).getOrNull()?.let { label ->
             updateLabel(

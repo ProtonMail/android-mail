@@ -199,11 +199,7 @@ internal fun NavGraphBuilder.addSettings(navController: NavHostController, showF
     }
 }
 
-internal fun NavGraphBuilder.addLabelList(
-    navController: NavHostController,
-    showLabelListLoadingSnackbar: () -> Unit,
-    showLabelLimitReachedSnackbar: () -> Unit
-) {
+internal fun NavGraphBuilder.addLabelList(navController: NavHostController, showLabelListLoadingSnackbar: () -> Unit) {
     composable(route = Destination.Screen.LabelList.route) {
         LabelListScreen(
             actions = LabelListScreen.Actions(
@@ -216,18 +212,19 @@ internal fun NavGraphBuilder.addLabelList(
                 onAddLabelClick = {
                     navController.navigate(Destination.Screen.CreateLabel.route)
                 },
-                showLabelListLoadingSnackbar = showLabelListLoadingSnackbar,
-                showLabelLimitReachedSnackbar = showLabelLimitReachedSnackbar
+                showLabelListLoadingSnackbar = showLabelListLoadingSnackbar
             )
         )
     }
 }
 
+@SuppressWarnings("LongParameterList")
 internal fun NavGraphBuilder.addLabelForm(
     navController: NavHostController,
     showLabelSavedSnackbar: () -> Unit,
     showLabelDeletedSnackbar: () -> Unit,
     showLabelAlreadyExistsSnackbar: () -> Unit,
+    showLabelLimitReachedSnackbar: () -> Unit,
     showSaveLabelErrorSnackbar: () -> Unit
 ) {
     val actions = LabelFormScreen.Actions.Empty.copy(
@@ -237,6 +234,7 @@ internal fun NavGraphBuilder.addLabelForm(
         showLabelSavedSnackbar = showLabelSavedSnackbar,
         showLabelDeletedSnackbar = showLabelDeletedSnackbar,
         showLabelAlreadyExistsSnackbar = showLabelAlreadyExistsSnackbar,
+        showLabelLimitReachedSnackbar = showLabelLimitReachedSnackbar,
         showSaveLabelErrorSnackbar = showSaveLabelErrorSnackbar
     )
     composable(route = Destination.Screen.CreateLabel.route) { LabelFormScreen(actions) }

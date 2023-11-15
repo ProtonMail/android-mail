@@ -34,12 +34,6 @@ class LabelListReducer @Inject constructor() {
                     is LabelListState.Loading -> currentState
                 }
             }
-            is LabelListEvent.LabelLimitReached -> {
-                when (currentState) {
-                    is LabelListState.Data -> currentState.copy(labelLimitReachedError = Effect.of(Unit))
-                    is LabelListState.Loading -> currentState
-                }
-            }
         }
     }
 

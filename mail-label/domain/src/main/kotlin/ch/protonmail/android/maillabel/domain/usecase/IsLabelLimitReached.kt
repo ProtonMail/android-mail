@@ -23,27 +23,34 @@ import java.net.UnknownHostException
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
+import ch.protonmail.android.mailcommon.domain.usecase.ObserveUser
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.label.domain.repository.LabelRepository
-import me.proton.core.util.kotlin.equalsNoCase
+import me.proton.core.user.domain.extension.hasSubscription
 import timber.log.Timber
 import javax.inject.Inject
 
-class IsLabelNameAllowed @Inject constructor(
-    private val labelRepository: LabelRepository
+class IsLabelLimitReached @Inject constructor(
+    private val labelRepository: LabelRepository,
+    private val observeUser: ObserveUser
 ) {
 
-    suspend operator fun invoke(userId: UserId, name: String): Either<DataError, Boolean> = Either.catch {
-        FORBIDDEN_LABEL_NAME.none { it.equalsNoCase(name) } &&
-            labelRepository.getLabels(userId, LabelType.MessageLabel).none { it.name.equalsNoCase(name) } &&
-            labelRepository.getLabels(userId, LabelType.MessageFolder).none { it.name.equalsNoCase(name) }
+    suspend operator fun invoke(userId: UserId): Either<DataError, Boolean> = Either.catch {
+        val isPaidUser = observeUser(userId).filterNotNull().first().hasSubscription()
+        if (!isPaidUser) {
+            val labelList = labelRepository.getLabels(userId, LabelType.MessageLabel)
+            if (labelList.size >= FREE_USER_LABEL_LIMIT) return@catch true
+        }
+        return@catch false
     }.mapLeft {
         val error = when (it) {
             is UnknownHostException -> NetworkError.NoNetwork
             is SocketTimeoutException -> NetworkError.Unreachable
             else -> {
-                Timber.e("Unknown error while checking label name validity: $it")
+                Timber.e("Unknown error while checking labels count limit: $it")
                 NetworkError.Unknown
             }
         }
@@ -53,8 +60,6 @@ class IsLabelNameAllowed @Inject constructor(
 
     private companion object {
 
-        val FORBIDDEN_LABEL_NAME = listOf(
-            "inbox", "drafts", "sent", "starred", "archive", "spam", "trash", "outbox", "scheduled", "snoozed"
-        )
+        const val FREE_USER_LABEL_LIMIT = 3
     }
 }

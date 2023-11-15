@@ -32,5 +32,4 @@ sealed interface LabelListEvent : LabelListOperation {
     ) : LabelListEvent
     object ErrorLoadingLabelList : LabelListEvent
     object OpenLabelForm : LabelListEvent
-    object LabelLimitReached : LabelListEvent
 }

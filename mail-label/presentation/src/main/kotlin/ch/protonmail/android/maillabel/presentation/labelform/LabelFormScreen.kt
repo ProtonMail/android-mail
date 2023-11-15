@@ -115,6 +115,9 @@ fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewMo
                     ConsumableLaunchedEffect(effect = state.showLabelAlreadyExistsSnackbar) {
                         actions.showLabelAlreadyExistsSnackbar()
                     }
+                    ConsumableLaunchedEffect(effect = state.showLabelLimitReachedSnackbar) {
+                        actions.showLabelLimitReachedSnackbar()
+                    }
                     ConsumableLaunchedEffect(effect = state.showSaveLabelErrorSnackbar) {
                         actions.showSaveLabelErrorSnackbar()
                     }
@@ -230,6 +233,7 @@ object LabelFormScreen {
         val showLabelSavedSnackbar: () -> Unit,
         val showLabelDeletedSnackbar: () -> Unit,
         val showLabelAlreadyExistsSnackbar: () -> Unit,
+        val showLabelLimitReachedSnackbar: () -> Unit,
         val showSaveLabelErrorSnackbar: () -> Unit,
         val onLabelNameChanged: (String) -> Unit,
         val onLabelColorChanged: (Color) -> Unit,
@@ -244,6 +248,7 @@ object LabelFormScreen {
                 showLabelSavedSnackbar = {},
                 showLabelDeletedSnackbar = {},
                 showLabelAlreadyExistsSnackbar = {},
+                showLabelLimitReachedSnackbar = {},
                 showSaveLabelErrorSnackbar = {},
                 onLabelNameChanged = {},
                 onLabelColorChanged = {},

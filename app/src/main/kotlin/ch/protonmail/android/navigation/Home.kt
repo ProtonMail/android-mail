@@ -145,7 +145,7 @@ fun Home(
     fun showLabelDeletedSnackbar() = scope.launch {
         snackbarHostSuccessState.showSnackbar(message = labelDeletedText, type = ProtonSnackbarType.SUCCESS)
     }
-    val showLabelAlreadyExistsText = stringResource(id = R.string.label_deleted)
+    val showLabelAlreadyExistsText = stringResource(id = R.string.label_already_exists)
     fun showLabelAlreadyExistsSnackbar() = scope.launch {
         snackbarHostErrorState.showSnackbar(message = showLabelAlreadyExistsText, type = ProtonSnackbarType.ERROR)
     }
@@ -259,14 +259,14 @@ fun Home(
                 )
                 addLabelList(
                     navController,
-                    showLabelListLoadingSnackbar = { showLabelListLoadingSnackbar() },
-                    showLabelLimitReachedSnackbar = { showLabelLimitReachedSnackbar() }
+                    showLabelListLoadingSnackbar = { showLabelListLoadingSnackbar() }
                 )
                 addLabelForm(
                     navController,
                     showLabelSavedSnackbar = { showLabelSavedSnackbar() },
                     showLabelDeletedSnackbar = { showLabelDeletedSnackbar() },
                     showLabelAlreadyExistsSnackbar = { showLabelAlreadyExistsSnackbar() },
+                    showLabelLimitReachedSnackbar = { showLabelLimitReachedSnackbar() },
                     showSaveLabelErrorSnackbar = { showSaveLabelErrorSnackbar() }
                 )
                 // settings

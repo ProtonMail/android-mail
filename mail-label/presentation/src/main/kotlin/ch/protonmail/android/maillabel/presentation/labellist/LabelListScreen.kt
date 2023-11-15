@@ -106,9 +106,6 @@ fun LabelListScreen(actions: LabelListScreen.Actions, viewModel: LabelListViewMo
                     ConsumableLaunchedEffect(effect = state.openLabelForm) {
                         actions.onAddLabelClick()
                     }
-                    ConsumableLaunchedEffect(effect = state.labelLimitReachedError) {
-                        actions.showLabelLimitReachedSnackbar()
-                    }
                 }
                 is LabelListState.Loading -> {
                     ProtonCenteredProgress(
@@ -275,8 +272,7 @@ object LabelListScreen {
         val onBackClick: () -> Unit,
         val onLabelSelected: (LabelId) -> Unit,
         val onAddLabelClick: () -> Unit,
-        val showLabelListLoadingSnackbar: () -> Unit,
-        val showLabelLimitReachedSnackbar: () -> Unit
+        val showLabelListLoadingSnackbar: () -> Unit
     ) {
 
         companion object {
@@ -285,8 +281,7 @@ object LabelListScreen {
                 onBackClick = {},
                 onLabelSelected = {},
                 onAddLabelClick = {},
-                showLabelListLoadingSnackbar = {},
-                showLabelLimitReachedSnackbar = {}
+                showLabelListLoadingSnackbar = {}
             )
         }
     }
