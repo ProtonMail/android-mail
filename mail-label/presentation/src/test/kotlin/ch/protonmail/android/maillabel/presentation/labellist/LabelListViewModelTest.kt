@@ -56,9 +56,14 @@ class LabelListViewModelTest {
         )
     }
 
+    private val reducer = mockk<LabelListReducer> {
+        every { newStateFrom(any(), any()) } returns LabelListState.Loading()
+    }
+
     private val labelListViewModel by lazy {
         LabelListViewModel(
             observeLabels,
+            reducer,
             observePrimaryUserId
         )
     }
@@ -81,12 +86,18 @@ class LabelListViewModelTest {
         // Given
         coEvery { observePrimaryUserId() } returns flowOf(userId)
         coEvery { observeLabels(userId = any()) } returns flowOf(emptyList<Label>().right())
+        every {
+            reducer.newStateFrom(
+                LabelListState.Loading(),
+                LabelListEvent.LabelListLoaded(emptyList())
+            )
+        } returns LabelListState.Data(emptyList())
 
         // When
         labelListViewModel.state.test {
             // Then
             val actual = awaitItem()
-            val expected = LabelListState.EmptyLabelList
+            val expected = LabelListState.Data(labels = emptyList())
 
             assertEquals(expected, actual)
         }
@@ -94,6 +105,14 @@ class LabelListViewModelTest {
 
     @Test
     fun `emits data state`() = runTest {
+        // Given
+        every {
+            reducer.newStateFrom(
+                LabelListState.Loading(),
+                LabelListEvent.LabelListLoaded(listOf(defaultTestLabel))
+            )
+        } returns LabelListState.Data(listOf(defaultTestLabel))
+
         // When
         labelListViewModel.state.test {
             // Then

@@ -30,6 +30,8 @@ import ch.protonmail.android.maillabel.domain.usecase.CreateLabel
 import ch.protonmail.android.maillabel.domain.usecase.DeleteLabel
 import ch.protonmail.android.maillabel.domain.usecase.GetLabel
 import ch.protonmail.android.maillabel.domain.usecase.GetLabelColors
+import ch.protonmail.android.maillabel.domain.usecase.IsLabelLimitReached
+import ch.protonmail.android.maillabel.domain.usecase.IsLabelNameAllowed
 import ch.protonmail.android.maillabel.domain.usecase.UpdateLabel
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
 import ch.protonmail.android.testdata.label.LabelTestData.buildLabel
@@ -102,6 +104,14 @@ class LabelFormViewModelTest {
         every { this@mockk.invoke() } returns listOf(defaultTestLabel.color)
     }
 
+    private val isLabelNameAllowed = mockk<IsLabelNameAllowed> {
+        coEvery { this@mockk.invoke(userId, any()) } returns true.right()
+    }
+
+    private val isLabelLimitReached = mockk<IsLabelLimitReached> {
+        coEvery { this@mockk.invoke(userId) } returns false.right()
+    }
+
     private val reducer = mockk<LabelFormReducer> {
         every { newStateFrom(any(), any()) } returns LabelFormState.Loading()
     }
@@ -117,6 +127,8 @@ class LabelFormViewModelTest {
             updateLabel,
             deleteLabel,
             getLabelColors,
+            isLabelNameAllowed,
+            isLabelLimitReached,
             reducer,
             observePrimaryUserId,
             savedStateHandle
