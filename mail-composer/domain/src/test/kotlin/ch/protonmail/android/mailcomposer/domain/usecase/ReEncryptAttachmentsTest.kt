@@ -23,6 +23,7 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.mailcommon.domain.usecase.ResolveUserAddress
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
@@ -304,12 +305,12 @@ class ReEncryptAttachmentsTest {
     }
 
     private fun expectResolveUserAddressSucceeds(senderEmail: SenderEmail) {
-        coEvery { resolveUserAddress(userId, senderEmail) } returns userAddress.right()
+        coEvery { resolveUserAddress(userId, senderEmail.value) } returns userAddress.right()
     }
 
     private fun expectResolveUserAddressFails() {
         coEvery {
-            resolveUserAddress(userId, previousSender)
+            resolveUserAddress(userId, previousSender.value)
         } returns ResolveUserAddress.Error.UserAddressNotFound.left()
     }
 

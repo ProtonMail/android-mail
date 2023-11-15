@@ -30,8 +30,8 @@ import ch.protonmail.android.mailcommon.domain.mapper.fromProtonCode
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.ProtonError
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
+import ch.protonmail.android.mailcommon.domain.usecase.ResolveUserAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.FindLocalDraft
-import ch.protonmail.android.mailcomposer.domain.usecase.ResolveUserAddress
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.model.Participant

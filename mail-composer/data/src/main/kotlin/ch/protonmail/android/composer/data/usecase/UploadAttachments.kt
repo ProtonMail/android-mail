@@ -22,11 +22,11 @@ import arrow.core.Either
 import arrow.core.raise.either
 import ch.protonmail.android.composer.data.remote.AttachmentRemoteDataSource
 import ch.protonmail.android.composer.data.remote.UploadAttachmentModel
+import ch.protonmail.android.mailcommon.domain.usecase.ResolveUserAddress
 import ch.protonmail.android.mailcomposer.domain.Transactor
 import ch.protonmail.android.mailcomposer.domain.model.AttachmentSyncState
 import ch.protonmail.android.mailcomposer.domain.repository.AttachmentStateRepository
 import ch.protonmail.android.mailcomposer.domain.usecase.FindLocalDraft
-import ch.protonmail.android.mailcomposer.domain.usecase.ResolveUserAddress
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.AttachmentRepository

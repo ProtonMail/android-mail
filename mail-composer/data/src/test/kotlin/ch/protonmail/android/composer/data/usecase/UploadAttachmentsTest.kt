@@ -27,12 +27,12 @@ import ch.protonmail.android.composer.data.remote.response.UploadAttachmentRespo
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.mailcommon.domain.usecase.ResolveUserAddress
 import ch.protonmail.android.mailcomposer.domain.model.AttachmentState
 import ch.protonmail.android.mailcomposer.domain.model.AttachmentSyncState
 import ch.protonmail.android.mailcomposer.domain.repository.AttachmentStateRepository
 import ch.protonmail.android.mailcomposer.domain.sample.AttachmentStateSample
 import ch.protonmail.android.mailcomposer.domain.usecase.FindLocalDraft
-import ch.protonmail.android.mailcomposer.domain.usecase.ResolveUserAddress
 import ch.protonmail.android.mailmessage.data.sample.AttachmentResourceSample
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachment

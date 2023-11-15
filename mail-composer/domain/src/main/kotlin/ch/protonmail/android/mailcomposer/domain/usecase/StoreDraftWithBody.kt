@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcomposer.domain.usecase
 
 import arrow.core.Either
 import arrow.core.raise.either
+import ch.protonmail.android.mailcommon.domain.usecase.ResolveUserAddress
 import ch.protonmail.android.mailcommon.domain.util.mapFalse
 import ch.protonmail.android.mailcomposer.domain.Transactor
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
@@ -50,7 +51,7 @@ class StoreDraftWithBody @Inject constructor(
         userId: UserId
     ): Either<StoreDraftWithBodyError, Unit> = either {
 
-        val senderAddress = resolveUserAddress(userId, senderEmail)
+        val senderAddress = resolveUserAddress(userId, senderEmail.value)
             .mapLeft { StoreDraftWithBodyError.DraftResolveUserAddressError }
             .bind()
 

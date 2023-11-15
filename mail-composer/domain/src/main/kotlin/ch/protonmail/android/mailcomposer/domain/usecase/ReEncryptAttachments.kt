@@ -22,6 +22,7 @@ import arrow.core.Either
 import arrow.core.left
 import arrow.core.raise.either
 import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.usecase.ResolveUserAddress
 import ch.protonmail.android.mailcommon.domain.util.mapFalse
 import ch.protonmail.android.mailcomposer.domain.Transactor
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
@@ -106,42 +107,40 @@ class ReEncryptAttachments @Inject constructor(
         userId: UserId,
         newAddressId: AddressId,
         attachmentIdWithSessionKey: List<AttachmentSessionKey>
-    ): Either<AttachmentReEncryptionError, List<AttachmentKeyPacket>> =
-        resolveUserAddress(userId, newAddressId)
-            .mapLeft { AttachmentReEncryptionError.FailedToResolveNewUserAddress }
-            .map { userAddress ->
-                userAddress.useKeys(cryptoContext) {
-                    return@map attachmentIdWithSessionKey.map {
-                        try {
-                            AttachmentKeyPacket(it.attachmentId, Base64.encode(encryptSessionKey(it.sessionKey)))
-                        } catch (e: CryptoException) {
-                            Timber.e(e, "Failed to encrypt attachment key packet")
-                            return AttachmentReEncryptionError.FailedToEncryptAttachmentKeyPackets.left()
-                        }
+    ): Either<AttachmentReEncryptionError, List<AttachmentKeyPacket>> = resolveUserAddress(userId, newAddressId)
+        .mapLeft { AttachmentReEncryptionError.FailedToResolveNewUserAddress }
+        .map { userAddress ->
+            userAddress.useKeys(cryptoContext) {
+                return@map attachmentIdWithSessionKey.map {
+                    try {
+                        AttachmentKeyPacket(it.attachmentId, Base64.encode(encryptSessionKey(it.sessionKey)))
+                    } catch (e: CryptoException) {
+                        Timber.e(e, "Failed to encrypt attachment key packet")
+                        return AttachmentReEncryptionError.FailedToEncryptAttachmentKeyPackets.left()
                     }
                 }
             }
+        }
 
 
     private suspend fun decryptKeyPackets(
         userId: UserId,
         oldAddressId: SenderEmail,
         attachmentIdWithKeyPackets: List<AttachmentKeyPacket>
-    ): Either<AttachmentReEncryptionError, List<AttachmentSessionKey>> =
-        resolveUserAddress(userId, oldAddressId)
-            .mapLeft { AttachmentReEncryptionError.FailedToResolvePreviousUserAddress }
-            .map { userAddress ->
-                userAddress.useKeys(cryptoContext) {
-                    return@map attachmentIdWithKeyPackets.map {
-                        try {
-                            AttachmentSessionKey(it.attachmentId, decryptSessionKey(Base64.decode(it.keyPacket)))
-                        } catch (e: CryptoException) {
-                            Timber.e(e, "Failed to decrypt attachment key packet")
-                            return AttachmentReEncryptionError.FailedToDecryptAttachmentKeyPackets.left()
-                        }
+    ): Either<AttachmentReEncryptionError, List<AttachmentSessionKey>> = resolveUserAddress(userId, oldAddressId.value)
+        .mapLeft { AttachmentReEncryptionError.FailedToResolvePreviousUserAddress }
+        .map { userAddress ->
+            userAddress.useKeys(cryptoContext) {
+                return@map attachmentIdWithKeyPackets.map {
+                    try {
+                        AttachmentSessionKey(it.attachmentId, decryptSessionKey(Base64.decode(it.keyPacket)))
+                    } catch (e: CryptoException) {
+                        Timber.e(e, "Failed to decrypt attachment key packet")
+                        return AttachmentReEncryptionError.FailedToDecryptAttachmentKeyPackets.left()
                     }
                 }
             }
+        }
 
 
     private data class AttachmentKeyPacket(val attachmentId: AttachmentId, val keyPacket: String)

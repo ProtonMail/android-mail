@@ -19,13 +19,13 @@
 package ch.protonmail.android.composer.data.usecase
 
 import arrow.core.Either
-import arrow.core.raise.either
 import arrow.core.left
+import arrow.core.raise.either
 import arrow.core.right
 import ch.protonmail.android.composer.data.remote.MessageRemoteDataSource
 import ch.protonmail.android.composer.data.remote.resource.SendMessageBody
+import ch.protonmail.android.mailcommon.domain.usecase.ResolveUserAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.FindLocalDraft
-import ch.protonmail.android.mailcomposer.domain.usecase.ResolveUserAddress
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailSettings
 import kotlinx.coroutines.flow.firstOrNull

@@ -22,6 +22,7 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.mailcommon.domain.usecase.ResolveUserAddress
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
@@ -121,9 +122,14 @@ class GetLocalDraftTest {
         userId: UserId,
         email: SenderEmail,
         address: () -> UserAddress
-    ) = address().also { coEvery { resolveUserAddressMock(userId, email) } returns it.right() }
+    ) = address().also { coEvery { resolveUserAddressMock(userId, email.value) } returns it.right() }
 
     private fun expectResolveUserAddressFailure(userId: UserId, email: SenderEmail) {
-        coEvery { resolveUserAddressMock(userId, email) } returns ResolveUserAddress.Error.UserAddressNotFound.left()
+        coEvery {
+            resolveUserAddressMock(
+                userId,
+                email.value
+            )
+        } returns ResolveUserAddress.Error.UserAddressNotFound.left()
     }
 }

@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcomposer.domain.usecase
 
 import arrow.core.Either
 import arrow.core.raise.either
+import ch.protonmail.android.mailcommon.domain.usecase.ResolveUserAddress
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
@@ -37,7 +38,7 @@ class GetLocalDraft @Inject constructor(
         messageId: MessageId,
         senderEmail: SenderEmail
     ): Either<Error, MessageWithBody> = either {
-        val senderAddress = resolveUserAddress(userId, senderEmail)
+        val senderAddress = resolveUserAddress(userId, senderEmail.value)
             .mapLeft { Error.ResolveUserAddressError }
             .bind()
 

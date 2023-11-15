@@ -22,6 +22,7 @@ import arrow.core.Either
 import arrow.core.raise.either
 import arrow.core.raise.ensureNotNull
 import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.usecase.ResolveUserAddress
 import ch.protonmail.android.mailcomposer.domain.model.AddressPublicKey
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import me.proton.core.crypto.common.context.CryptoContext
@@ -38,7 +39,7 @@ class GetAddressPublicKey @Inject constructor(
 
     suspend operator fun invoke(userId: UserId, email: SenderEmail): Either<Error, AddressPublicKey> = either {
 
-        val address = resolveUserAddress(userId, email)
+        val address = resolveUserAddress(userId, email.value)
             .mapLeft { Error.AddressNotFound }
             .bind()
 
