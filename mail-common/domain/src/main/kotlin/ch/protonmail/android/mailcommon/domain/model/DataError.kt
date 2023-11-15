@@ -82,6 +82,8 @@ sealed interface DataError {
         object SendPreferences : MessageSending
 
         object GeneratingPackages : MessageSending
+
+        object DownloadingAttachments : MessageSending
     }
 
     object AddressNotFound : DataError

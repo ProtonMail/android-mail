@@ -23,6 +23,7 @@ import arrow.core.Either
 import arrow.core.raise.either
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
+import ch.protonmail.android.mailmessage.data.local.usecase.DecryptAttachmentByteArray
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.AttachmentRepository
@@ -33,6 +34,7 @@ import javax.inject.Inject
 
 class ReadAttachmentsFromStorage @Inject constructor(
     private val attachmentRepository: AttachmentRepository,
+    private val decryptAttachmentByteArray: DecryptAttachmentByteArray,
     private val draftStateRepository: DraftStateRepository
 ) {
 
@@ -43,10 +45,26 @@ class ReadAttachmentsFromStorage @Inject constructor(
     ): Either<DataError, Map<AttachmentId, File>> = either {
         val apiMessageId = draftStateRepository.observe(userId, messageId).first().onLeft {
             Timber.e("No draft state found for $messageId when reading attachments from storage")
-        }.getOrNull()?.apiMessageId ?: shift(DataError.Local.NoDataCached)
+        }.getOrNull()?.apiMessageId ?: raise(DataError.Local.NoDataCached)
 
-        attachmentIds.associateWith {
-            attachmentRepository.readFileFromStorage(userId, apiMessageId, it).bind()
+        attachmentIds.associateWith { attachmentId ->
+            attachmentRepository.readFileFromStorage(userId, apiMessageId, attachmentId).fold(
+                ifRight = { it },
+                ifLeft = {
+                    val encryptedAttachment = attachmentRepository.getAttachmentFromRemote(
+                        userId,
+                        apiMessageId,
+                        attachmentId
+                    ).mapLeft { DataError.MessageSending.DownloadingAttachments }.bind()
+
+                    decryptAttachmentByteArray(userId, apiMessageId, attachmentId, encryptedAttachment).fold(
+                        ifRight = {
+                            attachmentRepository.saveAttachmentToFile(userId, apiMessageId, attachmentId, it).bind()
+                        },
+                        ifLeft = { raise(DataError.MessageSending.DownloadingAttachments) }
+                    )
+                }
+            )
         }
     }
 }

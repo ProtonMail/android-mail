@@ -35,12 +35,15 @@ import ch.protonmail.android.mailcomposer.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftState
 import ch.protonmail.android.mailcomposer.domain.model.DraftSyncState
 import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
+import ch.protonmail.android.mailmessage.data.local.usecase.AttachmentDecryptionError
+import ch.protonmail.android.mailmessage.data.local.usecase.DecryptAttachmentByteArray
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.AttachmentRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.coEvery
+import io.mockk.coVerifyOrder
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -51,18 +54,23 @@ class ReadAttachmentsFromStorageTest {
 
     private val attachmentRepository = mockk<AttachmentRepository> {
         coEvery { readFileFromStorage(UserId, ApiMessageId, AttachmentId1) } returns Attachment1.right()
-        coEvery { readFileFromStorage(UserId, ApiMessageId, AttachmentId2) } returns Attachment2.right()
     }
+    private val decryptAttachmentByteArray = mockk<DecryptAttachmentByteArray>()
     private val draftStateRepository = mockk<DraftStateRepository> {
         coEvery { observe(UserId, MessageId) } returns flowOf(DraftState.right())
     }
 
-    private val readAttachmentsFromStorage = ReadAttachmentsFromStorage(attachmentRepository, draftStateRepository)
+    private val readAttachmentsFromStorage = ReadAttachmentsFromStorage(
+        attachmentRepository = attachmentRepository,
+        decryptAttachmentByteArray = decryptAttachmentByteArray,
+        draftStateRepository = draftStateRepository
+    )
 
     @Test
     fun `should return files if all attachments were read successfully`() = runTest {
         // Given
         val expected = mapOf(AttachmentId1 to Attachment1, AttachmentId2 to Attachment2).right()
+        expectReadFileFromStorageSucceeds(AttachmentId2, Attachment2)
 
         // When
         val actual = readAttachmentsFromStorage(UserId, MessageId, AttachmentIds)
@@ -72,19 +80,112 @@ class ReadAttachmentsFromStorageTest {
     }
 
     @Test
-    fun `should return error if at least one attachment was not read successfully`() = runTest {
-        // Given
-        val expected = DataError.Local.NoDataCached.left()
-        coEvery {
-            attachmentRepository.readFileFromStorage(UserId, ApiMessageId, AttachmentId2)
-        } returns DataError.Local.NoDataCached.left()
+    fun `should return files when some attachments are not available locally and are fetched from api successfully`() =
+        runTest {
+            // Given
+            val encryptedAttachmentByteArray = "encryptedAttachmentByteArray".encodeToByteArray()
+            val decryptedAttachmentByteArray = "decryptedAttachmentByteArray".encodeToByteArray()
+            expectReadFileFromStorageFails(AttachmentId2)
+            expectGetAttachmentFromRemoteSucceeds(AttachmentId2, encryptedAttachmentByteArray)
+            expectDecryptAttachmentByteArraySucceeds(
+                AttachmentId2, encryptedAttachmentByteArray, decryptedAttachmentByteArray
+            )
+            expectSaveAttachmentSucceeds(AttachmentId2, decryptedAttachmentByteArray, Attachment2)
 
-        // When
-        val actual = readAttachmentsFromStorage(UserId, MessageId, AttachmentIds)
+            // When
+            val actual = readAttachmentsFromStorage(UserId, MessageId, AttachmentIds)
 
-        // Then
-        assertEquals(expected, actual)
-    }
+            // Then
+            val expected = mapOf(AttachmentId1 to Attachment1, AttachmentId2 to Attachment2).right()
+            assertEquals(expected, actual)
+            coVerifyOrder {
+                attachmentRepository.readFileFromStorage(UserId, ApiMessageId, AttachmentId1)
+                attachmentRepository.readFileFromStorage(UserId, ApiMessageId, AttachmentId2)
+                attachmentRepository.getAttachmentFromRemote(UserId, ApiMessageId, AttachmentId2)
+                decryptAttachmentByteArray(UserId, ApiMessageId, AttachmentId2, encryptedAttachmentByteArray)
+                attachmentRepository.saveAttachmentToFile(
+                    UserId, ApiMessageId, AttachmentId2, decryptedAttachmentByteArray
+                )
+            }
+        }
+
+    @Test
+    fun `should return error when some attachments are not available locally and fetching them from api has failed`() =
+        runTest {
+            // Given
+            expectReadFileFromStorageFails(AttachmentId2)
+            coEvery {
+                attachmentRepository.getAttachmentFromRemote(UserId, ApiMessageId, AttachmentId2)
+            } returns DataError.Remote.Unknown.left()
+
+            // When
+            val actual = readAttachmentsFromStorage(UserId, MessageId, AttachmentIds)
+
+            // Then
+            assertEquals(DataError.MessageSending.DownloadingAttachments.left(), actual)
+            coVerifyOrder {
+                attachmentRepository.readFileFromStorage(UserId, ApiMessageId, AttachmentId1)
+                attachmentRepository.readFileFromStorage(UserId, ApiMessageId, AttachmentId2)
+                attachmentRepository.getAttachmentFromRemote(UserId, ApiMessageId, AttachmentId2)
+            }
+        }
+
+    @Test
+    fun `should return error when attachments not available locally are fetched but the decryption failed`() =
+        runTest {
+            // Given
+            val encryptedAttachmentByteArray = "encryptedAttachmentByteArray".encodeToByteArray()
+            expectReadFileFromStorageFails(AttachmentId2)
+            expectGetAttachmentFromRemoteSucceeds(AttachmentId2, encryptedAttachmentByteArray)
+            coEvery {
+                decryptAttachmentByteArray(UserId, ApiMessageId, AttachmentId2, encryptedAttachmentByteArray)
+            } returns AttachmentDecryptionError.DecryptionFailed.left()
+
+            // When
+            val actual = readAttachmentsFromStorage(UserId, MessageId, AttachmentIds)
+
+            // Then
+            assertEquals(DataError.MessageSending.DownloadingAttachments.left(), actual)
+            coVerifyOrder {
+                attachmentRepository.readFileFromStorage(UserId, ApiMessageId, AttachmentId1)
+                attachmentRepository.readFileFromStorage(UserId, ApiMessageId, AttachmentId2)
+                attachmentRepository.getAttachmentFromRemote(UserId, ApiMessageId, AttachmentId2)
+                decryptAttachmentByteArray(UserId, ApiMessageId, AttachmentId2, encryptedAttachmentByteArray)
+            }
+        }
+
+    @Test
+    fun `should return error when attachments not available locally are fetched and decrypted but saving failed`() =
+        runTest {
+            // Given
+            val encryptedAttachmentByteArray = "encryptedAttachmentByteArray".encodeToByteArray()
+            val decryptedAttachmentByteArray = "decryptedAttachmentByteArray".encodeToByteArray()
+            expectReadFileFromStorageFails(AttachmentId2)
+            expectGetAttachmentFromRemoteSucceeds(AttachmentId2, encryptedAttachmentByteArray)
+            expectDecryptAttachmentByteArraySucceeds(
+                AttachmentId2, encryptedAttachmentByteArray, decryptedAttachmentByteArray
+            )
+            coEvery {
+                attachmentRepository.saveAttachmentToFile(
+                    UserId, ApiMessageId, AttachmentId2, decryptedAttachmentByteArray
+                )
+            } returns DataError.Local.FailedToStoreFile.left()
+
+            // When
+            val actual = readAttachmentsFromStorage(UserId, MessageId, AttachmentIds)
+
+            // Then
+            assertEquals(DataError.Local.FailedToStoreFile.left(), actual)
+            coVerifyOrder {
+                attachmentRepository.readFileFromStorage(UserId, ApiMessageId, AttachmentId1)
+                attachmentRepository.readFileFromStorage(UserId, ApiMessageId, AttachmentId2)
+                attachmentRepository.getAttachmentFromRemote(UserId, ApiMessageId, AttachmentId2)
+                decryptAttachmentByteArray(UserId, ApiMessageId, AttachmentId2, encryptedAttachmentByteArray)
+                attachmentRepository.saveAttachmentToFile(
+                    UserId, ApiMessageId, AttachmentId2, decryptedAttachmentByteArray
+                )
+            }
+        }
 
     @Test
     fun `should return error if api assigned message id still doesn't exist`() = runTest {
@@ -97,6 +198,47 @@ class ReadAttachmentsFromStorageTest {
 
         // Then
         assertEquals(expected, actual)
+    }
+
+    private fun expectReadFileFromStorageSucceeds(attachmentId: AttachmentId, attachment: File) {
+        coEvery {
+            attachmentRepository.readFileFromStorage(UserId, ApiMessageId, attachmentId)
+        } returns attachment.right()
+    }
+
+    private fun expectReadFileFromStorageFails(attachmentId: AttachmentId) {
+        coEvery {
+            attachmentRepository.readFileFromStorage(UserId, ApiMessageId, attachmentId)
+        } returns DataError.Local.NoDataCached.left()
+    }
+
+    private fun expectGetAttachmentFromRemoteSucceeds(
+        attachmentId: AttachmentId,
+        encryptedAttachmentContent: ByteArray
+    ) {
+        coEvery {
+            attachmentRepository.getAttachmentFromRemote(UserId, ApiMessageId, attachmentId)
+        } returns encryptedAttachmentContent.right()
+    }
+
+    private fun expectDecryptAttachmentByteArraySucceeds(
+        attachmentId: AttachmentId,
+        encryptedAttachmentContent: ByteArray,
+        decryptedAttachmentContent: ByteArray
+    ) {
+        coEvery {
+            decryptAttachmentByteArray(UserId, ApiMessageId, attachmentId, encryptedAttachmentContent)
+        } returns decryptedAttachmentContent.right()
+    }
+
+    private fun expectSaveAttachmentSucceeds(
+        attachmentId: AttachmentId,
+        decryptedAttachmentContent: ByteArray,
+        attachment: File
+    ) {
+        coEvery {
+            attachmentRepository.saveAttachmentToFile(UserId, ApiMessageId, attachmentId, decryptedAttachmentContent)
+        } returns attachment.right()
     }
 
     object TestData {
