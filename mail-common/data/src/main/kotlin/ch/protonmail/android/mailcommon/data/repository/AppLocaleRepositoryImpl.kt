@@ -46,7 +46,7 @@ class AppLocaleRepositoryImpl(val context: Context) : AppLocaleRepository, Broad
             savedLocale = obtainCurrentLocale()
         }
 
-        return savedLocale!!
+        return savedLocale ?: Locale.getDefault() // Use default Locale if savedLocale is null
     }
 
     override fun refresh() {
