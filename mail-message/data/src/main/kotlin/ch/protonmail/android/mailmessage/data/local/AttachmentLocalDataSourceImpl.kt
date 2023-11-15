@@ -218,6 +218,17 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
         }
     }
 
+    override suspend fun saveAttachmentToFile(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId,
+        content: ByteArray
+    ): Either<DataError.Local, File> {
+        val file = attachmentFileStorage.saveAttachment(userId, messageId, attachmentId, content)
+            ?: return DataError.Local.FailedToStoreFile.left()
+        return file.right()
+    }
+
     override suspend fun upsertMimeAttachment(
         userId: UserId,
         messageId: MessageId,

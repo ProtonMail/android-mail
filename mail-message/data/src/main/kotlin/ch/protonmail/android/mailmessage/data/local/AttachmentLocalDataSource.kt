@@ -101,6 +101,13 @@ interface AttachmentLocalDataSource {
         content: ByteArray
     ): Either<DataError.Local, Unit>
 
+    suspend fun saveAttachmentToFile(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId,
+        content: ByteArray
+    ): Either<DataError.Local, File>
+
     suspend fun upsertMimeAttachment(
         userId: UserId,
         messageId: MessageId,

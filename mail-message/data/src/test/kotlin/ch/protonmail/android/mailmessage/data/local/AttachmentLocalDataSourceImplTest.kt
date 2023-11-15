@@ -884,4 +884,31 @@ class AttachmentLocalDataSourceImplTest {
         // Then
         assertEquals(DataError.Local.FailedToStoreFile.left(), result)
     }
+
+    @Test
+    fun `should return file when saving attachment byte array was successful`() = runTest {
+        // Given
+        val file = mockk<File>()
+        val fileContent = "attachment".encodeToByteArray()
+        coEvery { attachmentFileStorage.saveAttachment(userId, messageId, attachmentId, fileContent) } returns file
+
+        // When
+        val result = attachmentLocalDataSource.saveAttachmentToFile(userId, messageId, attachmentId, fileContent)
+
+        // Then
+        assertEquals(file.right(), result)
+    }
+
+    @Test
+    fun `should return error when saving attachment byte array has failed`() = runTest {
+        // Given
+        val fileContent = "attachment".encodeToByteArray()
+        coEvery { attachmentFileStorage.saveAttachment(userId, messageId, attachmentId, fileContent) } returns null
+
+        // When
+        val result = attachmentLocalDataSource.saveAttachmentToFile(userId, messageId, attachmentId, fileContent)
+
+        // Then
+        assertEquals(DataError.Local.FailedToStoreFile.left(), result)
+    }
 }
