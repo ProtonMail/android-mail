@@ -71,6 +71,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailVie
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.RequestLabelAsBottomSheet
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.RequestMoveToBottomSheet
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.RequestScrollTo
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.ScrollRequestCompleted
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.ShowAllAttachmentsForMessage
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.Star
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.Trash
@@ -191,6 +192,7 @@ class ConversationDetailViewModel @Inject constructor(
             is CollapseMessage -> onCollapseMessage(action.messageId)
             is MessageBodyLinkClicked -> onMessageBodyLinkClicked(action)
             is RequestScrollTo -> onRequestScrollTo(action)
+            is ScrollRequestCompleted -> onScrollRequestCompleted(action)
             is ShowAllAttachmentsForMessage -> showAllAttachmentsForMessage(action.messageId)
             is ConversationDetailViewAction.OnAttachmentClicked -> {
                 onOpenAttachmentClicked(action.messageId, action.attachmentId)
@@ -253,17 +255,17 @@ class ConversationDetailViewModel @Inject constructor(
                     val messages = messagesEither.getOrElse {
                         return@combine ConversationDetailEvent.ErrorLoadingMessages
                     }
+                    val messagesUiModels = buildMessagesUiModels(
+                        messages = messages,
+                        contacts = contacts,
+                        folderColorSettings = folderColorSettings,
+                        currentViewState = conversationViewState
+                    ).toImmutableList()
+
                     val firstNonDraftMessageId = getFirstNonDraftMessageId(messages)
                     if (stateIsLoading() && firstNonDraftMessageId != null && allCollapsed(conversationViewState)) {
-                        onExpandMessage(firstNonDraftMessageId)
-                        null
+                        ConversationDetailEvent.MessagesData(messagesUiModels, firstNonDraftMessageId)
                     } else {
-                        val messagesUiModels = buildMessagesUiModels(
-                            messages = messages,
-                            contacts = contacts,
-                            folderColorSettings = folderColorSettings,
-                            currentViewState = conversationViewState
-                        ).toImmutableList()
                         val requestScrollTo = requestScrollToMessageId(conversationViewState)
                         ConversationDetailEvent.MessagesData(messagesUiModels, requestScrollTo)
                     }
@@ -624,6 +626,10 @@ class ConversationDetailViewModel @Inject constructor(
     }
 
     private fun onRequestScrollTo(action: RequestScrollTo) {
+        viewModelScope.launch { emitNewStateFrom(action) }
+    }
+
+    private fun onScrollRequestCompleted(action: ScrollRequestCompleted) {
         viewModelScope.launch { emitNewStateFrom(action) }
     }
 

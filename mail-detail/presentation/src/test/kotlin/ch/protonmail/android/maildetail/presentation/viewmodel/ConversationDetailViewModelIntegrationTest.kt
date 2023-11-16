@@ -24,8 +24,6 @@ import android.content.Context
 import android.net.Uri
 import android.text.format.Formatter
 import androidx.lifecycle.SavedStateHandle
-import app.cash.turbine.Event
-import app.cash.turbine.ReceiveTurbine
 import app.cash.turbine.test
 import arrow.core.NonEmptyList
 import arrow.core.left
@@ -147,7 +145,6 @@ import me.proton.core.featureflag.domain.entity.FeatureFlag
 import me.proton.core.featureflag.domain.entity.Scope
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
-import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
@@ -338,7 +335,7 @@ class ConversationDetailViewModelIntegrationTest {
     }
 
     @Test
-    fun `Should expand automatically the message in the conversation and handle attachments`() = runTest {
+    fun `Should expand the message in the conversation after initial scroll and handle attachments`() = runTest {
         // given
         val messages = nonEmptyListOf(
             ConversationDetailMessageUiModelSample.invoiceExpandedWithAttachments(3)
@@ -358,13 +355,25 @@ class ConversationDetailViewModelIntegrationTest {
         ).right()
         coEvery { observeAttachmentStatus.invoke(userId, messageId, any()) } returns flowOf()
 
-        buildConversationDetailViewModel().state.test {
+        val viewModel = buildConversationDetailViewModel()
+        viewModel.state.test {
+            // The initial states
+            skipItems(3)
+
             // when
-            advanceUntilIdle()
-            val newState = lastEmittedItem().messagesState as ConversationDetailsMessagesState.Data
+            val newState = awaitItem().messagesState as ConversationDetailsMessagesState.Data
 
             // then
-            val expandedMessage = newState.messages.first { it.messageId == messages.first().messageId }
+            val collapsedMessage = newState.messages.first { it.messageId == messages.first().messageId }
+            assertIs<Collapsed>(collapsedMessage)
+
+            // When
+            // Initial scroll completed and UI  notifies view model to expand message
+            viewModel.submit(ExpandMessage(messageIdUiModelMapper.toUiModel(messageId)))
+
+            // then
+            val newExpandedState = awaitItem().messagesState as ConversationDetailsMessagesState.Data
+            val expandedMessage = newExpandedState.messages.first { it.messageId == messages.first().messageId }
             assertIs<Expanded>(expandedMessage)
             assertEquals(
                 messages.first().messageBodyUiModel.attachments,
@@ -399,10 +408,10 @@ class ConversationDetailViewModelIntegrationTest {
 
         fun assertCorrectMessagesEmitted(actual: ConversationDetailsMessagesState.Data, expected: MessageWithLabels) {
             assertEquals(1, actual.messages.size)
-            with(actual.messages.first() as Expanded) {
+            with(actual.messages.first() as Collapsed) {
                 assertEquals(expected.message.messageId.id, messageId.id)
                 assertEquals(expected.message.unread, isUnread)
-                assertEquals(expected.labels.size, messageDetailHeaderUiModel.labels.size)
+                assertEquals(expected.labels.size, labels.size)
             }
         }
 
@@ -428,8 +437,8 @@ class ConversationDetailViewModelIntegrationTest {
             val actualUpdatedMessagesState = awaitItem().messagesState as ConversationDetailsMessagesState.Data
             val actualLabels = (
                 actualUpdatedMessagesState.messages.first()
-                    as Expanded
-                ).messageDetailHeaderUiModel.labels
+                    as Collapsed
+                ).labels
             assertCorrectMessagesEmitted(actualUpdatedMessagesState, expected = updatedMessage)
             assertEquals(LabelUiModelSample.Starred.name, actualLabels.first().name)
 
@@ -453,10 +462,10 @@ class ConversationDetailViewModelIntegrationTest {
 
         fun assertCorrectFolderColor(actual: ConversationDetailsMessagesState.Data, expected: FolderColorSettings) {
             assertEquals(1, actual.messages.size)
-            with(actual.messages.first() as Expanded) {
+            with(actual.messages.first() as Collapsed) {
                 when {
-                    expected.useFolderColor -> assertNotNull(this.messageDetailHeaderUiModel.location.color)
-                    else -> assertNull(this.messageDetailHeaderUiModel.location.color)
+                    expected.useFolderColor -> assertNotNull(this.locationIcon.color)
+                    else -> assertNull(this.locationIcon.color)
                 }
             }
         }
@@ -488,12 +497,11 @@ class ConversationDetailViewModelIntegrationTest {
     }
 
     @Test
-    @Ignore("MAILANDR-696")
-    fun `should emit first non draft message as expanding and expanded states on start`() = runTest {
+    fun `should emit first non draft message as Collapsed`() = runTest {
         // given
-        val expectedExpanded = MessageWithLabelsSample.AugWeatherForecast
+        val expectedCollapsed = MessageWithLabelsSample.AugWeatherForecast
         val messages = nonEmptyListOf(
-            expectedExpanded,
+            expectedCollapsed,
             MessageWithLabelsSample.InvoiceWithLabel,
             MessageWithLabelsSample.EmptyDraft
         )
@@ -504,18 +512,14 @@ class ConversationDetailViewModelIntegrationTest {
             ioDispatcher = Dispatchers.Default
         ).state.test {
             skipItems(3)
-            // then
-            val expandingState = awaitItem()
-            val expandingMessage = (expandingState.messagesState as ConversationDetailsMessagesState.Data)
-                .messages
-                .first { it.messageId.id == expectedExpanded.message.messageId.id }
-            assertIs<Expanding>(expandingMessage)
 
-            val expandedState = awaitItem()
-            val expandedMessage = (expandedState.messagesState as ConversationDetailsMessagesState.Data)
+            // then
+            val collapsedState = awaitItem()
+            val collapsedMessage = (collapsedState.messagesState as ConversationDetailsMessagesState.Data)
                 .messages
-                .first { it.messageId.id == expectedExpanded.message.messageId.id }
-            assertIs<Expanded>(expandedMessage)
+                .first { it.messageId.id == expectedCollapsed.message.messageId.id }
+            assertIs<Collapsed>(collapsedMessage)
+
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -538,11 +542,19 @@ class ConversationDetailViewModelIntegrationTest {
             skipItems(3)
             // then
             var conversationState: ConversationDetailState = awaitItem()
-            val expandedMessage = (conversationState.messagesState as ConversationDetailsMessagesState.Data)
+            val collapsedMessage = (conversationState.messagesState as ConversationDetailsMessagesState.Data)
                 .messages
                 .first { it.messageId.id == expectedScrolledTo.message.messageId.id }
-            assertIs<Expanded>(expandedMessage)
+            assertIs<Collapsed>(collapsedMessage)
             assertTrue { conversationState.scrollToMessage?.id == expectedScrolledTo.message.messageId.id }
+
+            // when
+            // scroll request completed, clear scroll msg id in state
+            viewModel.submit(ConversationDetailViewAction.ScrollRequestCompleted)
+
+            // then
+            conversationState = awaitItem()
+            assertTrue { conversationState.scrollToMessage == null }
 
             // when
             viewModel.submit(
@@ -559,7 +571,9 @@ class ConversationDetailViewModelIntegrationTest {
                 .messages
                 .first { it.messageId.id == expectedExpandedNotScrolled.message.messageId.id }
             assertIs<Expanded>(expandMessage)
-            assertTrue { conversationState.scrollToMessage == null }
+            // If there is only one expanded message that item  is scrolled to
+            // (according to View Model requestScrollToMessageId)
+            assertTrue { conversationState.scrollToMessage == expandMessage.messageId }
 
             cancelAndIgnoreRemainingEvents()
         }
@@ -620,7 +634,7 @@ class ConversationDetailViewModelIntegrationTest {
         val viewModel = buildConversationDetailViewModel()
 
         viewModel.state.test {
-            skipItems(4)
+            skipItems(3)
 
             // when
             viewModel.submit(
@@ -946,18 +960,32 @@ class ConversationDetailViewModelIntegrationTest {
             MessageWithLabelsSample.EmptyDraft
         )
         coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
-        coEvery { getDecryptedMessageBody(any(), any()) } returns
+        coEvery { getDecryptedMessageBody.invoke(any(), any()) } coAnswers {
+            // Add a delay, so we're able to receive the `Expanding` state.
+            // Without it, we'd only get the final `Expanded` state.
+            delay(1)
             GetDecryptedMessageBodyError.Decryption(defaultExpanded.message.messageId, "").left()
+        }
 
         val viewModel = buildConversationDetailViewModel()
         viewModel.state.test {
-            skipItems(4)
+            skipItems(3)
 
             // When
-            val expandingState = awaitItem()
+            val initialCollapsedState = awaitItem()
 
             // Then
-            var message = (expandingState.messagesState as ConversationDetailsMessagesState.Data)
+            var message = (initialCollapsedState.messagesState as ConversationDetailsMessagesState.Data)
+                .messages
+                .first { it.messageId.id == defaultExpanded.message.messageId.id }
+            assertIs<Collapsed>(message)
+
+            // When
+            viewModel.submit(ExpandMessage(messageIdUiModelMapper.toUiModel(defaultExpanded.message.messageId)))
+            var expandingState = awaitItem()
+
+            // Then
+            message = (expandingState.messagesState as ConversationDetailsMessagesState.Data)
                 .messages
                 .first { it.messageId.id == defaultExpanded.message.messageId.id }
             assertIs<Expanding>(message)
@@ -1002,11 +1030,6 @@ class ConversationDetailViewModelIntegrationTest {
 
         // Then
         assertNull(actual)
-    }
-
-    private suspend fun ReceiveTurbine<ConversationDetailState>.lastEmittedItem(): ConversationDetailState {
-        val events = cancelAndConsumeRemainingEvents()
-        return (events.last() as Event.Item).value
     }
 
     @Suppress("LongParameterList")

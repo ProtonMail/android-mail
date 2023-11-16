@@ -186,8 +186,18 @@ class ConversationDetailReducer @Inject constructor(
     private fun ConversationDetailState.toScrollToMessageState(
         operation: ConversationDetailOperation
     ): MessageIdUiModel? = when (operation) {
+        // Scroll to message requested
         is ConversationDetailViewAction.RequestScrollTo -> operation.messageId
-        is ConversationDetailEvent.MessagesData -> operation.requestScrollToMessageId
+
+        // Scroll to message completed, so we need to clear the state
+        is ConversationDetailViewAction.ScrollRequestCompleted -> null
+
+        // ConversationDetailEvent.MessagesData update should not clear the scroll state. It will be cleared when
+        // the scroll is completed.
+        is ConversationDetailEvent.MessagesData -> {
+            operation.requestScrollToMessageId ?: scrollToMessage
+        }
+
         else -> scrollToMessage
     }
 

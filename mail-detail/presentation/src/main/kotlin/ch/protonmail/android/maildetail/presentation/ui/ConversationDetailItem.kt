@@ -150,7 +150,8 @@ object ConversationDetailItem {
         val loadEmbeddedImage: (messageId: MessageId?, contentId: String) -> GetEmbeddedImageResult?,
         val onReply: (MessageId) -> Unit,
         val onReplyAll: (MessageId) -> Unit,
-        val onForward: (MessageId) -> Unit
+        val onForward: (MessageId) -> Unit,
+        val onScrollRequestCompleted: () -> Unit
     )
 }
 

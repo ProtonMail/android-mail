@@ -21,11 +21,13 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetValue
@@ -42,17 +44,21 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
+import ch.protonmail.android.mailcommon.presentation.compose.dpToPx
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
@@ -68,13 +74,12 @@ import ch.protonmail.android.maildetail.presentation.model.LabelAsBottomSheetSta
 import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
 import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
 import ch.protonmail.android.maildetail.presentation.previewdata.ConversationDetailsPreviewProvider
+import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.scrollOffsetDp
 import ch.protonmail.android.maildetail.presentation.viewmodel.ConversationDetailViewModel
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonErrorMessage
@@ -177,7 +182,8 @@ fun ConversationDetailScreen(
                 loadEmbeddedImage = { messageId, contentId -> viewModel.loadEmbeddedImage(messageId, contentId) },
                 onReply = actions.onReply,
                 onReplyAll = actions.onReplyAll,
-                onForward = actions.onForward
+                onForward = actions.onForward,
+                onScrollRequestCompleted = { viewModel.submit(ConversationDetailViewAction.ScrollRequestCompleted) }
             ),
             scrollToMessageId = state.scrollToMessage?.id
         )
@@ -287,7 +293,8 @@ fun ConversationDetailScreen(
                     loadEmbeddedImage = actions.loadEmbeddedImage,
                     onReply = actions.onReply,
                     onReplyAll = actions.onReplyAll,
-                    onForward = actions.onForward
+                    onForward = actions.onForward,
+                    onScrollRequestCompleted = actions.onScrollRequestCompleted
                 )
                 MessagesContent(
                     uiModels = state.messagesState.messages,
@@ -329,7 +336,6 @@ private fun MessagesContent(
     val listState = rememberLazyListState()
     var loadedItemsChanged by remember { mutableStateOf(0) }
     val loadedItemsHeight = remember { mutableStateMapOf<String, Int>() }
-    var scrollStopped by remember { mutableStateOf(true) }
     val layoutDirection = LocalLayoutDirection.current
     val contentPadding = remember(padding) {
         PaddingValues(
@@ -340,29 +346,64 @@ private fun MessagesContent(
         )
     }
 
-    LaunchedEffect(key1 = scrollToMessageId, key2 = loadedItemsChanged) {
-        snapshotFlow { scrollToMessageId }
-            .filterNotNull()
-            .collectLatest {
-                val scrollToIndex = uiModels.indexOf(uiModels.first { uiModel -> uiModel.messageId.id == it })
-                listState.animateScrollToItem(scrollToIndex)
-            }
+    // Map of item heights in LazyColumn (Row index -> height)
+    // We will use this map to calculate total height of first non-draft message + any draft messages below it
+    val itemsHeight = remember { mutableStateMapOf<Int, Int>() }
+    var initialPlaceholderHeightCalculated by remember { mutableStateOf(false) }
+    var scrollCount by remember { mutableStateOf(0) }
+
+    var scrollToIndex = remember(scrollToMessageId) {
+        if (scrollToMessageId == null) return@remember -1
+        else uiModels.indexOfFirst { uiModel -> uiModel.messageId.id == scrollToMessageId }
     }
 
-    LaunchedEffect(key1 = listState) {
-        snapshotFlow { listState }
-            .collectLatest {
-                scrollStopped = !it.isScrollInProgress
+    // Insert some offset to scrolling to make sure the message above will also be visible partially
+    val scrollOffsetPx = scrollOffsetDp.dpToPx()
+
+    LaunchedEffect(key1 = scrollToIndex, key2 = loadedItemsChanged, key3 = initialPlaceholderHeightCalculated) {
+        if (scrollToIndex >= 0) {
+
+            // We are having frequent state updates at the beginning which are causing recompositions and
+            // animateScrollToItem to be cancelled or delayed. Therefore we use scrollToItem for
+            // the first scroll action.
+            if (loadedItemsChanged == 0) {
+
+                listState.scrollToItem(scrollToIndex, scrollOffsetPx)
+
+                // When try to perform both scrolling and expanding at the same time, the above scrollToItem
+                // suspend function is paused during WebView initialization. Therefore we notify the view model
+                // after the completion of the first scrolling to start expanding the message.
+                if (scrollCount == 0) {
+                    scrollToMessageId?.let { actions.onExpand(MessageIdUiModel(it)) }
+                }
+
+            } else {
+                listState.animateScrollToItem(scrollToIndex, scrollOffsetPx)
+                actions.onScrollRequestCompleted()
+                scrollToIndex = -1
             }
+
+            scrollCount++
+        }
     }
+
+    // We will insert a placeholder after the last item to move it to the top when scrolled
+    val lazyColumnHeight = remember { mutableStateOf(0) }
 
     LazyColumn(
-        modifier = modifier.testTag(ConversationDetailScreenTestTags.MessagesList),
+        modifier = modifier
+            .testTag(ConversationDetailScreenTestTags.MessagesList)
+            .onGloballyPositioned {
+                lazyColumnHeight.value = it.size.height
+            },
         contentPadding = contentPadding,
         verticalArrangement = Arrangement.spacedBy(ProtonDimens.SmallSpacing),
         state = listState
     ) {
-        items(uiModels, key = { it.messageId.id }) { uiModel ->
+
+        itemsIndexed(uiModels) { index, uiModel ->
+            val isLastItem = index == uiModels.size - 1
+
             ConversationDetailItem(
                 uiModel = uiModel,
                 actions = actions,
@@ -371,6 +412,8 @@ private fun MessagesContent(
                     is ConversationDetailMessageUiModel.Expanding -> Modifier.animateItemPlacement()
 
                     else -> Modifier
+                }.onSizeChanged {
+                    itemsHeight[index] = it.height
                 },
                 webViewHeight = loadedItemsHeight[uiModel.messageId.id],
                 onMessageBodyLoadFinished = { messageId, height ->
@@ -380,6 +423,29 @@ private fun MessagesContent(
                 },
                 showReplyActionsFeatureFlag = showReplyActionsFeatureFlag
             )
+
+            // We will insert placeholder after the last item to move it to the top when scrolled
+            if (isLastItem && scrollToIndex >= 0) {
+                val sumOfHeights = itemsHeight.entries.filter { it.key >= scrollToIndex }.sumOf { it.value }
+                val placeholderHeight = lazyColumnHeight.value - sumOfHeights
+                if (placeholderHeight > 0) {
+                    Spacer(
+                        modifier = Modifier
+                            .height(placeholderHeight.dp)
+                    )
+
+                    // We need to check if we got all items heights, in that case we need to trigger scroll to the
+                    // message again by changing initialPlaceholderHeightCalculated to true. We need this scrolling
+                    // only when sum of all item heights is less than the LazyColumn height (which means we have
+                    // few messages in the conversation)
+                    if (itemsHeight.size == uiModels.size && !initialPlaceholderHeightCalculated) {
+                        val totalOfHeights = itemsHeight.values.sum()
+                        if (totalOfHeights < lazyColumnHeight.value) {
+                            initialPlaceholderHeightCalculated = true
+                        }
+                    }
+                }
+            }
         }
     }
 }
@@ -401,6 +467,7 @@ object ConversationDetail {
 object ConversationDetailScreen {
 
     const val ConversationIdKey = "conversation id"
+    val scrollOffsetDp: Dp = (-30).dp
 
     data class Actions(
         val onExit: (notifyUserMessage: String?) -> Unit,
@@ -415,6 +482,7 @@ object ConversationDetailScreen {
         val onMessageBodyLinkClicked: (url: String) -> Unit,
         val onOpenMessageBodyLink: (url: String) -> Unit,
         val onRequestScrollTo: (MessageIdUiModel) -> Unit,
+        val onScrollRequestCompleted: () -> Unit,
         val onShowAllAttachmentsForMessage: (MessageIdUiModel) -> Unit,
         val onAttachmentClicked: (MessageIdUiModel, AttachmentId) -> Unit,
         val openAttachment: (values: OpenAttachmentIntentValues) -> Unit,
@@ -440,6 +508,7 @@ object ConversationDetailScreen {
                 onMessageBodyLinkClicked = {},
                 onOpenMessageBodyLink = {},
                 onRequestScrollTo = {},
+                onScrollRequestCompleted = {},
                 onShowAllAttachmentsForMessage = {},
                 onAttachmentClicked = { _, _ -> },
                 openAttachment = {},
