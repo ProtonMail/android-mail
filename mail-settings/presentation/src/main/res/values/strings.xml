@@ -92,6 +92,14 @@
     <string name="mail_settings_swipe_action_spam_description">Move to spam</string>
     <string name="mail_settings_swipe_action_star_description">Star/unstar</string>
     <string name="mail_settings_swipe_action_trash_description">Move to trash</string>
+    <!-- Notification settings -->
+    <string name="mail_settings_notifications_title">Push notifications</string>
+    <string name="mail_settings_notifications_extended_notifications_title">Extended notifications</string>
+    <string name="mail_settings_notifications_extended_notifications_summary">Turn this feature on to see the sender of the emails in the push notifications.</string>
+    <string name="mail_settings_notifications_notifications_settings">Notifications settings</string>
+    <string name="mail_settings_notifications_notifications_settings_hint">Navigate to system notification settings</string>
+    <string name="mail_settings_notifications_update_error">Error updating settings</string>
+    <string name="mail_settings_notifications_loading_error">Error loading settings</string>
     <!-- Error messages -->
     <string name="mail_settings_generic_error_message">An error occurred. Try again.</string>
 </resources>
