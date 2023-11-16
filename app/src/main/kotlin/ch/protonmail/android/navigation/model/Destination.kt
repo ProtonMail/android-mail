@@ -72,6 +72,7 @@ sealed class Destination(val route: String) {
                 route.replace(SWIPE_DIRECTION_KEY.wrap(), direction.name)
         }
         object ThemeSettings : Destination("settings/theme")
+        object Notifications : Destination("settings/notifications")
         object DeepLinksHandler : Destination("deepLinksHandler")
         object LabelList : Destination("labelList")
         object CreateLabel : Destination("labelForm")

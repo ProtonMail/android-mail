@@ -174,7 +174,7 @@ internal fun NavGraphBuilder.addSettings(navController: NavHostController, showF
                     navController.navigate(Destination.Screen.ThemeSettings.route)
                 },
                 onPushNotificationsClick = {
-                    showFeatureMissingSnackbar()
+                    navController.navigate(Destination.Screen.Notifications.route)
                 },
                 onAutoLockClick = {
                     showFeatureMissingSnackbar()
