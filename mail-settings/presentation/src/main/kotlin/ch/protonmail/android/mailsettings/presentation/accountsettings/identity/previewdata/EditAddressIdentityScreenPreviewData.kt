@@ -23,6 +23,7 @@ import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.DisplayNameUiModel
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.EditAddressIdentityState
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.MobileFooterUiModel
+import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.ui.EditAddressIdentityScreenList
 
 internal object EditAddressIdentityScreenPreviewData {
 
@@ -36,5 +37,13 @@ internal object EditAddressIdentityScreenPreviewData {
         ),
         updateErrorState = EditAddressIdentityState.UpdateErrorState(Effect.empty()),
         closeState = EditAddressIdentityState.CloseState(Effect.empty())
+    )
+
+    val listActions = EditAddressIdentityScreenList.Actions(
+        onDisplayNameChanged = {},
+        onSignatureValueChanged = {},
+        onSignatureToggled = {},
+        onMobileFooterValueChanged = {},
+        onMobileFooterToggled = {}
     )
 }

@@ -71,6 +71,5 @@ object EditAddressIdentityScreenList {
         val onSignatureToggled: (Boolean) -> Unit,
         val onMobileFooterValueChanged: (String) -> Unit,
         val onMobileFooterToggled: (Boolean) -> Unit,
-        val onCloseScreen: () -> Unit
     )
 }

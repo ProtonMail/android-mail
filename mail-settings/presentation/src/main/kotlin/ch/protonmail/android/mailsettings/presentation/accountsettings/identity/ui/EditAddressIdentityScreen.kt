@@ -48,17 +48,21 @@ fun EditAddressIdentityScreen(
 ) {
     val state: EditAddressIdentityState by viewModel.state.collectAsState()
 
-    EditAddressIdentityScreen(
-        modifier = modifier,
-        state = state,
-        onBackClick = onBackClick,
-        onSaveClick = { viewModel.submit(EditAddressIdentityAction.Save) },
+    val listActions = EditAddressIdentityScreenList.Actions(
         onDisplayNameChanged = { viewModel.submit(EditAddressIdentityAction.DisplayName.UpdateValue(it)) },
         onSignatureValueChanged = { viewModel.submit(EditAddressIdentityAction.Signature.UpdateValue(it)) },
         onSignatureToggled = { viewModel.submit(EditAddressIdentityAction.Signature.ToggleState(it)) },
         onMobileFooterValueChanged = { viewModel.submit(EditAddressIdentityAction.MobileFooter.UpdateValue(it)) },
         onMobileFooterToggled = { viewModel.submit(EditAddressIdentityAction.MobileFooter.ToggleState(it)) },
-        onCloseScreen = onCloseScreen
+    )
+
+    EditAddressIdentityScreen(
+        modifier = modifier,
+        state = state,
+        onBackClick = onBackClick,
+        onSaveClick = { viewModel.submit(EditAddressIdentityAction.Save) },
+        onCloseScreen = onCloseScreen,
+        listActions = listActions
     )
 }
 
@@ -69,22 +73,9 @@ fun EditAddressIdentityScreen(
     state: EditAddressIdentityState,
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
-    onDisplayNameChanged: (String) -> Unit,
-    onSignatureValueChanged: (String) -> Unit,
-    onSignatureToggled: (Boolean) -> Unit,
-    onMobileFooterValueChanged: (String) -> Unit,
-    onMobileFooterToggled: (Boolean) -> Unit,
-    onCloseScreen: () -> Unit
+    onCloseScreen: () -> Unit,
+    listActions: EditAddressIdentityScreenList.Actions
 ) {
-    val actions = EditAddressIdentityScreenList.Actions(
-        onDisplayNameChanged = onDisplayNameChanged,
-        onSignatureValueChanged = onSignatureValueChanged,
-        onSignatureToggled = onSignatureToggled,
-        onMobileFooterValueChanged = onMobileFooterValueChanged,
-        onMobileFooterToggled = onMobileFooterToggled,
-        onCloseScreen = onCloseScreen
-    )
-
     val snackbarHostState = ProtonSnackbarHostState()
     val updateErrorMessage = stringResource(id = R.string.mail_settings_identity_error_updating)
 
@@ -102,7 +93,7 @@ fun EditAddressIdentityScreen(
                         displayNameState = state.displayNameState,
                         signatureState = state.signatureState,
                         mobileFooterState = state.mobileFooterState,
-                        actions
+                        actions = listActions
                     )
                     ConsumableLaunchedEffect(state.updateErrorState.updateError) {
                         snackbarHostState.showSnackbar(ProtonSnackbarType.ERROR, message = updateErrorMessage)
@@ -124,12 +115,8 @@ private fun EditAddressIdentityScreenPreview() {
             state = EditAddressIdentityScreenPreviewData.state,
             onBackClick = {},
             onSaveClick = {},
-            onDisplayNameChanged = {},
-            onSignatureValueChanged = {},
-            onSignatureToggled = {},
-            onMobileFooterValueChanged = {},
-            onMobileFooterToggled = {},
-            onCloseScreen = {}
+            onCloseScreen = {},
+            listActions = EditAddressIdentityScreenPreviewData.listActions
         )
     }
 }
