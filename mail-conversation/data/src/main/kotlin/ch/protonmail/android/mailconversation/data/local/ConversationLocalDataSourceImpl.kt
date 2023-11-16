@@ -19,8 +19,8 @@
 package ch.protonmail.android.mailconversation.data.local
 
 import arrow.core.Either
-import arrow.core.raise.either
 import arrow.core.left
+import arrow.core.raise.either
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
@@ -230,13 +230,12 @@ class ConversationLocalDataSourceImpl @Inject constructor(
 
     override suspend fun markRead(
         userId: UserId,
-        conversationIds: List<ConversationId>,
-        contextLabelId: LabelId
+        conversationIds: List<ConversationId>
     ): Either<DataError.Local, List<Conversation>> = db.inTransaction {
         getConversations(userId, conversationIds).map { conversations ->
             val updatedConversations = conversations.map { conversation ->
-                val updatedLabels = conversation.labels.mapOnly(contextLabelId) { label ->
-                    label.copy(contextNumUnread = label.contextNumUnread.decrementCoercingZero())
+                val updatedLabels = conversation.labels.map { label ->
+                    label.copy(contextNumUnread = 0)
                 }
                 conversation.copy(
                     numUnread = conversation.numUnread.decrementCoercingZero(),

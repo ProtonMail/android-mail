@@ -23,20 +23,15 @@ import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
-import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 class MarkConversationsAsRead @Inject constructor(
-    private val conversationRepository: ConversationRepository,
-    private val selectedMailLabelId: SelectedMailLabelId
+    private val conversationRepository: ConversationRepository
 ) {
 
     suspend operator fun invoke(
         userId: UserId,
         conversationIds: List<ConversationId>
-    ): Either<DataError, List<Conversation>> {
-        val contextLabelId = selectedMailLabelId.flow.value.labelId
-        return conversationRepository.markRead(userId, conversationIds, contextLabelId)
-    }
+    ): Either<DataError, List<Conversation>> = conversationRepository.markRead(userId, conversationIds)
 }

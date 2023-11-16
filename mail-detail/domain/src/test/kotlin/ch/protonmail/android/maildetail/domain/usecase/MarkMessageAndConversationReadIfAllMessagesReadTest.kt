@@ -27,17 +27,14 @@ import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
 import ch.protonmail.android.maildetail.domain.model.MarkConversationReadError
-import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.testdata.conversation.ConversationTestData
-import ch.protonmail.android.testdata.maillabel.MailLabelTestData
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -48,9 +45,6 @@ class MarkMessageAndConversationReadIfAllMessagesReadTest {
     private val messageRepository: MessageRepository = mockk()
     private val markMessageAsRead: MarkMessageAsRead = mockk()
     private val conversationRepository: ConversationRepository = mockk()
-    private val selectedMailLabelId: SelectedMailLabelId = mockk {
-        coEvery { this@mockk.flow } returns MutableStateFlow(MailLabelTestData.customLabelOne.id)
-    }
     private val userId = UserIdSample.Primary
 
     @Test
@@ -144,7 +138,6 @@ class MarkMessageAndConversationReadIfAllMessagesReadTest {
         // given
         val sampleMessage = MessageSample.Invoice
         val sampleConversation = ConversationTestData.conversation
-        val sampleContextLabel = MailLabelTestData.customLabelOne
         val error = DataError.Local.NoDataCached
         conversationCacheIsUpToDate(sampleConversation.conversationId)
         coEvery { messageRepository.isMessageRead(userId, sampleMessage.messageId) } returns false.right()
@@ -154,7 +147,7 @@ class MarkMessageAndConversationReadIfAllMessagesReadTest {
         coEvery { conversationRepository.isCachedConversationRead(userId, sampleConversation.conversationId) } returns
             false.right()
         coEvery {
-            conversationRepository.markRead(userId, sampleConversation.conversationId, sampleContextLabel.id.labelId)
+            conversationRepository.markRead(userId, sampleConversation.conversationId)
         } returns error.left()
 
         // when
@@ -169,7 +162,6 @@ class MarkMessageAndConversationReadIfAllMessagesReadTest {
         // given
         val sampleMessage = MessageSample.Invoice.copy(unread = false)
         val sampleConversation = ConversationTestData.conversation
-        val sampleContextLabel = MailLabelTestData.customLabelOne
         conversationCacheIsUpToDate(sampleConversation.conversationId)
         coEvery { messageRepository.isMessageRead(userId, sampleMessage.messageId) } returns false.right()
         coEvery { messageRepository.observeCachedMessages(userId, sampleConversation.conversationId) } returns
@@ -178,7 +170,7 @@ class MarkMessageAndConversationReadIfAllMessagesReadTest {
         coEvery { conversationRepository.isCachedConversationRead(userId, sampleConversation.conversationId) } returns
             false.right()
         coEvery {
-            conversationRepository.markRead(userId, sampleConversation.conversationId, sampleContextLabel.id.labelId)
+            conversationRepository.markRead(userId, sampleConversation.conversationId)
         } returns sampleConversation.right()
 
         // when
@@ -187,9 +179,7 @@ class MarkMessageAndConversationReadIfAllMessagesReadTest {
         // then
         assertEquals(Unit.right(), result)
         coVerify(exactly = 1) { markMessageAsRead.invoke(userId, sampleMessage.messageId) }
-        coVerify(exactly = 1) {
-            conversationRepository.markRead(userId, sampleConversation.conversationId, sampleContextLabel.id.labelId)
-        }
+        coVerify(exactly = 1) { conversationRepository.markRead(userId, sampleConversation.conversationId) }
     }
 
     @Test
@@ -197,7 +187,6 @@ class MarkMessageAndConversationReadIfAllMessagesReadTest {
         // given
         val sampleMessage = MessageSample.Invoice.copy(unread = true)
         val sampleConversation = ConversationTestData.conversation
-        val sampleContextLabel = MailLabelTestData.customLabelOne
         val otherMessage = MessageSample.Invoice.copy(messageId = MessageId("other"), unread = true)
         conversationCacheIsUpToDate(sampleConversation.conversationId)
         coEvery { messageRepository.isMessageRead(userId, any()) } returns false.right()
@@ -207,7 +196,7 @@ class MarkMessageAndConversationReadIfAllMessagesReadTest {
         coEvery { conversationRepository.isCachedConversationRead(userId, sampleConversation.conversationId) } returns
             false.right()
         coEvery {
-            conversationRepository.markRead(userId, sampleConversation.conversationId, sampleContextLabel.id.labelId)
+            conversationRepository.markRead(userId, sampleConversation.conversationId)
         } returns sampleConversation.right()
 
         // when
@@ -216,13 +205,7 @@ class MarkMessageAndConversationReadIfAllMessagesReadTest {
         // then
         assertEquals(MarkConversationReadError.ConversationHasUnreadMessages.left(), result)
         coVerify(exactly = 1) { markMessageAsRead.invoke(userId, sampleMessage.messageId) }
-        coVerify(exactly = 0) {
-            conversationRepository.markRead(
-                userId,
-                sampleConversation.conversationId,
-                sampleContextLabel.id.labelId
-            )
-        }
+        coVerify(exactly = 0) { conversationRepository.markRead(userId, sampleConversation.conversationId) }
     }
 
     @Test
@@ -230,7 +213,6 @@ class MarkMessageAndConversationReadIfAllMessagesReadTest {
         // given
         val sampleMessage = MessageSample.Invoice.copy(unread = true)
         val sampleConversation = ConversationTestData.conversation
-        val sampleContextLabel = MailLabelTestData.customLabelOne
         conversationCacheIsUpToDate(sampleConversation.conversationId)
         coEvery { messageRepository.isMessageRead(userId, sampleMessage.messageId) } returns false.right()
         coEvery { messageRepository.observeCachedMessages(userId, sampleConversation.conversationId) } returns
@@ -245,13 +227,7 @@ class MarkMessageAndConversationReadIfAllMessagesReadTest {
         // then
         assertEquals(MarkConversationReadError.ConversationAlreadyRead.left(), result)
         coVerify(exactly = 1) { markMessageAsRead.invoke(userId, sampleMessage.messageId) }
-        coVerify(exactly = 0) {
-            conversationRepository.markRead(
-                userId,
-                sampleConversation.conversationId,
-                sampleContextLabel.id.labelId
-            )
-        }
+        coVerify(exactly = 0) { conversationRepository.markRead(userId, sampleConversation.conversationId) }
     }
 
     private fun conversationCacheIsUpToDate(conversationId: ConversationId) {
@@ -260,11 +236,9 @@ class MarkMessageAndConversationReadIfAllMessagesReadTest {
         } returns flowOf(Unit.right())
     }
 
-    private fun buildUseCase() =
-        MarkMessageAndConversationReadIfAllMessagesRead(
-            messageRepository = messageRepository,
-            markMessageAsRead = markMessageAsRead,
-            conversationRepository = conversationRepository,
-            selectedMailLabelId = selectedMailLabelId
-        )
+    private fun buildUseCase() = MarkMessageAndConversationReadIfAllMessagesRead(
+        messageRepository = messageRepository,
+        markMessageAsRead = markMessageAsRead,
+        conversationRepository = conversationRepository
+    )
 }

@@ -747,13 +747,13 @@ class ConversationRepositoryImplTest {
         // given
         val conversationId = ConversationIdSample.WeatherForecast
         val error = DataErrorSample.NoCache.left()
-        coEvery { conversationLocalDataSource.markRead(userId, listOf(conversationId), contextLabelId) } returns error
+        coEvery { conversationLocalDataSource.markRead(userId, listOf(conversationId)) } returns error
         coEvery {
             messageLocalDataSource.markMessagesInConversationsRead(userId, listOf(conversationId))
         } returns listOf(MessageSample.build()).right()
 
         // when
-        val result = conversationRepository.markRead(userId, conversationId, contextLabelId)
+        val result = conversationRepository.markRead(userId, conversationId)
 
         // then
         assertEquals(error, result)
@@ -765,14 +765,14 @@ class ConversationRepositoryImplTest {
         val conversationId = ConversationIdSample.WeatherForecast
         val updatedConversation = ConversationSample.WeatherForecast
         coEvery {
-            conversationLocalDataSource.markRead(userId, listOf(conversationId), contextLabelId)
+            conversationLocalDataSource.markRead(userId, listOf(conversationId))
         } returns listOf(updatedConversation).right()
         coEvery {
             messageLocalDataSource.markMessagesInConversationsRead(userId, listOf(conversationId))
         } returns listOf(MessageSample.build()).right()
 
         // when
-        val result = conversationRepository.markRead(userId, conversationId, contextLabelId)
+        val result = conversationRepository.markRead(userId, conversationId)
 
         // then
         assertEquals(updatedConversation.right(), result)
@@ -783,14 +783,14 @@ class ConversationRepositoryImplTest {
         // given
         val conversationId = ConversationIdSample.WeatherForecast
         coEvery {
-            conversationLocalDataSource.markRead(userId, listOf(conversationId), contextLabelId)
+            conversationLocalDataSource.markRead(userId, listOf(conversationId))
         } returns listOf(ConversationSample.WeatherForecast).right()
         coEvery {
             messageLocalDataSource.markMessagesInConversationsRead(userId, listOf(conversationId))
         } returns listOf(MessageSample.build()).right()
 
         // when
-        conversationRepository.markRead(userId, conversationId, contextLabelId)
+        conversationRepository.markRead(userId, conversationId)
 
         // then
         coVerify { conversationRemoteDataSource.markRead(userId, listOf(conversationId)) }
@@ -801,14 +801,14 @@ class ConversationRepositoryImplTest {
         // given
         val conversationId = ConversationIdSample.WeatherForecast
         coEvery {
-            conversationLocalDataSource.markRead(userId, listOf(conversationId), contextLabelId)
+            conversationLocalDataSource.markRead(userId, listOf(conversationId))
         } returns listOf(ConversationSample.WeatherForecast).right()
         coEvery {
             messageLocalDataSource.markMessagesInConversationsRead(userId, listOf(conversationId))
         } returns listOf(MessageSample.build()).right()
 
         // when
-        conversationRepository.markRead(userId, conversationId, contextLabelId)
+        conversationRepository.markRead(userId, conversationId)
 
         // then
         coVerify { messageLocalDataSource.markMessagesInConversationsRead(userId, listOf(conversationId)) }

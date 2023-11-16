@@ -164,8 +164,7 @@ interface ConversationLocalDataSource {
 
     suspend fun markRead(
         userId: UserId,
-        conversationIds: List<ConversationId>,
-        contextLabelId: LabelId
+        conversationIds: List<ConversationId>
     ): Either<DataError.Local, List<Conversation>>
 
     suspend fun isConversationRead(userId: UserId, conversationId: ConversationId): Either<DataError.Local, Boolean>

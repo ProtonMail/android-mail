@@ -252,18 +252,14 @@ class ConversationRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun markRead(
-        userId: UserId,
-        conversationId: ConversationId,
-        contextLabelId: LabelId
-    ): Either<DataError, Conversation> = markRead(userId, listOf(conversationId), contextLabelId).map { it.first() }
+    override suspend fun markRead(userId: UserId, conversationId: ConversationId): Either<DataError, Conversation> =
+        markRead(userId, listOf(conversationId)).map { it.first() }
 
     override suspend fun markRead(
         userId: UserId,
-        conversationIds: List<ConversationId>,
-        contextLabelId: LabelId
+        conversationIds: List<ConversationId>
     ): Either<DataError, List<Conversation>> {
-        return conversationLocalDataSource.markRead(userId, conversationIds, contextLabelId).onRight {
+        return conversationLocalDataSource.markRead(userId, conversationIds).onRight {
             messageLocalDataSource.markMessagesInConversationsRead(userId, conversationIds)
             conversationRemoteDataSource.markRead(userId, conversationIds)
         }

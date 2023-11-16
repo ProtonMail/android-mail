@@ -25,10 +25,7 @@ import ch.protonmail.android.mailcommon.domain.sample.DataErrorSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
 import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
-import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
-import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
@@ -38,20 +35,16 @@ class MarkConversationsAsReadTest {
 
     private val userId = UserIdSample.Primary
     private val conversationIds = listOf(ConversationIdSample.WeatherForecast, ConversationIdSample.AlphaAppFeedback)
-    private val mailLabel = MailLabelId.System.Archive
 
     private val conversationRepository: ConversationRepository = mockk()
-    private val selectedMailLabelId: SelectedMailLabelId = mockk {
-        every { flow.value } returns mailLabel
-    }
 
-    private val markRead = MarkConversationsAsRead(conversationRepository, selectedMailLabelId)
+    private val markRead = MarkConversationsAsRead(conversationRepository)
 
     @Test
     fun `returns error when repository fails`() = runTest {
         // given
         val error = DataErrorSample.NoCache.left()
-        coEvery { conversationRepository.markRead(userId, conversationIds, mailLabel.labelId) } returns error
+        coEvery { conversationRepository.markRead(userId, conversationIds) } returns error
 
         // when
         val result = markRead(userId, conversationIds)
@@ -64,7 +57,7 @@ class MarkConversationsAsReadTest {
     fun `returns updated conversation when repository succeeds`() = runTest {
         // given
         val conversation = listOf(ConversationSample.WeatherForecast, ConversationSample.AlphaAppFeedback).right()
-        coEvery { conversationRepository.markRead(userId, conversationIds, mailLabel.labelId) } returns conversation
+        coEvery { conversationRepository.markRead(userId, conversationIds) } returns conversation
 
         // when
         val result = markRead(userId, conversationIds)

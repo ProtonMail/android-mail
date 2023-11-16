@@ -501,11 +501,7 @@ class ConversationLocalDataSourceImplTest {
         coEvery { conversationDao.getConversations(userId, listOf(conversationId)) } returns listOf(conversation)
 
         // when
-        val result = conversationLocalDataSource.markRead(
-            userId,
-            listOf(ConversationIdSample.WeatherForecast),
-            contextLabelId
-        )
+        val result = conversationLocalDataSource.markRead(userId, listOf(ConversationIdSample.WeatherForecast))
 
         // then
         assertEquals(listOf(updatedConversation).right(), result)
@@ -514,7 +510,6 @@ class ConversationLocalDataSourceImplTest {
     @Test
     fun `mark read decrements the unread count for the given context label only`() = runTest {
         // given
-        val contextLabelId = MailLabelId.System.Inbox.labelId
         val conversationId = ConversationIdSample.AlphaAppFeedback
         val conversation = ConversationWithLabelsSample.AlphaAppFeedback.copy(
             conversation = ConversationEntitySample.AlphaAppFeedback.copy(
@@ -535,11 +530,7 @@ class ConversationLocalDataSourceImplTest {
         coEvery { conversationDao.getConversations(userId, listOf(conversationId)) } returns listOf(conversation)
 
         // when
-        val result = conversationLocalDataSource.markRead(
-            userId,
-            listOf(ConversationIdSample.AlphaAppFeedback),
-            contextLabelId
-        )
+        val result = conversationLocalDataSource.markRead(userId, listOf(ConversationIdSample.AlphaAppFeedback))
 
         // then
         assertEquals(listOf(updatedConversation).right(), result)

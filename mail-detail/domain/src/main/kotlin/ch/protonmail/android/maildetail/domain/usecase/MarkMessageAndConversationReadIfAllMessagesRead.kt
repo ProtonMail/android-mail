@@ -30,7 +30,6 @@ import ch.protonmail.android.maildetail.domain.model.MarkConversationReadError
 import ch.protonmail.android.maildetail.domain.model.MarkConversationReadError.ConversationAlreadyRead
 import ch.protonmail.android.maildetail.domain.model.MarkConversationReadError.ConversationHasUnreadMessages
 import ch.protonmail.android.maildetail.domain.model.MarkConversationReadError.DataSourceError
-import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.mailmessage.domain.model.Message
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
@@ -38,14 +37,12 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEmpty
 import me.proton.core.domain.entity.UserId
-import me.proton.core.label.domain.entity.LabelId
 import javax.inject.Inject
 
 class MarkMessageAndConversationReadIfAllMessagesRead @Inject constructor(
     private val messageRepository: MessageRepository,
     private val markMessageAsRead: MarkMessageAsRead,
-    private val conversationRepository: ConversationRepository,
-    private val selectedMailLabelId: SelectedMailLabelId
+    private val conversationRepository: ConversationRepository
 ) {
 
     suspend operator fun invoke(
@@ -53,13 +50,12 @@ class MarkMessageAndConversationReadIfAllMessagesRead @Inject constructor(
         messageId: MessageId,
         conversationId: ConversationId
     ): Either<MarkConversationReadError, Unit> {
-        val contextLabelId = selectedMailLabelId.flow.value.labelId
         return conversationRepository.observeConversationCacheUpToDate(userId, conversationId)
             .onEmpty { emit(DataError.Local.NoDataCached.left()) }
             .map {
                 it.fold(
                     ifLeft = { error -> DataSourceError(error).left() },
-                    ifRight = { markMessageAndConversationAsRead(userId, messageId, conversationId, contextLabelId) }
+                    ifRight = { markMessageAndConversationAsRead(userId, messageId, conversationId) }
                 )
             }
             .first()
@@ -68,21 +64,14 @@ class MarkMessageAndConversationReadIfAllMessagesRead @Inject constructor(
     private suspend fun markMessageAndConversationAsRead(
         userId: UserId,
         messageId: MessageId,
-        conversationId: ConversationId,
-        contextLabelId: LabelId
+        conversationId: ConversationId
     ): Either<MarkConversationReadError, Unit> {
         return messageRepository.isMessageRead(userId, messageId)
             .fold(
                 ifLeft = { error -> DataSourceError(error).left() },
                 ifRight = { isRead ->
                     markMessageReadIfUnread(isRead, userId, messageId)
-                        .flatMap {
-                            markConversationAsReadIfAllRead(
-                                userId,
-                                conversationId,
-                                contextLabelId
-                            )
-                        }
+                        .flatMap { markConversationAsReadIfAllRead(userId, conversationId) }
                 }
             )
     }
@@ -102,8 +91,7 @@ class MarkMessageAndConversationReadIfAllMessagesRead @Inject constructor(
 
     private suspend fun markConversationAsReadIfAllRead(
         userId: UserId,
-        conversationId: ConversationId,
-        contextLabelId: LabelId
+        conversationId: ConversationId
     ): Either<MarkConversationReadError, Unit> {
         return conversationRepository.isCachedConversationRead(userId, conversationId)
             .mapLeft { error -> DataSourceError(error) }
@@ -115,7 +103,7 @@ class MarkMessageAndConversationReadIfAllMessagesRead @Inject constructor(
                         .map { messages -> messages.all { message -> !message.unread } }
                         .flatMap { allRead ->
                             if (allRead) {
-                                conversationRepository.markRead(userId, conversationId, contextLabelId)
+                                conversationRepository.markRead(userId, conversationId)
                                     .fold(
                                         ifLeft = { error -> DataSourceError(error).left() },
                                         ifRight = { Unit.right() }
