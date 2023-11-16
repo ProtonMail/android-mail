@@ -25,6 +25,7 @@ import ch.protonmail.android.mailsettings.data.repository.AlternativeRoutingRepo
 import ch.protonmail.android.mailsettings.data.repository.AppLanguageRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.AutoLockRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.CombinedContactsRepositoryImpl
+import ch.protonmail.android.mailsettings.data.repository.NotificationsSettingsRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.PreventScreenshotsRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.ThemeRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.local.AlternativeRoutingLocalDataSource
@@ -33,6 +34,7 @@ import ch.protonmail.android.mailsettings.domain.repository.AlternativeRoutingRe
 import ch.protonmail.android.mailsettings.domain.repository.AppLanguageRepository
 import ch.protonmail.android.mailsettings.domain.repository.AutoLockRepository
 import ch.protonmail.android.mailsettings.domain.repository.CombinedContactsRepository
+import ch.protonmail.android.mailsettings.domain.repository.NotificationsSettingsRepository
 import ch.protonmail.android.mailsettings.domain.repository.PreventScreenshotsRepository
 import ch.protonmail.android.mailsettings.domain.repository.ThemeRepository
 import ch.protonmail.android.mailsettings.presentation.settings.theme.ThemeObserverCoroutineScope
@@ -87,6 +89,12 @@ object SettingsModule {
     @Singleton
     fun provideThemeRepository(dataStoreProvider: MailSettingsDataStoreProvider): ThemeRepository =
         ThemeRepositoryImpl(dataStoreProvider)
+
+    @Provides
+    @Singleton
+    fun provideNotificationExtendedRepository(
+        dataStoreProvider: MailSettingsDataStoreProvider
+    ): NotificationsSettingsRepository = NotificationsSettingsRepositoryImpl(dataStoreProvider)
 
     @Provides
     @Singleton
