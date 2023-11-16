@@ -34,6 +34,8 @@ import ch.protonmail.android.mailnotifications.domain.usecase.ProcessMessageRead
 import ch.protonmail.android.mailnotifications.domain.usecase.ProcessNewLoginPushNotification
 import ch.protonmail.android.mailnotifications.domain.usecase.ProcessNewMessagePushNotification
 import ch.protonmail.android.mailnotifications.domain.usecase.content.DecryptNotificationContent
+import ch.protonmail.android.mailsettings.domain.model.ExtendedNotificationPreference
+import ch.protonmail.android.mailsettings.domain.usecase.notifications.GetExtendedNotificationsSetting
 import ch.protonmail.android.test.annotations.suite.SmokeTest
 import io.mockk.called
 import io.mockk.coEvery
@@ -57,6 +59,7 @@ internal class ProcessPushNotificationDataWorkerNewMessageTest {
     private val decryptNotificationContent = mockk<DecryptNotificationContent>()
     private val appInBackgroundState = mockk<AppInBackgroundState>()
     private val userManager = mockk<UserManager>()
+    private val getNotificationsExtendedPreference = mockk<GetExtendedNotificationsSetting>()
     private val processNewMessagePushNotification = mockk<ProcessNewMessagePushNotification>(relaxUnitFun = true)
     private val processNewLoginPushNotification = mockk<ProcessNewLoginPushNotification>(relaxUnitFun = true)
     private val processMessageReadPushNotification = mockk<ProcessMessageReadPushNotification>(relaxUnitFun = true)
@@ -78,6 +81,7 @@ internal class ProcessPushNotificationDataWorkerNewMessageTest {
         decryptNotificationContent,
         appInBackgroundState,
         userManager,
+        getNotificationsExtendedPreference,
         processNewMessagePushNotification,
         processNewLoginPushNotification,
         processMessageReadPushNotification
@@ -93,12 +97,35 @@ internal class ProcessPushNotificationDataWorkerNewMessageTest {
     }
 
     @Test
-    fun newMessageReadNotificationIsNotShownWhenAppIsInBackground() = runTest {
+    fun newMessageNotificationIsShownWhenAppIsInBackground() = runTest {
         // Given
         prepareSharedMocks(isAppInBackground = true)
 
         val userData = UserPushData("primary", "primary-email@pm.me")
         val pushData = NewMessagePushData("Sender", "aMessageId", "Notification")
+        val newMessageNotificationData = LocalPushNotificationData.NewMessage(userData, pushData)
+
+        // When
+        val result = worker.doWork()
+
+        // Then
+        verify(exactly = 1) {
+            processNewMessagePushNotification(newMessageNotificationData)
+        }
+        verify {
+            processNewLoginPushNotification wasNot called
+            processMessageReadPushNotification wasNot called
+        }
+        assertEquals(ListenableWorker.Result.success(), result)
+    }
+
+    @Test
+    fun newMessageNotificationIsShownWithRedactedSenderWhenAppIsInBackgroundWithNotificationsNotExtended() = runTest {
+        // Given
+        prepareSharedMocks(isAppInBackground = true, hasNotificationsExtended = false)
+
+        val userData = UserPushData("primary", "primary-email@pm.me")
+        val pushData = NewMessagePushData("New message", "aMessageId", "Notification")
         val newMessageNotificationData = LocalPushNotificationData.NewMessage(userData, pushData)
 
         // When
@@ -132,11 +159,14 @@ internal class ProcessPushNotificationDataWorkerNewMessageTest {
         assertEquals(ListenableWorker.Result.success(), result)
     }
 
-    private fun prepareSharedMocks(isAppInBackground: Boolean) {
+    private fun prepareSharedMocks(isAppInBackground: Boolean, hasNotificationsExtended: Boolean = true) {
         coEvery { sessionManager.getUserId(any()) } returns userId
         coEvery { decryptNotificationContent(any(), any()) } returns baseNewMessageNotification
         coEvery { userManager.getUser(any()) } returns UserSample.Primary
         coEvery { appInBackgroundState.isAppInBackground() } returns isAppInBackground
+        coEvery {
+            getNotificationsExtendedPreference()
+        } returns ExtendedNotificationPreference(hasNotificationsExtended).right()
         every { processMessageReadPushNotification.invoke(any()) } returns ListenableWorker.Result.success()
         every { processNewMessagePushNotification.invoke(any()) } returns ListenableWorker.Result.success()
     }

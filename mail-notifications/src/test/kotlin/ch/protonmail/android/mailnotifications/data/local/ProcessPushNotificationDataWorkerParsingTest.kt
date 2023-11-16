@@ -31,6 +31,7 @@ import ch.protonmail.android.mailnotifications.domain.usecase.ProcessMessageRead
 import ch.protonmail.android.mailnotifications.domain.usecase.ProcessNewLoginPushNotification
 import ch.protonmail.android.mailnotifications.domain.usecase.ProcessNewMessagePushNotification
 import ch.protonmail.android.mailnotifications.domain.usecase.content.DecryptNotificationContent
+import ch.protonmail.android.mailsettings.domain.usecase.notifications.GetExtendedNotificationsSetting
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -50,6 +51,7 @@ internal class ProcessPushNotificationDataWorkerParsingTest {
     private val decryptNotificationContent = mockk<DecryptNotificationContent>()
     private val appInBackgroundState = mockk<AppInBackgroundState>()
     private val userManager = mockk<UserManager>()
+    private val getExtendedNotificationsSetting = mockk<GetExtendedNotificationsSetting>()
     private val processNewMessagePushNotification = mockk<ProcessNewMessagePushNotification>()
     private val processNewLoginPushNotification = mockk<ProcessNewLoginPushNotification>()
     private val processMessageReadPushNotification = mockk<ProcessMessageReadPushNotification>()
@@ -76,6 +78,7 @@ internal class ProcessPushNotificationDataWorkerParsingTest {
         decryptNotificationContent,
         appInBackgroundState,
         userManager,
+        getExtendedNotificationsSetting,
         processNewMessagePushNotification,
         processNewLoginPushNotification,
         processMessageReadPushNotification
