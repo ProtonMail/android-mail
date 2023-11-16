@@ -21,30 +21,25 @@ package ch.protonmail.android.mailsettings.presentation.accountsettings.identity
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.AddressSignatureUiModel
 
 @Composable
 fun SignatureDisplaySetting(
+    modifier: Modifier = Modifier,
     uiModel: AddressSignatureUiModel,
     onSignatureChanged: (String) -> Unit = {},
     onToggleSwitched: (Boolean) -> Unit = {}
 ) {
-    var text by rememberSaveable { mutableStateOf(uiModel.textValue) }
-    var enabled by rememberSaveable { mutableStateOf(uiModel.enabled) }
 
-    Column {
+    Column(modifier = modifier) {
         Row {
             AddressIdentitySettingToggleItem(
                 name = stringResource(id = R.string.mail_settings_identity_signature),
                 value = uiModel.enabled,
                 onToggle = {
-                    enabled = it
                     onToggleSwitched(it)
                 }
             )
@@ -52,10 +47,9 @@ fun SignatureDisplaySetting(
 
         if (uiModel.enabled) {
             AddressIdentityTextField(
-                text,
+                text = uiModel.textValue,
                 placeholder = stringResource(id = R.string.mail_settings_identity_signature_hint),
                 onValueChanged = {
-                    text = it
                     onSignatureChanged(it)
                 }
             )

@@ -21,46 +21,37 @@ package ch.protonmail.android.mailsettings.presentation.accountsettings.identity
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.MobileFooterUiModel
 
 @Composable
 fun MobileFooterDisplaySetting(
+    modifier: Modifier = Modifier,
     uiModel: MobileFooterUiModel,
     onMobileFooterChanged: (String) -> Unit,
     onToggleSwitched: (Boolean) -> Unit
 ) {
-    var text by rememberSaveable { mutableStateOf(uiModel.textValue) }
-    var toggled by rememberSaveable { mutableStateOf(uiModel.enabled) }
-    val isFieldEnabled by remember { mutableStateOf(uiModel.isFieldEnabled) }
-
-    Column {
+    Column(modifier = modifier) {
         Row {
             AddressIdentitySettingToggleItem(
                 name = stringResource(R.string.mail_settings_identity_mobile_footer),
-                value = toggled,
-                isFieldEnabled = isFieldEnabled,
+                value = uiModel.enabled,
+                isFieldEnabled = uiModel.isFieldEnabled,
                 onToggle = {
-                    toggled = it
                     onToggleSwitched(it)
                 },
                 hint = stringResource(id = R.string.mail_settings_identity_mobile_footer_subtext)
             )
         }
 
-        if (toggled) {
+        if (uiModel.enabled) {
             AddressIdentityTextField(
-                text,
+                text = uiModel.textValue,
+                enabled = uiModel.isFieldEnabled,
                 placeholder = stringResource(id = R.string.mail_settings_identity_mobile_footer_hint),
-                enabled = isFieldEnabled,
                 onValueChanged = {
-                    text = it
                     onMobileFooterChanged(it)
                 }
             )

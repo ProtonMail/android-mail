@@ -32,7 +32,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.unit.dp
+import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import me.proton.core.compose.component.protonOutlineTextFieldColors
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
@@ -40,22 +40,24 @@ import me.proton.core.compose.theme.defaultNorm
 
 @Composable
 fun AddressIdentityTextField(
+    modifier: Modifier = Modifier,
     text: String,
     enabled: Boolean = true,
     placeholder: String,
     onValueChanged: (String) -> Unit
 ) {
     OutlinedTextField(
-        modifier = Modifier
+        modifier = modifier
             .focusRequester(FocusRequester())
             .fillMaxWidth()
-            .size(128.dp)
+            .size(MailDimens.TextFieldMultiLineSize)
             .padding(
                 top = ProtonDimens.SmallSpacing,
                 start = ProtonDimens.DefaultSpacing,
                 end = ProtonDimens.DefaultSpacing,
                 bottom = ProtonDimens.DefaultSpacing
             ),
+        enabled = enabled,
         value = text,
         trailingIcon = {
             if (enabled && text.isNotBlank()) {
@@ -74,7 +76,6 @@ fun AddressIdentityTextField(
         onValueChange = { onValueChanged(it) },
         textStyle = ProtonTheme.typography.defaultNorm,
         colors = TextFieldDefaults.protonOutlineTextFieldColors(),
-        enabled = enabled,
         placeholder = { Text(text = placeholder) },
         maxLines = 3
     )
