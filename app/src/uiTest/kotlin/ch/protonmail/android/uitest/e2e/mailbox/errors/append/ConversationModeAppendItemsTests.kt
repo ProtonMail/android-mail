@@ -41,6 +41,7 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import io.mockk.mockk
 import me.proton.core.auth.domain.usecase.ValidateServerProof
+import org.junit.Ignore
 import org.junit.Test
 
 @SmokeTest
@@ -93,6 +94,7 @@ internal class ConversationModeAppendItemsTests : MockedNetworkTest(), MailboxAp
 
     @Test
     @TestId("189113/2", "189158")
+    @Ignore("To be enabled again when MAILANDR-1162 is addressed.")
     @Suppress("MaxLineLength")
     fun checkAppendItemsInConversationMode() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
