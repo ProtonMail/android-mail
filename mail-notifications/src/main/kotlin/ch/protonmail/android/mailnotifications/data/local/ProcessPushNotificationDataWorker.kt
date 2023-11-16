@@ -28,6 +28,7 @@ import ch.protonmail.android.mailnotifications.data.local.ProcessPushNotificatio
 import ch.protonmail.android.mailnotifications.data.local.ProcessPushNotificationDataWorkerUtils.isNewLoginNotification
 import ch.protonmail.android.mailnotifications.data.local.ProcessPushNotificationDataWorkerUtils.isNewMessageNotification
 import ch.protonmail.android.mailnotifications.data.remote.resource.PushNotificationData
+import ch.protonmail.android.mailnotifications.data.remote.resource.PushNotificationSender
 import ch.protonmail.android.mailnotifications.domain.AppInBackgroundState
 import ch.protonmail.android.mailnotifications.domain.model.LocalPushNotificationData
 import ch.protonmail.android.mailnotifications.domain.model.MessageReadPushData
@@ -38,6 +39,7 @@ import ch.protonmail.android.mailnotifications.domain.usecase.ProcessMessageRead
 import ch.protonmail.android.mailnotifications.domain.usecase.ProcessNewLoginPushNotification
 import ch.protonmail.android.mailnotifications.domain.usecase.ProcessNewMessagePushNotification
 import ch.protonmail.android.mailnotifications.domain.usecase.content.DecryptNotificationContent
+import ch.protonmail.android.mailsettings.domain.usecase.notifications.GetExtendedNotificationsSetting
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.proton.core.accountmanager.domain.SessionManager
@@ -54,6 +56,7 @@ internal class ProcessPushNotificationDataWorker @AssistedInject constructor(
     private val decryptNotificationContent: DecryptNotificationContent,
     private val appInBackgroundState: AppInBackgroundState,
     private val userManager: UserManager,
+    private val getNotificationsExtendedPreference: GetExtendedNotificationsSetting,
     private val processNewMessagePushNotification: ProcessNewMessagePushNotification,
     private val processNewLoginPushNotification: ProcessNewLoginPushNotification,
     private val processMessageReadPushNotification: ProcessMessageReadPushNotification
@@ -116,14 +119,13 @@ internal class ProcessPushNotificationDataWorker @AssistedInject constructor(
         }
     }
 
-    private fun PushNotificationData.toLocalEmailNotificationData(
+    private suspend fun PushNotificationData.toLocalEmailNotificationData(
         context: Context,
         userId: String,
         userEmail: String
     ): LocalPushNotificationData.NewMessage {
         val userData = UserPushData(userId, userEmail)
-        val sender = sender?.senderName?.ifEmpty { sender.senderAddress }
-            ?: context.getString(R.string.notification_title_text_new_message_fallback)
+        val sender = getSenderForNewMessage(context, sender)
         val pushData = NewMessagePushData(sender, messageId, body)
 
         return LocalPushNotificationData.NewMessage(userData, pushData)
@@ -147,6 +149,16 @@ internal class ProcessPushNotificationDataWorker @AssistedInject constructor(
         return LocalPushNotificationData.Login(userData, pushData)
     }
 
+    private suspend fun getSenderForNewMessage(context: Context, sender: PushNotificationSender?): String {
+        val hasNotificationsExtended = getNotificationsExtendedPreference().getOrNull()?.enabled ?: true
+
+        if (hasNotificationsExtended) {
+            return sender?.senderName?.ifEmpty { sender.senderAddress }
+                ?: context.getString(R.string.notification_title_text_new_message_fallback)
+        }
+
+        return context.getString(R.string.notification_title_text_new_message_fallback)
+    }
 
     companion object {
 
