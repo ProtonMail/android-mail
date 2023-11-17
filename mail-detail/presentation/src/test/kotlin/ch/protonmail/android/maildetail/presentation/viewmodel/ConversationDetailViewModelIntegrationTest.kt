@@ -508,9 +508,7 @@ class ConversationDetailViewModelIntegrationTest {
         coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
 
         // When
-        buildConversationDetailViewModel(
-            ioDispatcher = Dispatchers.Default
-        ).state.test {
+        buildConversationDetailViewModel().state.test {
             skipItems(3)
 
             // then
