@@ -1,11 +1,9 @@
 package ch.protonmail.android.uicomponents.chips
 
 import androidx.compose.animation.core.Animatable
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -227,14 +225,12 @@ private fun UnFocusedChipsList(
     counterChip: ChipItem? = null,
     onChipClick: () -> Unit = {}
 ) {
-    var spacerRequired by remember { mutableStateOf(true) }
-
     Row {
         SuggestionChip(
             modifier = Modifier
                 .testTag(ChipsTestTags.BaseSuggestionChip)
                 .semantics { isValidField = itemChip !is ChipItem.Invalid }
-                .thenIf(!spacerRequired) { weight(2F) }
+                .weight(1f, fill = false)
                 .padding(horizontal = 4.dp),
             onClick = onChipClick,
             label = {
@@ -246,9 +242,6 @@ private fun UnFocusedChipsList(
                     color = when (itemChip) {
                         is ChipItem.Invalid -> Color.Red
                         else -> Color.Unspecified
-                    },
-                    onTextLayout = { textLayoutResult ->
-                        spacerRequired = !textLayoutResult.isLineEllipsized(0)
                     }
                 )
             },
@@ -270,13 +263,6 @@ private fun UnFocusedChipsList(
                     )
                 },
                 shape = chipShape
-            )
-        }
-        if (spacerRequired) {
-            Spacer(
-                modifier = Modifier
-                    .weight(1F)
-                    .background(Color.Red)
             )
         }
     }
