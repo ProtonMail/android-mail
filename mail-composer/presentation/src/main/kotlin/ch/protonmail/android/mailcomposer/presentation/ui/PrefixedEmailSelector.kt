@@ -72,6 +72,7 @@ internal fun PrefixedEmailSelector(
                     Spacer(modifier = Modifier.size(ProtonDimens.ExtraSmallSpacing))
                 }
             },
+            singleLine = true,
             colors = TextFieldDefaults.composerTextFieldColors(),
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next,
