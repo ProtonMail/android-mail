@@ -29,7 +29,7 @@ import ch.protonmail.android.mailcomposer.domain.usecase.FindLocalDraft
 import ch.protonmail.android.mailcomposer.domain.usecase.ResolveUserAddress
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailSettings
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import me.proton.core.domain.entity.UserId
 import me.proton.core.mailmessage.domain.entity.Email
 import me.proton.core.mailsendpreferences.domain.model.SendPreferences
@@ -63,7 +63,7 @@ internal class SendMessage @Inject constructor(
             .mapLeft { DataError.MessageSending.SenderAddressNotFound }
             .bind()
 
-        val autoSaveContacts = observeMailSettings(userId).first()?.autoSaveContacts ?: false
+        val autoSaveContacts = observeMailSettings(userId).firstOrNull()?.autoSaveContacts ?: false
 
         val recipients = localDraft.message.toList + localDraft.message.ccList + localDraft.message.bccList
 

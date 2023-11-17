@@ -27,7 +27,7 @@ import ch.protonmail.android.mailcomposer.domain.repository.AttachmentRepository
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.usecase.ProvideNewAttachmentId
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailSettings
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
@@ -41,7 +41,7 @@ class InjectAddressPublicKeyIntoMessage @Inject constructor(
 
     suspend operator fun invoke(userId: UserId, messageId: MessageId): Either<Error, Unit> = either {
 
-        if (observeMailSettings(userId).first()?.attachPublicKey != true) {
+        if (observeMailSettings(userId).firstOrNull()?.attachPublicKey != true) {
             return Unit.right()
         }
 
@@ -52,7 +52,9 @@ class InjectAddressPublicKeyIntoMessage @Inject constructor(
         val publicKey = getAddressPublicKey(
             userId,
             SenderEmail(localDraft.message.sender.address)
-        ).getOrNull() ?: raise(Error.GettingAddressPublicKey)
+        ).mapLeft {
+            Error.GettingAddressPublicKey
+        }.bind()
 
         attachmentRepository.createAttachment(
             userId,

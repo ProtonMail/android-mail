@@ -23,6 +23,7 @@ import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailcomposer.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import me.proton.core.domain.entity.UserId
+import timber.log.Timber
 import javax.inject.Inject
 
 class SendMessage @Inject constructor(
@@ -33,9 +34,13 @@ class SendMessage @Inject constructor(
 ) {
 
     suspend operator fun invoke(userId: UserId, messageId: MessageId) {
-        draftStateRepository.updateDraftSyncState(userId, messageId, DraftSyncState.Sending)
+        draftStateRepository.updateDraftSyncState(userId, messageId, DraftSyncState.Sending).onLeft {
+            Timber.e("SendMessage: error updating draft sync state: $it")
+        }
         moveToSentOptimistically(userId, messageId)
-        injectAddressPublicKeyIntoMessage(userId, messageId)
+        injectAddressPublicKeyIntoMessage(userId, messageId).onLeft {
+            Timber.e("SendMessage: error injecting public key: $it")
+        }
         messageRepository.send(userId, messageId)
     }
 }
