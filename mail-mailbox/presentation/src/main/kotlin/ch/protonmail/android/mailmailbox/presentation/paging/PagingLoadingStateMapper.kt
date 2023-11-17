@@ -18,81 +18,38 @@
 
 package ch.protonmail.android.mailmailbox.presentation.paging
 
+import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import ch.protonmail.android.mailcommon.domain.model.isOfflineError
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreenState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.paging.exception.DataErrorException
 import timber.log.Timber
 
-/**
- * Maps the [MailboxListState] to the [MailboxScreenState]
- */
-fun LazyPagingItems<MailboxItemUiModel>.mapToUiStates(
-    listState: MailboxListState,
-    refreshRequested: Boolean,
-    userInitiatedAppendState: MailboxScreenState
-): MailboxScreenState {
-    return when (listState) {
-        is MailboxListState.Data.ViewMode -> {
-            this.mapToUiStateInViewMode(refreshRequested, userInitiatedAppendState)
-        }
+fun LazyPagingItems<MailboxItemUiModel>.mapToUiStates(refreshRequested: Boolean): MailboxScreenState {
 
-        is MailboxListState.Data.SelectionMode -> {
-            MailboxScreenState.Data(this)
-        }
-
-        is MailboxListState.Loading -> {
-            MailboxScreenState.Loading
+    // When the user performs Pull to Refresh (refreshRequested = true), we will ignore AppendLoading state, because
+    // Paging Library performs Refresh Loading --> Gets New Data --> Starts Append Loading
+    if (refreshRequested) {
+        return when {
+            isPageLoadingNoData() -> MailboxScreenState.Loading
+            isPageLoadingWithData() -> MailboxScreenState.LoadingWithData
+            isPageRefreshFailed() -> refreshErrorToUiState(this)
+            isPageEmpty() -> MailboxScreenState.Empty
+            else -> MailboxScreenState.Data(this)
         }
     }
-}
 
-/**
- * Maps the [MailboxListState] to the [MailboxScreenState] only when user scroll downs the bottom
- * of the list for Appending a new page
- *
- * We keep this function separate from [mapToUiState] because we do not want to access LazyPagingItems.loadState.append
- * in [mapToUiState] function. Because it will cause background page loading changes loadState.append then it
- * causes redundant recomposition of the whole MailboxList.
- *
- * This function need to be called only locally at the end of the LazyColumn scope. So
- * it will not cause redundant recompositions
- */
-fun LazyPagingItems<MailboxItemUiModel>.mapAppendToUiStates(listState: MailboxListState): MailboxScreenState {
-    return when (listState) {
-        is MailboxListState.Data.ViewMode -> this.mapAppendToUiStateInViewMode()
-        else -> MailboxScreenState.Data(this)
-    }
-}
-
-private fun LazyPagingItems<MailboxItemUiModel>.mapToUiStateInViewMode(
-    refreshRequested: Boolean,
-    userInitiatedAppendState: MailboxScreenState
-): MailboxScreenState {
+    // In other cases, we should give priority to AppendLoading state in order to show the loading
+    // indicator at the bottom
     return when {
-        this.loadState.refresh is LoadState.Loading -> {
-            if (this.itemCount == 0) {
-                MailboxScreenState.Loading
-            } else {
-                MailboxScreenState.LoadingWithData(refreshRequested)
-            }
-        }
-
-        userInitiatedAppendState is MailboxScreenState.AppendLoading -> MailboxScreenState.AppendLoading
-        this.loadState.refresh is LoadState.Error -> refreshErrorToUiState(this)
-        this.itemCount == 0 -> MailboxScreenState.Empty
-        else -> MailboxScreenState.Data(this)
-    }
-
-}
-
-private fun LazyPagingItems<MailboxItemUiModel>.mapAppendToUiStateInViewMode(): MailboxScreenState {
-    return when (this.loadState.append) {
-        is LoadState.Loading -> MailboxScreenState.AppendLoading
-        is LoadState.Error -> appendErrorToUiState(this)
+        isPageLoadingNoData() -> MailboxScreenState.Loading
+        isPageAppendLoading() -> MailboxScreenState.AppendLoading
+        isPageLoadingWithData() -> MailboxScreenState.LoadingWithData
+        isPageAppendFailed() -> appendErrorToUiState(this)
+        isPageRefreshFailed() -> refreshErrorToUiState(this)
+        isPageEmpty() -> MailboxScreenState.Empty
         else -> MailboxScreenState.Data(this)
     }
 }
@@ -129,3 +86,26 @@ private fun refreshErrorToUiState(pagingItems: LazyPagingItems<MailboxItemUiMode
         else -> MailboxScreenState.Error
     }
 }
+
+// General Loading State (When there is data)
+private fun LazyPagingItems<MailboxItemUiModel>.isPageLoadingWithData(): Boolean =
+    this.loadState.isLoading() && this.itemCount > 0
+
+// General Loading State (When there is NO data)
+private fun LazyPagingItems<MailboxItemUiModel>.isPageLoadingNoData(): Boolean =
+    this.loadState.isLoading() && this.itemCount == 0
+
+private fun LazyPagingItems<MailboxItemUiModel>.isPageAppendLoading(): Boolean = this.loadState.isAppendLoading()
+
+private fun LazyPagingItems<MailboxItemUiModel>.isPageAppendFailed(): Boolean = this.loadState.append is LoadState.Error
+
+private fun LazyPagingItems<MailboxItemUiModel>.isPageRefreshFailed(): Boolean =
+    this.loadState.refresh is LoadState.Error
+
+private fun LazyPagingItems<MailboxItemUiModel>.isPageEmpty(): Boolean = this.itemCount == 0
+
+// Mediator or Source is Loading
+private fun CombinedLoadStates.isLoading() = this.isSourceLoading() || this.isMediatorLoading()
+private fun CombinedLoadStates.isSourceLoading() = this.source.refresh is LoadState.Loading
+private fun CombinedLoadStates.isMediatorLoading() = this.mediator?.refresh is LoadState.Loading
+private fun CombinedLoadStates.isAppendLoading() = this.append is LoadState.Loading

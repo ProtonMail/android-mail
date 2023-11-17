@@ -28,7 +28,7 @@ sealed class MailboxScreenState {
     object Error : MailboxScreenState()
     object Offline : MailboxScreenState()
 
-    class LoadingWithData(val refreshRequested: Boolean) : MailboxScreenState()
+    object LoadingWithData : MailboxScreenState()
     object ErrorWithData : MailboxScreenState()
     object OfflineWithData : MailboxScreenState()
 

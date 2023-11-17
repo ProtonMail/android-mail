@@ -45,12 +45,11 @@ import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -81,7 +80,6 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewA
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxPreview
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxPreviewProvider
-import ch.protonmail.android.mailmailbox.presentation.paging.mapAppendToUiStates
 import ch.protonmail.android.mailmailbox.presentation.paging.mapToUiStates
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonAlertDialog
@@ -131,6 +129,7 @@ fun MailboxScreen(
             }
         },
         onRefreshList = { viewModel.submit(MailboxViewAction.Refresh) },
+        onRefreshListCompleted = { viewModel.submit(MailboxViewAction.RefreshCompleted) },
         markAsRead = { viewModel.submit(MailboxViewAction.MarkAsRead) },
         markAsUnread = { viewModel.submit(MailboxViewAction.MarkAsUnread) },
         trash = { viewModel.submit(MailboxViewAction.Trash) },
@@ -286,6 +285,7 @@ private fun MailboxStickyHeader(
     }
 }
 
+@SuppressWarnings("ComplexMethod")
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun MailboxSwipeRefresh(
@@ -296,32 +296,20 @@ private fun MailboxSwipeRefresh(
     actions: MailboxScreen.Actions,
     modifier: Modifier = Modifier
 ) {
+    // We need to show the Pull To Refresh indicator at top at correct times, which are first time we fetch data from
+    // remote and when the user pulls to refresh. We will use following flags to know when to show the indicator.
+    var loadingWithDataCount by remember { mutableStateOf(0) }
     val refreshRequested = (state as? MailboxListState.Data.ViewMode)?.refreshRequested ?: false
-    val appendLoadingState: MutableState<MailboxScreenState> =
-        remember { mutableStateOf(MailboxScreenState.Data(items)) }
-
-    val appendLoadingStateChanged: (MailboxScreenState) -> Unit = {
-        // View state is refreshed from the Append part of the LazyColumn (user scrolls down and tries to load older
-        // emails , we need to trigger derivedStateOf to calculate the state again and refresh the list accordingly
-        appendLoadingState.value = it
-    }
-
-    // Here we use derivedStateOf to discard LazyPagingItems's loadState changes in the background while the user
-    // scrolls down the mail list. Paging library produces loadState.append = Loading state in the background and this
-    // was causing recomposition of MailboxSwipeRefresh composable
-    val currentViewState by remember {
-        derivedStateOf {
-            items.mapToUiStates(
-                state,
-                refreshRequested,
-                appendLoadingState.value
-            )
-        }
-    }
+    val currentViewState = remember(items.loadState, refreshRequested) { items.mapToUiStates(refreshRequested) }
 
     val refreshing = currentViewState is MailboxScreenState.LoadingWithData
 
     LaunchedEffect(refreshing) {
+        // first time refreshing
+        if (refreshing) {
+            loadingWithDataCount++
+        }
+
         // We need to clear the refreshRequestedState after the refresh is done
         if (refreshRequested && !refreshing) {
             actions.onRefreshListCompleted()
@@ -329,7 +317,7 @@ private fun MailboxSwipeRefresh(
     }
 
     val pullRefreshState = rememberPullRefreshState(
-        refreshing = refreshing,
+        refreshing = refreshing && (refreshRequested || loadingWithDataCount == 1),
         onRefresh = {
             actions.onRefreshList()
             items.refresh()
@@ -365,22 +353,19 @@ private fun MailboxSwipeRefresh(
 
             is MailboxScreenState.OfflineWithData -> {
                 actions.onOfflineWithData()
-                MailboxItemsList(state, listState, items, actions, appendLoadingStateChanged)
+                MailboxItemsList(state, listState, currentViewState, items, actions)
             }
 
             is MailboxScreenState.ErrorWithData -> {
                 actions.onErrorWithData()
-                MailboxItemsList(state, listState, items, actions, appendLoadingStateChanged)
+                MailboxItemsList(state, listState, currentViewState, items, actions)
             }
 
             is MailboxScreenState.LoadingWithData,
             is MailboxScreenState.AppendLoading,
             is MailboxScreenState.AppendError,
             is MailboxScreenState.AppendOfflineError,
-            is MailboxScreenState.Data -> MailboxItemsList(
-                state, listState, items, actions,
-                appendLoadingStateChanged
-            )
+            is MailboxScreenState.Data -> MailboxItemsList(state, listState, currentViewState, items, actions)
         }
         PullRefreshIndicator(
             refreshing = refreshing,
@@ -395,9 +380,9 @@ private fun MailboxSwipeRefresh(
 private fun MailboxItemsList(
     state: MailboxListState,
     listState: LazyListState,
+    viewState: MailboxScreenState,
     items: LazyPagingItems<MailboxItemUiModel>,
-    actions: MailboxScreen.Actions,
-    appendLoadingStateChanged: (MailboxScreenState) -> Unit
+    actions: MailboxScreen.Actions
 ) {
     val itemActions = ComposeMailboxItem.Actions(
         onItemClicked = actions.onItemClicked,
@@ -435,35 +420,23 @@ private fun MailboxItemsList(
         }
         item {
 
-            when (items.mapAppendToUiStates(state)) {
+            when (viewState) {
+                is MailboxScreenState.AppendLoading -> ProtonCenteredProgress(
+                    modifier = Modifier
+                        .testTag(MailboxScreenTestTags.MailboxAppendLoader)
+                        .padding(ProtonDimens.DefaultSpacing)
+                )
 
-                is MailboxScreenState.AppendLoading -> {
-                    ProtonCenteredProgress(
-                        modifier = Modifier
-                            .testTag(MailboxScreenTestTags.MailboxAppendLoader)
-                            .padding(ProtonDimens.DefaultSpacing)
-                    )
-                    appendLoadingStateChanged(MailboxScreenState.AppendLoading)
-                }
+                is MailboxScreenState.AppendOfflineError -> AppendError(
+                    message = stringResource(id = R.string.mailbox_error_message_offline),
+                    onClick = { items.retry() }
+                )
 
-                is MailboxScreenState.AppendOfflineError -> {
-                    AppendError(
-                        message = stringResource(id = R.string.mailbox_error_message_offline),
-                        onClick = { items.retry() }
-                    )
-                    appendLoadingStateChanged(MailboxScreenState.AppendOfflineError)
-                }
-
-                is MailboxScreenState.AppendError -> {
-                    AppendError(
-                        message = stringResource(id = R.string.mailbox_error_message_generic),
-                        onClick = { items.retry() }
-                    )
-                    appendLoadingStateChanged(MailboxScreenState.AppendError)
-
-                }
-
-                else -> appendLoadingStateChanged(MailboxScreenState.Data(items))
+                is MailboxScreenState.AppendError -> AppendError(
+                    message = stringResource(id = R.string.mailbox_error_message_generic),
+                    onClick = { items.retry() }
+                )
+                else -> Unit
             }
         }
     }
