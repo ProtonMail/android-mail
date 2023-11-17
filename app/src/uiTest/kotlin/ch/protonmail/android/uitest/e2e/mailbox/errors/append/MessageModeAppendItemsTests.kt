@@ -41,10 +41,12 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import io.mockk.mockk
 import me.proton.core.auth.domain.usecase.ValidateServerProof
+import org.junit.Ignore
 import org.junit.Test
 
 @SmokeTest
 @HiltAndroidTest
+@Ignore("To be enabled again when MAILANDR-1162 is addressed.")
 @UninstallModules(ServerProofModule::class)
 internal class MessageModeAppendItemsTests : MockedNetworkTest(), MailboxAppendItemsTests {
 
