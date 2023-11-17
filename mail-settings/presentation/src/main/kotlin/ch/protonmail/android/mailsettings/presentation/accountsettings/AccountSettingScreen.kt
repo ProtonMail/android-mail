@@ -20,13 +20,11 @@ package ch.protonmail.android.mailsettings.presentation.accountsettings
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import android.text.format.Formatter.formatShortFileSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Divider
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,6 +37,7 @@ import me.proton.core.compose.component.ProtonSettingsItem
 import me.proton.core.compose.component.ProtonSettingsList
 import me.proton.core.compose.component.ProtonSettingsTopBar
 import me.proton.core.compose.flow.rememberAsState
+import me.proton.core.presentation.utils.formatByteToHumanReadable
 import me.proton.core.util.kotlin.exhaustive
 import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 
@@ -181,7 +180,7 @@ fun AccountSettingScreen(
 @Composable
 private fun MailboxSizeItem(state: AccountSettingsState.Data) {
     val formattedSize = if (state.mailboxUsedSpace != null && state.mailboxSize != null) {
-        "${formatFileSize(state.mailboxUsedSpace)} / ${formatFileSize(state.mailboxSize)}"
+        "${state.mailboxUsedSpace.formatByteToHumanReadable()} / ${state.mailboxSize.formatByteToHumanReadable()}"
     } else {
         stringResource(id = string.mail_settings_no_information_available)
     }
@@ -214,21 +213,6 @@ private fun ConversationModeSettingItem(
     )
     Divider()
 }
-
-/**
- * Formats the given parameter to a suitable file size measurement.
- * Please note that this will yield different values depending on the
- * android version it is invoked on, since on android N and earlier
- * the calculation is done considering `1kB = 1024B`
- * while on newer versions it's done using `1kB = 1000B`
- *
- * See [formatShortFileSize] docs for more details
- */
-@Composable
-private fun formatFileSize(mailboxUsedSpace: Long) = formatShortFileSize(
-    LocalContext.current,
-    mailboxUsedSpace
-)
 
 object AccountSettingScreen {
 
