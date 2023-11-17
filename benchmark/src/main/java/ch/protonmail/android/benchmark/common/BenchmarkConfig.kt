@@ -21,5 +21,6 @@ package ch.protonmail.android.benchmark.common
 object BenchmarkConfig {
     const val PackageName = "ch.protonmail.android.alpha"
     const val WaitForMailboxTimeout = 20_000L
+    const val WaitForMessageDetailsTimeout = 10_000L
     const val DefaultIterations = 3
 }

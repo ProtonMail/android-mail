@@ -25,4 +25,5 @@ object TestTags {
     const val MailboxRootTag = "MailboxScreen"
     const val FirstMailboxItemRow = "MailboxItemRow0"
     const val MailboxListTag = "MailboxList"
+    const val MessageBodyNoWebView = "MessageBodyNoWebView"
 }

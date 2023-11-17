@@ -24,6 +24,7 @@ import androidx.benchmark.macro.TraceSectionMetric
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.Until
 import ch.protonmail.android.benchmark.common.BenchmarkConfig.WaitForMailboxTimeout
+import ch.protonmail.android.benchmark.common.BenchmarkConfig.WaitForMessageDetailsTimeout
 
 /**
  * Wait until the first row within the mailbox list is rendered.
@@ -35,6 +36,21 @@ fun MacrobenchmarkScope.waitUntilFirstEmailRowShownOnMailboxList() {
 
     // Wait until the first row within the list is rendered
     mailboxList.wait(Until.hasObject(By.res(TestTags.FirstMailboxItemRow)), WaitForMailboxTimeout)
+}
+
+
+/**
+ * Click on the first row and wait until message details are shown
+ */
+fun MacrobenchmarkScope.clickOnTheFirstEmailRowWaitDetailsShown() {
+
+    val mailboxList = device.findObject(By.res(TestTags.MailboxListTag))
+
+    val firstEmailRow = mailboxList.findObject(By.res(TestTags.FirstMailboxItemRow))
+
+    firstEmailRow.click()
+
+    device.wait(Until.hasObject(By.res(TestTags.MessageBodyNoWebView)), WaitForMessageDetailsTimeout)
 }
 
 /**
