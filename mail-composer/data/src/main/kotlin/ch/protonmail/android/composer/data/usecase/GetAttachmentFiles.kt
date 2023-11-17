@@ -32,7 +32,7 @@ import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import javax.inject.Inject
 
-class ReadAttachmentsFromStorage @Inject constructor(
+class GetAttachmentFiles @Inject constructor(
     private val attachmentRepository: AttachmentRepository,
     private val decryptAttachmentByteArray: DecryptAttachmentByteArray,
     private val draftStateRepository: DraftStateRepository

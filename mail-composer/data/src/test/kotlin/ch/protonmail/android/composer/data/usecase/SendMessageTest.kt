@@ -68,7 +68,7 @@ class SendMessageTest {
     private val findLocalDraft = mockk<FindLocalDraft>()
     private val obtainSendPreferences = mockk<ObtainSendPreferences>()
     private val observeMailSettings = mockk<ObserveMailSettings>()
-    private val readAttachmentsFromStorage = mockk<ReadAttachmentsFromStorage>()
+    private val getAttachmentFiles = mockk<GetAttachmentFiles>()
 
     private val sendMessage = SendMessage(
         messageRemoteDataSource,
@@ -77,7 +77,7 @@ class SendMessageTest {
         findLocalDraft,
         obtainSendPreferences,
         observeMailSettings,
-        readAttachmentsFromStorage
+        getAttachmentFiles
     )
 
     private val userId = UserAddressSample.PrimaryAddress.userId
@@ -149,7 +149,7 @@ class SendMessageTest {
         expectObserveMailSettingsReturnsNull()
         expectObtainSendPreferencesSucceeds { sendPreferences }
         coEvery {
-            readAttachmentsFromStorage(userId, messageId, sampleMessage.messageBody.attachments.map { it.attachmentId })
+            getAttachmentFiles(userId, messageId, sampleMessage.messageBody.attachments.map { it.attachmentId })
         } returns DataError.Local.NoDataCached.left()
 
         // When
@@ -178,7 +178,7 @@ class SendMessageTest {
         sendMessage(userId, messageId)
 
         // Then
-        coVerify(exactly = attachmentIds.size) { readAttachmentsFromStorage(userId, messageId, any()) }
+        coVerify(exactly = attachmentIds.size) { getAttachmentFiles(userId, messageId, any()) }
     }
 
     @Test
@@ -200,7 +200,7 @@ class SendMessageTest {
         sendMessage(userId, messageId)
 
         // Then
-        coVerify(exactly = attachmentIds.size) { readAttachmentsFromStorage(userId, messageId, any()) }
+        coVerify(exactly = attachmentIds.size) { getAttachmentFiles(userId, messageId, any()) }
     }
 
     @Test
@@ -219,7 +219,7 @@ class SendMessageTest {
         sendMessage(userId, messageId)
 
         // Then
-        coVerify(exactly = 0) { readAttachmentsFromStorage(any(), any(), any()) }
+        coVerify(exactly = 0) { getAttachmentFiles(any(), any(), any()) }
     }
 
     @Test
@@ -392,7 +392,7 @@ class SendMessageTest {
         attachments: Map<AttachmentId, File>
     ) {
         coEvery {
-            readAttachmentsFromStorage(userId, messageId, attachmentIds)
+            getAttachmentFiles(userId, messageId, attachmentIds)
         } returns attachments.right()
     }
 

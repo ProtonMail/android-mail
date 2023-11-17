@@ -21,15 +21,15 @@ package ch.protonmail.android.composer.data.usecase
 import java.io.File
 import arrow.core.left
 import arrow.core.right
-import ch.protonmail.android.composer.data.usecase.ReadAttachmentsFromStorageTest.TestData.ApiMessageId
-import ch.protonmail.android.composer.data.usecase.ReadAttachmentsFromStorageTest.TestData.Attachment1
-import ch.protonmail.android.composer.data.usecase.ReadAttachmentsFromStorageTest.TestData.Attachment2
-import ch.protonmail.android.composer.data.usecase.ReadAttachmentsFromStorageTest.TestData.AttachmentId1
-import ch.protonmail.android.composer.data.usecase.ReadAttachmentsFromStorageTest.TestData.AttachmentId2
-import ch.protonmail.android.composer.data.usecase.ReadAttachmentsFromStorageTest.TestData.AttachmentIds
-import ch.protonmail.android.composer.data.usecase.ReadAttachmentsFromStorageTest.TestData.DraftState
-import ch.protonmail.android.composer.data.usecase.ReadAttachmentsFromStorageTest.TestData.MessageId
-import ch.protonmail.android.composer.data.usecase.ReadAttachmentsFromStorageTest.TestData.UserId
+import ch.protonmail.android.composer.data.usecase.GetAttachmentFilesTest.TestData.ApiMessageId
+import ch.protonmail.android.composer.data.usecase.GetAttachmentFilesTest.TestData.Attachment1
+import ch.protonmail.android.composer.data.usecase.GetAttachmentFilesTest.TestData.Attachment2
+import ch.protonmail.android.composer.data.usecase.GetAttachmentFilesTest.TestData.AttachmentId1
+import ch.protonmail.android.composer.data.usecase.GetAttachmentFilesTest.TestData.AttachmentId2
+import ch.protonmail.android.composer.data.usecase.GetAttachmentFilesTest.TestData.AttachmentIds
+import ch.protonmail.android.composer.data.usecase.GetAttachmentFilesTest.TestData.DraftState
+import ch.protonmail.android.composer.data.usecase.GetAttachmentFilesTest.TestData.MessageId
+import ch.protonmail.android.composer.data.usecase.GetAttachmentFilesTest.TestData.UserId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcomposer.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftState
@@ -50,7 +50,7 @@ import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class ReadAttachmentsFromStorageTest {
+class GetAttachmentFilesTest {
 
     private val attachmentRepository = mockk<AttachmentRepository> {
         coEvery { readFileFromStorage(UserId, ApiMessageId, AttachmentId1) } returns Attachment1.right()
@@ -60,7 +60,7 @@ class ReadAttachmentsFromStorageTest {
         coEvery { observe(UserId, MessageId) } returns flowOf(DraftState.right())
     }
 
-    private val readAttachmentsFromStorage = ReadAttachmentsFromStorage(
+    private val getAttachmentFiles = GetAttachmentFiles(
         attachmentRepository = attachmentRepository,
         decryptAttachmentByteArray = decryptAttachmentByteArray,
         draftStateRepository = draftStateRepository
@@ -73,7 +73,7 @@ class ReadAttachmentsFromStorageTest {
         expectReadFileFromStorageSucceeds(AttachmentId2, Attachment2)
 
         // When
-        val actual = readAttachmentsFromStorage(UserId, MessageId, AttachmentIds)
+        val actual = getAttachmentFiles(UserId, MessageId, AttachmentIds)
 
         // Then
         assertEquals(expected, actual)
@@ -93,7 +93,7 @@ class ReadAttachmentsFromStorageTest {
             expectSaveAttachmentSucceeds(AttachmentId2, decryptedAttachmentByteArray, Attachment2)
 
             // When
-            val actual = readAttachmentsFromStorage(UserId, MessageId, AttachmentIds)
+            val actual = getAttachmentFiles(UserId, MessageId, AttachmentIds)
 
             // Then
             val expected = mapOf(AttachmentId1 to Attachment1, AttachmentId2 to Attachment2).right()
@@ -119,7 +119,7 @@ class ReadAttachmentsFromStorageTest {
             } returns DataError.Remote.Unknown.left()
 
             // When
-            val actual = readAttachmentsFromStorage(UserId, MessageId, AttachmentIds)
+            val actual = getAttachmentFiles(UserId, MessageId, AttachmentIds)
 
             // Then
             assertEquals(DataError.MessageSending.DownloadingAttachments.left(), actual)
@@ -142,7 +142,7 @@ class ReadAttachmentsFromStorageTest {
             } returns AttachmentDecryptionError.DecryptionFailed.left()
 
             // When
-            val actual = readAttachmentsFromStorage(UserId, MessageId, AttachmentIds)
+            val actual = getAttachmentFiles(UserId, MessageId, AttachmentIds)
 
             // Then
             assertEquals(DataError.MessageSending.DownloadingAttachments.left(), actual)
@@ -172,7 +172,7 @@ class ReadAttachmentsFromStorageTest {
             } returns DataError.Local.FailedToStoreFile.left()
 
             // When
-            val actual = readAttachmentsFromStorage(UserId, MessageId, AttachmentIds)
+            val actual = getAttachmentFiles(UserId, MessageId, AttachmentIds)
 
             // Then
             assertEquals(DataError.Local.FailedToStoreFile.left(), actual)
@@ -194,7 +194,7 @@ class ReadAttachmentsFromStorageTest {
         coEvery { draftStateRepository.observe(UserId, MessageId) } returns flowOf(DataError.Local.NoDataCached.left())
 
         // When
-        val actual = readAttachmentsFromStorage(UserId, MessageId, AttachmentIds)
+        val actual = getAttachmentFiles(UserId, MessageId, AttachmentIds)
 
         // Then
         assertEquals(expected, actual)

@@ -47,7 +47,7 @@ internal class SendMessage @Inject constructor(
     private val findLocalDraft: FindLocalDraft,
     private val obtainSendPreferences: ObtainSendPreferences,
     private val observeMailSettings: ObserveMailSettings,
-    private val readAttachmentsFromStorage: ReadAttachmentsFromStorage
+    private val getAttachmentFiles: GetAttachmentFiles
 ) {
 
     /**
@@ -71,7 +71,7 @@ internal class SendMessage @Inject constructor(
 
         val attachmentFiles = if (sendPreferences.containsMimeSchemePreferences()) {
             val attachmentIds = localDraft.messageBody.attachments.map { it.attachmentId }
-            readAttachmentsFromStorage(userId, messageId, attachmentIds).bind()
+            getAttachmentFiles(userId, messageId, attachmentIds).bind()
         } else {
             emptyMap()
         }
