@@ -49,11 +49,11 @@ class EditAddressIdentityReducer @Inject constructor(
 
             is EditAddressIdentityState.DataLoaded -> when (event) {
                 is EditAddressIdentityEvent.Error.UpdateError -> this.copy(
-                    updateErrorState = EditAddressIdentityState.UpdateErrorState(Effect.of(Unit))
+                    updateError = Effect.of(Unit)
                 )
 
                 EditAddressIdentityEvent.Navigation.Close -> this.copy(
-                    closeState = EditAddressIdentityState.CloseState(close = Effect.of(Unit))
+                    close = Effect.of(Unit)
                 )
 
                 else -> this
@@ -142,15 +142,13 @@ class EditAddressIdentityReducer @Inject constructor(
         val displayNameUiModel = editAddressIdentityMapper.toDisplayNameUiModel(displayName)
         val signatureUiModel = editAddressIdentityMapper.toSignatureUiModel(signature)
         val mobileFooterUiModel = editAddressIdentityMapper.toMobileFooterUiModel(mobileFooter)
-        val errorState = EditAddressIdentityState.UpdateErrorState(Effect.empty())
-        val closeState = EditAddressIdentityState.CloseState(Effect.empty())
 
         return EditAddressIdentityState.DataLoaded(
             EditAddressIdentityState.DisplayNameState(displayNameUiModel),
             EditAddressIdentityState.SignatureState(signatureUiModel),
             EditAddressIdentityState.MobileFooterState(mobileFooterUiModel),
-            errorState,
-            closeState
+            Effect.empty(),
+            Effect.empty()
         )
     }
 }

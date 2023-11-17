@@ -29,13 +29,11 @@ sealed interface EditAddressIdentityState {
         val displayNameState: DisplayNameState,
         val signatureState: SignatureState,
         val mobileFooterState: MobileFooterState,
-        val updateErrorState: UpdateErrorState,
-        val closeState: CloseState
+        val updateError: Effect<Unit>,
+        val close: Effect<Unit>
     ) : EditAddressIdentityState
 
     data class DisplayNameState(val displayNameUiModel: DisplayNameUiModel)
     data class SignatureState(val addressSignatureUiModel: AddressSignatureUiModel)
     data class MobileFooterState(val mobileFooterUiModel: MobileFooterUiModel)
-    data class UpdateErrorState(val updateError: Effect<Unit>)
-    data class CloseState(val close: Effect<Unit>)
 }

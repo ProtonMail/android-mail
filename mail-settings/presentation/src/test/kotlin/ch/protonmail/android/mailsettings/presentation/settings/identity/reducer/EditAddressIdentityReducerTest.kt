@@ -67,19 +67,15 @@ internal class EditAddressIdentityReducerTest(
         private val baseMobileFooterState = EditAddressIdentityState.MobileFooterState(
             MobileFooterUiModel("mobile-footer", enabled = true, isFieldEnabled = false)
         )
-        private val baseErrorState = EditAddressIdentityState.UpdateErrorState(
-            Effect.empty()
-        )
-        private val baseCloseState = EditAddressIdentityState.CloseState(
-            Effect.empty()
-        )
+        private val baseError = Effect.empty<Unit>()
+        private val baseClose = Effect.empty<Unit>()
 
         private val baseLoadedState = EditAddressIdentityState.DataLoaded(
             baseDisplayNameState,
             baseSignatureState,
             baseMobileFooterState,
-            baseErrorState,
-            baseCloseState
+            baseError,
+            baseClose
         )
 
         private val transitionFromLoadingState = listOf(
@@ -100,7 +96,7 @@ internal class EditAddressIdentityReducerTest(
                 currentState = baseLoadedState,
                 event = EditAddressIdentityEvent.Error.UpdateError,
                 expectedState = baseLoadedState.copy(
-                    updateErrorState = EditAddressIdentityState.UpdateErrorState(Effect.of(Unit))
+                    updateError = Effect.of(Unit)
                 )
             ),
             TestInput(
@@ -159,7 +155,7 @@ internal class EditAddressIdentityReducerTest(
                 currentState = baseLoadedState,
                 event = EditAddressIdentityEvent.Navigation.Close,
                 expectedState = baseLoadedState.copy(
-                    closeState = EditAddressIdentityState.CloseState(close = Effect.of(Unit))
+                    close = Effect.of(Unit)
                 )
             )
         )
