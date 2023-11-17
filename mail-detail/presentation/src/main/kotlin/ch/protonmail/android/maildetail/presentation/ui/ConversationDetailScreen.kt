@@ -44,8 +44,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -322,9 +324,9 @@ fun ConversationDetailScreen(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @Composable
-@Suppress("LongParameterList")
+@Suppress("LongParameterList", "ComplexMethod")
 private fun MessagesContent(
     uiModels: ImmutableList<ConversationDetailMessageUiModel>,
     padding: PaddingValues,
@@ -377,22 +379,30 @@ private fun MessagesContent(
                     scrollToMessageId?.let { actions.onExpand(MessageIdUiModel(it)) }
                 }
 
+                scrollCount++
+
             } else {
-                listState.animateScrollToItem(scrollToIndex, scrollOffsetPx)
+                // Scrolled message expanded, so we can conclude that scrolling is completed
                 actions.onScrollRequestCompleted()
                 scrollToIndex = -1
             }
-
-            scrollCount++
         }
     }
 
     // We will insert a placeholder after the last item to move it to the top when scrolled
     val lazyColumnHeight = remember { mutableStateOf(0) }
-
+    var placeholderHeight by remember { mutableStateOf(0) }
+    var userScrolled by remember { mutableStateOf(false) }
     LazyColumn(
         modifier = modifier
             .testTag(ConversationDetailScreenTestTags.MessagesList)
+            .pointerInteropFilter { event ->
+                if (!userScrolled && event.action == android.view.MotionEvent.ACTION_DOWN) {
+                    userScrolled = true
+                }
+
+                false // Allow the event to propagate
+            }
             .onGloballyPositioned {
                 lazyColumnHeight.value = it.size.height
             },
@@ -424,31 +434,37 @@ private fun MessagesContent(
                 showReplyActionsFeatureFlag = showReplyActionsFeatureFlag
             )
 
-            // We will insert placeholder after the last item to move it to the top when scrolled
-            if (isLastItem && scrollToIndex >= 0) {
-                val sumOfHeights = itemsHeight.entries.filter { it.key >= scrollToIndex }.sumOf { it.value }
-                val placeholderHeight = lazyColumnHeight.value - sumOfHeights
-                if (placeholderHeight > 0) {
-                    Spacer(
-                        modifier = Modifier
-                            .height(placeholderHeight.dp)
-                    )
+            if (!userScrolled) {
+                // We will insert placeholder after the last item to move it to the top when scrolled
+                // Make this calculation until we get sum of all items heights before the completion of scrolling
+                // We assume scroll operation is completed when the scrolled item is expanded
+                if (isLastItem && scrollToIndex >= 0 && !initialPlaceholderHeightCalculated) {
+                    val sumOfHeights = itemsHeight.entries.filter { it.key >= scrollToIndex }.sumOf { it.value }
+                    placeholderHeight = lazyColumnHeight.value - sumOfHeights
 
                     // We need to check if we got all items heights, in that case we need to trigger scroll to the
                     // message again by changing initialPlaceholderHeightCalculated to true. We need this scrolling
                     // only when sum of all item heights is less than the LazyColumn height (which means we have
                     // few messages in the conversation)
-                    if (itemsHeight.size == uiModels.size && !initialPlaceholderHeightCalculated) {
-                        val totalOfHeights = itemsHeight.values.sum()
-                        if (totalOfHeights < lazyColumnHeight.value) {
-                            initialPlaceholderHeightCalculated = true
-                        }
+                    if (itemsHeight.size == uiModels.size) {
+                        initialPlaceholderHeightCalculated = true
                     }
                 }
+            } else {
+                // After user scrolled, we need to reset the placeholder height to 0
+                placeholderHeight = 0
+            }
+
+            if (isLastItem && placeholderHeight > 0) {
+                Spacer(
+                    modifier = Modifier
+                        .height(placeholderHeight.dp)
+                )
             }
         }
     }
 }
+
 
 object ConversationDetail {
 
