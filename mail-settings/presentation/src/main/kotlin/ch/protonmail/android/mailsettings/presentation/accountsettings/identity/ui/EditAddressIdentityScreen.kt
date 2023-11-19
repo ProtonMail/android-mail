@@ -29,8 +29,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailsettings.presentation.R
-import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.EditAddressIdentityAction
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.EditAddressIdentityState
+import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.EditAddressIdentityViewAction
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.previewdata.EditAddressIdentityScreenPreviewData
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.viewmodel.EditAddressIdentityViewModel
 import me.proton.core.compose.component.ProtonCenteredProgress
@@ -49,18 +49,18 @@ fun EditAddressIdentityScreen(
     val state: EditAddressIdentityState by viewModel.state.collectAsState()
 
     val listActions = EditAddressIdentityScreenList.Actions(
-        onDisplayNameChanged = { viewModel.submit(EditAddressIdentityAction.DisplayName.UpdateValue(it)) },
-        onSignatureValueChanged = { viewModel.submit(EditAddressIdentityAction.Signature.UpdateValue(it)) },
-        onSignatureToggled = { viewModel.submit(EditAddressIdentityAction.Signature.ToggleState(it)) },
-        onMobileFooterValueChanged = { viewModel.submit(EditAddressIdentityAction.MobileFooter.UpdateValue(it)) },
-        onMobileFooterToggled = { viewModel.submit(EditAddressIdentityAction.MobileFooter.ToggleState(it)) },
+        onDisplayNameChanged = { viewModel.submit(EditAddressIdentityViewAction.DisplayName.UpdateValue(it)) },
+        onSignatureValueChanged = { viewModel.submit(EditAddressIdentityViewAction.Signature.UpdateValue(it)) },
+        onSignatureToggled = { viewModel.submit(EditAddressIdentityViewAction.Signature.ToggleState(it)) },
+        onMobileFooterValueChanged = { viewModel.submit(EditAddressIdentityViewAction.MobileFooter.UpdateValue(it)) },
+        onMobileFooterToggled = { viewModel.submit(EditAddressIdentityViewAction.MobileFooter.ToggleState(it)) },
     )
 
     EditAddressIdentityScreen(
         modifier = modifier,
         state = state,
         onBackClick = onBackClick,
-        onSaveClick = { viewModel.submit(EditAddressIdentityAction.Save) },
+        onSaveClick = { viewModel.submit(EditAddressIdentityViewAction.Save) },
         onCloseScreen = onCloseScreen,
         listActions = listActions
     )
@@ -95,10 +95,10 @@ fun EditAddressIdentityScreen(
                         mobileFooterState = state.mobileFooterState,
                         actions = listActions
                     )
-                    ConsumableLaunchedEffect(state.updateErrorState.updateError) {
+                    ConsumableLaunchedEffect(state.updateError) {
                         snackbarHostState.showSnackbar(ProtonSnackbarType.ERROR, message = updateErrorMessage)
                     }
-                    ConsumableLaunchedEffect(state.closeState.close) {
+                    ConsumableLaunchedEffect(state.close) {
                         onCloseScreen()
                     }
                 }

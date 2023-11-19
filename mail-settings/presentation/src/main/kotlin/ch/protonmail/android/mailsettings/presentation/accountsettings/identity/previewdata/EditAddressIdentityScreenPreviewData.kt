@@ -35,8 +35,8 @@ internal object EditAddressIdentityScreenPreviewData {
         mobileFooterState = EditAddressIdentityState.MobileFooterState(
             MobileFooterUiModel("Sent with Proton Mail for Android", enabled = true, isFieldEnabled = true)
         ),
-        updateErrorState = EditAddressIdentityState.UpdateErrorState(Effect.empty()),
-        closeState = EditAddressIdentityState.CloseState(Effect.empty())
+        updateError = Effect.empty(),
+        close = Effect.empty()
     )
 
     val listActions = EditAddressIdentityScreenList.Actions(
