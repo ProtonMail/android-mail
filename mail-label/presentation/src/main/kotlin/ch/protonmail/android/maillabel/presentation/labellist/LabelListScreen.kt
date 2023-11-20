@@ -84,7 +84,7 @@ fun LabelListScreen(actions: LabelListScreen.Actions, viewModel: LabelListViewMo
             LabelListTopBar(
                 actions = actions,
                 onAddLabelClick = { viewModel.submit(LabelListViewAction.OnAddLabelClick) },
-                isAddLabelButtonVisible = state is LabelListState.ListLoaded
+                isAddLabelButtonVisible = state is LabelListState.ListLoaded.Data
             )
         },
         content = { paddingValues ->
