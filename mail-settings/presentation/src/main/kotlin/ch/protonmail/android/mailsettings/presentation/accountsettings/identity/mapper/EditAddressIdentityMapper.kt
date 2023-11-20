@@ -31,7 +31,7 @@ class EditAddressIdentityMapper @Inject constructor() {
     fun toDisplayNameUiModel(displayName: DisplayName) = DisplayNameUiModel(textValue = displayName.value)
 
     fun toSignatureUiModel(signature: Signature) =
-        AddressSignatureUiModel(textValue = signature.value.text, enabled = signature.enabled)
+        AddressSignatureUiModel(textValue = signature.value.toPlainText(), enabled = signature.enabled)
 
     fun toMobileFooterUiModel(mobileFooter: MobileFooter): MobileFooterUiModel =
         MobileFooterUiModel(mobileFooter.value, mobileFooter.enabled, mobileFooter.editable)

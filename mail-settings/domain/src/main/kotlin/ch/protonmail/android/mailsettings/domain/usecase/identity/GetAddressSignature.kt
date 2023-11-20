@@ -16,38 +16,34 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcomposer.domain.usecase
+package ch.protonmail.android.mailsettings.domain.usecase.identity
 
-import androidx.core.text.HtmlCompat
 import arrow.core.Either
 import arrow.core.raise.either
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailcomposer.domain.model.AddressSignature
-import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
+import ch.protonmail.android.mailcommon.domain.usecase.ResolveUserAddress
+import ch.protonmail.android.mailsettings.domain.model.Signature
+import ch.protonmail.android.mailsettings.domain.model.SignatureValue
+import ch.protonmail.android.mailsettings.domain.repository.AddressIdentityRepository
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 class GetAddressSignature @Inject constructor(
-    private val resolveUserAddress: ResolveUserAddress
+    private val resolveUserAddress: ResolveUserAddress,
+    private val addressIdentityRepository: AddressIdentityRepository
 ) {
 
-    suspend operator fun invoke(userId: UserId, email: SenderEmail): Either<DataError, AddressSignature> = either {
-
+    suspend operator fun invoke(userId: UserId, email: String): Either<DataError, Signature> = either {
         val address = resolveUserAddress(userId, email)
             .mapLeft { DataError.AddressNotFound }
             .bind()
 
-        val htmlSignature = address.signature ?: "" // backend falls back to empty string in case of a null
+        val preference = addressIdentityRepository.getSignatureEnabled(address.addressId)
+            .mapLeft { DataError.Local.Unknown }
+            .bind()
 
-        val plaintextSignature = HtmlCompat.fromHtml(htmlSignature, HtmlCompat.FROM_HTML_MODE_COMPACT).toString()
+        val signature = address.signature ?: ""
 
-        val plaintextSignatureWithSeparator =
-            (if (plaintextSignature.isNotBlank()) AddressSignature.SeparatorPlaintext else "") + plaintextSignature
-
-        AddressSignature(
-            htmlSignature,
-            plaintextSignatureWithSeparator.trimEnd()
-        )
+        Signature(enabled = preference.enabled, SignatureValue(signature))
     }
-
 }

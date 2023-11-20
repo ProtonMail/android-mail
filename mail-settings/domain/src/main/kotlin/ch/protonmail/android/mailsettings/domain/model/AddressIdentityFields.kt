@@ -18,11 +18,16 @@
 
 package ch.protonmail.android.mailsettings.domain.model
 
+import androidx.core.text.HtmlCompat
+
 @JvmInline
 value class DisplayName(val value: String)
 
 @JvmInline
-value class SignatureValue(val text: String)
+value class SignatureValue(val text: String) {
+
+    fun toPlainText(): String = HtmlCompat.fromHtml(this.text, HtmlCompat.FROM_HTML_MODE_COMPACT).toString()
+}
 
 data class Signature(val enabled: Boolean, val value: SignatureValue)
 
