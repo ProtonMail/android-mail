@@ -171,7 +171,7 @@ class ComposerViewModel @Inject constructor(
     private fun prefillForDraftAction(draftAction: DraftAction) {
         val parentMessageId = draftAction.getParentMessageId() ?: return
         Timber.d("Opening composer for draft action $draftAction / ${currentMessageId()}")
-        emitNewStateFor(ComposerEvent.OpenWithMessageAction(currentMessageId()))
+        emitNewStateFor(ComposerEvent.OpenWithMessageAction(currentMessageId(), draftAction))
 
         viewModelScope.launch {
             getLocalMessageDecrypted(primaryUserId(), parentMessageId).onRight { parentMessage ->
@@ -227,7 +227,7 @@ class ComposerViewModel @Inject constructor(
                 composerIdlingResource.increment()
                 when (action) {
                     is ComposerAction.AttachmentsAdded -> onAttachmentsAdded(action)
-                    is ComposerAction.DraftBodyChanged -> emitNewStateFor(onDraftBodyChanged(action))
+                    is ComposerAction.DraftBodyChanged -> onDraftBodyChanged(action)
                     is ComposerAction.SenderChanged -> emitNewStateFor(onSenderChanged(action))
                     is ComposerAction.SubjectChanged -> emitNewStateFor(onSubjectChanged(action))
                     is ComposerAction.ChangeSenderRequested -> emitNewStateFor(onChangeSender())
@@ -274,7 +274,10 @@ class ComposerViewModel @Inject constructor(
     private suspend fun onCloseComposer(action: ComposerAction.OnCloseComposer): ComposerOperation {
         val draftFields = buildDraftFields()
         return when {
-            draftFields.areBlank() || isDraftBodyOnlySignatureOrMobileFooter() -> action
+            draftFields.haveBlankRecipients() &&
+                draftFields.haveBlankSubject() &&
+                isBodyEmptyOrEqualsToSignatureAndFooter(currentDraftBody()) -> action
+
             else -> {
                 viewModelScope.launch {
                     withContext(NonCancellable) {
@@ -361,17 +364,20 @@ class ComposerViewModel @Inject constructor(
             }
         )
 
-    private suspend fun onDraftBodyChanged(action: ComposerAction.DraftBodyChanged): ComposerOperation =
+    private suspend fun onDraftBodyChanged(action: ComposerAction.DraftBodyChanged) {
+        emitNewStateFor(ComposerAction.DraftBodyChanged(action.draftBody))
+
+        // Do not store the draft if the body is exactly the same as signature + footer.
+        if (isBodyEmptyOrEqualsToSignatureAndFooter(action.draftBody)) return
+
         storeDraftWithBody(
             currentMessageId(),
             action.draftBody,
             currentDraftQuotedHtmlBody(),
             currentSenderEmail(),
             primaryUserId()
-        ).fold(
-            ifLeft = { ComposerEvent.ErrorStoringDraftBody },
-            ifRight = { ComposerAction.DraftBodyChanged(action.draftBody) }
-        )
+        ).onLeft { emitNewStateFor(ComposerEvent.ErrorStoringDraftBody) }
+    }
 
     private suspend fun injectAddressSignature(senderEmail: SenderEmail, previousSenderEmail: SenderEmail? = null) {
         injectAddressSignature(primaryUserId(), currentDraftBody(), senderEmail, previousSenderEmail).getOrNull()?.let {
@@ -379,15 +385,18 @@ class ComposerViewModel @Inject constructor(
         }
     }
 
-    private suspend fun isDraftBodyOnlySignatureOrMobileFooter(): Boolean {
+    private suspend fun isBodyEmptyOrEqualsToSignatureAndFooter(draftBody: DraftBody): Boolean {
+        // Consider the body empty even if it has white spaces or newlines.
+        if (draftBody.value.trim().isEmpty()) return true
 
-        val isBodyEqualSignature = injectAddressSignature(
+        val bodyWithSignature = injectAddressSignature(
             primaryUserId(),
             DraftBody(""),
             currentSenderEmail()
-        ).getOrNull() == currentDraftBody()
+        )
 
-        return currentDraftBody().value.isNotBlank() && isBodyEqualSignature
+        val isBodyEqualSignature = bodyWithSignature.getOrNull()?.value == draftBody.value
+        return draftBody.value.isNotBlank() && isBodyEqualSignature
     }
 
     private suspend fun CoroutineScope.startDraftContinuousUpload(draftAction: DraftAction = DraftAction.Compose) =

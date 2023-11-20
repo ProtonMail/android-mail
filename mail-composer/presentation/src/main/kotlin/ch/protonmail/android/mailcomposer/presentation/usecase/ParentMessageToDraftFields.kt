@@ -27,7 +27,6 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveUserAddresses
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatExtendedTime
-import ch.protonmail.android.mailcomposer.domain.model.AddressSignature
 import ch.protonmail.android.mailcomposer.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
@@ -38,13 +37,17 @@ import ch.protonmail.android.mailcomposer.domain.model.RecipientsCc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsTo
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.domain.model.Subject
-import ch.protonmail.android.mailcomposer.domain.usecase.GetAddressSignature
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.model.Message
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.model.Recipient
+import ch.protonmail.android.mailsettings.domain.model.MobileFooter
+import ch.protonmail.android.mailsettings.domain.model.Signature
+import ch.protonmail.android.mailsettings.domain.model.SignatureValue
+import ch.protonmail.android.mailsettings.domain.usecase.identity.GetAddressSignature
+import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.usecase.GetMobileFooter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.firstOrNull
 import me.proton.core.domain.entity.UserId
@@ -70,7 +73,8 @@ class ParentMessageToDraftFields @Inject constructor(
         val decryptedBody = messageWithDecryptedBody.decryptedMessageBody
         val userAddresses = observeUserAddresses(userId).firstOrNull() ?: return DataError.Local.NoDataCached.left()
         val sender = getSenderEmail(userAddresses, message)
-        val senderAddressSignature = getAddressSignature(userId, sender).getOrElse { AddressSignature.BlankSignature }
+        val senderAddressSignature =
+            getAddressSignature(userId, sender.value).getOrElse { Signature(enabled = false, SignatureValue("")) }
         val mobileFooter = getMobileFooter(userId).getOrNull() ?: return DataError.Local.Unknown.left()
 
         return DraftFields(
@@ -87,17 +91,28 @@ class ParentMessageToDraftFields @Inject constructor(
     private fun buildQuotedPlainTextBody(
         message: Message,
         decryptedBody: DecryptedMessageBody,
-        senderAddressSignature: AddressSignature,
-        mobileFooter: String
+        senderAddressSignature: Signature,
+        mobileFooter: MobileFooter
     ): DraftBody {
-        if (decryptedBody.mimeType != MimeType.PlainText &&
-            (senderAddressSignature.plaintext.isNotBlank() || mobileFooter.isNotBlank())
-        ) {
+        val senderSignatureEnabled = senderAddressSignature.enabled
+        val senderSignatureValue = senderAddressSignature.value.toPlainText()
+        val mobileFooterEnabled = mobileFooter.enabled
+        val mobileFooterValue = mobileFooter.value
+
+        if (decryptedBody.mimeType != MimeType.PlainText) {
             // HTML quote is fully created elsewhere, but we still need to inject signature
             //  and mobile footer into editable body
-            return DraftBody(senderAddressSignature.plaintext + mobileFooter)
-        } else if (decryptedBody.mimeType != MimeType.PlainText) {
-            return DraftBody("")
+            StringBuilder().apply {
+                if (senderSignatureEnabled && senderSignatureValue.isNotBlank()) {
+                    append(SignatureFooterSeparator)
+                    append(senderSignatureValue)
+                }
+
+                if (mobileFooterEnabled && mobileFooterValue.isNotBlank()) {
+                    append(SignatureFooterSeparator)
+                    append(mobileFooterValue)
+                }
+            }.let { return DraftBody(it.toString()) }
         }
 
         Timber.d("Decrypted body ${decryptedBody.value} \n splitted: ${decryptedBody.value.split("\n")}")
@@ -105,20 +120,28 @@ class ParentMessageToDraftFields @Inject constructor(
             .split("\n")
             .joinToString(separator = PlainTextNewLine) { "$PlainTextQuotePrefix $it" }
 
-        val raw = StringBuilder()
-            .append(senderAddressSignature.plaintext.ifBlank { "" })
-            .append(mobileFooter.ifBlank { "" })
-            .append(PlainTextNewLine)
-            .append(PlainTextNewLine)
-            .append(PlainTextNewLine)
-            .append(buildOriginalMessageQuote())
-            .append(PlainTextNewLine)
-            .append(buildSenderQuote(message))
-            .append(PlainTextNewLine)
-            .append(PlainTextNewLine)
-            .append(bodyQuoted)
-            .toString()
-        return DraftBody(raw)
+        val raw = StringBuilder().apply {
+            if (senderSignatureEnabled && senderSignatureValue.isNotBlank()) {
+                append(SignatureFooterSeparator)
+                append(senderSignatureValue)
+            }
+
+            if (mobileFooterEnabled && mobileFooterValue.isNotBlank()) {
+                append(SignatureFooterSeparator)
+                append(mobileFooterValue)
+            }
+
+            append(PlainTextNewLine)
+            append(PlainTextNewLine)
+            append(PlainTextNewLine)
+            append(buildOriginalMessageQuote())
+            append(PlainTextNewLine)
+            append(buildSenderQuote(message))
+            append(PlainTextNewLine)
+            append(PlainTextNewLine)
+            append(bodyQuoted)
+        }
+        return DraftBody(raw.toString())
     }
 
     private fun buildQuotedHtmlBody(message: Message, decryptedBody: DecryptedMessageBody): OriginalHtmlQuote? {
@@ -187,6 +210,7 @@ class ParentMessageToDraftFields @Inject constructor(
     }
 
     companion object {
+
         const val ProtonMailQuote = "<div class=\"protonmail_quote\">"
         const val ProtonMailBlockquote = "<blockquote class=\"protonmail_quote\">"
         const val CloseProtonMailQuote = "</div>"
@@ -194,5 +218,6 @@ class ParentMessageToDraftFields @Inject constructor(
         const val LineBreak = "<br>"
         const val PlainTextNewLine = "\n"
         const val PlainTextQuotePrefix = "> "
+        const val SignatureFooterSeparator = "\n\n"
     }
 }

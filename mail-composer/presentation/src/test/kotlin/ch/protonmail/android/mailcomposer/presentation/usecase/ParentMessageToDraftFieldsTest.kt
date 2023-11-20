@@ -20,18 +20,17 @@ package ch.protonmail.android.mailcomposer.presentation.usecase
 
 import android.content.Context
 import androidx.annotation.StringRes
+import androidx.core.text.HtmlCompat
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveUserAddresses
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatExtendedTime
-import ch.protonmail.android.mailcomposer.domain.model.AddressSignature
 import ch.protonmail.android.mailcomposer.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.MessageWithDecryptedBody
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.domain.model.Subject
-import ch.protonmail.android.mailcomposer.domain.usecase.GetAddressSignature
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailcomposer.presentation.usecase.ParentMessageToDraftFields.Companion.CloseProtonMailBlockquote
 import ch.protonmail.android.mailcomposer.presentation.usecase.ParentMessageToDraftFields.Companion.CloseProtonMailQuote
@@ -42,14 +41,23 @@ import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
 import ch.protonmail.android.mailmessage.domain.sample.RecipientSample
+import ch.protonmail.android.mailsettings.domain.model.MobileFooter
+import ch.protonmail.android.mailsettings.domain.model.Signature
+import ch.protonmail.android.mailsettings.domain.model.SignatureValue
+import ch.protonmail.android.mailsettings.domain.usecase.identity.GetAddressSignature
+import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.usecase.GetMobileFooter
 import ch.protonmail.android.testdata.message.DecryptedMessageBodyTestData
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkStatic
+import io.mockk.unmockkAll
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import me.proton.core.user.domain.entity.UserAddress
+import org.junit.After
+import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -72,7 +80,7 @@ class ParentMessageToDraftFieldsTest {
     }
 
     private val paidMobileFooter = ""
-    private val freeMobileFooter = "\n\nSent from Proton Mail Android"
+    private val freeMobileFooter = "Sent from Proton Mail Android"
 
     private val parentMessageToDraftFields = ParentMessageToDraftFields(
         context,
@@ -81,6 +89,18 @@ class ParentMessageToDraftFieldsTest {
         getAddressSignatureMock,
         getMobileFooterMock
     )
+
+    @Before
+    fun setup() {
+        mockkStatic(HtmlCompat::class)
+        every { HtmlCompat.fromHtml(any(), any()).toString() } returns "HTML signature"
+        every { HtmlCompat.fromHtml("", any()).toString() } returns ""
+    }
+
+    @After
+    fun teardown() {
+        unmockkAll()
+    }
 
     @Test
     fun `returns quoted draft body with injected sender and body data`() = runTest {
@@ -157,7 +177,8 @@ class ParentMessageToDraftFieldsTest {
 
         // Then
         val expectedQuotedPlaintextBody = StringBuilder()
-            .append(expectedSignature.plaintext)
+            .append(ParentMessageToDraftFields.SignatureFooterSeparator)
+            .append(expectedSignature.value.toPlainText())
             .append(ParentMessageToDraftFields.PlainTextNewLine)
             .append(ParentMessageToDraftFields.PlainTextNewLine)
             .append(ParentMessageToDraftFields.PlainTextNewLine)
@@ -204,7 +225,9 @@ class ParentMessageToDraftFieldsTest {
 
         // Then
         val expectedQuotedPlaintextBody = StringBuilder()
-            .append(expectedSignature.plaintext)
+            .append(ParentMessageToDraftFields.SignatureFooterSeparator)
+            .append(expectedSignature.value.toPlainText())
+            .append(ParentMessageToDraftFields.SignatureFooterSeparator)
             .append(expectedMobileFooter)
             .append(ParentMessageToDraftFields.PlainTextNewLine)
             .append(ParentMessageToDraftFields.PlainTextNewLine)
@@ -283,8 +306,9 @@ class ParentMessageToDraftFieldsTest {
             userId,
             SenderEmail(UserAddressSample.PrimaryAddress.email)
         )
-        expectMobileFooter(userId, isUserPaid = true)
-        val expectedBody = expectedSignature.plaintext
+        val footer = expectMobileFooter(userId, isUserPaid = true)
+        val expectedBody =
+            ParentMessageToDraftFields.SignatureFooterSeparator + expectedSignature.value.toPlainText() + footer
 
         // When
         val actual = parentMessageToDraftFields(userId, expectedDecryptedMessage, expectedAction).getOrNull()!!
@@ -309,6 +333,34 @@ class ParentMessageToDraftFieldsTest {
         expectBlankSignatureForSenderAddress(
             userId,
             SenderEmail(UserAddressSample.PrimaryAddress.email)
+        )
+        expectMobileFooter(userId, isUserPaid = true)
+        val expectedBody = ""
+
+        // When
+        val actual = parentMessageToDraftFields(userId, expectedDecryptedMessage, expectedAction).getOrNull()!!
+
+        // Then
+        assertEquals(expectedBody, actual.body.value)
+    }
+
+    @Test
+    fun `returns draft body with no sender signature for HTML message when signature is disabled`() = runTest {
+        // Given
+        val userId = UserIdSample.Primary
+        val expectedAction = DraftAction.Reply(MessageIdSample.HtmlInvoice)
+        val expectedDecryptedMessage = MessageWithDecryptedBody(
+            MessageWithBodySample.HtmlInvoice,
+            DecryptedMessageBodyTestData.htmlInvoice
+        )
+        expectFormattedTime(MessageSample.HtmlInvoice.time.seconds) {
+            TextUiModel.Text("Sep 13, 2023 3:36 PM")
+        }
+        expectedUserAddresses(userId) { listOf(UserAddressSample.PrimaryAddress) }
+        expectSignatureForSenderAddress(
+            userId,
+            SenderEmail(UserAddressSample.PrimaryAddress.email),
+            enabled = false
         )
         expectMobileFooter(userId, isUserPaid = true)
         val expectedBody = ""
@@ -437,24 +489,32 @@ class ParentMessageToDraftFieldsTest {
 
     private fun expectSignatureForSenderAddress(
         expectedUserId: UserId,
-        expectedSenderEmail: SenderEmail
-    ): AddressSignature = AddressSignature(
-        "<div>HTML signature</div>",
-        "Plaintext signature"
+        expectedSenderEmail: SenderEmail,
+        enabled: Boolean = true
+    ): Signature = Signature(
+        enabled = enabled,
+        SignatureValue("<div>HTML signature</div>")
     ).also {
-        coEvery { getAddressSignatureMock(expectedUserId, expectedSenderEmail) } returns it.right()
+        coEvery { getAddressSignatureMock(expectedUserId, expectedSenderEmail.value) } returns it.right()
     }
 
     private fun expectBlankSignatureForSenderAddress(
         expectedUserId: UserId,
         expectedSenderEmail: SenderEmail
-    ): AddressSignature = AddressSignature(
-        "",
-        ""
-    ).also { coEvery { getAddressSignatureMock(expectedUserId, expectedSenderEmail) } returns it.right() }
+    ): Signature = Signature(
+        enabled = true,
+        SignatureValue("")
+    ).also { coEvery { getAddressSignatureMock(expectedUserId, expectedSenderEmail.value) } returns it.right() }
 
-    private fun expectMobileFooter(expectedUserId: UserId, isUserPaid: Boolean): String =
-        (if (isUserPaid) paidMobileFooter else freeMobileFooter).also {
-            coEvery { getMobileFooterMock(expectedUserId) } returns it.right()
+    private fun expectMobileFooter(expectedUserId: UserId, isUserPaid: Boolean): String {
+
+        val footer = if (isUserPaid) {
+            MobileFooter.PaidUserMobileFooter(paidMobileFooter, enabled = true)
+        } else {
+            MobileFooter.FreeUserMobileFooter(freeMobileFooter)
         }
+
+        coEvery { getMobileFooterMock(expectedUserId) } returns footer.right()
+        return footer.value
+    }
 }

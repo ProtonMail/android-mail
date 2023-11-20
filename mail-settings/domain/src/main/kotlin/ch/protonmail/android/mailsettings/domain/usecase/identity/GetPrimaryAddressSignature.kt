@@ -18,21 +18,18 @@
 
 package ch.protonmail.android.mailsettings.domain.usecase.identity
 
-import androidx.core.text.HtmlCompat
 import arrow.core.Either
 import arrow.core.getOrElse
 import arrow.core.raise.either
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.usecase.GetPrimaryAddress
 import ch.protonmail.android.mailsettings.domain.model.Signature
-import ch.protonmail.android.mailsettings.domain.model.SignatureValue
-import ch.protonmail.android.mailsettings.domain.repository.AddressIdentityRepository
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 class GetPrimaryAddressSignature @Inject constructor(
     private val getPrimaryAddress: GetPrimaryAddress,
-    private val addressIdentityRepository: AddressIdentityRepository
+    private val getAddressSignature: GetAddressSignature
 ) {
 
     suspend operator fun invoke(userId: UserId): Either<DataError, Signature> = either {
@@ -40,14 +37,6 @@ class GetPrimaryAddressSignature @Inject constructor(
             raise(DataError.AddressNotFound)
         }
 
-        val signaturePreference = addressIdentityRepository.getSignatureEnabled(address.addressId).getOrElse {
-            raise(DataError.Local.NoDataCached)
-        }
-
-        val signature = address.signature?.let {
-            HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_COMPACT).toString()
-        } ?: ""
-
-        Signature(signaturePreference.enabled, SignatureValue(signature))
+        getAddressSignature(userId, address.email).bind()
     }
 }

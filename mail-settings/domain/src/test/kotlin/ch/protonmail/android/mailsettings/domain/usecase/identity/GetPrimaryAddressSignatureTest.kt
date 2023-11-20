@@ -18,38 +18,27 @@
 
 package ch.protonmail.android.mailsettings.domain.usecase.identity
 
-import androidx.core.text.HtmlCompat
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.usecase.GetPrimaryAddress
 import ch.protonmail.android.mailsettings.domain.model.Signature
-import ch.protonmail.android.mailsettings.domain.model.SignaturePreference
 import ch.protonmail.android.mailsettings.domain.model.SignatureValue
-import ch.protonmail.android.mailsettings.domain.repository.AddressIdentityRepository
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
-import io.mockk.mockkStatic
 import io.mockk.unmockkAll
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import org.junit.After
 import org.junit.Assert.assertEquals
-import org.junit.Before
 import org.junit.Test
 
 internal class GetPrimaryAddressSignatureTest {
 
     private val getPrimaryAddress: GetPrimaryAddress = mockk()
-    private val addressIdentityRepository: AddressIdentityRepository = mockk()
-    private val getPrimaryAddressSignature = GetPrimaryAddressSignature(getPrimaryAddress, addressIdentityRepository)
-
-    @Before
-    fun setup() {
-        mockkStatic(HtmlCompat::class)
-    }
+    private val getAddressSignature: GetAddressSignature = mockk()
+    private val getPrimaryAddressSignature = GetPrimaryAddressSignature(getPrimaryAddress, getAddressSignature)
 
     @After
     fun teardown() {
@@ -62,9 +51,8 @@ internal class GetPrimaryAddressSignatureTest {
         val address = UserAddressSample.PrimaryAddress
         coEvery { getPrimaryAddress(BaseUserId) } returns address.right()
         coEvery {
-            addressIdentityRepository.getSignatureEnabled(address.addressId)
-        } returns SignaturePreference(true).right()
-        every { HtmlCompat.fromHtml(any(), any()).toString() } returns "signature"
+            getAddressSignature(BaseUserId, address.email)
+        } returns Signature(true, SignatureValue("signature")).right()
 
         // When
         val result = getPrimaryAddressSignature(BaseUserId)
@@ -79,8 +67,8 @@ internal class GetPrimaryAddressSignatureTest {
         val address = AddressWithNullSignature
         coEvery { getPrimaryAddress(BaseUserId) } returns address.right()
         coEvery {
-            addressIdentityRepository.getSignatureEnabled(address.addressId)
-        } returns SignaturePreference(true).right()
+            getAddressSignature(BaseUserId, address.email)
+        } returns Signature(true, SignatureValue("")).right()
 
         // When
         val result = getPrimaryAddressSignature(BaseUserId)
@@ -108,7 +96,7 @@ internal class GetPrimaryAddressSignatureTest {
         val address = UserAddressSample.PrimaryAddress
         val expectedError = DataError.Local.NoDataCached.left()
         coEvery { getPrimaryAddress(BaseUserId) } returns address.right()
-        coEvery { addressIdentityRepository.getSignatureEnabled(address.addressId) } returns expectedError
+        coEvery { getAddressSignature(BaseUserId, address.email) } returns expectedError
 
         // When
         val result = getPrimaryAddressSignature(BaseUserId)

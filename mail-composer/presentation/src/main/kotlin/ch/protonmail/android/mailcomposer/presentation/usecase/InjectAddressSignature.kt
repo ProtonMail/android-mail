@@ -19,13 +19,16 @@
 package ch.protonmail.android.mailcomposer.presentation.usecase
 
 import arrow.core.Either
-import arrow.core.raise.either
 import arrow.core.getOrElse
+import arrow.core.raise.either
+import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailcomposer.domain.model.AddressSignature
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
-import ch.protonmail.android.mailcomposer.domain.usecase.GetAddressSignature
+import ch.protonmail.android.mailsettings.domain.model.Signature
+import ch.protonmail.android.mailsettings.domain.model.SignatureValue
+import ch.protonmail.android.mailsettings.domain.usecase.identity.GetAddressSignature
+import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.usecase.GetMobileFooter
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import javax.inject.Inject
@@ -42,50 +45,97 @@ class InjectAddressSignature @Inject constructor(
         previousSenderEmail: SenderEmail? = null
     ): Either<DataError, DraftBody> = either {
 
-        val addressSignature = getAddressSignature(userId, senderEmail).getOrElse {
+        val addressSignature = getAddressSignature(userId, senderEmail.value).getOrElse {
             Timber.e("InjectAddressSignature: error getting address signature: $it")
-            AddressSignature.BlankSignature
+            Signature(enabled = false, SignatureValue(""))
         }
 
         val mobileFooter = getMobileFooter(userId).bind()
 
         previousSenderEmail?.let { senderEmail ->
-            getAddressSignature(userId, senderEmail).fold(
+            getAddressSignature(userId, senderEmail.value).fold(
                 ifLeft = { Timber.e("Error getting previous address signature: $senderEmail") },
                 ifRight = { previousAddressSignature ->
-                    getBodyWithReplacedSignature(draftBody, previousAddressSignature, addressSignature)?.let {
-                        return@either it
+                    getBodyWithReplacedSignature(
+                        draftBody,
+                        previousAddressSignature.value,
+                        mobileFooter.value,
+                        addressSignature
+                    ).let {
+                        return it.right()
                     }
                 }
             )
         }
 
-        val draftBodyWithAddressSignature = if (addressSignature.plaintext.isNotBlank() || mobileFooter.isNotBlank()) {
-            DraftBody(
-                draftBody.value +
-                    addressSignature.plaintext +
-                    mobileFooter
-            )
-        } else draftBody
+        val draftBodyWithAddressSignature = StringBuilder().apply {
+            append(draftBody.value)
+
+            if (addressSignature.enabled && addressSignature.value.toPlainText().isNotBlank()) {
+                append(SignatureFooterSeparator)
+                append(addressSignature.value.toPlainText())
+            }
+
+            if (mobileFooter.enabled && mobileFooter.value.isNotBlank()) {
+                append(SignatureFooterSeparator)
+                append(mobileFooter.value)
+            }
+        }.let { DraftBody(it.toString()) }
 
         return@either draftBodyWithAddressSignature
     }
 
     private fun getBodyWithReplacedSignature(
         draftBody: DraftBody,
-        previousAddressSignature: AddressSignature,
-        addressSignature: AddressSignature
-    ): DraftBody? {
-        return draftBody.value.lastIndexOf(previousAddressSignature.plaintext).takeIf { it != -1 }?.let { lastIndex ->
-            val bodyStringBuilder: StringBuilder = StringBuilder(draftBody.value)
+        previousAddressSignature: SignatureValue,
+        existingMobileFooter: String,
+        addressSignature: Signature
+    ): DraftBody {
+        val previousSignatureIndex =
+            draftBody.value.lastIndexOf(previousAddressSignature.toPlainText()).takeIf { it != -1 }
+        val bodyStringBuilder = StringBuilder(draftBody.value)
+        val signatureReplacement = StringBuilder().apply {
+            if (addressSignature.enabled) append(addressSignature.value.toPlainText()) else append("")
+        }
+
+        // If it has a signature.
+        previousSignatureIndex?.let { lastIndex ->
             bodyStringBuilder.replace(
                 lastIndex,
-                previousAddressSignature.plaintext.length + lastIndex,
-                addressSignature.plaintext
+                previousAddressSignature.toPlainText().length + lastIndex,
+                signatureReplacement.toString()
             )
-            DraftBody(bodyStringBuilder.toString())
+            return DraftBody(bodyStringBuilder.toString())
         }
+
+        // Footer needs not to be empty, in that case we add a separator to the signature replacement.
+        val footerIndex = if (existingMobileFooter.isNotEmpty()) {
+            draftBody.value.indexOf(existingMobileFooter).takeIf { it != -1 }
+        } else {
+            null
+        }?.also { signatureReplacement.append(SignatureFooterSeparator) }
+
+        // If it has no signature but a footer.
+        footerIndex?.let { lastIndex ->
+            bodyStringBuilder.replace(
+                lastIndex,
+                lastIndex,
+                signatureReplacement.toString()
+            )
+            return DraftBody(bodyStringBuilder.toString())
+        }
+
+        // If it has nothing, add some spacing.
+        if (!draftBody.value.startsWith(SignatureFooterSeparator)) {
+            bodyStringBuilder.append(SignatureFooterSeparator)
+        }
+
+        bodyStringBuilder.append(signatureReplacement.toString())
+        return DraftBody(bodyStringBuilder.toString())
     }
 
+    private companion object {
 
+        const val SignatureFooterSeparator = "\n\n"
+    }
 }
