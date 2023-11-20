@@ -29,10 +29,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -63,6 +63,7 @@ internal fun ComposerForm(
     initialFocus: FocusedFieldType,
     fields: ComposerFields,
     replaceDraftBody: Effect<TextUiModel>,
+    shouldForceBodyTextFocus: Effect<Unit>,
     actions: ComposerFormActions
 ) {
     val maxWidthModifier = Modifier.fillMaxWidth()
@@ -183,7 +184,7 @@ internal fun ComposerForm(
             MailDivider()
             BodyTextField(
                 initialValue = fields.body,
-                hasQuotedBody = fields.quotedBody != null,
+                shouldRequestFocus = shouldForceBodyTextFocus,
                 replaceDraftBody = replaceDraftBody,
                 onBodyChange = actions.onBodyChanged,
                 modifier = maxWidthModifier

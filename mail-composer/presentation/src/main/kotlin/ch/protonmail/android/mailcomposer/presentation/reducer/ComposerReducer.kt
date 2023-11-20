@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcomposer.presentation.reducer
 
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcomposer.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.Subject
 import ch.protonmail.android.mailcomposer.presentation.R
@@ -97,11 +98,16 @@ class ComposerReducer @Inject constructor(
 
         is ComposerEvent.OnCloseWithDraftSaved -> updateCloseComposerState(currentState, true)
         is ComposerEvent.OpenExistingDraft -> currentState.copy(isLoading = true)
-        is ComposerEvent.OpenWithMessageAction -> currentState.copy(isLoading = true)
-        is ComposerEvent.PrefillDraftDataReceived -> updateComposerFieldsState(currentState, this.draftUiModel)
+        is ComposerEvent.OpenWithMessageAction -> updateStateForOpenWithMessageAction(currentState, draftAction)
+        is ComposerEvent.PrefillDraftDataReceived -> updateComposerFieldsState(
+            currentState,
+            this.draftUiModel
+        )
+
         is ComposerEvent.ReplaceDraftBody -> {
             updateReplaceDraftBodyEffect(currentState, this.draftBody)
         }
+
         is ComposerEvent.ErrorLoadingDraftData -> currentState.copy(
             error = Effect.of(TextUiModel(R.string.composer_error_loading_draft)),
             isLoading = false
@@ -113,6 +119,7 @@ class ComposerReducer @Inject constructor(
             error = Effect.of(TextUiModel(R.string.composer_error_loading_parent_message)),
             isLoading = false
         )
+
         is ComposerEvent.ErrorAttachmentsExceedSizeLimit -> updateStateForAttachmentsExceedSizeLimit(currentState)
         is ComposerEvent.ErrorAttachmentsReEncryption -> updateStateForDeleteAllAttachment(currentState)
     }
@@ -163,6 +170,20 @@ class ComposerReducer @Inject constructor(
 
     private fun updateSubjectTo(currentState: ComposerDraftState, subject: Subject) =
         currentState.copy(fields = currentState.fields.copy(subject = subject.value))
+
+    private fun updateStateForOpenWithMessageAction(
+        currentState: ComposerDraftState,
+        draftAction: DraftAction
+    ): ComposerDraftState {
+        val bodyTextFieldEffect =
+            if (draftAction is DraftAction.Reply || draftAction is DraftAction.ReplyAll) {
+                Effect.of(Unit)
+            } else {
+                Effect.empty()
+            }
+
+        return currentState.copy(isLoading = true, focusTextBody = bodyTextFieldEffect)
+    }
 
     private fun updateStateForChangeSenderFailed(currentState: ComposerDraftState, errorMessage: TextUiModel) =
         currentState.copy(changeBottomSheetVisibility = Effect.of(false), error = Effect.of(errorMessage))

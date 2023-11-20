@@ -40,7 +40,8 @@ data class ComposerDraftState(
     val isAddAttachmentsButtonVisible: Boolean,
     val attachmentsFileSizeExceeded: Effect<Unit>,
     val attachmentsReEncryptionFailed: Effect<Unit>,
-    val replaceDraftBody: Effect<TextUiModel>
+    val replaceDraftBody: Effect<TextUiModel>,
+    val focusTextBody: Effect<Unit> = Effect.empty()
 ) {
 
     companion object {

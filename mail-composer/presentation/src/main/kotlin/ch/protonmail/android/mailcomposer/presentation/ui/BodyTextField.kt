@@ -25,7 +25,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,6 +38,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
+import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
@@ -49,8 +49,8 @@ import me.proton.core.compose.theme.defaultNorm
 @Composable
 internal fun BodyTextField(
     initialValue: String,
-    hasQuotedBody: Boolean,
     replaceDraftBody: Effect<TextUiModel>,
+    shouldRequestFocus: Effect<Unit>,
     onBodyChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -68,7 +68,9 @@ internal fun BodyTextField(
             text = it
             onBodyChange(it.text)
         },
-        modifier = modifier.fillMaxSize().focusRequester(focusRequester),
+        modifier = modifier
+            .fillMaxSize()
+            .focusRequester(focusRequester),
         textStyle = ProtonTheme.typography.defaultNorm,
         minLines = bodyMinLines,
         colors = TextFieldDefaults.composerTextFieldColors(),
@@ -83,13 +85,12 @@ internal fun BodyTextField(
         }
     )
 
-    LaunchedEffect(initialValue) {
-        val shouldGetFocus = initialValue.isNotEmpty() || hasQuotedBody
-        if (shouldGetFocus) { focusRequester.requestFocus() }
+    ConsumableLaunchedEffect(shouldRequestFocus) {
+        focusRequester.requestFocus()
     }
 
     ConsumableTextEffect(effect = replaceDraftBody) {
         text = TextFieldValue(it)
-        // this is not user's deliberate action so we don't trigger onBodyChange(it)
+        onBodyChange(it)
     }
 }

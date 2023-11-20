@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcomposer.presentation.model
 
 import android.net.Uri
+import ch.protonmail.android.mailcomposer.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.Subject
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
@@ -48,7 +49,7 @@ sealed interface ComposerEvent : ComposerOperation {
     data class DefaultSenderReceived(val sender: SenderUiModel) : ComposerEvent
     data class SenderAddressesReceived(val senders: List<SenderUiModel>) : ComposerEvent
     data class OpenExistingDraft(val draftId: MessageId) : ComposerEvent
-    data class OpenWithMessageAction(val parentId: MessageId) : ComposerEvent
+    data class OpenWithMessageAction(val parentId: MessageId, val draftAction: DraftAction) : ComposerEvent
     data class PrefillDraftDataReceived(val draftUiModel: DraftUiModel) : ComposerEvent
     data class ReplaceDraftBody(val draftBody: DraftBody) : ComposerEvent
     data class OnAttachmentsUpdated(val attachments: List<MessageAttachment>) : ComposerEvent
