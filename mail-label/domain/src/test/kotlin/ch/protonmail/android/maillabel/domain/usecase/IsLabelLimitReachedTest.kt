@@ -23,6 +23,7 @@ import ch.protonmail.android.mailcommon.domain.usecase.ObserveUser
 import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
 import ch.protonmail.android.testdata.user.UserTestData
+import io.mockk.Called
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -56,7 +57,7 @@ class IsLabelLimitReachedTest {
 
         // Then
         coVerify { observeUser(UserIdTestData.userId) }
-        coVerify(exactly = 0) { labelRepository.getLabels(UserIdTestData.userId, LabelType.MessageLabel) }
+        coVerify { labelRepository.getLabels(UserIdTestData.userId, LabelType.MessageLabel) wasNot Called }
         assertEquals(expectedResult.right(), result)
     }
 

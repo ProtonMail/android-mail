@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.maillabel.presentation.labelform
 
-import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.SavedStateHandle
@@ -140,8 +139,6 @@ class LabelFormViewModelTest {
     @BeforeTest
     fun setUp() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
-        mockkStatic(Log::class)
-        every { Log.isLoggable(any(), any()) } returns false
         mockkStatic(android.graphics.Color::class)
         every { android.graphics.Color.parseColor(Color.Red.getHexStringFromColor()) } returns Color.Red.toArgb()
         every { android.graphics.Color.parseColor(Color.Blue.getHexStringFromColor()) } returns Color.Blue.toArgb()
@@ -150,7 +147,7 @@ class LabelFormViewModelTest {
     @AfterTest
     fun tearDown() {
         Dispatchers.resetMain()
-        unmockkStatic(Log::class)
+        unmockkStatic(android.graphics.Color::class)
     }
 
     @Test

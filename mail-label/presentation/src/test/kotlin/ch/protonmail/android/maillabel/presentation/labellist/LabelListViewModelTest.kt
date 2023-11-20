@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.maillabel.presentation.labellist
 
-import android.util.Log
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
@@ -31,8 +30,6 @@ import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.mockkStatic
-import io.mockk.unmockkStatic
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -74,14 +71,11 @@ class LabelListViewModelTest {
     @BeforeTest
     fun setUp() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
-        mockkStatic(Log::class)
-        every { Log.isLoggable(any(), any()) } returns false
     }
 
     @AfterTest
     fun tearDown() {
         Dispatchers.resetMain()
-        unmockkStatic(Log::class)
     }
 
     @Test
