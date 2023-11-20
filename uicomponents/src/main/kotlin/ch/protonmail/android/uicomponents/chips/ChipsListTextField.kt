@@ -55,6 +55,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultSmallNorm
+import me.proton.core.util.kotlin.takeIfNotBlank
 
 @Stable
 sealed class ChipItem(open val value: String) {
@@ -299,26 +300,24 @@ internal class ChipsListState(
 
     fun type(newValue: String) {
         when {
-            typedText.value + newValue.trim() == EMPTY_STRING -> clearTypedText()
-            newValue.endsWith(WORD_SEPARATOR) -> {
+            typedText.value + newValue.trim() == EmptyString -> clearTypedText()
+            newValue.endsWith(WordSeparator) -> {
 
-                val words = typedText.value.trim().split(
+                val words = typedText.value.split(
+                    WordSeparator,
+                    NewLineDelimiter,
+                    CarriageReturnNewLineDelimiter,
+                    CommaDelimiter,
+                    SemiColonDelimiter,
+                    TabDelimiter
+                ).mapNotNull { it.takeIfNotBlank() }
 
-                    WORD_SEPARATOR, NewLineDelimiter, CarriageReturnNewLineDelimiter,
-                    CommaDelimiter, SemiColonDelimiter, TabDelimiter
-
-                )
-
-                for (token in words) {
-                    if (token.trim().isNotBlank()) {
-                        add(token.trim())
-                    }
-                }
-
-                // added here so we only check for duplicated after pasting all the words
-                onListChanged(items)
-
-                clearTypedText()
+                if (words.isNotEmpty()) {
+                    words.forEach { add(it) }
+                    // added here so we only check for duplicates after pasting all the words
+                    onListChanged(items)
+                    clearTypedText()
+                } else typedText.value = newValue
             }
 
             else -> typedText.value = newValue
@@ -327,7 +326,7 @@ internal class ChipsListState(
 
     fun typeWord(word: String) {
         type(word)
-        type(WORD_SEPARATOR)
+        type(WordSeparator)
     }
 
     fun isFocused(): Boolean = focusedState.value
@@ -360,13 +359,13 @@ internal class ChipsListState(
     }
 
     private fun clearTypedText() {
-        typedText.value = EMPTY_STRING
+        typedText.value = EmptyString
     }
 
     private companion object {
 
-        private const val WORD_SEPARATOR = " "
-        private const val EMPTY_STRING = ""
+        private const val WordSeparator = " "
+        private const val EmptyString = ""
         private const val NewLineDelimiter = "\n"
         private const val CarriageReturnNewLineDelimiter = "\r\n"
         private const val SemiColonDelimiter = ";"
