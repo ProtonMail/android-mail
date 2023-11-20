@@ -145,21 +145,9 @@ fun Home(
     fun showLabelDeletedSnackbar() = scope.launch {
         snackbarHostSuccessState.showSnackbar(message = labelDeletedText, type = ProtonSnackbarType.SUCCESS)
     }
-    val showLabelAlreadyExistsText = stringResource(id = R.string.label_already_exists)
-    fun showLabelAlreadyExistsSnackbar() = scope.launch {
-        snackbarHostErrorState.showSnackbar(message = showLabelAlreadyExistsText, type = ProtonSnackbarType.ERROR)
-    }
-    val showSaveLabelErrorText = stringResource(id = R.string.save_label_error)
-    fun showSaveLabelErrorSnackbar() = scope.launch {
-        snackbarHostErrorState.showSnackbar(message = showSaveLabelErrorText, type = ProtonSnackbarType.ERROR)
-    }
-    val labelListLoadingText = stringResource(id = R.string.label_list_loading_error)
-    fun showLabelListLoadingSnackbar() = scope.launch {
-        snackbarHostErrorState.showSnackbar(message = labelListLoadingText, type = ProtonSnackbarType.ERROR)
-    }
-    val showLabelLimitReachedText = stringResource(id = R.string.label_limit_reached_error)
-    fun showLabelLimitReachedSnackbar() = scope.launch {
-        snackbarHostErrorState.showSnackbar(message = showLabelLimitReachedText, type = ProtonSnackbarType.ERROR)
+    val labelListErrorLoadingText = stringResource(id = R.string.label_list_loading_error)
+    fun showLabelListErrorLoadingSnackbar() = scope.launch {
+        snackbarHostErrorState.showSnackbar(message = labelListErrorLoadingText, type = ProtonSnackbarType.ERROR)
     }
     ConsumableLaunchedEffect(state.value.messageSendingStatusEffect) { sendingStatus ->
         when (sendingStatus) {
@@ -259,15 +247,12 @@ fun Home(
                 )
                 addLabelList(
                     navController,
-                    showLabelListLoadingSnackbar = { showLabelListLoadingSnackbar() }
+                    showLabelListErrorLoadingSnackbar = { showLabelListErrorLoadingSnackbar() }
                 )
                 addLabelForm(
                     navController,
                     showLabelSavedSnackbar = { showLabelSavedSnackbar() },
-                    showLabelDeletedSnackbar = { showLabelDeletedSnackbar() },
-                    showLabelAlreadyExistsSnackbar = { showLabelAlreadyExistsSnackbar() },
-                    showLabelLimitReachedSnackbar = { showLabelLimitReachedSnackbar() },
-                    showSaveLabelErrorSnackbar = { showSaveLabelErrorSnackbar() }
+                    showLabelDeletedSnackbar = { showLabelDeletedSnackbar() }
                 )
                 // settings
                 addAccountSettings(

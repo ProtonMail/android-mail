@@ -116,7 +116,7 @@ fun LabelListScreen(actions: LabelListScreen.Actions, viewModel: LabelListViewMo
 
                     ConsumableLaunchedEffect(effect = state.errorLoading) {
                         actions.onBackClick()
-                        actions.showLabelListLoadingSnackbar()
+                        actions.showLabelListErrorLoadingSnackbar()
                     }
                 }
             }
@@ -272,7 +272,7 @@ object LabelListScreen {
         val onBackClick: () -> Unit,
         val onLabelSelected: (LabelId) -> Unit,
         val onAddLabelClick: () -> Unit,
-        val showLabelListLoadingSnackbar: () -> Unit
+        val showLabelListErrorLoadingSnackbar: () -> Unit
     ) {
 
         companion object {
@@ -281,7 +281,7 @@ object LabelListScreen {
                 onBackClick = {},
                 onLabelSelected = {},
                 onAddLabelClick = {},
-                showLabelListLoadingSnackbar = {}
+                showLabelListErrorLoadingSnackbar = {}
             )
         }
     }

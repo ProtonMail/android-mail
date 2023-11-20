@@ -31,6 +31,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -52,6 +53,8 @@ import ch.protonmail.android.maillabel.presentation.ui.ColorPicker
 import ch.protonmail.android.maillabel.presentation.ui.FormDeleteButton
 import ch.protonmail.android.maillabel.presentation.ui.FormInputField
 import me.proton.core.compose.component.ProtonCenteredProgress
+import me.proton.core.compose.component.ProtonSnackbarHostState
+import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.component.ProtonTextButton
 import me.proton.core.compose.component.appbar.ProtonTopAppBar
 import me.proton.core.compose.flow.rememberAsState
@@ -64,6 +67,7 @@ fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewMo
     val context = LocalContext.current
     val view = LocalView.current
     val keyboardController = LocalSoftwareKeyboardController.current
+    val snackbarHostState = remember { ProtonSnackbarHostState() }
 
     val customActions = actions.copy(
         onLabelNameChanged = {
@@ -112,14 +116,26 @@ fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewMo
                         customActions.onBackClick()
                         actions.showLabelSavedSnackbar()
                     }
+                    val labelAlreadyExistsMessage = stringResource(id = R.string.label_already_exists)
                     ConsumableLaunchedEffect(effect = state.showLabelAlreadyExistsSnackbar) {
-                        actions.showLabelAlreadyExistsSnackbar()
+                        snackbarHostState.showSnackbar(
+                            message = labelAlreadyExistsMessage,
+                            type = ProtonSnackbarType.ERROR
+                        )
                     }
+                    val labelLimitReachedMessage = stringResource(id = R.string.label_limit_reached_error)
                     ConsumableLaunchedEffect(effect = state.showLabelLimitReachedSnackbar) {
-                        actions.showLabelLimitReachedSnackbar()
+                        snackbarHostState.showSnackbar(
+                            message = labelLimitReachedMessage,
+                            type = ProtonSnackbarType.ERROR
+                        )
                     }
+                    val saveLabelErrorMessage = stringResource(id = R.string.save_label_error)
                     ConsumableLaunchedEffect(effect = state.showSaveLabelErrorSnackbar) {
-                        actions.showSaveLabelErrorSnackbar()
+                        snackbarHostState.showSnackbar(
+                            message = saveLabelErrorMessage,
+                            type = ProtonSnackbarType.ERROR
+                        )
                     }
                     if (state is LabelFormState.Data.Update) {
                         ConsumableLaunchedEffect(effect = state.closeWithDelete) {
@@ -232,9 +248,6 @@ object LabelFormScreen {
         val onBackClick: () -> Unit,
         val showLabelSavedSnackbar: () -> Unit,
         val showLabelDeletedSnackbar: () -> Unit,
-        val showLabelAlreadyExistsSnackbar: () -> Unit,
-        val showLabelLimitReachedSnackbar: () -> Unit,
-        val showSaveLabelErrorSnackbar: () -> Unit,
         val onLabelNameChanged: (String) -> Unit,
         val onLabelColorChanged: (Color) -> Unit,
         val onSaveClick: () -> Unit,
@@ -247,9 +260,6 @@ object LabelFormScreen {
                 onBackClick = {},
                 showLabelSavedSnackbar = {},
                 showLabelDeletedSnackbar = {},
-                showLabelAlreadyExistsSnackbar = {},
-                showLabelLimitReachedSnackbar = {},
-                showSaveLabelErrorSnackbar = {},
                 onLabelNameChanged = {},
                 onLabelColorChanged = {},
                 onSaveClick = {},

@@ -45,7 +45,9 @@
     <string name="add_a_label_name_hint">Add a label name</string>
     <string name="input_field_max_characters_count">%1d / %2d characters</string>
     <string name="color_picker_title">Color</string>
-    <string name="save_label_error">Error saving label</string>
+    <string name="save_label_error">Error saving label, please try again later</string>
+    <string name="label_already_exists">A label or folder with this name already exists</string>
+    <string name="label_limit_reached_error">Label limit reached</string>
     <string name="delete_label_error">Error deleting label</string>
     <string name="input_field_clear_content_description">Clear text</string>
     <string name="label_list_item_content_description">Label list item</string>

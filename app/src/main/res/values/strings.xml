@@ -33,8 +33,5 @@
     <string name="notification_switched_account">Switched to account: %s</string>
     <string name="label_saved">Label saved</string>
     <string name="label_deleted">Label deleted</string>
-    <string name="save_label_error">Error saving label, please try again later</string>
-    <string name="label_already_exists">A label or folder with this name already exists</string>
     <string name="label_list_loading_error">Error loading label, please try again later</string>
-    <string name="label_limit_reached_error">Label limit reached</string>
 </resources>

@@ -199,7 +199,10 @@ internal fun NavGraphBuilder.addSettings(navController: NavHostController, showF
     }
 }
 
-internal fun NavGraphBuilder.addLabelList(navController: NavHostController, showLabelListLoadingSnackbar: () -> Unit) {
+internal fun NavGraphBuilder.addLabelList(
+    navController: NavHostController,
+    showLabelListErrorLoadingSnackbar: () -> Unit
+) {
     composable(route = Destination.Screen.LabelList.route) {
         LabelListScreen(
             actions = LabelListScreen.Actions(
@@ -212,7 +215,7 @@ internal fun NavGraphBuilder.addLabelList(navController: NavHostController, show
                 onAddLabelClick = {
                     navController.navigate(Destination.Screen.CreateLabel.route)
                 },
-                showLabelListLoadingSnackbar = showLabelListLoadingSnackbar
+                showLabelListErrorLoadingSnackbar = showLabelListErrorLoadingSnackbar
             )
         )
     }
@@ -222,20 +225,14 @@ internal fun NavGraphBuilder.addLabelList(navController: NavHostController, show
 internal fun NavGraphBuilder.addLabelForm(
     navController: NavHostController,
     showLabelSavedSnackbar: () -> Unit,
-    showLabelDeletedSnackbar: () -> Unit,
-    showLabelAlreadyExistsSnackbar: () -> Unit,
-    showLabelLimitReachedSnackbar: () -> Unit,
-    showSaveLabelErrorSnackbar: () -> Unit
+    showLabelDeletedSnackbar: () -> Unit
 ) {
     val actions = LabelFormScreen.Actions.Empty.copy(
         onBackClick = {
             navController.popBackStack()
         },
         showLabelSavedSnackbar = showLabelSavedSnackbar,
-        showLabelDeletedSnackbar = showLabelDeletedSnackbar,
-        showLabelAlreadyExistsSnackbar = showLabelAlreadyExistsSnackbar,
-        showLabelLimitReachedSnackbar = showLabelLimitReachedSnackbar,
-        showSaveLabelErrorSnackbar = showSaveLabelErrorSnackbar
+        showLabelDeletedSnackbar = showLabelDeletedSnackbar
     )
     composable(route = Destination.Screen.CreateLabel.route) { LabelFormScreen(actions) }
     composable(route = Destination.Screen.EditLabel.route) { LabelFormScreen(actions) }
