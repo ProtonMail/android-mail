@@ -122,7 +122,7 @@ class GetAttachmentFilesTest {
             val actual = getAttachmentFiles(UserId, MessageId, AttachmentIds)
 
             // Then
-            assertEquals(DataError.MessageSending.DownloadingAttachments.left(), actual)
+            assertEquals(GetAttachmentFiles.Error.DownloadingAttachments.left(), actual)
             coVerifyOrder {
                 attachmentRepository.readFileFromStorage(UserId, ApiMessageId, AttachmentId1)
                 attachmentRepository.readFileFromStorage(UserId, ApiMessageId, AttachmentId2)
@@ -131,28 +131,27 @@ class GetAttachmentFilesTest {
         }
 
     @Test
-    fun `should return error when attachments not available locally are fetched but the decryption failed`() =
-        runTest {
-            // Given
-            val encryptedAttachmentByteArray = "encryptedAttachmentByteArray".encodeToByteArray()
-            expectReadFileFromStorageFails(AttachmentId2)
-            expectGetAttachmentFromRemoteSucceeds(AttachmentId2, encryptedAttachmentByteArray)
-            coEvery {
-                decryptAttachmentByteArray(UserId, ApiMessageId, AttachmentId2, encryptedAttachmentByteArray)
-            } returns AttachmentDecryptionError.DecryptionFailed.left()
+    fun `should return error when attachments not available locally are fetched but the decryption failed`() = runTest {
+        // Given
+        val encryptedAttachmentByteArray = "encryptedAttachmentByteArray".encodeToByteArray()
+        expectReadFileFromStorageFails(AttachmentId2)
+        expectGetAttachmentFromRemoteSucceeds(AttachmentId2, encryptedAttachmentByteArray)
+        coEvery {
+            decryptAttachmentByteArray(UserId, ApiMessageId, AttachmentId2, encryptedAttachmentByteArray)
+        } returns AttachmentDecryptionError.DecryptionFailed.left()
 
-            // When
-            val actual = getAttachmentFiles(UserId, MessageId, AttachmentIds)
+        // When
+        val actual = getAttachmentFiles(UserId, MessageId, AttachmentIds)
 
-            // Then
-            assertEquals(DataError.MessageSending.DownloadingAttachments.left(), actual)
-            coVerifyOrder {
-                attachmentRepository.readFileFromStorage(UserId, ApiMessageId, AttachmentId1)
-                attachmentRepository.readFileFromStorage(UserId, ApiMessageId, AttachmentId2)
-                attachmentRepository.getAttachmentFromRemote(UserId, ApiMessageId, AttachmentId2)
-                decryptAttachmentByteArray(UserId, ApiMessageId, AttachmentId2, encryptedAttachmentByteArray)
-            }
+        // Then
+        assertEquals(GetAttachmentFiles.Error.DownloadingAttachments.left(), actual)
+        coVerifyOrder {
+            attachmentRepository.readFileFromStorage(UserId, ApiMessageId, AttachmentId1)
+            attachmentRepository.readFileFromStorage(UserId, ApiMessageId, AttachmentId2)
+            attachmentRepository.getAttachmentFromRemote(UserId, ApiMessageId, AttachmentId2)
+            decryptAttachmentByteArray(UserId, ApiMessageId, AttachmentId2, encryptedAttachmentByteArray)
         }
+    }
 
     @Test
     fun `should return error when attachments not available locally are fetched and decrypted but saving failed`() =
@@ -175,7 +174,7 @@ class GetAttachmentFilesTest {
             val actual = getAttachmentFiles(UserId, MessageId, AttachmentIds)
 
             // Then
-            assertEquals(DataError.Local.FailedToStoreFile.left(), actual)
+            assertEquals(GetAttachmentFiles.Error.FailedToStoreFile.left(), actual)
             coVerifyOrder {
                 attachmentRepository.readFileFromStorage(UserId, ApiMessageId, AttachmentId1)
                 attachmentRepository.readFileFromStorage(UserId, ApiMessageId, AttachmentId2)
@@ -190,7 +189,7 @@ class GetAttachmentFilesTest {
     @Test
     fun `should return error if api assigned message id still doesn't exist`() = runTest {
         // Given
-        val expected = DataError.Local.NoDataCached.left()
+        val expected = GetAttachmentFiles.Error.DraftNotFound.left()
         coEvery { draftStateRepository.observe(UserId, MessageId) } returns flowOf(DataError.Local.NoDataCached.left())
 
         // When

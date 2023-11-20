@@ -24,7 +24,6 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.composer.data.remote.MessageRemoteDataSource
 import ch.protonmail.android.composer.data.remote.resource.SendMessageBody
-import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcomposer.domain.usecase.FindLocalDraft
 import ch.protonmail.android.mailcomposer.domain.usecase.ResolveUserAddress
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -55,12 +54,12 @@ internal class SendMessage @Inject constructor(
      * local draft has been correctly uploaded to backend and we will get the final version from DB here. Draft
      * should also be locked for editing by now.
      */
-    suspend operator fun invoke(userId: UserId, messageId: MessageId): Either<DataError, Unit> = either {
+    suspend operator fun invoke(userId: UserId, messageId: MessageId): Either<Error, Unit> = either {
 
-        val localDraft = findLocalDraft(userId, messageId) ?: shift(DataError.MessageSending.DraftNotFound)
+        val localDraft = findLocalDraft(userId, messageId) ?: raise(Error.DraftNotFound)
 
         val senderAddress = resolveUserAddress(userId, localDraft.message.addressId)
-            .mapLeft { DataError.MessageSending.SenderAddressNotFound }
+            .mapLeft { Error.SenderAddressNotFound }
             .bind()
 
         val autoSaveContacts = observeMailSettings(userId).firstOrNull()?.autoSaveContacts ?: false
@@ -71,12 +70,13 @@ internal class SendMessage @Inject constructor(
 
         val attachmentFiles = if (sendPreferences.containsMimeSchemePreferences()) {
             val attachmentIds = localDraft.messageBody.attachments.map { it.attachmentId }
-            getAttachmentFiles(userId, messageId, attachmentIds).bind()
+            getAttachmentFiles(userId, messageId, attachmentIds).mapLeft { Error.DownloadingAttachments }.bind()
         } else {
             emptyMap()
         }
 
         val messagePackages = generateMessagePackages(senderAddress, localDraft, sendPreferences, attachmentFiles)
+            .mapLeft { Error.GeneratingPackages }
             .bind()
 
         val response = messageRemoteDataSource.send(
@@ -86,7 +86,7 @@ internal class SendMessage @Inject constructor(
                 autoSaveContacts = autoSaveContacts.toInt(),
                 packages = messagePackages
             )
-        )
+        ).mapLeft { Error.SendingToApi }
 
         response.onLeft {
             Timber.e("API error sending message ID: $messageId", it)
@@ -98,7 +98,7 @@ internal class SendMessage @Inject constructor(
     private suspend fun getSendPreferences(
         userId: UserId,
         emails: List<Email>
-    ): Either<DataError.MessageSending.SendPreferences, Map<Email, SendPreferences>> {
+    ): Either<Error.SendPreferences, Map<Email, SendPreferences>> {
 
         val sendPreferences = runCatching {
             obtainSendPreferences(userId, emails)
@@ -106,18 +106,33 @@ internal class SendMessage @Inject constructor(
                 .mapValues { it.value.sendPreferences }
         }.getOrElse {
             Timber.e("Unexpected exception ${it.message} while obtaining send preferences for $userId")
-            return DataError.MessageSending.SendPreferences.left()
+            return Error.SendPreferences.left()
         }
 
         val uniqueEmails = emails.distinctBy { it.lowercase() }
         // we failed getting send preferences for all recipients
         return if (sendPreferences.size != uniqueEmails.size) {
-            DataError.MessageSending.SendPreferences.left()
+            Error.SendPreferences.left()
         } else sendPreferences.right()
     }
 
     private fun Map<Email, SendPreferences>.containsMimeSchemePreferences() = values.any {
         it.encrypt && it.pgpScheme != PackageType.ProtonMail ||
             it.encrypt.not() && it.sign
+    }
+
+    sealed interface Error {
+
+        object DraftNotFound : Error
+
+        object SenderAddressNotFound : Error
+
+        object SendPreferences : Error
+
+        object GeneratingPackages : Error
+
+        object SendingToApi : Error
+
+        object DownloadingAttachments : Error
     }
 }

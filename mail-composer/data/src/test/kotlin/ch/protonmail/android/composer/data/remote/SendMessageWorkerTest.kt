@@ -28,7 +28,6 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.composer.data.usecase.SendMessage
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
-import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcomposer.domain.model.DraftSyncState
 import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
@@ -165,7 +164,7 @@ class SendMessageWorkerTest {
     }
 
     private fun givenSendMessageFailsWithDraftNotFound(userId: UserId, messageId: MessageId) {
-        coEvery { sendMessageMock(userId, messageId) } returns DataError.MessageSending.DraftNotFound.left()
+        coEvery { sendMessageMock(userId, messageId) } returns SendMessage.Error.DraftNotFound.left()
     }
 
     private fun givenSendMessageSucceeds(userId: UserId, messageId: MessageId) {

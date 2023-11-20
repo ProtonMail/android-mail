@@ -49,7 +49,7 @@ sealed interface DataError {
     }
 
     /**
-     * Error fetching date from Remote source
+     * Error fetching data from Remote source
      */
     sealed interface Remote : DataError {
 
@@ -71,19 +71,6 @@ sealed interface DataError {
         object Unknown : Remote
 
         object CreateDraftRequestNotPerformed : Remote
-    }
-
-    sealed interface MessageSending : DataError {
-
-        object DraftNotFound : MessageSending
-
-        object SenderAddressNotFound : MessageSending
-
-        object SendPreferences : MessageSending
-
-        object GeneratingPackages : MessageSending
-
-        object DownloadingAttachments : MessageSending
     }
 
     object AddressNotFound : DataError

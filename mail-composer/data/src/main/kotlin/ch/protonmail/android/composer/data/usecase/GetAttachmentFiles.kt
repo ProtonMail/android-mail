@@ -21,7 +21,6 @@ package ch.protonmail.android.composer.data.usecase
 import java.io.File
 import arrow.core.Either
 import arrow.core.raise.either
-import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailmessage.data.local.usecase.DecryptAttachmentByteArray
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
@@ -42,10 +41,10 @@ class GetAttachmentFiles @Inject constructor(
         userId: UserId,
         messageId: MessageId,
         attachmentIds: List<AttachmentId>
-    ): Either<DataError, Map<AttachmentId, File>> = either {
+    ): Either<Error, Map<AttachmentId, File>> = either {
         val apiMessageId = draftStateRepository.observe(userId, messageId).first().onLeft {
             Timber.e("No draft state found for $messageId when reading attachments from storage")
-        }.getOrNull()?.apiMessageId ?: raise(DataError.Local.NoDataCached)
+        }.getOrNull()?.apiMessageId ?: raise(Error.DraftNotFound)
 
         attachmentIds.associateWith { attachmentId ->
             attachmentRepository.readFileFromStorage(userId, apiMessageId, attachmentId).fold(
@@ -55,16 +54,26 @@ class GetAttachmentFiles @Inject constructor(
                         userId,
                         apiMessageId,
                         attachmentId
-                    ).mapLeft { DataError.MessageSending.DownloadingAttachments }.bind()
+                    ).mapLeft { Error.DownloadingAttachments }
+                        .bind()
 
                     decryptAttachmentByteArray(userId, apiMessageId, attachmentId, encryptedAttachment).fold(
                         ifRight = {
-                            attachmentRepository.saveAttachmentToFile(userId, apiMessageId, attachmentId, it).bind()
+                            attachmentRepository.saveAttachmentToFile(userId, apiMessageId, attachmentId, it)
+                                .mapLeft { Error.FailedToStoreFile }
+                                .bind()
                         },
-                        ifLeft = { raise(DataError.MessageSending.DownloadingAttachments) }
+                        ifLeft = { raise(Error.DownloadingAttachments) }
                     )
                 }
             )
         }
     }
+
+    sealed interface Error {
+        object DraftNotFound : Error
+        object FailedToStoreFile : Error
+        object DownloadingAttachments : Error
+    }
+
 }

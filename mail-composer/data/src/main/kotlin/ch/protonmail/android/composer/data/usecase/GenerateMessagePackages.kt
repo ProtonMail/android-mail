@@ -25,7 +25,6 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.composer.data.extension.encryptAndSignText
 import ch.protonmail.android.composer.data.remote.resource.SendMessagePackage
-import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
@@ -67,7 +66,7 @@ class GenerateMessagePackages @Inject constructor(
         localDraft: MessageWithBody,
         sendPreferences: Map<Email, SendPreferences>,
         attachmentFiles: Map<AttachmentId, File>
-    ): Either<DataError.MessageSending.GeneratingPackages, List<SendMessagePackage>> {
+    ): Either<Error, List<SendMessagePackage>> {
         lateinit var decryptedPlaintextBodySessionKey: SessionKey
         lateinit var encryptedPlaintextBodyDataPacket: DataPacket
 
@@ -84,7 +83,7 @@ class GenerateMessagePackages @Inject constructor(
             decryptedAttachmentSessionKeys = localDraft.messageBody.attachments.associate { attachment ->
                 attachment.keyPackets?.let {
                     attachment.attachmentId.id to decryptSessionKey(Base64.decode(it))
-                } ?: return DataError.MessageSending.GeneratingPackages.left()
+                } ?: return Error.GeneratingPackages.left()
             }
 
             val encryptedBodyPgpMessage = localDraft.messageBody.body
@@ -137,7 +136,7 @@ class GenerateMessagePackages @Inject constructor(
 
         return if (areAllSubpackagesGenerated) {
             return packages.right()
-        } else DataError.MessageSending.GeneratingPackages.left()
+        } else Error.GeneratingPackages.left()
     }
 
     private fun signAndEncryptMimeBody(
@@ -216,5 +215,9 @@ class GenerateMessagePackages @Inject constructor(
             |
             |$foldedAttachment
         """.trimMargin()
+    }
+
+    sealed interface Error {
+        object GeneratingPackages : Error
     }
 }

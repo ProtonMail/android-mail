@@ -100,7 +100,7 @@ class SendMessageTest {
         val result = sendMessage(userId, messageId)
 
         // Then
-        assertEquals(DataError.MessageSending.DraftNotFound.left(), result)
+        assertEquals(SendMessage.Error.DraftNotFound.left(), result)
     }
 
     @Test
@@ -118,7 +118,7 @@ class SendMessageTest {
         val result = sendMessage(userId, messageId)
 
         // Then
-        assertEquals(DataError.MessageSending.SenderAddressNotFound.left(), result)
+        assertEquals(SendMessage.Error.SenderAddressNotFound.left(), result)
     }
 
     @Test
@@ -135,14 +135,14 @@ class SendMessageTest {
         val result = sendMessage(userId, messageId)
 
         // Then
-        assertEquals(DataError.MessageSending.SendPreferences.left(), result)
+        assertEquals(SendMessage.Error.SendPreferences.left(), result)
     }
 
     @Test
     fun `when attachment reading fails, the error is propagated to the calling site`() = runTest {
         // Given
         val sendPreferences = generateSendPreferences(encrypt = true, sign = true, pgpScheme = PackageType.PgpMime)
-        val expectedError = DataError.Local.NoDataCached.left()
+        val expectedError = SendMessage.Error.DownloadingAttachments.left()
 
         expectFindLocalDraftSucceeds()
         expectResolveUserAddressSucceeds()
@@ -150,7 +150,7 @@ class SendMessageTest {
         expectObtainSendPreferencesSucceeds { sendPreferences }
         coEvery {
             getAttachmentFiles(userId, messageId, sampleMessage.messageBody.attachments.map { it.attachmentId })
-        } returns DataError.Local.NoDataCached.left()
+        } returns GetAttachmentFiles.Error.DraftNotFound.left()
 
         // When
         val result = sendMessage(userId, messageId)
@@ -227,7 +227,7 @@ class SendMessageTest {
         // Given
         val senderAddress = UserAddressSample.PrimaryAddress
         val sendPreferences = expectObtainSendPreferencesSucceeds { generateSendPreferences() }
-        val expectedError = DataError.MessageSending.GeneratingPackages.left()
+        val expectedError = SendMessage.Error.GeneratingPackages.left()
 
         expectFindLocalDraftSucceeds()
         expectResolveUserAddressSucceeds()
@@ -239,7 +239,7 @@ class SendMessageTest {
                 sendPreferences.forMessagePackages(),
                 emptyMap()
             )
-        } returns expectedError
+        } returns GenerateMessagePackages.Error.GeneratingPackages.left()
 
         // When
         val result = sendMessage(userId, messageId)
@@ -252,7 +252,7 @@ class SendMessageTest {
     fun `when remote data source fails to send the message, the error is propagated to the calling site`() = runTest {
         // Given
         val sendPreferences = expectObtainSendPreferencesSucceeds { generateSendPreferences() }
-        val expectedError = DataError.Remote.Proton(ProtonError.fromProtonCode(503)).left()
+        val expectedError = SendMessage.Error.SendingToApi.left()
 
         expectFindLocalDraftSucceeds()
         expectResolveUserAddressSucceeds()
@@ -264,7 +264,7 @@ class SendMessageTest {
                 messageId.id,
                 generateSendMessageBody(messagePackages)
             )
-        } returns expectedError
+        } returns DataError.Remote.Proton(ProtonError.fromProtonCode(503)).left()
 
         // When
         val result = sendMessage(userId, messageId)
@@ -355,7 +355,7 @@ class SendMessageTest {
         val result = sendMessage(userId, messageId)
 
         // Then
-        assertEquals(DataError.MessageSending.SendPreferences.left(), result)
+        assertEquals(SendMessage.Error.SendPreferences.left(), result)
     }
 
     private fun expectFindLocalDraftSucceeds(expected: () -> MessageWithBody = { sampleMessage }) = expected().also {
