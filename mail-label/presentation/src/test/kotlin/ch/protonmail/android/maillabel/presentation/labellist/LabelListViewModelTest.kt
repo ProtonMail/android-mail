@@ -20,8 +20,11 @@ package ch.protonmail.android.maillabel.presentation.labellist
 
 import android.util.Log
 import app.cash.turbine.test
+import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.maillabel.domain.usecase.ObserveLabels
 import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
@@ -119,6 +122,61 @@ class LabelListViewModelTest {
             val actual = awaitItem()
             val expected = LabelListState.ListLoaded.Data(
                 labels = listOf(defaultTestLabel)
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `emits error state`() = runTest {
+        // Given
+        every { observeLabels.invoke(userId) } returns flowOf(
+            DataError.Local.Unknown.left()
+        )
+        every {
+            reducer.newStateFrom(
+                LabelListState.Loading(),
+                LabelListEvent.ErrorLoadingLabelList
+            )
+        } returns LabelListState.Loading(errorLoading = Effect.of(Unit))
+
+        // When
+        labelListViewModel.state.test {
+            // Then
+            val actual = awaitItem()
+            val expected = LabelListState.Loading(errorLoading = Effect.of(Unit))
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `emits open label form state`() = runTest {
+        // Given
+        every {
+            reducer.newStateFrom(
+                LabelListState.Loading(),
+                LabelListEvent.LabelListLoaded(listOf(defaultTestLabel))
+            )
+        } returns LabelListState.ListLoaded.Data(labels = listOf(defaultTestLabel))
+        every {
+            reducer.newStateFrom(
+                LabelListState.ListLoaded.Data(labels = listOf(defaultTestLabel)),
+                LabelListEvent.OpenLabelForm
+            )
+        } returns LabelListState.ListLoaded.Data(labels = listOf(defaultTestLabel), openLabelForm = Effect.of(Unit))
+
+        // When
+        labelListViewModel.state.test {
+            awaitItem()
+
+            labelListViewModel.submit(LabelListViewAction.OnAddLabelClick)
+
+            val actual = awaitItem()
+            val expected = LabelListState.ListLoaded.Data(
+                labels = listOf(defaultTestLabel),
+                openLabelForm = Effect.of(Unit)
             )
 
             assertEquals(expected, actual)
