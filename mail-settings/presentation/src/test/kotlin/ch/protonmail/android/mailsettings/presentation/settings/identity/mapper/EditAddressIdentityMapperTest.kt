@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.mailsettings.presentation.settings.identity.mapper
 
-import androidx.core.text.HtmlCompat
 import ch.protonmail.android.mailsettings.domain.model.DisplayName
 import ch.protonmail.android.mailsettings.domain.model.MobileFooter
 import ch.protonmail.android.mailsettings.domain.model.Signature
@@ -27,24 +26,14 @@ import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.AddressSignatureUiModel
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.DisplayNameUiModel
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.MobileFooterUiModel
-import io.mockk.every
-import io.mockk.mockkStatic
 import io.mockk.unmockkAll
 import org.junit.After
 import org.junit.Assert.assertEquals
-import org.junit.Before
 import org.junit.Test
 
 internal class EditAddressIdentityMapperTest {
 
     private val editAddressIdentityMapper = EditAddressIdentityMapper()
-
-    @Before
-    fun setUp() {
-        mockkStatic(HtmlCompat::class)
-        every { HtmlCompat.fromHtml(any(), any()).toString() } returns "123"
-        every { HtmlCompat.fromHtml("", any()).toString() } returns ""
-    }
 
     @After
     fun teardown() {

@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.mailsettings.presentation.settings.identity.reducer
 
-import androidx.core.text.HtmlCompat
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailsettings.domain.model.DisplayName
 import ch.protonmail.android.mailsettings.domain.model.MobileFooter
@@ -33,11 +32,8 @@ import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.EditAddressIdentityViewAction
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.MobileFooterUiModel
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.reducer.EditAddressIdentityReducer
-import io.mockk.every
-import io.mockk.mockkStatic
 import io.mockk.unmockkAll
 import org.junit.After
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -51,13 +47,6 @@ internal class EditAddressIdentityReducerTest(
 
     private val editAddressIdentityMapper = EditAddressIdentityMapper()
     private val editAddressIdentityReducer = EditAddressIdentityReducer(editAddressIdentityMapper)
-
-    @Before
-    fun setUp() {
-        mockkStatic(HtmlCompat::class)
-        every { HtmlCompat.fromHtml(any(), any()).toString() } returns "signature"
-        every { HtmlCompat.fromHtml("", any()).toString() } returns ""
-    }
 
     @After
     fun teardown() {

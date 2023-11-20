@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.mailsettings.presentation.settings.identity.viewmodel
 
-import androidx.core.text.HtmlCompat
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
@@ -51,7 +50,6 @@ import io.mockk.coVerifySequence
 import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.mockkStatic
 import io.mockk.spyk
 import io.mockk.unmockkAll
 import io.mockk.verify
@@ -90,10 +88,6 @@ internal class EditAddressIdentityViewModelTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
-
-        mockkStatic(HtmlCompat::class)
-        every { HtmlCompat.fromHtml(any(), any()).toString() } returns "signature"
-        every { HtmlCompat.fromHtml("", any()).toString() } returns ""
     }
 
     @After
