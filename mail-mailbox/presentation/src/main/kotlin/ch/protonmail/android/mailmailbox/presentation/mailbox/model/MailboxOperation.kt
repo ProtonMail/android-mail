@@ -53,6 +53,10 @@ internal sealed interface MailboxViewAction : MailboxOperation {
         val item: MailboxItemUiModel
     ) : MailboxViewAction
 
+    data class MailboxItemsChanged(
+        val itemIds: List<String>
+    ) : MailboxViewAction
+
     object ExitSelectionMode : MailboxViewAction, AffectingTopAppBar, AffectingMailboxList, AffectingBottomAppBar
 
     data class ItemClicked(val item: MailboxItemUiModel) : MailboxViewAction
@@ -143,8 +147,11 @@ internal sealed interface MailboxEvent : MailboxOperation {
         data class ItemRemovedFromSelection(
             override val item: MailboxItemUiModel
         ) : ItemClicked, AffectingMailboxList, AffectingTopAppBar
-
     }
+
+    data class ItemsRemovedFromSelection(
+        val itemIds: List<String>
+    ) : MailboxEvent, AffectingMailboxList, AffectingTopAppBar
 
     data class MessageBottomBarEvent(
         val bottomBarEvent: BottomBarEvent

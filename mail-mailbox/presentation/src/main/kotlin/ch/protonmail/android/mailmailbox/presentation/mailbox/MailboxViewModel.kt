@@ -99,6 +99,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.domain.entity.UserId
@@ -110,7 +112,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-@SuppressWarnings("LongParameterList", "TooManyFunctions")
+@SuppressWarnings("LongParameterList", "TooManyFunctions", "LargeClass")
 class MailboxViewModel @Inject constructor(
     private val mailboxPagerFactory: MailboxPagerFactory,
     private val observeCurrentViewMode: ObserveCurrentViewMode,
@@ -143,6 +145,8 @@ class MailboxViewModel @Inject constructor(
 
     private val primaryUserId = observePrimaryUserId()
     private val mutableState = MutableStateFlow(initialState)
+    private val itemIds = mutableListOf<String>()
+    private val itemsChangedMutex = Mutex()
 
     val state: StateFlow<MailboxState> = mutableState.asStateFlow()
     val items: Flow<PagingData<MailboxItemUiModel>> = observePagingData().cachedIn(viewModelScope)
@@ -162,6 +166,7 @@ class MailboxViewModel @Inject constructor(
             .mapToExistingLabel()
             .pairWithCurrentLabelCount()
             .onEach { (currentMailLabel, currentLabelCount) ->
+                itemIds.clear()
                 emitNewStateFrom(MailboxEvent.NewLabelSelected(currentMailLabel, currentLabelCount))
             }
             .launchIn(viewModelScope)
@@ -209,6 +214,7 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.DisableUnreadFilter,
                 is MailboxViewAction.EnableUnreadFilter -> emitNewStateFrom(viewAction)
 
+                is MailboxViewAction.MailboxItemsChanged -> handleMailboxItemChanged(viewAction.itemIds)
                 is MailboxViewAction.OnItemAvatarClicked -> handleOnAvatarClicked(viewAction.item)
                 is MailboxViewAction.OnItemLongClicked -> handleItemLongClick(viewAction.item)
                 is MailboxViewAction.Refresh -> emitNewStateFrom(viewAction)
@@ -227,6 +233,30 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.LabelAsToggleAction -> emitNewStateFrom(viewAction)
                 is MailboxViewAction.LabelAsConfirmed -> onLabelAsConfirmed(viewAction.archiveSelected)
             }.exhaustive
+        }
+    }
+
+    private suspend fun handleMailboxItemChanged(updatedItemIds: List<String>) {
+        withContext(dispatchersProvider.Comp) {
+            itemsChangedMutex.withLock {
+                val removedItems = itemIds.filterNot { updatedItemIds.contains(it) }
+                itemIds.clear()
+                itemIds.addAll(updatedItemIds)
+                Timber.d("Removed items: $removedItems")
+                if (removedItems.isNotEmpty()) {
+                    when (val currentState = state.value.mailboxListState) {
+                        is MailboxListState.Data.SelectionMode -> {
+                            currentState.selectedMailboxItems
+                                .map { it.id }
+                                .filter { currentSelectedItem -> removedItems.contains(currentSelectedItem) }
+                                .takeIf { it.isNotEmpty() }
+                                ?.let { emitNewStateFrom(MailboxEvent.ItemsRemovedFromSelection(it)) }
+                        }
+
+                        else -> {}
+                    }
+                }
+            }
         }
     }
 

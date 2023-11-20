@@ -51,6 +51,8 @@ class MailboxListReducer @Inject constructor() {
                 currentState
             )
 
+            is MailboxEvent.ItemsRemovedFromSelection -> reduceItemsRemovedFromSelection(operation, currentState)
+
             is MailboxEvent.DeleteConfirmed,
             is MailboxEvent.Trash -> reduceExitSelectionMode(currentState)
 
@@ -238,6 +240,19 @@ class MailboxListReducer @Inject constructor() {
                     .filterNot { it.id == operation.item.id }
                     .toSet()
             )
+
+        else -> currentState
+    }
+
+    private fun reduceItemsRemovedFromSelection(
+        operation: MailboxEvent.ItemsRemovedFromSelection,
+        currentState: MailboxListState
+    ) = when (currentState) {
+        is MailboxListState.Data.SelectionMode -> currentState.copy(
+            selectedMailboxItems = currentState.selectedMailboxItems
+                .filterNot { operation.itemIds.contains(it.id) }
+                .toSet()
+        )
 
         else -> currentState
     }

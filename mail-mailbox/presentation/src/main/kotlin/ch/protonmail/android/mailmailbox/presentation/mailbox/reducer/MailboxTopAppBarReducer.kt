@@ -21,6 +21,7 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.presentation.text
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent.ItemsRemovedFromSelection
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
@@ -39,6 +40,7 @@ class MailboxTopAppBarReducer @Inject constructor() {
             is MailboxEvent.EnterSelectionMode -> currentState.toNewStateForEnterSelectionMode()
             is MailboxEvent.ItemClicked.ItemAddedToSelection -> currentState.toNewStateForItemAddedToSelection()
             is MailboxEvent.ItemClicked.ItemRemovedFromSelection -> currentState.toNewStateForItemRemovedFromSelection()
+            is ItemsRemovedFromSelection -> currentState.toNewStateForItemsRemovedFromSelection(operation)
             is MailboxEvent.DeleteConfirmed,
             is MailboxEvent.Trash -> currentState.toNewStateForExitSelectionMode()
         }
@@ -84,6 +86,14 @@ class MailboxTopAppBarReducer @Inject constructor() {
         is MailboxTopAppBarState.Data.SelectionMode -> this.copy(selectedCount = this.selectedCount - 1)
         else -> this
     }
+
+    private fun MailboxTopAppBarState.toNewStateForItemsRemovedFromSelection(removedItems: ItemsRemovedFromSelection) =
+        when (this) {
+            is MailboxTopAppBarState.Data.SelectionMode ->
+                this.copy(selectedCount = this.selectedCount - removedItems.itemIds.size)
+
+            else -> this
+        }
 
     fun MailboxTopAppBarState.Data.with(currentLabelName: TextUiModel) = when (this) {
         is MailboxTopAppBarState.Data.DefaultMode -> copy(currentLabelName = currentLabelName)
