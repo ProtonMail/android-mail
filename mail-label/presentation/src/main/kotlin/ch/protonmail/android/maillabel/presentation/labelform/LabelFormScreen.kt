@@ -31,7 +31,6 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -39,12 +38,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.compose.dismissKeyboard
+import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.maillabel.presentation.getColorFromHexString
 import ch.protonmail.android.maillabel.presentation.previewdata.LabelFormPreviewData.createLabelFormState
@@ -53,6 +54,7 @@ import ch.protonmail.android.maillabel.presentation.ui.ColorPicker
 import ch.protonmail.android.maillabel.presentation.ui.FormDeleteButton
 import ch.protonmail.android.maillabel.presentation.ui.FormInputField
 import me.proton.core.compose.component.ProtonCenteredProgress
+import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.component.ProtonTextButton
@@ -67,7 +69,7 @@ fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewMo
     val context = LocalContext.current
     val view = LocalView.current
     val keyboardController = LocalSoftwareKeyboardController.current
-    val snackbarHostState = remember { ProtonSnackbarHostState() }
+    val snackbarHostErrorState = ProtonSnackbarHostState(defaultType = ProtonSnackbarType.ERROR)
 
     val customActions = actions.copy(
         onLabelNameChanged = {
@@ -118,21 +120,21 @@ fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewMo
                     }
                     val labelAlreadyExistsMessage = stringResource(id = R.string.label_already_exists)
                     ConsumableLaunchedEffect(effect = state.showLabelAlreadyExistsSnackbar) {
-                        snackbarHostState.showSnackbar(
+                        snackbarHostErrorState.showSnackbar(
                             message = labelAlreadyExistsMessage,
                             type = ProtonSnackbarType.ERROR
                         )
                     }
                     val labelLimitReachedMessage = stringResource(id = R.string.label_limit_reached_error)
                     ConsumableLaunchedEffect(effect = state.showLabelLimitReachedSnackbar) {
-                        snackbarHostState.showSnackbar(
+                        snackbarHostErrorState.showSnackbar(
                             message = labelLimitReachedMessage,
                             type = ProtonSnackbarType.ERROR
                         )
                     }
                     val saveLabelErrorMessage = stringResource(id = R.string.save_label_error)
                     ConsumableLaunchedEffect(effect = state.showSaveLabelErrorSnackbar) {
-                        snackbarHostState.showSnackbar(
+                        snackbarHostErrorState.showSnackbar(
                             message = saveLabelErrorMessage,
                             type = ProtonSnackbarType.ERROR
                         )
@@ -152,6 +154,12 @@ fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewMo
                     )
                 }
             }
+        },
+        snackbarHost = {
+            ProtonSnackbarHost(
+                modifier = Modifier.testTag(CommonTestTags.SnackbarHostError),
+                hostState = snackbarHostErrorState
+            )
         }
     )
 

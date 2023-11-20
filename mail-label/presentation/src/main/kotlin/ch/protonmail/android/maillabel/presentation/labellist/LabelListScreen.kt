@@ -84,24 +84,27 @@ fun LabelListScreen(actions: LabelListScreen.Actions, viewModel: LabelListViewMo
             LabelListTopBar(
                 actions = actions,
                 onAddLabelClick = { viewModel.submit(LabelListViewAction.OnAddLabelClick) },
-                isAddLabelButtonVisible = state is LabelListState.Data
+                isAddLabelButtonVisible = state is LabelListState.ListLoaded
             )
         },
         content = { paddingValues ->
             when (state) {
-                is LabelListState.Data -> {
-                    if (state.labels.isEmpty()) {
-                        EmptyLabelListScreen(
-                            onAddLabelClick = { viewModel.submit(LabelListViewAction.OnAddLabelClick) },
-                            paddingValues = paddingValues
-                        )
-                    } else {
-                        LabelListScreenContent(
-                            state = state,
-                            actions = actions,
-                            paddingValues = paddingValues
-                        )
+                is LabelListState.ListLoaded.Data -> {
+                    LabelListScreenContent(
+                        state = state,
+                        actions = actions,
+                        paddingValues = paddingValues
+                    )
+
+                    ConsumableLaunchedEffect(effect = state.openLabelForm) {
+                        actions.onAddLabelClick()
                     }
+                }
+                is LabelListState.ListLoaded.Empty -> {
+                    EmptyLabelListScreen(
+                        onAddLabelClick = { viewModel.submit(LabelListViewAction.OnAddLabelClick) },
+                        paddingValues = paddingValues
+                    )
 
                     ConsumableLaunchedEffect(effect = state.openLabelForm) {
                         actions.onAddLabelClick()
@@ -127,7 +130,7 @@ fun LabelListScreen(actions: LabelListScreen.Actions, viewModel: LabelListViewMo
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LabelListScreenContent(
-    state: LabelListState.Data,
+    state: LabelListState.ListLoaded.Data,
     actions: LabelListScreen.Actions,
     paddingValues: PaddingValues
 ) {
@@ -291,7 +294,7 @@ object LabelListScreen {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 private fun LabelListScreenPreview() {
     LabelListScreenContent(
-        state = LabelListState.Data(
+        state = LabelListState.ListLoaded.Data(
             labels = listOf(
                 labelSampleData,
                 labelSampleData,

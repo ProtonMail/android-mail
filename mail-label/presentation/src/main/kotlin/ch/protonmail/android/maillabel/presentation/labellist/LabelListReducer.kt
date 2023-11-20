@@ -25,25 +25,24 @@ class LabelListReducer @Inject constructor() {
 
     internal fun newStateFrom(currentState: LabelListState, operation: LabelListOperation): LabelListState {
         return when (operation) {
-            is LabelListEvent.LabelListLoaded -> reduceLabelListLoaded(currentState, operation)
+            is LabelListEvent.LabelListLoaded -> reduceLabelListLoaded(operation)
             is LabelListEvent.ErrorLoadingLabelList -> LabelListState.Loading(errorLoading = Effect.of(Unit))
             is LabelListEvent.OpenLabelForm,
             is LabelListViewAction.OnAddLabelClick -> {
                 when (currentState) {
-                    is LabelListState.Data -> currentState.copy(openLabelForm = Effect.of(Unit))
                     is LabelListState.Loading -> currentState
+                    is LabelListState.ListLoaded.Data -> currentState.copy(openLabelForm = Effect.of(Unit))
+                    is LabelListState.ListLoaded.Empty -> currentState.copy(openLabelForm = Effect.of(Unit))
                 }
             }
         }
     }
 
-    private fun reduceLabelListLoaded(
-        currentState: LabelListState,
-        operation: LabelListEvent.LabelListLoaded
-    ): LabelListState {
-        return when (currentState) {
-            is LabelListState.Data -> currentState.copy(labels = operation.labelList)
-            is LabelListState.Loading -> LabelListState.Data(labels = operation.labelList)
+    private fun reduceLabelListLoaded(operation: LabelListEvent.LabelListLoaded): LabelListState {
+        return if (operation.labelList.isNotEmpty()) {
+            LabelListState.ListLoaded.Data(labels = operation.labelList)
+        } else {
+            LabelListState.ListLoaded.Empty()
         }
     }
 }

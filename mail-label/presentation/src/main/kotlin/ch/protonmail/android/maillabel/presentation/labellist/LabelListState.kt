@@ -21,14 +21,23 @@ package ch.protonmail.android.maillabel.presentation.labellist
 import ch.protonmail.android.mailcommon.presentation.Effect
 import me.proton.core.label.domain.entity.Label
 
-sealed class LabelListState {
+sealed interface LabelListState {
 
     data class Loading(
         val errorLoading: Effect<Unit> = Effect.empty()
-    ) : LabelListState()
+    ) : LabelListState
 
-    data class Data(
-        val labels: List<Label>,
-        val openLabelForm: Effect<Unit> = Effect.empty()
-    ) : LabelListState()
+    sealed interface ListLoaded : LabelListState {
+
+        val openLabelForm: Effect<Unit>
+
+        data class Data(
+            override val openLabelForm: Effect<Unit> = Effect.empty(),
+            val labels: List<Label>
+        ) : ListLoaded
+
+        data class Empty(
+            override val openLabelForm: Effect<Unit> = Effect.empty()
+        ) : ListLoaded
+    }
 }
