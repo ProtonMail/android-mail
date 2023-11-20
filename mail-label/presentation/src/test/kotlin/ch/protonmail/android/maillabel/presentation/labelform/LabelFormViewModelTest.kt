@@ -23,7 +23,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
+import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.maillabel.domain.usecase.CreateLabel
@@ -86,12 +88,12 @@ class LabelFormViewModelTest {
     }
 
     private val createLabel = mockk<CreateLabel> {
-        coEvery { this@mockk.invoke(userId, defaultTestLabel.name, defaultTestLabel.color) } returns
+        coEvery { this@mockk.invoke(userId, any(), any()) } returns
             Unit.right()
     }
 
     private val updateLabel = mockk<UpdateLabel> {
-        coEvery { this@mockk.invoke(userId, defaultTestLabel.copy(name = defaultTestUpdatedName)) } returns
+        coEvery { this@mockk.invoke(userId, any()) } returns
             Unit.right()
     }
 
@@ -201,7 +203,7 @@ class LabelFormViewModelTest {
     }
 
     @Test
-    fun `when label is updated`() = runTest {
+    fun `when label name is updated`() = runTest {
         val loadedState = loadedCreateState
         every { savedStateHandle.get<String>(LabelFormScreen.LabelIdKey) } returns null
         every {
@@ -230,7 +232,6 @@ class LabelFormViewModelTest {
 
             // When
             labelFormViewModel.submit(LabelFormViewAction.LabelNameChanged(defaultTestUpdatedName))
-
             // Then
             assertEquals(loadedState.copy(name = defaultTestUpdatedName), awaitItem())
         }
@@ -266,9 +267,294 @@ class LabelFormViewModelTest {
 
             // When
             labelFormViewModel.submit(LabelFormViewAction.LabelColorChanged(Color.Blue))
-
             // Then
             assertEquals(loadedState.copy(color = Color.Blue.getHexStringFromColor()), awaitItem())
+        }
+    }
+
+    @Test
+    fun `when label is created`() = runTest {
+        val loadedState = loadedCreateState
+        every { savedStateHandle.get<String>(LabelFormScreen.LabelIdKey) } returns null
+        every {
+            reducer.newStateFrom(
+                LabelFormState.Loading(),
+                LabelFormEvent.LabelLoaded(
+                    null,
+                    name = "",
+                    color = defaultTestLabel.color,
+                    colorList = listOf(Color.Red)
+                )
+            )
+        } returns loadedState
+        every {
+            reducer.newStateFrom(
+                loadedState,
+                LabelFormViewAction.LabelNameChanged(defaultTestUpdatedName)
+            )
+        } returns loadedState.copy(name = defaultTestUpdatedName)
+        every {
+            reducer.newStateFrom(
+                loadedState.copy(name = defaultTestUpdatedName),
+                LabelFormEvent.LabelCreated
+            )
+        } returns loadedState.copy(name = defaultTestUpdatedName, closeWithSave = Effect.of(Unit))
+
+        labelFormViewModel.state.test {
+            // Initial loaded state
+            val actual = awaitItem()
+
+            assertEquals(loadedState, actual)
+
+            // When
+            labelFormViewModel.submit(LabelFormViewAction.LabelNameChanged(defaultTestUpdatedName))
+            // Then
+            assertEquals(loadedState.copy(name = defaultTestUpdatedName), awaitItem())
+
+            // When
+            labelFormViewModel.submit(LabelFormViewAction.OnSaveClick)
+            // Then
+            assertEquals(loadedState.copy(name = defaultTestUpdatedName, closeWithSave = Effect.of(Unit)), awaitItem())
+        }
+    }
+
+    @Test
+    fun `when label is updated`() = runTest {
+        val loadedState = loadedUpdateState
+        every {
+            reducer.newStateFrom(
+                LabelFormState.Loading(),
+                LabelFormEvent.LabelLoaded(
+                    labelId = defaultTestLabel.labelId,
+                    name = defaultTestLabel.name,
+                    color = defaultTestLabel.color,
+                    colorList = listOf(Color.Red)
+                )
+            )
+        } returns loadedState
+        every {
+            reducer.newStateFrom(
+                loadedState,
+                LabelFormViewAction.LabelNameChanged(defaultTestUpdatedName)
+            )
+        } returns loadedState.copy(name = defaultTestUpdatedName)
+        every {
+            reducer.newStateFrom(
+                loadedState.copy(name = defaultTestUpdatedName),
+                LabelFormEvent.LabelUpdated
+            )
+        } returns loadedState.copy(name = defaultTestUpdatedName, closeWithSave = Effect.of(Unit))
+
+        labelFormViewModel.state.test {
+            // Initial loaded state
+            val actual = awaitItem()
+
+            assertEquals(loadedState, actual)
+
+            // When
+            labelFormViewModel.submit(LabelFormViewAction.LabelNameChanged(defaultTestUpdatedName))
+            // Then
+            assertEquals(loadedState.copy(name = defaultTestUpdatedName), awaitItem())
+
+            // When
+            labelFormViewModel.submit(LabelFormViewAction.OnSaveClick)
+            // Then
+            assertEquals(loadedState.copy(name = defaultTestUpdatedName, closeWithSave = Effect.of(Unit)), awaitItem())
+        }
+    }
+
+    @Test
+    fun `when label name already exists`() = runTest {
+        val loadedState = loadedUpdateState
+        every {
+            reducer.newStateFrom(
+                LabelFormState.Loading(),
+                LabelFormEvent.LabelLoaded(
+                    labelId = defaultTestLabel.labelId,
+                    name = defaultTestLabel.name,
+                    color = defaultTestLabel.color,
+                    colorList = listOf(Color.Red)
+                )
+            )
+        } returns loadedState
+        every {
+            reducer.newStateFrom(
+                loadedState,
+                LabelFormViewAction.LabelNameChanged(defaultTestUpdatedName)
+            )
+        } returns loadedState.copy(name = defaultTestUpdatedName)
+        every {
+            reducer.newStateFrom(
+                loadedState.copy(name = defaultTestUpdatedName),
+                LabelFormEvent.LabelAlreadyExists
+            )
+        } returns loadedState.copy(name = defaultTestUpdatedName, showLabelAlreadyExistsSnackbar = Effect.of(Unit))
+        coEvery { isLabelNameAllowed.invoke(userId, any()) } returns false.right()
+
+        labelFormViewModel.state.test {
+            // Initial loaded state
+            val actual = awaitItem()
+
+            assertEquals(loadedState, actual)
+
+            // When
+            labelFormViewModel.submit(LabelFormViewAction.LabelNameChanged(defaultTestUpdatedName))
+            // Then
+            assertEquals(loadedState.copy(name = defaultTestUpdatedName), awaitItem())
+
+            // When
+            labelFormViewModel.submit(LabelFormViewAction.OnSaveClick)
+            // Then
+            assertEquals(
+                loadedState.copy(
+                    name = defaultTestUpdatedName,
+                    showLabelAlreadyExistsSnackbar = Effect.of(Unit)
+                ),
+                awaitItem()
+            )
+        }
+    }
+
+    @Test
+    fun `when label limit is reached`() = runTest {
+        val loadedState = loadedCreateState
+        every { savedStateHandle.get<String>(LabelFormScreen.LabelIdKey) } returns null
+        every {
+            reducer.newStateFrom(
+                LabelFormState.Loading(),
+                LabelFormEvent.LabelLoaded(
+                    null,
+                    name = "",
+                    color = defaultTestLabel.color,
+                    colorList = listOf(Color.Red)
+                )
+            )
+        } returns loadedState
+        every {
+            reducer.newStateFrom(
+                loadedState,
+                LabelFormViewAction.LabelNameChanged(defaultTestUpdatedName)
+            )
+        } returns loadedState.copy(name = defaultTestUpdatedName)
+        every {
+            reducer.newStateFrom(
+                loadedState.copy(name = defaultTestUpdatedName),
+                LabelFormEvent.LabelLimitReached
+            )
+        } returns loadedState.copy(name = defaultTestUpdatedName, showLabelLimitReachedSnackbar = Effect.of(Unit))
+        coEvery { isLabelLimitReached.invoke(userId) } returns true.right()
+
+        labelFormViewModel.state.test {
+            // Initial loaded state
+            val actual = awaitItem()
+
+            assertEquals(loadedState, actual)
+
+            // When
+            labelFormViewModel.submit(LabelFormViewAction.LabelNameChanged(defaultTestUpdatedName))
+            // Then
+            assertEquals(loadedState.copy(name = defaultTestUpdatedName), awaitItem())
+
+            // When
+            labelFormViewModel.submit(LabelFormViewAction.OnSaveClick)
+            // Then
+            assertEquals(
+                loadedState.copy(
+                    name = defaultTestUpdatedName,
+                    showLabelLimitReachedSnackbar = Effect.of(Unit)
+                ),
+                awaitItem()
+            )
+        }
+    }
+
+    @Test
+    fun `when label is deleted`() = runTest {
+        val loadedState = loadedUpdateState
+        every {
+            reducer.newStateFrom(
+                LabelFormState.Loading(),
+                LabelFormEvent.LabelLoaded(
+                    labelId = defaultTestLabel.labelId,
+                    name = defaultTestLabel.name,
+                    color = defaultTestLabel.color,
+                    colorList = listOf(Color.Red)
+                )
+            )
+        } returns loadedState
+        every {
+            reducer.newStateFrom(
+                loadedState,
+                LabelFormEvent.LabelDeleted
+            )
+        } returns loadedState.copy(closeWithDelete = Effect.of(Unit))
+
+        labelFormViewModel.state.test {
+            // Initial loaded state
+            val actual = awaitItem()
+
+            assertEquals(loadedState, actual)
+
+            // When
+            labelFormViewModel.submit(LabelFormViewAction.OnDeleteClick)
+            // Then
+            assertEquals(
+                loadedState.copy(closeWithDelete = Effect.of(Unit)),
+                awaitItem()
+            )
+        }
+    }
+
+    @Test
+    fun `when save label has an error`() = runTest {
+        val loadedState = loadedCreateState
+        every { savedStateHandle.get<String>(LabelFormScreen.LabelIdKey) } returns null
+        every {
+            reducer.newStateFrom(
+                LabelFormState.Loading(),
+                LabelFormEvent.LabelLoaded(
+                    null,
+                    name = "",
+                    color = defaultTestLabel.color,
+                    colorList = listOf(Color.Red)
+                )
+            )
+        } returns loadedState
+        every {
+            reducer.newStateFrom(
+                loadedState,
+                LabelFormViewAction.LabelNameChanged(defaultTestUpdatedName)
+            )
+        } returns loadedState.copy(name = defaultTestUpdatedName)
+        every {
+            reducer.newStateFrom(
+                loadedState.copy(name = defaultTestUpdatedName),
+                LabelFormEvent.SaveLabelError
+            )
+        } returns loadedState.copy(name = defaultTestUpdatedName, showSaveLabelErrorSnackbar = Effect.of(Unit))
+        coEvery { isLabelLimitReached.invoke(userId) } returns DataError.Local.Unknown.left()
+
+        labelFormViewModel.state.test {
+            // Initial loaded state
+            val actual = awaitItem()
+
+            assertEquals(loadedState, actual)
+
+            // When
+            labelFormViewModel.submit(LabelFormViewAction.LabelNameChanged(defaultTestUpdatedName))
+            // Then
+            assertEquals(loadedState.copy(name = defaultTestUpdatedName), awaitItem())
+
+            // When
+            labelFormViewModel.submit(LabelFormViewAction.OnSaveClick)
+            // Then
+            assertEquals(
+                loadedState.copy(
+                    name = defaultTestUpdatedName,
+                    showSaveLabelErrorSnackbar = Effect.of(Unit)
+                ),
+                awaitItem()
+            )
         }
     }
 }
