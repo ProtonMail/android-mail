@@ -62,6 +62,7 @@ import ch.protonmail.android.mailmailbox.domain.usecase.MoveMessages
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveOnboarding
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
+import ch.protonmail.android.mailmailbox.domain.usecase.RelabelMessages
 import ch.protonmail.android.mailmailbox.domain.usecase.SaveOnboarding
 import ch.protonmail.android.mailmailbox.presentation.helper.MailboxAsyncPagingDataDiffer
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxViewModel
@@ -207,6 +208,7 @@ class MailboxViewModelTest {
     private val moveMessages = mockk<MoveMessages>()
     private val deleteConversations = mockk<DeleteConversations>()
     private val deleteMessages = mockk<DeleteMessages>()
+    private val relabelMessages = mockk<RelabelMessages>()
 
     private val mailboxViewModel by lazy {
         MailboxViewModel(
@@ -227,6 +229,7 @@ class MailboxViewModelTest {
             markConversationsAsUnread = markConversationsAsUnread,
             markMessagesAsRead = markMessagesAsRead,
             markMessagesAsUnread = markMessagesAsUnread,
+            relabelMessages = relabelMessages,
             moveConversations = moveConversations,
             moveMessages = moveMessages,
             deleteConversations = deleteConversations,

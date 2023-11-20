@@ -130,6 +130,7 @@ class MailboxReducer @Inject constructor(
                 is MailboxEvent.MailboxBottomSheetEvent -> operation.bottomSheetOperation
                 is MailboxViewAction.RequestLabelAsBottomSheet -> BottomSheetOperation.Requested
                 is MailboxViewAction.LabelAsToggleAction -> LabelToggled(operation.label)
+                is MailboxViewAction.LabelAsConfirmed -> BottomSheetOperation.Dismiss
             }
             bottomSheetReducer.newStateFrom(bottomSheetState, bottomSheetOperation)
         } else {

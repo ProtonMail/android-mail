@@ -22,8 +22,9 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingActionMessage
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingBottomAppBar
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingDeleteDialog
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingBottomSheet
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingDeleteDialog
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingErrorBar
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingMailboxList
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingTopAppBar
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingUnreadFilter
@@ -40,6 +41,7 @@ internal sealed interface MailboxOperation {
     sealed interface AffectingActionMessage
     sealed interface AffectingDeleteDialog
     sealed interface AffectingBottomSheet
+    sealed interface AffectingErrorBar
 }
 
 internal sealed interface MailboxViewAction : MailboxOperation {
@@ -68,6 +70,7 @@ internal sealed interface MailboxViewAction : MailboxOperation {
     object DeleteDialogDismissed : MailboxViewAction, AffectingDeleteDialog
     object RequestLabelAsBottomSheet : MailboxViewAction, AffectingBottomSheet
     data class LabelAsToggleAction(val label: LabelId) : MailboxViewAction, AffectingBottomSheet
+    data class LabelAsConfirmed(val archiveSelected: Boolean) : MailboxViewAction, AffectingBottomSheet
 
     /*
      *`OnOfflineWithData` and `OnErrorWithData` are not actual Actions which are actively performed by the user
@@ -150,6 +153,8 @@ internal sealed interface MailboxEvent : MailboxOperation {
     data class MailboxBottomSheetEvent(
         val bottomSheetOperation: BottomSheetOperation
     ) : MailboxEvent, AffectingBottomSheet
+
+    object ErrorLabelingMessages : MailboxEvent, AffectingErrorBar
 }
 
 
