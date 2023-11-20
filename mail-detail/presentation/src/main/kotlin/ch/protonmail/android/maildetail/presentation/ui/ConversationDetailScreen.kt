@@ -17,6 +17,7 @@
  */
 package ch.protonmail.android.maildetail.presentation.ui
 
+import android.net.Uri
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
@@ -187,7 +188,10 @@ fun ConversationDetailScreen(
                 onReply = actions.onReply,
                 onReplyAll = actions.onReplyAll,
                 onForward = actions.onForward,
-                onScrollRequestCompleted = { viewModel.submit(ConversationDetailViewAction.ScrollRequestCompleted) }
+                onScrollRequestCompleted = { viewModel.submit(ConversationDetailViewAction.ScrollRequestCompleted) },
+                onDoNotAskLinkConfirmationAgain = {
+                    viewModel.submit(ConversationDetailViewAction.DoNotAskLinkConfirmationAgain)
+                }
             ),
             scrollToMessageId = state.scrollToMessage?.id
         )
@@ -205,6 +209,7 @@ fun ConversationDetailScreen(
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val snackbarHostState = ProtonSnackbarHostState()
+    val linkConfirmationDialogState = remember { mutableStateOf<Uri?>(null) }
 
     ConsumableLaunchedEffect(state.exitScreenEffect) { actions.onExit(null) }
     ConsumableTextEffect(state.exitScreenWithMessageEffect) { message ->
@@ -214,10 +219,30 @@ fun ConversationDetailScreen(
         snackbarHostState.showSnackbar(ProtonSnackbarType.ERROR, message = string)
     }
     ConsumableLaunchedEffect(effect = state.openMessageBodyLinkEffect) {
-        actions.onOpenMessageBodyLink(it)
+        if (state.requestLinkConfirmation) {
+            linkConfirmationDialogState.value = it
+        } else {
+            actions.onOpenMessageBodyLink(it)
+        }
     }
     ConsumableLaunchedEffect(effect = state.openAttachmentEffect) {
         actions.openAttachment(it)
+    }
+
+    if (linkConfirmationDialogState.value != null) {
+        ExternalLinkConfirmationDialog(
+            onCancelClicked = {
+                linkConfirmationDialogState.value = null
+            },
+            onContinueClicked = { doNotShowAgain ->
+                linkConfirmationDialogState.value?.let { actions.onOpenMessageBodyLink(it) }
+                linkConfirmationDialogState.value = null
+                if (doNotShowAgain) {
+                    actions.onDoNotAskLinkConfirmationAgain()
+                }
+            },
+            linkUri = linkConfirmationDialogState.value
+        )
     }
 
     if (state.conversationState is ConversationDetailMetadataState.Error) {
@@ -472,7 +497,7 @@ object ConversationDetail {
 
     data class Actions(
         val onExit: (notifyUserMessage: String?) -> Unit,
-        val openMessageBodyLink: (url: String) -> Unit,
+        val openMessageBodyLink: (uri: Uri) -> Unit,
         val openAttachment: (values: OpenAttachmentIntentValues) -> Unit,
         val onAddLabel: () -> Unit,
         val showFeatureMissingSnackbar: () -> Unit,
@@ -497,8 +522,9 @@ object ConversationDetailScreen {
         val onLabelAsClick: () -> Unit,
         val onExpandMessage: (MessageIdUiModel) -> Unit,
         val onCollapseMessage: (MessageIdUiModel) -> Unit,
-        val onMessageBodyLinkClicked: (url: String) -> Unit,
-        val onOpenMessageBodyLink: (url: String) -> Unit,
+        val onMessageBodyLinkClicked: (uri: Uri) -> Unit,
+        val onOpenMessageBodyLink: (uri: Uri) -> Unit,
+        val onDoNotAskLinkConfirmationAgain: () -> Unit,
         val onRequestScrollTo: (MessageIdUiModel) -> Unit,
         val onScrollRequestCompleted: () -> Unit,
         val onShowAllAttachmentsForMessage: (MessageIdUiModel) -> Unit,
@@ -525,6 +551,7 @@ object ConversationDetailScreen {
                 onCollapseMessage = {},
                 onMessageBodyLinkClicked = {},
                 onOpenMessageBodyLink = {},
+                onDoNotAskLinkConfirmationAgain = {},
                 onRequestScrollTo = {},
                 onScrollRequestCompleted = {},
                 onShowAllAttachmentsForMessage = {},

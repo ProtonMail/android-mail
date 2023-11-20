@@ -35,7 +35,8 @@ data class MessageDetailState(
     val error: Effect<TextUiModel>,
     val openMessageBodyLinkEffect: Effect<Uri>,
     val openAttachmentEffect: Effect<OpenAttachmentIntentValues>,
-    val showReplyActionsFeatureFlag: Boolean
+    val showReplyActionsFeatureFlag: Boolean,
+    val requestLinkConfirmation: Boolean
 ) {
 
     companion object {
@@ -50,7 +51,8 @@ data class MessageDetailState(
             error = Effect.empty(),
             openMessageBodyLinkEffect = Effect.empty(),
             openAttachmentEffect = Effect.empty(),
-            showReplyActionsFeatureFlag = false
+            showReplyActionsFeatureFlag = false,
+            requestLinkConfirmation = false
         )
     }
 }

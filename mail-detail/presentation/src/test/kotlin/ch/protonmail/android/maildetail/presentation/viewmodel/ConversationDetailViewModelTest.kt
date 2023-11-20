@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.viewmodel
 
-import java.util.UUID
+import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.Event
 import app.cash.turbine.ReceiveTurbine
@@ -95,7 +95,10 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSh
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
+import ch.protonmail.android.mailsettings.domain.model.PrivacySettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
+import ch.protonmail.android.mailsettings.domain.usecase.privacy.ObservePrivacySettings
+import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdateLinkConfirmationSetting
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
 import ch.protonmail.android.testdata.conversation.ConversationTestData
 import ch.protonmail.android.testdata.conversation.ConversationUiModelTestData
@@ -265,6 +268,19 @@ class ConversationDetailViewModelTest {
         )
     }
 
+    // Privacy settings for link confirmation dialog
+    private val observePrivacySettings = mockk<ObservePrivacySettings> {
+        coEvery { this@mockk.invoke(any()) } returns flowOf(
+            PrivacySettings(
+                autoShowRemoteContent = false,
+                autoShowEmbeddedImages = false,
+                preventTakingScreenshots = false,
+                requestLinkConfirmation = false
+            ).right()
+        )
+    }
+    private val updateLinkConfirmationSetting = mockk<UpdateLinkConfirmationSetting>()
+
     private val inMemoryConversationStateRepository = FakeInMemoryConversationStateRepository()
     private val setMessageViewState = SetMessageViewState(inMemoryConversationStateRepository)
     private val observeConversationViewState = ObserveConversationViewState(inMemoryConversationStateRepository)
@@ -299,7 +315,9 @@ class ConversationDetailViewModelTest {
             getEmbeddedImageAvoidDuplicatedExecution = getEmbeddedImageAvoidDuplicatedExecution,
             ioDispatcher = Dispatchers.Unconfined,
             observeMailFeature = observeMailFeature,
-            messageIdUiModelMapper = messageIdUiModelMapper
+            messageIdUiModelMapper = messageIdUiModelMapper,
+            observePrivacySettings = observePrivacySettings,
+            updateLinkConfirmationSetting = updateLinkConfirmationSetting
         )
     }
 
@@ -1437,16 +1455,18 @@ class ConversationDetailViewModelTest {
                 folderColorSettings = defaultFolderColorSettings
             )
         } returns messages.first()
-        val link = "https://www.proton.me/${UUID.randomUUID()}"
-        setupLinkClickState(link)
+
+        // Mock the Uri class
+        val mockUri = mockk<Uri>(relaxed = true)
+        setupLinkClickState(mockUri)
 
         viewModel.state.test {
             initialStateEmitted()
             // when
-            viewModel.submit(ConversationDetailViewAction.MessageBodyLinkClicked(link))
+            viewModel.submit(ConversationDetailViewAction.MessageBodyLinkClicked(mockUri))
 
             // then
-            assertEquals(link, awaitItem().openMessageBodyLinkEffect.consume())
+            assertEquals(mockUri, awaitItem().openMessageBodyLinkEffect.consume())
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -1740,7 +1760,7 @@ class ConversationDetailViewModelTest {
         return Pair(allCollapsed.map { it.messageId }, InvoiceWithLabelExpanded)
     }
 
-    private fun setupLinkClickState(link: String) {
+    private fun setupLinkClickState(link: Uri) {
         every {
             reducer.newStateFrom(
                 currentState = any(),

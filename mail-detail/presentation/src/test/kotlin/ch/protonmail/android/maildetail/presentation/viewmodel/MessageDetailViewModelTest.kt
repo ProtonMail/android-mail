@@ -95,6 +95,9 @@ import ch.protonmail.android.testdata.maillabel.MailLabelTestData
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData.buildCustomFolder
 import ch.protonmail.android.testdata.message.MessageAttachmentMetadataTestData
 import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
+import ch.protonmail.android.mailsettings.domain.model.PrivacySettings
+import ch.protonmail.android.mailsettings.domain.usecase.privacy.ObservePrivacySettings
+import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdateLinkConfirmationSetting
 import ch.protonmail.android.testdata.message.MessageBodyTestData
 import ch.protonmail.android.testdata.message.MessageBodyUiModelTestData
 import ch.protonmail.android.testdata.message.MessageDetailActionBarUiModelTestData
@@ -255,6 +258,20 @@ class MessageDetailViewModelTest {
             FeatureFlag(userId, MailFeatureId.MessageActions.id, Scope.Unknown, defaultValue = false, value = false)
         )
     }
+
+    // Privacy settings for link confirmation dialog
+    private val observePrivacySettings = mockk<ObservePrivacySettings> {
+        coEvery { this@mockk.invoke(userId) } returns flowOf(
+            PrivacySettings(
+                autoShowRemoteContent = false,
+                autoShowEmbeddedImages = false,
+                preventTakingScreenshots = false,
+                requestLinkConfirmation = false
+            ).right()
+        )
+    }
+    private val updateLinkConfirmationSetting = mockk<UpdateLinkConfirmationSetting>()
+
     private val getAttachmentIntentValues = mockk<GetAttachmentIntentValues>()
     private val getDownloadingAttachmentsForMessages = mockk<GetDownloadingAttachmentsForMessages>()
     private val getEmbeddedImageAvoidDuplicatedExecution = mockk<GetEmbeddedImageAvoidDuplicatedExecution>()
@@ -285,7 +302,9 @@ class MessageDetailViewModelTest {
             getAttachmentIntentValues = getAttachmentIntentValues,
             getDownloadingAttachmentsForMessages = getDownloadingAttachmentsForMessages,
             getEmbeddedImageAvoidDuplicatedExecution = getEmbeddedImageAvoidDuplicatedExecution,
-            observeMailFeature = observeMailFeature
+            observeMailFeature = observeMailFeature,
+            observePrivacySettings = observePrivacySettings,
+            updateLinkConfirmationSetting = updateLinkConfirmationSetting
         )
     }
 
@@ -883,6 +902,57 @@ class MessageDetailViewModelTest {
             // Then
             assertEquals(expected, awaitItem().openMessageBodyLinkEffect)
             cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `Initial requestLinkConfirmation should be emit as true`() = runTest {
+        // Given
+        val privacySettings = PrivacySettings(
+            autoShowRemoteContent = false,
+            autoShowEmbeddedImages = false,
+            preventTakingScreenshots = false,
+            requestLinkConfirmation = true
+        )
+        // given
+        coEvery { observePrivacySettings(any()) } returns flowOf(privacySettings.right())
+
+        // When
+        viewModel.state.test {
+            advanceUntilIdle()
+
+            // Then
+            assertEquals(true, lastEmittedItem().requestLinkConfirmation)
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `Should disable requestLinkConfirmation flag when user checks do not ask again`() = runTest {
+        // Given
+        val initialPrivacySettings = PrivacySettings(
+            autoShowRemoteContent = false,
+            autoShowEmbeddedImages = false,
+            preventTakingScreenshots = false,
+            requestLinkConfirmation = true
+        )
+        coEvery { updateLinkConfirmationSetting(any()) } returns Unit.right()
+        coEvery { observePrivacySettings(any()) } returns flowOf(initialPrivacySettings.right())
+
+        // When
+        viewModel.state.test {
+            advanceUntilIdle()
+
+            // Then
+            assertEquals(true, lastEmittedItem().requestLinkConfirmation)
+            cancelAndIgnoreRemainingEvents()
+
+            // when
+            viewModel.submit(MessageViewAction.DoNotAskLinkConfirmationAgain)
+            advanceUntilIdle()
+
+            // then
+            coVerify { updateLinkConfirmationSetting(false) }
         }
     }
 

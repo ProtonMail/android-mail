@@ -176,7 +176,8 @@ class MessageDetailReducerTest(
             error = Effect.empty(),
             openMessageBodyLinkEffect = Effect.empty(),
             openAttachmentEffect = Effect.empty(),
-            showReplyActionsFeatureFlag = false
+            showReplyActionsFeatureFlag = false,
+            requestLinkConfirmation = false
         )
 
         private val actions = listOf(
@@ -188,7 +189,8 @@ class MessageDetailReducerTest(
                 shouldReduceExitEffect = false,
                 shouldReduceToErrorEffect = false,
                 shouldReduceBottomSheetState = false,
-                shouldReduceOpenMessageBodyLinkEffect = false
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReduceRequestLinkConfirmation = false
             ),
             TestInput(
                 MessageViewAction.UnStar,
@@ -198,7 +200,8 @@ class MessageDetailReducerTest(
                 shouldReduceExitEffect = false,
                 shouldReduceToErrorEffect = false,
                 shouldReduceBottomSheetState = false,
-                shouldReduceOpenMessageBodyLinkEffect = false
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReduceRequestLinkConfirmation = false
             ),
             TestInput(
                 MessageViewAction.MarkUnread,
@@ -208,7 +211,8 @@ class MessageDetailReducerTest(
                 shouldReduceExitEffect = true,
                 shouldReduceToErrorEffect = false,
                 shouldReduceBottomSheetState = false,
-                shouldReduceOpenMessageBodyLinkEffect = false
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReduceRequestLinkConfirmation = false,
             ),
             TestInput(
                 MessageViewAction.Trash,
@@ -219,7 +223,8 @@ class MessageDetailReducerTest(
                 exitMessage = TextUiModel(string.message_moved_to_trash),
                 shouldReduceToErrorEffect = false,
                 shouldReduceBottomSheetState = false,
-                shouldReduceOpenMessageBodyLinkEffect = false
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReduceRequestLinkConfirmation = false
             ),
             TestInput(
                 MessageViewAction.RequestMoveToBottomSheet,
@@ -229,7 +234,8 @@ class MessageDetailReducerTest(
                 shouldReduceExitEffect = false,
                 shouldReduceToErrorEffect = false,
                 shouldReduceBottomSheetState = true,
-                shouldReduceOpenMessageBodyLinkEffect = false
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReduceRequestLinkConfirmation = false
             ),
             TestInput(
                 MessageViewAction.DismissBottomSheet,
@@ -239,7 +245,8 @@ class MessageDetailReducerTest(
                 shouldReduceExitEffect = false,
                 shouldReduceToErrorEffect = false,
                 shouldReduceBottomSheetState = true,
-                shouldReduceOpenMessageBodyLinkEffect = false
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReduceRequestLinkConfirmation = false
             ),
             TestInput(
                 MessageViewAction.MoveToDestinationSelected(MailLabelId.System.Spam),
@@ -249,7 +256,8 @@ class MessageDetailReducerTest(
                 shouldReduceExitEffect = false,
                 shouldReduceToErrorEffect = false,
                 shouldReduceBottomSheetState = true,
-                shouldReduceOpenMessageBodyLinkEffect = false
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReduceRequestLinkConfirmation = false
             ),
             TestInput(
                 MessageViewAction.MoveToDestinationConfirmed("testLabel"),
@@ -260,7 +268,8 @@ class MessageDetailReducerTest(
                 exitMessage = TextUiModel(string.message_moved_to_selected_destination, "testLabel"),
                 shouldReduceToErrorEffect = false,
                 shouldReduceBottomSheetState = false,
-                shouldReduceOpenMessageBodyLinkEffect = false
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReduceRequestLinkConfirmation = false
             ),
             TestInput(
                 MessageViewAction.LabelAsToggleAction(LabelId("customLabel")),
@@ -270,7 +279,8 @@ class MessageDetailReducerTest(
                 shouldReduceExitEffect = false,
                 shouldReduceToErrorEffect = false,
                 shouldReduceBottomSheetState = true,
-                shouldReduceOpenMessageBodyLinkEffect = false
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReduceRequestLinkConfirmation = false
             ),
             TestInput(
                 MessageViewAction.LabelAsConfirmed(false),
@@ -280,7 +290,8 @@ class MessageDetailReducerTest(
                 shouldReduceExitEffect = false,
                 shouldReduceToErrorEffect = false,
                 shouldReduceBottomSheetState = true,
-                shouldReduceOpenMessageBodyLinkEffect = false
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReduceRequestLinkConfirmation = false
             ),
             TestInput(
                 MessageViewAction.LabelAsConfirmed(true),
@@ -291,7 +302,8 @@ class MessageDetailReducerTest(
                 exitMessage = TextUiModel(string.message_moved_to_archive),
                 shouldReduceToErrorEffect = false,
                 shouldReduceBottomSheetState = true,
-                shouldReduceOpenMessageBodyLinkEffect = false
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReduceRequestLinkConfirmation = false
             ),
             TestInput(
                 MessageViewAction.MessageBodyLinkClicked(mockk()),
@@ -301,7 +313,8 @@ class MessageDetailReducerTest(
                 shouldReduceExitEffect = false,
                 shouldReduceToErrorEffect = false,
                 shouldReduceBottomSheetState = false,
-                shouldReduceOpenMessageBodyLinkEffect = true
+                shouldReduceOpenMessageBodyLinkEffect = true,
+                shouldReduceRequestLinkConfirmation = false
             )
         )
 
@@ -317,7 +330,8 @@ class MessageDetailReducerTest(
                 shouldReduceExitEffect = false,
                 shouldReduceToErrorEffect = false,
                 shouldReduceBottomSheetState = false,
-                shouldReduceOpenMessageBodyLinkEffect = false
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReduceRequestLinkConfirmation = false
             ),
             TestInput(
                 MessageDetailEvent.MessageBodyEvent(
@@ -329,7 +343,8 @@ class MessageDetailReducerTest(
                 shouldReduceExitEffect = false,
                 shouldReduceToErrorEffect = false,
                 shouldReduceBottomSheetState = false,
-                shouldReduceOpenMessageBodyLinkEffect = false
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReduceRequestLinkConfirmation = false
             ),
             TestInput(
                 MessageDetailEvent.NoCachedMetadata,
@@ -339,7 +354,8 @@ class MessageDetailReducerTest(
                 shouldReduceExitEffect = false,
                 shouldReduceToErrorEffect = false,
                 shouldReduceBottomSheetState = false,
-                shouldReduceOpenMessageBodyLinkEffect = false
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReduceRequestLinkConfirmation = false
             ),
             TestInput(
                 MessageDetailEvent.MessageBottomBarEvent(BottomBarEvent.ErrorLoadingActions),
@@ -349,7 +365,8 @@ class MessageDetailReducerTest(
                 shouldReduceExitEffect = false,
                 shouldReduceToErrorEffect = false,
                 shouldReduceBottomSheetState = false,
-                shouldReduceOpenMessageBodyLinkEffect = false
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReduceRequestLinkConfirmation = false
             ),
             TestInput(
                 MessageDetailEvent.ErrorAddingStar,
@@ -359,7 +376,8 @@ class MessageDetailReducerTest(
                 shouldReduceExitEffect = false,
                 shouldReduceToErrorEffect = true,
                 shouldReduceBottomSheetState = false,
-                shouldReduceOpenMessageBodyLinkEffect = false
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReduceRequestLinkConfirmation = false
             ),
             TestInput(
                 MessageDetailEvent.ErrorRemovingStar,
@@ -369,7 +387,8 @@ class MessageDetailReducerTest(
                 shouldReduceExitEffect = false,
                 shouldReduceToErrorEffect = true,
                 shouldReduceBottomSheetState = false,
-                shouldReduceOpenMessageBodyLinkEffect = false
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReduceRequestLinkConfirmation = false
             ),
             TestInput(
                 MessageDetailEvent.ErrorMarkingUnread,
@@ -379,7 +398,8 @@ class MessageDetailReducerTest(
                 shouldReduceExitEffect = false,
                 shouldReduceToErrorEffect = true,
                 shouldReduceBottomSheetState = false,
-                shouldReduceOpenMessageBodyLinkEffect = false
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReduceRequestLinkConfirmation = false
             ),
             TestInput(
                 MessageDetailEvent.ErrorMovingToTrash,
@@ -389,7 +409,8 @@ class MessageDetailReducerTest(
                 shouldReduceExitEffect = false,
                 shouldReduceToErrorEffect = true,
                 shouldReduceBottomSheetState = false,
-                shouldReduceOpenMessageBodyLinkEffect = false
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReduceRequestLinkConfirmation = false,
             ),
             TestInput(
                 MessageDetailEvent.MessageBottomSheetEvent(
@@ -403,7 +424,8 @@ class MessageDetailReducerTest(
                 shouldReduceExitEffect = false,
                 shouldReduceToErrorEffect = false,
                 shouldReduceBottomSheetState = true,
-                shouldReduceOpenMessageBodyLinkEffect = false
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReduceRequestLinkConfirmation = false
             ),
             TestInput(
                 MessageDetailEvent.MessageBottomSheetEvent(
@@ -418,7 +440,8 @@ class MessageDetailReducerTest(
                 shouldReduceExitEffect = false,
                 shouldReduceToErrorEffect = false,
                 shouldReduceBottomSheetState = true,
-                shouldReduceOpenMessageBodyLinkEffect = false
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReduceRequestLinkConfirmation = false
             ),
             TestInput(
                 MessageDetailEvent.AttachmentStatusChanged(
@@ -431,7 +454,8 @@ class MessageDetailReducerTest(
                 shouldReduceExitEffect = false,
                 shouldReduceToErrorEffect = false,
                 shouldReduceBottomSheetState = false,
-                shouldReduceOpenMessageBodyLinkEffect = false
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReduceRequestLinkConfirmation = false
             ),
             TestInput(
                 MessageDetailEvent.ErrorGettingAttachment,
@@ -441,7 +465,8 @@ class MessageDetailReducerTest(
                 shouldReduceExitEffect = false,
                 shouldReduceToErrorEffect = true,
                 shouldReduceBottomSheetState = false,
-                shouldReduceOpenMessageBodyLinkEffect = false
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReduceRequestLinkConfirmation = false
             ),
             TestInput(
                 MessageDetailEvent.ErrorGettingAttachmentNotEnoughSpace,
@@ -451,7 +476,8 @@ class MessageDetailReducerTest(
                 shouldReduceExitEffect = false,
                 shouldReduceToErrorEffect = true,
                 shouldReduceBottomSheetState = false,
-                shouldReduceOpenMessageBodyLinkEffect = false
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReduceRequestLinkConfirmation = false
             )
         )
 
@@ -479,6 +505,7 @@ class MessageDetailReducerTest(
         val shouldReduceBottomSheetState: Boolean,
         val shouldReduceToErrorEffect: Boolean,
         val shouldReduceOpenMessageBodyLinkEffect: Boolean,
+        val shouldReduceRequestLinkConfirmation: Boolean,
         val exitMessage: TextUiModel? = null
     )
 }

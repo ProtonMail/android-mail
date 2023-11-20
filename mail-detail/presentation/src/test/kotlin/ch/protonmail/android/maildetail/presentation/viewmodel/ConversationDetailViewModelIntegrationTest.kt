@@ -121,6 +121,9 @@ import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSetti
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData
 import ch.protonmail.android.testdata.message.MessageAttachmentMetadataTestData
 import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
+import ch.protonmail.android.mailsettings.domain.model.PrivacySettings
+import ch.protonmail.android.mailsettings.domain.usecase.privacy.ObservePrivacySettings
+import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdateLinkConfirmationSetting
 import io.mockk.Called
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -201,6 +204,20 @@ class ConversationDetailViewModelIntegrationTest {
             MailLabelTestData.listOfCustomLabels.right()
         )
     }
+
+    // Privacy settings for link confirmation dialog
+    private val observePrivacySettings = mockk<ObservePrivacySettings> {
+        coEvery { this@mockk.invoke(any()) } returns flowOf(
+            PrivacySettings(
+                autoShowRemoteContent = false,
+                autoShowEmbeddedImages = false,
+                preventTakingScreenshots = false,
+                requestLinkConfirmation = false
+            ).right()
+        )
+    }
+    private val updateLinkConfirmationSetting = mockk<UpdateLinkConfirmationSetting>()
+
     private val observeAttachmentStatus = mockk<ObserveMessageAttachmentStatus>()
     private val getDownloadingAttachmentsForMessages = mockk<GetDownloadingAttachmentsForMessages>()
     private val getAttachmentIntentValues = mockk<GetAttachmentIntentValues>()
@@ -332,6 +349,63 @@ class ConversationDetailViewModelIntegrationTest {
         Dispatchers.resetMain()
         unmockkStatic(Formatter::formatShortFileSize)
         unmockkStatic(Uri::class)
+    }
+
+    @Test
+    fun `Should emit updated requestLinkConfirmation flag`() = runTest {
+        // given
+        val privacySettings = PrivacySettings(
+            autoShowRemoteContent = false,
+            autoShowEmbeddedImages = false,
+            preventTakingScreenshots = false,
+            requestLinkConfirmation = true
+        )
+        coEvery { observePrivacySettings(userId) } returns flowOf(privacySettings.right())
+
+        // When
+        buildConversationDetailViewModel().state.test {
+            skipItems(3)
+
+            // then
+            val convDetailsState = awaitItem()
+            assertIs<ConversationDetailState>(convDetailsState)
+            assertTrue { convDetailsState.requestLinkConfirmation }
+
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `Should disable requestLinkConfirmation flag when user checks do not ask again`() = runTest {
+        // given
+        val initialPrivacySettings = PrivacySettings(
+            autoShowRemoteContent = false,
+            autoShowEmbeddedImages = false,
+            preventTakingScreenshots = false,
+            requestLinkConfirmation = true
+        )
+        coEvery { observePrivacySettings(userId) } returns flowOf(initialPrivacySettings.right())
+        coEvery { updateLinkConfirmationSetting(any()) } returns Unit.right()
+
+        // When
+        val viewModel = buildConversationDetailViewModel()
+        viewModel.state.test {
+            skipItems(3)
+
+            // then
+            val convDetailsState = awaitItem()
+            assertIs<ConversationDetailState>(convDetailsState)
+            assertTrue { convDetailsState.requestLinkConfirmation }
+
+            // when
+            viewModel.submit(ConversationDetailViewAction.DoNotAskLinkConfirmationAgain)
+
+            // then
+            awaitItem()
+            coVerify { updateLinkConfirmationSetting(false) }
+
+            cancelAndIgnoreRemainingEvents()
+        }
     }
 
     @Test
@@ -1086,7 +1160,9 @@ class ConversationDetailViewModelIntegrationTest {
         getEmbeddedImageAvoidDuplicatedExecution = getEmbeddedImageAvoidDuplicatedExecution,
         ioDispatcher = ioDispatcher,
         observeMailFeature = observeMailFeature,
-        messageIdUiModelMapper = messageIdUiModelMapper
+        messageIdUiModelMapper = messageIdUiModelMapper,
+        observePrivacySettings = observePrivacySettings,
+        updateLinkConfirmationSetting = updateLinkConfirmationSetting
     )
 
     private fun aMessageAttachment(id: String): MessageAttachment = MessageAttachment(

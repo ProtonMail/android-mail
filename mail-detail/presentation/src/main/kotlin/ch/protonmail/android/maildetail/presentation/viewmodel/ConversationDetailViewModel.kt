@@ -73,6 +73,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailVie
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.RequestScrollTo
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.ScrollRequestCompleted
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.ShowAllAttachmentsForMessage
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.DoNotAskLinkConfirmationAgain
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.Star
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.Trash
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.UnStar
@@ -99,6 +100,8 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsB
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
+import ch.protonmail.android.mailsettings.domain.usecase.privacy.ObservePrivacySettings
+import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdateLinkConfirmationSetting
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineDispatcher
@@ -156,7 +159,9 @@ class ConversationDetailViewModel @Inject constructor(
     private val getAttachmentIntentValues: GetAttachmentIntentValues,
     private val getEmbeddedImageAvoidDuplicatedExecution: GetEmbeddedImageAvoidDuplicatedExecution,
     @IODispatcher private val ioDispatcher: CoroutineDispatcher,
-    private val observeMailFeature: ObserveMailFeature
+    private val observeMailFeature: ObserveMailFeature,
+    private val observePrivacySettings: ObservePrivacySettings,
+    private val updateLinkConfirmationSetting: UpdateLinkConfirmationSetting
 ) : ViewModel() {
 
     private val primaryUserId: Flow<UserId> = observePrimaryUserId().filterNotNull()
@@ -172,6 +177,7 @@ class ConversationDetailViewModel @Inject constructor(
         observeConversationMessages(conversationId)
         observeBottomBarActions(conversationId)
         observeReplyActionsFeatureFlag()
+        observePrivacySettings()
     }
 
     @Suppress("ComplexMethod")
@@ -191,6 +197,7 @@ class ConversationDetailViewModel @Inject constructor(
             is ExpandMessage -> onExpandMessage(action.messageId)
             is CollapseMessage -> onCollapseMessage(action.messageId)
             is MessageBodyLinkClicked -> onMessageBodyLinkClicked(action)
+            is DoNotAskLinkConfirmationAgain -> onDoNotAskLinkConfirmationChecked()
             is RequestScrollTo -> onRequestScrollTo(action)
             is ScrollRequestCompleted -> onScrollRequestCompleted(action)
             is ShowAllAttachmentsForMessage -> showAllAttachmentsForMessage(action.messageId)
@@ -209,6 +216,23 @@ class ConversationDetailViewModel @Inject constructor(
                 coroutineContext = viewModelScope.coroutineContext
             )
         }
+    }
+
+    private fun observePrivacySettings() {
+        primaryUserId.flatMapLatest { userId ->
+            observePrivacySettings(userId).mapLatest { either ->
+                either.fold(
+                    ifLeft = { Timber.e("Error getting Privacy Settings for user: $userId") },
+                    ifRight = { privacySettings ->
+                        mutableDetailState.emit(
+                            mutableDetailState.value.copy(
+                                requestLinkConfirmation = privacySettings.requestLinkConfirmation
+                            )
+                        )
+                    }
+                )
+            }
+        }.launchIn(viewModelScope)
     }
 
     private fun observeReplyActionsFeatureFlag() {
@@ -623,6 +647,10 @@ class ConversationDetailViewModel @Inject constructor(
 
     private fun onMessageBodyLinkClicked(action: MessageBodyLinkClicked) {
         viewModelScope.launch { emitNewStateFrom(action) }
+    }
+
+    private fun onDoNotAskLinkConfirmationChecked() {
+        viewModelScope.launch { updateLinkConfirmationSetting(false) }
     }
 
     private fun onRequestScrollTo(action: RequestScrollTo) {

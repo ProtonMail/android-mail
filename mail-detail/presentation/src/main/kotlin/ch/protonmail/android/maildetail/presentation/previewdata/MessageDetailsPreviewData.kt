@@ -73,7 +73,8 @@ object MessageDetailsPreviewData {
         error = Effect.empty(),
         openMessageBodyLinkEffect = Effect.empty(),
         openAttachmentEffect = Effect.empty(),
-        showReplyActionsFeatureFlag = false
+        showReplyActionsFeatureFlag = false,
+        requestLinkConfirmation = false
     )
 
     val MessageWithLabels = Message.copy(
@@ -98,7 +99,8 @@ object MessageDetailsPreviewData {
         error = Effect.empty(),
         openMessageBodyLinkEffect = Effect.empty(),
         openAttachmentEffect = Effect.empty(),
-        showReplyActionsFeatureFlag = false
+        showReplyActionsFeatureFlag = false,
+        requestLinkConfirmation = false
     )
 }
 

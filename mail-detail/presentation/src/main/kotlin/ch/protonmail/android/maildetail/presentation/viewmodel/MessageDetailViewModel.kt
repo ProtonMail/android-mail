@@ -69,6 +69,8 @@ import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
+import ch.protonmail.android.mailsettings.domain.usecase.privacy.ObservePrivacySettings
+import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdateLinkConfirmationSetting
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -117,7 +119,9 @@ class MessageDetailViewModel @Inject constructor(
     private val getAttachmentIntentValues: GetAttachmentIntentValues,
     private val getDownloadingAttachmentsForMessages: GetDownloadingAttachmentsForMessages,
     private val getEmbeddedImageAvoidDuplicatedExecution: GetEmbeddedImageAvoidDuplicatedExecution,
-    private val observeMailFeature: ObserveMailFeature
+    private val observeMailFeature: ObserveMailFeature,
+    private val observePrivacySettings: ObservePrivacySettings,
+    private val updateLinkConfirmationSetting: UpdateLinkConfirmationSetting
 ) : ViewModel() {
 
     private val messageId = requireMessageId()
@@ -133,6 +137,7 @@ class MessageDetailViewModel @Inject constructor(
         getMessageBody(messageId)
         observeBottomBarActions(messageId)
         observeReplyActionsFeatureFlag()
+        observePrivacySettings()
     }
 
     @Suppress("ComplexMethod")
@@ -151,6 +156,7 @@ class MessageDetailViewModel @Inject constructor(
             is MessageViewAction.LabelAsToggleAction -> onLabelSelected(action.labelId)
             is MessageViewAction.LabelAsConfirmed -> onLabelAsConfirmed(action.archiveSelected)
             is MessageViewAction.MessageBodyLinkClicked -> onMessageBodyLinkClicked(action.uri)
+            is MessageViewAction.DoNotAskLinkConfirmationAgain -> onDoNotAskLinkConfirmationChecked()
             is MessageViewAction.ShowAllAttachments -> onShowAllAttachmentsClicked()
             is MessageViewAction.OnAttachmentClicked -> onOpenAttachmentClicked(action.attachmentId)
         }.exhaustive
@@ -314,6 +320,23 @@ class MessageDetailViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
+    private fun observePrivacySettings() {
+        primaryUserId.flatMapLatest { userId ->
+            observePrivacySettings(userId).mapLatest { either ->
+                either.fold(
+                    ifLeft = { Timber.e("Error getting Privacy Settings for user: $userId") },
+                    ifRight = { privacySettings ->
+                        mutableDetailState.emit(
+                            mutableDetailState.value.copy(
+                                requestLinkConfirmation = privacySettings.requestLinkConfirmation
+                            )
+                        )
+                    }
+                )
+            }
+        }.launchIn(viewModelScope)
+    }
+
     private fun observeBottomBarActions(messageId: MessageId) {
         primaryUserId.flatMapLatest { userId ->
             observeDetailActions(userId, messageId).mapLatest { either ->
@@ -463,6 +486,10 @@ class MessageDetailViewModel @Inject constructor(
 
     private fun onMessageBodyLinkClicked(uri: Uri) {
         viewModelScope.launch { emitNewStateFrom(MessageViewAction.MessageBodyLinkClicked(uri)) }
+    }
+
+    private fun onDoNotAskLinkConfirmationChecked() {
+        viewModelScope.launch { updateLinkConfirmationSetting(false) }
     }
 
     private fun onOpenAttachmentClicked(attachmentId: AttachmentId) {

@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.ui
 
+import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -123,7 +124,7 @@ private fun ConversationDetailExpandedItem(
         MessageBody(
             messageBodyUiModel = uiModel.messageBodyUiModel,
             actions = MessageBody.Actions(
-                onMessageBodyLinkClicked = { actions.onMessageBodyLinkClicked(it.toString()) },
+                onMessageBodyLinkClicked = { actions.onMessageBodyLinkClicked(it) },
                 onShowAllAttachments = { actions.onShowAllAttachmentsForMessage(uiModel.messageId) },
                 onAttachmentClicked = { actions.onAttachmentClicked(uiModel.messageId, it) },
                 loadEmbeddedImage = actions.loadEmbeddedImage,
@@ -142,8 +143,8 @@ object ConversationDetailItem {
     data class Actions(
         val onCollapse: (MessageIdUiModel) -> Unit,
         val onExpand: (MessageIdUiModel) -> Unit,
-        val onMessageBodyLinkClicked: (url: String) -> Unit,
-        val onOpenMessageBodyLink: (url: String) -> Unit,
+        val onMessageBodyLinkClicked: (url: Uri) -> Unit,
+        val onOpenMessageBodyLink: (url: Uri) -> Unit,
         val onShowAllAttachmentsForMessage: (MessageIdUiModel) -> Unit,
         val onAttachmentClicked: (MessageIdUiModel, AttachmentId) -> Unit,
         val showFeatureMissingSnackbar: () -> Unit,

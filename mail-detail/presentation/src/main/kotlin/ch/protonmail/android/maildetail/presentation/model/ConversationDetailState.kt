@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.model
 
+import android.net.Uri
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
@@ -32,10 +33,11 @@ data class ConversationDetailState(
     val exitScreenEffect: Effect<Unit>,
     val exitScreenWithMessageEffect: Effect<TextUiModel>,
     val error: Effect<TextUiModel>,
-    val openMessageBodyLinkEffect: Effect<String>,
+    val openMessageBodyLinkEffect: Effect<Uri>,
     val openAttachmentEffect: Effect<OpenAttachmentIntentValues>,
     val scrollToMessage: MessageIdUiModel?,
-    val showReplyActionsFeatureFlag: Boolean
+    val showReplyActionsFeatureFlag: Boolean,
+    val requestLinkConfirmation: Boolean
 ) {
 
     companion object {
@@ -51,7 +53,8 @@ data class ConversationDetailState(
             openMessageBodyLinkEffect = Effect.empty(),
             openAttachmentEffect = Effect.empty(),
             scrollToMessage = null,
-            showReplyActionsFeatureFlag = false
+            showReplyActionsFeatureFlag = false,
+            requestLinkConfirmation = false
         )
     }
 }

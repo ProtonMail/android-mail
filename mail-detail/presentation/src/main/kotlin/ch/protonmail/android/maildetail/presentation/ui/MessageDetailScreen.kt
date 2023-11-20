@@ -33,6 +33,8 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -146,6 +148,7 @@ fun MessageDetailScreen(
                 onMoveClick = { viewModel.submit(MessageViewAction.RequestMoveToBottomSheet) },
                 onLabelAsClick = { viewModel.submit(MessageViewAction.RequestLabelAsBottomSheet) },
                 onMessageBodyLinkClicked = { viewModel.submit(MessageViewAction.MessageBodyLinkClicked(it)) },
+                onDoNotAskLinkConfirmationAgain = { viewModel.submit(MessageViewAction.DoNotAskLinkConfirmationAgain) },
                 onOpenMessageBodyLink = actions.openMessageBodyLink,
                 onReplyClick = { actions.onReply(it) },
                 onReplyAllClick = { actions.onReplyAll(it) },
@@ -170,6 +173,7 @@ fun MessageDetailScreen(
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val snackbarHostState = ProtonSnackbarHostState()
+    val linkConfirmationDialogState = remember { mutableStateOf<Uri?>(null) }
 
     ConsumableLaunchedEffect(state.exitScreenEffect) { actions.onExit(null) }
     ConsumableTextEffect(state.exitScreenWithMessageEffect) { string ->
@@ -179,10 +183,29 @@ fun MessageDetailScreen(
         snackbarHostState.showSnackbar(ProtonSnackbarType.ERROR, message = string)
     }
     ConsumableLaunchedEffect(effect = state.openMessageBodyLinkEffect) {
-        actions.onOpenMessageBodyLink(it)
+        if (state.requestLinkConfirmation) {
+            linkConfirmationDialogState.value = it
+        } else {
+            actions.onOpenMessageBodyLink(it)
+        }
     }
     ConsumableLaunchedEffect(effect = state.openAttachmentEffect) {
         actions.openAttachment(it)
+    }
+    if (linkConfirmationDialogState.value != null) {
+        ExternalLinkConfirmationDialog(
+            onCancelClicked = {
+                linkConfirmationDialogState.value = null
+            },
+            onContinueClicked = { doNotShowAgain ->
+                linkConfirmationDialogState.value?.let { actions.onOpenMessageBodyLink(it) }
+                linkConfirmationDialogState.value = null
+                if (doNotShowAgain) {
+                    actions.onDoNotAskLinkConfirmationAgain()
+                }
+            },
+            linkUri = linkConfirmationDialogState.value
+        )
     }
 
     Scaffold(
@@ -358,6 +381,7 @@ object MessageDetailScreen {
         val onLabelAsClick: () -> Unit,
         val onMessageBodyLinkClicked: (uri: Uri) -> Unit,
         val onOpenMessageBodyLink: (uri: Uri) -> Unit,
+        val onDoNotAskLinkConfirmationAgain: () -> Unit,
         val onReplyClick: (MessageId) -> Unit,
         val onReplyAllClick: (MessageId) -> Unit,
         val onForwardClick: (MessageId) -> Unit,
@@ -382,6 +406,7 @@ object MessageDetailScreen {
                 onLabelAsClick = {},
                 onMessageBodyLinkClicked = {},
                 onOpenMessageBodyLink = {},
+                onDoNotAskLinkConfirmationAgain = {},
                 onReplyClick = {},
                 onReplyAllClick = {},
                 onForwardClick = {},

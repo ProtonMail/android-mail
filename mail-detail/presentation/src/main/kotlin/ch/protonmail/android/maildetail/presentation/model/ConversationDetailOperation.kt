@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.model
 
+import android.net.Uri
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingBottomSheet
@@ -127,7 +128,8 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
     data class LabelAsConfirmed(val archiveSelected: Boolean) : ConversationDetailViewAction, AffectingBottomSheet
     data class ExpandMessage(val messageId: MessageIdUiModel) : ConversationDetailViewAction
     data class CollapseMessage(val messageId: MessageIdUiModel) : ConversationDetailViewAction
-    data class MessageBodyLinkClicked(val url: String) : ConversationDetailViewAction
+    data class MessageBodyLinkClicked(val uri: Uri) : ConversationDetailViewAction
+    object DoNotAskLinkConfirmationAgain : ConversationDetailViewAction
     data class RequestScrollTo(val messageId: MessageIdUiModel) : ConversationDetailViewAction
     object ScrollRequestCompleted : ConversationDetailViewAction
     data class ShowAllAttachmentsForMessage(val messageId: MessageIdUiModel) : ConversationDetailViewAction

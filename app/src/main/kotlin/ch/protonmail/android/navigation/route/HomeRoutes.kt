@@ -58,7 +58,7 @@ internal fun NavGraphBuilder.addConversationDetail(
                     navController.popBackStack()
                     notifyUserMessage?.let(showSnackbar)
                 },
-                openMessageBodyLink = { url -> openMessageBodyLink(Uri.parse(url)) },
+                openMessageBodyLink = { uri -> openMessageBodyLink(uri) },
                 openAttachment = openAttachment,
                 onAddLabel = { navController.navigate(Destination.Screen.CreateLabel.route) },
                 showFeatureMissingSnackbar = showFeatureMissingSnackbar,

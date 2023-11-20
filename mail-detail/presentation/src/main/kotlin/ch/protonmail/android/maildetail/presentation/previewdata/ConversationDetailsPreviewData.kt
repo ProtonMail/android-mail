@@ -70,7 +70,8 @@ object ConversationDetailsPreviewData {
         openMessageBodyLinkEffect = Effect.empty(),
         openAttachmentEffect = Effect.empty(),
         scrollToMessage = null,
-        showReplyActionsFeatureFlag = false
+        showReplyActionsFeatureFlag = false,
+        requestLinkConfirmation = false
     )
 
     val SuccessWithRandomMessageIds = ConversationDetailState(
@@ -110,7 +111,8 @@ object ConversationDetailsPreviewData {
         openMessageBodyLinkEffect = Effect.empty(),
         openAttachmentEffect = Effect.empty(),
         scrollToMessage = null,
-        showReplyActionsFeatureFlag = false
+        showReplyActionsFeatureFlag = false,
+        requestLinkConfirmation = false
     )
 
     val FailedLoadingConversation = ConversationDetailState(
@@ -124,7 +126,8 @@ object ConversationDetailsPreviewData {
         openMessageBodyLinkEffect = Effect.empty(),
         openAttachmentEffect = Effect.empty(),
         scrollToMessage = null,
-        showReplyActionsFeatureFlag = false
+        showReplyActionsFeatureFlag = false,
+        requestLinkConfirmation = false
     )
 
     val FailedLoadingMessages = ConversationDetailState(
@@ -138,7 +141,8 @@ object ConversationDetailsPreviewData {
         openMessageBodyLinkEffect = Effect.empty(),
         openAttachmentEffect = Effect.empty(),
         scrollToMessage = null,
-        showReplyActionsFeatureFlag = false
+        showReplyActionsFeatureFlag = false,
+        requestLinkConfirmation = false
     )
 
     val FailedLoadingBottomBar = ConversationDetailState(
@@ -152,7 +156,8 @@ object ConversationDetailsPreviewData {
         openMessageBodyLinkEffect = Effect.empty(),
         openAttachmentEffect = Effect.empty(),
         scrollToMessage = null,
-        showReplyActionsFeatureFlag = false
+        showReplyActionsFeatureFlag = false,
+        requestLinkConfirmation = false
     )
 
     val Loading = ConversationDetailState(
@@ -166,7 +171,8 @@ object ConversationDetailsPreviewData {
         openMessageBodyLinkEffect = Effect.empty(),
         openAttachmentEffect = Effect.empty(),
         scrollToMessage = null,
-        showReplyActionsFeatureFlag = false
+        showReplyActionsFeatureFlag = false,
+        requestLinkConfirmation = false
     )
 
     val NotLoggedIn = ConversationDetailState(
@@ -180,7 +186,8 @@ object ConversationDetailsPreviewData {
         openMessageBodyLinkEffect = Effect.empty(),
         openAttachmentEffect = Effect.empty(),
         scrollToMessage = null,
-        showReplyActionsFeatureFlag = false
+        showReplyActionsFeatureFlag = false,
+        requestLinkConfirmation = false
     )
 }
 

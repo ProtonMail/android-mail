@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.reducer
 
+import android.net.Uri
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
@@ -179,8 +180,8 @@ class ConversationDetailReducer @Inject constructor(
 
     private fun ConversationDetailState.toOpenMessageBodyLinkState(
         operation: ConversationDetailOperation
-    ): Effect<String> = when (operation) {
-        is ConversationDetailViewAction.MessageBodyLinkClicked -> Effect.of(operation.url)
+    ): Effect<Uri> = when (operation) {
+        is ConversationDetailViewAction.MessageBodyLinkClicked -> Effect.of(operation.uri)
         else -> openMessageBodyLinkEffect
     }
 

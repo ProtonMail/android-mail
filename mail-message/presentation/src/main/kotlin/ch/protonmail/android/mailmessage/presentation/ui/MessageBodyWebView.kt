@@ -73,7 +73,9 @@ fun MessageBodyWebView(
     val client = remember {
         object : AccompanistWebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
-                request?.let { actions.onMessageBodyLinkClicked(it.url) }
+                request?.let {
+                    actions.onMessageBodyLinkClicked(it.url)
+                }
                 return true
             }
 
