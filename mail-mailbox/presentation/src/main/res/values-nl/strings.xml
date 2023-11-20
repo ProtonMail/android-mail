@@ -46,7 +46,7 @@
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Gesprek verwijderen</item>
-    <item quantity="other">%d conversaties verwijderen</item>
+    <item quantity="other">%d gesprekken verwijderen</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_title">
     <item quantity="one">Bericht verwijderen</item>
@@ -57,8 +57,8 @@
     <item quantity="other">Weet u zeker dat u deze gesprekken permanent wilt verwijderen?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_message">
-    <item quantity="one">Weet u zeker dat u dit bericht permanent wilt wissen?</item>
-    <item quantity="other">Weet u zeker dat u deze berichten permanent wilt wissen?</item>
+    <item quantity="one">Weet u zeker dat u dit bericht permanent wilt verwijderen?</item>
+    <item quantity="other">Weet u zeker dat u deze berichten permanent wilt verwijderen?</item>
   </plurals>
   <string name="mailbox_action_delete_dialog_button_cancel">Annuleren</string>
   <string name="mailbox_action_delete_dialog_button_delete">Verwijderen</string>

@@ -55,12 +55,23 @@
   <string name="mail_settings_display_name_and_signature">Visningsnavn og signatur</string>
   <string name="mail_settings_mailbox">Postkasse</string>
   <string name="mail_settings_privacy">Privatliv</string>
+  <string name="mail_settings_labels">Etiketter</string>
+  <string name="mail_settings_folders">Mapper</string>
   <string name="mail_settings_local_storage">Lokalt lager</string>
   <string name="mail_settings_snooze">Udsæt</string>
   <string name="mail_settings_snooze_notifications">Udsæt notifikationer</string>
   <string name="mail_settings_conversation_mode">Samtaletilstand</string>
   <string name="mail_settings_not_set">Ikke indstillet</string>
   <string name="mail_settings_conversation_mode_hint">Gruppér e-mails i den samme samtale sammen i din indbakke, eller vis dem hver for sig</string>
+  <!-- Default email address settings -->
+  <string name="mail_settings_default_email_address_title">Standard e-mailadresse</string>
+  <string name="mail_settings_default_email_address_inactive_addresses">Inaktive adresser</string>
+  <string name="mail_settings_default_email_address_no_inactive_addresses">Ingen inaktive adresser</string>
+  <string name="mail_settings_default_email_address_error_loading">Fejl ved indlæsning af indstillinger</string>
+  <string name="mail_settings_default_email_address_error_update">Fejl ved opdatering af indstillinger</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">Opgradér til et betalt abonnement for at kunne indstille denne e-mail som standardadresse</string>
+  <!-- Display name, signature, mobile footer -->
+  <string name="mail_settings_identity_mobile_footer_default_free">Sendt fra Proton Mail Android</string>
   <!-- Privacy settings -->
   <string name="mail_settings_privacy_auto_show_remote_content">Vis automatisk eksternt indhold</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">Vis automatisk indlejrede billeder</string>
@@ -83,6 +94,14 @@
   <string name="mail_settings_swipe_action_spam_description">Flyt til spam</string>
   <string name="mail_settings_swipe_action_star_description">Tilføj eller fjern stjerne</string>
   <string name="mail_settings_swipe_action_trash_description">Flyt til papirkurv</string>
+  <!-- Notification settings -->
+  <string name="mail_settings_notifications_title">Push-notifikationer</string>
+  <string name="mail_settings_notifications_extended_notifications_title">Udvidede notifikationer</string>
+  <string name="mail_settings_notifications_extended_notifications_summary">Slå denne funktion til for at se afsenderen af e-mails i push-notifikationer.</string>
+  <string name="mail_settings_notifications_notifications_settings">Indstillinger for notifikationer</string>
+  <string name="mail_settings_notifications_notifications_settings_hint">Gå til systemets notifikationsindstillinger</string>
+  <string name="mail_settings_notifications_update_error">Fejl ved opdatering af indstillinger</string>
+  <string name="mail_settings_notifications_loading_error">Fejl ved indlæsning af indstillinger</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Der opstod en fejl. Prøv igen.</string>
 </resources>

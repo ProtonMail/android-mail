@@ -25,8 +25,8 @@
   <string name="toolbar_back_content_description">Back to previous screen</string>
   <string name="x_error_not_logged_in">Not signed in</string>
   <string name="action_reply">Reply</string>
-  <string name="action_reply_all">Reply all</string>
-  <string name="action_forward">Forward</string>
+  <string name="action_reply_all">Odgovori svima</string>
+  <string name="action_forward">Proslijedi</string>
   <string name="action_reply_content_description">Odgovori</string>
   <string name="action_reply_all_content_description">Odgovori svima</string>
   <string name="action_forward_content_description">Proslijedi</string>
@@ -54,9 +54,9 @@
   <string name="common_error_loading_actions">Failed loading actions</string>
   <string name="yesterday">Jučer</string>
   <!-- notification channels -->
-  <string name="attachment_download_notification_channel_name">Attachments</string>
+  <string name="attachment_download_notification_channel_name">Privitci</string>
   <string name="attachment_download_notification_channel_description">Notifications for attachment downloads</string>
-  <string name="email_notification_channel_name">Emails</string>
+  <string name="email_notification_channel_name">E-pošta</string>
   <string name="login_notification_channel_name">Login Alerts</string>
   <string name="email_notification_channel_description">Incoming email notifications</string>
   <string name="login_notification_channel_description">New logins notifications</string>

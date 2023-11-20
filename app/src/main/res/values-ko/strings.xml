@@ -30,4 +30,6 @@
   <string name="mailbox_message_sending_error">메시지 전송 오류</string>
   <string name="mailbox_attachment_uploading_error">첨부 파일 업로드 중 오류</string>
   <string name="notification_switched_account">%s 계정으로 전환됨</string>
+  <string name="label_saved">Label saved</string>
+  <string name="label_deleted">Label deleted</string>
 </resources>

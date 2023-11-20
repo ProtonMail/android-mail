@@ -45,47 +45,47 @@
   <string name="mailbox_error_message_unexpected">Щось пішло не так</string>
   <string name="mailbox_is_empty_message">Ця поштова скринька порожня</string>
   <plurals name="mailbox_action_trash">
-    <item quantity="one">Message moved to Trash</item>
-    <item quantity="few">%d messages moved to Trash</item>
-    <item quantity="many">%d messages moved to Trash</item>
-    <item quantity="other">%d messages moved to Trash</item>
+    <item quantity="one">Повідомлення переміщено до смітника</item>
+    <item quantity="few">%d повідомлень переміщено до смітника</item>
+    <item quantity="many">%d повідомлень переміщено до смітника</item>
+    <item quantity="other">%d повідомлень переміщено до смітника</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
-    <item quantity="one">Delete conversation</item>
-    <item quantity="few">Delete %d conversations</item>
-    <item quantity="many">Delete %d conversations</item>
-    <item quantity="other">Delete %d conversations</item>
+    <item quantity="one">Видалити розмову</item>
+    <item quantity="few">Видалити %d розмов</item>
+    <item quantity="many">Видалити %d розмов</item>
+    <item quantity="other">Видалити %d розмов</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_title">
-    <item quantity="one">Delete message</item>
-    <item quantity="few">Delete %d messages</item>
-    <item quantity="many">Delete %d messages</item>
-    <item quantity="other">Delete %d messages</item>
+    <item quantity="one">Видалити повідомлення</item>
+    <item quantity="few">Видалити %d повідомлень</item>
+    <item quantity="many">Видалити %d повідомлень</item>
+    <item quantity="other">Видалити %d повідомлень</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_message">
-    <item quantity="one">Are you sure you want to permanently delete this conversation?</item>
-    <item quantity="few">Are you sure you want to permanently delete these conversations?</item>
-    <item quantity="many">Are you sure you want to permanently delete these conversations?</item>
-    <item quantity="other">Are you sure you want to permanently delete these conversations?</item>
+    <item quantity="one">Ви дійсно бажаєте остаточно видалити цю розмову?</item>
+    <item quantity="few">Ви дійсно бажаєте остаточно видалити ці розмови?</item>
+    <item quantity="many">Ви дійсно бажаєте остаточно видалити ці розмови?</item>
+    <item quantity="other">Ви дійсно бажаєте остаточно видалити ці розмови?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_message">
-    <item quantity="one">Are you sure you want to permanently delete this message?</item>
-    <item quantity="few">Are you sure you want to permanently delete these message?</item>
-    <item quantity="many">Are you sure you want to permanently delete these message?</item>
-    <item quantity="other">Are you sure you want to permanently delete these message?</item>
+    <item quantity="one">Ви дійсно бажаєте остаточно видалити це повідомлення?</item>
+    <item quantity="few">Ви дійсно хочете назавжди видалити ці повідомлення?</item>
+    <item quantity="many">Ви дійсно хочете назавжди видалити ці повідомлення?</item>
+    <item quantity="other">Ви дійсно хочете назавжди видалити ці повідомлення?</item>
   </plurals>
-  <string name="mailbox_action_delete_dialog_button_cancel">Cancel</string>
-  <string name="mailbox_action_delete_dialog_button_delete">Delete</string>
+  <string name="mailbox_action_delete_dialog_button_cancel">Скасувати</string>
+  <string name="mailbox_action_delete_dialog_button_delete">Видалити</string>
   <plurals name="mailbox_action_delete_message">
-    <item quantity="one">Message permanently deleted</item>
-    <item quantity="few">%d messages permanently deleted</item>
-    <item quantity="many">%d messages permanently deleted</item>
-    <item quantity="other">%d messages permanently deleted</item>
+    <item quantity="one">Повідомлення остаточно видалено</item>
+    <item quantity="few">%d повідомлень остаточно видалено</item>
+    <item quantity="many">%d повідомлень остаточно видалено</item>
+    <item quantity="other">%d повідомлень остаточно видалено</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation">
-    <item quantity="one">Conversation permanently deleted</item>
-    <item quantity="few">%d conversations permanently deleted</item>
-    <item quantity="many">%d conversations permanently deleted</item>
-    <item quantity="other">%d conversations permanently deleted</item>
+    <item quantity="one">Розмову остаточно видалено</item>
+    <item quantity="few">%d розмов остаточно видалено</item>
+    <item quantity="many">%d розмов остаточно видалено</item>
+    <item quantity="other">%d розмов остаточно видалено</item>
   </plurals>
 </resources>

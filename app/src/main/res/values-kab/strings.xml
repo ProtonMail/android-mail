@@ -30,4 +30,6 @@
   <string name="mailbox_message_sending_error">Yalla-d tuccḍa deg tuzna n yizen</string>
   <string name="mailbox_attachment_uploading_error">Error uploading attachment</string>
   <string name="notification_switched_account">Tnekzeḍ ɣer umiḍan: %s</string>
+  <string name="label_saved">Label saved</string>
+  <string name="label_deleted">Label deleted</string>
 </resources>

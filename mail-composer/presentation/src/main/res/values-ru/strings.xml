@@ -38,13 +38,13 @@
   <string name="composer_error_store_draft_recipients">Storing this draft\'s recipients failed</string>
   <string name="composer_error_loading_draft">The content of this draft is not available at this time. Editing will override any pre-existing content.</string>
   <string name="composer_add_attachments_content_description">Add attachments</string>
-  <string name="composer_add_attachments_bottom_sheet_import_from">Import from…</string>
+  <string name="composer_add_attachments_bottom_sheet_import_from">Импортировать из…</string>
   <string name="composer_error_loading_parent_message">Could not load the message\'s information</string>
   <string name="composer_original_message_quote">Original Message</string>
   <string name="composer_sender_quote">On %s, %s &lt;%s&gt; wrote:</string>
-  <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
+  <string name="composer_attachment_size_exceeded_dialog_confirm_button">Да</string>
   <string name="composer_attachment_size_exceeded_dialog_title">Attachment limit reached</string>
-  <string name="composer_attachment_size_exceeded_dialog_message">The size limit for attachments is %1$s</string>
+  <string name="composer_attachment_size_exceeded_dialog_message">Максимальный размер вложений %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Reencryption of attachment failed. For security reasons all attachments got removed.</string>
-  <string name="message_footer_text">Sent from Proton Mail Android</string>
+  <string name="message_footer_text">Отправлено из мобильного приложения Proton Mail Android</string>
 </resources>

@@ -55,17 +55,28 @@
   <string name="mail_settings_display_name_and_signature">Megjelenített név és aláírás</string>
   <string name="mail_settings_mailbox">Postafiók</string>
   <string name="mail_settings_privacy">Adatvédelem</string>
+  <string name="mail_settings_labels">Címkék</string>
+  <string name="mail_settings_folders">Mappák</string>
   <string name="mail_settings_local_storage">Helyi tárhely</string>
   <string name="mail_settings_snooze">Szüneteltetés</string>
   <string name="mail_settings_snooze_notifications">Értesítések szüneteltetése</string>
   <string name="mail_settings_conversation_mode">Beszélgetés-mód</string>
   <string name="mail_settings_not_set">Nincs megadva</string>
   <string name="mail_settings_conversation_mode_hint">A levelező csoportosítsa az e-maileket beszélgetésenként vagy jelenítse meg külön</string>
+  <!-- Default email address settings -->
+  <string name="mail_settings_default_email_address_title">Default email address</string>
+  <string name="mail_settings_default_email_address_inactive_addresses">Inactive addresses</string>
+  <string name="mail_settings_default_email_address_no_inactive_addresses">No inactive addresses</string>
+  <string name="mail_settings_default_email_address_error_loading">Error loading settings</string>
+  <string name="mail_settings_default_email_address_error_update">Error updating settings</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">Upgrade to a paid plan to set this address as default</string>
+  <!-- Display name, signature, mobile footer -->
+  <string name="mail_settings_identity_mobile_footer_default_free">Sent from Proton Mail Android</string>
   <!-- Privacy settings -->
   <string name="mail_settings_privacy_auto_show_remote_content">Auto show remote content</string>
-  <string name="mail_settings_privacy_auto_show_embedded_images">Auto show embedded images</string>
+  <string name="mail_settings_privacy_auto_show_embedded_images">Beágyazott képek automatikus megjelenítése</string>
   <string name="mail_settings_privacy_prevent_taking_screenshots">Képernyőkép készítés megakadályozása</string>
-  <string name="mail_settings_privacy_request_link_confirmation">Request link confirmation</string>
+  <string name="mail_settings_privacy_request_link_confirmation">Hivatkozás megnyitásának megerősítése</string>
   <string name="mail_settings_privacy_error_updating">Error updating settings</string>
   <string name="mail_settings_privacy_error_loading">Error loading settings</string>
   <!-- Swipe Actions -->
@@ -83,6 +94,14 @@
   <string name="mail_settings_swipe_action_spam_description">Áthelyezés a levélszeméthez</string>
   <string name="mail_settings_swipe_action_star_description">Csillagozás/Vagy nem</string>
   <string name="mail_settings_swipe_action_trash_description">Áthelyezés a lomtárba</string>
+  <!-- Notification settings -->
+  <string name="mail_settings_notifications_title">Push notifications</string>
+  <string name="mail_settings_notifications_extended_notifications_title">Extended notifications</string>
+  <string name="mail_settings_notifications_extended_notifications_summary">Turn this feature on to see the sender of the emails in the push notifications.</string>
+  <string name="mail_settings_notifications_notifications_settings">Notifications settings</string>
+  <string name="mail_settings_notifications_notifications_settings_hint">Navigate to system notification settings</string>
+  <string name="mail_settings_notifications_update_error">Error updating settings</string>
+  <string name="mail_settings_notifications_loading_error">Error loading settings</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Hiba történt. Próbálja újra.</string>
 </resources>

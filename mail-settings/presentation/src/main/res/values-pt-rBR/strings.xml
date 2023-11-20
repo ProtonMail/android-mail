@@ -55,12 +55,23 @@
   <string name="mail_settings_display_name_and_signature">Nome de exibição e assinatura</string>
   <string name="mail_settings_mailbox">Caixa de correio</string>
   <string name="mail_settings_privacy">Privacidade</string>
+  <string name="mail_settings_labels">Marcadores</string>
+  <string name="mail_settings_folders">Pastas</string>
   <string name="mail_settings_local_storage">Armazenamento local</string>
   <string name="mail_settings_snooze">Adiar</string>
   <string name="mail_settings_snooze_notifications">Adiar notificações</string>
   <string name="mail_settings_conversation_mode">Modo de conversa</string>
   <string name="mail_settings_not_set">Não definido</string>
   <string name="mail_settings_conversation_mode_hint">Agrupe e-mails na mesma conversa junto em sua caixa de Entrada ou os exiba separadamente</string>
+  <!-- Default email address settings -->
+  <string name="mail_settings_default_email_address_title">Endereço de e-mail padrão</string>
+  <string name="mail_settings_default_email_address_inactive_addresses">Endereços inativos</string>
+  <string name="mail_settings_default_email_address_no_inactive_addresses">Sem endereço inativos</string>
+  <string name="mail_settings_default_email_address_error_loading">Erro ao carregar as configurações</string>
+  <string name="mail_settings_default_email_address_error_update">Erro ao atualizar as configurações</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">Upgrade to a paid plan to set this address as default</string>
+  <!-- Display name, signature, mobile footer -->
+  <string name="mail_settings_identity_mobile_footer_default_free">Sent from Proton Mail Android</string>
   <!-- Privacy settings -->
   <string name="mail_settings_privacy_auto_show_remote_content">Carregar o conteúdo remoto automaticamente</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">Mostrar imagens incoporadas automaticamente</string>
@@ -83,6 +94,14 @@
   <string name="mail_settings_swipe_action_spam_description">Mover para spam</string>
   <string name="mail_settings_swipe_action_star_description">Atribuir/retirar estrela</string>
   <string name="mail_settings_swipe_action_trash_description">Mover para lixeira</string>
+  <!-- Notification settings -->
+  <string name="mail_settings_notifications_title">Push notifications</string>
+  <string name="mail_settings_notifications_extended_notifications_title">Extended notifications</string>
+  <string name="mail_settings_notifications_extended_notifications_summary">Turn this feature on to see the sender of the emails in the push notifications.</string>
+  <string name="mail_settings_notifications_notifications_settings">Notifications settings</string>
+  <string name="mail_settings_notifications_notifications_settings_hint">Navigate to system notification settings</string>
+  <string name="mail_settings_notifications_update_error">Error updating settings</string>
+  <string name="mail_settings_notifications_loading_error">Error loading settings</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Ocorreu um erro. Tente novamente.</string>
 </resources>

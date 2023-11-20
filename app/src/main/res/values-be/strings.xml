@@ -30,4 +30,6 @@
   <string name="mailbox_message_sending_error">Памылка адпраўкі паведамлення</string>
   <string name="mailbox_attachment_uploading_error">Памылка запампоўвання далучэння</string>
   <string name="notification_switched_account">Зменена на ўліковы запіс: %s</string>
+  <string name="label_saved">Метка захавана</string>
+  <string name="label_deleted">Метка выдалена</string>
 </resources>

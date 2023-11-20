@@ -21,16 +21,16 @@
   <string name="mail_settings_toolbar_button_content_description">Indietro</string>
   <!-- Settings items -->
   <string name="mail_settings_account_settings">Impostazioni dell\'account</string>
-  <string name="mail_settings_app_settings">Impostazioni dell\'app</string>
+  <string name="mail_settings_app_settings">Impostazioni dell\'applicazione</string>
   <string name="mail_settings_theme">Tema</string>
   <string name="mail_settings_push_notifications">Notifiche push</string>
   <string name="mail_settings_auto_lock">Blocco automatico</string>
   <string name="mail_settings_alternative_routing">Percorso alternativo</string>
-  <string name="mail_settings_app_language">Lingua dell\'app</string>
+  <string name="mail_settings_app_language">Lingua dell\'applicazione</string>
   <string name="mail_settings_combined_contacts">Contatti combinati</string>
   <string name="mail_settings_swipe_actions">Azioni di scorrimento</string>
   <string name="mail_settings_combined_contacts_hint">Attiva questa funzionalità per completare automaticamente gli indirizzi email usando i contatti di tutti i tuoi account connessi.</string>
-  <string name="mail_settings_alternative_routing_hint">Nel caso in cui i siti di Proton siano bloccati, questa impostazione consente all\'app di provare l\'indirizzamento di rete alternativo per raggiungere Proton, che potrebbe esser utile per evitare firewall o problemi di rete. Consigliamo di mantenere questa impostazione attiva per una maggiore affidabilità.</string>
+  <string name="mail_settings_alternative_routing_hint">Nel caso in cui i siti di Proton siano bloccati, questa impostazione consente all\'app di provare l\'indirizzamento di rete alternativo per raggiungere Proton, che può essere utile per evitare firewall o problemi di rete. Consigliamo di mantenere attiva questa impostazione per una maggiore affidabilità.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Predefinito di sistema</string>
   <string name="mail_settings_theme_light">Chiaro</string>
@@ -42,8 +42,8 @@
   <string name="mail_settings_allowed">Consentito</string>
   <string name="mail_settings_denied">Negato</string>
   <string name="mail_settings_auto_detect">Riconoscimento automatico</string>
-  <string name="mail_settings_app_information">Informazioni sull\'app</string>
-  <string name="mail_settings_app_version">Versione dell\'app</string>
+  <string name="mail_settings_app_information">Informazioni sull\'applicazione</string>
+  <string name="mail_settings_app_version">Versione dell\'applicazione</string>
   <string name="mail_settings_account">Account</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Abbonamento</string>
@@ -55,12 +55,23 @@
   <string name="mail_settings_display_name_and_signature">Nome visualizzato e firma</string>
   <string name="mail_settings_mailbox">Casella di posta</string>
   <string name="mail_settings_privacy">Privacy</string>
-  <string name="mail_settings_local_storage">Spazio locale</string>
-  <string name="mail_settings_snooze">Posticipa</string>
-  <string name="mail_settings_snooze_notifications">Posticipa le notifiche</string>
-  <string name="mail_settings_conversation_mode">Modalità conversazione</string>
+  <string name="mail_settings_labels">Etichette</string>
+  <string name="mail_settings_folders">Cartelle</string>
+  <string name="mail_settings_local_storage">Spazio di archiviazione locale</string>
+  <string name="mail_settings_snooze">Silenzia</string>
+  <string name="mail_settings_snooze_notifications">Silenzia le notifiche</string>
+  <string name="mail_settings_conversation_mode">Modalità delle conversazioni</string>
   <string name="mail_settings_not_set">Non impostato</string>
   <string name="mail_settings_conversation_mode_hint">Raggruppa o visualizza separatamente le email nella stessa conversazione</string>
+  <!-- Default email address settings -->
+  <string name="mail_settings_default_email_address_title">Indirizzo email predefinito</string>
+  <string name="mail_settings_default_email_address_inactive_addresses">Indirizzi non attivi</string>
+  <string name="mail_settings_default_email_address_no_inactive_addresses">Nessun indirizzo inattivo</string>
+  <string name="mail_settings_default_email_address_error_loading">Errore nel caricamento delle impostazioni</string>
+  <string name="mail_settings_default_email_address_error_update">Errore nell\'aggiornamento delle impostazioni</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">Effettua l\'upgrade a un piano a pagamento per impostare questo indirizzo come predefinito</string>
+  <!-- Display name, signature, mobile footer -->
+  <string name="mail_settings_identity_mobile_footer_default_free">Inviata da Proton Mail Android</string>
   <!-- Privacy settings -->
   <string name="mail_settings_privacy_auto_show_remote_content">Mostra automaticamente i contenuti remoti</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">Mostra automaticamente le immagini incorporate</string>
@@ -83,6 +94,14 @@
   <string name="mail_settings_swipe_action_spam_description">Sposta in spam</string>
   <string name="mail_settings_swipe_action_star_description">Segna come importante/non importante</string>
   <string name="mail_settings_swipe_action_trash_description">Sposta nel cestino</string>
+  <!-- Notification settings -->
+  <string name="mail_settings_notifications_title">Notifiche push</string>
+  <string name="mail_settings_notifications_extended_notifications_title">Notifiche estese</string>
+  <string name="mail_settings_notifications_extended_notifications_summary">Attiva questa funzionalità per vedere il mittente delle email nelle notifiche push.</string>
+  <string name="mail_settings_notifications_notifications_settings">Impostazioni delle notifiche</string>
+  <string name="mail_settings_notifications_notifications_settings_hint">Vai alle impostazioni di notifica di sistema</string>
+  <string name="mail_settings_notifications_update_error">Errore nell\'aggiornamento delle impostazioni</string>
+  <string name="mail_settings_notifications_loading_error">Errore nel caricamento delle impostazioni</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Si è verificato un errore. Riprova.</string>
 </resources>

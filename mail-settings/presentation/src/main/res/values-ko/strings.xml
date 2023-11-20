@@ -55,12 +55,23 @@
   <string name="mail_settings_display_name_and_signature">이름과 서명 표시</string>
   <string name="mail_settings_mailbox">메일함</string>
   <string name="mail_settings_privacy">개인정보 보호</string>
+  <string name="mail_settings_labels">Labels</string>
+  <string name="mail_settings_folders">Folders</string>
   <string name="mail_settings_local_storage">로컬 저장소</string>
   <string name="mail_settings_snooze">방해 금지</string>
   <string name="mail_settings_snooze_notifications">방해금지 모드</string>
   <string name="mail_settings_conversation_mode">대화 모드</string>
   <string name="mail_settings_not_set">미설정</string>
   <string name="mail_settings_conversation_mode_hint">받은 편지함에 있는 동일한 메일을 함께 그룹화하거나 별도로 표시</string>
+  <!-- Default email address settings -->
+  <string name="mail_settings_default_email_address_title">Default email address</string>
+  <string name="mail_settings_default_email_address_inactive_addresses">Inactive addresses</string>
+  <string name="mail_settings_default_email_address_no_inactive_addresses">No inactive addresses</string>
+  <string name="mail_settings_default_email_address_error_loading">Error loading settings</string>
+  <string name="mail_settings_default_email_address_error_update">Error updating settings</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">Upgrade to a paid plan to set this address as default</string>
+  <!-- Display name, signature, mobile footer -->
+  <string name="mail_settings_identity_mobile_footer_default_free">Sent from Proton Mail Android</string>
   <!-- Privacy settings -->
   <string name="mail_settings_privacy_auto_show_remote_content">자동으로 외부 콘텐츠 불러오기</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">자동으로 삽입된 이미지 로드</string>
@@ -83,6 +94,14 @@
   <string name="mail_settings_swipe_action_spam_description">스팸으로 이동</string>
   <string name="mail_settings_swipe_action_star_description">별표 표시/삭제</string>
   <string name="mail_settings_swipe_action_trash_description">휴지통으로 이동</string>
+  <!-- Notification settings -->
+  <string name="mail_settings_notifications_title">Push notifications</string>
+  <string name="mail_settings_notifications_extended_notifications_title">Extended notifications</string>
+  <string name="mail_settings_notifications_extended_notifications_summary">Turn this feature on to see the sender of the emails in the push notifications.</string>
+  <string name="mail_settings_notifications_notifications_settings">Notifications settings</string>
+  <string name="mail_settings_notifications_notifications_settings_hint">Navigate to system notification settings</string>
+  <string name="mail_settings_notifications_update_error">Error updating settings</string>
+  <string name="mail_settings_notifications_loading_error">Error loading settings</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">오류 발생. 다시 시도하세요.</string>
 </resources>

@@ -30,4 +30,6 @@
   <string name="mailbox_message_sending_error">Помилка надсилання повідомлення</string>
   <string name="mailbox_attachment_uploading_error">Помилка вивантаження вкладення</string>
   <string name="notification_switched_account">Змінено на обліковий запис: %s</string>
+  <string name="label_saved">Label saved</string>
+  <string name="label_deleted">Label deleted</string>
 </resources>

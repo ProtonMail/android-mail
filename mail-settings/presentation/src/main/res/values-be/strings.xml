@@ -55,12 +55,23 @@
   <string name="mail_settings_display_name_and_signature">Бачнае імя і подпіс</string>
   <string name="mail_settings_mailbox">Паштовая скрыня</string>
   <string name="mail_settings_privacy">Прыватнасць</string>
+  <string name="mail_settings_labels">Меткі</string>
+  <string name="mail_settings_folders">Папкі</string>
   <string name="mail_settings_local_storage">Лакальнае сховішча</string>
   <string name="mail_settings_snooze">Адкласці</string>
   <string name="mail_settings_snooze_notifications">Адкласці апавяшчэнні</string>
   <string name="mail_settings_conversation_mode">Рэжым размовы</string>
   <string name="mail_settings_not_set">Не зададзена</string>
   <string name="mail_settings_conversation_mode_hint">Групуйце лісты ў адну размову ва ўваходных або адлюстроўвайце іх паасобку</string>
+  <!-- Default email address settings -->
+  <string name="mail_settings_default_email_address_title">Прадвызначаны адрас электроннай пошты</string>
+  <string name="mail_settings_default_email_address_inactive_addresses">Неактыўныя адрасы</string>
+  <string name="mail_settings_default_email_address_no_inactive_addresses">Няма неактыўных адрасоў</string>
+  <string name="mail_settings_default_email_address_error_loading">Памылка пры загрузцы налад</string>
+  <string name="mail_settings_default_email_address_error_update">Памылка пры абнаўленні налад</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">Перайдзіце на платны тарыфны план, каб задаць гэты адрас у якасці прадвызначанага</string>
+  <!-- Display name, signature, mobile footer -->
+  <string name="mail_settings_identity_mobile_footer_default_free">Адпраўлена з ProtonMail для Android</string>
   <!-- Privacy settings -->
   <string name="mail_settings_privacy_auto_show_remote_content">Аўтаматычнае паказваць аддаленае змесціва</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">Аўтаматычна паказваць убудаваныя відарысы</string>
@@ -83,6 +94,14 @@
   <string name="mail_settings_swipe_action_spam_description">Перамясціць у спам</string>
   <string name="mail_settings_swipe_action_star_description">Паставіць/прыбраць зорачку</string>
   <string name="mail_settings_swipe_action_trash_description">Перамясціць у сметніцу</string>
+  <!-- Notification settings -->
+  <string name="mail_settings_notifications_title">Push-апавяшчэнні</string>
+  <string name="mail_settings_notifications_extended_notifications_title">Пашыраныя апавяшчэнні</string>
+  <string name="mail_settings_notifications_extended_notifications_summary">Уключыце гэту функцыю, каб бачыць адпраўніка лістоў у push-апавяшчэннях.</string>
+  <string name="mail_settings_notifications_notifications_settings">Налады апавяшчэнняў</string>
+  <string name="mail_settings_notifications_notifications_settings_hint">Перайсці ў сістэмныя налады апавяшчэнняў</string>
+  <string name="mail_settings_notifications_update_error">Памылка пры абнаўленні налад</string>
+  <string name="mail_settings_notifications_loading_error">Памылка пры загрузцы налад</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Адбылася памылка. Паспрабуйце яшчэ раз.</string>
 </resources>

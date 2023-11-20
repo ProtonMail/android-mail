@@ -55,12 +55,23 @@
   <string name="mail_settings_display_name_and_signature">Zobrazované jméno a podpis</string>
   <string name="mail_settings_mailbox">E-mailová schránka</string>
   <string name="mail_settings_privacy">Soukromí</string>
+  <string name="mail_settings_labels">Štítky</string>
+  <string name="mail_settings_folders">Složky</string>
   <string name="mail_settings_local_storage">Místní úložiště</string>
   <string name="mail_settings_snooze">Odložit</string>
   <string name="mail_settings_snooze_notifications">Odložit oznámení</string>
   <string name="mail_settings_conversation_mode">Režim konverzace</string>
   <string name="mail_settings_not_set">Nenastaveno</string>
   <string name="mail_settings_conversation_mode_hint">E-maily stejné konverzace v doručené poště seskupit a nebo zobrazit samostatně</string>
+  <!-- Default email address settings -->
+  <string name="mail_settings_default_email_address_title">Výchozí e-mailová adresa</string>
+  <string name="mail_settings_default_email_address_inactive_addresses">Neaktivní adresy</string>
+  <string name="mail_settings_default_email_address_no_inactive_addresses">Žádné neaktivní adresy</string>
+  <string name="mail_settings_default_email_address_error_loading">Chyba při načítání nastavení</string>
+  <string name="mail_settings_default_email_address_error_update">Chyba při aktualizaci nastavení</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">Pro nastavení vaší adressy jako výchozí, přejděte na placený tarif</string>
+  <!-- Display name, signature, mobile footer -->
+  <string name="mail_settings_identity_mobile_footer_default_free">Odesláno z Proton Mail pro Android</string>
   <!-- Privacy settings -->
   <string name="mail_settings_privacy_auto_show_remote_content">Automaticky zobrazovat vzdálený obsah</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">Automaticky zobrazovat vložené obrázky</string>
@@ -83,6 +94,14 @@
   <string name="mail_settings_swipe_action_spam_description">Přesunout do spamu</string>
   <string name="mail_settings_swipe_action_star_description">Přidat/odebrat hvězdičku</string>
   <string name="mail_settings_swipe_action_trash_description">Přesunout do koše</string>
+  <!-- Notification settings -->
+  <string name="mail_settings_notifications_title">Vyskakovací oznámení</string>
+  <string name="mail_settings_notifications_extended_notifications_title">Rozšířená oznámení</string>
+  <string name="mail_settings_notifications_extended_notifications_summary">Zapněte funkci pro rozpoznání odesílatele e-mailů ve vyskakovacích oznámeních.</string>
+  <string name="mail_settings_notifications_notifications_settings">Nastavení oznámení</string>
+  <string name="mail_settings_notifications_notifications_settings_hint">Přejděte do nastavení systémových oznámení</string>
+  <string name="mail_settings_notifications_update_error">Chyba při aktualizaci nastavení</string>
+  <string name="mail_settings_notifications_loading_error">Chyba při načítání nastavení</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Došlo k chybě. Zkuste to znovu.</string>
 </resources>

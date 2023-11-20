@@ -32,4 +32,21 @@
   <string name="label_title_labels">Etiketter</string>
   <string name="label_title_add_folder">Lägg till mapp</string>
   <string name="label_title_add_label">Lägg till etikett</string>
+  <string name="label_title_label_list">Etikettlista</string>
+  <string name="label_title_folder_list">Mapplista</string>
+  <string name="label_list_no_labels_found">Inga etiketter hittades.</string>
+  <string name="label_list_create_label_placeholder_description">Skapa en etikett för att förbättra din e-postupplevelse.</string>
+  <string name="add_label_content_description">Lägg till etikett</string>
+  <string name="label_form_create_label">Skapa etikett</string>
+  <string name="label_form_edit_label">Redigera etikett</string>
+  <string name="label_form_save">Spara</string>
+  <string name="label_form_delete">Ta bort etikett</string>
+  <string name="label_name_title">Namn</string>
+  <string name="add_a_label_name_hint">Lägg till ett etikettnamn</string>
+  <string name="input_field_max_characters_count">%1d/%2d tecken</string>
+  <string name="color_picker_title">Färg</string>
+  <string name="save_label_error">Gick inte spara mapp</string>
+  <string name="delete_label_error">Gick inte ta bort etikett</string>
+  <string name="input_field_clear_content_description">Rensa text</string>
+  <string name="label_list_item_content_description">Märk listobjekten</string>
 </resources>

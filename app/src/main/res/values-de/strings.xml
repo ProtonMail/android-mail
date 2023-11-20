@@ -30,4 +30,6 @@
   <string name="mailbox_message_sending_error">Fehler beim Senden der Nachricht</string>
   <string name="mailbox_attachment_uploading_error">Fehler beim Hochladen des Anhangs.</string>
   <string name="notification_switched_account">Zu Konto „%s“ gewechselt</string>
+  <string name="label_saved">Kategorie gespeichert</string>
+  <string name="label_deleted">Kategorie gelöscht</string>
 </resources>

@@ -55,12 +55,23 @@
   <string name="mail_settings_display_name_and_signature">Nama tampilan dan tanda tangan</string>
   <string name="mail_settings_mailbox">Kotak Surat</string>
   <string name="mail_settings_privacy">Privasi</string>
+  <string name="mail_settings_labels">Label</string>
+  <string name="mail_settings_folders">Folder</string>
   <string name="mail_settings_local_storage">Penyimpanan lokal</string>
   <string name="mail_settings_snooze">Tunda</string>
   <string name="mail_settings_snooze_notifications">Tunda notifikasi</string>
   <string name="mail_settings_conversation_mode">Mode percakapan</string>
   <string name="mail_settings_not_set">Belum ditentukan</string>
   <string name="mail_settings_conversation_mode_hint">Tentukan apakah surel yang terhubung dalam suatu rantai percakapan akan saling dikelompokkan atau ditampilkan secara terpisah</string>
+  <!-- Default email address settings -->
+  <string name="mail_settings_default_email_address_title">Alamat email bawaan</string>
+  <string name="mail_settings_default_email_address_inactive_addresses">Alamat yang tidak aktif</string>
+  <string name="mail_settings_default_email_address_no_inactive_addresses">Tidak ada alamat yang tidak aktif</string>
+  <string name="mail_settings_default_email_address_error_loading">Terdapat kesalahan dalam memuat pengaturan</string>
+  <string name="mail_settings_default_email_address_error_update">Terdapat kesalahan dalam memperbarui pengaturan</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">Tingkatkan ke paket berbayar untuk mengatur alamat ini sebagai alamat bawaan</string>
+  <!-- Display name, signature, mobile footer -->
+  <string name="mail_settings_identity_mobile_footer_default_free">Sent from Proton Mail Android</string>
   <!-- Privacy settings -->
   <string name="mail_settings_privacy_auto_show_remote_content">Tampilkan remote content secara otomatis</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">Tampilkan gambar tersemat secara otomatis</string>
@@ -83,6 +94,14 @@
   <string name="mail_settings_swipe_action_spam_description">Pindahkan ke spam</string>
   <string name="mail_settings_swipe_action_star_description">Bintangi/Hapus Bintang</string>
   <string name="mail_settings_swipe_action_trash_description">Pindahkan ke sampah</string>
+  <!-- Notification settings -->
+  <string name="mail_settings_notifications_title">Notifikasi push</string>
+  <string name="mail_settings_notifications_extended_notifications_title">Notifikasi terperinci</string>
+  <string name="mail_settings_notifications_extended_notifications_summary">Aktifkan fitur ini untuk melihat nama pengirim email dalam notifikasi push yang diterima.</string>
+  <string name="mail_settings_notifications_notifications_settings">Pengaturan notifikasi</string>
+  <string name="mail_settings_notifications_notifications_settings_hint">Tuju pengaturan notifikasi sistem</string>
+  <string name="mail_settings_notifications_update_error">Terdapat kesalahan dalam memperbarui pengaturan</string>
+  <string name="mail_settings_notifications_loading_error">Terdapat kesalahan dalam memuat pengaturan</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Terdapat suatu kesalahan. Silakan coba lagi.</string>
 </resources>

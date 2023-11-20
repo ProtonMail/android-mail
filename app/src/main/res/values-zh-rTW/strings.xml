@@ -30,4 +30,6 @@
   <string name="mailbox_message_sending_error">傳送郵件時發生錯誤</string>
   <string name="mailbox_attachment_uploading_error">上載附件出現錯誤</string>
   <string name="notification_switched_account">已切換至帳號「%s」</string>
+  <string name="label_saved">Label saved</string>
+  <string name="label_deleted">Label deleted</string>
 </resources>

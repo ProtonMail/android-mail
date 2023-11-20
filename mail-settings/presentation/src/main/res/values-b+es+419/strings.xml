@@ -55,12 +55,23 @@
   <string name="mail_settings_display_name_and_signature">Nombre a mostrar y firma</string>
   <string name="mail_settings_mailbox">Buzón</string>
   <string name="mail_settings_privacy">Privacidad</string>
+  <string name="mail_settings_labels">Etiquetas</string>
+  <string name="mail_settings_folders">Carpetas</string>
   <string name="mail_settings_local_storage">Almacenamiento local</string>
-  <string name="mail_settings_snooze">Silenciar</string>
-  <string name="mail_settings_snooze_notifications">Silenciar notificaciones</string>
+  <string name="mail_settings_snooze">Pausar</string>
+  <string name="mail_settings_snooze_notifications">Pausar las notificaciones</string>
   <string name="mail_settings_conversation_mode">Modo de conversación</string>
   <string name="mail_settings_not_set">No definido</string>
   <string name="mail_settings_conversation_mode_hint">Agrupa correos electrónicos en la misma conversación juntos en su bandeja de entrada o los muestra por separado</string>
+  <!-- Default email address settings -->
+  <string name="mail_settings_default_email_address_title">Dirección de correo por defecto</string>
+  <string name="mail_settings_default_email_address_inactive_addresses">Direcciones inactivas</string>
+  <string name="mail_settings_default_email_address_no_inactive_addresses">No hay direcciones inactivas.</string>
+  <string name="mail_settings_default_email_address_error_loading">Error al cargar los ajustes</string>
+  <string name="mail_settings_default_email_address_error_update">Error al actualizar los ajustes</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">Mejore a un plan de pago para establecer esta dirección como dirección por defecto.</string>
+  <!-- Display name, signature, mobile footer -->
+  <string name="mail_settings_identity_mobile_footer_default_free">Enviado desde Proton Mail para Android</string>
   <!-- Privacy settings -->
   <string name="mail_settings_privacy_auto_show_remote_content">Mostrar contenido remoto automáticamente</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">Mostrar imágenes incrustadas automáticamente</string>
@@ -83,6 +94,14 @@
   <string name="mail_settings_swipe_action_spam_description">Mover a spam</string>
   <string name="mail_settings_swipe_action_star_description">Destacar/no destacar</string>
   <string name="mail_settings_swipe_action_trash_description">Mover a la papelera</string>
+  <!-- Notification settings -->
+  <string name="mail_settings_notifications_title">Notificaciones push</string>
+  <string name="mail_settings_notifications_extended_notifications_title">Notificaciones extendidas</string>
+  <string name="mail_settings_notifications_extended_notifications_summary">Active esta función para ver el remitente de los mensajes en las notificaciones push.</string>
+  <string name="mail_settings_notifications_notifications_settings">Ajustes de las notificaciones</string>
+  <string name="mail_settings_notifications_notifications_settings_hint">Navegar a los ajustes de notificaciones del sistema</string>
+  <string name="mail_settings_notifications_update_error">Error al actualizar los ajustes</string>
+  <string name="mail_settings_notifications_loading_error">Error al cargar los ajustes</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Ocurrió un error, intente de nuevo.</string>
 </resources>

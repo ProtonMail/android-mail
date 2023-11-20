@@ -42,7 +42,7 @@
     <item quantity="other">%d개 메시지를 휴지통으로 이동했습니다.</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
-    <item quantity="other">%d 개의 대화 삭제</item>
+    <item quantity="other">%d개의 대화 삭제</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_title">
     <item quantity="other">%d개의 메시지 삭제</item>

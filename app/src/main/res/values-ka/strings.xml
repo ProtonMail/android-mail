@@ -30,4 +30,6 @@
   <string name="mailbox_message_sending_error">შეტყობინების გაგზავნის შეცდომა</string>
   <string name="mailbox_attachment_uploading_error">მიმაგრებული ფაილის ატვირთვის შეცდომა</string>
   <string name="notification_switched_account">გადაერთეთ ანგარიშზე: %s</string>
+  <string name="label_saved">Label saved</string>
+  <string name="label_deleted">Label deleted</string>
 </resources>

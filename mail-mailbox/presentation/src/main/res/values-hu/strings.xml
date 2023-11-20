@@ -41,11 +41,11 @@
   <string name="mailbox_error_message_unexpected">Valami váratlanul rosszul történt</string>
   <string name="mailbox_is_empty_message">A postafiók üres</string>
   <plurals name="mailbox_action_trash">
-    <item quantity="one">Message moved to Trash</item>
+    <item quantity="one">Üzenet áthelyezve a lomtárba</item>
     <item quantity="other">%d messages moved to Trash</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
-    <item quantity="one">Delete conversation</item>
+    <item quantity="one">Beszélgetés törlése</item>
     <item quantity="other">Delete %d conversations</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_title">
@@ -53,11 +53,11 @@
     <item quantity="other">Delete %d messages</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_message">
-    <item quantity="one">Are you sure you want to permanently delete this conversation?</item>
+    <item quantity="one">Biztos, hogy végleg törölni szeretné ezt a beszélgetést?</item>
     <item quantity="other">Are you sure you want to permanently delete these conversations?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_message">
-    <item quantity="one">Are you sure you want to permanently delete this message?</item>
+    <item quantity="one">Biztos, hogy véglegesen törli ezt az üzenetet?</item>
     <item quantity="other">Are you sure you want to permanently delete these message?</item>
   </plurals>
   <string name="mailbox_action_delete_dialog_button_cancel">Mégsem</string>

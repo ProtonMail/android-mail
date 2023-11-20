@@ -32,4 +32,21 @@
   <string name="label_title_labels">Etichette</string>
   <string name="label_title_add_folder">Aggiungi una cartella</string>
   <string name="label_title_add_label">Aggiungi un\'etichetta</string>
+  <string name="label_title_label_list">Lista delle etichette</string>
+  <string name="label_title_folder_list">Lista delle cartelle</string>
+  <string name="label_list_no_labels_found">Nessuna etichetta trovata.</string>
+  <string name="label_list_create_label_placeholder_description">Crea un\'etichetta per migliorare la tua esperienza con le email.</string>
+  <string name="add_label_content_description">Aggiungi un\'etichetta</string>
+  <string name="label_form_create_label">Crea un\'etichetta</string>
+  <string name="label_form_edit_label">Modifica l\'etichetta</string>
+  <string name="label_form_save">Salva</string>
+  <string name="label_form_delete">Elimina l\'etichetta</string>
+  <string name="label_name_title">Nome</string>
+  <string name="add_a_label_name_hint">Aggiungi un nome all\'etichetta</string>
+  <string name="input_field_max_characters_count">%1d / %2d caratteri</string>
+  <string name="color_picker_title">Colore</string>
+  <string name="save_label_error">Errore nel salvataggio dell\'etichetta</string>
+  <string name="delete_label_error">Errore nell\'eliminazione dell\'etichetta</string>
+  <string name="input_field_clear_content_description">Cancella il testo</string>
+  <string name="label_list_item_content_description">Etichetta l\'elemento della lista</string>
 </resources>

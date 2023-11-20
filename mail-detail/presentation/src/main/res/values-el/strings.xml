@@ -55,7 +55,7 @@
   <string name="bottom_sheet_archive_action">Επίσης αρχειοθέτηση;</string>
   <string name="bottom_sheet_label_as_title">Ορίστε ετικέτα...</string>
   <string name="error_relabel_message_failed">Σφάλμα κατά την αλλαγή ετικέτας μηνύματος. Παρακαλώ προσπαθήστε ξανά</string>
-  <string name="error_relabel_conversation_failed">Σφάλμα κατά την αλλαγή ετικέτας συνομιλίας. Παρακαλώ προσπαθήστε ξανά</string>
+  <string name="error_relabel_conversation_failed">Σφάλμα κατά την αλλαγή ετικέτας συνομιλίας. Παρακαλούμε προσπαθήστε ξανά</string>
   <string name="please_go_back_online_to_load_messages">Είσαστε αποσυνδεμένοι. Παρακαλούμε συνδεθήτε ξανά για να φορτώσετε μηνύματα</string>
   <string name="decryption_error">Αποτυχία αποκρυπτογράφησης μηνύματος.</string>
   <string name="detail_error_retrieving_message_body">Δεν είναι δυνατή η ανάκτηση του μηνύματος</string>

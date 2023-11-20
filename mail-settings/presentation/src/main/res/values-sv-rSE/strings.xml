@@ -55,12 +55,23 @@
   <string name="mail_settings_display_name_and_signature">Visningsnamn och signatur</string>
   <string name="mail_settings_mailbox">Brevlåda</string>
   <string name="mail_settings_privacy">Integritet</string>
+  <string name="mail_settings_labels">Etiketter</string>
+  <string name="mail_settings_folders">Mappar</string>
   <string name="mail_settings_local_storage">Lokalt lagringsutrymme</string>
   <string name="mail_settings_snooze">Snooza</string>
   <string name="mail_settings_snooze_notifications">Snooza aviseringar</string>
   <string name="mail_settings_conversation_mode">Konversationsläge</string>
   <string name="mail_settings_not_set">Inte inställd</string>
   <string name="mail_settings_conversation_mode_hint">Gruppera e-postmeddelanden i samma konversation tillsammans i din inkorg eller visa dem separat</string>
+  <!-- Default email address settings -->
+  <string name="mail_settings_default_email_address_title">Standard e-postadress</string>
+  <string name="mail_settings_default_email_address_inactive_addresses">Inaktiva adresser</string>
+  <string name="mail_settings_default_email_address_no_inactive_addresses">Inga inaktiva adresser</string>
+  <string name="mail_settings_default_email_address_error_loading">Fel vid laddning av inställningar</string>
+  <string name="mail_settings_default_email_address_error_update">Fel vid uppdatering av inställningar</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">Uppgradera till ett betalt paket för att ställa in denna adress som standard</string>
+  <!-- Display name, signature, mobile footer -->
+  <string name="mail_settings_identity_mobile_footer_default_free">Skickat från Proton Mail Android</string>
   <!-- Privacy settings -->
   <string name="mail_settings_privacy_auto_show_remote_content">Visa fjärrinnehåll automatiskt</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">Visa inbäddade bilder automatiskt</string>
@@ -83,6 +94,14 @@
   <string name="mail_settings_swipe_action_spam_description">Flytta till skräppost</string>
   <string name="mail_settings_swipe_action_star_description">Stjärnmärk/ta bort stjärnmärking</string>
   <string name="mail_settings_swipe_action_trash_description">Flytta till papperskorgen</string>
+  <!-- Notification settings -->
+  <string name="mail_settings_notifications_title">Push notifications</string>
+  <string name="mail_settings_notifications_extended_notifications_title">Utökade aviseringar</string>
+  <string name="mail_settings_notifications_extended_notifications_summary">Turn this feature on to see the sender of the emails in the push notifications.</string>
+  <string name="mail_settings_notifications_notifications_settings">Aviseringsinställningar</string>
+  <string name="mail_settings_notifications_notifications_settings_hint">Navigera till systemets aviseringsinställningar</string>
+  <string name="mail_settings_notifications_update_error">Fel vid uppdatering av inställningar</string>
+  <string name="mail_settings_notifications_loading_error">Fel vid laddning av inställningar</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Ett fel uppstod. Försök igen.</string>
 </resources>

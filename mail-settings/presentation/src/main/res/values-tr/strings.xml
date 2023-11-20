@@ -30,7 +30,7 @@
   <string name="mail_settings_combined_contacts">Birleştirilmiş kişiler</string>
   <string name="mail_settings_swipe_actions">Kaydırma işlemleri</string>
   <string name="mail_settings_combined_contacts_hint">E-posta adreslerinin, oturum açtığınız tüm hesaplardaki kişilerle otomatik olarak tamamlanması için bu özelliği açın.</string>
-  <string name="mail_settings_alternative_routing_hint">Bu seçenek ile, Proton sitelerinin engellenmiş olması durumunda, uygulama Proton ağına ulaşmak için güvenlik duvarlarını veya ağ sorunlarını aşmakta yararlı olabilecek alternatif ağ yöneltmesini dener: Bağlantı güvenilirliğini artırmak için bu seçeneği açık tutmanız önerilir.</string>
+  <string name="mail_settings_alternative_routing_hint">Açıldığında, uygulama Proton sitelerinin engellenmiş olması durumunda Proton ağına erişmek için alternatif ağ yöneltmesini dener. Güvenlik duvarlarını veya ağ sorunlarını aşmakta yararlı olabilir. Bağlantı güvenilirliğini artırmak için bu seçeneği açık tutmanız önerilir.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Sistem varsayılanı</string>
   <string name="mail_settings_theme_light">Açık</string>
@@ -38,7 +38,7 @@
   <!-- Settings item states -->
   <string name="mail_settings_no_information_available">Kullanılabilecek bir bilgi yok</string>
   <string name="mail_settings_enabled">Açık</string>
-  <string name="mail_settings_disabled">Kullanımdan kaldırılmış</string>
+  <string name="mail_settings_disabled">Kullanım dışı</string>
   <string name="mail_settings_allowed">İzin verildi</string>
   <string name="mail_settings_denied">Reddedildi</string>
   <string name="mail_settings_auto_detect">Otomatik algılama</string>
@@ -55,12 +55,23 @@
   <string name="mail_settings_display_name_and_signature">Görüntülenecek ad ve imza</string>
   <string name="mail_settings_mailbox">Posta kutusu</string>
   <string name="mail_settings_privacy">Gizlilik</string>
+  <string name="mail_settings_labels">Labels</string>
+  <string name="mail_settings_folders">Folders</string>
   <string name="mail_settings_local_storage">Yerel depolama alanı</string>
   <string name="mail_settings_snooze">Ertele</string>
   <string name="mail_settings_snooze_notifications">Bildirimleri ertele</string>
   <string name="mail_settings_conversation_mode">Yazışma kipi</string>
   <string name="mail_settings_not_set">Ayarlanmamış</string>
   <string name="mail_settings_conversation_mode_hint">Aynı yazışmadaki e-postaları Gelen kutunuzda gruplayın ya da ayrı ayrı görüntüleyin</string>
+  <!-- Default email address settings -->
+  <string name="mail_settings_default_email_address_title">Default email address</string>
+  <string name="mail_settings_default_email_address_inactive_addresses">Inactive addresses</string>
+  <string name="mail_settings_default_email_address_no_inactive_addresses">No inactive addresses</string>
+  <string name="mail_settings_default_email_address_error_loading">Error loading settings</string>
+  <string name="mail_settings_default_email_address_error_update">Error updating settings</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">Upgrade to a paid plan to set this address as default</string>
+  <!-- Display name, signature, mobile footer -->
+  <string name="mail_settings_identity_mobile_footer_default_free">Sent from Proton Mail Android</string>
   <!-- Privacy settings -->
   <string name="mail_settings_privacy_auto_show_remote_content">Uzak içerik otomatik olarak görüntülensin</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">Gömülü görseller otomatik olarak görüntülensin</string>
@@ -83,6 +94,14 @@
   <string name="mail_settings_swipe_action_spam_description">İstenmeyen kutusuna taşı</string>
   <string name="mail_settings_swipe_action_star_description">Yıldız koy/kaldır</string>
   <string name="mail_settings_swipe_action_trash_description">Çöpe at</string>
+  <!-- Notification settings -->
+  <string name="mail_settings_notifications_title">Push notifications</string>
+  <string name="mail_settings_notifications_extended_notifications_title">Extended notifications</string>
+  <string name="mail_settings_notifications_extended_notifications_summary">Turn this feature on to see the sender of the emails in the push notifications.</string>
+  <string name="mail_settings_notifications_notifications_settings">Notifications settings</string>
+  <string name="mail_settings_notifications_notifications_settings_hint">Navigate to system notification settings</string>
+  <string name="mail_settings_notifications_update_error">Error updating settings</string>
+  <string name="mail_settings_notifications_loading_error">Error loading settings</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Bir sorun çıktı. Yeniden deneyin.</string>
 </resources>

@@ -30,4 +30,6 @@
   <string name="mailbox_message_sending_error">Chyba pri odosielaní správy</string>
   <string name="mailbox_attachment_uploading_error">Chyba pri nahrávaní prílohy</string>
   <string name="notification_switched_account">Prepnuté na účet: %s</string>
+  <string name="label_saved">Label saved</string>
+  <string name="label_deleted">Label deleted</string>
 </resources>

@@ -30,4 +30,6 @@
   <string name="mailbox_message_sending_error">Wystąpił błąd podczas wysyłania wiadomości</string>
   <string name="mailbox_attachment_uploading_error">Wystąpił błąd podczas przesyłania załącznika</string>
   <string name="notification_switched_account">Przełączono na konto %s</string>
+  <string name="label_saved">Etykieta została zapisana</string>
+  <string name="label_deleted">Etykieta została usunięta</string>
 </resources>

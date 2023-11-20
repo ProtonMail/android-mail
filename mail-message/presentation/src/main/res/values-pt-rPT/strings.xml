@@ -26,7 +26,7 @@
   <string name="attachment_permission_dialog_message">Proton Mail precisa de permissão para aceder ao seu armazenamento para transferir o anexo.</string>
   <string name="attachment_permission_dialog_dismiss_button">OK</string>
   <string name="attachment_permission_dialog_action_button">Definições</string>
-  <string name="attachment_type_description">%1$s ficheiro</string>
+  <string name="attachment_type_description">Categoria de ficheiro: %1$s</string>
   <!-- Attachment Types -->
   <string name="attachment_type_archive">Arquivo</string>
   <string name="attachment_type_image">Imagem</string>

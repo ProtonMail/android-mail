@@ -48,7 +48,7 @@
   <string name="action_report_phishing_content_description">Segnala phishing</string>
   <string name="action_remind_content_description">Ricordamelo</string>
   <string name="action_save_pdf_content_description">Salva come PDF</string>
-  <string name="action_sender_emails_content_description">Imposta un\'azione per tutte le email future che arriveranno da questo mittente</string>
+  <string name="action_sender_emails_content_description">Imposta un\'azione per tutte le email future provenienti da questo mittente</string>
   <string name="action_save_attachments_content_description">Salva gli allegati</string>
   <string name="action_more_content_description">Altro</string>
   <string name="common_error_loading_actions">Caricamento delle azioni non riuscito</string>

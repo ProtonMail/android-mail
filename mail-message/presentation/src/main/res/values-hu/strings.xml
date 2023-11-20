@@ -22,7 +22,7 @@
     <item quantity="other">%d files</item>
   </plurals>
   <string name="attachment_show_more_label">+%1$d további</string>
-  <string name="attachment_permission_dialog_title">Permission required</string>
+  <string name="attachment_permission_dialog_title">Engedély szükséges</string>
   <string name="attachment_permission_dialog_message">A Proton Mailnek engedélyre van szüksége a tárolójához való hozzáféréshez, hogy letöltse a mellékletet.</string>
   <string name="attachment_permission_dialog_dismiss_button">OK</string>
   <string name="attachment_permission_dialog_action_button">Beállítások</string>

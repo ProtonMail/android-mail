@@ -42,7 +42,7 @@
     <item quantity="other">%d 個のメッセージをゴミ箱に移動しました</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
-    <item quantity="other">Delete %d conversations</item>
+    <item quantity="other">%d 件の会話を削除</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_title">
     <item quantity="other">%d 件のメッセージを削除</item>

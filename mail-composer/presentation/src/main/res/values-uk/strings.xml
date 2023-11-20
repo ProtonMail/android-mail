@@ -42,9 +42,9 @@
   <string name="composer_error_loading_parent_message">Неможливо завантажити інформацію про повідомлення</string>
   <string name="composer_original_message_quote">Оригінальне повідомлення</string>
   <string name="composer_sender_quote">%s, %s &lt;%s&gt; пише:</string>
-  <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
-  <string name="composer_attachment_size_exceeded_dialog_title">Attachment limit reached</string>
-  <string name="composer_attachment_size_exceeded_dialog_message">The size limit for attachments is %1$s</string>
-  <string name="composer_attachment_reencryption_failed_message">Reencryption of attachment failed. For security reasons all attachments got removed.</string>
-  <string name="message_footer_text">Sent from Proton Mail Android</string>
+  <string name="composer_attachment_size_exceeded_dialog_confirm_button">Гаразд</string>
+  <string name="composer_attachment_size_exceeded_dialog_title">Досягнуто ліміту вкладень</string>
+  <string name="composer_attachment_size_exceeded_dialog_message">Обмеження розміру для вкладень складає: %1$s</string>
+  <string name="composer_attachment_reencryption_failed_message">Збій повторного шифрування вкладення. В цілях безпеки усі вкладення було вилучено.</string>
+  <string name="message_footer_text">Надіслано з Proton Mail Android</string>
 </resources>

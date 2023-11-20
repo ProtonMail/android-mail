@@ -25,7 +25,7 @@
   <string name="mailbox_toolbar_menu_button_content_description">菜单</string>
   <string name="mailbox_toolbar_search_button_content_description">搜索</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="other">%d Selected</item>
+    <item quantity="other">已选择 %d 项</item>
   </plurals>
   <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
   <string name="filter_unread_button_text_without_counter">未读</string>

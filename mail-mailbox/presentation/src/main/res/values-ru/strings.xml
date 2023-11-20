@@ -75,7 +75,7 @@
     <item quantity="other">Are you sure you want to permanently delete these message?</item>
   </plurals>
   <string name="mailbox_action_delete_dialog_button_cancel">Cancel</string>
-  <string name="mailbox_action_delete_dialog_button_delete">Delete</string>
+  <string name="mailbox_action_delete_dialog_button_delete">Удалить</string>
   <plurals name="mailbox_action_delete_message">
     <item quantity="one">Message permanently deleted</item>
     <item quantity="few">%d messages permanently deleted</item>

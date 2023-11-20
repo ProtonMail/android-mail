@@ -54,11 +54,11 @@
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_message">
     <item quantity="one">Você tem certeza de que quer excluir permanentemente esta conversa?</item>
-    <item quantity="other">Are you sure you want to permanently delete these conversations?</item>
+    <item quantity="other">Você tem certeza de que quer excluir permanentemente estas conversas?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_message">
     <item quantity="one">Você tem certeza de que deseja excluir permanentemente esta mensagem?</item>
-    <item quantity="other">Are you sure you want to permanently delete these message?</item>
+    <item quantity="other">Você tem certeza que deseja excluir estas mensagens permanentemente?</item>
   </plurals>
   <string name="mailbox_action_delete_dialog_button_cancel">Cancelar</string>
   <string name="mailbox_action_delete_dialog_button_delete">Excluir</string>

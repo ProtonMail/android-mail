@@ -32,4 +32,21 @@
   <string name="label_title_labels">Ετικέτες</string>
   <string name="label_title_add_folder">Προσθήκη φακέλου</string>
   <string name="label_title_add_label">Προσθήκη ετικέτας</string>
+  <string name="label_title_label_list">Λίστα ετικετών</string>
+  <string name="label_title_folder_list">Λίστα φακέλων</string>
+  <string name="label_list_no_labels_found">Δε βρέθηκαν ετικέτες.</string>
+  <string name="label_list_create_label_placeholder_description">Δημιουργήστε μια ετικέτα για να βελτιώσετε την εμπειρία ηλεκτρονικού ταχυδρομείου σας.</string>
+  <string name="add_label_content_description">Προσθήκη ετικέτας</string>
+  <string name="label_form_create_label">Δημιουργία ετικέτας</string>
+  <string name="label_form_edit_label">Επεξεργασία ετικέτας</string>
+  <string name="label_form_save">Αποθήκευση</string>
+  <string name="label_form_delete">Διαγραφή ετικέτας</string>
+  <string name="label_name_title">Όνομα</string>
+  <string name="add_a_label_name_hint">Προσθήκη ονόματος ετικέτας</string>
+  <string name="input_field_max_characters_count">%1d / %2d χαρακτήρες</string>
+  <string name="color_picker_title">Χρώμα</string>
+  <string name="save_label_error">Σφάλμα κατά την αποθήκευση ετικέτας</string>
+  <string name="delete_label_error">Σφάλμα κατά τη διαγραφή ετικέτας</string>
+  <string name="input_field_clear_content_description">Διαγραφή κειμένου</string>
+  <string name="label_list_item_content_description">Στοιχείο λίστας ετικετών</string>
 </resources>

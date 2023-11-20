@@ -30,4 +30,6 @@
   <string name="mailbox_message_sending_error">Eroare trimitere mesaj</string>
   <string name="mailbox_attachment_uploading_error">Eroare la încărcare atașament.</string>
   <string name="notification_switched_account">S-a comutat la contul: %s</string>
+  <string name="label_saved">Label saved</string>
+  <string name="label_deleted">Label deleted</string>
 </resources>

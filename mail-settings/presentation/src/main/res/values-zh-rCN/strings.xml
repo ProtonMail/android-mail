@@ -55,12 +55,23 @@
   <string name="mail_settings_display_name_and_signature">称呼与落款</string>
   <string name="mail_settings_mailbox">邮箱</string>
   <string name="mail_settings_privacy">隐私</string>
+  <string name="mail_settings_labels">Labels</string>
+  <string name="mail_settings_folders">Folders</string>
   <string name="mail_settings_local_storage">本机存储空间</string>
   <string name="mail_settings_snooze">免打扰</string>
   <string name="mail_settings_snooze_notifications">免打扰</string>
   <string name="mail_settings_conversation_mode">会话模式</string>
   <string name="mail_settings_not_set">未设置</string>
   <string name="mail_settings_conversation_mode_hint">将收件箱中同一主题关联的往来邮件合并或单独显示</string>
+  <!-- Default email address settings -->
+  <string name="mail_settings_default_email_address_title">首选邮箱地址</string>
+  <string name="mail_settings_default_email_address_inactive_addresses">Inactive addresses</string>
+  <string name="mail_settings_default_email_address_no_inactive_addresses">No inactive addresses</string>
+  <string name="mail_settings_default_email_address_error_loading">Error loading settings</string>
+  <string name="mail_settings_default_email_address_error_update">Error updating settings</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">Upgrade to a paid plan to set this address as default</string>
+  <!-- Display name, signature, mobile footer -->
+  <string name="mail_settings_identity_mobile_footer_default_free">Sent from Proton Mail Android</string>
   <!-- Privacy settings -->
   <string name="mail_settings_privacy_auto_show_remote_content">自动显示远程内容</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">自动显示嵌入的图像</string>
@@ -83,6 +94,14 @@
   <string name="mail_settings_swipe_action_spam_description">归为垃圾邮件</string>
   <string name="mail_settings_swipe_action_star_description">星标/取消星标</string>
   <string name="mail_settings_swipe_action_trash_description">移至废件箱</string>
+  <!-- Notification settings -->
+  <string name="mail_settings_notifications_title">推送通知</string>
+  <string name="mail_settings_notifications_extended_notifications_title">Extended notifications</string>
+  <string name="mail_settings_notifications_extended_notifications_summary">开启后推送通知将显示发件人。</string>
+  <string name="mail_settings_notifications_notifications_settings">Notifications settings</string>
+  <string name="mail_settings_notifications_notifications_settings_hint">Navigate to system notification settings</string>
+  <string name="mail_settings_notifications_update_error">Error updating settings</string>
+  <string name="mail_settings_notifications_loading_error">Error loading settings</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">出错了，请重试。</string>
 </resources>

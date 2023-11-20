@@ -30,4 +30,6 @@
   <string name="mailbox_message_sending_error">İleti gönderilirken sorun çıktı</string>
   <string name="mailbox_attachment_uploading_error">Ek dosya yüklenirken sorun çıktı</string>
   <string name="notification_switched_account">Geçilen hesap: %s</string>
+  <string name="label_saved">Label saved</string>
+  <string name="label_deleted">Label deleted</string>
 </resources>

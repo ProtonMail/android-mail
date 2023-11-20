@@ -30,4 +30,6 @@
   <string name="mailbox_message_sending_error">Fejl ved afsendelse af besked</string>
   <string name="mailbox_attachment_uploading_error">Fejl ved upload af vedhæftning</string>
   <string name="notification_switched_account">Skiftede til konto: %s</string>
+  <string name="label_saved">Etiket gemt</string>
+  <string name="label_deleted">Etiket slettet</string>
 </resources>

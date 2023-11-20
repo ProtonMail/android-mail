@@ -44,7 +44,7 @@
   <string name="conversation_moved_to_archive">Conversazione spostata nell\'archivio</string>
   <string name="error_move_conversation_failed">Spostamento della conversazione non riuscito. Riprova.</string>
   <string name="error_loading_message">Si è verificato un errore. Riprova.</string>
-  <string name="error_offline_loading_message">Sei offline. Una connessione a Internet è necessaria per mostrare i contenuti di questo messaggio.</string>
+  <string name="error_offline_loading_message">Sei offline. È necessaria una connessione a Internet per mostrare i contenuti di questo messaggio.</string>
   <string name="error_get_attachment_failed">Recupero dell\'allegato non riuscito.</string>
   <string name="error_attachment_download_in_progress">Lo scaricamento dell\'allegato attuale deve giungere a termine prima di avviarne uno nuovo.</string>
   <string name="error_get_attachment_not_enough_memory">Recupero dell\'allegato non riuscito a causa di memoria insufficiente</string>
@@ -52,14 +52,14 @@
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Sposta in...</string>
   <string name="bottom_sheet_done_action">Fatto</string>
-  <string name="bottom_sheet_archive_action">Vuoi anche archiviare?</string>
+  <string name="bottom_sheet_archive_action">Spostare in archivio?</string>
   <string name="bottom_sheet_label_as_title">Etichetta come...</string>
   <string name="error_relabel_message_failed">Nuova etichettatura del messaggio non riuscita. Riprova</string>
   <string name="error_relabel_conversation_failed">Nuova etichettatura della conversazione non riuscita. Riprova</string>
   <string name="please_go_back_online_to_load_messages">Sei offline. Torna online per caricare i messaggi</string>
   <string name="decryption_error">Decrittografia del messaggio non riuscita.</string>
   <string name="detail_error_retrieving_message_body">Impossibile recuperare il messaggio</string>
-  <string name="message_body_error_no_webview">Per visualizzare il contenuto di questo messaggio è necessario che sia installata una WebView.</string>
+  <string name="message_body_error_no_webview">Devi avere una WebView installata per poter visualizzare il contenuto di questo messaggio.</string>
   <!-- Banners -->
   <string name="message_body_embedded_images_banner_text">Il caricamento automatico delle immagini incorporate è disattivato. Questo può essere cambiato nelle impostazioni.</string>
   <string name="message_body_remote_content_banner_text">Il caricamento automatico dei contenuti remoti è disattivato. Questo può essere cambiato nelle impostazioni.</string>

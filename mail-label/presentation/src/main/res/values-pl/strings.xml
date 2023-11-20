@@ -32,4 +32,21 @@
   <string name="label_title_labels">Etykiety</string>
   <string name="label_title_add_folder">Dodaj folder</string>
   <string name="label_title_add_label">Dodaj etykietę</string>
+  <string name="label_title_label_list">Lista etykiet</string>
+  <string name="label_title_folder_list">Lista folderów</string>
+  <string name="label_list_no_labels_found">Nie znaleziono etykiet.</string>
+  <string name="label_list_create_label_placeholder_description">Utwórz etykietę, aby zwiększyć komfort korzystania z poczty.</string>
+  <string name="add_label_content_description">Dodaj etykietę</string>
+  <string name="label_form_create_label">Utwórz etykietę</string>
+  <string name="label_form_edit_label">Edytuj etykietę</string>
+  <string name="label_form_save">Zapisz</string>
+  <string name="label_form_delete">Usuń etykietę</string>
+  <string name="label_name_title">Nazwa</string>
+  <string name="add_a_label_name_hint">Dodaj nazwę etykiety</string>
+  <string name="input_field_max_characters_count">Znaki: %1d / %2d</string>
+  <string name="color_picker_title">Kolor</string>
+  <string name="save_label_error">Wystąpił błąd podczas zapisywania etykiety</string>
+  <string name="delete_label_error">Wystąpił błąd podczas usuwania etykiety</string>
+  <string name="input_field_clear_content_description">Wyczyść tekst</string>
+  <string name="label_list_item_content_description">Element listy etykiet</string>
 </resources>

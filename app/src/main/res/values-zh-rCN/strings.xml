@@ -30,4 +30,6 @@
   <string name="mailbox_message_sending_error">发送信息时出错</string>
   <string name="mailbox_attachment_uploading_error">上传附件时出错</string>
   <string name="notification_switched_account">已转至 %s</string>
+  <string name="label_saved">Label saved</string>
+  <string name="label_deleted">标签已删除</string>
 </resources>

@@ -32,4 +32,21 @@
   <string name="label_title_labels">Štítky</string>
   <string name="label_title_add_folder">Přidat složku</string>
   <string name="label_title_add_label">Přidat štítek</string>
+  <string name="label_title_label_list">Seznam štítků</string>
+  <string name="label_title_folder_list">Seznam složek</string>
+  <string name="label_list_no_labels_found">Nebyly nalezeny žádné štítky.</string>
+  <string name="label_list_create_label_placeholder_description">Vytvořte si štítek, který vám pomůže zlepšit práci s e-maily.</string>
+  <string name="add_label_content_description">Přidat štítek</string>
+  <string name="label_form_create_label">Vytvořit štítek</string>
+  <string name="label_form_edit_label">Upravit štítek</string>
+  <string name="label_form_save">Uložit</string>
+  <string name="label_form_delete">Smazat štítek</string>
+  <string name="label_name_title">Název</string>
+  <string name="add_a_label_name_hint">Přidejte název štítku</string>
+  <string name="input_field_max_characters_count">%1d / %2d znaků</string>
+  <string name="color_picker_title">Barva</string>
+  <string name="save_label_error">Chyba při ukládání štítku</string>
+  <string name="delete_label_error">Chyba při mazání štítku</string>
+  <string name="input_field_clear_content_description">Smazat text</string>
+  <string name="label_list_item_content_description">Položka seznamu štítků</string>
 </resources>

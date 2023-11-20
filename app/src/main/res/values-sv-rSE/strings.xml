@@ -30,4 +30,6 @@
   <string name="mailbox_message_sending_error">Det gick inte att skicka meddelandet</string>
   <string name="mailbox_attachment_uploading_error">Kunde inte ladda upp bilaga</string>
   <string name="notification_switched_account">Bytte till konto: %s</string>
+  <string name="label_saved">Etikett sparad</string>
+  <string name="label_deleted">Etikett borttagen</string>
 </resources>

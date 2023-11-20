@@ -32,4 +32,21 @@
   <string name="label_title_labels">Label</string>
   <string name="label_title_add_folder">Tambah folder</string>
   <string name="label_title_add_label">Tambah label</string>
+  <string name="label_title_label_list">Daftar label</string>
+  <string name="label_title_folder_list">Daftar folder</string>
+  <string name="label_list_no_labels_found">Tidak ada label yang ditemukan.</string>
+  <string name="label_list_create_label_placeholder_description">Buat label untuk memperkaya pengalaman email Anda.</string>
+  <string name="add_label_content_description">Tambah label</string>
+  <string name="label_form_create_label">Buat label</string>
+  <string name="label_form_edit_label">Sunting label</string>
+  <string name="label_form_save">Simpan</string>
+  <string name="label_form_delete">Hapus label</string>
+  <string name="label_name_title">Nama</string>
+  <string name="add_a_label_name_hint">Tambah nama label</string>
+  <string name="input_field_max_characters_count">%1d / %2d karakter</string>
+  <string name="color_picker_title">Warna</string>
+  <string name="save_label_error">Terdapat kesalahan dalam menyimpan label</string>
+  <string name="delete_label_error">Terdapar kesalahan dalam menghapus label</string>
+  <string name="input_field_clear_content_description">Hapus teks</string>
+  <string name="label_list_item_content_description">Item daftar label</string>
 </resources>

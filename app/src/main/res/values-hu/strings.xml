@@ -30,4 +30,6 @@
   <string name="mailbox_message_sending_error">Hiba az üzenet küldése közben</string>
   <string name="mailbox_attachment_uploading_error">Hiba mellékletek feltöltésénél</string>
   <string name="notification_switched_account">Átlépve a fiókba: %s</string>
+  <string name="label_saved">Label saved</string>
+  <string name="label_deleted">Címke törölve</string>
 </resources>

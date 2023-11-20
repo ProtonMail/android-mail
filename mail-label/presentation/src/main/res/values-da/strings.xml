@@ -32,4 +32,21 @@
   <string name="label_title_labels">Etiketter</string>
   <string name="label_title_add_folder">Tilføj mappe</string>
   <string name="label_title_add_label">Tilføj etiket</string>
+  <string name="label_title_label_list">Liste over etiketter</string>
+  <string name="label_title_folder_list">Liste over mapper</string>
+  <string name="label_list_no_labels_found">Ingen etiketter fundet.</string>
+  <string name="label_list_create_label_placeholder_description">Opret en etikette for at forbedre din e-mailoplevelse.</string>
+  <string name="add_label_content_description">Tilføj etikette</string>
+  <string name="label_form_create_label">Opret etikette</string>
+  <string name="label_form_edit_label">Redigér etikette</string>
+  <string name="label_form_save">Gem</string>
+  <string name="label_form_delete">Slet etikette</string>
+  <string name="label_name_title">Navn</string>
+  <string name="add_a_label_name_hint">Tilføj et etiketnavn</string>
+  <string name="input_field_max_characters_count">%1d / %2d tegn</string>
+  <string name="color_picker_title">Farve</string>
+  <string name="save_label_error">Fejl da etiketten skulle gemmes</string>
+  <string name="delete_label_error">Fejl ved sletning af etikette</string>
+  <string name="input_field_clear_content_description">Ryd tekst</string>
+  <string name="label_list_item_content_description">Giv listeelement etikette</string>
 </resources>

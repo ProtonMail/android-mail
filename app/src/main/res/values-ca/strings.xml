@@ -30,4 +30,6 @@
   <string name="mailbox_message_sending_error">Error enviant el missatge</string>
   <string name="mailbox_attachment_uploading_error">S\'ha produït un error en carregar l\'adjunt.</string>
   <string name="notification_switched_account">Canviat al compte: %s</string>
+  <string name="label_saved">Label saved</string>
+  <string name="label_deleted">Label deleted</string>
 </resources>

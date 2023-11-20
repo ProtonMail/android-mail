@@ -30,11 +30,11 @@
     <item quantity="other">%d Selected</item>
   </plurals>
   <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
-  <string name="filter_unread_button_text_without_counter">Unread</string>
+  <string name="filter_unread_button_text_without_counter">Nepročitano</string>
   <plurals name="filter_unread_button_text">
-    <item quantity="one">%d unread</item>
-    <item quantity="few">%d unread</item>
-    <item quantity="other">%d unread</item>
+    <item quantity="one">%d nepročitana</item>
+    <item quantity="few">%d nepročitane</item>
+    <item quantity="other">%d nepročitanih</item>
   </plurals>
   <string name="mailbox_default_recipient">(No Recipient)</string>
   <string name="mailbox_default_sender">(No Sender)</string>
@@ -67,8 +67,8 @@
     <item quantity="few">Are you sure you want to permanently delete these message?</item>
     <item quantity="other">Are you sure you want to permanently delete these message?</item>
   </plurals>
-  <string name="mailbox_action_delete_dialog_button_cancel">Cancel</string>
-  <string name="mailbox_action_delete_dialog_button_delete">Delete</string>
+  <string name="mailbox_action_delete_dialog_button_cancel">Poništi</string>
+  <string name="mailbox_action_delete_dialog_button_delete">Izbriši</string>
   <plurals name="mailbox_action_delete_message">
     <item quantity="one">Message permanently deleted</item>
     <item quantity="few">%d messages permanently deleted</item>

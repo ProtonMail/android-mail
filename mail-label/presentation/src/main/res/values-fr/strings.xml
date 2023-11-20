@@ -32,4 +32,21 @@
   <string name="label_title_labels">Labels</string>
   <string name="label_title_add_folder">Ajouter un dossier</string>
   <string name="label_title_add_label">Ajouter un label</string>
+  <string name="label_title_label_list">Liste des labels</string>
+  <string name="label_title_folder_list">Liste des dossiers</string>
+  <string name="label_list_no_labels_found">Aucun label n\'a été trouvé.</string>
+  <string name="label_list_create_label_placeholder_description">Créez un label pour améliorer votre expérience de messagerie.</string>
+  <string name="add_label_content_description">Ajouter un label</string>
+  <string name="label_form_create_label">Créer un label</string>
+  <string name="label_form_edit_label">Modifier le label</string>
+  <string name="label_form_save">Enregistrer</string>
+  <string name="label_form_delete">Supprimer le label</string>
+  <string name="label_name_title">Nom</string>
+  <string name="add_a_label_name_hint">Ajoutez un nom de label.</string>
+  <string name="input_field_max_characters_count">Nombre de caractères : %1d sur %2d</string>
+  <string name="color_picker_title">Couleur</string>
+  <string name="save_label_error">Une erreur s\'est produite lors de l\'enregistrement du label.</string>
+  <string name="delete_label_error">Une erreur s\'est produite lors de la suppression du label.</string>
+  <string name="input_field_clear_content_description">Effacer le texte</string>
+  <string name="label_list_item_content_description">Ajouter un label à l\'élément de la liste</string>
 </resources>

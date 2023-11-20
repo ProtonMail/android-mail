@@ -45,16 +45,16 @@
     <item quantity="other">%d missatges s\'han mogut a la paperera.</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
-    <item quantity="one">Eliminar la conversa</item>
-    <item quantity="other">Eliminar %d converses</item>
+    <item quantity="one">Elimina la conversa</item>
+    <item quantity="other">Elimina %d converses</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_title">
-    <item quantity="one">Eliminar el missatge</item>
-    <item quantity="other">Eliminar %d missatges</item>
+    <item quantity="one">Elimina el missatge</item>
+    <item quantity="other">Elimina %d missatges</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_message">
     <item quantity="one">Segur que voleu eliminar permanentment aquesta conversa?</item>
-    <item quantity="other">Està segur que vol esborrar permanentment aquestes converses?</item>
+    <item quantity="other">Segur que voleu eliminar permanentment aquestes converses?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_message">
     <item quantity="one">Segur que voleu eliminar aquest missatge permanentment?</item>

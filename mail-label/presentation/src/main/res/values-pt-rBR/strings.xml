@@ -32,4 +32,21 @@
   <string name="label_title_labels">Marcadores</string>
   <string name="label_title_add_folder">Adicionar pasta</string>
   <string name="label_title_add_label">Adicionar marcador</string>
+  <string name="label_title_label_list">Lista de marcadores</string>
+  <string name="label_title_folder_list">Lista de pastas</string>
+  <string name="label_list_no_labels_found">Nenhum marcador encontrado.</string>
+  <string name="label_list_create_label_placeholder_description">Create a label to enhance your email experience.</string>
+  <string name="add_label_content_description">Adicionar marcador</string>
+  <string name="label_form_create_label">Criar marcador</string>
+  <string name="label_form_edit_label">Editar marcador</string>
+  <string name="label_form_save">Salvar</string>
+  <string name="label_form_delete">Excluir marcador</string>
+  <string name="label_name_title">Nome</string>
+  <string name="add_a_label_name_hint">Add a label name</string>
+  <string name="input_field_max_characters_count">%1d / %2d caracteres</string>
+  <string name="color_picker_title">Cor</string>
+  <string name="save_label_error">Errro ao salvar o marcador</string>
+  <string name="delete_label_error">Erro ao excluir marcador</string>
+  <string name="input_field_clear_content_description">Limpar texto</string>
+  <string name="label_list_item_content_description">Label list item</string>
 </resources>
