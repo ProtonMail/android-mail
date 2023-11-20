@@ -151,7 +151,7 @@ class LabelFormViewModelTest {
     }
 
     @Test
-    fun `emits create state`() = runTest {
+    fun `given null label id value, when init, then emits create label state`() = runTest {
         val loadedState = loadedCreateState
         every { savedStateHandle.get<String>(LabelFormScreen.LabelIdKey) } returns null
         every {
@@ -176,7 +176,7 @@ class LabelFormViewModelTest {
     }
 
     @Test
-    fun `emits update state`() = runTest {
+    fun `given label id value, when init, then emits update label state`() = runTest {
         val loadedState = loadedUpdateState
         every {
             reducer.newStateFrom(
@@ -200,7 +200,7 @@ class LabelFormViewModelTest {
     }
 
     @Test
-    fun `when label name is updated`() = runTest {
+    fun `given create state, when action label name changed, then emits updated label`() = runTest {
         val loadedState = loadedCreateState
         every { savedStateHandle.get<String>(LabelFormScreen.LabelIdKey) } returns null
         every {
@@ -235,7 +235,7 @@ class LabelFormViewModelTest {
     }
 
     @Test
-    fun `when color is updated`() = runTest {
+    fun `given create state, when action label color changed, then emits updated label`() = runTest {
         val loadedState = loadedCreateState
         every { savedStateHandle.get<String>(LabelFormScreen.LabelIdKey) } returns null
         every {
@@ -270,7 +270,7 @@ class LabelFormViewModelTest {
     }
 
     @Test
-    fun `when label is created`() = runTest {
+    fun `given create state, when action label save, then emits close with save`() = runTest {
         val loadedState = loadedCreateState
         every { savedStateHandle.get<String>(LabelFormScreen.LabelIdKey) } returns null
         every {
@@ -316,7 +316,7 @@ class LabelFormViewModelTest {
     }
 
     @Test
-    fun `when label is updated`() = runTest {
+    fun `given update state, when action label save, then emits close with save`() = runTest {
         val loadedState = loadedUpdateState
         every {
             reducer.newStateFrom(
@@ -361,7 +361,7 @@ class LabelFormViewModelTest {
     }
 
     @Test
-    fun `when label name already exists`() = runTest {
+    fun `given create state and name already exists, when action label save, then emits close with save`() = runTest {
         val loadedState = loadedUpdateState
         every {
             reducer.newStateFrom(
@@ -413,7 +413,7 @@ class LabelFormViewModelTest {
     }
 
     @Test
-    fun `when label limit is reached`() = runTest {
+    fun `given create state and limit reached, when action label save, then emits close with save`() = runTest {
         val loadedState = loadedCreateState
         every { savedStateHandle.get<String>(LabelFormScreen.LabelIdKey) } returns null
         every {
@@ -466,7 +466,7 @@ class LabelFormViewModelTest {
     }
 
     @Test
-    fun `when label is deleted`() = runTest {
+    fun `given update state, when action delete, then emits close with delete`() = runTest {
         val loadedState = loadedUpdateState
         every {
             reducer.newStateFrom(
@@ -503,7 +503,7 @@ class LabelFormViewModelTest {
     }
 
     @Test
-    fun `when save label has an error`() = runTest {
+    fun `given create state and error in save, when action save, then emits save label error`() = runTest {
         val loadedState = loadedCreateState
         every { savedStateHandle.get<String>(LabelFormScreen.LabelIdKey) } returns null
         every {

@@ -79,7 +79,7 @@ class LabelListViewModelTest {
     }
 
     @Test
-    fun `emits empty state`() = runTest {
+    fun `given empty label list, when init, then emits empty state`() = runTest {
         // Given
         coEvery { observePrimaryUserId() } returns flowOf(userId)
         coEvery { observeLabels(userId = any()) } returns flowOf(emptyList<Label>().right())
@@ -101,7 +101,7 @@ class LabelListViewModelTest {
     }
 
     @Test
-    fun `emits data state`() = runTest {
+    fun `given label list, when init, then emits data state`() = runTest {
         // Given
         every {
             reducer.newStateFrom(
@@ -123,7 +123,7 @@ class LabelListViewModelTest {
     }
 
     @Test
-    fun `emits error state`() = runTest {
+    fun `given error on loading label list, when init, then emits error state`() = runTest {
         // Given
         every { observeLabels.invoke(userId) } returns flowOf(
             DataError.Local.Unknown.left()
@@ -146,7 +146,7 @@ class LabelListViewModelTest {
     }
 
     @Test
-    fun `emits open label form state`() = runTest {
+    fun `given label list, when action add label, then emits open label form state`() = runTest {
         // Given
         every {
             reducer.newStateFrom(
