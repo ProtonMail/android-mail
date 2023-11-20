@@ -91,13 +91,13 @@ class LabelListViewModelTest {
                 LabelListState.Loading(),
                 LabelListEvent.LabelListLoaded(emptyList())
             )
-        } returns LabelListState.Data(emptyList())
+        } returns LabelListState.ListLoaded.Empty()
 
         // When
         labelListViewModel.state.test {
             // Then
             val actual = awaitItem()
-            val expected = LabelListState.Data(labels = emptyList())
+            val expected = LabelListState.ListLoaded.Empty()
 
             assertEquals(expected, actual)
         }
@@ -111,14 +111,14 @@ class LabelListViewModelTest {
                 LabelListState.Loading(),
                 LabelListEvent.LabelListLoaded(listOf(defaultTestLabel))
             )
-        } returns LabelListState.Data(listOf(defaultTestLabel))
+        } returns LabelListState.ListLoaded.Data(labels = listOf(defaultTestLabel))
 
         // When
         labelListViewModel.state.test {
             // Then
             val actual = awaitItem()
-            val expected = LabelListState.Data(
-                listOf(defaultTestLabel)
+            val expected = LabelListState.ListLoaded.Data(
+                labels = listOf(defaultTestLabel)
             )
 
             assertEquals(expected, actual)
