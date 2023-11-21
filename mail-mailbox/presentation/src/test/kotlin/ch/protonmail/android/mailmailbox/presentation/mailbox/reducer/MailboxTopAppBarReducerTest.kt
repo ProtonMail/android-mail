@@ -154,6 +154,11 @@ internal class MailboxTopAppBarReducerTest(
                 currentState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 42),
                 operation = MailboxEvent.DeleteConfirmed(ViewMode.NoConversationGrouping, 42),
                 expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text())
+            ),
+            TestInput(
+                currentState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 42),
+                operation = MailboxEvent.ItemsRemovedFromSelection(itemIds = listOf("1", "2", "3")),
+                expectedState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 39)
             )
         )
 

@@ -624,6 +624,27 @@ internal class MailboxListReducerTest(
                     refreshRequested = false,
                     selectionModeEnabled = false
                 )
+            ),
+            TestInput(
+                currentState = MailboxListState.Data.SelectionMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    selectedMailboxItems = setOf(
+                        SelectedMailboxItem(
+                            userId = UserIdTestData.userId,
+                            id = MailboxItemUiModelTestData.readMailboxItemUiModel.id,
+                            isRead = false
+                        )
+                    ),
+                    selectionModeEnabled = false
+                ),
+                operation = MailboxEvent.ItemsRemovedFromSelection(
+                    listOf(MailboxItemUiModelTestData.readMailboxItemUiModel.id)
+                ),
+                expectedState = MailboxListState.Data.SelectionMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    selectedMailboxItems = emptySet(),
+                    selectionModeEnabled = false
+                )
             )
         )
 
