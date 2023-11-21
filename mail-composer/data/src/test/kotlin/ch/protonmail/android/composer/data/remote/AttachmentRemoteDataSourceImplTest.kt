@@ -138,7 +138,10 @@ class AttachmentRemoteDataSourceImplTest {
         )
 
         // Then
-        assertEquals(DataError.Remote.Http(NetworkError.NoNetwork, "No error message found").left(), actual)
+        assertEquals(
+            DataError.Remote.Http(NetworkError.NoNetwork, "No error message found", isRetryable = true).left(),
+            actual
+        )
     }
 
     @Test

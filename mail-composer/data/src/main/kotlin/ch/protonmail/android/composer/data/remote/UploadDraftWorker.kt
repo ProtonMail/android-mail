@@ -23,6 +23,7 @@ import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import ch.protonmail.android.composer.data.usecase.UploadDraft
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.util.requireNotBlank
 import ch.protonmail.android.mailcomposer.domain.model.DraftSyncState
 import ch.protonmail.android.mailcomposer.domain.usecase.UpdateDraftStateForError
@@ -46,9 +47,14 @@ internal class UploadDraftWorker @AssistedInject constructor(
         return uploadDraft(userId, messageId).fold(
             ifLeft = {
                 updateDraftStateForError(userId, messageId, DraftSyncState.ErrorUploadDraft)
-                Result.failure()
+                return when (it) {
+                    is DataError.Remote.Http -> if (it.isRetryable) Result.retry() else Result.failure()
+                    else -> Result.failure()
+                }
             },
-            ifRight = { Result.success() }
+            ifRight = {
+                Result.success()
+            }
         )
     }
 

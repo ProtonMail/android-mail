@@ -132,12 +132,12 @@ class UploadDraftWorkerTest {
     }
 
     @Test
-    fun `worker fails and updates draft state for error when upload draft fails`() = runTest {
+    fun `worker fails and updates draft state for error when upload draft fails with unretryable error`() = runTest {
         // Given
         val userId = UserIdSample.Primary
         val messageId = MessageIdSample.LocalDraft
         givenInputData(userId, messageId)
-        givenUploadDraftFails(userId, messageId)
+        givenUploadDraftFailsWithUnretryableError(userId, messageId)
         givenUpdateDraftStateForErrorSucceeds(userId, messageId)
 
         // When
@@ -147,12 +147,35 @@ class UploadDraftWorkerTest {
         coVerify { updateDraftStateForError(userId, messageId, DraftSyncState.ErrorUploadDraft) }
     }
 
+    @Test
+    fun `worker returns a retry result when upload draft fails with retryable error`() = runTest {
+        // Given
+        val userId = UserIdSample.Primary
+        val messageId = MessageIdSample.LocalDraft
+        givenInputData(userId, messageId)
+        givenUploadDraftFailsWithRetryableError(userId, messageId)
+        givenUpdateDraftStateForErrorSucceeds(userId, messageId)
+
+        // When
+        val actual = uploadDraftWorker.doWork()
+
+        // Then
+        assertEquals(Result.retry(), actual)
+    }
+
+
     private fun givenUploadDraftSucceeds(userId: UserId, messageId: MessageId) {
         coEvery { uploadDraft(userId, messageId) } returns Unit.right()
     }
 
-    private fun givenUploadDraftFails(userId: UserId, messageId: MessageId) {
-        coEvery { uploadDraft(userId, messageId) } returns DataError.Remote.Http(NetworkError.ServerError).left()
+    private fun givenUploadDraftFailsWithUnretryableError(userId: UserId, messageId: MessageId) {
+        coEvery { uploadDraft(userId, messageId) } returns DataError.Remote.Http(NetworkError.Forbidden).left()
+    }
+
+    private fun givenUploadDraftFailsWithRetryableError(userId: UserId, messageId: MessageId) {
+        coEvery {
+            uploadDraft(userId, messageId)
+        } returns DataError.Remote.Http(NetworkError.ServerError, isRetryable = true).left()
     }
 
     private fun givenInputData(userId: UserId?, messageId: MessageId?) {

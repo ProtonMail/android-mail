@@ -73,7 +73,7 @@ class ApiResultEitherMappingTest {
         val result = apiResult.toEither()
 
         // then
-        val expected = DataError.Remote.Http(NetworkError.NoNetwork, "No error message found")
+        val expected = DataError.Remote.Http(NetworkError.NoNetwork, "No error message found", isRetryable = true)
         assertEquals(expected.left(), result)
     }
 
@@ -86,7 +86,7 @@ class ApiResultEitherMappingTest {
         val result = apiResult.toEither()
 
         // then
-        val expected = DataError.Remote.Http(NetworkError.Unreachable, "No error message found")
+        val expected = DataError.Remote.Http(NetworkError.Unreachable, "No error message found", isRetryable = true)
         assertEquals(expected.left(), result)
     }
 
@@ -104,7 +104,7 @@ class ApiResultEitherMappingTest {
         val result = apiResult.toEither()
 
         // then
-        val expected = DataError.Remote.Http(NetworkError.NoNetwork, "No error message found")
+        val expected = DataError.Remote.Http(NetworkError.NoNetwork, "No error message found", isRetryable = true)
         assertEquals(expected.left(), result)
     }
 

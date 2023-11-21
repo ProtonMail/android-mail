@@ -26,22 +26,27 @@ import ch.protonmail.android.mailcommon.domain.mapper.fromHttpCode
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import me.proton.core.network.domain.ApiResult
+import me.proton.core.network.domain.isRetryable
 import timber.log.Timber
 
 fun <T : Any> ApiResult<T>.toEither(): Either<DataError.Remote, T> = when (this) {
     is ApiResult.Success -> value.right()
 
     is ApiResult.Error.Http -> {
-        DataError.Remote.Http(NetworkError.fromHttpCode(httpCode), this.extractApiErrorInfo()).left()
+        DataError.Remote.Http(
+            NetworkError.fromHttpCode(httpCode),
+            this.extractApiErrorInfo(),
+            this.isRetryable()
+        ).left()
     }
 
     is ApiResult.Error.Parse -> {
         Timber.e("Unexpected parse error, caused by: ${this.cause}")
-        DataError.Remote.Http(NetworkError.Parse, this.cause.tryExtractError()).left()
+        DataError.Remote.Http(NetworkError.Parse, this.cause.tryExtractError(), this.isRetryable()).left()
     }
 
     is ApiResult.Error.Connection -> {
-        DataError.Remote.Http(toNetworkError(this), this.cause.tryExtractError()).left()
+        DataError.Remote.Http(toNetworkError(this), this.cause.tryExtractError(), this.isRetryable()).left()
     }
 }
 
