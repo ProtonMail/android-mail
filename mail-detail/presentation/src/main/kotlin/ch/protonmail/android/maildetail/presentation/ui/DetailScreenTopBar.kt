@@ -18,21 +18,28 @@
 
 package ch.protonmail.android.maildetail.presentation.ui
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.TopAppBarScrollBehavior
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -41,20 +48,24 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.maildetail.presentation.R.color
 import ch.protonmail.android.maildetail.presentation.R.drawable
 import ch.protonmail.android.maildetail.presentation.R.plurals
 import ch.protonmail.android.maildetail.presentation.R.string
+import ch.protonmail.android.maildetail.presentation.model.SubjectHeaderTransform
 import ch.protonmail.android.maildetail.presentation.previewdata.DetailsScreenTopBarPreview
 import ch.protonmail.android.maildetail.presentation.previewdata.DetailsScreenTopBarPreviewProvider
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.ProtonTheme3
-import me.proton.core.compose.theme.overline
+import me.proton.core.compose.theme.captionNorm
+import me.proton.core.compose.theme.defaultStrongNorm
+import me.proton.core.compose.theme.headlineNorm
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailScreenTopBar(
     modifier: Modifier = Modifier,
@@ -62,70 +73,169 @@ fun DetailScreenTopBar(
     isStarred: Boolean?,
     messageCount: Int?,
     actions: DetailScreenTopBar.Actions,
-    scrollBehavior: TopAppBarScrollBehavior
+    subjectHeaderSizeCallback: (Int) -> Unit,
+    subjectHeaderTransform: SubjectHeaderTransform
 ) {
     ProtonTheme3 {
-        LargeTopAppBar(
-            modifier = modifier.testTag(DetailScreenTopBarTestTags.RootItem),
-            title = {
-                Column {
-                    messageCount?.let { count ->
-                        Text(
-                            modifier = Modifier
-                                .testTag(DetailScreenTopBarTestTags.MessageCount)
-                                .fillMaxWidth(),
-                            text = pluralStringResource(plurals.message_count_label_text, count, count),
-                            fontSize = ProtonTheme.typography.overline.fontSize,
-                            textAlign = TextAlign.Center
-                        )
+        Column(
+            modifier = modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+        ) {
+
+            CustomSingleLineTopAppBar(
+                actions = actions,
+                messageCount = messageCount,
+                title = title,
+                isStarred = isStarred,
+                subjectLineAlpha = 1f - subjectHeaderTransform.alpha,
+                modifier = modifier
+                    .fillMaxWidth()
+                    .zIndex(1f)
+                    .graphicsLayer {
+                        translationY = -subjectHeaderTransform.yOffsetPx
                     }
-                    val isFullyExpanded = scrollBehavior.state.collapsedFraction == 0F
-                    Text(
-                        modifier = Modifier
-                            .testTag(DetailScreenTopBarTestTags.Subject)
-                            .fillMaxWidth(),
-                        maxLines = if (isFullyExpanded) 2 else 1,
-                        text = title,
-                        overflow = TextOverflow.Ellipsis,
-                        textAlign = TextAlign.Center
-                    )
-                }
-            },
-            navigationIcon = {
-                IconButton(onClick = actions.onBackClick) {
-                    Icon(
-                        modifier = Modifier.testTag(DetailScreenTopBarTestTags.BackButton),
-                        imageVector = Icons.Filled.ArrowBack,
-                        contentDescription = stringResource(id = string.presentation_back)
-                    )
-                }
-            },
-            actions = {
-                if (isStarred != null) {
-                    val onStarIconClick = {
-                        when (isStarred) {
-                            true -> actions.onUnStarClick()
-                            false -> actions.onStarClick()
-                        }
-                    }
-                    IconButton(onClick = onStarIconClick) {
-                        Icon(
-                            modifier = Modifier.size(ProtonDimens.DefaultIconSize),
-                            painter = getStarredIcon(isStarred),
-                            contentDescription = NO_CONTENT_DESCRIPTION,
-                            tint = getStarredIconColor(isStarred)
-                        )
-                    }
-                }
-            },
-            scrollBehavior = scrollBehavior,
-            colors = TopAppBarDefaults.mediumTopAppBarColors(
-                containerColor = ProtonTheme.colors.backgroundNorm,
-                scrolledContainerColor = ProtonTheme.colors.backgroundSecondary,
-                navigationIconContentColor = ProtonTheme.colors.iconNorm,
-                titleContentColor = ProtonTheme.colors.textNorm
             )
+
+            // Subject text should not exceed the screen height otherwise it will not be possible
+            // to scroll message(s). So the subject text will cover at most 60% of the screen height
+            val maxSubjectHeightDp = with(LocalDensity.current) {
+                LocalContext.current.resources.displayMetrics.heightPixels / density * 0.6f
+            }
+
+            SubjectHeader(
+                modifier = modifier
+                    .background(ProtonTheme.colors.backgroundNorm)
+                    .onGloballyPositioned { layoutCoordinates ->
+                        subjectHeaderSizeCallback(layoutCoordinates.size.height)
+                    }
+                    .heightIn(
+                        min = subjectHeaderMinHeight,
+                        max = maxSubjectHeightDp.dp
+                    ),
+                subject = title,
+                subjectTextAlpha = subjectHeaderTransform.alpha
+            )
+        }
+    }
+}
+
+@Composable
+fun CustomSingleLineTopAppBar(
+    modifier: Modifier = Modifier,
+    actions: DetailScreenTopBar.Actions,
+    messageCount: Int?,
+    title: String,
+    isStarred: Boolean?,
+    subjectLineAlpha: Float
+) {
+    Row(
+        modifier = modifier
+            .background(ProtonTheme.colors.backgroundNorm)
+            .height(ProtonDimens.DefaultBottomSheetHeaderMinHeight)
+    ) {
+        IconButton(
+            modifier = Modifier
+                .align(Alignment.CenterVertically),
+            onClick = actions.onBackClick
+        ) {
+            Icon(
+                modifier = Modifier
+                    .testTag(DetailScreenTopBarTestTags.BackButton),
+                imageVector = Icons.Filled.ArrowBack,
+                contentDescription = stringResource(id = string.presentation_back),
+                tint = ProtonTheme.colors.textNorm
+            )
+        }
+
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .align(Alignment.CenterVertically)
+                .wrapContentHeight(align = Alignment.CenterVertically)
+        ) {
+            messageCount?.let { count ->
+                Text(
+                    modifier = Modifier
+                        .testTag(DetailScreenTopBarTestTags.MessageCount)
+                        .fillMaxWidth(),
+                    text = pluralStringResource(plurals.message_count_label_text, count, count),
+                    style = ProtonTheme.typography.captionNorm,
+                    textAlign = TextAlign.Center
+                )
+            }
+            Text(
+                modifier = Modifier
+                    .graphicsLayer {
+                        alpha = subjectLineAlpha
+                    }
+                    .fillMaxWidth()
+                    .testTag(DetailScreenTopBarTestTags.Subject),
+                maxLines = 1,
+                text = title,
+                overflow = TextOverflow.Ellipsis,
+                style = ProtonTheme.typography.defaultStrongNorm,
+                textAlign = TextAlign.Center
+            )
+        }
+
+        if (isStarred != null) {
+            val onStarIconClick = {
+                when (isStarred) {
+                    true -> actions.onUnStarClick()
+                    false -> actions.onStarClick()
+                }
+            }
+            IconButton(
+                modifier = Modifier
+                    .align(Alignment.CenterVertically),
+                onClick = onStarIconClick
+            ) {
+                Icon(
+                    modifier = Modifier.size(ProtonDimens.DefaultIconSize),
+                    painter = getStarredIcon(isStarred),
+                    contentDescription = NO_CONTENT_DESCRIPTION,
+                    tint = getStarredIconColor(isStarred)
+                )
+            }
+        }
+    }
+}
+
+val subjectHeaderMinHeight = 56.dp
+
+@Composable
+private fun SubjectHeader(
+    subject: String,
+    modifier: Modifier = Modifier,
+    subjectTextAlpha: Float
+) {
+
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(
+                start = ProtonDimens.DefaultSpacing,
+                end = ProtonDimens.DefaultSpacing,
+                top = ProtonDimens.SmallSpacing,
+                bottom = ProtonDimens.SmallSpacing
+            )
+    ) {
+
+        Text(
+            modifier = Modifier
+                .graphicsLayer {
+                    alpha = subjectTextAlpha
+                }
+                .testTag(DetailScreenTopBarTestTags.Subject)
+                .fillMaxWidth()
+                .align(Alignment.Center),
+            text = subject,
+            overflow = TextOverflow.Ellipsis,
+            style = ProtonTheme.typography.headlineNorm,
+            textAlign = TextAlign.Center
         )
+
     }
 }
 
@@ -171,19 +281,21 @@ object DetailScreenTopBar {
 
 @Composable
 @AdaptivePreviews
-@OptIn(ExperimentalMaterial3Api::class)
 private fun DetailScreenTopBarPreview(
     @PreviewParameter(DetailsScreenTopBarPreviewProvider::class) preview: DetailsScreenTopBarPreview
 ) {
     ProtonTheme3 {
-        val initialHeightOffset = if (preview.isExpanded) 0f else -Float.MAX_VALUE
-        val state = rememberTopAppBarState(initialHeightOffset = initialHeightOffset)
         DetailScreenTopBar(
             title = preview.title,
             isStarred = preview.isStarred,
             messageCount = preview.messageCount,
             actions = DetailScreenTopBar.Actions.Empty,
-            scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(state = state)
+            subjectHeaderSizeCallback = {},
+            subjectHeaderTransform = SubjectHeaderTransform(
+                headerHeightPx = 0f,
+                yOffsetPx = 0f,
+                minOffsetPxForAlphaChange = 0f
+            )
         )
     }
 }

@@ -21,15 +21,16 @@ package ch.protonmail.android.maildetail.presentation.ui
 import android.net.Uri
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
@@ -37,10 +38,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
@@ -57,6 +65,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
+import ch.protonmail.android.maildetail.presentation.model.SubjectHeaderTransform
 import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailsPreviewProvider
 import ch.protonmail.android.maildetail.presentation.viewmodel.MessageDetailViewModel
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
@@ -72,6 +81,7 @@ import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.flow.rememberAsState
+import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.ProtonTheme3
 import me.proton.core.util.kotlin.exhaustive
@@ -165,13 +175,11 @@ fun MessageDetailScreen(
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 fun MessageDetailScreen(
     state: MessageDetailState,
     actions: MessageDetailScreen.Actions,
     modifier: Modifier = Modifier
 ) {
-    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val snackbarHostState = ProtonSnackbarHostState()
     val linkConfirmationDialogState = remember { mutableStateOf<Uri?>(null) }
 
@@ -208,10 +216,52 @@ fun MessageDetailScreen(
         )
     }
 
+    // When we scroll up, subject header will collapse. We will not change the text alpha values until
+    // the remaining height is minOffsetPxForAlphaChange, After that, we will start changing the alpha values linearly.
+    val minOffsetPxForAlphaChange = with(LocalDensity.current) {
+        SubjectHeaderTransform.minOffsetForAlphaChangeDp.dp.roundToPx().toFloat()
+    }
+
+    // Offset values from onPreScroll will be accumulated to decide the translationY of the subject header. This will
+    // create collapsing effect for the subject header.
+    val subjectHeaderTransform = remember {
+        mutableStateOf(
+            SubjectHeaderTransform(0f, 0f, minOffsetPxForAlphaChange)
+        )
+    }
+
+    // When SubjectHeader is first time composed, we need to get the its actual height to be able to calculate yOffset
+    // for collapsing effect
+    val subjectHeaderSizeCallback: (Int) -> Unit = {
+        val currentTransform = subjectHeaderTransform.value
+        subjectHeaderTransform.value = currentTransform.copyWithUpdatedHeaderHeight(it.toFloat())
+    }
+
+    val nestedScrollConnection = remember {
+        object : NestedScrollConnection {
+            override fun onPostScroll(
+                consumed: Offset,
+                available: Offset,
+                source: NestedScrollSource
+            ): Offset {
+                val currentTransform = subjectHeaderTransform.value
+                val newOffset = subjectHeaderTransform.value.yOffsetPx + consumed.y
+
+                subjectHeaderTransform.value = currentTransform.copyWithUpdatedYOffset(
+                    newOffset.coerceIn(-currentTransform.headerHeightPx, 0f)
+                )
+
+                // We're basically watching scroll without taking it
+                return super.onPostScroll(consumed, available, source)
+            }
+
+        }
+    }
+
     Scaffold(
         modifier = modifier
             .testTag(MessageDetailScreenTestTags.RootItem)
-            .nestedScroll(scrollBehavior.nestedScrollConnection),
+            .nestedScroll(nestedScrollConnection),
         snackbarHost = {
             ProtonSnackbarHost(
                 modifier = Modifier.testTag(CommonTestTags.SnackbarHost),
@@ -221,6 +271,10 @@ fun MessageDetailScreen(
         topBar = {
             val uiModel = (state.messageMetadataState as? MessageMetadataState.Data)?.messageDetailActionBar
             DetailScreenTopBar(
+                modifier = Modifier
+                    .graphicsLayer {
+                        translationY = subjectHeaderTransform.value.yOffsetPx / 2f
+                    },
                 title = uiModel?.subject ?: DetailScreenTopBar.NoTitle,
                 isStarred = uiModel?.isStarred,
                 messageCount = null,
@@ -229,7 +283,8 @@ fun MessageDetailScreen(
                     onStarClick = actions.onStarClick,
                     onUnStarClick = actions.onUnStarClick
                 ),
-                scrollBehavior = scrollBehavior
+                subjectHeaderSizeCallback = subjectHeaderSizeCallback,
+                subjectHeaderTransform = subjectHeaderTransform.value
             )
         },
         bottomBar = {
@@ -275,7 +330,7 @@ fun MessageDetailScreen(
                     onForward = actions.onForwardClick
                 )
                 MessageDetailContent(
-                    modifier = Modifier.padding(innerPadding),
+                    padding = innerPadding,
                     messageMetadataState = state.messageMetadataState,
                     messageBodyState = state.messageBodyState,
                     actions = messageDetailContentActions,
@@ -294,15 +349,27 @@ fun MessageDetailScreen(
 @Suppress("UseComposableActions")
 private fun MessageDetailContent(
     modifier: Modifier = Modifier,
+    padding: PaddingValues,
     messageMetadataState: MessageMetadataState.Data,
     messageBodyState: MessageBodyState,
     actions: MessageDetailContent.Actions,
     showMessageActionsFeatureFlag: Boolean
 ) {
+    val layoutDirection = LocalLayoutDirection.current
+    val contentPadding = remember(padding) {
+        PaddingValues(
+            start = padding.calculateStartPadding(layoutDirection) + ProtonDimens.SmallSpacing,
+            end = padding.calculateEndPadding(layoutDirection) + ProtonDimens.SmallSpacing,
+            top = padding.calculateTopPadding() + ProtonDimens.SmallSpacing,
+            bottom = padding.calculateBottomPadding() + ProtonDimens.SmallSpacing
+        )
+    }
+
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
-            .background(ProtonTheme.colors.backgroundNorm)
+            .background(ProtonTheme.colors.backgroundNorm),
+        contentPadding = contentPadding
     ) {
         item {
             MessageDetailHeader(
