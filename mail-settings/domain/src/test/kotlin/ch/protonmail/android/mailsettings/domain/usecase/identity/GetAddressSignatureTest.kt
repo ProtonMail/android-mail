@@ -69,7 +69,7 @@ internal class GetAddressSignatureTest {
         } returns BaseAddress.right()
 
         coEvery {
-            addressIdentityRepository.getSignatureEnabled(BaseAddress.addressId)
+            addressIdentityRepository.getSignatureEnabledPreferenceValue(BaseAddress.addressId)
         } returns DataError.Local.NoDataCached.left()
 
         // When
@@ -87,7 +87,7 @@ internal class GetAddressSignatureTest {
         } returns BaseAddress.right()
 
         coEvery {
-            addressIdentityRepository.getSignatureEnabled(BaseAddress.addressId)
+            addressIdentityRepository.getSignatureEnabledPreferenceValue(BaseAddress.addressId)
         } returns BaseSignaturePreference.right()
 
         val expectedSignature = Signature(enabled = false, SignatureValue("signature"))

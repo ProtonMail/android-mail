@@ -92,7 +92,7 @@ internal class AddressIdentityRepositoryImplTest {
         } returns flowOf(BaseSignaturePreference.right())
 
         // When
-        val result = addressIdentityRepository.getSignatureEnabled(BaseAddressId)
+        val result = addressIdentityRepository.getSignatureEnabledPreferenceValue(BaseAddressId)
 
         // Then
         assertEquals(BaseSignaturePreference.right(), result)
@@ -120,7 +120,7 @@ internal class AddressIdentityRepositoryImplTest {
         } returns flowOf(PreferencesError.left())
 
         // When
-        val result = addressIdentityRepository.getSignatureEnabled(BaseAddressId)
+        val result = addressIdentityRepository.getSignatureEnabledPreferenceValue(BaseAddressId)
 
         // Then
         assertEquals(DataError.Local.NoDataCached.left(), result)

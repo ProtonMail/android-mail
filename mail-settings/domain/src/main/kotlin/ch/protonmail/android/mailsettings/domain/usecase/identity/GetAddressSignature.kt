@@ -38,7 +38,7 @@ class GetAddressSignature @Inject constructor(
             .mapLeft { DataError.AddressNotFound }
             .bind()
 
-        val preference = addressIdentityRepository.getSignatureEnabled(address.addressId)
+        val preference = addressIdentityRepository.getSignatureEnabledPreferenceValue(address.addressId)
             .mapLeft { DataError.Local.Unknown }
             .bind()
 

@@ -67,7 +67,9 @@ class AddressIdentityRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getSignatureEnabled(addressId: AddressId): Either<DataError, SignaturePreference> = either {
+    override suspend fun getSignatureEnabledPreferenceValue(
+        addressId: AddressId
+    ): Either<DataError, SignaturePreference> = either {
         addressIdentityLocalDataSource.observeSignaturePreference(addressId)
             .firstOrNull()
             ?.getOrNull()

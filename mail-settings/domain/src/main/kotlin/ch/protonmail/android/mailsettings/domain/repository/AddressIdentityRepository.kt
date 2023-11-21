@@ -33,7 +33,7 @@ interface AddressIdentityRepository {
 
     suspend fun getSignatureValue(addressId: AddressId): Either<DataError, SignatureValue>
 
-    suspend fun getSignatureEnabled(addressId: AddressId): Either<DataError, SignaturePreference>
+    suspend fun getSignatureEnabledPreferenceValue(addressId: AddressId): Either<DataError, SignaturePreference>
 
     suspend fun updateAddressIdentity(
         userId: UserId,
