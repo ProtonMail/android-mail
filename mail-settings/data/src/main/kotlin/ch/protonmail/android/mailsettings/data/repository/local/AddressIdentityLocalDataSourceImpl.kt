@@ -62,7 +62,7 @@ class AddressIdentityLocalDataSourceImpl @Inject constructor(
     override fun observeSignaturePreference(addressId: AddressId): Flow<Either<PreferencesError, SignaturePreference>> =
         dataStoreProvider.addressDisplayInfoDataStore.safeData.map { preferences ->
             preferences.map {
-                val isEnabled = it[getSignatureEnabledPrefKey(addressId)] ?: false
+                val isEnabled = it[getSignatureEnabledPrefKey(addressId)] ?: true
                 SignaturePreference(isEnabled)
             }
         }
