@@ -271,9 +271,10 @@ class MailboxViewModelTest {
                 unreadFilterState = UnreadFilterState.Loading,
                 bottomAppBarState = BottomBarState.Data.Hidden(emptyList<ActionUiModel>().toImmutableList()),
                 onboardingState = OnboardingState.Hidden,
-                actionMessage = Effect.empty(),
                 deleteDialogState = DeleteDialogState.Hidden,
-                bottomSheetState = null
+                bottomSheetState = null,
+                actionMessage = Effect.empty(),
+                error = Effect.empty()
             )
 
             assertEquals(expected, actual)

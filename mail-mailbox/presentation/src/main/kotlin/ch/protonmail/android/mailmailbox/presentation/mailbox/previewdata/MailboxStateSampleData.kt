@@ -45,7 +45,8 @@ object MailboxStateSampleData {
         onboardingState = OnboardingState.Hidden,
         actionMessage = Effect.empty(),
         deleteDialogState = DeleteDialogState.Hidden,
-        bottomSheetState = null
+        bottomSheetState = null,
+        error = Effect.empty()
     )
 
     val Inbox = MailboxState(
@@ -71,7 +72,8 @@ object MailboxStateSampleData {
         onboardingState = OnboardingState.Hidden,
         actionMessage = Effect.empty(),
         deleteDialogState = DeleteDialogState.Hidden,
-        bottomSheetState = null
+        bottomSheetState = null,
+        error = Effect.empty()
     )
 
     val AllMail = MailboxState(
@@ -97,7 +99,8 @@ object MailboxStateSampleData {
         onboardingState = OnboardingState.Hidden,
         actionMessage = Effect.empty(),
         deleteDialogState = DeleteDialogState.Hidden,
-        bottomSheetState = null
+        bottomSheetState = null,
+        error = Effect.empty()
     )
 
     val OnboardingShown = MailboxState(
@@ -108,7 +111,8 @@ object MailboxStateSampleData {
         onboardingState = OnboardingState.Shown,
         actionMessage = Effect.empty(),
         deleteDialogState = DeleteDialogState.Hidden,
-        bottomSheetState = null
+        bottomSheetState = null,
+        error = Effect.empty()
     )
 
     fun createSelectionMode(
@@ -137,6 +141,7 @@ object MailboxStateSampleData {
         onboardingState = OnboardingState.Hidden,
         actionMessage = Effect.empty(),
         deleteDialogState = DeleteDialogState.Hidden,
-        bottomSheetState = null
+        bottomSheetState = null,
+        error = Effect.empty()
     )
 }

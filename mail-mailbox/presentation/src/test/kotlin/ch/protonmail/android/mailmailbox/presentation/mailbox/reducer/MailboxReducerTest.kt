@@ -21,6 +21,7 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
@@ -40,6 +41,7 @@ import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
 import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData
 import ch.protonmail.android.testdata.mailbox.UnreadCountersTestData
+import ch.protonmail.android.mailmailbox.presentation.R
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -174,7 +176,8 @@ internal class MailboxReducerTest(
             onboardingState = OnboardingState.Hidden,
             actionMessage = Effect.empty(),
             deleteDialogState = DeleteDialogState.Hidden,
-            bottomSheetState = null
+            bottomSheetState = null,
+            error = Effect.empty()
         )
 
         private val actions = listOf(
@@ -250,6 +253,16 @@ internal class MailboxReducerTest(
             ),
             TestInput(
                 MailboxViewAction.LabelAsToggleAction(LabelIdSample.Label2022),
+                shouldReduceMailboxListState = false,
+                shouldReduceTopAppBarState = false,
+                shouldReduceUnreadFilterState = false,
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false,
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = true
+            ),
+            TestInput(
+                MailboxViewAction.LabelAsConfirmed(archiveSelected = true),
                 shouldReduceMailboxListState = false,
                 shouldReduceTopAppBarState = false,
                 shouldReduceUnreadFilterState = false,
@@ -410,6 +423,17 @@ internal class MailboxReducerTest(
                 shouldReduceActionMessage = false,
                 shouldReduceDeleteDialog = true,
                 shouldReduceBottomSheetState = false
+            ),
+            TestInput(
+                MailboxEvent.ErrorLabelingMessages,
+                shouldReduceMailboxListState = false,
+                shouldReduceTopAppBarState = false,
+                shouldReduceUnreadFilterState = false,
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false,
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = false,
+                errorBarState = Effect.of(TextUiModel(R.string.mailbox_action_label_messages_failed))
             )
         )
 
@@ -435,6 +459,7 @@ internal class MailboxReducerTest(
         val shouldReduceBottomAppBarState: Boolean,
         val shouldReduceActionMessage: Boolean,
         val shouldReduceDeleteDialog: Boolean,
-        val shouldReduceBottomSheetState: Boolean
+        val shouldReduceBottomSheetState: Boolean,
+        val errorBarState: Effect<TextUiModel> = Effect.empty()
     )
 }

@@ -213,9 +213,13 @@ fun MailboxScreen(
     val scope = rememberCoroutineScope()
     val lazyListState = rememberLazyListState()
     val snackbarHostState = remember { ProtonSnackbarHostState() }
+    val snackbarHostErrorState = remember { ProtonSnackbarHostState(defaultType = ProtonSnackbarType.ERROR) }
 
     ConsumableTextEffect(effect = mailboxState.actionMessage) {
         snackbarHostState.showSnackbar(message = it, type = ProtonSnackbarType.NORM)
+    }
+    ConsumableTextEffect(effect = mailboxState.error) {
+        snackbarHostErrorState.showSnackbar(message = it, type = ProtonSnackbarType.ERROR)
     }
 
     MailboxDeleteDialog(state = mailboxState.deleteDialogState, actions.deleteConfirmed, actions.deleteDialogDismissed)
@@ -274,7 +278,10 @@ fun MailboxScreen(
                 )
             )
         },
-        snackbarHost = { ProtonSnackbarHost(hostState = snackbarHostState) }
+        snackbarHost = {
+            ProtonSnackbarHost(hostState = snackbarHostState)
+            ProtonSnackbarHost(hostState = snackbarHostErrorState)
+        }
     ) { paddingValues ->
         when (val mailboxListState = mailboxState.mailboxListState) {
             is MailboxListState.Data -> {

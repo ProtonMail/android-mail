@@ -23,6 +23,7 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
+import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.DeleteDialogState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
@@ -56,9 +57,10 @@ class MailboxReducer @Inject constructor(
             unreadFilterState = currentState.toNewUnreadFilterStateFrom(operation),
             bottomAppBarState = currentState.toNewBottomAppBarStateFrom(operation),
             onboardingState = currentState.toNewOnboardingStateFrom(operation),
-            actionMessage = currentState.toNewActionMessageStateFrom(operation),
             deleteDialogState = currentState.toNewDeleteActionStateFrom(operation),
-            bottomSheetState = currentState.toNewBottomSheetState(operation)
+            bottomSheetState = currentState.toNewBottomSheetState(operation),
+            actionMessage = currentState.toNewActionMessageStateFrom(operation),
+            error = currentState.toNewErrorBarState(operation)
         )
 
     private fun MailboxState.toNewMailboxListStateFrom(operation: MailboxOperation): MailboxListState {
@@ -135,6 +137,17 @@ class MailboxReducer @Inject constructor(
             bottomSheetReducer.newStateFrom(bottomSheetState, bottomSheetOperation)
         } else {
             bottomSheetState
+        }
+    }
+
+    private fun MailboxState.toNewErrorBarState(operation: MailboxOperation): Effect<TextUiModel> {
+        return if (operation is MailboxOperation.AffectingErrorBar) {
+            when (operation) {
+                is MailboxEvent.ErrorLabelingMessages ->
+                    Effect.of(TextUiModel(R.string.mailbox_action_label_messages_failed))
+            }
+        } else {
+            error
         }
     }
 }
