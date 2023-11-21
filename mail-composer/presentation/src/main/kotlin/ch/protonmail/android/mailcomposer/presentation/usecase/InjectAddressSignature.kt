@@ -91,8 +91,12 @@ class InjectAddressSignature @Inject constructor(
         existingMobileFooter: String,
         addressSignature: Signature
     ): DraftBody {
-        val previousSignatureIndex =
-            draftBody.value.lastIndexOf(previousAddressSignature.toPlainText()).takeIf { it != -1 }
+        val previousSignatureIndex = previousAddressSignature.toPlainText()
+            .takeIf { it.isNotEmpty() }
+            ?.let { signature ->
+                draftBody.value.lastIndexOf(signature).takeIf { it != -1 }
+            }
+
         val bodyStringBuilder = StringBuilder(draftBody.value)
         val signatureReplacement = StringBuilder().apply {
             if (addressSignature.enabled) append(addressSignature.value.toPlainText()) else append("")
@@ -125,8 +129,8 @@ class InjectAddressSignature @Inject constructor(
             return DraftBody(bodyStringBuilder.toString())
         }
 
-        // If it has nothing, add some spacing.
-        if (!draftBody.value.startsWith(SignatureFooterSeparator)) {
+        // If it has nothing, add some spacing but only if the signature replacement is NOT blank.
+        if (!draftBody.value.startsWith(SignatureFooterSeparator) && signatureReplacement.isNotBlank()) {
             bodyStringBuilder.append(SignatureFooterSeparator)
         }
 
