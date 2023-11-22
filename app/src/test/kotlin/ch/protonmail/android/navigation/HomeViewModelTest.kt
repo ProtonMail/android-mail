@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveSendingMessagesStatus
 import ch.protonmail.android.mailcomposer.domain.usecase.ResetSendingMessagesStatus
+import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.navigation.model.HomeState
 import io.mockk.coVerify
 import io.mockk.every
@@ -60,11 +61,14 @@ class HomeViewModelTest {
 
     private val resetSendingMessageStatus = mockk<ResetSendingMessagesStatus>(relaxUnitFun = true)
 
+    private val selectedMailLabelId = mockk<SelectedMailLabelId>(relaxUnitFun = true)
+
     private val homeViewModel by lazy {
         HomeViewModel(
             networkManager,
             observeSendingMessagesStatus,
             resetSendingMessageStatus,
+            selectedMailLabelId,
             observePrimaryUserMock
         )
     }

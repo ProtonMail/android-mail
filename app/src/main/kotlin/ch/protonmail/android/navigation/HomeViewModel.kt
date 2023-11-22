@@ -25,6 +25,8 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveSendingMessagesStatus
 import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
 import ch.protonmail.android.mailcomposer.domain.usecase.ResetSendingMessagesStatus
+import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.navigation.model.HomeState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -45,6 +47,7 @@ class HomeViewModel @Inject constructor(
     private val networkManager: NetworkManager,
     private val observeSendingMessagesStatus: ObserveSendingMessagesStatus,
     private val resetSendingMessageStatus: ResetSendingMessagesStatus,
+    private val selectedMailLabelId: SelectedMailLabelId,
     observePrimaryUser: ObservePrimaryUser
 ) : ViewModel() {
 
@@ -70,6 +73,14 @@ class HomeViewModel @Inject constructor(
             emitNewStateFor(it)
             resetSendingMessageStatus(primaryUser.first().userId)
         }.launchIn(viewModelScope)
+    }
+
+    fun shouldNavigateToDraftsOnSendingFailure(): Boolean =
+        selectedMailLabelId.flow.value.labelId != MailLabelId.System.AllDrafts.labelId &&
+            selectedMailLabelId.flow.value.labelId != MailLabelId.System.Drafts.labelId
+
+    fun navigateToDrafts() {
+        selectedMailLabelId.set(MailLabelId.System.Drafts)
     }
 
     private fun emitNewStateFor(messageSendingStatus: MessageSendingStatus) {

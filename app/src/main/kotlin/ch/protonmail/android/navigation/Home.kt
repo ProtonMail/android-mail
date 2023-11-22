@@ -21,6 +21,8 @@ package ch.protonmail.android.navigation
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
+import androidx.compose.material.SnackbarDuration
+import androidx.compose.material.SnackbarResult
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -131,8 +133,19 @@ fun Home(
         snackbarHostSuccessState.showSnackbar(message = successSendingMessageText, type = ProtonSnackbarType.SUCCESS)
     }
     val errorSendingMessageText = stringResource(id = R.string.mailbox_message_sending_error)
+    val errorSendingMessageActionText = stringResource(id = R.string.mailbox_message_sending_error_action)
     fun showErrorSendingMessageSnackbar() = scope.launch {
-        snackbarHostErrorState.showSnackbar(message = errorSendingMessageText, type = ProtonSnackbarType.ERROR)
+        val shouldShowAction = viewModel.shouldNavigateToDraftsOnSendingFailure()
+        val result = snackbarHostErrorState.showSnackbar(
+            type = ProtonSnackbarType.ERROR,
+            message = errorSendingMessageText,
+            actionLabel = if (shouldShowAction) errorSendingMessageActionText else null,
+            duration = if (shouldShowAction) SnackbarDuration.Indefinite else SnackbarDuration.Short
+        )
+        when (result) {
+            SnackbarResult.ActionPerformed -> viewModel.navigateToDrafts()
+            SnackbarResult.Dismissed -> Unit
+        }
     }
     val errorUploadAttachmentText = stringResource(id = R.string.mailbox_attachment_uploading_error)
     fun showErrorUploadAttachmentSnackbar() = scope.launch {
