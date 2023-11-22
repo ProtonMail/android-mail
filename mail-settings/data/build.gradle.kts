@@ -20,7 +20,6 @@ plugins {
     id("com.android.library")
     kotlin("android")
     kotlin("kapt")
-    kotlin("plugin.serialization") version Versions.Gradle.kotlinGradlePlugin
 }
 
 android {
@@ -56,6 +55,9 @@ dependencies {
     implementation(project(":mail-common:data"))
     implementation(project(":mail-common:domain"))
     implementation(project(":mail-settings:domain"))
+    implementation(project(":mail-message:data"))
+    implementation(project(":mail-pagination:data"))
+    implementation(project(":mail-conversation:domain"))
 
     testImplementation(Dependencies.testLibs)
 }

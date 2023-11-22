@@ -20,7 +20,6 @@ plugins {
     id("com.android.library")
     kotlin("android")
     kotlin("kapt")
-    kotlin("plugin.serialization") version Versions.Gradle.kotlinGradlePlugin
 }
 
 android {
@@ -49,6 +48,7 @@ dependencies {
     implementation(Proton.Core.mailSettings)
 
     implementation(project(":mail-common:domain"))
+    implementation(project(":mail-message:data"))
 
     testImplementation(Dependencies.testLibs)
     testImplementation(project(":test:test-data"))
