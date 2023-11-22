@@ -53,6 +53,7 @@ import ch.protonmail.android.navigation.route.addDeepLinkHandler
 import ch.protonmail.android.navigation.route.addDefaultEmailSettings
 import ch.protonmail.android.navigation.route.addDisplayNameSettings
 import ch.protonmail.android.navigation.route.addEditSwipeActionsSettings
+import ch.protonmail.android.navigation.route.addFolderList
 import ch.protonmail.android.navigation.route.addLabelForm
 import ch.protonmail.android.navigation.route.addLabelList
 import ch.protonmail.android.navigation.route.addLanguageSettings
@@ -163,6 +164,10 @@ fun Home(
     fun showLabelListErrorLoadingSnackbar() = scope.launch {
         snackbarHostErrorState.showSnackbar(message = labelListErrorLoadingText, type = ProtonSnackbarType.ERROR)
     }
+    val folderListErrorLoadingText = stringResource(id = R.string.folder_list_loading_error)
+    fun showFolderListErrorLoadingSnackbar() = scope.launch {
+        snackbarHostErrorState.showSnackbar(message = folderListErrorLoadingText, type = ProtonSnackbarType.ERROR)
+    }
     ConsumableLaunchedEffect(state.value.messageSendingStatusEffect) { sendingStatus ->
         when (sendingStatus) {
             is MessageSendingStatus.MessageSent -> showSuccessSendingMessageSnackbar()
@@ -268,6 +273,10 @@ fun Home(
                     showLabelSavedSnackbar = { showLabelSavedSnackbar() },
                     showLabelDeletedSnackbar = { showLabelDeletedSnackbar() }
                 )
+                addFolderList(
+                    navController,
+                    showFolderListErrorLoadingSnackbar = { showFolderListErrorLoadingSnackbar() }
+                )
                 // settings
                 addAccountSettings(
                     navController,
@@ -301,7 +310,7 @@ private fun buildSidebarActions(navController: NavHostController, launcherAction
         onSwitchAccount = launcherActions.onSwitchAccount,
         onSettings = { navController.navigate(Screen.Settings.route) },
         onLabelList = { navController.navigate(Screen.LabelList.route) },
-        onFolderList = { },
+        onFolderList = { navController.navigate(Screen.FolderList.route) },
         onLabelAdd = { navController.navigate(Screen.CreateLabel.route) },
         onFolderAdd = { },
         onSubscription = launcherActions.onSubscription,

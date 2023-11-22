@@ -80,6 +80,7 @@ sealed class Destination(val route: String) {
         object EditLabel : Destination("labelForm/${LabelIdKey.wrap()}") {
             operator fun invoke(labelId: LabelId) = route.replace(LabelIdKey.wrap(), labelId.id)
         }
+        object FolderList : Destination("folderList")
     }
 
     object Dialog {

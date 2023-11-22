@@ -33,6 +33,7 @@ import ch.protonmail.android.maildetail.presentation.ui.ConversationDetail
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetail
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
+import ch.protonmail.android.maillabel.presentation.folderlist.FolderListScreen
 import ch.protonmail.android.maillabel.presentation.labelform.LabelFormScreen
 import ch.protonmail.android.maillabel.presentation.labellist.LabelListScreen
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
@@ -237,3 +238,24 @@ internal fun NavGraphBuilder.addLabelForm(
     composable(route = Destination.Screen.CreateLabel.route) { LabelFormScreen(actions) }
     composable(route = Destination.Screen.EditLabel.route) { LabelFormScreen(actions) }
 }
+
+internal fun NavGraphBuilder.addFolderList(
+    navController: NavHostController,
+    showFolderListErrorLoadingSnackbar: () -> Unit
+) {
+    composable(route = Destination.Screen.FolderList.route) {
+        FolderListScreen(
+            actions = FolderListScreen.Actions(
+                onBackClick = {
+                    navController.popBackStack()
+                },
+                onFolderSelected = { _ ->
+                },
+                onAddFolderClick = {
+                },
+                showFolderListErrorLoadingSnackbar = showFolderListErrorLoadingSnackbar
+            )
+        )
+    }
+}
+

@@ -16,23 +16,17 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maillabel.domain.usecase
+package ch.protonmail.android.mailsettings.domain.usecase
 
-import arrow.core.Either
-import ch.protonmail.android.mailcommon.domain.mapper.mapToEither
-import ch.protonmail.android.mailcommon.domain.model.DataError
-import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
-import me.proton.core.label.domain.entity.Label
-import me.proton.core.label.domain.entity.LabelType
-import me.proton.core.label.domain.repository.LabelRepository
+import me.proton.core.mailsettings.domain.repository.MailSettingsRepository
 import javax.inject.Inject
 
-class ObserveLabels @Inject constructor(
-    private val labelRepository: LabelRepository
+class UpdateInheritFolderColor @Inject constructor(
+    private val mailSettingsRepository: MailSettingsRepository
 ) {
 
-    operator fun invoke(userId: UserId, labelType: LabelType): Flow<Either<DataError, List<Label>>> =
-        labelRepository.observeLabels(userId, labelType)
-            .mapToEither()
+    suspend operator fun invoke(userId: UserId, enable: Boolean) {
+        mailSettingsRepository.updateInheritFolderColor(userId, enable)
+    }
 }

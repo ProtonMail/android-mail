@@ -144,6 +144,7 @@ fun LabelListScreenContent(
                     bottom = paddingValues.calculateBottomPadding()
                 )
             )
+            .fillMaxSize()
     ) {
         items(state.labels) { label ->
             Row(

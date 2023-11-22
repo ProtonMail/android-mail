@@ -37,6 +37,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.LabelType
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -63,7 +64,7 @@ class LabelListViewModel @Inject constructor(
     }
 
     private fun flowLabelListOperation(userId: UserId): Flow<LabelListOperation> {
-        return observeLabels(userId).map { labels ->
+        return observeLabels(userId, LabelType.MessageLabel).map { labels ->
             LabelListEvent.LabelListLoaded(
                 labelList = labels.getOrElse {
                     Timber.e("Error while observing custom labels")

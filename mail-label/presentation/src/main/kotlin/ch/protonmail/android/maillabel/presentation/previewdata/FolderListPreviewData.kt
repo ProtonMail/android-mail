@@ -16,23 +16,28 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maillabel.domain.usecase
+package ch.protonmail.android.maillabel.presentation.previewdata
 
-import arrow.core.Either
-import ch.protonmail.android.mailcommon.domain.mapper.mapToEither
-import ch.protonmail.android.mailcommon.domain.model.DataError
-import kotlinx.coroutines.flow.Flow
+import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
+import ch.protonmail.android.maillabel.presentation.sample.LabelColorListSample.colorListSample
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.Label
+import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
-import me.proton.core.label.domain.repository.LabelRepository
-import javax.inject.Inject
 
-class ObserveLabels @Inject constructor(
-    private val labelRepository: LabelRepository
-) {
+object FolderListPreviewData {
 
-    operator fun invoke(userId: UserId, labelType: LabelType): Flow<Either<DataError, List<Label>>> =
-        labelRepository.observeLabels(userId, labelType)
-            .mapToEither()
+    val folderSampleData = Label(
+        userId = UserId("userId"),
+        labelId = LabelId("labelId"),
+        parentId = null,
+        name = "Folder Name",
+        type = LabelType.MessageFolder,
+        path = "path",
+        color = colorListSample().random().getHexStringFromColor(),
+        order = 0,
+        isNotified = false,
+        isExpanded = false,
+        isSticky = null
+    )
 }
