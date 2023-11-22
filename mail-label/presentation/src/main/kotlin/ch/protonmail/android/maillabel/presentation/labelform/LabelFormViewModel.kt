@@ -99,9 +99,13 @@ class LabelFormViewModel @Inject constructor(
         viewModelScope.launch {
             actionMutex.withLock {
                 when (action) {
-                    is LabelFormViewAction.LabelColorChanged -> emitNewStateFor(action)
-                    is LabelFormViewAction.LabelNameChanged -> emitNewStateFor(action)
-                    LabelFormViewAction.OnCloseLabelForm -> emitNewStateFor(action)
+                    is LabelFormViewAction.LabelColorChanged -> emitNewStateFor(
+                        LabelFormEvent.UpdateLabelColor(action.color.getHexStringFromColor())
+                    )
+                    is LabelFormViewAction.LabelNameChanged -> emitNewStateFor(
+                        LabelFormEvent.UpdateLabelName(action.name)
+                    )
+                    LabelFormViewAction.OnCloseLabelFormClick -> emitNewStateFor(LabelFormEvent.CloseLabelForm)
                     LabelFormViewAction.OnDeleteClick -> handleOnDeleteClick()
                     LabelFormViewAction.OnSaveClick -> handleOnSaveClick()
                 }
@@ -174,7 +178,7 @@ class LabelFormViewModel @Inject constructor(
 
     private suspend fun primaryUserId() = primaryUserId.first()
 
-    private fun emitNewStateFor(operation: LabelFormOperation) {
+    private fun emitNewStateFor(operation: LabelFormEvent) {
         val currentState = state.value
         mutableState.value = reducer.newStateFrom(currentState, operation)
     }

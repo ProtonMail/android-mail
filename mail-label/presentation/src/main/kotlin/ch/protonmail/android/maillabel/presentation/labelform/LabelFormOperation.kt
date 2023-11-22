@@ -24,11 +24,11 @@ import me.proton.core.label.domain.entity.LabelId
 sealed interface LabelFormOperation
 
 internal sealed interface LabelFormViewAction : LabelFormOperation {
-    data class LabelNameChanged(val labelName: String) : LabelFormViewAction
-    data class LabelColorChanged(val labelColor: Color) : LabelFormViewAction
+    data class LabelNameChanged(val name: String) : LabelFormViewAction
+    data class LabelColorChanged(val color: Color) : LabelFormViewAction
     object OnSaveClick : LabelFormViewAction
     object OnDeleteClick : LabelFormViewAction
-    object OnCloseLabelForm : LabelFormViewAction
+    object OnCloseLabelFormClick : LabelFormViewAction
 }
 
 sealed interface LabelFormEvent : LabelFormOperation {
@@ -44,4 +44,11 @@ sealed interface LabelFormEvent : LabelFormOperation {
     object LabelAlreadyExists : LabelFormEvent
     object LabelLimitReached : LabelFormEvent
     object SaveLabelError : LabelFormEvent
+    data class UpdateLabelName(
+        val name: String
+    ) : LabelFormEvent
+    data class UpdateLabelColor(
+        val color: String
+    ) : LabelFormEvent
+    object CloseLabelForm : LabelFormEvent
 }

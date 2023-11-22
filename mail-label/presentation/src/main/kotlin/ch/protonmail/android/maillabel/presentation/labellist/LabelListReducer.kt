@@ -23,12 +23,11 @@ import javax.inject.Inject
 
 class LabelListReducer @Inject constructor() {
 
-    internal fun newStateFrom(currentState: LabelListState, operation: LabelListOperation): LabelListState {
+    internal fun newStateFrom(currentState: LabelListState, operation: LabelListEvent): LabelListState {
         return when (operation) {
             is LabelListEvent.LabelListLoaded -> reduceLabelListLoaded(operation)
             is LabelListEvent.ErrorLoadingLabelList -> LabelListState.Loading(errorLoading = Effect.of(Unit))
-            is LabelListEvent.OpenLabelForm,
-            is LabelListViewAction.OnAddLabelClick -> {
+            is LabelListEvent.OpenLabelForm -> {
                 when (currentState) {
                     is LabelListState.Loading -> currentState
                     is LabelListState.ListLoaded.Data -> currentState.copy(openLabelForm = Effect.of(Unit))

@@ -18,27 +18,23 @@
 
 package ch.protonmail.android.maillabel.presentation.labelform
 
-import androidx.compose.ui.graphics.Color
 import ch.protonmail.android.mailcommon.presentation.Effect
-import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
 import javax.inject.Inject
 
 class LabelFormReducer @Inject constructor() {
 
-    internal fun newStateFrom(currentState: LabelFormState, operation: LabelFormOperation): LabelFormState {
+    internal fun newStateFrom(currentState: LabelFormState, operation: LabelFormEvent): LabelFormState {
         return when (operation) {
             is LabelFormEvent.LabelLoaded -> reduceLabelLoaded(operation)
-            is LabelFormViewAction.LabelColorChanged -> reduceLabelColorChanged(currentState, operation.labelColor)
-            is LabelFormViewAction.LabelNameChanged -> reduceLabelNameChanged(currentState, operation.labelName)
-            LabelFormViewAction.OnCloseLabelForm -> reduceOnCloseLabelForm(currentState)
-            LabelFormViewAction.OnDeleteClick -> reduceOnDeleteClick(currentState)
-            LabelFormViewAction.OnSaveClick -> reduceOnSaveClick(currentState)
+            is LabelFormEvent.UpdateLabelColor -> reduceUpdateLabelColor(currentState, operation.color)
+            is LabelFormEvent.UpdateLabelName -> reduceUpdateLabelName(currentState, operation.name)
             LabelFormEvent.LabelCreated -> reduceLabelCreated(currentState)
             LabelFormEvent.LabelDeleted -> reduceLabelDeleted(currentState)
             LabelFormEvent.LabelUpdated -> reduceLabelUpdated(currentState)
             LabelFormEvent.LabelAlreadyExists -> reduceLabelAlreadyExists(currentState)
             LabelFormEvent.LabelLimitReached -> reduceLabelLimitReached(currentState)
             LabelFormEvent.SaveLabelError -> reduceSaveLabelError(currentState)
+            LabelFormEvent.CloseLabelForm -> reduceCloseLabelForm(currentState)
         }
     }
 
@@ -60,8 +56,7 @@ class LabelFormReducer @Inject constructor() {
             )
         }
     }
-
-    private fun reduceLabelNameChanged(currentState: LabelFormState, labelName: String): LabelFormState {
+    private fun reduceUpdateLabelName(currentState: LabelFormState, labelName: String): LabelFormState {
         return when (currentState) {
             is LabelFormState.Data.Create -> currentState.copy(isSaveEnabled = labelName.isNotEmpty(), name = labelName)
             is LabelFormState.Data.Update -> currentState.copy(isSaveEnabled = labelName.isNotEmpty(), name = labelName)
@@ -69,35 +64,19 @@ class LabelFormReducer @Inject constructor() {
         }
     }
 
-    private fun reduceLabelColorChanged(currentState: LabelFormState, labelColor: Color): LabelFormState {
+    private fun reduceUpdateLabelColor(currentState: LabelFormState, labelColor: String): LabelFormState {
         return when (currentState) {
-            is LabelFormState.Data.Create -> currentState.copy(color = labelColor.getHexStringFromColor())
-            is LabelFormState.Data.Update -> currentState.copy(color = labelColor.getHexStringFromColor())
+            is LabelFormState.Data.Create -> currentState.copy(color = labelColor)
+            is LabelFormState.Data.Update -> currentState.copy(color = labelColor)
             is LabelFormState.Loading -> currentState
         }
     }
 
-    private fun reduceOnCloseLabelForm(currentState: LabelFormState): LabelFormState {
+    private fun reduceCloseLabelForm(currentState: LabelFormState): LabelFormState {
         return when (currentState) {
             is LabelFormState.Data.Create -> currentState.copy(close = Effect.of(Unit))
             is LabelFormState.Data.Update -> currentState.copy(close = Effect.of(Unit))
             is LabelFormState.Loading -> currentState.copy(close = Effect.of(Unit))
-        }
-    }
-
-    private fun reduceOnDeleteClick(currentState: LabelFormState): LabelFormState {
-        return when (currentState) {
-            is LabelFormState.Data.Create -> currentState
-            is LabelFormState.Data.Update -> currentState.copy(closeWithDelete = Effect.of(Unit))
-            is LabelFormState.Loading -> currentState
-        }
-    }
-
-    private fun reduceOnSaveClick(currentState: LabelFormState): LabelFormState {
-        return when (currentState) {
-            is LabelFormState.Data.Create -> currentState.copy(closeWithSave = Effect.of(Unit))
-            is LabelFormState.Data.Update -> currentState.copy(closeWithSave = Effect.of(Unit))
-            is LabelFormState.Loading -> currentState
         }
     }
 

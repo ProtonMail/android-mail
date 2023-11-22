@@ -63,7 +63,7 @@ class LabelListViewModel @Inject constructor(
         }
     }
 
-    private fun flowLabelListOperation(userId: UserId): Flow<LabelListOperation> {
+    private fun flowLabelListOperation(userId: UserId): Flow<LabelListEvent> {
         return observeLabels(userId, LabelType.MessageLabel).map { labels ->
             LabelListEvent.LabelListLoaded(
                 labelList = labels.getOrElse {
@@ -84,7 +84,7 @@ class LabelListViewModel @Inject constructor(
         }
     }
 
-    private fun emitNewStateFor(operation: LabelListOperation) {
+    private fun emitNewStateFor(operation: LabelListEvent) {
         val currentState = state.value
         mutableState.value = reducer.newStateFrom(currentState, operation)
     }

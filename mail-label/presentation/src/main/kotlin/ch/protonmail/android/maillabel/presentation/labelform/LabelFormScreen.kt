@@ -98,7 +98,7 @@ fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewMo
             LabelFormTopBar(
                 state = state,
                 onCloseLabelFormClick = {
-                    viewModel.submit(LabelFormViewAction.OnCloseLabelForm)
+                    viewModel.submit(LabelFormViewAction.OnCloseLabelFormClick)
                 },
                 onSaveLabelClick = {
                     viewModel.submit(LabelFormViewAction.OnSaveClick)
