@@ -42,7 +42,7 @@ class UpdateLabelTest {
     private val defaultTestLabel = LabelTestData.buildLabel(id = "LabelId")
 
     @Test
-    fun `should return success when label is updated successfully`() = runTest {
+    fun `when label is updated successfully, then return success`() = runTest {
         // Given
         val expectedResult = Unit
         coEvery { labelRepository.updateLabel(UserIdTestData.userId, defaultTestLabel) } returns expectedResult
@@ -56,7 +56,7 @@ class UpdateLabelTest {
     }
 
     @Test
-    fun `should return error when label update fails`() = runTest {
+    fun `when label update fails, then return error`() = runTest {
         // Given
         val expectedResult = DataError.Remote.Http(NetworkError.Unknown)
         coEvery { labelRepository.updateLabel(UserIdTestData.userId, defaultTestLabel) } throws Exception("Test")

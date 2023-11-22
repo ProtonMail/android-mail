@@ -43,7 +43,7 @@ class GetLabelTest {
     private val defaultTestLabel = LabelTestData.buildLabel(id = "LabelId")
 
     @Test
-    fun `should return success when get label is successful`() = runTest {
+    fun `when get label is successful, then return success `() = runTest {
         // Given
         val expectedResult = defaultTestLabel
         coEvery {
@@ -59,7 +59,7 @@ class GetLabelTest {
     }
 
     @Test
-    fun `should return error when get label fails`() = runTest {
+    fun `when get label fails, then return error `() = runTest {
         // Given
         val expectedResult = DataError.Remote.Http(NetworkError.Unknown)
         coEvery {

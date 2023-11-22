@@ -40,7 +40,7 @@ class IsLabelNameAllowedTest {
     private val defaultTestFolder = LabelTestData.buildLabel(id = "FolderId", type = LabelType.MessageFolder)
 
     @Test
-    fun `label name doesn't exist`() = runTest {
+    fun `when label name doesn't exist, then return true`() = runTest {
         // Given
         val expectedResult = true
         coEvery { labelRepository.getLabels(UserIdTestData.userId, LabelType.MessageLabel) } returns listOf(
@@ -60,7 +60,7 @@ class IsLabelNameAllowedTest {
     }
 
     @Test
-    fun `label name already exist`() = runTest {
+    fun `when label name already exist, then return false`() = runTest {
         // Given
         val expectedResult = false
         coEvery { labelRepository.getLabels(UserIdTestData.userId, LabelType.MessageLabel) } returns listOf(
@@ -80,7 +80,7 @@ class IsLabelNameAllowedTest {
     }
 
     @Test
-    fun `folder name already exist`() = runTest {
+    fun `when folder name already exist, then return false`() = runTest {
         // Given
         val expectedResult = false
         coEvery { labelRepository.getLabels(UserIdTestData.userId, LabelType.MessageLabel) } returns listOf(
@@ -100,7 +100,7 @@ class IsLabelNameAllowedTest {
     }
 
     @Test
-    fun `name is forbidden`() = runTest {
+    fun `when name is forbidden, then return false`() = runTest {
         // Given
         val expectedResult = false
         coEvery { labelRepository.getLabels(UserIdTestData.userId, LabelType.MessageLabel) } returns listOf(

@@ -44,7 +44,7 @@ class IsLabelLimitReachedTest {
     private val defaultTestLabel = LabelTestData.buildLabel(id = "LabelId")
 
     @Test
-    fun `no limit for paid user`() = runTest {
+    fun `given paid user has not limit, when paid user, then return false`() = runTest {
         // Given
         val expectedResult = false
         coEvery { observeUser(UserIdTestData.userId) } returns flowOf(UserTestData.paidUser)
@@ -62,7 +62,7 @@ class IsLabelLimitReachedTest {
     }
 
     @Test
-    fun `under limit for free user`() = runTest {
+    fun `given user has 1 existing label, when free user, then return true`() = runTest {
         // Given
         val expectedResult = false
         coEvery { observeUser(UserIdTestData.userId) } returns flowOf(UserTestData.freeUser)
@@ -80,7 +80,7 @@ class IsLabelLimitReachedTest {
     }
 
     @Test
-    fun `over limit for free user`() = runTest {
+    fun `given user has 3 existing label, when free user, then return false`() = runTest {
         // Given
         val expectedResult = true
         coEvery { observeUser(UserIdTestData.userId) } returns flowOf(UserTestData.freeUser)

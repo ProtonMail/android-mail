@@ -82,7 +82,7 @@ class LabelListViewModelTest {
     fun `given empty label list, when init, then emits empty state`() = runTest {
         // Given
         coEvery { observePrimaryUserId() } returns flowOf(userId)
-        coEvery { observeLabels(userId = any()) } returns flowOf(emptyList<Label>().right())
+        coEvery { observeLabels(userId = userId) } returns flowOf(emptyList<Label>().right())
         every {
             reducer.newStateFrom(
                 LabelListState.Loading(),

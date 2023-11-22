@@ -41,7 +41,7 @@ class CreateLabelTest {
     private val defaultTestNewLabel = LabelTestData.buildNewLabel(name = "LabelName")
 
     @Test
-    fun `should return success when label is created successfully`() = runTest {
+    fun `when label is created successfully, then return success`() = runTest {
         // Given
         val expectedResult = Unit
         coEvery { labelRepository.createLabel(userId, defaultTestNewLabel) } returns expectedResult
@@ -55,7 +55,7 @@ class CreateLabelTest {
     }
 
     @Test
-    fun `should return error when label creation fails`() = runTest {
+    fun `when label creation fails, then return error`() = runTest {
         // Given
         val expectedResult = DataError.Remote.Http(NetworkError.Unknown)
         coEvery { labelRepository.createLabel(userId, defaultTestNewLabel) } throws Exception("Test")
