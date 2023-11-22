@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox
 
+import java.util.Collections
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
@@ -99,8 +100,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.domain.entity.UserId
@@ -145,8 +144,7 @@ class MailboxViewModel @Inject constructor(
 
     private val primaryUserId = observePrimaryUserId()
     private val mutableState = MutableStateFlow(initialState)
-    private val itemIds = mutableListOf<String>()
-    private val itemsChangedMutex = Mutex()
+    private val itemIds = Collections.synchronizedList(mutableListOf<String>())
 
     val state: StateFlow<MailboxState> = mutableState.asStateFlow()
     val items: Flow<PagingData<MailboxItemUiModel>> = observePagingData().cachedIn(viewModelScope)
@@ -238,23 +236,21 @@ class MailboxViewModel @Inject constructor(
 
     private suspend fun handleMailboxItemChanged(updatedItemIds: List<String>) {
         withContext(dispatchersProvider.Comp) {
-            itemsChangedMutex.withLock {
-                val removedItems = itemIds.filterNot { updatedItemIds.contains(it) }
-                itemIds.clear()
-                itemIds.addAll(updatedItemIds)
-                Timber.d("Removed items: $removedItems")
-                if (removedItems.isNotEmpty()) {
-                    when (val currentState = state.value.mailboxListState) {
-                        is MailboxListState.Data.SelectionMode -> {
-                            currentState.selectedMailboxItems
-                                .map { it.id }
-                                .filter { currentSelectedItem -> removedItems.contains(currentSelectedItem) }
-                                .takeIf { it.isNotEmpty() }
-                                ?.let { emitNewStateFrom(MailboxEvent.ItemsRemovedFromSelection(it)) }
-                        }
-
-                        else -> {}
+            val removedItems = itemIds.filterNot { updatedItemIds.contains(it) }
+            itemIds.clear()
+            itemIds.addAll(updatedItemIds)
+            Timber.d("Removed items: $removedItems")
+            if (removedItems.isNotEmpty()) {
+                when (val currentState = state.value.mailboxListState) {
+                    is MailboxListState.Data.SelectionMode -> {
+                        currentState.selectedMailboxItems
+                            .map { it.id }
+                            .filter { currentSelectedItem -> removedItems.contains(currentSelectedItem) }
+                            .takeIf { it.isNotEmpty() }
+                            ?.let { emitNewStateFrom(MailboxEvent.ItemsRemovedFromSelection(it)) }
                     }
+
+                    else -> {}
                 }
             }
         }
