@@ -33,6 +33,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
 import kotlinx.collections.immutable.toImmutableList
 
 object MailboxStateSampleData {
@@ -118,7 +119,8 @@ object MailboxStateSampleData {
     fun createSelectionMode(
         selectedMailboxItemUiModels: List<MailboxItemUiModel>,
         bottomBarAction: List<ActionUiModel> = listOf(ActionUiModelSample.Archive),
-        currentMailLabel: MailLabel = MailLabel.System(MailLabelId.System.Inbox)
+        currentMailLabel: MailLabel = MailLabel.System(MailLabelId.System.Inbox),
+        bottomSheetState: BottomSheetState? = null
     ) = MailboxState(
         mailboxListState = MailboxListState.Data.SelectionMode(
             currentMailLabel = currentMailLabel,
@@ -141,7 +143,7 @@ object MailboxStateSampleData {
         onboardingState = OnboardingState.Hidden,
         actionMessage = Effect.empty(),
         deleteDialogState = DeleteDialogState.Hidden,
-        bottomSheetState = null,
+        bottomSheetState = bottomSheetState,
         error = Effect.empty()
     )
 }

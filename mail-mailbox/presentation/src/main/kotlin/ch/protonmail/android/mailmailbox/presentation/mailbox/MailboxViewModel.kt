@@ -645,7 +645,8 @@ class MailboxViewModel @Inject constructor(
     }
 
     private fun emitNewStateFrom(operation: MailboxOperation) {
-        mutableState.value = mailboxReducer.newStateFrom(state.value, operation)
+        val state = mailboxReducer.newStateFrom(state.value, operation)
+        mutableState.value = state
     }
 
     private fun Flow<MailboxState>.observeUnreadFilterState() =
