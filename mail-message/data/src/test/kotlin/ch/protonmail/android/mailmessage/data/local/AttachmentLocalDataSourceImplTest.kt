@@ -332,6 +332,23 @@ class AttachmentLocalDataSourceImplTest {
     }
 
     @Test
+    fun `should return true when deleting all attachment data from db for a given userId was successful`() = runTest {
+        // Given
+        coEvery { attachmentDao.deleteAttachments(userId) } returns Unit
+        coEvery { attachmentFileStorage.deleteAttachmentsForUser(userId) } returns true
+
+        // When
+        val result = attachmentLocalDataSource.deleteAttachments(userId)
+
+        // Then
+        assertTrue(result)
+        coVerifySequence {
+            attachmentDao.deleteAttachments(userId)
+            attachmentFileStorage.deleteAttachmentsForUser(userId)
+        }
+    }
+
+    @Test
     fun `should return list of metadata when multiple attachments are downloading for a user`() = runTest {
         // Given
         val attachment1 = MessageAttachmentMetadataEntityTestData.buildMessageAttachmentMetadataEntity(

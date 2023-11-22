@@ -283,6 +283,12 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
         return true
     }
 
+    override suspend fun deleteAttachments(userId: UserId): Boolean {
+        return runCatching {
+            attachmentDao.deleteAttachments(userId)
+        }.isSuccess && attachmentFileStorage.deleteAttachmentsForUser(userId)
+    }
+
     override suspend fun readFileFromStorage(
         userId: UserId,
         messageId: MessageId,

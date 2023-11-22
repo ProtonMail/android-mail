@@ -335,6 +335,31 @@ internal class AttachmentFileStorageTest {
         }
 
     @Test
+    fun `should delete all cached files connected to a userId from internal storage and return true on success`() =
+        runTest {
+            // Given
+            coEvery {
+                internalFileStorageMock.deleteCachedFolder(
+                    userId = UserId,
+                    folder = InternalFileStorage.Folder.MessageAttachmentsRoot
+                )
+            } returns true
+
+            coEvery {
+                internalFileStorageMock.deleteFolder(
+                    userId = UserId,
+                    folder = InternalFileStorage.Folder.MessageAttachmentsRoot
+                )
+            } returns true
+
+            // When
+            val result = attachmentFileStorage.deleteAttachmentsForUser(UserId)
+
+            // Then
+            assertTrue(result)
+        }
+
+    @Test
     fun `should return false when deleting all files connected to a message from internal fails`() = runTest {
         // Given
         coEvery {

@@ -30,6 +30,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
 
+@Suppress("TooManyFunctions", "ComplexInterface")
 interface AttachmentLocalDataSource {
 
     suspend fun observeAttachmentMetadata(
@@ -138,6 +139,12 @@ interface AttachmentLocalDataSource {
      * @return true if deleting was successful, false otherwise.
      */
     suspend fun deleteAttachments(userId: UserId, messageId: MessageId): Boolean
+
+    /**
+     * Delete all attachments for the given [userId].
+     * @return true if deleting was successful, false otherwise.
+     */
+    suspend fun deleteAttachments(userId: UserId): Boolean
 
     /**
      * Returns the file for the given [userId], [messageId] and [attachmentId], or null if it does not exist.
