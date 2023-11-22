@@ -207,7 +207,8 @@ internal class MailboxScreenTest {
                 onboardingState = OnboardingState.Hidden,
                 actionMessage = Effect.empty(),
                 deleteDialogState = DeleteDialogState.Hidden,
-                bottomSheetState = null
+                bottomSheetState = null,
+                error = Effect.empty()
             )
         }
 
