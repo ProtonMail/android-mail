@@ -28,7 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailsettings.presentation.R
-import me.proton.core.compose.component.ProtonSettingsToggleItem
+import ch.protonmail.android.uicomponents.settings.SettingsToggleItem
 import me.proton.core.compose.component.ProtonSettingsTopBar
 import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
@@ -86,13 +86,13 @@ fun CombinedContactsSettingScreen(
             )
         },
         content = { paddingValues ->
-            ProtonSettingsToggleItem(
+            SettingsToggleItem(
                 modifier = Modifier
                     .padding(paddingValues)
                     .testTag(TEST_TAG_COMBINED_CONTACTS_TOGGLE_ITEM),
                 name = stringResource(id = R.string.mail_settings_combined_contacts),
                 hint = stringResource(id = R.string.mail_settings_combined_contacts_hint),
-                value = state.isEnabled,
+                value = state.isEnabled ?: false,
                 onToggle = { state.isEnabled?.let { onToggle(!it) } }
             )
         },

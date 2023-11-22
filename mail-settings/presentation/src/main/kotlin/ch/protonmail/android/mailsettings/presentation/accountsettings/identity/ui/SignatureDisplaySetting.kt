@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.AddressSignatureUiModel
+import ch.protonmail.android.uicomponents.settings.SettingsToggleItem
 
 @Composable
 fun SignatureDisplaySetting(
@@ -36,7 +37,7 @@ fun SignatureDisplaySetting(
 
     Column(modifier = modifier) {
         Row {
-            AddressIdentitySettingToggleItem(
+            SettingsToggleItem(
                 name = stringResource(id = R.string.mail_settings_identity_signature),
                 value = uiModel.enabled,
                 onToggle = {

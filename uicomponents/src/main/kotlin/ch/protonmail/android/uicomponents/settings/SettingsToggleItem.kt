@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailsettings.presentation.accountsettings.identity.ui
+package ch.protonmail.android.uicomponents.settings
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -39,7 +39,7 @@ import me.proton.core.compose.theme.defaultSmallUnspecified
 import me.proton.core.compose.theme.textNorm
 
 @Composable
-fun AddressIdentitySettingToggleItem(
+fun SettingsToggleItem(
     modifier: Modifier = Modifier,
     name: String,
     value: Boolean,
@@ -60,10 +60,13 @@ fun AddressIdentitySettingToggleItem(
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         ProtonRawListItem(
-            modifier = Modifier.sizeIn(minHeight = ProtonDimens.ListItemHeight),
+            modifier = Modifier
+                .sizeIn(minHeight = ProtonDimens.ListItemHeight)
+                .padding(vertical = ProtonDimens.DefaultSpacing),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
+                modifier = Modifier.weight(1f),
                 text = name,
                 color = ProtonTheme.colors.textNorm(),
                 style = ProtonTheme.typography.defaultNorm

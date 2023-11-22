@@ -54,6 +54,7 @@ fun NotificationSettingsItemButton(modifier: Modifier = Modifier) {
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
+            modifier = Modifier.weight(1f),
             text = stringResource(id = R.string.mail_settings_notifications_notifications_settings),
             color = ProtonTheme.colors.textNorm,
             style = ProtonTheme.typography.defaultNorm

@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.MobileFooterUiModel
+import ch.protonmail.android.uicomponents.settings.SettingsToggleItem
 
 @Composable
 fun MobileFooterDisplaySetting(
@@ -35,7 +36,7 @@ fun MobileFooterDisplaySetting(
 ) {
     Column(modifier = modifier) {
         Row {
-            AddressIdentitySettingToggleItem(
+            SettingsToggleItem(
                 name = stringResource(R.string.mail_settings_identity_mobile_footer),
                 value = uiModel.enabled,
                 isFieldEnabled = uiModel.isFieldEnabled,

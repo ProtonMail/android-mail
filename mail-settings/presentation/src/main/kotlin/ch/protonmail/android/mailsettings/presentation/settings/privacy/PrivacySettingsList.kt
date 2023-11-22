@@ -24,8 +24,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import ch.protonmail.android.mailsettings.presentation.R
+import ch.protonmail.android.uicomponents.settings.SettingsToggleItem
 import me.proton.core.compose.component.ProtonSettingsList
-import me.proton.core.compose.component.ProtonSettingsToggleItem
 
 @Composable
 fun PrivacySettingsList(
@@ -36,8 +36,9 @@ fun PrivacySettingsList(
     ProtonSettingsList(
         modifier.testTag(PrivacySettingsTestTags.RootItem)
     ) {
+        item { Divider() }
         item {
-            ProtonSettingsToggleItem(
+            SettingsToggleItem(
                 name = stringResource(id = R.string.mail_settings_privacy_auto_show_remote_content),
                 value = state.settings.autoShowRemoteContent,
                 onToggle = actions.onShowRemoteContent
@@ -45,7 +46,7 @@ fun PrivacySettingsList(
         }
         item { Divider() }
         item {
-            ProtonSettingsToggleItem(
+            SettingsToggleItem(
                 name = stringResource(id = R.string.mail_settings_privacy_auto_show_embedded_images),
                 value = state.settings.autoShowEmbeddedImages,
                 onToggle = actions.onShowEmbeddedImages
@@ -53,7 +54,7 @@ fun PrivacySettingsList(
         }
         item { Divider() }
         item {
-            ProtonSettingsToggleItem(
+            SettingsToggleItem(
                 name = stringResource(id = R.string.mail_settings_privacy_prevent_taking_screenshots),
                 value = state.settings.preventTakingScreenshots,
                 onToggle = actions.onPreventScreenshots
@@ -61,7 +62,7 @@ fun PrivacySettingsList(
         }
         item { Divider() }
         item {
-            ProtonSettingsToggleItem(
+            SettingsToggleItem(
                 name = stringResource(id = R.string.mail_settings_privacy_request_link_confirmation),
                 value = state.settings.requestLinkConfirmation,
                 onToggle = actions.onRequestLinkConfirmation

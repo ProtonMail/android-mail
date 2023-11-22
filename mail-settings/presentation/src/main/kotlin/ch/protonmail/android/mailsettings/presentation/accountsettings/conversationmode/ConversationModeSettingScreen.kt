@@ -30,9 +30,9 @@ import ch.protonmail.android.mailsettings.presentation.R.string
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingState.Data
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingState.Loading
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingState.NotLoggedIn
+import ch.protonmail.android.uicomponents.settings.SettingsToggleItem
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonErrorMessage
-import me.proton.core.compose.component.ProtonSettingsToggleItem
 import me.proton.core.compose.component.ProtonSettingsTopBar
 import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.util.kotlin.exhaustive
@@ -81,11 +81,11 @@ fun ConversationModeSettingScreen(
             )
         },
         content = { paddingValues ->
-            ProtonSettingsToggleItem(
+            SettingsToggleItem(
                 modifier = Modifier.padding(paddingValues),
                 name = stringResource(id = string.mail_settings_conversation_mode),
                 hint = stringResource(id = string.mail_settings_conversation_mode_hint),
-                value = state.isEnabled,
+                value = state.isEnabled ?: false,
                 onToggle = onConversationModeToggled
             )
         }

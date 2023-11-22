@@ -27,6 +27,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.material.Divider
 import androidx.compose.material.RadioButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -51,7 +52,7 @@ fun ActiveAddressesList(
         modifier = modifier.selectableGroup(),
         contentPadding = PaddingValues(top = ProtonDimens.SmallSpacing)
     ) {
-
+        item { Divider() }
         items(state.addresses) {
             Row(
                 modifier = Modifier

@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.mailsettings.presentation.settings.notifications.ui
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -26,8 +25,7 @@ import androidx.compose.ui.res.stringResource
 import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
 import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.settings.notifications.model.PushNotificationsSettingsState
-import me.proton.core.compose.component.ProtonSettingsToggleItem
-import me.proton.core.compose.theme.ProtonDimens
+import ch.protonmail.android.uicomponents.settings.SettingsToggleItem
 
 @Composable
 fun PushNotificationsSettingsScreenList(
@@ -38,8 +36,7 @@ fun PushNotificationsSettingsScreenList(
     LazyColumn(modifier = modifier) {
         item { MailDivider() }
         item {
-            ProtonSettingsToggleItem(
-                modifier = Modifier.padding(top = ProtonDimens.SmallSpacing),
+            SettingsToggleItem(
                 name = stringResource(id = R.string.mail_settings_notifications_extended_notifications_title),
                 value = state.extendedNotificationState.model.enabled,
                 hint = stringResource(id = R.string.mail_settings_notifications_extended_notifications_summary),
