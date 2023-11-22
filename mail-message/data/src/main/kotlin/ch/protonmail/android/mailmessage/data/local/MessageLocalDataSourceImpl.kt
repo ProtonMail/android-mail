@@ -19,8 +19,8 @@
 package ch.protonmail.android.mailmessage.data.local
 
 import arrow.core.Either
-import arrow.core.raise.either
 import arrow.core.left
+import arrow.core.raise.either
 import arrow.core.right
 import ch.protonmail.android.mailcommon.data.file.shouldBeStoredAsFile
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
@@ -136,6 +136,14 @@ class MessageLocalDataSourceImpl @Inject constructor(
             userId = userId,
             messages = messageIds
         ).mapLatest { list -> list.mapNotNull { it?.toMessage() } }
+
+    override fun observeMessagesForConversation(
+        userId: UserId,
+        conversationIds: List<ConversationId>
+    ): Flow<List<Message>> = messageDao.observeMessageWithLabelsInConversations(
+        userId = userId,
+        conversationIds = conversationIds
+    ).mapLatest { it.map { messageWithLabelIds -> messageWithLabelIds.toMessage() } }
 
     override suspend fun upsertMessage(message: Message) = db.inTransaction {
         upsertMessages(listOf(message))

@@ -374,6 +374,43 @@ class MessageLocalDataSourceImplTest {
     }
 
     @Test
+    fun `get messages for conversations returns returns local message when existing`() = runTest {
+        // Given
+        val conversationIds = listOf(ConversationId("ConversationId"))
+        val expected = listOf(getMessage(userId1, "1"))
+
+        val messageWithLabels = listOf(getMessageWithLabels(userId1, "1"))
+        coEvery {
+            messageDao.observeMessageWithLabelsInConversations(userId1, conversationIds)
+        } returns flowOf(messageWithLabels)
+
+        // When
+        messageLocalDataSource.observeMessagesForConversation(userId1, conversationIds).test {
+            // Then
+            assertEquals(expected, awaitItem())
+            awaitComplete()
+        }
+
+    }
+
+    @Test
+    fun `get messages for conversations returns local data error when no messages are stored`() = runTest {
+        // Given
+        val conversationIds = listOf(ConversationId("ConversationId"))
+
+        coEvery {
+            messageDao.observeMessageWithLabelsInConversations(userId1, conversationIds)
+        } returns flowOf(emptyList())
+
+        // When
+        messageLocalDataSource.observeMessagesForConversation(userId1, conversationIds).test {
+            // Then
+            assertEquals(emptyList(), awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
     fun `upsert message inserts message and related labels locally`() = runTest {
         val message = MessageTestData.spamMessage
         // When
