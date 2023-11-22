@@ -303,6 +303,25 @@ class MessageRepositoryImplTest {
     }
 
     @Test
+    fun `get cached message for conversation ids calls the local source with correct parameters`() = runTest {
+        // Given
+        val userId = UserIdSample.Primary
+        val conversationIds = listOf(ConversationIdSample.WeatherForecast)
+        val messages = nonEmptyListOf(
+            MessageSample.AugWeatherForecast,
+            MessageSample.SepWeatherForecast
+        )
+        coEvery { localDataSource.observeMessagesForConversation(userId, conversationIds) } returns flowOf(messages)
+
+        // When
+        messageRepository.observeCachedMessagesForConversations(userId, conversationIds).test {
+            // Then
+            assertEquals(messages, awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
     fun `observe message with body emits cached message with body when it exists`() = runTest {
         // Given
         val messageId = MessageIdSample.AugWeatherForecast

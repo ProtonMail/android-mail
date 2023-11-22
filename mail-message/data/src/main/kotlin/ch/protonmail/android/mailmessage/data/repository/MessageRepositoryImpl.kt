@@ -132,6 +132,12 @@ class MessageRepositoryImpl @Inject constructor(
             list.toNonEmptyListOrNull()?.right() ?: DataError.Local.NoDataCached.left()
         }
 
+    override fun observeCachedMessagesForConversations(
+        userId: UserId,
+        conversationIds: List<ConversationId>
+    ): Flow<List<Message>> = localDataSource.observeMessagesForConversation(userId, conversationIds)
+
+
     override fun observeMessageWithBody(
         userId: UserId,
         messageId: MessageId

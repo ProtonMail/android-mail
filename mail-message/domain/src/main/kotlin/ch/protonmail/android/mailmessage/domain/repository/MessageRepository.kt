@@ -73,6 +73,15 @@ interface MessageRepository {
     fun observeCachedMessages(userId: UserId, messageIds: List<MessageId>): Flow<Either<DataError.Local, List<Message>>>
 
     /**
+     * Gets a list of [Message] metadata for [userId] and [conversationIds] from the local storage
+     * @return either the [Message] or a [DataError.Local]
+     */
+    fun observeCachedMessagesForConversations(
+        userId: UserId,
+        conversationIds: List<ConversationId>
+    ): Flow<List<Message>>
+
+    /**
      * Get all the [Message]s metadata for a given [ConversationId], for [userId] from the local storage
      */
     fun observeCachedMessages(
