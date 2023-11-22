@@ -401,6 +401,9 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
     override suspend fun getFileSizeFromUri(uri: Uri) =
         uriHelper.getFileInformationFromUri(uri)?.size?.right() ?: DataError.Local.NoDataCached.left()
 
+    override suspend fun getAttachmentFolderForUserId(userId: UserId): File? =
+        attachmentFileStorage.getAttachmentsFolderForUserId(userId)
+
     private fun isAttachmentFileAvailable(uri: Uri): Boolean {
         val doesFileExist = try {
             context.contentResolver.openInputStream(uri)?.use {

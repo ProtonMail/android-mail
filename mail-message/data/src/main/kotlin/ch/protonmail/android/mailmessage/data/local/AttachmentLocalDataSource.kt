@@ -187,5 +187,7 @@ interface AttachmentLocalDataSource {
         attachmentId: AttachmentId
     ): Either<DataError.Local, Uri>
 
+    suspend fun getAttachmentFolderForUserId(userId: UserId): File?
+
     suspend fun getFileSizeFromUri(uri: Uri): Either<DataError, Long>
 }

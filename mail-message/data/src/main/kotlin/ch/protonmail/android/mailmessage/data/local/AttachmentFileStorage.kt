@@ -151,6 +151,9 @@ class AttachmentFileStorage @Inject constructor(
         InternalFileStorage.FileIdentifier(attachmentId)
     )
 
+    suspend fun getAttachmentsFolderForUserId(userId: UserId): File? =
+        internalFileStorage.getFolder(userId, InternalFileStorage.Folder.MessageAttachmentsRoot)
+
     suspend fun deleteAttachmentsForUser(userId: UserId): Boolean =
         internalFileStorage.deleteCachedFolder(userId, InternalFileStorage.Folder.MessageAttachmentsRoot) &&
             internalFileStorage.deleteFolder(userId, InternalFileStorage.Folder.MessageAttachmentsRoot)
