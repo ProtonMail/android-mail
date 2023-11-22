@@ -143,7 +143,7 @@ class MailboxReducer @Inject constructor(
     private fun MailboxState.toNewErrorBarState(operation: MailboxOperation): Effect<TextUiModel> {
         return if (operation is MailboxOperation.AffectingErrorBar) {
             when (operation) {
-                is MailboxEvent.ErrorLabelingMessages ->
+                is MailboxEvent.ErrorLabeling ->
                     Effect.of(TextUiModel(R.string.mailbox_action_label_messages_failed))
             }
         } else {

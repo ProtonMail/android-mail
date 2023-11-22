@@ -161,7 +161,7 @@ internal sealed interface MailboxEvent : MailboxOperation {
         val bottomSheetOperation: BottomSheetOperation
     ) : MailboxEvent, AffectingBottomSheet
 
-    object ErrorLabelingMessages : MailboxEvent, AffectingErrorBar
+    object ErrorLabeling : MailboxEvent, AffectingErrorBar
 }
 
 

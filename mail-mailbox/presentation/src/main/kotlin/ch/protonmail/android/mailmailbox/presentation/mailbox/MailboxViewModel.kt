@@ -60,6 +60,7 @@ import ch.protonmail.android.mailmailbox.domain.usecase.MoveMessages
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveOnboarding
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
+import ch.protonmail.android.mailmailbox.domain.usecase.RelabelConversations
 import ch.protonmail.android.mailmailbox.domain.usecase.RelabelMessages
 import ch.protonmail.android.mailmailbox.domain.usecase.SaveOnboarding
 import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.MailboxItemUiModelMapper
@@ -67,6 +68,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.DeleteDialog
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState.Data.SelectionMode.SelectedMailboxItem
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
@@ -79,6 +81,7 @@ import ch.protonmail.android.mailmessage.domain.model.LabelSelectionList
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithLabels
 import ch.protonmail.android.mailmessage.domain.usecase.DeleteMessages
+import ch.protonmail.android.mailmessage.domain.usecase.GetConversationMessagesWithLabels
 import ch.protonmail.android.mailmessage.domain.usecase.GetMessagesWithLabels
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
@@ -122,6 +125,7 @@ class MailboxViewModel @Inject constructor(
     private val observeUnreadCounters: ObserveUnreadCounters,
     private val observeFolderColorSettings: ObserveFolderColorSettings,
     private val getMessagesWithLabels: GetMessagesWithLabels,
+    private val getConversationMessagesWithLabels: GetConversationMessagesWithLabels,
     private val getMailboxActions: GetMailboxActions,
     private val actionUiModelMapper: ActionUiModelMapper,
     private val mailboxItemMapper: MailboxItemUiModelMapper,
@@ -131,6 +135,7 @@ class MailboxViewModel @Inject constructor(
     private val markMessagesAsRead: MarkMessagesAsRead,
     private val markMessagesAsUnread: MarkMessagesAsUnread,
     private val relabelMessages: RelabelMessages,
+    private val relabelConversations: RelabelConversations,
     private val moveConversations: MoveConversations,
     private val moveMessages: MoveMessages,
     private val deleteConversations: DeleteConversations,
@@ -405,92 +410,106 @@ class MailboxViewModel @Inject constructor(
     }
 
     private fun showLabelAsBottomSheetAndLoadData(operation: MailboxViewAction) {
-        val selectionModeDataState = state.value.mailboxListState as? MailboxListState.Data.SelectionMode
-        if (selectionModeDataState == null) {
+        val selectionMode = state.value.mailboxListState as? MailboxListState.Data.SelectionMode
+        if (selectionMode == null) {
             Timber.d("MailboxListState is not in SelectionMode")
             return
         }
         viewModelScope.launch {
             emitNewStateFrom(operation)
 
-            when (getPreferredViewMode()) {
-                ViewMode.ConversationGrouping -> TODO()
-                ViewMode.NoConversationGrouping -> loadDataForLabelMessages(selectionModeDataState)
-            }
+            val userId = primaryUserId.filterNotNull().first()
+            val labels = observeCustomMailLabels(userId).first()
+            val color = observeFolderColorSettings(userId).first()
+
+            val mappedLabels = labels.onLeft {
+                Timber.e("Error while observing custom labels")
+            }.getOrElse { emptyList() }
+
+            val messagesWithLabels = getMessagesWithLabels(userId, selectionMode.selectedMailboxItems)
+
+            val (selectedLabels, partiallySelectedLabels) = mappedLabels.getLabelSelectionState(messagesWithLabels)
+            val event = MailboxEvent.MailboxBottomSheetEvent(
+                LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
+                    customLabelList = mappedLabels.map { it.toCustomUiModel(color, emptyMap(), null) }
+                        .toImmutableList(),
+                    selectedLabels = selectedLabels.toImmutableList(),
+                    partiallySelectedLabels = partiallySelectedLabels.toImmutableList()
+                )
+            )
+            emitNewStateFrom(event)
         }
     }
 
-    private suspend fun loadDataForLabelMessages(selectionState: MailboxListState.Data.SelectionMode) {
-        val userId = primaryUserId.filterNotNull().first()
-        val labels = observeCustomMailLabels(userId).first()
-        val color = observeFolderColorSettings(userId).first()
-        val messages = getMessagesWithLabels(userId, selectionState.selectedMailboxItems.map { MessageId(it.id) })
-
-        val mappedLabels = labels.onLeft {
-            Timber.e("Error while observing custom labels")
-        }.getOrElse { emptyList() }
-
-        val messagesWithLabels = messages.onLeft {
-            Timber.e("Error while observing messages with labels")
-        }.getOrElse { emptyList() }
-
-        val (selectedLabels, partiallySelectedLabels) = mappedLabels.getLabelSelectionState(messagesWithLabels)
-        val event = MailboxEvent.MailboxBottomSheetEvent(
-            LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
-                customLabelList = mappedLabels.map { it.toCustomUiModel(color, emptyMap(), null) }.toImmutableList(),
-                selectedLabels = selectedLabels.toImmutableList(),
-                partiallySelectedLabels = partiallySelectedLabels.toImmutableList()
-            )
-        )
-        emitNewStateFrom(event)
-    }
-
     private fun onLabelAsConfirmed(archiveSelected: Boolean) {
-        val selectionModeDataState = state.value.mailboxListState as? MailboxListState.Data.SelectionMode
-        if (selectionModeDataState == null) {
+        val selectionState = state.value.mailboxListState as? MailboxListState.Data.SelectionMode
+        if (selectionState == null) {
             Timber.d("MailboxListState is not in SelectionMode")
             return
         }
         viewModelScope.launch {
-            when (getPreferredViewMode()) {
-                ViewMode.ConversationGrouping -> TODO()
-                ViewMode.NoConversationGrouping ->
-                    onLabelAsConfirmedForMessages(selectionModeDataState, archiveSelected)
+            val userId = primaryUserId.filterNotNull().first()
+            val labels = observeCustomMailLabels(userId).first().onLeft {
+                Timber.e("Error while observing custom labels when relabeling got confirmed: $it")
+            }.getOrElse { emptyList() }
+            val messagesWithLabels = getMessagesWithLabels(userId, selectionState.selectedMailboxItems)
+
+            val previousSelection = labels.getLabelSelectionState(messagesWithLabels)
+            val labelAsData = state.value.bottomSheetState?.contentState as? LabelAsBottomSheetState.Data
+                ?: throw IllegalStateException("BottomSheetState is not LabelAsBottomSheetState.Data")
+
+            val updatedSelections = labelAsData.getLabelSelectionState()
+            if (archiveSelected) {
+                // will be added when move to is implemented, see ticket: MAILANDR-674
             }
+            val operation = handleRelabelOperation(
+                userId = userId,
+                selectedItems = selectionState.selectedMailboxItems,
+                currentSelectionList = previousSelection,
+                updatedSelectionList = updatedSelections,
+                archiveSelected = archiveSelected
+            )
+            emitNewStateFrom(operation)
         }
     }
 
-    private suspend fun onLabelAsConfirmedForMessages(
-        selectionState: MailboxListState.Data.SelectionMode,
+    private suspend fun getMessagesWithLabels(
+        userId: UserId,
+        selectedItems: Set<SelectedMailboxItem>
+    ): List<MessageWithLabels> {
+        return when (getPreferredViewMode()) {
+            ViewMode.ConversationGrouping ->
+                getConversationMessagesWithLabels(userId, selectedItems.map { ConversationId(it.id) })
+
+            ViewMode.NoConversationGrouping -> getMessagesWithLabels(userId, selectedItems.map { MessageId(it.id) })
+        }.onLeft { Timber.e("Error while observing messages with labels") }.getOrElse { emptyList() }
+    }
+
+    private suspend fun handleRelabelOperation(
+        userId: UserId,
+        selectedItems: Set<SelectedMailboxItem>,
+        currentSelectionList: LabelSelectionList,
+        updatedSelectionList: LabelSelectionList,
         archiveSelected: Boolean
-    ) {
-        val userId = primaryUserId.filterNotNull().first()
-        val messageIds = selectionState.selectedMailboxItems.map { MessageId(it.id) }
-        val labels = observeCustomMailLabels(userId).first().onLeft {
-            Timber.e("Error while observing custom labels when relabeling got confirmed: $it")
-        }.getOrElse { emptyList() }
-        val messagesWithLabels = getMessagesWithLabels(userId, messageIds).onLeft {
-            Timber.e("Error while observing messages with labels when relabeling got confirmed: $it")
-        }.getOrElse { emptyList() }
+    ): MailboxOperation {
+        return when (getPreferredViewMode()) {
+            ViewMode.ConversationGrouping -> relabelConversations(
+                userId = userId,
+                conversationIds = selectedItems.map { ConversationId(it.id) },
+                currentSelections = currentSelectionList,
+                updatedSelections = updatedSelectionList
+            )
 
-        val previousSelection = labels.getLabelSelectionState(messagesWithLabels)
-        val labelAsData = state.value.bottomSheetState?.contentState as? LabelAsBottomSheetState.Data
-            ?: throw IllegalStateException("BottomSheetState is not LabelAsBottomSheetState.Data")
-
-        val updatedSelections = labelAsData.getLabelSelectionState()
-        if (archiveSelected) {
-            // will be added when move to is implemented
-        }
-        val operation = relabelMessages(
-            userId = userId,
-            messageIds = messageIds,
-            currentSelections = previousSelection,
-            updatedSelections = updatedSelections
-        ).fold(
-            ifLeft = { MailboxEvent.ErrorLabelingMessages },
+            ViewMode.NoConversationGrouping -> relabelMessages(
+                userId = userId,
+                messageIds = selectedItems.map { MessageId(it.id) },
+                currentSelections = currentSelectionList,
+                updatedSelections = updatedSelectionList
+            )
+        }.fold(
+            ifLeft = { MailboxEvent.ErrorLabeling },
             ifRight = { MailboxViewAction.LabelAsConfirmed(archiveSelected) }
         )
-        emitNewStateFrom(operation)
     }
 
     private suspend fun handleCloseOnboarding() {

@@ -67,6 +67,7 @@ import ch.protonmail.android.mailmailbox.domain.usecase.MoveMessages
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveOnboarding
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
+import ch.protonmail.android.mailmailbox.domain.usecase.RelabelConversations
 import ch.protonmail.android.mailmailbox.domain.usecase.RelabelMessages
 import ch.protonmail.android.mailmailbox.domain.usecase.SaveOnboarding
 import ch.protonmail.android.mailmailbox.presentation.helper.MailboxAsyncPagingDataDiffer
@@ -90,6 +91,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageWithLabels
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailmessage.domain.usecase.DeleteMessages
+import ch.protonmail.android.mailmessage.domain.usecase.GetConversationMessagesWithLabels
 import ch.protonmail.android.mailmessage.domain.usecase.GetMessagesWithLabels
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
@@ -174,6 +176,7 @@ class MailboxViewModelTest {
     }
     private val observeCustomMailLabels = mockk<ObserveCustomMailLabels>()
     private val getMessagesWithLabels = mockk<GetMessagesWithLabels>()
+    private val getConversationMessagesWithLabels = mockk<GetConversationMessagesWithLabels>()
 
     private val observeCurrentViewMode = mockk<ObserveCurrentViewMode> {
         coEvery { this@mockk(userId = any()) } returns flowOf(NoConversationGrouping)
@@ -222,6 +225,7 @@ class MailboxViewModelTest {
     private val deleteConversations = mockk<DeleteConversations>()
     private val deleteMessages = mockk<DeleteMessages>()
     private val relabelMessages = mockk<RelabelMessages>()
+    private val relabelConversations = mockk<RelabelConversations>()
 
     private val mailboxViewModel by lazy {
         MailboxViewModel(
@@ -234,6 +238,7 @@ class MailboxViewModelTest {
             observeUnreadCounters = observeUnreadCounters,
             observeFolderColorSettings = observeFolderColorSettings,
             getMessagesWithLabels = getMessagesWithLabels,
+            getConversationMessagesWithLabels = getConversationMessagesWithLabels,
             getMailboxActions = observeMailboxActions,
             actionUiModelMapper = actionUiModelMapper,
             mailboxItemMapper = mailboxItemMapper,
@@ -243,6 +248,7 @@ class MailboxViewModelTest {
             markMessagesAsRead = markMessagesAsRead,
             markMessagesAsUnread = markMessagesAsUnread,
             relabelMessages = relabelMessages,
+            relabelConversations = relabelConversations,
             moveConversations = moveConversations,
             moveMessages = moveMessages,
             deleteConversations = deleteConversations,
@@ -1946,6 +1952,7 @@ class MailboxViewModelTest {
 
     @Test
     fun `when label as is triggered for no conversation grouping then relabel messages is called`() = runTest {
+        // Given
         val item = readMailboxItemUiModel.copy(id = MessageIdSample.Invoice.id)
         val secondItem = unreadMailboxItemUiModel.copy(id = MessageIdSample.AlphaAppQAReport.id)
         val selectedItemsList = listOf(item, secondItem)
@@ -1987,7 +1994,6 @@ class MailboxViewModelTest {
         )
 
         mailboxViewModel.state.test {
-            // Given
             awaitItem() // First emission for selected user
 
             // When
@@ -2009,6 +2015,76 @@ class MailboxViewModelTest {
                     expectedUpdatedLabelList
                 )
             }
+            coVerify { relabelConversations wasNot Called }
+        }
+    }
+
+    @Test
+    fun `when label as is triggered for conversation grouping then relabel conversation is called`() = runTest {
+        // Given
+        val item = readMailboxItemUiModel.copy(id = MessageIdSample.Invoice.id)
+        val secondItem = unreadMailboxItemUiModel.copy(id = MessageIdSample.AlphaAppQAReport.id)
+        val selectedItemsList = listOf(item, secondItem)
+
+        val expectedCustomLabels = MailLabelTestData.listOfCustomLabels
+        val expectedCustomUiLabels = MailLabelUiModelTestData.customLabelList
+
+        val expectedCurrentLabelList = LabelSelectionList(
+            partiallySelectionLabels = emptyList(),
+            selectedLabels = emptyList()
+        )
+        val expectedUpdatedLabelList = LabelSelectionList(
+            partiallySelectionLabels = emptyList(),
+            selectedLabels = listOf(
+                MailLabelTestData.customLabelOne.id.labelId,
+                MailLabelTestData.customLabelTwo.id.labelId
+            )
+        )
+
+        val initialState = createMailboxDataState()
+        val bottomSheetShownState = createMailboxStateWithBottomSheet(selectedItemsList, false)
+        val intermediateState = MailboxStateSampleData.createSelectionMode(
+            listOf(item, secondItem),
+            currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
+        )
+        expectViewMode(ConversationGrouping)
+        expectedSelectedLabelCountStateChange(initialState)
+        returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
+        returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
+        expectObserveCustomMailLabelSucceeds(expectedCustomLabels)
+        expectGetConversationMessagesWithLabelsSucceeds(selectedItemsList.map { ConversationId(it.id) })
+        expectedBottomSheetRequestedStateChange(expectedCustomUiLabels, bottomSheetShownState)
+        expectedLabelAsStateChange(selectedItemsList, LabelIdSample.Label2022)
+        expectedLabelAsConfirmed(intermediateState)
+        expectRelabelConversationSucceeds(
+            selectedItemsList.map { ConversationId(it.id) },
+            expectedCurrentLabelList,
+            expectedUpdatedLabelList
+        )
+
+        mailboxViewModel.state.test {
+            awaitItem() // First emission for selected user
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
+            assertEquals(intermediateState, awaitItem())
+            mailboxViewModel.submit(MailboxViewAction.RequestLabelAsBottomSheet)
+            assertEquals(bottomSheetShownState, awaitItem())
+            mailboxViewModel.submit(MailboxViewAction.LabelAsToggleAction(LabelIdSample.Label2022))
+            assertEquals(createMailboxStateWithBottomSheet(selectedItemsList, true), awaitItem())
+            mailboxViewModel.submit(MailboxViewAction.LabelAsConfirmed(false))
+
+            // Then
+            assertEquals(intermediateState, awaitItem())
+            coVerify(exactly = 1) {
+                relabelConversations(
+                    userId,
+                    selectedItemsList.map { ConversationId(it.id) },
+                    expectedCurrentLabelList,
+                    expectedUpdatedLabelList
+                )
+            }
+            coVerify { relabelMessages wasNot Called }
         }
     }
 
@@ -2224,6 +2300,16 @@ class MailboxViewModelTest {
         } returns listOf<DomainMessage>().right()
     }
 
+    private fun expectRelabelConversationSucceeds(
+        selectedConversation: List<ConversationId>,
+        currentSelections: LabelSelectionList,
+        updatedSelections: LabelSelectionList
+    ) {
+        coEvery {
+            relabelConversations(userId, selectedConversation, currentSelections, updatedSelections)
+        } returns listOf<DomainConversation>().right()
+    }
+
     private fun expectViewMode(viewMode: ViewMode) {
         every { observeCurrentViewMode(any()) } returns flowOf(viewMode)
     }
@@ -2234,6 +2320,19 @@ class MailboxViewModelTest {
 
     private fun expectGetMessagesWithLabelsSucceeds(messageIds: List<MessageId>) {
         coEvery { getMessagesWithLabels(userId, messageIds) } returns listOf(
+            MessageWithLabels(
+                message = MessageSample.Invoice,
+                labels = listOf()
+            ),
+            MessageWithLabels(
+                message = MessageSample.AlphaAppQAReport,
+                labels = listOf()
+            )
+        ).right()
+    }
+
+    private fun expectGetConversationMessagesWithLabelsSucceeds(conversationIds: List<ConversationId>) {
+        coEvery { getConversationMessagesWithLabels(userId, conversationIds) } returns listOf(
             MessageWithLabels(
                 message = MessageSample.Invoice,
                 labels = listOf()

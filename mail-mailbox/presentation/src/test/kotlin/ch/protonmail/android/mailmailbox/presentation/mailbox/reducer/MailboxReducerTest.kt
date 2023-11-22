@@ -425,7 +425,7 @@ internal class MailboxReducerTest(
                 shouldReduceBottomSheetState = false
             ),
             TestInput(
-                MailboxEvent.ErrorLabelingMessages,
+                MailboxEvent.ErrorLabeling,
                 shouldReduceMailboxListState = false,
                 shouldReduceTopAppBarState = false,
                 shouldReduceUnreadFilterState = false,
