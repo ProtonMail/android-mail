@@ -232,4 +232,6 @@ interface MessageLocalDataSource {
         localDraftId: MessageId,
         apiAssignedId: MessageId
     )
+
+    fun observeCachedMessagesTotalSize(): Flow<Long>
 }

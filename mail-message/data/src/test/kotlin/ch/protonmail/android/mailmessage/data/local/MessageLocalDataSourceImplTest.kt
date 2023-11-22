@@ -76,6 +76,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
+import org.junit.Assert
 import org.junit.Before
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -1059,6 +1060,19 @@ class MessageLocalDataSourceImplTest {
 
         // Then
         assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `when cached message data size is observed, it is propagated correctly`() = runTest {
+        // Given
+        val expectedValue = 10L
+        every { messageDao.observeCachedMessagesTotalSize() } returns flowOf(expectedValue)
+
+        // When + Then
+        messageLocalDataSource.observeCachedMessagesTotalSize().test {
+            Assert.assertEquals(expectedValue, awaitItem())
+            awaitComplete()
+        }
     }
 
     private fun verifyLabelsUpdatedFor(messageWithBody: MessageWithBody) {

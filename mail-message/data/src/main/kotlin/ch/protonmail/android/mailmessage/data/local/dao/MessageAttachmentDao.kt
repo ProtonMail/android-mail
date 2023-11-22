@@ -84,4 +84,12 @@ abstract class MessageAttachmentDao : BaseDao<MessageAttachmentEntity>() {
         messageId: MessageId,
         attachmentId: AttachmentId
     )
+
+    @Query(
+        """
+            DELETE FROM MessageAttachmentEntity
+            WHERE userId = :userId
+        """
+    )
+    abstract suspend fun deleteAttachments(userId: UserId)
 }

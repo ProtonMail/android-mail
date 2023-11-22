@@ -53,6 +53,29 @@ abstract class MessageDao : BaseDao<MessageEntity>() {
     @Transaction
     abstract fun observeMessages(userId: UserId, messages: List<MessageId>): Flow<List<MessageWithLabelIds?>>
 
+    @Query(
+        """
+            /*
+            * Calculates the size of the message bodies for messages that have been opened at least once by the user
+            * by subtracting the attachment sizes from the "whole" message `size` present in the `MessageEntity` table.
+            * Attachments belonging to drafts are excluded since draft entities are not stored in `MessageEntity`
+            * but rather in `DraftStateEntity`, not used at all in this query. 
+            */
+            SELECT IFNULL(SUM(size), 0) - (
+              SELECT IFNULL(SUM(size), 0) 
+              FROM MessageAttachmentEntity WHERE messageId NOT IN (
+                SELECT messageId 
+                FROM MessageLabelEntity
+                WHERE labelId IN (1, 8) -- 1 and 8 are labelId for "All drafts" and "Drafts"
+              ) 
+            )
+            FROM MessageEntity me 
+            JOIN MessageBodyEntity mbe
+            ON me.userId = mbe.userId AND me.messageId == mbe.messageId
+        """
+    )
+    abstract fun observeCachedMessagesTotalSize(): Flow<Long>
+
     fun observeAll(userId: UserId, pageKey: PageKey): Flow<List<MessageWithLabelIds>> {
         val labelId = pageKey.filter.labelId
         val keyword = pageKey.filter.keyword
