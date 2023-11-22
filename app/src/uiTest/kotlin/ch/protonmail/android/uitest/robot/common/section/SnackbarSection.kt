@@ -54,7 +54,7 @@ internal class SnackbarSection : ComposeSectionRobot() {
     }
 
     private val snackbarHostError: SemanticsNodeInteraction by lazy {
-        composeTestRule.onNodeWithTag(CommonTestTags.SnackbarHostError)
+        composeTestRule.onNodeWithTag(CommonTestTags.SnackbarHostError, useUnmergedTree = true)
     }
 
     private val snackbarHostWarning: SemanticsNodeInteraction by lazy {
