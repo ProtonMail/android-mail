@@ -20,12 +20,14 @@ package ch.protonmail.android.mailsettings.presentation.settings
 
 import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailsettings.domain.model.AppSettings
+import ch.protonmail.android.mailsettings.domain.model.LocalStorageUsageInformation
 
 sealed class SettingsState {
     data class Data(
         val account: AccountInfo?,
         val appSettings: AppSettings,
-        val appInformation: AppInformation
+        val appInformation: AppInformation,
+        val totalSizeInformation: LocalStorageUsageInformation
     ) : SettingsState()
 
     object Loading : SettingsState()
