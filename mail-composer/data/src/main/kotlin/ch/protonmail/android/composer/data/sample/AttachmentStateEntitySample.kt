@@ -18,10 +18,10 @@
 
 package ch.protonmail.android.composer.data.sample
 
-import ch.protonmail.android.composer.data.local.entity.AttachmentStateEntity
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
-import ch.protonmail.android.mailcomposer.domain.model.AttachmentSyncState
+import ch.protonmail.android.mailmessage.data.local.entity.AttachmentStateEntity
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
+import ch.protonmail.android.mailmessage.domain.model.AttachmentSyncState
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import me.proton.core.domain.entity.UserId

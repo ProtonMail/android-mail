@@ -19,7 +19,7 @@
 package ch.protonmail.android.composer.data.local.converters
 
 import androidx.room.TypeConverter
-import ch.protonmail.android.mailcomposer.domain.model.AttachmentSyncState
+import ch.protonmail.android.mailmessage.domain.model.AttachmentSyncState
 
 class AttachmentStateConverters {
 

@@ -24,7 +24,6 @@ import androidx.room.TypeConverters
 import ch.protonmail.android.composer.data.local.DraftStateDatabase
 import ch.protonmail.android.composer.data.local.converters.AttachmentStateConverters
 import ch.protonmail.android.composer.data.local.converters.DraftStateConverters
-import ch.protonmail.android.composer.data.local.entity.AttachmentStateEntity
 import ch.protonmail.android.composer.data.local.entity.DraftStateEntity
 import ch.protonmail.android.mailconversation.data.local.ConversationDatabase
 import ch.protonmail.android.mailconversation.data.local.converters.ConversationConverters
@@ -35,6 +34,7 @@ import ch.protonmail.android.mailmessage.data.local.MessageConverters
 import ch.protonmail.android.mailmessage.data.local.MessageDatabase
 import ch.protonmail.android.mailmessage.data.local.converters.AttachmentWorkerStatusConverters
 import ch.protonmail.android.mailmessage.data.local.converters.UriConverter
+import ch.protonmail.android.mailmessage.data.local.entity.AttachmentStateEntity
 import ch.protonmail.android.mailmessage.data.local.entity.MessageAttachmentEntity
 import ch.protonmail.android.mailmessage.data.local.entity.MessageAttachmentMetadataEntity
 import ch.protonmail.android.mailmessage.data.local.entity.MessageBodyEntity

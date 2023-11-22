@@ -16,11 +16,11 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.composer.data.local.dao
+package ch.protonmail.android.mailmessage.data.local.dao
 
 import androidx.room.Dao
 import androidx.room.Query
-import ch.protonmail.android.composer.data.local.entity.AttachmentStateEntity
+import ch.protonmail.android.mailmessage.data.local.entity.AttachmentStateEntity
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import me.proton.core.data.room.db.BaseDao

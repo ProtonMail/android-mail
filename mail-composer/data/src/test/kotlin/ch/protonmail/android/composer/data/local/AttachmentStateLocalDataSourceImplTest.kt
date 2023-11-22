@@ -20,12 +20,12 @@ package ch.protonmail.android.composer.data.local
 
 import arrow.core.left
 import arrow.core.right
-import ch.protonmail.android.composer.data.local.dao.AttachmentStateDao
-import ch.protonmail.android.composer.data.local.entity.AttachmentStateEntity
 import ch.protonmail.android.composer.data.sample.AttachmentStateEntitySample
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcomposer.domain.sample.AttachmentStateSample
+import ch.protonmail.android.mailmessage.data.local.dao.AttachmentStateDao
+import ch.protonmail.android.mailmessage.data.local.entity.AttachmentStateEntity
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample

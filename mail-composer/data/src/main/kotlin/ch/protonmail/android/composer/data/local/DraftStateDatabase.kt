@@ -19,8 +19,8 @@
 package ch.protonmail.android.composer.data.local
 
 import androidx.sqlite.db.SupportSQLiteDatabase
-import ch.protonmail.android.composer.data.local.dao.AttachmentStateDao
 import ch.protonmail.android.composer.data.local.dao.DraftStateDao
+import ch.protonmail.android.mailmessage.data.local.dao.AttachmentStateDao
 import me.proton.core.data.room.db.Database
 import me.proton.core.data.room.db.extension.dropTable
 import me.proton.core.data.room.db.migration.DatabaseMigration

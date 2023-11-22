@@ -16,15 +16,21 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcomposer.domain.model
+package ch.protonmail.android.mailmessage.domain.model
 
-import ch.protonmail.android.mailmessage.domain.model.AttachmentId
-import ch.protonmail.android.mailmessage.domain.model.MessageId
-import me.proton.core.domain.entity.UserId
+enum class AttachmentSyncState(val value: Int) {
+    Local(0),
+    Uploaded(1),
 
-data class AttachmentState(
-    val userId: UserId,
-    val messageId: MessageId,
-    val attachmentId: AttachmentId,
-    val state: AttachmentSyncState
-)
+    /**
+     * External can be used for attachments coming from a forwarded messages or
+     * from an attachment which was added via a different client
+     */
+    External(2),
+    ExternalUploaded(3);
+
+    companion object {
+
+        fun from(value: Int) = AttachmentSyncState.values().find { it.value == value } ?: Local
+    }
+}
