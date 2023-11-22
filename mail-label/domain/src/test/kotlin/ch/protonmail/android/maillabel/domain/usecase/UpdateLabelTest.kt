@@ -34,7 +34,6 @@ import kotlin.test.assertEquals
 
 class UpdateLabelTest {
 
-
     private val labelRepository: LabelRepository = mockk()
 
     private val updateLabel = UpdateLabel(labelRepository)

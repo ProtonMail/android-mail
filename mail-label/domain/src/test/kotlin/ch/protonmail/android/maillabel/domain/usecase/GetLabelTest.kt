@@ -35,7 +35,6 @@ import kotlin.test.assertEquals
 
 class GetLabelTest {
 
-
     private val labelRepository: LabelRepository = mockk()
 
     private val getLabel = GetLabel(labelRepository)
@@ -43,7 +42,7 @@ class GetLabelTest {
     private val defaultTestLabel = LabelTestData.buildLabel(id = "LabelId")
 
     @Test
-    fun `when get label is successful, then return success `() = runTest {
+    fun `when get label is successful, then return success`() = runTest {
         // Given
         val expectedResult = defaultTestLabel
         coEvery {
@@ -59,7 +58,7 @@ class GetLabelTest {
     }
 
     @Test
-    fun `when get label fails, then return error `() = runTest {
+    fun `when get label fails, then return error`() = runTest {
         // Given
         val expectedResult = DataError.Remote.Http(NetworkError.Unknown)
         coEvery {

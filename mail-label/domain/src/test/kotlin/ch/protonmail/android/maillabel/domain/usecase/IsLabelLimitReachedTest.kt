@@ -23,9 +23,11 @@ import ch.protonmail.android.mailcommon.domain.usecase.ObserveUser
 import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
 import ch.protonmail.android.testdata.user.UserTestData
+import io.mockk.called
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.label.domain.entity.LabelType
@@ -47,21 +49,18 @@ class IsLabelLimitReachedTest {
         // Given
         val expectedResult = false
         coEvery { observeUser(UserIdTestData.userId) } returns flowOf(UserTestData.paidUser)
-        coEvery { labelRepository.getLabels(UserIdTestData.userId, LabelType.MessageLabel) } returns listOf(
-            defaultTestLabel
-        )
 
         // When
         val result = isLabelLimitReached(UserIdTestData.userId)
 
         // Then
         coVerify { observeUser(UserIdTestData.userId) }
-        coVerify(exactly = 0) { labelRepository.getLabels(UserIdTestData.userId, LabelType.MessageLabel) }
+        verify { labelRepository wasNot called }
         assertEquals(expectedResult.right(), result)
     }
 
     @Test
-    fun `given user has 1 existing label, when free user, then return true`() = runTest {
+    fun `given user has 1 existing label, when free user, then return false`() = runTest {
         // Given
         val expectedResult = false
         coEvery { observeUser(UserIdTestData.userId) } returns flowOf(UserTestData.freeUser)
@@ -79,7 +78,7 @@ class IsLabelLimitReachedTest {
     }
 
     @Test
-    fun `given user has 3 existing label, when free user, then return false`() = runTest {
+    fun `given user has 3 existing label, when free user, then return true`() = runTest {
         // Given
         val expectedResult = true
         coEvery { observeUser(UserIdTestData.userId) } returns flowOf(UserTestData.freeUser)

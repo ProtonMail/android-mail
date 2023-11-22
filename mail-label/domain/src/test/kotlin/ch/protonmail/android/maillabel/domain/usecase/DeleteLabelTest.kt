@@ -42,7 +42,7 @@ class DeleteLabelTest {
     private val labelId = LabelId("LabelId")
 
     @Test
-    fun `when label is deleted successfully, then return success `() = runTest {
+    fun `when label is deleted successfully, then return success`() = runTest {
         // Given
         val expectedResult = Unit
         coEvery {
@@ -58,7 +58,7 @@ class DeleteLabelTest {
     }
 
     @Test
-    fun `when label deletion fails, then return error `() = runTest {
+    fun `when label deletion fails, then return error`() = runTest {
         // Given
         val expectedResult = DataError.Remote.Http(NetworkError.Unknown)
         coEvery {

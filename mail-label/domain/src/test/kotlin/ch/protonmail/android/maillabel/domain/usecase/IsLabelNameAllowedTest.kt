@@ -21,6 +21,7 @@ package ch.protonmail.android.maillabel.domain.usecase
 import arrow.core.right
 import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
+import io.mockk.called
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -54,8 +55,10 @@ class IsLabelNameAllowedTest {
         val result = isLabelNameAllowed(UserIdTestData.userId, name = "NewName")
 
         // Then
-        coVerify { labelRepository.getLabels(UserIdTestData.userId, LabelType.MessageLabel) }
-        coVerify { labelRepository.getLabels(UserIdTestData.userId, LabelType.MessageFolder) }
+        coVerify {
+            labelRepository.getLabels(UserIdTestData.userId, LabelType.MessageLabel)
+            labelRepository.getLabels(UserIdTestData.userId, LabelType.MessageFolder)
+        }
         assertEquals(expectedResult.right(), result)
     }
 
@@ -65,9 +68,6 @@ class IsLabelNameAllowedTest {
         val expectedResult = false
         coEvery { labelRepository.getLabels(UserIdTestData.userId, LabelType.MessageLabel) } returns listOf(
             defaultTestLabel
-        )
-        coEvery { labelRepository.getLabels(UserIdTestData.userId, LabelType.MessageFolder) } returns listOf(
-            defaultTestFolder
         )
 
         // When
@@ -94,8 +94,10 @@ class IsLabelNameAllowedTest {
         val result = isLabelNameAllowed(UserIdTestData.userId, name = "FolderId")
 
         // Then
-        coVerify { labelRepository.getLabels(UserIdTestData.userId, LabelType.MessageLabel) }
-        coVerify { labelRepository.getLabels(UserIdTestData.userId, LabelType.MessageFolder) }
+        coVerify {
+            labelRepository.getLabels(UserIdTestData.userId, LabelType.MessageLabel)
+            labelRepository.getLabels(UserIdTestData.userId, LabelType.MessageFolder)
+        }
         assertEquals(expectedResult.right(), result)
     }
 
@@ -103,19 +105,12 @@ class IsLabelNameAllowedTest {
     fun `when name is forbidden, then return false`() = runTest {
         // Given
         val expectedResult = false
-        coEvery { labelRepository.getLabels(UserIdTestData.userId, LabelType.MessageLabel) } returns listOf(
-            defaultTestLabel
-        )
-        coEvery { labelRepository.getLabels(UserIdTestData.userId, LabelType.MessageFolder) } returns listOf(
-            defaultTestFolder
-        )
 
         // When
         val result = isLabelNameAllowed(UserIdTestData.userId, name = "Inbox")
 
         // Then
-        coVerify(exactly = 0) { labelRepository.getLabels(UserIdTestData.userId, LabelType.MessageLabel) }
-        coVerify(exactly = 0) { labelRepository.getLabels(UserIdTestData.userId, LabelType.MessageFolder) }
+        coVerify { labelRepository wasNot called }
         assertEquals(expectedResult.right(), result)
     }
 }

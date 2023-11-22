@@ -25,7 +25,6 @@ import kotlin.test.assertEquals
 
 class GetLabelColorsTest {
 
-
     private val getLabelColors = GetLabelColors()
 
     @Test
