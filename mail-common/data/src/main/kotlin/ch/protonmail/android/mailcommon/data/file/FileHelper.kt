@@ -50,6 +50,10 @@ class FileHelper @Inject constructor(
         runCatching { fileFactory.fileFrom(folder, filename).takeIf { it.exists() } }.getOrNull()
     }
 
+    suspend fun getFolder(folderName: Folder): File? = fileOperationIn(folderName) {
+        runCatching { fileFactory.folderFrom(folderName) }.getOrNull()
+    }
+
     suspend fun renameFolder(oldFolder: Folder, newFolder: Folder) = fileOperationIn(newFolder) {
         runCatching {
             fileFactory.folderFromWhenExists(oldFolder)?.renameTo(fileFactory.folderFrom(newFolder)) ?: false

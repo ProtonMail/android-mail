@@ -135,13 +135,13 @@ interface AttachmentLocalDataSource {
     )
 
     /**
-     * Delete the attachment for the given [userId] and [messageId].
+     * Deletes the attachment for the given [userId] and [messageId].
      * @return true if deleting was successful, false otherwise.
      */
     suspend fun deleteAttachments(userId: UserId, messageId: MessageId): Boolean
 
     /**
-     * Delete all attachments for the given [userId].
+     * Deletes all attachments for the given [userId].
      * @return true if deleting was successful, false otherwise.
      */
     suspend fun deleteAttachments(userId: UserId): Boolean
@@ -188,5 +188,4 @@ interface AttachmentLocalDataSource {
     ): Either<DataError.Local, Uri>
 
     suspend fun getFileSizeFromUri(uri: Uri): Either<DataError, Long>
-
 }

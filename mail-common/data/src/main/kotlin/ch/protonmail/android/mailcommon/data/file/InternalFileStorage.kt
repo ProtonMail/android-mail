@@ -91,6 +91,9 @@ class InternalFileStorage @Inject constructor(
         filename = FileHelper.Filename(fileIdentifier.value.asSanitisedPath())
     )
 
+    suspend fun getFolder(userId: UserId, folder: Folder): File? =
+        fileHelper.getFolder(FileHelper.Folder("${userId.asRootCacheDirectory()}${folder.path}"))
+
     suspend fun writeToFile(
         userId: UserId,
         folder: Folder,
@@ -201,7 +204,8 @@ class InternalFileStorage @Inject constructor(
 
     sealed class Folder(open val path: String) {
         object MessageBodies : Folder("message_bodies/")
-        data class MessageAttachments(val messageId: String) : Folder("attachments/$messageId/")
+        object MessageAttachmentsRoot : Folder("attachments/")
+        data class MessageAttachments(val messageId: String) : Folder("${MessageAttachmentsRoot.path}$messageId/")
     }
 }
 
