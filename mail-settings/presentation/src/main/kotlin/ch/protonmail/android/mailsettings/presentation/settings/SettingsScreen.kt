@@ -20,17 +20,24 @@ package ch.protonmail.android.mailsettings.presentation.settings
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import android.widget.Toast
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Button
 import androidx.compose.material.Divider
 import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailsettings.domain.model.AppSettings
+import ch.protonmail.android.mailsettings.domain.model.LocalStorageUsageInformation
 import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.R.string
 import ch.protonmail.android.mailsettings.presentation.settings.SettingsState.Data
@@ -40,7 +47,9 @@ import me.proton.core.compose.component.ProtonSettingsItem
 import me.proton.core.compose.component.ProtonSettingsList
 import me.proton.core.compose.component.ProtonSettingsTopBar
 import me.proton.core.compose.flow.rememberAsState
+import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
+import me.proton.core.presentation.utils.formatByteToHumanReadable
 import me.proton.core.usersettings.presentation.compose.view.CrashReportSettingToggleItem
 import me.proton.core.usersettings.presentation.compose.view.TelemetrySettingToggleItem
 
@@ -54,12 +63,24 @@ fun MainSettingsScreen(
     actions: MainSettingsScreen.Actions,
     settingsViewModel: SettingsViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
+    val toastText = stringResource(id = string.mail_settings_clearing_cached_data)
+    val showClearDataToast = { Toast.makeText(context, toastText, Toast.LENGTH_LONG).show() }
+
+    val dataActions = actions.copy(
+        onClearCacheClick = {
+            settingsViewModel.clearAllData()
+            showClearDataToast()
+        }
+    )
+
     when (val settingsState = rememberAsState(flow = settingsViewModel.state, Loading).value) {
         is Data -> MainSettingsScreen(
             modifier = modifier,
             state = settingsState,
-            actions = actions
+            actions = dataActions
         )
+
         is Loading -> Unit
     }
 }
@@ -139,6 +160,12 @@ fun MainSettingsScreen(
                 )
                 Divider()
             }
+            item {
+                ClearLocalCacheItem(
+                    totalSize = state.totalSizeInformation,
+                    onClearCacheClick = actions.onClearCacheClick
+                )
+            }
             item { TelemetrySettingToggleItem() }
             item { CrashReportSettingToggleItem() }
             item { ProtonSettingsHeader(title = string.mail_settings_app_information) }
@@ -170,6 +197,38 @@ private fun CombinedContactsSettingItem(
         hint = hint,
         onClick = onCombinedContactsClick
     )
+    Divider()
+}
+
+@Composable
+private fun ClearLocalCacheItem(
+    modifier: Modifier = Modifier,
+    totalSize: LocalStorageUsageInformation,
+    onClearCacheClick: () -> Unit
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Start
+    ) {
+
+        ProtonSettingsItem(
+            modifier = Modifier.weight(1f),
+            name = stringResource(id = string.mail_settings_local_cache),
+            hint = stringResource(
+                id = string.mail_settings_local_cache_hint,
+                totalSize.value.formatByteToHumanReadable()
+            ),
+            isClickable = false
+        )
+
+        Button(
+            modifier = Modifier.padding(end = ProtonDimens.DefaultSpacing),
+            onClick = onClearCacheClick
+        ) {
+            Text(text = stringResource(id = string.mail_settings_local_cache_clear_button))
+        }
+    }
     Divider()
 }
 
@@ -260,6 +319,7 @@ object MainSettingsScreen {
         val onAppLanguageClick: () -> Unit,
         val onCombinedContactsClick: () -> Unit,
         val onSwipeActionsClick: () -> Unit,
+        val onClearCacheClick: () -> Unit,
         val onBackClick: () -> Unit
     )
 }
@@ -278,27 +338,8 @@ object MainSettingsScreen {
 fun PreviewMainSettingsScreen() {
     ProtonTheme {
         MainSettingsScreen(
-            state = Data(
-                AccountInfo("ProtonUser", "user@proton.ch"),
-                AppSettings(
-                    hasAutoLock = false,
-                    hasAlternativeRouting = true,
-                    customAppLanguage = null,
-                    hasCombinedContacts = true
-                ),
-                AppInformation(appVersionName = "6.0.0-alpha")
-            ),
-            actions = MainSettingsScreen.Actions(
-                onAccountClick = { },
-                onThemeClick = {},
-                onPushNotificationsClick = {},
-                onAutoLockClick = {},
-                onAlternativeRoutingClick = {},
-                onAppLanguageClick = {},
-                onCombinedContactsClick = {},
-                onSwipeActionsClick = {},
-                onBackClick = {}
-            )
+            state = SettingsScreenPreviewData.Data,
+            actions = SettingsScreenPreviewData.Actions
         )
     }
 }

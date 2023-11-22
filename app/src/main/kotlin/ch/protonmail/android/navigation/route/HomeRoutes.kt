@@ -192,6 +192,7 @@ internal fun NavGraphBuilder.addSettings(navController: NavHostController, showF
                 onSwipeActionsClick = {
                     navController.navigate(Destination.Screen.SwipeActionsSettings.route)
                 },
+                onClearCacheClick = {},
                 onBackClick = {
                     navController.popBackStack()
                 }
