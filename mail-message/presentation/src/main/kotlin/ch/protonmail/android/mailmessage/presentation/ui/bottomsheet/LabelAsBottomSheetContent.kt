@@ -53,10 +53,10 @@ import ch.protonmail.android.maillabel.presentation.model.LabelSelectedState
 import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelWithSelectedStateSample
 import ch.protonmail.android.mailmessage.presentation.R
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
+import ch.protonmail.android.uicomponents.settings.SettingsToggleItem
 import kotlinx.collections.immutable.toImmutableList
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonRawListItem
-import me.proton.core.compose.component.ProtonSettingsToggleItem
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.default
@@ -105,7 +105,7 @@ fun LabelAsBottomSheetContent(
             )
         }
         Divider(modifier = Modifier.testTag(LabelAsBottomSheetTestTags.Divider))
-        ProtonSettingsToggleItem(
+        SettingsToggleItem(
             modifier = Modifier.testTag(LabelAsBottomSheetTestTags.AlsoArchiveToggle),
             name = stringResource(id = R.string.bottom_sheet_archive_action),
             value = archiveSelectedState,
