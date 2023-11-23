@@ -46,6 +46,7 @@ import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.Archive
 import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ObserveCustomMailLabels
+import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinationMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
 import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
 import ch.protonmail.android.maillabel.presentation.model.LabelSelectedState
@@ -175,6 +176,7 @@ class MailboxViewModelTest {
         )
     }
     private val observeCustomMailLabels = mockk<ObserveCustomMailLabels>()
+    private val observeDestinationMailLabels = mockk<ObserveExclusiveDestinationMailLabels>()
     private val getMessagesWithLabels = mockk<GetMessagesWithLabels>()
     private val getConversationMessagesWithLabels = mockk<GetConversationMessagesWithLabels>()
 
@@ -234,6 +236,7 @@ class MailboxViewModelTest {
             observePrimaryUserId = observePrimaryUserId,
             observeMailLabels = observeMailLabels,
             observeCustomMailLabels = observeCustomMailLabels,
+            observeDestinationMailLabels = observeDestinationMailLabels,
             selectedMailLabelId = selectedMailLabelId,
             observeUnreadCounters = observeUnreadCounters,
             observeFolderColorSettings = observeFolderColorSettings,

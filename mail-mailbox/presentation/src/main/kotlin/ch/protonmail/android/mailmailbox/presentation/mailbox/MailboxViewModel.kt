@@ -237,9 +237,10 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.DeleteConfirmed -> handleDeleteConfirmedAction()
                 is MailboxViewAction.DeleteDialogDismissed -> handleDeleteDialogDismissed()
                 is MailboxViewAction.RequestLabelAsBottomSheet -> showLabelAsBottomSheetAndLoadData(viewAction)
-                is MailboxViewAction.RequestMoveToBottomSheet -> showMoveToBottomSheetAndLoadData(viewAction)
                 is MailboxViewAction.LabelAsToggleAction -> emitNewStateFrom(viewAction)
                 is MailboxViewAction.LabelAsConfirmed -> onLabelAsConfirmed(viewAction.archiveSelected)
+                is MailboxViewAction.RequestMoveToBottomSheet -> showMoveToBottomSheetAndLoadData(viewAction)
+                is MailboxViewAction.MoveToDestinationSelected -> emitNewStateFrom(viewAction)
             }.exhaustive
         }
     }

@@ -26,6 +26,7 @@ import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.text
+import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.DeleteDialogState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
@@ -41,7 +42,6 @@ import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
 import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData
 import ch.protonmail.android.testdata.mailbox.UnreadCountersTestData
-import ch.protonmail.android.mailmailbox.presentation.R
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -267,6 +267,26 @@ internal class MailboxReducerTest(
                 shouldReduceTopAppBarState = false,
                 shouldReduceUnreadFilterState = false,
                 shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false,
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = true
+            ),
+            TestInput(
+                MailboxViewAction.RequestMoveToBottomSheet,
+                shouldReduceMailboxListState = false,
+                shouldReduceTopAppBarState = false,
+                shouldReduceUnreadFilterState = false,
+                shouldReduceBottomAppBarState = true,
+                shouldReduceActionMessage = false,
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = true
+            ),
+            TestInput(
+                MailboxViewAction.MoveToDestinationSelected(MailLabelId.System.Archive),
+                shouldReduceMailboxListState = false,
+                shouldReduceTopAppBarState = false,
+                shouldReduceUnreadFilterState = false,
+                shouldReduceBottomAppBarState = true,
                 shouldReduceActionMessage = false,
                 shouldReduceDeleteDialog = false,
                 shouldReduceBottomSheetState = true

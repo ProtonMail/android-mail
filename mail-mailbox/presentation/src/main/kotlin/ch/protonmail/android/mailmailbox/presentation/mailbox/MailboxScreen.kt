@@ -173,7 +173,7 @@ fun MailboxScreen(
             when (val bottomSheetContentState = mailboxState.bottomSheetState?.contentState) {
                 is MoveToBottomSheetState -> MoveToBottomSheetContent(
                     state = bottomSheetContentState,
-                    onFolderSelected = { Timber.d("Folder selected") },
+                    onFolderSelected = { viewModel.submit(MailboxViewAction.MoveToDestinationSelected(it)) },
                     onDoneClick = { Timber.d("Folder selected Done clicked") }
                 )
 
