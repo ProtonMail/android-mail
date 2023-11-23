@@ -23,6 +23,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -44,6 +46,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.dismissKeyboard
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.maillabel.presentation.R
@@ -60,6 +63,7 @@ import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.component.ProtonTextButton
 import me.proton.core.compose.component.appbar.ProtonTopAppBar
 import me.proton.core.compose.flow.rememberAsState
+import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultStrongNorm
 
@@ -231,18 +235,28 @@ fun LabelFormTopBar(
             }
         },
         actions = {
-            ProtonTextButton(
-                onClick = onSaveLabelClick,
-                enabled = state.isSaveEnabled
-            ) {
-                val textColor =
-                    if (state.isSaveEnabled) ProtonTheme.colors.textAccent
-                    else ProtonTheme.colors.interactionDisabled
-                Text(
-                    text = stringResource(id = R.string.label_form_save),
-                    color = textColor,
-                    style = ProtonTheme.typography.defaultStrongNorm
+            val displayCreateLoader = state is LabelFormState.Data.Create && state.displayCreateLoader
+            if (displayCreateLoader) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .padding(end = ProtonDimens.DefaultSpacing)
+                        .size(MailDimens.ProgressDefaultSize),
+                    strokeWidth = MailDimens.ProgressStrokeWidth
                 )
+            } else {
+                ProtonTextButton(
+                    onClick = onSaveLabelClick,
+                    enabled = state.isSaveEnabled
+                ) {
+                    val textColor =
+                        if (state.isSaveEnabled) ProtonTheme.colors.textAccent
+                        else ProtonTheme.colors.interactionDisabled
+                    Text(
+                        text = stringResource(id = R.string.label_form_save),
+                        color = textColor,
+                        style = ProtonTheme.typography.defaultStrongNorm
+                    )
+                }
             }
         }
     )
@@ -300,6 +314,16 @@ private fun EditLabelFormScreenPreview() {
 private fun CreateLabelFormTopBarPreview() {
     LabelFormTopBar(
         state = createLabelFormState,
+        onCloseLabelFormClick = {},
+        onSaveLabelClick = {}
+    )
+}
+
+@Composable
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
+private fun CreateLabelFormTopBarLoaderPreview() {
+    LabelFormTopBar(
+        state = createLabelFormState.copy(displayCreateLoader = true),
         onCloseLabelFormClick = {},
         onSaveLabelClick = {}
     )

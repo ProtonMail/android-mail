@@ -36,6 +36,7 @@ object MailDimens {
     val AvatarCheckmarkSize = 20.dp
 
     val ProgressDefaultSize = 24.dp
+    val ProgressStrokeWidth = 2.dp
 
     val TinyIcon = 12.dp
 

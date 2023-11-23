@@ -51,7 +51,8 @@ sealed interface LabelFormState {
             override val closeWithSave: Effect<Unit> = Effect.empty(),
             override val showLabelAlreadyExistsSnackbar: Effect<Unit> = Effect.empty(),
             override val showLabelLimitReachedSnackbar: Effect<Unit> = Effect.empty(),
-            override val showSaveLabelErrorSnackbar: Effect<Unit> = Effect.empty()
+            override val showSaveLabelErrorSnackbar: Effect<Unit> = Effect.empty(),
+            val displayCreateLoader: Boolean = false
         ) : Data
 
         data class Update(

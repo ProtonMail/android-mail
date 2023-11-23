@@ -38,6 +38,7 @@ sealed interface LabelFormEvent : LabelFormOperation {
         val color: String,
         val colorList: List<Color>
     ) : LabelFormEvent
+    object CreatingLabel : LabelFormEvent
     object LabelCreated : LabelFormEvent
     object LabelUpdated : LabelFormEvent
     object LabelDeleted : LabelFormEvent

@@ -139,6 +139,8 @@ class LabelFormViewModel @Inject constructor(
 
     @SuppressWarnings("ReturnCount")
     private suspend fun createLabel(name: String, color: String) {
+        emitNewStateFor(LabelFormEvent.CreatingLabel)
+
         val isLabelLimitReached = isLabelLimitReached(primaryUserId(), LabelType.MessageLabel).getOrElse {
             return emitNewStateFor(LabelFormEvent.SaveLabelError)
         }
