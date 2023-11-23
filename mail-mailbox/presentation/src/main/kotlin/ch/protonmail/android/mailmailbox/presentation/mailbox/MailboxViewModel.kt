@@ -43,9 +43,11 @@ import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ObserveCustomMailLabels
+import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinationMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
 import ch.protonmail.android.maillabel.presentation.model.LabelSelectedState
 import ch.protonmail.android.maillabel.presentation.toCustomUiModel
+import ch.protonmail.android.maillabel.presentation.toUiModels
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
 import ch.protonmail.android.mailmailbox.domain.model.UnreadCounter
@@ -84,6 +86,7 @@ import ch.protonmail.android.mailmessage.domain.usecase.DeleteMessages
 import ch.protonmail.android.mailmessage.domain.usecase.GetConversationMessagesWithLabels
 import ch.protonmail.android.mailmessage.domain.usecase.GetMessagesWithLabels
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
@@ -121,6 +124,7 @@ class MailboxViewModel @Inject constructor(
     observePrimaryUserId: ObservePrimaryUserId,
     private val observeMailLabels: ObserveMailLabels,
     private val observeCustomMailLabels: ObserveCustomMailLabels,
+    private val observeDestinationMailLabels: ObserveExclusiveDestinationMailLabels,
     private val selectedMailLabelId: SelectedMailLabelId,
     private val observeUnreadCounters: ObserveUnreadCounters,
     private val observeFolderColorSettings: ObserveFolderColorSettings,
@@ -233,6 +237,7 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.DeleteConfirmed -> handleDeleteConfirmedAction()
                 is MailboxViewAction.DeleteDialogDismissed -> handleDeleteDialogDismissed()
                 is MailboxViewAction.RequestLabelAsBottomSheet -> showLabelAsBottomSheetAndLoadData(viewAction)
+                is MailboxViewAction.RequestMoveToBottomSheet -> showMoveToBottomSheetAndLoadData(viewAction)
                 is MailboxViewAction.LabelAsToggleAction -> emitNewStateFrom(viewAction)
                 is MailboxViewAction.LabelAsConfirmed -> onLabelAsConfirmed(viewAction.archiveSelected)
             }.exhaustive
@@ -487,6 +492,29 @@ class MailboxViewModel @Inject constructor(
             emitNewStateFrom(operation)
         }
     }
+
+    private fun showMoveToBottomSheetAndLoadData(operation: MailboxViewAction) {
+        val selectionState = state.value.mailboxListState as? MailboxListState.Data.SelectionMode
+        if (selectionState == null) {
+            Timber.d("MailboxListState is not in SelectionMode")
+            return
+        }
+        viewModelScope.launch {
+            emitNewStateFrom(operation)
+
+            val userId = primaryUserId.filterNotNull().first()
+            val destinationFolder = observeDestinationMailLabels(userId).first()
+            val color = observeFolderColorSettings(userId).first()
+
+            val event = MailboxEvent.MailboxBottomSheetEvent(
+                MoveToBottomSheetState.MoveToBottomSheetEvent.ActionData(
+                    destinationFolder.toUiModels(color).let { it.folders + it.systems }.toImmutableList()
+                )
+            )
+            emitNewStateFrom(event)
+        }
+    }
+
 
     private suspend fun getMessagesWithLabels(
         userId: UserId,

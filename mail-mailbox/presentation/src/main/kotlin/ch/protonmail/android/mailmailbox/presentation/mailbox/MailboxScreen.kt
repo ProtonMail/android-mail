@@ -151,7 +151,8 @@ fun MailboxScreen(
         delete = { viewModel.submit(MailboxViewAction.Delete) },
         deleteConfirmed = { viewModel.submit(MailboxViewAction.DeleteConfirmed) },
         deleteDialogDismissed = { viewModel.submit(MailboxViewAction.DeleteDialogDismissed) },
-        onLabelAsClicked = { viewModel.submit(MailboxViewAction.RequestLabelAsBottomSheet) }
+        onLabelAsClicked = { viewModel.submit(MailboxViewAction.RequestLabelAsBottomSheet) },
+        onMoveToClicked = { viewModel.submit(MailboxViewAction.RequestMoveToBottomSheet) }
     )
 
     mailboxState.bottomSheetState?.let {
@@ -254,7 +255,7 @@ fun MailboxScreen(
             BottomActionBar(
                 state = mailboxState.bottomAppBarState,
                 viewActionCallbacks = BottomActionBar.Actions(
-                    onMove = { Timber.d("mailbox onMove clicked") },
+                    onMove = actions.onMoveToClicked,
                     onLabel = actions.onLabelAsClicked,
                     onTrash = actions.trash,
                     onDelete = actions.delete,
@@ -609,7 +610,8 @@ object MailboxScreen {
         val delete: () -> Unit,
         val deleteConfirmed: () -> Unit,
         val deleteDialogDismissed: () -> Unit,
-        val onLabelAsClicked: () -> Unit
+        val onLabelAsClicked: () -> Unit,
+        val onMoveToClicked: () -> Unit
     ) {
 
         companion object {
@@ -637,7 +639,8 @@ object MailboxScreen {
                 delete = {},
                 deleteConfirmed = {},
                 deleteDialogDismissed = {},
-                onLabelAsClicked = {}
+                onLabelAsClicked = {},
+                onMoveToClicked = {}
             )
         }
     }
