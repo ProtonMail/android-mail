@@ -20,6 +20,7 @@ package ch.protonmail.android.navigation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailcommon.presentation.Effect
@@ -87,7 +88,10 @@ class HomeViewModel @Inject constructor(
             selectedMailLabelId.flow.value.labelId != MailLabelId.System.AllDrafts.labelId &&
             selectedMailLabelId.flow.value.labelId != MailLabelId.System.Drafts.labelId
 
-    fun navigateToDrafts() {
+    fun navigateToDrafts(navController: NavController) {
+        if (navController.currentDestination?.route != Destination.Screen.Mailbox.route) {
+            navController.popBackStack(Destination.Screen.Mailbox.route, inclusive = false)
+        }
         selectedMailLabelId.set(MailLabelId.System.Drafts)
     }
 

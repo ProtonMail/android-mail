@@ -143,7 +143,7 @@ fun Home(
             duration = if (shouldShowAction) SnackbarDuration.Indefinite else SnackbarDuration.Short
         )
         when (result) {
-            SnackbarResult.ActionPerformed -> viewModel.navigateToDrafts()
+            SnackbarResult.ActionPerformed -> { viewModel.navigateToDrafts(navController) }
             SnackbarResult.Dismissed -> Unit
         }
     }
