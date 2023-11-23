@@ -52,6 +52,7 @@ fun MobileFooterDisplaySetting(
                 text = uiModel.textValue,
                 enabled = uiModel.isFieldEnabled,
                 placeholder = stringResource(id = R.string.mail_settings_identity_mobile_footer_hint),
+                multiLine = true,
                 onValueChanged = {
                     onMobileFooterChanged(it)
                 }

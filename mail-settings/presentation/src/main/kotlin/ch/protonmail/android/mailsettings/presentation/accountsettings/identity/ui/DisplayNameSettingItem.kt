@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.DisplayNameUiModel
+import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.ui.DisplayNameSettingLimit.FieldLengthLimit
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultNorm
@@ -37,6 +38,7 @@ fun DisplayNameSettingItem(
     uiModel: DisplayNameUiModel,
     onDisplayNameChanged: (String) -> Unit
 ) {
+
     Column(modifier = modifier) {
         Row(
             modifier = Modifier
@@ -59,9 +61,16 @@ fun DisplayNameSettingItem(
         AddressIdentityTextField(
             text = uiModel.textValue,
             placeholder = stringResource(id = R.string.mail_settings_identity_display_name_hint),
+            multiLine = false,
+            maxLength = FieldLengthLimit,
             onValueChanged = {
                 onDisplayNameChanged(it)
             }
         )
     }
+}
+
+private object DisplayNameSettingLimit {
+
+    const val FieldLengthLimit = 255
 }

@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailsettings.presentation.accountsettings.identity.ui
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
@@ -33,6 +34,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
+import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.ui.MaxLines.MultiLine
+import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.ui.MaxLines.SingleLine
+import ch.protonmail.android.uicomponents.chips.thenIf
 import me.proton.core.compose.component.protonOutlineTextFieldColors
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
@@ -44,23 +48,27 @@ fun AddressIdentityTextField(
     text: String,
     enabled: Boolean = true,
     placeholder: String,
+    multiLine: Boolean = false,
+    maxLength: Int? = null,
     onValueChanged: (String) -> Unit
 ) {
     OutlinedTextField(
         modifier = modifier
             .focusRequester(FocusRequester())
             .fillMaxWidth()
-            .size(MailDimens.TextFieldMultiLineSize)
+            .thenIf(!multiLine) { height(MailDimens.TextFieldSingleLineSize) }
+            .thenIf(multiLine) { height(MailDimens.TextFieldMultiLineSize) }
             .padding(
                 top = ProtonDimens.SmallSpacing,
                 start = ProtonDimens.DefaultSpacing,
                 end = ProtonDimens.DefaultSpacing,
                 bottom = ProtonDimens.DefaultSpacing
             ),
+        singleLine = !multiLine,
         enabled = enabled,
         value = text,
         trailingIcon = {
-            if (enabled && text.isNotBlank()) {
+            if (enabled && text.isNotEmpty()) {
                 IconButton(
                     modifier = Modifier.size(ProtonDimens.DefaultIconSize),
                     content = {
@@ -73,10 +81,19 @@ fun AddressIdentityTextField(
                 )
             }
         },
-        onValueChange = { onValueChanged(it) },
+        onValueChange = {
+            val newValue = if (!multiLine) it.lines().firstOrNull() ?: "" else it
+            onValueChanged(maxLength?.let { size -> newValue.take(size) } ?: newValue)
+        },
         textStyle = ProtonTheme.typography.defaultNorm,
         colors = TextFieldDefaults.protonOutlineTextFieldColors(),
         placeholder = { Text(text = placeholder) },
-        maxLines = 3
+        maxLines = if (multiLine) MultiLine else SingleLine
     )
+}
+
+private object MaxLines {
+
+    const val SingleLine = 1
+    const val MultiLine = 3
 }

@@ -50,6 +50,7 @@ fun SignatureDisplaySetting(
             AddressIdentityTextField(
                 text = uiModel.textValue,
                 placeholder = stringResource(id = R.string.mail_settings_identity_signature_hint),
+                multiLine = true,
                 onValueChanged = {
                     onSignatureChanged(it)
                 }

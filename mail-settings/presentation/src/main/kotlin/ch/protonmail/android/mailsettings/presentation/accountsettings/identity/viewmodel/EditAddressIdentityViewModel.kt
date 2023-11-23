@@ -113,9 +113,9 @@ class EditAddressIdentityViewModel @Inject constructor(
             EditAddressIdentityEvent.Error.UpdateError
         )
 
-        val displayName = DisplayName(state.displayNameState.displayNameUiModel.textValue)
+        val displayName = DisplayName(state.displayNameState.displayNameUiModel.textValue.trim())
         val signature = state.signatureState.addressSignatureUiModel.let {
-            Signature(it.enabled, SignatureValue(it.textValue))
+            Signature(it.enabled, SignatureValue(it.textValue.trim()))
         }
 
         updatePrimaryAddressIdentity(displayName, signature).getOrElse {
@@ -124,7 +124,7 @@ class EditAddressIdentityViewModel @Inject constructor(
 
         val mobileFooter = state.mobileFooterState.mobileFooterUiModel.let {
             if (!it.isFieldEnabled) return emitNewStateFrom(EditAddressIdentityEvent.Navigation.Close)
-            MobileFooterPreference(it.textValue, it.enabled)
+            MobileFooterPreference(it.textValue.trim(), it.enabled)
         }
 
         updatePrimaryUserMobileFooter(mobileFooter).getOrElse {
