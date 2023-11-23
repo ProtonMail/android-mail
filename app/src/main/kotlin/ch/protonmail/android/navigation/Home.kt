@@ -135,7 +135,7 @@ fun Home(
     val errorSendingMessageText = stringResource(id = R.string.mailbox_message_sending_error)
     val errorSendingMessageActionText = stringResource(id = R.string.mailbox_message_sending_error_action)
     fun showErrorSendingMessageSnackbar() = scope.launch {
-        val shouldShowAction = viewModel.shouldNavigateToDraftsOnSendingFailure()
+        val shouldShowAction = viewModel.shouldNavigateToDraftsOnSendingFailure(navController.currentDestination)
         val result = snackbarHostErrorState.showSnackbar(
             type = ProtonSnackbarType.ERROR,
             message = errorSendingMessageText,

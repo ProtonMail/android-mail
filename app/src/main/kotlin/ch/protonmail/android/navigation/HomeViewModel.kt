@@ -20,6 +20,7 @@ package ch.protonmail.android.navigation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavDestination
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveSendingMessagesStatus
@@ -27,6 +28,7 @@ import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
 import ch.protonmail.android.mailcomposer.domain.usecase.ResetSendingMessagesStatus
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.navigation.model.Destination
 import ch.protonmail.android.navigation.model.HomeState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -75,8 +77,14 @@ class HomeViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun shouldNavigateToDraftsOnSendingFailure(): Boolean =
-        selectedMailLabelId.flow.value.labelId != MailLabelId.System.AllDrafts.labelId &&
+    /**
+     * Navigate to Drafts only when:
+     * - we are outside of Mailbox
+     * - we are in Mailbox but not in Drafts
+     */
+    fun shouldNavigateToDraftsOnSendingFailure(currentNavDestination: NavDestination?): Boolean =
+        currentNavDestination?.route != Destination.Screen.Mailbox.route ||
+            selectedMailLabelId.flow.value.labelId != MailLabelId.System.AllDrafts.labelId &&
             selectedMailLabelId.flow.value.labelId != MailLabelId.System.Drafts.labelId
 
     fun navigateToDrafts() {
