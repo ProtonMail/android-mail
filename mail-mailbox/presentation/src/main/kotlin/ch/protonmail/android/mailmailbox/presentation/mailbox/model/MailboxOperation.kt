@@ -81,6 +81,7 @@ internal sealed interface MailboxViewAction : MailboxOperation {
     data class MoveToDestinationSelected(
         val mailLabelId: MailLabelId
     ) : MailboxViewAction, AffectingBottomSheet
+    object MoveToConfirmed : MailboxViewAction, AffectingBottomSheet
 
     /*
      *`OnOfflineWithData` and `OnErrorWithData` are not actual Actions which are actively performed by the user
@@ -170,6 +171,7 @@ internal sealed interface MailboxEvent : MailboxOperation {
     object ErrorLabeling : MailboxEvent, AffectingErrorBar
     object ErrorRetrievingCustomMailLabels : MailboxEvent, AffectingErrorBar, AffectingBottomSheet
     object ErrorRetrievingFolderColorSettings : MailboxEvent, AffectingErrorBar, AffectingBottomSheet
+    object ErrorMoving : MailboxEvent, AffectingErrorBar
 }
 
 

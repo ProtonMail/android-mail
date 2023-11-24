@@ -32,15 +32,16 @@ import me.proton.core.label.domain.entity.LabelId
 
 object MailLabelUiModelTestData {
 
+    val spamFolder = MailLabelUiModel.System(
+        id = MailLabelId.System.Spam,
+        text = TextUiModel.TextRes(MailLabelId.System.Spam.systemLabelId.textRes()),
+        icon = MailLabelId.System.Spam.systemLabelId.iconRes(),
+        iconTint = null,
+        isSelected = false,
+        count = null
+    )
     val spamAndCustomFolder = listOf(
-        MailLabelUiModel.System(
-            id = MailLabelId.System.Spam,
-            text = TextUiModel.TextRes(MailLabelId.System.Spam.systemLabelId.textRes()),
-            icon = MailLabelId.System.Spam.systemLabelId.iconRes(),
-            iconTint = null,
-            isSelected = false,
-            count = null
-        ),
+        spamFolder,
         MailLabelUiModel.Custom(
             id = MailLabelId.Custom.Folder(LabelId("folder1")),
             text = TextUiModel.Text("Folder1"),
@@ -54,14 +55,7 @@ object MailLabelUiModelTestData {
         )
     ).toImmutableList()
     val spamAndCustomFolderWithSpamSelected = listOf(
-        MailLabelUiModel.System(
-            id = MailLabelId.System.Spam,
-            text = TextUiModel.TextRes(MailLabelId.System.Spam.systemLabelId.textRes()),
-            icon = MailLabelId.System.Spam.systemLabelId.iconRes(),
-            iconTint = null,
-            isSelected = true,
-            count = null
-        ),
+        spamFolder.copy(isSelected = true),
         MailLabelUiModel.Custom(
             id = MailLabelId.Custom.Folder(LabelId("folder1")),
             text = TextUiModel.Text("Folder1"),
@@ -75,14 +69,7 @@ object MailLabelUiModelTestData {
         )
     ).toImmutableList()
     val spamAndCustomFolderWithCustomSelected = listOf(
-        MailLabelUiModel.System(
-            id = MailLabelId.System.Spam,
-            text = TextUiModel.TextRes(MailLabelId.System.Spam.systemLabelId.textRes()),
-            icon = MailLabelId.System.Spam.systemLabelId.iconRes(),
-            iconTint = null,
-            isSelected = false,
-            count = null
-        ),
+        spamFolder,
         MailLabelUiModel.Custom(
             id = MailLabelId.Custom.Folder(LabelId("folder1")),
             text = TextUiModel.Text("Folder1"),
@@ -96,14 +83,7 @@ object MailLabelUiModelTestData {
         )
     ).toImmutableList()
     val systemAndTwoCustomFolders = listOf(
-        MailLabelUiModel.System(
-            id = MailLabelId.System.Spam,
-            text = TextUiModel.TextRes(MailLabelId.System.Spam.systemLabelId.textRes()),
-            icon = MailLabelId.System.Spam.systemLabelId.iconRes(),
-            iconTint = null,
-            isSelected = true,
-            count = null
-        ),
+        spamFolder.copy(isSelected = true),
         MailLabelUiModel.Custom(
             id = MailLabelId.Custom.Folder(LabelId("folder1")),
             text = TextUiModel.Text("Folder1"),

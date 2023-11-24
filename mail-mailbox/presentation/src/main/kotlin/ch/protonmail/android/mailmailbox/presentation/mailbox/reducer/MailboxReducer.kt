@@ -139,6 +139,7 @@ class MailboxReducer @Inject constructor(
                 is MailboxEvent.ErrorRetrievingFolderColorSettings,
                 is MailboxViewAction.LabelAsConfirmed -> BottomSheetOperation.Dismiss
                 is MailboxViewAction.MoveToDestinationSelected -> MoveToDestinationSelected(operation.mailLabelId)
+                is MailboxViewAction.MoveToConfirmed -> BottomSheetOperation.Dismiss
             }
             bottomSheetReducer.newStateFrom(bottomSheetState, bottomSheetOperation)
         } else {
@@ -156,6 +157,9 @@ class MailboxReducer @Inject constructor(
                     Effect.of(TextUiModel(R.string.mailbox_action_label_messages_failed_retrieving_labels))
                 MailboxEvent.ErrorRetrievingFolderColorSettings ->
                     Effect.of(TextUiModel(R.string.mailbox_action_label_messages_failed))
+
+                MailboxEvent.ErrorMoving ->
+                    Effect.of(TextUiModel(R.string.mailbox_action_move_messages_failed))
             }
         } else {
             error

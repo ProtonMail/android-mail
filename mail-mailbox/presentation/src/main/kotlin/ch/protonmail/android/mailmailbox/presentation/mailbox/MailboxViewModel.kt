@@ -241,6 +241,7 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.LabelAsConfirmed -> onLabelAsConfirmed(viewAction.archiveSelected)
                 is MailboxViewAction.RequestMoveToBottomSheet -> showMoveToBottomSheetAndLoadData(viewAction)
                 is MailboxViewAction.MoveToDestinationSelected -> emitNewStateFrom(viewAction)
+                is MailboxViewAction.MoveToConfirmed -> onMoveToConfirmed()
             }.exhaustive
         }
     }
@@ -516,6 +517,37 @@ class MailboxViewModel @Inject constructor(
         }
     }
 
+    private suspend fun onMoveToConfirmed() {
+        val selectionState = state.value.mailboxListState as? MailboxListState.Data.SelectionMode
+        if (selectionState == null) {
+            Timber.d("MailboxListState is not in SelectionMode")
+            return
+        }
+        val bottomSheetState = mutableState.value.bottomSheetState?.contentState
+        if (bottomSheetState !is MoveToBottomSheetState.Data) {
+            Timber.d("BottomSheetState is not MoveToBottomSheetState.Data")
+            return
+        }
+        val userId = primaryUserId.filterNotNull().first()
+        bottomSheetState.selected?.let { mailLabelUiModel ->
+            when (getPreferredViewMode()) {
+                ViewMode.ConversationGrouping -> moveConversations(
+                    userId = userId,
+                    conversationIds = selectionState.selectedMailboxItems.map { ConversationId(it.id) },
+                    labelId = mailLabelUiModel.id.labelId
+                )
+
+                ViewMode.NoConversationGrouping -> moveMessages(
+                    userId = userId,
+                    messageIds = selectionState.selectedMailboxItems.map { MessageId(it.id) },
+                    labelId = mailLabelUiModel.id.labelId
+                )
+            }.fold(
+                ifLeft = { MailboxEvent.ErrorMoving },
+                ifRight = { MailboxViewAction.MoveToConfirmed }
+            ).let { emitNewStateFrom(it) }
+        }
+    }
 
     private suspend fun getMessagesWithLabels(
         userId: UserId,
