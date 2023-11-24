@@ -26,6 +26,7 @@ import ch.protonmail.android.mailmessage.domain.model.Message
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
+import ch.protonmail.android.mailmessage.domain.model.RefreshedMessageWithBody
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
@@ -113,7 +114,7 @@ interface MessageRepository {
      * Get the [MessageWithBody] for a given [MessageId] and [userId] from the remote storage
      * and stores it locally. When getting from remote fails, returns any existing local one
      */
-    suspend fun getRefreshedMessageWithBody(userId: UserId, messageId: MessageId): MessageWithBody?
+    suspend fun getRefreshedMessageWithBody(userId: UserId, messageId: MessageId): RefreshedMessageWithBody?
 
     suspend fun upsertMessageWithBody(userId: UserId, messageWithBody: MessageWithBody): Boolean
 

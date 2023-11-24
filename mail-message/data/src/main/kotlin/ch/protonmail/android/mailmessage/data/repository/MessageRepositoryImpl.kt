@@ -20,7 +20,6 @@ package ch.protonmail.android.mailmessage.data.repository
 
 import arrow.core.Either
 import arrow.core.NonEmptyList
-import arrow.core.getOrElse
 import arrow.core.left
 import arrow.core.right
 import arrow.core.toNonEmptyListOrNull
@@ -38,6 +37,7 @@ import ch.protonmail.android.mailmessage.domain.model.Message
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
+import ch.protonmail.android.mailmessage.domain.model.RefreshedMessageWithBody
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import com.dropbox.android.external.store4.Fetcher
@@ -156,10 +156,18 @@ class MessageRepositoryImpl @Inject constructor(
     override suspend fun getLocalMessageWithBody(userId: UserId, messageId: MessageId): MessageWithBody? =
         localDataSource.observeMessageWithBody(userId, messageId).firstOrNull()
 
-    override suspend fun getRefreshedMessageWithBody(userId: UserId, messageId: MessageId): MessageWithBody? =
-        remoteDataSource.getMessage(userId, messageId).onRight { upsertMessageWithBody(userId, it) }.getOrElse {
-            getLocalMessageWithBody(userId, messageId)
-        }
+    override suspend fun getRefreshedMessageWithBody(userId: UserId, messageId: MessageId): RefreshedMessageWithBody? =
+        remoteDataSource.getMessage(userId, messageId).fold(
+            ifRight = {
+                upsertMessageWithBody(userId, it)
+                RefreshedMessageWithBody(it, isRefreshed = true)
+            },
+            ifLeft = {
+                getLocalMessageWithBody(userId, messageId)?.let {
+                    RefreshedMessageWithBody(it, isRefreshed = false)
+                }
+            }
+        )
 
     override suspend fun upsertMessageWithBody(userId: UserId, messageWithBody: MessageWithBody): Boolean {
         return try {

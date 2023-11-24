@@ -38,6 +38,7 @@ import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSource
 import ch.protonmail.android.mailmessage.data.repository.MessageRepositoryImpl
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
+import ch.protonmail.android.mailmessage.domain.model.RefreshedMessageWithBody
 import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
@@ -1021,6 +1022,7 @@ class MessageRepositoryImplTest {
             // Given
             val userId = UserIdSample.Primary
             val expectedMessageWithBody = MessageWithBodySample.RemoteDraft
+            val expectedRefreshedMessageWithBody = RefreshedMessageWithBody(expectedMessageWithBody, isRefreshed = true)
             val expectedMessageId = MessageIdSample.RemoteDraft
             coEvery { remoteDataSource.getMessage(userId, expectedMessageId) } returns expectedMessageWithBody.right()
 
@@ -1028,7 +1030,7 @@ class MessageRepositoryImplTest {
             val actual = messageRepository.getRefreshedMessageWithBody(userId, expectedMessageId)
 
             // Then
-            assertEquals(expectedMessageWithBody, actual)
+            assertEquals(expectedRefreshedMessageWithBody, actual)
             coVerify { localDataSource.upsertMessageWithBody(userId, expectedMessageWithBody) }
         }
 
@@ -1037,6 +1039,7 @@ class MessageRepositoryImplTest {
         // Given
         val userId = UserIdSample.Primary
         val expectedMessageWithBody = MessageWithBodySample.RemoteDraft
+        val expectedRefreshedMessageWithBody = RefreshedMessageWithBody(expectedMessageWithBody, isRefreshed = false)
         val expectedMessageId = MessageIdSample.RemoteDraft
         val expectedError = DataError.Remote.Http(NetworkError.Unreachable).left()
         coEvery { remoteDataSource.getMessage(userId, expectedMessageId) } returns expectedError
@@ -1047,7 +1050,7 @@ class MessageRepositoryImplTest {
         val actual = messageRepository.getRefreshedMessageWithBody(userId, expectedMessageId)
 
         // Then
-        assertEquals(expectedMessageWithBody, actual)
+        assertEquals(expectedRefreshedMessageWithBody, actual)
         coVerify(exactly = 0) { localDataSource.upsertMessageWithBody(userId, expectedMessageWithBody) }
     }
 
