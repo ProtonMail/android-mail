@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2022 Proton Technologies AG
   ~ This file is part of Proton Technologies AG and Proton Mail.
   ~
@@ -71,4 +70,6 @@
         <item quantity="other">%d conversations permanently deleted</item>
     </plurals>
     <string name="mailbox_action_label_messages_failed">Label operation failed</string>
+    <string name="mailbox_action_label_messages_failed_retrieving_labels">Failed to get labels</string>
+    <string name="mailbox_action_label_messages_failed_retrieving_colors">Failed to get color settings</string>
 </resources>

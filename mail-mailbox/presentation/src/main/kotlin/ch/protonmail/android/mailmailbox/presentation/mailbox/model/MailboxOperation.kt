@@ -162,6 +162,8 @@ internal sealed interface MailboxEvent : MailboxOperation {
     ) : MailboxEvent, AffectingBottomSheet
 
     object ErrorLabeling : MailboxEvent, AffectingErrorBar
+    object ErrorRetrievingCustomMailLabels : MailboxEvent, AffectingErrorBar, AffectingBottomSheet
+    object ErrorRetrievingFolderColorSettings : MailboxEvent, AffectingErrorBar, AffectingBottomSheet
 }
 
 

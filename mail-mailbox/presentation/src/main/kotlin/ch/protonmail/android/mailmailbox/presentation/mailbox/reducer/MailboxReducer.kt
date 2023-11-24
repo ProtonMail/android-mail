@@ -132,6 +132,8 @@ class MailboxReducer @Inject constructor(
                 is MailboxEvent.MailboxBottomSheetEvent -> operation.bottomSheetOperation
                 is MailboxViewAction.RequestLabelAsBottomSheet -> BottomSheetOperation.Requested
                 is MailboxViewAction.LabelAsToggleAction -> LabelToggled(operation.label)
+                is MailboxEvent.ErrorRetrievingCustomMailLabels,
+                is MailboxEvent.ErrorRetrievingFolderColorSettings,
                 is MailboxViewAction.LabelAsConfirmed -> BottomSheetOperation.Dismiss
             }
             bottomSheetReducer.newStateFrom(bottomSheetState, bottomSheetOperation)
@@ -144,6 +146,11 @@ class MailboxReducer @Inject constructor(
         return if (operation is MailboxOperation.AffectingErrorBar) {
             when (operation) {
                 is MailboxEvent.ErrorLabeling ->
+                    Effect.of(TextUiModel(R.string.mailbox_action_label_messages_failed))
+
+                MailboxEvent.ErrorRetrievingCustomMailLabels ->
+                    Effect.of(TextUiModel(R.string.mailbox_action_label_messages_failed_retrieving_labels))
+                MailboxEvent.ErrorRetrievingFolderColorSettings ->
                     Effect.of(TextUiModel(R.string.mailbox_action_label_messages_failed))
             }
         } else {

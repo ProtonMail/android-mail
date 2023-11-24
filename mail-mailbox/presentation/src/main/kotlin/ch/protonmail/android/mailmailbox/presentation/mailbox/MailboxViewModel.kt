@@ -419,8 +419,18 @@ class MailboxViewModel @Inject constructor(
             emitNewStateFrom(operation)
 
             val userId = primaryUserId.filterNotNull().first()
-            val labels = observeCustomMailLabels(userId).first()
-            val color = observeFolderColorSettings(userId).first()
+            val labels = observeCustomMailLabels(userId).firstOrNull()
+            val color = observeFolderColorSettings(userId).firstOrNull()
+
+            if (labels == null) {
+                emitNewStateFrom(MailboxEvent.ErrorRetrievingCustomMailLabels)
+                return@launch
+            }
+
+            if (color == null) {
+                emitNewStateFrom(MailboxEvent.ErrorRetrievingFolderColorSettings)
+                return@launch
+            }
 
             val mappedLabels = labels.onLeft {
                 Timber.e("Error while observing custom labels")
@@ -449,16 +459,21 @@ class MailboxViewModel @Inject constructor(
         }
         viewModelScope.launch {
             val userId = primaryUserId.filterNotNull().first()
-            val labels = observeCustomMailLabels(userId).first().onLeft {
+            val labels = observeCustomMailLabels(userId).firstOrNull()?.onLeft {
                 Timber.e("Error while observing custom labels when relabeling got confirmed: $it")
-            }.getOrElse { emptyList() }
+            }?.getOrElse { emptyList() }
+            if (labels == null) {
+                emitNewStateFrom(MailboxEvent.ErrorRetrievingCustomMailLabels)
+                return@launch
+            }
+
             val messagesWithLabels = getMessagesWithLabels(userId, selectionState.selectedMailboxItems)
 
             val previousSelection = labels.getLabelSelectionState(messagesWithLabels)
             val labelAsData = state.value.bottomSheetState?.contentState as? LabelAsBottomSheetState.Data
                 ?: throw IllegalStateException("BottomSheetState is not LabelAsBottomSheetState.Data")
 
-            val updatedSelections = labelAsData.getLabelSelectionState()
+            val updatedSelection = labelAsData.getLabelSelectionState()
             if (archiveSelected) {
                 // will be added when move to is implemented, see ticket: MAILANDR-674
             }
@@ -466,7 +481,7 @@ class MailboxViewModel @Inject constructor(
                 userId = userId,
                 selectedItems = selectionState.selectedMailboxItems,
                 currentSelectionList = previousSelection,
-                updatedSelectionList = updatedSelections,
+                updatedSelectionList = updatedSelection,
                 archiveSelected = archiveSelected
             )
             emitNewStateFrom(operation)
