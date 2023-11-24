@@ -209,6 +209,10 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
         snackbarHostState.showSnackbar(type = ProtonSnackbarType.ERROR, message = error)
     }
 
+    ConsumableTextEffect(effect = state.warning) { warning ->
+        snackbarHostState.showSnackbar(type = ProtonSnackbarType.WARNING, message = warning)
+    }
+
     val errorAttachmentReEncryption = stringResource(id = R.string.composer_attachment_reencryption_failed_message)
     ConsumableLaunchedEffect(effect = state.attachmentsReEncryptionFailed) {
         snackbarHostState.showSnackbar(type = ProtonSnackbarType.ERROR, message = errorAttachmentReEncryption)
