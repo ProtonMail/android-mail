@@ -41,6 +41,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import me.proton.core.label.domain.entity.LabelId
+import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.util.kotlin.equalsNoCase
 import javax.inject.Inject
 
@@ -72,7 +73,11 @@ class LabelFormViewModel @Inject constructor(
                 it.getColorFromHexString()
             }
             if (labelId != null) {
-                getLabel(userId = primaryUserId(), labelId = LabelId(labelId)).getOrNull()?.let { label ->
+                getLabel(
+                    userId = primaryUserId(),
+                    labelId = LabelId(labelId),
+                    labelType = LabelType.MessageLabel
+                ).getOrNull()?.let { label ->
                     emitNewStateFor(
                         LabelFormEvent.LabelLoaded(
                             labelId = label.labelId,
@@ -134,7 +139,7 @@ class LabelFormViewModel @Inject constructor(
 
     @SuppressWarnings("ReturnCount")
     private suspend fun createLabel(name: String, color: String) {
-        val isLabelLimitReached = isLabelLimitReached(primaryUserId()).getOrElse {
+        val isLabelLimitReached = isLabelLimitReached(primaryUserId(), LabelType.MessageLabel).getOrElse {
             return emitNewStateFor(LabelFormEvent.SaveLabelError)
         }
         if (isLabelLimitReached) return emitNewStateFor(LabelFormEvent.LabelLimitReached)
@@ -153,7 +158,7 @@ class LabelFormViewModel @Inject constructor(
         name: String,
         color: String
     ) {
-        getLabel(primaryUserId(), labelId).getOrNull()?.let { label ->
+        getLabel(primaryUserId(), labelId, LabelType.MessageLabel).getOrNull()?.let { label ->
             if (!name.equalsNoCase(label.name)) {
                 val isLabelNameAllowed = isLabelNameAllowed(primaryUserId(), name).getOrElse {
                     return emitNewStateFor(LabelFormEvent.SaveLabelError)

@@ -137,8 +137,13 @@ fun ConversationDetailScreen(
             when (val bottomSheetContentState = state.bottomSheetState?.contentState) {
                 is MoveToBottomSheetState -> MoveToBottomSheetContent(
                     state = bottomSheetContentState,
-                    onFolderSelected = { viewModel.submit(ConversationDetailViewAction.MoveToDestinationSelected(it)) },
-                    onDoneClick = { viewModel.submit(ConversationDetailViewAction.MoveToDestinationConfirmed(it)) }
+                    actions = MoveToBottomSheetContent.Actions(
+                        onAddFolderClick = actions.onAddFolder,
+                        onFolderSelected = {
+                            viewModel.submit(ConversationDetailViewAction.MoveToDestinationSelected(it))
+                        },
+                        onDoneClick = { viewModel.submit(ConversationDetailViewAction.MoveToDestinationConfirmed(it)) }
+                    )
                 )
 
                 is LabelAsBottomSheetState -> LabelAsBottomSheetContent(
@@ -517,6 +522,7 @@ object ConversationDetail {
         val openMessageBodyLink: (uri: Uri) -> Unit,
         val openAttachment: (values: OpenAttachmentIntentValues) -> Unit,
         val onAddLabel: () -> Unit,
+        val onAddFolder: () -> Unit,
         val showFeatureMissingSnackbar: () -> Unit,
         val onReply: (MessageId) -> Unit,
         val onReplyAll: (MessageId) -> Unit,

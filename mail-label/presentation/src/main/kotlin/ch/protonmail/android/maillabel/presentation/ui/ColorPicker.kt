@@ -30,14 +30,17 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.constraintlayout.compose.ConstraintLayout
+import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.maillabel.presentation.sample.LabelColorListSample.colorListSample
@@ -49,6 +52,7 @@ import me.proton.core.compose.theme.defaultSmallStrongNorm
 fun ColorPicker(
     colors: List<Color>,
     selectedColor: Color,
+    iconResId: Int? = null,
     onColorClicked: (Color) -> Unit
 ) {
     Column {
@@ -69,6 +73,7 @@ fun ColorPicker(
                 ColorItem(
                     color = color,
                     isSelected = color == selectedColor,
+                    iconResId = iconResId,
                     onColorClicked = onColorClicked
                 )
             }
@@ -80,6 +85,7 @@ fun ColorPicker(
 fun ColorItem(
     color: Color,
     isSelected: Boolean,
+    iconResId: Int? = null,
     onColorClicked: (Color) -> Unit
 ) {
     ConstraintLayout(
@@ -105,28 +111,47 @@ fun ColorItem(
                     }
             )
         }
-        Box(
-            modifier = Modifier
-                .constrainAs(item) {
-                    top.linkTo(parent.top, margin = MailDimens.ColorPicker.SelectedCircleInternalMargin)
-                    start.linkTo(parent.start, margin = MailDimens.ColorPicker.SelectedCircleInternalMargin)
-                    end.linkTo(parent.end, margin = MailDimens.ColorPicker.SelectedCircleInternalMargin)
-                    bottom.linkTo(parent.bottom, margin = MailDimens.ColorPicker.SelectedCircleInternalMargin)
-                }
-                .size(MailDimens.ColorPicker.CircleSize)
-                .clip(CircleShape)
-                .background(color)
-                .clickable {
-                    onColorClicked(color)
-                }
-        )
-    }
 
+        if (iconResId == null) {
+            Box(
+                modifier = Modifier
+                    .constrainAs(item) {
+                        top.linkTo(parent.top, margin = MailDimens.ColorPicker.SelectedCircleInternalMargin)
+                        start.linkTo(parent.start, margin = MailDimens.ColorPicker.SelectedCircleInternalMargin)
+                        end.linkTo(parent.end, margin = MailDimens.ColorPicker.SelectedCircleInternalMargin)
+                        bottom.linkTo(parent.bottom, margin = MailDimens.ColorPicker.SelectedCircleInternalMargin)
+                    }
+                    .size(MailDimens.ColorPicker.CircleSize)
+                    .clip(CircleShape)
+                    .background(color)
+                    .clickable {
+                        onColorClicked(color)
+                    }
+            )
+        } else {
+            Icon(
+                painter = painterResource(iconResId),
+                contentDescription = NO_CONTENT_DESCRIPTION,
+                tint = color,
+                modifier = Modifier
+                    .constrainAs(item) {
+                        top.linkTo(parent.top, margin = MailDimens.ColorPicker.SelectedCircleInternalMargin)
+                        start.linkTo(parent.start, margin = MailDimens.ColorPicker.SelectedCircleInternalMargin)
+                        end.linkTo(parent.end, margin = MailDimens.ColorPicker.SelectedCircleInternalMargin)
+                        bottom.linkTo(parent.bottom, margin = MailDimens.ColorPicker.SelectedCircleInternalMargin)
+                    }
+                    .size(ProtonDimens.DefaultIconSize)
+                    .clickable {
+                        onColorClicked(color)
+                    }
+            )
+        }
+    }
 }
 
 @Composable
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
-private fun ColorPickerPreview() {
+private fun CircleColorPickerPreview() {
     ColorPicker(
         colors = colorListSample(),
         selectedColor = colorListSample().random(),
@@ -136,7 +161,7 @@ private fun ColorPickerPreview() {
 
 @Composable
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
-private fun ColorItemPreview() {
+private fun CircleColorItemPreview() {
     ColorItem(
         color = colorListSample().random(),
         isSelected = false,
@@ -146,10 +171,43 @@ private fun ColorItemPreview() {
 
 @Composable
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
-private fun SelectedColorItemPreview() {
+private fun SelectedCircleColorItemPreview() {
     ColorItem(
         color = colorListSample().random(),
         isSelected = true,
+        onColorClicked = {}
+    )
+}
+
+@Composable
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
+private fun IconColorPickerPreview() {
+    ColorPicker(
+        colors = colorListSample(),
+        selectedColor = colorListSample().random(),
+        iconResId = R.drawable.ic_proton_folder_filled,
+        onColorClicked = {}
+    )
+}
+
+@Composable
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
+private fun IconColorItemPreview() {
+    ColorItem(
+        color = colorListSample().random(),
+        isSelected = false,
+        iconResId = R.drawable.ic_proton_folder_filled,
+        onColorClicked = {}
+    )
+}
+
+@Composable
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
+private fun SelectedIconColorItemPreview() {
+    ColorItem(
+        color = colorListSample().random(),
+        isSelected = true,
+        iconResId = R.drawable.ic_proton_folder_filled,
         onColorClicked = {}
     )
 }

@@ -81,6 +81,7 @@ sealed class Destination(val route: String) {
             operator fun invoke(labelId: LabelId) = route.replace(LabelIdKey.wrap(), labelId.id)
         }
         object FolderList : Destination("folderList")
+        object CreateFolder : Destination("folderForm")
     }
 
     object Dialog {

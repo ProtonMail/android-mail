@@ -33,6 +33,7 @@
     <string name="mailbox_attachment_uploading_error">Error uploading attachment</string>
     <string name="notification_switched_account">Switched to account: %s</string>
     <string name="label_saved">Label saved</string>
+    <string name="folder_saved">Folder saved</string>
     <string name="label_deleted">Label deleted</string>
     <string name="label_list_loading_error">Error loading label, please try again later</string>
 </resources>

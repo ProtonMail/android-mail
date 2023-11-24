@@ -19,30 +19,20 @@
 package ch.protonmail.android.maillabel.presentation.previewdata
 
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.maillabel.presentation.folderform.FolderFormState
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
-import ch.protonmail.android.maillabel.presentation.labelform.LabelFormState
-import ch.protonmail.android.maillabel.presentation.sample.LabelColorListSample.colorListSample
-import me.proton.core.label.domain.entity.LabelId
+import ch.protonmail.android.maillabel.presentation.sample.LabelColorListSample
 
-object LabelFormPreviewData {
+object FolderFormPreviewData {
 
-    val createLabelFormState = LabelFormState.Data.Create(
+    val createFolderFormState = FolderFormState.Data.Create(
         isSaveEnabled = true,
-        name = "",
-        color = colorListSample().random().getHexStringFromColor(),
-        colorList = colorListSample(),
+        name = "Folder name",
+        color = LabelColorListSample.colorListSample().random().getHexStringFromColor(),
+        parent = null,
+        notifications = true,
+        colorList = LabelColorListSample.colorListSample(),
         close = Effect.empty(),
         closeWithSave = Effect.empty()
-    )
-
-    val editLabelFormState = LabelFormState.Data.Update(
-        isSaveEnabled = true,
-        name = "Label name",
-        color = colorListSample().random().getHexStringFromColor(),
-        colorList = colorListSample(),
-        close = Effect.empty(),
-        closeWithSave = Effect.empty(),
-        labelId = LabelId("Label Id"),
-        closeWithDelete = Effect.empty()
     )
 }

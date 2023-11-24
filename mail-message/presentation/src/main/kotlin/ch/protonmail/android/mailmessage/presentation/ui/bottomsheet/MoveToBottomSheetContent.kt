@@ -38,6 +38,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.disabled
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
@@ -63,23 +64,15 @@ import me.proton.core.compose.theme.interactionNorm
 import me.proton.core.label.domain.entity.LabelId
 
 @Composable
-fun MoveToBottomSheetContent(
-    state: MoveToBottomSheetState,
-    onFolderSelected: (MailLabelId) -> Unit,
-    onDoneClick: (String) -> Unit
-) {
+fun MoveToBottomSheetContent(state: MoveToBottomSheetState, actions: MoveToBottomSheetContent.Actions) {
     when (state) {
-        is MoveToBottomSheetState.Data -> MoveToBottomSheetContent(state, onFolderSelected, onDoneClick)
+        is MoveToBottomSheetState.Data -> MoveToBottomSheetContent(state, actions)
         else -> ProtonCenteredProgress()
     }
 }
 
 @Composable
-fun MoveToBottomSheetContent(
-    dataState: MoveToBottomSheetState.Data,
-    onFolderSelected: (MailLabelId) -> Unit,
-    onDoneClick: (String) -> Unit
-) {
+fun MoveToBottomSheetContent(dataState: MoveToBottomSheetState.Data, actions: MoveToBottomSheetContent.Actions) {
     val selectedMailLabel = dataState.selected?.text?.string()
     Column {
         Row(
@@ -98,19 +91,48 @@ fun MoveToBottomSheetContent(
                 modifier = Modifier
                     .testTag(MoveToBottomSheetTestTags.DoneButton)
                     .semantics { selectedMailLabel ?: disabled() }
-                    .clickable { selectedMailLabel?.let(onDoneClick) },
+                    .clickable { selectedMailLabel?.let(actions.onDoneClick) },
                 text = stringResource(id = R.string.bottom_sheet_done_action),
                 style = ProtonTheme.typography.default,
                 color = ProtonTheme.colors.interactionNorm(dataState.selected != null)
             )
         }
         Divider(modifier = Modifier.testTag(MoveToBottomSheetTestTags.Divider))
+        Row(
+            modifier = Modifier
+                .testTag(MoveToBottomSheetTestTags.AddFolderRow)
+                .fillMaxWidth()
+                .clickable(
+                    onClickLabel = stringResource(id = R.string.add_folder_content_description),
+                    role = Role.Button,
+                    onClick = actions.onAddFolderClick
+                ),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_proton_plus),
+                contentDescription = NO_CONTENT_DESCRIPTION,
+                modifier = Modifier
+                    .testTag(MoveToBottomSheetTestTags.AddFolderIcon)
+                    .padding(ProtonDimens.DefaultSpacing),
+                tint = ProtonTheme.colors.iconNorm
+            )
+            Text(
+                modifier = Modifier
+                    .testTag(MoveToBottomSheetTestTags.AddFolderText)
+                    .weight(1f)
+                    .padding(vertical = ProtonDimens.DefaultSpacing),
+                text = stringResource(id = R.string.label_title_add_folder),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
         LazyColumn {
             items(dataState.moveToDestinations) {
                 ProtonRawListItem(
                     modifier = Modifier
                         .testTag(MoveToBottomSheetTestTags.FolderItem)
-                        .clickable { onFolderSelected(it.id) }
+                        .clickable { actions.onFolderSelected(it.id) }
                         .height(ProtonDimens.ListItemHeight)
                         .padding(end = ProtonDimens.DefaultSpacing)
                 ) {
@@ -152,6 +174,15 @@ fun MoveToBottomSheetContent(
             }
         }
     }
+}
+
+object MoveToBottomSheetContent {
+
+    data class Actions(
+        val onAddFolderClick: () -> Unit,
+        val onFolderSelected: (MailLabelId) -> Unit,
+        val onDoneClick: (String) -> Unit
+    )
 }
 
 @Preview(showBackground = true)
@@ -215,8 +246,11 @@ fun MoveToBottomSheetContentPreview() {
                 )
             ).toImmutableList()
         ),
-        onFolderSelected = {},
-        onDoneClick = {}
+        actions = MoveToBottomSheetContent.Actions(
+            onAddFolderClick = {},
+            onFolderSelected = {},
+            onDoneClick = {}
+        )
     )
 }
 
@@ -231,4 +265,7 @@ object MoveToBottomSheetTestTags {
     const val FolderNameText = "FolderNameText"
     const val FolderSpacer = "FolderSpacer"
     const val FolderSelectionIcon = "FolderSelectionIcon"
+    const val AddFolderRow = "AddFolderRow"
+    const val AddFolderIcon = "AddFolderIcon"
+    const val AddFolderText = "AddFolderText"
 }

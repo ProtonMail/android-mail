@@ -233,8 +233,8 @@ fun UseFolderColorSetting(
     onChangeUseFolderColor: (Boolean) -> Unit
 ) {
     val useFolderColorHintResId =
-        if (state.useFolderColor) R.string.folder_settings_switch_on
-        else R.string.folder_settings_switch_off
+        if (state.useFolderColor) R.string.switch_on
+        else R.string.switch_off
     ProtonSettingsToggleItem(
         modifier = modifier,
         name = stringResource(id = R.string.folder_settings_folder_colors),
@@ -255,8 +255,8 @@ fun InheritParentFolderColorSetting(
     AnimatedVisibility(visible = state.useFolderColor) {
         Divider()
         val inheritParentFolderColorHintResId =
-            if (state.inheritParentFolderColor) R.string.folder_settings_switch_on
-            else R.string.folder_settings_switch_off
+            if (state.inheritParentFolderColor) R.string.switch_on
+            else R.string.switch_off
         ProtonSettingsToggleItem(
             modifier = modifier,
             name = stringResource(id = R.string.folder_settings_parent_color),

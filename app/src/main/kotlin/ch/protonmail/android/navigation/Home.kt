@@ -53,6 +53,7 @@ import ch.protonmail.android.navigation.route.addDeepLinkHandler
 import ch.protonmail.android.navigation.route.addDefaultEmailSettings
 import ch.protonmail.android.navigation.route.addDisplayNameSettings
 import ch.protonmail.android.navigation.route.addEditSwipeActionsSettings
+import ch.protonmail.android.navigation.route.addFolderForm
 import ch.protonmail.android.navigation.route.addFolderList
 import ch.protonmail.android.navigation.route.addLabelForm
 import ch.protonmail.android.navigation.route.addLabelList
@@ -163,6 +164,10 @@ fun Home(
     val labelListErrorLoadingText = stringResource(id = R.string.label_list_loading_error)
     fun showLabelListErrorLoadingSnackbar() = scope.launch {
         snackbarHostErrorState.showSnackbar(message = labelListErrorLoadingText, type = ProtonSnackbarType.ERROR)
+    }
+    val folderSavedText = stringResource(id = R.string.folder_saved)
+    fun showFolderSavedSnackbar() = scope.launch {
+        snackbarHostSuccessState.showSnackbar(message = folderSavedText, type = ProtonSnackbarType.SUCCESS)
     }
     ConsumableLaunchedEffect(state.value.messageSendingStatusEffect) { sendingStatus ->
         when (sendingStatus) {
@@ -280,6 +285,10 @@ fun Home(
                         }
                     }
                 )
+                addFolderForm(
+                    navController,
+                    showFolderSavedSnackbar = { showFolderSavedSnackbar() }
+                )
                 // settings
                 addAccountSettings(
                     navController,
@@ -315,7 +324,7 @@ private fun buildSidebarActions(navController: NavHostController, launcherAction
         onLabelList = { navController.navigate(Screen.LabelList.route) },
         onFolderList = { navController.navigate(Screen.FolderList.route) },
         onLabelAdd = { navController.navigate(Screen.CreateLabel.route) },
-        onFolderAdd = { },
+        onFolderAdd = { navController.navigate(Screen.CreateFolder.route) },
         onSubscription = launcherActions.onSubscription,
         onReportBug = launcherActions.onReportBug
     )

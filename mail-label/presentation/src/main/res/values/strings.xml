@@ -38,16 +38,20 @@
     <string name="label_list_create_label_placeholder_description">Create a label to enhance your email experience.</string>
     <string name="add_label_content_description">Add label</string>
     <string name="label_form_create_label">Create label</string>
+    <string name="folder_form_create_folder">Create folder</string>
     <string name="label_form_edit_label">Edit label</string>
     <string name="label_form_save">Save</string>
     <string name="label_form_delete">Delete label</string>
     <string name="label_name_title">Name</string>
     <string name="add_a_label_name_hint">Add a label name</string>
+    <string name="add_a_folder_name_hint">Add a folder name</string>
     <string name="input_field_max_characters_count">%1d / %2d characters</string>
     <string name="color_picker_title">Color</string>
     <string name="save_label_error">Error saving label, please try again later</string>
+    <string name="save_folder_error">Error saving folder, please try again later</string>
     <string name="label_already_exists">A label or folder with this name already exists</string>
     <string name="label_limit_reached_error">Label limit reached</string>
+    <string name="folder_limit_reached_error">Folder limit reached</string>
     <string name="delete_label_error">Error deleting label</string>
     <string name="input_field_clear_content_description">Clear text</string>
     <string name="label_list_item_content_description">Label list item</string>
@@ -60,7 +64,10 @@
     <string name="folder_settings_done_button">Done</string>
     <string name="folder_settings_folder_colors">Use folder colors</string>
     <string name="folder_settings_parent_color">Inherit parent folder color</string>
-    <string name="folder_settings_switch_on">On</string>
-    <string name="folder_settings_switch_off">Off</string>
     <string name="folder_list_loading_error">Error loading folder, please try again later</string>
+    <string name="switch_on">On</string>
+    <string name="switch_off">Off</string>
+    <string name="folder_form_parent">Parent folder</string>
+    <string name="folder_form_no_parent">None</string>
+    <string name="folder_form_notifications">Notifications</string>
 </resources>

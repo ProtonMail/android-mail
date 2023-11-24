@@ -33,6 +33,7 @@ import ch.protonmail.android.maildetail.presentation.ui.ConversationDetail
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetail
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
+import ch.protonmail.android.maillabel.presentation.folderform.FolderFormScreen
 import ch.protonmail.android.maillabel.presentation.folderlist.FolderListScreen
 import ch.protonmail.android.maillabel.presentation.labelform.LabelFormScreen
 import ch.protonmail.android.maillabel.presentation.labellist.LabelListScreen
@@ -62,6 +63,7 @@ internal fun NavGraphBuilder.addConversationDetail(
                 openMessageBodyLink = { uri -> openMessageBodyLink(uri) },
                 openAttachment = openAttachment,
                 onAddLabel = { navController.navigate(Destination.Screen.CreateLabel.route) },
+                onAddFolder = { navController.navigate(Destination.Screen.CreateFolder.route) },
                 showFeatureMissingSnackbar = showFeatureMissingSnackbar,
                 onReply = { navController.navigate(Destination.Screen.MessageActionComposer(DraftAction.Reply(it))) },
                 onReplyAll = {
@@ -124,6 +126,7 @@ internal fun NavGraphBuilder.addMessageDetail(
                 openMessageBodyLink = openMessageBodyLink,
                 openAttachment = openAttachment,
                 onAddLabel = { navController.navigate(Destination.Screen.CreateLabel.route) },
+                onAddFolder = { navController.navigate(Destination.Screen.CreateFolder.route) },
                 showFeatureMissingSnackbar = showFeatureMissingSnackbar,
                 onReply = { navController.navigate(Destination.Screen.MessageActionComposer(DraftAction.Reply(it))) },
                 onReplyAll = {
@@ -250,9 +253,9 @@ internal fun NavGraphBuilder.addFolderList(
                 onBackClick = {
                     navController.popBackStack()
                 },
-                onFolderSelected = { _ ->
-                },
+                onFolderSelected = {},
                 onAddFolderClick = {
+                    navController.navigate(Destination.Screen.CreateFolder.route)
                 },
                 exitWithErrorMessage = { message ->
                     navController.popBackStack()
@@ -261,5 +264,17 @@ internal fun NavGraphBuilder.addFolderList(
             )
         )
     }
+}
+
+@SuppressWarnings("LongParameterList")
+internal fun NavGraphBuilder.addFolderForm(navController: NavHostController, showFolderSavedSnackbar: () -> Unit) {
+    val actions = FolderFormScreen.Actions.Empty.copy(
+        onBackClick = {
+            navController.popBackStack()
+        },
+        onFolderParentClick = {},
+        showFolderSavedSnackbar = showFolderSavedSnackbar
+    )
+    composable(route = Destination.Screen.CreateFolder.route) { FolderFormScreen(actions) }
 }
 

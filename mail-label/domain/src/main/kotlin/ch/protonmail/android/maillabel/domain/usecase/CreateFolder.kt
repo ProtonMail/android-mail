@@ -23,34 +23,30 @@ import java.net.UnknownHostException
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
-import ch.protonmail.android.mailcommon.domain.usecase.ObserveUser
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.first
 import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
+import me.proton.core.label.domain.entity.NewLabel
 import me.proton.core.label.domain.repository.LabelRepository
-import me.proton.core.user.domain.extension.hasSubscription
 import timber.log.Timber
 import javax.inject.Inject
 
-class IsLabelLimitReached @Inject constructor(
-    private val labelRepository: LabelRepository,
-    private val observeUser: ObserveUser
-) {
+class CreateFolder @Inject constructor(private val labelRepository: LabelRepository) {
 
-    suspend operator fun invoke(userId: UserId, labelType: LabelType): Either<DataError, Boolean> = Either.catch {
-        val isPaidUser = observeUser(userId).filterNotNull().first().hasSubscription()
-        if (!isPaidUser) {
-            val labelList = labelRepository.getLabels(userId, labelType)
-            if (labelList.size >= FREE_USER_LABEL_LIMIT) return@catch true
-        }
-        return@catch false
+    suspend operator fun invoke(
+        userId: UserId,
+        name: String,
+        color: String,
+        parentId: LabelId?,
+        notifications: Boolean
+    ): Either<DataError, Unit> = Either.catch {
+        labelRepository.createLabel(userId, buildNewLabel(name, color, parentId, notifications))
     }.mapLeft {
         val error = when (it) {
             is UnknownHostException -> NetworkError.NoNetwork
             is SocketTimeoutException -> NetworkError.Unreachable
             else -> {
-                Timber.e("Unknown error while checking labels count limit: $it")
+                Timber.e("Unknown error while creating folder: $it")
                 NetworkError.Unknown
             }
         }
@@ -58,8 +54,20 @@ class IsLabelLimitReached @Inject constructor(
         DataError.Remote.Http(error)
     }
 
-    private companion object {
-
-        const val FREE_USER_LABEL_LIMIT = 3
+    private fun buildNewLabel(
+        name: String,
+        color: String,
+        parentId: LabelId?,
+        notifications: Boolean
+    ): NewLabel {
+        return NewLabel(
+            parentId = parentId,
+            name = name,
+            type = LabelType.MessageFolder,
+            color = color,
+            isNotified = notifications,
+            isExpanded = null,
+            isSticky = null
+        )
     }
 }
