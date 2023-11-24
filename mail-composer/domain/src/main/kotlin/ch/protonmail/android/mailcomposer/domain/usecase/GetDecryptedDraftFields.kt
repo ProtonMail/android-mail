@@ -23,6 +23,7 @@ import arrow.core.getOrElse
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcomposer.domain.model.DecryptedDraftFields
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsBcc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsCc
@@ -42,18 +43,19 @@ class GetDecryptedDraftFields @Inject constructor(
     private val splitMessageBodyHtmlQuote: SplitMessageBodyHtmlQuote
 ) {
 
-    suspend operator fun invoke(userId: UserId, messageId: MessageId): Either<DataError, DraftFields> {
+    suspend operator fun invoke(userId: UserId, messageId: MessageId): Either<DataError, DecryptedDraftFields> {
         Timber.d("Get decrypted draft data for $userId $messageId")
-        val message = messageRepository.getRefreshedMessageWithBody(userId, messageId)?.message
+        val refreshedMessageWithBody = messageRepository.getRefreshedMessageWithBody(userId, messageId)
             ?: return DataError.Local.NoDataCached.left()
 
         val decryptedMessageBody = getDecryptedMessageBody(userId, messageId).getOrElse {
             return DataError.Local.DecryptionError.left()
         }
 
+        val message = refreshedMessageWithBody.messageWithBody.message
         val splitMessageBody = splitMessageBodyHtmlQuote(decryptedMessageBody)
 
-        return DraftFields(
+        val draftFields = DraftFields(
             SenderEmail(message.sender.address),
             Subject(message.subject),
             splitMessageBody.first,
@@ -61,7 +63,13 @@ class GetDecryptedDraftFields @Inject constructor(
             RecipientsCc(message.ccList),
             RecipientsBcc(message.bccList),
             splitMessageBody.second
-        ).right()
+        )
+
+        return if (refreshedMessageWithBody.isRefreshed) {
+            DecryptedDraftFields.Remote(draftFields)
+        } else {
+            DecryptedDraftFields.Local(draftFields)
+        }.right()
     }
 
 }

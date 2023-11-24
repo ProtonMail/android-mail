@@ -22,6 +22,7 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.mailcomposer.domain.model.DecryptedDraftFields
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
 import ch.protonmail.android.mailcomposer.domain.model.OriginalHtmlQuote
@@ -34,6 +35,7 @@ import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.model.GetDecryptedMessageBodyError
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
+import ch.protonmail.android.mailmessage.domain.model.RefreshedMessageWithBody
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
@@ -59,13 +61,13 @@ class GetDecryptedDraftFieldsTest {
     )
 
     @Test
-    fun `returns draft data when get refreshed message and decrypt operations succeed`() = runTest {
+    fun `returns remote draft data when get refreshed message and decrypt operations succeed`() = runTest {
         // Given
         val userId = UserIdSample.Primary
         val messageId = MessageIdSample.RemoteDraft
         val decryptedMessageBody = DecryptedMessageBodyTestData.buildDecryptedMessageBody()
         val expectedMessage = MessageWithBodySample.RemoteDraft
-        expectedGetRefreshedMessage(userId, messageId) { expectedMessage }
+        expectedGetRefreshedMessage(userId, messageId) { RefreshedMessageWithBody(expectedMessage, isRefreshed = true) }
         expectDecryptedMessageResult(userId, messageId) { decryptedMessageBody }
         expectSplitMessageBodyHtmlQuote(decryptedMessageBody) { Pair(DraftBody(decryptedMessageBody.value), null) }
 
@@ -73,9 +75,31 @@ class GetDecryptedDraftFieldsTest {
         val actual = getDecryptedDraftFields(userId, messageId)
 
         // Then
-        val expected = expectedMessage.toDraftFields(decryptedMessageBody.value)
+        val expected = DecryptedDraftFields.Remote(expectedMessage.toDraftFields(decryptedMessageBody.value))
         assertEquals(expected.right(), actual)
     }
+
+    @Test
+    fun `returns local draft data when get refreshed message returns local data and decrypt operations succeed`() =
+        runTest {
+            // Given
+            val userId = UserIdSample.Primary
+            val messageId = MessageIdSample.RemoteDraft
+            val decryptedMessageBody = DecryptedMessageBodyTestData.buildDecryptedMessageBody()
+            val expectedMessage = MessageWithBodySample.RemoteDraft
+            expectedGetRefreshedMessage(userId, messageId) {
+                RefreshedMessageWithBody(expectedMessage, isRefreshed = false)
+            }
+            expectDecryptedMessageResult(userId, messageId) { decryptedMessageBody }
+            expectSplitMessageBodyHtmlQuote(decryptedMessageBody) { Pair(DraftBody(decryptedMessageBody.value), null) }
+
+            // When
+            val actual = getDecryptedDraftFields(userId, messageId)
+
+            // Then
+            val expected = DecryptedDraftFields.Local(expectedMessage.toDraftFields(decryptedMessageBody.value))
+            assertEquals(expected.right(), actual)
+        }
 
     @Test
     fun `returns no cached data error when get refreshed message with body fails`() = runTest {
@@ -99,7 +123,7 @@ class GetDecryptedDraftFieldsTest {
         val messageId = MessageIdSample.RemoteDraft
         val expectedMessage = MessageWithBodySample.RemoteDraft
         val decryptError = GetDecryptedMessageBodyError.Decryption(messageId, "Failed decrypting")
-        expectedGetRefreshedMessage(userId, messageId) { expectedMessage }
+        expectedGetRefreshedMessage(userId, messageId) { RefreshedMessageWithBody(expectedMessage, isRefreshed = true) }
         expectDecryptedMessageError(userId, messageId) { decryptError }
 
         // When
@@ -144,7 +168,7 @@ class GetDecryptedDraftFieldsTest {
     private fun expectedGetRefreshedMessage(
         userId: UserId,
         messageId: MessageId,
-        result: () -> MessageWithBody
+        result: () -> RefreshedMessageWithBody
     ) = result().also {
         coEvery { messageRepository.getRefreshedMessageWithBody(userId, messageId) } returns it
     }
