@@ -190,14 +190,17 @@ fun MailboxScreen(
             when (val bottomSheetContentState = mailboxState.bottomSheetState?.contentState) {
                 is MoveToBottomSheetState -> MoveToBottomSheetContent(
                     state = bottomSheetContentState,
-                    onFolderSelected = { viewModel.submit(MailboxViewAction.MoveToDestinationSelected(it)) },
-                    onDoneClick = { viewModel.submit(MailboxViewAction.MoveToConfirmed) }
+                    actions = MoveToBottomSheetContent.Actions(
+                        onAddFolderClick = actions.onAddFolder,
+                        onFolderSelected = { viewModel.submit(MailboxViewAction.MoveToDestinationSelected(it)) },
+                        onDoneClick = { viewModel.submit(MailboxViewAction.MoveToConfirmed) }
+                    )
                 )
 
                 is LabelAsBottomSheetState -> LabelAsBottomSheetContent(
                     state = bottomSheetContentState,
                     actions = LabelAsBottomSheetContent.Actions(
-                        onAddLabelClick = { Timber.d("Add label clicked") },
+                        onAddLabelClick = { actions.onAddLabel },
                         onLabelAsSelected = { viewModel.submit(MailboxViewAction.LabelAsToggleAction(it)) },
                         onDoneClick = { viewModel.submit(MailboxViewAction.LabelAsConfirmed(it)) }
                     )
@@ -639,7 +642,9 @@ object MailboxScreen {
         val deleteDialogDismissed: () -> Unit,
         val onLabelAsClicked: () -> Unit,
         val onMoveToClicked: () -> Unit,
-        val onMoreClicked: () -> Unit
+        val onMoreClicked: () -> Unit,
+        val onAddLabel: () -> Unit,
+        val onAddFolder: () -> Unit
     ) {
 
         companion object {
@@ -669,7 +674,9 @@ object MailboxScreen {
                 deleteDialogDismissed = {},
                 onLabelAsClicked = {},
                 onMoveToClicked = {},
-                onMoreClicked = {}
+                onMoreClicked = {},
+                onAddLabel = {},
+                onAddFolder = {}
             )
         }
     }

@@ -103,7 +103,9 @@ internal fun NavGraphBuilder.addMailbox(
                 openDrawerMenu = openDrawerMenu,
                 showOfflineSnackbar = showOfflineSnackbar,
                 showRefreshErrorSnackbar = showRefreshErrorSnackbar,
-                showFeatureMissingSnackbar = showFeatureMissingSnackbar
+                showFeatureMissingSnackbar = showFeatureMissingSnackbar,
+                onAddLabel = { navController.navigate(Destination.Screen.CreateLabel.route) },
+                onAddFolder = { navController.navigate(Destination.Screen.CreateFolder.route) }
             )
         )
     }

@@ -23,7 +23,6 @@ import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.maillabel.domain.usecase.CreateFolder
-import ch.protonmail.android.maillabel.domain.usecase.GetLabel
 import ch.protonmail.android.maillabel.domain.usecase.GetLabelColors
 import ch.protonmail.android.maillabel.domain.usecase.IsLabelLimitReached
 import ch.protonmail.android.maillabel.domain.usecase.IsLabelNameAllowed
@@ -44,7 +43,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FolderFormViewModel @Inject constructor(
-    private val getLabel: GetLabel,
     private val createFolder: CreateFolder,
     private val getLabelColors: GetLabelColors,
     private val isLabelNameAllowed: IsLabelNameAllowed,
