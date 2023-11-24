@@ -505,8 +505,18 @@ class MailboxViewModel @Inject constructor(
             emitNewStateFrom(operation)
 
             val userId = primaryUserId.filterNotNull().first()
-            val destinationFolder = observeDestinationMailLabels(userId).first()
-            val color = observeFolderColorSettings(userId).first()
+            val destinationFolder = observeDestinationMailLabels(userId).firstOrNull()
+            val color = observeFolderColorSettings(userId).firstOrNull()
+
+            if (destinationFolder == null) {
+                emitNewStateFrom(MailboxEvent.ErrorRetrievingDestinationMailLabels)
+                return@launch
+            }
+
+            if (color == null) {
+                emitNewStateFrom(MailboxEvent.ErrorRetrievingFolderColorSettings)
+                return@launch
+            }
 
             val event = MailboxEvent.MailboxBottomSheetEvent(
                 MoveToBottomSheetState.MoveToBottomSheetEvent.ActionData(
