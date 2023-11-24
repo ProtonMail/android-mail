@@ -23,11 +23,11 @@ import javax.inject.Inject
 
 class LabelFormReducer @Inject constructor() {
 
-    internal fun newStateFrom(currentState: LabelFormState, operation: LabelFormEvent): LabelFormState {
-        return when (operation) {
-            is LabelFormEvent.LabelLoaded -> reduceLabelLoaded(operation)
-            is LabelFormEvent.UpdateLabelColor -> reduceUpdateLabelColor(currentState, operation.color)
-            is LabelFormEvent.UpdateLabelName -> reduceUpdateLabelName(currentState, operation.name)
+    internal fun newStateFrom(currentState: LabelFormState, event: LabelFormEvent): LabelFormState {
+        return when (event) {
+            is LabelFormEvent.LabelLoaded -> reduceLabelLoaded(event)
+            is LabelFormEvent.UpdateLabelColor -> reduceUpdateLabelColor(currentState, event.color)
+            is LabelFormEvent.UpdateLabelName -> reduceUpdateLabelName(currentState, event.name)
             LabelFormEvent.LabelCreated -> reduceLabelCreated(currentState)
             LabelFormEvent.LabelDeleted -> reduceLabelDeleted(currentState)
             LabelFormEvent.LabelUpdated -> reduceLabelUpdated(currentState)
@@ -38,21 +38,21 @@ class LabelFormReducer @Inject constructor() {
         }
     }
 
-    private fun reduceLabelLoaded(operation: LabelFormEvent.LabelLoaded): LabelFormState {
-        return if (operation.labelId != null) {
+    private fun reduceLabelLoaded(event: LabelFormEvent.LabelLoaded): LabelFormState {
+        return if (event.labelId != null) {
             LabelFormState.Data.Update(
-                isSaveEnabled = operation.name.isNotEmpty(),
-                labelId = operation.labelId,
-                name = operation.name,
-                color = operation.color,
-                colorList = operation.colorList
+                isSaveEnabled = event.name.isNotEmpty(),
+                labelId = event.labelId,
+                name = event.name,
+                color = event.color,
+                colorList = event.colorList
             )
         } else {
             LabelFormState.Data.Create(
-                isSaveEnabled = operation.name.isNotEmpty(),
-                name = operation.name,
-                color = operation.color,
-                colorList = operation.colorList
+                isSaveEnabled = event.name.isNotEmpty(),
+                name = event.name,
+                color = event.color,
+                colorList = event.colorList
             )
         }
     }

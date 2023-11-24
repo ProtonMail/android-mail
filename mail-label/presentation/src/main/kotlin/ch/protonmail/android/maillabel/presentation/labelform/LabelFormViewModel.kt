@@ -178,8 +178,8 @@ class LabelFormViewModel @Inject constructor(
 
     private suspend fun primaryUserId() = primaryUserId.first()
 
-    private fun emitNewStateFor(operation: LabelFormEvent) {
+    private fun emitNewStateFor(event: LabelFormEvent) {
         val currentState = state.value
-        mutableState.value = reducer.newStateFrom(currentState, operation)
+        mutableState.value = reducer.newStateFrom(currentState, event)
     }
 }

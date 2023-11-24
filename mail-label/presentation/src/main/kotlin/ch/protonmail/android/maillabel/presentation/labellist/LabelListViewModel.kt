@@ -57,13 +57,13 @@ class LabelListViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            flowLabelListOperation(userId = primaryUserId())
-                .onEach { labelListOperation -> emitNewStateFor(labelListOperation) }
+            flowLabelListEvent(userId = primaryUserId())
+                .onEach { labelListEvent -> emitNewStateFor(labelListEvent) }
                 .launchIn(viewModelScope)
         }
     }
 
-    private fun flowLabelListOperation(userId: UserId): Flow<LabelListEvent> {
+    private fun flowLabelListEvent(userId: UserId): Flow<LabelListEvent> {
         return observeLabels(userId, LabelType.MessageLabel).map { labels ->
             LabelListEvent.LabelListLoaded(
                 labelList = labels.getOrElse {
@@ -84,9 +84,9 @@ class LabelListViewModel @Inject constructor(
         }
     }
 
-    private fun emitNewStateFor(operation: LabelListEvent) {
+    private fun emitNewStateFor(event: LabelListEvent) {
         val currentState = state.value
-        mutableState.value = reducer.newStateFrom(currentState, operation)
+        mutableState.value = reducer.newStateFrom(currentState, event)
     }
 
     private suspend fun primaryUserId() = primaryUserId.first()

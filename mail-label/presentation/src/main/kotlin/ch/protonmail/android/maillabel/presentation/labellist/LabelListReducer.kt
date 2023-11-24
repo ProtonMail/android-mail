@@ -23,9 +23,9 @@ import javax.inject.Inject
 
 class LabelListReducer @Inject constructor() {
 
-    internal fun newStateFrom(currentState: LabelListState, operation: LabelListEvent): LabelListState {
-        return when (operation) {
-            is LabelListEvent.LabelListLoaded -> reduceLabelListLoaded(operation)
+    internal fun newStateFrom(currentState: LabelListState, event: LabelListEvent): LabelListState {
+        return when (event) {
+            is LabelListEvent.LabelListLoaded -> reduceLabelListLoaded(event)
             is LabelListEvent.ErrorLoadingLabelList -> LabelListState.Loading(errorLoading = Effect.of(Unit))
             is LabelListEvent.OpenLabelForm -> {
                 when (currentState) {
@@ -37,9 +37,9 @@ class LabelListReducer @Inject constructor() {
         }
     }
 
-    private fun reduceLabelListLoaded(operation: LabelListEvent.LabelListLoaded): LabelListState {
-        return if (operation.labelList.isNotEmpty()) {
-            LabelListState.ListLoaded.Data(labels = operation.labelList)
+    private fun reduceLabelListLoaded(event: LabelListEvent.LabelListLoaded): LabelListState {
+        return if (event.labelList.isNotEmpty()) {
+            LabelListState.ListLoaded.Data(labels = event.labelList)
         } else {
             LabelListState.ListLoaded.Empty()
         }
