@@ -186,7 +186,7 @@ fun MailboxScreen(
                     )
                 )
 
-                null -> {
+                else -> {
                     if (bottomSheetState.isVisible) {
                         ProtonCenteredProgress()
                     }

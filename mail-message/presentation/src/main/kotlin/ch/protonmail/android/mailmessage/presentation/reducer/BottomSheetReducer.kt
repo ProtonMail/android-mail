@@ -23,24 +23,27 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSh
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import javax.inject.Inject
 
 class BottomSheetReducer @Inject constructor(
     private val moveToBottomSheetReducer: MoveToBottomSheetReducer,
-    private val labelAsBottomSheetReducer: LabelAsBottomSheetReducer
+    private val labelAsBottomSheetReducer: LabelAsBottomSheetReducer,
+    private val moreActionsBottomSheetReducer: MoreActionsBottomSheetReducer
 ) {
 
     fun newStateFrom(currentState: BottomSheetState?, operation: BottomSheetOperation): BottomSheetState? {
         return when (operation) {
-            is MoveToBottomSheetState.MoveToBottomSheetOperation -> moveToBottomSheetReducer.newStateFrom(
-                currentState,
-                operation
-            )
-            is LabelAsBottomSheetState.LabelAsBottomSheetOperation -> labelAsBottomSheetReducer.newStateFrom(
-                currentState,
-                operation
-            )
+            is MoveToBottomSheetState.MoveToBottomSheetOperation ->
+                moveToBottomSheetReducer.newStateFrom(currentState, operation)
+
+            is LabelAsBottomSheetState.LabelAsBottomSheetOperation ->
+                labelAsBottomSheetReducer.newStateFrom(currentState, operation)
+
+            is MoreActionsBottomSheetState.MoreActionsBottomSheetOperation ->
+                moreActionsBottomSheetReducer.newStateFrom(currentState, operation)
+
             is BottomSheetOperation.Dismiss -> BottomSheetState(null, Effect.of(BottomSheetVisibilityEffect.Hide))
             is BottomSheetOperation.Requested -> BottomSheetState(null, Effect.of(BottomSheetVisibilityEffect.Show))
         }

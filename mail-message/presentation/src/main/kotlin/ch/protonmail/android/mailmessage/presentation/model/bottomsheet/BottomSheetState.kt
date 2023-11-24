@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailmessage.presentation.model.bottomsheet
 
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModelWithSelectedState
@@ -87,5 +88,16 @@ sealed interface LabelAsBottomSheetState : BottomSheetContentState {
 
     sealed interface LabelAsBottomSheetAction : LabelAsBottomSheetOperation {
         data class LabelToggled(val labelId: LabelId) : LabelAsBottomSheetAction
+    }
+}
+
+sealed interface MoreActionsBottomSheetState : BottomSheetContentState {
+
+    data class Data(val actionUiModels: ImmutableList<ActionUiModel>) : MoreActionsBottomSheetState
+    object Loading : MoreActionsBottomSheetState
+
+    sealed interface MoreActionsBottomSheetOperation : BottomSheetOperation
+    sealed interface MoreActionsBottomSheetEvent : MoreActionsBottomSheetOperation {
+        data class ActionData(val actionUiModels: ImmutableList<ActionUiModel>) : MoreActionsBottomSheetEvent
     }
 }

@@ -150,7 +150,7 @@ fun ConversationDetailScreen(
                     )
                 )
 
-                null -> {
+                else -> {
                     if (bottomSheetState.isVisible) {
                         ProtonCenteredProgress()
                     }
