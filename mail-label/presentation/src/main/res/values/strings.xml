@@ -40,8 +40,10 @@
     <string name="label_form_create_label">Create label</string>
     <string name="folder_form_create_folder">Create folder</string>
     <string name="label_form_edit_label">Edit label</string>
+    <string name="folder_form_edit_folder">Edit folder</string>
     <string name="label_form_save">Save</string>
     <string name="label_form_delete">Delete label</string>
+    <string name="folder_form_delete">Delete folder</string>
     <string name="label_name_title">Name</string>
     <string name="add_a_label_name_hint">Add a label name</string>
     <string name="add_a_folder_name_hint">Add a folder name</string>
@@ -71,4 +73,5 @@
     <string name="folder_form_no_parent">None</string>
     <string name="folder_form_notifications">Notifications</string>
     <string name="folder_saved">Folder saved</string>
+    <string name="folder_deleted">Folder deleted</string>
 </resources>

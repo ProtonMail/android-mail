@@ -32,8 +32,12 @@ import javax.inject.Inject
 
 class DeleteLabel @Inject constructor(private val labelRepository: LabelRepository) {
 
-    suspend operator fun invoke(userId: UserId, labelId: LabelId): Either<DataError, Unit> = Either.catch {
-        labelRepository.deleteLabel(userId, LabelType.MessageLabel, labelId)
+    suspend operator fun invoke(
+        userId: UserId,
+        labelId: LabelId,
+        labelType: LabelType
+    ): Either<DataError, Unit> = Either.catch {
+        labelRepository.deleteLabel(userId, labelType, labelId)
     }.mapLeft {
         val error = when (it) {
             is UnknownHostException -> NetworkError.NoNetwork

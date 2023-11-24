@@ -32,6 +32,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -51,7 +52,9 @@ import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.maillabel.presentation.getColorFromHexString
 import ch.protonmail.android.maillabel.presentation.previewdata.FolderFormPreviewData.createFolderFormState
+import ch.protonmail.android.maillabel.presentation.previewdata.FolderFormPreviewData.editFolderFormState
 import ch.protonmail.android.maillabel.presentation.ui.ColorPicker
+import ch.protonmail.android.maillabel.presentation.ui.FormDeleteButton
 import ch.protonmail.android.maillabel.presentation.ui.FormInputField
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonSettingsToggleItem
@@ -89,6 +92,10 @@ fun FolderFormScreen(actions: FolderFormScreen.Actions, viewModel: FolderFormVie
         onSaveClick = {
             dismissKeyboard(context, view, keyboardController)
             viewModel.submit(FolderFormViewAction.OnSaveClick)
+        },
+        onDeleteClick = {
+            dismissKeyboard(context, view, keyboardController)
+            viewModel.submit(FolderFormViewAction.OnDeleteClick)
         }
     )
 
@@ -182,6 +189,14 @@ fun FolderFormContent(
                 actions.onFolderColorChanged(it)
             }
         )
+        if (state is FolderFormState.Data.Update) {
+            FormDeleteButton(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally),
+                text = stringResource(id = R.string.folder_form_delete),
+                onClick = actions.onDeleteClick
+            )
+        }
     }
 }
 
@@ -228,6 +243,7 @@ fun FolderFormTopBar(
         title = {
             val title = when (state) {
                 is FolderFormState.Data.Create -> stringResource(id = R.string.folder_form_create_folder)
+                is FolderFormState.Data.Update -> stringResource(id = R.string.folder_form_edit_folder)
                 is FolderFormState.Loading -> ""
             }
             Text(text = title)
@@ -261,6 +277,8 @@ fun FolderFormTopBar(
 
 object FolderFormScreen {
 
+    const val FolderFormLabelIdKey = "folder_form_label_id"
+
     data class Actions(
         val onBackClick: () -> Unit,
         val exitWithSuccessMessage: (String) -> Unit,
@@ -268,7 +286,8 @@ object FolderFormScreen {
         val onFolderColorChanged: (Color) -> Unit,
         val onFolderNotificationsChanged: (Boolean) -> Unit,
         val onFolderParentClick: () -> Unit,
-        val onSaveClick: () -> Unit
+        val onSaveClick: () -> Unit,
+        val onDeleteClick: () -> Unit
     ) {
 
         companion object {
@@ -280,7 +299,8 @@ object FolderFormScreen {
                 onFolderColorChanged = {},
                 onFolderNotificationsChanged = {},
                 onFolderParentClick = {},
-                onSaveClick = {}
+                onSaveClick = {},
+                onDeleteClick = {}
             )
         }
     }
@@ -297,9 +317,28 @@ private fun CreateFolderFormScreenPreview() {
 
 @Composable
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
+private fun EditFolderFormScreenPreview() {
+    FolderFormContent(
+        state = editFolderFormState,
+        actions = FolderFormScreen.Actions.Empty
+    )
+}
+
+@Composable
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 private fun CreateFolderFormTopBarPreview() {
     FolderFormTopBar(
         state = createFolderFormState,
+        onCloseFolderFormClick = {},
+        onSaveFolderClick = {}
+    )
+}
+
+@Composable
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
+private fun EditFolderFormTopBarPreview() {
+    FolderFormTopBar(
+        state = editFolderFormState,
         onCloseFolderFormClick = {},
         onSaveFolderClick = {}
     )

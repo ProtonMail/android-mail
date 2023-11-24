@@ -67,7 +67,7 @@ class LabelFormViewModel @Inject constructor(
     val state: StateFlow<LabelFormState> = mutableState
 
     init {
-        val labelId = savedStateHandle.get<String>(LabelFormScreen.LabelIdKey)
+        val labelId = savedStateHandle.get<String>(LabelFormScreen.LabelFormLabelIdKey)
         viewModelScope.launch {
             val colors = getLabelColors().map {
                 it.getColorFromHexString()
@@ -177,7 +177,7 @@ class LabelFormViewModel @Inject constructor(
     }
 
     private suspend fun deleteLabel(labelId: LabelId) {
-        deleteLabel(primaryUserId(), labelId)
+        deleteLabel(primaryUserId(), labelId, LabelType.MessageLabel)
         emitNewStateFor(LabelFormEvent.LabelDeleted)
     }
 

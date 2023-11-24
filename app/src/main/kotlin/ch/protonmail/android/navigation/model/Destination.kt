@@ -25,7 +25,8 @@ import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.DraftMe
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.SerializedDraftActionKey
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.ConversationIdKey
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen.MESSAGE_ID_KEY
-import ch.protonmail.android.maillabel.presentation.labelform.LabelFormScreen.LabelIdKey
+import ch.protonmail.android.maillabel.presentation.folderform.FolderFormScreen.FolderFormLabelIdKey
+import ch.protonmail.android.maillabel.presentation.labelform.LabelFormScreen.LabelFormLabelIdKey
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailsettings.domain.model.SwipeActionDirection
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.EditSwipeActionPreferenceScreen.SWIPE_DIRECTION_KEY
@@ -77,11 +78,14 @@ sealed class Destination(val route: String) {
         object DeepLinksHandler : Destination("deepLinksHandler")
         object LabelList : Destination("labelList")
         object CreateLabel : Destination("labelForm")
-        object EditLabel : Destination("labelForm/${LabelIdKey.wrap()}") {
-            operator fun invoke(labelId: LabelId) = route.replace(LabelIdKey.wrap(), labelId.id)
+        object EditLabel : Destination("labelForm/${LabelFormLabelIdKey.wrap()}") {
+            operator fun invoke(labelId: LabelId) = route.replace(LabelFormLabelIdKey.wrap(), labelId.id)
         }
         object FolderList : Destination("folderList")
         object CreateFolder : Destination("folderForm")
+        object EditFolder : Destination("folderForm/${FolderFormLabelIdKey.wrap()}") {
+            operator fun invoke(labelId: LabelId) = route.replace(FolderFormLabelIdKey.wrap(), labelId.id)
+        }
     }
 
     object Dialog {

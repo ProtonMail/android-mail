@@ -27,8 +27,10 @@ sealed interface FolderFormOperation
 internal sealed interface FolderFormViewAction : FolderFormOperation {
     data class FolderNameChanged(val name: String) : FolderFormViewAction
     data class FolderColorChanged(val color: Color) : FolderFormViewAction
+    data class FolderParentChanged(val parentId: LabelId) : FolderFormViewAction
     data class FolderNotificationsChanged(val enabled: Boolean) : FolderFormViewAction
     object OnSaveClick : FolderFormViewAction
+    object OnDeleteClick : FolderFormViewAction
     object OnCloseFolderFormClick : FolderFormViewAction
 }
 
@@ -49,10 +51,15 @@ sealed interface FolderFormEvent : FolderFormOperation {
     data class UpdateFolderColor(
         val color: String
     ) : FolderFormEvent
+    data class UpdateFolderParent(
+        val parent: Label?
+    ) : FolderFormEvent
     data class UpdateFolderNotifications(
         val enabled: Boolean
     ) : FolderFormEvent
     object FolderCreated : FolderFormEvent
+    object FolderUpdated : FolderFormEvent
+    object FolderDeleted : FolderFormEvent
     object FolderAlreadyExists : FolderFormEvent
     object FolderLimitReached : FolderFormEvent
     object SaveFolderError : FolderFormEvent

@@ -250,7 +250,7 @@ fun LabelFormTopBar(
 
 object LabelFormScreen {
 
-    const val LabelIdKey = "label_id"
+    const val LabelFormLabelIdKey = "label_form_label_id"
 
     data class Actions(
         val onBackClick: () -> Unit,

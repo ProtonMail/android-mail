@@ -18,14 +18,18 @@
 
 package ch.protonmail.android.maillabel.presentation.folderform
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.maillabel.domain.usecase.CreateFolder
+import ch.protonmail.android.maillabel.domain.usecase.DeleteLabel
+import ch.protonmail.android.maillabel.domain.usecase.GetLabel
 import ch.protonmail.android.maillabel.domain.usecase.GetLabelColors
 import ch.protonmail.android.maillabel.domain.usecase.IsLabelLimitReached
 import ch.protonmail.android.maillabel.domain.usecase.IsLabelNameAllowed
+import ch.protonmail.android.maillabel.domain.usecase.UpdateLabel
 import ch.protonmail.android.maillabel.presentation.getColorFromHexString
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
@@ -39,17 +43,22 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
+import me.proton.core.util.kotlin.equalsNoCase
 import javax.inject.Inject
 
 @HiltViewModel
 class FolderFormViewModel @Inject constructor(
+    private val getLabel: GetLabel,
     private val createFolder: CreateFolder,
+    private val updateLabel: UpdateLabel,
+    private val deleteLabel: DeleteLabel,
     private val getLabelColors: GetLabelColors,
     private val isLabelNameAllowed: IsLabelNameAllowed,
     private val isLabelLimitReached: IsLabelLimitReached,
     private val observeFolderColorSettings: ObserveFolderColorSettings,
     private val reducer: FolderFormReducer,
-    observePrimaryUserId: ObservePrimaryUserId
+    observePrimaryUserId: ObservePrimaryUserId,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     val initialState: FolderFormState = FolderFormState.Loading()
@@ -60,23 +69,52 @@ class FolderFormViewModel @Inject constructor(
     val state: StateFlow<FolderFormState> = mutableState
 
     init {
+        val labelId = savedStateHandle.get<String>(FolderFormScreen.FolderFormLabelIdKey)
         viewModelScope.launch {
             val colors = getLabelColors().map {
                 it.getColorFromHexString()
             }
             val folderColorSettings = observeFolderColorSettings(primaryUserId()).filterNotNull().first()
-            emitNewStateFor(
-                FolderFormEvent.FolderLoaded(
-                    labelId = null,
-                    name = "",
-                    color = colors.random().getHexStringFromColor(),
-                    parent = null,
-                    notifications = true,
-                    colorList = colors,
-                    useFolderColor = folderColorSettings.useFolderColor,
-                    inheritParentFolderColor = folderColorSettings.inheritParentFolderColor
+            if (labelId != null) {
+                getLabel(
+                    userId = primaryUserId(),
+                    labelId = LabelId(labelId),
+                    labelType = LabelType.MessageFolder
+                ).getOrNull()?.let { label ->
+                    val parent = label.parentId?.let { parentId ->
+                        getLabel(
+                            userId = primaryUserId(),
+                            labelId = parentId,
+                            labelType = LabelType.MessageFolder
+                        ).getOrNull()
+                    }
+                    emitNewStateFor(
+                        FolderFormEvent.FolderLoaded(
+                            labelId = label.labelId,
+                            name = label.name,
+                            color = label.color,
+                            parent = parent,
+                            notifications = label.isNotified ?: true,
+                            colorList = colors,
+                            useFolderColor = folderColorSettings.useFolderColor,
+                            inheritParentFolderColor = folderColorSettings.inheritParentFolderColor
+                        )
+                    )
+                }
+            } else {
+                emitNewStateFor(
+                    FolderFormEvent.FolderLoaded(
+                        labelId = null,
+                        name = "",
+                        color = colors.random().getHexStringFromColor(),
+                        parent = null,
+                        notifications = true,
+                        colorList = colors,
+                        useFolderColor = folderColorSettings.useFolderColor,
+                        inheritParentFolderColor = folderColorSettings.inheritParentFolderColor
+                    )
                 )
-            )
+            }
         }
     }
 
@@ -93,10 +131,27 @@ class FolderFormViewModel @Inject constructor(
                     is FolderFormViewAction.FolderNotificationsChanged -> emitNewStateFor(
                         FolderFormEvent.UpdateFolderNotifications(action.enabled)
                     )
+                    is FolderFormViewAction.FolderParentChanged -> handleFolderParentChanged(action.parentId)
                     FolderFormViewAction.OnCloseFolderFormClick -> emitNewStateFor(FolderFormEvent.CloseFolderForm)
+                    FolderFormViewAction.OnDeleteClick -> handleOnDeleteClick()
                     FolderFormViewAction.OnSaveClick -> handleOnSaveClick()
                 }
             }
+        }
+    }
+
+    private fun handleFolderParentChanged(parentId: LabelId?) {
+        if (parentId == null) return emitNewStateFor(FolderFormEvent.UpdateFolderParent(null))
+        viewModelScope.launch {
+            emitNewStateFor(
+                FolderFormEvent.UpdateFolderParent(
+                    getLabel(
+                        userId = primaryUserId(),
+                        labelId = parentId,
+                        labelType = LabelType.MessageFolder
+                    ).getOrNull()
+                )
+            )
         }
     }
 
@@ -110,7 +165,23 @@ class FolderFormViewModel @Inject constructor(
                     currentState.notifications
                 )
             }
+            is FolderFormState.Data.Update -> {
+                editFolder(
+                    currentState.labelId,
+                    currentState.name,
+                    currentState.color,
+                    currentState.parent?.labelId,
+                    currentState.notifications
+                )
+            }
             is FolderFormState.Loading -> {}
+        }
+    }
+
+    private suspend fun handleOnDeleteClick() {
+        val currentState = state.value
+        if (currentState is FolderFormState.Data.Update) {
+            deleteFolder(currentState.labelId)
         }
     }
 
@@ -133,6 +204,38 @@ class FolderFormViewModel @Inject constructor(
 
         createFolder(primaryUserId(), name, color, parentId, notifications)
         emitNewStateFor(FolderFormEvent.FolderCreated)
+    }
+
+    private suspend fun editFolder(
+        labelId: LabelId,
+        name: String,
+        color: String,
+        parentId: LabelId?,
+        notifications: Boolean
+    ) {
+        getLabel(primaryUserId(), labelId, LabelType.MessageFolder).getOrNull()?.let { label ->
+            if (!name.equalsNoCase(label.name)) {
+                val isFolderNameAllowed = isLabelNameAllowed(primaryUserId(), name).getOrElse {
+                    return emitNewStateFor(FolderFormEvent.SaveFolderError)
+                }
+                if (!isFolderNameAllowed) return emitNewStateFor(FolderFormEvent.FolderAlreadyExists)
+            }
+            updateLabel(
+                primaryUserId(),
+                label.copy(
+                    name = name,
+                    color = color,
+                    parentId = parentId,
+                    isNotified = notifications
+                )
+            )
+        }
+        emitNewStateFor(FolderFormEvent.FolderUpdated)
+    }
+
+    private suspend fun deleteFolder(labelId: LabelId) {
+        deleteLabel(primaryUserId(), labelId, LabelType.MessageFolder)
+        emitNewStateFor(FolderFormEvent.FolderDeleted)
     }
 
     private suspend fun primaryUserId() = primaryUserId.first()

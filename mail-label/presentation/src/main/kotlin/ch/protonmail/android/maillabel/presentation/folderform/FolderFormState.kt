@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import me.proton.core.label.domain.entity.Label
+import me.proton.core.label.domain.entity.LabelId
 
 sealed interface FolderFormState {
 
@@ -55,6 +56,20 @@ sealed interface FolderFormState {
             override val close: Effect<Unit> = Effect.empty(),
             override val closeWithSuccess: Effect<TextUiModel> = Effect.empty(),
             override val showErrorSnackbar: Effect<TextUiModel> = Effect.empty()
+        ) : Data
+
+        data class Update(
+            override val isSaveEnabled: Boolean,
+            override val name: String,
+            override val color: String,
+            override val parent: Label?,
+            override val notifications: Boolean,
+            override val colorList: List<Color>,
+            override val openParentFolderList: Effect<Unit> = Effect.empty(),
+            override val close: Effect<Unit> = Effect.empty(),
+            override val closeWithSuccess: Effect<TextUiModel> = Effect.empty(),
+            override val showErrorSnackbar: Effect<TextUiModel> = Effect.empty(),
+            val labelId: LabelId
         ) : Data
     }
 }

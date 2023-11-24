@@ -255,7 +255,9 @@ internal fun NavGraphBuilder.addFolderList(
                 onBackClick = {
                     navController.popBackStack()
                 },
-                onFolderSelected = {},
+                onFolderSelected = { labelId ->
+                    navController.navigate(Destination.Screen.EditFolder(labelId))
+                },
                 onAddFolderClick = {
                     navController.navigate(Destination.Screen.CreateFolder.route)
                 },
@@ -284,5 +286,6 @@ internal fun NavGraphBuilder.addFolderForm(
         }
     )
     composable(route = Destination.Screen.CreateFolder.route) { FolderFormScreen(actions) }
+    composable(route = Destination.Screen.EditFolder.route) { FolderFormScreen(actions) }
 }
 
