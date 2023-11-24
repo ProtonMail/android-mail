@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.mailcomposer.presentation.usecase
 
-import androidx.core.text.HtmlCompat
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
@@ -29,16 +28,14 @@ import ch.protonmail.android.mailsettings.domain.model.MobileFooter
 import ch.protonmail.android.mailsettings.domain.model.Signature
 import ch.protonmail.android.mailsettings.domain.model.SignatureValue
 import ch.protonmail.android.mailsettings.domain.usecase.identity.GetAddressSignature
+import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.toPlainText
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.usecase.GetMobileFooter
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
-import io.mockk.mockkStatic
 import io.mockk.unmockkAll
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import org.junit.After
-import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -51,13 +48,6 @@ class InjectAddressSignatureTest {
 
     private val paidMobileFooter = ""
     private val freeMobileFooter = "Sent from Proton Mail Android"
-
-    @Before
-    fun setup() {
-        mockkStatic(HtmlCompat::class)
-        every { HtmlCompat.fromHtml(any(), any()).toString() } returns "HTML signature"
-        every { HtmlCompat.fromHtml("", any()).toString() } returns ""
-    }
 
     @After
     fun teardown() {

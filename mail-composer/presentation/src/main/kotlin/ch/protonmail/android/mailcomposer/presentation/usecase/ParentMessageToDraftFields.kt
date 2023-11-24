@@ -47,6 +47,7 @@ import ch.protonmail.android.mailsettings.domain.model.MobileFooter
 import ch.protonmail.android.mailsettings.domain.model.Signature
 import ch.protonmail.android.mailsettings.domain.model.SignatureValue
 import ch.protonmail.android.mailsettings.domain.usecase.identity.GetAddressSignature
+import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.toPlainText
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.usecase.GetMobileFooter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.firstOrNull

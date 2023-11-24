@@ -16,19 +16,9 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailsettings.domain.model
+package ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model
 
-@JvmInline
-value class DisplayName(val value: String)
+import ch.protonmail.android.mailsettings.domain.model.SignatureValue
+import org.jsoup.Jsoup
 
-@JvmInline
-value class SignatureValue(val text: String)
-
-data class Signature(val enabled: Boolean, val value: SignatureValue)
-
-sealed class MobileFooter(val value: String, val enabled: Boolean, val editable: Boolean) {
-
-    class PaidUserMobileFooter(value: String, enabled: Boolean) : MobileFooter(value, enabled, editable = true)
-
-    class FreeUserMobileFooter(value: String) : MobileFooter(value, enabled = true, editable = false)
-}
+fun SignatureValue.toPlainText(): String = Jsoup.parse(text).wholeText()
