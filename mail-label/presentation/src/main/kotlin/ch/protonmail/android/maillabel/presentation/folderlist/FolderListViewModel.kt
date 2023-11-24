@@ -65,29 +65,9 @@ class FolderListViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            flowFolderListOperation(userId = primaryUserId())
-                .onEach { folderListOperation -> emitNewStateFor(folderListOperation) }
+            flowFolderListEvent(userId = primaryUserId())
+                .onEach { folderListEvent -> emitNewStateFor(folderListEvent) }
                 .launchIn(viewModelScope)
-        }
-    }
-
-    private fun flowFolderListOperation(userId: UserId): Flow<FolderListEvent> {
-        return combine(
-            observeLabels(userId, LabelType.MessageFolder),
-            observeFolderColorSettings(userId)
-        ) { folders, folderColorSettings ->
-            folders.map {
-                FolderListEvent.FolderListLoaded(
-                    folderList = it.toMailLabelCustom(),
-                    useFolderColor = folderColorSettings.useFolderColor,
-                    inheritParentFolderColor = folderColorSettings.inheritParentFolderColor
-                )
-            }
-        }.map {
-            it.getOrElse {
-                Timber.e("Error while observing custom folders")
-                return@map FolderListEvent.ErrorLoadingFolderList
-            }
         }
     }
 
@@ -107,6 +87,26 @@ class FolderListViewModel @Inject constructor(
         }
     }
 
+    private fun flowFolderListEvent(userId: UserId): Flow<FolderListEvent> {
+        return combine(
+            observeLabels(userId, LabelType.MessageFolder),
+            observeFolderColorSettings(userId)
+        ) { folders, folderColorSettings ->
+            folders.map {
+                FolderListEvent.FolderListLoaded(
+                    folderList = it.toMailLabelCustom(),
+                    useFolderColor = folderColorSettings.useFolderColor,
+                    inheritParentFolderColor = folderColorSettings.inheritParentFolderColor
+                )
+            }
+        }.map {
+            it.getOrElse {
+                Timber.e("Error while observing custom folders")
+                return@map FolderListEvent.ErrorLoadingFolderList
+            }
+        }
+    }
+
     private suspend fun handleUseFolderColor(useFolderColor: Boolean) {
         updateEnableFolderColor(primaryUserId(), useFolderColor)
         emitNewStateFor(FolderListEvent.UseFolderColorChanged(useFolderColor))
@@ -117,9 +117,9 @@ class FolderListViewModel @Inject constructor(
         emitNewStateFor(FolderListEvent.InheritParentFolderColorChanged(inheritParentFolderColor))
     }
 
-    private fun emitNewStateFor(operation: FolderListEvent) {
+    private fun emitNewStateFor(event: FolderListEvent) {
         val currentState = state.value
-        mutableState.value = reducer.newStateFrom(currentState, operation)
+        mutableState.value = reducer.newStateFrom(currentState, event)
     }
 
     private suspend fun primaryUserId() = primaryUserId.first()

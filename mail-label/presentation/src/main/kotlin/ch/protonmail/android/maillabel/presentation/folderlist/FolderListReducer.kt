@@ -23,51 +23,51 @@ import javax.inject.Inject
 
 class FolderListReducer @Inject constructor() {
 
-    internal fun newStateFrom(currentState: FolderListState, operation: FolderListEvent): FolderListState {
-        return when (operation) {
-            is FolderListEvent.FolderListLoaded -> reduceFolderListLoaded(currentState, operation)
+    internal fun newStateFrom(currentState: FolderListState, event: FolderListEvent): FolderListState {
+        return when (event) {
+            is FolderListEvent.FolderListLoaded -> reduceFolderListLoaded(currentState, event)
             is FolderListEvent.ErrorLoadingFolderList -> FolderListState.Loading(errorLoading = Effect.of(Unit))
             is FolderListEvent.OpenFolderForm -> reduceOpenFolderForm(currentState)
             is FolderListEvent.DismissSettings -> reduceDismissSettings(currentState)
             is FolderListEvent.OpenSettings -> reduceOpenSettings(currentState)
-            is FolderListEvent.UseFolderColorChanged -> reduceUseFolderColorChanged(currentState, operation)
+            is FolderListEvent.UseFolderColorChanged -> reduceUseFolderColorChanged(currentState, event)
             is FolderListEvent.InheritParentFolderColorChanged -> {
-                reduceInheritParentFolderColorChanged(currentState, operation)
+                reduceInheritParentFolderColorChanged(currentState, event)
             }
         }
     }
 
     private fun reduceFolderListLoaded(
         currentState: FolderListState,
-        operation: FolderListEvent.FolderListLoaded
+        event: FolderListEvent.FolderListLoaded
     ): FolderListState {
         return when (currentState) {
             is FolderListState.Loading -> {
-                if (operation.folderList.isNotEmpty()) {
+                if (event.folderList.isNotEmpty()) {
                     FolderListState.ListLoaded.Data(
-                        useFolderColor = operation.useFolderColor,
-                        inheritParentFolderColor = operation.inheritParentFolderColor,
-                        folders = operation.folderList
+                        useFolderColor = event.useFolderColor,
+                        inheritParentFolderColor = event.inheritParentFolderColor,
+                        folders = event.folderList
                     )
                 } else FolderListState.ListLoaded.Empty(
-                    useFolderColor = operation.useFolderColor,
-                    inheritParentFolderColor = operation.inheritParentFolderColor
+                    useFolderColor = event.useFolderColor,
+                    inheritParentFolderColor = event.inheritParentFolderColor
                 )
             }
             is FolderListState.ListLoaded -> {
-                if (operation.folderList.isNotEmpty()) {
+                if (event.folderList.isNotEmpty()) {
                     FolderListState.ListLoaded.Data(
                         bottomSheetVisibilityEffect = currentState.bottomSheetVisibilityEffect,
-                        useFolderColor = operation.useFolderColor,
-                        inheritParentFolderColor = operation.inheritParentFolderColor,
+                        useFolderColor = event.useFolderColor,
+                        inheritParentFolderColor = event.inheritParentFolderColor,
                         openFolderForm = currentState.openFolderForm,
-                        folders = operation.folderList
+                        folders = event.folderList
                     )
                 } else {
                     FolderListState.ListLoaded.Empty(
                         bottomSheetVisibilityEffect = currentState.bottomSheetVisibilityEffect,
-                        useFolderColor = operation.useFolderColor,
-                        inheritParentFolderColor = operation.inheritParentFolderColor,
+                        useFolderColor = event.useFolderColor,
+                        inheritParentFolderColor = event.inheritParentFolderColor,
                         openFolderForm = currentState.openFolderForm
                     )
                 }
@@ -109,23 +109,23 @@ class FolderListReducer @Inject constructor() {
 
     private fun reduceUseFolderColorChanged(
         currentState: FolderListState,
-        operation: FolderListEvent.UseFolderColorChanged
+        event: FolderListEvent.UseFolderColorChanged
     ): FolderListState {
         return when (currentState) {
-            is FolderListState.ListLoaded.Data -> currentState.copy(useFolderColor = operation.useFolderColor)
-            is FolderListState.ListLoaded.Empty -> currentState.copy(useFolderColor = operation.useFolderColor)
+            is FolderListState.ListLoaded.Data -> currentState.copy(useFolderColor = event.useFolderColor)
+            is FolderListState.ListLoaded.Empty -> currentState.copy(useFolderColor = event.useFolderColor)
             is FolderListState.Loading -> currentState
         }
     }
 
     private fun reduceInheritParentFolderColorChanged(
         currentState: FolderListState,
-        operation: FolderListEvent.InheritParentFolderColorChanged
+        event: FolderListEvent.InheritParentFolderColorChanged
     ): FolderListState {
         return when (currentState) {
-            is FolderListState.ListLoaded.Data -> currentState.copy(useFolderColor = operation.inheritParentFolderColor)
+            is FolderListState.ListLoaded.Data -> currentState.copy(useFolderColor = event.inheritParentFolderColor)
             is FolderListState.ListLoaded.Empty -> {
-                currentState.copy(useFolderColor = operation.inheritParentFolderColor)
+                currentState.copy(useFolderColor = event.inheritParentFolderColor)
             }
             is FolderListState.Loading -> currentState
         }

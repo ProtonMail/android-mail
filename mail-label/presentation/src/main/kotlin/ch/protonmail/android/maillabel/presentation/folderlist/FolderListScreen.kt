@@ -48,11 +48,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -89,10 +85,7 @@ import me.proton.core.label.domain.entity.LabelId
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun FolderListScreen(actions: FolderListScreen.Actions, viewModel: FolderListViewModel = hiltViewModel()) {
-    val state = rememberAsState(
-        flow = viewModel.state,
-        initial = viewModel.initialState
-    ).value
+    val state = rememberAsState(flow = viewModel.state, initial = viewModel.initialState).value
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
 
@@ -135,50 +128,48 @@ fun FolderListScreen(actions: FolderListScreen.Actions, viewModel: FolderListVie
         Scaffold(
             topBar = {
                 FolderListTopBar(
-                    actions = actions,
-                    onAddFolderClick = { viewModel.submit(FolderListViewAction.OnAddFolderClick) },
-                    onFolderSettingsClick = { viewModel.submit(FolderListViewAction.OnOpenSettingsClick) },
+                    actions = FolderListTopBar.Actions(
+                        onBackClick = actions.onBackClick,
+                        onAddFolderClick = { viewModel.submit(FolderListViewAction.OnAddFolderClick) },
+                        onFolderSettingsClick = { viewModel.submit(FolderListViewAction.OnOpenSettingsClick) }
+                    ),
                     isAddFolderButtonVisible = state is FolderListState.ListLoaded.Data,
                     isSettingsButtonVisible = state is FolderListState.ListLoaded
                 )
             },
             content = { paddingValues ->
+                if (state is FolderListState.ListLoaded) {
+                    ConsumableLaunchedEffect(effect = state.openFolderForm) {
+                        actions.onAddFolderClick()
+                    }
+                    ConsumableLaunchedEffect(effect = state.bottomSheetVisibilityEffect) {
+                        when (it) {
+                            BottomSheetVisibilityEffect.Hide -> scope.launch { bottomSheetState.hide() }
+                            BottomSheetVisibilityEffect.Show -> scope.launch { bottomSheetState.show() }
+                        }
+                    }
+                }
                 when (state) {
                     is FolderListState.ListLoaded.Data -> {
                         FolderListScreenContent(
+                            modifier = Modifier.padding(
+                                PaddingValues(
+                                    start = paddingValues.calculateStartPadding(LocalLayoutDirection.current),
+                                    top = paddingValues.calculateTopPadding() + ProtonDimens.SmallSpacing,
+                                    end = paddingValues.calculateEndPadding(LocalLayoutDirection.current),
+                                    bottom = paddingValues.calculateBottomPadding()
+                                )
+                            ),
                             state = state,
-                            actions = actions,
-                            paddingValues = paddingValues
+                            actions = actions
                         )
-
-                        ConsumableLaunchedEffect(effect = state.openFolderForm) {
-                            actions.onAddFolderClick()
-                        }
-                        ConsumableLaunchedEffect(effect = state.bottomSheetVisibilityEffect) {
-                            when (it) {
-                                BottomSheetVisibilityEffect.Hide -> scope.launch { bottomSheetState.hide() }
-                                BottomSheetVisibilityEffect.Show -> scope.launch { bottomSheetState.show() }
-                            }
-                        }
                     }
-
                     is FolderListState.ListLoaded.Empty -> {
                         EmptyFolderListScreen(
-                            onAddFolderClick = { viewModel.submit(FolderListViewAction.OnAddFolderClick) },
-                            paddingValues = paddingValues
+                            modifier = Modifier.padding(paddingValues),
+                            onAddFolderClick = { viewModel.submit(FolderListViewAction.OnAddFolderClick) }
                         )
-
-                        ConsumableLaunchedEffect(effect = state.openFolderForm) {
-                            actions.onAddFolderClick()
-                        }
-                        ConsumableLaunchedEffect(effect = state.bottomSheetVisibilityEffect) {
-                            when (it) {
-                                BottomSheetVisibilityEffect.Hide -> scope.launch { bottomSheetState.hide() }
-                                BottomSheetVisibilityEffect.Show -> scope.launch { bottomSheetState.show() }
-                            }
-                        }
                     }
-
                     is FolderListState.Loading -> {
                         ProtonCenteredProgress(
                             modifier = Modifier
@@ -205,77 +196,81 @@ fun FolderSettingsScreen(
     onChangeInheritParentFolderColor: (Boolean) -> Unit,
     onDoneClick: () -> Unit
 ) {
-    var useFolderColorState by remember { mutableStateOf(state.useFolderColor) }
-    var inheritParentFolderColorState by remember { mutableStateOf(state.inheritParentFolderColor) }
-
     Column {
-        Row(
+        FolderSettingsHeader(onDoneClick)
+        UseFolderColorSetting(state, onChangeUseFolderColor)
+        InheritParentFolderColorSetting(state, onChangeInheritParentFolderColor)
+    }
+}
+
+@Composable
+fun FolderSettingsHeader(onDoneClick: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .padding(ProtonDimens.DefaultSpacing)
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = stringResource(id = R.string.folder_settings_title),
+            style = ProtonTheme.typography.defaultNorm
+        )
+        Text(
             modifier = Modifier
-                .padding(ProtonDimens.DefaultSpacing)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                text = stringResource(id = R.string.folder_settings_title),
-                style = ProtonTheme.typography.defaultNorm
-            )
-            Text(
-                modifier = Modifier
-                    .clickable { onDoneClick() },
-                text = stringResource(id = R.string.folder_settings_done_button),
-                style = ProtonTheme.typography.defaultUnspecified,
-                color = ProtonTheme.colors.interactionNorm()
-            )
+                .clickable { onDoneClick() },
+            text = stringResource(id = R.string.folder_settings_done_button),
+            style = ProtonTheme.typography.defaultUnspecified,
+            color = ProtonTheme.colors.interactionNorm()
+        )
+    }
+    Divider()
+}
+
+@Composable
+fun UseFolderColorSetting(state: FolderListState.ListLoaded, onChangeUseFolderColor: (Boolean) -> Unit) {
+    val useFolderColorHintResId =
+        if (state.useFolderColor) R.string.folder_settings_switch_on
+        else R.string.folder_settings_switch_off
+    ProtonSettingsToggleItem(
+        name = stringResource(id = R.string.folder_settings_folder_colors),
+        hint = stringResource(id = useFolderColorHintResId),
+        value = state.useFolderColor,
+        onToggle = {
+            onChangeUseFolderColor(!state.useFolderColor)
         }
+    )
+}
+
+@Composable
+fun InheritParentFolderColorSetting(
+    state: FolderListState.ListLoaded,
+    onChangeInheritParentFolderColor: (Boolean) -> Unit
+) {
+    AnimatedVisibility(visible = state.useFolderColor) {
         Divider()
-        val useFolderColorHintResId =
-            if (useFolderColorState) R.string.folder_settings_switch_on
+        val inheritParentFolderColorHintResId =
+            if (state.inheritParentFolderColor) R.string.folder_settings_switch_on
             else R.string.folder_settings_switch_off
         ProtonSettingsToggleItem(
-            name = stringResource(id = R.string.folder_settings_folder_colors),
-            hint = stringResource(id = useFolderColorHintResId),
-            value = useFolderColorState,
+            name = stringResource(id = R.string.folder_settings_parent_color),
+            hint = stringResource(id = inheritParentFolderColorHintResId),
+            value = state.inheritParentFolderColor,
             onToggle = {
-                useFolderColorState = !useFolderColorState
-                onChangeUseFolderColor(useFolderColorState)
+                onChangeInheritParentFolderColor(!state.inheritParentFolderColor)
             }
         )
-        AnimatedVisibility(visible = useFolderColorState) {
-            Divider()
-            val inheritParentFolderColorHintResId =
-                if (inheritParentFolderColorState) R.string.folder_settings_switch_on
-                else R.string.folder_settings_switch_off
-            ProtonSettingsToggleItem(
-                name = stringResource(id = R.string.folder_settings_parent_color),
-                hint = stringResource(id = inheritParentFolderColorHintResId),
-                value = inheritParentFolderColorState,
-                onToggle = {
-                    inheritParentFolderColorState = !inheritParentFolderColorState
-                    onChangeInheritParentFolderColor(inheritParentFolderColorState)
-                }
-            )
-        }
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun FolderListScreenContent(
+    modifier: Modifier = Modifier,
     state: FolderListState.ListLoaded.Data,
-    actions: FolderListScreen.Actions,
-    paddingValues: PaddingValues
+    actions: FolderListScreen.Actions
 ) {
     LazyColumn(
-        modifier = Modifier
-            .padding(
-                PaddingValues(
-                    start = paddingValues.calculateStartPadding(LocalLayoutDirection.current),
-                    top = paddingValues.calculateTopPadding() + ProtonDimens.SmallSpacing,
-                    end = paddingValues.calculateEndPadding(LocalLayoutDirection.current),
-                    bottom = paddingValues.calculateBottomPadding()
-                )
-            )
-            .fillMaxSize()
+        modifier = modifier.fillMaxSize()
     ) {
         itemsIndexed(state.folders) { index, folder ->
             if (index != 0 && folder.parent == null) {
@@ -286,7 +281,6 @@ fun FolderListScreenContent(
                     .fillMaxWidth()
                     .animateItemPlacement()
                     .clickable(
-                        onClickLabel = stringResource(R.string.folder_list_item_content_description),
                         role = Role.Button,
                         onClick = {
                             actions.onFolderSelected(folder.id.labelId)
@@ -322,7 +316,7 @@ fun FolderListScreenContent(
                     ),
                     painter = painterResource(id = iconResId),
                     tint = iconTint,
-                    contentDescription = stringResource(R.string.add_folder_content_description)
+                    contentDescription = NO_CONTENT_DESCRIPTION
                 )
                 Text(
                     text = folder.text,
@@ -340,11 +334,9 @@ fun FolderListScreenContent(
 }
 
 @Composable
-fun EmptyFolderListScreen(onAddFolderClick: () -> Unit, paddingValues: PaddingValues) {
+fun EmptyFolderListScreen(modifier: Modifier = Modifier, onAddFolderClick: () -> Unit) {
     Column(
-        modifier = Modifier
-            .padding(paddingValues)
-            .fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -394,14 +386,13 @@ fun EmptyFolderListScreen(onAddFolderClick: () -> Unit, paddingValues: PaddingVa
 
 @Composable
 fun FolderListTopBar(
-    actions: FolderListScreen.Actions,
-    onAddFolderClick: () -> Unit,
-    onFolderSettingsClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    actions: FolderListTopBar.Actions,
     isAddFolderButtonVisible: Boolean,
     isSettingsButtonVisible: Boolean
 ) {
     ProtonTopAppBar(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         title = {
             Text(text = stringResource(id = R.string.label_title_folders))
         },
@@ -416,7 +407,7 @@ fun FolderListTopBar(
         },
         actions = {
             if (isAddFolderButtonVisible) {
-                IconButton(onClick = onAddFolderClick) {
+                IconButton(onClick = actions.onAddFolderClick) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_proton_plus),
                         tint = ProtonTheme.colors.iconNorm,
@@ -425,7 +416,7 @@ fun FolderListTopBar(
                 }
             }
             if (isSettingsButtonVisible) {
-                IconButton(onClick = onFolderSettingsClick) {
+                IconButton(onClick = actions.onFolderSettingsClick) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_proton_cog_wheel),
                         tint = ProtonTheme.colors.iconNorm,
@@ -458,6 +449,25 @@ object FolderListScreen {
     }
 }
 
+object FolderListTopBar {
+
+    data class Actions(
+        val onBackClick: () -> Unit,
+        val onAddFolderClick: () -> Unit,
+        val onFolderSettingsClick: () -> Unit,
+    ) {
+
+        companion object {
+
+            val Empty = Actions(
+                onBackClick = {},
+                onAddFolderClick = {},
+                onFolderSettingsClick = {}
+            )
+        }
+    }
+}
+
 @Composable
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 private fun FolderListScreenPreview() {
@@ -471,8 +481,7 @@ private fun FolderListScreenPreview() {
             useFolderColor = true,
             inheritParentFolderColor = true
         ),
-        actions = FolderListScreen.Actions.Empty,
-        paddingValues = PaddingValues()
+        actions = FolderListScreen.Actions.Empty
     )
 }
 
@@ -480,8 +489,7 @@ private fun FolderListScreenPreview() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 private fun EmptyFolderListScreenPreview() {
     EmptyFolderListScreen(
-        onAddFolderClick = {},
-        paddingValues = PaddingValues()
+        onAddFolderClick = {}
     )
 }
 
@@ -504,9 +512,7 @@ private fun FolderSettingsScreenPreview() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 private fun FolderListTopBarPreview() {
     FolderListTopBar(
-        actions = FolderListScreen.Actions.Empty,
-        onAddFolderClick = {},
-        onFolderSettingsClick = {},
+        actions = FolderListTopBar.Actions.Empty,
         isAddFolderButtonVisible = true,
         isSettingsButtonVisible = true
     )
@@ -516,9 +522,7 @@ private fun FolderListTopBarPreview() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 private fun EmptyFolderListTopBarPreview() {
     FolderListTopBar(
-        actions = FolderListScreen.Actions.Empty,
-        onAddFolderClick = {},
-        onFolderSettingsClick = {},
+        actions = FolderListTopBar.Actions.Empty,
         isAddFolderButtonVisible = false,
         isSettingsButtonVisible = true
     )
