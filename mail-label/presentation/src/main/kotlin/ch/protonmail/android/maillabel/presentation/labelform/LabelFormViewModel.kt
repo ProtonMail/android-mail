@@ -41,6 +41,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import me.proton.core.label.domain.entity.LabelId
+import me.proton.core.util.kotlin.equalsNoCase
 import javax.inject.Inject
 
 @HiltViewModel
@@ -148,12 +149,13 @@ class LabelFormViewModel @Inject constructor(
         name: String,
         color: String
     ) {
-        val isLabelNameAllowed = isLabelNameAllowed(primaryUserId(), name).getOrElse {
-            return emitNewStateFor(LabelFormEvent.SaveLabelError)
-        }
-        if (!isLabelNameAllowed) return emitNewStateFor(LabelFormEvent.LabelAlreadyExists)
-
         getLabel(primaryUserId(), labelId).getOrNull()?.let { label ->
+            if (!name.equalsNoCase(label.name)) {
+                val isLabelNameAllowed = isLabelNameAllowed(primaryUserId(), name).getOrElse {
+                    return emitNewStateFor(LabelFormEvent.SaveLabelError)
+                }
+                if (!isLabelNameAllowed) return emitNewStateFor(LabelFormEvent.LabelAlreadyExists)
+            }
             updateLabel(
                 primaryUserId(),
                 label.copy(
