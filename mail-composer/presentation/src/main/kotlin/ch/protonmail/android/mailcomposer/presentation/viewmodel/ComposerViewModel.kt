@@ -26,6 +26,7 @@ import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import ch.protonmail.android.mailcommon.domain.usecase.GetPrimaryAddress
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailcomposer.domain.model.DecryptedDraftFields
 import ch.protonmail.android.mailcomposer.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
@@ -179,7 +180,12 @@ class ComposerViewModel @Inject constructor(
                 parentMessageToDraftFields(primaryUserId(), parentMessage, draftAction).onRight { draftFields ->
                     Timber.d("Quoted parent body $draftFields")
                     startDraftContinuousUpload(draftAction)
-                    emitNewStateFor(ComposerEvent.PrefillDraftDataReceived(draftFields.toDraftUiModel()))
+                    emitNewStateFor(
+                        ComposerEvent.PrefillDraftDataReceived(
+                            draftUiModel = draftFields.toDraftUiModel(),
+                            isDataRefreshed = true
+                        )
+                    )
                     storeDraftWithParentAttachments.invoke(
                         primaryUserId(),
                         currentMessageId(),
@@ -202,7 +208,12 @@ class ComposerViewModel @Inject constructor(
                     Timber.d("Opening existing draft with body $draftFields")
                     storeExternalAttachments(primaryUserId(), currentMessageId())
                     startDraftContinuousUpload()
-                    emitNewStateFor(ComposerEvent.PrefillDraftDataReceived(draftFields.toDraftUiModel()))
+                    emitNewStateFor(
+                        ComposerEvent.PrefillDraftDataReceived(
+                            draftUiModel = draftFields.draftFields.toDraftUiModel(),
+                            isDataRefreshed = draftFields is DecryptedDraftFields.Remote
+                        )
+                    )
                 }
                 .onLeft { emitNewStateFor(ComposerEvent.ErrorLoadingDraftData) }
 

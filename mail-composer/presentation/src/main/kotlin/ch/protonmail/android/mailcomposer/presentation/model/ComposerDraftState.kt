@@ -41,6 +41,7 @@ data class ComposerDraftState(
     val attachmentsFileSizeExceeded: Effect<Unit>,
     val attachmentsReEncryptionFailed: Effect<Unit>,
     val replaceDraftBody: Effect<TextUiModel>,
+    val warning: Effect<TextUiModel>,
     val focusTextBody: Effect<Unit> = Effect.empty()
 ) {
 
@@ -78,6 +79,7 @@ data class ComposerDraftState(
             isAddAttachmentsButtonVisible = false,
             attachmentsFileSizeExceeded = Effect.empty(),
             attachmentsReEncryptionFailed = Effect.empty(),
+            warning = Effect.empty(),
             replaceDraftBody = Effect.empty()
         )
     }

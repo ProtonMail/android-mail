@@ -517,7 +517,7 @@ class ComposerReducerTest(
             name = "Should stop loading and set the received draft data as composer fields when draft data received, " +
                 "empty recipients",
             currentState = ComposerDraftState.initial(messageId).copy(isLoading = true),
-            operation = ComposerEvent.PrefillDraftDataReceived(draftUiModelWithoutRecipients),
+            operation = ComposerEvent.PrefillDraftDataReceived(draftUiModelWithoutRecipients, isDataRefreshed = true),
             expectedState = aNotSubmittableState(
                 draftId = messageId,
                 sender = SenderUiModel(draftFieldsWithoutRecipients.sender.value),
@@ -536,7 +536,7 @@ class ComposerReducerTest(
             name = "Should stop loading and set the received draft data as composer fields when draft data received, " +
                 "valid recipients",
             currentState = ComposerDraftState.initial(messageId).copy(isLoading = true),
-            operation = ComposerEvent.PrefillDraftDataReceived(draftUiModel),
+            operation = ComposerEvent.PrefillDraftDataReceived(draftUiModel, isDataRefreshed = true),
             expectedState = aSubmittableState(
                 draftId = messageId,
                 sender = SenderUiModel(draftFieldsWithoutRecipients.sender.value),
@@ -546,6 +546,24 @@ class ComposerReducerTest(
                 subject = draftFieldsWithoutRecipients.subject,
                 draftBody = draftFieldsWithoutRecipients.body.value,
                 error = Effect.empty()
+            )
+        )
+
+        @Suppress("VariableMaxLength")
+        private val LoadingToFieldsWhenReceivedDraftDataFromLocal = TestTransition(
+            name = "Should stop loading and set the received draft data as composer fields when draft data received, " +
+                "valid recipients",
+            currentState = ComposerDraftState.initial(messageId).copy(isLoading = true),
+            operation = ComposerEvent.PrefillDraftDataReceived(draftUiModel, isDataRefreshed = false),
+            expectedState = aSubmittableState(
+                draftId = messageId,
+                sender = SenderUiModel(draftFieldsWithoutRecipients.sender.value),
+                to = draftFields.recipientsTo.value.map { Valid(it.address) },
+                cc = draftFields.recipientsCc.value.map { Valid(it.address) },
+                bcc = draftFields.recipientsBcc.value.map { Valid(it.address) },
+                subject = draftFieldsWithoutRecipients.subject,
+                draftBody = draftFieldsWithoutRecipients.body.value,
+                warning = Effect.of(TextUiModel(R.string.composer_warning_local_data_shown))
             )
         )
 
@@ -654,6 +672,7 @@ class ComposerReducerTest(
             EmptyToLoadingWithOpenExistingDraft,
             LoadingToFieldsWhenReceivedDraftDataEmptyRecipients,
             LoadingToFieldsWhenReceivedDraftDataValidRecipients,
+            LoadingToFieldsWhenReceivedDraftDataFromLocal,
             LoadingToErrorWhenErrorLoadingDraftData,
             EmptyToBottomSheetOpened,
             EmptyToBottomSheetClosed,
@@ -674,7 +693,8 @@ class ComposerReducerTest(
             closeComposerWithMessageSending: Effect<Unit> = Effect.empty(),
             closeComposerWithMessageSendingOffline: Effect<Unit> = Effect.empty(),
             attachmentsFileSizeExceeded: Effect<Unit> = Effect.empty(),
-            attachmentReEncryptionFailed: Effect<Unit> = Effect.empty()
+            attachmentReEncryptionFailed: Effect<Unit> = Effect.empty(),
+            warning: Effect<TextUiModel> = Effect.empty()
         ) = ComposerDraftState(
             fields = ComposerFields(
                 draftId = draftId,
@@ -700,6 +720,7 @@ class ComposerReducerTest(
             closeComposerWithMessageSendingOffline = closeComposerWithMessageSendingOffline,
             attachmentsFileSizeExceeded = attachmentsFileSizeExceeded,
             attachmentsReEncryptionFailed = attachmentReEncryptionFailed,
+            warning = warning,
             replaceDraftBody = Effect.empty()
         )
 
@@ -720,6 +741,7 @@ class ComposerReducerTest(
             isLoading: Boolean = false,
             attachmentsFileSizeExceeded: Effect<Unit> = Effect.empty(),
             attachmentReEncryptionFailed: Effect<Unit> = Effect.empty(),
+            warning: Effect<TextUiModel> = Effect.empty(),
             replaceDraftBody: Effect<TextUiModel> = Effect.empty()
         ) = ComposerDraftState(
             fields = ComposerFields(
@@ -746,6 +768,7 @@ class ComposerReducerTest(
             closeComposerWithMessageSendingOffline = Effect.empty(),
             attachmentsFileSizeExceeded = attachmentsFileSizeExceeded,
             attachmentsReEncryptionFailed = attachmentReEncryptionFailed,
+            warning = warning,
             replaceDraftBody = replaceDraftBody
         )
 

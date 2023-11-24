@@ -101,7 +101,8 @@ class ComposerReducer @Inject constructor(
         is ComposerEvent.OpenWithMessageAction -> updateStateForOpenWithMessageAction(currentState, draftAction)
         is ComposerEvent.PrefillDraftDataReceived -> updateComposerFieldsState(
             currentState,
-            this.draftUiModel
+            this.draftUiModel,
+            this.isDataRefreshed
         )
 
         is ComposerEvent.ReplaceDraftBody -> {
@@ -129,7 +130,8 @@ class ComposerReducer @Inject constructor(
 
     private fun updateComposerFieldsState(
         currentState: ComposerDraftState,
-        draftUiModel: DraftUiModel
+        draftUiModel: DraftUiModel,
+        isDataRefreshed: Boolean
     ): ComposerDraftState {
 
         val validToRecipients = draftUiModel.draftFields.recipientsTo.value.map { RecipientUiModel.Valid(it.address) }
@@ -147,7 +149,12 @@ class ComposerReducer @Inject constructor(
                 bcc = validBccRecipients
             ),
             isLoading = false,
-            isSubmittable = (validToRecipients + validCcRecipients + validBccRecipients).isNotEmpty()
+            isSubmittable = (validToRecipients + validCcRecipients + validBccRecipients).isNotEmpty(),
+            warning = if (!isDataRefreshed) {
+                Effect.of(TextUiModel(R.string.composer_warning_local_data_shown))
+            } else {
+                Effect.empty()
+            }
         )
     }
 

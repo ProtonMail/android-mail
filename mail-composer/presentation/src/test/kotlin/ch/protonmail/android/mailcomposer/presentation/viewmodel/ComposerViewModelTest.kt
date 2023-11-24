@@ -32,6 +32,7 @@ import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcomposer.domain.model.DecryptedDraftFields
 import ch.protonmail.android.mailcomposer.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
@@ -235,11 +236,12 @@ class ComposerViewModelTest {
             recipientsBcc,
             null
         )
+        val decryptedDraftFields = DecryptedDraftFields.Remote(expectedFields)
         expectedPrimaryAddress(expectedUserId) { primaryAddress }
         expectInputDraftMessageId { messageId }
         expectStoreAllDraftFieldsSucceeds(expectedUserId, messageId, expectedFields)
         expectStoreAttachmentsSucceeds(expectedUserId, messageId, expectedSenderEmail, listOf(uri))
-        expectDecryptedDraftDataSuccess(expectedUserId, messageId) { expectedFields }
+        expectDecryptedDraftDataSuccess(expectedUserId, messageId) { decryptedDraftFields }
         expectStartDraftSync(expectedUserId, messageId)
         expectObservedMessageAttachments(expectedUserId, messageId)
         expectNoInputDraftAction()
@@ -1186,9 +1188,10 @@ class ComposerViewModelTest {
         // Given
         val expectedUserId = expectedUserId { UserIdSample.Primary }
         val expectedDraftId = expectInputDraftMessageId { MessageIdSample.RemoteDraft }
+        val decryptedDraftFields = DecryptedDraftFields.Remote(existingDraftFields)
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
         // Simulate a small delay in getDecryptedDraftFields to ensure the "loading" state was emitted
-        expectDecryptedDraftDataSuccess(expectedUserId, expectedDraftId, 100) { existingDraftFields }
+        expectDecryptedDraftDataSuccess(expectedUserId, expectedDraftId, 100) { decryptedDraftFields }
         expectStartDraftSync(UserIdSample.Primary, MessageIdSample.RemoteDraft)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedDraftId)
@@ -1204,13 +1207,48 @@ class ComposerViewModelTest {
     }
 
     @Test
-    fun `emits state with draft fields to be prefilled when getting decrypted draft fields succeeds`() = runTest {
+    fun `emits state with remote draft fields to be prefilled when getting decrypted draft fields succeeds`() =
+        runTest {
+            // Given
+            val expectedUserId = expectedUserId { UserIdSample.Primary }
+            val expectedDraftId = expectInputDraftMessageId { MessageIdSample.RemoteDraft }
+            val expectedDraftFields = existingDraftFields
+            val decryptedDraftFields = DecryptedDraftFields.Remote(existingDraftFields)
+            expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+            expectDecryptedDraftDataSuccess(expectedUserId, expectedDraftId) { decryptedDraftFields }
+            expectStartDraftSync(expectedUserId, expectedDraftId)
+            expectObserveMailFeature(expectedUserId) { emptyFlow() }
+            expectObservedMessageAttachments(expectedUserId, expectedDraftId)
+            expectStoreParentAttachmentSucceeds(expectedUserId, expectedDraftId)
+            expectNoInputDraftAction()
+
+            // When
+            val actual = viewModel.state.value
+
+            // Then
+            val expectedComposerFields = ComposerFields(
+                expectedDraftId,
+                SenderUiModel(expectedDraftFields.sender.value),
+                expectedDraftFields.recipientsTo.value.map { RecipientUiModel.Valid(it.address) },
+                emptyList(),
+                emptyList(),
+                expectedDraftFields.subject.value,
+                expectedDraftFields.body.value,
+                null
+            )
+            assertEquals(expectedComposerFields, actual.fields)
+            coVerify { storeExternalAttachmentStates(expectedUserId, expectedDraftId) }
+        }
+
+    @Test
+    fun `emits state with local draft fields to be prefilled when getting decrypted draft fields succeeds`() = runTest {
         // Given
         val expectedUserId = expectedUserId { UserIdSample.Primary }
         val expectedDraftId = expectInputDraftMessageId { MessageIdSample.RemoteDraft }
         val expectedDraftFields = existingDraftFields
+        val decryptedDraftFields = DecryptedDraftFields.Local(existingDraftFields)
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
-        expectDecryptedDraftDataSuccess(expectedUserId, expectedDraftId) { expectedDraftFields }
+        expectDecryptedDraftDataSuccess(expectedUserId, expectedDraftId) { decryptedDraftFields }
         expectStartDraftSync(expectedUserId, expectedDraftId)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedDraftId)
@@ -1349,7 +1387,8 @@ class ComposerViewModelTest {
         val expectedUserId = expectedUserId { UserIdSample.Primary }
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
         val expectedDraftId = expectInputDraftMessageId { MessageIdSample.RemoteDraft }
-        expectDecryptedDraftDataSuccess(expectedUserId, expectedDraftId) { existingDraftFields }
+        val decryptedDraftFields = DecryptedDraftFields.Remote(existingDraftFields)
+        expectDecryptedDraftDataSuccess(expectedUserId, expectedDraftId) { decryptedDraftFields }
         expectStartDraftSync(expectedUserId, expectedDraftId)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectNoInputDraftAction()
@@ -1370,7 +1409,8 @@ class ComposerViewModelTest {
         val expectedUserId = expectedUserId { UserIdSample.Primary }
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
         val expectedDraftId = expectInputDraftMessageId { MessageIdSample.RemoteDraft }
-        expectDecryptedDraftDataSuccess(expectedUserId, expectedDraftId) { existingDraftFields }
+        val decryptedDraftFields = DecryptedDraftFields.Remote(existingDraftFields)
+        expectDecryptedDraftDataSuccess(expectedUserId, expectedDraftId) { decryptedDraftFields }
         expectStartDraftSync(expectedUserId, expectedDraftId)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectNoInputDraftAction()
@@ -1406,9 +1446,10 @@ class ComposerViewModelTest {
             recipientsBcc,
             null
         )
+        val decryptedDraftFields = DecryptedDraftFields.Remote(expectedFields)
         expectNoInputDraftAction()
         expectStoreAllDraftFieldsSucceeds(expectedUserId, expectedDraftId, expectedFields)
-        expectDecryptedDraftDataSuccess(expectedUserId, expectedDraftId) { expectedFields }
+        expectDecryptedDraftDataSuccess(expectedUserId, expectedDraftId) { decryptedDraftFields }
         expectStartDraftSync(expectedUserId, expectedDraftId)
         expectObservedMessageAttachments(expectedUserId, expectedDraftId)
         expectStoreParentAttachmentSucceeds(expectedUserId, expectedDraftId)
@@ -1448,10 +1489,11 @@ class ComposerViewModelTest {
             recipientsBcc,
             null
         )
+        val decryptedDraftFields = DecryptedDraftFields.Remote(expectedFields)
         expectedPrimaryAddress(expectedUserId) { primaryAddress }
         expectInputDraftMessageId { messageId }
         expectStoreAllDraftFieldsSucceeds(expectedUserId, messageId, expectedFields)
-        expectDecryptedDraftDataSuccess(expectedUserId, messageId) { expectedFields }
+        expectDecryptedDraftDataSuccess(expectedUserId, messageId) { decryptedDraftFields }
         expectStartDraftSync(expectedUserId, messageId)
         expectObservedMessageAttachments(expectedUserId, messageId)
         expectNoInputDraftAction()
@@ -1487,6 +1529,7 @@ class ComposerViewModelTest {
             recipientsBcc,
             null
         )
+        val decryptedDraftFields = DecryptedDraftFields.Remote(expectedFields)
         expectedPrimaryAddress(expectedUserId) { primaryAddress }
         expectInputDraftMessageId { messageId }
         expectStoreAllDraftFieldsSucceeds(expectedUserId, messageId, expectedFields)
@@ -1497,7 +1540,7 @@ class ComposerViewModelTest {
             expectedUriList = listOf(uri),
             storeAttachmentError = StoreDraftWithAttachmentError.FileSizeExceedsLimit
         )
-        expectDecryptedDraftDataSuccess(expectedUserId, messageId) { expectedFields }
+        expectDecryptedDraftDataSuccess(expectedUserId, messageId) { decryptedDraftFields }
         expectStartDraftSync(expectedUserId, messageId)
         expectObservedMessageAttachments(expectedUserId, messageId)
         expectNoInputDraftAction()
@@ -1560,11 +1603,11 @@ class ComposerViewModelTest {
         userId: UserId,
         draftId: MessageId,
         responseDelay: Long = 0L,
-        result: () -> DraftFields
-    ) = result().also { draftFields ->
+        result: () -> DecryptedDraftFields
+    ) = result().also { decryptedDraftFields ->
         coEvery { getDecryptedDraftFields(userId, draftId) } coAnswers {
             delay(responseDelay)
-            draftFields.right()
+            decryptedDraftFields.right()
         }
     }
 
@@ -1669,6 +1712,7 @@ class ComposerViewModelTest {
             closeComposerWithMessageSendingOffline = Effect.empty(),
             attachmentsFileSizeExceeded = Effect.empty(),
             attachmentsReEncryptionFailed = Effect.empty(),
+            warning = Effect.empty(),
             replaceDraftBody = Effect.empty()
         )
 
