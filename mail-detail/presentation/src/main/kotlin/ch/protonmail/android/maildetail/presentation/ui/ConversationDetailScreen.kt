@@ -65,6 +65,7 @@ import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.compose.dpToPx
+import ch.protonmail.android.mailcommon.presentation.compose.pxToDp
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
@@ -101,6 +102,7 @@ import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.ProtonTheme3
 import timber.log.Timber
+import kotlin.math.absoluteValue
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -278,6 +280,9 @@ fun ConversationDetailScreen(
         subjectHeaderTransform.value = currentTransform.copyWithUpdatedHeaderHeight(it.toFloat())
     }
 
+    // When the LazyColumn cannot be scrolled anymore, we will use the padding offset to move it to the top
+    val messagesContentPaddingOffsetPx = remember { mutableStateOf(0f) }
+
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
             override fun onPostScroll(
@@ -285,12 +290,26 @@ fun ConversationDetailScreen(
                 available: Offset,
                 source: NestedScrollSource
             ): Offset {
+                val epsilon = 1e-6f
                 val currentTransform = subjectHeaderTransform.value
-                val newOffset = subjectHeaderTransform.value.yOffsetPx + consumed.y
 
-                subjectHeaderTransform.value = currentTransform.copyWithUpdatedYOffset(
-                    newOffset.coerceIn(-currentTransform.headerHeightPx, 0f)
-                )
+                // When the LazyColumn is scrolled, use consumed value and do not
+                // apply offset to the lazyColumn content padding
+                if (consumed.y.absoluteValue > epsilon) {
+                    val newOffset = currentTransform.yOffsetPx + consumed.y
+
+                    subjectHeaderTransform.value = currentTransform.copyWithUpdatedYOffset(
+                        newOffset.coerceIn(-currentTransform.headerHeightPx, 0f)
+                    )
+                    messagesContentPaddingOffsetPx.value = 0f
+                } else {
+                    val newOffset = currentTransform.yOffsetPx + available.y
+
+                    subjectHeaderTransform.value = currentTransform.copyWithUpdatedYOffset(
+                        newOffset.coerceIn(-currentTransform.headerHeightPx, 0f)
+                    )
+                    messagesContentPaddingOffsetPx.value = subjectHeaderTransform.value.yOffsetPx
+                }
 
                 // We're basically watching scroll without taking it
                 return super.onPostScroll(consumed, available, source)
@@ -378,7 +397,8 @@ fun ConversationDetailScreen(
                     padding = innerPadding,
                     scrollToMessageId = scrollToMessageId,
                     actions = conversationDetailItemActions,
-                    showReplyActionsFeatureFlag = state.showReplyActionsFeatureFlag
+                    showReplyActionsFeatureFlag = state.showReplyActionsFeatureFlag,
+                    paddingOffsetDp = messagesContentPaddingOffsetPx.value.pxToDp()
                 )
             }
 
@@ -408,17 +428,20 @@ private fun MessagesContent(
     scrollToMessageId: String?,
     modifier: Modifier = Modifier,
     actions: ConversationDetailItem.Actions,
-    showReplyActionsFeatureFlag: Boolean
+    showReplyActionsFeatureFlag: Boolean,
+    paddingOffsetDp: Dp = 0f.dp
 ) {
     val listState = rememberLazyListState()
     var loadedItemsChanged by remember { mutableStateOf(0) }
     val loadedItemsHeight = remember { mutableStateMapOf<String, Int>() }
     val layoutDirection = LocalLayoutDirection.current
-    val contentPadding = remember(padding) {
+    val contentPadding = remember(padding, paddingOffsetDp) {
         PaddingValues(
             start = padding.calculateStartPadding(layoutDirection) + ProtonDimens.SmallSpacing,
             end = padding.calculateEndPadding(layoutDirection) + ProtonDimens.SmallSpacing,
-            top = padding.calculateTopPadding() + ProtonDimens.SmallSpacing,
+            top = (
+                padding.calculateTopPadding() + ProtonDimens.SmallSpacing + paddingOffsetDp
+                ).coerceAtLeast(0f.dp),
             bottom = padding.calculateBottomPadding() + ProtonDimens.SmallSpacing
         )
     }

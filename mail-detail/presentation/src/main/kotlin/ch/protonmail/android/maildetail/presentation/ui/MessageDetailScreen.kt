@@ -48,11 +48,13 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
+import ch.protonmail.android.mailcommon.presentation.compose.pxToDp
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
@@ -86,6 +88,7 @@ import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.ProtonTheme3
 import me.proton.core.util.kotlin.exhaustive
 import timber.log.Timber
+import kotlin.math.absoluteValue
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -237,6 +240,9 @@ fun MessageDetailScreen(
         subjectHeaderTransform.value = currentTransform.copyWithUpdatedHeaderHeight(it.toFloat())
     }
 
+    // When the LazyColumn cannot be scrolled anymore, we will use the padding offset to move it to the top
+    val messagesContentPaddingOffsetPx = remember { mutableStateOf(0f) }
+
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
             override fun onPostScroll(
@@ -244,17 +250,30 @@ fun MessageDetailScreen(
                 available: Offset,
                 source: NestedScrollSource
             ): Offset {
+                val epsilon = 1e-6f
                 val currentTransform = subjectHeaderTransform.value
-                val newOffset = subjectHeaderTransform.value.yOffsetPx + consumed.y
 
-                subjectHeaderTransform.value = currentTransform.copyWithUpdatedYOffset(
-                    newOffset.coerceIn(-currentTransform.headerHeightPx, 0f)
-                )
+                // When the LazyColumn is scrolled, use consumed value and do not
+                // apply offset to the lazyColumn content padding
+                if (consumed.y.absoluteValue > epsilon) {
+                    val newOffset = currentTransform.yOffsetPx + consumed.y
+
+                    subjectHeaderTransform.value = currentTransform.copyWithUpdatedYOffset(
+                        newOffset.coerceIn(-currentTransform.headerHeightPx, 0f)
+                    )
+                    messagesContentPaddingOffsetPx.value = 0f
+                } else {
+                    val newOffset = currentTransform.yOffsetPx + available.y
+
+                    subjectHeaderTransform.value = currentTransform.copyWithUpdatedYOffset(
+                        newOffset.coerceIn(-currentTransform.headerHeightPx, 0f)
+                    )
+                    messagesContentPaddingOffsetPx.value = subjectHeaderTransform.value.yOffsetPx
+                }
 
                 // We're basically watching scroll without taking it
                 return super.onPostScroll(consumed, available, source)
             }
-
         }
     }
 
@@ -334,7 +353,8 @@ fun MessageDetailScreen(
                     messageMetadataState = state.messageMetadataState,
                     messageBodyState = state.messageBodyState,
                     actions = messageDetailContentActions,
-                    showMessageActionsFeatureFlag = state.showReplyActionsFeatureFlag
+                    showMessageActionsFeatureFlag = state.showReplyActionsFeatureFlag,
+                    paddingOffsetDp = messagesContentPaddingOffsetPx.value.pxToDp()
                 )
             }
 
@@ -353,14 +373,17 @@ private fun MessageDetailContent(
     messageMetadataState: MessageMetadataState.Data,
     messageBodyState: MessageBodyState,
     actions: MessageDetailContent.Actions,
-    showMessageActionsFeatureFlag: Boolean
+    showMessageActionsFeatureFlag: Boolean,
+    paddingOffsetDp: Dp = 0f.dp
 ) {
     val layoutDirection = LocalLayoutDirection.current
-    val contentPadding = remember(padding) {
+    val contentPadding = remember(padding, paddingOffsetDp) {
         PaddingValues(
             start = padding.calculateStartPadding(layoutDirection) + ProtonDimens.SmallSpacing,
             end = padding.calculateEndPadding(layoutDirection) + ProtonDimens.SmallSpacing,
-            top = padding.calculateTopPadding() + ProtonDimens.SmallSpacing,
+            top = (
+                padding.calculateTopPadding() + ProtonDimens.SmallSpacing + paddingOffsetDp
+                ).coerceAtLeast(0f.dp),
             bottom = padding.calculateBottomPadding() + ProtonDimens.SmallSpacing
         )
     }

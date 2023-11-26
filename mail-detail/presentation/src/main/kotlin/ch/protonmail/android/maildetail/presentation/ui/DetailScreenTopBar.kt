@@ -52,6 +52,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
+import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.maildetail.presentation.R.color
 import ch.protonmail.android.maildetail.presentation.R.drawable
 import ch.protonmail.android.maildetail.presentation.R.plurals
@@ -110,7 +111,7 @@ fun DetailScreenTopBar(
                         subjectHeaderSizeCallback(layoutCoordinates.size.height)
                     }
                     .heightIn(
-                        min = subjectHeaderMinHeight,
+                        min = MailDimens.SubjectHeaderMinHeight,
                         max = maxSubjectHeightDp.dp
                     ),
                 subject = title,
@@ -132,7 +133,7 @@ fun CustomSingleLineTopAppBar(
     Row(
         modifier = modifier
             .background(ProtonTheme.colors.backgroundNorm)
-            .height(ProtonDimens.DefaultBottomSheetHeaderMinHeight)
+            .height(MailDimens.SingleLineTopAppBarHeight)
     ) {
         IconButton(
             modifier = Modifier
@@ -202,8 +203,6 @@ fun CustomSingleLineTopAppBar(
     }
 }
 
-val subjectHeaderMinHeight = 56.dp
-
 @Composable
 private fun SubjectHeader(
     subject: String,
@@ -215,10 +214,8 @@ private fun SubjectHeader(
         modifier = modifier
             .fillMaxWidth()
             .padding(
-                start = ProtonDimens.DefaultSpacing,
-                end = ProtonDimens.DefaultSpacing,
-                top = ProtonDimens.SmallSpacing,
-                bottom = ProtonDimens.SmallSpacing
+                horizontal = ProtonDimens.DefaultSpacing,
+                vertical = ProtonDimens.SmallSpacing
             )
     ) {
 

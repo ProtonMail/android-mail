@@ -62,4 +62,7 @@ object MailDimens {
     }
 
     const val ActionButtonShapeRadius = 100
+
+    val SingleLineTopAppBarHeight = 56.dp
+    val SubjectHeaderMinHeight = 56.dp
 }
