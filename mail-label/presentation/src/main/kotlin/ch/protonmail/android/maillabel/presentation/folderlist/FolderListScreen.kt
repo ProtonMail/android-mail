@@ -105,21 +105,23 @@ fun FolderListScreen(actions: FolderListScreen.Actions, viewModel: FolderListVie
                 is FolderListState.ListLoaded -> {
                     FolderSettingsScreen(
                         state = state,
-                        onChangeUseFolderColor = { useFolderColor ->
-                            viewModel.submit(
-                                FolderListViewAction.OnChangeUseFolderColor(
-                                    useFolderColor = useFolderColor
+                        FolderSettingsScreen.Actions(
+                            onChangeUseFolderColor = { useFolderColor ->
+                                viewModel.submit(
+                                    FolderListViewAction.OnChangeUseFolderColor(
+                                        useFolderColor = useFolderColor
+                                    )
                                 )
-                            )
-                        },
-                        onChangeInheritParentFolderColor = { inheritParentFolderColor ->
-                            viewModel.submit(
-                                FolderListViewAction.OnChangeInheritParentFolderColor(
-                                    inheritParentFolderColor = inheritParentFolderColor
+                            },
+                            onChangeInheritParentFolderColor = { inheritParentFolderColor ->
+                                viewModel.submit(
+                                    FolderListViewAction.OnChangeInheritParentFolderColor(
+                                        inheritParentFolderColor = inheritParentFolderColor
+                                    )
                                 )
-                            )
-                        },
-                        onDoneClick = { viewModel.submit(FolderListViewAction.OnDismissSettings) }
+                            },
+                            onDoneClick = { viewModel.submit(FolderListViewAction.OnDismissSettings) }
+                        )
                     )
                 }
             }
@@ -188,18 +190,15 @@ fun FolderListScreen(actions: FolderListScreen.Actions, viewModel: FolderListVie
     }
 }
 
-@SuppressWarnings("UseComposableActions")
 @Composable
 fun FolderSettingsScreen(
     state: FolderListState.ListLoaded,
-    onChangeUseFolderColor: (Boolean) -> Unit,
-    onChangeInheritParentFolderColor: (Boolean) -> Unit,
-    onDoneClick: () -> Unit
+    actions: FolderSettingsScreen.Actions
 ) {
     Column {
-        FolderSettingsHeader(onDoneClick)
-        UseFolderColorSetting(state, onChangeUseFolderColor)
-        InheritParentFolderColorSetting(state, onChangeInheritParentFolderColor)
+        FolderSettingsHeader(actions.onDoneClick)
+        UseFolderColorSetting(state, actions.onChangeUseFolderColor)
+        InheritParentFolderColorSetting(state, actions.onChangeInheritParentFolderColor)
     }
 }
 
@@ -449,6 +448,25 @@ object FolderListScreen {
     }
 }
 
+object FolderSettingsScreen {
+
+    data class Actions(
+        val onChangeUseFolderColor: (Boolean) -> Unit,
+        val onChangeInheritParentFolderColor: (Boolean) -> Unit,
+        val onDoneClick: () -> Unit
+    ) {
+
+        companion object {
+
+            val Empty = Actions(
+                onChangeUseFolderColor = {},
+                onChangeInheritParentFolderColor = {},
+                onDoneClick = {}
+            )
+        }
+    }
+}
+
 object FolderListTopBar {
 
     data class Actions(
@@ -502,9 +520,7 @@ private fun FolderSettingsScreenPreview() {
             useFolderColor = true,
             inheritParentFolderColor = true
         ),
-        onChangeUseFolderColor = {},
-        onChangeInheritParentFolderColor = {},
-        onDoneClick = {}
+        actions = FolderSettingsScreen.Actions.Empty
     )
 }
 
