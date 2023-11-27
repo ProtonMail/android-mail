@@ -23,6 +23,7 @@ import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.contentDescription
+import ch.protonmail.android.mailcommon.presentation.model.description
 import ch.protonmail.android.mailcommon.presentation.model.iconDrawable
 import kotlinx.collections.immutable.toImmutableList
 
@@ -30,10 +31,30 @@ object BottomActionBarsPreviewData {
 
     val Data = BottomBarState.Data.Shown(
         listOf(
-            ActionUiModel(Action.MarkUnread, Action.MarkUnread.iconDrawable(), Action.MarkUnread.contentDescription()),
-            ActionUiModel(Action.Archive, Action.Archive.iconDrawable(), Action.Archive.contentDescription()),
-            ActionUiModel(Action.Trash, Action.Trash.iconDrawable(), Action.Trash.contentDescription()),
-            ActionUiModel(Action.Move, Action.Move.iconDrawable(), Action.Move.contentDescription())
+            ActionUiModel(
+                Action.MarkUnread,
+                Action.MarkUnread.iconDrawable(),
+                Action.MarkUnread.description(),
+                Action.MarkUnread.contentDescription()
+            ),
+            ActionUiModel(
+                Action.Archive,
+                Action.Archive.iconDrawable(),
+                Action.Archive.description(),
+                Action.Archive.contentDescription()
+            ),
+            ActionUiModel(
+                Action.Trash,
+                Action.Trash.iconDrawable(),
+                Action.Trash.description(),
+                Action.Trash.contentDescription()
+            ),
+            ActionUiModel(
+                Action.Move,
+                Action.Move.iconDrawable(),
+                Action.Move.description(),
+                Action.Move.contentDescription()
+            )
         ).toImmutableList()
     )
 

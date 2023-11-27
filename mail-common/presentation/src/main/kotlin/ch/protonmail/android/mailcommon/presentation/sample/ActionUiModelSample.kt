@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcommon.presentation.sample
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.contentDescription
+import ch.protonmail.android.mailcommon.presentation.model.description
 import ch.protonmail.android.mailcommon.presentation.model.iconDrawable
 
 object ActionUiModelSample {
@@ -37,6 +38,7 @@ object ActionUiModelSample {
     fun build(action: Action) = ActionUiModel(
         action = action,
         icon = action.iconDrawable(),
-        description = action.contentDescription()
+        description = action.description(),
+        contentDescription = action.contentDescription()
     )
 }

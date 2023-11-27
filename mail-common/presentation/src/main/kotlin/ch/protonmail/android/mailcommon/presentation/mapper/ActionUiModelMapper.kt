@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcommon.presentation.mapper
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.contentDescription
+import ch.protonmail.android.mailcommon.presentation.model.description
 import ch.protonmail.android.mailcommon.presentation.model.iconDrawable
 import me.proton.core.domain.arch.Mapper
 import javax.inject.Inject
@@ -28,8 +29,9 @@ import javax.inject.Inject
 class ActionUiModelMapper @Inject constructor() : Mapper<Action, ActionUiModel> {
 
     fun toUiModel(action: Action) = ActionUiModel(
-        action,
-        action.iconDrawable(),
-        action.contentDescription()
+        action = action,
+        icon = action.iconDrawable(),
+        description = action.description(),
+        contentDescription = action.contentDescription()
     )
 }

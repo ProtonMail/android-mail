@@ -24,17 +24,18 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.contentDescription
+import ch.protonmail.android.mailcommon.presentation.model.description
 import ch.protonmail.android.mailcommon.presentation.model.iconDrawable
-import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
-import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
-import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
-import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
 import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelSample
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
+import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
@@ -59,7 +60,12 @@ object MessageDetailsPreviewData {
         ),
         bottomBarState = BottomBarState.Data.Shown(
             listOf(
-                ActionUiModel(Action.Archive, Action.Archive.iconDrawable(), Action.Archive.contentDescription())
+                ActionUiModel(
+                    Action.Archive,
+                    Action.Archive.iconDrawable(),
+                    Action.Archive.description(),
+                    Action.Archive.contentDescription()
+                )
             ).toImmutableList()
         ),
         bottomSheetState = BottomSheetState(

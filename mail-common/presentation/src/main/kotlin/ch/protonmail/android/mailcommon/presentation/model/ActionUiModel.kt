@@ -26,7 +26,8 @@ import ch.protonmail.android.mailcommon.presentation.R
 data class ActionUiModel(
     val action: Action,
     @DrawableRes val icon: Int,
-    @StringRes val description: Int
+    @StringRes val description: Int,
+    @StringRes val contentDescription: Int
 )
 
 @DrawableRes
@@ -79,4 +80,30 @@ fun Action.contentDescription() = when (this) {
     Action.SenderEmails -> R.string.action_sender_emails_content_description
     Action.SaveAttachments -> R.string.action_save_attachments_content_description
     Action.More -> R.string.action_more_content_description
+}
+
+@StringRes
+@SuppressWarnings("ComplexMethod")
+fun Action.description() = when (this) {
+    Action.MarkRead -> R.string.action_mark_read_description
+    Action.MarkUnread -> R.string.action_mark_unread_description
+    Action.Star -> R.string.action_star_description
+    Action.Unstar -> R.string.action_unstar_description
+    Action.Label -> R.string.action_label_description
+    Action.Move -> R.string.action_move_description
+    Action.Trash -> R.string.action_trash_description
+    Action.Delete -> R.string.action_delete_description
+    Action.Archive -> R.string.action_archive_description
+    Action.Spam -> R.string.action_spam_description
+    Action.ViewInLightMode -> R.string.action_view_in_light_mode_description
+    Action.ViewInDarkMode -> R.string.action_view_in_dark_mode_description
+    Action.Print -> R.string.action_print_description
+    Action.ViewHeaders -> R.string.action_view_headers_description
+    Action.ViewHtml -> R.string.action_view_html_description
+    Action.ReportPhishing -> R.string.action_report_phishing_description
+    Action.Remind -> R.string.action_remind_description
+    Action.SavePdf -> R.string.action_save_pdf_description
+    Action.SenderEmails -> R.string.action_sender_emails_description
+    Action.SaveAttachments -> R.string.action_save_attachments_description
+    Action.More -> R.string.action_more_description
 }

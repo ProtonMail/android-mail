@@ -55,6 +55,7 @@ class ActionUiModelMapperTest(
                     expected = ActionUiModel(
                         Action.MarkRead,
                         R.drawable.ic_proton_envelope,
+                        commonRes.string.action_mark_read_description,
                         commonRes.string.action_mark_read_content_description
                     )
                 )
@@ -66,6 +67,7 @@ class ActionUiModelMapperTest(
                     expected = ActionUiModel(
                         Action.MarkUnread,
                         R.drawable.ic_proton_envelope_dot,
+                        commonRes.string.action_mark_unread_description,
                         commonRes.string.action_mark_unread_content_description
                     )
                 )
@@ -77,6 +79,7 @@ class ActionUiModelMapperTest(
                     expected = ActionUiModel(
                         Action.Star,
                         R.drawable.ic_proton_star,
+                        commonRes.string.action_star_description,
                         commonRes.string.action_star_content_description
                     )
                 )
@@ -88,7 +91,8 @@ class ActionUiModelMapperTest(
                     expected = ActionUiModel(
                         Action.Unstar,
                         R.drawable.ic_proton_star_filled,
-                        commonRes.string.action_unstar_content_description
+                        commonRes.string.action_unstar_description,
+                        commonRes.string.action_unstar_content_description,
                     )
                 )
             ),
@@ -99,6 +103,7 @@ class ActionUiModelMapperTest(
                     expected = ActionUiModel(
                         Action.Label,
                         R.drawable.ic_proton_tag,
+                        commonRes.string.action_label_description,
                         commonRes.string.action_label_content_description
                     )
                 )
@@ -110,6 +115,7 @@ class ActionUiModelMapperTest(
                     expected = ActionUiModel(
                         Action.Move,
                         R.drawable.ic_proton_folder_arrow_in,
+                        commonRes.string.action_move_description,
                         commonRes.string.action_move_content_description
                     )
                 )
@@ -121,6 +127,7 @@ class ActionUiModelMapperTest(
                     expected = ActionUiModel(
                         Action.Trash,
                         R.drawable.ic_proton_trash,
+                        commonRes.string.action_trash_description,
                         commonRes.string.action_trash_content_description
                     )
                 )
@@ -132,6 +139,7 @@ class ActionUiModelMapperTest(
                     expected = ActionUiModel(
                         Action.Archive,
                         R.drawable.ic_proton_archive_box,
+                        commonRes.string.action_archive_description,
                         commonRes.string.action_archive_content_description
                     )
                 )
@@ -143,6 +151,7 @@ class ActionUiModelMapperTest(
                     expected = ActionUiModel(
                         Action.Spam,
                         R.drawable.ic_proton_fire,
+                        commonRes.string.action_spam_description,
                         commonRes.string.action_spam_content_description
                     )
                 )
@@ -154,6 +163,7 @@ class ActionUiModelMapperTest(
                     expected = ActionUiModel(
                         Action.ViewInLightMode,
                         R.drawable.ic_proton_circle,
+                        commonRes.string.action_view_in_light_mode_description,
                         commonRes.string.action_view_in_light_mode_content_description
                     )
                 )
@@ -165,7 +175,8 @@ class ActionUiModelMapperTest(
                     expected = ActionUiModel(
                         Action.ViewInDarkMode,
                         R.drawable.ic_proton_circle_filled,
-                        commonRes.string.action_view_in_dark_mode_content_description
+                        commonRes.string.action_view_in_dark_mode_description,
+                        commonRes.string.action_view_in_dark_mode_content_description,
                     )
                 )
             ),
@@ -176,6 +187,7 @@ class ActionUiModelMapperTest(
                     expected = ActionUiModel(
                         Action.Print,
                         R.drawable.ic_proton_printer,
+                        commonRes.string.action_print_description,
                         commonRes.string.action_print_content_description
                     )
                 )
@@ -187,6 +199,7 @@ class ActionUiModelMapperTest(
                     expected = ActionUiModel(
                         Action.ViewHeaders,
                         R.drawable.ic_proton_file_lines,
+                        commonRes.string.action_view_headers_description,
                         commonRes.string.action_view_headers_content_description
                     )
                 )
@@ -198,6 +211,7 @@ class ActionUiModelMapperTest(
                     expected = ActionUiModel(
                         Action.ViewHtml,
                         R.drawable.ic_proton_code,
+                        commonRes.string.action_view_html_description,
                         commonRes.string.action_view_html_content_description
                     )
                 )
@@ -209,6 +223,7 @@ class ActionUiModelMapperTest(
                     expected = ActionUiModel(
                         Action.ReportPhishing,
                         R.drawable.ic_proton_hook,
+                        commonRes.string.action_report_phishing_description,
                         commonRes.string.action_report_phishing_content_description
                     )
                 )
@@ -220,6 +235,7 @@ class ActionUiModelMapperTest(
                     expected = ActionUiModel(
                         Action.Remind,
                         R.drawable.ic_proton_clock,
+                        commonRes.string.action_remind_description,
                         commonRes.string.action_remind_content_description
                     )
                 )
@@ -231,6 +247,7 @@ class ActionUiModelMapperTest(
                     expected = ActionUiModel(
                         Action.SavePdf,
                         R.drawable.ic_proton_arrow_down_line,
+                        commonRes.string.action_save_pdf_description,
                         commonRes.string.action_save_pdf_content_description
                     )
                 )
@@ -242,6 +259,7 @@ class ActionUiModelMapperTest(
                     expected = ActionUiModel(
                         Action.SenderEmails,
                         R.drawable.ic_proton_envelope,
+                        commonRes.string.action_sender_emails_description,
                         commonRes.string.action_sender_emails_content_description
                     )
                 )
@@ -253,7 +271,8 @@ class ActionUiModelMapperTest(
                     expected = ActionUiModel(
                         Action.SaveAttachments,
                         R.drawable.ic_proton_arrow_down_to_square,
-                        commonRes.string.action_save_attachments_content_description
+                        commonRes.string.action_save_attachments_description,
+                        commonRes.string.action_save_attachments_content_description,
                     )
                 )
             )

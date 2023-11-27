@@ -88,7 +88,7 @@ fun BottomActionBar(
                         BottomBarIcon(
                             modifier = Modifier.testTag("${BottomActionBarTestTags.Button}$index"),
                             iconId = uiModel.icon,
-                            descriptionId = uiModel.description,
+                            descriptionId = uiModel.contentDescription,
                             onClick = callbackForAction(uiModel.action, viewActionCallbacks)
                         )
                     }

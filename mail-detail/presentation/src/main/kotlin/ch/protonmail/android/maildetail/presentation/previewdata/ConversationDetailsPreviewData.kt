@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.contentDescription
+import ch.protonmail.android.mailcommon.presentation.model.description
 import ch.protonmail.android.mailcommon.presentation.model.iconDrawable
 import ch.protonmail.android.mailcommon.presentation.sample.TextMessageSample
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
@@ -55,7 +56,12 @@ object ConversationDetailsPreviewData {
         ),
         bottomBarState = BottomBarState.Data.Shown(
             actions = listOf(
-                ActionUiModel(Action.Archive, Action.Archive.iconDrawable(), Action.Archive.contentDescription())
+                ActionUiModel(
+                    Action.Archive,
+                    Action.Archive.iconDrawable(),
+                    Action.Archive.description(),
+                    Action.Archive.contentDescription()
+                )
             ).toImmutableList()
         ),
         bottomSheetState = BottomSheetState(
@@ -96,7 +102,12 @@ object ConversationDetailsPreviewData {
         ),
         bottomBarState = BottomBarState.Data.Shown(
             actions = listOf(
-                ActionUiModel(Action.Archive, Action.Archive.iconDrawable(), Action.Archive.contentDescription())
+                ActionUiModel(
+                    Action.Archive,
+                    Action.Archive.iconDrawable(),
+                    Action.Archive.description(),
+                    Action.Archive.contentDescription()
+                )
             ).toImmutableList()
         ),
         bottomSheetState = BottomSheetState(
