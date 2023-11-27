@@ -19,12 +19,13 @@
 package ch.protonmail.android.maillabel.presentation.folderlist
 
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.presentation.model.FolderUiModel
 
 sealed interface FolderListState {
 
     data class Loading(
-        val errorLoading: Effect<Unit> = Effect.empty()
+        val errorLoading: Effect<TextUiModel> = Effect.empty()
     ) : FolderListState
 
     sealed interface ListLoaded : FolderListState {

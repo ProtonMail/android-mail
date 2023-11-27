@@ -164,10 +164,6 @@ fun Home(
     fun showLabelListErrorLoadingSnackbar() = scope.launch {
         snackbarHostErrorState.showSnackbar(message = labelListErrorLoadingText, type = ProtonSnackbarType.ERROR)
     }
-    val folderListErrorLoadingText = stringResource(id = R.string.folder_list_loading_error)
-    fun showFolderListErrorLoadingSnackbar() = scope.launch {
-        snackbarHostErrorState.showSnackbar(message = folderListErrorLoadingText, type = ProtonSnackbarType.ERROR)
-    }
     ConsumableLaunchedEffect(state.value.messageSendingStatusEffect) { sendingStatus ->
         when (sendingStatus) {
             is MessageSendingStatus.MessageSent -> showSuccessSendingMessageSnackbar()
@@ -275,7 +271,14 @@ fun Home(
                 )
                 addFolderList(
                     navController,
-                    showFolderListErrorLoadingSnackbar = { showFolderListErrorLoadingSnackbar() }
+                    showErrorSnackbar = { message ->
+                        scope.launch {
+                            snackbarHostNormState.showSnackbar(
+                                message = message,
+                                type = ProtonSnackbarType.ERROR
+                            )
+                        }
+                    }
                 )
                 // settings
                 addAccountSettings(

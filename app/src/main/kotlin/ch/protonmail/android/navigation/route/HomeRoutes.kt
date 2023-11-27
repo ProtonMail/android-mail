@@ -241,7 +241,7 @@ internal fun NavGraphBuilder.addLabelForm(
 
 internal fun NavGraphBuilder.addFolderList(
     navController: NavHostController,
-    showFolderListErrorLoadingSnackbar: () -> Unit
+    showErrorSnackbar: (message: String) -> Unit
 ) {
     composable(route = Destination.Screen.FolderList.route) {
         FolderListScreen(
@@ -253,7 +253,10 @@ internal fun NavGraphBuilder.addFolderList(
                 },
                 onAddFolderClick = {
                 },
-                showFolderListErrorLoadingSnackbar = showFolderListErrorLoadingSnackbar
+                exitWithErrorMessage = { message ->
+                    navController.popBackStack()
+                    showErrorSnackbar(message)
+                }
             )
         )
     }

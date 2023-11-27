@@ -62,4 +62,5 @@
     <string name="folder_settings_parent_color">Inherit parent folder color</string>
     <string name="folder_settings_switch_on">On</string>
     <string name="folder_settings_switch_off">Off</string>
+    <string name="folder_list_loading_error">Error loading folder, please try again later</string>
 </resources>

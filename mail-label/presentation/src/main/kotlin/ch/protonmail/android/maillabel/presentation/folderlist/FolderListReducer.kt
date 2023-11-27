@@ -19,6 +19,8 @@
 package ch.protonmail.android.maillabel.presentation.folderlist
 
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.maillabel.presentation.R
 import javax.inject.Inject
 
 class FolderListReducer @Inject constructor() {
@@ -26,7 +28,7 @@ class FolderListReducer @Inject constructor() {
     internal fun newStateFrom(currentState: FolderListState, event: FolderListEvent): FolderListState {
         return when (event) {
             is FolderListEvent.FolderListLoaded -> reduceFolderListLoaded(currentState, event)
-            is FolderListEvent.ErrorLoadingFolderList -> FolderListState.Loading(errorLoading = Effect.of(Unit))
+            is FolderListEvent.ErrorLoadingFolderList -> reduceErrorLoadingFolderList()
             is FolderListEvent.OpenFolderForm -> reduceOpenFolderForm(currentState)
             is FolderListEvent.DismissSettings -> reduceDismissSettings(currentState)
             is FolderListEvent.OpenSettings -> reduceOpenSettings(currentState)
@@ -74,6 +76,9 @@ class FolderListReducer @Inject constructor() {
             }
         }
     }
+
+    private fun reduceErrorLoadingFolderList() =
+        FolderListState.Loading(errorLoading = Effect.of(TextUiModel(R.string.folder_list_loading_error)))
 
     private fun reduceOpenFolderForm(currentState: FolderListState): FolderListState {
         return when (currentState) {

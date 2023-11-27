@@ -58,6 +58,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
+import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
@@ -179,9 +180,8 @@ fun FolderListScreen(actions: FolderListScreen.Actions, viewModel: FolderListVie
                                 .fillMaxSize()
                         )
 
-                        ConsumableLaunchedEffect(effect = state.errorLoading) {
-                            actions.onBackClick()
-                            actions.showFolderListErrorLoadingSnackbar()
+                        ConsumableTextEffect(effect = state.errorLoading) { message ->
+                            actions.exitWithErrorMessage(message)
                         }
                     }
                 }
@@ -420,7 +420,7 @@ object FolderListScreen {
         val onBackClick: () -> Unit,
         val onFolderSelected: (LabelId) -> Unit,
         val onAddFolderClick: () -> Unit,
-        val showFolderListErrorLoadingSnackbar: () -> Unit
+        val exitWithErrorMessage: (String) -> Unit
     ) {
 
         companion object {
@@ -429,7 +429,7 @@ object FolderListScreen {
                 onBackClick = {},
                 onFolderSelected = {},
                 onAddFolderClick = {},
-                showFolderListErrorLoadingSnackbar = {}
+                exitWithErrorMessage = {}
             )
         }
     }
