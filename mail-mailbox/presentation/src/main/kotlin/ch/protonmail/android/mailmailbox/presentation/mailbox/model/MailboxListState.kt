@@ -51,7 +51,8 @@ sealed interface MailboxListState {
             data class SelectedMailboxItem(
                 val userId: UserId,
                 val id: String,
-                val isRead: Boolean
+                val isRead: Boolean,
+                val isStarred: Boolean
             )
         }
     }

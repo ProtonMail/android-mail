@@ -580,11 +580,22 @@ class MailboxViewModel @Inject constructor(
     }
 
     private fun showMoreBottomSheet(operation: MailboxViewAction) {
+        val selectionState = state.value.mailboxListState as? MailboxListState.Data.SelectionMode
+        if (selectionState == null) {
+            Timber.d("MailboxListState is not in SelectionMode")
+            return
+        }
         emitNewStateFrom(operation)
+
+        val usedStarAction = when (selectionState.selectedMailboxItems.all { it.isStarred }) {
+            true -> Action.Unstar
+            false -> Action.Star
+        }
+
         emitNewStateFrom(
             MailboxEvent.MailboxBottomSheetEvent(
                 MoreActionsBottomSheetState.MoreActionsBottomSheetEvent.ActionData(
-                    listOf(Action.Star, Action.Archive, Action.Spam)
+                    listOf(usedStarAction, Action.Archive, Action.Spam)
                         .map { actionUiModelMapper.toUiModel(it) }
                         .toImmutableList()
                 )

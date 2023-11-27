@@ -99,6 +99,7 @@ import ch.protonmail.android.mailmessage.domain.usecase.GetConversationMessagesW
 import ch.protonmail.android.mailmessage.domain.usecase.GetMessagesWithLabels
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
@@ -2435,6 +2436,86 @@ class MailboxViewModelTest {
     }
 
     @Test
+    fun `when more action bottom sheet is requested with non-starred items then star action is shown`() = runTest {
+        // Given
+        val item = readMailboxItemUiModel.copy(id = MessageIdSample.Invoice.id, showStar = true)
+        val secondItem = unreadMailboxItemUiModel.copy(id = MessageIdSample.AlphaAppQAReport.id, showStar = false)
+        val selectedItemsList = listOf(item, secondItem)
+
+        val initialState = createMailboxDataState()
+        val expectedActionItems = listOf(
+            ActionUiModelSample.build(Action.Star),
+            ActionUiModelSample.build(Action.Archive),
+            ActionUiModelSample.build(Action.Spam)
+        )
+        val expectedBottomSheetContent = MoreActionsBottomSheetState.Data(
+            actionUiModels = expectedActionItems.toImmutableList()
+        )
+        val bottomSheetShownState =
+            createMailboxStateWithMoreActionBottomSheet(selectedItemsList, expectedBottomSheetContent)
+        val intermediateState = MailboxStateSampleData.createSelectionMode(
+            listOf(item, secondItem),
+            currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
+        )
+        expectViewMode(NoConversationGrouping)
+        expectedSelectedLabelCountStateChange(initialState)
+        returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
+        returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
+        expectedMoreActionBottomSheetRequestedStateChange(expectedActionItems, bottomSheetShownState)
+
+
+        mailboxViewModel.state.test {
+            awaitItem() // First emission for selected user
+
+            // When + Then
+            mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
+            assertEquals(intermediateState, awaitItem())
+            mailboxViewModel.submit(MailboxViewAction.RequestMoreActionsBottomSheet)
+            assertEquals(bottomSheetShownState, awaitItem())
+        }
+    }
+
+    @Test
+    fun `when more action bottom sheet is requested with all items starred then unstar action is shown`() = runTest {
+        // Given
+        val item = readMailboxItemUiModel.copy(id = MessageIdSample.Invoice.id, showStar = true)
+        val secondItem = unreadMailboxItemUiModel.copy(id = MessageIdSample.AlphaAppQAReport.id, showStar = true)
+        val selectedItemsList = listOf(item, secondItem)
+
+        val initialState = createMailboxDataState()
+        val expectedActionItems = listOf(
+            ActionUiModelSample.build(Action.Unstar),
+            ActionUiModelSample.build(Action.Archive),
+            ActionUiModelSample.build(Action.Spam)
+        )
+        val expectedBottomSheetContent = MoreActionsBottomSheetState.Data(
+            actionUiModels = expectedActionItems.toImmutableList()
+        )
+        val bottomSheetShownState =
+            createMailboxStateWithMoreActionBottomSheet(selectedItemsList, expectedBottomSheetContent)
+        val intermediateState = MailboxStateSampleData.createSelectionMode(
+            listOf(item, secondItem),
+            currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
+        )
+        expectViewMode(NoConversationGrouping)
+        expectedSelectedLabelCountStateChange(initialState)
+        returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
+        returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
+        expectedMoreActionBottomSheetRequestedStateChange(expectedActionItems, bottomSheetShownState)
+
+
+        mailboxViewModel.state.test {
+            awaitItem() // First emission for selected user
+
+            // When + Then
+            mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
+            assertEquals(intermediateState, awaitItem())
+            mailboxViewModel.submit(MailboxViewAction.RequestMoreActionsBottomSheet)
+            assertEquals(bottomSheetShownState, awaitItem())
+        }
+    }
+
+    @Test
     fun `verify dismiss delete dialog calls reducer`() = runTest {
         // Given
         val initialState = createMailboxDataState()
@@ -2635,6 +2716,20 @@ class MailboxViewModelTest {
                 currentState = any(),
                 operation = MailboxEvent.MailboxBottomSheetEvent(
                     MoveToBottomSheetState.MoveToBottomSheetEvent.ActionData(mailLabelUiModel.toImmutableList())
+                )
+            )
+        } returns bottomSheetState
+    }
+
+    private fun expectedMoreActionBottomSheetRequestedStateChange(
+        actionUiModels: List<ActionUiModel>,
+        bottomSheetState: MailboxState
+    ) {
+        every {
+            mailboxReducer.newStateFrom(
+                currentState = any(),
+                operation = MailboxEvent.MailboxBottomSheetEvent(
+                    MoreActionsBottomSheetState.MoreActionsBottomSheetEvent.ActionData(actionUiModels.toImmutableList())
                 )
             )
         } returns bottomSheetState
@@ -2858,5 +2953,14 @@ class MailboxViewModelTest {
         bottomSheetState = BottomSheetState(
             MoveToBottomSheetState.Data(MailLabelUiModelTestData.customLabelList, selectedItem)
         )
+    )
+
+    private fun createMailboxStateWithMoreActionBottomSheet(
+        selectedMailboxItems: List<MailboxItemUiModel>,
+        expectedBottomSheetContent: MoreActionsBottomSheetState
+    ) = MailboxStateSampleData.createSelectionMode(
+        selectedMailboxItemUiModels = selectedMailboxItems,
+        currentMailLabel = MailLabel.System(MailLabelId.System.Trash),
+        bottomSheetState = BottomSheetState(expectedBottomSheetContent)
     )
 }
