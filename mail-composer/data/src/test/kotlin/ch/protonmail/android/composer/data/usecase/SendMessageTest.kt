@@ -135,7 +135,14 @@ class SendMessageTest {
         val result = sendMessage(userId, messageId)
 
         // Then
-        assertEquals(SendMessage.Error.SendPreferences.left(), result)
+        assertEquals(
+            SendMessage.Error.SendPreferences(
+                mapOf(
+                    baseRecipient.address to ObtainSendPreferences.Result.Error.AddressDisabled
+                )
+            ).left(),
+            result
+        )
     }
 
     @Test
@@ -355,7 +362,7 @@ class SendMessageTest {
         val result = sendMessage(userId, messageId)
 
         // Then
-        assertEquals(SendMessage.Error.SendPreferences.left(), result)
+        assertEquals(SendMessage.Error.SendPreferences(emptyMap()).left(), result)
     }
 
     private fun expectFindLocalDraftSucceeds(expected: () -> MessageWithBody = { sampleMessage }) = expected().also {

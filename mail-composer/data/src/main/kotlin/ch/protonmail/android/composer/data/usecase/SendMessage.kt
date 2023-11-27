@@ -34,6 +34,7 @@ import me.proton.core.mailmessage.domain.entity.Email
 import me.proton.core.mailsendpreferences.domain.model.SendPreferences
 import me.proton.core.mailsendpreferences.domain.usecase.ObtainSendPreferences
 import me.proton.core.mailsettings.domain.entity.PackageType
+import me.proton.core.util.kotlin.filterNullValues
 import me.proton.core.util.kotlin.filterValues
 import me.proton.core.util.kotlin.toInt
 import timber.log.Timber
@@ -100,19 +101,31 @@ internal class SendMessage @Inject constructor(
         emails: List<Email>
     ): Either<Error.SendPreferences, Map<Email, SendPreferences>> {
 
-        val sendPreferences = runCatching {
+        val sendPreferencesResults = runCatching {
             obtainSendPreferences(userId, emails)
-                .filterValues(ObtainSendPreferences.Result.Success::class.java)
-                .mapValues { it.value.sendPreferences }
         }.getOrElse {
             Timber.e("Unexpected exception ${it.message} while obtaining send preferences for $userId")
-            return Error.SendPreferences.left()
+            return Error.SendPreferences(emptyMap()).left()
         }
+
+        val sendPreferencesSuccesses = sendPreferencesResults
+            .filterValues<Email, ObtainSendPreferences.Result.Success>()
+
+        val sendPreferencesErrors = sendPreferencesResults.mapValues {
+            if (it.value is ObtainSendPreferences.Result.Error) {
+                it.value as ObtainSendPreferences.Result.Error
+            } else null
+        }.filterNullValues()
+
+        if (sendPreferencesErrors.isNotEmpty()) return Error.SendPreferences(sendPreferencesErrors).left()
+
+        val sendPreferences = sendPreferencesSuccesses
+            .mapValues { it.value.sendPreferences }
 
         val uniqueEmails = emails.distinctBy { it.lowercase() }
         // we failed getting send preferences for all recipients
         return if (sendPreferences.size != uniqueEmails.size) {
-            Error.SendPreferences.left()
+            Error.SendPreferences(emptyMap()).left()
         } else sendPreferences.right()
     }
 
@@ -127,7 +140,12 @@ internal class SendMessage @Inject constructor(
 
         object SenderAddressNotFound : Error
 
-        object SendPreferences : Error
+        data class SendPreferences(
+            /**
+             * Detail mapping of what went wrong with SendPreferences for recipient emails.
+             */
+            val errors: Map<Email, ObtainSendPreferences.Result.Error>
+        ) : Error
 
         object GeneratingPackages : Error
 
