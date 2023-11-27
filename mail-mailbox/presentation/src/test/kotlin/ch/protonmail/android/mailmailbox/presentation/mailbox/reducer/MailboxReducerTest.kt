@@ -78,7 +78,6 @@ internal class MailboxReducerTest(
     private val deleteDialogReducer: MailboxDeleteDialogReducer = mockk {
         every { newStateFrom(any()) } returns reducedState.deleteDialogState
     }
-
     private val bottomSheetReducer: BottomSheetReducer = mockk {
         every { newStateFrom(any(), any()) } returns reducedState.bottomSheetState
     }
@@ -142,6 +141,14 @@ internal class MailboxReducerTest(
             verify { deleteDialogReducer.newStateFrom(operation as AffectingDeleteDialog) }
         } else {
             assertEquals(currentState.deleteDialogState, nextState.deleteDialogState)
+        }
+
+        if (shouldReduceBottomAppBarState) {
+            verify {
+                bottomAppBarReducer.newStateFrom(currentState.bottomAppBarState, any())
+            }
+        } else {
+            assertEquals(currentState.bottomAppBarState, nextState.bottomAppBarState, testName)
         }
 
         if (shouldReduceBottomSheetState) {
@@ -276,7 +283,7 @@ internal class MailboxReducerTest(
                 shouldReduceMailboxListState = false,
                 shouldReduceTopAppBarState = false,
                 shouldReduceUnreadFilterState = false,
-                shouldReduceBottomAppBarState = true,
+                shouldReduceBottomAppBarState = false,
                 shouldReduceActionMessage = false,
                 shouldReduceDeleteDialog = false,
                 shouldReduceBottomSheetState = true
@@ -286,7 +293,27 @@ internal class MailboxReducerTest(
                 shouldReduceMailboxListState = false,
                 shouldReduceTopAppBarState = false,
                 shouldReduceUnreadFilterState = false,
-                shouldReduceBottomAppBarState = true,
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false,
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = true
+            ),
+            TestInput(
+                MailboxViewAction.RequestMoreActionsBottomSheet,
+                shouldReduceMailboxListState = false,
+                shouldReduceTopAppBarState = false,
+                shouldReduceUnreadFilterState = false,
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false,
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = true
+            ),
+            TestInput(
+                MailboxViewAction.DismissBottomSheet,
+                shouldReduceMailboxListState = false,
+                shouldReduceTopAppBarState = false,
+                shouldReduceUnreadFilterState = false,
+                shouldReduceBottomAppBarState = false,
                 shouldReduceActionMessage = false,
                 shouldReduceDeleteDialog = false,
                 shouldReduceBottomSheetState = true

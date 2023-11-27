@@ -139,10 +139,11 @@ class MailboxReducer @Inject constructor(
                 is MailboxEvent.ErrorRetrievingCustomMailLabels,
                 is MailboxEvent.ErrorRetrievingFolderColorSettings,
                 is MailboxEvent.ErrorRetrievingDestinationMailFolders,
-                is MailboxViewAction.LabelAsConfirmed -> BottomSheetOperation.Dismiss
+                is MailboxViewAction.MoveToConfirmed,
+                is MailboxViewAction.LabelAsConfirmed,
+                is MailboxViewAction.DismissBottomSheet -> BottomSheetOperation.Dismiss
 
                 is MailboxViewAction.MoveToDestinationSelected -> MoveToDestinationSelected(operation.mailLabelId)
-                is MailboxViewAction.MoveToConfirmed -> BottomSheetOperation.Dismiss
             }
             bottomSheetReducer.newStateFrom(bottomSheetState, bottomSheetOperation)
         } else {

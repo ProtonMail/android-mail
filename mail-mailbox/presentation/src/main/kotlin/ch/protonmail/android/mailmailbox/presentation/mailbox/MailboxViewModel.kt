@@ -245,6 +245,7 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.MoveToDestinationSelected -> emitNewStateFrom(viewAction)
                 is MailboxViewAction.MoveToConfirmed -> onMoveToConfirmed()
                 is MailboxViewAction.RequestMoreActionsBottomSheet -> showMoreBottomSheet(viewAction)
+                is MailboxViewAction.DismissBottomSheet -> emitNewStateFrom(viewAction)
             }.exhaustive
         }
     }
