@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.domain.usecase
+package ch.protonmail.android.mailmessage.domain.usecase
 
 import arrow.core.left
 import arrow.core.right
@@ -32,38 +32,38 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import kotlin.test.assertEquals
 
-internal class StarMessageTest {
+internal class StarMessagesTest {
 
     private val userId = UserIdSample.Primary
-    private val messageId = MessageTestData.starredMessage.messageId
+    private val messageIds = listOf(MessageTestData.starredMessage.messageId)
     private val starredLabelId = SystemLabelId.Starred.labelId
 
     private val messageRepository: MessageRepository = mockk {
         coEvery {
-            relabel(userId, messageId, labelsToBeAdded = listOf(starredLabelId))
-        } returns MessageTestData.starredMessage.right()
+            relabel(userId, messageIds, labelsToBeAdded = listOf(starredLabelId))
+        } returns listOf(MessageTestData.starredMessage).right()
     }
 
-    private val starMessage = StarMessage(
+    private val starMessages = StarMessages(
         messageRepository
     )
 
     @Test
     fun `calls message repository to add starred label`() = runTest {
         // When
-        starMessage(userId, messageId)
+        starMessages(userId, messageIds)
 
         // Then
-        coVerify { messageRepository.relabel(userId, messageId, emptyList(), listOf(starredLabelId)) }
+        coVerify { messageRepository.relabel(userId, messageIds, emptyList(), listOf(starredLabelId)) }
     }
 
     @Test
     fun `returns starred message when repository succeeds`() = runTest {
         // When
-        val actual = starMessage(userId, messageId)
+        val actual = starMessages(userId, messageIds)
 
         // Then
-        assertEquals(MessageTestData.starredMessage.right(), actual)
+        assertEquals(listOf(MessageTestData.starredMessage).right(), actual)
     }
 
     @Test
@@ -73,13 +73,13 @@ internal class StarMessageTest {
         coEvery {
             messageRepository.relabel(
                 userId = userId,
-                messageId = messageId,
+                messageIds = messageIds,
                 labelsToBeAdded = listOf(starredLabelId)
             )
         } returns localError.left()
 
         // When
-        val actual = starMessage(userId, messageId)
+        val actual = starMessages(userId, messageIds)
 
         // Then
         assertEquals(localError.left(), actual)

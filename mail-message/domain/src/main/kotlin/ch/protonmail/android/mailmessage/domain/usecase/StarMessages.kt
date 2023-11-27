@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.domain.usecase
+package ch.protonmail.android.mailmessage.domain.usecase
 
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.DataError
@@ -27,10 +27,10 @@ import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
-class StarMessage @Inject constructor(
+class StarMessages @Inject constructor(
     private val messageRepository: MessageRepository
 ) {
 
-    suspend operator fun invoke(userId: UserId, messageId: MessageId): Either<DataError, Message> =
-        messageRepository.relabel(userId, messageId, emptyList(), listOf(SystemLabelId.Starred.labelId))
+    suspend operator fun invoke(userId: UserId, messageIds: List<MessageId>): Either<DataError, List<Message>> =
+        messageRepository.relabel(userId, messageIds, emptyList(), listOf(SystemLabelId.Starred.labelId))
 }

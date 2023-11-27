@@ -49,7 +49,6 @@ import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageAttachmentS
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.RelabelMessage
-import ch.protonmail.android.maildetail.domain.usecase.StarMessage
 import ch.protonmail.android.maildetail.domain.usecase.UnStarMessage
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.mapper.MessageBodyUiModelMapper
@@ -82,6 +81,7 @@ import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
+import ch.protonmail.android.mailmessage.domain.usecase.StarMessages
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
@@ -202,8 +202,8 @@ class MessageDetailViewModelTest {
     private val getContacts = mockk<GetContacts> {
         coEvery { this@mockk.invoke(userId) } returns ContactTestData.contacts.right()
     }
-    private val starMessage = mockk<StarMessage> {
-        coEvery { this@mockk.invoke(userId, messageId) } returns MessageTestData.starredMessage.right()
+    private val starMessages = mockk<StarMessages> {
+        coEvery { this@mockk.invoke(userId, listOf(messageId)) } returns listOf(MessageTestData.starredMessage).right()
     }
     private val unStarMessage = mockk<UnStarMessage> {
         coEvery { this@mockk.invoke(userId, messageId) } returns MessageTestData.message.right()
@@ -292,7 +292,7 @@ class MessageDetailViewModelTest {
             markUnread = markUnread,
             markRead = markRead,
             getContacts = getContacts,
-            starMessage = starMessage,
+            starMessages = starMessages,
             unStarMessage = unStarMessage,
             savedStateHandle = savedStateHandle,
             messageDetailHeaderUiModelMapper = messageDetailHeaderUiModelMapper,
@@ -568,7 +568,7 @@ class MessageDetailViewModelTest {
     @Test
     fun `error starring message is emitted when star action fails`() = runTest {
         // Given
-        coEvery { starMessage.invoke(userId, messageId) } returns DataError.Local.NoDataCached.left()
+        coEvery { starMessages.invoke(userId, listOf(messageId)) } returns DataError.Local.NoDataCached.left()
 
         viewModel.state.test {
             initialStateEmitted()
