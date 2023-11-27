@@ -105,7 +105,7 @@ fun FolderListScreen(actions: FolderListScreen.Actions, viewModel: FolderListVie
                 is FolderListState.ListLoaded -> {
                     FolderSettingsScreen(
                         state = state,
-                        FolderSettingsScreen.Actions(
+                        actions = FolderSettingsScreen.Actions(
                             onChangeUseFolderColor = { useFolderColor ->
                                 viewModel.submit(
                                     FolderListViewAction.OnChangeUseFolderColor(
@@ -192,20 +192,21 @@ fun FolderListScreen(actions: FolderListScreen.Actions, viewModel: FolderListVie
 
 @Composable
 fun FolderSettingsScreen(
+    modifier: Modifier = Modifier,
     state: FolderListState.ListLoaded,
     actions: FolderSettingsScreen.Actions
 ) {
     Column {
-        FolderSettingsHeader(actions.onDoneClick)
-        UseFolderColorSetting(state, actions.onChangeUseFolderColor)
-        InheritParentFolderColorSetting(state, actions.onChangeInheritParentFolderColor)
+        FolderSettingsHeader(modifier, actions.onDoneClick)
+        UseFolderColorSetting(modifier, state, actions.onChangeUseFolderColor)
+        InheritParentFolderColorSetting(modifier, state, actions.onChangeInheritParentFolderColor)
     }
 }
 
 @Composable
-fun FolderSettingsHeader(onDoneClick: () -> Unit) {
+fun FolderSettingsHeader(modifier: Modifier = Modifier, onDoneClick: () -> Unit) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .padding(ProtonDimens.DefaultSpacing)
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
@@ -226,11 +227,16 @@ fun FolderSettingsHeader(onDoneClick: () -> Unit) {
 }
 
 @Composable
-fun UseFolderColorSetting(state: FolderListState.ListLoaded, onChangeUseFolderColor: (Boolean) -> Unit) {
+fun UseFolderColorSetting(
+    modifier: Modifier = Modifier,
+    state: FolderListState.ListLoaded,
+    onChangeUseFolderColor: (Boolean) -> Unit
+) {
     val useFolderColorHintResId =
         if (state.useFolderColor) R.string.folder_settings_switch_on
         else R.string.folder_settings_switch_off
     ProtonSettingsToggleItem(
+        modifier = modifier,
         name = stringResource(id = R.string.folder_settings_folder_colors),
         hint = stringResource(id = useFolderColorHintResId),
         value = state.useFolderColor,
@@ -242,6 +248,7 @@ fun UseFolderColorSetting(state: FolderListState.ListLoaded, onChangeUseFolderCo
 
 @Composable
 fun InheritParentFolderColorSetting(
+    modifier: Modifier = Modifier,
     state: FolderListState.ListLoaded,
     onChangeInheritParentFolderColor: (Boolean) -> Unit
 ) {
@@ -251,6 +258,7 @@ fun InheritParentFolderColorSetting(
             if (state.inheritParentFolderColor) R.string.folder_settings_switch_on
             else R.string.folder_settings_switch_off
         ProtonSettingsToggleItem(
+            modifier = modifier,
             name = stringResource(id = R.string.folder_settings_parent_color),
             hint = stringResource(id = inheritParentFolderColorHintResId),
             value = state.inheritParentFolderColor,
@@ -472,7 +480,7 @@ object FolderListTopBar {
     data class Actions(
         val onBackClick: () -> Unit,
         val onAddFolderClick: () -> Unit,
-        val onFolderSettingsClick: () -> Unit,
+        val onFolderSettingsClick: () -> Unit
     ) {
 
         companion object {
