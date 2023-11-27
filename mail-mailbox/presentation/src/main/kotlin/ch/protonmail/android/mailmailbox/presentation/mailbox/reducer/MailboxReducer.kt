@@ -137,8 +137,9 @@ class MailboxReducer @Inject constructor(
                 is MailboxViewAction.LabelAsToggleAction -> LabelToggled(operation.label)
                 is MailboxEvent.ErrorRetrievingCustomMailLabels,
                 is MailboxEvent.ErrorRetrievingFolderColorSettings,
-                is MailboxEvent.ErrorRetrievingDestinationMailLabels,
+                is MailboxEvent.ErrorRetrievingDestinationMailFolders,
                 is MailboxViewAction.LabelAsConfirmed -> BottomSheetOperation.Dismiss
+
                 is MailboxViewAction.MoveToDestinationSelected -> MoveToDestinationSelected(operation.mailLabelId)
                 is MailboxViewAction.MoveToConfirmed -> BottomSheetOperation.Dismiss
             }
@@ -150,21 +151,17 @@ class MailboxReducer @Inject constructor(
 
     private fun MailboxState.toNewErrorBarState(operation: MailboxOperation): Effect<TextUiModel> {
         return if (operation is MailboxOperation.AffectingErrorBar) {
-            when (operation) {
-                is MailboxEvent.ErrorLabeling ->
-                    Effect.of(TextUiModel(R.string.mailbox_action_label_messages_failed))
+            val textResource = when (operation) {
+                is MailboxEvent.ErrorLabeling -> R.string.mailbox_action_label_messages_failed
+                is MailboxEvent.ErrorRetrievingCustomMailLabels ->
+                    R.string.mailbox_action_label_messages_failed_retrieving_labels
 
-                MailboxEvent.ErrorRetrievingCustomMailLabels ->
-                    Effect.of(TextUiModel(R.string.mailbox_action_label_messages_failed_retrieving_labels))
-                MailboxEvent.ErrorRetrievingFolderColorSettings ->
-                    Effect.of(TextUiModel(R.string.mailbox_action_label_messages_failed))
-
-                MailboxEvent.ErrorMoving ->
-                    Effect.of(TextUiModel(R.string.mailbox_action_move_messages_failed))
-
-                MailboxEvent.ErrorRetrievingDestinationMailLabels ->
-                    Effect.of(TextUiModel(R.string.mailbox_action_move_messages_failed))
+                is MailboxEvent.ErrorMoving -> R.string.mailbox_action_move_messages_failed
+                is MailboxEvent.ErrorRetrievingDestinationMailFolders -> R.string.mailbox_action_move_messages_failed
+                is MailboxEvent.ErrorRetrievingFolderColorSettings ->
+                    R.string.mailbox_action_move_messages_failed_retrieving_folders
             }
+            Effect.of(TextUiModel(textResource))
         } else {
             error
         }

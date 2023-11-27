@@ -509,7 +509,7 @@ class MailboxViewModel @Inject constructor(
             val color = observeFolderColorSettings(userId).firstOrNull()
 
             if (destinationFolder == null) {
-                emitNewStateFrom(MailboxEvent.ErrorRetrievingDestinationMailLabels)
+                emitNewStateFrom(MailboxEvent.ErrorRetrievingDestinationMailFolders)
                 return@launch
             }
 
@@ -539,24 +539,27 @@ class MailboxViewModel @Inject constructor(
             return
         }
         val userId = primaryUserId.filterNotNull().first()
-        bottomSheetState.selected?.let { mailLabelUiModel ->
-            when (getPreferredViewMode()) {
-                ViewMode.ConversationGrouping -> moveConversations(
-                    userId = userId,
-                    conversationIds = selectionState.selectedMailboxItems.map { ConversationId(it.id) },
-                    labelId = mailLabelUiModel.id.labelId
-                )
-
-                ViewMode.NoConversationGrouping -> moveMessages(
-                    userId = userId,
-                    messageIds = selectionState.selectedMailboxItems.map { MessageId(it.id) },
-                    labelId = mailLabelUiModel.id.labelId
-                )
-            }.fold(
-                ifLeft = { MailboxEvent.ErrorMoving },
-                ifRight = { MailboxViewAction.MoveToConfirmed }
-            ).let { emitNewStateFrom(it) }
+        val selectedFolder = bottomSheetState.selected
+        if (selectedFolder == null) {
+            Timber.d("Selected folder is null")
+            return
         }
+        when (getPreferredViewMode()) {
+            ViewMode.ConversationGrouping -> moveConversations(
+                userId = userId,
+                conversationIds = selectionState.selectedMailboxItems.map { ConversationId(it.id) },
+                labelId = selectedFolder.id.labelId
+            )
+
+            ViewMode.NoConversationGrouping -> moveMessages(
+                userId = userId,
+                messageIds = selectionState.selectedMailboxItems.map { MessageId(it.id) },
+                labelId = selectedFolder.id.labelId
+            )
+        }.fold(
+            ifLeft = { MailboxEvent.ErrorMoving },
+            ifRight = { MailboxViewAction.MoveToConfirmed }
+        ).let { emitNewStateFrom(it) }
     }
 
     private suspend fun getMessagesWithLabels(

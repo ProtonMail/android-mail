@@ -2128,7 +2128,7 @@ class MailboxViewModelTest {
         mailboxViewModel.state.test {
             awaitItem() // First emission for selected user
 
-            // When
+            // When + Then
             mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
             assertEquals(intermediateState, awaitItem())
             mailboxViewModel.submit(MailboxViewAction.RequestMoveToBottomSheet)
@@ -2136,8 +2136,7 @@ class MailboxViewModelTest {
             mailboxViewModel.submit(MailboxViewAction.MoveToDestinationSelected(MailLabelId.System.Spam))
             assertEquals(bottomSheetShownStateWithSelectedItem, awaitItem())
             mailboxViewModel.submit(MailboxViewAction.MoveToConfirmed)
-//
-            // Then
+
             assertEquals(intermediateState, awaitItem())
             coVerify(exactly = 1) {
                 moveMessages(userId, selectedItemsList.map { MessageId(it.id) }, MailLabelId.System.Spam.labelId)
@@ -2181,7 +2180,7 @@ class MailboxViewModelTest {
         mailboxViewModel.state.test {
             awaitItem() // First emission for selected user
 
-            // When
+            // When + Then
             mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
             assertEquals(intermediateState, awaitItem())
             mailboxViewModel.submit(MailboxViewAction.RequestMoveToBottomSheet)
@@ -2189,8 +2188,7 @@ class MailboxViewModelTest {
             mailboxViewModel.submit(MailboxViewAction.MoveToDestinationSelected(MailLabelId.System.Spam))
             assertEquals(bottomSheetShownStateWithSelectedItem, awaitItem())
             mailboxViewModel.submit(MailboxViewAction.MoveToConfirmed)
-//
-            // Then
+
             assertEquals(intermediateState, awaitItem())
             coVerify(exactly = 1) {
                 moveConversations(
@@ -2415,10 +2413,7 @@ class MailboxViewModelTest {
         } returns createMailboxStateWithLabelAsBottomSheet(selectedItems, true)
     }
 
-    private fun expectedMoveToStateChange(
-        selectedItem: MailLabelId,
-        expectedState: MailboxState
-    ) {
+    private fun expectedMoveToStateChange(selectedItem: MailLabelId, expectedState: MailboxState) {
         every {
             mailboxReducer.newStateFrom(any(), MailboxViewAction.MoveToDestinationSelected(selectedItem))
         } returns expectedState
@@ -2580,35 +2575,34 @@ class MailboxViewModelTest {
     private fun createMailboxStateWithLabelAsBottomSheet(
         selectedMailboxItems: List<MailboxItemUiModel>,
         selected: Boolean
-    ) =
-        MailboxStateSampleData.createSelectionMode(
-            selectedMailboxItemUiModels = selectedMailboxItems,
-            currentMailLabel = MailLabel.System(MailLabelId.System.Trash),
-            bottomSheetState = BottomSheetState(
-                LabelAsBottomSheetState.Data(
-                    listOf(
-                        LabelUiModelWithSelectedState(
-                            labelUiModel = MailLabelTestData.customLabelOne.toCustomUiModel(
-                                defaultFolderColorSettings, emptyMap(), null
-                            ),
-                            selectedState = when {
-                                selected -> LabelSelectedState.Selected
-                                else -> LabelSelectedState.NotSelected
-                            }
+    ) = MailboxStateSampleData.createSelectionMode(
+        selectedMailboxItemUiModels = selectedMailboxItems,
+        currentMailLabel = MailLabel.System(MailLabelId.System.Trash),
+        bottomSheetState = BottomSheetState(
+            LabelAsBottomSheetState.Data(
+                listOf(
+                    LabelUiModelWithSelectedState(
+                        labelUiModel = MailLabelTestData.customLabelOne.toCustomUiModel(
+                            defaultFolderColorSettings, emptyMap(), null
                         ),
-                        LabelUiModelWithSelectedState(
-                            labelUiModel = MailLabelTestData.customLabelTwo.toCustomUiModel(
-                                defaultFolderColorSettings, emptyMap(), null
-                            ),
-                            selectedState = when {
-                                selected -> LabelSelectedState.Selected
-                                else -> LabelSelectedState.NotSelected
-                            }
-                        )
-                    ).toPersistentList()
-                )
+                        selectedState = when {
+                            selected -> LabelSelectedState.Selected
+                            else -> LabelSelectedState.NotSelected
+                        }
+                    ),
+                    LabelUiModelWithSelectedState(
+                        labelUiModel = MailLabelTestData.customLabelTwo.toCustomUiModel(
+                            defaultFolderColorSettings, emptyMap(), null
+                        ),
+                        selectedState = when {
+                            selected -> LabelSelectedState.Selected
+                            else -> LabelSelectedState.NotSelected
+                        }
+                    )
+                ).toPersistentList()
             )
         )
+    )
 
     private fun createMailboxStateWithMoveToBottomSheet(
         selectedMailboxItems: List<MailboxItemUiModel>,

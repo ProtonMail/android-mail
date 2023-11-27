@@ -172,7 +172,7 @@ internal sealed interface MailboxEvent : MailboxOperation {
     object ErrorRetrievingCustomMailLabels : MailboxEvent, AffectingErrorBar, AffectingBottomSheet
     object ErrorRetrievingFolderColorSettings : MailboxEvent, AffectingErrorBar, AffectingBottomSheet
     object ErrorMoving : MailboxEvent, AffectingErrorBar
-    object ErrorRetrievingDestinationMailLabels : MailboxEvent, AffectingErrorBar, AffectingBottomSheet
+    object ErrorRetrievingDestinationMailFolders : MailboxEvent, AffectingErrorBar, AffectingBottomSheet
 }
 
 
