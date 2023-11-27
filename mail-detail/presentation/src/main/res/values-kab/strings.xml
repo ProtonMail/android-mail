@@ -49,11 +49,6 @@
   <string name="error_attachment_download_in_progress">Current download must complete before starting a new one.</string>
   <string name="error_get_attachment_not_enough_memory">Failed to get attachment due to insufficient memory</string>
   <string name="reload">Smiren</string>
-  <!-- Bottom Sheet -->
-  <string name="bottom_sheet_move_to_title">Senkez ɣer...</string>
-  <string name="bottom_sheet_done_action">Immed</string>
-  <string name="bottom_sheet_archive_action">Ɣber daɣen?</string>
-  <string name="bottom_sheet_label_as_title">Tabzimt am...</string>
   <string name="error_relabel_message_failed">Tella-d tuccḍa deg usnas n tebzimt tamaynut i yizen. Ttxil ɛreḍ tikkel-nniḍen</string>
   <string name="error_relabel_conversation_failed">Tella-d tuccḍa deg usnas n tebzimt tamaynut i udiwenni. Ttxil ɛreḍ tikkel-nniḍen</string>
   <string name="please_go_back_online_to_load_messages">Ur teqqineḍ ara. Ttxil qqen akken ad d-tessaliḍ iznan</string>

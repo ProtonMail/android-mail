@@ -51,11 +51,6 @@
   <string name="error_attachment_download_in_progress">Przed rozpoczęciem nowego pobierania obecne musi zostać zakończone.</string>
   <string name="error_get_attachment_not_enough_memory">Nie udało się pobrać załącznika z powodu braku dostępu do pamięci wewnętrznej</string>
   <string name="reload">Odśwież</string>
-  <!-- Bottom Sheet -->
-  <string name="bottom_sheet_move_to_title">Przenieś do...</string>
-  <string name="bottom_sheet_done_action">Gotowe</string>
-  <string name="bottom_sheet_archive_action">Również archiwizuj?</string>
-  <string name="bottom_sheet_label_as_title">Oznacz jako...</string>
   <string name="error_relabel_message_failed">Nie udało się zmienić etykiet wiadomości. Spróbuj ponownie</string>
   <string name="error_relabel_conversation_failed">Nie udało się zmienić etykiet wątku. Spróbuj ponownie</string>
   <string name="please_go_back_online_to_load_messages">Jesteś w trybie offline. Połącz się z Internetem, aby załadować wiadomość</string>
@@ -66,4 +61,9 @@
   <string name="message_body_embedded_images_banner_text">Automatyczne ładowanie osadzonych obrazów jest wyłączone. Możesz to zmienić w ustawieniach.</string>
   <string name="message_body_remote_content_banner_text">Automatyczne ładowanie zawartości zdalnej jest wyłączone. Możesz to zmienić w ustawieniach.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">Automatyczne ładowanie osadzonych obrazów i zawartości zdalnej jest wyłączone. Możesz to zmienić w ustawieniach.</string>
+  <!-- External link confirmation dialog -->
+  <string name="external_link_confirmation_dialog_text">You are about to leave the app and navigate to:</string>
+  <string name="external_link_confirmation_dialog_do_not_ask_again">Nie pytaj ponownie</string>
+  <string name="external_link_confirmation_dialog_cancel_button">Anuluj</string>
+  <string name="external_link_confirmation_dialog_continue_button">Kontynuuj</string>
 </resources>

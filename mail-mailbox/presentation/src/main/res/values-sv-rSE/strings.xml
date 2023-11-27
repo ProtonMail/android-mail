@@ -70,4 +70,7 @@
     <item quantity="one">Konversation permanent borttaget</item>
     <item quantity="other">%d konversationer permanent borttagna</item>
   </plurals>
+  <string name="mailbox_action_label_messages_failed">Label operation failed</string>
+  <string name="mailbox_action_label_messages_failed_retrieving_labels">Misslyckades att hämta etiketter</string>
+  <string name="mailbox_action_label_messages_failed_retrieving_colors">Misslyckades att hämta färginställningar</string>
 </resources>

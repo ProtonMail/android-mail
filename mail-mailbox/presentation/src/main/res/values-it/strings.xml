@@ -70,4 +70,7 @@
     <item quantity="one">Conversazione eliminata definitivamente</item>
     <item quantity="other">%d conversazioni eliminate definitivamente</item>
   </plurals>
+  <string name="mailbox_action_label_messages_failed">Etichettatura non riuscita</string>
+  <string name="mailbox_action_label_messages_failed_retrieving_labels">Caricamento delle etichette non riuscito</string>
+  <string name="mailbox_action_label_messages_failed_retrieving_colors">Caricamento dei colori non riuscito</string>
 </resources>

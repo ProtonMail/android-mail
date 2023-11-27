@@ -49,11 +49,6 @@
   <string name="error_attachment_download_in_progress">Huidige download moet voltooid zijn voordat u een nieuwe start.</string>
   <string name="error_get_attachment_not_enough_memory">Kan bijlage niet ophalen vanwege onvoldoende geheugen</string>
   <string name="reload">Opnieuw laden</string>
-  <!-- Bottom Sheet -->
-  <string name="bottom_sheet_move_to_title">Verplaatsen naar...</string>
-  <string name="bottom_sheet_done_action">Klaar</string>
-  <string name="bottom_sheet_archive_action">Ook archiveren?</string>
-  <string name="bottom_sheet_label_as_title">Label als...</string>
   <string name="error_relabel_message_failed">Kon het bericht niet opnieuw labelen. Probeer opnieuw.</string>
   <string name="error_relabel_conversation_failed">Kon het gesprek niet opnieuw labelen. Probeer opnieuw.</string>
   <string name="please_go_back_online_to_load_messages">U bent offline. Ga terug online om berichten te laden</string>

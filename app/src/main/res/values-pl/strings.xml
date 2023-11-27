@@ -32,4 +32,5 @@
   <string name="notification_switched_account">Przełączono na konto %s</string>
   <string name="label_saved">Etykieta została zapisana</string>
   <string name="label_deleted">Etykieta została usunięta</string>
+  <string name="label_list_loading_error">Wystąpił błąd podczas ładowania etykiety. Spróbuj ponownie później</string>
 </resources>

@@ -45,7 +45,9 @@
   <string name="add_a_label_name_hint">Añadir un nombre a la etiqueta</string>
   <string name="input_field_max_characters_count">%1d / %2d caracteres</string>
   <string name="color_picker_title">Color</string>
-  <string name="save_label_error">Error al guardar la etiqueta</string>
+  <string name="save_label_error">Error al guardar la etiqueta,. Intente de nuevo más tarde</string>
+  <string name="label_already_exists">Ya existe una etiqueta o carpeta con este nombre</string>
+  <string name="label_limit_reached_error">Se alcanzó el límite de etiquetas.</string>
   <string name="delete_label_error">Error al eliminar la etiqueta</string>
   <string name="input_field_clear_content_description">Borrar texto</string>
   <string name="label_list_item_content_description">Elemento de lista de etiquetas</string>

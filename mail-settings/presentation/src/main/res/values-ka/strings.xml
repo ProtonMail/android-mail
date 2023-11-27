@@ -55,8 +55,8 @@
   <string name="mail_settings_display_name_and_signature">სახელისა და ხელმოწერის ჩვენება</string>
   <string name="mail_settings_mailbox">საფოსტო ყუთი</string>
   <string name="mail_settings_privacy">პირადი მონაცემები</string>
-  <string name="mail_settings_labels">Labels</string>
-  <string name="mail_settings_folders">Folders</string>
+  <string name="mail_settings_labels">ჭდეები</string>
+  <string name="mail_settings_folders">საქაღალდეები</string>
   <string name="mail_settings_local_storage">ლოკალური საცავი</string>
   <string name="mail_settings_snooze">გაჩუმება</string>
   <string name="mail_settings_snooze_notifications">გაფრთხილებების ჩაჩუმება</string>
@@ -64,14 +64,25 @@
   <string name="mail_settings_not_set">დაყენებული არაა</string>
   <string name="mail_settings_conversation_mode_hint">ელფოსტების ერთ საუბრად და ცალ-ცალკე ჩვენებას შორის გადართვა</string>
   <!-- Default email address settings -->
-  <string name="mail_settings_default_email_address_title">Default email address</string>
-  <string name="mail_settings_default_email_address_inactive_addresses">Inactive addresses</string>
-  <string name="mail_settings_default_email_address_no_inactive_addresses">No inactive addresses</string>
-  <string name="mail_settings_default_email_address_error_loading">Error loading settings</string>
-  <string name="mail_settings_default_email_address_error_update">Error updating settings</string>
-  <string name="mail_settings_default_email_address_error_update_subscription">Upgrade to a paid plan to set this address as default</string>
+  <string name="mail_settings_default_email_address_title">ნაგულისხმევი ელფოსტის მისამართი</string>
+  <string name="mail_settings_default_email_address_inactive_addresses">არააქტიური მისამართები</string>
+  <string name="mail_settings_default_email_address_no_inactive_addresses">არააქტიური მისამართების გარეშე</string>
+  <string name="mail_settings_default_email_address_error_loading">პარამეტრების ჩატვირთვის შეცდომა</string>
+  <string name="mail_settings_default_email_address_error_update">პარამეტრების განახლების შეცდომა</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">ამ მისამართის ნაგულისხმევად გამოსაყენებლად გადადით ფასიან გეგმაზე</string>
   <!-- Display name, signature, mobile footer -->
-  <string name="mail_settings_identity_mobile_footer_default_free">Sent from Proton Mail Android</string>
+  <string name="mail_settings_identity_title">სახელისა &amp; ხელმოწერის ჩვენება</string>
+  <string name="mail_settings_identity_save_button">შენახვა</string>
+  <string name="mail_settings_identity_display_name">საჩვენებელი სახელი</string>
+  <string name="mail_settings_identity_display_name_hint">საჩვენებელი სახელი</string>
+  <string name="mail_settings_identity_signature">ხელმოწერა</string>
+  <string name="mail_settings_identity_signature_hint">ხელმოწერა</string>
+  <string name="mail_settings_identity_mobile_footer">მობილური ბოლოსართი</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">მინაწერი თქვენი ბოლოსართის შემდეგ დაემატება.</string>
+  <string name="mail_settings_identity_mobile_footer_hint">მობილური ბოლოსართი</string>
+  <string name="mail_settings_identity_mobile_footer_default_free">გამოგზავნილია Proton Mail Android-დან</string>
+  <string name="mail_settings_identity_error_updating">პარამეტრების განახლების შეცდომა</string>
+  <string name="mail_settings_identity_error_loading">პარამეტრების ჩატვირთვის შეცდომა</string>
   <!-- Privacy settings -->
   <string name="mail_settings_privacy_auto_show_remote_content">დაშორებული შემცველობის ავტომატური ჩვენება</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">ჩადგმული გამოსახულებების ავტომატური ჩვენება</string>
@@ -95,13 +106,13 @@
   <string name="mail_settings_swipe_action_star_description">ვარსკვლავის დაყენება/მოცილება</string>
   <string name="mail_settings_swipe_action_trash_description">ნაგვის ყუთში გადატანა</string>
   <!-- Notification settings -->
-  <string name="mail_settings_notifications_title">Push notifications</string>
-  <string name="mail_settings_notifications_extended_notifications_title">Extended notifications</string>
-  <string name="mail_settings_notifications_extended_notifications_summary">Turn this feature on to see the sender of the emails in the push notifications.</string>
-  <string name="mail_settings_notifications_notifications_settings">Notifications settings</string>
-  <string name="mail_settings_notifications_notifications_settings_hint">Navigate to system notification settings</string>
-  <string name="mail_settings_notifications_update_error">Error updating settings</string>
-  <string name="mail_settings_notifications_loading_error">Error loading settings</string>
+  <string name="mail_settings_notifications_title">პუშ გაფრთხილებები</string>
+  <string name="mail_settings_notifications_extended_notifications_title">გაფართოებული გაფრთხილებები</string>
+  <string name="mail_settings_notifications_extended_notifications_summary">ჩართეთ პუშ გაფრთხილებებში გამომგზავნის მისამართის დასანახად.</string>
+  <string name="mail_settings_notifications_notifications_settings">გაფრთხილების პარამეტრები</string>
+  <string name="mail_settings_notifications_notifications_settings_hint">გადასვლა სისტემის გაფრთხილებების მორგებაზე</string>
+  <string name="mail_settings_notifications_update_error">პარამეტრების განახლების შეცდომა</string>
+  <string name="mail_settings_notifications_loading_error">პარამეტრების ჩატვირთვის შეცდომა</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">დაფიქსირდა შეცდომა. თავიდან სცადეთ.</string>
 </resources>

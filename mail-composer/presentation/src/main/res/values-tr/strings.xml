@@ -29,7 +29,7 @@
   <string name="composer_error_invalid_email">E-posta adresi geçersiz</string>
   <string name="composer_error_invalid_sender">Gönderici adresi geçersiz</string>
   <string name="change_sender_button_content_description">Göndericiyi değiştir</string>
-  <string name="composer_change_sender_paid_feature">Gönderici adresini deiştirmek için ücretli bir tarifeye yükseltin</string>
+  <string name="composer_change_sender_paid_feature">Gönderici adresini değiştirebilmek için ücretli bir tarifeye geçin</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Kuıllanıcının abonelik bilgileri alınamadığından gönderici değiştirilemedi. Yeniden deneyin.</string>
   <string name="composer_error_store_draft_sender_address">Bu taslağın gönderici adresi kaydedilemedi</string>
   <string name="composer_error_store_draft_body">Bu taslağın içeriği kaydedilemedi</string>
@@ -46,5 +46,4 @@
   <string name="composer_attachment_size_exceeded_dialog_title">Ek dosya sınırına ulaşıldı</string>
   <string name="composer_attachment_size_exceeded_dialog_message">Ek dosyaların boyutu %1$s ile sınırlıdır</string>
   <string name="composer_attachment_reencryption_failed_message">Ek dosya yeniden şifrelenemedi. Güvenlik nedeniyle tüm ek dosyalar kaldırıldı.</string>
-  <string name="message_footer_text">Proton Mail Android ile gönderildi</string>
 </resources>

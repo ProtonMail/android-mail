@@ -38,4 +38,9 @@
   <string name="attachment_type_document">Dokument</string>
   <string name="attachment_type_spreadsheet">Regneark</string>
   <string name="attachment_type_presentation">Præsentation</string>
+  <!-- Bottom Sheet -->
+  <string name="bottom_sheet_move_to_title">Flyt til...</string>
+  <string name="bottom_sheet_done_action">Udført</string>
+  <string name="bottom_sheet_archive_action">Arkivér også?</string>
+  <string name="bottom_sheet_label_as_title">Tilføj etikette...</string>
 </resources>

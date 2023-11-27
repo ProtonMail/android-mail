@@ -45,7 +45,9 @@
   <string name="add_a_label_name_hint">Aggiungi un nome all\'etichetta</string>
   <string name="input_field_max_characters_count">%1d / %2d caratteri</string>
   <string name="color_picker_title">Colore</string>
-  <string name="save_label_error">Errore nel salvataggio dell\'etichetta</string>
+  <string name="save_label_error">Errore nel salvataggio dell\'etichetta. Riprova più tardi.</string>
+  <string name="label_already_exists">Esiste già un\'etichetta o una cartella con questo nome</string>
+  <string name="label_limit_reached_error">Limite di etichette raggiunto</string>
   <string name="delete_label_error">Errore nell\'eliminazione dell\'etichetta</string>
   <string name="input_field_clear_content_description">Cancella il testo</string>
   <string name="label_list_item_content_description">Etichetta l\'elemento della lista</string>

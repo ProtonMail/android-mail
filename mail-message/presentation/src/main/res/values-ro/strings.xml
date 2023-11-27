@@ -39,4 +39,9 @@
   <string name="attachment_type_document">document</string>
   <string name="attachment_type_spreadsheet">foaie de calcul</string>
   <string name="attachment_type_presentation">prezentare</string>
+  <!-- Bottom Sheet -->
+  <string name="bottom_sheet_move_to_title">Mutare în...</string>
+  <string name="bottom_sheet_done_action">Gata</string>
+  <string name="bottom_sheet_archive_action">Și arhivare?</string>
+  <string name="bottom_sheet_label_as_title">Etichetare cu...</string>
 </resources>

@@ -51,11 +51,6 @@
   <string name="error_attachment_download_in_progress">Спачатку завяршыце бягучае спампоўванне перад тым, як пачаць новае.</string>
   <string name="error_get_attachment_not_enough_memory">Не ўдалося атрымаць далучэнне па прычыне недахопу памяці</string>
   <string name="reload">Перазагрузіць</string>
-  <!-- Bottom Sheet -->
-  <string name="bottom_sheet_move_to_title">Перамясціць у...</string>
-  <string name="bottom_sheet_done_action">Гатова</string>
-  <string name="bottom_sheet_archive_action">Таксама архіваваць?</string>
-  <string name="bottom_sheet_label_as_title">Пазначыць як...</string>
   <string name="error_relabel_message_failed">Не ўдалося паўторна пазначыць паведамленне. Паўтарыце спробу</string>
   <string name="error_relabel_conversation_failed">Не ўдалося змяніць метку размовы. Паўтарыце спробу</string>
   <string name="please_go_back_online_to_load_messages">Вы па-за сеткай. Для загрузкі паведамленняў неабходна падключэнне да інтэрнэту</string>
@@ -66,4 +61,9 @@
   <string name="message_body_embedded_images_banner_text">Аўтаматычная загрузка ўбудаваных відарысаў выключана. Гэта можна змяніць у наладах.</string>
   <string name="message_body_remote_content_banner_text">Аўтаматычная загрузка аддаленага змесціва выключана. Гэта можна змяніць у наладах.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">Аўтаматычная загрузка ўбудаваных відарысаў і аддаленага змесціва выключана. Гэта можна змяніць у наладах.</string>
+  <!-- External link confirmation dialog -->
+  <string name="external_link_confirmation_dialog_text">Вы збіраецеся выйсці з праграмы і перайсці ў:</string>
+  <string name="external_link_confirmation_dialog_do_not_ask_again">Больш не пытаць</string>
+  <string name="external_link_confirmation_dialog_cancel_button">Скасаваць</string>
+  <string name="external_link_confirmation_dialog_continue_button">Працягнуць</string>
 </resources>

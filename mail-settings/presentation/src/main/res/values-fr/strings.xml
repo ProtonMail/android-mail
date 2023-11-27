@@ -71,7 +71,18 @@
   <string name="mail_settings_default_email_address_error_update">Une erreur s\'est produite lors de la mise à jour des paramètres.</string>
   <string name="mail_settings_default_email_address_error_update_subscription">Changez d\'abonnement pour définir cette adresse par défaut.</string>
   <!-- Display name, signature, mobile footer -->
-  <string name="mail_settings_identity_mobile_footer_default_free">Sent from Proton Mail Android</string>
+  <string name="mail_settings_identity_title">Nom d\'affichage et signature</string>
+  <string name="mail_settings_identity_save_button">Enregistrer</string>
+  <string name="mail_settings_identity_display_name">Nom d\'affichage</string>
+  <string name="mail_settings_identity_display_name_hint">Nom d\'affichage</string>
+  <string name="mail_settings_identity_signature">Signature</string>
+  <string name="mail_settings_identity_signature_hint">Signature</string>
+  <string name="mail_settings_identity_mobile_footer">Pied de page sur mobile</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">Le pied de page est ajouté après votre signature.</string>
+  <string name="mail_settings_identity_mobile_footer_hint">Pied de page sur mobile</string>
+  <string name="mail_settings_identity_mobile_footer_default_free">Envoyé depuis Proton Mail pour Android</string>
+  <string name="mail_settings_identity_error_updating">Une erreur s\'est produite lors de la mise à jour des paramètres.</string>
+  <string name="mail_settings_identity_error_loading">Une erreur s\'est produite lors du chargement des paramètres.</string>
   <!-- Privacy settings -->
   <string name="mail_settings_privacy_auto_show_remote_content">Afficher automatiquement le contenu distant</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">Afficher automatiquement les images intégrées</string>
@@ -95,13 +106,13 @@
   <string name="mail_settings_swipe_action_star_description">Ajouter/Retirer des Favoris</string>
   <string name="mail_settings_swipe_action_trash_description">Déplacer dans le dossier Corbeille</string>
   <!-- Notification settings -->
-  <string name="mail_settings_notifications_title">Push notifications</string>
-  <string name="mail_settings_notifications_extended_notifications_title">Extended notifications</string>
-  <string name="mail_settings_notifications_extended_notifications_summary">Turn this feature on to see the sender of the emails in the push notifications.</string>
-  <string name="mail_settings_notifications_notifications_settings">Notifications settings</string>
-  <string name="mail_settings_notifications_notifications_settings_hint">Navigate to system notification settings</string>
-  <string name="mail_settings_notifications_update_error">Error updating settings</string>
-  <string name="mail_settings_notifications_loading_error">Error loading settings</string>
+  <string name="mail_settings_notifications_title">Notifications push</string>
+  <string name="mail_settings_notifications_extended_notifications_title">Notifications étendues</string>
+  <string name="mail_settings_notifications_extended_notifications_summary">Activez cette fonctionnalité pour voir l\'expéditeur des messages dans les notifications push.</string>
+  <string name="mail_settings_notifications_notifications_settings">Paramètres de notifications</string>
+  <string name="mail_settings_notifications_notifications_settings_hint">Accédez aux paramètres de notification du système.</string>
+  <string name="mail_settings_notifications_update_error">Une erreur s\'est produite lors de la mise à jour des paramètres.</string>
+  <string name="mail_settings_notifications_loading_error">Une erreur s\'est produite lors du chargement des paramètres.</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Une erreur est survenue. Veuillez réessayer.</string>
 </resources>

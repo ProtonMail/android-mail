@@ -33,7 +33,7 @@
   <string name="undisclosed_recipients">Destinatarios ocultos</string>
   <string name="error_mark_as_unread_failed">Error al marcar como no leído. Intente otra vez.</string>
   <string name="error_star_operation_failed">Error al destacar. Intente de nuevo.</string>
-  <string name="error_unstar_operation_failed">Error al eliminar el destacado. Intente de nuevo.</string>
+  <string name="error_unstar_operation_failed">Error al borrar el destacado. Intente de nuevo.</string>
   <string name="error_move_to_trash_failed">Error al mover a la papelera. Intente de nuevo.</string>
   <string name="message_moved_to_trash">Mensaje movido a la papelera</string>
   <string name="message_moved_to_archive">Mensaje movido al archivo</string>
@@ -49,11 +49,6 @@
   <string name="error_attachment_download_in_progress">La descarga actual debe completarse antes de iniciar una nueva.</string>
   <string name="error_get_attachment_not_enough_memory">Error al obtener el adjunto por falta de memoria</string>
   <string name="reload">Recargar</string>
-  <!-- Bottom Sheet -->
-  <string name="bottom_sheet_move_to_title">Mover a...</string>
-  <string name="bottom_sheet_done_action">Hecho</string>
-  <string name="bottom_sheet_archive_action">¿También archivar?</string>
-  <string name="bottom_sheet_label_as_title">Etiquetar como...</string>
   <string name="error_relabel_message_failed">Error al reetiquetar el mensaje, intente de nuevo</string>
   <string name="error_relabel_conversation_failed">Error al reetiquetar la conversación, intente de nuevo</string>
   <string name="please_go_back_online_to_load_messages">No está en línea. Vuelva a conectarse para cargar los mensajes</string>
@@ -64,4 +59,9 @@
   <string name="message_body_embedded_images_banner_text">La carga automática de imágenes incrustadas está desactivada. Esto se puede cambiar en los ajustes.</string>
   <string name="message_body_remote_content_banner_text">La carga automática de contenido remoto está desactivada. Esta se puede cambiar en los ajustes.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">La carga automática de imágenes incrustadas y contenido remoto está desactivada. Estas se pueden cambiar en los ajustes.</string>
+  <!-- External link confirmation dialog -->
+  <string name="external_link_confirmation_dialog_text">Está a punto de abandonar la app y navegar hacia:</string>
+  <string name="external_link_confirmation_dialog_do_not_ask_again">No volver a preguntar</string>
+  <string name="external_link_confirmation_dialog_cancel_button">Cancelar</string>
+  <string name="external_link_confirmation_dialog_continue_button">Continuar</string>
 </resources>

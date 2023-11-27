@@ -45,7 +45,9 @@
   <string name="add_a_label_name_hint">Přidejte název štítku</string>
   <string name="input_field_max_characters_count">%1d / %2d znaků</string>
   <string name="color_picker_title">Barva</string>
-  <string name="save_label_error">Chyba při ukládání štítku</string>
+  <string name="save_label_error">Chyba při ukládání štítku, zkuste to prosím později</string>
+  <string name="label_already_exists">Štítek nebo složka s tímto názvem již existuje</string>
+  <string name="label_limit_reached_error">Dosažen limit počtu štítků</string>
   <string name="delete_label_error">Chyba při mazání štítku</string>
   <string name="input_field_clear_content_description">Smazat text</string>
   <string name="label_list_item_content_description">Položka seznamu štítků</string>

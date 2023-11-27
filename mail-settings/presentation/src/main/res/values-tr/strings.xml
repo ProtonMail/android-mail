@@ -55,8 +55,8 @@
   <string name="mail_settings_display_name_and_signature">Görüntülenecek ad ve imza</string>
   <string name="mail_settings_mailbox">Posta kutusu</string>
   <string name="mail_settings_privacy">Gizlilik</string>
-  <string name="mail_settings_labels">Labels</string>
-  <string name="mail_settings_folders">Folders</string>
+  <string name="mail_settings_labels">Etiketler</string>
+  <string name="mail_settings_folders">Klasörler</string>
   <string name="mail_settings_local_storage">Yerel depolama alanı</string>
   <string name="mail_settings_snooze">Ertele</string>
   <string name="mail_settings_snooze_notifications">Bildirimleri ertele</string>
@@ -64,14 +64,25 @@
   <string name="mail_settings_not_set">Ayarlanmamış</string>
   <string name="mail_settings_conversation_mode_hint">Aynı yazışmadaki e-postaları Gelen kutunuzda gruplayın ya da ayrı ayrı görüntüleyin</string>
   <!-- Default email address settings -->
-  <string name="mail_settings_default_email_address_title">Default email address</string>
-  <string name="mail_settings_default_email_address_inactive_addresses">Inactive addresses</string>
-  <string name="mail_settings_default_email_address_no_inactive_addresses">No inactive addresses</string>
-  <string name="mail_settings_default_email_address_error_loading">Error loading settings</string>
-  <string name="mail_settings_default_email_address_error_update">Error updating settings</string>
-  <string name="mail_settings_default_email_address_error_update_subscription">Upgrade to a paid plan to set this address as default</string>
+  <string name="mail_settings_default_email_address_title">Varsayılan e-posta adresi</string>
+  <string name="mail_settings_default_email_address_inactive_addresses">Etkin olmayan adresler</string>
+  <string name="mail_settings_default_email_address_no_inactive_addresses">Etkin olmayan bir adres yok</string>
+  <string name="mail_settings_default_email_address_error_loading">Ayarlar yüklenirken sorun çıktı</string>
+  <string name="mail_settings_default_email_address_error_update">Ayarlar güncellenirken sorun çıktı</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">Bu adresi varsayılan yapmak için ücretli bir tarifeye geçin</string>
   <!-- Display name, signature, mobile footer -->
-  <string name="mail_settings_identity_mobile_footer_default_free">Sent from Proton Mail Android</string>
+  <string name="mail_settings_identity_title">Görüntülenecek ad ve imza</string>
+  <string name="mail_settings_identity_save_button">Kaydet</string>
+  <string name="mail_settings_identity_display_name">Görüntülenecek ad</string>
+  <string name="mail_settings_identity_display_name_hint">Görüntülenecek ad</string>
+  <string name="mail_settings_identity_signature">İmza</string>
+  <string name="mail_settings_identity_signature_hint">İmza</string>
+  <string name="mail_settings_identity_mobile_footer">Mobil alt bilgi</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">İmzanızın altına eklenecek alt bilgi.</string>
+  <string name="mail_settings_identity_mobile_footer_hint">Mobil alt bilgi</string>
+  <string name="mail_settings_identity_mobile_footer_default_free">Proton Mail Android ile gönderildi</string>
+  <string name="mail_settings_identity_error_updating">Ayarlar güncellenirken sorun çıktı</string>
+  <string name="mail_settings_identity_error_loading">Ayarlar yüklenirken sorun çıktı</string>
   <!-- Privacy settings -->
   <string name="mail_settings_privacy_auto_show_remote_content">Uzak içerik otomatik olarak görüntülensin</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">Gömülü görseller otomatik olarak görüntülensin</string>
@@ -95,13 +106,13 @@
   <string name="mail_settings_swipe_action_star_description">Yıldız koy/kaldır</string>
   <string name="mail_settings_swipe_action_trash_description">Çöpe at</string>
   <!-- Notification settings -->
-  <string name="mail_settings_notifications_title">Push notifications</string>
-  <string name="mail_settings_notifications_extended_notifications_title">Extended notifications</string>
-  <string name="mail_settings_notifications_extended_notifications_summary">Turn this feature on to see the sender of the emails in the push notifications.</string>
-  <string name="mail_settings_notifications_notifications_settings">Notifications settings</string>
-  <string name="mail_settings_notifications_notifications_settings_hint">Navigate to system notification settings</string>
-  <string name="mail_settings_notifications_update_error">Error updating settings</string>
-  <string name="mail_settings_notifications_loading_error">Error loading settings</string>
+  <string name="mail_settings_notifications_title">Anlık bildirimler</string>
+  <string name="mail_settings_notifications_extended_notifications_title">Genişletilmiş bildirimler</string>
+  <string name="mail_settings_notifications_extended_notifications_summary">Anlık bildirimlerde e-posta göndericisini görmek için bu özelliği açın.</string>
+  <string name="mail_settings_notifications_notifications_settings">Bildirim ayarları</string>
+  <string name="mail_settings_notifications_notifications_settings_hint">Sistem bildirimi ayarlarına git</string>
+  <string name="mail_settings_notifications_update_error">Ayarlar güncellenirken sorun çıktı</string>
+  <string name="mail_settings_notifications_loading_error">Ayarlar yüklenirken sorun çıktı</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Bir sorun çıktı. Yeniden deneyin.</string>
 </resources>

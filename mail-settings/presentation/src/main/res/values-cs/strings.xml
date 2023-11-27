@@ -71,7 +71,18 @@
   <string name="mail_settings_default_email_address_error_update">Chyba při aktualizaci nastavení</string>
   <string name="mail_settings_default_email_address_error_update_subscription">Pro nastavení vaší adressy jako výchozí, přejděte na placený tarif</string>
   <!-- Display name, signature, mobile footer -->
+  <string name="mail_settings_identity_title">Zobrazované jméno a podpis</string>
+  <string name="mail_settings_identity_save_button">Uložit</string>
+  <string name="mail_settings_identity_display_name">Zobrazované jméno</string>
+  <string name="mail_settings_identity_display_name_hint">Zobrazované jméno</string>
+  <string name="mail_settings_identity_signature">Podpis</string>
+  <string name="mail_settings_identity_signature_hint">Podpis</string>
+  <string name="mail_settings_identity_mobile_footer">Zápatí mobilního mailu</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">Toto zápatí je přidáno za váš podpis.</string>
+  <string name="mail_settings_identity_mobile_footer_hint">Zápatí mobilního mailu</string>
   <string name="mail_settings_identity_mobile_footer_default_free">Odesláno z Proton Mail pro Android</string>
+  <string name="mail_settings_identity_error_updating">Chyba při aktualizaci nastavení</string>
+  <string name="mail_settings_identity_error_loading">Chyba při načítání nastavení</string>
   <!-- Privacy settings -->
   <string name="mail_settings_privacy_auto_show_remote_content">Automaticky zobrazovat vzdálený obsah</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">Automaticky zobrazovat vložené obrázky</string>

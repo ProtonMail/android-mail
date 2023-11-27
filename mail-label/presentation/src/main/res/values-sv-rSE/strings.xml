@@ -45,7 +45,9 @@
   <string name="add_a_label_name_hint">Lägg till ett etikettnamn</string>
   <string name="input_field_max_characters_count">%1d/%2d tecken</string>
   <string name="color_picker_title">Färg</string>
-  <string name="save_label_error">Gick inte spara mapp</string>
+  <string name="save_label_error">Gick inte spara etikett, försök igen senare</string>
+  <string name="label_already_exists">En etikett eller mapp med detta namn finns redan</string>
+  <string name="label_limit_reached_error">Etikettgräns uppnådd</string>
   <string name="delete_label_error">Gick inte ta bort etikett</string>
   <string name="input_field_clear_content_description">Rensa text</string>
   <string name="label_list_item_content_description">Märk listobjekten</string>

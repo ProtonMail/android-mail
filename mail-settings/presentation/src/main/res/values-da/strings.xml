@@ -71,7 +71,18 @@
   <string name="mail_settings_default_email_address_error_update">Fejl ved opdatering af indstillinger</string>
   <string name="mail_settings_default_email_address_error_update_subscription">Opgradér til et betalt abonnement for at kunne indstille denne e-mail som standardadresse</string>
   <!-- Display name, signature, mobile footer -->
+  <string name="mail_settings_identity_title">Vis navn og signatur</string>
+  <string name="mail_settings_identity_save_button">Gem</string>
+  <string name="mail_settings_identity_display_name">Vist navn</string>
+  <string name="mail_settings_identity_display_name_hint">Vist navn</string>
+  <string name="mail_settings_identity_signature">Signatur</string>
+  <string name="mail_settings_identity_signature_hint">Signatur</string>
+  <string name="mail_settings_identity_mobile_footer">Mobil-sidefod</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">Denne sidefod tilføjes efter din signatur.</string>
+  <string name="mail_settings_identity_mobile_footer_hint">Mobil-sidefod</string>
   <string name="mail_settings_identity_mobile_footer_default_free">Sendt fra Proton Mail Android</string>
+  <string name="mail_settings_identity_error_updating">Fejl ved opdatering af indstillinger</string>
+  <string name="mail_settings_identity_error_loading">Fejl ved indlæsning af indstillinger</string>
   <!-- Privacy settings -->
   <string name="mail_settings_privacy_auto_show_remote_content">Vis automatisk eksternt indhold</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">Vis automatisk indlejrede billeder</string>

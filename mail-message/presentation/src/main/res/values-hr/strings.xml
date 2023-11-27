@@ -39,4 +39,9 @@
   <string name="attachment_type_document">Dokument</string>
   <string name="attachment_type_spreadsheet">Spreadsheet</string>
   <string name="attachment_type_presentation">Prezentacija</string>
+  <!-- Bottom Sheet -->
+  <string name="bottom_sheet_move_to_title">Move to...</string>
+  <string name="bottom_sheet_done_action">Done</string>
+  <string name="bottom_sheet_archive_action">Also archive?</string>
+  <string name="bottom_sheet_label_as_title">Label as...</string>
 </resources>

@@ -17,9 +17,9 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="title_remove">Eliminar</string>
-  <string name="title_remove_account">Eliminar cuenta</string>
-  <string name="description_remove_account">La sesión se cerrará y toda la información asociada a esta cuenta será eliminada.</string>
+  <string name="title_remove">Borrar</string>
+  <string name="title_remove_account">Borrar la cuenta</string>
+  <string name="description_remove_account">La sesión se cerrará y toda la información asociada a esta cuenta será borrada.</string>
   <string name="user_select_other_account_content_description">Selecciona otra cuenta</string>
   <string name="you_are_offline">No estás conectado.</string>
   <string name="feature_coming_soon">Pronto tendrás esta función…</string>
@@ -32,4 +32,5 @@
   <string name="notification_switched_account">Se ha cambiado a la cuenta: %s</string>
   <string name="label_saved">La etiqueta ha sido guardada.</string>
   <string name="label_deleted">La etiqueta ha sido eliminada.</string>
+  <string name="label_list_loading_error">Error al cargar la etiqueta. Intenta de nuevo más tarde.</string>
 </resources>

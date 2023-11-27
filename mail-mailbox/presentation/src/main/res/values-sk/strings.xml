@@ -88,4 +88,7 @@
     <item quantity="many">%d konverzácií bolo natrvalo vymazaných</item>
     <item quantity="other">%d konverzácií bolo natrvalo vymazaných</item>
   </plurals>
+  <string name="mailbox_action_label_messages_failed">Označenie štítkom zlyhalo</string>
+  <string name="mailbox_action_label_messages_failed_retrieving_labels">Nepodarilo sa získať štítky</string>
+  <string name="mailbox_action_label_messages_failed_retrieving_colors">Nepodarilo sa získať nastavenia farieb</string>
 </resources>

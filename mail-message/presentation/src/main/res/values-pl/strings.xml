@@ -40,4 +40,9 @@
   <string name="attachment_type_document">Dokument</string>
   <string name="attachment_type_spreadsheet">Arkusz kalkulacyjny</string>
   <string name="attachment_type_presentation">Prezentacja</string>
+  <!-- Bottom Sheet -->
+  <string name="bottom_sheet_move_to_title">Przenieś do...</string>
+  <string name="bottom_sheet_done_action">Gotowe</string>
+  <string name="bottom_sheet_archive_action">Również archiwizuj?</string>
+  <string name="bottom_sheet_label_as_title">Oznacz jako...</string>
 </resources>

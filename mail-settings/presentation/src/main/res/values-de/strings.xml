@@ -71,7 +71,18 @@
   <string name="mail_settings_default_email_address_error_update">Fehler beim Aktualisieren der Einstellungen.</string>
   <string name="mail_settings_default_email_address_error_update_subscription">Upgrade auf ein kostenpflichtiges Abonnement, damit du diese Adresse als Standard festlegen kannst.</string>
   <!-- Display name, signature, mobile footer -->
-  <string name="mail_settings_identity_mobile_footer_default_free">Sent from Proton Mail Android</string>
+  <string name="mail_settings_identity_title">Anzeigenamen und Signatur</string>
+  <string name="mail_settings_identity_save_button">Speichern</string>
+  <string name="mail_settings_identity_display_name">Anzeigenamen</string>
+  <string name="mail_settings_identity_display_name_hint">Anzeigename</string>
+  <string name="mail_settings_identity_signature">Signatur</string>
+  <string name="mail_settings_identity_signature_hint">Signatur</string>
+  <string name="mail_settings_identity_mobile_footer">Fußzeile für Mobilgeräte</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">Die Fußzeile wird unterhalb deiner Signatur hinzugefügt.</string>
+  <string name="mail_settings_identity_mobile_footer_hint">Fußzeile für Mobilgeräte</string>
+  <string name="mail_settings_identity_mobile_footer_default_free">Gesendet von Proton Mail für Android</string>
+  <string name="mail_settings_identity_error_updating">Fehler beim Aktualisieren der Einstellungen</string>
+  <string name="mail_settings_identity_error_loading">Fehler beim Laden der Einstellungen</string>
   <!-- Privacy settings -->
   <string name="mail_settings_privacy_auto_show_remote_content">Inhalte aus externen Quellen automatisch anzeigen</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">Eingebettete Bilder automatisch anzeigen</string>
@@ -95,13 +106,13 @@
   <string name="mail_settings_swipe_action_star_description">Markieren/Markierung entfernen</string>
   <string name="mail_settings_swipe_action_trash_description">In den Papierkorb verschieben</string>
   <!-- Notification settings -->
-  <string name="mail_settings_notifications_title">Push notifications</string>
-  <string name="mail_settings_notifications_extended_notifications_title">Extended notifications</string>
-  <string name="mail_settings_notifications_extended_notifications_summary">Turn this feature on to see the sender of the emails in the push notifications.</string>
-  <string name="mail_settings_notifications_notifications_settings">Notifications settings</string>
-  <string name="mail_settings_notifications_notifications_settings_hint">Navigate to system notification settings</string>
-  <string name="mail_settings_notifications_update_error">Error updating settings</string>
-  <string name="mail_settings_notifications_loading_error">Error loading settings</string>
+  <string name="mail_settings_notifications_title">Push-Benachrichtigungen</string>
+  <string name="mail_settings_notifications_extended_notifications_title">Erweiterte Benachrichtigungen</string>
+  <string name="mail_settings_notifications_extended_notifications_summary">Aktiviere diese Funktion, um den Absender der E-Mails in den Push-Benachrichtigungen anzuzeigen.</string>
+  <string name="mail_settings_notifications_notifications_settings">Benachrichtigungseinstellungen</string>
+  <string name="mail_settings_notifications_notifications_settings_hint">Gehe zu den System Benachrichtigungseinstellungen</string>
+  <string name="mail_settings_notifications_update_error">Fehler beim Aktualisieren der Einstellungen</string>
+  <string name="mail_settings_notifications_loading_error">Fehler beim Laden der Einstellungen</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Es ist ein Fehler aufgetreten. Versuche es erneut.</string>
 </resources>

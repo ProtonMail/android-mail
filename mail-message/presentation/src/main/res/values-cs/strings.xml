@@ -40,4 +40,9 @@
   <string name="attachment_type_document">Dokument</string>
   <string name="attachment_type_spreadsheet">Tabulka</string>
   <string name="attachment_type_presentation">Prezentace</string>
+  <!-- Bottom Sheet -->
+  <string name="bottom_sheet_move_to_title">Přesunout do...</string>
+  <string name="bottom_sheet_done_action">Hotovo</string>
+  <string name="bottom_sheet_archive_action">Také archivovat?</string>
+  <string name="bottom_sheet_label_as_title">Štítek jako...</string>
 </resources>

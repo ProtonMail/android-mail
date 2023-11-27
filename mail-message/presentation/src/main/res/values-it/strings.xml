@@ -38,4 +38,9 @@
   <string name="attachment_type_document">Documento</string>
   <string name="attachment_type_spreadsheet">Foglio elettronico</string>
   <string name="attachment_type_presentation">Presentazione</string>
+  <!-- Bottom Sheet -->
+  <string name="bottom_sheet_move_to_title">Sposta in...</string>
+  <string name="bottom_sheet_done_action">Fatto</string>
+  <string name="bottom_sheet_archive_action">Spostare in archivio?</string>
+  <string name="bottom_sheet_label_as_title">Etichetta come...</string>
 </resources>

@@ -55,8 +55,8 @@
   <string name="mail_settings_display_name_and_signature">이름과 서명 표시</string>
   <string name="mail_settings_mailbox">메일함</string>
   <string name="mail_settings_privacy">개인정보 보호</string>
-  <string name="mail_settings_labels">Labels</string>
-  <string name="mail_settings_folders">Folders</string>
+  <string name="mail_settings_labels">라벨</string>
+  <string name="mail_settings_folders">폴더함</string>
   <string name="mail_settings_local_storage">로컬 저장소</string>
   <string name="mail_settings_snooze">방해 금지</string>
   <string name="mail_settings_snooze_notifications">방해금지 모드</string>
@@ -64,14 +64,25 @@
   <string name="mail_settings_not_set">미설정</string>
   <string name="mail_settings_conversation_mode_hint">받은 편지함에 있는 동일한 메일을 함께 그룹화하거나 별도로 표시</string>
   <!-- Default email address settings -->
-  <string name="mail_settings_default_email_address_title">Default email address</string>
-  <string name="mail_settings_default_email_address_inactive_addresses">Inactive addresses</string>
-  <string name="mail_settings_default_email_address_no_inactive_addresses">No inactive addresses</string>
-  <string name="mail_settings_default_email_address_error_loading">Error loading settings</string>
-  <string name="mail_settings_default_email_address_error_update">Error updating settings</string>
-  <string name="mail_settings_default_email_address_error_update_subscription">Upgrade to a paid plan to set this address as default</string>
+  <string name="mail_settings_default_email_address_title">기본 이메일 주소</string>
+  <string name="mail_settings_default_email_address_inactive_addresses">비활성 주소</string>
+  <string name="mail_settings_default_email_address_no_inactive_addresses">비활성 주소 없음</string>
+  <string name="mail_settings_default_email_address_error_loading">설정 로딩 중 오류 발생</string>
+  <string name="mail_settings_default_email_address_error_update">설정 업데이트 오류</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">이 주소를 기본값으로 설정하려면 유료 플랜으로 업그레이드 하십시오.</string>
   <!-- Display name, signature, mobile footer -->
-  <string name="mail_settings_identity_mobile_footer_default_free">Sent from Proton Mail Android</string>
+  <string name="mail_settings_identity_title">표시 이름 &amp; 서명</string>
+  <string name="mail_settings_identity_save_button">저장</string>
+  <string name="mail_settings_identity_display_name">표시되는 이름</string>
+  <string name="mail_settings_identity_display_name_hint">표시되는 이름</string>
+  <string name="mail_settings_identity_signature">서명</string>
+  <string name="mail_settings_identity_signature_hint">서명</string>
+  <string name="mail_settings_identity_mobile_footer">모바일 바닥글</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">이 바닥글은 서명 아래에 추가됩니다.</string>
+  <string name="mail_settings_identity_mobile_footer_hint">모바일 바닥글</string>
+  <string name="mail_settings_identity_mobile_footer_default_free">Android용 Proton Mail에서 발송됨</string>
+  <string name="mail_settings_identity_error_updating">설정 업데이트 중 오류</string>
+  <string name="mail_settings_identity_error_loading">설정 로딩 중 오류 발생</string>
   <!-- Privacy settings -->
   <string name="mail_settings_privacy_auto_show_remote_content">자동으로 외부 콘텐츠 불러오기</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">자동으로 삽입된 이미지 로드</string>
@@ -95,13 +106,13 @@
   <string name="mail_settings_swipe_action_star_description">별표 표시/삭제</string>
   <string name="mail_settings_swipe_action_trash_description">휴지통으로 이동</string>
   <!-- Notification settings -->
-  <string name="mail_settings_notifications_title">Push notifications</string>
-  <string name="mail_settings_notifications_extended_notifications_title">Extended notifications</string>
-  <string name="mail_settings_notifications_extended_notifications_summary">Turn this feature on to see the sender of the emails in the push notifications.</string>
-  <string name="mail_settings_notifications_notifications_settings">Notifications settings</string>
-  <string name="mail_settings_notifications_notifications_settings_hint">Navigate to system notification settings</string>
-  <string name="mail_settings_notifications_update_error">Error updating settings</string>
-  <string name="mail_settings_notifications_loading_error">Error loading settings</string>
+  <string name="mail_settings_notifications_title">푸시 알림</string>
+  <string name="mail_settings_notifications_extended_notifications_title">확장 알림</string>
+  <string name="mail_settings_notifications_extended_notifications_summary">푸시 알림에서 이메일 발신자를 확인하려면 이 기능을 켜시기 바랍니다.</string>
+  <string name="mail_settings_notifications_notifications_settings">알림 설정</string>
+  <string name="mail_settings_notifications_notifications_settings_hint">시스템 알림 설정으로 이동</string>
+  <string name="mail_settings_notifications_update_error">설정 업데이트 중 실패</string>
+  <string name="mail_settings_notifications_loading_error">설정 로딩 중 오류 발생</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">오류 발생. 다시 시도하세요.</string>
 </resources>

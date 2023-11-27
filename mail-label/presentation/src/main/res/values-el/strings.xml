@@ -45,7 +45,9 @@
   <string name="add_a_label_name_hint">Προσθήκη ονόματος ετικέτας</string>
   <string name="input_field_max_characters_count">%1d / %2d χαρακτήρες</string>
   <string name="color_picker_title">Χρώμα</string>
-  <string name="save_label_error">Σφάλμα κατά την αποθήκευση ετικέτας</string>
+  <string name="save_label_error">Σφάλμα αποθήκευσης ετικέτας, παρακαλούμε δοκιμάστε ξανά αργότερα</string>
+  <string name="label_already_exists">Μια ετικέτα ή ένας φάκελος, υπάρχει ήδη με αυτό το όνομα</string>
+  <string name="label_limit_reached_error">Μέγιστο όριο ετικετών</string>
   <string name="delete_label_error">Σφάλμα κατά τη διαγραφή ετικέτας</string>
   <string name="input_field_clear_content_description">Διαγραφή κειμένου</string>
   <string name="label_list_item_content_description">Στοιχείο λίστας ετικετών</string>

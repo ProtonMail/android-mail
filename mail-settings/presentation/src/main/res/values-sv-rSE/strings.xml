@@ -71,7 +71,18 @@
   <string name="mail_settings_default_email_address_error_update">Fel vid uppdatering av inställningar</string>
   <string name="mail_settings_default_email_address_error_update_subscription">Uppgradera till ett betalt paket för att ställa in denna adress som standard</string>
   <!-- Display name, signature, mobile footer -->
+  <string name="mail_settings_identity_title">Visa namn &amp; signatur</string>
+  <string name="mail_settings_identity_save_button">Spara</string>
+  <string name="mail_settings_identity_display_name">Visa namn</string>
+  <string name="mail_settings_identity_display_name_hint">Visa namn</string>
+  <string name="mail_settings_identity_signature">Signatur</string>
+  <string name="mail_settings_identity_signature_hint">Signatur</string>
+  <string name="mail_settings_identity_mobile_footer">Mobil-sidfot</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">Sidfoten läggs till efter din signatur.</string>
+  <string name="mail_settings_identity_mobile_footer_hint">Mobil-sidfot</string>
   <string name="mail_settings_identity_mobile_footer_default_free">Skickat från Proton Mail Android</string>
+  <string name="mail_settings_identity_error_updating">Fel vid uppdatering av inställningar</string>
+  <string name="mail_settings_identity_error_loading">Fel vid laddning av inställningar</string>
   <!-- Privacy settings -->
   <string name="mail_settings_privacy_auto_show_remote_content">Visa fjärrinnehåll automatiskt</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">Visa inbäddade bilder automatiskt</string>
@@ -95,9 +106,9 @@
   <string name="mail_settings_swipe_action_star_description">Stjärnmärk/ta bort stjärnmärking</string>
   <string name="mail_settings_swipe_action_trash_description">Flytta till papperskorgen</string>
   <!-- Notification settings -->
-  <string name="mail_settings_notifications_title">Push notifications</string>
+  <string name="mail_settings_notifications_title">Push-notiser</string>
   <string name="mail_settings_notifications_extended_notifications_title">Utökade aviseringar</string>
-  <string name="mail_settings_notifications_extended_notifications_summary">Turn this feature on to see the sender of the emails in the push notifications.</string>
+  <string name="mail_settings_notifications_extended_notifications_summary">Slå på denna funktion för att se e-postens avsändare i push-notiserna.</string>
   <string name="mail_settings_notifications_notifications_settings">Aviseringsinställningar</string>
   <string name="mail_settings_notifications_notifications_settings_hint">Navigera till systemets aviseringsinställningar</string>
   <string name="mail_settings_notifications_update_error">Fel vid uppdatering av inställningar</string>

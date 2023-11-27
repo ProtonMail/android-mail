@@ -46,5 +46,4 @@
   <string name="composer_attachment_size_exceeded_dialog_title">Досягнуто ліміту вкладень</string>
   <string name="composer_attachment_size_exceeded_dialog_message">Обмеження розміру для вкладень складає: %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Збій повторного шифрування вкладення. В цілях безпеки усі вкладення було вилучено.</string>
-  <string name="message_footer_text">Надіслано з Proton Mail Android</string>
 </resources>

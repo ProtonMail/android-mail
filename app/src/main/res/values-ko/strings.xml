@@ -30,6 +30,7 @@
   <string name="mailbox_message_sending_error">메시지 전송 오류</string>
   <string name="mailbox_attachment_uploading_error">첨부 파일 업로드 중 오류</string>
   <string name="notification_switched_account">%s 계정으로 전환됨</string>
-  <string name="label_saved">Label saved</string>
-  <string name="label_deleted">Label deleted</string>
+  <string name="label_saved">라벨을 저장했습니다.</string>
+  <string name="label_deleted">라벨을 삭제했습니다.</string>
+  <string name="label_list_loading_error">라벨 로드 중 오류 발생, 다시 시도하십시오.</string>
 </resources>

@@ -33,7 +33,7 @@
   <string name="undisclosed_recipients">Destinataris ocults</string>
   <string name="error_mark_as_unread_failed">No s\'ha pogut marcar com a no llegit. Proveu-ho de nou.</string>
   <string name="error_star_operation_failed">No s\'ha pogut destacar. Torneu-ho a provar.</string>
-  <string name="error_unstar_operation_failed">No s\'ha pogut suprimir de destacats. Torneu-ho a provar.</string>
+  <string name="error_unstar_operation_failed">No s\'ha pogut esborrar dels destacats. Torneu-ho a provar.</string>
   <string name="error_move_to_trash_failed">No s\'ha pogut moure el missatge a la paperera. Proveu de nou.</string>
   <string name="message_moved_to_trash">El missatge s\'ha mogut a la paperera.</string>
   <string name="message_moved_to_archive">El missatge s\'ha mogut a l\'arxiu.</string>
@@ -49,11 +49,6 @@
   <string name="error_attachment_download_in_progress">S\'ha de completar la descàrrega actual abans de començar-ne una de nova.</string>
   <string name="error_get_attachment_not_enough_memory">No s\'ha pogut obtenir l\'adjunt a causa de memòria insuficient</string>
   <string name="reload">Recarrega</string>
-  <!-- Bottom Sheet -->
-  <string name="bottom_sheet_move_to_title">Mou a...</string>
-  <string name="bottom_sheet_done_action">Fet</string>
-  <string name="bottom_sheet_archive_action">Voleu arxivar també?</string>
-  <string name="bottom_sheet_label_as_title">Etiqueta com a…</string>
   <string name="error_relabel_message_failed">No s\'ha pogut tornar a etiquetar el missatge. Torneu-ho a provar</string>
   <string name="error_relabel_conversation_failed">No s\'ha pogut tornar a etiquetar la conversa. Torneu-ho a provar</string>
   <string name="please_go_back_online_to_load_messages">Esteu fora de línia. Torneu a connectar-vos per carregar els missatges</string>
@@ -64,4 +59,9 @@
   <string name="message_body_embedded_images_banner_text">La càrrega automàtica d\'imatges incrustades està desactivada. Això es pot canviar a les preferències.</string>
   <string name="message_body_remote_content_banner_text">La càrrega automàtica d\'imatges incrustades i contingut remot està desactivada. Això es pot canviar a les preferències.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">La càrrega automàtica d\'imatges incrustades i contingut remot està desactivada. Aquests es poden canviar a les preferències.</string>
+  <!-- External link confirmation dialog -->
+  <string name="external_link_confirmation_dialog_text">You are about to leave the app and navigate to:</string>
+  <string name="external_link_confirmation_dialog_do_not_ask_again">Don\'t ask again</string>
+  <string name="external_link_confirmation_dialog_cancel_button">Cancel</string>
+  <string name="external_link_confirmation_dialog_continue_button">Continue</string>
 </resources>

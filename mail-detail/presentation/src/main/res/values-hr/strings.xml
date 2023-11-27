@@ -50,11 +50,6 @@
   <string name="error_attachment_download_in_progress">Current download must complete before starting a new one.</string>
   <string name="error_get_attachment_not_enough_memory">Failed to get attachment due to insufficient memory</string>
   <string name="reload">Ponovno učitaj</string>
-  <!-- Bottom Sheet -->
-  <string name="bottom_sheet_move_to_title">Premjesti u...</string>
-  <string name="bottom_sheet_done_action">Gotovo</string>
-  <string name="bottom_sheet_archive_action">Also archive?</string>
-  <string name="bottom_sheet_label_as_title">Označi kao...</string>
   <string name="error_relabel_message_failed">Failed to relabel message. Please retry</string>
   <string name="error_relabel_conversation_failed">Failed to relabel conversation. Please retry</string>
   <string name="please_go_back_online_to_load_messages">Izvan mreže ste. Vratite se na mrežu kako bi učitali poruke</string>

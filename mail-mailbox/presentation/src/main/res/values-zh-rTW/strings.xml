@@ -61,4 +61,7 @@
   <plurals name="mailbox_action_delete_conversation">
     <item quantity="other">%d對話永久刪除</item>
   </plurals>
+  <string name="mailbox_action_label_messages_failed">Label operation failed</string>
+  <string name="mailbox_action_label_messages_failed_retrieving_labels">Failed to get labels</string>
+  <string name="mailbox_action_label_messages_failed_retrieving_colors">Failed to get color settings</string>
 </resources>

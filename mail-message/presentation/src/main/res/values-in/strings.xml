@@ -37,4 +37,9 @@
   <string name="attachment_type_document">Dokumen</string>
   <string name="attachment_type_spreadsheet">Lembar kerja</string>
   <string name="attachment_type_presentation">Presentasi</string>
+  <!-- Bottom Sheet -->
+  <string name="bottom_sheet_move_to_title">Pindahkan ke...</string>
+  <string name="bottom_sheet_done_action">Selesai</string>
+  <string name="bottom_sheet_archive_action">Arsipkan juga?</string>
+  <string name="bottom_sheet_label_as_title">Beri label sebagai...</string>
 </resources>

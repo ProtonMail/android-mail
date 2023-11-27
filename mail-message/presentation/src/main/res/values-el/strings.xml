@@ -38,4 +38,9 @@
   <string name="attachment_type_document">Έγγραφο</string>
   <string name="attachment_type_spreadsheet">Υπολογιστικό φύλλο</string>
   <string name="attachment_type_presentation">Παρουσίαση</string>
+  <!-- Bottom Sheet -->
+  <string name="bottom_sheet_move_to_title">Μετακίνηση σε...</string>
+  <string name="bottom_sheet_done_action">Ολοκληρώθηκε</string>
+  <string name="bottom_sheet_archive_action">Επίσης αρχειοθέτηση;</string>
+  <string name="bottom_sheet_label_as_title">Ορίστε ετικέτα...</string>
 </resources>

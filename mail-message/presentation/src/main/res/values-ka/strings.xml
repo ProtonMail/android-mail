@@ -38,4 +38,9 @@
   <string name="attachment_type_document">დოკუმენტი</string>
   <string name="attachment_type_spreadsheet">ელცხრილი</string>
   <string name="attachment_type_presentation">პრეზენტაცია</string>
+  <!-- Bottom Sheet -->
+  <string name="bottom_sheet_move_to_title">გადატანა...</string>
+  <string name="bottom_sheet_done_action">მზადაა</string>
+  <string name="bottom_sheet_archive_action">არქივის ჩათვლით?</string>
+  <string name="bottom_sheet_label_as_title">ჭდის დადება...</string>
 </resources>

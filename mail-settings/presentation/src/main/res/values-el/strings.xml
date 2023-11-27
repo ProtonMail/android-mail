@@ -71,7 +71,18 @@
   <string name="mail_settings_default_email_address_error_update">Σφάλμα κατά την ενημέρωση ρυθμίσεων</string>
   <string name="mail_settings_default_email_address_error_update_subscription">Αναβαθμίσετε σε πλάνο επί πληρωμή για να ορίσετε αυτήν τη διεύθυνση ως προεπιλεγμένη</string>
   <!-- Display name, signature, mobile footer -->
-  <string name="mail_settings_identity_mobile_footer_default_free">Sent from Proton Mail Android</string>
+  <string name="mail_settings_identity_title">Εμφανιζόμενο όνομα &amp; υπογραφή</string>
+  <string name="mail_settings_identity_save_button">Αποθήκευση</string>
+  <string name="mail_settings_identity_display_name">Εμφανιζόμενο Όνομα</string>
+  <string name="mail_settings_identity_display_name_hint">Προβολή του ονόματος</string>
+  <string name="mail_settings_identity_signature">Υπογραφή</string>
+  <string name="mail_settings_identity_signature_hint">Η Υπογραφή μου</string>
+  <string name="mail_settings_identity_mobile_footer">Υποσέλιδο κινητού</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">Το υποσέλιδο προστέθηκε μετά την υπογραφή σας.</string>
+  <string name="mail_settings_identity_mobile_footer_hint">Υποσέλιδο κινητού</string>
+  <string name="mail_settings_identity_mobile_footer_default_free">Στάλθηκε από το Proton Mail Android</string>
+  <string name="mail_settings_identity_error_updating">Σφάλμα κατά την ενημέρωση ρυθμίσεων</string>
+  <string name="mail_settings_identity_error_loading">Σφάλμα κατά τη φόρτωση ρυθμίσεων</string>
   <!-- Privacy settings -->
   <string name="mail_settings_privacy_auto_show_remote_content">Αυτόματη εμφάνιση απομακρυσμένου περιεχομένου</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">Αυτόματη εμφάνιση ενσωματωμένων εικόνων</string>

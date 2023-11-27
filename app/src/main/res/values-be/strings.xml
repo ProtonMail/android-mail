@@ -32,4 +32,5 @@
   <string name="notification_switched_account">Зменена на ўліковы запіс: %s</string>
   <string name="label_saved">Метка захавана</string>
   <string name="label_deleted">Метка выдалена</string>
+  <string name="label_list_loading_error">Памылка загрузкі меткі. Паспрабуйце пазней</string>
 </resources>

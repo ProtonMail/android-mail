@@ -48,11 +48,6 @@
   <string name="error_attachment_download_in_progress">Unduhan saat ini harus diselesaikan sebelum memulai unduhan baru.</string>
   <string name="error_get_attachment_not_enough_memory">Lampiran gagal diperoleh karena memori yang tersedia tidak memadai</string>
   <string name="reload">Muat ulang</string>
-  <!-- Bottom Sheet -->
-  <string name="bottom_sheet_move_to_title">Pindahkan ke...</string>
-  <string name="bottom_sheet_done_action">Selesai</string>
-  <string name="bottom_sheet_archive_action">Arsipkan juga?</string>
-  <string name="bottom_sheet_label_as_title">Label sebagai...</string>
   <string name="error_relabel_message_failed">Pesan gagal dilabeli ulang. Silakan coba lagi</string>
   <string name="error_relabel_conversation_failed">Percakapan gagal dilabeli ulang. Silakan coba lagi</string>
   <string name="please_go_back_online_to_load_messages">Anda sedang offline. Silakan sambungkan diri Anda ke internet untuk memuat pesan</string>
@@ -63,4 +58,9 @@
   <string name="message_body_embedded_images_banner_text">Pemuatan gambar tersemat secara otomatis dimatikan. Ini dapat diubah dalam pengaturan.</string>
   <string name="message_body_remote_content_banner_text">Remote content tengah diatur untuk tidak dimuat secara otomatis. Hal ini dapat diubah pada menu pengaturan.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">Gambar tersemat dan remote content tengah diatur untuk tidak dimuat secara otomatis. Hal ini dapat diubah pada menu pengaturan.</string>
+  <!-- External link confirmation dialog -->
+  <string name="external_link_confirmation_dialog_text">Anda akan meninggalkan aplikasi dan mengunjungi:</string>
+  <string name="external_link_confirmation_dialog_do_not_ask_again">Jangan tanyakan lagi</string>
+  <string name="external_link_confirmation_dialog_cancel_button">Batal</string>
+  <string name="external_link_confirmation_dialog_continue_button">Lanjut</string>
 </resources>

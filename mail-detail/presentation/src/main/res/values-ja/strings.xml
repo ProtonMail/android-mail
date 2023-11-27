@@ -48,11 +48,6 @@
   <string name="error_attachment_download_in_progress">新しいダウンロードを開始する前に、現在のダウンロードを完了させる必要があります。</string>
   <string name="error_get_attachment_not_enough_memory">メモリ不足のため添付ファイルの取得に失敗しました</string>
   <string name="reload">再読み込み</string>
-  <!-- Bottom Sheet -->
-  <string name="bottom_sheet_move_to_title">移動先</string>
-  <string name="bottom_sheet_done_action">完了</string>
-  <string name="bottom_sheet_archive_action">同時にアーカイブしますか？</string>
-  <string name="bottom_sheet_label_as_title">ラベル付け</string>
   <string name="error_relabel_message_failed">メッセージのラベル付けに失敗しました。再度お試しください。</string>
   <string name="error_relabel_conversation_failed">会話のラベル付けに失敗しました。再度お試しください。</string>
   <string name="please_go_back_online_to_load_messages">現在オフラインです。メッセージを読むには、オンラインに移動してください。</string>
@@ -63,4 +58,9 @@
   <string name="message_body_embedded_images_banner_text">埋め込み画像の自動読み込みはオフになっています。これは設定で変更できます。</string>
   <string name="message_body_remote_content_banner_text">リモートコンテンツの自動読み込みはオフになっています。これは設定で変更できます。</string>
   <string name="message_body_embedded_and_remote_content_banner_text">埋め込み画像やリモートコンテンツの自動読み込みはオフになっています。これらは設定で変更できます。</string>
+  <!-- External link confirmation dialog -->
+  <string name="external_link_confirmation_dialog_text">You are about to leave the app and navigate to:</string>
+  <string name="external_link_confirmation_dialog_do_not_ask_again">Don\'t ask again</string>
+  <string name="external_link_confirmation_dialog_cancel_button">Cancel</string>
+  <string name="external_link_confirmation_dialog_continue_button">Continue</string>
 </resources>

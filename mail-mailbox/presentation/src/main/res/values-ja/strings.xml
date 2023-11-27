@@ -59,6 +59,9 @@
     <item quantity="other">%d 個のメッセージを完全に削除しました</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation">
-    <item quantity="other">%d conversations permanently deleted</item>
+    <item quantity="other">%d 件のメッセージを完全に削除しました</item>
   </plurals>
+  <string name="mailbox_action_label_messages_failed">Label operation failed</string>
+  <string name="mailbox_action_label_messages_failed_retrieving_labels">Failed to get labels</string>
+  <string name="mailbox_action_label_messages_failed_retrieving_colors">Failed to get color settings</string>
 </resources>

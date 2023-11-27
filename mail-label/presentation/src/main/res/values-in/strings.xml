@@ -45,7 +45,9 @@
   <string name="add_a_label_name_hint">Tambah nama label</string>
   <string name="input_field_max_characters_count">%1d / %2d karakter</string>
   <string name="color_picker_title">Warna</string>
-  <string name="save_label_error">Terdapat kesalahan dalam menyimpan label</string>
+  <string name="save_label_error">Terjadi kesalahan menyimpan label, silakan coba lagi nanti</string>
+  <string name="label_already_exists">Label atau folder dengan nama ini sudah ada</string>
+  <string name="label_limit_reached_error">Batas jumlah label tercapai</string>
   <string name="delete_label_error">Terdapar kesalahan dalam menghapus label</string>
   <string name="input_field_clear_content_description">Hapus teks</string>
   <string name="label_list_item_content_description">Item daftar label</string>

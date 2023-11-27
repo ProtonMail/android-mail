@@ -71,7 +71,18 @@
   <string name="mail_settings_default_email_address_error_update">Terdapat kesalahan dalam memperbarui pengaturan</string>
   <string name="mail_settings_default_email_address_error_update_subscription">Tingkatkan ke paket berbayar untuk mengatur alamat ini sebagai alamat bawaan</string>
   <!-- Display name, signature, mobile footer -->
-  <string name="mail_settings_identity_mobile_footer_default_free">Sent from Proton Mail Android</string>
+  <string name="mail_settings_identity_title">Nama tampilan &amp; tanda tangan</string>
+  <string name="mail_settings_identity_save_button">Simpan</string>
+  <string name="mail_settings_identity_display_name">Nama tampilan</string>
+  <string name="mail_settings_identity_display_name_hint">Nama tampilan</string>
+  <string name="mail_settings_identity_signature">Tanda tangan</string>
+  <string name="mail_settings_identity_signature_hint">Tanda tangan</string>
+  <string name="mail_settings_identity_mobile_footer">Footer ponsel</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">Footer ini akan ditambahkan setelah tanda tangan Anda.</string>
+  <string name="mail_settings_identity_mobile_footer_hint">Footer ponsel</string>
+  <string name="mail_settings_identity_mobile_footer_default_free">Dikirim dari Proton Mail Android</string>
+  <string name="mail_settings_identity_error_updating">Terjadu kesalahan memperbarui pengaturan</string>
+  <string name="mail_settings_identity_error_loading">Terjadi kesalahan memuat pengaturan</string>
   <!-- Privacy settings -->
   <string name="mail_settings_privacy_auto_show_remote_content">Tampilkan remote content secara otomatis</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">Tampilkan gambar tersemat secara otomatis</string>

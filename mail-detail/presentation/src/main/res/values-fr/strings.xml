@@ -33,7 +33,7 @@
   <string name="undisclosed_recipients">Destinataires non divulgués</string>
   <string name="error_mark_as_unread_failed">Le marquage comme non lu n\'a pas abouti. Nous vous invitons à réessayer.</string>
   <string name="error_star_operation_failed">Le marquage comme favori n\'a pas abouti. Nous vous invitons à réessayer.</string>
-  <string name="error_unstar_operation_failed">La suppression du marquage comme favori n\'a pas abouti. Nous vous invitons à réessayer.</string>
+  <string name="error_unstar_operation_failed">Le marquage comme favori n\'a pas pu être retiré. Nous vous invitons à réessayer.</string>
   <string name="error_move_to_trash_failed">Le déplacement dans le dossier Corbeille n\'a pas abouti. Veuillez réessayer.</string>
   <string name="message_moved_to_trash">Le message a été déplacé dans le dossier Corbeille.</string>
   <string name="message_moved_to_archive">Le message a été déplacé dans le dossier Archives.</string>
@@ -49,11 +49,6 @@
   <string name="error_attachment_download_in_progress">Le téléchargement en cours doit être terminé avant d\'en commencer un nouveau.</string>
   <string name="error_get_attachment_not_enough_memory">La pièce jointe n\'a pu être obtenue par manque de mémoire.</string>
   <string name="reload">Recharger</string>
-  <!-- Bottom Sheet -->
-  <string name="bottom_sheet_move_to_title">Déplacer…</string>
-  <string name="bottom_sheet_done_action">Terminé</string>
-  <string name="bottom_sheet_archive_action">Archiver également ?</string>
-  <string name="bottom_sheet_label_as_title">Labelliser…</string>
   <string name="error_relabel_message_failed">Le nouveau label n\'a pas pu être appliqué au message. Réessayez.</string>
   <string name="error_relabel_conversation_failed">Le nouveau label n\'a pas pu être appliqué à la conversation. Réessayez.</string>
   <string name="please_go_back_online_to_load_messages">Vous êtes hors ligne. Veuillez vous reconnecter pour charger les messages.</string>
@@ -64,4 +59,9 @@
   <string name="message_body_embedded_images_banner_text">Le chargement automatique des images intégrées est désactivé. Vous pouvez modifier cette option dans les paramètres.</string>
   <string name="message_body_remote_content_banner_text">Le chargement automatique du contenu distant est désactivé. Vous pouvez modifier cette option dans les paramètres.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">Le chargement automatique des images intégrées et du contenu distant est désactivé. Vous pouvez modifier cette option dans les paramètres.</string>
+  <!-- External link confirmation dialog -->
+  <string name="external_link_confirmation_dialog_text">Vous êtes sur le point de quitter l\'application et de vous rendre sur :</string>
+  <string name="external_link_confirmation_dialog_do_not_ask_again">Ne plus demander</string>
+  <string name="external_link_confirmation_dialog_cancel_button">Annuler</string>
+  <string name="external_link_confirmation_dialog_continue_button">Continuer</string>
 </resources>

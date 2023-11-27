@@ -49,11 +49,6 @@
   <string name="error_attachment_download_in_progress">A jelenlegi letöltésnek be kell fejeződnie az új letöltés megkezdése előtt.</string>
   <string name="error_get_attachment_not_enough_memory">Elégtelen memória miatt a melléklet letöltése sikertelen</string>
   <string name="reload">Újratöltés</string>
-  <!-- Bottom Sheet -->
-  <string name="bottom_sheet_move_to_title">Áthelyezés...</string>
-  <string name="bottom_sheet_done_action">Kész</string>
-  <string name="bottom_sheet_archive_action">Archiválás is?</string>
-  <string name="bottom_sheet_label_as_title">Címkézés...</string>
   <string name="error_relabel_message_failed">Az üzenet címkéinek frissítése nem sikerült. Próbálja meg újra</string>
   <string name="error_relabel_conversation_failed">A beszélgetés címkéinek frissítése nem sikerült. Próbálja meg újra</string>
   <string name="please_go_back_online_to_load_messages">Ön jelenleg offline. Kérjük csatlakozzon újra internethez az üzenetek betöltéséhez</string>

@@ -51,11 +51,6 @@
   <string name="error_attachment_download_in_progress">Необхідно завершити поточне завантаження, перш ніж розпочати нове</string>
   <string name="error_get_attachment_not_enough_memory">Не вдалося отримати вкладення через брак пам\'яті</string>
   <string name="reload">Перезавантажити</string>
-  <!-- Bottom Sheet -->
-  <string name="bottom_sheet_move_to_title">Перемістити до...</string>
-  <string name="bottom_sheet_done_action">Готово</string>
-  <string name="bottom_sheet_archive_action">Також архівувати?</string>
-  <string name="bottom_sheet_label_as_title">Позначити як...</string>
   <string name="error_relabel_message_failed">Не вдалося змінити мітку повідомлення. Спробуйте ще раз</string>
   <string name="error_relabel_conversation_failed">Не вдалося змінити мітку розмови. Спробуйте ще раз</string>
   <string name="please_go_back_online_to_load_messages">Ви зараз офлайн. Під\'єднайтеся до інтернету, щоб завантажити повідомлення</string>
@@ -66,4 +61,9 @@
   <string name="message_body_embedded_images_banner_text">Автоматичне завантаження вбудованих зображень вимкнено. Це можна змінити в налаштуваннях.</string>
   <string name="message_body_remote_content_banner_text">Автоматичне завантаження віддаленого вмісту вимкнено. Це можна змінити в налаштуваннях.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">Автоматичне завантаження вбудованих зображень і віддаленого вмісту вимкнено. Це можна змінити в налаштуваннях.</string>
+  <!-- External link confirmation dialog -->
+  <string name="external_link_confirmation_dialog_text">You are about to leave the app and navigate to:</string>
+  <string name="external_link_confirmation_dialog_do_not_ask_again">Don\'t ask again</string>
+  <string name="external_link_confirmation_dialog_cancel_button">Cancel</string>
+  <string name="external_link_confirmation_dialog_continue_button">Continue</string>
 </resources>

@@ -32,4 +32,5 @@
   <string name="notification_switched_account">Έγινε αλλαγή σε λογαριασμό: %s</string>
   <string name="label_saved">Η ετικέτα αποθηκεύτηκε</string>
   <string name="label_deleted">Η ετικέτα διαγράφηκε</string>
+  <string name="label_list_loading_error">Σφάλμα φόρτωσης ετικέτας, παρακαλούμε δοκιμάστε ξανά αργότερα</string>
 </resources>

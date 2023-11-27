@@ -45,7 +45,9 @@
   <string name="add_a_label_name_hint">Ajoutez un nom de label.</string>
   <string name="input_field_max_characters_count">Nombre de caractères : %1d sur %2d</string>
   <string name="color_picker_title">Couleur</string>
-  <string name="save_label_error">Une erreur s\'est produite lors de l\'enregistrement du label.</string>
+  <string name="save_label_error">Une erreur s\'est produite lors de l\'enregistrement du label. Veuillez réessayer plus tard.</string>
+  <string name="label_already_exists">Un label ou un dossier portant ce nom existe déjà.</string>
+  <string name="label_limit_reached_error">Le nombre maximum de labels a été atteint.</string>
   <string name="delete_label_error">Une erreur s\'est produite lors de la suppression du label.</string>
   <string name="input_field_clear_content_description">Effacer le texte</string>
   <string name="label_list_item_content_description">Ajouter un label à l\'élément de la liste</string>

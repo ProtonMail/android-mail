@@ -48,11 +48,6 @@
   <string name="error_attachment_download_in_progress">在開始新的下載之前，必須先完成目前的。</string>
   <string name="error_get_attachment_not_enough_memory">因為儲存空間不足，無法取得附件</string>
   <string name="reload">重新載入</string>
-  <!-- Bottom Sheet -->
-  <string name="bottom_sheet_move_to_title">移至...</string>
-  <string name="bottom_sheet_done_action">已完成</string>
-  <string name="bottom_sheet_archive_action">同時進行封存？</string>
-  <string name="bottom_sheet_label_as_title">將郵件加上標籤…</string>
   <string name="error_relabel_message_failed">無法重新在郵件加上標籤。請再試試</string>
   <string name="error_relabel_conversation_failed">無法重新在對話加上標籤。請再試試</string>
   <string name="please_go_back_online_to_load_messages">您目前是離線狀態。請重新連線以載入訊息</string>
@@ -63,4 +58,9 @@
   <string name="message_body_embedded_images_banner_text">已經關閉內嵌影像的自動載入。這可以在設定中變更。</string>
   <string name="message_body_remote_content_banner_text">已經關閉遠端內容的自動載入。這可以在設定中變更。</string>
   <string name="message_body_embedded_and_remote_content_banner_text">已經關閉內嵌影像與遠端內容的自動載入。這可以在設定中變更。</string>
+  <!-- External link confirmation dialog -->
+  <string name="external_link_confirmation_dialog_text">You are about to leave the app and navigate to:</string>
+  <string name="external_link_confirmation_dialog_do_not_ask_again">Don\'t ask again</string>
+  <string name="external_link_confirmation_dialog_cancel_button">Cancel</string>
+  <string name="external_link_confirmation_dialog_continue_button">Continue</string>
 </resources>

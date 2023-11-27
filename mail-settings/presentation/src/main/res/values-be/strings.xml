@@ -71,7 +71,18 @@
   <string name="mail_settings_default_email_address_error_update">Памылка пры абнаўленні налад</string>
   <string name="mail_settings_default_email_address_error_update_subscription">Перайдзіце на платны тарыфны план, каб задаць гэты адрас у якасці прадвызначанага</string>
   <!-- Display name, signature, mobile footer -->
+  <string name="mail_settings_identity_title">Бачнае імя і подпіс</string>
+  <string name="mail_settings_identity_save_button">Захаваць</string>
+  <string name="mail_settings_identity_display_name">Бачнае імя</string>
+  <string name="mail_settings_identity_display_name_hint">Бачнае імя</string>
+  <string name="mail_settings_identity_signature">Подпіс</string>
+  <string name="mail_settings_identity_signature_hint">Подпіс</string>
+  <string name="mail_settings_identity_mobile_footer">Ніжні калонтытул для мабільнага кліента</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">Ніжні калонтытул дадаецца пасля вашага подпісу.</string>
+  <string name="mail_settings_identity_mobile_footer_hint">Ніжні калонтытул для мабільнага кліента</string>
   <string name="mail_settings_identity_mobile_footer_default_free">Адпраўлена з ProtonMail для Android</string>
+  <string name="mail_settings_identity_error_updating">Памылка пры абнаўленні налад</string>
+  <string name="mail_settings_identity_error_loading">Памылка пры загрузцы налад</string>
   <!-- Privacy settings -->
   <string name="mail_settings_privacy_auto_show_remote_content">Аўтаматычнае паказваць аддаленае змесціва</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">Аўтаматычна паказваць убудаваныя відарысы</string>
@@ -100,8 +111,8 @@
   <string name="mail_settings_notifications_extended_notifications_summary">Уключыце гэту функцыю, каб бачыць адпраўніка лістоў у push-апавяшчэннях.</string>
   <string name="mail_settings_notifications_notifications_settings">Налады апавяшчэнняў</string>
   <string name="mail_settings_notifications_notifications_settings_hint">Перайсці ў сістэмныя налады апавяшчэнняў</string>
-  <string name="mail_settings_notifications_update_error">Памылка пры абнаўленні налад</string>
-  <string name="mail_settings_notifications_loading_error">Памылка пры загрузцы налад</string>
+  <string name="mail_settings_notifications_update_error">Памылка абнаўлення налад</string>
+  <string name="mail_settings_notifications_loading_error">Памылка загрузкі налад</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Адбылася памылка. Паспрабуйце яшчэ раз.</string>
 </resources>

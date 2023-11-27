@@ -49,11 +49,6 @@
   <string name="error_attachment_download_in_progress">Nuvarande nedladdning måste slutföras innan du startar en ny.</string>
   <string name="error_get_attachment_not_enough_memory">Misslyckades att hämta bilaga på grund av otillräckligt minne</string>
   <string name="reload">Ladda om</string>
-  <!-- Bottom Sheet -->
-  <string name="bottom_sheet_move_to_title">Flytta till...</string>
-  <string name="bottom_sheet_done_action">Klar</string>
-  <string name="bottom_sheet_archive_action">Arkivera också?</string>
-  <string name="bottom_sheet_label_as_title">Märk som...</string>
   <string name="error_relabel_message_failed">Misslyckades att märka om meddelande. Försök igen</string>
   <string name="error_relabel_conversation_failed">Misslyckades att märka om konversation. Försök igen</string>
   <string name="please_go_back_online_to_load_messages">Du är offline. Gå tillbaka online för att ladda meddelanden</string>
@@ -64,4 +59,9 @@
   <string name="message_body_embedded_images_banner_text">Automatisk laddning av inbäddade bilder är avstängd. Detta kan ändras i inställningarna.</string>
   <string name="message_body_remote_content_banner_text">Automatisk laddning av fjärrinnehåll är avstängd. Detta kan ändras i inställningarna.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">Automatisk laddning av inbäddade bilder och fjärrinnehåll är avstängt. Dessa kan ändras i inställningarna.</string>
+  <!-- External link confirmation dialog -->
+  <string name="external_link_confirmation_dialog_text">Du är på väg att lämna appen och navigera till:</string>
+  <string name="external_link_confirmation_dialog_do_not_ask_again">Fråga inte igen</string>
+  <string name="external_link_confirmation_dialog_cancel_button">Avbryt</string>
+  <string name="external_link_confirmation_dialog_continue_button">Fortsätt</string>
 </resources>

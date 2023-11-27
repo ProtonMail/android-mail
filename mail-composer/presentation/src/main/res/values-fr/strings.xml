@@ -33,7 +33,7 @@
   <string name="composer_error_change_sender_failed_getting_subscription">Impossible de changer l\'expéditeur : l\'abonnement de l\'utilisateur n\'a pu être obtenu. Veuillez réessayer.</string>
   <string name="composer_error_store_draft_sender_address">L\'enregistrement de l\'adresse de l\'expéditeur du brouillon n\'a pas abouti.</string>
   <string name="composer_error_store_draft_body">L\'enregistrement du corps du brouillon n\'a pas abouti.</string>
-  <string name="composer_error_duplicate_recipient">Destinataire dupliqué supprimé : %1$s</string>
+  <string name="composer_error_duplicate_recipient">Destinataire dupliqué retiré : %1$s</string>
   <string name="composer_error_store_draft_subject">L\'enregistrement de l\'objet du brouillon n\'a pas abouti.</string>
   <string name="composer_error_store_draft_recipients">L\'enregistrement des destinataires du brouillon n\'a pas abouti.</string>
   <string name="composer_error_loading_draft">Le contenu de ce brouillon n\'est pas disponible pour l\'instant. Sa modification remplacera tout contenu déjà existant.</string>
@@ -45,6 +45,5 @@
   <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
   <string name="composer_attachment_size_exceeded_dialog_title">Limite de pièces jointes atteinte</string>
   <string name="composer_attachment_size_exceeded_dialog_message">La taille limite pour les pièces jointes est de %1$s.</string>
-  <string name="composer_attachment_reencryption_failed_message">Chiffrer à nouveau la pièce jointe n\'a pas abouti. Pour des raisons de sécurité, toutes les pièces jointes ont été supprimées.</string>
-  <string name="message_footer_text">Envoyé depuis Proton Mail Android</string>
+  <string name="composer_attachment_reencryption_failed_message">Chiffrer à nouveau la pièce jointe n\'a pas abouti. Pour des raisons de sécurité, toutes les pièces jointes ont été retirées.</string>
 </resources>

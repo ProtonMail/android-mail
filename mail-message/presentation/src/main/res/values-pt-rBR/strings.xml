@@ -38,4 +38,9 @@
   <string name="attachment_type_document">Documento</string>
   <string name="attachment_type_spreadsheet">Planilha</string>
   <string name="attachment_type_presentation">Apresentação</string>
+  <!-- Bottom Sheet -->
+  <string name="bottom_sheet_move_to_title">Mover para...</string>
+  <string name="bottom_sheet_done_action">Concluído</string>
+  <string name="bottom_sheet_archive_action">Também arquivar?</string>
+  <string name="bottom_sheet_label_as_title">Marcar como...</string>
 </resources>

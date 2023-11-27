@@ -38,4 +38,9 @@
   <string name="attachment_type_document">Belge</string>
   <string name="attachment_type_spreadsheet">Hesap tablosu</string>
   <string name="attachment_type_presentation">Sunum</string>
+  <!-- Bottom Sheet -->
+  <string name="bottom_sheet_move_to_title">Şuraya taşı...</string>
+  <string name="bottom_sheet_done_action">Tamam</string>
+  <string name="bottom_sheet_archive_action">Ayrıca arşivlensin mi?</string>
+  <string name="bottom_sheet_label_as_title">Etiketle...</string>
 </resources>

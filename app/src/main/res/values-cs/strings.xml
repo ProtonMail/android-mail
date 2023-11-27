@@ -32,4 +32,5 @@
   <string name="notification_switched_account">Přepnuto na účet: \'%s</string>
   <string name="label_saved">Štítek uložen</string>
   <string name="label_deleted">Štítek smazán</string>
+  <string name="label_list_loading_error">Chyba při načítání štítku, zkuste to prosím později</string>
 </resources>

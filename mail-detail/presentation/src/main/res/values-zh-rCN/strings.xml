@@ -48,11 +48,6 @@
   <string name="error_attachment_download_in_progress">当前附件下载完成后方可下载其他附件。</string>
   <string name="error_get_attachment_not_enough_memory">内存不足，无法获取附件</string>
   <string name="reload">刷新</string>
-  <!-- Bottom Sheet -->
-  <string name="bottom_sheet_move_to_title">移动至…</string>
-  <string name="bottom_sheet_done_action">完成</string>
-  <string name="bottom_sheet_archive_action">同时存档？</string>
-  <string name="bottom_sheet_label_as_title">加标签...</string>
   <string name="error_relabel_message_failed">重新标记消息失败，请重试</string>
   <string name="error_relabel_conversation_failed">重新标记对话失败，请重试</string>
   <string name="please_go_back_online_to_load_messages">您已离线。请连接至网络以加载邮件</string>
@@ -63,4 +58,9 @@
   <string name="message_body_embedded_images_banner_text">嵌入图片自动加载功能已关闭，可以在设置中开启。</string>
   <string name="message_body_remote_content_banner_text">外链内容自动加载功能已关闭，可以在设置中开启。</string>
   <string name="message_body_embedded_and_remote_content_banner_text">嵌入图片和外链内容自动加载功能已关闭，可以在设置中开启。</string>
+  <!-- External link confirmation dialog -->
+  <string name="external_link_confirmation_dialog_text">You are about to leave the app and navigate to:</string>
+  <string name="external_link_confirmation_dialog_do_not_ask_again">Don\'t ask again</string>
+  <string name="external_link_confirmation_dialog_cancel_button">Cancel</string>
+  <string name="external_link_confirmation_dialog_continue_button">Continue</string>
 </resources>

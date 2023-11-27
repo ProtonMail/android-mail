@@ -48,11 +48,6 @@
   <string name="error_attachment_download_in_progress">다운로드를 시작하기 전에 현재 다운로드를 완료해야 합니다.</string>
   <string name="error_get_attachment_not_enough_memory">메모리가 부족하여 첨부 파일을 받을 수 없습니다</string>
   <string name="reload">새로고침</string>
-  <!-- Bottom Sheet -->
-  <string name="bottom_sheet_move_to_title">이동하기</string>
-  <string name="bottom_sheet_done_action">완료</string>
-  <string name="bottom_sheet_archive_action">이 역시 보관함으로 이동할까요?</string>
-  <string name="bottom_sheet_label_as_title">라벨로...</string>
   <string name="error_relabel_message_failed">메시지를 다시 라벨링하는 데 실패했습니다. 다시 시도해주세요.</string>
   <string name="error_relabel_conversation_failed">대화를 다시 라벨링하는 데 실패했습니다. 다시 시도해주세요.</string>
   <string name="please_go_back_online_to_load_messages">오프라인 입니다. 메시지를 불러오려면 온라인으로 돌아가세요</string>
@@ -63,4 +58,9 @@
   <string name="message_body_embedded_images_banner_text">첨부한 이미지를 자동으로 불러오는 기능이 꺼져 있습니다. 설정에서 변경할 수 있습니다.</string>
   <string name="message_body_remote_content_banner_text">서버 콘텐츠를 자동으로 불러오는 기능이 꺼져 있습니다. 설정에서 변경할 수 있습니다.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">서버 이미지를 자동으로 불러오는 기능이 꺼져 있습니다. 설정에서 변경할 수 있습니다.</string>
+  <!-- External link confirmation dialog -->
+  <string name="external_link_confirmation_dialog_text">You are about to leave the app and navigate to:</string>
+  <string name="external_link_confirmation_dialog_do_not_ask_again">Don\'t ask again</string>
+  <string name="external_link_confirmation_dialog_cancel_button">Cancel</string>
+  <string name="external_link_confirmation_dialog_continue_button">Continue</string>
 </resources>

@@ -71,7 +71,18 @@
   <string name="mail_settings_default_email_address_error_update">Wystąpił błąd podczas aktualizowania ustawień</string>
   <string name="mail_settings_default_email_address_error_update_subscription">Ulepsz do płatnego planu, aby ustawić domyślny adres</string>
   <!-- Display name, signature, mobile footer -->
+  <string name="mail_settings_identity_title">Nazwa wyświetlana i podpis</string>
+  <string name="mail_settings_identity_save_button">Zapisz</string>
+  <string name="mail_settings_identity_display_name">Nazwa wyświetlana</string>
+  <string name="mail_settings_identity_display_name_hint">Nazwa wyświetlana</string>
+  <string name="mail_settings_identity_signature">Podpis</string>
+  <string name="mail_settings_identity_signature_hint">Podpis</string>
+  <string name="mail_settings_identity_mobile_footer">Stopka mobilna</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">Stopka jest dodawana pod Twoim podpisem.</string>
+  <string name="mail_settings_identity_mobile_footer_hint">Stopka mobilna</string>
   <string name="mail_settings_identity_mobile_footer_default_free">Wysłano z aplikacji Proton Mail</string>
+  <string name="mail_settings_identity_error_updating">Wystąpił błąd podczas aktualizowania ustawień</string>
+  <string name="mail_settings_identity_error_loading">Wystąpił błąd podczas ładowania ustawień</string>
   <!-- Privacy settings -->
   <string name="mail_settings_privacy_auto_show_remote_content">Automatycznie pokazuj zawartość zdalną</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">Automatycznie pokazuj osadzone obrazy</string>
@@ -99,7 +110,7 @@
   <string name="mail_settings_notifications_extended_notifications_title">Rozszerzone powiadomienia</string>
   <string name="mail_settings_notifications_extended_notifications_summary">Włącz tę funkcję, aby zobaczyć nadawcę w treści powiadomienia.</string>
   <string name="mail_settings_notifications_notifications_settings">Ustawienia powiadomień</string>
-  <string name="mail_settings_notifications_notifications_settings_hint">Przejdź systemowych ustawień powiadomień</string>
+  <string name="mail_settings_notifications_notifications_settings_hint">Przejdź do systemowych ustawień powiadomień</string>
   <string name="mail_settings_notifications_update_error">Wystąpił błąd podczas aktualizowania ustawień</string>
   <string name="mail_settings_notifications_loading_error">Wystąpił błąd podczas ładowania ustawień</string>
   <!-- Error messages -->
