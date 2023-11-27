@@ -40,7 +40,6 @@ import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageAttachmentS
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.RelabelMessage
-import ch.protonmail.android.maildetail.domain.usecase.UnStarMessage
 import ch.protonmail.android.maildetail.presentation.mapper.MessageBodyUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailActionBarUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailHeaderUiModelMapper
@@ -66,6 +65,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
 import ch.protonmail.android.mailmessage.domain.usecase.StarMessages
+import ch.protonmail.android.mailmessage.domain.usecase.UnStarMessages
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
@@ -109,7 +109,7 @@ class MessageDetailViewModel @Inject constructor(
     private val markRead: MarkMessageAsRead,
     private val getContacts: GetContacts,
     private val starMessages: StarMessages,
-    private val unStarMessage: UnStarMessage,
+    private val unStarMessages: UnStarMessages,
     private val savedStateHandle: SavedStateHandle,
     private val messageDetailHeaderUiModelMapper: MessageDetailHeaderUiModelMapper,
     private val messageBodyUiModelMapper: MessageBodyUiModelMapper,
@@ -186,7 +186,7 @@ class MessageDetailViewModel @Inject constructor(
 
     private fun unStarMessage() {
         primaryUserId.mapLatest { userId ->
-            unStarMessage(userId, messageId).fold(
+            unStarMessages(userId, listOf(messageId)).fold(
                 ifLeft = { MessageDetailEvent.ErrorRemovingStar },
                 ifRight = { MessageViewAction.UnStar }
             )

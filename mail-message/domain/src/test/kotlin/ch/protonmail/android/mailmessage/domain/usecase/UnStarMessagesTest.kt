@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.domain.usecase
+package ch.protonmail.android.mailmessage.domain.usecase
 
 import arrow.core.left
 import arrow.core.right
@@ -32,27 +32,27 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import kotlin.test.assertEquals
 
-internal class UnStarMessageTest {
+internal class UnStarMessagesTest {
 
     private val userId = UserIdSample.Primary
-    private val messageId = MessageTestData.message.messageId
+    private val messageId = listOf(MessageTestData.message.messageId)
     private val starredLabelId = SystemLabelId.Starred.labelId
 
     private val messageRepository: MessageRepository = mockk {
         coEvery {
             relabel(userId, messageId, labelsToBeRemoved = listOf(starredLabelId))
-        } returns MessageTestData.message.right()
+        } returns listOf(MessageTestData.message).right()
     }
 
 
-    private val unStarMessage = UnStarMessage(
+    private val unStarMessages = UnStarMessages(
         messageRepository
     )
 
     @Test
     fun `calls message repository to remove starred label`() = runTest {
         // When
-        unStarMessage(userId, messageId)
+        unStarMessages(userId, messageId)
 
         // Then
         coVerify {
@@ -67,10 +67,10 @@ internal class UnStarMessageTest {
     @Test
     fun `returns unStarred message when repository succeeds`() = runTest {
         // When
-        val actual = unStarMessage(userId, messageId)
+        val actual = unStarMessages(userId, messageId)
 
         // Then
-        assertEquals(MessageTestData.message.right(), actual)
+        assertEquals(listOf(MessageTestData.message).right(), actual)
     }
 
     @Test
@@ -82,7 +82,7 @@ internal class UnStarMessageTest {
         } returns localError.left()
 
         // When
-        val actual = unStarMessage(userId, messageId)
+        val actual = unStarMessages(userId, messageId)
 
         // Then
         assertEquals(localError.left(), actual)
