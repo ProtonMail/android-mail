@@ -43,6 +43,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.Button
 import androidx.compose.material.Divider
@@ -75,7 +76,9 @@ import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.constraintlayout.compose.ConstrainedLayoutReference
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.ConstraintLayoutScope
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
@@ -158,9 +161,7 @@ fun MailboxScreen(
         val completeActions = actions.copy(
             closeOnboarding = { viewModel.submit(MailboxViewAction.CloseOnboarding) }
         )
-        OnboardingScreen(
-            actions = completeActions
-        )
+        OnboardingScreen(actions = completeActions)
     } else {
         val completeActions = actions.copy(
             onDisableUnreadFilter = { viewModel.submit(MailboxViewAction.DisableUnreadFilter) },
@@ -265,7 +266,6 @@ fun MailboxScreen(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnboardingScreen(actions: MailboxScreen.Actions) {
-    val scope = rememberCoroutineScope()
     val pagerState = rememberPagerState()
 
     val contentMap = listOf(
@@ -313,82 +313,12 @@ fun OnboardingScreen(actions: MailboxScreen.Actions) {
                     bottom.linkTo(parent.bottom)
                 }
         ) { pageIndex ->
-            OnboardingContent(
-                content = contentMap[pageIndex]
-            )
+            OnboardingContent(content = contentMap[pageIndex])
         }
 
-        ProtonSolidButton(
-            modifier = Modifier
-                .constrainAs(positiveButton) {
-                    width = Dimension.fillToConstraints
-                    start.linkTo(parent.start, margin = ProtonDimens.MediumSpacing)
-                    end.linkTo(parent.end, margin = ProtonDimens.MediumSpacing)
-                    bottom.linkTo(dots.top, margin = ProtonDimens.DefaultSpacing)
-                }
-                .horizontalScroll(state = ScrollState(0), enabled = true),
-            onClick = {
-                val nextPageIndex = pagerState.currentPage.plus(1)
-                if (nextPageIndex == viewCount) {
-                    actions.closeOnboarding()
-                } else {
-                    scope.launch {
-                        pagerState.animateScrollToPage(nextPageIndex)
-                    }
-                }
-            }
-        ) {
-            val positiveButtonTextId =
-                if (pagerState.currentPage == viewCount.minus(1)) R.string.onboarding_get_started
-                else R.string.onboarding_next
-            Text(text = stringResource(id = positiveButtonTextId))
-        }
+        OnboardingButton(actions, pagerState, viewCount, positiveButton, dismissButton, dots)
 
-        if (pagerState.currentPage != viewCount.minus(1)) {
-            ProtonTextButton(
-                modifier = Modifier
-                    .constrainAs(dismissButton) {
-                        width = Dimension.fillToConstraints
-                        top.linkTo(parent.top)
-                        end.linkTo(parent.end)
-                    }
-                    .horizontalScroll(state = ScrollState(0), enabled = true),
-                onClick = {
-                    actions.closeOnboarding()
-                }
-            ) {
-                Text(text = stringResource(id = R.string.onboarding_skip))
-            }
-        }
-
-        val highlightedDotColor = ProtonTheme.colors.brandNorm
-        val defaultDotColor = ProtonTheme.colors.separatorNorm
-        Canvas(
-            modifier = Modifier
-                .size(pagerDotsCircleSize)
-                .constrainAs(dots) {
-                    width = Dimension.fillToConstraints
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(parent.bottom, margin = ProtonDimens.LargeSpacing)
-                },
-            onDraw = {
-                var centerOffset = Offset(
-                    size.width.div(2).minus(pagerDotsCircleSize.toPx().times(viewCount.minus(1))),
-                    this.center.y
-                )
-                for (i in 0 until viewCount) {
-                    drawCircle(
-                        color = if (i == pagerState.currentPage) highlightedDotColor else defaultDotColor,
-                        center = centerOffset
-                    )
-                    centerOffset = Offset(
-                        centerOffset.x.plus(pagerDotsCircleSize.toPx().times(2)),
-                        centerOffset.y
-                    )
-                }
-            }
-        )
+        OnboardingIndexDots(pagerState, viewCount, dots)
     }
 }
 
@@ -442,6 +372,99 @@ fun OnboardingContent(content: OnboardingUiModel) {
             color = ProtonTheme.colors.textWeak
         )
     }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun ConstraintLayoutScope.OnboardingButton(
+    actions: MailboxScreen.Actions,
+    pagerState: PagerState,
+    viewCount: Int,
+    positiveButton: ConstrainedLayoutReference,
+    dismissButton: ConstrainedLayoutReference,
+    dots: ConstrainedLayoutReference
+) {
+    val scope = rememberCoroutineScope()
+
+    ProtonSolidButton(
+        modifier = Modifier
+            .constrainAs(positiveButton) {
+                width = Dimension.fillToConstraints
+                start.linkTo(parent.start, margin = ProtonDimens.MediumSpacing)
+                end.linkTo(parent.end, margin = ProtonDimens.MediumSpacing)
+                bottom.linkTo(dots.top, margin = ProtonDimens.DefaultSpacing)
+            }
+            .horizontalScroll(state = ScrollState(0), enabled = true),
+        onClick = {
+            val nextPageIndex = pagerState.currentPage.plus(1)
+            if (nextPageIndex == viewCount) {
+                actions.closeOnboarding()
+            } else {
+                scope.launch {
+                    pagerState.animateScrollToPage(nextPageIndex)
+                }
+            }
+        }
+    ) {
+        val positiveButtonTextId =
+            if (pagerState.currentPage == viewCount.minus(1)) R.string.onboarding_get_started
+            else R.string.onboarding_next
+        Text(text = stringResource(id = positiveButtonTextId))
+    }
+
+    if (pagerState.currentPage != viewCount.minus(1)) {
+        ProtonTextButton(
+            modifier = Modifier
+                .constrainAs(dismissButton) {
+                    width = Dimension.fillToConstraints
+                    top.linkTo(parent.top)
+                    end.linkTo(parent.end)
+                }
+                .horizontalScroll(state = ScrollState(0), enabled = true),
+            onClick = {
+                actions.closeOnboarding()
+            }
+        ) {
+            Text(text = stringResource(id = R.string.onboarding_skip))
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun ConstraintLayoutScope.OnboardingIndexDots(
+    pagerState: PagerState,
+    viewCount: Int,
+    dots: ConstrainedLayoutReference
+) {
+    val highlightedDotColor = ProtonTheme.colors.brandNorm
+    val defaultDotColor = ProtonTheme.colors.separatorNorm
+    Canvas(
+        modifier = Modifier
+            .size(pagerDotsCircleSize)
+            .constrainAs(dots) {
+                width = Dimension.fillToConstraints
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+                bottom.linkTo(parent.bottom, margin = ProtonDimens.LargeSpacing)
+            },
+        onDraw = {
+            var centerOffset = Offset(
+                size.width.div(2).minus(pagerDotsCircleSize.toPx().times(viewCount.minus(1))),
+                this.center.y
+            )
+            for (i in 0 until viewCount) {
+                drawCircle(
+                    color = if (i == pagerState.currentPage) highlightedDotColor else defaultDotColor,
+                    center = centerOffset
+                )
+                centerOffset = Offset(
+                    centerOffset.x.plus(pagerDotsCircleSize.toPx().times(2)),
+                    centerOffset.y
+                )
+            }
+        }
+    )
 }
 
 @Composable
