@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.maillabel.presentation.folderlist
 
-import ch.protonmail.android.maillabel.domain.model.MailLabel
+import ch.protonmail.android.maillabel.presentation.model.FolderUiModel
 
 sealed interface FolderListOperation
 
@@ -36,7 +36,7 @@ internal sealed interface FolderListViewAction : FolderListOperation {
 
 sealed interface FolderListEvent : FolderListOperation {
     data class FolderListLoaded(
-        val folderList: List<MailLabel.Custom>,
+        val folderList: List<FolderUiModel>,
         val useFolderColor: Boolean,
         val inheritParentFolderColor: Boolean
     ) : FolderListEvent

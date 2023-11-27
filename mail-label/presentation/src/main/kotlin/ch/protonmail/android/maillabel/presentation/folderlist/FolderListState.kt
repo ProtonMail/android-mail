@@ -19,7 +19,7 @@
 package ch.protonmail.android.maillabel.presentation.folderlist
 
 import ch.protonmail.android.mailcommon.presentation.Effect
-import ch.protonmail.android.maillabel.domain.model.MailLabel
+import ch.protonmail.android.maillabel.presentation.model.FolderUiModel
 
 sealed interface FolderListState {
 
@@ -39,7 +39,7 @@ sealed interface FolderListState {
             override val useFolderColor: Boolean,
             override val inheritParentFolderColor: Boolean,
             override val openFolderForm: Effect<Unit> = Effect.empty(),
-            val folders: List<MailLabel.Custom>
+            val folders: List<FolderUiModel>
         ) : ListLoaded
 
         data class Empty(

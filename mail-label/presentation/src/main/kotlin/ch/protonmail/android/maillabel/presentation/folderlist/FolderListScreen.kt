@@ -51,7 +51,6 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -62,9 +61,10 @@ import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
-import ch.protonmail.android.maillabel.domain.model.toMailLabelCustom
 import ch.protonmail.android.maillabel.presentation.R
+import ch.protonmail.android.maillabel.presentation.model.toFolderUiModel
 import ch.protonmail.android.maillabel.presentation.previewdata.FolderListPreviewData.folderSampleData
+import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonModalBottomSheetLayout
@@ -290,43 +290,22 @@ fun FolderListScreenContent(
                     .clickable(
                         role = Role.Button,
                         onClick = {
-                            actions.onFolderSelected(folder.id.labelId)
+                            actions.onFolderSelected(folder.id)
                         }
                     ),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                val iconResId =
-                    if (folder.children.isNotEmpty()) {
-                        if (state.useFolderColor) R.drawable.ic_proton_folders_filled
-                        else R.drawable.ic_proton_folders
-                    } else {
-                        if (state.useFolderColor) R.drawable.ic_proton_folder_filled
-                        else R.drawable.ic_proton_folder
-                    }
-                val iconTint =
-                    if (state.useFolderColor &&
-                        state.inheritParentFolderColor
-                    ) {
-                        var parentFolder = folder.parent
-                        while (parentFolder?.parent != null) {
-                            parentFolder = parentFolder.parent
-                        }
-                        Color(parentFolder?.color ?: folder.color)
-                    } else if (state.useFolderColor) {
-                        Color(folder.color)
-                    } else ProtonTheme.colors.iconNorm
-
                 Icon(
                     modifier = Modifier.padding(
                         start = ProtonDimens.DefaultSpacing.times(folder.level.plus(1)),
                         end = ProtonDimens.DefaultSpacing
                     ),
-                    painter = painterResource(id = iconResId),
-                    tint = iconTint,
+                    painter = painterResource(id = folder.icon),
+                    tint = folder.displayColor ?: ProtonTheme.colors.iconNorm,
                     contentDescription = NO_CONTENT_DESCRIPTION
                 )
                 Text(
-                    text = folder.text,
+                    text = folder.name,
                     modifier = Modifier.padding(
                         start = ProtonDimens.ExtraSmallSpacing,
                         top = ProtonDimens.DefaultSpacing,
@@ -503,7 +482,12 @@ private fun FolderListScreenPreview() {
                 folderSampleData,
                 folderSampleData,
                 folderSampleData
-            ).toMailLabelCustom(),
+            ).toFolderUiModel(
+                FolderColorSettings(
+                    useFolderColor = true,
+                    inheritParentFolderColor = true
+                )
+            ),
             useFolderColor = true,
             inheritParentFolderColor = true
         ),
