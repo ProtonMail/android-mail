@@ -70,4 +70,5 @@
     <string name="folder_form_parent">Parent folder</string>
     <string name="folder_form_no_parent">None</string>
     <string name="folder_form_notifications">Notifications</string>
+    <string name="folder_saved">Folder saved</string>
 </resources>

@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.maillabel.presentation.previewdata
 
-import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.maillabel.presentation.folderform.FolderFormState
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
 import ch.protonmail.android.maillabel.presentation.sample.LabelColorListSample
@@ -31,8 +30,6 @@ object FolderFormPreviewData {
         color = LabelColorListSample.colorListSample().random().getHexStringFromColor(),
         parent = null,
         notifications = true,
-        colorList = LabelColorListSample.colorListSample(),
-        close = Effect.empty(),
-        closeWithSave = Effect.empty()
+        colorList = LabelColorListSample.colorListSample()
     )
 }

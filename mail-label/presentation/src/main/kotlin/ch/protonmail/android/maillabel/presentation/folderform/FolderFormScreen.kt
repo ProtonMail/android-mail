@@ -44,6 +44,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
+import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.compose.dismissKeyboard
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
@@ -112,28 +113,12 @@ fun FolderFormScreen(actions: FolderFormScreen.Actions, viewModel: FolderFormVie
                         modifier = Modifier.padding(paddingValues)
                     )
 
-                    ConsumableLaunchedEffect(effect = state.closeWithSave) {
-                        customActions.onBackClick()
-                        actions.showFolderSavedSnackbar()
+                    ConsumableTextEffect(effect = state.closeWithSuccess) { message ->
+                        actions.exitWithSuccessMessage(message)
                     }
-                    val folderAlreadyExistsMessage = stringResource(id = R.string.label_already_exists)
-                    ConsumableLaunchedEffect(effect = state.showFolderAlreadyExistsSnackbar) {
+                    ConsumableTextEffect(effect = state.showErrorSnackbar) { message ->
                         snackbarHostErrorState.showSnackbar(
-                            message = folderAlreadyExistsMessage,
-                            type = ProtonSnackbarType.ERROR
-                        )
-                    }
-                    val folderLimitReachedMessage = stringResource(id = R.string.folder_limit_reached_error)
-                    ConsumableLaunchedEffect(effect = state.showFolderLimitReachedSnackbar) {
-                        snackbarHostErrorState.showSnackbar(
-                            message = folderLimitReachedMessage,
-                            type = ProtonSnackbarType.ERROR
-                        )
-                    }
-                    val saveFolderErrorMessage = stringResource(id = R.string.save_folder_error)
-                    ConsumableLaunchedEffect(effect = state.showSaveFolderErrorSnackbar) {
-                        snackbarHostErrorState.showSnackbar(
-                            message = saveFolderErrorMessage,
+                            message = message,
                             type = ProtonSnackbarType.ERROR
                         )
                     }
@@ -278,7 +263,7 @@ object FolderFormScreen {
 
     data class Actions(
         val onBackClick: () -> Unit,
-        val showFolderSavedSnackbar: () -> Unit,
+        val exitWithSuccessMessage: (String) -> Unit,
         val onFolderNameChanged: (String) -> Unit,
         val onFolderColorChanged: (Color) -> Unit,
         val onFolderNotificationsChanged: (Boolean) -> Unit,
@@ -290,7 +275,7 @@ object FolderFormScreen {
 
             val Empty = Actions(
                 onBackClick = {},
-                showFolderSavedSnackbar = {},
+                exitWithSuccessMessage = {},
                 onFolderNameChanged = {},
                 onFolderColorChanged = {},
                 onFolderNotificationsChanged = {},

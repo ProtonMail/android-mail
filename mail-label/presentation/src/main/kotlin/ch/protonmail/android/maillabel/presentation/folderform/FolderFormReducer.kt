@@ -19,6 +19,8 @@
 package ch.protonmail.android.maillabel.presentation.folderform
 
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.maillabel.presentation.R
 import javax.inject.Inject
 
 class FolderFormReducer @Inject constructor() {
@@ -83,28 +85,36 @@ class FolderFormReducer @Inject constructor() {
 
     private fun reduceFolderCreated(currentState: FolderFormState): FolderFormState {
         return when (currentState) {
-            is FolderFormState.Data.Create -> currentState.copy(closeWithSave = Effect.of(Unit))
+            is FolderFormState.Data.Create -> currentState.copy(
+                closeWithSuccess = Effect.of(TextUiModel(R.string.folder_saved))
+            )
             is FolderFormState.Loading -> currentState
         }
     }
 
     private fun reduceFolderAlreadyExists(currentState: FolderFormState): FolderFormState {
         return when (currentState) {
-            is FolderFormState.Data.Create -> currentState.copy(showFolderAlreadyExistsSnackbar = Effect.of(Unit))
+            is FolderFormState.Data.Create -> currentState.copy(
+                showErrorSnackbar = Effect.of(TextUiModel(R.string.label_already_exists))
+            )
             is FolderFormState.Loading -> currentState
         }
     }
 
     private fun reduceFolderLimitReached(currentState: FolderFormState): FolderFormState {
         return when (currentState) {
-            is FolderFormState.Data.Create -> currentState.copy(showFolderLimitReachedSnackbar = Effect.of(Unit))
+            is FolderFormState.Data.Create -> currentState.copy(
+                showErrorSnackbar = Effect.of(TextUiModel(R.string.folder_limit_reached_error))
+            )
             is FolderFormState.Loading -> currentState
         }
     }
 
     private fun reduceSaveFolderError(currentState: FolderFormState): FolderFormState {
         return when (currentState) {
-            is FolderFormState.Data.Create -> currentState.copy(showSaveFolderErrorSnackbar = Effect.of(Unit))
+            is FolderFormState.Data.Create -> currentState.copy(
+                showErrorSnackbar = Effect.of(TextUiModel(R.string.save_folder_error))
+            )
             is FolderFormState.Loading -> currentState
         }
     }

@@ -20,6 +20,7 @@ package ch.protonmail.android.maillabel.presentation.folderform
 
 import androidx.compose.ui.graphics.Color
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import me.proton.core.label.domain.entity.Label
 
 sealed interface FolderFormState {
@@ -40,10 +41,8 @@ sealed interface FolderFormState {
         val notifications: Boolean
         val colorList: List<Color>
         val openParentFolderList: Effect<Unit>
-        val closeWithSave: Effect<Unit>
-        val showFolderAlreadyExistsSnackbar: Effect<Unit>
-        val showFolderLimitReachedSnackbar: Effect<Unit>
-        val showSaveFolderErrorSnackbar: Effect<Unit>
+        val closeWithSuccess: Effect<TextUiModel>
+        val showErrorSnackbar: Effect<TextUiModel>
 
         data class Create(
             override val isSaveEnabled: Boolean,
@@ -54,10 +53,8 @@ sealed interface FolderFormState {
             override val colorList: List<Color>,
             override val openParentFolderList: Effect<Unit> = Effect.empty(),
             override val close: Effect<Unit> = Effect.empty(),
-            override val closeWithSave: Effect<Unit> = Effect.empty(),
-            override val showFolderAlreadyExistsSnackbar: Effect<Unit> = Effect.empty(),
-            override val showFolderLimitReachedSnackbar: Effect<Unit> = Effect.empty(),
-            override val showSaveFolderErrorSnackbar: Effect<Unit> = Effect.empty()
+            override val closeWithSuccess: Effect<TextUiModel> = Effect.empty(),
+            override val showErrorSnackbar: Effect<TextUiModel> = Effect.empty()
         ) : Data
     }
 }
