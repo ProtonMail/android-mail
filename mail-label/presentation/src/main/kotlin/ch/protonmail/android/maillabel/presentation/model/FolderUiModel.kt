@@ -19,10 +19,6 @@
 package ch.protonmail.android.maillabel.presentation.model
 
 import androidx.compose.ui.graphics.Color
-import ch.protonmail.android.maillabel.presentation.R
-import ch.protonmail.android.maillabel.presentation.getColorFromHexString
-import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
-import me.proton.core.label.domain.entity.Label
 import me.proton.core.label.domain.entity.LabelId
 
 data class FolderUiModel(
@@ -37,74 +33,3 @@ data class FolderUiModel(
     val children: List<LabelId>,
     val icon: Int
 )
-
-fun List<Label>.toFolderUiModel(folderColorSettings: FolderColorSettings): List<FolderUiModel> {
-    val labelById = associateBy { it.labelId }
-    val groupByParentId = groupBy { it.parentId }
-    val mailLabels = mutableMapOf<LabelId, FolderUiModel>()
-    fun getChildren(labelId: LabelId): List<Label> = groupByParentId[labelId].orEmpty().sortedBy { it.order }
-    fun getMailLabel(labelId: LabelId): FolderUiModel = mailLabels.getOrPut(labelId) {
-        val label = requireNotNull(labelById[labelId])
-        label.toMailLabelCustom(::getMailLabel, ::getChildren, folderColorSettings)
-    }
-    return map { getMailLabel(it.labelId) }.sortedBy { it.order }.orderByParent()
-}
-
-private fun Label.toMailLabelCustom(
-    getMailLabel: (LabelId) -> FolderUiModel,
-    getChildren: (LabelId) -> List<Label>,
-    folderColorSettings: FolderColorSettings
-): FolderUiModel {
-    val parent = parentId?.let(getMailLabel)
-    val children = getChildren(labelId).map { it.labelId }
-    val level = parent?.level?.plus(1) ?: 0
-    val folderColor = color.getColorFromHexString()
-    return FolderUiModel(
-        id = labelId,
-        name = name,
-        color = folderColor,
-        displayColor = getDisplayColor(folderColorSettings, folderColor, parent),
-        parent = parent,
-        isExpanded = parent?.isExpanded ?: true && isExpanded ?: true,
-        level = level,
-        order = order,
-        children = children,
-        icon = getFolderIcon(children.isNotEmpty(), folderColorSettings.useFolderColor)
-    )
-}
-
-private fun getDisplayColor(
-    folderColorSettings: FolderColorSettings,
-    folderColor: Color,
-    parent: FolderUiModel?
-): Color? {
-    return if (folderColorSettings.useFolderColor &&
-        folderColorSettings.inheritParentFolderColor
-    ) {
-        var parentFolder = parent
-        while (parentFolder?.parent != null) {
-            parentFolder = parentFolder.parent
-        }
-        parentFolder?.color ?: folderColor
-    } else if (folderColorSettings.useFolderColor) {
-        folderColor
-    } else null
-}
-
-private fun getFolderIcon(hasChildren: Boolean, useFolderColor: Boolean): Int {
-    return if (hasChildren) {
-        if (useFolderColor) R.drawable.ic_proton_folders_filled
-        else R.drawable.ic_proton_folders
-    } else {
-        if (useFolderColor) R.drawable.ic_proton_folder_filled
-        else R.drawable.ic_proton_folder
-    }
-}
-
-private fun List<FolderUiModel>.orderByParent(): List<FolderUiModel> {
-    val groupByParent = groupBy { it.parent }
-    fun List<FolderUiModel>.itemsAndChildren(): List<FolderUiModel> = fold(emptyList()) { acc, item ->
-        acc + item + groupByParent[item].orEmpty().itemsAndChildren()
-    }
-    return groupByParent[null].orEmpty().itemsAndChildren()
-}
