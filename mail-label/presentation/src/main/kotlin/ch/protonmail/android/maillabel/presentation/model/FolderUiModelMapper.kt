@@ -53,7 +53,6 @@ private fun Label.toMailLabelCustom(
         color = folderColor,
         displayColor = getDisplayColor(folderColorSettings, folderColor, parent),
         parent = parent,
-        isExpanded = parent?.isExpanded ?: true && isExpanded ?: true,
         level = level,
         order = order,
         children = children,

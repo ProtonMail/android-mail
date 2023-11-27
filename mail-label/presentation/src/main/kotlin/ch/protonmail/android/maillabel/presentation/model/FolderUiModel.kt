@@ -27,7 +27,6 @@ data class FolderUiModel(
     val name: String,
     val color: Color,
     val displayColor: Color?,
-    val isExpanded: Boolean,
     val level: Int,
     val order: Int,
     val children: List<LabelId>,
