@@ -131,6 +131,7 @@ class MailboxReducer @Inject constructor(
         return if (operation is MailboxOperation.AffectingBottomSheet) {
             val bottomSheetOperation = when (operation) {
                 is MailboxEvent.MailboxBottomSheetEvent -> operation.bottomSheetOperation
+                is MailboxViewAction.RequestMoreActionsBottomSheet,
                 is MailboxViewAction.RequestMoveToBottomSheet,
                 is MailboxViewAction.RequestLabelAsBottomSheet -> BottomSheetOperation.Requested
 

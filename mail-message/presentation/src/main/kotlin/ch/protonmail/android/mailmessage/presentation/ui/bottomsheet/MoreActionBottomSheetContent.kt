@@ -19,7 +19,6 @@
 package ch.protonmail.android.mailmessage.presentation.ui.bottomsheet
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -60,13 +59,13 @@ fun MoreActionBottomSheetContent(
     state: MoreActionsBottomSheetState.Data,
     actionCallbacks: MoreActionBottomSheetContent.Actions
 ) {
-    LazyColumn(modifier = modifier) {
+    LazyColumn(modifier = modifier.padding(vertical = ProtonDimens.DefaultSpacing)) {
         items(state.actionUiModels) { actionItem ->
             ProtonRawListItem(
                 modifier = Modifier
                     .testTag(MoreActionsBottomSheetTestTags.ActionItem)
                     .clickable { callbackForAction(actionItem.action, actionCallbacks) }
-                    .height(ProtonDimens.ListItemHeight)
+                    .padding(vertical = ProtonDimens.DefaultSpacing)
             ) {
                 Icon(
                     modifier = Modifier

@@ -85,8 +85,10 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.Mailbo
 import ch.protonmail.android.mailmailbox.presentation.paging.mapToUiStates
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.LabelAsBottomSheetContent
+import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MoreActionBottomSheetContent
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MoveToBottomSheetContent
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonAlertDialog
@@ -152,7 +154,8 @@ fun MailboxScreen(
         deleteConfirmed = { viewModel.submit(MailboxViewAction.DeleteConfirmed) },
         deleteDialogDismissed = { viewModel.submit(MailboxViewAction.DeleteDialogDismissed) },
         onLabelAsClicked = { viewModel.submit(MailboxViewAction.RequestLabelAsBottomSheet) },
-        onMoveToClicked = { viewModel.submit(MailboxViewAction.RequestMoveToBottomSheet) }
+        onMoveToClicked = { viewModel.submit(MailboxViewAction.RequestMoveToBottomSheet) },
+        onMoreClicked = { viewModel.submit(MailboxViewAction.RequestMoreActionsBottomSheet) }
     )
 
     mailboxState.bottomSheetState?.let {
@@ -183,6 +186,16 @@ fun MailboxScreen(
                         onAddLabelClick = { Timber.d("Add label clicked") },
                         onLabelAsSelected = { viewModel.submit(MailboxViewAction.LabelAsToggleAction(it)) },
                         onDoneClick = { viewModel.submit(MailboxViewAction.LabelAsConfirmed(it)) }
+                    )
+                )
+
+                is MoreActionsBottomSheetState -> MoreActionBottomSheetContent(
+                    state = bottomSheetContentState,
+                    actionCallbacks = MoreActionBottomSheetContent.Actions(
+                        onStar = { Timber.d("Operation not implemented yet") },
+                        onUnStar = { Timber.d("Operation not implemented yet") },
+                        onArchive = { Timber.d("Operation not implemented yet") },
+                        onSpam = { Timber.d("Operation not implemented yet") }
                     )
                 )
 
@@ -271,7 +284,7 @@ fun MailboxScreen(
                     onSavePdf = { Timber.d("mailbox onSavePdf clicked") },
                     onSenderEmail = { Timber.d("mailbox onSenderEmail clicked") },
                     onSaveAttachments = { Timber.d("mailbox onSaveAttachments clicked") },
-                    onMore = { Timber.d("mailbox onMore clicked") },
+                    onMore = actions.onMoreClicked,
                     onMarkRead = actions.markAsRead,
                     onMarkUnread = actions.markAsUnread,
                     onStar = { Timber.d("mailbox onStar clicked") },
@@ -611,7 +624,8 @@ object MailboxScreen {
         val deleteConfirmed: () -> Unit,
         val deleteDialogDismissed: () -> Unit,
         val onLabelAsClicked: () -> Unit,
-        val onMoveToClicked: () -> Unit
+        val onMoveToClicked: () -> Unit,
+        val onMoreClicked: () -> Unit
     ) {
 
         companion object {
@@ -640,7 +654,8 @@ object MailboxScreen {
                 deleteConfirmed = {},
                 deleteDialogDismissed = {},
                 onLabelAsClicked = {},
-                onMoveToClicked = {}
+                onMoveToClicked = {},
+                onMoreClicked = {}
             )
         }
     }

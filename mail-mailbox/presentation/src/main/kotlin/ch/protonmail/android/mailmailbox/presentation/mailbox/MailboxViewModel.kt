@@ -27,6 +27,7 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.MailFeatureId
+import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
@@ -86,6 +87,7 @@ import ch.protonmail.android.mailmessage.domain.usecase.DeleteMessages
 import ch.protonmail.android.mailmessage.domain.usecase.GetConversationMessagesWithLabels
 import ch.protonmail.android.mailmessage.domain.usecase.GetMessagesWithLabels
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -242,6 +244,7 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.RequestMoveToBottomSheet -> showMoveToBottomSheetAndLoadData(viewAction)
                 is MailboxViewAction.MoveToDestinationSelected -> emitNewStateFrom(viewAction)
                 is MailboxViewAction.MoveToConfirmed -> onMoveToConfirmed()
+                is MailboxViewAction.RequestMoreActionsBottomSheet -> showMoreBottomSheet(viewAction)
             }.exhaustive
         }
     }
@@ -574,6 +577,19 @@ class MailboxViewModel @Inject constructor(
             ifLeft = { MailboxEvent.ErrorMoving },
             ifRight = { MailboxViewAction.MoveToConfirmed }
         ).let { emitNewStateFrom(it) }
+    }
+
+    private fun showMoreBottomSheet(operation: MailboxViewAction) {
+        emitNewStateFrom(operation)
+        emitNewStateFrom(
+            MailboxEvent.MailboxBottomSheetEvent(
+                MoreActionsBottomSheetState.MoreActionsBottomSheetEvent.ActionData(
+                    listOf(Action.Star, Action.Archive, Action.Spam)
+                        .map { actionUiModelMapper.toUiModel(it) }
+                        .toImmutableList()
+                )
+            )
+        )
     }
 
     private suspend fun getMessagesWithLabels(

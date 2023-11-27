@@ -84,6 +84,8 @@ internal sealed interface MailboxViewAction : MailboxOperation {
 
     object MoveToConfirmed : MailboxViewAction, AffectingTopAppBar, AffectingMailboxList, AffectingBottomSheet
 
+    object RequestMoreActionsBottomSheet : MailboxViewAction, AffectingBottomSheet
+
     /*
      *`OnOfflineWithData` and `OnErrorWithData` are not actual Actions which are actively performed by the user
      * but rather "Events" which happen when loading mailbox items. They are represented as actions due to
