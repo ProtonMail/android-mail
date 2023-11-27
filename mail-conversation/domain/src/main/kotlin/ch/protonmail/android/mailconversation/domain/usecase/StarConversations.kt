@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.domain.usecase
+package ch.protonmail.android.mailconversation.domain.usecase
 
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
@@ -27,11 +27,14 @@ import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
-class StarConversation @Inject constructor(
+class StarConversations @Inject constructor(
     private val conversationRepository: ConversationRepository
 ) {
 
-    suspend operator fun invoke(userId: UserId, conversationId: ConversationId): Either<DataError, Conversation> =
-        conversationRepository.addLabel(userId, conversationId, SystemLabelId.Starred.labelId)
+    suspend operator fun invoke(
+        userId: UserId,
+        conversationIds: List<ConversationId>
+    ): Either<DataError, List<Conversation>> =
+        conversationRepository.addLabel(userId, conversationIds, SystemLabelId.Starred.labelId)
 
 }

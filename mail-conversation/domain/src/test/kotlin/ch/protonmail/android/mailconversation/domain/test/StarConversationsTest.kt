@@ -16,13 +16,13 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.domain.usecase
+package ch.protonmail.android.mailconversation.domain.test
 
 import arrow.core.left
 import arrow.core.right
-import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
+import ch.protonmail.android.mailconversation.domain.usecase.StarConversations
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.testdata.conversation.ConversationTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
@@ -33,27 +33,29 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class StarConversationTest {
+class StarConversationsTest {
+
+    private val userId = UserIdTestData.userId
+    private val conversationIds = listOf(ConversationTestData.starredConversation.conversationId)
 
     private val conversationRepository: ConversationRepository = mockk {
         coEvery {
-            addLabel(any(), any<ConversationId>(), any())
-        } returns ConversationTestData.starredConversation.right()
+            addLabel(userId, conversationIds, SystemLabelId.Starred.labelId)
+        } returns listOf(ConversationTestData.starredConversation).right()
     }
 
-    private val conversationId = ConversationTestData.starredConversation.conversationId
-
-    private val starConversation = StarConversation(conversationRepository)
+    private val starConversations = StarConversations(conversationRepository)
 
     @Test
     fun `call conversation repository to add starred label`() = runTest {
         // When
-        starConversation(UserIdTestData.userId, conversationId)
+        starConversations(userId, conversationIds)
+
         // Then
         coVerify {
             conversationRepository.addLabel(
                 UserIdTestData.userId,
-                conversationId,
+                conversationIds,
                 SystemLabelId.Starred.labelId
             )
         }
@@ -62,18 +64,23 @@ class StarConversationTest {
     @Test
     fun `return starred conversation when repository succeeds`() = runTest {
         // When
-        val actual = starConversation(UserIdTestData.userId, conversationId)
+        val actual = starConversations(userId, conversationIds)
+
         // Then
-        assertEquals(ConversationTestData.starredConversation.right(), actual)
+        assertEquals(listOf(ConversationTestData.starredConversation).right(), actual)
     }
 
     @Test
     fun `returns error when repository fails`() = runTest {
         // Given
         val localError = DataError.Local.NoDataCached
-        coEvery { conversationRepository.addLabel(any(), any<ConversationId>(), any()) } returns localError.left()
+        coEvery {
+            conversationRepository.addLabel(userId, conversationIds, SystemLabelId.Starred.labelId)
+        } returns localError.left()
+
         // When
-        val actual = starConversation(UserIdTestData.userId, conversationId)
+        val actual = starConversations(UserIdTestData.userId, conversationIds)
+
         // Then
         assertEquals(DataError.Local.NoDataCached.left(), actual)
     }

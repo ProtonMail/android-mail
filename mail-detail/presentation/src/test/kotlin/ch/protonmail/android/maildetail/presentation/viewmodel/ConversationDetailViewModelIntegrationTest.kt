@@ -50,6 +50,7 @@ import ch.protonmail.android.mailcommon.presentation.usecase.GetInitial
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
+import ch.protonmail.android.mailconversation.domain.usecase.StarConversations
 import ch.protonmail.android.maildetail.domain.usecase.DoesMessageBodyHaveEmbeddedImages
 import ch.protonmail.android.maildetail.domain.usecase.DoesMessageBodyHaveRemoteContent
 import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
@@ -65,7 +66,6 @@ import ch.protonmail.android.maildetail.domain.usecase.RelabelConversation
 import ch.protonmail.android.maildetail.domain.usecase.SetMessageViewState
 import ch.protonmail.android.maildetail.domain.usecase.ShouldShowEmbeddedImages
 import ch.protonmail.android.maildetail.domain.usecase.ShouldShowRemoteContent
-import ch.protonmail.android.maildetail.domain.usecase.StarConversation
 import ch.protonmail.android.maildetail.domain.usecase.UnStarConversation
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMessageUiModelMapper
@@ -237,7 +237,7 @@ class ConversationDetailViewModelIntegrationTest {
     private val savedStateHandle: SavedStateHandle = mockk {
         every { get<String>(ConversationDetailScreen.ConversationIdKey) } returns conversationId.id
     }
-    private val starConversation: StarConversation = mockk()
+    private val starConversations: StarConversations = mockk()
     private val unStarConversation: UnStarConversation = mockk()
     private val getDecryptedMessageBody: GetDecryptedMessageBody = mockk {
         coEvery { this@mockk.invoke(any(), any()) } returns DecryptedMessageBody(
@@ -1126,7 +1126,7 @@ class ConversationDetailViewModelIntegrationTest {
         getAttachmentStatus: GetDownloadingAttachmentsForMessages = getDownloadingAttachmentsForMessages,
         detailReducer: ConversationDetailReducer = reducer,
         savedState: SavedStateHandle = savedStateHandle,
-        star: StarConversation = starConversation,
+        star: StarConversations = starConversations,
         unStar: UnStarConversation = unStarConversation,
         decryptedMessageBody: GetDecryptedMessageBody = getDecryptedMessageBody,
         markMessageAndConversationReadIfAllMessagesRead: MarkMessageAndConversationReadIfAllMessagesRead =
@@ -1152,7 +1152,7 @@ class ConversationDetailViewModelIntegrationTest {
         getDownloadingAttachmentsForMessages = getAttachmentStatus,
         reducer = detailReducer,
         savedStateHandle = savedState,
-        starConversation = star,
+        starConversations = star,
         unStarConversation = unStar,
         getDecryptedMessageBody = decryptedMessageBody,
         markMessageAndConversationReadIfAllMessagesRead = markMessageAndConversationReadIfAllMessagesRead,

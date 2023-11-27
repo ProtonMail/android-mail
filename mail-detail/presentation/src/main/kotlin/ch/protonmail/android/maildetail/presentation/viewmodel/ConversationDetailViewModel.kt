@@ -49,7 +49,7 @@ import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationViewSt
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageAttachmentStatus
 import ch.protonmail.android.maildetail.domain.usecase.RelabelConversation
 import ch.protonmail.android.maildetail.domain.usecase.SetMessageViewState
-import ch.protonmail.android.maildetail.domain.usecase.StarConversation
+import ch.protonmail.android.mailconversation.domain.usecase.StarConversations
 import ch.protonmail.android.maildetail.domain.usecase.UnStarConversation
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMessageUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMetadataUiModelMapper
@@ -149,7 +149,7 @@ class ConversationDetailViewModel @Inject constructor(
     private val observeMessageAttachmentStatus: ObserveMessageAttachmentStatus,
     private val getDownloadingAttachmentsForMessages: GetDownloadingAttachmentsForMessages,
     private val reducer: ConversationDetailReducer,
-    private val starConversation: StarConversation,
+    private val starConversations: StarConversations,
     private val unStarConversation: UnStarConversation,
     private val savedStateHandle: SavedStateHandle,
     private val getDecryptedMessageBody: GetDecryptedMessageBody,
@@ -574,7 +574,7 @@ class ConversationDetailViewModel @Inject constructor(
 
     private fun starConversation() {
         primaryUserId.mapLatest { userId ->
-            starConversation(userId, conversationId).fold(
+            starConversations(userId, listOf(conversationId)).fold(
                 ifLeft = { ConversationDetailEvent.ErrorAddStar },
                 ifRight = { Star }
             )

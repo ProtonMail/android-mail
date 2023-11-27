@@ -44,8 +44,7 @@ import ch.protonmail.android.mailcontact.domain.model.GetContactError
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
-import ch.protonmail.android.mailmessage.domain.model.LabelSelectionList
-import ch.protonmail.android.mailmessage.domain.sample.MessageWithLabelsSample
+import ch.protonmail.android.mailconversation.domain.usecase.StarConversations
 import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.usecase.GetDownloadingAttachmentsForMessages
 import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
@@ -58,7 +57,6 @@ import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageAttachmentS
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.RelabelConversation
 import ch.protonmail.android.maildetail.domain.usecase.SetMessageViewState
-import ch.protonmail.android.maildetail.domain.usecase.StarConversation
 import ch.protonmail.android.maildetail.domain.usecase.UnStarConversation
 import ch.protonmail.android.maildetail.presentation.R.string
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMessageUiModelMapper
@@ -87,9 +85,11 @@ import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinatio
 import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelWithSelectedStateSample
 import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.model.GetDecryptedMessageBodyError
+import ch.protonmail.android.mailmessage.domain.model.LabelSelectionList
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import ch.protonmail.android.mailmessage.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
@@ -244,8 +244,8 @@ class ConversationDetailViewModelTest {
     private val savedStateHandle: SavedStateHandle = mockk {
         every { get<String>(ConversationDetailScreen.ConversationIdKey) } returns conversationId.id
     }
-    private val starConversation: StarConversation = mockk {
-        coEvery { this@mockk.invoke(any(), any()) } returns ConversationTestData.starredConversation.right()
+    private val starConversations: StarConversations = mockk {
+        coEvery { this@mockk.invoke(any(), any()) } returns listOf(ConversationTestData.starredConversation).right()
     }
     private val unStarConversation: UnStarConversation = mockk {
         coEvery { this@mockk.invoke(any(), any()) } returns ConversationTestData.conversation.right()
@@ -305,7 +305,7 @@ class ConversationDetailViewModelTest {
             getDownloadingAttachmentsForMessages = getAttachmentDownloadStatus,
             reducer = reducer,
             savedStateHandle = savedStateHandle,
-            starConversation = starConversation,
+            starConversations = starConversations,
             unStarConversation = unStarConversation,
             getDecryptedMessageBody = getDecryptedMessageBody,
             markMessageAndConversationReadIfAllMessagesRead = markMessageAndConversationReadIfAllRead,
@@ -740,7 +740,7 @@ class ConversationDetailViewModelTest {
                 folderColorSettings = defaultFolderColorSettings
             )
         } returns messages.first()
-        coEvery { starConversation.invoke(UserIdSample.Primary, any()) } returns DataError.Local.NoDataCached.left()
+        coEvery { starConversations.invoke(UserIdSample.Primary, any()) } returns DataError.Local.NoDataCached.left()
         every {
             reducer.newStateFrom(
                 currentState = ConversationDetailState.Loading,
