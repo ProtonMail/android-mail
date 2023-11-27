@@ -35,8 +35,8 @@ import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
-import ch.protonmail.android.mailmessage.domain.model.LabelSelectionList
-import ch.protonmail.android.mailmessage.domain.model.MessageWithLabels
+import ch.protonmail.android.mailconversation.domain.usecase.StarConversations
+import ch.protonmail.android.mailconversation.domain.usecase.UnStarConversations
 import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationStateRepository
 import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.usecase.GetDownloadingAttachmentsForMessages
@@ -49,8 +49,6 @@ import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationViewSt
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageAttachmentStatus
 import ch.protonmail.android.maildetail.domain.usecase.RelabelConversation
 import ch.protonmail.android.maildetail.domain.usecase.SetMessageViewState
-import ch.protonmail.android.mailconversation.domain.usecase.StarConversations
-import ch.protonmail.android.maildetail.domain.usecase.UnStarConversation
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMessageUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMetadataUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageIdUiModelMapper
@@ -61,6 +59,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailSta
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.CollapseMessage
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.DismissBottomSheet
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.DoNotAskLinkConfirmationAgain
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.ExpandMessage
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.LabelAsConfirmed
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.LabelAsToggleAction
@@ -73,7 +72,6 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailVie
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.RequestScrollTo
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.ScrollRequestCompleted
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.ShowAllAttachmentsForMessage
-import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.DoNotAskLinkConfirmationAgain
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.Star
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.Trash
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.UnStar
@@ -93,8 +91,10 @@ import ch.protonmail.android.maillabel.presentation.toUiModels
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.model.GetDecryptedMessageBodyError
+import ch.protonmail.android.mailmessage.domain.model.LabelSelectionList
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageWithLabels
 import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
@@ -150,7 +150,7 @@ class ConversationDetailViewModel @Inject constructor(
     private val getDownloadingAttachmentsForMessages: GetDownloadingAttachmentsForMessages,
     private val reducer: ConversationDetailReducer,
     private val starConversations: StarConversations,
-    private val unStarConversation: UnStarConversation,
+    private val unStarConversations: UnStarConversations,
     private val savedStateHandle: SavedStateHandle,
     private val getDecryptedMessageBody: GetDecryptedMessageBody,
     private val markMessageAndConversationReadIfAllMessagesRead: MarkMessageAndConversationReadIfAllMessagesRead,
@@ -586,7 +586,7 @@ class ConversationDetailViewModel @Inject constructor(
     private fun unStarConversation() {
         Timber.d("UnStar conversation clicked")
         primaryUserId.mapLatest { userId ->
-            unStarConversation(userId, conversationId).fold(
+            unStarConversations(userId, listOf(conversationId)).fold(
                 ifLeft = { ConversationDetailEvent.ErrorRemoveStar },
                 ifRight = { UnStar }
             )

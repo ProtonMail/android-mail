@@ -45,6 +45,7 @@ import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
 import ch.protonmail.android.mailconversation.domain.usecase.StarConversations
+import ch.protonmail.android.mailconversation.domain.usecase.UnStarConversations
 import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.usecase.GetDownloadingAttachmentsForMessages
 import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
@@ -57,7 +58,6 @@ import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageAttachmentS
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.RelabelConversation
 import ch.protonmail.android.maildetail.domain.usecase.SetMessageViewState
-import ch.protonmail.android.maildetail.domain.usecase.UnStarConversation
 import ch.protonmail.android.maildetail.presentation.R.string
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMessageUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMetadataUiModelMapper
@@ -247,8 +247,10 @@ class ConversationDetailViewModelTest {
     private val starConversations: StarConversations = mockk {
         coEvery { this@mockk.invoke(any(), any()) } returns listOf(ConversationTestData.starredConversation).right()
     }
-    private val unStarConversation: UnStarConversation = mockk {
-        coEvery { this@mockk.invoke(any(), any()) } returns ConversationTestData.conversation.right()
+    private val unStarConversations: UnStarConversations = mockk {
+        coEvery {
+            this@mockk.invoke(any(), any())
+        } returns listOf(ConversationTestData.conversation).right()
     }
     private val getDecryptedMessageBody: GetDecryptedMessageBody = mockk {
         coEvery { this@mockk.invoke(any(), any()) } returns DecryptedMessageBody(
@@ -306,7 +308,7 @@ class ConversationDetailViewModelTest {
             reducer = reducer,
             savedStateHandle = savedStateHandle,
             starConversations = starConversations,
-            unStarConversation = unStarConversation,
+            unStarConversations = unStarConversations,
             getDecryptedMessageBody = getDecryptedMessageBody,
             markMessageAndConversationReadIfAllMessagesRead = markMessageAndConversationReadIfAllRead,
             setMessageViewState = setMessageViewState,
@@ -811,7 +813,7 @@ class ConversationDetailViewModelTest {
                 folderColorSettings = defaultFolderColorSettings
             )
         } returns messages.first()
-        coEvery { unStarConversation.invoke(UserIdSample.Primary, any()) } returns DataError.Local.NoDataCached.left()
+        coEvery { unStarConversations.invoke(UserIdSample.Primary, any()) } returns DataError.Local.NoDataCached.left()
         every {
             reducer.newStateFrom(
                 currentState = ConversationDetailState.Loading,

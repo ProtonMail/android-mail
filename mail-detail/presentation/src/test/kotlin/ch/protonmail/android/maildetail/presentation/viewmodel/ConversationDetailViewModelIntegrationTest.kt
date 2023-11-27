@@ -51,6 +51,7 @@ import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
 import ch.protonmail.android.mailconversation.domain.usecase.StarConversations
+import ch.protonmail.android.mailconversation.domain.usecase.UnStarConversations
 import ch.protonmail.android.maildetail.domain.usecase.DoesMessageBodyHaveEmbeddedImages
 import ch.protonmail.android.maildetail.domain.usecase.DoesMessageBodyHaveRemoteContent
 import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
@@ -66,7 +67,6 @@ import ch.protonmail.android.maildetail.domain.usecase.RelabelConversation
 import ch.protonmail.android.maildetail.domain.usecase.SetMessageViewState
 import ch.protonmail.android.maildetail.domain.usecase.ShouldShowEmbeddedImages
 import ch.protonmail.android.maildetail.domain.usecase.ShouldShowRemoteContent
-import ch.protonmail.android.maildetail.domain.usecase.UnStarConversation
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMessageUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMetadataUiModelMapper
@@ -238,7 +238,7 @@ class ConversationDetailViewModelIntegrationTest {
         every { get<String>(ConversationDetailScreen.ConversationIdKey) } returns conversationId.id
     }
     private val starConversations: StarConversations = mockk()
-    private val unStarConversation: UnStarConversation = mockk()
+    private val unStarConversations: UnStarConversations = mockk()
     private val getDecryptedMessageBody: GetDecryptedMessageBody = mockk {
         coEvery { this@mockk.invoke(any(), any()) } returns DecryptedMessageBody(
             MessageId("default"), "", MimeType.Html
@@ -1127,7 +1127,7 @@ class ConversationDetailViewModelIntegrationTest {
         detailReducer: ConversationDetailReducer = reducer,
         savedState: SavedStateHandle = savedStateHandle,
         star: StarConversations = starConversations,
-        unStar: UnStarConversation = unStarConversation,
+        unStar: UnStarConversations = unStarConversations,
         decryptedMessageBody: GetDecryptedMessageBody = getDecryptedMessageBody,
         markMessageAndConversationReadIfAllMessagesRead: MarkMessageAndConversationReadIfAllMessagesRead =
             markMessageAndConversationReadIfAllRead,
@@ -1153,7 +1153,7 @@ class ConversationDetailViewModelIntegrationTest {
         reducer = detailReducer,
         savedStateHandle = savedState,
         starConversations = star,
-        unStarConversation = unStar,
+        unStarConversations = unStar,
         getDecryptedMessageBody = decryptedMessageBody,
         markMessageAndConversationReadIfAllMessagesRead = markMessageAndConversationReadIfAllMessagesRead,
         setMessageViewState = setMessageViewState,
