@@ -54,6 +54,7 @@ class MailboxListReducer @Inject constructor() {
             is MailboxEvent.ItemsRemovedFromSelection -> reduceItemsRemovedFromSelection(operation, currentState)
 
             is MailboxEvent.DeleteConfirmed,
+            is MailboxViewAction.MoveToConfirmed,
             is MailboxEvent.Trash -> reduceExitSelectionMode(currentState)
 
             is MailboxViewAction.OnOfflineWithData -> reduceOfflineWithData(currentState)

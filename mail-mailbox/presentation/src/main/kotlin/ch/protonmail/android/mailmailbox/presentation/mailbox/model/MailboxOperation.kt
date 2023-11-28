@@ -81,7 +81,8 @@ internal sealed interface MailboxViewAction : MailboxOperation {
     data class MoveToDestinationSelected(
         val mailLabelId: MailLabelId
     ) : MailboxViewAction, AffectingBottomSheet
-    object MoveToConfirmed : MailboxViewAction, AffectingBottomSheet
+
+    object MoveToConfirmed : MailboxViewAction, AffectingTopAppBar, AffectingMailboxList, AffectingBottomSheet
 
     /*
      *`OnOfflineWithData` and `OnErrorWithData` are not actual Actions which are actively performed by the user
