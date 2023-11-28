@@ -29,6 +29,7 @@ import ch.protonmail.android.uitest.helpers.network.authenticationDispatcher
 import ch.protonmail.android.uitest.rule.GrantNotificationsPermissionRule
 import ch.protonmail.android.uitest.rule.MainInitializerRule
 import ch.protonmail.android.uitest.rule.MockIntentsRule
+import ch.protonmail.android.uitest.rule.MockOnboardingRuntimeRule
 import ch.protonmail.android.uitest.rule.MockTimeRule
 import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -51,6 +52,7 @@ import javax.inject.Inject
 @HiltAndroidTest
 internal open class MockedNetworkTest(
     captureIntents: Boolean = true,
+    private val showOnboarding: Boolean = false,
     private val loginType: LoginType = LoginTestUserTypes.Deprecated.GrumpyCat
 ) {
 
@@ -66,6 +68,9 @@ internal open class MockedNetworkTest(
 
     @Inject
     lateinit var networkManager: NetworkManager
+
+    @Inject
+    lateinit var mockOnboardingRuntimeRule: MockOnboardingRuntimeRule
 
     @get:Rule
     val ruleChain: RuleChain = RuleChain.outerRule(
@@ -96,6 +101,7 @@ internal open class MockedNetworkTest(
         }
 
         mockWebServer.dispatcher = authenticationDispatcher(loginType)
+        mockOnboardingRuntimeRule(showOnboarding)
     }
 
     @After
