@@ -42,6 +42,7 @@ import ch.protonmail.android.mailcommon.presentation.sample.ActionUiModelSample
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.mailconversation.domain.usecase.DeleteConversations
 import ch.protonmail.android.mailconversation.domain.usecase.StarConversations
+import ch.protonmail.android.mailconversation.domain.usecase.UnStarConversations
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
@@ -99,6 +100,7 @@ import ch.protonmail.android.mailmessage.domain.usecase.DeleteMessages
 import ch.protonmail.android.mailmessage.domain.usecase.GetConversationMessagesWithLabels
 import ch.protonmail.android.mailmessage.domain.usecase.GetMessagesWithLabels
 import ch.protonmail.android.mailmessage.domain.usecase.StarMessages
+import ch.protonmail.android.mailmessage.domain.usecase.UnStarMessages
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoreActionsBottomSheetState
@@ -237,6 +239,8 @@ class MailboxViewModelTest {
     private val relabelConversations = mockk<RelabelConversations>()
     private val starMessages = mockk<StarMessages>()
     private val starConversations = mockk<StarConversations>()
+    private val unStarMessages = mockk<UnStarMessages>()
+    private val unStarConversations = mockk<UnStarConversations>()
 
     private val mailboxViewModel by lazy {
         MailboxViewModel(
@@ -267,6 +271,8 @@ class MailboxViewModelTest {
             deleteMessages = deleteMessages,
             starMessages = starMessages,
             starConversations = starConversations,
+            unStarMessages = unStarMessages,
+            unStarConversations = unStarConversations,
             mailboxReducer = mailboxReducer,
             observeMailFeature = observeMailFeature,
             dispatchersProvider = TestDispatcherProvider(),
@@ -2237,7 +2243,11 @@ class MailboxViewModelTest {
                 // Then
                 assertEquals(intermediateState, awaitItem())
                 coVerifySequence {
-                    moveConversations(userId, selectedItemsList.map { ConversationId(it.id) }, SystemLabelId.Archive.labelId)
+                    moveConversations(
+                        userId,
+                        selectedItemsList.map { ConversationId(it.id) },
+                        SystemLabelId.Archive.labelId
+                    )
                     relabelConversations(
                         userId,
                         selectedItemsList.map { ConversationId(it.id) },
@@ -2568,6 +2578,98 @@ class MailboxViewModelTest {
     }
 
     @Test
+    fun `when unstar action is triggered for conversation grouping then unstar conversations is called`() = runTest {
+        // Given
+        val item = readMailboxItemUiModel.copy(id = MessageIdSample.Invoice.id, showStar = true)
+        val secondItem = unreadMailboxItemUiModel.copy(id = MessageIdSample.AlphaAppQAReport.id, showStar = true)
+        val selectedItemsList = listOf(item, secondItem)
+
+        val initialState = createMailboxDataState()
+        val expectedActionItems = listOf(
+            ActionUiModelSample.build(Action.Unstar),
+            ActionUiModelSample.build(Action.Archive),
+            ActionUiModelSample.build(Action.Spam)
+        )
+        val expectedBottomSheetContent = MoreActionsBottomSheetState.Data(
+            actionUiModels = expectedActionItems.toImmutableList()
+        )
+        val bottomSheetShownState =
+            createMailboxStateWithMoreActionBottomSheet(selectedItemsList, expectedBottomSheetContent)
+        val intermediateState = MailboxStateSampleData.createSelectionMode(
+            listOf(item, secondItem),
+            currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
+        )
+        expectViewMode(ConversationGrouping)
+        expectedSelectedLabelCountStateChange(initialState)
+        returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
+        returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
+        expectedMoreActionBottomSheetRequestedStateChange(expectedActionItems, bottomSheetShownState)
+        expectedUnStarConversationsSucceeds(userId, selectedItemsList)
+        returnExpectedStateWhenUnStarringSucceeds(intermediateState)
+
+
+        mailboxViewModel.state.test {
+            awaitItem() // First emission for selected user
+
+            // When + Then
+            mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
+            assertEquals(intermediateState, awaitItem())
+            mailboxViewModel.submit(MailboxViewAction.RequestMoreActionsBottomSheet)
+            assertEquals(bottomSheetShownState, awaitItem())
+            mailboxViewModel.submit(MailboxViewAction.UnStar)
+            assertEquals(intermediateState, awaitItem())
+        }
+        coVerify(exactly = 1) { unStarConversations(userId, selectedItemsList.map { ConversationId(it.id) }) }
+        verify { unStarMessages wasNot Called }
+    }
+
+    @Test
+    fun `when unstar action is triggered for no-conversation grouping then unstar messages is called`() = runTest {
+        // Given
+        val item = readMailboxItemUiModel.copy(id = MessageIdSample.Invoice.id, showStar = true)
+        val secondItem = unreadMailboxItemUiModel.copy(id = MessageIdSample.AlphaAppQAReport.id, showStar = true)
+        val selectedItemsList = listOf(item, secondItem)
+
+        val initialState = createMailboxDataState()
+        val expectedActionItems = listOf(
+            ActionUiModelSample.build(Action.Unstar),
+            ActionUiModelSample.build(Action.Archive),
+            ActionUiModelSample.build(Action.Spam)
+        )
+        val expectedBottomSheetContent = MoreActionsBottomSheetState.Data(
+            actionUiModels = expectedActionItems.toImmutableList()
+        )
+        val bottomSheetShownState =
+            createMailboxStateWithMoreActionBottomSheet(selectedItemsList, expectedBottomSheetContent)
+        val intermediateState = MailboxStateSampleData.createSelectionMode(
+            listOf(item, secondItem),
+            currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
+        )
+        expectViewMode(NoConversationGrouping)
+        expectedSelectedLabelCountStateChange(initialState)
+        returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
+        returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
+        expectedMoreActionBottomSheetRequestedStateChange(expectedActionItems, bottomSheetShownState)
+        expectedUnStarMessagesSucceeds(userId, selectedItemsList)
+        returnExpectedStateWhenUnStarringSucceeds(intermediateState)
+
+
+        mailboxViewModel.state.test {
+            awaitItem() // First emission for selected user
+
+            // When + Then
+            mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
+            assertEquals(intermediateState, awaitItem())
+            mailboxViewModel.submit(MailboxViewAction.RequestMoreActionsBottomSheet)
+            assertEquals(bottomSheetShownState, awaitItem())
+            mailboxViewModel.submit(MailboxViewAction.UnStar)
+            assertEquals(intermediateState, awaitItem())
+        }
+        coVerify(exactly = 1) { unStarMessages(userId, selectedItemsList.map { MessageId(it.id) }) }
+        verify { unStarConversations wasNot Called }
+    }
+
+    @Test
     fun `when star action is triggered for conversation grouping then star conversations is called`() = runTest {
         // Given
         val item = readMailboxItemUiModel.copy(id = MessageIdSample.Invoice.id, showStar = true)
@@ -2859,6 +2961,10 @@ class MailboxViewModelTest {
         every { mailboxReducer.newStateFrom(any(), MailboxViewAction.Star) } returns expectedState
     }
 
+    private fun returnExpectedStateWhenUnStarringSucceeds(expectedState: MailboxState) {
+        every { mailboxReducer.newStateFrom(any(), MailboxViewAction.UnStar) } returns expectedState
+    }
+
     private fun expectedReducerResult(operation: MailboxOperation, expectedState: MailboxState) {
         every { mailboxReducer.newStateFrom(any(), operation) } returns expectedState
     }
@@ -3020,8 +3126,16 @@ class MailboxViewModelTest {
         coJustRun { starMessages(userId, items.map { MessageId(it.id) }) }
     }
 
+    private fun expectedUnStarMessagesSucceeds(userId: UserId, items: List<MailboxItemUiModel>) {
+        coJustRun { unStarMessages(userId, items.map { MessageId(it.id) }) }
+    }
+
     private fun expectedStarConversationsSucceeds(userId: UserId, items: List<MailboxItemUiModel>) {
         coJustRun { starConversations(userId, items.map { ConversationId(it.id) }) }
+    }
+
+    private fun expectedUnStarConversationsSucceeds(userId: UserId, items: List<MailboxItemUiModel>) {
+        coJustRun { unStarConversations(userId, items.map { ConversationId(it.id) }) }
     }
 
     private fun createMailboxStateWithLabelAsBottomSheet(

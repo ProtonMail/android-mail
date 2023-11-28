@@ -39,6 +39,7 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.mailconversation.domain.usecase.DeleteConversations
 import ch.protonmail.android.mailconversation.domain.usecase.StarConversations
+import ch.protonmail.android.mailconversation.domain.usecase.UnStarConversations
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
@@ -88,6 +89,7 @@ import ch.protonmail.android.mailmessage.domain.usecase.DeleteMessages
 import ch.protonmail.android.mailmessage.domain.usecase.GetConversationMessagesWithLabels
 import ch.protonmail.android.mailmessage.domain.usecase.GetMessagesWithLabels
 import ch.protonmail.android.mailmessage.domain.usecase.StarMessages
+import ch.protonmail.android.mailmessage.domain.usecase.UnStarMessages
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
@@ -150,6 +152,8 @@ class MailboxViewModel @Inject constructor(
     private val deleteMessages: DeleteMessages,
     private val starMessages: StarMessages,
     private val starConversations: StarConversations,
+    private val unStarMessages: UnStarMessages,
+    private val unStarConversations: UnStarConversations,
     private val mailboxReducer: MailboxReducer,
     private val observeMailFeature: ObserveMailFeature,
     private val dispatchersProvider: DispatcherProvider,
@@ -251,6 +255,7 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.RequestMoreActionsBottomSheet -> showMoreBottomSheet(viewAction)
                 is MailboxViewAction.DismissBottomSheet -> emitNewStateFrom(viewAction)
                 is MailboxViewAction.Star -> handleStarAction(viewAction)
+                is MailboxViewAction.UnStar -> handleUnStarAction(viewAction)
             }.exhaustive
         }
     }
@@ -742,6 +747,24 @@ class MailboxViewModel @Inject constructor(
 
             ViewMode.NoConversationGrouping ->
                 starMessages(userId, selectionModeDataState.selectedMailboxItems.map { MessageId(it.id) })
+        }
+        emitNewStateFrom(viewAction)
+    }
+
+    private suspend fun handleUnStarAction(viewAction: MailboxViewAction) {
+        val selectionModeDataState = state.value.mailboxListState as? MailboxListState.Data.SelectionMode
+        if (selectionModeDataState == null) {
+            Timber.d("MailboxListState is not in SelectionMode")
+            return
+        }
+        val userId = primaryUserId.filterNotNull().first()
+
+        when (getPreferredViewMode()) {
+            ViewMode.ConversationGrouping ->
+                unStarConversations(userId, selectionModeDataState.selectedMailboxItems.map { ConversationId(it.id) })
+
+            ViewMode.NoConversationGrouping ->
+                unStarMessages(userId, selectionModeDataState.selectedMailboxItems.map { MessageId(it.id) })
         }
         emitNewStateFrom(viewAction)
     }

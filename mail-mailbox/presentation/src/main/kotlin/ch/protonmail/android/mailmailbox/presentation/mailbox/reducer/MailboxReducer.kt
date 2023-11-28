@@ -142,6 +142,7 @@ class MailboxReducer @Inject constructor(
                 is MailboxViewAction.MoveToConfirmed,
                 is MailboxViewAction.LabelAsConfirmed,
                 is MailboxViewAction.Star,
+                is MailboxViewAction.UnStar,
                 is MailboxViewAction.DismissBottomSheet -> BottomSheetOperation.Dismiss
 
                 is MailboxViewAction.MoveToDestinationSelected -> MoveToDestinationSelected(operation.mailLabelId)

@@ -86,6 +86,7 @@ internal sealed interface MailboxViewAction : MailboxOperation {
 
     object RequestMoreActionsBottomSheet : MailboxViewAction, AffectingBottomSheet
     object Star : MailboxViewAction, AffectingMailboxList, AffectingBottomSheet
+    object UnStar : MailboxViewAction, AffectingMailboxList, AffectingBottomSheet
 
     object DismissBottomSheet : MailboxViewAction, AffectingBottomSheet
     /*

@@ -197,11 +197,8 @@ fun MailboxScreen(
                 is MoreActionsBottomSheetState -> MoreActionBottomSheetContent(
                     state = bottomSheetContentState,
                     actionCallbacks = MoreActionBottomSheetContent.Actions(
-                        onStar = {
-                            Timber.d("On Star clicked")
-                            viewModel.submit(MailboxViewAction.Star)
-                        },
-                        onUnStar = { Timber.d("Operation not implemented yet") },
+                        onStar = { viewModel.submit(MailboxViewAction.Star) },
+                        onUnStar = { viewModel.submit(MailboxViewAction.UnStar) },
                         onArchive = { Timber.d("Operation not implemented yet") },
                         onSpam = { Timber.d("Operation not implemented yet") }
                     )
