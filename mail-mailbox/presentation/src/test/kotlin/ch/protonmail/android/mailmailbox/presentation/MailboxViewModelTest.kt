@@ -2026,6 +2026,80 @@ class MailboxViewModelTest {
         }
     }
 
+    @Suppress("MaxLineLength")
+    @Test
+    fun `when label as is triggered with archive selected for no conversation grouping then move and relabel messages is called`() =
+        runTest {
+            // Given
+            val item = readMailboxItemUiModel.copy(id = MessageIdSample.Invoice.id)
+            val secondItem = unreadMailboxItemUiModel.copy(id = MessageIdSample.AlphaAppQAReport.id)
+            val selectedItemsList = listOf(item, secondItem)
+
+            val expectedCustomLabels = MailLabelTestData.listOfCustomLabels
+            val expectedCustomUiLabels = MailLabelUiModelTestData.customLabelList
+
+            val expectedCurrentLabelList = LabelSelectionList(
+                partiallySelectionLabels = emptyList(),
+                selectedLabels = emptyList()
+            )
+            val expectedUpdatedLabelList = LabelSelectionList(
+                partiallySelectionLabels = emptyList(),
+                selectedLabels = listOf(
+                    MailLabelTestData.customLabelOne.id.labelId,
+                    MailLabelTestData.customLabelTwo.id.labelId
+                )
+            )
+
+            val initialState = createMailboxDataState()
+            val bottomSheetShownState = createMailboxStateWithLabelAsBottomSheet(selectedItemsList, false)
+            val intermediateState = MailboxStateSampleData.createSelectionMode(
+                listOf(item, secondItem),
+                currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
+            )
+            expectViewMode(NoConversationGrouping)
+            expectedSelectedLabelCountStateChange(initialState)
+            returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
+            returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
+            expectObserveCustomMailLabelSucceeds(expectedCustomLabels)
+            expectGetMessagesWithLabelsSucceeds(selectedItemsList.map { MessageId(it.id) })
+            expectedLabelAsBottomSheetRequestedStateChange(expectedCustomUiLabels, bottomSheetShownState)
+            expectedLabelAsStateChange(selectedItemsList, LabelIdSample.Label2022)
+            expectedLabelAsConfirmed(intermediateState, true)
+            expectRelabelMessagesSucceeds(
+                selectedItemsList.map { MessageId(it.id) },
+                expectedCurrentLabelList,
+                expectedUpdatedLabelList
+            )
+            expectMoveMessagesSucceeds(userId, selectedItemsList, SystemLabelId.Archive.labelId)
+
+            mailboxViewModel.state.test {
+                awaitItem() // First emission for selected user
+
+                // When
+                mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
+                assertEquals(intermediateState, awaitItem())
+                mailboxViewModel.submit(MailboxViewAction.RequestLabelAsBottomSheet)
+                assertEquals(bottomSheetShownState, awaitItem())
+                mailboxViewModel.submit(MailboxViewAction.LabelAsToggleAction(LabelIdSample.Label2022))
+                assertEquals(createMailboxStateWithLabelAsBottomSheet(selectedItemsList, true), awaitItem())
+                mailboxViewModel.submit(MailboxViewAction.LabelAsConfirmed(true))
+
+                // Then
+                assertEquals(intermediateState, awaitItem())
+                coVerifySequence {
+                    moveMessages(userId, selectedItemsList.map { MessageId(it.id) }, SystemLabelId.Archive.labelId)
+                    relabelMessages(
+                        userId,
+                        selectedItemsList.map { MessageId(it.id) },
+                        expectedCurrentLabelList,
+                        expectedUpdatedLabelList
+                    )
+                }
+                coVerify { relabelConversations wasNot Called }
+                coVerify { moveConversations wasNot Called }
+            }
+        }
+
     @Test
     fun `when label as is triggered for conversation grouping then relabel conversation is called`() = runTest {
         // Given
@@ -2094,6 +2168,80 @@ class MailboxViewModelTest {
             coVerify { relabelMessages wasNot Called }
         }
     }
+
+    @Suppress("MaxLineLength")
+    @Test
+    fun `when label as is triggered with archive selected for conversation grouping then move and relabel conversation is called`() =
+        runTest {
+            // Given
+            val item = readMailboxItemUiModel.copy(id = MessageIdSample.Invoice.id)
+            val secondItem = unreadMailboxItemUiModel.copy(id = MessageIdSample.AlphaAppQAReport.id)
+            val selectedItemsList = listOf(item, secondItem)
+
+            val expectedCustomLabels = MailLabelTestData.listOfCustomLabels
+            val expectedCustomUiLabels = MailLabelUiModelTestData.customLabelList
+
+            val expectedCurrentLabelList = LabelSelectionList(
+                partiallySelectionLabels = emptyList(),
+                selectedLabels = emptyList()
+            )
+            val expectedUpdatedLabelList = LabelSelectionList(
+                partiallySelectionLabels = emptyList(),
+                selectedLabels = listOf(
+                    MailLabelTestData.customLabelOne.id.labelId,
+                    MailLabelTestData.customLabelTwo.id.labelId
+                )
+            )
+
+            val initialState = createMailboxDataState()
+            val bottomSheetShownState = createMailboxStateWithLabelAsBottomSheet(selectedItemsList, false)
+            val intermediateState = MailboxStateSampleData.createSelectionMode(
+                listOf(item, secondItem),
+                currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
+            )
+            expectViewMode(ConversationGrouping)
+            expectedSelectedLabelCountStateChange(initialState)
+            returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
+            returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
+            expectObserveCustomMailLabelSucceeds(expectedCustomLabels)
+            expectGetConversationMessagesWithLabelsSucceeds(selectedItemsList.map { ConversationId(it.id) })
+            expectedLabelAsBottomSheetRequestedStateChange(expectedCustomUiLabels, bottomSheetShownState)
+            expectedLabelAsStateChange(selectedItemsList, LabelIdSample.Label2022)
+            expectedLabelAsConfirmed(intermediateState, true)
+            expectRelabelConversationSucceeds(
+                selectedItemsList.map { ConversationId(it.id) },
+                expectedCurrentLabelList,
+                expectedUpdatedLabelList
+            )
+            expectMoveConversationsSucceeds(userId, selectedItemsList, SystemLabelId.Archive.labelId)
+
+            mailboxViewModel.state.test {
+                awaitItem() // First emission for selected user
+
+                // When
+                mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
+                assertEquals(intermediateState, awaitItem())
+                mailboxViewModel.submit(MailboxViewAction.RequestLabelAsBottomSheet)
+                assertEquals(bottomSheetShownState, awaitItem())
+                mailboxViewModel.submit(MailboxViewAction.LabelAsToggleAction(LabelIdSample.Label2022))
+                assertEquals(createMailboxStateWithLabelAsBottomSheet(selectedItemsList, true), awaitItem())
+                mailboxViewModel.submit(MailboxViewAction.LabelAsConfirmed(true))
+
+                // Then
+                assertEquals(intermediateState, awaitItem())
+                coVerifySequence {
+                    moveConversations(userId, selectedItemsList.map { ConversationId(it.id) }, SystemLabelId.Archive.labelId)
+                    relabelConversations(
+                        userId,
+                        selectedItemsList.map { ConversationId(it.id) },
+                        expectedCurrentLabelList,
+                        expectedUpdatedLabelList
+                    )
+                }
+                coVerify { relabelMessages wasNot Called }
+                coVerify { moveMessages wasNot Called }
+            }
+        }
 
     @Test
     fun `when move to is triggered for no conversation grouping then move messages is called`() = runTest {
@@ -2504,8 +2652,8 @@ class MailboxViewModelTest {
         } returns expectedState
     }
 
-    private fun expectedLabelAsConfirmed(expectedState: MailboxState) {
-        every { mailboxReducer.newStateFrom(any(), MailboxViewAction.LabelAsConfirmed(false)) } returns expectedState
+    private fun expectedLabelAsConfirmed(expectedState: MailboxState, archiveSelected: Boolean = false) {
+        every { mailboxReducer.newStateFrom(any(), MailboxViewAction.LabelAsConfirmed(archiveSelected)) } returns expectedState
     }
 
     private fun expectedMoveToConfirmed(expectedState: MailboxState) {

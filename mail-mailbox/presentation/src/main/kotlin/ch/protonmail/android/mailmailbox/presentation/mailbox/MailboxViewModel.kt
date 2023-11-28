@@ -482,7 +482,21 @@ class MailboxViewModel @Inject constructor(
 
             val updatedSelection = labelAsData.getLabelSelectionState()
             if (archiveSelected) {
-                // will be added when move to is implemented, see ticket: MAILANDR-674
+                when (getPreferredViewMode()) {
+                    ViewMode.ConversationGrouping ->
+                        moveConversations(
+                            userId,
+                            selectionState.selectedMailboxItems.map { ConversationId(it.id) },
+                            SystemLabelId.Archive.labelId
+                        )
+
+                    ViewMode.NoConversationGrouping ->
+                        moveMessages(
+                            userId,
+                            selectionState.selectedMailboxItems.map { MessageId(it.id) },
+                            SystemLabelId.Archive.labelId
+                        )
+                }
             }
             val operation = handleRelabelOperation(
                 userId = userId,
