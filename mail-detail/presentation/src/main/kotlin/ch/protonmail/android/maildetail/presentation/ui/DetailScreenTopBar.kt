@@ -30,10 +30,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarState
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -53,11 +58,11 @@ import androidx.compose.ui.zIndex
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
+import ch.protonmail.android.mailcommon.presentation.compose.dpToPx
 import ch.protonmail.android.maildetail.presentation.R.color
 import ch.protonmail.android.maildetail.presentation.R.drawable
 import ch.protonmail.android.maildetail.presentation.R.plurals
 import ch.protonmail.android.maildetail.presentation.R.string
-import ch.protonmail.android.maildetail.presentation.model.SubjectHeaderTransform
 import ch.protonmail.android.maildetail.presentation.previewdata.DetailsScreenTopBarPreview
 import ch.protonmail.android.maildetail.presentation.previewdata.DetailsScreenTopBarPreviewProvider
 import me.proton.core.compose.theme.ProtonDimens
@@ -66,7 +71,9 @@ import me.proton.core.compose.theme.ProtonTheme3
 import me.proton.core.compose.theme.captionNorm
 import me.proton.core.compose.theme.defaultStrongNorm
 import me.proton.core.compose.theme.headlineNorm
+import kotlin.math.absoluteValue
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailScreenTopBar(
     modifier: Modifier = Modifier,
@@ -75,7 +82,7 @@ fun DetailScreenTopBar(
     messageCount: Int?,
     actions: DetailScreenTopBar.Actions,
     subjectHeaderSizeCallback: (Int) -> Unit,
-    subjectHeaderTransform: SubjectHeaderTransform
+    topAppBarState: TopAppBarState
 ) {
     ProtonTheme3 {
         Column(
@@ -84,17 +91,24 @@ fun DetailScreenTopBar(
                 .wrapContentHeight()
         ) {
 
+            // We will start changing alpha values of subject text when the top app bar is near to collapsed state.
+            val alphaChangeThresholdFraction = 1f - MailDimens.MinOffsetForSubjectAlphaChange.dpToPx() /
+                topAppBarState.heightOffsetLimit.absoluteValue
+            val subjectAlpha = remember(topAppBarState.collapsedFraction) {
+                calculateSubjectAlpha(topAppBarState.collapsedFraction, alphaChangeThresholdFraction)
+            }
+
             CustomSingleLineTopAppBar(
                 actions = actions,
                 messageCount = messageCount,
                 title = title,
                 isStarred = isStarred,
-                subjectLineAlpha = 1f - subjectHeaderTransform.alpha,
+                subjectLineAlpha = 1f - subjectAlpha,
                 modifier = modifier
                     .fillMaxWidth()
                     .zIndex(1f)
                     .graphicsLayer {
-                        translationY = -subjectHeaderTransform.yOffsetPx
+                        translationY = -topAppBarState.heightOffset
                     }
             )
 
@@ -115,10 +129,24 @@ fun DetailScreenTopBar(
                         max = maxSubjectHeightDp.dp
                     ),
                 subject = title,
-                subjectTextAlpha = subjectHeaderTransform.alpha
+                subjectTextAlpha = subjectAlpha
             )
         }
     }
+}
+
+// Calculate alpha value based on collapsedFraction which is a value between 0 and 1 based on the
+// heightOffset and collapsedHeight. But we should not change alpha value until the subject header
+// is near to fully collapsed state.
+fun calculateSubjectAlpha(headerCollapsedFraction: Float, alphaChangeThresholdFraction: Float): Float {
+
+    val newRatio = if (headerCollapsedFraction >= alphaChangeThresholdFraction) {
+        1.0f - (headerCollapsedFraction - alphaChangeThresholdFraction) / (1.0f - alphaChangeThresholdFraction)
+    } else {
+        1.0f
+    }
+
+    return newRatio.coerceIn(0.0f, 1.0f)
 }
 
 @Composable
@@ -278,21 +306,20 @@ object DetailScreenTopBar {
 
 @Composable
 @AdaptivePreviews
+@OptIn(ExperimentalMaterial3Api::class)
 private fun DetailScreenTopBarPreview(
     @PreviewParameter(DetailsScreenTopBarPreviewProvider::class) preview: DetailsScreenTopBarPreview
 ) {
     ProtonTheme3 {
+        val initialHeightOffset = if (preview.isExpanded) 0f else -Float.MAX_VALUE
+        val state = rememberTopAppBarState(initialHeightOffset = initialHeightOffset)
         DetailScreenTopBar(
             title = preview.title,
             isStarred = preview.isStarred,
             messageCount = preview.messageCount,
             actions = DetailScreenTopBar.Actions.Empty,
             subjectHeaderSizeCallback = {},
-            subjectHeaderTransform = SubjectHeaderTransform(
-                headerHeightPx = 0f,
-                yOffsetPx = 0f,
-                minOffsetPxForAlphaChange = 0f
-            )
+            topAppBarState = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(state = state).state
         )
     }
 }

@@ -65,4 +65,5 @@ object MailDimens {
 
     val SingleLineTopAppBarHeight = 56.dp
     val SubjectHeaderMinHeight = 56.dp
+    val MinOffsetForSubjectAlphaChange = 48.dp
 }

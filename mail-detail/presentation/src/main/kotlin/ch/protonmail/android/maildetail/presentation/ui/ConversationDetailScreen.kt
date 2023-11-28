@@ -33,7 +33,9 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -45,15 +47,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -77,7 +75,6 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailSta
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
 import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
-import ch.protonmail.android.maildetail.presentation.model.SubjectHeaderTransform
 import ch.protonmail.android.maildetail.presentation.previewdata.ConversationDetailsPreviewProvider
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.scrollOffsetDp
 import ch.protonmail.android.maildetail.presentation.viewmodel.ConversationDetailViewModel
@@ -102,7 +99,6 @@ import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.ProtonTheme3
 import timber.log.Timber
-import kotlin.math.absoluteValue
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -204,6 +200,7 @@ fun ConversationDetailScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Suppress("LongMethod")
 @Composable
 fun ConversationDetailScreen(
@@ -212,6 +209,7 @@ fun ConversationDetailScreen(
     modifier: Modifier = Modifier,
     scrollToMessageId: String?
 ) {
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(snapAnimationSpec = null)
     val snackbarHostState = ProtonSnackbarHostState()
     val linkConfirmationDialogState = remember { mutableStateOf<Uri?>(null) }
 
@@ -259,68 +257,16 @@ fun ConversationDetailScreen(
         }
     }
 
-    // When we scroll up, subject header will collapse. We will not change the text alpha values until
-    // the remaining height is minOffsetPxForAlphaChange, After that, we will start changing the alpha values linearly.
-    val minOffsetPxForAlphaChange = with(LocalDensity.current) {
-        SubjectHeaderTransform.minOffsetForAlphaChangeDp.dp.roundToPx().toFloat()
-    }
-
-    // Offset values from onPostScroll will be accumulated to decide the translationY of the subject header. This will
-    // create collapsing effect for the subject header.
-    val subjectHeaderTransform = remember {
-        mutableStateOf(
-            SubjectHeaderTransform(0f, 0f, minOffsetPxForAlphaChange)
-        )
-    }
-
     // When SubjectHeader is first time composed, we need to get the its actual height to be able to calculate yOffset
     // for collapsing effect
     val subjectHeaderSizeCallback: (Int) -> Unit = {
-        val currentTransform = subjectHeaderTransform.value
-        subjectHeaderTransform.value = currentTransform.copyWithUpdatedHeaderHeight(it.toFloat())
-    }
-
-    // When the LazyColumn cannot be scrolled anymore, we will use the padding offset to move it to the top
-    val messagesContentPaddingOffsetPx = remember { mutableStateOf(0f) }
-
-    val nestedScrollConnection = remember {
-        object : NestedScrollConnection {
-            override fun onPostScroll(
-                consumed: Offset,
-                available: Offset,
-                source: NestedScrollSource
-            ): Offset {
-                val epsilon = 1e-6f
-                val currentTransform = subjectHeaderTransform.value
-
-                // When the LazyColumn is scrolled, use consumed value and do not
-                // apply offset to the lazyColumn content padding
-                if (consumed.y.absoluteValue > epsilon) {
-                    val newOffset = currentTransform.yOffsetPx + consumed.y
-
-                    subjectHeaderTransform.value = currentTransform.copyWithUpdatedYOffset(
-                        newOffset.coerceIn(-currentTransform.headerHeightPx, 0f)
-                    )
-                    messagesContentPaddingOffsetPx.value = 0f
-                } else {
-                    val newOffset = currentTransform.yOffsetPx + available.y
-
-                    subjectHeaderTransform.value = currentTransform.copyWithUpdatedYOffset(
-                        newOffset.coerceIn(-currentTransform.headerHeightPx, 0f)
-                    )
-                    messagesContentPaddingOffsetPx.value = subjectHeaderTransform.value.yOffsetPx
-                }
-
-                // We're basically watching scroll without taking it
-                return super.onPostScroll(consumed, available, source)
-            }
-        }
+        scrollBehavior.state.heightOffsetLimit = -it.toFloat()
     }
 
     Scaffold(
         modifier = modifier
             .testTag(ConversationDetailScreenTestTags.RootItem)
-            .nestedScroll(nestedScrollConnection),
+            .nestedScroll(scrollBehavior.nestedScrollConnection),
         containerColor = ProtonTheme.colors.backgroundDeep,
         snackbarHost = {
             ProtonSnackbarHost(
@@ -333,7 +279,7 @@ fun ConversationDetailScreen(
             DetailScreenTopBar(
                 modifier = Modifier
                     .graphicsLayer {
-                        translationY = subjectHeaderTransform.value.yOffsetPx / 2f
+                        translationY = scrollBehavior.state.heightOffset / 2f
                     },
                 title = uiModel?.subject ?: DetailScreenTopBar.NoTitle,
                 isStarred = uiModel?.isStarred,
@@ -344,7 +290,7 @@ fun ConversationDetailScreen(
                     onUnStarClick = actions.onUnStarClick
                 ),
                 subjectHeaderSizeCallback = subjectHeaderSizeCallback,
-                subjectHeaderTransform = subjectHeaderTransform.value
+                topAppBarState = scrollBehavior.state
             )
         },
         bottomBar = {
@@ -398,7 +344,7 @@ fun ConversationDetailScreen(
                     scrollToMessageId = scrollToMessageId,
                     actions = conversationDetailItemActions,
                     showReplyActionsFeatureFlag = state.showReplyActionsFeatureFlag,
-                    paddingOffsetDp = messagesContentPaddingOffsetPx.value.pxToDp()
+                    paddingOffsetDp = scrollBehavior.state.heightOffset.pxToDp()
                 )
             }
 
