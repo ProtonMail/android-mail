@@ -159,7 +159,7 @@ class MailboxReducer @Inject constructor(
                 is MailboxEvent.ErrorMoving -> R.string.mailbox_action_move_messages_failed
                 is MailboxEvent.ErrorRetrievingDestinationMailFolders -> R.string.mailbox_action_move_messages_failed
                 is MailboxEvent.ErrorRetrievingFolderColorSettings ->
-                    R.string.mailbox_action_move_messages_failed_retrieving_folders
+                    R.string.mailbox_action_failed_retrieving_colors
             }
             Effect.of(TextUiModel(textResource))
         } else {

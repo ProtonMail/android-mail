@@ -21,6 +21,7 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.sample.ActionUiModelSample
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
@@ -120,7 +121,8 @@ object MailboxStateSampleData {
         selectedMailboxItemUiModels: List<MailboxItemUiModel>,
         bottomBarAction: List<ActionUiModel> = listOf(ActionUiModelSample.Archive),
         currentMailLabel: MailLabel = MailLabel.System(MailLabelId.System.Inbox),
-        bottomSheetState: BottomSheetState? = null
+        bottomSheetState: BottomSheetState? = null,
+        error: Effect<TextUiModel> = Effect.empty()
     ) = MailboxState(
         mailboxListState = MailboxListState.Data.SelectionMode(
             currentMailLabel = currentMailLabel,
@@ -144,6 +146,6 @@ object MailboxStateSampleData {
         actionMessage = Effect.empty(),
         deleteDialogState = DeleteDialogState.Hidden,
         bottomSheetState = bottomSheetState,
-        error = Effect.empty()
+        error = error
     )
 }

@@ -37,6 +37,7 @@ import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.sample.ActionUiModelSample
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.mailconversation.domain.usecase.DeleteConversations
@@ -79,6 +80,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.DeleteDialog
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
@@ -2122,7 +2124,7 @@ class MailboxViewModelTest {
         expectDestinationMailLabelsSucceeds(expectedMailLabels)
         expectedMoveToBottomSheetRequestedStateChange(expectedMailLabelUiModel, bottomSheetShownState)
         expectedMoveToStateChange(MailLabelId.System.Spam, bottomSheetShownStateWithSelectedItem)
-        expectedMoveToConfirmed(intermediateState)
+        expectedMoveToConfirmed(initialState)
         expectMoveMessagesSucceeds(userId, selectedItemsList, MailLabelId.System.Spam.labelId)
 
         mailboxViewModel.state.test {
@@ -2137,7 +2139,7 @@ class MailboxViewModelTest {
             assertEquals(bottomSheetShownStateWithSelectedItem, awaitItem())
             mailboxViewModel.submit(MailboxViewAction.MoveToConfirmed)
 
-            assertEquals(intermediateState, awaitItem())
+            assertEquals(initialState, awaitItem())
             coVerify(exactly = 1) {
                 moveMessages(userId, selectedItemsList.map { MessageId(it.id) }, MailLabelId.System.Spam.labelId)
             }
@@ -2174,7 +2176,7 @@ class MailboxViewModelTest {
         expectDestinationMailLabelsSucceeds(expectedMailLabels)
         expectedMoveToBottomSheetRequestedStateChange(expectedMailLabelUiModel, bottomSheetShownState)
         expectedMoveToStateChange(MailLabelId.System.Spam, bottomSheetShownStateWithSelectedItem)
-        expectedMoveToConfirmed(intermediateState)
+        expectedMoveToConfirmed(initialState)
         expectMoveConversationsSucceeds(userId, selectedItemsList, MailLabelId.System.Spam.labelId)
 
         mailboxViewModel.state.test {
@@ -2189,7 +2191,7 @@ class MailboxViewModelTest {
             assertEquals(bottomSheetShownStateWithSelectedItem, awaitItem())
             mailboxViewModel.submit(MailboxViewAction.MoveToConfirmed)
 
-            assertEquals(intermediateState, awaitItem())
+            assertEquals(initialState, awaitItem())
             coVerify(exactly = 1) {
                 moveConversations(
                     userId = userId,
@@ -2197,6 +2199,89 @@ class MailboxViewModelTest {
                     labelId = MailLabelId.System.Spam.labelId
                 )
             }
+            coVerify { moveMessages wasNot Called }
+        }
+    }
+
+    @Test
+    fun `show error retrieving folder error when observing mail labels failed`() = runTest {
+        // Given
+        val item = readMailboxItemUiModel.copy(id = ConversationIdSample.Invoices.id)
+        val secondItem = unreadMailboxItemUiModel.copy(id = ConversationIdSample.AlphaAppFeedback.id)
+        val selectedItemsList = listOf(item, secondItem)
+
+        val initialState = createMailboxDataState()
+        val intermediateState = MailboxStateSampleData.createSelectionMode(
+            selectedItemsList,
+            currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
+        )
+        val expectedState = MailboxStateSampleData.createSelectionMode(
+            selectedItemsList,
+            currentMailLabel = MailLabel.System(MailLabelId.System.Trash),
+            error = Effect.of(TextUiModel(R.string.mailbox_action_move_messages_failed_retrieving_folders))
+        )
+        expectViewMode(ConversationGrouping)
+        expectedSelectedLabelCountStateChange(initialState)
+        returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
+        returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
+        expectedReducerResult(MailboxEvent.ErrorRetrievingDestinationMailFolders, expectedState)
+        expectDestinationMailLabelsFails()
+
+        mailboxViewModel.state.test {
+            awaitItem() // First emission for selected user
+
+            // When + Then
+            mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
+            assertEquals(intermediateState, awaitItem())
+            mailboxViewModel.submit(MailboxViewAction.RequestMoveToBottomSheet)
+            assertEquals(expectedState, awaitItem())
+
+            coVerify { moveConversations wasNot Called }
+            coVerify { moveMessages wasNot Called }
+        }
+    }
+
+    @Test
+    fun `show error retrieving color setting when observing color settings failed`() = runTest {
+        // Given
+        val item = readMailboxItemUiModel.copy(id = ConversationIdSample.Invoices.id)
+        val secondItem = unreadMailboxItemUiModel.copy(id = ConversationIdSample.AlphaAppFeedback.id)
+        val selectedItemsList = listOf(item, secondItem)
+
+        val expectedMailLabels = MailLabels(
+            systemLabels = emptyList(),
+            folders = MailLabelTestData.listOfCustomLabels,
+            labels = emptyList()
+        )
+
+        val initialState = createMailboxDataState()
+        val intermediateState = MailboxStateSampleData.createSelectionMode(
+            selectedItemsList,
+            currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
+        )
+        val expectedState = MailboxStateSampleData.createSelectionMode(
+            selectedItemsList,
+            currentMailLabel = MailLabel.System(MailLabelId.System.Trash),
+            error = Effect.of(TextUiModel(R.string.mailbox_action_move_messages_failed_retrieving_folders))
+        )
+        expectViewMode(ConversationGrouping)
+        expectedSelectedLabelCountStateChange(initialState)
+        returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
+        returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
+        expectedReducerResult(MailboxEvent.ErrorRetrievingFolderColorSettings, expectedState)
+        expectDestinationMailLabelsSucceeds(expectedMailLabels)
+        expectFolderColorSettingsFails()
+
+        mailboxViewModel.state.test {
+            awaitItem() // First emission for selected user
+
+            // When + Then
+            mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
+            assertEquals(intermediateState, awaitItem())
+            mailboxViewModel.submit(MailboxViewAction.RequestMoveToBottomSheet)
+            assertEquals(expectedState, awaitItem())
+
+            coVerify { moveConversations wasNot Called }
             coVerify { moveMessages wasNot Called }
         }
     }
@@ -2427,6 +2512,10 @@ class MailboxViewModelTest {
         every { mailboxReducer.newStateFrom(any(), MailboxViewAction.MoveToConfirmed) } returns expectedState
     }
 
+    private fun expectedReducerResult(operation: MailboxOperation, expectedState: MailboxState) {
+        every { mailboxReducer.newStateFrom(any(), operation) } returns expectedState
+    }
+
     private fun expectRelabelMessagesSucceeds(
         selectedMessages: List<MessageId>,
         currentSelections: LabelSelectionList,
@@ -2457,6 +2546,14 @@ class MailboxViewModelTest {
 
     private fun expectDestinationMailLabelsSucceeds(expectedMailLabels: MailLabels) {
         every { observeDestinationMailLabels(userId) } returns flowOf(expectedMailLabels)
+    }
+
+    private fun expectDestinationMailLabelsFails() {
+        every { observeDestinationMailLabels(userId) } returns flowOf()
+    }
+
+    private fun expectFolderColorSettingsFails() {
+        every { observeFolderColorSettings(userId) } returns flowOf()
     }
 
     private fun expectGetMessagesWithLabelsSucceeds(messageIds: List<MessageId>) {
