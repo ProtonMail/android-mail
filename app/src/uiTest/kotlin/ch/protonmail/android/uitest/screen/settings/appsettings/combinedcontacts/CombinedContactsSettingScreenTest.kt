@@ -19,7 +19,6 @@
 package ch.protonmail.android.uitest.screen.settings.appsettings.combinedcontacts
 
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.assertIsOff
 import androidx.compose.ui.test.assertIsOn
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
@@ -98,7 +97,7 @@ internal class CombinedContactsSettingScreenTest {
     }
 
     @Test
-    fun testSwitchIsDisabledAndSnackbarIsShownWhenSwitchStateIsNull() {
+    fun testSwitchIsOffAndSnackbarIsShownWhenSwitchStateIsNull() {
         setupScreenWithState(
             CombinedContactsSettingState.Data(
                 isEnabled = null,
@@ -108,7 +107,8 @@ internal class CombinedContactsSettingScreenTest {
 
         composeTestRule
             .onNodeWithTag(TEST_TAG_COMBINED_CONTACTS_TOGGLE_ITEM)
-            .assertIsNotEnabled()
+            .assertIsDisplayed()
+            .assertIsOff()
         composeTestRule
             .onNodeWithTag(TEST_TAG_COMBINED_CONTACTS_SNACKBAR)
             .assertIsDisplayed()

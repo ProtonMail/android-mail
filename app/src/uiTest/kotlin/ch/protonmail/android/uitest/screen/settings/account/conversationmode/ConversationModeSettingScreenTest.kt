@@ -20,7 +20,6 @@ package ch.protonmail.android.uitest.screen.settings.account.conversationmode
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
-import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.assertIsOff
 import androidx.compose.ui.test.assertIsOn
 import androidx.compose.ui.test.isToggleable
@@ -62,14 +61,13 @@ internal class ConversationModeSettingScreenTest {
     }
 
     @Test
-    fun testConversationModeToggleIsDisabledWhenStateIsInvalid() {
+    fun testConversationModeToggleIsOffWhenStateIsInvalid() {
         setupScreenWithState(Data(null))
 
         composeTestRule
             .onNode(isToggleable())
             .assertIsDisplayed()
             .assertIsOff()
-            .assertIsNotEnabled()
     }
 
     private fun setupScreenWithState(state: Data) {

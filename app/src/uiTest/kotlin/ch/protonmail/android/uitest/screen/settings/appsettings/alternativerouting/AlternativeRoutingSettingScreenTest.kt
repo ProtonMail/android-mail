@@ -21,7 +21,6 @@ package ch.protonmail.android.uitest.screen.settings.appsettings.alternativerout
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.assertIsOff
 import androidx.compose.ui.test.assertIsOn
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
@@ -114,7 +113,7 @@ internal class AlternativeRoutingSettingScreenTest {
     }
 
     @Test
-    fun testSwitchIsDisabledAndSnackbarIsShownWhenSwitchStateIsNull() {
+    fun testSwitchIsOffAndSnackbarIsShownWhenSwitchStateIsNull() {
         setupScreenWithState(
             AlternativeRoutingSettingState.Data(
                 isEnabled = null,
@@ -124,7 +123,8 @@ internal class AlternativeRoutingSettingScreenTest {
 
         composeTestRule
             .onNodeWithTag(TEST_TAG_ALTERNATIVE_ROUTING_TOGGLE_ITEM)
-            .assertIsNotEnabled()
+            .assertIsDisplayed()
+            .assertIsOff()
         composeTestRule
             .onNodeWithTag(TEST_TAG_ALTERNATIVE_ROUTING_SNACKBAR)
             .assertIsDisplayed()
