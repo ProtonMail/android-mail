@@ -64,6 +64,7 @@ class MailboxListReducer @Inject constructor() {
             is MailboxViewAction.ExitSelectionMode -> reduceExitSelectionMode(currentState)
             is MailboxViewAction.MarkAsRead -> reduceMarkAsRead(currentState)
             is MailboxViewAction.MarkAsUnread -> reduceMarkAsUnread(currentState)
+            is MailboxViewAction.Star -> reduceStar(currentState)
         }
     }
 
@@ -292,6 +293,16 @@ class MailboxListReducer @Inject constructor() {
         is MailboxListState.Data.SelectionMode -> currentState.copy(
             selectedMailboxItems = currentState.selectedMailboxItems.map { currentSelectedItem ->
                 currentSelectedItem.copy(isRead = false)
+            }.toSet()
+        )
+
+        else -> currentState
+    }
+
+    private fun reduceStar(currentState: MailboxListState) = when (currentState) {
+        is MailboxListState.Data.SelectionMode -> currentState.copy(
+            selectedMailboxItems = currentState.selectedMailboxItems.map { currentSelectedItem ->
+                currentSelectedItem.copy(isStarred = true)
             }.toSet()
         )
 

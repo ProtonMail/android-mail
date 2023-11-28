@@ -64,7 +64,7 @@ fun MoreActionBottomSheetContent(
             ProtonRawListItem(
                 modifier = Modifier
                     .testTag(MoreActionsBottomSheetTestTags.ActionItem)
-                    .clickable { callbackForAction(actionItem.action, actionCallbacks) }
+                    .clickable { callbackForAction(actionItem.action, actionCallbacks).invoke() }
                     .padding(vertical = ProtonDimens.DefaultSpacing)
             ) {
                 Icon(
@@ -86,6 +86,17 @@ fun MoreActionBottomSheetContent(
         }
     }
 }
+
+fun callbackForAction(action: Action, actionCallbacks: MoreActionBottomSheetContent.Actions): () -> Unit =
+    when (action) {
+        Action.Star -> actionCallbacks.onStar
+        Action.Unstar -> actionCallbacks.onUnStar
+        Action.Archive -> actionCallbacks.onArchive
+        Action.Spam -> actionCallbacks.onSpam
+        else -> {
+            {}
+        }
+    }
 
 object MoreActionBottomSheetContent {
 
@@ -117,17 +128,6 @@ private fun MoreActionBottomSheetContentPreview(
         MoreActionBottomSheetContent(state = state, actionCallbacks = MoreActionBottomSheetContent.Actions.Empty)
     }
 }
-
-fun callbackForAction(action: Action, actionCallbacks: MoreActionBottomSheetContent.Actions): () -> Unit =
-    when (action) {
-        Action.Star -> actionCallbacks.onStar
-        Action.Unstar -> actionCallbacks.onUnStar
-        Action.Archive -> actionCallbacks.onArchive
-        Action.Spam -> actionCallbacks.onSpam
-        else -> {
-            {}
-        }
-    }
 
 object MoreActionsBottomSheetTestTags {
 

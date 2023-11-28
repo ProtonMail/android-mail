@@ -667,7 +667,8 @@ internal class MailboxListReducerTest(
                         SelectedMailboxItem(
                             userId = UserIdTestData.userId,
                             id = MailboxItemUiModelTestData.readMailboxItemUiModel.id,
-                            isRead = false
+                            isRead = false,
+                            isStarred = false
                         )
                     ),
                     selectionModeEnabled = false
@@ -680,6 +681,33 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    selectionModeEnabled = false
+                )
+            ),
+            TestInput(
+                currentState = MailboxListState.Data.SelectionMode(
+                    currentMailLabel = MailLabelTestData.customLabelTwo,
+                    selectedMailboxItems = setOf(
+                        SelectedMailboxItem(
+                            userId = UserIdTestData.userId,
+                            id = MailboxItemUiModelTestData.readMailboxItemUiModel.id,
+                            isRead = false,
+                            isStarred = false
+                        )
+                    ),
+                    selectionModeEnabled = false
+                ),
+                operation = MailboxViewAction.Star,
+                expectedState = MailboxListState.Data.SelectionMode(
+                    currentMailLabel = MailLabelTestData.customLabelTwo,
+                    selectedMailboxItems = setOf(
+                        SelectedMailboxItem(
+                            userId = UserIdTestData.userId,
+                            id = MailboxItemUiModelTestData.readMailboxItemUiModel.id,
+                            isRead = false,
+                            isStarred = true
+                        )
+                    ),
                     selectionModeEnabled = false
                 )
             )

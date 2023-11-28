@@ -41,6 +41,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.sample.ActionUiModelSample
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.mailconversation.domain.usecase.DeleteConversations
+import ch.protonmail.android.mailconversation.domain.usecase.StarConversations
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
@@ -97,6 +98,7 @@ import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailmessage.domain.usecase.DeleteMessages
 import ch.protonmail.android.mailmessage.domain.usecase.GetConversationMessagesWithLabels
 import ch.protonmail.android.mailmessage.domain.usecase.GetMessagesWithLabels
+import ch.protonmail.android.mailmessage.domain.usecase.StarMessages
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoreActionsBottomSheetState
@@ -233,6 +235,8 @@ class MailboxViewModelTest {
     private val deleteMessages = mockk<DeleteMessages>()
     private val relabelMessages = mockk<RelabelMessages>()
     private val relabelConversations = mockk<RelabelConversations>()
+    private val starMessages = mockk<StarMessages>()
+    private val starConversations = mockk<StarConversations>()
 
     private val mailboxViewModel by lazy {
         MailboxViewModel(
@@ -261,6 +265,8 @@ class MailboxViewModelTest {
             moveMessages = moveMessages,
             deleteConversations = deleteConversations,
             deleteMessages = deleteMessages,
+            starMessages = starMessages,
+            starConversations = starConversations,
             mailboxReducer = mailboxReducer,
             observeMailFeature = observeMailFeature,
             dispatchersProvider = TestDispatcherProvider(),
@@ -2516,6 +2522,98 @@ class MailboxViewModelTest {
     }
 
     @Test
+    fun `when star action is triggered for no-conversation grouping then star messages is called`() = runTest {
+        // Given
+        val item = readMailboxItemUiModel.copy(id = MessageIdSample.Invoice.id, showStar = true)
+        val secondItem = unreadMailboxItemUiModel.copy(id = MessageIdSample.AlphaAppQAReport.id, showStar = false)
+        val selectedItemsList = listOf(item, secondItem)
+
+        val initialState = createMailboxDataState()
+        val expectedActionItems = listOf(
+            ActionUiModelSample.build(Action.Star),
+            ActionUiModelSample.build(Action.Archive),
+            ActionUiModelSample.build(Action.Spam)
+        )
+        val expectedBottomSheetContent = MoreActionsBottomSheetState.Data(
+            actionUiModels = expectedActionItems.toImmutableList()
+        )
+        val bottomSheetShownState =
+            createMailboxStateWithMoreActionBottomSheet(selectedItemsList, expectedBottomSheetContent)
+        val intermediateState = MailboxStateSampleData.createSelectionMode(
+            listOf(item, secondItem),
+            currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
+        )
+        expectViewMode(NoConversationGrouping)
+        expectedSelectedLabelCountStateChange(initialState)
+        returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
+        returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
+        expectedMoreActionBottomSheetRequestedStateChange(expectedActionItems, bottomSheetShownState)
+        expectedStarMessagesSucceeds(userId, selectedItemsList)
+        returnExpectedStateWhenStarringSucceeds(intermediateState)
+
+
+        mailboxViewModel.state.test {
+            awaitItem() // First emission for selected user
+
+            // When + Then
+            mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
+            assertEquals(intermediateState, awaitItem())
+            mailboxViewModel.submit(MailboxViewAction.RequestMoreActionsBottomSheet)
+            assertEquals(bottomSheetShownState, awaitItem())
+            mailboxViewModel.submit(MailboxViewAction.Star)
+            assertEquals(intermediateState, awaitItem())
+        }
+        coVerify(exactly = 1) { starMessages(userId, selectedItemsList.map { MessageId(it.id) }) }
+        verify { starConversations wasNot Called }
+    }
+
+    @Test
+    fun `when star action is triggered for conversation grouping then star conversations is called`() = runTest {
+        // Given
+        val item = readMailboxItemUiModel.copy(id = MessageIdSample.Invoice.id, showStar = true)
+        val secondItem = unreadMailboxItemUiModel.copy(id = MessageIdSample.AlphaAppQAReport.id, showStar = false)
+        val selectedItemsList = listOf(item, secondItem)
+
+        val initialState = createMailboxDataState()
+        val expectedActionItems = listOf(
+            ActionUiModelSample.build(Action.Star),
+            ActionUiModelSample.build(Action.Archive),
+            ActionUiModelSample.build(Action.Spam)
+        )
+        val expectedBottomSheetContent = MoreActionsBottomSheetState.Data(
+            actionUiModels = expectedActionItems.toImmutableList()
+        )
+        val bottomSheetShownState =
+            createMailboxStateWithMoreActionBottomSheet(selectedItemsList, expectedBottomSheetContent)
+        val intermediateState = MailboxStateSampleData.createSelectionMode(
+            listOf(item, secondItem),
+            currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
+        )
+        expectViewMode(ConversationGrouping)
+        expectedSelectedLabelCountStateChange(initialState)
+        returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
+        returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
+        expectedMoreActionBottomSheetRequestedStateChange(expectedActionItems, bottomSheetShownState)
+        expectedStarConversationsSucceeds(userId, selectedItemsList)
+        returnExpectedStateWhenStarringSucceeds(intermediateState)
+
+
+        mailboxViewModel.state.test {
+            awaitItem() // First emission for selected user
+
+            // When + Then
+            mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
+            assertEquals(intermediateState, awaitItem())
+            mailboxViewModel.submit(MailboxViewAction.RequestMoreActionsBottomSheet)
+            assertEquals(bottomSheetShownState, awaitItem())
+            mailboxViewModel.submit(MailboxViewAction.Star)
+            assertEquals(intermediateState, awaitItem())
+        }
+        coVerify(exactly = 1) { starConversations(userId, selectedItemsList.map { ConversationId(it.id) }) }
+        verify { starMessages wasNot Called }
+    }
+
+    @Test
     fun `verify dismiss delete dialog calls reducer`() = runTest {
         // Given
         val initialState = createMailboxDataState()
@@ -2757,6 +2855,10 @@ class MailboxViewModelTest {
         every { mailboxReducer.newStateFrom(any(), MailboxViewAction.MoveToConfirmed) } returns expectedState
     }
 
+    private fun returnExpectedStateWhenStarringSucceeds(expectedState: MailboxState) {
+        every { mailboxReducer.newStateFrom(any(), MailboxViewAction.Star) } returns expectedState
+    }
+
     private fun expectedReducerResult(operation: MailboxOperation, expectedState: MailboxState) {
         every { mailboxReducer.newStateFrom(any(), operation) } returns expectedState
     }
@@ -2912,6 +3014,14 @@ class MailboxViewModelTest {
         labelId: LabelId
     ) {
         coJustRun { deleteMessages(userId, items.map { MessageId(it.id) }, labelId) }
+    }
+
+    private fun expectedStarMessagesSucceeds(userId: UserId, items: List<MailboxItemUiModel>) {
+        coJustRun { starMessages(userId, items.map { MessageId(it.id) }) }
+    }
+
+    private fun expectedStarConversationsSucceeds(userId: UserId, items: List<MailboxItemUiModel>) {
+        coJustRun { starConversations(userId, items.map { ConversationId(it.id) }) }
     }
 
     private fun createMailboxStateWithLabelAsBottomSheet(
