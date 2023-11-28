@@ -57,9 +57,9 @@ import kotlin.test.Test
 @HiltAndroidTest
 @SdkSuppress(minSdkVersion = 30, maxSdkVersion = 32)
 @UninstallModules(ServerProofModule::class)
-internal class ComposerSendMessageWithAttachmentsTests : MockedNetworkTest(
-    loginType = LoginTestUserTypes.Paid.FancyCapybara
-), ComposerAttachmentsTests {
+internal class ComposerSendMessageWithAttachmentsTests :
+    MockedNetworkTest(loginType = LoginTestUserTypes.Paid.FancyCapybara),
+    ComposerAttachmentsTests {
 
     @JvmField
     @BindValue
@@ -151,10 +151,12 @@ internal class ComposerSendMessageWithAttachmentsTests : MockedNetworkTest(
             topAppBarSection { tapSendButton() }
         }
 
-        every { networkManager.isConnectedToNetwork() } returns false
-
         mailboxRobot {
             snackbarSection { verify { isDisplaying(ComposerSnackbar.SendingMessage) } }
+
+            // Deferred as on FTL it might propagate too quickly.
+            every { networkManager.isConnectedToNetwork() } returns false
+
             snackbarSection { verify { isDisplaying(ComposerSnackbar.AttachmentUploadError) } }
         }
     }
