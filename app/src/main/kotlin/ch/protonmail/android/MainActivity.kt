@@ -22,6 +22,7 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -81,7 +82,18 @@ class MainActivity : AppCompatActivity() {
     private fun openInActivityInNewTask(uri: Uri) {
         val intent = Intent(Intent.ACTION_VIEW, uri)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        startActivity(intent)
+
+        try {
+            startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            Timber.d(e, "Failed to open a browser app")
+
+            Toast.makeText(
+                this,
+                getString(R.string.intent_failure_no_app_found_to_handle_this_action),
+                Toast.LENGTH_LONG
+            ).show()
+        }
     }
 
     private fun openIntentChooser(intentValues: OpenAttachmentIntentValues) {
