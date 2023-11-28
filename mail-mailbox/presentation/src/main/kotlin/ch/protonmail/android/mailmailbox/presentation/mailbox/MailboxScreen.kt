@@ -51,11 +51,14 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -68,6 +71,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -121,7 +125,6 @@ import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.component.ProtonSolidButton
-import me.proton.core.compose.component.ProtonTextButton
 import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
@@ -298,20 +301,12 @@ fun OnboardingScreen(actions: MailboxScreen.Actions) {
             .fillMaxWidth()
             .background(ProtonTheme.colors.backgroundNorm)
     ) {
-        val (pager, positiveButton, dismissButton, dots) = createRefs()
+        val (positiveButton, dismissButton, dots) = createRefs()
 
         HorizontalPager(
             state = pagerState,
             pageCount = viewCount,
-            modifier = Modifier
-                .constrainAs(pager) {
-                    width = Dimension.fillToConstraints
-                    height = Dimension.fillToConstraints
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(parent.bottom)
-                }
+            modifier = Modifier.fillMaxSize()
         ) { pageIndex ->
             OnboardingContent(content = contentMap[pageIndex])
         }
@@ -328,18 +323,18 @@ fun OnboardingContent(content: OnboardingUiModel) {
         modifier = Modifier
             .fillMaxHeight()
             .fillMaxWidth()
-            .background(ProtonTheme.colors.backgroundNorm)
     ) {
         val (illustration, headline, description) = createRefs()
 
         Image(
             modifier = Modifier
                 .fillMaxHeight(MailDimens.OnboardingIllustrationWeight)
+                .fillMaxWidth()
                 .constrainAs(illustration) {
-                    top.linkTo(parent.top, margin = ProtonDimens.DefaultSpacing)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 },
+            contentScale = ContentScale.Crop,
             painter = painterResource(id = content.illustrationId),
             contentDescription = stringResource(id = R.string.onboarding_illustration_content_description)
         )
@@ -413,19 +408,23 @@ fun ConstraintLayoutScope.OnboardingButton(
     }
 
     if (pagerState.currentPage != viewCount.minus(1)) {
-        ProtonTextButton(
+        IconButton(
             modifier = Modifier
                 .constrainAs(dismissButton) {
                     width = Dimension.fillToConstraints
                     top.linkTo(parent.top)
-                    end.linkTo(parent.end)
+                    start.linkTo(parent.start)
                 }
                 .horizontalScroll(state = ScrollState(0), enabled = true),
             onClick = {
                 actions.closeOnboarding()
             }
         ) {
-            Text(text = stringResource(id = R.string.onboarding_skip))
+            Icon(
+                tint = ProtonTheme.colors.iconNorm,
+                imageVector = androidx.compose.material.icons.Icons.Filled.Close,
+                contentDescription = stringResource(id = R.string.onboarding_close_content_description)
+            )
         }
     }
 }
