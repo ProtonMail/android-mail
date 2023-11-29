@@ -2748,7 +2748,9 @@ class MailboxViewModelTest {
     }
 
     private fun expectedLabelAsConfirmed(expectedState: MailboxState, archiveSelected: Boolean = false) {
-        every { mailboxReducer.newStateFrom(any(), MailboxViewAction.LabelAsConfirmed(archiveSelected)) } returns expectedState
+        every {
+            mailboxReducer.newStateFrom(any(), MailboxViewAction.LabelAsConfirmed(archiveSelected))
+        } returns expectedState
     }
 
     private fun expectedMoveToConfirmed(expectedState: MailboxState) {
