@@ -259,6 +259,16 @@ internal class MailboxReducerTest(
                 shouldReduceBottomSheetState = true
             ),
             TestInput(
+                MailboxViewAction.DismissBottomSheet,
+                shouldReduceMailboxListState = false,
+                shouldReduceTopAppBarState = false,
+                shouldReduceUnreadFilterState = false,
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false,
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = true
+            ),
+            TestInput(
                 MailboxViewAction.LabelAsToggleAction(LabelIdSample.Label2022),
                 shouldReduceMailboxListState = false,
                 shouldReduceTopAppBarState = false,

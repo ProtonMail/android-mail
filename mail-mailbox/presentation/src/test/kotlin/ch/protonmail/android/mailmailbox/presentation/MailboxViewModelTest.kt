@@ -1971,6 +1971,51 @@ class MailboxViewModelTest {
     }
 
     @Test
+    fun `when bottom sheet dismissal is triggered then the label as bottom sheet is dismissed `() = runTest {
+        // Given
+        val item = readMailboxItemUiModel.copy(id = MessageIdSample.Invoice.id)
+        val selectedItemsList = listOf(item)
+
+        val expectedCustomLabels = MailLabelTestData.listOfCustomLabels
+        val expectedCustomUiLabels = MailLabelUiModelTestData.customLabelList
+
+        val initialState = createMailboxDataState()
+        val bottomSheetShownState = createMailboxStateWithLabelAsBottomSheet(selectedItemsList, false)
+        val intermediateState = MailboxStateSampleData.createSelectionMode(
+            listOf(item),
+            currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
+        )
+        expectViewMode(NoConversationGrouping)
+        expectedSelectedLabelCountStateChange(initialState)
+        returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
+        returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
+        expectObserveCustomMailLabelSucceeds(expectedCustomLabels)
+        expectGetMessagesWithLabelsSucceeds(selectedItemsList.map { MessageId(it.id) })
+        expectedLabelAsBottomSheetRequestedStateChange(expectedCustomUiLabels, bottomSheetShownState)
+        expectedLabelAsBottomSheetDismissed(initialState)
+
+        mailboxViewModel.state.test {
+            awaitItem() // First emission for selected user
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
+            assertEquals(intermediateState, awaitItem())
+            mailboxViewModel.submit(MailboxViewAction.RequestLabelAsBottomSheet)
+            assertEquals(bottomSheetShownState, awaitItem())
+            mailboxViewModel.submit(MailboxViewAction.DismissBottomSheet)
+
+            // Then
+            assertEquals(initialState, awaitItem())
+
+            coVerify {
+                relabelMessages wasNot Called
+                relabelConversations wasNot Called
+            }
+        }
+    }
+
+
+    @Test
     fun `when label as is triggered for no conversation grouping then relabel messages is called`() = runTest {
         // Given
         val item = readMailboxItemUiModel.copy(id = MessageIdSample.Invoice.id)
@@ -2926,6 +2971,28 @@ class MailboxViewModelTest {
     }
 
     @Test
+    fun `verify dismiss bottom sheet calls reducer`() = runTest {
+        // Given
+        val initialState = createMailboxDataState()
+        expectViewMode(NoConversationGrouping)
+        expectedSelectedLabelCountStateChange(initialState)
+        returnExpectedStateForDeleteDismissed(initialState, initialState)
+
+        mailboxViewModel.state.test {
+            // Given
+            awaitItem() // First emission for selected user
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.DeleteDialogDismissed)
+
+            // Then
+            verify(exactly = 1) {
+                mailboxReducer.newStateFrom(initialState, MailboxViewAction.DeleteDialogDismissed)
+            }
+        }
+    }
+
+    @Test
     fun `mailbox items are not requested when a user account is removed`() = runTest {
         // Given
         val currentLocationFlow = MutableStateFlow<MailLabelId>(initialLocationMailLabelId)
@@ -3155,6 +3222,10 @@ class MailboxViewModelTest {
 
     private fun expectedReducerResult(operation: MailboxOperation, expectedState: MailboxState) {
         every { mailboxReducer.newStateFrom(any(), operation) } returns expectedState
+    }
+
+    private fun expectedLabelAsBottomSheetDismissed(expectedState: MailboxState) {
+        every { mailboxReducer.newStateFrom(any(), MailboxViewAction.DismissBottomSheet) } returns expectedState
     }
 
     private fun expectRelabelMessagesSucceeds(

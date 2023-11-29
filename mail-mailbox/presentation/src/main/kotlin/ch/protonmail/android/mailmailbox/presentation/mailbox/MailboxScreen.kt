@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailmailbox.presentation.mailbox
 
 import android.content.res.Configuration
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.ReportDrawn
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.Orientation
@@ -117,6 +118,10 @@ fun MailboxScreen(
     val mailboxListItems = viewModel.items.collectAsLazyPagingItems()
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
+
+    BackHandler(bottomSheetState.isVisible) {
+        viewModel.submit(MailboxViewAction.DismissBottomSheet)
+    }
 
     LaunchedEffect(key1 = mailboxListItems.itemSnapshotList) {
         Timber.d("Paging items: ${mailboxListItems.itemSnapshotList.size}")
