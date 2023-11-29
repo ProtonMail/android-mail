@@ -27,7 +27,7 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
 import ch.protonmail.android.mailnotifications.PushNotificationSample.getSampleLoginAlertNotification
 import ch.protonmail.android.mailnotifications.data.local.ProcessPushNotificationDataWorker
-import ch.protonmail.android.mailnotifications.domain.AppInBackgroundState
+import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
 import ch.protonmail.android.mailnotifications.domain.model.LocalPushNotificationData
 import ch.protonmail.android.mailnotifications.domain.model.NewLoginPushData
 import ch.protonmail.android.mailnotifications.domain.model.UserPushData

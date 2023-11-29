@@ -24,7 +24,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.startup.Initializer
-import ch.protonmail.android.mailnotifications.domain.AppInBackgroundState
+import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors

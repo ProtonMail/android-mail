@@ -29,7 +29,7 @@ import ch.protonmail.android.mailnotifications.data.local.ProcessPushNotificatio
 import ch.protonmail.android.mailnotifications.data.local.ProcessPushNotificationDataWorkerUtils.isNewMessageNotification
 import ch.protonmail.android.mailnotifications.data.remote.resource.PushNotificationData
 import ch.protonmail.android.mailnotifications.data.remote.resource.PushNotificationSender
-import ch.protonmail.android.mailnotifications.domain.AppInBackgroundState
+import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
 import ch.protonmail.android.mailnotifications.domain.model.LocalPushNotificationData
 import ch.protonmail.android.mailnotifications.domain.model.MessageReadPushData
 import ch.protonmail.android.mailnotifications.domain.model.NewLoginPushData

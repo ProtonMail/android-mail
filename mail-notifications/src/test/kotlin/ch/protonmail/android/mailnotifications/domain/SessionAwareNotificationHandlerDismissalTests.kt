@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailnotifications.domain
 
 import java.util.UUID
+import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailnotifications.domain.handler.SessionAwareNotificationHandler
 import ch.protonmail.android.mailnotifications.domain.handler.SessionAwareNotificationHandler.Companion.DISMISSAL_DELAY
