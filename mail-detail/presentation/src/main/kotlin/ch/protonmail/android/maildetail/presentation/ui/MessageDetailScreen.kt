@@ -118,7 +118,11 @@ fun MessageDetailScreen(
         viewModel.submit(MessageViewAction.DismissBottomSheet)
     }
 
-    DeleteDialog(state = state.deleteDialogState, confirm = {}, dismiss = {})
+    DeleteDialog(
+        state = state.deleteDialogState,
+        confirm = {},
+        dismiss = { viewModel.submit(MessageViewAction.DeleteDialogDismissed) }
+    )
 
     ProtonModalBottomSheetLayout(
         sheetState = bottomSheetState,
@@ -170,7 +174,7 @@ fun MessageDetailScreen(
                 onReplyClick = { actions.onReply(it) },
                 onReplyAllClick = { actions.onReplyAll(it) },
                 onForwardClick = { actions.onForward(it) },
-                onDeleteClick = { actions.showFeatureMissingSnackbar() },
+                onDeleteClick = { viewModel.submit(MessageViewAction.DeleteRequested) },
                 onShowAllAttachmentsClicked = { viewModel.submit(MessageViewAction.ShowAllAttachments) },
                 onAttachmentClicked = { viewModel.submit(MessageViewAction.OnAttachmentClicked(it)) },
                 openAttachment = actions.openAttachment,

@@ -52,6 +52,10 @@ class MessageDeleteDialogReducerTest(
                     title = TextUiModel.TextRes(R.string.message_delete_dialog_title),
                     message = TextUiModel.TextRes(R.string.message_delete_dialog_message)
                 )
+            ),
+            TestInput(
+                operation = MessageViewAction.DeleteDialogDismissed,
+                expectedState = DeleteDialogState.Hidden
             )
         )
 

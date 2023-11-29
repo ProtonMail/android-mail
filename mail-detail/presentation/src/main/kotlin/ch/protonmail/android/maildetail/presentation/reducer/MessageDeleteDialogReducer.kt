@@ -29,6 +29,7 @@ class MessageDeleteDialogReducer @Inject constructor() {
 
     internal fun newStateFrom(operation: MessageDetailOperation.AffectingDeleteDialog) = when (operation) {
         MessageViewAction.DeleteRequested -> newStateFromDeleteRequested()
+        MessageViewAction.DeleteDialogDismissed -> DeleteDialogState.Hidden
     }
 
     private fun newStateFromDeleteRequested(): DeleteDialogState {

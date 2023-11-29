@@ -97,6 +97,7 @@ sealed interface MessageViewAction : MessageDetailOperation {
     object MarkUnread : MessageViewAction
     object Trash : MessageViewAction
     object DeleteRequested : MessageViewAction, AffectingDeleteDialog
+    object DeleteDialogDismissed : MessageViewAction, AffectingDeleteDialog
     object RequestMoveToBottomSheet : MessageViewAction, AffectingBottomSheet
     object RequestLabelAsBottomSheet : MessageViewAction, AffectingBottomSheet
     object DismissBottomSheet : MessageViewAction, AffectingBottomSheet
