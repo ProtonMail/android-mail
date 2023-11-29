@@ -256,6 +256,8 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.DismissBottomSheet -> emitNewStateFrom(viewAction)
                 is MailboxViewAction.Star -> handleStarAction(viewAction)
                 is MailboxViewAction.UnStar -> handleUnStarAction(viewAction)
+                is MailboxViewAction.MoveToArchive,
+                is MailboxViewAction.MoveToSpam -> handleMoveToAction(viewAction)
             }.exhaustive
         }
     }
@@ -572,17 +574,43 @@ class MailboxViewModel @Inject constructor(
             Timber.d("Selected folder is null")
             return
         }
+        handleMoveOperation(userId, selectionState, selectedFolder.id.labelId)
+    }
+
+    private suspend fun handleMoveToAction(viewAction: MailboxViewAction) {
+        val selectionState = state.value.mailboxListState as? MailboxListState.Data.SelectionMode
+        if (selectionState == null) {
+            Timber.d("MailboxListState is not in SelectionMode")
+            return
+        }
+        val userId = primaryUserId.filterNotNull().first()
+        val targetLabel = when (viewAction) {
+            is MailboxViewAction.MoveToArchive -> SystemLabelId.Archive.labelId
+            is MailboxViewAction.MoveToSpam -> SystemLabelId.Spam.labelId
+            else -> {
+                Timber.e("Unsupported action: $viewAction")
+                return
+            }
+        }
+        handleMoveOperation(userId, selectionState, targetLabel)
+    }
+
+    private suspend fun handleMoveOperation(
+        userId: UserId,
+        selectionState: MailboxListState.Data.SelectionMode,
+        targetLabelId: LabelId
+    ) {
         when (getPreferredViewMode()) {
             ViewMode.ConversationGrouping -> moveConversations(
                 userId = userId,
                 conversationIds = selectionState.selectedMailboxItems.map { ConversationId(it.id) },
-                labelId = selectedFolder.id.labelId
+                labelId = targetLabelId
             )
 
             ViewMode.NoConversationGrouping -> moveMessages(
                 userId = userId,
                 messageIds = selectionState.selectedMailboxItems.map { MessageId(it.id) },
-                labelId = selectedFolder.id.labelId
+                labelId = targetLabelId
             )
         }.fold(
             ifLeft = { MailboxEvent.ErrorMoving },

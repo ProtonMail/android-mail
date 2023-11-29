@@ -164,6 +164,16 @@ internal class MailboxTopAppBarReducerTest(
                 currentState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 42),
                 operation = MailboxViewAction.MoveToConfirmed,
                 expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text())
+            ),
+            TestInput(
+                currentState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 42),
+                operation = MailboxViewAction.MoveToArchive,
+                expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text())
+            ),
+            TestInput(
+                currentState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 42),
+                operation = MailboxViewAction.MoveToSpam,
+                expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text())
             )
         )
 

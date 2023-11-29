@@ -2716,6 +2716,194 @@ class MailboxViewModelTest {
     }
 
     @Test
+    fun `when move to archive is triggered for no-conversation grouping then move messages is called`() = runTest {
+        // Given
+        val item = readMailboxItemUiModel.copy(id = MessageIdSample.Invoice.id, showStar = true)
+        val secondItem = unreadMailboxItemUiModel.copy(id = MessageIdSample.AlphaAppQAReport.id, showStar = true)
+        val selectedItemsList = listOf(item, secondItem)
+
+        val initialState = createMailboxDataState()
+        val expectedActionItems = listOf(
+            ActionUiModelSample.build(Action.Unstar),
+            ActionUiModelSample.build(Action.Archive),
+            ActionUiModelSample.build(Action.Spam)
+        )
+        val expectedBottomSheetContent = MoreActionsBottomSheetState.Data(
+            actionUiModels = expectedActionItems.toImmutableList()
+        )
+        val bottomSheetShownState =
+            createMailboxStateWithMoreActionBottomSheet(selectedItemsList, expectedBottomSheetContent)
+        val intermediateState = MailboxStateSampleData.createSelectionMode(
+            listOf(item, secondItem),
+            currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
+        )
+        expectViewMode(NoConversationGrouping)
+        expectedSelectedLabelCountStateChange(initialState)
+        returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
+        returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
+        expectedMoreActionBottomSheetRequestedStateChange(expectedActionItems, bottomSheetShownState)
+        expectMoveMessagesSucceeds(userId, selectedItemsList, SystemLabelId.Archive.labelId)
+        expectedReducerResult(MailboxViewAction.MoveToConfirmed, initialState)
+
+
+        mailboxViewModel.state.test {
+            awaitItem() // First emission for selected user
+
+            // When + Then
+            mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
+            assertEquals(intermediateState, awaitItem())
+            mailboxViewModel.submit(MailboxViewAction.RequestMoreActionsBottomSheet)
+            assertEquals(bottomSheetShownState, awaitItem())
+            mailboxViewModel.submit(MailboxViewAction.MoveToArchive)
+            assertEquals(initialState, awaitItem())
+        }
+        coVerify { moveMessages(userId, selectedItemsList.map { MessageId(it.id) }, SystemLabelId.Archive.labelId) }
+        coVerify { moveConversations wasNot Called }
+    }
+
+    @Test
+    fun `when move to archive is triggered for conversation grouping then move conversation is called`() = runTest {
+        // Given
+        val item = readMailboxItemUiModel.copy(id = MessageIdSample.Invoice.id, showStar = true)
+        val secondItem = unreadMailboxItemUiModel.copy(id = MessageIdSample.AlphaAppQAReport.id, showStar = true)
+        val selectedItemsList = listOf(item, secondItem)
+
+        val initialState = createMailboxDataState()
+        val expectedActionItems = listOf(
+            ActionUiModelSample.build(Action.Unstar),
+            ActionUiModelSample.build(Action.Archive),
+            ActionUiModelSample.build(Action.Spam)
+        )
+        val expectedBottomSheetContent = MoreActionsBottomSheetState.Data(
+            actionUiModels = expectedActionItems.toImmutableList()
+        )
+        val bottomSheetShownState =
+            createMailboxStateWithMoreActionBottomSheet(selectedItemsList, expectedBottomSheetContent)
+        val intermediateState = MailboxStateSampleData.createSelectionMode(
+            listOf(item, secondItem),
+            currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
+        )
+        expectViewMode(ConversationGrouping)
+        expectedSelectedLabelCountStateChange(initialState)
+        returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
+        returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
+        expectedMoreActionBottomSheetRequestedStateChange(expectedActionItems, bottomSheetShownState)
+        expectMoveConversationsSucceeds(userId, selectedItemsList, SystemLabelId.Archive.labelId)
+        expectedReducerResult(MailboxViewAction.MoveToConfirmed, initialState)
+
+
+        mailboxViewModel.state.test {
+            awaitItem() // First emission for selected user
+
+            // When + Then
+            mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
+            assertEquals(intermediateState, awaitItem())
+            mailboxViewModel.submit(MailboxViewAction.RequestMoreActionsBottomSheet)
+            assertEquals(bottomSheetShownState, awaitItem())
+            mailboxViewModel.submit(MailboxViewAction.MoveToArchive)
+            assertEquals(initialState, awaitItem())
+        }
+        coVerify {
+            moveConversations(userId, selectedItemsList.map { ConversationId(it.id) }, SystemLabelId.Archive.labelId)
+        }
+        coVerify { moveMessages wasNot Called }
+    }
+
+    @Test
+    fun `when move to spam is triggered for no-conversation grouping then move messages is called`() = runTest {
+        // Given
+        val item = readMailboxItemUiModel.copy(id = MessageIdSample.Invoice.id, showStar = true)
+        val secondItem = unreadMailboxItemUiModel.copy(id = MessageIdSample.AlphaAppQAReport.id, showStar = true)
+        val selectedItemsList = listOf(item, secondItem)
+
+        val initialState = createMailboxDataState()
+        val expectedActionItems = listOf(
+            ActionUiModelSample.build(Action.Unstar),
+            ActionUiModelSample.build(Action.Archive),
+            ActionUiModelSample.build(Action.Spam)
+        )
+        val expectedBottomSheetContent = MoreActionsBottomSheetState.Data(
+            actionUiModels = expectedActionItems.toImmutableList()
+        )
+        val bottomSheetShownState =
+            createMailboxStateWithMoreActionBottomSheet(selectedItemsList, expectedBottomSheetContent)
+        val intermediateState = MailboxStateSampleData.createSelectionMode(
+            listOf(item, secondItem),
+            currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
+        )
+        expectViewMode(NoConversationGrouping)
+        expectedSelectedLabelCountStateChange(initialState)
+        returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
+        returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
+        expectedMoreActionBottomSheetRequestedStateChange(expectedActionItems, bottomSheetShownState)
+        expectMoveMessagesSucceeds(userId, selectedItemsList, SystemLabelId.Spam.labelId)
+        expectedReducerResult(MailboxViewAction.MoveToConfirmed, initialState)
+
+
+        mailboxViewModel.state.test {
+            awaitItem() // First emission for selected user
+
+            // When + Then
+            mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
+            assertEquals(intermediateState, awaitItem())
+            mailboxViewModel.submit(MailboxViewAction.RequestMoreActionsBottomSheet)
+            assertEquals(bottomSheetShownState, awaitItem())
+            mailboxViewModel.submit(MailboxViewAction.MoveToSpam)
+            assertEquals(initialState, awaitItem())
+        }
+        coVerify { moveMessages(userId, selectedItemsList.map { MessageId(it.id) }, SystemLabelId.Spam.labelId) }
+        coVerify { moveConversations wasNot Called }
+    }
+
+    @Test
+    fun `when move to spam is triggered for conversation grouping then move conversation is called`() = runTest {
+        // Given
+        val item = readMailboxItemUiModel.copy(id = MessageIdSample.Invoice.id, showStar = true)
+        val secondItem = unreadMailboxItemUiModel.copy(id = MessageIdSample.AlphaAppQAReport.id, showStar = true)
+        val selectedItemsList = listOf(item, secondItem)
+
+        val initialState = createMailboxDataState()
+        val expectedActionItems = listOf(
+            ActionUiModelSample.build(Action.Unstar),
+            ActionUiModelSample.build(Action.Archive),
+            ActionUiModelSample.build(Action.Spam)
+        )
+        val expectedBottomSheetContent = MoreActionsBottomSheetState.Data(
+            actionUiModels = expectedActionItems.toImmutableList()
+        )
+        val bottomSheetShownState =
+            createMailboxStateWithMoreActionBottomSheet(selectedItemsList, expectedBottomSheetContent)
+        val intermediateState = MailboxStateSampleData.createSelectionMode(
+            listOf(item, secondItem),
+            currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
+        )
+        expectViewMode(ConversationGrouping)
+        expectedSelectedLabelCountStateChange(initialState)
+        returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
+        returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
+        expectedMoreActionBottomSheetRequestedStateChange(expectedActionItems, bottomSheetShownState)
+        expectMoveConversationsSucceeds(userId, selectedItemsList, SystemLabelId.Spam.labelId)
+        expectedReducerResult(MailboxViewAction.MoveToConfirmed, initialState)
+
+
+        mailboxViewModel.state.test {
+            awaitItem() // First emission for selected user
+
+            // When + Then
+            mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
+            assertEquals(intermediateState, awaitItem())
+            mailboxViewModel.submit(MailboxViewAction.RequestMoreActionsBottomSheet)
+            assertEquals(bottomSheetShownState, awaitItem())
+            mailboxViewModel.submit(MailboxViewAction.MoveToSpam)
+            assertEquals(initialState, awaitItem())
+        }
+        coVerify {
+            moveConversations(userId, selectedItemsList.map { ConversationId(it.id) }, SystemLabelId.Spam.labelId)
+        }
+        coVerify { moveMessages wasNot Called }
+    }
+
+    @Test
     fun `verify dismiss delete dialog calls reducer`() = runTest {
         // Given
         val initialState = createMailboxDataState()

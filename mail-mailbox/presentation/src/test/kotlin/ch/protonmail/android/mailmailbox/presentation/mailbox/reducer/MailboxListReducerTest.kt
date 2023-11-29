@@ -764,6 +764,54 @@ internal class MailboxListReducerTest(
                     ),
                     selectionModeEnabled = false
                 )
+            ),
+            TestInput(
+                currentState = MailboxListState.Data.SelectionMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    selectedMailboxItems = setOf(
+                        SelectedMailboxItem(
+                            userId = UserIdTestData.userId,
+                            id = MailboxItemUiModelTestData.readMailboxItemUiModel.id,
+                            isRead = false,
+                            isStarred = false
+                        )
+                    ),
+                    selectionModeEnabled = false
+                ),
+                operation = MailboxViewAction.MoveToArchive,
+                expectedState = MailboxListState.Data.ViewMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    openItemEffect = Effect.empty(),
+                    scrollToMailboxTop = Effect.empty(),
+                    offlineEffect = Effect.empty(),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshRequested = false,
+                    selectionModeEnabled = false
+                )
+            ),
+            TestInput(
+                currentState = MailboxListState.Data.SelectionMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    selectedMailboxItems = setOf(
+                        SelectedMailboxItem(
+                            userId = UserIdTestData.userId,
+                            id = MailboxItemUiModelTestData.readMailboxItemUiModel.id,
+                            isRead = false,
+                            isStarred = false
+                        )
+                    ),
+                    selectionModeEnabled = false
+                ),
+                operation = MailboxViewAction.MoveToSpam,
+                expectedState = MailboxListState.Data.ViewMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    openItemEffect = Effect.empty(),
+                    scrollToMailboxTop = Effect.empty(),
+                    offlineEffect = Effect.empty(),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshRequested = false,
+                    selectionModeEnabled = false
+                )
             )
         )
 

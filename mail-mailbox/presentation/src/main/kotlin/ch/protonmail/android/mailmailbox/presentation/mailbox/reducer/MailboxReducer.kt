@@ -96,6 +96,8 @@ class MailboxReducer @Inject constructor(
                 is MailboxEvent.DeleteConfirmed,
                 is MailboxEvent.Trash,
                 is MailboxViewAction.MoveToConfirmed,
+                is MailboxViewAction.MoveToArchive,
+                is MailboxViewAction.MoveToSpam,
                 is MailboxViewAction.ExitSelectionMode -> BottomBarEvent.HideBottomSheet
             }
             bottomAppBarReducer.newStateFrom(bottomAppBarState, bottomBarOperation)
@@ -144,6 +146,8 @@ class MailboxReducer @Inject constructor(
                 is MailboxViewAction.LabelAsConfirmed,
                 is MailboxViewAction.Star,
                 is MailboxViewAction.UnStar,
+                is MailboxViewAction.MoveToArchive,
+                is MailboxViewAction.MoveToSpam,
                 is MailboxViewAction.DismissBottomSheet -> BottomSheetOperation.Dismiss
 
                 is MailboxViewAction.MoveToDestinationSelected -> MoveToDestinationSelected(operation.mailLabelId)

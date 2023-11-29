@@ -199,8 +199,8 @@ fun MailboxScreen(
                     actionCallbacks = MoreActionBottomSheetContent.Actions(
                         onStar = { viewModel.submit(MailboxViewAction.Star) },
                         onUnStar = { viewModel.submit(MailboxViewAction.UnStar) },
-                        onArchive = { Timber.d("Operation not implemented yet") },
-                        onSpam = { Timber.d("Operation not implemented yet") }
+                        onArchive = { viewModel.submit(MailboxViewAction.MoveToArchive) },
+                        onSpam = { viewModel.submit(MailboxViewAction.MoveToSpam) }
                     )
                 )
 
