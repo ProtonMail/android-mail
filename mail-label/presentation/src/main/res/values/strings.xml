@@ -29,6 +29,7 @@
     <string name="label_title_all_drafts">All drafts</string>
     <string name="label_title_all_sent">All sent</string>
     <string name="label_title_folders">Folders</string>
+    <string name="label_title_parent_folder">Parent folder</string>
     <string name="label_title_labels">Labels</string>
     <string name="label_title_add_folder">Add folder</string>
     <string name="label_title_add_label">Add label</string>
@@ -75,4 +76,5 @@
     <string name="folder_form_notifications">Notifications</string>
     <string name="folder_saved">Folder saved</string>
     <string name="folder_deleted">Folder deleted</string>
+    <string name="parent_folder_none">None</string>
 </resources>

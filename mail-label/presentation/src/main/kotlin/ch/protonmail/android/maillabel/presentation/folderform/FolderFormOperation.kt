@@ -27,7 +27,7 @@ sealed interface FolderFormOperation
 internal sealed interface FolderFormViewAction : FolderFormOperation {
     data class FolderNameChanged(val name: String) : FolderFormViewAction
     data class FolderColorChanged(val color: Color) : FolderFormViewAction
-    data class FolderParentChanged(val parentId: LabelId) : FolderFormViewAction
+    data class FolderParentChanged(val parentId: LabelId?) : FolderFormViewAction
     data class FolderNotificationsChanged(val enabled: Boolean) : FolderFormViewAction
     object OnSaveClick : FolderFormViewAction
     object OnDeleteClick : FolderFormViewAction

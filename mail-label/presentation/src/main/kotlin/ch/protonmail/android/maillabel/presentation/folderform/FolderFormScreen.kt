@@ -32,6 +32,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -69,15 +70,29 @@ import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultNorm
 import me.proton.core.compose.theme.defaultSmallWeak
 import me.proton.core.compose.theme.defaultStrongNorm
+import me.proton.core.label.domain.entity.LabelId
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun FolderFormScreen(actions: FolderFormScreen.Actions, viewModel: FolderFormViewModel = hiltViewModel()) {
+fun FolderFormScreen(
+    actions: FolderFormScreen.Actions,
+    currentParentLabelId: State<String?>?,
+    viewModel: FolderFormViewModel = hiltViewModel()
+) {
     val context = LocalContext.current
     val view = LocalView.current
     val keyboardController = LocalSoftwareKeyboardController.current
     val snackbarHostErrorState = ProtonSnackbarHostState(defaultType = ProtonSnackbarType.ERROR)
     val state = rememberAsState(flow = viewModel.state, initial = FolderFormState.Loading(Effect.empty())).value
+
+    currentParentLabelId?.value?.let {
+        // Initial value will always be null when initializing the view,
+        //  so we use empty String to clear the current parent label id value
+        val labelId =
+            if (it.isEmpty()) null
+            else LabelId(it)
+        viewModel.submit(FolderFormViewAction.FolderParentChanged(labelId))
+    }
 
     val customActions = actions.copy(
         onFolderNameChanged = {
@@ -212,7 +227,12 @@ fun FolderFormParentFolderField(state: FolderFormState.Data, actions: FolderForm
             .clickable(
                 onClickLabel = stringResource(R.string.folder_form_parent),
                 role = Role.Button,
-                onClick = actions.onFolderParentClick
+                onClick = {
+                    actions.onFolderParentClick(
+                        if (state is FolderFormState.Data.Update) state.labelId else null,
+                        state.parent?.labelId
+                    )
+                }
             )
     ) {
         Text(
@@ -290,7 +310,7 @@ object FolderFormScreen {
         val onFolderNameChanged: (String) -> Unit,
         val onFolderColorChanged: (Color) -> Unit,
         val onFolderNotificationsChanged: (Boolean) -> Unit,
-        val onFolderParentClick: () -> Unit,
+        val onFolderParentClick: (LabelId?, LabelId?) -> Unit,
         val onSaveClick: () -> Unit,
         val onDeleteClick: () -> Unit
     ) {
@@ -304,7 +324,7 @@ object FolderFormScreen {
                 onFolderNameChanged = {},
                 onFolderColorChanged = {},
                 onFolderNotificationsChanged = {},
-                onFolderParentClick = {},
+                onFolderParentClick = { _, _ -> },
                 onSaveClick = {},
                 onDeleteClick = {}
             )

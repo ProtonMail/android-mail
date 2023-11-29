@@ -19,6 +19,7 @@
 package ch.protonmail.android.navigation.route
 
 import android.net.Uri
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -35,6 +36,7 @@ import ch.protonmail.android.maildetail.presentation.ui.MessageDetail
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.maillabel.presentation.folderform.FolderFormScreen
 import ch.protonmail.android.maillabel.presentation.folderlist.FolderListScreen
+import ch.protonmail.android.maillabel.presentation.folderparentlist.ParentFolderListScreen
 import ch.protonmail.android.maillabel.presentation.labelform.LabelFormScreen
 import ch.protonmail.android.maillabel.presentation.labellist.LabelListScreen
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
@@ -42,6 +44,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreen
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailsettings.presentation.settings.MainSettingsScreen
 import ch.protonmail.android.navigation.model.Destination
+import ch.protonmail.android.navigation.model.SavedStateKey
 import me.proton.core.compose.navigation.get
 import me.proton.core.domain.entity.UserId
 import me.proton.core.util.kotlin.takeIfNotBlank
@@ -228,7 +231,6 @@ internal fun NavGraphBuilder.addLabelList(
     }
 }
 
-@SuppressWarnings("LongParameterList")
 internal fun NavGraphBuilder.addLabelForm(
     navController: NavHostController,
     showLabelSavedSnackbar: () -> Unit,
@@ -270,7 +272,6 @@ internal fun NavGraphBuilder.addFolderList(
     }
 }
 
-@SuppressWarnings("LongParameterList")
 internal fun NavGraphBuilder.addFolderForm(
     navController: NavHostController,
     showSuccessSnackbar: (message: String) -> Unit,
@@ -280,7 +281,9 @@ internal fun NavGraphBuilder.addFolderForm(
         onBackClick = {
             navController.popBackStack()
         },
-        onFolderParentClick = {},
+        onFolderParentClick = { labelId, currentParentLabelId ->
+            navController.navigate(Destination.Screen.ParentFolderList(labelId, currentParentLabelId))
+        },
         exitWithSuccessMessage = { message ->
             navController.popBackStack()
             showSuccessSnackbar(message)
@@ -290,7 +293,52 @@ internal fun NavGraphBuilder.addFolderForm(
             showErrorSnackbar(message)
         }
     )
-    composable(route = Destination.Screen.CreateFolder.route) { FolderFormScreen(actions) }
-    composable(route = Destination.Screen.EditFolder.route) { FolderFormScreen(actions) }
+    composable(route = Destination.Screen.CreateFolder.route) {
+        FolderFormScreen(
+            actions,
+            currentParentLabelId = navController.currentBackStackEntry?.savedStateHandle?.getLiveData<String>(
+                SavedStateKey.CurrentParentFolderId.key
+            )?.observeAsState()
+        )
+    }
+    composable(route = Destination.Screen.EditFolder.route) {
+        FolderFormScreen(
+            actions,
+            currentParentLabelId = navController.currentBackStackEntry?.savedStateHandle?.getLiveData<String>(
+                SavedStateKey.CurrentParentFolderId.key
+            )?.observeAsState()
+        )
+    }
 }
 
+internal fun NavGraphBuilder.addParentFolderList(
+    navController: NavHostController,
+    showErrorSnackbar: (message: String) -> Unit
+) {
+    val actions = ParentFolderListScreen.Actions.Empty.copy(
+        onBackClick = {
+            navController.popBackStack()
+        },
+        onFolderSelected = { labelId ->
+            navController.previousBackStackEntry?.savedStateHandle?.set(
+                SavedStateKey.CurrentParentFolderId.key,
+                labelId.id
+            )
+            navController.popBackStack()
+        },
+        onNoneClick = {
+            navController.previousBackStackEntry?.savedStateHandle?.set(
+                SavedStateKey.CurrentParentFolderId.key,
+                ""
+            )
+            navController.popBackStack()
+        },
+        exitWithErrorMessage = { message ->
+            navController.popBackStack()
+            showErrorSnackbar(message)
+        }
+    )
+    composable(route = Destination.Screen.ParentFolderList.route) {
+        ParentFolderListScreen(actions)
+    }
+}

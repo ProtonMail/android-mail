@@ -26,6 +26,8 @@ import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.Seriali
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.ConversationIdKey
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen.MESSAGE_ID_KEY
 import ch.protonmail.android.maillabel.presentation.folderform.FolderFormScreen.FolderFormLabelIdKey
+import ch.protonmail.android.maillabel.presentation.folderparentlist.ParentFolderListScreen.ParentFolderListLabelIdKey
+import ch.protonmail.android.maillabel.presentation.folderparentlist.ParentFolderListScreen.ParentFolderListParentLabelIdKey
 import ch.protonmail.android.maillabel.presentation.labelform.LabelFormScreen.LabelFormLabelIdKey
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailsettings.domain.model.SwipeActionDirection
@@ -85,6 +87,17 @@ sealed class Destination(val route: String) {
         object CreateFolder : Destination("folderForm")
         object EditFolder : Destination("folderForm/${FolderFormLabelIdKey.wrap()}") {
             operator fun invoke(labelId: LabelId) = route.replace(FolderFormLabelIdKey.wrap(), labelId.id)
+        }
+        object ParentFolderList : Destination(
+            "parentFolderList/${ParentFolderListLabelIdKey.wrap()}/${ParentFolderListParentLabelIdKey.wrap()}"
+        ) {
+            operator fun invoke(labelId: LabelId?, parentLabelId: LabelId?) = run {
+                route.replace(
+                    ParentFolderListLabelIdKey.wrap(), labelId?.id ?: "null"
+                ).replace(
+                    ParentFolderListParentLabelIdKey.wrap(), parentLabelId?.id ?: "null"
+                )
+            }
         }
     }
 

@@ -35,6 +35,7 @@ object Dependencies {
         add(AndroidX.Compose.material)
         add(AndroidX.Compose.material3)
         add(AndroidX.Compose.runtime)
+        add(AndroidX.Compose.runtimeLiveData)
         add(AndroidX.Compose.ui)
         add(AndroidX.Compose.uiToolingPreview)
         add(AndroidX.ConstraintLayoutCompose.constraintLayoutCompose)
