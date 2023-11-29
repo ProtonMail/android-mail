@@ -28,8 +28,11 @@ import ch.protonmail.android.maillabel.domain.usecase.ObserveLabels
 import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.coEvery
+import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.spyk
+import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -49,16 +52,9 @@ class LabelListViewModelTest {
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
         every { this@mockk.invoke() } returns flowOf(userId)
     }
+    private val observeLabels = mockk<ObserveLabels>()
 
-    private val observeLabels = mockk<ObserveLabels> {
-        every { this@mockk.invoke(userId) } returns flowOf(
-            listOf(defaultTestLabel).right()
-        )
-    }
-
-    private val reducer = mockk<LabelListReducer> {
-        every { newStateFrom(any(), any()) } returns LabelListState.Loading()
-    }
+    private val reducer = spyk(LabelListReducer())
 
     private val labelListViewModel by lazy {
         LabelListViewModel(
@@ -81,14 +77,7 @@ class LabelListViewModelTest {
     @Test
     fun `given empty label list, when init, then emits empty state`() = runTest {
         // Given
-        coEvery { observePrimaryUserId() } returns flowOf(userId)
         coEvery { observeLabels(userId = userId) } returns flowOf(emptyList<Label>().right())
-        every {
-            reducer.newStateFrom(
-                LabelListState.Loading(),
-                LabelListEvent.LabelListLoaded(emptyList())
-            )
-        } returns LabelListState.ListLoaded.Empty()
 
         // When
         labelListViewModel.state.test {
@@ -98,17 +87,19 @@ class LabelListViewModelTest {
 
             assertEquals(expected, actual)
         }
+        verify(exactly = 1) {
+            reducer.newStateFrom(
+                LabelListState.Loading(),
+                LabelListEvent.LabelListLoaded(emptyList())
+            )
+        }
+        confirmVerified(reducer)
     }
 
     @Test
     fun `given label list, when init, then emits data state`() = runTest {
         // Given
-        every {
-            reducer.newStateFrom(
-                LabelListState.Loading(),
-                LabelListEvent.LabelListLoaded(listOf(defaultTestLabel))
-            )
-        } returns LabelListState.ListLoaded.Data(labels = listOf(defaultTestLabel))
+        coEvery { observeLabels(userId = userId) } returns flowOf(listOf(defaultTestLabel).right())
 
         // When
         labelListViewModel.state.test {
@@ -120,20 +111,19 @@ class LabelListViewModelTest {
 
             assertEquals(expected, actual)
         }
+        verify(exactly = 1) {
+            reducer.newStateFrom(
+                LabelListState.Loading(),
+                LabelListEvent.LabelListLoaded(listOf(defaultTestLabel))
+            )
+        }
+        confirmVerified(reducer)
     }
 
     @Test
     fun `given error on loading label list, when init, then emits error state`() = runTest {
         // Given
-        every { observeLabels.invoke(userId) } returns flowOf(
-            DataError.Local.Unknown.left()
-        )
-        every {
-            reducer.newStateFrom(
-                LabelListState.Loading(),
-                LabelListEvent.ErrorLoadingLabelList
-            )
-        } returns LabelListState.Loading(errorLoading = Effect.of(Unit))
+        every { observeLabels.invoke(userId) } returns flowOf(DataError.Local.Unknown.left())
 
         // When
         labelListViewModel.state.test {
@@ -143,23 +133,19 @@ class LabelListViewModelTest {
 
             assertEquals(expected, actual)
         }
+        verify(exactly = 1) {
+            reducer.newStateFrom(
+                LabelListState.Loading(),
+                LabelListEvent.ErrorLoadingLabelList
+            )
+        }
+        confirmVerified(reducer)
     }
 
     @Test
     fun `given label list, when action add label, then emits open label form state`() = runTest {
         // Given
-        every {
-            reducer.newStateFrom(
-                LabelListState.Loading(),
-                LabelListEvent.LabelListLoaded(listOf(defaultTestLabel))
-            )
-        } returns LabelListState.ListLoaded.Data(labels = listOf(defaultTestLabel))
-        every {
-            reducer.newStateFrom(
-                LabelListState.ListLoaded.Data(labels = listOf(defaultTestLabel)),
-                LabelListEvent.OpenLabelForm
-            )
-        } returns LabelListState.ListLoaded.Data(labels = listOf(defaultTestLabel), openLabelForm = Effect.of(Unit))
+        coEvery { observeLabels(userId = userId) } returns flowOf(listOf(defaultTestLabel).right())
 
         // When
         labelListViewModel.state.test {
@@ -175,6 +161,16 @@ class LabelListViewModelTest {
 
             assertEquals(expected, actual)
         }
+        verify(exactly = 1) {
+            reducer.newStateFrom(
+                LabelListState.Loading(),
+                LabelListEvent.LabelListLoaded(listOf(defaultTestLabel))
+            )
+            reducer.newStateFrom(
+                LabelListState.ListLoaded.Data(labels = listOf(defaultTestLabel)),
+                LabelListEvent.OpenLabelForm
+            )
+        }
+        confirmVerified(reducer)
     }
-
 }
