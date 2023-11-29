@@ -710,6 +710,60 @@ internal class MailboxListReducerTest(
                     ),
                     selectionModeEnabled = false
                 )
+            ),
+            TestInput(
+                currentState = MailboxListState.Data.SelectionMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    selectedMailboxItems = setOf(
+                        SelectedMailboxItem(
+                            userId = UserIdTestData.userId,
+                            id = MailboxItemUiModelTestData.readMailboxItemUiModel.id,
+                            isRead = false,
+                            isStarred = false
+                        )
+                    ),
+                    selectionModeEnabled = false
+                ),
+                operation = MailboxViewAction.Star,
+                expectedState = MailboxListState.Data.SelectionMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    selectedMailboxItems = setOf(
+                        SelectedMailboxItem(
+                            userId = UserIdTestData.userId,
+                            id = MailboxItemUiModelTestData.readMailboxItemUiModel.id,
+                            isRead = false,
+                            isStarred = true
+                        )
+                    ),
+                    selectionModeEnabled = false
+                )
+            ),
+            TestInput(
+                currentState = MailboxListState.Data.SelectionMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    selectedMailboxItems = setOf(
+                        SelectedMailboxItem(
+                            userId = UserIdTestData.userId,
+                            id = MailboxItemUiModelTestData.readMailboxItemUiModel.id,
+                            isRead = false,
+                            isStarred = true
+                        )
+                    ),
+                    selectionModeEnabled = false
+                ),
+                operation = MailboxViewAction.UnStar,
+                expectedState = MailboxListState.Data.SelectionMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    selectedMailboxItems = setOf(
+                        SelectedMailboxItem(
+                            userId = UserIdTestData.userId,
+                            id = MailboxItemUiModelTestData.readMailboxItemUiModel.id,
+                            isRead = false,
+                            isStarred = false
+                        )
+                    ),
+                    selectionModeEnabled = false
+                )
             )
         )
 
