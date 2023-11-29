@@ -82,13 +82,19 @@ internal sealed interface MailboxViewAction : MailboxOperation {
         val mailLabelId: MailLabelId
     ) : MailboxViewAction, AffectingBottomSheet
 
-    object MoveToConfirmed : MailboxViewAction, AffectingTopAppBar, AffectingMailboxList, AffectingBottomSheet
+    object MoveToConfirmed :
+        MailboxViewAction,
+        AffectingTopAppBar,
+        AffectingBottomAppBar,
+        AffectingMailboxList,
+        AffectingBottomSheet
 
     object RequestMoreActionsBottomSheet : MailboxViewAction, AffectingBottomSheet
     object Star : MailboxViewAction, AffectingMailboxList, AffectingBottomSheet
     object UnStar : MailboxViewAction, AffectingMailboxList, AffectingBottomSheet
 
     object DismissBottomSheet : MailboxViewAction, AffectingBottomSheet
+
     /*
      *`OnOfflineWithData` and `OnErrorWithData` are not actual Actions which are actively performed by the user
      * but rather "Events" which happen when loading mailbox items. They are represented as actions due to

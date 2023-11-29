@@ -92,10 +92,11 @@ class MailboxReducer @Inject constructor(
         return if (operation is MailboxOperation.AffectingBottomAppBar) {
             val bottomBarOperation = when (operation) {
                 is MailboxEvent.EnterSelectionMode -> BottomBarEvent.ShowBottomSheet
-                is MailboxViewAction.ExitSelectionMode -> BottomBarEvent.HideBottomSheet
                 is MailboxEvent.MessageBottomBarEvent -> operation.bottomBarEvent
                 is MailboxEvent.DeleteConfirmed,
-                is MailboxEvent.Trash -> BottomBarEvent.HideBottomSheet
+                is MailboxEvent.Trash,
+                is MailboxViewAction.MoveToConfirmed,
+                is MailboxViewAction.ExitSelectionMode -> BottomBarEvent.HideBottomSheet
             }
             bottomAppBarReducer.newStateFrom(bottomAppBarState, bottomBarOperation)
         } else {
