@@ -26,7 +26,7 @@ import me.proton.core.compose.component.ProtonAlertDialogButton
 import me.proton.core.compose.component.ProtonAlertDialogText
 
 @Composable
-fun MailboxDeleteDialog(
+fun DeleteDialog(
     state: DeleteDialogState,
     confirm: () -> Unit,
     dismiss: () -> Unit

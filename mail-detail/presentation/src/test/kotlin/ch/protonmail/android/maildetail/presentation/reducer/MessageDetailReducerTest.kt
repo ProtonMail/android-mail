@@ -23,9 +23,8 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
+import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.maildetail.presentation.R.string
-import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
-import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailActionBarUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
@@ -33,10 +32,12 @@ import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperatio
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
-import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
 import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData
@@ -77,11 +78,16 @@ class MessageDetailReducerTest(
         every { newStateFrom(any(), any()) } returns reducedState.bottomSheetState
     }
 
+    private val deleteDialogReducer: MessageDeleteDialogReducer = mockk {
+        every { newStateFrom(any()) } returns reducedState.deleteDialogState
+    }
+
     private val detailReducer = MessageDetailReducer(
         messageMetadataReducer,
         messageBodyReducer,
         bottomBarReducer,
-        bottomSheetReducer
+        bottomSheetReducer,
+        deleteDialogReducer
     )
 
     @Test
@@ -154,6 +160,12 @@ class MessageDetailReducerTest(
             assertEquals(exitMessage, nextState.exitScreenWithMessageEffect.consume())
         }
 
+        if (shouldReduceDeleteDialogState) {
+            verify { deleteDialogReducer.newStateFrom(any()) }
+        } else {
+            assertEquals(currentState.deleteDialogState, nextState.deleteDialogState, testName)
+        }
+
         // Reducer should not change the requestLinkConfirmation flag, just copy it
         assertEquals(currentState.requestLinkConfirmation, nextState.requestLinkConfirmation)
     }
@@ -180,7 +192,8 @@ class MessageDetailReducerTest(
             openMessageBodyLinkEffect = Effect.empty(),
             openAttachmentEffect = Effect.empty(),
             showReplyActionsFeatureFlag = false,
-            requestLinkConfirmation = false
+            requestLinkConfirmation = false,
+            deleteDialogState = DeleteDialogState.Hidden
         )
 
         private val actions = listOf(
@@ -456,6 +469,17 @@ class MessageDetailReducerTest(
                 shouldReduceToErrorEffect = true,
                 shouldReduceBottomSheetState = false,
                 shouldReduceOpenMessageBodyLinkEffect = false
+            ),
+            TestInput(
+                MessageViewAction.DeleteRequested,
+                shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBodyState = false,
+                shouldReduceBottomBarState = false,
+                shouldReduceExitEffect = false,
+                shouldReduceToErrorEffect = false,
+                shouldReduceBottomSheetState = false,
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReduceDeleteDialogState = true
             )
         )
 
@@ -482,6 +506,7 @@ class MessageDetailReducerTest(
         val shouldReduceBottomSheetState: Boolean,
         val shouldReduceToErrorEffect: Boolean,
         val shouldReduceOpenMessageBodyLinkEffect: Boolean,
-        val exitMessage: TextUiModel? = null
+        val exitMessage: TextUiModel? = null,
+        val shouldReduceDeleteDialogState: Boolean = false
     )
 }

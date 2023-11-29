@@ -59,6 +59,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import ch.protonmail.android.maildetail.presentation.reducer.MessageBodyReducer
+import ch.protonmail.android.maildetail.presentation.reducer.MessageDeleteDialogReducer
 import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailMetadataReducer
 import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailReducer
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
@@ -145,7 +146,8 @@ class MessageDetailViewModelTest {
         MessageDetailMetadataReducer(),
         MessageBodyReducer(),
         BottomBarReducer(),
-        BottomSheetReducer(MoveToBottomSheetReducer(), LabelAsBottomSheetReducer(), MoreActionsBottomSheetReducer())
+        BottomSheetReducer(MoveToBottomSheetReducer(), LabelAsBottomSheetReducer(), MoreActionsBottomSheetReducer()),
+        MessageDeleteDialogReducer()
     )
     private val defaultFolderColorSettings = FolderColorSettings()
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {

@@ -22,6 +22,7 @@ import android.net.Uri
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation.AffectingBottomSheet
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation.AffectingDeleteDialog
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation.AffectingErrorBar
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation.AffectingMessage
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation.AffectingMessageBody
@@ -37,6 +38,7 @@ sealed interface MessageDetailOperation {
     sealed interface AffectingMessageBody
     sealed interface AffectingErrorBar
     sealed interface AffectingBottomSheet
+    sealed interface AffectingDeleteDialog
 }
 
 sealed interface MessageDetailEvent : MessageDetailOperation {
@@ -94,6 +96,7 @@ sealed interface MessageViewAction : MessageDetailOperation {
     object UnStar : MessageViewAction, AffectingMessage
     object MarkUnread : MessageViewAction
     object Trash : MessageViewAction
+    object DeleteRequested : MessageViewAction, AffectingDeleteDialog
     object RequestMoveToBottomSheet : MessageViewAction, AffectingBottomSheet
     object RequestLabelAsBottomSheet : MessageViewAction, AffectingBottomSheet
     object DismissBottomSheet : MessageViewAction, AffectingBottomSheet

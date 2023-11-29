@@ -26,6 +26,7 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.contentDescription
 import ch.protonmail.android.mailcommon.presentation.model.description
 import ch.protonmail.android.mailcommon.presentation.model.iconDrawable
+import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
@@ -80,7 +81,8 @@ object MessageDetailsPreviewData {
         openMessageBodyLinkEffect = Effect.empty(),
         openAttachmentEffect = Effect.empty(),
         showReplyActionsFeatureFlag = false,
-        requestLinkConfirmation = false
+        requestLinkConfirmation = false,
+        deleteDialogState = DeleteDialogState.Hidden
     )
 
     val MessageWithLabels = Message.copy(
@@ -106,7 +108,8 @@ object MessageDetailsPreviewData {
         openMessageBodyLinkEffect = Effect.empty(),
         openAttachmentEffect = Effect.empty(),
         showReplyActionsFeatureFlag = false,
-        requestLinkConfirmation = false
+        requestLinkConfirmation = false,
+        deleteDialogState = DeleteDialogState.Hidden
     )
 }
 

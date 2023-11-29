@@ -22,6 +22,7 @@ import android.net.Uri
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
 
@@ -36,7 +37,8 @@ data class MessageDetailState(
     val openMessageBodyLinkEffect: Effect<Uri>,
     val openAttachmentEffect: Effect<OpenAttachmentIntentValues>,
     val showReplyActionsFeatureFlag: Boolean,
-    val requestLinkConfirmation: Boolean
+    val requestLinkConfirmation: Boolean,
+    val deleteDialogState: DeleteDialogState
 ) {
 
     companion object {
@@ -52,7 +54,8 @@ data class MessageDetailState(
             openMessageBodyLinkEffect = Effect.empty(),
             openAttachmentEffect = Effect.empty(),
             showReplyActionsFeatureFlag = false,
-            requestLinkConfirmation = false
+            requestLinkConfirmation = false,
+            deleteDialogState = DeleteDialogState.Hidden
         )
     }
 }

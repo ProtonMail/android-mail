@@ -56,6 +56,7 @@ import ch.protonmail.android.mailcommon.presentation.compose.pxToDp
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
+import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialog
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
@@ -116,6 +117,8 @@ fun MessageDetailScreen(
     BackHandler(bottomSheetState.isVisible) {
         viewModel.submit(MessageViewAction.DismissBottomSheet)
     }
+
+    DeleteDialog(state = state.deleteDialogState, confirm = {}, dismiss = {})
 
     ProtonModalBottomSheetLayout(
         sheetState = bottomSheetState,

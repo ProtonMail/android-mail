@@ -63,4 +63,6 @@
     <string name="external_link_confirmation_dialog_do_not_ask_again">Don\'t ask again</string>
     <string name="external_link_confirmation_dialog_cancel_button">Cancel</string>
     <string name="external_link_confirmation_dialog_continue_button">Continue</string>
+    <string name="message_delete_dialog_title">Delete message</string>
+    <string name="message_delete_dialog_message">Are you sure you want to permanently delete this message?</string>
 </resources>

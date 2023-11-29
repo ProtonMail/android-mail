@@ -22,14 +22,15 @@ import android.net.Uri
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
+import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.presentation.R
-import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetOperation
-import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState.LabelAsBottomSheetAction.LabelToggled
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetOperation
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState.LabelAsBottomSheetAction.LabelToggled
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState.MoveToBottomSheetAction.MoveToDestinationSelected
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
 import javax.inject.Inject
@@ -38,7 +39,8 @@ class MessageDetailReducer @Inject constructor(
     private val messageMetadataReducer: MessageDetailMetadataReducer,
     private val messageBodyReducer: MessageBodyReducer,
     private val bottomBarReducer: BottomBarReducer,
-    private val bottomSheetReducer: BottomSheetReducer
+    private val bottomSheetReducer: BottomSheetReducer,
+    private val deleteDialogReducer: MessageDeleteDialogReducer
 ) {
 
     fun newStateFrom(currentState: MessageDetailState, operation: MessageDetailOperation): MessageDetailState =
@@ -51,7 +53,8 @@ class MessageDetailReducer @Inject constructor(
             exitScreenEffect = currentState.toNewExitStateFrom(operation),
             exitScreenWithMessageEffect = currentState.toNewExitWithMessageStateFrom(operation),
             openMessageBodyLinkEffect = currentState.toNewOpenMessageBodyLinkStateFrom(operation),
-            openAttachmentEffect = currentState.toNewOpenAttachmentStateFrom(operation)
+            openAttachmentEffect = currentState.toNewOpenAttachmentStateFrom(operation),
+            deleteDialogState = currentState.toNewDeleteDialogStateFrom(operation)
         )
 
     private fun MessageDetailState.toNewErrorStateFrom(operation: MessageDetailOperation) =
@@ -151,5 +154,13 @@ class MessageDetailReducer @Inject constructor(
     ): Effect<OpenAttachmentIntentValues> = when (operation) {
         is MessageDetailEvent.OpenAttachmentEvent -> Effect.of(operation.values)
         else -> openAttachmentEffect
+    }
+
+    private fun MessageDetailState.toNewDeleteDialogStateFrom(operation: MessageDetailOperation): DeleteDialogState {
+        return if (operation is MessageDetailOperation.AffectingDeleteDialog) {
+            deleteDialogReducer.newStateFrom(operation)
+        } else {
+            deleteDialogState
+        }
     }
 }
