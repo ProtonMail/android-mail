@@ -72,11 +72,10 @@ import androidx.paging.compose.itemKey
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
-import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
+import ch.protonmail.android.mailcommon.presentation.ui.delete.MailboxDeleteDialog
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
 import ch.protonmail.android.mailmailbox.presentation.R
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.DeleteDialogState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
@@ -94,9 +93,6 @@ import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.LabelAsBott
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MoreActionBottomSheetContent
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MoveToBottomSheetContent
 import kotlinx.coroutines.launch
-import me.proton.core.compose.component.ProtonAlertDialog
-import me.proton.core.compose.component.ProtonAlertDialogButton
-import me.proton.core.compose.component.ProtonAlertDialogText
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonModalBottomSheetLayout
 import me.proton.core.compose.component.ProtonSnackbarHost
@@ -594,31 +590,6 @@ private fun MailboxError(modifier: Modifier = Modifier, errorMessage: String) {
             modifier = Modifier.testTag(MailboxScreenTestTags.MailboxErrorMessage),
             text = errorMessage,
             textAlign = TextAlign.Center
-        )
-    }
-}
-
-@Composable
-private fun MailboxDeleteDialog(
-    state: DeleteDialogState,
-    confirm: () -> Unit,
-    dismiss: () -> Unit
-) {
-    if (state is DeleteDialogState.Shown) {
-        ProtonAlertDialog(
-            onDismissRequest = dismiss,
-            confirmButton = {
-                ProtonAlertDialogButton(R.string.mailbox_action_delete_dialog_button_delete) {
-                    confirm()
-                }
-            },
-            dismissButton = {
-                ProtonAlertDialogButton(R.string.mailbox_action_delete_dialog_button_cancel) {
-                    dismiss()
-                }
-            },
-            title = state.title.string(),
-            text = { ProtonAlertDialogText(state.message.string()) }
         )
     }
 }
