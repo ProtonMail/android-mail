@@ -128,9 +128,11 @@ class FolderListReducer @Inject constructor() {
         event: FolderListEvent.InheritParentFolderColorChanged
     ): FolderListState {
         return when (currentState) {
-            is FolderListState.ListLoaded.Data -> currentState.copy(useFolderColor = event.inheritParentFolderColor)
+            is FolderListState.ListLoaded.Data -> {
+                currentState.copy(inheritParentFolderColor = event.inheritParentFolderColor)
+            }
             is FolderListState.ListLoaded.Empty -> {
-                currentState.copy(useFolderColor = event.inheritParentFolderColor)
+                currentState.copy(inheritParentFolderColor = event.inheritParentFolderColor)
             }
             is FolderListState.Loading -> currentState
         }
