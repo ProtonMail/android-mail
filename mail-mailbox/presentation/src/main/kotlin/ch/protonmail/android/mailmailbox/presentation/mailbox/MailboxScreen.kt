@@ -119,6 +119,10 @@ fun MailboxScreen(
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
 
+    BackHandler(mailboxState.mailboxListState is MailboxListState.Data.SelectionMode) {
+        viewModel.submit(MailboxViewAction.ExitSelectionMode)
+    }
+
     BackHandler(bottomSheetState.isVisible) {
         viewModel.submit(MailboxViewAction.DismissBottomSheet)
     }
