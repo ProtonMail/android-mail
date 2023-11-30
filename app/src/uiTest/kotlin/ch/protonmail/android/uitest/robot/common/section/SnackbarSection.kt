@@ -36,6 +36,7 @@ import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
 import ch.protonmail.android.uitest.util.assertions.hasAnyChildWith
 import ch.protonmail.android.uitest.util.awaitDisplayed
 import ch.protonmail.android.uitest.util.awaitHidden
+import kotlin.time.Duration.Companion.seconds
 
 @AttachTo(
     targets = [
@@ -81,7 +82,7 @@ internal class SnackbarSection : ComposeSectionRobot() {
             val host = resolveHost(entry)
 
             // The actual text node is not an immediate child, so the hierarchy needs to be traversed.
-            host.awaitDisplayed()
+            host.awaitDisplayed(timeout = 15.seconds)
                 .hasAnyChildWith(hasText(entry.value))
         }
     }

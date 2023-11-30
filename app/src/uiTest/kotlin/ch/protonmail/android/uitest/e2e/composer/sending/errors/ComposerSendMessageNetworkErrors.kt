@@ -309,7 +309,12 @@ internal class ComposerSendMessageNetworkErrors : MockedNetworkTest(
         }
 
         mailboxRobot {
-            snackbarSection { verify { isDisplaying(ComposerSnackbar.MessageSentError) } }
+            snackbarSection {
+                verify {
+                    isDisplaying(ComposerSnackbar.SendingMessage)
+                    isDisplaying(ComposerSnackbar.MessageSentError)
+                }
+            }
         }
     }
 }
