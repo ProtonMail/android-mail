@@ -85,6 +85,7 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
     val bottomSheetType = rememberSaveable { mutableStateOf(BottomSheetType.AddAttachments) }
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val attachmentSizeDialogState = remember { mutableStateOf(false) }
+    val sendingErrorDialogState = remember { mutableStateOf<String?>(null) }
 
     val imagePicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetMultipleContents(),
@@ -190,6 +191,16 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
                 )
             }
 
+            if (sendingErrorDialogState.value != null) {
+                SendingErrorDialog(
+                    errorMessage = sendingErrorDialogState.value.toString(),
+                    onDismissClicked = {
+                        sendingErrorDialogState.value = null
+                        viewModel.clearSendingError()
+                    }
+                )
+            }
+
             if (state.isLoading) {
                 @Suppress("MagicNumber")
                 Surface(
@@ -248,6 +259,10 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
         dismissKeyboard(context, view, keyboardController)
         actions.onCloseComposerClick()
         actions.showMessageSendingOfflineSnackbar()
+    }
+
+    ConsumableLaunchedEffect(effect = state.sendingErrorEffect) {
+        sendingErrorDialogState.value = viewModel.formatSendingError(it)
     }
 
     ConsumableLaunchedEffect(effect = state.attachmentsFileSizeExceeded) { attachmentSizeDialogState.value = true }

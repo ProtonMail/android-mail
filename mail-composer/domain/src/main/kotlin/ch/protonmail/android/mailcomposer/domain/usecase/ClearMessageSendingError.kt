@@ -16,27 +16,18 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmessage.domain.model
+package ch.protonmail.android.mailcomposer.domain.usecase
 
-import kotlinx.serialization.Serializable
-import me.proton.core.mailmessage.domain.entity.Email
+import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
+import ch.protonmail.android.mailmessage.domain.model.MessageId
+import me.proton.core.domain.entity.UserId
+import javax.inject.Inject
 
-@Serializable
-sealed interface SendingError {
+class ClearMessageSendingError @Inject constructor(
+    private val draftStateRepository: DraftStateRepository
+) {
 
-    @Serializable
-    object Other : SendingError
+    suspend operator fun invoke(userId: UserId, messageId: MessageId) =
+        draftStateRepository.updateSendingError(userId, messageId, null)
 
-    @Serializable
-    data class SendPreferences(
-        val errors: Map<Email, SendPreferencesError>
-    ) : SendingError
-
-    enum class SendPreferencesError {
-        AddressDisabled,
-        GettingContactPreferences,
-        TrustedKeysInvalid,
-        NoCorrectlySignedTrustedKeys,
-        PublicKeysInvalid
-    }
 }

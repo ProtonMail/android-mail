@@ -252,6 +252,13 @@ class GetAttachmentFilesTest {
         val Attachment1 = File.createTempFile("attachment1", "txt")
         val Attachment2 = File.createTempFile("attachment2", "txt")
 
-        val DraftState = DraftState(UserId, MessageId, ApiMessageId, DraftSyncState.Synchronized, DraftAction.Compose)
+        val DraftState = DraftState(
+            UserId,
+            MessageId,
+            ApiMessageId,
+            DraftSyncState.Synchronized,
+            DraftAction.Compose,
+            null
+        )
     }
 }

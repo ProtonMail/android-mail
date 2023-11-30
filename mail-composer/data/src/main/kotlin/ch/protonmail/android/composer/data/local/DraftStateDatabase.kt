@@ -75,7 +75,6 @@ interface DraftStateDatabase : Database {
         }
 
         val MIGRATION_4: DatabaseMigration = object : DatabaseMigration {
-            @Suppress("MaxLineLength")
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.addTableColumn("DraftStateEntity", "sendingError", "TEXT") // nullable by default
             }

@@ -47,6 +47,7 @@ android {
 dependencies {
     implementation(Proton.Core.user)
     implementation(Proton.Core.mailSettings)
+    implementation(Proton.Core.mailSendPreferences)
 
     implementation(Dependencies.moduleDomainLibs)
     implementation(Proton.Core.user)

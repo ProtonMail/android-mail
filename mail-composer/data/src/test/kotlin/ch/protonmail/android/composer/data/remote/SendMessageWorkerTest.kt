@@ -31,6 +31,7 @@ import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
 import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
+import ch.protonmail.android.mailmessage.domain.model.SendingError
 import ch.protonmail.android.mailcomposer.domain.usecase.UpdateDraftStateForError
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
@@ -97,16 +98,17 @@ class SendMessageWorkerTest {
         // Given
         val userId = UserIdSample.Primary
         val messageId = MessageIdSample.LocalDraft
+        val sendingError = SendingError.Other
         givenInputData(userId, messageId)
         givenSendMessageFailsWithDraftNotFound(userId, messageId)
         givenUpdateDraftSyncStateSucceeds(userId, messageId, DraftSyncState.ErrorSending)
-        givenUpdateDraftStateForErrorSucceeds(userId, messageId)
+        givenUpdateDraftStateForErrorSucceeds(userId, messageId, sendingError)
 
         // When
         val actual = sendMessageWorker.doWork()
 
         // Then
-        coVerify { updateDraftStateForErrorMock(userId, messageId, DraftSyncState.ErrorSending) }
+        coVerify { updateDraftStateForErrorMock(userId, messageId, DraftSyncState.ErrorSending, sendingError) }
         assertEquals(Result.failure(), actual)
     }
 
@@ -159,8 +161,12 @@ class SendMessageWorkerTest {
         coEvery { draftStateRepositoryMock.updateDraftSyncState(userId, messageId, syncState) } returns Unit.right()
     }
 
-    private fun givenUpdateDraftStateForErrorSucceeds(userId: UserId, messageId: MessageId) {
-        coJustRun { updateDraftStateForErrorMock(userId, messageId, DraftSyncState.ErrorSending) }
+    private fun givenUpdateDraftStateForErrorSucceeds(
+        userId: UserId,
+        messageId: MessageId,
+        sendingError: SendingError?
+    ) {
+        coJustRun { updateDraftStateForErrorMock(userId, messageId, DraftSyncState.ErrorSending, sendingError) }
     }
 
     private fun givenSendMessageFailsWithDraftNotFound(userId: UserId, messageId: MessageId) {

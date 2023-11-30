@@ -34,6 +34,7 @@ import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
 import ch.protonmail.android.mailcomposer.domain.usecase.UpdateDraftStateForError
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.SendingError
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import io.mockk.Called
 import io.mockk.coEvery
@@ -136,15 +137,16 @@ class UploadDraftWorkerTest {
         // Given
         val userId = UserIdSample.Primary
         val messageId = MessageIdSample.LocalDraft
+        val sendingError: SendingError? = null
         givenInputData(userId, messageId)
         givenUploadDraftFailsWithUnretryableError(userId, messageId)
-        givenUpdateDraftStateForErrorSucceeds(userId, messageId)
+        givenUpdateDraftStateForErrorSucceeds(userId, messageId, sendingError)
 
         // When
         uploadDraftWorker.doWork()
 
         // Then
-        coVerify { updateDraftStateForError(userId, messageId, DraftSyncState.ErrorUploadDraft) }
+        coVerify { updateDraftStateForError(userId, messageId, DraftSyncState.ErrorUploadDraft, sendingError) }
     }
 
     @Test
@@ -152,9 +154,10 @@ class UploadDraftWorkerTest {
         // Given
         val userId = UserIdSample.Primary
         val messageId = MessageIdSample.LocalDraft
+        val sendingError: SendingError? = null
         givenInputData(userId, messageId)
         givenUploadDraftFailsWithRetryableError(userId, messageId)
-        givenUpdateDraftStateForErrorSucceeds(userId, messageId)
+        givenUpdateDraftStateForErrorSucceeds(userId, messageId, sendingError)
 
         // When
         val actual = uploadDraftWorker.doWork()
@@ -183,7 +186,11 @@ class UploadDraftWorkerTest {
         every { parameters.inputData.getString(UploadDraftWorker.RawMessageIdKey) } returns messageId?.id
     }
 
-    private fun givenUpdateDraftStateForErrorSucceeds(userId: UserId, messageId: MessageId) {
-        coJustRun { updateDraftStateForError(userId, messageId, DraftSyncState.ErrorUploadDraft) }
+    private fun givenUpdateDraftStateForErrorSucceeds(
+        userId: UserId,
+        messageId: MessageId,
+        sendingError: SendingError?
+    ) {
+        coJustRun { updateDraftStateForError(userId, messageId, DraftSyncState.ErrorUploadDraft, sendingError) }
     }
 }

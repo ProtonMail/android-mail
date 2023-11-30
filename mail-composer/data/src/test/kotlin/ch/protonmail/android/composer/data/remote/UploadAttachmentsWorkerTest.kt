@@ -151,7 +151,7 @@ class UploadAttachmentsWorkerTest {
     }
 
     private fun givenUpdateDraftStateForErrorSucceeds(userId: UserId, messageId: MessageId) {
-        coJustRun { updateDraftStateForError(userId, messageId, DraftSyncState.ErrorUploadAttachments) }
+        coJustRun { updateDraftStateForError(userId, messageId, DraftSyncState.ErrorUploadAttachments, null) }
     }
 
     private fun givenUploadAttachmentsFails(userId: UserId, messageId: MessageId) {

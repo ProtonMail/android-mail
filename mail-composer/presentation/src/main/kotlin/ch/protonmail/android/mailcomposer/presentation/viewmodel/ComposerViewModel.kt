@@ -37,7 +37,9 @@ import ch.protonmail.android.mailcomposer.domain.model.RecipientsBcc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsCc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsTo
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
+import ch.protonmail.android.mailcomposer.domain.model.SendingError
 import ch.protonmail.android.mailcomposer.domain.model.Subject
+import ch.protonmail.android.mailcomposer.domain.usecase.ClearMessageSendingError
 import ch.protonmail.android.mailcomposer.domain.usecase.DeleteAllAttachments
 import ch.protonmail.android.mailcomposer.domain.usecase.DeleteAttachment
 import ch.protonmail.android.mailcomposer.domain.usecase.DraftUploader
@@ -47,6 +49,7 @@ import ch.protonmail.android.mailcomposer.domain.usecase.GetDecryptedDraftFields
 import ch.protonmail.android.mailcomposer.domain.usecase.GetLocalMessageDecrypted
 import ch.protonmail.android.mailcomposer.domain.usecase.IsValidEmailAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessageAttachments
+import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessageSendingError
 import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
 import ch.protonmail.android.mailcomposer.domain.usecase.ReEncryptAttachments
 import ch.protonmail.android.mailcomposer.domain.usecase.SendMessage
@@ -68,6 +71,7 @@ import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
 import ch.protonmail.android.mailcomposer.presentation.reducer.ComposerReducer
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen
+import ch.protonmail.android.mailcomposer.presentation.usecase.FormatMessageSendingError
 import ch.protonmail.android.mailcomposer.presentation.usecase.InjectAddressSignature
 import ch.protonmail.android.mailcomposer.presentation.usecase.ParentMessageToDraftFields
 import ch.protonmail.android.mailcomposer.presentation.usecase.StyleQuotedHtml
@@ -113,6 +117,9 @@ class ComposerViewModel @Inject constructor(
     private val draftUploader: DraftUploader,
     private val observeMailFeature: ObserveMailFeature,
     private val observeMessageAttachments: ObserveMessageAttachments,
+    private val observeMessageSendingError: ObserveMessageSendingError,
+    private val clearMessageSendingError: ClearMessageSendingError,
+    private val formatMessageSendingError: FormatMessageSendingError,
     private val sendMessage: SendMessage,
     private val networkManager: NetworkManager,
     private val getLocalMessageDecrypted: GetLocalMessageDecrypted,
@@ -168,6 +175,7 @@ class ComposerViewModel @Inject constructor(
             .launchIn(viewModelScope)
 
         observeMessageAttachments()
+        observeSendingError()
     }
 
     private fun prefillForDraftAction(draftAction: DraftAction) {
@@ -278,7 +286,24 @@ class ComposerViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
+    private fun observeSendingError() {
+        primaryUserId
+            .flatMapLatest { userId -> observeMessageSendingError(userId, currentMessageId()) }
+            .onEach { emitNewStateFor(ComposerEvent.OnSendingError(it)) }
+            .launchIn(viewModelScope)
+    }
+
     fun validateEmailAddress(emailAddress: String): Boolean = isValidEmailAddress(emailAddress)
+
+    fun clearSendingError() {
+        viewModelScope.launch {
+            clearMessageSendingError(primaryUserId(), currentMessageId()).onLeft {
+                Timber.e("Failed to clear SendingError: $it")
+            }
+        }
+    }
+
+    fun formatSendingError(sendingError: SendingError): String? = formatMessageSendingError(sendingError)
 
     private fun onAttachmentsAdded(action: ComposerAction.AttachmentsAdded) {
         viewModelScope.launch {

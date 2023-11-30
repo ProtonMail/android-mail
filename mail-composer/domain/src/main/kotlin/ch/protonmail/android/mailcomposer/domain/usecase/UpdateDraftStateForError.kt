@@ -43,7 +43,7 @@ class UpdateDraftStateForError @Inject constructor(
         userId: UserId,
         messageId: MessageId,
         newState: DraftSyncState,
-        sendingError: SendingError?
+        sendingError: SendingError? = null
     ) {
         val draftState = draftStateRepository.observe(userId, messageId).firstOrNull()?.getOrNull()
 

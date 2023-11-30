@@ -22,6 +22,7 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
+import ch.protonmail.android.mailcomposer.domain.model.SendingError
 import ch.protonmail.android.mailcomposer.domain.model.Subject
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
@@ -123,6 +124,7 @@ class ComposerReducer @Inject constructor(
 
         is ComposerEvent.ErrorAttachmentsExceedSizeLimit -> updateStateForAttachmentsExceedSizeLimit(currentState)
         is ComposerEvent.ErrorAttachmentsReEncryption -> updateStateForDeleteAllAttachment(currentState)
+        is ComposerEvent.OnSendingError -> updateSendingErrorState(currentState, sendingError)
     }
 
     private fun updateBottomSheetVisibility(currentState: ComposerDraftState, bottomSheetVisibility: Boolean) =
@@ -165,6 +167,9 @@ class ComposerReducer @Inject constructor(
                 attachments = attachments.map { attachmentUiModelMapper.toUiModel(it, true) }
             )
         )
+
+    private fun updateSendingErrorState(currentState: ComposerDraftState, sendingError: SendingError) =
+        currentState.copy(sendingErrorEffect = Effect.of(sendingError))
 
     private fun updateCloseComposerState(currentState: ComposerDraftState, isDraftSaved: Boolean) = if (isDraftSaved) {
         currentState.copy(closeComposerWithDraftSaved = Effect.of(Unit))

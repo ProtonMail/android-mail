@@ -29,6 +29,7 @@ import ch.protonmail.android.mailcomposer.domain.model.RecipientsBcc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsCc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsTo
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
+import ch.protonmail.android.mailcomposer.domain.model.SendingError
 import ch.protonmail.android.mailcomposer.domain.model.Subject
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
@@ -637,6 +638,15 @@ class ComposerReducerTest(
             )
         )
 
+        private val EmptyToOnSendingError = TestTransition(
+            name = "Should emit sending error",
+            currentState = ComposerDraftState.initial(messageId),
+            operation = ComposerEvent.OnSendingError(SendingError.SendPreferences(emptyMap())),
+            expectedState = ComposerDraftState.initial(messageId).copy(
+                sendingErrorEffect = Effect.of(SendingError.SendPreferences(emptyMap()))
+            )
+        )
+
         private val transitions = listOf(
             EmptyToSubmittableToField,
             EmptyToNotSubmittableToField,
@@ -678,7 +688,8 @@ class ComposerReducerTest(
             EmptyToBottomSheetClosed,
             EmptyToAttachmentsUpdated,
             EmptyToAttachmentFileExceeded,
-            EmptyToAttachmentReEncryptionFailed
+            EmptyToAttachmentReEncryptionFailed,
+            EmptyToOnSendingError
         )
 
         private fun aSubmittableState(

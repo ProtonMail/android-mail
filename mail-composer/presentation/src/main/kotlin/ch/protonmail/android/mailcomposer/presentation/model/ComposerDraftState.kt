@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcomposer.presentation.model
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.domain.model.QuotedHtmlContent
+import ch.protonmail.android.mailcomposer.domain.model.SendingError
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
 
@@ -42,7 +43,8 @@ data class ComposerDraftState(
     val attachmentsReEncryptionFailed: Effect<Unit>,
     val replaceDraftBody: Effect<TextUiModel>,
     val warning: Effect<TextUiModel>,
-    val focusTextBody: Effect<Unit> = Effect.empty()
+    val focusTextBody: Effect<Unit> = Effect.empty(),
+    val sendingErrorEffect: Effect<SendingError> = Effect.empty()
 ) {
 
     companion object {
@@ -80,7 +82,8 @@ data class ComposerDraftState(
             attachmentsFileSizeExceeded = Effect.empty(),
             attachmentsReEncryptionFailed = Effect.empty(),
             warning = Effect.empty(),
-            replaceDraftBody = Effect.empty()
+            replaceDraftBody = Effect.empty(),
+            sendingErrorEffect = Effect.empty()
         )
     }
 }
