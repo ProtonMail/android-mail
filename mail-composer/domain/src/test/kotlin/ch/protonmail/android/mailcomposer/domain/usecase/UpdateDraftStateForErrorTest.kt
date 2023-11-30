@@ -24,10 +24,12 @@ import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.DraftState
 import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
 import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
+import ch.protonmail.android.mailmessage.domain.model.SendingError
 import ch.protonmail.android.mailcomposer.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import io.mockk.Called
+import io.mockk.called
 import io.mockk.coEvery
 import io.mockk.coJustRun
 import io.mockk.coVerify
@@ -54,14 +56,16 @@ class UpdateDraftStateForErrorTest {
         val userId = UserIdSample.Primary
         val messageId = MessageIdSample.Invoice
         val newState = DraftSyncState.ErrorUploadDraft
+        val sendingError = SendingError.Other
         givenExistingDraftState(userId, messageId) { buildDraftState(DraftSyncState.Local) }
         givenUpdateDraftSyncStateSucceeds(userId, messageId, newState)
 
         // When
-        updateDraftStateForError(userId, messageId, newState)
+        updateDraftStateForError(userId, messageId, newState, sendingError)
 
         // Then
         coVerify { draftStateRepository.updateDraftSyncState(userId, messageId, newState) }
+        coVerify { draftStateRepository.updateSendingError(userId, messageId, any()) wasNot called }
     }
 
     @Test
@@ -70,14 +74,16 @@ class UpdateDraftStateForErrorTest {
         val userId = UserIdSample.Primary
         val messageId = MessageIdSample.Invoice
         val newState = DraftSyncState.ErrorUploadDraft
+        val sendingError = SendingError.Other
         givenExistingDraftState(userId, messageId) { buildDraftState(DraftSyncState.Local) }
         givenUpdateDraftSyncStateSucceeds(userId, messageId, newState)
 
         // When
-        updateDraftStateForError(userId, messageId, newState)
+        updateDraftStateForError(userId, messageId, newState, sendingError)
 
         // Then
         verify { messageRepository wasNot Called }
+        coVerify { draftStateRepository.updateSendingError(userId, messageId, any()) wasNot called }
     }
 
     @Test
@@ -87,15 +93,18 @@ class UpdateDraftStateForErrorTest {
         val messageId = MessageIdSample.Invoice
         val newState = DraftSyncState.ErrorUploadAttachments
         val expectedState = DraftSyncState.ErrorSending
+        val sendingError = SendingError.Other
         givenExistingDraftState(userId, messageId) { buildDraftState(DraftSyncState.Sending) }
         givenUpdateDraftSyncStateSucceeds(userId, messageId, expectedState)
+        givenUpdateSendingErrorStateSucceeds(userId, messageId, sendingError)
         givenMoveMessageBackFromSentToDraftsSucceeds(userId, messageId)
 
         // When
-        updateDraftStateForError(userId, messageId, newState)
+        updateDraftStateForError(userId, messageId, newState, sendingError)
 
         // Then
         coVerify { draftStateRepository.updateDraftSyncState(userId, messageId, expectedState) }
+        coVerify { draftStateRepository.updateSendingError(userId, messageId, sendingError) }
     }
 
     @Test
@@ -105,12 +114,14 @@ class UpdateDraftStateForErrorTest {
         val messageId = MessageIdSample.Invoice
         val newState = DraftSyncState.ErrorUploadDraft
         val expectedState = DraftSyncState.ErrorSending
+        val sendingError = SendingError.Other
         givenExistingDraftState(userId, messageId) { buildDraftState(DraftSyncState.Sending) }
         givenUpdateDraftSyncStateSucceeds(userId, messageId, expectedState)
+        givenUpdateSendingErrorStateSucceeds(userId, messageId, sendingError)
         givenMoveMessageBackFromSentToDraftsSucceeds(userId, messageId)
 
         // When
-        updateDraftStateForError(userId, messageId, newState)
+        updateDraftStateForError(userId, messageId, newState, sendingError)
 
         // Then
         coVerify { messageRepository.moveMessageBackFromSentToDrafts(userId, messageId) }
@@ -121,7 +132,8 @@ class UpdateDraftStateForErrorTest {
         messageId = MessageIdSample.LocalDraft,
         apiMessageId = null,
         state = syncState,
-        action = DraftAction.Compose
+        action = DraftAction.Compose,
+        sendingError = null
     )
 
     private fun givenExistingDraftState(
@@ -138,6 +150,14 @@ class UpdateDraftStateForErrorTest {
         state: DraftSyncState
     ) {
         coEvery { draftStateRepository.updateDraftSyncState(userId, messageId, state) } returns Unit.right()
+    }
+
+    private fun givenUpdateSendingErrorStateSucceeds(
+        userId: UserId,
+        messageId: MessageId,
+        sendingError: SendingError
+    ) {
+        coEvery { draftStateRepository.updateSendingError(userId, messageId, sendingError) } returns Unit.right()
     }
 
     private fun givenMoveMessageBackFromSentToDraftsSucceeds(userId: UserId, messageId: MessageId) {

@@ -24,6 +24,7 @@ import androidx.room.Index
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.DraftState
 import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
+import ch.protonmail.android.mailmessage.domain.model.SendingError
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import me.proton.core.domain.entity.UserId
 import me.proton.core.user.data.entity.UserEntity
@@ -51,14 +52,16 @@ data class DraftStateEntity(
     val messageId: MessageId,
     val apiMessageId: MessageId?,
     val state: DraftSyncState,
-    val action: DraftAction
+    val action: DraftAction,
+    val sendingError: SendingError?
 ) {
     fun toDraftState() = DraftState(
         userId = userId,
         messageId = messageId,
         apiMessageId = apiMessageId,
         state = state,
-        action = action
+        action = action,
+        sendingError = sendingError
     )
 }
 
@@ -67,5 +70,6 @@ fun DraftState.toDraftStateEntity() = DraftStateEntity(
     messageId = this.messageId,
     apiMessageId = this.apiMessageId,
     state = this.state,
-    action = this.action
+    action = this.action,
+    sendingError = this.sendingError
 )

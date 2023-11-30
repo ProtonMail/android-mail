@@ -21,6 +21,7 @@ package ch.protonmail.android.composer.data.local.converters
 import androidx.room.TypeConverter
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
+import ch.protonmail.android.mailmessage.domain.model.SendingError
 import me.proton.core.util.kotlin.deserialize
 import me.proton.core.util.kotlin.serialize
 
@@ -37,5 +38,11 @@ class DraftStateConverters {
 
     @TypeConverter
     fun fromIntToDraftState(value: Int?): DraftSyncState? = value?.let { DraftSyncState.from(it) }
+
+    @TypeConverter
+    fun fromStringToSendingError(value: String?): SendingError? = value?.deserialize()
+
+    @TypeConverter
+    fun fromSendingErrorToString(value: SendingError?): String? = value?.serialize()
 
 }

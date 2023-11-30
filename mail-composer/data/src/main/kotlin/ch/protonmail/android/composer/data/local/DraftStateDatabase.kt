@@ -22,6 +22,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import ch.protonmail.android.composer.data.local.dao.DraftStateDao
 import ch.protonmail.android.mailmessage.data.local.dao.AttachmentStateDao
 import me.proton.core.data.room.db.Database
+import me.proton.core.data.room.db.extension.addTableColumn
 import me.proton.core.data.room.db.extension.dropTable
 import me.proton.core.data.room.db.migration.DatabaseMigration
 
@@ -70,6 +71,13 @@ interface DraftStateDatabase : Database {
                 database.execSQL("CREATE INDEX IF NOT EXISTS `index_AttachmentStateEntity_userId` ON `AttachmentStateEntity` (`userId`)")
                 database.execSQL("CREATE INDEX IF NOT EXISTS `index_AttachmentStateEntity_userId_messageId` ON `AttachmentStateEntity` (`userId`, `messageId`)")
                 database.execSQL("CREATE INDEX IF NOT EXISTS `index_AttachmentStateEntity_userId_messageId_attachmentId` ON `AttachmentStateEntity` (`userId`, `messageId`, `attachmentId`)")
+            }
+        }
+
+        val MIGRATION_4: DatabaseMigration = object : DatabaseMigration {
+            @Suppress("MaxLineLength")
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.addTableColumn("DraftStateEntity", "sendingError", "TEXT") // nullable by default
             }
         }
     }

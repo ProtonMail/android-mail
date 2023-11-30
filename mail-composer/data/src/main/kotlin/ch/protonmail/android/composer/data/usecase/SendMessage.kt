@@ -25,6 +25,7 @@ import arrow.core.right
 import ch.protonmail.android.composer.data.remote.MessageRemoteDataSource
 import ch.protonmail.android.composer.data.remote.resource.SendMessageBody
 import ch.protonmail.android.mailcommon.domain.usecase.ResolveUserAddress
+import ch.protonmail.android.mailmessage.domain.model.SendingError
 import ch.protonmail.android.mailcomposer.domain.usecase.FindLocalDraft
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailSettings
@@ -40,7 +41,7 @@ import me.proton.core.util.kotlin.toInt
 import timber.log.Timber
 import javax.inject.Inject
 
-internal class SendMessage @Inject constructor(
+class SendMessage @Inject constructor(
     private val messageRemoteDataSource: MessageRemoteDataSource,
     private val resolveUserAddress: ResolveUserAddress,
     private val generateMessagePackages: GenerateMessagePackages,
@@ -152,5 +153,35 @@ internal class SendMessage @Inject constructor(
         object SendingToApi : Error
 
         object DownloadingAttachments : Error
+
+        fun toSendingError(): SendingError {
+            return when (this) {
+                is SendPreferences -> {
+                    SendingError.SendPreferences(
+                        this.errors.mapValues {
+                            when (it.value) {
+                                ObtainSendPreferences.Result.Error.AddressDisabled -> {
+                                    SendingError.SendPreferencesError.AddressDisabled
+                                }
+                                ObtainSendPreferences.Result.Error.GettingContactPreferences -> {
+                                    SendingError.SendPreferencesError.GettingContactPreferences
+                                }
+                                ObtainSendPreferences.Result.Error.NoCorrectlySignedTrustedKeys -> {
+                                    SendingError.SendPreferencesError.NoCorrectlySignedTrustedKeys
+                                }
+                                ObtainSendPreferences.Result.Error.PublicKeysInvalid -> {
+                                    SendingError.SendPreferencesError.PublicKeysInvalid
+                                }
+                                ObtainSendPreferences.Result.Error.TrustedKeysInvalid -> {
+                                    SendingError.SendPreferencesError.TrustedKeysInvalid
+                                }
+                            }
+                        }
+                    )
+                }
+
+                else -> SendingError.Other
+            }
+        }
     }
 }

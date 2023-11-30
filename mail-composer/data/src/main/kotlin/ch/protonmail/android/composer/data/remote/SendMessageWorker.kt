@@ -49,7 +49,7 @@ internal class SendMessageWorker @AssistedInject constructor(
         return sendMessage(userId, messageId).fold(
             ifLeft = {
                 Timber.e("error sending $it")
-                updateDraftStateForError(userId, messageId, DraftSyncState.ErrorSending)
+                updateDraftStateForError(userId, messageId, DraftSyncState.ErrorSending, it.toSendingError())
                 Result.failure()
             },
             ifRight = {

@@ -27,6 +27,7 @@ import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.DraftState
 import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
 import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
+import ch.protonmail.android.mailmessage.domain.model.SendingError
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -48,7 +49,7 @@ class DraftStateRepositoryImpl @Inject constructor(
         action: DraftAction
     ): Either<DataError, Unit> = either {
         val draftState = localDataSource.observe(userId, messageId).first().getOrElse {
-            DraftState(userId, messageId, null, DraftSyncState.Local, action)
+            DraftState(userId, messageId, null, DraftSyncState.Local, action, null)
         }
         val updatedState = draftState.copy(state = DraftSyncState.Local)
         localDataSource.save(updatedState)
@@ -61,6 +62,15 @@ class DraftStateRepositoryImpl @Inject constructor(
     ): Either<DataError, Unit> = either {
         val draftState = localDataSource.observe(userId, messageId).first().bind()
         localDataSource.save(draftState.copy(state = syncState))
+    }
+
+    override suspend fun updateSendingError(
+        userId: UserId,
+        messageId: MessageId,
+        sendingError: SendingError?
+    ): Either<DataError, Unit> = either {
+        val draftState = localDataSource.observe(userId, messageId).first().bind()
+        localDataSource.save(draftState.copy(sendingError = sendingError))
     }
 
     override suspend fun deleteDraftState(userId: UserId, messageId: MessageId): Either<DataError, Unit> = either {

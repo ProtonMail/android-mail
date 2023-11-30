@@ -22,6 +22,7 @@ import ch.protonmail.android.mailmessage.data.local.entity.DraftStateEntity
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
+import ch.protonmail.android.mailmessage.domain.model.SendingError
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import me.proton.core.domain.entity.UserId
@@ -41,12 +42,14 @@ object DraftStateEntitySample {
         messageId: MessageId = MessageIdSample.EmptyDraft,
         apiMessageId: MessageId? = null,
         state: DraftSyncState = DraftSyncState.Local,
-        action: DraftAction = DraftAction.Compose
+        action: DraftAction = DraftAction.Compose,
+        sendingError: SendingError? = null
     ) = DraftStateEntity(
         userId = userId,
         messageId = messageId,
         apiMessageId = apiMessageId,
         state = state,
-        action = action
+        action = action,
+        sendingError = sendingError
     )
 }

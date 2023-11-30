@@ -46,7 +46,7 @@ internal class UploadDraftWorker @AssistedInject constructor(
 
         return uploadDraft(userId, messageId).fold(
             ifLeft = {
-                updateDraftStateForError(userId, messageId, DraftSyncState.ErrorUploadDraft)
+                updateDraftStateForError(userId, messageId, DraftSyncState.ErrorUploadDraft, sendingError = null)
                 return when (it) {
                     is DataError.Remote.Http -> if (it.isRetryable) Result.retry() else Result.failure()
                     else -> Result.failure()

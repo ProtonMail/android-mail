@@ -49,7 +49,7 @@ class UploadAttachmentsWorker @AssistedInject constructor(
         return uploadAttachments(userId, messageId).fold(
             ifLeft = {
                 Timber.e("UploadAttachmentsWorker doWork failed: $it")
-                updateDraftStateForError(userId, messageId, DraftSyncState.ErrorUploadAttachments)
+                updateDraftStateForError(userId, messageId, DraftSyncState.ErrorUploadAttachments, sendingError = null)
                 Result.failure()
             },
             ifRight = { Result.success() }

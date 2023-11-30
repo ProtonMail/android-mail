@@ -23,6 +23,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.DraftState
 import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
+import ch.protonmail.android.mailmessage.domain.model.SendingError
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
@@ -62,6 +63,15 @@ interface DraftStateRepository {
         userId: UserId,
         messageId: MessageId,
         syncState: DraftSyncState
+    ): Either<DataError, Unit>
+
+    /**
+     * Updates the [sendingError] value in [DraftState].
+     */
+    suspend fun updateSendingError(
+        userId: UserId,
+        messageId: MessageId,
+        sendingError: SendingError?
     ): Either<DataError, Unit>
 
     /**

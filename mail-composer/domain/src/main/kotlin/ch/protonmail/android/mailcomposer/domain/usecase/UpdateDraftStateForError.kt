@@ -20,6 +20,8 @@ package ch.protonmail.android.mailcomposer.domain.usecase
 
 import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
 import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
+import ch.protonmail.android.mailmessage.domain.model.DraftState
+import ch.protonmail.android.mailmessage.domain.model.SendingError
 import ch.protonmail.android.mailcomposer.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import kotlinx.coroutines.flow.firstOrNull
@@ -28,8 +30,8 @@ import javax.inject.Inject
 
 /**
  * Updates the [DraftState] for the given messageId.
- * When any error happens while a message is being sent, state is updated to "error sending"
- * and the message is moved back to drafts folder
+ * When any error happens while a message is being sent, state is updated to "error sending",
+ * [sendingError] persisted and the message is moved back to drafts folder.
  * In all other cases, the given newState is applied.
  */
 class UpdateDraftStateForError @Inject constructor(
@@ -40,15 +42,20 @@ class UpdateDraftStateForError @Inject constructor(
     suspend operator fun invoke(
         userId: UserId,
         messageId: MessageId,
-        newState: DraftSyncState
+        newState: DraftSyncState,
+        sendingError: SendingError?
     ) {
         val draftState = draftStateRepository.observe(userId, messageId).firstOrNull()?.getOrNull()
 
         if (draftState?.state == DraftSyncState.Sending) {
             draftStateRepository.updateDraftSyncState(userId, messageId, DraftSyncState.ErrorSending)
+            draftStateRepository.updateSendingError(userId, messageId, sendingError)
             messageRepository.moveMessageBackFromSentToDrafts(userId, messageId)
         } else {
             draftStateRepository.updateDraftSyncState(userId, messageId, newState)
+            if (newState == DraftSyncState.ErrorSending) {
+                draftStateRepository.updateSendingError(userId, messageId, sendingError)
+            }
         }
     }
 }

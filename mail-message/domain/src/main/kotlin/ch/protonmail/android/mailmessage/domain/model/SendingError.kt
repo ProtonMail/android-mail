@@ -18,13 +18,24 @@
 
 package ch.protonmail.android.mailmessage.domain.model
 
-import me.proton.core.domain.entity.UserId
+import kotlinx.serialization.Serializable
 
-data class DraftState(
-    val userId: UserId,
-    val messageId: MessageId,
-    val apiMessageId: MessageId?,
-    val state: DraftSyncState,
-    val action: DraftAction,
-    val sendingError: SendingError?
-)
+@Serializable
+sealed interface SendingError {
+
+    @Serializable
+    object Other : SendingError
+
+    @Serializable
+    data class SendPreferences(
+        val errors: Map<String, SendPreferencesError>
+    ) : SendingError
+
+    enum class SendPreferencesError {
+        AddressDisabled,
+        GettingContactPreferences,
+        TrustedKeysInvalid,
+        NoCorrectlySignedTrustedKeys,
+        PublicKeysInvalid
+    }
+}
