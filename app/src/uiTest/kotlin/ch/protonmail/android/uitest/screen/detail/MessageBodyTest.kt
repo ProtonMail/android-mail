@@ -27,13 +27,14 @@ import ch.protonmail.android.mailcommon.domain.system.DeviceCapabilities.Capabil
 import ch.protonmail.android.mailcommon.presentation.system.LocalDeviceCapabilitiesProvider
 import ch.protonmail.android.maildetail.presentation.sample.MessageDetailBodyUiModelSample
 import ch.protonmail.android.maildetail.presentation.ui.MessageBody
-import ch.protonmail.android.mailmessage.presentation.ui.MessageBodyWebView
 import ch.protonmail.android.maildetail.presentation.ui.MessageBodyTestTags
 import ch.protonmail.android.mailmessage.presentation.ui.MessageBodyWebViewTestTags
+import ch.protonmail.android.test.annotations.suite.RegressionTest
 import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import org.junit.Rule
 import org.junit.Test
 
+@RegressionTest
 class MessageBodyTest {
 
     @get:Rule
