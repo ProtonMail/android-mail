@@ -23,6 +23,7 @@ import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
 import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
@@ -107,6 +108,7 @@ import io.mockk.spyk
 import io.mockk.unmockkObject
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -175,12 +177,17 @@ class ComposerViewModelTest {
     }
     private val observeMessageAttachments = mockk<ObserveMessageAttachments>()
     private val reEncryptAttachments = mockk<ReEncryptAttachments>()
+    private val appInBackgroundStateFlow = MutableStateFlow(false)
+    private val appInBackgroundState = mockk<AppInBackgroundState> {
+        every { observe() } returns appInBackgroundStateFlow
+    }
 
     private val attachmentUiModelMapper = AttachmentUiModelMapper()
     private val reducer = ComposerReducer(attachmentUiModelMapper)
 
     private val viewModel by lazy {
         ComposerViewModel(
+            appInBackgroundState,
             storeAttachments,
             storeDraftWithBodyMock,
             storeDraftWithSubjectMock,
@@ -1326,9 +1333,10 @@ class ComposerViewModelTest {
         // Given
         val expectedUserId = expectedUserId { UserIdSample.Primary }
         val expectedParentId = MessageIdSample.Invoice
-        expectInputDraftAction { DraftAction.Reply(expectedParentId) }
+        val expectedAction = expectInputDraftAction { DraftAction.Reply(expectedParentId) }
         val draftId = expectedMessageId { MessageIdSample.EmptyDraft }
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        expectStartDraftSync(expectedUserId, draftId, expectedAction)
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectNoInputDraftMessageId()
         expectParentDraftDataError(expectedUserId, expectedParentId) { DataError.Local.DecryptionError }
@@ -1347,6 +1355,7 @@ class ComposerViewModelTest {
         val expectedUserId = expectedUserId { UserIdSample.Primary }
         val expectedDraftId = expectInputDraftMessageId { MessageIdSample.RemoteDraft }
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        expectStartDraftSync(expectedUserId, expectedDraftId, DraftAction.Compose)
         expectDecryptedDraftDataError(expectedUserId, expectedDraftId) { DataError.Local.NoDataCached }
         expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedDraftId)
@@ -1555,6 +1564,60 @@ class ComposerViewModelTest {
             val expected = Effect.of(Unit)
             val actual = awaitItem().attachmentsFileSizeExceeded
             assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `stop syncing draft for current messageId when app is put in background`() = runTest {
+        // Given
+        val userId = expectedUserId { UserIdSample.Primary }
+        val messageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+        expectedPrimaryAddress(userId) { UserAddressSample.PrimaryAddress }
+        expectStartDraftSync(userId, messageId)
+        expectStopContinuousDraftUploadSucceeds()
+        expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
+        expectObserveMailFeature(userId) { emptyFlow() }
+        expectObservedMessageAttachments(userId, messageId)
+        expectInjectAddressSignature(userId, expectDraftBodyWithSignature(), expectedSenderEmail)
+
+        // When
+        viewModel.state // app is in foreground
+        appInBackgroundStateFlow.emit(true) // app is in background
+
+        // Then
+        coVerifyOrder {
+            draftUploaderMock.startContinuousUpload(userId, messageId, DraftAction.Compose, any())
+            draftUploaderMock.stopContinuousUpload()
+        }
+    }
+
+    @Test
+    fun `start syncing draft for current messageId when app is put back in foreground`() = runTest {
+        // Given
+        val userId = expectedUserId { UserIdSample.Primary }
+        val messageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+        expectedPrimaryAddress(userId) { UserAddressSample.PrimaryAddress }
+        expectStartDraftSync(userId, messageId)
+        expectStopContinuousDraftUploadSucceeds()
+        expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
+        expectObserveMailFeature(userId) { emptyFlow() }
+        expectObservedMessageAttachments(userId, messageId)
+        expectInjectAddressSignature(userId, expectDraftBodyWithSignature(), expectedSenderEmail)
+
+        // When
+        viewModel.state // app is in foreground
+        appInBackgroundStateFlow.emit(true) // app is in background
+        appInBackgroundStateFlow.emit(false) // app is in foreground again
+
+        // Then
+        coVerifyOrder {
+            draftUploaderMock.startContinuousUpload(userId, messageId, DraftAction.Compose, any())
+            draftUploaderMock.stopContinuousUpload()
+            draftUploaderMock.startContinuousUpload(userId, messageId, DraftAction.Compose, any())
         }
     }
 

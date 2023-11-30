@@ -22,6 +22,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
+import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
 import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import ch.protonmail.android.mailcommon.domain.usecase.GetPrimaryAddress
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
@@ -74,7 +75,6 @@ import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.test.idlingresources.ComposerIdlingResource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -96,6 +96,7 @@ import javax.inject.Inject
 @Suppress("LongParameterList", "TooManyFunctions")
 @HiltViewModel
 class ComposerViewModel @Inject constructor(
+    private val appInBackgroundState: AppInBackgroundState,
     private val storeAttachments: StoreAttachments,
     private val storeDraftWithBody: StoreDraftWithBody,
     private val storeDraftWithSubject: StoreDraftWithSubject,
@@ -158,7 +159,7 @@ class ComposerViewModel @Inject constructor(
         when {
             inputDraftId != null -> prefillWithExistingDraft(inputDraftId, getDecryptedDraftFields)
             draftAction != null -> prefillForDraftAction(draftAction)
-            else -> viewModelScope.launch { startDraftContinuousUpload() }
+            else -> uploadDraftContinuouslyWhileInForeground(DraftAction.Compose)
         }
 
         primaryUserId
@@ -179,7 +180,7 @@ class ComposerViewModel @Inject constructor(
                 Timber.d("Parent message draft data received $parentMessage")
                 parentMessageToDraftFields(primaryUserId(), parentMessage, draftAction).onRight { draftFields ->
                     Timber.d("Quoted parent body $draftFields")
-                    startDraftContinuousUpload(draftAction)
+                    uploadDraftContinuouslyWhileInForeground(draftAction)
                     emitNewStateFor(
                         ComposerEvent.PrefillDraftDataReceived(
                             draftUiModel = draftFields.toDraftUiModel(),
@@ -206,8 +207,8 @@ class ComposerViewModel @Inject constructor(
             getDecryptedDraftFields(primaryUserId(), currentMessageId())
                 .onRight { draftFields ->
                     Timber.d("Opening existing draft with body $draftFields")
+                    uploadDraftContinuouslyWhileInForeground(DraftAction.Compose)
                     storeExternalAttachments(primaryUserId(), currentMessageId())
-                    startDraftContinuousUpload()
                     emitNewStateFor(
                         ComposerEvent.PrefillDraftDataReceived(
                             draftUiModel = draftFields.draftFields.toDraftUiModel(),
@@ -254,6 +255,20 @@ class ComposerViewModel @Inject constructor(
                 composerIdlingResource.decrement()
             }
         }
+    }
+
+    private fun uploadDraftContinuouslyWhileInForeground(draftAction: DraftAction) {
+        appInBackgroundState.observe().onEach { isAppInBackground ->
+            if (isAppInBackground) {
+                Timber.d("App is in background, stop continuous upload")
+                draftUploader.stopContinuousUpload()
+            } else {
+                Timber.d("App is in foreground, start continuous upload")
+                draftUploader.startContinuousUpload(
+                    primaryUserId(), currentMessageId(), draftAction, this.viewModelScope
+                )
+            }
+        }.launchIn(viewModelScope)
     }
 
     private fun observeMessageAttachments() {
@@ -409,11 +424,6 @@ class ComposerViewModel @Inject constructor(
         val isBodyEqualSignature = bodyWithSignature.getOrNull()?.value == draftBody.value
         return draftBody.value.isNotBlank() && isBodyEqualSignature
     }
-
-    private suspend fun CoroutineScope.startDraftContinuousUpload(draftAction: DraftAction = DraftAction.Compose) =
-        draftUploader.startContinuousUpload(
-            primaryUserId(), currentMessageId(), draftAction, this@startDraftContinuousUpload
-        )
 
     private suspend fun primaryUserId() = primaryUserId.first()
 
