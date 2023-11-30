@@ -143,7 +143,7 @@ fun Home(
             type = ProtonSnackbarType.ERROR,
             message = errorSendingMessageText,
             actionLabel = if (shouldShowAction) errorSendingMessageActionText else null,
-            duration = if (shouldShowAction) SnackbarDuration.Indefinite else SnackbarDuration.Short
+            duration = if (shouldShowAction) SnackbarDuration.Long else SnackbarDuration.Short
         )
         when (result) {
             SnackbarResult.ActionPerformed -> { viewModel.navigateToDrafts(navController) }
