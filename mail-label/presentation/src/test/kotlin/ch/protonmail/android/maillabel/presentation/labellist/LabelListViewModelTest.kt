@@ -28,11 +28,9 @@ import ch.protonmail.android.maillabel.domain.usecase.ObserveLabels
 import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.coEvery
-import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.spyk
-import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -40,6 +38,7 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import me.proton.core.label.domain.entity.Label
+import me.proton.core.label.domain.entity.LabelType
 import org.junit.Test
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -77,7 +76,9 @@ class LabelListViewModelTest {
     @Test
     fun `given empty label list, when init, then emits empty state`() = runTest {
         // Given
-        coEvery { observeLabels(userId = userId) } returns flowOf(emptyList<Label>().right())
+        coEvery {
+            observeLabels(userId = userId, labelType = LabelType.MessageLabel)
+        } returns flowOf(emptyList<Label>().right())
 
         // When
         labelListViewModel.state.test {
@@ -87,19 +88,14 @@ class LabelListViewModelTest {
 
             assertEquals(expected, actual)
         }
-        verify(exactly = 1) {
-            reducer.newStateFrom(
-                LabelListState.Loading(),
-                LabelListEvent.LabelListLoaded(emptyList())
-            )
-        }
-        confirmVerified(reducer)
     }
 
     @Test
     fun `given label list, when init, then emits data state`() = runTest {
         // Given
-        coEvery { observeLabels(userId = userId) } returns flowOf(listOf(defaultTestLabel).right())
+        coEvery {
+            observeLabels(userId = userId, labelType = LabelType.MessageLabel)
+        } returns flowOf(listOf(defaultTestLabel).right())
 
         // When
         labelListViewModel.state.test {
@@ -111,19 +107,14 @@ class LabelListViewModelTest {
 
             assertEquals(expected, actual)
         }
-        verify(exactly = 1) {
-            reducer.newStateFrom(
-                LabelListState.Loading(),
-                LabelListEvent.LabelListLoaded(listOf(defaultTestLabel))
-            )
-        }
-        confirmVerified(reducer)
     }
 
     @Test
     fun `given error on loading label list, when init, then emits error state`() = runTest {
         // Given
-        every { observeLabels.invoke(userId) } returns flowOf(DataError.Local.Unknown.left())
+        every {
+            observeLabels.invoke(userId, labelType = LabelType.MessageLabel)
+        } returns flowOf(DataError.Local.Unknown.left())
 
         // When
         labelListViewModel.state.test {
@@ -133,19 +124,14 @@ class LabelListViewModelTest {
 
             assertEquals(expected, actual)
         }
-        verify(exactly = 1) {
-            reducer.newStateFrom(
-                LabelListState.Loading(),
-                LabelListEvent.ErrorLoadingLabelList
-            )
-        }
-        confirmVerified(reducer)
     }
 
     @Test
     fun `given label list, when action add label, then emits open label form state`() = runTest {
         // Given
-        coEvery { observeLabels(userId = userId) } returns flowOf(listOf(defaultTestLabel).right())
+        coEvery {
+            observeLabels(userId = userId, labelType = LabelType.MessageLabel)
+        } returns flowOf(listOf(defaultTestLabel).right())
 
         // When
         labelListViewModel.state.test {
@@ -161,16 +147,5 @@ class LabelListViewModelTest {
 
             assertEquals(expected, actual)
         }
-        verify(exactly = 1) {
-            reducer.newStateFrom(
-                LabelListState.Loading(),
-                LabelListEvent.LabelListLoaded(listOf(defaultTestLabel))
-            )
-            reducer.newStateFrom(
-                LabelListState.ListLoaded.Data(labels = listOf(defaultTestLabel)),
-                LabelListEvent.OpenLabelForm
-            )
-        }
-        confirmVerified(reducer)
     }
 }

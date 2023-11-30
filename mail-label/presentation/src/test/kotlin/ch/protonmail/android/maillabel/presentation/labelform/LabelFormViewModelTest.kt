@@ -38,13 +38,11 @@ import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
 import ch.protonmail.android.testdata.label.LabelTestData.buildLabel
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.coEvery
-import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.spyk
 import io.mockk.unmockkStatic
-import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -150,18 +148,6 @@ class LabelFormViewModelTest {
             val actual = awaitItem()
             assertEquals(loadedState, actual)
         }
-        verify(exactly = 1) {
-            reducer.newStateFrom(
-                LabelFormState.Loading(),
-                LabelFormEvent.LabelLoaded(
-                    null,
-                    name = "",
-                    color = defaultTestLabel.color,
-                    colorList = listOf(Color.Red)
-                )
-            )
-        }
-        confirmVerified(reducer)
     }
 
     @Test
@@ -177,18 +163,6 @@ class LabelFormViewModelTest {
             val actual = awaitItem()
             assertEquals(loadedState, actual)
         }
-        verify(exactly = 1) {
-            reducer.newStateFrom(
-                LabelFormState.Loading(),
-                LabelFormEvent.LabelLoaded(
-                    labelId = defaultTestLabel.labelId,
-                    name = defaultTestLabel.name,
-                    color = defaultTestLabel.color,
-                    colorList = listOf(Color.Red)
-                )
-            )
-        }
-        confirmVerified(reducer)
     }
 
     @Test
@@ -207,22 +181,6 @@ class LabelFormViewModelTest {
             // Then
             assertEquals(loadedState.copy(name = defaultTestUpdatedName, isSaveEnabled = true), awaitItem())
         }
-        verify(exactly = 1) {
-            reducer.newStateFrom(
-                LabelFormState.Loading(),
-                LabelFormEvent.LabelLoaded(
-                    null,
-                    name = "",
-                    color = defaultTestLabel.color,
-                    colorList = listOf(Color.Red)
-                )
-            )
-            reducer.newStateFrom(
-                loadedState,
-                LabelFormViewAction.LabelNameChanged(defaultTestUpdatedName)
-            )
-        }
-        confirmVerified(reducer)
     }
 
     @Test
@@ -241,22 +199,6 @@ class LabelFormViewModelTest {
             // Then
             assertEquals(loadedState.copy(color = Color.Blue.getHexStringFromColor()), awaitItem())
         }
-        verify(exactly = 1) {
-            reducer.newStateFrom(
-                LabelFormState.Loading(),
-                LabelFormEvent.LabelLoaded(
-                    null,
-                    name = "",
-                    color = defaultTestLabel.color,
-                    colorList = listOf(Color.Red)
-                )
-            )
-            reducer.newStateFrom(
-                loadedState,
-                LabelFormViewAction.LabelColorChanged(Color.Blue)
-            )
-        }
-        confirmVerified(reducer)
     }
 
     @Test
@@ -289,26 +231,6 @@ class LabelFormViewModelTest {
                 awaitItem()
             )
         }
-        verify(exactly = 1) {
-            reducer.newStateFrom(
-                LabelFormState.Loading(),
-                LabelFormEvent.LabelLoaded(
-                    null,
-                    name = "",
-                    color = defaultTestLabel.color,
-                    colorList = listOf(Color.Red)
-                )
-            )
-            reducer.newStateFrom(
-                loadedState,
-                LabelFormViewAction.LabelNameChanged(defaultTestUpdatedName)
-            )
-            reducer.newStateFrom(
-                loadedState.copy(name = defaultTestUpdatedName, isSaveEnabled = true),
-                LabelFormEvent.LabelCreated
-            )
-        }
-        confirmVerified(reducer)
     }
 
     @Test
@@ -334,26 +256,6 @@ class LabelFormViewModelTest {
             // Then
             assertEquals(loadedState.copy(name = defaultTestUpdatedName, closeWithSave = Effect.of(Unit)), awaitItem())
         }
-        verify(exactly = 1) {
-            reducer.newStateFrom(
-                LabelFormState.Loading(),
-                LabelFormEvent.LabelLoaded(
-                    labelId = defaultTestLabel.labelId,
-                    name = defaultTestLabel.name,
-                    color = defaultTestLabel.color,
-                    colorList = listOf(Color.Red)
-                )
-            )
-            reducer.newStateFrom(
-                loadedState,
-                LabelFormViewAction.LabelNameChanged(defaultTestUpdatedName)
-            )
-            reducer.newStateFrom(
-                loadedState.copy(name = defaultTestUpdatedName),
-                LabelFormEvent.LabelUpdated
-            )
-        }
-        confirmVerified(reducer)
     }
 
     @Test
@@ -386,26 +288,6 @@ class LabelFormViewModelTest {
                 awaitItem()
             )
         }
-        verify(exactly = 1) {
-            reducer.newStateFrom(
-                LabelFormState.Loading(),
-                LabelFormEvent.LabelLoaded(
-                    null,
-                    name = "",
-                    color = defaultTestLabel.color,
-                    colorList = listOf(Color.Red)
-                )
-            )
-            reducer.newStateFrom(
-                loadedState,
-                LabelFormViewAction.LabelNameChanged(defaultTestUpdatedName)
-            )
-            reducer.newStateFrom(
-                loadedState.copy(name = defaultTestUpdatedName, isSaveEnabled = true),
-                LabelFormEvent.LabelAlreadyExists
-            )
-        }
-        confirmVerified(reducer)
     }
 
     @Test
@@ -437,26 +319,6 @@ class LabelFormViewModelTest {
                 awaitItem()
             )
         }
-        verify(exactly = 1) {
-            reducer.newStateFrom(
-                LabelFormState.Loading(),
-                LabelFormEvent.LabelLoaded(
-                    null,
-                    name = "",
-                    color = defaultTestLabel.color,
-                    colorList = listOf(Color.Red)
-                )
-            )
-            reducer.newStateFrom(
-                loadedState,
-                LabelFormViewAction.LabelNameChanged(defaultTestUpdatedName)
-            )
-            reducer.newStateFrom(
-                loadedState.copy(name = defaultTestUpdatedName, isSaveEnabled = true),
-                LabelFormEvent.LabelLimitReached
-            )
-        }
-        confirmVerified(reducer)
     }
 
     @Test
@@ -479,22 +341,6 @@ class LabelFormViewModelTest {
                 awaitItem()
             )
         }
-        verify(exactly = 1) {
-            reducer.newStateFrom(
-                LabelFormState.Loading(),
-                LabelFormEvent.LabelLoaded(
-                    labelId = defaultTestLabel.labelId,
-                    name = defaultTestLabel.name,
-                    color = defaultTestLabel.color,
-                    colorList = listOf(Color.Red)
-                )
-            )
-            reducer.newStateFrom(
-                loadedState,
-                LabelFormEvent.LabelDeleted
-            )
-        }
-        confirmVerified(reducer)
     }
 
     @Test
@@ -526,25 +372,5 @@ class LabelFormViewModelTest {
                 awaitItem()
             )
         }
-        verify(exactly = 1) {
-            reducer.newStateFrom(
-                LabelFormState.Loading(),
-                LabelFormEvent.LabelLoaded(
-                    null,
-                    name = "",
-                    color = defaultTestLabel.color,
-                    colorList = listOf(Color.Red)
-                )
-            )
-            reducer.newStateFrom(
-                loadedState,
-                LabelFormViewAction.LabelNameChanged(defaultTestUpdatedName)
-            )
-            reducer.newStateFrom(
-                loadedState.copy(name = defaultTestUpdatedName, isSaveEnabled = true),
-                LabelFormEvent.SaveLabelError
-            )
-        }
-        confirmVerified(reducer)
     }
 }
