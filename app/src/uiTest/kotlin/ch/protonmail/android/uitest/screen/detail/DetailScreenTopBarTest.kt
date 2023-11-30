@@ -28,6 +28,7 @@ import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailsP
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.maildetail.presentation.ui.DetailScreenTopBar
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
+import ch.protonmail.android.test.annotations.suite.RegressionTest
 import ch.protonmail.android.uitest.robot.detail.ConversationDetailRobot
 import ch.protonmail.android.uitest.robot.detail.MessageDetailRobot
 import ch.protonmail.android.uitest.robot.detail.conversationDetailRobot
@@ -38,6 +39,7 @@ import ch.protonmail.android.uitest.util.ComposeTestRuleHolder.createAndGetCompo
 import org.junit.Rule
 import org.junit.Test
 
+@RegressionTest
 internal class DetailScreenTopBarTest {
 
     @get:Rule

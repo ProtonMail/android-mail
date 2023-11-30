@@ -160,6 +160,7 @@ fun CustomSingleLineTopAppBar(
 ) {
     Row(
         modifier = modifier
+            .testTag(DetailScreenTopBarTestTags.RootItem)
             .background(ProtonTheme.colors.backgroundNorm)
             .height(MailDimens.SingleLineTopAppBarHeight)
     ) {
