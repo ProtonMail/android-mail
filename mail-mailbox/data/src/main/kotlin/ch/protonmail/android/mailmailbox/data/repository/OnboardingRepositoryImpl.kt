@@ -20,7 +20,7 @@ package ch.protonmail.android.mailmailbox.data.repository
 
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
-import ch.protonmail.android.mailmailbox.data.repository.local.OnboardingLocalDataSource
+import ch.protonmail.android.mailmailbox.data.local.OnboardingLocalDataSource
 import ch.protonmail.android.mailmailbox.domain.model.OnboardingPreference
 import ch.protonmail.android.mailmailbox.domain.repository.OnboardingRepository
 import kotlinx.coroutines.flow.Flow

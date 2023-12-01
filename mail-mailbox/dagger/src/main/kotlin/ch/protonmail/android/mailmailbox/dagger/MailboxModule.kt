@@ -21,8 +21,8 @@ package ch.protonmail.android.mailmailbox.dagger
 import android.content.Context
 import ch.protonmail.android.mailmailbox.data.MailMailboxDataStoreProvider
 import ch.protonmail.android.mailmailbox.data.repository.OnboardingRepositoryImpl
-import ch.protonmail.android.mailmailbox.data.repository.local.OnboardingLocalDataSource
-import ch.protonmail.android.mailmailbox.data.repository.local.OnboardingLocalDataSourceImpl
+import ch.protonmail.android.mailmailbox.data.local.OnboardingLocalDataSource
+import ch.protonmail.android.mailmailbox.data.local.OnboardingLocalDataSourceImpl
 import ch.protonmail.android.mailmailbox.domain.repository.OnboardingRepository
 import dagger.Module
 import dagger.Provides

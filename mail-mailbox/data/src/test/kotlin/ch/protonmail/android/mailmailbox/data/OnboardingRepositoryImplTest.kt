@@ -21,7 +21,7 @@ package ch.protonmail.android.mailmailbox.data
 import app.cash.turbine.test
 import arrow.core.right
 import ch.protonmail.android.mailmailbox.data.repository.OnboardingRepositoryImpl
-import ch.protonmail.android.mailmailbox.data.repository.local.OnboardingLocalDataSource
+import ch.protonmail.android.mailmailbox.data.local.OnboardingLocalDataSource
 import ch.protonmail.android.mailmailbox.domain.model.OnboardingPreference
 import io.mockk.coEvery
 import io.mockk.coVerify

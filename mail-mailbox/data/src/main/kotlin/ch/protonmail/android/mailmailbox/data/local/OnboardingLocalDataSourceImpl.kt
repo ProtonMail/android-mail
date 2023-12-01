@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.data.repository.local
+package ch.protonmail.android.mailmailbox.data.local
 
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import arrow.core.Either

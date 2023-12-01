@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.uitest.rule
 
-import ch.protonmail.android.mailmailbox.data.repository.local.OnboardingLocalDataSource
+import ch.protonmail.android.mailmailbox.data.local.OnboardingLocalDataSource
 import ch.protonmail.android.mailmailbox.domain.model.OnboardingPreference
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
