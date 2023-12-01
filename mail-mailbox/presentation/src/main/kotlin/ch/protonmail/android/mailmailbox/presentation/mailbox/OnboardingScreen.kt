@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox
 
+import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -49,6 +50,8 @@ import androidx.constraintlayout.compose.ConstrainedLayoutReference
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintLayoutScope
 import androidx.constraintlayout.compose.Dimension
+import ch.protonmail.android.mailcommon.presentation.compose.HyperlinkText
+import ch.protonmail.android.mailcommon.presentation.compose.LockScreenOrientation
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingUiModel
@@ -65,11 +68,17 @@ import me.proton.core.compose.theme.headlineNorm
 fun OnboardingScreen(actions: MailboxScreen.Actions) {
     val pagerState = rememberPagerState()
 
+    LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+
     val contentMap = listOf(
         OnboardingUiModel(
             illustrationId = R.drawable.illustration_onboarding_beta,
             headlineId = R.string.onboarding_headline_beta,
-            descriptionId = R.string.onboarding_description_beta
+            descriptionId = R.string.onboarding_description_beta,
+            hyperLinks = mutableMapOf(
+                stringResource(R.string.onboarding_description_beta_learn_more)
+                    to stringResource(R.string.onboarding_description_beta_link)
+            )
         ),
         OnboardingUiModel(
             illustrationId = R.drawable.illustration_privacy_for_all,
@@ -145,7 +154,7 @@ fun OnboardingContent(content: OnboardingUiModel) {
             style = ProtonTheme.typography.headlineNorm,
             color = ProtonTheme.colors.textNorm
         )
-        Text(
+        HyperlinkText(
             modifier = Modifier
                 .constrainAs(description) {
                     width = Dimension.fillToConstraints
@@ -155,10 +164,13 @@ fun OnboardingContent(content: OnboardingUiModel) {
                     end.linkTo(parent.end, margin = ProtonDimens.LargeSpacing)
                     bottom.linkTo(parent.bottom, margin = ProtonDimens.DefaultSpacing)
                 },
-            textAlign = TextAlign.Center,
-            text = stringResource(id = content.descriptionId),
-            style = ProtonTheme.typography.defaultWeak,
-            color = ProtonTheme.colors.textWeak
+            fullText = stringResource(id = content.descriptionId),
+            hyperLinks = content.hyperLinks,
+            textStyle = ProtonTheme.typography.defaultWeak.copy(
+                textAlign = TextAlign.Center,
+                color = ProtonTheme.colors.textWeak
+            ),
+            linkTextColor = ProtonTheme.colors.textAccent
         )
     }
 }

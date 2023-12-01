@@ -24,5 +24,6 @@ import androidx.compose.runtime.Immutable
 data class OnboardingUiModel(
     val illustrationId: Int,
     val headlineId: Int,
-    val descriptionId: Int
+    val descriptionId: Int,
+    val hyperLinks: Map<String, String> = emptyMap()
 )
