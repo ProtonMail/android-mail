@@ -50,7 +50,7 @@ class DeleteLabelTest {
         } returns expectedResult
 
         // When
-        val result = deleteLabel(UserIdTestData.userId, labelId)
+        val result = deleteLabel(UserIdTestData.userId, labelId, LabelType.MessageLabel)
 
         // Then
         coVerify { labelRepository.deleteLabel(UserIdTestData.userId, LabelType.MessageLabel, labelId) }
@@ -66,7 +66,7 @@ class DeleteLabelTest {
         } throws Exception("Test")
 
         // When
-        val result = deleteLabel(UserIdTestData.userId, labelId)
+        val result = deleteLabel(UserIdTestData.userId, labelId, LabelType.MessageLabel)
 
         // Then
         coVerify { labelRepository.deleteLabel(UserIdTestData.userId, LabelType.MessageLabel, labelId) }
