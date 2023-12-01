@@ -18,22 +18,16 @@
 
 package ch.protonmail.android.mailcomposer.domain.usecase
 
-import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
 import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
-import kotlinx.coroutines.flow.firstOrNull
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
-class ResetSendingMessagesStatus @Inject constructor(
-    private val draftStateRepository: DraftStateRepository,
-    private val resetDraftStateError: ResetDraftStateError
+class DeleteDraftState @Inject constructor(
+    private val draftStateRepository: DraftStateRepository
 ) {
 
-    suspend operator fun invoke(userId: UserId) {
-        draftStateRepository.observeAll(userId).firstOrNull()?.map {
-            if (it.state == DraftSyncState.ErrorSending || it.state == DraftSyncState.ErrorUploadAttachments) {
-                resetDraftStateError(it.userId, it.messageId)
-            }
-        }
+    suspend operator fun invoke(userId: UserId, messageId: MessageId) {
+        draftStateRepository.deleteDraftState(userId, messageId)
     }
 }

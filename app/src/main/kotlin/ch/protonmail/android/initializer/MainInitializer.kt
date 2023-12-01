@@ -74,7 +74,8 @@ class MainInitializer : Initializer<Unit> {
         StrictModeInitializer::class.java,
         ThemeObserverInitializer::class.java,
         NotificationInitializer::class.java,
-        NotificationHandlersInitializer::class.java
+        NotificationHandlersInitializer::class.java,
+        OutboxInitializer::class.java
     )
 
     companion object {

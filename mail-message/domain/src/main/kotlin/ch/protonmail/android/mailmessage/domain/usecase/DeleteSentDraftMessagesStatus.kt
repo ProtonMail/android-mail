@@ -16,23 +16,24 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcomposer.domain.usecase
+package ch.protonmail.android.mailmessage.domain.usecase
 
 import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
 import kotlinx.coroutines.flow.firstOrNull
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
-class ResetSendingMessagesStatus @Inject constructor(
+class DeleteSentDraftMessagesStatus @Inject constructor(
     private val draftStateRepository: DraftStateRepository,
-    private val resetDraftStateError: ResetDraftStateError
+    private val deleteDraftState: DeleteDraftState
 ) {
 
-    suspend operator fun invoke(userId: UserId) {
-        draftStateRepository.observeAll(userId).firstOrNull()?.map {
-            if (it.state == DraftSyncState.ErrorSending || it.state == DraftSyncState.ErrorUploadAttachments) {
-                resetDraftStateError(it.userId, it.messageId)
+    suspend operator fun invoke(userId: UserId, messageId: MessageId) {
+        draftStateRepository.observe(userId, messageId).firstOrNull()?.map {
+            if (it.state == DraftSyncState.Sent) {
+                deleteDraftState(it.userId, it.messageId)
             }
         }
     }
