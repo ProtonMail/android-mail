@@ -187,6 +187,9 @@ class ConversationDetailViewModel @Inject constructor(
             is UnStar -> unStarConversation()
             is MarkUnread -> markAsUnread()
             is Trash -> moveConversationToTrash()
+            is ConversationDetailViewAction.DeleteRequested -> handleDeleteConversationRequested(action)
+            is ConversationDetailViewAction.DeleteDialogDismissed -> handleDeleteDialogDismissed(action)
+            is ConversationDetailViewAction.DeleteConfirmed -> handleDeleteConfirmed()
             is DismissBottomSheet -> dismissBottomSheet(action)
             is RequestMoveToBottomSheet -> showMoveToBottomSheetAndLoadData(action)
             is MoveToDestinationSelected -> moveToDestinationSelected(action.mailLabelId)
@@ -593,6 +596,18 @@ class ConversationDetailViewModel @Inject constructor(
         }.onEach { event ->
             emitNewStateFrom(event)
         }.launchIn(viewModelScope)
+    }
+
+    private fun handleDeleteConversationRequested(action: ConversationDetailViewAction) {
+        viewModelScope.launch { emitNewStateFrom(action) }
+    }
+
+    private fun handleDeleteDialogDismissed(action: ConversationDetailViewAction) {
+        viewModelScope.launch { emitNewStateFrom(action) }
+    }
+
+    private fun handleDeleteConfirmed() {
+        Timber.d("Not yet implemented")
     }
 
     private fun dismissBottomSheet(action: ConversationDetailViewAction) {

@@ -44,6 +44,7 @@ import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.mailcommon.presentation.mapper.ExpirationTimeMapper
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
+import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatExtendedTime
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatShortTime
 import ch.protonmail.android.mailcommon.presentation.usecase.GetInitial
@@ -86,6 +87,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailVie
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.RequestScrollTo
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.ShowAllAttachmentsForMessage
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
+import ch.protonmail.android.maildetail.presentation.reducer.ConversationDeleteDialogReducer
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailMessagesReducer
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailMetadataReducer
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailReducer
@@ -327,7 +329,8 @@ class ConversationDetailViewModelIntegrationTest {
             moveToBottomSheetReducer = MoveToBottomSheetReducer(),
             labelAsBottomSheetReducer = LabelAsBottomSheetReducer(),
             moreActionsBottomSheetReducer = MoreActionsBottomSheetReducer()
-        )
+        ),
+        deleteDialogReducer = ConversationDeleteDialogReducer()
     )
 
     private val inMemoryConversationStateRepository = FakeInMemoryConversationStateRepository()
@@ -998,6 +1001,42 @@ class ConversationDetailViewModelIntegrationTest {
                 cancelAndIgnoreRemainingEvents()
             }
         }
+
+    @Test
+    fun `verify delete dialog is shown when delete conversation is called`() = runTest {
+        // Given
+        val expectedTitle = TextUiModel(R.string.message_delete_dialog_title)
+        val expectedMessage = TextUiModel(R.string.message_delete_dialog_message)
+        val viewModel = buildConversationDetailViewModel()
+
+        // When
+        viewModel.submit(ConversationDetailViewAction.DeleteRequested)
+        advanceUntilIdle()
+
+        // Then
+        assertEquals(
+            expected = DeleteDialogState.Shown(expectedTitle, expectedMessage),
+            actual = viewModel.state.value.deleteDialogState
+        )
+    }
+
+    @Test
+    fun `verify delete dialog is hidden when dismissed is called`() = runTest {
+        // Given
+        val viewModel = buildConversationDetailViewModel()
+
+        // When
+        viewModel.submit(ConversationDetailViewAction.DeleteRequested)
+        advanceUntilIdle()
+        viewModel.submit(ConversationDetailViewAction.DeleteDialogDismissed)
+        advanceUntilIdle()
+
+        // Then
+        assertEquals(
+            expected = DeleteDialogState.Hidden,
+            actual = viewModel.state.value.deleteDialogState
+        )
+    }
 
     private fun mockAttachmentDownload(
         messages: NonEmptyList<MessageWithLabels>,

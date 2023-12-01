@@ -28,6 +28,7 @@ import ch.protonmail.android.mailcommon.presentation.model.contentDescription
 import ch.protonmail.android.mailcommon.presentation.model.description
 import ch.protonmail.android.mailcommon.presentation.model.iconDrawable
 import ch.protonmail.android.mailcommon.presentation.sample.TextMessageSample
+import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
@@ -77,7 +78,8 @@ object ConversationDetailsPreviewData {
         openAttachmentEffect = Effect.empty(),
         scrollToMessage = null,
         showReplyActionsFeatureFlag = false,
-        requestLinkConfirmation = false
+        requestLinkConfirmation = false,
+        deleteDialogState = DeleteDialogState.Hidden
     )
 
     val SuccessWithRandomMessageIds = ConversationDetailState(
@@ -123,7 +125,8 @@ object ConversationDetailsPreviewData {
         openAttachmentEffect = Effect.empty(),
         scrollToMessage = null,
         showReplyActionsFeatureFlag = false,
-        requestLinkConfirmation = false
+        requestLinkConfirmation = false,
+        deleteDialogState = DeleteDialogState.Hidden
     )
 
     val FailedLoadingConversation = ConversationDetailState(
@@ -138,7 +141,8 @@ object ConversationDetailsPreviewData {
         openAttachmentEffect = Effect.empty(),
         scrollToMessage = null,
         showReplyActionsFeatureFlag = false,
-        requestLinkConfirmation = false
+        requestLinkConfirmation = false,
+        deleteDialogState = DeleteDialogState.Hidden
     )
 
     val FailedLoadingMessages = ConversationDetailState(
@@ -153,7 +157,8 @@ object ConversationDetailsPreviewData {
         openAttachmentEffect = Effect.empty(),
         scrollToMessage = null,
         showReplyActionsFeatureFlag = false,
-        requestLinkConfirmation = false
+        requestLinkConfirmation = false,
+        deleteDialogState = DeleteDialogState.Hidden
     )
 
     val FailedLoadingBottomBar = ConversationDetailState(
@@ -168,7 +173,8 @@ object ConversationDetailsPreviewData {
         openAttachmentEffect = Effect.empty(),
         scrollToMessage = null,
         showReplyActionsFeatureFlag = false,
-        requestLinkConfirmation = false
+        requestLinkConfirmation = false,
+        deleteDialogState = DeleteDialogState.Hidden
     )
 
     val Loading = ConversationDetailState(
@@ -183,7 +189,8 @@ object ConversationDetailsPreviewData {
         openAttachmentEffect = Effect.empty(),
         scrollToMessage = null,
         showReplyActionsFeatureFlag = false,
-        requestLinkConfirmation = false
+        requestLinkConfirmation = false,
+        deleteDialogState = DeleteDialogState.Hidden
     )
 
     val NotLoggedIn = ConversationDetailState(
@@ -198,7 +205,8 @@ object ConversationDetailsPreviewData {
         openAttachmentEffect = Effect.empty(),
         scrollToMessage = null,
         showReplyActionsFeatureFlag = false,
-        requestLinkConfirmation = false
+        requestLinkConfirmation = false,
+        deleteDialogState = DeleteDialogState.Hidden
     )
 }
 

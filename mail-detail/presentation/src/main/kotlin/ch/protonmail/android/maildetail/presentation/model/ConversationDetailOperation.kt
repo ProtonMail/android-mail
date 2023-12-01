@@ -23,6 +23,7 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingBottomSheet
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingConversation
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingDeleteDialog
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingErrorBar
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingMessages
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
@@ -38,6 +39,7 @@ sealed interface ConversationDetailOperation {
     sealed interface AffectingMessages : ConversationDetailOperation
     sealed interface AffectingErrorBar
     sealed interface AffectingBottomSheet
+    sealed interface AffectingDeleteDialog
 }
 
 sealed interface ConversationDetailEvent : ConversationDetailOperation {
@@ -71,6 +73,8 @@ sealed interface ConversationDetailEvent : ConversationDetailOperation {
     object ErrorGettingAttachment : ConversationDetailEvent, AffectingErrorBar
     object ErrorGettingAttachmentNotEnoughSpace : ConversationDetailEvent, AffectingErrorBar
     object ErrorAttachmentDownloadInProgress : ConversationDetailEvent, AffectingErrorBar
+    object ErrorDeletingConversation : ConversationDetailEvent, AffectingErrorBar, AffectingDeleteDialog
+    object ErrorDeletingNoApplicableFolder : ConversationDetailEvent, AffectingErrorBar, AffectingDeleteDialog
 
     data class ExpandDecryptedMessage(
         val messageId: MessageIdUiModel,
@@ -116,6 +120,9 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
     object UnStar : ConversationDetailViewAction, AffectingConversation
     object MarkUnread : ConversationDetailViewAction
     object Trash : ConversationDetailViewAction
+    object DeleteRequested : ConversationDetailViewAction, AffectingDeleteDialog
+    object DeleteDialogDismissed : ConversationDetailViewAction, AffectingDeleteDialog
+    object DeleteConfirmed : ConversationDetailViewAction, AffectingDeleteDialog
     object RequestMoveToBottomSheet : ConversationDetailViewAction, AffectingBottomSheet
     object DismissBottomSheet : ConversationDetailViewAction, AffectingBottomSheet
     data class MoveToDestinationSelected(

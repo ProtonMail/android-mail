@@ -22,10 +22,29 @@ import android.net.Uri
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
+import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.presentation.R
-import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ConversationBottomBarEvent
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ConversationBottomSheetEvent
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorAddStar
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorAttachmentDownloadInProgress
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorDeletingConversation
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorDeletingNoApplicableFolder
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorExpandingDecryptMessageError
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorExpandingRetrieveMessageError
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorExpandingRetrievingMessageOffline
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorGettingAttachment
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorGettingAttachmentNotEnoughSpace
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorLabelingConversation
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorMarkingAsUnread
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorMovingConversation
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorMovingToTrash
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorRemoveStar
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.MessagesData
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.OpenAttachmentEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingDeleteDialog
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
 import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
@@ -39,7 +58,8 @@ class ConversationDetailReducer @Inject constructor(
     private val bottomBarReducer: BottomBarReducer,
     private val metadataReducer: ConversationDetailMetadataReducer,
     private val messagesReducer: ConversationDetailMessagesReducer,
-    private val bottomSheetReducer: BottomSheetReducer
+    private val bottomSheetReducer: BottomSheetReducer,
+    private val deleteDialogReducer: ConversationDeleteDialogReducer
 ) {
 
     fun newStateFrom(
@@ -56,7 +76,8 @@ class ConversationDetailReducer @Inject constructor(
             exitScreenWithMessageEffect = currentState.toExitWithMessageState(operation),
             openMessageBodyLinkEffect = currentState.toOpenMessageBodyLinkState(operation),
             openAttachmentEffect = currentState.toNewOpenAttachmentStateFrom(operation),
-            scrollToMessage = currentState.toScrollToMessageState(operation)
+            scrollToMessage = currentState.toScrollToMessageState(operation),
+            deleteDialogState = currentState.toNewDeleteDialogState(operation)
         )
     }
 
@@ -75,7 +96,7 @@ class ConversationDetailReducer @Inject constructor(
         }
 
     private fun ConversationDetailState.toNewBottomBarState(operation: ConversationDetailOperation) =
-        if (operation is ConversationDetailEvent.ConversationBottomBarEvent) {
+        if (operation is ConversationBottomBarEvent) {
             bottomBarReducer.newStateFrom(bottomBarState, operation.bottomBarEvent)
         } else {
             bottomBarState
@@ -84,7 +105,7 @@ class ConversationDetailReducer @Inject constructor(
     private fun ConversationDetailState.toNewBottomSheetStateFrom(operation: ConversationDetailOperation) =
         if (operation is ConversationDetailOperation.AffectingBottomSheet) {
             val bottomSheetOperation = when (operation) {
-                is ConversationDetailEvent.ConversationBottomSheetEvent -> operation.bottomSheetOperation
+                is ConversationBottomSheetEvent -> operation.bottomSheetOperation
                 is ConversationDetailViewAction.MoveToDestinationSelected ->
                     MoveToDestinationSelected(operation.mailLabelId)
 
@@ -100,54 +121,26 @@ class ConversationDetailReducer @Inject constructor(
             bottomSheetState
         }
 
+    @Suppress("ComplexMethod")
     private fun ConversationDetailState.toErrorState(operation: ConversationDetailOperation): Effect<TextUiModel> {
         return if (operation is ConversationDetailOperation.AffectingErrorBar) {
-            when (operation) {
-                is ConversationDetailEvent.ErrorAddStar -> Effect.of(TextUiModel(R.string.error_star_operation_failed))
-                is ConversationDetailEvent.ErrorRemoveStar -> Effect.of(
-                    TextUiModel(R.string.error_unstar_operation_failed)
-                )
-
-                is ConversationDetailEvent.ErrorMarkingAsUnread -> Effect.of(
-                    TextUiModel(R.string.error_mark_as_unread_failed)
-                )
-
-                is ConversationDetailEvent.ErrorMovingToTrash -> Effect.of(
-                    TextUiModel(R.string.error_move_to_trash_failed)
-                )
-
-                is ConversationDetailEvent.ErrorMovingConversation -> Effect.of(
-                    TextUiModel(R.string.error_move_conversation_failed)
-                )
-
-                is ConversationDetailEvent.ErrorLabelingConversation -> Effect.of(
-                    TextUiModel(R.string.error_relabel_message_failed)
-                )
-
-                is ConversationDetailEvent.ErrorExpandingDecryptMessageError -> Effect.of(
-                    TextUiModel(R.string.decryption_error)
-                )
-
-                is ConversationDetailEvent.ErrorExpandingRetrieveMessageError -> Effect.of(
-                    TextUiModel(R.string.detail_error_retrieving_message_body)
-                )
-
-                is ConversationDetailEvent.ErrorExpandingRetrievingMessageOffline -> Effect.of(
-                    TextUiModel(R.string.error_offline_loading_message)
-                )
-
-                is ConversationDetailEvent.ErrorGettingAttachment -> Effect.of(
-                    TextUiModel(R.string.error_get_attachment_failed)
-                )
-
-                is ConversationDetailEvent.ErrorGettingAttachmentNotEnoughSpace -> Effect.of(
-                    TextUiModel(R.string.error_get_attachment_not_enough_memory)
-                )
-
-                ConversationDetailEvent.ErrorAttachmentDownloadInProgress -> Effect.of(
-                    TextUiModel(R.string.error_attachment_download_in_progress)
-                )
+            val textResource = when (operation) {
+                is ErrorAddStar -> R.string.error_star_operation_failed
+                is ErrorRemoveStar -> R.string.error_unstar_operation_failed
+                is ErrorMarkingAsUnread -> R.string.error_mark_as_unread_failed
+                is ErrorMovingToTrash -> R.string.error_move_to_trash_failed
+                is ErrorMovingConversation -> R.string.error_move_conversation_failed
+                is ErrorLabelingConversation -> R.string.error_relabel_message_failed
+                is ErrorExpandingDecryptMessageError -> R.string.decryption_error
+                is ErrorExpandingRetrieveMessageError -> R.string.detail_error_retrieving_message_body
+                is ErrorExpandingRetrievingMessageOffline -> R.string.error_offline_loading_message
+                is ErrorGettingAttachment -> R.string.error_get_attachment_failed
+                is ErrorGettingAttachmentNotEnoughSpace -> R.string.error_get_attachment_not_enough_memory
+                is ErrorAttachmentDownloadInProgress -> R.string.error_attachment_download_in_progress
+                is ErrorDeletingConversation -> R.string.error_delete_conversation_failed
+                is ErrorDeletingNoApplicableFolder -> R.string.error_delete_conversation_failed_wrong_folder
             }
+            Effect.of(TextUiModel(textResource))
         } else {
             error
         }
@@ -196,7 +189,7 @@ class ConversationDetailReducer @Inject constructor(
 
         // ConversationDetailEvent.MessagesData update should not clear the scroll state. It will be cleared when
         // the scroll is completed.
-        is ConversationDetailEvent.MessagesData -> {
+        is MessagesData -> {
             operation.requestScrollToMessageId ?: scrollToMessage
         }
 
@@ -206,7 +199,17 @@ class ConversationDetailReducer @Inject constructor(
     private fun ConversationDetailState.toNewOpenAttachmentStateFrom(
         operation: ConversationDetailOperation
     ): Effect<OpenAttachmentIntentValues> = when (operation) {
-        is ConversationDetailEvent.OpenAttachmentEvent -> Effect.of(operation.values)
+        is OpenAttachmentEvent -> Effect.of(operation.values)
         else -> openAttachmentEffect
+    }
+
+    private fun ConversationDetailState.toNewDeleteDialogState(
+        operation: ConversationDetailOperation
+    ): DeleteDialogState {
+        return if (operation is AffectingDeleteDialog) {
+            deleteDialogReducer.newStateFrom(operation)
+        } else {
+            deleteDialogState
+        }
     }
 }

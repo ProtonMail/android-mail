@@ -56,11 +56,13 @@ class ConversationDetailReducerTest(
     private val messagesReducer = mockk<ConversationDetailMessagesReducer>(relaxed = true)
     private val metadataReducer = mockk<ConversationDetailMetadataReducer>(relaxed = true)
     private val bottomSheetReducer = mockk<BottomSheetReducer>(relaxed = true)
+    private val deleteDialogReducer = mockk<ConversationDeleteDialogReducer>(relaxed = true)
     private val reducer = ConversationDetailReducer(
         bottomBarReducer = bottomBarReducer,
         messagesReducer = messagesReducer,
         metadataReducer = metadataReducer,
-        bottomSheetReducer = bottomSheetReducer
+        bottomSheetReducer = bottomSheetReducer,
+        deleteDialogReducer = deleteDialogReducer
     )
 
     @Test
@@ -119,6 +121,12 @@ class ConversationDetailReducerTest(
             } else {
                 assertNull(result.scrollToMessage)
             }
+
+            if (reducesDeleteDialog) {
+                verify { deleteDialogReducer.newStateFrom(any()) }
+            } else {
+                verify { deleteDialogReducer wasNot Called }
+            }
         }
     }
 
@@ -132,7 +140,8 @@ class ConversationDetailReducerTest(
         val expectedExitMessage: TextUiModel?,
         val reducesBottomSheet: Boolean,
         val reducesLinkClick: Boolean,
-        val reducesMessageScroll: Boolean
+        val reducesMessageScroll: Boolean,
+        val reducesDeleteDialog: Boolean
     ) {
 
         fun operationAffectingBottomBar() = operation as ConversationDetailEvent.ConversationBottomBarEvent
@@ -141,6 +150,7 @@ class ConversationDetailReducerTest(
     }
 
     private companion object {
+
         val actions = listOf(
             ConversationDetailViewAction.MarkUnread affects Exit,
             ConversationDetailViewAction.MoveToDestinationConfirmed("spam") affects ExitWithMessage(
@@ -207,7 +217,9 @@ class ConversationDetailReducerTest(
             ConversationDetailEvent.ErrorExpandingRetrievingMessageOffline(
                 MessageIdUiModel(UUID.randomUUID().toString())
             ) affects listOf(ErrorBar, Messages),
-            ConversationDetailEvent.ErrorGettingAttachment affects ErrorBar
+            ConversationDetailEvent.ErrorGettingAttachment affects ErrorBar,
+            ConversationDetailEvent.ErrorDeletingConversation affects listOf(ErrorBar, DeleteDialog),
+            ConversationDetailEvent.ErrorDeletingNoApplicableFolder affects listOf(ErrorBar, DeleteDialog)
         )
 
         @JvmStatic
@@ -230,7 +242,8 @@ private infix fun ConversationDetailOperation.affects(entities: List<Entity>) = 
     expectedExitMessage = entities.firstNotNullOfOrNull { (it as? ExitWithMessage)?.message },
     reducesBottomSheet = entities.contains(BottomSheet),
     reducesLinkClick = entities.contains(LinkClick),
-    reducesMessageScroll = entities.contains(MessageScroll)
+    reducesMessageScroll = entities.contains(MessageScroll),
+    reducesDeleteDialog = entities.contains(DeleteDialog)
 )
 
 private infix fun ConversationDetailOperation.affects(entity: Entity) = this.affects(listOf(entity))
@@ -245,6 +258,7 @@ private object ErrorBar : Entity
 private object BottomSheet : Entity
 private object LinkClick : Entity
 private object MessageScroll : Entity
+private object DeleteDialog : Entity
 
 private val allMessagesFirstExpanded = listOf(
     ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded,

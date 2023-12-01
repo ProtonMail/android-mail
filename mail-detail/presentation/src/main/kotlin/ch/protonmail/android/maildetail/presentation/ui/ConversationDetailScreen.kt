@@ -67,6 +67,7 @@ import ch.protonmail.android.mailcommon.presentation.compose.pxToDp
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
+import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialog
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
@@ -131,6 +132,12 @@ fun ConversationDetailScreen(
         viewModel.submit(ConversationDetailViewAction.DismissBottomSheet)
     }
 
+    DeleteDialog(
+        state = state.deleteDialogState,
+        confirm = { viewModel.submit(ConversationDetailViewAction.DeleteConfirmed) },
+        dismiss = { viewModel.submit(ConversationDetailViewAction.DeleteDialogDismissed) }
+    )
+
     ProtonModalBottomSheetLayout(
         sheetState = bottomSheetState,
         sheetContent = {
@@ -170,6 +177,7 @@ fun ConversationDetailScreen(
                 onExit = actions.onExit,
                 onStarClick = { viewModel.submit(ConversationDetailViewAction.Star) },
                 onTrashClick = { viewModel.submit(ConversationDetailViewAction.Trash) },
+                onDeleteClick = { viewModel.submit(ConversationDetailViewAction.DeleteRequested) },
                 onUnStarClick = { viewModel.submit(ConversationDetailViewAction.UnStar) },
                 onUnreadClick = { viewModel.submit(ConversationDetailViewAction.MarkUnread) },
                 onMoveToClick = { viewModel.submit(ConversationDetailViewAction.RequestMoveToBottomSheet) },
@@ -309,7 +317,7 @@ fun ConversationDetailScreen(
                     onMove = actions.onMoveToClick,
                     onLabel = actions.onLabelAsClick,
                     onTrash = actions.onTrashClick,
-                    onDelete = actions.showFeatureMissingSnackbar,
+                    onDelete = actions.onDeleteClick,
                     onArchive = { Timber.d("conversation onArchive clicked") },
                     onSpam = { Timber.d("conversation onSpam clicked") },
                     onViewInLightMode = { Timber.d("conversation onViewInLightMode clicked") },
@@ -539,6 +547,7 @@ object ConversationDetailScreen {
         val onExit: (notifyUserMessage: String?) -> Unit,
         val onStarClick: () -> Unit,
         val onTrashClick: () -> Unit,
+        val onDeleteClick: () -> Unit,
         val onUnStarClick: () -> Unit,
         val onUnreadClick: () -> Unit,
         val onMoveToClick: () -> Unit,
@@ -566,6 +575,7 @@ object ConversationDetailScreen {
                 onExit = {},
                 onStarClick = {},
                 onTrashClick = {},
+                onDeleteClick = {},
                 onUnStarClick = {},
                 onUnreadClick = {},
                 onMoveToClick = {},
