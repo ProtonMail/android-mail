@@ -51,7 +51,7 @@ class IsLabelLimitReachedTest {
         coEvery { observeUser(UserIdTestData.userId) } returns flowOf(UserTestData.paidUser)
 
         // When
-        val result = isLabelLimitReached(UserIdTestData.userId)
+        val result = isLabelLimitReached(UserIdTestData.userId, LabelType.MessageLabel)
 
         // Then
         coVerify { observeUser(UserIdTestData.userId) }
@@ -69,7 +69,7 @@ class IsLabelLimitReachedTest {
         )
 
         // When
-        val result = isLabelLimitReached(UserIdTestData.userId)
+        val result = isLabelLimitReached(UserIdTestData.userId, LabelType.MessageLabel)
 
         // Then
         coVerify { observeUser(UserIdTestData.userId) }
@@ -89,7 +89,7 @@ class IsLabelLimitReachedTest {
         )
 
         // When
-        val result = isLabelLimitReached(UserIdTestData.userId)
+        val result = isLabelLimitReached(UserIdTestData.userId, LabelType.MessageLabel)
 
         // Then
         coVerify { observeUser(UserIdTestData.userId) }

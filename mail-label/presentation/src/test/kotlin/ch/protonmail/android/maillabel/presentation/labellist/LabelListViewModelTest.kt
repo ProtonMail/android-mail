@@ -30,7 +30,6 @@ import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.spyk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -53,7 +52,7 @@ class LabelListViewModelTest {
     }
     private val observeLabels = mockk<ObserveLabels>()
 
-    private val reducer = spyk(LabelListReducer())
+    private val reducer = LabelListReducer()
 
     private val labelListViewModel by lazy {
         LabelListViewModel(

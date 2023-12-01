@@ -50,7 +50,7 @@ class GetLabelTest {
         } returns expectedResult
 
         // When
-        val result = getLabel(UserIdTestData.userId, defaultTestLabel.labelId)
+        val result = getLabel(UserIdTestData.userId, defaultTestLabel.labelId, LabelType.MessageLabel)
 
         // Then
         coVerify { labelRepository.getLabel(UserIdTestData.userId, LabelType.MessageLabel, defaultTestLabel.labelId) }
@@ -66,7 +66,7 @@ class GetLabelTest {
         } throws Exception("Test")
 
         // When
-        val result = getLabel(UserIdTestData.userId, defaultTestLabel.labelId)
+        val result = getLabel(UserIdTestData.userId, defaultTestLabel.labelId, LabelType.MessageLabel)
 
         // Then
         coVerify { labelRepository.getLabel(UserIdTestData.userId, LabelType.MessageLabel, defaultTestLabel.labelId) }

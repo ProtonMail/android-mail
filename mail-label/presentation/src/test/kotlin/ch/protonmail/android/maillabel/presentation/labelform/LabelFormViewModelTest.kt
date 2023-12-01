@@ -41,7 +41,6 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
-import io.mockk.spyk
 import io.mockk.unmockkStatic
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
@@ -49,6 +48,7 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import me.proton.core.label.domain.entity.LabelType
 import org.junit.Test
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -103,7 +103,7 @@ class LabelFormViewModelTest {
     private val isLabelNameAllowed = mockk<IsLabelNameAllowed>()
     private val isLabelLimitReached = mockk<IsLabelLimitReached>()
 
-    private val reducer = spyk(LabelFormReducer())
+    private val reducer = LabelFormReducer()
 
     private val savedStateHandle = mockk<SavedStateHandle>()
 
@@ -155,7 +155,9 @@ class LabelFormViewModelTest {
         // Given
         val loadedState = loadedUpdateState
         every { savedStateHandle.get<String>(LabelFormScreen.LabelIdKey) } returns defaultTestLabel.labelId.id
-        coEvery { getLabel.invoke(userId, defaultTestLabel.labelId) } returns defaultTestLabel.right()
+        coEvery {
+            getLabel.invoke(userId, defaultTestLabel.labelId, LabelType.MessageLabel)
+        } returns defaultTestLabel.right()
 
         // When
         labelFormViewModel.state.test {
@@ -207,7 +209,7 @@ class LabelFormViewModelTest {
         val loadedState = loadedCreateState
         every { savedStateHandle.get<String>(LabelFormScreen.LabelIdKey) } returns null
         coEvery { isLabelNameAllowed.invoke(userId, defaultTestUpdatedName) } returns true.right()
-        coEvery { isLabelLimitReached.invoke(userId) } returns false.right()
+        coEvery { isLabelLimitReached.invoke(userId, LabelType.MessageLabel) } returns false.right()
 
         labelFormViewModel.state.test {
             // Initial loaded state
@@ -239,7 +241,9 @@ class LabelFormViewModelTest {
         val loadedState = loadedUpdateState
         every { savedStateHandle.get<String>(LabelFormScreen.LabelIdKey) } returns defaultTestLabel.labelId.id
         coEvery { isLabelNameAllowed.invoke(userId, defaultTestUpdatedName) } returns true.right()
-        coEvery { getLabel.invoke(userId, defaultTestLabel.labelId) } returns defaultTestLabel.right()
+        coEvery {
+            getLabel.invoke(userId, defaultTestLabel.labelId, LabelType.MessageLabel)
+        } returns defaultTestLabel.right()
 
         labelFormViewModel.state.test {
             // Initial loaded state
@@ -263,7 +267,7 @@ class LabelFormViewModelTest {
         // Given
         val loadedState = loadedCreateState
         every { savedStateHandle.get<String>(LabelFormScreen.LabelIdKey) } returns null
-        coEvery { isLabelLimitReached.invoke(userId) } returns false.right()
+        coEvery { isLabelLimitReached.invoke(userId, LabelType.MessageLabel) } returns false.right()
         coEvery { isLabelNameAllowed.invoke(userId, any()) } returns false.right()
 
         labelFormViewModel.state.test {
@@ -295,7 +299,7 @@ class LabelFormViewModelTest {
         // Given
         val loadedState = loadedCreateState
         every { savedStateHandle.get<String>(LabelFormScreen.LabelIdKey) } returns null
-        coEvery { isLabelLimitReached.invoke(userId) } returns true.right()
+        coEvery { isLabelLimitReached.invoke(userId, LabelType.MessageLabel) } returns true.right()
 
         labelFormViewModel.state.test {
             // Initial loaded state
@@ -326,7 +330,9 @@ class LabelFormViewModelTest {
         // Given
         val loadedState = loadedUpdateState
         every { savedStateHandle.get<String>(LabelFormScreen.LabelIdKey) } returns defaultTestLabel.labelId.id
-        coEvery { getLabel.invoke(userId, defaultTestLabel.labelId) } returns defaultTestLabel.right()
+        coEvery {
+            getLabel.invoke(userId, defaultTestLabel.labelId, LabelType.MessageLabel)
+        } returns defaultTestLabel.right()
 
         labelFormViewModel.state.test {
             // Initial loaded state
@@ -348,7 +354,7 @@ class LabelFormViewModelTest {
         // Given
         val loadedState = loadedCreateState
         every { savedStateHandle.get<String>(LabelFormScreen.LabelIdKey) } returns null
-        coEvery { isLabelLimitReached.invoke(userId) } returns DataError.Local.Unknown.left()
+        coEvery { isLabelLimitReached.invoke(userId, LabelType.MessageLabel) } returns DataError.Local.Unknown.left()
 
         labelFormViewModel.state.test {
             // Initial loaded state
