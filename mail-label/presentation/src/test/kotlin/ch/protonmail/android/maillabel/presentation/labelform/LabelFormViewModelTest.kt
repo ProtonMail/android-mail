@@ -228,6 +228,7 @@ class LabelFormViewModelTest {
                 loadedState.copy(
                     name = defaultTestUpdatedName,
                     isSaveEnabled = true,
+                    displayCreateLoader = true,
                     closeWithSave = Effect.of(Unit)
                 ),
                 awaitItem()
