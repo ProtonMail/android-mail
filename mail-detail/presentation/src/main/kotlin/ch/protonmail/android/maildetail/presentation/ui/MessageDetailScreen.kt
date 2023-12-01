@@ -120,7 +120,7 @@ fun MessageDetailScreen(
 
     DeleteDialog(
         state = state.deleteDialogState,
-        confirm = {},
+        confirm = { viewModel.submit(MessageViewAction.DeleteConfirmed) },
         dismiss = { viewModel.submit(MessageViewAction.DeleteDialogDismissed) }
     )
 

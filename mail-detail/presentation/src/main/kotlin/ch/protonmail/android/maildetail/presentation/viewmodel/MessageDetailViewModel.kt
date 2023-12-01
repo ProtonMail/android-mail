@@ -62,6 +62,7 @@ import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.GetDecryptedMessageBodyError
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.usecase.DeleteMessages
 import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
 import ch.protonmail.android.mailmessage.domain.usecase.StarMessages
@@ -79,6 +80,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapLatest
@@ -116,6 +118,7 @@ class MessageDetailViewModel @Inject constructor(
     private val messageDetailActionBarUiModelMapper: MessageDetailActionBarUiModelMapper,
     private val moveMessage: MoveMessage,
     private val relabelMessage: RelabelMessage,
+    private val deleteMessages: DeleteMessages,
     private val getAttachmentIntentValues: GetAttachmentIntentValues,
     private val getDownloadingAttachmentsForMessages: GetDownloadingAttachmentsForMessages,
     private val getEmbeddedImageAvoidDuplicatedExecution: GetEmbeddedImageAvoidDuplicatedExecution,
@@ -150,6 +153,7 @@ class MessageDetailViewModel @Inject constructor(
             is MessageViewAction.Trash -> trashMessage()
             is MessageViewAction.DeleteRequested -> handleDeleteMessageRequested(action)
             is MessageViewAction.DeleteDialogDismissed -> handleDeleteDialogDismissed(action)
+            is MessageViewAction.DeleteConfirmed -> handleDeleteConfirmed(action)
             is MessageViewAction.RequestMoveToBottomSheet -> showMoveToBottomSheetAndLoadData(action)
             is MessageViewAction.DismissBottomSheet -> dismissBottomSheet(action)
             is MessageViewAction.MoveToDestinationSelected -> moveToDestinationSelected(action.mailLabelId)
@@ -231,6 +235,36 @@ class MessageDetailViewModel @Inject constructor(
 
     private fun handleDeleteDialogDismissed(action: MessageViewAction) {
         viewModelScope.launch { emitNewStateFrom(action) }
+    }
+
+    private fun handleDeleteConfirmed(action: MessageViewAction) {
+        viewModelScope.launch {
+            val userId = primaryUserId.first()
+            val messageWithLabels = observeMessageWithLabels(userId, messageId).first().getOrNull()
+            if (messageWithLabels == null) {
+                Timber.d("Failed to get message with labels for deleting message")
+                emitNewStateFrom(MessageDetailEvent.ErrorDeletingMessage)
+                return@launch
+            }
+
+            val exclusiveLabels = observeDestinationMailLabels(userId).firstOrNull()
+            if (exclusiveLabels == null) {
+                Timber.d("Failed to get exclusive labels for deleting message")
+                emitNewStateFrom(MessageDetailEvent.ErrorDeletingMessage)
+                return@launch
+            }
+
+            val currentExclusiveLabel = messageWithLabels.message.labelIds
+                .firstOrNull { labelId -> labelId in exclusiveLabels.systemLabels.map { it.id.labelId } }
+
+            if (currentExclusiveLabel == null) {
+                Timber.d("Applicable exclusive label not found")
+                emitNewStateFrom(MessageDetailEvent.ErrorDeletingNoApplicableFolder)
+            } else {
+                emitNewStateFrom(action)
+                deleteMessages(userId, listOf(messageId), currentExclusiveLabel)
+            }
+        }
     }
 
     private fun dismissBottomSheet(action: MessageViewAction) {

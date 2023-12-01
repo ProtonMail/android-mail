@@ -38,6 +38,7 @@ import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
+import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
@@ -79,6 +80,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageWithLabels
 import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
+import ch.protonmail.android.mailmessage.domain.usecase.DeleteMessages
 import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
 import ch.protonmail.android.mailmessage.domain.usecase.StarMessages
@@ -107,6 +109,7 @@ import ch.protonmail.android.testdata.message.MessageTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.Called
 import io.mockk.coEvery
+import io.mockk.coJustRun
 import io.mockk.coVerify
 import io.mockk.coVerifyOrder
 import io.mockk.coVerifySequence
@@ -279,6 +282,7 @@ class MessageDetailViewModelTest {
     private val getAttachmentIntentValues = mockk<GetAttachmentIntentValues>()
     private val getDownloadingAttachmentsForMessages = mockk<GetDownloadingAttachmentsForMessages>()
     private val getEmbeddedImageAvoidDuplicatedExecution = mockk<GetEmbeddedImageAvoidDuplicatedExecution>()
+    private val deleteMessages = mockk<DeleteMessages>()
 
     private val viewModel by lazy {
         MessageDetailViewModel(
@@ -303,6 +307,7 @@ class MessageDetailViewModelTest {
             messageDetailActionBarUiModelMapper = messageDetailActionBarUiModelMapper,
             moveMessage = moveMessage,
             relabelMessage = relabelMessage,
+            deleteMessages = deleteMessages,
             getAttachmentIntentValues = getAttachmentIntentValues,
             getDownloadingAttachmentsForMessages = getDownloadingAttachmentsForMessages,
             getEmbeddedImageAvoidDuplicatedExecution = getEmbeddedImageAvoidDuplicatedExecution,
@@ -648,6 +653,105 @@ class MessageDetailViewModelTest {
 
         // Then
         assertEquals(TextUiModel(R.string.error_move_to_trash_failed), viewModel.state.value.error.consume())
+    }
+
+    @Test
+    fun `when delete requested action is submitted, then delete dialog is shown`() = runTest {
+        // Given
+        val expectedTitle = TextUiModel(R.string.message_delete_dialog_title)
+        val expectedMessage = TextUiModel(R.string.message_delete_dialog_message)
+
+        // When
+        viewModel.submit(MessageViewAction.DeleteRequested)
+        advanceUntilIdle()
+
+        // Then
+        assertEquals(
+            expected = DeleteDialogState.Shown(
+                title = expectedTitle,
+                message = expectedMessage
+            ),
+            actual = viewModel.state.value.deleteDialogState
+        )
+    }
+
+    @Test
+    fun `when delete confirmed action is submitted, use case is called and success message is emitted`() = runTest {
+        // Given
+        coJustRun { deleteMessages(userId, listOf(messageId), SystemLabelId.Spam.labelId) }
+        coEvery { observeMessageWithLabels(userId, messageId) } returns flowOf(
+            MessageWithLabels(
+                MessageTestData.message.copy(labelIds = listOf(LabelIdSample.Spam)),
+                emptyList()
+            ).right()
+        )
+        val expectedMessage = TextUiModel(R.string.message_deleted)
+
+        // when
+        viewModel.submit(MessageViewAction.DeleteConfirmed)
+        advanceUntilIdle()
+        viewModel.state.test {
+
+            // then
+            coVerify { deleteMessages(userId, listOf(messageId), SystemLabelId.Spam.labelId) }
+            assertEquals(expectedMessage, awaitItem().exitScreenWithMessageEffect.consume())
+        }
+    }
+
+    @Test
+    fun `when delete confirmed action is submitted, and observing message fails, then error is emitted`() = runTest {
+        // Given
+        coEvery { observeMessageWithLabels(userId, messageId) } returns flowOf(DataError.Local.NoDataCached.left())
+        val expectedMessage = TextUiModel(R.string.error_delete_message_failed)
+
+        // when
+        viewModel.submit(MessageViewAction.DeleteConfirmed)
+        advanceUntilIdle()
+        viewModel.state.test {
+
+            // then
+            coVerify { deleteMessages wasNot Called }
+            assertEquals(expectedMessage, awaitItem().error.consume())
+        }
+    }
+
+    @Test
+    fun `when delete confirmed action is submitted, and exclusive labels fails, then error is emitted`() = runTest {
+        // Given
+        coEvery { observeMessageWithLabels(userId, messageId) } returns flowOf(
+            MessageWithLabels(
+                MessageTestData.message.copy(labelIds = listOf(LabelIdSample.Spam)),
+                emptyList()
+            ).right()
+        )
+        coEvery { observeMailLabels(userId) } returns flowOf()
+        val expectedMessage = TextUiModel(R.string.error_delete_message_failed)
+
+        // when
+        viewModel.submit(MessageViewAction.DeleteConfirmed)
+        advanceUntilIdle()
+        viewModel.state.test {
+
+            // then
+            coVerify { deleteMessages wasNot Called }
+            assertEquals(expectedMessage, awaitItem().error.consume())
+        }
+    }
+
+    @Test
+    fun `when delete confirmed action is submitted, and message has wrong location, then error is emitted`() = runTest {
+        // Given
+        val expectedMessage = TextUiModel(R.string.error_delete_message_failed_wrong_folder)
+
+        // when
+        viewModel.submit(MessageViewAction.DeleteConfirmed)
+        advanceUntilIdle()
+        viewModel.state.test {
+
+            // then
+            coVerify { deleteMessages wasNot Called }
+            assertEquals(expectedMessage, awaitItem().error.consume())
+        }
     }
 
     @Test

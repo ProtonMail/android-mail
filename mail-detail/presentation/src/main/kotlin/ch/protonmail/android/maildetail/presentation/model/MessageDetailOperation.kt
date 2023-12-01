@@ -88,6 +88,8 @@ sealed interface MessageDetailEvent : MessageDetailOperation {
     object ErrorGettingAttachment : MessageDetailEvent, AffectingErrorBar
     object ErrorGettingAttachmentNotEnoughSpace : MessageDetailEvent, AffectingErrorBar
     object ErrorAttachmentDownloadInProgress : MessageDetailEvent, AffectingErrorBar
+    object ErrorDeletingMessage : MessageDetailEvent, AffectingErrorBar, AffectingDeleteDialog
+    object ErrorDeletingNoApplicableFolder : MessageDetailEvent, AffectingErrorBar, AffectingDeleteDialog
 }
 
 sealed interface MessageViewAction : MessageDetailOperation {
@@ -98,6 +100,7 @@ sealed interface MessageViewAction : MessageDetailOperation {
     object Trash : MessageViewAction
     object DeleteRequested : MessageViewAction, AffectingDeleteDialog
     object DeleteDialogDismissed : MessageViewAction, AffectingDeleteDialog
+    object DeleteConfirmed : MessageViewAction, AffectingDeleteDialog
     object RequestMoveToBottomSheet : MessageViewAction, AffectingBottomSheet
     object RequestLabelAsBottomSheet : MessageViewAction, AffectingBottomSheet
     object DismissBottomSheet : MessageViewAction, AffectingBottomSheet

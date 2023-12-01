@@ -36,9 +36,8 @@ class MessageDetailMetadataReducer @Inject constructor() {
                 event.messageDetailActionBar,
                 event.messageDetailHeader
             )
-            is MessageDetailEvent.NoCachedMetadata -> TODO(
-                "This should never happen. Handle by following the 'load message body' flow (once implemented)"
-            )
+
+            is MessageDetailEvent.NoCachedMetadata -> currentState
             is MessageViewAction.Star -> currentState.toNewStateForStarredMessage()
             is MessageViewAction.UnStar -> currentState.toNewStateForUnStarredMessage()
             is MessageDetailEvent.ErrorAddingStar -> currentState.toNewStateForErrorAddingStar()

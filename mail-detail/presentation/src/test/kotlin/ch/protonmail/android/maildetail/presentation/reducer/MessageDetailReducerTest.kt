@@ -319,6 +319,39 @@ class MessageDetailReducerTest(
                 shouldReduceToErrorEffect = false,
                 shouldReduceBottomSheetState = false,
                 shouldReduceOpenMessageBodyLinkEffect = true
+            ),
+            TestInput(
+                MessageViewAction.DeleteRequested,
+                shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBodyState = false,
+                shouldReduceBottomBarState = false,
+                shouldReduceExitEffect = false,
+                shouldReduceToErrorEffect = false,
+                shouldReduceBottomSheetState = false,
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReduceDeleteDialogState = true
+            ),
+            TestInput(
+                MessageViewAction.DeleteDialogDismissed,
+                shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBodyState = false,
+                shouldReduceBottomBarState = false,
+                shouldReduceExitEffect = false,
+                shouldReduceToErrorEffect = false,
+                shouldReduceBottomSheetState = false,
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReduceDeleteDialogState = true
+            ),
+            TestInput(
+                MessageViewAction.DeleteConfirmed,
+                shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBodyState = false,
+                shouldReduceBottomBarState = false,
+                shouldReduceExitEffect = false,
+                shouldReduceToErrorEffect = false,
+                shouldReduceBottomSheetState = false,
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReduceDeleteDialogState = true
             )
         )
 
@@ -353,7 +386,7 @@ class MessageDetailReducerTest(
                 shouldReduceMessageMetadataState = true,
                 shouldReduceMessageBodyState = false,
                 shouldReduceBottomBarState = false,
-                shouldReduceExitEffect = false,
+                shouldReduceExitEffect = true,
                 shouldReduceToErrorEffect = false,
                 shouldReduceBottomSheetState = false,
                 shouldReduceOpenMessageBodyLinkEffect = false
@@ -471,12 +504,23 @@ class MessageDetailReducerTest(
                 shouldReduceOpenMessageBodyLinkEffect = false
             ),
             TestInput(
-                MessageViewAction.DeleteRequested,
+                MessageDetailEvent.ErrorDeletingMessage,
                 shouldReduceMessageMetadataState = false,
                 shouldReduceMessageBodyState = false,
                 shouldReduceBottomBarState = false,
                 shouldReduceExitEffect = false,
-                shouldReduceToErrorEffect = false,
+                shouldReduceToErrorEffect = true,
+                shouldReduceBottomSheetState = false,
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReduceDeleteDialogState = true
+            ),
+            TestInput(
+                MessageDetailEvent.ErrorDeletingNoApplicableFolder,
+                shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBodyState = false,
+                shouldReduceBottomBarState = false,
+                shouldReduceExitEffect = false,
+                shouldReduceToErrorEffect = true,
                 shouldReduceBottomSheetState = false,
                 shouldReduceOpenMessageBodyLinkEffect = false,
                 shouldReduceDeleteDialogState = true

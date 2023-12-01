@@ -59,32 +59,32 @@ class MessageDetailReducer @Inject constructor(
 
     private fun MessageDetailState.toNewErrorStateFrom(operation: MessageDetailOperation) =
         if (operation is MessageDetailOperation.AffectingErrorBar) {
-            when (operation) {
-                is MessageDetailEvent.ErrorMarkingUnread -> Effect.of(TextUiModel(R.string.error_mark_unread_failed))
-                is MessageDetailEvent.ErrorAddingStar -> Effect.of(TextUiModel(R.string.error_star_operation_failed))
-                is MessageDetailEvent.ErrorRemovingStar ->
-                    Effect.of(TextUiModel(R.string.error_unstar_operation_failed))
-
-                is MessageDetailEvent.ErrorMovingToTrash -> Effect.of(TextUiModel(R.string.error_move_to_trash_failed))
-                is MessageDetailEvent.ErrorMovingMessage -> Effect.of(TextUiModel(R.string.error_move_message_failed))
-                is MessageDetailEvent.ErrorLabelingMessage ->
-                    Effect.of(TextUiModel(R.string.error_relabel_message_failed))
-
-                is MessageDetailEvent.ErrorGettingAttachment ->
-                    Effect.of(TextUiModel(R.string.error_get_attachment_failed))
-
+            val textRessource = when (operation) {
+                is MessageDetailEvent.ErrorMarkingUnread -> R.string.error_mark_unread_failed
+                is MessageDetailEvent.ErrorAddingStar -> R.string.error_star_operation_failed
+                is MessageDetailEvent.ErrorRemovingStar -> R.string.error_unstar_operation_failed
+                is MessageDetailEvent.ErrorMovingToTrash -> R.string.error_move_to_trash_failed
+                is MessageDetailEvent.ErrorMovingMessage -> R.string.error_move_message_failed
+                is MessageDetailEvent.ErrorLabelingMessage -> R.string.error_relabel_message_failed
+                is MessageDetailEvent.ErrorGettingAttachment -> R.string.error_get_attachment_failed
                 is MessageDetailEvent.ErrorGettingAttachmentNotEnoughSpace ->
-                    Effect.of(TextUiModel(R.string.error_get_attachment_not_enough_memory))
+                    R.string.error_get_attachment_not_enough_memory
 
-                MessageDetailEvent.ErrorAttachmentDownloadInProgress ->
-                    Effect.of(TextUiModel(R.string.error_attachment_download_in_progress))
+                is MessageDetailEvent.ErrorAttachmentDownloadInProgress ->
+                    R.string.error_attachment_download_in_progress
+
+                is MessageDetailEvent.ErrorDeletingMessage -> R.string.error_delete_message_failed
+                is MessageDetailEvent.ErrorDeletingNoApplicableFolder ->
+                    R.string.error_delete_message_failed_wrong_folder
             }
+            Effect.of(TextUiModel(textRessource))
         } else {
             error
         }
 
     private fun MessageDetailState.toNewExitStateFrom(operation: MessageDetailOperation): Effect<Unit> =
         when (operation) {
+            MessageDetailEvent.NoCachedMetadata -> Effect.of(Unit)
             MessageViewAction.MarkUnread -> Effect.of(Unit)
             else -> exitScreenEffect
         }
@@ -101,6 +101,10 @@ class MessageDetailReducer @Inject constructor(
             true -> Effect.of(TextUiModel(R.string.message_moved_to_archive))
             else -> exitScreenWithMessageEffect
         }
+
+        is MessageViewAction.DeleteConfirmed -> Effect.of(
+            TextUiModel(R.string.message_deleted)
+        )
 
         else -> exitScreenWithMessageEffect
     }

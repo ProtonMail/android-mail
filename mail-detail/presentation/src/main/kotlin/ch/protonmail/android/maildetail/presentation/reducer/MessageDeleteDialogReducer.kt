@@ -21,6 +21,7 @@ package ch.protonmail.android.maildetail.presentation.reducer
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.maildetail.presentation.R
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import javax.inject.Inject
@@ -29,6 +30,9 @@ class MessageDeleteDialogReducer @Inject constructor() {
 
     internal fun newStateFrom(operation: MessageDetailOperation.AffectingDeleteDialog) = when (operation) {
         MessageViewAction.DeleteRequested -> newStateFromDeleteRequested()
+        MessageDetailEvent.ErrorDeletingMessage,
+        MessageDetailEvent.ErrorDeletingNoApplicableFolder,
+        MessageViewAction.DeleteConfirmed,
         MessageViewAction.DeleteDialogDismissed -> DeleteDialogState.Hidden
     }
 

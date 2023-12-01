@@ -21,6 +21,7 @@ package ch.protonmail.android.maildetail.presentation.reducer
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.maildetail.presentation.R
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation.AffectingDeleteDialog
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import org.junit.Test
@@ -55,6 +56,18 @@ class MessageDeleteDialogReducerTest(
             ),
             TestInput(
                 operation = MessageViewAction.DeleteDialogDismissed,
+                expectedState = DeleteDialogState.Hidden
+            ),
+            TestInput(
+                operation = MessageViewAction.DeleteConfirmed,
+                expectedState = DeleteDialogState.Hidden
+            ),
+            TestInput(
+                operation = MessageDetailEvent.ErrorDeletingMessage,
+                expectedState = DeleteDialogState.Hidden
+            ),
+            TestInput(
+                operation = MessageDetailEvent.ErrorDeletingNoApplicableFolder,
                 expectedState = DeleteDialogState.Hidden
             )
         )
