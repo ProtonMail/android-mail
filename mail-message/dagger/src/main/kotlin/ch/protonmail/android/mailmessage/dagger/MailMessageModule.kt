@@ -23,7 +23,9 @@ import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSourceImpl
 import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSourceImpl
 import ch.protonmail.android.mailmessage.data.repository.MessageRepositoryImpl
+import ch.protonmail.android.mailmessage.data.repository.OutboxRepositoryImpl
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
+import ch.protonmail.android.mailmessage.domain.repository.OutboxRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -45,4 +47,9 @@ abstract class MailMessageModule {
     @Binds
     @Singleton
     abstract fun provideMessageLocalDataSource(localDataSourceImpl: MessageLocalDataSourceImpl): MessageLocalDataSource
+
+    @Binds
+    @Singleton
+    abstract fun provideOutboxRepositoryImpl(repositoryImpl: OutboxRepositoryImpl): OutboxRepository
+
 }

@@ -24,6 +24,7 @@ import ch.protonmail.android.mailmessage.data.local.dao.MessageAttachmentMetadat
 import ch.protonmail.android.mailmessage.data.local.dao.MessageBodyDao
 import ch.protonmail.android.mailmessage.data.local.dao.MessageDao
 import ch.protonmail.android.mailmessage.data.local.dao.MessageLabelDao
+import ch.protonmail.android.mailmessage.data.local.dao.OutboxDao
 import ch.protonmail.android.mailpagination.data.local.PageIntervalDatabase
 import me.proton.core.data.room.db.Database
 import me.proton.core.data.room.db.extension.addTableColumn
@@ -38,6 +39,7 @@ interface MessageDatabase : Database, PageIntervalDatabase {
     fun messageBodyDao(): MessageBodyDao
     fun messageAttachmentDao(): MessageAttachmentDao
     fun messageAttachmentMetadataDao(): MessageAttachmentMetadataDao
+    fun outboxDao(): OutboxDao
 
     companion object {
 
