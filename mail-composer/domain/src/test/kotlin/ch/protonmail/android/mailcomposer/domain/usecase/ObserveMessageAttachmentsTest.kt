@@ -21,7 +21,7 @@ package ch.protonmail.android.mailcomposer.domain.usecase
 import app.cash.turbine.test
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
-import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
+import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailcomposer.domain.sample.DraftStateSample
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample

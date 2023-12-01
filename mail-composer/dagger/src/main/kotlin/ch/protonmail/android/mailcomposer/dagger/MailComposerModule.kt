@@ -38,7 +38,7 @@ import ch.protonmail.android.mailcomposer.domain.Transactor
 import ch.protonmail.android.mailcomposer.domain.repository.AttachmentRepository
 import ch.protonmail.android.mailcomposer.domain.repository.AttachmentStateRepository
 import ch.protonmail.android.mailcomposer.domain.repository.DraftRepository
-import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
+import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailcomposer.domain.repository.MessageRepository
 import dagger.Binds
 import dagger.Module

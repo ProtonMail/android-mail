@@ -23,10 +23,10 @@ import arrow.core.raise.either
 import arrow.core.getOrElse
 import ch.protonmail.android.composer.data.local.DraftStateLocalDataSource
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailcomposer.domain.model.DraftAction
-import ch.protonmail.android.mailcomposer.domain.model.DraftState
-import ch.protonmail.android.mailcomposer.domain.model.DraftSyncState
-import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
+import ch.protonmail.android.mailmessage.domain.model.DraftAction
+import ch.protonmail.android.mailmessage.domain.model.DraftState
+import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
+import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first

@@ -19,8 +19,8 @@
 package ch.protonmail.android.composer.data.local.converters
 
 import androidx.room.TypeConverter
-import ch.protonmail.android.mailcomposer.domain.model.DraftAction
-import ch.protonmail.android.mailcomposer.domain.model.DraftSyncState
+import ch.protonmail.android.mailmessage.domain.model.DraftAction
+import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
 import me.proton.core.util.kotlin.deserialize
 import me.proton.core.util.kotlin.serialize
 

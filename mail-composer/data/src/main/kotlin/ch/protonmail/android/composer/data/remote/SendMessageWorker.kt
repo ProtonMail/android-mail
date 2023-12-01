@@ -24,8 +24,8 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import ch.protonmail.android.composer.data.usecase.SendMessage
 import ch.protonmail.android.mailcommon.domain.util.requireNotBlank
-import ch.protonmail.android.mailcomposer.domain.model.DraftSyncState
-import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
+import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
+import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailcomposer.domain.usecase.UpdateDraftStateForError
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import dagger.assisted.Assisted

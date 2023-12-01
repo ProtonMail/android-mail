@@ -16,18 +16,14 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcomposer.domain.usecase
+package ch.protonmail.android.mailmessage.domain.model
 
-import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
-import ch.protonmail.android.mailmessage.domain.model.MessageId
 import me.proton.core.domain.entity.UserId
-import javax.inject.Inject
 
-class DeleteDraftState @Inject constructor(
-    private val draftStateRepository: DraftStateRepository
-) {
-
-    suspend operator fun invoke(userId: UserId, messageId: MessageId) {
-        draftStateRepository.deleteDraftState(userId, messageId)
-    }
-}
+data class DraftState(
+    val userId: UserId,
+    val messageId: MessageId,
+    val apiMessageId: MessageId?,
+    val state: DraftSyncState,
+    val action: DraftAction
+)

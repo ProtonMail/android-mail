@@ -28,7 +28,7 @@ import ch.protonmail.android.composer.data.sample.MessageWithBodyResourceSample
 import ch.protonmail.android.composer.data.sample.UpdateDraftBodySample
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
-import ch.protonmail.android.mailcomposer.domain.model.DraftAction
+import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.data.remote.resource.AttachmentResource
 import ch.protonmail.android.mailmessage.data.remote.resource.MessageWithBodyResource
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId

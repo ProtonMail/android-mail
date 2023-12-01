@@ -20,7 +20,7 @@ package ch.protonmail.android.composer.data.local.dao
 
 import androidx.room.Dao
 import androidx.room.Query
-import ch.protonmail.android.composer.data.local.entity.DraftStateEntity
+import ch.protonmail.android.mailmessage.data.local.entity.DraftStateEntity
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.data.room.db.BaseDao

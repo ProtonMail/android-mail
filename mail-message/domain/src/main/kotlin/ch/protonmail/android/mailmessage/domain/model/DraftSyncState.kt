@@ -16,15 +16,19 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcomposer.domain.model
+package ch.protonmail.android.mailmessage.domain.model
 
-import ch.protonmail.android.mailmessage.domain.model.MessageId
-import me.proton.core.domain.entity.UserId
+enum class DraftSyncState(val value: Int) {
+    Local(0),
+    Synchronized(1),
+    Sending(2),
+    ErrorSending(3),
+    Sent(4),
+    ErrorUploadAttachments(5),
+    ErrorUploadDraft(6);
 
-data class DraftState(
-    val userId: UserId,
-    val messageId: MessageId,
-    val apiMessageId: MessageId?,
-    val state: DraftSyncState,
-    val action: DraftAction
-)
+    companion object {
+
+        fun from(value: Int) = values().find { it.value == value } ?: Local
+    }
+}

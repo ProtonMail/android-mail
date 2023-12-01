@@ -25,7 +25,7 @@ import ch.protonmail.android.composer.data.remote.resource.DraftMessageResource
 import ch.protonmail.android.composer.data.remote.resource.UpdateDraftBody
 import ch.protonmail.android.mailcommon.data.mapper.toEither
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailcomposer.domain.model.DraftAction
+import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.data.remote.resource.RecipientResource
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import me.proton.core.domain.entity.UserId

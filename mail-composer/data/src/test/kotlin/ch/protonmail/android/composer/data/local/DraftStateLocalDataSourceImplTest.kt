@@ -21,7 +21,7 @@ package ch.protonmail.android.composer.data.local
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.composer.data.local.dao.DraftStateDao
-import ch.protonmail.android.composer.data.local.entity.DraftStateEntity
+import ch.protonmail.android.mailmessage.data.local.entity.DraftStateEntity
 import ch.protonmail.android.composer.data.sample.DraftStateEntitySample
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample

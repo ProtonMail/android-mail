@@ -20,9 +20,9 @@ package ch.protonmail.android.mailcomposer.domain.usecase
 
 import arrow.core.Either
 import ch.protonmail.android.mailcomposer.domain.Transactor
-import ch.protonmail.android.mailcomposer.domain.model.DraftAction
+import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
-import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
+import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.withContext

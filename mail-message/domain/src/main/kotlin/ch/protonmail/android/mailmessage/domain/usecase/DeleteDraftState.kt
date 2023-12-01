@@ -16,31 +16,18 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcomposer.domain.model
+package ch.protonmail.android.mailmessage.domain.usecase
 
+import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailmessage.domain.model.MessageId
-import kotlinx.serialization.Serializable
+import me.proton.core.domain.entity.UserId
+import javax.inject.Inject
 
-@Serializable
-sealed interface DraftAction {
+class DeleteDraftState @Inject constructor(
+    private val draftStateRepository: DraftStateRepository
+) {
 
-    @Serializable
-    object Compose : DraftAction
-
-    @Serializable
-    data class Reply(val parentId: MessageId) : DraftAction
-
-    @Serializable
-    data class ReplyAll(val parentId: MessageId) : DraftAction
-
-    @Serializable
-    data class Forward(val parentId: MessageId) : DraftAction
-
-    fun getParentMessageId(): MessageId? = when (this) {
-        is Compose -> null
-        is Forward -> this.parentId
-        is Reply -> this.parentId
-        is ReplyAll -> this.parentId
+    suspend operator fun invoke(userId: UserId, messageId: MessageId) {
+        draftStateRepository.deleteDraftState(userId, messageId)
     }
-
 }

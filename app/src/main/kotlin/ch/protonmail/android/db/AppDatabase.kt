@@ -24,7 +24,7 @@ import androidx.room.TypeConverters
 import ch.protonmail.android.composer.data.local.DraftStateDatabase
 import ch.protonmail.android.composer.data.local.converters.AttachmentStateConverters
 import ch.protonmail.android.composer.data.local.converters.DraftStateConverters
-import ch.protonmail.android.composer.data.local.entity.DraftStateEntity
+import ch.protonmail.android.mailmessage.data.local.entity.DraftStateEntity
 import ch.protonmail.android.mailconversation.data.local.ConversationDatabase
 import ch.protonmail.android.mailconversation.data.local.converters.ConversationConverters
 import ch.protonmail.android.mailconversation.data.local.converters.MapConverters

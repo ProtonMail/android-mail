@@ -16,19 +16,30 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcomposer.domain.model
+package ch.protonmail.android.mailmessage.domain.model
 
-enum class DraftSyncState(val value: Int) {
-    Local(0),
-    Synchronized(1),
-    Sending(2),
-    ErrorSending(3),
-    Sent(4),
-    ErrorUploadAttachments(5),
-    ErrorUploadDraft(6);
+import kotlinx.serialization.Serializable
 
-    companion object {
+@Serializable
+sealed interface DraftAction {
 
-        fun from(value: Int) = values().find { it.value == value } ?: Local
+    @Serializable
+    object Compose : DraftAction
+
+    @Serializable
+    data class Reply(val parentId: MessageId) : DraftAction
+
+    @Serializable
+    data class ReplyAll(val parentId: MessageId) : DraftAction
+
+    @Serializable
+    data class Forward(val parentId: MessageId) : DraftAction
+
+    fun getParentMessageId(): MessageId? = when (this) {
+        is Compose -> null
+        is Forward -> this.parentId
+        is Reply -> this.parentId
+        is ReplyAll -> this.parentId
     }
+
 }

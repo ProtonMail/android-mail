@@ -31,10 +31,10 @@ import ch.protonmail.android.composer.data.usecase.GetAttachmentFilesTest.TestDa
 import ch.protonmail.android.composer.data.usecase.GetAttachmentFilesTest.TestData.MessageId
 import ch.protonmail.android.composer.data.usecase.GetAttachmentFilesTest.TestData.UserId
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailcomposer.domain.model.DraftAction
-import ch.protonmail.android.mailcomposer.domain.model.DraftState
-import ch.protonmail.android.mailcomposer.domain.model.DraftSyncState
-import ch.protonmail.android.mailcomposer.domain.repository.DraftStateRepository
+import ch.protonmail.android.mailmessage.domain.model.DraftAction
+import ch.protonmail.android.mailmessage.domain.model.DraftState
+import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
+import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailmessage.data.local.usecase.AttachmentDecryptionError
 import ch.protonmail.android.mailmessage.data.local.usecase.DecryptAttachmentByteArray
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId

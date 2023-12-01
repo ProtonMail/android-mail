@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailcomposer.domain.usecase
 
 import java.util.UUID
-import ch.protonmail.android.mailcomposer.domain.model.DraftState
+import ch.protonmail.android.mailmessage.domain.model.DraftState
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import timber.log.Timber
 import javax.inject.Inject
