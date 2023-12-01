@@ -26,10 +26,8 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
 import arrow.core.getOrElse
-import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
-import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
@@ -159,7 +157,6 @@ class MailboxViewModel @Inject constructor(
     private val unStarMessages: UnStarMessages,
     private val unStarConversations: UnStarConversations,
     private val mailboxReducer: MailboxReducer,
-    private val observeMailFeature: ObserveMailFeature,
     private val dispatchersProvider: DispatcherProvider,
     private val observeOnboarding: ObserveOnboarding,
     private val saveOnboarding: SaveOnboarding
@@ -228,14 +225,6 @@ class MailboxViewModel @Inject constructor(
             .filterNotNull()
             .onEach { currentLabelCount ->
                 emitNewStateFrom(MailboxEvent.SelectedLabelCountChanged(currentLabelCount))
-            }
-            .launchIn(viewModelScope)
-
-        primaryUserId
-            .filterNotNull()
-            .flatMapLatest { userId -> observeMailFeature(userId, MailFeatureId.SelectionMode) }
-            .onEach {
-                emitNewStateFrom(MailboxEvent.SelectionModeEnabledChanged(selectionModeEnabled = it.value))
             }
             .launchIn(viewModelScope)
     }
@@ -1084,7 +1073,7 @@ class MailboxViewModel @Inject constructor(
     companion object {
 
         val initialState = MailboxState(
-            mailboxListState = MailboxListState.Loading(selectionModeEnabled = false),
+            mailboxListState = MailboxListState.Loading,
             topAppBarState = MailboxTopAppBarState.Loading,
             unreadFilterState = UnreadFilterState.Loading,
             bottomAppBarState = BottomBarState.Data.Hidden(emptyList<ActionUiModel>().toImmutableList()),

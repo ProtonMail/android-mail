@@ -140,10 +140,6 @@ internal sealed interface MailboxEvent : MailboxOperation {
         val selectedLabelCount: Int
     ) : MailboxEvent, AffectingUnreadFilter
 
-    data class SelectionModeEnabledChanged(
-        val selectionModeEnabled: Boolean
-    ) : MailboxEvent, AffectingMailboxList
-
     data class EnterSelectionMode(
         val item: MailboxItemUiModel
     ) : MailboxEvent, AffectingTopAppBar, AffectingMailboxList, AffectingBottomAppBar

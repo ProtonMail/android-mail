@@ -26,8 +26,6 @@ import me.proton.core.domain.entity.UserId
 
 sealed interface MailboxListState {
 
-    val selectionModeEnabled: Boolean
-
     sealed interface Data : MailboxListState {
 
         val currentMailLabel: MailLabel
@@ -35,7 +33,6 @@ sealed interface MailboxListState {
 
         data class ViewMode(
             override val currentMailLabel: MailLabel,
-            override val selectionModeEnabled: Boolean,
             override val swipeActions: SwipeActionsUiModel?,
             val openItemEffect: Effect<OpenMailboxItemRequest>,
             val scrollToMailboxTop: Effect<MailLabelId>,
@@ -46,7 +43,6 @@ sealed interface MailboxListState {
 
         data class SelectionMode(
             override val currentMailLabel: MailLabel,
-            override val selectionModeEnabled: Boolean,
             override val swipeActions: SwipeActionsUiModel?,
             val selectedMailboxItems: Set<SelectedMailboxItem>
         ) : Data {
@@ -60,6 +56,6 @@ sealed interface MailboxListState {
         }
     }
 
-    data class Loading(override val selectionModeEnabled: Boolean) : MailboxListState
+    object Loading : MailboxListState
 }
 

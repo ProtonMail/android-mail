@@ -93,7 +93,6 @@ internal class MailboxScreenTest {
             offlineEffect = Effect.empty(),
             refreshErrorEffect = Effect.empty(),
             refreshRequested = false,
-            selectionModeEnabled = false,
             swipeActions = null
         )
         val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
@@ -116,7 +115,6 @@ internal class MailboxScreenTest {
             offlineEffect = Effect.empty(),
             refreshErrorEffect = Effect.empty(),
             refreshRequested = false,
-            selectionModeEnabled = false,
             swipeActions = null
         )
         val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
@@ -149,7 +147,6 @@ internal class MailboxScreenTest {
             offlineEffect = Effect.empty(),
             refreshErrorEffect = Effect.empty(),
             refreshRequested = false,
-            selectionModeEnabled = false,
             swipeActions = null
         )
         val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
@@ -168,7 +165,6 @@ internal class MailboxScreenTest {
             offlineEffect = Effect.empty(),
             refreshErrorEffect = Effect.empty(),
             refreshRequested = false,
-            selectionModeEnabled = false,
             swipeActions = null
         )
         val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
@@ -201,7 +197,6 @@ internal class MailboxScreenTest {
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
-                    selectionModeEnabled = false,
                     swipeActions = null
                 ),
                 topAppBarState = MailboxTopAppBarState.Data.DefaultMode(

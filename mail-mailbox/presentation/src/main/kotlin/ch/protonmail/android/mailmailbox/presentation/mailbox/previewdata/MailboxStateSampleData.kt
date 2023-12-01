@@ -41,7 +41,7 @@ import kotlinx.collections.immutable.toImmutableList
 object MailboxStateSampleData {
 
     val Loading = MailboxState(
-        mailboxListState = MailboxListState.Loading(selectionModeEnabled = false),
+        mailboxListState = MailboxListState.Loading,
         topAppBarState = MailboxTopAppBarState.Loading,
         unreadFilterState = UnreadFilterState.Loading,
         bottomAppBarState = BottomBarState.Loading,
@@ -60,7 +60,6 @@ object MailboxStateSampleData {
             offlineEffect = Effect.empty(),
             refreshErrorEffect = Effect.empty(),
             refreshRequested = false,
-            selectionModeEnabled = false,
             swipeActions = SwipeActionsUiModel(
                 start = SwipeUiModelSampleData.Trash,
                 end = SwipeUiModelSampleData.Archive
@@ -91,7 +90,6 @@ object MailboxStateSampleData {
             offlineEffect = Effect.empty(),
             refreshErrorEffect = Effect.empty(),
             refreshRequested = false,
-            selectionModeEnabled = false,
             swipeActions = SwipeActionsUiModel(
                 start = SwipeUiModelSampleData.Trash,
                 end = SwipeUiModelSampleData.Archive
@@ -115,7 +113,7 @@ object MailboxStateSampleData {
     )
 
     val OnboardingShown = MailboxState(
-        mailboxListState = MailboxListState.Loading(selectionModeEnabled = false),
+        mailboxListState = MailboxListState.Loading,
         topAppBarState = MailboxTopAppBarState.Loading,
         unreadFilterState = UnreadFilterState.Loading,
         bottomAppBarState = BottomBarState.Loading,
@@ -135,7 +133,6 @@ object MailboxStateSampleData {
     ) = MailboxState(
         mailboxListState = MailboxListState.Data.SelectionMode(
             currentMailLabel = currentMailLabel,
-            selectionModeEnabled = true,
             selectedMailboxItems = selectedMailboxItemUiModels.map {
                 SelectedMailboxItem(it.userId, it.id, it.isRead, it.showStar)
             }.toSet(),

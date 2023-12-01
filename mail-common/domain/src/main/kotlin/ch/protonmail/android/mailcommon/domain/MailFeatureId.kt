@@ -31,6 +31,5 @@ enum class MailFeatureId(val id: FeatureId) {
     // Local only flag (unknown to remote API)
     AddAttachmentsToDraft(FeatureId("AddAttachmentsToDraft")),
     ShowSettings(FeatureId("ShowSettings")),
-    SelectionMode(FeatureId("EnableSelectionMode")),
     MessageActions(FeatureId("ShowMessageActionButtons"))
 }

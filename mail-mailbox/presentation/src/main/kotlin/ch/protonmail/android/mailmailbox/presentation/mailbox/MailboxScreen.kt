@@ -146,20 +146,7 @@ fun MailboxScreen(
             onOfflineWithData = { viewModel.submit(MailboxViewAction.OnOfflineWithData) },
             onErrorWithData = { viewModel.submit(MailboxViewAction.OnErrorWithData) },
             onItemClicked = { item -> viewModel.submit(MailboxViewAction.ItemClicked(item)) },
-            onItemLongClicked = {
-                if (mailboxState.mailboxListState.selectionModeEnabled) {
-                    viewModel.submit(MailboxViewAction.OnItemLongClicked(it))
-                } else {
-                    actions.showFeatureMissingSnackbar()
-                }
-            },
-            onAvatarClicked = {
-                if (mailboxState.mailboxListState.selectionModeEnabled) {
-                    viewModel.submit(MailboxViewAction.OnItemAvatarClicked(it))
-                } else {
-                    actions.showFeatureMissingSnackbar()
-                }
-            },
+            onItemLongClicked = { viewModel.submit(MailboxViewAction.OnItemLongClicked(it)) },
             onRefreshList = { viewModel.submit(MailboxViewAction.Refresh) },
             onRefreshListCompleted = { viewModel.submit(MailboxViewAction.RefreshCompleted) },
             markAsRead = { viewModel.submit(MailboxViewAction.MarkAsRead) },

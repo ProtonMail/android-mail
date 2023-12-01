@@ -170,7 +170,6 @@ internal class MailboxReducerTest(
                 offlineEffect = Effect.empty(),
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
-                selectionModeEnabled = false,
                 swipeActions = null
             ),
             topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
@@ -447,16 +446,6 @@ internal class MailboxReducerTest(
                 shouldReduceMailboxListState = false,
                 shouldReduceTopAppBarState = false,
                 shouldReduceUnreadFilterState = true,
-                shouldReduceBottomAppBarState = false,
-                shouldReduceActionMessage = false,
-                shouldReduceDeleteDialog = false,
-                shouldReduceBottomSheetState = false
-            ),
-            TestInput(
-                MailboxEvent.SelectionModeEnabledChanged(selectionModeEnabled = false),
-                shouldReduceMailboxListState = true,
-                shouldReduceTopAppBarState = false,
-                shouldReduceUnreadFilterState = false,
                 shouldReduceBottomAppBarState = false,
                 shouldReduceActionMessage = false,
                 shouldReduceDeleteDialog = false,

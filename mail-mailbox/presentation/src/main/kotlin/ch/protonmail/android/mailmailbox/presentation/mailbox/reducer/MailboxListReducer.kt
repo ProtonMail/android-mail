@@ -44,7 +44,6 @@ class MailboxListReducer @Inject constructor() {
             is MailboxEvent.SwipeActionsChanged -> reduceSwipeActionsChanged(operation, currentState)
             is MailboxEvent.ItemClicked.ItemDetailsOpenedInViewMode -> reduceItemDetailOpened(operation, currentState)
             is MailboxEvent.ItemClicked.OpenComposer -> reduceOpenComposer(operation, currentState)
-            is MailboxEvent.SelectionModeEnabledChanged -> reduceSelectionModeEnabledChanged(operation, currentState)
             is MailboxEvent.EnterSelectionMode -> reduceEnterSelectionMode(operation.item, currentState)
             is MailboxEvent.ItemClicked.ItemAddedToSelection -> reduceItemAddedToSelection(operation, currentState)
             is MailboxEvent.ItemClicked.ItemRemovedFromSelection -> reduceItemRemovedFromSelection(
@@ -85,7 +84,6 @@ class MailboxListReducer @Inject constructor() {
                 offlineEffect = Effect.empty(),
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
-                selectionModeEnabled = currentState.selectionModeEnabled,
                 swipeActions = null
             )
 
@@ -112,7 +110,6 @@ class MailboxListReducer @Inject constructor() {
                 offlineEffect = Effect.empty(),
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
-                selectionModeEnabled = currentState.selectionModeEnabled,
                 swipeActions = null
             )
 
@@ -206,10 +203,7 @@ class MailboxListReducer @Inject constructor() {
         when (currentState) {
             is MailboxListState.Data.ViewMode -> MailboxListState.Data.SelectionMode(
                 currentMailLabel = currentState.currentMailLabel,
-                selectedMailboxItems = setOf(
-                    SelectedMailboxItem(item.userId, item.id, item.isRead, item.showStar)
-                ),
-                selectionModeEnabled = currentState.selectionModeEnabled,
+                selectedMailboxItems = setOf(SelectedMailboxItem(item.userId, item.id, item.isRead, item.showStar)),
                 swipeActions = currentState.swipeActions
             )
 
@@ -224,22 +218,10 @@ class MailboxListReducer @Inject constructor() {
             offlineEffect = Effect.empty(),
             refreshErrorEffect = Effect.empty(),
             refreshRequested = false,
-            selectionModeEnabled = currentState.selectionModeEnabled,
             swipeActions = currentState.swipeActions
         )
 
         else -> currentState
-    }
-
-    private fun reduceSelectionModeEnabledChanged(
-        operation: MailboxEvent.SelectionModeEnabledChanged,
-        currentState: MailboxListState
-    ) = with(currentState) {
-        when (this) {
-            is MailboxListState.Data.SelectionMode -> copy(selectionModeEnabled = operation.selectionModeEnabled)
-            is MailboxListState.Data.ViewMode -> copy(selectionModeEnabled = operation.selectionModeEnabled)
-            is MailboxListState.Loading -> copy(selectionModeEnabled = operation.selectionModeEnabled)
-        }
     }
 
     private fun reduceItemAddedToSelection(

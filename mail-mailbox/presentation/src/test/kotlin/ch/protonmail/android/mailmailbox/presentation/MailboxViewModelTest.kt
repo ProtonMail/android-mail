@@ -24,13 +24,11 @@ import app.cash.turbine.test
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
-import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
-import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
@@ -146,7 +144,6 @@ import io.mockk.verifyOrder
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
@@ -156,7 +153,6 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import me.proton.core.domain.entity.UserId
-import me.proton.core.featureflag.domain.entity.FeatureFlag
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.mailsettings.domain.entity.SwipeAction
 import me.proton.core.mailsettings.domain.entity.ViewMode
@@ -226,10 +222,6 @@ class MailboxViewModelTest {
         every { newStateFrom(any(), any()) } returns MailboxStateSampleData.Loading
     }
 
-    private val observeMailFeature = mockk<ObserveMailFeature> {
-        every { this@mockk(any(), any()) } returns flowOf()
-    }
-
     private val observeMailboxActions = mockk<GetMailboxActions> {
         coEvery { this@mockk(any(), any()) } returns listOf(Action.Archive, Action.Trash).right()
     }
@@ -289,7 +281,6 @@ class MailboxViewModelTest {
             unStarMessages = unStarMessages,
             unStarConversations = unStarConversations,
             mailboxReducer = mailboxReducer,
-            observeMailFeature = observeMailFeature,
             dispatchersProvider = TestDispatcherProvider(),
             observeOnboarding = observeOnboarding,
             saveOnboarding = saveOnboarding
@@ -320,7 +311,7 @@ class MailboxViewModelTest {
             // Then
             val actual = awaitItem()
             val expected = MailboxState(
-                mailboxListState = MailboxListState.Loading(selectionModeEnabled = false),
+                mailboxListState = MailboxListState.Loading,
                 topAppBarState = MailboxTopAppBarState.Loading,
                 unreadFilterState = UnreadFilterState.Loading,
                 bottomAppBarState = BottomBarState.Data.Hidden(emptyList<ActionUiModel>().toImmutableList()),
@@ -430,7 +421,6 @@ class MailboxViewModelTest {
                 offlineEffect = Effect.empty(),
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
-                selectionModeEnabled = false,
                 swipeActions = null
             )
         )
@@ -446,7 +436,6 @@ class MailboxViewModelTest {
                 offlineEffect = Effect.empty(),
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
-                selectionModeEnabled = false,
                 swipeActions = expectedSwipeActions
             )
         )
@@ -503,7 +492,6 @@ class MailboxViewModelTest {
                 offlineEffect = Effect.empty(),
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
-                selectionModeEnabled = false,
                 swipeActions = null
             )
         )
@@ -1066,7 +1054,6 @@ class MailboxViewModelTest {
                 offlineEffect = Effect.of(Unit),
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
-                selectionModeEnabled = false,
                 swipeActions = null
             )
         )
@@ -1096,7 +1083,6 @@ class MailboxViewModelTest {
                 offlineEffect = Effect.empty(),
                 refreshErrorEffect = Effect.of(Unit),
                 refreshRequested = false,
-                selectionModeEnabled = false,
                 swipeActions = null
             )
         )
@@ -1126,7 +1112,6 @@ class MailboxViewModelTest {
                 offlineEffect = Effect.of(Unit),
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = true,
-                selectionModeEnabled = false,
                 swipeActions = null
             )
         )
@@ -1204,45 +1189,6 @@ class MailboxViewModelTest {
         // When
         mailboxViewModel.submit(MailboxViewAction.DisableUnreadFilter)
         mailboxViewModel.state.test {
-            // Then
-            assertEquals(expectedState, awaitItem())
-        }
-    }
-
-    @Test
-    fun `when selection mode enabled with a feature flag, produces and emits a new state`() = runTest {
-        // Given
-        val expectedState = MailboxStateSampleData.Loading.copy(
-            topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
-                currentLabelName = MailLabel.System(initialLocationMailLabelId).text()
-            ),
-            mailboxListState = MailboxListState.Data.ViewMode(
-                currentMailLabel = MailLabel.System(initialLocationMailLabelId),
-                openItemEffect = Effect.empty(),
-                scrollToMailboxTop = Effect.empty(),
-                offlineEffect = Effect.empty(),
-                refreshErrorEffect = Effect.empty(),
-                refreshRequested = false,
-                selectionModeEnabled = true,
-                swipeActions = null
-            )
-        )
-        every {
-            mailboxReducer.newStateFrom(
-                MailboxStateSampleData.Loading,
-                MailboxEvent.SelectionModeEnabledChanged(selectionModeEnabled = true)
-            )
-        } returns expectedState
-        val featureFlagFlow = MutableSharedFlow<FeatureFlag>()
-        every { observeMailFeature(userId, MailFeatureId.SelectionMode) } returns featureFlagFlow
-
-        // When
-        mailboxViewModel.state.test {
-
-            // The initial state
-            skipItems(1)
-            featureFlagFlow.emit(FeatureFlag.default(MailFeatureId.SelectionMode.id.id, defaultValue = true))
-
             // Then
             assertEquals(expectedState, awaitItem())
         }
@@ -3202,7 +3148,6 @@ class MailboxViewModelTest {
                 offlineEffect = Effect.empty(),
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
-                selectionModeEnabled = false,
                 swipeActions = null
             ),
             unreadFilterState = UnreadFilterState.Data(

@@ -31,7 +31,7 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
     @Test
     fun `should provide the correct defaults`() = with(testInput) {
         // When
-        val actualDefaults = FeatureFlagModule.provideDefaultMailFeatureFlags(buildFlavor, buildDebug)
+        val actualDefaults = FeatureFlagModule.provideDefaultMailFeatureFlags(buildFlavor)
 
         // Then
         assertEquals(expectedDefaults, actualDefaults)
@@ -43,61 +43,49 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
         fun data() = arrayOf(
             TestInput(
                 buildFlavor = "dev",
-                buildDebug = false,
                 expectedDefaultsMap = mapOf(
                     MailFeatureId.AddAttachmentsToDraft to true,
                     MailFeatureId.ConversationMode to true,
-                    MailFeatureId.SelectionMode to false,
                     MailFeatureId.MessageActions to true
                 )
             ),
             TestInput(
                 buildFlavor = "dev",
-                buildDebug = true,
                 expectedDefaultsMap = mapOf(
                     MailFeatureId.AddAttachmentsToDraft to true,
                     MailFeatureId.ConversationMode to true,
-                    MailFeatureId.SelectionMode to true,
                     MailFeatureId.MessageActions to true
                 )
             ),
             TestInput(
                 buildFlavor = "alpha",
-                buildDebug = false,
                 expectedDefaultsMap = mapOf(
                     MailFeatureId.AddAttachmentsToDraft to true,
                     MailFeatureId.ConversationMode to true,
-                    MailFeatureId.SelectionMode to false,
                     MailFeatureId.MessageActions to true
                 )
             ),
             TestInput(
                 buildFlavor = "alpha",
-                buildDebug = true,
                 expectedDefaultsMap = mapOf(
                     MailFeatureId.AddAttachmentsToDraft to true,
                     MailFeatureId.ConversationMode to true,
-                    MailFeatureId.SelectionMode to true,
                     MailFeatureId.MessageActions to true
                 )
             ),
             TestInput(
                 buildFlavor = "prod",
-                buildDebug = false,
                 expectedDefaultsMap = mapOf(
                     MailFeatureId.AddAttachmentsToDraft to false,
                     MailFeatureId.ConversationMode to false,
-                    MailFeatureId.SelectionMode to false,
                     MailFeatureId.MessageActions to false
                 )
             ),
             TestInput(
                 buildFlavor = "prod",
-                buildDebug = true,
                 expectedDefaultsMap = mapOf(
                     MailFeatureId.AddAttachmentsToDraft to false,
                     MailFeatureId.ConversationMode to false,
-                    MailFeatureId.SelectionMode to true,
                     MailFeatureId.MessageActions to false
                 )
             )
@@ -106,7 +94,6 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
 
     data class TestInput(
         val buildFlavor: String,
-        val buildDebug: Boolean,
         val expectedDefaultsMap: Map<MailFeatureId, Boolean>
     ) {
         val expectedDefaults = MailFeatureDefaults(expectedDefaultsMap)
