@@ -38,11 +38,12 @@ object ContactTestData {
     fun buildContactWith(
         userId: UserId = UserIdTestData.userId,
         contactId: ContactId = ContactIdTestData.contactId1,
-        contactEmails: List<ContactEmail>
+        contactEmails: List<ContactEmail>,
+        name: String? = null
     ) = Contact(
         userId = userId,
         id = contactId,
-        name = "contact name",
+        name = name ?: "contact name",
         contactEmails = contactEmails
     )
 
