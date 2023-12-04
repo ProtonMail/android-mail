@@ -43,6 +43,9 @@ class MailSettingsDataStoreProvider @Inject constructor(
     private val Context.preventScreenshotsDataStore: DataStore<Preferences> by preferencesDataStore(
         name = "preventScreenshotsPrefDataStore"
     )
+    private val Context.backgroundSyncDataStore: DataStore<Preferences> by preferencesDataStore(
+        name = "backgroundSyncPrefDataStore"
+    )
     private val Context.addressDisplayInfoDataStore: DataStore<Preferences> by preferencesDataStore(
         name = "addressDisplayInfoPrefDataStore"
     )
@@ -57,6 +60,7 @@ class MailSettingsDataStoreProvider @Inject constructor(
     val combinedContactsDataStore = context.combinedContactsDataStore
     val themeDataStore = context.themeDataStore
     val preventScreenshotsDataStore = context.preventScreenshotsDataStore
+    val backgroundSyncDataStore = context.backgroundSyncDataStore
     val notificationsDataStore = context.notificationsDataStore
     val addressDisplayInfoDataStore = context.addressDisplayInfoDataStore
     val mobileFooterDataStore = context.mobileFooterDataStore

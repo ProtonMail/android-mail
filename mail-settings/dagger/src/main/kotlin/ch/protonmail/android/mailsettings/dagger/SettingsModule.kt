@@ -25,6 +25,7 @@ import ch.protonmail.android.mailsettings.data.repository.AddressIdentityReposit
 import ch.protonmail.android.mailsettings.data.repository.AlternativeRoutingRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.AppLanguageRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.AutoLockRepositoryImpl
+import ch.protonmail.android.mailsettings.data.repository.BackgroundSyncSettingRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.CombinedContactsRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.LocalStorageDataRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.MobileFooterRepositoryImpl
@@ -43,6 +44,7 @@ import ch.protonmail.android.mailsettings.domain.repository.AddressIdentityRepos
 import ch.protonmail.android.mailsettings.domain.repository.AlternativeRoutingRepository
 import ch.protonmail.android.mailsettings.domain.repository.AppLanguageRepository
 import ch.protonmail.android.mailsettings.domain.repository.AutoLockRepository
+import ch.protonmail.android.mailsettings.domain.repository.BackgroundSyncSettingRepository
 import ch.protonmail.android.mailsettings.domain.repository.CombinedContactsRepository
 import ch.protonmail.android.mailsettings.domain.repository.LocalStorageDataRepository
 import ch.protonmail.android.mailsettings.domain.repository.MobileFooterRepository
@@ -125,6 +127,10 @@ object SettingsModule {
     @Module
     @InstallIn(SingletonComponent::class)
     interface BindsModule {
+
+        @Binds
+        @Reusable
+        fun provideBackgroundSyncRepository(impl: BackgroundSyncSettingRepositoryImpl): BackgroundSyncSettingRepository
 
         @Binds
         @Reusable
