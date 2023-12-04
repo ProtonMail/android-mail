@@ -46,9 +46,21 @@
   <string name="input_field_max_characters_count">%1d / %2d 文字</string>
   <string name="color_picker_title">色</string>
   <string name="save_label_error">Error saving label, please try again later</string>
-  <string name="label_already_exists">A label or folder with this name already exists</string>
-  <string name="label_limit_reached_error">Label limit reached</string>
+  <string name="label_already_exists">この名前のラベルまたはフォルダーはすでに存在しています</string>
+  <string name="label_limit_reached_error">ラベルの制限に達しました。</string>
   <string name="delete_label_error">Error deleting label</string>
   <string name="input_field_clear_content_description">Clear text</string>
   <string name="label_list_item_content_description">Label list item</string>
+  <string name="folder_list_item_content_description">Folder list item</string>
+  <string name="folder_list_no_folders_found">No folders found.</string>
+  <string name="folder_list_create_folder_placeholder_description">Create a folder to enhance your email experience.</string>
+  <string name="add_folder_content_description">Add folder</string>
+  <string name="folder_settings_content_description">Folder settings</string>
+  <string name="folder_settings_title">Settings</string>
+  <string name="folder_settings_done_button">Done</string>
+  <string name="folder_settings_folder_colors">フォルダーの色を使用</string>
+  <string name="folder_settings_parent_color">Inherit parent folder color</string>
+  <string name="folder_settings_switch_on">On</string>
+  <string name="folder_settings_switch_off">Off</string>
+  <string name="folder_list_loading_error">Error loading folder, please try again later</string>
 </resources>

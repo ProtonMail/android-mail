@@ -28,6 +28,9 @@
   <string name="mail_settings_alternative_routing">Alternatieve routing</string>
   <string name="mail_settings_app_language">App-taal</string>
   <string name="mail_settings_combined_contacts">Gecombineerde contacten</string>
+  <string name="mail_settings_local_cache">Lokale cache</string>
+  <string name="mail_settings_local_cache_hint">Space used: %s</string>
+  <string name="mail_settings_local_cache_clear_button">Gegevens wissen</string>
   <string name="mail_settings_swipe_actions">Veegacties</string>
   <string name="mail_settings_combined_contacts_hint">Schakel deze functie in om e-mailadressen automatisch aan te vullen met behulp van contacten van al uw ingelogde accounts.</string>
   <string name="mail_settings_alternative_routing_hint">In het geval dat Proton-sites worden geblokkeerd, stelt deze instelling de app in staat om alternatieve netwerkroutering te proberen om Proton te bereiken, wat nuttig kan zijn voor het omzeilen van firewalls of netwerkproblemen. We raden aan deze instelling aan te houden voor een grotere betrouwbaarheid.</string>
@@ -56,7 +59,7 @@
   <string name="mail_settings_mailbox">Mailbox</string>
   <string name="mail_settings_privacy">Privacy</string>
   <string name="mail_settings_labels">Labels</string>
-  <string name="mail_settings_folders">Folders</string>
+  <string name="mail_settings_folders">Mappen</string>
   <string name="mail_settings_local_storage">Lokale opslag</string>
   <string name="mail_settings_snooze">Uitstellen</string>
   <string name="mail_settings_snooze_notifications">Snooze meldingen</string>
@@ -64,25 +67,25 @@
   <string name="mail_settings_not_set">Niet ingesteld</string>
   <string name="mail_settings_conversation_mode_hint">Groepeer e-mails in hetzelfde gesprek samen in uw inbox of geef ze apart weer</string>
   <!-- Default email address settings -->
-  <string name="mail_settings_default_email_address_title">Default email address</string>
-  <string name="mail_settings_default_email_address_inactive_addresses">Inactive addresses</string>
+  <string name="mail_settings_default_email_address_title">Standaard e-mailadres</string>
+  <string name="mail_settings_default_email_address_inactive_addresses">Inactieve adressen</string>
   <string name="mail_settings_default_email_address_no_inactive_addresses">No inactive addresses</string>
-  <string name="mail_settings_default_email_address_error_loading">Error loading settings</string>
-  <string name="mail_settings_default_email_address_error_update">Error updating settings</string>
+  <string name="mail_settings_default_email_address_error_loading">Fout bij het laden van instellingen</string>
+  <string name="mail_settings_default_email_address_error_update">Fout bij het bijwerken van instellingen</string>
   <string name="mail_settings_default_email_address_error_update_subscription">Upgrade to a paid plan to set this address as default</string>
   <!-- Display name, signature, mobile footer -->
-  <string name="mail_settings_identity_title">Display name &amp; signature</string>
-  <string name="mail_settings_identity_save_button">Save</string>
-  <string name="mail_settings_identity_display_name">Display name</string>
-  <string name="mail_settings_identity_display_name_hint">Display name</string>
-  <string name="mail_settings_identity_signature">Signature</string>
-  <string name="mail_settings_identity_signature_hint">Signature</string>
-  <string name="mail_settings_identity_mobile_footer">Mobile footer</string>
-  <string name="mail_settings_identity_mobile_footer_subtext">The footer is added after your signature.</string>
-  <string name="mail_settings_identity_mobile_footer_hint">Mobile footer</string>
-  <string name="mail_settings_identity_mobile_footer_default_free">Sent from Proton Mail Android</string>
-  <string name="mail_settings_identity_error_updating">Error updating settings</string>
-  <string name="mail_settings_identity_error_loading">Error loading settings</string>
+  <string name="mail_settings_identity_title">Weergave naam &amp; handtekening</string>
+  <string name="mail_settings_identity_save_button">Opslaan</string>
+  <string name="mail_settings_identity_display_name">Weergavenaam</string>
+  <string name="mail_settings_identity_display_name_hint">Weergavenaam</string>
+  <string name="mail_settings_identity_signature">Handtekening</string>
+  <string name="mail_settings_identity_signature_hint">Handtekening</string>
+  <string name="mail_settings_identity_mobile_footer">Mobiele voettekst</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">De voettekst is toegevoegd na uw handtekening.</string>
+  <string name="mail_settings_identity_mobile_footer_hint">Mobiele voettekst</string>
+  <string name="mail_settings_identity_mobile_footer_default_free">Verzonden met Proton Mail Android</string>
+  <string name="mail_settings_identity_error_updating">Fout bij het bijwerken van instellingen</string>
+  <string name="mail_settings_identity_error_loading">Fout bij het laden van instellingen</string>
   <!-- Privacy settings -->
   <string name="mail_settings_privacy_auto_show_remote_content">Externe inhoud automatisch laden</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">Ingesloten afbeeldingen automatisch weergeven</string>
@@ -106,13 +109,15 @@
   <string name="mail_settings_swipe_action_star_description">Ster/verwijder ster</string>
   <string name="mail_settings_swipe_action_trash_description">Naar prullenbak verplaatsen</string>
   <!-- Notification settings -->
-  <string name="mail_settings_notifications_title">Push notifications</string>
-  <string name="mail_settings_notifications_extended_notifications_title">Extended notifications</string>
-  <string name="mail_settings_notifications_extended_notifications_summary">Turn this feature on to see the sender of the emails in the push notifications.</string>
+  <string name="mail_settings_notifications_title">Pushmeldingen</string>
+  <string name="mail_settings_notifications_extended_notifications_title">Uitgebreide meldingen</string>
+  <string name="mail_settings_notifications_extended_notifications_summary">Schakel deze functie in om de afzender\nvan de e-mails in de push meldingen te zien.</string>
   <string name="mail_settings_notifications_notifications_settings">Notifications settings</string>
   <string name="mail_settings_notifications_notifications_settings_hint">Navigate to system notification settings</string>
-  <string name="mail_settings_notifications_update_error">Error updating settings</string>
-  <string name="mail_settings_notifications_loading_error">Error loading settings</string>
+  <string name="mail_settings_notifications_update_error">Fout bij het bijwerken van instellingen</string>
+  <string name="mail_settings_notifications_loading_error">Fout bij het laden van instellingen</string>
+  <!-- Local storage -->
+  <string name="mail_settings_clearing_cached_data">Clearing local cached data…</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Er ging iets fout. Probeer opnieuw.</string>
 </resources>

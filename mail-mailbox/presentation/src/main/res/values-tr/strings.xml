@@ -70,7 +70,9 @@
     <item quantity="one">Yazışma kalıcı olarak silindi</item>
     <item quantity="other">%d yazışma kalıcı olarak silindi</item>
   </plurals>
-  <string name="mailbox_action_label_messages_failed">Label operation failed</string>
-  <string name="mailbox_action_label_messages_failed_retrieving_labels">Failed to get labels</string>
-  <string name="mailbox_action_label_messages_failed_retrieving_colors">Failed to get color settings</string>
+  <string name="mailbox_action_label_messages_failed">Etiket işlemi yapılamadı</string>
+  <string name="mailbox_action_label_messages_failed_retrieving_labels">Etiketler alınamadı</string>
+  <string name="mailbox_action_failed_retrieving_colors">Renk ayarları alınamadı</string>
+  <string name="mailbox_action_move_messages_failed">Move operation failed</string>
+  <string name="mailbox_action_move_messages_failed_retrieving_folders">Failed to get folders</string>
 </resources>

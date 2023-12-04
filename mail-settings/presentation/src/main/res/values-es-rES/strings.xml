@@ -28,6 +28,9 @@
   <string name="mail_settings_alternative_routing">Enrutamiento alternativo</string>
   <string name="mail_settings_app_language">Idioma de la aplicación</string>
   <string name="mail_settings_combined_contacts">Contactos combinados</string>
+  <string name="mail_settings_local_cache">Caché local</string>
+  <string name="mail_settings_local_cache_hint">Espacio utilizado: %s</string>
+  <string name="mail_settings_local_cache_clear_button">Limpiar los datos</string>
   <string name="mail_settings_swipe_actions">Gestos de deslizamiento</string>
   <string name="mail_settings_combined_contacts_hint">Activa esta función para completar automáticamente las direcciones utilizando los contactos de todas tus cuentas conectadas.</string>
   <string name="mail_settings_alternative_routing_hint">En caso de que los servicios de Proton estén bloqueados, esta configuración permite a la aplicación intentar un enrutamiento alternativo para llegar a Proton, lo que puede ser útil para evitar los cortafuegos o los problemas de red. Recomendamos mantener esta configuración activada para una mayor fiabilidad.</string>
@@ -113,6 +116,8 @@
   <string name="mail_settings_notifications_notifications_settings_hint">Navegar a los ajustes de notificaciones del sistema</string>
   <string name="mail_settings_notifications_update_error">Error al actualizar los ajustes</string>
   <string name="mail_settings_notifications_loading_error">Error al cargar los ajustes</string>
+  <!-- Local storage -->
+  <string name="mail_settings_clearing_cached_data">Borrando los datos de la caché local…</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Se ha producido un error. Inténtalo de nuevo.</string>
 </resources>

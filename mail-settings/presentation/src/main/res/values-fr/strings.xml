@@ -28,6 +28,9 @@
   <string name="mail_settings_alternative_routing">Routage alternatif</string>
   <string name="mail_settings_app_language">Langue de l\'application</string>
   <string name="mail_settings_combined_contacts">Contacts combinés</string>
+  <string name="mail_settings_local_cache">Cache local</string>
+  <string name="mail_settings_local_cache_hint">Espace utilisé : %s</string>
+  <string name="mail_settings_local_cache_clear_button">Effacer les données</string>
   <string name="mail_settings_swipe_actions">Actions de balayage</string>
   <string name="mail_settings_combined_contacts_hint">Activez cette fonctionnalité pour compléter automatiquement les adresses e-mail en utilisant les contacts de tous vos comptes connectés.</string>
   <string name="mail_settings_alternative_routing_hint">En cas de blocage des sites Proton, ce paramètre permet à l\'application d\'essayer un routage réseau alternatif pour atteindre Proton, ce qui peut être utile pour contourner les pare-feux ou les problèmes de réseau : nous vous recommandons de conserver ce paramètre activé pour plus de fiabilité.</string>
@@ -113,6 +116,8 @@
   <string name="mail_settings_notifications_notifications_settings_hint">Accédez aux paramètres de notification du système.</string>
   <string name="mail_settings_notifications_update_error">Une erreur s\'est produite lors de la mise à jour des paramètres.</string>
   <string name="mail_settings_notifications_loading_error">Une erreur s\'est produite lors du chargement des paramètres.</string>
+  <!-- Local storage -->
+  <string name="mail_settings_clearing_cached_data">Les données locales mises en cache sont en cours d\'effacement.</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Une erreur est survenue. Veuillez réessayer.</string>
 </resources>

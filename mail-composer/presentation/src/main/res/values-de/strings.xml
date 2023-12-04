@@ -46,4 +46,5 @@
   <string name="composer_attachment_size_exceeded_dialog_title">Limit für Anhänge erreicht</string>
   <string name="composer_attachment_size_exceeded_dialog_message">Die maximale Größe für Anhänge beträgt %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Die erneute Verschlüsselung des Anhangs ist fehlgeschlagen. Aus Sicherheitsgründen wurden alle Anhänge entfernt.</string>
+  <string name="composer_warning_local_data_shown">The latest version of this draft failed to load. Any change will override its content.</string>
 </resources>

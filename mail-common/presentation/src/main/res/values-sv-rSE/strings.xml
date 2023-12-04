@@ -27,6 +27,30 @@
   <string name="action_reply">Svara</string>
   <string name="action_reply_all">Svara alla</string>
   <string name="action_forward">Vidarebefordra</string>
+  <string name="action_reply_description">Svara</string>
+  <string name="action_reply_all_description">Svara alla</string>
+  <string name="action_forward_description">Vidarebefordra</string>
+  <string name="action_mark_read_description">Markera som läst</string>
+  <string name="action_mark_unread_description">Markera som oläst</string>
+  <string name="action_star_description">Stjärnmärk</string>
+  <string name="action_unstar_description">Ta bort stjärnmärkning</string>
+  <string name="action_label_description">Märk som</string>
+  <string name="action_move_description">Flytta till</string>
+  <string name="action_trash_description">Papperskorg</string>
+  <string name="action_delete_description">Ta bort</string>
+  <string name="action_archive_description">Arkivera</string>
+  <string name="action_spam_description">Flytta till skräppost</string>
+  <string name="action_view_in_light_mode_description">Visa meddelande i ljust läge</string>
+  <string name="action_view_in_dark_mode_description">Visa meddelande i mörkt läge</string>
+  <string name="action_print_description">Skriv ut</string>
+  <string name="action_view_headers_description">Visa rubriker</string>
+  <string name="action_view_html_description">Visa HTML</string>
+  <string name="action_report_phishing_description">Rapportera nätfiske</string>
+  <string name="action_remind_description">Påminn mig</string>
+  <string name="action_save_pdf_description">Spara som PDF</string>
+  <string name="action_sender_emails_description">Ställ in åtgärd för framtida e-postmeddelanden från denna avsändare</string>
+  <string name="action_save_attachments_description">Spara bilagorna</string>
+  <string name="action_more_description">Mer</string>
   <string name="action_reply_content_description">Svara</string>
   <string name="action_reply_all_content_description">Svara alla</string>
   <string name="action_forward_content_description">Vidarebefordra</string>
@@ -61,4 +85,5 @@
   <string name="email_notification_channel_description">Inkommande e-postaviseringar</string>
   <string name="login_notification_channel_description">Nya inloggningsaviseringar</string>
   <string name="auth_badge_official">Officiell</string>
+  <string name="intent_failure_no_app_found_to_handle_this_action">Ingen app hittades för att hantera denna åtgärd</string>
 </resources>

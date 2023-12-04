@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="title_remove">Borrar</string>
-  <string name="title_remove_account">Borrar la cuenta</string>
+  <string name="title_remove_account">Eliminar la cuenta</string>
   <string name="description_remove_account">La sesión se cerrará y toda la información asociada a esta cuenta será borrada.</string>
   <string name="user_select_other_account_content_description">Selecciona otra cuenta</string>
   <string name="you_are_offline">No estás conectado.</string>
@@ -28,6 +28,7 @@
   <string name="mailbox_message_sending_offline">Sin conexión: el mensaje está puesto en la cola de envío.</string>
   <string name="mailbox_message_sending_success">El mensaje ha sido enviado.</string>
   <string name="mailbox_message_sending_error">Error al enviar el mensaje</string>
+  <string name="mailbox_message_sending_error_action">Ir a borradores</string>
   <string name="mailbox_attachment_uploading_error">Error al cargar el archivo adjunto</string>
   <string name="notification_switched_account">Se ha cambiado a la cuenta: %s</string>
   <string name="label_saved">La etiqueta ha sido guardada.</string>

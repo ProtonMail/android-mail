@@ -27,6 +27,30 @@
   <string name="action_reply">პასუხი</string>
   <string name="action_reply_all">ყველასთვის პასუხი</string>
   <string name="action_forward">გადაგზავნა</string>
+  <string name="action_reply_description">პასუხი</string>
+  <string name="action_reply_all_description">ყველასთვის პასუხი</string>
+  <string name="action_forward_description">გადაგზავნა</string>
+  <string name="action_mark_read_description">წაკითხულად მონიშვნა</string>
+  <string name="action_mark_unread_description">წაუკითხავად მონიშვნა</string>
+  <string name="action_star_description">ვარსკვლავი</string>
+  <string name="action_unstar_description">ვარსკვლავის მოხსნა</string>
+  <string name="action_label_description">ჭდის დადება</string>
+  <string name="action_move_description">გადატანა</string>
+  <string name="action_trash_description">ნაგვის ყუთი</string>
+  <string name="action_delete_description">წაშლა</string>
+  <string name="action_archive_description">დაარქივება</string>
+  <string name="action_spam_description">სპამში გადატანა</string>
+  <string name="action_view_in_light_mode_description">შეტყობინებების ღია რეჟიმში ნახვა</string>
+  <string name="action_view_in_dark_mode_description">შეტყობინებების ბნელ რეჟიმში ნახვა</string>
+  <string name="action_print_description">დაბეჭდვა</string>
+  <string name="action_view_headers_description">თავსართების ნახვა</string>
+  <string name="action_view_html_description">HTML-ის ნახვა</string>
+  <string name="action_report_phishing_description">ფიშინგის შესახებ შეტყობინება</string>
+  <string name="action_remind_description">შემახსენე</string>
+  <string name="action_save_pdf_description">PDF-ად შენახვა</string>
+  <string name="action_sender_emails_description">მომავალში ამ გამომგზავნიდან მოსული ელფოსტებზე გადატარებული ქმეების დაყენება</string>
+  <string name="action_save_attachments_description">მიმაგრებული ფაილების შენახვა</string>
+  <string name="action_more_description">მეტი</string>
   <string name="action_reply_content_description">პასუხი</string>
   <string name="action_reply_all_content_description">ყველასთვის პასუხი</string>
   <string name="action_forward_content_description">გადაგზავნა</string>
@@ -61,4 +85,5 @@
   <string name="email_notification_channel_description">შემომავალი ელფოსტის გაფრთხილებები</string>
   <string name="login_notification_channel_description">ახალი შესვლის გაფრთხილებები</string>
   <string name="auth_badge_official">ოფიციალური</string>
+  <string name="intent_failure_no_app_found_to_handle_this_action">ვერ ვიპოვე ამ ქმედების გამგები აპი</string>
 </resources>

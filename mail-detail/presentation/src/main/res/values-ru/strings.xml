@@ -63,7 +63,7 @@
   <string name="message_body_embedded_and_remote_content_banner_text">Автоматическая загрузка встроенных изображений и внешнего содержимого отключена. Это можно изменить в настройках.</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">You are about to leave the app and navigate to:</string>
-  <string name="external_link_confirmation_dialog_do_not_ask_again">Don\'t ask again</string>
+  <string name="external_link_confirmation_dialog_do_not_ask_again">Больше не спрашивать</string>
   <string name="external_link_confirmation_dialog_cancel_button">Cancel</string>
   <string name="external_link_confirmation_dialog_continue_button">Continue</string>
 </resources>

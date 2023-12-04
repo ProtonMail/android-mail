@@ -28,6 +28,7 @@
   <string name="mailbox_message_sending_offline">오프라인, 메시지 전송 대기중</string>
   <string name="mailbox_message_sending_success">메시지 보냄</string>
   <string name="mailbox_message_sending_error">메시지 전송 오류</string>
+  <string name="mailbox_message_sending_error_action">임시보관함으로 이동</string>
   <string name="mailbox_attachment_uploading_error">첨부 파일 업로드 중 오류</string>
   <string name="notification_switched_account">%s 계정으로 전환됨</string>
   <string name="label_saved">라벨을 저장했습니다.</string>

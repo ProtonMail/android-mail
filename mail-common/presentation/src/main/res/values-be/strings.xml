@@ -27,6 +27,30 @@
   <string name="action_reply">Адказаць</string>
   <string name="action_reply_all">Адказаць усім</string>
   <string name="action_forward">Пераслаць</string>
+  <string name="action_reply_description">Адказаць</string>
+  <string name="action_reply_all_description">Адказаць усім</string>
+  <string name="action_forward_description">Пераслаць</string>
+  <string name="action_mark_read_description">Пазначыць прачытаным</string>
+  <string name="action_mark_unread_description">Пазначыць непрачытаным</string>
+  <string name="action_star_description">Пазначыць зорачкай</string>
+  <string name="action_unstar_description">Прыбраць зорачку</string>
+  <string name="action_label_description">Пазначыць як</string>
+  <string name="action_move_description">Перамясціць у</string>
+  <string name="action_trash_description">Перамясціць у сметніцу</string>
+  <string name="action_delete_description">Выдаліць</string>
+  <string name="action_archive_description">Архіваваць</string>
+  <string name="action_spam_description">Перамясціць у спам</string>
+  <string name="action_view_in_light_mode_description">Паглядзець паведамленні ў светлым рэжыме</string>
+  <string name="action_view_in_dark_mode_description">Паглядзець паведамленні ў цёмным рэжыме</string>
+  <string name="action_print_description">Друкаваць</string>
+  <string name="action_view_headers_description">Прагледзець загалоўкі</string>
+  <string name="action_view_html_description">Паглядзець HTML</string>
+  <string name="action_report_phishing_description">Паведаміць пра фішынг</string>
+  <string name="action_remind_description">Нагадаць мне</string>
+  <string name="action_save_pdf_description">Захаваць як PDF</string>
+  <string name="action_sender_emails_description">Задаць дзеянне для будучых лістоў ад гэтага адпраўніка</string>
+  <string name="action_save_attachments_description">Захаваць далучэнні</string>
+  <string name="action_more_description">Больш</string>
   <string name="action_reply_content_description">Адказаць</string>
   <string name="action_reply_all_content_description">Адказаць усім</string>
   <string name="action_forward_content_description">Пераслаць</string>
@@ -61,4 +85,5 @@
   <string name="email_notification_channel_description">Апавяшчэнні пра ўваходную электронную пошту</string>
   <string name="login_notification_channel_description">Новыя апавяшчэнні пра ўваходы</string>
   <string name="auth_badge_official">Афіцыйны</string>
+  <string name="intent_failure_no_app_found_to_handle_this_action">Не знойдзена праграм для апрацоўкі гэтага дзеяння</string>
 </resources>

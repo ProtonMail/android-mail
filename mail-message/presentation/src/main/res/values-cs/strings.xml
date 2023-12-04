@@ -44,5 +44,5 @@
   <string name="bottom_sheet_move_to_title">Přesunout do...</string>
   <string name="bottom_sheet_done_action">Hotovo</string>
   <string name="bottom_sheet_archive_action">Také archivovat?</string>
-  <string name="bottom_sheet_label_as_title">Štítek jako...</string>
+  <string name="bottom_sheet_label_as_title">Přidat štítek...</string>
 </resources>

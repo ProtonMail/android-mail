@@ -60,8 +60,8 @@
   <string name="message_body_remote_content_banner_text">Das automatische Laden von externen Inhalten ist deaktiviert. Dies kann in den Einstellungen geändert werden.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">Das automatische Laden von eingebetteten Bildern ist deaktiviert. Dies kann in den Einstellungen geändert werden.</string>
   <!-- External link confirmation dialog -->
-  <string name="external_link_confirmation_dialog_text">You are about to leave the app and navigate to:</string>
-  <string name="external_link_confirmation_dialog_do_not_ask_again">Don\'t ask again</string>
-  <string name="external_link_confirmation_dialog_cancel_button">Cancel</string>
-  <string name="external_link_confirmation_dialog_continue_button">Continue</string>
+  <string name="external_link_confirmation_dialog_text">Du bist dabei, die App zu verlassen und navigierst zu:</string>
+  <string name="external_link_confirmation_dialog_do_not_ask_again">Nicht erneut nachfragen</string>
+  <string name="external_link_confirmation_dialog_cancel_button">Abbrechen</string>
+  <string name="external_link_confirmation_dialog_continue_button">Fortfahren</string>
 </resources>

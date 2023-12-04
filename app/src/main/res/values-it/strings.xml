@@ -28,6 +28,7 @@
   <string name="mailbox_message_sending_offline">Sei offline. Messaggio in coda per l\'invio.</string>
   <string name="mailbox_message_sending_success">Messaggio inviato</string>
   <string name="mailbox_message_sending_error">Errore nell\'invio del messaggio</string>
+  <string name="mailbox_message_sending_error_action">Vai alle bozze</string>
   <string name="mailbox_attachment_uploading_error">Errore nel caricamento dell\'allegato</string>
   <string name="notification_switched_account">Passato all\'account %s</string>
   <string name="label_saved">Etichetta salvata</string>

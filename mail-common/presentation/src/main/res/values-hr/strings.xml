@@ -24,9 +24,33 @@
   <string name="retry">Pokušaj ponovno</string>
   <string name="toolbar_back_content_description">Back to previous screen</string>
   <string name="x_error_not_logged_in">Not signed in</string>
-  <string name="action_reply">Reply</string>
+  <string name="action_reply">Odgovori</string>
   <string name="action_reply_all">Odgovori svima</string>
   <string name="action_forward">Proslijedi</string>
+  <string name="action_reply_description">Reply</string>
+  <string name="action_reply_all_description">Reply all</string>
+  <string name="action_forward_description">Forward</string>
+  <string name="action_mark_read_description">Mark read</string>
+  <string name="action_mark_unread_description">Mark unread</string>
+  <string name="action_star_description">Star</string>
+  <string name="action_unstar_description">Unstar</string>
+  <string name="action_label_description">Label as</string>
+  <string name="action_move_description">Move to</string>
+  <string name="action_trash_description">Trash</string>
+  <string name="action_delete_description">Delete</string>
+  <string name="action_archive_description">Archive</string>
+  <string name="action_spam_description">Move to spam</string>
+  <string name="action_view_in_light_mode_description">View message in light mode</string>
+  <string name="action_view_in_dark_mode_description">View message in dark mode</string>
+  <string name="action_print_description">Print</string>
+  <string name="action_view_headers_description">View headers</string>
+  <string name="action_view_html_description">View HTML</string>
+  <string name="action_report_phishing_description">Prijavi krađu identiteta</string>
+  <string name="action_remind_description">Remind me</string>
+  <string name="action_save_pdf_description">Save as PDF</string>
+  <string name="action_sender_emails_description">Set action for future emails from this sender</string>
+  <string name="action_save_attachments_description">Spremi privitke</string>
+  <string name="action_more_description">More</string>
   <string name="action_reply_content_description">Odgovori</string>
   <string name="action_reply_all_content_description">Odgovori svima</string>
   <string name="action_forward_content_description">Proslijedi</string>
@@ -49,8 +73,8 @@
   <string name="action_remind_content_description">Podsjeti me</string>
   <string name="action_save_pdf_content_description">Spremi kao PDF</string>
   <string name="action_sender_emails_content_description">Set action for future emails from this sender</string>
-  <string name="action_save_attachments_content_description">Save attachments</string>
-  <string name="action_more_content_description">More</string>
+  <string name="action_save_attachments_content_description">Spremi privitke</string>
+  <string name="action_more_content_description">Više</string>
   <string name="common_error_loading_actions">Failed loading actions</string>
   <string name="yesterday">Jučer</string>
   <!-- notification channels -->
@@ -58,7 +82,8 @@
   <string name="attachment_download_notification_channel_description">Notifications for attachment downloads</string>
   <string name="email_notification_channel_name">E-pošta</string>
   <string name="login_notification_channel_name">Login Alerts</string>
-  <string name="email_notification_channel_description">Incoming email notifications</string>
+  <string name="email_notification_channel_description">Obavijesti dolazne pošte</string>
   <string name="login_notification_channel_description">New logins notifications</string>
-  <string name="auth_badge_official">Official</string>
+  <string name="auth_badge_official">Službeno</string>
+  <string name="intent_failure_no_app_found_to_handle_this_action">Nije pronađena aplikacija za upravljanje ovom radnjom</string>
 </resources>

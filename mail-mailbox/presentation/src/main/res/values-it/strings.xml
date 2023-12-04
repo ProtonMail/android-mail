@@ -34,9 +34,9 @@
     <item quantity="one">%d non letta</item>
     <item quantity="other">%d non lette</item>
   </plurals>
-  <string name="mailbox_default_recipient">(Nessun Destinatario)</string>
-  <string name="mailbox_default_sender">(Nessun Mittente)</string>
-  <string name="mailbox_error_message_offline">Sei offline. Impossibile recuperare gli elementi.</string>
+  <string name="mailbox_default_recipient">(Nessun destinatario)</string>
+  <string name="mailbox_default_sender">(Nessun mittente)</string>
+  <string name="mailbox_error_message_offline">Sei offline. Impossibile caricare gli elementi.</string>
   <string name="mailbox_error_message_generic">Caricamento della casella di posta non riuscito</string>
   <string name="mailbox_error_message_unexpected">Si è verificato un errore imprevisto</string>
   <string name="mailbox_is_empty_message">Questa casella di posta è vuota</string>
@@ -72,5 +72,7 @@
   </plurals>
   <string name="mailbox_action_label_messages_failed">Etichettatura non riuscita</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Caricamento delle etichette non riuscito</string>
-  <string name="mailbox_action_label_messages_failed_retrieving_colors">Caricamento dei colori non riuscito</string>
+  <string name="mailbox_action_failed_retrieving_colors">Caricamento dei colori non riuscito</string>
+  <string name="mailbox_action_move_messages_failed">Spostamento non riuscito</string>
+  <string name="mailbox_action_move_messages_failed_retrieving_folders">Caricamento delle cartelle non riuscito</string>
 </resources>

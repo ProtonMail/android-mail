@@ -18,14 +18,14 @@
   -->
 <resources>
   <plurals name="attachment_count_label">
-    <item quantity="one">%d file</item>
-    <item quantity="few">%d files</item>
-    <item quantity="many">%d files</item>
-    <item quantity="other">%d files</item>
+    <item quantity="one">%d файл</item>
+    <item quantity="few">%d файла</item>
+    <item quantity="many">%d файлы</item>
+    <item quantity="other">%d файлы</item>
   </plurals>
   <string name="attachment_show_more_label">+%1$d больше</string>
   <string name="attachment_permission_dialog_title">Необходимо разрешение</string>
-  <string name="attachment_permission_dialog_message">Proton Mail needs permission to access your storage to download the attachment.</string>
+  <string name="attachment_permission_dialog_message">Необходимо разрешение от Proton Mail для доступа в Ваше хранилище для загрузки вложения.</string>
   <string name="attachment_permission_dialog_dismiss_button">Да</string>
   <string name="attachment_permission_dialog_action_button">Настройки</string>
   <string name="attachment_type_description">файл %1$s</string>

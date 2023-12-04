@@ -70,7 +70,9 @@
     <item quantity="one">Conversación eliminada permanentemente</item>
     <item quantity="other">%d conversaciones eliminadas permanentemente</item>
   </plurals>
-  <string name="mailbox_action_label_messages_failed">Error con la operación de la etiqueta</string>
+  <string name="mailbox_action_label_messages_failed">Error con la operación sobre la etiqueta</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Error al obtener las etiquetas</string>
-  <string name="mailbox_action_label_messages_failed_retrieving_colors">Error al obtener los ajustes de color</string>
+  <string name="mailbox_action_failed_retrieving_colors">Error al obtener los ajustes de color</string>
+  <string name="mailbox_action_move_messages_failed">Error con la operación de mover</string>
+  <string name="mailbox_action_move_messages_failed_retrieving_folders">Error al obtener las carpetas</string>
 </resources>

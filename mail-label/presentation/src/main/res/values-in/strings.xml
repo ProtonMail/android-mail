@@ -51,4 +51,16 @@
   <string name="delete_label_error">Terdapar kesalahan dalam menghapus label</string>
   <string name="input_field_clear_content_description">Hapus teks</string>
   <string name="label_list_item_content_description">Item daftar label</string>
+  <string name="folder_list_item_content_description">Item daftar folder</string>
+  <string name="folder_list_no_folders_found">Tidak ada folder yang ditemukan.</string>
+  <string name="folder_list_create_folder_placeholder_description">Buat folder untuk memperkaya pengalaman email Anda.</string>
+  <string name="add_folder_content_description">Tambah folder</string>
+  <string name="folder_settings_content_description">Pengaturan folder</string>
+  <string name="folder_settings_title">Pengaturan</string>
+  <string name="folder_settings_done_button">Selesai</string>
+  <string name="folder_settings_folder_colors">Gunakan warna folder</string>
+  <string name="folder_settings_parent_color">Ikuti warna folder induk</string>
+  <string name="folder_settings_switch_on">Aktif</string>
+  <string name="folder_settings_switch_off">Nonaktif</string>
+  <string name="folder_list_loading_error">Terjadi kesalahan dalam memuat folder. Silakan coba lagi nanti</string>
 </resources>

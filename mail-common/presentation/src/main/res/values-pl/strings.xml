@@ -27,6 +27,30 @@
   <string name="action_reply">Odpowiedz</string>
   <string name="action_reply_all">Odpowiedz wszystkim</string>
   <string name="action_forward">Przekaż dalej</string>
+  <string name="action_reply_description">Odpowiedz</string>
+  <string name="action_reply_all_description">Odpowiedz wszystkim</string>
+  <string name="action_forward_description">Przekaż dalej</string>
+  <string name="action_mark_read_description">Oznacz jako przeczytane</string>
+  <string name="action_mark_unread_description">Oznacz jako nieprzeczytane</string>
+  <string name="action_star_description">Oznacz gwiazdką</string>
+  <string name="action_unstar_description">Usuń gwiazdkę</string>
+  <string name="action_label_description">Oznacz jako</string>
+  <string name="action_move_description">Przenieś do</string>
+  <string name="action_trash_description">Przenieś do Kosza</string>
+  <string name="action_delete_description">Usuń</string>
+  <string name="action_archive_description">Archiwizuj</string>
+  <string name="action_spam_description">Przenieś do Spamu</string>
+  <string name="action_view_in_light_mode_description">Pokaż wiadomość w jasnym motywie</string>
+  <string name="action_view_in_dark_mode_description">Pokaż wiadomość w ciemnym motywie</string>
+  <string name="action_print_description">Drukuj</string>
+  <string name="action_view_headers_description">Pokaż nagłówki</string>
+  <string name="action_view_html_description">Widok HTML</string>
+  <string name="action_report_phishing_description">Zgłoś próbę wyłudzenia informacji</string>
+  <string name="action_remind_description">Przypomnij</string>
+  <string name="action_save_pdf_description">Zapisz jako plik PDF</string>
+  <string name="action_sender_emails_description">Ustaw akcję dla przyszłych wiadomości od tego nadawcy</string>
+  <string name="action_save_attachments_description">Zapisz załączniki</string>
+  <string name="action_more_description">Więcej</string>
   <string name="action_reply_content_description">Odpowiedz</string>
   <string name="action_reply_all_content_description">Odpowiedz wszystkim</string>
   <string name="action_forward_content_description">Przekaż dalej</string>
@@ -61,4 +85,5 @@
   <string name="email_notification_channel_description">Powiadomienia wiadomości przychodzących</string>
   <string name="login_notification_channel_description">Powiadomienia o nowych logowaniach</string>
   <string name="auth_badge_official">Oficjalna</string>
+  <string name="intent_failure_no_app_found_to_handle_this_action">Nie znaleziono aplikacji do obsługi tego działania</string>
 </resources>

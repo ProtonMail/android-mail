@@ -46,19 +46,19 @@
   <string name="mailbox_is_empty_message">Ця поштова скринька порожня</string>
   <plurals name="mailbox_action_trash">
     <item quantity="one">Повідомлення переміщено до смітника</item>
-    <item quantity="few">%d повідомлень переміщено до смітника</item>
+    <item quantity="few">%d повідомлення переміщено до смітника</item>
     <item quantity="many">%d повідомлень переміщено до смітника</item>
     <item quantity="other">%d повідомлень переміщено до смітника</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Видалити розмову</item>
-    <item quantity="few">Видалити %d розмов</item>
+    <item quantity="few">Видалити %d розмови</item>
     <item quantity="many">Видалити %d розмов</item>
     <item quantity="other">Видалити %d розмов</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_title">
     <item quantity="one">Видалити повідомлення</item>
-    <item quantity="few">Видалити %d повідомлень</item>
+    <item quantity="few">Видалити %d повідомлення</item>
     <item quantity="many">Видалити %d повідомлень</item>
     <item quantity="other">Видалити %d повідомлень</item>
   </plurals>
@@ -70,25 +70,27 @@
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_message">
     <item quantity="one">Ви дійсно бажаєте остаточно видалити це повідомлення?</item>
-    <item quantity="few">Ви дійсно хочете назавжди видалити ці повідомлення?</item>
-    <item quantity="many">Ви дійсно хочете назавжди видалити ці повідомлення?</item>
-    <item quantity="other">Ви дійсно хочете назавжди видалити ці повідомлення?</item>
+    <item quantity="few">Ви дійсно бажаєте остаточно видалити ці повідомлення?</item>
+    <item quantity="many">Ви дійсно бажаєте остаточно видалити ці повідомлення?</item>
+    <item quantity="other">Ви дійсно бажаєте остаточно видалити ці повідомлення?</item>
   </plurals>
   <string name="mailbox_action_delete_dialog_button_cancel">Скасувати</string>
   <string name="mailbox_action_delete_dialog_button_delete">Видалити</string>
   <plurals name="mailbox_action_delete_message">
     <item quantity="one">Повідомлення остаточно видалено</item>
-    <item quantity="few">%d повідомлень остаточно видалено</item>
+    <item quantity="few">%d повідомлення остаточно видалено</item>
     <item quantity="many">%d повідомлень остаточно видалено</item>
     <item quantity="other">%d повідомлень остаточно видалено</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation">
     <item quantity="one">Розмову остаточно видалено</item>
-    <item quantity="few">%d розмов остаточно видалено</item>
+    <item quantity="few">%d розмови остаточно видалено</item>
     <item quantity="many">%d розмов остаточно видалено</item>
     <item quantity="other">%d розмов остаточно видалено</item>
   </plurals>
   <string name="mailbox_action_label_messages_failed">Label operation failed</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Failed to get labels</string>
-  <string name="mailbox_action_label_messages_failed_retrieving_colors">Failed to get color settings</string>
+  <string name="mailbox_action_failed_retrieving_colors">Failed to get color settings</string>
+  <string name="mailbox_action_move_messages_failed">Move operation failed</string>
+  <string name="mailbox_action_move_messages_failed_retrieving_folders">Failed to get folders</string>
 </resources>

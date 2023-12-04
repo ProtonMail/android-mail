@@ -46,4 +46,5 @@
   <string name="composer_attachment_size_exceeded_dialog_title">Limite de pièces jointes atteinte</string>
   <string name="composer_attachment_size_exceeded_dialog_message">La taille limite pour les pièces jointes est de %1$s.</string>
   <string name="composer_attachment_reencryption_failed_message">Chiffrer à nouveau la pièce jointe n\'a pas abouti. Pour des raisons de sécurité, toutes les pièces jointes ont été retirées.</string>
+  <string name="composer_warning_local_data_shown">La dernière version de ce brouillon n\'a pas pu être chargée. Toute modification remplacera son contenu.</string>
 </resources>

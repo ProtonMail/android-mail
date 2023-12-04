@@ -90,5 +90,7 @@
   </plurals>
   <string name="mailbox_action_label_messages_failed">Označenie štítkom zlyhalo</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Nepodarilo sa získať štítky</string>
-  <string name="mailbox_action_label_messages_failed_retrieving_colors">Nepodarilo sa získať nastavenia farieb</string>
+  <string name="mailbox_action_failed_retrieving_colors">Nepodarilo sa získať nastavenia farieb</string>
+  <string name="mailbox_action_move_messages_failed">Presunutie zlyhalo</string>
+  <string name="mailbox_action_move_messages_failed_retrieving_folders">Failed to get folders</string>
 </resources>

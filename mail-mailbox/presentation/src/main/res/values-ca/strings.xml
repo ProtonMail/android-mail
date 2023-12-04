@@ -70,7 +70,9 @@
     <item quantity="one">S\'ha eliminat la conversa de manera permanent.</item>
     <item quantity="other">S\'han eliminat %d converses de manera permanent.</item>
   </plurals>
-  <string name="mailbox_action_label_messages_failed">Label operation failed</string>
-  <string name="mailbox_action_label_messages_failed_retrieving_labels">Failed to get labels</string>
-  <string name="mailbox_action_label_messages_failed_retrieving_colors">Failed to get color settings</string>
+  <string name="mailbox_action_label_messages_failed">No s\'ha pogut efectuar l\'operació sobre l\'etiqueta.</string>
+  <string name="mailbox_action_label_messages_failed_retrieving_labels">No s\'han pogut obtenir les etiquetes.</string>
+  <string name="mailbox_action_failed_retrieving_colors">No s\'han pogut obtenir les preferències de color.</string>
+  <string name="mailbox_action_move_messages_failed">Move operation failed</string>
+  <string name="mailbox_action_move_messages_failed_retrieving_folders">Failed to get folders</string>
 </resources>

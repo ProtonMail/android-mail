@@ -28,6 +28,9 @@
   <string name="mail_settings_alternative_routing">Rută alternativă</string>
   <string name="mail_settings_app_language">Limbă aplicație</string>
   <string name="mail_settings_combined_contacts">Contacte combinate</string>
+  <string name="mail_settings_local_cache">Buffer local</string>
+  <string name="mail_settings_local_cache_hint">Spațiu utilizat: %s</string>
+  <string name="mail_settings_local_cache_clear_button">Golire buffer</string>
   <string name="mail_settings_swipe_actions">Acțiuni de glisare</string>
   <string name="mail_settings_combined_contacts_hint">Activați funcția pentru autocompletarea adreselor de e-mail folosind contactele din toate conturile conectate.</string>
   <string name="mail_settings_alternative_routing_hint">În cazul în care serverele Proton sunt blocate, această setare permite aplicației să încerce accesarea printr-o rețea alternativă pentru a ajunge la Proton, ceea ce poate fi util pentru ocolirea paravanelor de protecție sau a problemelor de rețea. Se recomandă păstrarea acestei setări pentru o fiabilitate mai mare.</string>
@@ -113,6 +116,8 @@
   <string name="mail_settings_notifications_notifications_settings_hint">Accesați setările notificărilor de sistem</string>
   <string name="mail_settings_notifications_update_error">Eroare la actualizarea setărilor.</string>
   <string name="mail_settings_notifications_loading_error">Eroare la încărcarea setărilor.</string>
+  <!-- Local storage -->
+  <string name="mail_settings_clearing_cached_data">Se golesc datele din bufferul local…</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">A apărut o eroare. Mai încercați.</string>
 </resources>

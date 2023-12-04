@@ -72,5 +72,7 @@
   </plurals>
   <string name="mailbox_action_label_messages_failed">Etikette-handling mislykkedes</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Kunne ikke hente etiketter</string>
-  <string name="mailbox_action_label_messages_failed_retrieving_colors">Kunne ikke hente farveindstillinger</string>
+  <string name="mailbox_action_failed_retrieving_colors">Kunne ikke hente farveindstillinger</string>
+  <string name="mailbox_action_move_messages_failed">Flytning mislykkedes</string>
+  <string name="mailbox_action_move_messages_failed_retrieving_folders">Kunne ikke hente mapper</string>
 </resources>

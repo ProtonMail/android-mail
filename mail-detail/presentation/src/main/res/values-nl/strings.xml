@@ -59,4 +59,9 @@
   <string name="message_body_embedded_images_banner_text">Automatisch laden van ingesloten afbeeldingen is uitgeschakeld. Dit kan worden gewijzigd bij de instellingen.</string>
   <string name="message_body_remote_content_banner_text">Automatisch laden van externe inhoud is uitgeschakeld. Dit kan worden gewijzigd bij de instellingen.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">Automatisch laden van ingesloten afbeeldingen en externe inhoud is uitgeschakeld. Dit kan worden gewijzigd bij de instellingen.</string>
+  <!-- External link confirmation dialog -->
+  <string name="external_link_confirmation_dialog_text">You are about to leave the app and navigate to:</string>
+  <string name="external_link_confirmation_dialog_do_not_ask_again">Niet opnieuw vragen</string>
+  <string name="external_link_confirmation_dialog_cancel_button">Annuleren</string>
+  <string name="external_link_confirmation_dialog_continue_button">Continue</string>
 </resources>

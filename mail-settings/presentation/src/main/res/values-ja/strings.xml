@@ -28,6 +28,9 @@
   <string name="mail_settings_alternative_routing">代替ルーティング</string>
   <string name="mail_settings_app_language">アプリ言語</string>
   <string name="mail_settings_combined_contacts">連絡先の相互利用</string>
+  <string name="mail_settings_local_cache">Local cache</string>
+  <string name="mail_settings_local_cache_hint">Space used: %s</string>
+  <string name="mail_settings_local_cache_clear_button">Clear data</string>
   <string name="mail_settings_swipe_actions">スワイプ操作</string>
   <string name="mail_settings_combined_contacts_hint">この機能を有効にすると、ログイン済みアカウントの連絡先のメールアドレスの自動補完を利用することができます。</string>
   <string name="mail_settings_alternative_routing_hint">Proton への接続がブロックされている場合、アプリは別のネットワーク経由で Proton へ接続を試みます。この設定は、ファイアウォールやネットワーク上の問題を回避するのに役立ちます。信頼性向上の観点から、この設定を有効にしておくことをおすすめします。</string>
@@ -67,8 +70,8 @@
   <string name="mail_settings_default_email_address_title">既定のメールアドレス</string>
   <string name="mail_settings_default_email_address_inactive_addresses">Inactive addresses</string>
   <string name="mail_settings_default_email_address_no_inactive_addresses">No inactive addresses</string>
-  <string name="mail_settings_default_email_address_error_loading">Error loading settings</string>
-  <string name="mail_settings_default_email_address_error_update">Error updating settings</string>
+  <string name="mail_settings_default_email_address_error_loading">設定の読み込みエラー</string>
+  <string name="mail_settings_default_email_address_error_update">設定更新エラー</string>
   <string name="mail_settings_default_email_address_error_update_subscription">Upgrade to a paid plan to set this address as default</string>
   <!-- Display name, signature, mobile footer -->
   <string name="mail_settings_identity_title">表示名と署名</string>
@@ -81,8 +84,8 @@
   <string name="mail_settings_identity_mobile_footer_subtext">The footer is added after your signature.</string>
   <string name="mail_settings_identity_mobile_footer_hint">Mobile footer</string>
   <string name="mail_settings_identity_mobile_footer_default_free">Proton Mail Android から送信</string>
-  <string name="mail_settings_identity_error_updating">Error updating settings</string>
-  <string name="mail_settings_identity_error_loading">Error loading settings</string>
+  <string name="mail_settings_identity_error_updating">設定更新エラー</string>
+  <string name="mail_settings_identity_error_loading">設定の読み込みエラー</string>
   <!-- Privacy settings -->
   <string name="mail_settings_privacy_auto_show_remote_content">リモートコンテンツを自動表示</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">埋め込み画像を自動表示</string>
@@ -108,11 +111,13 @@
   <!-- Notification settings -->
   <string name="mail_settings_notifications_title">プッシュ通知</string>
   <string name="mail_settings_notifications_extended_notifications_title">Extended notifications</string>
-  <string name="mail_settings_notifications_extended_notifications_summary">Turn this feature on to see the sender of the emails in the push notifications.</string>
+  <string name="mail_settings_notifications_extended_notifications_summary">この機能を有効にするとメールの送信者をプッシュ通知します。</string>
   <string name="mail_settings_notifications_notifications_settings">通知設定</string>
   <string name="mail_settings_notifications_notifications_settings_hint">Navigate to system notification settings</string>
-  <string name="mail_settings_notifications_update_error">Error updating settings</string>
-  <string name="mail_settings_notifications_loading_error">Error loading settings</string>
+  <string name="mail_settings_notifications_update_error">設定更新エラー</string>
+  <string name="mail_settings_notifications_loading_error">設定の読み込みエラー</string>
+  <!-- Local storage -->
+  <string name="mail_settings_clearing_cached_data">Clearing local cached data…</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">エラーが発生しました。再度お試しください。</string>
 </resources>

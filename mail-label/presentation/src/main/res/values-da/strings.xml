@@ -51,4 +51,16 @@
   <string name="delete_label_error">Fejl ved sletning af etikette</string>
   <string name="input_field_clear_content_description">Ryd tekst</string>
   <string name="label_list_item_content_description">Giv listeelement etikette</string>
+  <string name="folder_list_item_content_description">Folder list item</string>
+  <string name="folder_list_no_folders_found">Ingen mapper fundet.</string>
+  <string name="folder_list_create_folder_placeholder_description">Opret en folder for at forbedre din e-mailoplevelse.</string>
+  <string name="add_folder_content_description">Tilføj mappe</string>
+  <string name="folder_settings_content_description">Mappe-indstillinger</string>
+  <string name="folder_settings_title">Indstillinger</string>
+  <string name="folder_settings_done_button">Færdig</string>
+  <string name="folder_settings_folder_colors">Brug mappefarver</string>
+  <string name="folder_settings_parent_color">Overtag den overordnede mappes farve</string>
+  <string name="folder_settings_switch_on">Til</string>
+  <string name="folder_settings_switch_off">Fra</string>
+  <string name="folder_list_loading_error">Fejl ved indlæsning af mappe. Prøv igen senere.</string>
 </resources>

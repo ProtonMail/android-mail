@@ -28,6 +28,9 @@
   <string name="mail_settings_alternative_routing">대체 라우팅</string>
   <string name="mail_settings_app_language">앱 언어</string>
   <string name="mail_settings_combined_contacts">병합된 연락처</string>
+  <string name="mail_settings_local_cache">로컬 캐시</string>
+  <string name="mail_settings_local_cache_hint">사용된 공간: %s</string>
+  <string name="mail_settings_local_cache_clear_button">데이터 지우기</string>
   <string name="mail_settings_swipe_actions">스와이프 동작</string>
   <string name="mail_settings_combined_contacts_hint">로그인된 모든 계정의 연락처를 사용하여 이메일 주소를 자동 완성하려면 이 기능을 켜십시오.</string>
   <string name="mail_settings_alternative_routing_hint">Proton 사이트가 차단되었을 경우 이 설정을 통한 대체 네트워크 라우팅으로 방화벽을 우회하거나 네트워크 문제가 발생했을 때 Proton에 접근할 수 있습니다. 더 나은 신뢰성을 위해 이 설정을 계속 켜두는 것을 권장합니다.</string>
@@ -113,6 +116,8 @@
   <string name="mail_settings_notifications_notifications_settings_hint">시스템 알림 설정으로 이동</string>
   <string name="mail_settings_notifications_update_error">설정 업데이트 중 실패</string>
   <string name="mail_settings_notifications_loading_error">설정 로딩 중 오류 발생</string>
+  <!-- Local storage -->
+  <string name="mail_settings_clearing_cached_data">로컬에 저장된 캐시 데이터 삭제 중…</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">오류 발생. 다시 시도하세요.</string>
 </resources>

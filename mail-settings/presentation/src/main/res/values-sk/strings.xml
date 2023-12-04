@@ -28,6 +28,9 @@
   <string name="mail_settings_alternative_routing">Alternatívne smerovanie</string>
   <string name="mail_settings_app_language">Jazyk aplikácie</string>
   <string name="mail_settings_combined_contacts">Kombinované kontakty</string>
+  <string name="mail_settings_local_cache">Local cache</string>
+  <string name="mail_settings_local_cache_hint">Space used: %s</string>
+  <string name="mail_settings_local_cache_clear_button">Clear data</string>
   <string name="mail_settings_swipe_actions">Akcia po prejdení prstom</string>
   <string name="mail_settings_combined_contacts_hint">Zapnutím tejto funkcie sa budú emailové adresy automaticky dopĺňať pomocou kontaktov zo všetkých vašich prihlásených účtov.</string>
   <string name="mail_settings_alternative_routing_hint">V prípade, že sú stránky Proton blokované, toto nastavenie umožňuje aplikácii vyskúšať alternatívne smerovanie siete na prístup k Protonu, čo môže byť užitočné pri obchádzaní brán firewall alebo problémov so sieťou. Pre vyššiu spoľahlivosť odporúčame ponechať toto nastavenie zapnuté.</string>
@@ -113,6 +116,8 @@
   <string name="mail_settings_notifications_notifications_settings_hint">Prejdite do nastavení systémových notifikácií</string>
   <string name="mail_settings_notifications_update_error">Chyba pri aktualizácii nastavení</string>
   <string name="mail_settings_notifications_loading_error">Chyba pri načítaní nastavení</string>
+  <!-- Local storage -->
+  <string name="mail_settings_clearing_cached_data">Clearing local cached data…</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Vyskytla sa chyba. Skúste znova.</string>
 </resources>

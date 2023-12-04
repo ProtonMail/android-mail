@@ -51,4 +51,16 @@
   <string name="delete_label_error">Wystąpił błąd podczas usuwania etykiety</string>
   <string name="input_field_clear_content_description">Wyczyść tekst</string>
   <string name="label_list_item_content_description">Element listy etykiet</string>
+  <string name="folder_list_item_content_description">Lista elementów folderu</string>
+  <string name="folder_list_no_folders_found">Nie znaleziono folderów.</string>
+  <string name="folder_list_create_folder_placeholder_description">Utwórz folder, aby zwiększyć komfort korzystania z poczty.</string>
+  <string name="add_folder_content_description">Dodaj folder</string>
+  <string name="folder_settings_content_description">Ustawienia folderu</string>
+  <string name="folder_settings_title">Ustawienia</string>
+  <string name="folder_settings_done_button">Gotowe</string>
+  <string name="folder_settings_folder_colors">Użyj kolorów folderu</string>
+  <string name="folder_settings_parent_color">Zastosuj kolor folderu nadrzędnego</string>
+  <string name="folder_settings_switch_on">Włączone</string>
+  <string name="folder_settings_switch_off">Wyłączone</string>
+  <string name="folder_list_loading_error">Wystąpił błąd podczas ładowania folderu. Spróbuj ponownie później</string>
 </resources>

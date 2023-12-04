@@ -28,6 +28,9 @@
   <string name="mail_settings_alternative_routing">Альтернативна маршрутизація</string>
   <string name="mail_settings_app_language">Мова програми</string>
   <string name="mail_settings_combined_contacts">Об\'єднані контакти</string>
+  <string name="mail_settings_local_cache">Local cache</string>
+  <string name="mail_settings_local_cache_hint">Space used: %s</string>
+  <string name="mail_settings_local_cache_clear_button">Clear data</string>
   <string name="mail_settings_swipe_actions">Жести посування</string>
   <string name="mail_settings_combined_contacts_hint">Увімкніть цю функцію для автозавершення адрес електронної пошти, використовуючи контакти з усіх ваших під\'єднаних облікових записів.</string>
   <string name="mail_settings_alternative_routing_hint">У випадку блокування сайтів Proton, цей параметр дозволяє програмі спробувати альтернативний мережевий маршрут для доступу до Proton, що може бути корисним для обходу мережевих екранів чи мережевих проблем: Радимо ввімкнути цей параметр для кращої надійності.</string>
@@ -64,14 +67,14 @@
   <string name="mail_settings_not_set">Не встановлено</string>
   <string name="mail_settings_conversation_mode_hint">Групуйте електронні листи в одній розмові або переглядайте їх окремо</string>
   <!-- Default email address settings -->
-  <string name="mail_settings_default_email_address_title">Default email address</string>
+  <string name="mail_settings_default_email_address_title">Типова адреса електронної пошти</string>
   <string name="mail_settings_default_email_address_inactive_addresses">Inactive addresses</string>
   <string name="mail_settings_default_email_address_no_inactive_addresses">No inactive addresses</string>
-  <string name="mail_settings_default_email_address_error_loading">Error loading settings</string>
-  <string name="mail_settings_default_email_address_error_update">Error updating settings</string>
+  <string name="mail_settings_default_email_address_error_loading">Помилка завантаження налаштувань</string>
+  <string name="mail_settings_default_email_address_error_update">Помилка оновлення налаштувань</string>
   <string name="mail_settings_default_email_address_error_update_subscription">Upgrade to a paid plan to set this address as default</string>
   <!-- Display name, signature, mobile footer -->
-  <string name="mail_settings_identity_title">Display name &amp; signature</string>
+  <string name="mail_settings_identity_title">Ім\'я та підпис</string>
   <string name="mail_settings_identity_save_button">Save</string>
   <string name="mail_settings_identity_display_name">Display name</string>
   <string name="mail_settings_identity_display_name_hint">Display name</string>
@@ -80,14 +83,14 @@
   <string name="mail_settings_identity_mobile_footer">Mobile footer</string>
   <string name="mail_settings_identity_mobile_footer_subtext">The footer is added after your signature.</string>
   <string name="mail_settings_identity_mobile_footer_hint">Mobile footer</string>
-  <string name="mail_settings_identity_mobile_footer_default_free">Sent from Proton Mail Android</string>
-  <string name="mail_settings_identity_error_updating">Error updating settings</string>
-  <string name="mail_settings_identity_error_loading">Error loading settings</string>
+  <string name="mail_settings_identity_mobile_footer_default_free">Надіслано з Proton Mail Android</string>
+  <string name="mail_settings_identity_error_updating">Помилка оновлення налаштувань</string>
+  <string name="mail_settings_identity_error_loading">Помилка завантаження налаштувань</string>
   <!-- Privacy settings -->
   <string name="mail_settings_privacy_auto_show_remote_content">Автопоказ зовнішнього вмісту</string>
-  <string name="mail_settings_privacy_auto_show_embedded_images">Автоматичний показ вбудованих зображень</string>
-  <string name="mail_settings_privacy_prevent_taking_screenshots">Запобігти створення знімки екрану</string>
-  <string name="mail_settings_privacy_request_link_confirmation">Запитувати підтвердження при переході за посиланнями</string>
+  <string name="mail_settings_privacy_auto_show_embedded_images">Автопоказ вбудованих зображень</string>
+  <string name="mail_settings_privacy_prevent_taking_screenshots">Не дозволяти знімки екрана</string>
+  <string name="mail_settings_privacy_request_link_confirmation">Підтверджувати відкриття посилань</string>
   <string name="mail_settings_privacy_error_updating">Помилка оновлення налаштувань</string>
   <string name="mail_settings_privacy_error_loading">Помилка завантаження налаштувань</string>
   <!-- Swipe Actions -->
@@ -106,13 +109,15 @@
   <string name="mail_settings_swipe_action_star_description">Позначити/Прибрати зірочку</string>
   <string name="mail_settings_swipe_action_trash_description">Перемістити до смітника</string>
   <!-- Notification settings -->
-  <string name="mail_settings_notifications_title">Push notifications</string>
+  <string name="mail_settings_notifications_title">Push-сповіщення</string>
   <string name="mail_settings_notifications_extended_notifications_title">Extended notifications</string>
-  <string name="mail_settings_notifications_extended_notifications_summary">Turn this feature on to see the sender of the emails in the push notifications.</string>
+  <string name="mail_settings_notifications_extended_notifications_summary">Увімкніть цю функцію, щоб бачити відправника листів у push-сповіщеннях.</string>
   <string name="mail_settings_notifications_notifications_settings">Notifications settings</string>
   <string name="mail_settings_notifications_notifications_settings_hint">Navigate to system notification settings</string>
-  <string name="mail_settings_notifications_update_error">Error updating settings</string>
-  <string name="mail_settings_notifications_loading_error">Error loading settings</string>
+  <string name="mail_settings_notifications_update_error">Помилка оновлення налаштувань</string>
+  <string name="mail_settings_notifications_loading_error">Помилка завантаження налаштувань</string>
+  <!-- Local storage -->
+  <string name="mail_settings_clearing_cached_data">Clearing local cached data…</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Сталася помилка. Спробуйте знову.</string>
 </resources>

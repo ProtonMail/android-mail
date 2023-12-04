@@ -51,4 +51,16 @@
   <string name="delete_label_error">Gick inte ta bort etikett</string>
   <string name="input_field_clear_content_description">Rensa text</string>
   <string name="label_list_item_content_description">Märk listobjekten</string>
+  <string name="folder_list_item_content_description">Folder list item</string>
+  <string name="folder_list_no_folders_found">Inga mappar hittades.</string>
+  <string name="folder_list_create_folder_placeholder_description">Skapa en mapp för att förbättra din e-postupplevelse.</string>
+  <string name="add_folder_content_description">Lägg till mapp</string>
+  <string name="folder_settings_content_description">Mappinställningar</string>
+  <string name="folder_settings_title">Inställningar</string>
+  <string name="folder_settings_done_button">Klar</string>
+  <string name="folder_settings_folder_colors">Använd mappfärger</string>
+  <string name="folder_settings_parent_color">Ärv överordnad mappfärg</string>
+  <string name="folder_settings_switch_on">På</string>
+  <string name="folder_settings_switch_off">Av</string>
+  <string name="folder_list_loading_error">Det gick inte ladda mapp, försök igen senare</string>
 </resources>

@@ -28,6 +28,9 @@
   <string name="mail_settings_alternative_routing">Alternatif yöneltme</string>
   <string name="mail_settings_app_language">Uygulama dili</string>
   <string name="mail_settings_combined_contacts">Birleştirilmiş kişiler</string>
+  <string name="mail_settings_local_cache">Local cache</string>
+  <string name="mail_settings_local_cache_hint">Space used: %s</string>
+  <string name="mail_settings_local_cache_clear_button">Clear data</string>
   <string name="mail_settings_swipe_actions">Kaydırma işlemleri</string>
   <string name="mail_settings_combined_contacts_hint">E-posta adreslerinin, oturum açtığınız tüm hesaplardaki kişilerle otomatik olarak tamamlanması için bu özelliği açın.</string>
   <string name="mail_settings_alternative_routing_hint">Açıldığında, uygulama Proton sitelerinin engellenmiş olması durumunda Proton ağına erişmek için alternatif ağ yöneltmesini dener. Güvenlik duvarlarını veya ağ sorunlarını aşmakta yararlı olabilir. Bağlantı güvenilirliğini artırmak için bu seçeneği açık tutmanız önerilir.</string>
@@ -113,6 +116,8 @@
   <string name="mail_settings_notifications_notifications_settings_hint">Sistem bildirimi ayarlarına git</string>
   <string name="mail_settings_notifications_update_error">Ayarlar güncellenirken sorun çıktı</string>
   <string name="mail_settings_notifications_loading_error">Ayarlar yüklenirken sorun çıktı</string>
+  <!-- Local storage -->
+  <string name="mail_settings_clearing_cached_data">Clearing local cached data…</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Bir sorun çıktı. Yeniden deneyin.</string>
 </resources>

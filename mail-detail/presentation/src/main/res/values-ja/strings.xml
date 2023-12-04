@@ -60,7 +60,7 @@
   <string name="message_body_embedded_and_remote_content_banner_text">埋め込み画像やリモートコンテンツの自動読み込みはオフになっています。これらは設定で変更できます。</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">You are about to leave the app and navigate to:</string>
-  <string name="external_link_confirmation_dialog_do_not_ask_again">Don\'t ask again</string>
+  <string name="external_link_confirmation_dialog_do_not_ask_again">今後表示しない</string>
   <string name="external_link_confirmation_dialog_cancel_button">Cancel</string>
   <string name="external_link_confirmation_dialog_continue_button">Continue</string>
 </resources>

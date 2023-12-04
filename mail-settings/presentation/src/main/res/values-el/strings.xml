@@ -28,6 +28,9 @@
   <string name="mail_settings_alternative_routing">Εναλλακτική δρομολόγηση</string>
   <string name="mail_settings_app_language">Γλώσσα εφαρμογής</string>
   <string name="mail_settings_combined_contacts">Συνδυασμένες επαφές</string>
+  <string name="mail_settings_local_cache">Τοπική προσωρινή μνήμη</string>
+  <string name="mail_settings_local_cache_hint">Χρησιμοποιούμενος χώρος: %s</string>
+  <string name="mail_settings_local_cache_clear_button">Εκκαθάριση δεδομένων</string>
   <string name="mail_settings_swipe_actions">Ενέργειες ολίσθησης</string>
   <string name="mail_settings_combined_contacts_hint">Ενεργοποιήστε αυτή τη λειτουργία για να συμπληρώνετε αυτόματα τα E-mail χρησιμοποιώντας επαφές από όλους τους συνδεδεμένους λογαριασμούς σας.</string>
   <string name="mail_settings_alternative_routing_hint">Σε περίπτωση φραγής των ιστοσελίδων της Proton, αυτή η ρύθμιση επιτρέπει στην εφαρμογή να επιχειρήσει εναλλακτική δρομολόγηση δικτύου προκειμένου να φτάσει στην Proton, κάτι που μπορεί να φανεί χρήσιμο στην παράκαμψη τοίχων προστασίας ή προβλημάτων του δικτύου: Συνιστούμε τη διατήρηση αυτής της ρύθμισης για μεγαλύτερη αξιοπιστία.</string>
@@ -113,6 +116,8 @@
   <string name="mail_settings_notifications_notifications_settings_hint">Μεταβείτε στις ρυθμίσεις ειδοποιήσεων συστήματος</string>
   <string name="mail_settings_notifications_update_error">Σφάλμα κατά την ενημέρωση ρυθμίσεων</string>
   <string name="mail_settings_notifications_loading_error">Σφάλμα κατά τη φόρτωση ρυθμίσεων</string>
+  <!-- Local storage -->
+  <string name="mail_settings_clearing_cached_data">Εκκαθάριση τοπικών προσωρινά αποθηκευμένων δεδομένων…</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Παρουσιάστηκε σφάλμα. Δοκίμασε ξανά.</string>
 </resources>

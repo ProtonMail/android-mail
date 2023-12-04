@@ -28,6 +28,7 @@
   <string name="mailbox_message_sending_offline">Brak połączenia z siecią. Wiadomość została dodana do kolejki wysyłania</string>
   <string name="mailbox_message_sending_success">Wiadomość została wysłana</string>
   <string name="mailbox_message_sending_error">Wystąpił błąd podczas wysyłania wiadomości</string>
+  <string name="mailbox_message_sending_error_action">Przejdź do Szkiców</string>
   <string name="mailbox_attachment_uploading_error">Wystąpił błąd podczas przesyłania załącznika</string>
   <string name="notification_switched_account">Przełączono na konto %s</string>
   <string name="label_saved">Etykieta została zapisana</string>

@@ -79,7 +79,9 @@
     <item quantity="few">%d conversații au fost șterse permanent.</item>
     <item quantity="other">%d de conversații au fost șterse permanent.</item>
   </plurals>
-  <string name="mailbox_action_label_messages_failed">Label operation failed</string>
-  <string name="mailbox_action_label_messages_failed_retrieving_labels">Failed to get labels</string>
-  <string name="mailbox_action_label_messages_failed_retrieving_colors">Failed to get color settings</string>
+  <string name="mailbox_action_label_messages_failed">Operația de etichetare a eșuat.</string>
+  <string name="mailbox_action_label_messages_failed_retrieving_labels">Eșuare obținere etichete.</string>
+  <string name="mailbox_action_failed_retrieving_colors">Eșuare obținere setări culori.</string>
+  <string name="mailbox_action_move_messages_failed">Move operation failed</string>
+  <string name="mailbox_action_move_messages_failed_retrieving_folders">Failed to get folders</string>
 </resources>

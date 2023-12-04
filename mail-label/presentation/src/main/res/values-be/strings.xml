@@ -51,4 +51,16 @@
   <string name="delete_label_error">Памылка пры выдаленні меткі</string>
   <string name="input_field_clear_content_description">Ачысціць тэкст</string>
   <string name="label_list_item_content_description">Элемент спіса метак</string>
+  <string name="folder_list_item_content_description">Спіс элементаў папкі</string>
+  <string name="folder_list_no_folders_found">Папкі не знойдзены.</string>
+  <string name="folder_list_create_folder_placeholder_description">Стварыце папку, каб палепшыць сваю працу з электроннай поштай.</string>
+  <string name="add_folder_content_description">Дадаць папку</string>
+  <string name="folder_settings_content_description">Налады папкі</string>
+  <string name="folder_settings_title">Налады</string>
+  <string name="folder_settings_done_button">Гатова</string>
+  <string name="folder_settings_folder_colors">Выкарыстоўваць колеры папкі</string>
+  <string name="folder_settings_parent_color">Унаследаваць колеры бацькоўскай папкі</string>
+  <string name="folder_settings_switch_on">Уключана</string>
+  <string name="folder_settings_switch_off">Выключана</string>
+  <string name="folder_list_loading_error">Памылка загрузкі папкі. Паспрабуйце яшчэ раз пазней</string>
 </resources>

@@ -19,7 +19,7 @@
 <resources>
   <string name="title_remove">Esborra</string>
   <string name="title_remove_account">Esborra el compte</string>
-  <string name="description_remove_account">Es tancarà la sessió i s\'esborrarà tota la informació associada a ella.</string>
+  <string name="description_remove_account">Es tancarà la sessió i s\'esborrarà tota la informació associada amb aquest compte.</string>
   <string name="user_select_other_account_content_description">Seleccioneu un altre compte</string>
   <string name="you_are_offline">Esteu fora de línia</string>
   <string name="feature_coming_soon">Aquesta característica arribarà aviat…</string>
@@ -28,9 +28,10 @@
   <string name="mailbox_message_sending_offline">Fora de línia, missatge a la cua per enviar</string>
   <string name="mailbox_message_sending_success">S\'ha enviat el missatge.</string>
   <string name="mailbox_message_sending_error">Error enviant el missatge</string>
+  <string name="mailbox_message_sending_error_action">Aneu a Esborranys</string>
   <string name="mailbox_attachment_uploading_error">S\'ha produït un error en carregar l\'adjunt.</string>
   <string name="notification_switched_account">Canviat al compte: %s</string>
-  <string name="label_saved">Label saved</string>
-  <string name="label_deleted">Label deleted</string>
-  <string name="label_list_loading_error">Error loading label, please try again later</string>
+  <string name="label_saved">S\'ha desat l\'etiqueta.</string>
+  <string name="label_deleted">S\'ha eliminat l\'etiqueta.</string>
+  <string name="label_list_loading_error">S\'ha produït un error en carregar l\'etiqueta. Proveu de nou més tard.</string>
 </resources>

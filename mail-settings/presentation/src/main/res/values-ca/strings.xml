@@ -28,6 +28,9 @@
   <string name="mail_settings_alternative_routing">Enrutament alternatiu</string>
   <string name="mail_settings_app_language">Idioma de l\'aplicació</string>
   <string name="mail_settings_combined_contacts">Contactes combinats</string>
+  <string name="mail_settings_local_cache">Memòria cau local</string>
+  <string name="mail_settings_local_cache_hint">Espai utilitzat: %s</string>
+  <string name="mail_settings_local_cache_clear_button">Neteja les dades</string>
   <string name="mail_settings_swipe_actions">Accions de lliscament</string>
   <string name="mail_settings_combined_contacts_hint">Activeu aquesta característica per a completar automàticament les adreces de correu electrònic utilitzant els contactes de tots els vostres comptes amb la sessió iniciada.</string>
   <string name="mail_settings_alternative_routing_hint">En cas que es bloquegin els llocs de Proton, aquest paràmetre permet a l\'aplicació provar l\'encaminament de xarxa alternatiu per arribar a Proton, cosa que pot ser útil per evitar els tallafocs o problemes de xarxa. Recomanem mantenir aquesta configuració per a una major fiabilitat.</string>
@@ -55,8 +58,8 @@
   <string name="mail_settings_display_name_and_signature">Nom a mostrar i signatura</string>
   <string name="mail_settings_mailbox">Bústia de correu</string>
   <string name="mail_settings_privacy">Privacitat</string>
-  <string name="mail_settings_labels">Labels</string>
-  <string name="mail_settings_folders">Folders</string>
+  <string name="mail_settings_labels">Etiquetes</string>
+  <string name="mail_settings_folders">Carpetes</string>
   <string name="mail_settings_local_storage">Emmagatzematge local</string>
   <string name="mail_settings_snooze">Posposa</string>
   <string name="mail_settings_snooze_notifications">Posposa notificacions</string>
@@ -64,25 +67,25 @@
   <string name="mail_settings_not_set">Sense definir</string>
   <string name="mail_settings_conversation_mode_hint">Agrupeu correus electrònics de la mateixa conversa a la safata d\'entrada o mostreu-los per separat</string>
   <!-- Default email address settings -->
-  <string name="mail_settings_default_email_address_title">Default email address</string>
-  <string name="mail_settings_default_email_address_inactive_addresses">Inactive addresses</string>
-  <string name="mail_settings_default_email_address_no_inactive_addresses">No inactive addresses</string>
-  <string name="mail_settings_default_email_address_error_loading">Error loading settings</string>
-  <string name="mail_settings_default_email_address_error_update">Error updating settings</string>
-  <string name="mail_settings_default_email_address_error_update_subscription">Upgrade to a paid plan to set this address as default</string>
+  <string name="mail_settings_default_email_address_title">Adreça de correu per defecte</string>
+  <string name="mail_settings_default_email_address_inactive_addresses">Adreces inactives</string>
+  <string name="mail_settings_default_email_address_no_inactive_addresses">No hi ha adreces inactives.</string>
+  <string name="mail_settings_default_email_address_error_loading">S\'ha produït un error en carregar les preferències.</string>
+  <string name="mail_settings_default_email_address_error_update">S\'ha produït un error en actualitzar les preferències.</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">Milloreu a un pla de pagament per configurar aquesta adreça com a predeterminada.</string>
   <!-- Display name, signature, mobile footer -->
-  <string name="mail_settings_identity_title">Display name &amp; signature</string>
-  <string name="mail_settings_identity_save_button">Save</string>
-  <string name="mail_settings_identity_display_name">Display name</string>
-  <string name="mail_settings_identity_display_name_hint">Display name</string>
-  <string name="mail_settings_identity_signature">Signature</string>
-  <string name="mail_settings_identity_signature_hint">Signature</string>
-  <string name="mail_settings_identity_mobile_footer">Mobile footer</string>
-  <string name="mail_settings_identity_mobile_footer_subtext">The footer is added after your signature.</string>
-  <string name="mail_settings_identity_mobile_footer_hint">Mobile footer</string>
-  <string name="mail_settings_identity_mobile_footer_default_free">Sent from Proton Mail Android</string>
-  <string name="mail_settings_identity_error_updating">Error updating settings</string>
-  <string name="mail_settings_identity_error_loading">Error loading settings</string>
+  <string name="mail_settings_identity_title">Nom a mostrar i signatura</string>
+  <string name="mail_settings_identity_save_button">Desa</string>
+  <string name="mail_settings_identity_display_name">Nom per a mostrar</string>
+  <string name="mail_settings_identity_display_name_hint">Nom per a mostrar</string>
+  <string name="mail_settings_identity_signature">Signatura</string>
+  <string name="mail_settings_identity_signature_hint">Signatura</string>
+  <string name="mail_settings_identity_mobile_footer">Peu de pàgina al mòbil</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">El peu de pàgina s\'afegeix després de la signatura.</string>
+  <string name="mail_settings_identity_mobile_footer_hint">Peu de pàgina al mòbil</string>
+  <string name="mail_settings_identity_mobile_footer_default_free">Enviat des de Proton Mail Android</string>
+  <string name="mail_settings_identity_error_updating">S\'ha produït un error en actualitzar les preferències.</string>
+  <string name="mail_settings_identity_error_loading">S\'ha produït un error en carregar les preferències.</string>
   <!-- Privacy settings -->
   <string name="mail_settings_privacy_auto_show_remote_content">Mostra automàticament el contingut remot</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">Mostra automàticament les imatges incrustades</string>
@@ -106,13 +109,15 @@
   <string name="mail_settings_swipe_action_star_description">Destaca/no destaquis</string>
   <string name="mail_settings_swipe_action_trash_description">Mou a la paperera</string>
   <!-- Notification settings -->
-  <string name="mail_settings_notifications_title">Push notifications</string>
-  <string name="mail_settings_notifications_extended_notifications_title">Extended notifications</string>
-  <string name="mail_settings_notifications_extended_notifications_summary">Turn this feature on to see the sender of the emails in the push notifications.</string>
-  <string name="mail_settings_notifications_notifications_settings">Notifications settings</string>
+  <string name="mail_settings_notifications_title">Notificacions push</string>
+  <string name="mail_settings_notifications_extended_notifications_title">Notificacions ampliades</string>
+  <string name="mail_settings_notifications_extended_notifications_summary">Activeu aquesta característica per veure el remitent dels correus electrònics a les notificacions push.</string>
+  <string name="mail_settings_notifications_notifications_settings">Preferències de les notificacions</string>
   <string name="mail_settings_notifications_notifications_settings_hint">Navigate to system notification settings</string>
-  <string name="mail_settings_notifications_update_error">Error updating settings</string>
-  <string name="mail_settings_notifications_loading_error">Error loading settings</string>
+  <string name="mail_settings_notifications_update_error">S\'ha produït un error en actualitzar les preferències.</string>
+  <string name="mail_settings_notifications_loading_error">S\'ha produït un error en carregar les preferències.</string>
+  <!-- Local storage -->
+  <string name="mail_settings_clearing_cached_data">Clearing local cached data…</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">S\'ha produït un error. Proveu de nou.</string>
 </resources>

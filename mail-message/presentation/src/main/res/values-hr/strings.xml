@@ -18,7 +18,7 @@
   -->
 <resources>
   <plurals name="attachment_count_label">
-    <item quantity="one">%d file</item>
+    <item quantity="one">%d datoteka</item>
     <item quantity="few">%d files</item>
     <item quantity="other">%d files</item>
   </plurals>
@@ -27,21 +27,21 @@
   <string name="attachment_permission_dialog_message">Proton Mail needs permission to access your storage to download the attachment.</string>
   <string name="attachment_permission_dialog_dismiss_button">U redu</string>
   <string name="attachment_permission_dialog_action_button">Postavke</string>
-  <string name="attachment_type_description">%1$s file</string>
+  <string name="attachment_type_description">%1$s datoteka</string>
   <!-- Attachment Types -->
-  <string name="attachment_type_archive">Archive</string>
+  <string name="attachment_type_archive">Arhiva</string>
   <string name="attachment_type_image">Slika</string>
   <string name="attachment_type_video">Videozapis</string>
   <string name="attachment_type_audio">Zvuk</string>
-  <string name="attachment_type_unknown">Unknown</string>
+  <string name="attachment_type_unknown">Nepoznato</string>
   <string name="attachment_type_pdf">PDF</string>
-  <string name="attachment_type_text">Text</string>
+  <string name="attachment_type_text">Tekst</string>
   <string name="attachment_type_document">Dokument</string>
-  <string name="attachment_type_spreadsheet">Spreadsheet</string>
+  <string name="attachment_type_spreadsheet">Proračunska tablica</string>
   <string name="attachment_type_presentation">Prezentacija</string>
   <!-- Bottom Sheet -->
-  <string name="bottom_sheet_move_to_title">Move to...</string>
-  <string name="bottom_sheet_done_action">Done</string>
+  <string name="bottom_sheet_move_to_title">Premjesti u...</string>
+  <string name="bottom_sheet_done_action">Gotovo</string>
   <string name="bottom_sheet_archive_action">Also archive?</string>
-  <string name="bottom_sheet_label_as_title">Label as...</string>
+  <string name="bottom_sheet_label_as_title">Označi kao...</string>
 </resources>

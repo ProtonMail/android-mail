@@ -39,8 +39,8 @@
   <string name="attachment_type_spreadsheet">Full de càlcul</string>
   <string name="attachment_type_presentation">Presentació</string>
   <!-- Bottom Sheet -->
-  <string name="bottom_sheet_move_to_title">Move to...</string>
-  <string name="bottom_sheet_done_action">Done</string>
-  <string name="bottom_sheet_archive_action">Also archive?</string>
-  <string name="bottom_sheet_label_as_title">Label as...</string>
+  <string name="bottom_sheet_move_to_title">Mou a...</string>
+  <string name="bottom_sheet_done_action">Fet</string>
+  <string name="bottom_sheet_archive_action">Voleu arxivar també?</string>
+  <string name="bottom_sheet_label_as_title">Etiqueta com a…</string>
 </resources>

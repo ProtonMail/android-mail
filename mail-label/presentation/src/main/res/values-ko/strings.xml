@@ -51,4 +51,16 @@
   <string name="delete_label_error">라벨 삭제 오류</string>
   <string name="input_field_clear_content_description">텍스트 지우기</string>
   <string name="label_list_item_content_description">라벨 목록 내의 항목</string>
+  <string name="folder_list_item_content_description">폴더 목록 항목</string>
+  <string name="folder_list_no_folders_found">폴더를 찾을 수 없습니다.</string>
+  <string name="folder_list_create_folder_placeholder_description">이메일 경험을 극대화 하려면 폴더를 생성하세요.</string>
+  <string name="add_folder_content_description">폴더 추가</string>
+  <string name="folder_settings_content_description">폴더 설정</string>
+  <string name="folder_settings_title">설정</string>
+  <string name="folder_settings_done_button">완료</string>
+  <string name="folder_settings_folder_colors">폴더 색상 사용</string>
+  <string name="folder_settings_parent_color">상위 폴더 색깔과 일치</string>
+  <string name="folder_settings_switch_on">켬</string>
+  <string name="folder_settings_switch_off">끔</string>
+  <string name="folder_list_loading_error">파일 로드 중 오류 발생, 다시 시도하십시오.</string>
 </resources>

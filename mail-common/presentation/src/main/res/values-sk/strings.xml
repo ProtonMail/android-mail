@@ -27,6 +27,30 @@
   <string name="action_reply">Odpovedať</string>
   <string name="action_reply_all">Odpovedať všetkým</string>
   <string name="action_forward">Preposlať</string>
+  <string name="action_reply_description">Odpovedať</string>
+  <string name="action_reply_all_description">Odpovedať všetkým</string>
+  <string name="action_forward_description">Preposlať</string>
+  <string name="action_mark_read_description">Označiť ako prečítané</string>
+  <string name="action_mark_unread_description">Označiť ako neprečítané</string>
+  <string name="action_star_description">Star</string>
+  <string name="action_unstar_description">Unstar</string>
+  <string name="action_label_description">Label as</string>
+  <string name="action_move_description">Presunúť do</string>
+  <string name="action_trash_description">Kôš</string>
+  <string name="action_delete_description">Odstrániť</string>
+  <string name="action_archive_description">Archivovať</string>
+  <string name="action_spam_description">Presunúť do spamu</string>
+  <string name="action_view_in_light_mode_description">Zobraziť správu v svetlom režime</string>
+  <string name="action_view_in_dark_mode_description">Zobraziť správu v tmavom režime</string>
+  <string name="action_print_description">Tlačiť</string>
+  <string name="action_view_headers_description">View headers</string>
+  <string name="action_view_html_description">View HTML</string>
+  <string name="action_report_phishing_description">Nahlásiť phishing</string>
+  <string name="action_remind_description">Remind me</string>
+  <string name="action_save_pdf_description">Uložiť ako PDF</string>
+  <string name="action_sender_emails_description">Nastaviť akciu pre budúce emaily od tohto odosielateľa</string>
+  <string name="action_save_attachments_description">Uložiť prílohy</string>
+  <string name="action_more_description">Viac</string>
   <string name="action_reply_content_description">Odpovedať</string>
   <string name="action_reply_all_content_description">Odpovedať všetkým</string>
   <string name="action_forward_content_description">Preposlať</string>
@@ -61,4 +85,5 @@
   <string name="email_notification_channel_description">Notifikácie prichádzajúcich emailov</string>
   <string name="login_notification_channel_description">Notifikácie o novom prihlásení</string>
   <string name="auth_badge_official">Oficiálny</string>
+  <string name="intent_failure_no_app_found_to_handle_this_action">Pre spracovanie tejto akcie sa nenašla žiadna aplikácia</string>
 </resources>

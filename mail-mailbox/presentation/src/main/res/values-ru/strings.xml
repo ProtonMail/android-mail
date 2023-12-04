@@ -25,10 +25,10 @@
   <string name="mailbox_toolbar_menu_button_content_description">Меню</string>
   <string name="mailbox_toolbar_search_button_content_description">Поиск</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">%d Selected</item>
-    <item quantity="few">%d Selected</item>
-    <item quantity="many">%d Selected</item>
-    <item quantity="other">%d Selected</item>
+    <item quantity="one">%d выбрано</item>
+    <item quantity="few">%d выбрано</item>
+    <item quantity="many">%d выбрано</item>
+    <item quantity="other">%d выбрано</item>
   </plurals>
   <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
   <string name="filter_unread_button_text_without_counter">Непрочитанные</string>
@@ -45,31 +45,31 @@
   <string name="mailbox_error_message_unexpected">Что-то неожиданно пошло не так</string>
   <string name="mailbox_is_empty_message">Этот почтовый ящик пуст</string>
   <plurals name="mailbox_action_trash">
-    <item quantity="one">Message moved to Trash</item>
+    <item quantity="one">Сообщение помещено в Корзину</item>
     <item quantity="few">%d messages moved to Trash</item>
     <item quantity="many">%d messages moved to Trash</item>
     <item quantity="other">%d messages moved to Trash</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
-    <item quantity="one">Delete conversation</item>
+    <item quantity="one">Удалить цепочку писем</item>
     <item quantity="few">Delete %d conversations</item>
     <item quantity="many">Delete %d conversations</item>
     <item quantity="other">Delete %d conversations</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_title">
-    <item quantity="one">Delete message</item>
+    <item quantity="one">Удалить сообщение</item>
     <item quantity="few">Delete %d messages</item>
     <item quantity="many">Delete %d messages</item>
     <item quantity="other">Delete %d messages</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_message">
-    <item quantity="one">Are you sure you want to permanently delete this conversation?</item>
+    <item quantity="one">Вы уверены, что хотите безвозвратно удалить эту цепочку писем?</item>
     <item quantity="few">Are you sure you want to permanently delete these conversations?</item>
     <item quantity="many">Are you sure you want to permanently delete these conversations?</item>
     <item quantity="other">Are you sure you want to permanently delete these conversations?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_message">
-    <item quantity="one">Are you sure you want to permanently delete this message?</item>
+    <item quantity="one">Вы уверены, что хотите безвозвратно удалить это сообщение?</item>
     <item quantity="few">Are you sure you want to permanently delete these message?</item>
     <item quantity="many">Are you sure you want to permanently delete these message?</item>
     <item quantity="other">Are you sure you want to permanently delete these message?</item>
@@ -90,5 +90,7 @@
   </plurals>
   <string name="mailbox_action_label_messages_failed">Label operation failed</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Failed to get labels</string>
-  <string name="mailbox_action_label_messages_failed_retrieving_colors">Failed to get color settings</string>
+  <string name="mailbox_action_failed_retrieving_colors">Failed to get color settings</string>
+  <string name="mailbox_action_move_messages_failed">Move operation failed</string>
+  <string name="mailbox_action_move_messages_failed_retrieving_folders">Failed to get folders</string>
 </resources>

@@ -19,7 +19,7 @@
 <resources>
   <plurals name="attachment_count_label">
     <item quantity="one">%d fájl</item>
-    <item quantity="other">%d files</item>
+    <item quantity="other">%d fájl</item>
   </plurals>
   <string name="attachment_show_more_label">+%1$d további</string>
   <string name="attachment_permission_dialog_title">Engedély szükséges</string>
@@ -39,8 +39,8 @@
   <string name="attachment_type_spreadsheet">Munkafüzet</string>
   <string name="attachment_type_presentation">Prezentáció</string>
   <!-- Bottom Sheet -->
-  <string name="bottom_sheet_move_to_title">Move to...</string>
-  <string name="bottom_sheet_done_action">Done</string>
-  <string name="bottom_sheet_archive_action">Also archive?</string>
-  <string name="bottom_sheet_label_as_title">Label as...</string>
+  <string name="bottom_sheet_move_to_title">Áthelyezés...</string>
+  <string name="bottom_sheet_done_action">Kész</string>
+  <string name="bottom_sheet_archive_action">Archiválás is?</string>
+  <string name="bottom_sheet_label_as_title">Címkézés...</string>
 </resources>

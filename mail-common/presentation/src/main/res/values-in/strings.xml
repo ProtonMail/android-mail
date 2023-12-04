@@ -27,6 +27,30 @@
   <string name="action_reply">Balas</string>
   <string name="action_reply_all">Balas semua</string>
   <string name="action_forward">Teruskan</string>
+  <string name="action_reply_description">Balas</string>
+  <string name="action_reply_all_description">Balas semua</string>
+  <string name="action_forward_description">Teruskan</string>
+  <string name="action_mark_read_description">Tandai dibaca</string>
+  <string name="action_mark_unread_description">Tandai belum dibaca</string>
+  <string name="action_star_description">Bintangi</string>
+  <string name="action_unstar_description">Hapus bintang</string>
+  <string name="action_label_description">Labeli sebagai</string>
+  <string name="action_move_description">Pindahkan ke</string>
+  <string name="action_trash_description">Sampah</string>
+  <string name="action_delete_description">Hapus</string>
+  <string name="action_archive_description">Arsipkan</string>
+  <string name="action_spam_description">Pindahkan ke spam</string>
+  <string name="action_view_in_light_mode_description">Tampilkan pesan dalam mode terang</string>
+  <string name="action_view_in_dark_mode_description">Tampilkan pesan dalam mode gelap</string>
+  <string name="action_print_description">Cetak</string>
+  <string name="action_view_headers_description">Lihat tajuk</string>
+  <string name="action_view_html_description">Lihat HTML</string>
+  <string name="action_report_phishing_description">Laporkan upaya phishing</string>
+  <string name="action_remind_description">Ingatkan saya</string>
+  <string name="action_save_pdf_description">Simpan sebagai PDF</string>
+  <string name="action_sender_emails_description">Tentukan tindakan untuk surel dari pengirim ini ke depannya</string>
+  <string name="action_save_attachments_description">Simpan lampiran</string>
+  <string name="action_more_description">Lainnya</string>
   <string name="action_reply_content_description">Balas</string>
   <string name="action_reply_all_content_description">Balas semua</string>
   <string name="action_forward_content_description">Teruskan</string>
@@ -61,4 +85,5 @@
   <string name="email_notification_channel_description">Notifikasi surel masuk</string>
   <string name="login_notification_channel_description">Pemberitahuan masuk terbaru</string>
   <string name="auth_badge_official">Resmi</string>
+  <string name="intent_failure_no_app_found_to_handle_this_action">Aplikasi untuk menangani tindakan ini tidak ditemukan</string>
 </resources>

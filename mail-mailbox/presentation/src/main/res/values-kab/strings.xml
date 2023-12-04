@@ -25,8 +25,8 @@
   <string name="mailbox_toolbar_menu_button_content_description">Umuɣ</string>
   <string name="mailbox_toolbar_search_button_content_description">Nadi</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">%d Selected</item>
-    <item quantity="other">%d Selected</item>
+    <item quantity="one">%d yettwafernen</item>
+    <item quantity="other">%d yettwafernen</item>
   </plurals>
   <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
   <string name="filter_unread_button_text_without_counter">Ur yettwaɣri ara</string>
@@ -41,23 +41,23 @@
   <string name="mailbox_error_message_unexpected">Tella-d tuccḍa</string>
   <string name="mailbox_is_empty_message">Tanaka-a n urmas d tilemt</string>
   <plurals name="mailbox_action_trash">
-    <item quantity="one">Message moved to Trash</item>
+    <item quantity="one">Izen ittwasenkez ɣer iḍumman</item>
     <item quantity="other">%d messages moved to Trash</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
-    <item quantity="one">Delete conversation</item>
+    <item quantity="one">Kkes adiwenni</item>
     <item quantity="other">Delete %d conversations</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_title">
-    <item quantity="one">Delete message</item>
+    <item quantity="one">Kkes ien</item>
     <item quantity="other">Delete %d messages</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_message">
-    <item quantity="one">Are you sure you want to permanently delete this conversation?</item>
+    <item quantity="one">D tidet tebɣiḍ ad tekkseḍ i lebda adiwenni-a?</item>
     <item quantity="other">Are you sure you want to permanently delete these conversations?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_message">
-    <item quantity="one">Are you sure you want to permanently delete this message?</item>
+    <item quantity="one">Tebɣiḍ s tidet ad tekkseḍ s wudem imezgi izen-a?</item>
     <item quantity="other">Are you sure you want to permanently delete these message?</item>
   </plurals>
   <string name="mailbox_action_delete_dialog_button_cancel">Cancel</string>
@@ -72,5 +72,7 @@
   </plurals>
   <string name="mailbox_action_label_messages_failed">Label operation failed</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Failed to get labels</string>
-  <string name="mailbox_action_label_messages_failed_retrieving_colors">Failed to get color settings</string>
+  <string name="mailbox_action_failed_retrieving_colors">Failed to get color settings</string>
+  <string name="mailbox_action_move_messages_failed">Move operation failed</string>
+  <string name="mailbox_action_move_messages_failed_retrieving_folders">Failed to get folders</string>
 </resources>

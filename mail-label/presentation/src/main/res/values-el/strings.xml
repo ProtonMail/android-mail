@@ -50,5 +50,17 @@
   <string name="label_limit_reached_error">Μέγιστο όριο ετικετών</string>
   <string name="delete_label_error">Σφάλμα κατά τη διαγραφή ετικέτας</string>
   <string name="input_field_clear_content_description">Διαγραφή κειμένου</string>
-  <string name="label_list_item_content_description">Στοιχείο λίστας ετικετών</string>
+  <string name="label_list_item_content_description">Εφαρμογή ετικέτας στο στοιχείο λίστας</string>
+  <string name="folder_list_item_content_description">Προσθέστε στο φάκελο το στοιχείο λίστας</string>
+  <string name="folder_list_no_folders_found">Δεν βρέθηκαν φάκελοι.</string>
+  <string name="folder_list_create_folder_placeholder_description">Δημιουργήστε μια φάκελο για να βελτιώσετε την εμπειρία ηλεκτρονικού ταχυδρομείου σας.</string>
+  <string name="add_folder_content_description">Προσθήκη φακέλου</string>
+  <string name="folder_settings_content_description">Ρυθμίσεις φακέλου</string>
+  <string name="folder_settings_title">Ρυθμίσεις</string>
+  <string name="folder_settings_done_button">Έτοιμο</string>
+  <string name="folder_settings_folder_colors">Χρήση χρωμάτων φακέλου</string>
+  <string name="folder_settings_parent_color">Μεταβίβαση χρώματος γονικού φακέλου</string>
+  <string name="folder_settings_switch_on">Ενεργό</string>
+  <string name="folder_settings_switch_off">Ανενεργό</string>
+  <string name="folder_list_loading_error">Σφάλμα φόρτωσης φακέλου, παρακαλούμε δοκιμάστε ξανά αργότερα</string>
 </resources>

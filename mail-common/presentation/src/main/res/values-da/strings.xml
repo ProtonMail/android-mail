@@ -27,6 +27,30 @@
   <string name="action_reply">Svar</string>
   <string name="action_reply_all">Svar alle</string>
   <string name="action_forward">Videresend</string>
+  <string name="action_reply_description">Svar</string>
+  <string name="action_reply_all_description">Svar alle</string>
+  <string name="action_forward_description">Videresend</string>
+  <string name="action_mark_read_description">Markér som læst</string>
+  <string name="action_mark_unread_description">Markér som ulæst</string>
+  <string name="action_star_description">Stjernemarkér</string>
+  <string name="action_unstar_description">Fjern stjernemarkering</string>
+  <string name="action_label_description">Tilføj etiketten</string>
+  <string name="action_move_description">Flyt til</string>
+  <string name="action_trash_description">Flyt til papirkurv</string>
+  <string name="action_delete_description">Slet</string>
+  <string name="action_archive_description">Arkivér</string>
+  <string name="action_spam_description">Flyt til spam</string>
+  <string name="action_view_in_light_mode_description">Se besked i lys tilstand</string>
+  <string name="action_view_in_dark_mode_description">Se besked i mørk tilstand</string>
+  <string name="action_print_description">Udskriv</string>
+  <string name="action_view_headers_description">View headers</string>
+  <string name="action_view_html_description">Vis HTML</string>
+  <string name="action_report_phishing_description">Anmeld phishing</string>
+  <string name="action_remind_description">Påmind mig</string>
+  <string name="action_save_pdf_description">Gem som PDF</string>
+  <string name="action_sender_emails_description">Indstil handling for fremtidige e-mails fra denne afsender</string>
+  <string name="action_save_attachments_description">Gem vedhæftninger</string>
+  <string name="action_more_description">Flere</string>
   <string name="action_reply_content_description">Svar</string>
   <string name="action_reply_all_content_description">Svar alle</string>
   <string name="action_forward_content_description">Videresend</string>
@@ -61,4 +85,5 @@
   <string name="email_notification_channel_description">Indgående e-mailnotifikationer</string>
   <string name="login_notification_channel_description">Nye login-notifikationer</string>
   <string name="auth_badge_official">Officiel</string>
+  <string name="intent_failure_no_app_found_to_handle_this_action">Ingen app til håndtering af denne handling fundet</string>
 </resources>

@@ -26,10 +26,10 @@
     <item quantity="few">%d poruke</item>
     <item quantity="other">%d poruka</item>
   </plurals>
-  <string name="more_button_content_description">More</string>
+  <string name="more_button_content_description">Više</string>
   <string name="to">Za:</string>
-  <string name="cc">Cc:</string>
-  <string name="bcc">Bcc:</string>
+  <string name="cc">Kopija:</string>
+  <string name="bcc">Skrivena kopija:</string>
   <string name="hide_details">Sakrij detalje</string>
   <string name="undisclosed_recipients">Nedefinirani primatelji</string>
   <string name="error_mark_as_unread_failed">Mark as unread operation failed. Please retry.</string>
@@ -60,4 +60,9 @@
   <string name="message_body_embedded_images_banner_text">Automatic loading of embedded images is turned off. This can be changed in the settings.</string>
   <string name="message_body_remote_content_banner_text">Automatic loading of remote content is turned off. This can be changed in the settings.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">Automatic loading of embedded images and remote content is turned off. These can be changed in the settings.</string>
+  <!-- External link confirmation dialog -->
+  <string name="external_link_confirmation_dialog_text">You are about to leave the app and navigate to:</string>
+  <string name="external_link_confirmation_dialog_do_not_ask_again">Ne pitaj ponovno</string>
+  <string name="external_link_confirmation_dialog_cancel_button">Poništi</string>
+  <string name="external_link_confirmation_dialog_continue_button">Nastavi</string>
 </resources>

@@ -50,5 +50,17 @@
   <string name="label_limit_reached_error">Le nombre maximum de labels a été atteint.</string>
   <string name="delete_label_error">Une erreur s\'est produite lors de la suppression du label.</string>
   <string name="input_field_clear_content_description">Effacer le texte</string>
-  <string name="label_list_item_content_description">Ajouter un label à l\'élément de la liste</string>
+  <string name="label_list_item_content_description">Élément de la liste des labels</string>
+  <string name="folder_list_item_content_description">Élément de la liste des dossiers</string>
+  <string name="folder_list_no_folders_found">Aucun dossier n\'a été trouvé.</string>
+  <string name="folder_list_create_folder_placeholder_description">Créez un dossier pour faciliter l\'utilisation de votre messagerie.</string>
+  <string name="add_folder_content_description">Ajouter un dossier</string>
+  <string name="folder_settings_content_description">Paramètres du dossier</string>
+  <string name="folder_settings_title">Paramètres</string>
+  <string name="folder_settings_done_button">Terminé</string>
+  <string name="folder_settings_folder_colors">Utiliser les couleurs de dossier</string>
+  <string name="folder_settings_parent_color">Appliquer la couleur du dossier principal</string>
+  <string name="folder_settings_switch_on">Activé</string>
+  <string name="folder_settings_switch_off">Désactivé</string>
+  <string name="folder_list_loading_error">Une erreur s\'est produite lors du chargement du dossier, réessayez plus tard.</string>
 </resources>

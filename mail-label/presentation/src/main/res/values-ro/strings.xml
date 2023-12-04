@@ -50,5 +50,17 @@
   <string name="label_limit_reached_error">Limita de etichete a fost atinsă.</string>
   <string name="delete_label_error">Eroare ștergere etichetă.</string>
   <string name="input_field_clear_content_description">Eliminare text</string>
-  <string name="label_list_item_content_description">Etichetați articolul din listă</string>
+  <string name="label_list_item_content_description">Etichetă listă articole</string>
+  <string name="folder_list_item_content_description">Folder listă articole</string>
+  <string name="folder_list_no_folders_found">Nu s-au găsit foldere.</string>
+  <string name="folder_list_create_folder_placeholder_description">Creați un folder pentru a vă îmbunătăți lucrul cu mesajele.</string>
+  <string name="add_folder_content_description">Adăugare folder</string>
+  <string name="folder_settings_content_description">Setări foldere</string>
+  <string name="folder_settings_title">Setări</string>
+  <string name="folder_settings_done_button">Gata</string>
+  <string name="folder_settings_folder_colors">Folosire foldere colorate</string>
+  <string name="folder_settings_parent_color">Moștenire culoare folder părinte</string>
+  <string name="folder_settings_switch_on">Activat</string>
+  <string name="folder_settings_switch_off">Dezactivat</string>
+  <string name="folder_list_loading_error">Eroare la încărcarea folderului. Reîncercați mai târziu.</string>
 </resources>

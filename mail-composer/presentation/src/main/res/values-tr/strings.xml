@@ -46,4 +46,5 @@
   <string name="composer_attachment_size_exceeded_dialog_title">Ek dosya sınırına ulaşıldı</string>
   <string name="composer_attachment_size_exceeded_dialog_message">Ek dosyaların boyutu %1$s ile sınırlıdır</string>
   <string name="composer_attachment_reencryption_failed_message">Ek dosya yeniden şifrelenemedi. Güvenlik nedeniyle tüm ek dosyalar kaldırıldı.</string>
+  <string name="composer_warning_local_data_shown">The latest version of this draft failed to load. Any change will override its content.</string>
 </resources>

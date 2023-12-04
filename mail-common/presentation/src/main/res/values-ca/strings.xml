@@ -27,6 +27,30 @@
   <string name="action_reply">Respon</string>
   <string name="action_reply_all">Respon a tothom</string>
   <string name="action_forward">Reenvia</string>
+  <string name="action_reply_description">Reply</string>
+  <string name="action_reply_all_description">Reply all</string>
+  <string name="action_forward_description">Forward</string>
+  <string name="action_mark_read_description">Mark read</string>
+  <string name="action_mark_unread_description">Mark unread</string>
+  <string name="action_star_description">Star</string>
+  <string name="action_unstar_description">Unstar</string>
+  <string name="action_label_description">Label as</string>
+  <string name="action_move_description">Move to</string>
+  <string name="action_trash_description">Trash</string>
+  <string name="action_delete_description">Delete</string>
+  <string name="action_archive_description">Archive</string>
+  <string name="action_spam_description">Move to spam</string>
+  <string name="action_view_in_light_mode_description">Mostra els missatges en mode clar</string>
+  <string name="action_view_in_dark_mode_description">Mostra els missatges en mode fosc</string>
+  <string name="action_print_description">Print</string>
+  <string name="action_view_headers_description">View headers</string>
+  <string name="action_view_html_description">View HTML</string>
+  <string name="action_report_phishing_description">Denuncia una suplantació d\'identitat</string>
+  <string name="action_remind_description">Remind me</string>
+  <string name="action_save_pdf_description">Save as PDF</string>
+  <string name="action_sender_emails_description">Estableix l\'acció per a correus electrònics futurs d\'aquest remitent</string>
+  <string name="action_save_attachments_description">Desa els adjunts</string>
+  <string name="action_more_description">More</string>
   <string name="action_reply_content_description">Respon</string>
   <string name="action_reply_all_content_description">Respon a tothom</string>
   <string name="action_forward_content_description">Reenvia</string>
@@ -61,4 +85,5 @@
   <string name="email_notification_channel_description">Notificacions de correu electrònic entrant</string>
   <string name="login_notification_channel_description">Noves notificacions d\'inici de sessió</string>
   <string name="auth_badge_official">Oficial</string>
+  <string name="intent_failure_no_app_found_to_handle_this_action">No s\'ha trobat cap aplicació per a gestionar aquesta acció</string>
 </resources>

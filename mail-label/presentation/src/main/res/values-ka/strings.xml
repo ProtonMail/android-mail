@@ -51,4 +51,16 @@
   <string name="delete_label_error">ჭდის წაშლის შეცდომა</string>
   <string name="input_field_clear_content_description">ტექსტის გასუფთავება</string>
   <string name="label_list_item_content_description">ჭდის დადება სიის ელემენტზე</string>
+  <string name="folder_list_item_content_description">საქაღალდის სიის ელემენტი</string>
+  <string name="folder_list_no_folders_found">საქაღალდე ნაპოვნი არაა.</string>
+  <string name="folder_list_create_folder_placeholder_description">შექმენით საქაღალდე თქვენი ელფოსტით უფრო მეტად სიამოვნებისთვის.</string>
+  <string name="add_folder_content_description">საქაღალდის დამატება</string>
+  <string name="folder_settings_content_description">საქაღალდის პარამეტრები</string>
+  <string name="folder_settings_title">მორგება</string>
+  <string name="folder_settings_done_button">მზადაა</string>
+  <string name="folder_settings_folder_colors">საქაღალდის ფერების გამოყენება</string>
+  <string name="folder_settings_parent_color">Inherit parent folder color</string>
+  <string name="folder_settings_switch_on">ჩართ</string>
+  <string name="folder_settings_switch_off">გამორთული</string>
+  <string name="folder_list_loading_error">Error loading folder, please try again later</string>
 </resources>

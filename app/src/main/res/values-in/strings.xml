@@ -28,6 +28,7 @@
   <string name="mailbox_message_sending_offline">Luring, pesan diantrekan untuk pengiriman</string>
   <string name="mailbox_message_sending_success">Pesan terkirim</string>
   <string name="mailbox_message_sending_error">Masalah dalam mengirim pesan</string>
+  <string name="mailbox_message_sending_error_action">Tuju draf</string>
   <string name="mailbox_attachment_uploading_error">Kesalahan mengunggah lampiran</string>
   <string name="notification_switched_account">Anda telah beralih ke akun: \'%s</string>
   <string name="label_saved">Label disimpan</string>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="title_remove">Fjern</string>
+  <string name="title_remove_account">Fjern konto</string>
+  <string name="description_remove_account">Du vil logges av og all informasjon forbundet med denne kontoen vil fjernes.</string>
+  <string name="user_select_other_account_content_description">Velg en annen konto</string>
+  <string name="you_are_offline">Du er frakoblet</string>
+  <string name="feature_coming_soon">Denne funksjonen kommer snart ...</string>
+  <string name="mailbox_draft_saved">Utkast lagret</string>
+  <string name="mailbox_message_sending">Sender melding…</string>
+  <string name="mailbox_message_sending_offline">Frakoblet modus, melding satt i sendekø</string>
+  <string name="mailbox_message_sending_success">Melding sendt</string>
+  <string name="mailbox_message_sending_error">Feil ved sending av melding</string>
+  <string name="mailbox_message_sending_error_action">Gå til utkast</string>
+  <string name="mailbox_attachment_uploading_error">Feil ved opplasting av vedlegg</string>
+  <string name="notification_switched_account">Byttet til konto: %s</string>
+  <string name="label_saved">Etikett lagret</string>
+  <string name="label_deleted">Etikett slettet</string>
+  <string name="label_list_loading_error">Feil ved lasting av etikett, vennligst prøv igjen senere.</string>
+</resources>

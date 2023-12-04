@@ -28,6 +28,7 @@
   <string name="mailbox_message_sending_offline">Offline, besked sat i kø til afsendelse</string>
   <string name="mailbox_message_sending_success">Besked sendt</string>
   <string name="mailbox_message_sending_error">Fejl ved afsendelse af besked</string>
+  <string name="mailbox_message_sending_error_action">Gå til kladder</string>
   <string name="mailbox_attachment_uploading_error">Fejl ved upload af vedhæftning</string>
   <string name="notification_switched_account">Skiftede til konto: %s</string>
   <string name="label_saved">Etiket gemt</string>

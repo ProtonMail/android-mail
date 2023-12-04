@@ -28,9 +28,10 @@
   <string name="mailbox_message_sending_offline">Offline, správa vo fronte na odoslanie</string>
   <string name="mailbox_message_sending_success">Správa odoslaná</string>
   <string name="mailbox_message_sending_error">Chyba pri odosielaní správy</string>
+  <string name="mailbox_message_sending_error_action">Prejsť do konceptov</string>
   <string name="mailbox_attachment_uploading_error">Chyba pri nahrávaní prílohy</string>
   <string name="notification_switched_account">Prepnuté na účet: %s</string>
   <string name="label_saved">Štítok uložený</string>
-  <string name="label_deleted">Štítok vymazaný</string>
+  <string name="label_deleted">Štítok odstránený</string>
   <string name="label_list_loading_error">Chyba pri načítaní štítku, skúste to znova neskôr, prosím</string>
 </resources>

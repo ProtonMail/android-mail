@@ -27,6 +27,30 @@
   <string name="action_reply">回覆</string>
   <string name="action_reply_all">回覆全部收件者</string>
   <string name="action_forward">轉發</string>
+  <string name="action_reply_description">Reply</string>
+  <string name="action_reply_all_description">Reply all</string>
+  <string name="action_forward_description">Forward</string>
+  <string name="action_mark_read_description">Mark read</string>
+  <string name="action_mark_unread_description">Mark unread</string>
+  <string name="action_star_description">Star</string>
+  <string name="action_unstar_description">Unstar</string>
+  <string name="action_label_description">Label as</string>
+  <string name="action_move_description">Move to</string>
+  <string name="action_trash_description">Trash</string>
+  <string name="action_delete_description">Delete</string>
+  <string name="action_archive_description">Archive</string>
+  <string name="action_spam_description">Move to spam</string>
+  <string name="action_view_in_light_mode_description">以淺色模式檢視郵件訊息</string>
+  <string name="action_view_in_dark_mode_description">以深色模式檢視郵件訊息</string>
+  <string name="action_print_description">Print</string>
+  <string name="action_view_headers_description">View headers</string>
+  <string name="action_view_html_description">View HTML</string>
+  <string name="action_report_phishing_description">回報網路釣魚</string>
+  <string name="action_remind_description">Remind me</string>
+  <string name="action_save_pdf_description">Save as PDF</string>
+  <string name="action_sender_emails_description">設定動作套用於日後接獲寄件者傳送的電郵</string>
+  <string name="action_save_attachments_description">儲存附件</string>
+  <string name="action_more_description">More</string>
   <string name="action_reply_content_description">回覆</string>
   <string name="action_reply_all_content_description">回覆全部收件者</string>
   <string name="action_forward_content_description">轉寄</string>
@@ -61,4 +85,5 @@
   <string name="email_notification_channel_description">來信通知</string>
   <string name="login_notification_channel_description">新的登入通知</string>
   <string name="auth_badge_official">官方郵件</string>
+  <string name="intent_failure_no_app_found_to_handle_this_action">未找到可處理此操作的程式</string>
 </resources>

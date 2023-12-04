@@ -28,6 +28,9 @@
   <string name="mail_settings_alternative_routing">Альтернативная маршрутизация</string>
   <string name="mail_settings_app_language">Язык приложения</string>
   <string name="mail_settings_combined_contacts">Объединенные контакты</string>
+  <string name="mail_settings_local_cache">Local cache</string>
+  <string name="mail_settings_local_cache_hint">Space used: %s</string>
+  <string name="mail_settings_local_cache_clear_button">Clear data</string>
   <string name="mail_settings_swipe_actions">Жесты пролистывания</string>
   <string name="mail_settings_combined_contacts_hint">Включите эту функцию для автозаполнения адресов электронной почты из контактов всех ваших авторизованных аккаунтов.</string>
   <string name="mail_settings_alternative_routing_hint">В случае если сайты Proton заблокированы, эта настройка позволяет приложению попробовать альтернативную сетевую маршрутизацию для подключения к Proton, что может быть полезно для обхода брандмауэров или проблем с сетью. Мы рекомендуем оставить эту настройку включенной для большей надежности.</string>
@@ -71,7 +74,7 @@
   <string name="mail_settings_default_email_address_error_update">Error updating settings</string>
   <string name="mail_settings_default_email_address_error_update_subscription">Upgrade to a paid plan to set this address as default</string>
   <!-- Display name, signature, mobile footer -->
-  <string name="mail_settings_identity_title">Display name &amp; signature</string>
+  <string name="mail_settings_identity_title">Отображаемое имя и подпись</string>
   <string name="mail_settings_identity_save_button">Save</string>
   <string name="mail_settings_identity_display_name">Display name</string>
   <string name="mail_settings_identity_display_name_hint">Display name</string>
@@ -80,14 +83,14 @@
   <string name="mail_settings_identity_mobile_footer">Mobile footer</string>
   <string name="mail_settings_identity_mobile_footer_subtext">The footer is added after your signature.</string>
   <string name="mail_settings_identity_mobile_footer_hint">Mobile footer</string>
-  <string name="mail_settings_identity_mobile_footer_default_free">Sent from Proton Mail Android</string>
+  <string name="mail_settings_identity_mobile_footer_default_free">Отправлено из мобильного приложения Proton Mail Android</string>
   <string name="mail_settings_identity_error_updating">Error updating settings</string>
   <string name="mail_settings_identity_error_loading">Error loading settings</string>
   <!-- Privacy settings -->
   <string name="mail_settings_privacy_auto_show_remote_content">Auto show remote content</string>
-  <string name="mail_settings_privacy_auto_show_embedded_images">Auto show embedded images</string>
+  <string name="mail_settings_privacy_auto_show_embedded_images">Авто-показ встроенных изображений</string>
   <string name="mail_settings_privacy_prevent_taking_screenshots">Prevent taking screenshots</string>
-  <string name="mail_settings_privacy_request_link_confirmation">Request link confirmation</string>
+  <string name="mail_settings_privacy_request_link_confirmation">Запрашивать подтверждение при переходе по ссылкам</string>
   <string name="mail_settings_privacy_error_updating">Error updating settings</string>
   <string name="mail_settings_privacy_error_loading">Error loading settings</string>
   <!-- Swipe Actions -->
@@ -106,13 +109,15 @@
   <string name="mail_settings_swipe_action_star_description">Отметить звёздочкой / снять звёздочку</string>
   <string name="mail_settings_swipe_action_trash_description">Переместить в Корзину</string>
   <!-- Notification settings -->
-  <string name="mail_settings_notifications_title">Push notifications</string>
+  <string name="mail_settings_notifications_title">Push-уведомления</string>
   <string name="mail_settings_notifications_extended_notifications_title">Extended notifications</string>
-  <string name="mail_settings_notifications_extended_notifications_summary">Turn this feature on to see the sender of the emails in the push notifications.</string>
+  <string name="mail_settings_notifications_extended_notifications_summary">Включите эту функцию, чтобы видеть отправителя\nписем в push-уведомлениях.</string>
   <string name="mail_settings_notifications_notifications_settings">Notifications settings</string>
   <string name="mail_settings_notifications_notifications_settings_hint">Navigate to system notification settings</string>
   <string name="mail_settings_notifications_update_error">Error updating settings</string>
   <string name="mail_settings_notifications_loading_error">Error loading settings</string>
+  <!-- Local storage -->
+  <string name="mail_settings_clearing_cached_data">Clearing local cached data…</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Произошла ошибка. Попробуйте ещё раз.</string>
 </resources>

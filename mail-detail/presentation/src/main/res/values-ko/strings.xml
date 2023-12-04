@@ -59,8 +59,8 @@
   <string name="message_body_remote_content_banner_text">서버 콘텐츠를 자동으로 불러오는 기능이 꺼져 있습니다. 설정에서 변경할 수 있습니다.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">서버 이미지를 자동으로 불러오는 기능이 꺼져 있습니다. 설정에서 변경할 수 있습니다.</string>
   <!-- External link confirmation dialog -->
-  <string name="external_link_confirmation_dialog_text">You are about to leave the app and navigate to:</string>
-  <string name="external_link_confirmation_dialog_do_not_ask_again">Don\'t ask again</string>
-  <string name="external_link_confirmation_dialog_cancel_button">Cancel</string>
-  <string name="external_link_confirmation_dialog_continue_button">Continue</string>
+  <string name="external_link_confirmation_dialog_text">앱을 나가고 다음으로 이동하려고 하고 있습니다:</string>
+  <string name="external_link_confirmation_dialog_do_not_ask_again">다시 묻지 않기</string>
+  <string name="external_link_confirmation_dialog_cancel_button">취소</string>
+  <string name="external_link_confirmation_dialog_continue_button">계속하기</string>
 </resources>

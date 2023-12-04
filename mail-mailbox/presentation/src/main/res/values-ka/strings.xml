@@ -70,7 +70,9 @@
     <item quantity="one">საუბარი სამუდამოდ წაიშალა</item>
     <item quantity="other">%d საუბარი სამუდამოდ წაიშალა</item>
   </plurals>
-  <string name="mailbox_action_label_messages_failed">Label operation failed</string>
-  <string name="mailbox_action_label_messages_failed_retrieving_labels">Failed to get labels</string>
-  <string name="mailbox_action_label_messages_failed_retrieving_colors">Failed to get color settings</string>
+  <string name="mailbox_action_label_messages_failed">ჭდის ოპერაცია ჩავარდა</string>
+  <string name="mailbox_action_label_messages_failed_retrieving_labels">ჭდეების მიღება ჩავარდა</string>
+  <string name="mailbox_action_failed_retrieving_colors">ფერის პარამეტრების მიღება ჩავარდა</string>
+  <string name="mailbox_action_move_messages_failed">გადატანის ოპერაცია ჩავარდა</string>
+  <string name="mailbox_action_move_messages_failed_retrieving_folders">საქაღალდეების მიღება ჩავარდა</string>
 </resources>

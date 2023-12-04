@@ -28,6 +28,9 @@
   <string name="mail_settings_alternative_routing">Альтэрнатыўная маршрутызацыя</string>
   <string name="mail_settings_app_language">Мова праграмы</string>
   <string name="mail_settings_combined_contacts">Камбінаваныя кантакты</string>
+  <string name="mail_settings_local_cache">Лакальны кэш</string>
+  <string name="mail_settings_local_cache_hint">Выкарыстана прасторы: %s</string>
+  <string name="mail_settings_local_cache_clear_button">Ачысціць даныя</string>
   <string name="mail_settings_swipe_actions">Дзеянні правядзення</string>
   <string name="mail_settings_combined_contacts_hint">Уключыце гэту функцыю для аўтаматычнага запаўнення адрасоў электроннай пошты выкарыстоўваючы кантакты з усіх уліковых запісаў у якія вы ўвайшлі.</string>
   <string name="mail_settings_alternative_routing_hint">У выпадку блакіроўкі сайтаў Proton гэта налада дазваляе праграме скарыстацца альтэрнатыўнай сеткавай маршрутызацыяй, каб атрымаць доступ да Proton, што можа быць карысным для абыходу міжсеткавых экранаў або праблем з сеткай. Для большай надзейнасці мы рэкамендуем пакінуць гэту наладу актыўнай.</string>
@@ -113,6 +116,8 @@
   <string name="mail_settings_notifications_notifications_settings_hint">Перайсці ў сістэмныя налады апавяшчэнняў</string>
   <string name="mail_settings_notifications_update_error">Памылка абнаўлення налад</string>
   <string name="mail_settings_notifications_loading_error">Памылка загрузкі налад</string>
+  <!-- Local storage -->
+  <string name="mail_settings_clearing_cached_data">Ачыстка даных лакальнага кэша...</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Адбылася памылка. Паспрабуйце яшчэ раз.</string>
 </resources>

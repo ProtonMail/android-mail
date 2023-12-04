@@ -28,6 +28,9 @@
   <string name="mail_settings_alternative_routing">ალტერნატიული რაუტინგი</string>
   <string name="mail_settings_app_language">აპის ენა</string>
   <string name="mail_settings_combined_contacts">გაერთიანებული კონტაქტები</string>
+  <string name="mail_settings_local_cache">ლოკალური კეში</string>
+  <string name="mail_settings_local_cache_hint">გამოყენებული ადგილი: %s</string>
+  <string name="mail_settings_local_cache_clear_button">მონაცემების გასუფთავება</string>
   <string name="mail_settings_swipe_actions">გადათრევის ქმედებები</string>
   <string name="mail_settings_combined_contacts_hint">ჩართეთ ეს ფუნქცია თქვენი ყველა შემოსული ანგარიშის კონტაქტების გამოყენებით ელფოსტის მისამართების ავტომატურად შესავსებად.</string>
   <string name="mail_settings_alternative_routing_hint">იმ შემთხვევაში, თუ Proton-ის საიტები დაბლოკილია, ეს პარამეტრი აპს საშუალებას აძლევს, Proton-მდე მისასვლელად ქსელის ალტერნატიული რაუტინგი სცადოს, რაც შეიძლება, სასარგებლო იყოს ბრანდმაუერის ან ქსელის პრობლემების გვერდის ავლისთვის. მეტი საიმედოობისთვის გირჩევთ, ჩართოთ ეს პარამეტრი.</string>
@@ -113,6 +116,8 @@
   <string name="mail_settings_notifications_notifications_settings_hint">გადასვლა სისტემის გაფრთხილებების მორგებაზე</string>
   <string name="mail_settings_notifications_update_error">პარამეტრების განახლების შეცდომა</string>
   <string name="mail_settings_notifications_loading_error">პარამეტრების ჩატვირთვის შეცდომა</string>
+  <!-- Local storage -->
+  <string name="mail_settings_clearing_cached_data">Clearing local cached data…</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">დაფიქსირდა შეცდომა. თავიდან სცადეთ.</string>
 </resources>
