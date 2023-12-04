@@ -24,6 +24,7 @@ import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.ObservePrivacySettings
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdateAutoShowEmbeddedImagesSetting
+import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdateBackgroundSyncSetting
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdateLinkConfirmationSetting
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdatePreventScreenshotsSetting
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdateShowRemoteContentSetting
@@ -46,6 +47,7 @@ class PrivacySettingsViewModel @Inject constructor(
     private val updateAutoShowEmbeddedImagesSetting: UpdateAutoShowEmbeddedImagesSetting,
     private val updateLinkConfirmationSetting: UpdateLinkConfirmationSetting,
     private val updatePreventScreenshotsSetting: UpdatePreventScreenshotsSetting,
+    private val updateBackgroundSyncSetting: UpdateBackgroundSyncSetting,
     private val privacySettingsReducer: PrivacySettingsReducer
 ) : ViewModel() {
 
@@ -93,6 +95,14 @@ class PrivacySettingsViewModel @Inject constructor(
             updatePreventScreenshotsSetting(newValue)
                 .onLeft { emitNewStateFrom(PrivacySettingsEvent.Error.UpdateError) }
                 .onRight { emitNewStateFrom(PrivacySettingsEvent.Data.PreventScreenshotsChanged(newValue)) }
+        }
+    }
+
+    fun onAllowBackgroundSyncToggled(newValue: Boolean) {
+        viewModelScope.launch {
+            updateBackgroundSyncSetting(newValue)
+                .onLeft { emitNewStateFrom(PrivacySettingsEvent.Error.UpdateError) }
+                .onRight { emitNewStateFrom(PrivacySettingsEvent.Data.AllowBackgroundSyncChanged(newValue)) }
         }
     }
 

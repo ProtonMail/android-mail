@@ -22,5 +22,6 @@ data class PrivacySettings(
     val autoShowRemoteContent: Boolean,
     val autoShowEmbeddedImages: Boolean,
     val preventTakingScreenshots: Boolean,
-    val requestLinkConfirmation: Boolean
+    val requestLinkConfirmation: Boolean,
+    val allowBackgroundSync: Boolean
 )

@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.mailsettings.presentation.settings.privacy
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
@@ -40,6 +39,7 @@ import me.proton.core.compose.component.ProtonSettingsTopBar
 import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
+import me.proton.core.compose.theme.ProtonTheme
 
 @Composable
 fun PrivacySettingsScreen(
@@ -55,7 +55,8 @@ fun PrivacySettingsScreen(
                 onShowRemoteContent = viewModel::onAutoShowRemoteContentToggled,
                 onShowEmbeddedImages = viewModel::onAutoShowEmbeddedImagesToggled,
                 onRequestLinkConfirmation = viewModel::onConfirmLinkToggled,
-                onPreventScreenshots = viewModel::onPreventScreenshotsToggled
+                onPreventScreenshots = viewModel::onPreventScreenshotsToggled,
+                onAllowBackgroundSync = viewModel::onAllowBackgroundSyncToggled
             )
         )
     }
@@ -110,40 +111,36 @@ object PrivacySettingsScreen {
         val onShowRemoteContent: (Boolean) -> Unit,
         val onShowEmbeddedImages: (Boolean) -> Unit,
         val onPreventScreenshots: (Boolean) -> Unit,
-        val onRequestLinkConfirmation: (Boolean) -> Unit
+        val onRequestLinkConfirmation: (Boolean) -> Unit,
+        val onAllowBackgroundSync: (Boolean) -> Unit
     )
 }
 
-@Preview(
-    name = "Privacy settings screen light mode",
-    showBackground = true,
-    uiMode = Configuration.UI_MODE_NIGHT_NO
-)
-@Preview(
-    name = "Privacy settings screen dark mode",
-    showBackground = true,
-    uiMode = Configuration.UI_MODE_NIGHT_YES
-)
+@Preview
 @Composable
 private fun PrivacySettingsScreenPreview() {
-    PrivacySettingsScreen(
-        state = PrivacySettingsState.WithData(
-            PrivacySettings(
-                autoShowEmbeddedImages = false,
-                autoShowRemoteContent = false,
-                preventTakingScreenshots = false,
-                requestLinkConfirmation = false
+    ProtonTheme {
+        PrivacySettingsScreen(
+            state = PrivacySettingsState.WithData(
+                PrivacySettings(
+                    allowBackgroundSync = true,
+                    autoShowEmbeddedImages = false,
+                    autoShowRemoteContent = false,
+                    preventTakingScreenshots = false,
+                    requestLinkConfirmation = false
+                ),
+                updateSettingsError = Effect.empty()
             ),
-            updateSettingsError = Effect.empty()
-        ),
-        actions = PrivacySettingsScreen.Actions(
-            onBackClick = {},
-            onShowRemoteContent = {},
-            onShowEmbeddedImages = {},
-            onPreventScreenshots = {},
-            onRequestLinkConfirmation = {}
+            actions = PrivacySettingsScreen.Actions(
+                onBackClick = {},
+                onShowRemoteContent = {},
+                onShowEmbeddedImages = {},
+                onPreventScreenshots = {},
+                onRequestLinkConfirmation = {},
+                onAllowBackgroundSync = {}
+            )
         )
-    )
+    }
 }
 
 object PrivacySettingsTestTags {

@@ -46,7 +46,8 @@ internal class PrivacySettingsReducerTest(
             autoShowRemoteContent = false,
             autoShowEmbeddedImages = false,
             preventTakingScreenshots = false,
-            requestLinkConfirmation = false
+            requestLinkConfirmation = false,
+            allowBackgroundSync = false
         )
 
         private val transitionFromLoadingState = listOf(
@@ -92,6 +93,14 @@ internal class PrivacySettingsReducerTest(
                 event = PrivacySettingsEvent.Data.RequestLinkConfirmationChanged(newValue = true),
                 expectedState = PrivacySettingsState.WithData(
                     baseSettings.copy(requestLinkConfirmation = true),
+                    updateSettingsError = Effect.empty()
+                )
+            ),
+            TestInput(
+                currentState = PrivacySettingsState.WithData(baseSettings, updateSettingsError = Effect.empty()),
+                event = PrivacySettingsEvent.Data.AllowBackgroundSyncChanged(newValue = true),
+                expectedState = PrivacySettingsState.WithData(
+                    baseSettings.copy(allowBackgroundSync = true),
                     updateSettingsError = Effect.empty()
                 )
             )

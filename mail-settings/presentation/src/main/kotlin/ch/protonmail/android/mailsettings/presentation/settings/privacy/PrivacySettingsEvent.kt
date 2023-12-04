@@ -33,5 +33,6 @@ sealed interface PrivacySettingsEvent {
         data class AutoShowEmbeddedImagesChanged(val newValue: Boolean) : PrivacySettingsEvent
         data class RequestLinkConfirmationChanged(val newValue: Boolean) : PrivacySettingsEvent
         data class PreventScreenshotsChanged(val newValue: Boolean) : PrivacySettingsEvent
+        data class AllowBackgroundSyncChanged(val newValue: Boolean) : PrivacySettingsEvent
     }
 }

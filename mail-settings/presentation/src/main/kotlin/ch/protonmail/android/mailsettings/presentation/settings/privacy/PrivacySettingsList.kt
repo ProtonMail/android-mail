@@ -68,5 +68,14 @@ fun PrivacySettingsList(
                 onToggle = actions.onRequestLinkConfirmation
             )
         }
+        item { Divider() }
+        item {
+            SettingsToggleItem(
+                name = stringResource(id = R.string.mail_settings_privacy_background_sync),
+                hint = stringResource(id = R.string.mail_settings_privacy_background_sync_description),
+                value = state.settings.allowBackgroundSync,
+                onToggle = actions.onAllowBackgroundSync
+            )
+        }
     }
 }

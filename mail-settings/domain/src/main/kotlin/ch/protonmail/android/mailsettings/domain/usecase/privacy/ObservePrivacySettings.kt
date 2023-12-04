@@ -19,8 +19,6 @@
 package ch.protonmail.android.mailsettings.domain.usecase.privacy
 
 import arrow.core.Either
-import arrow.core.getOrElse
-import arrow.core.left
 import arrow.core.raise.either
 import ch.protonmail.android.mailcommon.domain.mapper.mapToEither
 import ch.protonmail.android.mailcommon.domain.model.DataError
@@ -35,21 +33,23 @@ import javax.inject.Inject
 
 class ObservePrivacySettings @Inject constructor(
     private val mailSettingsRepository: MailSettingsRepository,
-    private val observePreventScreenshotsSetting: ObservePreventScreenshotsSetting
+    private val observePreventScreenshotsSetting: ObservePreventScreenshotsSetting,
+    private val observeBackgroundSyncSetting: ObserveBackgroundSyncSetting
 ) {
 
     operator fun invoke(userId: UserId): Flow<Either<DataError, PrivacySettings>> {
         return combine(
             mailSettingsRepository.getMailSettingsFlow(userId, refresh = false).mapToEither(),
-            observePreventScreenshotsSetting()
-        ) { coreMailSettings, preventScreenshotSetting ->
+            observePreventScreenshotsSetting(),
+            observeBackgroundSyncSetting()
+        ) { coreMailSettings, preventScreenshotSetting, backgroundSyncSetting ->
             either {
                 val mailSettings = coreMailSettings.bind()
-                val preventScreenshots = preventScreenshotSetting.getOrElse {
-                    return@combine DataError.Local.NoDataCached.left()
-                }
+                val preventScreenshots = preventScreenshotSetting.getOrNull() ?: raise(DataError.Local.NoDataCached)
+                val backgroundSync = backgroundSyncSetting.getOrNull() ?: raise(DataError.Local.NoDataCached)
 
                 PrivacySettings(
+                    allowBackgroundSync = backgroundSync.isEnabled,
                     autoShowRemoteContent = mailSettings.showImages.isAutoShowRemoteContentEnabled,
                     autoShowEmbeddedImages = mailSettings.showImages.isAutoShowEmbeddedImages,
                     preventTakingScreenshots = preventScreenshots.isEnabled,

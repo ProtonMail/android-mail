@@ -22,6 +22,7 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
+import ch.protonmail.android.mailsettings.domain.model.BackgroundSyncPreference
 import ch.protonmail.android.mailsettings.domain.model.PreventScreenshotsPreference
 import ch.protonmail.android.mailsettings.domain.model.PrivacySettings
 import ch.protonmail.android.testdata.mailsettings.MailSettingsTestData
@@ -42,13 +43,15 @@ import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-internal class ObservePrivacySettingsTests {
+internal class ObservePrivacySettingsTest {
 
     private val mailSettingsRepository = mockk<MailSettingsRepository>()
     private val observePreventScreenshotsSetting = mockk<ObservePreventScreenshotsSetting>()
+    private val observeBackgroundSyncSetting = mockk<ObserveBackgroundSyncSetting>()
     private val observePrivacySettings = ObservePrivacySettings(
         mailSettingsRepository,
-        observePreventScreenshotsSetting
+        observePreventScreenshotsSetting,
+        observeBackgroundSyncSetting
     )
 
     @After
@@ -61,6 +64,7 @@ internal class ObservePrivacySettingsTests {
         // Given
         val expectedResult = DataError.Local.Unknown.left()
         expectValidPreventScreenshotsPreference()
+        expectValidBackgroundSyncPreference()
         coEvery { mailSettingsRepository.getMailSettingsFlow(any(), any()) } returns
             flowOf(DataResult.Error.Local("", mockk()))
 
@@ -77,6 +81,22 @@ internal class ObservePrivacySettingsTests {
         val expectedResult = DataError.Local.NoDataCached.left()
         expectValidMailSettingsPreference()
         coEvery { observePreventScreenshotsSetting() } returns flowOf(PreferencesError.left())
+        expectValidBackgroundSyncPreference()
+
+        // When
+        val result = observePrivacySettings(userId).first()
+
+        // Then
+        assertEquals(expectedResult, result)
+    }
+
+    @Test
+    fun `when background sync settings cannot be fetched, an error is returned`() = runTest {
+        // Given
+        val expectedResult = DataError.Local.NoDataCached.left()
+        expectValidMailSettingsPreference()
+        expectValidPreventScreenshotsPreference()
+        coEvery { observeBackgroundSyncSetting() } returns flowOf(PreferencesError.left())
 
         // When
         val result = observePrivacySettings(userId).first()
@@ -92,6 +112,7 @@ internal class ObservePrivacySettingsTests {
 
         expectValidMailSettingsPreference()
         expectValidPreventScreenshotsPreference()
+        expectValidBackgroundSyncPreference()
 
         // When
         val result = observePrivacySettings(userId).first()
@@ -109,6 +130,7 @@ internal class ObservePrivacySettingsTests {
 
             expectValidMailSettingsPreference(expectedMailSettings)
             expectValidPreventScreenshotsPreference()
+            expectValidBackgroundSyncPreference()
 
             // When
             val result = observePrivacySettings(userId).first()
@@ -127,6 +149,7 @@ internal class ObservePrivacySettingsTests {
 
             expectValidMailSettingsPreference(expectedMailSettings)
             expectValidPreventScreenshotsPreference()
+            expectValidBackgroundSyncPreference()
 
             // When
             val result = observePrivacySettings(userId).first()
@@ -147,6 +170,7 @@ internal class ObservePrivacySettingsTests {
 
             expectValidMailSettingsPreference(expectedMailSettings)
             expectValidPreventScreenshotsPreference()
+            expectValidBackgroundSyncPreference()
 
             // When
             val result = observePrivacySettings(userId).first()
@@ -170,6 +194,12 @@ internal class ObservePrivacySettingsTests {
         } returns flowOf(PreventScreenshotsPreference(true).right())
     }
 
+    private fun expectValidBackgroundSyncPreference() {
+        coEvery {
+            observeBackgroundSyncSetting()
+        } returns flowOf(BackgroundSyncPreference(true).right())
+    }
+
     private companion object {
 
         val userId = UserIdTestData.userId
@@ -181,7 +211,8 @@ internal class ObservePrivacySettingsTests {
             autoShowRemoteContent = true,
             autoShowEmbeddedImages = true,
             preventTakingScreenshots = true,
-            requestLinkConfirmation = true
+            requestLinkConfirmation = true,
+            allowBackgroundSync = true
         )
     }
 }

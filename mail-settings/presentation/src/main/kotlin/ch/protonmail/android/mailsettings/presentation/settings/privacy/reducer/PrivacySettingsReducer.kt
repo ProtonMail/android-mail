@@ -45,6 +45,9 @@ class PrivacySettingsReducer @Inject constructor() {
                 is PrivacySettingsEvent.Data.RequestLinkConfirmationChanged ->
                     copy(settings = settings.copy(requestLinkConfirmation = event.newValue))
 
+                is PrivacySettingsEvent.Data.AllowBackgroundSyncChanged ->
+                    copy(settings = settings.copy(allowBackgroundSync = event.newValue))
+
                 is PrivacySettingsEvent.Error ->
                     copy(updateSettingsError = Effect.of(Unit))
             }

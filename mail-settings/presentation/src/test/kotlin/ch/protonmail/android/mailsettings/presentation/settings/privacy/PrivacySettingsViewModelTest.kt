@@ -27,6 +27,7 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailsettings.domain.model.PrivacySettings
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.ObservePrivacySettings
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdateAutoShowEmbeddedImagesSetting
+import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdateBackgroundSyncSetting
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdateLinkConfirmationSetting
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdatePreventScreenshotsSetting
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdateShowRemoteContentSetting
@@ -61,6 +62,7 @@ internal class PrivacySettingsViewModelTest {
     private val updateAutoShowEmbeddedImagesSetting = mockk<UpdateAutoShowEmbeddedImagesSetting>()
     private val updatePreventScreenshotsSetting = mockk<UpdatePreventScreenshotsSetting>()
     private val updateLinkConfirmationSetting = mockk<UpdateLinkConfirmationSetting>()
+    private val updateBackgroundSyncSetting = mockk<UpdateBackgroundSyncSetting>()
     private val privacySettingsReducer = spyk<PrivacySettingsReducer>()
     private val viewModel: PrivacySettingsViewModel by lazy {
         PrivacySettingsViewModel(
@@ -70,6 +72,7 @@ internal class PrivacySettingsViewModelTest {
             updateAutoShowEmbeddedImagesSetting,
             updateLinkConfirmationSetting,
             updatePreventScreenshotsSetting,
+            updateBackgroundSyncSetting,
             privacySettingsReducer
         )
     }
@@ -219,6 +222,7 @@ internal class PrivacySettingsViewModelTest {
             updateAutoShowEmbeddedImagesSetting wasNot called
             updateLinkConfirmationSetting wasNot called
             updatePreventScreenshotsSetting wasNot called
+            updateBackgroundSyncSetting wasNot called
         }
     }
 
@@ -252,6 +256,7 @@ internal class PrivacySettingsViewModelTest {
             updateShowRemoteContentSettings wasNot called
             updateLinkConfirmationSetting wasNot called
             updatePreventScreenshotsSetting wasNot called
+            updateBackgroundSyncSetting wasNot called
         }
     }
 
@@ -285,6 +290,7 @@ internal class PrivacySettingsViewModelTest {
             updateShowRemoteContentSettings wasNot called
             updateAutoShowEmbeddedImagesSetting wasNot called
             updatePreventScreenshotsSetting wasNot called
+            updateBackgroundSyncSetting wasNot called
         }
     }
 
@@ -315,6 +321,41 @@ internal class PrivacySettingsViewModelTest {
         }
         confirmVerified(updatePreventScreenshotsSetting)
         verify {
+            updateShowRemoteContentSettings wasNot called
+            updateAutoShowEmbeddedImagesSetting wasNot called
+            updateLinkConfirmationSetting wasNot called
+            updateBackgroundSyncSetting wasNot called
+        }
+    }
+
+    @Test
+    fun `should call the correct use case and update state when allow background sync update is done`() = runTest {
+        // Given
+        expectValidSettingsLoaded()
+        val expectedFinalState = PrivacySettingsState.WithData(
+            basePrivacySettings.copy(allowBackgroundSync = true),
+            Effect.empty()
+        )
+        coEvery { updateBackgroundSyncSetting(true) } returns Unit.right()
+
+        // When
+        viewModel.state.test {
+            skipItems(1)
+
+            // When
+            viewModel.onAllowBackgroundSyncToggled(true)
+
+            // Then
+            assertEquals(expectedFinalState, awaitItem())
+        }
+
+        // Then
+        coVerify(exactly = 1) {
+            updateBackgroundSyncSetting(true)
+        }
+        confirmVerified(updateBackgroundSyncSetting)
+        verify {
+            updatePreventScreenshotsSetting wasNot called
             updateShowRemoteContentSettings wasNot called
             updateAutoShowEmbeddedImagesSetting wasNot called
             updateLinkConfirmationSetting wasNot called
@@ -354,7 +395,8 @@ internal class PrivacySettingsViewModelTest {
             autoShowRemoteContent = true,
             autoShowEmbeddedImages = true,
             preventTakingScreenshots = false,
-            requestLinkConfirmation = true
+            requestLinkConfirmation = true,
+            allowBackgroundSync = false
         )
     }
 }
