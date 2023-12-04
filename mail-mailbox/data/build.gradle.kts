@@ -46,6 +46,7 @@ dependencies {
     kapt(Dependencies.appAnnotationProcessors)
 
     implementation(Dependencies.moduleDataLibs)
+    implementation(Proton.Core.labelDomain)
 
     implementation(project(":mail-mailbox:domain"))
     implementation(project(":mail-common:data"))

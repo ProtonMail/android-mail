@@ -23,7 +23,13 @@ import ch.protonmail.android.mailmailbox.data.MailMailboxDataStoreProvider
 import ch.protonmail.android.mailmailbox.data.repository.OnboardingRepositoryImpl
 import ch.protonmail.android.mailmailbox.data.local.OnboardingLocalDataSource
 import ch.protonmail.android.mailmailbox.data.local.OnboardingLocalDataSourceImpl
+import ch.protonmail.android.mailmailbox.data.local.UnreadCountLocalDataSource
+import ch.protonmail.android.mailmailbox.data.local.UnreadCountLocalDataSourceImpl
+import ch.protonmail.android.mailmailbox.data.remote.UnreadCountRemoteDataSource
+import ch.protonmail.android.mailmailbox.data.remote.UnreadCountRemoteDataSourceImpl
+import ch.protonmail.android.mailmailbox.data.repository.UnreadCountRepositoryImpl
 import ch.protonmail.android.mailmailbox.domain.repository.OnboardingRepository
+import ch.protonmail.android.mailmailbox.domain.repository.UnreadCountRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -53,6 +59,18 @@ object MailboxModule {
         @Binds
         @Reusable
         fun bindsOnboardingRepository(impl: OnboardingRepositoryImpl): OnboardingRepository
+
+        @Binds
+        @Reusable
+        fun bindsUnreadCountRepository(impl: UnreadCountRepositoryImpl): UnreadCountRepository
+
+        @Binds
+        @Reusable
+        fun bindsUnreadCountRemoteDataSource(impl: UnreadCountRemoteDataSourceImpl): UnreadCountRemoteDataSource
+
+        @Binds
+        @Reusable
+        fun bindsUnreadCountLocalDataSource(impl: UnreadCountLocalDataSourceImpl): UnreadCountLocalDataSource
     }
 
 }
