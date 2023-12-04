@@ -19,11 +19,12 @@
 package ch.protonmail.android.mailmailbox.presentation.mailbox.model
 
 import androidx.compose.runtime.Immutable
+import ch.protonmail.android.mailcommon.presentation.compose.HyperlinkText
 
 @Immutable
 data class OnboardingUiModel(
     val illustrationId: Int,
     val headlineId: Int,
     val descriptionId: Int,
-    val hyperLinks: Map<String, String> = emptyMap()
+    val hyperLinks: List<HyperlinkText> = emptyList()
 )

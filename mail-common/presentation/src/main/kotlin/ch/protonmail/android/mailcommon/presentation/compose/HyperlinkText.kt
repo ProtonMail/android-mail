@@ -29,11 +29,13 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 
+data class HyperlinkText(val text: String, val url: String)
+
 @Composable
 fun HyperlinkText(
     modifier: Modifier = Modifier,
     fullText: String,
-    hyperLinks: Map<String, String>,
+    hyperLinks: List<HyperlinkText>,
     textStyle: TextStyle = TextStyle.Default,
     linkTextColor: Color = Color.Blue,
     linkTextFontWeight: FontWeight = FontWeight.Normal,
@@ -42,9 +44,9 @@ fun HyperlinkText(
     val annotatedString = buildAnnotatedString {
         append(fullText)
 
-        for ((key, value) in hyperLinks) {
-            val startIndex = fullText.indexOf(key)
-            val endIndex = startIndex + key.length
+        for (hyperlink in hyperLinks) {
+            val startIndex = fullText.indexOf(hyperlink.text)
+            val endIndex = startIndex + hyperlink.text.length
             addStyle(
                 style = SpanStyle(
                     color = linkTextColor,
@@ -57,7 +59,7 @@ fun HyperlinkText(
             )
             addStringAnnotation(
                 tag = "URL",
-                annotation = value,
+                annotation = hyperlink.url,
                 start = startIndex,
                 end = endIndex
             )

@@ -75,9 +75,11 @@ fun OnboardingScreen(actions: MailboxScreen.Actions) {
             illustrationId = R.drawable.illustration_onboarding_beta,
             headlineId = R.string.onboarding_headline_beta,
             descriptionId = R.string.onboarding_description_beta,
-            hyperLinks = mutableMapOf(
-                stringResource(R.string.onboarding_description_beta_learn_more)
-                    to stringResource(R.string.onboarding_description_beta_link)
+            hyperLinks = listOf(
+                HyperlinkText(
+                    text = stringResource(R.string.onboarding_description_beta_learn_more),
+                    url = stringResource(R.string.onboarding_description_beta_link)
+                )
             )
         ),
         OnboardingUiModel(
