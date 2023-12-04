@@ -24,32 +24,35 @@ import ch.protonmail.android.mailmailbox.data.repository.OnboardingRepositoryImp
 import ch.protonmail.android.mailmailbox.data.local.OnboardingLocalDataSource
 import ch.protonmail.android.mailmailbox.data.local.OnboardingLocalDataSourceImpl
 import ch.protonmail.android.mailmailbox.domain.repository.OnboardingRepository
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import dagger.Reusable
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-@Module
+@Module(includes = [MailboxModule.BindsModule::class])
 @InstallIn(SingletonComponent::class)
-object SettingsModule {
+object MailboxModule {
 
     @Provides
     @Singleton
-    fun provideDataStoreProvider(
-        @ApplicationContext context: Context
-    ): MailMailboxDataStoreProvider = MailMailboxDataStoreProvider(context)
+    fun provideDataStoreProvider(@ApplicationContext context: Context): MailMailboxDataStoreProvider =
+        MailMailboxDataStoreProvider(context)
 
-    @Provides
-    @Singleton
-    fun provideOnboardingLocalDataSource(
-        dataStoreProvider: MailMailboxDataStoreProvider
-    ): OnboardingLocalDataSource = OnboardingLocalDataSourceImpl(dataStoreProvider)
+    @Module
+    @InstallIn(SingletonComponent::class)
+    internal interface BindsModule {
 
-    @Provides
-    @Singleton
-    fun provideOnboardingRepository(
-        onboardingLocalDataSource: OnboardingLocalDataSource
-    ): OnboardingRepository = OnboardingRepositoryImpl(onboardingLocalDataSource)
+        @Binds
+        @Reusable
+        fun bindsOnboardingLocalDataSource(impl: OnboardingLocalDataSourceImpl): OnboardingLocalDataSource
+
+        @Binds
+        @Reusable
+        fun bindsOnboardingRepository(impl: OnboardingRepositoryImpl): OnboardingRepository
+    }
+
 }
