@@ -19,7 +19,6 @@
 package ch.protonmail.android.mailmessage.data.usecase
 
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
-import ch.protonmail.android.mailmessage.data.remote.resource.MessageResource
 import ch.protonmail.android.mailmessage.domain.model.Message
 import ch.protonmail.android.mailmessage.domain.repository.OutboxRepository
 import kotlinx.coroutines.flow.firstOrNull
@@ -34,7 +33,7 @@ class FilterDraftMessagesAlreadyInOutbox @Inject constructor(
     private val outboxRepository: OutboxRepository
 ) {
 
-    suspend operator fun invoke(userId: UserId, entities: List<MessageResource>): List<Message> {
+    suspend operator fun invoke(userId: UserId, entities: List<Message>): List<Message> {
         // Get outbox messages
         val outboxMessages = outboxRepository
             .observeAll(userId)
@@ -46,8 +45,8 @@ class FilterDraftMessagesAlreadyInOutbox @Inject constructor(
             entities
         } else {
             entities.filter { message ->
-                !(message.labelIds.contains(SystemLabelId.AllDrafts.labelId.id) && message.id in outboxMessages)
+                !(message.labelIds.contains(SystemLabelId.AllDrafts.labelId) && message.id in outboxMessages)
             }
-        }.map { it.toMessage(userId) }
+        }
     }
 }

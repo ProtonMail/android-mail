@@ -23,6 +23,9 @@ import ch.protonmail.android.mailmessage.domain.model.Message
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.usecase.DeleteSentDraftMessagesStatus
 import me.proton.core.domain.entity.UserId
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
+import me.proton.core.util.kotlin.CoroutineScopeProvider
 import javax.inject.Inject
 
 /**
@@ -30,7 +33,8 @@ import javax.inject.Inject
  * in the DraftSyncEntity table.
  */
 class DeleteSentMessagesFromOutbox @Inject constructor(
-    private val deleteSentDraftMessagesStatus: DeleteSentDraftMessagesStatus
+    private val deleteSentDraftMessagesStatus: DeleteSentDraftMessagesStatus,
+    private val scopeProvider: CoroutineScopeProvider
 ) {
 
     suspend operator fun invoke(userId: UserId, entities: List<Message>) {
@@ -39,9 +43,20 @@ class DeleteSentMessagesFromOutbox @Inject constructor(
             message.labelIds.contains(SystemLabelId.AllSent.labelId)
         }.map { MessageId(it.id) }
 
-        for (sentItemId in sentItemsToClear) {
-            deleteSentDraftMessagesStatus(userId, sentItemId)
+        if (sentItemsToClear.isNotEmpty()) {
+            scopeProvider.GlobalIOSupervisedScope.launch {
+                // We need to keep Sent messages in Outbox until the next event loop iteration in order to prevent
+                // pull to refresh updates overwriting the message label
+                delay(EVENT_LOOP_PERIOD_MS)
+                for (sentItemId in sentItemsToClear) {
+                    deleteSentDraftMessagesStatus(userId, sentItemId)
+                }
+            }
         }
+    }
+
+    companion object {
+        const val EVENT_LOOP_PERIOD_MS = 30_000L
     }
 }
 

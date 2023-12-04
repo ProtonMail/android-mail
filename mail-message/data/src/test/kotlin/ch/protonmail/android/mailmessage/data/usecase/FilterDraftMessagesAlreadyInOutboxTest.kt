@@ -20,7 +20,7 @@ package ch.protonmail.android.mailmessage.data.usecase
 
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
-import ch.protonmail.android.mailmessage.data.getMessageResource
+import ch.protonmail.android.mailmessage.data.getMessage
 import ch.protonmail.android.mailmessage.domain.repository.OutboxRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import io.mockk.coEvery
@@ -38,13 +38,13 @@ class FilterDraftMessagesAlreadyInOutboxTest {
     private val draftLabel = SystemLabelId.AllDrafts.labelId.id
     private val sentLabel = SystemLabelId.AllSent.labelId.id
     private val entities = listOf(
-        getMessageResource(
+        getMessage(
             id = MessageIdSample.Invoice.id, labelIds = listOf(allMailLabel, sentLabel)
         ),
-        getMessageResource(
+        getMessage(
             id = MessageIdSample.NewDraftWithSubjectAndBody.id, labelIds = listOf(allMailLabel, draftLabel)
         ),
-        getMessageResource(
+        getMessage(
             id = MessageIdSample.SepWeatherForecast.id, labelIds = listOf(allMailLabel, sentLabel)
         )
     )

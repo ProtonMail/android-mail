@@ -80,7 +80,10 @@ open class MessageEventListener @Inject constructor(
 
     override suspend fun onUpdate(config: EventManagerConfig, entities: List<MessageResource>) {
 
-        val messagesToUpsert = filterDraftMessagesAlreadyInOutbox(config.userId, entities)
+        val messagesToUpsert = filterDraftMessagesAlreadyInOutbox(
+            config.userId,
+            entities.map { it.toMessage(config.userId) }
+        )
 
         // Update local messages
         if (messagesToUpsert.isNotEmpty()) {
