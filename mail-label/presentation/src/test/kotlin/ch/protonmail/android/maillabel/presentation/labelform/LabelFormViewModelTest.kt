@@ -63,19 +63,14 @@ class LabelFormViewModelTest {
         isSaveEnabled = false,
         name = "",
         color = defaultTestLabel.color,
-        colorList = listOf(Color.Red),
-        close = Effect.empty(),
-        closeWithSave = Effect.empty()
+        colorList = listOf(Color.Red)
     )
     private val loadedUpdateState = LabelFormState.Data.Update(
         isSaveEnabled = true,
         name = defaultTestLabel.name,
         color = defaultTestLabel.color,
         colorList = listOf(Color.Red),
-        close = Effect.empty(),
-        closeWithSave = Effect.empty(),
-        labelId = defaultTestLabel.labelId,
-        closeWithDelete = Effect.empty()
+        labelId = defaultTestLabel.labelId
     )
 
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
