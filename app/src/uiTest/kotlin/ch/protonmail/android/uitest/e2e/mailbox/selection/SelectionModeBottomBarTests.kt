@@ -42,7 +42,6 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import io.mockk.mockk
 import me.proton.core.auth.domain.usecase.ValidateServerProof
-import org.junit.Ignore
 import org.junit.Test
 
 @RegressionTest
@@ -102,7 +101,6 @@ internal class SelectionModeBottomBarTests : MockedNetworkTest(
 
     @Test
     @TestId("216621/2, 216622")
-    @Ignore("To be enabled again when MAILANDR-957 is addressed.")
     fun testBottomBarDismissalWhenBackButtonIsPressed() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(

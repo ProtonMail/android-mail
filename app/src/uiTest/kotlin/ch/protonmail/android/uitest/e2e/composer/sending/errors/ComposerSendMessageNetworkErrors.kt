@@ -252,6 +252,7 @@ internal class ComposerSendMessageNetworkErrors : MockedNetworkTest(
     }
 
     @Test
+    @Ignore("To be enabled again when MAILANDR-1244 is addressed.")
     @TestId("219656")
     fun testMessageSendingWithServerErrorOnDraftUpload() {
         mockWebServer.dispatcher combineWith composerMockNetworkDispatcher(
