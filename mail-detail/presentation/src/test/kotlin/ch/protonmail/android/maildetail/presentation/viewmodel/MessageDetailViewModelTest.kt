@@ -267,7 +267,8 @@ class MessageDetailViewModelTest {
                 autoShowRemoteContent = false,
                 autoShowEmbeddedImages = false,
                 preventTakingScreenshots = false,
-                requestLinkConfirmation = false
+                requestLinkConfirmation = false,
+                allowBackgroundSync = false
             ).right()
         )
     }
@@ -913,7 +914,8 @@ class MessageDetailViewModelTest {
             autoShowRemoteContent = false,
             autoShowEmbeddedImages = false,
             preventTakingScreenshots = false,
-            requestLinkConfirmation = true
+            requestLinkConfirmation = true,
+            allowBackgroundSync = true
         )
         // given
         coEvery { observePrivacySettings(any()) } returns flowOf(privacySettings.right())
@@ -935,7 +937,8 @@ class MessageDetailViewModelTest {
             autoShowRemoteContent = false,
             autoShowEmbeddedImages = false,
             preventTakingScreenshots = false,
-            requestLinkConfirmation = true
+            requestLinkConfirmation = true,
+            allowBackgroundSync = true
         )
         coEvery { updateLinkConfirmationSetting(any()) } returns Unit.right()
         coEvery { observePrivacySettings(any()) } returns flowOf(initialPrivacySettings.right())

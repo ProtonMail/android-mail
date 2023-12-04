@@ -213,7 +213,8 @@ class ConversationDetailViewModelIntegrationTest {
                 autoShowRemoteContent = false,
                 autoShowEmbeddedImages = false,
                 preventTakingScreenshots = false,
-                requestLinkConfirmation = false
+                requestLinkConfirmation = false,
+                allowBackgroundSync = false
             ).right()
         )
     }
@@ -360,7 +361,8 @@ class ConversationDetailViewModelIntegrationTest {
             autoShowRemoteContent = false,
             autoShowEmbeddedImages = false,
             preventTakingScreenshots = false,
-            requestLinkConfirmation = true
+            requestLinkConfirmation = true,
+            allowBackgroundSync = false
         )
         coEvery { observePrivacySettings(userId) } returns flowOf(privacySettings.right())
 
@@ -384,7 +386,8 @@ class ConversationDetailViewModelIntegrationTest {
             autoShowRemoteContent = false,
             autoShowEmbeddedImages = false,
             preventTakingScreenshots = false,
-            requestLinkConfirmation = true
+            requestLinkConfirmation = true,
+            allowBackgroundSync = false
         )
         coEvery { observePrivacySettings(userId) } returns flowOf(initialPrivacySettings.right())
         coEvery { updateLinkConfirmationSetting(any()) } returns Unit.right()

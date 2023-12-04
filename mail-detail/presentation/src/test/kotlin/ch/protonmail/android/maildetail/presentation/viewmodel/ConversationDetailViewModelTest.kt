@@ -277,7 +277,8 @@ class ConversationDetailViewModelTest {
                 autoShowRemoteContent = false,
                 autoShowEmbeddedImages = false,
                 preventTakingScreenshots = false,
-                requestLinkConfirmation = false
+                requestLinkConfirmation = false,
+                allowBackgroundSync = false
             ).right()
         )
     }
