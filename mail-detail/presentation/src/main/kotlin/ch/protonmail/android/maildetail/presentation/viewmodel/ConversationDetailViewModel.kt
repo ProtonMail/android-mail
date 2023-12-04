@@ -34,6 +34,8 @@ import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
+import ch.protonmail.android.mailconversation.domain.entity.ConversationLabel
+import ch.protonmail.android.mailconversation.domain.usecase.DeleteConversations
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
 import ch.protonmail.android.mailconversation.domain.usecase.StarConversations
 import ch.protonmail.android.mailconversation.domain.usecase.UnStarConversations
@@ -138,6 +140,7 @@ class ConversationDetailViewModel @Inject constructor(
     private val conversationMetadataMapper: ConversationDetailMetadataUiModelMapper,
     private val markConversationAsUnread: MarkConversationAsUnread,
     private val moveConversation: MoveConversation,
+    private val deleteConversations: DeleteConversations,
     private val relabelConversation: RelabelConversation,
     private val observeContacts: ObserveContacts,
     private val observeConversation: ObserveConversation,
@@ -189,7 +192,7 @@ class ConversationDetailViewModel @Inject constructor(
             is Trash -> moveConversationToTrash()
             is ConversationDetailViewAction.DeleteRequested -> handleDeleteConversationRequested(action)
             is ConversationDetailViewAction.DeleteDialogDismissed -> handleDeleteDialogDismissed(action)
-            is ConversationDetailViewAction.DeleteConfirmed -> handleDeleteConfirmed()
+            is ConversationDetailViewAction.DeleteConfirmed -> handleDeleteConfirmed(action)
             is DismissBottomSheet -> dismissBottomSheet(action)
             is RequestMoveToBottomSheet -> showMoveToBottomSheetAndLoadData(action)
             is MoveToDestinationSelected -> moveToDestinationSelected(action.mailLabelId)
@@ -606,8 +609,28 @@ class ConversationDetailViewModel @Inject constructor(
         viewModelScope.launch { emitNewStateFrom(action) }
     }
 
-    private fun handleDeleteConfirmed() {
-        Timber.d("Not yet implemented")
+    private fun handleDeleteConfirmed(action: ConversationDetailViewAction) {
+        viewModelScope.launch {
+            val userId = primaryUserId.first()
+            val conversation = observeConversation(userId, conversationId, false).first().getOrNull()
+            if (conversation == null) {
+                Timber.e("Failed to get conversation for deletion")
+                emitNewStateFrom(ConversationDetailEvent.ErrorDeletingConversation)
+                return@launch
+            }
+
+            val currentDeletableLabel = conversation.labels.firstOrNull { isDeletable(it) }
+
+            if (currentDeletableLabel == null) {
+                Timber.e("Failed to delete conversation: no applicable folder")
+                emitNewStateFrom(ConversationDetailEvent.ErrorDeletingNoApplicableFolder)
+                return@launch
+            } else {
+                emitNewStateFrom(action)
+                deleteConversations(userId, listOf(conversationId), currentDeletableLabel.labelId)
+            }
+
+        }
     }
 
     private fun dismissBottomSheet(action: ConversationDetailViewAction) {
@@ -645,7 +668,11 @@ class ConversationDetailViewModel @Inject constructor(
             getDecryptedMessageBody(primaryUserId.first(), domainMsgId)
                 .onRight {
                     observeAttachments(messageId, it.attachments)
-                    markMessageAndConversationReadIfAllMessagesRead(primaryUserId.first(), domainMsgId, conversationId)
+                    markMessageAndConversationReadIfAllMessagesRead(
+                        primaryUserId.first(),
+                        domainMsgId,
+                        conversationId
+                    )
                     setMessageViewState.expanded(domainMsgId, it)
                 }
                 .onLeft {
@@ -676,7 +703,10 @@ class ConversationDetailViewModel @Inject constructor(
         viewModelScope.launch { emitNewStateFrom(action) }
     }
 
-    private suspend fun emitMessageBodyDecryptError(error: GetDecryptedMessageBodyError, messageId: MessageIdUiModel) {
+    private suspend fun emitMessageBodyDecryptError(
+        error: GetDecryptedMessageBodyError,
+        messageId: MessageIdUiModel
+    ) {
         val errorState = when (error) {
             is GetDecryptedMessageBodyError.Data -> if (error.dataError.isOfflineError()) {
                 ConversationDetailEvent.ErrorExpandingRetrievingMessageOffline(messageId)
@@ -768,6 +798,9 @@ class ConversationDetailViewModel @Inject constructor(
         val initialState = ConversationDetailState.Loading
     }
 }
+
+private fun isDeletable(it: ConversationLabel) =
+    it.labelId == SystemLabelId.Trash.labelId || it.labelId == SystemLabelId.Spam.labelId
 
 /**
  * Filters [DataError.Local] from messages flow, as we don't want to show them to the user, because the fetch is being

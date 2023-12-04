@@ -43,6 +43,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontact.domain.model.GetContactError
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
+import ch.protonmail.android.mailconversation.domain.usecase.DeleteConversations
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
 import ch.protonmail.android.mailconversation.domain.usecase.StarConversations
 import ch.protonmail.android.mailconversation.domain.usecase.UnStarConversations
@@ -191,6 +192,7 @@ class ConversationDetailViewModelTest {
     private val markConversationAsUnread: MarkConversationAsUnread = mockk()
     private val move: MoveConversation = mockk()
     private val relabelConversation: RelabelConversation = mockk()
+    private val deleteConversations: DeleteConversations = mockk()
     private val observeContacts: ObserveContacts = mockk {
         every { this@mockk(userId = UserIdSample.Primary) } returns flowOf(emptyList<Contact>().right())
     }
@@ -296,6 +298,7 @@ class ConversationDetailViewModelTest {
             conversationMetadataMapper = conversationMetadataMapper,
             markConversationAsUnread = markConversationAsUnread,
             moveConversation = move,
+            deleteConversations = deleteConversations,
             relabelConversation = relabelConversation,
             observeContacts = observeContacts,
             observeConversation = observeConversation,

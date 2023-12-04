@@ -33,6 +33,7 @@ import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
+import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailcommon.domain.sample.LabelSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcommon.domain.usecase.GetCurrentEpochTimeDuration
@@ -49,7 +50,9 @@ import ch.protonmail.android.mailcommon.presentation.usecase.FormatExtendedTime
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatShortTime
 import ch.protonmail.android.mailcommon.presentation.usecase.GetInitial
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
+import ch.protonmail.android.mailconversation.domain.sample.ConversationLabelSample
 import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
+import ch.protonmail.android.mailconversation.domain.usecase.DeleteConversations
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
 import ch.protonmail.android.mailconversation.domain.usecase.StarConversations
 import ch.protonmail.android.mailconversation.domain.usecase.UnStarConversations
@@ -129,6 +132,7 @@ import ch.protonmail.android.testdata.maillabel.MailLabelTestData
 import ch.protonmail.android.testdata.message.MessageAttachmentMetadataTestData
 import io.mockk.Called
 import io.mockk.coEvery
+import io.mockk.coJustRun
 import io.mockk.coVerify
 import io.mockk.coVerifyOrder
 import io.mockk.every
@@ -237,6 +241,7 @@ class ConversationDetailViewModelIntegrationTest {
     private val markConversationAsUnread: MarkConversationAsUnread = mockk()
     private val move: MoveConversation = mockk()
     private val relabelConversation: RelabelConversation = mockk()
+    private val deleteConversations: DeleteConversations = mockk()
     private val savedStateHandle: SavedStateHandle = mockk {
         every { get<String>(ConversationDetailScreen.ConversationIdKey) } returns conversationId.id
     }
@@ -1038,6 +1043,65 @@ class ConversationDetailViewModelIntegrationTest {
         )
     }
 
+    @Test
+    fun `verify delete is executed when delete confirmed is called`() = runTest {
+        // Given
+        val expectedMessage = TextUiModel(R.string.conversation_deleted)
+        coEvery {
+            observeConversationUseCase(userId, conversationId, false)
+        } returns flowOf(
+            ConversationSample.WeatherForecast.copy(
+                labels = listOf(ConversationLabelSample.build(labelId = LabelIdSample.Trash))
+            ).right()
+        )
+        coJustRun { deleteConversations(userId, listOf(conversationId), LabelIdSample.Trash) }
+
+        val viewModel = buildConversationDetailViewModel()
+
+        // When
+        viewModel.submit(ConversationDetailViewAction.DeleteConfirmed)
+        advanceUntilIdle()
+
+        // Then
+        coVerify { deleteConversations(userId, listOf(conversationId), LabelIdSample.Trash) }
+        assertEquals(expectedMessage, viewModel.state.value.exitScreenWithMessageEffect.consume())
+    }
+
+    @Test
+    fun `verify error is shown when getting conversation fails`() = runTest {
+        // Given
+        val expectedMessage = TextUiModel(R.string.error_delete_conversation_failed)
+        coEvery {
+            observeConversationUseCase(userId, conversationId, false)
+        } returns flowOf(DataError.Local.NoDataCached.left())
+
+        val viewModel = buildConversationDetailViewModel()
+
+        // When
+        viewModel.submit(ConversationDetailViewAction.DeleteConfirmed)
+        advanceUntilIdle()
+
+        // Then
+        coVerify { deleteConversations wasNot Called }
+        assertEquals(expectedMessage, viewModel.state.value.error.consume())
+    }
+
+    @Test
+    fun `verify error is shown when conversation is in wrong location `() = runTest {
+        // Given
+        val expectedMessage = TextUiModel(R.string.error_delete_conversation_failed_wrong_folder)
+
+        val viewModel = buildConversationDetailViewModel()
+
+        // When
+        viewModel.submit(ConversationDetailViewAction.DeleteConfirmed)
+        advanceUntilIdle()
+
+        // Then
+        coVerify { deleteConversations wasNot Called }
+        assertEquals(expectedMessage, viewModel.state.value.error.consume())
+    }
+
     private fun mockAttachmentDownload(
         messages: NonEmptyList<MessageWithLabels>,
         expandedMessageId: MessageId,
@@ -1157,6 +1221,7 @@ class ConversationDetailViewModelIntegrationTest {
         unread: MarkConversationAsUnread = markConversationAsUnread,
         moveConversation: MoveConversation = move,
         relabel: RelabelConversation = relabelConversation,
+        delete: DeleteConversations = deleteConversations,
         contacts: ObserveContacts = observeContacts,
         observeConversation: ObserveConversation = observeConversationUseCase,
         observeConversationMessages: ObserveConversationMessagesWithLabels = observeConversationMessagesWithLabels,
@@ -1182,6 +1247,7 @@ class ConversationDetailViewModelIntegrationTest {
         conversationMetadataMapper = metadataMapper,
         markConversationAsUnread = unread,
         moveConversation = moveConversation,
+        deleteConversations = delete,
         relabelConversation = relabel,
         observeContacts = contacts,
         observeConversation = observeConversation,

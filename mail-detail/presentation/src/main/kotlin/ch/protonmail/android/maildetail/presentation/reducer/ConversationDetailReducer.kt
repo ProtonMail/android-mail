@@ -168,6 +168,8 @@ class ConversationDetailReducer @Inject constructor(
             false -> exitScreenWithMessageEffect
         }
 
+        is ConversationDetailViewAction.DeleteConfirmed -> Effect.of(TextUiModel(R.string.conversation_deleted))
+
         else -> exitScreenWithMessageEffect
     }
 

@@ -176,7 +176,11 @@ class ConversationDetailReducerTest(
                 MessageIdUiModel(
                     UUID.randomUUID().toString()
                 )
-            ) affects MessageScroll
+            ) affects MessageScroll,
+            ConversationDetailViewAction.DeleteConfirmed affects listOf(
+                DeleteDialog,
+                ExitWithMessage(TextUiModel(string.conversation_deleted))
+            )
         )
 
         val events = listOf(
