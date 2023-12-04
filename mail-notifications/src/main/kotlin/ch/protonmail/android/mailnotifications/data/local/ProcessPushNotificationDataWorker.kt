@@ -40,8 +40,10 @@ import ch.protonmail.android.mailnotifications.domain.usecase.ProcessNewLoginPus
 import ch.protonmail.android.mailnotifications.domain.usecase.ProcessNewMessagePushNotification
 import ch.protonmail.android.mailnotifications.domain.usecase.content.DecryptNotificationContent
 import ch.protonmail.android.mailsettings.domain.usecase.notifications.GetExtendedNotificationsSetting
+import ch.protonmail.android.mailsettings.domain.usecase.privacy.ObserveBackgroundSyncSetting
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.flow.first
 import me.proton.core.accountmanager.domain.SessionManager
 import me.proton.core.domain.entity.UserId
 import me.proton.core.network.domain.session.SessionId
@@ -57,6 +59,7 @@ internal class ProcessPushNotificationDataWorker @AssistedInject constructor(
     private val appInBackgroundState: AppInBackgroundState,
     private val userManager: UserManager,
     private val getNotificationsExtendedPreference: GetExtendedNotificationsSetting,
+    private val observeBackgroundSyncSetting: ObserveBackgroundSyncSetting,
     private val processNewMessagePushNotification: ProcessNewMessagePushNotification,
     private val processNewLoginPushNotification: ProcessNewLoginPushNotification,
     private val processMessageReadPushNotification: ProcessMessageReadPushNotification
@@ -98,9 +101,12 @@ internal class ProcessPushNotificationDataWorker @AssistedInject constructor(
 
         Timber.d("Decrypted data: $decryptedNotification")
 
+        val hasBackgroundSyncEnabled = observeBackgroundSyncSetting().first().getOrNull()?.isEnabled ?: true
+
         return when {
             isNewMessageNotification(decryptedNotification.value) &&
-                appInBackgroundState.isAppInBackground() -> {
+                appInBackgroundState.isAppInBackground() &&
+                hasBackgroundSyncEnabled -> {
                 val notificationData = data.toLocalEmailNotificationData(context, userId.id, user.email ?: "")
                 processNewMessagePushNotification(notificationData)
             }

@@ -34,8 +34,10 @@ import ch.protonmail.android.mailnotifications.domain.usecase.ProcessMessageRead
 import ch.protonmail.android.mailnotifications.domain.usecase.ProcessNewLoginPushNotification
 import ch.protonmail.android.mailnotifications.domain.usecase.ProcessNewMessagePushNotification
 import ch.protonmail.android.mailnotifications.domain.usecase.content.DecryptNotificationContent
+import ch.protonmail.android.mailsettings.domain.model.BackgroundSyncPreference
 import ch.protonmail.android.mailsettings.domain.model.ExtendedNotificationPreference
 import ch.protonmail.android.mailsettings.domain.usecase.notifications.GetExtendedNotificationsSetting
+import ch.protonmail.android.mailsettings.domain.usecase.privacy.ObserveBackgroundSyncSetting
 import ch.protonmail.android.test.annotations.suite.SmokeTest
 import io.mockk.called
 import io.mockk.coEvery
@@ -43,6 +45,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
 import io.mockk.verify
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.accountmanager.domain.SessionManager
 import me.proton.core.user.domain.UserManager
@@ -60,6 +63,7 @@ internal class ProcessPushNotificationDataWorkerNewMessageTest {
     private val appInBackgroundState = mockk<AppInBackgroundState>()
     private val userManager = mockk<UserManager>()
     private val getNotificationsExtendedPreference = mockk<GetExtendedNotificationsSetting>()
+    private val observeBackgroundSyncSetting = mockk<ObserveBackgroundSyncSetting>()
     private val processNewMessagePushNotification = mockk<ProcessNewMessagePushNotification>(relaxUnitFun = true)
     private val processNewLoginPushNotification = mockk<ProcessNewLoginPushNotification>(relaxUnitFun = true)
     private val processMessageReadPushNotification = mockk<ProcessMessageReadPushNotification>(relaxUnitFun = true)
@@ -82,6 +86,7 @@ internal class ProcessPushNotificationDataWorkerNewMessageTest {
         appInBackgroundState,
         userManager,
         getNotificationsExtendedPreference,
+        observeBackgroundSyncSetting,
         processNewMessagePushNotification,
         processNewLoginPushNotification,
         processMessageReadPushNotification
@@ -159,7 +164,28 @@ internal class ProcessPushNotificationDataWorkerNewMessageTest {
         assertEquals(ListenableWorker.Result.success(), result)
     }
 
-    private fun prepareSharedMocks(isAppInBackground: Boolean, hasNotificationsExtended: Boolean = true) {
+    @Test
+    fun newMessageNotificationIsNotShownWhenBackgroundSyncIsDisabled() = runTest {
+        // Given
+        prepareSharedMocks(isAppInBackground = true, hasBackgroundSyncEnabled = false)
+
+        // When
+        val result = worker.doWork()
+
+        // Then
+        verify {
+            processNewLoginPushNotification wasNot called
+            processNewMessagePushNotification wasNot called
+            processMessageReadPushNotification wasNot called
+        }
+        assertEquals(ListenableWorker.Result.success(), result)
+    }
+
+    private fun prepareSharedMocks(
+        isAppInBackground: Boolean,
+        hasNotificationsExtended: Boolean = true,
+        hasBackgroundSyncEnabled: Boolean = true
+    ) {
         coEvery { sessionManager.getUserId(any()) } returns userId
         coEvery { decryptNotificationContent(any(), any()) } returns baseNewMessageNotification
         coEvery { userManager.getUser(any()) } returns UserSample.Primary
@@ -167,6 +193,9 @@ internal class ProcessPushNotificationDataWorkerNewMessageTest {
         coEvery {
             getNotificationsExtendedPreference()
         } returns ExtendedNotificationPreference(hasNotificationsExtended).right()
+        coEvery {
+            observeBackgroundSyncSetting()
+        } returns flowOf(BackgroundSyncPreference(hasBackgroundSyncEnabled).right())
         every { processMessageReadPushNotification.invoke(any()) } returns ListenableWorker.Result.success()
         every { processNewMessagePushNotification.invoke(any()) } returns ListenableWorker.Result.success()
     }

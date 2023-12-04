@@ -31,11 +31,14 @@ import ch.protonmail.android.mailnotifications.domain.usecase.ProcessMessageRead
 import ch.protonmail.android.mailnotifications.domain.usecase.ProcessNewLoginPushNotification
 import ch.protonmail.android.mailnotifications.domain.usecase.ProcessNewMessagePushNotification
 import ch.protonmail.android.mailnotifications.domain.usecase.content.DecryptNotificationContent
+import ch.protonmail.android.mailsettings.domain.model.BackgroundSyncPreference
 import ch.protonmail.android.mailsettings.domain.usecase.notifications.GetExtendedNotificationsSetting
+import ch.protonmail.android.mailsettings.domain.usecase.privacy.ObserveBackgroundSyncSetting
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.accountmanager.domain.SessionManager
 import me.proton.core.network.domain.session.SessionId
@@ -53,6 +56,7 @@ internal class ProcessPushNotificationDataWorkerParsingTest {
     private val userManager = mockk<UserManager>()
     private val getExtendedNotificationsSetting = mockk<GetExtendedNotificationsSetting>()
     private val processNewMessagePushNotification = mockk<ProcessNewMessagePushNotification>()
+    private val observeBackgroundSyncSetting = mockk<ObserveBackgroundSyncSetting>()
     private val processNewLoginPushNotification = mockk<ProcessNewLoginPushNotification>()
     private val processMessageReadPushNotification = mockk<ProcessMessageReadPushNotification>()
 
@@ -79,6 +83,7 @@ internal class ProcessPushNotificationDataWorkerParsingTest {
         appInBackgroundState,
         userManager,
         getExtendedNotificationsSetting,
+        observeBackgroundSyncSetting,
         processNewMessagePushNotification,
         processNewLoginPushNotification,
         processMessageReadPushNotification
@@ -135,6 +140,7 @@ internal class ProcessPushNotificationDataWorkerParsingTest {
     fun `unknown notification type does not create a new notification but returns a success`() = runTest {
         // Given
         coEvery { sessionManager.getUserId(sessionId) } returns userId
+        coEvery { observeBackgroundSyncSetting() } returns flowOf(BackgroundSyncPreference(true).right())
         coEvery {
             decryptNotificationContent(userId, RawNotification)
         } returns DecryptNotificationContent.DecryptedNotification(

@@ -35,7 +35,9 @@ import ch.protonmail.android.mailnotifications.domain.usecase.ProcessMessageRead
 import ch.protonmail.android.mailnotifications.domain.usecase.ProcessNewLoginPushNotification
 import ch.protonmail.android.mailnotifications.domain.usecase.ProcessNewMessagePushNotification
 import ch.protonmail.android.mailnotifications.domain.usecase.content.DecryptNotificationContent
+import ch.protonmail.android.mailsettings.domain.model.BackgroundSyncPreference
 import ch.protonmail.android.mailsettings.domain.usecase.notifications.GetExtendedNotificationsSetting
+import ch.protonmail.android.mailsettings.domain.usecase.privacy.ObserveBackgroundSyncSetting
 import ch.protonmail.android.test.annotations.suite.SmokeTest
 import io.mockk.coEvery
 import io.mockk.confirmVerified
@@ -44,6 +46,7 @@ import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.unmockkAll
 import io.mockk.verify
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.accountmanager.domain.SessionManager
 import me.proton.core.user.domain.UserManager
@@ -62,6 +65,7 @@ class ProcessPushNotificationDataWorkerLoginTest {
     private val appInBackgroundState = mockk<AppInBackgroundState>()
     private val userManager = mockk<UserManager>()
     private val getNotificationsExtendedPreference = mockk<GetExtendedNotificationsSetting>()
+    private val observeBackgroundSyncSetting = mockk<ObserveBackgroundSyncSetting>()
     private val processNewMessagePushNotification = mockk<ProcessNewMessagePushNotification>(relaxUnitFun = true)
     private val processNewLoginPushNotification = mockk<ProcessNewLoginPushNotification>(relaxUnitFun = true)
     private val processMessageReadPushNotification = mockk<ProcessMessageReadPushNotification>(relaxUnitFun = true)
@@ -84,6 +88,7 @@ class ProcessPushNotificationDataWorkerLoginTest {
         appInBackgroundState,
         userManager,
         getNotificationsExtendedPreference,
+        observeBackgroundSyncSetting,
         processNewMessagePushNotification,
         processNewLoginPushNotification,
         processMessageReadPushNotification
@@ -145,11 +150,35 @@ class ProcessPushNotificationDataWorkerLoginTest {
         assertEquals(ListenableWorker.Result.success(), result)
     }
 
-    private fun prepareSharedMocks(isAppInBackground: Boolean) {
+    @Test
+    fun newLoginNotificationDataCreatesNewPushNotificationWhenAppIsInForegroundAndBackgroundSyncIsDisabled() = runTest {
+        // Given
+        prepareSharedMocks(isAppInBackground = false, hasBackgroundSyncEnabled = false)
+
+        val userData = UserPushData("primary", "primary-email@pm.me")
+        val pushData = NewLoginPushData("Proton Mail", "New login attempt", "")
+        val loginNotification = LocalPushNotificationData.Login(userData, pushData)
+
+        // When
+        val result = worker.doWork()
+
+        // Then
+        verify(exactly = 1) {
+            processNewLoginPushNotification.invoke(loginNotification)
+        }
+
+        confirmVerified(processNewLoginPushNotification)
+        assertEquals(ListenableWorker.Result.success(), result)
+    }
+
+    private fun prepareSharedMocks(isAppInBackground: Boolean, hasBackgroundSyncEnabled: Boolean = true) {
         coEvery { sessionManager.getUserId(any()) } returns userId
         coEvery { decryptNotificationContent(any(), any()) } returns baseLoginNotification
         coEvery { userManager.getUser(any()) } returns UserSample.Primary
         coEvery { appInBackgroundState.isAppInBackground() } returns isAppInBackground
+        coEvery {
+            observeBackgroundSyncSetting()
+        } returns flowOf(BackgroundSyncPreference(hasBackgroundSyncEnabled).right())
         every { processNewLoginPushNotification.invoke(any()) } returns ListenableWorker.Result.success()
         every { Instant.now() } returns mockk { every { epochSecond } returns 123 }
     }
