@@ -290,6 +290,14 @@ fun Home(
                                 type = ProtonSnackbarType.SUCCESS
                             )
                         }
+                    },
+                    showErrorSnackbar = { message ->
+                        scope.launch {
+                            snackbarHostNormState.showSnackbar(
+                                message = message,
+                                type = ProtonSnackbarType.ERROR
+                            )
+                        }
                     }
                 )
                 // settings

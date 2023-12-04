@@ -43,6 +43,7 @@ class FolderFormReducer @Inject constructor() {
             FolderFormEvent.FolderLimitReached -> reduceFolderLimitReached(currentState)
             FolderFormEvent.SaveFolderError -> reduceSaveFolderError(currentState)
             FolderFormEvent.CloseFolderForm -> reduceCloseFolderForm(currentState)
+            FolderFormEvent.LoadFolderError -> reduceLoadFolderError()
         }
     }
 
@@ -181,4 +182,7 @@ class FolderFormReducer @Inject constructor() {
             is FolderFormState.Loading -> currentState
         }
     }
+
+    private fun reduceLoadFolderError() =
+        FolderFormState.Loading(errorLoading = Effect.of(TextUiModel(R.string.folder_loading_error)))
 }

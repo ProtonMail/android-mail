@@ -273,7 +273,8 @@ internal fun NavGraphBuilder.addFolderList(
 @SuppressWarnings("LongParameterList")
 internal fun NavGraphBuilder.addFolderForm(
     navController: NavHostController,
-    showSuccessSnackbar: (message: String) -> Unit
+    showSuccessSnackbar: (message: String) -> Unit,
+    showErrorSnackbar: (message: String) -> Unit
 ) {
     val actions = FolderFormScreen.Actions.Empty.copy(
         onBackClick = {
@@ -283,6 +284,10 @@ internal fun NavGraphBuilder.addFolderForm(
         exitWithSuccessMessage = { message ->
             navController.popBackStack()
             showSuccessSnackbar(message)
+        },
+        exitWithErrorMessage = { message ->
+            navController.popBackStack()
+            showErrorSnackbar(message)
         }
     )
     composable(route = Destination.Screen.CreateFolder.route) { FolderFormScreen(actions) }

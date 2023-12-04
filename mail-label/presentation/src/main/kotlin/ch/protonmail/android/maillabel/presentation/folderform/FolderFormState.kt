@@ -31,7 +31,8 @@ sealed interface FolderFormState {
 
     data class Loading(
         override val close: Effect<Unit> = Effect.empty(),
-        override val isSaveEnabled: Boolean = false
+        override val isSaveEnabled: Boolean = false,
+        val errorLoading: Effect<TextUiModel> = Effect.empty()
     ) : FolderFormState
 
     sealed interface Data : FolderFormState {

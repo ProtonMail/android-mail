@@ -76,31 +76,30 @@ class FolderFormViewModel @Inject constructor(
             }
             val folderColorSettings = observeFolderColorSettings(primaryUserId()).filterNotNull().first()
             if (labelId != null) {
-                getLabel(
+                val label = getLabel(
                     userId = primaryUserId(),
                     labelId = LabelId(labelId),
                     labelType = LabelType.MessageFolder
-                ).getOrNull()?.let { label ->
-                    val parent = label.parentId?.let { parentId ->
-                        getLabel(
-                            userId = primaryUserId(),
-                            labelId = parentId,
-                            labelType = LabelType.MessageFolder
-                        ).getOrNull()
-                    }
-                    emitNewStateFor(
-                        FolderFormEvent.FolderLoaded(
-                            labelId = label.labelId,
-                            name = label.name,
-                            color = label.color,
-                            parent = parent,
-                            notifications = label.isNotified ?: true,
-                            colorList = colors,
-                            useFolderColor = folderColorSettings.useFolderColor,
-                            inheritParentFolderColor = folderColorSettings.inheritParentFolderColor
-                        )
-                    )
+                ).getOrNull() ?: return@launch emitNewStateFor(FolderFormEvent.LoadFolderError)
+                val parent = label.parentId?.let { parentId ->
+                    getLabel(
+                        userId = primaryUserId(),
+                        labelId = parentId,
+                        labelType = LabelType.MessageFolder
+                    ).getOrNull() ?: return@launch emitNewStateFor(FolderFormEvent.LoadFolderError)
                 }
+                emitNewStateFor(
+                    FolderFormEvent.FolderLoaded(
+                        labelId = label.labelId,
+                        name = label.name,
+                        color = label.color,
+                        parent = parent,
+                        notifications = label.isNotified ?: true,
+                        colorList = colors,
+                        useFolderColor = folderColorSettings.useFolderColor,
+                        inheritParentFolderColor = folderColorSettings.inheritParentFolderColor
+                    )
+                )
             } else {
                 emitNewStateFor(
                     FolderFormEvent.FolderLoaded(

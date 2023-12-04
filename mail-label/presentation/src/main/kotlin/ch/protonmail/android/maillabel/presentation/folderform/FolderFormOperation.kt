@@ -62,6 +62,7 @@ sealed interface FolderFormEvent : FolderFormOperation {
     object FolderDeleted : FolderFormEvent
     object FolderAlreadyExists : FolderFormEvent
     object FolderLimitReached : FolderFormEvent
+    object LoadFolderError : FolderFormEvent
     object SaveFolderError : FolderFormEvent
     object CloseFolderForm : FolderFormEvent
 }

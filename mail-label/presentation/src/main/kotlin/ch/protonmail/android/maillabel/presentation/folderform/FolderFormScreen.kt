@@ -136,6 +136,10 @@ fun FolderFormScreen(actions: FolderFormScreen.Actions, viewModel: FolderFormVie
                             .padding(paddingValues)
                             .fillMaxSize()
                     )
+
+                    ConsumableTextEffect(effect = state.errorLoading) { message ->
+                        actions.exitWithErrorMessage(message)
+                    }
                 }
             }
         },
@@ -282,6 +286,7 @@ object FolderFormScreen {
     data class Actions(
         val onBackClick: () -> Unit,
         val exitWithSuccessMessage: (String) -> Unit,
+        val exitWithErrorMessage: (String) -> Unit,
         val onFolderNameChanged: (String) -> Unit,
         val onFolderColorChanged: (Color) -> Unit,
         val onFolderNotificationsChanged: (Boolean) -> Unit,
@@ -295,6 +300,7 @@ object FolderFormScreen {
             val Empty = Actions(
                 onBackClick = {},
                 exitWithSuccessMessage = {},
+                exitWithErrorMessage = {},
                 onFolderNameChanged = {},
                 onFolderColorChanged = {},
                 onFolderNotificationsChanged = {},
