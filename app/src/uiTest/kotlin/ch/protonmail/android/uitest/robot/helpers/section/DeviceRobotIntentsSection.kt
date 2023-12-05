@@ -52,7 +52,7 @@ internal class DeviceRobotIntentsSection : ComposeSectionRobot() {
         fun actionViewIntentWasLaunched(
             times: Int = 1,
             mimeType: String? = null,
-            timeout: Long = 5000L
+            timeout: Long = 10_000L
         ) {
             composeTestRule.waitUntil(timeout) {
                 runCatching {

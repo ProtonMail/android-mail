@@ -65,6 +65,8 @@ internal class MessageFooterAttachmentSection : ComposeSectionRobot() {
 
     init {
         scrollTo()
+        // If the section is expanding in a conversation detail, tapping via interactors might fail.
+        composeTestRule.waitForIdle()
     }
 
     fun tapItem(position: Int = 0) = withItemEntryModel(position) {
