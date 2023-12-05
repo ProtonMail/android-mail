@@ -42,7 +42,6 @@ fun Launcher(activityActions: MainActivity.Actions, viewModel: LauncherViewModel
                 onRecoveryEmail = { viewModel.submit(LauncherViewModel.Action.OpenRecoveryEmail) },
                 onReportBug = { viewModel.submit(LauncherViewModel.Action.OpenReport) },
                 onSignIn = { viewModel.submit(LauncherViewModel.Action.SignIn(it)) },
-                onSignOut = { viewModel.submit(LauncherViewModel.Action.SignOut(it)) },
                 onSubscription = { viewModel.submit(LauncherViewModel.Action.OpenSubscription) },
                 onSwitchAccount = { viewModel.submit(LauncherViewModel.Action.Switch(it)) }
             )
@@ -59,7 +58,6 @@ object Launcher {
      */
     data class Actions(
         val onSignIn: (UserId?) -> Unit,
-        val onSignOut: (UserId) -> Unit,
         val onSwitchAccount: (UserId) -> Unit,
         val onSubscription: () -> Unit,
         val onReportBug: () -> Unit,

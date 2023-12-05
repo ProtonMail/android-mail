@@ -65,6 +65,7 @@ import ch.protonmail.android.navigation.route.addParentFolderList
 import ch.protonmail.android.navigation.route.addPrivacySettings
 import ch.protonmail.android.navigation.route.addRemoveAccountDialog
 import ch.protonmail.android.navigation.route.addSettings
+import ch.protonmail.android.navigation.route.addSignOutAccountDialog
 import ch.protonmail.android.navigation.route.addSwipeActionsSettings
 import ch.protonmail.android.navigation.route.addThemeSettings
 import io.sentry.compose.withSentryObservableEffect
@@ -112,6 +113,7 @@ fun Home(
             type = ProtonSnackbarType.NORM
         )
     }
+
     val refreshMailboxErrorMessage = stringResource(id = R.string.mailbox_error_message_generic)
     fun showRefreshErrorSnackbar() = scope.launch {
         snackbarHostErrorState.showSnackbar(
@@ -119,22 +121,27 @@ fun Home(
             type = ProtonSnackbarType.ERROR
         )
     }
+
     val draftSavedText = stringResource(id = R.string.mailbox_draft_saved)
     fun showDraftSavedSnackbar() = scope.launch {
         snackbarHostSuccessState.showSnackbar(message = draftSavedText, type = ProtonSnackbarType.SUCCESS)
     }
+
     val sendingMessageText = stringResource(id = R.string.mailbox_message_sending)
     fun showMessageSendingSnackbar() = scope.launch {
         snackbarHostNormState.showSnackbar(message = sendingMessageText, type = ProtonSnackbarType.NORM)
     }
+
     val sendingMessageOfflineText = stringResource(id = R.string.mailbox_message_sending_offline)
     fun showMessageSendingOfflineSnackbar() = scope.launch {
         snackbarHostNormState.showSnackbar(message = sendingMessageOfflineText, type = ProtonSnackbarType.NORM)
     }
+
     val successSendingMessageText = stringResource(id = R.string.mailbox_message_sending_success)
     fun showSuccessSendingMessageSnackbar() = scope.launch {
         snackbarHostSuccessState.showSnackbar(message = successSendingMessageText, type = ProtonSnackbarType.SUCCESS)
     }
+
     val errorSendingMessageText = stringResource(id = R.string.mailbox_message_sending_error)
     val errorSendingMessageActionText = stringResource(id = R.string.mailbox_message_sending_error_action)
     fun showErrorSendingMessageSnackbar() = scope.launch {
@@ -146,22 +153,26 @@ fun Home(
             duration = if (shouldShowAction) SnackbarDuration.Long else SnackbarDuration.Short
         )
         when (result) {
-            SnackbarResult.ActionPerformed -> { viewModel.navigateToDrafts(navController) }
+            SnackbarResult.ActionPerformed -> viewModel.navigateToDrafts(navController)
             SnackbarResult.Dismissed -> Unit
         }
     }
+
     val errorUploadAttachmentText = stringResource(id = R.string.mailbox_attachment_uploading_error)
     fun showErrorUploadAttachmentSnackbar() = scope.launch {
         snackbarHostErrorState.showSnackbar(message = errorUploadAttachmentText, type = ProtonSnackbarType.ERROR)
     }
+
     val labelSavedText = stringResource(id = R.string.label_saved)
     fun showLabelSavedSnackbar() = scope.launch {
         snackbarHostSuccessState.showSnackbar(message = labelSavedText, type = ProtonSnackbarType.SUCCESS)
     }
+
     val labelDeletedText = stringResource(id = R.string.label_deleted)
     fun showLabelDeletedSnackbar() = scope.launch {
         snackbarHostSuccessState.showSnackbar(message = labelDeletedText, type = ProtonSnackbarType.SUCCESS)
     }
+
     val labelListErrorLoadingText = stringResource(id = R.string.label_list_loading_error)
     fun showLabelListErrorLoadingSnackbar() = scope.launch {
         snackbarHostErrorState.showSnackbar(message = labelListErrorLoadingText, type = ProtonSnackbarType.ERROR)
@@ -255,6 +266,7 @@ fun Home(
                     showMessageSendingSnackbar = { showMessageSendingSnackbar() },
                     showMessageSendingOfflineSnackbar = { showMessageSendingOfflineSnackbar() }
                 )
+                addSignOutAccountDialog(navController)
                 addRemoveAccountDialog(navController)
                 addSettings(
                     navController,
@@ -340,7 +352,7 @@ fun Home(
 private fun buildSidebarActions(navController: NavHostController, launcherActions: Launcher.Actions) =
     Sidebar.NavigationActions(
         onSignIn = launcherActions.onSignIn,
-        onSignOut = launcherActions.onSignOut,
+        onSignOut = { navController.navigate(Dialog.SignOut(it)) },
         onRemoveAccount = { navController.navigate(Dialog.RemoveAccount(it)) },
         onSwitchAccount = launcherActions.onSwitchAccount,
         onSettings = { navController.navigate(Screen.Settings.route) },

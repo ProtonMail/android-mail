@@ -160,7 +160,7 @@ fun Sidebar(
         item { ProtonSidebarSettingsItem(onClick = actions.onSettings) }
         item { SidebarSubscriptionItem(viewState.isSubscriptionVisible, onSubscription = actions.onSubscription) }
         item { ProtonSidebarReportBugItem(onClick = actions.onReportBug) }
-        item { ProtonSidebarSignOutItem(onClick = { actions.onRemoveAccount(null) }) }
+        item { ProtonSidebarSignOutItem(onClick = { actions.onSignOut(null) }) }
         item { SidebarAppVersionItem(viewState.appInformation) }
     }
 }
@@ -194,7 +194,7 @@ object Sidebar {
 
     data class Actions(
         val onSignIn: (UserId?) -> Unit,
-        val onSignOut: (UserId) -> Unit,
+        val onSignOut: (UserId?) -> Unit,
         val onRemoveAccount: (UserId?) -> Unit,
         val onSwitchAccount: (UserId) -> Unit,
         val onSettings: () -> Unit,
@@ -220,7 +220,7 @@ object Sidebar {
 
     data class NavigationActions(
         val onSignIn: (UserId?) -> Unit,
-        val onSignOut: (UserId) -> Unit,
+        val onSignOut: (UserId?) -> Unit,
         val onRemoveAccount: (UserId?) -> Unit,
         val onSwitchAccount: (UserId) -> Unit,
         val onSettings: () -> Unit,

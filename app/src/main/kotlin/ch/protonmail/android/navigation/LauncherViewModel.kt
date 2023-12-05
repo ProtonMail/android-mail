@@ -128,9 +128,7 @@ class LauncherViewModel @Inject constructor(
                 Action.OpenRecoveryEmail -> onOpenRecoveryEmail()
                 Action.OpenReport -> onOpenReport()
                 Action.OpenSubscription -> onOpenSubscription()
-                is Action.Remove -> onRemove(action.userId)
                 is Action.SignIn -> onSignIn(action.userId)
-                is Action.SignOut -> onSignOut(action.userId)
                 is Action.Switch -> onSwitch(action.userId)
             }
         }
@@ -166,17 +164,9 @@ class LauncherViewModel @Inject constructor(
         }
     }
 
-    private suspend fun onRemove(userId: UserId) {
-        accountManager.removeAccount(userId)
-    }
-
     private suspend fun onSignIn(userId: UserId?) {
         val account = userId?.let { getAccountOrNull(it) }
         authOrchestrator.startLoginWorkflow(requiredAccountType, username = account?.username)
-    }
-
-    private suspend fun onSignOut(userId: UserId?) {
-        accountManager.disableAccount(requireNotNull(userId ?: getPrimaryUserIdOrNull()))
     }
 
     private suspend fun onSwitch(userId: UserId) {
@@ -197,9 +187,7 @@ class LauncherViewModel @Inject constructor(
         object OpenRecoveryEmail : Action
         object OpenReport : Action
         object OpenSubscription : Action
-        data class Remove(val userId: UserId) : Action
         data class SignIn(val userId: UserId?) : Action
-        data class SignOut(val userId: UserId?) : Action
         data class Switch(val userId: UserId) : Action
     }
 }

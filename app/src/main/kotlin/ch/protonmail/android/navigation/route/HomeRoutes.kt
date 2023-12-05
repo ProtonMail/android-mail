@@ -25,7 +25,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import ch.protonmail.android.feature.account.RemoveAccountDialog
-import ch.protonmail.android.feature.account.RemoveAccountDialog.USER_ID_KEY
+import ch.protonmail.android.feature.account.SignOutAccountDialog
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen
@@ -162,10 +162,20 @@ internal fun NavGraphBuilder.addComposer(
     composable(route = Destination.Screen.MessageActionComposer.route) { ComposerScreen(actions) }
 }
 
+internal fun NavGraphBuilder.addSignOutAccountDialog(navController: NavHostController) {
+    dialog(route = Destination.Dialog.SignOut.route) {
+        SignOutAccountDialog(
+            userId = it.get<String>(SignOutAccountDialog.USER_ID_KEY)?.takeIfNotBlank()?.let(::UserId),
+            onSignedOut = { navController.popBackStack() },
+            onCancelled = { navController.popBackStack() }
+        )
+    }
+}
+
 internal fun NavGraphBuilder.addRemoveAccountDialog(navController: NavHostController) {
     dialog(route = Destination.Dialog.RemoveAccount.route) {
         RemoveAccountDialog(
-            userId = it.get<String>(USER_ID_KEY)?.takeIfNotBlank()?.let(::UserId),
+            userId = it.get<String>(RemoveAccountDialog.USER_ID_KEY)?.takeIfNotBlank()?.let(::UserId),
             onRemoved = { navController.popBackStack() },
             onCancelled = { navController.popBackStack() }
         )

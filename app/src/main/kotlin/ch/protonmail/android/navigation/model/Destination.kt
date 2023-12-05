@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.navigation.model
 
-import ch.protonmail.android.feature.account.RemoveAccountDialog.USER_ID_KEY
+import ch.protonmail.android.feature.account.SignOutAccountDialog.USER_ID_KEY
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.DraftMessageIdKey
@@ -102,6 +102,11 @@ sealed class Destination(val route: String) {
     }
 
     object Dialog {
+        object SignOut : Destination("signout/${USER_ID_KEY.wrap()}") {
+
+            operator fun invoke(userId: UserId?) = route.replace(USER_ID_KEY.wrap(), userId?.id ?: " ")
+        }
+
         object RemoveAccount : Destination("remove/${USER_ID_KEY.wrap()}") {
 
             operator fun invoke(userId: UserId?) = route.replace(USER_ID_KEY.wrap(), userId?.id ?: " ")
