@@ -16,20 +16,19 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.helpers.core.navigation
+package ch.protonmail.android.uitest.e2e.account
 
-/**
- * A [Destination] represents a screen of the Proton Mail app.
- */
-internal sealed class Destination {
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import ch.protonmail.android.R
+import me.proton.core.test.android.robots.auth.AddAccountRobot
 
-    object Inbox : Destination()
-    object Drafts : Destination()
-    object Archive : Destination()
-    object Spam : Destination()
-    object Trash : Destination()
-    object Composer : Destination()
-    class MailDetail(val messagePosition: Int = 0) : Destination()
-    class EditDraft(val draftPosition: Int = 0) : Destination()
-    object SidebarMenu : Destination()
+fun addAccountRobot(block: AddAccountRobot.() -> Unit) = AddAccountRobot().apply(block)
+
+fun AddAccountRobot.Verify.isDisplayed() {
+    // There are no efficient ways to check for this since it does not have a root view id.
+    onView(withId(R.id.sign_in)).check(matches(ViewMatchers.isDisplayed()))
+    onView(withId(R.id.sign_up)).check(matches(ViewMatchers.isDisplayed()))
 }

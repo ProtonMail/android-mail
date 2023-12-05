@@ -80,6 +80,10 @@ internal class MenuRobot : ComposeRobot() {
         tapSidebarMenuItemWithText(getTestString(testR.string.test_subscription))
     }
 
+    fun tapSignOut() {
+        tapSidebarMenuItemWithText(getTestString(testR.string.test_signout))
+    }
+
     private fun tapSidebarMenuItemWithText(value: String) {
         rootItem.onChild()
             .apply { performScrollToNode(hasText(value)) }

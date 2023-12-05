@@ -16,20 +16,25 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.helpers.core.navigation
+package ch.protonmail.android.uitest.robot.account
 
-/**
- * A [Destination] represents a screen of the Proton Mail app.
- */
-internal sealed class Destination {
+import androidx.compose.ui.test.onNodeWithTag
+import ch.protonmail.android.feature.account.SignOutAccountDialogTestTags
+import ch.protonmail.android.test.ksp.annotations.AsDsl
+import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
+import ch.protonmail.android.uitest.robot.ComposeRobot
+import ch.protonmail.android.uitest.util.awaitHidden
 
-    object Inbox : Destination()
-    object Drafts : Destination()
-    object Archive : Destination()
-    object Spam : Destination()
-    object Trash : Destination()
-    object Composer : Destination()
-    class MailDetail(val messagePosition: Int = 0) : Destination()
-    class EditDraft(val draftPosition: Int = 0) : Destination()
-    object SidebarMenu : Destination()
+@AsDsl
+internal class SignOutAccountDialogRobot : ComposeRobot() {
+
+    private val rootItem = composeTestRule.onNodeWithTag(SignOutAccountDialogTestTags.RootItem)
+
+    @VerifiesOuter
+    inner class Verify {
+
+        fun isNotShown() {
+            rootItem.awaitHidden()
+        }
+    }
 }

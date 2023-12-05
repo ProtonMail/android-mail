@@ -41,7 +41,6 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import me.proton.core.account.domain.entity.Account
-import me.proton.core.account.domain.entity.AccountType
 import me.proton.core.account.domain.entity.AccountType.Internal
 import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.accountmanager.presentation.AccountManagerObserver
@@ -191,8 +190,8 @@ class LauncherViewModelTest {
         // THEN
         verify {
             authOrchestrator.startAddAccountWorkflow(
-                requiredAccountType = AccountType.Internal,
-                creatableAccountType = AccountType.Internal,
+                requiredAccountType = Internal,
+                creatableAccountType = Internal,
                 product = Product.Mail
             )
         }
@@ -203,7 +202,7 @@ class LauncherViewModelTest {
         // WHEN
         viewModel.submit(LauncherViewModel.Action.SignIn(userId = null))
         // THEN
-        verify { authOrchestrator.startLoginWorkflow(AccountType.Internal, any(), any()) }
+        verify { authOrchestrator.startLoginWorkflow(Internal, any(), any()) }
     }
 
     @Test
@@ -213,27 +212,7 @@ class LauncherViewModelTest {
         // WHEN
         viewModel.submit(LauncherViewModel.Action.SignIn(userId))
         // THEN
-        verify { authOrchestrator.startLoginWorkflow(AccountType.Internal, user1Username) }
-    }
-
-    @Test
-    fun `when signOut is called, disableAccount`() = runTest {
-        // GIVEN
-        every { accountManager.getPrimaryUserId() } returns flowOf(userId)
-        // WHEN
-        viewModel.submit(LauncherViewModel.Action.SignOut(userId = null))
-        // THEN
-        coVerify { accountManager.disableAccount(userId) }
-        verify(exactly = 1) { accountManager.getPrimaryUserId() }
-    }
-
-    @Test
-    fun `when signOut with userId is called, disableAccount`() = runTest {
-        // WHEN
-        viewModel.submit(LauncherViewModel.Action.SignOut(userId))
-        // THEN
-        coVerify { accountManager.disableAccount(userId) }
-        verify(exactly = 0) { accountManager.getPrimaryUserId() }
+        verify { authOrchestrator.startLoginWorkflow(Internal, user1Username) }
     }
 
     @Test
@@ -243,7 +222,7 @@ class LauncherViewModelTest {
         // WHEN
         viewModel.submit(LauncherViewModel.Action.Switch(userId))
         // THEN
-        verify { authOrchestrator.startLoginWorkflow(AccountType.Internal, user1Username) }
+        verify { authOrchestrator.startLoginWorkflow(Internal, user1Username) }
     }
 
     @Test
@@ -254,14 +233,6 @@ class LauncherViewModelTest {
         viewModel.submit(LauncherViewModel.Action.Switch(userId))
         // THEN
         coVerify { accountManager.setAsPrimary(userId) }
-    }
-
-    @Test
-    fun `when remove is called, removeAccount`() = runTest {
-        // WHEN
-        viewModel.submit(LauncherViewModel.Action.Remove(userId))
-        // THEN
-        coVerify { accountManager.removeAccount(userId) }
     }
 
     @Test

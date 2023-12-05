@@ -105,6 +105,8 @@ internal class Navigator {
                 mailboxRobot { listSection { clickMessageByPosition(destination.draftPosition) } }
                 composerRobot { fullscreenLoaderSection { waitUntilGone() } }
             }
+
+            is Destination.SidebarMenu -> menuRobot { swipeOpenSidebarMenu() }
         }
     }
 
