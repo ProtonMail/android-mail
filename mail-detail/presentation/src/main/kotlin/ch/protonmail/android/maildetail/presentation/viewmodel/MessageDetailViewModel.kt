@@ -151,11 +151,11 @@ class MessageDetailViewModel @Inject constructor(
             is MessageViewAction.UnStar -> unStarMessage()
             is MessageViewAction.MarkUnread -> markMessageUnread()
             is MessageViewAction.Trash -> trashMessage()
-            is MessageViewAction.DeleteRequested -> handleDeleteMessageRequested(action)
-            is MessageViewAction.DeleteDialogDismissed -> handleDeleteDialogDismissed(action)
+            is MessageViewAction.DismissBottomSheet,
+            is MessageViewAction.DeleteRequested,
+            is MessageViewAction.DeleteDialogDismissed -> directlyHandleViewAction(action)
             is MessageViewAction.DeleteConfirmed -> handleDeleteConfirmed(action)
             is MessageViewAction.RequestMoveToBottomSheet -> showMoveToBottomSheetAndLoadData(action)
-            is MessageViewAction.DismissBottomSheet -> dismissBottomSheet(action)
             is MessageViewAction.MoveToDestinationSelected -> moveToDestinationSelected(action.mailLabelId)
             is MessageViewAction.MoveToDestinationConfirmed -> onBottomSheetDestinationConfirmed(action.mailLabelText)
             is MessageViewAction.RequestLabelAsBottomSheet -> showLabelAsBottomSheetAndLoadData(action)
@@ -229,11 +229,7 @@ class MessageDetailViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    private fun handleDeleteMessageRequested(action: MessageViewAction) {
-        viewModelScope.launch { emitNewStateFrom(action) }
-    }
-
-    private fun handleDeleteDialogDismissed(action: MessageViewAction) {
+    private fun directlyHandleViewAction(action: MessageViewAction) {
         viewModelScope.launch { emitNewStateFrom(action) }
     }
 
@@ -265,10 +261,6 @@ class MessageDetailViewModel @Inject constructor(
                 deleteMessages(userId, listOf(messageId), currentExclusiveLabel)
             }
         }
-    }
-
-    private fun dismissBottomSheet(action: MessageViewAction) {
-        viewModelScope.launch { emitNewStateFrom(action) }
     }
 
     private fun moveToDestinationSelected(mailLabelId: MailLabelId) {
