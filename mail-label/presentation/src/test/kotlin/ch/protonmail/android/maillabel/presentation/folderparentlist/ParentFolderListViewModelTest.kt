@@ -40,7 +40,7 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
-import io.mockk.unmockkStatic
+import io.mockk.unmockkAll
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -98,7 +98,7 @@ class ParentFolderListViewModelTest {
     @AfterTest
     fun tearDown() {
         Dispatchers.resetMain()
-        unmockkStatic(android.graphics.Color::class)
+        unmockkAll()
     }
 
     @Test
