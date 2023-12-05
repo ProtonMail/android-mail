@@ -22,7 +22,6 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
-import ch.protonmail.android.mailcomposer.domain.model.SendingError
 import ch.protonmail.android.mailcomposer.domain.model.Subject
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
@@ -168,7 +167,7 @@ class ComposerReducer @Inject constructor(
             )
         )
 
-    private fun updateSendingErrorState(currentState: ComposerDraftState, sendingError: SendingError) =
+    private fun updateSendingErrorState(currentState: ComposerDraftState, sendingError: TextUiModel) =
         currentState.copy(sendingErrorEffect = Effect.of(sendingError))
 
     private fun updateCloseComposerState(currentState: ComposerDraftState, isDraftSaved: Boolean) = if (isDraftSaved) {

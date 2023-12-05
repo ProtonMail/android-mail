@@ -27,6 +27,7 @@ import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import ch.protonmail.android.mailcommon.domain.usecase.GetPrimaryAddress
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.domain.model.DecryptedDraftFields
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
@@ -37,7 +38,6 @@ import ch.protonmail.android.mailcomposer.domain.model.RecipientsBcc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsCc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsTo
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
-import ch.protonmail.android.mailcomposer.domain.model.SendingError
 import ch.protonmail.android.mailcomposer.domain.model.Subject
 import ch.protonmail.android.mailcomposer.domain.usecase.ClearMessageSendingError
 import ch.protonmail.android.mailcomposer.domain.usecase.DeleteAllAttachments
@@ -289,7 +289,11 @@ class ComposerViewModel @Inject constructor(
     private fun observeSendingError() {
         primaryUserId
             .flatMapLatest { userId -> observeMessageSendingError(userId, currentMessageId()) }
-            .onEach { emitNewStateFor(ComposerEvent.OnSendingError(it)) }
+            .onEach {
+                formatMessageSendingError(it)?.run {
+                    emitNewStateFor(ComposerEvent.OnSendingError(TextUiModel.Text(this)))
+                }
+            }
             .launchIn(viewModelScope)
     }
 
@@ -302,8 +306,6 @@ class ComposerViewModel @Inject constructor(
             }
         }
     }
-
-    fun formatSendingError(sendingError: SendingError): String? = formatMessageSendingError(sendingError)
 
     private fun onAttachmentsAdded(action: ComposerAction.AttachmentsAdded) {
         viewModelScope.launch {

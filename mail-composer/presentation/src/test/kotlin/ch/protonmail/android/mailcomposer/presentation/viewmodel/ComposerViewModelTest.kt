@@ -1629,6 +1629,7 @@ class ComposerViewModelTest {
         expectObserveMailFeature(userId) { emptyFlow() }
         expectObservedMessageAttachments(userId, messageId)
         expectInjectAddressSignature(userId, expectDraftBodyWithSignature(), expectedSenderEmail)
+        expectObserveMessageSendingError(userId, messageId)
 
         // When
         viewModel.state // app is in foreground
@@ -1655,6 +1656,7 @@ class ComposerViewModelTest {
         expectObserveMailFeature(userId) { emptyFlow() }
         expectObservedMessageAttachments(userId, messageId)
         expectInjectAddressSignature(userId, expectDraftBodyWithSignature(), expectedSenderEmail)
+        expectObserveMessageSendingError(userId, messageId)
 
         // When
         viewModel.state // app is in foreground

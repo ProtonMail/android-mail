@@ -20,8 +20,8 @@ package ch.protonmail.android.mailcomposer.presentation.model
 
 import android.net.Uri
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
-import ch.protonmail.android.mailcomposer.domain.model.SendingError
 import ch.protonmail.android.mailcomposer.domain.model.Subject
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
@@ -54,7 +54,7 @@ sealed interface ComposerEvent : ComposerOperation {
     data class PrefillDraftDataReceived(val draftUiModel: DraftUiModel, val isDataRefreshed: Boolean) : ComposerEvent
     data class ReplaceDraftBody(val draftBody: DraftBody) : ComposerEvent
     data class OnAttachmentsUpdated(val attachments: List<MessageAttachment>) : ComposerEvent
-    data class OnSendingError(val sendingError: SendingError) : ComposerEvent
+    data class OnSendingError(val sendingError: TextUiModel) : ComposerEvent
 
     object ErrorLoadingDefaultSenderAddress : ComposerEvent
     object ErrorFreeUserCannotChangeSender : ComposerEvent

@@ -191,9 +191,9 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
                 )
             }
 
-            if (sendingErrorDialogState.value != null) {
+            sendingErrorDialogState.value?.run {
                 SendingErrorDialog(
-                    errorMessage = sendingErrorDialogState.value.toString(),
+                    errorMessage = this,
                     onDismissClicked = {
                         sendingErrorDialogState.value = null
                         viewModel.clearSendingError()
@@ -261,8 +261,8 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
         actions.showMessageSendingOfflineSnackbar()
     }
 
-    ConsumableLaunchedEffect(effect = state.sendingErrorEffect) {
-        sendingErrorDialogState.value = viewModel.formatSendingError(it)
+    ConsumableTextEffect(effect = state.sendingErrorEffect) {
+        sendingErrorDialogState.value = it
     }
 
     ConsumableLaunchedEffect(effect = state.attachmentsFileSizeExceeded) { attachmentSizeDialogState.value = true }
