@@ -40,7 +40,6 @@ class RemoveAccountViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val mutableState = MutableStateFlow<State>(Initial)
-
     val state = mutableState.asStateFlow()
 
     fun remove(userId: UserId? = null) = viewModelScope.launch {

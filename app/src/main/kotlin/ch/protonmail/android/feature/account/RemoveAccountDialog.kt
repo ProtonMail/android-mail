@@ -18,10 +18,8 @@
 
 package ch.protonmail.android.feature.account
 
-import androidx.compose.material.AlertDialog
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -32,61 +30,74 @@ import ch.protonmail.android.feature.account.RemoveAccountViewModel.State
 import ch.protonmail.android.feature.account.RemoveAccountViewModel.State.Initial
 import ch.protonmail.android.feature.account.RemoveAccountViewModel.State.Removed
 import ch.protonmail.android.feature.account.RemoveAccountViewModel.State.Removing
+import me.proton.core.compose.component.ProtonAlertDialog
+import me.proton.core.compose.component.ProtonAlertDialogText
+import me.proton.core.compose.component.ProtonTextButton
 import me.proton.core.compose.flow.rememberAsState
+import me.proton.core.compose.theme.ProtonTheme
+import me.proton.core.compose.theme.defaultStrongNorm
 import me.proton.core.domain.entity.UserId
-import me.proton.core.util.kotlin.exhaustive
 
 @Composable
 fun RemoveAccountDialog(
-    onRemoved: () -> Unit,
-    onCancelled: () -> Unit,
     modifier: Modifier = Modifier,
     userId: UserId? = null,
+    onCancelled: () -> Unit,
+    onRemoved: () -> Unit,
     removeAccountViewModel: RemoveAccountViewModel = hiltViewModel()
 ) {
     val viewState by rememberAsState(removeAccountViewModel.state, Initial)
 
     when (viewState) {
         Initial -> Unit
-        Removed -> onRemoved()
         Removing -> Unit
-    }.exhaustive
+        Removed -> onRemoved()
+    }
 
     RemoveAccountDialog(
+        modifier = modifier,
         viewState = viewState,
         onCancelClicked = onCancelled,
-        onRemoveClicked = { removeAccountViewModel.remove(userId) },
-        modifier
+        onRemoveClicked = { removeAccountViewModel.remove(userId) }
     )
 }
 
 @Composable
 private fun RemoveAccountDialog(
+    modifier: Modifier = Modifier,
     viewState: State,
     onCancelClicked: () -> Unit,
-    onRemoveClicked: () -> Unit,
-    modifier: Modifier = Modifier
+    onRemoveClicked: () -> Unit
 ) {
-    AlertDialog(
+    ProtonAlertDialog(
         modifier = modifier,
         onDismissRequest = onCancelClicked,
-        title = { Text(text = stringResource(id = R.string.title_remove_account)) },
-        text = { Text(text = stringResource(id = R.string.description_remove_account)) },
+        title = stringResource(id = R.string.dialog_remove_account_title),
+        text = { ProtonAlertDialogText(text = stringResource(id = R.string.dialog_remove_account_description)) },
         confirmButton = {
-            TextButton(
+            ProtonTextButton(
                 onClick = onRemoveClicked,
                 content = {
                     when (viewState) {
                         Initial,
-                        Removed -> Text(text = stringResource(id = R.string.title_remove))
+                        Removed -> Text(
+                            text = stringResource(id = R.string.dialog_remove_account_confirm),
+                            style = ProtonTheme.typography.defaultStrongNorm,
+                            color = ProtonTheme.colors.textAccent
+                        )
+
                         Removing -> CircularProgressIndicator()
-                    }.exhaustive
+                    }
                 }
             )
         },
         dismissButton = {
-            TextButton(onClick = onCancelClicked) {
-                Text(text = stringResource(id = R.string.presentation_alert_cancel))
+            ProtonTextButton(onClick = onCancelClicked) {
+                Text(
+                    text = stringResource(id = R.string.dialog_remove_account_cancel),
+                    style = ProtonTheme.typography.defaultStrongNorm,
+                    color = ProtonTheme.colors.textAccent
+                )
             }
         }
     )

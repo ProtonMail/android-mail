@@ -43,7 +43,7 @@ class RemoveAccountViewModelTest {
     val mainDispatcherRule = MainDispatcherRule(TestDispatcherProvider().Main)
 
     private val accountManager = mockk<AccountManager>(relaxUnitFun = true) {
-        every { this@mockk.getPrimaryUserId() } returns flowOf(UserIdTestData.Primary)
+        every { this@mockk.getPrimaryUserId() } returns flowOf(BaseUserId)
     }
     private val enqueuer = mockk<Enqueuer>()
 
@@ -61,7 +61,7 @@ class RemoveAccountViewModelTest {
     @Test
     fun `when remove is called emits Removing and then Removed when completed`() = runTest {
         // Given
-        every { enqueuer.cancelAllWork(UserIdTestData.Primary) } just Runs
+        every { enqueuer.cancelAllWork(BaseUserId) } just Runs
 
         // When
         viewModel.remove()
@@ -71,26 +71,30 @@ class RemoveAccountViewModelTest {
             assertEquals(RemoveAccountViewModel.State.Initial, awaitItem())
             assertEquals(RemoveAccountViewModel.State.Removing, awaitItem())
             assertEquals(RemoveAccountViewModel.State.Removed, awaitItem())
-            coVerify { accountManager.removeAccount(any()) }
+            coVerify { accountManager.removeAccount(BaseUserId) }
         }
     }
 
     @Test
     fun `when remove is called cancel all work related to this user`() = runTest {
         // Given
-        val userId = UserIdTestData.userId
-        every { enqueuer.cancelAllWork(userId) } just Runs
+        every { enqueuer.cancelAllWork(BaseUserId) } just Runs
 
         // When
-        viewModel.remove(userId)
+        viewModel.remove(BaseUserId)
 
         // Then
         viewModel.state.test {
             assertEquals(RemoveAccountViewModel.State.Initial, awaitItem())
             assertEquals(RemoveAccountViewModel.State.Removing, awaitItem())
-            coVerify { enqueuer.cancelAllWork(userId) }
-            coVerify { accountManager.removeAccount(any()) }
+            coVerify { enqueuer.cancelAllWork(BaseUserId) }
+            coVerify { accountManager.removeAccount(BaseUserId) }
             assertEquals(RemoveAccountViewModel.State.Removed, awaitItem())
         }
+    }
+
+    private companion object {
+
+        val BaseUserId = UserIdTestData.Primary
     }
 }
