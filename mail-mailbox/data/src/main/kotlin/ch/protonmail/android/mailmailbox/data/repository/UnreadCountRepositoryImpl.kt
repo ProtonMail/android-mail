@@ -26,10 +26,8 @@ import ch.protonmail.android.mailmailbox.domain.repository.UnreadCountRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import me.proton.core.domain.entity.UserId
-import timber.log.Timber
 import javax.inject.Inject
 
-@Suppress("UnusedPrivateMember")
 class UnreadCountRepositoryImpl @Inject constructor(
     private val localDataSource: UnreadCountLocalDataSource,
     private val remoteDataSource: UnreadCountRemoteDataSource
@@ -39,24 +37,27 @@ class UnreadCountRepositoryImpl @Inject constructor(
         localDataSource.observeMessageCounters(userId),
         localDataSource.observeConversationCounters(userId)
     ) { messageCounters, conversationCounters ->
-        Timber.d("Unread counters: found msg: $messageCounters and conversation: $conversationCounters")
         if (messageCounters.isEmpty()) {
-            Timber.d("Unread counters: message counters empty. Triggering remote fetch")
-            val remoteMessageCounters = remoteDataSource.getMessageCounters(userId)
-            localDataSource.saveMessageCounters(
-                remoteMessageCounters.map { it.toUnreadCountMessagesEntity(userId) }
-            )
+            refreshLocalMessageCounters(userId)
         }
         if (conversationCounters.isEmpty()) {
-            Timber.d("Unread counters: conversation counters empty. Triggering remote fetch")
-            val remoteConversationCounters = remoteDataSource.getConversationCounters(userId)
-            localDataSource.saveConversationCounters(
-                remoteConversationCounters.map { it.toUnreadCountConversationsEntity(userId) }
-            )
+            refreshLocalConversationCounters(userId)
         }
         return@combine UnreadCounters(
             conversationCounters.map { UnreadCounter(it.labelId, it.unreadCount) },
             messageCounters.map { UnreadCounter(it.labelId, it.unreadCount) }
+        )
+    }
+
+    private suspend fun refreshLocalConversationCounters(userId: UserId) {
+        localDataSource.saveConversationCounters(
+            remoteDataSource.getConversationCounters(userId).map { it.toUnreadCountConversationsEntity(userId) }
+        )
+    }
+
+    private suspend fun refreshLocalMessageCounters(userId: UserId) {
+        localDataSource.saveMessageCounters(
+            remoteDataSource.getMessageCounters(userId).map { it.toUnreadCountMessagesEntity(userId) }
         )
     }
 

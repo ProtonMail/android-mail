@@ -22,10 +22,8 @@ import ch.protonmail.android.mailmailbox.data.entity.UnreadConversationsCountEnt
 import ch.protonmail.android.mailmailbox.data.entity.UnreadMessagesCountEntity
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
-import timber.log.Timber
 import javax.inject.Inject
 
-@Suppress("NotImplementedDeclaration")
 class UnreadCountLocalDataSourceImpl @Inject constructor(
     database: UnreadCountDatabase
 ) : UnreadCountLocalDataSource {
@@ -40,14 +38,10 @@ class UnreadCountLocalDataSourceImpl @Inject constructor(
         unreadConversationsCountDao.observeConversationsCounts(userId)
 
     override suspend fun saveMessageCounters(counters: List<UnreadMessagesCountEntity>) {
-        Timber.d("Unread counters: Writing message counters to DB $counters")
         unreadMessagesCountDao.insertOrUpdate(*counters.toTypedArray())
-        Timber.d("written")
     }
 
     override suspend fun saveConversationCounters(counters: List<UnreadConversationsCountEntity>) {
-        Timber.d("Unread counters: Writing conversation counters to DB $counters")
         unreadConversationsCountDao.insertOrUpdate(*counters.toTypedArray())
-        Timber.d("written")
     }
 }

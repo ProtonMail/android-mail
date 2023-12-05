@@ -19,10 +19,10 @@
 package ch.protonmail.android.mailmailbox.data.remote
 
 import ch.protonmail.android.mailmailbox.data.remote.response.UnreadCountResource
+import ch.protonmail.android.mailmailbox.data.remote.response.UnreadCountsResponse
 import me.proton.core.domain.entity.UserId
 import me.proton.core.network.data.ApiProvider
 import me.proton.core.network.domain.ApiResult
-import timber.log.Timber
 import javax.inject.Inject
 
 class UnreadCountRemoteDataSourceImpl @Inject constructor(
@@ -30,37 +30,23 @@ class UnreadCountRemoteDataSourceImpl @Inject constructor(
 ) : UnreadCountRemoteDataSource {
 
     override suspend fun getMessageCounters(userId: UserId): List<UnreadCountResource> {
-        Timber.d("Unread Counters: fetching for messages...")
         val result = apiProvider.get<UnreadCountersApi>(userId).invoke {
             getMessageCounters()
         }
-        return when (result) {
-            is ApiResult.Success -> {
-                Timber.d("Unread Counters: received for messages ${result.value}")
-                result.value.counts
-            }
-            is ApiResult.Error -> {
-                Timber.w("Unread Counters: Failed to fetch for messages ${result.cause}")
-                emptyList()
-            }
-        }
+        return countResourcesOrEmptyList(result)
     }
 
     override suspend fun getConversationCounters(userId: UserId): List<UnreadCountResource> {
-        Timber.d("Unread Counters: fetching for conversations...")
         val result = apiProvider.get<UnreadCountersApi>(userId).invoke {
             getConversationCounters()
         }
-        return when (result) {
-            is ApiResult.Success -> {
-                Timber.d("Unread Counters: received for conversations ${result.value}")
-                result.value.counts
-            }
-            is ApiResult.Error -> {
-                Timber.w("Unread Counters: Failed to fetch for conversations ${result.cause}")
-                emptyList()
-            }
-        }
+        return countResourcesOrEmptyList(result)
     }
+
+    private fun countResourcesOrEmptyList(result: ApiResult<UnreadCountsResponse>): List<UnreadCountResource> =
+        when (result) {
+            is ApiResult.Success -> result.value.counts
+            is ApiResult.Error -> emptyList()
+        }
 
 }
