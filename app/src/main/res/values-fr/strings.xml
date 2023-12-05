@@ -17,9 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="title_remove">Retirer</string>
-  <string name="title_remove_account">Retirer le compte</string>
-  <string name="description_remove_account">Vous allez vous déconnecter et supprimer toutes les informations associées à ce compte.</string>
   <string name="user_select_other_account_content_description">Sélectionner un autre compte</string>
   <string name="you_are_offline">Vous êtes hors ligne.</string>
   <string name="feature_coming_soon">Fonctionnalité bientôt disponible…</string>

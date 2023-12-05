@@ -17,9 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="title_remove">Borrar</string>
-  <string name="title_remove_account">Borrar la cuenta</string>
-  <string name="description_remove_account">Cerrará la sesión y borrará toda la información asociada con esta cuenta.</string>
   <string name="user_select_other_account_content_description">Seleccione otra cuenta</string>
   <string name="you_are_offline">No está conectado</string>
   <string name="feature_coming_soon">Próximamente...</string>

@@ -17,9 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="title_remove">წაშლა</string>
-  <string name="title_remove_account">ანგარიშის წაშლა</string>
-  <string name="description_remove_account">გახვალთ და წაშლით ყველაფერს, რაც დაკავშირებულია ამ ანგარიშთან.</string>
   <string name="user_select_other_account_content_description">აირჩიეთ სხვა ანგარიში</string>
   <string name="you_are_offline">ქსელი გამორთულია</string>
   <string name="feature_coming_soon">ფუნქცია მალე ჩაირთვება…</string>

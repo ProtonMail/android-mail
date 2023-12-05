@@ -17,9 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="title_remove">Выдаліць</string>
-  <string name="title_remove_account">Выдаліць уліковы запіс</string>
-  <string name="description_remove_account">Адбудзецца выхад і выдаленне ўсёй інфармацыі, звязанай з гэтым уліковым запісам.</string>
   <string name="user_select_other_account_content_description">Выбраць іншы ўліковы запіс</string>
   <string name="you_are_offline">Вы па-за сеткай</string>
   <string name="feature_coming_soon">Функцыя неўзабаве з\'явіцца…</string>
