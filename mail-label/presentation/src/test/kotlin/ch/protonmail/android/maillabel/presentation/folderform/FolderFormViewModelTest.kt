@@ -45,7 +45,7 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
-import io.mockk.unmockkStatic
+import io.mockk.unmockkAll
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -153,7 +153,7 @@ class FolderFormViewModelTest {
     @AfterTest
     fun tearDown() {
         Dispatchers.resetMain()
-        unmockkStatic(android.graphics.Color::class)
+        unmockkAll()
     }
 
     @Test
@@ -190,7 +190,7 @@ class FolderFormViewModelTest {
     }
 
     @Test
-    fun `given id for label with parent, when init, then emits update folder state`() = runTest {
+    fun `given id for label with parent, when init, then emits update folder state with parent`() = runTest {
         // Given
         val defaultTestFolder = defaultTestFolder.copy(parentId = defaultTestParentFolder.labelId)
         val loadedState = loadedUpdateState.copy(parent = defaultTestParentFolder)
@@ -355,7 +355,7 @@ class FolderFormViewModelTest {
     }
 
     @Test
-    fun `given create state and name already exists, when action folder save, then emits close with save`() = runTest {
+    fun `given create state and name already exists, when action folder save, then emits error snack`() = runTest {
         // Given
         val loadedState = loadedCreateState
         every { savedStateHandle.get<String>(FolderFormScreen.FolderFormLabelIdKey) } returns null
@@ -387,7 +387,7 @@ class FolderFormViewModelTest {
     }
 
     @Test
-    fun `given create state and limit reached, when action folder save, then emits close with save`() = runTest {
+    fun `given create state and limit reached, when action folder save, then emits error snack`() = runTest {
         // Given
         val loadedState = loadedCreateState
         every { savedStateHandle.get<String>(FolderFormScreen.FolderFormLabelIdKey) } returns null
@@ -418,7 +418,7 @@ class FolderFormViewModelTest {
     }
 
     @Test
-    fun `given update state, when action delete, then emits close with delete`() = runTest {
+    fun `given update state, when action delete, then emits close with success`() = runTest {
         // Given
         val loadedState = loadedUpdateState
         every {
@@ -444,7 +444,7 @@ class FolderFormViewModelTest {
     }
 
     @Test
-    fun `given create state and error in save, when action save, then emits save folder error`() = runTest {
+    fun `given create state and error in save, when action save, then emits error snack`() = runTest {
         // Given
         val loadedState = loadedCreateState
         every { savedStateHandle.get<String>(FolderFormScreen.FolderFormLabelIdKey) } returns null

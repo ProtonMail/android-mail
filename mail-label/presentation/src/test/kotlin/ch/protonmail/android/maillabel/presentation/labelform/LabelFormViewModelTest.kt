@@ -259,7 +259,7 @@ class LabelFormViewModelTest {
     }
 
     @Test
-    fun `given create state and name already exists, when action label save, then emits close with save`() = runTest {
+    fun `given create state and name already exists, when action label save, then emits error snack`() = runTest {
         // Given
         val loadedState = loadedCreateState
         every { savedStateHandle.get<String>(LabelFormScreen.LabelFormLabelIdKey) } returns null
@@ -291,7 +291,7 @@ class LabelFormViewModelTest {
     }
 
     @Test
-    fun `given create state and limit reached, when action label save, then emits close with save`() = runTest {
+    fun `given create state and limit reached, when action label save, then emits error snack`() = runTest {
         // Given
         val loadedState = loadedCreateState
         every { savedStateHandle.get<String>(LabelFormScreen.LabelFormLabelIdKey) } returns null
