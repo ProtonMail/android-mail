@@ -18,42 +18,52 @@
 
 package ch.protonmail.android.outbox
 
-import arrow.core.raise.either
 import ch.protonmail.android.initializer.outbox.OutboxObserver
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailmessage.data.usecase.DeleteSentMessagesFromOutbox
-import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
+import ch.protonmail.android.mailmessage.domain.model.DraftAction
+import ch.protonmail.android.mailmessage.domain.model.DraftState
+import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.OutboxRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.test.kotlin.TestCoroutineScopeProvider
+import me.proton.core.test.kotlin.TestDispatcherProvider
 import kotlin.test.Test
 
 @ExperimentalCoroutinesApi
 class OutboxObserverTest {
 
     private val userId = UserIdSample.Primary
-    private val outboxMessages = listOf(
-        MessageIdSample.Invoice,
-        MessageIdSample.SepWeatherForecast
+    private val unsentDraftItem = DraftState(
+        userId = userId, apiMessageId = MessageId("unsentItem01"),
+        messageId = MessageIdSample.AugWeatherForecast, state = DraftSyncState.Synchronized,
+        action = DraftAction.Compose
+    )
+    private val sentDraftItem = DraftState(
+        userId = userId, apiMessageId = MessageId("sentItem01"),
+        messageId = MessageIdSample.Invoice, state = DraftSyncState.Sent,
+        action = DraftAction.Compose
     )
 
     private val accountManager = mockk<AccountManager>()
-    private val messageRepository = mockk<MessageRepository>()
     private val outboxRepository = mockk<OutboxRepository>()
     private val deleteSentMessagesFromOutbox = mockk<DeleteSentMessagesFromOutbox>()
-    private val scopeProvider = TestCoroutineScopeProvider()
+    private val dispatcherProvider = TestDispatcherProvider(UnconfinedTestDispatcher())
+    private val scopeProvider = TestCoroutineScopeProvider(dispatcherProvider)
 
     private val outboxObserver = OutboxObserver(
         scopeProvider,
         accountManager,
-        messageRepository,
         outboxRepository,
         deleteSentMessagesFromOutbox
     )
@@ -71,30 +81,30 @@ class OutboxObserverTest {
     }
 
     @Test
-    fun `should not observe messages when outbox messages are empty`() = runTest {
+    fun `should not call delete sent outbox messages when there are no outbox messages`() = runTest {
         // Given
         coEvery { accountManager.getPrimaryUserId() } returns flowOf(userId)
-        coEvery { outboxRepository.observeAll(userId) } returns flowOf(emptyList())
-
-        // When
-        outboxObserver.start()
-
-        // Then
-        coVerify(exactly = 0) { outboxRepository.observeAll(userId) }
-    }
-
-    @Test
-    fun `should not delete sent outbox messages when there are no corresponding repository messages`() = runTest {
-        // Given
-        coEvery { accountManager.getPrimaryUserId() } returns flowOf(userId)
-        coEvery { outboxRepository.observeAll(userId) } returns flowOf(outboxMessages)
-        coEvery { messageRepository.observeCachedMessages(userId, outboxMessages) } returns
-            flowOf(either { emptyList() })
+        coEvery { outboxRepository.observeAll(any()) } returns flowOf(emptyList())
 
         // When
         outboxObserver.start()
 
         // Then
         coVerify(exactly = 0) { deleteSentMessagesFromOutbox(userId, any()) }
+    }
+
+    @Test
+    fun `should call delete for sent outbox messages`() = runTest {
+        // Given
+        val outboxDraftItems = flowOf(listOf(unsentDraftItem, sentDraftItem))
+        every { accountManager.getPrimaryUserId() } returns flowOf(userId)
+        coEvery { outboxRepository.observeAll(userId) } returns outboxDraftItems
+
+        // When
+        outboxObserver.start()
+
+        // Then
+        coVerify(exactly = 1) { deleteSentMessagesFromOutbox(userId, listOf(sentDraftItem)) }
+        coVerify(exactly = 0) { deleteSentMessagesFromOutbox(userId, listOf(unsentDraftItem)) }
     }
 }

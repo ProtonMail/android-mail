@@ -29,7 +29,7 @@ import javax.inject.Inject
 /**
  * Filter draft messages which are already in Outbox
  */
-class FilterDraftMessagesAlreadyInOutbox @Inject constructor(
+class ExcludeDraftMessagesAlreadyInOutbox @Inject constructor(
     private val outboxRepository: OutboxRepository
 ) {
 
@@ -37,7 +37,7 @@ class FilterDraftMessagesAlreadyInOutbox @Inject constructor(
         // Get outbox messages
         val outboxMessages = outboxRepository
             .observeAll(userId)
-            .map { it.map { messageId -> messageId.id } }
+            .map { it.mapNotNull { draftState -> draftState.apiMessageId?.id } }
             .firstOrNull()
             ?: emptyList()
 

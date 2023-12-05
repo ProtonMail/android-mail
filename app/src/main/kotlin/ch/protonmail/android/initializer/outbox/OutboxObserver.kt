@@ -19,12 +19,12 @@
 package ch.protonmail.android.initializer.outbox
 
 import ch.protonmail.android.mailmessage.data.usecase.DeleteSentMessagesFromOutbox
-import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
+import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
 import ch.protonmail.android.mailmessage.domain.repository.OutboxRepository
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.util.kotlin.CoroutineScopeProvider
 import javax.inject.Inject
@@ -34,7 +34,6 @@ import javax.inject.Singleton
 class OutboxObserver @Inject constructor(
     private val scopeProvider: CoroutineScopeProvider,
     private val accountManager: AccountManager,
-    private val messageRepository: MessageRepository,
     private val outboxRepository: OutboxRepository,
     private val deleteSentMessagesFromOutbox: DeleteSentMessagesFromOutbox
 ) {
@@ -42,22 +41,17 @@ class OutboxObserver @Inject constructor(
     fun start() = accountManager.getPrimaryUserId()
         .filterNotNull()
         .flatMapLatest { userId ->
-            // Observe the outbox items
             outboxRepository.observeAll(userId)
-                .flatMapLatest { outboxMessages ->
-
-                    // Observe the corresponding messages from the MessageRepository
-                    messageRepository.observeCachedMessages(userId, outboxMessages)
-                        .map { either ->
-                            either.fold(
-                                // Ignore local data error
-                                {},
-                                { messages ->
-                                    deleteSentMessagesFromOutbox(userId, messages)
-                                }
-                            )
-                        }
-                }
         }
-        .launchIn(scopeProvider.GlobalDefaultSupervisedScope)
+        .onEach { outboxDraftStates ->
+
+            val sentItems = outboxDraftStates.filter { draftState -> draftState.state == DraftSyncState.Sent }
+            if (sentItems.isNotEmpty()) {
+                deleteSentMessagesFromOutbox(
+                    sentItems.first().userId,
+                    sentItems
+                )
+            }
+        }
+        .launchIn(scopeProvider.GlobalIOSupervisedScope)
 }

@@ -18,10 +18,8 @@
 
 package ch.protonmail.android.mailmessage.data.usecase
 
-import ch.protonmail.android.maillabel.domain.model.SystemLabelId
-import ch.protonmail.android.mailmessage.domain.model.Message
-import ch.protonmail.android.mailmessage.domain.model.MessageId
-import ch.protonmail.android.mailmessage.domain.usecase.DeleteSentDraftMessagesStatus
+import ch.protonmail.android.mailmessage.domain.model.DraftState
+import ch.protonmail.android.mailmessage.domain.usecase.DeleteDraftState
 import me.proton.core.domain.entity.UserId
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.delay
@@ -33,24 +31,18 @@ import javax.inject.Inject
  * in the DraftSyncEntity table.
  */
 class DeleteSentMessagesFromOutbox @Inject constructor(
-    private val deleteSentDraftMessagesStatus: DeleteSentDraftMessagesStatus,
+    private val deleteDraftState: DeleteDraftState,
     private val scopeProvider: CoroutineScopeProvider
 ) {
 
-    suspend operator fun invoke(userId: UserId, entities: List<Message>) {
+    suspend operator fun invoke(userId: UserId, sentDraftItems: List<DraftState>) {
 
-        val sentItemsToClear = entities.filter { message ->
-            message.labelIds.contains(SystemLabelId.AllSent.labelId)
-        }.map { MessageId(it.id) }
-
-        if (sentItemsToClear.isNotEmpty()) {
-            scopeProvider.GlobalIOSupervisedScope.launch {
-                // We need to keep Sent messages in Outbox until the next event loop iteration in order to prevent
-                // pull to refresh updates overwriting the message label
-                delay(EVENT_LOOP_PERIOD_MS)
-                for (sentItemId in sentItemsToClear) {
-                    deleteSentDraftMessagesStatus(userId, sentItemId)
-                }
+        scopeProvider.GlobalIOSupervisedScope.launch {
+            // We need to keep Sent messages in Outbox until the next event loop iteration in order to prevent
+            // pull to refresh updates overwriting the message label
+            delay(EVENT_LOOP_PERIOD_MS)
+            for (sentDraft in sentDraftItems) {
+                deleteDraftState(userId, sentDraft.messageId)
             }
         }
     }

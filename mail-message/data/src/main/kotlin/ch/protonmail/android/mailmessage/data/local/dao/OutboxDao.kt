@@ -20,29 +20,21 @@ package ch.protonmail.android.mailmessage.data.local.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import ch.protonmail.android.mailmessage.domain.model.DraftState
 import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
-import ch.protonmail.android.mailmessage.domain.model.MessageId
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
-import me.proton.core.label.domain.entity.LabelId
 
 @Dao
 interface OutboxDao {
 
     @Query(
         """
-        SELECT MLE.messageId 
-        FROM MessageLabelEntity MLE 
-        LEFT JOIN DraftStateEntity DSE 
-        ON MLE.userId = DSE.userId AND MLE.messageId = DSE.apiMessageId 
-        WHERE MLE.userId = :userId AND MLE.labelId = (:outboxLabelId) AND 
-        DSE.state IN (:outboxDraftSyncStates) 
+        SELECT * 
+        FROM DraftStateEntity 
+        WHERE userId = :userId AND state IN (:outboxDraftSyncStates) 
         """
     )
-    fun getMessagesInOutbox(
-        userId: UserId,
-        outboxLabelId: LabelId,
-        outboxDraftSyncStates: List<DraftSyncState>
-    ): Flow<List<MessageId>>
+    fun getMessagesInOutbox(userId: UserId, outboxDraftSyncStates: List<DraftSyncState>): Flow<List<DraftState>>
 
 }

@@ -21,6 +21,10 @@ package ch.protonmail.android.mailmessage.data.usecase
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.data.getMessage
+import ch.protonmail.android.mailmessage.domain.model.DraftAction
+import ch.protonmail.android.mailmessage.domain.model.DraftState
+import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.OutboxRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import io.mockk.coEvery
@@ -31,7 +35,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class FilterDraftMessagesAlreadyInOutboxTest {
+class ExcludeDraftMessagesAlreadyInOutboxTest {
 
     private val userId = UserIdSample.Primary
     private val allMailLabel = SystemLabelId.AllMail.labelId.id
@@ -48,12 +52,36 @@ class FilterDraftMessagesAlreadyInOutboxTest {
             id = MessageIdSample.SepWeatherForecast.id, labelIds = listOf(allMailLabel, sentLabel)
         )
     )
+    private val outboxStateList = listOf(
+        DraftState(
+            userId = userId,
+            messageId = MessageId("outboxItem01"),
+            apiMessageId = MessageIdSample.Invoice,
+            state = DraftSyncState.Sent,
+            action = DraftAction.Compose
+        ),
+        DraftState(
+            userId = userId,
+            messageId = MessageId("outboxItem02"),
+            apiMessageId = MessageIdSample.NewDraftWithSubjectAndBody,
+            state = DraftSyncState.Synchronized,
+            action = DraftAction.Compose
+        ),
+        DraftState(
+            userId = userId,
+            messageId = MessageId("outboxItem03"),
+            apiMessageId = MessageIdSample.SepWeatherForecast,
+            state = DraftSyncState.Sent,
+            action = DraftAction.Compose
+        )
+
+    )
     private val allMailEntityCount = 3
     private val sentEntityCount = 2
 
     private val outboxRepository = mockk<OutboxRepository>()
 
-    private val filterDraftMessagesAlreadyInOutbox = FilterDraftMessagesAlreadyInOutbox(outboxRepository)
+    private val excludeDraftMessagesAlreadyInOutbox = ExcludeDraftMessagesAlreadyInOutbox(outboxRepository)
 
     @Test
     fun `should return the same message list when there is no outbox messages`() = runTest {
@@ -61,7 +89,7 @@ class FilterDraftMessagesAlreadyInOutboxTest {
         coEvery { outboxRepository.observeAll(userId) } returns flowOf(emptyList())
 
         // When
-        val result = filterDraftMessagesAlreadyInOutbox.invoke(userId, entities)
+        val result = excludeDraftMessagesAlreadyInOutbox.invoke(userId, entities)
 
         // Then
         assertEquals(allMailEntityCount, result.size)
@@ -73,10 +101,10 @@ class FilterDraftMessagesAlreadyInOutboxTest {
     fun `should filter out draft message when it is in outbox messages`() = runTest {
         // Given
         coEvery { outboxRepository.observeAll(userId) } returns
-            flowOf(listOf(MessageIdSample.NewDraftWithSubjectAndBody))
+            flowOf(outboxStateList.filter { it.state != DraftSyncState.Sent })
 
         // When
-        val result = filterDraftMessagesAlreadyInOutbox.invoke(userId, entities)
+        val result = excludeDraftMessagesAlreadyInOutbox.invoke(userId, entities)
 
         // Then
         assertEquals(sentEntityCount, result.size)
@@ -87,10 +115,10 @@ class FilterDraftMessagesAlreadyInOutboxTest {
     fun `should not filter out sent messages when they are also in outbox messages`() = runTest {
         // Given
         coEvery { outboxRepository.observeAll(userId) } returns
-            flowOf(listOf(MessageIdSample.Invoice, MessageIdSample.SepWeatherForecast))
+            flowOf(outboxStateList.filter { it.state == DraftSyncState.Sent })
 
         // When
-        val result = filterDraftMessagesAlreadyInOutbox.invoke(userId, entities)
+        val result = excludeDraftMessagesAlreadyInOutbox.invoke(userId, entities)
 
         // Then
         assertEquals(allMailEntityCount, result.size)

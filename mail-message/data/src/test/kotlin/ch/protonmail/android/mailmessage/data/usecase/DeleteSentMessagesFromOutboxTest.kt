@@ -19,12 +19,13 @@
 package ch.protonmail.android.mailmessage.data.usecase
 
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
-import ch.protonmail.android.maillabel.domain.model.SystemLabelId
-import ch.protonmail.android.mailmessage.data.getMessage
 import ch.protonmail.android.mailmessage.data.usecase.DeleteSentMessagesFromOutbox.Companion.EVENT_LOOP_PERIOD_MS
+import ch.protonmail.android.mailmessage.domain.model.DraftAction
+import ch.protonmail.android.mailmessage.domain.model.DraftState
+import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
-import ch.protonmail.android.mailmessage.domain.usecase.DeleteSentDraftMessagesStatus
-import io.mockk.coEvery
+import ch.protonmail.android.mailmessage.domain.usecase.DeleteDraftState
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.advanceTimeBy
@@ -35,67 +36,39 @@ import org.junit.Test
 class DeleteSentMessagesFromOutboxTest {
 
     private val userId = UserIdSample.Primary
-    private val allMailLabel = SystemLabelId.AllMail.labelId.id
-    private val draftLabel = SystemLabelId.AllDrafts.labelId.id
-    private val sentLabel = SystemLabelId.AllSent.labelId.id
-    private val outboxMessages = listOf(
-        getMessage(
-            id = MessageIdSample.Invoice.id, labelIds = listOf(allMailLabel, sentLabel)
-        ),
-        getMessage(
-            id = MessageIdSample.NewDraftWithSubjectAndBody.id, labelIds = listOf(allMailLabel, draftLabel)
-        ),
-        getMessage(
-            id = MessageIdSample.SepWeatherForecast.id, labelIds = listOf(allMailLabel, sentLabel)
-        )
-    )
-
-    private val draftOnlyOutboxMessages = listOf(
-        getMessage(
-            id = MessageIdSample.Invoice.id, labelIds = listOf(allMailLabel, draftLabel)
-        ),
-        getMessage(
-            id = MessageIdSample.NewDraftWithSubjectAndBody.id, labelIds = listOf(allMailLabel, draftLabel)
-        ),
-        getMessage(
-            id = MessageIdSample.SepWeatherForecast.id, labelIds = listOf(allMailLabel, draftLabel)
-        )
-    )
-
-    private val deleteSentDraftMessagesStatus = mockk<DeleteSentDraftMessagesStatus>()
+    private val deleteDraftState = mockk<DeleteDraftState>()
     private val scopeProvider = TestCoroutineScopeProvider()
     private val deleteSentMessagesFromOutbox = DeleteSentMessagesFromOutbox(
-        deleteSentDraftMessagesStatus,
+        deleteDraftState,
         scopeProvider
     )
 
     @Test
     fun `should delete sent messages from outbox`() = runTest {
         // Given
-        val sentItemsToClear = listOf(MessageIdSample.Invoice, MessageIdSample.SepWeatherForecast)
-        coEvery { deleteSentDraftMessagesStatus(userId, any()) } returns Unit
+        val sentDraftItems = listOf(
+            DraftState(
+                userId = userId,
+                apiMessageId = MessageId("outboxItem01"),
+                messageId = MessageIdSample.Invoice,
+                state = DraftSyncState.Sent,
+                action = DraftAction.Compose
+            ),
+            DraftState(
+                userId = userId,
+                apiMessageId = MessageId("outboxItem02"),
+                messageId = MessageIdSample.SepWeatherForecast,
+                state = DraftSyncState.Sent,
+                action = DraftAction.Compose
+            )
+        )
 
         // When
-        deleteSentMessagesFromOutbox.invoke(userId, outboxMessages)
+        deleteSentMessagesFromOutbox.invoke(userId, sentDraftItems)
         scopeProvider.GlobalIOSupervisedScope.advanceTimeBy(EVENT_LOOP_PERIOD_MS * 2)
 
         // Then
-        coVerify(exactly = sentItemsToClear.size) {
-            deleteSentDraftMessagesStatus(userId, any())
-        }
-    }
-
-    @Test
-    fun `should not delete draft messages from outbox`() = runTest {
-        // Given
-        coEvery { deleteSentDraftMessagesStatus(userId, any()) } returns Unit
-
-        // When
-        deleteSentMessagesFromOutbox.invoke(userId, draftOnlyOutboxMessages)
-
-        // Then
-        coVerify(exactly = 0) {
-            deleteSentDraftMessagesStatus(userId, any())
-        }
+        coVerify { deleteDraftState(userId, any()) }
+        coVerify { deleteDraftState(userId, any()) }
     }
 }

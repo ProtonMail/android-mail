@@ -20,7 +20,7 @@ package ch.protonmail.android.mailmessage.data
 
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.resource.MessageResource
-import ch.protonmail.android.mailmessage.data.usecase.FilterDraftMessagesAlreadyInOutbox
+import ch.protonmail.android.mailmessage.data.usecase.ExcludeDraftMessagesAlreadyInOutbox
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailpagination.domain.model.PageKey
@@ -57,7 +57,7 @@ open class MessageEventListener @Inject constructor(
     private val db: LabelDatabase,
     private val localDataSource: MessageLocalDataSource,
     private val repository: MessageRepository,
-    private val filterDraftMessagesAlreadyInOutbox: FilterDraftMessagesAlreadyInOutbox
+    private val excludeDraftMessagesAlreadyInOutbox: ExcludeDraftMessagesAlreadyInOutbox
 ) : EventListener<String, MessageResource>() {
 
     override val type = Type.Core
@@ -80,7 +80,7 @@ open class MessageEventListener @Inject constructor(
 
     override suspend fun onUpdate(config: EventManagerConfig, entities: List<MessageResource>) {
 
-        val messagesToUpsert = filterDraftMessagesAlreadyInOutbox(
+        val messagesToUpsert = excludeDraftMessagesAlreadyInOutbox(
             config.userId,
             entities.map { it.toMessage(config.userId) }
         )

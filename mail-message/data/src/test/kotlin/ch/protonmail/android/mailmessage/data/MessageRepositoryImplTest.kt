@@ -36,7 +36,7 @@ import ch.protonmail.android.mailmessage.data.local.MessageBodyFileWriteExceptio
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSource
 import ch.protonmail.android.mailmessage.data.repository.MessageRepositoryImpl
-import ch.protonmail.android.mailmessage.data.usecase.FilterDraftMessagesAlreadyInOutbox
+import ch.protonmail.android.mailmessage.data.usecase.ExcludeDraftMessagesAlreadyInOutbox
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.model.RefreshedMessageWithBody
@@ -80,7 +80,7 @@ class MessageRepositoryImplTest {
         getMessage(id = "3", time = 3000),
         getMessage(id = "4", time = 4000)
     )
-    private val filterDraftMessagesAlreadyInOutbox = mockk<FilterDraftMessagesAlreadyInOutbox> {
+    private val excludeDraftMessagesAlreadyInOutbox = mockk<ExcludeDraftMessagesAlreadyInOutbox> {
         // Mock the behavior to return the same list
         coEvery { invoke(userId = userId, entities = remoteMessageList) } returns remoteMessageList
     }
@@ -108,7 +108,7 @@ class MessageRepositoryImplTest {
     private val messageRepository = MessageRepositoryImpl(
         remoteDataSource = remoteDataSource,
         localDataSource = localDataSource,
-        filterDraftMessagesAlreadyInOutbox = filterDraftMessagesAlreadyInOutbox,
+        excludeDraftMessagesAlreadyInOutbox = excludeDraftMessagesAlreadyInOutbox,
         coroutineScopeProvider = TestCoroutineScopeProvider(TestDispatcherProvider(UnconfinedTestDispatcher()))
     )
 
@@ -151,7 +151,7 @@ class MessageRepositoryImplTest {
         val pageKey = PageKey()
         val clippedPageKey = PageKey(filter = PageFilter(minTime = 0))
         val expected = listOf(getMessage(id = "1", time = 1000))
-        coEvery { filterDraftMessagesAlreadyInOutbox.invoke(any(), any()) } returns expected
+        coEvery { excludeDraftMessagesAlreadyInOutbox.invoke(any(), any()) } returns expected
         coEvery { localDataSource.getClippedPageKey(userId, pageKey) } returns clippedPageKey
         coEvery { remoteDataSource.getMessages(userId, clippedPageKey) } returns expected.right()
 
@@ -192,7 +192,7 @@ class MessageRepositoryImplTest {
             getMessage(id = "2", time = 2000),
             getMessage(id = "3", time = 3000)
         )
-        coEvery { filterDraftMessagesAlreadyInOutbox.invoke(any(), any()) } returns expected
+        coEvery { excludeDraftMessagesAlreadyInOutbox.invoke(any(), any()) } returns expected
         coEvery { localDataSource.getClippedPageKey(userId, pageKey) } returns pageKey
         coEvery { remoteDataSource.getMessages(any(), any()) } returns expected.right()
 

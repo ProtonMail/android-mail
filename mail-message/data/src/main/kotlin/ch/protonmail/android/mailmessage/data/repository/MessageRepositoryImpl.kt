@@ -33,7 +33,7 @@ import ch.protonmail.android.mailmessage.data.local.MessageBodyFileWriteExceptio
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageApi
 import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSource
-import ch.protonmail.android.mailmessage.data.usecase.FilterDraftMessagesAlreadyInOutbox
+import ch.protonmail.android.mailmessage.data.usecase.ExcludeDraftMessagesAlreadyInOutbox
 import ch.protonmail.android.mailmessage.domain.model.Message
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -67,7 +67,7 @@ import kotlin.math.min
 class MessageRepositoryImpl @Inject constructor(
     private val remoteDataSource: MessageRemoteDataSource,
     private val localDataSource: MessageLocalDataSource,
-    private val filterDraftMessagesAlreadyInOutbox: FilterDraftMessagesAlreadyInOutbox,
+    private val excludeDraftMessagesAlreadyInOutbox: ExcludeDraftMessagesAlreadyInOutbox,
     coroutineScopeProvider: CoroutineScopeProvider
 ) : MessageRepository {
 
@@ -109,7 +109,7 @@ class MessageRepositoryImpl @Inject constructor(
             userId = userId,
             pageKey = adaptedPageKey
         ).onRight { messages ->
-            val filteredMessages = filterDraftMessagesAlreadyInOutbox(userId, messages)
+            val filteredMessages = excludeDraftMessagesAlreadyInOutbox(userId, messages)
             upsertMessages(userId, adaptedPageKey, filteredMessages)
         }
     }

@@ -18,11 +18,11 @@
 
 package ch.protonmail.android.mailmessage.domain.repository
 
-import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.DraftState
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
 
 interface OutboxRepository {
-    suspend fun observeAll(userId: UserId): Flow<List<MessageId>>
+    suspend fun observeAll(userId: UserId): Flow<List<DraftState>>
 
 }
