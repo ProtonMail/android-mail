@@ -21,12 +21,15 @@ package ch.protonmail.android.mailmailbox.domain.usecase
 import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailmailbox.domain.model.UnreadCounter
+import ch.protonmail.android.mailmailbox.domain.model.UnreadCounters
 import ch.protonmail.android.mailmailbox.domain.repository.UnreadCountRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.mapLatest
 import me.proton.core.domain.entity.UserId
+import me.proton.core.mailsettings.domain.entity.ViewMode
 import javax.inject.Inject
 
 /**
@@ -39,7 +42,8 @@ import javax.inject.Inject
  */
 class ObserveUnreadCounters @Inject constructor(
     private val countersRepository: UnreadCountRepository,
-    private val observeMailFeature: ObserveMailFeature
+    private val observeMailFeature: ObserveMailFeature,
+    private val observeCurrentViewMode: ObserveCurrentViewMode
 ) {
 
     suspend operator fun invoke(userId: UserId): Flow<List<UnreadCounter>> {
@@ -48,9 +52,32 @@ class ObserveUnreadCounters @Inject constructor(
             return flowOf(emptyList())
         }
 
-        return countersRepository.observeUnreadCount(userId).mapLatest {
-            it.messagesUnreadCount
-        }
+        return observeCurrentViewMode(userId)
+            .flatMapLatest { viewMode ->
+                countersRepository.observeUnreadCount(userId).mapLatest { unreadCounters ->
+                    val counters = getCountersForViewMode(viewMode, unreadCounters)
+                    replaceCountersForMessageOnlyLocations(counters, unreadCounters)
+                }
+            }
     }
+
+    private fun replaceCountersForMessageOnlyLocations(
+        counters: List<UnreadCounter>,
+        unreadCounters: UnreadCounters
+    ): List<UnreadCounter> = counters.toMutableList().run {
+        removeAll { it.labelId in MessageOnlyLabelIds.messagesOnlyLabelsIds }
+        val messageOnlyCounters = unreadCounters.messagesUnreadCount.filter {
+            it.labelId in MessageOnlyLabelIds.messagesOnlyLabelsIds
+        }
+        addAll(messageOnlyCounters)
+        this
+    }
+
+    private fun getCountersForViewMode(viewMode: ViewMode, unreadCounters: UnreadCounters) =
+        if (viewMode == ViewMode.ConversationGrouping) {
+            unreadCounters.conversationsUnreadCount
+        } else {
+            unreadCounters.messagesUnreadCount
+        }
 
 }
