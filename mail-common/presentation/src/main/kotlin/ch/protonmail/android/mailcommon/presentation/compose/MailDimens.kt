@@ -29,6 +29,7 @@ object MailDimens {
     val TinySpacing = 2.dp
 
     val SeparatorHeight = 1.dp
+    val SidebarBetaLabelHeight = 64.dp
 
     val DefaultTouchTargetSize = 32.dp
 
@@ -55,6 +56,7 @@ object MailDimens {
     val TextFieldMultiLineSize = 128.dp
 
     object ColorPicker {
+
         val CircleBoxSize = 56.dp
         val CircleSize = 20.dp
         val SelectedCircleSize = 40.dp
