@@ -68,4 +68,9 @@ data class Message(
     fun expirationTimeOrNull(): Duration? = expirationTime.takeIf { it > 0 }?.seconds
 
     fun isDraft() = labelIds.any { it == SystemLabelId.AllDrafts.labelId }
+
+    companion object {
+        const val FLAG_PHISHING_AUTO = 1_073_741_824L
+        const val FLAG_PHISHING_MANUAL = 2_147_483_648L
+    }
 }
