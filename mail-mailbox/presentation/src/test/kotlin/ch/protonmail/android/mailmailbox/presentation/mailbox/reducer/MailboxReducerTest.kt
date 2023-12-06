@@ -170,7 +170,8 @@ internal class MailboxReducerTest(
                 offlineEffect = Effect.empty(),
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
-                selectionModeEnabled = false
+                selectionModeEnabled = false,
+                swipeActions = null
             ),
             topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
                 currentLabelName = spamLabel.text()

@@ -31,10 +31,12 @@ sealed interface MailboxListState {
     sealed interface Data : MailboxListState {
 
         val currentMailLabel: MailLabel
+        val swipeActions: SwipeActionsUiModel?
 
         data class ViewMode(
             override val currentMailLabel: MailLabel,
             override val selectionModeEnabled: Boolean,
+            override val swipeActions: SwipeActionsUiModel?,
             val openItemEffect: Effect<OpenMailboxItemRequest>,
             val scrollToMailboxTop: Effect<MailLabelId>,
             val offlineEffect: Effect<Unit>,
@@ -45,6 +47,7 @@ sealed interface MailboxListState {
         data class SelectionMode(
             override val currentMailLabel: MailLabel,
             override val selectionModeEnabled: Boolean,
+            override val swipeActions: SwipeActionsUiModel?,
             val selectedMailboxItems: Set<SelectedMailboxItem>
         ) : Data {
 

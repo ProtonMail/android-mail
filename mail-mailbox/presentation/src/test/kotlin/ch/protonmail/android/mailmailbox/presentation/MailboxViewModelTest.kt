@@ -415,7 +415,8 @@ class MailboxViewModelTest {
                 offlineEffect = Effect.empty(),
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
-                selectionModeEnabled = false
+                selectionModeEnabled = false,
+                swipeActions = null
             )
         )
         val mailLabelsFlow = MutableStateFlow(
@@ -1025,7 +1026,8 @@ class MailboxViewModelTest {
                 offlineEffect = Effect.of(Unit),
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
-                selectionModeEnabled = false
+                selectionModeEnabled = false,
+                swipeActions = null
             )
         )
         every {
@@ -1054,7 +1056,8 @@ class MailboxViewModelTest {
                 offlineEffect = Effect.empty(),
                 refreshErrorEffect = Effect.of(Unit),
                 refreshRequested = false,
-                selectionModeEnabled = false
+                selectionModeEnabled = false,
+                swipeActions = null
             )
         )
         every {
@@ -1083,7 +1086,8 @@ class MailboxViewModelTest {
                 offlineEffect = Effect.of(Unit),
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = true,
-                selectionModeEnabled = false
+                selectionModeEnabled = false,
+                swipeActions = null
             )
         )
         every {
@@ -1179,7 +1183,8 @@ class MailboxViewModelTest {
                 offlineEffect = Effect.empty(),
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
-                selectionModeEnabled = true
+                selectionModeEnabled = true,
+                swipeActions = null
             )
         )
         every {
@@ -3087,7 +3092,8 @@ class MailboxViewModelTest {
                 offlineEffect = Effect.empty(),
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
-                selectionModeEnabled = false
+                selectionModeEnabled = false,
+                swipeActions = null
             ),
             unreadFilterState = UnreadFilterState.Data(
                 numUnread = UnreadCountersTestData.labelToCounterMap[initialLocationMailLabelId.labelId]!!,

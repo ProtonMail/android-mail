@@ -66,7 +66,8 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 )
             ),
             TestInput(
@@ -79,7 +80,8 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 )
             ),
             TestInput(
@@ -129,7 +131,8 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 ),
                 operation = MailboxEvent.SelectedLabelChanged(MailLabelTestData.customLabelTwo),
                 expectedState = MailboxListState.Data.ViewMode(
@@ -139,7 +142,8 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 )
             ),
             TestInput(
@@ -150,7 +154,8 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 ),
                 operation = MailboxEvent.NewLabelSelected(MailLabelTestData.customLabelTwo, UNREAD_COUNT),
                 expectedState = MailboxListState.Data.ViewMode(
@@ -160,7 +165,8 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 )
             ),
             TestInput(
@@ -171,7 +177,8 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 ),
                 operation = MailboxEvent.ItemClicked.ItemDetailsOpenedInViewMode(
                     item = MailboxItemUiModelTestData.readMailboxItemUiModel,
@@ -190,7 +197,8 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 )
             ),
             TestInput(
@@ -201,7 +209,8 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 ),
                 operation = MailboxEvent.ItemClicked.ItemDetailsOpenedInViewMode(
                     item = MailboxItemUiModelTestData.readMailboxItemUiModel,
@@ -220,7 +229,8 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 )
             ),
             TestInput(
@@ -231,7 +241,8 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 ),
                 operation = MailboxEvent.ItemClicked.OpenComposer(
                     item = MailboxItemUiModelTestData.draftMailboxItemUiModel
@@ -249,7 +260,8 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 )
             ),
             TestInput(
@@ -260,7 +272,8 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 ),
                 operation = MailboxEvent.ItemClicked.OpenComposer(
                     item = MailboxItemUiModelTestData.draftMailboxItemUiModel
@@ -278,7 +291,8 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 )
             ),
             TestInput(
@@ -289,7 +303,8 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = true,
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 ),
                 operation = MailboxViewAction.OnOfflineWithData,
                 expectedState = MailboxListState.Data.ViewMode(
@@ -299,7 +314,8 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.of(Unit),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 )
             ),
             TestInput(
@@ -310,7 +326,8 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 ),
                 operation = MailboxViewAction.OnOfflineWithData,
                 expectedState = MailboxListState.Data.ViewMode(
@@ -320,7 +337,8 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 )
             ),
             TestInput(
@@ -331,7 +349,8 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = true,
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 ),
                 operation = MailboxViewAction.OnErrorWithData,
                 expectedState = MailboxListState.Data.ViewMode(
@@ -341,7 +360,8 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.of(Unit),
                     refreshRequested = false,
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 )
             ),
             TestInput(
@@ -352,7 +372,8 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 ),
                 operation = MailboxViewAction.OnErrorWithData,
                 expectedState = MailboxListState.Data.ViewMode(
@@ -362,7 +383,8 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 )
             ),
             TestInput(
@@ -373,7 +395,8 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 ),
                 operation = MailboxViewAction.Refresh,
                 expectedState = MailboxListState.Data.ViewMode(
@@ -383,7 +406,8 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = true,
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 )
             ),
             TestInput(
@@ -394,7 +418,8 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 ),
                 operation = MailboxEvent.EnterSelectionMode(MailboxItemUiModelTestData.readMailboxItemUiModel),
                 expectedState = MailboxListState.Data.SelectionMode(
@@ -407,7 +432,8 @@ internal class MailboxListReducerTest(
                             isStarred = false
                         )
                     ),
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 )
             ),
             TestInput(
@@ -421,7 +447,8 @@ internal class MailboxListReducerTest(
                             isStarred = false
                         )
                     ),
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 ),
                 operation = MailboxViewAction.ExitSelectionMode,
                 expectedState = MailboxListState.Data.ViewMode(
@@ -431,7 +458,8 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 )
             ),
             TestInput(
@@ -445,7 +473,8 @@ internal class MailboxListReducerTest(
                             isStarred = false
                         )
                     ),
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 ),
                 operation = MailboxEvent.ItemClicked.ItemAddedToSelection(
                     MailboxItemUiModelTestData.unreadMailboxItemUiModel
@@ -466,7 +495,8 @@ internal class MailboxListReducerTest(
                             isStarred = false
                         )
                     ),
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 )
             ),
             TestInput(
@@ -480,7 +510,8 @@ internal class MailboxListReducerTest(
                             isStarred = false
                         )
                     ),
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 ),
                 operation = MailboxEvent.ItemClicked.ItemRemovedFromSelection(
                     MailboxItemUiModelTestData.readMailboxItemUiModel
@@ -488,7 +519,8 @@ internal class MailboxListReducerTest(
                 expectedState = MailboxListState.Data.SelectionMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,
                     selectedMailboxItems = setOf(),
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 )
             ),
             TestInput(
@@ -499,7 +531,8 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 ),
                 operation = MailboxEvent.SelectionModeEnabledChanged(true),
                 expectedState = MailboxListState.Data.ViewMode(
@@ -509,7 +542,8 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
-                    selectionModeEnabled = true
+                    selectionModeEnabled = true,
+                    swipeActions = null
                 )
             ),
             TestInput(
@@ -523,7 +557,8 @@ internal class MailboxListReducerTest(
                             isStarred = false
                         )
                     ),
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 ),
                 operation = MailboxViewAction.MarkAsRead,
                 expectedState = MailboxListState.Data.SelectionMode(
@@ -536,7 +571,8 @@ internal class MailboxListReducerTest(
                             isStarred = false
                         )
                     ),
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 )
             ),
             TestInput(
@@ -550,7 +586,8 @@ internal class MailboxListReducerTest(
                             isStarred = false
                         )
                     ),
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 ),
                 operation = MailboxViewAction.MarkAsUnread,
                 expectedState = MailboxListState.Data.SelectionMode(
@@ -563,7 +600,8 @@ internal class MailboxListReducerTest(
                             isStarred = false
                         )
                     ),
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 )
             ),
             TestInput(
@@ -577,7 +615,8 @@ internal class MailboxListReducerTest(
                             isStarred = true
                         )
                     ),
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 ),
                 operation = MailboxEvent.Trash(5),
                 expectedState = MailboxListState.Data.ViewMode(
@@ -587,7 +626,8 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 )
             ),
             TestInput(
@@ -601,7 +641,8 @@ internal class MailboxListReducerTest(
                             isStarred = true
                         )
                     ),
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 ),
                 operation = MailboxEvent.DeleteConfirmed(ViewMode.ConversationGrouping, 5),
                 expectedState = MailboxListState.Data.ViewMode(
@@ -611,7 +652,8 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 )
             ),
             TestInput(
@@ -625,7 +667,8 @@ internal class MailboxListReducerTest(
                             isStarred = true
                         )
                     ),
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 ),
                 operation = MailboxEvent.DeleteConfirmed(ViewMode.NoConversationGrouping, 5),
                 expectedState = MailboxListState.Data.ViewMode(
@@ -635,7 +678,8 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 )
             ),
             TestInput(
@@ -649,7 +693,8 @@ internal class MailboxListReducerTest(
                             isStarred = true
                         )
                     ),
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 ),
                 operation = MailboxEvent.ItemsRemovedFromSelection(
                     listOf(MailboxItemUiModelTestData.readMailboxItemUiModel.id)
@@ -657,7 +702,8 @@ internal class MailboxListReducerTest(
                 expectedState = MailboxListState.Data.SelectionMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,
                     selectedMailboxItems = emptySet(),
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 )
             ),
             TestInput(
@@ -671,7 +717,8 @@ internal class MailboxListReducerTest(
                             isStarred = false
                         )
                     ),
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 ),
                 operation = MailboxViewAction.MoveToConfirmed,
                 expectedState = MailboxListState.Data.ViewMode(
@@ -681,7 +728,8 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 )
             ),
             TestInput(
@@ -695,7 +743,8 @@ internal class MailboxListReducerTest(
                             isStarred = false
                         )
                     ),
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 ),
                 operation = MailboxViewAction.Star,
                 expectedState = MailboxListState.Data.SelectionMode(
@@ -708,7 +757,8 @@ internal class MailboxListReducerTest(
                             isStarred = true
                         )
                     ),
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 )
             ),
             TestInput(
@@ -722,7 +772,8 @@ internal class MailboxListReducerTest(
                             isStarred = false
                         )
                     ),
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 ),
                 operation = MailboxViewAction.Star,
                 expectedState = MailboxListState.Data.SelectionMode(
@@ -735,7 +786,8 @@ internal class MailboxListReducerTest(
                             isStarred = true
                         )
                     ),
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 )
             ),
             TestInput(
@@ -749,7 +801,8 @@ internal class MailboxListReducerTest(
                             isStarred = true
                         )
                     ),
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 ),
                 operation = MailboxViewAction.UnStar,
                 expectedState = MailboxListState.Data.SelectionMode(
@@ -762,7 +815,8 @@ internal class MailboxListReducerTest(
                             isStarred = false
                         )
                     ),
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 )
             ),
             TestInput(
@@ -776,7 +830,8 @@ internal class MailboxListReducerTest(
                             isStarred = false
                         )
                     ),
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 ),
                 operation = MailboxViewAction.MoveToArchive,
                 expectedState = MailboxListState.Data.ViewMode(
@@ -786,7 +841,8 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 )
             ),
             TestInput(
@@ -800,7 +856,8 @@ internal class MailboxListReducerTest(
                             isStarred = false
                         )
                     ),
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 ),
                 operation = MailboxViewAction.MoveToSpam,
                 expectedState = MailboxListState.Data.ViewMode(
@@ -810,7 +867,8 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 )
             )
         )

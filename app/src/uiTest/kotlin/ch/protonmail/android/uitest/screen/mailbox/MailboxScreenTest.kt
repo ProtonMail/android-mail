@@ -93,7 +93,8 @@ internal class MailboxScreenTest {
             offlineEffect = Effect.empty(),
             refreshErrorEffect = Effect.empty(),
             refreshRequested = false,
-            selectionModeEnabled = false
+            selectionModeEnabled = false,
+            swipeActions = null
         )
         val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
         val items = listOf(MailboxItemUiModelTestData.readMailboxItemUiModel)
@@ -115,7 +116,8 @@ internal class MailboxScreenTest {
             offlineEffect = Effect.empty(),
             refreshErrorEffect = Effect.empty(),
             refreshRequested = false,
-            selectionModeEnabled = false
+            selectionModeEnabled = false,
+            swipeActions = null
         )
         val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
         val label = LabelUiModelSample.News
@@ -147,7 +149,8 @@ internal class MailboxScreenTest {
             offlineEffect = Effect.empty(),
             refreshErrorEffect = Effect.empty(),
             refreshRequested = false,
-            selectionModeEnabled = false
+            selectionModeEnabled = false,
+            swipeActions = null
         )
         val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
         val robot = setupScreen(state = mailboxState)
@@ -165,7 +168,8 @@ internal class MailboxScreenTest {
             offlineEffect = Effect.empty(),
             refreshErrorEffect = Effect.empty(),
             refreshRequested = false,
-            selectionModeEnabled = false
+            selectionModeEnabled = false,
+            swipeActions = null
         )
         val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
         val robot = setupScreen(state = mailboxState)
@@ -197,7 +201,8 @@ internal class MailboxScreenTest {
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
-                    selectionModeEnabled = false
+                    selectionModeEnabled = false,
+                    swipeActions = null
                 ),
                 topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
                     currentLabelName = MailLabel.System(systemLabel).text()

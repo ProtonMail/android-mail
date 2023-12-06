@@ -22,6 +22,7 @@ import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.ReportDrawn
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.rememberScrollableState
 import androidx.compose.foundation.gestures.scrollable
@@ -500,19 +501,34 @@ private fun MailboxItemsList(
             contentType = items.itemContentType { MailboxItemUiModel::class }
         ) { index ->
             items[index]?.let { item ->
-                MailboxItem(
-                    modifier = Modifier
-                        .testTag("${MailboxItemTestTags.ItemRow}$index")
-                        .animateItemPlacement(),
-                    item = item,
-                    actions = itemActions,
-                    selectionMode = state is MailboxListState.Data.SelectionMode,
-                    // See doc 0014
-                    isSelected = when (state) {
-                        is MailboxListState.Data.SelectionMode -> state.selectedMailboxItems.any { it.id == item.id }
-                        else -> false
-                    }
-                )
+                SwipeableItem(
+                    swipeActionsUiModel = (state as MailboxListState.Data).swipeActions,
+                    swipingEnabled = state is MailboxListState.Data.ViewMode,
+                    swipeActionCallbacks = SwipeActions.Actions(
+                        onTrash = { Timber.d("mailbox onTrash swiped") },
+                        onSpam = { Timber.d("mailbox onSpam swiped") },
+                        onStar = { Timber.d("mailbox onStar swiped") },
+                        onArchive = { Timber.d("mailbox onArchive swiped") },
+                        onMarkRead = { Timber.d("mailbox onMarkRead swiped") }
+                    )
+                ) {
+                    MailboxItem(
+                        modifier = Modifier
+                            .background(ProtonTheme.colors.backgroundNorm)
+                            .testTag("${MailboxItemTestTags.ItemRow}$index")
+                            .animateItemPlacement(),
+                        item = item,
+                        actions = itemActions,
+                        selectionMode = state is MailboxListState.Data.SelectionMode,
+                        // See doc 0014
+                        isSelected = when (state) {
+                            is MailboxListState.Data.SelectionMode ->
+                                state.selectedMailboxItems.any { it.id == item.id }
+
+                            else -> false
+                        }
+                    )
+                }
                 Divider(color = ProtonTheme.colors.separatorNorm, thickness = MailDimens.SeparatorHeight)
             }
         }

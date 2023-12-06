@@ -33,6 +33,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListS
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.SwipeActionsUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
 import kotlinx.collections.immutable.toImmutableList
@@ -59,7 +60,11 @@ object MailboxStateSampleData {
             offlineEffect = Effect.empty(),
             refreshErrorEffect = Effect.empty(),
             refreshRequested = false,
-            selectionModeEnabled = false
+            selectionModeEnabled = false,
+            swipeActions = SwipeActionsUiModel(
+                start = SwipeUiModelSampleData.Trash,
+                end = SwipeUiModelSampleData.Archive
+            )
         ),
         topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
             currentLabelName = MailLabel.System(MailLabelId.System.Inbox).text()
@@ -86,7 +91,11 @@ object MailboxStateSampleData {
             offlineEffect = Effect.empty(),
             refreshErrorEffect = Effect.empty(),
             refreshRequested = false,
-            selectionModeEnabled = false
+            selectionModeEnabled = false,
+            swipeActions = SwipeActionsUiModel(
+                start = SwipeUiModelSampleData.Trash,
+                end = SwipeUiModelSampleData.Archive
+            )
         ),
         topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
             currentLabelName = MailLabel.System(MailLabelId.System.AllMail).text()
@@ -129,7 +138,11 @@ object MailboxStateSampleData {
             selectionModeEnabled = true,
             selectedMailboxItems = selectedMailboxItemUiModels.map {
                 SelectedMailboxItem(it.userId, it.id, it.isRead, it.showStar)
-            }.toSet()
+            }.toSet(),
+            swipeActions = SwipeActionsUiModel(
+                start = SwipeUiModelSampleData.Trash,
+                end = SwipeUiModelSampleData.Archive
+            )
         ),
         topAppBarState = MailboxTopAppBarState.Data.SelectionMode(
             currentLabelName = MailLabel.System(MailLabelId.System.Inbox).text(),

@@ -84,7 +84,8 @@ class MailboxListReducer @Inject constructor() {
                 offlineEffect = Effect.empty(),
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
-                selectionModeEnabled = currentState.selectionModeEnabled
+                selectionModeEnabled = currentState.selectionModeEnabled,
+                swipeActions = null
             )
 
             is MailboxListState.Data.SelectionMode -> currentState.copy(
@@ -110,7 +111,8 @@ class MailboxListReducer @Inject constructor() {
                 offlineEffect = Effect.empty(),
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
-                selectionModeEnabled = currentState.selectionModeEnabled
+                selectionModeEnabled = currentState.selectionModeEnabled,
+                swipeActions = null
             )
 
             is MailboxListState.Data.ViewMode -> currentState.copy(
@@ -191,7 +193,8 @@ class MailboxListReducer @Inject constructor() {
             is MailboxListState.Data.ViewMode -> MailboxListState.Data.SelectionMode(
                 currentMailLabel = currentState.currentMailLabel,
                 selectedMailboxItems = setOf(SelectedMailboxItem(item.userId, item.id, item.isRead, item.showStar)),
-                selectionModeEnabled = currentState.selectionModeEnabled
+                selectionModeEnabled = currentState.selectionModeEnabled,
+                swipeActions = null
             )
 
             else -> currentState
@@ -205,7 +208,8 @@ class MailboxListReducer @Inject constructor() {
             offlineEffect = Effect.empty(),
             refreshErrorEffect = Effect.empty(),
             refreshRequested = false,
-            selectionModeEnabled = currentState.selectionModeEnabled
+            selectionModeEnabled = currentState.selectionModeEnabled,
+            swipeActions = null
         )
 
         else -> currentState
