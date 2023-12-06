@@ -49,14 +49,16 @@ class DeleteSentMessagesFromOutboxTest {
                 apiMessageId = MessageId("outboxItem01"),
                 messageId = MessageIdSample.Invoice,
                 state = DraftSyncState.Sent,
-                action = DraftAction.Compose
+                action = DraftAction.Compose,
+                sendingError = null
             ),
             DraftState(
                 userId = userId,
                 apiMessageId = MessageId("outboxItem02"),
                 messageId = MessageIdSample.SepWeatherForecast,
                 state = DraftSyncState.Sent,
-                action = DraftAction.Compose
+                action = DraftAction.Compose,
+                sendingError = null
             )
         )
 

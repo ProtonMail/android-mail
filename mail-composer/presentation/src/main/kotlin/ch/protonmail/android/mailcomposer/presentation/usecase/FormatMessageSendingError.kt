@@ -19,8 +19,8 @@
 package ch.protonmail.android.mailcomposer.presentation.usecase
 
 import android.content.Context
-import ch.protonmail.android.mailcomposer.domain.model.SendingError
 import ch.protonmail.android.mailcomposer.presentation.R
+import ch.protonmail.android.mailmessage.domain.model.SendingError
 import dagger.hilt.android.qualifiers.ApplicationContext
 import me.proton.core.util.kotlin.takeIfNotEmpty
 import javax.inject.Inject

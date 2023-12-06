@@ -58,21 +58,24 @@ class ExcludeDraftMessagesAlreadyInOutboxTest {
             messageId = MessageId("outboxItem01"),
             apiMessageId = MessageIdSample.Invoice,
             state = DraftSyncState.Sent,
-            action = DraftAction.Compose
+            action = DraftAction.Compose,
+            sendingError = null
         ),
         DraftState(
             userId = userId,
             messageId = MessageId("outboxItem02"),
             apiMessageId = MessageIdSample.NewDraftWithSubjectAndBody,
             state = DraftSyncState.Synchronized,
-            action = DraftAction.Compose
+            action = DraftAction.Compose,
+            sendingError = null
         ),
         DraftState(
             userId = userId,
             messageId = MessageId("outboxItem03"),
             apiMessageId = MessageIdSample.SepWeatherForecast,
             state = DraftSyncState.Sent,
-            action = DraftAction.Compose
+            action = DraftAction.Compose,
+            sendingError = null
         )
 
     )
