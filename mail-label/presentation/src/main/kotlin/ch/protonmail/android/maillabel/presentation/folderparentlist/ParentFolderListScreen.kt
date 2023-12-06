@@ -51,8 +51,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.maillabel.presentation.R
-import ch.protonmail.android.maillabel.presentation.model.FolderUiModel
+import ch.protonmail.android.maillabel.presentation.model.ParentFolderUiModel
 import ch.protonmail.android.maillabel.presentation.model.toFolderUiModel
+import ch.protonmail.android.maillabel.presentation.model.toParentFolderUiModel
 import ch.protonmail.android.maillabel.presentation.previewdata.FolderListPreviewData.folderSampleData
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import me.proton.core.compose.component.ProtonCenteredProgress
@@ -126,17 +127,14 @@ fun ParentFolderListScreenContent(
     LazyColumn(
         modifier = modifier.fillMaxSize()
     ) {
-        itemsIndexed(state.folders) { index, folder ->
-
+        itemsIndexed(state.folders) { index, parentFolderUiModel ->
             if (index == 0) NoneListItem(actions = actions, state = state)
-            else if (folder.parent == null) Divider()
-
-            if (folder.id != state.labelId && folder.level < 2) {
-                ClickableParentFolderItem(state = state, actions = actions, folder = folder)
+            if (parentFolderUiModel.displayDivider) Divider()
+            if (parentFolderUiModel.isEnabled) {
+                ClickableParentFolderItem(actions = actions, parentFolderUiModel = parentFolderUiModel)
             } else {
-                DisabledParentFolderItem(folder = folder)
+                DisabledParentFolderItem(parentFolderUiModel = parentFolderUiModel)
             }
-
         }
     }
 }
@@ -144,30 +142,29 @@ fun ParentFolderListScreenContent(
 @Composable
 fun ClickableParentFolderItem(
     modifier: Modifier = Modifier,
-    state: ParentFolderListState.ListLoaded.Data,
     actions: ParentFolderListScreen.Actions,
-    folder: FolderUiModel
+    parentFolderUiModel: ParentFolderUiModel
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .clickable(
                 role = Role.Button,
-                onClick = { actions.onFolderSelected(folder.id) }
+                onClick = { actions.onFolderSelected(parentFolderUiModel.folder.id) }
             ),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
             modifier = Modifier.padding(
-                start = ProtonDimens.DefaultSpacing.times(folder.level.plus(1)),
+                start = ProtonDimens.DefaultSpacing.times(parentFolderUiModel.folder.level.plus(1)),
                 end = ProtonDimens.DefaultSpacing
             ),
-            painter = painterResource(id = folder.icon),
-            tint = folder.displayColor ?: ProtonTheme.colors.iconNorm,
+            painter = painterResource(id = parentFolderUiModel.folder.icon),
+            tint = parentFolderUiModel.folder.displayColor ?: ProtonTheme.colors.iconNorm,
             contentDescription = NO_CONTENT_DESCRIPTION
         )
         Text(
-            text = folder.name,
+            text = parentFolderUiModel.folder.name,
             modifier = Modifier
                 .padding(
                     start = ProtonDimens.ExtraSmallSpacing,
@@ -178,7 +175,7 @@ fun ClickableParentFolderItem(
                 .weight(1f),
             style = ProtonTheme.typography.defaultNorm
         )
-        if (state.parentLabelId == folder.id) {
+        if (parentFolderUiModel.isSelected) {
             Icon(
                 modifier = Modifier.padding(
                     end = ProtonDimens.DefaultSpacing
@@ -192,7 +189,7 @@ fun ClickableParentFolderItem(
 }
 
 @Composable
-fun DisabledParentFolderItem(modifier: Modifier = Modifier, folder: FolderUiModel) {
+fun DisabledParentFolderItem(modifier: Modifier = Modifier, parentFolderUiModel: ParentFolderUiModel) {
     Row(
         modifier = modifier
             .fillMaxWidth(),
@@ -200,15 +197,15 @@ fun DisabledParentFolderItem(modifier: Modifier = Modifier, folder: FolderUiMode
     ) {
         Icon(
             modifier = Modifier.padding(
-                start = ProtonDimens.DefaultSpacing.times(folder.level.plus(1)),
+                start = ProtonDimens.DefaultSpacing.times(parentFolderUiModel.folder.level.plus(1)),
                 end = ProtonDimens.DefaultSpacing
             ),
-            painter = painterResource(id = folder.icon),
-            tint = folder.displayColor?.copy(alpha = 0.5f) ?: ProtonTheme.colors.iconDisabled,
+            painter = painterResource(id = parentFolderUiModel.folder.icon),
+            tint = parentFolderUiModel.folder.displayColor?.copy(alpha = 0.5f) ?: ProtonTheme.colors.iconDisabled,
             contentDescription = NO_CONTENT_DESCRIPTION
         )
         Text(
-            text = folder.name,
+            text = parentFolderUiModel.folder.name,
             modifier = Modifier
                 .padding(
                     start = ProtonDimens.ExtraSmallSpacing,
@@ -329,7 +326,7 @@ private fun ParentFolderListScreenPreview() {
                     useFolderColor = true,
                     inheritParentFolderColor = true
                 )
-            ),
+            ).toParentFolderUiModel(null, null),
             labelId = LabelId("N/A"),
             parentLabelId = null,
             useFolderColor = true,

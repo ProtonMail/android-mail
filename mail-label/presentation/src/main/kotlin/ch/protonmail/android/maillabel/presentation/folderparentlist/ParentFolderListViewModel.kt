@@ -25,6 +25,7 @@ import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.maillabel.domain.usecase.ObserveLabels
 import ch.protonmail.android.maillabel.presentation.model.toFolderUiModel
+import ch.protonmail.android.maillabel.presentation.model.toParentFolderUiModel
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -84,7 +85,7 @@ class ParentFolderListViewModel @Inject constructor(
         ) { folders, folderColorSettings ->
             folders.map {
                 ParentFolderListEvent.FolderListLoaded(
-                    folderList = it.toFolderUiModel(folderColorSettings),
+                    folderList = it.toFolderUiModel(folderColorSettings).toParentFolderUiModel(labelId, parentLabelId),
                     labelId = labelId,
                     parentLabelId = parentLabelId,
                     useFolderColor = folderColorSettings.useFolderColor,

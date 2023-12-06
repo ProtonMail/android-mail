@@ -16,20 +16,11 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maillabel.presentation.folderparentlist
+package ch.protonmail.android.maillabel.presentation.model
 
-import ch.protonmail.android.maillabel.presentation.model.ParentFolderUiModel
-import me.proton.core.label.domain.entity.LabelId
-
-sealed interface ParentFolderListOperation
-
-sealed interface ParentFolderListEvent : ParentFolderListOperation {
-    data class FolderListLoaded(
-        val folderList: List<ParentFolderUiModel>,
-        val labelId: LabelId?,
-        val parentLabelId: LabelId?,
-        val useFolderColor: Boolean,
-        val inheritParentFolderColor: Boolean
-    ) : ParentFolderListEvent
-    object ErrorLoadingFolderList : ParentFolderListEvent
-}
+data class ParentFolderUiModel(
+    val folder: FolderUiModel,
+    val isEnabled: Boolean,
+    val isSelected: Boolean,
+    val displayDivider: Boolean
+)

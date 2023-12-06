@@ -20,7 +20,7 @@ package ch.protonmail.android.maillabel.presentation.folderparentlist
 
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import ch.protonmail.android.maillabel.presentation.model.FolderUiModel
+import ch.protonmail.android.maillabel.presentation.model.ParentFolderUiModel
 import me.proton.core.label.domain.entity.LabelId
 
 sealed interface ParentFolderListState {
@@ -39,7 +39,7 @@ sealed interface ParentFolderListState {
             override val parentLabelId: LabelId?,
             val useFolderColor: Boolean,
             val inheritParentFolderColor: Boolean,
-            val folders: List<FolderUiModel>
+            val folders: List<ParentFolderUiModel>
         ) : ListLoaded
 
         data class Empty(
