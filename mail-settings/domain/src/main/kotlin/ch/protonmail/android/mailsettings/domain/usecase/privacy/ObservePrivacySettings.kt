@@ -20,31 +20,30 @@ package ch.protonmail.android.mailsettings.domain.usecase.privacy
 
 import arrow.core.Either
 import arrow.core.raise.either
-import ch.protonmail.android.mailcommon.domain.mapper.mapToEither
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailsettings.domain.model.PrivacySettings
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailSettings
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import me.proton.core.domain.entity.UserId
 import me.proton.core.domain.type.IntEnum
 import me.proton.core.mailsettings.domain.entity.ShowImage
-import me.proton.core.mailsettings.domain.repository.MailSettingsRepository
 import javax.inject.Inject
 
 class ObservePrivacySettings @Inject constructor(
-    private val mailSettingsRepository: MailSettingsRepository,
+    private val observeMailSettings: ObserveMailSettings,
     private val observePreventScreenshotsSetting: ObservePreventScreenshotsSetting,
     private val observeBackgroundSyncSetting: ObserveBackgroundSyncSetting
 ) {
 
     operator fun invoke(userId: UserId): Flow<Either<DataError, PrivacySettings>> {
         return combine(
-            mailSettingsRepository.getMailSettingsFlow(userId, refresh = false).mapToEither(),
+            observeMailSettings(userId),
             observePreventScreenshotsSetting(),
             observeBackgroundSyncSetting()
-        ) { coreMailSettings, preventScreenshotSetting, backgroundSyncSetting ->
+        ) { mailSettings, preventScreenshotSetting, backgroundSyncSetting ->
             either {
-                val mailSettings = coreMailSettings.bind()
+                mailSettings ?: raise(DataError.Local.NoDataCached)
                 val preventScreenshots = preventScreenshotSetting.getOrNull() ?: raise(DataError.Local.NoDataCached)
                 val backgroundSync = backgroundSyncSetting.getOrNull() ?: raise(DataError.Local.NoDataCached)
 

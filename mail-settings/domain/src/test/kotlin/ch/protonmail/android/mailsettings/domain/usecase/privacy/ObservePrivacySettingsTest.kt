@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailsettings.domain.model.BackgroundSyncPreference
 import ch.protonmail.android.mailsettings.domain.model.PreventScreenshotsPreference
 import ch.protonmail.android.mailsettings.domain.model.PrivacySettings
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailSettings
 import ch.protonmail.android.testdata.mailsettings.MailSettingsTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.coEvery
@@ -33,23 +34,20 @@ import io.mockk.unmockkAll
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import me.proton.core.domain.arch.DataResult
-import me.proton.core.domain.arch.ResponseSource
 import me.proton.core.domain.type.IntEnum
 import me.proton.core.mailsettings.domain.entity.MailSettings
 import me.proton.core.mailsettings.domain.entity.ShowImage
-import me.proton.core.mailsettings.domain.repository.MailSettingsRepository
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
 internal class ObservePrivacySettingsTest {
 
-    private val mailSettingsRepository = mockk<MailSettingsRepository>()
+    private val observeMailSettings = mockk<ObserveMailSettings>()
     private val observePreventScreenshotsSetting = mockk<ObservePreventScreenshotsSetting>()
     private val observeBackgroundSyncSetting = mockk<ObserveBackgroundSyncSetting>()
     private val observePrivacySettings = ObservePrivacySettings(
-        mailSettingsRepository,
+        observeMailSettings,
         observePreventScreenshotsSetting,
         observeBackgroundSyncSetting
     )
@@ -60,13 +58,12 @@ internal class ObservePrivacySettingsTest {
     }
 
     @Test
-    fun `when mail settings cannot be fetched, an error is returned`() = runTest {
+    fun `when fetched mail settings are null, an error is returned`() = runTest {
         // Given
-        val expectedResult = DataError.Local.Unknown.left()
+        val expectedResult = DataError.Local.NoDataCached.left()
         expectValidPreventScreenshotsPreference()
         expectValidBackgroundSyncPreference()
-        coEvery { mailSettingsRepository.getMailSettingsFlow(any(), any()) } returns
-            flowOf(DataResult.Error.Local("", mockk()))
+        coEvery { observeMailSettings(userId) } returns flowOf(null)
 
         // When
         val result = observePrivacySettings(userId).first()
@@ -180,12 +177,7 @@ internal class ObservePrivacySettingsTest {
         }
 
     private fun expectValidMailSettingsPreference(settings: MailSettings = mailSettings) {
-        coEvery { mailSettingsRepository.getMailSettingsFlow(any(), any()) } returns flowOf(
-            DataResult.Success(
-                source = ResponseSource.Local,
-                value = settings
-            )
-        )
+        coEvery { observeMailSettings(userId) } returns flowOf(settings)
     }
 
     private fun expectValidPreventScreenshotsPreference() {
