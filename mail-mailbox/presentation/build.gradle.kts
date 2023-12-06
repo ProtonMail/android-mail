@@ -87,6 +87,7 @@ dependencies {
     implementation(project(":mail-pagination:domain"))
     implementation(project(":mail-pagination:presentation"))
     implementation(project(":mail-settings:domain"))
+    implementation(project(":mail-settings:presentation"))
 
     testImplementation(Dependencies.testLibs)
     testImplementation(project(":test:test-data"))
