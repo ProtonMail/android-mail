@@ -19,9 +19,11 @@
 package ch.protonmail.android.uitest.robot.helpers.section
 
 import android.content.Intent
+import android.net.Uri
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.Intents.times
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
+import androidx.test.espresso.intent.matcher.IntentMatchers.hasData
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasType
 import ch.protonmail.android.test.ksp.annotations.AttachTo
 import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
@@ -45,6 +47,18 @@ internal class DeviceRobotIntentsSection : ComposeSectionRobot() {
             composeTestRule.waitUntil(timeout) {
                 runCatching {
                     intended(allOf(hasAction(Intent.ACTION_GET_CONTENT), mimeType.asMimeTypeMatcher()), times(times))
+                }.isSuccess
+            }
+        }
+
+        fun actionViewUriIntentWasLaunched(
+            times: Int = 1,
+            url: String,
+            timeout: Long = 10_000L
+        ) {
+            composeTestRule.waitUntil(timeout) {
+                runCatching {
+                    intended(allOf(hasAction(Intent.ACTION_VIEW), hasData(Uri.parse(url))), times(times))
                 }.isSuccess
             }
         }

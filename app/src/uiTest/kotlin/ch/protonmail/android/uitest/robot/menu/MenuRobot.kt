@@ -17,6 +17,7 @@
  */
 package ch.protonmail.android.uitest.robot.menu
 
+import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.onChild
 import androidx.compose.ui.test.onNodeWithTag
@@ -26,6 +27,7 @@ import androidx.compose.ui.test.performScrollToNode
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.presentation.sidebar.SidebarSystemLabelTestTags.BaseTag
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxTopAppBarTestTags
+import ch.protonmail.android.mailmailbox.presentation.sidebar.SidebarBetaLabelInfoItemTestTags
 import ch.protonmail.android.mailmailbox.presentation.sidebar.SidebarMenuTestTags
 import ch.protonmail.android.test.ksp.annotations.AsDsl
 import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
@@ -86,10 +88,24 @@ internal class MenuRobot : ComposeRobot() {
         tapSidebarMenuItemWithText(getTestString(testR.string.test_signout))
     }
 
+    fun tapBetaItem() {
+        tapSidebarMenuItemWithTag(SidebarBetaLabelInfoItemTestTags.RootItem)
+    }
+
     private fun tapSidebarMenuItemWithText(value: String) {
         rootItem.onChild()
             .apply { performScrollToNode(hasText(value)) }
             .child { hasText(value) }
+            .performClick()
+
+        composeTestRule.waitForIdle()
+    }
+
+    @Suppress("SameParameterValue")
+    private fun tapSidebarMenuItemWithTag(value: String) {
+        rootItem.onChild()
+            .apply { performScrollToNode(hasTestTag(value)) }
+            .child { hasTestTag(value) }
             .performClick()
 
         composeTestRule.waitForIdle()
