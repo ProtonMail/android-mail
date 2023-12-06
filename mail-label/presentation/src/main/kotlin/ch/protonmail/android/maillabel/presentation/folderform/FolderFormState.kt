@@ -56,7 +56,8 @@ sealed interface FolderFormState {
             override val openParentFolderList: Effect<Unit> = Effect.empty(),
             override val close: Effect<Unit> = Effect.empty(),
             override val closeWithSuccess: Effect<TextUiModel> = Effect.empty(),
-            override val showErrorSnackbar: Effect<TextUiModel> = Effect.empty()
+            override val showErrorSnackbar: Effect<TextUiModel> = Effect.empty(),
+            val displayCreateLoader: Boolean = false
         ) : Data
 
         data class Update(

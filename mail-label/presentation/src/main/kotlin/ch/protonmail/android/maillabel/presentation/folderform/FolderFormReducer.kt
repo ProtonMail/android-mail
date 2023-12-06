@@ -26,6 +26,7 @@ import javax.inject.Inject
 
 class FolderFormReducer @Inject constructor() {
 
+    @SuppressWarnings("ComplexMethod")
     internal fun newStateFrom(currentState: FolderFormState, event: FolderFormEvent): FolderFormState {
         return when (event) {
             is FolderFormEvent.FolderLoaded -> reduceFolderLoaded(event)
@@ -44,6 +45,7 @@ class FolderFormReducer @Inject constructor() {
             FolderFormEvent.SaveFolderError -> reduceSaveFolderError(currentState)
             FolderFormEvent.CloseFolderForm -> reduceCloseFolderForm(currentState)
             FolderFormEvent.LoadFolderError -> reduceLoadFolderError()
+            FolderFormEvent.CreatingFolder -> reduceCreatingFolder(currentState)
         }
     }
 
@@ -150,7 +152,8 @@ class FolderFormReducer @Inject constructor() {
     private fun reduceFolderAlreadyExists(currentState: FolderFormState): FolderFormState {
         return when (currentState) {
             is FolderFormState.Data.Create -> currentState.copy(
-                showErrorSnackbar = Effect.of(TextUiModel(R.string.label_already_exists))
+                showErrorSnackbar = Effect.of(TextUiModel(R.string.label_already_exists)),
+                displayCreateLoader = false
             )
             is FolderFormState.Data.Update -> currentState.copy(
                 showErrorSnackbar = Effect.of(TextUiModel(R.string.label_already_exists))
@@ -162,7 +165,8 @@ class FolderFormReducer @Inject constructor() {
     private fun reduceFolderLimitReached(currentState: FolderFormState): FolderFormState {
         return when (currentState) {
             is FolderFormState.Data.Create -> currentState.copy(
-                showErrorSnackbar = Effect.of(TextUiModel(R.string.folder_limit_reached_error))
+                showErrorSnackbar = Effect.of(TextUiModel(R.string.folder_limit_reached_error)),
+                displayCreateLoader = false
             )
             is FolderFormState.Data.Update -> currentState.copy(
                 showErrorSnackbar = Effect.of(TextUiModel(R.string.folder_limit_reached_error))
@@ -174,7 +178,8 @@ class FolderFormReducer @Inject constructor() {
     private fun reduceSaveFolderError(currentState: FolderFormState): FolderFormState {
         return when (currentState) {
             is FolderFormState.Data.Create -> currentState.copy(
-                showErrorSnackbar = Effect.of(TextUiModel(R.string.save_folder_error))
+                showErrorSnackbar = Effect.of(TextUiModel(R.string.save_folder_error)),
+                displayCreateLoader = false
             )
             is FolderFormState.Data.Update -> currentState.copy(
                 showErrorSnackbar = Effect.of(TextUiModel(R.string.save_folder_error))
@@ -185,4 +190,12 @@ class FolderFormReducer @Inject constructor() {
 
     private fun reduceLoadFolderError() =
         FolderFormState.Loading(errorLoading = Effect.of(TextUiModel(R.string.folder_loading_error)))
+
+    private fun reduceCreatingFolder(currentState: FolderFormState): FolderFormState {
+        return when (currentState) {
+            is FolderFormState.Data.Create -> currentState.copy(displayCreateLoader = true)
+            is FolderFormState.Data.Update -> currentState
+            is FolderFormState.Loading -> currentState
+        }
+    }
 }

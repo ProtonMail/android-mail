@@ -312,7 +312,8 @@ class FolderFormViewModelTest {
                 loadedState.copy(
                     name = defaultTestUpdatedName,
                     isSaveEnabled = true,
-                    closeWithSuccess = Effect.of(TextUiModel(R.string.folder_saved))
+                    closeWithSuccess = Effect.of(TextUiModel(R.string.folder_saved)),
+                    displayCreateLoader = true
                 ),
                 awaitItem()
             )

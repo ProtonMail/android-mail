@@ -57,6 +57,7 @@ sealed interface FolderFormEvent : FolderFormOperation {
     data class UpdateFolderNotifications(
         val enabled: Boolean
     ) : FolderFormEvent
+    object CreatingFolder : FolderFormEvent
     object FolderCreated : FolderFormEvent
     object FolderUpdated : FolderFormEvent
     object FolderDeleted : FolderFormEvent

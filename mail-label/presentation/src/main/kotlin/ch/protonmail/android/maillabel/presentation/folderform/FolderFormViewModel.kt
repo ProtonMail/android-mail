@@ -191,6 +191,8 @@ class FolderFormViewModel @Inject constructor(
         parentId: LabelId?,
         notifications: Boolean
     ) {
+        emitNewStateFor(FolderFormEvent.CreatingFolder)
+
         val isFolderLimitReached = isLabelLimitReached(primaryUserId(), LabelType.MessageFolder).getOrElse {
             return emitNewStateFor(FolderFormEvent.SaveFolderError)
         }
