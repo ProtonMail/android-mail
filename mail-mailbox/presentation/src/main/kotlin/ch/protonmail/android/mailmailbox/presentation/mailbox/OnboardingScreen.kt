@@ -102,8 +102,7 @@ fun OnboardingScreen(actions: MailboxScreen.Actions) {
 
     ConstraintLayout(
         modifier = Modifier
-            .fillMaxHeight()
-            .fillMaxWidth()
+            .fillMaxSize()
             .background(ProtonTheme.colors.backgroundNorm)
     ) {
         val (positiveButton, dismissButton, dots) = createRefs()
@@ -126,8 +125,7 @@ fun OnboardingScreen(actions: MailboxScreen.Actions) {
 fun OnboardingContent(content: OnboardingUiModel) {
     ConstraintLayout(
         modifier = Modifier
-            .fillMaxHeight()
-            .fillMaxWidth()
+            .fillMaxSize()
     ) {
         val (illustration, headline, description) = createRefs()
 
@@ -153,8 +151,7 @@ fun OnboardingContent(content: OnboardingUiModel) {
                 },
             textAlign = TextAlign.Center,
             text = stringResource(id = content.headlineId),
-            style = ProtonTheme.typography.headlineNorm,
-            color = ProtonTheme.colors.textNorm
+            style = ProtonTheme.typography.headlineNorm
         )
         HyperlinkText(
             modifier = Modifier
@@ -169,8 +166,7 @@ fun OnboardingContent(content: OnboardingUiModel) {
             fullText = stringResource(id = content.descriptionId),
             hyperLinks = content.hyperLinks,
             textStyle = ProtonTheme.typography.defaultWeak.copy(
-                textAlign = TextAlign.Center,
-                color = ProtonTheme.colors.textWeak
+                textAlign = TextAlign.Center
             ),
             linkTextColor = ProtonTheme.colors.textAccent
         )
@@ -245,7 +241,7 @@ fun ConstraintLayoutScope.OnboardingIndexDots(
     dots: ConstrainedLayoutReference
 ) {
     val highlightedDotColor = ProtonTheme.colors.brandNorm
-    val defaultDotColor = ProtonTheme.colors.separatorNorm
+    val defaultDotColor = ProtonTheme.colors.shade20
     Canvas(
         modifier = Modifier
             .size(MailDimens.pagerDotsCircleSize)
