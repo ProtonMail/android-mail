@@ -143,12 +143,6 @@ android {
             buildConfigField("String", "HOST", "\"proton.black\"")
             buildConfigField("String", "HUMAN_VERIFICATION_HOST", "\"verify.proton.black\"")
         }
-        create("beta") {
-            applicationIdSuffix = ".beta"
-            versionNameSuffix = "-beta+$gitHash"
-            buildConfigField("Boolean", "USE_DEFAULT_PINS", "true")
-            buildConfigField("String", "HOST", "\"proton.me\"")
-        }
         create("alpha") {
             applicationIdSuffix = ".alpha"
             versionNameSuffix = "-alpha+$gitHash"
@@ -200,8 +194,8 @@ android {
         getByName("androidTest").assets.srcDirs("src/uiTest/assets", "schemas")
         getByName("androidTest").res.srcDirs("src/uiTest/res")
         getByName("dev").res.srcDirs("src/dev/res")
-        getByName("beta").res.srcDirs("src/beta/res")
         getByName("alpha").res.srcDirs("src/alpha/res")
+        getByName("prod").res.srcDirs("src/prod/res")
     }
 }
 
