@@ -152,6 +152,7 @@ android {
         create("prod") {
             buildConfigField("Boolean", "USE_DEFAULT_PINS", "true")
             buildConfigField("String", "HOST", "\"proton.me\"")
+            versionNameSuffix = "-beta"
         }
     }
 
