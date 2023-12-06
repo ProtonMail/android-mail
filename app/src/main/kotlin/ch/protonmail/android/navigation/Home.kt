@@ -193,7 +193,7 @@ fun Home(
         drawerContent = {
             Sidebar(
                 drawerState = scaffoldState.drawerState,
-                navigationActions = buildSidebarActions(navController, launcherActions)
+                navigationActions = buildSidebarActions(navController, activityActions, launcherActions)
             )
         },
         snackbarHost = {
@@ -349,7 +349,11 @@ fun Home(
     }
 }
 
-private fun buildSidebarActions(navController: NavHostController, launcherActions: Launcher.Actions) =
+private fun buildSidebarActions(
+    navController: NavHostController,
+    activityActions: MainActivity.Actions,
+    launcherActions: Launcher.Actions
+) =
     Sidebar.NavigationActions(
         onSignIn = launcherActions.onSignIn,
         onSignOut = { navController.navigate(Dialog.SignOut(it)) },
@@ -361,5 +365,6 @@ private fun buildSidebarActions(navController: NavHostController, launcherAction
         onLabelAdd = { navController.navigate(Screen.CreateLabel.route) },
         onFolderAdd = { navController.navigate(Screen.CreateFolder.route) },
         onSubscription = launcherActions.onSubscription,
-        onReportBug = launcherActions.onReportBug
+        onReportBug = launcherActions.onReportBug,
+        onBetaLabelClick = activityActions.openInActivityInNewTask
     )
