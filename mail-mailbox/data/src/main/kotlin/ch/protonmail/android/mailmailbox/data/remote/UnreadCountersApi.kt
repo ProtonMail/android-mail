@@ -24,9 +24,9 @@ import retrofit2.http.GET
 
 interface UnreadCountersApi : BaseRetrofitApi {
 
-    @GET("mail/v4/messages/count/")
+    @GET("mail/v4/messages/count")
     suspend fun getMessageCounters(): UnreadCountsResponse
 
-    @GET("mail/v4/conversations/count/")
+    @GET("mail/v4/conversations/count")
     suspend fun getConversationCounters(): UnreadCountsResponse
 }
