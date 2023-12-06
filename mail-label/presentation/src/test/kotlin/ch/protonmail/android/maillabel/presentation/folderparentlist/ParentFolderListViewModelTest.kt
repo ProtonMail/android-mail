@@ -32,6 +32,7 @@ import ch.protonmail.android.maillabel.domain.usecase.ObserveLabels
 import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
 import ch.protonmail.android.maillabel.presentation.model.toFolderUiModel
+import ch.protonmail.android.maillabel.presentation.model.toParentFolderUiModel
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.testdata.label.LabelTestData
@@ -126,8 +127,14 @@ class ParentFolderListViewModelTest {
     @Test
     fun `given parent folder list, when init, then emits data state`() = runTest {
         // Given
-        every { savedStateHandle.get<String>(ParentFolderListScreen.ParentFolderListLabelIdKey) } returns null
-        every { savedStateHandle.get<String>(ParentFolderListScreen.ParentFolderListParentLabelIdKey) } returns null
+        val labelId = null
+        val parentLabelId = null
+        every {
+            savedStateHandle.get<String>(ParentFolderListScreen.ParentFolderListLabelIdKey)
+        } returns labelId
+        every {
+            savedStateHandle.get<String>(ParentFolderListScreen.ParentFolderListParentLabelIdKey)
+        } returns parentLabelId
         coEvery {
             observeLabels(userId = UserIdTestData.userId, labelType = LabelType.MessageFolder)
         } returns flowOf(listOf(defaultTestFolder).right())
@@ -141,7 +148,9 @@ class ParentFolderListViewModelTest {
                 parentLabelId = null,
                 useFolderColor = true,
                 inheritParentFolderColor = false,
-                folders = listOf(defaultTestFolder).toFolderUiModel(defaultFolderColorSettings)
+                folders = listOf(defaultTestFolder)
+                    .toFolderUiModel(defaultFolderColorSettings)
+                    .toParentFolderUiModel(labelId, parentLabelId)
             )
 
             assertEquals(expected, actual)
@@ -171,7 +180,9 @@ class ParentFolderListViewModelTest {
                 parentLabelId = parentLabelId,
                 useFolderColor = true,
                 inheritParentFolderColor = false,
-                folders = listOf(defaultTestFolder).toFolderUiModel(defaultFolderColorSettings)
+                folders = listOf(defaultTestFolder)
+                    .toFolderUiModel(defaultFolderColorSettings)
+                    .toParentFolderUiModel(defaultTestFolder.labelId, parentLabelId)
             )
 
             assertEquals(expected, actual)
