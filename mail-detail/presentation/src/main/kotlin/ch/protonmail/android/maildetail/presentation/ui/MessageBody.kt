@@ -26,11 +26,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -75,13 +73,13 @@ fun MessageBody(
 
     when {
         messageBodyUiModel.shouldShowEmbeddedImagesBanner && messageBodyUiModel.shouldShowRemoteContentBanner -> {
-            MessageBodyBanner(text = stringResource(id = R.string.message_body_embedded_and_remote_content_banner_text))
+            MessageBodyBanner(text = R.string.message_body_embedded_and_remote_content_banner_text)
         }
         messageBodyUiModel.shouldShowEmbeddedImagesBanner -> {
-            MessageBodyBanner(text = stringResource(id = R.string.message_body_embedded_images_banner_text))
+            MessageBodyBanner(text = R.string.message_body_embedded_images_banner_text)
         }
         messageBodyUiModel.shouldShowRemoteContentBanner -> {
-            MessageBodyBanner(text = stringResource(id = R.string.message_body_remote_content_banner_text))
+            MessageBodyBanner(text = R.string.message_body_remote_content_banner_text)
         }
     }
 
@@ -230,27 +228,14 @@ internal fun MessageBodyLoadingError(
 }
 
 @Composable
-private fun MessageBodyBanner(modifier: Modifier = Modifier, text: String) {
-    Row(
-        modifier = modifier
-            .testTag(MessageBodyTestTags.MessageBodyBanner)
-            .padding(ProtonDimens.DefaultSpacing)
-            .background(color = ProtonTheme.colors.backgroundSecondary, shape = ProtonTheme.shapes.medium)
-            .padding(ProtonDimens.DefaultSpacing)
-    ) {
-        Icon(
-            modifier = Modifier.testTag(MessageBodyTestTags.MessageBodyBannerIcon),
-            painter = painterResource(id = R.drawable.ic_proton_image),
-            contentDescription = NO_CONTENT_DESCRIPTION,
-            tint = ProtonTheme.colors.iconWeak
-        )
-        Spacer(modifier = Modifier.width(ProtonDimens.SmallSpacing))
-        Text(
-            modifier = Modifier.testTag(MessageBodyTestTags.MessageBodyBannerText),
-            text = text,
-            style = ProtonTheme.typography.defaultSmallWeak
-        )
-    }
+fun MessageBodyBanner(@StringRes text: Int) {
+    MessageBanner(
+        icon = R.drawable.ic_proton_image,
+        iconTint = ProtonTheme.colors.iconWeak,
+        text = text,
+        textStyle = ProtonTheme.typography.defaultSmallWeak,
+        backgroundColor = ProtonTheme.colors.backgroundSecondary
+    )
 }
 
 object MessageBody {

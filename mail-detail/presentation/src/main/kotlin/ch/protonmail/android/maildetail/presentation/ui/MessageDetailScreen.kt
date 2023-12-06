@@ -59,6 +59,7 @@ import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialog
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.presentation.R
+import ch.protonmail.android.maildetail.presentation.model.MessageBannersState
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
@@ -309,6 +310,7 @@ fun MessageDetailScreen(
                 MessageDetailContent(
                     padding = innerPadding,
                     messageMetadataState = state.messageMetadataState,
+                    messageBannersState = state.messageBannersState,
                     messageBodyState = state.messageBodyState,
                     actions = messageDetailContentActions,
                     showMessageActionsFeatureFlag = state.showReplyActionsFeatureFlag,
@@ -329,6 +331,7 @@ private fun MessageDetailContent(
     modifier: Modifier = Modifier,
     padding: PaddingValues,
     messageMetadataState: MessageMetadataState.Data,
+    messageBannersState: MessageBannersState,
     messageBodyState: MessageBodyState,
     actions: MessageDetailContent.Actions,
     showMessageActionsFeatureFlag: Boolean,
@@ -358,6 +361,10 @@ private fun MessageDetailContent(
                 showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar
             )
             MailDivider()
+            when (messageBannersState) {
+                is MessageBannersState.Loading -> {}
+                is MessageBannersState.Data -> MessageBanners(messageBannersState.messageBannersUiModel)
+            }
             when (messageBodyState) {
                 is MessageBodyState.Loading -> ProtonCenteredProgress()
                 is MessageBodyState.Data -> MessageBody(

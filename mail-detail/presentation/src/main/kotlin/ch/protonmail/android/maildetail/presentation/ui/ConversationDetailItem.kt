@@ -121,6 +121,7 @@ private fun ConversationDetailExpandedItem(
             showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar
         )
         MailDivider()
+        MessageBanners(messageBannersUiModel = uiModel.messageBannersUiModel)
         MessageBody(
             messageBodyUiModel = uiModel.messageBodyUiModel,
             actions = MessageBody.Actions(
