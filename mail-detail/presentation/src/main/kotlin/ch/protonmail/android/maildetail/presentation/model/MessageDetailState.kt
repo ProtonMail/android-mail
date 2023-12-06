@@ -28,6 +28,7 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSh
 
 data class MessageDetailState(
     val messageMetadataState: MessageMetadataState,
+    val messageBannersState: MessageBannersState,
     val messageBodyState: MessageBodyState,
     val bottomBarState: BottomBarState,
     val bottomSheetState: BottomSheetState?,
@@ -45,6 +46,7 @@ data class MessageDetailState(
 
         val Loading = MessageDetailState(
             messageMetadataState = MessageMetadataState.Loading,
+            messageBannersState = MessageBannersState.Loading,
             messageBodyState = MessageBodyState.Loading,
             bottomBarState = BottomBarState.Loading,
             bottomSheetState = null,

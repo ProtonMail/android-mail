@@ -22,6 +22,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
+import ch.protonmail.android.testdata.maildetail.MessageBannersUiModelTestData.messageBannersUiModel
 import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
 import ch.protonmail.android.testdata.message.MessageDetailActionBarUiModelTestData
 import org.junit.runner.RunWith
@@ -57,7 +58,8 @@ class MessageDetailMetadataReducerTest(
                 currentState = MessageMetadataState.Loading,
                 operation = MessageDetailEvent.MessageWithLabelsEvent(
                     notStarredActionBarUiModel,
-                    messageDetailHeaderUiModel
+                    messageDetailHeaderUiModel,
+                    messageBannersUiModel
                 ),
                 expectedState = MessageMetadataState.Data(
                     notStarredActionBarUiModel,

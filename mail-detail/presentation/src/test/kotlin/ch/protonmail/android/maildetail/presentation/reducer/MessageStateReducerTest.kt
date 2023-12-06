@@ -21,6 +21,7 @@ package ch.protonmail.android.maildetail.presentation.reducer
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
+import ch.protonmail.android.testdata.maildetail.MessageBannersUiModelTestData.messageBannersUiModel
 import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
 import ch.protonmail.android.testdata.message.MessageDetailActionBarUiModelTestData
 import org.junit.runner.RunWith
@@ -55,7 +56,11 @@ class MessageStateReducerTest(
         private val transitionsFromLoadingState = listOf(
             TestInput(
                 currentState = MessageMetadataState.Loading,
-                operation = MessageDetailEvent.MessageWithLabelsEvent(messageUiModel, messageDetailHeaderUiModel),
+                operation = MessageDetailEvent.MessageWithLabelsEvent(
+                    messageUiModel,
+                    messageDetailHeaderUiModel,
+                    messageBannersUiModel
+                ),
                 expectedState = MessageMetadataState.Data(messageUiModel, messageDetailHeaderUiModel)
             )
         )
@@ -65,7 +70,8 @@ class MessageStateReducerTest(
                 currentState = MessageMetadataState.Data(messageUiModel, messageDetailHeaderUiModel),
                 operation = MessageDetailEvent.MessageWithLabelsEvent(
                     updatedMessageUiModel,
-                    messageDetailHeaderUiModel
+                    messageDetailHeaderUiModel,
+                    messageBannersUiModel
                 ),
                 expectedState = MessageMetadataState.Data(updatedMessageUiModel, messageDetailHeaderUiModel)
             )

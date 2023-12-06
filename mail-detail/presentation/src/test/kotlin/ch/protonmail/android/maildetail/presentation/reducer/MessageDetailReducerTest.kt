@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.maildetail.presentation.R.string
+import ch.protonmail.android.maildetail.presentation.model.MessageBannersState
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailActionBarUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
@@ -40,6 +41,7 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsB
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
+import ch.protonmail.android.testdata.maildetail.MessageBannersUiModelTestData.messageBannersUiModel
 import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData
 import ch.protonmail.android.testdata.maillabel.MailLabelUiModelTestData
 import ch.protonmail.android.testdata.message.MessageBodyUiModelTestData
@@ -66,6 +68,10 @@ class MessageDetailReducerTest(
         every { newStateFrom(any(), any()) } returns reducedState.messageMetadataState
     }
 
+    private val messageBannersReducer: MessageBannersReducer = mockk {
+        every { newStateFrom(any()) } returns reducedState.messageBannersState
+    }
+
     private val messageBodyReducer: MessageBodyReducer = mockk {
         every { newStateFrom(any(), any()) } returns reducedState.messageBodyState
     }
@@ -84,6 +90,7 @@ class MessageDetailReducerTest(
 
     private val detailReducer = MessageDetailReducer(
         messageMetadataReducer,
+        messageBannersReducer,
         messageBodyReducer,
         bottomBarReducer,
         bottomSheetReducer,
@@ -103,6 +110,16 @@ class MessageDetailReducerTest(
             }
         } else {
             assertEquals(currentState.messageMetadataState, nextState.messageMetadataState, testName)
+        }
+
+        if (shouldReduceMessageBannersState) {
+            verify {
+                messageBannersReducer.newStateFrom(
+                    operation as MessageDetailOperation.AffectingMessageBanners
+                )
+            }
+        } else {
+            assertEquals(currentState.messageBannersState, nextState.messageBannersState, testName)
         }
 
         if (shouldReduceMessageBodyState) {
@@ -178,6 +195,7 @@ class MessageDetailReducerTest(
         private val currentState = MessageDetailState.Loading
         private val reducedState = MessageDetailState(
             messageMetadataState = MessageMetadataState.Data(actionBarUiModel, detailHeaderUiModel),
+            messageBannersState = MessageBannersState.Data(messageBannersUiModel),
             messageBodyState = MessageBodyState.Data(messageBodyUiModel),
             bottomBarState = BottomBarState.Data.Shown(listOf(ActionUiModelTestData.markUnread).toImmutableList()),
             bottomSheetState = BottomSheetState(
@@ -200,6 +218,7 @@ class MessageDetailReducerTest(
             TestInput(
                 MessageViewAction.Star,
                 shouldReduceMessageMetadataState = true,
+                shouldReduceMessageBannersState = false,
                 shouldReduceMessageBodyState = false,
                 shouldReduceBottomBarState = false,
                 shouldReduceExitEffect = false,
@@ -210,6 +229,7 @@ class MessageDetailReducerTest(
             TestInput(
                 MessageViewAction.UnStar,
                 shouldReduceMessageMetadataState = true,
+                shouldReduceMessageBannersState = false,
                 shouldReduceMessageBodyState = false,
                 shouldReduceBottomBarState = false,
                 shouldReduceExitEffect = false,
@@ -220,6 +240,7 @@ class MessageDetailReducerTest(
             TestInput(
                 MessageViewAction.MarkUnread,
                 shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBannersState = false,
                 shouldReduceMessageBodyState = false,
                 shouldReduceBottomBarState = false,
                 shouldReduceExitEffect = true,
@@ -230,6 +251,7 @@ class MessageDetailReducerTest(
             TestInput(
                 MessageViewAction.Trash,
                 shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBannersState = false,
                 shouldReduceMessageBodyState = false,
                 shouldReduceBottomBarState = false,
                 shouldReduceExitEffect = false,
@@ -241,6 +263,7 @@ class MessageDetailReducerTest(
             TestInput(
                 MessageViewAction.RequestMoveToBottomSheet,
                 shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBannersState = false,
                 shouldReduceMessageBodyState = false,
                 shouldReduceBottomBarState = false,
                 shouldReduceExitEffect = false,
@@ -251,6 +274,7 @@ class MessageDetailReducerTest(
             TestInput(
                 MessageViewAction.DismissBottomSheet,
                 shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBannersState = false,
                 shouldReduceMessageBodyState = false,
                 shouldReduceBottomBarState = false,
                 shouldReduceExitEffect = false,
@@ -261,6 +285,7 @@ class MessageDetailReducerTest(
             TestInput(
                 MessageViewAction.MoveToDestinationSelected(MailLabelId.System.Spam),
                 shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBannersState = false,
                 shouldReduceMessageBodyState = false,
                 shouldReduceBottomBarState = false,
                 shouldReduceExitEffect = false,
@@ -271,6 +296,7 @@ class MessageDetailReducerTest(
             TestInput(
                 MessageViewAction.MoveToDestinationConfirmed("testLabel"),
                 shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBannersState = false,
                 shouldReduceMessageBodyState = false,
                 shouldReduceBottomBarState = false,
                 shouldReduceExitEffect = false,
@@ -282,6 +308,7 @@ class MessageDetailReducerTest(
             TestInput(
                 MessageViewAction.LabelAsToggleAction(LabelId("customLabel")),
                 shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBannersState = false,
                 shouldReduceMessageBodyState = false,
                 shouldReduceBottomBarState = false,
                 shouldReduceExitEffect = false,
@@ -292,6 +319,7 @@ class MessageDetailReducerTest(
             TestInput(
                 MessageViewAction.LabelAsConfirmed(false),
                 shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBannersState = false,
                 shouldReduceMessageBodyState = false,
                 shouldReduceBottomBarState = false,
                 shouldReduceExitEffect = false,
@@ -302,6 +330,7 @@ class MessageDetailReducerTest(
             TestInput(
                 MessageViewAction.LabelAsConfirmed(true),
                 shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBannersState = false,
                 shouldReduceMessageBodyState = false,
                 shouldReduceBottomBarState = false,
                 shouldReduceExitEffect = false,
@@ -313,6 +342,7 @@ class MessageDetailReducerTest(
             TestInput(
                 MessageViewAction.MessageBodyLinkClicked(mockk()),
                 shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBannersState = false,
                 shouldReduceMessageBodyState = false,
                 shouldReduceBottomBarState = false,
                 shouldReduceExitEffect = false,
@@ -323,6 +353,7 @@ class MessageDetailReducerTest(
             TestInput(
                 MessageViewAction.DeleteRequested,
                 shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBannersState = false,
                 shouldReduceMessageBodyState = false,
                 shouldReduceBottomBarState = false,
                 shouldReduceExitEffect = false,
@@ -334,6 +365,7 @@ class MessageDetailReducerTest(
             TestInput(
                 MessageViewAction.DeleteDialogDismissed,
                 shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBannersState = false,
                 shouldReduceMessageBodyState = false,
                 shouldReduceBottomBarState = false,
                 shouldReduceExitEffect = false,
@@ -345,6 +377,7 @@ class MessageDetailReducerTest(
             TestInput(
                 MessageViewAction.DeleteConfirmed,
                 shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBannersState = false,
                 shouldReduceMessageBodyState = false,
                 shouldReduceBottomBarState = false,
                 shouldReduceExitEffect = false,
@@ -359,9 +392,11 @@ class MessageDetailReducerTest(
             TestInput(
                 MessageDetailEvent.MessageWithLabelsEvent(
                     MessageDetailActionBarUiModel("subject", false),
-                    detailHeaderUiModel
+                    detailHeaderUiModel,
+                    messageBannersUiModel
                 ),
                 shouldReduceMessageBodyState = false,
+                shouldReduceMessageBannersState = true,
                 shouldReduceMessageMetadataState = true,
                 shouldReduceBottomBarState = false,
                 shouldReduceExitEffect = false,
@@ -374,6 +409,7 @@ class MessageDetailReducerTest(
                     MessageBodyUiModelTestData.plainTextMessageBodyUiModel
                 ),
                 shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBannersState = false,
                 shouldReduceMessageBodyState = true,
                 shouldReduceBottomBarState = false,
                 shouldReduceExitEffect = false,
@@ -384,6 +420,7 @@ class MessageDetailReducerTest(
             TestInput(
                 MessageDetailEvent.NoCachedMetadata,
                 shouldReduceMessageMetadataState = true,
+                shouldReduceMessageBannersState = false,
                 shouldReduceMessageBodyState = false,
                 shouldReduceBottomBarState = false,
                 shouldReduceExitEffect = true,
@@ -394,6 +431,7 @@ class MessageDetailReducerTest(
             TestInput(
                 MessageDetailEvent.MessageBottomBarEvent(BottomBarEvent.ErrorLoadingActions),
                 shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBannersState = false,
                 shouldReduceMessageBodyState = false,
                 shouldReduceBottomBarState = true,
                 shouldReduceExitEffect = false,
@@ -404,6 +442,7 @@ class MessageDetailReducerTest(
             TestInput(
                 MessageDetailEvent.ErrorAddingStar,
                 shouldReduceMessageMetadataState = true,
+                shouldReduceMessageBannersState = false,
                 shouldReduceMessageBodyState = false,
                 shouldReduceBottomBarState = false,
                 shouldReduceExitEffect = false,
@@ -414,6 +453,7 @@ class MessageDetailReducerTest(
             TestInput(
                 MessageDetailEvent.ErrorRemovingStar,
                 shouldReduceMessageMetadataState = true,
+                shouldReduceMessageBannersState = false,
                 shouldReduceMessageBodyState = false,
                 shouldReduceBottomBarState = false,
                 shouldReduceExitEffect = false,
@@ -424,6 +464,7 @@ class MessageDetailReducerTest(
             TestInput(
                 MessageDetailEvent.ErrorMarkingUnread,
                 shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBannersState = false,
                 shouldReduceMessageBodyState = false,
                 shouldReduceBottomBarState = false,
                 shouldReduceExitEffect = false,
@@ -434,6 +475,7 @@ class MessageDetailReducerTest(
             TestInput(
                 MessageDetailEvent.ErrorMovingToTrash,
                 shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBannersState = false,
                 shouldReduceMessageBodyState = false,
                 shouldReduceBottomBarState = false,
                 shouldReduceExitEffect = false,
@@ -448,6 +490,7 @@ class MessageDetailReducerTest(
                     )
                 ),
                 shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBannersState = false,
                 shouldReduceMessageBodyState = false,
                 shouldReduceBottomBarState = false,
                 shouldReduceExitEffect = false,
@@ -463,6 +506,7 @@ class MessageDetailReducerTest(
                     )
                 ),
                 shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBannersState = false,
                 shouldReduceMessageBodyState = false,
                 shouldReduceBottomBarState = false,
                 shouldReduceExitEffect = false,
@@ -476,6 +520,7 @@ class MessageDetailReducerTest(
                     status = AttachmentWorkerStatus.Running
                 ),
                 shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBannersState = false,
                 shouldReduceMessageBodyState = true,
                 shouldReduceBottomBarState = false,
                 shouldReduceExitEffect = false,
@@ -486,6 +531,7 @@ class MessageDetailReducerTest(
             TestInput(
                 MessageDetailEvent.ErrorGettingAttachment,
                 shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBannersState = false,
                 shouldReduceMessageBodyState = false,
                 shouldReduceBottomBarState = false,
                 shouldReduceExitEffect = false,
@@ -496,6 +542,7 @@ class MessageDetailReducerTest(
             TestInput(
                 MessageDetailEvent.ErrorGettingAttachmentNotEnoughSpace,
                 shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBannersState = false,
                 shouldReduceMessageBodyState = false,
                 shouldReduceBottomBarState = false,
                 shouldReduceExitEffect = false,
@@ -506,6 +553,7 @@ class MessageDetailReducerTest(
             TestInput(
                 MessageDetailEvent.ErrorDeletingMessage,
                 shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBannersState = false,
                 shouldReduceMessageBodyState = false,
                 shouldReduceBottomBarState = false,
                 shouldReduceExitEffect = false,
@@ -517,6 +565,7 @@ class MessageDetailReducerTest(
             TestInput(
                 MessageDetailEvent.ErrorDeletingNoApplicableFolder,
                 shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBannersState = false,
                 shouldReduceMessageBodyState = false,
                 shouldReduceBottomBarState = false,
                 shouldReduceExitEffect = false,
@@ -544,6 +593,7 @@ class MessageDetailReducerTest(
     data class TestInput(
         val operation: MessageDetailOperation,
         val shouldReduceMessageMetadataState: Boolean,
+        val shouldReduceMessageBannersState: Boolean,
         val shouldReduceMessageBodyState: Boolean,
         val shouldReduceBottomBarState: Boolean,
         val shouldReduceExitEffect: Boolean,

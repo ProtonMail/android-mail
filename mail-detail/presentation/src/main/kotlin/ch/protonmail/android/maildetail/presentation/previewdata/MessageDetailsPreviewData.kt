@@ -27,6 +27,8 @@ import ch.protonmail.android.mailcommon.presentation.model.contentDescription
 import ch.protonmail.android.mailcommon.presentation.model.description
 import ch.protonmail.android.mailcommon.presentation.model.iconDrawable
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
+import ch.protonmail.android.maildetail.presentation.model.MessageBannersState
+import ch.protonmail.android.maildetail.presentation.model.MessageBannersUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
@@ -46,6 +48,11 @@ object MessageDetailsPreviewData {
         messageMetadataState = MessageMetadataState.Data(
             messageDetailActionBar = MessageDetailActionBarUiModelPreviewData.FirstWeekOfAugWeatherForecast,
             messageDetailHeader = MessageDetailHeaderPreviewData.WithoutLabels
+        ),
+        messageBannersState = MessageBannersState.Data(
+            messageBannersUiModel = MessageBannersUiModel(
+                shouldShowPhishingBanner = false
+            )
         ),
         messageBodyState = MessageBodyState.Data(
             messageBodyUiModel = MessageBodyUiModel(
@@ -99,6 +106,7 @@ object MessageDetailsPreviewData {
 
     val Loading = MessageDetailState(
         messageMetadataState = MessageMetadataState.Loading,
+        messageBannersState = MessageBannersState.Loading,
         messageBodyState = MessageBodyState.Loading,
         bottomBarState = BottomBarState.Loading,
         bottomSheetState = BottomSheetState(MoveToBottomSheetState.Loading),

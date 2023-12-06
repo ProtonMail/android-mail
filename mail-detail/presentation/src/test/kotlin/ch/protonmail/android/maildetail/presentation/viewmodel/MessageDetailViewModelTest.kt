@@ -51,14 +51,17 @@ import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageDetailActio
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.RelabelMessage
 import ch.protonmail.android.maildetail.presentation.R
+import ch.protonmail.android.maildetail.presentation.mapper.MessageBannersUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageBodyUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailActionBarUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailHeaderUiModelMapper
+import ch.protonmail.android.maildetail.presentation.model.MessageBannersState
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailActionBarUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
+import ch.protonmail.android.maildetail.presentation.reducer.MessageBannersReducer
 import ch.protonmail.android.maildetail.presentation.reducer.MessageBodyReducer
 import ch.protonmail.android.maildetail.presentation.reducer.MessageDeleteDialogReducer
 import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailMetadataReducer
@@ -98,6 +101,7 @@ import ch.protonmail.android.mailsettings.domain.usecase.privacy.ObservePrivacyS
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdateLinkConfirmationSetting
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
 import ch.protonmail.android.testdata.contact.ContactTestData
+import ch.protonmail.android.testdata.maildetail.MessageBannersUiModelTestData.messageBannersUiModel
 import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData.buildCustomFolder
@@ -147,6 +151,7 @@ class MessageDetailViewModelTest {
     private val messageDetailActionBarUiModelMapper = MessageDetailActionBarUiModelMapper()
     private val messageDetailReducer = MessageDetailReducer(
         MessageDetailMetadataReducer(),
+        MessageBannersReducer(),
         MessageBodyReducer(),
         BottomBarReducer(),
         BottomSheetReducer(MoveToBottomSheetReducer(), LabelAsBottomSheetReducer(), MoreActionsBottomSheetReducer()),
@@ -221,6 +226,9 @@ class MessageDetailViewModelTest {
                 defaultFolderColorSettings
             )
         } returns messageDetailHeaderUiModel
+    }
+    private val messageBannersUiModelMapper = mockk<MessageBannersUiModelMapper> {
+        every { createMessageBannersUiModel(any()) } returns messageBannersUiModel
     }
     private val messageBodyUiModelMapper = mockk<MessageBodyUiModelMapper> {
         coEvery {
@@ -303,6 +311,7 @@ class MessageDetailViewModelTest {
             unStarMessages = unStarMessages,
             savedStateHandle = savedStateHandle,
             messageDetailHeaderUiModelMapper = messageDetailHeaderUiModelMapper,
+            messageBannersUiModelMapper = messageBannersUiModelMapper,
             messageBodyUiModelMapper = messageBodyUiModelMapper,
             messageDetailActionBarUiModelMapper = messageDetailActionBarUiModelMapper,
             moveMessage = moveMessage,
@@ -766,6 +775,7 @@ class MessageDetailViewModelTest {
                     MessageDetailActionBarUiModelTestData.uiModel,
                     messageDetailHeaderUiModel
                 ),
+                messageBannersState = MessageBannersState.Data(messageBannersUiModel),
                 messageBodyState = MessageBodyState.Data(
                     MessageBodyUiModelTestData.plainTextMessageBodyUiModel
                 )

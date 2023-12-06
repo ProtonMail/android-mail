@@ -191,6 +191,9 @@ object MessageTestData {
         )
     )
 
+    val autoPhishingMessage = buildMessage(id = "message", flags = Message.FLAG_PHISHING_AUTO)
+    val manualPhishingMessage = buildMessage(id = "message", flags = Message.FLAG_PHISHING_MANUAL)
+
     fun buildMessage(
         userId: UserId = UserIdTestData.userId,
         id: String,
@@ -206,7 +209,8 @@ object MessageTestData {
         toList: List<Recipient> = emptyList(),
         ccList: List<Recipient> = emptyList(),
         bccList: List<Recipient> = emptyList(),
-        conversationId: ConversationId = ConversationId(id)
+        conversationId: ConversationId = ConversationId(id),
+        flags: Long = 0
     ) = Message(
         userId = userId,
         messageId = MessageId(id),
@@ -228,7 +232,7 @@ object MessageTestData {
         addressId = AddressId("1"),
         externalId = null,
         numAttachments = numAttachments,
-        flags = 0,
+        flags = flags,
         attachmentCount = attachmentCount
     )
 }
