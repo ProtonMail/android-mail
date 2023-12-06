@@ -48,6 +48,7 @@ internal fun mockNetworkDispatcher(
     useDefaultPaymentSettings: Boolean = true,
     useDefaultMailReadResponses: Boolean = true,
     useDefaultDeviceRegistration: Boolean = true,
+    useDefaultCounters: Boolean = true,
     ignoreEvents: Boolean = true,
     additionalMockDefinitions: MockNetworkDispatcher.() -> Unit = {}
 ) = MockNetworkDispatcher().apply {
@@ -161,6 +162,17 @@ internal fun mockNetworkDispatcher(
                 withStatusCode 200 matchWildcards true,
             get("/core/v4/events/latest")
                 respondWith "/core/v4/events/latest/events-latest_base_placeholder.json"
+                withStatusCode 200
+        )
+    }
+
+    if (useDefaultCounters) {
+        addMockRequests(
+            get("/mail/v4/conversations/count")
+                respondWith "/mail/v4/conversations/count/conversations-count_base_placeholder.json"
+                withStatusCode 200,
+            get("/mail/v4/messages/count")
+                respondWith "/mail/v4/messages/count/messages-count_base_placeholder.json"
                 withStatusCode 200
         )
     }
