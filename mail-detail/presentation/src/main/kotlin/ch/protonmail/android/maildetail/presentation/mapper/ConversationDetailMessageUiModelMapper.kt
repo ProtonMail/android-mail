@@ -48,6 +48,7 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
     private val messageLocationUiModelMapper: MessageLocationUiModelMapper,
     private val resolveParticipantName: ResolveParticipantName,
     private val messageDetailHeaderUiModelMapper: MessageDetailHeaderUiModelMapper,
+    private val messageBannersUiModelMapper: MessageBannersUiModelMapper,
     private val messageBodyUiModelMapper: MessageBodyUiModelMapper,
     private val participantUiModelMapper: ParticipantUiModelMapper
 ) {
@@ -93,6 +94,7 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
                 contacts,
                 folderColorSettings
             ),
+            messageBannersUiModel = messageBannersUiModelMapper.createMessageBannersUiModel(message),
             messageBodyUiModel = messageBodyUiModelMapper.toUiModel(message.userId, decryptedMessageBody)
         )
     }

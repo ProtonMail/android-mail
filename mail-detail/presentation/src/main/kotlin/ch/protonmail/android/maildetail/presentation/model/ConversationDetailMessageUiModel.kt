@@ -54,6 +54,7 @@ sealed interface ConversationDetailMessageUiModel {
         override val messageId: MessageIdUiModel,
         override val isUnread: Boolean,
         val messageDetailHeaderUiModel: MessageDetailHeaderUiModel,
+        val messageBannersUiModel: MessageBannersUiModel,
         val messageBodyUiModel: MessageBodyUiModel
     ) : ConversationDetailMessageUiModel
 

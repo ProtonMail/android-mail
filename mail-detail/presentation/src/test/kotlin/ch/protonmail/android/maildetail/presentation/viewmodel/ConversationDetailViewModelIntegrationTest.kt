@@ -75,6 +75,7 @@ import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMessageUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMetadataUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.DetailAvatarUiModelMapper
+import ch.protonmail.android.maildetail.presentation.mapper.MessageBannersUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageBodyUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailHeaderUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageIdUiModelMapper
@@ -310,6 +311,7 @@ class ConversationDetailViewModelIntegrationTest {
             participantUiModelMapper = ParticipantUiModelMapper(resolveParticipantName),
             resolveParticipantName = resolveParticipantName
         ),
+        messageBannersUiModelMapper = MessageBannersUiModelMapper(),
         messageBodyUiModelMapper = MessageBodyUiModelMapper(
             attachmentUiModelMapper = attachmentUiModelMapper,
             doesMessageBodyHaveEmbeddedImages = doesMessageBodyHaveEmbeddedImages,
