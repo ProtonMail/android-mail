@@ -19,33 +19,30 @@
 package ch.protonmail.android.mailmessage.data.usecase
 
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
-import ch.protonmail.android.mailmessage.data.usecase.DeleteSentMessagesFromOutbox.Companion.EVENT_LOOP_PERIOD_MS
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.DraftState
 import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.usecase.DeleteDraftState
+import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.runTest
-import me.proton.core.test.kotlin.TestCoroutineScopeProvider
 import org.junit.Test
 
 class DeleteSentMessagesFromOutboxTest {
 
     private val userId = UserIdSample.Primary
     private val deleteDraftState = mockk<DeleteDraftState>()
-    private val scopeProvider = TestCoroutineScopeProvider()
     private val deleteSentMessagesFromOutbox = DeleteSentMessagesFromOutbox(
-        deleteDraftState,
-        scopeProvider
+        deleteDraftState
     )
 
     @Test
     fun `should delete sent messages from outbox`() = runTest {
         // Given
+        coEvery { deleteDraftState(userId, any()) } returns Unit
         val sentDraftItems = listOf(
             DraftState(
                 userId = userId,
@@ -65,7 +62,6 @@ class DeleteSentMessagesFromOutboxTest {
 
         // When
         deleteSentMessagesFromOutbox.invoke(userId, sentDraftItems)
-        scopeProvider.GlobalIOSupervisedScope.advanceTimeBy(EVENT_LOOP_PERIOD_MS * 2)
 
         // Then
         coVerify { deleteDraftState(userId, any()) }
