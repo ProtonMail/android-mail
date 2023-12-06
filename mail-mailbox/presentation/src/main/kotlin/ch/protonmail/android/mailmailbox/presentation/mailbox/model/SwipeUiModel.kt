@@ -30,4 +30,17 @@ data class SwipeUiModel(
     @StringRes val descriptionRes: Int,
     val getColor: @Composable () -> Color,
     val staysDismissed: Boolean
-)
+) {
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is SwipeUiModel) return false
+
+        if (swipeAction != other.swipeAction) return false
+        if (icon != other.icon) return false
+        if (descriptionRes != other.descriptionRes) return false
+        if (staysDismissed != other.staysDismissed) return false
+
+        return true
+    }
+}

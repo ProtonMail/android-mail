@@ -28,7 +28,7 @@ object SwipeUiModelSampleData {
     val Trash = SwipeUiModel(
         swipeAction = SwipeAction.Trash,
         icon = R.drawable.ic_proton_trash,
-        descriptionRes = 0,
+        descriptionRes = R.string.mail_settings_swipe_action_trash_description,
         getColor = { Color.Red },
         staysDismissed = true
     )
@@ -36,9 +36,17 @@ object SwipeUiModelSampleData {
     val Archive = SwipeUiModel(
         swipeAction = SwipeAction.Archive,
         icon = R.drawable.ic_proton_archive_box,
-        descriptionRes = 0,
+        descriptionRes = R.string.mail_settings_swipe_action_archive_description,
         getColor = { Color.Blue },
         staysDismissed = true
+    )
+
+    val MarkRead = SwipeUiModel(
+        swipeAction = SwipeAction.MarkRead,
+        icon = R.drawable.ic_proton_envelope_dot,
+        descriptionRes = R.string.mail_settings_swipe_action_read_description,
+        getColor = { Color.Green },
+        staysDismissed = false
     )
 
 }

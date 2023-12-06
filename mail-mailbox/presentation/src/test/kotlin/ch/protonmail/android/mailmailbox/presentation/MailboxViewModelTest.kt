@@ -79,6 +79,7 @@ import ch.protonmail.android.mailmailbox.presentation.helper.MailboxAsyncPagingD
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxViewModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.MailboxItemUiModelMapper
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.SwipeActionsMapper
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
@@ -87,8 +88,10 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.SwipeActionsUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxStateSampleData
+import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.SwipeUiModelSampleData
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxReducer
 import ch.protonmail.android.mailmailbox.presentation.paging.MailboxPagerFactory
 import ch.protonmail.android.mailmessage.domain.model.LabelSelectionList
@@ -106,7 +109,9 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsB
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
+import ch.protonmail.android.mailsettings.domain.model.SwipeActionsPreference
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveSwipeActionsPreference
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData.buildMailboxUiModelItem
@@ -150,6 +155,7 @@ import kotlinx.coroutines.test.setMain
 import me.proton.core.domain.entity.UserId
 import me.proton.core.featureflag.domain.entity.FeatureFlag
 import me.proton.core.label.domain.entity.LabelId
+import me.proton.core.mailsettings.domain.entity.SwipeAction
 import me.proton.core.mailsettings.domain.entity.ViewMode
 import me.proton.core.mailsettings.domain.entity.ViewMode.ConversationGrouping
 import me.proton.core.mailsettings.domain.entity.ViewMode.NoConversationGrouping
@@ -166,6 +172,7 @@ class MailboxViewModelTest {
     private val defaultFolderColorSettings = FolderColorSettings()
     private val initialLocationMailLabelId = Archive
     private val actionUiModelMapper = ActionUiModelMapper()
+    private val swipeActionsMapper = SwipeActionsMapper()
 
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
         every { this@mockk.invoke() } returns flowOf(userId)
@@ -186,6 +193,9 @@ class MailboxViewModelTest {
     }
     private val observeCustomMailLabels = mockk<ObserveCustomMailLabels>()
     private val observeDestinationMailLabels = mockk<ObserveExclusiveDestinationMailLabels>()
+    private val observeSwipeActionsPreference = mockk<ObserveSwipeActionsPreference> {
+        every { this@mockk(userId) } returns flowOf(SwipeActionsPreference(SwipeAction.MarkRead, SwipeAction.Archive))
+    }
     private val getMessagesWithLabels = mockk<GetMessagesWithLabels>()
     private val getConversationMessagesWithLabels = mockk<GetConversationMessagesWithLabels>()
 
@@ -250,6 +260,7 @@ class MailboxViewModelTest {
             observeMailLabels = observeMailLabels,
             observeCustomMailLabels = observeCustomMailLabels,
             observeDestinationMailLabels = observeDestinationMailLabels,
+            observeSwipeActionsPreference = observeSwipeActionsPreference,
             selectedMailLabelId = selectedMailLabelId,
             observeUnreadCounters = observeUnreadCounters,
             observeFolderColorSettings = observeFolderColorSettings,
@@ -258,6 +269,7 @@ class MailboxViewModelTest {
             getMailboxActions = observeMailboxActions,
             actionUiModelMapper = actionUiModelMapper,
             mailboxItemMapper = mailboxItemMapper,
+            swipeActionsMapper = swipeActionsMapper,
             getContacts = getContacts,
             markConversationsAsRead = markConversationsAsRead,
             markConversationsAsUnread = markConversationsAsUnread,
@@ -419,6 +431,22 @@ class MailboxViewModelTest {
                 swipeActions = null
             )
         )
+        val expectedSwipeActions = SwipeActionsUiModel(
+            end = SwipeUiModelSampleData.MarkRead,
+            start = SwipeUiModelSampleData.Archive
+        )
+        val expectedStateWithSwipeGestures = expectedState.copy(
+            mailboxListState = MailboxListState.Data.ViewMode(
+                currentMailLabel = modifiedMailLabel,
+                openItemEffect = Effect.empty(),
+                scrollToMailboxTop = Effect.of(initialMailLabel.id),
+                offlineEffect = Effect.empty(),
+                refreshErrorEffect = Effect.empty(),
+                refreshRequested = false,
+                selectionModeEnabled = false,
+                swipeActions = expectedSwipeActions
+            )
+        )
         val mailLabelsFlow = MutableStateFlow(
             MailLabels(
                 systemLabels = LabelTestData.systemLabels,
@@ -435,6 +463,12 @@ class MailboxViewModelTest {
                 MailboxEvent.SelectedLabelChanged(modifiedMailLabel)
             )
         } returns expectedState
+        every {
+            mailboxReducer.newStateFrom(
+                any(),
+                MailboxEvent.SwipeActionsChanged(expectedSwipeActions)
+            )
+        } returns expectedStateWithSwipeGestures
 
         mailboxViewModel.state.test {
             awaitItem()
@@ -449,6 +483,8 @@ class MailboxViewModelTest {
 
             // Then
             assertEquals(expectedState, awaitItem())
+            assertEquals(expectedStateWithSwipeGestures, awaitItem())
+
         }
     }
 

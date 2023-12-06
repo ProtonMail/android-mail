@@ -27,6 +27,8 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListS
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState.Data.SelectionMode.SelectedMailboxItem
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.SwipeActionsUiModel
+import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.SwipeUiModelSampleData
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
@@ -869,6 +871,37 @@ internal class MailboxListReducerTest(
                     refreshRequested = false,
                     selectionModeEnabled = false,
                     swipeActions = null
+                )
+            ),
+            TestInput(
+                currentState = MailboxListState.Data.ViewMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    openItemEffect = Effect.empty(),
+                    scrollToMailboxTop = Effect.empty(),
+                    offlineEffect = Effect.empty(),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshRequested = false,
+                    selectionModeEnabled = true,
+                    swipeActions = null
+                ),
+                operation = MailboxEvent.SwipeActionsChanged(
+                    SwipeActionsUiModel(
+                        start = SwipeUiModelSampleData.Trash,
+                        end = SwipeUiModelSampleData.Archive
+                    )
+                ),
+                expectedState = MailboxListState.Data.ViewMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    openItemEffect = Effect.empty(),
+                    scrollToMailboxTop = Effect.empty(),
+                    offlineEffect = Effect.empty(),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshRequested = false,
+                    selectionModeEnabled = true,
+                    swipeActions = SwipeActionsUiModel(
+                        start = SwipeUiModelSampleData.Trash,
+                        end = SwipeUiModelSampleData.Archive
+                    )
                 )
             )
         )

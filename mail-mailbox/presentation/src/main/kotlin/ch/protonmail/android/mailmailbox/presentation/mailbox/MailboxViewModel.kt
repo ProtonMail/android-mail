@@ -70,6 +70,7 @@ import ch.protonmail.android.mailmailbox.domain.usecase.RelabelConversations
 import ch.protonmail.android.mailmailbox.domain.usecase.RelabelMessages
 import ch.protonmail.android.mailmailbox.domain.usecase.SaveOnboarding
 import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.MailboxItemUiModelMapper
+import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.SwipeActionsMapper
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
@@ -94,6 +95,7 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsB
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveSwipeActionsPreference
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.Flow
@@ -131,6 +133,7 @@ class MailboxViewModel @Inject constructor(
     private val observeMailLabels: ObserveMailLabels,
     private val observeCustomMailLabels: ObserveCustomMailLabels,
     private val observeDestinationMailLabels: ObserveExclusiveDestinationMailLabels,
+    private val observeSwipeActionsPreference: ObserveSwipeActionsPreference,
     private val selectedMailLabelId: SelectedMailLabelId,
     private val observeUnreadCounters: ObserveUnreadCounters,
     private val observeFolderColorSettings: ObserveFolderColorSettings,
@@ -139,6 +142,7 @@ class MailboxViewModel @Inject constructor(
     private val getMailboxActions: GetMailboxActions,
     private val actionUiModelMapper: ActionUiModelMapper,
     private val mailboxItemMapper: MailboxItemUiModelMapper,
+    private val swipeActionsMapper: SwipeActionsMapper,
     private val getContacts: GetContacts,
     private val markConversationsAsRead: MarkConversationsAsRead,
     private val markConversationsAsUnread: MarkConversationsAsUnread,
@@ -182,6 +186,13 @@ class MailboxViewModel @Inject constructor(
                 } ?: run {
                     emitNewStateFrom(MailboxEvent.SelectedLabelChanged(MailLabelId.System.Inbox.toMailLabel()))
                 }
+            }
+            .filterNotNull()
+            .combine(
+                primaryUserId.filterNotNull().flatMapLatest { userId -> observeSwipeActionsPreference(userId) }
+            ) { currentMailLabel, swipeActionsPreference ->
+                val swipeActions = swipeActionsMapper(currentMailLabel.id.labelId, swipeActionsPreference)
+                emitNewStateFrom(MailboxEvent.SwipeActionsChanged(swipeActions))
             }
             .launchIn(viewModelScope)
 
@@ -794,7 +805,10 @@ class MailboxViewModel @Inject constructor(
 
         when (getPreferredViewMode()) {
             ViewMode.ConversationGrouping ->
-                unStarConversations(userId, selectionModeDataState.selectedMailboxItems.map { ConversationId(it.id) })
+                unStarConversations(
+                    userId,
+                    selectionModeDataState.selectedMailboxItems.map { ConversationId(it.id) }
+                )
 
             ViewMode.NoConversationGrouping ->
                 unStarMessages(userId, selectionModeDataState.selectedMailboxItems.map { MessageId(it.id) })

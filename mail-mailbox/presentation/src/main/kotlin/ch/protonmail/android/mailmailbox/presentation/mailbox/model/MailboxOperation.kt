@@ -141,6 +141,10 @@ internal sealed interface MailboxEvent : MailboxOperation {
         val item: MailboxItemUiModel
     ) : MailboxEvent, AffectingTopAppBar, AffectingMailboxList, AffectingBottomAppBar
 
+    data class SwipeActionsChanged(
+        val swipeActionsPreference: SwipeActionsUiModel
+    ) : MailboxEvent, AffectingMailboxList
+
     object ShowOnboarding : MailboxEvent, MailboxOperation.AffectingOnboarding
 
     data class Trash(val numAffectedMessages: Int) :
