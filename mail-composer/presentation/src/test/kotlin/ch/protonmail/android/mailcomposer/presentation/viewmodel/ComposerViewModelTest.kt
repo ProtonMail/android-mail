@@ -141,7 +141,9 @@ class ComposerViewModelTest {
     private val storeAttachments = mockk<StoreAttachments>()
     private val storeDraftWithAllFields = mockk<StoreDraftWithAllFields>()
     private val storeDraftWithBodyMock = mockk<StoreDraftWithBody>()
-    private val storeDraftWithSubjectMock = mockk<StoreDraftWithSubject>()
+    private val storeDraftWithSubjectMock = mockk<StoreDraftWithSubject> {
+        coEvery { this@mockk.invoke(any(), any(), any(), any()) } returns Unit.right()
+    }
     private val storeDraftWithRecipientsMock = mockk<StoreDraftWithRecipients>()
     private val storeExternalAttachmentStates = mockk<StoreExternalAttachments>()
     private val sendMessageMock = mockk<SendMessage>()
@@ -1293,6 +1295,7 @@ class ComposerViewModelTest {
         val expectedDraftId = expectInputDraftMessageId { MessageIdSample.RemoteDraft }
         val expectedDraftFields = existingDraftFields
         val decryptedDraftFields = DecryptedDraftFields.Local(existingDraftFields)
+        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
         expectDecryptedDraftDataSuccess(expectedUserId, expectedDraftId) { decryptedDraftFields }
         expectStartDraftSync(expectedUserId, expectedDraftId)
@@ -1318,6 +1321,10 @@ class ComposerViewModelTest {
         )
         assertEquals(expectedComposerFields, actual.fields)
         coVerify { storeExternalAttachmentStates(expectedUserId, expectedDraftId) }
+        expectStoreDraftSubjectSucceeds(
+            expectedDraftId, expectedSenderEmail,
+            expectedUserId, expectedDraftFields.subject
+        )
     }
 
     @Test

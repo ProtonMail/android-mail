@@ -202,6 +202,12 @@ class ComposerViewModel @Inject constructor(
                         draftFields.sender,
                         draftAction
                     )
+
+                    // User may skip editing Subject line, so we need to store it here.
+                    storeDraftWithSubject(
+                        primaryUserId(), currentMessageId(), draftFields.sender, draftFields.subject
+                    )
+
                 }.onLeft { emitNewStateFor(ComposerEvent.ErrorLoadingParentMessageData) }
             }.onLeft { emitNewStateFor(ComposerEvent.ErrorLoadingParentMessageData) }
         }
