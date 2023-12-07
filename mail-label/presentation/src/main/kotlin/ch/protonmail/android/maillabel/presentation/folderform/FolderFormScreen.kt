@@ -202,15 +202,17 @@ fun FolderFormContent(
                 actions.onFolderNotificationsChanged(it)
             }
         )
-        Divider()
-        ColorPicker(
-            colors = state.colorList,
-            selectedColor = state.color.getColorFromHexString(),
-            iconResId = R.drawable.ic_proton_folder_filled,
-            onColorClicked = {
-                actions.onFolderColorChanged(it)
-            }
-        )
+        if (state.displayColorPicker) {
+            Divider()
+            ColorPicker(
+                colors = state.colorList,
+                selectedColor = state.color.getColorFromHexString(),
+                iconResId = R.drawable.ic_proton_folder_filled,
+                onColorClicked = {
+                    actions.onFolderColorChanged(it)
+                }
+            )
+        }
         if (state is FolderFormState.Data.Update) {
             FormDeleteButton(
                 modifier = Modifier

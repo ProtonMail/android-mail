@@ -50,6 +50,11 @@ class FolderFormReducer @Inject constructor() {
     }
 
     private fun reduceFolderLoaded(event: FolderFormEvent.FolderLoaded): FolderFormState {
+        val displayColorPicker = displayColorPicker(
+            hasParent = event.parent != null,
+            useFolderColor = event.useFolderColor,
+            inheritParentFolderColor = event.inheritParentFolderColor
+        )
         return if (event.labelId != null) {
             FolderFormState.Data.Update(
                 isSaveEnabled = event.name.isNotEmpty(),
@@ -58,7 +63,10 @@ class FolderFormReducer @Inject constructor() {
                 color = event.color,
                 parent = event.parent,
                 notifications = event.notifications,
-                colorList = event.colorList
+                colorList = event.colorList,
+                displayColorPicker = displayColorPicker,
+                useFolderColor = event.useFolderColor,
+                inheritParentFolderColor = event.inheritParentFolderColor
             )
         } else {
             FolderFormState.Data.Create(
@@ -67,7 +75,10 @@ class FolderFormReducer @Inject constructor() {
                 color = event.color,
                 parent = event.parent,
                 notifications = event.notifications,
-                colorList = event.colorList
+                colorList = event.colorList,
+                displayColorPicker = displayColorPicker,
+                useFolderColor = event.useFolderColor,
+                inheritParentFolderColor = event.inheritParentFolderColor
             )
         }
     }
@@ -90,8 +101,23 @@ class FolderFormReducer @Inject constructor() {
 
     private fun reduceUpdateFolderParent(currentState: FolderFormState, parent: Label?): FolderFormState {
         return when (currentState) {
-            is FolderFormState.Data.Create -> currentState.copy(parent = parent)
-            is FolderFormState.Data.Update -> currentState.copy(parent = parent)
+            is FolderFormState.Data -> {
+                val displayColorPicker = displayColorPicker(
+                    hasParent = parent != null,
+                    useFolderColor = currentState.useFolderColor,
+                    inheritParentFolderColor = currentState.inheritParentFolderColor
+                )
+                when (currentState) {
+                    is FolderFormState.Data.Create -> currentState.copy(
+                        parent = parent,
+                        displayColorPicker = displayColorPicker
+                    )
+                    is FolderFormState.Data.Update -> currentState.copy(
+                        parent = parent,
+                        displayColorPicker = displayColorPicker
+                    )
+                }
+            }
             is FolderFormState.Loading -> currentState
         }
     }
@@ -197,5 +223,14 @@ class FolderFormReducer @Inject constructor() {
             is FolderFormState.Data.Update -> currentState
             is FolderFormState.Loading -> currentState
         }
+    }
+
+    private fun displayColorPicker(
+        hasParent: Boolean,
+        useFolderColor: Boolean,
+        inheritParentFolderColor: Boolean
+    ): Boolean {
+        return hasParent && useFolderColor && !inheritParentFolderColor ||
+            !hasParent && useFolderColor
     }
 }

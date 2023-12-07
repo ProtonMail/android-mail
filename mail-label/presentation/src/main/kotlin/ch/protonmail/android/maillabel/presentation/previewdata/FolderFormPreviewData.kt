@@ -32,7 +32,10 @@ object FolderFormPreviewData {
         color = LabelColorListSample.colorListSample().random().getHexStringFromColor(),
         parent = null,
         notifications = true,
-        colorList = LabelColorListSample.colorListSample()
+        colorList = LabelColorListSample.colorListSample(),
+        displayColorPicker = true,
+        useFolderColor = true,
+        inheritParentFolderColor = true
     )
 
     val editFolderFormState = FolderFormState.Data.Update(
@@ -42,6 +45,9 @@ object FolderFormPreviewData {
         parent = labelSampleData,
         notifications = true,
         colorList = LabelColorListSample.colorListSample(),
+        displayColorPicker = true,
+        useFolderColor = true,
+        inheritParentFolderColor = true,
         labelId = LabelId("Label Id")
     )
 }

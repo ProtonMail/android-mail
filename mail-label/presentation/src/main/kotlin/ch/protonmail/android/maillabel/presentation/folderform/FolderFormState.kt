@@ -42,6 +42,9 @@ sealed interface FolderFormState {
         val parent: Label?
         val notifications: Boolean
         val colorList: List<Color>
+        val displayColorPicker: Boolean
+        val useFolderColor: Boolean
+        val inheritParentFolderColor: Boolean
         val openParentFolderList: Effect<Unit>
         val closeWithSuccess: Effect<TextUiModel>
         val showErrorSnackbar: Effect<TextUiModel>
@@ -53,6 +56,9 @@ sealed interface FolderFormState {
             override val parent: Label?,
             override val notifications: Boolean,
             override val colorList: List<Color>,
+            override val displayColorPicker: Boolean,
+            override val useFolderColor: Boolean,
+            override val inheritParentFolderColor: Boolean,
             override val openParentFolderList: Effect<Unit> = Effect.empty(),
             override val close: Effect<Unit> = Effect.empty(),
             override val closeWithSuccess: Effect<TextUiModel> = Effect.empty(),
@@ -67,6 +73,9 @@ sealed interface FolderFormState {
             override val parent: Label?,
             override val notifications: Boolean,
             override val colorList: List<Color>,
+            override val displayColorPicker: Boolean,
+            override val useFolderColor: Boolean,
+            override val inheritParentFolderColor: Boolean,
             override val openParentFolderList: Effect<Unit> = Effect.empty(),
             override val close: Effect<Unit> = Effect.empty(),
             override val closeWithSuccess: Effect<TextUiModel> = Effect.empty(),

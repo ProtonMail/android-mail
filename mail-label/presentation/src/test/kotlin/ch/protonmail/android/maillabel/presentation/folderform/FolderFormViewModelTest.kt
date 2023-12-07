@@ -82,7 +82,10 @@ class FolderFormViewModelTest {
         color = defaultTestFolder.color,
         parent = null,
         notifications = true,
-        colorList = listOf(Color.Red)
+        colorList = listOf(Color.Red),
+        displayColorPicker = true,
+        useFolderColor = defaultFolderColorSettings.useFolderColor,
+        inheritParentFolderColor = defaultFolderColorSettings.inheritParentFolderColor
     )
     private val loadedUpdateState = FolderFormState.Data.Update(
         isSaveEnabled = true,
@@ -91,6 +94,9 @@ class FolderFormViewModelTest {
         parent = null,
         notifications = true,
         colorList = listOf(Color.Red),
+        displayColorPicker = true,
+        useFolderColor = defaultFolderColorSettings.useFolderColor,
+        inheritParentFolderColor = defaultFolderColorSettings.inheritParentFolderColor,
         labelId = defaultTestFolder.labelId
     )
 
