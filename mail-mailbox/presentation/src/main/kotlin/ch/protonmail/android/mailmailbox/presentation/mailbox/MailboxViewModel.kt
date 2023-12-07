@@ -261,6 +261,7 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.SwipeReadAction -> handleSwipeReadAction(viewAction)
                 is MailboxViewAction.SwipeArchiveAction -> handleSwipeArchiveAction(viewAction)
                 is MailboxViewAction.SwipeSpamAction -> handleSwipeSpamAction(viewAction)
+                is MailboxViewAction.SwipeTrashAction -> handleSwipeTrashAction(viewAction)
                 is MailboxViewAction.CloseOnboarding -> handleCloseOnboarding()
                 is MailboxViewAction.Trash -> handleTrashAction()
                 is MailboxViewAction.Delete -> handleDeleteAction()
@@ -487,6 +488,10 @@ class MailboxViewModel @Inject constructor(
 
     private suspend fun handleSwipeSpamAction(swipeSpamAction: MailboxViewAction.SwipeSpamAction) {
         swipeSpamAction.let { moveSingleItemToDestination(it.userId, it.itemId, SystemLabelId.Spam.labelId) }
+    }
+
+    private suspend fun handleSwipeTrashAction(swipeSpamAction: MailboxViewAction.SwipeTrashAction) {
+        swipeSpamAction.let { moveSingleItemToDestination(it.userId, it.itemId, SystemLabelId.Trash.labelId) }
     }
 
     private suspend fun moveSingleItemToDestination(

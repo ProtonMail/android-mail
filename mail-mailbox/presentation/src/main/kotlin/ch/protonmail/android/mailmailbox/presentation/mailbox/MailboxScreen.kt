@@ -179,6 +179,9 @@ fun MailboxScreen(
         },
         onSwipeSpam = { userId, itemId ->
             viewModel.submit(MailboxViewAction.SwipeSpamAction(userId, itemId))
+        },
+        onSwipeTrash = { userId, itemId ->
+            viewModel.submit(MailboxViewAction.SwipeTrashAction(userId, itemId))
         }
     )
 
@@ -567,7 +570,7 @@ private fun generateSwipeActions(
     item: MailboxItemUiModel
 ): SwipeActions.Actions {
     return SwipeActions.Actions(
-        onTrash = { Timber.d("mailbox onTrash swiped") },
+        onTrash = { actions.onSwipeTrash(item.userId, item.id) },
         onSpam = { actions.onSwipeSpam(item.userId, item.id) },
         onStar = { Timber.d("mailbox onStar swiped") },
         onArchive = { actions.onSwipeArchive(item.userId, item.id) },
@@ -665,7 +668,8 @@ object MailboxScreen {
         val closeOnboarding: () -> Unit,
         val onSwipeRead: (UserId, String, Boolean) -> Unit,
         val onSwipeArchive: (UserId, String) -> Unit,
-        val onSwipeSpam: (UserId, String) -> Unit
+        val onSwipeSpam: (UserId, String) -> Unit,
+        val onSwipeTrash: (UserId, String) -> Unit
     ) {
 
         companion object {
@@ -701,7 +705,8 @@ object MailboxScreen {
                 closeOnboarding = {},
                 onSwipeRead = { _, _, _ -> },
                 onSwipeArchive = { _, _ -> },
-                onSwipeSpam = { _, _ -> }
+                onSwipeSpam = { _, _ -> },
+                onSwipeTrash = { _, _ -> }
             )
         }
     }
