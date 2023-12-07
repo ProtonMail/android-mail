@@ -27,7 +27,7 @@ internal class MockOnboardingRuntimeRule @Inject constructor(
     private val onboardingLocalDataSource: OnboardingLocalDataSource
 ) {
 
-    operator fun invoke(forcedValue: Boolean) = runBlocking {
-        onboardingLocalDataSource.save(OnboardingPreference(forcedValue))
+    operator fun invoke(shouldForceShow: Boolean) = runBlocking {
+        onboardingLocalDataSource.save(OnboardingPreference(shouldForceShow))
     }
 }

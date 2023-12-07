@@ -27,6 +27,7 @@ import ch.protonmail.android.test.BuildConfig
 import ch.protonmail.android.uitest.rule.GrantNotificationsPermissionRule
 import ch.protonmail.android.uitest.rule.HiltInjectRule
 import ch.protonmail.android.uitest.rule.MainInitializerRule
+import ch.protonmail.android.uitest.rule.MockOnboardingRuntimeRule
 import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import dagger.hilt.android.testing.HiltAndroidRule
 import kotlinx.coroutines.runBlocking
@@ -75,10 +76,14 @@ internal open class BaseTest(
     @Inject
     lateinit var mailSettingsRepo: MailSettingsRepository
 
+    @Inject
+    lateinit var mockOnboardingRuntimeRule: MockOnboardingRuntimeRule
+
     @Before
     open fun setup() {
         setupDeviceForAutomation(true)
         loginTestHelper.logoutAll()
+        mockOnboardingRuntimeRule(shouldForceShow = false)
 
         ActivityScenario.launch(MainActivity::class.java)
     }
