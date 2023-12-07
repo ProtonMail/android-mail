@@ -50,8 +50,21 @@ internal class MailboxTopBarSection : ComposeSectionRobot() {
     @VerifiesOuter
     inner class Verify {
 
-        fun isMailbox(type: MailboxType) {
-            locationLabel.assertTextEquals(type.name)
+        /**
+         * Verifies that the current Mailbox is of the given [MailboxType].
+         *
+         * A [timeout] is provided as switching Mailbox does not trigger any loaders or idling resources.
+         * By waiting for the condition to be fulfilled, we prevent the automation from performing the check
+         * before the Mailbox is effectively switched, avoiding unnecessary test flakiness.
+         *
+         * @param type the Mailbox type (Inbox, Drafts, Sent...)
+         * @param timeout the max timeout for the check to be successful
+         *
+         */
+        fun isMailbox(type: MailboxType, timeout: Long = 2_000) {
+            composeTestRule.waitUntil(timeoutMillis = timeout) {
+                runCatching { locationLabel.assertTextEquals(type.name) }.isSuccess
+            }
         }
     }
 }

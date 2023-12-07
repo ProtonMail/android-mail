@@ -123,7 +123,7 @@ internal class DetailMoveToBottomSheetLabelsTests : MockedNetworkTest() {
         }
 
         menuRobot {
-            swipeOpenSidebarMenu()
+            openSidebarMenu()
             openTrash()
         }
 
@@ -185,7 +185,7 @@ internal class DetailMoveToBottomSheetLabelsTests : MockedNetworkTest() {
         }
 
         menuRobot {
-            swipeOpenSidebarMenu()
+            openSidebarMenu()
             openSpam()
         }
 

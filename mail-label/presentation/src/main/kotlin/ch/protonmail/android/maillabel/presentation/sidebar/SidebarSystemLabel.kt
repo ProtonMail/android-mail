@@ -23,12 +23,15 @@ import android.content.res.Configuration
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
 import ch.protonmail.android.maillabel.presentation.MailLabelsUiModel
 import ch.protonmail.android.maillabel.presentation.sidebar.SidebarLabelAction.Select
+import ch.protonmail.android.maillabel.presentation.sidebar.SidebarSystemLabelTestTags.BaseTag
 import me.proton.core.compose.component.ProtonSidebarItem
 import me.proton.core.compose.component.ProtonSidebarLazy
 import me.proton.core.compose.theme.ProtonTheme
@@ -38,16 +41,22 @@ fun LazyListScope.sidebarSystemLabelItems(
     onLabelAction: (SidebarLabelAction) -> Unit
 ) {
     items(items = items, key = { it.id.labelId.id }) {
-        SidebarSystemLabel(it, onLabelAction)
+        SidebarSystemLabel(
+            modifier = Modifier.testTag("$BaseTag#${it.id.labelId.id}"),
+            item = it,
+            onLabelAction = onLabelAction
+        )
     }
 }
 
 @Composable
 private fun SidebarSystemLabel(
+    modifier: Modifier = Modifier,
     item: MailLabelUiModel.System,
     onLabelAction: (SidebarLabelAction) -> Unit
 ) {
     ProtonSidebarItem(
+        modifier = modifier,
         icon = painterResource(item.icon),
         text = stringResource(item.text.value),
         count = item.count,
@@ -75,4 +84,9 @@ fun PreviewSidebarSystemLabelItems() {
             )
         }
     }
+}
+
+object SidebarSystemLabelTestTags {
+
+    const val BaseTag = "SidebarSystemLabel"
 }

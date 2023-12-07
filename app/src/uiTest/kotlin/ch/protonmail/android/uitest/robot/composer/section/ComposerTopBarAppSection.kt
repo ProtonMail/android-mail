@@ -29,6 +29,7 @@ import ch.protonmail.android.test.ksp.annotations.AttachTo
 import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
 import ch.protonmail.android.uitest.robot.ComposeSectionRobot
 import ch.protonmail.android.uitest.robot.composer.ComposerRobot
+import ch.protonmail.android.uitest.util.awaitHidden
 import ch.protonmail.android.uitest.util.child
 
 @AttachTo(
@@ -57,6 +58,7 @@ internal class ComposerTopBarAppSection : ComposeSectionRobot() {
 
     fun tapCloseButton() = apply {
         closeButton.performScrollTo().performClick()
+        rootItem.awaitHidden()
     }
 
     fun tapAttachmentsButton() = apply {

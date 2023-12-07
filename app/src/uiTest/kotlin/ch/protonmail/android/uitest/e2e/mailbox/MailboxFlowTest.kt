@@ -62,7 +62,7 @@ internal class MailboxFlowTest : MockedNetworkTest() {
         }
 
         menuRobot {
-            swipeOpenSidebarMenu()
+            openSidebarMenu()
             openDrafts()
         }
 
@@ -71,7 +71,7 @@ internal class MailboxFlowTest : MockedNetworkTest() {
         }
 
         menuRobot {
-            swipeOpenSidebarMenu()
+            openSidebarMenu()
             openAllMail()
         }
 

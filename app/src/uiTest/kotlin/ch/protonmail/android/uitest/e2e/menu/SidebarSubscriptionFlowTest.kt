@@ -59,7 +59,7 @@ internal class SidebarSubscriptionFlowTest : BaseTest(), MinimalSubscriptionTest
         mailboxRobot { verify { isShown() } }
 
         menuRobot {
-            swipeOpenSidebarMenu()
+            openSidebarMenu()
             openSubscription()
         }
     }

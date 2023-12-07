@@ -38,7 +38,7 @@ internal class SidebarReportBugFlowTests : BaseTest(), MinimalReportInternalTest
 
     override fun startReport() {
         menuRobot {
-            swipeOpenSidebarMenu()
+            openSidebarMenu()
             openReportBugs()
         }
     }

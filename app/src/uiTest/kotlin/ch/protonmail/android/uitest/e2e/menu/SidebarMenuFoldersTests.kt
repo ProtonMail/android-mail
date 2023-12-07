@@ -80,7 +80,7 @@ internal class SidebarMenuFoldersTests : MockedNetworkTest() {
         }
 
         menuRobot {
-            swipeOpenSidebarMenu()
+            openSidebarMenu()
 
             verify { customFoldersAreDisplayed(*expectedFolders) }
         }
@@ -116,7 +116,7 @@ internal class SidebarMenuFoldersTests : MockedNetworkTest() {
         }
 
         menuRobot {
-            swipeOpenSidebarMenu()
+            openSidebarMenu()
             verify { customFoldersAreDisplayed(*expectedFolders) }
         }
     }
@@ -151,7 +151,7 @@ internal class SidebarMenuFoldersTests : MockedNetworkTest() {
         }
 
         menuRobot {
-            swipeOpenSidebarMenu()
+            openSidebarMenu()
             verify { customFoldersAreDisplayed(*expectedFolders) }
         }
     }

@@ -259,7 +259,7 @@ internal class DetailMoveToBottomSheetActionTests : MockedNetworkTest() {
         val snackbar = MessageDetailSnackbar.ConversationMovedToFolder(destinationFolder.name)
 
         menuRobot {
-            swipeOpenSidebarMenu()
+            openSidebarMenu()
             openFolderWithName(startingFolder.name)
         }
 
@@ -284,7 +284,7 @@ internal class DetailMoveToBottomSheetActionTests : MockedNetworkTest() {
         }
 
         menuRobot {
-            swipeOpenSidebarMenu()
+            openSidebarMenu()
             openFolderWithName(destinationFolder.name)
         }
 

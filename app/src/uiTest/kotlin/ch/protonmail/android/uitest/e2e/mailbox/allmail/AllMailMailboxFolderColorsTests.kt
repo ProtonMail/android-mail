@@ -315,7 +315,7 @@ internal class AllMailMailboxFolderColorsTests : MockedNetworkTest() {
         )
 
         menuRobot
-            .swipeOpenSidebarMenu()
+            .openSidebarMenu()
             .openAllMail()
             .listSection { verify { listItemsAreShown(*expectedMailboxEntries) } }
     }

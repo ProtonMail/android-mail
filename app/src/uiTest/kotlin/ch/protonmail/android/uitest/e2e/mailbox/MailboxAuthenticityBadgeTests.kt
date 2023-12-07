@@ -168,7 +168,7 @@ internal class MailboxAuthenticityBadgeTests : MockedNetworkTest(
         navigator { navigateTo(Destination.Inbox) }
 
         menuRobot {
-            swipeOpenSidebarMenu()
+            openSidebarMenu()
             openSent()
         }
 

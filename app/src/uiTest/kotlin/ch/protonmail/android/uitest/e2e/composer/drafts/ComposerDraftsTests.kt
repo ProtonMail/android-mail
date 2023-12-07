@@ -37,7 +37,7 @@ internal interface ComposerDraftsTests : ComposerTests {
 
     fun verifyEmptyDrafts() {
         menuRobot {
-            swipeOpenSidebarMenu()
+            openSidebarMenu()
             openDrafts()
         }
 
@@ -84,7 +84,7 @@ internal interface ComposerDraftsTests : ComposerTests {
         }
 
         menuRobot {
-            swipeOpenSidebarMenu()
+            openSidebarMenu()
             openDrafts()
         }
 

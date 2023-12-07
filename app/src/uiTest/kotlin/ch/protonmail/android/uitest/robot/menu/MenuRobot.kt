@@ -20,11 +20,12 @@ package ch.protonmail.android.uitest.robot.menu
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.onChild
 import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performScrollToNode
-import androidx.compose.ui.test.performTouchInput
-import androidx.compose.ui.test.swipeRight
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.maillabel.presentation.sidebar.SidebarSystemLabelTestTags.BaseTag
+import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxTopAppBarTestTags
 import ch.protonmail.android.mailmailbox.presentation.sidebar.SidebarMenuTestTags
 import ch.protonmail.android.test.ksp.annotations.AsDsl
 import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
@@ -33,35 +34,36 @@ import ch.protonmail.android.uitest.models.folders.SidebarItemCustomFolderEntryM
 import ch.protonmail.android.uitest.robot.ComposeRobot
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
 import ch.protonmail.android.uitest.robot.settings.SettingsRobot
+import ch.protonmail.android.uitest.util.awaitDisplayed
 import ch.protonmail.android.uitest.util.awaitHidden
 import ch.protonmail.android.uitest.util.child
 import ch.protonmail.android.uitest.util.getTestString
+import me.proton.core.label.domain.entity.LabelId
 import ch.protonmail.android.test.R as testR
 
 @AsDsl
 internal class MenuRobot : ComposeRobot() {
 
     private val rootItem = composeTestRule.onNodeWithTag(SidebarMenuTestTags.Root)
+    private val hamburgerMenuButton = composeTestRule.onNodeWithTag(MailboxTopAppBarTestTags.HamburgerMenu)
 
-    fun swipeOpenSidebarMenu(): MenuRobot = apply {
-        composeTestRule
-            .onRoot()
-            .performTouchInput { swipeRight() }
+    fun openSidebarMenu(): MenuRobot = apply {
+        hamburgerMenuButton.awaitDisplayed().performClick()
     }
 
-    fun openInbox() = openMailbox(getTestString(testR.string.test_label_title_inbox))
+    fun openInbox() = openMailbox(SystemLabelId.Inbox)
 
-    fun openDrafts() = openMailbox(getTestString(testR.string.test_label_title_drafts))
+    fun openDrafts() = openMailbox(SystemLabelId.Drafts)
 
-    fun openArchive() = openMailbox(getTestString(testR.string.test_label_title_archive))
+    fun openArchive() = openMailbox(SystemLabelId.Archive)
 
-    fun openSent() = openMailbox(getTestString(testR.string.test_label_title_sent))
+    fun openSent() = openMailbox(SystemLabelId.Sent)
 
-    fun openSpam() = openMailbox(getTestString(testR.string.test_label_title_spam))
+    fun openSpam() = openMailbox(SystemLabelId.Spam)
 
-    fun openTrash() = openMailbox(getTestString(testR.string.test_label_title_trash))
+    fun openTrash() = openMailbox(SystemLabelId.Trash)
 
-    fun openAllMail() = openMailbox(getTestString(testR.string.test_label_title_all_mail))
+    fun openAllMail() = openMailbox(SystemLabelId.AllMail)
 
     fun openSettings(): SettingsRobot {
         tapSidebarMenuItemWithText(getTestString(testR.string.test_mail_settings_settings))
@@ -93,10 +95,13 @@ internal class MenuRobot : ComposeRobot() {
         composeTestRule.waitForIdle()
     }
 
-    private fun openMailbox(sidebarTextMenu: String): MailboxRobot {
-        tapSidebarMenuItemWithText(sidebarTextMenu)
-        rootItem.awaitHidden()
+    private fun openMailbox(id: SystemLabelId): MailboxRobot {
+        composeTestRule
+            .onNodeWithTag(id.labelId.testTag)
+            .performScrollTo()
+            .performClick()
 
+        rootItem.awaitHidden()
         return MailboxRobot()
     }
 
@@ -113,3 +118,6 @@ internal class MenuRobot : ComposeRobot() {
         }
     }
 }
+
+private val LabelId.testTag: String
+    get() = "$BaseTag#${this.id}"

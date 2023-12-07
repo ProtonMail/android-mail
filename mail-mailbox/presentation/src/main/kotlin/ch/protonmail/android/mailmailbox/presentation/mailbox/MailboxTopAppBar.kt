@@ -88,7 +88,10 @@ fun MailboxTopAppBar(
         },
         navigationIcon = {
             if (state !is MailboxTopAppBarState.Loading) {
-                IconButton(onClick = onNavigationIconClick) {
+                IconButton(
+                    modifier = Modifier.testTag(MailboxTopAppBarTestTags.HamburgerMenu),
+                    onClick = onNavigationIconClick
+                ) {
                     Icon(
                         painter = painterResource(id = uiModel.navigationIconRes),
                         contentDescription = uiModel.navigationIconContentDescription
@@ -179,6 +182,7 @@ fun LoadingMailboxTopAppBarPreview() {
 object MailboxTopAppBarTestTags {
 
     const val RootItem = "TopAppBarRootItem"
+    const val HamburgerMenu = "HamburgerMenu"
     const val LocationLabel = "LocationLabel"
     const val SearchButton = "SearchButton"
     const val ComposerButton = "ComposerButton"

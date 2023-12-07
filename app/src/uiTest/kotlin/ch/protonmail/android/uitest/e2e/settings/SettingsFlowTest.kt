@@ -58,7 +58,7 @@ internal class SettingsFlowTest : MockedNetworkTest() {
     @Test
     fun openAccountSettings() {
         menuRobot
-            .swipeOpenSidebarMenu()
+            .openSidebarMenu()
             .openSettings()
             .openUserAccountSettings()
             .verify { accountSettingsScreenIsDisplayed() }
@@ -67,7 +67,7 @@ internal class SettingsFlowTest : MockedNetworkTest() {
     @Test
     fun openConversationModeSetting() {
         menuRobot
-            .swipeOpenSidebarMenu()
+            .openSidebarMenu()
             .openSettings()
             .openUserAccountSettings()
             .verify { accountSettingsScreenIsDisplayed() }
@@ -78,7 +78,7 @@ internal class SettingsFlowTest : MockedNetworkTest() {
     @Test
     fun openSettingAndChangePreferredTheme() {
         menuRobot
-            .swipeOpenSidebarMenu()
+            .openSidebarMenu()
             .openSettings()
             .openThemeSettings()
             .selectSystemDefault()
@@ -90,7 +90,7 @@ internal class SettingsFlowTest : MockedNetworkTest() {
     @Test
     fun openSettingAndChangePreferredLanguage() {
         val languageSettingsRobot = menuRobot
-            .swipeOpenSidebarMenu()
+            .openSidebarMenu()
             .openSettings()
             .openLanguageSettings()
             .selectSystemDefault()
@@ -122,7 +122,7 @@ internal class SettingsFlowTest : MockedNetworkTest() {
     @Test
     fun openPasswordManagementSettings() {
         menuRobot
-            .swipeOpenSidebarMenu()
+            .openSidebarMenu()
             .openSettings()
             .openUserAccountSettings()
             .openPasswordManagement()
@@ -132,7 +132,7 @@ internal class SettingsFlowTest : MockedNetworkTest() {
     @Test
     fun openSettingsAndChangeLeftSwipeAction() {
         menuRobot
-            .swipeOpenSidebarMenu()
+            .openSidebarMenu()
             .openSettings()
             .openSwipeActions()
             .openSwipeLeft()
@@ -144,7 +144,7 @@ internal class SettingsFlowTest : MockedNetworkTest() {
     @Test
     fun openSettingsAndChangeRightSwipeAction() {
         menuRobot
-            .swipeOpenSidebarMenu()
+            .openSidebarMenu()
             .openSettings()
             .openSwipeActions()
             .openSwipeRight()
@@ -156,7 +156,7 @@ internal class SettingsFlowTest : MockedNetworkTest() {
     @Test
     fun openSettingsAndChangeCombinedContactsSetting() {
         menuRobot
-            .swipeOpenSidebarMenu()
+            .openSidebarMenu()
             .openSettings()
             .openCombinedContactsSettings()
             .turnOnCombinedContacts()
@@ -166,7 +166,7 @@ internal class SettingsFlowTest : MockedNetworkTest() {
     @Test
     fun openSettingsAndChangeAlternativeRoutingSetting() {
         menuRobot
-            .swipeOpenSidebarMenu()
+            .openSidebarMenu()
             .openSettings()
             .openAlternativeRoutingSettings()
             .turnOffAlternativeRouting()

@@ -73,22 +73,22 @@ internal class Navigator {
         when (destination) {
             is Destination.Inbox -> Unit // It's the default screen post-login, nothing to do.
             is Destination.Drafts -> menuRobot {
-                swipeOpenSidebarMenu()
+                openSidebarMenu()
                 openDrafts()
             }
 
             is Destination.Archive -> menuRobot {
-                swipeOpenSidebarMenu()
+                openSidebarMenu()
                 openArchive()
             }
 
             is Destination.Spam -> menuRobot {
-                swipeOpenSidebarMenu()
+                openSidebarMenu()
                 openSpam()
             }
 
             is Destination.Trash -> menuRobot {
-                swipeOpenSidebarMenu()
+                openSidebarMenu()
                 openTrash()
             }
 

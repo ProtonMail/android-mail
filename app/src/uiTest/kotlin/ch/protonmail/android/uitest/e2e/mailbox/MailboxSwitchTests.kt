@@ -88,7 +88,7 @@ internal class MailboxSwitchTests : MockedNetworkTest() {
         }
 
         menuRobot {
-            swipeOpenSidebarMenu()
+            openSidebarMenu()
             openSent()
         }
 
