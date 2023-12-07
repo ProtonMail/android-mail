@@ -52,6 +52,7 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
@@ -201,6 +202,7 @@ fun EmptyLabelListScreen(onAddLabelClick: () -> Unit, paddingValues: PaddingValu
                 )
                 .padding(ProtonDimens.SmallSpacing),
             painter = painterResource(id = R.drawable.ic_proton_tag_plus),
+            tint = ProtonTheme.colors.iconNorm,
             contentDescription = NO_CONTENT_DESCRIPTION
         )
         Text(
@@ -219,7 +221,8 @@ fun EmptyLabelListScreen(onAddLabelClick: () -> Unit, paddingValues: PaddingValu
                 top = MailDimens.TinySpacing,
                 end = ProtonDimens.LargeSpacing
             ),
-            style = ProtonTheme.typography.defaultSmallWeak
+            style = ProtonTheme.typography.defaultSmallWeak,
+            textAlign = TextAlign.Center
         )
         ProtonSecondaryButton(
             modifier = Modifier.padding(top = ProtonDimens.LargeSpacing),
