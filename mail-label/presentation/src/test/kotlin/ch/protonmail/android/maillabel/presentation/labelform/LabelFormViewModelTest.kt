@@ -260,6 +260,27 @@ class LabelFormViewModelTest {
     }
 
     @Test
+    fun `given update state and no changes, when action label save, then emits close`() = runTest {
+        // Given
+        val loadedState = loadedUpdateState
+        every { savedStateHandle.get<String>(LabelFormScreen.LabelFormLabelIdKey) } returns defaultTestLabel.labelId.id
+        coEvery {
+            getLabel.invoke(userId, defaultTestLabel.labelId, LabelType.MessageLabel)
+        } returns defaultTestLabel.right()
+
+        labelFormViewModel.state.test {
+            // Initial loaded state
+            val actual = awaitItem()
+            assertEquals(loadedState, actual)
+
+            // When
+            labelFormViewModel.submit(LabelFormViewAction.OnSaveClick)
+            // Then
+            assertEquals(loadedState.copy(close = Effect.of(Unit)), awaitItem())
+        }
+    }
+
+    @Test
     fun `given create state and name already exists, when action label save, then emits error snack`() = runTest {
         // Given
         val loadedState = loadedCreateState

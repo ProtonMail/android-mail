@@ -169,6 +169,9 @@ class LabelFormViewModel @Inject constructor(
         color: String
     ) {
         getLabel(primaryUserId(), labelId, LabelType.MessageLabel).getOrNull()?.let { label ->
+            if (name.equalsNoCase(label.name) && color.equalsNoCase(label.color)) {
+                return emitNewStateFor(LabelFormEvent.CloseLabelForm)
+            }
             if (!name.equalsNoCase(label.name)) {
                 val isLabelNameAllowed = isLabelNameAllowed(primaryUserId(), name).getOrElse {
                     return emitNewStateFor(LabelFormEvent.SaveLabelError)
