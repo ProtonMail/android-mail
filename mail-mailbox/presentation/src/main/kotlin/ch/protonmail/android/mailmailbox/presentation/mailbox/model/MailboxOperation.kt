@@ -30,6 +30,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOpera
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingTopAppBar
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingUnreadFilter
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetOperation
+import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.mailsettings.domain.entity.ViewMode
 
@@ -76,6 +77,8 @@ internal sealed interface MailboxViewAction : MailboxOperation {
     object RequestLabelAsBottomSheet : MailboxViewAction, AffectingBottomSheet
     data class LabelAsToggleAction(val label: LabelId) : MailboxViewAction, AffectingBottomSheet
     data class LabelAsConfirmed(val archiveSelected: Boolean) : MailboxViewAction, AffectingBottomSheet
+
+    data class SwipeReadAction(val userId: UserId, val itemId: String, val isRead: Boolean) : MailboxViewAction
 
     object RequestMoveToBottomSheet : MailboxViewAction, AffectingBottomSheet
     data class MoveToDestinationSelected(

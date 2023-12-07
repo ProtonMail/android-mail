@@ -258,6 +258,7 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.OnErrorWithData -> emitNewStateFrom(viewAction)
                 is MailboxViewAction.MarkAsRead -> handleMarkAsReadAction(viewAction)
                 is MailboxViewAction.MarkAsUnread -> handleMarkAsUnreadAction(viewAction)
+                is MailboxViewAction.SwipeReadAction -> handleSwipeReadAction(viewAction)
                 is MailboxViewAction.CloseOnboarding -> handleCloseOnboarding()
                 is MailboxViewAction.Trash -> handleTrashAction()
                 is MailboxViewAction.Delete -> handleDeleteAction()
@@ -447,6 +448,35 @@ class MailboxViewModel @Inject constructor(
             }
         }
         emitNewStateFrom(markAsReadOperation)
+    }
+
+    private suspend fun handleSwipeReadAction(swipeReadAction: MailboxViewAction.SwipeReadAction) {
+        val preferredViewMode = getPreferredViewMode()
+        if (swipeReadAction.isRead) {
+            when (preferredViewMode) {
+                ViewMode.ConversationGrouping -> markConversationsAsUnread(
+                    userId = swipeReadAction.userId,
+                    conversationIds = listOf(ConversationId(swipeReadAction.itemId))
+                )
+
+                ViewMode.NoConversationGrouping -> markMessagesAsUnread(
+                    userId = swipeReadAction.userId,
+                    messageIds = listOf(MessageId(swipeReadAction.itemId))
+                )
+            }
+        } else {
+            when (preferredViewMode) {
+                ViewMode.ConversationGrouping -> markConversationsAsRead(
+                    userId = swipeReadAction.userId,
+                    conversationIds = listOf(ConversationId(swipeReadAction.itemId))
+                )
+
+                ViewMode.NoConversationGrouping -> markMessagesAsRead(
+                    userId = swipeReadAction.userId,
+                    messageIds = listOf(MessageId(swipeReadAction.itemId))
+                )
+            }
+        }
     }
 
     private fun showLabelAsBottomSheetAndLoadData(operation: MailboxViewAction) {

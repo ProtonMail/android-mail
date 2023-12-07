@@ -3114,6 +3114,82 @@ class MailboxViewModelTest {
         }
     }
 
+    @Test
+    fun `when swipe read is called for no conversation grouping and item is read then mark as unread is called`() {
+        // Given
+        val expectedItemId = "itemId"
+        expectViewMode(NoConversationGrouping)
+        expectMarkMessagesAsUnreadSucceeds(userId, listOf(buildMailboxUiModelItem(id = expectedItemId)))
+
+        // When
+        mailboxViewModel.submit(MailboxViewAction.SwipeReadAction(userId, expectedItemId, true))
+
+        // Then
+        coVerify { markMessagesAsUnread(userId, listOf(MessageId(expectedItemId))) }
+        coVerify {
+            markMessagesAsRead wasNot Called
+            markConversationsAsRead wasNot Called
+            markConversationsAsUnread wasNot Called
+        }
+    }
+
+    @Test
+    fun `when swipe read is called for conversation grouping and item is read then mark as unread is called`() {
+        // Given
+        val expectedItemId = "itemId"
+        expectViewMode(ConversationGrouping)
+        expectMarkConversationsAsUnreadSucceeds(userId, listOf(buildMailboxUiModelItem(id = expectedItemId)))
+
+        // When
+        mailboxViewModel.submit(MailboxViewAction.SwipeReadAction(userId, expectedItemId, true))
+
+        // Then
+        coVerify { markConversationsAsUnread(userId, listOf(ConversationId(expectedItemId))) }
+        coVerify {
+            markMessagesAsRead wasNot Called
+            markMessagesAsUnread wasNot Called
+            markConversationsAsRead wasNot Called
+        }
+    }
+
+    @Test
+    fun `when swipe read is called for no conversation grouping and item is unread then mark as read is called`() {
+        // Given
+        val expectedItemId = "itemId"
+        expectViewMode(NoConversationGrouping)
+        expectMarkMessagesAsReadSucceeds(userId, listOf(buildMailboxUiModelItem(id = expectedItemId)))
+
+        // When
+        mailboxViewModel.submit(MailboxViewAction.SwipeReadAction(userId, expectedItemId, false))
+
+        // Then
+        coVerify { markMessagesAsRead(userId, listOf(MessageId(expectedItemId))) }
+        coVerify {
+            markMessagesAsUnread wasNot Called
+            markConversationsAsRead wasNot Called
+            markConversationsAsUnread wasNot Called
+        }
+    }
+
+    @Test
+    fun `when swipe read is called for conversation grouping and item is unread then mark as read is called`() {
+        // Given
+        val expectedItemId = "itemId"
+        expectViewMode(ConversationGrouping)
+        expectMarkConversationsAsReadSucceeds(userId, listOf(buildMailboxUiModelItem(id = expectedItemId)))
+
+        // When
+        mailboxViewModel.submit(MailboxViewAction.SwipeReadAction(userId, expectedItemId, false))
+
+        // Then
+        coVerify { markConversationsAsRead(userId, listOf(ConversationId(expectedItemId))) }
+        coVerify {
+            markMessagesAsRead wasNot Called
+            markMessagesAsUnread wasNot Called
+            markConversationsAsUnread wasNot Called
+        }
+    }
+
     private fun createMailboxDataState(
         openEffect: Effect<OpenMailboxItemRequest> = Effect.empty(),
         scrollToMailboxTop: Effect<MailLabelId> = Effect.empty(),
