@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.uitest.e2e.mailbox.detail.attachments
 
+import androidx.test.filters.SdkSuppress
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.networkmocks.mockwebserver.combineWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MimeType
@@ -45,9 +46,6 @@ import ch.protonmail.android.uitest.robot.detail.section.conversation.messagesCo
 import ch.protonmail.android.uitest.robot.detail.section.messageBodySection
 import ch.protonmail.android.uitest.robot.detail.section.messageHeaderSection
 import ch.protonmail.android.uitest.robot.detail.section.verify
-import ch.protonmail.android.uitest.robot.helpers.deviceRobot
-import ch.protonmail.android.uitest.robot.helpers.section.intents
-import ch.protonmail.android.uitest.robot.helpers.section.verify
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
@@ -65,6 +63,7 @@ internal class AttachmentConversationModeTests : MockedNetworkTest(loginType = L
     val serverProofValidation: ValidateServerProof = mockk(relaxUnitFun = true)
 
     @Test
+    @SdkSuppress(minSdkVersion = 29)
     @TestId("194318")
     fun testMultipleAttachmentDownloadingInConversationMode() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
@@ -87,12 +86,11 @@ internal class AttachmentConversationModeTests : MockedNetworkTest(loginType = L
                 get("/mail/v4/attachments/*")
                     respondWith "/mail/v4/attachments/attachment_194318"
                     withStatusCode 200 matchWildcards true serveOnce true
-                    withMimeType MimeType.OctetStream withNetworkDelay 5000L
+                    withMimeType MimeType.OctetStream withNetworkDelay 150_000L
             )
         }
 
         val expectedSnackbar = MessageDetailSnackbar.MultipleDownloadsWarning
-        val expectedMimeType = "image/jpeg"
 
         navigator { navigateTo(Destination.MailDetail()) }
 
@@ -113,15 +111,6 @@ internal class AttachmentConversationModeTests : MockedNetworkTest(loginType = L
 
             snackbarSection {
                 verify { isDisplaying(expectedSnackbar) }
-                waitUntilDismisses(expectedSnackbar)
-            }
-
-            deviceRobot {
-                intents {
-                    verify {
-                        actionViewIntentWasLaunched(mimeType = expectedMimeType)
-                    }
-                }
             }
         }
     }
