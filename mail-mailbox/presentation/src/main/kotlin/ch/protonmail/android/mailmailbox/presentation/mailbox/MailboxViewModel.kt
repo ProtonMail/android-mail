@@ -262,6 +262,7 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.SwipeArchiveAction -> handleSwipeArchiveAction(viewAction)
                 is MailboxViewAction.SwipeSpamAction -> handleSwipeSpamAction(viewAction)
                 is MailboxViewAction.SwipeTrashAction -> handleSwipeTrashAction(viewAction)
+                is MailboxViewAction.SwipeStarAction -> handleSwipeStarAction(viewAction)
                 is MailboxViewAction.CloseOnboarding -> handleCloseOnboarding()
                 is MailboxViewAction.Trash -> handleTrashAction()
                 is MailboxViewAction.Delete -> handleDeleteAction()
@@ -477,6 +478,35 @@ class MailboxViewModel @Inject constructor(
                 ViewMode.NoConversationGrouping -> markMessagesAsRead(
                     userId = swipeReadAction.userId,
                     messageIds = listOf(MessageId(swipeReadAction.itemId))
+                )
+            }
+        }
+    }
+
+    private suspend fun handleSwipeStarAction(swipeStarAction: MailboxViewAction.SwipeStarAction) {
+        val preferredViewMode = getPreferredViewMode()
+        if (swipeStarAction.isStarred) {
+            when (preferredViewMode) {
+                ViewMode.ConversationGrouping -> unStarConversations(
+                    userId = swipeStarAction.userId,
+                    conversationIds = listOf(ConversationId(swipeStarAction.itemId))
+                )
+
+                ViewMode.NoConversationGrouping -> unStarMessages(
+                    userId = swipeStarAction.userId,
+                    messageIds = listOf(MessageId(swipeStarAction.itemId))
+                )
+            }
+        } else {
+            when (preferredViewMode) {
+                ViewMode.ConversationGrouping -> starConversations(
+                    userId = swipeStarAction.userId,
+                    conversationIds = listOf(ConversationId(swipeStarAction.itemId))
+                )
+
+                ViewMode.NoConversationGrouping -> starMessages(
+                    userId = swipeStarAction.userId,
+                    messageIds = listOf(MessageId(swipeStarAction.itemId))
                 )
             }
         }

@@ -174,14 +174,11 @@ fun MailboxScreen(
           onSwipeRead = { userId, itemId, isRead ->
             viewModel.submit(MailboxViewAction.SwipeReadAction(userId, itemId, isRead))
         },
-        onSwipeArchive = { userId, itemId ->
-            viewModel.submit(MailboxViewAction.SwipeArchiveAction(userId, itemId))
-        },
-        onSwipeSpam = { userId, itemId ->
-            viewModel.submit(MailboxViewAction.SwipeSpamAction(userId, itemId))
-        },
-        onSwipeTrash = { userId, itemId ->
-            viewModel.submit(MailboxViewAction.SwipeTrashAction(userId, itemId))
+        onSwipeArchive = { userId, itemId -> viewModel.submit(MailboxViewAction.SwipeArchiveAction(userId, itemId)) },
+        onSwipeSpam = { userId, itemId -> viewModel.submit(MailboxViewAction.SwipeSpamAction(userId, itemId)) },
+        onSwipeTrash = { userId, itemId -> viewModel.submit(MailboxViewAction.SwipeTrashAction(userId, itemId)) },
+        onSwipeStar = { userId, itemId, isStarred ->
+            viewModel.submit(MailboxViewAction.SwipeStarAction(userId, itemId, isStarred))
         }
     )
 
@@ -572,7 +569,11 @@ private fun generateSwipeActions(
     return SwipeActions.Actions(
         onTrash = { actions.onSwipeTrash(item.userId, item.id) },
         onSpam = { actions.onSwipeSpam(item.userId, item.id) },
-        onStar = { Timber.d("mailbox onStar swiped") },
+        onStar = {
+            items.itemSnapshotList.items.firstOrNull { it.id == item.id }?.let {
+                actions.onSwipeStar(it.userId, it.id, it.showStar)
+            }
+        },
         onArchive = { actions.onSwipeArchive(item.userId, item.id) },
         onMarkRead = {
             items.itemSnapshotList.items.firstOrNull { it.id == item.id }?.let {
@@ -669,7 +670,8 @@ object MailboxScreen {
         val onSwipeRead: (UserId, String, Boolean) -> Unit,
         val onSwipeArchive: (UserId, String) -> Unit,
         val onSwipeSpam: (UserId, String) -> Unit,
-        val onSwipeTrash: (UserId, String) -> Unit
+        val onSwipeTrash: (UserId, String) -> Unit,
+        val onSwipeStar: (UserId, String, Boolean) -> Unit
     ) {
 
         companion object {
@@ -706,7 +708,8 @@ object MailboxScreen {
                 onSwipeRead = { _, _, _ -> },
                 onSwipeArchive = { _, _ -> },
                 onSwipeSpam = { _, _ -> },
-                onSwipeTrash = { _, _ -> }
+                onSwipeTrash = { _, _ -> },
+                onSwipeStar = { _, _, _ -> }
             )
         }
     }

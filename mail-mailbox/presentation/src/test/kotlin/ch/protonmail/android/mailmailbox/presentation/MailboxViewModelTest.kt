@@ -3286,6 +3286,82 @@ class MailboxViewModelTest {
         coVerify { moveMessages wasNot Called }
     }
 
+    @Test
+    fun `when swipe star is called for no conversation grouping and item is starred then unstar is called`() {
+        // Given
+        val expectedItemId = "itemId"
+        expectViewMode(NoConversationGrouping)
+        expectedUnStarMessagesSucceeds(userId, listOf(buildMailboxUiModelItem(id = expectedItemId)))
+
+        // When
+        mailboxViewModel.submit(MailboxViewAction.SwipeStarAction(userId, expectedItemId, true))
+
+        // Then
+        coVerify { unStarMessages(userId, listOf(MessageId(expectedItemId))) }
+        coVerify {
+            starMessages wasNot Called
+            starConversations wasNot Called
+            unStarConversations wasNot Called
+        }
+    }
+
+    @Test
+    fun `when swipe star is called for conversation grouping and item is starred then unstar is called`() {
+        // Given
+        val expectedItemId = "itemId"
+        expectViewMode(ConversationGrouping)
+        expectedUnStarConversationsSucceeds(userId, listOf(buildMailboxUiModelItem(id = expectedItemId)))
+
+        // When
+        mailboxViewModel.submit(MailboxViewAction.SwipeStarAction(userId, expectedItemId, true))
+
+        // Then
+        coVerify { unStarConversations(userId, listOf(ConversationId(expectedItemId))) }
+        coVerify {
+            starConversations wasNot Called
+            starMessages wasNot Called
+            unStarMessages wasNot Called
+        }
+    }
+
+    @Test
+    fun `when swipe star is called for no conversation grouping and item is not starred then star is called`() {
+        // Given
+        val expectedItemId = "itemId"
+        expectViewMode(NoConversationGrouping)
+        expectedStarMessagesSucceeds(userId, listOf(buildMailboxUiModelItem(id = expectedItemId)))
+
+        // When
+        mailboxViewModel.submit(MailboxViewAction.SwipeStarAction(userId, expectedItemId, false))
+
+        // Then
+        coVerify { starMessages(userId, listOf(MessageId(expectedItemId))) }
+        coVerify {
+            unStarMessages wasNot Called
+            unStarConversations wasNot Called
+            starConversations wasNot Called
+        }
+    }
+
+    @Test
+    fun `when swipe star is called for conversation grouping and item is not starred then star is called`() {
+        // Given
+        val expectedItemId = "itemId"
+        expectViewMode(ConversationGrouping)
+        expectedStarConversationsSucceeds(userId, listOf(buildMailboxUiModelItem(id = expectedItemId)))
+
+        // When
+        mailboxViewModel.submit(MailboxViewAction.SwipeStarAction(userId, expectedItemId, false))
+
+        // Then
+        coVerify { starConversations(userId, listOf(ConversationId(expectedItemId))) }
+        coVerify {
+            unStarConversations wasNot Called
+            unStarMessages wasNot Called
+            starMessages wasNot Called
+        }
+    }
+
     private fun createMailboxDataState(
         openEffect: Effect<OpenMailboxItemRequest> = Effect.empty(),
         scrollToMailboxTop: Effect<MailLabelId> = Effect.empty(),
