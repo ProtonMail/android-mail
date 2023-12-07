@@ -36,6 +36,7 @@ import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
+import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.mailconversation.domain.usecase.DeleteConversations
 import ch.protonmail.android.mailconversation.domain.usecase.StarConversations
@@ -69,7 +70,6 @@ import ch.protonmail.android.mailmailbox.domain.usecase.RelabelConversations
 import ch.protonmail.android.mailmailbox.domain.usecase.RelabelMessages
 import ch.protonmail.android.mailmailbox.domain.usecase.SaveOnboarding
 import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.MailboxItemUiModelMapper
-import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
@@ -176,7 +176,13 @@ class MailboxViewModel @Inject constructor(
         }
 
         observeCurrentMailLabel()
-            .onEach { currentMailLabel -> emitNewStateFrom(MailboxEvent.SelectedLabelChanged(currentMailLabel)) }
+            .onEach { currentMailLabel ->
+                currentMailLabel?.let {
+                    emitNewStateFrom(MailboxEvent.SelectedLabelChanged(currentMailLabel))
+                } ?: run {
+                    emitNewStateFrom(MailboxEvent.SelectedLabelChanged(MailLabelId.System.Inbox.toMailLabel()))
+                }
+            }
             .launchIn(viewModelScope)
 
         selectedMailLabelId.flow
@@ -804,7 +810,6 @@ class MailboxViewModel @Inject constructor(
         .map { mailLabels ->
             mailLabels.allById[selectedMailLabelId.flow.value]
         }
-        .filterNotNull()
 
     private fun Flow<MailLabelId>.mapToExistingLabel() = map {
         observeMailLabels().firstOrNull()?.let { mailLabels ->

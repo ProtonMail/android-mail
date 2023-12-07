@@ -452,6 +452,54 @@ class MailboxViewModelTest {
     }
 
     @Test
+    fun `when selected label is deleted, new state is created and emitted`() = runTest {
+        // Given
+        val initialMailLabel = MailLabelTestData.customLabelOne
+        val expectedState = MailboxStateSampleData.Loading.copy(
+            mailboxListState = MailboxListState.Data.ViewMode(
+                currentMailLabel = MailLabelId.System.Inbox.toMailLabel(),
+                openItemEffect = Effect.empty(),
+                scrollToMailboxTop = Effect.of(initialMailLabel.id),
+                offlineEffect = Effect.empty(),
+                refreshErrorEffect = Effect.empty(),
+                refreshRequested = false,
+                selectionModeEnabled = false
+            )
+        )
+        val mailLabelsFlow = MutableStateFlow(
+            MailLabels(
+                systemLabels = LabelTestData.systemLabels,
+                folders = emptyList(),
+                labels = listOf(MailLabelTestData.customLabelOne, MailLabelTestData.customLabelTwo)
+            )
+        )
+        val currentLocationFlow = MutableStateFlow<MailLabelId>(initialMailLabel.id)
+        every { observeMailLabels(userId) } returns mailLabelsFlow
+        every { selectedMailLabelId.flow } returns currentLocationFlow
+        every {
+            mailboxReducer.newStateFrom(
+                any(),
+                MailboxEvent.SelectedLabelChanged(MailLabelId.System.Inbox.toMailLabel())
+            )
+        } returns expectedState
+
+        mailboxViewModel.state.test {
+            awaitItem()
+
+            mailLabelsFlow.emit(
+                MailLabels(
+                    systemLabels = LabelTestData.systemLabels,
+                    folders = emptyList(),
+                    labels = listOf(MailLabelTestData.customLabelTwo)
+                )
+            )
+
+            // Then
+            assertEquals(expectedState, awaitItem())
+        }
+    }
+
+    @Test
     fun `when counters for selected location change, new state is created and emitted`() = runTest {
         // Given
         val expectedCount = 42
