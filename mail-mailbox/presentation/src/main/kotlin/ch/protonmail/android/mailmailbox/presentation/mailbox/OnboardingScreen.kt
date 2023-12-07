@@ -189,6 +189,7 @@ fun ConstraintLayoutScope.OnboardingButton(
         modifier = Modifier
             .constrainAs(positiveButton) {
                 width = Dimension.fillToConstraints
+                height = Dimension.value(MailDimens.onboardingBottomButtonHeight)
                 start.linkTo(parent.start, margin = ProtonDimens.MediumSpacing)
                 end.linkTo(parent.end, margin = ProtonDimens.MediumSpacing)
                 bottom.linkTo(dots.top, margin = ProtonDimens.DefaultSpacing)

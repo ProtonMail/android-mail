@@ -69,5 +69,6 @@ object MailDimens {
     val MinOffsetForSubjectAlphaChange = 48.dp
 
     val pagerDotsCircleSize = 8.dp
+    val onboardingBottomButtonHeight = 48.dp
     const val OnboardingIllustrationWeight = 0.5f
 }
