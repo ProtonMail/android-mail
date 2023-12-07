@@ -27,7 +27,4 @@ class MessageBannersUiModelMapper @Inject constructor() {
     fun createMessageBannersUiModel(message: Message) = MessageBannersUiModel(
         shouldShowPhishingBanner = message.isPhishing()
     )
-
-    private fun Message.isPhishing() = flags.and(Message.FLAG_PHISHING_AUTO) == Message.FLAG_PHISHING_AUTO ||
-        flags.and(Message.FLAG_PHISHING_MANUAL) == Message.FLAG_PHISHING_MANUAL
 }

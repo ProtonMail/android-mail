@@ -40,10 +40,7 @@ import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageAttachmentS
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.RelabelMessage
-import ch.protonmail.android.maildetail.presentation.mapper.MessageBannersUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageBodyUiModelMapper
-import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailActionBarUiModelMapper
-import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailHeaderUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
@@ -114,10 +111,7 @@ class MessageDetailViewModel @Inject constructor(
     private val starMessages: StarMessages,
     private val unStarMessages: UnStarMessages,
     private val savedStateHandle: SavedStateHandle,
-    private val messageDetailHeaderUiModelMapper: MessageDetailHeaderUiModelMapper,
-    private val messageBannersUiModelMapper: MessageBannersUiModelMapper,
     private val messageBodyUiModelMapper: MessageBodyUiModelMapper,
-    private val messageDetailActionBarUiModelMapper: MessageDetailActionBarUiModelMapper,
     private val moveMessage: MoveMessage,
     private val relabelMessage: RelabelMessage,
     private val deleteMessages: DeleteMessages,
@@ -300,9 +294,9 @@ class MessageDetailViewModel @Inject constructor(
                     ifLeft = { MessageDetailEvent.NoCachedMetadata },
                     ifRight = { messageWithLabels ->
                         MessageDetailEvent.MessageWithLabelsEvent(
-                            messageDetailActionBarUiModelMapper.toUiModel(messageWithLabels.message),
-                            messageDetailHeaderUiModelMapper.toUiModel(messageWithLabels, contacts, folderColor),
-                            messageBannersUiModelMapper.createMessageBannersUiModel(messageWithLabels.message)
+                            messageWithLabels,
+                            contacts,
+                            folderColor
                         )
                     }
                 )

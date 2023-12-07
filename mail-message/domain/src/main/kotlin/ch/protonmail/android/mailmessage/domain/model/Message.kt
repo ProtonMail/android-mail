@@ -69,6 +69,9 @@ data class Message(
 
     fun isDraft() = labelIds.any { it == SystemLabelId.AllDrafts.labelId }
 
+    fun isPhishing() = flags.and(FLAG_PHISHING_AUTO) == FLAG_PHISHING_AUTO ||
+        flags.and(FLAG_PHISHING_MANUAL) == FLAG_PHISHING_MANUAL
+
     companion object {
         const val FLAG_PHISHING_AUTO = 1_073_741_824L
         const val FLAG_PHISHING_MANUAL = 2_147_483_648L

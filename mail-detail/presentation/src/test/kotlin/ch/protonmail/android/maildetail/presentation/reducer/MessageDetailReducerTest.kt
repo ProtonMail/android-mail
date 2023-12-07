@@ -27,7 +27,6 @@ import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.maildetail.presentation.R.string
 import ch.protonmail.android.maildetail.presentation.model.MessageBannersState
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
-import ch.protonmail.android.maildetail.presentation.model.MessageDetailActionBarUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
@@ -39,17 +38,22 @@ import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
+import ch.protonmail.android.mailmessage.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
+import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
 import ch.protonmail.android.testdata.maildetail.MessageBannersUiModelTestData.messageBannersUiModel
 import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData
 import ch.protonmail.android.testdata.maillabel.MailLabelUiModelTestData
 import ch.protonmail.android.testdata.message.MessageBodyUiModelTestData
 import ch.protonmail.android.testdata.message.MessageDetailActionBarUiModelTestData
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.test.runTest
 import me.proton.core.label.domain.entity.LabelId
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -65,7 +69,7 @@ class MessageDetailReducerTest(
 ) {
 
     private val messageMetadataReducer: MessageDetailMetadataReducer = mockk {
-        every { newStateFrom(any(), any()) } returns reducedState.messageMetadataState
+        coEvery { newStateFrom(any(), any()) } returns reducedState.messageMetadataState
     }
 
     private val messageBannersReducer: MessageBannersReducer = mockk {
@@ -98,93 +102,95 @@ class MessageDetailReducerTest(
     )
 
     @Test
-    fun `should reduce only the affected parts of the state`() = with(testInput) {
-        val nextState = detailReducer.newStateFrom(currentState, operation)
+    fun `should reduce only the affected parts of the state`() = runTest {
+        with(testInput) {
+            val nextState = detailReducer.newStateFrom(currentState, operation)
 
-        if (shouldReduceMessageMetadataState) {
-            verify {
-                messageMetadataReducer.newStateFrom(
-                    currentState.messageMetadataState,
-                    operation as MessageDetailOperation.AffectingMessage
-                )
+            if (shouldReduceMessageMetadataState) {
+                coVerify {
+                    messageMetadataReducer.newStateFrom(
+                        currentState.messageMetadataState,
+                        operation as MessageDetailOperation.AffectingMessage
+                    )
+                }
+            } else {
+                assertEquals(currentState.messageMetadataState, nextState.messageMetadataState, testName)
             }
-        } else {
-            assertEquals(currentState.messageMetadataState, nextState.messageMetadataState, testName)
-        }
 
-        if (shouldReduceMessageBannersState) {
-            verify {
-                messageBannersReducer.newStateFrom(
-                    operation as MessageDetailOperation.AffectingMessageBanners
-                )
+            if (shouldReduceMessageBannersState) {
+                verify {
+                    messageBannersReducer.newStateFrom(
+                        operation as MessageDetailOperation.AffectingMessageBanners
+                    )
+                }
+            } else {
+                assertEquals(currentState.messageBannersState, nextState.messageBannersState, testName)
             }
-        } else {
-            assertEquals(currentState.messageBannersState, nextState.messageBannersState, testName)
-        }
 
-        if (shouldReduceMessageBodyState) {
-            verify {
-                messageBodyReducer.newStateFrom(
-                    currentState.messageBodyState,
-                    operation as MessageDetailOperation.AffectingMessageBody
-                )
+            if (shouldReduceMessageBodyState) {
+                verify {
+                    messageBodyReducer.newStateFrom(
+                        currentState.messageBodyState,
+                        operation as MessageDetailOperation.AffectingMessageBody
+                    )
+                }
+            } else {
+                assertEquals(currentState.messageBodyState, nextState.messageBodyState, testName)
             }
-        } else {
-            assertEquals(currentState.messageBodyState, nextState.messageBodyState, testName)
-        }
 
-        if (shouldReduceBottomBarState) {
-            verify {
-                bottomBarReducer.newStateFrom(
-                    currentState.bottomBarState,
-                    (operation as MessageDetailEvent.MessageBottomBarEvent).bottomBarEvent
-                )
+            if (shouldReduceBottomBarState) {
+                verify {
+                    bottomBarReducer.newStateFrom(
+                        currentState.bottomBarState,
+                        (operation as MessageDetailEvent.MessageBottomBarEvent).bottomBarEvent
+                    )
+                }
+            } else {
+                assertEquals(currentState.bottomBarState, nextState.bottomBarState, testName)
             }
-        } else {
-            assertEquals(currentState.bottomBarState, nextState.bottomBarState, testName)
-        }
 
-        if (shouldReduceBottomSheetState) {
-            verify {
-                bottomSheetReducer.newStateFrom(
-                    currentState.bottomSheetState,
-                    any()
-                )
+            if (shouldReduceBottomSheetState) {
+                verify {
+                    bottomSheetReducer.newStateFrom(
+                        currentState.bottomSheetState,
+                        any()
+                    )
+                }
+            } else {
+                assertEquals(currentState.bottomSheetState, nextState.bottomSheetState, testName)
             }
-        } else {
-            assertEquals(currentState.bottomSheetState, nextState.bottomSheetState, testName)
-        }
 
-        if (shouldReduceToErrorEffect) {
-            assertTrue(nextState.error.consume() is TextUiModel.TextRes)
-        } else {
-            assertEquals(currentState.error, nextState.error, testName)
-        }
+            if (shouldReduceToErrorEffect) {
+                assertTrue(nextState.error.consume() is TextUiModel.TextRes)
+            } else {
+                assertEquals(currentState.error, nextState.error, testName)
+            }
 
-        if (shouldReduceExitEffect) {
-            assertNotNull(nextState.exitScreenEffect.consume(), testName)
-        } else {
-            assertEquals(currentState.exitScreenEffect, nextState.exitScreenEffect, testName)
-        }
+            if (shouldReduceExitEffect) {
+                assertNotNull(nextState.exitScreenEffect.consume(), testName)
+            } else {
+                assertEquals(currentState.exitScreenEffect, nextState.exitScreenEffect, testName)
+            }
 
-        if (shouldReduceOpenMessageBodyLinkEffect) {
-            assertNotNull(nextState.openMessageBodyLinkEffect.consume(), testName)
-        } else {
-            assertEquals(currentState.exitScreenEffect, nextState.exitScreenEffect, testName)
-        }
+            if (shouldReduceOpenMessageBodyLinkEffect) {
+                assertNotNull(nextState.openMessageBodyLinkEffect.consume(), testName)
+            } else {
+                assertEquals(currentState.exitScreenEffect, nextState.exitScreenEffect, testName)
+            }
 
-        if (exitMessage != null) {
-            assertEquals(exitMessage, nextState.exitScreenWithMessageEffect.consume())
-        }
+            if (exitMessage != null) {
+                assertEquals(exitMessage, nextState.exitScreenWithMessageEffect.consume())
+            }
 
-        if (shouldReduceDeleteDialogState) {
-            verify { deleteDialogReducer.newStateFrom(any()) }
-        } else {
-            assertEquals(currentState.deleteDialogState, nextState.deleteDialogState, testName)
-        }
+            if (shouldReduceDeleteDialogState) {
+                verify { deleteDialogReducer.newStateFrom(any()) }
+            } else {
+                assertEquals(currentState.deleteDialogState, nextState.deleteDialogState, testName)
+            }
 
-        // Reducer should not change the requestLinkConfirmation flag, just copy it
-        assertEquals(currentState.requestLinkConfirmation, nextState.requestLinkConfirmation)
+            // Reducer should not change the requestLinkConfirmation flag, just copy it
+            assertEquals(currentState.requestLinkConfirmation, nextState.requestLinkConfirmation)
+        }
     }
 
     companion object {
@@ -391,9 +397,9 @@ class MessageDetailReducerTest(
         private val events = listOf(
             TestInput(
                 MessageDetailEvent.MessageWithLabelsEvent(
-                    MessageDetailActionBarUiModel("subject", false),
-                    detailHeaderUiModel,
-                    messageBannersUiModel
+                    MessageWithLabelsSample.Invoice,
+                    emptyList(),
+                    FolderColorSettings()
                 ),
                 shouldReduceMessageBodyState = false,
                 shouldReduceMessageBannersState = true,

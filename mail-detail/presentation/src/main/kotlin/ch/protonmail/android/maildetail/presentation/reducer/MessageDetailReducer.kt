@@ -44,7 +44,7 @@ class MessageDetailReducer @Inject constructor(
     private val deleteDialogReducer: MessageDeleteDialogReducer
 ) {
 
-    fun newStateFrom(currentState: MessageDetailState, operation: MessageDetailOperation): MessageDetailState =
+    suspend fun newStateFrom(currentState: MessageDetailState, operation: MessageDetailOperation): MessageDetailState =
         currentState.copy(
             messageMetadataState = currentState.toNewMessageStateFrom(operation),
             messageBannersState = currentState.toNewBannersStateFrom(operation),
@@ -111,7 +111,7 @@ class MessageDetailReducer @Inject constructor(
         else -> exitScreenWithMessageEffect
     }
 
-    private fun MessageDetailState.toNewMessageStateFrom(operation: MessageDetailOperation) =
+    private suspend fun MessageDetailState.toNewMessageStateFrom(operation: MessageDetailOperation) =
         if (operation is MessageDetailOperation.AffectingMessage) {
             messageMetadataReducer.newStateFrom(messageMetadataState, operation)
         } else {

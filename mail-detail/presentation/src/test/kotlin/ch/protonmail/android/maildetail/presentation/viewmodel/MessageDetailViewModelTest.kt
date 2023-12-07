@@ -149,14 +149,6 @@ class MessageDetailViewModelTest {
     private val decryptedMessageBody = DecryptedMessageBody(messageId, "Decrypted message body.", MimeType.PlainText)
     private val actionUiModelMapper = ActionUiModelMapper()
     private val messageDetailActionBarUiModelMapper = MessageDetailActionBarUiModelMapper()
-    private val messageDetailReducer = MessageDetailReducer(
-        MessageDetailMetadataReducer(),
-        MessageBannersReducer(),
-        MessageBodyReducer(),
-        BottomBarReducer(),
-        BottomSheetReducer(MoveToBottomSheetReducer(), LabelAsBottomSheetReducer(), MoreActionsBottomSheetReducer()),
-        MessageDeleteDialogReducer()
-    )
     private val defaultFolderColorSettings = FolderColorSettings()
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
         every { this@mockk.invoke() } returns flowOf(userId)
@@ -292,6 +284,15 @@ class MessageDetailViewModelTest {
     private val getEmbeddedImageAvoidDuplicatedExecution = mockk<GetEmbeddedImageAvoidDuplicatedExecution>()
     private val deleteMessages = mockk<DeleteMessages>()
 
+    private val messageDetailReducer = MessageDetailReducer(
+        MessageDetailMetadataReducer(messageDetailActionBarUiModelMapper, messageDetailHeaderUiModelMapper),
+        MessageBannersReducer(messageBannersUiModelMapper),
+        MessageBodyReducer(),
+        BottomBarReducer(),
+        BottomSheetReducer(MoveToBottomSheetReducer(), LabelAsBottomSheetReducer(), MoreActionsBottomSheetReducer()),
+        MessageDeleteDialogReducer()
+    )
+
     private val viewModel by lazy {
         MessageDetailViewModel(
             observePrimaryUserId = observePrimaryUserId,
@@ -310,10 +311,7 @@ class MessageDetailViewModelTest {
             starMessages = starMessages,
             unStarMessages = unStarMessages,
             savedStateHandle = savedStateHandle,
-            messageDetailHeaderUiModelMapper = messageDetailHeaderUiModelMapper,
-            messageBannersUiModelMapper = messageBannersUiModelMapper,
             messageBodyUiModelMapper = messageBodyUiModelMapper,
-            messageDetailActionBarUiModelMapper = messageDetailActionBarUiModelMapper,
             moveMessage = moveMessage,
             relabelMessage = relabelMessage,
             deleteMessages = deleteMessages,

@@ -18,13 +18,21 @@
 
 package ch.protonmail.android.maildetail.presentation.reducer
 
+import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailActionBarUiModelMapper
+import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailHeaderUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
-import ch.protonmail.android.testdata.maildetail.MessageBannersUiModelTestData.messageBannersUiModel
+import ch.protonmail.android.mailmessage.domain.sample.MessageSample
+import ch.protonmail.android.mailmessage.domain.sample.MessageWithLabelsSample
+import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
 import ch.protonmail.android.testdata.message.MessageDetailActionBarUiModelTestData
+import io.mockk.coEvery
+import io.mockk.every
+import io.mockk.mockk
+import kotlinx.coroutines.test.runTest
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import kotlin.test.Test
@@ -35,10 +43,22 @@ class MessageDetailMetadataReducerTest(
     private val testInput: TestInput
 ) {
 
-    private val detailReducer = MessageDetailMetadataReducer()
+    private val messageDetailActionBarUiModelMapper = mockk<MessageDetailActionBarUiModelMapper> {
+        every { toUiModel(MessageSample.Invoice) } returns notStarredActionBarUiModel
+    }
+    private val messageDetailHeaderUiModelMapper = mockk<MessageDetailHeaderUiModelMapper> {
+        coEvery {
+            toUiModel(MessageWithLabelsSample.Invoice, emptyList(), FolderColorSettings())
+        } returns messageDetailHeaderUiModel
+    }
+
+    private val detailReducer = MessageDetailMetadataReducer(
+        messageDetailActionBarUiModelMapper,
+        messageDetailHeaderUiModelMapper
+    )
 
     @Test
-    fun `should produce the expected new state`() {
+    fun `should produce the expected new state`() = runTest {
         val actualState = detailReducer.newStateFrom(testInput.currentState, testInput.operation)
 
         assertEquals(testInput.expectedState, actualState)
@@ -57,9 +77,9 @@ class MessageDetailMetadataReducerTest(
             TestInput(
                 currentState = MessageMetadataState.Loading,
                 operation = MessageDetailEvent.MessageWithLabelsEvent(
-                    notStarredActionBarUiModel,
-                    messageDetailHeaderUiModel,
-                    messageBannersUiModel
+                    MessageWithLabelsSample.Invoice,
+                    emptyList(),
+                    FolderColorSettings()
                 ),
                 expectedState = MessageMetadataState.Data(
                     notStarredActionBarUiModel,

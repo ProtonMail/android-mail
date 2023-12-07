@@ -30,8 +30,11 @@ import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperatio
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
+import ch.protonmail.android.mailmessage.domain.model.MessageWithLabels
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetOperation
+import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
+import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.label.domain.entity.LabelId
 
 sealed interface MessageDetailOperation {
@@ -46,9 +49,9 @@ sealed interface MessageDetailOperation {
 sealed interface MessageDetailEvent : MessageDetailOperation {
 
     data class MessageWithLabelsEvent(
-        val messageDetailActionBar: MessageDetailActionBarUiModel,
-        val messageDetailHeader: MessageDetailHeaderUiModel,
-        val messageDetailBanners: MessageBannersUiModel
+        val messageWithLabels: MessageWithLabels,
+        val contacts: List<Contact>,
+        val folderColor: FolderColorSettings
     ) : MessageDetailEvent,
         AffectingMessage,
         AffectingMessageBanners

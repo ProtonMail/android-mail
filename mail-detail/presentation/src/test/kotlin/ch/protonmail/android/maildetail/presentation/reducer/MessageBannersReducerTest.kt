@@ -18,12 +18,16 @@
 
 package ch.protonmail.android.maildetail.presentation.reducer
 
+import ch.protonmail.android.maildetail.presentation.mapper.MessageBannersUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.MessageBannersState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
-import ch.protonmail.android.testdata.maildetail.MessageBannersUiModelTestData
-import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData
-import ch.protonmail.android.testdata.message.MessageDetailActionBarUiModelTestData
+import ch.protonmail.android.mailmessage.domain.sample.MessageSample
+import ch.protonmail.android.mailmessage.domain.sample.MessageWithLabelsSample
+import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
+import ch.protonmail.android.testdata.maildetail.MessageBannersUiModelTestData.messageBannersUiModel
+import io.mockk.every
+import io.mockk.mockk
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -34,7 +38,11 @@ class MessageBannersReducerTest(
     private val testInput: TestInput
 ) {
 
-    private val detailReducer = MessageBannersReducer()
+    private val messageBannersUiModelMapper = mockk<MessageBannersUiModelMapper> {
+        every { createMessageBannersUiModel(MessageSample.LotteryScam) } returns messageBannersUiModel
+    }
+
+    private val detailReducer = MessageBannersReducer(messageBannersUiModelMapper)
 
     @Test
     fun `should produce the expected new state`() {
@@ -50,11 +58,11 @@ class MessageBannersReducerTest(
         fun data() = arrayOf(
             TestInput(
                 operation = MessageDetailEvent.MessageWithLabelsEvent(
-                    MessageDetailActionBarUiModelTestData.uiModel,
-                    MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel,
-                    MessageBannersUiModelTestData.messageBannersUiModel
+                    MessageWithLabelsSample.LotteryScam,
+                    emptyList(),
+                    FolderColorSettings()
                 ),
-                expectedState = MessageBannersState.Data(MessageBannersUiModelTestData.messageBannersUiModel)
+                expectedState = MessageBannersState.Data(messageBannersUiModel)
             )
         )
     }

@@ -18,16 +18,21 @@
 
 package ch.protonmail.android.maildetail.presentation.reducer
 
+import ch.protonmail.android.maildetail.presentation.mapper.MessageBannersUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.MessageBannersState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import javax.inject.Inject
 
-class MessageBannersReducer @Inject constructor() {
+class MessageBannersReducer @Inject constructor(
+    private val messageBannersUiModelMapper: MessageBannersUiModelMapper
+) {
 
     fun newStateFrom(event: MessageDetailOperation.AffectingMessageBanners): MessageBannersState {
         return when (event) {
-            is MessageDetailEvent.MessageWithLabelsEvent -> MessageBannersState.Data(event.messageDetailBanners)
+            is MessageDetailEvent.MessageWithLabelsEvent -> MessageBannersState.Data(
+                messageBannersUiModelMapper.createMessageBannersUiModel(event.messageWithLabels.message)
+            )
         }
     }
 }
