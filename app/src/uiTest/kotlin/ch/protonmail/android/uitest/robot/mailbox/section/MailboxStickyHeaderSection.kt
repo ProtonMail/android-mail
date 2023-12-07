@@ -28,6 +28,7 @@ import ch.protonmail.android.test.ksp.annotations.AttachTo
 import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
 import ch.protonmail.android.uitest.robot.ComposeSectionRobot
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
+import ch.protonmail.android.uitest.util.awaitDisplayed
 
 @AttachTo(targets = [MailboxRobot::class], identifier = "stickyHeaderSection")
 internal class MailboxStickyHeaderSection : ComposeSectionRobot() {
@@ -35,8 +36,10 @@ internal class MailboxStickyHeaderSection : ComposeSectionRobot() {
     private val unreadFilterChip = composeTestRule
         .onNodeWithTag(UnreadItemsFilterTestTags.UnreadFilterChip)
 
-    fun filterUnreadMessages() = apply {
-        unreadFilterChip.performClick()
+    fun filterUnreadMessages() {
+        unreadFilterChip
+            .awaitDisplayed()
+            .performClick()
     }
 
     @VerifiesOuter
