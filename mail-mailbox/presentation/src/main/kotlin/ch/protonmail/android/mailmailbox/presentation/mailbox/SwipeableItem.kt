@@ -84,17 +84,13 @@ fun SwipeableItem(
                     dismissValue == DismissValue.DismissedToEnd
                 ) {
                     callbackForSwipeAction(it.start.swipeAction, swipeActionCallbacks)()
-                    it.start.staysDismissed
                 } else if (willDismissDirection == DismissDirection.EndToStart &&
                     dismissValue == DismissValue.DismissedToStart
                 ) {
                     callbackForSwipeAction(it.end.swipeAction, swipeActionCallbacks)()
-                    it.end.staysDismissed
-                } else {
-                    false
                 }
-            } ?: false
-
+            }
+            false
         }
     )
 

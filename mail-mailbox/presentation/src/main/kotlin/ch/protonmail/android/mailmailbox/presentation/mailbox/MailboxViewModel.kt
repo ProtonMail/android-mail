@@ -259,6 +259,7 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.MarkAsRead -> handleMarkAsReadAction(viewAction)
                 is MailboxViewAction.MarkAsUnread -> handleMarkAsUnreadAction(viewAction)
                 is MailboxViewAction.SwipeReadAction -> handleSwipeReadAction(viewAction)
+                is MailboxViewAction.SwipeArchiveAction -> handleSwipeArchiveAction(viewAction)
                 is MailboxViewAction.CloseOnboarding -> handleCloseOnboarding()
                 is MailboxViewAction.Trash -> handleTrashAction()
                 is MailboxViewAction.Delete -> handleDeleteAction()
@@ -476,6 +477,23 @@ class MailboxViewModel @Inject constructor(
                     messageIds = listOf(MessageId(swipeReadAction.itemId))
                 )
             }
+        }
+    }
+
+    private suspend fun handleSwipeArchiveAction(swipeArchiveAction: MailboxViewAction.SwipeArchiveAction) {
+        val preferredViewMode = getPreferredViewMode()
+        when (preferredViewMode) {
+            ViewMode.ConversationGrouping -> moveConversations(
+                userId = swipeArchiveAction.userId,
+                conversationIds = listOf(ConversationId(swipeArchiveAction.itemId)),
+                labelId = SystemLabelId.Archive.labelId
+            )
+
+            ViewMode.NoConversationGrouping -> moveMessages(
+                userId = swipeArchiveAction.userId,
+                messageIds = listOf(MessageId(swipeArchiveAction.itemId)),
+                labelId = SystemLabelId.Archive.labelId
+            )
         }
     }
 

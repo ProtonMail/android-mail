@@ -173,8 +173,11 @@ fun MailboxScreen(
           onMoreClicked = { viewModel.submit(MailboxViewAction.RequestMoreActionsBottomSheet) },
           onSwipeRead = { userId, itemId, isRead ->
             viewModel.submit(MailboxViewAction.SwipeReadAction(userId, itemId, isRead))
-          }
-      )
+        },
+        onSwipeArchive = { userId, itemId ->
+            viewModel.submit(MailboxViewAction.SwipeArchiveAction(userId, itemId))
+        }
+    )
 
         mailboxState.bottomSheetState?.let {
             // Avoids a "jumping" of the bottom sheet
@@ -564,7 +567,7 @@ private fun generateSwipeActions(
         onTrash = { Timber.d("mailbox onTrash swiped") },
         onSpam = { Timber.d("mailbox onSpam swiped") },
         onStar = { Timber.d("mailbox onStar swiped") },
-        onArchive = { Timber.d("mailbox onArchive swiped") },
+        onArchive = { actions.onSwipeArchive(item.userId, item.id) },
         onMarkRead = {
             items.itemSnapshotList.items.firstOrNull { it.id == item.id }?.let {
                 actions.onSwipeRead(it.userId, it.id, it.isRead)
@@ -657,7 +660,8 @@ object MailboxScreen {
         val onAddLabel: () -> Unit,
         val onAddFolder: () -> Unit,
         val closeOnboarding: () -> Unit,
-        val onSwipeRead: (UserId, String, Boolean) -> Unit
+        val onSwipeRead: (UserId, String, Boolean) -> Unit,
+        val onSwipeArchive: (UserId, String) -> Unit
     ) {
 
         companion object {
@@ -691,7 +695,8 @@ object MailboxScreen {
                 onAddLabel = {},
                 onAddFolder = {},
                 closeOnboarding = {},
-                onSwipeRead = { _, _, _ -> }
+                onSwipeRead = { _, _, _ -> },
+                onSwipeArchive = { _, _ -> }
             )
         }
     }

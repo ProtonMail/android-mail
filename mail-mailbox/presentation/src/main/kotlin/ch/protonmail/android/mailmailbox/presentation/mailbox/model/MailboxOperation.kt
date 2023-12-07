@@ -79,6 +79,7 @@ internal sealed interface MailboxViewAction : MailboxOperation {
     data class LabelAsConfirmed(val archiveSelected: Boolean) : MailboxViewAction, AffectingBottomSheet
 
     data class SwipeReadAction(val userId: UserId, val itemId: String, val isRead: Boolean) : MailboxViewAction
+    data class SwipeArchiveAction(val userId: UserId, val itemId: String) : MailboxViewAction
 
     object RequestMoveToBottomSheet : MailboxViewAction, AffectingBottomSheet
     data class MoveToDestinationSelected(
