@@ -95,7 +95,8 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
                 folderColorSettings
             ),
             messageBannersUiModel = messageBannersUiModelMapper.createMessageBannersUiModel(message),
-            messageBodyUiModel = messageBodyUiModelMapper.toUiModel(message.userId, decryptedMessageBody)
+            messageBodyUiModel = messageBodyUiModelMapper.toUiModel(message.userId, decryptedMessageBody),
+            requestPhishingLinkConfirmation = message.isPhishing()
         )
     }
 

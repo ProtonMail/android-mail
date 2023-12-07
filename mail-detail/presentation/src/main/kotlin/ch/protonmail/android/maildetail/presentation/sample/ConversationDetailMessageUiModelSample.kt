@@ -195,7 +195,8 @@ object ConversationDetailMessageUiModelSample {
             labels = persistentListOf()
         ),
         messageBannersUiModel = MessageBannersUiModel(shouldShowPhishingBanner = true),
-        messageBodyUiModel = messageBodyUiModel
+        messageBodyUiModel = messageBodyUiModel,
+        requestPhishingLinkConfirmation = false
     )
 
     private fun buildExpanding(

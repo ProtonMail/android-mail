@@ -135,7 +135,7 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
     data class LabelAsConfirmed(val archiveSelected: Boolean) : ConversationDetailViewAction, AffectingBottomSheet
     data class ExpandMessage(val messageId: MessageIdUiModel) : ConversationDetailViewAction
     data class CollapseMessage(val messageId: MessageIdUiModel) : ConversationDetailViewAction
-    data class MessageBodyLinkClicked(val uri: Uri) : ConversationDetailViewAction
+    data class MessageBodyLinkClicked(val messageId: MessageIdUiModel, val uri: Uri) : ConversationDetailViewAction
     object DoNotAskLinkConfirmationAgain : ConversationDetailViewAction
     data class RequestScrollTo(val messageId: MessageIdUiModel) : ConversationDetailViewAction
     object ScrollRequestCompleted : ConversationDetailViewAction

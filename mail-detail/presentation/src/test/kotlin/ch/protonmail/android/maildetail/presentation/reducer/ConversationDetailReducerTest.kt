@@ -151,6 +151,7 @@ class ConversationDetailReducerTest(
 
     private companion object {
 
+        val messageId = MessageIdUiModel(UUID.randomUUID().toString())
         val actions = listOf(
             ConversationDetailViewAction.MarkUnread affects Exit,
             ConversationDetailViewAction.MoveToDestinationConfirmed("spam") affects ExitWithMessage(
@@ -171,12 +172,8 @@ class ConversationDetailReducerTest(
                 BottomSheet,
                 ExitWithMessage(TextUiModel(string.conversation_moved_to_archive))
             ),
-            ConversationDetailViewAction.MessageBodyLinkClicked(mockk()) affects LinkClick,
-            ConversationDetailViewAction.RequestScrollTo(
-                MessageIdUiModel(
-                    UUID.randomUUID().toString()
-                )
-            ) affects MessageScroll,
+            ConversationDetailViewAction.MessageBodyLinkClicked(messageId, mockk()) affects LinkClick,
+            ConversationDetailViewAction.RequestScrollTo(messageId) affects MessageScroll,
             ConversationDetailViewAction.DeleteConfirmed affects listOf(
                 DeleteDialog,
                 ExitWithMessage(TextUiModel(string.conversation_deleted))

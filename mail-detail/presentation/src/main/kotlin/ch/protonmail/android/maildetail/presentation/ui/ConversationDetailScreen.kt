@@ -184,8 +184,8 @@ fun ConversationDetailScreen(
                 onLabelAsClick = { viewModel.submit(ConversationDetailViewAction.RequestLabelAsBottomSheet) },
                 onExpandMessage = { viewModel.submit(ConversationDetailViewAction.ExpandMessage(it)) },
                 onCollapseMessage = { viewModel.submit(ConversationDetailViewAction.CollapseMessage(it)) },
-                onMessageBodyLinkClicked = {
-                    viewModel.submit(ConversationDetailViewAction.MessageBodyLinkClicked(it))
+                onMessageBodyLinkClicked = { messageId, uri ->
+                    viewModel.submit(ConversationDetailViewAction.MessageBodyLinkClicked(messageId, uri))
                 },
                 onOpenMessageBodyLink = actions.openMessageBodyLink,
                 onRequestScrollTo = { viewModel.submit(ConversationDetailViewAction.RequestScrollTo(it)) },
@@ -214,7 +214,7 @@ fun ConversationDetailScreen(
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Suppress("LongMethod")
+@Suppress("LongMethod", "ComplexMethod")
 @Composable
 fun ConversationDetailScreen(
     state: ConversationDetailState,
@@ -225,6 +225,7 @@ fun ConversationDetailScreen(
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(snapAnimationSpec = null)
     val snackbarHostState = ProtonSnackbarHostState()
     val linkConfirmationDialogState = remember { mutableStateOf<Uri?>(null) }
+    val phishingLinkConfirmationDialogState = remember { mutableStateOf<Uri?>(null) }
 
     ConsumableLaunchedEffect(state.exitScreenEffect) { actions.onExit(null) }
     ConsumableTextEffect(state.exitScreenWithMessageEffect) { message ->
@@ -233,11 +234,23 @@ fun ConversationDetailScreen(
     ConsumableTextEffect(state.error) { string ->
         snackbarHostState.showSnackbar(ProtonSnackbarType.ERROR, message = string)
     }
-    ConsumableLaunchedEffect(effect = state.openMessageBodyLinkEffect) {
-        if (state.requestLinkConfirmation) {
-            linkConfirmationDialogState.value = it
+    ConsumableLaunchedEffect(effect = state.openMessageBodyLinkEffect) { messageBodyLink ->
+        val message = when (state.messagesState) {
+            is ConversationDetailsMessagesState.Data -> state.messagesState.messages.find {
+                it.messageId == messageBodyLink.messageId
+            }
+            else -> null
+        }
+        val requestPhishingLinkConfirmation = when (message) {
+            is ConversationDetailMessageUiModel.Expanded -> message.requestPhishingLinkConfirmation
+            else -> false
+        }
+        if (requestPhishingLinkConfirmation) {
+            phishingLinkConfirmationDialogState.value = messageBodyLink.uri
+        } else if (state.requestLinkConfirmation) {
+            linkConfirmationDialogState.value = messageBodyLink.uri
         } else {
-            actions.onOpenMessageBodyLink(it)
+            actions.onOpenMessageBodyLink(messageBodyLink.uri)
         }
     }
     ConsumableLaunchedEffect(effect = state.openAttachmentEffect) {
@@ -257,6 +270,16 @@ fun ConversationDetailScreen(
                 }
             },
             linkUri = linkConfirmationDialogState.value
+        )
+    }
+
+    if (phishingLinkConfirmationDialogState.value != null) {
+        PhishingLinkConfirmationDialog(
+            onCancelClicked = { phishingLinkConfirmationDialogState.value = null },
+            onContinueClicked = {
+                phishingLinkConfirmationDialogState.value?.let { actions.onOpenMessageBodyLink(it) }
+            },
+            linkUri = phishingLinkConfirmationDialogState.value
         )
     }
 
@@ -554,7 +577,7 @@ object ConversationDetailScreen {
         val onLabelAsClick: () -> Unit,
         val onExpandMessage: (MessageIdUiModel) -> Unit,
         val onCollapseMessage: (MessageIdUiModel) -> Unit,
-        val onMessageBodyLinkClicked: (uri: Uri) -> Unit,
+        val onMessageBodyLinkClicked: (messageId: MessageIdUiModel, uri: Uri) -> Unit,
         val onOpenMessageBodyLink: (uri: Uri) -> Unit,
         val onDoNotAskLinkConfirmationAgain: () -> Unit,
         val onRequestScrollTo: (MessageIdUiModel) -> Unit,
@@ -582,7 +605,7 @@ object ConversationDetailScreen {
                 onLabelAsClick = {},
                 onExpandMessage = {},
                 onCollapseMessage = {},
-                onMessageBodyLinkClicked = {},
+                onMessageBodyLinkClicked = { _, _ -> },
                 onOpenMessageBodyLink = {},
                 onDoNotAskLinkConfirmationAgain = {},
                 onRequestScrollTo = {},

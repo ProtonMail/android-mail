@@ -125,7 +125,7 @@ private fun ConversationDetailExpandedItem(
         MessageBody(
             messageBodyUiModel = uiModel.messageBodyUiModel,
             actions = MessageBody.Actions(
-                onMessageBodyLinkClicked = { actions.onMessageBodyLinkClicked(it) },
+                onMessageBodyLinkClicked = { actions.onMessageBodyLinkClicked(uiModel.messageId, it) },
                 onShowAllAttachments = { actions.onShowAllAttachmentsForMessage(uiModel.messageId) },
                 onAttachmentClicked = { actions.onAttachmentClicked(uiModel.messageId, it) },
                 loadEmbeddedImage = actions.loadEmbeddedImage,
@@ -144,7 +144,7 @@ object ConversationDetailItem {
     data class Actions(
         val onCollapse: (MessageIdUiModel) -> Unit,
         val onExpand: (MessageIdUiModel) -> Unit,
-        val onMessageBodyLinkClicked: (url: Uri) -> Unit,
+        val onMessageBodyLinkClicked: (messageId: MessageIdUiModel, url: Uri) -> Unit,
         val onOpenMessageBodyLink: (url: Uri) -> Unit,
         val onShowAllAttachmentsForMessage: (MessageIdUiModel) -> Unit,
         val onAttachmentClicked: (MessageIdUiModel, AttachmentId) -> Unit,

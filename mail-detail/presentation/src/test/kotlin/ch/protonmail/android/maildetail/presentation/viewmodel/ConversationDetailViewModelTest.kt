@@ -69,6 +69,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMet
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
+import ch.protonmail.android.maildetail.presentation.model.MessageBodyLink
 import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailReducer
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
@@ -184,7 +185,7 @@ class ConversationDetailViewModelTest {
             ConversationDetailMessageUiModelSample.AnotherInvoiceWithoutLabels
         coEvery {
             toUiModel(
-                ofType(ConversationDetailMessageUiModel.Collapsed::class),
+                ofType(ConversationDetailMessageUiModel.Collapsed::class)
             )
         } returns
             InvoiceWithLabelExpanding
@@ -1452,6 +1453,7 @@ class ConversationDetailViewModelTest {
     @Test
     fun `should emit click effect when a link click is submitted`() = runTest {
         // given
+        val messageId = MessageIdUiModel(MessageIdSample.AugWeatherForecast.id)
         val messages = nonEmptyListOf(ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded)
         coEvery {
             conversationMessageMapper.toUiModel(
@@ -1464,15 +1466,15 @@ class ConversationDetailViewModelTest {
 
         // Mock the Uri class
         val mockUri = mockk<Uri>(relaxed = true)
-        setupLinkClickState(mockUri)
+        setupLinkClickState(messageId, mockUri)
 
         viewModel.state.test {
             initialStateEmitted()
             // when
-            viewModel.submit(ConversationDetailViewAction.MessageBodyLinkClicked(mockUri))
+            viewModel.submit(ConversationDetailViewAction.MessageBodyLinkClicked(messageId, mockUri))
 
             // then
-            assertEquals(mockUri, awaitItem().openMessageBodyLinkEffect.consume())
+            assertEquals(MessageBodyLink(messageId, mockUri), awaitItem().openMessageBodyLinkEffect.consume())
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -1766,14 +1768,14 @@ class ConversationDetailViewModelTest {
         return Pair(allCollapsed.map { it.messageId }, InvoiceWithLabelExpanded)
     }
 
-    private fun setupLinkClickState(link: Uri) {
+    private fun setupLinkClickState(messageId: MessageIdUiModel, link: Uri) {
         every {
             reducer.newStateFrom(
                 currentState = any(),
                 operation = any()
             )
         } returns ConversationDetailState.Loading.copy(
-            openMessageBodyLinkEffect = Effect.of(link)
+            openMessageBodyLinkEffect = Effect.of(MessageBodyLink(messageId, link))
         )
     }
 

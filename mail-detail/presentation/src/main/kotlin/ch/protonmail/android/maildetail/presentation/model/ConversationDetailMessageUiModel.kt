@@ -55,7 +55,8 @@ sealed interface ConversationDetailMessageUiModel {
         override val isUnread: Boolean,
         val messageDetailHeaderUiModel: MessageDetailHeaderUiModel,
         val messageBannersUiModel: MessageBannersUiModel,
-        val messageBodyUiModel: MessageBodyUiModel
+        val messageBodyUiModel: MessageBodyUiModel,
+        val requestPhishingLinkConfirmation: Boolean
     ) : ConversationDetailMessageUiModel
 
     enum class ForwardedIcon {

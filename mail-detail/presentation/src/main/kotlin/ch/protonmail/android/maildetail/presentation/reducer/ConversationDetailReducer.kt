@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.maildetail.presentation.reducer
 
-import android.net.Uri
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
@@ -47,6 +46,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOpe
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingDeleteDialog
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
+import ch.protonmail.android.maildetail.presentation.model.MessageBodyLink
 import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetOperation
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState.LabelAsBottomSheetAction.LabelToggled
@@ -175,8 +175,10 @@ class ConversationDetailReducer @Inject constructor(
 
     private fun ConversationDetailState.toOpenMessageBodyLinkState(
         operation: ConversationDetailOperation
-    ): Effect<Uri> = when (operation) {
-        is ConversationDetailViewAction.MessageBodyLinkClicked -> Effect.of(operation.uri)
+    ): Effect<MessageBodyLink> = when (operation) {
+        is ConversationDetailViewAction.MessageBodyLinkClicked -> Effect.of(
+            MessageBodyLink(operation.messageId, operation.uri)
+        )
         else -> openMessageBodyLinkEffect
     }
 
