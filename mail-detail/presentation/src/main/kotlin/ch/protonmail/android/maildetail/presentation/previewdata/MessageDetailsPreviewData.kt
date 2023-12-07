@@ -89,6 +89,7 @@ object MessageDetailsPreviewData {
         openAttachmentEffect = Effect.empty(),
         showReplyActionsFeatureFlag = false,
         requestLinkConfirmation = false,
+        requestPhishingLinkConfirmation = false,
         deleteDialogState = DeleteDialogState.Hidden
     )
 
@@ -117,6 +118,7 @@ object MessageDetailsPreviewData {
         openAttachmentEffect = Effect.empty(),
         showReplyActionsFeatureFlag = false,
         requestLinkConfirmation = false,
+        requestPhishingLinkConfirmation = false,
         deleteDialogState = DeleteDialogState.Hidden
     )
 }

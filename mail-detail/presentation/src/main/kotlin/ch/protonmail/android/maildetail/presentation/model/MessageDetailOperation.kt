@@ -27,6 +27,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperatio
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation.AffectingMessage
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation.AffectingMessageBanners
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation.AffectingMessageBody
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation.AffectingPhishingLinkConfirmationDialog
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
@@ -44,6 +45,7 @@ sealed interface MessageDetailOperation {
     sealed interface AffectingErrorBar
     sealed interface AffectingBottomSheet
     sealed interface AffectingDeleteDialog
+    sealed interface AffectingPhishingLinkConfirmationDialog
 }
 
 sealed interface MessageDetailEvent : MessageDetailOperation {
@@ -54,7 +56,8 @@ sealed interface MessageDetailEvent : MessageDetailOperation {
         val folderColor: FolderColorSettings
     ) : MessageDetailEvent,
         AffectingMessage,
-        AffectingMessageBanners
+        AffectingMessageBanners,
+        AffectingPhishingLinkConfirmationDialog
 
     data class MessageBodyEvent(
         val messageBody: MessageBodyUiModel

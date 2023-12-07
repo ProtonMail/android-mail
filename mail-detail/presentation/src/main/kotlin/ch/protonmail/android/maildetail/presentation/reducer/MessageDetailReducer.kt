@@ -56,7 +56,8 @@ class MessageDetailReducer @Inject constructor(
             exitScreenWithMessageEffect = currentState.toNewExitWithMessageStateFrom(operation),
             openMessageBodyLinkEffect = currentState.toNewOpenMessageBodyLinkStateFrom(operation),
             openAttachmentEffect = currentState.toNewOpenAttachmentStateFrom(operation),
-            deleteDialogState = currentState.toNewDeleteDialogStateFrom(operation)
+            deleteDialogState = currentState.toNewDeleteDialogStateFrom(operation),
+            requestPhishingLinkConfirmation = currentState.toNewPhishingLinkConfirmationState(operation)
         )
 
     private fun MessageDetailState.toNewErrorStateFrom(operation: MessageDetailOperation) =
@@ -176,4 +177,10 @@ class MessageDetailReducer @Inject constructor(
             deleteDialogState
         }
     }
+
+    private fun MessageDetailState.toNewPhishingLinkConfirmationState(operation: MessageDetailOperation): Boolean =
+        when (operation) {
+            is MessageDetailEvent.MessageWithLabelsEvent -> operation.messageWithLabels.message.isPhishing()
+            else -> requestPhishingLinkConfirmation
+        }
 }

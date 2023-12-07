@@ -39,6 +39,7 @@ data class MessageDetailState(
     val openAttachmentEffect: Effect<OpenAttachmentIntentValues>,
     val showReplyActionsFeatureFlag: Boolean,
     val requestLinkConfirmation: Boolean,
+    val requestPhishingLinkConfirmation: Boolean,
     val deleteDialogState: DeleteDialogState
 ) {
 
@@ -57,6 +58,7 @@ data class MessageDetailState(
             openAttachmentEffect = Effect.empty(),
             showReplyActionsFeatureFlag = false,
             requestLinkConfirmation = false,
+            requestPhishingLinkConfirmation = false,
             deleteDialogState = DeleteDialogState.Hidden
         )
     }
