@@ -3222,6 +3222,38 @@ class MailboxViewModelTest {
         coVerify { moveMessages wasNot Called }
     }
 
+    @Test
+    fun `when swipe spam is called for no conversation grouping then move is called`() {
+        // Given
+        val itemId = "itemId"
+        val expectedLabelId = SystemLabelId.Spam.labelId
+        expectViewMode(NoConversationGrouping)
+        expectMoveMessagesSucceeds(userId, listOf(buildMailboxUiModelItem(id = itemId)), expectedLabelId)
+
+        // When
+        mailboxViewModel.submit(MailboxViewAction.SwipeSpamAction(userId, itemId))
+
+        // Then
+        coVerify { moveMessages(userId, listOf(MessageId(itemId)), expectedLabelId) }
+        coVerify { moveConversations wasNot Called }
+    }
+
+    @Test
+    fun `when swipe spam is called for conversation grouping then move is called`() {
+        // Given
+        val expectedItemId = "itemId"
+        val expectedLabelId = SystemLabelId.Spam.labelId
+        expectViewMode(ConversationGrouping)
+        expectMoveConversationsSucceeds(userId, listOf(buildMailboxUiModelItem(id = expectedItemId)), expectedLabelId)
+
+        // When
+        mailboxViewModel.submit(MailboxViewAction.SwipeSpamAction(userId, expectedItemId))
+
+        // Then
+        coVerify { moveConversations(userId, listOf(ConversationId(expectedItemId)), expectedLabelId) }
+        coVerify { moveMessages wasNot Called }
+    }
+
     private fun createMailboxDataState(
         openEffect: Effect<OpenMailboxItemRequest> = Effect.empty(),
         scrollToMailboxTop: Effect<MailLabelId> = Effect.empty(),

@@ -260,6 +260,7 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.MarkAsUnread -> handleMarkAsUnreadAction(viewAction)
                 is MailboxViewAction.SwipeReadAction -> handleSwipeReadAction(viewAction)
                 is MailboxViewAction.SwipeArchiveAction -> handleSwipeArchiveAction(viewAction)
+                is MailboxViewAction.SwipeSpamAction -> handleSwipeSpamAction(viewAction)
                 is MailboxViewAction.CloseOnboarding -> handleCloseOnboarding()
                 is MailboxViewAction.Trash -> handleTrashAction()
                 is MailboxViewAction.Delete -> handleDeleteAction()
@@ -481,18 +482,30 @@ class MailboxViewModel @Inject constructor(
     }
 
     private suspend fun handleSwipeArchiveAction(swipeArchiveAction: MailboxViewAction.SwipeArchiveAction) {
+        swipeArchiveAction.let { moveSingleItemToDestination(it.userId, it.itemId, SystemLabelId.Archive.labelId) }
+    }
+
+    private suspend fun handleSwipeSpamAction(swipeSpamAction: MailboxViewAction.SwipeSpamAction) {
+        swipeSpamAction.let { moveSingleItemToDestination(it.userId, it.itemId, SystemLabelId.Spam.labelId) }
+    }
+
+    private suspend fun moveSingleItemToDestination(
+        userId: UserId,
+        itemId: String,
+        labelId: LabelId
+    ) {
         val preferredViewMode = getPreferredViewMode()
         when (preferredViewMode) {
             ViewMode.ConversationGrouping -> moveConversations(
-                userId = swipeArchiveAction.userId,
-                conversationIds = listOf(ConversationId(swipeArchiveAction.itemId)),
-                labelId = SystemLabelId.Archive.labelId
+                userId = userId,
+                conversationIds = listOf(ConversationId(itemId)),
+                labelId = labelId
             )
 
             ViewMode.NoConversationGrouping -> moveMessages(
-                userId = swipeArchiveAction.userId,
-                messageIds = listOf(MessageId(swipeArchiveAction.itemId)),
-                labelId = SystemLabelId.Archive.labelId
+                userId = userId,
+                messageIds = listOf(MessageId(itemId)),
+                labelId = labelId
             )
         }
     }

@@ -80,6 +80,7 @@ internal sealed interface MailboxViewAction : MailboxOperation {
 
     data class SwipeReadAction(val userId: UserId, val itemId: String, val isRead: Boolean) : MailboxViewAction
     data class SwipeArchiveAction(val userId: UserId, val itemId: String) : MailboxViewAction
+    data class SwipeSpamAction(val userId: UserId, val itemId: String) : MailboxViewAction
 
     object RequestMoveToBottomSheet : MailboxViewAction, AffectingBottomSheet
     data class MoveToDestinationSelected(
