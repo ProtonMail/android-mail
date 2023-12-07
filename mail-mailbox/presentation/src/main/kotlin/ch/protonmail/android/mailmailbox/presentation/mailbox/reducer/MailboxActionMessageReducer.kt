@@ -24,23 +24,31 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel.Pluralise
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import me.proton.core.mailsettings.domain.entity.ViewMode
 import javax.inject.Inject
 
 class MailboxActionMessageReducer @Inject constructor() {
 
     internal fun newStateFrom(operation: MailboxOperation.AffectingActionMessage): Effect<TextUiModel> {
-        return when (operation) {
+        val textUiModel = when (operation) {
             is MailboxEvent.Trash ->
-                Effect.of(TextUiModel(R.plurals.mailbox_action_trash, operation.numAffectedMessages))
+                TextUiModel(R.plurals.mailbox_action_trash, operation.numAffectedMessages)
 
             is MailboxEvent.DeleteConfirmed -> {
                 val resource = when (operation.viewMode) {
                     ViewMode.ConversationGrouping -> R.plurals.mailbox_action_delete_conversation
                     ViewMode.NoConversationGrouping -> R.plurals.mailbox_action_delete_message
                 }
-                Effect.of(PluralisedText(resource, operation.numAffectedMessages))
+                PluralisedText(resource, operation.numAffectedMessages)
             }
+
+            is MailboxViewAction.SwipeArchiveAction -> TextUiModel(R.string.mailbox_action_archive_message)
+            is MailboxViewAction.SwipeReadAction -> TextUiModel(R.string.mailbox_action_read_message)
+            is MailboxViewAction.SwipeSpamAction -> TextUiModel(R.string.mailbox_action_spam_message)
+            is MailboxViewAction.SwipeStarAction -> TextUiModel(R.string.mailbox_action_star_message)
+            is MailboxViewAction.SwipeTrashAction -> TextUiModel(R.string.mailbox_action_trash_message)
         }
+        return Effect.of(textUiModel)
     }
 }

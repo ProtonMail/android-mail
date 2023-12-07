@@ -78,11 +78,16 @@ internal sealed interface MailboxViewAction : MailboxOperation {
     data class LabelAsToggleAction(val label: LabelId) : MailboxViewAction, AffectingBottomSheet
     data class LabelAsConfirmed(val archiveSelected: Boolean) : MailboxViewAction, AffectingBottomSheet
 
-    data class SwipeReadAction(val userId: UserId, val itemId: String, val isRead: Boolean) : MailboxViewAction
-    data class SwipeArchiveAction(val userId: UserId, val itemId: String) : MailboxViewAction
-    data class SwipeSpamAction(val userId: UserId, val itemId: String) : MailboxViewAction
-    data class SwipeTrashAction(val userId: UserId, val itemId: String) : MailboxViewAction
-    data class SwipeStarAction(val userId: UserId, val itemId: String, val isStarred: Boolean) : MailboxViewAction
+    data class SwipeReadAction(val userId: UserId, val itemId: String, val isRead: Boolean) :
+        MailboxViewAction,
+        AffectingActionMessage
+
+    data class SwipeArchiveAction(val userId: UserId, val itemId: String) : MailboxViewAction, AffectingActionMessage
+    data class SwipeSpamAction(val userId: UserId, val itemId: String) : MailboxViewAction, AffectingActionMessage
+    data class SwipeTrashAction(val userId: UserId, val itemId: String) : MailboxViewAction, AffectingActionMessage
+    data class SwipeStarAction(val userId: UserId, val itemId: String, val isStarred: Boolean) :
+        MailboxViewAction,
+        AffectingActionMessage
 
     object RequestMoveToBottomSheet : MailboxViewAction, AffectingBottomSheet
     data class MoveToDestinationSelected(

@@ -133,6 +133,7 @@ import io.mockk.Called
 import io.mockk.coEvery
 import io.mockk.coJustRun
 import io.mockk.coVerify
+import io.mockk.coVerifyOrder
 import io.mockk.coVerifySequence
 import io.mockk.confirmVerified
 import io.mockk.every
@@ -3120,12 +3121,16 @@ class MailboxViewModelTest {
         val expectedItemId = "itemId"
         expectViewMode(NoConversationGrouping)
         expectMarkMessagesAsUnreadSucceeds(userId, listOf(buildMailboxUiModelItem(id = expectedItemId)))
+        val expectedViewAction = MailboxViewAction.SwipeReadAction(userId, expectedItemId, true)
 
         // When
-        mailboxViewModel.submit(MailboxViewAction.SwipeReadAction(userId, expectedItemId, true))
+        mailboxViewModel.submit(expectedViewAction)
 
         // Then
-        coVerify { markMessagesAsUnread(userId, listOf(MessageId(expectedItemId))) }
+        coVerifyOrder {
+            markMessagesAsUnread(userId, listOf(MessageId(expectedItemId)))
+            mailboxReducer.newStateFrom(any(), expectedViewAction)
+        }
         coVerify {
             markMessagesAsRead wasNot Called
             markConversationsAsRead wasNot Called
@@ -3139,12 +3144,16 @@ class MailboxViewModelTest {
         val expectedItemId = "itemId"
         expectViewMode(ConversationGrouping)
         expectMarkConversationsAsUnreadSucceeds(userId, listOf(buildMailboxUiModelItem(id = expectedItemId)))
+        val expectedViewAction = MailboxViewAction.SwipeReadAction(userId, expectedItemId, true)
 
         // When
-        mailboxViewModel.submit(MailboxViewAction.SwipeReadAction(userId, expectedItemId, true))
+        mailboxViewModel.submit(expectedViewAction)
 
         // Then
-        coVerify { markConversationsAsUnread(userId, listOf(ConversationId(expectedItemId))) }
+        coVerifyOrder {
+            markConversationsAsUnread(userId, listOf(ConversationId(expectedItemId)))
+            mailboxReducer.newStateFrom(any(), expectedViewAction)
+        }
         coVerify {
             markMessagesAsRead wasNot Called
             markMessagesAsUnread wasNot Called
@@ -3158,12 +3167,16 @@ class MailboxViewModelTest {
         val expectedItemId = "itemId"
         expectViewMode(NoConversationGrouping)
         expectMarkMessagesAsReadSucceeds(userId, listOf(buildMailboxUiModelItem(id = expectedItemId)))
+        val expectedViewAction = MailboxViewAction.SwipeReadAction(userId, expectedItemId, false)
 
         // When
-        mailboxViewModel.submit(MailboxViewAction.SwipeReadAction(userId, expectedItemId, false))
+        mailboxViewModel.submit(expectedViewAction)
 
         // Then
-        coVerify { markMessagesAsRead(userId, listOf(MessageId(expectedItemId))) }
+        coVerifyOrder {
+            markMessagesAsRead(userId, listOf(MessageId(expectedItemId)))
+            mailboxReducer.newStateFrom(any(), expectedViewAction)
+        }
         coVerify {
             markMessagesAsUnread wasNot Called
             markConversationsAsRead wasNot Called
@@ -3177,12 +3190,16 @@ class MailboxViewModelTest {
         val expectedItemId = "itemId"
         expectViewMode(ConversationGrouping)
         expectMarkConversationsAsReadSucceeds(userId, listOf(buildMailboxUiModelItem(id = expectedItemId)))
+        val expectedViewAction = MailboxViewAction.SwipeReadAction(userId, expectedItemId, false)
 
         // When
-        mailboxViewModel.submit(MailboxViewAction.SwipeReadAction(userId, expectedItemId, false))
+        mailboxViewModel.submit(expectedViewAction)
 
         // Then
-        coVerify { markConversationsAsRead(userId, listOf(ConversationId(expectedItemId))) }
+        coVerify {
+            markConversationsAsRead(userId, listOf(ConversationId(expectedItemId)))
+            mailboxReducer.newStateFrom(any(), expectedViewAction)
+        }
         coVerify {
             markMessagesAsRead wasNot Called
             markMessagesAsUnread wasNot Called
@@ -3197,12 +3214,16 @@ class MailboxViewModelTest {
         val expectedLabelId = SystemLabelId.Archive.labelId
         expectViewMode(NoConversationGrouping)
         expectMoveMessagesSucceeds(userId, listOf(buildMailboxUiModelItem(id = itemId)), expectedLabelId)
+        val expectedViewAction = MailboxViewAction.SwipeArchiveAction(userId, itemId)
 
         // When
-        mailboxViewModel.submit(MailboxViewAction.SwipeArchiveAction(userId, itemId))
+        mailboxViewModel.submit(expectedViewAction)
 
         // Then
-        coVerify { moveMessages(userId, listOf(MessageId(itemId)), expectedLabelId) }
+        coVerifyOrder {
+            moveMessages(userId, listOf(MessageId(itemId)), expectedLabelId)
+            mailboxReducer.newStateFrom(any(), expectedViewAction)
+        }
         coVerify { moveConversations wasNot Called }
     }
 
@@ -3213,12 +3234,16 @@ class MailboxViewModelTest {
         val expectedLabelId = SystemLabelId.Archive.labelId
         expectViewMode(ConversationGrouping)
         expectMoveConversationsSucceeds(userId, listOf(buildMailboxUiModelItem(id = expectedItemId)), expectedLabelId)
+        val expectedViewAction = MailboxViewAction.SwipeArchiveAction(userId, expectedItemId)
 
         // When
-        mailboxViewModel.submit(MailboxViewAction.SwipeArchiveAction(userId, expectedItemId))
+        mailboxViewModel.submit(expectedViewAction)
 
         // Then
-        coVerify { moveConversations(userId, listOf(ConversationId(expectedItemId)), expectedLabelId) }
+        coVerify {
+            moveConversations(userId, listOf(ConversationId(expectedItemId)), expectedLabelId)
+            mailboxReducer.newStateFrom(any(), expectedViewAction)
+        }
         coVerify { moveMessages wasNot Called }
     }
 
@@ -3229,12 +3254,16 @@ class MailboxViewModelTest {
         val expectedLabelId = SystemLabelId.Spam.labelId
         expectViewMode(NoConversationGrouping)
         expectMoveMessagesSucceeds(userId, listOf(buildMailboxUiModelItem(id = itemId)), expectedLabelId)
+        val expectedViewAction = MailboxViewAction.SwipeSpamAction(userId, itemId)
 
         // When
-        mailboxViewModel.submit(MailboxViewAction.SwipeSpamAction(userId, itemId))
+        mailboxViewModel.submit(expectedViewAction)
 
         // Then
-        coVerify { moveMessages(userId, listOf(MessageId(itemId)), expectedLabelId) }
+        coVerifyOrder {
+            moveMessages(userId, listOf(MessageId(itemId)), expectedLabelId)
+            mailboxReducer.newStateFrom(any(), expectedViewAction)
+        }
         coVerify { moveConversations wasNot Called }
     }
 
@@ -3245,12 +3274,16 @@ class MailboxViewModelTest {
         val expectedLabelId = SystemLabelId.Spam.labelId
         expectViewMode(ConversationGrouping)
         expectMoveConversationsSucceeds(userId, listOf(buildMailboxUiModelItem(id = expectedItemId)), expectedLabelId)
+        val expectedViewAction = MailboxViewAction.SwipeSpamAction(userId, expectedItemId)
 
         // When
-        mailboxViewModel.submit(MailboxViewAction.SwipeSpamAction(userId, expectedItemId))
+        mailboxViewModel.submit(expectedViewAction)
 
         // Then
-        coVerify { moveConversations(userId, listOf(ConversationId(expectedItemId)), expectedLabelId) }
+        coVerifyOrder {
+            moveConversations(userId, listOf(ConversationId(expectedItemId)), expectedLabelId)
+            mailboxReducer.newStateFrom(any(), expectedViewAction)
+        }
         coVerify { moveMessages wasNot Called }
     }
 
@@ -3261,12 +3294,16 @@ class MailboxViewModelTest {
         val expectedLabelId = SystemLabelId.Trash.labelId
         expectViewMode(NoConversationGrouping)
         expectMoveMessagesSucceeds(userId, listOf(buildMailboxUiModelItem(id = itemId)), expectedLabelId)
+        val expectedViewAction = MailboxViewAction.SwipeTrashAction(userId, itemId)
 
         // When
-        mailboxViewModel.submit(MailboxViewAction.SwipeTrashAction(userId, itemId))
+        mailboxViewModel.submit(expectedViewAction)
 
         // Then
-        coVerify { moveMessages(userId, listOf(MessageId(itemId)), expectedLabelId) }
+        coVerifyOrder {
+            moveMessages(userId, listOf(MessageId(itemId)), expectedLabelId)
+            mailboxReducer.newStateFrom(any(), expectedViewAction)
+        }
         coVerify { moveConversations wasNot Called }
     }
 
@@ -3277,12 +3314,16 @@ class MailboxViewModelTest {
         val expectedLabelId = SystemLabelId.Trash.labelId
         expectViewMode(ConversationGrouping)
         expectMoveConversationsSucceeds(userId, listOf(buildMailboxUiModelItem(id = expectedItemId)), expectedLabelId)
+        val expectedViewAction = MailboxViewAction.SwipeTrashAction(userId, expectedItemId)
 
         // When
-        mailboxViewModel.submit(MailboxViewAction.SwipeTrashAction(userId, expectedItemId))
+        mailboxViewModel.submit(expectedViewAction)
 
         // Then
-        coVerify { moveConversations(userId, listOf(ConversationId(expectedItemId)), expectedLabelId) }
+        coVerifyOrder {
+            moveConversations(userId, listOf(ConversationId(expectedItemId)), expectedLabelId)
+            mailboxReducer.newStateFrom(any(), expectedViewAction)
+        }
         coVerify { moveMessages wasNot Called }
     }
 
@@ -3292,12 +3333,16 @@ class MailboxViewModelTest {
         val expectedItemId = "itemId"
         expectViewMode(NoConversationGrouping)
         expectedUnStarMessagesSucceeds(userId, listOf(buildMailboxUiModelItem(id = expectedItemId)))
+        val expectedViewAction = MailboxViewAction.SwipeStarAction(userId, expectedItemId, true)
 
         // When
-        mailboxViewModel.submit(MailboxViewAction.SwipeStarAction(userId, expectedItemId, true))
+        mailboxViewModel.submit(expectedViewAction)
 
         // Then
-        coVerify { unStarMessages(userId, listOf(MessageId(expectedItemId))) }
+        coVerifyOrder {
+            unStarMessages(userId, listOf(MessageId(expectedItemId)))
+            mailboxReducer.newStateFrom(any(), expectedViewAction)
+        }
         coVerify {
             starMessages wasNot Called
             starConversations wasNot Called
@@ -3311,12 +3356,16 @@ class MailboxViewModelTest {
         val expectedItemId = "itemId"
         expectViewMode(ConversationGrouping)
         expectedUnStarConversationsSucceeds(userId, listOf(buildMailboxUiModelItem(id = expectedItemId)))
+        val expectedViewAction = MailboxViewAction.SwipeStarAction(userId, expectedItemId, true)
 
         // When
-        mailboxViewModel.submit(MailboxViewAction.SwipeStarAction(userId, expectedItemId, true))
+        mailboxViewModel.submit(expectedViewAction)
 
         // Then
-        coVerify { unStarConversations(userId, listOf(ConversationId(expectedItemId))) }
+        coVerifyOrder {
+            unStarConversations(userId, listOf(ConversationId(expectedItemId)))
+            mailboxReducer.newStateFrom(any(), expectedViewAction)
+        }
         coVerify {
             starConversations wasNot Called
             starMessages wasNot Called
@@ -3330,12 +3379,16 @@ class MailboxViewModelTest {
         val expectedItemId = "itemId"
         expectViewMode(NoConversationGrouping)
         expectedStarMessagesSucceeds(userId, listOf(buildMailboxUiModelItem(id = expectedItemId)))
+        val expectedViewAction = MailboxViewAction.SwipeStarAction(userId, expectedItemId, false)
 
         // When
-        mailboxViewModel.submit(MailboxViewAction.SwipeStarAction(userId, expectedItemId, false))
+        mailboxViewModel.submit(expectedViewAction)
 
         // Then
-        coVerify { starMessages(userId, listOf(MessageId(expectedItemId))) }
+        coVerifyOrder {
+            starMessages(userId, listOf(MessageId(expectedItemId)))
+            mailboxReducer.newStateFrom(any(), expectedViewAction)
+        }
         coVerify {
             unStarMessages wasNot Called
             unStarConversations wasNot Called
@@ -3349,17 +3402,22 @@ class MailboxViewModelTest {
         val expectedItemId = "itemId"
         expectViewMode(ConversationGrouping)
         expectedStarConversationsSucceeds(userId, listOf(buildMailboxUiModelItem(id = expectedItemId)))
+        val expectedViewAction = MailboxViewAction.SwipeStarAction(userId, expectedItemId, false)
 
         // When
-        mailboxViewModel.submit(MailboxViewAction.SwipeStarAction(userId, expectedItemId, false))
+        mailboxViewModel.submit(expectedViewAction)
 
         // Then
-        coVerify { starConversations(userId, listOf(ConversationId(expectedItemId))) }
+        coVerifyOrder {
+            starConversations(userId, listOf(ConversationId(expectedItemId)))
+            mailboxReducer.newStateFrom(any(), expectedViewAction)
+        }
         coVerify {
             unStarConversations wasNot Called
             unStarMessages wasNot Called
             starMessages wasNot Called
         }
+
     }
 
     private fun createMailboxDataState(

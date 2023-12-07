@@ -481,6 +481,7 @@ class MailboxViewModel @Inject constructor(
                 )
             }
         }
+        emitNewStateFrom(swipeReadAction)
     }
 
     private suspend fun handleSwipeStarAction(swipeStarAction: MailboxViewAction.SwipeStarAction) {
@@ -510,18 +511,22 @@ class MailboxViewModel @Inject constructor(
                 )
             }
         }
+        emitNewStateFrom(swipeStarAction)
     }
 
     private suspend fun handleSwipeArchiveAction(swipeArchiveAction: MailboxViewAction.SwipeArchiveAction) {
         swipeArchiveAction.let { moveSingleItemToDestination(it.userId, it.itemId, SystemLabelId.Archive.labelId) }
+        emitNewStateFrom(swipeArchiveAction)
     }
 
     private suspend fun handleSwipeSpamAction(swipeSpamAction: MailboxViewAction.SwipeSpamAction) {
         swipeSpamAction.let { moveSingleItemToDestination(it.userId, it.itemId, SystemLabelId.Spam.labelId) }
+        emitNewStateFrom(swipeSpamAction)
     }
 
     private suspend fun handleSwipeTrashAction(swipeSpamAction: MailboxViewAction.SwipeTrashAction) {
         swipeSpamAction.let { moveSingleItemToDestination(it.userId, it.itemId, SystemLabelId.Trash.labelId) }
+        emitNewStateFrom(swipeSpamAction)
     }
 
     private suspend fun moveSingleItemToDestination(

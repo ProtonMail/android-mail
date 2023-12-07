@@ -98,4 +98,10 @@
     <string name="sidebar_beta_version_title">Proton Mail Beta</string>
     <string name="sidebar_beta_version_description">Tap to learn more about this project.</string>
     <string name="sidebar_beta_version_icon_content_description">Navigate to KB article.</string>
+
+    <string name="mailbox_action_read_message">Message read updated</string>
+    <string name="mailbox_action_star_message">Message star updated</string>
+    <string name="mailbox_action_trash_message">Message moved to trash</string>
+    <string name="mailbox_action_archive_message">Message moved to archive</string>
+    <string name="mailbox_action_spam_message">Message moved to spam</string>
 </resources>
