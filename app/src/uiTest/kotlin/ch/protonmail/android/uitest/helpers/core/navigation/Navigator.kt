@@ -106,7 +106,7 @@ internal class Navigator {
                 composerRobot { fullscreenLoaderSection { waitUntilGone() } }
             }
 
-            is Destination.SidebarMenu -> menuRobot { swipeOpenSidebarMenu() }
+            is Destination.SidebarMenu -> menuRobot { openSidebarMenu() }
         }
     }
 
