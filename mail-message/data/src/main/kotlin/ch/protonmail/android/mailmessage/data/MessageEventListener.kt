@@ -26,6 +26,7 @@ import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import me.proton.core.domain.entity.UserId
 import me.proton.core.eventmanager.domain.EventListener
 import me.proton.core.eventmanager.domain.EventManagerConfig
 import me.proton.core.eventmanager.domain.entity.Action
@@ -75,24 +76,15 @@ open class MessageEventListener @Inject constructor(
     override suspend fun <R> inTransaction(block: suspend () -> R): R = db.inTransaction(block)
 
     override suspend fun onCreate(config: EventManagerConfig, entities: List<MessageResource>) {
-        localDataSource.upsertMessages(entities.map { it.toMessage(config.userId) })
+        excludeDraftsInOutboxAndUpsert(config.userId, entities)
     }
 
     override suspend fun onUpdate(config: EventManagerConfig, entities: List<MessageResource>) {
-
-        val messagesToUpsert = excludeDraftMessagesAlreadyInOutbox(
-            config.userId,
-            entities.map { it.toMessage(config.userId) }
-        )
-
-        // Update local messages
-        if (messagesToUpsert.isNotEmpty()) {
-            localDataSource.upsertMessages(messagesToUpsert)
-        }
+        excludeDraftsInOutboxAndUpsert(config.userId, entities)
     }
 
     override suspend fun onPartial(config: EventManagerConfig, entities: List<MessageResource>) {
-        localDataSource.upsertMessages(entities.map { it.toMessage(config.userId) })
+        excludeDraftsInOutboxAndUpsert(config.userId, entities)
     }
 
     override suspend fun onDelete(config: EventManagerConfig, keys: List<String>) {
@@ -102,5 +94,12 @@ open class MessageEventListener @Inject constructor(
     override suspend fun onResetAll(config: EventManagerConfig) {
         localDataSource.deleteAllMessages(config.userId)
         repository.getRemoteMessages(config.userId, PageKey())
+    }
+
+    private suspend fun excludeDraftsInOutboxAndUpsert(userId: UserId, messages: List<MessageResource>) {
+        val messagesToUpsert = excludeDraftMessagesAlreadyInOutbox(userId, messages.map { it.toMessage(userId) })
+        if (messagesToUpsert.isNotEmpty()) {
+            localDataSource.upsertMessages(messagesToUpsert)
+        }
     }
 }
