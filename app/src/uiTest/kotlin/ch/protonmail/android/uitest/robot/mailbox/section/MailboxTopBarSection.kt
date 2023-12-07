@@ -28,6 +28,7 @@ import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
 import ch.protonmail.android.uitest.models.mailbox.MailboxType
 import ch.protonmail.android.uitest.robot.ComposeSectionRobot
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
+import ch.protonmail.android.uitest.util.awaitDisplayed
 import ch.protonmail.android.uitest.util.child
 
 @AttachTo(targets = [MailboxRobot::class], identifier = "topAppBarSection")
@@ -43,8 +44,8 @@ internal class MailboxTopBarSection : ComposeSectionRobot() {
         hasTestTag(MailboxTopAppBarTestTags.ComposerButton)
     }
 
-    fun tapComposerIcon() = apply {
-        composerButton.performClick()
+    fun tapComposerIcon() {
+        composerButton.awaitDisplayed().performClick()
     }
 
     @VerifiesOuter
