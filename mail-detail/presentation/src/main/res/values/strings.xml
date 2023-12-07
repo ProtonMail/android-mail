@@ -64,6 +64,12 @@
     <string name="external_link_confirmation_dialog_do_not_ask_again">Don\'t ask again</string>
     <string name="external_link_confirmation_dialog_cancel_button">Cancel</string>
     <string name="external_link_confirmation_dialog_continue_button">Continue</string>
+    <!-- Phishing link confirmation dialog -->
+    <string name="phishing_link_confirmation_dialog_title">Warning: suspected fake website</string>
+    <string name="phishing_link_confirmation_dialog_content_part_1">This link leads to a website that might be trying to steal your information, such as passwords and credit card details.</string>
+    <string name="phishing_link_confirmation_dialog_content_part_2">For your security, do not continue.</string>
+    <string name="phishing_link_confirmation_dialog_button_go_back">Go back (recommended)</string>
+    <string name="phishing_link_confirmation_dialog_button_continue">Ignore warning and continue</string>
     <string name="message_delete_dialog_title">Delete message</string>
     <string name="message_delete_dialog_message">Are you sure you want to permanently delete this message?</string>
     <string name="message_deleted">Message deleted</string>

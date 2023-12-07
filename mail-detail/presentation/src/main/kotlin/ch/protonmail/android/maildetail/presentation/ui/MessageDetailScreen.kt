@@ -196,6 +196,7 @@ fun MessageDetailScreen(
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(snapAnimationSpec = null)
     val snackbarHostState = ProtonSnackbarHostState()
     val linkConfirmationDialogState = remember { mutableStateOf<Uri?>(null) }
+    val phishingLinkConfirmationDialogState = remember { mutableStateOf<Uri?>(null) }
 
     ConsumableLaunchedEffect(state.exitScreenEffect) { actions.onExit(null) }
     ConsumableTextEffect(state.exitScreenWithMessageEffect) { string ->
@@ -205,7 +206,9 @@ fun MessageDetailScreen(
         snackbarHostState.showSnackbar(ProtonSnackbarType.ERROR, message = string)
     }
     ConsumableLaunchedEffect(effect = state.openMessageBodyLinkEffect) {
-        if (state.requestLinkConfirmation) {
+        if (state.requestPhishingLinkConfirmation) {
+            phishingLinkConfirmationDialogState.value = it
+        } else if (state.requestLinkConfirmation) {
             linkConfirmationDialogState.value = it
         } else {
             actions.onOpenMessageBodyLink(it)
@@ -214,6 +217,7 @@ fun MessageDetailScreen(
     ConsumableLaunchedEffect(effect = state.openAttachmentEffect) {
         actions.openAttachment(it)
     }
+
     if (linkConfirmationDialogState.value != null) {
         ExternalLinkConfirmationDialog(
             onCancelClicked = {
@@ -227,6 +231,16 @@ fun MessageDetailScreen(
                 }
             },
             linkUri = linkConfirmationDialogState.value
+        )
+    }
+
+    if (phishingLinkConfirmationDialogState.value != null) {
+        PhishingLinkConfirmationDialog(
+            onCancelClicked = { phishingLinkConfirmationDialogState.value = null },
+            onContinueClicked = {
+                phishingLinkConfirmationDialogState.value?.let { actions.onOpenMessageBodyLink(it) }
+            },
+            linkUri = phishingLinkConfirmationDialogState.value
         )
     }
 
