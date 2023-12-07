@@ -120,11 +120,19 @@ class LabelFormViewModel @Inject constructor(
 
     private suspend fun handleOnSaveClick() {
         when (val currentState = state.value) {
-            is LabelFormState.Data.Create -> {
-                createLabel(currentState.name, currentState.color)
-            }
-            is LabelFormState.Data.Update -> {
-                editLabel(currentState.labelId, currentState.name, currentState.color)
+            is LabelFormState.Data -> {
+                val cleanName = currentState.name.trim()
+                when (currentState) {
+                    is LabelFormState.Data.Create -> createLabel(
+                        cleanName,
+                        currentState.color
+                    )
+                    is LabelFormState.Data.Update -> editLabel(
+                        currentState.labelId,
+                        cleanName,
+                        currentState.color
+                    )
+                }
             }
             is LabelFormState.Loading -> {}
         }

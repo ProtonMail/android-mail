@@ -38,6 +38,7 @@ import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
 import ch.protonmail.android.testdata.label.LabelTestData.buildLabel
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
@@ -287,6 +288,46 @@ class LabelFormViewModelTest {
                 ),
                 awaitItem()
             )
+        }
+    }
+
+    @Test
+    fun `given name with trailing whitespace, when action label save, then emit success`() = runTest {
+        // Given
+        val loadedState = loadedCreateState
+        val nameWithTrailingWhitespace = " $defaultTestUpdatedName "
+        every { savedStateHandle.get<String>(LabelFormScreen.LabelFormLabelIdKey) } returns null
+        coEvery { isLabelLimitReached.invoke(userId, LabelType.MessageLabel) } returns false.right()
+        coEvery { isLabelNameAllowed.invoke(userId, defaultTestUpdatedName) } returns true.right()
+        coEvery { createLabel.invoke(userId, defaultTestUpdatedName, any()) } returns Unit.right()
+
+        labelFormViewModel.state.test {
+            // Initial loaded state
+            val actual = awaitItem()
+            assertEquals(loadedState, actual)
+
+            // When
+            labelFormViewModel.submit(LabelFormViewAction.LabelNameChanged(nameWithTrailingWhitespace))
+            // Then
+            assertEquals(loadedState.copy(name = nameWithTrailingWhitespace, isSaveEnabled = true), awaitItem())
+
+            // When
+            labelFormViewModel.submit(LabelFormViewAction.OnSaveClick)
+            // Then
+            assertEquals(
+                loadedState.copy(
+                    name = nameWithTrailingWhitespace,
+                    isSaveEnabled = true,
+                    closeWithSave = Effect.of(Unit),
+                    displayCreateLoader = true
+                ),
+                awaitItem()
+            )
+        }
+        coVerify {
+            // Verify that we use the name trimmed from leading and trailing whitespaces
+            isLabelNameAllowed.invoke(userId, defaultTestUpdatedName)
+            createLabel.invoke(userId, defaultTestUpdatedName, defaultTestLabel.color)
         }
     }
 
