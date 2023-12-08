@@ -39,7 +39,5 @@ interface AttachmentRemoteDataSource {
     /**
      * Cancel the attachment upload for the given [attachmentId].
      */
-    fun cancelAttachmentUpload(
-        attachmentId: AttachmentId
-    )
+    fun cancelAttachmentUpload(attachmentId: AttachmentId)
 }

@@ -2082,7 +2082,11 @@ class ComposerViewModelTest {
         } returns AttachmentReEncryptionError.FailedToEncryptAttachmentKeyPackets.left()
     }
 
-    private fun expectDeleteAllAttachmentsSucceeds(userId: UserId, senderEmail: SenderEmail, messageId: MessageId) {
+    private fun expectDeleteAllAttachmentsSucceeds(
+        userId: UserId,
+        senderEmail: SenderEmail,
+        messageId: MessageId
+    ) {
         coJustRun { deleteAllAttachments(userId, senderEmail, messageId) }
     }
 

@@ -92,7 +92,7 @@ class ActionUiModelMapperTest(
                         Action.Unstar,
                         R.drawable.ic_proton_star_filled,
                         commonRes.string.action_unstar_description,
-                        commonRes.string.action_unstar_content_description,
+                        commonRes.string.action_unstar_content_description
                     )
                 )
             ),
@@ -176,7 +176,7 @@ class ActionUiModelMapperTest(
                         Action.ViewInDarkMode,
                         R.drawable.ic_proton_circle_filled,
                         commonRes.string.action_view_in_dark_mode_description,
-                        commonRes.string.action_view_in_dark_mode_content_description,
+                        commonRes.string.action_view_in_dark_mode_content_description
                     )
                 )
             ),
@@ -272,7 +272,7 @@ class ActionUiModelMapperTest(
                         Action.SaveAttachments,
                         R.drawable.ic_proton_arrow_down_to_square,
                         commonRes.string.action_save_attachments_description,
-                        commonRes.string.action_save_attachments_content_description,
+                        commonRes.string.action_save_attachments_content_description
                     )
                 )
             )

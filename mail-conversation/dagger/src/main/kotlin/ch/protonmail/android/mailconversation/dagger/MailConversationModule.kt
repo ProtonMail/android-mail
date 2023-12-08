@@ -68,7 +68,6 @@ object MailConversationModule {
 
     @Provides
     @Singleton
-    fun provideConversationLocalDataSource(
-        db: ConversationDatabase
-    ): ConversationLocalDataSource = ConversationLocalDataSourceImpl(db)
+    fun provideConversationLocalDataSource(db: ConversationDatabase): ConversationLocalDataSource =
+        ConversationLocalDataSourceImpl(db)
 }

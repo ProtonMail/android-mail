@@ -59,7 +59,7 @@ fun SignOutAccountDialog(
         modifier = modifier,
         viewState = viewState,
         onCancelClicked = onCancelled,
-        onSignOutClicked = { signOutViewModel.signOut(userId) },
+        onSignOutClicked = { signOutViewModel.signOut(userId) }
     )
 }
 

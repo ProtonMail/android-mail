@@ -35,17 +35,16 @@ class HasAlternativeRouting @Inject constructor(
 
     private val initialValue = AlternativeRoutingPreference(true)
 
-    operator fun invoke() =
-        alternativeRoutingRepository.observe()
-            .map { alternativeRoutingPreferenceEither ->
-                alternativeRoutingPreferenceEither.fold(
-                    ifLeft = { initialValue },
-                    ifRight = { it }
-                )
-            }
-            .stateIn(
-                scope = coroutineScope,
-                started = SharingStarted.Eagerly,
-                initialValue = initialValue
+    operator fun invoke() = alternativeRoutingRepository.observe()
+        .map { alternativeRoutingPreferenceEither ->
+            alternativeRoutingPreferenceEither.fold(
+                ifLeft = { initialValue },
+                ifRight = { it }
             )
+        }
+        .stateIn(
+            scope = coroutineScope,
+            started = SharingStarted.Eagerly,
+            initialValue = initialValue
+        )
 }

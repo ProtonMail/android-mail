@@ -30,7 +30,11 @@ class DeleteAllAttachments @Inject constructor(
     private val attachmentRepository: AttachmentRepository
 ) {
 
-    suspend operator fun invoke(userId: UserId, senderEmail: SenderEmail, messageId: MessageId) {
+    suspend operator fun invoke(
+        userId: UserId,
+        senderEmail: SenderEmail,
+        messageId: MessageId
+    ) {
         val localDraft = localDraft(userId, messageId, senderEmail).getOrNull()
 
         if (localDraft == null) {

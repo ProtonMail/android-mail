@@ -296,9 +296,7 @@ class ReEncryptAttachmentsTest {
         coEvery { getLocalDraft(userId, messageId, newSender) } returns expectedDraftError
     }
 
-    private fun expectGetMessageWithBodySucceeds(
-        expectedMessageWithBody: MessageWithBody
-    ) {
+    private fun expectGetMessageWithBodySucceeds(expectedMessageWithBody: MessageWithBody) {
         coEvery {
             messageRepository.getMessageWithBody(userId, expectedMessageWithBody.message.messageId)
         } returns expectedMessageWithBody.right()

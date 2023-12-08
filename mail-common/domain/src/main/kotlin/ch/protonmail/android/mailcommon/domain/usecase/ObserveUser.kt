@@ -28,6 +28,5 @@ class ObserveUser @Inject constructor(
     val userManager: UserManager
 ) {
 
-    operator fun invoke(userId: UserId): Flow<User?> =
-        userManager.observeUser(userId)
+    operator fun invoke(userId: UserId): Flow<User?> = userManager.observeUser(userId)
 }

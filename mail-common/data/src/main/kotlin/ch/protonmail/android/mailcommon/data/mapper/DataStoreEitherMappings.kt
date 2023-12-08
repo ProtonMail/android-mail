@@ -45,10 +45,9 @@ val DataStore<Preferences>.safeData: Flow<Either<PreferencesError, Preferences>>
 
 suspend fun DataStore<Preferences>.safeEdit(
     transform: suspend (MutablePreferences) -> Unit
-): Either<PreferencesError, Preferences> =
-    try {
-        edit(transform).right()
-    } catch (exception: IOException) {
-        Timber.e(exception, "Error saving preference")
-        PreferencesError.left()
-    }
+): Either<PreferencesError, Preferences> = try {
+    edit(transform).right()
+} catch (exception: IOException) {
+    Timber.e(exception, "Error saving preference")
+    PreferencesError.left()
+}

@@ -26,8 +26,7 @@ class GetCurrentEpochTimeDuration @Inject constructor(
     private val getLocalisedCalendar: GetLocalisedCalendar
 ) {
 
-    operator fun invoke(): Duration =
-        (getLocalisedCalendar().timeInMillis / MsInASec).seconds
+    operator fun invoke(): Duration = (getLocalisedCalendar().timeInMillis / MsInASec).seconds
 
     companion object {
 
