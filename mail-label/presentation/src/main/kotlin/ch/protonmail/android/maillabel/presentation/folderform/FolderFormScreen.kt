@@ -194,9 +194,12 @@ fun FolderFormContent(
         )
         Divider()
         FolderFormParentFolderField(state, actions)
+        val notificationsHintResId =
+            if (state.notifications) R.string.switch_on
+            else R.string.switch_off
         ProtonSettingsToggleItem(
             name = stringResource(id = R.string.folder_form_notifications),
-            hint = stringResource(id = R.string.folder_form_no_parent),
+            hint = stringResource(id = notificationsHintResId),
             value = state.notifications,
             onToggle = {
                 actions.onFolderNotificationsChanged(it)
