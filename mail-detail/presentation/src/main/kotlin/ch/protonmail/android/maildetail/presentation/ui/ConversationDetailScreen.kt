@@ -434,10 +434,14 @@ private fun MessagesContent(
     var initialPlaceholderHeightCalculated by remember { mutableStateOf(false) }
     var scrollCount by remember { mutableStateOf(0) }
 
-    var scrollToIndex = remember(scrollToMessageId) {
+    var scrollToIndex = remember(scrollToMessageId, uiModels) {
         if (scrollToMessageId == null) return@remember -1
         else uiModels.indexOfFirst { uiModel -> uiModel.messageId.id == scrollToMessageId }
     }
+
+    // Sometimes we do not get all conversation items in the first call. The complete list of items can be provided
+    // after a delay. In that case we need to repeat the initial automatic scroll to the most recent non-draft item
+    var lastScrolledIndex by remember { mutableStateOf(-1) }
 
     // Insert some offset to scrolling to make sure the message above will also be visible partially
     val scrollOffsetPx = scrollOffsetDp.dpToPx()
@@ -452,6 +456,8 @@ private fun MessagesContent(
 
                 listState.scrollToItem(scrollToIndex, scrollOffsetPx)
 
+                lastScrolledIndex = scrollToIndex
+
                 // When try to perform both scrolling and expanding at the same time, the above scrollToItem
                 // suspend function is paused during WebView initialization. Therefore we notify the view model
                 // after the completion of the first scrolling to start expanding the message.
@@ -462,6 +468,13 @@ private fun MessagesContent(
                 scrollCount++
 
             } else {
+
+                // If we get a different scrollToIndex, we need to scroll to that index again
+                if (scrollToIndex != lastScrolledIndex) {
+                    listState.animateScrollToItem(scrollToIndex, scrollOffsetPx)
+                    lastScrolledIndex = scrollToIndex
+                }
+
                 // Scrolled message expanded, so we can conclude that scrolling is completed
                 actions.onScrollRequestCompleted()
                 scrollToIndex = -1
