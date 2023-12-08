@@ -212,6 +212,7 @@ class FolderFormViewModel @Inject constructor(
         emitNewStateFor(FolderFormEvent.FolderCreated)
     }
 
+    @SuppressWarnings("ComplexCondition")
     private suspend fun editFolder(
         labelId: LabelId,
         name: String,
@@ -220,6 +221,11 @@ class FolderFormViewModel @Inject constructor(
         notifications: Boolean
     ) {
         getLabel(primaryUserId(), labelId, LabelType.MessageFolder).getOrNull()?.let { label ->
+            if (name.equalsNoCase(label.name) && color.equalsNoCase(label.color) &&
+                parentId == label.parentId && notifications == label.isNotified
+            ) {
+                return emitNewStateFor(FolderFormEvent.CloseFolderForm)
+            }
             if (!name.equalsNoCase(label.name)) {
                 val isFolderNameAllowed = isLabelNameAllowed(primaryUserId(), name).getOrElse {
                     return emitNewStateFor(FolderFormEvent.SaveFolderError)

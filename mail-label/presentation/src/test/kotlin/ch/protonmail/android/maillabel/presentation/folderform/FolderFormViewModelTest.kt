@@ -337,7 +337,6 @@ class FolderFormViewModelTest {
             savedStateHandle.get<String>(FolderFormScreen.FolderFormLabelIdKey)
         } returns defaultTestFolder.labelId.id
         coEvery { isLabelNameAllowed.invoke(userId, defaultTestUpdatedName) } returns true.right()
-        coEvery { isLabelLimitReached.invoke(userId, LabelType.MessageFolder) } returns false.right()
         coEvery {
             getLabel.invoke(userId, defaultTestFolder.labelId, LabelType.MessageFolder)
         } returns defaultTestFolder.right()
@@ -366,6 +365,32 @@ class FolderFormViewModelTest {
     }
 
     @Test
+    fun `given update state and no changes, when action folder save, then emits close with success`() = runTest {
+        // Given
+        val loadedState = loadedUpdateState
+        every {
+            savedStateHandle.get<String>(FolderFormScreen.FolderFormLabelIdKey)
+        } returns defaultTestFolder.labelId.id
+        coEvery {
+            getLabel.invoke(userId, defaultTestFolder.labelId, LabelType.MessageFolder)
+        } returns defaultTestFolder.right()
+
+        folderFormViewModel.state.test {
+            // Initial loaded state
+            val actual = awaitItem()
+            assertEquals(loadedState, actual)
+
+            // When
+            folderFormViewModel.submit(FolderFormViewAction.OnSaveClick)
+            // Then
+            assertEquals(
+                loadedState.copy(close = Effect.of(Unit)),
+                awaitItem()
+            )
+        }
+    }
+
+    @Test
     fun `given name with spaces, when action folder save, then trim and emits close with success`() = runTest {
         // Given
         val loadedState = loadedUpdateState
@@ -374,7 +399,6 @@ class FolderFormViewModelTest {
             savedStateHandle.get<String>(FolderFormScreen.FolderFormLabelIdKey)
         } returns defaultTestFolder.labelId.id
         coEvery { isLabelNameAllowed.invoke(userId, defaultTestUpdatedName) } returns true.right()
-        coEvery { isLabelLimitReached.invoke(userId, LabelType.MessageFolder) } returns false.right()
         coEvery {
             getLabel.invoke(userId, defaultTestFolder.labelId, LabelType.MessageFolder)
         } returns defaultTestFolder.right()
