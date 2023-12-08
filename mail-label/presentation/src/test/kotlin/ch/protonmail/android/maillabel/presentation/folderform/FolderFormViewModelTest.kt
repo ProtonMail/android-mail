@@ -42,6 +42,7 @@ import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSetti
 import ch.protonmail.android.testdata.label.LabelTestData.buildLabel
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
@@ -63,12 +64,14 @@ class FolderFormViewModelTest {
     private val defaultTestFolder = buildLabel(
         id = "LabelID",
         type = LabelType.MessageFolder,
-        color = Color.Red.getHexStringFromColor()
+        color = Color.Red.getHexStringFromColor(),
+        isNotified = true
     )
     private val defaultTestParentFolder = buildLabel(
         id = "ParentLabelID",
         type = LabelType.MessageFolder,
-        color = Color.Red.getHexStringFromColor()
+        color = Color.Red.getHexStringFromColor(),
+        isNotified = true
     )
     private val defaultTestUpdatedName = "UpdatedName"
     private val defaultFolderColorSettings = FolderColorSettings(
@@ -334,6 +337,7 @@ class FolderFormViewModelTest {
             savedStateHandle.get<String>(FolderFormScreen.FolderFormLabelIdKey)
         } returns defaultTestFolder.labelId.id
         coEvery { isLabelNameAllowed.invoke(userId, defaultTestUpdatedName) } returns true.right()
+        coEvery { isLabelLimitReached.invoke(userId, LabelType.MessageFolder) } returns false.right()
         coEvery {
             getLabel.invoke(userId, defaultTestFolder.labelId, LabelType.MessageFolder)
         } returns defaultTestFolder.right()
@@ -357,6 +361,51 @@ class FolderFormViewModelTest {
                     closeWithSuccess = Effect.of(TextUiModel(R.string.folder_saved))
                 ),
                 awaitItem()
+            )
+        }
+    }
+
+    @Test
+    fun `given name with spaces, when action folder save, then trim and emits close with success`() = runTest {
+        // Given
+        val loadedState = loadedUpdateState
+        val nameWithWhitespaces = " $defaultTestUpdatedName "
+        every {
+            savedStateHandle.get<String>(FolderFormScreen.FolderFormLabelIdKey)
+        } returns defaultTestFolder.labelId.id
+        coEvery { isLabelNameAllowed.invoke(userId, defaultTestUpdatedName) } returns true.right()
+        coEvery { isLabelLimitReached.invoke(userId, LabelType.MessageFolder) } returns false.right()
+        coEvery {
+            getLabel.invoke(userId, defaultTestFolder.labelId, LabelType.MessageFolder)
+        } returns defaultTestFolder.right()
+
+        folderFormViewModel.state.test {
+            // Initial loaded state
+            val actual = awaitItem()
+            assertEquals(loadedState, actual)
+
+            // When
+            folderFormViewModel.submit(FolderFormViewAction.FolderNameChanged(nameWithWhitespaces))
+            // Then
+            assertEquals(loadedState.copy(name = nameWithWhitespaces), awaitItem())
+
+            // When
+            folderFormViewModel.submit(FolderFormViewAction.OnSaveClick)
+            // Then
+            assertEquals(
+                loadedState.copy(
+                    name = nameWithWhitespaces,
+                    closeWithSuccess = Effect.of(TextUiModel(R.string.folder_saved))
+                ),
+                awaitItem()
+            )
+        }
+        coVerify {
+            // Verify that we use the name trimmed from leading and trailing whitespaces
+            isLabelNameAllowed.invoke(userId, defaultTestUpdatedName)
+            updateLabel.invoke(
+                userId,
+                defaultTestFolder.copy(name = defaultTestUpdatedName)
             )
         }
     }

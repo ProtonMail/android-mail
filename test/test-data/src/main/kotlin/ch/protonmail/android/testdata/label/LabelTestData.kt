@@ -51,6 +51,7 @@ object LabelTestData {
         order: Int = 0,
         color: String = "#338AF3",
         parentId: String? = null,
+        isNotified: Boolean? = null,
         isExpanded: Boolean? = null
     ) = Label(
         userId = userId,
@@ -61,7 +62,7 @@ object LabelTestData {
         path = id,
         color = color,
         order = order,
-        isNotified = null,
+        isNotified = isNotified,
         isExpanded = isExpanded,
         isSticky = null
     )

@@ -156,22 +156,27 @@ class FolderFormViewModel @Inject constructor(
 
     private suspend fun handleOnSaveClick() {
         when (val currentState = state.value) {
-            is FolderFormState.Data.Create -> {
-                createFolder(
-                    currentState.name,
-                    currentState.color,
-                    currentState.parent?.labelId,
-                    currentState.notifications
-                )
-            }
-            is FolderFormState.Data.Update -> {
-                editFolder(
-                    currentState.labelId,
-                    currentState.name,
-                    currentState.color,
-                    currentState.parent?.labelId,
-                    currentState.notifications
-                )
+            is FolderFormState.Data -> {
+                val cleanName = currentState.name.trim()
+                when (currentState) {
+                    is FolderFormState.Data.Create -> {
+                        createFolder(
+                            cleanName,
+                            currentState.color,
+                            currentState.parent?.labelId,
+                            currentState.notifications
+                        )
+                    }
+                    is FolderFormState.Data.Update -> {
+                        editFolder(
+                            currentState.labelId,
+                            cleanName,
+                            currentState.color,
+                            currentState.parent?.labelId,
+                            currentState.notifications
+                        )
+                    }
+                }
             }
             is FolderFormState.Loading -> {}
         }
