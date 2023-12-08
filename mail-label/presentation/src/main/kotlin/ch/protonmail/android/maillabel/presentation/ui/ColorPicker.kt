@@ -25,11 +25,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material3.Text
@@ -50,6 +49,7 @@ import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultSmallStrongNorm
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ColorPicker(
     colors: List<Color>,
@@ -68,10 +68,8 @@ fun ColorPicker(
             style = ProtonTheme.typography.defaultSmallStrongNorm
         )
 
-        LazyVerticalGrid(
-            columns = GridCells.Adaptive(minSize = MailDimens.ColorPicker.CircleBoxSize)
-        ) {
-            items(colors) { color ->
+        FlowRow(Modifier.padding(start = ProtonDimens.SmallSpacing)) {
+            for (color in colors) {
                 ColorItem(
                     color = color,
                     isSelected = color == selectedColor,

@@ -24,6 +24,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -33,7 +35,6 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -43,6 +44,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.Effect
@@ -179,29 +181,41 @@ fun LabelFormContent(
     actions: LabelFormScreen.Actions,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier
+    ConstraintLayout(
+        modifier = modifier.fillMaxSize()
     ) {
-        FormInputField(
-            initialValue = state.name,
-            title = stringResource(R.string.label_name_title),
-            hint = stringResource(R.string.add_a_label_name_hint),
-            onTextChange = {
-                actions.onLabelNameChanged(it)
-            }
-        )
-        Divider()
-        ColorPicker(
-            colors = state.colorList,
-            selectedColor = state.color.getColorFromHexString(),
-            onColorClicked = {
-                actions.onLabelColorChanged(it)
-            }
-        )
+        val (deleteButton) = createRefs()
+
+        Column(
+            modifier = modifier
+                .verticalScroll(rememberScrollState())
+                .fillMaxSize()
+                .padding(bottom = MailDimens.ScrollableFormBottomButtonSpacing)
+        ) {
+            FormInputField(
+                initialValue = state.name,
+                title = stringResource(R.string.label_name_title),
+                hint = stringResource(R.string.add_a_label_name_hint),
+                onTextChange = {
+                    actions.onLabelNameChanged(it)
+                }
+            )
+            Divider()
+            ColorPicker(
+                colors = state.colorList,
+                selectedColor = state.color.getColorFromHexString(),
+                onColorClicked = {
+                    actions.onLabelColorChanged(it)
+                }
+            )
+        }
         if (state is LabelFormState.Data.Update) {
             FormDeleteButton(
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally),
+                modifier = Modifier.constrainAs(deleteButton) {
+                    bottom.linkTo(parent.bottom, margin = ProtonDimens.DefaultSpacing)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                },
                 text = stringResource(id = R.string.label_form_delete),
                 onClick = actions.onDeleteClick
             )

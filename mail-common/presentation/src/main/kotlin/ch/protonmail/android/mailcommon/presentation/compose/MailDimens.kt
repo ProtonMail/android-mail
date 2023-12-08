@@ -64,6 +64,8 @@ object MailDimens {
         val SelectedCircleInternalMargin = 10.dp
     }
 
+    val ScrollableFormBottomButtonSpacing = 60.dp
+
     const val ActionButtonShapeRadius = 100
 
     val SingleLineTopAppBarHeight = 56.dp

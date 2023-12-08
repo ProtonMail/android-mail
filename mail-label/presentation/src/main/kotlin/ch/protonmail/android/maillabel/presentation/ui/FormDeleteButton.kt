@@ -26,6 +26,7 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import me.proton.core.compose.component.ProtonButton
 import me.proton.core.compose.component.protonOutlinedButtonColors
@@ -51,7 +52,7 @@ fun FormDeleteButton(
             ProtonTheme.colors.notificationError
         ),
         colors = ButtonDefaults.protonOutlinedButtonColors(
-            contentColor = ProtonTheme.colors.notificationError
+            backgroundColor = ProtonTheme.colors.notificationError
         ),
         contentPadding = ButtonDefaults.ContentPadding
     ) {
@@ -62,7 +63,7 @@ fun FormDeleteButton(
             ),
             text = text,
             style = ProtonTheme.typography.defaultNorm,
-            color = ProtonTheme.colors.notificationError
+            color = Color.White
         )
     }
 }
