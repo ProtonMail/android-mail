@@ -65,13 +65,15 @@ object MessageBodyUiModelTestData {
     ): MessageBodyUiModel {
         return MessageBodyUiModel(
             messageBody = messageBody,
+            messageBodyWithoutQuote = messageBody,
             messageId = messageId,
             mimeType = mimeType,
             shouldShowEmbeddedImages = shouldShowEmbeddedImages,
             shouldShowRemoteContent = shouldShowRemoteContent,
             shouldShowEmbeddedImagesBanner = shouldShowEmbeddedImagesBanner,
             shouldShowRemoteContentBanner = shouldShowRemoteContentBanner,
-            attachments = attachments
+            attachments = attachments,
+            shouldShowExpandCollapseButton = false
         )
     }
 }

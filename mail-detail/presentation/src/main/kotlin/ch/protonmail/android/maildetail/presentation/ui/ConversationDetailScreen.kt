@@ -206,6 +206,9 @@ fun ConversationDetailScreen(
                 onScrollRequestCompleted = { viewModel.submit(ConversationDetailViewAction.ScrollRequestCompleted) },
                 onDoNotAskLinkConfirmationAgain = {
                     viewModel.submit(ConversationDetailViewAction.DoNotAskLinkConfirmationAgain)
+                },
+                onBodyExpandCollapseButtonClicked = {
+                    viewModel.submit(ConversationDetailViewAction.ExpandOrCollapseMessageBody(it))
                 }
             ),
             scrollToMessageId = state.scrollToMessage?.id
@@ -372,7 +375,9 @@ fun ConversationDetailScreen(
                     onReply = actions.onReply,
                     onReplyAll = actions.onReplyAll,
                     onForward = actions.onForward,
-                    onScrollRequestCompleted = actions.onScrollRequestCompleted
+                    onScrollRequestCompleted = actions.onScrollRequestCompleted,
+                    onBodyExpandCollapseButtonClicked = actions.onBodyExpandCollapseButtonClicked
+
                 )
                 MessagesContent(
                     uiModels = state.messagesState.messages,
@@ -518,7 +523,6 @@ private fun MessagesContent(
                 }.onSizeChanged {
                     itemsHeight[index] = it.height
                 },
-                webViewHeight = loadedItemsHeight[uiModel.messageId.id],
                 onMessageBodyLoadFinished = { messageId, height ->
                     Timber.d("onMessageBodyLoadFinished: $messageId, $height. loadedItemsChanged: $loadedItemsChanged")
                     loadedItemsHeight[messageId.id] = height
@@ -602,7 +606,8 @@ object ConversationDetailScreen {
         val loadEmbeddedImage: (messageId: MessageId?, contentId: String) -> GetEmbeddedImageResult?,
         val onReply: (MessageId) -> Unit,
         val onReplyAll: (MessageId) -> Unit,
-        val onForward: (MessageId) -> Unit
+        val onForward: (MessageId) -> Unit,
+        val onBodyExpandCollapseButtonClicked: (MessageIdUiModel) -> Unit
     ) {
 
         companion object {
@@ -630,7 +635,8 @@ object ConversationDetailScreen {
                 loadEmbeddedImage = { _, _ -> null },
                 onReply = {},
                 onReplyAll = {},
-                onForward = {}
+                onForward = {},
+                onBodyExpandCollapseButtonClicked = {}
             )
         }
     }

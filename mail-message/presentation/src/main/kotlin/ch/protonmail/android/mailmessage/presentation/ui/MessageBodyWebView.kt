@@ -25,26 +25,44 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebSettings
 import android.webkit.WebView
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
+import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.pxToDp
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
+import ch.protonmail.android.mailmessage.presentation.R
 import ch.protonmail.android.mailmessage.presentation.extension.isEmbeddedImage
 import ch.protonmail.android.mailmessage.presentation.extension.isRemoteContent
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import com.google.accompanist.web.AccompanistWebChromeClient
 import com.google.accompanist.web.AccompanistWebViewClient
@@ -52,20 +70,23 @@ import com.google.accompanist.web.WebView
 import com.google.accompanist.web.rememberWebViewStateWithHTMLData
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 
 @Composable
 fun MessageBodyWebView(
     modifier: Modifier = Modifier,
     messageBodyUiModel: MessageBodyUiModel,
+    bodyDisplayMode: MessageBodyExpandCollapseMode,
     actions: MessageBodyWebView.Actions,
-    webViewHeight: Int? = null,
     onMessageBodyLoaded: (messageId: MessageId, height: Int) -> Unit = { _, _ -> }
 ) {
     val scope = rememberCoroutineScope()
     var contentLoaded by remember { mutableStateOf(false) }
     val state = rememberWebViewStateWithHTMLData(
-        data = messageBodyUiModel.messageBody,
+        data =
+        if (bodyDisplayMode == MessageBodyExpandCollapseMode.Collapsed) messageBodyUiModel.messageBodyWithoutQuote
+        else messageBodyUiModel.messageBody,
         mimeType = messageBodyUiModel.mimeType.value
     )
     val messageId = messageBodyUiModel.messageId
@@ -106,6 +127,9 @@ fun MessageBodyWebView(
 
     val isSystemInDarkTheme = isSystemInDarkTheme()
 
+    // This is will on be used if the WebView height is higher than the max constraint.
+    var webViewHeightPx by remember { mutableStateOf(0) }
+
     Column(modifier = modifier) {
         WebView(
             onCreated = {
@@ -126,25 +150,36 @@ fun MessageBodyWebView(
                 Modifier
                     .testTag(MessageBodyWebViewTestTags.WebView)
                     .fillMaxWidth()
-            ) {
-                if (webViewHeight == null) {
-                    onSizeChanged { size ->
+                    // There are no guarantees onSizeChanged will not be re-invoked with the same size. We need to take
+                    // our own measures to avoid callback with the same size.
+                    .onSizeChanged {
+                            size ->
                         if (size.height >= 0 && contentLoaded) {
                             scope.launch {
                                 delay(WEB_PAGE_CONTENT_LOAD_TIMEOUT)
-                                onMessageBodyLoaded(messageId, size.height)
+                                if (webViewHeightPx != size.height) {
+                                    onMessageBodyLoaded(messageId, size.height)
+                                    webViewHeightPx = size.height
+                                }
                             }
                         }
                     }
-                } else if (webViewHeight < WEB_VIEW_FIXED_MAX_HEIGHT) {
-                    height(webViewHeight.pxToDp())
-                } else {
+            ) {
+                if (webViewHeightPx < WEB_VIEW_FIXED_MAX_HEIGHT) {
                     this
+                } else {
+                    height((WEB_VIEW_FIXED_MAX_HEIGHT - 1).pxToDp())
                 }
             },
             client = client,
             chromeClient = chromeClient
         )
+        if (bodyDisplayMode != MessageBodyExpandCollapseMode.NotApplicable) {
+            ExpandCollapseBodyButton(
+                modifier = Modifier.offset(x = ProtonDimens.SmallSpacing),
+                onClick = { actions.onExpandCollapseButtonCLicked() }
+            )
+        }
         val attachmentsUiModel = messageBodyUiModel.attachments
         if (attachmentsUiModel != null && attachmentsUiModel.attachments.isNotEmpty()) {
             AttachmentFooter(
@@ -159,11 +194,47 @@ fun MessageBodyWebView(
     }
 }
 
+
+@Composable
+private fun ExpandCollapseBodyButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
+    Button(
+        modifier = modifier
+            .padding(ProtonDimens.ExtraSmallSpacing)
+            .height(MessageBodyDimens.ExpandButtonHeight)
+            .width(MessageBodyDimens.ExpandButtonWidth),
+        contentPadding = PaddingValues(0.dp),
+        shape = RoundedCornerShape(MessageBodyDimens.ExpandButtonRoundedCornerPercent),
+        border = BorderStroke(MailDimens.DefaultBorder, ProtonTheme.colors.shade20),
+        colors = ButtonDefaults.buttonColors(backgroundColor = ProtonTheme.colors.backgroundNorm),
+        elevation = ButtonDefaults.elevation(defaultElevation = 0.dp),
+        onClick = { onClick() }
+    ) {
+        Icon(
+            modifier = Modifier
+                .size(MessageBodyDimens.ExpandButtonHeight)
+                .align(Alignment.CenterVertically),
+            painter = painterResource(id = R.drawable.ic_proton_three_dots_horizontal),
+            tint = ProtonTheme.colors.iconNorm,
+            contentDescription = NO_CONTENT_DESCRIPTION
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun ExpandCollapseBodyButtonPreview() {
+    ProtonTheme {
+        ExpandCollapseBodyButton(onClick = {})
+    }
+}
+
+
 object MessageBodyWebView {
 
     data class Actions(
         val onMessageBodyLinkClicked: (uri: Uri) -> Unit,
         val onShowAllAttachments: () -> Unit,
+        val onExpandCollapseButtonCLicked: () -> Unit,
         val onAttachmentClicked: (attachmentId: AttachmentId) -> Unit,
         val loadEmbeddedImage: (messageId: MessageId, contentId: String) -> GetEmbeddedImageResult?
     )

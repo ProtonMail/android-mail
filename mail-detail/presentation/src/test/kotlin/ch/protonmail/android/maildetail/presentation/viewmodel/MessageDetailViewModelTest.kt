@@ -67,6 +67,7 @@ import ch.protonmail.android.maildetail.presentation.reducer.MessageDeleteDialog
 import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailMetadataReducer
 import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailReducer
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
+import ch.protonmail.android.maildetail.presentation.usecase.ExtractMessageBodyWithoutQuote
 import ch.protonmail.android.maildetail.presentation.usecase.GetEmbeddedImageAvoidDuplicatedExecution
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
@@ -88,6 +89,7 @@ import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
 import ch.protonmail.android.mailmessage.domain.usecase.StarMessages
 import ch.protonmail.android.mailmessage.domain.usecase.UnStarMessages
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
@@ -147,6 +149,18 @@ class MessageDetailViewModelTest {
 
     private val messageId = MessageId("detailMessageId")
     private val decryptedMessageBody = DecryptedMessageBody(messageId, "Decrypted message body.", MimeType.PlainText)
+    private val decryptedHtmlMessageBody = DecryptedMessageBody(
+        messageId = messageId,
+        value = EmailBodyTestSamples.BodyWithoutQuotes,
+        mimeType = MimeType.PlainText,
+        attachments = listOf(
+            MessageAttachmentSample.invoice,
+            MessageAttachmentSample.document,
+            MessageAttachmentSample.documentWithMultipleDots,
+            MessageAttachmentSample.image
+        )
+    )
+    private val extractMessageBodyWithoutQuote = ExtractMessageBodyWithoutQuote()
     private val actionUiModelMapper = ActionUiModelMapper()
     private val messageDetailActionBarUiModelMapper = MessageDetailActionBarUiModelMapper()
     private val defaultFolderColorSettings = FolderColorSettings()
@@ -1330,6 +1344,129 @@ class MessageDetailViewModelTest {
 
         // Then
         assertNull(actual)
+    }
+
+    @Test
+    fun `initial expand collapse mode will be not applicable given body contains no quotes`() = runTest {
+        // Given
+        val expectedDecryptedHtmlMessageBody =
+            decryptedHtmlMessageBody.copy(value = EmailBodyTestSamples.BodyWithoutQuotes)
+        val hasQuote = extractMessageBodyWithoutQuote(expectedDecryptedHtmlMessageBody.value).hasQuote
+        val expectedMessageBodyUiModel = MessageBodyUiModelTestData.messageBodyWithAttachmentsUiModel.copy(
+            shouldShowExpandCollapseButton = hasQuote
+        )
+        coEvery {
+            getDecryptedMessageBody(userId, any())
+        } returns expectedDecryptedHtmlMessageBody.right()
+        coEvery {
+            messageBodyUiModelMapper.toUiModel(userId, any())
+        } returns expectedMessageBodyUiModel
+        coEvery {
+            observeAttachmentWorkerStatus(userId, any(), any())
+        } returns flowOf()
+        coEvery {
+            getAttachmentIntentValues(userId, messageId, any())
+        } returns mockk()
+        coEvery { getDownloadingAttachmentsForMessages(userId, any()) } returns listOf()
+
+        // When
+        viewModel.state.test {
+            initialStateEmitted()
+            skipItems(2)
+
+            // Then
+            val expected = MessageBodyState.Data(
+                expectedMessageBodyUiModel, MessageBodyExpandCollapseMode.NotApplicable
+            )
+            assertEquals(expected, awaitItem().messageBodyState)
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `initial expand collapse mode will be collapsed given body contains proton mail quote`() = runTest {
+        // Given
+        val expectedDecryptedHtmlMessageBody =
+            decryptedHtmlMessageBody.copy(value = EmailBodyTestSamples.BodyWithProtonMailQuote)
+        val hasQuote = extractMessageBodyWithoutQuote(expectedDecryptedHtmlMessageBody.value).hasQuote
+        val expectedMessageBodyUiModel = MessageBodyUiModelTestData.messageBodyWithAttachmentsUiModel.copy(
+            shouldShowExpandCollapseButton = hasQuote
+        )
+        coEvery {
+            getDecryptedMessageBody(userId, any())
+        } returns expectedDecryptedHtmlMessageBody.right()
+        coEvery {
+            messageBodyUiModelMapper.toUiModel(userId, any())
+        } returns expectedMessageBodyUiModel
+        coEvery {
+            observeAttachmentWorkerStatus(userId, any(), any())
+        } returns flowOf()
+        coEvery {
+            getAttachmentIntentValues(userId, messageId, any())
+        } returns mockk()
+        coEvery { getDownloadingAttachmentsForMessages(userId, any()) } returns listOf()
+
+        // When
+        viewModel.state.test {
+            initialStateEmitted()
+            skipItems(2)
+
+            // Then
+            val expected = MessageBodyState.Data(
+                expectedMessageBodyUiModel, MessageBodyExpandCollapseMode.Collapsed
+            )
+            assertEquals(expected, awaitItem().messageBodyState)
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `when user clicks expand collapse button then mode will toggle`() = runTest {
+        // Given
+        val expectedDecryptedHtmlMessageBody =
+            decryptedHtmlMessageBody.copy(value = EmailBodyTestSamples.BodyWithProtonMailQuote)
+        val hasQuote = extractMessageBodyWithoutQuote(expectedDecryptedHtmlMessageBody.value).hasQuote
+        val expectedMessageBodyUiModel = MessageBodyUiModelTestData.messageBodyWithAttachmentsUiModel.copy(
+            shouldShowExpandCollapseButton = hasQuote
+        )
+        coEvery {
+            getDecryptedMessageBody(userId, any())
+        } returns expectedDecryptedHtmlMessageBody.right()
+        coEvery {
+            messageBodyUiModelMapper.toUiModel(userId, any())
+        } returns expectedMessageBodyUiModel
+        coEvery {
+            observeAttachmentWorkerStatus(userId, any(), any())
+        } returns flowOf()
+        coEvery {
+            getAttachmentIntentValues(userId, messageId, any())
+        } returns mockk()
+        coEvery { getDownloadingAttachmentsForMessages(userId, any()) } returns listOf()
+
+        viewModel.state.test {
+            initialStateEmitted()
+            skipItems(3)
+
+            // When
+            viewModel.submit(MessageViewAction.ExpandOrCollapseMessageBody)
+
+            // Then
+            val expectExpanded = MessageBodyState.Data(
+                expectedMessageBodyUiModel, MessageBodyExpandCollapseMode.Expanded
+            )
+            assertEquals(expectExpanded, awaitItem().messageBodyState)
+
+            // When
+            viewModel.submit(MessageViewAction.ExpandOrCollapseMessageBody)
+
+            // Then
+            val expectCollapsed = MessageBodyState.Data(
+                expectedMessageBodyUiModel, MessageBodyExpandCollapseMode.Collapsed
+            )
+            assertEquals(expectCollapsed, awaitItem().messageBodyState)
+
+            cancelAndIgnoreRemainingEvents()
+        }
     }
 
     private suspend fun ReceiveTurbine<MessageDetailState>.initialStateEmitted() {

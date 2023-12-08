@@ -35,6 +35,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
 import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelSample
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
@@ -56,15 +57,18 @@ object MessageDetailsPreviewData {
         ),
         messageBodyState = MessageBodyState.Data(
             messageBodyUiModel = MessageBodyUiModel(
-                messageBody = "This is a message body.",
+                messageBody = "This is a message body with quote.",
+                messageBodyWithoutQuote = "This is a message body without quote.",
                 messageId = MessageId("This is a messageId"),
                 mimeType = MimeTypeUiModel.PlainText,
                 shouldShowEmbeddedImages = false,
                 shouldShowRemoteContent = false,
                 shouldShowEmbeddedImagesBanner = false,
                 shouldShowRemoteContentBanner = false,
+                shouldShowExpandCollapseButton = false,
                 attachments = null
-            )
+            ),
+            expandCollapseMode = MessageBodyExpandCollapseMode.Collapsed
         ),
         bottomBarState = BottomBarState.Data.Shown(
             listOf(

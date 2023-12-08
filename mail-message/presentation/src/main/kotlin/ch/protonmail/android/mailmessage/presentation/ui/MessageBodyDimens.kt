@@ -16,24 +16,12 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmessage.presentation.model
+package ch.protonmail.android.mailmessage.presentation.ui
 
-import ch.protonmail.android.mailmessage.domain.model.MessageId
+import androidx.compose.ui.unit.dp
 
-data class MessageBodyUiModel(
-    val messageId: MessageId,
-    val messageBody: String,
-    val messageBodyWithoutQuote: String,
-    val mimeType: MimeTypeUiModel,
-    val shouldShowEmbeddedImages: Boolean,
-    val shouldShowRemoteContent: Boolean,
-    val shouldShowEmbeddedImagesBanner: Boolean,
-    val shouldShowRemoteContentBanner: Boolean,
-    val shouldShowExpandCollapseButton: Boolean,
-    val attachments: AttachmentGroupUiModel?
-)
-
-enum class MimeTypeUiModel(val value: String) {
-    PlainText("text/plain"),
-    Html("text/html")
+object MessageBodyDimens {
+    val ExpandButtonWidth = 36.dp
+    val ExpandButtonHeight = 20.dp
+    const val ExpandButtonRoundedCornerPercent = 30
 }

@@ -21,6 +21,7 @@ package ch.protonmail.android.maildetail.presentation.model
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import kotlinx.collections.immutable.ImmutableList
 
@@ -56,7 +57,8 @@ sealed interface ConversationDetailMessageUiModel {
         val messageDetailHeaderUiModel: MessageDetailHeaderUiModel,
         val messageBannersUiModel: MessageBannersUiModel,
         val messageBodyUiModel: MessageBodyUiModel,
-        val requestPhishingLinkConfirmation: Boolean
+        val requestPhishingLinkConfirmation: Boolean,
+        val expandCollapseMode: MessageBodyExpandCollapseMode
     ) : ConversationDetailMessageUiModel
 
     enum class ForwardedIcon {

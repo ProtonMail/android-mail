@@ -29,6 +29,8 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMes
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -86,6 +88,7 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
         folderColorSettings: FolderColorSettings
     ): ConversationDetailMessageUiModel.Expanded {
         val (message, _) = messageWithLabels
+        val uiModel = messageBodyUiModelMapper.toUiModel(message.userId, decryptedMessageBody)
         return ConversationDetailMessageUiModel.Expanded(
             messageId = messageIdUiModelMapper.toUiModel(message.messageId),
             isUnread = message.unread,
@@ -95,9 +98,18 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
                 folderColorSettings
             ),
             messageBannersUiModel = messageBannersUiModelMapper.createMessageBannersUiModel(message),
-            messageBodyUiModel = messageBodyUiModelMapper.toUiModel(message.userId, decryptedMessageBody),
-            requestPhishingLinkConfirmation = message.isPhishing()
+            requestPhishingLinkConfirmation = message.isPhishing(),
+            messageBodyUiModel = uiModel,
+            expandCollapseMode = getInitialBodyExpandCollapseMode(uiModel)
         )
+    }
+
+    private fun getInitialBodyExpandCollapseMode(uiModel: MessageBodyUiModel): MessageBodyExpandCollapseMode {
+        return if (uiModel.shouldShowExpandCollapseButton) {
+            MessageBodyExpandCollapseMode.Collapsed
+        } else {
+            MessageBodyExpandCollapseMode.NotApplicable
+        }
     }
 
     suspend fun toUiModel(

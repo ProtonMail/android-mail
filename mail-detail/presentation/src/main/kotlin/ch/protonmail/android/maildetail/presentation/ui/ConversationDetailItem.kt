@@ -49,7 +49,6 @@ fun ConversationDetailItem(
     uiModel: ConversationDetailMessageUiModel,
     actions: ConversationDetailItem.Actions,
     modifier: Modifier = Modifier,
-    webViewHeight: Int?,
     onMessageBodyLoadFinished: (messageId: MessageId, height: Int) -> Unit,
     showReplyActionsFeatureFlag: Boolean
 ) {
@@ -79,7 +78,6 @@ fun ConversationDetailItem(
                     uiModel = uiModel,
                     actions = actions,
                     onMessageBodyLoadFinished = onMessageBodyLoadFinished,
-                    webViewHeight = webViewHeight,
                     showReplyActionsFeatureFlag = showReplyActionsFeatureFlag
                 )
             }
@@ -105,7 +103,6 @@ private fun ConversationDetailExpandedItem(
     actions: ConversationDetailItem.Actions,
     modifier: Modifier = Modifier,
     onMessageBodyLoadFinished: (messageId: MessageId, height: Int) -> Unit,
-    webViewHeight: Int?,
     showReplyActionsFeatureFlag: Boolean
 ) {
     Column(modifier = modifier) {
@@ -124,16 +121,19 @@ private fun ConversationDetailExpandedItem(
         MessageBanners(messageBannersUiModel = uiModel.messageBannersUiModel)
         MessageBody(
             messageBodyUiModel = uiModel.messageBodyUiModel,
+            expandCollapseMode = uiModel.expandCollapseMode,
             actions = MessageBody.Actions(
                 onMessageBodyLinkClicked = { actions.onMessageBodyLinkClicked(uiModel.messageId, it) },
                 onShowAllAttachments = { actions.onShowAllAttachmentsForMessage(uiModel.messageId) },
                 onAttachmentClicked = { actions.onAttachmentClicked(uiModel.messageId, it) },
+                onExpandCollapseButtonClicked = {
+                    actions.onBodyExpandCollapseButtonClicked(uiModel.messageId)
+                },
                 loadEmbeddedImage = actions.loadEmbeddedImage,
                 onReply = actions.onReply,
                 onReplyAll = actions.onReplyAll,
                 onForward = actions.onForward
             ),
-            webViewHeight = webViewHeight,
             onMessageBodyLoaded = onMessageBodyLoadFinished,
             showReplyActionsFeatureFlag = showReplyActionsFeatureFlag
         )
@@ -153,7 +153,8 @@ object ConversationDetailItem {
         val onReply: (MessageId) -> Unit,
         val onReplyAll: (MessageId) -> Unit,
         val onForward: (MessageId) -> Unit,
-        val onScrollRequestCompleted: () -> Unit
+        val onScrollRequestCompleted: () -> Unit,
+        val onBodyExpandCollapseButtonClicked: (MessageIdUiModel) -> Unit
     )
 }
 

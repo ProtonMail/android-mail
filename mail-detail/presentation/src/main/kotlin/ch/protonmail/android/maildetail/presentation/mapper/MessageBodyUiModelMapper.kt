@@ -22,6 +22,7 @@ import ch.protonmail.android.maildetail.domain.usecase.DoesMessageBodyHaveEmbedd
 import ch.protonmail.android.maildetail.domain.usecase.DoesMessageBodyHaveRemoteContent
 import ch.protonmail.android.maildetail.domain.usecase.ShouldShowEmbeddedImages
 import ch.protonmail.android.maildetail.domain.usecase.ShouldShowRemoteContent
+import ch.protonmail.android.maildetail.presentation.usecase.ExtractMessageBodyWithoutQuote
 import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.model.GetDecryptedMessageBodyError
 import ch.protonmail.android.mailmessage.domain.model.MimeType
@@ -40,6 +41,7 @@ class MessageBodyUiModelMapper @Inject constructor(
     private val doesMessageBodyHaveRemoteContent: DoesMessageBodyHaveRemoteContent,
     private val injectCssIntoDecryptedMessageBody: InjectCssIntoDecryptedMessageBody,
     private val sanitizeHtmlOfDecryptedMessageBody: SanitizeHtmlOfDecryptedMessageBody,
+    private val extractMessageBodyWithoutQuote: ExtractMessageBodyWithoutQuote,
     private val shouldShowEmbeddedImages: ShouldShowEmbeddedImages,
     private val shouldShowRemoteContent: ShouldShowRemoteContent
 ) {
@@ -54,17 +56,26 @@ class MessageBodyUiModelMapper @Inject constructor(
         val shouldShowRemoteContent = shouldShowRemoteContent(userId)
         val doesMessageBodyHaveRemoteContent = doesMessageBodyHaveRemoteContent(decryptedMessageBody)
 
+        val originalMessageBody = injectCssIntoDecryptedMessageBody(
+            sanitizedMessageBody,
+            decryptedMessageBody.mimeType.toMimeTypeUiModel()
+        )
+
+        val extractQuoteResult = extractMessageBodyWithoutQuote(originalMessageBody)
+        val bodyWithoutQuote = if (extractQuoteResult.hasQuote) {
+            extractQuoteResult.messageBodyHtmlWithoutQuote
+        } else originalMessageBody
+
         return MessageBodyUiModel(
-            messageBody = injectCssIntoDecryptedMessageBody(
-                sanitizedMessageBody,
-                decryptedMessageBody.mimeType.toMimeTypeUiModel()
-            ),
+            messageBody = originalMessageBody,
+            messageBodyWithoutQuote = bodyWithoutQuote,
             messageId = decryptedMessageBody.messageId,
             mimeType = decryptedMessageBody.mimeType.toMimeTypeUiModel(),
             shouldShowEmbeddedImages = shouldShowEmbeddedImages,
             shouldShowRemoteContent = shouldShowRemoteContent(userId),
             shouldShowEmbeddedImagesBanner = !shouldShowEmbeddedImages && doesMessageBodyHaveEmbeddedImages,
             shouldShowRemoteContentBanner = !shouldShowRemoteContent && doesMessageBodyHaveRemoteContent,
+            shouldShowExpandCollapseButton = extractQuoteResult.hasQuote,
             attachments = if (decryptedMessageBody.attachments.isNotEmpty()) {
                 AttachmentGroupUiModel(
                     attachments = decryptedMessageBody.attachments.map {
@@ -77,12 +88,14 @@ class MessageBodyUiModelMapper @Inject constructor(
 
     fun toUiModel(decryptionError: GetDecryptedMessageBodyError.Decryption) = MessageBodyUiModel(
         messageBody = decryptionError.encryptedMessageBody,
+        messageBodyWithoutQuote = decryptionError.encryptedMessageBody,
         messageId = decryptionError.messageId,
         mimeType = MimeTypeUiModel.PlainText,
         shouldShowEmbeddedImages = false,
         shouldShowRemoteContent = false,
         shouldShowEmbeddedImagesBanner = false,
         shouldShowRemoteContentBanner = false,
+        shouldShowExpandCollapseButton = false,
         attachments = null
     )
 

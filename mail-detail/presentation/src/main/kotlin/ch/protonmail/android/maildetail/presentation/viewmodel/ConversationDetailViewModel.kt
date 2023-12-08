@@ -210,6 +210,8 @@ class ConversationDetailViewModel @Inject constructor(
             is ConversationDetailViewAction.OnAttachmentClicked -> {
                 onOpenAttachmentClicked(action.messageId, action.attachmentId)
             }
+
+            is ConversationDetailViewAction.ExpandOrCollapseMessageBody -> onExpandOrCollapseMessageBody(action)
         }
     }
 
@@ -634,6 +636,10 @@ class ConversationDetailViewModel @Inject constructor(
     }
 
     private fun dismissBottomSheet(action: ConversationDetailViewAction) {
+        viewModelScope.launch { emitNewStateFrom(action) }
+    }
+
+    private fun onExpandOrCollapseMessageBody(action: ConversationDetailViewAction) {
         viewModelScope.launch { emitNewStateFrom(action) }
     }
 

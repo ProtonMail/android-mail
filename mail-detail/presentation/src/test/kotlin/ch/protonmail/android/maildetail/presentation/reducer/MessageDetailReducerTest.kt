@@ -39,6 +39,7 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSh
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithLabelsSample
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
@@ -438,7 +439,8 @@ class MessageDetailReducerTest(
             ),
             TestInput(
                 MessageDetailEvent.MessageBodyEvent(
-                    MessageBodyUiModelTestData.plainTextMessageBodyUiModel
+                    MessageBodyUiModelTestData.plainTextMessageBodyUiModel,
+                    MessageBodyExpandCollapseMode.NotApplicable
                 ),
                 shouldReduceMessageMetadataState = false,
                 shouldReduceMessageBannersState = false,

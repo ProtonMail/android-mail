@@ -46,6 +46,7 @@ import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.system.LocalDeviceCapabilitiesProvider
 import ch.protonmail.android.maildetail.presentation.R
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
@@ -65,9 +66,9 @@ fun MessageBody(
     modifier: Modifier = Modifier,
     messageBodyUiModel: MessageBodyUiModel,
     actions: MessageBody.Actions,
-    webViewHeight: Int? = null,
     onMessageBodyLoaded: (messageId: MessageId, height: Int) -> Unit = { _, _ -> },
-    showReplyActionsFeatureFlag: Boolean
+    showReplyActionsFeatureFlag: Boolean,
+    expandCollapseMode: MessageBodyExpandCollapseMode
 ) {
     val hasWebView = LocalDeviceCapabilitiesProvider.current.hasWebView
 
@@ -87,13 +88,14 @@ fun MessageBody(
         MessageBodyWebView(
             modifier = modifier,
             messageBodyUiModel = messageBodyUiModel,
+            bodyDisplayMode = expandCollapseMode,
             actions = MessageBodyWebView.Actions(
                 actions.onMessageBodyLinkClicked,
                 actions.onShowAllAttachments,
+                actions.onExpandCollapseButtonClicked,
                 actions.onAttachmentClicked,
                 actions.loadEmbeddedImage
             ),
-            webViewHeight = webViewHeight,
             onMessageBodyLoaded = onMessageBodyLoaded
         )
     } else {
@@ -241,6 +243,7 @@ fun MessageBodyBanner(@StringRes text: Int) {
 object MessageBody {
 
     data class Actions(
+        val onExpandCollapseButtonClicked: () -> Unit,
         val onMessageBodyLinkClicked: (uri: Uri) -> Unit,
         val onShowAllAttachments: () -> Unit,
         val onAttachmentClicked: (attachmentId: AttachmentId) -> Unit,

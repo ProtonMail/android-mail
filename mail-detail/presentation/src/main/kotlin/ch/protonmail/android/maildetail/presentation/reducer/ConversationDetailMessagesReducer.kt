@@ -23,12 +23,15 @@ import ch.protonmail.android.maildetail.presentation.R.string
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
 import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import kotlinx.collections.immutable.toImmutableList
 import javax.inject.Inject
 
+@Suppress("ComplexMethod")
 class ConversationDetailMessagesReducer @Inject constructor() {
 
     fun newStateFrom(
@@ -84,6 +87,12 @@ class ConversationDetailMessagesReducer @Inject constructor() {
 
         is ConversationDetailEvent.AttachmentStatusChanged ->
             currentState.newStateFromMessageAttachmentStatus(operation)
+
+        is ConversationDetailViewAction.ExpandOrCollapseMessageBody -> {
+            currentState.toNewMessageBodyExpandCollapseState(
+                operation
+            )
+        }
     }
 
     private fun ConversationDetailsMessagesState.toNewStateForNoNetworkError() = when (this) {
@@ -100,6 +109,28 @@ class ConversationDetailMessagesReducer @Inject constructor() {
         is ConversationDetailsMessagesState.Error -> ConversationDetailsMessagesState.Error(
             message = TextUiModel(string.detail_error_loading_messages)
         )
+    }
+
+    private fun ConversationDetailsMessagesState.toNewMessageBodyExpandCollapseState(
+        operation: ConversationDetailViewAction.ExpandOrCollapseMessageBody
+    ): ConversationDetailsMessagesState = when (this) {
+        is ConversationDetailsMessagesState.Data -> ConversationDetailsMessagesState.Data(
+            messages = messages.map {
+                if (it.messageId == operation.messageId && it is ConversationDetailMessageUiModel.Expanded) {
+                    it.copy(
+                        expandCollapseMode = when (it.expandCollapseMode) {
+                            MessageBodyExpandCollapseMode.Collapsed -> MessageBodyExpandCollapseMode.Expanded
+                            MessageBodyExpandCollapseMode.Expanded -> MessageBodyExpandCollapseMode.Collapsed
+                            else -> it.expandCollapseMode
+                        }
+                    )
+                } else {
+                    it
+                }
+            }.toImmutableList()
+        )
+
+        else -> this
     }
 
     private fun ConversationDetailsMessagesState.toNewExpandCollapseState(

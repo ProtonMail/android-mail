@@ -22,6 +22,8 @@ import ch.protonmail.android.maildetail.domain.usecase.DoesMessageBodyHaveEmbedd
 import ch.protonmail.android.maildetail.domain.usecase.DoesMessageBodyHaveRemoteContent
 import ch.protonmail.android.maildetail.domain.usecase.ShouldShowEmbeddedImages
 import ch.protonmail.android.maildetail.domain.usecase.ShouldShowRemoteContent
+import ch.protonmail.android.maildetail.presentation.model.MessageBodyWithoutQuote
+import ch.protonmail.android.maildetail.presentation.usecase.ExtractMessageBodyWithoutQuote
 import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.model.GetDecryptedMessageBodyError
 import ch.protonmail.android.mailmessage.domain.model.MimeType
@@ -74,6 +76,10 @@ class MessageBodyUiModelMapperTest {
     private val shouldShowRemoteContent = mockk<ShouldShowRemoteContent> {
         coEvery { this@mockk.invoke(UserIdTestData.userId) } returns false
     }
+    private val extractMessageBodyWithoutQuote = mockk<ExtractMessageBodyWithoutQuote> {
+        coEvery { this@mockk.invoke(any()) } returns MessageBodyWithoutQuote(decryptedMessageBody, false)
+    }
+
     private val messageBodyUiModelMapper = MessageBodyUiModelMapper(
         attachmentUiModelMapper = attachmentUiModelMapper,
         doesMessageBodyHaveEmbeddedImages = doesMessageBodyHaveEmbeddedImages,
@@ -81,7 +87,9 @@ class MessageBodyUiModelMapperTest {
         injectCssIntoDecryptedMessageBody = injectCssIntoDecryptedMessageBody,
         sanitizeHtmlOfDecryptedMessageBody = sanitizeHtmlOfDecryptedMessageBody,
         shouldShowEmbeddedImages = shouldShowEmbeddedImages,
-        shouldShowRemoteContent = shouldShowRemoteContent
+        shouldShowRemoteContent = shouldShowRemoteContent,
+        extractMessageBodyWithoutQuote = extractMessageBodyWithoutQuote
+
     )
 
     @Test
@@ -92,11 +100,13 @@ class MessageBodyUiModelMapperTest {
         val expected = MessageBodyUiModel(
             messageId = messageId,
             messageBody = decryptedMessageBody,
+            messageBodyWithoutQuote = decryptedMessageBody,
             mimeType = MimeTypeUiModel.PlainText,
             shouldShowEmbeddedImages = false,
             shouldShowRemoteContent = false,
             shouldShowEmbeddedImagesBanner = false,
             shouldShowRemoteContentBanner = false,
+            shouldShowExpandCollapseButton = false,
             attachments = null
         )
 
@@ -124,11 +134,13 @@ class MessageBodyUiModelMapperTest {
         val expected = MessageBodyUiModel(
             messageId = messageId,
             messageBody = decryptedMessageBody,
+            messageBodyWithoutQuote = decryptedMessageBody,
             mimeType = MimeTypeUiModel.PlainText,
             shouldShowEmbeddedImages = false,
             shouldShowRemoteContent = false,
             shouldShowEmbeddedImagesBanner = false,
             shouldShowRemoteContentBanner = false,
+            shouldShowExpandCollapseButton = false,
             attachments = AttachmentGroupUiModel(
                 attachments = listOf(
                     AttachmentUiModelSample.invoice,
@@ -159,11 +171,13 @@ class MessageBodyUiModelMapperTest {
         val expected = MessageBodyUiModel(
             messageId = messageId,
             messageBody = sanitizedDecryptedMessageBodyWithCss,
+            messageBodyWithoutQuote = sanitizedDecryptedMessageBodyWithCss,
             mimeType = MimeTypeUiModel.Html,
             shouldShowEmbeddedImages = false,
             shouldShowRemoteContent = false,
             shouldShowEmbeddedImagesBanner = false,
             shouldShowRemoteContentBanner = false,
+            shouldShowExpandCollapseButton = false,
             attachments = null
         )
 
@@ -183,11 +197,13 @@ class MessageBodyUiModelMapperTest {
             val expected = MessageBodyUiModel(
                 messageId = messageId,
                 messageBody = decryptedMessageBody,
+                messageBodyWithoutQuote = decryptedMessageBody,
                 mimeType = MimeTypeUiModel.Html,
                 shouldShowEmbeddedImages = false,
                 shouldShowRemoteContent = true,
                 shouldShowEmbeddedImagesBanner = false,
                 shouldShowRemoteContentBanner = false,
+                shouldShowExpandCollapseButton = false,
                 attachments = null
             )
             every { doesMessageBodyHaveRemoteContent(messageBody) } returns true
@@ -209,11 +225,13 @@ class MessageBodyUiModelMapperTest {
             val expected = MessageBodyUiModel(
                 messageId = messageId,
                 messageBody = decryptedMessageBody,
+                messageBodyWithoutQuote = decryptedMessageBody,
                 mimeType = MimeTypeUiModel.Html,
                 shouldShowEmbeddedImages = false,
                 shouldShowRemoteContent = false,
                 shouldShowEmbeddedImagesBanner = false,
                 shouldShowRemoteContentBanner = true,
+                shouldShowExpandCollapseButton = false,
                 attachments = null
             )
             every { doesMessageBodyHaveRemoteContent(messageBody) } returns true
@@ -235,11 +253,13 @@ class MessageBodyUiModelMapperTest {
             val expected = MessageBodyUiModel(
                 messageId = messageId,
                 messageBody = decryptedMessageBody,
+                messageBodyWithoutQuote = decryptedMessageBody,
                 mimeType = MimeTypeUiModel.Html,
                 shouldShowEmbeddedImages = true,
                 shouldShowRemoteContent = false,
                 shouldShowEmbeddedImagesBanner = false,
                 shouldShowRemoteContentBanner = false,
+                shouldShowExpandCollapseButton = false,
                 attachments = null
             )
             every { doesMessageBodyHaveEmbeddedImages(messageBody) } returns true
@@ -261,11 +281,13 @@ class MessageBodyUiModelMapperTest {
             val expected = MessageBodyUiModel(
                 messageId = messageId,
                 messageBody = decryptedMessageBody,
+                messageBodyWithoutQuote = decryptedMessageBody,
                 mimeType = MimeTypeUiModel.Html,
                 shouldShowEmbeddedImages = false,
                 shouldShowRemoteContent = false,
                 shouldShowEmbeddedImagesBanner = true,
                 shouldShowRemoteContentBanner = false,
+                shouldShowExpandCollapseButton = false,
                 attachments = null
             )
             every { doesMessageBodyHaveEmbeddedImages(messageBody) } returns true
@@ -286,11 +308,13 @@ class MessageBodyUiModelMapperTest {
         val expected = MessageBodyUiModel(
             messageId = messageId,
             messageBody = messageBody,
+            messageBodyWithoutQuote = messageBody,
             mimeType = MimeTypeUiModel.PlainText,
             shouldShowEmbeddedImages = false,
             shouldShowRemoteContent = false,
             shouldShowEmbeddedImagesBanner = false,
             shouldShowRemoteContentBanner = false,
+            shouldShowExpandCollapseButton = false,
             attachments = null
         )
 

@@ -18,27 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.model
 
-import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
-import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
-
-sealed class MessageBodyState {
-
-    data class Data(
-        val messageBodyUiModel: MessageBodyUiModel,
-        val expandCollapseMode: MessageBodyExpandCollapseMode
-        = MessageBodyExpandCollapseMode.NotApplicable // expand / collapse with quote descriptors
-    ) : MessageBodyState()
-
-    object Loading : MessageBodyState()
-
-    object Error {
-
-        data class Data(
-            val isNetworkError: Boolean
-        ) : MessageBodyState()
-
-        data class Decryption(
-            val encryptedMessageBody: MessageBodyUiModel
-        ) : MessageBodyState()
-    }
-}
+data class MessageBodyWithoutQuote(
+    val messageBodyHtmlWithoutQuote: String,
+    val hasQuote: Boolean
+)

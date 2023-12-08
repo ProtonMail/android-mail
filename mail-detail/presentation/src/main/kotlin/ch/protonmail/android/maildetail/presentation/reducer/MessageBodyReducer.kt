@@ -23,6 +23,7 @@ import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import javax.inject.Inject
 
 class MessageBodyReducer @Inject constructor() {
@@ -33,11 +34,29 @@ class MessageBodyReducer @Inject constructor() {
     ): MessageBodyState {
         return when (event) {
             is MessageViewAction.Reload -> MessageBodyState.Loading
-            is MessageDetailEvent.MessageBodyEvent -> MessageBodyState.Data(event.messageBody)
+            is MessageDetailEvent.MessageBodyEvent -> MessageBodyState.Data(event.messageBody, event.expandCollapseMode)
             is MessageDetailEvent.ErrorGettingMessageBody -> MessageBodyState.Error.Data(event.isNetworkError)
             is MessageDetailEvent.ErrorDecryptingMessageBody -> MessageBodyState.Error.Decryption(event.messageBody)
             is MessageDetailEvent.AttachmentStatusChanged ->
                 messageBodyState.newMessageBodyStateFromAttachmentStatus(event)
+
+            is MessageViewAction.ExpandOrCollapseMessageBody ->
+                messageBodyState.newMessageBodyStateFromCollapseOrExpand()
+        }
+    }
+
+    private fun MessageBodyState.newMessageBodyStateFromCollapseOrExpand(): MessageBodyState {
+        return when (this) {
+            is MessageBodyState.Data -> MessageBodyState.Data(
+                messageBodyUiModel,
+                when (expandCollapseMode) {
+                    MessageBodyExpandCollapseMode.Collapsed -> MessageBodyExpandCollapseMode.Expanded
+                    MessageBodyExpandCollapseMode.Expanded -> MessageBodyExpandCollapseMode.Collapsed
+                    else -> expandCollapseMode
+                }
+            )
+
+            else -> this
         }
     }
 
@@ -45,13 +64,14 @@ class MessageBodyReducer @Inject constructor() {
         operation: MessageDetailEvent.AttachmentStatusChanged
     ): MessageBodyState {
         return when (this) {
-            is MessageBodyState.Data -> createMessageBodyState(messageBodyUiModel, operation)
+            is MessageBodyState.Data -> createMessageBodyState(messageBodyUiModel, expandCollapseMode, operation)
             else -> this
         }
     }
 
     private fun createMessageBodyState(
         messageBodyUiModel: MessageBodyUiModel,
+        expandCollapseMode: MessageBodyExpandCollapseMode,
         operation: MessageDetailEvent.AttachmentStatusChanged
     ): MessageBodyState.Data {
         val attachmentGroupUiModel = messageBodyUiModel.attachments
@@ -66,7 +86,8 @@ class MessageBodyReducer @Inject constructor() {
                         }
                     }
                 )
-            )
+            ),
+            expandCollapseMode = expandCollapseMode
         )
     }
 }

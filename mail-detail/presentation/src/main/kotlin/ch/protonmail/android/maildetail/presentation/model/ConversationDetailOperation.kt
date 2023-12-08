@@ -142,4 +142,7 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
     data class ShowAllAttachmentsForMessage(val messageId: MessageIdUiModel) : ConversationDetailViewAction
     data class OnAttachmentClicked(val messageId: MessageIdUiModel, val attachmentId: AttachmentId) :
         ConversationDetailViewAction
+    data class ExpandOrCollapseMessageBody(val messageId: MessageIdUiModel) :
+        ConversationDetailViewAction, AffectingMessages
+
 }

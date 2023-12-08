@@ -65,6 +65,8 @@ import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
 import ch.protonmail.android.mailmessage.domain.usecase.StarMessages
 import ch.protonmail.android.mailmessage.domain.usecase.UnStarMessages
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
@@ -142,6 +144,7 @@ class MessageDetailViewModel @Inject constructor(
     @Suppress("ComplexMethod")
     fun submit(action: MessageViewAction) {
         when (action) {
+            is MessageViewAction.ExpandOrCollapseMessageBody -> expandOrCollapseMessageBody()
             is MessageViewAction.Reload -> reloadMessageBody(messageId)
             is MessageViewAction.Star -> starMessage()
             is MessageViewAction.UnStar -> unStarMessage()
@@ -331,12 +334,31 @@ class MessageDetailViewModel @Inject constructor(
                 },
                 ifRight = {
                     observeAttachments(messageId, it.attachments)
-                    MessageDetailEvent.MessageBodyEvent(messageBodyUiModelMapper.toUiModel(userId, it))
+                    val initialUiModel = messageBodyUiModelMapper.toUiModel(userId, it)
+                    MessageDetailEvent.MessageBodyEvent(
+                        initialUiModel,
+                        getInitialBodyExpandCollapseMode(initialUiModel)
+                    )
                 }
             )
             emitNewStateFrom(event)
         }
     }
+
+    private fun getInitialBodyExpandCollapseMode(uiModel: MessageBodyUiModel): MessageBodyExpandCollapseMode {
+        return if (uiModel.shouldShowExpandCollapseButton) {
+            MessageBodyExpandCollapseMode.Collapsed
+        } else {
+            MessageBodyExpandCollapseMode.NotApplicable
+        }
+    }
+
+    private fun expandOrCollapseMessageBody() {
+        viewModelScope.launch {
+            emitNewStateFrom(MessageViewAction.ExpandOrCollapseMessageBody)
+        }
+    }
+
 
     private fun reloadMessageBody(messageId: MessageId) {
         viewModelScope.launch {
@@ -508,7 +530,8 @@ class MessageDetailViewModel @Inject constructor(
                 attachments = attachmentGroupUiModel?.copy(
                     limit = attachmentGroupUiModel.attachments.size
                 )
-            )
+            ),
+            state.expandCollapseMode
         )
         viewModelScope.launch { emitNewStateFrom(operation) }
     }

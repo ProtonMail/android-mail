@@ -69,6 +69,7 @@ import ch.protonmail.android.maildetail.presentation.viewmodel.MessageDetailView
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
@@ -180,7 +181,10 @@ fun MessageDetailScreen(
                 onAttachmentClicked = { viewModel.submit(MessageViewAction.OnAttachmentClicked(it)) },
                 openAttachment = actions.openAttachment,
                 showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar,
-                loadEmbeddedImage = { viewModel.loadEmbeddedImage(it) }
+                loadEmbeddedImage = { viewModel.loadEmbeddedImage(it) },
+                onExpandCollapseButtonClicked = {
+                    viewModel.submit(MessageViewAction.ExpandOrCollapseMessageBody)
+                }
             )
         )
     }
@@ -319,7 +323,8 @@ fun MessageDetailScreen(
                     loadEmbeddedImage = actions.loadEmbeddedImage,
                     onReply = actions.onReplyClick,
                     onReplyAll = actions.onReplyAllClick,
-                    onForward = actions.onForwardClick
+                    onForward = actions.onForwardClick,
+                    onExpandCollapseButtonClicked = actions.onExpandCollapseButtonClicked
                 )
                 MessageDetailContent(
                     padding = innerPadding,
@@ -383,9 +388,11 @@ private fun MessageDetailContent(
                 is MessageBodyState.Loading -> ProtonCenteredProgress()
                 is MessageBodyState.Data -> MessageBody(
                     messageBodyUiModel = messageBodyState.messageBodyUiModel,
+                    expandCollapseMode = messageBodyState.expandCollapseMode,
                     actions = MessageBody.Actions(
                         onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked,
                         onShowAllAttachments = actions.onShowAllAttachmentsClicked,
+                        onExpandCollapseButtonClicked = actions.onExpandCollapseButtonClicked,
                         onAttachmentClicked = actions.onAttachmentClicked,
                         loadEmbeddedImage = { _, contentId -> actions.loadEmbeddedImage(contentId) },
                         onReply = actions.onReply,
@@ -404,9 +411,11 @@ private fun MessageDetailContent(
                     ProtonErrorMessage(errorMessage = stringResource(id = R.string.decryption_error))
                     MessageBody(
                         messageBodyUiModel = messageBodyState.encryptedMessageBody,
+                        expandCollapseMode = MessageBodyExpandCollapseMode.NotApplicable,
                         actions = MessageBody.Actions(
                             onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked,
                             onShowAllAttachments = actions.onShowAllAttachmentsClicked,
+                            onExpandCollapseButtonClicked = actions.onExpandCollapseButtonClicked,
                             onAttachmentClicked = actions.onAttachmentClicked,
                             loadEmbeddedImage = { _, contentId -> actions.loadEmbeddedImage(contentId) },
                             onReply = { Timber.d("Message: Reply to message $it") },
@@ -460,7 +469,8 @@ object MessageDetailScreen {
         val onAttachmentClicked: (attachmentId: AttachmentId) -> Unit,
         val openAttachment: (values: OpenAttachmentIntentValues) -> Unit,
         val showFeatureMissingSnackbar: () -> Unit,
-        val loadEmbeddedImage: (contentId: String) -> GetEmbeddedImageResult?
+        val loadEmbeddedImage: (contentId: String) -> GetEmbeddedImageResult?,
+        val onExpandCollapseButtonClicked: () -> Unit
     ) {
 
         companion object {
@@ -485,7 +495,8 @@ object MessageDetailScreen {
                 onAttachmentClicked = {},
                 openAttachment = {},
                 showFeatureMissingSnackbar = {},
-                loadEmbeddedImage = { null }
+                loadEmbeddedImage = { null },
+                onExpandCollapseButtonClicked = {}
             )
         }
     }
@@ -502,7 +513,8 @@ object MessageDetailContent {
         val loadEmbeddedImage: (contentId: String) -> GetEmbeddedImageResult?,
         val onReply: (MessageId) -> Unit,
         val onReplyAll: (MessageId) -> Unit,
-        val onForward: (MessageId) -> Unit
+        val onForward: (MessageId) -> Unit,
+        val onExpandCollapseButtonClicked: () -> Unit
     )
 }
 

@@ -28,6 +28,7 @@ import ch.protonmail.android.mailcommon.presentation.system.LocalDeviceCapabilit
 import ch.protonmail.android.maildetail.presentation.sample.MessageDetailBodyUiModelSample
 import ch.protonmail.android.maildetail.presentation.ui.MessageBody
 import ch.protonmail.android.maildetail.presentation.ui.MessageBodyTestTags
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.ui.MessageBodyWebViewTestTags
 import ch.protonmail.android.test.annotations.suite.RegressionTest
 import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
@@ -52,8 +53,9 @@ class MessageBodyTest {
                 MessageBody(
                     modifier = Modifier,
                     messageBodyUiModel = state,
-                    actions = MessageBody.Actions({}, {}, {}, { _, _ -> null }, {}, {}, {}),
-                    showReplyActionsFeatureFlag = false
+                    actions = MessageBody.Actions({}, {}, {}, {}, { _, _ -> null }, {}, {}, {}),
+                    showReplyActionsFeatureFlag = false,
+                    expandCollapseMode = MessageBodyExpandCollapseMode.NotApplicable
                 )
             }
         }
@@ -75,8 +77,9 @@ class MessageBodyTest {
                 MessageBody(
                     modifier = Modifier,
                     messageBodyUiModel = state,
-                    actions = MessageBody.Actions({}, {}, {}, { _, _ -> null }, {}, {}, {}),
-                    showReplyActionsFeatureFlag = false
+                    actions = MessageBody.Actions({}, {}, {}, {}, { _, _ -> null }, {}, {}, {}),
+                    showReplyActionsFeatureFlag = false,
+                    expandCollapseMode = MessageBodyExpandCollapseMode.NotApplicable
                 )
             }
         }

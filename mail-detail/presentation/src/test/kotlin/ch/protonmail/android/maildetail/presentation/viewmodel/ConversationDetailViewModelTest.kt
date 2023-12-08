@@ -93,6 +93,7 @@ import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
@@ -1608,6 +1609,126 @@ class ConversationDetailViewModelTest {
                     .messages
                     .first { it.messageId == InvoiceWithLabelExpanded.messageId }
             assertIs<ConversationDetailMessageUiModel.Expanded>(expandedMessage)
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `expand collapse mode of the automatically expanded message will be collapsed when body contains quote`() =
+        runTest {
+            // given
+            val expectedUiModel = InvoiceWithLabelExpanded.copy(
+                expandCollapseMode = MessageBodyExpandCollapseMode.Collapsed
+            )
+            val messages = nonEmptyListOf(
+                InvoiceWithLabelExpanded
+            ).toImmutableList()
+            coEvery {
+                conversationMessageMapper.toUiModel(
+                    messageWithLabels = any(),
+                    contacts = any(),
+                    decryptedMessageBody = any(),
+                    folderColorSettings = defaultFolderColorSettings
+                )
+            } returns expectedUiModel
+            every {
+                reducer.newStateFrom(
+                    currentState = any(),
+                    operation = any()
+                )
+            } returns ConversationDetailState.Loading.copy(
+                messagesState = ConversationDetailsMessagesState.Data(messages)
+            )
+
+            viewModel.state.test {
+                initialStateEmitted()
+
+                // when
+                advanceUntilIdle()
+                val newState = awaitItem().messagesState as ConversationDetailsMessagesState.Data
+
+                // then
+                val expandedMessage =
+                    newState
+                        .messages
+                        .first { it.messageId == InvoiceWithLabelExpanded.messageId }
+                assertIs<ConversationDetailMessageUiModel.Expanded>(expandedMessage)
+                assertEquals(MessageBodyExpandCollapseMode.Collapsed, expandedMessage.expandCollapseMode)
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+
+    @Test
+    fun `when user clicks on expand collapse button in the expanded message then mode will toggle`() = runTest {
+        // given
+        val expectedUiModel = InvoiceWithLabelExpanded.copy(
+            expandCollapseMode = MessageBodyExpandCollapseMode.Collapsed
+        )
+        val messagesBodyCollapsed = nonEmptyListOf(
+            InvoiceWithLabelExpanded.copy(
+                expandCollapseMode = MessageBodyExpandCollapseMode.Collapsed
+            )
+        ).toImmutableList()
+        val messagesBodyExpanded = nonEmptyListOf(
+            InvoiceWithLabelExpanded.copy(
+                expandCollapseMode = MessageBodyExpandCollapseMode.Expanded
+            )
+        ).toImmutableList()
+        coEvery {
+            conversationMessageMapper.toUiModel(
+                messageWithLabels = any(),
+                contacts = any(),
+                decryptedMessageBody = any(),
+                folderColorSettings = defaultFolderColorSettings
+            )
+        } returns expectedUiModel
+        every {
+            reducer.newStateFrom(
+                currentState = any(),
+                operation = any()
+            )
+        } returns ConversationDetailState.Loading.copy(
+            messagesState = ConversationDetailsMessagesState.Data(messagesBodyCollapsed)
+        )
+        every {
+            reducer.newStateFrom(
+                currentState = any(),
+                operation = ofType<ConversationDetailViewAction.ExpandOrCollapseMessageBody>()
+            )
+        } returns ConversationDetailState.Loading.copy(
+            messagesState = ConversationDetailsMessagesState.Data(messagesBodyExpanded)
+        )
+
+        viewModel.state.test {
+            initialStateEmitted()
+
+            // when
+            advanceUntilIdle()
+            val newState = awaitItem().messagesState as ConversationDetailsMessagesState.Data
+
+            // then
+            val expandedMessage =
+                newState
+                    .messages
+                    .first { it.messageId == InvoiceWithLabelExpanded.messageId }
+            assertIs<ConversationDetailMessageUiModel.Expanded>(expandedMessage)
+            assertEquals(MessageBodyExpandCollapseMode.Collapsed, expandedMessage.expandCollapseMode)
+
+            // when
+            viewModel.submit(
+                ConversationDetailViewAction.ExpandOrCollapseMessageBody(InvoiceWithLabelExpanded.messageId)
+            )
+            advanceUntilIdle()
+
+            // Then
+            val newStateForExpandBody = awaitItem().messagesState as ConversationDetailsMessagesState.Data
+            val messageWithCollapsedBody =
+                newStateForExpandBody
+                    .messages
+                    .first { it.messageId == InvoiceWithLabelExpanded.messageId }
+            assertIs<ConversationDetailMessageUiModel.Expanded>(messageWithCollapsedBody)
+            assertEquals(MessageBodyExpandCollapseMode.Expanded, messageWithCollapsedBody.expandCollapseMode)
+
             cancelAndIgnoreRemainingEvents()
         }
     }

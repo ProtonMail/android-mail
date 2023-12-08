@@ -26,6 +26,7 @@ import ch.protonmail.android.mailmessage.presentation.sample.AttachmentUiModelSa
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.testdata.message.MessageBodyUiModelTestData
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -62,7 +63,8 @@ class MessageBodyReducerTest(
             TestInput(
                 MessageBodyState.Loading,
                 MessageDetailEvent.MessageBodyEvent(
-                    messageBody = MessageBodyUiModelTestData.plainTextMessageBodyUiModel
+                    messageBody = MessageBodyUiModelTestData.plainTextMessageBodyUiModel,
+                    expandCollapseMode = MessageBodyExpandCollapseMode.NotApplicable
                 ),
                 MessageBodyState.Data(MessageBodyUiModelTestData.plainTextMessageBodyUiModel)
             ),
@@ -112,6 +114,28 @@ class MessageBodyReducerTest(
                     status = AttachmentWorkerStatus.Running
                 ),
                 MessageBodyState.Data(MessageBodyUiModelTestData.messageBodyWithAttachmentsUiModel)
+            ),
+            TestInput(
+                MessageBodyState.Data(
+                    MessageBodyUiModelTestData.messageBodyWithAttachmentsUiModel,
+                    expandCollapseMode = MessageBodyExpandCollapseMode.Expanded
+                ),
+                MessageViewAction.ExpandOrCollapseMessageBody,
+                MessageBodyState.Data(
+                    MessageBodyUiModelTestData.messageBodyWithAttachmentsUiModel,
+                    expandCollapseMode = MessageBodyExpandCollapseMode.Collapsed
+                )
+            ),
+            TestInput(
+                MessageBodyState.Data(
+                    MessageBodyUiModelTestData.messageBodyWithAttachmentsUiModel,
+                    expandCollapseMode = MessageBodyExpandCollapseMode.Collapsed
+                ),
+                MessageViewAction.ExpandOrCollapseMessageBody,
+                MessageBodyState.Data(
+                    MessageBodyUiModelTestData.messageBodyWithAttachmentsUiModel,
+                    expandCollapseMode = MessageBodyExpandCollapseMode.Expanded
+                )
             )
         )
 

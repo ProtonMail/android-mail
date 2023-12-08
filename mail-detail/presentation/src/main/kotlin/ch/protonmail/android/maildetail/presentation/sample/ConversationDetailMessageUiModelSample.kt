@@ -33,6 +33,7 @@ import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
 import ch.protonmail.android.mailmessage.domain.model.Message
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.sample.AttachmentUiModelSample
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -196,7 +197,8 @@ object ConversationDetailMessageUiModelSample {
         ),
         messageBannersUiModel = MessageBannersUiModel(shouldShowPhishingBanner = true),
         messageBodyUiModel = messageBodyUiModel,
-        requestPhishingLinkConfirmation = false
+        requestPhishingLinkConfirmation = false,
+        expandCollapseMode = MessageBodyExpandCollapseMode.Collapsed
     )
 
     private fun buildExpanding(

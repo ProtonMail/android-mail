@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
 import ch.protonmail.android.mailmessage.presentation.ui.MessageBodyWebView
@@ -32,9 +33,11 @@ internal fun BodyHtmlQuote(value: String, modifier: Modifier = Modifier) {
     MessageBodyWebView(
         modifier = modifier,
         messageBodyUiModel = uiModel,
+        bodyDisplayMode = MessageBodyExpandCollapseMode.NotApplicable,
         actions = MessageBodyWebView.Actions(
             onMessageBodyLinkClicked = {},
             onShowAllAttachments = {},
+            onExpandCollapseButtonCLicked = {},
             onAttachmentClicked = {},
             loadEmbeddedImage = { _, _ -> null }
         )
@@ -44,10 +47,12 @@ internal fun BodyHtmlQuote(value: String, modifier: Modifier = Modifier) {
 private fun buildFakeMessageBodyUiModel(body: String) = MessageBodyUiModel(
     MessageId("fake-message-id-for-quoted-message-body"),
     body,
+    messageBodyWithoutQuote = body,
     MimeTypeUiModel.Html,
     shouldShowEmbeddedImages = false,
     shouldShowRemoteContent = false,
     shouldShowEmbeddedImagesBanner = false,
     shouldShowRemoteContentBanner = false,
+    shouldShowExpandCollapseButton = false,
     attachments = null
 )

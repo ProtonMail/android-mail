@@ -36,12 +36,14 @@ object MessageDetailBodyUiModelSample {
         attachments: AttachmentGroupUiModel? = null
     ) = MessageBodyUiModel(
         messageBody = messageBody,
+        messageBodyWithoutQuote = messageBody,
         messageId = messageId,
         mimeType = mimeType,
         shouldShowEmbeddedImages = shouldShowEmbeddedImages,
         shouldShowRemoteContent = shouldShowRemoteContent,
         shouldShowEmbeddedImagesBanner = shouldShowEmbeddedImagesBanner,
         shouldShowRemoteContentBanner = shouldShowRemoteContentBanner,
+        shouldShowExpandCollapseButton = false,
         attachments = attachments
     )
 }

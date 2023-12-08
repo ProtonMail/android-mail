@@ -46,6 +46,7 @@ import kotlinx.coroutines.test.runTest
 import java.util.UUID
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantNameResult
 import ch.protonmail.android.testdata.maildetail.MessageBannersUiModelTestData.messageBannersUiModel
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -106,8 +107,10 @@ internal class ConversationDetailMessageUiModelMapperTest {
     private val messageBannersUiModelMapper = mockk<MessageBannersUiModelMapper> {
         every { createMessageBannersUiModel(any()) } returns messageBannersUiModel
     }
+
+    private val messageBodyUiModel = mockk<MessageBodyUiModel>(relaxed = true)
     private val messageBodyUiModelMapper: MessageBodyUiModelMapper = mockk {
-        coEvery { toUiModel(any(), any<DecryptedMessageBody>()) } returns mockk()
+        coEvery { toUiModel(any(), any<DecryptedMessageBody>()) } returns messageBodyUiModel
     }
     private val participantUiModelMapper: ParticipantUiModelMapper = mockk {
         every {

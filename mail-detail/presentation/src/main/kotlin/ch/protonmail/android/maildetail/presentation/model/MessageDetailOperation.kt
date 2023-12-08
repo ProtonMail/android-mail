@@ -32,6 +32,7 @@ import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
 import ch.protonmail.android.mailmessage.domain.model.MessageWithLabels
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetOperation
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
@@ -60,7 +61,8 @@ sealed interface MessageDetailEvent : MessageDetailOperation {
         AffectingPhishingLinkConfirmationDialog
 
     data class MessageBodyEvent(
-        val messageBody: MessageBodyUiModel
+        val messageBody: MessageBodyUiModel,
+        val expandCollapseMode: MessageBodyExpandCollapseMode
     ) : MessageDetailEvent,
         AffectingMessageBody
 
@@ -103,6 +105,7 @@ sealed interface MessageDetailEvent : MessageDetailOperation {
 }
 
 sealed interface MessageViewAction : MessageDetailOperation {
+    object ExpandOrCollapseMessageBody : MessageViewAction, AffectingMessageBody
     object Reload : MessageViewAction, AffectingMessageBody
     object Star : MessageViewAction, AffectingMessage
     object UnStar : MessageViewAction, AffectingMessage
