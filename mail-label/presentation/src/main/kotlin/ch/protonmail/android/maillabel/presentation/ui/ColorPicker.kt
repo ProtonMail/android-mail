@@ -22,6 +22,7 @@ import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -33,6 +34,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -89,10 +91,17 @@ fun ColorItem(
     onColorClicked: (Color) -> Unit
 ) {
     ConstraintLayout(
-        modifier = Modifier.padding(
-            horizontal = ProtonDimens.ExtraSmallSpacing,
-            vertical = ProtonDimens.SmallSpacing
-        )
+        modifier = Modifier
+            .padding(
+                horizontal = ProtonDimens.ExtraSmallSpacing,
+                vertical = ProtonDimens.SmallSpacing
+            )
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null
+            ) {
+                onColorClicked(color)
+            }
     ) {
         val (item, selectedItem) = createRefs()
 
@@ -106,9 +115,6 @@ fun ColorItem(
                     .clip(CircleShape)
                     .border(MailDimens.ColorPicker.SelectedCircleBorderSize, color, CircleShape)
                     .background(ProtonTheme.colors.backgroundNorm)
-                    .clickable {
-                        onColorClicked(color)
-                    }
             )
         }
 
@@ -124,9 +130,6 @@ fun ColorItem(
                     .size(MailDimens.ColorPicker.CircleSize)
                     .clip(CircleShape)
                     .background(color)
-                    .clickable {
-                        onColorClicked(color)
-                    }
             )
         } else {
             Icon(
@@ -141,9 +144,6 @@ fun ColorItem(
                         bottom.linkTo(parent.bottom, margin = MailDimens.ColorPicker.SelectedCircleInternalMargin)
                     }
                     .size(ProtonDimens.DefaultIconSize)
-                    .clickable {
-                        onColorClicked(color)
-                    }
             )
         }
     }
