@@ -21,7 +21,6 @@ package ch.protonmail.android.maillabel.presentation.folderparentlist
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -262,7 +261,6 @@ fun EmptyParentFolderListScreen(
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         NoneListItem(actions = actions, state = state)
