@@ -501,7 +501,8 @@ class MailboxViewModelTest {
                 offlineEffect = Effect.empty(),
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
-                selectionModeEnabled = false
+                selectionModeEnabled = false,
+                swipeActions = null
             )
         )
         val mailLabelsFlow = MutableStateFlow(

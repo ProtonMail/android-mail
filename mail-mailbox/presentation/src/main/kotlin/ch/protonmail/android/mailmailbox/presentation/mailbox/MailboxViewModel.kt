@@ -524,9 +524,9 @@ class MailboxViewModel @Inject constructor(
         emitNewStateFrom(swipeSpamAction)
     }
 
-    private suspend fun handleSwipeTrashAction(swipeSpamAction: MailboxViewAction.SwipeTrashAction) {
-        swipeSpamAction.let { moveSingleItemToDestination(it.userId, it.itemId, SystemLabelId.Trash.labelId) }
-        emitNewStateFrom(swipeSpamAction)
+    private suspend fun handleSwipeTrashAction(swipeTrashAction: MailboxViewAction.SwipeTrashAction) {
+        swipeTrashAction.let { moveSingleItemToDestination(it.userId, it.itemId, SystemLabelId.Trash.labelId) }
+        emitNewStateFrom(swipeTrashAction)
     }
 
     private suspend fun moveSingleItemToDestination(

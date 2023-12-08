@@ -139,48 +139,50 @@ fun MailboxScreen(
         )
         OnboardingScreen(actions = completeActions)
     } else {
-      val completeActions = actions.copy(
-          onDisableUnreadFilter = { viewModel.submit(MailboxViewAction.DisableUnreadFilter) },
-          onEnableUnreadFilter = { viewModel.submit(MailboxViewAction.EnableUnreadFilter) },
-          onExitSelectionMode = { viewModel.submit(MailboxViewAction.ExitSelectionMode) },
-          onOfflineWithData = { viewModel.submit(MailboxViewAction.OnOfflineWithData) },
-          onErrorWithData = { viewModel.submit(MailboxViewAction.OnErrorWithData) },
-          onItemClicked = { item -> viewModel.submit(MailboxViewAction.ItemClicked(item)) },
-          onItemLongClicked = {
-          if (mailboxState.mailboxListState.selectionModeEnabled) {
-          viewModel.submit(MailboxViewAction.OnItemLongClicked(it))
-          } else {
-          actions.showFeatureMissingSnackbar()
-          }
-          },
-          onAvatarClicked = {
-          if (mailboxState.mailboxListState.selectionModeEnabled) {
-          viewModel.submit(MailboxViewAction.OnItemAvatarClicked(it))
-          } else {
-          actions.showFeatureMissingSnackbar()
-          }
-          },
-          onRefreshList = { viewModel.submit(MailboxViewAction.Refresh) },
-          onRefreshListCompleted = { viewModel.submit(MailboxViewAction.RefreshCompleted) },
-          markAsRead = { viewModel.submit(MailboxViewAction.MarkAsRead) },
-          markAsUnread = { viewModel.submit(MailboxViewAction.MarkAsUnread) },
-          trash = { viewModel.submit(MailboxViewAction.Trash) },
-          delete = { viewModel.submit(MailboxViewAction.Delete) },
-          deleteConfirmed = { viewModel.submit(MailboxViewAction.DeleteConfirmed) },
-          deleteDialogDismissed = { viewModel.submit(MailboxViewAction.DeleteDialogDismissed) },
-          onLabelAsClicked = { viewModel.submit(MailboxViewAction.RequestLabelAsBottomSheet) },
-          onMoveToClicked = { viewModel.submit(MailboxViewAction.RequestMoveToBottomSheet) },
-          onMoreClicked = { viewModel.submit(MailboxViewAction.RequestMoreActionsBottomSheet) },
-          onSwipeRead = { userId, itemId, isRead ->
-            viewModel.submit(MailboxViewAction.SwipeReadAction(userId, itemId, isRead))
-        },
-        onSwipeArchive = { userId, itemId -> viewModel.submit(MailboxViewAction.SwipeArchiveAction(userId, itemId)) },
-        onSwipeSpam = { userId, itemId -> viewModel.submit(MailboxViewAction.SwipeSpamAction(userId, itemId)) },
-        onSwipeTrash = { userId, itemId -> viewModel.submit(MailboxViewAction.SwipeTrashAction(userId, itemId)) },
-        onSwipeStar = { userId, itemId, isStarred ->
-            viewModel.submit(MailboxViewAction.SwipeStarAction(userId, itemId, isStarred))
-        }
-    )
+        val completeActions = actions.copy(
+            onDisableUnreadFilter = { viewModel.submit(MailboxViewAction.DisableUnreadFilter) },
+            onEnableUnreadFilter = { viewModel.submit(MailboxViewAction.EnableUnreadFilter) },
+            onExitSelectionMode = { viewModel.submit(MailboxViewAction.ExitSelectionMode) },
+            onOfflineWithData = { viewModel.submit(MailboxViewAction.OnOfflineWithData) },
+            onErrorWithData = { viewModel.submit(MailboxViewAction.OnErrorWithData) },
+            onItemClicked = { item -> viewModel.submit(MailboxViewAction.ItemClicked(item)) },
+            onItemLongClicked = {
+                if (mailboxState.mailboxListState.selectionModeEnabled) {
+                    viewModel.submit(MailboxViewAction.OnItemLongClicked(it))
+                } else {
+                    actions.showFeatureMissingSnackbar()
+                }
+            },
+            onAvatarClicked = {
+                if (mailboxState.mailboxListState.selectionModeEnabled) {
+                    viewModel.submit(MailboxViewAction.OnItemAvatarClicked(it))
+                } else {
+                    actions.showFeatureMissingSnackbar()
+                }
+            },
+            onRefreshList = { viewModel.submit(MailboxViewAction.Refresh) },
+            onRefreshListCompleted = { viewModel.submit(MailboxViewAction.RefreshCompleted) },
+            markAsRead = { viewModel.submit(MailboxViewAction.MarkAsRead) },
+            markAsUnread = { viewModel.submit(MailboxViewAction.MarkAsUnread) },
+            trash = { viewModel.submit(MailboxViewAction.Trash) },
+            delete = { viewModel.submit(MailboxViewAction.Delete) },
+            deleteConfirmed = { viewModel.submit(MailboxViewAction.DeleteConfirmed) },
+            deleteDialogDismissed = { viewModel.submit(MailboxViewAction.DeleteDialogDismissed) },
+            onLabelAsClicked = { viewModel.submit(MailboxViewAction.RequestLabelAsBottomSheet) },
+            onMoveToClicked = { viewModel.submit(MailboxViewAction.RequestMoveToBottomSheet) },
+            onMoreClicked = { viewModel.submit(MailboxViewAction.RequestMoreActionsBottomSheet) },
+            onSwipeRead = { userId, itemId, isRead ->
+                viewModel.submit(MailboxViewAction.SwipeReadAction(userId, itemId, isRead))
+            },
+            onSwipeArchive = { userId, itemId ->
+                viewModel.submit(MailboxViewAction.SwipeArchiveAction(userId, itemId))
+            },
+            onSwipeSpam = { userId, itemId -> viewModel.submit(MailboxViewAction.SwipeSpamAction(userId, itemId)) },
+            onSwipeTrash = { userId, itemId -> viewModel.submit(MailboxViewAction.SwipeTrashAction(userId, itemId)) },
+            onSwipeStar = { userId, itemId, isStarred ->
+                viewModel.submit(MailboxViewAction.SwipeStarAction(userId, itemId, isStarred))
+            }
+        )
 
         mailboxState.bottomSheetState?.let {
             // Avoids a "jumping" of the bottom sheet
