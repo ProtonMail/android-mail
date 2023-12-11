@@ -69,6 +69,10 @@ class ObserveUnreadCountersTest {
     fun `when view mode is conversation mode return the conversation counters except for message-only labels`() =
         runTest {
             // Given
+            val expected = conversationUnreadCounters.toMutableList()
+            expected.removeAll { it.labelId in listOf(SystemLabelId.Sent.labelId, SystemLabelId.Drafts.labelId) }
+            expected.add(UnreadCounter(SystemLabelId.Drafts.labelId, 0))
+            expected.add(UnreadCounter(SystemLabelId.Sent.labelId, 0))
             every { repository.observeUnreadCount(userId) } returns flowOf(
                 UnreadCounters(conversationUnreadCounters, messageUnreadCounters)
             )
@@ -78,12 +82,9 @@ class ObserveUnreadCountersTest {
             // When
             observeUnreadCounters(userId).test {
                 // Then
-                val expected = conversationUnreadCounters.toMutableList()
-                expected.removeAll { it.labelId in listOf(SystemLabelId.Sent.labelId, SystemLabelId.Drafts.labelId) }
-                expected.add(UnreadCounter(SystemLabelId.Drafts.labelId, 0))
-                expected.add(UnreadCounter(SystemLabelId.Sent.labelId, 0))
-
-                assertEquals(expected, awaitItem())
+                val actual = awaitItem()
+                assertTrue(actual.containsAll(expected))
+                assertEquals(actual.count(), expected.count())
                 awaitComplete()
             }
         }

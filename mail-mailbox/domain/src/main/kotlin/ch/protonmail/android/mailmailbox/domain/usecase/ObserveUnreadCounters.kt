@@ -64,13 +64,11 @@ class ObserveUnreadCounters @Inject constructor(
     private fun replaceCountersForMessageOnlyLocations(
         counters: List<UnreadCounter>,
         unreadCounters: UnreadCounters
-    ): List<UnreadCounter> = counters.toMutableList().run {
-        removeAll { it.labelId in MessageOnlyLabelIds.messagesOnlyLabelsIds }
-        val messageOnlyCounters = unreadCounters.messagesUnreadCount.filter {
-            it.labelId in MessageOnlyLabelIds.messagesOnlyLabelsIds
+    ): List<UnreadCounter> = counters.map { counter ->
+        if (counter.labelId in MessageOnlyLabelIds.messagesOnlyLabelsIds) {
+            return@map unreadCounters.messagesUnreadCount.first { it.labelId == counter.labelId }
         }
-        addAll(messageOnlyCounters)
-        this
+        counter
     }
 
     private fun getCountersForViewMode(viewMode: ViewMode, unreadCounters: UnreadCounters) =
