@@ -47,4 +47,10 @@
   <string name="composer_attachment_size_exceeded_dialog_message">El límit de mida pels arxius adjunts és de %1$s.</string>
   <string name="composer_attachment_reencryption_failed_message">Reencryption of attachment failed. For security reasons all attachments got removed.</string>
   <string name="composer_warning_local_data_shown">The latest version of this draft failed to load. Any change will override its content.</string>
+  <!-- Message sending error dialog -->
+  <string name="message_sending_error_dialog_header">Sending error</string>
+  <string name="message_sending_error_dialog_button_dismiss">Tanca</string>
+  <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the email entered due to the following reason:</string>
+  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">There are no Trusted Keys: %s</string>
+  <string name="message_sending_error_dialog_text_reason_address_disabled">Address does not exist: %s</string>
 </resources>

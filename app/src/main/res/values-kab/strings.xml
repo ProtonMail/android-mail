@@ -17,6 +17,14 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
+  <string name="dialog_sign_out_account_title">Sign out</string>
+  <string name="dialog_sign_out_account_description">Are you sure you want to sign out?</string>
+  <string name="dialog_sign_out_account_confirm">Yes</string>
+  <string name="dialog_sign_out_account_cancel">No</string>
+  <string name="dialog_remove_account_title">Remove Account</string>
+  <string name="dialog_remove_account_description">You will sign out and remove all information associated with this account.</string>
+  <string name="dialog_remove_account_confirm">Remove</string>
+  <string name="dialog_remove_account_cancel">Cancel</string>
   <string name="user_select_other_account_content_description">Fren amiḍan-nniḍen</string>
   <string name="you_are_offline">Ur teqqineḍ ara</string>
   <string name="feature_coming_soon">Tamahilt-a ad tili ticki…</string>
@@ -25,10 +33,10 @@
   <string name="mailbox_message_sending_offline">Offline, message queued for sending</string>
   <string name="mailbox_message_sending_success">Izen yettwazen</string>
   <string name="mailbox_message_sending_error">Yalla-d tuccḍa deg tuzna n yizen</string>
-  <string name="mailbox_message_sending_error_action">Go to drafts</string>
+  <string name="mailbox_message_sending_error_action">Go to Drafts</string>
   <string name="mailbox_attachment_uploading_error">Error uploading attachment</string>
   <string name="notification_switched_account">Tnekzeḍ ɣer umiḍan: %s</string>
   <string name="label_saved">Label saved</string>
-  <string name="label_deleted">Label deleted</string>
+  <string name="label_deleted">Tabzimt tettwakkes</string>
   <string name="label_list_loading_error">Error loading label, please try again later</string>
 </resources>

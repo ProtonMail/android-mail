@@ -46,5 +46,11 @@
   <string name="composer_attachment_size_exceeded_dialog_title">Limit für Anhänge erreicht</string>
   <string name="composer_attachment_size_exceeded_dialog_message">Die maximale Größe für Anhänge beträgt %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Die erneute Verschlüsselung des Anhangs ist fehlgeschlagen. Aus Sicherheitsgründen wurden alle Anhänge entfernt.</string>
-  <string name="composer_warning_local_data_shown">The latest version of this draft failed to load. Any change will override its content.</string>
+  <string name="composer_warning_local_data_shown">Die letzte Version dieses Entwurfs konnte nicht geladen werden. Jede Änderung wird den Inhalt überschreiben.</string>
+  <!-- Message sending error dialog -->
+  <string name="message_sending_error_dialog_header">Sending error</string>
+  <string name="message_sending_error_dialog_button_dismiss">Close</string>
+  <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the email entered due to the following reason:</string>
+  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">There are no Trusted Keys: %s</string>
+  <string name="message_sending_error_dialog_text_reason_address_disabled">Address does not exist: %s</string>
 </resources>

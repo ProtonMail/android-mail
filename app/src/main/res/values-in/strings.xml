@@ -17,6 +17,14 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
+  <string name="dialog_sign_out_account_title">Keluar</string>
+  <string name="dialog_sign_out_account_description">Apakah Anda yakin ingin keluar?</string>
+  <string name="dialog_sign_out_account_confirm">Ya</string>
+  <string name="dialog_sign_out_account_cancel">Tidak</string>
+  <string name="dialog_remove_account_title">Hapus Akun</string>
+  <string name="dialog_remove_account_description">Anda akan keluar dari akun dan menghapus segala informasi yang terhubung dengan akun ini.</string>
+  <string name="dialog_remove_account_confirm">Hapus</string>
+  <string name="dialog_remove_account_cancel">Batal</string>
   <string name="user_select_other_account_content_description">Pilih akun lain</string>
   <string name="you_are_offline">Anda sedang offline</string>
   <string name="feature_coming_soon">Fitur segera hadir</string>
@@ -25,7 +33,7 @@
   <string name="mailbox_message_sending_offline">Luring, pesan diantrekan untuk pengiriman</string>
   <string name="mailbox_message_sending_success">Pesan terkirim</string>
   <string name="mailbox_message_sending_error">Masalah dalam mengirim pesan</string>
-  <string name="mailbox_message_sending_error_action">Tuju draf</string>
+  <string name="mailbox_message_sending_error_action">Ke Draf</string>
   <string name="mailbox_attachment_uploading_error">Kesalahan mengunggah lampiran</string>
   <string name="notification_switched_account">Anda telah beralih ke akun: \'%s</string>
   <string name="label_saved">Label disimpan</string>

@@ -66,4 +66,12 @@
   <string name="external_link_confirmation_dialog_do_not_ask_again">Nie pytaj ponownie</string>
   <string name="external_link_confirmation_dialog_cancel_button">Anuluj</string>
   <string name="external_link_confirmation_dialog_continue_button">Kontynuuj</string>
+  <string name="message_delete_dialog_title">Usuń wiadomość</string>
+  <string name="message_delete_dialog_message">Czy na pewno chcesz trwale usunąć tę wiadomość?</string>
+  <string name="message_deleted">Wiadomość została usunięta</string>
+  <string name="error_delete_message_failed">Nie udało się usunąć wiadomości</string>
+  <string name="error_delete_message_failed_wrong_folder">Wiadomość znajduje się miejscu, gdzie nie może zostać usunięta</string>
+  <string name="error_delete_conversation_failed">Nie udało się usunąć wątku</string>
+  <string name="error_delete_conversation_failed_wrong_folder">Wątek znajduje się miejscu, gdzie nie może zostać usunięty</string>
+  <string name="conversation_deleted">Wątek został usunięty</string>
 </resources>

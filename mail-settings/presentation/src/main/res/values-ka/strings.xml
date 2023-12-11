@@ -91,6 +91,8 @@
   <string name="mail_settings_privacy_auto_show_embedded_images">ჩადგმული გამოსახულებების ავტომატური ჩვენება</string>
   <string name="mail_settings_privacy_prevent_taking_screenshots">ეკრანის ანაბეჭდების გადაღების გათიშვა</string>
   <string name="mail_settings_privacy_request_link_confirmation">ბმულის დადასტურების მოთხოვნა</string>
+  <string name="mail_settings_privacy_background_sync">Background sync</string>
+  <string name="mail_settings_privacy_background_sync_description">If this option is enabled, the app will sync with the server in the background. Disabling this feature will also disable push notifications.</string>
   <string name="mail_settings_privacy_error_updating">პარამეტრების განახლების შეცდომა</string>
   <string name="mail_settings_privacy_error_loading">პარამეტრების ჩატვირთვის შეცდომა</string>
   <!-- Swipe Actions -->
@@ -117,7 +119,7 @@
   <string name="mail_settings_notifications_update_error">პარამეტრების განახლების შეცდომა</string>
   <string name="mail_settings_notifications_loading_error">პარამეტრების ჩატვირთვის შეცდომა</string>
   <!-- Local storage -->
-  <string name="mail_settings_clearing_cached_data">Clearing local cached data…</string>
+  <string name="mail_settings_clearing_cached_data">მონაცემების გასუფთავება ლოკალური კეშიდან…</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">დაფიქსირდა შეცდომა. თავიდან სცადეთ.</string>
 </resources>

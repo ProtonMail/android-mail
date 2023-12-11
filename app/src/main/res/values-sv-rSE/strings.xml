@@ -17,6 +17,14 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
+  <string name="dialog_sign_out_account_title">Logga ut</string>
+  <string name="dialog_sign_out_account_description">Är du säker på att du vill logga ut?</string>
+  <string name="dialog_sign_out_account_confirm">Ja</string>
+  <string name="dialog_sign_out_account_cancel">Nej</string>
+  <string name="dialog_remove_account_title">Ta bort konto</string>
+  <string name="dialog_remove_account_description">Du kommer att logga ut och ta bort all information som är associerat till detta konto.</string>
+  <string name="dialog_remove_account_confirm">Ta bort</string>
+  <string name="dialog_remove_account_cancel">Avbryt</string>
   <string name="user_select_other_account_content_description">Välj annat konto</string>
   <string name="you_are_offline">Du är offline</string>
   <string name="feature_coming_soon">Funktion kommer snart…</string>

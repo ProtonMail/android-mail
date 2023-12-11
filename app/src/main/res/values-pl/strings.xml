@@ -17,6 +17,14 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
+  <string name="dialog_sign_out_account_title">Wyloguj</string>
+  <string name="dialog_sign_out_account_description">Czy na pewno chcesz się wylogować?</string>
+  <string name="dialog_sign_out_account_confirm">Tak</string>
+  <string name="dialog_sign_out_account_cancel">Nie</string>
+  <string name="dialog_remove_account_title">Usuń konto</string>
+  <string name="dialog_remove_account_description">Zostaniesz wylogowany i wszystkie dane powiązane z tym kontem zostaną usunięte.</string>
+  <string name="dialog_remove_account_confirm">Usuń</string>
+  <string name="dialog_remove_account_cancel">Anuluj</string>
   <string name="user_select_other_account_content_description">Wybierz inne konto</string>
   <string name="you_are_offline">Jesteś w trybie offline</string>
   <string name="feature_coming_soon">Funkcja dostępna wkrótce…</string>

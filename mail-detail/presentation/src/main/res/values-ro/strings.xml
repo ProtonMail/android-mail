@@ -65,4 +65,12 @@
   <string name="external_link_confirmation_dialog_do_not_ask_again">Nu mă mai întreba</string>
   <string name="external_link_confirmation_dialog_cancel_button">Anulare</string>
   <string name="external_link_confirmation_dialog_continue_button">Continuare</string>
+  <string name="message_delete_dialog_title">Ștergere mesaj</string>
+  <string name="message_delete_dialog_message">Sigur doriți să ștergeți definitiv acest mesaj?</string>
+  <string name="message_deleted">Mesaj șters</string>
+  <string name="error_delete_message_failed">Mesajul nu a putut fi șters.</string>
+  <string name="error_delete_message_failed_wrong_folder">Mesajul nu se află într-un loc unde poate fi șters.</string>
+  <string name="error_delete_conversation_failed">Conversația nu s-a putut șterge.</string>
+  <string name="error_delete_conversation_failed_wrong_folder">Conversația nu se află într-un loc unde poate fi șters.</string>
+  <string name="conversation_deleted">Conversația a fost ștearsă.</string>
 </resources>

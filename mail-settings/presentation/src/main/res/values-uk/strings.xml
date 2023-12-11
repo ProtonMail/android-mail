@@ -75,7 +75,7 @@
   <string name="mail_settings_default_email_address_error_update_subscription">Upgrade to a paid plan to set this address as default</string>
   <!-- Display name, signature, mobile footer -->
   <string name="mail_settings_identity_title">Ім\'я та підпис</string>
-  <string name="mail_settings_identity_save_button">Save</string>
+  <string name="mail_settings_identity_save_button">Зберегти</string>
   <string name="mail_settings_identity_display_name">Display name</string>
   <string name="mail_settings_identity_display_name_hint">Display name</string>
   <string name="mail_settings_identity_signature">Signature</string>
@@ -91,6 +91,8 @@
   <string name="mail_settings_privacy_auto_show_embedded_images">Автопоказ вбудованих зображень</string>
   <string name="mail_settings_privacy_prevent_taking_screenshots">Не дозволяти знімки екрана</string>
   <string name="mail_settings_privacy_request_link_confirmation">Підтверджувати відкриття посилань</string>
+  <string name="mail_settings_privacy_background_sync">Background sync</string>
+  <string name="mail_settings_privacy_background_sync_description">If this option is enabled, the app will sync with the server in the background. Disabling this feature will also disable push notifications.</string>
   <string name="mail_settings_privacy_error_updating">Помилка оновлення налаштувань</string>
   <string name="mail_settings_privacy_error_loading">Помилка завантаження налаштувань</string>
   <!-- Swipe Actions -->

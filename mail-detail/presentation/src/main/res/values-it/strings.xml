@@ -46,7 +46,7 @@
   <string name="error_loading_message">Si è verificato un errore. Riprova.</string>
   <string name="error_offline_loading_message">Sei offline. È necessaria una connessione a Internet per mostrare i contenuti di questo messaggio.</string>
   <string name="error_get_attachment_failed">Caricamento dell\'allegato non riuscito</string>
-  <string name="error_attachment_download_in_progress">Lo scaricamento dell\'allegato attuale deve giungere a termine prima di avviarne uno nuovo.</string>
+  <string name="error_attachment_download_in_progress">Attendi il completamento dello scaricamento attuale prima di avviarne uno nuovo.</string>
   <string name="error_get_attachment_not_enough_memory">Caricamento dell\'allegato non riuscito a causa di memoria insufficiente</string>
   <string name="reload">Ricarica</string>
   <string name="error_relabel_message_failed">Nuova etichettatura del messaggio non riuscita. Riprova.</string>
@@ -64,4 +64,12 @@
   <string name="external_link_confirmation_dialog_do_not_ask_again">Non chiederlo più</string>
   <string name="external_link_confirmation_dialog_cancel_button">Annulla</string>
   <string name="external_link_confirmation_dialog_continue_button">Continua</string>
+  <string name="message_delete_dialog_title">Elimina il messaggio</string>
+  <string name="message_delete_dialog_message">Sei sicuro di voler eliminare definitivamente questo messaggio?</string>
+  <string name="message_deleted">Messaggio eliminato</string>
+  <string name="error_delete_message_failed">Eliminazione del messaggio non riuscita</string>
+  <string name="error_delete_message_failed_wrong_folder">Il messaggio non è in una posizione dove può essere eliminato</string>
+  <string name="error_delete_conversation_failed">Eliminazione della conversazione non riuscita</string>
+  <string name="error_delete_conversation_failed_wrong_folder">La conversazione non è in una posizione dove può essere eliminata</string>
+  <string name="conversation_deleted">Conversazione eliminata</string>
 </resources>

@@ -17,6 +17,14 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
+  <string name="dialog_sign_out_account_title">Выхад</string>
+  <string name="dialog_sign_out_account_description">Вы сапраўды хочаце выйсці?</string>
+  <string name="dialog_sign_out_account_confirm">Так</string>
+  <string name="dialog_sign_out_account_cancel">Не</string>
+  <string name="dialog_remove_account_title">Выдаліць уліковы запіс</string>
+  <string name="dialog_remove_account_description">Адбудзецца выхад і выдаленне ўсёй інфармацыі, якая звязана з гэтым уліковым запісам.</string>
+  <string name="dialog_remove_account_confirm">Выдаліць</string>
+  <string name="dialog_remove_account_cancel">Скасаваць</string>
   <string name="user_select_other_account_content_description">Выбраць іншы ўліковы запіс</string>
   <string name="you_are_offline">Вы па-за сеткай</string>
   <string name="feature_coming_soon">Функцыя неўзабаве з\'явіцца…</string>
@@ -25,7 +33,7 @@
   <string name="mailbox_message_sending_offline">Вы па-за сеткай, паведамленне ў чарзе на адпраўку</string>
   <string name="mailbox_message_sending_success">Паведамленне адпраўлена</string>
   <string name="mailbox_message_sending_error">Памылка адпраўкі паведамлення</string>
-  <string name="mailbox_message_sending_error_action">Перайсці ў чарнавікі</string>
+  <string name="mailbox_message_sending_error_action">Перайсці ў Чарнавікі</string>
   <string name="mailbox_attachment_uploading_error">Памылка запампоўвання далучэння</string>
   <string name="notification_switched_account">Зменена на ўліковы запіс: %s</string>
   <string name="label_saved">Метка захавана</string>

@@ -60,8 +60,6 @@
     <item quantity="one">Möchtest du diese Nachricht wirklich löschen?</item>
     <item quantity="other">Möchtest du diese Nachrichten wirklich löschen?</item>
   </plurals>
-  <string name="mailbox_action_delete_dialog_button_cancel">Abbrechen</string>
-  <string name="mailbox_action_delete_dialog_button_delete">Löschen</string>
   <plurals name="mailbox_action_delete_message">
     <item quantity="one">Nachricht dauerhaft gelöscht</item>
     <item quantity="other">%d Nachrichten dauerhaft gelöscht</item>
@@ -70,9 +68,40 @@
     <item quantity="one">Unterhaltung dauerhaft gelöscht</item>
     <item quantity="other">%d Unterhaltungen dauerhaft gelöscht</item>
   </plurals>
-  <string name="mailbox_action_label_messages_failed">Kategorie fehlgeschlagen</string>
-  <string name="mailbox_action_label_messages_failed_retrieving_labels">Kategorien konnte nicht geladen werden</string>
-  <string name="mailbox_action_failed_retrieving_colors">Farbeinstellungen konnten nicht geladen werden</string>
-  <string name="mailbox_action_move_messages_failed">Move operation failed</string>
-  <string name="mailbox_action_move_messages_failed_retrieving_folders">Failed to get folders</string>
+  <string name="mailbox_action_label_messages_failed">Fehler beim Kategorisieren.</string>
+  <string name="mailbox_action_label_messages_failed_retrieving_labels">Fehler beim Laden der Kategorien.</string>
+  <string name="mailbox_action_failed_retrieving_colors">Fehler beim Laden der Farbeinstellungen.</string>
+  <string name="mailbox_action_move_messages_failed">Fehler beim Verschieben.</string>
+  <string name="mailbox_action_move_messages_failed_retrieving_folders">Fehler beim Laden der Ordner.</string>
+  <!--  Spotlight V6 Beta  -->
+  <string name="onboarding_headline_beta">Werde Beta-Tester für die neue App.</string>
+  <string name="onboarding_description_beta">Wir haben die App im Hinblick auf Stabilität und Zuverlässigkeit überarbeitet. Teile uns dein Feedback mit und bleib dran, während wir weitere Funktionen hinzufügen. Mehr erfahren.</string>
+  <string name="onboarding_description_beta_link">https://proton.me/support/de/mail-android-beta</string>
+  <string name="onboarding_description_beta_learn_more">Mehr erfahren</string>
+  <!--  Spotlight V6 GA  -->
+  <string name="onboarding_headline_ga">Willkommen in der neuen App</string>
+  <string name="onboarding_description_ga">Die neue Proton Mail-App wurde von Grund auf neu entwickelt und ist auf Stabilität und Leistung ausgelegt.</string>
+  <!--  Onboarding 1  -->
+  <string name="onboarding_privacy_for_all_headline">Privatsphäre für alle</string>
+  <string name="onboarding_privacy_for_all_description">Lade andere zu Proton Mail ein, damit ihr alle von der Ende-zu-Ende-Verschlüsselung profitieren könnt.</string>
+  <!--  Onboarding 2  -->
+  <string name="onboarding_easily_up_to_date_headline">Immer auf dem neuesten Stand</string>
+  <string name="onboarding_easily_up_to_date_description">Blättere im Unterhaltungsmodus durch zusammenhängende Nachrichten.</string>
+  <!--  Onboarding 3  -->
+  <string name="onboarding_neat_and_tidy_headline">Gepflegt und aufgeräumt</string>
+  <string name="onboarding_neat_and_tidy_description">Du kannst Nachrichten ablegen, kategorisieren und farblich kennzeichnen, um deinen perfekten, individuellen Posteingang zu erstellen.</string>
+  <!--  Onboarding actions  -->
+  <string name="onboarding_next">Weiter</string>
+  <string name="onboarding_get_started">Los geht\'s</string>
+  <string name="onboarding_illustration_content_description">Onboarding illustration</string>
+  <string name="onboarding_close_content_description">Schliessen</string>
+  <!-- Sidebar Beta label -->
+  <string name="sidebar_beta_version_title">Proton Mail Beta</string>
+  <string name="sidebar_beta_version_description">Tap to learn more about this project.</string>
+  <string name="sidebar_beta_version_icon_content_description">Navigate to KB article.</string>
+  <string name="mailbox_action_read_message">Message read updated</string>
+  <string name="mailbox_action_star_message">Message star updated</string>
+  <string name="mailbox_action_trash_message">Message moved to trash</string>
+  <string name="mailbox_action_archive_message">Message moved to archive</string>
+  <string name="mailbox_action_spam_message">Message moved to spam</string>
 </resources>

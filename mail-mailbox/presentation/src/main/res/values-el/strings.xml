@@ -60,8 +60,6 @@
     <item quantity="one">Θέλετε σίγουρα να διαγράψετε οριστικά αυτό το μήνυμα;</item>
     <item quantity="other">Θέλετε σίγουρα να διαγράψετε οριστικά αυτά τα μηνύματα;</item>
   </plurals>
-  <string name="mailbox_action_delete_dialog_button_cancel">Ακύρωση</string>
-  <string name="mailbox_action_delete_dialog_button_delete">Διαγραφή</string>
   <plurals name="mailbox_action_delete_message">
     <item quantity="one">Το μήνυμα διαγράφηκε οριστικά</item>
     <item quantity="other">%d μηνύματα διαγράφηκαν οριστικά</item>
@@ -73,6 +71,37 @@
   <string name="mailbox_action_label_messages_failed">Η εφαρμογή ετικέτας απέτυχε</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Αποτυχία λήψης ετικετών</string>
   <string name="mailbox_action_failed_retrieving_colors">Αποτυχία λήψης ρυθμίσεων χρωμάτων</string>
-  <string name="mailbox_action_move_messages_failed">Move operation failed</string>
-  <string name="mailbox_action_move_messages_failed_retrieving_folders">Failed to get folders</string>
+  <string name="mailbox_action_move_messages_failed">Η μετακίνηση απέτυχε</string>
+  <string name="mailbox_action_move_messages_failed_retrieving_folders">Αποτυχία λήψης φακέλων</string>
+  <!--  Spotlight V6 Beta  -->
+  <string name="onboarding_headline_beta">Beta test the new app</string>
+  <string name="onboarding_description_beta">We\'ve rebuilt the app for stability and reliability. Share your feedback and stay tuned as we reintroduce features. Learn more.</string>
+  <string name="onboarding_description_beta_link">https://proton.me/support/mail-android-beta</string>
+  <string name="onboarding_description_beta_learn_more">Learn more</string>
+  <!--  Spotlight V6 GA  -->
+  <string name="onboarding_headline_ga">Welcome to the new app</string>
+  <string name="onboarding_description_ga">Completely rebuilt from scratch, the new Proton Mail app was made for stability and performance.</string>
+  <!--  Onboarding 1  -->
+  <string name="onboarding_privacy_for_all_headline">Privacy for all</string>
+  <string name="onboarding_privacy_for_all_description">Invite others to Proton Mail so you can all benefit from end-to-end encryption.</string>
+  <!--  Onboarding 2  -->
+  <string name="onboarding_easily_up_to_date_headline">Easily up-to-date</string>
+  <string name="onboarding_easily_up_to_date_description">Breeze through threaded messages in conversation mode.</string>
+  <!--  Onboarding 3  -->
+  <string name="onboarding_neat_and_tidy_headline">Neat and tidy</string>
+  <string name="onboarding_neat_and_tidy_description">File, label, and color code messages to create your perfect, custom inbox.</string>
+  <!--  Onboarding actions  -->
+  <string name="onboarding_next">Επόμενο</string>
+  <string name="onboarding_get_started">Ξεκινήστε</string>
+  <string name="onboarding_illustration_content_description">Onboarding illustration</string>
+  <string name="onboarding_close_content_description">Close</string>
+  <!-- Sidebar Beta label -->
+  <string name="sidebar_beta_version_title">Proton Mail Beta</string>
+  <string name="sidebar_beta_version_description">Tap to learn more about this project.</string>
+  <string name="sidebar_beta_version_icon_content_description">Navigate to KB article.</string>
+  <string name="mailbox_action_read_message">Message read updated</string>
+  <string name="mailbox_action_star_message">Message star updated</string>
+  <string name="mailbox_action_trash_message">Message moved to trash</string>
+  <string name="mailbox_action_archive_message">Message moved to archive</string>
+  <string name="mailbox_action_spam_message">Message moved to spam</string>
 </resources>

@@ -28,9 +28,9 @@
   <string name="mail_settings_alternative_routing">Alternatív útválasztás</string>
   <string name="mail_settings_app_language">Alkalmazás nyelve</string>
   <string name="mail_settings_combined_contacts">Kombinált névjegyek</string>
-  <string name="mail_settings_local_cache">Local cache</string>
+  <string name="mail_settings_local_cache">Helyi gyorsítótár</string>
   <string name="mail_settings_local_cache_hint">Space used: %s</string>
-  <string name="mail_settings_local_cache_clear_button">Clear data</string>
+  <string name="mail_settings_local_cache_clear_button">Adatok törlése</string>
   <string name="mail_settings_swipe_actions">Csúsztatási műveletek</string>
   <string name="mail_settings_combined_contacts_hint">Kapcsolja be ezt a funkciót, az e-mail címek automatikus kitöltéséhez az összes bejelentkezett fiók névjegyei alapján.</string>
   <string name="mail_settings_alternative_routing_hint">Ha a Proton szolgáltatásai le vannak tiltva, ezzel a beállítással az alkalmazás alternatív hálózati útvonalakat próbál meg használni, ami hasznos lehet tűzfalak megkerüléséhez vagy hálózati problémák megoldásához. Javasolt ezt a beállítást bekapcsolva a tartani nagyobb megbízhatóság érdekében.</string>
@@ -75,14 +75,14 @@
   <string name="mail_settings_default_email_address_error_update_subscription">Upgrade to a paid plan to set this address as default</string>
   <!-- Display name, signature, mobile footer -->
   <string name="mail_settings_identity_title">Megjelenített név és aláírás</string>
-  <string name="mail_settings_identity_save_button">Save</string>
-  <string name="mail_settings_identity_display_name">Display name</string>
-  <string name="mail_settings_identity_display_name_hint">Display name</string>
-  <string name="mail_settings_identity_signature">Signature</string>
-  <string name="mail_settings_identity_signature_hint">Signature</string>
-  <string name="mail_settings_identity_mobile_footer">Mobile footer</string>
+  <string name="mail_settings_identity_save_button">Mentés</string>
+  <string name="mail_settings_identity_display_name">Megjelenített név</string>
+  <string name="mail_settings_identity_display_name_hint">Megjelenített név</string>
+  <string name="mail_settings_identity_signature">Aláírás</string>
+  <string name="mail_settings_identity_signature_hint">Aláírás</string>
+  <string name="mail_settings_identity_mobile_footer">Mobil aláírás</string>
   <string name="mail_settings_identity_mobile_footer_subtext">The footer is added after your signature.</string>
-  <string name="mail_settings_identity_mobile_footer_hint">Mobile footer</string>
+  <string name="mail_settings_identity_mobile_footer_hint">Mobil aláírás</string>
   <string name="mail_settings_identity_mobile_footer_default_free">Proton Mail Android alkalmazásból küldve</string>
   <string name="mail_settings_identity_error_updating">Error updating settings</string>
   <string name="mail_settings_identity_error_loading">Error loading settings</string>
@@ -91,6 +91,8 @@
   <string name="mail_settings_privacy_auto_show_embedded_images">Beágyazott képek automatikus megjelenítése</string>
   <string name="mail_settings_privacy_prevent_taking_screenshots">Képernyőkép készítés megakadályozása</string>
   <string name="mail_settings_privacy_request_link_confirmation">Hivatkozás megnyitásának megerősítése</string>
+  <string name="mail_settings_privacy_background_sync">Background sync</string>
+  <string name="mail_settings_privacy_background_sync_description">If this option is enabled, the app will sync with the server in the background. Disabling this feature will also disable push notifications.</string>
   <string name="mail_settings_privacy_error_updating">Error updating settings</string>
   <string name="mail_settings_privacy_error_loading">Error loading settings</string>
   <!-- Swipe Actions -->

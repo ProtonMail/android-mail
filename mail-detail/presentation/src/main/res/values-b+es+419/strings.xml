@@ -64,4 +64,12 @@
   <string name="external_link_confirmation_dialog_do_not_ask_again">No volver a preguntar</string>
   <string name="external_link_confirmation_dialog_cancel_button">Cancelar</string>
   <string name="external_link_confirmation_dialog_continue_button">Continuar</string>
+  <string name="message_delete_dialog_title">Eliminar mensaje</string>
+  <string name="message_delete_dialog_message">¿En verdad desea eliminar permanentemente este mensaje?</string>
+  <string name="message_deleted">Mensaje eliminado</string>
+  <string name="error_delete_message_failed">Error al eliminar el mensaje</string>
+  <string name="error_delete_message_failed_wrong_folder">El mensaje no está en una ubicación de donde pueda ser eliminado</string>
+  <string name="error_delete_conversation_failed">Error al eliminar la conversación</string>
+  <string name="error_delete_conversation_failed_wrong_folder">La conversación no está en una ubicación de donde pueda ser eliminada</string>
+  <string name="conversation_deleted">Conversación eliminada</string>
 </resources>

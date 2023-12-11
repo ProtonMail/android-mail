@@ -91,6 +91,8 @@
   <string name="mail_settings_privacy_auto_show_embedded_images">Tampilkan gambar tersemat secara otomatis</string>
   <string name="mail_settings_privacy_prevent_taking_screenshots">Cegah pengambilan tangkapan layar</string>
   <string name="mail_settings_privacy_request_link_confirmation">Minta tautan konfirmasi</string>
+  <string name="mail_settings_privacy_background_sync">Background sync</string>
+  <string name="mail_settings_privacy_background_sync_description">If this option is enabled, the app will sync with the server in the background. Disabling this feature will also disable push notifications.</string>
   <string name="mail_settings_privacy_error_updating">Terdapat kesalahan dalam memperbarui pengaturan</string>
   <string name="mail_settings_privacy_error_loading">Terdapat kesalahan dalam memuat pengaturan</string>
   <!-- Swipe Actions -->

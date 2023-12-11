@@ -36,7 +36,7 @@
   <string name="composer_error_duplicate_recipient">Destinatario duplicato rimosso: %1$s</string>
   <string name="composer_error_store_draft_subject">Salvataggio dell\'oggetto di questa bozza non riuscito</string>
   <string name="composer_error_store_draft_recipients">Salvataggio dei destinatari di questa bozza non riuscito</string>
-  <string name="composer_error_loading_draft">Il contenuto di questa bozza non è al momento disponibile. La modifica sovrascriverà qualsiasi contenuto già esistente.</string>
+  <string name="composer_error_loading_draft">Il contenuto di questa bozza non è al momento disponibile. Modificarla sovrascriverà qualsiasi contenuto già esistente.</string>
   <string name="composer_add_attachments_content_description">Aggiungi degli allegati</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Importa da…</string>
   <string name="composer_error_loading_parent_message">Impossibile caricare le informazioni del messaggio</string>
@@ -47,4 +47,10 @@
   <string name="composer_attachment_size_exceeded_dialog_message">Il limite di dimensione per gli allegati è %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Nuova crittografia dell\'allegato non riuscita. Per motivi di sicurezza, tutti gli allegati sono stati rimossi.</string>
   <string name="composer_warning_local_data_shown">Caricamento dell\'ultima versione di questa bozza non riuscito. Qualsiasi modifica sovrascriverà il suo contenuto.</string>
+  <!-- Message sending error dialog -->
+  <string name="message_sending_error_dialog_header">Errore nell\'invio del messaggio</string>
+  <string name="message_sending_error_dialog_button_dismiss">Chiudi</string>
+  <string name="message_sending_error_dialog_text_error">Impossibile inviare la tua email all\'indirizzo inserito a causa del seguente motivo:</string>
+  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Non ci sono chiavi attendibili: %s</string>
+  <string name="message_sending_error_dialog_text_reason_address_disabled">L\'indirizzo non esiste: %s</string>
 </resources>

@@ -17,6 +17,14 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
+  <string name="dialog_sign_out_account_title">Cerrar la sesión</string>
+  <string name="dialog_sign_out_account_description">¿Estás seguro de que quieres cerrar sesión?</string>
+  <string name="dialog_sign_out_account_confirm">Sí</string>
+  <string name="dialog_sign_out_account_cancel">No</string>
+  <string name="dialog_remove_account_title">Eliminar la cuenta</string>
+  <string name="dialog_remove_account_description">Cerrarás la sesión y borrarás toda la información asociada con esta cuenta.</string>
+  <string name="dialog_remove_account_confirm">Borrar</string>
+  <string name="dialog_remove_account_cancel">Cancelar</string>
   <string name="user_select_other_account_content_description">Selecciona otra cuenta</string>
   <string name="you_are_offline">No estás conectado.</string>
   <string name="feature_coming_soon">Pronto tendrás esta función…</string>
@@ -25,7 +33,7 @@
   <string name="mailbox_message_sending_offline">Sin conexión: el mensaje está puesto en la cola de envío.</string>
   <string name="mailbox_message_sending_success">El mensaje ha sido enviado.</string>
   <string name="mailbox_message_sending_error">Error al enviar el mensaje</string>
-  <string name="mailbox_message_sending_error_action">Ir a borradores</string>
+  <string name="mailbox_message_sending_error_action">Ir a la carpeta de Borradores</string>
   <string name="mailbox_attachment_uploading_error">Error al cargar el archivo adjunto</string>
   <string name="notification_switched_account">Se ha cambiado a la cuenta: %s</string>
   <string name="label_saved">La etiqueta ha sido guardada.</string>

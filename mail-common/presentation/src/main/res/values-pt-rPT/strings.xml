@@ -48,7 +48,7 @@
   <string name="action_report_phishing_description">Reportar phishing</string>
   <string name="action_remind_description">Remind me</string>
   <string name="action_save_pdf_description">Save as PDF</string>
-  <string name="action_sender_emails_description">Definir a acção para os futuros e-mails deste remetente</string>
+  <string name="action_sender_emails_description">Definir a ação para os futuros e-mails deste remetente</string>
   <string name="action_save_attachments_description">Guardar anexos</string>
   <string name="action_more_description">More</string>
   <string name="action_reply_content_description">Responder</string>
@@ -86,4 +86,6 @@
   <string name="login_notification_channel_description">New logins notifications</string>
   <string name="auth_badge_official">Oficial</string>
   <string name="intent_failure_no_app_found_to_handle_this_action">Nenhuma aplicação encontrada para gerir a operação</string>
+  <string name="mailbox_action_delete_dialog_button_cancel">Cancelar</string>
+  <string name="mailbox_action_delete_dialog_button_delete">Eliminar</string>
 </resources>

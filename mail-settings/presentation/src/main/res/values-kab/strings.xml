@@ -28,9 +28,9 @@
   <string name="mail_settings_alternative_routing">Aseglu amlellay</string>
   <string name="mail_settings_app_language">Tutlayt n usnas</string>
   <string name="mail_settings_combined_contacts">Inermisen uddisen</string>
-  <string name="mail_settings_local_cache">Local cache</string>
+  <string name="mail_settings_local_cache">Tuffirt tadigant</string>
   <string name="mail_settings_local_cache_hint">Space used: %s</string>
-  <string name="mail_settings_local_cache_clear_button">Clear data</string>
+  <string name="mail_settings_local_cache_clear_button">Sfeḍ isefka</string>
   <string name="mail_settings_swipe_actions">Tigawin n uḍummu</string>
   <string name="mail_settings_combined_contacts_hint">Sermed tawuri-agi i usemmed awurman n tansiwin imayl s useqdec n yinermisen n yal imiḍanen-inek•inem yeqqnen.</string>
   <string name="mail_settings_alternative_routing_hint">Mayella weḥlen yismal n Proton, aɣewwaṛ-a ad yeǧǧ asnas ad yeɛreḍ asiweḍ-nniḍen n uẓeṭṭa akken ad yaweḍ ɣer Proton, d ayen ara yelhun i uɛeddi n yiɣerban n tmes neɣ uguren n uẓeṭṭa: Axir ad teǧǧeḍ aɣewwaṛ-a yermed i wugar n teflest.</string>
@@ -58,8 +58,8 @@
   <string name="mail_settings_display_name_and_signature">Isem n uskan d uzmul</string>
   <string name="mail_settings_mailbox">Tankult n imayl</string>
   <string name="mail_settings_privacy">Tabaḍnit</string>
-  <string name="mail_settings_labels">Labels</string>
-  <string name="mail_settings_folders">Folders</string>
+  <string name="mail_settings_labels">Tibzimin</string>
+  <string name="mail_settings_folders">Ikaramen</string>
   <string name="mail_settings_local_storage">Aḥraz adigan</string>
   <string name="mail_settings_snooze">Ales</string>
   <string name="mail_settings_snooze_notifications">Ilɣa n uṭenṭen n usmekti</string>
@@ -75,14 +75,14 @@
   <string name="mail_settings_default_email_address_error_update_subscription">Upgrade to a paid plan to set this address as default</string>
   <!-- Display name, signature, mobile footer -->
   <string name="mail_settings_identity_title">Isem n uskan &amp; azmul</string>
-  <string name="mail_settings_identity_save_button">Save</string>
-  <string name="mail_settings_identity_display_name">Display name</string>
-  <string name="mail_settings_identity_display_name_hint">Display name</string>
-  <string name="mail_settings_identity_signature">Signature</string>
-  <string name="mail_settings_identity_signature_hint">Signature</string>
-  <string name="mail_settings_identity_mobile_footer">Mobile footer</string>
+  <string name="mail_settings_identity_save_button">Sekles</string>
+  <string name="mail_settings_identity_display_name">Isem n uskan</string>
+  <string name="mail_settings_identity_display_name_hint">Isem n uskan</string>
+  <string name="mail_settings_identity_signature">Azmul</string>
+  <string name="mail_settings_identity_signature_hint">Azmul</string>
+  <string name="mail_settings_identity_mobile_footer">Aḍar n usebter n uziraz</string>
   <string name="mail_settings_identity_mobile_footer_subtext">The footer is added after your signature.</string>
-  <string name="mail_settings_identity_mobile_footer_hint">Mobile footer</string>
+  <string name="mail_settings_identity_mobile_footer_hint">Aḍar n usebter n uziraz</string>
   <string name="mail_settings_identity_mobile_footer_default_free">Sent from Proton Mail Android</string>
   <string name="mail_settings_identity_error_updating">Error updating settings</string>
   <string name="mail_settings_identity_error_loading">Error loading settings</string>
@@ -91,6 +91,8 @@
   <string name="mail_settings_privacy_auto_show_embedded_images">Sken-d tugna tusliγt s wudem awurman</string>
   <string name="mail_settings_privacy_prevent_taking_screenshots">Prevent taking screenshots</string>
   <string name="mail_settings_privacy_request_link_confirmation">Suter aseɣwen n usentem</string>
+  <string name="mail_settings_privacy_background_sync">Background sync</string>
+  <string name="mail_settings_privacy_background_sync_description">If this option is enabled, the app will sync with the server in the background. Disabling this feature will also disable push notifications.</string>
   <string name="mail_settings_privacy_error_updating">Error updating settings</string>
   <string name="mail_settings_privacy_error_loading">Error loading settings</string>
   <!-- Swipe Actions -->

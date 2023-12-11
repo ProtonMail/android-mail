@@ -28,9 +28,9 @@
   <string name="mail_settings_alternative_routing">备用线路</string>
   <string name="mail_settings_app_language">语言</string>
   <string name="mail_settings_combined_contacts">共用通讯录</string>
-  <string name="mail_settings_local_cache">Local cache</string>
-  <string name="mail_settings_local_cache_hint">Space used: %s</string>
-  <string name="mail_settings_local_cache_clear_button">Clear data</string>
+  <string name="mail_settings_local_cache">本机缓存</string>
+  <string name="mail_settings_local_cache_hint">已使用空间: %s</string>
+  <string name="mail_settings_local_cache_clear_button">清除数据</string>
   <string name="mail_settings_swipe_actions">滑动操作</string>
   <string name="mail_settings_combined_contacts_hint">开启此功能后，您登录的所有账户通讯录的邮箱地址都可以自动补全。</string>
   <string name="mail_settings_alternative_routing_hint">当 Proton 网站遭到封禁时，此设置允许该应用程序改用其他网络路由连接 Proton，这能有助于绕过防火墙或解决网络问题：推荐开启此设置，以提高可靠性。</string>
@@ -69,21 +69,21 @@
   <!-- Default email address settings -->
   <string name="mail_settings_default_email_address_title">首选邮箱地址</string>
   <string name="mail_settings_default_email_address_inactive_addresses">未使用地址</string>
-  <string name="mail_settings_default_email_address_no_inactive_addresses">No inactive addresses</string>
+  <string name="mail_settings_default_email_address_no_inactive_addresses">闲置地址</string>
   <string name="mail_settings_default_email_address_error_loading">加载设置时出现错误</string>
   <string name="mail_settings_default_email_address_error_update">更新设置时出现错误</string>
-  <string name="mail_settings_default_email_address_error_update_subscription">Upgrade to a paid plan to set this address as default</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">升级到付费账户后方可将该地址设为默认</string>
   <!-- Display name, signature, mobile footer -->
   <string name="mail_settings_identity_title">称呼与落款</string>
-  <string name="mail_settings_identity_save_button">Save</string>
-  <string name="mail_settings_identity_display_name">Display name</string>
-  <string name="mail_settings_identity_display_name_hint">Display name</string>
-  <string name="mail_settings_identity_signature">Signature</string>
-  <string name="mail_settings_identity_signature_hint">Signature</string>
-  <string name="mail_settings_identity_mobile_footer">Mobile footer</string>
-  <string name="mail_settings_identity_mobile_footer_subtext">The footer is added after your signature.</string>
-  <string name="mail_settings_identity_mobile_footer_hint">Mobile footer</string>
-  <string name="mail_settings_identity_mobile_footer_default_free">Sent from Proton Mail Android</string>
+  <string name="mail_settings_identity_save_button">保存</string>
+  <string name="mail_settings_identity_display_name">显示名称</string>
+  <string name="mail_settings_identity_display_name_hint">显示名称</string>
+  <string name="mail_settings_identity_signature">签名</string>
+  <string name="mail_settings_identity_signature_hint">签名</string>
+  <string name="mail_settings_identity_mobile_footer">移动端标识</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">这段标识文本将加在您的落款之后.</string>
+  <string name="mail_settings_identity_mobile_footer_hint">移动端标识</string>
+  <string name="mail_settings_identity_mobile_footer_default_free">通过 Proton Mail 移动端发送</string>
   <string name="mail_settings_identity_error_updating">更新设置时出现错误</string>
   <string name="mail_settings_identity_error_loading">加载设置时出现错误</string>
   <!-- Privacy settings -->
@@ -91,6 +91,8 @@
   <string name="mail_settings_privacy_auto_show_embedded_images">自动显示嵌入的图像</string>
   <string name="mail_settings_privacy_prevent_taking_screenshots">防止截屏</string>
   <string name="mail_settings_privacy_request_link_confirmation">打开链接前提示</string>
+  <string name="mail_settings_privacy_background_sync">Background sync</string>
+  <string name="mail_settings_privacy_background_sync_description">If this option is enabled, the app will sync with the server in the background. Disabling this feature will also disable push notifications.</string>
   <string name="mail_settings_privacy_error_updating">更新设置时出现错误</string>
   <string name="mail_settings_privacy_error_loading">加载设置时出现错误</string>
   <!-- Swipe Actions -->
@@ -110,14 +112,14 @@
   <string name="mail_settings_swipe_action_trash_description">移至废件箱</string>
   <!-- Notification settings -->
   <string name="mail_settings_notifications_title">推送通知</string>
-  <string name="mail_settings_notifications_extended_notifications_title">Extended notifications</string>
+  <string name="mail_settings_notifications_extended_notifications_title">通知详情</string>
   <string name="mail_settings_notifications_extended_notifications_summary">开启后推送通知将显示发件人。</string>
-  <string name="mail_settings_notifications_notifications_settings">Notifications settings</string>
-  <string name="mail_settings_notifications_notifications_settings_hint">Navigate to system notification settings</string>
+  <string name="mail_settings_notifications_notifications_settings">通知设置</string>
+  <string name="mail_settings_notifications_notifications_settings_hint">跳转到系统通知设置</string>
   <string name="mail_settings_notifications_update_error">更新设置时出现错误</string>
   <string name="mail_settings_notifications_loading_error">加载设置时出现错误</string>
   <!-- Local storage -->
-  <string name="mail_settings_clearing_cached_data">Clearing local cached data…</string>
+  <string name="mail_settings_clearing_cached_data">清除本地缓存</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">出错了，请重试。</string>
 </resources>

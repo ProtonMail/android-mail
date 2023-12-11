@@ -41,8 +41,8 @@
   <string name="attachment_type_spreadsheet">Табличный файл</string>
   <string name="attachment_type_presentation">Presentation</string>
   <!-- Bottom Sheet -->
-  <string name="bottom_sheet_move_to_title">Move to...</string>
-  <string name="bottom_sheet_done_action">Done</string>
+  <string name="bottom_sheet_move_to_title">Переместить в...</string>
+  <string name="bottom_sheet_done_action">Готово</string>
   <string name="bottom_sheet_archive_action">Also archive?</string>
-  <string name="bottom_sheet_label_as_title">Label as...</string>
+  <string name="bottom_sheet_label_as_title">Отметить, как...</string>
 </resources>

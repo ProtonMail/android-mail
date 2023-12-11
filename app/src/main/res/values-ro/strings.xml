@@ -17,6 +17,14 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
+  <string name="dialog_sign_out_account_title">Deconectare</string>
+  <string name="dialog_sign_out_account_description">Sigur doriți să vă deconectați?</string>
+  <string name="dialog_sign_out_account_confirm">Da</string>
+  <string name="dialog_sign_out_account_cancel">Nu</string>
+  <string name="dialog_remove_account_title">Eliminare cont</string>
+  <string name="dialog_remove_account_description">Vă veți deconecta și veți elimina toate informațiile asociate cu acest cont.</string>
+  <string name="dialog_remove_account_confirm">Eliminare</string>
+  <string name="dialog_remove_account_cancel">Anulare</string>
   <string name="user_select_other_account_content_description">Selectare alt cont</string>
   <string name="you_are_offline">Sunteți deconectat</string>
   <string name="feature_coming_soon">Funcție disponibilă în curând…</string>
@@ -25,7 +33,7 @@
   <string name="mailbox_message_sending_offline">Deconectat, mesajul va fi trimis ulterior.</string>
   <string name="mailbox_message_sending_success">Mesaj trimis</string>
   <string name="mailbox_message_sending_error">Eroare trimitere mesaj</string>
-  <string name="mailbox_message_sending_error_action">Accesare ciorne</string>
+  <string name="mailbox_message_sending_error_action">Accesare Ciorne</string>
   <string name="mailbox_attachment_uploading_error">Eroare la încărcare atașament.</string>
   <string name="notification_switched_account">S-a comutat la contul: %s</string>
   <string name="label_saved">Etichetă a fost salvată.</string>

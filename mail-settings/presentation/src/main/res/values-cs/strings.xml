@@ -28,9 +28,9 @@
   <string name="mail_settings_alternative_routing">Alternativní směrování</string>
   <string name="mail_settings_app_language">Jazyk aplikace</string>
   <string name="mail_settings_combined_contacts">Sloučené kontakty</string>
-  <string name="mail_settings_local_cache">Local cache</string>
+  <string name="mail_settings_local_cache">Místní mezipaměť</string>
   <string name="mail_settings_local_cache_hint">Space used: %s</string>
-  <string name="mail_settings_local_cache_clear_button">Clear data</string>
+  <string name="mail_settings_local_cache_clear_button">Smazat data</string>
   <string name="mail_settings_swipe_actions">Akce po přejetí prstem</string>
   <string name="mail_settings_combined_contacts_hint">Zapněte tuto funkci pro automatické vyplňování e-mailových adres pomocí kontaktů ze všech vašich přihlášených účtů.</string>
   <string name="mail_settings_alternative_routing_hint">V případě, že jsou stránky Proton blokovány, toto nastavení umožňuje aplikaci vyzkoušet alternativní síťové směrování na Proton, což může být užitečné pro obejítí bran firewall nebo problémům se sítí: pro větší spolehlivost doporučujeme ponechat toto nastavení zapnuté.</string>
@@ -74,7 +74,7 @@
   <string name="mail_settings_default_email_address_error_update">Chyba při aktualizaci nastavení</string>
   <string name="mail_settings_default_email_address_error_update_subscription">Upgrade to a paid plan to set this address as default</string>
   <!-- Display name, signature, mobile footer -->
-  <string name="mail_settings_identity_title">Zobrazované jméno &amp; podpis</string>
+  <string name="mail_settings_identity_title">Zobrazované jméno a podpis</string>
   <string name="mail_settings_identity_save_button">Uložit</string>
   <string name="mail_settings_identity_display_name">Zobrazované jméno</string>
   <string name="mail_settings_identity_display_name_hint">Zobrazované jméno</string>
@@ -91,6 +91,8 @@
   <string name="mail_settings_privacy_auto_show_embedded_images">Automaticky zobrazovat vložené obrázky</string>
   <string name="mail_settings_privacy_prevent_taking_screenshots">Zabránit pořízení snímků obrazovky</string>
   <string name="mail_settings_privacy_request_link_confirmation">Požadovat potvrzení odkazů</string>
+  <string name="mail_settings_privacy_background_sync">Synchronizace na pozadí</string>
+  <string name="mail_settings_privacy_background_sync_description">Pokud je tato volba povolena, synchronizace aplikace se serverem proběhne na pozadí. Zakázáním této volby táké vypnete upozornění push.</string>
   <string name="mail_settings_privacy_error_updating">Chyba při aktualizaci nastavení</string>
   <string name="mail_settings_privacy_error_loading">Chyba při načítání nastavení</string>
   <!-- Swipe Actions -->

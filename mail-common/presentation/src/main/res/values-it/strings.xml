@@ -86,4 +86,6 @@
   <string name="login_notification_channel_description">Notifiche per i nuovi accessi</string>
   <string name="auth_badge_official">Ufficiale</string>
   <string name="intent_failure_no_app_found_to_handle_this_action">Nessuna applicazione trovata per gestire questa azione</string>
+  <string name="mailbox_action_delete_dialog_button_cancel">Annulla</string>
+  <string name="mailbox_action_delete_dialog_button_delete">Elimina</string>
 </resources>

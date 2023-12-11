@@ -28,9 +28,9 @@
   <string name="mail_settings_alternative_routing">替代路由</string>
   <string name="mail_settings_app_language">應用程式語言</string>
   <string name="mail_settings_combined_contacts">合併聯絡人</string>
-  <string name="mail_settings_local_cache">Local cache</string>
-  <string name="mail_settings_local_cache_hint">Space used: %s</string>
-  <string name="mail_settings_local_cache_clear_button">Clear data</string>
+  <string name="mail_settings_local_cache">本機快取</string>
+  <string name="mail_settings_local_cache_hint">空間使用: %s</string>
+  <string name="mail_settings_local_cache_clear_button">清除資料</string>
   <string name="mail_settings_swipe_actions">滑動動作</string>
   <string name="mail_settings_combined_contacts_hint">啟用此功能以使用您所有已登入帳號中的聯絡人來自動完成電子郵件位址。</string>
   <string name="mail_settings_alternative_routing_hint">萬一 Proton 網站遭到攔截，此設定允許此應用程式嘗試以替代網路路由連接 Proton，這或有助繞過防火牆或網路問題。建議保持此設定開啟，有備無患。</string>
@@ -72,7 +72,7 @@
   <string name="mail_settings_default_email_address_no_inactive_addresses">無未啟用的地址</string>
   <string name="mail_settings_default_email_address_error_loading">載入設定時發生錯誤</string>
   <string name="mail_settings_default_email_address_error_update">上傳設定時發生錯誤</string>
-  <string name="mail_settings_default_email_address_error_update_subscription">Upgrade to a paid plan to set this address as default</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">升級至付費方案以將此地址設為您的預設值</string>
   <!-- Display name, signature, mobile footer -->
   <string name="mail_settings_identity_title">顯示名稱 &amp; 簽名檔</string>
   <string name="mail_settings_identity_save_button">儲存</string>
@@ -80,9 +80,9 @@
   <string name="mail_settings_identity_display_name_hint">顯示名稱</string>
   <string name="mail_settings_identity_signature">簽名</string>
   <string name="mail_settings_identity_signature_hint">簽名檔</string>
-  <string name="mail_settings_identity_mobile_footer">Mobile footer</string>
-  <string name="mail_settings_identity_mobile_footer_subtext">The footer is added after your signature.</string>
-  <string name="mail_settings_identity_mobile_footer_hint">Mobile footer</string>
+  <string name="mail_settings_identity_mobile_footer">行動註腳</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">此註腳會加入至您的簽名檔下方。</string>
+  <string name="mail_settings_identity_mobile_footer_hint">行動註腳</string>
   <string name="mail_settings_identity_mobile_footer_default_free">從 Proton Mail Android版送出</string>
   <string name="mail_settings_identity_error_updating">上傳設定時發生錯誤</string>
   <string name="mail_settings_identity_error_loading">載入設定時發生錯誤</string>
@@ -91,6 +91,8 @@
   <string name="mail_settings_privacy_auto_show_embedded_images">自動載入內嵌圖片</string>
   <string name="mail_settings_privacy_prevent_taking_screenshots">防止螢幕截圖</string>
   <string name="mail_settings_privacy_request_link_confirmation">申請發送連結確認</string>
+  <string name="mail_settings_privacy_background_sync">Background sync</string>
+  <string name="mail_settings_privacy_background_sync_description">If this option is enabled, the app will sync with the server in the background. Disabling this feature will also disable push notifications.</string>
   <string name="mail_settings_privacy_error_updating">更新設定時發生錯誤</string>
   <string name="mail_settings_privacy_error_loading">載入設定時發生錯誤</string>
   <!-- Swipe Actions -->
@@ -110,10 +112,10 @@
   <string name="mail_settings_swipe_action_trash_description">移至垃圾桶</string>
   <!-- Notification settings -->
   <string name="mail_settings_notifications_title">推播通知</string>
-  <string name="mail_settings_notifications_extended_notifications_title">Extended notifications</string>
+  <string name="mail_settings_notifications_extended_notifications_title">延伸通知</string>
   <string name="mail_settings_notifications_extended_notifications_summary">開啟此功能，可以在推播通知裡查看電郵的寄件者。</string>
   <string name="mail_settings_notifications_notifications_settings">通知設定</string>
-  <string name="mail_settings_notifications_notifications_settings_hint">Navigate to system notification settings</string>
+  <string name="mail_settings_notifications_notifications_settings_hint">導航至系統通知設定</string>
   <string name="mail_settings_notifications_update_error">設定更新時發生錯誤</string>
   <string name="mail_settings_notifications_loading_error">載入設定時發生錯誤</string>
   <!-- Local storage -->

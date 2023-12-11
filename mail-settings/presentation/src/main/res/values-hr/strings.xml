@@ -91,6 +91,8 @@
   <string name="mail_settings_privacy_auto_show_embedded_images">Auto show embedded images</string>
   <string name="mail_settings_privacy_prevent_taking_screenshots">Spriječite snimanje snimki zaslona</string>
   <string name="mail_settings_privacy_request_link_confirmation">Zatražite potvrdu poveznice</string>
+  <string name="mail_settings_privacy_background_sync">Background sync</string>
+  <string name="mail_settings_privacy_background_sync_description">Ako je ova opcija omogućena, aplikacija će se u pozadini sinkronizirati s poslužiteljem. Onemogućavanjem ove značajke onemogućiti ćete i push obavijesti.</string>
   <string name="mail_settings_privacy_error_updating">Pogreška prilikom ažuriranja postavki</string>
   <string name="mail_settings_privacy_error_loading">Error loading settings</string>
   <!-- Swipe Actions -->

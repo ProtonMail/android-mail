@@ -28,9 +28,9 @@
   <string name="mail_settings_alternative_routing">Alternatif yöneltme</string>
   <string name="mail_settings_app_language">Uygulama dili</string>
   <string name="mail_settings_combined_contacts">Birleştirilmiş kişiler</string>
-  <string name="mail_settings_local_cache">Local cache</string>
-  <string name="mail_settings_local_cache_hint">Space used: %s</string>
-  <string name="mail_settings_local_cache_clear_button">Clear data</string>
+  <string name="mail_settings_local_cache">Yerel ön bellek</string>
+  <string name="mail_settings_local_cache_hint">Kullanılan alan: %s</string>
+  <string name="mail_settings_local_cache_clear_button">Verileri temizle</string>
   <string name="mail_settings_swipe_actions">Kaydırma işlemleri</string>
   <string name="mail_settings_combined_contacts_hint">E-posta adreslerinin, oturum açtığınız tüm hesaplardaki kişilerle otomatik olarak tamamlanması için bu özelliği açın.</string>
   <string name="mail_settings_alternative_routing_hint">Açıldığında, uygulama Proton sitelerinin engellenmiş olması durumunda Proton ağına erişmek için alternatif ağ yöneltmesini dener. Güvenlik duvarlarını veya ağ sorunlarını aşmakta yararlı olabilir. Bağlantı güvenilirliğini artırmak için bu seçeneği açık tutmanız önerilir.</string>
@@ -91,6 +91,8 @@
   <string name="mail_settings_privacy_auto_show_embedded_images">Gömülü görseller otomatik olarak görüntülensin</string>
   <string name="mail_settings_privacy_prevent_taking_screenshots">Ekran görüntüsü alınamasın</string>
   <string name="mail_settings_privacy_request_link_confirmation">Bağlantı onayı istensin</string>
+  <string name="mail_settings_privacy_background_sync">Background sync</string>
+  <string name="mail_settings_privacy_background_sync_description">If this option is enabled, the app will sync with the server in the background. Disabling this feature will also disable push notifications.</string>
   <string name="mail_settings_privacy_error_updating">Ayarlar güncellenirken sorun çıktı</string>
   <string name="mail_settings_privacy_error_loading">Ayarlar yüklenirken sorun çıktı</string>
   <!-- Swipe Actions -->
@@ -117,7 +119,7 @@
   <string name="mail_settings_notifications_update_error">Ayarlar güncellenirken sorun çıktı</string>
   <string name="mail_settings_notifications_loading_error">Ayarlar yüklenirken sorun çıktı</string>
   <!-- Local storage -->
-  <string name="mail_settings_clearing_cached_data">Clearing local cached data…</string>
+  <string name="mail_settings_clearing_cached_data">Yerel ön bellek verileri temizleniyor…</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Bir sorun çıktı. Yeniden deneyin.</string>
 </resources>

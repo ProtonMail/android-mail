@@ -64,4 +64,12 @@
   <string name="external_link_confirmation_dialog_do_not_ask_again">Fråga inte igen</string>
   <string name="external_link_confirmation_dialog_cancel_button">Avbryt</string>
   <string name="external_link_confirmation_dialog_continue_button">Fortsätt</string>
+  <string name="message_delete_dialog_title">Ta bort meddelande</string>
+  <string name="message_delete_dialog_message">Är du säker på att du vill ta bort detta meddelande permanent?</string>
+  <string name="message_deleted">Meddelande borttaget</string>
+  <string name="error_delete_message_failed">Misslyckades att ta bort meddelande</string>
+  <string name="error_delete_message_failed_wrong_folder">Meddelande är inte på en plats där det kan tas bort</string>
+  <string name="error_delete_conversation_failed">Misslyckades att ta bort konversation</string>
+  <string name="error_delete_conversation_failed_wrong_folder">Konversation är inte på en plats där den kan tas bort</string>
+  <string name="conversation_deleted">Konversation borttagen</string>
 </resources>

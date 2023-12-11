@@ -29,7 +29,7 @@
   <string name="mail_settings_app_language">Język aplikacji</string>
   <string name="mail_settings_combined_contacts">Połączone kontakty</string>
   <string name="mail_settings_local_cache">Pamięć podręczna</string>
-  <string name="mail_settings_local_cache_hint">Wykorzystana przestrzeń: %s</string>
+  <string name="mail_settings_local_cache_hint">Wykorzystana pamięć podręczna: %s</string>
   <string name="mail_settings_local_cache_clear_button">Usuń dane</string>
   <string name="mail_settings_swipe_actions">Gesty przesunięcia</string>
   <string name="mail_settings_combined_contacts_hint">Włączenie tej funkcji spowoduje automatyczne uzupełnianie adresów e-mail przy użyciu wszystkich kontaktów na Twoich zalogowanych kontach.</string>
@@ -91,6 +91,8 @@
   <string name="mail_settings_privacy_auto_show_embedded_images">Automatycznie pokazuj osadzone obrazy</string>
   <string name="mail_settings_privacy_prevent_taking_screenshots">Zablokuj zrzuty ekranu</string>
   <string name="mail_settings_privacy_request_link_confirmation">Potwierdź otwieranie linków</string>
+  <string name="mail_settings_privacy_background_sync">Synchronizacja w tle</string>
+  <string name="mail_settings_privacy_background_sync_description">Jeśli włączysz tę opcję, aplikacja będzie synchronizować się w tle. W przeciwnym wypadku powiadomienia zostaną wyłączone.</string>
   <string name="mail_settings_privacy_error_updating">Wystąpił błąd podczas aktualizowania ustawień</string>
   <string name="mail_settings_privacy_error_loading">Wystąpił błąd podczas ładowania ustawień</string>
   <!-- Swipe Actions -->
@@ -117,7 +119,7 @@
   <string name="mail_settings_notifications_update_error">Wystąpił błąd podczas aktualizowania ustawień</string>
   <string name="mail_settings_notifications_loading_error">Wystąpił błąd podczas ładowania ustawień</string>
   <!-- Local storage -->
-  <string name="mail_settings_clearing_cached_data">Czyszczenie lokalnych danych buforowanych...</string>
+  <string name="mail_settings_clearing_cached_data">Czyszczenie pamięci podręcznej…</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Wystąpił błąd. Spróbuj ponownie.</string>
 </resources>

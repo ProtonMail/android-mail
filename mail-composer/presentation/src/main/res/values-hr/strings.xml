@@ -21,10 +21,10 @@
   <string name="to_prefix">Za:</string>
   <string name="cc_prefix">Kopija:</string>
   <string name="bcc_prefix">Skrivena kopija:</string>
-  <string name="subject_placeholder">Subject</string>
+  <string name="subject_placeholder">Predmet</string>
   <string name="compose_message_placeholder">Nova poruka e-pošte</string>
   <string name="close_composer_content_description">Zatvori prozor za novu poruku</string>
-  <string name="send_message_content_description">Send message</string>
+  <string name="send_message_content_description">Pošalji poruku</string>
   <string name="composer_expand_recipients_button">Show other recipients</string>
   <string name="composer_error_invalid_email">Nevažeća adresa e-pošte</string>
   <string name="composer_error_invalid_sender">Sender address is invalid</string>
@@ -37,7 +37,7 @@
   <string name="composer_error_store_draft_subject">Storing this draft\'s subject failed</string>
   <string name="composer_error_store_draft_recipients">Storing this draft\'s recipients failed</string>
   <string name="composer_error_loading_draft">The content of this draft is not available at this time. Editing will override any pre-existing content.</string>
-  <string name="composer_add_attachments_content_description">Add attachments</string>
+  <string name="composer_add_attachments_content_description">Dodaj privitke</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Uvoz iz…</string>
   <string name="composer_error_loading_parent_message">Could not load the message\'s information</string>
   <string name="composer_original_message_quote">Original Message</string>
@@ -47,4 +47,10 @@
   <string name="composer_attachment_size_exceeded_dialog_message">The size limit for attachments is %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Reencryption of attachment failed. For security reasons all attachments got removed.</string>
   <string name="composer_warning_local_data_shown">The latest version of this draft failed to load. Any change will override its content.</string>
+  <!-- Message sending error dialog -->
+  <string name="message_sending_error_dialog_header">Sending error</string>
+  <string name="message_sending_error_dialog_button_dismiss">Zatvori</string>
+  <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the email entered due to the following reason:</string>
+  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">There are no Trusted Keys: %s</string>
+  <string name="message_sending_error_dialog_text_reason_address_disabled">Address does not exist: %s</string>
 </resources>

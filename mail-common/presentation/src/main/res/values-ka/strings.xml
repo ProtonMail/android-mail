@@ -86,4 +86,6 @@
   <string name="login_notification_channel_description">ახალი შესვლის გაფრთხილებები</string>
   <string name="auth_badge_official">ოფიციალური</string>
   <string name="intent_failure_no_app_found_to_handle_this_action">ვერ ვიპოვე ამ ქმედების გამგები აპი</string>
+  <string name="mailbox_action_delete_dialog_button_cancel">გაუქმება</string>
+  <string name="mailbox_action_delete_dialog_button_delete">წაშლა</string>
 </resources>

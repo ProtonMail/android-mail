@@ -36,7 +36,7 @@
     <item quantity="few">%d nepročitane</item>
     <item quantity="other">%d nepročitanih</item>
   </plurals>
-  <string name="mailbox_default_recipient">(No Recipient)</string>
+  <string name="mailbox_default_recipient">(Nema primatelja)</string>
   <string name="mailbox_default_sender">(No Sender)</string>
   <string name="mailbox_error_message_offline">You are offline, unable to retrieve items</string>
   <string name="mailbox_error_message_generic">Loading mailbox failed</string>
@@ -49,13 +49,13 @@
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Izbriši razgovor</item>
-    <item quantity="few">Delete %d conversations</item>
-    <item quantity="other">Delete %d conversations</item>
+    <item quantity="few">Izbriši %d razgovora</item>
+    <item quantity="other">Izbriši %d razgovora</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_title">
     <item quantity="one">Izbriši poruku</item>
-    <item quantity="few">Delete %d messages</item>
-    <item quantity="other">Delete %d messages</item>
+    <item quantity="few">Delete %d poruke</item>
+    <item quantity="other">Izbriši %d poruka</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_message">
     <item quantity="one">Jeste li sigurni da želite trajno izbrisati ovaj razgovor?</item>
@@ -67,8 +67,6 @@
     <item quantity="few">Are you sure you want to permanently delete these message?</item>
     <item quantity="other">Are you sure you want to permanently delete these message?</item>
   </plurals>
-  <string name="mailbox_action_delete_dialog_button_cancel">Poništi</string>
-  <string name="mailbox_action_delete_dialog_button_delete">Izbriši</string>
   <plurals name="mailbox_action_delete_message">
     <item quantity="one">Message permanently deleted</item>
     <item quantity="few">%d messages permanently deleted</item>
@@ -80,8 +78,39 @@
     <item quantity="other">%d conversations permanently deleted</item>
   </plurals>
   <string name="mailbox_action_label_messages_failed">Label operation failed</string>
-  <string name="mailbox_action_label_messages_failed_retrieving_labels">Failed to get labels</string>
+  <string name="mailbox_action_label_messages_failed_retrieving_labels">Neuspješno dohvaćanje oznaka</string>
   <string name="mailbox_action_failed_retrieving_colors">Failed to get color settings</string>
   <string name="mailbox_action_move_messages_failed">Move operation failed</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Failed to get folders</string>
+  <!--  Spotlight V6 Beta  -->
+  <string name="onboarding_headline_beta">Beta test the new app</string>
+  <string name="onboarding_description_beta">We\'ve rebuilt the app for stability and reliability. Share your feedback and stay tuned as we reintroduce features. Learn more.</string>
+  <string name="onboarding_description_beta_link">https://proton.me/support/mail-android-beta</string>
+  <string name="onboarding_description_beta_learn_more">Više informacija</string>
+  <!--  Spotlight V6 GA  -->
+  <string name="onboarding_headline_ga">Welcome to the new app</string>
+  <string name="onboarding_description_ga">Completely rebuilt from scratch, the new Proton Mail app was made for stability and performance.</string>
+  <!--  Onboarding 1  -->
+  <string name="onboarding_privacy_for_all_headline">Privacy for all</string>
+  <string name="onboarding_privacy_for_all_description">Invite others to Proton Mail so you can all benefit from end-to-end encryption.</string>
+  <!--  Onboarding 2  -->
+  <string name="onboarding_easily_up_to_date_headline">Easily up-to-date</string>
+  <string name="onboarding_easily_up_to_date_description">Breeze through threaded messages in conversation mode.</string>
+  <!--  Onboarding 3  -->
+  <string name="onboarding_neat_and_tidy_headline">Neat and tidy</string>
+  <string name="onboarding_neat_and_tidy_description">File, label, and color code messages to create your perfect, custom inbox.</string>
+  <!--  Onboarding actions  -->
+  <string name="onboarding_next">Sljedeće</string>
+  <string name="onboarding_get_started">Započnite</string>
+  <string name="onboarding_illustration_content_description">Onboarding illustration</string>
+  <string name="onboarding_close_content_description">Zatvori</string>
+  <!-- Sidebar Beta label -->
+  <string name="sidebar_beta_version_title">Proton Mail Beta</string>
+  <string name="sidebar_beta_version_description">Tap to learn more about this project.</string>
+  <string name="sidebar_beta_version_icon_content_description">Navigate to KB article.</string>
+  <string name="mailbox_action_read_message">Message read updated</string>
+  <string name="mailbox_action_star_message">Message star updated</string>
+  <string name="mailbox_action_trash_message">Message moved to trash</string>
+  <string name="mailbox_action_archive_message">Message moved to archive</string>
+  <string name="mailbox_action_spam_message">Message moved to spam</string>
 </resources>

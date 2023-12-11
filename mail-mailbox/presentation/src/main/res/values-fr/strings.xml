@@ -60,8 +60,6 @@
     <item quantity="one">Voulez-vous vraiment supprimer définitivement ce message ?</item>
     <item quantity="other">Voulez-vous vraiment supprimer définitivement ces messages ?</item>
   </plurals>
-  <string name="mailbox_action_delete_dialog_button_cancel">Annuler</string>
-  <string name="mailbox_action_delete_dialog_button_delete">Supprimer</string>
   <plurals name="mailbox_action_delete_message">
     <item quantity="one">Le message a été supprimé définitivement.</item>
     <item quantity="other">%d messages ont été supprimés définitivement.</item>
@@ -73,6 +71,37 @@
   <string name="mailbox_action_label_messages_failed">L\'opération sur le label n\'a pas abouti.</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Les labels n\'ont pas pu être obtenus.</string>
   <string name="mailbox_action_failed_retrieving_colors">Les paramètres de couleur n\'ont pas pu être obtenus.</string>
-  <string name="mailbox_action_move_messages_failed">Move operation failed</string>
-  <string name="mailbox_action_move_messages_failed_retrieving_folders">Failed to get folders</string>
+  <string name="mailbox_action_move_messages_failed">Le déplacement n\'a pas abouti.</string>
+  <string name="mailbox_action_move_messages_failed_retrieving_folders">Les dossiers n\'ont pas pu être obtenus.</string>
+  <!--  Spotlight V6 Beta  -->
+  <string name="onboarding_headline_beta">Testez la nouvelle application (bêta)</string>
+  <string name="onboarding_description_beta">Nous avons remanié l\'application pour la rendre plus stable et plus fiable. Partagez vos commentaires et restez à l\'écoute des fonctionnalités que nous allons à nouveau proposer. En savoir plus.</string>
+  <string name="onboarding_description_beta_link">https://proton.me/support/mail-android-beta</string>
+  <string name="onboarding_description_beta_learn_more">En savoir plus</string>
+  <!--  Spotlight V6 GA  -->
+  <string name="onboarding_headline_ga">Bienvenue dans la nouvelle application</string>
+  <string name="onboarding_description_ga">Entièrement repensée, la nouvelle application Proton Mail a été conçue pour être stable et performante.</string>
+  <!--  Onboarding 1  -->
+  <string name="onboarding_privacy_for_all_headline">Le respect de la vie privée pour tous</string>
+  <string name="onboarding_privacy_for_all_description">Invitez d\'autres personnes à utiliser Proton Mail pour bénéficier du chiffrement de bout en bout.</string>
+  <!--  Onboarding 2  -->
+  <string name="onboarding_easily_up_to_date_headline">Facile d\'être à jour</string>
+  <string name="onboarding_easily_up_to_date_description">Consultez les messages en mode conversation.</string>
+  <!--  Onboarding 3  -->
+  <string name="onboarding_neat_and_tidy_headline">Une bonne organisation</string>
+  <string name="onboarding_neat_and_tidy_description">Triez vos messages en utilisant des dossiers, des labels et des couleurs pour personnaliser votre boite de réception.</string>
+  <!--  Onboarding actions  -->
+  <string name="onboarding_next">Suivant</string>
+  <string name="onboarding_get_started">Commencer</string>
+  <string name="onboarding_illustration_content_description">Illustration d\'accueil</string>
+  <string name="onboarding_close_content_description">Fermer</string>
+  <!-- Sidebar Beta label -->
+  <string name="sidebar_beta_version_title">Proton Mail bêta</string>
+  <string name="sidebar_beta_version_description">Appuyer pour en savoir plus sur ce projet.</string>
+  <string name="sidebar_beta_version_icon_content_description">Consultez l\'article de la base de connaissances.</string>
+  <string name="mailbox_action_read_message">Le message lu a été mis à jour.</string>
+  <string name="mailbox_action_star_message">Le message favori a été mis à jour.</string>
+  <string name="mailbox_action_trash_message">Le message a été déplacé dans le dossier Corbeille.</string>
+  <string name="mailbox_action_archive_message">Le message a été déplacé dans le dossier Archives.</string>
+  <string name="mailbox_action_spam_message">Le message a été déplacé dans le dossier Indésirables/spam.</string>
 </resources>

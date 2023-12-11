@@ -39,31 +39,60 @@
   <string name="mailbox_error_message_unexpected">发生意外错误。</string>
   <string name="mailbox_is_empty_message">此邮箱为空</string>
   <plurals name="mailbox_action_trash">
-    <item quantity="other">%d messages moved to Trash</item>
+    <item quantity="other">%d 封邮件已移至废件箱</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
-    <item quantity="other">Delete %d conversations</item>
+    <item quantity="other">删除 %d 条会话</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_title">
-    <item quantity="other">Delete %d messages</item>
+    <item quantity="other">删除 %d 封邮件</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_message">
-    <item quantity="other">Are you sure you want to permanently delete these conversations?</item>
+    <item quantity="other">确定要永久删除这些会话吗？</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_message">
     <item quantity="other">确定要永久删除此邮件吗？</item>
   </plurals>
-  <string name="mailbox_action_delete_dialog_button_cancel">取消</string>
-  <string name="mailbox_action_delete_dialog_button_delete">刪除</string>
   <plurals name="mailbox_action_delete_message">
     <item quantity="other">%d封邮件已永久删除</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation">
     <item quantity="other">%d组对话已永久删除</item>
   </plurals>
-  <string name="mailbox_action_label_messages_failed">Label operation failed</string>
-  <string name="mailbox_action_label_messages_failed_retrieving_labels">Failed to get labels</string>
-  <string name="mailbox_action_failed_retrieving_colors">Failed to get color settings</string>
-  <string name="mailbox_action_move_messages_failed">Move operation failed</string>
-  <string name="mailbox_action_move_messages_failed_retrieving_folders">Failed to get folders</string>
+  <string name="mailbox_action_label_messages_failed">添加标签失败</string>
+  <string name="mailbox_action_label_messages_failed_retrieving_labels">获取标签失败</string>
+  <string name="mailbox_action_failed_retrieving_colors">无法获取颜色设置</string>
+  <string name="mailbox_action_move_messages_failed">移动操作失败</string>
+  <string name="mailbox_action_move_messages_failed_retrieving_folders">无法列出文件夹</string>
+  <!--  Spotlight V6 Beta  -->
+  <string name="onboarding_headline_beta">Beta test the new app</string>
+  <string name="onboarding_description_beta">We\'ve rebuilt the app for stability and reliability. Share your feedback and stay tuned as we reintroduce features. Learn more.</string>
+  <string name="onboarding_description_beta_link">https://proton.me/support/mail-android-beta</string>
+  <string name="onboarding_description_beta_learn_more">Learn more</string>
+  <!--  Spotlight V6 GA  -->
+  <string name="onboarding_headline_ga">Welcome to the new app</string>
+  <string name="onboarding_description_ga">Completely rebuilt from scratch, the new Proton Mail app was made for stability and performance.</string>
+  <!--  Onboarding 1  -->
+  <string name="onboarding_privacy_for_all_headline">Privacy for all</string>
+  <string name="onboarding_privacy_for_all_description">Invite others to Proton Mail so you can all benefit from end-to-end encryption.</string>
+  <!--  Onboarding 2  -->
+  <string name="onboarding_easily_up_to_date_headline">Easily up-to-date</string>
+  <string name="onboarding_easily_up_to_date_description">Breeze through threaded messages in conversation mode.</string>
+  <!--  Onboarding 3  -->
+  <string name="onboarding_neat_and_tidy_headline">Neat and tidy</string>
+  <string name="onboarding_neat_and_tidy_description">File, label, and color code messages to create your perfect, custom inbox.</string>
+  <!--  Onboarding actions  -->
+  <string name="onboarding_next">继续</string>
+  <string name="onboarding_get_started">立即体验</string>
+  <string name="onboarding_illustration_content_description">Onboarding illustration</string>
+  <string name="onboarding_close_content_description">Close</string>
+  <!-- Sidebar Beta label -->
+  <string name="sidebar_beta_version_title">Proton Mail Beta</string>
+  <string name="sidebar_beta_version_description">Tap to learn more about this project.</string>
+  <string name="sidebar_beta_version_icon_content_description">Navigate to KB article.</string>
+  <string name="mailbox_action_read_message">Message read updated</string>
+  <string name="mailbox_action_star_message">Message star updated</string>
+  <string name="mailbox_action_trash_message">Message moved to trash</string>
+  <string name="mailbox_action_archive_message">Message moved to archive</string>
+  <string name="mailbox_action_spam_message">Message moved to spam</string>
 </resources>

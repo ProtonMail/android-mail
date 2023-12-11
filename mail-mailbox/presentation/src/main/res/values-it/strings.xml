@@ -60,8 +60,6 @@
     <item quantity="one">Sei sicuro di voler eliminare definitivamente questo messaggio?</item>
     <item quantity="other">Sei sicuro di voler eliminare definitivamente questi messaggi?</item>
   </plurals>
-  <string name="mailbox_action_delete_dialog_button_cancel">Annulla</string>
-  <string name="mailbox_action_delete_dialog_button_delete">Elimina</string>
   <plurals name="mailbox_action_delete_message">
     <item quantity="one">Messaggio eliminato definitivamente</item>
     <item quantity="other">%d messaggi eliminati definitivamente</item>
@@ -75,4 +73,35 @@
   <string name="mailbox_action_failed_retrieving_colors">Caricamento dei colori non riuscito</string>
   <string name="mailbox_action_move_messages_failed">Spostamento non riuscito</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Caricamento delle cartelle non riuscito</string>
+  <!--  Spotlight V6 Beta  -->
+  <string name="onboarding_headline_beta">Prova la nuova app in Beta</string>
+  <string name="onboarding_description_beta">Abbiamo ricreato l\'app per una maggiore stabilità e attendibilità. Condividi il tuo feedback e rimani aggiornato mentre che introduciamo le precedenti funzionalità. Scopri di più.</string>
+  <string name="onboarding_description_beta_link">https://proton.me/support/mail-android-beta</string>
+  <string name="onboarding_description_beta_learn_more">Scopri di più</string>
+  <!--  Spotlight V6 GA  -->
+  <string name="onboarding_headline_ga">Benvenuto nella nuova app</string>
+  <string name="onboarding_description_ga">Completamente ricreata da zero. La nuova app di Proton Mail è stata realizzata per maggiore stabilità e prestazioni.</string>
+  <!--  Onboarding 1  -->
+  <string name="onboarding_privacy_for_all_headline">Privacy per tutti</string>
+  <string name="onboarding_privacy_for_all_description">Invita altre persone su Proton Mail così che possiate tutti approfittare della crittografia end-to-end.</string>
+  <!--  Onboarding 2  -->
+  <string name="onboarding_easily_up_to_date_headline">Rimani facilmente aggiornato</string>
+  <string name="onboarding_easily_up_to_date_description">Scorri velocemente i messaggi raggruppati in modalità conversazione.</string>
+  <!--  Onboarding 3  -->
+  <string name="onboarding_neat_and_tidy_headline">Preciso e ordinato</string>
+  <string name="onboarding_neat_and_tidy_description">Classifica i messaggi con cartelle, etichette e colori per personalizzare la tua casella di posta e renderla perfetta.</string>
+  <!--  Onboarding actions  -->
+  <string name="onboarding_next">Avanti</string>
+  <string name="onboarding_get_started">Inizia ora</string>
+  <string name="onboarding_illustration_content_description">Illustrazione della presentazione</string>
+  <string name="onboarding_close_content_description">Chiudi</string>
+  <!-- Sidebar Beta label -->
+  <string name="sidebar_beta_version_title">Proton Mail Beta</string>
+  <string name="sidebar_beta_version_description">Tocca per scoprire di più su questo progetto.</string>
+  <string name="sidebar_beta_version_icon_content_description">Vai all\'articolo sulle conoscenze di base.</string>
+  <string name="mailbox_action_read_message">Lettura del messaggio aggiornata</string>
+  <string name="mailbox_action_star_message">Importanza del messaggio aggiornata</string>
+  <string name="mailbox_action_trash_message">Messaggio spostato nel cestino</string>
+  <string name="mailbox_action_archive_message">Messaggio spostato nell\'archivio</string>
+  <string name="mailbox_action_spam_message">Messaggio spostato in spam</string>
 </resources>

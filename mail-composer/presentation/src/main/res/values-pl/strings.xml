@@ -46,5 +46,11 @@
   <string name="composer_attachment_size_exceeded_dialog_title">Limit załączników został osiągnięty</string>
   <string name="composer_attachment_size_exceeded_dialog_message">Maksymalny rozmiar załączników wynosi %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Ponowne szyfrowanie załącznika nie powiodło się. Ze względów bezpieczeństwa wszystkie załączniki zostały usunięte.</string>
-  <string name="composer_warning_local_data_shown">Nie udało się załadować najnowszej wersji tej wersji roboczej. Jakakolwiek zmiana spowoduje zastąpienie jej treści.</string>
+  <string name="composer_warning_local_data_shown">Nie udało się załadować najnowszej wersji szkicu. Wszelkie jej zmiany spowodują nadpisanie zawartości.</string>
+  <!-- Message sending error dialog -->
+  <string name="message_sending_error_dialog_header">Błąd wysyłania</string>
+  <string name="message_sending_error_dialog_button_dismiss">Zamknij</string>
+  <string name="message_sending_error_dialog_text_error">Wiadomość nie może zostać wysłana:</string>
+  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Brak zaufanych kluczy: %s</string>
+  <string name="message_sending_error_dialog_text_reason_address_disabled">Adres nie istnieje: %s</string>
 </resources>

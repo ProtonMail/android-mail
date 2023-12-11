@@ -91,6 +91,8 @@
   <string name="mail_settings_privacy_auto_show_embedded_images">Afișare automată imagini incluse</string>
   <string name="mail_settings_privacy_prevent_taking_screenshots">Împiedicare capturi de ecran</string>
   <string name="mail_settings_privacy_request_link_confirmation">Legătură web de confirmare</string>
+  <string name="mail_settings_privacy_background_sync">Sincronizare în fundal</string>
+  <string name="mail_settings_privacy_background_sync_description">Dacă este activată, aplicația se va sincroniza cu serverul în fundal. Dezactivând această funcție se va opri și funcția de notificare.</string>
   <string name="mail_settings_privacy_error_updating">Eroare actualizare setări</string>
   <string name="mail_settings_privacy_error_loading">Eroare încărcare setări</string>
   <!-- Swipe Actions -->

@@ -47,4 +47,10 @@
   <string name="composer_attachment_size_exceeded_dialog_message">첨부 파일의 최대 크기는 %1$s 입니다</string>
   <string name="composer_attachment_reencryption_failed_message">첨부 파일에 대한 복호화 실패. 보안 상의 이유로 전체 첨부 파일이 삭제되었습니다.</string>
   <string name="composer_warning_local_data_shown">이 초안의 최신 버전을 로드하는데 실패했습니다. 어떠한 변경 사항도 존재되지 않습니다.</string>
+  <!-- Message sending error dialog -->
+  <string name="message_sending_error_dialog_header">Sending error</string>
+  <string name="message_sending_error_dialog_button_dismiss">Close</string>
+  <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the email entered due to the following reason:</string>
+  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">There are no Trusted Keys: %s</string>
+  <string name="message_sending_error_dialog_text_reason_address_disabled">Address does not exist: %s</string>
 </resources>

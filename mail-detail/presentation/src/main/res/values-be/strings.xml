@@ -66,4 +66,12 @@
   <string name="external_link_confirmation_dialog_do_not_ask_again">Больш не пытаць</string>
   <string name="external_link_confirmation_dialog_cancel_button">Скасаваць</string>
   <string name="external_link_confirmation_dialog_continue_button">Працягнуць</string>
+  <string name="message_delete_dialog_title">Выдаліць паведамленне</string>
+  <string name="message_delete_dialog_message">Вы сапраўды хочаце незваротна выдаліць гэта паведамленне?</string>
+  <string name="message_deleted">Паведамленне выдалена</string>
+  <string name="error_delete_message_failed">Не ўдалося выдаліць паведамленне.</string>
+  <string name="error_delete_message_failed_wrong_folder">Змяніце размяшчэнне паведамлення, каб выдаліць яго</string>
+  <string name="error_delete_conversation_failed">Не ўдалося выдаліць размову</string>
+  <string name="error_delete_conversation_failed_wrong_folder">Змяніце размяшчэнне размовы, каб выдаліць яе</string>
+  <string name="conversation_deleted">Размова выдалена</string>
 </resources>

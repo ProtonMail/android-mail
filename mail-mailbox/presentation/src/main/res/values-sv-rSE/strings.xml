@@ -60,8 +60,6 @@
     <item quantity="one">Är du säker på att du vill ta bort detta meddelande permanent?</item>
     <item quantity="other">Är du säker på att du vill ta bort dessa meddelanden permanent?</item>
   </plurals>
-  <string name="mailbox_action_delete_dialog_button_cancel">Avbryt</string>
-  <string name="mailbox_action_delete_dialog_button_delete">Ta bort</string>
   <plurals name="mailbox_action_delete_message">
     <item quantity="one">Meddelandet permanent borttaget</item>
     <item quantity="other">%d meddelanden permanent borttagna</item>
@@ -75,4 +73,35 @@
   <string name="mailbox_action_failed_retrieving_colors">Misslyckades att hämta färginställningar</string>
   <string name="mailbox_action_move_messages_failed">Flyttåtgärd misslyckades</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Misslyckades att hämta mappar</string>
+  <!--  Spotlight V6 Beta  -->
+  <string name="onboarding_headline_beta">Beta-testa den nya appen</string>
+  <string name="onboarding_description_beta">Vi har byggt om appen för stabilitet och tillförlitlighet. Dela din feedback och håll utkik när vi återinför funktioner. Lär dig mer.</string>
+  <string name="onboarding_description_beta_link">https://proton.me/support/mail-android-beta</string>
+  <string name="onboarding_description_beta_learn_more">Lär dig mer</string>
+  <!--  Spotlight V6 GA  -->
+  <string name="onboarding_headline_ga">Välkommen till den nya appen</string>
+  <string name="onboarding_description_ga">Helt ombyggd från grunden, den nya Proton Mail-appen gjordes för stabilitet och prestanda.</string>
+  <!--  Onboarding 1  -->
+  <string name="onboarding_privacy_for_all_headline">Integritet för alla</string>
+  <string name="onboarding_privacy_for_all_description">Bjud in andra till Proton Mail så att ni alla kan dra nytta av end-to-end-kryptering.</string>
+  <!--  Onboarding 2  -->
+  <string name="onboarding_easily_up_to_date_headline">Enkelt att uppdatera</string>
+  <string name="onboarding_easily_up_to_date_description">Bläddra igenom trådade meddelanden i konversationsläge.</string>
+  <!--  Onboarding 3  -->
+  <string name="onboarding_neat_and_tidy_headline">Rent och snyggt</string>
+  <string name="onboarding_neat_and_tidy_description">Fil-, etikett- och färgkodsmeddelanden för att skapa din perfekta, anpassade inkorg.</string>
+  <!--  Onboarding actions  -->
+  <string name="onboarding_next">Nästa</string>
+  <string name="onboarding_get_started">Kom igång</string>
+  <string name="onboarding_illustration_content_description">Onboarding illustration</string>
+  <string name="onboarding_close_content_description">Stäng</string>
+  <!-- Sidebar Beta label -->
+  <string name="sidebar_beta_version_title">Proton Mail Beta</string>
+  <string name="sidebar_beta_version_description">Tryck för att lära dig mer om detta projekt.</string>
+  <string name="sidebar_beta_version_icon_content_description">Navigera till KB-artikel.</string>
+  <string name="mailbox_action_read_message">Message read updated</string>
+  <string name="mailbox_action_star_message">Message star updated</string>
+  <string name="mailbox_action_trash_message">Meddelande flyttat till papperskorg</string>
+  <string name="mailbox_action_archive_message">Meddelande flyttat till arkiv</string>
+  <string name="mailbox_action_spam_message">Meddelande flyttat till skräppost</string>
 </resources>

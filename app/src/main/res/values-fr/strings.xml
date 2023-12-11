@@ -17,6 +17,14 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
+  <string name="dialog_sign_out_account_title">Déconnexion</string>
+  <string name="dialog_sign_out_account_description">Voulez-vous vraiment vous déconnecter ?</string>
+  <string name="dialog_sign_out_account_confirm">Oui</string>
+  <string name="dialog_sign_out_account_cancel">Non</string>
+  <string name="dialog_remove_account_title">Retirer le compte</string>
+  <string name="dialog_remove_account_description">Vous allez vous déconnecter et supprimer toutes les informations associées à ce compte.</string>
+  <string name="dialog_remove_account_confirm">Retirer</string>
+  <string name="dialog_remove_account_cancel">Annuler</string>
   <string name="user_select_other_account_content_description">Sélectionner un autre compte</string>
   <string name="you_are_offline">Vous êtes hors ligne.</string>
   <string name="feature_coming_soon">Fonctionnalité bientôt disponible…</string>
@@ -25,7 +33,7 @@
   <string name="mailbox_message_sending_offline">Vous êtes hors ligne, le message est en file d\'attente pour l\'envoi.</string>
   <string name="mailbox_message_sending_success">Le message a été envoyé.</string>
   <string name="mailbox_message_sending_error">Une erreur s\'est produite lors de l\'envoi du message.</string>
-  <string name="mailbox_message_sending_error_action">Accéder aux Brouillons</string>
+  <string name="mailbox_message_sending_error_action">Aller dans le dossier Brouillons</string>
   <string name="mailbox_attachment_uploading_error">La pièce jointe n\'a pas pu être chargée.</string>
   <string name="notification_switched_account">Basculé sur le compte %s</string>
   <string name="label_saved">Le label a été enregistré.</string>

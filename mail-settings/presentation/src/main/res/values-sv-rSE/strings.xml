@@ -91,6 +91,8 @@
   <string name="mail_settings_privacy_auto_show_embedded_images">Visa inbäddade bilder automatiskt</string>
   <string name="mail_settings_privacy_prevent_taking_screenshots">Förhindra att ta skärmdumpar</string>
   <string name="mail_settings_privacy_request_link_confirmation">Begär länkbekräftelse</string>
+  <string name="mail_settings_privacy_background_sync">Bakgrundssynkronisering</string>
+  <string name="mail_settings_privacy_background_sync_description">If this option is enabled, the app will sync with the server in the background. Disabling this feature will also disable push notifications.</string>
   <string name="mail_settings_privacy_error_updating">Fel vid uppdatering av inställningar</string>
   <string name="mail_settings_privacy_error_loading">Fel vid laddning av inställningar</string>
   <!-- Swipe Actions -->

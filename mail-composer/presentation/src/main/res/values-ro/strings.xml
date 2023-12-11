@@ -47,4 +47,10 @@
   <string name="composer_attachment_size_exceeded_dialog_message">Limita dimensiunii atașamentelor este de %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Recriptarea atașamentului a eșuat. Din motive de securitate, toate atașamentele au fost eliminate.</string>
   <string name="composer_warning_local_data_shown">Nu s-a încărcat ultima versiune a acestei ciorne. Orice modificare va anula conținutul acesteia.</string>
+  <!-- Message sending error dialog -->
+  <string name="message_sending_error_dialog_header">Eroare trimitere</string>
+  <string name="message_sending_error_dialog_button_dismiss">Închidere</string>
+  <string name="message_sending_error_dialog_text_error">Mesajul nu poate fi trimis la adresa introdusă din următorul motiv:</string>
+  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Nu există chei de încredere: %s</string>
+  <string name="message_sending_error_dialog_text_reason_address_disabled">Adresa nu există: %s</string>
 </resources>

@@ -28,9 +28,9 @@
   <string name="mail_settings_alternative_routing">Альтернативная маршрутизация</string>
   <string name="mail_settings_app_language">Язык приложения</string>
   <string name="mail_settings_combined_contacts">Объединенные контакты</string>
-  <string name="mail_settings_local_cache">Local cache</string>
+  <string name="mail_settings_local_cache">Локальный кэш</string>
   <string name="mail_settings_local_cache_hint">Space used: %s</string>
-  <string name="mail_settings_local_cache_clear_button">Clear data</string>
+  <string name="mail_settings_local_cache_clear_button">Очистить данные</string>
   <string name="mail_settings_swipe_actions">Жесты пролистывания</string>
   <string name="mail_settings_combined_contacts_hint">Включите эту функцию для автозаполнения адресов электронной почты из контактов всех ваших авторизованных аккаунтов.</string>
   <string name="mail_settings_alternative_routing_hint">В случае если сайты Proton заблокированы, эта настройка позволяет приложению попробовать альтернативную сетевую маршрутизацию для подключения к Proton, что может быть полезно для обхода брандмауэров или проблем с сетью. Мы рекомендуем оставить эту настройку включенной для большей надежности.</string>
@@ -75,11 +75,11 @@
   <string name="mail_settings_default_email_address_error_update_subscription">Upgrade to a paid plan to set this address as default</string>
   <!-- Display name, signature, mobile footer -->
   <string name="mail_settings_identity_title">Отображаемое имя и подпись</string>
-  <string name="mail_settings_identity_save_button">Save</string>
+  <string name="mail_settings_identity_save_button">Сохранить</string>
   <string name="mail_settings_identity_display_name">Display name</string>
   <string name="mail_settings_identity_display_name_hint">Display name</string>
-  <string name="mail_settings_identity_signature">Signature</string>
-  <string name="mail_settings_identity_signature_hint">Signature</string>
+  <string name="mail_settings_identity_signature">Подпись</string>
+  <string name="mail_settings_identity_signature_hint">Подпись</string>
   <string name="mail_settings_identity_mobile_footer">Mobile footer</string>
   <string name="mail_settings_identity_mobile_footer_subtext">The footer is added after your signature.</string>
   <string name="mail_settings_identity_mobile_footer_hint">Mobile footer</string>
@@ -87,12 +87,14 @@
   <string name="mail_settings_identity_error_updating">Error updating settings</string>
   <string name="mail_settings_identity_error_loading">Error loading settings</string>
   <!-- Privacy settings -->
-  <string name="mail_settings_privacy_auto_show_remote_content">Auto show remote content</string>
+  <string name="mail_settings_privacy_auto_show_remote_content">Автоматический показ удаленного содержимого</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">Авто-показ встроенных изображений</string>
-  <string name="mail_settings_privacy_prevent_taking_screenshots">Prevent taking screenshots</string>
+  <string name="mail_settings_privacy_prevent_taking_screenshots">Предотвратить снятие снимков экрана</string>
   <string name="mail_settings_privacy_request_link_confirmation">Запрашивать подтверждение при переходе по ссылкам</string>
-  <string name="mail_settings_privacy_error_updating">Error updating settings</string>
-  <string name="mail_settings_privacy_error_loading">Error loading settings</string>
+  <string name="mail_settings_privacy_background_sync">Background sync</string>
+  <string name="mail_settings_privacy_background_sync_description">If this option is enabled, the app will sync with the server in the background. Disabling this feature will also disable push notifications.</string>
+  <string name="mail_settings_privacy_error_updating">Ошибка обновления настроек</string>
+  <string name="mail_settings_privacy_error_loading">Ошибка загрузки настроек</string>
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Жесты пролистывания</string>
   <string name="mail_settings_swipe_actions_subtitle">Настройте жесты пролистывания для доступа к наиболее используемым действиям.</string>

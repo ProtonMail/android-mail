@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="from_prefix">Fra:</string>
+  <string name="to_prefix">Til:</string>
+  <string name="cc_prefix">Kopi:</string>
+  <string name="bcc_prefix">Blindkopi:</string>
+  <string name="subject_placeholder">Emne</string>
+  <string name="compose_message_placeholder">Skriv e-post</string>
+  <string name="close_composer_content_description">Lukk skrivevindu</string>
+  <string name="send_message_content_description">Send melding</string>
+  <string name="composer_expand_recipients_button">Vis andre mottakere</string>
+  <string name="composer_error_invalid_email">E-postadressen er ugyldig</string>
+  <string name="composer_error_invalid_sender">Avsenderadressen er ugyldig</string>
+  <string name="change_sender_button_content_description">Endre avsender</string>
+  <string name="composer_change_sender_paid_feature">Oppgrader til en betalt plan for å endre avsenderadressen.</string>
+  <string name="composer_error_change_sender_failed_getting_subscription">Kan ikke endre avsender da innhenting av brukerens abonnement mislyktes. Prøv igjen.</string>
+  <string name="composer_error_store_draft_sender_address">Lagring av avsenderadressen til dette utkastet mislyktes</string>
+  <string name="composer_error_store_draft_body">Lagring av meldingsinnholdet til dette utkastet mislyktes</string>
+  <string name="composer_error_duplicate_recipient">Fjernet duplisert mottaker: %1$s</string>
+  <string name="composer_error_store_draft_subject">Lagring av meldingsemnet til dette utkastet mislyktes</string>
+  <string name="composer_error_store_draft_recipients">Lagring av mottakerne til dette utkastet mislyktes</string>
+  <string name="composer_error_loading_draft">Innholdet i dette utkastet er ikke tilgjengelig på dette tidspunktet. Redigering vil overstyre eksisterende innhold.</string>
+  <string name="composer_add_attachments_content_description">Legg til vedlegg</string>
+  <string name="composer_add_attachments_bottom_sheet_import_from">Importer fra…</string>
+  <string name="composer_error_loading_parent_message">Kunne ikke laste inn meldingens informasjon</string>
+  <string name="composer_original_message_quote">Opprinnelig melding</string>
+  <string name="composer_sender_quote">På %s, %s &lt;%s&gt; skrev:</string>
+  <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
+  <string name="composer_attachment_size_exceeded_dialog_title">Vedleggsgrensen er nådd</string>
+  <string name="composer_attachment_size_exceeded_dialog_message">Størrelsesgrensen for vedlegg er %1$s</string>
+  <string name="composer_attachment_reencryption_failed_message">Kryptering av vedlegg på nytt mislyktes. Av sikkerhetsmessige årsaker ble alle vedlegg fjernet.</string>
+  <string name="composer_warning_local_data_shown">Den nyeste versjonen av dette utkastet kunne ikke lastes inn. Enhver endring vil overstyre innholdet.</string>
+  <!-- Message sending error dialog -->
+  <string name="message_sending_error_dialog_header">Sending error</string>
+  <string name="message_sending_error_dialog_button_dismiss">Close</string>
+  <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the email entered due to the following reason:</string>
+  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">There are no Trusted Keys: %s</string>
+  <string name="message_sending_error_dialog_text_reason_address_disabled">Address does not exist: %s</string>
+</resources>

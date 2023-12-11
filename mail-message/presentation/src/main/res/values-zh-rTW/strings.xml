@@ -38,8 +38,8 @@
   <string name="attachment_type_spreadsheet">試算表</string>
   <string name="attachment_type_presentation">簡報</string>
   <!-- Bottom Sheet -->
-  <string name="bottom_sheet_move_to_title">Move to...</string>
-  <string name="bottom_sheet_done_action">Done</string>
+  <string name="bottom_sheet_move_to_title">移至...</string>
+  <string name="bottom_sheet_done_action">完成</string>
   <string name="bottom_sheet_archive_action">Also archive?</string>
   <string name="bottom_sheet_label_as_title">Label as...</string>
 </resources>

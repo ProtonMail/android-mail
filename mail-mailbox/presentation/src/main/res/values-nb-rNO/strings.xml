@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="drawer_title_more">Mer</string>
+  <string name="drawer_title_contacts">Kontakter</string>
+  <string name="drawer_title_subscription">Abonnement</string>
+  <string name="mailbox_toolbar_compose_button_content_description">Skriv ny melding</string>
+  <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Avslutt valgmodus</string>
+  <string name="mailbox_toolbar_menu_button_content_description">Meny</string>
+  <string name="mailbox_toolbar_search_button_content_description">Søk</string>
+  <plurals name="mailbox_toolbar_selected_count">
+    <item quantity="one">%d valgt</item>
+    <item quantity="other">%d valgt</item>
+  </plurals>
+  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
+  <string name="filter_unread_button_text_without_counter">Ulest</string>
+  <plurals name="filter_unread_button_text">
+    <item quantity="one">%d ulest</item>
+    <item quantity="other">%d uleste</item>
+  </plurals>
+  <string name="mailbox_default_recipient">(Ingen mottaker)</string>
+  <string name="mailbox_default_sender">(Ingen avsender)</string>
+  <string name="mailbox_error_message_offline">Du er i frakoblet modus, ikke i stand til å hente elementer.</string>
+  <string name="mailbox_error_message_generic">Lasting av postboks mislyktes</string>
+  <string name="mailbox_error_message_unexpected">Noe gikk uventet galt</string>
+  <string name="mailbox_is_empty_message">Denne postboksen er tom</string>
+  <plurals name="mailbox_action_trash">
+    <item quantity="one">Meldingen flyttet til papirkurven</item>
+    <item quantity="other">%d meldinger flyttet til papirkurven</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_title">
+    <item quantity="one">Slett samtalen</item>
+    <item quantity="other">Slett %d samtaler</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_title">
+    <item quantity="one">Slett meldingen</item>
+    <item quantity="other">Slett %d meldinger</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_message">
+    <item quantity="one">Er du sikker på at du vil slette denne samtalen permanent?</item>
+    <item quantity="other">Er du sikker på at du vil slette disse samtalene permanent?</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_message">
+    <item quantity="one">Er du sikker på at du vil slette denne meldingen permanent?</item>
+    <item quantity="other">Er du sikker på at du vil slette disse meldingene permanent?</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message">
+    <item quantity="one">Meldingen slettet permanent</item>
+    <item quantity="other">%d meldinger slettet permanent</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation">
+    <item quantity="one">Samtalen slettet permanent</item>
+    <item quantity="other">%d samtaler slettet permanent</item>
+  </plurals>
+  <string name="mailbox_action_label_messages_failed">Etikettoperasjonen mislyktes</string>
+  <string name="mailbox_action_label_messages_failed_retrieving_labels">Kunne ikke hente etiketter</string>
+  <string name="mailbox_action_failed_retrieving_colors">Kunne ikke hente fargeinnstillinger</string>
+  <string name="mailbox_action_move_messages_failed">Flytteoperasjonen mislyktes</string>
+  <string name="mailbox_action_move_messages_failed_retrieving_folders">Kunne ikke hente mapper</string>
+  <!--  Spotlight V6 Beta  -->
+  <string name="onboarding_headline_beta">Beta test the new app</string>
+  <string name="onboarding_description_beta">We\'ve rebuilt the app for stability and reliability. Share your feedback and stay tuned as we reintroduce features. Learn more.</string>
+  <string name="onboarding_description_beta_link">https://proton.me/support/mail-android-beta</string>
+  <string name="onboarding_description_beta_learn_more">Learn more</string>
+  <!--  Spotlight V6 GA  -->
+  <string name="onboarding_headline_ga">Welcome to the new app</string>
+  <string name="onboarding_description_ga">Completely rebuilt from scratch, the new Proton Mail app was made for stability and performance.</string>
+  <!--  Onboarding 1  -->
+  <string name="onboarding_privacy_for_all_headline">Privacy for all</string>
+  <string name="onboarding_privacy_for_all_description">Invite others to Proton Mail so you can all benefit from end-to-end encryption.</string>
+  <!--  Onboarding 2  -->
+  <string name="onboarding_easily_up_to_date_headline">Easily up-to-date</string>
+  <string name="onboarding_easily_up_to_date_description">Breeze through threaded messages in conversation mode.</string>
+  <!--  Onboarding 3  -->
+  <string name="onboarding_neat_and_tidy_headline">Neat and tidy</string>
+  <string name="onboarding_neat_and_tidy_description">File, label, and color code messages to create your perfect, custom inbox.</string>
+  <!--  Onboarding actions  -->
+  <string name="onboarding_next">Neste</string>
+  <string name="onboarding_get_started">Kom i gang</string>
+  <string name="onboarding_illustration_content_description">Onboarding illustration</string>
+  <string name="onboarding_close_content_description">Close</string>
+  <!-- Sidebar Beta label -->
+  <string name="sidebar_beta_version_title">Proton Mail Beta</string>
+  <string name="sidebar_beta_version_description">Tap to learn more about this project.</string>
+  <string name="sidebar_beta_version_icon_content_description">Navigate to KB article.</string>
+  <string name="mailbox_action_read_message">Message read updated</string>
+  <string name="mailbox_action_star_message">Message star updated</string>
+  <string name="mailbox_action_trash_message">Message moved to trash</string>
+  <string name="mailbox_action_archive_message">Message moved to archive</string>
+  <string name="mailbox_action_spam_message">Message moved to spam</string>
+</resources>

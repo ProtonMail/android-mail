@@ -17,6 +17,14 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
+  <string name="dialog_sign_out_account_title">Sign out</string>
+  <string name="dialog_sign_out_account_description">Are you sure you want to sign out?</string>
+  <string name="dialog_sign_out_account_confirm">Yes</string>
+  <string name="dialog_sign_out_account_cancel">No</string>
+  <string name="dialog_remove_account_title">Remove Account</string>
+  <string name="dialog_remove_account_description">You will sign out and remove all information associated with this account.</string>
+  <string name="dialog_remove_account_confirm">Remove</string>
+  <string name="dialog_remove_account_cancel">Cancel</string>
   <string name="user_select_other_account_content_description">選取其它帳號</string>
   <string name="you_are_offline">您處於離線狀態</string>
   <string name="feature_coming_soon">全新功能即將大展身手...</string>
@@ -25,7 +33,7 @@
   <string name="mailbox_message_sending_offline">未連線，郵件佇列等候傳送</string>
   <string name="mailbox_message_sending_success">郵件已傳送</string>
   <string name="mailbox_message_sending_error">傳送郵件時發生錯誤</string>
-  <string name="mailbox_message_sending_error_action">Go to drafts</string>
+  <string name="mailbox_message_sending_error_action">Go to Drafts</string>
   <string name="mailbox_attachment_uploading_error">上載附件出現錯誤</string>
   <string name="notification_switched_account">已切換至帳號「%s」</string>
   <string name="label_saved">已儲存標籤</string>

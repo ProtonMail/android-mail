@@ -91,6 +91,8 @@
   <string name="mail_settings_privacy_auto_show_embedded_images">Аўтаматычна паказваць убудаваныя відарысы</string>
   <string name="mail_settings_privacy_prevent_taking_screenshots">Прадухіляць здымкі экрана</string>
   <string name="mail_settings_privacy_request_link_confirmation">Запытваць пацвярджэнне пры пераходзе па спасылках</string>
+  <string name="mail_settings_privacy_background_sync">Сінхранізацыя ў фоне</string>
+  <string name="mail_settings_privacy_background_sync_description">Калі гэты параметр уключаны, то сінхранізацыя праграмы з серверам будзе адбывацца ў фонавым рэжыме. Адключэнне гэтай функцыі адключыць push-апавяшчэнні.</string>
   <string name="mail_settings_privacy_error_updating">Памылка абнаўлення налад</string>
   <string name="mail_settings_privacy_error_loading">Памылка загрузкі налад</string>
   <!-- Swipe Actions -->

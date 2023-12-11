@@ -74,8 +74,6 @@
     <item quantity="many">Вы сапраўды хочаце незваротна выдаліць гэтыя паведамленні?</item>
     <item quantity="other">Вы сапраўды хочаце незваротна выдаліць гэтыя паведамленні?</item>
   </plurals>
-  <string name="mailbox_action_delete_dialog_button_cancel">Скасаваць</string>
-  <string name="mailbox_action_delete_dialog_button_delete">Выдаліць</string>
   <plurals name="mailbox_action_delete_message">
     <item quantity="one">Паведамленне незваротна выдалена</item>
     <item quantity="few">%d паведамленні незваротна выдалены</item>
@@ -93,4 +91,35 @@
   <string name="mailbox_action_failed_retrieving_colors">Не ўдалося атрымаць налады колеру</string>
   <string name="mailbox_action_move_messages_failed">Збой аперацыі пераносу</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Не ўдалося атрымаць папкі</string>
+  <!--  Spotlight V6 Beta  -->
+  <string name="onboarding_headline_beta">Бэта-тэсціраванне новай праграмы</string>
+  <string name="onboarding_description_beta">Мы перапрацавалі праграму для стабільнасці і надзейнасці. Падзяліцеся сваім водгукам і будзьце ў курсе, калі мы ўкараняем новыя функцыі.</string>
+  <string name="onboarding_description_beta_link">https://proton.me/support/mail-android-beta</string>
+  <string name="onboarding_description_beta_learn_more">Даведацца больш</string>
+  <!--  Spotlight V6 GA  -->
+  <string name="onboarding_headline_ga">Сардэчна запрашаем у новую праграму</string>
+  <string name="onboarding_description_ga">Новая праграма Proton Mail цалкам перапрацавана з нуля, каб забяспечыць стабільнасць і прадукцыйнасць.</string>
+  <!--  Onboarding 1  -->
+  <string name="onboarding_privacy_for_all_headline">Прыватнасць для ўсяго</string>
+  <string name="onboarding_privacy_for_all_description">Запрасіце іншых у Proton Mail і вы зможаце атрымаць усе перавагі ад скразнога шыфравання.</string>
+  <!--  Onboarding 2  -->
+  <string name="onboarding_easily_up_to_date_headline">Лёгка абнаўляць</string>
+  <string name="onboarding_easily_up_to_date_description">Праглядайце ланцужкі паведамленняў у рэжыме размовы.</string>
+  <!--  Onboarding 3  -->
+  <string name="onboarding_neat_and_tidy_headline">Просты і лаканічны</string>
+  <string name="onboarding_neat_and_tidy_description">Файл, метка і пазначэнне паведамленняў колерам дапамогуць стварыць ідэальную паштовую скрыню, якая будзе пасаваць менавіта вам.</string>
+  <!--  Onboarding actions  -->
+  <string name="onboarding_next">Далей</string>
+  <string name="onboarding_get_started">Пачаць працу</string>
+  <string name="onboarding_illustration_content_description">Ілюстрацыі для азнаямлення</string>
+  <string name="onboarding_close_content_description">Закрыць</string>
+  <!-- Sidebar Beta label -->
+  <string name="sidebar_beta_version_title">Proton Mail Beta</string>
+  <string name="sidebar_beta_version_description">Націсніце, каб даведацца больш пра гэты праект.</string>
+  <string name="sidebar_beta_version_icon_content_description">Перайсці да артыкулаў базы ведаў.</string>
+  <string name="mailbox_action_read_message">Прачытанне паведамлення абноўлена</string>
+  <string name="mailbox_action_star_message">Пазнака зорачка паведамлення абноўлена</string>
+  <string name="mailbox_action_trash_message">Паведамленне перамешчана ў сметніцу</string>
+  <string name="mailbox_action_archive_message">Паведамленне перамешчана ў архіў</string>
+  <string name="mailbox_action_spam_message">Паведамленне перамешчана ў спам</string>
 </resources>

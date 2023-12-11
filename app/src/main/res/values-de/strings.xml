@@ -17,6 +17,14 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
+  <string name="dialog_sign_out_account_title">Abmelden</string>
+  <string name="dialog_sign_out_account_description">Bist du sicher, dass du dich abmelden möchtest?</string>
+  <string name="dialog_sign_out_account_confirm">Ja</string>
+  <string name="dialog_sign_out_account_cancel">Nein</string>
+  <string name="dialog_remove_account_title">Konto entfernen</string>
+  <string name="dialog_remove_account_description">Du wirst abgemeldet und alle Informationen, die mit diesem Konto verbunden sind, werden gelöscht.</string>
+  <string name="dialog_remove_account_confirm">Entfernen</string>
+  <string name="dialog_remove_account_cancel">Abbrechen</string>
   <string name="user_select_other_account_content_description">Anderes Konto auswählen</string>
   <string name="you_are_offline">Du bist offline</string>
   <string name="feature_coming_soon">Funktion demnächst verfügbar…</string>
@@ -25,7 +33,7 @@
   <string name="mailbox_message_sending_offline">Offline, die Nachricht ist in der Warteschlange für den Versand.</string>
   <string name="mailbox_message_sending_success">Nachricht gesendet</string>
   <string name="mailbox_message_sending_error">Fehler beim Senden der Nachricht</string>
-  <string name="mailbox_message_sending_error_action">Go to drafts</string>
+  <string name="mailbox_message_sending_error_action">Gehe zu Entwürfe</string>
   <string name="mailbox_attachment_uploading_error">Fehler beim Hochladen des Anhangs.</string>
   <string name="notification_switched_account">Zu Konto „%s“ gewechselt</string>
   <string name="label_saved">Kategorie gespeichert</string>

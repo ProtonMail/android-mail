@@ -91,6 +91,8 @@
   <string name="mail_settings_privacy_auto_show_embedded_images">Mostra automaticamente le immagini incorporate</string>
   <string name="mail_settings_privacy_prevent_taking_screenshots">Blocca gli screenshot</string>
   <string name="mail_settings_privacy_request_link_confirmation">Richiedi la conferma dei link</string>
+  <string name="mail_settings_privacy_background_sync">Sincronizzazione in background</string>
+  <string name="mail_settings_privacy_background_sync_description">Se questa opzione è abilitata, l\'app si sincronizzerà con il server in background. Disabilitare questa funzione disabiliterà anche le notifiche push.</string>
   <string name="mail_settings_privacy_error_updating">Errore nell\'aggiornamento delle impostazioni</string>
   <string name="mail_settings_privacy_error_loading">Errore nel caricamento delle impostazioni</string>
   <!-- Swipe Actions -->
