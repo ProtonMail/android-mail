@@ -47,6 +47,7 @@ import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.captionWeak
 import me.proton.core.compose.theme.defaultNorm
 import me.proton.core.compose.theme.defaultSmallStrongNorm
+import kotlin.math.min
 
 @Composable
 fun FormInputField(
@@ -76,10 +77,8 @@ fun FormInputField(
                 .fillMaxWidth(),
             value = textFieldValue,
             onValueChange = {
-                if (it.text.length <= maxCharacters) {
-                    textFieldValue = it
-                    onTextChange(it.text)
-                }
+                textFieldValue = it.copy(text = it.text.substring(0, min(it.text.length, maxCharacters)))
+                onTextChange(textFieldValue.text)
             },
             placeholder = {
                 Text(
