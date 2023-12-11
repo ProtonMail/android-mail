@@ -208,7 +208,9 @@ class FolderFormViewModel @Inject constructor(
         }
         if (!isFolderNameAllowed) return emitNewStateFor(FolderFormEvent.FolderAlreadyExists)
 
-        createFolder(primaryUserId(), name, color, parentId, notifications)
+        createFolder(primaryUserId(), name, color, parentId, notifications).getOrElse {
+            return emitNewStateFor(FolderFormEvent.SaveFolderError)
+        }
         emitNewStateFor(FolderFormEvent.FolderCreated)
     }
 

@@ -25,6 +25,7 @@ import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
@@ -323,6 +324,42 @@ class FolderFormViewModelTest {
                     isSaveEnabled = true,
                     closeWithSuccess = Effect.of(TextUiModel(R.string.folder_saved)),
                     displayCreateLoader = true
+                ),
+                awaitItem()
+            )
+        }
+    }
+
+    @Test
+    fun `given create state, when action folder save fails, then emits show error snack`() = runTest {
+        // Given
+        val loadedState = loadedCreateState
+        every { savedStateHandle.get<String>(FolderFormScreen.FolderFormLabelIdKey) } returns null
+        coEvery { isLabelNameAllowed.invoke(userId, defaultTestUpdatedName) } returns true.right()
+        coEvery { isLabelLimitReached.invoke(userId, LabelType.MessageFolder) } returns false.right()
+        coEvery {
+            createFolder.invoke(userId, any(), any(), any(), any())
+        } returns DataError.Remote.Http(NetworkError.Unknown).left()
+
+        folderFormViewModel.state.test {
+            // Initial loaded state
+            val actual = awaitItem()
+            assertEquals(loadedState, actual)
+
+            // When
+            folderFormViewModel.submit(FolderFormViewAction.FolderNameChanged(defaultTestUpdatedName))
+            // Then
+            assertEquals(loadedState.copy(name = defaultTestUpdatedName, isSaveEnabled = true), awaitItem())
+
+            // When
+            folderFormViewModel.submit(FolderFormViewAction.OnSaveClick)
+            // Then
+            assertEquals(
+                loadedState.copy(
+                    name = defaultTestUpdatedName,
+                    isSaveEnabled = true,
+                    showErrorSnackbar = Effect.of(TextUiModel(R.string.save_folder_error)),
+                    displayCreateLoader = false
                 ),
                 awaitItem()
             )

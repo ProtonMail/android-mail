@@ -25,6 +25,7 @@ import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.maillabel.domain.usecase.CreateLabel
@@ -226,6 +227,40 @@ class LabelFormViewModelTest {
                     isSaveEnabled = true,
                     displayCreateLoader = true,
                     closeWithSave = Effect.of(Unit)
+                ),
+                awaitItem()
+            )
+        }
+    }
+
+    @Test
+    fun `given create state, when action label save fails, then emits show error snack`() = runTest {
+        // Given
+        val loadedState = loadedCreateState
+        every { savedStateHandle.get<String>(LabelFormScreen.LabelFormLabelIdKey) } returns null
+        coEvery { isLabelNameAllowed.invoke(userId, defaultTestUpdatedName) } returns true.right()
+        coEvery { isLabelLimitReached.invoke(userId, LabelType.MessageLabel) } returns false.right()
+        coEvery { createLabel.invoke(userId, any(), any()) } returns DataError.Remote.Http(NetworkError.Unknown).left()
+
+        labelFormViewModel.state.test {
+            // Initial loaded state
+            val actual = awaitItem()
+            assertEquals(loadedState, actual)
+
+            // When
+            labelFormViewModel.submit(LabelFormViewAction.LabelNameChanged(defaultTestUpdatedName))
+            // Then
+            assertEquals(loadedState.copy(name = defaultTestUpdatedName, isSaveEnabled = true), awaitItem())
+
+            // When
+            labelFormViewModel.submit(LabelFormViewAction.OnSaveClick)
+            // Then
+            assertEquals(
+                loadedState.copy(
+                    name = defaultTestUpdatedName,
+                    isSaveEnabled = true,
+                    displayCreateLoader = false,
+                    showSaveLabelErrorSnackbar = Effect.of(Unit)
                 ),
                 awaitItem()
             )

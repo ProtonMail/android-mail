@@ -159,7 +159,9 @@ class LabelFormViewModel @Inject constructor(
         }
         if (!isLabelNameAllowed) return emitNewStateFor(LabelFormEvent.LabelAlreadyExists)
 
-        createLabel(primaryUserId(), name, color)
+        createLabel(primaryUserId(), name, color).getOrElse {
+            return emitNewStateFor(LabelFormEvent.SaveLabelError)
+        }
         emitNewStateFor(LabelFormEvent.LabelCreated)
     }
 
