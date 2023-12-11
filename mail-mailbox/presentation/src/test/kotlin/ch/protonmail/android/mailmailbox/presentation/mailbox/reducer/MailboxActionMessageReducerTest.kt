@@ -3,6 +3,7 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
@@ -35,23 +36,37 @@ internal class MailboxActionMessageReducerTest(
                 expectedState = Effect.of(TextUiModel(R.plurals.mailbox_action_trash, 5))
             ),
             TestInput(
-                operation = MailboxViewAction.SwipeStarAction(UserIdSample.Primary, "itemId", false),
+                operation = MailboxViewAction.SwipeStarAction(
+                    UserIdSample.Primary,
+                    "itemId",
+                    false,
+                    MailboxItemType.Message
+                ),
                 expectedState = Effect.of(TextUiModel(R.string.mailbox_action_star_message))
             ),
             TestInput(
-                operation = MailboxViewAction.SwipeTrashAction(UserIdSample.Primary, "itemId"),
+                operation = MailboxViewAction.SwipeTrashAction(UserIdSample.Primary, "itemId", MailboxItemType.Message),
                 expectedState = Effect.of(TextUiModel(R.string.mailbox_action_trash_message))
             ),
             TestInput(
-                operation = MailboxViewAction.SwipeArchiveAction(UserIdSample.Primary, "itemId"),
+                operation = MailboxViewAction.SwipeArchiveAction(
+                    UserIdSample.Primary,
+                    "itemId",
+                    MailboxItemType.Message
+                ),
                 expectedState = Effect.of(TextUiModel(R.string.mailbox_action_archive_message))
             ),
             TestInput(
-                operation = MailboxViewAction.SwipeReadAction(UserIdSample.Primary, "itemId", false),
+                operation = MailboxViewAction.SwipeReadAction(
+                    UserIdSample.Primary,
+                    "itemId",
+                    false,
+                    MailboxItemType.Message
+                ),
                 expectedState = Effect.of(TextUiModel(R.string.mailbox_action_read_message))
             ),
             TestInput(
-                operation = MailboxViewAction.SwipeSpamAction(UserIdSample.Primary, "itemId"),
+                operation = MailboxViewAction.SwipeSpamAction(UserIdSample.Primary, "itemId", MailboxItemType.Message),
                 expectedState = Effect.of(TextUiModel(R.string.mailbox_action_spam_message))
             )
         )

@@ -53,6 +53,7 @@ import ch.protonmail.android.maillabel.presentation.model.LabelSelectedState
 import ch.protonmail.android.maillabel.presentation.toCustomUiModel
 import ch.protonmail.android.maillabel.presentation.toUiModels
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
+import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
 import ch.protonmail.android.mailmailbox.domain.model.UnreadCounter
 import ch.protonmail.android.mailmailbox.domain.model.toMailboxItemType
@@ -455,27 +456,26 @@ class MailboxViewModel @Inject constructor(
     }
 
     private suspend fun handleSwipeReadAction(swipeReadAction: MailboxViewAction.SwipeReadAction) {
-        val preferredViewMode = getPreferredViewMode()
         if (swipeReadAction.isRead) {
-            when (preferredViewMode) {
-                ViewMode.ConversationGrouping -> markConversationsAsUnread(
+            when (swipeReadAction.viewMode) {
+                MailboxItemType.Conversation -> markConversationsAsUnread(
                     userId = swipeReadAction.userId,
                     conversationIds = listOf(ConversationId(swipeReadAction.itemId))
                 )
 
-                ViewMode.NoConversationGrouping -> markMessagesAsUnread(
+                MailboxItemType.Message -> markMessagesAsUnread(
                     userId = swipeReadAction.userId,
                     messageIds = listOf(MessageId(swipeReadAction.itemId))
                 )
             }
         } else {
-            when (preferredViewMode) {
-                ViewMode.ConversationGrouping -> markConversationsAsRead(
+            when (swipeReadAction.viewMode) {
+                MailboxItemType.Conversation -> markConversationsAsRead(
                     userId = swipeReadAction.userId,
                     conversationIds = listOf(ConversationId(swipeReadAction.itemId))
                 )
 
-                ViewMode.NoConversationGrouping -> markMessagesAsRead(
+                MailboxItemType.Message -> markMessagesAsRead(
                     userId = swipeReadAction.userId,
                     messageIds = listOf(MessageId(swipeReadAction.itemId))
                 )
@@ -485,27 +485,26 @@ class MailboxViewModel @Inject constructor(
     }
 
     private suspend fun handleSwipeStarAction(swipeStarAction: MailboxViewAction.SwipeStarAction) {
-        val preferredViewMode = getPreferredViewMode()
         if (swipeStarAction.isStarred) {
-            when (preferredViewMode) {
-                ViewMode.ConversationGrouping -> unStarConversations(
+            when (swipeStarAction.viewMode) {
+                MailboxItemType.Conversation -> unStarConversations(
                     userId = swipeStarAction.userId,
                     conversationIds = listOf(ConversationId(swipeStarAction.itemId))
                 )
 
-                ViewMode.NoConversationGrouping -> unStarMessages(
+                MailboxItemType.Message -> unStarMessages(
                     userId = swipeStarAction.userId,
                     messageIds = listOf(MessageId(swipeStarAction.itemId))
                 )
             }
         } else {
-            when (preferredViewMode) {
-                ViewMode.ConversationGrouping -> starConversations(
+            when (swipeStarAction.viewMode) {
+                MailboxItemType.Conversation -> starConversations(
                     userId = swipeStarAction.userId,
                     conversationIds = listOf(ConversationId(swipeStarAction.itemId))
                 )
 
-                ViewMode.NoConversationGrouping -> starMessages(
+                MailboxItemType.Message -> starMessages(
                     userId = swipeStarAction.userId,
                     messageIds = listOf(MessageId(swipeStarAction.itemId))
                 )
@@ -515,34 +514,46 @@ class MailboxViewModel @Inject constructor(
     }
 
     private suspend fun handleSwipeArchiveAction(swipeArchiveAction: MailboxViewAction.SwipeArchiveAction) {
-        swipeArchiveAction.let { moveSingleItemToDestination(it.userId, it.itemId, SystemLabelId.Archive.labelId) }
-        emitNewStateFrom(swipeArchiveAction)
+        if (isActionAllowedForCurrentLabel(SystemLabelId.Archive.labelId)) {
+            swipeArchiveAction.let {
+                moveSingleItemToDestination(it.userId, it.itemId, SystemLabelId.Archive.labelId, it.viewMode)
+            }
+            emitNewStateFrom(swipeArchiveAction)
+        }
     }
 
     private suspend fun handleSwipeSpamAction(swipeSpamAction: MailboxViewAction.SwipeSpamAction) {
-        swipeSpamAction.let { moveSingleItemToDestination(it.userId, it.itemId, SystemLabelId.Spam.labelId) }
-        emitNewStateFrom(swipeSpamAction)
+        if (isActionAllowedForCurrentLabel(SystemLabelId.Spam.labelId)) {
+            swipeSpamAction.let {
+                moveSingleItemToDestination(it.userId, it.itemId, SystemLabelId.Spam.labelId, it.viewMode)
+            }
+            emitNewStateFrom(swipeSpamAction)
+        }
     }
 
     private suspend fun handleSwipeTrashAction(swipeTrashAction: MailboxViewAction.SwipeTrashAction) {
-        swipeTrashAction.let { moveSingleItemToDestination(it.userId, it.itemId, SystemLabelId.Trash.labelId) }
-        emitNewStateFrom(swipeTrashAction)
+        if (isActionAllowedForCurrentLabel(SystemLabelId.Trash.labelId)) {
+            swipeTrashAction.let {
+                moveSingleItemToDestination(it.userId, it.itemId, SystemLabelId.Trash.labelId, it.viewMode)
+            }
+            emitNewStateFrom(swipeTrashAction)
+        }
     }
 
     private suspend fun moveSingleItemToDestination(
         userId: UserId,
         itemId: String,
-        labelId: LabelId
+        labelId: LabelId,
+        type: MailboxItemType
     ) {
-        val preferredViewMode = getPreferredViewMode()
-        when (preferredViewMode) {
-            ViewMode.ConversationGrouping -> moveConversations(
+        when (type) {
+            MailboxItemType.Conversation -> moveConversations(
                 userId = userId,
                 conversationIds = listOf(ConversationId(itemId)),
                 labelId = labelId
             )
 
-            ViewMode.NoConversationGrouping -> moveMessages(
+            MailboxItemType.Message -> moveMessages(
                 userId = userId,
                 messageIds = listOf(MessageId(itemId)),
                 labelId = labelId
@@ -1042,6 +1053,12 @@ class MailboxViewModel @Inject constructor(
     private fun List<MessageWithLabels>.partiallyContainsLabel(labelId: LabelId): Boolean {
         return this.any { messageWithLabel ->
             messageWithLabel.labels.any { it.labelId == labelId }
+        }
+    }
+
+    private fun isActionAllowedForCurrentLabel(labelId: LabelId): Boolean {
+        return state.value.mailboxListState.let { listState ->
+            listState is MailboxListState.Data && listState.currentMailLabel.id.labelId != labelId
         }
     }
 

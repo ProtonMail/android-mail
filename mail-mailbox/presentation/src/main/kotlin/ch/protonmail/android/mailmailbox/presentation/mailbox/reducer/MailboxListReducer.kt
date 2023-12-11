@@ -208,7 +208,7 @@ class MailboxListReducer @Inject constructor() {
                 currentMailLabel = currentState.currentMailLabel,
                 selectedMailboxItems = setOf(SelectedMailboxItem(item.userId, item.id, item.isRead, item.showStar)),
                 selectionModeEnabled = currentState.selectionModeEnabled,
-                swipeActions = null
+                swipeActions = currentState.swipeActions
             )
 
             else -> currentState
@@ -223,7 +223,7 @@ class MailboxListReducer @Inject constructor() {
             refreshErrorEffect = Effect.empty(),
             refreshRequested = false,
             selectionModeEnabled = currentState.selectionModeEnabled,
-            swipeActions = null
+            swipeActions = currentState.swipeActions
         )
 
         else -> currentState
