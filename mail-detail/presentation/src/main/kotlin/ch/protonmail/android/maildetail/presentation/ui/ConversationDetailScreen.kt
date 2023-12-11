@@ -490,15 +490,23 @@ private fun MessagesContent(
     // We will insert a placeholder after the last item to move it to the top when scrolled
     val lazyColumnHeight = remember { mutableStateOf(0) }
     var placeholderHeight by remember { mutableStateOf(0) }
+
+    // Detect if user manually scrolled the list
     var userScrolled by remember { mutableStateOf(false) }
+    var userTapped by remember { mutableStateOf(false) }
+    LaunchedEffect(key1 = listState.isScrollInProgress) {
+        if (!userScrolled && userTapped && listState.isScrollInProgress) {
+            userScrolled = true
+        }
+    }
+
     LazyColumn(
         modifier = modifier
             .testTag(ConversationDetailScreenTestTags.MessagesList)
             .pointerInteropFilter { event ->
-                if (!userScrolled && event.action == android.view.MotionEvent.ACTION_DOWN) {
-                    userScrolled = true
+                if (!userTapped && event.action == android.view.MotionEvent.ACTION_DOWN) {
+                    userTapped = true
                 }
-
                 false // Allow the event to propagate
             }
             .onGloballyPositioned {
