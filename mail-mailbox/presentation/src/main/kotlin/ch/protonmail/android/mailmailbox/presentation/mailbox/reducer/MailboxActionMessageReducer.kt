@@ -43,9 +43,7 @@ class MailboxActionMessageReducer @Inject constructor() {
             }
 
             is MailboxViewAction.SwipeArchiveAction -> TextUiModel(R.string.mailbox_action_archive_message)
-            is MailboxViewAction.SwipeReadAction -> TextUiModel(R.string.mailbox_action_read_message)
             is MailboxViewAction.SwipeSpamAction -> TextUiModel(R.string.mailbox_action_spam_message)
-            is MailboxViewAction.SwipeStarAction -> TextUiModel(R.string.mailbox_action_star_message)
             is MailboxViewAction.SwipeTrashAction -> TextUiModel(R.string.mailbox_action_trash_message)
         }
         return Effect.of(textUiModel)

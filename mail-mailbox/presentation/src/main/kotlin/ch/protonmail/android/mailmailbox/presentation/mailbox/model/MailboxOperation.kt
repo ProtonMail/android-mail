@@ -84,7 +84,7 @@ internal sealed interface MailboxViewAction : MailboxOperation {
         val itemId: String,
         val isRead: Boolean,
         val viewMode: MailboxItemType
-    ) : MailboxViewAction, AffectingActionMessage
+    ) : MailboxViewAction
 
     data class SwipeArchiveAction(val userId: UserId, val itemId: String, val viewMode: MailboxItemType) :
         MailboxViewAction, AffectingActionMessage
@@ -100,7 +100,7 @@ internal sealed interface MailboxViewAction : MailboxOperation {
         val itemId: String,
         val isStarred: Boolean,
         val viewMode: MailboxItemType
-    ) : MailboxViewAction, AffectingActionMessage
+    ) : MailboxViewAction
 
     object RequestMoveToBottomSheet : MailboxViewAction, AffectingBottomSheet
     data class MoveToDestinationSelected(
