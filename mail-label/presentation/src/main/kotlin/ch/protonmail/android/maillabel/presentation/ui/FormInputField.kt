@@ -72,6 +72,8 @@ fun FormInputField(
             mutableStateOf(TextFieldValue(initialValue))
         }
         OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth(),
             value = textFieldValue,
             onValueChange = {
                 if (it.text.length <= maxCharacters) {
@@ -88,7 +90,7 @@ fun FormInputField(
             },
             shape = RoundedCornerShape(ProtonDimens.LargeCornerRadius),
             colors = formTextFieldColors(),
-            maxLines = 1,
+            singleLine = true,
             textStyle = ProtonTheme.typography.defaultNorm,
             keyboardOptions = KeyboardOptions.Default.copy(
                 capitalization = KeyboardCapitalization.Sentences,
@@ -110,9 +112,7 @@ fun FormInputField(
                         }
                     )
                 }
-            },
-            modifier = Modifier
-                .fillMaxWidth()
+            }
         )
 
         Text(
