@@ -68,8 +68,7 @@ internal class AccountSettingsScreenTest {
                         onPrivacyClick = {},
                         onLabelsClick = {},
                         onFoldersClick = {},
-                        onLocalStorageClick = {},
-                        onSnoozeNotificationsClick = {}
+                        onLocalStorageClick = {}
                     )
                 )
             }
@@ -81,11 +80,6 @@ internal class AccountSettingsScreenTest {
         composeTestRule.onNodeWithText(string.mail_settings_account).assertIsDisplayed()
         composeTestRule.onNodeWithText(string.mail_settings_addresses).assertIsDisplayed()
         composeTestRule.onNodeWithText(string.mail_settings_mailbox).assertIsDisplayed()
-        composeTestRule
-            .onNodeWithTag(TEST_TAG_ACCOUNT_SETTINGS_LIST)
-            .onChild()
-            .performScrollToNode(hasText(string.mail_settings_snooze))
-            .assertIsDisplayed()
     }
 
     @Test
@@ -150,12 +144,6 @@ internal class AccountSettingsScreenTest {
             .onNodeWithTag(TEST_TAG_ACCOUNT_SETTINGS_LIST)
             .onChild()
             .performScrollToNode(hasText(string.mail_settings_local_storage))
-            .assertIsDisplayed()
-
-        composeTestRule
-            .onNodeWithTag(TEST_TAG_ACCOUNT_SETTINGS_LIST)
-            .onChild()
-            .performScrollToNode(hasText(string.mail_settings_snooze_notifications))
             .assertIsDisplayed()
     }
 }

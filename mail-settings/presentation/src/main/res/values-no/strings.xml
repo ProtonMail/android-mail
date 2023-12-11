@@ -61,8 +61,6 @@
   <string name="mail_settings_labels">Etiketter</string>
   <string name="mail_settings_folders">Mapper</string>
   <string name="mail_settings_local_storage">Lokal lagring</string>
-  <string name="mail_settings_snooze">Slumre</string>
-  <string name="mail_settings_snooze_notifications">Slumre varsler</string>
   <string name="mail_settings_conversation_mode">Samtalemodus</string>
   <string name="mail_settings_not_set">Ikke angitt</string>
   <string name="mail_settings_conversation_mode_hint">Grupper e-poster fra den samme samtalen i innboksen eller vis dem enkeltvis.</string>

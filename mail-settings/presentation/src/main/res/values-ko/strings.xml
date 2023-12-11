@@ -61,8 +61,6 @@
   <string name="mail_settings_labels">라벨</string>
   <string name="mail_settings_folders">폴더함</string>
   <string name="mail_settings_local_storage">로컬 저장소</string>
-  <string name="mail_settings_snooze">방해 금지</string>
-  <string name="mail_settings_snooze_notifications">방해금지 모드</string>
   <string name="mail_settings_conversation_mode">대화 모드</string>
   <string name="mail_settings_not_set">미설정</string>
   <string name="mail_settings_conversation_mode_hint">받은 편지함에 있는 동일한 메일을 함께 그룹화하거나 별도로 표시</string>

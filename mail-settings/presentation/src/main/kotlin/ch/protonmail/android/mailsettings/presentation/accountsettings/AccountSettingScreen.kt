@@ -160,17 +160,6 @@ fun AccountSettingScreen(
                         name = stringResource(id = string.mail_settings_local_storage),
                         onClick = actions.onLocalStorageClick
                     )
-                    Divider()
-                }
-
-                item { ProtonSettingsHeader(title = string.mail_settings_snooze) }
-                item {
-                    ProtonSettingsItem(
-                        name = stringResource(id = string.mail_settings_snooze_notifications),
-                        hint = "(Off)",
-                        onClick = actions.onSnoozeNotificationsClick
-                    )
-                    Divider()
                 }
             }
         }
@@ -226,8 +215,7 @@ object AccountSettingScreen {
         val onPrivacyClick: () -> Unit,
         val onLabelsClick: () -> Unit,
         val onFoldersClick: () -> Unit,
-        val onLocalStorageClick: () -> Unit,
-        val onSnoozeNotificationsClick: () -> Unit
+        val onLocalStorageClick: () -> Unit
     )
 }
 
@@ -261,8 +249,7 @@ fun AccountSettingsScreenPreview() {
             onPrivacyClick = {},
             onLabelsClick = {},
             onFoldersClick = {},
-            onLocalStorageClick = {},
-            onSnoozeNotificationsClick = {}
+            onLocalStorageClick = {}
         )
     )
 }
