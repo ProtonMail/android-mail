@@ -60,7 +60,6 @@
   <string name="mail_settings_privacy">Integritet</string>
   <string name="mail_settings_labels">Etiketter</string>
   <string name="mail_settings_folders">Mappar</string>
-  <string name="mail_settings_local_storage">Lokalt lagringsutrymme</string>
   <string name="mail_settings_conversation_mode">Konversationsläge</string>
   <string name="mail_settings_not_set">Inte inställd</string>
   <string name="mail_settings_conversation_mode_hint">Gruppera e-postmeddelanden i samma konversation tillsammans i din inkorg eller visa dem separat</string>

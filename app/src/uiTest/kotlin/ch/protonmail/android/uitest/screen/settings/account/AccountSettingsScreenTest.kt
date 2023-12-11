@@ -67,8 +67,7 @@ internal class AccountSettingsScreenTest {
                         onDisplayNameClick = {},
                         onPrivacyClick = {},
                         onLabelsClick = {},
-                        onFoldersClick = {},
-                        onLocalStorageClick = {}
+                        onFoldersClick = {}
                     )
                 )
             }
@@ -138,12 +137,6 @@ internal class AccountSettingsScreenTest {
             .onNodeWithTag(TEST_TAG_ACCOUNT_SETTINGS_LIST)
             .onChild()
             .performScrollToNode(hasText(string.mail_settings_folders))
-            .assertIsDisplayed()
-
-        composeTestRule
-            .onNodeWithTag(TEST_TAG_ACCOUNT_SETTINGS_LIST)
-            .onChild()
-            .performScrollToNode(hasText(string.mail_settings_local_storage))
             .assertIsDisplayed()
     }
 }

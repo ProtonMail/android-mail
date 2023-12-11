@@ -60,7 +60,6 @@
   <string name="mail_settings_privacy">Súkromie</string>
   <string name="mail_settings_labels">Štítky</string>
   <string name="mail_settings_folders">Priečinky</string>
-  <string name="mail_settings_local_storage">Lokálne úložisko</string>
   <string name="mail_settings_conversation_mode">Režim konverzácie</string>
   <string name="mail_settings_not_set">Nenastavené</string>
   <string name="mail_settings_conversation_mode_hint">Zoskupiť emaily v rovnakej konverzácii vo vašej doručenej pošte alebo ich zobraziť samostatne</string>

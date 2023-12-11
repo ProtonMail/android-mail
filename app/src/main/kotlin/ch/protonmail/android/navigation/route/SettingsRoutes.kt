@@ -40,11 +40,7 @@ import ch.protonmail.android.navigation.Launcher
 import ch.protonmail.android.navigation.model.Destination.Screen
 import me.proton.core.compose.navigation.require
 
-fun NavGraphBuilder.addAccountSettings(
-    navController: NavHostController,
-    launcherActions: Launcher.Actions,
-    showFeatureMissingSnackbar: () -> Unit
-) {
+fun NavGraphBuilder.addAccountSettings(navController: NavHostController, launcherActions: Launcher.Actions) {
     composable(route = Screen.AccountSettings.route) {
         AccountSettingScreen(
             actions = AccountSettingScreen.Actions(
@@ -56,8 +52,7 @@ fun NavGraphBuilder.addAccountSettings(
                 onDisplayNameClick = { navController.navigate(Screen.DisplayNameSettings.route) },
                 onPrivacyClick = { navController.navigate(Screen.PrivacySettings.route) },
                 onLabelsClick = { navController.navigate(Screen.LabelList.route) },
-                onFoldersClick = { navController.navigate(Screen.FolderList.route) },
-                onLocalStorageClick = { showFeatureMissingSnackbar() }
+                onFoldersClick = { navController.navigate(Screen.FolderList.route) }
             )
         )
     }

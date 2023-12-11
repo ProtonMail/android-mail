@@ -60,7 +60,6 @@
   <string name="mail_settings_privacy">Απόρρητο</string>
   <string name="mail_settings_labels">Ετικέτες</string>
   <string name="mail_settings_folders">Φάκελοι</string>
-  <string name="mail_settings_local_storage">Τοπικός χώρος αποθήκευσης</string>
   <string name="mail_settings_conversation_mode">Λειτουργία συνομιλίας</string>
   <string name="mail_settings_not_set">Μη ορισμένο</string>
   <string name="mail_settings_conversation_mode_hint">Ομαδοποιήστε τα μηνύματα της ίδιας συνομιλίας στα εισερχόμενά σας ή εμφανίστε τα ξεχωριστά</string>

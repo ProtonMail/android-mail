@@ -60,7 +60,6 @@
   <string name="mail_settings_privacy">隱私</string>
   <string name="mail_settings_labels">標籤</string>
   <string name="mail_settings_folders">資料夾</string>
-  <string name="mail_settings_local_storage">本機儲存</string>
   <string name="mail_settings_conversation_mode">交談群组模式</string>
   <string name="mail_settings_not_set">未設定</string>
   <string name="mail_settings_conversation_mode_hint">收件匣可將同一對話的電郵，以群組或單獨方式陳列顯示</string>

@@ -60,7 +60,6 @@
   <string name="mail_settings_privacy">Datenschutz</string>
   <string name="mail_settings_labels">Kategorien</string>
   <string name="mail_settings_folders">Ordner</string>
-  <string name="mail_settings_local_storage">Lokaler Speicher</string>
   <string name="mail_settings_conversation_mode">Unterhaltungsmodus</string>
   <string name="mail_settings_not_set">Nicht festgelegt</string>
   <string name="mail_settings_conversation_mode_hint">Gruppiere E-Mails zum gleichen Thema in deinem Posteingang oder zeige diese getrennt an</string>

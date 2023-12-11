@@ -60,7 +60,6 @@
   <string name="mail_settings_privacy">პირადი მონაცემები</string>
   <string name="mail_settings_labels">ჭდეები</string>
   <string name="mail_settings_folders">საქაღალდეები</string>
-  <string name="mail_settings_local_storage">ლოკალური საცავი</string>
   <string name="mail_settings_conversation_mode">საუბრის რეჟიმი</string>
   <string name="mail_settings_not_set">დაყენებული არაა</string>
   <string name="mail_settings_conversation_mode_hint">ელფოსტების ერთ საუბრად და ცალ-ცალკე ჩვენებას შორის გადართვა</string>

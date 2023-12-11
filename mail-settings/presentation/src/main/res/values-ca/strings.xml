@@ -60,7 +60,6 @@
   <string name="mail_settings_privacy">Privacitat</string>
   <string name="mail_settings_labels">Etiquetes</string>
   <string name="mail_settings_folders">Carpetes</string>
-  <string name="mail_settings_local_storage">Emmagatzematge local</string>
   <string name="mail_settings_conversation_mode">Mode de conversa</string>
   <string name="mail_settings_not_set">Sense definir</string>
   <string name="mail_settings_conversation_mode_hint">Agrupeu correus electrònics de la mateixa conversa a la safata d\'entrada o mostreu-los per separat</string>

@@ -60,7 +60,6 @@
   <string name="mail_settings_privacy">Confidentialité</string>
   <string name="mail_settings_labels">Labels</string>
   <string name="mail_settings_folders">Dossiers</string>
-  <string name="mail_settings_local_storage">Stockage local</string>
   <string name="mail_settings_conversation_mode">Mode conversation</string>
   <string name="mail_settings_not_set">Non défini</string>
   <string name="mail_settings_conversation_mode_hint">Regroupez les messages d\'une même conversation dans votre boite de réception ou affichez-les séparément.</string>

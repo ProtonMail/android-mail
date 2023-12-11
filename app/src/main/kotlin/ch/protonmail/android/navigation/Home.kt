@@ -325,13 +325,7 @@ fun Home(
                     }
                 )
                 // settings
-                addAccountSettings(
-                    navController,
-                    launcherActions,
-                    showFeatureMissingSnackbar = {
-                        showFeatureMissingSnackbar()
-                    }
-                )
+                addAccountSettings(navController, launcherActions)
                 addAlternativeRoutingSetting(navController)
                 addCombinedContactsSetting(navController)
                 addConversationModeSettings(navController)

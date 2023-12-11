@@ -60,7 +60,6 @@
   <string name="mail_settings_privacy">Prywatność</string>
   <string name="mail_settings_labels">Etykiety</string>
   <string name="mail_settings_folders">Foldery</string>
-  <string name="mail_settings_local_storage">Magazyn lokalny</string>
   <string name="mail_settings_conversation_mode">Tryb wątku</string>
   <string name="mail_settings_not_set">Nie ustawiono</string>
   <string name="mail_settings_conversation_mode_hint">Grupuj wiadomości w skrzynce pocztowej do wątku lub wyświetlaj je oddzielnie</string>

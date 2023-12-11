@@ -60,7 +60,6 @@
   <string name="mail_settings_privacy">Privatliv</string>
   <string name="mail_settings_labels">Etiketter</string>
   <string name="mail_settings_folders">Mapper</string>
-  <string name="mail_settings_local_storage">Lokalt lager</string>
   <string name="mail_settings_conversation_mode">Samtaletilstand</string>
   <string name="mail_settings_not_set">Ikke indstillet</string>
   <string name="mail_settings_conversation_mode_hint">Gruppér e-mails i den samme samtale sammen i din indbakke, eller vis dem hver for sig</string>

@@ -60,7 +60,6 @@
   <string name="mail_settings_privacy">Soukromí</string>
   <string name="mail_settings_labels">Štítky</string>
   <string name="mail_settings_folders">Složky</string>
-  <string name="mail_settings_local_storage">Místní úložiště</string>
   <string name="mail_settings_conversation_mode">Režim konverzace</string>
   <string name="mail_settings_not_set">Nenastaveno</string>
   <string name="mail_settings_conversation_mode_hint">E-maily stejné konverzace v doručené poště seskupit a nebo zobrazit samostatně</string>

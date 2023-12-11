@@ -60,7 +60,6 @@
   <string name="mail_settings_privacy">Privacidad</string>
   <string name="mail_settings_labels">Etiquetas</string>
   <string name="mail_settings_folders">Carpetas</string>
-  <string name="mail_settings_local_storage">Almacenamiento local</string>
   <string name="mail_settings_conversation_mode">Modo de conversación</string>
   <string name="mail_settings_not_set">No definido</string>
   <string name="mail_settings_conversation_mode_hint">Agrupa correos electrónicos en la misma conversación juntos en su bandeja de entrada o los muestra por separado</string>

@@ -60,7 +60,6 @@
   <string name="mail_settings_privacy">Gizlilik</string>
   <string name="mail_settings_labels">Etiketler</string>
   <string name="mail_settings_folders">Klasörler</string>
-  <string name="mail_settings_local_storage">Yerel depolama alanı</string>
   <string name="mail_settings_conversation_mode">Yazışma kipi</string>
   <string name="mail_settings_not_set">Ayarlanmamış</string>
   <string name="mail_settings_conversation_mode_hint">Aynı yazışmadaki e-postaları Gelen kutunuzda gruplayın ya da ayrı ayrı görüntüleyin</string>

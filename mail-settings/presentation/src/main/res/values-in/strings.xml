@@ -60,7 +60,6 @@
   <string name="mail_settings_privacy">Privasi</string>
   <string name="mail_settings_labels">Label</string>
   <string name="mail_settings_folders">Folder</string>
-  <string name="mail_settings_local_storage">Penyimpanan lokal</string>
   <string name="mail_settings_conversation_mode">Mode percakapan</string>
   <string name="mail_settings_not_set">Belum ditentukan</string>
   <string name="mail_settings_conversation_mode_hint">Tentukan apakah surel yang terhubung dalam suatu rantai percakapan akan saling dikelompokkan atau ditampilkan secara terpisah</string>
