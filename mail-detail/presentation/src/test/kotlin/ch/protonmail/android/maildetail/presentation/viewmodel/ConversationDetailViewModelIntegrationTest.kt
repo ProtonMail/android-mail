@@ -487,13 +487,12 @@ class ConversationDetailViewModelIntegrationTest {
     }
 
     @Test
-    fun `Should show expand collapse toggle button when the expanded message contains quote`() = runTest {
+    fun `Should show expand button with initially collapsed mode when message contains quote`() = runTest {
         // given
         val messages = nonEmptyListOf(
             ConversationDetailMessageUiModelSample.invoiceExpandedWithAttachments(3)
         )
         val messageId = MessageId(messages.first().messageId.id)
-
         coEvery { getDecryptedMessageBody.invoke(userId, any()) } returns DecryptedMessageBody(
             messageId = messageId,
             value = EmailBodyTestSamples.BodyWithProtonMailQuote,
@@ -510,20 +509,13 @@ class ConversationDetailViewModelIntegrationTest {
         val viewModel = buildConversationDetailViewModel()
         viewModel.state.test {
             // The initial states
-            skipItems(3)
-
-            // when
-            val newState = awaitItem().messagesState as ConversationDetailsMessagesState.Data
-
-            // then
-            val collapsedMessage = newState.messages.first { it.messageId == messages.first().messageId }
-            assertIs<Collapsed>(collapsedMessage)
+            skipItems(4)
 
             // When
             // Initial scroll completed and UI  notifies view model to expand message
             viewModel.submit(ExpandMessage(messageIdUiModelMapper.toUiModel(messageId)))
 
-            // then
+            // Then
             val newExpandedStateBodyCollapsed = awaitItem().messagesState as ConversationDetailsMessagesState.Data
             val expandedMessageBodyCollapsed = newExpandedStateBodyCollapsed.messages.first {
                 it.messageId == messages.first().messageId
@@ -531,31 +523,99 @@ class ConversationDetailViewModelIntegrationTest {
             assertIs<Expanded>(expandedMessageBodyCollapsed)
             assertEquals(MessageBodyExpandCollapseMode.Collapsed, expandedMessageBodyCollapsed.expandCollapseMode)
 
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `Should expand message body content when user clicks on body expand button`() = runTest {
+        // given
+        val messages = nonEmptyListOf(
+            ConversationDetailMessageUiModelSample.invoiceExpandedWithAttachments(3)
+        )
+        val messageId = MessageId(messages.first().messageId.id)
+        coEvery { getDecryptedMessageBody.invoke(userId, any()) } returns DecryptedMessageBody(
+            messageId = messageId,
+            value = EmailBodyTestSamples.BodyWithProtonMailQuote,
+            mimeType = MimeType.Html,
+            attachments = listOf(
+                MessageAttachmentSample.document,
+                MessageAttachmentSample.documentWithReallyLongFileName,
+                MessageAttachmentSample.invoice,
+                MessageAttachmentSample.image
+            )
+        ).right()
+        coEvery { observeAttachmentStatus.invoke(userId, messageId, any()) } returns flowOf()
+
+        val viewModel = buildConversationDetailViewModel()
+        viewModel.state.test {
+            // The initial states
+            skipItems(4)
+            viewModel.submit(ExpandMessage(messageIdUiModelMapper.toUiModel(messageId)))
+            val stateBodyCollapsed = awaitItem().messagesState as ConversationDetailsMessagesState.Data
+            val msgBodyCollapsed = stateBodyCollapsed.messages.first {
+                it.messageId == messages.first().messageId
+            }
+
             // When
             viewModel.submit(
-                ConversationDetailViewAction.ExpandOrCollapseMessageBody(expandedMessageBodyCollapsed.messageId)
+                ConversationDetailViewAction.ExpandOrCollapseMessageBody(msgBodyCollapsed.messageId)
             )
 
             // then
-            val newExpandedStateBodyExpanded = awaitItem().messagesState as ConversationDetailsMessagesState.Data
-            val expandedMessageBodyExpanded = newExpandedStateBodyExpanded.messages.first {
+            val newState = awaitItem().messagesState as ConversationDetailsMessagesState.Data
+            val msgBodyExpanded = newState.messages.first {
                 it.messageId == messages.first().messageId
             }
-            assertIs<Expanded>(expandedMessageBodyExpanded)
-            assertEquals(MessageBodyExpandCollapseMode.Expanded, expandedMessageBodyExpanded.expandCollapseMode)
+            assertIs<Expanded>(msgBodyExpanded)
+            assertEquals(MessageBodyExpandCollapseMode.Expanded, msgBodyExpanded.expandCollapseMode)
+
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `Should collapse message body content when user clicks on body collapse button`() = runTest {
+        // given
+        val messages = nonEmptyListOf(
+            ConversationDetailMessageUiModelSample.invoiceExpandedWithAttachments(3)
+        )
+        val messageId = MessageId(messages.first().messageId.id)
+        val messageIdUiModel = messageIdUiModelMapper.toUiModel(messageId)
+        coEvery { getDecryptedMessageBody.invoke(userId, any()) } returns DecryptedMessageBody(
+            messageId = messageId,
+            value = EmailBodyTestSamples.BodyWithProtonMailQuote,
+            mimeType = MimeType.Html,
+            attachments = listOf(
+                MessageAttachmentSample.document,
+                MessageAttachmentSample.documentWithReallyLongFileName,
+                MessageAttachmentSample.invoice,
+                MessageAttachmentSample.image
+            )
+        ).right()
+        coEvery { observeAttachmentStatus.invoke(userId, messageId, any()) } returns flowOf()
+
+        val viewModel = buildConversationDetailViewModel()
+        viewModel.state.test {
+            // The initial states
+            skipItems(4)
+            viewModel.submit(ExpandMessage(messageIdUiModelMapper.toUiModel(messageId)))
+            awaitItem()
+            viewModel.submit(ConversationDetailViewAction.ExpandOrCollapseMessageBody(messageIdUiModel))
+            awaitItem()
 
             // When
             viewModel.submit(
-                ConversationDetailViewAction.ExpandOrCollapseMessageBody(expandedMessageBodyExpanded.messageId)
+                ConversationDetailViewAction.ExpandOrCollapseMessageBody(messageIdUiModel)
             )
 
             // then
-            val newExpandedStateBodyCollapsedAgain = awaitItem().messagesState as ConversationDetailsMessagesState.Data
-            val expandedMessageBodyCollapsedAgain = newExpandedStateBodyCollapsedAgain.messages.first {
+            val newState = awaitItem().messagesState as ConversationDetailsMessagesState.Data
+            val msgBodyExpanded = newState.messages.first {
                 it.messageId == messages.first().messageId
             }
-            assertIs<Expanded>(expandedMessageBodyCollapsedAgain)
-            assertEquals(MessageBodyExpandCollapseMode.Collapsed, expandedMessageBodyCollapsedAgain.expandCollapseMode)
+            assertIs<Expanded>(msgBodyExpanded)
+            assertEquals(MessageBodyExpandCollapseMode.Collapsed, msgBodyExpanded.expandCollapseMode)
 
             cancelAndIgnoreRemainingEvents()
         }

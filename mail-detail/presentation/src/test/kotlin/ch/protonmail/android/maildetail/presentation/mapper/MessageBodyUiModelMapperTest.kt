@@ -24,6 +24,7 @@ import ch.protonmail.android.maildetail.domain.usecase.ShouldShowEmbeddedImages
 import ch.protonmail.android.maildetail.domain.usecase.ShouldShowRemoteContent
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyWithoutQuote
 import ch.protonmail.android.maildetail.presentation.usecase.ExtractMessageBodyWithoutQuote
+import ch.protonmail.android.maildetail.presentation.viewmodel.EmailBodyTestSamples
 import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.model.GetDecryptedMessageBodyError
 import ch.protonmail.android.mailmessage.domain.model.MimeType
@@ -320,6 +321,35 @@ class MessageBodyUiModelMapperTest {
 
         // When
         val actual = messageBodyUiModelMapper.toUiModel(GetDecryptedMessageBodyError.Decryption(messageId, messageBody))
+
+        // Then
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `both the original and the no-quote bodies are mapped correctly`() = runTest {
+        // Given
+        val messageId = MessageIdSample.build()
+        val originalMessageBody = DecryptedMessageBody(messageId, decryptedMessageBody, MimeType.Html)
+        val noQuoteMessageBody = EmailBodyTestSamples.BodyWithoutQuotes
+        coEvery { extractMessageBodyWithoutQuote(decryptedMessageBody) } returns
+            MessageBodyWithoutQuote(noQuoteMessageBody, true)
+
+        val expected = MessageBodyUiModel(
+            messageId = messageId,
+            messageBody = decryptedMessageBody,
+            messageBodyWithoutQuote = noQuoteMessageBody,
+            mimeType = MimeTypeUiModel.Html,
+            shouldShowEmbeddedImages = false,
+            shouldShowRemoteContent = false,
+            shouldShowEmbeddedImagesBanner = false,
+            shouldShowRemoteContentBanner = false,
+            shouldShowExpandCollapseButton = true,
+            attachments = null
+        )
+
+        // When
+        val actual = messageBodyUiModelMapper.toUiModel(UserIdTestData.userId, originalMessageBody)
 
         // Then
         assertEquals(expected, actual)
