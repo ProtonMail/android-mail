@@ -16,38 +16,33 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.data.remote.response
+package ch.protonmail.android.mailmailbox.data.entity
 
-import ch.protonmail.android.mailmailbox.data.entity.UnreadConversationsCountEntity
-import ch.protonmail.android.mailmailbox.data.entity.UnreadMessagesCountEntity
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Index
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
+import me.proton.core.user.data.entity.UserEntity
 
-@Serializable
-class UnreadCountResource(
-    @SerialName("LabelID")
-    val labelId: String,
-
-    @SerialName("Total")
+@Entity(
+    primaryKeys = ["userId", "labelId"],
+    indices = [
+        Index("userId"),
+        Index("labelId")
+    ],
+    foreignKeys = [
+        ForeignKey(
+            entity = UserEntity::class,
+            parentColumns = ["userId"],
+            childColumns = ["userId"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ]
+)
+data class UnreadMessagesCountEntity(
+    val userId: UserId,
+    val labelId: LabelId,
     val totalCount: Int,
-
-    @SerialName("Unread")
     val unreadCount: Int
-) {
-
-    fun toUnreadCountMessagesEntity(userId: UserId) = UnreadMessagesCountEntity(
-        userId,
-        LabelId(this.labelId),
-        this.totalCount,
-        this.unreadCount
-    )
-
-    fun toUnreadCountConversationsEntity(userId: UserId) = UnreadConversationsCountEntity(
-        userId,
-        LabelId(this.labelId),
-        this.totalCount,
-        this.unreadCount
-    )
-}
+)

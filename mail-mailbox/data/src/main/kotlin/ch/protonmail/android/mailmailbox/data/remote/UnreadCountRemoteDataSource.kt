@@ -18,11 +18,11 @@
 
 package ch.protonmail.android.mailmailbox.data.remote
 
-import ch.protonmail.android.mailmailbox.data.entity.UnreadCountEntity
+import ch.protonmail.android.mailmailbox.data.remote.response.UnreadCountResource
 import me.proton.core.domain.entity.UserId
 
 interface UnreadCountRemoteDataSource {
-    suspend fun getMessageCounters(userId: UserId): List<UnreadCountEntity>
+    suspend fun getMessageCounters(userId: UserId): List<UnreadCountResource>
 
-    suspend fun getConversationCounters(userId: UserId): List<UnreadCountEntity>
+    suspend fun getConversationCounters(userId: UserId): List<UnreadCountResource>
 }

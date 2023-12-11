@@ -24,5 +24,5 @@ import me.proton.core.domain.entity.UserId
 
 interface UnreadCountRepository {
 
-    suspend fun observeUnreadCount(userId: UserId): Flow<UnreadCounters>
+    fun observeUnreadCount(userId: UserId): Flow<UnreadCounters>
 }

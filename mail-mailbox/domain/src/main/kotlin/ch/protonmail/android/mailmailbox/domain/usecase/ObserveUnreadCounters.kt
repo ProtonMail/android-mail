@@ -18,10 +18,10 @@
 
 package ch.protonmail.android.mailmailbox.domain.usecase
 
-import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmailbox.domain.model.UnreadCounter
+import ch.protonmail.android.mailmailbox.domain.repository.UnreadCountRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.mapLatest
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
@@ -33,20 +33,14 @@ import javax.inject.Inject
  * such as `[All-]Draft` / `[All-]Sent` should use "Message counters" independently
  * from the view mode
  */
-class ObserveUnreadCounters @Inject constructor() {
+class ObserveUnreadCounters @Inject constructor(
+    private val countersRepository: UnreadCountRepository
+) {
 
-    operator fun invoke(userId: UserId): Flow<List<UnreadCounter>> = flowOf(
-        @Suppress("MagicNumber")
-        listOf(
-            UnreadCounter(SystemLabelId.Inbox.labelId, 5),
-            UnreadCounter(SystemLabelId.Drafts.labelId, 0),
-            UnreadCounter(SystemLabelId.Sent.labelId, 0),
-            UnreadCounter(SystemLabelId.Starred.labelId, 4),
-            UnreadCounter(SystemLabelId.Archive.labelId, 2),
-            UnreadCounter(SystemLabelId.Spam.labelId, 6),
-            UnreadCounter(SystemLabelId.Trash.labelId, 0),
-            UnreadCounter(SystemLabelId.AllMail.labelId, 17)
-        )
-    )
+    operator fun invoke(userId: UserId): Flow<List<UnreadCounter>> {
+        return countersRepository.observeUnreadCount(userId).mapLatest {
+            it.messagesUnreadCount
+        }
+    }
 
 }

@@ -18,19 +18,36 @@
 
 package ch.protonmail.android.mailmailbox.data.local
 
-import ch.protonmail.android.mailmailbox.data.entity.UnreadCountEntity
+import ch.protonmail.android.mailmailbox.data.entity.UnreadConversationsCountEntity
+import ch.protonmail.android.mailmailbox.data.entity.UnreadMessagesCountEntity
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
+import timber.log.Timber
 import javax.inject.Inject
 
 @Suppress("NotImplementedDeclaration")
-class UnreadCountLocalDataSourceImpl @Inject constructor() : UnreadCountLocalDataSource {
+class UnreadCountLocalDataSourceImpl @Inject constructor(
+    database: UnreadCountDatabase
+) : UnreadCountLocalDataSource {
 
-    override fun observeMessageCounters(userId: UserId): Flow<UnreadCountEntity> {
-        TODO("Not yet implemented")
+    private val unreadMessagesCountDao = database.unreadMessagesCountDao()
+    private val unreadConversationsCountDao = database.unreadConversationsCountDao()
+
+    override fun observeMessageCounters(userId: UserId): Flow<List<UnreadMessagesCountEntity>> =
+        unreadMessagesCountDao.observeMessageCounts(userId)
+
+    override fun observeConversationCounters(userId: UserId): Flow<List<UnreadConversationsCountEntity>> =
+        unreadConversationsCountDao.observeConversationsCounts(userId)
+
+    override suspend fun saveMessageCounters(counters: List<UnreadMessagesCountEntity>) {
+        Timber.d("Unread counters: Writing message counters to DB $counters")
+        unreadMessagesCountDao.insertOrUpdate(*counters.toTypedArray())
+        Timber.d("written")
     }
 
-    override fun observeConversationCounters(userId: UserId): Flow<UnreadCountEntity> {
-        TODO("Not yet implemented")
+    override suspend fun saveConversationCounters(counters: List<UnreadConversationsCountEntity>) {
+        Timber.d("Unread counters: Writing conversation counters to DB $counters")
+        unreadConversationsCountDao.insertOrUpdate(*counters.toTypedArray())
+        Timber.d("written")
     }
 }

@@ -47,6 +47,7 @@ dependencies {
 
     implementation(Dependencies.moduleDataLibs)
     implementation(Proton.Core.labelDomain)
+    implementation(Proton.Core.user)
 
     implementation(project(":mail-mailbox:domain"))
     implementation(project(":mail-common:data"))

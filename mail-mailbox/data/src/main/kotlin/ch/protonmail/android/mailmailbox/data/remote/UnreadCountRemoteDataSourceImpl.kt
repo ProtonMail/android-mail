@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.mailmailbox.data.remote
 
-import ch.protonmail.android.mailmailbox.data.entity.UnreadCountEntity
+import ch.protonmail.android.mailmailbox.data.remote.response.UnreadCountResource
 import me.proton.core.domain.entity.UserId
 import me.proton.core.network.data.ApiProvider
 import me.proton.core.network.domain.ApiResult
@@ -29,7 +29,7 @@ class UnreadCountRemoteDataSourceImpl @Inject constructor(
     private val apiProvider: ApiProvider
 ) : UnreadCountRemoteDataSource {
 
-    override suspend fun getMessageCounters(userId: UserId): List<UnreadCountEntity> {
+    override suspend fun getMessageCounters(userId: UserId): List<UnreadCountResource> {
         Timber.d("Unread Counters: fetching for messages...")
         val result = apiProvider.get<UnreadCountersApi>(userId).invoke {
             getMessageCounters()
@@ -37,7 +37,7 @@ class UnreadCountRemoteDataSourceImpl @Inject constructor(
         return when (result) {
             is ApiResult.Success -> {
                 Timber.d("Unread Counters: received for messages ${result.value}")
-                result.value.counts.map { it.toUnreadCountEntity() }
+                result.value.counts
             }
             is ApiResult.Error -> {
                 Timber.w("Unread Counters: Failed to fetch for messages ${result.cause}")
@@ -46,7 +46,7 @@ class UnreadCountRemoteDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun getConversationCounters(userId: UserId): List<UnreadCountEntity> {
+    override suspend fun getConversationCounters(userId: UserId): List<UnreadCountResource> {
         Timber.d("Unread Counters: fetching for conversations...")
         val result = apiProvider.get<UnreadCountersApi>(userId).invoke {
             getConversationCounters()
@@ -54,7 +54,7 @@ class UnreadCountRemoteDataSourceImpl @Inject constructor(
         return when (result) {
             is ApiResult.Success -> {
                 Timber.d("Unread Counters: received for conversations ${result.value}")
-                result.value.counts.map { it.toUnreadCountEntity() }
+                result.value.counts
             }
             is ApiResult.Error -> {
                 Timber.w("Unread Counters: Failed to fetch for conversations ${result.cause}")

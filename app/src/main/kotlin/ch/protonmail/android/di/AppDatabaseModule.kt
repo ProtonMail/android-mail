@@ -23,6 +23,7 @@ import androidx.room.RoomDatabase
 import ch.protonmail.android.composer.data.local.DraftStateDatabase
 import ch.protonmail.android.db.AppDatabase
 import ch.protonmail.android.mailconversation.data.local.ConversationDatabase
+import ch.protonmail.android.mailmailbox.data.local.UnreadCountDatabase
 import ch.protonmail.android.mailmessage.data.local.MessageDatabase
 import dagger.Binds
 import dagger.Module
@@ -134,4 +135,7 @@ abstract class AppDatabaseBindsModule {
 
     @Binds
     abstract fun provideDraftStateDatabase(appDatabase: AppDatabase): DraftStateDatabase
+
+    @Binds
+    abstract fun provideUnreadCountDatabase(appDatabase: AppDatabase): UnreadCountDatabase
 }

@@ -30,6 +30,9 @@ import ch.protonmail.android.mailconversation.data.local.converters.Conversation
 import ch.protonmail.android.mailconversation.data.local.converters.MapConverters
 import ch.protonmail.android.mailconversation.data.local.entity.ConversationEntity
 import ch.protonmail.android.mailconversation.data.local.entity.ConversationLabelEntity
+import ch.protonmail.android.mailmailbox.data.entity.UnreadConversationsCountEntity
+import ch.protonmail.android.mailmailbox.data.entity.UnreadMessagesCountEntity
+import ch.protonmail.android.mailmailbox.data.local.UnreadCountDatabase
 import ch.protonmail.android.mailmessage.data.local.MessageConverters
 import ch.protonmail.android.mailmessage.data.local.MessageDatabase
 import ch.protonmail.android.mailmessage.data.local.converters.AttachmentWorkerStatusConverters
@@ -171,7 +174,10 @@ import me.proton.core.usersettings.data.entity.UserSettingsEntity
         SelfAuditResultEntity::class,
         // draft state
         DraftStateEntity::class,
-        AttachmentStateEntity::class
+        AttachmentStateEntity::class,
+        // Unread counts
+        UnreadMessagesCountEntity::class,
+        UnreadConversationsCountEntity::class
     ],
     version = AppDatabase.version,
     exportSchema = true
@@ -223,12 +229,13 @@ abstract class AppDatabase :
     NotificationDatabase,
     PushDatabase,
     TelemetryDatabase,
-    DraftStateDatabase {
+    DraftStateDatabase,
+    UnreadCountDatabase {
 
     companion object {
 
         const val name = "db-mail"
-        const val version = 21
+        const val version = 22
 
         internal val migrations = listOf(
             AppDatabaseMigrations.MIGRATION_1_2,
@@ -250,7 +257,8 @@ abstract class AppDatabase :
             AppDatabaseMigrations.MIGRATION_17_18,
             AppDatabaseMigrations.MIGRATION_18_19,
             AppDatabaseMigrations.MIGRATION_19_20,
-            AppDatabaseMigrations.MIGRATION_20_21
+            AppDatabaseMigrations.MIGRATION_20_21,
+            AppDatabaseMigrations.MIGRATION_21_22
         )
 
         fun buildDatabase(context: Context): AppDatabase = databaseBuilder<AppDatabase>(context, name)

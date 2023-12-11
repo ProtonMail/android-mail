@@ -21,6 +21,7 @@ package ch.protonmail.android.db
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import ch.protonmail.android.composer.data.local.DraftStateDatabase
+import ch.protonmail.android.mailmailbox.data.local.UnreadCountDatabase
 import ch.protonmail.android.mailmessage.data.local.MessageDatabase
 import me.proton.core.account.data.db.AccountDatabase
 import me.proton.core.contact.data.local.db.ContactDatabase
@@ -165,4 +166,11 @@ object AppDatabaseMigrations {
             DraftStateDatabase.MIGRATION_4.migrate(database)
         }
     }
+
+    val MIGRATION_21_22 = object : Migration(21, 22) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            UnreadCountDatabase.MIGRATION_0.migrate(database)
+        }
+    }
+
 }
