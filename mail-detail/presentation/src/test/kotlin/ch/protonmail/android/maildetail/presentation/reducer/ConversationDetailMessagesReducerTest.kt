@@ -113,7 +113,7 @@ class ConversationDetailMessagesReducerTest(
                     allMessagesFirstExpanded.first().messageId
                 ),
                 expectedState = ConversationDetailsMessagesState.Data(messages = allMessagesFirstExpanded)
-            ),
+            )
         ).toImmutableList()
 
         private val fromErrorState = listOf(

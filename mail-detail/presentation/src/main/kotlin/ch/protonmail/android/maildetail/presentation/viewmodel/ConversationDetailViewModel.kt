@@ -697,10 +697,7 @@ class ConversationDetailViewModel @Inject constructor(
         viewModelScope.launch { emitNewStateFrom(action) }
     }
 
-    private suspend fun emitMessageBodyDecryptError(
-        error: GetDecryptedMessageBodyError,
-        messageId: MessageIdUiModel
-    ) {
+    private suspend fun emitMessageBodyDecryptError(error: GetDecryptedMessageBodyError, messageId: MessageIdUiModel) {
         val errorState = when (error) {
             is GetDecryptedMessageBodyError.Data -> if (error.dataError.isOfflineError()) {
                 ConversationDetailEvent.ErrorExpandingRetrievingMessageOffline(messageId)

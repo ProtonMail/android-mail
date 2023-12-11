@@ -41,21 +41,20 @@ class ObserveConversationMessagesWithLabels @Inject constructor(
     operator fun invoke(
         userId: UserId,
         conversationId: ConversationId
-    ): Flow<Either<DataError, NonEmptyList<MessageWithLabels>>> =
-        combine(
-            labelRepository.observeLabels(userId, type = LabelType.MessageLabel).mapToEither(),
-            labelRepository.observeLabels(userId, type = LabelType.MessageFolder).mapToEither(),
-            messageRepository.observeCachedMessages(userId, conversationId)
-        ) { labelsEither, foldersEither, messagesEither ->
-            either {
-                val allLabelsAndFolders = (labelsEither.bind() + foldersEither.bind()).sortedBy { it.order }
-                val messages = messagesEither.bind()
-                messages.map { message ->
-                    val messageLabels = allLabelsAndFolders.filter { label ->
-                        label.labelId in message.labelIds
-                    }
-                    MessageWithLabels(message = message, labels = messageLabels)
+    ): Flow<Either<DataError, NonEmptyList<MessageWithLabels>>> = combine(
+        labelRepository.observeLabels(userId, type = LabelType.MessageLabel).mapToEither(),
+        labelRepository.observeLabels(userId, type = LabelType.MessageFolder).mapToEither(),
+        messageRepository.observeCachedMessages(userId, conversationId)
+    ) { labelsEither, foldersEither, messagesEither ->
+        either {
+            val allLabelsAndFolders = (labelsEither.bind() + foldersEither.bind()).sortedBy { it.order }
+            val messages = messagesEither.bind()
+            messages.map { message ->
+                val messageLabels = allLabelsAndFolders.filter { label ->
+                    label.labelId in message.labelIds
                 }
+                MessageWithLabels(message = message, labels = messageLabels)
             }
         }
+    }
 }

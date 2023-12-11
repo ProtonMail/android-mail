@@ -38,10 +38,7 @@ class FakeInMemoryConversationStateRepository : InMemoryConversationStateReposit
     override val conversationState: Flow<Map<MessageId, MessageState>> =
         conversationStateFlow
 
-    override suspend fun expandMessage(
-        messageId: MessageId,
-        decryptedBody: DecryptedMessageBody
-    ) {
+    override suspend fun expandMessage(messageId: MessageId, decryptedBody: DecryptedMessageBody) {
         conversationCache[messageId] = MessageState.Expanded(decryptedBody)
         conversationStateFlow.emit(conversationCache)
     }

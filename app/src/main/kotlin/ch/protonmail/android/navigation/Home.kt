@@ -362,19 +362,18 @@ private fun buildSidebarActions(
     navController: NavHostController,
     activityActions: MainActivity.Actions,
     launcherActions: Launcher.Actions
-) =
-    Sidebar.NavigationActions(
-        onSignIn = launcherActions.onSignIn,
-        onSignOut = { navController.navigate(Dialog.SignOut(it)) },
-        onRemoveAccount = { navController.navigate(Dialog.RemoveAccount(it)) },
-        onSwitchAccount = launcherActions.onSwitchAccount,
-        onSettings = { navController.navigate(Screen.Settings.route) },
-        onLabelList = { navController.navigate(Screen.LabelList.route) },
-        onFolderList = { navController.navigate(Screen.FolderList.route) },
-        onLabelAdd = { navController.navigate(Screen.CreateLabel.route) },
-        onFolderAdd = { navController.navigate(Screen.CreateFolder.route) },
-        onSubscription = launcherActions.onSubscription,
-        onContacts = { navController.navigate(Screen.Contacts.route) },
-        onReportBug = launcherActions.onReportBug,
-        onBetaLabelClick = activityActions.openInActivityInNewTask
-    )
+) = Sidebar.NavigationActions(
+    onSignIn = launcherActions.onSignIn,
+    onSignOut = { navController.navigate(Dialog.SignOut(it)) },
+    onRemoveAccount = { navController.navigate(Dialog.RemoveAccount(it)) },
+    onSwitchAccount = launcherActions.onSwitchAccount,
+    onSettings = { navController.navigate(Screen.Settings.route) },
+    onLabelList = { navController.navigate(Screen.LabelList.route) },
+    onFolderList = { navController.navigate(Screen.FolderList.route) },
+    onLabelAdd = { navController.navigate(Screen.CreateLabel.route) },
+    onFolderAdd = { navController.navigate(Screen.CreateFolder.route) },
+    onSubscription = launcherActions.onSubscription,
+    onContacts = { navController.navigate(Screen.Contacts.route) },
+    onReportBug = launcherActions.onReportBug,
+    onBetaLabelClick = activityActions.openInActivityInNewTask
+)

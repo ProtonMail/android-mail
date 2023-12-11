@@ -26,16 +26,19 @@ import me.proton.core.label.domain.entity.LabelId
 
 object TestConversationLabel {
 
-    fun createConversationLabel(conversationId: ConversationId, conversation: Conversation, labelId: LabelId) =
-        ConversationLabelEntity(
-            userId = UserIdTestData.userId,
-            conversationId = conversationId,
-            labelId = labelId,
-            contextTime = conversation.labels.first().contextTime,
-            contextSize = conversation.labels.first().contextSize,
-            contextNumMessages = conversation.labels.first().contextNumMessages,
-            contextNumUnread = conversation.labels.first().contextNumUnread,
-            contextNumAttachments = conversation.labels.first().contextNumAttachments
-        )
+    fun createConversationLabel(
+        conversationId: ConversationId,
+        conversation: Conversation,
+        labelId: LabelId
+    ) = ConversationLabelEntity(
+        userId = UserIdTestData.userId,
+        conversationId = conversationId,
+        labelId = labelId,
+        contextTime = conversation.labels.first().contextTime,
+        contextSize = conversation.labels.first().contextSize,
+        contextNumMessages = conversation.labels.first().contextNumMessages,
+        contextNumUnread = conversation.labels.first().contextNumUnread,
+        contextNumAttachments = conversation.labels.first().contextNumAttachments
+    )
 
 }

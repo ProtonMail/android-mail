@@ -114,21 +114,19 @@ internal class MoveToBottomSheetReducerTest(
 
         @JvmStatic
         @Parameterized.Parameters(name = "{0}")
-        fun data() =
-            (
-                transitionsFromLoadingState +
-                    transitionsFromDataState +
-                    transitionFromDataStateToSelected
-                )
-                .map { testInput ->
-                    val testName = """
-                        Current state: ${testInput.currentState}
-                        Operation: ${testInput.operation}
-                        Next state: ${testInput.expectedState}
-                        
-                    """.trimIndent()
-                    arrayOf(testName, testInput)
-                }
+        fun data() = (
+            transitionsFromLoadingState +
+                transitionsFromDataState +
+                transitionFromDataStateToSelected
+            )
+            .map { testInput ->
+                val testName = """
+                    Current state: ${testInput.currentState}
+                    Operation: ${testInput.operation}
+                    Next state: ${testInput.expectedState}
+                """.trimIndent()
+                arrayOf(testName, testInput)
+            }
     }
 
     data class TestInput(

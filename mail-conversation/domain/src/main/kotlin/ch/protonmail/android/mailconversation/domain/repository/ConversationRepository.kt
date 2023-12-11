@@ -142,15 +142,9 @@ interface ConversationRepository {
         contextLabelId: LabelId
     ): Either<DataError, List<Conversation>>
 
-    suspend fun markRead(
-        userId: UserId,
-        conversationId: ConversationId
-    ): Either<DataError, Conversation>
+    suspend fun markRead(userId: UserId, conversationId: ConversationId): Either<DataError, Conversation>
 
-    suspend fun markRead(
-        userId: UserId,
-        conversationIds: List<ConversationId>
-    ): Either<DataError, List<Conversation>>
+    suspend fun markRead(userId: UserId, conversationIds: List<ConversationId>): Either<DataError, List<Conversation>>
 
     suspend fun isCachedConversationRead(userId: UserId, conversationId: ConversationId): Either<DataError, Boolean>
 

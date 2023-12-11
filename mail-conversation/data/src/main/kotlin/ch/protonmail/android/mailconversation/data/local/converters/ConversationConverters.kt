@@ -35,10 +35,8 @@ class ConversationConverters {
     }
 
     @TypeConverter
-    fun fromParticipantListToString(value: List<Participant>?) =
-        value?.serialize()
+    fun fromParticipantListToString(value: List<Participant>?) = value?.serialize()
 
     @TypeConverter
-    fun fromStringToParticipantList(value: String?): List<Participant>? =
-        value?.deserialize()
+    fun fromStringToParticipantList(value: String?): List<Participant>? = value?.deserialize()
 }

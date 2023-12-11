@@ -47,10 +47,7 @@ fun getConversationResource(
     )
 )
 
-fun getConversationLabelResource(
-    id: String,
-    contextTime: Long = 1000
-) = ConversationLabelResource(
+fun getConversationLabelResource(id: String, contextTime: Long = 1000) = ConversationLabelResource(
     id = id,
     contextNumUnread = 0,
     contextNumMessages = 0,
