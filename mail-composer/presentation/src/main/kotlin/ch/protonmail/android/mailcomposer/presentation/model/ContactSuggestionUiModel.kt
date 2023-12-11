@@ -16,12 +16,9 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcomposer.presentation.ui
+package ch.protonmail.android.mailcomposer.presentation.model
 
-enum class FocusedFieldType {
-    TO,
-    CC,
-    BCC,
-    SUBJECT,
-    BODY
-}
+data class ContactSuggestionUiModel(
+    val name: String,
+    val email: String
+)

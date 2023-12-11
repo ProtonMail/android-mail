@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcomposer.presentation.model
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.domain.model.QuotedHtmlContent
+import ch.protonmail.android.mailcomposer.presentation.ui.FocusedFieldType
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
 
@@ -43,7 +44,9 @@ data class ComposerDraftState(
     val replaceDraftBody: Effect<TextUiModel>,
     val warning: Effect<TextUiModel>,
     val focusTextBody: Effect<Unit> = Effect.empty(),
-    val sendingErrorEffect: Effect<TextUiModel> = Effect.empty()
+    val sendingErrorEffect: Effect<TextUiModel> = Effect.empty(),
+    val contactSuggestions: Map<FocusedFieldType, List<ContactSuggestionUiModel>> = emptyMap(),
+    val areContactSuggestionsExpanded: Map<FocusedFieldType, Boolean> = emptyMap()
 ) {
 
     companion object {

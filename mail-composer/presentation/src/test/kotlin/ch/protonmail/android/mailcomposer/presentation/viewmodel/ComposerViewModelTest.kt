@@ -83,6 +83,7 @@ import ch.protonmail.android.mailcomposer.presentation.usecase.InjectAddressSign
 import ch.protonmail.android.mailcomposer.presentation.usecase.ParentMessageToDraftFields
 import ch.protonmail.android.mailcomposer.presentation.usecase.StyleQuotedHtml
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
+import ch.protonmail.android.mailcontact.domain.usecase.SearchContacts
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.Recipient
@@ -149,6 +150,7 @@ class ComposerViewModelTest {
     private val sendMessageMock = mockk<SendMessage>()
     private val networkManagerMock = mockk<NetworkManager>()
     private val getContactsMock = mockk<GetContacts>()
+    private val searchContactsMock = mockk<SearchContacts>()
     private val participantMapperMock = mockk<ParticipantMapper>()
     private val observePrimaryUserIdMock = mockk<ObservePrimaryUserId>()
     private val composerIdlingResource = spyk<ComposerIdlingResource>()
@@ -204,6 +206,7 @@ class ComposerViewModelTest {
             storeDraftWithRecipientsMock,
             storeExternalAttachmentStates,
             getContactsMock,
+            searchContactsMock,
             participantMapperMock,
             reducer,
             isValidEmailAddressMock,

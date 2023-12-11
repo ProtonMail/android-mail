@@ -29,7 +29,10 @@ fun ChipsListField(
     chipValidator: (String) -> Boolean = { true },
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     focusRequester: FocusRequester? = null,
-    focusOnClick: Boolean = true
+    focusOnClick: Boolean = true,
+    actions: ChipsListField.Actions,
+    areSuggestionsExpanded: Boolean = false,
+    suggestionItems: List<SuggestionItem> = emptyList()
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     Row(
@@ -60,9 +63,22 @@ fun ChipsListField(
             onListChanged = onListChanged,
             value = value,
             keyboardOptions = keyboardOptions,
-            focusRequester = focusRequester
+            focusRequester = focusRequester,
+            actions = ChipsListTextField.Actions(
+                onSuggestionTermTyped = actions.onSuggestionTermTyped,
+                onSuggestionsDismissed = actions.onSuggestionsDismissed
+            ),
+            areSuggestionsExpanded = areSuggestionsExpanded,
+            suggestionItems = suggestionItems
         )
     }
+}
+
+object ChipsListField {
+    data class Actions(
+        val onSuggestionTermTyped: (String) -> Unit,
+        val onSuggestionsDismissed: () -> Unit
+    )
 }
 
 fun Modifier.thenIf(condition: Boolean, modifier: Modifier.() -> Modifier): Modifier {

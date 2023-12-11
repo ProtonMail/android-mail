@@ -1,13 +1,17 @@
 package ch.protonmail.android.uicomponents.chips
 
 import androidx.compose.animation.core.Animatable
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -17,7 +21,11 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.InputChip
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.runtime.Composable
@@ -53,8 +61,12 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.PopupProperties
+import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
+import me.proton.core.compose.theme.defaultNorm
 import me.proton.core.compose.theme.defaultSmallNorm
+import me.proton.core.compose.theme.defaultSmallWeak
 import me.proton.core.util.kotlin.takeIfNotBlank
 
 @Stable
@@ -65,15 +77,24 @@ sealed class ChipItem(open val value: String) {
     data class Counter(override val value: String) : ChipItem(value)
 }
 
+@Stable
+data class SuggestionItem(
+    val header: String,
+    val subheader: String
+)
+
 /*
     Composable that displays a TextField where the user can type and
     a chips list will be created from the text typed. A chip can be added
     when the user presses space or when the focus is lost from the field (by tapping in
     a different field or tapping the keyboard in a key that moves the focus away).
+
+    When suggestion options are provided, it also displays DropdownMenu and auto-types
+    them into TextField on click.
  */
 @OptIn(
     ExperimentalLayoutApi::class,
-    ExperimentalComposeUiApi::class
+    ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class
 )
 @Composable
 fun ChipsListTextField(
@@ -85,7 +106,10 @@ fun ChipsListTextField(
     focusRequester: FocusRequester? = null,
     cursorColor: Color = ProtonTheme.colors.brandDarken20,
     textStyle: TextStyle = ProtonTheme.typography.defaultSmallNorm,
-    animateChipsCreation: Boolean = false
+    animateChipsCreation: Boolean = false,
+    actions: ChipsListTextField.Actions,
+    areSuggestionsExpanded: Boolean,
+    suggestionItems: List<SuggestionItem>
 ) {
     val state by remember { mutableStateOf(ChipsListState(chipValidator, onListChanged)) }
 
@@ -120,48 +144,103 @@ fun ChipsListTextField(
 
             is ChipItemsList.Unfocused.Single -> UnFocusedChipsList(items.item) { focusRequester?.requestFocus() }
         }
-        BasicTextField(
-            modifier = Modifier
-                .testTag(ChipsTestTags.BasicTextField)
-                .thenIf(focusRequester != null) {
-                    focusRequester(focusRequester!!)
-                }
-                .thenIf(!state.isFocused()) {
-                    height(0.dp)
-                }
-                .padding(16.dp)
-                .onKeyEvent { keyEvent ->
-                    if (keyEvent.key == Key.Backspace) {
-                        state.onDelete()
-                        true
-                    } else {
-                        false
+
+        ExposedDropdownMenuBox(
+            expanded = areSuggestionsExpanded,
+            onExpandedChange = {}
+        ) {
+            BasicTextField(
+                modifier = Modifier
+                    .testTag(ChipsTestTags.BasicTextField)
+                    .thenIf(focusRequester != null) {
+                        focusRequester(focusRequester!!)
+                    }
+                    .thenIf(!state.isFocused()) {
+                        height(0.dp)
+                    }
+                    .padding(16.dp)
+                    .onKeyEvent { keyEvent ->
+                        if (keyEvent.key == Key.Backspace) {
+                            state.onDelete()
+                            true
+                        } else {
+                            false
+                        }
+                    }
+                    .onFocusChanged { focusChange ->
+                        state.typeWord(state.getTypedText())
+                        state.setFocusState(focusChange.isFocused)
+                    }
+                    .menuAnchor(),
+                value = state.getTypedText(),
+                keyboardOptions = keyboardOptions,
+                keyboardActions = KeyboardActions(
+                    onNext = {
+                        state.typeWord(state.getTypedText())
+                        focusManager.moveFocus(FocusDirection.Next)
+                    },
+                    onDone = {
+                        state.typeWord(state.getTypedText())
+                        focusManager.clearFocus()
+                    },
+                    onPrevious = {
+                        state.typeWord(state.getTypedText())
+                        focusManager.moveFocus(FocusDirection.Previous)
+                    }
+                ),
+                onValueChange = { newText ->
+                    state.type(newText)
+                    actions.onSuggestionTermTyped(newText)
+                },
+                cursorBrush = SolidColor(cursorColor),
+                textStyle = textStyle
+            )
+
+            if (suggestionItems.isNotEmpty()) {
+                DropdownMenu(
+                    modifier = Modifier
+                        .background(Color.White)
+                        .width(textMaxWidth)
+                        .exposedDropdownSize(false),
+                    properties = PopupProperties(focusable = false),
+                    expanded = areSuggestionsExpanded,
+                    onDismissRequest = {
+                        actions.onSuggestionsDismissed()
+                    }
+                ) {
+                    suggestionItems.forEach { selectionOption ->
+                        DropdownMenuItem(
+                            text = {
+                                Column(modifier = Modifier.padding(vertical = ProtonDimens.SmallSpacing)) {
+                                    Text(
+                                        text = selectionOption.header,
+                                        maxLines = 1,
+                                        color = ProtonTheme.colors.textNorm,
+                                        style = ProtonTheme.typography.defaultNorm,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
+                                    Spacer(modifier = Modifier.size(ProtonDimens.ExtraSmallSpacing))
+                                    Text(
+                                        text = selectionOption.subheader,
+                                        maxLines = 1,
+                                        color = ProtonTheme.colors.textWeak,
+                                        style = ProtonTheme.typography.defaultSmallWeak,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
+                                }
+
+                            },
+                            onClick = {
+                                state.typeWord(selectionOption.subheader)
+                                actions.onSuggestionsDismissed()
+                            },
+                            contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                        )
                     }
                 }
-                .onFocusChanged { focusChange ->
-                    state.typeWord(state.getTypedText())
-                    state.setFocusState(focusChange.isFocused)
-                },
-            value = state.getTypedText(),
-            keyboardOptions = keyboardOptions,
-            keyboardActions = KeyboardActions(
-                onNext = {
-                    state.typeWord(state.getTypedText())
-                    focusManager.moveFocus(FocusDirection.Next)
-                },
-                onDone = {
-                    state.typeWord(state.getTypedText())
-                    focusManager.clearFocus()
-                },
-                onPrevious = {
-                    state.typeWord(state.getTypedText())
-                    focusManager.moveFocus(FocusDirection.Previous)
-                }
-            ),
-            onValueChange = { newText -> state.type(newText) },
-            cursorBrush = SolidColor(cursorColor),
-            textStyle = textStyle
-        )
+            }
+        }
+
     }
 }
 
@@ -389,4 +468,11 @@ internal sealed class ChipItemsList {
         data class Single(val item: ChipItem) : Unfocused()
         data class Multiple(val item: ChipItem, val counter: ChipItem) : Unfocused()
     }
+}
+
+object ChipsListTextField {
+    data class Actions(
+        val onSuggestionTermTyped: (String) -> Unit,
+        val onSuggestionsDismissed: () -> Unit
+    )
 }

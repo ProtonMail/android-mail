@@ -26,6 +26,8 @@ internal data class ComposerFormActions(
     val onToChanged: (List<RecipientUiModel>) -> Unit,
     val onCcChanged: (List<RecipientUiModel>) -> Unit,
     val onBccChanged: (List<RecipientUiModel>) -> Unit,
+    val onContactSuggestionsDismissed: (FocusedFieldType) -> Unit,
+    val onContactSuggestionTermChanged: (String, FocusedFieldType) -> Unit,
     val onSubjectChanged: (String) -> Unit,
     val onBodyChanged: (String) -> Unit,
     val onChangeSender: () -> Unit

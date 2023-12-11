@@ -49,6 +49,7 @@ android {
 
 dependencies {
     implementation(Dependencies.modulePresentationLibs)
+    implementation(Dependencies.composeLibs)
 
     debugImplementation(Dependencies.appDebug)
     testImplementation(Dependencies.testLibs)

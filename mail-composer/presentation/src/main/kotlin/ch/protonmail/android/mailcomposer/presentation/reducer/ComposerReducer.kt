@@ -31,6 +31,8 @@ import ch.protonmail.android.mailcomposer.presentation.model.ComposerOperation
 import ch.protonmail.android.mailcomposer.presentation.model.DraftUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
+import ch.protonmail.android.mailcomposer.presentation.model.ContactSuggestionUiModel
+import ch.protonmail.android.mailcomposer.presentation.ui.FocusedFieldType
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.presentation.mapper.AttachmentUiModelMapper
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
@@ -48,6 +50,7 @@ class ComposerReducer @Inject constructor(
             is ComposerEvent -> operation.newStateForEvent(currentState)
         }
 
+    @Suppress("ComplexMethod")
     private fun ComposerAction.newStateForAction(currentState: ComposerDraftState) = when (this) {
         is ComposerAction.AttachmentsAdded,
         is ComposerAction.RemoveAttachment -> currentState
@@ -56,6 +59,7 @@ class ComposerReducer @Inject constructor(
         is ComposerAction.RecipientsBccChanged -> updateRecipientsBcc(currentState, this.recipients)
         is ComposerAction.RecipientsCcChanged -> updateRecipientsCc(currentState, this.recipients)
         is ComposerAction.RecipientsToChanged -> updateRecipientsTo(currentState, this.recipients)
+        is ComposerAction.ContactSuggestionTermChanged -> currentState
         is ComposerAction.DraftBodyChanged -> updateDraftBodyTo(currentState, this.draftBody)
         is ComposerAction.SubjectChanged -> updateSubjectTo(currentState, this.subject)
         is ComposerAction.OnBottomSheetOptionSelected -> updateBottomSheetVisibility(currentState, false)
@@ -63,6 +67,10 @@ class ComposerReducer @Inject constructor(
         is ComposerAction.OnCloseComposer -> updateCloseComposerState(currentState, false)
         is ComposerAction.ChangeSenderRequested -> currentState
         is ComposerAction.OnSendMessage -> updateStateForSendMessage(currentState)
+        is ComposerAction.ContactSuggestionsDismissed -> updateStateForContactSuggestionsDismissed(
+            currentState,
+            this.fieldType
+        )
     }
 
     @Suppress("ComplexMethod")
@@ -124,6 +132,11 @@ class ComposerReducer @Inject constructor(
         is ComposerEvent.ErrorAttachmentsExceedSizeLimit -> updateStateForAttachmentsExceedSizeLimit(currentState)
         is ComposerEvent.ErrorAttachmentsReEncryption -> updateStateForDeleteAllAttachment(currentState)
         is ComposerEvent.OnSendingError -> updateSendingErrorState(currentState, sendingError)
+        is ComposerEvent.UpdateContactSuggestions -> updateStateForContactSuggestions(
+            currentState,
+            this.contactSuggestions,
+            this.fieldType
+        )
     }
 
     private fun updateBottomSheetVisibility(currentState: ComposerDraftState, bottomSheetVisibility: Boolean) =
@@ -257,6 +270,29 @@ class ComposerReducer @Inject constructor(
         to = currentState.fields.to,
         cc = currentState.fields.cc,
         bcc = recipients
+    )
+
+    private fun updateStateForContactSuggestions(
+        currentState: ComposerDraftState,
+        contactSuggestions: List<ContactSuggestionUiModel>,
+        fieldType: FocusedFieldType
+    ) = currentState.copy(
+        contactSuggestions = currentState.contactSuggestions.toMutableMap().apply {
+            this[fieldType] = contactSuggestions
+        },
+        areContactSuggestionsExpanded = currentState.areContactSuggestionsExpanded.toMutableMap().apply {
+            this[fieldType] = contactSuggestions.isNotEmpty()
+        }
+    )
+
+    @Suppress("FunctionMaxLength")
+    private fun updateStateForContactSuggestionsDismissed(
+        currentState: ComposerDraftState,
+        fieldType: FocusedFieldType
+    ): ComposerDraftState = currentState.copy(
+        areContactSuggestionsExpanded = currentState.areContactSuggestionsExpanded.toMutableMap().apply {
+            this[fieldType] = false
+        }
     )
 
     private fun updateRecipients(

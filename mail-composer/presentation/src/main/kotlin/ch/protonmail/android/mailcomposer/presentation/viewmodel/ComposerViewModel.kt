@@ -29,7 +29,6 @@ import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.domain.model.DecryptedDraftFields
-import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
 import ch.protonmail.android.mailcomposer.domain.model.OriginalHtmlQuote
@@ -69,13 +68,17 @@ import ch.protonmail.android.mailcomposer.presentation.model.ComposerOperation
 import ch.protonmail.android.mailcomposer.presentation.model.DraftUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
+import ch.protonmail.android.mailcomposer.presentation.model.ContactSuggestionUiModel
 import ch.protonmail.android.mailcomposer.presentation.reducer.ComposerReducer
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen
 import ch.protonmail.android.mailcomposer.presentation.usecase.FormatMessageSendingError
+import ch.protonmail.android.mailcomposer.presentation.ui.FocusedFieldType
 import ch.protonmail.android.mailcomposer.presentation.usecase.InjectAddressSignature
 import ch.protonmail.android.mailcomposer.presentation.usecase.ParentMessageToDraftFields
 import ch.protonmail.android.mailcomposer.presentation.usecase.StyleQuotedHtml
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
+import ch.protonmail.android.mailcontact.domain.usecase.SearchContacts
+import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.test.idlingresources.ComposerIdlingResource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -93,6 +96,7 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import me.proton.core.network.domain.NetworkManager
 import me.proton.core.util.kotlin.deserialize
+import me.proton.core.util.kotlin.takeIfNotBlank
 import me.proton.core.util.kotlin.takeIfNotEmpty
 import timber.log.Timber
 import javax.inject.Inject
@@ -108,6 +112,7 @@ class ComposerViewModel @Inject constructor(
     private val storeDraftWithRecipients: StoreDraftWithRecipients,
     private val storeExternalAttachments: StoreExternalAttachments,
     private val getContacts: GetContacts,
+    private val searchContacts: SearchContacts,
     private val participantMapper: ParticipantMapper,
     private val reducer: ComposerReducer,
     private val isValidEmailAddress: IsValidEmailAddress,
@@ -247,6 +252,7 @@ class ComposerViewModel @Inject constructor(
         composerIdlingResource.clear()
     }
 
+    @Suppress("ComplexMethod")
     internal fun submit(action: ComposerAction) {
         viewModelScope.launch {
             actionMutex.withLock {
@@ -260,6 +266,11 @@ class ComposerViewModel @Inject constructor(
                     is ComposerAction.RecipientsToChanged -> emitNewStateFor(onToChanged(action))
                     is ComposerAction.RecipientsCcChanged -> emitNewStateFor(onCcChanged(action))
                     is ComposerAction.RecipientsBccChanged -> emitNewStateFor(onBccChanged(action))
+                    is ComposerAction.ContactSuggestionTermChanged -> onSearchTermChanged(
+                        action.searchTerm,
+                        action.fieldType
+                    )
+                    is ComposerAction.ContactSuggestionsDismissed -> emitNewStateFor(action)
                     is ComposerAction.OnBottomSheetOptionSelected -> emitNewStateFor(action)
                     is ComposerAction.OnAddAttachments -> emitNewStateFor(action)
                     is ComposerAction.OnCloseComposer -> emitNewStateFor(onCloseComposer(action))
@@ -541,6 +552,29 @@ class ComposerViewModel @Inject constructor(
                 ifRight = { action }
             )
         } ?: action
+
+    private suspend fun onSearchTermChanged(searchTerm: String, fieldType: FocusedFieldType) {
+        searchContacts(primaryUserId(), searchTerm).onEach {
+            val suggestedContacts = it.getOrNull()?.flatMap { contact ->
+                contact.contactEmails.map { contactEmail ->
+                    ContactSuggestionUiModel(
+                        name = contactEmail.name.takeIfNotBlank()
+                            ?: contact.name.takeIfNotBlank()
+                            ?: contactEmail.email,
+                        email = contactEmail.email
+                    )
+                }
+            } ?: emptyList()
+
+            emitNewStateFor(
+                ComposerEvent.UpdateContactSuggestions(
+                    suggestedContacts,
+                    fieldType
+                )
+            )
+
+        }.launchIn(viewModelScope)
+    }
 
     private suspend fun handleReEncryptionFailed() {
         deleteAllAttachments(primaryUserId(), currentSenderEmail(), currentMessageId())
