@@ -27,8 +27,8 @@ import ch.protonmail.android.maillabel.domain.usecase.CreateFolder
 import ch.protonmail.android.maillabel.domain.usecase.DeleteLabel
 import ch.protonmail.android.maillabel.domain.usecase.GetLabel
 import ch.protonmail.android.maillabel.domain.usecase.GetLabelColors
-import ch.protonmail.android.maillabel.domain.usecase.IsLabelLimitReached
 import ch.protonmail.android.maillabel.domain.usecase.IsLabelNameAllowed
+import ch.protonmail.android.maillabel.domain.usecase.IsLabelLimitReached
 import ch.protonmail.android.maillabel.domain.usecase.UpdateLabel
 import ch.protonmail.android.maillabel.presentation.getColorFromHexString
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
@@ -203,7 +203,7 @@ class FolderFormViewModel @Inject constructor(
         }
         if (isFolderLimitReached) return emitNewStateFor(FolderFormEvent.FolderLimitReached)
 
-        val isFolderNameAllowed = isLabelNameAllowed(primaryUserId(), name).getOrElse {
+        val isFolderNameAllowed = isLabelNameAllowed(primaryUserId(), name, parentId).getOrElse {
             return emitNewStateFor(FolderFormEvent.SaveFolderError)
         }
         if (!isFolderNameAllowed) return emitNewStateFor(FolderFormEvent.FolderAlreadyExists)
@@ -229,7 +229,7 @@ class FolderFormViewModel @Inject constructor(
                 return emitNewStateFor(FolderFormEvent.CloseFolderForm)
             }
             if (!name.equalsNoCase(label.name)) {
-                val isFolderNameAllowed = isLabelNameAllowed(primaryUserId(), name).getOrElse {
+                val isFolderNameAllowed = isLabelNameAllowed(primaryUserId(), name, parentId).getOrElse {
                     return emitNewStateFor(FolderFormEvent.SaveFolderError)
                 }
                 if (!isFolderNameAllowed) return emitNewStateFor(FolderFormEvent.FolderAlreadyExists)

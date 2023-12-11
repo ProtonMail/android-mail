@@ -302,7 +302,9 @@ class FolderFormViewModelTest {
         // Given
         val loadedState = loadedCreateState
         every { savedStateHandle.get<String>(FolderFormScreen.FolderFormLabelIdKey) } returns null
-        coEvery { isLabelNameAllowed.invoke(userId, defaultTestUpdatedName) } returns true.right()
+        coEvery {
+            isLabelNameAllowed.invoke(userId, defaultTestUpdatedName, loadedState.parent?.labelId)
+        } returns true.right()
         coEvery { isLabelLimitReached.invoke(userId, LabelType.MessageFolder) } returns false.right()
 
         folderFormViewModel.state.test {
@@ -335,7 +337,7 @@ class FolderFormViewModelTest {
         // Given
         val loadedState = loadedCreateState
         every { savedStateHandle.get<String>(FolderFormScreen.FolderFormLabelIdKey) } returns null
-        coEvery { isLabelNameAllowed.invoke(userId, defaultTestUpdatedName) } returns true.right()
+        coEvery { isLabelNameAllowed.invoke(userId, defaultTestUpdatedName, any()) } returns true.right()
         coEvery { isLabelLimitReached.invoke(userId, LabelType.MessageFolder) } returns false.right()
         coEvery {
             createFolder.invoke(userId, any(), any(), any(), any())
@@ -373,7 +375,9 @@ class FolderFormViewModelTest {
         every {
             savedStateHandle.get<String>(FolderFormScreen.FolderFormLabelIdKey)
         } returns defaultTestFolder.labelId.id
-        coEvery { isLabelNameAllowed.invoke(userId, defaultTestUpdatedName) } returns true.right()
+        coEvery {
+            isLabelNameAllowed.invoke(userId, defaultTestUpdatedName, loadedState.parent?.labelId)
+        } returns true.right()
         coEvery {
             getLabel.invoke(userId, defaultTestFolder.labelId, LabelType.MessageFolder)
         } returns defaultTestFolder.right()
@@ -435,7 +439,7 @@ class FolderFormViewModelTest {
         every {
             savedStateHandle.get<String>(FolderFormScreen.FolderFormLabelIdKey)
         } returns defaultTestFolder.labelId.id
-        coEvery { isLabelNameAllowed.invoke(userId, defaultTestUpdatedName) } returns true.right()
+        coEvery { isLabelNameAllowed.invoke(userId, defaultTestUpdatedName, any()) } returns true.right()
         coEvery {
             getLabel.invoke(userId, defaultTestFolder.labelId, LabelType.MessageFolder)
         } returns defaultTestFolder.right()
@@ -463,7 +467,7 @@ class FolderFormViewModelTest {
         }
         coVerify {
             // Verify that we use the name trimmed from leading and trailing whitespaces
-            isLabelNameAllowed.invoke(userId, defaultTestUpdatedName)
+            isLabelNameAllowed.invoke(userId, defaultTestUpdatedName, null)
             updateLabel.invoke(
                 userId,
                 defaultTestFolder.copy(name = defaultTestUpdatedName)
@@ -477,7 +481,7 @@ class FolderFormViewModelTest {
         val loadedState = loadedCreateState
         every { savedStateHandle.get<String>(FolderFormScreen.FolderFormLabelIdKey) } returns null
         coEvery { isLabelLimitReached.invoke(userId, LabelType.MessageFolder) } returns false.right()
-        coEvery { isLabelNameAllowed.invoke(userId, any()) } returns false.right()
+        coEvery { isLabelNameAllowed.invoke(userId, any(), any()) } returns false.right()
 
         folderFormViewModel.state.test {
             // Initial loaded state

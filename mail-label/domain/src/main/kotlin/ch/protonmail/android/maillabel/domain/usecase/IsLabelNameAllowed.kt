@@ -24,6 +24,7 @@ import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.label.domain.repository.LabelRepository
 import me.proton.core.util.kotlin.equalsNoCase
@@ -34,10 +35,18 @@ class IsLabelNameAllowed @Inject constructor(
     private val labelRepository: LabelRepository
 ) {
 
-    suspend operator fun invoke(userId: UserId, name: String): Either<DataError, Boolean> = Either.catch {
-        FORBIDDEN_LABEL_NAME.none { it.equalsNoCase(name) } &&
-            labelRepository.getLabels(userId, LabelType.MessageLabel).none { it.name.equalsNoCase(name) } &&
-            labelRepository.getLabels(userId, LabelType.MessageFolder).none { it.name.equalsNoCase(name) }
+    suspend operator fun invoke(
+        userId: UserId,
+        name: String,
+        parentId: LabelId? = null
+    ): Either<DataError, Boolean> = Either.catch {
+        if (parentId != null) {
+            noSubFolderWithSameName(userId, name, parentId)
+        } else {
+            noSystemFolderWithSameName(name) &&
+                noLabelWithSameName(userId, name) &&
+                noFolderWithSameName(userId, name)
+        }
     }.mapLeft {
         val error = when (it) {
             is UnknownHostException -> NetworkError.NoNetwork
@@ -50,6 +59,27 @@ class IsLabelNameAllowed @Inject constructor(
 
         DataError.Remote.Http(error)
     }
+
+    private suspend fun noSubFolderWithSameName(
+        userId: UserId,
+        name: String,
+        parentId: LabelId?
+    ): Boolean {
+        return labelRepository.getLabels(userId, LabelType.MessageFolder).filter {
+            it.parentId == parentId
+        }.none {
+            it.name.equalsNoCase(name)
+        }
+    }
+
+    private fun noSystemFolderWithSameName(name: String) =
+        FORBIDDEN_LABEL_NAME.none { it.equalsNoCase(name) }
+
+    private suspend fun noLabelWithSameName(userId: UserId, name: String) =
+        labelRepository.getLabels(userId, LabelType.MessageLabel).none { it.name.equalsNoCase(name) }
+
+    private suspend fun noFolderWithSameName(userId: UserId, name: String) =
+        labelRepository.getLabels(userId, LabelType.MessageFolder).none { it.name.equalsNoCase(name) }
 
     private companion object {
 
