@@ -23,10 +23,11 @@ import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.sample.ActionUiModelSample
+import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.text
-import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
+import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState.Data.SelectionMode.SelectedMailboxItem
@@ -131,13 +132,14 @@ object MailboxStateSampleData {
         bottomBarAction: List<ActionUiModel> = listOf(ActionUiModelSample.Archive),
         currentMailLabel: MailLabel = MailLabel.System(MailLabelId.System.Inbox),
         bottomSheetState: BottomSheetState? = null,
-        error: Effect<TextUiModel> = Effect.empty()
+        error: Effect<TextUiModel> = Effect.empty(),
+        type: MailboxItemType = MailboxItemType.Conversation
     ) = MailboxState(
         mailboxListState = MailboxListState.Data.SelectionMode(
             currentMailLabel = currentMailLabel,
             selectionModeEnabled = true,
             selectedMailboxItems = selectedMailboxItemUiModels.map {
-                SelectedMailboxItem(it.userId, it.id, it.isRead, it.showStar)
+                SelectedMailboxItem(it.userId, it.id, it.isRead, it.showStar, type)
             }.toSet(),
             swipeActions = SwipeActionsUiModel(
                 start = SwipeUiModelSampleData.Trash,

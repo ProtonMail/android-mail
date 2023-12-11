@@ -431,7 +431,8 @@ internal class MailboxListReducerTest(
                             userId = UserIdTestData.userId,
                             id = MailboxItemUiModelTestData.readMailboxItemUiModel.id,
                             isRead = true,
-                            isStarred = false
+                            isStarred = false,
+                            type = MailboxItemType.Message
                         )
                     ),
                     selectionModeEnabled = false,
@@ -446,7 +447,8 @@ internal class MailboxListReducerTest(
                             userId = UserIdTestData.userId,
                             id = MailboxItemUiModelTestData.unreadMailboxItemUiModel.id,
                             isRead = false,
-                            isStarred = false
+                            isStarred = false,
+                            type = MailboxItemType.Conversation
                         )
                     ),
                     selectionModeEnabled = false,
@@ -472,7 +474,8 @@ internal class MailboxListReducerTest(
                             userId = UserIdTestData.userId,
                             id = MailboxItemUiModelTestData.readMailboxItemUiModel.id,
                             isRead = false,
-                            isStarred = false
+                            isStarred = false,
+                            type = MailboxItemType.Conversation
                         )
                     ),
                     selectionModeEnabled = false,
@@ -488,13 +491,15 @@ internal class MailboxListReducerTest(
                             userId = UserIdTestData.userId,
                             id = MailboxItemUiModelTestData.readMailboxItemUiModel.id,
                             isRead = false,
-                            isStarred = false
+                            isStarred = false,
+                            type = MailboxItemType.Conversation
                         ),
                         SelectedMailboxItem(
                             userId = UserIdTestData.userId,
                             id = MailboxItemUiModelTestData.unreadMailboxItemUiModel.id,
                             isRead = false,
-                            isStarred = false
+                            isStarred = false,
+                            type = MailboxItemType.Message
                         )
                     ),
                     selectionModeEnabled = false,
@@ -509,7 +514,8 @@ internal class MailboxListReducerTest(
                             userId = UserIdTestData.userId,
                             id = MailboxItemUiModelTestData.readMailboxItemUiModel.id,
                             isRead = false,
-                            isStarred = false
+                            isStarred = false,
+                            type = MailboxItemType.Conversation
                         )
                     ),
                     selectionModeEnabled = false,
@@ -556,7 +562,8 @@ internal class MailboxListReducerTest(
                             userId = UserIdTestData.userId,
                             id = MailboxItemUiModelTestData.readMailboxItemUiModel.id,
                             isRead = false,
-                            isStarred = false
+                            isStarred = false,
+                            type = MailboxItemType.Conversation
                         )
                     ),
                     selectionModeEnabled = false,
@@ -570,7 +577,8 @@ internal class MailboxListReducerTest(
                             userId = UserIdTestData.userId,
                             id = MailboxItemUiModelTestData.readMailboxItemUiModel.id,
                             isRead = true,
-                            isStarred = false
+                            isStarred = false,
+                            type = MailboxItemType.Conversation
                         )
                     ),
                     selectionModeEnabled = false,
@@ -585,7 +593,8 @@ internal class MailboxListReducerTest(
                             userId = UserIdTestData.userId,
                             id = MailboxItemUiModelTestData.readMailboxItemUiModel.id,
                             isRead = false,
-                            isStarred = false
+                            isStarred = false,
+                            type = MailboxItemType.Conversation
                         )
                     ),
                     selectionModeEnabled = false,
@@ -599,7 +608,8 @@ internal class MailboxListReducerTest(
                             userId = UserIdTestData.userId,
                             id = MailboxItemUiModelTestData.readMailboxItemUiModel.id,
                             isRead = false,
-                            isStarred = false
+                            isStarred = false,
+                            type = MailboxItemType.Conversation
                         )
                     ),
                     selectionModeEnabled = false,
@@ -614,7 +624,8 @@ internal class MailboxListReducerTest(
                             userId = UserIdTestData.userId,
                             id = MailboxItemUiModelTestData.readMailboxItemUiModel.id,
                             isRead = false,
-                            isStarred = true
+                            isStarred = true,
+                            type = MailboxItemType.Conversation
                         )
                     ),
                     selectionModeEnabled = false,
@@ -640,7 +651,8 @@ internal class MailboxListReducerTest(
                             userId = UserIdTestData.userId,
                             id = MailboxItemUiModelTestData.readMailboxItemUiModel.id,
                             isRead = false,
-                            isStarred = true
+                            isStarred = true,
+                            type = MailboxItemType.Conversation
                         )
                     ),
                     selectionModeEnabled = false,
@@ -666,7 +678,8 @@ internal class MailboxListReducerTest(
                             userId = UserIdTestData.userId,
                             id = MailboxItemUiModelTestData.readMailboxItemUiModel.id,
                             isRead = false,
-                            isStarred = true
+                            isStarred = true,
+                            type = MailboxItemType.Conversation
                         )
                     ),
                     selectionModeEnabled = false,
@@ -692,7 +705,8 @@ internal class MailboxListReducerTest(
                             userId = UserIdTestData.userId,
                             id = MailboxItemUiModelTestData.readMailboxItemUiModel.id,
                             isRead = false,
-                            isStarred = true
+                            isStarred = true,
+                            type = MailboxItemType.Conversation
                         )
                     ),
                     selectionModeEnabled = false,
@@ -716,7 +730,8 @@ internal class MailboxListReducerTest(
                             userId = UserIdTestData.userId,
                             id = MailboxItemUiModelTestData.readMailboxItemUiModel.id,
                             isRead = false,
-                            isStarred = false
+                            isStarred = false,
+                            type = MailboxItemType.Conversation
                         )
                     ),
                     selectionModeEnabled = false,
@@ -742,7 +757,8 @@ internal class MailboxListReducerTest(
                             userId = UserIdTestData.userId,
                             id = MailboxItemUiModelTestData.readMailboxItemUiModel.id,
                             isRead = false,
-                            isStarred = false
+                            isStarred = false,
+                            type = MailboxItemType.Conversation
                         )
                     ),
                     selectionModeEnabled = false,
@@ -756,7 +772,8 @@ internal class MailboxListReducerTest(
                             userId = UserIdTestData.userId,
                             id = MailboxItemUiModelTestData.readMailboxItemUiModel.id,
                             isRead = false,
-                            isStarred = true
+                            isStarred = true,
+                            type = MailboxItemType.Conversation
                         )
                     ),
                     selectionModeEnabled = false,
@@ -771,7 +788,8 @@ internal class MailboxListReducerTest(
                             userId = UserIdTestData.userId,
                             id = MailboxItemUiModelTestData.readMailboxItemUiModel.id,
                             isRead = false,
-                            isStarred = false
+                            isStarred = false,
+                            type = MailboxItemType.Conversation
                         )
                     ),
                     selectionModeEnabled = false,
@@ -785,7 +803,8 @@ internal class MailboxListReducerTest(
                             userId = UserIdTestData.userId,
                             id = MailboxItemUiModelTestData.readMailboxItemUiModel.id,
                             isRead = false,
-                            isStarred = true
+                            isStarred = true,
+                            type = MailboxItemType.Conversation
                         )
                     ),
                     selectionModeEnabled = false,
@@ -800,7 +819,8 @@ internal class MailboxListReducerTest(
                             userId = UserIdTestData.userId,
                             id = MailboxItemUiModelTestData.readMailboxItemUiModel.id,
                             isRead = false,
-                            isStarred = true
+                            isStarred = true,
+                            type = MailboxItemType.Conversation
                         )
                     ),
                     selectionModeEnabled = false,
@@ -814,7 +834,8 @@ internal class MailboxListReducerTest(
                             userId = UserIdTestData.userId,
                             id = MailboxItemUiModelTestData.readMailboxItemUiModel.id,
                             isRead = false,
-                            isStarred = false
+                            isStarred = false,
+                            type = MailboxItemType.Conversation
                         )
                     ),
                     selectionModeEnabled = false,
@@ -829,7 +850,8 @@ internal class MailboxListReducerTest(
                             userId = UserIdTestData.userId,
                             id = MailboxItemUiModelTestData.readMailboxItemUiModel.id,
                             isRead = false,
-                            isStarred = false
+                            isStarred = false,
+                            type = MailboxItemType.Conversation
                         )
                     ),
                     selectionModeEnabled = false,
@@ -855,7 +877,8 @@ internal class MailboxListReducerTest(
                             userId = UserIdTestData.userId,
                             id = MailboxItemUiModelTestData.readMailboxItemUiModel.id,
                             isRead = false,
-                            isStarred = false
+                            isStarred = false,
+                            type = MailboxItemType.Conversation
                         )
                     ),
                     selectionModeEnabled = false,

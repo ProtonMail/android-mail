@@ -59,6 +59,7 @@ import ch.protonmail.android.maillabel.presentation.model.LabelUiModelWithSelect
 import ch.protonmail.android.maillabel.presentation.text
 import ch.protonmail.android.maillabel.presentation.toCustomUiModel
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemId
+import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Conversation
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Message
 import ch.protonmail.android.mailmailbox.domain.model.OnboardingPreference
@@ -128,7 +129,6 @@ import ch.protonmail.android.testdata.mailbox.UnreadCountersTestData.update
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData
 import ch.protonmail.android.testdata.maillabel.MailLabelUiModelTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
-import ch.protonmail.android.testdata.user.UserIdTestData.userId1
 import io.mockk.Called
 import io.mockk.coEvery
 import io.mockk.coJustRun
@@ -1423,49 +1423,6 @@ class MailboxViewModelTest {
         }
 
     @Test
-    fun `verify mark conversations read action triggers mark conversations read use case for each user id`() = runTest {
-        // Given
-        val item = readMailboxItemUiModel.copy(userId = userId)
-        val secondItem = unreadMailboxItemUiModel.copy(userId = userId1)
-        val initialState = createMailboxDataState()
-        val intermediateState = MailboxStateSampleData.createSelectionMode(listOf(item, secondItem))
-        val expectedState = MailboxStateSampleData.createSelectionMode(
-            listOf(item.copy(isRead = true), secondItem.copy(isRead = true))
-        )
-        expectViewMode(ConversationGrouping)
-        expectedSelectedLabelCountStateChange(initialState)
-        returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
-        returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
-        returnExpectedStateForMarkAsRead(intermediateState, expectedState)
-        expectMarkConversationsAsReadSucceeds(userId, listOf(item))
-        expectMarkConversationsAsReadSucceeds(userId1, listOf(secondItem))
-
-        mailboxViewModel.state.test {
-            // Given
-            awaitItem() // First emission for selected user
-
-            // When
-            mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
-
-            // Then
-            assertEquals(intermediateState, awaitItem())
-            verify(exactly = 1) {
-                mailboxReducer.newStateFrom(initialState, MailboxEvent.EnterSelectionMode(item))
-            }
-
-            // When
-            mailboxViewModel.submit(MailboxViewAction.MarkAsRead)
-
-            // Then
-            assertEquals(expectedState, awaitItem())
-            coVerifySequence {
-                markConversationsAsRead(userId, listOf(ConversationId(item.id)))
-                markConversationsAsRead(userId1, listOf(ConversationId(secondItem.id)))
-            }
-        }
-    }
-
-    @Test
     fun `when mark as unread is triggered for conversation grouping then mark conversations as unread is called`() =
         runTest {
             // Given
@@ -1509,59 +1466,15 @@ class MailboxViewModelTest {
         }
 
     @Test
-    fun `verify mark conversations unread action triggers mark conversations unread use case for each user id`() =
-        runTest {
-            // Given
-            val item = readMailboxItemUiModel.copy(userId = userId)
-            val secondItem = unreadMailboxItemUiModel.copy(userId = userId1)
-            val initialState = createMailboxDataState()
-            val intermediateState = MailboxStateSampleData.createSelectionMode(listOf(item, secondItem))
-            val expectedState = MailboxStateSampleData.createSelectionMode(
-                listOf(item.copy(isRead = false), secondItem.copy(isRead = false))
-            )
-            expectViewMode(ConversationGrouping)
-            expectedSelectedLabelCountStateChange(initialState)
-            returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
-            returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
-            returnExpectedStateForMarkAsUnread(intermediateState, expectedState)
-            expectMarkConversationsAsUnreadSucceeds(userId, listOf(item))
-            expectMarkConversationsAsUnreadSucceeds(userId1, listOf(secondItem))
-
-            mailboxViewModel.state.test {
-                // Given
-                awaitItem() // First emission for selected user
-
-                // When
-                mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
-
-                // Then
-                assertEquals(intermediateState, awaitItem())
-                verify(exactly = 1) {
-                    mailboxReducer.newStateFrom(initialState, MailboxEvent.EnterSelectionMode(item))
-                }
-
-                // When
-                mailboxViewModel.submit(MailboxViewAction.MarkAsUnread)
-
-                // Then
-                assertEquals(expectedState, awaitItem())
-                coVerifySequence {
-                    markConversationsAsUnread(userId, listOf(ConversationId(item.id)))
-                    markConversationsAsUnread(userId1, listOf(ConversationId(secondItem.id)))
-                }
-            }
-        }
-
-    @Test
     fun `when mark as read is triggered for no conversation grouping then mark messages as read use case is called`() =
         runTest {
             // Given
             val item = readMailboxItemUiModel
             val secondItem = unreadMailboxItemUiModel
             val initialState = createMailboxDataState()
-            val intermediateState = MailboxStateSampleData.createSelectionMode(listOf(item, secondItem))
+            val intermediateState = MailboxStateSampleData.createSelectionMode(listOf(item, secondItem), type = Message)
             val expectedState = MailboxStateSampleData.createSelectionMode(
-                listOf(item.copy(isRead = true), secondItem.copy(isRead = true))
+                listOf(item.copy(isRead = true), secondItem.copy(isRead = true)), type = Message
             )
             expectViewMode(NoConversationGrouping)
             expectedSelectedLabelCountStateChange(initialState)
@@ -1596,58 +1509,15 @@ class MailboxViewModelTest {
         }
 
     @Test
-    fun `verify mark messages read action triggers mark messages read use case for each user id`() = runTest {
-        // Given
-        val item = readMailboxItemUiModel.copy(userId = userId)
-        val secondItem = unreadMailboxItemUiModel.copy(userId = userId1)
-        val initialState = createMailboxDataState()
-        val intermediateState = MailboxStateSampleData.createSelectionMode(listOf(item, secondItem))
-        val expectedState = MailboxStateSampleData.createSelectionMode(
-            listOf(item.copy(isRead = true), secondItem.copy(isRead = true))
-        )
-        expectViewMode(NoConversationGrouping)
-        expectedSelectedLabelCountStateChange(initialState)
-        returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
-        returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
-        returnExpectedStateForMarkAsRead(intermediateState, expectedState)
-        expectMarkMessagesAsReadSucceeds(userId, listOf(item))
-        expectMarkMessagesAsReadSucceeds(userId1, listOf(secondItem))
-
-        mailboxViewModel.state.test {
-            // Given
-            awaitItem() // First emission for selected user
-
-            // When
-            mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
-
-            // Then
-            assertEquals(intermediateState, awaitItem())
-            verify(exactly = 1) {
-                mailboxReducer.newStateFrom(initialState, MailboxEvent.EnterSelectionMode(item))
-            }
-
-            // When
-            mailboxViewModel.submit(MailboxViewAction.MarkAsRead)
-
-            // Then
-            assertEquals(expectedState, awaitItem())
-            coVerifySequence {
-                markMessagesAsRead(userId, listOf(MessageId(item.id)))
-                markMessagesAsRead(userId1, listOf(MessageId(secondItem.id)))
-            }
-        }
-    }
-
-    @Test
     fun `when mark as unread is triggered for no conversation grouping then mark messages as unread is called`() =
         runTest {
             // Given
             val item = readMailboxItemUiModel
             val secondItem = unreadMailboxItemUiModel
             val initialState = createMailboxDataState()
-            val intermediateState = MailboxStateSampleData.createSelectionMode(listOf(item, secondItem))
+            val intermediateState = MailboxStateSampleData.createSelectionMode(listOf(item, secondItem), type = Message)
             val expectedState = MailboxStateSampleData.createSelectionMode(
-                listOf(item.copy(isRead = true), secondItem.copy(isRead = true))
+                listOf(item.copy(isRead = true), secondItem.copy(isRead = true)), type = Message
             )
             expectViewMode(NoConversationGrouping)
             expectedSelectedLabelCountStateChange(initialState)
@@ -1680,49 +1550,6 @@ class MailboxViewModelTest {
                 coVerify { markConversationsAsUnread wasNot Called }
             }
         }
-
-    @Test
-    fun `verify mark messages unread action triggers mark messages unread use case for each user id`() = runTest {
-        // Given
-        val item = readMailboxItemUiModel.copy(userId = userId)
-        val secondItem = unreadMailboxItemUiModel.copy(userId = userId1)
-        val initialState = createMailboxDataState()
-        val intermediateState = MailboxStateSampleData.createSelectionMode(listOf(item, secondItem))
-        val expectedState = MailboxStateSampleData.createSelectionMode(
-            listOf(item.copy(isRead = true), secondItem.copy(isRead = true))
-        )
-        expectViewMode(NoConversationGrouping)
-        expectedSelectedLabelCountStateChange(initialState)
-        returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
-        returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
-        returnExpectedStateForMarkAsUnread(intermediateState, expectedState)
-        expectMarkMessagesAsUnreadSucceeds(userId, listOf(item))
-        expectMarkMessagesAsUnreadSucceeds(userId1, listOf(secondItem))
-
-        mailboxViewModel.state.test {
-            // Given
-            awaitItem() // First emission for selected user
-
-            // When
-            mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
-
-            // Then
-            assertEquals(intermediateState, awaitItem())
-            verify(exactly = 1) {
-                mailboxReducer.newStateFrom(initialState, MailboxEvent.EnterSelectionMode(item))
-            }
-
-            // When
-            mailboxViewModel.submit(MailboxViewAction.MarkAsUnread)
-
-            // Then
-            assertEquals(expectedState, awaitItem())
-            coVerifySequence {
-                markMessagesAsUnread(userId, listOf(MessageId(item.id)))
-                markMessagesAsUnread(userId1, listOf(MessageId(secondItem.id)))
-            }
-        }
-    }
 
     @Test
     fun `when trash is triggered for conversation grouping then move conversations is called`() = runTest {
@@ -1768,51 +1595,11 @@ class MailboxViewModelTest {
     }
 
     @Test
-    fun `verify trash action triggers move conversations use case for each user id`() = runTest {
-        // Given
-        val item = readMailboxItemUiModel.copy(userId = userId)
-        val secondItem = unreadMailboxItemUiModel.copy(userId = userId1)
-        val initialState = createMailboxDataState()
-        val intermediateState = MailboxStateSampleData.createSelectionMode(listOf(item, secondItem))
-        expectViewMode(ConversationGrouping)
-        expectedSelectedLabelCountStateChange(initialState)
-        returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
-        returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
-        returnExpectedStateForTrash(intermediateState, initialState, 2)
-        expectMoveConversationsSucceeds(userId, listOf(item), SystemLabelId.Trash.labelId)
-        expectMoveConversationsSucceeds(userId1, listOf(secondItem), SystemLabelId.Trash.labelId)
-
-        mailboxViewModel.state.test {
-            // Given
-            awaitItem() // First emission for selected user
-
-            // When
-            mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
-
-            // Then
-            assertEquals(intermediateState, awaitItem())
-            verify(exactly = 1) {
-                mailboxReducer.newStateFrom(initialState, MailboxEvent.EnterSelectionMode(item))
-            }
-
-            // When
-            mailboxViewModel.submit(MailboxViewAction.Trash)
-
-            // Then
-            assertEquals(initialState, awaitItem())
-            coVerifySequence {
-                moveConversations(userId, listOf(ConversationId(item.id)), SystemLabelId.Trash.labelId)
-                moveConversations(userId1, listOf(ConversationId(secondItem.id)), SystemLabelId.Trash.labelId)
-            }
-        }
-    }
-
-    @Test
     fun `when trash is triggered for no conversation grouping then move messages is called `() = runTest {
         val item = readMailboxItemUiModel
         val secondItem = unreadMailboxItemUiModel
         val initialState = createMailboxDataState()
-        val intermediateState = MailboxStateSampleData.createSelectionMode(listOf(item, secondItem))
+        val intermediateState = MailboxStateSampleData.createSelectionMode(listOf(item, secondItem), type = Message)
         expectViewMode(NoConversationGrouping)
         expectedSelectedLabelCountStateChange(initialState)
         returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
@@ -1842,46 +1629,6 @@ class MailboxViewModelTest {
                 moveMessages(userId, listOf(MessageId(item.id), MessageId(secondItem.id)), SystemLabelId.Trash.labelId)
             }
             coVerify { moveConversations wasNot Called }
-        }
-    }
-
-    @Test
-    fun `verify trash action triggers move messages use case for each user id`() = runTest {
-        // Given
-        val item = readMailboxItemUiModel.copy(userId = userId)
-        val secondItem = unreadMailboxItemUiModel.copy(userId = userId1)
-        val initialState = createMailboxDataState()
-        val intermediateState = MailboxStateSampleData.createSelectionMode(listOf(item, secondItem))
-        expectViewMode(NoConversationGrouping)
-        expectedSelectedLabelCountStateChange(initialState)
-        returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
-        returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
-        returnExpectedStateForTrash(intermediateState, initialState, 2)
-        expectMoveMessagesSucceeds(userId, listOf(item), SystemLabelId.Trash.labelId)
-        expectMoveMessagesSucceeds(userId1, listOf(secondItem), SystemLabelId.Trash.labelId)
-
-        mailboxViewModel.state.test {
-            // Given
-            awaitItem() // First emission for selected user
-
-            // When
-            mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
-
-            // Then
-            assertEquals(intermediateState, awaitItem())
-            verify(exactly = 1) {
-                mailboxReducer.newStateFrom(initialState, MailboxEvent.EnterSelectionMode(item))
-            }
-
-            // When
-            mailboxViewModel.submit(MailboxViewAction.Trash)
-
-            // Then
-            assertEquals(initialState, awaitItem())
-            coVerifySequence {
-                moveMessages(userId, listOf(MessageId(item.id)), SystemLabelId.Trash.labelId)
-                moveMessages(userId1, listOf(MessageId(secondItem.id)), SystemLabelId.Trash.labelId)
-            }
         }
     }
 
@@ -1932,58 +1679,15 @@ class MailboxViewModelTest {
     }
 
     @Test
-    fun `verify delete action triggers delete conversations use case for each user id`() = runTest {
-        // Given
-        val item = readMailboxItemUiModel.copy(userId = userId)
-        val secondItem = unreadMailboxItemUiModel.copy(userId = userId1)
-        val initialState = createMailboxDataState()
-        val intermediateState = MailboxStateSampleData.createSelectionMode(
-            listOf(item, secondItem),
-            currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
-        )
-        expectViewMode(ConversationGrouping)
-        expectedSelectedLabelCountStateChange(initialState)
-        returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
-        returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
-        returnExpectedStateForDeleteConfirmed(intermediateState, initialState, ConversationGrouping, 2)
-        expectDeleteConversationsSucceeds(userId, listOf(item), SystemLabelId.Trash.labelId)
-        expectDeleteConversationsSucceeds(userId1, listOf(secondItem), SystemLabelId.Trash.labelId)
-
-        mailboxViewModel.state.test {
-            // Given
-            awaitItem() // First emission for selected user
-
-            // When
-            mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
-
-            // Then
-            assertEquals(intermediateState, awaitItem())
-            verify(exactly = 1) {
-                mailboxReducer.newStateFrom(initialState, MailboxEvent.EnterSelectionMode(item))
-            }
-
-            // When
-            mailboxViewModel.submit(MailboxViewAction.DeleteConfirmed)
-
-            // Then
-            assertEquals(initialState, awaitItem())
-            coVerifySequence {
-                deleteConversations(userId, listOf(ConversationId(item.id)), SystemLabelId.Trash.labelId)
-                deleteConversations(userId1, listOf(ConversationId(secondItem.id)), SystemLabelId.Trash.labelId)
-            }
-        }
-    }
-
-    @Test
     fun `when delete is triggered for no conversation grouping then delete messages is called`() = runTest {
-        val item = readMailboxItemUiModel
-        val secondItem = unreadMailboxItemUiModel
+        val item = readMailboxItemUiModel.copy(type = Message)
+        val secondItem = unreadMailboxItemUiModel.copy(type = Message)
         val initialState = createMailboxDataState()
         val intermediateState = MailboxStateSampleData.createSelectionMode(
             listOf(item, secondItem),
-            currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
+            currentMailLabel = MailLabel.System(MailLabelId.System.Trash),
+            type = Message
         )
-        expectViewMode(NoConversationGrouping)
         expectedSelectedLabelCountStateChange(initialState)
         returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
         returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
@@ -2020,49 +1724,6 @@ class MailboxViewModelTest {
     }
 
     @Test
-    fun `verify delete action triggers delete messages use case for each user id`() = runTest {
-        // Given
-        val item = readMailboxItemUiModel.copy(userId = userId)
-        val secondItem = unreadMailboxItemUiModel.copy(userId = userId1)
-        val initialState = createMailboxDataState()
-        val intermediateState = MailboxStateSampleData.createSelectionMode(
-            listOf(item, secondItem),
-            currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
-        )
-        expectViewMode(NoConversationGrouping)
-        expectedSelectedLabelCountStateChange(initialState)
-        returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
-        returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
-        returnExpectedStateForDeleteConfirmed(intermediateState, initialState, NoConversationGrouping, 2)
-        expectDeleteMessagesSucceeds(userId, listOf(item), SystemLabelId.Trash.labelId)
-        expectDeleteMessagesSucceeds(userId1, listOf(secondItem), SystemLabelId.Trash.labelId)
-
-        mailboxViewModel.state.test {
-            // Given
-            awaitItem() // First emission for selected user
-
-            // When
-            mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
-
-            // Then
-            assertEquals(intermediateState, awaitItem())
-            verify(exactly = 1) {
-                mailboxReducer.newStateFrom(initialState, MailboxEvent.EnterSelectionMode(item))
-            }
-
-            // When
-            mailboxViewModel.submit(MailboxViewAction.DeleteConfirmed)
-
-            // Then
-            assertEquals(initialState, awaitItem())
-            coVerifySequence {
-                deleteMessages(userId, listOf(MessageId(item.id)), SystemLabelId.Trash.labelId)
-                deleteMessages(userId1, listOf(MessageId(secondItem.id)), SystemLabelId.Trash.labelId)
-            }
-        }
-    }
-
-    @Test
     fun `when bottom sheet dismissal is triggered then the label as bottom sheet is dismissed `() = runTest {
         // Given
         val item = readMailboxItemUiModel.copy(id = MessageIdSample.Invoice.id)
@@ -2072,7 +1733,7 @@ class MailboxViewModelTest {
         val expectedCustomUiLabels = MailLabelUiModelTestData.customLabelList
 
         val initialState = createMailboxDataState()
-        val bottomSheetShownState = createMailboxStateWithLabelAsBottomSheet(selectedItemsList, false)
+        val bottomSheetShownState = createMailboxStateWithLabelAsBottomSheet(selectedItemsList, false, type = Message)
         val intermediateState = MailboxStateSampleData.createSelectionMode(
             listOf(item),
             currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
@@ -2130,10 +1791,11 @@ class MailboxViewModelTest {
         )
 
         val initialState = createMailboxDataState()
-        val bottomSheetShownState = createMailboxStateWithLabelAsBottomSheet(selectedItemsList, false)
+        val bottomSheetShownState = createMailboxStateWithLabelAsBottomSheet(selectedItemsList, false, type = Message)
         val intermediateState = MailboxStateSampleData.createSelectionMode(
             listOf(item, secondItem),
-            currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
+            currentMailLabel = MailLabel.System(MailLabelId.System.Trash),
+            type = Message
         )
         expectViewMode(NoConversationGrouping)
         expectedSelectedLabelCountStateChange(initialState)
@@ -2142,7 +1804,7 @@ class MailboxViewModelTest {
         expectObserveCustomMailLabelSucceeds(expectedCustomLabels)
         expectGetMessagesWithLabelsSucceeds(selectedItemsList.map { MessageId(it.id) })
         expectedLabelAsBottomSheetRequestedStateChange(expectedCustomUiLabels, bottomSheetShownState)
-        expectedLabelAsStateChange(selectedItemsList, LabelIdSample.Label2022)
+        expectedLabelAsStateChange(selectedItemsList, LabelIdSample.Label2022, Message)
         expectedLabelAsConfirmed(intermediateState)
         expectRelabelMessagesSucceeds(
             selectedItemsList.map { MessageId(it.id) },
@@ -2159,7 +1821,7 @@ class MailboxViewModelTest {
             mailboxViewModel.submit(MailboxViewAction.RequestLabelAsBottomSheet)
             assertEquals(bottomSheetShownState, awaitItem())
             mailboxViewModel.submit(MailboxViewAction.LabelAsToggleAction(LabelIdSample.Label2022))
-            assertEquals(createMailboxStateWithLabelAsBottomSheet(selectedItemsList, true), awaitItem())
+            assertEquals(createMailboxStateWithLabelAsBottomSheet(selectedItemsList, true, type = Message), awaitItem())
             mailboxViewModel.submit(MailboxViewAction.LabelAsConfirmed(false))
 
             // Then
@@ -2201,10 +1863,12 @@ class MailboxViewModelTest {
             )
 
             val initialState = createMailboxDataState()
-            val bottomSheetShownState = createMailboxStateWithLabelAsBottomSheet(selectedItemsList, false)
+            val bottomSheetShownState =
+                createMailboxStateWithLabelAsBottomSheet(selectedItemsList, false, type = Message)
             val intermediateState = MailboxStateSampleData.createSelectionMode(
                 listOf(item, secondItem),
-                currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
+                currentMailLabel = MailLabel.System(MailLabelId.System.Trash),
+                type = Message
             )
             expectViewMode(NoConversationGrouping)
             expectedSelectedLabelCountStateChange(initialState)
@@ -2213,7 +1877,7 @@ class MailboxViewModelTest {
             expectObserveCustomMailLabelSucceeds(expectedCustomLabels)
             expectGetMessagesWithLabelsSucceeds(selectedItemsList.map { MessageId(it.id) })
             expectedLabelAsBottomSheetRequestedStateChange(expectedCustomUiLabels, bottomSheetShownState)
-            expectedLabelAsStateChange(selectedItemsList, LabelIdSample.Label2022)
+            expectedLabelAsStateChange(selectedItemsList, LabelIdSample.Label2022, Message)
             expectedLabelAsConfirmed(intermediateState, true)
             expectRelabelMessagesSucceeds(
                 selectedItemsList.map { MessageId(it.id) },
@@ -2231,7 +1895,10 @@ class MailboxViewModelTest {
                 mailboxViewModel.submit(MailboxViewAction.RequestLabelAsBottomSheet)
                 assertEquals(bottomSheetShownState, awaitItem())
                 mailboxViewModel.submit(MailboxViewAction.LabelAsToggleAction(LabelIdSample.Label2022))
-                assertEquals(createMailboxStateWithLabelAsBottomSheet(selectedItemsList, true), awaitItem())
+                assertEquals(
+                    createMailboxStateWithLabelAsBottomSheet(selectedItemsList, true, type = Message),
+                    awaitItem()
+                )
                 mailboxViewModel.submit(MailboxViewAction.LabelAsConfirmed(true))
 
                 // Then
@@ -2273,7 +1940,8 @@ class MailboxViewModelTest {
         )
 
         val initialState = createMailboxDataState()
-        val bottomSheetShownState = createMailboxStateWithLabelAsBottomSheet(selectedItemsList, false)
+        val bottomSheetShownState =
+            createMailboxStateWithLabelAsBottomSheet(selectedItemsList, false, type = Conversation)
         val intermediateState = MailboxStateSampleData.createSelectionMode(
             listOf(item, secondItem),
             currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
@@ -2285,7 +1953,7 @@ class MailboxViewModelTest {
         expectObserveCustomMailLabelSucceeds(expectedCustomLabels)
         expectGetConversationMessagesWithLabelsSucceeds(selectedItemsList.map { ConversationId(it.id) })
         expectedLabelAsBottomSheetRequestedStateChange(expectedCustomUiLabels, bottomSheetShownState)
-        expectedLabelAsStateChange(selectedItemsList, LabelIdSample.Label2022)
+        expectedLabelAsStateChange(selectedItemsList, LabelIdSample.Label2022, Conversation)
         expectedLabelAsConfirmed(intermediateState)
         expectRelabelConversationSucceeds(
             selectedItemsList.map { ConversationId(it.id) },
@@ -2302,7 +1970,10 @@ class MailboxViewModelTest {
             mailboxViewModel.submit(MailboxViewAction.RequestLabelAsBottomSheet)
             assertEquals(bottomSheetShownState, awaitItem())
             mailboxViewModel.submit(MailboxViewAction.LabelAsToggleAction(LabelIdSample.Label2022))
-            assertEquals(createMailboxStateWithLabelAsBottomSheet(selectedItemsList, true), awaitItem())
+            assertEquals(
+                createMailboxStateWithLabelAsBottomSheet(selectedItemsList, true, type = Conversation),
+                awaitItem()
+            )
             mailboxViewModel.submit(MailboxViewAction.LabelAsConfirmed(false))
 
             // Then
@@ -2344,7 +2015,8 @@ class MailboxViewModelTest {
             )
 
             val initialState = createMailboxDataState()
-            val bottomSheetShownState = createMailboxStateWithLabelAsBottomSheet(selectedItemsList, false)
+            val bottomSheetShownState =
+                createMailboxStateWithLabelAsBottomSheet(selectedItemsList, false, type = Conversation)
             val intermediateState = MailboxStateSampleData.createSelectionMode(
                 listOf(item, secondItem),
                 currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
@@ -2356,7 +2028,7 @@ class MailboxViewModelTest {
             expectObserveCustomMailLabelSucceeds(expectedCustomLabels)
             expectGetConversationMessagesWithLabelsSucceeds(selectedItemsList.map { ConversationId(it.id) })
             expectedLabelAsBottomSheetRequestedStateChange(expectedCustomUiLabels, bottomSheetShownState)
-            expectedLabelAsStateChange(selectedItemsList, LabelIdSample.Label2022)
+            expectedLabelAsStateChange(selectedItemsList, LabelIdSample.Label2022, Conversation)
             expectedLabelAsConfirmed(intermediateState, true)
             expectRelabelConversationSucceeds(
                 selectedItemsList.map { ConversationId(it.id) },
@@ -2374,7 +2046,10 @@ class MailboxViewModelTest {
                 mailboxViewModel.submit(MailboxViewAction.RequestLabelAsBottomSheet)
                 assertEquals(bottomSheetShownState, awaitItem())
                 mailboxViewModel.submit(MailboxViewAction.LabelAsToggleAction(LabelIdSample.Label2022))
-                assertEquals(createMailboxStateWithLabelAsBottomSheet(selectedItemsList, true), awaitItem())
+                assertEquals(
+                    createMailboxStateWithLabelAsBottomSheet(selectedItemsList, true, type = Conversation),
+                    awaitItem()
+                )
                 mailboxViewModel.submit(MailboxViewAction.LabelAsConfirmed(true))
 
                 // Then
@@ -2412,12 +2087,16 @@ class MailboxViewModelTest {
         val expectedMailLabelUiModel = MailLabelUiModelTestData.customLabelList
 
         val initialState = createMailboxDataState()
-        val bottomSheetShownState = createMailboxStateWithMoveToBottomSheet(selectedItemsList)
-        val bottomSheetShownStateWithSelectedItem =
-            createMailboxStateWithMoveToBottomSheet(selectedItemsList, MailLabelUiModelTestData.spamFolder)
+        val bottomSheetShownState = createMailboxStateWithMoveToBottomSheet(selectedItemsList, type = Message)
+        val bottomSheetShownStateWithSelectedItem = createMailboxStateWithMoveToBottomSheet(
+            selectedItemsList,
+            MailLabelUiModelTestData.spamFolder,
+            type = Message
+        )
         val intermediateState = MailboxStateSampleData.createSelectionMode(
             listOf(item, secondItem),
-            currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
+            currentMailLabel = MailLabel.System(MailLabelId.System.Trash),
+            type = Message
         )
         expectViewMode(NoConversationGrouping)
         expectedSelectedLabelCountStateChange(initialState)
@@ -2464,9 +2143,12 @@ class MailboxViewModelTest {
         val expectedMailLabelUiModel = MailLabelUiModelTestData.customLabelList
 
         val initialState = createMailboxDataState()
-        val bottomSheetShownState = createMailboxStateWithMoveToBottomSheet(selectedItemsList)
-        val bottomSheetShownStateWithSelectedItem =
-            createMailboxStateWithMoveToBottomSheet(selectedItemsList, MailLabelUiModelTestData.spamFolder)
+        val bottomSheetShownState = createMailboxStateWithMoveToBottomSheet(selectedItemsList, type = Conversation)
+        val bottomSheetShownStateWithSelectedItem = createMailboxStateWithMoveToBottomSheet(
+            selectedItemsList,
+            MailLabelUiModelTestData.spamFolder,
+            type = Conversation
+        )
         val intermediateState = MailboxStateSampleData.createSelectionMode(
             listOf(item, secondItem),
             currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
@@ -2605,7 +2287,7 @@ class MailboxViewModelTest {
             actionUiModels = expectedActionItems.toImmutableList()
         )
         val bottomSheetShownState =
-            createMailboxStateWithMoreActionBottomSheet(selectedItemsList, expectedBottomSheetContent)
+            createMailboxStateWithMoreActionBottomSheet(selectedItemsList, expectedBottomSheetContent, type = Message)
         val intermediateState = MailboxStateSampleData.createSelectionMode(
             listOf(item, secondItem),
             currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
@@ -2645,7 +2327,7 @@ class MailboxViewModelTest {
             actionUiModels = expectedActionItems.toImmutableList()
         )
         val bottomSheetShownState =
-            createMailboxStateWithMoreActionBottomSheet(selectedItemsList, expectedBottomSheetContent)
+            createMailboxStateWithMoreActionBottomSheet(selectedItemsList, expectedBottomSheetContent, type = Message)
         val intermediateState = MailboxStateSampleData.createSelectionMode(
             listOf(item, secondItem),
             currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
@@ -2685,7 +2367,7 @@ class MailboxViewModelTest {
             actionUiModels = expectedActionItems.toImmutableList()
         )
         val bottomSheetShownState =
-            createMailboxStateWithMoreActionBottomSheet(selectedItemsList, expectedBottomSheetContent)
+            createMailboxStateWithMoreActionBottomSheet(selectedItemsList, expectedBottomSheetContent, type = Message)
         val intermediateState = MailboxStateSampleData.createSelectionMode(
             listOf(item, secondItem),
             currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
@@ -2731,7 +2413,11 @@ class MailboxViewModelTest {
             actionUiModels = expectedActionItems.toImmutableList()
         )
         val bottomSheetShownState =
-            createMailboxStateWithMoreActionBottomSheet(selectedItemsList, expectedBottomSheetContent)
+            createMailboxStateWithMoreActionBottomSheet(
+                selectedItemsList,
+                expectedBottomSheetContent,
+                type = Conversation
+            )
         val intermediateState = MailboxStateSampleData.createSelectionMode(
             listOf(item, secondItem),
             currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
@@ -2777,7 +2463,7 @@ class MailboxViewModelTest {
             actionUiModels = expectedActionItems.toImmutableList()
         )
         val bottomSheetShownState =
-            createMailboxStateWithMoreActionBottomSheet(selectedItemsList, expectedBottomSheetContent)
+            createMailboxStateWithMoreActionBottomSheet(selectedItemsList, expectedBottomSheetContent, type = Message)
         val intermediateState = MailboxStateSampleData.createSelectionMode(
             listOf(item, secondItem),
             currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
@@ -2823,7 +2509,11 @@ class MailboxViewModelTest {
             actionUiModels = expectedActionItems.toImmutableList()
         )
         val bottomSheetShownState =
-            createMailboxStateWithMoreActionBottomSheet(selectedItemsList, expectedBottomSheetContent)
+            createMailboxStateWithMoreActionBottomSheet(
+                selectedItemsList,
+                expectedBottomSheetContent,
+                type = Conversation
+            )
         val intermediateState = MailboxStateSampleData.createSelectionMode(
             listOf(item, secondItem),
             currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
@@ -2869,7 +2559,7 @@ class MailboxViewModelTest {
             actionUiModels = expectedActionItems.toImmutableList()
         )
         val bottomSheetShownState =
-            createMailboxStateWithMoreActionBottomSheet(selectedItemsList, expectedBottomSheetContent)
+            createMailboxStateWithMoreActionBottomSheet(selectedItemsList, expectedBottomSheetContent, type = Message)
         val intermediateState = MailboxStateSampleData.createSelectionMode(
             listOf(item, secondItem),
             currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
@@ -2915,7 +2605,11 @@ class MailboxViewModelTest {
             actionUiModels = expectedActionItems.toImmutableList()
         )
         val bottomSheetShownState =
-            createMailboxStateWithMoreActionBottomSheet(selectedItemsList, expectedBottomSheetContent)
+            createMailboxStateWithMoreActionBottomSheet(
+                selectedItemsList,
+                expectedBottomSheetContent,
+                type = Conversation
+            )
         val intermediateState = MailboxStateSampleData.createSelectionMode(
             listOf(item, secondItem),
             currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
@@ -2963,7 +2657,7 @@ class MailboxViewModelTest {
             actionUiModels = expectedActionItems.toImmutableList()
         )
         val bottomSheetShownState =
-            createMailboxStateWithMoreActionBottomSheet(selectedItemsList, expectedBottomSheetContent)
+            createMailboxStateWithMoreActionBottomSheet(selectedItemsList, expectedBottomSheetContent, type = Message)
         val intermediateState = MailboxStateSampleData.createSelectionMode(
             listOf(item, secondItem),
             currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
@@ -3009,7 +2703,11 @@ class MailboxViewModelTest {
             actionUiModels = expectedActionItems.toImmutableList()
         )
         val bottomSheetShownState =
-            createMailboxStateWithMoreActionBottomSheet(selectedItemsList, expectedBottomSheetContent)
+            createMailboxStateWithMoreActionBottomSheet(
+                selectedItemsList,
+                expectedBottomSheetContent,
+                type = Conversation
+            )
         val intermediateState = MailboxStateSampleData.createSelectionMode(
             listOf(item, secondItem),
             currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
@@ -3667,10 +3365,14 @@ class MailboxViewModelTest {
         } returns bottomSheetState
     }
 
-    private fun expectedLabelAsStateChange(selectedItems: List<MailboxItemUiModel>, labelId: LabelId) {
+    private fun expectedLabelAsStateChange(
+        selectedItems: List<MailboxItemUiModel>,
+        labelId: LabelId,
+        type: MailboxItemType
+    ) {
         every {
             mailboxReducer.newStateFrom(any(), MailboxViewAction.LabelAsToggleAction(labelId))
-        } returns createMailboxStateWithLabelAsBottomSheet(selectedItems, true)
+        } returns createMailboxStateWithLabelAsBottomSheet(selectedItems, true, type = type)
     }
 
     private fun expectedMoveToStateChange(selectedItem: MailLabelId, expectedState: MailboxState) {
@@ -3876,7 +3578,8 @@ class MailboxViewModelTest {
 
     private fun createMailboxStateWithLabelAsBottomSheet(
         selectedMailboxItems: List<MailboxItemUiModel>,
-        selected: Boolean
+        selected: Boolean,
+        type: MailboxItemType
     ) = MailboxStateSampleData.createSelectionMode(
         selectedMailboxItemUiModels = selectedMailboxItems,
         currentMailLabel = MailLabel.System(MailLabelId.System.Trash),
@@ -3903,26 +3606,31 @@ class MailboxViewModelTest {
                     )
                 ).toPersistentList()
             )
-        )
+        ),
+        type = type
     )
 
     private fun createMailboxStateWithMoveToBottomSheet(
         selectedMailboxItems: List<MailboxItemUiModel>,
-        selectedItem: MailLabelUiModel? = null
+        selectedItem: MailLabelUiModel? = null,
+        type: MailboxItemType
     ) = MailboxStateSampleData.createSelectionMode(
         selectedMailboxItemUiModels = selectedMailboxItems,
         currentMailLabel = MailLabel.System(MailLabelId.System.Trash),
         bottomSheetState = BottomSheetState(
             MoveToBottomSheetState.Data(MailLabelUiModelTestData.customLabelList, selectedItem)
-        )
+        ),
+        type = type
     )
 
     private fun createMailboxStateWithMoreActionBottomSheet(
         selectedMailboxItems: List<MailboxItemUiModel>,
-        expectedBottomSheetContent: MoreActionsBottomSheetState
+        expectedBottomSheetContent: MoreActionsBottomSheetState,
+        type: MailboxItemType
     ) = MailboxStateSampleData.createSelectionMode(
         selectedMailboxItemUiModels = selectedMailboxItems,
         currentMailLabel = MailLabel.System(MailLabelId.System.Trash),
-        bottomSheetState = BottomSheetState(expectedBottomSheetContent)
+        bottomSheetState = BottomSheetState(expectedBottomSheetContent),
+        type = type
     )
 }

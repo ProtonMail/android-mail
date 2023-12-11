@@ -413,18 +413,18 @@ class MailboxViewModel @Inject constructor(
             return
         }
 
-        val selectedItemsByUserId = selectionModeDataState.selectedMailboxItems.groupBy { it.userId }
-
-        selectedItemsByUserId.keys.forEach { userId ->
-            when (getPreferredViewMode()) {
-                ViewMode.ConversationGrouping -> markConversationsAsRead(
-                    userId = userId,
-                    conversationIds = selectedItemsByUserId[userId]?.map { ConversationId(it.id) } ?: emptyList()
+        val user = primaryUserId.filterNotNull().first()
+        val selectedItemsByViewMode = selectionModeDataState.selectedMailboxItems.groupBy { it.type }
+        selectedItemsByViewMode.keys.forEach { viewMode ->
+            when (viewMode) {
+                MailboxItemType.Conversation -> markConversationsAsRead(
+                    userId = user,
+                    conversationIds = selectedItemsByViewMode[viewMode]?.map { ConversationId(it.id) } ?: emptyList()
                 )
 
-                ViewMode.NoConversationGrouping -> markMessagesAsRead(
-                    userId = userId,
-                    messageIds = selectedItemsByUserId[userId]?.map { MessageId(it.id) } ?: emptyList()
+                MailboxItemType.Message -> markMessagesAsRead(
+                    userId = user,
+                    messageIds = selectedItemsByViewMode[viewMode]?.map { MessageId(it.id) } ?: emptyList()
                 )
             }
         }
@@ -437,18 +437,19 @@ class MailboxViewModel @Inject constructor(
             Timber.d("MailboxListState is not in SelectionMode")
             return
         }
-        val selectedItemsByUserId = selectionModeDataState.selectedMailboxItems.groupBy { it.userId }
+        val userId = primaryUserId.filterNotNull().first()
+        val selectedItemsByViewMode = selectionModeDataState.selectedMailboxItems.groupBy { it.type }
 
-        selectedItemsByUserId.keys.forEach { userId ->
-            when (getPreferredViewMode()) {
-                ViewMode.ConversationGrouping -> markConversationsAsUnread(
+        selectedItemsByViewMode.keys.forEach { viewMode ->
+            when (viewMode) {
+                MailboxItemType.Conversation -> markConversationsAsUnread(
                     userId = userId,
-                    conversationIds = selectedItemsByUserId[userId]?.map { ConversationId(it.id) } ?: emptyList()
+                    conversationIds = selectedItemsByViewMode[viewMode]?.map { ConversationId(it.id) } ?: emptyList()
                 )
 
-                ViewMode.NoConversationGrouping -> markMessagesAsUnread(
+                MailboxItemType.Message -> markMessagesAsUnread(
                     userId = userId,
-                    messageIds = selectedItemsByUserId[userId]?.map { MessageId(it.id) } ?: emptyList()
+                    messageIds = selectedItemsByViewMode[viewMode]?.map { MessageId(it.id) } ?: emptyList()
                 )
             }
         }
@@ -626,31 +627,35 @@ class MailboxViewModel @Inject constructor(
                 ?: throw IllegalStateException("BottomSheetState is not LabelAsBottomSheetState.Data")
 
             val updatedSelection = labelAsData.getLabelSelectionState()
-            if (archiveSelected) {
-                when (getPreferredViewMode()) {
-                    ViewMode.ConversationGrouping ->
-                        moveConversations(
-                            userId,
-                            selectionState.selectedMailboxItems.map { ConversationId(it.id) },
-                            SystemLabelId.Archive.labelId
-                        )
+            val itemsGroupedByViewMode = selectionState.selectedMailboxItems.groupBy { it.type }
+            itemsGroupedByViewMode.keys.forEach { viewMode ->
+                if (archiveSelected) {
+                    when (viewMode) {
+                        MailboxItemType.Conversation ->
+                            moveConversations(
+                                userId,
+                                itemsGroupedByViewMode[viewMode]?.map { ConversationId(it.id) } ?: emptyList(),
+                                SystemLabelId.Archive.labelId
+                            )
 
-                    ViewMode.NoConversationGrouping ->
-                        moveMessages(
-                            userId,
-                            selectionState.selectedMailboxItems.map { MessageId(it.id) },
-                            SystemLabelId.Archive.labelId
-                        )
+                        MailboxItemType.Message ->
+                            moveMessages(
+                                userId,
+                                itemsGroupedByViewMode[viewMode]?.map { MessageId(it.id) } ?: emptyList(),
+                                SystemLabelId.Archive.labelId
+                            )
+                    }
                 }
+                val operation = handleRelabelOperation(
+                    userId = userId,
+                    viewMode = viewMode,
+                    selectedItems = itemsGroupedByViewMode[viewMode]?.toSet() ?: emptySet(),
+                    currentSelectionList = previousSelection,
+                    updatedSelectionList = updatedSelection,
+                    archiveSelected = archiveSelected
+                )
+                emitNewStateFrom(operation)
             }
-            val operation = handleRelabelOperation(
-                userId = userId,
-                selectedItems = selectionState.selectedMailboxItems,
-                currentSelectionList = previousSelection,
-                updatedSelectionList = updatedSelection,
-                archiveSelected = archiveSelected
-            )
-            emitNewStateFrom(operation)
         }
     }
 
@@ -729,22 +734,25 @@ class MailboxViewModel @Inject constructor(
         selectionState: MailboxListState.Data.SelectionMode,
         targetLabelId: LabelId
     ) {
-        when (getPreferredViewMode()) {
-            ViewMode.ConversationGrouping -> moveConversations(
-                userId = userId,
-                conversationIds = selectionState.selectedMailboxItems.map { ConversationId(it.id) },
-                labelId = targetLabelId
-            )
+        val itemsGroupedByViewMode = selectionState.selectedMailboxItems.groupBy { it.type }
+        itemsGroupedByViewMode.keys.forEach { viewMode ->
+            when (viewMode) {
+                MailboxItemType.Conversation -> moveConversations(
+                    userId = userId,
+                    conversationIds = itemsGroupedByViewMode[viewMode]?.map { ConversationId(it.id) } ?: emptyList(),
+                    labelId = targetLabelId
+                )
 
-            ViewMode.NoConversationGrouping -> moveMessages(
-                userId = userId,
-                messageIds = selectionState.selectedMailboxItems.map { MessageId(it.id) },
-                labelId = targetLabelId
-            )
-        }.fold(
-            ifLeft = { MailboxEvent.ErrorMoving },
-            ifRight = { MailboxViewAction.MoveToConfirmed }
-        ).let { emitNewStateFrom(it) }
+                MailboxItemType.Message -> moveMessages(
+                    userId = userId,
+                    messageIds = itemsGroupedByViewMode[viewMode]?.map { MessageId(it.id) } ?: emptyList(),
+                    labelId = targetLabelId
+                )
+            }.fold(
+                ifLeft = { MailboxEvent.ErrorMoving },
+                ifRight = { MailboxViewAction.MoveToConfirmed }
+            ).let { emitNewStateFrom(it) }
+        }
     }
 
     private fun showMoreBottomSheet(operation: MailboxViewAction) {
@@ -785,20 +793,21 @@ class MailboxViewModel @Inject constructor(
 
     private suspend fun handleRelabelOperation(
         userId: UserId,
+        viewMode: MailboxItemType,
         selectedItems: Set<SelectedMailboxItem>,
         currentSelectionList: LabelSelectionList,
         updatedSelectionList: LabelSelectionList,
         archiveSelected: Boolean
     ): MailboxOperation {
-        return when (getPreferredViewMode()) {
-            ViewMode.ConversationGrouping -> relabelConversations(
+        return when (viewMode) {
+            MailboxItemType.Conversation -> relabelConversations(
                 userId = userId,
                 conversationIds = selectedItems.map { ConversationId(it.id) },
                 currentSelections = currentSelectionList,
                 updatedSelections = updatedSelectionList
             )
 
-            ViewMode.NoConversationGrouping -> relabelMessages(
+            MailboxItemType.Message -> relabelMessages(
                 userId = userId,
                 messageIds = selectedItems.map { MessageId(it.id) },
                 currentSelections = currentSelectionList,
@@ -830,18 +839,19 @@ class MailboxViewModel @Inject constructor(
             Timber.d("MailboxListState is not in SelectionMode")
             return
         }
-        val selectedItemsByUserId = selectionModeDataState.selectedMailboxItems.groupBy { it.userId }
-        selectedItemsByUserId.keys.forEach { userId ->
-            when (getPreferredViewMode()) {
-                ViewMode.ConversationGrouping -> moveConversations(
+        val userId = primaryUserId.filterNotNull().first()
+        val selectedItemsByViewMode = selectionModeDataState.selectedMailboxItems.groupBy { it.type }
+        selectedItemsByViewMode.keys.forEach { viewMode ->
+            when (viewMode) {
+                MailboxItemType.Conversation -> moveConversations(
                     userId = userId,
-                    conversationIds = selectedItemsByUserId[userId]?.map { ConversationId(it.id) } ?: emptyList(),
+                    conversationIds = selectedItemsByViewMode[viewMode]?.map { ConversationId(it.id) } ?: emptyList(),
                     labelId = SystemLabelId.Trash.labelId
                 )
 
-                ViewMode.NoConversationGrouping -> moveMessages(
+                MailboxItemType.Message -> moveMessages(
                     userId = userId,
-                    messageIds = selectedItemsByUserId[userId]?.map { MessageId(it.id) } ?: emptyList(),
+                    messageIds = selectedItemsByViewMode[viewMode]?.map { MessageId(it.id) } ?: emptyList(),
                     labelId = SystemLabelId.Trash.labelId
                 )
             }
@@ -869,24 +879,39 @@ class MailboxViewModel @Inject constructor(
             return
         }
 
-        val selectedItemsByUserId = selectionModeDataState.selectedMailboxItems.groupBy { it.userId }
-        val viewMode = getPreferredViewMode()
-        selectedItemsByUserId.keys.forEach { userId ->
+        val userId = primaryUserId.filterNotNull().first()
+        val itemsByViewMode = selectionModeDataState.selectedMailboxItems.groupBy { it.type }
+        itemsByViewMode.keys.forEach { viewMode ->
             when (viewMode) {
-                ViewMode.ConversationGrouping -> deleteConversations(
-                    userId = userId,
-                    conversationIds = selectedItemsByUserId[userId]?.map { ConversationId(it.id) } ?: emptyList(),
-                    currentLabelId = selectionModeDataState.currentMailLabel.id.labelId
-                )
+                MailboxItemType.Conversation -> {
+                    deleteConversations(
+                        userId = userId,
+                        conversationIds = itemsByViewMode[viewMode]?.map { ConversationId(it.id) } ?: emptyList(),
+                        currentLabelId = selectionModeDataState.currentMailLabel.id.labelId
+                    )
+                    emitNewStateFrom(
+                        MailboxEvent.DeleteConfirmed(
+                            ViewMode.ConversationGrouping,
+                            selectionModeDataState.selectedMailboxItems.size
+                        )
+                    )
+                }
 
-                ViewMode.NoConversationGrouping -> deleteMessages(
-                    userId = userId,
-                    messageIds = selectedItemsByUserId[userId]?.map { MessageId(it.id) } ?: emptyList(),
-                    currentLabelId = selectionModeDataState.currentMailLabel.id.labelId
-                )
+                MailboxItemType.Message -> {
+                    deleteMessages(
+                        userId = userId,
+                        messageIds = itemsByViewMode[viewMode]?.map { MessageId(it.id) } ?: emptyList(),
+                        currentLabelId = selectionModeDataState.currentMailLabel.id.labelId
+                    )
+                    emitNewStateFrom(
+                        MailboxEvent.DeleteConfirmed(
+                            ViewMode.NoConversationGrouping,
+                            selectionModeDataState.selectedMailboxItems.size
+                        )
+                    )
+                }
             }
         }
-        emitNewStateFrom(MailboxEvent.DeleteConfirmed(viewMode, selectionModeDataState.selectedMailboxItems.size))
     }
 
     private suspend fun handleStarAction(viewAction: MailboxViewAction) {
@@ -896,13 +921,15 @@ class MailboxViewModel @Inject constructor(
             return
         }
         val userId = primaryUserId.filterNotNull().first()
+        val selectedItemsByViewMode = selectionModeDataState.selectedMailboxItems.groupBy { it.type }
+        selectedItemsByViewMode.keys.forEach { viewMode ->
+            when (viewMode) {
+                MailboxItemType.Conversation ->
+                    starConversations(userId, selectionModeDataState.selectedMailboxItems.map { ConversationId(it.id) })
 
-        when (getPreferredViewMode()) {
-            ViewMode.ConversationGrouping ->
-                starConversations(userId, selectionModeDataState.selectedMailboxItems.map { ConversationId(it.id) })
-
-            ViewMode.NoConversationGrouping ->
-                starMessages(userId, selectionModeDataState.selectedMailboxItems.map { MessageId(it.id) })
+                MailboxItemType.Message ->
+                    starMessages(userId, selectionModeDataState.selectedMailboxItems.map { MessageId(it.id) })
+            }
         }
         emitNewStateFrom(viewAction)
     }
@@ -914,16 +941,19 @@ class MailboxViewModel @Inject constructor(
             return
         }
         val userId = primaryUserId.filterNotNull().first()
+        val selectedItemsByViewMode = selectionModeDataState.selectedMailboxItems.groupBy { it.type }
 
-        when (getPreferredViewMode()) {
-            ViewMode.ConversationGrouping ->
-                unStarConversations(
-                    userId,
-                    selectionModeDataState.selectedMailboxItems.map { ConversationId(it.id) }
-                )
+        selectedItemsByViewMode.keys.forEach { viewMode ->
+            when (viewMode) {
+                MailboxItemType.Conversation ->
+                    unStarConversations(
+                        userId,
+                        selectionModeDataState.selectedMailboxItems.map { ConversationId(it.id) }
+                    )
 
-            ViewMode.NoConversationGrouping ->
-                unStarMessages(userId, selectionModeDataState.selectedMailboxItems.map { MessageId(it.id) })
+                MailboxItemType.Message ->
+                    unStarMessages(userId, selectionModeDataState.selectedMailboxItems.map { MessageId(it.id) })
+            }
         }
         emitNewStateFrom(viewAction)
     }
@@ -951,9 +981,10 @@ class MailboxViewModel @Inject constructor(
         }
     }
 
-    private fun observeViewModeByLocation(): Flow<ViewMode> = primaryUserId.filterNotNull().flatMapLatest { userId ->
-        selectedMailLabelId.flow.flatMapLatest { observeCurrentViewMode(userId, it) }.distinctUntilChanged()
-    }
+    private fun observeViewModeByLocation(): Flow<ViewMode> =
+        primaryUserId.filterNotNull().flatMapLatest { userId ->
+            selectedMailLabelId.flow.flatMapLatest { observeCurrentViewMode(userId, it) }.distinctUntilChanged()
+        }
 
     private fun observeMailLabels() = primaryUserId.flatMapLatest { userId ->
         if (userId == null) {
