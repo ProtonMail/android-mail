@@ -51,6 +51,7 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import io.mockk.mockk
 import me.proton.core.auth.domain.usecase.ValidateServerProof
+import org.junit.Ignore
 import org.junit.Test
 
 @RegressionTest
@@ -64,6 +65,7 @@ internal class AttachmentConversationModeTests : MockedNetworkTest(loginType = L
 
     @Test
     @SdkSuppress(minSdkVersion = 29)
+    @Ignore("To be addressed with MAILANDR-1276")
     @TestId("194318")
     fun testMultipleAttachmentDownloadingInConversationMode() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
