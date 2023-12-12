@@ -313,7 +313,7 @@ internal class MessageDetailScreenTest {
     fun whenPlainTextMessageBodyIsLoadedThenPlainTextMessageBodyIsDisplayedInWebView() {
         // given
         val state = MessageDetailsPreviewData.Message
-        val messageBody = (state.messageBodyState as MessageBodyState.Data).messageBodyUiModel.messageBody
+        val messageBody = (state.messageBodyState as MessageBodyState.Data).messageBodyUiModel.messageBodyWithoutQuote
 
         // when
         val robot = setUpScreen(state = state)
