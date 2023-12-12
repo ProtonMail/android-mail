@@ -458,25 +458,25 @@ class MailboxViewModel @Inject constructor(
 
     private suspend fun handleSwipeReadAction(swipeReadAction: MailboxViewAction.SwipeReadAction) {
         if (swipeReadAction.isRead) {
-            when (swipeReadAction.viewMode) {
-                MailboxItemType.Conversation -> markConversationsAsUnread(
+            when (getViewModeForCurrentLocation(selectedMailLabelId.flow.value)) {
+                ViewMode.ConversationGrouping -> markConversationsAsUnread(
                     userId = swipeReadAction.userId,
                     conversationIds = listOf(ConversationId(swipeReadAction.itemId))
                 )
 
-                MailboxItemType.Message -> markMessagesAsUnread(
+                ViewMode.NoConversationGrouping -> markMessagesAsUnread(
                     userId = swipeReadAction.userId,
                     messageIds = listOf(MessageId(swipeReadAction.itemId))
                 )
             }
         } else {
-            when (swipeReadAction.viewMode) {
-                MailboxItemType.Conversation -> markConversationsAsRead(
+            when (getViewModeForCurrentLocation(selectedMailLabelId.flow.value)) {
+                ViewMode.ConversationGrouping -> markConversationsAsRead(
                     userId = swipeReadAction.userId,
                     conversationIds = listOf(ConversationId(swipeReadAction.itemId))
                 )
 
-                MailboxItemType.Message -> markMessagesAsRead(
+                ViewMode.NoConversationGrouping -> markMessagesAsRead(
                     userId = swipeReadAction.userId,
                     messageIds = listOf(MessageId(swipeReadAction.itemId))
                 )
@@ -487,25 +487,25 @@ class MailboxViewModel @Inject constructor(
 
     private suspend fun handleSwipeStarAction(swipeStarAction: MailboxViewAction.SwipeStarAction) {
         if (swipeStarAction.isStarred) {
-            when (swipeStarAction.viewMode) {
-                MailboxItemType.Conversation -> unStarConversations(
+            when (getViewModeForCurrentLocation(selectedMailLabelId.flow.value)) {
+                ViewMode.ConversationGrouping -> unStarConversations(
                     userId = swipeStarAction.userId,
                     conversationIds = listOf(ConversationId(swipeStarAction.itemId))
                 )
 
-                MailboxItemType.Message -> unStarMessages(
+                ViewMode.NoConversationGrouping -> unStarMessages(
                     userId = swipeStarAction.userId,
                     messageIds = listOf(MessageId(swipeStarAction.itemId))
                 )
             }
         } else {
-            when (swipeStarAction.viewMode) {
-                MailboxItemType.Conversation -> starConversations(
+            when (getViewModeForCurrentLocation(selectedMailLabelId.flow.value)) {
+                ViewMode.ConversationGrouping -> starConversations(
                     userId = swipeStarAction.userId,
                     conversationIds = listOf(ConversationId(swipeStarAction.itemId))
                 )
 
-                MailboxItemType.Message -> starMessages(
+                ViewMode.NoConversationGrouping -> starMessages(
                     userId = swipeStarAction.userId,
                     messageIds = listOf(MessageId(swipeStarAction.itemId))
                 )
@@ -516,8 +516,9 @@ class MailboxViewModel @Inject constructor(
 
     private suspend fun handleSwipeArchiveAction(swipeArchiveAction: MailboxViewAction.SwipeArchiveAction) {
         if (isActionAllowedForCurrentLabel(SystemLabelId.Archive.labelId)) {
+            val viewMode = getViewModeForCurrentLocation(selectedMailLabelId.flow.value)
             swipeArchiveAction.let {
-                moveSingleItemToDestination(it.userId, it.itemId, SystemLabelId.Archive.labelId, it.viewMode)
+                moveSingleItemToDestination(it.userId, it.itemId, SystemLabelId.Archive.labelId, viewMode)
             }
             emitNewStateFrom(swipeArchiveAction)
         }
@@ -525,8 +526,9 @@ class MailboxViewModel @Inject constructor(
 
     private suspend fun handleSwipeSpamAction(swipeSpamAction: MailboxViewAction.SwipeSpamAction) {
         if (isActionAllowedForCurrentLabel(SystemLabelId.Spam.labelId)) {
+            val viewMode = getViewModeForCurrentLocation(selectedMailLabelId.flow.value)
             swipeSpamAction.let {
-                moveSingleItemToDestination(it.userId, it.itemId, SystemLabelId.Spam.labelId, it.viewMode)
+                moveSingleItemToDestination(it.userId, it.itemId, SystemLabelId.Spam.labelId, viewMode)
             }
             emitNewStateFrom(swipeSpamAction)
         }
@@ -534,8 +536,9 @@ class MailboxViewModel @Inject constructor(
 
     private suspend fun handleSwipeTrashAction(swipeTrashAction: MailboxViewAction.SwipeTrashAction) {
         if (isActionAllowedForCurrentLabel(SystemLabelId.Trash.labelId)) {
+            val viewMode = getViewModeForCurrentLocation(selectedMailLabelId.flow.value)
             swipeTrashAction.let {
-                moveSingleItemToDestination(it.userId, it.itemId, SystemLabelId.Trash.labelId, it.viewMode)
+                moveSingleItemToDestination(it.userId, it.itemId, SystemLabelId.Trash.labelId, viewMode)
             }
             emitNewStateFrom(swipeTrashAction)
         }
@@ -545,16 +548,16 @@ class MailboxViewModel @Inject constructor(
         userId: UserId,
         itemId: String,
         labelId: LabelId,
-        type: MailboxItemType
+        viewMode: ViewMode
     ) {
-        when (type) {
-            MailboxItemType.Conversation -> moveConversations(
+        when (viewMode) {
+            ViewMode.ConversationGrouping -> moveConversations(
                 userId = userId,
                 conversationIds = listOf(ConversationId(itemId)),
                 labelId = labelId
             )
 
-            MailboxItemType.Message -> moveMessages(
+            ViewMode.NoConversationGrouping -> moveMessages(
                 userId = userId,
                 messageIds = listOf(MessageId(itemId)),
                 labelId = labelId
@@ -1010,6 +1013,16 @@ class MailboxViewModel @Inject constructor(
             ObserveCurrentViewMode.DefaultViewMode
         } else {
             observeCurrentViewMode(userId).first()
+        }
+    }
+
+    private suspend fun getViewModeForCurrentLocation(currentMailLabel: MailLabelId): ViewMode {
+        val userId = primaryUserId.firstOrNull()
+
+        return if (userId == null) {
+            ObserveCurrentViewMode.DefaultViewMode
+        } else {
+            observeCurrentViewMode(userId, currentMailLabel).first()
         }
     }
 

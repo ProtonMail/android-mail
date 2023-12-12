@@ -2821,7 +2821,7 @@ class MailboxViewModelTest {
         val expectedItemId = "itemId"
         expectViewMode(NoConversationGrouping)
         expectMarkMessagesAsUnreadSucceeds(userId, listOf(buildMailboxUiModelItem(id = expectedItemId)))
-        val expectedViewAction = MailboxViewAction.SwipeReadAction(userId, expectedItemId, true, Message)
+        val expectedViewAction = MailboxViewAction.SwipeReadAction(userId, expectedItemId, true)
 
         // When
         mailboxViewModel.submit(expectedViewAction)
@@ -2842,9 +2842,9 @@ class MailboxViewModelTest {
     fun `when swipe read is called for conversation grouping and item is read then mark as unread is called`() {
         // Given
         val expectedItemId = "itemId"
-        expectViewMode(ConversationGrouping)
+        expectViewModeForCurrentLocation(ConversationGrouping)
         expectMarkConversationsAsUnreadSucceeds(userId, listOf(buildMailboxUiModelItem(id = expectedItemId)))
-        val expectedViewAction = MailboxViewAction.SwipeReadAction(userId, expectedItemId, true, Conversation)
+        val expectedViewAction = MailboxViewAction.SwipeReadAction(userId, expectedItemId, true)
 
         // When
         mailboxViewModel.submit(expectedViewAction)
@@ -2867,7 +2867,7 @@ class MailboxViewModelTest {
         val expectedItemId = "itemId"
         expectViewMode(NoConversationGrouping)
         expectMarkMessagesAsReadSucceeds(userId, listOf(buildMailboxUiModelItem(id = expectedItemId)))
-        val expectedViewAction = MailboxViewAction.SwipeReadAction(userId, expectedItemId, false, Message)
+        val expectedViewAction = MailboxViewAction.SwipeReadAction(userId, expectedItemId, false)
 
         // When
         mailboxViewModel.submit(expectedViewAction)
@@ -2888,9 +2888,9 @@ class MailboxViewModelTest {
     fun `when swipe read is called for conversation grouping and item is unread then mark as read is called`() {
         // Given
         val expectedItemId = "itemId"
-        expectViewMode(ConversationGrouping)
+        expectViewModeForCurrentLocation(ConversationGrouping)
         expectMarkConversationsAsReadSucceeds(userId, listOf(buildMailboxUiModelItem(id = expectedItemId)))
-        val expectedViewAction = MailboxViewAction.SwipeReadAction(userId, expectedItemId, false, Conversation)
+        val expectedViewAction = MailboxViewAction.SwipeReadAction(userId, expectedItemId, false)
 
         // When
         mailboxViewModel.submit(expectedViewAction)
@@ -2913,7 +2913,7 @@ class MailboxViewModelTest {
         val initialState = createMailboxDataState(selectedMailLabelId = MailLabelId.System.Inbox)
         val itemId = "itemId"
         val expectedLabelId = SystemLabelId.Archive.labelId
-        val expectedViewAction = MailboxViewAction.SwipeArchiveAction(userId, itemId, Message)
+        val expectedViewAction = MailboxViewAction.SwipeArchiveAction(userId, itemId)
 
         expectedSelectedLabelCountStateChange(initialState)
         expectMoveMessagesSucceeds(userId, listOf(buildMailboxUiModelItem(id = itemId)), expectedLabelId)
@@ -2937,8 +2937,9 @@ class MailboxViewModelTest {
         val initialState = createMailboxDataState(selectedMailLabelId = MailLabelId.System.Inbox)
         val expectedItemId = "itemId"
         val expectedLabelId = SystemLabelId.Archive.labelId
-        val expectedViewAction = MailboxViewAction.SwipeArchiveAction(userId, expectedItemId, Conversation)
+        val expectedViewAction = MailboxViewAction.SwipeArchiveAction(userId, expectedItemId)
 
+        expectViewModeForCurrentLocation(ConversationGrouping)
         expectedSelectedLabelCountStateChange(initialState)
         expectMoveConversationsSucceeds(userId, listOf(buildMailboxUiModelItem(id = expectedItemId)), expectedLabelId)
 
@@ -2960,7 +2961,7 @@ class MailboxViewModelTest {
         // Given
         val initialState = createMailboxDataState(selectedMailLabelId = MailLabelId.System.Archive)
         val expectedItemId = "itemId"
-        val expectedViewAction = MailboxViewAction.SwipeArchiveAction(userId, expectedItemId, Conversation)
+        val expectedViewAction = MailboxViewAction.SwipeArchiveAction(userId, expectedItemId)
 
         expectedSelectedLabelCountStateChange(initialState)
 
@@ -2981,7 +2982,7 @@ class MailboxViewModelTest {
         val initialState = createMailboxDataState(selectedMailLabelId = MailLabelId.System.Inbox)
         val itemId = "itemId"
         val expectedLabelId = SystemLabelId.Spam.labelId
-        val expectedViewAction = MailboxViewAction.SwipeSpamAction(userId, itemId, Message)
+        val expectedViewAction = MailboxViewAction.SwipeSpamAction(userId, itemId)
 
         expectedSelectedLabelCountStateChange(initialState)
         expectMoveMessagesSucceeds(userId, listOf(buildMailboxUiModelItem(id = itemId)), expectedLabelId)
@@ -3005,8 +3006,9 @@ class MailboxViewModelTest {
         val initialState = createMailboxDataState(selectedMailLabelId = MailLabelId.System.Inbox)
         val expectedItemId = "itemId"
         val expectedLabelId = SystemLabelId.Spam.labelId
-        val expectedViewAction = MailboxViewAction.SwipeSpamAction(userId, expectedItemId, Conversation)
+        val expectedViewAction = MailboxViewAction.SwipeSpamAction(userId, expectedItemId)
 
+        expectViewModeForCurrentLocation(ConversationGrouping)
         expectedSelectedLabelCountStateChange(initialState)
         expectMoveConversationsSucceeds(userId, listOf(buildMailboxUiModelItem(id = expectedItemId)), expectedLabelId)
 
@@ -3026,7 +3028,7 @@ class MailboxViewModelTest {
         // Given
         val initialState = createMailboxDataState(selectedMailLabelId = MailLabelId.System.Spam)
         val expectedItemId = "itemId"
-        val expectedViewAction = MailboxViewAction.SwipeSpamAction(userId, expectedItemId, Conversation)
+        val expectedViewAction = MailboxViewAction.SwipeSpamAction(userId, expectedItemId)
 
         expectedSelectedLabelCountStateChange(initialState)
 
@@ -3047,7 +3049,7 @@ class MailboxViewModelTest {
         val initialState = createMailboxDataState(selectedMailLabelId = MailLabelId.System.Inbox)
         val itemId = "itemId"
         val expectedLabelId = SystemLabelId.Trash.labelId
-        val expectedViewAction = MailboxViewAction.SwipeTrashAction(userId, itemId, Message)
+        val expectedViewAction = MailboxViewAction.SwipeTrashAction(userId, itemId)
 
         expectedSelectedLabelCountStateChange(initialState)
         expectMoveMessagesSucceeds(userId, listOf(buildMailboxUiModelItem(id = itemId)), expectedLabelId)
@@ -3070,8 +3072,9 @@ class MailboxViewModelTest {
         val initialState = createMailboxDataState(selectedMailLabelId = MailLabelId.System.Inbox)
         val expectedItemId = "itemId"
         val expectedLabelId = SystemLabelId.Trash.labelId
-        val expectedViewAction = MailboxViewAction.SwipeTrashAction(userId, expectedItemId, Conversation)
+        val expectedViewAction = MailboxViewAction.SwipeTrashAction(userId, expectedItemId)
 
+        expectViewModeForCurrentLocation(ConversationGrouping)
         expectedSelectedLabelCountStateChange(initialState)
         expectMoveConversationsSucceeds(userId, listOf(buildMailboxUiModelItem(id = expectedItemId)), expectedLabelId)
 
@@ -3091,7 +3094,7 @@ class MailboxViewModelTest {
         // Given
         val initialState = createMailboxDataState(selectedMailLabelId = MailLabelId.System.Trash)
         val expectedItemId = "itemId"
-        val expectedViewAction = MailboxViewAction.SwipeTrashAction(userId, expectedItemId, Conversation)
+        val expectedViewAction = MailboxViewAction.SwipeTrashAction(userId, expectedItemId)
 
         expectedSelectedLabelCountStateChange(initialState)
 
@@ -3112,7 +3115,7 @@ class MailboxViewModelTest {
         val expectedItemId = "itemId"
         expectViewMode(NoConversationGrouping)
         expectedUnStarMessagesSucceeds(userId, listOf(buildMailboxUiModelItem(id = expectedItemId)))
-        val expectedViewAction = MailboxViewAction.SwipeStarAction(userId, expectedItemId, true, Message)
+        val expectedViewAction = MailboxViewAction.SwipeStarAction(userId, expectedItemId, true)
 
         // When
         mailboxViewModel.submit(expectedViewAction)
@@ -3135,7 +3138,8 @@ class MailboxViewModelTest {
         val expectedItemId = "itemId"
         expectViewMode(ConversationGrouping)
         expectedUnStarConversationsSucceeds(userId, listOf(buildMailboxUiModelItem(id = expectedItemId)))
-        val expectedViewAction = MailboxViewAction.SwipeStarAction(userId, expectedItemId, true, Conversation)
+        expectViewModeForCurrentLocation(ConversationGrouping)
+        val expectedViewAction = MailboxViewAction.SwipeStarAction(userId, expectedItemId, true)
 
         // When
         mailboxViewModel.submit(expectedViewAction)
@@ -3158,7 +3162,7 @@ class MailboxViewModelTest {
         val expectedItemId = "itemId"
         expectViewMode(NoConversationGrouping)
         expectedStarMessagesSucceeds(userId, listOf(buildMailboxUiModelItem(id = expectedItemId)))
-        val expectedViewAction = MailboxViewAction.SwipeStarAction(userId, expectedItemId, false, Message)
+        val expectedViewAction = MailboxViewAction.SwipeStarAction(userId, expectedItemId, false)
 
         // When
         mailboxViewModel.submit(expectedViewAction)
@@ -3181,7 +3185,8 @@ class MailboxViewModelTest {
         val expectedItemId = "itemId"
         expectViewMode(ConversationGrouping)
         expectedStarConversationsSucceeds(userId, listOf(buildMailboxUiModelItem(id = expectedItemId)))
-        val expectedViewAction = MailboxViewAction.SwipeStarAction(userId, expectedItemId, false, Conversation)
+        expectViewModeForCurrentLocation(ConversationGrouping)
+        val expectedViewAction = MailboxViewAction.SwipeStarAction(userId, expectedItemId, false)
 
         // When
         mailboxViewModel.submit(expectedViewAction)
@@ -3429,6 +3434,10 @@ class MailboxViewModelTest {
 
     private fun expectViewMode(viewMode: ViewMode) {
         every { observeCurrentViewMode(any()) } returns flowOf(viewMode)
+    }
+
+    private fun expectViewModeForCurrentLocation(viewMode: ViewMode) {
+        every { observeCurrentViewMode(any(), any()) } returns flowOf(viewMode)
     }
 
     private fun expectObserveCustomMailLabelSucceeds(expectedLabels: List<MailLabel.Custom>) {

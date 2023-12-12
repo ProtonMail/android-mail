@@ -75,7 +75,6 @@ import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialog
-import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
@@ -172,20 +171,16 @@ fun MailboxScreen(
             onLabelAsClicked = { viewModel.submit(MailboxViewAction.RequestLabelAsBottomSheet) },
             onMoveToClicked = { viewModel.submit(MailboxViewAction.RequestMoveToBottomSheet) },
             onMoreClicked = { viewModel.submit(MailboxViewAction.RequestMoreActionsBottomSheet) },
-            onSwipeRead = { userId, itemId, isRead, type ->
-                viewModel.submit(MailboxViewAction.SwipeReadAction(userId, itemId, isRead, type))
+            onSwipeRead = { userId, itemId, isRead ->
+                viewModel.submit(MailboxViewAction.SwipeReadAction(userId, itemId, isRead))
             },
-            onSwipeArchive = { userId, itemId, type ->
-                viewModel.submit(MailboxViewAction.SwipeArchiveAction(userId, itemId, type))
+            onSwipeArchive = { userId, itemId ->
+                viewModel.submit(MailboxViewAction.SwipeArchiveAction(userId, itemId))
             },
-            onSwipeSpam = { userId, itemId, type ->
-                viewModel.submit(MailboxViewAction.SwipeSpamAction(userId, itemId, type))
-            },
-            onSwipeTrash = { userId, itemId, type ->
-                viewModel.submit(MailboxViewAction.SwipeTrashAction(userId, itemId, type))
-            },
-            onSwipeStar = { userId, itemId, isStarred, type ->
-                viewModel.submit(MailboxViewAction.SwipeStarAction(userId, itemId, isStarred, type))
+            onSwipeSpam = { userId, itemId -> viewModel.submit(MailboxViewAction.SwipeSpamAction(userId, itemId)) },
+            onSwipeTrash = { userId, itemId -> viewModel.submit(MailboxViewAction.SwipeTrashAction(userId, itemId)) },
+            onSwipeStar = { userId, itemId, isStarred ->
+                viewModel.submit(MailboxViewAction.SwipeStarAction(userId, itemId, isStarred))
             }
         )
 
@@ -574,17 +569,17 @@ private fun generateSwipeActions(
     item: MailboxItemUiModel
 ): SwipeActions.Actions {
     return SwipeActions.Actions(
-        onTrash = { actions.onSwipeTrash(item.userId, item.id, item.type) },
-        onSpam = { actions.onSwipeSpam(item.userId, item.id, item.type) },
+        onTrash = { actions.onSwipeTrash(item.userId, item.id) },
+        onSpam = { actions.onSwipeSpam(item.userId, item.id) },
         onStar = {
             items.itemSnapshotList.items.firstOrNull { it.id == item.id }?.let {
-                actions.onSwipeStar(it.userId, it.id, it.showStar, item.type)
+                actions.onSwipeStar(it.userId, it.id, it.showStar)
             }
         },
-        onArchive = { actions.onSwipeArchive(item.userId, item.id, item.type) },
+        onArchive = { actions.onSwipeArchive(item.userId, item.id) },
         onMarkRead = {
             items.itemSnapshotList.items.firstOrNull { it.id == item.id }?.let {
-                actions.onSwipeRead(it.userId, it.id, it.isRead, item.type)
+                actions.onSwipeRead(it.userId, it.id, it.isRead)
             }
         }
     )
@@ -674,11 +669,11 @@ object MailboxScreen {
         val onAddLabel: () -> Unit,
         val onAddFolder: () -> Unit,
         val closeOnboarding: () -> Unit,
-        val onSwipeRead: (UserId, String, Boolean, MailboxItemType) -> Unit,
-        val onSwipeArchive: (UserId, String, MailboxItemType) -> Unit,
-        val onSwipeSpam: (UserId, String, MailboxItemType) -> Unit,
-        val onSwipeTrash: (UserId, String, MailboxItemType) -> Unit,
-        val onSwipeStar: (UserId, String, Boolean, MailboxItemType) -> Unit
+        val onSwipeRead: (UserId, String, Boolean) -> Unit,
+        val onSwipeArchive: (UserId, String) -> Unit,
+        val onSwipeSpam: (UserId, String) -> Unit,
+        val onSwipeTrash: (UserId, String) -> Unit,
+        val onSwipeStar: (UserId, String, Boolean) -> Unit
     ) {
 
         companion object {
@@ -712,11 +707,11 @@ object MailboxScreen {
                 onAddLabel = {},
                 onAddFolder = {},
                 closeOnboarding = {},
-                onSwipeRead = { _, _, _, _ -> },
-                onSwipeArchive = { _, _, _ -> },
-                onSwipeSpam = { _, _, _ -> },
-                onSwipeTrash = { _, _, _ -> },
-                onSwipeStar = { _, _, _, _ -> }
+                onSwipeRead = { _, _, _ -> },
+                onSwipeArchive = { _, _ -> },
+                onSwipeSpam = { _, _ -> },
+                onSwipeTrash = { _, _ -> },
+                onSwipeStar = { _, _, _ -> }
             )
         }
     }

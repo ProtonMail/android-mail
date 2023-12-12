@@ -3,7 +3,6 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
@@ -36,19 +35,18 @@ internal class MailboxActionMessageReducerTest(
                 expectedState = Effect.of(TextUiModel(R.plurals.mailbox_action_trash, 5))
             ),
             TestInput(
-                operation = MailboxViewAction.SwipeTrashAction(UserIdSample.Primary, "itemId", MailboxItemType.Message),
+                operation = MailboxViewAction.SwipeTrashAction(UserIdSample.Primary, "itemId"),
                 expectedState = Effect.of(TextUiModel(R.string.mailbox_action_trash_message))
             ),
             TestInput(
                 operation = MailboxViewAction.SwipeArchiveAction(
                     UserIdSample.Primary,
-                    "itemId",
-                    MailboxItemType.Message
+                    "itemId"
                 ),
                 expectedState = Effect.of(TextUiModel(R.string.mailbox_action_archive_message))
             ),
             TestInput(
-                operation = MailboxViewAction.SwipeSpamAction(UserIdSample.Primary, "itemId", MailboxItemType.Message),
+                operation = MailboxViewAction.SwipeSpamAction(UserIdSample.Primary, "itemId"),
                 expectedState = Effect.of(TextUiModel(R.string.mailbox_action_spam_message))
             )
         )
