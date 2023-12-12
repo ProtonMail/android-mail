@@ -72,6 +72,12 @@ interface ConversationRepository {
     fun observeConversationCacheUpToDate(userId: UserId, id: ConversationId): Flow<Either<DataError, Unit>>
 
     /**
+     * Get a list of conversations.
+     * Returns any conversation data that is available locally right away.
+     */
+    fun observeCachedConversations(userId: UserId, ids: List<ConversationId>): Flow<List<Conversation>>
+
+    /**
      * Adds the given [labelId] to the message with the given [conversationId]
      */
     suspend fun addLabel(

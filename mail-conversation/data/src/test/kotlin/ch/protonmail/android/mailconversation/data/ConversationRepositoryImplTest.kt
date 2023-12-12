@@ -50,6 +50,7 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.coVerifyOrder
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -246,6 +247,27 @@ class ConversationRepositoryImplTest {
             // Then
             coVerify { conversationLocalDataSource.upsertConversation(userId, updatedConversation) }
             cancelAndConsumeRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `observe conversations return local cached conversations`() = runTest {
+        // Given
+        val conversationIds = listOf(ConversationIdSample.WeatherForecast, ConversationIdSample.AlphaAppFeedback)
+        val conversations = listOf(
+            ConversationSample.WeatherForecast,
+            ConversationSample.AlphaAppFeedback
+        )
+        coEvery {
+            conversationLocalDataSource.observeCachedConversations(userId, conversationIds)
+        } returns flowOf(conversations)
+
+        // When
+        conversationRepository.observeCachedConversations(userId, conversationIds).test {
+            // Then
+            assertEquals(conversations, awaitItem())
+            cancelAndConsumeRemainingEvents()
+            verify { conversationRemoteDataSource wasNot Called }
         }
     }
 

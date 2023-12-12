@@ -133,6 +133,9 @@ class ConversationRepositoryImpl @Inject constructor(
             }
     }
 
+    override fun observeCachedConversations(userId: UserId, ids: List<ConversationId>) =
+        conversationLocalDataSource.observeCachedConversations(userId, ids)
+
     private fun buildStoreStream(
         userId: UserId,
         id: ConversationId,
