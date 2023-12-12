@@ -187,7 +187,7 @@ run_firebase_proton_core_libs_tests:
   script:
     - bundle exec fastlane coreLibsTest
   rules:
-    - if: $CI_COMMIT_BRANCH == "master"
+    - if: $CI_COMMIT_BRANCH == "master" && ($NIGHTLY_ALPHA_BUILD == "true" || $INTERNAL_ALPHA_RELEASE == "true" || $BETA_RELEASE == "true")
 
 run_firebase_smoke_tests:
   extends: .firebase_test_job

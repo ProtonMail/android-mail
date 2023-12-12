@@ -25,6 +25,7 @@ case $1 in
 'smoke-test')
   device_config=smokeTest
   shards=2
+  flaky_attempts=1
   test_targets='filter ch.protonmail.android.uitest.filters.SmokeTestFilter'
   timeout=15m
   ;;
@@ -32,6 +33,7 @@ case $1 in
 'full-regression-test')
   device_config=fullTest
   shards=4
+  flaky_attempts=1
   test_targets='filter ch.protonmail.android.uitest.filters.FullRegressionTestFilter'
   timeout=45m
   ;;
@@ -39,6 +41,7 @@ case $1 in
 'core-libs-test')
   device_config=smokeTest
   shards=1
+  flaky_attempts=0
   test_targets='filter ch.protonmail.android.uitest.filters.CoreLibraryTestFilter'
   timeout=20m
   ;;
@@ -53,7 +56,7 @@ echo "Y" | gcloud beta --quiet firebase test android run ../firebase-device-conf
   --test-targets "$test_targets" \
   --use-orchestrator \
   --environment-variables clearPackageData=true \
-  --num-flaky-test-attempts=1 \
+  --num-flaky-test-attempts=$flaky_attempts \
   --num-uniform-shards=$shards \
   --timeout "$timeout" \
   --no-auto-google-login
