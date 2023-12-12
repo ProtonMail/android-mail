@@ -35,6 +35,8 @@ import ch.protonmail.android.mailsettings.domain.model.SwipeActionDirection
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockInsertionMode
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.ui.pin.AutoLockPinScreen.AutoLockPinModeKey
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.EditSwipeActionPreferenceScreen.SWIPE_DIRECTION_KEY
+import ch.protonmail.android.mailcontact.presentation.contactdetails.ContactDetailsScreen.ContactDetailsContactIdKey
+import me.proton.core.contact.domain.entity.ContactId
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.util.kotlin.serialize
@@ -125,6 +127,9 @@ sealed class Destination(val route: String) {
         }
 
         object Contacts : Destination("contacts")
+        object ContactDetails : Destination("contacts/${ContactDetailsContactIdKey.wrap()}") {
+            operator fun invoke(contactId: ContactId) = route.replace(ContactDetailsContactIdKey.wrap(), contactId.id)
+        }
     }
 
     object Dialog {

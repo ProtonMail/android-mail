@@ -46,7 +46,9 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailsettings.presentation.settings.MainSettingsScreen
 import ch.protonmail.android.navigation.model.Destination
 import ch.protonmail.android.navigation.model.SavedStateKey
+import ch.protonmail.android.mailcontact.presentation.contactdetails.ContactDetailsScreen
 import me.proton.core.compose.navigation.get
+import me.proton.core.contact.domain.entity.ContactId
 import me.proton.core.domain.entity.UserId
 import me.proton.core.util.kotlin.takeIfNotBlank
 
@@ -376,8 +378,8 @@ internal fun NavGraphBuilder.addContacts(
                 openImportContact = {
                     showFeatureMissingSnackbar()
                 },
-                onContactSelected = { _ ->
-                    showFeatureMissingSnackbar()
+                onContactSelected = { contactId ->
+                    navController.navigate(Destination.Screen.ContactDetails(ContactId(contactId)))
                 },
                 onBackClick = {
                     navController.popBackStack()
@@ -388,5 +390,32 @@ internal fun NavGraphBuilder.addContacts(
                 }
             )
         )
+    }
+}
+
+internal fun NavGraphBuilder.addContactDetails(
+    navController: NavHostController,
+    showSuccessSnackbar: (message: String) -> Unit,
+    showErrorSnackbar: (message: String) -> Unit,
+    showFeatureMissingSnackbar: () -> Unit
+) {
+    val actions = ContactDetailsScreen.Actions.Empty.copy(
+        onBackClick = {
+            navController.popBackStack()
+        },
+        exitWithSuccessMessage = { message ->
+            navController.popBackStack()
+            showSuccessSnackbar(message)
+        },
+        exitWithErrorMessage = { message ->
+            navController.popBackStack()
+            showErrorSnackbar(message)
+        },
+        onEditClick = {
+            showFeatureMissingSnackbar()
+        }
+    )
+    composable(route = Destination.Screen.ContactDetails.route) {
+        ContactDetailsScreen(actions)
     }
 }

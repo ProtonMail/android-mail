@@ -52,6 +52,7 @@ import ch.protonmail.android.navigation.route.addAutoLockPinScreen
 import ch.protonmail.android.navigation.route.addAutoLockSettings
 import ch.protonmail.android.navigation.route.addCombinedContactsSetting
 import ch.protonmail.android.navigation.route.addComposer
+import ch.protonmail.android.navigation.route.addContactDetails
 import ch.protonmail.android.navigation.route.addContacts
 import ch.protonmail.android.navigation.route.addConversationDetail
 import ch.protonmail.android.navigation.route.addConversationModeSettings
@@ -334,6 +335,28 @@ fun Home(
                 addAccountSettings(navController, launcherActions)
                 addContacts(
                     navController,
+                    showErrorSnackbar = { message ->
+                        scope.launch {
+                            snackbarHostNormState.showSnackbar(
+                                message = message,
+                                type = ProtonSnackbarType.ERROR
+                            )
+                        }
+                    },
+                    showFeatureMissingSnackbar = {
+                        showFeatureMissingSnackbar()
+                    }
+                )
+                addContactDetails(
+                    navController,
+                    showSuccessSnackbar = { message ->
+                        scope.launch {
+                            snackbarHostNormState.showSnackbar(
+                                message = message,
+                                type = ProtonSnackbarType.SUCCESS
+                            )
+                        }
+                    },
                     showErrorSnackbar = { message ->
                         scope.launch {
                             snackbarHostNormState.showSnackbar(
