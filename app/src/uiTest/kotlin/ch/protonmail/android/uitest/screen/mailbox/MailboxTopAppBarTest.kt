@@ -69,11 +69,6 @@ internal class MailboxTopAppBarTest {
         setupScreenWithDefaultMode(MAIL_LABEL_INBOX)
 
         composeTestRule
-            .onSearchIconButton()
-            .assertIsDisplayed()
-            .assertHasClickAction()
-
-        composeTestRule
             .onComposeIconButton()
             .assertIsDisplayed()
             .assertHasClickAction()
@@ -107,10 +102,6 @@ internal class MailboxTopAppBarTest {
     @Test
     fun actionsAreHiddenInSelectionMode() {
         setupScreenWithSelectionMode(MAIL_LABEL_INBOX, selectedCount = SELECTED_COUNT_TEN)
-
-        composeTestRule
-            .onSearchIconButton()
-            .assertDoesNotExist()
 
         composeTestRule
             .onComposeIconButton()
@@ -149,23 +140,12 @@ internal class MailboxTopAppBarTest {
         setupScreenWithState(state)
     }
 
-    private fun setupScreenWithSearchMode(currentMailLabel: MailLabel, searchQuery: String) {
-        val state = Data.SearchMode(
-            currentLabelName = currentMailLabel.text(),
-            searchQuery = searchQuery
-        )
-        setupScreenWithState(state)
-    }
-
     private fun SemanticsNodeInteractionsProvider.onHamburgerIconButton() =
         onNodeWithContentDescription(context.getString(R.string.mailbox_toolbar_menu_button_content_description))
 
     private fun SemanticsNodeInteractionsProvider.onExitSelectionModeIconButton() = onNodeWithContentDescription(
         context.getString(R.string.mailbox_toolbar_exit_selection_mode_button_content_description)
     )
-
-    private fun SemanticsNodeInteractionsProvider.onSearchIconButton() =
-        onNodeWithContentDescription(context.getString(R.string.mailbox_toolbar_search_button_content_description))
 
     private fun SemanticsNodeInteractionsProvider.onComposeIconButton() =
         onNodeWithContentDescription(context.getString(R.string.mailbox_toolbar_compose_button_content_description))

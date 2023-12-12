@@ -103,17 +103,6 @@ fun MailboxTopAppBar(
 
             if (uiModel.shouldShowActions) {
                 IconButton(
-                    modifier = Modifier.testTag(MailboxTopAppBarTestTags.SearchButton),
-                    onClick = actions.onEnterSearchMode
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_proton_magnifier),
-                        contentDescription = stringResource(
-                            id = R.string.mailbox_toolbar_search_button_content_description
-                        )
-                    )
-                }
-                IconButton(
                     modifier = Modifier.testTag(MailboxTopAppBarTestTags.ComposerButton),
                     onClick = actions.onOpenComposer
                 ) {
@@ -184,6 +173,5 @@ object MailboxTopAppBarTestTags {
     const val RootItem = "TopAppBarRootItem"
     const val HamburgerMenu = "HamburgerMenu"
     const val LocationLabel = "LocationLabel"
-    const val SearchButton = "SearchButton"
     const val ComposerButton = "ComposerButton"
 }
