@@ -108,8 +108,7 @@ fun ChipsListTextField(
     textStyle: TextStyle = ProtonTheme.typography.defaultSmallNorm,
     animateChipsCreation: Boolean = false,
     actions: ChipsListTextField.Actions,
-    areSuggestionsExpanded: Boolean,
-    suggestionItems: List<SuggestionItem>
+    contactSuggestionState: ContactSuggestionState
 ) {
     val state by remember { mutableStateOf(ChipsListState(chipValidator, onListChanged)) }
 
@@ -146,7 +145,7 @@ fun ChipsListTextField(
         }
 
         ExposedDropdownMenuBox(
-            expanded = areSuggestionsExpanded,
+            expanded = contactSuggestionState.areSuggestionsExpanded,
             onExpandedChange = {}
         ) {
             BasicTextField(
@@ -196,19 +195,19 @@ fun ChipsListTextField(
                 textStyle = textStyle
             )
 
-            if (suggestionItems.isNotEmpty()) {
+            if (contactSuggestionState.suggestionItems.isNotEmpty()) {
                 DropdownMenu(
                     modifier = Modifier
-                        .background(Color.White)
+                        .background(ProtonTheme.colors.backgroundNorm)
                         .width(textMaxWidth)
                         .exposedDropdownSize(false),
                     properties = PopupProperties(focusable = false),
-                    expanded = areSuggestionsExpanded,
+                    expanded = contactSuggestionState.areSuggestionsExpanded,
                     onDismissRequest = {
                         actions.onSuggestionsDismissed()
                     }
                 ) {
-                    suggestionItems.forEach { selectionOption ->
+                    contactSuggestionState.suggestionItems.forEach { selectionOption ->
                         DropdownMenuItem(
                             text = {
                                 Column(modifier = Modifier.padding(vertical = ProtonDimens.SmallSpacing)) {

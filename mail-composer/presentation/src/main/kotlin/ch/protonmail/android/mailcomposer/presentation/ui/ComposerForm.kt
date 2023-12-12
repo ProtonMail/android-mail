@@ -53,6 +53,7 @@ import ch.protonmail.android.mailcomposer.presentation.model.ContactSuggestionUi
 import ch.protonmail.android.mailcomposer.presentation.model.ContactSuggestionsField
 import ch.protonmail.android.uicomponents.chips.ChipItem
 import ch.protonmail.android.uicomponents.chips.ChipsListField
+import ch.protonmail.android.uicomponents.chips.ContactSuggestionState
 import ch.protonmail.android.uicomponents.chips.SuggestionItem
 import ch.protonmail.android.uicomponents.chips.thenIf
 import me.proton.core.compose.theme.ProtonDimens
@@ -110,9 +111,6 @@ internal fun ComposerForm(
                     label = stringResource(id = R.string.to_prefix),
                     value = fields.to.map { it.toChipItem() },
                     chipValidator = emailValidator,
-                    onListChanged = {
-                        actions.onToChanged(it.mapNotNull { chipItem -> chipItem.toRecipientUiModel() })
-                    },
                     modifier = Modifier
                         .weight(1f)
                         .padding(start = ProtonDimens.DefaultSpacing)
@@ -125,11 +123,16 @@ internal fun ComposerForm(
                             actions.onContactSuggestionTermChanged(it, ContactSuggestionsField.TO)
                         },
                         onSuggestionsDismissed = { actions.onContactSuggestionsDismissed(ContactSuggestionsField.TO) },
+                        onListChanged = {
+                            actions.onToChanged(it.mapNotNull { chipItem -> chipItem.toRecipientUiModel() })
+                        }
                     ),
-                    areSuggestionsExpanded = areContactSuggestionsExpanded[ContactSuggestionsField.TO] ?: false,
-                    suggestionItems = contactSuggestions[ContactSuggestionsField.TO]?.map {
-                        it.toSuggestionContactItem()
-                    } ?: emptyList()
+                    contactSuggestionState = ContactSuggestionState(
+                        areSuggestionsExpanded = areContactSuggestionsExpanded[ContactSuggestionsField.TO] ?: false,
+                        suggestionItems = contactSuggestions[ContactSuggestionsField.TO]?.map {
+                            it.toSuggestionContactItem()
+                        } ?: emptyList()
+                    )
                 )
                 Spacer(modifier = Modifier.size(ProtonDimens.DefaultSpacing))
                 IconButton(
@@ -161,9 +164,6 @@ internal fun ComposerForm(
                         label = stringResource(id = R.string.cc_prefix),
                         value = fields.cc.map { it.toChipItem() },
                         chipValidator = emailValidator,
-                        onListChanged = {
-                            actions.onCcChanged(it.mapNotNull { chipItem -> chipItem.toRecipientUiModel() })
-                        },
                         modifier = Modifier
                             .padding(start = ProtonDimens.DefaultSpacing)
                             .testTag(ComposerTestTags.CcRecipient)
@@ -177,20 +177,22 @@ internal fun ComposerForm(
                             onSuggestionsDismissed = {
                                 actions.onContactSuggestionsDismissed(ContactSuggestionsField.CC)
                             },
+                            onListChanged = {
+                                actions.onCcChanged(it.mapNotNull { chipItem -> chipItem.toRecipientUiModel() })
+                            }
                         ),
-                        areSuggestionsExpanded = areContactSuggestionsExpanded[ContactSuggestionsField.CC] ?: false,
-                        suggestionItems = contactSuggestions[ContactSuggestionsField.CC]?.map {
-                            it.toSuggestionContactItem()
-                        } ?: emptyList()
+                        contactSuggestionState = ContactSuggestionState(
+                            areSuggestionsExpanded = areContactSuggestionsExpanded[ContactSuggestionsField.CC] ?: false,
+                            suggestionItems = contactSuggestions[ContactSuggestionsField.CC]?.map {
+                                it.toSuggestionContactItem()
+                            } ?: emptyList()
+                        )
                     )
                     MailDivider()
                     ChipsListField(
                         label = stringResource(id = R.string.bcc_prefix),
                         value = fields.bcc.map { it.toChipItem() },
                         chipValidator = emailValidator,
-                        onListChanged = {
-                            actions.onBccChanged(it.mapNotNull { chipItem -> chipItem.toRecipientUiModel() })
-                        },
                         modifier = Modifier
                             .padding(start = ProtonDimens.DefaultSpacing)
                             .testTag(ComposerTestTags.BccRecipient)
@@ -204,11 +206,17 @@ internal fun ComposerForm(
                             onSuggestionsDismissed = {
                                 actions.onContactSuggestionsDismissed(ContactSuggestionsField.BCC)
                             },
+                            onListChanged = {
+                                actions.onBccChanged(it.mapNotNull { chipItem -> chipItem.toRecipientUiModel() })
+                            }
                         ),
-                        areSuggestionsExpanded = areContactSuggestionsExpanded[ContactSuggestionsField.BCC] ?: false,
-                        suggestionItems = contactSuggestions[ContactSuggestionsField.BCC]?.map {
-                            it.toSuggestionContactItem()
-                        } ?: emptyList()
+                        contactSuggestionState = ContactSuggestionState(
+                            areSuggestionsExpanded = areContactSuggestionsExpanded[ContactSuggestionsField.BCC]
+                                ?: false,
+                            suggestionItems = contactSuggestions[ContactSuggestionsField.BCC]?.map {
+                                it.toSuggestionContactItem()
+                            } ?: emptyList()
+                        )
                     )
                 }
             }

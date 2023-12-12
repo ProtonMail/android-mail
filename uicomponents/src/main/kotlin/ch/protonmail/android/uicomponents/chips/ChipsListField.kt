@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,15 +25,13 @@ import me.proton.core.compose.theme.defaultSmallNorm
 fun ChipsListField(
     label: String,
     value: List<ChipItem>,
-    onListChanged: (List<ChipItem>) -> Unit,
     modifier: Modifier = Modifier,
     chipValidator: (String) -> Boolean = { true },
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     focusRequester: FocusRequester? = null,
     focusOnClick: Boolean = true,
     actions: ChipsListField.Actions,
-    areSuggestionsExpanded: Boolean = false,
-    suggestionItems: List<SuggestionItem> = emptyList()
+    contactSuggestionState: ContactSuggestionState
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     Row(
@@ -60,7 +59,7 @@ fun ChipsListField(
                     )
                 },
             chipValidator = chipValidator,
-            onListChanged = onListChanged,
+            onListChanged = actions.onListChanged,
             value = value,
             keyboardOptions = keyboardOptions,
             focusRequester = focusRequester,
@@ -68,16 +67,22 @@ fun ChipsListField(
                 onSuggestionTermTyped = actions.onSuggestionTermTyped,
                 onSuggestionsDismissed = actions.onSuggestionsDismissed
             ),
-            areSuggestionsExpanded = areSuggestionsExpanded,
-            suggestionItems = suggestionItems
+            contactSuggestionState = contactSuggestionState
         )
     }
 }
 
+@Stable
+data class ContactSuggestionState(
+    val areSuggestionsExpanded: Boolean,
+    val suggestionItems: List<SuggestionItem>
+)
+
 object ChipsListField {
     data class Actions(
         val onSuggestionTermTyped: (String) -> Unit,
-        val onSuggestionsDismissed: () -> Unit
+        val onSuggestionsDismissed: () -> Unit,
+        val onListChanged: (List<ChipItem>) -> Unit
     )
 }
 
