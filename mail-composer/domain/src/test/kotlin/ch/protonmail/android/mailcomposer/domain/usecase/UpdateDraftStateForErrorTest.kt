@@ -127,10 +127,45 @@ class UpdateDraftStateForErrorTest {
         coVerify { messageRepository.moveMessageBackFromSentToDrafts(userId, messageId) }
     }
 
+
+    @Test
+    fun `moves message back to draft folder using api message if available when current state is Sending`() = runTest {
+        // Given
+        val userId = UserIdSample.Primary
+        val messageId = MessageIdSample.Invoice
+        val newState = DraftSyncState.ErrorUploadDraft
+        val expectedState = DraftSyncState.ErrorSending
+        val sendingError = SendingError.Other
+        val apiMessageId = MessageIdSample.RemoteDraft
+        givenExistingDraftState(userId, messageId) {
+            buildDraftStateWithApiMessageId(DraftSyncState.Sending, apiMessageId)
+        }
+        givenUpdateDraftSyncStateSucceeds(userId, messageId, expectedState)
+        givenUpdateSendingErrorStateSucceeds(userId, messageId, sendingError)
+        givenMoveMessageBackFromSentToDraftsSucceeds(userId, apiMessageId)
+
+        // When
+        updateDraftStateForError(userId, messageId, newState, sendingError)
+
+        // Then
+        coVerify { messageRepository.moveMessageBackFromSentToDrafts(userId, apiMessageId) }
+
+    }
+
     private fun buildDraftState(syncState: DraftSyncState) = DraftState(
         userId = UserIdSample.Primary,
         messageId = MessageIdSample.LocalDraft,
         apiMessageId = null,
+        state = syncState,
+        action = DraftAction.Compose,
+        sendingError = null,
+        sendingStatusConfirmed = false
+    )
+
+    private fun buildDraftStateWithApiMessageId(syncState: DraftSyncState, apiMessageId: MessageId) = DraftState(
+        userId = UserIdSample.Primary,
+        messageId = MessageIdSample.LocalDraft,
+        apiMessageId = apiMessageId,
         state = syncState,
         action = DraftAction.Compose,
         sendingError = null,

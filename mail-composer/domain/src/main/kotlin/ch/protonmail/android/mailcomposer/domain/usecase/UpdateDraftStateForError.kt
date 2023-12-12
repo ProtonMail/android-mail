@@ -50,7 +50,8 @@ class UpdateDraftStateForError @Inject constructor(
         if (draftState?.state == DraftSyncState.Sending) {
             draftStateRepository.updateDraftSyncState(userId, messageId, DraftSyncState.ErrorSending)
             draftStateRepository.updateSendingError(userId, messageId, sendingError)
-            messageRepository.moveMessageBackFromSentToDrafts(userId, messageId)
+            draftState.apiMessageId?.let { messageRepository.moveMessageBackFromSentToDrafts(userId, it) }
+                ?: messageRepository.moveMessageBackFromSentToDrafts(userId, messageId)
         } else {
             draftStateRepository.updateDraftSyncState(userId, messageId, newState)
             if (newState == DraftSyncState.ErrorSending) {
