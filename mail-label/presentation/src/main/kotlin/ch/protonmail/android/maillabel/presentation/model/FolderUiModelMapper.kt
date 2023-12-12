@@ -35,7 +35,11 @@ fun List<Label>.toFolderUiModel(folderColorSettings: FolderColorSettings): List<
         val label = requireNotNull(labelById[labelId])
         label.toMailLabelCustom(::getMailLabel, ::getChildren, folderColorSettings)
     }
-    return map { getMailLabel(it.labelId) }.sortedBy { it.order }.orderByParent()
+    return mapNotNull { label ->
+        if (label.parentId == null || this.any { label.parentId == it.labelId }) {
+            getMailLabel(label.labelId)
+        } else null
+    }.sortedBy { it.order }.orderByParent()
 }
 
 private fun Label.toMailLabelCustom(

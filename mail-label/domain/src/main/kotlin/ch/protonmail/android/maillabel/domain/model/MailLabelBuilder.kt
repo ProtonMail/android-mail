@@ -40,7 +40,11 @@ fun List<Label>.toMailLabelCustom(): List<MailLabel.Custom> {
             LabelType.SystemFolder -> throw UnsupportedOperationException()
         }
     }
-    return map { getMailLabel(it.labelId) }.sortedBy { it.order }.orderByParent()
+    return mapNotNull { label ->
+        if (label.parentId == null || this.any { label.parentId == it.labelId }) {
+            getMailLabel(label.labelId)
+        } else null
+    }.sortedBy { it.order }.orderByParent()
 }
 
 private fun Label.toMailLabelCustom(
