@@ -245,6 +245,24 @@ class ConversationLocalDataSourceImplTest {
     }
 
     @Test
+    fun `observe conversations returns conversations from db when existing`() = runTest {
+        // Given
+        val conversationIds = listOf(ConversationIdSample.AlphaAppFeedback, ConversationIdSample.WeatherForecast)
+        val cachedConversationWithLabels = listOf(
+            ConversationWithLabelsSample.AlphaAppFeedback,
+            ConversationWithLabelsSample.WeatherForecast
+        )
+        coEvery { conversationDao.observe(userId, conversationIds) } returns flowOf(cachedConversationWithLabels)
+
+        // When
+        conversationLocalDataSource.observeCachedConversations(userId, conversationIds).test {
+            // Then
+            assertEquals(cachedConversationWithLabels.map { it.toConversation() }, awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
     fun `upsert conversation inserts or updates conversation and labels in the DB`() = runTest {
         // Given
         val conversationId = ConversationId("convId1")

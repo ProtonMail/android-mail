@@ -68,6 +68,7 @@ abstract class ConversationDao : BaseDao<ConversationEntity>() {
                 maxOrder = maxOrder,
                 size = size
             )
+
             OrderDirection.Descending -> observeAllOrderByTimeDesc(
                 userId = userId,
                 labelId = labelId,
@@ -160,6 +161,10 @@ abstract class ConversationDao : BaseDao<ConversationEntity>() {
     @Query("SELECT * FROM ConversationEntity WHERE userId = :userId AND conversationId = :conversationId")
     @Transaction
     abstract fun observe(userId: UserId, conversationId: ConversationId): Flow<ConversationWithLabels?>
+
+    @Query("SELECT * FROM ConversationEntity WHERE userId = :userId AND conversationId IN (:conversationIds)")
+    @Transaction
+    abstract fun observe(userId: UserId, conversationIds: List<ConversationId>): Flow<List<ConversationWithLabels>>
 
     @Query("SELECT * FROM ConversationEntity WHERE userId = :userId AND conversationId = :conversationId")
     @Transaction

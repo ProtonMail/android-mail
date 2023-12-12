@@ -58,6 +58,11 @@ class ConversationLocalDataSourceImpl @Inject constructor(
         .observeAll(userId, pageKey)
         .mapLatest { list -> list.map { it.toConversationWithContext(pageKey.filter.labelId) } }
 
+    override fun observeCachedConversations(userId: UserId, ids: List<ConversationId>) =
+        conversationDao.observe(userId, ids)
+            .mapLatest { list -> list.map { it.toConversation() } }
+
+
     override suspend fun getConversations(
         userId: UserId,
         pageKey: PageKey

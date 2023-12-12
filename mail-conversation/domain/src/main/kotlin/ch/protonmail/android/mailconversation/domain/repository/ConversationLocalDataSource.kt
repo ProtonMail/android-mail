@@ -42,6 +42,11 @@ interface ConversationLocalDataSource {
     suspend fun getConversations(userId: UserId, pageKey: PageKey): List<ConversationWithContext>
 
     /**
+     * Observe all [Conversation] by [userId] and [ids].
+     */
+    fun observeCachedConversations(userId: UserId, ids: List<ConversationId>): Flow<List<Conversation>>
+
+    /**
      * Update or insert [Conversation] related to the same [userId] and [pageKey].
      */
     suspend fun upsertConversations(
