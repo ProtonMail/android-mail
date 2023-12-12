@@ -130,6 +130,27 @@ class MailLabelBuilderTest {
     }
 
     @Test
+    fun `when a parent does not exist, ignore its children`() = runTest {
+        // Given
+        val items = listOf(
+            buildLabel(userId = userId, type = LabelType.MessageFolder, id = "0", order = 0),
+            buildLabel(userId = userId, type = LabelType.MessageFolder, id = "0.1", order = 0, parentId = "0"),
+            buildLabel(userId = userId, type = LabelType.MessageFolder, id = "0.2.1", order = 0, parentId = "0.2"),
+            buildLabel(userId = userId, type = LabelType.MessageFolder, id = "0.2.2", order = 1, parentId = "0.2")
+        )
+
+        // When
+        val actual = items.toMailLabelCustom()
+
+        // Then
+        val f0 = buildCustomFolder("0", level = 0, order = 0, parent = null, children = listOf("0.1"))
+        val f01 = buildCustomFolder("0.1", level = 1, order = 0, parent = f0)
+        val expected = listOf(f0, f01)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
     fun `return correct ordered folders`() = runTest {
         // Given
         val items = listOf(
