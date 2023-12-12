@@ -21,7 +21,6 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.model
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
-import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
 import me.proton.core.domain.entity.UserId
 
@@ -56,8 +55,7 @@ sealed interface MailboxListState {
                 val userId: UserId,
                 val id: String,
                 val isRead: Boolean,
-                val isStarred: Boolean,
-                val type: MailboxItemType
+                val isStarred: Boolean
             )
         }
     }

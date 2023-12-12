@@ -207,7 +207,7 @@ class MailboxListReducer @Inject constructor() {
             is MailboxListState.Data.ViewMode -> MailboxListState.Data.SelectionMode(
                 currentMailLabel = currentState.currentMailLabel,
                 selectedMailboxItems = setOf(
-                    SelectedMailboxItem(item.userId, item.id, item.isRead, item.showStar, item.type)
+                    SelectedMailboxItem(item.userId, item.id, item.isRead, item.showStar)
                 ),
                 selectionModeEnabled = currentState.selectionModeEnabled,
                 swipeActions = currentState.swipeActions
@@ -253,8 +253,7 @@ class MailboxListReducer @Inject constructor() {
                         operation.item.userId,
                         operation.item.id,
                         operation.item.isRead,
-                        operation.item.showStar,
-                        operation.item.type
+                        operation.item.showStar
                     )
             )
 
