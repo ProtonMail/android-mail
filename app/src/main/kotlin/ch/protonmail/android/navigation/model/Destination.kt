@@ -99,6 +99,7 @@ sealed class Destination(val route: String) {
                 )
             }
         }
+        object Contacts : Destination("contacts")
     }
 
     object Dialog {

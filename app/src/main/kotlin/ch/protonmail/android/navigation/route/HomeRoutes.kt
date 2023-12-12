@@ -27,7 +27,6 @@ import androidx.navigation.compose.dialog
 import ch.protonmail.android.feature.account.RemoveAccountDialog
 import ch.protonmail.android.feature.account.SignOutAccountDialog
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
-import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetail
@@ -41,10 +40,12 @@ import ch.protonmail.android.maillabel.presentation.labelform.LabelFormScreen
 import ch.protonmail.android.maillabel.presentation.labellist.LabelListScreen
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreen
+import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailsettings.presentation.settings.MainSettingsScreen
 import ch.protonmail.android.navigation.model.Destination
 import ch.protonmail.android.navigation.model.SavedStateKey
+import ch.protonmail.android.mailcontact.presentation.contactlist.ContactListScreen
 import me.proton.core.compose.navigation.get
 import me.proton.core.domain.entity.UserId
 import me.proton.core.util.kotlin.takeIfNotBlank
@@ -350,5 +351,37 @@ internal fun NavGraphBuilder.addParentFolderList(
     )
     composable(route = Destination.Screen.ParentFolderList.route) {
         ParentFolderListScreen(actions)
+    }
+}
+
+internal fun NavGraphBuilder.addContacts(
+    navController: NavHostController,
+    showErrorSnackbar: (message: String) -> Unit,
+    showFeatureMissingSnackbar: () -> Unit
+) {
+    composable(route = Destination.Screen.Contacts.route) {
+        ContactListScreen(
+            actions = ContactListScreen.Actions(
+                openContactForm = {
+                    showFeatureMissingSnackbar()
+                },
+                openContactGroupForm = {
+                    showFeatureMissingSnackbar()
+                },
+                openImportContact = {
+                    showFeatureMissingSnackbar()
+                },
+                onContactSelected = { _ ->
+                    showFeatureMissingSnackbar()
+                },
+                onBackClick = {
+                    navController.popBackStack()
+                },
+                exitWithErrorMessage = { message ->
+                    navController.popBackStack()
+                    showErrorSnackbar(message)
+                }
+            )
+        )
     }
 }

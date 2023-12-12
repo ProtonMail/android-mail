@@ -31,6 +31,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -160,6 +161,7 @@ fun Sidebar(
         item { SidebarMoreTitleItem() }
         item { ProtonSidebarSettingsItem(onClick = actions.onSettings) }
         item { SidebarSubscriptionItem(viewState.isSubscriptionVisible, onSubscription = actions.onSubscription) }
+        item { SidebarContactsItem(onClick = actions.onContacts) }
         item { ProtonSidebarReportBugItem(onClick = actions.onReportBug) }
         item { ProtonSidebarSignOutItem(onClick = { actions.onSignOut(null) }) }
         item { SidebarBetaLabelInfoItem(onClick = actions.onBetaLabelClick) }
@@ -185,6 +187,16 @@ private fun SidebarSubscriptionItem(isVisible: Boolean, onSubscription: () -> Un
 }
 
 @Composable
+private fun SidebarContactsItem(onClick: () -> Unit) {
+    ProtonSidebarItem(
+        icon = painterResource(R.drawable.ic_proton_users),
+        text = stringResource(R.string.drawer_title_contacts),
+        isSelected = false,
+        onClick = onClick
+    )
+}
+
+@Composable
 private fun SidebarAppVersionItem(appInformation: AppInformation) {
     ProtonSidebarAppVersionItem(
         name = appInformation.appName,
@@ -202,6 +214,7 @@ object Sidebar {
         val onSettings: () -> Unit,
         val onLabelAction: (SidebarLabelAction) -> Unit,
         val onSubscription: () -> Unit,
+        val onContacts: () -> Unit,
         val onReportBug: () -> Unit,
         val onBetaLabelClick: (Uri) -> Unit
     ) {
@@ -216,6 +229,7 @@ object Sidebar {
                 onSettings = {},
                 onLabelAction = {},
                 onSubscription = {},
+                onContacts = {},
                 onReportBug = {},
                 onBetaLabelClick = {}
             )
@@ -233,6 +247,7 @@ object Sidebar {
         val onLabelAdd: () -> Unit,
         val onFolderAdd: () -> Unit,
         val onSubscription: () -> Unit,
+        val onContacts: () -> Unit,
         val onReportBug: () -> Unit,
         val onBetaLabelClick: (Uri) -> Unit
     ) {
@@ -266,6 +281,10 @@ object Sidebar {
                 onSubscription()
                 close()
             },
+            onContacts = {
+                onContacts()
+                close()
+            },
             onReportBug = {
                 onReportBug()
                 close()
@@ -289,6 +308,7 @@ object Sidebar {
                 onLabelAdd = {},
                 onFolderAdd = {},
                 onSubscription = {},
+                onContacts = {},
                 onReportBug = {},
                 onBetaLabelClick = {}
             )

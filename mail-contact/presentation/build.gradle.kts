@@ -19,6 +19,7 @@
 plugins {
     id("com.android.library")
     kotlin("android")
+    kotlin("kapt")
 }
 
 android {
@@ -56,10 +57,21 @@ android {
 }
 
 dependencies {
+    kapt(Dependencies.appAnnotationProcessors)
+    debugImplementation(Dependencies.composeDebugLibs)
+
     implementation(Dependencies.modulePresentationLibs)
+    implementation(Proton.Core.contact)
+    implementation(Proton.Core.label)
 
     implementation(project(":mail-contact:domain"))
+    implementation(project(":mail-common:domain"))
+    implementation(project(":mail-common:presentation"))
+    implementation(project(":mail-label:domain"))
 
     testImplementation(Dependencies.testLibs)
     testImplementation(project(":test:test-data"))
+
+    androidTestImplementation(Dependencies.androidTestLibs)
+    androidTestImplementation(project(":test:annotations"))
 }

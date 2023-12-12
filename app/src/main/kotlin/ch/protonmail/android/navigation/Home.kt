@@ -47,6 +47,7 @@ import ch.protonmail.android.navigation.route.addAccountSettings
 import ch.protonmail.android.navigation.route.addAlternativeRoutingSetting
 import ch.protonmail.android.navigation.route.addCombinedContactsSetting
 import ch.protonmail.android.navigation.route.addComposer
+import ch.protonmail.android.navigation.route.addContacts
 import ch.protonmail.android.navigation.route.addConversationDetail
 import ch.protonmail.android.navigation.route.addConversationModeSettings
 import ch.protonmail.android.navigation.route.addDeepLinkHandler
@@ -326,6 +327,20 @@ fun Home(
                 )
                 // settings
                 addAccountSettings(navController, launcherActions)
+                addContacts(
+                    navController,
+                    showErrorSnackbar = { message ->
+                        scope.launch {
+                            snackbarHostNormState.showSnackbar(
+                                message = message,
+                                type = ProtonSnackbarType.ERROR
+                            )
+                        }
+                    },
+                    showFeatureMissingSnackbar = {
+                        showFeatureMissingSnackbar()
+                    }
+                )
                 addAlternativeRoutingSetting(navController)
                 addCombinedContactsSetting(navController)
                 addConversationModeSettings(navController)
@@ -359,6 +374,7 @@ private fun buildSidebarActions(
         onLabelAdd = { navController.navigate(Screen.CreateLabel.route) },
         onFolderAdd = { navController.navigate(Screen.CreateFolder.route) },
         onSubscription = launcherActions.onSubscription,
+        onContacts = { navController.navigate(Screen.Contacts.route) },
         onReportBug = launcherActions.onReportBug,
         onBetaLabelClick = activityActions.openInActivityInNewTask
     )
