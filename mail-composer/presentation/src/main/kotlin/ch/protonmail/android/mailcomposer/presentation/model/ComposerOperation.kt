@@ -23,7 +23,6 @@ import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.Subject
-import ch.protonmail.android.mailcomposer.presentation.ui.FocusedFieldType
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -38,9 +37,9 @@ internal sealed interface ComposerAction : ComposerOperation {
     data class RecipientsBccChanged(val recipients: List<RecipientUiModel>) : ComposerAction
     data class ContactSuggestionTermChanged(
         val searchTerm: String,
-        val fieldType: FocusedFieldType
+        val suggestionsField: ContactSuggestionsField
     ) : ComposerAction
-    data class ContactSuggestionsDismissed(val fieldType: FocusedFieldType) : ComposerAction
+    data class ContactSuggestionsDismissed(val suggestionsField: ContactSuggestionsField) : ComposerAction
 
     data class SubjectChanged(val subject: Subject) : ComposerAction
     data class DraftBodyChanged(val draftBody: DraftBody) : ComposerAction
@@ -64,7 +63,7 @@ sealed interface ComposerEvent : ComposerOperation {
     data class OnSendingError(val sendingError: TextUiModel) : ComposerEvent
     data class UpdateContactSuggestions(
         val contactSuggestions: List<ContactSuggestionUiModel>,
-        val fieldType: FocusedFieldType
+        val suggestionsField: ContactSuggestionsField
     ) : ComposerEvent
 
     object ErrorLoadingDefaultSenderAddress : ComposerEvent

@@ -32,7 +32,7 @@ import ch.protonmail.android.mailcomposer.presentation.model.DraftUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.ContactSuggestionUiModel
-import ch.protonmail.android.mailcomposer.presentation.ui.FocusedFieldType
+import ch.protonmail.android.mailcomposer.presentation.model.ContactSuggestionsField
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.presentation.mapper.AttachmentUiModelMapper
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
@@ -69,7 +69,7 @@ class ComposerReducer @Inject constructor(
         is ComposerAction.OnSendMessage -> updateStateForSendMessage(currentState)
         is ComposerAction.ContactSuggestionsDismissed -> updateStateForContactSuggestionsDismissed(
             currentState,
-            this.fieldType
+            this.suggestionsField
         )
     }
 
@@ -135,7 +135,7 @@ class ComposerReducer @Inject constructor(
         is ComposerEvent.UpdateContactSuggestions -> updateStateForContactSuggestions(
             currentState,
             this.contactSuggestions,
-            this.fieldType
+            this.suggestionsField
         )
     }
 
@@ -275,23 +275,23 @@ class ComposerReducer @Inject constructor(
     private fun updateStateForContactSuggestions(
         currentState: ComposerDraftState,
         contactSuggestions: List<ContactSuggestionUiModel>,
-        fieldType: FocusedFieldType
+        suggestionsField: ContactSuggestionsField
     ) = currentState.copy(
         contactSuggestions = currentState.contactSuggestions.toMutableMap().apply {
-            this[fieldType] = contactSuggestions
+            this[suggestionsField] = contactSuggestions
         },
         areContactSuggestionsExpanded = currentState.areContactSuggestionsExpanded.toMutableMap().apply {
-            this[fieldType] = contactSuggestions.isNotEmpty()
+            this[suggestionsField] = contactSuggestions.isNotEmpty()
         }
     )
 
     @Suppress("FunctionMaxLength")
     private fun updateStateForContactSuggestionsDismissed(
         currentState: ComposerDraftState,
-        fieldType: FocusedFieldType
+        suggestionsField: ContactSuggestionsField
     ): ComposerDraftState = currentState.copy(
         areContactSuggestionsExpanded = currentState.areContactSuggestionsExpanded.toMutableMap().apply {
-            this[fieldType] = false
+            this[suggestionsField] = false
         }
     )
 

@@ -150,7 +150,6 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
                         ),
                         contactSuggestions = state.contactSuggestions,
                         areContactSuggestionsExpanded = state.areContactSuggestionsExpanded
-
                     )
                     if (state.attachments.attachments.isNotEmpty()) {
                         AttachmentFooter(
@@ -287,8 +286,8 @@ private fun buildActions(
     onCcChanged = { viewModel.submit(ComposerAction.RecipientsCcChanged(it)) },
     onBccChanged = { viewModel.submit(ComposerAction.RecipientsBccChanged(it)) },
     onContactSuggestionsDismissed = { viewModel.submit(ComposerAction.ContactSuggestionsDismissed(it)) },
-    onContactSuggestionTermChanged = { searchTerm, focusedFieldType ->
-        viewModel.submit(ComposerAction.ContactSuggestionTermChanged(searchTerm, focusedFieldType))
+    onContactSuggestionTermChanged = { searchTerm, suggestionsField ->
+        viewModel.submit(ComposerAction.ContactSuggestionTermChanged(searchTerm, suggestionsField))
     },
     onSubjectChanged = { viewModel.submit(ComposerAction.SubjectChanged(Subject(it))) },
     onBodyChanged = { viewModel.submit(ComposerAction.DraftBodyChanged(DraftBody(it))) },

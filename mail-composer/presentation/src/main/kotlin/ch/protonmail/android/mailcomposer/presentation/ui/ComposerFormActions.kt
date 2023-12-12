@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcomposer.presentation.ui
 
+import ch.protonmail.android.mailcomposer.presentation.model.ContactSuggestionsField
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 
 internal data class ComposerFormActions(
@@ -26,8 +27,8 @@ internal data class ComposerFormActions(
     val onToChanged: (List<RecipientUiModel>) -> Unit,
     val onCcChanged: (List<RecipientUiModel>) -> Unit,
     val onBccChanged: (List<RecipientUiModel>) -> Unit,
-    val onContactSuggestionsDismissed: (FocusedFieldType) -> Unit,
-    val onContactSuggestionTermChanged: (String, FocusedFieldType) -> Unit,
+    val onContactSuggestionsDismissed: (ContactSuggestionsField) -> Unit,
+    val onContactSuggestionTermChanged: (String, ContactSuggestionsField) -> Unit,
     val onSubjectChanged: (String) -> Unit,
     val onBodyChanged: (String) -> Unit,
     val onChangeSender: () -> Unit

@@ -69,10 +69,10 @@ import ch.protonmail.android.mailcomposer.presentation.model.DraftUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.ContactSuggestionUiModel
+import ch.protonmail.android.mailcomposer.presentation.model.ContactSuggestionsField
 import ch.protonmail.android.mailcomposer.presentation.reducer.ComposerReducer
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen
 import ch.protonmail.android.mailcomposer.presentation.usecase.FormatMessageSendingError
-import ch.protonmail.android.mailcomposer.presentation.ui.FocusedFieldType
 import ch.protonmail.android.mailcomposer.presentation.usecase.InjectAddressSignature
 import ch.protonmail.android.mailcomposer.presentation.usecase.ParentMessageToDraftFields
 import ch.protonmail.android.mailcomposer.presentation.usecase.StyleQuotedHtml
@@ -268,7 +268,7 @@ class ComposerViewModel @Inject constructor(
                     is ComposerAction.RecipientsBccChanged -> emitNewStateFor(onBccChanged(action))
                     is ComposerAction.ContactSuggestionTermChanged -> onSearchTermChanged(
                         action.searchTerm,
-                        action.fieldType
+                        action.suggestionsField
                     )
                     is ComposerAction.ContactSuggestionsDismissed -> emitNewStateFor(action)
                     is ComposerAction.OnBottomSheetOptionSelected -> emitNewStateFor(action)
@@ -553,7 +553,7 @@ class ComposerViewModel @Inject constructor(
             )
         } ?: action
 
-    private suspend fun onSearchTermChanged(searchTerm: String, fieldType: FocusedFieldType) {
+    private suspend fun onSearchTermChanged(searchTerm: String, suggestionsField: ContactSuggestionsField) {
         searchContacts(primaryUserId(), searchTerm).onEach {
             val suggestedContacts = it.getOrNull()?.flatMap { contact ->
                 contact.contactEmails.map { contactEmail ->
@@ -569,7 +569,7 @@ class ComposerViewModel @Inject constructor(
             emitNewStateFor(
                 ComposerEvent.UpdateContactSuggestions(
                     suggestedContacts,
-                    fieldType
+                    suggestionsField
                 )
             )
 

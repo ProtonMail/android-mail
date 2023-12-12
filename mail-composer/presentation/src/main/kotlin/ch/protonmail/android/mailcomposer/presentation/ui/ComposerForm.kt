@@ -50,6 +50,7 @@ import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerFields
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.ContactSuggestionUiModel
+import ch.protonmail.android.mailcomposer.presentation.model.ContactSuggestionsField
 import ch.protonmail.android.uicomponents.chips.ChipItem
 import ch.protonmail.android.uicomponents.chips.ChipsListField
 import ch.protonmail.android.uicomponents.chips.SuggestionItem
@@ -67,8 +68,8 @@ internal fun ComposerForm(
     replaceDraftBody: Effect<TextUiModel>,
     shouldForceBodyTextFocus: Effect<Unit>,
     actions: ComposerFormActions,
-    contactSuggestions: Map<FocusedFieldType, List<ContactSuggestionUiModel>>,
-    areContactSuggestionsExpanded: Map<FocusedFieldType, Boolean>
+    contactSuggestions: Map<ContactSuggestionsField, List<ContactSuggestionUiModel>>,
+    areContactSuggestionsExpanded: Map<ContactSuggestionsField, Boolean>
 ) {
     val maxWidthModifier = Modifier.fillMaxWidth()
     val emailNextKeyboardOptions = KeyboardOptions(
@@ -121,12 +122,12 @@ internal fun ComposerForm(
                     focusRequester = fieldFocusRequesters[FocusedFieldType.TO],
                     actions = ChipsListField.Actions(
                         onSuggestionTermTyped = {
-                            actions.onContactSuggestionTermChanged(it, FocusedFieldType.TO)
+                            actions.onContactSuggestionTermChanged(it, ContactSuggestionsField.TO)
                         },
-                        onSuggestionsDismissed = { actions.onContactSuggestionsDismissed(FocusedFieldType.TO) }
+                        onSuggestionsDismissed = { actions.onContactSuggestionsDismissed(ContactSuggestionsField.TO) },
                     ),
-                    areSuggestionsExpanded = areContactSuggestionsExpanded[FocusedFieldType.TO] ?: false,
-                    suggestionItems = contactSuggestions[FocusedFieldType.TO]?.map {
+                    areSuggestionsExpanded = areContactSuggestionsExpanded[ContactSuggestionsField.TO] ?: false,
+                    suggestionItems = contactSuggestions[ContactSuggestionsField.TO]?.map {
                         it.toSuggestionContactItem()
                     } ?: emptyList()
                 )
@@ -171,12 +172,14 @@ internal fun ComposerForm(
                         focusRequester = fieldFocusRequesters[FocusedFieldType.CC],
                         actions = ChipsListField.Actions(
                             onSuggestionTermTyped = {
-                                actions.onContactSuggestionTermChanged(it, FocusedFieldType.CC)
+                                actions.onContactSuggestionTermChanged(it, ContactSuggestionsField.CC)
                             },
-                            onSuggestionsDismissed = { actions.onContactSuggestionsDismissed(FocusedFieldType.CC) }
+                            onSuggestionsDismissed = {
+                                actions.onContactSuggestionsDismissed(ContactSuggestionsField.CC)
+                            },
                         ),
-                        areSuggestionsExpanded = areContactSuggestionsExpanded[FocusedFieldType.CC] ?: false,
-                        suggestionItems = contactSuggestions[FocusedFieldType.CC]?.map {
+                        areSuggestionsExpanded = areContactSuggestionsExpanded[ContactSuggestionsField.CC] ?: false,
+                        suggestionItems = contactSuggestions[ContactSuggestionsField.CC]?.map {
                             it.toSuggestionContactItem()
                         } ?: emptyList()
                     )
@@ -196,12 +199,14 @@ internal fun ComposerForm(
                         focusRequester = fieldFocusRequesters[FocusedFieldType.BCC],
                         actions = ChipsListField.Actions(
                             onSuggestionTermTyped = {
-                                actions.onContactSuggestionTermChanged(it, FocusedFieldType.BCC)
+                                actions.onContactSuggestionTermChanged(it, ContactSuggestionsField.BCC)
                             },
-                            onSuggestionsDismissed = { actions.onContactSuggestionsDismissed(FocusedFieldType.BCC) }
+                            onSuggestionsDismissed = {
+                                actions.onContactSuggestionsDismissed(ContactSuggestionsField.BCC)
+                            },
                         ),
-                        areSuggestionsExpanded = areContactSuggestionsExpanded[FocusedFieldType.BCC] ?: false,
-                        suggestionItems = contactSuggestions[FocusedFieldType.BCC]?.map {
+                        areSuggestionsExpanded = areContactSuggestionsExpanded[ContactSuggestionsField.BCC] ?: false,
+                        suggestionItems = contactSuggestions[ContactSuggestionsField.BCC]?.map {
                             it.toSuggestionContactItem()
                         } ?: emptyList()
                     )
