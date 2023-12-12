@@ -538,7 +538,7 @@ class MailboxViewModelTest {
         val currentCountersFlow = MutableStateFlow(UnreadCountersTestData.systemUnreadCounters)
         val modifiedCounters = UnreadCountersTestData.systemUnreadCounters
             .update(initialLocationMailLabelId.labelId, expectedCount)
-        every { observeUnreadCounters(userId) } returns currentCountersFlow
+        coEvery { observeUnreadCounters(userId) } returns currentCountersFlow
         every {
             mailboxReducer.newStateFrom(
                 any(),
@@ -566,7 +566,7 @@ class MailboxViewModelTest {
         val currentCountersFlow = MutableStateFlow(UnreadCountersTestData.systemUnreadCounters)
         val modifiedCounters = UnreadCountersTestData.systemUnreadCounters
             .update(MailLabelId.System.Spam.labelId, expectedCount)
-        every { observeUnreadCounters(userId) } returns currentCountersFlow
+        coEvery { observeUnreadCounters(userId) } returns currentCountersFlow
         every {
             mailboxReducer.newStateFrom(
                 any(),
