@@ -514,6 +514,7 @@ private fun MailboxItemsList(
         ) { index ->
             items[index]?.let { item ->
                 SwipeableItem(
+                    modifier = Modifier.animateItemPlacement(),
                     swipeActionsUiModel = (state as MailboxListState.Data).swipeActions,
                     swipingEnabled = state is MailboxListState.Data.ViewMode,
                     swipeActionCallbacks = generateSwipeActions(items, actions, item)
@@ -521,8 +522,7 @@ private fun MailboxItemsList(
                     MailboxItem(
                         modifier = Modifier
                             .background(ProtonTheme.colors.backgroundNorm)
-                            .testTag("${MailboxItemTestTags.ItemRow}$index")
-                            .animateItemPlacement(),
+                            .testTag("${MailboxItemTestTags.ItemRow}$index"),
                         item = item,
                         actions = itemActions,
                         selectionMode = state is MailboxListState.Data.SelectionMode,
