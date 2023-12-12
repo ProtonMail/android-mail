@@ -489,7 +489,7 @@ private fun MessagesContent(
 
     // We will insert a placeholder after the last item to move it to the top when scrolled
     val lazyColumnHeight = remember { mutableStateOf(0) }
-    var placeholderHeight by remember { mutableStateOf(0) }
+    var placeholderHeightPx by remember { mutableStateOf(0) }
 
     // Detect if user manually scrolled the list
     var userScrolled by remember { mutableStateOf(false) }
@@ -545,7 +545,8 @@ private fun MessagesContent(
                 // We assume scroll operation is completed when the scrolled item is expanded
                 if (isLastItem && scrollToIndex >= 0 && !initialPlaceholderHeightCalculated) {
                     val sumOfHeights = itemsHeight.entries.filter { it.key >= scrollToIndex }.sumOf { it.value }
-                    placeholderHeight = lazyColumnHeight.value - sumOfHeights
+                    placeholderHeightPx = lazyColumnHeight.value - sumOfHeights +
+                        contentPadding.calculateTopPadding().dpToPx()
 
                     // We need to check if we got all items heights, in that case we need to trigger scroll to the
                     // message again by changing initialPlaceholderHeightCalculated to true. We need this scrolling
@@ -557,19 +558,18 @@ private fun MessagesContent(
                 }
             } else {
                 // After user scrolled, we need to reset the placeholder height to 0
-                placeholderHeight = 0
+                placeholderHeightPx = 0
             }
 
-            if (isLastItem && placeholderHeight > 0) {
+            if (isLastItem && placeholderHeightPx > 0) {
                 Spacer(
                     modifier = Modifier
-                        .height(placeholderHeight.dp)
+                        .height(placeholderHeightPx.pxToDp())
                 )
             }
         }
     }
 }
-
 
 object ConversationDetail {
 
