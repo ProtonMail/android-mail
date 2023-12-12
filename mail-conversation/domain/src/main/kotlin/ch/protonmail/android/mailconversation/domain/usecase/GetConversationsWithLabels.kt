@@ -16,15 +16,15 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmessage.domain.usecase
+package ch.protonmail.android.mailconversation.domain.usecase
 
 import arrow.core.Either
 import arrow.core.raise.either
 import ch.protonmail.android.mailcommon.domain.mapper.mapToEither
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailmessage.domain.model.MessageWithLabels
-import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
+import ch.protonmail.android.mailconversation.domain.entity.ConversationWithLabels
+import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import me.proton.core.domain.entity.UserId
@@ -32,27 +32,28 @@ import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.label.domain.repository.LabelRepository
 import javax.inject.Inject
 
-class GetConversationMessagesWithLabels @Inject constructor(
+class GetConversationsWithLabels @Inject constructor(
     private val labelRepository: LabelRepository,
-    private val messageRepository: MessageRepository
+    private val conversationRepository: ConversationRepository
 ) {
 
     suspend operator fun invoke(
         userId: UserId,
         conversationIds: List<ConversationId>
-    ): Either<DataError, List<MessageWithLabels>> = combine(
+    ): Either<DataError, List<ConversationWithLabels>> = combine(
         labelRepository.observeLabels(userId, type = LabelType.MessageLabel).mapToEither(),
         labelRepository.observeLabels(userId, type = LabelType.MessageFolder).mapToEither(),
-        messageRepository.observeCachedMessagesForConversations(userId, conversationIds)
-    ) { labelsEither, foldersEither, messages ->
+        conversationRepository.observeCachedConversations(userId, conversationIds)
+    ) { labelsEither, foldersEither, conversations ->
         either {
-            if (messages.isEmpty()) raise(DataError.Local.NoDataCached)
+            if (conversations.isEmpty()) raise(DataError.Local.NoDataCached)
             val allLabelsAndFolders = (labelsEither.bind() + foldersEither.bind()).sortedBy { it.order }
-            messages.map { message ->
-                val messageLabels = allLabelsAndFolders.filter { label ->
-                    label.labelId in message.labelIds
+
+            conversations.map { conversation ->
+                val labels = allLabelsAndFolders.filter { label ->
+                    label.labelId in conversation.labels.map { it.labelId }
                 }
-                MessageWithLabels(message = message, labels = messageLabels)
+                ConversationWithLabels(conversation, labels)
             }
         }
     }.first()

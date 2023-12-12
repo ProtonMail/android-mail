@@ -39,6 +39,7 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.mailconversation.domain.usecase.DeleteConversations
+import ch.protonmail.android.mailconversation.domain.usecase.GetConversationsWithLabels
 import ch.protonmail.android.mailconversation.domain.usecase.StarConversations
 import ch.protonmail.android.mailconversation.domain.usecase.UnStarConversations
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
@@ -80,14 +81,13 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnifiedMessageWithLabels
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxReducer
 import ch.protonmail.android.mailmailbox.presentation.paging.MailboxPagerFactory
 import ch.protonmail.android.mailmessage.domain.model.LabelSelectionList
 import ch.protonmail.android.mailmessage.domain.model.MessageId
-import ch.protonmail.android.mailmessage.domain.model.MessageWithLabels
 import ch.protonmail.android.mailmessage.domain.usecase.DeleteMessages
-import ch.protonmail.android.mailmessage.domain.usecase.GetConversationMessagesWithLabels
 import ch.protonmail.android.mailmessage.domain.usecase.GetMessagesWithLabels
 import ch.protonmail.android.mailmessage.domain.usecase.StarMessages
 import ch.protonmail.android.mailmessage.domain.usecase.UnStarMessages
@@ -138,7 +138,7 @@ class MailboxViewModel @Inject constructor(
     private val observeUnreadCounters: ObserveUnreadCounters,
     private val observeFolderColorSettings: ObserveFolderColorSettings,
     private val getMessagesWithLabels: GetMessagesWithLabels,
-    private val getConversationMessagesWithLabels: GetConversationMessagesWithLabels,
+    private val getConversationsWithLabels: GetConversationsWithLabels,
     private val getMailboxActions: GetMailboxActions,
     private val actionUiModelMapper: ActionUiModelMapper,
     private val mailboxItemMapper: MailboxItemUiModelMapper,
@@ -777,12 +777,17 @@ class MailboxViewModel @Inject constructor(
     private suspend fun getMessagesWithLabels(
         userId: UserId,
         selectedItems: Set<SelectedMailboxItem>
-    ): List<MessageWithLabels> {
+    ): List<UnifiedMessageWithLabels> {
         return when (getViewModeForCurrentLocation(selectedMailLabelId.flow.value)) {
             ViewMode.ConversationGrouping ->
-                getConversationMessagesWithLabels(userId, selectedItems.map { ConversationId(it.id) })
+                getConversationsWithLabels(userId, selectedItems.map { ConversationId(it.id) }).map { list ->
+                    list.map { UnifiedMessageWithLabels(it.conversation.conversationId.id, it.labels) }
+                }
 
-            ViewMode.NoConversationGrouping -> getMessagesWithLabels(userId, selectedItems.map { MessageId(it.id) })
+            ViewMode.NoConversationGrouping ->
+                getMessagesWithLabels(userId, selectedItems.map { MessageId(it.id) }).map { list ->
+                    list.map { UnifiedMessageWithLabels(it.message.messageId.id, it.labels) }
+                }
         }.onLeft { Timber.e("Error while observing messages with labels") }.getOrElse { emptyList() }
     }
 
@@ -881,12 +886,6 @@ class MailboxViewModel @Inject constructor(
                     conversationIds = selectionModeDataState.selectedMailboxItems.map { ConversationId(it.id) },
                     currentLabelId = selectionModeDataState.currentMailLabel.id.labelId
                 )
-                emitNewStateFrom(
-                    MailboxEvent.DeleteConfirmed(
-                        ViewMode.ConversationGrouping,
-                        selectionModeDataState.selectedMailboxItems.size
-                    )
-                )
             }
 
             ViewMode.NoConversationGrouping -> {
@@ -895,14 +894,9 @@ class MailboxViewModel @Inject constructor(
                     messageIds = selectionModeDataState.selectedMailboxItems.map { MessageId(it.id) },
                     currentLabelId = selectionModeDataState.currentMailLabel.id.labelId
                 )
-                emitNewStateFrom(
-                    MailboxEvent.DeleteConfirmed(
-                        ViewMode.NoConversationGrouping,
-                        selectionModeDataState.selectedMailboxItems.size
-                    )
-                )
             }
         }
+        emitNewStateFrom(MailboxEvent.DeleteConfirmed(viewMode, selectionModeDataState.selectedMailboxItems.size))
     }
 
     private suspend fun handleStarAction(viewAction: MailboxViewAction) {
@@ -1043,13 +1037,15 @@ class MailboxViewModel @Inject constructor(
             .mapNotNull { it?.selectedMailboxItems }
             .distinctUntilChanged()
 
-    private fun List<MailLabel.Custom>.getLabelSelectionState(messages: List<MessageWithLabels>): LabelSelectionList {
+    private fun List<MailLabel.Custom>.getLabelSelectionState(
+        mappedLabels: List<UnifiedMessageWithLabels>
+    ): LabelSelectionList {
         val previousSelectedLabels = mutableListOf<LabelId>()
         val previousPartiallySelectedLabels = mutableListOf<LabelId>()
         this.forEach { label ->
-            if (messages.allContainsLabel(label.id.labelId)) {
+            if (mappedLabels.allContainsLabel(label.id.labelId)) {
                 previousSelectedLabels.add(label.id.labelId)
-            } else if (messages.partiallyContainsLabel(label.id.labelId)) {
+            } else if (mappedLabels.partiallyContainsLabel(label.id.labelId)) {
                 previousPartiallySelectedLabels.add(label.id.labelId)
             }
         }
@@ -1073,13 +1069,13 @@ class MailboxViewModel @Inject constructor(
         )
     }
 
-    private fun List<MessageWithLabels>.allContainsLabel(labelId: LabelId): Boolean {
+    private fun List<UnifiedMessageWithLabels>.allContainsLabel(labelId: LabelId): Boolean {
         return this.all { messageWithLabel ->
             messageWithLabel.labels.any { it.labelId == labelId }
         }
     }
 
-    private fun List<MessageWithLabels>.partiallyContainsLabel(labelId: LabelId): Boolean {
+    private fun List<UnifiedMessageWithLabels>.partiallyContainsLabel(labelId: LabelId): Boolean {
         return this.any { messageWithLabel ->
             messageWithLabel.labels.any { it.labelId == labelId }
         }
