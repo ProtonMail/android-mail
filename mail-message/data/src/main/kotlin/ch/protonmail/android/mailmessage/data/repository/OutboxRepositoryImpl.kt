@@ -20,7 +20,7 @@ package ch.protonmail.android.mailmessage.data.repository
 
 import ch.protonmail.android.mailmessage.data.local.MessageDatabase
 import ch.protonmail.android.mailmessage.domain.model.DraftState
-import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
+import ch.protonmail.android.mailmessage.domain.model.OutboxStates
 import ch.protonmail.android.mailmessage.domain.repository.OutboxRepository
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
@@ -33,14 +33,5 @@ class OutboxRepositoryImpl @Inject constructor(private val db: MessageDatabase) 
     private val outboxDao = db.outboxDao()
 
     override suspend fun observeAll(userId: UserId): Flow<List<DraftState>> = outboxDao
-        .getMessagesInOutbox(userId, OutboxDraftSyncStates)
-
-    companion object {
-
-        private val OutboxDraftSyncStates = listOf(
-            DraftSyncState.Sent,
-            DraftSyncState.Synchronized,
-            DraftSyncState.Sending
-        )
-    }
+        .getMessagesInOutbox(userId, OutboxStates.stateList)
 }
