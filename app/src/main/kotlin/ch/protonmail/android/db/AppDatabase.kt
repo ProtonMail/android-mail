@@ -30,9 +30,8 @@ import ch.protonmail.android.mailconversation.data.local.converters.Conversation
 import ch.protonmail.android.mailconversation.data.local.converters.MapConverters
 import ch.protonmail.android.mailconversation.data.local.entity.ConversationEntity
 import ch.protonmail.android.mailconversation.data.local.entity.ConversationLabelEntity
-import ch.protonmail.android.mailmailbox.data.entity.UnreadConversationsCountEntity
-import ch.protonmail.android.mailmailbox.data.entity.UnreadMessagesCountEntity
-import ch.protonmail.android.mailmailbox.data.local.UnreadCountDatabase
+import ch.protonmail.android.mailconversation.data.local.entity.UnreadConversationsCountEntity
+import ch.protonmail.android.mailmessage.data.local.entity.UnreadMessagesCountEntity
 import ch.protonmail.android.mailmessage.data.local.MessageConverters
 import ch.protonmail.android.mailmessage.data.local.MessageDatabase
 import ch.protonmail.android.mailmessage.data.local.converters.AttachmentWorkerStatusConverters
@@ -229,13 +228,12 @@ abstract class AppDatabase :
     NotificationDatabase,
     PushDatabase,
     TelemetryDatabase,
-    DraftStateDatabase,
-    UnreadCountDatabase {
+    DraftStateDatabase {
 
     companion object {
 
         const val name = "db-mail"
-        const val version = 23
+        const val version = 24
 
         internal val migrations = listOf(
             AppDatabaseMigrations.MIGRATION_1_2,
@@ -259,7 +257,8 @@ abstract class AppDatabase :
             AppDatabaseMigrations.MIGRATION_19_20,
             AppDatabaseMigrations.MIGRATION_20_21,
             AppDatabaseMigrations.MIGRATION_21_22,
-            AppDatabaseMigrations.MIGRATION_22_23
+            AppDatabaseMigrations.MIGRATION_22_23,
+            AppDatabaseMigrations.MIGRATION_23_24
         )
 
         fun buildDatabase(context: Context): AppDatabase = databaseBuilder<AppDatabase>(context, name)

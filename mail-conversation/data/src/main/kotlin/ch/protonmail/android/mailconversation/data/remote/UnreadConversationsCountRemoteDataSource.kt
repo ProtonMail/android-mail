@@ -16,11 +16,11 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.data.remote
+package ch.protonmail.android.mailconversation.data.remote
 
-import ch.protonmail.android.mailmailbox.data.remote.response.UnreadCountResource
+import ch.protonmail.android.mailconversation.data.remote.resource.UnreadConversationCountResource
 import me.proton.core.domain.entity.UserId
 
 interface UnreadConversationsCountRemoteDataSource {
-    suspend fun getConversationCounters(userId: UserId): List<UnreadCountResource>
+    suspend fun getConversationCounters(userId: UserId): List<UnreadConversationCountResource>
 }

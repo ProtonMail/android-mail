@@ -20,9 +20,9 @@ package ch.protonmail.android.mailmailbox.data.repository
 
 import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
-import ch.protonmail.android.mailmailbox.domain.model.UnreadCounter
-import ch.protonmail.android.mailmailbox.domain.repository.UnreadConversationsCountRepository
-import ch.protonmail.android.mailmailbox.domain.repository.UnreadMessagesCountRepository
+import ch.protonmail.android.mailconversation.domain.repository.UnreadConversationsCountRepository
+import ch.protonmail.android.mailmessage.domain.model.UnreadCounter
+import ch.protonmail.android.mailmessage.domain.repository.UnreadMessagesCountRepository
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf

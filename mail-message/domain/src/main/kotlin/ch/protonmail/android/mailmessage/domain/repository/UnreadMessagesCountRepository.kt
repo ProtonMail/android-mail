@@ -16,19 +16,13 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.data.local
+package ch.protonmail.android.mailmessage.domain.repository
 
-import androidx.room.Dao
-import androidx.room.Query
-import ch.protonmail.android.mailmailbox.data.entity.UnreadConversationsCountEntity
+import ch.protonmail.android.mailmessage.domain.model.UnreadCounter
 import kotlinx.coroutines.flow.Flow
-import me.proton.core.data.room.db.BaseDao
 import me.proton.core.domain.entity.UserId
 
-@Dao
-abstract class UnreadConversationsCountDao : BaseDao<UnreadConversationsCountEntity>() {
+interface UnreadMessagesCountRepository {
 
-    @Query("SELECT * FROM UnreadConversationsCountEntity WHERE userId = :userId")
-    abstract fun observeConversationsCounts(userId: UserId): Flow<List<UnreadConversationsCountEntity>>
-
+    fun observeUnreadCounters(userId: UserId): Flow<List<UnreadCounter>>
 }

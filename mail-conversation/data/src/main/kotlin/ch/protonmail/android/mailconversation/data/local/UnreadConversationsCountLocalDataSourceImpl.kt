@@ -16,23 +16,23 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.data.local
+package ch.protonmail.android.mailconversation.data.local
 
-import ch.protonmail.android.mailmailbox.data.entity.UnreadMessagesCountEntity
+import ch.protonmail.android.mailconversation.data.local.entity.UnreadConversationsCountEntity
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
-class UnreadMessagesCountLocalDataSourceImpl @Inject constructor(
-    database: UnreadCountDatabase
-) : UnreadMessagesCountLocalDataSource {
+class UnreadConversationsCountLocalDataSourceImpl @Inject constructor(
+    database: ConversationDatabase
+) : UnreadConversationsCountLocalDataSource {
 
-    private val unreadMessagesCountDao = database.unreadMessagesCountDao()
+    private val unreadConversationsCountDao = database.unreadConversationsCountDao()
 
-    override fun observeMessageCounters(userId: UserId): Flow<List<UnreadMessagesCountEntity>> =
-        unreadMessagesCountDao.observeMessageCounts(userId)
+    override fun observeConversationCounters(userId: UserId): Flow<List<UnreadConversationsCountEntity>> =
+        unreadConversationsCountDao.observeConversationsCounts(userId)
 
-    override suspend fun saveMessageCounters(counters: List<UnreadMessagesCountEntity>) {
-        unreadMessagesCountDao.insertOrUpdate(*counters.toTypedArray())
+    override suspend fun saveConversationCounters(counters: List<UnreadConversationsCountEntity>) {
+        unreadConversationsCountDao.insertOrUpdate(*counters.toTypedArray())
     }
 }

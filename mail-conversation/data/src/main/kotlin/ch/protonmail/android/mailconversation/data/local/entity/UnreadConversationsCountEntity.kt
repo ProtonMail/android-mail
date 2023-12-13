@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.data.entity
+package ch.protonmail.android.mailconversation.data.local.entity
 
 import androidx.room.Entity
 import androidx.room.ForeignKey

@@ -16,11 +16,14 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.domain.model
+package ch.protonmail.android.mailconversation.data.remote.response
 
-import ch.protonmail.android.mailmessage.domain.model.UnreadCounter
+import ch.protonmail.android.mailconversation.data.remote.resource.UnreadConversationCountResource
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-data class UnreadCounters(
-    val conversationsUnreadCount: List<UnreadCounter>,
-    val messagesUnreadCount: List<UnreadCounter>
+@Serializable
+data class UnreadConversationsCountsResponse(
+    @SerialName("Counts")
+    val counts: List<UnreadConversationCountResource>
 )

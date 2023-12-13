@@ -16,9 +16,9 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.data.local
+package ch.protonmail.android.mailmessage.data.local
 
-import ch.protonmail.android.mailmailbox.data.entity.UnreadMessagesCountEntity
+import ch.protonmail.android.mailmessage.data.local.entity.UnreadMessagesCountEntity
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
 

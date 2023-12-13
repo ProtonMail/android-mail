@@ -20,14 +20,21 @@ package ch.protonmail.android.mailmessage.dagger
 
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSourceImpl
+import ch.protonmail.android.mailmessage.data.local.UnreadMessagesCountLocalDataSource
+import ch.protonmail.android.mailmessage.data.local.UnreadMessagesCountLocalDataSourceImpl
 import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSourceImpl
+import ch.protonmail.android.mailmessage.data.remote.UnreadMessagesCountRemoteDataSource
+import ch.protonmail.android.mailmessage.data.remote.UnreadMessagesCountRemoteDataSourceImpl
 import ch.protonmail.android.mailmessage.data.repository.MessageRepositoryImpl
 import ch.protonmail.android.mailmessage.data.repository.OutboxRepositoryImpl
+import ch.protonmail.android.mailmessage.data.repository.UnreadMessageCountRepositoryImpl
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.repository.OutboxRepository
+import ch.protonmail.android.mailmessage.domain.repository.UnreadMessagesCountRepository
 import dagger.Binds
 import dagger.Module
+import dagger.Reusable
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
@@ -52,4 +59,21 @@ abstract class MailMessageModule {
     @Singleton
     abstract fun provideOutboxRepositoryImpl(repositoryImpl: OutboxRepositoryImpl): OutboxRepository
 
+    @Binds
+    @Reusable
+    abstract fun bindsUnreadMessagesCountRepository(
+        impl: UnreadMessageCountRepositoryImpl
+    ): UnreadMessagesCountRepository
+
+    @Binds
+    @Reusable
+    abstract fun bindsUnreadMessagesCountRemoteDataSource(
+        impl: UnreadMessagesCountRemoteDataSourceImpl
+    ): UnreadMessagesCountRemoteDataSource
+
+    @Binds
+    @Reusable
+    abstract fun bindsUnreadMessagesCountLocalDataSource(
+        impl: UnreadMessagesCountLocalDataSourceImpl
+    ): UnreadMessagesCountLocalDataSource
 }

@@ -16,17 +16,14 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.data.remote
+package ch.protonmail.android.mailconversation.data.local
 
-import ch.protonmail.android.mailmailbox.data.remote.response.UnreadCountsResponse
-import me.proton.core.network.data.protonApi.BaseRetrofitApi
-import retrofit2.http.GET
+import ch.protonmail.android.mailconversation.data.local.entity.UnreadConversationsCountEntity
+import kotlinx.coroutines.flow.Flow
+import me.proton.core.domain.entity.UserId
 
-interface UnreadCountersApi : BaseRetrofitApi {
+interface UnreadConversationsCountLocalDataSource {
+    fun observeConversationCounters(userId: UserId): Flow<List<UnreadConversationsCountEntity>>
 
-    @GET("mail/v4/messages/count")
-    suspend fun getMessageCounters(): UnreadCountsResponse
-
-    @GET("mail/v4/conversations/count")
-    suspend fun getConversationCounters(): UnreadCountsResponse
+    suspend fun saveConversationCounters(counters: List<UnreadConversationsCountEntity>)
 }

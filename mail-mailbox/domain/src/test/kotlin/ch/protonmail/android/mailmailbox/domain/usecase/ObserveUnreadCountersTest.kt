@@ -23,7 +23,7 @@ import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
-import ch.protonmail.android.mailmailbox.domain.model.UnreadCounter
+import ch.protonmail.android.mailmessage.domain.model.UnreadCounter
 import ch.protonmail.android.mailmailbox.domain.model.UnreadCounters
 import ch.protonmail.android.mailmailbox.domain.repository.UnreadCountersRepository
 import io.mockk.every

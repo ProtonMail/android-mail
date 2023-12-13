@@ -16,10 +16,10 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.data.remote
+package ch.protonmail.android.mailmessage.data.remote
 
-import ch.protonmail.android.mailmailbox.data.remote.response.UnreadCountResource
-import ch.protonmail.android.mailmailbox.data.remote.response.UnreadCountsResponse
+import ch.protonmail.android.mailmessage.data.remote.resource.UnreadMessageCountResource
+import ch.protonmail.android.mailmessage.data.remote.response.UnreadMessagesCountsResponse
 import me.proton.core.domain.entity.UserId
 import me.proton.core.network.data.ApiProvider
 import me.proton.core.network.domain.ApiResult
@@ -29,17 +29,18 @@ class UnreadMessagesCountRemoteDataSourceImpl @Inject constructor(
     private val apiProvider: ApiProvider
 ) : UnreadMessagesCountRemoteDataSource {
 
-    override suspend fun getMessageCounters(userId: UserId): List<UnreadCountResource> {
-        val result = apiProvider.get<UnreadCountersApi>(userId).invoke {
+    override suspend fun getMessageCounters(userId: UserId): List<UnreadMessageCountResource> {
+        val result = apiProvider.get<UnreadMessageCountersApi>(userId).invoke {
             getMessageCounters()
         }
         return countResourcesOrEmptyList(result)
     }
 
-    private fun countResourcesOrEmptyList(result: ApiResult<UnreadCountsResponse>): List<UnreadCountResource> =
-        when (result) {
-            is ApiResult.Success -> result.value.counts
-            is ApiResult.Error -> emptyList()
-        }
+    private fun countResourcesOrEmptyList(
+        result: ApiResult<UnreadMessagesCountsResponse>
+    ): List<UnreadMessageCountResource> = when (result) {
+        is ApiResult.Success -> result.value.counts
+        is ApiResult.Error -> emptyList()
+    }
 
 }

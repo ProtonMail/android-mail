@@ -20,17 +20,9 @@ package ch.protonmail.android.mailmailbox.dagger
 
 import android.content.Context
 import ch.protonmail.android.mailmailbox.data.MailMailboxDataStoreProvider
-import ch.protonmail.android.mailmailbox.data.repository.OnboardingRepositoryImpl
 import ch.protonmail.android.mailmailbox.data.local.OnboardingLocalDataSource
 import ch.protonmail.android.mailmailbox.data.local.OnboardingLocalDataSourceImpl
-import ch.protonmail.android.mailmailbox.data.local.UnreadConversationsCountLocalDataSource
-import ch.protonmail.android.mailmailbox.data.local.UnreadConversationsCountLocalDataSourceImpl
-import ch.protonmail.android.mailmailbox.data.local.UnreadMessagesCountLocalDataSource
-import ch.protonmail.android.mailmailbox.data.local.UnreadMessagesCountLocalDataSourceImpl
-import ch.protonmail.android.mailmailbox.data.remote.UnreadConversationsCountRemoteDataSource
-import ch.protonmail.android.mailmailbox.data.remote.UnreadConversationsCountRemoteDataSourceImpl
-import ch.protonmail.android.mailmailbox.data.remote.UnreadMessagesCountRemoteDataSource
-import ch.protonmail.android.mailmailbox.data.remote.UnreadMessagesCountRemoteDataSourceImpl
+import ch.protonmail.android.mailmailbox.data.repository.OnboardingRepositoryImpl
 import ch.protonmail.android.mailmailbox.data.repository.UnreadCountersRepositoryImpl
 import ch.protonmail.android.mailmailbox.domain.repository.OnboardingRepository
 import ch.protonmail.android.mailmailbox.domain.repository.UnreadCountersRepository
@@ -67,30 +59,6 @@ object MailboxModule {
         @Binds
         @Reusable
         fun bindsUnreadCountRepository(impl: UnreadCountersRepositoryImpl): UnreadCountersRepository
-
-        @Binds
-        @Reusable
-        fun bindsUnreadConvoCountRemoteDataSource(
-            impl: UnreadConversationsCountRemoteDataSourceImpl
-        ): UnreadConversationsCountRemoteDataSource
-
-        @Binds
-        @Reusable
-        fun bindsUnreadConvoCountLocalDataSource(
-            impl: UnreadConversationsCountLocalDataSourceImpl
-        ): UnreadConversationsCountLocalDataSource
-
-        @Binds
-        @Reusable
-        fun bindsUnreadMessagesCountRemoteDataSource(
-            impl: UnreadMessagesCountRemoteDataSourceImpl
-        ): UnreadMessagesCountRemoteDataSource
-
-        @Binds
-        @Reusable
-        fun bindsUnreadMessagesCountLocalDataSource(
-            impl: UnreadMessagesCountLocalDataSourceImpl
-        ): UnreadMessagesCountLocalDataSource
     }
 
 }

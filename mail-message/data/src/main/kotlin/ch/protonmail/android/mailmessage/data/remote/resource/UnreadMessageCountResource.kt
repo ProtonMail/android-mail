@@ -16,13 +16,30 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.domain.repository
+package ch.protonmail.android.mailmessage.data.remote.resource
 
-import ch.protonmail.android.mailmailbox.domain.model.UnreadCounter
-import kotlinx.coroutines.flow.Flow
+import ch.protonmail.android.mailmessage.data.local.entity.UnreadMessagesCountEntity
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.LabelId
 
-interface UnreadMessagesCountRepository {
+@Serializable
+class UnreadMessageCountResource(
+    @SerialName("LabelID")
+    val labelId: String,
 
-    fun observeUnreadCounters(userId: UserId): Flow<List<UnreadCounter>>
+    @SerialName("Total")
+    val totalCount: Int,
+
+    @SerialName("Unread")
+    val unreadCount: Int
+) {
+
+    fun toUnreadCountMessagesEntity(userId: UserId) = UnreadMessagesCountEntity(
+        userId,
+        LabelId(this.labelId),
+        this.totalCount,
+        this.unreadCount
+    )
 }

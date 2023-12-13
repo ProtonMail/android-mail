@@ -20,7 +20,7 @@ package ch.protonmail.android.mailmailbox.domain.usecase
 
 import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
-import ch.protonmail.android.mailmailbox.domain.model.UnreadCounter
+import ch.protonmail.android.mailmessage.domain.model.UnreadCounter
 import ch.protonmail.android.mailmailbox.domain.model.UnreadCounters
 import ch.protonmail.android.mailmailbox.domain.repository.UnreadCountersRepository
 import kotlinx.coroutines.flow.Flow

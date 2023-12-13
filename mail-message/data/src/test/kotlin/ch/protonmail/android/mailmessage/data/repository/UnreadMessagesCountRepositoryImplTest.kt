@@ -16,15 +16,15 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.data.repository
+package ch.protonmail.android.mailmessage.data.repository
 
 import app.cash.turbine.test
+import ch.protonmail.android.mailmessage.data.remote.resource.UnreadMessageCountResource
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
-import ch.protonmail.android.mailmailbox.data.entity.UnreadMessagesCountEntity
-import ch.protonmail.android.mailmailbox.data.local.UnreadMessagesCountLocalDataSource
-import ch.protonmail.android.mailmailbox.data.remote.UnreadMessagesCountRemoteDataSource
-import ch.protonmail.android.mailmailbox.data.remote.response.UnreadCountResource
-import ch.protonmail.android.mailmailbox.domain.model.UnreadCounter
+import ch.protonmail.android.mailmessage.data.local.UnreadMessagesCountLocalDataSource
+import ch.protonmail.android.mailmessage.data.local.entity.UnreadMessagesCountEntity
+import ch.protonmail.android.mailmessage.data.remote.UnreadMessagesCountRemoteDataSource
+import ch.protonmail.android.mailmessage.domain.model.UnreadCounter
 import io.mockk.Called
 import io.mockk.Runs
 import io.mockk.coEvery
@@ -86,6 +86,6 @@ class UnreadMessagesCountRepositoryImplTest {
 
         val inboxUnreadMessageCounter = UnreadMessagesCountEntity(userId, LabelId("0"), 10, 1)
 
-        val inboxUnreadCounterResource = UnreadCountResource("0", 10, 1)
+        val inboxUnreadCounterResource = UnreadMessageCountResource("0", 10, 1)
     }
 }

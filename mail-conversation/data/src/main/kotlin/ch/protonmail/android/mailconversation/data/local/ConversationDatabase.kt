@@ -18,13 +18,30 @@
 
 package ch.protonmail.android.mailconversation.data.local
 
+import androidx.sqlite.db.SupportSQLiteDatabase
 import ch.protonmail.android.mailconversation.data.local.dao.ConversationDao
 import ch.protonmail.android.mailconversation.data.local.dao.ConversationLabelDao
+import ch.protonmail.android.mailconversation.data.local.dao.UnreadConversationsCountDao
 import ch.protonmail.android.mailpagination.data.local.PageIntervalDatabase
 import me.proton.core.data.room.db.Database
+import me.proton.core.data.room.db.migration.DatabaseMigration
 
 @Suppress("MaxLineLength")
 interface ConversationDatabase : Database, PageIntervalDatabase {
     fun conversationDao(): ConversationDao
     fun conversationLabelDao(): ConversationLabelDao
+    fun unreadConversationsCountDao(): UnreadConversationsCountDao
+
+    companion object {
+
+        val MIGRATION_0 = object : DatabaseMigration {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Added UnreadConversationsCountEntity.
+                database.execSQL("CREATE TABLE IF NOT EXISTS `UnreadConversationsCountEntity` (`userId` TEXT NOT NULL, `labelId` TEXT NOT NULL, `totalCount` INTEGER NOT NULL, `unreadCount` INTEGER NOT NULL, PRIMARY KEY(`userId`,`labelId`), FOREIGN KEY(`userId`) REFERENCES `UserEntity`(`userId`) ON UPDATE NO ACTION ON DELETE CASCADE)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_UnreadConversationsCountEntity_userId` ON `UnreadConversationsCountEntity` (`userId`)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_UnreadConversationsCountEntity_labelId` ON `UnreadConversationsCountEntity` (`labelId`)")
+            }
+        }
+
+    }
 }

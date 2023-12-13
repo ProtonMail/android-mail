@@ -16,12 +16,12 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.data.repository
+package ch.protonmail.android.mailmessage.data.repository
 
-import ch.protonmail.android.mailmailbox.data.local.UnreadMessagesCountLocalDataSource
-import ch.protonmail.android.mailmailbox.data.remote.UnreadMessagesCountRemoteDataSource
-import ch.protonmail.android.mailmailbox.domain.model.UnreadCounter
-import ch.protonmail.android.mailmailbox.domain.repository.UnreadMessagesCountRepository
+import ch.protonmail.android.mailmessage.data.local.UnreadMessagesCountLocalDataSource
+import ch.protonmail.android.mailmessage.data.remote.UnreadMessagesCountRemoteDataSource
+import ch.protonmail.android.mailmessage.domain.model.UnreadCounter
+import ch.protonmail.android.mailmessage.domain.repository.UnreadMessagesCountRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapLatest
 import me.proton.core.domain.entity.UserId

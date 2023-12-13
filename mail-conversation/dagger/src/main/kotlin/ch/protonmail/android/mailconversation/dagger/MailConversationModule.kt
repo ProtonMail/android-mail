@@ -22,21 +22,29 @@ import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcommon.domain.benchmark.BenchmarkTracer
 import ch.protonmail.android.mailconversation.data.local.ConversationDatabase
 import ch.protonmail.android.mailconversation.data.local.ConversationLocalDataSourceImpl
+import ch.protonmail.android.mailconversation.data.local.UnreadConversationsCountLocalDataSource
+import ch.protonmail.android.mailconversation.data.local.UnreadConversationsCountLocalDataSourceImpl
 import ch.protonmail.android.mailconversation.data.remote.ConversationRemoteDataSourceImpl
+import ch.protonmail.android.mailconversation.data.remote.UnreadConversationsCountRemoteDataSource
+import ch.protonmail.android.mailconversation.data.remote.UnreadConversationsCountRemoteDataSourceImpl
 import ch.protonmail.android.mailconversation.data.repository.ConversationRepositoryImpl
+import ch.protonmail.android.mailconversation.data.repository.UnreadConversationsCountRepositoryImpl
 import ch.protonmail.android.mailconversation.domain.repository.ConversationLocalDataSource
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRemoteDataSource
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
+import ch.protonmail.android.mailconversation.domain.repository.UnreadConversationsCountRepository
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import dagger.Reusable
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import me.proton.core.network.data.ApiProvider
 import me.proton.core.util.kotlin.CoroutineScopeProvider
 import javax.inject.Singleton
 
-@Module
+@Module(includes = [MailConversationModule.BindsModule::class])
 @InstallIn(SingletonComponent::class)
 object MailConversationModule {
 
@@ -70,4 +78,27 @@ object MailConversationModule {
     @Singleton
     fun provideConversationLocalDataSource(db: ConversationDatabase): ConversationLocalDataSource =
         ConversationLocalDataSourceImpl(db)
+
+    @Module
+    @InstallIn(SingletonComponent::class)
+    internal interface BindsModule {
+
+        @Binds
+        @Reusable
+        fun bindsUnreadConvoCountRepository(
+            impl: UnreadConversationsCountRepositoryImpl
+        ): UnreadConversationsCountRepository
+
+        @Binds
+        @Reusable
+        fun bindsUnreadConvoCountRemoteDataSource(
+            impl: UnreadConversationsCountRemoteDataSourceImpl
+        ): UnreadConversationsCountRemoteDataSource
+
+        @Binds
+        @Reusable
+        fun bindsUnreadConvoCountLocalDataSource(
+            impl: UnreadConversationsCountLocalDataSourceImpl
+        ): UnreadConversationsCountLocalDataSource
+    }
 }

@@ -53,7 +53,7 @@ import ch.protonmail.android.maillabel.presentation.toCustomUiModel
 import ch.protonmail.android.maillabel.presentation.toUiModels
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
-import ch.protonmail.android.mailmailbox.domain.model.UnreadCounter
+import ch.protonmail.android.mailmessage.domain.model.UnreadCounter
 import ch.protonmail.android.mailmailbox.domain.model.toMailboxItemType
 import ch.protonmail.android.mailmailbox.domain.usecase.GetMailboxActions
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkConversationsAsRead

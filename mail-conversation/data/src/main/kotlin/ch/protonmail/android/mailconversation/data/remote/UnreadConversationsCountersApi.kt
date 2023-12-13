@@ -16,11 +16,14 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.domain.model
+package ch.protonmail.android.mailconversation.data.remote
 
-import me.proton.core.label.domain.entity.LabelId
+import ch.protonmail.android.mailconversation.data.remote.response.UnreadConversationsCountsResponse
+import me.proton.core.network.data.protonApi.BaseRetrofitApi
+import retrofit2.http.GET
 
-data class UnreadCounter(
-    val labelId: LabelId,
-    val count: Int
-)
+interface UnreadConversationsCountersApi : BaseRetrofitApi {
+
+    @GET("mail/v4/conversations/count")
+    suspend fun getConversationCounters(): UnreadConversationsCountsResponse
+}

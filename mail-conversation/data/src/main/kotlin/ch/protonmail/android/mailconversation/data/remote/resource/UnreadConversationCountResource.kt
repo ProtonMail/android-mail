@@ -16,11 +16,30 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.domain.model
+package ch.protonmail.android.mailconversation.data.remote.resource
 
-import ch.protonmail.android.mailmessage.domain.model.UnreadCounter
+import ch.protonmail.android.mailconversation.data.local.entity.UnreadConversationsCountEntity
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.LabelId
 
-data class UnreadCounters(
-    val conversationsUnreadCount: List<UnreadCounter>,
-    val messagesUnreadCount: List<UnreadCounter>
-)
+@Serializable
+class UnreadConversationCountResource(
+    @SerialName("LabelID")
+    val labelId: String,
+
+    @SerialName("Total")
+    val totalCount: Int,
+
+    @SerialName("Unread")
+    val unreadCount: Int
+) {
+
+    fun toUnreadCountConversationsEntity(userId: UserId) = UnreadConversationsCountEntity(
+        userId,
+        LabelId(this.labelId),
+        this.totalCount,
+        this.unreadCount
+    )
+}

@@ -19,9 +19,9 @@
 package ch.protonmail.android.mailmailbox.data.repository
 
 import ch.protonmail.android.mailmailbox.domain.model.UnreadCounters
-import ch.protonmail.android.mailmailbox.domain.repository.UnreadConversationsCountRepository
+import ch.protonmail.android.mailconversation.domain.repository.UnreadConversationsCountRepository
 import ch.protonmail.android.mailmailbox.domain.repository.UnreadCountersRepository
-import ch.protonmail.android.mailmailbox.domain.repository.UnreadMessagesCountRepository
+import ch.protonmail.android.mailmessage.domain.repository.UnreadMessagesCountRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import me.proton.core.domain.entity.UserId

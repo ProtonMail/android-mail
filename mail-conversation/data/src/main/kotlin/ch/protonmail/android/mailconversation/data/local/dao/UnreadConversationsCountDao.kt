@@ -16,33 +16,19 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.data.entity
+package ch.protonmail.android.mailconversation.data.local.dao
 
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.Index
+import androidx.room.Dao
+import androidx.room.Query
+import ch.protonmail.android.mailconversation.data.local.entity.UnreadConversationsCountEntity
+import kotlinx.coroutines.flow.Flow
+import me.proton.core.data.room.db.BaseDao
 import me.proton.core.domain.entity.UserId
-import me.proton.core.label.domain.entity.LabelId
-import me.proton.core.user.data.entity.UserEntity
 
-@Entity(
-    primaryKeys = ["userId", "labelId"],
-    indices = [
-        Index("userId"),
-        Index("labelId")
-    ],
-    foreignKeys = [
-        ForeignKey(
-            entity = UserEntity::class,
-            parentColumns = ["userId"],
-            childColumns = ["userId"],
-            onDelete = ForeignKey.CASCADE
-        )
-    ]
-)
-data class UnreadMessagesCountEntity(
-    val userId: UserId,
-    val labelId: LabelId,
-    val totalCount: Int,
-    val unreadCount: Int
-)
+@Dao
+abstract class UnreadConversationsCountDao : BaseDao<UnreadConversationsCountEntity>() {
+
+    @Query("SELECT * FROM UnreadConversationsCountEntity WHERE userId = :userId")
+    abstract fun observeConversationsCounts(userId: UserId): Flow<List<UnreadConversationsCountEntity>>
+
+}

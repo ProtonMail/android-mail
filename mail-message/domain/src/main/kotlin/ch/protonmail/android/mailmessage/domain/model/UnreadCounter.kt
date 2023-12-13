@@ -16,13 +16,11 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.domain.repository
+package ch.protonmail.android.mailmessage.domain.model
 
-import ch.protonmail.android.mailmailbox.domain.model.UnreadCounter
-import kotlinx.coroutines.flow.Flow
-import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.LabelId
 
-interface UnreadConversationsCountRepository {
-
-    fun observeUnreadCounters(userId: UserId): Flow<List<UnreadCounter>>
-}
+data class UnreadCounter(
+    val labelId: LabelId,
+    val count: Int
+)

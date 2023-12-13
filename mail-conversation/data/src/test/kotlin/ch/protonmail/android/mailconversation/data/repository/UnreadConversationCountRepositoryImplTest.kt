@@ -16,15 +16,15 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.data.repository
+package ch.protonmail.android.mailconversation.data.repository
 
 import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
-import ch.protonmail.android.mailmailbox.data.entity.UnreadConversationsCountEntity
-import ch.protonmail.android.mailmailbox.data.local.UnreadConversationsCountLocalDataSource
-import ch.protonmail.android.mailmailbox.data.remote.UnreadConversationsCountRemoteDataSource
-import ch.protonmail.android.mailmailbox.data.remote.response.UnreadCountResource
-import ch.protonmail.android.mailmailbox.domain.model.UnreadCounter
+import ch.protonmail.android.mailconversation.data.local.UnreadConversationsCountLocalDataSource
+import ch.protonmail.android.mailconversation.data.local.entity.UnreadConversationsCountEntity
+import ch.protonmail.android.mailconversation.data.remote.UnreadConversationsCountRemoteDataSource
+import ch.protonmail.android.mailconversation.data.remote.resource.UnreadConversationCountResource
+import ch.protonmail.android.mailmessage.domain.model.UnreadCounter
 import io.mockk.Called
 import io.mockk.Runs
 import io.mockk.coEvery
@@ -91,6 +91,6 @@ class UnreadConversationCountRepositoryImplTest {
             1
         )
 
-        val inboxUnreadCounterResource = UnreadCountResource("0", 10, 1)
+        val inboxUnreadCounterResource = UnreadConversationCountResource("0", 10, 1)
     }
 }

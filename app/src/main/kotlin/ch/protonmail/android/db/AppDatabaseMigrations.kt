@@ -21,7 +21,7 @@ package ch.protonmail.android.db
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import ch.protonmail.android.composer.data.local.DraftStateDatabase
-import ch.protonmail.android.mailmailbox.data.local.UnreadCountDatabase
+import ch.protonmail.android.mailconversation.data.local.ConversationDatabase
 import ch.protonmail.android.mailmessage.data.local.MessageDatabase
 import me.proton.core.account.data.db.AccountDatabase
 import me.proton.core.contact.data.local.db.ContactDatabase
@@ -169,13 +169,23 @@ object AppDatabaseMigrations {
 
     val MIGRATION_21_22 = object : Migration(21, 22) {
         override fun migrate(database: SupportSQLiteDatabase) {
-            UnreadCountDatabase.MIGRATION_0.migrate(database)
+            // Empty migration as UnreadCountDatabase was deleted
+            // when tables were distributed to message and conversation DBs (migration 23->24)
         }
     }
 
     val MIGRATION_22_23 = object : Migration(22, 23) {
         override fun migrate(database: SupportSQLiteDatabase) {
             DraftStateDatabase.MIGRATION_5.migrate(database)
+        }
+    }
+
+    val MIGRATION_23_24 = object : Migration(23, 24) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            // Add UnreadMessageCount Table
+            MessageDatabase.MIGRATION_6.migrate(database)
+            // Add UnreadConversationsCount Table
+            ConversationDatabase.MIGRATION_0.migrate(database)
         }
     }
 }
