@@ -74,6 +74,8 @@ import ch.protonmail.android.mailcomposer.presentation.mapper.ParticipantMapper
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerFields
+import ch.protonmail.android.mailcomposer.presentation.model.ContactSuggestionUiModel
+import ch.protonmail.android.mailcomposer.presentation.model.ContactSuggestionsField
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
 import ch.protonmail.android.mailcomposer.presentation.reducer.ComposerReducer
@@ -100,6 +102,7 @@ import ch.protonmail.android.test.idlingresources.ComposerIdlingResource
 import ch.protonmail.android.test.utils.rule.LoggingTestRule
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import ch.protonmail.android.testdata.contact.ContactSample
+import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.message.DecryptedMessageBodyTestData
 import io.mockk.Called
 import io.mockk.coEvery
@@ -111,6 +114,7 @@ import io.mockk.mockk
 import io.mockk.mockkObject
 import io.mockk.spyk
 import io.mockk.unmockkObject
+import io.mockk.verify
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -570,6 +574,122 @@ class ComposerViewModelTest {
                 bcc = expectedRecipients
             )
         }
+    }
+
+    @Test
+    fun `should perform search when ContactSuggestionTermChanged`() = runTest {
+        // Given
+        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+        val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val expectedSearchTerm = "proton"
+        val suggestionField = ContactSuggestionsField.BCC
+        val expectedContacts = listOf(ContactSample.Doe, ContactSample.John)
+        val action = ComposerAction.ContactSuggestionTermChanged(expectedSearchTerm, suggestionField)
+
+        expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
+        expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
+        expectObservedMessageAttachments(expectedUserId, expectedMessageId)
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
+        expectObserveMessageSendingError(expectedUserId, expectedMessageId)
+        expectSearchContacts(expectedUserId, expectedSearchTerm, expectedContacts)
+
+        // When
+        viewModel.submit(action)
+
+        // Then
+        verify {
+            searchContactsMock(expectedUserId, expectedSearchTerm)
+        }
+    }
+
+    @Test
+    fun `should emit UpdateContactSuggestions when contact suggestions are found`() = runTest {
+        // Given
+        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+        val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val expectedSearchTerm = "contact"
+        val suggestionField = ContactSuggestionsField.BCC
+
+        val expectedContacts = listOf(
+            ContactSample.Doe.copy(
+                contactEmails = listOf(
+                    ContactTestData.buildContactEmailWith(
+                        name = "doe contact",
+                        address = "address1@proton.ch"
+                    )
+                )
+            ),
+            ContactSample.John.copy(
+                contactEmails = listOf(
+                    ContactTestData.buildContactEmailWith(
+                        name = "john contact",
+                        address = "address2@proton.ch"
+                    )
+                )
+            )
+        )
+        val action = ComposerAction.ContactSuggestionTermChanged(expectedSearchTerm, suggestionField)
+
+        expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
+        expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
+        expectObservedMessageAttachments(expectedUserId, expectedMessageId)
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
+        expectObserveMessageSendingError(expectedUserId, expectedMessageId)
+        expectSearchContacts(expectedUserId, expectedSearchTerm, expectedContacts)
+
+        // When
+        viewModel.submit(action)
+        val actual = viewModel.state.value
+
+        // Then
+        assertEquals(
+            mapOf(
+                ContactSuggestionsField.BCC to listOf(
+                    ContactSuggestionUiModel(
+                        expectedContacts[0].contactEmails.first().name,
+                        expectedContacts[0].contactEmails.first().email
+                    ),
+                    ContactSuggestionUiModel(
+                        expectedContacts[1].contactEmails.first().name,
+                        expectedContacts[1].contactEmails.first().email
+                    )
+                )
+            ),
+            actual.contactSuggestions
+        )
+        assertEquals(mapOf(ContactSuggestionsField.BCC to true), actual.areContactSuggestionsExpanded)
+    }
+
+    @Test
+    fun `should dismiss contact suggestions when ContactSuggestionsDismissed is emitted`() = runTest {
+        // Given
+        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+        val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val suggestionField = ContactSuggestionsField.BCC
+
+        val action = ComposerAction.ContactSuggestionsDismissed(suggestionField)
+
+        expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
+        expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
+        expectObservedMessageAttachments(expectedUserId, expectedMessageId)
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
+        expectObserveMessageSendingError(expectedUserId, expectedMessageId)
+
+        // When
+        viewModel.submit(action)
+        val actual = viewModel.state.value
+
+        // Then
+        assertEquals(mapOf(ContactSuggestionsField.BCC to false), actual.areContactSuggestionsExpanded)
     }
 
     @Test
@@ -2043,6 +2163,17 @@ class ComposerViewModelTest {
     private fun expectContacts(): List<Contact> {
         val expectedContacts = listOf(ContactSample.Doe, ContactSample.John)
         coEvery { getContactsMock.invoke(UserIdSample.Primary) } returns expectedContacts.right()
+        return expectedContacts
+    }
+
+    private fun expectSearchContacts(
+        expectedUserId: UserId,
+        expectedSearchTerm: String,
+        expectedContacts: List<Contact>
+    ): List<Contact> {
+        coEvery {
+            searchContactsMock.invoke(expectedUserId, expectedSearchTerm)
+        } returns flowOf(expectedContacts.right())
         return expectedContacts
     }
 

@@ -40,6 +40,8 @@ import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerEvent
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerFields
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerOperation
+import ch.protonmail.android.mailcomposer.presentation.model.ContactSuggestionUiModel
+import ch.protonmail.android.mailcomposer.presentation.model.ContactSuggestionsField
 import ch.protonmail.android.mailcomposer.presentation.model.DraftUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel.Invalid
@@ -501,6 +503,20 @@ class ComposerReducerTest(
                 )
             )
 
+        private val ContactsSuggestionExpandedToDismissed =
+            TestTransition(
+                name = "Should update state with dismissing suggestions after ContactSuggestionsDismissed action",
+                currentState = ComposerDraftState.initial(messageId).copy(
+                    areContactSuggestionsExpanded = mapOf(ContactSuggestionsField.BCC to true)
+                ),
+                operation = ComposerAction.ContactSuggestionsDismissed(ContactSuggestionsField.BCC),
+                expectedState = aNotSubmittableState(
+                    messageId,
+                    error = Effect.empty(),
+                    areContactSuggestionsExpanded = mapOf(ContactSuggestionsField.BCC to false)
+                )
+            )
+
         private val EmptyToLoadingWithOpenExistingDraft = TestTransition(
             name = "Should set state to loading when open of existing draft was requested",
             currentState = ComposerDraftState.initial(messageId),
@@ -646,6 +662,22 @@ class ComposerReducerTest(
             )
         )
 
+        private val EmptyToUpdateContactSuggestions = TestTransition(
+            name = "Should update state with contact suggestions on UpdateContactSuggestions event",
+            currentState = ComposerDraftState.initial(messageId),
+            operation = ComposerEvent.UpdateContactSuggestions(
+                contactSuggestions = listOf(ContactSuggestionUiModel("contact name", "contact email")),
+                suggestionsField = ContactSuggestionsField.BCC
+            ),
+            expectedState = ComposerDraftState.initial(messageId).copy(
+                contactSuggestions = mapOf(
+                    ContactSuggestionsField.BCC
+                        to listOf(ContactSuggestionUiModel("contact name", "contact email"))
+                ),
+                areContactSuggestionsExpanded = mapOf(ContactSuggestionsField.BCC to true)
+            )
+        )
+
         private val transitions = listOf(
             EmptyToSubmittableToField,
             EmptyToNotSubmittableToField,
@@ -678,6 +710,7 @@ class ComposerReducerTest(
             EmptyToStateWhenReplaceDraftBody,
             SubmittableToSendMessage,
             SubmittableToOnSendMessageOffline,
+            ContactsSuggestionExpandedToDismissed,
             EmptyToLoadingWithOpenExistingDraft,
             LoadingToFieldsWhenReceivedDraftDataEmptyRecipients,
             LoadingToFieldsWhenReceivedDraftDataValidRecipients,
@@ -688,7 +721,8 @@ class ComposerReducerTest(
             EmptyToAttachmentsUpdated,
             EmptyToAttachmentFileExceeded,
             EmptyToAttachmentReEncryptionFailed,
-            EmptyToOnSendingError
+            EmptyToOnSendingError,
+            EmptyToUpdateContactSuggestions
         )
 
         private fun aSubmittableState(
@@ -752,7 +786,8 @@ class ComposerReducerTest(
             attachmentsFileSizeExceeded: Effect<Unit> = Effect.empty(),
             attachmentReEncryptionFailed: Effect<Unit> = Effect.empty(),
             warning: Effect<TextUiModel> = Effect.empty(),
-            replaceDraftBody: Effect<TextUiModel> = Effect.empty()
+            replaceDraftBody: Effect<TextUiModel> = Effect.empty(),
+            areContactSuggestionsExpanded: Map<ContactSuggestionsField, Boolean> = emptyMap()
         ) = ComposerDraftState(
             fields = ComposerFields(
                 draftId = draftId,
@@ -779,7 +814,8 @@ class ComposerReducerTest(
             attachmentsFileSizeExceeded = attachmentsFileSizeExceeded,
             attachmentsReEncryptionFailed = attachmentReEncryptionFailed,
             warning = warning,
-            replaceDraftBody = replaceDraftBody
+            replaceDraftBody = replaceDraftBody,
+            areContactSuggestionsExpanded = areContactSuggestionsExpanded
         )
 
         private fun aPositiveRandomInt(bound: Int = 10) = Random().nextInt(bound)
