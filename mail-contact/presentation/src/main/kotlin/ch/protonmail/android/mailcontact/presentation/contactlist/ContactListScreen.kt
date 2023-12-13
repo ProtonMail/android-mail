@@ -35,6 +35,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Scaffold
@@ -59,8 +60,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
+import ch.protonmail.android.mailcommon.presentation.compose.Avatar
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcontact.presentation.R
+import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModel
+import ch.protonmail.android.mailcontact.presentation.previewdata.ContactListPreviewData.contactSampleData
+import ch.protonmail.android.mailcontact.presentation.previewdata.ContactListPreviewData.headerSampleData
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonModalBottomSheetLayout
@@ -71,10 +76,9 @@ import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.captionNorm
 import me.proton.core.compose.theme.defaultNorm
+import me.proton.core.compose.theme.defaultSmallStrongUnspecified
 import me.proton.core.compose.theme.defaultSmallWeak
 import me.proton.core.compose.theme.defaultStrongNorm
-import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModel
-import ch.protonmail.android.mailcontact.presentation.previewdata.ContactListPreviewData.contactSampleData
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -269,13 +273,15 @@ fun HeaderListItem(modifier: Modifier = Modifier, header: ContactListItemUiModel
     Text(
         text = header.value,
         modifier = modifier.padding(
-            start = ProtonDimens.ExtraSmallSpacing,
-            top = ProtonDimens.DefaultSpacing,
+            start = ProtonDimens.DefaultSpacing,
             end = ProtonDimens.DefaultSpacing,
-            bottom = ProtonDimens.DefaultSpacing
+            top = ProtonDimens.MediumSpacing,
+            bottom = ProtonDimens.SmallSpacing
         ),
-        style = ProtonTheme.typography.defaultNorm
+        style = ProtonTheme.typography.defaultSmallStrongUnspecified,
+        color = ProtonTheme.colors.brandNorm
     )
+    Divider()
 }
 
 @Composable
@@ -292,19 +298,31 @@ fun ContactListItem(
                 onClick = {
                     actions.onContactSelected(contact.id)
                 }
-            ),
+            )
+            .padding(start = ProtonDimens.DefaultSpacing),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(
-            text = contact.name,
-            modifier = Modifier.padding(
-                start = ProtonDimens.ExtraSmallSpacing,
-                top = ProtonDimens.DefaultSpacing,
-                end = ProtonDimens.DefaultSpacing,
-                bottom = ProtonDimens.DefaultSpacing
-            ),
-            style = ProtonTheme.typography.defaultNorm
+        Avatar(
+            avatarUiModel = contact.avatar,
+            onClick = { }
         )
+        Column(
+            modifier = Modifier.padding(
+                start = ProtonDimens.ListItemTextStartPadding,
+                top = ProtonDimens.ListItemTextStartPadding,
+                bottom = ProtonDimens.ListItemTextStartPadding,
+                end = ProtonDimens.DefaultSpacing
+            )
+        ) {
+            Text(
+                text = contact.name,
+                style = ProtonTheme.typography.defaultNorm
+            )
+            Text(
+                text = contact.emails.first(),
+                style = ProtonTheme.typography.defaultSmallWeak
+            )
+        }
     }
 }
 
@@ -462,6 +480,7 @@ private fun ContactListScreenPreview() {
     ContactListScreenContent(
         state = ContactListState.ListLoaded.Data(
             contacts = listOf(
+                headerSampleData,
                 contactSampleData,
                 contactSampleData,
                 contactSampleData

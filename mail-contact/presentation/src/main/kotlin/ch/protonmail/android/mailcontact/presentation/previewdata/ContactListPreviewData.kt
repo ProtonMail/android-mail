@@ -18,13 +18,19 @@
 
 package ch.protonmail.android.mailcontact.presentation.previewdata
 
+import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModel
 
 object ContactListPreviewData {
 
+    val headerSampleData = ContactListItemUiModel.Header(
+        value = "A"
+    )
+
     val contactSampleData = ContactListItemUiModel.Contact(
         id = "Id",
         name = "Name",
-        emails = listOf("Email")
+        emails = listOf("Email"),
+        avatar = AvatarUiModel.ParticipantInitial("JD")
     )
 }
