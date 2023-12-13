@@ -20,68 +20,43 @@ package ch.protonmail.android.mailmailbox.data.repository
 
 import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
-import ch.protonmail.android.mailmailbox.data.entity.UnreadConversationsCountEntity
-import ch.protonmail.android.mailmailbox.data.entity.UnreadMessagesCountEntity
-import ch.protonmail.android.mailmailbox.data.local.UnreadConversationsCountLocalDataSource
-import ch.protonmail.android.mailmailbox.data.remote.UnreadConversationsCountRemoteDataSource
-import ch.protonmail.android.mailmailbox.data.remote.response.UnreadCountResource
 import ch.protonmail.android.mailmailbox.domain.model.UnreadCounter
-import ch.protonmail.android.mailmailbox.domain.model.UnreadCounters
-import io.mockk.Called
+import ch.protonmail.android.mailmailbox.domain.repository.UnreadConversationsCountRepository
+import ch.protonmail.android.mailmailbox.domain.repository.UnreadMessagesCountRepository
 import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.label.domain.entity.LabelId
-import org.junit.Ignore
 import org.junit.Test
 import kotlin.test.assertEquals
 
 class UnreadCountersRepositoryImplTest {
 
-    private val localDataSource = mockk<UnreadConversationsCountLocalDataSource>()
-    private val remoteDataSource = mockk<UnreadConversationsCountRemoteDataSource>()
+    private val messageUnreadCountRepository = mockk<UnreadMessagesCountRepository>()
+    private val conversationUnreadCountRepository = mockk<UnreadConversationsCountRepository>()
 
-    private lateinit var repository: UnreadCountersRepositoryImpl
+    private val repository = UnreadCountersRepositoryImpl(
+        messageUnreadCountRepository,
+        conversationUnreadCountRepository
+    )
 
     @Test
-    @Ignore("Not working due to intermediate step - Fixed through the next step of the refactoring")
-    fun `refresh message and conversation counters from remote when not existing locally`() = runTest {
+    fun `combines messages and conversations unread counters`() = runTest {
         // Given
         val expectedMessages = listOf(inboxUnreadMessageCounter)
         val expectedConversations = listOf(inboxUnreadConversationCounter)
+        coEvery { messageUnreadCountRepository.observeUnreadCounters(userId) } returns flowOf(expectedMessages)
+        coEvery {
+            conversationUnreadCountRepository.observeUnreadCounters(userId)
+        } returns flowOf(expectedConversations)
 
         // When
         repository.observeUnreadCounters(userId).test {
             // Then
-            awaitItem()
-            coVerify {
-                localDataSource.saveConversationCounters(expectedConversations)
-            }
-            awaitComplete()
-        }
-
-    }
-
-    @Test
-    @Ignore("Not working due to intermediate step - Fixed through the next step of the refactoring")
-    fun `returns local unread counters when available`() = runTest {
-        // Given
-        val expectedMessages = listOf(inboxUnreadMessageCounter)
-        val expectedConversations = listOf(inboxUnreadConversationCounter)
-        coEvery { localDataSource.observeConversationCounters(userId) } returns flowOf(expectedConversations)
-
-        // When
-        repository.observeUnreadCounters(userId).test {
-            // Then
-            val expected = UnreadCounters(
-                expectedConversations.map { UnreadCounter(it.labelId, it.unreadCount) },
-                expectedMessages.map { UnreadCounter(it.labelId, it.unreadCount) }
-            )
-            assertEquals(expected, awaitItem())
-            verify { remoteDataSource wasNot Called }
+            val actual = awaitItem()
+            assertEquals(expectedMessages, actual.messagesUnreadCount)
+            assertEquals(expectedConversations, actual.conversationsUnreadCount)
             awaitComplete()
         }
 
@@ -90,15 +65,8 @@ class UnreadCountersRepositoryImplTest {
     companion object TestData {
         private val userId = UserIdSample.Primary
 
-        val inboxUnreadConversationCounter = UnreadConversationsCountEntity(
-            userId,
-            LabelId("0"),
-            10,
-            1
-        )
+        val inboxUnreadConversationCounter = UnreadCounter(LabelId("0"), 10)
 
-        val inboxUnreadMessageCounter = UnreadMessagesCountEntity(userId, LabelId("0"), 10, 1)
-
-        val inboxUnreadCounterResource = UnreadCountResource("0", 10, 1)
+        val inboxUnreadMessageCounter = UnreadCounter(LabelId("0"), 2)
     }
 }
