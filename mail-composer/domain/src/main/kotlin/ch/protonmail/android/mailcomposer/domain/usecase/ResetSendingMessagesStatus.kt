@@ -26,13 +26,17 @@ import javax.inject.Inject
 
 class ResetSendingMessagesStatus @Inject constructor(
     private val draftStateRepository: DraftStateRepository,
-    private val resetDraftStateError: ResetDraftStateError
+    private val resetDraftStateError: ResetDraftStateError,
+    private val confirmSendingMessageStatus: ConfirmSendingMessageStatus
 ) {
 
     suspend operator fun invoke(userId: UserId) {
         draftStateRepository.observeAll(userId).firstOrNull()?.map {
             if (it.state == DraftSyncState.ErrorSending || it.state == DraftSyncState.ErrorUploadAttachments) {
                 resetDraftStateError(it.userId, it.messageId)
+                confirmSendingMessageStatus(it.userId, it.messageId)
+            } else if (it.state == DraftSyncState.Sent) {
+                confirmSendingMessageStatus(it.userId, it.messageId)
             }
         }
     }
