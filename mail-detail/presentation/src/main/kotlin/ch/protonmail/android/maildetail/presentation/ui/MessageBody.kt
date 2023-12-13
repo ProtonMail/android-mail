@@ -67,7 +67,6 @@ fun MessageBody(
     messageBodyUiModel: MessageBodyUiModel,
     actions: MessageBody.Actions,
     onMessageBodyLoaded: (messageId: MessageId, height: Int) -> Unit = { _, _ -> },
-    showReplyActionsFeatureFlag: Boolean,
     expandCollapseMode: MessageBodyExpandCollapseMode
 ) {
     val hasWebView = LocalDeviceCapabilitiesProvider.current.hasWebView
@@ -104,9 +103,7 @@ fun MessageBody(
         )
     }
 
-    if (showReplyActionsFeatureFlag) {
-        MessageActionButtons(messageId = MessageIdUiModel(messageBodyUiModel.messageId.id), callbacks = actions)
-    }
+    MessageActionButtons(messageId = MessageIdUiModel(messageBodyUiModel.messageId.id), callbacks = actions)
 }
 
 @Composable

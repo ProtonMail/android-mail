@@ -32,15 +32,12 @@ object FeatureFlagModule {
 
     @Provides
     @Singleton
-    fun provideDefaultMailFeatureFlags(
-        @BuildFlavor buildFlavor: String
-    ): MailFeatureDefaults {
+    fun provideDefaultMailFeatureFlags(@BuildFlavor buildFlavor: String): MailFeatureDefaults {
         val isNotProd = buildFlavor != "prod"
         return MailFeatureDefaults(
             mapOf(
                 MailFeatureId.AddAttachmentsToDraft to isNotProd,
-                MailFeatureId.ConversationMode to isNotProd,
-                MailFeatureId.MessageActions to isNotProd
+                MailFeatureId.ConversationMode to isNotProd
             )
         )
     }

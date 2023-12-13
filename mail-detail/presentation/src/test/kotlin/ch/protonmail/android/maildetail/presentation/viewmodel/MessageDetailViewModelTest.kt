@@ -26,12 +26,10 @@ import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.nonEmptyListOf
 import arrow.core.right
-import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
-import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
@@ -132,8 +130,6 @@ import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import me.proton.core.featureflag.domain.entity.FeatureFlag
-import me.proton.core.featureflag.domain.entity.Scope
 import org.junit.After
 import org.junit.Assert.assertThrows
 import kotlin.test.BeforeTest
@@ -273,11 +269,6 @@ class MessageDetailViewModelTest {
             )
         }.right()
     }
-    private val observeMailFeature = mockk<ObserveMailFeature> {
-        every { this@mockk.invoke(userId, MailFeatureId.MessageActions) } returns flowOf(
-            FeatureFlag(userId, MailFeatureId.MessageActions.id, Scope.Unknown, defaultValue = false, value = false)
-        )
-    }
 
     // Privacy settings for link confirmation dialog
     private val observePrivacySettings = mockk<ObservePrivacySettings> {
@@ -310,9 +301,9 @@ class MessageDetailViewModelTest {
     private val viewModel by lazy {
         MessageDetailViewModel(
             observePrimaryUserId = observePrimaryUserId,
-            messageDetailReducer = messageDetailReducer,
             observeMessageWithLabels = observeMessageWithLabels,
             getDecryptedMessageBody = getDecryptedMessageBody,
+            messageDetailReducer = messageDetailReducer,
             actionUiModelMapper = actionUiModelMapper,
             observeDetailActions = observeDetailActions,
             observeDestinationMailLabels = observeMailLabels,
@@ -332,7 +323,6 @@ class MessageDetailViewModelTest {
             getAttachmentIntentValues = getAttachmentIntentValues,
             getDownloadingAttachmentsForMessages = getDownloadingAttachmentsForMessages,
             getEmbeddedImageAvoidDuplicatedExecution = getEmbeddedImageAvoidDuplicatedExecution,
-            observeMailFeature = observeMailFeature,
             observePrivacySettings = observePrivacySettings,
             updateLinkConfirmationSetting = updateLinkConfirmationSetting
         )

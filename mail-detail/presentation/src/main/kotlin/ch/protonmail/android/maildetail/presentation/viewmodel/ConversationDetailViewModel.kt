@@ -24,12 +24,10 @@ import androidx.lifecycle.viewModelScope
 import arrow.core.Either
 import arrow.core.NonEmptyList
 import arrow.core.getOrElse
-import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import ch.protonmail.android.mailcommon.domain.coroutines.IODispatcher
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.isOfflineError
-import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
@@ -162,7 +160,6 @@ class ConversationDetailViewModel @Inject constructor(
     private val getAttachmentIntentValues: GetAttachmentIntentValues,
     private val getEmbeddedImageAvoidDuplicatedExecution: GetEmbeddedImageAvoidDuplicatedExecution,
     @IODispatcher private val ioDispatcher: CoroutineDispatcher,
-    private val observeMailFeature: ObserveMailFeature,
     private val observePrivacySettings: ObservePrivacySettings,
     private val updateLinkConfirmationSetting: UpdateLinkConfirmationSetting
 ) : ViewModel() {
@@ -179,7 +176,6 @@ class ConversationDetailViewModel @Inject constructor(
         observeConversationMetadata(conversationId)
         observeConversationMessages(conversationId)
         observeBottomBarActions(conversationId)
-        observeReplyActionsFeatureFlag()
         observePrivacySettings()
     }
 
@@ -239,14 +235,6 @@ class ConversationDetailViewModel @Inject constructor(
                         )
                     }
                 )
-            }
-        }.launchIn(viewModelScope)
-    }
-
-    private fun observeReplyActionsFeatureFlag() {
-        primaryUserId.flatMapLatest {
-            observeMailFeature(it, MailFeatureId.MessageActions).onEach { feature ->
-                mutableDetailState.emit(mutableDetailState.value.copy(showReplyActionsFeatureFlag = feature.value))
             }
         }.launchIn(viewModelScope)
     }

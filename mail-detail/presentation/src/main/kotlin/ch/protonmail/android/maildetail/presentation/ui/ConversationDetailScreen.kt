@@ -384,7 +384,6 @@ fun ConversationDetailScreen(
                     padding = innerPadding,
                     scrollToMessageId = scrollToMessageId,
                     actions = conversationDetailItemActions,
-                    showReplyActionsFeatureFlag = state.showReplyActionsFeatureFlag,
                     paddingOffsetDp = scrollBehavior.state.heightOffset.pxToDp()
                 )
             }
@@ -415,7 +414,6 @@ private fun MessagesContent(
     scrollToMessageId: String?,
     modifier: Modifier = Modifier,
     actions: ConversationDetailItem.Actions,
-    showReplyActionsFeatureFlag: Boolean,
     paddingOffsetDp: Dp = 0f.dp
 ) {
     val listState = rememberLazyListState()
@@ -535,8 +533,7 @@ private fun MessagesContent(
                     Timber.d("onMessageBodyLoadFinished: $messageId, $height. loadedItemsChanged: $loadedItemsChanged")
                     loadedItemsHeight[messageId.id] = height
                     loadedItemsChanged += 1
-                },
-                showReplyActionsFeatureFlag = showReplyActionsFeatureFlag
+                }
             )
 
             if (!userScrolled) {

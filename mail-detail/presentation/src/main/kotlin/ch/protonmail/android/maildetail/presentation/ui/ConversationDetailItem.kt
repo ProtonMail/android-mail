@@ -49,8 +49,7 @@ fun ConversationDetailItem(
     uiModel: ConversationDetailMessageUiModel,
     actions: ConversationDetailItem.Actions,
     modifier: Modifier = Modifier,
-    onMessageBodyLoadFinished: (messageId: MessageId, height: Int) -> Unit,
-    showReplyActionsFeatureFlag: Boolean
+    onMessageBodyLoadFinished: (messageId: MessageId, height: Int) -> Unit
 ) {
     ElevatedCard(
         modifier = modifier.fillMaxWidth(),
@@ -77,8 +76,7 @@ fun ConversationDetailItem(
                 ConversationDetailExpandedItem(
                     uiModel = uiModel,
                     actions = actions,
-                    onMessageBodyLoadFinished = onMessageBodyLoadFinished,
-                    showReplyActionsFeatureFlag = showReplyActionsFeatureFlag
+                    onMessageBodyLoadFinished = onMessageBodyLoadFinished
                 )
             }
         }
@@ -102,8 +100,7 @@ private fun ConversationDetailExpandedItem(
     uiModel: Expanded,
     actions: ConversationDetailItem.Actions,
     modifier: Modifier = Modifier,
-    onMessageBodyLoadFinished: (messageId: MessageId, height: Int) -> Unit,
-    showReplyActionsFeatureFlag: Boolean
+    onMessageBodyLoadFinished: (messageId: MessageId, height: Int) -> Unit
 ) {
     Column(modifier = modifier) {
         Box(
@@ -134,8 +131,7 @@ private fun ConversationDetailExpandedItem(
                 onReplyAll = actions.onReplyAll,
                 onForward = actions.onForward
             ),
-            onMessageBodyLoaded = onMessageBodyLoadFinished,
-            showReplyActionsFeatureFlag = showReplyActionsFeatureFlag
+            onMessageBodyLoaded = onMessageBodyLoadFinished
         )
     }
 }

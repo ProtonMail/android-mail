@@ -45,48 +45,42 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
                 buildFlavor = "dev",
                 expectedDefaultsMap = mapOf(
                     MailFeatureId.AddAttachmentsToDraft to true,
-                    MailFeatureId.ConversationMode to true,
-                    MailFeatureId.MessageActions to true
+                    MailFeatureId.ConversationMode to true
                 )
             ),
             TestInput(
                 buildFlavor = "dev",
                 expectedDefaultsMap = mapOf(
                     MailFeatureId.AddAttachmentsToDraft to true,
-                    MailFeatureId.ConversationMode to true,
-                    MailFeatureId.MessageActions to true
+                    MailFeatureId.ConversationMode to true
                 )
             ),
             TestInput(
                 buildFlavor = "alpha",
                 expectedDefaultsMap = mapOf(
                     MailFeatureId.AddAttachmentsToDraft to true,
-                    MailFeatureId.ConversationMode to true,
-                    MailFeatureId.MessageActions to true
+                    MailFeatureId.ConversationMode to true
                 )
             ),
             TestInput(
                 buildFlavor = "alpha",
                 expectedDefaultsMap = mapOf(
                     MailFeatureId.AddAttachmentsToDraft to true,
-                    MailFeatureId.ConversationMode to true,
-                    MailFeatureId.MessageActions to true
+                    MailFeatureId.ConversationMode to true
                 )
             ),
             TestInput(
                 buildFlavor = "prod",
                 expectedDefaultsMap = mapOf(
                     MailFeatureId.AddAttachmentsToDraft to false,
-                    MailFeatureId.ConversationMode to false,
-                    MailFeatureId.MessageActions to false
+                    MailFeatureId.ConversationMode to false
                 )
             ),
             TestInput(
                 buildFlavor = "prod",
                 expectedDefaultsMap = mapOf(
                     MailFeatureId.AddAttachmentsToDraft to false,
-                    MailFeatureId.ConversationMode to false,
-                    MailFeatureId.MessageActions to false
+                    MailFeatureId.ConversationMode to false
                 )
             )
         )

@@ -36,7 +36,6 @@ data class ConversationDetailState(
     val openMessageBodyLinkEffect: Effect<MessageBodyLink>,
     val openAttachmentEffect: Effect<OpenAttachmentIntentValues>,
     val scrollToMessage: MessageIdUiModel?,
-    val showReplyActionsFeatureFlag: Boolean,
     val requestLinkConfirmation: Boolean,
     val deleteDialogState: DeleteDialogState
 ) {
@@ -54,7 +53,6 @@ data class ConversationDetailState(
             openMessageBodyLinkEffect = Effect.empty(),
             openAttachmentEffect = Effect.empty(),
             scrollToMessage = null,
-            showReplyActionsFeatureFlag = false,
             requestLinkConfirmation = false,
             deleteDialogState = DeleteDialogState.Hidden
         )

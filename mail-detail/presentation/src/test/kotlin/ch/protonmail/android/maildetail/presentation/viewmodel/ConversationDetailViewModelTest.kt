@@ -26,7 +26,6 @@ import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.nonEmptyListOf
 import arrow.core.right
-import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
@@ -34,7 +33,6 @@ import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.DataErrorSample
 import ch.protonmail.android.mailcommon.domain.sample.LabelSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
-import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
@@ -123,8 +121,6 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import me.proton.core.contact.domain.entity.Contact
-import me.proton.core.featureflag.domain.entity.FeatureFlag
-import me.proton.core.featureflag.domain.entity.Scope
 import me.proton.core.label.domain.entity.LabelId
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -268,11 +264,6 @@ class ConversationDetailViewModelTest {
         mockk {
             coEvery { this@mockk.invoke(any(), any(), any()) } returns Unit.right()
         }
-    private val observeMailFeature = mockk<ObserveMailFeature> {
-        every { this@mockk.invoke(userId, MailFeatureId.MessageActions) } returns flowOf(
-            FeatureFlag(userId, MailFeatureId.MessageActions.id, Scope.Unknown, defaultValue = false, value = false)
-        )
-    }
 
     // Privacy settings for link confirmation dialog
     private val observePrivacySettings = mockk<ObservePrivacySettings> {
@@ -295,6 +286,7 @@ class ConversationDetailViewModelTest {
     private val viewModel by lazy {
         ConversationDetailViewModel(
             observePrimaryUserId = observePrimaryUserId,
+            messageIdUiModelMapper = messageIdUiModelMapper,
             actionUiModelMapper = actionUiModelMapper,
             conversationMessageMapper = conversationMessageMapper,
             conversationMetadataMapper = conversationMetadataMapper,
@@ -312,9 +304,9 @@ class ConversationDetailViewModelTest {
             observeMessageAttachmentStatus = observeAttachmentStatus,
             getDownloadingAttachmentsForMessages = getAttachmentDownloadStatus,
             reducer = reducer,
-            savedStateHandle = savedStateHandle,
             starConversations = starConversations,
             unStarConversations = unStarConversations,
+            savedStateHandle = savedStateHandle,
             getDecryptedMessageBody = getDecryptedMessageBody,
             markMessageAndConversationReadIfAllMessagesRead = markMessageAndConversationReadIfAllRead,
             setMessageViewState = setMessageViewState,
@@ -322,8 +314,6 @@ class ConversationDetailViewModelTest {
             getAttachmentIntentValues = getAttachmentIntentValues,
             getEmbeddedImageAvoidDuplicatedExecution = getEmbeddedImageAvoidDuplicatedExecution,
             ioDispatcher = Dispatchers.Unconfined,
-            observeMailFeature = observeMailFeature,
-            messageIdUiModelMapper = messageIdUiModelMapper,
             observePrivacySettings = observePrivacySettings,
             updateLinkConfirmationSetting = updateLinkConfirmationSetting
         )

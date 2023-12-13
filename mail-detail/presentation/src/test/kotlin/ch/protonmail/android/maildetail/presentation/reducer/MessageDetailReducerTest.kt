@@ -225,7 +225,6 @@ class MessageDetailReducerTest(
             error = Effect.empty(),
             openMessageBodyLinkEffect = Effect.empty(),
             openAttachmentEffect = Effect.empty(),
-            showReplyActionsFeatureFlag = false,
             requestLinkConfirmation = false,
             requestPhishingLinkConfirmation = false,
             deleteDialogState = DeleteDialogState.Hidden

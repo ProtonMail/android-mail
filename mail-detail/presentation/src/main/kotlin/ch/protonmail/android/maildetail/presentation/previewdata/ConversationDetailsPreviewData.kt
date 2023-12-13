@@ -77,7 +77,6 @@ object ConversationDetailsPreviewData {
         openMessageBodyLinkEffect = Effect.empty(),
         openAttachmentEffect = Effect.empty(),
         scrollToMessage = null,
-        showReplyActionsFeatureFlag = false,
         requestLinkConfirmation = false,
         deleteDialogState = DeleteDialogState.Hidden
     )
@@ -124,7 +123,6 @@ object ConversationDetailsPreviewData {
         openMessageBodyLinkEffect = Effect.empty(),
         openAttachmentEffect = Effect.empty(),
         scrollToMessage = null,
-        showReplyActionsFeatureFlag = false,
         requestLinkConfirmation = false,
         deleteDialogState = DeleteDialogState.Hidden
     )
@@ -140,7 +138,6 @@ object ConversationDetailsPreviewData {
         openMessageBodyLinkEffect = Effect.empty(),
         openAttachmentEffect = Effect.empty(),
         scrollToMessage = null,
-        showReplyActionsFeatureFlag = false,
         requestLinkConfirmation = false,
         deleteDialogState = DeleteDialogState.Hidden
     )
@@ -156,7 +153,6 @@ object ConversationDetailsPreviewData {
         openMessageBodyLinkEffect = Effect.empty(),
         openAttachmentEffect = Effect.empty(),
         scrollToMessage = null,
-        showReplyActionsFeatureFlag = false,
         requestLinkConfirmation = false,
         deleteDialogState = DeleteDialogState.Hidden
     )
@@ -172,7 +168,6 @@ object ConversationDetailsPreviewData {
         openMessageBodyLinkEffect = Effect.empty(),
         openAttachmentEffect = Effect.empty(),
         scrollToMessage = null,
-        showReplyActionsFeatureFlag = false,
         requestLinkConfirmation = false,
         deleteDialogState = DeleteDialogState.Hidden
     )
@@ -188,7 +183,6 @@ object ConversationDetailsPreviewData {
         openMessageBodyLinkEffect = Effect.empty(),
         openAttachmentEffect = Effect.empty(),
         scrollToMessage = null,
-        showReplyActionsFeatureFlag = false,
         requestLinkConfirmation = false,
         deleteDialogState = DeleteDialogState.Hidden
     )
@@ -204,7 +198,6 @@ object ConversationDetailsPreviewData {
         openMessageBodyLinkEffect = Effect.empty(),
         openAttachmentEffect = Effect.empty(),
         scrollToMessage = null,
-        showReplyActionsFeatureFlag = false,
         requestLinkConfirmation = false,
         deleteDialogState = DeleteDialogState.Hidden
     )

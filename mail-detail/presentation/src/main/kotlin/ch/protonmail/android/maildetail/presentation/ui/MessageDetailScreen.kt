@@ -332,7 +332,6 @@ fun MessageDetailScreen(
                     messageBannersState = state.messageBannersState,
                     messageBodyState = state.messageBodyState,
                     actions = messageDetailContentActions,
-                    showMessageActionsFeatureFlag = state.showReplyActionsFeatureFlag,
                     paddingOffsetDp = scrollBehavior.state.heightOffset.pxToDp()
                 )
             }
@@ -353,7 +352,6 @@ private fun MessageDetailContent(
     messageBannersState: MessageBannersState,
     messageBodyState: MessageBodyState,
     actions: MessageDetailContent.Actions,
-    showMessageActionsFeatureFlag: Boolean,
     paddingOffsetDp: Dp = 0f.dp
 ) {
     val layoutDirection = LocalLayoutDirection.current
@@ -398,8 +396,7 @@ private fun MessageDetailContent(
                         onReply = actions.onReply,
                         onReplyAll = actions.onReplyAll,
                         onForward = actions.onForward
-                    ),
-                    showReplyActionsFeatureFlag = showMessageActionsFeatureFlag
+                    )
                 )
 
                 is MessageBodyState.Error.Data -> MessageBodyLoadingError(
@@ -421,8 +418,7 @@ private fun MessageDetailContent(
                             onReply = { Timber.d("Message: Reply to message $it") },
                             onReplyAll = { Timber.d("Message: Reply All to message $it") },
                             onForward = { Timber.d("Message: Forward message $it") }
-                        ),
-                        showReplyActionsFeatureFlag = showMessageActionsFeatureFlag
+                        )
                     )
                 }
             }
