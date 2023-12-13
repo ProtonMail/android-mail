@@ -31,15 +31,17 @@ class ObserveSendingMessagesStatus @Inject constructor(
 ) {
 
     operator fun invoke(userId: UserId) = draftStateRepository.observeAll(userId).map { draftStates ->
-        if (draftStates.any { it.state == DraftSyncState.ErrorSending }) {
+        val unconfirmedDraftStates = draftStates.filter { !it.sendingStatusConfirmed }
+
+        if (unconfirmedDraftStates.any { it.state == DraftSyncState.ErrorSending }) {
             return@map MessageSendingStatus.SendMessageError
         }
 
-        if (draftStates.any { it.state == DraftSyncState.ErrorUploadAttachments }) {
+        if (unconfirmedDraftStates.any { it.state == DraftSyncState.ErrorUploadAttachments }) {
             return@map MessageSendingStatus.UploadAttachmentsError
         }
 
-        if (draftStates.any { it.state == DraftSyncState.Sent }) {
+        if (unconfirmedDraftStates.any { it.state == DraftSyncState.Sent }) {
             return@map MessageSendingStatus.MessageSent
         }
 
