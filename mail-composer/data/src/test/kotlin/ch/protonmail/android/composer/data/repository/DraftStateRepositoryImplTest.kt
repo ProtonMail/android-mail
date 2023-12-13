@@ -164,6 +164,23 @@ class DraftStateRepositoryImplTest {
         assertEquals(Unit.right(), actual)
     }
 
+    @Test
+    fun `confirm sending status updates draft state in data source when state exists`() = runTest {
+        // Given
+        val draftId = MessageIdSample.RemoteDraft
+        val existingState = DraftStateSample.RemoteDraftInSentState
+        val expectedDraftState = existingState.copy(sendingStatusConfirmed = true)
+        expectDraftStateLocalDataSourceSuccess(userId, draftId, existingState)
+        expectLocalDataSourceUpsertSuccess(expectedDraftState)
+
+        // When
+        val actual = repository.updateConfirmDraftSendingStatus(userId, draftId, true)
+
+        // Then
+        coVerify { draftStateLocalDataSource.save(expectedDraftState) }
+        assertEquals(Unit.right(), actual)
+    }
+
     private fun expectDraftStateLocalDataSourceSuccess(
         userId: UserId,
         draftId: MessageId,

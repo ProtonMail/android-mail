@@ -66,6 +66,16 @@ interface DraftStateRepository {
     ): Either<DataError, Unit>
 
     /**
+     * Updates the [syncState] value in [DraftState].
+     */
+    suspend fun updateConfirmDraftSendingStatus(
+        userId: UserId,
+        messageId: MessageId,
+        sendingStatusConfirmed: Boolean
+    ): Either<DataError, Unit>
+
+
+    /**
      * Updates the [sendingError] value in [DraftState].
      */
     suspend fun updateSendingError(
