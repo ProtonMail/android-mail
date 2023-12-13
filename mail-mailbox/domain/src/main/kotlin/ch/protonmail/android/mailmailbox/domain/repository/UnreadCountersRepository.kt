@@ -22,7 +22,7 @@ import ch.protonmail.android.mailmailbox.domain.model.UnreadCounters
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
 
-interface UnreadCountRepository {
+interface UnreadCountersRepository {
 
-    fun observeUnreadCount(userId: UserId): Flow<UnreadCounters>
+    fun observeUnreadCounters(userId: UserId): Flow<UnreadCounters>
 }

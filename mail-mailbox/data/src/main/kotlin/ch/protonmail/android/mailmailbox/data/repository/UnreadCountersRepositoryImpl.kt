@@ -22,18 +22,18 @@ import ch.protonmail.android.mailmailbox.data.local.UnreadCountLocalDataSource
 import ch.protonmail.android.mailmailbox.data.remote.UnreadCountRemoteDataSource
 import ch.protonmail.android.mailmailbox.domain.model.UnreadCounter
 import ch.protonmail.android.mailmailbox.domain.model.UnreadCounters
-import ch.protonmail.android.mailmailbox.domain.repository.UnreadCountRepository
+import ch.protonmail.android.mailmailbox.domain.repository.UnreadCountersRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
-class UnreadCountRepositoryImpl @Inject constructor(
+class UnreadCountersRepositoryImpl @Inject constructor(
     private val localDataSource: UnreadCountLocalDataSource,
     private val remoteDataSource: UnreadCountRemoteDataSource
-) : UnreadCountRepository {
+) : UnreadCountersRepository {
 
-    override fun observeUnreadCount(userId: UserId): Flow<UnreadCounters> = combine(
+    override fun observeUnreadCounters(userId: UserId): Flow<UnreadCounters> = combine(
         localDataSource.observeMessageCounters(userId),
         localDataSource.observeConversationCounters(userId)
     ) { messageCounters, conversationCounters ->

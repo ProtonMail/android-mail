@@ -25,7 +25,7 @@ import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmailbox.domain.model.UnreadCounter
 import ch.protonmail.android.mailmailbox.domain.model.UnreadCounters
-import ch.protonmail.android.mailmailbox.domain.repository.UnreadCountRepository
+import ch.protonmail.android.mailmailbox.domain.repository.UnreadCountersRepository
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
@@ -40,7 +40,7 @@ import kotlin.test.assertTrue
 
 class ObserveUnreadCountersTest {
 
-    private val repository = mockk<UnreadCountRepository>()
+    private val repository = mockk<UnreadCountersRepository>()
     private val observeCurrentViewMode = mockk<ObserveCurrentViewMode>()
     private val observeMailFeature = mockk<ObserveMailFeature>()
 
@@ -49,7 +49,7 @@ class ObserveUnreadCountersTest {
     @Test
     fun `when view mode is message mode return the messages counters`() = runTest {
         // Given
-        every { repository.observeUnreadCount(userId) } returns flowOf(
+        every { repository.observeUnreadCounters(userId) } returns flowOf(
             UnreadCounters(emptyList(), messageUnreadCounters)
         )
         every { observeCurrentViewMode(userId) } returns flowOf(ViewMode.NoConversationGrouping)
@@ -73,7 +73,7 @@ class ObserveUnreadCountersTest {
             expected.removeAll { it.labelId in listOf(SystemLabelId.Sent.labelId, SystemLabelId.Drafts.labelId) }
             expected.add(UnreadCounter(SystemLabelId.Drafts.labelId, 0))
             expected.add(UnreadCounter(SystemLabelId.Sent.labelId, 0))
-            every { repository.observeUnreadCount(userId) } returns flowOf(
+            every { repository.observeUnreadCounters(userId) } returns flowOf(
                 UnreadCounters(conversationUnreadCounters, messageUnreadCounters)
             )
             every { observeCurrentViewMode(userId) } returns flowOf(ViewMode.ConversationGrouping)
@@ -92,7 +92,7 @@ class ObserveUnreadCountersTest {
     @Test
     fun `returns empty flow when feature flag is disabled`() = runTest {
         // Given
-        every { repository.observeUnreadCount(userId) } returns flowOf(
+        every { repository.observeUnreadCounters(userId) } returns flowOf(
             UnreadCounters(conversationUnreadCounters, messageUnreadCounters)
         )
         every { observeCurrentViewMode(userId) } returns flowOf(ViewMode.ConversationGrouping)

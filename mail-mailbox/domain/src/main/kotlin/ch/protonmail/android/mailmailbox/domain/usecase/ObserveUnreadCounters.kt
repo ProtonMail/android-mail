@@ -22,7 +22,7 @@ import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailmailbox.domain.model.UnreadCounter
 import ch.protonmail.android.mailmailbox.domain.model.UnreadCounters
-import ch.protonmail.android.mailmailbox.domain.repository.UnreadCountRepository
+import ch.protonmail.android.mailmailbox.domain.repository.UnreadCountersRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flowOf
@@ -41,7 +41,7 @@ import javax.inject.Inject
  * from the view mode
  */
 class ObserveUnreadCounters @Inject constructor(
-    private val countersRepository: UnreadCountRepository,
+    private val countersRepository: UnreadCountersRepository,
     private val observeMailFeature: ObserveMailFeature,
     private val observeCurrentViewMode: ObserveCurrentViewMode
 ) {
@@ -52,13 +52,12 @@ class ObserveUnreadCounters @Inject constructor(
             return flowOf(emptyList())
         }
 
-        return observeCurrentViewMode(userId)
-            .flatMapLatest { viewMode ->
-                countersRepository.observeUnreadCount(userId).mapLatest { unreadCounters ->
-                    val counters = getCountersForViewMode(viewMode, unreadCounters)
-                    replaceCountersForMessageOnlyLocations(counters, unreadCounters)
-                }
+        return observeCurrentViewMode(userId).flatMapLatest { viewMode ->
+            countersRepository.observeUnreadCounters(userId).mapLatest { unreadCounters ->
+                val counters = getCountersForViewMode(viewMode, unreadCounters)
+                replaceCountersForMessageOnlyLocations(counters, unreadCounters)
             }
+        }
     }
 
     private fun replaceCountersForMessageOnlyLocations(

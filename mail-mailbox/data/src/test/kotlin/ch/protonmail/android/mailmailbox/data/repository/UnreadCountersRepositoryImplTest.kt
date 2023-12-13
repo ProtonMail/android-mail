@@ -40,12 +40,12 @@ import me.proton.core.label.domain.entity.LabelId
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class UnreadCountRepositoryImplTest {
+class UnreadCountersRepositoryImplTest {
 
     private val localDataSource = mockk<UnreadCountLocalDataSource>()
     private val remoteDataSource = mockk<UnreadCountRemoteDataSource>()
 
-    private val repository = UnreadCountRepositoryImpl(localDataSource, remoteDataSource)
+    private val repository = UnreadCountersRepositoryImpl(localDataSource, remoteDataSource)
 
     @Test
     fun `refresh message and conversation counters from remote when not existing locally`() = runTest {
@@ -60,7 +60,7 @@ class UnreadCountRepositoryImplTest {
         coEvery { localDataSource.saveConversationCounters(expectedConversations) } just Runs
 
         // When
-        repository.observeUnreadCount(userId).test {
+        repository.observeUnreadCounters(userId).test {
             // Then
             awaitItem()
             coVerify {
@@ -81,7 +81,7 @@ class UnreadCountRepositoryImplTest {
         coEvery { localDataSource.observeConversationCounters(userId) } returns flowOf(expectedConversations)
 
         // When
-        repository.observeUnreadCount(userId).test {
+        repository.observeUnreadCounters(userId).test {
             // Then
             val expected = UnreadCounters(
                 expectedConversations.map { UnreadCounter(it.labelId, it.unreadCount) },
