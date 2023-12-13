@@ -89,6 +89,7 @@ object Dependencies {
         add(Proton.Core.notification)
         add(Proton.Core.observability)
         add(Proton.Core.payment)
+        add(Proton.Core.paymentIap)
         add(Proton.Core.plan)
         add(Proton.Core.presentation)
         add(Proton.Core.presentationCompose)
@@ -195,7 +196,6 @@ object Dependencies {
         add(Kotlin.test)
         add(Kotlin.testJunit)
         add(Mockk.mockkAndroid)
-        add(Proton.Core.paymentIap)
         add(Proton.Core.testAndroidInstrumented)
         add(Proton.Core.testQuark)
     }
