@@ -126,6 +126,48 @@ class DraftStateRepositoryImplTest {
     }
 
     @Test
+    fun `should block updating draft sync state of outbox items when in sending state`() = runTest {
+        // Given
+        val draftId = MessageIdSample.EmptyDraft
+        val remoteDraftId = MessageIdSample.RemoteDraft
+        val existingState = DraftStateSample.RemoteDraftInSendingState
+        val expectedDraftState = existingState.copy(
+            apiMessageId = remoteDraftId,
+            state = DraftSyncState.Sending
+        )
+        expectDraftStateLocalDataSourceSuccess(userId, draftId, existingState)
+        expectLocalDataSourceUpsertSuccess(expectedDraftState)
+
+        // When
+        val actual = repository.updateApiMessageIdAndSetSyncedState(userId, draftId, remoteDraftId)
+
+        // Then
+        assertEquals(Unit.right(), actual)
+        coVerify { draftStateLocalDataSource.save(expectedDraftState) }
+    }
+
+    @Test
+    fun `should block updating draft sync state of outbox items when in sent state`() = runTest {
+        // Given
+        val draftId = MessageIdSample.EmptyDraft
+        val remoteDraftId = MessageIdSample.RemoteDraft
+        val existingState = DraftStateSample.RemoteDraftInSentState
+        val expectedDraftState = existingState.copy(
+            apiMessageId = remoteDraftId,
+            state = DraftSyncState.Sent
+        )
+        expectDraftStateLocalDataSourceSuccess(userId, draftId, existingState)
+        expectLocalDataSourceUpsertSuccess(expectedDraftState)
+
+        // When
+        val actual = repository.updateApiMessageIdAndSetSyncedState(userId, draftId, remoteDraftId)
+
+        // Then
+        assertEquals(Unit.right(), actual)
+        coVerify { draftStateLocalDataSource.save(expectedDraftState) }
+    }
+
+    @Test
     fun `save local state stores new draft state when no state exists`() = runTest {
         // Given
         val draftId = MessageIdSample.EmptyDraft

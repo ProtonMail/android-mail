@@ -29,9 +29,11 @@ import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
 import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailmessage.domain.model.SendingError
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.OutboxStates
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import me.proton.core.domain.entity.UserId
+import timber.log.Timber
 import javax.inject.Inject
 
 class DraftStateRepositoryImpl @Inject constructor(
@@ -61,7 +63,11 @@ class DraftStateRepositoryImpl @Inject constructor(
         syncState: DraftSyncState
     ): Either<DataError, Unit> = either {
         val draftState = localDataSource.observe(userId, messageId).first().bind()
-        localDataSource.save(draftState.copy(state = syncState))
+        localDataSource.save(
+            draftState.copy(
+                state = validateUpdateDraftSyncState(draftState.state, syncState)
+            )
+        )
     }
 
     override suspend fun updateConfirmDraftSendingStatus(
@@ -95,9 +101,21 @@ class DraftStateRepositoryImpl @Inject constructor(
         val draftState = localDataSource.observe(userId, messageId).first().bind()
         val updatedState = draftState.copy(
             apiMessageId = apiMessageId,
-            state = DraftSyncState.Synchronized
+            state = validateUpdateDraftSyncState(draftState.state, DraftSyncState.Synchronized)
         )
         localDataSource.save(updatedState)
     }
+
+    private fun validateUpdateDraftSyncState(fromState: DraftSyncState, toState: DraftSyncState): DraftSyncState {
+        return if (validStateTransition(fromState, toState)) toState else {
+            Timber.i(
+                "Ignored state transition from: ${fromState.name} to: ${toState.name}"
+            )
+            fromState
+        }
+    }
+
+    private fun validStateTransition(from: DraftSyncState, to: DraftSyncState): Boolean =
+        !(OutboxStates.isSendingState(from) && to == DraftSyncState.Synchronized)
 
 }
