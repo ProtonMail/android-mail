@@ -18,17 +18,12 @@
 
 package ch.protonmail.android.mailmailbox.data.local
 
-import ch.protonmail.android.mailmailbox.data.entity.UnreadConversationsCountEntity
 import ch.protonmail.android.mailmailbox.data.entity.UnreadMessagesCountEntity
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
 
-interface UnreadCountLocalDataSource {
+interface UnreadMessagesCountLocalDataSource {
     fun observeMessageCounters(userId: UserId): Flow<List<UnreadMessagesCountEntity>>
 
-    fun observeConversationCounters(userId: UserId): Flow<List<UnreadConversationsCountEntity>>
-
     suspend fun saveMessageCounters(counters: List<UnreadMessagesCountEntity>)
-
-    suspend fun saveConversationCounters(counters: List<UnreadConversationsCountEntity>)
 }

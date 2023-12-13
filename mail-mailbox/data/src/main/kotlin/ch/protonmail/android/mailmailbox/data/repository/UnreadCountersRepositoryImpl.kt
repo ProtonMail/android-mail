@@ -18,8 +18,10 @@
 
 package ch.protonmail.android.mailmailbox.data.repository
 
-import ch.protonmail.android.mailmailbox.data.local.UnreadCountLocalDataSource
-import ch.protonmail.android.mailmailbox.data.remote.UnreadCountRemoteDataSource
+import ch.protonmail.android.mailmailbox.data.local.UnreadConversationsCountLocalDataSource
+import ch.protonmail.android.mailmailbox.data.local.UnreadMessagesCountLocalDataSource
+import ch.protonmail.android.mailmailbox.data.remote.UnreadConversationsCountRemoteDataSource
+import ch.protonmail.android.mailmailbox.data.remote.UnreadMessagesCountRemoteDataSource
 import ch.protonmail.android.mailmailbox.domain.model.UnreadCounter
 import ch.protonmail.android.mailmailbox.domain.model.UnreadCounters
 import ch.protonmail.android.mailmailbox.domain.repository.UnreadCountersRepository
@@ -29,13 +31,15 @@ import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 class UnreadCountersRepositoryImpl @Inject constructor(
-    private val localDataSource: UnreadCountLocalDataSource,
-    private val remoteDataSource: UnreadCountRemoteDataSource
+    private val conversationLocalDataSource: UnreadConversationsCountLocalDataSource,
+    private val messageLocalDataSource: UnreadMessagesCountLocalDataSource,
+    private val conversationRemoteDataSource: UnreadConversationsCountRemoteDataSource,
+    private val messageRemoteDataSource: UnreadMessagesCountRemoteDataSource
 ) : UnreadCountersRepository {
 
     override fun observeUnreadCounters(userId: UserId): Flow<UnreadCounters> = combine(
-        localDataSource.observeMessageCounters(userId),
-        localDataSource.observeConversationCounters(userId)
+        messageLocalDataSource.observeMessageCounters(userId),
+        conversationLocalDataSource.observeConversationCounters(userId)
     ) { messageCounters, conversationCounters ->
         if (messageCounters.isEmpty()) {
             refreshLocalMessageCounters(userId)
@@ -50,14 +54,16 @@ class UnreadCountersRepositoryImpl @Inject constructor(
     }
 
     private suspend fun refreshLocalConversationCounters(userId: UserId) {
-        localDataSource.saveConversationCounters(
-            remoteDataSource.getConversationCounters(userId).map { it.toUnreadCountConversationsEntity(userId) }
+        conversationLocalDataSource.saveConversationCounters(
+            conversationRemoteDataSource.getConversationCounters(userId).map {
+                it.toUnreadCountConversationsEntity(userId)
+            }
         )
     }
 
     private suspend fun refreshLocalMessageCounters(userId: UserId) {
-        localDataSource.saveMessageCounters(
-            remoteDataSource.getMessageCounters(userId).map { it.toUnreadCountMessagesEntity(userId) }
+        messageLocalDataSource.saveMessageCounters(
+            messageRemoteDataSource.getMessageCounters(userId).map { it.toUnreadCountMessagesEntity(userId) }
         )
     }
 

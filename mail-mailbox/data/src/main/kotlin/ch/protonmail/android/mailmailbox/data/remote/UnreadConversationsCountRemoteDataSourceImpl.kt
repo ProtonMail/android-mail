@@ -25,16 +25,9 @@ import me.proton.core.network.data.ApiProvider
 import me.proton.core.network.domain.ApiResult
 import javax.inject.Inject
 
-class UnreadCountRemoteDataSourceImpl @Inject constructor(
+class UnreadConversationsCountRemoteDataSourceImpl @Inject constructor(
     private val apiProvider: ApiProvider
-) : UnreadCountRemoteDataSource {
-
-    override suspend fun getMessageCounters(userId: UserId): List<UnreadCountResource> {
-        val result = apiProvider.get<UnreadCountersApi>(userId).invoke {
-            getMessageCounters()
-        }
-        return countResourcesOrEmptyList(result)
-    }
+) : UnreadConversationsCountRemoteDataSource {
 
     override suspend fun getConversationCounters(userId: UserId): List<UnreadCountResource> {
         val result = apiProvider.get<UnreadCountersApi>(userId).invoke {
