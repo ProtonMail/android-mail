@@ -50,7 +50,8 @@ class DeleteSentMessagesFromOutboxTest {
                 messageId = MessageIdSample.Invoice,
                 state = DraftSyncState.Sent,
                 action = DraftAction.Compose,
-                sendingError = null
+                sendingError = null,
+                sendingStatusConfirmed = false
             ),
             DraftState(
                 userId = userId,
@@ -58,7 +59,8 @@ class DeleteSentMessagesFromOutboxTest {
                 messageId = MessageIdSample.SepWeatherForecast,
                 state = DraftSyncState.Sent,
                 action = DraftAction.Compose,
-                sendingError = null
+                sendingError = null,
+                sendingStatusConfirmed = false
             )
         )
 

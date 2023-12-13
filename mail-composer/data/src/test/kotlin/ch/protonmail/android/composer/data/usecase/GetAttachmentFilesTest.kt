@@ -258,7 +258,8 @@ class GetAttachmentFilesTest {
             ApiMessageId,
             DraftSyncState.Synchronized,
             DraftAction.Compose,
-            null
+            null,
+            false
         )
     }
 }

@@ -50,13 +50,15 @@ class OutboxObserverTest {
         userId = userId, apiMessageId = MessageId("unsentItem01"),
         messageId = MessageIdSample.AugWeatherForecast, state = DraftSyncState.Synchronized,
         action = DraftAction.Compose,
-        sendingError = null
+        sendingError = null,
+        sendingStatusConfirmed = false
     )
     private val sentDraftItem = DraftState(
         userId = userId, apiMessageId = MessageId("sentItem01"),
         messageId = MessageIdSample.Invoice, state = DraftSyncState.Sent,
         action = DraftAction.Compose,
-        sendingError = null
+        sendingError = null,
+        sendingStatusConfirmed = false
     )
 
     private val accountManager = mockk<AccountManager>()

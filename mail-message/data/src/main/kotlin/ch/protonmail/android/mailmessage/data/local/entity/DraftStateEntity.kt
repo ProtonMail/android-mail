@@ -53,7 +53,8 @@ data class DraftStateEntity(
     val apiMessageId: MessageId?,
     val state: DraftSyncState,
     val action: DraftAction,
-    val sendingError: SendingError?
+    val sendingError: SendingError?,
+    val sendingStatusConfirmed: Boolean = false
 ) {
     fun toDraftState() = DraftState(
         userId = userId,
@@ -61,7 +62,8 @@ data class DraftStateEntity(
         apiMessageId = apiMessageId,
         state = state,
         action = action,
-        sendingError = sendingError
+        sendingError = sendingError,
+        sendingStatusConfirmed = sendingStatusConfirmed
     )
 }
 
@@ -71,5 +73,6 @@ fun DraftState.toDraftStateEntity() = DraftStateEntity(
     apiMessageId = this.apiMessageId,
     state = this.state,
     action = this.action,
-    sendingError = this.sendingError
+    sendingError = this.sendingError,
+    sendingStatusConfirmed = this.sendingStatusConfirmed
 )

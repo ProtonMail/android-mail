@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 22,
-    "identityHash": "314a3c8da048312b980ea0b323e0f76e",
+    "version": 23,
+    "identityHash": "fb8ba7ba7d30f7f729d93525d98f5c54",
     "entities": [
       {
         "tableName": "AccountEntity",
@@ -3783,7 +3783,7 @@
       },
       {
         "tableName": "DraftStateEntity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`userId` TEXT NOT NULL, `messageId` TEXT NOT NULL, `apiMessageId` TEXT, `state` INTEGER NOT NULL, `action` TEXT NOT NULL, `sendingError` TEXT, PRIMARY KEY(`userId`, `messageId`), FOREIGN KEY(`userId`) REFERENCES `UserEntity`(`userId`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`userId` TEXT NOT NULL, `messageId` TEXT NOT NULL, `apiMessageId` TEXT, `state` INTEGER NOT NULL, `action` TEXT NOT NULL, `sendingError` TEXT, `sendingStatusConfirmed` INTEGER NOT NULL, PRIMARY KEY(`userId`, `messageId`), FOREIGN KEY(`userId`) REFERENCES `UserEntity`(`userId`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "userId",
@@ -3820,6 +3820,12 @@
             "columnName": "sendingError",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "sendingStatusConfirmed",
+            "columnName": "sendingStatusConfirmed",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -4119,7 +4125,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '314a3c8da048312b980ea0b323e0f76e')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'fb8ba7ba7d30f7f729d93525d98f5c54')"
     ]
   }
 }

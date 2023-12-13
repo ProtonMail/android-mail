@@ -133,7 +133,8 @@ class UpdateDraftStateForErrorTest {
         apiMessageId = null,
         state = syncState,
         action = DraftAction.Compose,
-        sendingError = null
+        sendingError = null,
+        sendingStatusConfirmed = false
     )
 
     private fun givenExistingDraftState(

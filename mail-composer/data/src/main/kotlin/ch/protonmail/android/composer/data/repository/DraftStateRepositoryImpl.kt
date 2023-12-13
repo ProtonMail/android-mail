@@ -49,7 +49,7 @@ class DraftStateRepositoryImpl @Inject constructor(
         action: DraftAction
     ): Either<DataError, Unit> = either {
         val draftState = localDataSource.observe(userId, messageId).first().getOrElse {
-            DraftState(userId, messageId, null, DraftSyncState.Local, action, null)
+            DraftState(userId, messageId, null, DraftSyncState.Local, action, null, false)
         }
         val updatedState = draftState.copy(state = DraftSyncState.Local)
         localDataSource.save(updatedState)

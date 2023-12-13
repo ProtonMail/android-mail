@@ -59,7 +59,8 @@ class ExcludeDraftMessagesAlreadyInOutboxTest {
             apiMessageId = MessageIdSample.Invoice,
             state = DraftSyncState.Sent,
             action = DraftAction.Compose,
-            sendingError = null
+            sendingError = null,
+            sendingStatusConfirmed = false
         ),
         DraftState(
             userId = userId,
@@ -67,7 +68,8 @@ class ExcludeDraftMessagesAlreadyInOutboxTest {
             apiMessageId = MessageIdSample.NewDraftWithSubjectAndBody,
             state = DraftSyncState.Synchronized,
             action = DraftAction.Compose,
-            sendingError = null
+            sendingError = null,
+            sendingStatusConfirmed = false
         ),
         DraftState(
             userId = userId,
@@ -75,7 +77,8 @@ class ExcludeDraftMessagesAlreadyInOutboxTest {
             apiMessageId = MessageIdSample.SepWeatherForecast,
             state = DraftSyncState.Sent,
             action = DraftAction.Compose,
-            sendingError = null
+            sendingError = null,
+            sendingStatusConfirmed = false
         )
 
     )

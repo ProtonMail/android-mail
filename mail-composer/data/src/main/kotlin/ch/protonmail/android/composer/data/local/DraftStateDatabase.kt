@@ -79,5 +79,11 @@ interface DraftStateDatabase : Database {
                 database.addTableColumn("DraftStateEntity", "sendingError", "TEXT") // nullable by default
             }
         }
+
+        val MIGRATION_5: DatabaseMigration = object : DatabaseMigration {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.addTableColumn("DraftStateEntity", "sendingStatusConfirmed", "INTEGER NOT NULL", "0")
+            }
+        }
     }
 }

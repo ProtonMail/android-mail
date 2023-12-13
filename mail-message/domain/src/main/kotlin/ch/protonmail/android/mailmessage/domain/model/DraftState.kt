@@ -26,5 +26,6 @@ data class DraftState(
     val apiMessageId: MessageId?,
     val state: DraftSyncState,
     val action: DraftAction,
-    val sendingError: SendingError?
+    val sendingError: SendingError?,
+    val sendingStatusConfirmed: Boolean
 )

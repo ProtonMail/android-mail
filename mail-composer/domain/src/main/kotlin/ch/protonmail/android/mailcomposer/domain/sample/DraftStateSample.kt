@@ -123,6 +123,7 @@ object DraftStateSample {
         apiMessageId = apiMessageId,
         state = state,
         action = action,
-        sendingError = sendingError
+        sendingError = sendingError,
+        sendingStatusConfirmed = false
     )
 }
