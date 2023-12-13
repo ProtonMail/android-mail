@@ -145,6 +145,7 @@ fun MailboxScreen(
             onExitSelectionMode = { viewModel.submit(MailboxViewAction.ExitSelectionMode) },
             onOfflineWithData = { viewModel.submit(MailboxViewAction.OnOfflineWithData) },
             onErrorWithData = { viewModel.submit(MailboxViewAction.OnErrorWithData) },
+            onAvatarClicked = { viewModel.submit(MailboxViewAction.OnItemAvatarClicked(it)) },
             onItemClicked = { item -> viewModel.submit(MailboxViewAction.ItemClicked(item)) },
             onItemLongClicked = { viewModel.submit(MailboxViewAction.OnItemLongClicked(it)) },
             onRefreshList = { viewModel.submit(MailboxViewAction.Refresh) },
