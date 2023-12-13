@@ -82,6 +82,7 @@ import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.test.idlingresources.ComposerIdlingResource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -144,6 +145,7 @@ class ComposerViewModel @Inject constructor(
     private val actionMutex = Mutex()
     private val primaryUserId = observePrimaryUserId().filterNotNull()
 
+    private val searchContactsJobs = mutableMapOf<ContactSuggestionsField, Job>()
     private val mutableState = MutableStateFlow(
         ComposerDraftState.initial(
             MessageId(savedStateHandle.get<String>(ComposerScreen.DraftMessageIdKey) ?: provideNewDraftId().id)
@@ -554,26 +556,33 @@ class ComposerViewModel @Inject constructor(
         } ?: action
 
     private suspend fun onSearchTermChanged(searchTerm: String, suggestionsField: ContactSuggestionsField) {
-        searchContacts(primaryUserId(), searchTerm).onEach {
-            val suggestedContacts = it.getOrNull()?.flatMap { contact ->
-                contact.contactEmails.map { contactEmail ->
-                    ContactSuggestionUiModel(
-                        name = contactEmail.name.takeIfNotBlank()
-                            ?: contact.name.takeIfNotBlank()
-                            ?: contactEmail.email,
-                        email = contactEmail.email
+
+        // cancel previous search Job for this [suggestionsField] type
+        searchContactsJobs[suggestionsField]?.cancel()
+
+        if (searchTerm.isNotBlank()) {
+            searchContactsJobs[suggestionsField] = searchContacts(primaryUserId(), searchTerm).onEach {
+                val suggestedContacts = it.getOrNull()?.flatMap { contact ->
+                    contact.contactEmails.map { contactEmail ->
+                        ContactSuggestionUiModel(
+                            name = contactEmail.name.takeIfNotBlank()
+                                ?: contact.name.takeIfNotBlank()
+                                ?: contactEmail.email,
+                            email = contactEmail.email
+                        )
+                    }
+                } ?: emptyList()
+
+                emitNewStateFor(
+                    ComposerEvent.UpdateContactSuggestions(
+                        suggestedContacts,
+                        suggestionsField
                     )
-                }
-            } ?: emptyList()
-
-            emitNewStateFor(
-                ComposerEvent.UpdateContactSuggestions(
-                    suggestedContacts,
-                    suggestionsField
                 )
-            )
 
-        }.launchIn(viewModelScope)
+            }.launchIn(viewModelScope)
+        }
+
     }
 
     private suspend fun handleReEncryptionFailed() {
