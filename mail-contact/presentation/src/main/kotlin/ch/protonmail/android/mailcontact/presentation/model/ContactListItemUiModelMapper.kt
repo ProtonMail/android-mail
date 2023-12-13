@@ -23,10 +23,12 @@ import me.proton.core.contact.domain.entity.Contact
 
 fun List<Contact>.toContactListItemUiModel(): List<ContactListItemUiModel> {
     val contacts = arrayListOf<ContactListItemUiModel>()
-    this.sortedBy {
+    this.map {
+        it.copy(name = it.name.trim())
+    }.sortedBy {
         it.name
     }.groupBy {
-        it.name.first().uppercaseChar()
+        it.name.trim().first().uppercaseChar()
     }.forEach { nameGroup ->
         contacts.add(
             ContactListItemUiModel.Header(value = nameGroup.key.toString())
