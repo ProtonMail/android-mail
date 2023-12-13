@@ -161,7 +161,7 @@ fun Sidebar(
         item { SidebarMoreTitleItem() }
         item { ProtonSidebarSettingsItem(onClick = actions.onSettings) }
         item { SidebarSubscriptionItem(viewState.isSubscriptionVisible, onSubscription = actions.onSubscription) }
-        item { SidebarContactsItem(onClick = actions.onContacts) }
+        if (viewState.showContacts) item { SidebarContactsItem(onClick = actions.onContacts) }
         item { ProtonSidebarReportBugItem(onClick = actions.onReportBug) }
         item { ProtonSidebarSignOutItem(onClick = { actions.onSignOut(null) }) }
         item { SidebarBetaLabelInfoItem(onClick = actions.onBetaLabelClick) }
