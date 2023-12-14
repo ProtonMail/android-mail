@@ -158,6 +158,17 @@ abstract class ConversationDao : BaseDao<ConversationEntity>() {
     @Query("DELETE FROM ConversationEntity WHERE userId = :userId")
     abstract suspend fun deleteAll(userId: UserId)
 
+    @Query(
+        """
+            DELETE FROM ConversationEntity 
+            WHERE userId = :userId 
+            AND conversationId IN (
+              SELECT conversationId FROM ConversationLabelEntity WHERE userId = :userId AND labelId = :labelId
+            )
+        """
+    )
+    abstract suspend fun deleteAllConversationsWithLabel(userId: UserId, labelId: LabelId)
+
     @Query("SELECT * FROM ConversationEntity WHERE userId = :userId AND conversationId = :conversationId")
     @Transaction
     abstract fun observe(userId: UserId, conversationId: ConversationId): Flow<ConversationWithLabels?>

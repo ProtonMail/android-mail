@@ -27,6 +27,7 @@ import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.DataErrorSample
+import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailconversation.data.TestConversationLabel
 import ch.protonmail.android.mailconversation.data.getConversation
 import ch.protonmail.android.mailconversation.data.getConversationWithLabels
@@ -195,6 +196,34 @@ class ConversationLocalDataSourceImplTest {
 
         // Then
         coVerify { conversationDao.delete(userId, deletedRawIds) }
+        assertEquals(DataError.Local.DeletingFailed.left(), result)
+    }
+
+    @Test
+    fun `return unit when delete conversations with label from db is successful`() = runTest {
+        val expectedLabel = LabelIdSample.Trash
+        coJustRun { conversationDao.deleteAllConversationsWithLabel(userId, expectedLabel) }
+
+        // When
+        val result = conversationLocalDataSource.deleteConversationsWithLabel(userId, expectedLabel)
+
+        // Then
+        coVerify { conversationDao.deleteAllConversationsWithLabel(userId, expectedLabel) }
+        assertEquals(Unit.right(), result)
+    }
+
+    @Test
+    fun `return data error when delete conversations with label from db failed`() = runTest {
+        val expectedLabel = LabelIdSample.Trash
+        coEvery {
+            conversationDao.deleteAllConversationsWithLabel(userId, expectedLabel)
+        } throws SQLiteConstraintException()
+
+        // When
+        val result = conversationLocalDataSource.deleteConversationsWithLabel(userId, expectedLabel)
+
+        // Then
+        coVerify { conversationDao.deleteAllConversationsWithLabel(userId, expectedLabel) }
         assertEquals(DataError.Local.DeletingFailed.left(), result)
     }
 

@@ -106,6 +106,16 @@ class ConversationLocalDataSourceImpl @Inject constructor(
         pageIntervalDao.deleteAll(userId, PageItemType.Conversation)
     }
 
+    override suspend fun deleteConversationsWithLabel(userId: UserId, labelId: LabelId): Either<DataError, Unit> {
+        runCatching {
+            conversationDao.deleteAllConversationsWithLabel(userId, labelId)
+        }.getOrElse {
+            Timber.e(it, "Failed to delete conversations with label")
+            return DataError.Local.DeletingFailed.left()
+        }
+        return Unit.right()
+    }
+
     override suspend fun markAsStale(
         userId: UserId,
         labelId: LabelId

@@ -76,6 +76,11 @@ interface ConversationLocalDataSource {
     suspend fun deleteAllConversations(userId: UserId)
 
     /**
+     * Delete Conversation(s) for [userId], only conversations with the given [labelId] will be deleted.
+     */
+    suspend fun deleteConversationsWithLabel(userId: UserId, labelId: LabelId): Either<DataError, Unit>
+
+    /**
      * Mark local data as stale for [userId], by [labelId].
      */
     suspend fun markAsStale(userId: UserId, labelId: LabelId)
