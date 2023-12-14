@@ -23,8 +23,8 @@ import arrow.core.right
 import ch.protonmail.android.mailsettings.domain.model.AlternativeRoutingPreference
 import ch.protonmail.android.mailsettings.domain.model.AppLanguage
 import ch.protonmail.android.mailsettings.domain.model.AppSettings
-import ch.protonmail.android.mailsettings.domain.model.AutoLockPreference
 import ch.protonmail.android.mailsettings.domain.model.CombinedContactsPreference
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPreference
 import ch.protonmail.android.mailsettings.domain.repository.AlternativeRoutingRepository
 import ch.protonmail.android.mailsettings.domain.repository.AppLanguageRepository
 import ch.protonmail.android.mailsettings.domain.repository.AutoLockRepository
@@ -50,7 +50,7 @@ class ObserveAppSettingsTest {
         every { this@mockk.observe() } returns flowOf(AlternativeRoutingPreference(true).right())
     }
     private val autoLockRepository = mockk<AutoLockRepository> {
-        every { this@mockk.observe() } returns flowOf(AutoLockPreference(false))
+        every { this@mockk.observeAutoLockEnabledValue() } returns flowOf(AutoLockPreference(false).right())
     }
 
     private lateinit var observeAppSettings: ObserveAppSettings
@@ -68,7 +68,7 @@ class ObserveAppSettingsTest {
     @Test
     fun `auto lock value is returned from auto lock repository`() = runTest {
         // Given
-        every { autoLockRepository.observe() } returns flowOf(AutoLockPreference(true))
+        every { autoLockRepository.observeAutoLockEnabledValue() } returns flowOf(AutoLockPreference(true).right())
 
         // When
         observeAppSettings().test {
