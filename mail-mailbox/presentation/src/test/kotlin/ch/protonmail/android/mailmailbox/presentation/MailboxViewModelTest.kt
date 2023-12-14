@@ -1677,6 +1677,86 @@ class MailboxViewModelTest {
     }
 
     @Test
+    fun `when delete all is triggered for no conversation grouping then delete messages is called with label`() =
+        runTest {
+            // Given
+            val initialState = createMailboxDataState(selectedMailLabelId = MailLabelId.System.Trash)
+            every { selectedMailLabelId.flow } returns MutableStateFlow(MailLabelId.System.Trash)
+            expectedSelectedLabelCountStateChange(initialState)
+            expectDeleteMessagesSucceeds(userId, SystemLabelId.Trash.labelId)
+            expectViewModeForCurrentLocation(NoConversationGrouping)
+            returnExpectedStateForDeleteAllConfirmed(initialState, NoConversationGrouping)
+
+
+            mailboxViewModel.state.test {
+                awaitItem() // First emission for selected user
+
+                // When
+                mailboxViewModel.submit(MailboxViewAction.DeleteAllConfirmed)
+
+                // Then
+                assertEquals(initialState, awaitItem())
+                coVerify(exactly = 1) {
+                    deleteMessages(userId, SystemLabelId.Trash.labelId)
+                }
+                coVerify { deleteConversations wasNot Called }
+            }
+        }
+
+    @Test
+    fun `when delete all is triggered for conversation grouping then delete conversation is called with label`() =
+        runTest {
+            // Given
+            val initialState = createMailboxDataState(selectedMailLabelId = MailLabelId.System.Trash)
+            every { selectedMailLabelId.flow } returns MutableStateFlow(MailLabelId.System.Trash)
+            expectedSelectedLabelCountStateChange(initialState)
+            expectDeleteConversationsSucceeds(userId, SystemLabelId.Trash.labelId)
+            expectViewModeForCurrentLocation(ConversationGrouping)
+            returnExpectedStateForDeleteAllConfirmed(initialState, ConversationGrouping)
+
+
+            mailboxViewModel.state.test {
+                awaitItem() // First emission for selected user
+
+                // When
+                mailboxViewModel.submit(MailboxViewAction.DeleteAllConfirmed)
+
+                // Then
+                assertEquals(initialState, awaitItem())
+                coVerify(exactly = 1) {
+                    deleteConversations(userId, SystemLabelId.Trash.labelId)
+                }
+                coVerify { deleteMessages wasNot Called }
+            }
+        }
+
+    @Test
+    fun `when delete all is triggered from non spam and trash location no action is performed`() =
+        runTest {
+            // Given
+            val initialState = createMailboxDataState(selectedMailLabelId = MailLabelId.System.Inbox)
+            every { selectedMailLabelId.flow } returns MutableStateFlow(MailLabelId.System.Inbox)
+            expectedSelectedLabelCountStateChange(initialState)
+            returnExpectedStateForDeleteAllDismissed(initialState)
+
+
+            mailboxViewModel.state.test {
+                awaitItem() // First emission for selected user
+
+                // When
+                mailboxViewModel.submit(MailboxViewAction.DeleteAllConfirmed)
+
+                // Then
+                assertEquals(initialState, awaitItem())
+                coVerify {
+                    mailboxReducer.newStateFrom(any(), MailboxViewAction.DeleteAllDialogDismissed)
+                    deleteMessages wasNot Called
+                    deleteConversations wasNot Called
+                }
+            }
+        }
+
+    @Test
     fun `when bottom sheet dismissal is triggered then the label as bottom sheet is dismissed `() = runTest {
         // Given
         val item = readMailboxItemUiModel.copy(id = MessageIdSample.Invoice.id)
@@ -3601,6 +3681,16 @@ class MailboxViewModelTest {
         } returns expectedState
     }
 
+    private fun returnExpectedStateForDeleteAllConfirmed(expectedState: MailboxState, viewMode: ViewMode) {
+        every {
+            mailboxReducer.newStateFrom(any(), MailboxEvent.DeleteAllConfirmed(viewMode))
+        } returns expectedState
+    }
+
+    private fun returnExpectedStateForDeleteAllDismissed(expectedState: MailboxState) {
+        every { mailboxReducer.newStateFrom(any(), MailboxViewAction.DeleteAllDialogDismissed) } returns expectedState
+    }
+
     private fun returnExpectedStateForDeleteDismissed(intermediateState: MailboxState, expectedState: MailboxState) {
         every {
             mailboxReducer.newStateFrom(intermediateState, MailboxViewAction.DeleteDialogDismissed)
@@ -3655,12 +3745,20 @@ class MailboxViewModelTest {
         coJustRun { deleteConversations(userId, items.map { ConversationId(it.id) }, labelId) }
     }
 
+    private fun expectDeleteConversationsSucceeds(userId: UserId, labelId: LabelId) {
+        coJustRun { deleteConversations(userId, labelId) }
+    }
+
     private fun expectDeleteMessagesSucceeds(
         userId: UserId,
         items: List<MailboxItemUiModel>,
         labelId: LabelId
     ) {
         coJustRun { deleteMessages(userId, items.map { MessageId(it.id) }, labelId) }
+    }
+
+    private fun expectDeleteMessagesSucceeds(userId: UserId, labelId: LabelId) {
+        coJustRun { deleteMessages(userId, labelId) }
     }
 
     private fun expectedStarMessagesSucceeds(userId: UserId, items: List<MailboxItemUiModel>) {

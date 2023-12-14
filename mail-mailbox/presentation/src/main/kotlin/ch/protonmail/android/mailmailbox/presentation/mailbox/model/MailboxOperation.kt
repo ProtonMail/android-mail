@@ -24,6 +24,7 @@ import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingActionMessage
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingBottomAppBar
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingBottomSheet
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingClearDialog
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingDeleteDialog
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingErrorBar
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingMailboxList
@@ -42,6 +43,7 @@ internal sealed interface MailboxOperation {
     sealed interface AffectingOnboarding
     sealed interface AffectingActionMessage
     sealed interface AffectingDeleteDialog
+    sealed interface AffectingClearDialog
     sealed interface AffectingBottomSheet
     sealed interface AffectingErrorBar
 }
@@ -128,6 +130,9 @@ internal sealed interface MailboxViewAction : MailboxOperation {
     object OnOfflineWithData : MailboxViewAction, AffectingMailboxList
     object OnErrorWithData : MailboxViewAction, AffectingMailboxList
     object CloseOnboarding : MailboxViewAction, MailboxOperation.AffectingOnboarding
+    object DeleteAll : MailboxViewAction
+    object DeleteAllConfirmed : MailboxViewAction
+    object DeleteAllDialogDismissed : MailboxViewAction, AffectingClearDialog
 }
 
 internal sealed interface MailboxEvent : MailboxOperation {
@@ -170,6 +175,9 @@ internal sealed interface MailboxEvent : MailboxOperation {
         AffectingBottomAppBar,
         AffectingActionMessage,
         AffectingDeleteDialog
+
+    data class DeleteAll(val viewMode: ViewMode) : MailboxEvent, AffectingClearDialog
+    data class DeleteAllConfirmed(val viewMode: ViewMode) : MailboxEvent, AffectingClearDialog
 
     sealed interface ItemClicked : MailboxEvent {
 

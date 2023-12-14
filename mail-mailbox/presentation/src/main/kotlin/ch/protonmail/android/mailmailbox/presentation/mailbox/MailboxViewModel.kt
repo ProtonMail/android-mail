@@ -276,7 +276,9 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.ExitSearchMode -> handleExitSearchMode(viewAction)
                 is MailboxViewAction.SearchQuery -> handleSearchQuery(viewAction)
                 is MailboxViewAction.SearchResult -> emitNewStateFrom(viewAction)
-
+                is MailboxViewAction.DeleteAll -> handleClearAllAction()
+                is MailboxViewAction.DeleteAllConfirmed -> handleClearAllConfirmedAction()
+                is MailboxViewAction.DeleteAllDialogDismissed -> handleClearAllDialogDismissed(viewAction)
             }.exhaustive
         }
     }
@@ -911,6 +913,30 @@ class MailboxViewModel @Inject constructor(
             }
         }
         emitNewStateFrom(MailboxEvent.DeleteConfirmed(viewMode, selectionModeDataState.selectedMailboxItems.size))
+    }
+
+    private fun handleClearAllDialogDismissed(viewAction: MailboxViewAction) {
+        emitNewStateFrom(viewAction)
+    }
+
+    private suspend fun handleClearAllAction() {
+        emitNewStateFrom(MailboxEvent.DeleteAll(getViewModeForCurrentLocation(selectedMailLabelId.flow.value)))
+    }
+
+    private suspend fun handleClearAllConfirmedAction() {
+        val currentMailLabel = selectedMailLabelId.flow.value.labelId
+        if (currentMailLabel != SystemLabelId.Trash.labelId && currentMailLabel != SystemLabelId.Spam.labelId) {
+            Timber.e("Clear all action is only supported for Trash and Spam")
+            emitNewStateFrom(MailboxViewAction.DeleteAllDialogDismissed)
+            return
+        }
+        val userId = primaryUserId.filterNotNull().first()
+        val viewMode = getViewModeForCurrentLocation(selectedMailLabelId.flow.value)
+        emitNewStateFrom(MailboxEvent.DeleteAllConfirmed(viewMode))
+        when (viewMode) {
+            ViewMode.ConversationGrouping -> deleteConversations(userId, currentMailLabel)
+            ViewMode.NoConversationGrouping -> deleteMessages(userId, currentMailLabel)
+        }
     }
 
     private suspend fun handleStarAction(viewAction: MailboxViewAction) {
