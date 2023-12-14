@@ -65,7 +65,9 @@ class ObserveUnreadCounters @Inject constructor(
         unreadCounters: UnreadCounters
     ): List<UnreadCounter> = counters.map { counter ->
         if (counter.labelId in MessageOnlyLabelIds.messagesOnlyLabelsIds) {
-            return@map unreadCounters.messagesUnreadCount.first { it.labelId == counter.labelId }
+            unreadCounters.messagesUnreadCount.firstOrNull { it.labelId == counter.labelId }?.let {
+                return@map it
+            }
         }
         counter
     }
