@@ -77,4 +77,9 @@ interface MessageRemoteDataSource {
         messageIds: List<MessageId>,
         currentLabelId: LabelId
     )
+
+    /**
+     * Delete all messages from the given [labelId]
+     */
+    fun clearLabel(userId: UserId, labelId: LabelId)
 }

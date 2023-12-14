@@ -27,7 +27,9 @@ import ch.protonmail.android.mailmessage.data.remote.response.MarkReadResponse
 import ch.protonmail.android.mailmessage.data.remote.response.MarkUnreadResponse
 import ch.protonmail.android.mailmessage.data.remote.response.PutLabelResponse
 import me.proton.core.network.data.protonApi.BaseRetrofitApi
+import okhttp3.ResponseBody
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.PUT
 import retrofit2.http.Path
@@ -71,6 +73,9 @@ interface MessageApi : BaseRetrofitApi {
 
     @PUT("mail/v4/messages/delete")
     suspend fun deleteMessages(@Body messageActionBody: MessageActionBody): PutLabelResponse
+
+    @DELETE("mail/v4/messages/empty")
+    suspend fun emptyLabel(@Query("LabelID") labelId: String): ResponseBody
 
     companion object {
 

@@ -27,6 +27,7 @@ import ch.protonmail.android.mailmessage.data.getMessageResource
 import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSourceImpl.Companion.MAX_ACTION_WORKER_PARAMETER_COUNT
 import ch.protonmail.android.mailmessage.data.remote.response.GetMessagesResponse
 import ch.protonmail.android.mailmessage.data.remote.worker.AddLabelMessageWorker
+import ch.protonmail.android.mailmessage.data.remote.worker.ClearLabelWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.DeleteMessagesWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.MarkMessageAsReadWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.MarkMessageAsUnreadWorker
@@ -481,6 +482,20 @@ class MessageRemoteDataSourceImplTest {
                 userId, messageIds.drop(MAX_ACTION_WORKER_PARAMETER_COUNT), expectedLabel
             )
             enqueuer.enqueue<DeleteMessagesWorker>(userId, match { mapDeepEquals(it, expectedSecond) })
+        }
+    }
+
+    @Test
+    fun `enqueues worker to clear label`() {
+        // given
+        val labelId = SystemLabelId.Trash.labelId
+
+        // when
+        messageRemoteDataSource.clearLabel(userId, labelId)
+
+        // then
+        verify {
+            enqueuer.enqueue<ClearLabelWorker>(userId, ClearLabelWorker.params(userId, labelId))
         }
     }
 

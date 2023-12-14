@@ -24,6 +24,7 @@ import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcommon.domain.benchmark.BenchmarkTracer
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.data.remote.worker.AddLabelMessageWorker
+import ch.protonmail.android.mailmessage.data.remote.worker.ClearLabelWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.DeleteMessagesWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.MarkMessageAsReadWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.MarkMessageAsUnreadWorker
@@ -140,6 +141,10 @@ class MessageRemoteDataSourceImpl @Inject constructor(
             .forEach {
                 enqueuer.enqueue<DeleteMessagesWorker>(userId, DeleteMessagesWorker.params(userId, it, currentLabelId))
             }
+    }
+
+    override fun clearLabel(userId: UserId, labelId: LabelId) {
+        enqueuer.enqueue<ClearLabelWorker>(userId, ClearLabelWorker.params(userId, labelId))
     }
 
     companion object {
