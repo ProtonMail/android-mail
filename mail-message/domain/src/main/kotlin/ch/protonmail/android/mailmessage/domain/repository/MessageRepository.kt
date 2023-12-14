@@ -200,4 +200,9 @@ interface MessageRepository {
         messageIds: List<MessageId>,
         currentLabelId: LabelId
     ): Either<DataError, Unit>
+
+    /**
+     * Delete all messages from the given [labelId]
+     */
+    suspend fun deleteMessages(userId: UserId, labelId: LabelId): Either<DataError, Unit>
 }
