@@ -64,6 +64,7 @@ import io.mockk.Called
 import io.mockk.called
 import io.mockk.coEvery
 import io.mockk.coInvoke
+import io.mockk.coJustRun
 import io.mockk.coVerify
 import io.mockk.coVerifyOrder
 import io.mockk.coVerifySequence
@@ -330,6 +331,32 @@ class MessageLocalDataSourceImplTest {
         coVerify { messageDao.delete(userId1, expectedRawIds) }
         coVerify { messageBodyFileStorage wasNot Called }
         assertEquals(DataError.Local.DeletingFailed.left(), result)
+    }
+
+    @Test
+    fun `should delete messages with given label from db and corresponding message body `() = runTest {
+        // Given
+        val expectedLabel = LabelIdSample.Trash
+        val expectedRawIds = listOf(MessageIdSample.AugWeatherForecast.id, MessageIdSample.SepWeatherForecast.id)
+        val expectedMessages = listOf(
+            MessageWithLabelIdsSample.AugWeatherForecast.copy(labelIds = listOf(expectedLabel)),
+            MessageWithLabelIdsSample.SepWeatherForecast.copy(labelIds = listOf(expectedLabel))
+        )
+        coEvery { messageDao.observeMessages(userId1, expectedLabel) } returns flowOf(expectedMessages)
+        coEvery { messageBodyFileStorage.deleteMessageBody(userId1, MessageIdSample.AugWeatherForecast) } returns true
+        coEvery { messageBodyFileStorage.deleteMessageBody(userId1, MessageIdSample.SepWeatherForecast) } returns true
+        coJustRun { messageDao.delete(userId1, expectedRawIds) }
+
+        // When
+        val result = messageLocalDataSource.deleteMessagesWithLabel(userId1, expectedLabel)
+
+        // Then
+        coVerify { messageDao.delete(userId1, expectedRawIds) }
+        coVerifySequence {
+            messageBodyFileStorage.deleteMessageBody(userId1, MessageIdSample.AugWeatherForecast)
+            messageBodyFileStorage.deleteMessageBody(userId1, MessageIdSample.SepWeatherForecast)
+        }
+        assertEquals(Unit.right(), result)
     }
 
     @Test

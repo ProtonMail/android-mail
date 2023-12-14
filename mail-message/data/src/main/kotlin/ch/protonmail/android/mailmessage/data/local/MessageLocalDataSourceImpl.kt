@@ -103,6 +103,18 @@ class MessageLocalDataSourceImpl @Inject constructor(
         return Unit.right()
     }
 
+    override suspend fun deleteMessagesWithLabel(userId: UserId, labelId: LabelId): Either<DataError.Local, Unit> {
+        runCatching {
+            messageDao.observeMessages(userId, labelId).first().filterNotNull().let { messageWithLabelIds ->
+                deleteMessages(userId, messageWithLabelIds.map { it.message.messageId })
+            }
+        }.getOrElse {
+            Timber.e(it, "Failed to delete messages")
+            return DataError.Local.DeletingFailed.left()
+        }
+        return Unit.right()
+    }
+
     override suspend fun getClippedPageKey(userId: UserId, pageKey: PageKey): PageKey? =
         pageIntervalDao.getClippedPageKey(userId, PageItemType.Message, pageKey)
 

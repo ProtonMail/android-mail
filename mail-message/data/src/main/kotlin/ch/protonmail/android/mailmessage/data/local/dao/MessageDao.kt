@@ -55,6 +55,21 @@ abstract class MessageDao : BaseDao<MessageEntity>() {
 
     @Query(
         """
+       SELECT * FROM MessageEntity
+        JOIN MessageLabelEntity
+        ON MessageLabelEntity.userId = MessageEntity.userId
+        AND MessageLabelEntity.messageId = MessageEntity.messageId
+        AND MessageLabelEntity.labelId = :labelId
+        WHERE MessageEntity.userId = :userId
+        AND MessageEntity.messageId IN (
+          SELECT messageId FROM MessageLabelEntity WHERE labelId = :labelId)
+        """
+    )
+    @Transaction
+    abstract fun observeMessages(userId: UserId, labelId: LabelId): Flow<List<MessageWithLabelIds?>>
+
+    @Query(
+        """
             /*
             * Calculates the size of the message bodies for messages that have been opened at least once by the user
             * by subtracting the attachment sizes from the "whole" message `size` present in the `MessageEntity` table.

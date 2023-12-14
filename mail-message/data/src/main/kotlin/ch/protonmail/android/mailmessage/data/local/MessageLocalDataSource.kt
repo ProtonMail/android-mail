@@ -58,6 +58,11 @@ interface MessageLocalDataSource {
     ): Either<DataError.Local, Unit>
 
     /**
+     * Delete Message(s) for [userId], only messages with the given [labelId] will be deleted.
+     */
+    suspend fun deleteMessagesWithLabel(userId: UserId, labelId: LabelId): Either<DataError.Local, Unit>
+
+    /**
      * Return clipped [PageKey] according already persisted intervals.
      *
      * Note: Usually used to trim unnecessary interval from the [PageKey] before fetching.
