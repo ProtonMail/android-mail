@@ -87,6 +87,15 @@ fun ContactListScreen(actions: ContactListScreen.Actions, viewModel: ContactList
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
 
+    if (state is ContactListState.ListLoaded) {
+        ConsumableLaunchedEffect(effect = state.bottomSheetVisibilityEffect) { bottomSheetEffect ->
+            when (bottomSheetEffect) {
+                BottomSheetVisibilityEffect.Hide -> scope.launch { bottomSheetState.hide() }
+                BottomSheetVisibilityEffect.Show -> scope.launch { bottomSheetState.show() }
+            }
+        }
+    }
+
     if (bottomSheetState.currentValue != ModalBottomSheetValue.Hidden) {
         DisposableEffect(Unit) { onDispose { viewModel.submit(ContactListViewAction.OnDismissBottomSheet) } }
     }
@@ -138,12 +147,6 @@ fun ContactListScreen(actions: ContactListScreen.Actions, viewModel: ContactList
                     }
                     ConsumableLaunchedEffect(effect = state.openImportContact) {
                         actions.openImportContact
-                    }
-                    ConsumableLaunchedEffect(effect = state.bottomSheetVisibilityEffect) {
-                        when (it) {
-                            BottomSheetVisibilityEffect.Hide -> scope.launch { bottomSheetState.hide() }
-                            BottomSheetVisibilityEffect.Show -> scope.launch { bottomSheetState.show() }
-                        }
                     }
                 }
                 when (state) {
