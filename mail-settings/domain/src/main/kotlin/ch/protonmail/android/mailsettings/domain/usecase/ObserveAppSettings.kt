@@ -19,9 +19,11 @@
 package ch.protonmail.android.mailsettings.domain.usecase
 
 import arrow.core.Either
+import arrow.core.getOrElse
 import ch.protonmail.android.mailsettings.domain.model.AlternativeRoutingPreference
 import ch.protonmail.android.mailsettings.domain.model.AppSettings
 import ch.protonmail.android.mailsettings.domain.model.CombinedContactsPreference
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPreference
 import ch.protonmail.android.mailsettings.domain.repository.AlternativeRoutingRepository
 import ch.protonmail.android.mailsettings.domain.repository.AppLanguageRepository
 import ch.protonmail.android.mailsettings.domain.repository.AutoLockRepository
@@ -38,16 +40,17 @@ class ObserveAppSettings @Inject constructor(
 ) {
 
     operator fun invoke(): Flow<AppSettings> = combine(
-        autoLockRepository.observe(),
+        autoLockRepository.observeAutoLockEnabledValue(),
         alternativeRoutingRepository.observe(),
         appLanguageRepository.observe(),
         combinedContactsRepository.observe()
     ) { autoLockPref, alternativeRouting, customLanguage, combinedContacts ->
+        val hasAutoLock = autoLockPref.getOrElse { AutoLockPreference(isEnabled = false) }
         val hasCombinedContacts = (combinedContacts as Either.Right<CombinedContactsPreference>).value.isEnabled
         val hasAlternativeRouting = (alternativeRouting as Either.Right<AlternativeRoutingPreference>).value.isEnabled
 
         AppSettings(
-            hasAutoLock = autoLockPref.isEnabled,
+            hasAutoLock = hasAutoLock.isEnabled,
             hasAlternativeRouting = hasAlternativeRouting,
             customAppLanguage = customLanguage?.langName,
             hasCombinedContacts = hasCombinedContacts

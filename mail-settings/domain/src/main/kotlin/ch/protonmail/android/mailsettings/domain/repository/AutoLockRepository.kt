@@ -18,9 +18,31 @@
 
 package ch.protonmail.android.mailsettings.domain.repository
 
-import ch.protonmail.android.mailsettings.domain.model.AutoLockPreference
+import arrow.core.Either
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockInterval
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockLastForegroundMillis
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPin
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPreference
 import kotlinx.coroutines.flow.Flow
 
 interface AutoLockRepository {
-    fun observe(): Flow<AutoLockPreference>
+
+    fun observeAutoLockEnabledValue(): Flow<Either<AutoLockPreferenceError, AutoLockPreference>>
+    fun observeAutoLockInterval(): Flow<Either<AutoLockPreferenceError, AutoLockInterval>>
+    fun observeAutoLockLastForegroundMillis(): Flow<Either<AutoLockPreferenceError, AutoLockLastForegroundMillis>>
+    fun observeAutoLockPin(): Flow<Either<AutoLockPreferenceError, AutoLockPin>>
+
+    suspend fun updateAutoLockEnabledValue(value: AutoLockPreference): Either<AutoLockPreferenceError, Unit>
+    suspend fun updateAutoLockInterval(interval: AutoLockInterval): Either<AutoLockPreferenceError, Unit>
+    suspend fun updateLastForegroundMillis(
+        timestamp: AutoLockLastForegroundMillis
+    ): Either<AutoLockPreferenceError, Unit>
+
+    suspend fun updateAutoLockPin(pin: AutoLockPin): Either<AutoLockPreferenceError, Unit>
+}
+
+sealed interface AutoLockPreferenceError {
+    object DataStoreError : AutoLockPreferenceError
+    data class DeserializationError(val message: String) : AutoLockPreferenceError
+    data class SerializationError(val message: String) : AutoLockPreferenceError
 }

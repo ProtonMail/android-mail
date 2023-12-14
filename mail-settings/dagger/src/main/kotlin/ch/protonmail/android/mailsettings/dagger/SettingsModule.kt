@@ -36,6 +36,8 @@ import ch.protonmail.android.mailsettings.data.repository.local.AddressIdentityL
 import ch.protonmail.android.mailsettings.data.repository.local.AddressIdentityLocalDataSourceImpl
 import ch.protonmail.android.mailsettings.data.repository.local.AlternativeRoutingLocalDataSource
 import ch.protonmail.android.mailsettings.data.repository.local.AlternativeRoutingLocalDataSourceImpl
+import ch.protonmail.android.mailsettings.data.repository.local.AutoLockLocalDataSource
+import ch.protonmail.android.mailsettings.data.repository.local.AutoLockLocalDataSourceImpl
 import ch.protonmail.android.mailsettings.data.repository.local.MobileFooterLocalDataSource
 import ch.protonmail.android.mailsettings.data.repository.local.MobileFooterLocalDataSourceImpl
 import ch.protonmail.android.mailsettings.data.repository.remote.AddressIdentityRemoteDataSource
@@ -73,10 +75,6 @@ object SettingsModule {
     fun provideDataStoreProvider(@ApplicationContext context: Context): MailSettingsDataStoreProvider =
         MailSettingsDataStoreProvider(context)
 
-    @Provides
-    @Singleton
-    fun provideAutoLockRepository(dataStoreProvider: MailSettingsDataStoreProvider): AutoLockRepository =
-        AutoLockRepositoryImpl(dataStoreProvider)
 
     @Provides
     @Singleton
@@ -157,5 +155,13 @@ object SettingsModule {
         @Binds
         @Reusable
         fun bindLocalDataRepository(impl: LocalStorageDataRepositoryImpl): LocalStorageDataRepository
+
+        @Binds
+        @Reusable
+        fun bindAutoLockRepository(impl: AutoLockRepositoryImpl): AutoLockRepository
+
+        @Binds
+        @Singleton
+        fun bindAutoLockLocalDataSource(impl: AutoLockLocalDataSourceImpl): AutoLockLocalDataSource
     }
 }

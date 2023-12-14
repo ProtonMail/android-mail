@@ -18,25 +18,111 @@
 
 package ch.protonmail.android.mailsettings.data.repository
 
-import androidx.datastore.preferences.core.booleanPreferencesKey
-import ch.protonmail.android.mailsettings.data.MailSettingsDataStoreProvider
-import ch.protonmail.android.mailsettings.domain.model.AutoLockPreference
+import arrow.core.Either
+import arrow.core.getOrElse
+import arrow.core.raise.either
+import ch.protonmail.android.mailcommon.domain.model.PreferencesError
+import ch.protonmail.android.mailsettings.data.repository.local.AutoLockLocalDataSource
+import ch.protonmail.android.mailsettings.data.usecase.DecryptSerializableValue
+import ch.protonmail.android.mailsettings.data.usecase.EncryptSerializableValue
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEnabledEncryptedValue
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedInterval
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedPin
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockInterval
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockLastEncryptedForegroundMillis
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockLastForegroundMillis
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPin
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPreference
+import ch.protonmail.android.mailsettings.domain.repository.AutoLockPreferenceError
 import ch.protonmail.android.mailsettings.domain.repository.AutoLockRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-private const val DEFAULT_VALUE = false
-
 class AutoLockRepositoryImpl @Inject constructor(
-    private val dataStoreProvider: MailSettingsDataStoreProvider
+    private val autoLockLocalDataSource: AutoLockLocalDataSource,
+    private val encryptSerializableValue: EncryptSerializableValue,
+    private val decryptSerializableValue: DecryptSerializableValue
 ) : AutoLockRepository {
 
-    private val hasAutoLockKey = booleanPreferencesKey("hasAutoLockPrefKey")
-
-    override fun observe(): Flow<AutoLockPreference> =
-        dataStoreProvider.autoLockDataStore.data.map { prefs ->
-            val hasAutoLock = prefs[hasAutoLockKey] ?: DEFAULT_VALUE
-            AutoLockPreference(hasAutoLock)
+    override fun observeAutoLockEnabledValue(): AutoLockPreferenceEitherFlow<AutoLockPreference> =
+        autoLockLocalDataSource.observeAutoLockEnabledEncryptedValue().map {
+            either {
+                val encryptedValue = it.getOrElse { raise(AutoLockPreferenceError.DataStoreError) }.encryptedValue
+                decryptSerializedValue<AutoLockPreference>(encryptedValue).bind()
+            }
         }
+
+    override fun observeAutoLockInterval(): AutoLockPreferenceEitherFlow<AutoLockInterval> =
+        autoLockLocalDataSource.observeAutoLockEncryptedInterval().map {
+            either {
+                val encryptedValue = it.getOrElse { raise(AutoLockPreferenceError.DataStoreError) }.encryptedValue
+                decryptSerializedValue<AutoLockInterval>(encryptedValue).bind()
+            }
+        }
+
+    override fun observeAutoLockLastForegroundMillis(): AutoLockPreferenceEitherFlow<AutoLockLastForegroundMillis> =
+        autoLockLocalDataSource.observeLastEncryptedForegroundMillis().map {
+            either {
+                val encryptedValue = it.getOrElse { raise(AutoLockPreferenceError.DataStoreError) }.encryptedValue
+                decryptSerializedValue<AutoLockLastForegroundMillis>(encryptedValue).bind()
+            }
+        }
+
+    override fun observeAutoLockPin(): AutoLockPreferenceEitherFlow<AutoLockPin> =
+        autoLockLocalDataSource.observeAutoLockEncryptedPin().map {
+            either {
+                val encryptedValue = it.getOrElse { raise(AutoLockPreferenceError.DataStoreError) }.encryptedValue
+                decryptSerializedValue<AutoLockPin>(encryptedValue).bind()
+            }
+        }
+
+    override suspend fun updateAutoLockEnabledValue(value: AutoLockPreference): AutoLockPreferenceEither<Unit> =
+        either {
+            val encryptedValue = encryptValueWithSerialization(value).bind()
+            autoLockLocalDataSource.updateAutoLockEnabledEncryptedValue(AutoLockEnabledEncryptedValue(encryptedValue))
+                .mapEither()
+                .bind()
+        }
+
+    override suspend fun updateAutoLockInterval(interval: AutoLockInterval): AutoLockPreferenceEither<Unit> = either {
+        val encryptedValue = encryptValueWithSerialization(interval).bind()
+        autoLockLocalDataSource.updateAutoLockEncryptedInterval(AutoLockEncryptedInterval(encryptedValue)).mapEither()
+            .bind()
+    }
+
+    override suspend fun updateAutoLockPin(pin: AutoLockPin): AutoLockPreferenceEither<Unit> = either {
+        val encryptedValue = encryptValueWithSerialization(pin).bind()
+        autoLockLocalDataSource.updateAutoLockEncryptedPin(AutoLockEncryptedPin(encryptedValue)).mapEither().bind()
+    }
+
+    override suspend fun updateLastForegroundMillis(
+        timestamp: AutoLockLastForegroundMillis
+    ): AutoLockPreferenceEither<Unit> = either {
+        val encryptedValue = encryptValueWithSerialization(timestamp).bind()
+        autoLockLocalDataSource.updateLastEncryptedForegroundMillis(
+            AutoLockLastEncryptedForegroundMillis(encryptedValue)
+        )
+            .mapEither()
+            .bind()
+    }
+
+    private suspend inline fun <reified T> decryptSerializedValue(value: String) = either {
+        decryptSerializableValue<T>(value).getOrElse {
+            raise(AutoLockPreferenceError.DeserializationError(it.message))
+        }
+    }
+
+    private suspend inline fun <reified T> encryptValueWithSerialization(value: T) = either {
+        encryptSerializableValue(value).getOrElse {
+            raise(AutoLockPreferenceError.SerializationError(it.message))
+        }
+    }
+
+    private fun Either<PreferencesError, Unit>.mapEither() = either {
+        getOrElse { raise(AutoLockPreferenceError.DataStoreError) }
+    }
 }
+
+private typealias AutoLockPreferenceEitherFlow<T> = Flow<AutoLockPreferenceEither<T>>
+private typealias AutoLockPreferenceEither<T> = Either<AutoLockPreferenceError, T>
