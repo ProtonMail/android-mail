@@ -21,7 +21,6 @@ package ch.protonmail.android.mailcontact.presentation
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModel
 import ch.protonmail.android.mailcontact.presentation.model.toContactListItemUiModel
-import ch.protonmail.android.testdata.contact.ContactIdTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.contact.domain.entity.ContactEmail
