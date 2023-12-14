@@ -19,7 +19,6 @@
 package ch.protonmail.android.mailcommon.domain
 
 import org.junit.Test
-import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class MailFeatureDefaultsTest {
@@ -34,6 +33,5 @@ class MailFeatureDefaultsTest {
 
         // When/Then
         assertTrue(defaults[MailFeatureId.ConversationMode])
-        assertFalse(defaults[MailFeatureId.MessageActions])
     }
 }

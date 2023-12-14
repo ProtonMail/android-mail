@@ -23,9 +23,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
-import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import ch.protonmail.android.mailcommon.domain.usecase.GetPrimaryAddress
-import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.domain.model.DecryptedDraftFields
@@ -121,7 +119,6 @@ class ComposerViewModel @Inject constructor(
     private val getComposerSenderAddresses: GetComposerSenderAddresses,
     private val composerIdlingResource: ComposerIdlingResource,
     private val draftUploader: DraftUploader,
-    private val observeMailFeature: ObserveMailFeature,
     private val observeMessageAttachments: ObserveMessageAttachments,
     private val observeMessageSendingError: ObserveMessageSendingError,
     private val clearMessageSendingError: ClearMessageSendingError,
@@ -175,11 +172,6 @@ class ComposerViewModel @Inject constructor(
             draftAction != null -> prefillForDraftAction(draftAction)
             else -> uploadDraftContinuouslyWhileInForeground(DraftAction.Compose)
         }
-
-        primaryUserId
-            .flatMapLatest { userId -> observeMailFeature(userId, MailFeatureId.AddAttachmentsToDraft) }
-            .onEach { mutableState.emit(mutableState.value.copy(isAddAttachmentsButtonVisible = it.value)) }
-            .launchIn(viewModelScope)
 
         observeMessageAttachments()
         observeSendingError()

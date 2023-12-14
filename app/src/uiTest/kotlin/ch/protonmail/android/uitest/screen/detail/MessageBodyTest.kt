@@ -54,7 +54,6 @@ class MessageBodyTest {
                     modifier = Modifier,
                     messageBodyUiModel = state,
                     actions = MessageBody.Actions({}, {}, {}, {}, { _, _ -> null }, {}, {}, {}),
-                    showReplyActionsFeatureFlag = false,
                     expandCollapseMode = MessageBodyExpandCollapseMode.NotApplicable
                 )
             }
@@ -78,7 +77,6 @@ class MessageBodyTest {
                     modifier = Modifier,
                     messageBodyUiModel = state,
                     actions = MessageBody.Actions({}, {}, {}, {}, { _, _ -> null }, {}, {}, {}),
-                    showReplyActionsFeatureFlag = false,
                     expandCollapseMode = MessageBodyExpandCollapseMode.NotApplicable
                 )
             }

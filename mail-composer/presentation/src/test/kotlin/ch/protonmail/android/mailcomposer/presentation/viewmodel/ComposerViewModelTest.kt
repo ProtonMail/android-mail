@@ -24,17 +24,14 @@ import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
-import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcommon.domain.usecase.GetPrimaryAddress
-import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.domain.model.DecryptedDraftFields
-import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
 import ch.protonmail.android.mailcomposer.domain.model.MessageWithDecryptedBody
@@ -87,6 +84,7 @@ import ch.protonmail.android.mailcomposer.presentation.usecase.StyleQuotedHtml
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.mailcontact.domain.usecase.SearchContacts
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
+import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.Recipient
 import ch.protonmail.android.mailmessage.domain.model.SendingError
@@ -116,16 +114,11 @@ import io.mockk.spyk
 import io.mockk.unmockkObject
 import io.mockk.verify
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.domain.entity.UserId
-import me.proton.core.featureflag.domain.entity.FeatureFlag
-import me.proton.core.featureflag.domain.entity.FeatureId
-import me.proton.core.featureflag.domain.entity.Scope
 import me.proton.core.network.domain.NetworkManager
 import me.proton.core.user.domain.entity.UserAddress
 import me.proton.core.util.kotlin.serialize
@@ -174,19 +167,6 @@ class ComposerViewModelTest {
     private val storeDraftWithParentAttachments = mockk<StoreDraftWithParentAttachments>()
     private val deleteAttachment = mockk<DeleteAttachment>()
     private val deleteAllAttachments = mockk<DeleteAllAttachments>()
-    private val observeMailFeature = mockk<ObserveMailFeature> {
-        coEvery {
-            this@mockk.invoke(any(), MailFeatureId.AddAttachmentsToDraft)
-        } returns flowOf(
-            FeatureFlag(
-                userId = UserIdSample.Primary,
-                featureId = FeatureId("AddAttachmentsToDraft"),
-                scope = Scope.Local,
-                defaultValue = true,
-                value = true
-            )
-        )
-    }
     private val observeMessageAttachments = mockk<ObserveMessageAttachments>()
     private val observeMessageSendingError = mockk<ObserveMessageSendingError>()
     private val clearMessageSendingError = mockk<ClearMessageSendingError>()
@@ -218,7 +198,6 @@ class ComposerViewModelTest {
             getComposerSenderAddresses,
             composerIdlingResource,
             draftUploaderMock,
-            observeMailFeature,
             observeMessageAttachments,
             observeMessageSendingError,
             clearMessageSendingError,
@@ -303,7 +282,6 @@ class ComposerViewModelTest {
         expectNoInputDraftMessageId()
         expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
-        expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
@@ -344,7 +322,6 @@ class ComposerViewModelTest {
         expectNoInputDraftMessageId()
         expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
-        expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectReEncryptAttachmentSucceeds(expectedUserId, expectedMessageId, originalSenderEmail, expectedSenderEmail)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), originalSenderEmail)
@@ -387,7 +364,6 @@ class ComposerViewModelTest {
         expectNoInputDraftMessageId()
         expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
-        expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectReEncryptAttachmentSucceeds(expectedUserId, expectedMessageId, previousSenderEmail, expectedSenderEmail)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), previousSenderEmail)
@@ -425,7 +401,6 @@ class ComposerViewModelTest {
         expectNoInputDraftMessageId()
         expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
-        expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
@@ -469,7 +444,6 @@ class ComposerViewModelTest {
         expectNoInputDraftMessageId()
         expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
-        expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
@@ -513,7 +487,6 @@ class ComposerViewModelTest {
         expectNoInputDraftMessageId()
         expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
-        expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
@@ -557,7 +530,6 @@ class ComposerViewModelTest {
         expectNoInputDraftMessageId()
         expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
-        expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
@@ -720,7 +692,6 @@ class ComposerViewModelTest {
         expectUploadDraftSucceeds(expectedUserId, expectedMessageId)
         expectStopContinuousDraftUploadSucceeds()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
-        expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
@@ -775,7 +746,6 @@ class ComposerViewModelTest {
         expectSendMessageSucceds(expectedUserId, expectedMessageId)
         expectStopContinuousDraftUploadSucceeds()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
-        expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
@@ -830,7 +800,6 @@ class ComposerViewModelTest {
         expectSendMessageSucceds(expectedUserId, expectedMessageId)
         expectStopContinuousDraftUploadSucceeds()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
-        expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
@@ -866,7 +835,6 @@ class ComposerViewModelTest {
         expectNoInputDraftMessageId()
         expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
-        expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
@@ -890,7 +858,6 @@ class ComposerViewModelTest {
         expectNoInputDraftMessageId()
         expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
-        expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         val expectedDraftBody = expectDraftBodyWithSignature()
         expectInjectAddressSignature(expectedUserId, expectedDraftBody, expectedSenderEmail)
@@ -940,7 +907,6 @@ class ComposerViewModelTest {
             expectStopContinuousDraftUploadSucceeds()
             expectUploadDraftSucceeds(expectedUserId, expectedMessageId)
             expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
-            expectObserveMailFeature(expectedUserId) { emptyFlow() }
             expectObservedMessageAttachments(expectedUserId, expectedMessageId)
             expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
             expectObserveMessageSendingError(expectedUserId, expectedMessageId)
@@ -975,7 +941,6 @@ class ComposerViewModelTest {
         expectNoInputDraftMessageId()
         expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
-        expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
@@ -996,7 +961,6 @@ class ComposerViewModelTest {
         expectNoInputDraftMessageId()
         expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
-        expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
 
@@ -1019,7 +983,6 @@ class ComposerViewModelTest {
         expectNoInputDraftMessageId()
         expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
-        expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
@@ -1044,7 +1007,6 @@ class ComposerViewModelTest {
         expectNoInputDraftMessageId()
         expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
-        expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
@@ -1069,7 +1031,6 @@ class ComposerViewModelTest {
         expectNoInputDraftMessageId()
         expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
-        expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
@@ -1097,7 +1058,6 @@ class ComposerViewModelTest {
         expectNoInputDraftMessageId()
         expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
-        expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectReEncryptAttachmentSucceeds(expectedUserId, expectedMessageId, originalSenderEmail, expectedSenderEmail)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), originalSenderEmail)
@@ -1129,7 +1089,6 @@ class ComposerViewModelTest {
         expectNoInputDraftMessageId()
         expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
-        expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectReEncryptAttachmentFails(expectedUserId, expectedMessageId, previousSenderEmail, expectedSenderEmail)
         expectDeleteAllAttachmentsSucceeds(expectedUserId, previousSenderEmail, expectedMessageId)
@@ -1161,7 +1120,6 @@ class ComposerViewModelTest {
         expectNoInputDraftMessageId()
         expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
-        expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), originalSenderEmail)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
@@ -1193,7 +1151,6 @@ class ComposerViewModelTest {
         expectNoInputDraftMessageId()
         expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
-        expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
@@ -1221,7 +1178,6 @@ class ComposerViewModelTest {
         expectNoInputDraftMessageId()
         expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
-        expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
@@ -1262,8 +1218,6 @@ class ComposerViewModelTest {
         expectNoInputDraftMessageId()
         expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
-        expectObserveMailFeature(UserIdSample.Primary) { emptyFlow() }
-        expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
@@ -1301,7 +1255,6 @@ class ComposerViewModelTest {
         expectNoInputDraftMessageId()
         expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
-        expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
@@ -1339,7 +1292,6 @@ class ComposerViewModelTest {
         expectNoInputDraftMessageId()
         expectNoInputDraftAction()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
-        expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
@@ -1362,7 +1314,6 @@ class ComposerViewModelTest {
         // Simulate a small delay in getDecryptedDraftFields to ensure the "loading" state was emitted
         expectDecryptedDraftDataSuccess(expectedUserId, expectedDraftId, 100) { decryptedDraftFields }
         expectStartDraftSync(UserIdSample.Primary, MessageIdSample.RemoteDraft)
-        expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedDraftId)
         expectNoInputDraftAction()
         expectStoreParentAttachmentSucceeds(expectedUserId, expectedDraftId)
@@ -1387,7 +1338,6 @@ class ComposerViewModelTest {
             expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
             expectDecryptedDraftDataSuccess(expectedUserId, expectedDraftId) { decryptedDraftFields }
             expectStartDraftSync(expectedUserId, expectedDraftId)
-            expectObserveMailFeature(expectedUserId) { emptyFlow() }
             expectObservedMessageAttachments(expectedUserId, expectedDraftId)
             expectStoreParentAttachmentSucceeds(expectedUserId, expectedDraftId)
             expectNoInputDraftAction()
@@ -1422,7 +1372,6 @@ class ComposerViewModelTest {
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
         expectDecryptedDraftDataSuccess(expectedUserId, expectedDraftId) { decryptedDraftFields }
         expectStartDraftSync(expectedUserId, expectedDraftId)
-        expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedDraftId)
         expectStoreParentAttachmentSucceeds(expectedUserId, expectedDraftId)
         expectNoInputDraftAction()
@@ -1461,7 +1410,6 @@ class ComposerViewModelTest {
             val expectedDecryptedParentBody = DecryptedMessageBodyTestData.htmlInvoice
             expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
             expectStartDraftSync(expectedUserId, expectedDraftId, expectedAction)
-            expectObserveMailFeature(expectedUserId) { emptyFlow() }
             expectNoInputDraftMessageId()
             val expectedMessageDecrypted = expectGetMessageWithDecryptedBodySuccess(expectedUserId, expectedParentId) {
                 MessageWithDecryptedBody(MessageWithBodySample.Invoice, expectedDecryptedParentBody)
@@ -1508,7 +1456,6 @@ class ComposerViewModelTest {
         val draftId = expectedMessageId { MessageIdSample.EmptyDraft }
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
         expectStartDraftSync(expectedUserId, draftId, expectedAction)
-        expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectNoInputDraftMessageId()
         expectParentDraftDataError(expectedUserId, expectedParentId) { DataError.Local.DecryptionError }
         expectObservedMessageAttachments(expectedUserId, draftId)
@@ -1529,7 +1476,6 @@ class ComposerViewModelTest {
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
         expectStartDraftSync(expectedUserId, expectedDraftId, DraftAction.Compose)
         expectDecryptedDraftDataError(expectedUserId, expectedDraftId) { DataError.Local.NoDataCached }
-        expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectObservedMessageAttachments(expectedUserId, expectedDraftId)
         expectNoInputDraftAction()
         expectObserveMessageSendingError(expectedUserId, expectedDraftId)
@@ -1551,7 +1497,6 @@ class ComposerViewModelTest {
         expectStartDraftSync(userId, messageId)
         expectNoInputDraftMessageId()
         expectNoInputDraftAction()
-        expectObserveMailFeature(userId) { emptyFlow() }
         expectObservedMessageAttachments(userId, messageId)
         expectInjectAddressSignature(userId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(userId, messageId)
@@ -1573,7 +1518,6 @@ class ComposerViewModelTest {
         val decryptedDraftFields = DecryptedDraftFields.Remote(existingDraftFields)
         expectDecryptedDraftDataSuccess(expectedUserId, expectedDraftId) { decryptedDraftFields }
         expectStartDraftSync(expectedUserId, expectedDraftId)
-        expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectNoInputDraftAction()
         expectObservedMessageAttachments(expectedUserId, expectedDraftId)
         expectStoreParentAttachmentSucceeds(expectedUserId, expectedDraftId)
@@ -1596,7 +1540,6 @@ class ComposerViewModelTest {
         val decryptedDraftFields = DecryptedDraftFields.Remote(existingDraftFields)
         expectDecryptedDraftDataSuccess(expectedUserId, expectedDraftId) { decryptedDraftFields }
         expectStartDraftSync(expectedUserId, expectedDraftId)
-        expectObserveMailFeature(expectedUserId) { emptyFlow() }
         expectNoInputDraftAction()
         expectObservedMessageAttachments(expectedUserId, expectedDraftId)
         expectStoreParentAttachmentSucceeds(expectedUserId, expectedDraftId)
@@ -1756,7 +1699,6 @@ class ComposerViewModelTest {
         expectStopContinuousDraftUploadSucceeds()
         expectNoInputDraftMessageId()
         expectNoInputDraftAction()
-        expectObserveMailFeature(userId) { emptyFlow() }
         expectObservedMessageAttachments(userId, messageId)
         expectInjectAddressSignature(userId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(userId, messageId)
@@ -1783,7 +1725,6 @@ class ComposerViewModelTest {
         expectStopContinuousDraftUploadSucceeds()
         expectNoInputDraftMessageId()
         expectNoInputDraftAction()
-        expectObserveMailFeature(userId) { emptyFlow() }
         expectObservedMessageAttachments(userId, messageId)
         expectInjectAddressSignature(userId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(userId, messageId)
@@ -1927,10 +1868,6 @@ class ComposerViewModelTest {
         coEvery { draftUploaderMock.startContinuousUpload(userId, messageId, action, any()) } returns Unit
     }
 
-    private fun expectObserveMailFeature(userId: UserId, result: () -> Flow<FeatureFlag>) = result().also {
-        coEvery { observeMailFeature.invoke(userId, MailFeatureId.AddAttachmentsToDraft) } returns it
-    }
-
     private fun expectedViewModelInitialState(
         messageId: MessageId,
         senderEmail: SenderEmail = SenderEmail(""),
@@ -1962,7 +1899,6 @@ class ComposerViewModelTest {
             closeComposer = Effect.empty(),
             closeComposerWithDraftSaved = Effect.empty(),
             isLoading = false,
-            isAddAttachmentsButtonVisible = false,
             closeComposerWithMessageSending = Effect.empty(),
             closeComposerWithMessageSendingOffline = Effect.empty(),
             attachmentsFileSizeExceeded = Effect.empty(),

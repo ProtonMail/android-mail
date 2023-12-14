@@ -38,7 +38,6 @@ import ch.protonmail.android.mailmailbox.presentation.sidebar.SidebarViewModel.S
 import ch.protonmail.android.mailmailbox.presentation.sidebar.SidebarViewModel.State.Enabled
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
-import ch.protonmail.android.testdata.FeatureFlagTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
 import ch.protonmail.android.testdata.user.UserTestData
 import io.mockk.coEvery
@@ -52,7 +51,6 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import me.proton.core.domain.entity.UserId
-import me.proton.core.featureflag.domain.entity.FeatureFlag
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.payment.domain.PaymentManager
 import me.proton.core.user.domain.entity.User
@@ -69,7 +67,6 @@ class SidebarViewModelTest {
         every { this@mockk.set(any()) } returns Unit
     }
 
-    private val showSettings = MutableStateFlow(FeatureFlag.default(FeatureFlagTestData.showSettingsId.id.id, false))
     private val primaryUser = MutableStateFlow<User?>(null)
     private val observePrimaryUser = mockk<ObservePrimaryUser> {
         every { this@mockk() } returns primaryUser
@@ -115,48 +112,6 @@ class SidebarViewModelTest {
 
             // Given
             primaryUser.emit(UserTestData.Primary)
-
-            // Then
-            val actual = awaitItem() as Enabled
-            val expected = Enabled(
-                selectedMailLabelId = Inbox,
-                canChangeSubscription = true,
-                mailLabels = MailLabelsUiModel.Loading
-            )
-            assertEquals(expected, actual)
-        }
-    }
-
-    @Test
-    fun `emits is settings enabled true when settings feature toggle is enabled`() = runTest {
-        sidebarViewModel.state.test {
-            // Initial state is Disabled.
-            assertEquals(Disabled, awaitItem())
-
-            // Given
-            showSettings.emit(FeatureFlagTestData.enabledShowSettings)
-            primaryUser.emit(UserTestData.Primary)
-
-            // Then
-            val actual = awaitItem() as Enabled
-            val expected = Enabled(
-                selectedMailLabelId = Inbox,
-                canChangeSubscription = true,
-                mailLabels = MailLabelsUiModel.Loading
-            )
-            assertEquals(expected, actual)
-        }
-    }
-
-    @Test
-    fun `emits is settings enabled false when settings feature toggle is disabled`() = runTest {
-        sidebarViewModel.state.test {
-            // Initial state is Disabled.
-            assertEquals(Disabled, awaitItem())
-
-            // Given
-            primaryUser.emit(UserTestData.Primary)
-            showSettings.emit(FeatureFlagTestData.disabledShowSettings)
 
             // Then
             val actual = awaitItem() as Enabled

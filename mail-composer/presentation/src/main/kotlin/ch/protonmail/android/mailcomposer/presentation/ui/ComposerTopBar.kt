@@ -37,7 +37,6 @@ import me.proton.core.compose.theme.ProtonTheme
 @Composable
 @Suppress("UseComposableActions")
 internal fun ComposerTopBar(
-    isAddAttachmentsButtonVisible: Boolean,
     onAddAttachmentsClick: () -> Unit,
     onCloseComposerClick: () -> Unit,
     onSendMessageComposerClick: () -> Unit,
@@ -59,17 +58,15 @@ internal fun ComposerTopBar(
             }
         },
         actions = {
-            if (isAddAttachmentsButtonVisible) {
-                IconButton(
-                    modifier = Modifier.testTag(ComposerTestTags.AttachmentsButton),
-                    onClick = onAddAttachmentsClick
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_proton_paper_clip),
-                        tint = ProtonTheme.colors.iconNorm,
-                        contentDescription = stringResource(R.string.composer_add_attachments_content_description)
-                    )
-                }
+            IconButton(
+                modifier = Modifier.testTag(ComposerTestTags.AttachmentsButton),
+                onClick = onAddAttachmentsClick
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_proton_paper_clip),
+                    tint = ProtonTheme.colors.iconNorm,
+                    contentDescription = stringResource(R.string.composer_add_attachments_content_description)
+                )
             }
             IconButton(
                 modifier = Modifier

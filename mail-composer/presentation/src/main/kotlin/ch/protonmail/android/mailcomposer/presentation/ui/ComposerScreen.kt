@@ -119,7 +119,6 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
                     .testTag(ComposerTestTags.RootItem)
             ) {
                 ComposerTopBar(
-                    isAddAttachmentsButtonVisible = state.isAddAttachmentsButtonVisible,
                     onAddAttachmentsClick = {
                         bottomSheetType.value = BottomSheetType.AddAttachments
                         viewModel.submit(ComposerAction.OnAddAttachments)

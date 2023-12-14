@@ -31,7 +31,7 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
     @Test
     fun `should provide the correct defaults`() = with(testInput) {
         // When
-        val actualDefaults = FeatureFlagModule.provideDefaultMailFeatureFlags(buildFlavor)
+        val actualDefaults = FeatureFlagModule.provideDefaultMailFeatureFlags()
 
         // Then
         assertEquals(expectedDefaults, actualDefaults)
@@ -44,43 +44,19 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
             TestInput(
                 buildFlavor = "dev",
                 expectedDefaultsMap = mapOf(
-                    MailFeatureId.AddAttachmentsToDraft to true,
-                    MailFeatureId.ConversationMode to true
-                )
-            ),
-            TestInput(
-                buildFlavor = "dev",
-                expectedDefaultsMap = mapOf(
-                    MailFeatureId.AddAttachmentsToDraft to true,
                     MailFeatureId.ConversationMode to true
                 )
             ),
             TestInput(
                 buildFlavor = "alpha",
                 expectedDefaultsMap = mapOf(
-                    MailFeatureId.AddAttachmentsToDraft to true,
-                    MailFeatureId.ConversationMode to true
-                )
-            ),
-            TestInput(
-                buildFlavor = "alpha",
-                expectedDefaultsMap = mapOf(
-                    MailFeatureId.AddAttachmentsToDraft to true,
                     MailFeatureId.ConversationMode to true
                 )
             ),
             TestInput(
                 buildFlavor = "prod",
                 expectedDefaultsMap = mapOf(
-                    MailFeatureId.AddAttachmentsToDraft to false,
-                    MailFeatureId.ConversationMode to false
-                )
-            ),
-            TestInput(
-                buildFlavor = "prod",
-                expectedDefaultsMap = mapOf(
-                    MailFeatureId.AddAttachmentsToDraft to false,
-                    MailFeatureId.ConversationMode to false
+                    MailFeatureId.ConversationMode to true
                 )
             )
         )
