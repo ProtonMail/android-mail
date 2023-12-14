@@ -764,6 +764,7 @@ class ComposerReducerTest(
             attachmentsFileSizeExceeded = attachmentsFileSizeExceeded,
             attachmentsReEncryptionFailed = attachmentReEncryptionFailed,
             warning = warning,
+            isPasswordActionVisible = false,
             replaceDraftBody = Effect.empty()
         )
 
@@ -812,6 +813,7 @@ class ComposerReducerTest(
             attachmentsFileSizeExceeded = attachmentsFileSizeExceeded,
             attachmentsReEncryptionFailed = attachmentReEncryptionFailed,
             warning = warning,
+            isPasswordActionVisible = false,
             replaceDraftBody = replaceDraftBody,
             areContactSuggestionsExpanded = areContactSuggestionsExpanded
         )

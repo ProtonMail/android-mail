@@ -41,6 +41,7 @@ data class ComposerDraftState(
     val attachmentsReEncryptionFailed: Effect<Unit>,
     val replaceDraftBody: Effect<TextUiModel>,
     val warning: Effect<TextUiModel>,
+    val isPasswordActionVisible: Boolean,
     val focusTextBody: Effect<Unit> = Effect.empty(),
     val sendingErrorEffect: Effect<TextUiModel> = Effect.empty(),
     val contactSuggestions: Map<ContactSuggestionsField, List<ContactSuggestionUiModel>> = emptyMap(),
@@ -82,7 +83,8 @@ data class ComposerDraftState(
             attachmentsReEncryptionFailed = Effect.empty(),
             warning = Effect.empty(),
             replaceDraftBody = Effect.empty(),
-            sendingErrorEffect = Effect.empty()
+            sendingErrorEffect = Effect.empty(),
+            isPasswordActionVisible = false
         )
     }
 }
