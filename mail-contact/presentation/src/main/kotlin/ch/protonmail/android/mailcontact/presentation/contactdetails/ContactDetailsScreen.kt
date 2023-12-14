@@ -19,11 +19,17 @@
 package ch.protonmail.android.mailcontact.presentation.contactdetails
 
 import android.content.res.Configuration
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -32,21 +38,28 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
+import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
+import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.dismissKeyboard
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcontact.presentation.R
+import ch.protonmail.android.mailcontact.presentation.previewdata.ContactDetailsPreviewData.contactDetailsSampleData
+import ch.protonmail.android.mailcontact.presentation.ui.InitialsContactAvatar
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
@@ -55,8 +68,7 @@ import me.proton.core.compose.component.appbar.ProtonTopAppBar
 import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
-import me.proton.core.compose.theme.defaultNorm
-import ch.protonmail.android.mailcontact.presentation.previewdata.ContactDetailsPreviewData.contactDetailsSampleData
+import me.proton.core.compose.theme.headlineNorm
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -128,13 +140,71 @@ fun ContactDetailsContent(
             .verticalScroll(rememberScrollState())
             .fillMaxSize()
     ) {
+        InitialsContactAvatar(
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(top = ProtonDimens.DefaultSpacing),
+            initials = state.contact.initials
+        )
         Text(
-            modifier = Modifier.padding(
-                top = ProtonDimens.DefaultSpacing,
-                start = ProtonDimens.DefaultSpacing
-            ),
-            style = ProtonTheme.typography.defaultNorm,
+            modifier = Modifier
+                .padding(top = ProtonDimens.MediumSpacing)
+                .align(Alignment.CenterHorizontally),
+            style = ProtonTheme.typography.headlineNorm,
             text = state.contact.name
+        )
+        Row(
+            modifier = Modifier
+                .padding(top = ProtonDimens.MediumSpacing)
+                .align(Alignment.CenterHorizontally)
+        ) {
+            ContactActionItem(
+                iconResId = R.drawable.ic_proton_phone,
+                onClick = {}
+            )
+            ContactActionItem(
+                modifier = Modifier.padding(start = ProtonDimens.DefaultSpacing),
+                iconResId = R.drawable.ic_proton_pen_square,
+                onClick = {}
+            )
+            ContactActionItem(
+                modifier = Modifier.padding(start = ProtonDimens.DefaultSpacing),
+                iconResId = R.drawable.ic_proton_arrow_up_from_square,
+                onClick = {}
+            )
+        }
+    }
+}
+
+@Composable
+private fun ContactActionItem(
+    modifier: Modifier = Modifier,
+    iconResId: Int,
+    onClick: () -> Unit
+) {
+    Box(
+        modifier = modifier
+            .sizeIn(
+                minWidth = MailDimens.ContactActionSize,
+                minHeight = MailDimens.ContactActionSize
+            )
+            .background(
+                color = ProtonTheme.colors.interactionWeakNorm,
+                shape = RoundedCornerShape(MailDimens.ContactActionCornerRadius)
+            )
+            .clip(
+                shape = RoundedCornerShape(MailDimens.ContactActionCornerRadius)
+            )
+            .clickable(
+                role = Role.Button,
+                onClick = onClick
+            ),
+        contentAlignment = Alignment.Center
+    ) {
+        Icon(
+            painter = painterResource(id = iconResId),
+            tint = ProtonTheme.colors.iconNorm,
+            contentDescription = NO_CONTENT_DESCRIPTION
         )
     }
 }

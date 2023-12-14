@@ -36,4 +36,5 @@
     <string name="contact_details_delete_success">Contact deleted</string>
     <string name="edit_contact_content_description">Edit contact</string>
     <string name="delete_contact_content_description">Delete contact</string>
+    <string name="contact_avatar_image_content_description">Contact avatar</string>
 </resources>

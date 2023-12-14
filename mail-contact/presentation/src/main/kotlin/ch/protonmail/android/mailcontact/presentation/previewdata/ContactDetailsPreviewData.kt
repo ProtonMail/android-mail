@@ -18,14 +18,15 @@
 
 package ch.protonmail.android.mailcontact.presentation.previewdata
 
-import me.proton.core.contact.domain.entity.ContactId
 import ch.protonmail.android.mailcontact.presentation.model.ContactDetailsUiModel
+import me.proton.core.contact.domain.entity.ContactId
 
 object ContactDetailsPreviewData {
 
     val contactDetailsSampleData = ContactDetailsUiModel(
         id = ContactId("Id"),
-        name = "Name"
+        name = "John Doe",
+        initials = "JD"
     )
 }
 

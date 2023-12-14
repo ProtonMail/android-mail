@@ -1,0 +1,90 @@
+/*
+ * Copyright (c) 2022 Proton Technologies AG
+ * This file is part of Proton Technologies AG and Proton Mail.
+ *
+ * Proton Mail is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Proton Mail is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package ch.protonmail.android.mailcontact.presentation.ui
+
+import android.content.res.Configuration
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
+import ch.protonmail.android.mailcontact.presentation.R
+import me.proton.core.compose.theme.ProtonTheme
+import me.proton.core.compose.theme.subheadlineUnspecified
+
+@Composable
+fun InitialsContactAvatar(modifier: Modifier = Modifier, initials: String) {
+    ContactAvatarBox(modifier) {
+        Text(
+            textAlign = TextAlign.Center,
+            style = ProtonTheme.typography.subheadlineUnspecified,
+            color = ProtonTheme.colors.textHint,
+            text = initials
+        )
+    }
+}
+
+@Composable
+fun ImageContactAvatar(modifier: Modifier = Modifier, imageBitmap: ImageBitmap) {
+    ContactAvatarBox(modifier) {
+        Image(
+            bitmap = imageBitmap,
+            contentDescription = stringResource(id = R.string.contact_avatar_image_content_description)
+        )
+    }
+}
+
+@Composable
+private fun ContactAvatarBox(modifier: Modifier = Modifier, content: @Composable BoxScope.() -> Unit) {
+    Box(
+        modifier = modifier
+            .sizeIn(
+                minWidth = MailDimens.ContactAvatarSize,
+                minHeight = MailDimens.ContactAvatarSize
+            )
+            .background(
+                color = ProtonTheme.colors.backgroundSecondary,
+                shape = RoundedCornerShape(MailDimens.ContactAvatarCornerRadius)
+            )
+            .clip(
+                shape = RoundedCornerShape(MailDimens.ContactAvatarCornerRadius)
+            ),
+        contentAlignment = Alignment.Center,
+        content = content
+    )
+}
+
+@Composable
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
+private fun InitialsContactAvatarPreview() {
+    InitialsContactAvatar(
+        initials = "JD"
+    )
+}

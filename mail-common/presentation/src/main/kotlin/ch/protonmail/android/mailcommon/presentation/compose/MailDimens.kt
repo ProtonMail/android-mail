@@ -87,4 +87,10 @@ object MailDimens {
         val DigitTextSize = 20.sp
         val BottomButtonSize = 24.dp
     }
+
+    val ContactAvatarSize = 80.dp
+    val ContactAvatarCornerRadius = 30.dp
+
+    val ContactActionSize = 52.dp
+    val ContactActionCornerRadius = 16.dp
 }

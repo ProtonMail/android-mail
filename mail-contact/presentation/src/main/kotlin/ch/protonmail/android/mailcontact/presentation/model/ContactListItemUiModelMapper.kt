@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcontact.presentation.model
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontact.presentation.R
+import ch.protonmail.android.mailcontact.presentation.utils.getInitials
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.contact.domain.entity.ContactEmail
 import me.proton.core.util.kotlin.takeIfNotBlank
@@ -72,14 +73,4 @@ private fun getEmailSubtext(contactEmails: List<ContactEmail>): TextUiModel {
     } else {
         TextUiModel(R.string.no_contact_email)
     }
-}
-
-private fun getInitials(name: String, takeFirstOnly: Boolean? = false): String {
-    if (name.isBlank()) return ""
-    if (takeFirstOnly == true) return name.uppercase().take(1)
-    val initials = name.uppercase().split(' ')
-        .mapNotNull { it.firstOrNull()?.toString() }
-        .reduce { acc, s -> acc + s }
-    // Keep only the first and last initials
-    return if (initials.length > 2) initials[0].toString() + initials[initials.lastIndex] else initials
 }

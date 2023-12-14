@@ -16,15 +16,14 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcontact.presentation.model
+package ch.protonmail.android.mailcontact.presentation.utils
 
-import ch.protonmail.android.mailcontact.presentation.utils.getInitials
-import me.proton.core.contact.domain.entity.ContactWithCards
-
-fun ContactWithCards.toContactDetailsUiModel(): ContactDetailsUiModel {
-    return ContactDetailsUiModel(
-        id = this.contact.id,
-        name = this.contact.name,
-        initials = getInitials(this.contact.name)
-    )
+fun getInitials(name: String, takeFirstOnly: Boolean? = false): String {
+    if (name.isBlank()) return ""
+    if (takeFirstOnly == true) return name.uppercase().take(1)
+    val initials = name.uppercase().split(' ')
+        .mapNotNull { it.firstOrNull()?.toString() }
+        .reduce { acc, s -> acc + s }
+    // Keep only the first and last initials
+    return if (initials.length > 2) initials[0].toString() + initials[initials.lastIndex] else initials
 }
