@@ -28,6 +28,8 @@ interface UnreadMessagesCountLocalDataSource {
 
     suspend fun saveMessageCounters(counters: List<UnreadMessagesCountEntity>)
 
+    suspend fun saveMessageCounter(counter: UnreadMessagesCountEntity)
+
     suspend fun delete(userId: UserId, labelIds: List<LabelId>)
 
     suspend fun deleteAll(userId: UserId)

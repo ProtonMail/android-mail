@@ -18,13 +18,17 @@
 
 package ch.protonmail.android.mailmessage.data.repository
 
+import arrow.core.raise.either
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.data.local.UnreadMessagesCountLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.UnreadMessagesCountRemoteDataSource
 import ch.protonmail.android.mailmessage.domain.model.UnreadCounter
 import ch.protonmail.android.mailmessage.domain.repository.UnreadMessagesCountRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.mapLatest
 import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.LabelId
 import javax.inject.Inject
 
 class UnreadMessageCountRepositoryImpl @Inject constructor(
@@ -40,10 +44,29 @@ class UnreadMessageCountRepositoryImpl @Inject constructor(
             messageCounters.map { UnreadCounter(it.labelId, it.unreadCount) }
         }
 
+    override suspend fun incrementUnreadCount(userId: UserId, labelId: LabelId) = either<DataError.Local, Unit> {
+        messageLocalDataSource.observeMessageCounters(userId).firstOrNull()?.let { counters ->
+            counters.find { it.labelId == labelId }?.let {
+                val updatedCounter = it.copy(unreadCount = it.unreadCount.inc())
+                messageLocalDataSource.saveMessageCounter(updatedCounter)
+            }
+        }
+    }
+
+    override suspend fun decrementUnreadCount(userId: UserId, labelId: LabelId) = either<DataError.Local, Unit> {
+        messageLocalDataSource.observeMessageCounters(userId).firstOrNull()?.let { counters ->
+            counters.find { it.labelId == labelId }?.let {
+                val updatedCounter = it.copy(unreadCount = it.unreadCount.decrementCoercingZero())
+                messageLocalDataSource.saveMessageCounter(updatedCounter)
+            }
+        }
+    }
+
     private suspend fun refreshLocalMessageCounters(userId: UserId) {
         messageLocalDataSource.saveMessageCounters(
             messageRemoteDataSource.getMessageCounters(userId).map { it.toUnreadCountMessagesEntity(userId) }
         )
     }
 
+    private fun Int.decrementCoercingZero() = (this - 1).coerceAtLeast(0)
 }

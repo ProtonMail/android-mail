@@ -16,21 +16,19 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.domain.usecase
+package ch.protonmail.android.mailmessage.domain.usecase
 
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailmessage.domain.model.Message
-import ch.protonmail.android.mailmessage.domain.model.MessageId
-import ch.protonmail.android.mailmessage.domain.usecase.MarkMessagesAsRead
+import ch.protonmail.android.mailmessage.domain.repository.UnreadMessagesCountRepository
 import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.LabelId
 import javax.inject.Inject
 
-class MarkMessageAsRead @Inject constructor(
-    private val markMessagesAsRead: MarkMessagesAsRead
+class DecrementUnreadCount @Inject constructor(
+    private val unreadCountRepository: UnreadMessagesCountRepository
 ) {
 
-    suspend operator fun invoke(userId: UserId, messageId: MessageId): Either<DataError.Local, Message> =
-        markMessagesAsRead(userId, listOf(messageId)).map { it.first() }
-
+    suspend operator fun invoke(userId: UserId, labelId: LabelId): Either<DataError.Local, Unit> =
+        unreadCountRepository.decrementUnreadCount(userId, labelId)
 }
