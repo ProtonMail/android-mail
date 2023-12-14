@@ -53,13 +53,11 @@ class ContactListReducer @Inject constructor() {
                 if (event.contactList.isNotEmpty()) {
                     ContactListState.ListLoaded.Data(
                         bottomSheetVisibilityEffect = currentState.bottomSheetVisibilityEffect,
-                        openContactForm = currentState.openContactForm,
                         contacts = event.contactList
                     )
                 } else {
                     ContactListState.ListLoaded.Empty(
-                        bottomSheetVisibilityEffect = currentState.bottomSheetVisibilityEffect,
-                        openContactForm = currentState.openContactForm
+                        bottomSheetVisibilityEffect = currentState.bottomSheetVisibilityEffect
                     )
                 }
             }
@@ -72,24 +70,42 @@ class ContactListReducer @Inject constructor() {
     private fun reduceOpenContactForm(currentState: ContactListState): ContactListState {
         return when (currentState) {
             is ContactListState.Loading -> currentState
-            is ContactListState.ListLoaded.Data -> currentState.copy(openContactForm = Effect.of(Unit))
-            is ContactListState.ListLoaded.Empty -> currentState.copy(openContactForm = Effect.of(Unit))
+            is ContactListState.ListLoaded.Data -> currentState.copy(
+                openContactForm = Effect.of(Unit),
+                bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide)
+            )
+            is ContactListState.ListLoaded.Empty -> currentState.copy(
+                openContactForm = Effect.of(Unit),
+                bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide)
+            )
         }
     }
 
     private fun reduceOpenContactGroupForm(currentState: ContactListState): ContactListState {
         return when (currentState) {
             is ContactListState.Loading -> currentState
-            is ContactListState.ListLoaded.Data -> currentState.copy(openContactGroupForm = Effect.of(Unit))
-            is ContactListState.ListLoaded.Empty -> currentState.copy(openContactGroupForm = Effect.of(Unit))
+            is ContactListState.ListLoaded.Data -> currentState.copy(
+                openContactGroupForm = Effect.of(Unit),
+                bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide)
+            )
+            is ContactListState.ListLoaded.Empty -> currentState.copy(
+                openContactGroupForm = Effect.of(Unit),
+                bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide)
+            )
         }
     }
 
     private fun reduceOpenImportContact(currentState: ContactListState): ContactListState {
         return when (currentState) {
             is ContactListState.Loading -> currentState
-            is ContactListState.ListLoaded.Data -> currentState.copy(openImportContact = Effect.of(Unit))
-            is ContactListState.ListLoaded.Empty -> currentState.copy(openImportContact = Effect.of(Unit))
+            is ContactListState.ListLoaded.Data -> currentState.copy(
+                openImportContact = Effect.of(Unit),
+                bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide)
+            )
+            is ContactListState.ListLoaded.Empty -> currentState.copy(
+                openImportContact = Effect.of(Unit),
+                bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide)
+            )
         }
     }
 

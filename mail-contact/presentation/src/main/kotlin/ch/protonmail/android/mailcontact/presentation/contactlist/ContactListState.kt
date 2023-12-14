@@ -47,7 +47,7 @@ sealed interface ContactListState {
             override val bottomSheetVisibilityEffect: Effect<BottomSheetVisibilityEffect> = Effect.empty(),
             override val openContactForm: Effect<Unit> = Effect.empty(),
             override val openContactGroupForm: Effect<Unit> = Effect.empty(),
-            override val openImportContact: Effect<Unit> = Effect.empty(),
+            override val openImportContact: Effect<Unit> = Effect.empty()
         ) : ListLoaded
     }
 }
