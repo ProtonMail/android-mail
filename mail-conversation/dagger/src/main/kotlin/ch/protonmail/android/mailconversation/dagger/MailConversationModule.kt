@@ -34,6 +34,7 @@ import ch.protonmail.android.mailconversation.domain.repository.ConversationRemo
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
 import ch.protonmail.android.mailconversation.domain.repository.UnreadConversationsCountRepository
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
+import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSource
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -54,12 +55,14 @@ object MailConversationModule {
         conversationLocalDataSource: ConversationLocalDataSource,
         conversationRemoteDataSource: ConversationRemoteDataSource,
         coroutineScopeProvider: CoroutineScopeProvider,
-        messageLocalDataSource: MessageLocalDataSource
+        messageLocalDataSource: MessageLocalDataSource,
+        messageRemoteDataSource: MessageRemoteDataSource
     ): ConversationRepository = ConversationRepositoryImpl(
         conversationRemoteDataSource = conversationRemoteDataSource,
         conversationLocalDataSource = conversationLocalDataSource,
         coroutineScopeProvider = coroutineScopeProvider,
-        messageLocalDataSource = messageLocalDataSource
+        messageLocalDataSource = messageLocalDataSource,
+        messageRemoteDataSource = messageRemoteDataSource
     )
 
     @Provides

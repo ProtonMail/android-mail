@@ -167,4 +167,6 @@ interface ConversationRepository {
         conversationIds: List<ConversationId>,
         contextLabelId: LabelId
     ): Either<DataError, Unit>
+
+    suspend fun deleteConversations(userId: UserId, labelId: LabelId): Either<DataError, Unit>
 }
