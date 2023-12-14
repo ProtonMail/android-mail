@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.domain.usecase
+package ch.protonmail.android.mailmessage.domain.usecase
 
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.DataError
@@ -26,9 +26,9 @@ import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
-class MarkMessagesAsRead @Inject constructor(private val messageRepository: MessageRepository) {
+class MarkMessagesAsUnread @Inject constructor(private val messageRepository: MessageRepository) {
 
     suspend operator fun invoke(userId: UserId, messageIds: List<MessageId>): Either<DataError.Local, List<Message>> =
-        messageRepository.markRead(userId, messageIds)
+        messageRepository.markUnread(userId, messageIds)
 
 }
