@@ -40,6 +40,10 @@ class DeleteConversations @Inject constructor(
         conversationRepository.deleteConversations(userId, conversationIds, currentLabelId)
     }
 
+    suspend operator fun invoke(userId: UserId, labelId: LabelId) {
+        conversationRepository.deleteConversations(userId, labelId)
+    }
+
     private suspend fun decrementUnreadConversationsCount(userId: UserId, conversationIds: List<ConversationId>) {
         conversationRepository.observeCachedConversations(userId, conversationIds)
             .firstOrNull()

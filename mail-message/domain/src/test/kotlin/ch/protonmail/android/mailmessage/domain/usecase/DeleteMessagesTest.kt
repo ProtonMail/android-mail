@@ -71,4 +71,16 @@ class DeleteMessagesTest {
         // then
         coVerifySequence { decrementUnreadCount(userId, unreadMessage.labelIds) }
     }
+
+    @Test
+    fun `delete messages with label calls repository with given parameters`() = runTest {
+        // Given
+        coEvery { messageRepository.deleteMessages(userId, currentLabel) } returns Unit.right()
+
+        // When
+        deleteMessages(userId, currentLabel)
+
+        // Then
+        coVerify { messageRepository.deleteMessages(userId, currentLabel) }
+    }
 }

@@ -39,6 +39,10 @@ class DeleteMessages @Inject constructor(
         messageRepository.deleteMessages(userId, messageIds, currentLabelId)
     }
 
+    suspend operator fun invoke(userId: UserId, labelId: LabelId) {
+        messageRepository.deleteMessages(userId, labelId)
+    }
+
     private suspend fun decrementUnreadMessagesCount(userId: UserId, messageIds: List<MessageId>) {
         messageRepository.observeCachedMessages(userId, messageIds).firstOrNull()?.map { messages ->
             messages.onEach { message ->
