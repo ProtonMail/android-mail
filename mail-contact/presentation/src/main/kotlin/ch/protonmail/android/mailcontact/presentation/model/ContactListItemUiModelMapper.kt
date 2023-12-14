@@ -28,7 +28,7 @@ fun List<Contact>.toContactListItemUiModel(): List<ContactListItemUiModel> {
     }.sortedBy {
         it.name
     }.groupBy {
-        it.name.trim().first().uppercaseChar()
+        it.name.first().uppercaseChar()
     }.forEach { nameGroup ->
         contacts.add(
             ContactListItemUiModel.Header(value = nameGroup.key.toString())

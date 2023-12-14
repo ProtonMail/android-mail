@@ -107,24 +107,19 @@ fun ContactListScreen(actions: ContactListScreen.Actions, viewModel: ContactList
     ProtonModalBottomSheetLayout(
         sheetState = bottomSheetState,
         sheetContent = {
-            when (state) {
-                is ContactListState.Loading -> {}
-                is ContactListState.ListLoaded -> {
-                    ContactBottomSheetScreen(
-                        actions = ContactSettingsScreen.Actions(
-                            onNewContactClick = {
-                                viewModel.submit(ContactListViewAction.OnNewContactClick)
-                            },
-                            onNewContactGroupClick = {
-                                viewModel.submit(ContactListViewAction.OnNewContactGroupClick)
-                            },
-                            onImportContactClick = {
-                                viewModel.submit(ContactListViewAction.OnImportContactClick)
-                            }
-                        )
-                    )
-                }
-            }
+            ContactBottomSheetContent(
+                actions = ContactSettingsScreen.Actions(
+                    onNewContactClick = {
+                        viewModel.submit(ContactListViewAction.OnNewContactClick)
+                    },
+                    onNewContactGroupClick = {
+                        viewModel.submit(ContactListViewAction.OnNewContactGroupClick)
+                    },
+                    onImportContactClick = {
+                        viewModel.submit(ContactListViewAction.OnImportContactClick)
+                    }
+                )
+            )
         }
     ) {
         Scaffold(
@@ -188,8 +183,10 @@ fun ContactListScreen(actions: ContactListScreen.Actions, viewModel: ContactList
 }
 
 @Composable
-fun ContactBottomSheetScreen(modifier: Modifier = Modifier, actions: ContactSettingsScreen.Actions) {
-    Column {
+fun ContactBottomSheetContent(modifier: Modifier = Modifier, actions: ContactSettingsScreen.Actions) {
+    Column(
+        modifier = modifier.padding(top = ProtonDimens.SmallSpacing)
+    ) {
         ContactBottomSheetItem(
             modifier = Modifier,
             titleResId = R.string.new_contact,
@@ -504,7 +501,7 @@ private fun EmptyContactListScreenPreview() {
 @Composable
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 private fun ContactBottomSheetScreenPreview() {
-    ContactBottomSheetScreen(
+    ContactBottomSheetContent(
         actions = ContactSettingsScreen.Actions.Empty
     )
 }
