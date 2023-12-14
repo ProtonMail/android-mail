@@ -22,14 +22,14 @@ import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.domain.model.Message
 import ch.protonmail.android.mailmessage.domain.model.MessageId
-import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
+import ch.protonmail.android.mailmessage.domain.usecase.MarkMessagesAsUnread
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 class MarkMessageAsUnread @Inject constructor(
-    private val messageRepository: MessageRepository
+    private val markMessagesAsUnread: MarkMessagesAsUnread
 ) {
 
     suspend operator fun invoke(userId: UserId, messageId: MessageId): Either<DataError.Local, Message> =
-        messageRepository.markUnread(userId, messageId)
+        markMessagesAsUnread.invoke(userId, listOf(messageId)).map { it.first() }
 }

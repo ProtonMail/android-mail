@@ -22,9 +22,9 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
-import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
+import ch.protonmail.android.mailmessage.domain.usecase.MarkMessagesAsRead
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -36,14 +36,14 @@ internal class MarkMessageAsReadTest {
     private val userId = UserIdSample.Primary
     private val messageId = MessageIdSample.Invoice
 
-    private val messageRepository: MessageRepository = mockk()
-    private val markRead = MarkMessageAsRead(messageRepository)
+    private val markMessagesAsRead: MarkMessagesAsRead = mockk()
+    private val markRead = MarkMessageAsRead(markMessagesAsRead)
 
     @Test
     fun `when repository fails then error is returned`() = runTest {
         // given
         val error = DataError.Local.NoDataCached.left()
-        coEvery { messageRepository.markRead(userId, messageId) } returns error
+        coEvery { markMessagesAsRead(userId, listOf(messageId)) } returns error
 
         // when
         val result = markRead(userId, messageId)
@@ -55,13 +55,13 @@ internal class MarkMessageAsReadTest {
     @Test
     fun `when repository succeed then message is returned`() = runTest {
         // given
-        val message = MessageSample.Invoice.right()
-        coEvery { messageRepository.markRead(userId, messageId) } returns message
+        val message = MessageSample.Invoice
+        coEvery { markMessagesAsRead(userId, listOf(messageId)) } returns listOf(message).right()
 
         // when
         val result = markRead(userId, messageId)
 
         // then
-        assertEquals(message, result)
+        assertEquals(message.right(), result)
     }
 }

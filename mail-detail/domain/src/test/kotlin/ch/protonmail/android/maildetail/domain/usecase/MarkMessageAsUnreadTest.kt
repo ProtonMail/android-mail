@@ -23,9 +23,9 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailmessage.domain.model.MessageId
-import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
+import ch.protonmail.android.mailmessage.domain.usecase.MarkMessagesAsUnread
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -34,14 +34,14 @@ import kotlin.test.assertEquals
 
 internal class MarkMessageAsUnreadTest {
 
-    private val messageRepository: MessageRepository = mockk()
-    private val markUnread = MarkMessageAsUnread(messageRepository)
+    private val markMessagesAsUnread: MarkMessagesAsUnread = mockk()
+    private val markUnread = MarkMessageAsUnread(markMessagesAsUnread)
 
     @Test
     fun `when repository fails then error is returned`() = runTest {
         // given
         val error = DataError.Local.NoDataCached.left()
-        coEvery { messageRepository.markUnread(any(), any<MessageId>()) } returns error
+        coEvery { markMessagesAsUnread(UserIdSample.Primary, listOf(MessageIdSample.Invoice)) } returns error
 
         // when
         val result = markUnread(UserIdSample.Primary, MessageIdSample.Invoice)
@@ -53,13 +53,13 @@ internal class MarkMessageAsUnreadTest {
     @Test
     fun `when repository succeed then message is returned`() = runTest {
         // given
-        val message = MessageSample.Invoice.right()
-        coEvery { messageRepository.markUnread(any(), any<MessageId>()) } returns MessageSample.Invoice.right()
+        val message = MessageSample.Invoice
+        coEvery { markMessagesAsUnread(any(), any<List<MessageId>>()) } returns listOf(message).right()
 
         // when
         val result = markUnread(UserIdSample.Primary, MessageIdSample.Invoice)
 
         // then
-        assertEquals(message, result)
+        assertEquals(message.right(), result)
     }
 }
