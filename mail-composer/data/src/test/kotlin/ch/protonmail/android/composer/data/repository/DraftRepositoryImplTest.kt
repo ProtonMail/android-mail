@@ -23,7 +23,10 @@ import ch.protonmail.android.composer.data.remote.UploadAttachmentsWorker
 import ch.protonmail.android.composer.data.remote.UploadDraftWorker
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.mailcomposer.domain.usecase.DraftUploadTracker
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -34,11 +37,12 @@ import kotlin.test.Test
 class DraftRepositoryImplTest {
 
     private val enqueuer = mockk<Enqueuer>()
+    private val draftUploadTracker = mockk<DraftUploadTracker>()
 
-    private val draftRepository = DraftRepositoryImpl(enqueuer)
+    private val draftRepository = DraftRepositoryImpl(enqueuer, draftUploadTracker)
 
     @Test
-    fun `upload enqueue upload draft work when not already enqueued`() = runTest {
+    fun `upload enqueue upload draft work when not already enqueued and upload tracker requires upload`() = runTest {
         // Given
         val userId = UserIdSample.Primary
         val messageId = MessageIdSample.LocalDraft
@@ -46,6 +50,7 @@ class DraftRepositoryImplTest {
         val expectedWorkerId = UploadDraftWorker.id(messageId)
         val expectedWorkPolicy = ExistingWorkPolicy.KEEP
         givenEnqueuerSucceeds(userId, expectedWorkerId, expectedParams, expectedWorkPolicy)
+        givenUploadTrackerRequiresUpload(userId, messageId)
 
         // When
         draftRepository.upload(userId, messageId)
@@ -57,6 +62,24 @@ class DraftRepositoryImplTest {
                 workerId = expectedWorkerId,
                 params = expectedParams,
                 existingWorkPolicy = expectedWorkPolicy
+            )
+        }
+    }
+
+    @Test
+    fun `should not enqueue upload draft work when upload tracker does not require upload`() = runTest {
+        // Given
+        val userId = UserIdSample.Primary
+        val messageId = MessageIdSample.LocalDraft
+        givenUploadTrackerDoesNotRequireUpload(userId, messageId)
+
+        // When
+        draftRepository.upload(userId, messageId)
+
+        // Then
+        verify(exactly = 0) {
+            enqueuer.enqueueUniqueWork<UploadDraftWorker>(
+                userId, any(), any(), any()
             )
         }
     }
@@ -92,6 +115,18 @@ class DraftRepositoryImplTest {
                 existingWorkPolicy = expectedWorkPolicy
             )
         }
+    }
+
+    private fun givenUploadTrackerRequiresUpload(userId: UserId, messageId: MessageId) {
+        coEvery {
+            draftUploadTracker.uploadRequired(userId, messageId)
+        } returns true
+    }
+
+    private fun givenUploadTrackerDoesNotRequireUpload(userId: UserId, messageId: MessageId) {
+        coEvery {
+            draftUploadTracker.uploadRequired(userId, messageId)
+        } returns false
     }
 
     private fun givenEnqueuerSucceeds(

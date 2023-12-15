@@ -23,24 +23,30 @@ import ch.protonmail.android.composer.data.remote.UploadAttachmentsWorker
 import ch.protonmail.android.composer.data.remote.UploadDraftWorker
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcomposer.domain.repository.DraftRepository
+import ch.protonmail.android.mailcomposer.domain.usecase.DraftUploadTracker
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import javax.inject.Inject
 
 class DraftRepositoryImpl @Inject constructor(
-    private val enqueuer: Enqueuer
+    private val enqueuer: Enqueuer,
+    private val draftUploadTracker: DraftUploadTracker
 ) : DraftRepository {
 
     override suspend fun upload(userId: UserId, messageId: MessageId) {
-        val uniqueWorkId = UploadDraftWorker.id(messageId)
+        if (draftUploadTracker.uploadRequired(userId, messageId)) {
+            val uniqueWorkId = UploadDraftWorker.id(messageId)
 
-        enqueuer.enqueueUniqueWork<UploadDraftWorker>(
-            userId = userId,
-            workerId = uniqueWorkId,
-            params = UploadDraftWorker.params(userId, messageId),
-            existingWorkPolicy = ExistingWorkPolicy.KEEP
-        )
+            enqueuer.enqueueUniqueWork<UploadDraftWorker>(
+                userId = userId,
+                workerId = uniqueWorkId,
+                params = UploadDraftWorker.params(userId, messageId),
+                existingWorkPolicy = ExistingWorkPolicy.KEEP
+            )
+        } else {
+            Timber.v("Draft: Upload skipped for $messageId")
+        }
     }
 
     override suspend fun forceUpload(userId: UserId, messageId: MessageId) {
