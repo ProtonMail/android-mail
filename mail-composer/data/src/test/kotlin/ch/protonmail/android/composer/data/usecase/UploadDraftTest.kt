@@ -29,6 +29,7 @@ import ch.protonmail.android.mailmessage.domain.model.DraftState
 import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailcomposer.domain.sample.DraftStateSample
 import ch.protonmail.android.mailcomposer.domain.usecase.CreateOrUpdateParentAttachmentStates
+import ch.protonmail.android.mailcomposer.domain.usecase.DraftUploadTracker
 import ch.protonmail.android.mailcomposer.domain.usecase.FindLocalDraft
 import ch.protonmail.android.mailcomposer.domain.usecase.IsDraftKnownToApi
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
@@ -68,6 +69,7 @@ class UploadDraftTest {
     private val fakeTransactor = FakeTransactor()
     private val attachmentRepository = mockk<AttachmentRepository>()
     private val updatedAttachmentStates = mockk<CreateOrUpdateParentAttachmentStates>()
+    private val draftUploadTracker = mockk<DraftUploadTracker>()
 
     private val draftRepository = UploadDraft(
         fakeTransactor,
@@ -77,7 +79,8 @@ class UploadDraftTest {
         draftRemoteDataSource,
         isDraftKnownToApi,
         attachmentRepository,
-        updatedAttachmentStates
+        updatedAttachmentStates,
+        draftUploadTracker
     )
 
     @Test
@@ -141,6 +144,7 @@ class UploadDraftTest {
         expectRemoteDataSourceUpdateSuccess(userId, expectedDraft, expectedResponse)
         expectStoreSyncedStateSuccess(userId, messageId, messageId)
         expectIsDraftKnownToApi(expectedDraftState, true)
+        expectDraftUploadTrackerNotified(messageId, expectedDraft)
 
         // When
         val actual = draftRepository(userId, messageId)
@@ -238,6 +242,7 @@ class UploadDraftTest {
         expectRemoteDataSourceUpdateSuccess(userId, expectedDraft, expectedResponse)
         expectStoreSyncedStateSuccess(userId, messageId, messageId)
         expectIsDraftKnownToApi(expectedDraftState, true)
+        expectDraftUploadTrackerNotified(messageId, expectedDraft)
 
         // When
         val actual = draftRepository(userId, messageId)
@@ -245,6 +250,7 @@ class UploadDraftTest {
         // Then
         assertEquals(Unit.right(), actual)
         coVerify(exactly = 0) { draftRemoteDataSource.create(any(), any(), any()) }
+        coVerify { draftUploadTracker.notifyUploadedDraft(messageId, expectedDraft) }
     }
 
     @Test
@@ -392,4 +398,7 @@ class UploadDraftTest {
         coJustRun { updatedAttachmentStates(userId, messageId, attachmentIds) }
     }
 
+    private fun expectDraftUploadTrackerNotified(messageId: MessageId, expectedMessage: MessageWithBody) {
+        coJustRun { draftUploadTracker.notifyUploadedDraft(messageId, expectedMessage) }
+    }
 }

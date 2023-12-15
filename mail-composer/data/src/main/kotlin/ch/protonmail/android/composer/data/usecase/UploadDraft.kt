@@ -26,6 +26,7 @@ import ch.protonmail.android.mailcomposer.domain.Transactor
 import ch.protonmail.android.mailmessage.domain.model.DraftState
 import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailcomposer.domain.usecase.CreateOrUpdateParentAttachmentStates
+import ch.protonmail.android.mailcomposer.domain.usecase.DraftUploadTracker
 import ch.protonmail.android.mailcomposer.domain.usecase.FindLocalDraft
 import ch.protonmail.android.mailcomposer.domain.usecase.IsDraftKnownToApi
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -45,7 +46,8 @@ internal class UploadDraft @Inject constructor(
     private val draftRemoteDataSource: DraftRemoteDataSource,
     private val isDraftKnownToApi: IsDraftKnownToApi,
     private val attachmentRepository: AttachmentRepository,
-    private val updateParentAttachments: CreateOrUpdateParentAttachmentStates
+    private val updateParentAttachments: CreateOrUpdateParentAttachmentStates,
+    private val draftUploadTracker: DraftUploadTracker
 ) {
 
     suspend operator fun invoke(userId: UserId, messageId: MessageId): Either<DataError, Unit> = either {
@@ -98,6 +100,7 @@ internal class UploadDraft @Inject constructor(
         draftStateRepository.updateApiMessageIdAndSetSyncedState(
             userId, it.message.messageId, it.message.messageId
         )
+        draftUploadTracker.notifyUploadedDraft(messageId, message)
     }.onLeft {
         Timber.w("Sync draft failure $messageId: Update API call error $it")
     }
