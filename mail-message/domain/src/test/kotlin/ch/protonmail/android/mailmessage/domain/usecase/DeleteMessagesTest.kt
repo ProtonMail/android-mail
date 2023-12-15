@@ -23,9 +23,12 @@ import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.coVerifySequence
 import io.mockk.mockk
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
@@ -36,18 +39,36 @@ class DeleteMessagesTest {
     private val currentLabel = SystemLabelId.Trash.labelId
 
     private val messageRepository = mockk<MessageRepository>()
+    private val decrementUnreadCount = mockk<DecrementUnreadCount>()
 
-    private val deleteMessages by lazy { DeleteMessages(messageRepository) }
+    private val deleteMessages = DeleteMessages(messageRepository, decrementUnreadCount)
 
     @Test
     fun `delete messages calls repository with given parameters`() = runTest {
         // Given
         coEvery { messageRepository.deleteMessages(userId, messageIds, currentLabel) } returns Unit.right()
+        coEvery { messageRepository.observeCachedMessages(userId, messageIds) } returns flowOf()
 
         // When
         deleteMessages(userId, messageIds, currentLabel)
 
         // Then
         coVerify { messageRepository.deleteMessages(userId, messageIds, currentLabel) }
+    }
+
+    @Test
+    fun `decrement unread messages count for each unread message that is deleted`() = runTest {
+        // given
+        val unreadMessage = MessageSample.UnreadInvoice
+        val messages = listOf(MessageSample.Invoice, MessageSample.HtmlInvoice, unreadMessage).right()
+        coEvery { messageRepository.deleteMessages(userId, messageIds, currentLabel) } returns Unit.right()
+        coEvery { messageRepository.observeCachedMessages(userId, messageIds) } returns flowOf(messages)
+        coEvery { decrementUnreadCount(userId, currentLabel) } returns Unit.right()
+
+        // when
+        deleteMessages(userId, messageIds, currentLabel)
+
+        // then
+        coVerifySequence { decrementUnreadCount(userId, currentLabel) }
     }
 }

@@ -20,17 +20,36 @@ package ch.protonmail.android.mailmessage.domain.usecase
 
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
+import kotlinx.coroutines.flow.firstOrNull
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import javax.inject.Inject
 
-class DeleteMessages @Inject constructor(private val messageRepository: MessageRepository) {
+class DeleteMessages @Inject constructor(
+    private val messageRepository: MessageRepository,
+    private val decrementUnreadCount: DecrementUnreadCount
+) {
 
     suspend operator fun invoke(
         userId: UserId,
         messageIds: List<MessageId>,
         currentLabelId: LabelId
     ) {
+        decrementUnreadMessagesCount(userId, messageIds, currentLabelId)
         messageRepository.deleteMessages(userId, messageIds, currentLabelId)
+    }
+
+    private suspend fun decrementUnreadMessagesCount(
+        userId: UserId,
+        messageIds: List<MessageId>,
+        currentLabelId: LabelId
+    ) {
+        messageRepository.observeCachedMessages(userId, messageIds).firstOrNull()?.map { messages ->
+            messages.onEach { message ->
+                if (message.unread) {
+                    decrementUnreadCount(userId, currentLabelId)
+                }
+            }
+        }
     }
 }
