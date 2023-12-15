@@ -22,6 +22,7 @@ import arrow.core.Either
 import arrow.core.raise.either
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveMailLabels
+import ch.protonmail.android.mailmessage.domain.model.Message
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import kotlinx.coroutines.flow.first
@@ -31,6 +32,8 @@ import javax.inject.Inject
 
 class MoveMessages @Inject constructor(
     private val messageRepository: MessageRepository,
+    private val decrementUnreadCount: DecrementUnreadCount,
+    private val incrementUnreadCount: IncrementUnreadCount,
     private val observeExclusiveMailLabels: ObserveExclusiveMailLabels
 ) {
 
@@ -40,9 +43,25 @@ class MoveMessages @Inject constructor(
         labelId: LabelId
     ): Either<DataError.Local, Unit> = either {
         val exclusiveMailLabels = observeExclusiveMailLabels(userId).first().allById.mapKeys { it.key.labelId }
-        val messagesWithExclusiveLabels = messageRepository.getLocalMessages(userId, messageIds).associate {
-            it.messageId to it.labelIds.firstOrNull { labelId -> labelId in exclusiveMailLabels }
-        }
-        messageRepository.moveTo(userId, messagesWithExclusiveLabels, labelId).bind()
+        val messagesWithExclusiveLabels =
+            messageRepository.getLocalMessages(userId, messageIds).associateWith {
+                it.labelIds.firstOrNull { labelId -> labelId in exclusiveMailLabels }
+            }
+        updateUnreadMessagesCount(userId, messagesWithExclusiveLabels, labelId)
+        val messageIdsWithExclusiveLabels = messagesWithExclusiveLabels.mapKeys { it.key.messageId }
+        messageRepository.moveTo(userId, messageIdsWithExclusiveLabels, labelId).bind()
     }
+
+    private suspend fun updateUnreadMessagesCount(
+        userId: UserId,
+        messagesWithExclusiveLabels: Map<Message, LabelId?>,
+        destinationLabel: LabelId
+    ) = messagesWithExclusiveLabels.onEach { messageWithLabels ->
+        val exclusiveLabelId = messageWithLabels.value
+        if (exclusiveLabelId != null && messageWithLabels.key.unread) {
+            decrementUnreadCount(userId, exclusiveLabelId)
+            incrementUnreadCount(userId, destinationLabel)
+        }
+    }
+
 }

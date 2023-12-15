@@ -21,16 +21,19 @@ package ch.protonmail.android.mailmessage.domain.usecase
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.model.toMailLabelSystem
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveMailLabels
 import ch.protonmail.android.mailmessage.domain.model.Message
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import io.mockk.coEvery
+import io.mockk.coVerifySequence
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
@@ -46,14 +49,16 @@ class MoveMessagesTest {
     private val exclusiveMailLabels = SystemLabelId.exclusiveList.map { it.toMailLabelSystem() }
 
     private val messageRepository = mockk<MessageRepository>()
+    private val decrementUnreadCount = mockk<DecrementUnreadCount>()
+    private val incrementUnreadCount = mockk<IncrementUnreadCount>()
     private val observeExclusiveMailLabels = mockk<ObserveExclusiveMailLabels>()
 
-    private val moveMessages by lazy {
-        MoveMessages(
-            messageRepository = messageRepository,
-            observeExclusiveMailLabels = observeExclusiveMailLabels
-        )
-    }
+    private val moveMessages = MoveMessages(
+        messageRepository,
+        decrementUnreadCount,
+        incrementUnreadCount,
+        observeExclusiveMailLabels
+    )
 
     @Test
     fun `when move succeeds then Unit is returned`() = runTest {
@@ -83,6 +88,31 @@ class MoveMessagesTest {
         assertEquals(DataError.Local.NoDataCached.left(), actual)
     }
 
+    @Test
+    fun `for each unread message moved decrement unread count of 'from' label and increment it of 'to' label'`() =
+        runTest {
+            // given
+            val fromLabel = LabelIdSample.Archive // Unread invoice has this exclusive label
+            val toLabel = SystemLabelId.Trash.labelId
+            val unreadMessage = MessageSample.UnreadInvoice
+            val messages = listOf(MessageSample.Invoice, MessageSample.HtmlInvoice, unreadMessage)
+            val expectedMap = messages.associate { it.messageId to it.labelIds.first() }
+            expectObserveExclusiveMailLabelSucceeds()
+            expectGetLocalMessagesSucceeds(messages)
+            expectMoveSucceeds(toLabel, messages, expectedMap)
+            coEvery { decrementUnreadCount(userId, fromLabel) } returns Unit.right()
+            coEvery { incrementUnreadCount(userId, toLabel) } returns Unit.right()
+
+            // when
+            moveMessages(userId, messageIds, toLabel)
+
+            // then
+            coVerifySequence {
+                decrementUnreadCount(userId, fromLabel)
+                incrementUnreadCount(userId, toLabel)
+            }
+        }
+
     private fun expectObserveExclusiveMailLabelSucceeds() {
         every { observeExclusiveMailLabels(userId) } returns flowOf(
             MailLabels(
@@ -93,16 +123,21 @@ class MoveMessagesTest {
         )
     }
 
-    private fun expectGetLocalMessagesSucceeds() {
-        coEvery { messageRepository.getLocalMessages(userId, messageIds) } returns listOf(
+    private fun expectGetLocalMessagesSucceeds(withMessages: List<Message>? = null) {
+        val returnedMessages = withMessages ?: listOf(
             MessageSample.AugWeatherForecast.copy(labelIds = listOf(SystemLabelId.Archive.labelId)),
             MessageSample.Invoice.copy(labelIds = listOf(SystemLabelId.Inbox.labelId))
         )
+        coEvery { messageRepository.getLocalMessages(userId, messageIds) } returns returnedMessages
     }
 
-    private fun expectMoveSucceeds(destinationLabel: LabelId, expectedMessages: List<Message>) {
+    private fun expectMoveSucceeds(
+        destinationLabel: LabelId,
+        expectedMessages: List<Message>,
+        expectedMap: Map<MessageId, LabelId?> = buildExpectedMap()
+    ) {
         coEvery {
-            messageRepository.moveTo(userId, buildExpectedMap(), destinationLabel)
+            messageRepository.moveTo(userId, expectedMap, destinationLabel)
         } returns expectedMessages.right()
     }
 
