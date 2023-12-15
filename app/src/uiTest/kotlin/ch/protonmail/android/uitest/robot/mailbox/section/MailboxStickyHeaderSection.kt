@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.uitest.robot.mailbox.section
 
-import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotSelected
 import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.onNodeWithTag
@@ -47,13 +46,13 @@ internal class MailboxStickyHeaderSection : ComposeSectionRobot() {
 
         fun unreadFilterIsDisplayed() {
             unreadFilterChip
-                .assertIsDisplayed()
+                .awaitDisplayed()
                 .assertIsNotSelected()
         }
 
         fun unreadFilterIsSelected() {
             unreadFilterChip
-                .assertIsDisplayed()
+                .awaitDisplayed()
                 .assertIsSelected()
         }
     }
