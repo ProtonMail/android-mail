@@ -21,6 +21,7 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox
 import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.ReportDrawn
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -35,12 +36,15 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.ButtonDefaults.OutlinedBorderSize
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetValue
@@ -83,6 +87,7 @@ import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
+import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialog
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
@@ -108,11 +113,13 @@ import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.LabelAsBott
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MoreActionBottomSheetContent
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MoveToBottomSheetContent
 import kotlinx.coroutines.launch
+import me.proton.core.compose.component.ProtonButton
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonModalBottomSheetLayout
 import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
+import me.proton.core.compose.component.protonOutlinedButtonColors
 import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
@@ -174,6 +181,9 @@ fun MailboxScreen(
             delete = { viewModel.submit(MailboxViewAction.Delete) },
             deleteConfirmed = { viewModel.submit(MailboxViewAction.DeleteConfirmed) },
             deleteDialogDismissed = { viewModel.submit(MailboxViewAction.DeleteDialogDismissed) },
+            deleteAll = { viewModel.submit(MailboxViewAction.DeleteAll) },
+            deleteAllConfirmed = { viewModel.submit(MailboxViewAction.DeleteAllConfirmed) },
+            deleteAllDismissed = { viewModel.submit(MailboxViewAction.DeleteAllDialogDismissed) },
             onLabelAsClicked = { viewModel.submit(MailboxViewAction.RequestLabelAsBottomSheet) },
             onMoveToClicked = { viewModel.submit(MailboxViewAction.RequestMoveToBottomSheet) },
             onMoreClicked = { viewModel.submit(MailboxViewAction.RequestMoreActionsBottomSheet) },
@@ -282,6 +292,7 @@ fun MailboxScreen(
     }
 
     DeleteDialog(state = mailboxState.deleteDialogState, actions.deleteConfirmed, actions.deleteDialogDismissed)
+    DeleteDialog(state = mailboxState.deleteAllDialogState, actions.deleteAllConfirmed, actions.deleteAllDismissed)
 
     Scaffold(
         modifier = modifier.testTag(MailboxScreenTestTags.Root),
@@ -567,6 +578,32 @@ private fun MailboxItemsList(
             .testTag(MailboxScreenTestTags.List)
             .fillMaxSize()
     ) {
+        if (state is MailboxListState.Data) {
+            state.clearButtonText?.let { text ->
+                item {
+                    ProtonButton(
+                        onClick = actions.deleteAll,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(min = ButtonDefaults.MinHeight)
+                            .padding(
+                                bottom = ProtonDimens.DefaultSpacing,
+                                start = ProtonDimens.DefaultSpacing,
+                                end = ProtonDimens.MediumSpacing
+                            ),
+                        shape = ProtonTheme.shapes.medium,
+                        border = BorderStroke(OutlinedBorderSize, ProtonTheme.colors.notificationError),
+                        elevation = null,
+                        colors = ButtonDefaults.protonOutlinedButtonColors(
+                            contentColor = ProtonTheme.colors.notificationError
+                        ),
+                        contentPadding = ButtonDefaults.ContentPadding
+                    ) {
+                        Text(text = text.string())
+                    }
+                }
+            }
+        }
         items(
             count = items.itemCount,
             key = items.itemKey { it.id },
@@ -847,6 +884,9 @@ object MailboxScreen {
         val delete: () -> Unit,
         val deleteConfirmed: () -> Unit,
         val deleteDialogDismissed: () -> Unit,
+        val deleteAll: () -> Unit,
+        val deleteAllConfirmed: () -> Unit,
+        val deleteAllDismissed: () -> Unit,
         val onLabelAsClicked: () -> Unit,
         val onMoveToClicked: () -> Unit,
         val onMoreClicked: () -> Unit,
@@ -889,6 +929,9 @@ object MailboxScreen {
                 delete = {},
                 deleteConfirmed = {},
                 deleteDialogDismissed = {},
+                deleteAll = {},
+                deleteAllConfirmed = {},
+                deleteAllDismissed = {},
                 onLabelAsClicked = {},
                 onMoveToClicked = {},
                 onMoreClicked = {},
