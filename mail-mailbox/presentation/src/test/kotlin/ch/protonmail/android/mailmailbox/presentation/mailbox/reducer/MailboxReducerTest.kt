@@ -23,11 +23,11 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
+import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.text
 import ch.protonmail.android.mailmailbox.presentation.R
-import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
@@ -157,6 +157,8 @@ internal class MailboxReducerTest(
         } else {
             assertEquals(currentState.bottomSheetState, nextState.bottomSheetState, testName)
         }
+
+        assertEquals(testInput.deleteAllDialogState, nextState.deleteAllDialogState)
     }
 
     companion object {
@@ -185,6 +187,7 @@ internal class MailboxReducerTest(
             onboardingState = OnboardingState.Hidden,
             actionMessage = Effect.empty(),
             deleteDialogState = DeleteDialogState.Hidden,
+            deleteAllDialogState = DeleteDialogState.Hidden,
             bottomSheetState = null,
             error = Effect.empty()
         )
@@ -524,6 +527,106 @@ internal class MailboxReducerTest(
                 shouldReduceBottomSheetState = false
             ),
             TestInput(
+                MailboxEvent.DeleteAll(ViewMode.ConversationGrouping, LabelIdSample.Trash),
+                shouldReduceMailboxListState = false,
+                shouldReduceTopAppBarState = false,
+                shouldReduceUnreadFilterState = false,
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false,
+                shouldReduceDeleteDialog = false,
+                deleteAllDialogState = DeleteDialogState.Shown(
+                    title = TextUiModel(R.string.mailbox_action_clear_trash_dialog_title),
+                    message = TextUiModel(R.string.mailbox_action_clear_trash_dialog_body_conversation)
+                ),
+                shouldReduceBottomSheetState = false
+            ),
+            TestInput(
+                MailboxEvent.DeleteAll(ViewMode.NoConversationGrouping, LabelIdSample.Trash),
+                shouldReduceMailboxListState = false,
+                shouldReduceTopAppBarState = false,
+                shouldReduceUnreadFilterState = false,
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false,
+                shouldReduceDeleteDialog = false,
+                deleteAllDialogState = DeleteDialogState.Shown(
+                    title = TextUiModel(R.string.mailbox_action_clear_trash_dialog_title),
+                    message = TextUiModel(R.string.mailbox_action_clear_trash_dialog_body_message)
+                ),
+                shouldReduceBottomSheetState = false
+            ),
+            TestInput(
+                MailboxEvent.DeleteAll(ViewMode.ConversationGrouping, LabelIdSample.Spam),
+                shouldReduceMailboxListState = false,
+                shouldReduceTopAppBarState = false,
+                shouldReduceUnreadFilterState = false,
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false,
+                shouldReduceDeleteDialog = false,
+                deleteAllDialogState = DeleteDialogState.Shown(
+                    title = TextUiModel(R.string.mailbox_action_clear_spam_dialog_title),
+                    message = TextUiModel(R.string.mailbox_action_clear_spam_dialog_body_conversation)
+                ),
+                shouldReduceBottomSheetState = false
+            ),
+            TestInput(
+                MailboxEvent.DeleteAll(ViewMode.NoConversationGrouping, LabelIdSample.Spam),
+                shouldReduceMailboxListState = false,
+                shouldReduceTopAppBarState = false,
+                shouldReduceUnreadFilterState = false,
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false,
+                shouldReduceDeleteDialog = false,
+                deleteAllDialogState = DeleteDialogState.Shown(
+                    title = TextUiModel(R.string.mailbox_action_clear_spam_dialog_title),
+                    message = TextUiModel(R.string.mailbox_action_clear_spam_dialog_body_message)
+                ),
+                shouldReduceBottomSheetState = false
+            ),
+            TestInput(
+                MailboxEvent.DeleteAll(ViewMode.NoConversationGrouping, LabelIdSample.Inbox),
+                shouldReduceMailboxListState = false,
+                shouldReduceTopAppBarState = false,
+                shouldReduceUnreadFilterState = false,
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false,
+                shouldReduceDeleteDialog = false,
+                deleteAllDialogState = DeleteDialogState.Hidden,
+                shouldReduceBottomSheetState = false
+            ),
+            TestInput(
+                MailboxEvent.DeleteAllConfirmed(ViewMode.ConversationGrouping),
+                shouldReduceMailboxListState = false,
+                shouldReduceTopAppBarState = false,
+                shouldReduceUnreadFilterState = false,
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false,
+                shouldReduceDeleteDialog = false,
+                deleteAllDialogState = DeleteDialogState.Hidden,
+                shouldReduceBottomSheetState = false
+            ),
+            TestInput(
+                MailboxEvent.DeleteAllConfirmed(ViewMode.NoConversationGrouping),
+                shouldReduceMailboxListState = false,
+                shouldReduceTopAppBarState = false,
+                shouldReduceUnreadFilterState = false,
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false,
+                shouldReduceDeleteDialog = false,
+                deleteAllDialogState = DeleteDialogState.Hidden,
+                shouldReduceBottomSheetState = false
+            ),
+            TestInput(
+                MailboxViewAction.DeleteAllDialogDismissed,
+                shouldReduceMailboxListState = false,
+                shouldReduceTopAppBarState = false,
+                shouldReduceUnreadFilterState = false,
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false,
+                shouldReduceDeleteDialog = false,
+                deleteAllDialogState = DeleteDialogState.Hidden,
+                shouldReduceBottomSheetState = false
+            ),
+            TestInput(
                 MailboxEvent.ErrorLabeling,
                 shouldReduceMailboxListState = false,
                 shouldReduceTopAppBarState = false,
@@ -531,6 +634,7 @@ internal class MailboxReducerTest(
                 shouldReduceBottomAppBarState = false,
                 shouldReduceActionMessage = false,
                 shouldReduceDeleteDialog = false,
+
                 shouldReduceBottomSheetState = false,
                 errorBarState = Effect.of(TextUiModel(R.string.mailbox_action_label_messages_failed))
             )
@@ -558,6 +662,7 @@ internal class MailboxReducerTest(
         val shouldReduceBottomAppBarState: Boolean,
         val shouldReduceActionMessage: Boolean,
         val shouldReduceDeleteDialog: Boolean,
+        val deleteAllDialogState: DeleteDialogState = DeleteDialogState.Hidden,
         val shouldReduceBottomSheetState: Boolean,
         val errorBarState: Effect<TextUiModel> = Effect.empty()
     )

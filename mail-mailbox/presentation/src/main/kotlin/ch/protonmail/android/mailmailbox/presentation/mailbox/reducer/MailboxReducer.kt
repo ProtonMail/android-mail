@@ -23,8 +23,9 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
-import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
@@ -38,6 +39,7 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSh
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState.LabelAsBottomSheetAction.LabelToggled
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState.MoveToBottomSheetAction.MoveToDestinationSelected
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
+import me.proton.core.mailsettings.domain.entity.ViewMode
 import javax.inject.Inject
 
 class MailboxReducer @Inject constructor(
@@ -59,6 +61,7 @@ class MailboxReducer @Inject constructor(
             bottomAppBarState = currentState.toNewBottomAppBarStateFrom(operation),
             onboardingState = currentState.toNewOnboardingStateFrom(operation),
             deleteDialogState = currentState.toNewDeleteActionStateFrom(operation),
+            deleteAllDialogState = currentState.toNewDeleteAllActionStateFrom(operation),
             bottomSheetState = currentState.toNewBottomSheetState(operation),
             actionMessage = currentState.toNewActionMessageStateFrom(operation),
             error = currentState.toNewErrorBarState(operation)
@@ -127,6 +130,44 @@ class MailboxReducer @Inject constructor(
             deleteDialogReducer.newStateFrom(operation)
         } else {
             deleteDialogState
+        }
+    }
+
+    private fun MailboxState.toNewDeleteAllActionStateFrom(operation: MailboxOperation): DeleteDialogState {
+        return if (operation is MailboxOperation.AffectingClearDialog) {
+            when (operation) {
+                is MailboxEvent.DeleteAll ->
+                    when (operation.location) {
+                        SystemLabelId.Trash.labelId -> DeleteDialogState.Shown(
+                            title = TextUiModel(R.string.mailbox_action_clear_trash_dialog_title),
+                            message = when (operation.viewMode) {
+                                ViewMode.ConversationGrouping ->
+                                    TextUiModel(R.string.mailbox_action_clear_trash_dialog_body_conversation)
+
+                                ViewMode.NoConversationGrouping ->
+                                    TextUiModel(R.string.mailbox_action_clear_trash_dialog_body_message)
+                            }
+                        )
+
+                        SystemLabelId.Spam.labelId -> DeleteDialogState.Shown(
+                            title = TextUiModel(R.string.mailbox_action_clear_spam_dialog_title),
+                            message = when (operation.viewMode) {
+                                ViewMode.ConversationGrouping ->
+                                    TextUiModel(R.string.mailbox_action_clear_spam_dialog_body_conversation)
+
+                                ViewMode.NoConversationGrouping ->
+                                    TextUiModel(R.string.mailbox_action_clear_spam_dialog_body_message)
+                            }
+                        )
+
+                        else -> DeleteDialogState.Hidden
+                    }
+
+                is MailboxEvent.DeleteAllConfirmed,
+                MailboxViewAction.DeleteAllDialogDismissed -> DeleteDialogState.Hidden
+            }
+        } else {
+            deleteAllDialogState
         }
     }
 

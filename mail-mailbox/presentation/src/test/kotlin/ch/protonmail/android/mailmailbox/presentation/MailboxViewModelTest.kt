@@ -318,6 +318,7 @@ class MailboxViewModelTest {
                 bottomAppBarState = BottomBarState.Data.Hidden(emptyList<ActionUiModel>().toImmutableList()),
                 onboardingState = OnboardingState.Hidden,
                 deleteDialogState = DeleteDialogState.Hidden,
+                deleteAllDialogState = DeleteDialogState.Hidden,
                 bottomSheetState = null,
                 actionMessage = Effect.empty(),
                 error = Effect.empty()
@@ -1673,6 +1674,82 @@ class MailboxViewModelTest {
                 )
             }
             coVerify { deleteConversations wasNot Called }
+        }
+    }
+
+    @Test
+    fun `when delete all is triggered from trash for no conversation grouping, then reducer is called`() = runTest {
+        // Given
+        val currentMailLabel = MailLabelId.System.Trash
+        val initialState = createMailboxDataState(selectedMailLabelId = currentMailLabel)
+        every { selectedMailLabelId.flow } returns MutableStateFlow(currentMailLabel)
+        expectedSelectedLabelCountStateChange(initialState)
+        expectViewModeForCurrentLocation(NoConversationGrouping)
+
+        mailboxViewModel.state.test {
+            awaitItem() // First emission for selected user
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.DeleteAll)
+
+            // Then
+            coVerify {
+                mailboxReducer.newStateFrom(
+                    any(),
+                    MailboxEvent.DeleteAll(NoConversationGrouping, currentMailLabel.labelId)
+                )
+                deleteMessages wasNot Called
+                deleteConversations wasNot Called
+            }
+        }
+    }
+
+    @Test
+    fun `when delete all is triggered from spam for no conversation grouping, then reducer is called`() = runTest {
+        // Given
+        val currentMailLabel = MailLabelId.System.Spam
+        val initialState = createMailboxDataState(selectedMailLabelId = currentMailLabel)
+        every { selectedMailLabelId.flow } returns MutableStateFlow(currentMailLabel)
+        expectedSelectedLabelCountStateChange(initialState)
+        expectViewModeForCurrentLocation(NoConversationGrouping)
+
+        mailboxViewModel.state.test {
+            awaitItem() // First emission for selected user
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.DeleteAll)
+
+            // Then
+            coVerify {
+                mailboxReducer.newStateFrom(
+                    any(),
+                    MailboxEvent.DeleteAll(NoConversationGrouping, currentMailLabel.labelId)
+                )
+                deleteMessages wasNot Called
+                deleteConversations wasNot Called
+            }
+        }
+    }
+
+    @Test
+    fun `when delete all is triggered from non spam or trash location, then no new state is emitted`() = runTest {
+        // Given
+        val initialState = createMailboxDataState(selectedMailLabelId = MailLabelId.System.Inbox)
+        every { selectedMailLabelId.flow } returns MutableStateFlow(MailLabelId.System.Inbox)
+        expectedSelectedLabelCountStateChange(initialState)
+
+        mailboxViewModel.state.test {
+            awaitItem() // First emission for selected user
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.DeleteAll)
+
+            // Then
+            coVerify(exactly = 0) { mailboxReducer.newStateFrom(any(), MailboxViewAction.DeleteAll) }
+            coVerify {
+                deleteMessages wasNot Called
+                deleteConversations wasNot Called
+            }
         }
     }
 

@@ -49,6 +49,7 @@ object MailboxStateSampleData {
         onboardingState = OnboardingState.Hidden,
         actionMessage = Effect.empty(),
         deleteDialogState = DeleteDialogState.Hidden,
+        deleteAllDialogState = DeleteDialogState.Hidden,
         bottomSheetState = null,
         error = Effect.empty()
     )
@@ -80,6 +81,7 @@ object MailboxStateSampleData {
         onboardingState = OnboardingState.Hidden,
         actionMessage = Effect.empty(),
         deleteDialogState = DeleteDialogState.Hidden,
+        deleteAllDialogState = DeleteDialogState.Hidden,
         bottomSheetState = null,
         error = Effect.empty()
     )
@@ -111,6 +113,7 @@ object MailboxStateSampleData {
         onboardingState = OnboardingState.Hidden,
         actionMessage = Effect.empty(),
         deleteDialogState = DeleteDialogState.Hidden,
+        deleteAllDialogState = DeleteDialogState.Hidden,
         bottomSheetState = null,
         error = Effect.empty()
     )
@@ -123,6 +126,7 @@ object MailboxStateSampleData {
         onboardingState = OnboardingState.Shown,
         actionMessage = Effect.empty(),
         deleteDialogState = DeleteDialogState.Hidden,
+        deleteAllDialogState = DeleteDialogState.Hidden,
         bottomSheetState = null,
         error = Effect.empty()
     )
@@ -158,6 +162,7 @@ object MailboxStateSampleData {
         onboardingState = OnboardingState.Hidden,
         actionMessage = Effect.empty(),
         deleteDialogState = DeleteDialogState.Hidden,
+        deleteAllDialogState = DeleteDialogState.Hidden,
         bottomSheetState = bottomSheetState,
         error = error
     )

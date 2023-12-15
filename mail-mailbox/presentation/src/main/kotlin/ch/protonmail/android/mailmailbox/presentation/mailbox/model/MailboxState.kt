@@ -33,6 +33,7 @@ data class MailboxState(
     val bottomAppBarState: BottomBarState,
     val onboardingState: OnboardingState,
     val deleteDialogState: DeleteDialogState,
+    val deleteAllDialogState: DeleteDialogState,
     val bottomSheetState: BottomSheetState?,
     val actionMessage: Effect<TextUiModel>,
     val error: Effect<TextUiModel>

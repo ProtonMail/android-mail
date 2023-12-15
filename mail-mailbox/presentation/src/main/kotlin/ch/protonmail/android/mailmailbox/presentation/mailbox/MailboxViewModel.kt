@@ -920,7 +920,14 @@ class MailboxViewModel @Inject constructor(
     }
 
     private suspend fun handleClearAllAction() {
-        emitNewStateFrom(MailboxEvent.DeleteAll(getViewModeForCurrentLocation(selectedMailLabelId.flow.value)))
+        val currentMailLabel = selectedMailLabelId.flow.value.labelId
+        if (currentMailLabel != SystemLabelId.Trash.labelId && currentMailLabel != SystemLabelId.Spam.labelId) {
+            Timber.e("Clear all action is only supported for Trash and Spam")
+            return
+        }
+        emitNewStateFrom(
+            MailboxEvent.DeleteAll(getViewModeForCurrentLocation(selectedMailLabelId.flow.value), currentMailLabel)
+        )
     }
 
     private suspend fun handleClearAllConfirmedAction() {
@@ -1133,6 +1140,7 @@ class MailboxViewModel @Inject constructor(
             bottomAppBarState = BottomBarState.Data.Hidden(emptyList<ActionUiModel>().toImmutableList()),
             onboardingState = OnboardingState.Hidden,
             deleteDialogState = DeleteDialogState.Hidden,
+            deleteAllDialogState = DeleteDialogState.Hidden,
             bottomSheetState = null,
             actionMessage = Effect.empty(),
             error = Effect.empty()
