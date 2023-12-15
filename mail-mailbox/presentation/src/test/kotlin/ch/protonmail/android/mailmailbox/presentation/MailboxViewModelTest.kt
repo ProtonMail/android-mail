@@ -424,7 +424,8 @@ class MailboxViewModelTest {
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
                 swipeActions = null,
-                searchMode = MailboxSearchMode.None
+                searchMode = MailboxSearchMode.None,
+                clearButtonText = null
             )
         )
         val expectedSwipeActions = SwipeActionsUiModel(
@@ -440,7 +441,8 @@ class MailboxViewModelTest {
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
                 swipeActions = expectedSwipeActions,
-                searchMode = MailboxSearchMode.None
+                searchMode = MailboxSearchMode.None,
+                clearButtonText = null
             )
         )
         val mailLabelsFlow = MutableStateFlow(
@@ -497,7 +499,8 @@ class MailboxViewModelTest {
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
                 swipeActions = null,
-                searchMode = MailboxSearchMode.None
+                searchMode = MailboxSearchMode.None,
+                clearButtonText = null
             )
         )
         val mailLabelsFlow = MutableStateFlow(
@@ -1060,7 +1063,8 @@ class MailboxViewModelTest {
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
                 swipeActions = null,
-                searchMode = MailboxSearchMode.None
+                searchMode = MailboxSearchMode.None,
+                clearButtonText = null
             )
         )
         every {
@@ -1090,7 +1094,8 @@ class MailboxViewModelTest {
                 refreshErrorEffect = Effect.of(Unit),
                 refreshRequested = false,
                 swipeActions = null,
-                searchMode = MailboxSearchMode.None
+                searchMode = MailboxSearchMode.None,
+                clearButtonText = null
             )
         )
         every {
@@ -1120,7 +1125,8 @@ class MailboxViewModelTest {
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = true,
                 swipeActions = null,
-                searchMode = MailboxSearchMode.None
+                searchMode = MailboxSearchMode.None,
+                clearButtonText = null
             )
         )
         every {
@@ -3313,7 +3319,8 @@ class MailboxViewModelTest {
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
                 swipeActions = null,
-                searchMode = MailboxSearchMode.None
+                searchMode = MailboxSearchMode.None,
+                clearButtonText = null
             ),
             unreadFilterState = UnreadFilterState.Data(
                 numUnread = UnreadCountersTestData.labelToCounterMap[initialLocationMailLabelId.labelId]!!,
@@ -3391,7 +3398,8 @@ class MailboxViewModelTest {
                 refreshErrorEffect = Effect.of(Unit),
                 refreshRequested = false,
                 swipeActions = null,
-                searchMode = MailboxSearchMode.NewSearch
+                searchMode = MailboxSearchMode.NewSearch,
+                clearButtonText = null
             )
         )
         every {
@@ -3422,7 +3430,8 @@ class MailboxViewModelTest {
                 refreshErrorEffect = Effect.of(Unit),
                 refreshRequested = false,
                 swipeActions = null,
-                searchMode = MailboxSearchMode.None
+                searchMode = MailboxSearchMode.None,
+                clearButtonText = null
             )
         )
         every {
@@ -3454,7 +3463,8 @@ class MailboxViewModelTest {
                 refreshErrorEffect = Effect.of(Unit),
                 refreshRequested = false,
                 swipeActions = null,
-                searchMode = MailboxSearchMode.NewSearchLoading
+                searchMode = MailboxSearchMode.NewSearchLoading,
+                clearButtonText = null
             )
         )
         every {
@@ -3485,7 +3495,8 @@ class MailboxViewModelTest {
                 refreshErrorEffect = Effect.of(Unit),
                 refreshRequested = false,
                 swipeActions = null,
-                searchMode = MailboxSearchMode.SearchData
+                searchMode = MailboxSearchMode.SearchData,
+                clearButtonText = null
             )
         )
         every {

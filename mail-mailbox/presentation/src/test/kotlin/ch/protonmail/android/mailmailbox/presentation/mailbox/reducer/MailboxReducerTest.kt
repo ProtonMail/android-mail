@@ -174,7 +174,8 @@ internal class MailboxReducerTest(
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
                 swipeActions = null,
-                searchMode = MailboxSearchMode.None
+                searchMode = MailboxSearchMode.None,
+                clearButtonText = null
             ),
             topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
                 currentLabelName = spamLabel.text()

@@ -19,9 +19,13 @@
 package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.maillabel.domain.model.MailLabel
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
+import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
@@ -128,15 +132,18 @@ class MailboxListReducer @Inject constructor() {
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
                 swipeActions = null,
-                searchMode = MailboxSearchMode.None
+                searchMode = MailboxSearchMode.None,
+                clearButtonText = currentMailLabel.getClearButtonText()
             )
 
             is MailboxListState.Data.SelectionMode -> currentState.copy(
-                currentMailLabel = currentMailLabel
+                currentMailLabel = currentMailLabel,
+                clearButtonText = currentMailLabel.getClearButtonText()
             )
 
             is MailboxListState.Data.ViewMode -> currentState.copy(
-                currentMailLabel = currentMailLabel
+                currentMailLabel = currentMailLabel,
+                clearButtonText = currentMailLabel.getClearButtonText()
             )
         }
     }
@@ -155,12 +162,14 @@ class MailboxListReducer @Inject constructor() {
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
                 swipeActions = null,
-                searchMode = MailboxSearchMode.None
+                searchMode = MailboxSearchMode.None,
+                clearButtonText = currentMailLabel.getClearButtonText()
             )
 
             is MailboxListState.Data.ViewMode -> currentState.copy(
                 currentMailLabel = currentMailLabel,
-                scrollToMailboxTop = Effect.of(currentMailLabel.id)
+                scrollToMailboxTop = Effect.of(currentMailLabel.id),
+                clearButtonText = currentMailLabel.getClearButtonText()
             )
 
             is MailboxListState.Data.SelectionMode -> currentState.copy(
@@ -258,7 +267,8 @@ class MailboxListReducer @Inject constructor() {
             is MailboxListState.Data.ViewMode -> MailboxListState.Data.SelectionMode(
                 currentMailLabel = currentState.currentMailLabel,
                 selectedMailboxItems = setOf(SelectedMailboxItem(item.userId, item.id, item.isRead, item.showStar)),
-                swipeActions = currentState.swipeActions
+                swipeActions = currentState.swipeActions,
+                clearButtonText = currentState.clearButtonText
             )
 
             else -> currentState
@@ -273,7 +283,8 @@ class MailboxListReducer @Inject constructor() {
             refreshErrorEffect = Effect.empty(),
             refreshRequested = false,
             swipeActions = currentState.swipeActions,
-            searchMode = MailboxSearchMode.None
+            searchMode = MailboxSearchMode.None,
+            clearButtonText = currentState.clearButtonText
         )
 
         else -> currentState
@@ -377,5 +388,11 @@ class MailboxListReducer @Inject constructor() {
         )
 
         else -> currentState
+    }
+
+    private fun MailLabel.getClearButtonText() = when (this.id) {
+        MailLabelId.System.Trash -> TextUiModel(R.string.mailbox_action_button_clear_trash)
+        MailLabelId.System.Spam -> TextUiModel(R.string.mailbox_action_button_clear_spam)
+        else -> null
     }
 }

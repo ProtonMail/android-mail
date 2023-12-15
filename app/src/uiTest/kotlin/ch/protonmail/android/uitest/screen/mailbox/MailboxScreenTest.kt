@@ -95,7 +95,8 @@ internal class MailboxScreenTest {
             refreshErrorEffect = Effect.empty(),
             refreshRequested = false,
             swipeActions = null,
-            searchMode = MailboxSearchMode.None
+            searchMode = MailboxSearchMode.None,
+            clearButtonText = null
         )
         val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
         val items = listOf(MailboxItemUiModelTestData.readMailboxItemUiModel)
@@ -118,7 +119,8 @@ internal class MailboxScreenTest {
             refreshErrorEffect = Effect.empty(),
             refreshRequested = false,
             swipeActions = null,
-            searchMode = MailboxSearchMode.None
+            searchMode = MailboxSearchMode.None,
+            clearButtonText = null
         )
         val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
         val label = LabelUiModelSample.News
@@ -151,7 +153,8 @@ internal class MailboxScreenTest {
             refreshErrorEffect = Effect.empty(),
             refreshRequested = false,
             swipeActions = null,
-            searchMode = MailboxSearchMode.None
+            searchMode = MailboxSearchMode.None,
+            clearButtonText = null
         )
         val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
         val robot = setupScreen(state = mailboxState)
@@ -170,7 +173,8 @@ internal class MailboxScreenTest {
             refreshErrorEffect = Effect.empty(),
             refreshRequested = false,
             swipeActions = null,
-            searchMode = MailboxSearchMode.None
+            searchMode = MailboxSearchMode.None,
+            clearButtonText = null
         )
         val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
         val robot = setupScreen(state = mailboxState)
@@ -203,7 +207,8 @@ internal class MailboxScreenTest {
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
                     swipeActions = null,
-                    searchMode = MailboxSearchMode.None
+                    searchMode = MailboxSearchMode.None,
+                    clearButtonText = null
                 ),
                 topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
                     currentLabelName = MailLabel.System(systemLabel).text()

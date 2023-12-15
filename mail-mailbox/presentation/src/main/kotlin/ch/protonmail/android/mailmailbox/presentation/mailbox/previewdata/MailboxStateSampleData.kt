@@ -66,7 +66,8 @@ object MailboxStateSampleData {
                 start = SwipeUiModelSampleData.Trash,
                 end = SwipeUiModelSampleData.Archive
             ),
-            searchMode = MailboxSearchMode.None
+            searchMode = MailboxSearchMode.None,
+            clearButtonText = null
         ),
         topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
             currentLabelName = MailLabel.System(MailLabelId.System.Inbox).text()
@@ -98,7 +99,8 @@ object MailboxStateSampleData {
                 start = SwipeUiModelSampleData.Trash,
                 end = SwipeUiModelSampleData.Archive
             ),
-            searchMode = MailboxSearchMode.None
+            searchMode = MailboxSearchMode.None,
+            clearButtonText = null
         ),
         topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
             currentLabelName = MailLabel.System(MailLabelId.System.AllMail).text()
@@ -146,7 +148,8 @@ object MailboxStateSampleData {
             swipeActions = SwipeActionsUiModel(
                 start = SwipeUiModelSampleData.Trash,
                 end = SwipeUiModelSampleData.Archive
-            )
+            ),
+            clearButtonText = null
         ),
         topAppBarState = MailboxTopAppBarState.Data.SelectionMode(
             currentLabelName = MailLabel.System(MailLabelId.System.Inbox).text(),
