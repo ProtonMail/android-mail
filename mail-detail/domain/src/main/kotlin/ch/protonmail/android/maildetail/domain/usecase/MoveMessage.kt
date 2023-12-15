@@ -19,34 +19,20 @@
 package ch.protonmail.android.maildetail.domain.usecase
 
 import arrow.core.Either
-import arrow.core.left
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveMailLabels
-import ch.protonmail.android.mailmessage.domain.model.Message
 import ch.protonmail.android.mailmessage.domain.model.MessageId
-import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
-import kotlinx.coroutines.flow.first
+import ch.protonmail.android.mailmessage.domain.usecase.MoveMessages
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import javax.inject.Inject
 
 class MoveMessage @Inject constructor(
-    private val messageRepository: MessageRepository,
-    private val observeExclusiveMailLabels: ObserveExclusiveMailLabels
+    private val moveMessages: MoveMessages
 ) {
 
     suspend operator fun invoke(
         userId: UserId,
         messageId: MessageId,
         labelId: LabelId
-    ): Either<DataError.Local, Message> {
-        return messageRepository.observeCachedMessage(userId, messageId).first().fold(
-            ifLeft = { DataError.Local.NoDataCached.left() },
-            ifRight = { message ->
-                val exclusiveLabelIds = observeExclusiveMailLabels(userId).first().allById.mapKeys { it.key.labelId }
-                val fromLabelId = message.labelIds.firstOrNull { labelId -> labelId in exclusiveLabelIds }
-                messageRepository.moveTo(userId, messageId, fromLabelId, toLabel = labelId)
-            }
-        )
-    }
+    ): Either<DataError.Local, Unit> = moveMessages.invoke(userId, listOf(messageId), labelId)
 }
