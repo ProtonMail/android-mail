@@ -22,13 +22,14 @@ import android.text.format.Formatter
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -38,7 +39,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -112,12 +112,9 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
         },
         sheetState = bottomSheetState
     ) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            Column(
-                modifier = Modifier
-                    .verticalScroll(rememberScrollState(), reverseScrolling = true)
-                    .testTag(ComposerTestTags.RootItem)
-            ) {
+        Scaffold(
+            modifier = Modifier.testTag(ComposerTestTags.RootItem),
+            topBar = {
                 ComposerTopBar(
                     onAddAttachmentsClick = {
                         bottomSheetType.value = BottomSheetType.AddAttachments
@@ -131,7 +128,32 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
                     },
                     isSendMessageButtonEnabled = state.isSubmittable
                 )
-                if (!state.isLoading) {
+            },
+            bottomBar = {
+                if (state.isPasswordActionVisible) {
+                    ComposerBottomBar()
+                }
+            },
+            snackbarHost = {
+                ProtonSnackbarHost(
+                    modifier = Modifier.testTag(CommonTestTags.SnackbarHost),
+                    hostState = snackbarHostState
+                )
+            }
+        ) { paddingValues ->
+            if (state.isLoading) {
+                @Suppress("MagicNumber")
+                Surface(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .alpha(.5f)
+                ) { ProtonCenteredProgress() }
+            } else {
+                Column(
+                    modifier = Modifier
+                        .padding(paddingValues)
+                        .verticalScroll(rememberScrollState(), reverseScrolling = true)
+                ) {
                     // Not showing the form till we're done loading ensure it does receive the
                     // right "initial values" from state when displayed
                     ComposerForm(
@@ -162,55 +184,40 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
                     }
                 }
             }
-            ProtonSnackbarHost(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .testTag(CommonTestTags.SnackbarHost),
-                hostState = snackbarHostState
-            )
-
-            if (attachmentSizeDialogState.value) {
-                ProtonAlertDialog(
-                    onDismissRequest = { attachmentSizeDialogState.value = false },
-                    confirmButton = {
-                        ProtonAlertDialogButton(R.string.composer_attachment_size_exceeded_dialog_confirm_button) {
-                            attachmentSizeDialogState.value = false
-                        }
-                    },
-                    title = stringResource(id = R.string.composer_attachment_size_exceeded_dialog_title),
-                    text = {
-                        ProtonAlertDialogText(
-                            stringResource(
-                                id = R.string.composer_attachment_size_exceeded_dialog_message,
-                                Formatter.formatShortFileSize(
-                                    LocalContext.current,
-                                    StoreAttachments.MAX_ATTACHMENTS_SIZE
-                                )
-                            )
-                        )
-                    }
-                )
-            }
-
-            sendingErrorDialogState.value?.run {
-                SendingErrorDialog(
-                    errorMessage = this,
-                    onDismissClicked = {
-                        sendingErrorDialogState.value = null
-                        viewModel.clearSendingError()
-                    }
-                )
-            }
-
-            if (state.isLoading) {
-                @Suppress("MagicNumber")
-                Surface(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .alpha(.5f)
-                ) { ProtonCenteredProgress() }
-            }
         }
+    }
+
+    if (attachmentSizeDialogState.value) {
+        ProtonAlertDialog(
+            onDismissRequest = { attachmentSizeDialogState.value = false },
+            confirmButton = {
+                ProtonAlertDialogButton(R.string.composer_attachment_size_exceeded_dialog_confirm_button) {
+                    attachmentSizeDialogState.value = false
+                }
+            },
+            title = stringResource(id = R.string.composer_attachment_size_exceeded_dialog_title),
+            text = {
+                ProtonAlertDialogText(
+                    stringResource(
+                        id = R.string.composer_attachment_size_exceeded_dialog_message,
+                        Formatter.formatShortFileSize(
+                            LocalContext.current,
+                            StoreAttachments.MAX_ATTACHMENTS_SIZE
+                        )
+                    )
+                )
+            }
+        )
+    }
+
+    sendingErrorDialogState.value?.run {
+        SendingErrorDialog(
+            errorMessage = this,
+            onDismissClicked = {
+                sendingErrorDialogState.value = null
+                viewModel.clearSendingError()
+            }
+        )
     }
 
     ConsumableTextEffect(effect = state.premiumFeatureMessage) { message ->
