@@ -20,6 +20,7 @@ package ch.protonmail.android.outbox
 
 import ch.protonmail.android.initializer.outbox.OutboxObserver
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.mailcomposer.domain.usecase.DraftUploadTracker
 import ch.protonmail.android.mailmessage.data.usecase.DeleteSentMessagesFromOutbox
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.DraftState
@@ -31,6 +32,7 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -60,6 +62,7 @@ class OutboxObserverTest {
     private val accountManager = mockk<AccountManager>()
     private val outboxRepository = mockk<OutboxRepository>()
     private val deleteSentMessagesFromOutbox = mockk<DeleteSentMessagesFromOutbox>()
+    private val draftUploadTracker = mockk<DraftUploadTracker>()
     private val dispatcherProvider = TestDispatcherProvider(UnconfinedTestDispatcher())
     private val scopeProvider = TestCoroutineScopeProvider(dispatcherProvider)
 
@@ -67,7 +70,8 @@ class OutboxObserverTest {
         scopeProvider,
         accountManager,
         outboxRepository,
-        deleteSentMessagesFromOutbox
+        deleteSentMessagesFromOutbox,
+        draftUploadTracker
     )
 
     @Test
@@ -93,19 +97,22 @@ class OutboxObserverTest {
 
         // Then
         coVerify(exactly = 0) { deleteSentMessagesFromOutbox(userId, any()) }
+        verify(exactly = 0) { draftUploadTracker.notifySentMessages(any()) }
     }
 
     @Test
-    fun `should call delete for sent outbox messages`() = runTest {
+    fun `should call delete for sent outbox messages and notify draft upload tracker`() = runTest {
         // Given
         val outboxDraftItems = flowOf(listOf(unsentDraftItem, sentDraftItem))
         every { accountManager.getPrimaryUserId() } returns flowOf(userId)
         coEvery { outboxRepository.observeAll(userId) } returns outboxDraftItems
+        every { draftUploadTracker.notifySentMessages(any()) } returns Unit
 
         // When
         outboxObserver.start()
 
         // Then
+        verify(exactly = 1) { draftUploadTracker.notifySentMessages(setOf(sentDraftItem.messageId)) }
         coVerify(exactly = 1) { deleteSentMessagesFromOutbox(userId, listOf(sentDraftItem)) }
         coVerify(exactly = 0) { deleteSentMessagesFromOutbox(userId, listOf(unsentDraftItem)) }
     }

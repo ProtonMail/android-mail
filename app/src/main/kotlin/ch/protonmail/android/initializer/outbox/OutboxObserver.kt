@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.initializer.outbox
 
+import ch.protonmail.android.mailcomposer.domain.usecase.DraftUploadTracker
 import ch.protonmail.android.mailmessage.data.usecase.DeleteSentMessagesFromOutbox
 import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
 import ch.protonmail.android.mailmessage.domain.repository.OutboxRepository
@@ -35,7 +36,8 @@ class OutboxObserver @Inject constructor(
     private val scopeProvider: CoroutineScopeProvider,
     private val accountManager: AccountManager,
     private val outboxRepository: OutboxRepository,
-    private val deleteSentMessagesFromOutbox: DeleteSentMessagesFromOutbox
+    private val deleteSentMessagesFromOutbox: DeleteSentMessagesFromOutbox,
+    private val draftUploadTracker: DraftUploadTracker
 ) {
 
     fun start() = accountManager.getPrimaryUserId()
@@ -47,6 +49,8 @@ class OutboxObserver @Inject constructor(
 
             val sentItems = outboxDraftStates.filter { draftState -> draftState.state == DraftSyncState.Sent }
             if (sentItems.isNotEmpty()) {
+                draftUploadTracker.notifySentMessages(sentItems.map { it.messageId }.toSet())
+
                 deleteSentMessagesFromOutbox(
                     sentItems.first().userId,
                     sentItems
