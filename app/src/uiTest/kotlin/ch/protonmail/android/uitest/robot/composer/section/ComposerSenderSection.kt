@@ -21,6 +21,7 @@ package ch.protonmail.android.uitest.robot.composer.section
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerTestTags
 import ch.protonmail.android.mailcomposer.presentation.ui.PrefixedEmailSelectorTestTags
 import ch.protonmail.android.test.ksp.annotations.AttachTo
@@ -35,7 +36,9 @@ import ch.protonmail.android.uitest.util.child
 @AttachTo(targets = [ComposerRobot::class], identifier = "senderSection")
 internal class ComposerSenderSection : ComposeSectionRobot() {
 
-    private val parent = composeTestRule.onNodeWithTag(ComposerTestTags.FromSender)
+    private val rootItem = composeTestRule.onNodeWithTag(ComposerTestTags.ComposerForm)
+    private val parent = rootItem.child { hasTestTag(ComposerTestTags.FromSender) }
+
     private val text = parent.child {
         hasTestTag(PrefixedEmailSelectorTestTags.TextField)
     }
@@ -44,13 +47,13 @@ internal class ComposerSenderSection : ComposeSectionRobot() {
     }
 
     fun tapChangeSender() {
-        changeSenderButton.performClick()
+        changeSenderButton.performScrollTo().performClick()
     }
 
     @VerifiesOuter
     inner class Verify {
 
-        fun hasValue(value: String) = text.run {
+        fun hasValue(value: String) = text.performScrollTo().run {
             assertNotEditableTextEquals(ComposerFieldPrefixes.From.value)
             assertEditableTextEquals(value)
         }

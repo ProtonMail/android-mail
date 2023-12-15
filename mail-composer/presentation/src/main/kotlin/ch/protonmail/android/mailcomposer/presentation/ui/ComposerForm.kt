@@ -70,7 +70,8 @@ internal fun ComposerForm(
     shouldForceBodyTextFocus: Effect<Unit>,
     actions: ComposerFormActions,
     contactSuggestions: Map<ContactSuggestionsField, List<ContactSuggestionUiModel>>,
-    areContactSuggestionsExpanded: Map<ContactSuggestionsField, Boolean>
+    areContactSuggestionsExpanded: Map<ContactSuggestionsField, Boolean>,
+    modifier: Modifier = Modifier
 ) {
     val maxWidthModifier = Modifier.fillMaxWidth()
     val emailNextKeyboardOptions = KeyboardOptions(
@@ -94,7 +95,7 @@ internal fun ComposerForm(
         }
     ) { fieldFocusRequesters ->
         Column(
-            modifier = maxWidthModifier
+            modifier = modifier.fillMaxWidth()
         ) {
             PrefixedEmailSelector(
                 prefixStringResource = R.string.from_prefix,

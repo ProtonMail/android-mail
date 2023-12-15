@@ -57,16 +57,16 @@ internal class ComposerTopBarAppSection : ComposeSectionRobot() {
     }
 
     fun tapCloseButton() = apply {
-        closeButton.performScrollTo().performClick()
+        closeButton.performClick()
         rootItem.awaitHidden()
     }
 
     fun tapAttachmentsButton() = apply {
-        attachmentsButton.performScrollTo().performClick()
+        attachmentsButton.performClick()
     }
 
     fun tapSendButton() = apply {
-        sendButton.performScrollTo().performClick()
+        sendButton.performClick()
     }
 
     @VerifiesOuter

@@ -22,6 +22,7 @@ object ComposerTestTags {
 
     const val RootItem = "ComposerScreenRootItem"
     const val TopAppBar = "ComposerTopAppBar"
+    const val ComposerForm = "ComposerForm"
     const val FieldPrefix = "FieldPrefix"
     const val FromSender = "FromField"
     const val ToRecipient = "ToField"

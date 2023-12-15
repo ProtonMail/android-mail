@@ -157,6 +157,7 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
                     // Not showing the form till we're done loading ensure it does receive the
                     // right "initial values" from state when displayed
                     ComposerForm(
+                        modifier = Modifier.testTag(ComposerTestTags.ComposerForm),
                         emailValidator = viewModel::validateEmailAddress,
                         recipientsOpen = recipientsOpen,
                         initialFocus = focusedField,
