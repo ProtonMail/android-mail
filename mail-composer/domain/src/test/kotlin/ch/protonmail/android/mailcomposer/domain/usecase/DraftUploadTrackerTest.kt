@@ -109,15 +109,6 @@ class DraftUploadTrackerTest {
         )
     )
 
-    private val nonUploadRequiringChanges: List<MessageWithBody> = listOf(
-        sampleDraft.copy(message = sampleDraft.message.copy(isReplied = !sampleDraft.message.isReplied)),
-        sampleDraft.copy(message = sampleDraft.message.copy(isRepliedAll = !sampleDraft.message.isRepliedAll)),
-        sampleDraft.copy(message = sampleDraft.message.copy(isForwarded = !sampleDraft.message.isForwarded)),
-        sampleDraft.copy(message = sampleDraft.message.copy(unread = !sampleDraft.message.unread)),
-        sampleDraft.copy(message = sampleDraft.message.copy(time = System.currentTimeMillis()))
-    )
-
-
     @Test
     fun `upload is required when draft state is not synchronized`() = runTest {
         // given
@@ -197,25 +188,6 @@ class DraftUploadTrackerTest {
 
             // then
             assertTrue { uploadRequired }
-        }
-    }
-
-    @Test
-    fun `upload is not required when any non upload requiring parameter changes`() = runTest {
-
-        // given
-        val lastUploadedDraft = sampleDraft
-        coEvery { draftStateRepository.observe(userId, messageId) } returns flowOf()
-        nonUploadRequiringChanges.forEach { updatedLocalDraft ->
-
-            coEvery { findLocalDraft(userId, messageId) } returns updatedLocalDraft
-            draftUploadTracker.notifyUploadedDraft(messageId, lastUploadedDraft)
-
-            // when
-            val uploadRequired = draftUploadTracker.uploadRequired(userId, messageId)
-
-            // then
-            assertFalse { uploadRequired }
         }
     }
 

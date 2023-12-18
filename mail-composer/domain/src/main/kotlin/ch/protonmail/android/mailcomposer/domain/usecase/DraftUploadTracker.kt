@@ -20,18 +20,14 @@ package ch.protonmail.android.mailcomposer.domain.usecase
 
 import java.util.concurrent.ConcurrentHashMap
 import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
-import ch.protonmail.android.mailmessage.domain.model.Message
-import ch.protonmail.android.mailmessage.domain.model.MessageBody
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
-import ch.protonmail.android.mailmessage.domain.model.Recipient
 import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
 import kotlinx.coroutines.flow.firstOrNull
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Suppress("UnnecessaryParentheses", "ComplexMethod")
 @Singleton
 class DraftUploadTracker @Inject constructor(
     private val findLocalDraft: FindLocalDraft,
@@ -49,61 +45,16 @@ class DraftUploadTracker @Inject constructor(
             }
             ?.let { return true }
 
-        return lastUploadedDrafts[messageId]?.let { lastUploadedDraft ->
-            findLocalDraft(userId, messageId)?.let { localDraft ->
-                !localDraft.equalTo(lastUploadedDraft)
-            } ?: true // If localDraft is null, upload is required
-        } ?: true // If lastSyncedRemoteCopy is null, upload is required
-    }
+        val lastUploadedDraft = lastUploadedDrafts[messageId]
 
-    private fun MessageWithBody.equalTo(other: MessageWithBody): Boolean = this.message.equalTo(other.message) &&
-        this.messageBody.equalTo(other.messageBody)
+        return if (lastUploadedDraft != null) {
+            val localDraft = findLocalDraft(userId, messageId)
 
-    // Following fields are not compared since they are not related to message content
-    // [isReplied] / [isRepliedAll] / [isForwarded] / [unread] / [read] / [time]
-    //
-    // [id] / [keywords] are not compared since it is calculated from other fields
-    private fun Message.equalTo(other: Message): Boolean = this.userId == other.userId &&
-        this.messageId == other.messageId &&
-        this.subject == other.subject &&
-        this.sender.equalTo(other.sender) &&
-        this.toList.equalTo(other.toList) &&
-        this.ccList.equalTo(other.ccList) &&
-        this.bccList.equalTo(other.bccList) &&
-        this.order == other.order &&
-        this.flags == other.flags &&
-        this.labelIds == other.labelIds &&
-        this.size == other.size &&
-        this.conversationId == other.conversationId &&
-        this.expirationTime == other.expirationTime &&
-        this.addressId == other.addressId &&
-        this.externalId == other.externalId &&
-        this.numAttachments == other.numAttachments &&
-        this.attachmentCount == other.attachmentCount
-
-    // Following fields are not compared since they do not have any effect on the message content
-    // [replyTo] / [replyTos] / [unsubscribeMethods]
-    private fun MessageBody.equalTo(other: MessageBody): Boolean = this.messageId == other.messageId &&
-        this.userId == other.userId &&
-        this.body == other.body &&
-        this.spamScore == other.spamScore &&
-        this.header == other.header &&
-        this.attachments == other.attachments &&
-        this.mimeType == other.mimeType &&
-        this.replyTo.equalTo(other.replyTo)
-
-    private fun List<Recipient>.equalTo(other: List<Recipient>): Boolean =
-        this.size == other.size && this.all { recipient1 ->
-            other.any { recipient2 -> recipient1.equalTo(recipient2) }
+            localDraft?.let { it != lastUploadedDraft } ?: true
+        } else {
+            true
         }
-
-    private fun Recipient.equalTo(other: Recipient): Boolean = this.address == other.address &&
-        this.name == other.name &&
-        this.isProton == other.isProton &&
-        this.group.equalTo(other.group)
-
-    private fun String?.equalTo(other: String?): Boolean =
-        (this.isNullOrEmpty() && other.isNullOrEmpty()) || this == other
+    }
 
     fun notifyUploadedDraft(messageId: MessageId, messageWithBody: MessageWithBody) {
         lastUploadedDrafts[messageId] = messageWithBody
