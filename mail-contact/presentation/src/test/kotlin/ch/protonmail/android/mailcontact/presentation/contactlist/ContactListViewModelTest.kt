@@ -213,6 +213,7 @@ class ContactListViewModelTest {
             val actual = awaitItem()
             val expected = ContactListState.ListLoaded.Data(
                 contacts = listOf(defaultTestContact).toContactListItemUiModel(),
+                bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide),
                 openContactForm = Effect.of(Unit)
             )
 
@@ -236,6 +237,7 @@ class ContactListViewModelTest {
             val actual = awaitItem()
             val expected = ContactListState.ListLoaded.Data(
                 contacts = listOf(defaultTestContact).toContactListItemUiModel(),
+                bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide),
                 openContactGroupForm = Effect.of(Unit)
             )
 
@@ -259,6 +261,7 @@ class ContactListViewModelTest {
             val actual = awaitItem()
             val expected = ContactListState.ListLoaded.Data(
                 contacts = listOf(defaultTestContact).toContactListItemUiModel(),
+                bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide),
                 openImportContact = Effect.of(Unit)
             )
 
