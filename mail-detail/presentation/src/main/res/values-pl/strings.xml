@@ -61,11 +61,18 @@
   <string name="message_body_embedded_images_banner_text">Automatyczne ładowanie osadzonych obrazów jest wyłączone. Możesz to zmienić w ustawieniach.</string>
   <string name="message_body_remote_content_banner_text">Automatyczne ładowanie zawartości zdalnej jest wyłączone. Możesz to zmienić w ustawieniach.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">Automatyczne ładowanie osadzonych obrazów i zawartości zdalnej jest wyłączone. Możesz to zmienić w ustawieniach.</string>
+  <string name="message_phishing_banner_text">Nasz system oznaczył wiadomość jako próbę wyłudzenia informacji. Upewnij się, że jest ona wiarygodna.</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">Opuścisz aplikację i przejdziesz do:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">Nie pytaj ponownie</string>
   <string name="external_link_confirmation_dialog_cancel_button">Anuluj</string>
   <string name="external_link_confirmation_dialog_continue_button">Kontynuuj</string>
+  <!-- Phishing link confirmation dialog -->
+  <string name="phishing_link_confirmation_dialog_title">Ostrzeżenie: podejrzana strona internetowa</string>
+  <string name="phishing_link_confirmation_dialog_content_part_1">Link prowadzi do strony internetowej, która może próbować wykraść informacje, takie jak hasła i dane karty płatniczej.</string>
+  <string name="phishing_link_confirmation_dialog_content_part_2">Ze względów bezpieczeństwa nie kontynuuj</string>
+  <string name="phishing_link_confirmation_dialog_button_go_back">Wróć (zalecane)</string>
+  <string name="phishing_link_confirmation_dialog_button_continue">Ignoruj ostrzeżenie i kontynuuj</string>
   <string name="message_delete_dialog_title">Usuń wiadomość</string>
   <string name="message_delete_dialog_message">Czy na pewno chcesz trwale usunąć tę wiadomość?</string>
   <string name="message_deleted">Wiadomość została usunięta</string>

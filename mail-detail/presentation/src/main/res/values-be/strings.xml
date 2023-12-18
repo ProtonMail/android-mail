@@ -61,11 +61,18 @@
   <string name="message_body_embedded_images_banner_text">Аўтаматычная загрузка ўбудаваных відарысаў выключана. Гэта можна змяніць у наладах.</string>
   <string name="message_body_remote_content_banner_text">Аўтаматычная загрузка аддаленага змесціва выключана. Гэта можна змяніць у наладах.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">Аўтаматычная загрузка ўбудаваных відарысаў і аддаленага змесціва выключана. Гэта можна змяніць у наладах.</string>
+  <string name="message_phishing_banner_text">Наша сістэма пазначыла гэта паведамленне як спробу фішынгу. Праверце яго надзейнасць</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">Вы збіраецеся выйсці з праграмы і перайсці ў:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">Больш не пытаць</string>
   <string name="external_link_confirmation_dialog_cancel_button">Скасаваць</string>
   <string name="external_link_confirmation_dialog_continue_button">Працягнуць</string>
+  <!-- Phishing link confirmation dialog -->
+  <string name="phishing_link_confirmation_dialog_title">Папярэджанне: гэты вэб-сайт можа быць падробленым</string>
+  <string name="phishing_link_confirmation_dialog_content_part_1">Гэта спасылка вядзе на вэб-сайт, на якім могуць паспрабаваць скрасці вашы даныя: паролі або інфармацыю аб крэдытных картках.</string>
+  <string name="phishing_link_confirmation_dialog_content_part_2">Не працягвайце, каб захаваць бяспеку.</string>
+  <string name="phishing_link_confirmation_dialog_button_go_back">Вярнуцца (рэкамендуецца)</string>
+  <string name="phishing_link_confirmation_dialog_button_continue">Ігнараваць папярэджанне і працягнуць</string>
   <string name="message_delete_dialog_title">Выдаліць паведамленне</string>
   <string name="message_delete_dialog_message">Вы сапраўды хочаце незваротна выдаліць гэта паведамленне?</string>
   <string name="message_deleted">Паведамленне выдалена</string>

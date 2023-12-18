@@ -30,8 +30,6 @@
     <item quantity="many">%d zaznaczonych</item>
     <item quantity="other">%d zaznaczonych</item>
   </plurals>
-  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
-  <string name="filter_unread_button_text_without_counter">Nieprzeczytane</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%d nieprzeczytana</item>
     <item quantity="few">%d nieprzeczytane</item>
@@ -117,8 +115,6 @@
   <string name="sidebar_beta_version_title">Proton Mail Beta</string>
   <string name="sidebar_beta_version_description">Kliknij, aby dowiedzieć się więcej o tym projekcie.</string>
   <string name="sidebar_beta_version_icon_content_description">Przejdź do bazy wiedzy.</string>
-  <string name="mailbox_action_read_message">Status przeczytania został zaktualizowany</string>
-  <string name="mailbox_action_star_message">Gwiazdka została zaktualizowana</string>
   <string name="mailbox_action_trash_message">Wiadomość została przeniesiona do Kosza</string>
   <string name="mailbox_action_archive_message">Wiadomość została przeniesiona do Archiwum</string>
   <string name="mailbox_action_spam_message">Wiadomość została przeniesiona do Spamu</string>

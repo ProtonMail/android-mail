@@ -88,8 +88,8 @@
   <string name="mail_settings_privacy_auto_show_embedded_images">Automaticky zobrazovať vložené obrázky</string>
   <string name="mail_settings_privacy_prevent_taking_screenshots">Zabrániť vytváraniu snímok obrazovky</string>
   <string name="mail_settings_privacy_request_link_confirmation">Požadovať potvrdenie odkazu</string>
-  <string name="mail_settings_privacy_background_sync">Background sync</string>
-  <string name="mail_settings_privacy_background_sync_description">If this option is enabled, the app will sync with the server in the background. Disabling this feature will also disable push notifications.</string>
+  <string name="mail_settings_privacy_background_sync">Synchronizácia na pozadí</string>
+  <string name="mail_settings_privacy_background_sync_description">Ak je táto možnosť povolená, aplikácia sa synchronizuje so serverom na pozadí. Zakázaním tejto funkcie zakážete oznámenia.</string>
   <string name="mail_settings_privacy_error_updating">Chyba pri aktualizácii nastavení</string>
   <string name="mail_settings_privacy_error_loading">Chyba pri načítaní nastavení</string>
   <!-- Swipe Actions -->

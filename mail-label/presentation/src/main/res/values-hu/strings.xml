@@ -39,12 +39,12 @@
   <string name="label_list_create_label_placeholder_description">Create a label to enhance your email experience.</string>
   <string name="add_label_content_description">Új címke</string>
   <string name="label_form_create_label">Címke létrehozása</string>
-  <string name="folder_form_create_folder">Create folder</string>
+  <string name="folder_form_create_folder">Mappa létrehozása</string>
   <string name="label_form_edit_label">Címke szerkesztése</string>
-  <string name="folder_form_edit_folder">Edit folder</string>
+  <string name="folder_form_edit_folder">Mappa szerkesztése</string>
   <string name="label_form_save">Mentés</string>
   <string name="label_form_delete">Címke törlése</string>
-  <string name="folder_form_delete">Delete folder</string>
+  <string name="folder_form_delete">Mappa törlése</string>
   <string name="label_name_title">Név</string>
   <string name="add_a_label_name_hint">Add a label name</string>
   <string name="add_a_folder_name_hint">Add a folder name</string>
@@ -54,7 +54,7 @@
   <string name="save_folder_error">Error saving folder, please try again later</string>
   <string name="label_already_exists">Címke vagy mappa név már létezik</string>
   <string name="label_limit_reached_error">Elérte a címkék maximális számát</string>
-  <string name="folder_limit_reached_error">Folder limit reached</string>
+  <string name="folder_limit_reached_error">Elérte a mappák maximális számát</string>
   <string name="delete_label_error">Error deleting label</string>
   <string name="input_field_clear_content_description">Clear text</string>
   <string name="label_list_item_content_description">Label list item</string>
@@ -71,9 +71,9 @@
   <string name="folder_loading_error">Error loading folder, please try again later</string>
   <string name="switch_on">On</string>
   <string name="switch_off">Off</string>
-  <string name="folder_form_parent">Parent folder</string>
+  <string name="folder_form_parent">Szülő mappa</string>
   <string name="folder_form_no_parent">None</string>
-  <string name="folder_form_notifications">Notifications</string>
+  <string name="folder_form_notifications">Emlékeztetők</string>
   <string name="folder_saved">Folder saved</string>
   <string name="folder_deleted">Folder deleted</string>
   <string name="parent_folder_none">None</string>

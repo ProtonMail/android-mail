@@ -30,8 +30,6 @@
     <item quantity="many">Вибрано %d</item>
     <item quantity="other">Вибрано %d</item>
   </plurals>
-  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
-  <string name="filter_unread_button_text_without_counter">Непрочитані</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%d непрочитане</item>
     <item quantity="few">%d непрочитані</item>
@@ -100,26 +98,24 @@
   <string name="onboarding_headline_ga">Welcome to the new app</string>
   <string name="onboarding_description_ga">Completely rebuilt from scratch, the new Proton Mail app was made for stability and performance.</string>
   <!--  Onboarding 1  -->
-  <string name="onboarding_privacy_for_all_headline">Privacy for all</string>
+  <string name="onboarding_privacy_for_all_headline">Приватність для всіх</string>
   <string name="onboarding_privacy_for_all_description">Invite others to Proton Mail so you can all benefit from end-to-end encryption.</string>
   <!--  Onboarding 2  -->
-  <string name="onboarding_easily_up_to_date_headline">Easily up-to-date</string>
-  <string name="onboarding_easily_up_to_date_description">Breeze through threaded messages in conversation mode.</string>
+  <string name="onboarding_easily_up_to_date_headline">Зручне оновлення</string>
+  <string name="onboarding_easily_up_to_date_description">Переглядайте ланцюжки повідомлень у режимі розмови.</string>
   <!--  Onboarding 3  -->
   <string name="onboarding_neat_and_tidy_headline">Neat and tidy</string>
-  <string name="onboarding_neat_and_tidy_description">File, label, and color code messages to create your perfect, custom inbox.</string>
+  <string name="onboarding_neat_and_tidy_description">Файли, мітки та позначення повідомлень кольором для досконалої індивідуальної поштової скриньки.</string>
   <!--  Onboarding actions  -->
   <string name="onboarding_next">Далі</string>
   <string name="onboarding_get_started">Розпочати</string>
   <string name="onboarding_illustration_content_description">Onboarding illustration</string>
-  <string name="onboarding_close_content_description">Close</string>
+  <string name="onboarding_close_content_description">Закрити</string>
   <!-- Sidebar Beta label -->
   <string name="sidebar_beta_version_title">Proton Mail Beta</string>
   <string name="sidebar_beta_version_description">Tap to learn more about this project.</string>
   <string name="sidebar_beta_version_icon_content_description">Navigate to KB article.</string>
-  <string name="mailbox_action_read_message">Message read updated</string>
-  <string name="mailbox_action_star_message">Message star updated</string>
-  <string name="mailbox_action_trash_message">Message moved to trash</string>
-  <string name="mailbox_action_archive_message">Message moved to archive</string>
-  <string name="mailbox_action_spam_message">Message moved to spam</string>
+  <string name="mailbox_action_trash_message">Листа переміщено до кошика</string>
+  <string name="mailbox_action_archive_message">Повідомлення переміщено до архіву</string>
+  <string name="mailbox_action_spam_message">повідомлення переміщено до спаму</string>
 </resources>

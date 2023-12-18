@@ -59,17 +59,24 @@
   <string name="message_body_embedded_images_banner_text">Eklenmiş görselleri otomatik olarak yükleme seçeneği kapalı. Bu seçeneği ayarlardan değiştirebilirsiniz.</string>
   <string name="message_body_remote_content_banner_text">Uzak görselleri otomatik olarak yükleme seçeneği kapalı. Bu seçeneği ayarlardan değiştirebilirsiniz.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">Eklenmiş ve uzak görselleri otomatik olarak yükleme seçeneği kapalı. Bu seçenekleri ayarlardan değiştirebilirsiniz.</string>
+  <string name="message_phishing_banner_text">Sistemimiz bu iletiyi bir kimlik avı girişimi olarak işaretledi. Lütfen göründüğü gibi olup olmadığını kontrol edin.</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">Uygulamadan ayrılarak şuraya gitmek üzeresiniz:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">Bir daha sorma</string>
   <string name="external_link_confirmation_dialog_cancel_button">İptal</string>
   <string name="external_link_confirmation_dialog_continue_button">İlerle</string>
-  <string name="message_delete_dialog_title">Delete message</string>
-  <string name="message_delete_dialog_message">Are you sure you want to permanently delete this message?</string>
-  <string name="message_deleted">Message deleted</string>
-  <string name="error_delete_message_failed">Failed to delete message</string>
-  <string name="error_delete_message_failed_wrong_folder">Message is not in a location where it can be deleted</string>
-  <string name="error_delete_conversation_failed">Failed to delete conversation</string>
-  <string name="error_delete_conversation_failed_wrong_folder">Conversation is not in a location where it can be deleted</string>
-  <string name="conversation_deleted">Conversation deleted</string>
+  <!-- Phishing link confirmation dialog -->
+  <string name="phishing_link_confirmation_dialog_title">Uyarı: Kimlik avı girişimi şüphesi bulunan site</string>
+  <string name="phishing_link_confirmation_dialog_content_part_1">Bu bağlantı, parola ve kredi kartı gibi bilgilerinizi çalmayı deneyen bir siteye gidiyor olabilir.</string>
+  <string name="phishing_link_confirmation_dialog_content_part_2">Güvenliğiniz için daha ileri gitmeyin.</string>
+  <string name="phishing_link_confirmation_dialog_button_go_back">Geri dön (önerilir)</string>
+  <string name="phishing_link_confirmation_dialog_button_continue">Uyarıyı yok sayıp ilerle</string>
+  <string name="message_delete_dialog_title">İletiyi sil</string>
+  <string name="message_delete_dialog_message">Bu iletiyi kalıcı olarak silmek istediğinize emin misiniz?</string>
+  <string name="message_deleted">İleti silindi</string>
+  <string name="error_delete_message_failed">İleti silinemedi</string>
+  <string name="error_delete_message_failed_wrong_folder">İleti silinebilecek bir konumda değil</string>
+  <string name="error_delete_conversation_failed">Yazışma silinemedi</string>
+  <string name="error_delete_conversation_failed_wrong_folder">Yazışma silinebilecek bir konumda değil</string>
+  <string name="conversation_deleted">Yazışma silindi</string>
 </resources>

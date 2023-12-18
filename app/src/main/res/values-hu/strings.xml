@@ -18,13 +18,13 @@
   -->
 <resources>
   <string name="dialog_sign_out_account_title">Sign out</string>
-  <string name="dialog_sign_out_account_description">Are you sure you want to sign out?</string>
+  <string name="dialog_sign_out_account_description">Biztos, hogy ki szeretne jelentkezni?</string>
   <string name="dialog_sign_out_account_confirm">Yes</string>
-  <string name="dialog_sign_out_account_cancel">No</string>
-  <string name="dialog_remove_account_title">Remove Account</string>
-  <string name="dialog_remove_account_description">You will sign out and remove all information associated with this account.</string>
-  <string name="dialog_remove_account_confirm">Remove</string>
-  <string name="dialog_remove_account_cancel">Cancel</string>
+  <string name="dialog_sign_out_account_cancel">Nem</string>
+  <string name="dialog_remove_account_title">Fiók eltávolítása</string>
+  <string name="dialog_remove_account_description">Kijelentkezik és eltávolítja a fiókkal kapcsolatos összes adatot.</string>
+  <string name="dialog_remove_account_confirm">Eltávolítás</string>
+  <string name="dialog_remove_account_cancel">Mégsem</string>
   <string name="user_select_other_account_content_description">Másik fiók választása</string>
   <string name="you_are_offline">Nincs internetkapcsolat</string>
   <string name="feature_coming_soon">A funkció hamarosan érkezik...</string>
@@ -33,7 +33,7 @@
   <string name="mailbox_message_sending_offline">Offline, az üzenet sorba van állítva küldésre</string>
   <string name="mailbox_message_sending_success">Üzenet elküldve</string>
   <string name="mailbox_message_sending_error">Hiba az üzenet küldése közben</string>
-  <string name="mailbox_message_sending_error_action">Go to Drafts</string>
+  <string name="mailbox_message_sending_error_action">Ugrás a piszkozatokhoz</string>
   <string name="mailbox_attachment_uploading_error">Hiba mellékletek feltöltésénél</string>
   <string name="notification_switched_account">Átlépve a fiókba: %s</string>
   <string name="label_saved">Label saved</string>

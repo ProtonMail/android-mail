@@ -28,8 +28,6 @@
     <item quantity="one">%d yettwafernen</item>
     <item quantity="other">%d yettwafernen</item>
   </plurals>
-  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
-  <string name="filter_unread_button_text_without_counter">Ur yettwaɣri ara</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%d ur yettwaɣer ara</item>
     <item quantity="other">%d ur ttwaɣren ara</item>
@@ -58,7 +56,7 @@
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_message">
     <item quantity="one">Tebɣiḍ s tidet ad tekkseḍ s wudem imezgi izen-a?</item>
-    <item quantity="other">Are you sure you want to permanently delete these message?</item>
+    <item quantity="other">Are you sure you want to permanently delete these messages?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message">
     <item quantity="one">Message permanently deleted</item>
@@ -77,31 +75,29 @@
   <string name="onboarding_headline_beta">Beta test the new app</string>
   <string name="onboarding_description_beta">We\'ve rebuilt the app for stability and reliability. Share your feedback and stay tuned as we reintroduce features. Learn more.</string>
   <string name="onboarding_description_beta_link">https://proton.me/support/mail-android-beta</string>
-  <string name="onboarding_description_beta_learn_more">Learn more</string>
+  <string name="onboarding_description_beta_learn_more">Issin ugar</string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Welcome to the new app</string>
   <string name="onboarding_description_ga">Completely rebuilt from scratch, the new Proton Mail app was made for stability and performance.</string>
   <!--  Onboarding 1  -->
-  <string name="onboarding_privacy_for_all_headline">Privacy for all</string>
+  <string name="onboarding_privacy_for_all_headline">Tabaḍnit i yal yiwen</string>
   <string name="onboarding_privacy_for_all_description">Invite others to Proton Mail so you can all benefit from end-to-end encryption.</string>
   <!--  Onboarding 2  -->
-  <string name="onboarding_easily_up_to_date_headline">Easily up-to-date</string>
-  <string name="onboarding_easily_up_to_date_description">Breeze through threaded messages in conversation mode.</string>
+  <string name="onboarding_easily_up_to_date_headline">Fessus i usmiren</string>
+  <string name="onboarding_easily_up_to_date_description">Wali iznan deg uskar n udiwenni.</string>
   <!--  Onboarding 3  -->
-  <string name="onboarding_neat_and_tidy_headline">Neat and tidy</string>
-  <string name="onboarding_neat_and_tidy_description">File, label, and color code messages to create your perfect, custom inbox.</string>
+  <string name="onboarding_neat_and_tidy_headline">Zeddig yerna iseggem</string>
+  <string name="onboarding_neat_and_tidy_description">Afaylu, tabzimt d yiznan s tengalt n yini akken ad ternuḍ tabwaṭ n tnaka tudmawant ifazen.</string>
   <!--  Onboarding actions  -->
   <string name="onboarding_next">Γer zdat</string>
   <string name="onboarding_get_started">Bdu</string>
   <string name="onboarding_illustration_content_description">Onboarding illustration</string>
-  <string name="onboarding_close_content_description">Close</string>
+  <string name="onboarding_close_content_description">Mdel</string>
   <!-- Sidebar Beta label -->
   <string name="sidebar_beta_version_title">Proton Mail Beta</string>
   <string name="sidebar_beta_version_description">Tap to learn more about this project.</string>
   <string name="sidebar_beta_version_icon_content_description">Navigate to KB article.</string>
-  <string name="mailbox_action_read_message">Message read updated</string>
-  <string name="mailbox_action_star_message">Message star updated</string>
-  <string name="mailbox_action_trash_message">Message moved to trash</string>
-  <string name="mailbox_action_archive_message">Message moved to archive</string>
-  <string name="mailbox_action_spam_message">Message moved to spam</string>
+  <string name="mailbox_action_trash_message">Izen yettwasnekzen ar ar iḍumman</string>
+  <string name="mailbox_action_archive_message">Izen yettwasnekzen ɣer teṛcivt</string>
+  <string name="mailbox_action_spam_message">yizen yettwasenkez ɣer uspam</string>
 </resources>

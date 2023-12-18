@@ -89,7 +89,7 @@
   <string name="mail_settings_privacy_prevent_taking_screenshots">Evitar tirar capturas de tela</string>
   <string name="mail_settings_privacy_request_link_confirmation">Solicitar link de confirmação</string>
   <string name="mail_settings_privacy_background_sync">Sincronizar em segundo plano</string>
-  <string name="mail_settings_privacy_background_sync_description">If this option is enabled, the app will sync with the server in the background. Disabling this feature will also disable push notifications.</string>
+  <string name="mail_settings_privacy_background_sync_description">Se esta opção estiver habilitada, o aplicativo irá sincronizar com o servidor em segundo plano. Desativar esse recurso também desativará as notificações push.</string>
   <string name="mail_settings_privacy_error_updating">Erro ao atualizar as configurações</string>
   <string name="mail_settings_privacy_error_loading">Erro ao carregar as configurações</string>
   <!-- Swipe Actions -->

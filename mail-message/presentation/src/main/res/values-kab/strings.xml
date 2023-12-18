@@ -24,9 +24,9 @@
   <string name="attachment_show_more_label">+%1$d d wugar</string>
   <string name="attachment_permission_dialog_title">Tasiregt tettusra</string>
   <string name="attachment_permission_dialog_message">Proton Mail yesra tasiregt i unekcum ɣer uḥraz-ik i wakken ad d-isader amedday.</string>
-  <string name="attachment_permission_dialog_dismiss_button">OK</string>
-  <string name="attachment_permission_dialog_action_button">Settings</string>
-  <string name="attachment_type_description">%1$s file</string>
+  <string name="attachment_permission_dialog_dismiss_button">IH</string>
+  <string name="attachment_permission_dialog_action_button">Iɣewwaren</string>
+  <string name="attachment_type_description">%1$s ufaylu</string>
   <!-- Attachment Types -->
   <string name="attachment_type_archive">Taṛcivt</string>
   <string name="attachment_type_image">Tugna</string>
@@ -36,7 +36,7 @@
   <string name="attachment_type_pdf">PDF</string>
   <string name="attachment_type_text">Aḍris</string>
   <string name="attachment_type_document">Isemli</string>
-  <string name="attachment_type_spreadsheet">Spreadsheet</string>
+  <string name="attachment_type_spreadsheet">Ambellez</string>
   <string name="attachment_type_presentation">Asenked</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Senkez ɣer...</string>

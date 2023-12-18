@@ -59,11 +59,18 @@
   <string name="message_body_embedded_images_banner_text">Il caricamento automatico delle immagini incorporate è disattivato. Questo può essere cambiato nelle impostazioni.</string>
   <string name="message_body_remote_content_banner_text">Il caricamento automatico dei contenuti remoti è disattivato. Questo può essere cambiato nelle impostazioni.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">Il caricamento automatico delle immagini incorporate e dei contenuti remoti è disattivato. Questo può essere cambiato nelle impostazioni.</string>
+  <string name="message_phishing_banner_text">Il nostro sistema ha segnalato questo messaggio come tentativo di phishing. Verifica che sia legittimo.</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">Stai per uscire dall\'app e andare sul sito:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">Non chiederlo più</string>
   <string name="external_link_confirmation_dialog_cancel_button">Annulla</string>
   <string name="external_link_confirmation_dialog_continue_button">Continua</string>
+  <!-- Phishing link confirmation dialog -->
+  <string name="phishing_link_confirmation_dialog_title">Avviso: sito web sospetto</string>
+  <string name="phishing_link_confirmation_dialog_content_part_1">Questo link conduce a un sito web che potrebbe tentare di rubare le tue informazioni, come password e dettagli della carta di credito.</string>
+  <string name="phishing_link_confirmation_dialog_content_part_2">Per la tua sicurezza, non proseguire.</string>
+  <string name="phishing_link_confirmation_dialog_button_go_back">Torna indietro (consigliato)</string>
+  <string name="phishing_link_confirmation_dialog_button_continue">Ignora l\'avviso e prosegui</string>
   <string name="message_delete_dialog_title">Elimina il messaggio</string>
   <string name="message_delete_dialog_message">Sei sicuro di voler eliminare definitivamente questo messaggio?</string>
   <string name="message_deleted">Messaggio eliminato</string>

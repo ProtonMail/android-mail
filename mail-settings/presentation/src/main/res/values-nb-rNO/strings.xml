@@ -88,8 +88,8 @@
   <string name="mail_settings_privacy_auto_show_embedded_images">Vis automatisk innebygde bilder</string>
   <string name="mail_settings_privacy_prevent_taking_screenshots">Forhindre at det blir tatt skjermbilder</string>
   <string name="mail_settings_privacy_request_link_confirmation">Be om bekreftelse av kobling</string>
-  <string name="mail_settings_privacy_background_sync">Background sync</string>
-  <string name="mail_settings_privacy_background_sync_description">If this option is enabled, the app will sync with the server in the background. Disabling this feature will also disable push notifications.</string>
+  <string name="mail_settings_privacy_background_sync">Bakgunnssynkronisering</string>
+  <string name="mail_settings_privacy_background_sync_description">Hvis dette alternativet er aktivert, vil appen synkroniseres med tjeneren i bakgrunnen. Deaktivering av denne funksjonen vil også deaktivere push-varsler.</string>
   <string name="mail_settings_privacy_error_updating">Feil under oppdatering av innstillinger</string>
   <string name="mail_settings_privacy_error_loading">Feil ved lasting av innstillinger</string>
   <!-- Swipe Actions -->
@@ -100,7 +100,7 @@
   <string name="mail_settings_swipe_action_archive_title">Arkiver</string>
   <string name="mail_settings_swipe_action_read_title">Ulest</string>
   <string name="mail_settings_swipe_action_spam_title">Søppelpost</string>
-  <string name="mail_settings_swipe_action_star_title">Stjernemerket</string>
+  <string name="mail_settings_swipe_action_star_title">Stjernemerk</string>
   <string name="mail_settings_swipe_action_trash_title">Papirkurv</string>
   <string name="mail_settings_swipe_action_archive_description">Flytt til arkiv</string>
   <string name="mail_settings_swipe_action_read_description">Marker som ulest/lest</string>

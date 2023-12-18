@@ -88,8 +88,8 @@
   <string name="mail_settings_privacy_auto_show_embedded_images">Gömülü görseller otomatik olarak görüntülensin</string>
   <string name="mail_settings_privacy_prevent_taking_screenshots">Ekran görüntüsü alınamasın</string>
   <string name="mail_settings_privacy_request_link_confirmation">Bağlantı onayı istensin</string>
-  <string name="mail_settings_privacy_background_sync">Background sync</string>
-  <string name="mail_settings_privacy_background_sync_description">If this option is enabled, the app will sync with the server in the background. Disabling this feature will also disable push notifications.</string>
+  <string name="mail_settings_privacy_background_sync">Arka planda eşitleme</string>
+  <string name="mail_settings_privacy_background_sync_description">Açıldığında, uygulama sunucu ile arka planda eşitlenir. Kapatıldığında anlık bildirimler de kapatılır.</string>
   <string name="mail_settings_privacy_error_updating">Ayarlar güncellenirken sorun çıktı</string>
   <string name="mail_settings_privacy_error_loading">Ayarlar yüklenirken sorun çıktı</string>
   <!-- Swipe Actions -->

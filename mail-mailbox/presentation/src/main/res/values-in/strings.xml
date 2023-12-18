@@ -27,8 +27,6 @@
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="other">%d Dipilih</item>
   </plurals>
-  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
-  <string name="filter_unread_button_text_without_counter">Belum dibaca</string>
   <plurals name="filter_unread_button_text">
     <item quantity="other">%d belum dibaca</item>
   </plurals>
@@ -65,34 +63,32 @@
   <string name="mailbox_action_move_messages_failed">Pemindahan gagal</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Gagal mendapatkan folder</string>
   <!--  Spotlight V6 Beta  -->
-  <string name="onboarding_headline_beta">Beta test the new app</string>
-  <string name="onboarding_description_beta">We\'ve rebuilt the app for stability and reliability. Share your feedback and stay tuned as we reintroduce features. Learn more.</string>
+  <string name="onboarding_headline_beta">Coba aplikasi beta baru</string>
+  <string name="onboarding_description_beta">Kami telah membuat ulang aplikasi untuk stabilitas dan keandalan. Bagikan masukan Anda dan pantau terus saat kami memperkenalkan kembali fitur-fiturnya. Pelajari lebih lanjut.</string>
   <string name="onboarding_description_beta_link">https://proton.me/support/mail-android-beta</string>
-  <string name="onboarding_description_beta_learn_more">Learn more</string>
+  <string name="onboarding_description_beta_learn_more">Pelajari lebih lanjut</string>
   <!--  Spotlight V6 GA  -->
-  <string name="onboarding_headline_ga">Welcome to the new app</string>
-  <string name="onboarding_description_ga">Completely rebuilt from scratch, the new Proton Mail app was made for stability and performance.</string>
+  <string name="onboarding_headline_ga">Selamat datang di aplikasi yang baru</string>
+  <string name="onboarding_description_ga">Dibuat ulang sepenuhnya dari awal, aplikasi Proton Mail baru dibuat untuk stabilitas dan kinerja.</string>
   <!--  Onboarding 1  -->
-  <string name="onboarding_privacy_for_all_headline">Privacy for all</string>
-  <string name="onboarding_privacy_for_all_description">Invite others to Proton Mail so you can all benefit from end-to-end encryption.</string>
+  <string name="onboarding_privacy_for_all_headline">Privasi untuk semua</string>
+  <string name="onboarding_privacy_for_all_description">Undang pengguna lain ke Proton Mail agar Anda dan para rekan yang Anda undang dapat saling memperoleh manfaat dari enkripsi end-to-end.</string>
   <!--  Onboarding 2  -->
-  <string name="onboarding_easily_up_to_date_headline">Easily up-to-date</string>
-  <string name="onboarding_easily_up_to_date_description">Breeze through threaded messages in conversation mode.</string>
+  <string name="onboarding_easily_up_to_date_headline">Selalu termutakhir</string>
+  <string name="onboarding_easily_up_to_date_description">Baca pesan berutas dengan mudah dalam mode percakapan.</string>
   <!--  Onboarding 3  -->
-  <string name="onboarding_neat_and_tidy_headline">Neat and tidy</string>
-  <string name="onboarding_neat_and_tidy_description">File, label, and color code messages to create your perfect, custom inbox.</string>
+  <string name="onboarding_neat_and_tidy_headline">Rapi dan teratur</string>
+  <string name="onboarding_neat_and_tidy_description">Arsipkan, labeli, dan warnai pesan Anda agar kotak masuk Anda dapat tampak sempurna sebagaimana yang Anda kehendaki.</string>
   <!--  Onboarding actions  -->
   <string name="onboarding_next">Selanjutnya</string>
   <string name="onboarding_get_started">Mulai</string>
-  <string name="onboarding_illustration_content_description">Onboarding illustration</string>
-  <string name="onboarding_close_content_description">Close</string>
+  <string name="onboarding_illustration_content_description">Ilustrasi pengenalan</string>
+  <string name="onboarding_close_content_description">Tutup</string>
   <!-- Sidebar Beta label -->
   <string name="sidebar_beta_version_title">Proton Mail Beta</string>
-  <string name="sidebar_beta_version_description">Tap to learn more about this project.</string>
-  <string name="sidebar_beta_version_icon_content_description">Navigate to KB article.</string>
-  <string name="mailbox_action_read_message">Message read updated</string>
-  <string name="mailbox_action_star_message">Message star updated</string>
-  <string name="mailbox_action_trash_message">Message moved to trash</string>
-  <string name="mailbox_action_archive_message">Message moved to archive</string>
-  <string name="mailbox_action_spam_message">Message moved to spam</string>
+  <string name="sidebar_beta_version_description">Ketuk panel ini untuk mempelajari proyek ini lebih lanjut.</string>
+  <string name="sidebar_beta_version_icon_content_description">Tuju artikel Basis Pengetahuan.</string>
+  <string name="mailbox_action_trash_message">Pesan dipindahkan ke sampah</string>
+  <string name="mailbox_action_archive_message">Pesan dipindahkan ke arsip</string>
+  <string name="mailbox_action_spam_message">Pesan dipindahkan ke spam</string>
 </resources>

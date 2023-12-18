@@ -27,8 +27,6 @@
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="other">已选择 %d 项</item>
   </plurals>
-  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
-  <string name="filter_unread_button_text_without_counter">未读</string>
   <plurals name="filter_unread_button_text">
     <item quantity="other">%d 封未读邮件</item>
   </plurals>
@@ -65,34 +63,32 @@
   <string name="mailbox_action_move_messages_failed">移动操作失败</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">无法列出文件夹</string>
   <!--  Spotlight V6 Beta  -->
-  <string name="onboarding_headline_beta">Beta test the new app</string>
-  <string name="onboarding_description_beta">We\'ve rebuilt the app for stability and reliability. Share your feedback and stay tuned as we reintroduce features. Learn more.</string>
+  <string name="onboarding_headline_beta">体验测试版应用程序</string>
+  <string name="onboarding_description_beta">我们重新构建了应用程序，以提升其稳定性和可靠性。请分享您的反馈，并保持关注，因为我们会逐步重新引入应用的各项功能。了解更多信息。</string>
   <string name="onboarding_description_beta_link">https://proton.me/support/mail-android-beta</string>
-  <string name="onboarding_description_beta_learn_more">Learn more</string>
+  <string name="onboarding_description_beta_learn_more">了解详情</string>
   <!--  Spotlight V6 GA  -->
-  <string name="onboarding_headline_ga">Welcome to the new app</string>
-  <string name="onboarding_description_ga">Completely rebuilt from scratch, the new Proton Mail app was made for stability and performance.</string>
+  <string name="onboarding_headline_ga">欢迎体验全新的应用</string>
+  <string name="onboarding_description_ga">Proton Mail 的全新应用程序是完全从头开始重新构建的，它专为提升稳定性和性能而设计。</string>
   <!--  Onboarding 1  -->
-  <string name="onboarding_privacy_for_all_headline">Privacy for all</string>
-  <string name="onboarding_privacy_for_all_description">Invite others to Proton Mail so you can all benefit from end-to-end encryption.</string>
+  <string name="onboarding_privacy_for_all_headline">人人享有隐私</string>
+  <string name="onboarding_privacy_for_all_description">邀请更多人使用 Proton Mail，让大家都能享受到端到端加密带来的好处。</string>
   <!--  Onboarding 2  -->
-  <string name="onboarding_easily_up_to_date_headline">Easily up-to-date</string>
-  <string name="onboarding_easily_up_to_date_description">Breeze through threaded messages in conversation mode.</string>
+  <string name="onboarding_easily_up_to_date_headline">有条不紊</string>
+  <string name="onboarding_easily_up_to_date_description">会话模式能帮助您轻松应对各方的往来邮件。</string>
   <!--  Onboarding 3  -->
-  <string name="onboarding_neat_and_tidy_headline">Neat and tidy</string>
-  <string name="onboarding_neat_and_tidy_description">File, label, and color code messages to create your perfect, custom inbox.</string>
+  <string name="onboarding_neat_and_tidy_headline">干净利落，井井有条。</string>
+  <string name="onboarding_neat_and_tidy_description">使用文件夹、标签和颜色打造与您一拍即合的完美邮箱。</string>
   <!--  Onboarding actions  -->
   <string name="onboarding_next">继续</string>
   <string name="onboarding_get_started">立即体验</string>
-  <string name="onboarding_illustration_content_description">Onboarding illustration</string>
-  <string name="onboarding_close_content_description">Close</string>
+  <string name="onboarding_illustration_content_description">入职流程插画</string>
+  <string name="onboarding_close_content_description">关闭</string>
   <!-- Sidebar Beta label -->
-  <string name="sidebar_beta_version_title">Proton Mail Beta</string>
-  <string name="sidebar_beta_version_description">Tap to learn more about this project.</string>
-  <string name="sidebar_beta_version_icon_content_description">Navigate to KB article.</string>
-  <string name="mailbox_action_read_message">Message read updated</string>
-  <string name="mailbox_action_star_message">Message star updated</string>
-  <string name="mailbox_action_trash_message">Message moved to trash</string>
-  <string name="mailbox_action_archive_message">Message moved to archive</string>
-  <string name="mailbox_action_spam_message">Message moved to spam</string>
+  <string name="sidebar_beta_version_title">Proton Mail 测试版</string>
+  <string name="sidebar_beta_version_description">了解详细信息</string>
+  <string name="sidebar_beta_version_icon_content_description">跳转知识库</string>
+  <string name="mailbox_action_trash_message">邮件已移动到垃圾箱</string>
+  <string name="mailbox_action_archive_message">邮件已存档</string>
+  <string name="mailbox_action_spam_message">封邮件已移至垃圾邮件箱</string>
 </resources>

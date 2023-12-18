@@ -59,11 +59,18 @@
   <string name="message_body_embedded_images_banner_text">Le chargement automatique des images intégrées est désactivé. Vous pouvez modifier cette option dans les paramètres.</string>
   <string name="message_body_remote_content_banner_text">Le chargement automatique du contenu distant est désactivé. Vous pouvez modifier cette option dans les paramètres.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">Le chargement automatique des images intégrées et du contenu distant est désactivé. Vous pouvez modifier cette option dans les paramètres.</string>
+  <string name="message_phishing_banner_text">Notre système a signalé ce message comme tentative de phishing/hameçonnage. Nous vous invitons à vérifier qu\'il est légitime.</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">Vous êtes sur le point de quitter l\'application et de vous rendre sur :</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">Ne plus demander</string>
   <string name="external_link_confirmation_dialog_cancel_button">Annuler</string>
   <string name="external_link_confirmation_dialog_continue_button">Continuer</string>
+  <!-- Phishing link confirmation dialog -->
+  <string name="phishing_link_confirmation_dialog_title">Attention : site internet suspect/frauduleux</string>
+  <string name="phishing_link_confirmation_dialog_content_part_1">Ce lien mène à un site web qui pourrait essayer de voler vos informations, comme des mots de passe et des informations de carte de paiement.</string>
+  <string name="phishing_link_confirmation_dialog_content_part_2">Pour votre sécurité, veuillez ne pas continuer.</string>
+  <string name="phishing_link_confirmation_dialog_button_go_back">Revenir en arrière (recommandé)</string>
+  <string name="phishing_link_confirmation_dialog_button_continue">Ignorer l\'avertissement et continuer</string>
   <string name="message_delete_dialog_title">Supprimer le message</string>
   <string name="message_delete_dialog_message">Voulez-vous vraiment supprimer définitivement ce message ?</string>
   <string name="message_deleted">Le message a été supprimé.</string>

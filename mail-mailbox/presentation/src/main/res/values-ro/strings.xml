@@ -29,8 +29,6 @@
     <item quantity="few">Selectate: %d</item>
     <item quantity="other">Selectate: %d</item>
   </plurals>
-  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
-  <string name="filter_unread_button_text_without_counter">Necitit</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">Unul necitit</item>
     <item quantity="few">%d necitite</item>
@@ -92,7 +90,7 @@
   <string name="onboarding_description_ga">Complet reconstruită de la zero, noua aplicație Proton Mail a fost creată pentru stabilitate și performanță.</string>
   <!--  Onboarding 1  -->
   <string name="onboarding_privacy_for_all_headline">Intimitate pentru toți</string>
-  <string name="onboarding_privacy_for_all_description">Invitați alții la Proton Mail, astfel încât să puteți beneficia cu toții de criptarea în ambele părți.</string>
+  <string name="onboarding_privacy_for_all_description">Invitați alții la Proton Mail, astfel încât să puteți beneficia cu toții de criptarea bilaterală.</string>
   <!--  Onboarding 2  -->
   <string name="onboarding_easily_up_to_date_headline">Ușor de actualizat</string>
   <string name="onboarding_easily_up_to_date_description">Parcurgeți rapid mesajele înșiruite în modul conversație.</string>
@@ -108,8 +106,6 @@
   <string name="sidebar_beta_version_title">Proton Mail Beta</string>
   <string name="sidebar_beta_version_description">Atingeți ca să aflați mai multe despre acest proiect.</string>
   <string name="sidebar_beta_version_icon_content_description">Navigați la articolul din baza de cunoștințe.</string>
-  <string name="mailbox_action_read_message">Citire mesaj modificată.</string>
-  <string name="mailbox_action_star_message">Marcare cu stea modificată.</string>
   <string name="mailbox_action_trash_message">Mesaj mutat în «Gunoi».</string>
   <string name="mailbox_action_archive_message">Mesaj mutat în «Arhivă».</string>
   <string name="mailbox_action_spam_message">Mesaj mutat în «Nedorite».</string>

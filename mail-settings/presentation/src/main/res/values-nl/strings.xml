@@ -66,10 +66,10 @@
   <!-- Default email address settings -->
   <string name="mail_settings_default_email_address_title">Standaard e-mailadres</string>
   <string name="mail_settings_default_email_address_inactive_addresses">Inactieve adressen</string>
-  <string name="mail_settings_default_email_address_no_inactive_addresses">No inactive addresses</string>
+  <string name="mail_settings_default_email_address_no_inactive_addresses">Geen inactieve adressen</string>
   <string name="mail_settings_default_email_address_error_loading">Fout bij het laden van instellingen</string>
   <string name="mail_settings_default_email_address_error_update">Fout bij het bijwerken van instellingen</string>
-  <string name="mail_settings_default_email_address_error_update_subscription">Upgrade to a paid plan to set this address as default</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">Upgrade naar een betaald abonnement om dit adres als standaard in te stellen</string>
   <!-- Display name, signature, mobile footer -->
   <string name="mail_settings_identity_title">Weergave naam &amp; handtekening</string>
   <string name="mail_settings_identity_save_button">Opslaan</string>
@@ -88,8 +88,8 @@
   <string name="mail_settings_privacy_auto_show_embedded_images">Ingesloten afbeeldingen automatisch weergeven</string>
   <string name="mail_settings_privacy_prevent_taking_screenshots">Schermafdrukken voorkomen</string>
   <string name="mail_settings_privacy_request_link_confirmation">Bevestigingslink aanvragen</string>
-  <string name="mail_settings_privacy_background_sync">Background sync</string>
-  <string name="mail_settings_privacy_background_sync_description">If this option is enabled, the app will sync with the server in the background. Disabling this feature will also disable push notifications.</string>
+  <string name="mail_settings_privacy_background_sync">Achtergrondsynchronisatie</string>
+  <string name="mail_settings_privacy_background_sync_description">Als deze optie is ingeschakeld zal de app op de achtergrond met de server synchroniseren. Als u deze optie uitschakelt worden ook de pushmeldingen uitgeschakeld.</string>
   <string name="mail_settings_privacy_error_updating">Fout bij het bijwerken van instellingen</string>
   <string name="mail_settings_privacy_error_loading">Fout bij het laden van instellingen</string>
   <!-- Swipe Actions -->
@@ -111,12 +111,12 @@
   <string name="mail_settings_notifications_title">Pushmeldingen</string>
   <string name="mail_settings_notifications_extended_notifications_title">Uitgebreide meldingen</string>
   <string name="mail_settings_notifications_extended_notifications_summary">Schakel deze functie in om de afzender\nvan de e-mails in de pushmeldingen te zien.</string>
-  <string name="mail_settings_notifications_notifications_settings">Notifications settings</string>
-  <string name="mail_settings_notifications_notifications_settings_hint">Navigate to system notification settings</string>
+  <string name="mail_settings_notifications_notifications_settings">Meldingsinstellingen</string>
+  <string name="mail_settings_notifications_notifications_settings_hint">Navigeer naar de instellingen over systeemmeldingen</string>
   <string name="mail_settings_notifications_update_error">Fout bij het bijwerken van instellingen</string>
   <string name="mail_settings_notifications_loading_error">Fout bij het laden van instellingen</string>
   <!-- Local storage -->
-  <string name="mail_settings_clearing_cached_data">Clearing local cached data…</string>
+  <string name="mail_settings_clearing_cached_data">Lokaal gecachte gegevens wissen</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Er ging iets fout. Probeer opnieuw.</string>
 </resources>

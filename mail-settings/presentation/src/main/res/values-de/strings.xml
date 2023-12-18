@@ -71,9 +71,9 @@
   <string name="mail_settings_default_email_address_error_update">Fehler beim Aktualisieren der Einstellungen.</string>
   <string name="mail_settings_default_email_address_error_update_subscription">Upgrade auf ein kostenpflichtiges Abonnement, damit du diese Adresse als Standard festlegen kannst.</string>
   <!-- Display name, signature, mobile footer -->
-  <string name="mail_settings_identity_title">Anzeigenamen und Signatur</string>
+  <string name="mail_settings_identity_title">Anzeigenamen &amp; Signatur</string>
   <string name="mail_settings_identity_save_button">Speichern</string>
-  <string name="mail_settings_identity_display_name">Anzeigenamen</string>
+  <string name="mail_settings_identity_display_name">Anzeigename</string>
   <string name="mail_settings_identity_display_name_hint">Anzeigename</string>
   <string name="mail_settings_identity_signature">Signatur</string>
   <string name="mail_settings_identity_signature_hint">Signatur</string>

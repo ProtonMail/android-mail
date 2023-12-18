@@ -50,7 +50,7 @@
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Erro ao enviar</string>
   <string name="message_sending_error_dialog_button_dismiss">Fechar</string>
-  <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the email entered due to the following reason:</string>
-  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">There are no Trusted Keys: %s</string>
+  <string name="message_sending_error_dialog_text_error">Seu e-mail não pode ser enviado para o e-mail informado pelo seguinte motivo:</string>
+  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Não há chaves confiáveis: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">Endereço não existe: %s</string>
 </resources>

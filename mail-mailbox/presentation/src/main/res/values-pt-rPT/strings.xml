@@ -28,8 +28,6 @@
     <item quantity="one">%d selecionado</item>
     <item quantity="other">%d selecionados</item>
   </plurals>
-  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
-  <string name="filter_unread_button_text_without_counter">Não lido</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%d não lido</item>
     <item quantity="other">%d não lidas</item>
@@ -66,42 +64,40 @@
   </plurals>
   <plurals name="mailbox_action_delete_conversation">
     <item quantity="one">Conversa eliminada permanentemente</item>
-    <item quantity="other">%d conversations permanently deleted</item>
+    <item quantity="other">%d conversas eliminadas permanentemente</item>
   </plurals>
-  <string name="mailbox_action_label_messages_failed">Label operation failed</string>
-  <string name="mailbox_action_label_messages_failed_retrieving_labels">Failed to get labels</string>
-  <string name="mailbox_action_failed_retrieving_colors">Failed to get color settings</string>
-  <string name="mailbox_action_move_messages_failed">Move operation failed</string>
-  <string name="mailbox_action_move_messages_failed_retrieving_folders">Failed to get folders</string>
+  <string name="mailbox_action_label_messages_failed">Falha na operação da etiqueta</string>
+  <string name="mailbox_action_label_messages_failed_retrieving_labels">Falha ao obter etiquetas</string>
+  <string name="mailbox_action_failed_retrieving_colors">Falha ao obter definições de cor</string>
+  <string name="mailbox_action_move_messages_failed">Falha na operação de mover</string>
+  <string name="mailbox_action_move_messages_failed_retrieving_folders">Falha ao obter pastas</string>
   <!--  Spotlight V6 Beta  -->
-  <string name="onboarding_headline_beta">Beta test the new app</string>
-  <string name="onboarding_description_beta">We\'ve rebuilt the app for stability and reliability. Share your feedback and stay tuned as we reintroduce features. Learn more.</string>
+  <string name="onboarding_headline_beta">Teste o novo aplicativo em Beta</string>
+  <string name="onboarding_description_beta">Reconstruímos a aplicação para estabilidade e fiabilidade. Partilhe o seu \'feedback\' e fique atento enquanto reintroduzimos funcionalidades. Saiba mais.</string>
   <string name="onboarding_description_beta_link">https://proton.me/support/mail-android-beta</string>
-  <string name="onboarding_description_beta_learn_more">Learn more</string>
+  <string name="onboarding_description_beta_learn_more">Saiba mais</string>
   <!--  Spotlight V6 GA  -->
-  <string name="onboarding_headline_ga">Welcome to the new app</string>
-  <string name="onboarding_description_ga">Completely rebuilt from scratch, the new Proton Mail app was made for stability and performance.</string>
+  <string name="onboarding_headline_ga">Bem-vindo à nova aplicação</string>
+  <string name="onboarding_description_ga">Completamente reconstruída de raiz, a nova aplicação Proton Mail foi feita para estabilidade e desempenho.</string>
   <!--  Onboarding 1  -->
-  <string name="onboarding_privacy_for_all_headline">Privacy for all</string>
-  <string name="onboarding_privacy_for_all_description">Invite others to Proton Mail so you can all benefit from end-to-end encryption.</string>
+  <string name="onboarding_privacy_for_all_headline">Privacidade para todos</string>
+  <string name="onboarding_privacy_for_all_description">Convide outros para o Proton Mail e assim todos podem beneficiar da encriptação de ponta-a-ponta.</string>
   <!--  Onboarding 2  -->
-  <string name="onboarding_easily_up_to_date_headline">Easily up-to-date</string>
-  <string name="onboarding_easily_up_to_date_description">Breeze through threaded messages in conversation mode.</string>
+  <string name="onboarding_easily_up_to_date_headline">Facilmente atualizável</string>
+  <string name="onboarding_easily_up_to_date_description">Navegue por tópicos no modo de conversas.</string>
   <!--  Onboarding 3  -->
-  <string name="onboarding_neat_and_tidy_headline">Neat and tidy</string>
-  <string name="onboarding_neat_and_tidy_description">File, label, and color code messages to create your perfect, custom inbox.</string>
+  <string name="onboarding_neat_and_tidy_headline">Limpo e organizado</string>
+  <string name="onboarding_neat_and_tidy_description">Arquive, etiquete ou dê cor às mensagens para criar a sua caixa de entrada perfeita.</string>
   <!--  Onboarding actions  -->
   <string name="onboarding_next">Seguinte</string>
   <string name="onboarding_get_started">Começar</string>
-  <string name="onboarding_illustration_content_description">Onboarding illustration</string>
-  <string name="onboarding_close_content_description">Close</string>
+  <string name="onboarding_illustration_content_description">Ilustração \'onboarding\'</string>
+  <string name="onboarding_close_content_description">Fechar</string>
   <!-- Sidebar Beta label -->
   <string name="sidebar_beta_version_title">Proton Mail Beta</string>
-  <string name="sidebar_beta_version_description">Tap to learn more about this project.</string>
-  <string name="sidebar_beta_version_icon_content_description">Navigate to KB article.</string>
-  <string name="mailbox_action_read_message">Message read updated</string>
-  <string name="mailbox_action_star_message">Message star updated</string>
-  <string name="mailbox_action_trash_message">Message moved to trash</string>
-  <string name="mailbox_action_archive_message">Message moved to archive</string>
-  <string name="mailbox_action_spam_message">Message moved to spam</string>
+  <string name="sidebar_beta_version_description">Toque para saber mais sobre este projeto.</string>
+  <string name="sidebar_beta_version_icon_content_description">Navegue até ao artigo KB</string>
+  <string name="mailbox_action_trash_message">Mensagem movida para o lixo</string>
+  <string name="mailbox_action_archive_message">Mensagem movida para Arquivo</string>
+  <string name="mailbox_action_spam_message">mensagem movida para Spam</string>
 </resources>

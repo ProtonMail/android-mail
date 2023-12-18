@@ -59,17 +59,24 @@
   <string name="message_body_embedded_images_banner_text">O carregamento automático de imagens incorporadas está desativado. Isso pode ser alterado nas configurações.</string>
   <string name="message_body_remote_content_banner_text">O carregamento automático de conteúdo remoto está desativado. Isso pode ser alterado nas configurações.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">O carregamento automático de imagens incorporadas e conteúdo remoto está desativado. Isso pode ser alterado nas configurações.</string>
+  <string name="message_phishing_banner_text">Nosso sistema sinalizou esta mensagem como uma tentativa de phishing. Verifique se é legítimo.</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">Você está prestes a sair do aplicativo e navegar para:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">Não perguntar novamente</string>
   <string name="external_link_confirmation_dialog_cancel_button">Cancelar</string>
   <string name="external_link_confirmation_dialog_continue_button">Continuar</string>
+  <!-- Phishing link confirmation dialog -->
+  <string name="phishing_link_confirmation_dialog_title">Aviso: site suspeito/fraudulento</string>
+  <string name="phishing_link_confirmation_dialog_content_part_1">Esse link leva a um site que pode estar tentando roubar suas informações, como senhas e detalhes de cartão de crédito.</string>
+  <string name="phishing_link_confirmation_dialog_content_part_2">Para sua segurança, não continue.</string>
+  <string name="phishing_link_confirmation_dialog_button_go_back">Voltar (recomendado)</string>
+  <string name="phishing_link_confirmation_dialog_button_continue">Ignorar aviso e continuar</string>
   <string name="message_delete_dialog_title">Excluir mensagem</string>
   <string name="message_delete_dialog_message">Você tem certeza de que deseja excluir permanentemente esta mensagem?</string>
-  <string name="message_deleted">Mensagem excluida</string>
+  <string name="message_deleted">Mensagem excluída</string>
   <string name="error_delete_message_failed">Falha ao excluir mensagem</string>
-  <string name="error_delete_message_failed_wrong_folder">Message is not in a location where it can be deleted</string>
+  <string name="error_delete_message_failed_wrong_folder">A mensagem não está em um local onde possa ser excluída</string>
   <string name="error_delete_conversation_failed">Erro ao excluir a conversa</string>
-  <string name="error_delete_conversation_failed_wrong_folder">Conversation is not in a location where it can be deleted</string>
+  <string name="error_delete_conversation_failed_wrong_folder">A conversa não está em um local onde possa ser excluída</string>
   <string name="conversation_deleted">Conversa excluída</string>
 </resources>

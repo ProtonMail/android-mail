@@ -28,8 +28,6 @@
     <item quantity="one">%d valgt</item>
     <item quantity="other">%d valgt</item>
   </plurals>
-  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
-  <string name="filter_unread_button_text_without_counter">Ulest</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%d ulest</item>
     <item quantity="other">%d uleste</item>
@@ -74,34 +72,32 @@
   <string name="mailbox_action_move_messages_failed">Flytteoperasjonen mislyktes</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Kunne ikke hente mapper</string>
   <!--  Spotlight V6 Beta  -->
-  <string name="onboarding_headline_beta">Beta test the new app</string>
-  <string name="onboarding_description_beta">We\'ve rebuilt the app for stability and reliability. Share your feedback and stay tuned as we reintroduce features. Learn more.</string>
+  <string name="onboarding_headline_beta">Prøvekjør den nye app-testversjonen</string>
+  <string name="onboarding_description_beta">Vi har bygget om appen for stabilitet og pålitelighet. Del tilbakemeldingen din og følg med når vi gjenintroduserer funksjoner. Lær mer.</string>
   <string name="onboarding_description_beta_link">https://proton.me/support/mail-android-beta</string>
-  <string name="onboarding_description_beta_learn_more">Learn more</string>
+  <string name="onboarding_description_beta_learn_more">Lær mer</string>
   <!--  Spotlight V6 GA  -->
-  <string name="onboarding_headline_ga">Welcome to the new app</string>
-  <string name="onboarding_description_ga">Completely rebuilt from scratch, the new Proton Mail app was made for stability and performance.</string>
+  <string name="onboarding_headline_ga">Velkommen til den nye appen</string>
+  <string name="onboarding_description_ga">Den nye Proton Mail-appen ble fullstendig gjenoppbygd fra bunnen av, og ble laget for stabilitet og ytelse.</string>
   <!--  Onboarding 1  -->
-  <string name="onboarding_privacy_for_all_headline">Privacy for all</string>
-  <string name="onboarding_privacy_for_all_description">Invite others to Proton Mail so you can all benefit from end-to-end encryption.</string>
+  <string name="onboarding_privacy_for_all_headline">Personvern for alle</string>
+  <string name="onboarding_privacy_for_all_description">Inviter andre til Proton Mail, slik at dere alle kan dra nytte av ende-til-ende kryptering.</string>
   <!--  Onboarding 2  -->
-  <string name="onboarding_easily_up_to_date_headline">Easily up-to-date</string>
-  <string name="onboarding_easily_up_to_date_description">Breeze through threaded messages in conversation mode.</string>
+  <string name="onboarding_easily_up_to_date_headline">Lett oppdatert</string>
+  <string name="onboarding_easily_up_to_date_description">Lek deg gjennom trådmeldinger i samtalemodus.</string>
   <!--  Onboarding 3  -->
-  <string name="onboarding_neat_and_tidy_headline">Neat and tidy</string>
-  <string name="onboarding_neat_and_tidy_description">File, label, and color code messages to create your perfect, custom inbox.</string>
+  <string name="onboarding_neat_and_tidy_headline">Pent og ryddig</string>
+  <string name="onboarding_neat_and_tidy_description">Fil-, etikett- og fargekodemeldinger for å opprette en perfekt, tilpasset innboks.</string>
   <!--  Onboarding actions  -->
   <string name="onboarding_next">Neste</string>
   <string name="onboarding_get_started">Kom i gang</string>
-  <string name="onboarding_illustration_content_description">Onboarding illustration</string>
-  <string name="onboarding_close_content_description">Close</string>
+  <string name="onboarding_illustration_content_description">Illustrasjon om introduksjon</string>
+  <string name="onboarding_close_content_description">Lukk</string>
   <!-- Sidebar Beta label -->
-  <string name="sidebar_beta_version_title">Proton Mail Beta</string>
-  <string name="sidebar_beta_version_description">Tap to learn more about this project.</string>
-  <string name="sidebar_beta_version_icon_content_description">Navigate to KB article.</string>
-  <string name="mailbox_action_read_message">Message read updated</string>
-  <string name="mailbox_action_star_message">Message star updated</string>
-  <string name="mailbox_action_trash_message">Message moved to trash</string>
-  <string name="mailbox_action_archive_message">Message moved to archive</string>
-  <string name="mailbox_action_spam_message">Message moved to spam</string>
+  <string name="sidebar_beta_version_title">Proton Mail testversjon</string>
+  <string name="sidebar_beta_version_description">Trykk for å finne ut mer om dette prosjektet.</string>
+  <string name="sidebar_beta_version_icon_content_description">Naviger til KB-artikkelen.</string>
+  <string name="mailbox_action_trash_message">Melding flyttet til papirkurven</string>
+  <string name="mailbox_action_archive_message">Melding flyttet til arkiv</string>
+  <string name="mailbox_action_spam_message">Melding flyttet til søppelpost</string>
 </resources>

@@ -59,17 +59,24 @@
   <string name="message_body_embedded_images_banner_text">A beágyazott képek automatikus letöltése ki van kapcsolva. A beállításoknál lehet ezt megváltoztatni.</string>
   <string name="message_body_remote_content_banner_text">A távoli tartalom automatikus letöltése ki van kapcsolva. A beállításoknál lehet ezt megváltoztatni.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">A beágyazott képek és távoli tartalom automatikus letöltése ki van kapcsolva. A beállításoknál lehet ezt megváltoztatni.</string>
+  <string name="message_phishing_banner_text">A rendszerünk úgy érzékelte, hogy ez egy adathalász kísérlet. Kérjük ellenőrizze, hogy esetleg mégsem az.</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">You are about to leave the app and navigate to:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">Ne kérdezze újra</string>
   <string name="external_link_confirmation_dialog_cancel_button">Mégsem</string>
   <string name="external_link_confirmation_dialog_continue_button">Folytatás</string>
-  <string name="message_delete_dialog_title">Delete message</string>
-  <string name="message_delete_dialog_message">Are you sure you want to permanently delete this message?</string>
-  <string name="message_deleted">Message deleted</string>
+  <!-- Phishing link confirmation dialog -->
+  <string name="phishing_link_confirmation_dialog_title">Figyelem: gyanítottan hamis weboldal</string>
+  <string name="phishing_link_confirmation_dialog_content_part_1">Ez a hivatkozás egy olyan weboldalhoz vezet, amely ellophatja személyes információit, mint például a jelszavait vagy a bankkártyája adatait.</string>
+  <string name="phishing_link_confirmation_dialog_content_part_2">For your security, do not continue.</string>
+  <string name="phishing_link_confirmation_dialog_button_go_back">Vissza (ajánlott)</string>
+  <string name="phishing_link_confirmation_dialog_button_continue">Figyelmeztetés figyelmen kívül hagyása és folytatás</string>
+  <string name="message_delete_dialog_title">Üzenet törlése</string>
+  <string name="message_delete_dialog_message">Biztos, hogy véglegesen törli ezt az üzenetet?</string>
+  <string name="message_deleted">Üzenet törölve</string>
   <string name="error_delete_message_failed">Failed to delete message</string>
   <string name="error_delete_message_failed_wrong_folder">Message is not in a location where it can be deleted</string>
   <string name="error_delete_conversation_failed">Failed to delete conversation</string>
   <string name="error_delete_conversation_failed_wrong_folder">Conversation is not in a location where it can be deleted</string>
-  <string name="conversation_deleted">Conversation deleted</string>
+  <string name="conversation_deleted">Beszélgetés törölve</string>
 </resources>

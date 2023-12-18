@@ -61,17 +61,24 @@
   <string name="message_body_embedded_images_banner_text">Automatické načítanie vložených obrázkov je vypnuté. Toto je možné zmeniť v nastaveniach.</string>
   <string name="message_body_remote_content_banner_text">Automatické načítanie vzdialeného obsahu je vypnuté. Toto je možné zmeniť v nastaveniach.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">Automatické načítanie vložených obrázkov a vzdialeného obsahu je vypnuté. Tie je možné zmeniť v nastaveniach.</string>
+  <string name="message_phishing_banner_text">Náš systém označil túto správu ako pokus o phishing. Potvrďte prosím, že ide o legitímnu správu.</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">Chystáte sa opustiť aplikáciu a prejsť na:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">Viac sa nepýtať</string>
   <string name="external_link_confirmation_dialog_cancel_button">Zrušiť</string>
   <string name="external_link_confirmation_dialog_continue_button">Pokračovať</string>
-  <string name="message_delete_dialog_title">Delete message</string>
-  <string name="message_delete_dialog_message">Are you sure you want to permanently delete this message?</string>
+  <!-- Phishing link confirmation dialog -->
+  <string name="phishing_link_confirmation_dialog_title">Varovanie: podozrenie na falošnú webovú stránku</string>
+  <string name="phishing_link_confirmation_dialog_content_part_1">Tento odkaz vedie na webovú stránku, ktorá sa môže pokúsiť ukradnúť vaše informácie, ako sú heslá a údaje z platobnej karty.</string>
+  <string name="phishing_link_confirmation_dialog_content_part_2">V záujme vašej bezpečnosti nepokračujte.</string>
+  <string name="phishing_link_confirmation_dialog_button_go_back">Naspäť (odporúčané)</string>
+  <string name="phishing_link_confirmation_dialog_button_continue">Ignorovať varovanie a pokračovať</string>
+  <string name="message_delete_dialog_title">Odstrániť správu</string>
+  <string name="message_delete_dialog_message">Naozaj chcete natrvalo vymazať túto správu?</string>
   <string name="message_deleted">Správa bola odstránená</string>
-  <string name="error_delete_message_failed">Failed to delete message</string>
-  <string name="error_delete_message_failed_wrong_folder">Message is not in a location where it can be deleted</string>
-  <string name="error_delete_conversation_failed">Failed to delete conversation</string>
-  <string name="error_delete_conversation_failed_wrong_folder">Conversation is not in a location where it can be deleted</string>
-  <string name="conversation_deleted">Conversation deleted</string>
+  <string name="error_delete_message_failed">Nepodarilo sa odstrániť správu</string>
+  <string name="error_delete_message_failed_wrong_folder">Správa sa nenachádza na mieste, kde je možné ju odstrániť</string>
+  <string name="error_delete_conversation_failed">Nepodarilo sa odstrániť konverzáciu</string>
+  <string name="error_delete_conversation_failed_wrong_folder">Konverzácia sa nenachádza na mieste, kde je možné ju odstrániť</string>
+  <string name="conversation_deleted">Konverzácia bola zmazaná</string>
 </resources>

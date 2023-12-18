@@ -61,17 +61,24 @@
   <string name="message_body_embedded_images_banner_text">Автоматическая загрузка встроенных изображений отключена. Это можно изменить в настройках.</string>
   <string name="message_body_remote_content_banner_text">Автоматическая загрузка внешнего содержимого отключена. Это можно изменить в настройках.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">Автоматическая загрузка встроенных изображений и внешнего содержимого отключена. Это можно изменить в настройках.</string>
+  <string name="message_phishing_banner_text">Наша система отметила это сообщение как попытку фишинга. Пожалуйста, проверьте, является ли оно подлинным.</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">You are about to leave the app and navigate to:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">Больше не спрашивать</string>
   <string name="external_link_confirmation_dialog_cancel_button">Отменить</string>
   <string name="external_link_confirmation_dialog_continue_button">Продолжить</string>
+  <!-- Phishing link confirmation dialog -->
+  <string name="phishing_link_confirmation_dialog_title">Предупреждение: предполагаемый поддельный сайт</string>
+  <string name="phishing_link_confirmation_dialog_content_part_1">Эта ссылка ведет на сайт, который может пытаться украсть вашу информацию, например, пароли и данные кредитной карты.</string>
+  <string name="phishing_link_confirmation_dialog_content_part_2">В целях вашей безопасности не продолжайте.</string>
+  <string name="phishing_link_confirmation_dialog_button_go_back">Вернуться (рекомендуется)</string>
+  <string name="phishing_link_confirmation_dialog_button_continue">Игнорировать предупреждение и продолжить</string>
   <string name="message_delete_dialog_title">Delete message</string>
-  <string name="message_delete_dialog_message">Are you sure you want to permanently delete this message?</string>
-  <string name="message_deleted">Message deleted</string>
+  <string name="message_delete_dialog_message">Вы уверены, что хотите безвозвратно удалить это сообщение?</string>
+  <string name="message_deleted">Сообщение удалено</string>
   <string name="error_delete_message_failed">Failed to delete message</string>
   <string name="error_delete_message_failed_wrong_folder">Message is not in a location where it can be deleted</string>
   <string name="error_delete_conversation_failed">Failed to delete conversation</string>
   <string name="error_delete_conversation_failed_wrong_folder">Conversation is not in a location where it can be deleted</string>
-  <string name="conversation_deleted">Conversation deleted</string>
+  <string name="conversation_deleted">Цепочка писем удалена</string>
 </resources>

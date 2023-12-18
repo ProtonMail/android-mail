@@ -28,8 +28,6 @@
     <item quantity="one">%d vald</item>
     <item quantity="other">%d valda</item>
   </plurals>
-  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
-  <string name="filter_unread_button_text_without_counter">Oläst</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%d oläst</item>
     <item quantity="other">%d olästa</item>
@@ -93,14 +91,12 @@
   <!--  Onboarding actions  -->
   <string name="onboarding_next">Nästa</string>
   <string name="onboarding_get_started">Kom igång</string>
-  <string name="onboarding_illustration_content_description">Onboarding illustration</string>
+  <string name="onboarding_illustration_content_description">Onboarding-illustration</string>
   <string name="onboarding_close_content_description">Stäng</string>
   <!-- Sidebar Beta label -->
   <string name="sidebar_beta_version_title">Proton Mail Beta</string>
   <string name="sidebar_beta_version_description">Tryck för att lära dig mer om detta projekt.</string>
   <string name="sidebar_beta_version_icon_content_description">Navigera till KB-artikel.</string>
-  <string name="mailbox_action_read_message">Message read updated</string>
-  <string name="mailbox_action_star_message">Message star updated</string>
   <string name="mailbox_action_trash_message">Meddelande flyttat till papperskorg</string>
   <string name="mailbox_action_archive_message">Meddelande flyttat till arkiv</string>
   <string name="mailbox_action_spam_message">Meddelande flyttat till skräppost</string>

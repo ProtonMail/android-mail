@@ -59,17 +59,24 @@
   <string name="message_body_embedded_images_banner_text">ჩადგმულ გამოსახულებების ავტომატური ჩატვირთვა გამორთულია. ეს მორგების ფანჯარაში შეიძლიათ, შეცვალოთ.</string>
   <string name="message_body_remote_content_banner_text">დაშორებული შემცველობის ავტომატური ჩატვირთვა გამორთულია. ეს ქცევა მორგების ფანჯარაში შეგიძლიათ, შეცვალოთ.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">ჩადგმულ გამოსახულებებისა და დაშორებული შემცველობის ავტომატური ჩატვირთვა გამორთულია. ეს მორგების ფანჯარაში შეგიძლიათ, შეცვალოთ.</string>
+  <string name="message_phishing_banner_text">სისტემამ ეს ელ-ფოსტა ფიშინგის მცდელობად მონიშნა. გადაამოწმეთ, სიმართლეა თუ არა.</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">ახლა გახვალთ აპიდან და გადახვალთ:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">აღარ მკითხო</string>
   <string name="external_link_confirmation_dialog_cancel_button">გაუქმება</string>
   <string name="external_link_confirmation_dialog_continue_button">გაგრძელება</string>
-  <string name="message_delete_dialog_title">Delete message</string>
-  <string name="message_delete_dialog_message">Are you sure you want to permanently delete this message?</string>
-  <string name="message_deleted">Message deleted</string>
-  <string name="error_delete_message_failed">Failed to delete message</string>
-  <string name="error_delete_message_failed_wrong_folder">Message is not in a location where it can be deleted</string>
-  <string name="error_delete_conversation_failed">Failed to delete conversation</string>
-  <string name="error_delete_conversation_failed_wrong_folder">Conversation is not in a location where it can be deleted</string>
-  <string name="conversation_deleted">Conversation deleted</string>
+  <!-- Phishing link confirmation dialog -->
+  <string name="phishing_link_confirmation_dialog_title">გაფრთხილება: დიდი ალბათობით ვებგვერდი ყალბია</string>
+  <string name="phishing_link_confirmation_dialog_content_part_1">ბმული მიდის ვებგვერდამდე, რომელმაც შეიძლება მოიპაროს თქვენი ისეთი ინფორმაცია, როგორიცაა პაროლები და საკრედიტო ბარათის დეტალები.</string>
+  <string name="phishing_link_confirmation_dialog_content_part_2">თქვენი უსაფრთხოებისთვის, არ გააგრძელოთ.</string>
+  <string name="phishing_link_confirmation_dialog_button_go_back">უკან დაბრუნება (რეკომენდებულია)</string>
+  <string name="phishing_link_confirmation_dialog_button_continue">გაფრთხილების იგნორი და გაგრძელება</string>
+  <string name="message_delete_dialog_title">შეტყობინების წაშლა</string>
+  <string name="message_delete_dialog_message">დარწმუნებული ბრძანდებით, რომ გნებავთ, სამუდამოდ წაშალოთ ეს შეტყობინება?</string>
+  <string name="message_deleted">შეტყობინება წაშლილია</string>
+  <string name="error_delete_message_failed">შეტყობინების წაშლა ჩავარდა</string>
+  <string name="error_delete_message_failed_wrong_folder">შეტყობინება არ იმყოფება მდებარეობაზე, საიდანაც მისი წაშლა შეგიძლიათ</string>
+  <string name="error_delete_conversation_failed">საუბრის წაშლა ჩავარდა</string>
+  <string name="error_delete_conversation_failed_wrong_folder">საუბარი არ იმყოფება მდებარეობაზე, საიდანაც მისი წაშლა შეგიძლიათ</string>
+  <string name="conversation_deleted">საუბარი წაიშალა</string>
 </resources>

@@ -48,9 +48,9 @@
   <string name="composer_attachment_reencryption_failed_message">მიმაგრებული ფაილის თავიდან დაშიფვრა ჩავარდა. უსაფრთხოების მიზნით, ყველა მიმაგრებული ფაილი წაიშალა.</string>
   <string name="composer_warning_local_data_shown">მონახაზის უკანასკნელი ვერსიის ჩატივრთვა ჩავარდა. ნებისმიერი ცვლილება გადაფარავს მის შემცველობას.</string>
   <!-- Message sending error dialog -->
-  <string name="message_sending_error_dialog_header">Sending error</string>
-  <string name="message_sending_error_dialog_button_dismiss">Close</string>
-  <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the email entered due to the following reason:</string>
-  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">There are no Trusted Keys: %s</string>
-  <string name="message_sending_error_dialog_text_reason_address_disabled">Address does not exist: %s</string>
+  <string name="message_sending_error_dialog_header">გაგზავნის შეცდომა</string>
+  <string name="message_sending_error_dialog_button_dismiss">დახურვა</string>
+  <string name="message_sending_error_dialog_text_error">თქვენი ელფოსტა მითითებულ ანგარიშზე ვერ გაიგზავნება შემდეგი მიზეზი გამო:</string>
+  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">სანდო გასაღებების გარეშე: %s</string>
+  <string name="message_sending_error_dialog_text_reason_address_disabled">მისამართი არ არსებობს: %s</string>
 </resources>

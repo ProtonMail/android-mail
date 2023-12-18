@@ -59,17 +59,24 @@
   <string name="message_body_embedded_images_banner_text">Automatisk indlæsning af indlejrede billeder er slået fra. Dette kan ændres i indstillingerne.</string>
   <string name="message_body_remote_content_banner_text">Automatisk indlæsning af eksternt indhold er slået fra. Dette kan ændres i indstillingerne.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">Automatisk indlæsning af indlejrede billeder og eksternt indhold er slået fra. Dette kan ændres i indstillingerne.</string>
+  <string name="message_phishing_banner_text">Vores system markerede denne besked som et phishing-forsøg. Kontroller, at den er legitim.</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">Du er ved at forlade appen og fortsætte til:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">Spørg ikke igen</string>
   <string name="external_link_confirmation_dialog_cancel_button">Annullér</string>
   <string name="external_link_confirmation_dialog_continue_button">Fortsæt</string>
-  <string name="message_delete_dialog_title">Delete message</string>
-  <string name="message_delete_dialog_message">Are you sure you want to permanently delete this message?</string>
-  <string name="message_deleted">Message deleted</string>
-  <string name="error_delete_message_failed">Failed to delete message</string>
-  <string name="error_delete_message_failed_wrong_folder">Message is not in a location where it can be deleted</string>
-  <string name="error_delete_conversation_failed">Failed to delete conversation</string>
-  <string name="error_delete_conversation_failed_wrong_folder">Conversation is not in a location where it can be deleted</string>
-  <string name="conversation_deleted">Conversation deleted</string>
+  <!-- Phishing link confirmation dialog -->
+  <string name="phishing_link_confirmation_dialog_title">Advarsel: mistanke om falsk websted</string>
+  <string name="phishing_link_confirmation_dialog_content_part_1">Dette link fører til et websted, som måske forsøger at stjæle dine oplysninger, f.eks. adgangskoder og betalingskortoplysninger.</string>
+  <string name="phishing_link_confirmation_dialog_content_part_2">For din egen sikkerheds skyld bør du ikke fortsætte.</string>
+  <string name="phishing_link_confirmation_dialog_button_go_back">Gå tilbage (anbefalet)</string>
+  <string name="phishing_link_confirmation_dialog_button_continue">Ignorer advarsel og fortsæt</string>
+  <string name="message_delete_dialog_title">Slet besked</string>
+  <string name="message_delete_dialog_message">Er du sikker på, at du vil slette denne besked permanent?</string>
+  <string name="message_deleted">Besked slettet</string>
+  <string name="error_delete_message_failed">Kunne ikke slette besked</string>
+  <string name="error_delete_message_failed_wrong_folder">Beskeden er ikke på en placering, hvor den kan slettes</string>
+  <string name="error_delete_conversation_failed">Kunne ikke slette samtale</string>
+  <string name="error_delete_conversation_failed_wrong_folder">Samtale er ikke på en placering, hvor den kan slettes</string>
+  <string name="conversation_deleted">Samtale slettet</string>
 </resources>

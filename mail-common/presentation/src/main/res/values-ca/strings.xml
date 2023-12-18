@@ -33,7 +33,7 @@
   <string name="action_mark_read_description">Marca com a llegit</string>
   <string name="action_mark_unread_description">Marca com a no llegit</string>
   <string name="action_star_description">Destaca</string>
-  <string name="action_unstar_description">No destaca</string>
+  <string name="action_unstar_description">No destaquis</string>
   <string name="action_label_description">Etiqueta com a</string>
   <string name="action_move_description">Mou a</string>
   <string name="action_trash_description">Paperera</string>

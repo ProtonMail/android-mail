@@ -59,11 +59,18 @@
   <string name="message_body_embedded_images_banner_text">Automatisk laddning av inbäddade bilder är avstängd. Detta kan ändras i inställningarna.</string>
   <string name="message_body_remote_content_banner_text">Automatisk laddning av fjärrinnehåll är avstängd. Detta kan ändras i inställningarna.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">Automatisk laddning av inbäddade bilder och fjärrinnehåll är avstängt. Dessa kan ändras i inställningarna.</string>
+  <string name="message_phishing_banner_text">Vårt system flaggade detta meddelande som ett nätfiskeförsök. Kontrollera att det är legitimt.</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">Du är på väg att lämna appen och navigera till:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">Fråga inte igen</string>
   <string name="external_link_confirmation_dialog_cancel_button">Avbryt</string>
   <string name="external_link_confirmation_dialog_continue_button">Fortsätt</string>
+  <!-- Phishing link confirmation dialog -->
+  <string name="phishing_link_confirmation_dialog_title">Varning: misstänkt falsk webbplats</string>
+  <string name="phishing_link_confirmation_dialog_content_part_1">Denna länk leder till en webbplats som kanske försöker stjäla din information, såsom lösenord och kreditkortsuppgifter.</string>
+  <string name="phishing_link_confirmation_dialog_content_part_2">För din säkerhet, fortsätt inte.</string>
+  <string name="phishing_link_confirmation_dialog_button_go_back">Gå tillbaka (rekommenderas)</string>
+  <string name="phishing_link_confirmation_dialog_button_continue">Ignorera varning och fortsätt</string>
   <string name="message_delete_dialog_title">Ta bort meddelande</string>
   <string name="message_delete_dialog_message">Är du säker på att du vill ta bort detta meddelande permanent?</string>
   <string name="message_deleted">Meddelande borttaget</string>

@@ -18,11 +18,11 @@
   -->
 <resources>
   <string name="dialog_sign_out_account_title">Tanca la sessió</string>
-  <string name="dialog_sign_out_account_description">Are you sure you want to sign out?</string>
+  <string name="dialog_sign_out_account_description">Segur que desitgeu tancar la sessió?</string>
   <string name="dialog_sign_out_account_confirm">Sí</string>
   <string name="dialog_sign_out_account_cancel">No</string>
-  <string name="dialog_remove_account_title">Remove Account</string>
-  <string name="dialog_remove_account_description">You will sign out and remove all information associated with this account.</string>
+  <string name="dialog_remove_account_title">Esborra el compte</string>
+  <string name="dialog_remove_account_description">Es tancarà la sessió i s\'esborrarà tota la informació associada amb aquest compte.</string>
   <string name="dialog_remove_account_confirm">Esborra</string>
   <string name="dialog_remove_account_cancel">Cancel·la</string>
   <string name="user_select_other_account_content_description">Seleccioneu un altre compte</string>

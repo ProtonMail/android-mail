@@ -58,17 +58,24 @@
   <string name="message_body_embedded_images_banner_text">埋め込み画像の自動読み込みはオフになっています。これは設定で変更できます。</string>
   <string name="message_body_remote_content_banner_text">リモートコンテンツの自動読み込みはオフになっています。これは設定で変更できます。</string>
   <string name="message_body_embedded_and_remote_content_banner_text">埋め込み画像やリモートコンテンツの自動読み込みはオフになっています。これらは設定で変更できます。</string>
+  <string name="message_phishing_banner_text">このメッセージはフィッシングの可能性があります。ご注意ください。</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">You are about to leave the app and navigate to:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">今後表示しない</string>
-  <string name="external_link_confirmation_dialog_cancel_button">Cancel</string>
-  <string name="external_link_confirmation_dialog_continue_button">Continue</string>
-  <string name="message_delete_dialog_title">Delete message</string>
-  <string name="message_delete_dialog_message">Are you sure you want to permanently delete this message?</string>
-  <string name="message_deleted">Message deleted</string>
-  <string name="error_delete_message_failed">Failed to delete message</string>
-  <string name="error_delete_message_failed_wrong_folder">Message is not in a location where it can be deleted</string>
+  <string name="external_link_confirmation_dialog_cancel_button">キャンセル</string>
+  <string name="external_link_confirmation_dialog_continue_button">続行</string>
+  <!-- Phishing link confirmation dialog -->
+  <string name="phishing_link_confirmation_dialog_title">警告: 偽のウェブサイトの疑いがあります</string>
+  <string name="phishing_link_confirmation_dialog_content_part_1">このリンクはパスワードやクレジットカードなどの情報を盗もうとするウェブサイトに誘導している可能性があります。</string>
+  <string name="phishing_link_confirmation_dialog_content_part_2">安全のため、続行しないでください。</string>
+  <string name="phishing_link_confirmation_dialog_button_go_back">戻る (推奨)</string>
+  <string name="phishing_link_confirmation_dialog_button_continue">警告を無視して続行</string>
+  <string name="message_delete_dialog_title">メッセージを削除する</string>
+  <string name="message_delete_dialog_message">このメッセージを完全に削除してよろしいですか？</string>
+  <string name="message_deleted">メッセージが削除されました</string>
+  <string name="error_delete_message_failed">メッセージの削除に失敗しました</string>
+  <string name="error_delete_message_failed_wrong_folder">メッセージは削除できる場所にありません</string>
   <string name="error_delete_conversation_failed">Failed to delete conversation</string>
   <string name="error_delete_conversation_failed_wrong_folder">Conversation is not in a location where it can be deleted</string>
-  <string name="conversation_deleted">Conversation deleted</string>
+  <string name="conversation_deleted">会話が削除されました</string>
 </resources>

@@ -30,8 +30,6 @@
     <item quantity="many">%d vybráno</item>
     <item quantity="other">%d vybráno</item>
   </plurals>
-  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
-  <string name="filter_unread_button_text_without_counter">Nepřečteno</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%d nepřečtená</item>
     <item quantity="few">%d nepřečtené</item>
@@ -86,39 +84,37 @@
     <item quantity="many">%d konverzací trvale smazáno</item>
     <item quantity="other">%d konverzací trvale smazáno</item>
   </plurals>
-  <string name="mailbox_action_label_messages_failed">Label operation failed</string>
-  <string name="mailbox_action_label_messages_failed_retrieving_labels">Failed to get labels</string>
-  <string name="mailbox_action_failed_retrieving_colors">Failed to get color settings</string>
-  <string name="mailbox_action_move_messages_failed">Move operation failed</string>
-  <string name="mailbox_action_move_messages_failed_retrieving_folders">Failed to get folders</string>
+  <string name="mailbox_action_label_messages_failed">Operace se štítky selhala</string>
+  <string name="mailbox_action_label_messages_failed_retrieving_labels">Nepodařilo se získat štítky</string>
+  <string name="mailbox_action_failed_retrieving_colors">Nepodařilo se získat nastavení barev</string>
+  <string name="mailbox_action_move_messages_failed">Operace přesunu se nezdařila</string>
+  <string name="mailbox_action_move_messages_failed_retrieving_folders">Nepodařilo se získat složky</string>
   <!--  Spotlight V6 Beta  -->
-  <string name="onboarding_headline_beta">Beta test the new app</string>
-  <string name="onboarding_description_beta">We\'ve rebuilt the app for stability and reliability. Share your feedback and stay tuned as we reintroduce features. Learn more.</string>
+  <string name="onboarding_headline_beta">Beta testování nové aplikace</string>
+  <string name="onboarding_description_beta">Přestavěli jsme aplikaci, abychom zajistili její stabilitu a spolehlivost. Podělte se o své připomínky a sledujte, jak budeme znovu zavádět nové funkce. Další informace.</string>
   <string name="onboarding_description_beta_link">https://proton.me/support/mail-android-beta</string>
-  <string name="onboarding_description_beta_learn_more">Learn more</string>
+  <string name="onboarding_description_beta_learn_more">Více informací</string>
   <!--  Spotlight V6 GA  -->
-  <string name="onboarding_headline_ga">Welcome to the new app</string>
-  <string name="onboarding_description_ga">Completely rebuilt from scratch, the new Proton Mail app was made for stability and performance.</string>
+  <string name="onboarding_headline_ga">Vítejte v nové aplikaci</string>
+  <string name="onboarding_description_ga">Aplikace Proton Mail byla kompletně přestavěna od základů s ohledem na stabilitu a výkon.</string>
   <!--  Onboarding 1  -->
-  <string name="onboarding_privacy_for_all_headline">Privacy for all</string>
-  <string name="onboarding_privacy_for_all_description">Invite others to Proton Mail so you can all benefit from end-to-end encryption.</string>
+  <string name="onboarding_privacy_for_all_headline">Soukromí pro všechny</string>
+  <string name="onboarding_privacy_for_all_description">Pozvěte ostatní do Proton Mail, abyste všichni mohli využívat výhod koncového šifrování.</string>
   <!--  Onboarding 2  -->
-  <string name="onboarding_easily_up_to_date_headline">Easily up-to-date</string>
-  <string name="onboarding_easily_up_to_date_description">Breeze through threaded messages in conversation mode.</string>
+  <string name="onboarding_easily_up_to_date_headline">Jednoduše aktuální</string>
+  <string name="onboarding_easily_up_to_date_description">Snadné procházení zpráv ve vláknech v režimu konverzace.</string>
   <!--  Onboarding 3  -->
-  <string name="onboarding_neat_and_tidy_headline">Neat and tidy</string>
-  <string name="onboarding_neat_and_tidy_description">File, label, and color code messages to create your perfect, custom inbox.</string>
+  <string name="onboarding_neat_and_tidy_headline">Elegantní a úhledný</string>
+  <string name="onboarding_neat_and_tidy_description">Třiďte soubory, označte štítky a barevnými kódy pro perfektní schránku na míru.</string>
   <!--  Onboarding actions  -->
   <string name="onboarding_next">Další</string>
   <string name="onboarding_get_started">Začínáme</string>
-  <string name="onboarding_illustration_content_description">Onboarding illustration</string>
+  <string name="onboarding_illustration_content_description">Znázornění registrace</string>
   <string name="onboarding_close_content_description">Zavřít</string>
   <!-- Sidebar Beta label -->
   <string name="sidebar_beta_version_title">Proton Mail Beta</string>
   <string name="sidebar_beta_version_description">Klepnutím zobrazíte další informace o tomto projektu.</string>
-  <string name="sidebar_beta_version_icon_content_description">Navigate to KB article.</string>
-  <string name="mailbox_action_read_message">Message read updated</string>
-  <string name="mailbox_action_star_message">Message star updated</string>
+  <string name="sidebar_beta_version_icon_content_description">Přejít na článek databáze znalostí.</string>
   <string name="mailbox_action_trash_message">Zpráva přesunuta do koše</string>
   <string name="mailbox_action_archive_message">Zpráva přesunuta do archivu</string>
   <string name="mailbox_action_spam_message">Zpráva přesunuta do spamu</string>

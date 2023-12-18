@@ -54,7 +54,7 @@
   <string name="save_folder_error">Error saving folder, please try again later</string>
   <string name="label_already_exists">Oznaka ili mapa s ovim nazivom već postoje</string>
   <string name="label_limit_reached_error">Dosegnuto je ograničenje oznaka</string>
-  <string name="folder_limit_reached_error">Folder limit reached</string>
+  <string name="folder_limit_reached_error">Dosegnuto je ograničenje mapa</string>
   <string name="delete_label_error">Error deleting label</string>
   <string name="input_field_clear_content_description">Obriši tekst</string>
   <string name="label_list_item_content_description">Label list item</string>

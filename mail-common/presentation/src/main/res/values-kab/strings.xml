@@ -47,7 +47,7 @@
   <string name="action_view_html_description">Wali HTML</string>
   <string name="action_report_phishing_description">Azen aneqqis phishing</string>
   <string name="action_remind_description">Smekti-yi-d</string>
-  <string name="action_save_pdf_description">Save as PDF</string>
+  <string name="action_save_pdf_description">Sekles am PDF</string>
   <string name="action_sender_emails_description">Sbadu tigawt i yimaylen imaynuten n umazan-a</string>
   <string name="action_save_attachments_description">Sekles imeddayen</string>
   <string name="action_more_description">Ugar</string>

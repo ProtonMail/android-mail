@@ -18,9 +18,9 @@
   -->
 <resources>
   <string name="expiration_expired">Utløpt</string>
-  <string name="expiration_days_arg">%dd</string>
-  <string name="expiration_hours_arg">%dt</string>
-  <string name="expiration_minutes_arg">%dm</string>
+  <string name="expiration_days_arg">%d d</string>
+  <string name="expiration_hours_arg">%d t</string>
+  <string name="expiration_minutes_arg">%d min</string>
   <string name="retry">Prøv på nytt</string>
   <string name="toolbar_back_content_description">Tilbake til forrige skjerm</string>
   <string name="x_error_not_logged_in">Ikke pålogget</string>
@@ -32,9 +32,9 @@
   <string name="action_forward_description">Videresend</string>
   <string name="action_mark_read_description">Merk som lest</string>
   <string name="action_mark_unread_description">Merk som ulest</string>
-  <string name="action_star_description">Stjernemerket</string>
+  <string name="action_star_description">Stjernemerk</string>
   <string name="action_unstar_description">Fjern stjernemerking</string>
-  <string name="action_label_description">Marker som</string>
+  <string name="action_label_description">Merk som</string>
   <string name="action_move_description">Flytt til</string>
   <string name="action_trash_description">Papirkurv</string>
   <string name="action_delete_description">Slett</string>
@@ -56,7 +56,7 @@
   <string name="action_forward_content_description">Videresend</string>
   <string name="action_mark_read_content_description">Merk som lest</string>
   <string name="action_mark_unread_content_description">Merk som ulest</string>
-  <string name="action_star_content_description">Stjernemerket</string>
+  <string name="action_star_content_description">Stjernemerk</string>
   <string name="action_unstar_content_description">Fjern stjernemerking</string>
   <string name="action_label_content_description">Merk som</string>
   <string name="action_move_content_description">Flytt til</string>

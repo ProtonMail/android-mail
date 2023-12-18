@@ -17,14 +17,14 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="dialog_sign_out_account_title">Sign out</string>
-  <string name="dialog_sign_out_account_description">Are you sure you want to sign out?</string>
-  <string name="dialog_sign_out_account_confirm">Yes</string>
-  <string name="dialog_sign_out_account_cancel">No</string>
-  <string name="dialog_remove_account_title">Remove Account</string>
-  <string name="dialog_remove_account_description">You will sign out and remove all information associated with this account.</string>
-  <string name="dialog_remove_account_confirm">Remove</string>
-  <string name="dialog_remove_account_cancel">Cancel</string>
+  <string name="dialog_sign_out_account_title">Log ud</string>
+  <string name="dialog_sign_out_account_description">Er du sikker på, at du vil logge ud?</string>
+  <string name="dialog_sign_out_account_confirm">Ja</string>
+  <string name="dialog_sign_out_account_cancel">Nej</string>
+  <string name="dialog_remove_account_title">Fjern konto</string>
+  <string name="dialog_remove_account_description">Du logger ud og fjerner alle oplysninger, der er knyttet til denne konto.</string>
+  <string name="dialog_remove_account_confirm">Fjern</string>
+  <string name="dialog_remove_account_cancel">Annuller</string>
   <string name="user_select_other_account_content_description">Vælg en anden konto</string>
   <string name="you_are_offline">Du er offline</string>
   <string name="feature_coming_soon">Funktion kommer snart…</string>
@@ -33,7 +33,7 @@
   <string name="mailbox_message_sending_offline">Offline, besked sat i kø til afsendelse</string>
   <string name="mailbox_message_sending_success">Besked sendt</string>
   <string name="mailbox_message_sending_error">Fejl ved afsendelse af besked</string>
-  <string name="mailbox_message_sending_error_action">Go to Drafts</string>
+  <string name="mailbox_message_sending_error_action">Gå til kladder</string>
   <string name="mailbox_attachment_uploading_error">Fejl ved upload af vedhæftning</string>
   <string name="notification_switched_account">Skiftede til konto: %s</string>
   <string name="label_saved">Etiket gemt</string>

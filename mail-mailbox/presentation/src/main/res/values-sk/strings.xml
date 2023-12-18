@@ -30,8 +30,6 @@
     <item quantity="many">%d vybraných</item>
     <item quantity="other">%d vybraných</item>
   </plurals>
-  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
-  <string name="filter_unread_button_text_without_counter">Neprečítané</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%d neprečítaná</item>
     <item quantity="few">%d neprečítané</item>
@@ -107,19 +105,17 @@
   <string name="onboarding_easily_up_to_date_description">Jednoducho prechádzajte správy vo vlákne v režime konverzácie.</string>
   <!--  Onboarding 3  -->
   <string name="onboarding_neat_and_tidy_headline">Úhľadné a čisté</string>
-  <string name="onboarding_neat_and_tidy_description">File, label, and color code messages to create your perfect, custom inbox.</string>
+  <string name="onboarding_neat_and_tidy_description">Pomocou súborov, štítkov a farebných kódov pre správy si prispôsobte schránku doručenej pošty.</string>
   <!--  Onboarding actions  -->
   <string name="onboarding_next">Ďalej</string>
   <string name="onboarding_get_started">Začať</string>
-  <string name="onboarding_illustration_content_description">Onboarding illustration</string>
+  <string name="onboarding_illustration_content_description">Ukážka privítania</string>
   <string name="onboarding_close_content_description">Zavrieť</string>
   <!-- Sidebar Beta label -->
   <string name="sidebar_beta_version_title">Proton Mail Beta</string>
-  <string name="sidebar_beta_version_description">Tap to learn more about this project.</string>
-  <string name="sidebar_beta_version_icon_content_description">Navigate to KB article.</string>
-  <string name="mailbox_action_read_message">Message read updated</string>
-  <string name="mailbox_action_star_message">Message star updated</string>
-  <string name="mailbox_action_trash_message">Message moved to trash</string>
-  <string name="mailbox_action_archive_message">Message moved to archive</string>
-  <string name="mailbox_action_spam_message">Message moved to spam</string>
+  <string name="sidebar_beta_version_description">Klepnutím získate ďalšie informácie o tomto projekte.</string>
+  <string name="sidebar_beta_version_icon_content_description">Prejsť k článku v báze znalostí.</string>
+  <string name="mailbox_action_trash_message">Správa bola presunutá do koša</string>
+  <string name="mailbox_action_archive_message">Správa presunutá do archívu</string>
+  <string name="mailbox_action_spam_message">správa presunutá do spamu</string>
 </resources>

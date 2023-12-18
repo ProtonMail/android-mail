@@ -18,11 +18,11 @@
   -->
 <resources>
   <string name="dialog_sign_out_account_title">Odjavite se</string>
-  <string name="dialog_sign_out_account_description">Are you sure you want to sign out?</string>
+  <string name="dialog_sign_out_account_description">Da li ste sigurni da se želite odjaviti?</string>
   <string name="dialog_sign_out_account_confirm">Da</string>
   <string name="dialog_sign_out_account_cancel">Ne</string>
   <string name="dialog_remove_account_title">Ukloni račun</string>
-  <string name="dialog_remove_account_description">You will sign out and remove all information associated with this account.</string>
+  <string name="dialog_remove_account_description">Odjavit ćete se i ukloniti sve podatke povezane s ovim računom.</string>
   <string name="dialog_remove_account_confirm">Ukloni</string>
   <string name="dialog_remove_account_cancel">Poništi</string>
   <string name="user_select_other_account_content_description">Odaberite drugi račun</string>

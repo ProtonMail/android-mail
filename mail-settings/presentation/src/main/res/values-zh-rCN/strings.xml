@@ -74,9 +74,9 @@
   <string name="mail_settings_identity_title">称呼与落款</string>
   <string name="mail_settings_identity_save_button">保存</string>
   <string name="mail_settings_identity_display_name">显示名称</string>
-  <string name="mail_settings_identity_display_name_hint">显示名称</string>
-  <string name="mail_settings_identity_signature">签名</string>
-  <string name="mail_settings_identity_signature_hint">签名</string>
+  <string name="mail_settings_identity_display_name_hint">称呼</string>
+  <string name="mail_settings_identity_signature">落款</string>
+  <string name="mail_settings_identity_signature_hint">落款</string>
   <string name="mail_settings_identity_mobile_footer">移动端标识</string>
   <string name="mail_settings_identity_mobile_footer_subtext">这段标识文本将加在您的落款之后.</string>
   <string name="mail_settings_identity_mobile_footer_hint">移动端标识</string>
@@ -88,8 +88,8 @@
   <string name="mail_settings_privacy_auto_show_embedded_images">自动显示嵌入的图像</string>
   <string name="mail_settings_privacy_prevent_taking_screenshots">防止截屏</string>
   <string name="mail_settings_privacy_request_link_confirmation">打开链接前提示</string>
-  <string name="mail_settings_privacy_background_sync">Background sync</string>
-  <string name="mail_settings_privacy_background_sync_description">If this option is enabled, the app will sync with the server in the background. Disabling this feature will also disable push notifications.</string>
+  <string name="mail_settings_privacy_background_sync">后台同步</string>
+  <string name="mail_settings_privacy_background_sync_description">开启这个选项后，应用会在后台与服务器进行同步。关闭这个功能同时也会关闭推送通知。</string>
   <string name="mail_settings_privacy_error_updating">更新设置时出现错误</string>
   <string name="mail_settings_privacy_error_loading">加载设置时出现错误</string>
   <!-- Swipe Actions -->

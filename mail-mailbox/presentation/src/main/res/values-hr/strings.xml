@@ -29,8 +29,6 @@
     <item quantity="few">%d Odabrano</item>
     <item quantity="other">%d Odabrano</item>
   </plurals>
-  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
-  <string name="filter_unread_button_text_without_counter">Nepročitano</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%d nepročitana</item>
     <item quantity="few">%d nepročitane</item>
@@ -64,8 +62,8 @@
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_message">
     <item quantity="one">Jeste li sigurni da želite trajno izbrisati ovu poruku?</item>
-    <item quantity="few">Are you sure you want to permanently delete these message?</item>
-    <item quantity="other">Are you sure you want to permanently delete these message?</item>
+    <item quantity="few">Are you sure you want to permanently delete these messages?</item>
+    <item quantity="other">Are you sure you want to permanently delete these messages?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message">
     <item quantity="one">Message permanently deleted</item>
@@ -91,14 +89,14 @@
   <string name="onboarding_headline_ga">Welcome to the new app</string>
   <string name="onboarding_description_ga">Completely rebuilt from scratch, the new Proton Mail app was made for stability and performance.</string>
   <!--  Onboarding 1  -->
-  <string name="onboarding_privacy_for_all_headline">Privacy for all</string>
+  <string name="onboarding_privacy_for_all_headline">Privatnost za sve</string>
   <string name="onboarding_privacy_for_all_description">Invite others to Proton Mail so you can all benefit from end-to-end encryption.</string>
   <!--  Onboarding 2  -->
-  <string name="onboarding_easily_up_to_date_headline">Easily up-to-date</string>
+  <string name="onboarding_easily_up_to_date_headline">Lako ažurirano</string>
   <string name="onboarding_easily_up_to_date_description">Breeze through threaded messages in conversation mode.</string>
   <!--  Onboarding 3  -->
   <string name="onboarding_neat_and_tidy_headline">Neat and tidy</string>
-  <string name="onboarding_neat_and_tidy_description">File, label, and color code messages to create your perfect, custom inbox.</string>
+  <string name="onboarding_neat_and_tidy_description">Poruke s datotekama, oznakama i bojama za stvaranje savršenog, prilagođenog pretinca.</string>
   <!--  Onboarding actions  -->
   <string name="onboarding_next">Sljedeće</string>
   <string name="onboarding_get_started">Započnite</string>
@@ -108,9 +106,7 @@
   <string name="sidebar_beta_version_title">Proton Mail Beta</string>
   <string name="sidebar_beta_version_description">Tap to learn more about this project.</string>
   <string name="sidebar_beta_version_icon_content_description">Navigate to KB article.</string>
-  <string name="mailbox_action_read_message">Message read updated</string>
-  <string name="mailbox_action_star_message">Message star updated</string>
-  <string name="mailbox_action_trash_message">Message moved to trash</string>
+  <string name="mailbox_action_trash_message">Poruka premještena u otpad</string>
   <string name="mailbox_action_archive_message">Message moved to archive</string>
   <string name="mailbox_action_spam_message">Message moved to spam</string>
 </resources>

@@ -75,8 +75,8 @@
   <string name="mail_settings_identity_save_button">Зберегти</string>
   <string name="mail_settings_identity_display_name">Display name</string>
   <string name="mail_settings_identity_display_name_hint">Display name</string>
-  <string name="mail_settings_identity_signature">Signature</string>
-  <string name="mail_settings_identity_signature_hint">Signature</string>
+  <string name="mail_settings_identity_signature">Підпис</string>
+  <string name="mail_settings_identity_signature_hint">Підпис</string>
   <string name="mail_settings_identity_mobile_footer">Mobile footer</string>
   <string name="mail_settings_identity_mobile_footer_subtext">The footer is added after your signature.</string>
   <string name="mail_settings_identity_mobile_footer_hint">Mobile footer</string>

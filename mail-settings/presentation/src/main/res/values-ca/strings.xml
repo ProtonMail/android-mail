@@ -88,7 +88,7 @@
   <string name="mail_settings_privacy_auto_show_embedded_images">Mostra automàticament les imatges incrustades</string>
   <string name="mail_settings_privacy_prevent_taking_screenshots">Evita les captures de pantalla</string>
   <string name="mail_settings_privacy_request_link_confirmation">Demana confirmació dels enllaços</string>
-  <string name="mail_settings_privacy_background_sync">Background sync</string>
+  <string name="mail_settings_privacy_background_sync">Sincronització en segon pla</string>
   <string name="mail_settings_privacy_background_sync_description">If this option is enabled, the app will sync with the server in the background. Disabling this feature will also disable push notifications.</string>
   <string name="mail_settings_privacy_error_updating">S\'ha produït un error en actualitzar les preferències</string>
   <string name="mail_settings_privacy_error_loading">S\'ha produït un error en carregar les preferències</string>

@@ -59,17 +59,24 @@
   <string name="message_body_embedded_images_banner_text">O carregamento automático de imagens incorporadas está desativado. Isto pode ser alterado nas definições.</string>
   <string name="message_body_remote_content_banner_text">O carregamento automático de conteúdo remoto está desativado. Isto pode ser alterado nas definições.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">O carregamento automático de imagens incorporadas e conteúdo remoto está desativado. Estas propriedades podem ser alteradas nas definições.</string>
+  <string name="message_phishing_banner_text">O nosso sistema sinalizou esta mensagem como uma tentativa de phishing. Por favor, verifique se é legítima.</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">You are about to leave the app and navigate to:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">Não perguntar novamente</string>
   <string name="external_link_confirmation_dialog_cancel_button">Cancel</string>
   <string name="external_link_confirmation_dialog_continue_button">Continue</string>
+  <!-- Phishing link confirmation dialog -->
+  <string name="phishing_link_confirmation_dialog_title">Aviso: suspeita de sítio web falso</string>
+  <string name="phishing_link_confirmation_dialog_content_part_1">Esta hiperligação leva a um website que pode tentar roubar a sua informação, como palavras-passe e números de cartão de crédito.</string>
+  <string name="phishing_link_confirmation_dialog_content_part_2">For your security, do not continue.</string>
+  <string name="phishing_link_confirmation_dialog_button_go_back">Retroceder (recomendado)</string>
+  <string name="phishing_link_confirmation_dialog_button_continue">Ignorar aviso e continuar</string>
   <string name="message_delete_dialog_title">Delete message</string>
-  <string name="message_delete_dialog_message">Are you sure you want to permanently delete this message?</string>
-  <string name="message_deleted">Message deleted</string>
+  <string name="message_delete_dialog_message">Tem a certeza de que pretende eliminar permanentemente esta mensagem?</string>
+  <string name="message_deleted">Mensagem eliminada</string>
   <string name="error_delete_message_failed">Failed to delete message</string>
   <string name="error_delete_message_failed_wrong_folder">Message is not in a location where it can be deleted</string>
   <string name="error_delete_conversation_failed">Failed to delete conversation</string>
   <string name="error_delete_conversation_failed_wrong_folder">Conversation is not in a location where it can be deleted</string>
-  <string name="conversation_deleted">Conversation deleted</string>
+  <string name="conversation_deleted">Conversa eliminada</string>
 </resources>

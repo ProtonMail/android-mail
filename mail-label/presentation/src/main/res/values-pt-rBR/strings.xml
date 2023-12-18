@@ -47,7 +47,7 @@
   <string name="folder_form_delete">Excluir pasta</string>
   <string name="label_name_title">Nome</string>
   <string name="add_a_label_name_hint">Adicione um nome de marcador</string>
-  <string name="add_a_folder_name_hint">Adicione o nome da pasta</string>
+  <string name="add_a_folder_name_hint">Adicione um nome de pasta</string>
   <string name="input_field_max_characters_count">%1d / %2d caracteres</string>
   <string name="color_picker_title">Cor</string>
   <string name="save_label_error">Erro ao salvar o marcador, tente novamente mais tarde</string>

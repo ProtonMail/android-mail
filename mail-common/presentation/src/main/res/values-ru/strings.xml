@@ -81,9 +81,9 @@
   <string name="attachment_download_notification_channel_name">Вложения</string>
   <string name="attachment_download_notification_channel_description">Уведомления о скачивании вложений</string>
   <string name="email_notification_channel_name">Электронные письма</string>
-  <string name="login_notification_channel_name">Login Alerts</string>
+  <string name="login_notification_channel_name">Оповещения о входе в систему</string>
   <string name="email_notification_channel_description">Уведомления о входящей электронной почте</string>
-  <string name="login_notification_channel_description">New logins notifications</string>
+  <string name="login_notification_channel_description">Уведомления о новых входах в систему</string>
   <string name="auth_badge_official">Официальный</string>
   <string name="intent_failure_no_app_found_to_handle_this_action">Не найдено ни одного приложения для обработки данного действия</string>
   <string name="mailbox_action_delete_dialog_button_cancel">Отменить</string>

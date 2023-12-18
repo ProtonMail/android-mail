@@ -61,11 +61,18 @@
   <string name="message_body_embedded_images_banner_text">Automatické načítání vložených obrázků je vypnuto. Tuto možnost lze změnit v nastavení.</string>
   <string name="message_body_remote_content_banner_text">Automatické načítání vzdáleného obsahu je vypnuto. Tuto možnost lze změnit v nastavení.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">Automatické načítání vložených obrázků a vzdáleného obsahu je vypnuto. Tyto možnosti lze změnit v nastavení.</string>
+  <string name="message_phishing_banner_text">Náš systém označil tuto zprávu jako pokus o phishing. Zkontrolujte, že se jedná o legitimní zprávu.</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">Chystáte se opustit aplikaci a přejít na:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">Příště se neptat</string>
   <string name="external_link_confirmation_dialog_cancel_button">Zrušit</string>
   <string name="external_link_confirmation_dialog_continue_button">Pokračovat</string>
+  <!-- Phishing link confirmation dialog -->
+  <string name="phishing_link_confirmation_dialog_title">Varování: podezření na falešnou webovou stránku</string>
+  <string name="phishing_link_confirmation_dialog_content_part_1">Tento odkaz vede na webovou stránku, která se může pokoušet ukrást vaše údaje, například hesla a údaje o platební kartě.</string>
+  <string name="phishing_link_confirmation_dialog_content_part_2">V zájmu své bezpečnosti nepokračujte.</string>
+  <string name="phishing_link_confirmation_dialog_button_go_back">Vrátit se zpět (doporučeno)</string>
+  <string name="phishing_link_confirmation_dialog_button_continue">Ignorovat varování a pokračovat</string>
   <string name="message_delete_dialog_title">Smazat zprávu</string>
   <string name="message_delete_dialog_message">Jste si jisti, že chcete trvale smazat tuto zprávu?</string>
   <string name="message_deleted">Zpráva smazána</string>

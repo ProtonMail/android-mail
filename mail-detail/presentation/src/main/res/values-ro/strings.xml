@@ -60,11 +60,18 @@
   <string name="message_body_embedded_images_banner_text">Încărcarea automată a imaginilor încorporate este dezactivată. Acest lucru poate fi schimbat în setări.</string>
   <string name="message_body_remote_content_banner_text">Încărcarea automată a conținutului de la distanță este dezactivată. Acest lucru poate fi schimbat în setări.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">Încărcarea automată a imaginilor încorporate și conținutului de la distanță este dezactivată. Acest lucru poate fi schimbat în setări.</string>
+  <string name="message_phishing_banner_text">Sistemul nostru a marcat acest mesaj ca o încercare de înșelăciune. Verificați dacă este legitim.</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">Urmează să părăsiți aplicația și să accesați:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">Nu mă mai întreba</string>
   <string name="external_link_confirmation_dialog_cancel_button">Anulare</string>
   <string name="external_link_confirmation_dialog_continue_button">Continuare</string>
+  <!-- Phishing link confirmation dialog -->
+  <string name="phishing_link_confirmation_dialog_title">Avertisment: suspectare site fals</string>
+  <string name="phishing_link_confirmation_dialog_content_part_1">Această legătură duce la un site web care ar putea încerca să vă fure informațiile, cum ar fi parolele și detaliile cărților de credit.</string>
+  <string name="phishing_link_confirmation_dialog_content_part_2">Din motive de securitate, nu continuați.</string>
+  <string name="phishing_link_confirmation_dialog_button_go_back">Revenire (recomandat)</string>
+  <string name="phishing_link_confirmation_dialog_button_continue">Ignorare avertisment și continuare</string>
   <string name="message_delete_dialog_title">Ștergere mesaj</string>
   <string name="message_delete_dialog_message">Sigur doriți să ștergeți definitiv acest mesaj?</string>
   <string name="message_deleted">Mesaj șters</string>

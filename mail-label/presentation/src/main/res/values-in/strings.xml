@@ -29,7 +29,7 @@
   <string name="label_title_all_drafts">Semua draf</string>
   <string name="label_title_all_sent">Semua surat terkirim</string>
   <string name="label_title_folders">Folder</string>
-  <string name="label_title_parent_folder">Parent folder</string>
+  <string name="label_title_parent_folder">Folder induk</string>
   <string name="label_title_labels">Label</string>
   <string name="label_title_add_folder">Tambah folder</string>
   <string name="label_title_add_label">Tambah label</string>
@@ -41,10 +41,10 @@
   <string name="label_form_create_label">Buat label</string>
   <string name="folder_form_create_folder">Buat folder</string>
   <string name="label_form_edit_label">Sunting label</string>
-  <string name="folder_form_edit_folder">Edit folder</string>
+  <string name="folder_form_edit_folder">Sunting folder</string>
   <string name="label_form_save">Simpan</string>
   <string name="label_form_delete">Hapus label</string>
-  <string name="folder_form_delete">Delete folder</string>
+  <string name="folder_form_delete">Hapus folder</string>
   <string name="label_name_title">Nama</string>
   <string name="add_a_label_name_hint">Tambah nama label</string>
   <string name="add_a_folder_name_hint">Tambah nama folder</string>
@@ -67,14 +67,14 @@
   <string name="folder_settings_done_button">Selesai</string>
   <string name="folder_settings_folder_colors">Gunakan warna folder</string>
   <string name="folder_settings_parent_color">Ikuti warna folder induk</string>
-  <string name="folder_list_loading_error">Error loading folders, please try again later</string>
-  <string name="folder_loading_error">Error loading folder, please try again later</string>
+  <string name="folder_list_loading_error">Terdapat kesalahan dalam memuat folder. Silakan coba lagi nanti</string>
+  <string name="folder_loading_error">Terjadi kesalahan dalam memuat folder. Silakan coba lagi nanti</string>
   <string name="switch_on">Aktif</string>
   <string name="switch_off">Nonaktif</string>
   <string name="folder_form_parent">Folder induk</string>
   <string name="folder_form_no_parent">Tidak ada</string>
   <string name="folder_form_notifications">Notifikasi</string>
   <string name="folder_saved">Folder disimpan</string>
-  <string name="folder_deleted">Folder deleted</string>
-  <string name="parent_folder_none">None</string>
+  <string name="folder_deleted">Folder dihapus</string>
+  <string name="parent_folder_none">Tidak ada</string>
 </resources>

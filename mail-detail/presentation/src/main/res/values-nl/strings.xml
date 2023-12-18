@@ -59,17 +59,24 @@
   <string name="message_body_embedded_images_banner_text">Automatisch laden van ingesloten afbeeldingen is uitgeschakeld. Dit kan worden gewijzigd bij de instellingen.</string>
   <string name="message_body_remote_content_banner_text">Automatisch laden van externe inhoud is uitgeschakeld. Dit kan worden gewijzigd bij de instellingen.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">Automatisch laden van ingesloten afbeeldingen en externe inhoud is uitgeschakeld. Dit kan worden gewijzigd bij de instellingen.</string>
+  <string name="message_phishing_banner_text">Ons systeem heeft dit bericht gemarkeerd als phishing poging. Controleer of het legitiem is.</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">You are about to leave the app and navigate to:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">Niet opnieuw vragen</string>
   <string name="external_link_confirmation_dialog_cancel_button">Annuleren</string>
   <string name="external_link_confirmation_dialog_continue_button">Doorgaan</string>
-  <string name="message_delete_dialog_title">Delete message</string>
-  <string name="message_delete_dialog_message">Are you sure you want to permanently delete this message?</string>
-  <string name="message_deleted">Message deleted</string>
-  <string name="error_delete_message_failed">Failed to delete message</string>
+  <!-- Phishing link confirmation dialog -->
+  <string name="phishing_link_confirmation_dialog_title">Waarschuwing: vermoedelijk valse website</string>
+  <string name="phishing_link_confirmation_dialog_content_part_1">Deze koppeling leidt naar een website die mogelijk uw informatie, zoals wachtwoorden en kredietkaartgegevens, tracht te stelen.</string>
+  <string name="phishing_link_confirmation_dialog_content_part_2">Ga voor uw eigen veiligheid niet verder.</string>
+  <string name="phishing_link_confirmation_dialog_button_go_back">Ga terug (aanbevolen)</string>
+  <string name="phishing_link_confirmation_dialog_button_continue">Waarschuwing negeren en doorgaan</string>
+  <string name="message_delete_dialog_title">Bericht verwijderen</string>
+  <string name="message_delete_dialog_message">Weet u zeker dat u dit bericht permanent wilt verwijderen?</string>
+  <string name="message_deleted">Bericht verwijderd</string>
+  <string name="error_delete_message_failed">Het bericht verwijderen is mislukt.</string>
   <string name="error_delete_message_failed_wrong_folder">Message is not in a location where it can be deleted</string>
   <string name="error_delete_conversation_failed">Failed to delete conversation</string>
   <string name="error_delete_conversation_failed_wrong_folder">Conversation is not in a location where it can be deleted</string>
-  <string name="conversation_deleted">Conversation deleted</string>
+  <string name="conversation_deleted">Gesprek verwijderd</string>
 </resources>

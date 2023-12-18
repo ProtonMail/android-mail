@@ -58,7 +58,7 @@
   <string name="delete_label_error">Gick inte ta bort etikett</string>
   <string name="input_field_clear_content_description">Rensa text</string>
   <string name="label_list_item_content_description">Märk listobjekten</string>
-  <string name="folder_list_item_content_description">Folder list item</string>
+  <string name="folder_list_item_content_description">Mapplistobjekt</string>
   <string name="folder_list_no_folders_found">Inga mappar hittades.</string>
   <string name="folder_list_create_folder_placeholder_description">Skapa en mapp för att förbättra din e-postupplevelse.</string>
   <string name="add_folder_content_description">Lägg till mapp</string>

@@ -88,8 +88,8 @@
   <string name="mail_settings_privacy_auto_show_embedded_images">Αυτόματη εμφάνιση ενσωματωμένων εικόνων</string>
   <string name="mail_settings_privacy_prevent_taking_screenshots">Αποφύγετε τη λήψη στιγμιότυπων οθόνης</string>
   <string name="mail_settings_privacy_request_link_confirmation">Ζητήστε σύνδεσμο επιβεβαίωσης</string>
-  <string name="mail_settings_privacy_background_sync">Background sync</string>
-  <string name="mail_settings_privacy_background_sync_description">If this option is enabled, the app will sync with the server in the background. Disabling this feature will also disable push notifications.</string>
+  <string name="mail_settings_privacy_background_sync">Συγχρονισμός στο παρασκήνιο</string>
+  <string name="mail_settings_privacy_background_sync_description">Εάν αυτή η επιλογή είναι ενεργοποιημένη, η εφαρμογή θα συγχρονιστεί με τον διακομιστή στο παρασκήνιο. Η απενεργοποίηση αυτής της λειτουργίας θα απενεργοποιήσει επίσης τις ειδοποιήσεις push.</string>
   <string name="mail_settings_privacy_error_updating">Σφάλμα κατά την ενημέρωση ρυθμίσεων</string>
   <string name="mail_settings_privacy_error_loading">Σφάλμα κατά τη φόρτωση ρυθμίσεων</string>
   <!-- Swipe Actions -->

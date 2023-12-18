@@ -17,8 +17,8 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="dialog_sign_out_account_title">Sign out</string>
-  <string name="dialog_sign_out_account_description">Are you sure you want to sign out?</string>
+  <string name="dialog_sign_out_account_title">Odhlásiť sa</string>
+  <string name="dialog_sign_out_account_description">Naozaj sa chcete odhlásiť?</string>
   <string name="dialog_sign_out_account_confirm">Áno</string>
   <string name="dialog_sign_out_account_cancel">Nie</string>
   <string name="dialog_remove_account_title">Odstrániť účet</string>
@@ -33,7 +33,7 @@
   <string name="mailbox_message_sending_offline">Offline, správa vo fronte na odoslanie</string>
   <string name="mailbox_message_sending_success">Správa odoslaná</string>
   <string name="mailbox_message_sending_error">Chyba pri odosielaní správy</string>
-  <string name="mailbox_message_sending_error_action">Go to Drafts</string>
+  <string name="mailbox_message_sending_error_action">Prejsť do zložky Koncepty</string>
   <string name="mailbox_attachment_uploading_error">Chyba pri nahrávaní prílohy</string>
   <string name="notification_switched_account">Prepnuté na účet: %s</string>
   <string name="label_saved">Štítok uložený</string>

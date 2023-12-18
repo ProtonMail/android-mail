@@ -28,8 +28,6 @@
     <item quantity="one">%d ausgewählt</item>
     <item quantity="other">%d ausgewählt</item>
   </plurals>
-  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
-  <string name="filter_unread_button_text_without_counter">Ungelesen</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%d ungelesen</item>
     <item quantity="other">%d ungelesen</item>
@@ -93,15 +91,13 @@
   <!--  Onboarding actions  -->
   <string name="onboarding_next">Weiter</string>
   <string name="onboarding_get_started">Los geht\'s</string>
-  <string name="onboarding_illustration_content_description">Onboarding illustration</string>
+  <string name="onboarding_illustration_content_description">Onboarding-Illustration</string>
   <string name="onboarding_close_content_description">Schliessen</string>
   <!-- Sidebar Beta label -->
   <string name="sidebar_beta_version_title">Proton Mail Beta</string>
-  <string name="sidebar_beta_version_description">Tap to learn more about this project.</string>
-  <string name="sidebar_beta_version_icon_content_description">Navigate to KB article.</string>
-  <string name="mailbox_action_read_message">Message read updated</string>
-  <string name="mailbox_action_star_message">Message star updated</string>
-  <string name="mailbox_action_trash_message">Message moved to trash</string>
-  <string name="mailbox_action_archive_message">Message moved to archive</string>
-  <string name="mailbox_action_spam_message">Message moved to spam</string>
+  <string name="sidebar_beta_version_description">Tippe hier, um mehr über dieses Projekt zu erfahren.</string>
+  <string name="sidebar_beta_version_icon_content_description">Zum KB-Artikel gehen.</string>
+  <string name="mailbox_action_trash_message">Nachricht wurde in den Papierkorb verschoben</string>
+  <string name="mailbox_action_archive_message">Nachricht wurde in das Archiv verschoben</string>
+  <string name="mailbox_action_spam_message">Nachricht wurde in den Spam-Ordner verschoben</string>
 </resources>

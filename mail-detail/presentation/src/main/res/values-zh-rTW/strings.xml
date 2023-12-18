@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="detail_error_loading_contacts">無法載入聯絡人資料</string>
-  <string name="detail_error_loading_conversation">無法載入對話內容</string>
+  <string name="detail_error_loading_conversation">無法載入往來對話內容</string>
   <string name="detail_error_loading_messages">無法載入郵件訊息</string>
   <string name="error_mark_unread_failed">無法標記成未讀。請再試一次。</string>
   <plurals name="message_count_label_text">
@@ -38,10 +38,10 @@
   <string name="message_moved_to_archive">郵件訊息已移至封存檔</string>
   <string name="message_moved_to_selected_destination">郵件已移至 %1$s</string>
   <string name="error_move_message_failed">無法移動郵件。請再試一次。</string>
-  <string name="conversation_moved_to_trash">無法將對話訊息丟進垃圾桶</string>
-  <string name="conversation_moved_to_selected_destination">對話已移至 %1$s</string>
-  <string name="conversation_moved_to_archive">交談訊息已移至封存檔</string>
-  <string name="error_move_conversation_failed">無法移動對話。請再試一次。</string>
+  <string name="conversation_moved_to_trash">無法將往來對話訊息丟進垃圾桶</string>
+  <string name="conversation_moved_to_selected_destination">往來對話已移至 %1$s</string>
+  <string name="conversation_moved_to_archive">往來對話訊息已移至封存檔</string>
+  <string name="error_move_conversation_failed">無法移動往來對話。請再試一次。</string>
   <string name="error_loading_message">載入訊息時發生錯誤，請再試一次。</string>
   <string name="error_offline_loading_message">您目前是離線狀態。需要網際網路連線才能顯示此訊息的內容。</string>
   <string name="error_get_attachment_failed">無法取得附件。</string>
@@ -49,7 +49,7 @@
   <string name="error_get_attachment_not_enough_memory">因為儲存空間不足，無法取得附件</string>
   <string name="reload">重新載入</string>
   <string name="error_relabel_message_failed">無法重新在郵件加上標籤。請再試試</string>
-  <string name="error_relabel_conversation_failed">無法重新在對話加上標籤。請再試試</string>
+  <string name="error_relabel_conversation_failed">無法重新在往來對話加上標籤。請再試試</string>
   <string name="please_go_back_online_to_load_messages">您目前是離線狀態。請重新連線以載入訊息</string>
   <string name="decryption_error">訊息解密失敗。</string>
   <string name="detail_error_retrieving_message_body">無法擷取訊息</string>
@@ -58,17 +58,24 @@
   <string name="message_body_embedded_images_banner_text">已經關閉內嵌影像的自動載入。這可以在設定中變更。</string>
   <string name="message_body_remote_content_banner_text">已經關閉遠端內容的自動載入。這可以在設定中變更。</string>
   <string name="message_body_embedded_and_remote_content_banner_text">已經關閉內嵌影像與遠端內容的自動載入。這可以在設定中變更。</string>
+  <string name="message_phishing_banner_text">我們的系統已將此郵件認定為釣魚郵件。請檢查這是否正常郵件。</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">You are about to leave the app and navigate to:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">下次無需再詢問</string>
   <string name="external_link_confirmation_dialog_cancel_button">取消</string>
   <string name="external_link_confirmation_dialog_continue_button">繼續</string>
-  <string name="message_delete_dialog_title">Delete message</string>
-  <string name="message_delete_dialog_message">Are you sure you want to permanently delete this message?</string>
-  <string name="message_deleted">Message deleted</string>
-  <string name="error_delete_message_failed">Failed to delete message</string>
-  <string name="error_delete_message_failed_wrong_folder">Message is not in a location where it can be deleted</string>
-  <string name="error_delete_conversation_failed">Failed to delete conversation</string>
-  <string name="error_delete_conversation_failed_wrong_folder">Conversation is not in a location where it can be deleted</string>
-  <string name="conversation_deleted">Conversation deleted</string>
+  <!-- Phishing link confirmation dialog -->
+  <string name="phishing_link_confirmation_dialog_title">警告：疑似假冒網站</string>
+  <string name="phishing_link_confirmation_dialog_content_part_1">此連結指向的網站可能試圖竊取您的資訊，例如密碼或信用卡細節 。</string>
+  <string name="phishing_link_confirmation_dialog_content_part_2">For your security, do not continue.</string>
+  <string name="phishing_link_confirmation_dialog_button_go_back">返回（推薦）</string>
+  <string name="phishing_link_confirmation_dialog_button_continue">忽略警告並繼續</string>
+  <string name="message_delete_dialog_title">刪除訊息</string>
+  <string name="message_delete_dialog_message">您確定要永久刪除此郵件嗎？</string>
+  <string name="message_deleted">郵件已刪除</string>
+  <string name="error_delete_message_failed">刪除信件失敗</string>
+  <string name="error_delete_message_failed_wrong_folder">訊息位在無法刪除的地方</string>
+  <string name="error_delete_conversation_failed">刪除對話失敗</string>
+  <string name="error_delete_conversation_failed_wrong_folder">對話位在無法刪除的地方</string>
+  <string name="conversation_deleted">往來對話已刪除</string>
 </resources>

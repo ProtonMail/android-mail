@@ -88,8 +88,8 @@
   <string name="mail_settings_privacy_auto_show_embedded_images">자동으로 삽입된 이미지 로드</string>
   <string name="mail_settings_privacy_prevent_taking_screenshots">스크린샷 촬영 방지</string>
   <string name="mail_settings_privacy_request_link_confirmation">링크 확인 요청</string>
-  <string name="mail_settings_privacy_background_sync">Background sync</string>
-  <string name="mail_settings_privacy_background_sync_description">If this option is enabled, the app will sync with the server in the background. Disabling this feature will also disable push notifications.</string>
+  <string name="mail_settings_privacy_background_sync">백그라운드 동기화</string>
+  <string name="mail_settings_privacy_background_sync_description">이 옵션을 사용하면 앱이 백그라운드에서 서버와 동기화됩니다. 이 기능을 비활성화하면 푸시 알림이 비활성화됩니다.</string>
   <string name="mail_settings_privacy_error_updating">설정 업데이트 오류</string>
   <string name="mail_settings_privacy_error_loading">설정 로딩 중 오류 발생</string>
   <!-- Swipe Actions -->

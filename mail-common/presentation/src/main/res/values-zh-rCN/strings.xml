@@ -47,7 +47,7 @@
   <string name="action_view_html_description">查看 HTML 代码</string>
   <string name="action_report_phishing_description">举报欺诈邮件</string>
   <string name="action_remind_description">提醒我</string>
-  <string name="action_save_pdf_description">另存为PDF</string>
+  <string name="action_save_pdf_description">保存为 PDF 文件</string>
   <string name="action_sender_emails_description">对此发件人今后的邮件设置收信规则</string>
   <string name="action_save_attachments_description">保存附件</string>
   <string name="action_more_description">更多</string>

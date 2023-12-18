@@ -59,11 +59,18 @@
   <string name="message_body_embedded_images_banner_text">La carga automática de imágenes incrustadas está desactivada. Esto se puede cambiar en los ajustes.</string>
   <string name="message_body_remote_content_banner_text">La carga automática de contenido remoto está desactivada. Esta se puede cambiar en los ajustes.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">La carga automática de imágenes incrustadas y contenido remoto está desactivada. Estas se pueden cambiar en los ajustes.</string>
+  <string name="message_phishing_banner_text">Nuestro sistema ha marcado este mensaje como un intento de suplantación de identidad. Verifica que es legítimo.</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">Estás a punto de abandonar la aplicación y navegar hacia:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">No preguntar de nuevo</string>
   <string name="external_link_confirmation_dialog_cancel_button">Cancelar</string>
   <string name="external_link_confirmation_dialog_continue_button">Continuar</string>
+  <!-- Phishing link confirmation dialog -->
+  <string name="phishing_link_confirmation_dialog_title">Advertencia: el sitio web podría ser falso.</string>
+  <string name="phishing_link_confirmation_dialog_content_part_1">Este enlace conduce a un sitio web que podría estar intentando robar tus datos, como contraseñas y datos de tarjetas de crédito.</string>
+  <string name="phishing_link_confirmation_dialog_content_part_2">Por tu seguridad, no continúes.</string>
+  <string name="phishing_link_confirmation_dialog_button_go_back">Volver (recomendado)</string>
+  <string name="phishing_link_confirmation_dialog_button_continue">Ignorar la advertencia y continuar</string>
   <string name="message_delete_dialog_title">Eliminar el mensaje</string>
   <string name="message_delete_dialog_message">¿Estás seguro de que quieres eliminar permanentemente este mensaje?</string>
   <string name="message_deleted">El mensaje ha sido eliminado.</string>

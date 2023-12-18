@@ -26,12 +26,12 @@
   <string name="close_composer_content_description">關閉撰寫工具</string>
   <string name="send_message_content_description">傳送郵件訊息</string>
   <string name="composer_expand_recipients_button">顯示其他收件者</string>
-  <string name="composer_error_invalid_email">電子郵件地址無效</string>
-  <string name="composer_error_invalid_sender">寄件者電子郵件地址無效</string>
+  <string name="composer_error_invalid_email">電子郵件位址無效</string>
+  <string name="composer_error_invalid_sender">寄件者電子郵件位址無效</string>
   <string name="change_sender_button_content_description">變更寄件人</string>
   <string name="composer_change_sender_paid_feature">升級至付款方案後，您將能夠變更寄件者</string>
-  <string name="composer_error_change_sender_failed_getting_subscription">因無法取得訂閱資料無法變更寄件者。請再試一次。</string>
-  <string name="composer_error_store_draft_sender_address">取的此草稿的寄件者地址失敗</string>
+  <string name="composer_error_change_sender_failed_getting_subscription">因無法取得訂購授權資料無法變更寄件者。請再試一次。</string>
+  <string name="composer_error_store_draft_sender_address">取的此草稿的寄件者位址失敗</string>
   <string name="composer_error_store_draft_body">處存草稿內容失敗</string>
   <string name="composer_error_duplicate_recipient">已移除重複的收件者：%1$s</string>
   <string name="composer_error_store_draft_subject">無法儲存此草稿主旨</string>
@@ -48,9 +48,9 @@
   <string name="composer_attachment_reencryption_failed_message">Reencryption of attachment failed. For security reasons all attachments got removed.</string>
   <string name="composer_warning_local_data_shown">The latest version of this draft failed to load. Any change will override its content.</string>
   <!-- Message sending error dialog -->
-  <string name="message_sending_error_dialog_header">Sending error</string>
-  <string name="message_sending_error_dialog_button_dismiss">Close</string>
+  <string name="message_sending_error_dialog_header">回報錯誤</string>
+  <string name="message_sending_error_dialog_button_dismiss">關閉</string>
   <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the email entered due to the following reason:</string>
-  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">There are no Trusted Keys: %s</string>
-  <string name="message_sending_error_dialog_text_reason_address_disabled">Address does not exist: %s</string>
+  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">無信任金鑰 : %s</string>
+  <string name="message_sending_error_dialog_text_reason_address_disabled">地址不存在 : %s</string>
 </resources>
