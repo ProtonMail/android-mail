@@ -118,7 +118,8 @@ class DraftUploadTrackerTest {
             apiMessageId = MessageIdSample.RemoteDraft,
             state = DraftSyncState.Synchronized,
             action = DraftAction.Compose,
-            sendingError = null
+            sendingError = null,
+            sendingStatusConfirmed = false
         )
         coEvery { draftStateRepository.observe(userId, messageId) } returns flowOf(draftState.right())
 
