@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcontact.presentation.model
 
+import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.utils.getInitials
 import me.proton.core.contact.domain.entity.ContactWithCards
 
@@ -25,6 +26,11 @@ fun ContactWithCards.toContactDetailsUiModel(): ContactDetailsUiModel {
     return ContactDetailsUiModel(
         id = this.contact.id,
         name = this.contact.name,
-        initials = getInitials(this.contact.name)
+        initials = getInitials(this.contact.name),
+        contactDetailsItemList = emptyList(), // TODO
+        contactGroups = ContactDetailsGroupsItem(
+            iconResId = R.drawable.ic_proton_users,
+            groupLabelList = emptyList() // TODO
+        )
     )
 }

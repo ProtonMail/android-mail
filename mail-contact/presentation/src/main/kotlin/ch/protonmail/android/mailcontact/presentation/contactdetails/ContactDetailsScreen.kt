@@ -23,14 +23,16 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -42,6 +44,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalView
@@ -56,6 +59,7 @@ import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.dismissKeyboard
+import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactDetailsPreviewData.contactDetailsSampleData
@@ -68,6 +72,9 @@ import me.proton.core.compose.component.appbar.ProtonTopAppBar
 import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
+import me.proton.core.compose.theme.captionWeak
+import me.proton.core.compose.theme.defaultNorm
+import me.proton.core.compose.theme.defaultSmallStrongUnspecified
 import me.proton.core.compose.theme.headlineNorm
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -129,55 +136,183 @@ fun ContactDetailsScreen(actions: ContactDetailsScreen.Actions, viewModel: Conta
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ContactDetailsContent(
     state: ContactDetailsState.Data,
     actions: ContactDetailsScreen.Actions,
     modifier: Modifier = Modifier
 ) {
-    Column(
+    LazyColumn(
         modifier = modifier
-            .verticalScroll(rememberScrollState())
             .fillMaxSize()
     ) {
-        InitialsContactAvatar(
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(top = ProtonDimens.DefaultSpacing),
-            initials = state.contact.initials
-        )
+        item {
+            Column(modifier.fillMaxWidth()) {
+                InitialsContactAvatar(
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(top = ProtonDimens.DefaultSpacing),
+                    initials = state.contact.initials
+                )
+                Text(
+                    modifier = Modifier
+                        .padding(top = ProtonDimens.MediumSpacing)
+                        .align(Alignment.CenterHorizontally),
+                    style = ProtonTheme.typography.headlineNorm,
+                    text = state.contact.name
+                )
+                Row(
+                    modifier = Modifier
+                        .padding(vertical = ProtonDimens.MediumSpacing)
+                        .align(Alignment.CenterHorizontally)
+                ) {
+                    ContactDetailsActionItem(
+                        iconResId = R.drawable.ic_proton_phone,
+                        onClick = {}
+                    )
+                    ContactDetailsActionItem(
+                        modifier = Modifier.padding(start = ProtonDimens.DefaultSpacing),
+                        iconResId = R.drawable.ic_proton_pen_square,
+                        onClick = {}
+                    )
+                    ContactDetailsActionItem(
+                        modifier = Modifier.padding(start = ProtonDimens.DefaultSpacing),
+                        iconResId = R.drawable.ic_proton_arrow_up_from_square,
+                        onClick = {}
+                    )
+                }
+            }
+        }
+        items(state.contact.contactDetailsItemList) { contactDetailsItem ->
+            if (contactDetailsItem.displayIcon) {
+                ContactDetailsItemWithIcon(
+                    iconResId = contactDetailsItem.iconResId,
+                    caption = contactDetailsItem.header.string(),
+                    value = contactDetailsItem.value
+                )
+            } else {
+                ContactDetailsItem(
+                    caption = contactDetailsItem.header.string(),
+                    value = contactDetailsItem.value
+                )
+            }
+        }
+        item {
+            Row(
+                modifier = modifier
+                    .padding(ProtonDimens.DefaultSpacing)
+            ) {
+                Icon(
+                    modifier = Modifier.align(Alignment.Top),
+                    painter = painterResource(id = state.contact.contactGroups.iconResId),
+                    tint = ProtonTheme.colors.iconNorm,
+                    contentDescription = stringResource(id = R.string.contact_groups_content_description)
+                )
+                FlowRow(
+                    modifier.padding(start = ProtonDimens.DefaultSpacing)
+                ) {
+                    for (groupLabel in state.contact.contactGroups.groupLabelList) {
+                        ContactGroupLabel(
+                            value = groupLabel.name,
+                            color = groupLabel.color
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ContactGroupLabel(
+    modifier: Modifier = Modifier,
+    value: String,
+    color: Color
+) {
+    Box(
+        modifier = modifier
+            .padding(
+                end = ProtonDimens.ExtraSmallSpacing,
+                bottom = ProtonDimens.ExtraSmallSpacing
+            )
+            .background(
+                color = color,
+                shape = RoundedCornerShape(MailDimens.ContactGroupLabelCornerRadius)
+            )
+    ) {
         Text(
             modifier = Modifier
-                .padding(top = ProtonDimens.MediumSpacing)
-                .align(Alignment.CenterHorizontally),
-            style = ProtonTheme.typography.headlineNorm,
-            text = state.contact.name
+                .padding(
+                    horizontal = MailDimens.ContactGroupLabelPaddingHorizontal,
+                    vertical = MailDimens.ContactGroupLabelPaddingVertical
+                ),
+            text = value,
+            style = ProtonTheme.typography.defaultSmallStrongUnspecified,
+            color = Color.White
         )
-        Row(
-            modifier = Modifier
-                .padding(top = ProtonDimens.MediumSpacing)
-                .align(Alignment.CenterHorizontally)
+    }
+}
+
+@Composable
+private fun ContactDetailsItemWithIcon(
+    modifier: Modifier = Modifier,
+    iconResId: Int,
+    caption: String,
+    value: String
+) {
+    Row(
+        modifier = modifier
+            .padding(ProtonDimens.DefaultSpacing)
+    ) {
+        Icon(
+            modifier = Modifier.align(Alignment.CenterVertically),
+            painter = painterResource(id = iconResId),
+            tint = ProtonTheme.colors.iconNorm,
+            contentDescription = caption
+        )
+        Column(
+            modifier.padding(start = ProtonDimens.DefaultSpacing)
         ) {
-            ContactActionItem(
-                iconResId = R.drawable.ic_proton_phone,
-                onClick = {}
+            Text(
+                text = caption,
+                style = ProtonTheme.typography.captionWeak
             )
-            ContactActionItem(
-                modifier = Modifier.padding(start = ProtonDimens.DefaultSpacing),
-                iconResId = R.drawable.ic_proton_pen_square,
-                onClick = {}
-            )
-            ContactActionItem(
-                modifier = Modifier.padding(start = ProtonDimens.DefaultSpacing),
-                iconResId = R.drawable.ic_proton_arrow_up_from_square,
-                onClick = {}
+            Text(
+                text = value,
+                style = ProtonTheme.typography.defaultNorm
             )
         }
     }
 }
 
 @Composable
-private fun ContactActionItem(
+private fun ContactDetailsItem(
+    modifier: Modifier = Modifier,
+    caption: String,
+    value: String
+) {
+    Row(
+        modifier = modifier
+            .padding(ProtonDimens.DefaultSpacing)
+    ) {
+        Column(
+            modifier.padding(start = ProtonDimens.LargerSpacing)
+        ) {
+            Text(
+                text = caption,
+                style = ProtonTheme.typography.captionWeak
+            )
+            Text(
+                text = value,
+                style = ProtonTheme.typography.defaultNorm
+            )
+        }
+    }
+}
+
+@Composable
+private fun ContactDetailsActionItem(
     modifier: Modifier = Modifier,
     iconResId: Int,
     onClick: () -> Unit

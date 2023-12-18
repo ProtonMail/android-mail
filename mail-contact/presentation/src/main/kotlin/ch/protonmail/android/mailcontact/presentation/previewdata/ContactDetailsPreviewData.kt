@@ -18,7 +18,13 @@
 
 package ch.protonmail.android.mailcontact.presentation.previewdata
 
+import androidx.compose.ui.graphics.Color
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcontact.presentation.R
+import ch.protonmail.android.mailcontact.presentation.model.ContactDetailsGroupsItem
+import ch.protonmail.android.mailcontact.presentation.model.ContactDetailsItem
 import ch.protonmail.android.mailcontact.presentation.model.ContactDetailsUiModel
+import ch.protonmail.android.mailcontact.presentation.model.ContactGroupLabel
 import me.proton.core.contact.domain.entity.ContactId
 
 object ContactDetailsPreviewData {
@@ -26,7 +32,62 @@ object ContactDetailsPreviewData {
     val contactDetailsSampleData = ContactDetailsUiModel(
         id = ContactId("Id"),
         name = "John Doe",
-        initials = "JD"
+        initials = "JD",
+        contactDetailsItemList = listOf(
+            ContactDetailsItem(
+                displayIcon = true,
+                iconResId = R.drawable.ic_proton_at,
+                header = TextUiModel(R.string.contact_type_email),
+                value = "johndoe@proton.me"
+            ),
+            ContactDetailsItem(
+                displayIcon = false,
+                iconResId = R.drawable.ic_proton_at,
+                header = TextUiModel(R.string.contact_type_work),
+                value = "johndoe2@proton.me"
+            ),
+            ContactDetailsItem(
+                displayIcon = true,
+                iconResId = R.drawable.ic_proton_phone,
+                header = TextUiModel(R.string.contact_type_phone),
+                value = "01234567890"
+            ),
+            ContactDetailsItem(
+                displayIcon = false,
+                iconResId = R.drawable.ic_proton_phone,
+                header = TextUiModel(R.string.contact_type_pager),
+                value = "0987654321"
+            ),
+            ContactDetailsItem(
+                displayIcon = true,
+                iconResId = R.drawable.ic_proton_map_pin,
+                header = TextUiModel(R.string.contact_type_home),
+                value = "Lettensteg 10, 8037 Zürich"
+            ),
+            ContactDetailsItem(
+                displayIcon = false,
+                iconResId = R.drawable.ic_proton_map_pin,
+                header = TextUiModel(R.string.contact_type_work),
+                value = "Hello world, Earth"
+            )
+        ),
+        contactGroups = ContactDetailsGroupsItem(
+            iconResId = R.drawable.ic_proton_users,
+            groupLabelList = listOf(
+                ContactGroupLabel(
+                    name = "Short",
+                    color = Color.Red
+                ),
+                ContactGroupLabel(
+                    name = "Group very with long name",
+                    color = Color.Blue
+                ),
+                ContactGroupLabel(
+                    name = "Medium length",
+                    color = Color.Green
+                )
+            )
+        )
     )
 }
 

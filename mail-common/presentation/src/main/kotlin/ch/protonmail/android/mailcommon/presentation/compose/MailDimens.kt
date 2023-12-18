@@ -93,4 +93,8 @@ object MailDimens {
 
     val ContactActionSize = 52.dp
     val ContactActionCornerRadius = 16.dp
+
+    val ContactGroupLabelPaddingHorizontal = 6.dp
+    val ContactGroupLabelPaddingVertical = 2.dp
+    val ContactGroupLabelCornerRadius = 6.dp
 }

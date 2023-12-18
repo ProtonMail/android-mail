@@ -37,4 +37,15 @@
     <string name="edit_contact_content_description">Edit contact</string>
     <string name="delete_contact_content_description">Delete contact</string>
     <string name="contact_avatar_image_content_description">Contact avatar</string>
+    <string name="contact_groups_content_description">Contact groups</string>
+    <string name="contact_type_email">Email</string>
+    <string name="contact_type_phone">Phone</string>
+    <string name="contact_type_home">Home</string>
+    <string name="contact_type_work">Work</string>
+    <string name="contact_type_other">Other</string>
+    <string name="contact_type_mobile">Mobile</string>
+    <string name="contact_type_main">Main</string>
+    <string name="contact_type_fax">Fax</string>
+    <string name="contact_type_pager">Pager</string>
+    <string name="contact_type_address">Address</string>
 </resources>
