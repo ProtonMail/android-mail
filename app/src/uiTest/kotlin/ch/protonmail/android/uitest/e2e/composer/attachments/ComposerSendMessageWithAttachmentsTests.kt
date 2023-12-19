@@ -127,7 +127,7 @@ internal class ComposerSendMessageWithAttachmentsTests :
 
         mailboxRobot {
             snackbarSection { verify { isDisplaying(ComposerSnackbar.SendingMessage) } }
-            snackbarSection { verify { isDisplaying(ComposerSnackbar.AttachmentUploadError) } }
+            snackbarSection { verify { isDisplaying(ComposerSnackbar.MessageSentError) } }
         }
     }
 
@@ -157,7 +157,7 @@ internal class ComposerSendMessageWithAttachmentsTests :
             // Deferred as on FTL it might propagate too quickly.
             every { networkManager.isConnectedToNetwork() } returns false
 
-            snackbarSection { verify { isDisplaying(ComposerSnackbar.AttachmentUploadError) } }
+            snackbarSection { verify { isDisplaying(ComposerSnackbar.MessageSentError) } }
         }
     }
 
