@@ -22,6 +22,7 @@ import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.ReportDrawn
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.rememberScrollableState
@@ -30,8 +31,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -58,13 +61,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -72,9 +80,11 @@ import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
+import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialog
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
@@ -102,6 +112,8 @@ import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
+import me.proton.core.compose.theme.defaultSmallWeak
+import me.proton.core.compose.theme.headlineSmallNorm
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import ch.protonmail.android.mailcommon.presentation.R.string as commonString
@@ -250,6 +262,7 @@ fun MailboxScreen(
     val lazyListState = rememberLazyListState()
     val snackbarHostState = remember { ProtonSnackbarHostState() }
     val snackbarHostErrorState = remember { ProtonSnackbarHostState(defaultType = ProtonSnackbarType.ERROR) }
+    val rememberTopBarHeight = remember { mutableStateOf(0.dp) }
 
     ConsumableTextEffect(effect = mailboxState.actionMessage) {
         snackbarHostState.showSnackbar(message = it, type = ProtonSnackbarType.NORM)
@@ -264,7 +277,12 @@ fun MailboxScreen(
         modifier = modifier.testTag(MailboxScreenTestTags.Root),
         scaffoldState = scaffoldState,
         topBar = {
-            Column {
+            val localDensity = LocalDensity.current
+            Column(
+                modifier = Modifier.onGloballyPositioned { coordinates ->
+                    rememberTopBarHeight.value = with(localDensity) { coordinates.size.height.toDp() }
+                }
+            ) {
                 MailboxTopAppBar(
                     state = mailboxState.topAppBarState,
                     actions = MailboxTopAppBar.Actions(
@@ -345,10 +363,12 @@ fun MailboxScreen(
 
                 MailboxSwipeRefresh(
                     modifier = Modifier.padding(paddingValues),
+                    topBarHeight = rememberTopBarHeight.value,
                     items = mailboxListItems,
                     state = mailboxListState,
                     listState = lazyListState,
                     viewState = mailboxListState,
+                    unreadFilterState = mailboxState.unreadFilterState,
                     actions = actions
                 )
             }
@@ -392,8 +412,10 @@ private fun MailboxSwipeRefresh(
     items: LazyPagingItems<MailboxItemUiModel>,
     viewState: MailboxListState.Data,
     listState: LazyListState,
+    unreadFilterState: UnreadFilterState,
     actions: MailboxScreen.Actions,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    topBarHeight: Dp = 0.dp
 ) {
     // We need to show the Pull To Refresh indicator at top at correct times, which are first time we fetch data from
     // remote and when the user pulls to refresh. We will use following flags to know when to show the indicator.
@@ -446,8 +468,10 @@ private fun MailboxSwipeRefresh(
                 errorMessage = stringResource(id = R.string.mailbox_error_message_offline)
             )
 
-            is MailboxScreenState.Empty -> MailboxError(
-                errorMessage = stringResource(id = R.string.mailbox_is_empty_message)
+            is MailboxScreenState.Empty -> MailboxEmpty(
+                viewState,
+                unreadFilterState,
+                modifier.padding(bottom = topBarHeight)
             )
 
             is MailboxScreenState.OfflineWithData -> {
@@ -621,6 +645,72 @@ private fun MailboxError(modifier: Modifier = Modifier, errorMessage: String) {
         Text(
             modifier = Modifier.testTag(MailboxScreenTestTags.MailboxErrorMessage),
             text = errorMessage,
+            textAlign = TextAlign.Center
+        )
+    }
+}
+
+@Composable
+private fun MailboxEmpty(
+    listState: MailboxListState.Data,
+    unreadFilterState: UnreadFilterState,
+    modifier: Modifier = Modifier
+) {
+    val (illustration, title, description) =
+        if ((unreadFilterState as? UnreadFilterState.Data)?.isFilterEnabled == true) {
+            Triple(
+                R.drawable.illustration_empty_mailbox_unread,
+                R.string.mailbox_is_empty_no_unread_messages_title,
+                R.string.mailbox_is_empty_description
+            )
+        } else {
+            when (listState.currentMailLabel.id) {
+                MailLabelId.System.Inbox -> Triple(
+                    R.drawable.illustration_empty_mailbox_no_messages,
+                    R.string.mailbox_is_empty_title,
+                    R.string.mailbox_is_empty_description
+                )
+
+                MailLabelId.System.Spam -> Triple(
+                    R.drawable.illustration_empty_mailbox_spam,
+                    R.string.mailbox_is_empty_title,
+                    R.string.mailbox_is_empty_spam_description
+                )
+
+                MailLabelId.System.Trash -> Triple(
+                    R.drawable.illustration_empty_mailbox_trash,
+                    R.string.mailbox_is_empty_title,
+                    R.string.mailbox_is_empty_trash_description
+                )
+
+                else -> Triple(
+                    R.drawable.illustration_empty_mailbox_folder,
+                    R.string.mailbox_is_empty_title,
+                    R.string.mailbox_is_empty_folder_description
+                )
+            }
+        }
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .scrollable(
+                rememberScrollableState(consumeScrollDelta = { 0f }),
+                orientation = Orientation.Vertical
+            ),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(painter = painterResource(id = illustration), contentDescription = NO_CONTENT_DESCRIPTION)
+        Spacer(modifier = Modifier.height(ProtonDimens.LargeSpacing))
+        Text(
+            text = stringResource(id = title),
+            style = ProtonTheme.typography.headlineSmallNorm,
+            textAlign = TextAlign.Center
+        )
+        Spacer(modifier = Modifier.height(ProtonDimens.ExtraSmallSpacing))
+        Text(
+            text = stringResource(id = description),
+            style = ProtonTheme.typography.defaultSmallWeak,
             textAlign = TextAlign.Center
         )
     }
