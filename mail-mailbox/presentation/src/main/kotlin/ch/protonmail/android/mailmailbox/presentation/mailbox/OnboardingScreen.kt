@@ -74,13 +74,7 @@ fun OnboardingScreen(actions: MailboxScreen.Actions) {
         OnboardingUiModel(
             illustrationId = R.drawable.illustration_onboarding_beta,
             headlineId = R.string.onboarding_headline_beta,
-            descriptionId = R.string.onboarding_description_beta,
-            hyperLinks = listOf(
-                HyperlinkText(
-                    text = stringResource(R.string.onboarding_description_beta_learn_more),
-                    url = stringResource(R.string.onboarding_description_beta_link)
-                )
-            )
+            descriptionId = R.string.onboarding_description_beta
         ),
         OnboardingUiModel(
             illustrationId = R.drawable.illustration_privacy_for_all,
@@ -163,8 +157,7 @@ fun OnboardingContent(content: OnboardingUiModel) {
                     end.linkTo(parent.end, margin = ProtonDimens.LargeSpacing)
                     bottom.linkTo(parent.bottom, margin = ProtonDimens.DefaultSpacing)
                 },
-            fullText = stringResource(id = content.descriptionId),
-            hyperLinks = content.hyperLinks,
+            textResource = content.descriptionId,
             textStyle = ProtonTheme.typography.defaultWeak.copy(
                 textAlign = TextAlign.Center
             ),

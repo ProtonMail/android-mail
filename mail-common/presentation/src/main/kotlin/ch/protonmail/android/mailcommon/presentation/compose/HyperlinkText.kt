@@ -18,72 +18,39 @@
 
 package ch.protonmail.android.mailcommon.presentation.compose
 
-import androidx.compose.foundation.text.ClickableText
+import android.text.method.LinkMovementMethod
+import android.util.TypedValue
+import android.widget.TextView
+import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalFontFamilyResolver
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextDecoration
-
-data class HyperlinkText(val text: String, val url: String)
+import androidx.compose.ui.viewinterop.AndroidView
 
 @Composable
 fun HyperlinkText(
     modifier: Modifier = Modifier,
-    fullText: String,
-    hyperLinks: List<HyperlinkText>,
+    @StringRes textResource: Int,
     textStyle: TextStyle = TextStyle.Default,
-    linkTextColor: Color = Color.Blue,
-    linkTextFontWeight: FontWeight = FontWeight.Normal,
-    linkTextDecoration: TextDecoration = TextDecoration.None
+    linkTextColor: Color = Color.Blue
 ) {
-    val annotatedString = buildAnnotatedString {
-        append(fullText)
-
-        for (hyperlink in hyperLinks) {
-            val startIndex = fullText.indexOf(hyperlink.text)
-            val endIndex = startIndex + hyperlink.text.length
-            addStyle(
-                style = SpanStyle(
-                    color = linkTextColor,
-                    fontSize = textStyle.fontSize,
-                    fontWeight = linkTextFontWeight,
-                    textDecoration = linkTextDecoration
-                ),
-                start = startIndex,
-                end = endIndex
-            )
-            addStringAnnotation(
-                tag = "URL",
-                annotation = hyperlink.url,
-                start = startIndex,
-                end = endIndex
-            )
-        }
-
-        addStyle(
-            style = SpanStyle(fontSize = textStyle.fontSize),
-            start = 0,
-            end = fullText.length
-        )
-    }
-
-    val uriHandler = LocalUriHandler.current
-    ClickableText(
+    val resolver = LocalFontFamilyResolver.current
+    AndroidView(
         modifier = modifier,
-        text = annotatedString,
-        style = textStyle,
-        onClick = {
-            annotatedString
-                .getStringAnnotations("URL", it, it)
-                .firstOrNull()
-                ?.let { stringAnnotation ->
-                    uriHandler.openUri(stringAnnotation.item)
-                }
+        factory = { context ->
+            TextView(context).apply {
+                setLinkTextColor(linkTextColor.toArgb())
+                setTextColor(textStyle.color.toArgb())
+                setTextSize(TypedValue.COMPLEX_UNIT_SP, textStyle.fontSize.value)
+                letterSpacing = textStyle.letterSpacing.value
+                gravity = android.view.Gravity.CENTER_HORIZONTAL
+                typeface = resolver.resolve(textStyle.fontFamily).value as android.graphics.Typeface
+                movementMethod = LinkMovementMethod.getInstance()
+                setText(textResource)
+            }
         }
     )
 }

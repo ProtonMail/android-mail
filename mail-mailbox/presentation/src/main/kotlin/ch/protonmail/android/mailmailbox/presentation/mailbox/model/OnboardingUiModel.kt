@@ -18,11 +18,8 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox.model
 
-import ch.protonmail.android.mailcommon.presentation.compose.HyperlinkText
-
 data class OnboardingUiModel(
     val illustrationId: Int,
     val headlineId: Int,
-    val descriptionId: Int,
-    val hyperLinks: List<HyperlinkText> = emptyList()
+    val descriptionId: Int
 )
