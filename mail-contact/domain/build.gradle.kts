@@ -45,6 +45,7 @@ dependencies {
     implementation(KotlinX.serializationJson)
 
     implementation(Proton.Core.contact)
+    implementation(Proton.Core.user)
 
     implementation(project(":mail-common:domain"))
 
