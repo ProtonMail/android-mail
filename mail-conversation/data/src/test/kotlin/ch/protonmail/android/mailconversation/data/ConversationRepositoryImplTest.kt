@@ -837,21 +837,6 @@ class ConversationRepositoryImplTest {
     }
 
     @Test
-    fun `observe cache up to date does not refresh the local cache with the conversation from remote`() = runTest {
-        // Given
-        val conversationId = ConversationId("conversationId")
-
-        // When
-        conversationRepository.observeConversationCacheUpToDate(userId, conversationId).test {
-            // Then
-            coVerify(exactly = 0) {
-                conversationRemoteDataSource.getConversationWithMessages(userId, conversationId)
-            }
-            cancelAndConsumeRemainingEvents()
-        }
-    }
-
-    @Test
     fun `Should return true if the local cached conversation is read`() = runTest {
         // Given
         val conversationId = ConversationId(UUID.randomUUID().toString())

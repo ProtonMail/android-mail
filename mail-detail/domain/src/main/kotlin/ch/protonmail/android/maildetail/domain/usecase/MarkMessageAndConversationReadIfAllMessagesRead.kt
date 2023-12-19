@@ -50,7 +50,7 @@ class MarkMessageAndConversationReadIfAllMessagesRead @Inject constructor(
         messageId: MessageId,
         conversationId: ConversationId
     ): Either<MarkConversationReadError, Unit> {
-        return conversationRepository.observeConversationCacheUpToDate(userId, conversationId)
+        return conversationRepository.observeConversation(userId, conversationId, false)
             .onEmpty { emit(DataError.Local.NoDataCached.left()) }
             .map {
                 it.fold(

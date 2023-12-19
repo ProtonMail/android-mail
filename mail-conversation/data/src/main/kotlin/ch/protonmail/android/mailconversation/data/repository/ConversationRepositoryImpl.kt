@@ -19,12 +19,10 @@
 package ch.protonmail.android.mailconversation.data.repository
 
 import arrow.core.Either
-import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.mapper.mapToEither
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailcommon.domain.model.isOfflineError
 import ch.protonmail.android.mailconversation.data.remote.ConversationApi
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailconversation.domain.entity.ConversationWithContext
@@ -42,13 +40,11 @@ import com.dropbox.android.external.store4.StoreBuilder
 import com.dropbox.android.external.store4.StoreRequest
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import me.proton.core.data.arch.ProtonStore
 import me.proton.core.data.arch.buildProtonStore
 import me.proton.core.data.arch.toDataResult
 import me.proton.core.domain.arch.DataResult
-import me.proton.core.domain.arch.ResponseSource
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.util.kotlin.CoroutineScopeProvider
@@ -113,25 +109,6 @@ class ConversationRepositoryImpl @Inject constructor(
         refreshData: Boolean
     ): Flow<Either<DataError, Conversation>> = buildStoreStream(userId, id, refreshData)
         .mapToEither()
-
-    override fun observeConversationCacheUpToDate(userId: UserId, id: ConversationId): Flow<Either<DataError, Unit>> {
-        return buildStoreStream(userId, id, true)
-            .filter { it.source == ResponseSource.Remote }
-            .distinctUntilChanged()
-            .mapToEither()
-            .map {
-                it.fold(
-                    ifLeft = { dataError ->
-                        if (dataError.isOfflineError()) {
-                            Unit.right()
-                        } else {
-                            dataError.left()
-                        }
-                    },
-                    ifRight = { Unit.right() }
-                )
-            }
-    }
 
     override fun observeCachedConversations(userId: UserId, ids: List<ConversationId>) =
         conversationLocalDataSource.observeCachedConversations(userId, ids)

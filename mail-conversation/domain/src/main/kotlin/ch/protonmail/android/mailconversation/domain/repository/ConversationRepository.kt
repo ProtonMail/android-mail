@@ -69,8 +69,6 @@ interface ConversationRepository {
         refreshData: Boolean
     ): Flow<Either<DataError, Conversation>>
 
-    fun observeConversationCacheUpToDate(userId: UserId, id: ConversationId): Flow<Either<DataError, Unit>>
-
     /**
      * Get a list of conversations.
      * Returns any conversation data that is available locally right away.
