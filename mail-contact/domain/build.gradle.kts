@@ -50,5 +50,6 @@ dependencies {
     implementation(project(":mail-common:domain"))
 
     testImplementation(Dependencies.testLibs)
+    testImplementation(Proton.Core.contact)
     testImplementation(project(":test:test-data"))
 }

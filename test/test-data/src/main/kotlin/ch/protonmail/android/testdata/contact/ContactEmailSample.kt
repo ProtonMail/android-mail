@@ -19,28 +19,38 @@
 package ch.protonmail.android.testdata.contact
 
 import ch.protonmail.android.testdata.user.UserIdTestData
-import me.proton.core.contact.domain.entity.Contact
+import me.proton.core.contact.domain.entity.ContactEmail
 
-object ContactSample {
+object ContactEmailSample {
 
-    val Doe = Contact(
-        contactEmails = emptyList(),
-        id = ContactIdSample.Doe,
-        name = "Doe",
-        userId = UserIdTestData.Primary
+    val contactEmail1 = ContactEmail(
+        UserIdTestData.Primary,
+        ContactIdTestData.contactEmailId1,
+        "name (contact email 1)",
+        "email (contact email 1)",
+        0,
+        0,
+        ContactIdTestData.contactId1,
+        "canonical email (contact email 1)",
+        emptyList(),
+        false
     )
 
-    val John = Contact(
-        contactEmails = emptyList(),
-        id = ContactIdSample.John,
-        name = "John",
-        userId = UserIdTestData.Primary
+    val contactEmail2 = ContactEmail(
+        UserIdTestData.Primary,
+        ContactIdTestData.contactEmailId2,
+        "name (contact email 2)",
+        "email (contact email 2)",
+        0,
+        1,
+        ContactIdTestData.contactId1,
+        "canonical email (contact email 2)",
+        emptyList(),
+        false
     )
 
-    val Mario = Contact(
-        contactEmails = ContactEmailSample.contactEmails,
-        id = ContactIdSample.Mario,
-        name = "Mario",
-        userId = UserIdTestData.Primary
+    val contactEmails = listOf(
+        contactEmail1,
+        contactEmail2
     )
 }

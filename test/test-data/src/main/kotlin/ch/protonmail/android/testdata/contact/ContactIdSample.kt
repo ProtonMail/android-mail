@@ -25,4 +25,6 @@ object ContactIdSample {
     val Doe = ContactId("Doe")
 
     val John = ContactId("John")
+
+    val Mario = ContactId("Mario")
 }
