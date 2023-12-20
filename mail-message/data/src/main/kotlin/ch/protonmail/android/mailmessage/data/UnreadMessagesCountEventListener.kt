@@ -21,6 +21,7 @@ package ch.protonmail.android.mailmessage.data
 import java.util.UUID
 import ch.protonmail.android.mailmessage.data.local.MessageDatabase
 import ch.protonmail.android.mailmessage.data.local.UnreadMessagesCountLocalDataSource
+import ch.protonmail.android.mailmessage.data.remote.UnreadMessagesCountRemoteDataSource
 import ch.protonmail.android.mailmessage.data.remote.resource.UnreadMessageCountResource
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -29,6 +30,7 @@ import me.proton.core.eventmanager.domain.EventManagerConfig
 import me.proton.core.eventmanager.domain.entity.Action
 import me.proton.core.eventmanager.domain.entity.Event
 import me.proton.core.eventmanager.domain.entity.EventsResponse
+import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.util.kotlin.deserialize
 import timber.log.Timber
 import javax.inject.Inject
@@ -37,7 +39,8 @@ import javax.inject.Singleton
 @Singleton
 open class UnreadMessagesCountEventListener @Inject constructor(
     private val db: MessageDatabase,
-    private val localDataSource: UnreadMessagesCountLocalDataSource
+    private val localDataSource: UnreadMessagesCountLocalDataSource,
+    private val remoteDataSource: UnreadMessagesCountRemoteDataSource
 ) : EventListener<String, UnreadMessageCountResource>() {
 
     override val type = Type.Core
@@ -68,9 +71,14 @@ open class UnreadMessagesCountEventListener @Inject constructor(
         localDataSource.saveMessageCounters(entities.map { it.toUnreadCountMessagesEntity(config.userId) })
     }
 
-    override suspend fun onDelete(config: EventManagerConfig, keys: List<String>) { }
+    override suspend fun onDelete(config: EventManagerConfig, keys: List<String>) {
+        localDataSource.delete(config.userId, keys.map { LabelId(it) })
+    }
 
-    override suspend fun onResetAll(config: EventManagerConfig) { }
+    override suspend fun onResetAll(config: EventManagerConfig) {
+        localDataSource.deleteAll(config.userId)
+        remoteDataSource.getMessageCounters(config.userId)
+    }
 }
 
 @Serializable

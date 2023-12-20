@@ -21,6 +21,7 @@ package ch.protonmail.android.mailconversation.data.local
 import ch.protonmail.android.mailconversation.data.local.entity.UnreadConversationsCountEntity
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.LabelId
 import javax.inject.Inject
 
 class UnreadConversationsCountLocalDataSourceImpl @Inject constructor(
@@ -34,5 +35,13 @@ class UnreadConversationsCountLocalDataSourceImpl @Inject constructor(
 
     override suspend fun saveConversationCounters(counters: List<UnreadConversationsCountEntity>) {
         unreadConversationsCountDao.insertOrUpdate(*counters.toTypedArray())
+    }
+
+    override suspend fun delete(userId: UserId, labelIds: List<LabelId>) {
+        unreadConversationsCountDao.delete(userId, labelIds.map { it.id })
+    }
+
+    override suspend fun deleteAll(userId: UserId) {
+        unreadConversationsCountDao.deleteAll(userId)
     }
 }

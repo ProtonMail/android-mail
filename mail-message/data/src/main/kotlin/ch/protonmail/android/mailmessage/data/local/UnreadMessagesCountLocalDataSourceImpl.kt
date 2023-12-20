@@ -21,6 +21,7 @@ package ch.protonmail.android.mailmessage.data.local
 import ch.protonmail.android.mailmessage.data.local.entity.UnreadMessagesCountEntity
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.LabelId
 import javax.inject.Inject
 
 class UnreadMessagesCountLocalDataSourceImpl @Inject constructor(
@@ -34,5 +35,13 @@ class UnreadMessagesCountLocalDataSourceImpl @Inject constructor(
 
     override suspend fun saveMessageCounters(counters: List<UnreadMessagesCountEntity>) {
         unreadMessagesCountDao.insertOrUpdate(*counters.toTypedArray())
+    }
+
+    override suspend fun delete(userId: UserId, labelIds: List<LabelId>) {
+        unreadMessagesCountDao.delete(userId, labelIds.map { it.id })
+    }
+
+    override suspend fun deleteAll(userId: UserId) {
+        unreadMessagesCountDao.deleteAll(userId)
     }
 }

@@ -28,6 +28,12 @@ import me.proton.core.domain.entity.UserId
 @Dao
 abstract class UnreadConversationsCountDao : BaseDao<UnreadConversationsCountEntity>() {
 
+    @Query("DELETE FROM UnreadConversationsCountEntity WHERE userId = :userId AND labelId IN (:labelIds)")
+    abstract suspend fun delete(userId: UserId, labelIds: List<String>)
+
+    @Query("DELETE FROM UnreadConversationsCountEntity WHERE userId = :userId")
+    abstract suspend fun deleteAll(userId: UserId)
+
     @Query("SELECT * FROM UnreadConversationsCountEntity WHERE userId = :userId")
     abstract fun observeConversationsCounts(userId: UserId): Flow<List<UnreadConversationsCountEntity>>
 

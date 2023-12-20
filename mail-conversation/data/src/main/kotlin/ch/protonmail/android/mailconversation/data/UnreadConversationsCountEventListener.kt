@@ -21,6 +21,7 @@ package ch.protonmail.android.mailconversation.data
 import java.util.UUID
 import ch.protonmail.android.mailconversation.data.local.ConversationDatabase
 import ch.protonmail.android.mailconversation.data.local.UnreadConversationsCountLocalDataSource
+import ch.protonmail.android.mailconversation.data.remote.UnreadConversationsCountRemoteDataSource
 import ch.protonmail.android.mailconversation.data.remote.resource.UnreadConversationCountResource
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -29,6 +30,7 @@ import me.proton.core.eventmanager.domain.EventManagerConfig
 import me.proton.core.eventmanager.domain.entity.Action
 import me.proton.core.eventmanager.domain.entity.Event
 import me.proton.core.eventmanager.domain.entity.EventsResponse
+import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.util.kotlin.deserialize
 import timber.log.Timber
 import javax.inject.Inject
@@ -37,7 +39,8 @@ import javax.inject.Singleton
 @Singleton
 open class UnreadConversationsCountEventListener @Inject constructor(
     private val db: ConversationDatabase,
-    private val localDataSource: UnreadConversationsCountLocalDataSource
+    private val localDataSource: UnreadConversationsCountLocalDataSource,
+    private val remoteDataSource: UnreadConversationsCountRemoteDataSource
 ) : EventListener<String, UnreadConversationCountResource>() {
 
     override val type = Type.Core
@@ -68,9 +71,14 @@ open class UnreadConversationsCountEventListener @Inject constructor(
         localDataSource.saveConversationCounters(entities.map { it.toUnreadCountConversationsEntity(config.userId) })
     }
 
-    override suspend fun onDelete(config: EventManagerConfig, keys: List<String>) { }
+    override suspend fun onDelete(config: EventManagerConfig, keys: List<String>) {
+        localDataSource.delete(config.userId, keys.map { LabelId(it) })
+    }
 
-    override suspend fun onResetAll(config: EventManagerConfig) { }
+    override suspend fun onResetAll(config: EventManagerConfig) {
+        localDataSource.deleteAll(config.userId)
+        remoteDataSource.getConversationCounters(config.userId)
+    }
 }
 
 @Serializable

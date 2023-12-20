@@ -28,6 +28,12 @@ import me.proton.core.domain.entity.UserId
 @Dao
 abstract class UnreadMessagesCountDao : BaseDao<UnreadMessagesCountEntity>() {
 
+    @Query("DELETE FROM UnreadMessagesCountEntity WHERE userId = :userId AND labelId IN (:labelIds)")
+    abstract suspend fun delete(userId: UserId, labelIds: List<String>)
+
+    @Query("DELETE FROM UnreadMessagesCountEntity WHERE userId = :userId")
+    abstract suspend fun deleteAll(userId: UserId)
+
     @Query("SELECT * FROM UnreadMessagesCountEntity WHERE userId = :userId")
     abstract fun observeMessageCounts(userId: UserId): Flow<List<UnreadMessagesCountEntity>>
 
