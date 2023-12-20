@@ -33,7 +33,6 @@ import ch.protonmail.android.maillabel.domain.extension.isSpam
 import ch.protonmail.android.maillabel.domain.extension.isTrash
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
-import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSource
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import com.dropbox.android.external.store4.Fetcher
 import com.dropbox.android.external.store4.SourceOfTruth
@@ -59,8 +58,7 @@ class ConversationRepositoryImpl @Inject constructor(
     private val conversationLocalDataSource: ConversationLocalDataSource,
     private val conversationRemoteDataSource: ConversationRemoteDataSource,
     coroutineScopeProvider: CoroutineScopeProvider,
-    private val messageLocalDataSource: MessageLocalDataSource,
-    private val messageRemoteDataSource: MessageRemoteDataSource
+    private val messageLocalDataSource: MessageLocalDataSource
 ) : ConversationRepository {
 
     private data class ConversationKey(val userId: UserId, val conversationId: ConversationId)
@@ -284,14 +282,8 @@ class ConversationRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun deleteConversations(
-        userId: UserId,
-        labelId: LabelId
-    ): Either<DataError, Unit> {
-        return conversationLocalDataSource.deleteConversationsWithLabel(userId, labelId).onRight {
-            messageLocalDataSource.deleteMessagesWithLabel(userId, labelId)
-            messageRemoteDataSource.clearLabel(userId, labelId)
-        }
+    override suspend fun deleteConversations(userId: UserId, labelId: LabelId) {
+        conversationRemoteDataSource.clearLabel(userId, labelId)
     }
 
     override fun observeClearLabelOperation(userId: UserId, labelId: LabelId): Flow<Boolean> =

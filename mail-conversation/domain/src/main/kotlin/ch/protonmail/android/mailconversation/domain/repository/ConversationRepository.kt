@@ -168,7 +168,7 @@ interface ConversationRepository {
         contextLabelId: LabelId
     ): Either<DataError, Unit>
 
-    suspend fun deleteConversations(userId: UserId, labelId: LabelId): Either<DataError, Unit>
+    suspend fun deleteConversations(userId: UserId, labelId: LabelId)
 
     fun observeClearLabelOperation(userId: UserId, labelId: LabelId): Flow<Boolean>
 }

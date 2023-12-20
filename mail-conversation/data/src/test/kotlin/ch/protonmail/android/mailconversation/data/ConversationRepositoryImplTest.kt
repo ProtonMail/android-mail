@@ -38,7 +38,6 @@ import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
-import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSource
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailpagination.domain.model.PageFilter
 import ch.protonmail.android.mailpagination.domain.model.PageKey
@@ -92,14 +91,12 @@ class ConversationRepositoryImplTest {
             MessageTestData.unStarredMessagesByConversation
         )
     }
-    private val remoteDataSource: MessageRemoteDataSource = mockk()
 
     private val conversationRepository = ConversationRepositoryImpl(
         conversationLocalDataSource = conversationLocalDataSource,
         conversationRemoteDataSource = conversationRemoteDataSource,
         coroutineScopeProvider = coroutineScopeProvider,
-        messageLocalDataSource = messageLocalDataSource,
-        messageRemoteDataSource = remoteDataSource
+        messageLocalDataSource = messageLocalDataSource
     )
 
     @Test
@@ -954,40 +951,18 @@ class ConversationRepositoryImplTest {
     }
 
     @Test
-    fun `should return Unit if deletion conversations with label is successful`() = runTest {
+    fun `delete conversation with labels should call remote data source`() = runTest {
         // Given
         val expectedLabel = SystemLabelId.Trash.labelId
-        coEvery { conversationLocalDataSource.deleteConversationsWithLabel(userId, expectedLabel) } returns Unit.right()
-        coEvery { messageLocalDataSource.deleteMessagesWithLabel(userId, expectedLabel) } returns Unit.right()
-        coJustRun { remoteDataSource.clearLabel(userId, expectedLabel) }
+        coJustRun { conversationRemoteDataSource.clearLabel(userId, expectedLabel) }
 
         // When
-        val actual = conversationRepository.deleteConversations(userId, expectedLabel)
+        conversationRepository.deleteConversations(userId, expectedLabel)
 
         // Then
-        assertEquals(Unit.right(), actual)
         coVerify {
-            messageLocalDataSource.deleteMessagesWithLabel(userId, expectedLabel)
-            remoteDataSource.clearLabel(userId, expectedLabel)
-        }
-    }
-
-    @Test
-    fun `should return data error local if deletion of conversations with label failed`() = runTest {
-        // Given
-        val expectedLabel = SystemLabelId.Trash.labelId
-        val expected = DataError.Local.Unknown.left()
-        coEvery { conversationLocalDataSource.deleteConversationsWithLabel(userId, expectedLabel) } returns expected
-
-        // When
-        val actual = conversationRepository.deleteConversations(userId, expectedLabel)
-
-        // Then
-        assertEquals(expected, actual)
-        coVerifyOrder {
-            conversationLocalDataSource.deleteConversationsWithLabel(userId, expectedLabel)
+            conversationRemoteDataSource.clearLabel(userId, expectedLabel)
             messageLocalDataSource wasNot Called
-            remoteDataSource wasNot Called
         }
     }
 
