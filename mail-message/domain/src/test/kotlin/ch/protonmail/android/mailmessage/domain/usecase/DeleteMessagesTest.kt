@@ -25,6 +25,7 @@ import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import io.mockk.coEvery
+import io.mockk.coJustRun
 import io.mockk.coVerify
 import io.mockk.coVerifySequence
 import io.mockk.mockk
@@ -75,7 +76,7 @@ class DeleteMessagesTest {
     @Test
     fun `delete messages with label calls repository with given parameters`() = runTest {
         // Given
-        coEvery { messageRepository.deleteMessages(userId, currentLabel) } returns Unit.right()
+        coJustRun { messageRepository.deleteMessages(userId, currentLabel) }
 
         // When
         deleteMessages(userId, currentLabel)

@@ -287,10 +287,8 @@ class MessageRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun deleteMessages(userId: UserId, labelId: LabelId): Either<DataError, Unit> {
-        return localDataSource.deleteMessagesWithLabel(userId, labelId).onRight {
-            remoteDataSource.clearLabel(userId, labelId)
-        }
+    override suspend fun deleteMessages(userId: UserId, labelId: LabelId) {
+        remoteDataSource.clearLabel(userId, labelId)
     }
 
     override fun observeClearLabelOperation(userId: UserId, labelId: LabelId) =
