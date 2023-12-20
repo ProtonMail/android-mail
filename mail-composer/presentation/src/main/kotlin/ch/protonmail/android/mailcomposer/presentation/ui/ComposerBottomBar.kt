@@ -37,7 +37,7 @@ import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 
 @Composable
-fun ComposerBottomBar(modifier: Modifier = Modifier) {
+fun ComposerBottomBar(onSetMessagePasswordClick: () -> Unit, modifier: Modifier = Modifier) {
     Column(modifier = modifier.fillMaxWidth()) {
         Divider(color = ProtonTheme.colors.separatorNorm, thickness = MailDimens.SeparatorHeight)
         Row(
@@ -48,7 +48,7 @@ fun ComposerBottomBar(modifier: Modifier = Modifier) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(
-                onClick = {}
+                onClick = onSetMessagePasswordClick
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_proton_lock),

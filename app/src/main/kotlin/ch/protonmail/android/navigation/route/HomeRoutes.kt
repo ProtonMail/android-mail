@@ -28,6 +28,7 @@ import ch.protonmail.android.feature.account.RemoveAccountDialog
 import ch.protonmail.android.feature.account.SignOutAccountDialog
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen
+import ch.protonmail.android.mailcomposer.presentation.ui.SetMessagePasswordScreen
 import ch.protonmail.android.mailcontact.presentation.contactlist.ContactListScreen
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetail
@@ -161,6 +162,7 @@ internal fun NavGraphBuilder.addComposer(
 ) {
     val actions = ComposerScreen.Actions(
         onCloseComposerClick = navController::popBackStack,
+        onSetMessagePasswordClick = { navController.navigate(Destination.Screen.SetMessagePassword.route) },
         showDraftSavedSnackbar = showDraftSavedSnackbar,
         showMessageSendingSnackbar = showMessageSendingSnackbar,
         showMessageSendingOfflineSnackbar = showMessageSendingOfflineSnackbar
@@ -176,6 +178,16 @@ internal fun NavGraphBuilder.addSignOutAccountDialog(navController: NavHostContr
             userId = it.get<String>(SignOutAccountDialog.USER_ID_KEY)?.takeIfNotBlank()?.let(::UserId),
             onSignedOut = { navController.popBackStack() },
             onCancelled = { navController.popBackStack() }
+        )
+    }
+}
+
+internal fun NavGraphBuilder.addSetMessagePassword(navController: NavHostController) {
+    composable(route = Destination.Screen.SetMessagePassword.route) {
+        SetMessagePasswordScreen(
+            onBackClick = {
+                navController.popBackStack()
+            }
         )
     }
 }

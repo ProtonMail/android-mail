@@ -131,7 +131,7 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
             },
             bottomBar = {
                 if (state.isPasswordActionVisible) {
-                    ComposerBottomBar()
+                    ComposerBottomBar(onSetMessagePasswordClick = actions.onSetMessagePasswordClick)
                 }
             },
             snackbarHost = {
@@ -311,6 +311,7 @@ object ComposerScreen {
 
     data class Actions(
         val onCloseComposerClick: () -> Unit,
+        val onSetMessagePasswordClick: () -> Unit,
         val showDraftSavedSnackbar: () -> Unit,
         val showMessageSendingSnackbar: () -> Unit,
         val showMessageSendingOfflineSnackbar: () -> Unit
@@ -319,7 +320,9 @@ object ComposerScreen {
         companion object {
 
             val Empty = Actions(
+
                 onCloseComposerClick = {},
+                onSetMessagePasswordClick = {},
                 showDraftSavedSnackbar = {},
                 showMessageSendingSnackbar = {},
                 showMessageSendingOfflineSnackbar = {}

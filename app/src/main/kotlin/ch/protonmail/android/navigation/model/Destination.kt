@@ -61,6 +61,7 @@ sealed class Destination(val route: String) {
         }
 
         object Composer : Destination("composer")
+        object SetMessagePassword : Destination("composer/setMessagePassword")
 
         object EditDraftComposer : Destination("composer/${DraftMessageIdKey.wrap()}") {
 

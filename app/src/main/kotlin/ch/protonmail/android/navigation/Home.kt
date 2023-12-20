@@ -71,6 +71,7 @@ import ch.protonmail.android.navigation.route.addNotificationsSettings
 import ch.protonmail.android.navigation.route.addParentFolderList
 import ch.protonmail.android.navigation.route.addPrivacySettings
 import ch.protonmail.android.navigation.route.addRemoveAccountDialog
+import ch.protonmail.android.navigation.route.addSetMessagePassword
 import ch.protonmail.android.navigation.route.addSettings
 import ch.protonmail.android.navigation.route.addSignOutAccountDialog
 import ch.protonmail.android.navigation.route.addSwipeActionsSettings
@@ -278,6 +279,7 @@ fun Home(
                     showMessageSendingSnackbar = { showMessageSendingSnackbar() },
                     showMessageSendingOfflineSnackbar = { showMessageSendingOfflineSnackbar() }
                 )
+                addSetMessagePassword(navController)
                 addSignOutAccountDialog(navController)
                 addRemoveAccountDialog(navController)
                 addSettings(navController)
