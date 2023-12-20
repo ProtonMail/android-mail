@@ -45,6 +45,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalView
@@ -62,7 +63,9 @@ import ch.protonmail.android.mailcommon.presentation.compose.dismissKeyboard
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcontact.presentation.R
+import ch.protonmail.android.mailcontact.presentation.model.Avatar
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactDetailsPreviewData.contactDetailsSampleData
+import ch.protonmail.android.mailcontact.presentation.ui.ImageContactAvatar
 import ch.protonmail.android.mailcontact.presentation.ui.InitialsContactAvatar
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonSnackbarHost
@@ -149,18 +152,30 @@ fun ContactDetailsContent(
     ) {
         item {
             Column(modifier.fillMaxWidth()) {
-                InitialsContactAvatar(
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
-                        .padding(top = ProtonDimens.DefaultSpacing),
-                    initials = state.contact.initials
-                )
+                when (state.contact.avatar) {
+                    is Avatar.Initials -> {
+                        InitialsContactAvatar(
+                            modifier = Modifier
+                                .align(Alignment.CenterHorizontally)
+                                .padding(top = ProtonDimens.DefaultSpacing),
+                            initials = state.contact.avatar.value
+                        )
+                    }
+                    is Avatar.Photo -> {
+                        ImageContactAvatar(
+                            modifier = Modifier
+                                .align(Alignment.CenterHorizontally)
+                                .padding(top = ProtonDimens.DefaultSpacing),
+                            imageBitmap = state.contact.avatar.bitmap.asImageBitmap()
+                        )
+                    }
+                }
                 Text(
                     modifier = Modifier
                         .padding(top = ProtonDimens.MediumSpacing)
                         .align(Alignment.CenterHorizontally),
                     style = ProtonTheme.typography.headlineNorm,
-                    text = state.contact.name
+                    text = state.contact.displayName
                 )
                 Row(
                     modifier = Modifier
@@ -184,17 +199,31 @@ fun ContactDetailsContent(
                 }
             }
         }
-        items(state.contact.contactDetailsItemList) { contactDetailsItem ->
+        items(state.contact.contactMainDetailsItemList) { contactDetailsItem ->
             if (contactDetailsItem.displayIcon) {
                 ContactDetailsItemWithIcon(
                     iconResId = contactDetailsItem.iconResId,
                     caption = contactDetailsItem.header.string(),
-                    value = contactDetailsItem.value
+                    value = contactDetailsItem.value.string()
                 )
             } else {
                 ContactDetailsItem(
                     caption = contactDetailsItem.header.string(),
-                    value = contactDetailsItem.value
+                    value = contactDetailsItem.value.string()
+                )
+            }
+        }
+        items(state.contact.contactOtherDetailsItemList) { contactDetailsItem ->
+            if (contactDetailsItem.displayIcon) {
+                ContactDetailsItemWithIcon(
+                    iconResId = contactDetailsItem.iconResId,
+                    caption = contactDetailsItem.header.string(),
+                    value = contactDetailsItem.value.string()
+                )
+            } else {
+                ContactDetailsItem(
+                    caption = contactDetailsItem.header.string(),
+                    value = contactDetailsItem.value.string()
                 )
             }
         }

@@ -22,7 +22,6 @@ import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
@@ -41,28 +40,6 @@ import me.proton.core.compose.theme.subheadlineUnspecified
 
 @Composable
 fun InitialsContactAvatar(modifier: Modifier = Modifier, initials: String) {
-    ContactAvatarBox(modifier) {
-        Text(
-            textAlign = TextAlign.Center,
-            style = ProtonTheme.typography.subheadlineUnspecified,
-            color = ProtonTheme.colors.textHint,
-            text = initials
-        )
-    }
-}
-
-@Composable
-fun ImageContactAvatar(modifier: Modifier = Modifier, imageBitmap: ImageBitmap) {
-    ContactAvatarBox(modifier) {
-        Image(
-            bitmap = imageBitmap,
-            contentDescription = stringResource(id = R.string.contact_avatar_image_content_description)
-        )
-    }
-}
-
-@Composable
-private fun ContactAvatarBox(modifier: Modifier = Modifier, content: @Composable BoxScope.() -> Unit) {
     Box(
         modifier = modifier
             .sizeIn(
@@ -76,8 +53,34 @@ private fun ContactAvatarBox(modifier: Modifier = Modifier, content: @Composable
             .clip(
                 shape = RoundedCornerShape(MailDimens.ContactAvatarCornerRadius)
             ),
-        contentAlignment = Alignment.Center,
-        content = content
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            textAlign = TextAlign.Center,
+            style = ProtonTheme.typography.subheadlineUnspecified,
+            color = ProtonTheme.colors.textHint,
+            text = initials
+        )
+    }
+}
+
+@Composable
+fun ImageContactAvatar(modifier: Modifier = Modifier, imageBitmap: ImageBitmap) {
+    Image(
+        modifier = modifier
+            .sizeIn(
+                minWidth = MailDimens.ContactAvatarSize,
+                minHeight = MailDimens.ContactAvatarSize
+            )
+            .background(
+                color = ProtonTheme.colors.backgroundSecondary,
+                shape = RoundedCornerShape(MailDimens.ContactAvatarCornerRadius)
+            )
+            .clip(
+                shape = RoundedCornerShape(MailDimens.ContactAvatarCornerRadius)
+            ),
+        bitmap = imageBitmap,
+        contentDescription = stringResource(id = R.string.contact_avatar_image_content_description)
     )
 }
 

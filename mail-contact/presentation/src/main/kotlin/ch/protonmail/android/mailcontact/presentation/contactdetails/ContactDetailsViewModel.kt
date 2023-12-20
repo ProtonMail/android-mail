@@ -23,6 +23,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailcontact.domain.usecase.DecryptContact
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContact
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -44,6 +45,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ContactDetailsViewModel @Inject constructor(
+    private val decryptContact: DecryptContact,
     private val observeContact: ObserveContact,
     private val reducer: ContactDetailsReducer,
     observePrimaryUserId: ObservePrimaryUserId,
@@ -85,10 +87,11 @@ class ContactDetailsViewModel @Inject constructor(
 
     private fun flowContactDetailsEvent(userId: UserId, contactId: ContactId): Flow<ContactDetailsEvent> {
         return observeContact(userId, contactId).map { contact ->
-            val contactDetailsUiModel = contact.getOrElse {
+            val contactWithCards = contact.getOrElse {
                 Timber.e("Error while observing contact")
                 return@map ContactDetailsEvent.LoadContactError
-            }.toContactDetailsUiModel()
+            }
+            val contactDetailsUiModel = decryptContact(userId, contactWithCards).toContactDetailsUiModel()
             ContactDetailsEvent.ContactLoaded(
                 contactDetailsUiModel
             )

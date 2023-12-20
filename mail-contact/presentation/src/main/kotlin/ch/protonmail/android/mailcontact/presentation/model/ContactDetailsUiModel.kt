@@ -18,15 +18,19 @@
 
 package ch.protonmail.android.mailcontact.presentation.model
 
+import android.graphics.Bitmap
 import androidx.compose.ui.graphics.Color
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import me.proton.core.contact.domain.entity.ContactId
 
 data class ContactDetailsUiModel(
     val id: ContactId,
-    val name: String = "",
-    val initials: String = "",
-    val contactDetailsItemList: List<ContactDetailsItem> = emptyList(),
+    val displayName: String,
+    val firstName: String = "",
+    val lastName: String = "",
+    val avatar: Avatar,
+    val contactMainDetailsItemList: List<ContactDetailsItem> = emptyList(),
+    val contactOtherDetailsItemList: List<ContactDetailsItem> = emptyList(),
     val contactGroups: ContactDetailsGroupsItem
 )
 
@@ -34,7 +38,7 @@ data class ContactDetailsItem(
     val displayIcon: Boolean,
     val iconResId: Int,
     val header: TextUiModel,
-    val value: String
+    val value: TextUiModel
 )
 
 data class ContactDetailsGroupsItem(
@@ -46,3 +50,13 @@ data class ContactGroupLabel(
     val name: String,
     val color: Color
 )
+
+sealed interface Avatar {
+    data class Initials(
+        val value: String
+    ) : Avatar
+
+    data class Photo(
+        val bitmap: Bitmap
+    ) : Avatar
+}

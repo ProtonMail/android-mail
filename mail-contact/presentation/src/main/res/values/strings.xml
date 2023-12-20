@@ -48,4 +48,19 @@
     <string name="contact_type_fax">Fax</string>
     <string name="contact_type_pager">Pager</string>
     <string name="contact_type_address">Address</string>
+    <string name="contact_details_address">%1$s\n%2$s, %3$s\n%4$s, %5$s</string>
+    <string name="contact_property_birthday">Birthday</string>
+    <string name="contact_property_note">Note</string>
+    <string name="contact_property_photo">Photo</string>
+    <string name="contact_property_logo">Logo</string>
+    <string name="contact_property_geo">Geo</string>
+    <string name="contact_property_organization">Organization</string>
+    <string name="contact_property_anniversary">Anniversary</string>
+    <string name="contact_property_title">Title</string>
+    <string name="contact_property_role">Role</string>
+    <string name="contact_property_member">Member</string>
+    <string name="contact_property_url">URL</string>
+    <string name="contact_property_gender">Gender</string>
+    <string name="contact_property_language">Language</string>
+    <string name="contact_property_time_zone">Time zone</string>
 </resources>
