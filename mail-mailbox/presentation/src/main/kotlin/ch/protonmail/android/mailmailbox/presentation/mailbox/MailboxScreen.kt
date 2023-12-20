@@ -692,6 +692,7 @@ private fun MailboxEmpty(
         }
     Column(
         modifier = modifier
+            .testTag(MailboxScreenTestTags.MailboxEmptyRoot)
             .fillMaxSize()
             .scrollable(
                 rememberScrollableState(consumeScrollDelta = { 0f }),
@@ -700,15 +701,21 @@ private fun MailboxEmpty(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(painter = painterResource(id = illustration), contentDescription = NO_CONTENT_DESCRIPTION)
+        Image(
+            modifier = Modifier.testTag(MailboxScreenTestTags.MailboxEmptyImage),
+            painter = painterResource(id = illustration),
+            contentDescription = NO_CONTENT_DESCRIPTION
+        )
         Spacer(modifier = Modifier.height(ProtonDimens.LargeSpacing))
         Text(
+            modifier = Modifier.testTag(MailboxScreenTestTags.MailboxEmptyTitle),
             text = stringResource(id = title),
             style = ProtonTheme.typography.headlineSmallNorm,
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.height(ProtonDimens.ExtraSmallSpacing))
         Text(
+            modifier = Modifier.testTag(MailboxScreenTestTags.MailboxEmptySubtitle),
             text = stringResource(id = description),
             style = ProtonTheme.typography.defaultSmallWeak,
             textAlign = TextAlign.Center
@@ -838,5 +845,9 @@ object MailboxScreenTestTags {
     const val MailboxAppendError = "MailboxAppendError"
     const val MailboxAppendErrorText = "MailboxAppendErrorText"
     const val MailboxAppendErrorButton = "MailboxAppendErrorButton"
+    const val MailboxEmptyRoot = "MailboxEmptyRootItem"
+    const val MailboxEmptyImage = "MailboxEmptyImage"
+    const val MailboxEmptyTitle = "MailboxEmptyTitle"
+    const val MailboxEmptySubtitle = "MailboxEmptySubtitle"
     const val Root = "MailboxScreen"
 }

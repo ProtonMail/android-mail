@@ -119,11 +119,7 @@ internal interface MailboxPullToRefreshErrorTests {
         mailboxRobot {
             fullScreenErrorSection {
                 verify { isShown() }
-            }
-
-            emptyListSection { pullDownToRefresh() }
-
-            fullScreenErrorSection {
+                pullDownToRefresh()
                 verify { isShown() }
             }
         }

@@ -18,8 +18,6 @@
 
 package ch.protonmail.android.uitest.robot.mailbox.section
 
-import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performTouchInput
@@ -31,14 +29,14 @@ import ch.protonmail.android.uitest.robot.ComposeSectionRobot
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
 import ch.protonmail.android.uitest.util.awaitDisplayed
 import ch.protonmail.android.uitest.util.child
-import ch.protonmail.android.uitest.util.getTestString
-import ch.protonmail.android.test.R as testR
 
 @AttachTo(targets = [MailboxRobot::class], identifier = "emptyListSection")
 internal class MailboxEmptyListSection : ComposeSectionRobot(), RefreshableSection {
 
-    private val emptyList = composeTestRule.onNodeWithTag(MailboxScreenTestTags.MailboxError)
-    private val errorMessage = emptyList.child { hasTestTag(MailboxScreenTestTags.MailboxErrorMessage) }
+    private val emptyList = composeTestRule.onNodeWithTag(MailboxScreenTestTags.MailboxEmptyRoot)
+    private val image = emptyList.child { hasTestTag(MailboxScreenTestTags.MailboxEmptyImage) }
+    private val title = emptyList.child { hasTestTag(MailboxScreenTestTags.MailboxEmptyTitle) }
+    private val subtitle = emptyList.child { hasTestTag(MailboxScreenTestTags.MailboxEmptySubtitle) }
 
     override fun pullDownToRefresh() {
         emptyList.performTouchInput { swipeDown() }
@@ -48,11 +46,9 @@ internal class MailboxEmptyListSection : ComposeSectionRobot(), RefreshableSecti
     inner class Verify {
 
         fun isShown() {
-            emptyList
-                .awaitDisplayed()
-                .assertIsDisplayed()
-
-            errorMessage.assertTextEquals(getTestString(testR.string.test_mailbox_is_empty_message))
+            image.awaitDisplayed()
+            title.awaitDisplayed()
+            subtitle.awaitDisplayed()
         }
     }
 }

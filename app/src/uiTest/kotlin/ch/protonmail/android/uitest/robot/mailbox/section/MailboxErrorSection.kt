@@ -37,10 +37,7 @@ import ch.protonmail.android.test.R as testR
 internal class MailboxErrorSection : ComposeSectionRobot(), RefreshableSection {
 
     private val rootItem = composeTestRule.onNodeWithTag(MailboxScreenTestTags.MailboxError)
-
-    private val errorLabel = rootItem.child {
-        hasTestTag(MailboxScreenTestTags.MailboxErrorMessage)
-    }
+    private val errorLabel = rootItem.child { hasTestTag(MailboxScreenTestTags.MailboxErrorMessage) }
 
     override fun pullDownToRefresh() {
         rootItem.performTouchInput { swipeDown() }
