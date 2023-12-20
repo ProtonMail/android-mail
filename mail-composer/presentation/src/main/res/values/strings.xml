@@ -57,7 +57,7 @@
 
     <string name="set_message_password_title">Encrypt message</string>
     <string name="set_message_password_info_message">Set a password to encrypt this message for non-Proton Mail users.</string>
-    <string name="set_message_password_info_link">Learn more</string>
+    <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Learn more</a></string>
     <string name="set_message_password_label">Message password</string>
     <string name="set_message_password_label_repeat">Repeat password</string>
     <string name="set_message_password_label_hint">Password hint (optional)</string>

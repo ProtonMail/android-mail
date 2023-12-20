@@ -43,6 +43,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
+import ch.protonmail.android.mailcommon.presentation.compose.HyperlinkText
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailcomposer.presentation.ui.SetMessagePasswordScreen.MAX_PASSWORD_LENGTH
 import ch.protonmail.android.mailcomposer.presentation.ui.SetMessagePasswordScreen.MIN_PASSWORD_LENGTH
@@ -170,10 +171,10 @@ fun MessagePasswordInfo(modifier: Modifier = Modifier) {
                 text = stringResource(id = R.string.set_message_password_info_message),
                 style = ProtonTheme.typography.defaultSmallWeak
             )
-            Text(
-                text = stringResource(id = R.string.set_message_password_info_link),
-                style = ProtonTheme.typography.defaultSmallUnspecified,
-                color = ProtonTheme.colors.interactionNorm
+            HyperlinkText(
+                textResource = R.string.set_message_password_info_link,
+                textStyle = ProtonTheme.typography.defaultSmallUnspecified,
+                linkTextColor = ProtonTheme.colors.interactionNorm
             )
         }
     }
