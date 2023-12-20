@@ -169,4 +169,6 @@ interface ConversationRepository {
     ): Either<DataError, Unit>
 
     suspend fun deleteConversations(userId: UserId, labelId: LabelId): Either<DataError, Unit>
+
+    fun observeClearLabelOperation(userId: UserId, labelId: LabelId): Flow<Boolean>
 }

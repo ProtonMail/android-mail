@@ -293,6 +293,9 @@ class MessageRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun observeClearLabelOperation(userId: UserId, labelId: LabelId) =
+        remoteDataSource.observeClearWorkerIsEnqueuedOrRunning(userId, labelId)
+
     private suspend fun moveToTrashOrSpam(
         userId: UserId,
         messageIds: List<MessageId>,

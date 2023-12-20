@@ -1128,4 +1128,19 @@ class MessageRepositoryImplTest {
         coVerify { localDataSource.deleteMessagesWithLabel(userId, expectedLabel) }
         coVerify { remoteDataSource wasNot Called }
     }
+
+    @Test
+    fun `observe clear worker state returns worker state from remote data source`() = runTest {
+        // Given
+        val expected = true
+        val expectedLabel = SystemLabelId.Spam.labelId
+        val expectedFlow = MutableStateFlow(expected)
+        coEvery { remoteDataSource.observeClearWorkerIsEnqueuedOrRunning(userId, expectedLabel)} returns expectedFlow
+
+        // When
+        val actual = messageRepository.observeClearLabelOperation(userId, expectedLabel).test {
+            // Then
+            assertTrue { awaitItem() }
+        }
+    }
 }

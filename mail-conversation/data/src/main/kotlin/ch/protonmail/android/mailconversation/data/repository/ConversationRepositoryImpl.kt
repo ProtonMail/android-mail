@@ -294,6 +294,9 @@ class ConversationRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun observeClearLabelOperation(userId: UserId, labelId: LabelId): Flow<Boolean> =
+        conversationRemoteDataSource.observeClearWorkerIsEnqueuedOrRunning(userId, labelId)
+
     private suspend fun moveToTrashOrSpam(
         userId: UserId,
         conversationIds: List<ConversationId>,
