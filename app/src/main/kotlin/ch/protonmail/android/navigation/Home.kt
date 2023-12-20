@@ -25,6 +25,8 @@ import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarResult
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
@@ -33,6 +35,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import ch.protonmail.android.MainActivity
 import ch.protonmail.android.R
@@ -86,11 +89,14 @@ fun Home(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val navController = rememberNavController().withSentryObservableEffect()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestinationRoute = navBackStackEntry?.destination?.route
+
     val scaffoldState = rememberScaffoldState()
-    val snackbarHostSuccessState = ProtonSnackbarHostState(defaultType = ProtonSnackbarType.SUCCESS)
-    val snackbarHostWarningState = ProtonSnackbarHostState(defaultType = ProtonSnackbarType.WARNING)
-    val snackbarHostNormState = ProtonSnackbarHostState(defaultType = ProtonSnackbarType.NORM)
-    val snackbarHostErrorState = ProtonSnackbarHostState(defaultType = ProtonSnackbarType.ERROR)
+    val snackbarHostSuccessState = remember { ProtonSnackbarHostState(defaultType = ProtonSnackbarType.SUCCESS) }
+    val snackbarHostWarningState = remember { ProtonSnackbarHostState(defaultType = ProtonSnackbarType.WARNING) }
+    val snackbarHostNormState = remember { ProtonSnackbarHostState(defaultType = ProtonSnackbarType.NORM) }
+    val snackbarHostErrorState = remember { ProtonSnackbarHostState(defaultType = ProtonSnackbarType.ERROR) }
     val scope = rememberCoroutineScope()
     val state = rememberAsState(flow = viewModel.state, initial = HomeState.Initial)
 
@@ -197,6 +203,7 @@ fun Home(
                 navigationActions = buildSidebarActions(navController, activityActions, launcherActions)
             )
         },
+        drawerGesturesEnabled = currentDestinationRoute == Screen.Mailbox.route,
         snackbarHost = {
             ProtonSnackbarHost(
                 modifier = Modifier.testTag(CommonTestTags.SnackbarHostSuccess),
