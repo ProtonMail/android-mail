@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcontact.presentation
 
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModel
 import ch.protonmail.android.mailcontact.presentation.model.toContactListItemUiModel
 import ch.protonmail.android.testdata.user.UserIdTestData
@@ -100,20 +101,20 @@ class ContactListItemUiModelMapperTest {
             ContactListItemUiModel.Contact(
                 id = "1",
                 name = "first contact",
-                emails = listOf("firstcontact+alias@protonmail.com"),
+                emailSubtext = TextUiModel("firstcontact+alias@protonmail.com"),
                 avatar = AvatarUiModel.ParticipantInitial("FC")
             ),
             ContactListItemUiModel.Contact(
                 id = "1.1",
                 name = "first contact bis",
-                emails = listOf("firstcontactbis@protonmail.com"),
+                emailSubtext = TextUiModel("firstcontactbis@protonmail.com"),
                 avatar = AvatarUiModel.ParticipantInitial("FB")
             ),
             ContactListItemUiModel.Header("S"),
             ContactListItemUiModel.Contact(
                 id = "2",
                 name = "second contact",
-                emails = listOf("secondcontact@protonmail.com"),
+                emailSubtext = TextUiModel("secondcontact@protonmail.com"),
                 avatar = AvatarUiModel.ParticipantInitial("SC")
             )
         )

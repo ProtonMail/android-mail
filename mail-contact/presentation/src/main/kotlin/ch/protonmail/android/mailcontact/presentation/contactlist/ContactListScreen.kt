@@ -62,6 +62,7 @@ import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.Avatar
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
+import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModel
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactListPreviewData.contactSampleData
@@ -319,7 +320,7 @@ fun ContactListItem(
                 style = ProtonTheme.typography.defaultNorm
             )
             Text(
-                text = contact.emails.first(),
+                text = contact.emailSubtext.string(),
                 style = ProtonTheme.typography.defaultSmallWeak
             )
         }

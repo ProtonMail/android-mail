@@ -19,7 +19,11 @@
 package ch.protonmail.android.mailcontact.presentation.model
 
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcontact.presentation.R
 import me.proton.core.contact.domain.entity.Contact
+import me.proton.core.contact.domain.entity.ContactEmail
+import me.proton.core.util.kotlin.takeIfNotBlank
 
 fun List<Contact>.toContactListItemUiModel(): List<ContactListItemUiModel> {
     val contacts = arrayListOf<ContactListItemUiModel>()
@@ -38,13 +42,36 @@ fun List<Contact>.toContactListItemUiModel(): List<ContactListItemUiModel> {
                 ContactListItemUiModel.Contact(
                     id = contact.id.id,
                     name = contact.name,
-                    emails = contact.contactEmails.sortedBy { it.order }.map { contactEmail -> contactEmail.email },
+                    emailSubtext = getEmailSubtext(contact.contactEmails),
                     avatar = AvatarUiModel.ParticipantInitial(getInitials(contact.name))
                 )
             )
         }
     }
     return contacts
+}
+
+private fun getEmailSubtext(contactEmails: List<ContactEmail>): TextUiModel {
+    return if (contactEmails.isNotEmpty()) {
+        val sortedContactEmails = contactEmails.sortedBy {
+            it.order
+        }.mapNotNull { contactEmail ->
+            contactEmail.email.takeIfNotBlank()
+        }
+        if (sortedContactEmails.isEmpty()) {
+            TextUiModel(R.string.no_contact_email)
+        } else if (sortedContactEmails.size > 1) {
+            TextUiModel(
+                R.string.multiple_contact_emails,
+                sortedContactEmails.first(),
+                sortedContactEmails.size.minus(1)
+            )
+        } else {
+            TextUiModel(sortedContactEmails.first())
+        }
+    } else {
+        TextUiModel(R.string.no_contact_email)
+    }
 }
 
 private fun getInitials(name: String, takeFirstOnly: Boolean? = false): String {

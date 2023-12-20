@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcontact.presentation.previewdata
 
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModel
 
 object ContactListPreviewData {
@@ -30,7 +31,7 @@ object ContactListPreviewData {
     val contactSampleData = ContactListItemUiModel.Contact(
         id = "Id",
         name = "Name",
-        emails = listOf("Email"),
+        emailSubtext = TextUiModel("Email, +2"),
         avatar = AvatarUiModel.ParticipantInitial("JD")
     )
 }
