@@ -18,7 +18,10 @@
 
 package ch.protonmail.android.mailcontact.domain.model
 
+import me.proton.core.contact.domain.entity.ContactId
+
 data class DecryptedContact(
+    val id: ContactId,
     val structuredName: ContactProperty.StructuredName? = null,
     val formattedName: ContactProperty.FormattedName? = null,
     val emails: List<ContactProperty.Email> = emptyList(),

@@ -40,6 +40,7 @@ import ezvcard.property.Timezone
 import ezvcard.property.Title
 import ezvcard.property.Url
 import me.proton.core.contact.domain.decryptContactCard
+import me.proton.core.contact.domain.entity.ContactId
 import me.proton.core.contact.domain.entity.ContactWithCards
 import me.proton.core.contact.domain.entity.DecryptedVCard
 import me.proton.core.crypto.common.context.CryptoContext
@@ -75,13 +76,13 @@ class DecryptContact @Inject constructor(
             }
         }.filterNotNull()
 
-        return extractFromVCards(decryptedCards)
+        return extractFromVCards(contactWithCards.id, decryptedCards)
     }
 
     @Suppress("LongMethod", "ComplexMethod")
-    private fun extractFromVCards(decryptedCards: List<DecryptedVCard>): DecryptedContact {
+    private fun extractFromVCards(contactId: ContactId, decryptedCards: List<DecryptedVCard>): DecryptedContact {
 
-        var decryptedContact = DecryptedContact()
+        var decryptedContact = DecryptedContact(contactId)
 
         decryptedCards.forEach { decryptedVCard ->
             decryptedVCard.card.properties.forEach {

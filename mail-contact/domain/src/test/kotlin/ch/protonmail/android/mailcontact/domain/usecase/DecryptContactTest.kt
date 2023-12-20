@@ -59,6 +59,7 @@ class DecryptContactTest {
         )
 
         val expected = DecryptedContact(
+            id = ContactSample.Mario.id,
             structuredName = ContactProperty.StructuredName(
                 family = "Mario Last Name", given = "Mario First Name"
             ),
