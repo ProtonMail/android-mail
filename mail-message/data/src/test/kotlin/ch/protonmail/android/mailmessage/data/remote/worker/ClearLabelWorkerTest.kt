@@ -10,8 +10,11 @@ import androidx.work.WorkerParameters
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageApi
+import io.mockk.Called
 import io.mockk.coEvery
+import io.mockk.coJustRun
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
@@ -55,6 +58,9 @@ class ClearLabelWorkerTest {
     private val apiManagerFactory = mockk<ApiManagerFactory> {
         every { create(any(), MessageApi::class) } returns TestApiManager(messageApi)
     }
+    private val messageLocalDataSource: MessageLocalDataSource = mockk() {
+        coJustRun { deleteMessagesWithLabel(UserId(userId), LabelId(labelId)) }
+    }
 
     private lateinit var apiProvider: ApiProvider
     private lateinit var deleteMessagesWithLabel: ClearLabelWorker
@@ -62,7 +68,7 @@ class ClearLabelWorkerTest {
     @Before
     fun setUp() {
         apiProvider = ApiProvider(apiManagerFactory, sessionProvider, DefaultDispatcherProvider())
-        deleteMessagesWithLabel = ClearLabelWorker(context, parameters, apiProvider)
+        deleteMessagesWithLabel = ClearLabelWorker(context, parameters, apiProvider, messageLocalDataSource)
     }
 
     @Test
@@ -92,6 +98,7 @@ class ClearLabelWorkerTest {
 
         // Then
         coVerify { messageApi.emptyLabel(labelId) }
+        coVerify { messageLocalDataSource.deleteMessagesWithLabel(UserId(userId), LabelId(labelId)) }
         assertEquals(Result.success(), result)
     }
 
@@ -105,6 +112,10 @@ class ClearLabelWorkerTest {
 
         // Then
         assertEquals(Result.failure(), result)
+        coVerify {
+            messageApi wasNot Called
+            messageLocalDataSource wasNot Called
+        }
     }
 
     @Test
@@ -117,6 +128,10 @@ class ClearLabelWorkerTest {
 
         // Then
         assertEquals(Result.failure(), result)
+        coVerify {
+            messageApi wasNot Called
+            messageLocalDataSource wasNot Called
+        }
     }
 
     @Test
@@ -129,6 +144,10 @@ class ClearLabelWorkerTest {
 
         // Then
         assertEquals(Result.retry(), result)
+        coVerify {
+            messageApi.emptyLabel(labelId)
+            messageLocalDataSource wasNot Called
+        }
     }
 
     @Test
@@ -141,5 +160,9 @@ class ClearLabelWorkerTest {
 
         // Then
         assertEquals(Result.failure(), result)
+        coVerify {
+            messageApi.emptyLabel(labelId)
+            messageLocalDataSource wasNot Called
+        }
     }
 }

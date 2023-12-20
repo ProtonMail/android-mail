@@ -22,6 +22,7 @@ import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageApi
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -36,7 +37,8 @@ import me.proton.core.util.kotlin.takeIfNotBlank
 class ClearLabelWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted workerParameters: WorkerParameters,
-    private val apiProvider: ApiProvider
+    private val apiProvider: ApiProvider,
+    private val messageLocalDataSource: MessageLocalDataSource
 ) : CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {
@@ -50,7 +52,10 @@ class ClearLabelWorker @AssistedInject constructor(
         val result = apiProvider.get<MessageApi>(UserId(userId)).invoke { emptyLabel(labelId) }
 
         return when (result) {
-            is ApiResult.Success -> Result.success()
+            is ApiResult.Success -> {
+                messageLocalDataSource.deleteMessagesWithLabel(userId = UserId(userId), labelId = LabelId(labelId))
+                Result.success()
+            }
             is ApiResult.Error -> {
                 if (result.isRetryable()) Result.retry()
                 else Result.failure()
@@ -67,5 +72,7 @@ class ClearLabelWorker @AssistedInject constructor(
             RawUserIdKey to userId.id,
             RawLabelIdKey to labelId.id
         )
+
+        fun id(userId: UserId, labelId: LabelId): String = "ClearLabelWorker-${userId.id}-${labelId.id}"
     }
 }

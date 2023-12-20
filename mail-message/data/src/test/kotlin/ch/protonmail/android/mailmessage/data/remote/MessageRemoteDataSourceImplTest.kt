@@ -489,13 +489,24 @@ class MessageRemoteDataSourceImplTest {
     fun `enqueues worker to clear label`() {
         // given
         val labelId = SystemLabelId.Trash.labelId
+        every {
+            enqueuer.enqueueUniqueWork<ClearLabelWorker>(
+                userId,
+                ClearLabelWorker.id(userId, labelId),
+                ClearLabelWorker.params(userId, labelId)
+            )
+        } returns mockk()
 
         // when
         messageRemoteDataSource.clearLabel(userId, labelId)
 
         // then
         verify {
-            enqueuer.enqueue<ClearLabelWorker>(userId, ClearLabelWorker.params(userId, labelId))
+            enqueuer.enqueueUniqueWork<ClearLabelWorker>(
+                userId,
+                ClearLabelWorker.id(userId, labelId),
+                ClearLabelWorker.params(userId, labelId)
+            )
         }
     }
 

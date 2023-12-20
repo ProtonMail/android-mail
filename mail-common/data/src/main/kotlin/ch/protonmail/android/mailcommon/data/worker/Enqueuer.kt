@@ -23,8 +23,11 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.ListenableWorker
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.workDataOf
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 import kotlin.time.Duration
@@ -151,6 +154,15 @@ class Enqueuer @Inject constructor(private val workManager: WorkManager) {
     fun cancelAllWork(userId: UserId) {
         workManager.cancelAllWorkByTag(userId.id)
     }
+
+    fun observeWorkStatusIsEnqueuedOrRunning(workerId: String): Flow<Boolean> =
+        workManager.getWorkInfosForUniqueWorkFlow(workerId)
+            .map { workInfos ->
+                workInfos
+                    .firstOrNull()
+                    ?.let { it.state == WorkInfo.State.ENQUEUED || it.state == WorkInfo.State.RUNNING }
+                    ?: false
+            }
 
     @Suppress("LongParameterList")
     fun enqueueUniqueWork(

@@ -36,6 +36,7 @@ import ch.protonmail.android.mailpagination.domain.model.OrderBy
 import ch.protonmail.android.mailpagination.domain.model.OrderDirection
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.mailpagination.domain.model.ReadStatus
+import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.network.data.ApiProvider
@@ -144,8 +145,15 @@ class MessageRemoteDataSourceImpl @Inject constructor(
     }
 
     override fun clearLabel(userId: UserId, labelId: LabelId) {
-        enqueuer.enqueue<ClearLabelWorker>(userId, ClearLabelWorker.params(userId, labelId))
+        enqueuer.enqueueUniqueWork<ClearLabelWorker>(
+            userId = userId,
+            workerId = ClearLabelWorker.id(userId, labelId),
+            params = ClearLabelWorker.params(userId, labelId)
+        )
     }
+
+    override fun observeClearWorkerIsEnqueuedOrRunning(userId: UserId, labelId: LabelId): Flow<Boolean> =
+        enqueuer.observeWorkStatusIsEnqueuedOrRunning(ClearLabelWorker.id(userId, labelId))
 
     companion object {
 

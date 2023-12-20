@@ -18,20 +18,28 @@
 
 package ch.protonmail.android.mailcommon.data.worker
 
+import java.util.UUID
+import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
 import androidx.work.ListenableWorker
 import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkInfo
 import androidx.work.WorkManager
+import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import kotlin.test.Test
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class EnqueuerTest {
 
@@ -153,6 +161,51 @@ class EnqueuerTest {
         coVerify { workManager.cancelAllWorkByTag(userId.id) }
     }
 
+    @Test
+    fun `return true when worker is enqueued`() = runTest {
+        // Given
+        val workId = "ClearLabelWorker-test-message-id"
+        val workInfo = WorkInfo(UUID.randomUUID(), WorkInfo.State.ENQUEUED, emptySet(), Data.EMPTY)
+        val expectedFlow = MutableStateFlow(listOf(workInfo))
+        givenWorkManagerReturns(workId, expectedFlow)
+
+        // When
+        enqueuer.observeWorkStatusIsEnqueuedOrRunning(workId).test {
+            // Then
+            assertTrue { awaitItem() }
+        }
+    }
+
+    @Test
+    fun `return true when worker is running`() = runTest {
+        // Given
+        val workId = "ClearLabelWorker-test-message-id"
+        val workInfo = WorkInfo(UUID.randomUUID(), WorkInfo.State.ENQUEUED, emptySet(), Data.EMPTY)
+        val expectedFlow = MutableStateFlow(listOf(workInfo))
+        givenWorkManagerReturns(workId, expectedFlow)
+
+        // When
+        enqueuer.observeWorkStatusIsEnqueuedOrRunning(workId).test {
+            // Then
+            assertTrue { awaitItem() }
+        }
+    }
+
+    @Test
+    fun `return false when worker is not enqueued and not running`() = runTest {
+        // Given
+        val workId = "ClearLabelWorker-test-message-id"
+        val workInfo = WorkInfo(UUID.randomUUID(), WorkInfo.State.SUCCEEDED, emptySet(), Data.EMPTY)
+        val expectedFlow = MutableStateFlow(listOf(workInfo))
+        givenWorkManagerReturns(workId, expectedFlow)
+
+        // When
+        enqueuer.observeWorkStatusIsEnqueuedOrRunning(workId).test {
+            // Then
+            assertFalse { awaitItem() }
+        }
+    }
+
     private fun givenCancelWorkSucceeds(userId: UserId) {
         every { workManager.cancelAllWorkByTag(userId.id) } returns mockk()
     }
@@ -177,8 +230,13 @@ class EnqueuerTest {
         } returns mockk()
     }
 
+    private fun givenWorkManagerReturns(workId: String, flow: Flow<List<WorkInfo>>) {
+        every { workManager.getWorkInfosForUniqueWorkFlow(workId) } returns flow
+    }
+
     companion object {
         object TestData {
+
             val UserId = UserIdSample.Primary
         }
     }
