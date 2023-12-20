@@ -42,6 +42,7 @@ data class ContactDetailsItem(
 )
 
 data class ContactDetailsGroupsItem(
+    val displayGroupSection: Boolean,
     val iconResId: Int,
     val groupLabelList: List<ContactGroupLabel> = emptyList()
 )

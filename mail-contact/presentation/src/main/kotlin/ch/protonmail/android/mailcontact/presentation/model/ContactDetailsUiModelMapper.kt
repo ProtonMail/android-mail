@@ -28,23 +28,20 @@ import ch.protonmail.android.mailcontact.domain.model.ContactProperty
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
 import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.utils.getInitials
-import me.proton.core.contact.domain.entity.ContactId
 
 fun DecryptedContact.toContactDetailsUiModel(): ContactDetailsUiModel {
-    val displayName = this.formattedName?.value ?: ""
-    val firstName = this.structuredName?.given ?: ""
-    val lastName = this.structuredName?.family ?: ""
     return ContactDetailsUiModel(
         id = this.id,
-        displayName = displayName,
-        firstName = firstName,
-        lastName = lastName,
+        displayName = this.formattedName?.value ?: "",
+        firstName = this.structuredName?.given ?: "",
+        lastName = this.structuredName?.family ?: "",
         avatar = getAvatar(this),
         contactMainDetailsItemList = getContactMainDetailsItemList(this),
         contactOtherDetailsItemList = getContactOtherDetailsItemList(this),
         contactGroups = ContactDetailsGroupsItem(
+            displayGroupSection = false,
             iconResId = R.drawable.ic_proton_users,
-            groupLabelList = emptyList() // TODO
+            groupLabelList = emptyList()
         )
     )
 }

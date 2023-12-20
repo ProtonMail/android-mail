@@ -73,6 +73,7 @@ object ContactDetailsPreviewData {
             )
         ),
         contactGroups = ContactDetailsGroupsItem(
+            displayGroupSection = true,
             iconResId = R.drawable.ic_proton_users,
             groupLabelList = listOf(
                 ContactGroupLabel(

@@ -228,24 +228,26 @@ fun ContactDetailsContent(
             }
         }
         item {
-            Row(
-                modifier = modifier
-                    .padding(ProtonDimens.DefaultSpacing)
-            ) {
-                Icon(
-                    modifier = Modifier.align(Alignment.Top),
-                    painter = painterResource(id = state.contact.contactGroups.iconResId),
-                    tint = ProtonTheme.colors.iconNorm,
-                    contentDescription = stringResource(id = R.string.contact_groups_content_description)
-                )
-                FlowRow(
-                    modifier.padding(start = ProtonDimens.DefaultSpacing)
+            if (state.contact.contactGroups.displayGroupSection) {
+                Row(
+                    modifier = modifier
+                        .padding(ProtonDimens.DefaultSpacing)
                 ) {
-                    for (groupLabel in state.contact.contactGroups.groupLabelList) {
-                        ContactGroupLabel(
-                            value = groupLabel.name,
-                            color = groupLabel.color
-                        )
+                    Icon(
+                        modifier = Modifier.align(Alignment.Top),
+                        painter = painterResource(id = state.contact.contactGroups.iconResId),
+                        tint = ProtonTheme.colors.iconNorm,
+                        contentDescription = stringResource(id = R.string.contact_groups_content_description)
+                    )
+                    FlowRow(
+                        modifier.padding(start = ProtonDimens.DefaultSpacing)
+                    ) {
+                        for (groupLabel in state.contact.contactGroups.groupLabelList) {
+                            ContactGroupLabel(
+                                value = groupLabel.name,
+                                color = groupLabel.color
+                            )
+                        }
                     }
                 }
             }
