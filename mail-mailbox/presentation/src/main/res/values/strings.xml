@@ -110,4 +110,6 @@
     <string name="mailbox_action_archive_message">Message moved to archive</string>
     <string name="mailbox_action_spam_message">Message moved to spam</string>
     <string name="mailbox_search_placeholder_text">Search messages</string>
+    <string name="mailbox_search_no_results_title">No results found</string>
+    <string name="mailbox_search_no_results_explanation">Search date, name, email address, or subject line</string>
 </resources>

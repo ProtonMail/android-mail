@@ -32,6 +32,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -117,6 +118,8 @@ import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultSmallWeak
 import me.proton.core.compose.theme.headlineSmallNorm
+import me.proton.core.compose.theme.defaultStrongNorm
+import me.proton.core.compose.theme.headlineNorm
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import ch.protonmail.android.mailcommon.presentation.R.string as commonString
@@ -519,7 +522,7 @@ private fun MailboxSwipeRefresh(
 
             is MailboxScreenState.NewSearch -> {}
 
-            is MailboxScreenState.SearchNoData -> {}
+            is MailboxScreenState.SearchNoData -> SearchNoResult()
 
             is MailboxScreenState.SearchLoading -> ProtonCenteredProgress(
                 modifier = Modifier.testTag(MailboxScreenTestTags.ListProgress)
@@ -670,6 +673,57 @@ private fun AppendError(
         ) {
             Text(text = stringResource(id = commonString.retry))
         }
+    }
+}
+
+
+@Composable
+private fun SearchNoResult(modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(
+                start = ProtonDimens.LargerSpacing,
+                end = ProtonDimens.LargerSpacing
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        Spacer(
+            modifier = Modifier
+                .fillMaxHeight(fraction = 0.2f)
+                .fillMaxWidth()
+        )
+
+        Image(
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(
+                    bottom = ProtonDimens.SmallSpacing
+                ),
+            painter = painterResource(id = R.drawable.search_no_results),
+            contentDescription = NO_CONTENT_DESCRIPTION
+        )
+        Text(
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(
+                    bottom = ProtonDimens.SmallSpacing
+                ),
+            text = stringResource(id = R.string.mailbox_search_no_results_title),
+            textAlign = TextAlign.Center,
+            style = ProtonTheme.typography.headlineNorm,
+            color = ProtonTheme.colors.textNorm
+        )
+        Text(
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally),
+            text = stringResource(id = R.string.mailbox_search_no_results_explanation),
+            textAlign = TextAlign.Center,
+            style = ProtonTheme.typography.defaultStrongNorm,
+            color = ProtonTheme.colors.textHint
+        )
+
     }
 }
 
@@ -867,6 +921,14 @@ private fun MailboxScreenPreview(@PreviewParameter(MailboxPreviewProvider::class
             mailboxState = mailboxPreview.state,
             actions = MailboxScreen.Actions.Empty
         )
+    }
+}
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
+@Composable
+private fun SearchNoResultPreview() {
+    ProtonTheme {
+        SearchNoResult(modifier = Modifier.fillMaxSize())
     }
 }
 
