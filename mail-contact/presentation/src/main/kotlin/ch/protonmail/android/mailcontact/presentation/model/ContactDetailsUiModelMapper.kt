@@ -35,7 +35,7 @@ fun DecryptedContact.toContactDetailsUiModel(): ContactDetailsUiModel {
     val firstName = this.structuredName?.given ?: ""
     val lastName = this.structuredName?.family ?: ""
     return ContactDetailsUiModel(
-        id = ContactId("TODO"), // TODO Use ID here
+        id = this.id,
         displayName = displayName,
         firstName = firstName,
         lastName = lastName,
