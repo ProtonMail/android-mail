@@ -20,6 +20,7 @@ package ch.protonmail.android.uitest.robot.composer.section.recipients
 
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerTestTags
 import ch.protonmail.android.test.ksp.annotations.AttachTo
 import ch.protonmail.android.uitest.robot.composer.ComposerRobot
@@ -41,10 +42,10 @@ internal class ComposerRecipientsToSection : ComposerRecipientsSection(
     )
 
     fun expandCcAndBccFields() = apply {
-        expandRecipientsButton.performClick()
+        expandRecipientsButton.performScrollTo().performClick()
     }
 
     fun hideCcAndBccFields() = apply {
-        hideRecipientsButton.performClick()
+        hideRecipientsButton.performScrollTo().performClick()
     }
 }

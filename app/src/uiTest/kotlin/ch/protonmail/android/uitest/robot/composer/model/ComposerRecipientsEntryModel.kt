@@ -29,6 +29,7 @@ import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performImeAction
 import androidx.compose.ui.test.performKeyInput
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.pressKey
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerTestTags
@@ -126,6 +127,8 @@ internal sealed class ComposerRecipientsEntryModel(
     // region utility methods
     private fun withParentFocused(block: ComposerRecipientsEntryModel.() -> Unit) = apply {
         // This is needed as even though the correct textField is located, the automation might fill the wrong field.
+        parent.performScrollTo()
+
         if (!peekIsFocused()) {
             parent.performClick()
         }
