@@ -46,12 +46,12 @@ import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.system.LocalDeviceCapabilitiesProvider
 import ch.protonmail.android.maildetail.presentation.R
-import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.mailmessage.presentation.ui.MessageBodyWebView
 import me.proton.core.compose.component.ProtonSolidButton
@@ -114,25 +114,32 @@ private fun MessageActionButtons(
 ) {
     Row(
         modifier = modifier
+            .testTag(MessageBodyTestTags.MessageActionsRootItem)
             .fillMaxWidth()
             .padding(ProtonDimens.SmallSpacing)
             .padding(top = ProtonDimens.DefaultSpacing),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         MessageActionButton(
-            modifier = Modifier.weight(1f, false),
+            modifier = Modifier
+                .testTag(MessageBodyTestTags.MessageReplyButton)
+                .weight(1f, false),
             onClick = { callbacks.onReply(MessageId(messageId.id)) },
             iconResource = R.drawable.ic_proton_reply,
             textResource = R.string.action_reply
         )
         MessageActionButton(
-            modifier = Modifier.weight(1f, false),
+            modifier = Modifier
+                .testTag(MessageBodyTestTags.MessageReplyAllButton)
+                .weight(1f, false),
             onClick = { callbacks.onReplyAll(MessageId(messageId.id)) },
             iconResource = R.drawable.ic_proton_reply_all,
             textResource = R.string.action_reply_all
         )
         MessageActionButton(
-            modifier = Modifier.weight(1f, false),
+            modifier = Modifier
+                .testTag(MessageBodyTestTags.MessageForwardButton)
+                .weight(1f, false),
             onClick = { callbacks.onForward(MessageId(messageId.id)) },
             iconResource = R.drawable.ic_proton_forward,
             textResource = R.string.action_forward
@@ -257,4 +264,8 @@ object MessageBodyTestTags {
     const val MessageBodyBanner = "MessageBodyBanner"
     const val MessageBodyBannerIcon = "MessageBodyBannerIcon"
     const val MessageBodyBannerText = "MessageBodyBannerText"
+    const val MessageActionsRootItem = "MessageActionsRootItem"
+    const val MessageReplyButton = "MessageReplyButton"
+    const val MessageReplyAllButton = "MessageReplyAllButton"
+    const val MessageForwardButton = "MessageForwardButton"
 }

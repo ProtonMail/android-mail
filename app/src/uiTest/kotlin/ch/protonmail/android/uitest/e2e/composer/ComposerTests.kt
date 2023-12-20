@@ -42,13 +42,17 @@ import ch.protonmail.android.uitest.robot.helpers.section.time
 internal interface ComposerTests {
 
     fun composerMockNetworkDispatcher(
+        useDefaultMailSettings: Boolean = true,
         useDefaultMessagesList: Boolean = true,
         useDefaultContacts: Boolean = true,
         useDefaultDraftUploadResponse: Boolean = false,
         useDefaultSendMessageResponse: Boolean = false,
         useDefaultRecipientKeys: Boolean = true,
         mockDefinitions: MockNetworkDispatcher.() -> Unit = {}
-    ) = mockNetworkDispatcher(useDefaultContacts = useDefaultContacts) {
+    ) = mockNetworkDispatcher(
+        useDefaultMailSettings = useDefaultMailSettings,
+        useDefaultContacts = useDefaultContacts
+    ) {
 
         if (useDefaultMessagesList) {
             addMockRequests(
