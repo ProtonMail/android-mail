@@ -24,7 +24,7 @@ import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcommon.domain.benchmark.BenchmarkTracer
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.data.remote.worker.AddLabelMessageWorker
-import ch.protonmail.android.mailmessage.data.remote.worker.ClearLabelWorker
+import ch.protonmail.android.mailmessage.data.remote.worker.ClearMessageLabelWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.DeleteMessagesWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.MarkMessageAsReadWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.MarkMessageAsUnreadWorker
@@ -145,15 +145,15 @@ class MessageRemoteDataSourceImpl @Inject constructor(
     }
 
     override fun clearLabel(userId: UserId, labelId: LabelId) {
-        enqueuer.enqueueUniqueWork<ClearLabelWorker>(
+        enqueuer.enqueueUniqueWork<ClearMessageLabelWorker>(
             userId = userId,
-            workerId = ClearLabelWorker.id(userId, labelId),
-            params = ClearLabelWorker.params(userId, labelId)
+            workerId = ClearMessageLabelWorker.id(userId, labelId),
+            params = ClearMessageLabelWorker.params(userId, labelId)
         )
     }
 
     override fun observeClearWorkerIsEnqueuedOrRunning(userId: UserId, labelId: LabelId): Flow<Boolean> =
-        enqueuer.observeWorkStatusIsEnqueuedOrRunning(ClearLabelWorker.id(userId, labelId))
+        enqueuer.observeWorkStatusIsEnqueuedOrRunning(ClearMessageLabelWorker.id(userId, labelId))
 
     companion object {
 

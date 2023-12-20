@@ -27,7 +27,7 @@ import ch.protonmail.android.mailmessage.data.getMessageResource
 import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSourceImpl.Companion.MAX_ACTION_WORKER_PARAMETER_COUNT
 import ch.protonmail.android.mailmessage.data.remote.response.GetMessagesResponse
 import ch.protonmail.android.mailmessage.data.remote.worker.AddLabelMessageWorker
-import ch.protonmail.android.mailmessage.data.remote.worker.ClearLabelWorker
+import ch.protonmail.android.mailmessage.data.remote.worker.ClearMessageLabelWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.DeleteMessagesWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.MarkMessageAsReadWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.MarkMessageAsUnreadWorker
@@ -490,10 +490,10 @@ class MessageRemoteDataSourceImplTest {
         // given
         val labelId = SystemLabelId.Trash.labelId
         every {
-            enqueuer.enqueueUniqueWork<ClearLabelWorker>(
+            enqueuer.enqueueUniqueWork<ClearMessageLabelWorker>(
                 userId,
-                ClearLabelWorker.id(userId, labelId),
-                ClearLabelWorker.params(userId, labelId)
+                ClearMessageLabelWorker.id(userId, labelId),
+                ClearMessageLabelWorker.params(userId, labelId)
             )
         } returns mockk()
 
@@ -502,10 +502,10 @@ class MessageRemoteDataSourceImplTest {
 
         // then
         verify {
-            enqueuer.enqueueUniqueWork<ClearLabelWorker>(
+            enqueuer.enqueueUniqueWork<ClearMessageLabelWorker>(
                 userId,
-                ClearLabelWorker.id(userId, labelId),
-                ClearLabelWorker.params(userId, labelId)
+                ClearMessageLabelWorker.id(userId, labelId),
+                ClearMessageLabelWorker.params(userId, labelId)
             )
         }
     }

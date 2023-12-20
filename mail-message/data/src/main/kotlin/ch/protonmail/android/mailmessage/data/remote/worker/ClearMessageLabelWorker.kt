@@ -34,7 +34,7 @@ import me.proton.core.network.domain.isRetryable
 import me.proton.core.util.kotlin.takeIfNotBlank
 
 @HiltWorker
-class ClearLabelWorker @AssistedInject constructor(
+class ClearMessageLabelWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted workerParameters: WorkerParameters,
     private val apiProvider: ApiProvider,

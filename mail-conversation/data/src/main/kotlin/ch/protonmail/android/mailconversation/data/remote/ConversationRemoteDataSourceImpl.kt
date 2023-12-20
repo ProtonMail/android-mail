@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.domain.benchmark.BenchmarkTracer
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.data.remote.worker.AddLabelConversationWorker
+import ch.protonmail.android.mailconversation.data.remote.worker.ClearConversationLabelWorker
 import ch.protonmail.android.mailconversation.data.remote.worker.DeleteConversationsWorker
 import ch.protonmail.android.mailconversation.data.remote.worker.MarkConversationAsReadWorker
 import ch.protonmail.android.mailconversation.data.remote.worker.MarkConversationAsUnreadWorker
@@ -36,6 +37,7 @@ import ch.protonmail.android.mailpagination.domain.model.OrderBy
 import ch.protonmail.android.mailpagination.domain.model.OrderDirection
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.mailpagination.domain.model.ReadStatus
+import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.network.data.ApiProvider
@@ -185,6 +187,17 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
             )
         }
     }
+
+    override fun clearLabel(userId: UserId, labelId: LabelId) {
+        enqueuer.enqueueUniqueWork<ClearConversationLabelWorker>(
+            userId = userId,
+            workerId = ClearConversationLabelWorker.id(userId, labelId),
+            params = ClearConversationLabelWorker.params(userId, labelId)
+        )
+    }
+
+    override fun observeClearWorkerIsEnqueuedOrRunning(userId: UserId, labelId: LabelId): Flow<Boolean> =
+        enqueuer.observeWorkStatusIsEnqueuedOrRunning(ClearConversationLabelWorker.id(userId, labelId))
 
     companion object {
 

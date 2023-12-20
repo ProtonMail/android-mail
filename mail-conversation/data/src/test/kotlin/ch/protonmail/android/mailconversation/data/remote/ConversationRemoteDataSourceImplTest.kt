@@ -27,6 +27,7 @@ import ch.protonmail.android.mailconversation.data.getConversationResource
 import ch.protonmail.android.mailconversation.data.remote.ConversationRemoteDataSourceImpl.Companion.MAX_CONVERSATION_IDS_API_LIMIT
 import ch.protonmail.android.mailconversation.data.remote.response.GetConversationsResponse
 import ch.protonmail.android.mailconversation.data.remote.worker.AddLabelConversationWorker
+import ch.protonmail.android.mailconversation.data.remote.worker.ClearConversationLabelWorker
 import ch.protonmail.android.mailconversation.data.remote.worker.DeleteConversationsWorker
 import ch.protonmail.android.mailconversation.data.remote.worker.MarkConversationAsReadWorker
 import ch.protonmail.android.mailconversation.data.remote.worker.MarkConversationAsUnreadWorker
@@ -528,6 +529,31 @@ class ConversationRemoteDataSourceImplTest {
                 userId, conversationIds.drop(MAX_CONVERSATION_IDS_API_LIMIT), currentLabelId
             )
             enqueuer.enqueue<DeleteConversationsWorker>(userId, match { mapDeepEquals(it, expectedSecond) })
+        }
+    }
+
+    @org.junit.Test
+    fun `enqueues worker to clear label`() {
+        // given
+        val labelId = SystemLabelId.Trash.labelId
+        every {
+            enqueuer.enqueueUniqueWork<ClearConversationLabelWorker>(
+                userId,
+                ClearConversationLabelWorker.id(userId, labelId),
+                ClearConversationLabelWorker.params(userId, labelId)
+            )
+        } returns mockk()
+
+        // when
+        conversationRemoteDataSource.clearLabel(userId, labelId)
+
+        // then
+        verify {
+            enqueuer.enqueueUniqueWork<ClearConversationLabelWorker>(
+                userId,
+                ClearConversationLabelWorker.id(userId, labelId),
+                ClearConversationLabelWorker.params(userId, labelId)
+            )
         }
     }
 

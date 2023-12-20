@@ -25,6 +25,7 @@ import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailconversation.domain.entity.ConversationWithContext
 import ch.protonmail.android.mailconversation.domain.entity.ConversationWithMessages
 import ch.protonmail.android.mailpagination.domain.model.PageKey
+import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 
@@ -93,4 +94,14 @@ interface ConversationRemoteDataSource {
         conversationIds: List<ConversationId>,
         currentLabelId: LabelId
     )
+
+    /**
+     * Delete all messages from the given [labelId]
+     */
+    fun clearLabel(userId: UserId, labelId: LabelId)
+
+    /**
+     * Observe if the [ClearLabelWorker] is enqueued or running for the given [userId] and [labelId]
+     */
+    fun observeClearWorkerIsEnqueuedOrRunning(userId: UserId, labelId: LabelId): Flow<Boolean>
 }

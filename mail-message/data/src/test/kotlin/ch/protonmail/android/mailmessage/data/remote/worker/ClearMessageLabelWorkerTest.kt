@@ -1,3 +1,21 @@
+/*
+ * Copyright (c) 2022 Proton Technologies AG
+ * This file is part of Proton Technologies AG and Proton Mail.
+ *
+ * Proton Mail is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Proton Mail is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package ch.protonmail.android.mailmessage.data.remote.worker
 
 import java.net.UnknownHostException
@@ -34,7 +52,7 @@ import org.junit.Before
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class ClearLabelWorkerTest {
+class ClearMessageLabelWorkerTest {
 
     private val labelId = LabelIdSample.Spam.id
     private val userId = UserIdSample.Primary.id
@@ -44,8 +62,8 @@ class ClearLabelWorkerTest {
     }
     private val parameters: WorkerParameters = mockk {
         every { taskExecutor } returns mockk(relaxed = true)
-        every { inputData.getString(ClearLabelWorker.RawUserIdKey) } returns userId
-        every { inputData.getString(ClearLabelWorker.RawLabelIdKey) } returns labelId
+        every { inputData.getString(ClearMessageLabelWorker.RawUserIdKey) } returns userId
+        every { inputData.getString(ClearMessageLabelWorker.RawLabelIdKey) } returns labelId
     }
     private val context: Context = mockk()
 
@@ -63,19 +81,19 @@ class ClearLabelWorkerTest {
     }
 
     private lateinit var apiProvider: ApiProvider
-    private lateinit var deleteMessagesWithLabel: ClearLabelWorker
+    private lateinit var deleteMessagesWithLabel: ClearMessageLabelWorker
 
     @Before
     fun setUp() {
         apiProvider = ApiProvider(apiManagerFactory, sessionProvider, DefaultDispatcherProvider())
-        deleteMessagesWithLabel = ClearLabelWorker(context, parameters, apiProvider, messageLocalDataSource)
+        deleteMessagesWithLabel = ClearMessageLabelWorker(context, parameters, apiProvider, messageLocalDataSource)
     }
 
     @Test
     fun `worker is enqueued with given parameters`() {
         // When
-        Enqueuer(workManager).enqueue<ClearLabelWorker>(
-            UserId(userId), ClearLabelWorker.params(UserId(userId), LabelId(labelId))
+        Enqueuer(workManager).enqueue<ClearMessageLabelWorker>(
+            UserId(userId), ClearMessageLabelWorker.params(UserId(userId), LabelId(labelId))
         )
 
         // Then
@@ -84,8 +102,8 @@ class ClearLabelWorkerTest {
         val workSpec = requestSlot.captured.workSpec
         val constraints = workSpec.constraints
         val inputData = workSpec.input
-        val actualUserId = inputData.getString(ClearLabelWorker.RawUserIdKey)
-        val actualLabelId = inputData.getString(ClearLabelWorker.RawLabelIdKey)
+        val actualUserId = inputData.getString(ClearMessageLabelWorker.RawUserIdKey)
+        val actualLabelId = inputData.getString(ClearMessageLabelWorker.RawLabelIdKey)
         assertEquals(userId, actualUserId)
         assertEquals(labelId, actualLabelId)
         assertEquals(NetworkType.CONNECTED, constraints.requiredNetworkType)
@@ -105,7 +123,7 @@ class ClearLabelWorkerTest {
     @Test
     fun `delete messages with labels fails when userId is null`() = runTest {
         // Given
-        every { parameters.inputData.getString(ClearLabelWorker.RawUserIdKey) } returns null
+        every { parameters.inputData.getString(ClearMessageLabelWorker.RawUserIdKey) } returns null
 
         // When
         val result = deleteMessagesWithLabel.doWork()
@@ -121,7 +139,7 @@ class ClearLabelWorkerTest {
     @Test
     fun `delete messages with labels fails when labelId is null`() = runTest {
         // Given
-        every { parameters.inputData.getString(ClearLabelWorker.RawLabelIdKey) } returns null
+        every { parameters.inputData.getString(ClearMessageLabelWorker.RawLabelIdKey) } returns null
 
         // When
         val result = deleteMessagesWithLabel.doWork()
