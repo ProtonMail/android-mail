@@ -46,6 +46,7 @@ dependencies {
 
     implementation(Proton.Core.contact)
     implementation(Proton.Core.user)
+    implementation(Proton.Core.label)
 
     implementation(project(":mail-common:domain"))
 

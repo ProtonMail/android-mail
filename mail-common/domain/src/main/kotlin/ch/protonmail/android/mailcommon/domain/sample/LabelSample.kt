@@ -74,6 +74,16 @@ object LabelSample {
         parentId = LabelIdSample.Folder2022
     )
 
+    val GroupCoworkers = build(
+        labelId = LabelIdSample.LabelCoworkers,
+        color = "#AABBCC"
+    )
+
+    val GroupFriends = build(
+        labelId = LabelIdSample.LabelFriends,
+        color = "#CCBBAA"
+    )
+
     fun build(
         color: String = "#338AF3",
         isExpanded: Boolean? = null,

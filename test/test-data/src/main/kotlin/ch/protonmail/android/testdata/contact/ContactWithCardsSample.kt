@@ -18,15 +18,32 @@
 
 package ch.protonmail.android.testdata.contact
 
-import me.proton.core.contact.domain.entity.ContactId
+import me.proton.core.contact.domain.entity.ContactCard
+import me.proton.core.contact.domain.entity.ContactWithCards
 
-object ContactIdSample {
+object ContactWithCardsSample {
 
-    val Doe = ContactId("Doe")
+    val Mario = ContactWithCards(
+        ContactSample.Mario,
+        contactCards = listOf(
+            ContactCard.Signed(
+                ContactVCardSample.marioVCardType2,
+                "signature"
+            ),
+            ContactCard.Encrypted(
+                ContactVCardSample.marioVCardType3,
+                "signature"
+            )
+        )
+    )
 
-    val John = ContactId("John")
-
-    val Mario = ContactId("Mario")
-
-    val Stefano = ContactId("Stefano")
+    val Stefano = ContactWithCards(
+        ContactSample.Stefano,
+        contactCards = listOf(
+            ContactCard.Encrypted(
+                ContactVCardSample.stefanoVCardType3,
+                "signature"
+            )
+        )
+    )
 }

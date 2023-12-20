@@ -166,4 +166,17 @@ object ContactVCardSample {
         ITEM4.EMAIL;TYPE=other;PREF=4:other_email@Mario.protonmail.com
         END:VCARD
     """.trimIndent()
+
+    val stefanoVCardType3 = """
+        BEGIN:VCARD
+        VERSION:4.0
+        PRODID:ez-vcard 0.11.3
+        FN;PREF=1:Stefano@protonmail.com
+        UID:proton-autosave-84a8d5e8-e999-4c3e-960e-eea05fc5fe91
+        ITEM1.EMAIL;PREF=1:Stefano@protonmail.com
+        ITEM2.EMAIL;TYPE=home;PREF=2:home_email@Stefano.protonmail.com
+        ITEM3.EMAIL;TYPE=work;PREF=3:work_email@Stefano.protonmail.com
+        ITEM4.EMAIL;TYPE=other;PREF=4:other_email@Stefano.protonmail.com
+        END:VCARD
+    """.trimIndent()
 }

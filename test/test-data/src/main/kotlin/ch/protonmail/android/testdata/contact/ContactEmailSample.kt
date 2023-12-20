@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.testdata.contact
 
+import ch.protonmail.android.mailcommon.domain.sample.LabelSample
 import ch.protonmail.android.testdata.user.UserIdTestData
 import me.proton.core.contact.domain.entity.ContactEmail
 
@@ -32,7 +33,7 @@ object ContactEmailSample {
         0,
         ContactIdTestData.contactId1,
         "canonical email (contact email 1)",
-        emptyList(),
+        listOf(LabelSample.GroupCoworkers.labelId.id),
         false
     )
 
@@ -45,12 +46,20 @@ object ContactEmailSample {
         1,
         ContactIdTestData.contactId1,
         "canonical email (contact email 2)",
-        emptyList(),
+        listOf(LabelSample.GroupCoworkers.labelId.id),
         false
     )
 
-    val contactEmails = listOf(
-        contactEmail1,
-        contactEmail2
+    val contactEmail3 = ContactEmail(
+        UserIdTestData.Primary,
+        ContactIdTestData.contactEmailId3,
+        "name (contact email 3)",
+        "email (contact email 3)",
+        0,
+        2,
+        ContactIdTestData.contactId3,
+        "canonical email (contact email 3)",
+        emptyList(),
+        false
     )
 }

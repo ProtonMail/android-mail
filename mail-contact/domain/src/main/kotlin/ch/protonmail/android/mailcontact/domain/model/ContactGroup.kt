@@ -16,17 +16,9 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.testdata.contact
+package ch.protonmail.android.mailcontact.domain.model
 
-import me.proton.core.contact.domain.entity.ContactId
-
-object ContactIdSample {
-
-    val Doe = ContactId("Doe")
-
-    val John = ContactId("John")
-
-    val Mario = ContactId("Mario")
-
-    val Stefano = ContactId("Stefano")
-}
+data class ContactGroup(
+    val name: String,
+    val color: String
+)

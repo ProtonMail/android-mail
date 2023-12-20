@@ -31,6 +31,8 @@ object LabelIdSample {
     val Folder2022 = LabelId("2022")
     val Label2021 = LabelId("Label2021")
     val Label2022 = LabelId("Label2022")
+    val LabelCoworkers = LabelId("LabelCoworkers")
+    val LabelFriends = LabelId("LabelFriends")
     val Inbox = LabelId("0")
     val News = LabelId("news")
     val Starred = LabelId("10")
