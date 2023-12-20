@@ -78,10 +78,10 @@ class ClearConversationLabelWorkerTest {
     private val apiManagerFactory = mockk<ApiManagerFactory> {
         every { create(any(), MessageApi::class) } returns TestApiManager(messageApi)
     }
-    private val conversationLocalDataSource: ConversationLocalDataSource = mockk() {
+    private val conversationLocalDataSource: ConversationLocalDataSource = mockk {
         coJustRun { deleteConversationsWithLabel(UserId(userId), LabelId(labelId)) }
     }
-    private val messageLocalDataSource: MessageLocalDataSource = mockk() {
+    private val messageLocalDataSource: MessageLocalDataSource = mockk {
         coJustRun { deleteMessagesWithLabel(UserId(userId), LabelId(labelId)) }
     }
 

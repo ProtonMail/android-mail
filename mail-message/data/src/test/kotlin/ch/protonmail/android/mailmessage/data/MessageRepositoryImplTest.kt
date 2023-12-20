@@ -1119,7 +1119,7 @@ class MessageRepositoryImplTest {
         val expected = true
         val expectedLabel = SystemLabelId.Spam.labelId
         val expectedFlow = MutableStateFlow(expected)
-        coEvery { remoteDataSource.observeClearWorkerIsEnqueuedOrRunning(userId, expectedLabel)} returns expectedFlow
+        coEvery { remoteDataSource.observeClearWorkerIsEnqueuedOrRunning(userId, expectedLabel) } returns expectedFlow
 
         // When
         val actual = messageRepository.observeClearLabelOperation(userId, expectedLabel).test {

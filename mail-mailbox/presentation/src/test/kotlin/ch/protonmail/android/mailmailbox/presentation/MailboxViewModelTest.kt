@@ -43,6 +43,7 @@ import ch.protonmail.android.mailconversation.domain.entity.ConversationWithLabe
 import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.mailconversation.domain.usecase.DeleteConversations
 import ch.protonmail.android.mailconversation.domain.usecase.GetConversationsWithLabels
+import ch.protonmail.android.mailconversation.domain.usecase.ObserveClearConversationOperation
 import ch.protonmail.android.mailconversation.domain.usecase.MarkConversationsAsRead
 import ch.protonmail.android.mailconversation.domain.usecase.MarkConversationsAsUnread
 import ch.protonmail.android.mailconversation.domain.usecase.MoveConversations
@@ -103,6 +104,7 @@ import ch.protonmail.android.mailmessage.domain.usecase.GetMessagesWithLabels
 import ch.protonmail.android.mailmessage.domain.usecase.MarkMessagesAsRead
 import ch.protonmail.android.mailmessage.domain.usecase.MarkMessagesAsUnread
 import ch.protonmail.android.mailmessage.domain.usecase.MoveMessages
+import ch.protonmail.android.mailmessage.domain.usecase.ObserveClearMessageOperation
 import ch.protonmail.android.mailmessage.domain.usecase.StarMessages
 import ch.protonmail.android.mailmessage.domain.usecase.UnStarMessages
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
@@ -196,6 +198,12 @@ class MailboxViewModelTest {
     private val observeSwipeActionsPreference = mockk<ObserveSwipeActionsPreference> {
         every { this@mockk(userId) } returns flowOf(SwipeActionsPreference(SwipeAction.MarkRead, SwipeAction.Archive))
     }
+    private val observeConversationClearOperation = mockk<ObserveClearConversationOperation> {
+        every { this@mockk(userId, any()) } returns flowOf(false)
+    }
+    private val observeMessageClearOperation = mockk<ObserveClearMessageOperation> {
+        every { this@mockk(userId, any()) } returns flowOf(false)
+    }
     private val getMessagesWithLabels = mockk<GetMessagesWithLabels>()
     private val getConversationsWithLabels = mockk<GetConversationsWithLabels>()
 
@@ -257,6 +265,8 @@ class MailboxViewModelTest {
             observeCustomMailLabels = observeCustomMailLabels,
             observeDestinationMailLabels = observeDestinationMailLabels,
             observeSwipeActionsPreference = observeSwipeActionsPreference,
+            observeClearMessageOperation = observeMessageClearOperation,
+            observeClearConversationOperation = observeConversationClearOperation,
             selectedMailLabelId = selectedMailLabelId,
             observeUnreadCounters = observeUnreadCounters,
             observeFolderColorSettings = observeFolderColorSettings,
@@ -356,6 +366,7 @@ class MailboxViewModelTest {
 
             // Then
             assertEquals(expectedState, awaitItem())
+            awaitItem() // swipe gestures
         }
     }
 
@@ -395,6 +406,9 @@ class MailboxViewModelTest {
             // Then
             assertEquals(intermediateState, awaitItem())
             assertEquals(expectedState, awaitItem())
+
+            awaitItem() // swipe gestures
+
             verifyOrder {
                 mailboxReducer.newStateFrom(any(), MailboxEvent.NewLabelSelected(expectedMailLabel, expectedCount))
                 mailboxReducer.newStateFrom(
@@ -414,7 +428,7 @@ class MailboxViewModelTest {
     fun `when selected label changes, new state is created and emitted`() = runTest {
         // Given
         val initialMailLabel = MailLabelTestData.customLabelOne
-        val modifiedMailLabel = initialMailLabel.copy(isExpanded = !MailLabelTestData.customLabelOne.isExpanded)
+        val modifiedMailLabel = MailLabelTestData.customLabelTwo
         val expectedState = MailboxStateSampleData.Loading.copy(
             mailboxListState = MailboxListState.Data.ViewMode(
                 currentMailLabel = modifiedMailLabel,
@@ -445,43 +459,54 @@ class MailboxViewModelTest {
                 clearButtonText = null
             )
         )
+        val expectedStateAfterClearAllStatus = expectedStateWithSwipeGestures.copy(
+            mailboxListState = MailboxListState.Data.ViewMode(
+                currentMailLabel = modifiedMailLabel,
+                openItemEffect = Effect.empty(),
+                scrollToMailboxTop = Effect.of(initialMailLabel.id),
+                offlineEffect = Effect.empty(),
+                refreshErrorEffect = Effect.empty(),
+                refreshRequested = false,
+                swipeActions = expectedSwipeActions,
+                searchMode = MailboxSearchMode.None,
+                clearButtonText = null
+            )
+        )
         val mailLabelsFlow = MutableStateFlow(
             MailLabels(
                 systemLabels = LabelTestData.systemLabels,
                 folders = emptyList(),
-                labels = listOf(MailLabelTestData.customLabelOne)
+                labels = listOf(
+                    MailLabelTestData.customLabelOne,
+                    MailLabelTestData.customLabelTwo
+                )
             )
         )
         val currentLocationFlow = MutableStateFlow<MailLabelId>(initialMailLabel.id)
         every { observeMailLabels(userId) } returns mailLabelsFlow
         every { selectedMailLabelId.flow } returns currentLocationFlow
+
         every {
-            mailboxReducer.newStateFrom(
-                any(),
-                MailboxEvent.SelectedLabelChanged(modifiedMailLabel)
-            )
+            mailboxReducer.newStateFrom(any(), MailboxEvent.NewLabelSelected(modifiedMailLabel, null))
         } returns expectedState
         every {
-            mailboxReducer.newStateFrom(
-                any(),
-                MailboxEvent.SwipeActionsChanged(expectedSwipeActions)
-            )
+            mailboxReducer.newStateFrom(expectedState, MailboxEvent.SwipeActionsChanged(expectedSwipeActions))
         } returns expectedStateWithSwipeGestures
+        every {
+            mailboxReducer.newStateFrom(expectedStateWithSwipeGestures, MailboxEvent.ClearAllOperationStatus(false))
+        } returns expectedStateAfterClearAllStatus
 
         mailboxViewModel.state.test {
             awaitItem()
 
-            mailLabelsFlow.emit(
-                MailLabels(
-                    systemLabels = LabelTestData.systemLabels,
-                    folders = emptyList(),
-                    labels = listOf(modifiedMailLabel)
-                )
-            )
+            // When
+            currentLocationFlow.emit(modifiedMailLabel.id)
 
             // Then
             assertEquals(expectedState, awaitItem())
             assertEquals(expectedStateWithSwipeGestures, awaitItem())
+            assertEquals(expectedStateAfterClearAllStatus, awaitItem())
+
 
         }
     }
@@ -1814,30 +1839,29 @@ class MailboxViewModelTest {
         }
 
     @Test
-    fun `when delete all is triggered from non spam and trash location no action is performed`() =
-        runTest {
-            // Given
-            val initialState = createMailboxDataState(selectedMailLabelId = MailLabelId.System.Inbox)
-            every { selectedMailLabelId.flow } returns MutableStateFlow(MailLabelId.System.Inbox)
-            expectedSelectedLabelCountStateChange(initialState)
-            returnExpectedStateForDeleteAllDismissed(initialState)
+    fun `when delete all is triggered from non spam and trash location no action is performed`() = runTest {
+        // Given
+        val initialState = createMailboxDataState(selectedMailLabelId = MailLabelId.System.Inbox)
+        every { selectedMailLabelId.flow } returns MutableStateFlow(MailLabelId.System.Inbox)
+        expectedSelectedLabelCountStateChange(initialState)
+        returnExpectedStateForDeleteAllDismissed(initialState)
 
 
-            mailboxViewModel.state.test {
-                awaitItem() // First emission for selected user
+        mailboxViewModel.state.test {
+            awaitItem() // First emission for selected user
 
-                // When
-                mailboxViewModel.submit(MailboxViewAction.DeleteAllConfirmed)
+            // When
+            mailboxViewModel.submit(MailboxViewAction.DeleteAllConfirmed)
 
-                // Then
-                assertEquals(initialState, awaitItem())
-                coVerify {
-                    mailboxReducer.newStateFrom(any(), MailboxViewAction.DeleteAllDialogDismissed)
-                    deleteMessages wasNot Called
-                    deleteConversations wasNot Called
-                }
+            // Then
+            assertEquals(initialState, awaitItem())
+            coVerify {
+                mailboxReducer.newStateFrom(any(), MailboxViewAction.DeleteAllDialogDismissed)
+                deleteMessages wasNot Called
+                deleteConversations wasNot Called
             }
         }
+    }
 
     @Test
     fun `when bottom sheet dismissal is triggered then the label as bottom sheet is dismissed `() = runTest {

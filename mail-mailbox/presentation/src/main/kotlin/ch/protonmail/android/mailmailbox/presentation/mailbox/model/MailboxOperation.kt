@@ -178,6 +178,7 @@ internal sealed interface MailboxEvent : MailboxOperation {
 
     data class DeleteAll(val viewMode: ViewMode, val location: LabelId) : MailboxEvent, AffectingClearDialog
     data class DeleteAllConfirmed(val viewMode: ViewMode) : MailboxEvent, AffectingClearDialog
+    data class ClearAllOperationStatus(val isClearing: Boolean) : MailboxEvent
 
     sealed interface ItemClicked : MailboxEvent {
 

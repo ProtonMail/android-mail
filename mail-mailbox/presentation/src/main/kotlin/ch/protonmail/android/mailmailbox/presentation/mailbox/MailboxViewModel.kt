@@ -41,6 +41,7 @@ import ch.protonmail.android.mailconversation.domain.usecase.GetConversationsWit
 import ch.protonmail.android.mailconversation.domain.usecase.MarkConversationsAsRead
 import ch.protonmail.android.mailconversation.domain.usecase.MarkConversationsAsUnread
 import ch.protonmail.android.mailconversation.domain.usecase.MoveConversations
+import ch.protonmail.android.mailconversation.domain.usecase.ObserveClearConversationOperation
 import ch.protonmail.android.mailconversation.domain.usecase.StarConversations
 import ch.protonmail.android.mailconversation.domain.usecase.UnStarConversations
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
@@ -88,6 +89,7 @@ import ch.protonmail.android.mailmessage.domain.usecase.GetMessagesWithLabels
 import ch.protonmail.android.mailmessage.domain.usecase.MarkMessagesAsRead
 import ch.protonmail.android.mailmessage.domain.usecase.MarkMessagesAsUnread
 import ch.protonmail.android.mailmessage.domain.usecase.MoveMessages
+import ch.protonmail.android.mailmessage.domain.usecase.ObserveClearMessageOperation
 import ch.protonmail.android.mailmessage.domain.usecase.StarMessages
 import ch.protonmail.android.mailmessage.domain.usecase.UnStarMessages
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
@@ -111,6 +113,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -133,6 +136,8 @@ class MailboxViewModel @Inject constructor(
     private val observeCustomMailLabels: ObserveCustomMailLabels,
     private val observeDestinationMailLabels: ObserveExclusiveDestinationMailLabels,
     private val observeSwipeActionsPreference: ObserveSwipeActionsPreference,
+    private val observeClearMessageOperation: ObserveClearMessageOperation,
+    private val observeClearConversationOperation: ObserveClearConversationOperation,
     private val selectedMailLabelId: SelectedMailLabelId,
     private val observeUnreadCounters: ObserveUnreadCounters,
     private val observeFolderColorSettings: ObserveFolderColorSettings,
@@ -188,12 +193,6 @@ class MailboxViewModel @Inject constructor(
                 }
             }
             .filterNotNull()
-            .combine(
-                primaryUserId.filterNotNull().flatMapLatest { userId -> observeSwipeActionsPreference(userId) }
-            ) { currentMailLabel, swipeActionsPreference ->
-                val swipeActions = swipeActionsMapper(currentMailLabel.id.labelId, swipeActionsPreference)
-                emitNewStateFrom(MailboxEvent.SwipeActionsChanged(swipeActions))
-            }
             .launchIn(viewModelScope)
 
         selectedMailLabelId.flow
@@ -202,6 +201,16 @@ class MailboxViewModel @Inject constructor(
             .onEach { (currentMailLabel, currentLabelCount) ->
                 itemIds.clear()
                 emitNewStateFrom(MailboxEvent.NewLabelSelected(currentMailLabel, currentLabelCount))
+            }
+            .combine(primaryUserId.filterNotNull()) { currentMailLabel, userId -> userId to currentMailLabel }
+            .flatMapLatest {
+                merge(
+                    handleSwipeActionPreferences(it.first, it.second.first),
+                    observeClearAllOperation(it.first, it.second.first.id)
+                )
+            }
+            .onEach {
+                emitNewStateFrom(it)
             }
             .launchIn(viewModelScope)
 
@@ -230,6 +239,26 @@ class MailboxViewModel @Inject constructor(
                 emitNewStateFrom(MailboxEvent.SelectedLabelCountChanged(currentLabelCount))
             }
             .launchIn(viewModelScope)
+    }
+
+
+    private fun handleSwipeActionPreferences(userId: UserId, currentMailLabel: MailLabel): Flow<MailboxEvent> {
+        return observeSwipeActionsPreference(userId)
+            .map { swipeActionsPreference ->
+                val swipeActions = swipeActionsMapper(currentMailLabel.id.labelId, swipeActionsPreference)
+                MailboxEvent.SwipeActionsChanged(swipeActions)
+            }
+            .distinctUntilChanged()
+    }
+
+    private fun observeClearAllOperation(userId: UserId, currentMailLabel: MailLabelId): Flow<MailboxEvent> {
+        return combine(
+            observeClearMessageOperation(userId, currentMailLabel.labelId),
+            observeClearConversationOperation(userId, currentMailLabel.labelId)
+        ) { messageOperation, conversationOperation ->
+            val clearAllOperation = messageOperation || conversationOperation
+            MailboxEvent.ClearAllOperationStatus(clearAllOperation)
+        }.distinctUntilChanged()
     }
 
     @SuppressWarnings("ComplexMethod")
