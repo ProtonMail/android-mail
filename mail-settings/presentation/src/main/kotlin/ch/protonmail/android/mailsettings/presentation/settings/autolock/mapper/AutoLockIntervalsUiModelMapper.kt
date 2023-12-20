@@ -21,17 +21,16 @@ package ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper
 import androidx.annotation.StringRes
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockInterval
 import ch.protonmail.android.mailsettings.presentation.R
-import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.AutoLockIntervalListUiModel
-import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.AutoLockIntervalSelectedUiModel
+import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.AutoLockIntervalUiModel
 import javax.inject.Inject
 
 class AutoLockIntervalsUiModelMapper @Inject constructor() {
 
-    fun toIntervalsListUiModel(): List<AutoLockIntervalListUiModel> =
-        AutoLockInterval.values().map { AutoLockIntervalListUiModel(it, it.getDescriptionStringRes()) }
+    fun toIntervalsListUiModel(): List<AutoLockIntervalUiModel> =
+        AutoLockInterval.values().map { AutoLockIntervalUiModel(it, it.getDescriptionStringRes()) }
 
-    fun toSelectedIntervalUiModel(selectedInterval: AutoLockInterval): AutoLockIntervalSelectedUiModel =
-        AutoLockIntervalSelectedUiModel(selectedInterval, selectedInterval.getDescriptionStringRes())
+    fun toSelectedIntervalUiModel(selectedInterval: AutoLockInterval) =
+        AutoLockIntervalUiModel(selectedInterval, selectedInterval.getDescriptionStringRes())
 
     @StringRes
     private fun AutoLockInterval.getDescriptionStringRes(): Int = when (this) {

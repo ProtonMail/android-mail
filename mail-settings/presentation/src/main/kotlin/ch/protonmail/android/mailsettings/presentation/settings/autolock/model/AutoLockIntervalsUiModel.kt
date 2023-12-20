@@ -23,19 +23,13 @@ import androidx.compose.runtime.Stable
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockInterval
 
 @Stable
-data class AutoLockIntervalSelectedUiModel(
-    val autoLockInterval: AutoLockInterval,
-    @StringRes val description: Int
-)
-
-@Stable
-data class AutoLockIntervalListUiModel(
+data class AutoLockIntervalUiModel(
     val autoLockInterval: AutoLockInterval,
     @StringRes val description: Int
 )
 
 @Stable
 data class AutoLockIntervalsUiModel(
-    val selected: AutoLockIntervalSelectedUiModel,
-    val list: List<AutoLockIntervalListUiModel>
+    val selectedInterval: AutoLockIntervalUiModel,
+    val list: List<AutoLockIntervalUiModel>
 )

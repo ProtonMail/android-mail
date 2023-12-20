@@ -20,8 +20,7 @@ package ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper
 
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockInterval
 import ch.protonmail.android.mailsettings.presentation.R
-import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.AutoLockIntervalListUiModel
-import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.AutoLockIntervalSelectedUiModel
+import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.AutoLockIntervalUiModel
 import org.junit.Test
 import org.junit.experimental.runners.Enclosed
 import org.junit.runner.RunWith
@@ -39,24 +38,30 @@ internal class AutoLockIntervalsUiModelMapperTest {
         fun `should return all the known intervals with the appropriate string res`() {
             // Given
             val expected = listOf(
-                AutoLockIntervalListUiModel(AutoLockInterval.NotEnabled, R.string.mail_settings_auto_lock_not_enabled),
-                AutoLockIntervalListUiModel(AutoLockInterval.Immediately, R.string.mail_settings_auto_lock_immediately),
-                AutoLockIntervalListUiModel(
+                AutoLockIntervalUiModel(
+                    AutoLockInterval.NotEnabled,
+                    R.string.mail_settings_auto_lock_not_enabled
+                ),
+                AutoLockIntervalUiModel(
+                    AutoLockInterval.Immediately,
+                    R.string.mail_settings_auto_lock_immediately
+                ),
+                AutoLockIntervalUiModel(
                     AutoLockInterval.FiveMinutes,
                     R.string.mail_settings_auto_lock_item_timer_description_five_minutes
                 ),
-                AutoLockIntervalListUiModel(
+                AutoLockIntervalUiModel(
                     AutoLockInterval.FifteenMinutes,
                     R.string.mail_settings_auto_lock_item_timer_description_fifteen_minutes
                 ),
-                AutoLockIntervalListUiModel(
+                AutoLockIntervalUiModel(
                     AutoLockInterval.OneHour,
                     R.string.mail_settings_auto_lock_item_timer_description_one_hour
                 ),
-                AutoLockIntervalListUiModel(
+                AutoLockIntervalUiModel(
                     AutoLockInterval.OneDay,
                     R.string.mail_settings_auto_lock_item_timer_description_one_day
-                ),
+                )
             )
 
             // When
@@ -88,42 +93,42 @@ internal class AutoLockIntervalsUiModelMapperTest {
             fun data() = arrayOf(
                 TestInput(
                     interval = AutoLockInterval.NotEnabled,
-                    expectedValue = AutoLockIntervalSelectedUiModel(
+                    expectedValue = AutoLockIntervalUiModel(
                         AutoLockInterval.NotEnabled,
                         R.string.mail_settings_auto_lock_not_enabled
                     )
                 ),
                 TestInput(
                     interval = AutoLockInterval.Immediately,
-                    expectedValue = AutoLockIntervalSelectedUiModel(
+                    expectedValue = AutoLockIntervalUiModel(
                         AutoLockInterval.Immediately,
                         R.string.mail_settings_auto_lock_immediately
                     )
                 ),
                 TestInput(
                     interval = AutoLockInterval.FiveMinutes,
-                    expectedValue = AutoLockIntervalSelectedUiModel(
+                    expectedValue = AutoLockIntervalUiModel(
                         AutoLockInterval.FiveMinutes,
                         R.string.mail_settings_auto_lock_item_timer_description_five_minutes
                     )
                 ),
                 TestInput(
                     interval = AutoLockInterval.FifteenMinutes,
-                    expectedValue = AutoLockIntervalSelectedUiModel(
+                    expectedValue = AutoLockIntervalUiModel(
                         AutoLockInterval.FifteenMinutes,
                         R.string.mail_settings_auto_lock_item_timer_description_fifteen_minutes
                     )
                 ),
                 TestInput(
                     interval = AutoLockInterval.OneHour,
-                    expectedValue = AutoLockIntervalSelectedUiModel(
+                    expectedValue = AutoLockIntervalUiModel(
                         AutoLockInterval.OneHour,
                         R.string.mail_settings_auto_lock_item_timer_description_one_hour
                     )
                 ),
                 TestInput(
                     interval = AutoLockInterval.OneDay,
-                    expectedValue = AutoLockIntervalSelectedUiModel(
+                    expectedValue = AutoLockIntervalUiModel(
                         AutoLockInterval.OneDay,
                         R.string.mail_settings_auto_lock_item_timer_description_one_day
                     )
@@ -133,7 +138,7 @@ internal class AutoLockIntervalsUiModelMapperTest {
 
         data class TestInput(
             val interval: AutoLockInterval,
-            val expectedValue: AutoLockIntervalSelectedUiModel
+            val expectedValue: AutoLockIntervalUiModel
         )
     }
 }

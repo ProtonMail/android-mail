@@ -23,8 +23,7 @@ import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockInterval
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPreference
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.AutoLockIntervalsUiModelMapper
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.AutoLockEnabledUiModel
-import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.AutoLockIntervalListUiModel
-import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.AutoLockIntervalSelectedUiModel
+import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.AutoLockIntervalUiModel
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.AutoLockIntervalsUiModel
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.AutoLockSettingsEvent
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.AutoLockSettingsState
@@ -69,12 +68,12 @@ internal class AutoLockSettingsReducerTest(
 
     companion object {
 
-        private val oneDayUiModel = AutoLockIntervalSelectedUiModel(AutoLockInterval.OneDay, description = 1)
-        private val notEnabledUiModel = AutoLockIntervalSelectedUiModel(AutoLockInterval.NotEnabled, description = 0)
+        private val oneDayUiModel = AutoLockIntervalUiModel(AutoLockInterval.OneDay, description = 1)
+        private val notEnabledUiModel = AutoLockIntervalUiModel(AutoLockInterval.NotEnabled, description = 0)
 
         private val baseExpectedIntervals = listOf(
-            AutoLockIntervalListUiModel(AutoLockInterval.NotEnabled, description = 0),
-            AutoLockIntervalListUiModel(AutoLockInterval.OneDay, description = 1)
+            AutoLockIntervalUiModel(AutoLockInterval.NotEnabled, description = 0),
+            AutoLockIntervalUiModel(AutoLockInterval.OneDay, description = 1)
         )
 
         private val baseAutoLockState = AutoLockSettingsState.DataLoaded.AutoLockEnabledState(
@@ -83,7 +82,7 @@ internal class AutoLockSettingsReducerTest(
 
         private val baseAutoLockIntervalState = AutoLockSettingsState.DataLoaded.AutoLockIntervalState(
             AutoLockIntervalsUiModel(
-                AutoLockIntervalSelectedUiModel(AutoLockInterval.NotEnabled, description = 0),
+                AutoLockIntervalUiModel(AutoLockInterval.NotEnabled, description = 0),
                 baseExpectedIntervals
             )
         )

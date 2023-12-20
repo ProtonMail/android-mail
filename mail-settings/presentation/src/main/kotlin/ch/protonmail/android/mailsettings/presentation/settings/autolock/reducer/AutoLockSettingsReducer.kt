@@ -64,7 +64,7 @@ class AutoLockSettingsReducer @Inject constructor(
         val updatedSelectedUiModel = intervalsMapper.toSelectedIntervalUiModel(value)
         return copy(
             autoLockIntervalsState = AutoLockSettingsState.DataLoaded.AutoLockIntervalState(
-                autoLockIntervalsState.autoLockIntervalsUiModel.copy(selected = updatedSelectedUiModel)
+                autoLockIntervalsState.autoLockIntervalsUiModel.copy(selectedInterval = updatedSelectedUiModel)
             )
         )
     }
