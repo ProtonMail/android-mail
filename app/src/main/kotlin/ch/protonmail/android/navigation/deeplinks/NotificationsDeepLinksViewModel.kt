@@ -201,7 +201,10 @@ class NotificationsDeepLinksViewModel @Inject constructor(
                 }
                 .onRight { conversation ->
                     _state.value =
-                        State.NavigateToConversation(conversation.conversationId, switchedAccountEmail)
+                        State.NavigateToConversation(
+                            conversationId = conversation.conversationId,
+                            userSwitchedEmail = switchedAccountEmail
+                        )
                 }
         }
     }
@@ -222,6 +225,7 @@ class NotificationsDeepLinksViewModel @Inject constructor(
 
         data class NavigateToConversation(
             val conversationId: ConversationId,
+            val scrollToMessageId: MessageId? = null,
             val userSwitchedEmail: String? = null
         ) : State
 

@@ -262,7 +262,10 @@ class NotificationsDeepLinksViewModelTest {
         // Then
         viewModel.state.test {
             assertEquals(
-                NavigateToConversation(AlphaAppQAReport.conversationId, AccountSample.Primary.email),
+                NavigateToConversation(
+                    conversationId = AlphaAppQAReport.conversationId,
+                    userSwitchedEmail = AccountSample.Primary.email
+                ),
                 awaitItem()
             )
             coVerify { accountManager.setAsPrimary(secondaryAccount.userId) }

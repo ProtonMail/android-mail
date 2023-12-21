@@ -24,6 +24,7 @@ import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.DraftMessageIdKey
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.SerializedDraftActionKey
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.ConversationIdKey
+import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.ScrollToMessageIdKey
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen.MESSAGE_ID_KEY
 import ch.protonmail.android.maillabel.presentation.folderform.FolderFormScreen.FolderFormLabelIdKey
 import ch.protonmail.android.maillabel.presentation.folderparentlist.ParentFolderListScreen.ParentFolderListLabelIdKey
@@ -41,9 +42,13 @@ sealed class Destination(val route: String) {
     object Screen {
         object Mailbox : Destination("mailbox")
 
-        object Conversation : Destination("mailbox/conversation/${ConversationIdKey.wrap()}") {
-            operator fun invoke(conversationId: ConversationId) =
-                route.replace(ConversationIdKey.wrap(), conversationId.id)
+        object Conversation : Destination(
+            "mailbox/conversation/${ConversationIdKey.wrap()}/${ScrollToMessageIdKey.wrap()}"
+        ) {
+            operator fun invoke(conversationId: ConversationId, scrollToMessageId: MessageId? = null) =
+                route.replace(ConversationIdKey.wrap(), conversationId.id).replace(
+                    ScrollToMessageIdKey.wrap(), scrollToMessageId?.id ?: "null"
+                )
         }
 
         object Message : Destination("mailbox/message/${MESSAGE_ID_KEY.wrap()}") {

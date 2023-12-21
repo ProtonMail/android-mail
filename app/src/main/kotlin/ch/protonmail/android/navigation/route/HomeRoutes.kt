@@ -98,7 +98,12 @@ internal fun NavGraphBuilder.addMailbox(
                         false -> when (request.itemType) {
                             MailboxItemType.Message -> Destination.Screen.Message(MessageId(request.itemId.value))
                             MailboxItemType.Conversation ->
-                                Destination.Screen.Conversation(ConversationId(request.itemId.value))
+                                Destination.Screen.Conversation(
+                                    ConversationId(request.itemId.value),
+                                    request.subItemId?.let { mailboxItemId ->
+                                        MessageId(mailboxItemId.value)
+                                    }
+                                )
                         }
                     }
                     navController.navigate(destination)
