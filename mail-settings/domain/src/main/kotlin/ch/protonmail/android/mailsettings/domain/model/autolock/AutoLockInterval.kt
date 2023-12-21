@@ -20,7 +20,6 @@ package ch.protonmail.android.mailsettings.domain.model.autolock
 
 import kotlinx.serialization.Serializable
 import kotlin.time.Duration
-import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
@@ -30,8 +29,6 @@ value class AutoLockEncryptedInterval(val encryptedValue: String)
 
 @Serializable
 enum class AutoLockInterval(val duration: Duration) {
-
-    NotEnabled(Integer.MAX_VALUE.days),
     Immediately(0.seconds),
     FiveMinutes(5.minutes),
     FifteenMinutes(15.minutes),

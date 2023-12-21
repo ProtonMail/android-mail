@@ -47,6 +47,9 @@ class AutoLockSettingsReducer @Inject constructor(
                 is AutoLockSettingsEvent.ForcePinCreation -> triggerForcePinCreation()
                 is AutoLockSettingsEvent.Update.AutoLockIntervalSet -> updateAutoLockInterval(event.newValue)
                 is AutoLockSettingsEvent.Update.AutoLockPreferenceEnabled -> updateAutoLockEnabledToggle(event.newValue)
+                is AutoLockSettingsEvent.Update.AutoLockIntervalsDropDownToggled ->
+                    updateAutoLockIntervalsDropdown(event.newValue)
+
                 AutoLockSettingsEvent.UpdateError -> triggerUpdateError()
             }
         }
@@ -64,10 +67,14 @@ class AutoLockSettingsReducer @Inject constructor(
         val updatedSelectedUiModel = intervalsMapper.toSelectedIntervalUiModel(value)
         return copy(
             autoLockIntervalsState = AutoLockSettingsState.DataLoaded.AutoLockIntervalState(
-                autoLockIntervalsState.autoLockIntervalsUiModel.copy(selectedInterval = updatedSelectedUiModel)
+                autoLockIntervalsState.autoLockIntervalsUiModel.copy(selectedInterval = updatedSelectedUiModel),
+                dropdownExpanded = false
             )
         )
     }
+
+    private fun AutoLockSettingsState.DataLoaded.updateAutoLockIntervalsDropdown(newValue: Boolean) =
+        copy(autoLockIntervalsState = autoLockIntervalsState.copy(dropdownExpanded = newValue))
 
     private fun AutoLockSettingsState.DataLoaded.updateAutoLockEnabledToggle(
         value: Boolean
@@ -85,9 +92,15 @@ class AutoLockSettingsReducer @Inject constructor(
         val autoLockIntervalsUiModel =
             AutoLockIntervalsUiModel(autoLockSelectedIntervalUiModel, autoLockIntervalsListUiModel)
 
+        val autoLockEnabledState = AutoLockSettingsState.DataLoaded.AutoLockEnabledState(autoLockEnabledUiModel)
+        val autoLockIntervalsState = AutoLockSettingsState.DataLoaded.AutoLockIntervalState(
+            autoLockIntervalsUiModel,
+            dropdownMenuVisible
+        )
+
         return AutoLockSettingsState.DataLoaded(
-            autoLockEnabledState = AutoLockSettingsState.DataLoaded.AutoLockEnabledState(autoLockEnabledUiModel),
-            autoLockIntervalsState = AutoLockSettingsState.DataLoaded.AutoLockIntervalState(autoLockIntervalsUiModel),
+            autoLockEnabledState = autoLockEnabledState,
+            autoLockIntervalsState = autoLockIntervalsState,
             forceOpenPinCreation = Effect.empty(),
             pinLockChangeRequested = Effect.empty(),
             updateError = Effect.empty()

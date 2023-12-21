@@ -48,7 +48,7 @@ internal class AutoLockSettingsReducerTest(
     @Before
     fun setup() {
         every { intervalsMapper.toIntervalsListUiModel() } returns baseExpectedIntervals
-        every { intervalsMapper.toSelectedIntervalUiModel(AutoLockInterval.NotEnabled) } returns notEnabledUiModel
+        every { intervalsMapper.toSelectedIntervalUiModel(AutoLockInterval.Immediately) } returns immediatelyUiModel
         every { intervalsMapper.toSelectedIntervalUiModel(AutoLockInterval.OneDay) } returns oneDayUiModel
     }
 
@@ -69,10 +69,10 @@ internal class AutoLockSettingsReducerTest(
     companion object {
 
         private val oneDayUiModel = AutoLockIntervalUiModel(AutoLockInterval.OneDay, description = 1)
-        private val notEnabledUiModel = AutoLockIntervalUiModel(AutoLockInterval.NotEnabled, description = 0)
+        private val immediatelyUiModel = AutoLockIntervalUiModel(AutoLockInterval.Immediately, description = 0)
 
         private val baseExpectedIntervals = listOf(
-            AutoLockIntervalUiModel(AutoLockInterval.NotEnabled, description = 0),
+            AutoLockIntervalUiModel(AutoLockInterval.Immediately, description = 0),
             AutoLockIntervalUiModel(AutoLockInterval.OneDay, description = 1)
         )
 
@@ -81,8 +81,9 @@ internal class AutoLockSettingsReducerTest(
         )
 
         private val baseAutoLockIntervalState = AutoLockSettingsState.DataLoaded.AutoLockIntervalState(
-            AutoLockIntervalsUiModel(
-                AutoLockIntervalUiModel(AutoLockInterval.NotEnabled, description = 0),
+            dropdownExpanded = false,
+            autoLockIntervalsUiModel = AutoLockIntervalsUiModel(
+                AutoLockIntervalUiModel(AutoLockInterval.Immediately, description = 0),
                 baseExpectedIntervals
             )
         )
@@ -100,7 +101,7 @@ internal class AutoLockSettingsReducerTest(
         fun data() = arrayOf(
             TestInput(
                 AutoLockSettingsState.Loading,
-                AutoLockSettingsEvent.Data.Loaded(AutoLockPreference(true), AutoLockInterval.NotEnabled),
+                AutoLockSettingsEvent.Data.Loaded(AutoLockPreference(true), AutoLockInterval.Immediately),
                 baseDataLoaded
             ),
             TestInput(
@@ -134,6 +135,16 @@ internal class AutoLockSettingsReducerTest(
                 baseDataLoaded,
                 AutoLockSettingsEvent.ChangePinLockRequested,
                 baseDataLoaded.copy(pinLockChangeRequested = Effect.of(Unit))
+            ),
+            TestInput(
+                baseDataLoaded,
+                AutoLockSettingsEvent.Update.AutoLockIntervalsDropDownToggled(true),
+                baseDataLoaded.copy(autoLockIntervalsState = baseAutoLockIntervalState.copy(dropdownExpanded = true))
+            ),
+            TestInput(
+                baseDataLoaded.copy(autoLockIntervalsState = baseAutoLockIntervalState.copy(dropdownExpanded = true)),
+                AutoLockSettingsEvent.Update.AutoLockIntervalsDropDownToggled(false),
+                baseDataLoaded.copy(autoLockIntervalsState = baseAutoLockIntervalState.copy(dropdownExpanded = false))
             )
         )
     }

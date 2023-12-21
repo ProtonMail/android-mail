@@ -25,7 +25,10 @@ sealed interface AutoLockSettingsOperation
 
 sealed interface AutoLockSettingsViewAction : AutoLockSettingsOperation {
     data class ToggleAutoLockPreference(val newValue: Boolean) : AutoLockSettingsViewAction
+
     data class UpdateAutoLockInterval(val interval: AutoLockInterval) : AutoLockSettingsViewAction
+
+    data class ToggleIntervalDropDownVisibility(val value: Boolean) : AutoLockSettingsViewAction
 }
 
 sealed interface AutoLockSettingsEvent : AutoLockSettingsOperation {
@@ -33,13 +36,15 @@ sealed interface AutoLockSettingsEvent : AutoLockSettingsOperation {
     sealed interface Data : AutoLockSettingsEvent {
         data class Loaded(
             val lockEnabled: AutoLockPreference,
-            val selectedInterval: AutoLockInterval
+            val selectedInterval: AutoLockInterval,
+            val dropdownMenuVisible: Boolean = false
         ) : Data
     }
 
     sealed interface Update : AutoLockSettingsEvent {
         data class AutoLockPreferenceEnabled(val newValue: Boolean) : Update
         data class AutoLockIntervalSet(val newValue: AutoLockInterval) : Update
+        data class AutoLockIntervalsDropDownToggled(val newValue: Boolean) : Update
     }
 
     object UpdateError : AutoLockSettingsEvent

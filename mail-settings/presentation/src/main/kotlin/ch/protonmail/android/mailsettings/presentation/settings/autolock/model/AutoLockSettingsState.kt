@@ -33,6 +33,9 @@ sealed interface AutoLockSettingsState {
     ) : AutoLockSettingsState {
 
         data class AutoLockEnabledState(val autoLockEnabledUiModel: AutoLockEnabledUiModel)
-        data class AutoLockIntervalState(val autoLockIntervalsUiModel: AutoLockIntervalsUiModel)
+        data class AutoLockIntervalState(
+            val autoLockIntervalsUiModel: AutoLockIntervalsUiModel,
+            val dropdownExpanded: Boolean
+        )
     }
 }
