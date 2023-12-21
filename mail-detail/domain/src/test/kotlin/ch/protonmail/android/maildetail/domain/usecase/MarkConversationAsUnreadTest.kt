@@ -23,12 +23,9 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.DataErrorSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
-import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
 import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
-import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
-import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.mailconversation.domain.usecase.MarkConversationsAsUnread
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
@@ -38,20 +35,16 @@ internal class MarkConversationAsUnreadTest {
 
     private val userId = UserIdSample.Primary
     private val conversationId = ConversationIdSample.WeatherForecast
-    private val mailLabel = MailLabelId.System.Archive
 
-    private val conversationRepository: ConversationRepository = mockk()
-    private val selectedMailLabelId: SelectedMailLabelId = mockk {
-        every { flow.value } returns mailLabel
-    }
+    private val markConversationsAsUnread: MarkConversationsAsUnread = mockk()
 
-    private val markUnread = MarkConversationAsUnread(conversationRepository, selectedMailLabelId)
+    private val markUnread = MarkConversationAsUnread(markConversationsAsUnread)
 
     @Test
     fun `returns error when repository fails`() = runTest {
         // given
         val error = DataErrorSample.NoCache.left()
-        coEvery { conversationRepository.markUnread(userId, conversationId, mailLabel.labelId) } returns error
+        coEvery { markConversationsAsUnread(userId, listOf(conversationId)) } returns error
 
         // when
         val result = markUnread(userId, conversationId)
@@ -63,13 +56,13 @@ internal class MarkConversationAsUnreadTest {
     @Test
     fun `returns updated conversation when repository succeeds`() = runTest {
         // given
-        val conversation = ConversationSample.WeatherForecast.right()
-        coEvery { conversationRepository.markUnread(userId, conversationId, mailLabel.labelId) } returns conversation
+        val conversation = ConversationSample.WeatherForecast
+        coEvery { markConversationsAsUnread(userId, listOf(conversationId)) } returns listOf(conversation).right()
 
         // when
         val result = markUnread(userId, conversationId)
 
         // then
-        assertEquals(conversation, result)
+        assertEquals(conversation.right(), result)
     }
 }

@@ -23,19 +23,11 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
-import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
-import ch.protonmail.android.mailconversation.domain.sample.ConversationLabelSample
-import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
-import ch.protonmail.android.maillabel.domain.model.MailLabels
+import ch.protonmail.android.mailconversation.domain.usecase.MoveConversations
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
-import ch.protonmail.android.maillabel.domain.model.toMailLabelSystem
-import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveMailLabels
-import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -44,44 +36,16 @@ class MoveConversationTest {
 
     private val userId = UserIdSample.Primary
     private val conversationId = ConversationIdSample.WeatherForecast
-    private val exclusiveMailLabels = SystemLabelId.exclusiveList.map { it.toMailLabelSystem() }
 
-    private val conversationRepository: ConversationRepository = mockk {
-        every { this@mockk.observeConversation(userId, conversationId, any()) } returns flowOf(
-            ConversationSample.WeatherForecast.copy(
-                labels = listOf(ConversationLabelSample.WeatherForecast.Inbox)
-            ).right()
-        )
-    }
-    private val observeMailLabels: ObserveMailLabels = mockk {
-        every { this@mockk.invoke(userId) } returns flowOf(
-            MailLabels(
-                systemLabels = exclusiveMailLabels,
-                folders = emptyList(),
-                labels = emptyList()
-            )
-        )
-    }
-    private val observeExclusiveMailLabels: ObserveExclusiveMailLabels = mockk {
-        every { this@mockk.invoke(userId) } returns flowOf(
-            MailLabels(
-                systemLabels = exclusiveMailLabels,
-                folders = emptyList(),
-                labels = emptyList()
-            )
-        )
-    }
-    private val move = MoveConversation(
-        conversationRepository = conversationRepository,
-        observeExclusiveMailLabels = observeExclusiveMailLabels,
-        observeMailLabels = observeMailLabels
-    )
+    private val moveConversations: MoveConversations = mockk()
+
+    private val move = MoveConversation(moveConversations)
 
     @Test
-    fun `when conversation repository returns error then return error`() = runTest {
+    fun `when move conversations returns error then return error`() = runTest {
         // Given
         val error = DataError.Local.NoDataCached.left()
-        coEvery { conversationRepository.observeConversation(userId, conversationId, any()) } returns flowOf(error)
+        coEvery { moveConversations(userId, listOf(conversationId), any()) } returns error
 
         // When
         val actual = move(userId, conversationId, SystemLabelId.Trash.labelId)
@@ -91,58 +55,15 @@ class MoveConversationTest {
     }
 
     @Test
-    fun `when move to returns error then return error`() = runTest {
-        // Given
-        val error = DataError.Local.NoDataCached.left()
-        coEvery {
-            conversationRepository.move(
-                userId,
-                conversationId,
-                exclusiveMailLabels.map { it.id.labelId },
-                exclusiveMailLabels.map { it.id.labelId },
-                SystemLabelId.Trash.labelId
-            )
-        } returns error
-
-        // When
-        val result = move(userId, conversationId, SystemLabelId.Trash.labelId)
-
-        // Then
-        assertEquals(error, result)
-    }
-
-
-    @Test
-    fun `when moving a conversation to trash then repository is called with the given data`() = runTest {
+    fun `when moving a conversation to trash then move conversations is called with the given data`() = runTest {
         // Given
         val toLabel = SystemLabelId.Trash.labelId
-
-        val conversation = ConversationSample.WeatherForecast.copy(
-            labels = listOf(ConversationLabelSample.WeatherForecast.Trash)
-        ).right()
-        coEvery {
-            conversationRepository.move(
-                userId,
-                conversationId,
-                exclusiveMailLabels.map { it.id.labelId },
-                exclusiveMailLabels.map { it.id.labelId },
-                toLabel
-            )
-        } returns conversation
+        coEvery { moveConversations(userId, listOf(conversationId), toLabel) } returns Unit.right()
 
         // When
-        val result = move(userId, conversationId, toLabel)
+        move(userId, conversationId, toLabel)
 
         // Then
-        coVerify {
-            conversationRepository.move(
-                userId,
-                conversationId,
-                exclusiveMailLabels.map { it.id.labelId },
-                exclusiveMailLabels.map { it.id.labelId },
-                toLabel
-            )
-        }
-        assertEquals(conversation, result)
+        coVerify { moveConversations(userId, listOf(conversationId), toLabel) }
     }
 }

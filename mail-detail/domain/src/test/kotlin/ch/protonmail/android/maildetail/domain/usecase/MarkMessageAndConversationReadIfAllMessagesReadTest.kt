@@ -24,11 +24,13 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
+import ch.protonmail.android.mailconversation.domain.usecase.MarkConversationsAsRead
 import ch.protonmail.android.maildetail.domain.model.MarkConversationReadError
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.testdata.conversation.ConversationTestData
+import io.mockk.Called
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -42,6 +44,7 @@ class MarkMessageAndConversationReadIfAllMessagesReadTest {
     private val messageRepository: MessageRepository = mockk()
     private val markMessageAsRead: MarkMessageAsRead = mockk()
     private val conversationRepository: ConversationRepository = mockk()
+    private val markConversationsAsRead: MarkConversationsAsRead = mockk()
     private val userId = UserIdSample.Primary
 
     @Test
@@ -126,7 +129,7 @@ class MarkMessageAndConversationReadIfAllMessagesReadTest {
         coEvery { conversationRepository.isCachedConversationRead(userId, sampleConversation.conversationId) } returns
             false.right()
         coEvery {
-            conversationRepository.markRead(userId, sampleConversation.conversationId)
+            markConversationsAsRead(userId, listOf(sampleConversation.conversationId))
         } returns error.left()
 
         // when
@@ -148,8 +151,8 @@ class MarkMessageAndConversationReadIfAllMessagesReadTest {
         coEvery { conversationRepository.isCachedConversationRead(userId, sampleConversation.conversationId) } returns
             false.right()
         coEvery {
-            conversationRepository.markRead(userId, sampleConversation.conversationId)
-        } returns sampleConversation.right()
+            markConversationsAsRead(userId, listOf(sampleConversation.conversationId))
+        } returns listOf(sampleConversation).right()
 
         // when
         val result = buildUseCase()(userId, sampleMessage.messageId, sampleConversation.conversationId)
@@ -157,7 +160,7 @@ class MarkMessageAndConversationReadIfAllMessagesReadTest {
         // then
         assertEquals(Unit.right(), result)
         coVerify(exactly = 1) { markMessageAsRead.invoke(userId, sampleMessage.messageId) }
-        coVerify(exactly = 1) { conversationRepository.markRead(userId, sampleConversation.conversationId) }
+        coVerify(exactly = 1) { markConversationsAsRead(userId, listOf(sampleConversation.conversationId)) }
     }
 
     @Test
@@ -170,11 +173,9 @@ class MarkMessageAndConversationReadIfAllMessagesReadTest {
         coEvery { messageRepository.observeCachedMessages(userId, sampleConversation.conversationId) } returns
             flowOf(nonEmptyListOf(sampleMessage, otherMessage).right())
         coEvery { markMessageAsRead.invoke(userId, sampleMessage.messageId) } returns sampleMessage.right()
-        coEvery { conversationRepository.isCachedConversationRead(userId, sampleConversation.conversationId) } returns
-            false.right()
         coEvery {
-            conversationRepository.markRead(userId, sampleConversation.conversationId)
-        } returns sampleConversation.right()
+            conversationRepository.isCachedConversationRead(userId, sampleConversation.conversationId)
+        } returns false.right()
 
         // when
         val result = buildUseCase()(userId, sampleMessage.messageId, sampleConversation.conversationId)
@@ -182,7 +183,7 @@ class MarkMessageAndConversationReadIfAllMessagesReadTest {
         // then
         assertEquals(MarkConversationReadError.ConversationHasUnreadMessages.left(), result)
         coVerify(exactly = 1) { markMessageAsRead.invoke(userId, sampleMessage.messageId) }
-        coVerify(exactly = 0) { conversationRepository.markRead(userId, sampleConversation.conversationId) }
+        coVerify { markConversationsAsRead wasNot Called }
     }
 
     @Test
@@ -203,12 +204,13 @@ class MarkMessageAndConversationReadIfAllMessagesReadTest {
         // then
         assertEquals(MarkConversationReadError.ConversationAlreadyRead.left(), result)
         coVerify(exactly = 1) { markMessageAsRead.invoke(userId, sampleMessage.messageId) }
-        coVerify(exactly = 0) { conversationRepository.markRead(userId, sampleConversation.conversationId) }
+        coVerify { markConversationsAsRead wasNot Called }
     }
 
     private fun buildUseCase() = MarkMessageAndConversationReadIfAllMessagesRead(
         messageRepository = messageRepository,
         markMessageAsRead = markMessageAsRead,
-        conversationRepository = conversationRepository
+        conversationRepository = conversationRepository,
+        markConversationsAsRead = markConversationsAsRead
     )
 }

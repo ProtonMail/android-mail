@@ -25,6 +25,7 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
+import ch.protonmail.android.mailconversation.domain.usecase.MarkConversationsAsRead
 import ch.protonmail.android.maildetail.domain.model.MarkConversationReadError
 import ch.protonmail.android.maildetail.domain.model.MarkConversationReadError.ConversationAlreadyRead
 import ch.protonmail.android.maildetail.domain.model.MarkConversationReadError.ConversationHasUnreadMessages
@@ -39,7 +40,8 @@ import javax.inject.Inject
 class MarkMessageAndConversationReadIfAllMessagesRead @Inject constructor(
     private val messageRepository: MessageRepository,
     private val markMessageAsRead: MarkMessageAsRead,
-    private val conversationRepository: ConversationRepository
+    private val conversationRepository: ConversationRepository,
+    private val markConversationsAsRead: MarkConversationsAsRead
 ) {
 
     suspend operator fun invoke(
@@ -82,7 +84,7 @@ class MarkMessageAndConversationReadIfAllMessagesRead @Inject constructor(
                         .map { messages -> messages.all { message -> !message.unread } }
                         .flatMap { allRead ->
                             if (allRead) {
-                                conversationRepository.markRead(userId, conversationId)
+                                markConversationsAsRead(userId, listOf(conversationId))
                                     .fold(
                                         ifLeft = { error -> DataSourceError(error).left() },
                                         ifRight = { Unit.right() }
