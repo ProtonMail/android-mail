@@ -34,7 +34,6 @@ class AutoLockIntervalsUiModelMapper @Inject constructor() {
 
     @StringRes
     private fun AutoLockInterval.getDescriptionStringRes(): Int = when (this) {
-        AutoLockInterval.NotEnabled -> R.string.mail_settings_auto_lock_not_enabled
         AutoLockInterval.Immediately -> R.string.mail_settings_auto_lock_immediately
         AutoLockInterval.FiveMinutes -> R.string.mail_settings_auto_lock_item_timer_description_five_minutes
         AutoLockInterval.FifteenMinutes -> R.string.mail_settings_auto_lock_item_timer_description_fifteen_minutes

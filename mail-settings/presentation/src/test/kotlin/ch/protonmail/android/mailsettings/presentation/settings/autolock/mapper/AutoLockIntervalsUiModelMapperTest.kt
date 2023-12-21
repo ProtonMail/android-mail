@@ -39,10 +39,6 @@ internal class AutoLockIntervalsUiModelMapperTest {
             // Given
             val expected = listOf(
                 AutoLockIntervalUiModel(
-                    AutoLockInterval.NotEnabled,
-                    R.string.mail_settings_auto_lock_not_enabled
-                ),
-                AutoLockIntervalUiModel(
                     AutoLockInterval.Immediately,
                     R.string.mail_settings_auto_lock_immediately
                 ),
@@ -91,13 +87,6 @@ internal class AutoLockIntervalsUiModelMapperTest {
             @JvmStatic
             @Parameterized.Parameters(name = "{0}")
             fun data() = arrayOf(
-                TestInput(
-                    interval = AutoLockInterval.NotEnabled,
-                    expectedValue = AutoLockIntervalUiModel(
-                        AutoLockInterval.NotEnabled,
-                        R.string.mail_settings_auto_lock_not_enabled
-                    )
-                ),
                 TestInput(
                     interval = AutoLockInterval.Immediately,
                     expectedValue = AutoLockIntervalUiModel(
