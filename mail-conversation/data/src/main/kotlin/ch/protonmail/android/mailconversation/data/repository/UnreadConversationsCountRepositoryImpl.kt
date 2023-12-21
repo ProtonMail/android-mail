@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailconversation.data.repository
 
+import arrow.core.raise.either
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.data.local.UnreadConversationsCountLocalDataSource
 import ch.protonmail.android.mailconversation.data.remote.UnreadConversationsCountRemoteDataSource
 import ch.protonmail.android.mailconversation.domain.repository.UnreadConversationsCountRepository
@@ -25,6 +27,7 @@ import ch.protonmail.android.mailmessage.domain.model.UnreadCounter
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapLatest
 import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.LabelId
 import javax.inject.Inject
 
 class UnreadConversationsCountRepositoryImpl @Inject constructor(
@@ -40,6 +43,24 @@ class UnreadConversationsCountRepositoryImpl @Inject constructor(
             conversationCounters.map { UnreadCounter(it.labelId, it.unreadCount) }
         }
 
+    override suspend fun decrementUnreadCount(userId: UserId, labelId: LabelId) = either<DataError.Local, Unit> {
+        conversationLocalDataSource.observeConversationCounters(userId).mapLatest { counters ->
+            counters.find { it.labelId == labelId }?.let {
+                val updatedCounter = it.copy(unreadCount = it.unreadCount.decrementCoercingZero())
+                conversationLocalDataSource.saveConversationCounter(updatedCounter)
+            }
+        }
+    }
+
+    override suspend fun incrementUnreadCount(userId: UserId, labelId: LabelId) = either<DataError.Local, Unit> {
+        conversationLocalDataSource.observeConversationCounters(userId).mapLatest { counters ->
+            counters.find { it.labelId == labelId }?.let {
+                val updatedCounter = it.copy(unreadCount = it.unreadCount.inc())
+                conversationLocalDataSource.saveConversationCounter(updatedCounter)
+            }
+        }
+    }
+
     private suspend fun refreshLocalConversationCounters(userId: UserId) {
         conversationLocalDataSource.saveConversationCounters(
             conversationRemoteDataSource.getConversationCounters(userId).map {
@@ -48,4 +69,5 @@ class UnreadConversationsCountRepositoryImpl @Inject constructor(
         )
     }
 
+    private fun Int.decrementCoercingZero() = (this - 1).coerceAtLeast(0)
 }

@@ -889,7 +889,7 @@ class ConversationDetailViewModelTest {
                 conversationId,
                 SystemLabelId.Trash.labelId
             )
-        } returns ConversationSample.WeatherForecast.right()
+        } returns Unit.right()
         every {
             reducer.newStateFrom(
                 currentState = ConversationDetailState.Loading,
@@ -928,7 +928,7 @@ class ConversationDetailViewModelTest {
                 conversationId = conversationId,
                 labelId = SystemLabelId.Spam.labelId
             )
-        } returns ConversationSample.WeatherForecast.right()
+        } returns Unit.right()
         val selectedLabel = MailLabelUiModelTestData.spamAndCustomFolder.first()
         val dataState = ConversationDetailState.Loading.copy(
             bottomSheetState = BottomSheetState(
@@ -1167,7 +1167,7 @@ class ConversationDetailViewModelTest {
                     conversationId = conversationId,
                     labelId = SystemLabelId.Archive.labelId
                 )
-            } returns ConversationSample.WeatherForecast.right()
+            } returns Unit.right()
 
             coEvery { observeConversationMessagesWithLabels(userId, conversationId) } returns flowOf(
                 nonEmptyListOf(

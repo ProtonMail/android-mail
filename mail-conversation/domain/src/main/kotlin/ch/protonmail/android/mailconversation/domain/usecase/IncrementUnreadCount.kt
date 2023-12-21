@@ -16,21 +16,20 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailconversation.data.local
+package ch.protonmail.android.mailconversation.domain.usecase
 
-import ch.protonmail.android.mailconversation.data.local.entity.UnreadConversationsCountEntity
-import kotlinx.coroutines.flow.Flow
+import ch.protonmail.android.mailconversation.domain.repository.UnreadConversationsCountRepository
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
+import javax.inject.Inject
 
-interface UnreadConversationsCountLocalDataSource {
-    fun observeConversationCounters(userId: UserId): Flow<List<UnreadConversationsCountEntity>>
+class IncrementUnreadCount @Inject constructor(
+    private val unreadConversationsCountRepository: UnreadConversationsCountRepository
+) {
 
-    suspend fun saveConversationCounters(counters: List<UnreadConversationsCountEntity>)
-
-    suspend fun delete(userId: UserId, labelIds: List<LabelId>)
-
-    suspend fun deleteAll(userId: UserId)
-
-    suspend fun saveConversationCounter(updatedCounter: UnreadConversationsCountEntity)
+    suspend operator fun invoke(userId: UserId, labelIds: List<LabelId>) {
+        labelIds.onEach { labelId ->
+            unreadConversationsCountRepository.incrementUnreadCount(userId, labelId)
+        }
+    }
 }

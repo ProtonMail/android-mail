@@ -44,4 +44,8 @@ class UnreadConversationsCountLocalDataSourceImpl @Inject constructor(
     override suspend fun deleteAll(userId: UserId) {
         unreadConversationsCountDao.deleteAll(userId)
     }
+
+    override suspend fun saveConversationCounter(counter: UnreadConversationsCountEntity) {
+        unreadConversationsCountDao.insertOrUpdate(counter)
+    }
 }
