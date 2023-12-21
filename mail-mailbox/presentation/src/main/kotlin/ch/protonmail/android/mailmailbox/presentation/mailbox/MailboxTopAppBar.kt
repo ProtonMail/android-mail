@@ -19,7 +19,9 @@
 package ch.protonmail.android.mailmailbox.presentation.mailbox
 
 import androidx.annotation.DrawableRes
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
@@ -66,7 +68,12 @@ fun MailboxTopAppBar(
         )
 
         is MailboxTopAppBarState.Data.SearchMode -> UiModel.Empty.copy(
-            navigationIconRes = R.drawable.ic_proton_arrow_left
+            navigationIconRes = R.drawable.ic_proton_arrow_left,
+            navigationIconContentDescription = stringResource(
+                id = R.string.mailbox_toolbar_exit_search_mode_content_description
+            ),
+            shouldShowActions = false,
+            searchQuery = state.searchQuery
         )
     }
 
@@ -76,57 +83,107 @@ fun MailboxTopAppBar(
         is MailboxTopAppBarState.Data.SearchMode -> actions.onExitSearchMode
     }
 
+    Crossfade(targetState = state, label = "") { topBarState ->
+
+        if (topBarState is MailboxTopAppBarState.Data.SearchMode) {
+            TopAppBarInSearchMode(
+                modifier = modifier,
+                uiModel = uiModel,
+                actions = actions
+            )
+        } else {
+            ProtonTopAppBar(
+                modifier = modifier.testTag(MailboxTopAppBarTestTags.RootItem),
+                title = {
+                    Text(
+                        modifier = Modifier
+                            .testTag(MailboxTopAppBarTestTags.LocationLabel)
+                            .clickable(onClick = actions.onTitleClick),
+                        text = uiModel.title
+                    )
+                },
+                navigationIcon = {
+                    if (state !is MailboxTopAppBarState.Loading) {
+                        NavigationIcon(
+                            uiModel = uiModel,
+                            onNavigationIconClick = onNavigationIconClick
+                        )
+                    }
+                },
+                actions = {
+
+                    if (uiModel.shouldShowActions) {
+                        IconButton(
+                            modifier = Modifier.testTag(MailboxTopAppBarTestTags.SearchButton),
+                            onClick = actions.onEnterSearchMode
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_proton_magnifier),
+                                contentDescription = stringResource(
+                                    id = R.string.mailbox_toolbar_search_button_content_description
+                                )
+                            )
+                        }
+                        IconButton(
+                            modifier = Modifier.testTag(MailboxTopAppBarTestTags.ComposerButton),
+                            onClick = actions.onOpenComposer
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_proton_pen_square),
+                                contentDescription = stringResource(
+                                    id = R.string.mailbox_toolbar_compose_button_content_description
+                                )
+                            )
+                        }
+                    }
+                }
+            )
+        }
+    }
+}
+
+@Composable
+private fun TopAppBarInSearchMode(
+    modifier: Modifier = Modifier,
+    uiModel: UiModel,
+    actions: MailboxTopAppBar.Actions
+) {
+
     ProtonTopAppBar(
         modifier = modifier.testTag(MailboxTopAppBarTestTags.RootItem),
         title = {
-            Text(
+            SearchView(
                 modifier = Modifier
-                    .testTag(MailboxTopAppBarTestTags.LocationLabel)
-                    .clickable(onClick = actions.onTitleClick),
-                text = uiModel.title
+                    .fillMaxWidth()
+                    .testTag(MailboxTopAppBarTestTags.SearchView),
+                initialValue = uiModel.searchQuery,
+                actions = SearchView.Actions(
+                    onClearSearchQuery = {},
+                    onSearchQuerySubmit = actions.onSearch
+                )
             )
         },
         navigationIcon = {
-            if (state !is MailboxTopAppBarState.Loading) {
-                IconButton(
-                    modifier = Modifier.testTag(MailboxTopAppBarTestTags.HamburgerMenu),
-                    onClick = onNavigationIconClick
-                ) {
-                    Icon(
-                        painter = painterResource(id = uiModel.navigationIconRes),
-                        contentDescription = uiModel.navigationIconContentDescription
-                    )
-                }
-            }
+            NavigationIcon(
+                uiModel = uiModel,
+                onNavigationIconClick = actions.onExitSearchMode
+            )
         },
-        actions = {
-
-            if (uiModel.shouldShowActions) {
-                IconButton(
-                    modifier = Modifier.testTag(MailboxTopAppBarTestTags.SearchButton),
-                    onClick = actions.onEnterSearchMode
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_proton_magnifier),
-                        contentDescription = stringResource(
-                            id = R.string.mailbox_toolbar_search_button_content_description
-                        )
-                    )
-                }
-                IconButton(
-                    modifier = Modifier.testTag(MailboxTopAppBarTestTags.ComposerButton),
-                    onClick = actions.onOpenComposer
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_proton_pen_square),
-                        contentDescription = stringResource(
-                            id = R.string.mailbox_toolbar_compose_button_content_description
-                        )
-                    )
-                }
-            }
-        }
+        actions = {}
     )
+}
+
+@Composable
+private fun NavigationIcon(uiModel: UiModel, onNavigationIconClick: () -> Unit) {
+    IconButton(
+        modifier = Modifier.testTag(MailboxTopAppBarTestTags.HamburgerMenu),
+        onClick = onNavigationIconClick
+    ) {
+        Icon(
+            painter = painterResource(id = uiModel.navigationIconRes),
+            contentDescription = uiModel.navigationIconContentDescription
+        )
+    }
 }
 
 object MailboxTopAppBar {
@@ -146,7 +203,8 @@ private data class UiModel(
     val title: String,
     @DrawableRes val navigationIconRes: Int,
     val navigationIconContentDescription: String,
-    val shouldShowActions: Boolean
+    val shouldShowActions: Boolean,
+    val searchQuery: String = EMPTY_STRING
 ) {
 
     companion object {
@@ -186,4 +244,5 @@ object MailboxTopAppBarTestTags {
     const val LocationLabel = "LocationLabel"
     const val SearchButton = "SearchButton"
     const val ComposerButton = "ComposerButton"
+    const val SearchView = "SearchView"
 }
