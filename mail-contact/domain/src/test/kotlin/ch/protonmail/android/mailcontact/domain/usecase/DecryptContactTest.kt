@@ -24,39 +24,232 @@ import ch.protonmail.android.mailcontact.domain.model.ContactProperty
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
 import ch.protonmail.android.testdata.contact.ContactSample
 import ch.protonmail.android.testdata.contact.ContactVCardSample
+import ezvcard.Ezvcard
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkStatic
 import kotlinx.coroutines.test.runTest
+import me.proton.core.contact.domain.decryptContactCard
 import me.proton.core.contact.domain.entity.ContactCard
 import me.proton.core.contact.domain.entity.ContactWithCards
+import me.proton.core.contact.domain.entity.DecryptedVCard
 import me.proton.core.crypto.common.context.CryptoContext
+import me.proton.core.crypto.common.pgp.VerificationStatus
+import me.proton.core.key.domain.entity.keyholder.KeyHolderContext
 import me.proton.core.user.domain.UserManager
+import me.proton.core.user.domain.entity.User
 import org.junit.Test
 import kotlin.test.assertEquals
 
+@Suppress("MaxLineLength")
 class DecryptContactTest {
 
-    private val user = UserSample.Primary
+    private val cryptoContextMock = mockk<CryptoContext>()
+
+    private val user = mockk<User> {
+        every { keys } returns emptyList() // listOf(userAddressKey)
+        every { userId } returns UserSample.Primary.userId
+    }
 
     private val userManagerMock = mockk<UserManager> {
         coEvery { getUser(any()) } returns user
     }
 
-    private val cryptoContext = mockk<CryptoContext>()
+    private val sut = DecryptContact(userManagerMock, cryptoContextMock)
 
-    private val sut = DecryptContact(userManagerMock, cryptoContext)
+    private val vCardSignature = "vCardSignature"
 
-    @Suppress("MaxLineLength")
+    @Test
+    fun `parses and applies VCard Properties into DecryptedContact model from ClearText ContactCard`() = runTest {
+        // Given
+        val vCardClearText = """
+            BEGIN:VCARD
+            VERSION:4.0
+            PRODID:ez-vcard 0.11.3
+            FN;PREF=1:Mario_ClearText@protonmail.com
+            END:VCARD
+        """.trimIndent()
+
+        val contactWithCards = ContactWithCards(
+            contact = ContactSample.Mario,
+            contactCards = listOf(
+                ContactCard.ClearText(vCardClearText)
+            )
+        )
+
+        val expected = DecryptedContact(
+            id = ContactSample.Mario.id,
+            formattedName = ContactProperty.FormattedName(value = "Mario_ClearText@protonmail.com")
+        )
+
+        // When
+        val actual = sut(user.userId, contactWithCards)
+
+        // Then
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `parses and applies VCard Properties into DecryptedContact model from Signed ContactCard`() = runTest {
+        // Given
+        val vCardSigned = """
+            BEGIN:VCARD
+            VERSION:4.0
+            PRODID:ez-vcard 0.11.3
+            FN;PREF=1:Mario_Signed@protonmail.com
+            END:VCARD
+        """.trimIndent()
+
+        val contactWithCards = ContactWithCards(
+            contact = ContactSample.Mario,
+            contactCards = listOf(
+                ContactCard.Signed(vCardSigned, vCardSignature)
+            )
+        )
+
+        mockkStatic(KeyHolderContext::decryptContactCard)
+        every {
+            any<KeyHolderContext>().decryptContactCard(contactWithCards.contactCards.first())
+        } returns DecryptedVCard(Ezvcard.parse(vCardSigned).first(), VerificationStatus.Success)
+
+        val expected = DecryptedContact(
+            id = ContactSample.Mario.id,
+            formattedName = ContactProperty.FormattedName(value = "Mario_Signed@protonmail.com")
+        )
+
+        // When
+        val actual = sut(user.userId, contactWithCards)
+
+        // Then
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `parses and applies VCard Properties into DecryptedContact model from Encrypted ContactCard`() = runTest {
+        // Given
+        val vCardEncrypted = """
+            BEGIN:VCARD
+            VERSION:4.0
+            PRODID:ez-vcard 0.11.3
+            FN;PREF=1:Mario_Encrypted@protonmail.com
+            END:VCARD
+        """.trimIndent()
+
+        val contactWithCards = ContactWithCards(
+            contact = ContactSample.Mario,
+            contactCards = listOf(
+                ContactCard.Encrypted(vCardEncrypted, vCardSignature)
+            )
+        )
+
+        mockkStatic(KeyHolderContext::decryptContactCard)
+        every {
+            any<KeyHolderContext>().decryptContactCard(contactWithCards.contactCards.first())
+        } returns DecryptedVCard(Ezvcard.parse(vCardEncrypted).first(), VerificationStatus.Success)
+
+        val expected = DecryptedContact(
+            id = ContactSample.Mario.id,
+            formattedName = ContactProperty.FormattedName(value = "Mario_Encrypted@protonmail.com")
+        )
+
+        // When
+        val actual = sut(user.userId, contactWithCards)
+
+        // Then
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `does not apply VCard Properties into DecryptedContact model from ContactCard that failed signature verification`() =
+        runTest {
+            // Given
+            val vCardSigned = """
+                BEGIN:VCARD
+                VERSION:4.0
+                PRODID:ez-vcard 0.11.3
+                FN;PREF=1:Mario_Signed@protonmail.com
+                END:VCARD
+            """.trimIndent()
+
+            val contactWithCards = ContactWithCards(
+                contact = ContactSample.Mario,
+                contactCards = listOf(
+                    ContactCard.Encrypted(vCardSigned, vCardSignature)
+                )
+            )
+
+            mockkStatic(KeyHolderContext::decryptContactCard)
+            every {
+                any<KeyHolderContext>().decryptContactCard(contactWithCards.contactCards.first())
+            } returns DecryptedVCard(Ezvcard.parse(vCardSigned).first(), VerificationStatus.Failure)
+
+            val expected = DecryptedContact(
+                id = ContactSample.Mario.id,
+                formattedName = null
+            )
+
+            // When
+            val actual = sut(user.userId, contactWithCards)
+
+            // Then
+            assertEquals(expected, actual)
+        }
+
+    @Test
+    fun `does not apply VCard Properties into DecryptedContact model from ContactCard that failed decryption`() =
+        runTest {
+            // Given
+            val vCardEncrypted = """
+                BEGIN:VCARD
+                VERSION:4.0
+                PRODID:ez-vcard 0.11.3
+                FN;PREF=1:Mario_Encrypted@protonmail.com
+                END:VCARD
+            """.trimIndent()
+
+            val contactWithCards = ContactWithCards(
+                contact = ContactSample.Mario,
+                contactCards = listOf(
+                    ContactCard.Encrypted(vCardEncrypted, vCardSignature)
+                )
+            )
+
+            mockkStatic(KeyHolderContext::decryptContactCard)
+            every {
+                any<KeyHolderContext>().decryptContactCard(contactWithCards.contactCards.first())
+            } throws Exception("decryption exception")
+
+            val expected = DecryptedContact(
+                id = ContactSample.Mario.id,
+                formattedName = null
+            )
+
+            // When
+            val actual = sut(user.userId, contactWithCards)
+
+            // Then
+            assertEquals(expected, actual)
+        }
+
     @Test
     fun `parses and combines all VCard Properties into DecryptedContact model`() = runTest {
         // Given
         val contactWithCards = ContactWithCards(
             contact = ContactSample.Mario,
             contactCards = listOf(
-                ContactCard.ClearText(ContactVCardSample.marioVCardType2),
-                ContactCard.ClearText(ContactVCardSample.marioVCardType3)
+                ContactCard.Signed(ContactVCardSample.marioVCardType2, vCardSignature),
+                ContactCard.Encrypted(ContactVCardSample.marioVCardType3, vCardSignature)
             )
         )
+
+        mockkStatic(KeyHolderContext::decryptContactCard)
+        every {
+            any<KeyHolderContext>().decryptContactCard(contactWithCards.contactCards[0])
+        } returns DecryptedVCard(Ezvcard.parse(ContactVCardSample.marioVCardType2).first(), VerificationStatus.Success)
+        every {
+            any<KeyHolderContext>().decryptContactCard(contactWithCards.contactCards[1])
+        } returns DecryptedVCard(Ezvcard.parse(ContactVCardSample.marioVCardType3).first(), VerificationStatus.Success)
 
         val expected = DecryptedContact(
             id = ContactSample.Mario.id,
