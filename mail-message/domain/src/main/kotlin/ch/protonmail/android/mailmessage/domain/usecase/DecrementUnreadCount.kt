@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailmessage.domain.usecase
 
 import arrow.core.Either
+import arrow.core.raise.either
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.domain.repository.UnreadMessagesCountRepository
 import me.proton.core.domain.entity.UserId
@@ -29,6 +30,10 @@ class DecrementUnreadCount @Inject constructor(
     private val unreadCountRepository: UnreadMessagesCountRepository
 ) {
 
-    suspend operator fun invoke(userId: UserId, labelId: LabelId): Either<DataError.Local, Unit> =
-        unreadCountRepository.decrementUnreadCount(userId, labelId)
+    suspend operator fun invoke(userId: UserId, labelIds: List<LabelId>): Either<DataError.Local, Unit> = either {
+        labelIds.onEach { labelId ->
+            unreadCountRepository.decrementUnreadCount(userId, labelId).onLeft { raise(it) }
+        }
+    }
+
 }

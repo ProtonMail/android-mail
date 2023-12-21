@@ -63,12 +63,12 @@ class DeleteMessagesTest {
         val messages = listOf(MessageSample.Invoice, MessageSample.HtmlInvoice, unreadMessage).right()
         coEvery { messageRepository.deleteMessages(userId, messageIds, currentLabel) } returns Unit.right()
         coEvery { messageRepository.observeCachedMessages(userId, messageIds) } returns flowOf(messages)
-        coEvery { decrementUnreadCount(userId, currentLabel) } returns Unit.right()
+        coEvery { decrementUnreadCount(userId, unreadMessage.labelIds) } returns Unit.right()
 
         // when
         deleteMessages(userId, messageIds, currentLabel)
 
         // then
-        coVerifySequence { decrementUnreadCount(userId, currentLabel) }
+        coVerifySequence { decrementUnreadCount(userId, unreadMessage.labelIds) }
     }
 }

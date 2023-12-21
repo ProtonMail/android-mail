@@ -47,21 +47,23 @@ class MoveMessages @Inject constructor(
             messageRepository.getLocalMessages(userId, messageIds).associateWith {
                 it.labelIds.firstOrNull { labelId -> labelId in exclusiveMailLabels }
             }
-        updateUnreadMessagesCount(userId, messagesWithExclusiveLabels, labelId)
+        decrementUnreadCountInOriginLabel(userId, messagesWithExclusiveLabels.keys)
         val messageIdsWithExclusiveLabels = messagesWithExclusiveLabels.mapKeys { it.key.messageId }
-        messageRepository.moveTo(userId, messageIdsWithExclusiveLabels, labelId).bind()
+        messageRepository.moveTo(userId, messageIdsWithExclusiveLabels, labelId)
+            .onRight { messages -> incrementUnreadCountInDestinationLabel(userId, messages) }
+            .bind()
     }
 
-    private suspend fun updateUnreadMessagesCount(
-        userId: UserId,
-        messagesWithExclusiveLabels: Map<Message, LabelId?>,
-        destinationLabel: LabelId
-    ) = messagesWithExclusiveLabels.onEach { messageWithLabels ->
-        val exclusiveLabelId = messageWithLabels.value
-        if (exclusiveLabelId != null && messageWithLabels.key.unread) {
-            decrementUnreadCount(userId, exclusiveLabelId)
-            incrementUnreadCount(userId, destinationLabel)
-        }
+    private suspend fun incrementUnreadCountInDestinationLabel(userId: UserId, messages: List<Message>) {
+        messages
+            .filter { it.unread }
+            .forEach { incrementUnreadCount(userId, it.labelIds) }
+    }
+
+    private suspend fun decrementUnreadCountInOriginLabel(userId: UserId, messages: Set<Message>) {
+        messages
+            .filter { it.unread }
+            .forEach { decrementUnreadCount(userId, it.labelIds) }
     }
 
 }

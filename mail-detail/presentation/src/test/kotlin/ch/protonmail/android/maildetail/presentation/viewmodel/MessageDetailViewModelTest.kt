@@ -249,8 +249,7 @@ class MessageDetailViewModelTest {
                 messageId = messageId,
                 labelId = SystemLabelId.Trash.labelId
             )
-        } returns
-            with(MessageSample) { Invoice.moveTo(LabelIdSample.Trash) }.right()
+        } returns Unit.right()
     }
     private val relabelMessage: RelabelMessage = mockk {
         coEvery {
@@ -821,7 +820,7 @@ class MessageDetailViewModelTest {
                 messageId,
                 MailLabelId.System.Spam.labelId
             )
-        } returns MessageSample.Invoice.right()
+        } returns Unit.right()
 
         // When
         viewModel.state.test {
@@ -913,7 +912,7 @@ class MessageDetailViewModelTest {
     @Test
     fun `verify relabel message and move to is called and dismiss is set when destination gets confirmed`() = runTest {
         // Given
-        coEvery { moveMessage(userId, messageId, any()) } returns MessageSample.Invoice.right()
+        coEvery { moveMessage(userId, messageId, any()) } returns Unit.right()
 
         coEvery {
             relabelMessage(
@@ -1116,7 +1115,7 @@ class MessageDetailViewModelTest {
     }
 
     @Test
-    fun `attachment metadata of all attachments is observed when messagebody with attachment loaded successfully`() =
+    fun `attachment metadata of all attachments is observed when messageBody with attachment loaded successfully`() =
         runTest {
             // Given
             val expectedMessageBody = DecryptedMessageBody(

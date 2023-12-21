@@ -21,18 +21,12 @@ package ch.protonmail.android.mailmessage.domain.usecase
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
-import ch.protonmail.android.maillabel.domain.model.MailLabels
-import ch.protonmail.android.maillabel.domain.model.SystemLabelId
-import ch.protonmail.android.maillabel.domain.model.toMailLabelSystem
-import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveMailLabels
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import io.mockk.coEvery
 import io.mockk.coVerifySequence
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -43,21 +37,11 @@ class MarkMessagesAsReadTest {
 
     private val userId = UserIdSample.Primary
     private val messageIds = listOf(MessageIdSample.Invoice, MessageIdSample.PlainTextMessage)
-    private val exclusiveMailLabels = SystemLabelId.exclusiveList.map { it.toMailLabelSystem() }
 
     private val messageRepository = mockk<MessageRepository>()
     private val decrementUnreadCount = mockk<DecrementUnreadCount>()
-    private val observeExclusiveMailLabels = mockk<ObserveExclusiveMailLabels> {
-        every { this@mockk(userId) } returns flowOf(
-            MailLabels(systemLabels = exclusiveMailLabels, folders = emptyList(), labels = emptyList())
-        )
-    }
 
-    private val markRead = MarkMessagesAsRead(
-        messageRepository,
-        decrementUnreadCount,
-        observeExclusiveMailLabels
-    )
+    private val markRead = MarkMessagesAsRead(messageRepository, decrementUnreadCount)
 
     @Test
     fun `when repository fails then error is returned`() = runTest {
@@ -90,17 +74,16 @@ class MarkMessagesAsReadTest {
     @Test
     fun `decrement unread messages count for each unread message that is marked as read`() = runTest {
         // given
-        val unreadMessageExclusiveLabel = LabelIdSample.Archive
         val unreadMessage = MessageSample.UnreadInvoice
         val messages = listOf(MessageSample.Invoice, MessageSample.HtmlInvoice, unreadMessage).right()
         coEvery { messageRepository.markRead(userId, messageIds) } returns messages
         coEvery { messageRepository.observeCachedMessages(userId, messageIds) } returns flowOf(messages)
-        coEvery { decrementUnreadCount(userId, unreadMessageExclusiveLabel) } returns Unit.right()
+        coEvery { decrementUnreadCount(userId, unreadMessage.labelIds) } returns Unit.right()
 
         // when
         markRead(userId, messageIds)
 
         // then
-        coVerifySequence { decrementUnreadCount(userId, unreadMessageExclusiveLabel) }
+        coVerifySequence { decrementUnreadCount(userId, unreadMessage.labelIds) }
     }
 }

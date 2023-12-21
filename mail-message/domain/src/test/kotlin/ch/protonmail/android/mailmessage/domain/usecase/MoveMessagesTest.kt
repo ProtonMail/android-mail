@@ -21,7 +21,6 @@ package ch.protonmail.android.mailmessage.domain.usecase
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
@@ -92,7 +91,6 @@ class MoveMessagesTest {
     fun `for each unread message moved decrement unread count of 'from' label and increment it of 'to' label'`() =
         runTest {
             // given
-            val fromLabel = LabelIdSample.Archive // Unread invoice has this exclusive label
             val toLabel = SystemLabelId.Trash.labelId
             val unreadMessage = MessageSample.UnreadInvoice
             val messages = listOf(MessageSample.Invoice, MessageSample.HtmlInvoice, unreadMessage)
@@ -100,16 +98,16 @@ class MoveMessagesTest {
             expectObserveExclusiveMailLabelSucceeds()
             expectGetLocalMessagesSucceeds(messages)
             expectMoveSucceeds(toLabel, messages, expectedMap)
-            coEvery { decrementUnreadCount(userId, fromLabel) } returns Unit.right()
-            coEvery { incrementUnreadCount(userId, toLabel) } returns Unit.right()
+            coEvery { decrementUnreadCount(userId, unreadMessage.labelIds) } returns Unit.right()
+            coEvery { incrementUnreadCount(userId, unreadMessage.labelIds) } returns Unit.right()
 
             // when
             moveMessages(userId, messageIds, toLabel)
 
             // then
             coVerifySequence {
-                decrementUnreadCount(userId, fromLabel)
-                incrementUnreadCount(userId, toLabel)
+                decrementUnreadCount(userId, unreadMessage.labelIds)
+                incrementUnreadCount(userId, unreadMessage.labelIds)
             }
         }
 

@@ -35,19 +35,15 @@ class DeleteMessages @Inject constructor(
         messageIds: List<MessageId>,
         currentLabelId: LabelId
     ) {
-        decrementUnreadMessagesCount(userId, messageIds, currentLabelId)
+        decrementUnreadMessagesCount(userId, messageIds)
         messageRepository.deleteMessages(userId, messageIds, currentLabelId)
     }
 
-    private suspend fun decrementUnreadMessagesCount(
-        userId: UserId,
-        messageIds: List<MessageId>,
-        currentLabelId: LabelId
-    ) {
+    private suspend fun decrementUnreadMessagesCount(userId: UserId, messageIds: List<MessageId>) {
         messageRepository.observeCachedMessages(userId, messageIds).firstOrNull()?.map { messages ->
             messages.onEach { message ->
                 if (message.unread) {
-                    decrementUnreadCount(userId, currentLabelId)
+                    decrementUnreadCount(userId, message.labelIds)
                 }
             }
         }
