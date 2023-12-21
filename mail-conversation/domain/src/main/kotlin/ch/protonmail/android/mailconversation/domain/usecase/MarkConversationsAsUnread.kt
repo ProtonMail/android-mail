@@ -16,22 +16,27 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.domain.usecase
+package ch.protonmail.android.mailconversation.domain.usecase
 
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
+import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
-class MarkConversationsAsRead @Inject constructor(
-    private val conversationRepository: ConversationRepository
+class MarkConversationsAsUnread @Inject constructor(
+    private val conversationRepository: ConversationRepository,
+    private val selectedMailLabelId: SelectedMailLabelId
 ) {
 
     suspend operator fun invoke(
         userId: UserId,
         conversationIds: List<ConversationId>
-    ): Either<DataError, List<Conversation>> = conversationRepository.markRead(userId, conversationIds)
+    ): Either<DataError, List<Conversation>> {
+        val contextLabelId = selectedMailLabelId.flow.value.labelId
+        return conversationRepository.markUnread(userId, conversationIds, contextLabelId)
+    }
 }

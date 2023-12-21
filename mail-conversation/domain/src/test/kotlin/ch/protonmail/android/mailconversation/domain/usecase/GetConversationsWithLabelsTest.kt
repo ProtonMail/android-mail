@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailconversation.domain.test
+package ch.protonmail.android.mailconversation.domain.usecase
 
 import arrow.core.left
 import arrow.core.nonEmptyListOf
@@ -32,7 +32,6 @@ import ch.protonmail.android.mailconversation.domain.entity.ConversationWithLabe
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
 import ch.protonmail.android.mailconversation.domain.sample.ConversationLabelSample
 import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
-import ch.protonmail.android.mailconversation.domain.usecase.GetConversationsWithLabels
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic

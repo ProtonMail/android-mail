@@ -65,11 +65,11 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Message
 import ch.protonmail.android.mailmailbox.domain.model.OnboardingPreference
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
 import ch.protonmail.android.mailmailbox.domain.usecase.GetMailboxActions
-import ch.protonmail.android.mailmailbox.domain.usecase.MarkConversationsAsRead
-import ch.protonmail.android.mailmailbox.domain.usecase.MarkConversationsAsUnread
+import ch.protonmail.android.mailconversation.domain.usecase.MarkConversationsAsRead
+import ch.protonmail.android.mailconversation.domain.usecase.MarkConversationsAsUnread
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkMessagesAsRead
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkMessagesAsUnread
-import ch.protonmail.android.mailmailbox.domain.usecase.MoveConversations
+import ch.protonmail.android.mailconversation.domain.usecase.MoveConversations
 import ch.protonmail.android.mailmailbox.domain.usecase.MoveMessages
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveOnboarding

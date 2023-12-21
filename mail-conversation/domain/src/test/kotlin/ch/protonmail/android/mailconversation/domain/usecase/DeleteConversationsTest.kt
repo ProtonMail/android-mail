@@ -16,14 +16,13 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailconversation.domain.test
+package ch.protonmail.android.mailconversation.domain.usecase
 
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
-import ch.protonmail.android.mailconversation.domain.usecase.DeleteConversations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

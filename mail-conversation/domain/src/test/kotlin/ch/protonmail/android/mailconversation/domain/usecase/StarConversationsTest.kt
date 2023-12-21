@@ -16,14 +16,12 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailconversation.domain.test
+package ch.protonmail.android.mailconversation.domain.usecase
 
 import arrow.core.left
 import arrow.core.right
-import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
-import ch.protonmail.android.mailconversation.domain.usecase.UnStarConversations
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.testdata.conversation.ConversationTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
@@ -34,34 +32,41 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class UnStarConversationsTest {
+class StarConversationsTest {
 
     private val userId = UserIdTestData.userId
     private val conversationIds = listOf(ConversationTestData.starredConversation.conversationId)
 
     private val conversationRepository: ConversationRepository = mockk {
         coEvery {
-            removeLabel(any(), any<List<ConversationId>>(), any())
-        } returns listOf(ConversationTestData.conversation).right()
+            addLabel(userId, conversationIds, SystemLabelId.Starred.labelId)
+        } returns listOf(ConversationTestData.starredConversation).right()
     }
 
-    private val unStarConversations = UnStarConversations(conversationRepository)
+    private val starConversations = StarConversations(conversationRepository)
 
     @Test
-    fun `call conversation repository to remove starred label`() = runTest {
+    fun `call conversation repository to add starred label`() = runTest {
         // When
-        unStarConversations(userId, conversationIds)
+        starConversations(userId, conversationIds)
 
         // Then
-        coVerify { conversationRepository.removeLabel(userId, conversationIds, SystemLabelId.Starred.labelId) }
+        coVerify {
+            conversationRepository.addLabel(
+                UserIdTestData.userId,
+                conversationIds,
+                SystemLabelId.Starred.labelId
+            )
+        }
     }
 
     @Test
-    fun `return unStarred conversation when repository succeeds`() = runTest {
+    fun `return starred conversation when repository succeeds`() = runTest {
         // When
-        val actual = unStarConversations(userId, conversationIds)
+        val actual = starConversations(userId, conversationIds)
+
         // Then
-        assertEquals(listOf(ConversationTestData.conversation).right(), actual)
+        assertEquals(listOf(ConversationTestData.starredConversation).right(), actual)
     }
 
     @Test
@@ -69,10 +74,12 @@ class UnStarConversationsTest {
         // Given
         val localError = DataError.Local.NoDataCached
         coEvery {
-            conversationRepository.removeLabel(userId, conversationIds, SystemLabelId.Starred.labelId)
+            conversationRepository.addLabel(userId, conversationIds, SystemLabelId.Starred.labelId)
         } returns localError.left()
+
         // When
-        val actual = unStarConversations(userId, conversationIds)
+        val actual = starConversations(UserIdTestData.userId, conversationIds)
+
         // Then
         assertEquals(DataError.Local.NoDataCached.left(), actual)
     }

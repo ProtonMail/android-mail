@@ -16,35 +16,22 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.domain.usecase
+package ch.protonmail.android.mailconversation.domain.usecase
 
 import arrow.core.Either
-import arrow.core.raise.either
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
-import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveMailLabels
-import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
-import kotlinx.coroutines.flow.first
 import me.proton.core.domain.entity.UserId
-import me.proton.core.label.domain.entity.LabelId
 import javax.inject.Inject
 
-class MoveConversations @Inject constructor(
-    private val conversationRepository: ConversationRepository,
-    private val observeExclusiveMailLabels: ObserveExclusiveMailLabels,
-    private val observeMailLabels: ObserveMailLabels
+class MarkConversationsAsRead @Inject constructor(
+    private val conversationRepository: ConversationRepository
 ) {
 
     suspend operator fun invoke(
         userId: UserId,
-        conversationIds: List<ConversationId>,
-        labelId: LabelId
-    ): Either<DataError, Unit> = either {
-        val allLabelIds = observeMailLabels(userId).first().allById.mapNotNull { it.key.labelId }
-        val exclusiveMailLabels = observeExclusiveMailLabels(userId).first().allById.mapNotNull { it.key.labelId }
-        conversationRepository
-            .move(userId, conversationIds, allLabelIds, exclusiveMailLabels, toLabelId = labelId)
-            .bind()
-    }
+        conversationIds: List<ConversationId>
+    ): Either<DataError, List<Conversation>> = conversationRepository.markRead(userId, conversationIds)
 }
