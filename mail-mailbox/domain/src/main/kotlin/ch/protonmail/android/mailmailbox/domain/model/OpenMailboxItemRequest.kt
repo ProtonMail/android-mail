@@ -21,5 +21,6 @@ package ch.protonmail.android.mailmailbox.domain.model
 data class OpenMailboxItemRequest(
     val itemId: MailboxItemId,
     val itemType: MailboxItemType,
-    val shouldOpenInComposer: Boolean
+    val shouldOpenInComposer: Boolean,
+    val subItemId: MailboxItemId? = null
 )

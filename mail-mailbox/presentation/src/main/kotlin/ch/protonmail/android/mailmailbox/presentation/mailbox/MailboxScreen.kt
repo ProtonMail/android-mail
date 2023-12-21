@@ -360,8 +360,8 @@ fun MailboxScreen(
                         lazyListState.animateScrollToItem(0)
                     }
 
-                    ConsumableLaunchedEffect(mailboxListState.openItemEffect) { itemId ->
-                        actions.navigateToMailboxItem(itemId)
+                    ConsumableLaunchedEffect(mailboxListState.openItemEffect) { request ->
+                        actions.navigateToMailboxItem(request)
                     }
 
                     ConsumableLaunchedEffect(mailboxListState.offlineEffect) {
