@@ -59,6 +59,9 @@ internal sealed interface MailboxViewAction : MailboxOperation {
         val itemIds: List<String>
     ) : MailboxViewAction
 
+    object EnterSearchMode : MailboxViewAction, AffectingTopAppBar
+    object ExitSearchMode : MailboxViewAction, AffectingTopAppBar
+
     object ExitSelectionMode : MailboxViewAction, AffectingTopAppBar, AffectingMailboxList, AffectingBottomAppBar
 
     data class ItemClicked(val item: MailboxItemUiModel) : MailboxViewAction

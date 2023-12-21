@@ -90,6 +90,7 @@ import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
@@ -181,7 +182,9 @@ fun MailboxScreen(
             onSwipeTrash = { userId, itemId -> viewModel.submit(MailboxViewAction.SwipeTrashAction(userId, itemId)) },
             onSwipeStar = { userId, itemId, isStarred ->
                 viewModel.submit(MailboxViewAction.SwipeStarAction(userId, itemId, isStarred))
-            }
+            },
+            onEnterSearchMode = { viewModel.submit(MailboxViewAction.EnterSearchMode) },
+            onExitSearchMode = { viewModel.submit(MailboxViewAction.ExitSearchMode) }
         )
 
         mailboxState.bottomSheetState?.let {
@@ -288,20 +291,22 @@ fun MailboxScreen(
                     actions = MailboxTopAppBar.Actions(
                         onOpenMenu = actions.openDrawerMenu,
                         onExitSelectionMode = { actions.onExitSelectionMode() },
-                        onExitSearchMode = {},
+                        onExitSearchMode = { actions.onExitSearchMode() },
                         onTitleClick = { scope.launch { lazyListState.animateScrollToItem(0) } },
-                        onEnterSearchMode = { actions.showFeatureMissingSnackbar() },
+                        onEnterSearchMode = { actions.onEnterSearchMode() },
                         onSearch = {},
                         onOpenComposer = { actions.navigateToComposer() }
                     )
                 )
 
-                MailboxStickyHeader(
-                    modifier = Modifier,
-                    state = mailboxState.unreadFilterState,
-                    onFilterEnabled = actions.onEnableUnreadFilter,
-                    onFilterDisabled = actions.onDisableUnreadFilter
-                )
+                if (mailboxState.topAppBarState !is MailboxTopAppBarState.Data.SearchMode) {
+                    MailboxStickyHeader(
+                        modifier = Modifier,
+                        state = mailboxState.unreadFilterState,
+                        onFilterEnabled = actions.onEnableUnreadFilter,
+                        onFilterDisabled = actions.onDisableUnreadFilter
+                    )
+                }
             }
         },
         bottomBar = {
@@ -758,7 +763,9 @@ object MailboxScreen {
         val onSwipeArchive: (UserId, String) -> Unit,
         val onSwipeSpam: (UserId, String) -> Unit,
         val onSwipeTrash: (UserId, String) -> Unit,
-        val onSwipeStar: (UserId, String, Boolean) -> Unit
+        val onSwipeStar: (UserId, String, Boolean) -> Unit,
+        val onEnterSearchMode: () -> Unit,
+        val onExitSearchMode: () -> Unit
     ) {
 
         companion object {
@@ -796,7 +803,9 @@ object MailboxScreen {
                 onSwipeArchive = { _, _ -> },
                 onSwipeSpam = { _, _ -> },
                 onSwipeTrash = { _, _ -> },
-                onSwipeStar = { _, _, _ -> }
+                onSwipeStar = { _, _, _ -> },
+                onExitSearchMode = {},
+                onEnterSearchMode = {}
             )
         }
     }

@@ -83,6 +83,16 @@ internal class MailboxTopAppBarReducerTest(
                 currentState = MailboxTopAppBarState.Loading,
                 operation = MailboxEvent.SelectedLabelChanged(inboxLabel),
                 expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text())
+            ),
+            TestInput(
+                currentState = MailboxTopAppBarState.Loading,
+                operation = MailboxViewAction.EnterSearchMode,
+                expectedState = MailboxTopAppBarState.Loading
+            ),
+            TestInput(
+                currentState = MailboxTopAppBarState.Loading,
+                operation = MailboxViewAction.ExitSearchMode,
+                expectedState = MailboxTopAppBarState.Loading
             )
         )
 
@@ -106,6 +116,16 @@ internal class MailboxTopAppBarReducerTest(
                 currentState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text()),
                 operation = MailboxEvent.SelectedLabelChanged(trashLabel),
                 expectedState = MailboxTopAppBarState.Data.DefaultMode(trashLabel.text())
+            ),
+            TestInput(
+                currentState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text()),
+                operation = MailboxViewAction.EnterSearchMode,
+                expectedState = MailboxTopAppBarState.Data.SearchMode(inboxLabel.text(), searchQuery = EMPTY_STRING)
+            ),
+            TestInput(
+                currentState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text()),
+                operation = MailboxViewAction.ExitSearchMode,
+                expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text())
             )
         )
 
@@ -174,6 +194,16 @@ internal class MailboxTopAppBarReducerTest(
                 currentState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 42),
                 operation = MailboxViewAction.MoveToSpam,
                 expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text())
+            ),
+            TestInput(
+                currentState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 42),
+                operation = MailboxViewAction.EnterSearchMode,
+                expectedState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 42)
+            ),
+            TestInput(
+                currentState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 42),
+                operation = MailboxViewAction.ExitSearchMode,
+                expectedState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 42)
             )
         )
 
@@ -197,6 +227,16 @@ internal class MailboxTopAppBarReducerTest(
                 currentState = MailboxTopAppBarState.Data.SearchMode(inboxLabel.text(), searchQuery = EMPTY_STRING),
                 operation = MailboxEvent.SelectedLabelChanged(trashLabel),
                 expectedState = MailboxTopAppBarState.Data.SearchMode(trashLabel.text(), searchQuery = EMPTY_STRING)
+            ),
+            TestInput(
+                currentState = MailboxTopAppBarState.Data.SearchMode(inboxLabel.text(), searchQuery = EMPTY_STRING),
+                operation = MailboxViewAction.EnterSearchMode,
+                expectedState = MailboxTopAppBarState.Data.SearchMode(inboxLabel.text(), searchQuery = EMPTY_STRING)
+            ),
+            TestInput(
+                currentState = MailboxTopAppBarState.Data.SearchMode(inboxLabel.text(), searchQuery = EMPTY_STRING),
+                operation = MailboxViewAction.ExitSearchMode,
+                expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text())
             )
         )
 

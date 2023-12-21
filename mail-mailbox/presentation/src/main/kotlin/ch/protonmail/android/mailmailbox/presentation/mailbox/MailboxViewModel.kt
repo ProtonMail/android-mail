@@ -269,8 +269,18 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.UnStar -> handleUnStarAction(viewAction)
                 is MailboxViewAction.MoveToArchive,
                 is MailboxViewAction.MoveToSpam -> handleMoveToAction(viewAction)
+                is MailboxViewAction.EnterSearchMode -> handleEnterSearchMode(viewAction)
+                is MailboxViewAction.ExitSearchMode -> handleExitSearchMode(viewAction)
             }.exhaustive
         }
+    }
+
+    private fun handleEnterSearchMode(viewAction: MailboxViewAction) {
+        emitNewStateFrom(viewAction)
+    }
+
+    private fun handleExitSearchMode(viewAction: MailboxViewAction) {
+        emitNewStateFrom(viewAction)
     }
 
     private suspend fun handleMailboxItemChanged(updatedItemIds: List<String>) {

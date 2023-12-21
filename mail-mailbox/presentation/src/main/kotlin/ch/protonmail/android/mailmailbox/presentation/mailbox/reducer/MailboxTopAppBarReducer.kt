@@ -46,6 +46,8 @@ class MailboxTopAppBarReducer @Inject constructor() {
             is MailboxViewAction.MoveToArchive,
             is MailboxViewAction.MoveToSpam,
             is MailboxEvent.Trash -> currentState.toNewStateForExitSelectionMode()
+            is MailboxViewAction.ExitSearchMode -> currentState.toNewStateForExitSearchMode()
+            is MailboxViewAction.EnterSearchMode -> currentState.toNewStateForEnterSearchMode()
         }
     }
 
@@ -67,6 +69,18 @@ class MailboxTopAppBarReducer @Inject constructor() {
             is MailboxTopAppBarState.Loading -> MailboxTopAppBarState.Data.DefaultMode(currentMailLabel.text())
             is MailboxTopAppBarState.Data -> this.with(currentMailLabel.text())
         }
+    }
+
+    private fun MailboxTopAppBarState.toNewStateForEnterSearchMode() = when (this) {
+        is MailboxTopAppBarState.Data.DefaultMode ->
+            MailboxTopAppBarState.Data.SearchMode(currentLabelName, "")
+        else -> this
+    }
+
+    private fun MailboxTopAppBarState.toNewStateForExitSearchMode() = when (this) {
+        is MailboxTopAppBarState.Data.SearchMode ->
+            MailboxTopAppBarState.Data.DefaultMode(currentLabelName)
+        else -> this
     }
 
     private fun MailboxTopAppBarState.toNewStateForEnterSelectionMode() = when (this) {
