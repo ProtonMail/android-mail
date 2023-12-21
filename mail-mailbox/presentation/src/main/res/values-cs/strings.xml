@@ -91,9 +91,7 @@
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Nepodařilo se získat složky</string>
   <!--  Spotlight V6 Beta  -->
   <string name="onboarding_headline_beta">Beta testování nové aplikace</string>
-  <string name="onboarding_description_beta">Přestavěli jsme aplikaci, abychom zajistili její stabilitu a spolehlivost. Podělte se o své připomínky a sledujte, jak budeme znovu zavádět nové funkce. Další informace.</string>
-  <string name="onboarding_description_beta_link">https://proton.me/support/mail-android-beta</string>
-  <string name="onboarding_description_beta_learn_more">Více informací</string>
+  <string name="onboarding_description_beta">Přestavěli jsme aplikaci, abychom zajistili její stabilitu a spolehlivost. Podělte se o své připomínky a sledujte, jak budeme znovu zavádět nové funkce. <a href="https://proton.me/support/mail-android-beta">Více informací.</a></string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Vítejte v nové aplikaci</string>
   <string name="onboarding_description_ga">Aplikace Proton Mail byla kompletně přestavěna od základů s ohledem na stabilitu a výkon.</string>

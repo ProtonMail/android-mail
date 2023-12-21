@@ -115,6 +115,34 @@
   <string name="mail_settings_notifications_notifications_settings_hint">Przejdź do systemowych ustawień powiadomień</string>
   <string name="mail_settings_notifications_update_error">Wystąpił błąd podczas aktualizowania ustawień</string>
   <string name="mail_settings_notifications_loading_error">Wystąpił błąd podczas ładowania ustawień</string>
+  <!-- Auto lock -->
+  <string name="mail_settings_auto_lock_title">Automatyczna blokada</string>
+  <string name="mail_settings_auto_lock_item_title">Automatyczna blokada aplikacji</string>
+  <string name="mail_settings_auto_lock_item_description">Włączenie tej funkcji zablokuje aplikację. Wymagane będzie użycie kodu PIN lub odcisku palca, aby ją odblokować</string>
+  <string name="mail_settings_auto_lock_change_pin_description">Zmień kod PIN</string>
+  <string name="mail_settings_auto_lock_item_timer_title">Automatyczne blokowanie</string>
+  <string name="mail_settings_auto_lock_not_enabled">Wyłączone</string>
+  <string name="mail_settings_auto_lock_immediately">Natychmiast</string>
+  <string name="mail_settings_auto_lock_item_timer_description_five_minutes">5 minut bezczynności</string>
+  <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 minut bezczynności</string>
+  <string name="mail_settings_auto_lock_item_timer_description_one_hour">1 godzina bezczynności</string>
+  <string name="mail_settings_auto_lock_item_timer_description_one_day">1 dzień bezczynności</string>
+  <string name="mail_settings_auto_lock_update_error">Wystąpił błąd podczas aktualizowania ustawień</string>
+  <string name="mail_settings_pin_insertion_input_title">Wpisz kod PIN</string>
+  <string name="mail_settings_pin_insertion_set_title">Ustaw kod PIN</string>
+  <string name="mail_settings_pin_insertion_confirm_title">Potwierdź kod PIN</string>
+  <string name="mail_settings_pin_insertion_lock_icon_description">Lock icon</string>
+  <string name="mail_settings_pin_insertion_pin_dot_description">Kropka</string>
+  <string name="mail_settings_pin_insertion_backspace_description">Usuń</string>
+  <string name="mail_settings_pin_insertion_button_create">Utwórz</string>
+  <string name="mail_settings_pin_insertion_button_confirm">Potwierdź</string>
+  <string name="mail_settings_pin_insertion_error_no_match">Kody PIN nie pasują do siebie.</string>
+  <plurals name="mail_settings_pin_insertion_error_wrong_code">
+    <item quantity="one">Kod PIN jest nieprawidłowy. Pozostała %s próba.</item>
+    <item quantity="few">Kod PIN jest nieprawidłowy. Pozostały %s próby.</item>
+    <item quantity="many">Kod PIN jest nieprawidłowy. Pozostało %s prób.</item>
+    <item quantity="other">Kod PIN jest nieprawidłowy. Pozostało %s prób.</item>
+  </plurals>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Czyszczenie pamięci podręcznej…</string>
   <!-- Error messages -->

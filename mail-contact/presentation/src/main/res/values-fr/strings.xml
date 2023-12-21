@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="contact_list_title">Contacts</string>
+  <string name="contact_list_loading_error">Une erreur s\'est produite lors du chargement des contacts. Réessayez plus tard.</string>
+  <string name="no_contacts">Aucun contact n\'a été trouvé.</string>
+  <string name="no_contacts_description">Améliorez votre expérience de messagerie en créant un contact ou en important des contacts existants.</string>
+  <string name="add_contact">Ajouter un contact</string>
+  <string name="add_contact_content_description">Ajouter un contact</string>
+  <string name="all_title">Tous</string>
+  <string name="groups_title">Groupes</string>
+  <string name="group_member_count">%1$s membre</string>
+  <string name="group_members_count">%1$s membres</string>
+  <string name="new_contact">Nouveau contact</string>
+  <string name="new_group">Nouveau groupe</string>
+  <string name="import_contact">Importer les contacts de l\'appareil</string>
+  <string name="no_contact_email">Aucune adresse e-mail</string>
+  <string name="multiple_contact_emails">%1$s, +%2$d</string>
+</resources>

@@ -73,9 +73,7 @@
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Αποτυχία λήψης φακέλων</string>
   <!--  Spotlight V6 Beta  -->
   <string name="onboarding_headline_beta">Δοκιμάστε τη νέα εφαρμογή beta</string>
-  <string name="onboarding_description_beta">Ανακατασκευάσαμε την εφαρμογή για σταθερότητα και αξιοπιστία. Μοιραστείτε τα σχόλιά σας και μείνετε συντονισμένοι καθώς επαναφέρουμε τις λειτουργίες. Μάθετε περισσότερα.</string>
-  <string name="onboarding_description_beta_link">https://proton.me/support/mail-android-beta</string>
-  <string name="onboarding_description_beta_learn_more">Μάθετε περισσότερα</string>
+  <string name="onboarding_description_beta">We\'ve rebuilt the app for stability and reliability. Share your feedback and stay tuned as we reintroduce features. <a href="https://proton.me/support/mail-android-beta">Learn more.</a></string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Καλώς ήλθατε στη νέα εφαρμογή</string>
   <string name="onboarding_description_ga">Πλήρως ανακατασκευασμένη από την αρχή, η νέα εφαρμογή Proton Mail δημιουργήθηκε για σταθερότητα και απόδοση.</string>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="contact_list_title">Kontakter</string>
+  <string name="contact_list_loading_error">Det gick inte att ladda kontakter, försök igen senare</string>
+  <string name="no_contacts">Hittade inga kontakter</string>
+  <string name="no_contacts_description">Förbättra din e-postupplevelse genom att skapa en ny kontakt eller importera befintliga.</string>
+  <string name="add_contact">Lägg till kontakt</string>
+  <string name="add_contact_content_description">Lägg till kontakt</string>
+  <string name="all_title">Alla</string>
+  <string name="groups_title">Grupper</string>
+  <string name="group_member_count">%1$s medlem</string>
+  <string name="group_members_count">%1$s medlemmar</string>
+  <string name="new_contact">Ny kontakt</string>
+  <string name="new_group">Ny grupp</string>
+  <string name="import_contact">Ladda upp enhetskontakter</string>
+  <string name="no_contact_email">Ingen e-postadress</string>
+  <string name="multiple_contact_emails">%1$s, +%2$d</string>
+</resources>

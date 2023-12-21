@@ -73,9 +73,7 @@
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Fehler beim Laden der Ordner.</string>
   <!--  Spotlight V6 Beta  -->
   <string name="onboarding_headline_beta">Werde Beta-Tester für die neue App.</string>
-  <string name="onboarding_description_beta">Wir haben die App im Hinblick auf Stabilität und Zuverlässigkeit überarbeitet. Teile uns dein Feedback mit und bleib dran, während wir weitere Funktionen hinzufügen. Mehr erfahren.</string>
-  <string name="onboarding_description_beta_link">https://proton.me/support/de/mail-android-beta</string>
-  <string name="onboarding_description_beta_learn_more">Mehr erfahren</string>
+  <string name="onboarding_description_beta">We\'ve rebuilt the app for stability and reliability. Share your feedback and stay tuned as we reintroduce features. <a href="https://proton.me/support/mail-android-beta">Learn more.</a></string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Willkommen in der neuen App</string>
   <string name="onboarding_description_ga">Die neue Proton Mail-App wurde von Grund auf neu entwickelt und ist auf Stabilität und Leistung ausgelegt.</string>

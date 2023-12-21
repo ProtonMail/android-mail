@@ -36,7 +36,7 @@
   <string name="action_unstar_description">Прыбраць зорачку</string>
   <string name="action_label_description">Пазначыць як</string>
   <string name="action_move_description">Перамясціць у</string>
-  <string name="action_trash_description">Перамясціць у сметніцу</string>
+  <string name="action_trash_description">Сметніца</string>
   <string name="action_delete_description">Выдаліць</string>
   <string name="action_archive_description">Архіваваць</string>
   <string name="action_spam_description">Перамясціць у спам</string>

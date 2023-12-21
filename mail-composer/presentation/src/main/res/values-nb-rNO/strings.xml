@@ -47,6 +47,7 @@
   <string name="composer_attachment_size_exceeded_dialog_message">Størrelsesgrensen for vedlegg er %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Kryptering av vedlegg på nytt mislyktes. Av sikkerhetsmessige årsaker ble alle vedlegg fjernet.</string>
   <string name="composer_warning_local_data_shown">Den nyeste versjonen av dette utkastet kunne ikke lastes inn. Enhver endring vil overstyre innholdet.</string>
+  <string name="composer_button_add_password">Legg til passord</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Feil ved sending</string>
   <string name="message_sending_error_dialog_button_dismiss">Lukk</string>

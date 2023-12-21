@@ -47,6 +47,7 @@
   <string name="composer_attachment_size_exceeded_dialog_message">El límite del tamaño para los archivos adjuntos es de %1$s.</string>
   <string name="composer_attachment_reencryption_failed_message">Error al volver a cifrar el archivo adjunto. Por seguridad se borraron todos los archivos adjuntos.</string>
   <string name="composer_warning_local_data_shown">Error al cargar la última versión de este borrador. Cualquier cambio sobrescribirá su contenido.</string>
+  <string name="composer_button_add_password">Añadir una contraseña</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Error de envío</string>
   <string name="message_sending_error_dialog_button_dismiss">Cerrar</string>

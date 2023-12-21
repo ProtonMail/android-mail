@@ -73,7 +73,7 @@
   <string name="phishing_link_confirmation_dialog_content_part_2">В целях вашей безопасности не продолжайте.</string>
   <string name="phishing_link_confirmation_dialog_button_go_back">Вернуться (рекомендуется)</string>
   <string name="phishing_link_confirmation_dialog_button_continue">Игнорировать предупреждение и продолжить</string>
-  <string name="message_delete_dialog_title">Delete message</string>
+  <string name="message_delete_dialog_title">Удалить сообщение</string>
   <string name="message_delete_dialog_message">Вы уверены, что хотите безвозвратно удалить это сообщение?</string>
   <string name="message_deleted">Сообщение удалено</string>
   <string name="error_delete_message_failed">Failed to delete message</string>

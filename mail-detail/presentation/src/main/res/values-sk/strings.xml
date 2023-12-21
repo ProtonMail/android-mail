@@ -77,8 +77,8 @@
   <string name="message_delete_dialog_message">Naozaj chcete natrvalo vymazať túto správu?</string>
   <string name="message_deleted">Správa bola odstránená</string>
   <string name="error_delete_message_failed">Nepodarilo sa odstrániť správu</string>
-  <string name="error_delete_message_failed_wrong_folder">Správa sa nenachádza na mieste, kde je možné ju odstrániť</string>
+  <string name="error_delete_message_failed_wrong_folder">Správa sa nenachádza na mieste, kde ju možno vymazať</string>
   <string name="error_delete_conversation_failed">Nepodarilo sa odstrániť konverzáciu</string>
-  <string name="error_delete_conversation_failed_wrong_folder">Konverzácia sa nenachádza na mieste, kde je možné ju odstrániť</string>
+  <string name="error_delete_conversation_failed_wrong_folder">Konverzácia sa nenachádza na mieste, kde ju možno vymazať</string>
   <string name="conversation_deleted">Konverzácia bola zmazaná</string>
 </resources>

@@ -47,6 +47,7 @@
   <string name="composer_attachment_size_exceeded_dialog_message">Maksymalny rozmiar załączników wynosi %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Ponowne szyfrowanie załącznika nie powiodło się. Ze względów bezpieczeństwa wszystkie załączniki zostały usunięte.</string>
   <string name="composer_warning_local_data_shown">Nie udało się załadować najnowszej wersji szkicu. Wszelkie jej zmiany spowodują nadpisanie zawartości.</string>
+  <string name="composer_button_add_password">Dodaj hasło</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Błąd wysyłania</string>
   <string name="message_sending_error_dialog_button_dismiss">Zamknij</string>

@@ -36,7 +36,7 @@
   <string name="action_unstar_description">Retirer des favoris</string>
   <string name="action_label_description">Labelliser</string>
   <string name="action_move_description">Déplacer</string>
-  <string name="action_trash_description">Déplacer dans la Corbeille</string>
+  <string name="action_trash_description">Déplacer dans le dossier Corbeille</string>
   <string name="action_delete_description">Supprimer</string>
   <string name="action_archive_description">Déplacer dans le dossier Archives</string>
   <string name="action_spam_description">Déplacer dans le dossier Indésirables/spam</string>

@@ -47,6 +47,7 @@
   <string name="composer_attachment_size_exceeded_dialog_message">添付ファイルのサイズ制限は%1$sです。</string>
   <string name="composer_attachment_reencryption_failed_message">添付ファイルの再暗号化に失敗しました。セキュリティ上の理由により、すべての添付ファイルは削除されました。</string>
   <string name="composer_warning_local_data_shown">The latest version of this draft failed to load. Any change will override its content.</string>
+  <string name="composer_button_add_password">Add password</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Sending error</string>
   <string name="message_sending_error_dialog_button_dismiss">Close</string>

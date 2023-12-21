@@ -47,6 +47,7 @@
   <string name="composer_attachment_size_exceeded_dialog_message">Обмеження розміру для вкладень – %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Збій повторного шифрування вкладення. З міркувань безпеки усі вкладення вилучено.</string>
   <string name="composer_warning_local_data_shown">The latest version of this draft failed to load. Any change will override its content.</string>
+  <string name="composer_button_add_password">Add password</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Sending error</string>
   <string name="message_sending_error_dialog_button_dismiss">Закрити</string>

@@ -91,9 +91,7 @@
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Не ўдалося атрымаць папкі</string>
   <!--  Spotlight V6 Beta  -->
   <string name="onboarding_headline_beta">Бэта-тэсціраванне новай праграмы</string>
-  <string name="onboarding_description_beta">Мы перапрацавалі праграму для стабільнасці і надзейнасці. Падзяліцеся сваім водгукам і будзьце ў курсе, калі мы ўкараняем новыя функцыі.</string>
-  <string name="onboarding_description_beta_link">https://proton.me/support/mail-android-beta</string>
-  <string name="onboarding_description_beta_learn_more">Даведацца больш</string>
+  <string name="onboarding_description_beta">Мы перапрацавалі праграму для стабільнасці і надзейнасці. Падзяліцеся сваім водгукам і будзьце ў курсе, калі мы ўкараняем новыя функцыі. <a href="https://proton.me/support/mail-android-beta">Даведацца больш.</a></string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Сардэчна запрашаем у новую праграму</string>
   <string name="onboarding_description_ga">Новая праграма Proton Mail цалкам перапрацавана з нуля, каб забяспечыць стабільнасць і прадукцыйнасць.</string>

@@ -73,9 +73,7 @@
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Kan geen mappen ophalen</string>
   <!--  Spotlight V6 Beta  -->
   <string name="onboarding_headline_beta">Bèta-test de nieuwe app</string>
-  <string name="onboarding_description_beta">We hebben de app opnieuw opgebouwd voor de stabiliteit en betrouwbaarheid. Deel uw feedback en blijf op de hoogte als we functies herintroduceren. Lees meer.</string>
-  <string name="onboarding_description_beta_link">https://proton.me/support/mail-android-beta</string>
-  <string name="onboarding_description_beta_learn_more">Lees meer</string>
+  <string name="onboarding_description_beta">We\'ve rebuilt the app for stability and reliability. Share your feedback and stay tuned as we reintroduce features. <a href="https://proton.me/support/mail-android-beta">Learn more.</a></string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Welkom bij de nieuwe app</string>
   <string name="onboarding_description_ga">Volledig opnieuw van de grond  opgebouwd, de nieuwe Proton Mail-app werd gemaakt voor stabiliteit en prestaties.</string>
@@ -96,7 +94,7 @@
   <!-- Sidebar Beta label -->
   <string name="sidebar_beta_version_title">Proton Mail Beta</string>
   <string name="sidebar_beta_version_description">Tik voor meer informatie over dit project.</string>
-  <string name="sidebar_beta_version_icon_content_description">Navigeer naar KB-artikel.</string>
+  <string name="sidebar_beta_version_icon_content_description">Navigeer naar KDB-artikel.</string>
   <string name="mailbox_action_trash_message">Bericht verplaatst naar de prullenbak</string>
   <string name="mailbox_action_archive_message">Bericht verplaatst naar archief</string>
   <string name="mailbox_action_spam_message">Bericht verplaatst naar spam</string>

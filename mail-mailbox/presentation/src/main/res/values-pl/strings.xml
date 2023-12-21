@@ -91,9 +91,7 @@
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Nie udało się pobrać folderów</string>
   <!--  Spotlight V6 Beta  -->
   <string name="onboarding_headline_beta">Przetestuj nową aplikację</string>
-  <string name="onboarding_description_beta">Przebudowaliśmy aplikację, aby zwiększyć jej stabilność i niezawodność. Podziel się opinią i bądź na bieżąco, kiedy będziemy ponownie wprowadzać funkcje. Dowiedz się więcej.</string>
-  <string name="onboarding_description_beta_link">https://proton.me/support/mail-android-beta</string>
-  <string name="onboarding_description_beta_learn_more">Dowiedz się więcej</string>
+  <string name="onboarding_description_beta">Przebudowaliśmy aplikację, aby zwiększyć jej stabilność i niezawodność. Podziel się opinią i bądź na bieżąco, kiedy będziemy ponownie wprowadzać funkcje. <a href="https://proton.me/support/mail-android-beta">Dowiedz się więcej</a>.</string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Witaj w nowej aplikacji</string>
   <string name="onboarding_description_ga">Całkowicie przebudowana nowa aplikacja Proton Mail została stworzona z myślą o stabilności i wydajności.</string>

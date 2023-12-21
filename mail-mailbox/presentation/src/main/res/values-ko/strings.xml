@@ -64,9 +64,7 @@
   <string name="mailbox_action_move_messages_failed_retrieving_folders">폴더 게시 실패.</string>
   <!--  Spotlight V6 Beta  -->
   <string name="onboarding_headline_beta">새 앱 베타 테스트</string>
-  <string name="onboarding_description_beta">안정성과 신뢰성을 위해 앱을 처음 부터 다시 만들었습니다. 피드백을 공유하고 기능을 실사용자 버전으로 적용할 때까지 계속 지켜봐 주세요. 자세히 알아보세요.</string>
-  <string name="onboarding_description_beta_link">https://proton.me/support/mail-android-beta</string>
-  <string name="onboarding_description_beta_learn_more">더 알아보기</string>
+  <string name="onboarding_description_beta">We\'ve rebuilt the app for stability and reliability. Share your feedback and stay tuned as we reintroduce features. <a href="https://proton.me/support/mail-android-beta">Learn more.</a></string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">새로운 앱에 오신 것을 환영합니다</string>
   <string name="onboarding_description_ga">처음 부터 완전히 다시 개발된 새로운 Proton Mail 앱이 안정성과 성능의 강화로 새롭게 돌아왔습니다.</string>

@@ -47,6 +47,7 @@
   <string name="composer_attachment_size_exceeded_dialog_message">Storleksgränsen för bilagor är %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Omkryptering av bilaga misslyckades. Av säkerhetsskäl har alla bilagor tagits bort.</string>
   <string name="composer_warning_local_data_shown">Den senaste versionen av detta utkast misslyckades att laddas. Alla ändringar kommer att åsidosätta dess innehåll.</string>
+  <string name="composer_button_add_password">Lägg till lösenord</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Sändningsfel</string>
   <string name="message_sending_error_dialog_button_dismiss">Stäng</string>

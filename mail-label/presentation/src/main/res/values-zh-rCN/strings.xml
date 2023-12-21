@@ -66,12 +66,12 @@
   <string name="folder_settings_title">设置</string>
   <string name="folder_settings_done_button">完成</string>
   <string name="folder_settings_folder_colors">文件夹附带颜色</string>
-  <string name="folder_settings_parent_color">Inherit parent folder color</string>
+  <string name="folder_settings_parent_color">继承父级文件夹颜色</string>
   <string name="folder_list_loading_error">在加载文件夹时出现错误，请稍后重试。</string>
-  <string name="folder_loading_error">Error loading folder, please try again later</string>
+  <string name="folder_loading_error">加载文件夹时出错，请稍后重试</string>
   <string name="switch_on">On</string>
   <string name="switch_off">Off</string>
-  <string name="folder_form_parent">Parent folder</string>
+  <string name="folder_form_parent">父文件夹</string>
   <string name="folder_form_no_parent">None</string>
   <string name="folder_form_notifications">Notifications</string>
   <string name="folder_saved">Folder saved</string>

@@ -47,6 +47,7 @@
   <string name="composer_attachment_size_exceeded_dialog_message">Batas ukuran lampiran adalah %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Lampiran gagal dienkripsi ulang. Demi alasan keamanan, seluruh lampiran telah dihapus.</string>
   <string name="composer_warning_local_data_shown">Versi terbaru draf ini gagal dimuat. Perubahan apa pun akan menimpa draf ini.</string>
+  <string name="composer_button_add_password">Add password</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Pesan gagal dikirim</string>
   <string name="message_sending_error_dialog_button_dismiss">Tutup</string>

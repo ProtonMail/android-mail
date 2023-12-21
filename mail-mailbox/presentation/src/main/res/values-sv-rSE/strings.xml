@@ -73,9 +73,7 @@
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Misslyckades att hämta mappar</string>
   <!--  Spotlight V6 Beta  -->
   <string name="onboarding_headline_beta">Beta-testa den nya appen</string>
-  <string name="onboarding_description_beta">Vi har byggt om appen för stabilitet och tillförlitlighet. Dela din feedback och håll utkik när vi återinför funktioner. Lär dig mer.</string>
-  <string name="onboarding_description_beta_link">https://proton.me/support/mail-android-beta</string>
-  <string name="onboarding_description_beta_learn_more">Lär dig mer</string>
+  <string name="onboarding_description_beta">Vi har byggt om appen för stabilitet och tillförlitlighet. Dela din feedback och håll utkik när vi återinför funktioner. <a href="https://proton.me/support/mail-android-beta">Lär dig mer.</a></string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Välkommen till den nya appen</string>
   <string name="onboarding_description_ga">Helt ombyggd från grunden, den nya Proton Mail-appen gjordes för stabilitet och prestanda.</string>

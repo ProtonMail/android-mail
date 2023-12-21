@@ -64,9 +64,7 @@
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Gagal mendapatkan folder</string>
   <!--  Spotlight V6 Beta  -->
   <string name="onboarding_headline_beta">Coba aplikasi beta baru</string>
-  <string name="onboarding_description_beta">Kami telah membuat ulang aplikasi untuk stabilitas dan keandalan. Bagikan masukan Anda dan pantau terus saat kami memperkenalkan kembali fitur-fiturnya. Pelajari lebih lanjut.</string>
-  <string name="onboarding_description_beta_link">https://proton.me/support/mail-android-beta</string>
-  <string name="onboarding_description_beta_learn_more">Pelajari lebih lanjut</string>
+  <string name="onboarding_description_beta">We\'ve rebuilt the app for stability and reliability. Share your feedback and stay tuned as we reintroduce features. <a href="https://proton.me/support/mail-android-beta">Learn more.</a></string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Selamat datang di aplikasi yang baru</string>
   <string name="onboarding_description_ga">Dibuat ulang sepenuhnya dari awal, aplikasi Proton Mail baru dibuat untuk stabilitas dan kinerja.</string>

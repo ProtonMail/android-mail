@@ -73,9 +73,7 @@
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Error al obtener las carpetas</string>
   <!--  Spotlight V6 Beta  -->
   <string name="onboarding_headline_beta">Prueba beta de la nueva aplicación</string>
-  <string name="onboarding_description_beta">Hemos reconstruido la app para brindar estabilidad y confiabilidad. Comparta sus comentarios y permanezca atento conforme reintroducimos funciones. Más información.</string>
-  <string name="onboarding_description_beta_link">https://proton.me/support/mail-android-beta</string>
-  <string name="onboarding_description_beta_learn_more">Más información</string>
+  <string name="onboarding_description_beta">Hemos reconstruido la app para brindar estabilidad y confiabilidad. Comparta sus comentarios y permanezca atento conforme reintroducimos funciones. <a href="https://proton.me/support/mail-android-beta">Más información.</a></string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Le damos la bienvenida a la nueva app</string>
   <string name="onboarding_description_ga">Completamente reconstruida desde cero, la nueva app de Proton Mail fue creada para brindar estabilidad y rendimiento.</string>

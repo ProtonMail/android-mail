@@ -82,9 +82,7 @@
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Preluarea folderelor a eșuat.</string>
   <!--  Spotlight V6 Beta  -->
   <string name="onboarding_headline_beta">Testați noile aplicații beta</string>
-  <string name="onboarding_description_beta">Am reconstruit aplicația pentru stabilitate și fiabilitate. Împărtășiți-vă părerile despre ea și rămâneți la curent pe măsură ce reintroducem funcțiile. Detalii.</string>
-  <string name="onboarding_description_beta_link">https://proton.me/support/mail-android-beta</string>
-  <string name="onboarding_description_beta_learn_more">Detalii</string>
+  <string name="onboarding_description_beta">We\'ve rebuilt the app for stability and reliability. Share your feedback and stay tuned as we reintroduce features. <a href="https://proton.me/support/mail-android-beta">Learn more.</a></string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Bun venit la noua aplicație</string>
   <string name="onboarding_description_ga">Complet reconstruită de la zero, noua aplicație Proton Mail a fost creată pentru stabilitate și performanță.</string>

@@ -43,7 +43,7 @@
   <string name="action_view_in_light_mode_description">Se besked i lys tilstand</string>
   <string name="action_view_in_dark_mode_description">Se besked i mørk tilstand</string>
   <string name="action_print_description">Udskriv</string>
-  <string name="action_view_headers_description">View headers</string>
+  <string name="action_view_headers_description">Vis headeroplysninger</string>
   <string name="action_view_html_description">Vis HTML</string>
   <string name="action_report_phishing_description">Anmeld phishing</string>
   <string name="action_remind_description">Påmind mig</string>

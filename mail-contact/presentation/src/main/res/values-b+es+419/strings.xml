@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="contact_list_title">Contactos</string>
+  <string name="contact_list_loading_error">Error al cargar los contactos. Intente de nuevo más tarde.</string>
+  <string name="no_contacts">No se encontraron contactos</string>
+  <string name="no_contacts_description">Mejore su experiencia de correo creando un contacto o importando los existentes.</string>
+  <string name="add_contact">Añadir contacto</string>
+  <string name="add_contact_content_description">Añadir contacto</string>
+  <string name="all_title">Todos</string>
+  <string name="groups_title">Grupos</string>
+  <string name="group_member_count">%1$s miembro</string>
+  <string name="group_members_count">%1$s miembros</string>
+  <string name="new_contact">Contacto nuevo</string>
+  <string name="new_group">Grupo nuevo</string>
+  <string name="import_contact">Cargar contactos del dispositivo</string>
+  <string name="no_contact_email">No hay dirección de correo</string>
+  <string name="multiple_contact_emails">%1$s, +%2$d</string>
+</resources>

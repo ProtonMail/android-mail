@@ -89,7 +89,7 @@
   <string name="mail_settings_privacy_prevent_taking_screenshots">Zabrániť vytváraniu snímok obrazovky</string>
   <string name="mail_settings_privacy_request_link_confirmation">Požadovať potvrdenie odkazu</string>
   <string name="mail_settings_privacy_background_sync">Synchronizácia na pozadí</string>
-  <string name="mail_settings_privacy_background_sync_description">Ak je táto možnosť povolená, aplikácia sa synchronizuje so serverom na pozadí. Zakázaním tejto funkcie zakážete oznámenia.</string>
+  <string name="mail_settings_privacy_background_sync_description">Ak je táto možnosť povolená, aplikácia sa synchronizuje so serverom na pozadí. Vypnutím tejto funkcie zakážete push oznámenia.</string>
   <string name="mail_settings_privacy_error_updating">Chyba pri aktualizácii nastavení</string>
   <string name="mail_settings_privacy_error_loading">Chyba pri načítaní nastavení</string>
   <!-- Swipe Actions -->
@@ -115,6 +115,34 @@
   <string name="mail_settings_notifications_notifications_settings_hint">Prejdite do nastavení systémových notifikácií</string>
   <string name="mail_settings_notifications_update_error">Chyba pri aktualizácii nastavení</string>
   <string name="mail_settings_notifications_loading_error">Chyba pri načítaní nastavení</string>
+  <!-- Auto lock -->
+  <string name="mail_settings_auto_lock_title">Auto lock</string>
+  <string name="mail_settings_auto_lock_item_title">Auto lock app</string>
+  <string name="mail_settings_auto_lock_item_description">Turn this feature on to auto lock your app and use a PIN code or Fingerprint to unlock it</string>
+  <string name="mail_settings_auto_lock_change_pin_description">Zmeniť PIN kód</string>
+  <string name="mail_settings_auto_lock_item_timer_title">Časovač aut. zámku</string>
+  <string name="mail_settings_auto_lock_not_enabled">Neaktívny</string>
+  <string name="mail_settings_auto_lock_immediately">Okamžite</string>
+  <string name="mail_settings_auto_lock_item_timer_description_five_minutes">5 min. nečinnosti</string>
+  <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 min. nečinnosti</string>
+  <string name="mail_settings_auto_lock_item_timer_description_one_hour">1 h nečinnosti</string>
+  <string name="mail_settings_auto_lock_item_timer_description_one_day">1 deň nečinnosti</string>
+  <string name="mail_settings_auto_lock_update_error">Chyba pri aktualizácii nastavení</string>
+  <string name="mail_settings_pin_insertion_input_title">Zadajte PIN kód</string>
+  <string name="mail_settings_pin_insertion_set_title">Set PIN code</string>
+  <string name="mail_settings_pin_insertion_confirm_title">Confirm PIN code</string>
+  <string name="mail_settings_pin_insertion_lock_icon_description">Lock icon</string>
+  <string name="mail_settings_pin_insertion_pin_dot_description">Pin dot</string>
+  <string name="mail_settings_pin_insertion_backspace_description">Backspace</string>
+  <string name="mail_settings_pin_insertion_button_create">Vytvoriť</string>
+  <string name="mail_settings_pin_insertion_button_confirm">Potvrdiť</string>
+  <string name="mail_settings_pin_insertion_error_no_match">PIN kódy sa nezhodujú.</string>
+  <plurals name="mail_settings_pin_insertion_error_wrong_code">
+    <item quantity="one">Nesprávny PIN kód. Zostáva %s pokus.</item>
+    <item quantity="few">Nesprávny PIN kód. Zostávajú %s pokusy.</item>
+    <item quantity="many">Nesprávny PIN kód. Zostáva %s pokusov.</item>
+    <item quantity="other">Nesprávny PIN kód. Zostáva %s pokusov.</item>
+  </plurals>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Mazanie dát lokálnej medzipamäte...</string>
   <!-- Error messages -->

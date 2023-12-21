@@ -68,7 +68,7 @@
   <string name="folder_settings_folder_colors">Použiť farby priečinkov</string>
   <string name="folder_settings_parent_color">Zdediť farbu nadradeného priečinka</string>
   <string name="folder_list_loading_error">Chyba pri načítaní priečinkov, skúste to neskôr, prosím</string>
-  <string name="folder_loading_error">Chyba pri načítaní priečinka, skúste to znova neskôr</string>
+  <string name="folder_loading_error">Chyba pri načítaní priečinka, skúste to neskôr, prosím</string>
   <string name="switch_on">Zap.</string>
   <string name="switch_off">Vyp.</string>
   <string name="folder_form_parent">Nadradený priečinok</string>

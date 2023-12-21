@@ -61,7 +61,7 @@
   <string name="message_body_embedded_and_remote_content_banner_text">La càrrega automàtica d\'imatges incrustades i contingut remot està desactivada. Això es pot canviar a les preferències.</string>
   <string name="message_phishing_banner_text">El nostre sistema ha marcat aquest missatge com a intent de suplantació d\'identitat. Comproveu que sigui legítim.</string>
   <!-- External link confirmation dialog -->
-  <string name="external_link_confirmation_dialog_text">You are about to leave the app and navigate to:</string>
+  <string name="external_link_confirmation_dialog_text">Esteu a punt de deixar l\'aplicació i navegar a:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">No tornis a preguntar</string>
   <string name="external_link_confirmation_dialog_cancel_button">Cancel·la</string>
   <string name="external_link_confirmation_dialog_continue_button">Continua</string>
@@ -75,8 +75,8 @@
   <string name="message_delete_dialog_message">Segur que voleu eliminar aquest missatge permanentment?</string>
   <string name="message_deleted">S\'ha esborrat el missatge.</string>
   <string name="error_delete_message_failed">No s\'ha pogut eliminar el missatge.</string>
-  <string name="error_delete_message_failed_wrong_folder">Message is not in a location where it can be deleted</string>
-  <string name="error_delete_conversation_failed">Failed to delete conversation</string>
-  <string name="error_delete_conversation_failed_wrong_folder">Conversation is not in a location where it can be deleted</string>
+  <string name="error_delete_message_failed_wrong_folder">El missatge no es troba en una ubicació on es pugui eliminar</string>
+  <string name="error_delete_conversation_failed">No s\'ha pogut eliminar la conversa</string>
+  <string name="error_delete_conversation_failed_wrong_folder">La conversa no es troba en una ubicació on es pugui eliminar</string>
   <string name="conversation_deleted">S\'ha eliminat la conversa.</string>
 </resources>

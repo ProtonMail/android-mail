@@ -73,9 +73,7 @@
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Klasörler alınamadı</string>
   <!--  Spotlight V6 Beta  -->
   <string name="onboarding_headline_beta">Yeni uygulama Beta sürümü</string>
-  <string name="onboarding_description_beta">Kararlılığını ve güvenilirliğini artırmak için uygulamayı yeniden oluşturduk. Deneyiminizi paylaşın ve biz özellikleri yeniden sunarken izlemeyi sürdürün. Ayrıntılı bilgi alın.</string>
-  <string name="onboarding_description_beta_link">https://proton.me/support/mail-android-beta</string>
-  <string name="onboarding_description_beta_learn_more">Ayrıntılı bilgi alın</string>
+  <string name="onboarding_description_beta">We\'ve rebuilt the app for stability and reliability. Share your feedback and stay tuned as we reintroduce features. <a href="https://proton.me/support/mail-android-beta">Learn more.</a></string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Yeni uygulamaya hoş geldiniz</string>
   <string name="onboarding_description_ga">Tümüyle sıfırdan yeniden oluşturulan yeni Proton Mail uygulaması, kararlılık ve başarım için tasarlandı.</string>

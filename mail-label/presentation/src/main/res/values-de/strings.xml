@@ -50,9 +50,9 @@
   <string name="add_a_folder_name_hint">Ordnername hinzufügen</string>
   <string name="input_field_max_characters_count">%1d / %2d Zeichen</string>
   <string name="color_picker_title">Farbe</string>
-  <string name="save_label_error">Fehler beim Speichern der Kategorie. Bitte versuche es später erneut</string>
+  <string name="save_label_error">Fehler beim Speichern der Kategorie. Bitte versuche es später erneut.</string>
   <string name="save_folder_error">Fehler beim Speichern des Ordners. Bitte versuche es erneut.</string>
-  <string name="label_already_exists">Eine Kategorie oder Ordner mit diesem Namen existiert bereits</string>
+  <string name="label_already_exists">Eine Kategorie oder Ordner mit diesem Namen existiert bereits.</string>
   <string name="label_limit_reached_error">Kategorielimit erreicht</string>
   <string name="folder_limit_reached_error">Ordnerlimit erreicht</string>
   <string name="delete_label_error">Fehler beim Löschen der Kategorie.</string>

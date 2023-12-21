@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="contact_list_title">Kontakty</string>
+  <string name="contact_list_loading_error">Chyba pri načítaní kontaktov, skúste to neskôr, prosím</string>
+  <string name="no_contacts">Nenašli sa žiadne kontakty</string>
+  <string name="no_contacts_description">Vylepšite si prácu s emailami vytvorením nového kontaktu alebo importovaním existujúcich kontaktov.</string>
+  <string name="add_contact">Pridať kontakt</string>
+  <string name="add_contact_content_description">Pridať kontakt</string>
+  <string name="all_title">Všetky</string>
+  <string name="groups_title">Skupiny</string>
+  <string name="group_member_count">%1$s člen</string>
+  <string name="group_members_count">%1$s členov</string>
+  <string name="new_contact">Nový kontakt</string>
+  <string name="new_group">Nová skupina</string>
+  <string name="import_contact">Nahrať kontakty zo zariadenia</string>
+  <string name="no_contact_email">Žiadna emailová adresa</string>
+  <string name="multiple_contact_emails">%1$s, +%2$d</string>
+</resources>

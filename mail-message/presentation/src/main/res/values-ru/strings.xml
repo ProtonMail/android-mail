@@ -39,7 +39,7 @@
   <string name="attachment_type_text">Текст</string>
   <string name="attachment_type_document">Документ</string>
   <string name="attachment_type_spreadsheet">Табличный файл</string>
-  <string name="attachment_type_presentation">Presentation</string>
+  <string name="attachment_type_presentation">Презентация</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Переместить в...</string>
   <string name="bottom_sheet_done_action">Готово</string>

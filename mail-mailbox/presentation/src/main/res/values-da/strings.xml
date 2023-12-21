@@ -73,9 +73,7 @@
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Kunne ikke hente mapper</string>
   <!--  Spotlight V6 Beta  -->
   <string name="onboarding_headline_beta">Betatest den nye app</string>
-  <string name="onboarding_description_beta">Vi har genopbygget appen for at sikre stabilitet og pålidelighed. Del din feedback, og følg med, når vi genintroducerer nye funktioner. Få mere at vide.</string>
-  <string name="onboarding_description_beta_link">https://proton.me/support/mail-android-beta</string>
-  <string name="onboarding_description_beta_learn_more">Få mere at vide</string>
+  <string name="onboarding_description_beta">We\'ve rebuilt the app for stability and reliability. Share your feedback and stay tuned as we reintroduce features. <a href="https://proton.me/support/mail-android-beta">Learn more.</a></string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Velkommen til den nye app</string>
   <string name="onboarding_description_ga">Den nye Proton Mail-app er genopbygget helt fra bunden og er skabt med henblik på stabilitet og ydeevne.</string>
@@ -91,7 +89,7 @@
   <!--  Onboarding actions  -->
   <string name="onboarding_next">Næste</string>
   <string name="onboarding_get_started">Kom godt i gang</string>
-  <string name="onboarding_illustration_content_description">Onboarding illustration</string>
+  <string name="onboarding_illustration_content_description">Introduktion-illustration</string>
   <string name="onboarding_close_content_description">Luk</string>
   <!-- Sidebar Beta label -->
   <string name="sidebar_beta_version_title">Proton Mail Beta</string>

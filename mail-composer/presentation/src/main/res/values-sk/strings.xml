@@ -47,6 +47,7 @@
   <string name="composer_attachment_size_exceeded_dialog_message">Limit veľkosti príloh je %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Opätovné zašifrovanie prílohy zlyhalo. Z bezpečnostných dôvodov boli všetky prílohy odstránené.</string>
   <string name="composer_warning_local_data_shown">Najnovšiu verziu tohto konceptu sa nepodarilo načítať. Akákoľvek zmena prepíše jej obsah.</string>
+  <string name="composer_button_add_password">Pridať heslo</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Chyba pri odosielaní</string>
   <string name="message_sending_error_dialog_button_dismiss">Zavrieť</string>

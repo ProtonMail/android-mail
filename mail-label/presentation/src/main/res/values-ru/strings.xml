@@ -29,7 +29,7 @@
   <string name="label_title_all_drafts">Все черновики</string>
   <string name="label_title_all_sent">Все отправленные</string>
   <string name="label_title_folders">Папки</string>
-  <string name="label_title_parent_folder">Parent folder</string>
+  <string name="label_title_parent_folder">Родительская папка</string>
   <string name="label_title_labels">Ярлыки</string>
   <string name="label_title_add_folder">Добавить папку</string>
   <string name="label_title_add_label">Добавить ярлык</string>
@@ -39,12 +39,12 @@
   <string name="label_list_create_label_placeholder_description">Create a label to enhance your email experience.</string>
   <string name="add_label_content_description">Добавить ярлык</string>
   <string name="label_form_create_label">Создать ярлык</string>
-  <string name="folder_form_create_folder">Create folder</string>
+  <string name="folder_form_create_folder">Создать папку</string>
   <string name="label_form_edit_label">Изменить ярлык</string>
-  <string name="folder_form_edit_folder">Edit folder</string>
+  <string name="folder_form_edit_folder">Изменить папку</string>
   <string name="label_form_save">Сохранить</string>
   <string name="label_form_delete">Удалить ярлык</string>
-  <string name="folder_form_delete">Delete folder</string>
+  <string name="folder_form_delete">Удалить папку</string>
   <string name="label_name_title">Название</string>
   <string name="add_a_label_name_hint">Add a label name</string>
   <string name="add_a_folder_name_hint">Add a folder name</string>
@@ -71,9 +71,9 @@
   <string name="folder_loading_error">Error loading folder, please try again later</string>
   <string name="switch_on">On</string>
   <string name="switch_off">Off</string>
-  <string name="folder_form_parent">Parent folder</string>
+  <string name="folder_form_parent">Родительская папка</string>
   <string name="folder_form_no_parent">None</string>
-  <string name="folder_form_notifications">Notifications</string>
+  <string name="folder_form_notifications">Уведомления</string>
   <string name="folder_saved">Folder saved</string>
   <string name="folder_deleted">Folder deleted</string>
   <string name="parent_folder_none">None</string>

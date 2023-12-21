@@ -22,7 +22,7 @@
   <string name="dialog_sign_out_account_confirm">Oui</string>
   <string name="dialog_sign_out_account_cancel">Non</string>
   <string name="dialog_remove_account_title">Retirer le compte</string>
-  <string name="dialog_remove_account_description">Vous allez vous déconnecter et supprimer toutes les informations associées à ce compte.</string>
+  <string name="dialog_remove_account_description">Vous allez vous déconnecter et retirer toutes les informations associées à ce compte.</string>
   <string name="dialog_remove_account_confirm">Retirer</string>
   <string name="dialog_remove_account_cancel">Annuler</string>
   <string name="user_select_other_account_content_description">Sélectionner un autre compte</string>

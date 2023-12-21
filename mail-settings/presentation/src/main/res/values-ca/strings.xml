@@ -89,7 +89,7 @@
   <string name="mail_settings_privacy_prevent_taking_screenshots">Evita les captures de pantalla</string>
   <string name="mail_settings_privacy_request_link_confirmation">Demana confirmació dels enllaços</string>
   <string name="mail_settings_privacy_background_sync">Sincronització en segon pla</string>
-  <string name="mail_settings_privacy_background_sync_description">If this option is enabled, the app will sync with the server in the background. Disabling this feature will also disable push notifications.</string>
+  <string name="mail_settings_privacy_background_sync_description">Si aquesta opció està habilitada, l\'aplicació se sincronitzarà amb el servidor en segon pla. Desactivar aquesta característica també desactivarà les notificacions push.</string>
   <string name="mail_settings_privacy_error_updating">S\'ha produït un error en actualitzar les preferències</string>
   <string name="mail_settings_privacy_error_loading">S\'ha produït un error en carregar les preferències</string>
   <!-- Swipe Actions -->
@@ -112,11 +112,37 @@
   <string name="mail_settings_notifications_extended_notifications_title">Notificacions ampliades</string>
   <string name="mail_settings_notifications_extended_notifications_summary">Activeu aquesta característica per veure el remitent dels correus electrònics a les notificacions push.</string>
   <string name="mail_settings_notifications_notifications_settings">Preferències de les notificacions</string>
-  <string name="mail_settings_notifications_notifications_settings_hint">Navigate to system notification settings</string>
+  <string name="mail_settings_notifications_notifications_settings_hint">Navega a les preferències de notificacions del sistema</string>
   <string name="mail_settings_notifications_update_error">S\'ha produït un error en actualitzar les preferències.</string>
   <string name="mail_settings_notifications_loading_error">S\'ha produït un error en carregar les preferències.</string>
+  <!-- Auto lock -->
+  <string name="mail_settings_auto_lock_title">Bloqueig automàtic</string>
+  <string name="mail_settings_auto_lock_item_title">Bloqueig automàtic de l\'aplicació</string>
+  <string name="mail_settings_auto_lock_item_description">Activeu aquesta funció per bloquejar automàticament la vostra aplicació i utilitzar un codi PIN o empremta digital per desbloquejar-la.</string>
+  <string name="mail_settings_auto_lock_change_pin_description">Canvia el codi PIN</string>
+  <string name="mail_settings_auto_lock_item_timer_title">Temps de bloqueig automàtic</string>
+  <string name="mail_settings_auto_lock_not_enabled">Desactivat</string>
+  <string name="mail_settings_auto_lock_immediately">Immediatament</string>
+  <string name="mail_settings_auto_lock_item_timer_description_five_minutes">5 minuts d\'inactivitat</string>
+  <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 minuts d\'inactivitat</string>
+  <string name="mail_settings_auto_lock_item_timer_description_one_hour">1 hora d\'inactivitat</string>
+  <string name="mail_settings_auto_lock_item_timer_description_one_day">1 dia d\'inactivitat</string>
+  <string name="mail_settings_auto_lock_update_error">S\'ha produït un error en actualitzar les preferències.</string>
+  <string name="mail_settings_pin_insertion_input_title">Introduïu el codi PIN</string>
+  <string name="mail_settings_pin_insertion_set_title">Estableix el codi PIN</string>
+  <string name="mail_settings_pin_insertion_confirm_title">Confirma el codi PIN</string>
+  <string name="mail_settings_pin_insertion_lock_icon_description">Icona de bloqueig</string>
+  <string name="mail_settings_pin_insertion_pin_dot_description">Pin dot</string>
+  <string name="mail_settings_pin_insertion_backspace_description">Retrocés</string>
+  <string name="mail_settings_pin_insertion_button_create">Crea</string>
+  <string name="mail_settings_pin_insertion_button_confirm">Confirma</string>
+  <string name="mail_settings_pin_insertion_error_no_match">Els codis PIN no coincideixen.</string>
+  <plurals name="mail_settings_pin_insertion_error_wrong_code">
+    <item quantity="one">El codi PIN no és correcte. Resta %s intent.</item>
+    <item quantity="other">El codi PIN no és correcte. Resten %s intents.</item>
+  </plurals>
   <!-- Local storage -->
-  <string name="mail_settings_clearing_cached_data">Clearing local cached data…</string>
+  <string name="mail_settings_clearing_cached_data">S\'estan netejant les dades a la memòria cau local...</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">S\'ha produït un error. Proveu de nou.</string>
 </resources>

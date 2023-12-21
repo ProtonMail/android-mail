@@ -91,9 +91,7 @@
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Nepodarilo sa získať priečinky</string>
   <!--  Spotlight V6 Beta  -->
   <string name="onboarding_headline_beta">Beta testovanie novej aplikácie</string>
-  <string name="onboarding_description_beta">Prestavali sme aplikáciu, aby bola stabilná a spoľahlivá. Podeľte sa o svoje pripomienky a zostaňte na príjme, keď budeme znovu zavádzať rôzne funkcie. Zistite viac.</string>
-  <string name="onboarding_description_beta_link">https://proton.me/support/mail-android-beta</string>
-  <string name="onboarding_description_beta_learn_more">Zistiť viac</string>
+  <string name="onboarding_description_beta">Prestavali sme aplikáciu, aby bola stabilná a spoľahlivá. Podeľte sa o svoje pripomienky a zostaňte na príjme, keď budeme znovu zavádzať rôzne funkcie. <a href="https://proton.me/support/mail-android-beta">Zistite viac</a>.</string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Vitajte v novej aplikácii</string>
   <string name="onboarding_description_ga">Nová aplikácia Proton Mail bola úplne od základu prepracovaná, aby bola stabilná a výkonná.</string>
@@ -114,8 +112,8 @@
   <!-- Sidebar Beta label -->
   <string name="sidebar_beta_version_title">Proton Mail Beta</string>
   <string name="sidebar_beta_version_description">Klepnutím získate ďalšie informácie o tomto projekte.</string>
-  <string name="sidebar_beta_version_icon_content_description">Prejsť k článku v báze znalostí.</string>
+  <string name="sidebar_beta_version_icon_content_description">Prejsť na článok databázy znalostí.</string>
   <string name="mailbox_action_trash_message">Správa bola presunutá do koša</string>
-  <string name="mailbox_action_archive_message">Správa presunutá do archívu</string>
-  <string name="mailbox_action_spam_message">správa presunutá do spamu</string>
+  <string name="mailbox_action_archive_message">Správa bola presunutá do archívu</string>
+  <string name="mailbox_action_spam_message">Správa bola presunutá do spamu</string>
 </resources>

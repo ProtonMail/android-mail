@@ -47,6 +47,7 @@
   <string name="composer_attachment_size_exceeded_dialog_message">Il limite di dimensione per gli allegati è %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Nuova crittografia dell\'allegato non riuscita. Per motivi di sicurezza, tutti gli allegati sono stati rimossi.</string>
   <string name="composer_warning_local_data_shown">Caricamento dell\'ultima versione di questa bozza non riuscito. Qualsiasi modifica sovrascriverà il suo contenuto.</string>
+  <string name="composer_button_add_password">Aggiungi una password</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Errore nell\'invio del messaggio</string>
   <string name="message_sending_error_dialog_button_dismiss">Chiudi</string>

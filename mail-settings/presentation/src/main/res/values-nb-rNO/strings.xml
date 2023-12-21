@@ -115,6 +115,32 @@
   <string name="mail_settings_notifications_notifications_settings_hint">Naviger til systemvarslingsinnstillinger</string>
   <string name="mail_settings_notifications_update_error">Feil under oppdatering av innstillinger</string>
   <string name="mail_settings_notifications_loading_error">Feil ved lasting av innstillinger</string>
+  <!-- Auto lock -->
+  <string name="mail_settings_auto_lock_title">Autolås</string>
+  <string name="mail_settings_auto_lock_item_title">Autolås app</string>
+  <string name="mail_settings_auto_lock_item_description">Slå på denne funksjonen for å låse appen automatisk, og bruk en PIN-kode eller fingeravtrykk for å låse den opp</string>
+  <string name="mail_settings_auto_lock_change_pin_description">Endre PIN-koden</string>
+  <string name="mail_settings_auto_lock_item_timer_title">Tidtaker for autolås</string>
+  <string name="mail_settings_auto_lock_not_enabled">Ikke aktivert</string>
+  <string name="mail_settings_auto_lock_immediately">Umiddelbart</string>
+  <string name="mail_settings_auto_lock_item_timer_description_five_minutes">5 minutter med inaktivitet</string>
+  <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 minutter med inaktivitet</string>
+  <string name="mail_settings_auto_lock_item_timer_description_one_hour">1 time med inaktivitet</string>
+  <string name="mail_settings_auto_lock_item_timer_description_one_day">1 dag med inaktivitet</string>
+  <string name="mail_settings_auto_lock_update_error">Feil under oppdatering av innstillinger</string>
+  <string name="mail_settings_pin_insertion_input_title">Sett inn PIN-kode</string>
+  <string name="mail_settings_pin_insertion_set_title">Angi PIN-kode</string>
+  <string name="mail_settings_pin_insertion_confirm_title">Bekreft PIN-kode</string>
+  <string name="mail_settings_pin_insertion_lock_icon_description">Låseikon</string>
+  <string name="mail_settings_pin_insertion_pin_dot_description">Fest prikk</string>
+  <string name="mail_settings_pin_insertion_backspace_description">Bakovertast</string>
+  <string name="mail_settings_pin_insertion_button_create">Opprett</string>
+  <string name="mail_settings_pin_insertion_button_confirm">Bekreft</string>
+  <string name="mail_settings_pin_insertion_error_no_match">PIN-kodene samsvarer ikke.</string>
+  <plurals name="mail_settings_pin_insertion_error_wrong_code">
+    <item quantity="one">Feil PIN-kode. %s forsøk gjenstår.</item>
+    <item quantity="other">Feil PIN-kode. %s forsøk gjenstår.</item>
+  </plurals>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Tømmer lokalt hurtigbufrede data…</string>
   <!-- Error messages -->

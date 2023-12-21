@@ -115,6 +115,34 @@
   <string name="mail_settings_notifications_notifications_settings_hint">Перайсці ў сістэмныя налады апавяшчэнняў</string>
   <string name="mail_settings_notifications_update_error">Памылка абнаўлення налад</string>
   <string name="mail_settings_notifications_loading_error">Памылка загрузкі налад</string>
+  <!-- Auto lock -->
+  <string name="mail_settings_auto_lock_title">Аўтаблакіроўка</string>
+  <string name="mail_settings_auto_lock_item_title">Аўтаблакіроўка праграмы</string>
+  <string name="mail_settings_auto_lock_item_description">Уключыце гэту функцыю, каб аўтаматычна блакіраваць праграму і выкарыстоўваць PIN-код або адбітак пальца для яе разблакіроўкі</string>
+  <string name="mail_settings_auto_lock_change_pin_description">Змяніць PIN-код</string>
+  <string name="mail_settings_auto_lock_item_timer_title">Час аўтаблакіроўкі</string>
+  <string name="mail_settings_auto_lock_not_enabled">Не ўключана</string>
+  <string name="mail_settings_auto_lock_immediately">Адразу</string>
+  <string name="mail_settings_auto_lock_item_timer_description_five_minutes">5 хвілін бяздзейнасці</string>
+  <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 хвілін бяздзейнасці</string>
+  <string name="mail_settings_auto_lock_item_timer_description_one_hour">1 гадзіна бяздзейнасці</string>
+  <string name="mail_settings_auto_lock_item_timer_description_one_day">1 дзень бяздзейнасці</string>
+  <string name="mail_settings_auto_lock_update_error">Памылка абнаўлення налад</string>
+  <string name="mail_settings_pin_insertion_input_title">Уставіць PIN-код</string>
+  <string name="mail_settings_pin_insertion_set_title">Задаць PIN-код</string>
+  <string name="mail_settings_pin_insertion_confirm_title">Пацвердзіць PIN-код</string>
+  <string name="mail_settings_pin_insertion_lock_icon_description">Значок блакіроўкі</string>
+  <string name="mail_settings_pin_insertion_pin_dot_description">Pin dot</string>
+  <string name="mail_settings_pin_insertion_backspace_description">Backspace</string>
+  <string name="mail_settings_pin_insertion_button_create">Стварыць</string>
+  <string name="mail_settings_pin_insertion_button_confirm">Пацвердзіць</string>
+  <string name="mail_settings_pin_insertion_error_no_match">PIN-коды не супадаюць.</string>
+  <plurals name="mail_settings_pin_insertion_error_wrong_code">
+    <item quantity="one">Няправільны PIN-код. Засталася %s спроба.</item>
+    <item quantity="few">Няправільны PIN-код. Засталося %s спробы.</item>
+    <item quantity="many">Няправільны PIN-код. Засталося %s спроб.</item>
+    <item quantity="other">Няправільны PIN-код. Засталося %s спроб.</item>
+  </plurals>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Ачыстка даных лакальнага кэша...</string>
   <!-- Error messages -->

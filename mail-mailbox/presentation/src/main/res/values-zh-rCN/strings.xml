@@ -64,9 +64,7 @@
   <string name="mailbox_action_move_messages_failed_retrieving_folders">无法列出文件夹</string>
   <!--  Spotlight V6 Beta  -->
   <string name="onboarding_headline_beta">体验测试版应用程序</string>
-  <string name="onboarding_description_beta">我们重新构建了应用程序，以提升其稳定性和可靠性。请分享您的反馈，并保持关注，因为我们会逐步重新引入应用的各项功能。了解更多信息。</string>
-  <string name="onboarding_description_beta_link">https://proton.me/support/mail-android-beta</string>
-  <string name="onboarding_description_beta_learn_more">了解详情</string>
+  <string name="onboarding_description_beta">We\'ve rebuilt the app for stability and reliability. Share your feedback and stay tuned as we reintroduce features. <a href="https://proton.me/support/mail-android-beta">Learn more.</a></string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">欢迎体验全新的应用</string>
   <string name="onboarding_description_ga">Proton Mail 的全新应用程序是完全从头开始重新构建的，它专为提升稳定性和性能而设计。</string>

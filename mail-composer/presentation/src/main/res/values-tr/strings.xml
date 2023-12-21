@@ -47,6 +47,7 @@
   <string name="composer_attachment_size_exceeded_dialog_message">Ek dosyaların boyutu %1$s ile sınırlıdır</string>
   <string name="composer_attachment_reencryption_failed_message">Ek dosya yeniden şifrelenemedi. Güvenlik nedeniyle tüm ek dosyalar kaldırıldı.</string>
   <string name="composer_warning_local_data_shown">Taslağın son sürümü yüklenemedi. Yapılmış değişiklikler geçersiz olacak.</string>
+  <string name="composer_button_add_password">Add password</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Gönderme sorunu</string>
   <string name="message_sending_error_dialog_button_dismiss">Kapat</string>

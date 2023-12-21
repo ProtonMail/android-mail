@@ -115,6 +115,32 @@
   <string name="mail_settings_notifications_notifications_settings_hint">Navigera till systemets aviseringsinställningar</string>
   <string name="mail_settings_notifications_update_error">Fel vid uppdatering av inställningar</string>
   <string name="mail_settings_notifications_loading_error">Fel vid laddning av inställningar</string>
+  <!-- Auto lock -->
+  <string name="mail_settings_auto_lock_title">Autolås</string>
+  <string name="mail_settings_auto_lock_item_title">Autolås app</string>
+  <string name="mail_settings_auto_lock_item_description">Slå på denna funktion för att låsa din app automatiskt och använd en PIN-kod eller fingeravtryck för att låsa upp den</string>
+  <string name="mail_settings_auto_lock_change_pin_description">Ändra PIN-kod</string>
+  <string name="mail_settings_auto_lock_item_timer_title">Timer för autolås</string>
+  <string name="mail_settings_auto_lock_not_enabled">Inte aktiverad</string>
+  <string name="mail_settings_auto_lock_immediately">Omedelbart</string>
+  <string name="mail_settings_auto_lock_item_timer_description_five_minutes">5 minuters inaktivitet</string>
+  <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 minuters inaktivitet</string>
+  <string name="mail_settings_auto_lock_item_timer_description_one_hour">1 timmes inaktivitet</string>
+  <string name="mail_settings_auto_lock_item_timer_description_one_day">1 dags inaktivitet</string>
+  <string name="mail_settings_auto_lock_update_error">Fel vid uppdatering av inställningar</string>
+  <string name="mail_settings_pin_insertion_input_title">Infoga PIN-kod</string>
+  <string name="mail_settings_pin_insertion_set_title">Ställ in PIN-kod</string>
+  <string name="mail_settings_pin_insertion_confirm_title">Bekräfta PIN-kod</string>
+  <string name="mail_settings_pin_insertion_lock_icon_description">Låsikon</string>
+  <string name="mail_settings_pin_insertion_pin_dot_description">Pin dot</string>
+  <string name="mail_settings_pin_insertion_backspace_description">Backspace</string>
+  <string name="mail_settings_pin_insertion_button_create">Skapa</string>
+  <string name="mail_settings_pin_insertion_button_confirm">Bekräfta</string>
+  <string name="mail_settings_pin_insertion_error_no_match">PIN-koder matchar inte.</string>
+  <plurals name="mail_settings_pin_insertion_error_wrong_code">
+    <item quantity="one">Fel PIN-kod. %s försök återstår.</item>
+    <item quantity="other">Fel PIN-kod. %s försök återstår.</item>
+  </plurals>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Rensar lokal cachad data…</string>
   <!-- Error messages -->

@@ -115,6 +115,31 @@
   <string name="mail_settings_notifications_notifications_settings_hint">시스템 알림 설정으로 이동</string>
   <string name="mail_settings_notifications_update_error">설정 업데이트 중 실패</string>
   <string name="mail_settings_notifications_loading_error">설정 로딩 중 오류 발생</string>
+  <!-- Auto lock -->
+  <string name="mail_settings_auto_lock_title">Auto lock</string>
+  <string name="mail_settings_auto_lock_item_title">Auto lock app</string>
+  <string name="mail_settings_auto_lock_item_description">Turn this feature on to auto lock your app and use a PIN code or Fingerprint to unlock it</string>
+  <string name="mail_settings_auto_lock_change_pin_description">Change PIN code</string>
+  <string name="mail_settings_auto_lock_item_timer_title">Auto lock timer</string>
+  <string name="mail_settings_auto_lock_not_enabled">Not enabled</string>
+  <string name="mail_settings_auto_lock_immediately">Immediately</string>
+  <string name="mail_settings_auto_lock_item_timer_description_five_minutes">5 minutes inactivity</string>
+  <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 minutes inactivity</string>
+  <string name="mail_settings_auto_lock_item_timer_description_one_hour">1 hour inactivity</string>
+  <string name="mail_settings_auto_lock_item_timer_description_one_day">1 day inactivity</string>
+  <string name="mail_settings_auto_lock_update_error">Error updating settings</string>
+  <string name="mail_settings_pin_insertion_input_title">Insert PIN code</string>
+  <string name="mail_settings_pin_insertion_set_title">Set PIN code</string>
+  <string name="mail_settings_pin_insertion_confirm_title">Confirm PIN code</string>
+  <string name="mail_settings_pin_insertion_lock_icon_description">Lock icon</string>
+  <string name="mail_settings_pin_insertion_pin_dot_description">Pin dot</string>
+  <string name="mail_settings_pin_insertion_backspace_description">Backspace</string>
+  <string name="mail_settings_pin_insertion_button_create">Create</string>
+  <string name="mail_settings_pin_insertion_button_confirm">Confirm</string>
+  <string name="mail_settings_pin_insertion_error_no_match">PIN codes do not match.</string>
+  <plurals name="mail_settings_pin_insertion_error_wrong_code">
+    <item quantity="other">Wrong PIN code. %s remaining attempts.</item>
+  </plurals>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">로컬에 저장된 캐시 데이터 삭제 중…</string>
   <!-- Error messages -->

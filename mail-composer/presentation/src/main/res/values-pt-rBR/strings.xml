@@ -47,6 +47,7 @@
   <string name="composer_attachment_size_exceeded_dialog_message">O limite de tamanho para anexos é de %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">A recriptografia do anexo falhou. Por motivos de segurança, todos os anexos foram removidos.</string>
   <string name="composer_warning_local_data_shown">A versão mais recente deste rascunho não foi carregada. Qualquer alteração substituirá seu conteúdo.</string>
+  <string name="composer_button_add_password">Adicionar senha</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Erro ao enviar</string>
   <string name="message_sending_error_dialog_button_dismiss">Fechar</string>
