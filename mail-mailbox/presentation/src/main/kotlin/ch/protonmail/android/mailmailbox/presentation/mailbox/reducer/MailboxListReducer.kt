@@ -188,10 +188,19 @@ class MailboxListReducer @Inject constructor() {
     ): MailboxListState {
         val request = when (operation.preferredViewMode) {
             ViewMode.ConversationGrouping -> {
+                // in search mode, subItemId is set to scroll to the searched item
+                val searchedItemId =
+                    if (currentState is MailboxListState.Data.ViewMode && currentState.searchMode.isInSearch()) {
+                        MailboxItemId(operation.item.id)
+                    } else {
+                        null
+                    }
+
                 OpenMailboxItemRequest(
                     itemId = MailboxItemId(operation.item.conversationId.id),
                     itemType = MailboxItemType.Conversation,
-                    shouldOpenInComposer = false
+                    shouldOpenInComposer = false,
+                    subItemId = searchedItemId
                 )
             }
 
