@@ -66,7 +66,7 @@ abstract class MessageDao : BaseDao<MessageEntity>() {
         """
     )
     @Transaction
-    abstract fun observeMessages(userId: UserId, labelId: LabelId): Flow<List<MessageWithLabelIds?>>
+    abstract fun observeMessages(userId: UserId, labelId: LabelId): Flow<List<MessageWithLabelIds>>
 
     @Query(
         """

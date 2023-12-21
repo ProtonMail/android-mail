@@ -105,7 +105,7 @@ class MessageLocalDataSourceImpl @Inject constructor(
 
     override suspend fun deleteMessagesWithLabel(userId: UserId, labelId: LabelId): Either<DataError.Local, Unit> {
         runCatching {
-            messageDao.observeMessages(userId, labelId).first().filterNotNull().let { messageWithLabelIds ->
+            messageDao.observeMessages(userId, labelId).first().let { messageWithLabelIds ->
                 deleteMessages(userId, messageWithLabelIds.map { it.message.messageId })
             }
         }.getOrElse {
