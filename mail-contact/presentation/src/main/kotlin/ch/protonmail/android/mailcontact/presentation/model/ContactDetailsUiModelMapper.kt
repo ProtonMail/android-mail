@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcontact.presentation.model
 
+import androidx.compose.ui.graphics.Color
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.usecase.DecodeByteArray
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatLocalDate
@@ -33,6 +34,7 @@ class ContactDetailsUiModelMapper @Inject constructor(
 ) {
 
     fun toContactDetailsUiModel(decryptedContact: DecryptedContact): ContactDetailsUiModel {
+        val groupLabelList = getGroupLabelList(decryptedContact)
         return ContactDetailsUiModel(
             id = decryptedContact.id,
             displayName = decryptedContact.formattedName?.value ?: "",
@@ -42,9 +44,9 @@ class ContactDetailsUiModelMapper @Inject constructor(
             contactMainDetailsItemList = getContactMainDetailsItemList(decryptedContact),
             contactOtherDetailsItemList = getContactOtherDetailsItemList(decryptedContact),
             contactGroups = ContactDetailsGroupsItem(
-                displayGroupSection = false,
+                displayGroupSection = groupLabelList.isNotEmpty(),
                 iconResId = R.drawable.ic_proton_users,
-                groupLabelList = emptyList()
+                groupLabelList = groupLabelList
             )
         )
     }
@@ -59,6 +61,12 @@ class ContactDetailsUiModelMapper @Inject constructor(
             Avatar.Initials(
                 value = getInitials(contact.formattedName?.value ?: "")
             )
+        }
+    }
+
+    private fun getGroupLabelList(contact: DecryptedContact): List<ContactGroupLabel> {
+        return contact.contactGroups.map {
+            ContactGroupLabel(it.name, Color(android.graphics.Color.parseColor(it.color)))
         }
     }
 

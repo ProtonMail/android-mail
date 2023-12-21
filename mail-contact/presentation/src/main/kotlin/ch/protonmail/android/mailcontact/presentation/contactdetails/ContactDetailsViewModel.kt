@@ -23,8 +23,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
-import ch.protonmail.android.mailcontact.domain.usecase.DecryptContact
-import ch.protonmail.android.mailcontact.domain.usecase.ObserveContact
+import ch.protonmail.android.mailcontact.domain.usecase.ObserveDecryptedContact
 import ch.protonmail.android.mailcontact.presentation.model.ContactDetailsUiModelMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -45,8 +44,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ContactDetailsViewModel @Inject constructor(
-    private val decryptContact: DecryptContact,
-    private val observeContact: ObserveContact,
+    private val observeDecryptedContact: ObserveDecryptedContact,
     private val reducer: ContactDetailsReducer,
     private val contactDetailsUiModelMapper: ContactDetailsUiModelMapper,
     observePrimaryUserId: ObservePrimaryUserId,
@@ -87,16 +85,14 @@ class ContactDetailsViewModel @Inject constructor(
     }
 
     private fun flowContactDetailsEvent(userId: UserId, contactId: ContactId): Flow<ContactDetailsEvent> {
-        return observeContact(userId, contactId).map { contact ->
-            val contactWithCards = contact.getOrElse {
-                Timber.e("Error while observing contact")
-                return@map ContactDetailsEvent.LoadContactError
-            }
-            val contactDetailsUiModel = contactDetailsUiModelMapper.toContactDetailsUiModel(
-                decryptContact(userId, contactWithCards)
-            )
+        return observeDecryptedContact(userId, contactId).map { decryptedContact ->
             ContactDetailsEvent.ContactLoaded(
-                contactDetailsUiModel
+                contactDetailsUiModelMapper.toContactDetailsUiModel(
+                    decryptedContact.getOrElse {
+                        Timber.e("Error while observing decrypted contact")
+                        return@map ContactDetailsEvent.LoadContactError
+                    }
+                )
             )
         }
     }
