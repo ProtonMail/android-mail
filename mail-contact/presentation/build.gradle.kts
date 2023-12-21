@@ -68,6 +68,7 @@ dependencies {
     implementation(project(":mail-common:domain"))
     implementation(project(":mail-common:presentation"))
     implementation(project(":mail-label:domain"))
+    implementation(project(":mail-label:presentation"))
 
     testImplementation(Dependencies.testLibs)
     testImplementation(project(":test:test-data"))

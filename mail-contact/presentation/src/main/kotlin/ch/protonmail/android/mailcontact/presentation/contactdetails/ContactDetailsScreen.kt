@@ -231,7 +231,7 @@ private fun ActionItemsRow(modifier: Modifier = Modifier, actions: ContactDetail
 @Composable
 private fun ContactGroupRow(modifier: Modifier = Modifier, contactGroups: ContactDetailsGroupsItem) {
     Row(
-        modifier = modifier
+        modifier = modifier.fillMaxWidth()
     ) {
         Icon(
             modifier = Modifier.align(Alignment.Top),
@@ -240,7 +240,9 @@ private fun ContactGroupRow(modifier: Modifier = Modifier, contactGroups: Contac
             contentDescription = stringResource(id = R.string.contact_groups_content_description)
         )
         FlowRow(
-            modifier.padding(start = ProtonDimens.DefaultSpacing)
+            Modifier
+                .fillMaxWidth()
+                .padding(start = ProtonDimens.DefaultSpacing)
         ) {
             for (groupLabel in contactGroups.groupLabelList) {
                 ContactGroupLabel(
