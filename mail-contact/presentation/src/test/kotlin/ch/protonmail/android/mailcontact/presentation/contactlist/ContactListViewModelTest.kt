@@ -27,7 +27,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontact.domain.model.GetContactError
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailcontact.presentation.R
-import ch.protonmail.android.mailcontact.presentation.model.toContactListItemUiModel
+import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModelMapper
 import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.coEvery
 import io.mockk.every
@@ -77,10 +77,13 @@ class ContactListViewModelTest {
 
     private val reducer = ContactListReducer()
 
+    private val contactListItemUiModelMapper = ContactListItemUiModelMapper()
+
     private val contactListViewModel by lazy {
         ContactListViewModel(
             observeContacts,
             reducer,
+            contactListItemUiModelMapper,
             observePrimaryUserId
         )
     }
@@ -125,7 +128,9 @@ class ContactListViewModelTest {
             // Then
             val actual = awaitItem()
             val expected = ContactListState.ListLoaded.Data(
-                contacts = listOf(defaultTestContact).toContactListItemUiModel()
+                contacts = contactListItemUiModelMapper.toContactListItemUiModel(
+                    listOf(defaultTestContact)
+                )
             )
 
             assertEquals(expected, actual)
@@ -166,7 +171,9 @@ class ContactListViewModelTest {
 
             val actual = awaitItem()
             val expected = ContactListState.ListLoaded.Data(
-                contacts = listOf(defaultTestContact).toContactListItemUiModel(),
+                contacts = contactListItemUiModelMapper.toContactListItemUiModel(
+                    listOf(defaultTestContact)
+                ),
                 bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Show)
             )
 
@@ -189,7 +196,9 @@ class ContactListViewModelTest {
 
             val actual = awaitItem()
             val expected = ContactListState.ListLoaded.Data(
-                contacts = listOf(defaultTestContact).toContactListItemUiModel(),
+                contacts = contactListItemUiModelMapper.toContactListItemUiModel(
+                    listOf(defaultTestContact)
+                ),
                 bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide)
             )
 
@@ -212,7 +221,9 @@ class ContactListViewModelTest {
 
             val actual = awaitItem()
             val expected = ContactListState.ListLoaded.Data(
-                contacts = listOf(defaultTestContact).toContactListItemUiModel(),
+                contacts = contactListItemUiModelMapper.toContactListItemUiModel(
+                    listOf(defaultTestContact)
+                ),
                 bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide),
                 openContactForm = Effect.of(Unit)
             )
@@ -236,7 +247,9 @@ class ContactListViewModelTest {
 
             val actual = awaitItem()
             val expected = ContactListState.ListLoaded.Data(
-                contacts = listOf(defaultTestContact).toContactListItemUiModel(),
+                contacts = contactListItemUiModelMapper.toContactListItemUiModel(
+                    listOf(defaultTestContact)
+                ),
                 bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide),
                 openContactGroupForm = Effect.of(Unit)
             )
@@ -260,7 +273,9 @@ class ContactListViewModelTest {
 
             val actual = awaitItem()
             val expected = ContactListState.ListLoaded.Data(
-                contacts = listOf(defaultTestContact).toContactListItemUiModel(),
+                contacts = contactListItemUiModelMapper.toContactListItemUiModel(
+                    listOf(defaultTestContact)
+                ),
                 bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide),
                 openImportContact = Effect.of(Unit)
             )

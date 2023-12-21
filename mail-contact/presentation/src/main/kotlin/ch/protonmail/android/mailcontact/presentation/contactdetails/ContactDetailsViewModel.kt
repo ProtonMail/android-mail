@@ -25,6 +25,7 @@ import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcontact.domain.usecase.DecryptContact
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContact
+import ch.protonmail.android.mailcontact.presentation.model.ContactDetailsUiModelMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,7 +40,6 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import me.proton.core.contact.domain.entity.ContactId
 import me.proton.core.domain.entity.UserId
-import ch.protonmail.android.mailcontact.presentation.model.toContactDetailsUiModel
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -48,6 +48,7 @@ class ContactDetailsViewModel @Inject constructor(
     private val decryptContact: DecryptContact,
     private val observeContact: ObserveContact,
     private val reducer: ContactDetailsReducer,
+    private val contactDetailsUiModelMapper: ContactDetailsUiModelMapper,
     observePrimaryUserId: ObservePrimaryUserId,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -91,7 +92,9 @@ class ContactDetailsViewModel @Inject constructor(
                 Timber.e("Error while observing contact")
                 return@map ContactDetailsEvent.LoadContactError
             }
-            val contactDetailsUiModel = decryptContact(userId, contactWithCards).toContactDetailsUiModel()
+            val contactDetailsUiModel = contactDetailsUiModelMapper.toContactDetailsUiModel(
+                decryptContact(userId, contactWithCards)
+            )
             ContactDetailsEvent.ContactLoaded(
                 contactDetailsUiModel
             )
@@ -99,7 +102,6 @@ class ContactDetailsViewModel @Inject constructor(
     }
 
     private suspend fun handleOnDeleteClick() {
-        // TODO Call Delete contact UC (make sure call is in worker to support offline)
         emitNewStateFor(ContactDetailsEvent.ContactDeleted)
     }
 

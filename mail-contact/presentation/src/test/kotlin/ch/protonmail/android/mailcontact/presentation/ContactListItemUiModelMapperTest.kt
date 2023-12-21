@@ -21,7 +21,7 @@ package ch.protonmail.android.mailcontact.presentation
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModel
-import ch.protonmail.android.mailcontact.presentation.model.toContactListItemUiModel
+import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModelMapper
 import ch.protonmail.android.testdata.user.UserIdTestData
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.contact.domain.entity.ContactEmail
@@ -31,6 +31,8 @@ import org.junit.Test
 import kotlin.test.assertEquals
 
 class ContactListItemUiModelMapperTest {
+
+    private val contactListItemUiModelMapper = ContactListItemUiModelMapper()
 
     @Test
     fun `return correct contacts`() {
@@ -94,7 +96,7 @@ class ContactListItemUiModelMapperTest {
             )
         )
 
-        val actual = contacts.toContactListItemUiModel()
+        val actual = contactListItemUiModelMapper.toContactListItemUiModel(contacts)
 
         val expected = listOf(
             ContactListItemUiModel.Header("F"),

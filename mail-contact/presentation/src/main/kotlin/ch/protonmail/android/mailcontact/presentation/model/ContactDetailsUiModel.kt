@@ -34,12 +34,26 @@ data class ContactDetailsUiModel(
     val contactGroups: ContactDetailsGroupsItem
 )
 
-data class ContactDetailsItem(
-    val displayIcon: Boolean,
-    val iconResId: Int,
-    val header: TextUiModel,
-    val value: TextUiModel
-)
+sealed interface ContactDetailsItem {
+
+    val displayIcon: Boolean
+    val iconResId: Int
+    val header: TextUiModel
+
+    data class Text(
+        override val displayIcon: Boolean,
+        override val iconResId: Int,
+        override val header: TextUiModel,
+        val value: TextUiModel
+    ) : ContactDetailsItem
+
+    data class Image(
+        override val displayIcon: Boolean,
+        override val iconResId: Int,
+        override val header: TextUiModel,
+        val value: Bitmap
+    ) : ContactDetailsItem
+}
 
 data class ContactDetailsGroupsItem(
     val displayGroupSection: Boolean,

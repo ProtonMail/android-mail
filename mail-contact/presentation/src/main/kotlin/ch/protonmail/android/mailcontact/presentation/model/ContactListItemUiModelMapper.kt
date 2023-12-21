@@ -25,52 +25,56 @@ import ch.protonmail.android.mailcontact.presentation.utils.getInitials
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.contact.domain.entity.ContactEmail
 import me.proton.core.util.kotlin.takeIfNotBlank
+import javax.inject.Inject
 
-fun List<Contact>.toContactListItemUiModel(): List<ContactListItemUiModel> {
-    val contacts = arrayListOf<ContactListItemUiModel>()
-    this.map {
-        it.copy(name = it.name.trim())
-    }.sortedBy {
-        it.name
-    }.groupBy {
-        it.name.first().uppercaseChar()
-    }.forEach { nameGroup ->
-        contacts.add(
-            ContactListItemUiModel.Header(value = nameGroup.key.toString())
-        )
-        nameGroup.value.forEach { contact ->
+class ContactListItemUiModelMapper @Inject constructor() {
+
+    fun toContactListItemUiModel(contactList: List<Contact>): List<ContactListItemUiModel> {
+        val contacts = arrayListOf<ContactListItemUiModel>()
+        contactList.map {
+            it.copy(name = it.name.trim())
+        }.sortedBy {
+            it.name
+        }.groupBy {
+            it.name.first().uppercaseChar()
+        }.forEach { nameGroup ->
             contacts.add(
-                ContactListItemUiModel.Contact(
-                    id = contact.id.id,
-                    name = contact.name,
-                    emailSubtext = getEmailSubtext(contact.contactEmails),
-                    avatar = AvatarUiModel.ParticipantInitial(getInitials(contact.name))
+                ContactListItemUiModel.Header(value = nameGroup.key.toString())
+            )
+            nameGroup.value.forEach { contact ->
+                contacts.add(
+                    ContactListItemUiModel.Contact(
+                        id = contact.id.id,
+                        name = contact.name,
+                        emailSubtext = getEmailSubtext(contact.contactEmails),
+                        avatar = AvatarUiModel.ParticipantInitial(getInitials(contact.name))
+                    )
                 )
-            )
+            }
         }
+        return contacts
     }
-    return contacts
-}
 
-private fun getEmailSubtext(contactEmails: List<ContactEmail>): TextUiModel {
-    return if (contactEmails.isNotEmpty()) {
-        val sortedContactEmails = contactEmails.sortedBy {
-            it.order
-        }.mapNotNull { contactEmail ->
-            contactEmail.email.takeIfNotBlank()
-        }
-        if (sortedContactEmails.isEmpty()) {
-            TextUiModel(R.string.no_contact_email)
-        } else if (sortedContactEmails.size > 1) {
-            TextUiModel(
-                R.string.multiple_contact_emails,
-                sortedContactEmails.first(),
-                sortedContactEmails.size.minus(1)
-            )
+    private fun getEmailSubtext(contactEmails: List<ContactEmail>): TextUiModel {
+        return if (contactEmails.isNotEmpty()) {
+            val sortedContactEmails = contactEmails.sortedBy {
+                it.order
+            }.mapNotNull { contactEmail ->
+                contactEmail.email.takeIfNotBlank()
+            }
+            if (sortedContactEmails.isEmpty()) {
+                TextUiModel(R.string.no_contact_email)
+            } else if (sortedContactEmails.size > 1) {
+                TextUiModel(
+                    R.string.multiple_contact_emails,
+                    sortedContactEmails.first(),
+                    sortedContactEmails.size.minus(1)
+                )
+            } else {
+                TextUiModel(sortedContactEmails.first())
+            }
         } else {
-            TextUiModel(sortedContactEmails.first())
+            TextUiModel(R.string.no_contact_email)
         }
-    } else {
-        TextUiModel(R.string.no_contact_email)
     }
 }

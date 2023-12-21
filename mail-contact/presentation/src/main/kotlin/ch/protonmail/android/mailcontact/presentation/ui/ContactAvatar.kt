@@ -30,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -72,14 +73,15 @@ fun ImageContactAvatar(modifier: Modifier = Modifier, imageBitmap: ImageBitmap) 
                 minWidth = MailDimens.ContactAvatarSize,
                 minHeight = MailDimens.ContactAvatarSize
             )
+            .clip(
+                shape = RoundedCornerShape(MailDimens.ContactAvatarCornerRadius)
+            )
             .background(
                 color = ProtonTheme.colors.backgroundSecondary,
                 shape = RoundedCornerShape(MailDimens.ContactAvatarCornerRadius)
-            )
-            .clip(
-                shape = RoundedCornerShape(MailDimens.ContactAvatarCornerRadius)
             ),
         bitmap = imageBitmap,
+        contentScale = ContentScale.Crop,
         contentDescription = stringResource(id = R.string.contact_avatar_image_content_description)
     )
 }

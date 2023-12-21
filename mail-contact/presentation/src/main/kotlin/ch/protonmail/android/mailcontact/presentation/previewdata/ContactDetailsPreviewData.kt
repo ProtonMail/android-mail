@@ -35,37 +35,37 @@ object ContactDetailsPreviewData {
         displayName = "John Doe",
         avatar = Avatar.Initials("JD"),
         contactMainDetailsItemList = listOf(
-            ContactDetailsItem(
+            ContactDetailsItem.Text(
                 displayIcon = true,
                 iconResId = R.drawable.ic_proton_at,
                 header = TextUiModel(R.string.contact_type_email),
                 value = TextUiModel("johndoe@proton.me")
             ),
-            ContactDetailsItem(
+            ContactDetailsItem.Text(
                 displayIcon = false,
                 iconResId = R.drawable.ic_proton_at,
                 header = TextUiModel(R.string.contact_type_work),
                 value = TextUiModel("johndoe2@proton.me")
             ),
-            ContactDetailsItem(
+            ContactDetailsItem.Text(
                 displayIcon = true,
                 iconResId = R.drawable.ic_proton_phone,
                 header = TextUiModel(R.string.contact_type_phone),
                 value = TextUiModel("01234567890")
             ),
-            ContactDetailsItem(
+            ContactDetailsItem.Text(
                 displayIcon = false,
                 iconResId = R.drawable.ic_proton_phone,
                 header = TextUiModel(R.string.contact_type_pager),
                 value = TextUiModel("0987654321")
             ),
-            ContactDetailsItem(
+            ContactDetailsItem.Text(
                 displayIcon = true,
                 iconResId = R.drawable.ic_proton_map_pin,
                 header = TextUiModel(R.string.contact_type_home),
                 value = TextUiModel("Lettensteg 10, 8037 Zürich")
             ),
-            ContactDetailsItem(
+            ContactDetailsItem.Text(
                 displayIcon = false,
                 iconResId = R.drawable.ic_proton_map_pin,
                 header = TextUiModel(R.string.contact_type_work),

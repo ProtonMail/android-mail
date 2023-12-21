@@ -23,6 +23,7 @@ import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
+import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModelMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,7 +38,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import me.proton.core.domain.entity.UserId
-import ch.protonmail.android.mailcontact.presentation.model.toContactListItemUiModel
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -45,6 +45,7 @@ import javax.inject.Inject
 class ContactListViewModel @Inject constructor(
     private val observeContacts: ObserveContacts,
     private val reducer: ContactListReducer,
+    private val contactListItemUiModelMapper: ContactListItemUiModelMapper,
     observePrimaryUserId: ObservePrimaryUserId
 ) : ViewModel() {
 
@@ -82,10 +83,12 @@ class ContactListViewModel @Inject constructor(
     private fun flowContactListEvent(userId: UserId): Flow<ContactListEvent> {
         return observeContacts(userId).map { contacts ->
             ContactListEvent.ContactListLoaded(
-                contactList = contacts.getOrElse {
-                    Timber.e("Error while observing contacts")
-                    return@map ContactListEvent.ErrorLoadingContactList
-                }.toContactListItemUiModel()
+                contactList = contactListItemUiModelMapper.toContactListItemUiModel(
+                    contacts.getOrElse {
+                        Timber.e("Error while observing contacts")
+                        return@map ContactListEvent.ErrorLoadingContactList
+                    }
+                )
             )
         }
     }
