@@ -237,6 +237,7 @@ class ConversationDetailViewModelIntegrationTest {
     private val deleteConversations: DeleteConversations = mockk()
     private val savedStateHandle: SavedStateHandle = mockk {
         every { get<String>(ConversationDetailScreen.ConversationIdKey) } returns conversationId.id
+        every { get<String>(ConversationDetailScreen.ScrollToMessageIdKey) } returns "null"
     }
     private val starConversations: StarConversations = mockk()
     private val unStarConversations: UnStarConversations = mockk()
@@ -1231,6 +1232,32 @@ class ConversationDetailViewModelIntegrationTest {
         // Then
         coVerify { deleteConversations wasNot Called }
         assertEquals(expectedMessage, viewModel.state.value.error.consume())
+    }
+
+    @Test
+    fun `should initially scroll to the message id assigned by the navigator in search mode`() = runTest {
+        // given
+        val searchedItem = MessageWithLabelsSample.AugWeatherForecast
+        val messages = nonEmptyListOf(
+            MessageWithLabelsSample.SepWeatherForecast,
+            searchedItem,
+            MessageWithLabelsSample.InvoiceWithLabel
+        )
+        coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
+        coEvery { savedStateHandle.get<String>(ConversationDetailScreen.ScrollToMessageIdKey) } returns
+            searchedItem.message.messageId.id
+
+        // When
+        val viewModel = buildConversationDetailViewModel()
+        viewModel.state.test {
+            skipItems(3)
+
+            // then
+            val conversationState: ConversationDetailState = awaitItem()
+            assertEquals(searchedItem.message.messageId.id, conversationState.scrollToMessage?.id)
+
+            cancelAndIgnoreRemainingEvents()
+        }
     }
 
     private fun mockAttachmentDownload(

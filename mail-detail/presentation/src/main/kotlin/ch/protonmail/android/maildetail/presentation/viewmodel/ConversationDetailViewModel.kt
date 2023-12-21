@@ -167,6 +167,7 @@ class ConversationDetailViewModel @Inject constructor(
     private val primaryUserId: Flow<UserId> = observePrimaryUserId().filterNotNull()
     private val mutableDetailState = MutableStateFlow(initialState)
     private val conversationId = requireConversationId()
+    private val initialScrollToMessageId = getInitialScrollToMessageId()
     private val observedAttachments = mutableListOf<AttachmentId>()
 
     val state: StateFlow<ConversationDetailState> = mutableDetailState.asStateFlow()
@@ -282,9 +283,9 @@ class ConversationDetailViewModel @Inject constructor(
                         currentViewState = conversationViewState
                     ).toImmutableList()
 
-                    val firstNonDraftMessageId = getFirstNonDraftMessageId(messages)
-                    if (stateIsLoading() && firstNonDraftMessageId != null && allCollapsed(conversationViewState)) {
-                        ConversationDetailEvent.MessagesData(messagesUiModels, firstNonDraftMessageId)
+                    val initialScrollTo = initialScrollToMessageId ?: getFirstNonDraftMessageId(messages)
+                    if (stateIsLoading() && initialScrollTo != null && allCollapsed(conversationViewState)) {
+                        ConversationDetailEvent.MessagesData(messagesUiModels, initialScrollTo)
                     } else {
                         val requestScrollTo = requestScrollToMessageId(conversationViewState)
                         ConversationDetailEvent.MessagesData(messagesUiModels, requestScrollTo)
@@ -541,6 +542,11 @@ class ConversationDetailViewModel @Inject constructor(
         val conversationId = savedStateHandle.get<String>(ConversationDetailScreen.ConversationIdKey)
             ?: throw IllegalStateException("No Conversation id given")
         return ConversationId(conversationId)
+    }
+
+    private fun getInitialScrollToMessageId(): MessageIdUiModel? {
+        val messageIdStr = savedStateHandle.get<String>(ConversationDetailScreen.ScrollToMessageIdKey)
+        return messageIdStr?.let { if (it == "null") null else MessageIdUiModel(it) }
     }
 
     private suspend fun emitNewStateFrom(event: ConversationDetailOperation) {

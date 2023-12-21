@@ -586,6 +586,8 @@ object ConversationDetail {
 object ConversationDetailScreen {
 
     const val ConversationIdKey = "conversation id"
+    const val ScrollToMessageIdKey = "scroll to message id"
+
     val scrollOffsetDp: Dp = (-30).dp
 
     data class Actions(
