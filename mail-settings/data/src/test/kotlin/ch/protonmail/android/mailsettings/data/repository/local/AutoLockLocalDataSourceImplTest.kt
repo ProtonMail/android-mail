@@ -29,8 +29,8 @@ import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailsettings.data.MailSettingsDataStoreProvider
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEnabledEncryptedValue
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedInterval
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedLastForegroundMillis
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedPin
-import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockLastEncryptedForegroundMillis
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -163,7 +163,7 @@ internal class AutoLockLocalDataSourceImplTest {
             // When + Then
             autoLockLocalDataSource
                 .observeLastEncryptedForegroundMillis()
-                .assertValue(AutoLockLastEncryptedForegroundMillis(StringPlaceholder))
+                .assertValue(AutoLockEncryptedLastForegroundMillis(StringPlaceholder))
         }
 
     @Test
@@ -179,7 +179,7 @@ internal class AutoLockLocalDataSourceImplTest {
     fun `should return success when auto lock last foreground millis is updated`() = runTest {
         // When
         val result = autoLockLocalDataSource.updateLastEncryptedForegroundMillis(
-            AutoLockLastEncryptedForegroundMillis(StringPlaceholder)
+            AutoLockEncryptedLastForegroundMillis(StringPlaceholder)
         )
 
         // Then
@@ -194,7 +194,7 @@ internal class AutoLockLocalDataSourceImplTest {
 
         // When
         val result = autoLockLocalDataSource.updateLastEncryptedForegroundMillis(
-            AutoLockLastEncryptedForegroundMillis(StringPlaceholder)
+            AutoLockEncryptedLastForegroundMillis(StringPlaceholder)
         )
 
         // Then

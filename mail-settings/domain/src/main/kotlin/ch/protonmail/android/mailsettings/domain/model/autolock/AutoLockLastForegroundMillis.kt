@@ -21,7 +21,7 @@ package ch.protonmail.android.mailsettings.domain.model.autolock
 import kotlinx.serialization.Serializable
 
 @JvmInline
-value class AutoLockLastEncryptedForegroundMillis(val encryptedValue: String)
+value class AutoLockEncryptedLastForegroundMillis(val encryptedValue: String)
 
 @JvmInline
 @Serializable

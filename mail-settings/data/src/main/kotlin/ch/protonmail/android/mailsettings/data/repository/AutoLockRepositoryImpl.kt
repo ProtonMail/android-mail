@@ -27,9 +27,9 @@ import ch.protonmail.android.mailsettings.data.usecase.DecryptSerializableValue
 import ch.protonmail.android.mailsettings.data.usecase.EncryptSerializableValue
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEnabledEncryptedValue
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedInterval
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedLastForegroundMillis
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedPin
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockInterval
-import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockLastEncryptedForegroundMillis
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockLastForegroundMillis
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPin
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPreference
@@ -101,7 +101,7 @@ class AutoLockRepositoryImpl @Inject constructor(
     ): AutoLockPreferenceEither<Unit> = either {
         val encryptedValue = encryptValueWithSerialization(timestamp).bind()
         autoLockLocalDataSource.updateLastEncryptedForegroundMillis(
-            AutoLockLastEncryptedForegroundMillis(encryptedValue)
+            AutoLockEncryptedLastForegroundMillis(encryptedValue)
         )
             .mapEither()
             .bind()

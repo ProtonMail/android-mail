@@ -22,15 +22,15 @@ import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEnabledEncryptedValue
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedInterval
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedLastForegroundMillis
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedPin
-import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockLastEncryptedForegroundMillis
 import kotlinx.coroutines.flow.Flow
 
 interface AutoLockLocalDataSource {
 
     fun observeAutoLockEnabledEncryptedValue(): Flow<Either<PreferencesError, AutoLockEnabledEncryptedValue>>
     fun observeAutoLockEncryptedInterval(): Flow<Either<PreferencesError, AutoLockEncryptedInterval>>
-    fun observeLastEncryptedForegroundMillis(): Flow<Either<PreferencesError, AutoLockLastEncryptedForegroundMillis>>
+    fun observeLastEncryptedForegroundMillis(): Flow<Either<PreferencesError, AutoLockEncryptedLastForegroundMillis>>
     fun observeAutoLockEncryptedPin(): Flow<Either<PreferencesError, AutoLockEncryptedPin>>
 
     suspend fun updateAutoLockEnabledEncryptedValue(
@@ -39,7 +39,7 @@ interface AutoLockLocalDataSource {
 
     suspend fun updateAutoLockEncryptedInterval(interval: AutoLockEncryptedInterval): Either<PreferencesError, Unit>
     suspend fun updateLastEncryptedForegroundMillis(
-        timestamp: AutoLockLastEncryptedForegroundMillis
+        timestamp: AutoLockEncryptedLastForegroundMillis
     ): Either<PreferencesError, Unit>
 
     suspend fun updateAutoLockEncryptedPin(pin: AutoLockEncryptedPin): Either<PreferencesError, Unit>

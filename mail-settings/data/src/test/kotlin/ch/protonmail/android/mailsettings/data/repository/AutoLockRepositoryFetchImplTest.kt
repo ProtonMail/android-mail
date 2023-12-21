@@ -28,9 +28,9 @@ import ch.protonmail.android.mailsettings.data.usecase.DecryptSerializableValue
 import ch.protonmail.android.mailsettings.data.usecase.EncryptSerializableValue
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEnabledEncryptedValue
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedInterval
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedLastForegroundMillis
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedPin
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockInterval
-import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockLastEncryptedForegroundMillis
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockLastForegroundMillis
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPin
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPreference
@@ -107,7 +107,7 @@ internal class AutoLockRepositoryFetchImplTest {
     @Test
     fun `should propagate data correctly when auto lock interval is observed`() = runTest {
         // Given
-        val expectedValue = AutoLockInterval.NotEnabled
+        val expectedValue = AutoLockInterval.Immediately
         every { autoLockLocalDataSource.observeAutoLockEncryptedInterval() } returns flowOf(
             AutoLockEncryptedInterval(BaseEncryptedDummyValue).right()
         )
@@ -146,7 +146,7 @@ internal class AutoLockRepositoryFetchImplTest {
         // Given
         val expectedValue = AutoLockLastForegroundMillis(123L)
         every { autoLockLocalDataSource.observeLastEncryptedForegroundMillis() } returns flowOf(
-            AutoLockLastEncryptedForegroundMillis(BaseEncryptedDummyValue).right()
+            AutoLockEncryptedLastForegroundMillis(BaseEncryptedDummyValue).right()
         )
 
         expectSuccessfulDecryption("\"${expectedValue.value}\"")
@@ -169,7 +169,7 @@ internal class AutoLockRepositoryFetchImplTest {
     fun `should propagate deserialization error when last foreground timestamp cannot be decoded`() = runTest {
         // Given
         every { autoLockLocalDataSource.observeLastEncryptedForegroundMillis() } returns flowOf(
-            AutoLockLastEncryptedForegroundMillis(BaseEncryptedDummyValue).right()
+            AutoLockEncryptedLastForegroundMillis(BaseEncryptedDummyValue).right()
         )
 
         expectDecryptionError()

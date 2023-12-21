@@ -27,9 +27,9 @@ import ch.protonmail.android.mailsettings.data.usecase.DecryptSerializableValue
 import ch.protonmail.android.mailsettings.data.usecase.EncryptSerializableValue
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEnabledEncryptedValue
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedInterval
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedLastForegroundMillis
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedPin
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockInterval
-import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockLastEncryptedForegroundMillis
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockLastForegroundMillis
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPin
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPreference
@@ -114,7 +114,7 @@ internal class AutoLockRepositoryImplUpdateTest {
     @Test
     fun `should return unit when auto lock interval update is successful`() = runTest {
         // Given
-        val autoLockIntervalPreference = AutoLockInterval.NotEnabled
+        val autoLockIntervalPreference = AutoLockInterval.FiveMinutes
         val autoLockIntervalEncryptedPreference = AutoLockEncryptedInterval("encrypted")
         coEvery {
             autoLockLocalDataSource.updateAutoLockEncryptedInterval(autoLockIntervalEncryptedPreference)
@@ -132,7 +132,7 @@ internal class AutoLockRepositoryImplUpdateTest {
     @Test
     fun `should propagate data store error when auto lock interval update is not successful`() = runTest {
         // Given
-        val autoLockIntervalPreference = AutoLockInterval.NotEnabled
+        val autoLockIntervalPreference = AutoLockInterval.FiveMinutes
         val autoLockIntervalEncryptedPreference = AutoLockEncryptedInterval("encrypted")
         coEvery {
             autoLockLocalDataSource.updateAutoLockEncryptedInterval(autoLockIntervalEncryptedPreference)
@@ -150,7 +150,7 @@ internal class AutoLockRepositoryImplUpdateTest {
     @Test
     fun `should propagate encryption error when auto lock interval update encryption is not successful`() = runTest {
         // Given
-        val autoLockIntervalPreference = AutoLockInterval.NotEnabled
+        val autoLockIntervalPreference = AutoLockInterval.FiveMinutes
         expectEncryptionError()
 
         // When
@@ -164,7 +164,7 @@ internal class AutoLockRepositoryImplUpdateTest {
     fun `should return unit when auto lock foreground timestamp update is successful`() = runTest {
         // Given
         val autoLockLastForegroundTimestamp = AutoLockLastForegroundMillis(123L)
-        val autoLockLastForegroundEncryptedTimestamp = AutoLockLastEncryptedForegroundMillis("encrypted")
+        val autoLockLastForegroundEncryptedTimestamp = AutoLockEncryptedLastForegroundMillis("encrypted")
         coEvery {
             autoLockLocalDataSource.updateLastEncryptedForegroundMillis(autoLockLastForegroundEncryptedTimestamp)
         } returns Unit.right()
@@ -182,7 +182,7 @@ internal class AutoLockRepositoryImplUpdateTest {
     fun `should propagate data store error when auto lock foreground timestamp update is not successful`() = runTest {
         // Given
         val autoLockLastForegroundTimestamp = AutoLockLastForegroundMillis(123L)
-        val autoLockLastForegroundEncryptedTimestamp = AutoLockLastEncryptedForegroundMillis("encrypted")
+        val autoLockLastForegroundEncryptedTimestamp = AutoLockEncryptedLastForegroundMillis("encrypted")
         coEvery {
             autoLockLocalDataSource.updateLastEncryptedForegroundMillis(autoLockLastForegroundEncryptedTimestamp)
         } returns PreferencesError.left()
