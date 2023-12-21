@@ -294,7 +294,7 @@ fun MailboxScreen(
                         onExitSearchMode = { actions.onExitSearchMode() },
                         onTitleClick = { scope.launch { lazyListState.animateScrollToItem(0) } },
                         onEnterSearchMode = { actions.onEnterSearchMode() },
-                        onSearch = {},
+                        onSearch = { actions.showFeatureMissingSnackbar() },
                         onOpenComposer = { actions.navigateToComposer() }
                     )
                 )
