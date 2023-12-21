@@ -44,7 +44,6 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.ButtonDefaults.OutlinedBorderSize
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetValue
@@ -73,6 +72,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -579,27 +579,14 @@ private fun MailboxItemsList(
             .fillMaxSize()
     ) {
         if (state is MailboxListState.Data) {
-            state.clearButtonText?.let { text ->
+            state.clearState.let { it as? MailboxListState.Data.ClearState.Visible }?.let {
                 item {
-                    ProtonButton(
-                        onClick = actions.deleteAll,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .heightIn(min = ButtonDefaults.MinHeight)
-                            .padding(
-                                bottom = ProtonDimens.DefaultSpacing,
-                                start = ProtonDimens.DefaultSpacing,
-                                end = ProtonDimens.MediumSpacing
-                            ),
-                        shape = ProtonTheme.shapes.medium,
-                        border = BorderStroke(OutlinedBorderSize, ProtonTheme.colors.notificationError),
-                        elevation = null,
-                        colors = ButtonDefaults.protonOutlinedButtonColors(
-                            contentColor = ProtonTheme.colors.notificationError
-                        ),
-                        contentPadding = ButtonDefaults.ContentPadding
-                    ) {
-                        Text(text = text.string())
+                    when (it) {
+                        MailboxListState.Data.ClearState.Visible.Banner -> {
+                            ClearBanner()
+                        }
+
+                        is MailboxListState.Data.ClearState.Visible.Button -> { ClearButton(it, actions) }
                     }
                 }
             }
@@ -657,6 +644,64 @@ private fun MailboxItemsList(
                 else -> Unit
             }
         }
+    }
+}
+
+@Composable
+private fun ClearBanner() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = ButtonDefaults.MinHeight)
+            .padding(
+                start = ProtonDimens.DefaultSpacing,
+                top = ProtonDimens.SmallSpacing,
+                bottom = ProtonDimens.DefaultSpacing,
+                end = ProtonDimens.DefaultSpacing
+            )
+            .background(
+                color = ProtonTheme.colors.backgroundSecondary,
+                shape = ProtonTheme.shapes.medium
+            )
+            .padding(ProtonDimens.SmallSpacing),
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Text(
+            color = ProtonTheme.colors.textWeak,
+            fontWeight = FontWeight.Normal,
+            text = stringResource(id = R.string.mailbox_action_clear_operation_scheduled),
+        )
+    }
+}
+
+@Composable
+private fun ClearButton(
+    clearButtonState: MailboxListState.Data.ClearState.Visible.Button,
+    actions: MailboxScreen.Actions
+) {
+    ProtonButton(
+        onClick = actions.deleteAll,
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = ButtonDefaults.MinHeight)
+            .padding(
+                start = ProtonDimens.DefaultSpacing,
+                top = ProtonDimens.SmallSpacing,
+                bottom = ProtonDimens.DefaultSpacing,
+                end = ProtonDimens.DefaultSpacing
+            ),
+        shape = ProtonTheme.shapes.medium,
+        border = BorderStroke(
+            ButtonDefaults.OutlinedBorderSize,
+            ProtonTheme.colors.notificationError
+        ),
+        elevation = null,
+        colors = ButtonDefaults.protonOutlinedButtonColors(
+            contentColor = ProtonTheme.colors.notificationError
+        ),
+        contentPadding = ButtonDefaults.ContentPadding
+    ) {
+        Text(text = clearButtonState.text.string())
     }
 }
 

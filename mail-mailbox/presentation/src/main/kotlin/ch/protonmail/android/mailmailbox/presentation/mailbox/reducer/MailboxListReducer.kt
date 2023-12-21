@@ -77,6 +77,7 @@ class MailboxListReducer @Inject constructor() {
             is MailboxViewAction.SearchQuery -> reduceSearchQuery(currentState)
             is MailboxViewAction.SearchResult -> reduceSearchResult(currentState)
             is MailboxViewAction.ExitSearchMode -> reduceExitSearchMode(currentState)
+            is MailboxEvent.ClearAllOperationStatus -> reduceClearState(operation, currentState)
         }
     }
 
@@ -133,17 +134,17 @@ class MailboxListReducer @Inject constructor() {
                 refreshRequested = false,
                 swipeActions = null,
                 searchMode = MailboxSearchMode.None,
-                clearButtonText = currentMailLabel.getClearButtonText()
+                clearState = MailboxListState.Data.ClearState.Hidden
             )
 
             is MailboxListState.Data.SelectionMode -> currentState.copy(
                 currentMailLabel = currentMailLabel,
-                clearButtonText = currentMailLabel.getClearButtonText()
+                clearState = MailboxListState.Data.ClearState.Hidden
             )
 
             is MailboxListState.Data.ViewMode -> currentState.copy(
                 currentMailLabel = currentMailLabel,
-                clearButtonText = currentMailLabel.getClearButtonText()
+                clearState = MailboxListState.Data.ClearState.Hidden
             )
         }
     }
@@ -163,13 +164,13 @@ class MailboxListReducer @Inject constructor() {
                 refreshRequested = false,
                 swipeActions = null,
                 searchMode = MailboxSearchMode.None,
-                clearButtonText = currentMailLabel.getClearButtonText()
+                clearState = MailboxListState.Data.ClearState.Hidden
             )
 
             is MailboxListState.Data.ViewMode -> currentState.copy(
                 currentMailLabel = currentMailLabel,
                 scrollToMailboxTop = Effect.of(currentMailLabel.id),
-                clearButtonText = currentMailLabel.getClearButtonText()
+                clearState = MailboxListState.Data.ClearState.Hidden
             )
 
             is MailboxListState.Data.SelectionMode -> currentState.copy(
@@ -268,7 +269,7 @@ class MailboxListReducer @Inject constructor() {
                 currentMailLabel = currentState.currentMailLabel,
                 selectedMailboxItems = setOf(SelectedMailboxItem(item.userId, item.id, item.isRead, item.showStar)),
                 swipeActions = currentState.swipeActions,
-                clearButtonText = currentState.clearButtonText
+                clearState = currentState.clearState
             )
 
             else -> currentState
@@ -284,7 +285,7 @@ class MailboxListReducer @Inject constructor() {
             refreshRequested = false,
             swipeActions = currentState.swipeActions,
             searchMode = MailboxSearchMode.None,
-            clearButtonText = currentState.clearButtonText
+            clearState = currentState.clearState
         )
 
         else -> currentState
@@ -390,9 +391,31 @@ class MailboxListReducer @Inject constructor() {
         else -> currentState
     }
 
-    private fun MailLabel.getClearButtonText() = when (this.id) {
-        MailLabelId.System.Trash -> TextUiModel(R.string.mailbox_action_button_clear_trash)
-        MailLabelId.System.Spam -> TextUiModel(R.string.mailbox_action_button_clear_spam)
-        else -> null
-    }
+    private fun reduceClearState(operation: MailboxEvent.ClearAllOperationStatus, currentState: MailboxListState) =
+        when (currentState) {
+            is MailboxListState.Data.ViewMode -> {
+                if (currentState.currentMailLabel.isClearableLocation()) {
+                    currentState.copy(
+                        clearState = if (operation.isClearing) {
+                            MailboxListState.Data.ClearState.Visible.Banner
+                        } else {
+                            MailboxListState.Data.ClearState.Visible.Button(
+                                when (currentState.currentMailLabel.id) {
+                                    MailLabelId.System.Trash -> TextUiModel(R.string.mailbox_action_button_clear_trash)
+                                    MailLabelId.System.Spam -> TextUiModel(R.string.mailbox_action_button_clear_spam)
+                                    else -> TextUiModel.Text("")
+                                }
+                            )
+                        }
+                    )
+                } else {
+                    currentState
+                }
+            }
+
+            else -> currentState
+        }
+
+    private fun MailLabel.isClearableLocation() =
+        this.id == MailLabelId.System.Trash || this.id == MailLabelId.System.Spam
 }

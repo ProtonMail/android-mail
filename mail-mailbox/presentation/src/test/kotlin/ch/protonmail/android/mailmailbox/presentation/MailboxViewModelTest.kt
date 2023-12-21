@@ -43,10 +43,10 @@ import ch.protonmail.android.mailconversation.domain.entity.ConversationWithLabe
 import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.mailconversation.domain.usecase.DeleteConversations
 import ch.protonmail.android.mailconversation.domain.usecase.GetConversationsWithLabels
-import ch.protonmail.android.mailconversation.domain.usecase.ObserveClearConversationOperation
 import ch.protonmail.android.mailconversation.domain.usecase.MarkConversationsAsRead
 import ch.protonmail.android.mailconversation.domain.usecase.MarkConversationsAsUnread
 import ch.protonmail.android.mailconversation.domain.usecase.MoveConversations
+import ch.protonmail.android.mailconversation.domain.usecase.ObserveClearConversationOperation
 import ch.protonmail.android.mailconversation.domain.usecase.StarConversations
 import ch.protonmail.android.mailconversation.domain.usecase.UnStarConversations
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
@@ -439,7 +439,7 @@ class MailboxViewModelTest {
                 refreshRequested = false,
                 swipeActions = null,
                 searchMode = MailboxSearchMode.None,
-                clearButtonText = null
+                clearState = MailboxListState.Data.ClearState.Hidden
             )
         )
         val expectedSwipeActions = SwipeActionsUiModel(
@@ -456,7 +456,7 @@ class MailboxViewModelTest {
                 refreshRequested = false,
                 swipeActions = expectedSwipeActions,
                 searchMode = MailboxSearchMode.None,
-                clearButtonText = null
+                clearState = MailboxListState.Data.ClearState.Hidden
             )
         )
         val expectedStateAfterClearAllStatus = expectedStateWithSwipeGestures.copy(
@@ -469,7 +469,7 @@ class MailboxViewModelTest {
                 refreshRequested = false,
                 swipeActions = expectedSwipeActions,
                 searchMode = MailboxSearchMode.None,
-                clearButtonText = null
+                clearState = MailboxListState.Data.ClearState.Visible.Button(TextUiModel("Clear All"))
             )
         )
         val mailLabelsFlow = MutableStateFlow(
@@ -525,7 +525,7 @@ class MailboxViewModelTest {
                 refreshRequested = false,
                 swipeActions = null,
                 searchMode = MailboxSearchMode.None,
-                clearButtonText = null
+                clearState = MailboxListState.Data.ClearState.Hidden
             )
         )
         val mailLabelsFlow = MutableStateFlow(
@@ -1089,7 +1089,7 @@ class MailboxViewModelTest {
                 refreshRequested = false,
                 swipeActions = null,
                 searchMode = MailboxSearchMode.None,
-                clearButtonText = null
+                clearState = MailboxListState.Data.ClearState.Hidden
             )
         )
         every {
@@ -1120,7 +1120,7 @@ class MailboxViewModelTest {
                 refreshRequested = false,
                 swipeActions = null,
                 searchMode = MailboxSearchMode.None,
-                clearButtonText = null
+                clearState = MailboxListState.Data.ClearState.Hidden
             )
         )
         every {
@@ -1151,7 +1151,7 @@ class MailboxViewModelTest {
                 refreshRequested = true,
                 swipeActions = null,
                 searchMode = MailboxSearchMode.None,
-                clearButtonText = null
+                clearState = MailboxListState.Data.ClearState.Hidden
             )
         )
         every {
@@ -3344,7 +3344,7 @@ class MailboxViewModelTest {
                 refreshRequested = false,
                 swipeActions = null,
                 searchMode = MailboxSearchMode.None,
-                clearButtonText = null
+                clearState = MailboxListState.Data.ClearState.Hidden
             ),
             unreadFilterState = UnreadFilterState.Data(
                 numUnread = UnreadCountersTestData.labelToCounterMap[initialLocationMailLabelId.labelId]!!,
@@ -3423,7 +3423,7 @@ class MailboxViewModelTest {
                 refreshRequested = false,
                 swipeActions = null,
                 searchMode = MailboxSearchMode.NewSearch,
-                clearButtonText = null
+                clearState = MailboxListState.Data.ClearState.Hidden
             )
         )
         every {
@@ -3455,7 +3455,7 @@ class MailboxViewModelTest {
                 refreshRequested = false,
                 swipeActions = null,
                 searchMode = MailboxSearchMode.None,
-                clearButtonText = null
+                clearState = MailboxListState.Data.ClearState.Hidden
             )
         )
         every {
@@ -3488,7 +3488,7 @@ class MailboxViewModelTest {
                 refreshRequested = false,
                 swipeActions = null,
                 searchMode = MailboxSearchMode.NewSearchLoading,
-                clearButtonText = null
+                clearState = MailboxListState.Data.ClearState.Hidden
             )
         )
         every {
@@ -3520,7 +3520,7 @@ class MailboxViewModelTest {
                 refreshRequested = false,
                 swipeActions = null,
                 searchMode = MailboxSearchMode.SearchData,
-                clearButtonText = null
+                clearState = MailboxListState.Data.ClearState.Hidden
             )
         )
         every {
