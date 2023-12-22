@@ -87,12 +87,13 @@ object ConversationLabelSample {
     fun build(
         conversationId: ConversationId = ConversationIdSample.build(),
         labelId: LabelId = LabelIdSample.build(),
-        numMessages: Int = 0
+        numMessages: Int = 0,
+        numUnread: Int = 0
     ) = ConversationLabel(
         conversationId = conversationId,
         contextNumAttachments = 0,
         contextNumMessages = numMessages,
-        contextNumUnread = 0,
+        contextNumUnread = numUnread,
         contextSize = 0,
         contextTime = 0,
         labelId = labelId

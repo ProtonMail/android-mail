@@ -22,16 +22,33 @@ import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
+import ch.protonmail.android.mailconversation.domain.entity.ConversationLabel
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
+import kotlinx.coroutines.flow.firstOrNull
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 class MarkConversationsAsRead @Inject constructor(
-    private val conversationRepository: ConversationRepository
+    private val conversationRepository: ConversationRepository,
+    private val decrementUnreadCount: DecrementUnreadCount
 ) {
 
     suspend operator fun invoke(
         userId: UserId,
         conversationIds: List<ConversationId>
-    ): Either<DataError, List<Conversation>> = conversationRepository.markRead(userId, conversationIds)
+    ): Either<DataError, List<Conversation>> {
+        decrementUnreadConversationsCount(userId, conversationIds)
+        return conversationRepository.markRead(userId, conversationIds)
+    }
+
+    private suspend fun decrementUnreadConversationsCount(userId: UserId, conversationIds: List<ConversationId>) {
+        conversationRepository.observeCachedConversations(userId, conversationIds)
+            .firstOrNull()
+            ?.onEach { conversation ->
+                val labelsWithUnreadMessages = conversation.labels.mapNotNull { it.takeIf { it.hasUnreads() } }
+                decrementUnreadCount(userId, labelsWithUnreadMessages.map { it.labelId })
+            }
+    }
+
+    private fun ConversationLabel.hasUnreads() = this.contextNumUnread > 0
 }

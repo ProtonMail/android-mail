@@ -25,6 +25,7 @@ import ch.protonmail.android.mailconversation.data.remote.UnreadConversationsCou
 import ch.protonmail.android.mailconversation.domain.repository.UnreadConversationsCountRepository
 import ch.protonmail.android.mailmessage.domain.model.UnreadCounter
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.mapLatest
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
@@ -44,7 +45,7 @@ class UnreadConversationsCountRepositoryImpl @Inject constructor(
         }
 
     override suspend fun decrementUnreadCount(userId: UserId, labelId: LabelId) = either<DataError.Local, Unit> {
-        conversationLocalDataSource.observeConversationCounters(userId).mapLatest { counters ->
+        conversationLocalDataSource.observeConversationCounters(userId).firstOrNull()?.let { counters ->
             counters.find { it.labelId == labelId }?.let {
                 val updatedCounter = it.copy(unreadCount = it.unreadCount.decrementCoercingZero())
                 conversationLocalDataSource.saveConversationCounter(updatedCounter)
@@ -53,7 +54,7 @@ class UnreadConversationsCountRepositoryImpl @Inject constructor(
     }
 
     override suspend fun incrementUnreadCount(userId: UserId, labelId: LabelId) = either<DataError.Local, Unit> {
-        conversationLocalDataSource.observeConversationCounters(userId).mapLatest { counters ->
+        conversationLocalDataSource.observeConversationCounters(userId).firstOrNull()?.let { counters ->
             counters.find { it.labelId == labelId }?.let {
                 val updatedCounter = it.copy(unreadCount = it.unreadCount.inc())
                 conversationLocalDataSource.saveConversationCounter(updatedCounter)

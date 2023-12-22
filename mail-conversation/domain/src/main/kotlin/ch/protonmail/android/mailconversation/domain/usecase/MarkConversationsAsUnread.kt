@@ -22,14 +22,18 @@ import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
+import ch.protonmail.android.mailconversation.domain.entity.ConversationLabel
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
+import kotlinx.coroutines.flow.firstOrNull
 import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.LabelId
 import javax.inject.Inject
 
 class MarkConversationsAsUnread @Inject constructor(
     private val conversationRepository: ConversationRepository,
-    private val selectedMailLabelId: SelectedMailLabelId
+    private val selectedMailLabelId: SelectedMailLabelId,
+    private val incrementUnreadCount: IncrementUnreadCount
 ) {
 
     suspend operator fun invoke(
@@ -37,6 +41,26 @@ class MarkConversationsAsUnread @Inject constructor(
         conversationIds: List<ConversationId>
     ): Either<DataError, List<Conversation>> {
         val contextLabelId = selectedMailLabelId.flow.value.labelId
+        incrementUnreadConversationsCount(userId, conversationIds, contextLabelId)
         return conversationRepository.markUnread(userId, conversationIds, contextLabelId)
     }
+
+    private suspend fun incrementUnreadConversationsCount(
+        userId: UserId,
+        conversationIds: List<ConversationId>,
+        contextLabelId: LabelId
+    ) {
+        conversationRepository.observeCachedConversations(userId, conversationIds)
+            .firstOrNull()
+            ?.onEach { conversation ->
+                if (conversation.allMessagesInLabelAreRead(contextLabelId)) {
+                    incrementUnreadCount(userId, listOf(contextLabelId))
+                }
+            }
+    }
+
+    private fun Conversation.allMessagesInLabelAreRead(contextLabelId: LabelId) =
+        this.labels.find { it.labelId == contextLabelId }.allMessagesAreRead()
+
+    private fun ConversationLabel?.allMessagesAreRead() = this?.contextNumUnread == 0
 }

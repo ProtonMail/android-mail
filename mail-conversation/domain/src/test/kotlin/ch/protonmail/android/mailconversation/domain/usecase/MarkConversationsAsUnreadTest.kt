@@ -22,14 +22,21 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.DataErrorSample
+import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
+import ch.protonmail.android.mailcommon.domain.sample.LabelSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
+import ch.protonmail.android.mailconversation.domain.sample.ConversationLabelSample
 import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import io.mockk.Runs
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -44,14 +51,20 @@ class MarkConversationsAsUnreadTest {
     private val selectedMailLabelId: SelectedMailLabelId = mockk {
         every { flow.value } returns mailLabel
     }
+    private val incrementUnreadCount: IncrementUnreadCount = mockk()
 
-    private val markUnread = MarkConversationsAsUnread(conversationRepository, selectedMailLabelId)
+    private val markUnread = MarkConversationsAsUnread(
+        conversationRepository,
+        selectedMailLabelId,
+        incrementUnreadCount
+    )
 
     @Test
     fun `returns error when repository fails`() = runTest {
         // given
         val error = DataErrorSample.NoCache.left()
         coEvery { conversationRepository.markUnread(userId, conversationIds, mailLabel.labelId) } returns error
+        coEvery { conversationRepository.observeCachedConversations(userId, conversationIds) } returns flowOf()
 
         // when
         val result = markUnread(userId, conversationIds)
@@ -65,12 +78,76 @@ class MarkConversationsAsUnreadTest {
         // given
         val conversation = listOf(ConversationSample.WeatherForecast, ConversationSample.AlphaAppFeedback).right()
         coEvery { conversationRepository.markUnread(userId, conversationIds, mailLabel.labelId) } returns conversation
+        coEvery { conversationRepository.observeCachedConversations(userId, conversationIds) } returns flowOf()
 
         // when
         val result = markUnread(userId, conversationIds)
 
         // then
         assertEquals(conversation, result)
+    }
+
+    @Test
+    fun `increment unread count for each conversation's label that has all messages read`() = runTest {
+        // given
+        val forecastConversation = ConversationSample.WeatherForecast.copy(
+            labels = listOf(
+                ConversationLabelSample.build(
+                    conversationId = ConversationSample.WeatherForecast.conversationId,
+                    labelId = LabelIdSample.Inbox,
+                    numMessages = 2,
+                    numUnread = 1
+                ),
+                ConversationLabelSample.build(
+                    conversationId = ConversationSample.WeatherForecast.conversationId,
+                    labelId = LabelIdSample.Archive,
+                    numMessages = 2,
+                    numUnread = 0
+                )
+            )
+        )
+        val alphaAppConversation = ConversationSample.WeatherForecast.copy(
+            labels = listOf(
+                ConversationLabelSample.build(
+                    conversationId = ConversationSample.WeatherForecast.conversationId,
+                    labelId = LabelIdSample.Inbox,
+                    numMessages = 3,
+                    numUnread = 0
+                ),
+                ConversationLabelSample.build(
+                    conversationId = ConversationSample.WeatherForecast.conversationId,
+                    labelId = LabelIdSample.Archive,
+                    numMessages = 3,
+                    numUnread = 1
+                ),
+                ConversationLabelSample.build(
+                    conversationId = ConversationSample.WeatherForecast.conversationId,
+                    labelId = LabelIdSample.Starred,
+                    numMessages = 3,
+                    numUnread = 1
+                )
+            )
+        )
+        val conversations = listOf(forecastConversation, alphaAppConversation)
+        val whetherForecastExpectedLabelIds = listOf(LabelSample.Archive.labelId)
+        val alphaAppExpectedLabelIds = listOf(LabelSample.Archive.labelId)
+        coEvery {
+            conversationRepository.markUnread(userId, conversationIds, mailLabel.labelId)
+        } returns conversations.right()
+        coEvery {
+            conversationRepository.observeCachedConversations(userId, conversationIds)
+        } returns flowOf(conversations)
+        coEvery { incrementUnreadCount(userId, whetherForecastExpectedLabelIds) } just Runs
+        coEvery { incrementUnreadCount(userId, alphaAppExpectedLabelIds) } just Runs
+
+        // when
+        markUnread(userId, conversationIds)
+
+        // then
+        coVerify {
+            incrementUnreadCount(userId, whetherForecastExpectedLabelIds)
+            incrementUnreadCount(userId, alphaAppExpectedLabelIds)
+        }
     }
 
 }
