@@ -22,10 +22,13 @@ import arrow.core.Either
 import arrow.core.raise.either
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailconversation.domain.entity.Conversation
+import ch.protonmail.android.mailconversation.domain.entity.ConversationLabel
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import javax.inject.Inject
@@ -33,7 +36,9 @@ import javax.inject.Inject
 class MoveConversations @Inject constructor(
     private val conversationRepository: ConversationRepository,
     private val observeExclusiveMailLabels: ObserveExclusiveMailLabels,
-    private val observeMailLabels: ObserveMailLabels
+    private val observeMailLabels: ObserveMailLabels,
+    private val incrementUnreadCount: IncrementUnreadCount,
+    private val decrementUnreadCount: DecrementUnreadCount
 ) {
 
     suspend operator fun invoke(
@@ -43,8 +48,45 @@ class MoveConversations @Inject constructor(
     ): Either<DataError, Unit> = either {
         val allLabelIds = observeMailLabels(userId).first().allById.mapNotNull { it.key.labelId }
         val exclusiveMailLabels = observeExclusiveMailLabels(userId).first().allById.mapNotNull { it.key.labelId }
+        decrementUnreadConversationsCount(userId, conversationIds, exclusiveMailLabels)
         conversationRepository
             .move(userId, conversationIds, allLabelIds, exclusiveMailLabels, toLabelId = labelId)
+            .onRight { incrementUnreadConversationsCount(userId, conversationIds, labelId) }
             .bind()
     }
+
+    private suspend fun decrementUnreadConversationsCount(
+        userId: UserId,
+        conversationIds: List<ConversationId>,
+        fromLabelIds: List<LabelId>
+    ) {
+        conversationRepository.observeCachedConversations(userId, conversationIds)
+            .firstOrNull()
+            ?.onEach { conversation ->
+                fromLabelIds.forEach { fromLabelId ->
+                    if (conversation.hasUnreadMessagesInlabel(fromLabelId)) {
+                        decrementUnreadCount(userId, listOf(fromLabelId))
+                    }
+                }
+            }
+    }
+
+    private suspend fun incrementUnreadConversationsCount(
+        userId: UserId,
+        conversationIds: List<ConversationId>,
+        toLabelId: LabelId
+    ) {
+        conversationRepository.observeCachedConversations(userId, conversationIds)
+            .firstOrNull()
+            ?.onEach { conversation ->
+                if (conversation.hasUnreadMessagesInlabel(toLabelId)) {
+                    incrementUnreadCount(userId, listOf(toLabelId))
+                }
+            }
+    }
+
+    private fun Conversation.hasUnreadMessagesInlabel(contextLabelId: LabelId) =
+        this.labels.find { it.labelId == contextLabelId }.hasUnreadMessages()
+
+    private fun ConversationLabel?.hasUnreadMessages() = this?.let { it.contextNumUnread > 0 } ?: false
 }

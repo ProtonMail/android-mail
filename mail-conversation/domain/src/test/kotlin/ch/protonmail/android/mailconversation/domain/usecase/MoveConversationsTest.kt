@@ -22,17 +22,23 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
+import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
+import ch.protonmail.android.mailcommon.domain.sample.LabelSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
+import ch.protonmail.android.mailconversation.domain.sample.ConversationLabelSample
 import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.model.toMailLabelSystem
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
+import io.mockk.Runs
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -49,12 +55,16 @@ class MoveConversationsTest {
     private val conversationRepository = mockk<ConversationRepository>()
     private val observeMailLabels = mockk<ObserveMailLabels>()
     private val observeExclusiveMailLabels = mockk<ObserveExclusiveMailLabels>()
+    private val decrementUnreadCount: DecrementUnreadCount = mockk()
+    private val incrementUnreadCount: IncrementUnreadCount = mockk()
 
     private val moveConversations by lazy {
         MoveConversations(
             conversationRepository = conversationRepository,
             observeExclusiveMailLabels = observeExclusiveMailLabels,
-            observeMailLabels = observeMailLabels
+            observeMailLabels = observeMailLabels,
+            incrementUnreadCount = incrementUnreadCount,
+            decrementUnreadCount = decrementUnreadCount
         )
     }
 
@@ -67,6 +77,7 @@ class MoveConversationsTest {
         expectObserveMailLabelsSucceeds()
         expectObserveExclusiveMailLabelSucceeds()
         expectMoveSucceeds(destinationLabel, expectedConversations)
+        coEvery { conversationRepository.observeCachedConversations(userId, conversationIds) } returns flowOf()
 
         // When
         val result = moveConversations(userId, conversationIds, destinationLabel)
@@ -83,12 +94,91 @@ class MoveConversationsTest {
         expectObserveMailLabelsSucceeds()
         expectObserveExclusiveMailLabelSucceeds()
         expectMoveFails(destinationLabel)
+        coEvery { conversationRepository.observeCachedConversations(userId, conversationIds) } returns flowOf()
 
         // When
         val result = moveConversations(userId, conversationIds, destinationLabel)
 
         // Then
         assertEquals(DataError.Local.NoDataCached.left(), result)
+    }
+
+    @Test
+    fun `decrement unread count for each conversation's label that has unread messages`() = runTest {
+        // given
+        val destinationLabel = LabelId("labelId")
+        val forecastConversation = ConversationSample.WeatherForecast.copy(
+            labels = listOf(
+                ConversationLabelSample.build(
+                    conversationId = ConversationSample.WeatherForecast.conversationId,
+                    labelId = LabelIdSample.Inbox,
+                    numMessages = 2,
+                    numUnread = 1
+                ),
+                ConversationLabelSample.build(
+                    conversationId = ConversationSample.WeatherForecast.conversationId,
+                    labelId = LabelIdSample.Archive,
+                    numMessages = 2,
+                    numUnread = 0
+                )
+            )
+        )
+        val conversations = listOf(forecastConversation)
+        val whetherForecastExpectedLabelIds = listOf(LabelSample.Inbox.labelId)
+        expectObserveMailLabelsSucceeds()
+        expectObserveExclusiveMailLabelSucceeds()
+        expectMoveSucceeds(destinationLabel, conversations)
+        coEvery {
+            conversationRepository.observeCachedConversations(userId, conversationIds)
+        } returns flowOf(conversations)
+        coEvery { decrementUnreadCount(userId, whetherForecastExpectedLabelIds) } just Runs
+
+        // when
+        moveConversations(userId, conversationIds, destinationLabel)
+
+        // then
+        coVerify {
+            decrementUnreadCount(userId, whetherForecastExpectedLabelIds)
+        }
+    }
+
+    @Test
+    fun `increments unread count for the destination label when it has unread messages`() = runTest {
+        // given
+        val destinationLabel = LabelId("labelId")
+        val forecastConversation = ConversationSample.WeatherForecast.copy(
+            labels = listOf(
+                ConversationLabelSample.build(
+                    conversationId = ConversationSample.WeatherForecast.conversationId,
+                    labelId = LabelIdSample.Inbox,
+                    numMessages = 2,
+                    numUnread = 0
+                ),
+                ConversationLabelSample.build(
+                    conversationId = ConversationSample.WeatherForecast.conversationId,
+                    labelId = destinationLabel,
+                    numMessages = 2,
+                    numUnread = 1
+                )
+            )
+        )
+        val conversations = listOf(forecastConversation)
+        val whetherForecastExpectedLabelIds = listOf(destinationLabel)
+        expectObserveMailLabelsSucceeds()
+        expectObserveExclusiveMailLabelSucceeds()
+        expectMoveSucceeds(destinationLabel, conversations)
+        coEvery {
+            conversationRepository.observeCachedConversations(userId, conversationIds)
+        } returns flowOf(conversations)
+        coEvery { incrementUnreadCount(userId, whetherForecastExpectedLabelIds) } just Runs
+
+        // when
+        moveConversations(userId, conversationIds, destinationLabel)
+
+        // then
+        coVerify {
+            incrementUnreadCount(userId, whetherForecastExpectedLabelIds)
+        }
     }
 
     private fun expectMoveSucceeds(destinationLabel: LabelId, expectedList: List<Conversation>) {
