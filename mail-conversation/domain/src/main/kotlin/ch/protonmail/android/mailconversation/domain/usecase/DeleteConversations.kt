@@ -19,18 +19,35 @@
 package ch.protonmail.android.mailconversation.domain.usecase
 
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.mailconversation.domain.entity.ConversationLabel
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
+import kotlinx.coroutines.flow.firstOrNull
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import javax.inject.Inject
 
-class DeleteConversations @Inject constructor(private val conversationRepository: ConversationRepository) {
+class DeleteConversations @Inject constructor(
+    private val conversationRepository: ConversationRepository,
+    private val decrementUnreadCount: DecrementUnreadCount
+) {
 
     suspend operator fun invoke(
         userId: UserId,
         conversationIds: List<ConversationId>,
         currentLabelId: LabelId
     ) {
+        decrementUnreadConversationsCount(userId, conversationIds)
         conversationRepository.deleteConversations(userId, conversationIds, currentLabelId)
     }
+
+    private suspend fun decrementUnreadConversationsCount(userId: UserId, conversationIds: List<ConversationId>) {
+        conversationRepository.observeCachedConversations(userId, conversationIds)
+            .firstOrNull()
+            ?.onEach { conversation ->
+                val labelIdsWithUnreadMessages = conversation.labels.filter { it.hasUnreadMessages() }
+                decrementUnreadCount(userId, labelIdsWithUnreadMessages.map { it.labelId })
+            }
+    }
+
+    private fun ConversationLabel?.hasUnreadMessages() = this?.let { it.contextNumUnread > 0 } ?: false
 }
