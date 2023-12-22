@@ -29,6 +29,7 @@ import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEnabledE
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedInterval
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedLastForegroundMillis
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedPin
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedRemainingAttempts
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import javax.inject.Inject
@@ -40,6 +41,7 @@ class AutoLockLocalDataSourceImpl @Inject constructor(
     private val hasAutoLockKey = stringPreferencesKey("hasAutoLockPrefKey")
     private val autoLockIntervalKey = stringPreferencesKey("autoLockIntervalPrefKey")
     private val lastForegroundMillisKey = stringPreferencesKey("lastForegroundTimestampPrefKey")
+    private val attemptsKey = stringPreferencesKey("autoLockAttemptsPrefKey")
     private val pinKey = stringPreferencesKey("pinCodePrefKey")
 
     override fun observeAutoLockEnabledEncryptedValue() = dataStoreProvider.autoLockDataStore.data.map {
@@ -60,6 +62,11 @@ class AutoLockLocalDataSourceImpl @Inject constructor(
     override fun observeAutoLockEncryptedPin() = dataStoreProvider.autoLockDataStore.data.map {
         val encryptedValue = it[pinKey] ?: return@map PreferencesError.left()
         AutoLockEncryptedPin(encryptedValue).right()
+    }
+
+    override fun observeAutoLockEncryptedAttempts() = dataStoreProvider.autoLockDataStore.data.mapLatest {
+        val encryptedValue = it[attemptsKey] ?: return@mapLatest PreferencesError.left()
+        AutoLockEncryptedRemainingAttempts(encryptedValue).right()
     }
 
     override suspend fun updateAutoLockEnabledEncryptedValue(value: AutoLockEnabledEncryptedValue) =
@@ -87,6 +94,13 @@ class AutoLockLocalDataSourceImpl @Inject constructor(
         either<PreferencesError, Unit> {
             dataStoreProvider.autoLockDataStore.safeEdit {
                 it[pinKey] = pin.encryptedValue
+            }.bind()
+        }
+
+    override suspend fun updateAutoLockRemainingAttempts(attempts: AutoLockEncryptedRemainingAttempts) =
+        either<PreferencesError, Unit> {
+            dataStoreProvider.autoLockDataStore.safeEdit {
+                it[attemptsKey] = attempts.encryptedValue
             }.bind()
         }
 }

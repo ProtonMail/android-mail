@@ -23,6 +23,7 @@ import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockInterval
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockLastForegroundMillis
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPin
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPreference
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockRemainingAttempts
 import kotlinx.coroutines.flow.Flow
 
 interface AutoLockRepository {
@@ -31,6 +32,7 @@ interface AutoLockRepository {
     fun observeAutoLockInterval(): Flow<Either<AutoLockPreferenceError, AutoLockInterval>>
     fun observeAutoLockLastForegroundMillis(): Flow<Either<AutoLockPreferenceError, AutoLockLastForegroundMillis>>
     fun observeAutoLockPin(): Flow<Either<AutoLockPreferenceError, AutoLockPin>>
+    fun observeAutoLockRemainingAttempts(): Flow<Either<AutoLockPreferenceError, AutoLockRemainingAttempts>>
 
     suspend fun updateAutoLockEnabledValue(value: AutoLockPreference): Either<AutoLockPreferenceError, Unit>
     suspend fun updateAutoLockInterval(interval: AutoLockInterval): Either<AutoLockPreferenceError, Unit>
@@ -39,6 +41,10 @@ interface AutoLockRepository {
     ): Either<AutoLockPreferenceError, Unit>
 
     suspend fun updateAutoLockPin(pin: AutoLockPin): Either<AutoLockPreferenceError, Unit>
+
+    suspend fun updateAutoLockRemainingAttempts(
+        attempts: AutoLockRemainingAttempts
+    ): Either<AutoLockPreferenceError, Unit>
 }
 
 sealed interface AutoLockPreferenceError {

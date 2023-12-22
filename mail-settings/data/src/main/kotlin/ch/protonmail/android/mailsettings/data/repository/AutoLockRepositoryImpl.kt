@@ -29,10 +29,12 @@ import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEnabledE
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedInterval
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedLastForegroundMillis
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedPin
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedRemainingAttempts
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockInterval
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockLastForegroundMillis
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPin
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPreference
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockRemainingAttempts
 import ch.protonmail.android.mailsettings.domain.repository.AutoLockPreferenceError
 import ch.protonmail.android.mailsettings.domain.repository.AutoLockRepository
 import kotlinx.coroutines.flow.Flow
@@ -77,6 +79,14 @@ class AutoLockRepositoryImpl @Inject constructor(
             }
         }
 
+    override fun observeAutoLockRemainingAttempts(): AutoLockPreferenceEitherFlow<AutoLockRemainingAttempts> =
+        autoLockLocalDataSource.observeAutoLockEncryptedAttempts().map {
+            either {
+                val encryptedValue = it.getOrElse { raise(AutoLockPreferenceError.DataStoreError) }.encryptedValue
+                decryptSerializedValue<AutoLockRemainingAttempts>(encryptedValue).bind()
+            }
+        }
+
     override suspend fun updateAutoLockEnabledValue(value: AutoLockPreference): AutoLockPreferenceEither<Unit> =
         either {
             val encryptedValue = encryptValueWithSerialization(value).bind()
@@ -102,6 +112,15 @@ class AutoLockRepositoryImpl @Inject constructor(
         val encryptedValue = encryptValueWithSerialization(timestamp).bind()
         autoLockLocalDataSource.updateLastEncryptedForegroundMillis(
             AutoLockEncryptedLastForegroundMillis(encryptedValue)
+        )
+            .mapEither()
+            .bind()
+    }
+
+    override suspend fun updateAutoLockRemainingAttempts(attempts: AutoLockRemainingAttempts) = either {
+        val encryptedValue = encryptValueWithSerialization(attempts).bind()
+        autoLockLocalDataSource.updateAutoLockRemainingAttempts(
+            AutoLockEncryptedRemainingAttempts(encryptedValue)
         )
             .mapEither()
             .bind()
