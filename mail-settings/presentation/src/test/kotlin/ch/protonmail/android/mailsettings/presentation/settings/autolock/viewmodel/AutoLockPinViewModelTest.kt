@@ -44,9 +44,9 @@ import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.p
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.PinInsertionStep
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.PinVerificationRemainingAttempts
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.reducer.pin.AutoLockPinReducer
+import ch.protonmail.android.mailsettings.presentation.settings.autolock.ui.pin.AutoLockPinScreen
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.usecase.ClearPinDataAndForceLogout
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.viewmodel.pin.AutoLockPinViewModel
-import ch.protonmail.android.mailsettings.presentation.settings.autolock.viewmodel.pin.AutoLockPinViewModel.Companion.AutoLockPinModeKey
 import io.mockk.called
 import io.mockk.coEvery
 import io.mockk.coVerifySequence
@@ -465,12 +465,12 @@ internal class AutoLockPinViewModelTest {
 
     private fun expectConditionalStart(mode: AutoLockInsertionMode) {
         every {
-            savedStateHandle.get<String>(AutoLockPinModeKey)
+            savedStateHandle.get<String>(AutoLockPinScreen.AutoLockPinModeKey)
         } returns mode.serialize()
     }
 
     private fun expectStandaloneStart() {
-        every { savedStateHandle.get<String>(AutoLockPinModeKey) } returns ""
+        every { savedStateHandle.get<String>(AutoLockPinScreen.AutoLockPinModeKey) } returns ""
     }
 
     private fun expectAttempts(value: Int = 10) {
