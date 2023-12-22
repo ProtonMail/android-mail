@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcommon.presentation.compose
+package ch.protonmail.android.uicomponents.effects
 
 import android.app.Activity
 import android.content.Context
@@ -26,7 +26,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.platform.LocalContext
 
 @Composable
-fun LockScreenOrientation(orientation: Int) {
+fun LockScreenOrientationEffect(orientation: Int) {
     val context = LocalContext.current
     DisposableEffect(orientation) {
         val activity = context.findActivity() ?: return@DisposableEffect onDispose {}

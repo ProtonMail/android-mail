@@ -51,10 +51,10 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintLayoutScope
 import androidx.constraintlayout.compose.Dimension
 import ch.protonmail.android.mailcommon.presentation.compose.HyperlinkText
-import ch.protonmail.android.mailcommon.presentation.compose.LockScreenOrientation
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingUiModel
+import ch.protonmail.android.uicomponents.effects.LockScreenOrientationEffect
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonSolidButton
 import me.proton.core.compose.theme.ProtonDimens
@@ -68,7 +68,7 @@ import me.proton.core.compose.theme.headlineNorm
 fun OnboardingScreen(actions: MailboxScreen.Actions) {
     val pagerState = rememberPagerState()
 
-    LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+    LockScreenOrientationEffect(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
 
     val contentMap = listOf(
         OnboardingUiModel(

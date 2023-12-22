@@ -92,7 +92,7 @@ dependencies {
 
     testImplementation(Dependencies.testLibs)
     testImplementation(project(":test:test-data"))
-    
+
     androidTestImplementation(Dependencies.androidTestLibs)
     androidTestImplementation(project(":test:annotations"))
 }
