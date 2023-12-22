@@ -75,4 +75,12 @@ object MailDimens {
     val pagerDotsCircleSize = 8.dp
     val onboardingBottomButtonHeight = 48.dp
     const val OnboardingIllustrationWeight = 0.5f
+
+    object AutoLockPinScreen {
+
+        val SpacerSize = 64.dp
+        val PinDotsGridHeight = 64.dp
+        val KeyboardButtonItemSize = 84.dp
+        val InnerKeyboardButtonTextSize = 64.dp
+    }
 }
