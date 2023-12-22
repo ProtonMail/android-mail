@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailconversation.data.repository
 
 import app.cash.turbine.test
+import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailconversation.data.local.UnreadConversationsCountLocalDataSource
 import ch.protonmail.android.mailconversation.data.local.entity.UnreadConversationsCountEntity
@@ -79,6 +80,38 @@ class UnreadConversationCountRepositoryImplTest {
             awaitComplete()
         }
 
+    }
+
+    @Test
+    fun `increments unread count for the given labelId`() = runTest {
+        // Given
+        val expectedConversations = listOf(inboxUnreadConversationCounter)
+        val labelIds = LabelIdSample.Inbox
+        val expected = inboxUnreadConversationCounter.copy(unreadCount = 2)
+        coEvery { localDataSource.observeConversationCounters(userId) } returns flowOf(expectedConversations)
+        coEvery { localDataSource.saveConversationCounter(expected) } just Runs
+
+        // When
+        repository.incrementUnreadCount(userId, labelIds)
+
+        // Then
+        coVerify { localDataSource.saveConversationCounter(expected) }
+    }
+
+    @Test
+    fun `decrements unread count for the given labelId`() = runTest {
+        // Given
+        val expectedConversations = listOf(inboxUnreadConversationCounter)
+        val labelIds = LabelIdSample.Inbox
+        val expected = inboxUnreadConversationCounter.copy(unreadCount = 0)
+        coEvery { localDataSource.observeConversationCounters(userId) } returns flowOf(expectedConversations)
+        coEvery { localDataSource.saveConversationCounter(expected) } just Runs
+
+        // When
+        repository.decrementUnreadCount(userId, labelIds)
+
+        // Then
+        coVerify { localDataSource.saveConversationCounter(expected) }
     }
 
     companion object TestData {
