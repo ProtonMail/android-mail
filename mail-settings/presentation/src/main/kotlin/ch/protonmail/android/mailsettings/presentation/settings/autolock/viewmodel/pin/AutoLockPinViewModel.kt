@@ -36,6 +36,7 @@ import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.p
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.PinInsertionStep
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.PinVerificationRemainingAttempts
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.reducer.pin.AutoLockPinReducer
+import ch.protonmail.android.mailsettings.presentation.settings.autolock.ui.pin.AutoLockPinScreen
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.usecase.ClearPinDataAndForceLogout
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -66,7 +67,7 @@ class AutoLockPinViewModel @Inject constructor(
     private var temporaryInsertedPin: InsertedPin? = null
 
     init {
-        val openMode = savedStateHandle.get<String>(AutoLockPinModeKey)
+        val openMode = savedStateHandle.get<String>(AutoLockPinScreen.AutoLockPinModeKey)
             ?.runCatching { deserialize<AutoLockInsertionMode>() }
             ?.getOrNull()
 
@@ -221,10 +222,4 @@ class AutoLockPinViewModel @Inject constructor(
     }
 
     private fun AutoLockPin.matches(insertedPin: InsertedPin) = value == insertedPin.toString()
-
-    companion object {
-
-        // To be moved in a following CL
-        const val AutoLockPinModeKey = "auto_lock_pin_open_mode"
-    }
 }
