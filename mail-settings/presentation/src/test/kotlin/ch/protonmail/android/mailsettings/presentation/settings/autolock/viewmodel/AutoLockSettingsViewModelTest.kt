@@ -23,6 +23,7 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockInterval
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPin
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPreference
 import ch.protonmail.android.mailsettings.domain.repository.AutoLockPreferenceError
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.ObserveAutoLockEnabled
@@ -178,13 +179,14 @@ internal class AutoLockSettingsViewModelTest {
     }
 
     @Test
-    fun `should signal an error when auto lock preference cannot be updated`() = runTest {
+    fun `should force pin creation when pin does not exist or is empty and feature is enabled`() = runTest {
         // Given
         expectAutoLockPreference(false)
         expectAutoLockInterval()
-        coEvery { toggleAutoLockEnabled(true) } returns AutoLockPreferenceError.DataStoreError.left()
+        coEvery { toggleAutoLockEnabled(true) } returns Unit.right()
+        coEvery { observeAutoLockPinValue() } returns flowOf(AutoLockPin("").right())
 
-        val expectedState = defaultBaseState.copy(updateError = Effect.of(Unit))
+        val expectedState = defaultBaseState.copy(forceOpenPinCreation = Effect.of(Unit))
 
         // When + Then
         viewModel.state.test {

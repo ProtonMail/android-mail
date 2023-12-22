@@ -36,6 +36,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -45,7 +46,7 @@ import javax.inject.Inject
 class AutoLockSettingsViewModel @Inject constructor(
     observeAutoLockEnabled: ObserveAutoLockEnabled,
     observeSelectedAutoLockInterval: ObserveSelectedAutoLockInterval,
-    @Suppress("UnusedPrivateMember") private val observeAutoLockPinValue: ObserveAutoLockPinValue, // MAILANDR-1114
+    private val observeAutoLockPinValue: ObserveAutoLockPinValue,
     private val toggleAutoLockEnabled: ToggleAutoLockEnabled,
     private val updateAutoLockInterval: UpdateAutoLockInterval,
     private val reducer: AutoLockSettingsReducer
@@ -83,11 +84,10 @@ class AutoLockSettingsViewModel @Inject constructor(
     }
 
     private suspend fun updateAutoLockEnabledValue(newValue: Boolean) {
-        // To be introduced with MAILANDR-1114
-        // if (newValue) {
-        //     observeAutoLockPinValue().firstOrNull()?.getOrNull()?.value?.takeIf { it.isNotEmpty() }
-        //         ?: return emitNewStateFrom(AutoLockSettingsEvent.ForcePinCreation)
-        // }
+        if (newValue) {
+            observeAutoLockPinValue().firstOrNull()?.getOrNull()?.value?.takeIf { it.isNotEmpty() }
+                ?: return emitNewStateFrom(AutoLockSettingsEvent.ForcePinCreation)
+        }
 
         toggleAutoLockEnabled(newValue)
             .onRight { emitNewStateFrom(AutoLockSettingsEvent.Update.AutoLockPreferenceEnabled(newValue)) }
