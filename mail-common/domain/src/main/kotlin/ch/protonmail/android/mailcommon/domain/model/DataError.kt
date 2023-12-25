@@ -30,6 +30,8 @@ sealed interface DataError {
 
         object DecryptionError : Local
 
+        object EncryptionError : Local
+
         object NoDataCached : Local
 
         object OutOfMemory : Local
