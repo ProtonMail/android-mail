@@ -47,7 +47,7 @@
   <string name="composer_attachment_size_exceeded_dialog_message">Størrelsesgrænsen for vedhæftede filer er %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Rekryptering af vedhæftet fil mislykkedes. Af sikkerhedsgrunde blev alle vedhæftede filer fjernet.</string>
   <string name="composer_warning_local_data_shown">Den seneste version af denne kladde kunne ikke indlæses. Enhver ændring vil tilsidesætte dens indhold.</string>
-  <string name="composer_button_add_password">Add password</string>
+  <string name="composer_button_add_password">Tilføj adgangskode</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Afsendelsesfejl</string>
   <string name="message_sending_error_dialog_button_dismiss">Luk</string>

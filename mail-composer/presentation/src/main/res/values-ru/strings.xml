@@ -47,7 +47,7 @@
   <string name="composer_attachment_size_exceeded_dialog_message">Максимальный размер вложений %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Повторное шифрование вложений не удалось. В целях безопасности все вложения были удалены.</string>
   <string name="composer_warning_local_data_shown">The latest version of this draft failed to load. Any change will override its content.</string>
-  <string name="composer_button_add_password">Add password</string>
+  <string name="composer_button_add_password">Добавить пароль</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Ошибка отправки</string>
   <string name="message_sending_error_dialog_button_dismiss">Закрыть</string>

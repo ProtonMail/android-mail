@@ -28,6 +28,8 @@
     <item quantity="one">%d valgt</item>
     <item quantity="other">%d valgte</item>
   </plurals>
+  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
+  <string name="filter_unread_button_text_without_counter">Ulæste</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%d ulæst</item>
     <item quantity="other">%d ulæste</item>
@@ -37,7 +39,12 @@
   <string name="mailbox_error_message_offline">Du er offline, kunne ikke hente elementer</string>
   <string name="mailbox_error_message_generic">Indlæsning af postkasse mislykkedes</string>
   <string name="mailbox_error_message_unexpected">Noget gik uventet galt</string>
-  <string name="mailbox_is_empty_message">Denne postkasse er tom</string>
+  <string name="mailbox_is_empty_title">Ingen beskeder</string>
+  <string name="mailbox_is_empty_description">Du er ajour</string>
+  <string name="mailbox_is_empty_no_unread_messages_title">Ingen ulæste beskeder</string>
+  <string name="mailbox_is_empty_folder_description">Denne mappe er tom</string>
+  <string name="mailbox_is_empty_spam_description">Din spam-mappe er tom</string>
+  <string name="mailbox_is_empty_trash_description">Papirkurven er tom</string>
   <plurals name="mailbox_action_trash">
     <item quantity="one">Besked flyttet til papirkurv</item>
     <item quantity="other">%d beskeder flyttet til papirkurv</item>
@@ -73,7 +80,7 @@
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Kunne ikke hente mapper</string>
   <!--  Spotlight V6 Beta  -->
   <string name="onboarding_headline_beta">Betatest den nye app</string>
-  <string name="onboarding_description_beta">We\'ve rebuilt the app for stability and reliability. Share your feedback and stay tuned as we reintroduce features. <a href="https://proton.me/support/mail-android-beta">Learn more.</a></string>
+  <string name="onboarding_description_beta">Vi har genopbygget appen for at sikre stabilitet og pålidelighed. Del din feedback, og følg med, når vi genintroducerer nye funktioner. <a href="https://proton.me/support/mail-android-beta">Få mere at vide.</a></string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Velkommen til den nye app</string>
   <string name="onboarding_description_ga">Den nye Proton Mail-app er genopbygget helt fra bunden og er skabt med henblik på stabilitet og ydeevne.</string>

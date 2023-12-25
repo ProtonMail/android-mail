@@ -47,7 +47,7 @@
   <string name="composer_attachment_size_exceeded_dialog_message">Το όριο μεγέθους για τα συνημμένα είναι %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Απέτυχε η εκ νέου κρυπτογράφηση του συνημμένου. Για λόγους ασφαλείας, όλα τα συνημμένα καταργήθηκαν.</string>
   <string name="composer_warning_local_data_shown">Απέτυχε η φόρτωση της τελευταίας έκδοσης αυτού του προχείρου. Οποιαδήποτε αλλαγή θα υπερισχύει του περιεχομένου της.</string>
-  <string name="composer_button_add_password">Add password</string>
+  <string name="composer_button_add_password">Προσθήκη κωδικού πρόσβασης</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Σφάλμα αποστολής</string>
   <string name="message_sending_error_dialog_button_dismiss">Κλείσιμο</string>

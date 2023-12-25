@@ -132,7 +132,7 @@
   <string name="mail_settings_pin_insertion_set_title">Establecer código PIN</string>
   <string name="mail_settings_pin_insertion_confirm_title">Confirmar código PIN</string>
   <string name="mail_settings_pin_insertion_lock_icon_description">Ícono de bloqueo</string>
-  <string name="mail_settings_pin_insertion_pin_dot_description">Pin dot</string>
+  <string name="mail_settings_pin_insertion_pin_dot_description">Código PIN de puntos</string>
   <string name="mail_settings_pin_insertion_backspace_description">Retroceder</string>
   <string name="mail_settings_pin_insertion_button_create">Crear</string>
   <string name="mail_settings_pin_insertion_button_confirm">Confirmar</string>

@@ -27,6 +27,8 @@
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="other">已選取 %d 個</item>
   </plurals>
+  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
+  <string name="filter_unread_button_text_without_counter">未讀</string>
   <plurals name="filter_unread_button_text">
     <item quantity="other">%d 則未讀</item>
   </plurals>
@@ -35,7 +37,12 @@
   <string name="mailbox_error_message_offline">您目前為離線狀態，因此無法擷取項目</string>
   <string name="mailbox_error_message_generic">載入電子信箱失敗</string>
   <string name="mailbox_error_message_unexpected">不明原因發生異常</string>
-  <string name="mailbox_is_empty_message">電子郵件信箱是空的</string>
+  <string name="mailbox_is_empty_title">沒有訊息</string>
+  <string name="mailbox_is_empty_description">您以更新到最新版本</string>
+  <string name="mailbox_is_empty_no_unread_messages_title">沒有未讀的訊息</string>
+  <string name="mailbox_is_empty_folder_description">此資料夾目前是空的</string>
+  <string name="mailbox_is_empty_spam_description">垃圾郵件資料夾是空的</string>
+  <string name="mailbox_is_empty_trash_description">垃圾桶是空的</string>
   <plurals name="mailbox_action_trash">
     <item quantity="other">%d 則訊息已移至垃圾桶</item>
   </plurals>
@@ -67,7 +74,7 @@
   <string name="onboarding_description_beta">We\'ve rebuilt the app for stability and reliability. Share your feedback and stay tuned as we reintroduce features. <a href="https://proton.me/support/mail-android-beta">Learn more.</a></string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">歡迎使用全新的應用程式</string>
-  <string name="onboarding_description_ga">Completely rebuilt from scratch, the new Proton Mail app was made for stability and performance.</string>
+  <string name="onboarding_description_ga">完全從零開始重建，全新的 Proton Mail 應用程式專為穩定性和性能而設計。</string>
   <!--  Onboarding 1  -->
   <string name="onboarding_privacy_for_all_headline">隱私權天賦所有人</string>
   <string name="onboarding_privacy_for_all_description">邀請他人至Proton Mail以獲得端對端加密。</string>
@@ -80,12 +87,12 @@
   <!--  Onboarding actions  -->
   <string name="onboarding_next">下一步</string>
   <string name="onboarding_get_started">入門指南</string>
-  <string name="onboarding_illustration_content_description">Onboarding illustration</string>
+  <string name="onboarding_illustration_content_description">入門指南</string>
   <string name="onboarding_close_content_description">關閉</string>
   <!-- Sidebar Beta label -->
   <string name="sidebar_beta_version_title">Proton Mail Beta</string>
-  <string name="sidebar_beta_version_description">Tap to learn more about this project.</string>
-  <string name="sidebar_beta_version_icon_content_description">Navigate to KB article.</string>
+  <string name="sidebar_beta_version_description">按這裡了解更多關於此專案的資訊。</string>
+  <string name="sidebar_beta_version_icon_content_description">導覽到 KB 文章</string>
   <string name="mailbox_action_trash_message">郵件丟進垃圾桶</string>
   <string name="mailbox_action_archive_message">要移動到至「封存」的郵件</string>
   <string name="mailbox_action_spam_message">訊息移至垃圾郵件</string>

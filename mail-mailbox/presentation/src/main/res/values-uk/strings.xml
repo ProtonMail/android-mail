@@ -30,6 +30,8 @@
     <item quantity="many">Вибрано %d</item>
     <item quantity="other">Вибрано %d</item>
   </plurals>
+  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
+  <string name="filter_unread_button_text_without_counter">Unread</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%d непрочитане</item>
     <item quantity="few">%d непрочитані</item>
@@ -41,7 +43,12 @@
   <string name="mailbox_error_message_offline">Не вдалося завантажити елементи, тому що ви офлайн</string>
   <string name="mailbox_error_message_generic">Не вдалося завантажити поштову скриньку</string>
   <string name="mailbox_error_message_unexpected">Щось пішло не так</string>
-  <string name="mailbox_is_empty_message">Ця поштова скринька порожня</string>
+  <string name="mailbox_is_empty_title">No messages</string>
+  <string name="mailbox_is_empty_description">You are up to date</string>
+  <string name="mailbox_is_empty_no_unread_messages_title">No unread messages</string>
+  <string name="mailbox_is_empty_folder_description">Ця тека порожня</string>
+  <string name="mailbox_is_empty_spam_description">Тека зі спамом порожня</string>
+  <string name="mailbox_is_empty_trash_description">Trash is empty</string>
   <plurals name="mailbox_action_trash">
     <item quantity="one">Повідомлення переміщено до смітника</item>
     <item quantity="few">%d повідомлення переміщено до смітника</item>
@@ -102,7 +109,7 @@
   <string name="onboarding_easily_up_to_date_headline">Зручне оновлення</string>
   <string name="onboarding_easily_up_to_date_description">Переглядайте ланцюжки повідомлень у режимі розмови.</string>
   <!--  Onboarding 3  -->
-  <string name="onboarding_neat_and_tidy_headline">Neat and tidy</string>
+  <string name="onboarding_neat_and_tidy_headline">Простота й лаконічність</string>
   <string name="onboarding_neat_and_tidy_description">Файли, мітки та позначення повідомлень кольором для досконалої індивідуальної поштової скриньки.</string>
   <!--  Onboarding actions  -->
   <string name="onboarding_next">Далі</string>

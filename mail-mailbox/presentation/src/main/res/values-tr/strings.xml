@@ -28,6 +28,8 @@
     <item quantity="one">%d seçilmiş</item>
     <item quantity="other">%d seçilmiş</item>
   </plurals>
+  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
+  <string name="filter_unread_button_text_without_counter">Okunmamış</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%d okunmamış</item>
     <item quantity="other">%d okunmamış</item>
@@ -37,7 +39,12 @@
   <string name="mailbox_error_message_offline">Çevrim dışı olduğunuzda ögeler alınamadı</string>
   <string name="mailbox_error_message_generic">E-posta kutusu yüklenemedi</string>
   <string name="mailbox_error_message_unexpected">Beklenmeyen bir sorun çıktı</string>
-  <string name="mailbox_is_empty_message">Bu e-posta kutusu boş</string>
+  <string name="mailbox_is_empty_title">Herhangi bir ileti yok</string>
+  <string name="mailbox_is_empty_description">Güncelsiniz!</string>
+  <string name="mailbox_is_empty_no_unread_messages_title">Okunmamış ileti yok</string>
+  <string name="mailbox_is_empty_folder_description">Bu klasör boş</string>
+  <string name="mailbox_is_empty_spam_description">İstenmeyen kutunuz boş</string>
+  <string name="mailbox_is_empty_trash_description">Çöp kutusu boş</string>
   <plurals name="mailbox_action_trash">
     <item quantity="one">İleti çöpe atıldı</item>
     <item quantity="other">%d ileti çöpe atıldı</item>
@@ -73,7 +80,7 @@
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Klasörler alınamadı</string>
   <!--  Spotlight V6 Beta  -->
   <string name="onboarding_headline_beta">Yeni uygulama Beta sürümü</string>
-  <string name="onboarding_description_beta">We\'ve rebuilt the app for stability and reliability. Share your feedback and stay tuned as we reintroduce features. <a href="https://proton.me/support/mail-android-beta">Learn more.</a></string>
+  <string name="onboarding_description_beta">Kararlılığını ve güvenilirliğini artırmak için uygulamayı yeniden oluşturduk. Deneyiminizi paylaşın ve biz özellikleri yeniden sunarken izlemeyi sürdürün. <a href="https://proton.me/support/mail-android-beta">Ayrıntılı bilgi alın</a>.</string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Yeni uygulamaya hoş geldiniz</string>
   <string name="onboarding_description_ga">Tümüyle sıfırdan yeniden oluşturulan yeni Proton Mail uygulaması, kararlılık ve başarım için tasarlandı.</string>

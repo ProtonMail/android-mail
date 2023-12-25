@@ -17,19 +17,19 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="contact_list_title">Contacts</string>
-  <string name="contact_list_loading_error">Error loading contacts, please try again later</string>
-  <string name="no_contacts">No contacts found</string>
-  <string name="no_contacts_description">Improve your email experience by creating a new contact or importing existing ones.</string>
-  <string name="add_contact">Add contact</string>
-  <string name="add_contact_content_description">Add contact</string>
-  <string name="all_title">All</string>
-  <string name="groups_title">Groups</string>
-  <string name="group_member_count">%1$s member</string>
-  <string name="group_members_count">%1$s members</string>
-  <string name="new_contact">New contact</string>
-  <string name="new_group">New group</string>
-  <string name="import_contact">Upload device contacts</string>
-  <string name="no_contact_email">No email address</string>
+  <string name="contact_list_title">Kişiler</string>
+  <string name="contact_list_loading_error">Kişiler yüklenirken sorun çıktı. Lütfen bir süre sonra yeniden deneyin</string>
+  <string name="no_contacts">Herhangi bir kişi bulunamadı</string>
+  <string name="no_contacts_description">Yeni bir kişi oluşturarak ya da var olan kişileri içe aktararak e-posta deneyiminizi geliştirin.</string>
+  <string name="add_contact">Kişi ekle</string>
+  <string name="add_contact_content_description">Kişi ekle</string>
+  <string name="all_title">Tümü</string>
+  <string name="groups_title">Gruplar</string>
+  <string name="group_member_count">%1$s üye</string>
+  <string name="group_members_count">%1$s üye</string>
+  <string name="new_contact">Yeni kişi</string>
+  <string name="new_group">Yeni grup</string>
+  <string name="import_contact">Aygıt kişilerini yükle</string>
+  <string name="no_contact_email">E-posta adresi yok</string>
   <string name="multiple_contact_emails">%1$s, +%2$d</string>
 </resources>

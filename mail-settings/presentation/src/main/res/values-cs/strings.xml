@@ -138,10 +138,10 @@
   <string name="mail_settings_pin_insertion_button_confirm">Potvrdit</string>
   <string name="mail_settings_pin_insertion_error_no_match">PIN kódy se neshodují.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="one">Wrong PIN code. %s remaining attempt.</item>
-    <item quantity="few">Wrong PIN code. %s remaining attempts.</item>
-    <item quantity="many">Wrong PIN code. %s remaining attempts.</item>
-    <item quantity="other">Wrong PIN code. %s remaining attempts.</item>
+    <item quantity="one">Chybný kód PIN. Zbývá %s pokus.</item>
+    <item quantity="few">Chybný kód PIN. Zbývají %s pokusy.</item>
+    <item quantity="many">Chybný kód PIN. Zbývá %s pokusů.</item>
+    <item quantity="other">Chybný kód PIN. Zbývá %s pokusů.</item>
   </plurals>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Vymazání místních dat z mezipaměti…</string>

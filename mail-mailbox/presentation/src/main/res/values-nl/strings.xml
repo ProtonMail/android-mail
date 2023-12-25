@@ -28,6 +28,8 @@
     <item quantity="one">%d Geselecteerd</item>
     <item quantity="other">%d Geselecteerd</item>
   </plurals>
+  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
+  <string name="filter_unread_button_text_without_counter">Ongelezen</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%d ongelezen</item>
     <item quantity="other">%d ongelezen</item>
@@ -37,7 +39,12 @@
   <string name="mailbox_error_message_offline">U bent offline, u kunt geen items ophalen</string>
   <string name="mailbox_error_message_generic">Postvak IN laden mislukt</string>
   <string name="mailbox_error_message_unexpected">Er is onverwacht iets fout gegaan</string>
-  <string name="mailbox_is_empty_message">Dit postvak is leeg</string>
+  <string name="mailbox_is_empty_title">No messages</string>
+  <string name="mailbox_is_empty_description">You are up to date</string>
+  <string name="mailbox_is_empty_no_unread_messages_title">No unread messages</string>
+  <string name="mailbox_is_empty_folder_description">Deze map is leeg</string>
+  <string name="mailbox_is_empty_spam_description">Uw spam map is leeg</string>
+  <string name="mailbox_is_empty_trash_description">Trash is empty</string>
   <plurals name="mailbox_action_trash">
     <item quantity="one">Bericht verplaatst naar de prullenbak</item>
     <item quantity="other">%d berichten verplaatst naar de prullenbak</item>

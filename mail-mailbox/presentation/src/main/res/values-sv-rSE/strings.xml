@@ -28,6 +28,8 @@
     <item quantity="one">%d vald</item>
     <item quantity="other">%d valda</item>
   </plurals>
+  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
+  <string name="filter_unread_button_text_without_counter">Oläst</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%d oläst</item>
     <item quantity="other">%d olästa</item>
@@ -37,7 +39,12 @@
   <string name="mailbox_error_message_offline">Du är offline, kan inte hämta objekt</string>
   <string name="mailbox_error_message_generic">Misslyckades att ladda brevlåda</string>
   <string name="mailbox_error_message_unexpected">Något gick oväntat fel</string>
-  <string name="mailbox_is_empty_message">Denna brevlåda är tom</string>
+  <string name="mailbox_is_empty_title">Inga meddelanden</string>
+  <string name="mailbox_is_empty_description">Du är uppdaterad</string>
+  <string name="mailbox_is_empty_no_unread_messages_title">Inga olästa meddelanden</string>
+  <string name="mailbox_is_empty_folder_description">Denna mapp är tom</string>
+  <string name="mailbox_is_empty_spam_description">Din skräppostmapp är tom</string>
+  <string name="mailbox_is_empty_trash_description">Papperskorg är tom</string>
   <plurals name="mailbox_action_trash">
     <item quantity="one">Meddelande flyttat till papperskorg</item>
     <item quantity="other">%d meddelanden flyttades till papperskorg</item>

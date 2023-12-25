@@ -29,6 +29,8 @@
     <item quantity="few">%d Odabrano</item>
     <item quantity="other">%d Odabrano</item>
   </plurals>
+  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
+  <string name="filter_unread_button_text_without_counter">Unread</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%d nepročitana</item>
     <item quantity="few">%d nepročitane</item>
@@ -39,7 +41,12 @@
   <string name="mailbox_error_message_offline">You are offline, unable to retrieve items</string>
   <string name="mailbox_error_message_generic">Loading mailbox failed</string>
   <string name="mailbox_error_message_unexpected">Something went unexpectedly wrong</string>
-  <string name="mailbox_is_empty_message">This mailbox is empty</string>
+  <string name="mailbox_is_empty_title">No messages</string>
+  <string name="mailbox_is_empty_description">You are up to date</string>
+  <string name="mailbox_is_empty_no_unread_messages_title">No unread messages</string>
+  <string name="mailbox_is_empty_folder_description">Ova mapa je prazna</string>
+  <string name="mailbox_is_empty_spam_description">Vaša mapa neželjene pošte je prazna</string>
+  <string name="mailbox_is_empty_trash_description">Trash is empty</string>
   <plurals name="mailbox_action_trash">
     <item quantity="one">Message moved to Trash</item>
     <item quantity="few">%d messages moved to Trash</item>

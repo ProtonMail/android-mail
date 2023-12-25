@@ -27,6 +27,8 @@
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="other">%d 선택됨</item>
   </plurals>
+  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
+  <string name="filter_unread_button_text_without_counter">개 읽지 않음</string>
   <plurals name="filter_unread_button_text">
     <item quantity="other">%d 읽지 않음</item>
   </plurals>
@@ -35,42 +37,47 @@
   <string name="mailbox_error_message_offline">사용자가 오프라인 상태입니다, 항목 수신이 불가합니다</string>
   <string name="mailbox_error_message_generic">메일함 로딩 실패</string>
   <string name="mailbox_error_message_unexpected">예상치 못한 문제가 발생했습니다</string>
-  <string name="mailbox_is_empty_message">메일함이 비어있음</string>
+  <string name="mailbox_is_empty_title">메시지 없음</string>
+  <string name="mailbox_is_empty_description">최신 상태입니다</string>
+  <string name="mailbox_is_empty_no_unread_messages_title">읽지 않은 메세지 없음</string>
+  <string name="mailbox_is_empty_folder_description">폴더가 비어있음</string>
+  <string name="mailbox_is_empty_spam_description">스팸 폴더가 비어있음</string>
+  <string name="mailbox_is_empty_trash_description">휴지통이 깨끗합니다</string>
   <plurals name="mailbox_action_trash">
-    <item quantity="other">%d개 메시지를 휴지통으로 이동했습니다.</item>
+    <item quantity="other">메시지 %d개를 휴지통으로 옮겼습니다</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="other">%d개의 대화 삭제</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_title">
-    <item quantity="other">%d개의 메시지 삭제</item>
+    <item quantity="other">메시지 %d개 삭제</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_message">
-    <item quantity="other">이 대화를 영구적으로 삭제하시겠어요?</item>
+    <item quantity="other">이 대화를 영구적으로 삭제하는 것이 맞습니까?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_message">
     <item quantity="other">이 메시지를 완전히 삭제하시겠어요?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message">
-    <item quantity="other">%d개 메시지를 완전히 삭제했습니다.</item>
+    <item quantity="other">메시지 %d개를 완전히 삭제했습니다</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation">
-    <item quantity="other">%d개 대화를 완전히 삭제했습니다.</item>
+    <item quantity="other">대화 %d개를 완전히 삭제했습니다</item>
   </plurals>
-  <string name="mailbox_action_label_messages_failed">라벨 작업 실패</string>
-  <string name="mailbox_action_label_messages_failed_retrieving_labels">라벨 추가 실패</string>
+  <string name="mailbox_action_label_messages_failed">라벨 작업에 실패했습니다</string>
+  <string name="mailbox_action_label_messages_failed_retrieving_labels">라벨 불러오기에 실패했습니다</string>
   <string name="mailbox_action_failed_retrieving_colors">색상 설정 불러오기를 실패했습니다.</string>
-  <string name="mailbox_action_move_messages_failed">이동 작업 실패.</string>
-  <string name="mailbox_action_move_messages_failed_retrieving_folders">폴더 게시 실패.</string>
+  <string name="mailbox_action_move_messages_failed">이동 작업에 실패했습니다</string>
+  <string name="mailbox_action_move_messages_failed_retrieving_folders">폴더 불러오기에 실패했습니다</string>
   <!--  Spotlight V6 Beta  -->
-  <string name="onboarding_headline_beta">새 앱 베타 테스트</string>
-  <string name="onboarding_description_beta">We\'ve rebuilt the app for stability and reliability. Share your feedback and stay tuned as we reintroduce features. <a href="https://proton.me/support/mail-android-beta">Learn more.</a></string>
+  <string name="onboarding_headline_beta">새 앱을 베타 테스트하세요</string>
+  <string name="onboarding_description_beta">안정성과 신뢰성을 위해 앱을 다시 만들었습니다. 기능들이 다시 소개될 것이니 피드백을 공유해주시고 계속 지켜봐 주십시오. <a href="https://proton.me/support/mail-android-beta">더 알아보기</a></string>
   <!--  Spotlight V6 GA  -->
-  <string name="onboarding_headline_ga">새로운 앱에 오신 것을 환영합니다</string>
-  <string name="onboarding_description_ga">처음 부터 완전히 다시 개발된 새로운 Proton Mail 앱이 안정성과 성능의 강화로 새롭게 돌아왔습니다.</string>
+  <string name="onboarding_headline_ga">새 앱에 오신 것을 환영합니다</string>
+  <string name="onboarding_description_ga">완전히 새롭게 다시 만든, 새 Proton Mail 앱은 안정성과 성능을 위해 만들어졌습니다.</string>
   <!--  Onboarding 1  -->
   <string name="onboarding_privacy_for_all_headline">모두를 위한 개인정보 보호</string>
-  <string name="onboarding_privacy_for_all_description">종단 간 암호화의 모든 기능을 사용할 수 있도록 타인을 Proton Mail에 초대하세요.</string>
+  <string name="onboarding_privacy_for_all_description">Proton Mail에 다른 이들을 초대해 모두가 종단간 암호화를 누릴 수 있게 하세요.</string>
   <!--  Onboarding 2  -->
   <string name="onboarding_easily_up_to_date_headline">쉽게 최신으로 업데이트하기</string>
   <string name="onboarding_easily_up_to_date_description">대화 모드에서 스레드된 메시지를 확인합니다.</string>
@@ -83,10 +90,10 @@
   <string name="onboarding_illustration_content_description">온보딩 일러스트레이션</string>
   <string name="onboarding_close_content_description">닫기</string>
   <!-- Sidebar Beta label -->
-  <string name="sidebar_beta_version_title">Proton Mail Beta</string>
-  <string name="sidebar_beta_version_description">이 프로젝트에 대해 더 알아보려면 탭하세요.</string>
-  <string name="sidebar_beta_version_icon_content_description">지식 정보로 이동하십시오.</string>
+  <string name="sidebar_beta_version_title">Proton Mail 베타</string>
+  <string name="sidebar_beta_version_description">탭하여 이 프로젝트에 대해 더 알아보십시오.</string>
+  <string name="sidebar_beta_version_icon_content_description">지식 베이스 문서로 이동하십시오.</string>
   <string name="mailbox_action_trash_message">메시지를 휴지통으로 이동함</string>
   <string name="mailbox_action_archive_message">메시지가 보관함으로 이동함</string>
-  <string name="mailbox_action_spam_message">메시지를 스팸함으로 이동했습니다.</string>
+  <string name="mailbox_action_spam_message">메시지를 스팸으로 옮겼습니다</string>
 </resources>

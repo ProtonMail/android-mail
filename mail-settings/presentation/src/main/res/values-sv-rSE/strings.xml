@@ -133,7 +133,7 @@
   <string name="mail_settings_pin_insertion_confirm_title">Bekräfta PIN-kod</string>
   <string name="mail_settings_pin_insertion_lock_icon_description">Låsikon</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">Pin dot</string>
-  <string name="mail_settings_pin_insertion_backspace_description">Backspace</string>
+  <string name="mail_settings_pin_insertion_backspace_description">Backsteg</string>
   <string name="mail_settings_pin_insertion_button_create">Skapa</string>
   <string name="mail_settings_pin_insertion_button_confirm">Bekräfta</string>
   <string name="mail_settings_pin_insertion_error_no_match">PIN-koder matchar inte.</string>

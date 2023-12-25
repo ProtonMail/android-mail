@@ -29,6 +29,8 @@
     <item quantity="few">Selectate: %d</item>
     <item quantity="other">Selectate: %d</item>
   </plurals>
+  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
+  <string name="filter_unread_button_text_without_counter">Necitit</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">Unul necitit</item>
     <item quantity="few">%d necitite</item>
@@ -39,7 +41,12 @@
   <string name="mailbox_error_message_offline">Nu aveți conexiune. Nu se pot prelua datele.</string>
   <string name="mailbox_error_message_generic">Eroare la încărcarea mesajelor.</string>
   <string name="mailbox_error_message_unexpected">Ceva nu a funcționat bine.</string>
-  <string name="mailbox_is_empty_message">Acest cont nu are mesaje</string>
+  <string name="mailbox_is_empty_title">Nu sunt mesaje</string>
+  <string name="mailbox_is_empty_description">Nimic nou aici</string>
+  <string name="mailbox_is_empty_no_unread_messages_title">Nu sunt mesaje necitite</string>
+  <string name="mailbox_is_empty_folder_description">Acest folder este gol</string>
+  <string name="mailbox_is_empty_spam_description">Folderul de mesaje nedorite este gol</string>
+  <string name="mailbox_is_empty_trash_description">Coșul de gunoi este gol</string>
   <plurals name="mailbox_action_trash">
     <item quantity="one">Mesajul a fost mutat în «Gunoi».</item>
     <item quantity="few">S-au mutat %d mesaje în «Gunoi».</item>
@@ -82,7 +89,7 @@
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Preluarea folderelor a eșuat.</string>
   <!--  Spotlight V6 Beta  -->
   <string name="onboarding_headline_beta">Testați noile aplicații beta</string>
-  <string name="onboarding_description_beta">We\'ve rebuilt the app for stability and reliability. Share your feedback and stay tuned as we reintroduce features. <a href="https://proton.me/support/mail-android-beta">Learn more.</a></string>
+  <string name="onboarding_description_beta">Am reconstruit aplicația pentru stabilitate și fiabilitate. Împărtășiți-vă părerile despre ea și rămâneți la curent pe măsură ce reintroducem funcțiile. <a href="https://proton.me/support/mail-android-beta">Detalii.</a></string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Bun venit la noua aplicație</string>
   <string name="onboarding_description_ga">Complet reconstruită de la zero, noua aplicație Proton Mail a fost creată pentru stabilitate și performanță.</string>

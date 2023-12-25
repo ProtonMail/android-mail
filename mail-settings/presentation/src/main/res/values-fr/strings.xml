@@ -127,12 +127,12 @@
   <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 minutes d\'inactivité</string>
   <string name="mail_settings_auto_lock_item_timer_description_one_hour">1 heure d\'inactivité</string>
   <string name="mail_settings_auto_lock_item_timer_description_one_day">1 jour d\'inactivité</string>
-  <string name="mail_settings_auto_lock_update_error">Une erreur s\'est produite lors de la mise à jour des paramètres.</string>
+  <string name="mail_settings_auto_lock_update_error">Une erreur s\'est produite pendant la mise à jour des paramètres.</string>
   <string name="mail_settings_pin_insertion_input_title">Insérez le code PIN</string>
   <string name="mail_settings_pin_insertion_set_title">Définir le code PIN</string>
   <string name="mail_settings_pin_insertion_confirm_title">Confirmez le code PIN</string>
   <string name="mail_settings_pin_insertion_lock_icon_description">Icône de verrouillage</string>
-  <string name="mail_settings_pin_insertion_pin_dot_description">Pin dot</string>
+  <string name="mail_settings_pin_insertion_pin_dot_description">Code PIN en points</string>
   <string name="mail_settings_pin_insertion_backspace_description">Effacer</string>
   <string name="mail_settings_pin_insertion_button_create">Créer</string>
   <string name="mail_settings_pin_insertion_button_confirm">Confirmer</string>

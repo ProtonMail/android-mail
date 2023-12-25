@@ -29,7 +29,7 @@
   <string name="group_members_count">%1$s members</string>
   <string name="new_contact">Новый контакт</string>
   <string name="new_group">Новая группа</string>
-  <string name="import_contact">Upload device contacts</string>
+  <string name="import_contact">Загрузить контакты с устройства</string>
   <string name="no_contact_email">Нет адреса электронной почты</string>
   <string name="multiple_contact_emails">%1$s, +%2$d</string>
 </resources>

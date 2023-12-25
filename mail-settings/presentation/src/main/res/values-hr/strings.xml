@@ -119,7 +119,7 @@
   <string name="mail_settings_auto_lock_title">Auto lock</string>
   <string name="mail_settings_auto_lock_item_title">Auto lock app</string>
   <string name="mail_settings_auto_lock_item_description">Turn this feature on to auto lock your app and use a PIN code or Fingerprint to unlock it</string>
-  <string name="mail_settings_auto_lock_change_pin_description">Change PIN code</string>
+  <string name="mail_settings_auto_lock_change_pin_description">Promijenite PIN kod</string>
   <string name="mail_settings_auto_lock_item_timer_title">Auto lock timer</string>
   <string name="mail_settings_auto_lock_not_enabled">Not enabled</string>
   <string name="mail_settings_auto_lock_immediately">Immediately</string>
@@ -127,7 +127,7 @@
   <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 minutes inactivity</string>
   <string name="mail_settings_auto_lock_item_timer_description_one_hour">1 hour inactivity</string>
   <string name="mail_settings_auto_lock_item_timer_description_one_day">1 day inactivity</string>
-  <string name="mail_settings_auto_lock_update_error">Error updating settings</string>
+  <string name="mail_settings_auto_lock_update_error">Pogreška prilikom ažuriranja postavki</string>
   <string name="mail_settings_pin_insertion_input_title">Insert PIN code</string>
   <string name="mail_settings_pin_insertion_set_title">Set PIN code</string>
   <string name="mail_settings_pin_insertion_confirm_title">Confirm PIN code</string>

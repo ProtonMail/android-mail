@@ -131,7 +131,7 @@
   <string name="mail_settings_pin_insertion_input_title">Wpisz kod PIN</string>
   <string name="mail_settings_pin_insertion_set_title">Ustaw kod PIN</string>
   <string name="mail_settings_pin_insertion_confirm_title">Potwierdź kod PIN</string>
-  <string name="mail_settings_pin_insertion_lock_icon_description">Lock icon</string>
+  <string name="mail_settings_pin_insertion_lock_icon_description">Ikona kłódki</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">Kropka</string>
   <string name="mail_settings_pin_insertion_backspace_description">Usuń</string>
   <string name="mail_settings_pin_insertion_button_create">Utwórz</string>

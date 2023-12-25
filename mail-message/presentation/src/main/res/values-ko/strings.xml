@@ -38,8 +38,8 @@
   <string name="attachment_type_spreadsheet">스프레드시트</string>
   <string name="attachment_type_presentation">프레젠테이션</string>
   <!-- Bottom Sheet -->
-  <string name="bottom_sheet_move_to_title">다음으로 이동...</string>
+  <string name="bottom_sheet_move_to_title">옮길 곳은...</string>
   <string name="bottom_sheet_done_action">완료</string>
-  <string name="bottom_sheet_archive_action">이 역시 보관함으로 이동할까요?</string>
+  <string name="bottom_sheet_archive_action">보관함에 옮길까요?</string>
   <string name="bottom_sheet_label_as_title">다음에 라벨 추가...</string>
 </resources>

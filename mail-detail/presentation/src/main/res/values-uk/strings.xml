@@ -65,15 +65,15 @@
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">You are about to leave the app and navigate to:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">Не питати знову</string>
-  <string name="external_link_confirmation_dialog_cancel_button">Cancel</string>
-  <string name="external_link_confirmation_dialog_continue_button">Continue</string>
+  <string name="external_link_confirmation_dialog_cancel_button">Скасувати</string>
+  <string name="external_link_confirmation_dialog_continue_button">Продовжити</string>
   <!-- Phishing link confirmation dialog -->
   <string name="phishing_link_confirmation_dialog_title">Попередження: імовірно підроблений вебсайт</string>
   <string name="phishing_link_confirmation_dialog_content_part_1">Це посилання веде на вебсайт, який, можливо, намагається викрасти ваші дані, як-от паролі та дані кредитної картки.</string>
   <string name="phishing_link_confirmation_dialog_content_part_2">For your security, do not continue.</string>
   <string name="phishing_link_confirmation_dialog_button_go_back">Повернутися (рекомендовано)</string>
   <string name="phishing_link_confirmation_dialog_button_continue">Нехтувати попередженням і продовжити</string>
-  <string name="message_delete_dialog_title">Delete message</string>
+  <string name="message_delete_dialog_title">Видалити повідомлення</string>
   <string name="message_delete_dialog_message">Ви дійсно бажаєте остаточно видалити це повідомлення?</string>
   <string name="message_deleted">Повідомлення видалено</string>
   <string name="error_delete_message_failed">Failed to delete message</string>

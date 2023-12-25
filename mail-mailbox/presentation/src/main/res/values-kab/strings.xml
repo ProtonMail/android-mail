@@ -28,6 +28,8 @@
     <item quantity="one">%d yettwafernen</item>
     <item quantity="other">%d yettwafernen</item>
   </plurals>
+  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
+  <string name="filter_unread_button_text_without_counter">Unread</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%d ur yettwaɣer ara</item>
     <item quantity="other">%d ur ttwaɣren ara</item>
@@ -37,7 +39,12 @@
   <string name="mailbox_error_message_offline">Ur teqqineḍ ara, ulamek i d-terriḍ iferdisen</string>
   <string name="mailbox_error_message_generic">Yecceḍ usali n tnaka n urmas</string>
   <string name="mailbox_error_message_unexpected">Tella-d tuccḍa</string>
-  <string name="mailbox_is_empty_message">Tanaka-a n urmas d tilemt</string>
+  <string name="mailbox_is_empty_title">No messages</string>
+  <string name="mailbox_is_empty_description">You are up to date</string>
+  <string name="mailbox_is_empty_no_unread_messages_title">No unread messages</string>
+  <string name="mailbox_is_empty_folder_description">Akaram-agi d ilem</string>
+  <string name="mailbox_is_empty_spam_description">Akaram i yispamen d ilem</string>
+  <string name="mailbox_is_empty_trash_description">Trash is empty</string>
   <plurals name="mailbox_action_trash">
     <item quantity="one">Izen ittwasenkez ɣer iḍumman</item>
     <item quantity="other">%d messages moved to Trash</item>

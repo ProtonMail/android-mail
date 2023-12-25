@@ -30,6 +30,8 @@
     <item quantity="many">%d выбрано</item>
     <item quantity="other">%d выбрано</item>
   </plurals>
+  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
+  <string name="filter_unread_button_text_without_counter">Непрочитанное</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%d непрочитанное</item>
     <item quantity="few">%d непрочитанных</item>
@@ -41,7 +43,12 @@
   <string name="mailbox_error_message_offline">Вы офлайн, не удалось получить элементы</string>
   <string name="mailbox_error_message_generic">Загрузка почтового ящика не удалась</string>
   <string name="mailbox_error_message_unexpected">Что-то неожиданно пошло не так</string>
-  <string name="mailbox_is_empty_message">Этот почтовый ящик пуст</string>
+  <string name="mailbox_is_empty_title">Сообщений нет</string>
+  <string name="mailbox_is_empty_description">Обновление не требуется</string>
+  <string name="mailbox_is_empty_no_unread_messages_title">Нет непрочитанных сообщений</string>
+  <string name="mailbox_is_empty_folder_description">Эта папка пуста</string>
+  <string name="mailbox_is_empty_spam_description">Папка Спам пуста</string>
+  <string name="mailbox_is_empty_trash_description">Корзина пуста</string>
   <plurals name="mailbox_action_trash">
     <item quantity="one">Сообщение помещено в Корзину</item>
     <item quantity="few">%d messages moved to Trash</item>
@@ -91,7 +98,7 @@
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Failed to get folders</string>
   <!--  Spotlight V6 Beta  -->
   <string name="onboarding_headline_beta">Beta test the new app</string>
-  <string name="onboarding_description_beta">We\'ve rebuilt the app for stability and reliability. Share your feedback and stay tuned as we reintroduce features. <a href="https://proton.me/support/mail-android-beta">Learn more.</a></string>
+  <string name="onboarding_description_beta">Мы переработали приложение для обеспечения стабильности и надежности. Поделитесь своими отзывами и следите за обновлениями. <a href="https://proton.me/support/mail-android-beta">Подробнее.</a></string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Welcome to the new app</string>
   <string name="onboarding_description_ga">Completely rebuilt from scratch, the new Proton Mail app was made for stability and performance.</string>

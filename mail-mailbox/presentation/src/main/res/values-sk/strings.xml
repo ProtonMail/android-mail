@@ -30,6 +30,8 @@
     <item quantity="many">%d vybraných</item>
     <item quantity="other">%d vybraných</item>
   </plurals>
+  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
+  <string name="filter_unread_button_text_without_counter">Neprečítané</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%d neprečítaná</item>
     <item quantity="few">%d neprečítané</item>
@@ -41,7 +43,12 @@
   <string name="mailbox_error_message_offline">Ste odhlásený, nemôžete načítať položky</string>
   <string name="mailbox_error_message_generic">Načítanie poštovej schránky zlyhalo</string>
   <string name="mailbox_error_message_unexpected">Niečo sa nečakane pokazilo</string>
-  <string name="mailbox_is_empty_message">Táto poštová schránka je prázdna</string>
+  <string name="mailbox_is_empty_title">No messages</string>
+  <string name="mailbox_is_empty_description">You are up to date</string>
+  <string name="mailbox_is_empty_no_unread_messages_title">No unread messages</string>
+  <string name="mailbox_is_empty_folder_description">Tento priečinok je prázdny</string>
+  <string name="mailbox_is_empty_spam_description">Váš priečinok so spamom je prázdny</string>
+  <string name="mailbox_is_empty_trash_description">Trash is empty</string>
   <plurals name="mailbox_action_trash">
     <item quantity="one">Správa bola presunutá do koša</item>
     <item quantity="few">%d správy boli presunuté do koša</item>

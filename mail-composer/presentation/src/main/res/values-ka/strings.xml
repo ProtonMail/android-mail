@@ -47,7 +47,7 @@
   <string name="composer_attachment_size_exceeded_dialog_message">მიმაგრებული ფაილების მაქსიმალური ზომაა %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">მიმაგრებული ფაილის თავიდან დაშიფვრა ჩავარდა. უსაფრთხოების მიზნით, ყველა მიმაგრებული ფაილი წაიშალა.</string>
   <string name="composer_warning_local_data_shown">მონახაზის უკანასკნელი ვერსიის ჩატივრთვა ჩავარდა. ნებისმიერი ცვლილება გადაფარავს მის შემცველობას.</string>
-  <string name="composer_button_add_password">Add password</string>
+  <string name="composer_button_add_password">პაროლის დამატება</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">გაგზავნის შეცდომა</string>
   <string name="message_sending_error_dialog_button_dismiss">დახურვა</string>

@@ -47,7 +47,7 @@
   <string name="composer_attachment_size_exceeded_dialog_message">La taille limite pour les pièces jointes est de %1$s.</string>
   <string name="composer_attachment_reencryption_failed_message">Chiffrer à nouveau la pièce jointe n\'a pas abouti. Pour des raisons de sécurité, toutes les pièces jointes ont été retirées.</string>
   <string name="composer_warning_local_data_shown">La dernière version de ce brouillon n\'a pas pu être chargée. Toute modification remplacera son contenu.</string>
-  <string name="composer_button_add_password">Ajoutez le mot de passe.</string>
+  <string name="composer_button_add_password">Ajouter un mot de passe</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Une erreur s\'est produite pendant l\'envoi.</string>
   <string name="message_sending_error_dialog_button_dismiss">Fermer</string>

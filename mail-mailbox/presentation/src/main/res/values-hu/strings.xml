@@ -28,6 +28,8 @@
     <item quantity="one">%d kiválasztva</item>
     <item quantity="other">%d kiválasztva</item>
   </plurals>
+  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
+  <string name="filter_unread_button_text_without_counter">Unread</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%d olvasatlan</item>
     <item quantity="other">%d olvasatlan</item>
@@ -37,7 +39,12 @@
   <string name="mailbox_error_message_offline">Jelenleg offline, az elemek így nem tölthetők be</string>
   <string name="mailbox_error_message_generic">A postafiók betöltése sikertelen</string>
   <string name="mailbox_error_message_unexpected">Valami váratlanul rosszul történt</string>
-  <string name="mailbox_is_empty_message">A postafiók üres</string>
+  <string name="mailbox_is_empty_title">No messages</string>
+  <string name="mailbox_is_empty_description">You are up to date</string>
+  <string name="mailbox_is_empty_no_unread_messages_title">No unread messages</string>
+  <string name="mailbox_is_empty_folder_description">Ez a mappa üres</string>
+  <string name="mailbox_is_empty_spam_description">A kéretlen üzenetek mappája üres</string>
+  <string name="mailbox_is_empty_trash_description">Trash is empty</string>
   <plurals name="mailbox_action_trash">
     <item quantity="one">Üzenet áthelyezve a lomtárba</item>
     <item quantity="other">%d messages moved to Trash</item>

@@ -46,8 +46,8 @@
   <string name="composer_attachment_size_exceeded_dialog_title">첨부파일 한도 도달</string>
   <string name="composer_attachment_size_exceeded_dialog_message">첨부 파일의 최대 크기는 %1$s 입니다</string>
   <string name="composer_attachment_reencryption_failed_message">첨부 파일에 대한 복호화 실패. 보안 상의 이유로 전체 첨부 파일이 삭제되었습니다.</string>
-  <string name="composer_warning_local_data_shown">이 초안의 최신 버전을 로드하는데 실패했습니다. 어떠한 변경 사항도 존재되지 않습니다.</string>
-  <string name="composer_button_add_password">Add password</string>
+  <string name="composer_warning_local_data_shown">이 원고의 가장 최근 버전을 불러오는 데 실패했습니다. 어떤 변경점이 있더라도 그것을 덮어쓰게 됩니다.</string>
+  <string name="composer_button_add_password">비밀번호 추가</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">발송 실패</string>
   <string name="message_sending_error_dialog_button_dismiss">닫기</string>

@@ -28,6 +28,8 @@
     <item quantity="one">მონიშნულია %d</item>
     <item quantity="other">მონიშნულია %d</item>
   </plurals>
+  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
+  <string name="filter_unread_button_text_without_counter">წაუკითხავი</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%d წაუკითხავი</item>
     <item quantity="other">%d წაუკითხავი</item>
@@ -37,7 +39,12 @@
   <string name="mailbox_error_message_offline">ინტერნეტკავშირის გარეშე. ელემენტების მიღება შეუძლებელია</string>
   <string name="mailbox_error_message_generic">საფოსტო ყუთის ჩატვირთვის შეცდომა</string>
   <string name="mailbox_error_message_unexpected">რაღაც, მოულოდნელად, გაფუჭდა</string>
-  <string name="mailbox_is_empty_message">ეს საფოსტო ყუთი ცარიელია</string>
+  <string name="mailbox_is_empty_title">შეტყობინებების გარეშე</string>
+  <string name="mailbox_is_empty_description">ყველაფერი განახლებულია</string>
+  <string name="mailbox_is_empty_no_unread_messages_title">წაუკითხავი შეტყობინების გარეშე</string>
+  <string name="mailbox_is_empty_folder_description">საქაღალდე ცარიელია</string>
+  <string name="mailbox_is_empty_spam_description">თქვენი სპამის საქაღალდე ცარიელია</string>
+  <string name="mailbox_is_empty_trash_description">ნაგვის ყუთი ცარიელია</string>
   <plurals name="mailbox_action_trash">
     <item quantity="one">შეტყობინება გადატანილია ნაგვის ყუთში</item>
     <item quantity="other">%d შეტყობინება გადატანილია ნაგვის ყუთში</item>
@@ -79,7 +86,7 @@
   <string name="onboarding_description_ga">სრულად 0-დან შექმნილი ახალი Proton Mail-ის აპი, რომელიც სტაბილურობით და წარმადობით გამოირჩევა.</string>
   <!--  Onboarding 1  -->
   <string name="onboarding_privacy_for_all_headline">პირადი სივრცე ყველასთვის</string>
-  <string name="onboarding_privacy_for_all_description">მოიწვიეთ სხვები Proton Mail-ზე და სარგებლეთ გამჭოლი დაშიფვრით.</string>
+  <string name="onboarding_privacy_for_all_description">მოიწვიეთ სხვები Proton Mail-ზე და ისარგებლეთ გამჭოლი დაშიფვრით.</string>
   <!--  Onboarding 2  -->
   <string name="onboarding_easily_up_to_date_headline">ადვილად განახლებადი</string>
   <string name="onboarding_easily_up_to_date_description">საუბრების რეჟიმში შეტყობინებების ნაკადების სახით ჩვენება.</string>

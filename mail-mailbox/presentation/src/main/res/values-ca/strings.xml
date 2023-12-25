@@ -28,6 +28,8 @@
     <item quantity="one">%d seleccionat</item>
     <item quantity="other">%d seleccionats</item>
   </plurals>
+  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
+  <string name="filter_unread_button_text_without_counter">No llegits</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%d sense llegir</item>
     <item quantity="other">%d sense llegir</item>
@@ -37,7 +39,12 @@
   <string name="mailbox_error_message_offline">Esteu fora de línia. No s\'han pogut recuperar els elements.</string>
   <string name="mailbox_error_message_generic">No s\'ha pogut carregar la bústia de correu</string>
   <string name="mailbox_error_message_unexpected">Alguna cosa ha anat malament</string>
-  <string name="mailbox_is_empty_message">Aquesta bústia de correu està buida</string>
+  <string name="mailbox_is_empty_title">Cap missatge</string>
+  <string name="mailbox_is_empty_description">Esteu al dia.</string>
+  <string name="mailbox_is_empty_no_unread_messages_title">No hi ha missatges sense llegir.</string>
+  <string name="mailbox_is_empty_folder_description">Aquesta carpeta és buida</string>
+  <string name="mailbox_is_empty_spam_description">La carpeta de correu brossa és buida.</string>
+  <string name="mailbox_is_empty_trash_description">La paperera és buida.</string>
   <plurals name="mailbox_action_trash">
     <item quantity="one">El missatge s\'ha mogut a la paperera.</item>
     <item quantity="other">%d missatges s\'han mogut a la paperera.</item>

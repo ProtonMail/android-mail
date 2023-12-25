@@ -27,6 +27,8 @@
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="other">%d Dipilih</item>
   </plurals>
+  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
+  <string name="filter_unread_button_text_without_counter">Belum dibaca</string>
   <plurals name="filter_unread_button_text">
     <item quantity="other">%d belum dibaca</item>
   </plurals>
@@ -35,7 +37,12 @@
   <string name="mailbox_error_message_offline">Anda sedang offline. Item tidak dapat diterima</string>
   <string name="mailbox_error_message_generic">Kotak pesan gagal dimuat</string>
   <string name="mailbox_error_message_unexpected">Terdapat kesalahan yang tidak terduga</string>
-  <string name="mailbox_is_empty_message">Kotak surat ini kosong</string>
+  <string name="mailbox_is_empty_title">Tidak ada pesan</string>
+  <string name="mailbox_is_empty_description">You are up to date</string>
+  <string name="mailbox_is_empty_no_unread_messages_title">No unread messages</string>
+  <string name="mailbox_is_empty_folder_description">Folder ini kosong</string>
+  <string name="mailbox_is_empty_spam_description">Folder spam Anda kosong</string>
+  <string name="mailbox_is_empty_trash_description">Trash is empty</string>
   <plurals name="mailbox_action_trash">
     <item quantity="other">%d pesan dipindahkan ke Sampah</item>
   </plurals>

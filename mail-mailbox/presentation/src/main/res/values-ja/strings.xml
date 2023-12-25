@@ -27,6 +27,8 @@
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="other">%d個選択済み</item>
   </plurals>
+  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
+  <string name="filter_unread_button_text_without_counter">Unread</string>
   <plurals name="filter_unread_button_text">
     <item quantity="other">%d 未読</item>
   </plurals>
@@ -35,7 +37,12 @@
   <string name="mailbox_error_message_offline">インターネットに接続できないため、メールを取得できませんでした。</string>
   <string name="mailbox_error_message_generic">メールボックスの読み込みに失敗しました</string>
   <string name="mailbox_error_message_unexpected">予期せぬ問題が発生しました</string>
-  <string name="mailbox_is_empty_message">このメールボックスは空です</string>
+  <string name="mailbox_is_empty_title">No messages</string>
+  <string name="mailbox_is_empty_description">You are up to date</string>
+  <string name="mailbox_is_empty_no_unread_messages_title">No unread messages</string>
+  <string name="mailbox_is_empty_folder_description">このフォルダーは空です</string>
+  <string name="mailbox_is_empty_spam_description">迷惑メールフォルダーは空です</string>
+  <string name="mailbox_is_empty_trash_description">Trash is empty</string>
   <plurals name="mailbox_action_trash">
     <item quantity="other">%d 個のメッセージをゴミ箱に移動しました</item>
   </plurals>

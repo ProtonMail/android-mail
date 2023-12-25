@@ -27,6 +27,8 @@
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="other">已选择 %d 项</item>
   </plurals>
+  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
+  <string name="filter_unread_button_text_without_counter">Unread</string>
   <plurals name="filter_unread_button_text">
     <item quantity="other">%d 封未读邮件</item>
   </plurals>
@@ -35,7 +37,12 @@
   <string name="mailbox_error_message_offline">网络未连接，无法获取数据</string>
   <string name="mailbox_error_message_generic">邮箱数据加载失败</string>
   <string name="mailbox_error_message_unexpected">发生意外错误。</string>
-  <string name="mailbox_is_empty_message">此邮箱为空</string>
+  <string name="mailbox_is_empty_title">No messages</string>
+  <string name="mailbox_is_empty_description">You are up to date</string>
+  <string name="mailbox_is_empty_no_unread_messages_title">No unread messages</string>
+  <string name="mailbox_is_empty_folder_description">此文件夹为空</string>
+  <string name="mailbox_is_empty_spam_description">没有垃圾邮件</string>
+  <string name="mailbox_is_empty_trash_description">Trash is empty</string>
   <plurals name="mailbox_action_trash">
     <item quantity="other">%d 封邮件已移至废件箱</item>
   </plurals>

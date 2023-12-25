@@ -116,32 +116,32 @@
   <string name="mail_settings_notifications_update_error">設定更新時發生錯誤</string>
   <string name="mail_settings_notifications_loading_error">載入設定時發生錯誤</string>
   <!-- Auto lock -->
-  <string name="mail_settings_auto_lock_title">Auto lock</string>
-  <string name="mail_settings_auto_lock_item_title">Auto lock app</string>
+  <string name="mail_settings_auto_lock_title">自動鎖定</string>
+  <string name="mail_settings_auto_lock_item_title">自動鎖定應用程式</string>
   <string name="mail_settings_auto_lock_item_description">Turn this feature on to auto lock your app and use a PIN code or Fingerprint to unlock it</string>
-  <string name="mail_settings_auto_lock_change_pin_description">Change PIN code</string>
-  <string name="mail_settings_auto_lock_item_timer_title">Auto lock timer</string>
-  <string name="mail_settings_auto_lock_not_enabled">Not enabled</string>
-  <string name="mail_settings_auto_lock_immediately">Immediately</string>
-  <string name="mail_settings_auto_lock_item_timer_description_five_minutes">5 minutes inactivity</string>
-  <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 minutes inactivity</string>
-  <string name="mail_settings_auto_lock_item_timer_description_one_hour">1 hour inactivity</string>
-  <string name="mail_settings_auto_lock_item_timer_description_one_day">1 day inactivity</string>
-  <string name="mail_settings_auto_lock_update_error">Error updating settings</string>
-  <string name="mail_settings_pin_insertion_input_title">Insert PIN code</string>
-  <string name="mail_settings_pin_insertion_set_title">Set PIN code</string>
-  <string name="mail_settings_pin_insertion_confirm_title">Confirm PIN code</string>
-  <string name="mail_settings_pin_insertion_lock_icon_description">Lock icon</string>
+  <string name="mail_settings_auto_lock_change_pin_description">變更 PIN 碼</string>
+  <string name="mail_settings_auto_lock_item_timer_title">自動鎖定計時器</string>
+  <string name="mail_settings_auto_lock_not_enabled">未啟用</string>
+  <string name="mail_settings_auto_lock_immediately">立即</string>
+  <string name="mail_settings_auto_lock_item_timer_description_five_minutes">5分鐘內未有任何動作</string>
+  <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15分鐘內未有任何動作</string>
+  <string name="mail_settings_auto_lock_item_timer_description_one_hour">1小時內未有任何動作</string>
+  <string name="mail_settings_auto_lock_item_timer_description_one_day">1天內未有任何動作</string>
+  <string name="mail_settings_auto_lock_update_error">設定更新時發生錯誤</string>
+  <string name="mail_settings_pin_insertion_input_title">輸入 PIN 碼</string>
+  <string name="mail_settings_pin_insertion_set_title">設定 PIN 碼</string>
+  <string name="mail_settings_pin_insertion_confirm_title">確認個人識別數字代碼</string>
+  <string name="mail_settings_pin_insertion_lock_icon_description">鎖定圖示</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">Pin dot</string>
-  <string name="mail_settings_pin_insertion_backspace_description">Backspace</string>
-  <string name="mail_settings_pin_insertion_button_create">Create</string>
-  <string name="mail_settings_pin_insertion_button_confirm">Confirm</string>
-  <string name="mail_settings_pin_insertion_error_no_match">PIN codes do not match.</string>
+  <string name="mail_settings_pin_insertion_backspace_description">倒退鍵</string>
+  <string name="mail_settings_pin_insertion_button_create">創建</string>
+  <string name="mail_settings_pin_insertion_button_confirm">確認</string>
+  <string name="mail_settings_pin_insertion_error_no_match">PIN 碼不符.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="other">Wrong PIN code. %s remaining attempts.</item>
+    <item quantity="other">錯誤PIN碼。剩餘%s嘗試。</item>
   </plurals>
   <!-- Local storage -->
-  <string name="mail_settings_clearing_cached_data">Clearing local cached data…</string>
+  <string name="mail_settings_clearing_cached_data">正在清理本機快取資料中…</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">發生錯誤，請再試一次。</string>
 </resources>

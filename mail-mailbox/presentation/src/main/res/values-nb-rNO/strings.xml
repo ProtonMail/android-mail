@@ -28,6 +28,8 @@
     <item quantity="one">%d valgt</item>
     <item quantity="other">%d valgt</item>
   </plurals>
+  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
+  <string name="filter_unread_button_text_without_counter">Ulest</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%d ulest</item>
     <item quantity="other">%d uleste</item>
@@ -37,7 +39,12 @@
   <string name="mailbox_error_message_offline">Du er i frakoblet modus, ikke i stand til å hente elementer.</string>
   <string name="mailbox_error_message_generic">Lasting av postboks mislyktes</string>
   <string name="mailbox_error_message_unexpected">Noe gikk uventet galt</string>
-  <string name="mailbox_is_empty_message">Denne postboksen er tom</string>
+  <string name="mailbox_is_empty_title">Ingen meldinger</string>
+  <string name="mailbox_is_empty_description">Du er à jour</string>
+  <string name="mailbox_is_empty_no_unread_messages_title">Ingen uleste meldinger</string>
+  <string name="mailbox_is_empty_folder_description">Denne mappen er tom</string>
+  <string name="mailbox_is_empty_spam_description">Søppelpostmappen din er tom</string>
+  <string name="mailbox_is_empty_trash_description">Papirkurven er tom</string>
   <plurals name="mailbox_action_trash">
     <item quantity="one">Meldingen flyttet til papirkurven</item>
     <item quantity="other">%d meldinger flyttet til papirkurven</item>

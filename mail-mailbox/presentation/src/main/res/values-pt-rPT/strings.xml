@@ -28,6 +28,8 @@
     <item quantity="one">%d selecionado</item>
     <item quantity="other">%d selecionados</item>
   </plurals>
+  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
+  <string name="filter_unread_button_text_without_counter">Unread</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%d não lido</item>
     <item quantity="other">%d não lidas</item>
@@ -37,7 +39,12 @@
   <string name="mailbox_error_message_offline">Está offline. Não é possível recuperar itens.</string>
   <string name="mailbox_error_message_generic">Erro ao carregar a caixa de correio</string>
   <string name="mailbox_error_message_unexpected">Ocorreu um erro inesperado.</string>
-  <string name="mailbox_is_empty_message">Esta caixa de correio está vazia.</string>
+  <string name="mailbox_is_empty_title">No messages</string>
+  <string name="mailbox_is_empty_description">You are up to date</string>
+  <string name="mailbox_is_empty_no_unread_messages_title">No unread messages</string>
+  <string name="mailbox_is_empty_folder_description">Esta pasta está vazia.</string>
+  <string name="mailbox_is_empty_spam_description">A sua pasta de spam está vazia</string>
+  <string name="mailbox_is_empty_trash_description">Trash is empty</string>
   <plurals name="mailbox_action_trash">
     <item quantity="one">Mensagem movida para o Lixo</item>
     <item quantity="other">%d mensagens movidas para o Lixo</item>
