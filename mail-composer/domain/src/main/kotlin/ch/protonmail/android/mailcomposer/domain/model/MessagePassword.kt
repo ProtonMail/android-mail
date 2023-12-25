@@ -16,36 +16,14 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.composer.data.local.entity
+package ch.protonmail.android.mailcomposer.domain.model
 
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.Index
-import ch.protonmail.android.mailcomposer.domain.model.MessagePassword
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import me.proton.core.domain.entity.UserId
-import me.proton.core.user.data.entity.UserEntity
 
-@Entity(
-    primaryKeys = ["userId", "messageId"],
-    indices = [
-        Index("userId"),
-        Index("userId", "messageId")
-    ],
-    foreignKeys = [
-        ForeignKey(
-            entity = UserEntity::class,
-            parentColumns = ["userId"],
-            childColumns = ["userId"],
-            onDelete = ForeignKey.CASCADE
-        )
-    ]
-)
-data class MessagePasswordEntity(
+data class MessagePassword(
     val userId: UserId,
     val messageId: MessageId,
     val password: String,
     val passwordHint: String?
 )
-
-fun MessagePassword.toEntity() = MessagePasswordEntity(userId, messageId, password, passwordHint)
