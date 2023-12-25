@@ -188,4 +188,6 @@ fun MessagePasswordSpacer(modifier: Modifier = Modifier, height: Dp = ProtonDime
 object SetMessagePasswordScreen {
     const val MIN_PASSWORD_LENGTH = 4
     const val MAX_PASSWORD_LENGTH = 21
+
+    const val DraftMessageIdKey = "DraftMessageId"
 }
