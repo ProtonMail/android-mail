@@ -20,6 +20,7 @@ package ch.protonmail.android.composer.data.local
 
 import androidx.sqlite.db.SupportSQLiteDatabase
 import ch.protonmail.android.composer.data.local.dao.DraftStateDao
+import ch.protonmail.android.composer.data.local.dao.MessagePasswordDao
 import ch.protonmail.android.mailmessage.data.local.dao.AttachmentStateDao
 import me.proton.core.data.room.db.Database
 import me.proton.core.data.room.db.extension.addTableColumn
@@ -30,6 +31,7 @@ interface DraftStateDatabase : Database {
 
     fun draftStateDao(): DraftStateDao
     fun attachmentStateDao(): AttachmentStateDao
+    fun messagePasswordDao(): MessagePasswordDao
 
     companion object {
 
@@ -83,6 +85,15 @@ interface DraftStateDatabase : Database {
         val MIGRATION_5: DatabaseMigration = object : DatabaseMigration {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.addTableColumn("DraftStateEntity", "sendingStatusConfirmed", "INTEGER NOT NULL", "0")
+            }
+        }
+
+        val MIGRATION_6: DatabaseMigration = object : DatabaseMigration {
+            @Suppress("MaxLineLength")
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("CREATE TABLE IF NOT EXISTS `MessagePasswordEntity` (`userId` TEXT NOT NULL, `messageId` TEXT NOT NULL, `password` TEXT NOT NULL, `passwordHint` TEXT, PRIMARY KEY(`userId`, `messageId`), FOREIGN KEY(`userId`)  REFERENCES `UserEntity`(`userId`) ON UPDATE NO ACTION ON DELETE CASCADE )")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessagePasswordEntity_userId` ON `MessagePasswordEntity` (`userId`)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessagePasswordEntity_userId_messageId` ON `MessagePasswordEntity` (`userId`, `messageId`)")
             }
         }
     }

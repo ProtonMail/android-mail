@@ -197,4 +197,10 @@ object AppDatabaseMigrations {
             SearchResultsDatabase.MIGRATION_0.migrate(database)
         }
     }
+
+    val MIGRATION_25_26 = object : Migration(25, 26) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            DraftStateDatabase.MIGRATION_6.migrate(database)
+        }
+    }
 }
