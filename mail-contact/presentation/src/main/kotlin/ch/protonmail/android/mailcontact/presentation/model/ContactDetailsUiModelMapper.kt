@@ -52,16 +52,18 @@ class ContactDetailsUiModelMapper @Inject constructor(
     }
 
     private fun getAvatar(contact: DecryptedContact): Avatar {
-        return if (contact.photos.isNotEmpty()) {
+        if (contact.photos.isNotEmpty()) {
             val byteArray = contact.photos.first().data
-            Avatar.Photo(
-                bitmap = decodeByteArray(byteArray)
-            )
-        } else {
-            Avatar.Initials(
-                value = getInitials(contact.formattedName?.value ?: "")
-            )
+            decodeByteArray(byteArray)?.let { bitmap ->
+                return Avatar.Photo(
+                    bitmap = bitmap
+                )
+            }
         }
+
+        return Avatar.Initials(
+            value = getInitials(contact.formattedName?.value ?: "")
+        )
     }
 
     private fun getGroupLabelList(contact: DecryptedContact): List<ContactGroupLabel> {
@@ -166,14 +168,16 @@ class ContactDetailsUiModelMapper @Inject constructor(
         contact.photos.forEachIndexed { index, photo ->
             // Skip first index as we use it for avatar already
             if (index == 0) return@forEachIndexed
-            contactDetailsItem.add(
-                ContactDetailsItem.Image(
-                    displayIcon = contactDetailsItem.isEmpty(),
-                    iconResId = R.drawable.ic_proton_text_align_left,
-                    header = TextUiModel(R.string.contact_property_photo),
-                    value = decodeByteArray(photo.data)
+            decodeByteArray(photo.data)?.let { bitmap ->
+                contactDetailsItem.add(
+                    ContactDetailsItem.Image(
+                        displayIcon = contactDetailsItem.isEmpty(),
+                        iconResId = R.drawable.ic_proton_text_align_left,
+                        header = TextUiModel(R.string.contact_property_photo),
+                        value = bitmap
+                    )
                 )
-            )
+            }
         }
         contact.organizations.forEach { organization ->
             contactDetailsItem.add(
@@ -216,14 +220,16 @@ class ContactDetailsUiModelMapper @Inject constructor(
             )
         }
         contact.logos.forEach { logo ->
-            contactDetailsItem.add(
-                ContactDetailsItem.Image(
-                    displayIcon = contactDetailsItem.isEmpty(),
-                    iconResId = R.drawable.ic_proton_text_align_left,
-                    header = TextUiModel(R.string.contact_property_logo),
-                    value = decodeByteArray(logo.data)
+            decodeByteArray(logo.data)?.let { bitmap ->
+                contactDetailsItem.add(
+                    ContactDetailsItem.Image(
+                        displayIcon = contactDetailsItem.isEmpty(),
+                        iconResId = R.drawable.ic_proton_text_align_left,
+                        header = TextUiModel(R.string.contact_property_logo),
+                        value = bitmap
+                    )
                 )
-            )
+            }
         }
         contact.members.forEach { member ->
             contactDetailsItem.add(
