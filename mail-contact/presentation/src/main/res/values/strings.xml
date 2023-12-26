@@ -48,7 +48,6 @@
     <string name="contact_type_fax">Fax</string>
     <string name="contact_type_pager">Pager</string>
     <string name="contact_type_address">Address</string>
-    <string name="contact_details_address">%1$s\n%2$s, %3$s\n%4$s, %5$s</string>
     <string name="contact_property_birthday">Birthday</string>
     <string name="contact_property_note">Note</string>
     <string name="contact_property_photo">Photo</string>

@@ -160,7 +160,7 @@ class ContactDetailsUiModelMapperTest {
                 ),
                 ContactProperty.Address(
                     type = ContactProperty.Address.Type.Work,
-                    streetAddress = "Work address the rest is empty",
+                    streetAddress = "City the rest is empty",
                     locality = "",
                     region = "",
                     postalCode = "",
@@ -199,7 +199,7 @@ class ContactDetailsUiModelMapperTest {
             displayName = "Mario@protonmail.com",
             firstName = "Mario First Name",
             lastName = "Mario Last Name",
-            avatar = Avatar.Photo(bitmap = decodeByteArray(photoByteArray)),
+            avatar = Avatar.Photo(bitmap = decodeByteArray(photoByteArray)!!),
             contactMainDetailsItemList = listOf(
                 /* Emails */
                 ContactDetailsItem.Text(
@@ -287,12 +287,8 @@ class ContactDetailsUiModelMapperTest {
                     iconResId = R.drawable.ic_proton_map_pin,
                     header = TextUiModel(R.string.contact_type_address),
                     value = TextUiModel(
-                        R.string.contact_details_address,
-                        "Address Street1",
-                        "123",
-                        "City",
-                        "Region",
-                        "Country"
+                        "Address Street1\n123, City\nRegion, Country"
+
                     )
                 ),
                 ContactDetailsItem.Text(
@@ -300,12 +296,7 @@ class ContactDetailsUiModelMapperTest {
                     iconResId = R.drawable.ic_proton_map_pin,
                     header = TextUiModel(R.string.contact_type_other),
                     value = TextUiModel(
-                        R.string.contact_details_address,
-                        "Address Other1",
-                        "234",
-                        "City",
-                        "Region",
-                        "Country"
+                        "Address Other1\n234, City\nRegion, Country"
                     )
                 ),
                 ContactDetailsItem.Text(
@@ -313,12 +304,7 @@ class ContactDetailsUiModelMapperTest {
                     iconResId = R.drawable.ic_proton_map_pin,
                     header = TextUiModel(R.string.contact_type_home),
                     value = TextUiModel(
-                        R.string.contact_details_address,
-                        "Home address the rest is empty",
-                        "",
-                        "",
-                        "",
-                        ""
+                        "Home address the rest is empty"
                     )
                 ),
                 ContactDetailsItem.Text(
@@ -326,12 +312,7 @@ class ContactDetailsUiModelMapperTest {
                     iconResId = R.drawable.ic_proton_map_pin,
                     header = TextUiModel(R.string.contact_type_work),
                     value = TextUiModel(
-                        R.string.contact_details_address,
-                        "Work address the rest is empty",
-                        "",
-                        "",
-                        "",
-                        ""
+                        "City the rest is empty"
                     )
                 ),
                 /* Birthday */
@@ -395,7 +376,7 @@ class ContactDetailsUiModelMapperTest {
                     displayIcon = false,
                     iconResId = R.drawable.ic_proton_text_align_left,
                     header = TextUiModel(R.string.contact_property_logo),
-                    value = decodeByteArray(logoByteArray)
+                    value = decodeByteArray(logoByteArray)!!
                 ),
                 /* Members */
                 ContactDetailsItem.Text(

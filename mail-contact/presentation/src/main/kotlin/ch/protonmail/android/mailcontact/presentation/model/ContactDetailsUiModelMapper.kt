@@ -114,28 +114,24 @@ class ContactDetailsUiModelMapper @Inject constructor(
             )
         }
         contact.addresses.forEachIndexed { index, address ->
-            contactDetailsItem.add(
-                ContactDetailsItem.Text(
-                    displayIcon = index == 0,
-                    iconResId = R.drawable.ic_proton_map_pin,
-                    header = TextUiModel(
-                        when (address.type) {
-                            ContactProperty.Address.Type.Address -> R.string.contact_type_address
-                            ContactProperty.Address.Type.Home -> R.string.contact_type_home
-                            ContactProperty.Address.Type.Work -> R.string.contact_type_work
-                            ContactProperty.Address.Type.Other -> R.string.contact_type_other
-                        }
-                    ),
-                    value = TextUiModel(
-                        R.string.contact_details_address,
-                        address.streetAddress,
-                        address.postalCode,
-                        address.locality,
-                        address.region,
-                        address.country
+            val formattedAddress = formattedAddress(address)
+            if (formattedAddress.isNotBlank()) {
+                contactDetailsItem.add(
+                    ContactDetailsItem.Text(
+                        displayIcon = index == 0,
+                        iconResId = R.drawable.ic_proton_map_pin,
+                        header = TextUiModel(
+                            when (address.type) {
+                                ContactProperty.Address.Type.Address -> R.string.contact_type_address
+                                ContactProperty.Address.Type.Home -> R.string.contact_type_home
+                                ContactProperty.Address.Type.Work -> R.string.contact_type_work
+                                ContactProperty.Address.Type.Other -> R.string.contact_type_other
+                            }
+                        ),
+                        value = TextUiModel(formattedAddress)
                     )
                 )
-            )
+            }
         }
         contact.birthday?.let { birthday ->
             contactDetailsItem.add(
@@ -284,5 +280,29 @@ class ContactDetailsUiModelMapper @Inject constructor(
             )
         }
         return contactDetailsItem
+    }
+
+    private fun formattedAddress(address: ContactProperty.Address): String {
+        var formattedAddress = ""
+        if (address.streetAddress.isNotBlank()) {
+            formattedAddress = formattedAddress.plus(address.streetAddress)
+        }
+        if (address.postalCode.isNotBlank()) {
+            val prefix = if (formattedAddress.isNotBlank()) "\n" else ""
+            formattedAddress = formattedAddress.plus("$prefix${address.postalCode}")
+        }
+        if (address.locality.isNotBlank()) {
+            val prefix = if (address.postalCode.isNotBlank()) ", " else ""
+            formattedAddress = formattedAddress.plus("$prefix${address.locality}")
+        }
+        if (address.region.isNotBlank()) {
+            val prefix = if (formattedAddress.isNotBlank()) "\n" else ""
+            formattedAddress = formattedAddress.plus("$prefix${address.region}")
+        }
+        if (address.country.isNotBlank()) {
+            val prefix = if (address.region.isNotBlank()) ", " else ""
+            formattedAddress = formattedAddress.plus("$prefix${address.country}")
+        }
+        return formattedAddress
     }
 }
