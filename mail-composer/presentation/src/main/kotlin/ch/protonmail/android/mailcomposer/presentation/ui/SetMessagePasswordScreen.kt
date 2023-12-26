@@ -42,13 +42,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.HyperlinkText
 import ch.protonmail.android.mailcomposer.presentation.R
+import ch.protonmail.android.mailcomposer.presentation.model.SetMessagePasswordState
 import ch.protonmail.android.mailcomposer.presentation.ui.SetMessagePasswordScreen.MAX_PASSWORD_LENGTH
 import ch.protonmail.android.mailcomposer.presentation.ui.SetMessagePasswordScreen.MIN_PASSWORD_LENGTH
+import ch.protonmail.android.mailcomposer.presentation.viewmodel.MessagePasswordAction
+import ch.protonmail.android.mailcomposer.presentation.viewmodel.SetMessagePasswordViewModel
 import me.proton.core.compose.component.ProtonSolidButton
 import me.proton.core.compose.component.appbar.ProtonTopAppBar
+import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultInverted
@@ -58,7 +64,17 @@ import me.proton.core.compose.theme.defaultStrongNorm
 import me.proton.core.util.kotlin.EMPTY_STRING
 
 @Composable
-fun SetMessagePasswordScreen(onBackClick: () -> Unit, modifier: Modifier = Modifier) {
+fun SetMessagePasswordScreen(
+    onBackClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: SetMessagePasswordViewModel = hiltViewModel()
+) {
+    val state by rememberAsState(flow = viewModel.state, initial = SetMessagePasswordState.Initial)
+
+    ConsumableLaunchedEffect(effect = state.exitScreen) {
+        onBackClick()
+    }
+
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -81,78 +97,101 @@ fun SetMessagePasswordScreen(onBackClick: () -> Unit, modifier: Modifier = Modif
             )
         }
     ) { paddingValues ->
-        Column(
+        SetMessagePasswordContent(
+            modifier = Modifier.padding(paddingValues),
+            onApplyButtonClick = { messagePassword, messagePasswordHint ->
+                viewModel.submit(MessagePasswordAction.ApplyPassword(messagePassword, messagePasswordHint))
+            }
+        )
+    }
+}
+
+@Composable
+@Suppress("ComplexMethod")
+fun SetMessagePasswordContent(onApplyButtonClick: (String, String?) -> Unit, modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(ProtonTheme.colors.backgroundNorm)
+            .verticalScroll(rememberScrollState(), reverseScrolling = true)
+            .padding(ProtonDimens.DefaultSpacing)
+    ) {
+        var messagePassword by rememberSaveable { mutableStateOf(EMPTY_STRING) }
+        var repeatedMessagePassword by rememberSaveable { mutableStateOf(EMPTY_STRING) }
+        var messagePasswordHint by rememberSaveable { mutableStateOf(EMPTY_STRING) }
+        var isMessagePasswordError by rememberSaveable { mutableStateOf(false) }
+        var isRepeatedMessagePasswordError by rememberSaveable { mutableStateOf(false) }
+        var isMessagePasswordFieldActivated by rememberSaveable { mutableStateOf(false) }
+        var isRepeatedMessagePasswordFieldActivated by rememberSaveable { mutableStateOf(false) }
+
+        fun isMessagePasswordError() {
+            isMessagePasswordError = messagePassword.length !in MIN_PASSWORD_LENGTH..MAX_PASSWORD_LENGTH
+        }
+        fun isRepeatedMessagePasswordError() {
+            isRepeatedMessagePasswordError = messagePassword != repeatedMessagePassword
+        }
+        fun isApplyButtonEnabled() = isMessagePasswordFieldActivated && isRepeatedMessagePasswordFieldActivated &&
+            !isMessagePasswordError && !isRepeatedMessagePasswordError
+
+        MessagePasswordInfo()
+        MessagePasswordSpacer()
+        PasswordInputField(
+            titleRes = R.string.set_message_password_label,
+            supportingTextRes = if (isMessagePasswordError) {
+                R.string.set_message_password_supporting_error_text
+            } else {
+                R.string.set_message_password_supporting_text
+            },
+            value = messagePassword,
+            showTrailingIcon = true,
+            isError = isMessagePasswordError,
+            onValueChange = { messagePassword = it },
+            onFocusChanged = { hasFocus ->
+                if (hasFocus) isMessagePasswordFieldActivated = true
+                else if (isMessagePasswordFieldActivated) isMessagePasswordError()
+                if (isRepeatedMessagePasswordFieldActivated) isRepeatedMessagePasswordError()
+            }
+        )
+        MessagePasswordSpacer()
+        PasswordInputField(
+            titleRes = R.string.set_message_password_label_repeat,
+            supportingTextRes = if (isRepeatedMessagePasswordError) {
+                R.string.set_message_password_supporting_error_text_repeat
+            } else {
+                R.string.set_message_password_supporting_text_repeat
+            },
+            value = repeatedMessagePassword,
+            showTrailingIcon = true,
+            isError = isRepeatedMessagePasswordError,
+            onValueChange = { repeatedMessagePassword = it },
+            onFocusChanged = { hasFocus ->
+                if (hasFocus) isRepeatedMessagePasswordFieldActivated = true
+                else if (isRepeatedMessagePasswordFieldActivated) isRepeatedMessagePasswordError()
+                if (isMessagePasswordFieldActivated) isMessagePasswordError()
+            }
+        )
+        MessagePasswordSpacer()
+        PasswordInputField(
+            titleRes = R.string.set_message_password_label_hint,
+            supportingTextRes = null,
+            value = messagePasswordHint,
+            showTrailingIcon = false,
+            isError = false,
+            onValueChange = { messagePasswordHint = it },
+            onFocusChanged = {}
+        )
+        MessagePasswordSpacer(height = ProtonDimens.LargerSpacing)
+        ProtonSolidButton(
             modifier = Modifier
-                .padding(paddingValues)
-                .fillMaxSize()
-                .background(ProtonTheme.colors.backgroundNorm)
-                .verticalScroll(rememberScrollState(), reverseScrolling = true)
-                .padding(ProtonDimens.DefaultSpacing)
+                .fillMaxWidth()
+                .height(ProtonDimens.DefaultButtonMinHeight),
+            enabled = isApplyButtonEnabled(),
+            onClick = { onApplyButtonClick(messagePassword, messagePasswordHint) }
         ) {
-            var messagePassword by rememberSaveable { mutableStateOf(EMPTY_STRING) }
-            var repeatedMessagePassword by rememberSaveable { mutableStateOf(EMPTY_STRING) }
-            var messagePasswordHint by rememberSaveable { mutableStateOf(EMPTY_STRING) }
-            var isMessagePasswordError by rememberSaveable { mutableStateOf(false) }
-            var isRepeatedMessagePasswordError by rememberSaveable { mutableStateOf(false) }
-
-            fun isMessagePasswordError() {
-                isMessagePasswordError = messagePassword.length !in MIN_PASSWORD_LENGTH..MAX_PASSWORD_LENGTH
-            }
-            fun isRepeatedMessagePasswordError() {
-                isRepeatedMessagePasswordError = messagePassword != repeatedMessagePassword
-            }
-
-            MessagePasswordInfo()
-            MessagePasswordSpacer()
-            PasswordInputField(
-                titleRes = R.string.set_message_password_label,
-                supportingTextRes = if (isMessagePasswordError) {
-                    R.string.set_message_password_supporting_error_text
-                } else {
-                    R.string.set_message_password_supporting_text
-                },
-                value = messagePassword,
-                showTrailingIcon = true,
-                isError = isMessagePasswordError,
-                onValueChange = { messagePassword = it },
-                onFocusChanged = { isMessagePasswordError() }
+            Text(
+                text = stringResource(id = R.string.set_message_password_button_apply),
+                style = ProtonTheme.typography.defaultInverted
             )
-            MessagePasswordSpacer()
-            PasswordInputField(
-                titleRes = R.string.set_message_password_label_repeat,
-                supportingTextRes = if (isRepeatedMessagePasswordError) {
-                    R.string.set_message_password_supporting_error_text_repeat
-                } else {
-                    R.string.set_message_password_supporting_text_repeat
-                },
-                value = repeatedMessagePassword,
-                showTrailingIcon = true,
-                isError = isRepeatedMessagePasswordError,
-                onValueChange = { repeatedMessagePassword = it },
-                onFocusChanged = { isRepeatedMessagePasswordError() }
-            )
-            MessagePasswordSpacer()
-            PasswordInputField(
-                titleRes = R.string.set_message_password_label_hint,
-                supportingTextRes = null,
-                value = messagePasswordHint,
-                showTrailingIcon = false,
-                isError = false,
-                onValueChange = { messagePasswordHint = it },
-                onFocusChanged = {}
-            )
-            MessagePasswordSpacer(height = ProtonDimens.LargerSpacing)
-            ProtonSolidButton(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(ProtonDimens.DefaultButtonMinHeight),
-                onClick = {}
-            ) {
-                Text(
-                    text = stringResource(id = R.string.set_message_password_button_apply),
-                    style = ProtonTheme.typography.defaultInverted
-                )
-            }
         }
     }
 }

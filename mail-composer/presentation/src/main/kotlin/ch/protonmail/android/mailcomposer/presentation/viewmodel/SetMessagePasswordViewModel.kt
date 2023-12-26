@@ -22,10 +22,15 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcomposer.domain.usecase.SaveMessagePassword
+import ch.protonmail.android.mailcomposer.presentation.model.SetMessagePasswordState
 import ch.protonmail.android.mailcomposer.presentation.ui.SetMessagePasswordScreen
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -41,6 +46,9 @@ class SetMessagePasswordViewModel @Inject constructor(
     private val primaryUserId = observePrimaryUserId().filterNotNull()
     private val messageId = savedStateHandle.get<String>(SetMessagePasswordScreen.DraftMessageIdKey)
 
+    private val mutableState = MutableStateFlow(SetMessagePasswordState.Initial)
+    val state: StateFlow<SetMessagePasswordState> = mutableState.asStateFlow()
+
     fun submit(action: MessagePasswordAction) = when (action) {
         is MessagePasswordAction.ApplyPassword -> onApplyPassword(action.password, action.passwordHint)
     }
@@ -49,6 +57,7 @@ class SetMessagePasswordViewModel @Inject constructor(
         viewModelScope.launch {
             messageId?.let {
                 saveMessagePassword(primaryUserId.first(), MessageId(it), password, passwordHint)
+                mutableState.emit(mutableState.value.copy(exitScreen = Effect.of(Unit)))
             }
         }
     }

@@ -55,25 +55,18 @@ fun PasswordInputField(
     showTrailingIcon: Boolean,
     isError: Boolean,
     onValueChange: (String) -> Unit,
-    onFocusChanged: () -> Unit,
+    onFocusChanged: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
         var showPassword by rememberSaveable { mutableStateOf(false) }
-        var isActivated by rememberSaveable { mutableStateOf(false) }
 
         PasswordInputFieldLabel(text = stringResource(id = titleRes), isError = isError)
 
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
-                .onFocusChanged {
-                    if (it.hasFocus) {
-                        isActivated = true
-                    } else if (isActivated) {
-                        onFocusChanged()
-                    }
-                },
+                .onFocusChanged { onFocusChanged(it.hasFocus) },
             value = value,
             onValueChange = { onValueChange(it) },
             shape = RoundedCornerShape(ProtonDimens.LargeCornerRadius),
@@ -89,7 +82,11 @@ fun PasswordInputField(
                 }
             },
             isError = isError,
-            visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation()
+            visualTransformation = if (showTrailingIcon && !showPassword) {
+                PasswordVisualTransformation()
+            } else {
+                VisualTransformation.None
+            }
         )
 
         supportingTextRes?.let { PasswordInputFieldSupportingText(textId = it, isError = isError) }
