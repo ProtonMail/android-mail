@@ -33,11 +33,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcomposer.presentation.R
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 
 @Composable
-fun ComposerBottomBar(onSetMessagePasswordClick: () -> Unit, modifier: Modifier = Modifier) {
+fun ComposerBottomBar(
+    draftId: MessageId,
+    onSetMessagePasswordClick: (MessageId) -> Unit,
+    modifier: Modifier = Modifier
+) {
     Column(modifier = modifier.fillMaxWidth()) {
         Divider(color = ProtonTheme.colors.separatorNorm, thickness = MailDimens.SeparatorHeight)
         Row(
@@ -48,7 +53,7 @@ fun ComposerBottomBar(onSetMessagePasswordClick: () -> Unit, modifier: Modifier 
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(
-                onClick = onSetMessagePasswordClick
+                onClick = { onSetMessagePasswordClick(draftId) }
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_proton_lock),

@@ -59,6 +59,7 @@ import ch.protonmail.android.mailcomposer.domain.usecase.StoreAttachments
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
 import ch.protonmail.android.mailcomposer.presentation.viewmodel.ComposerViewModel
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.presentation.ui.AttachmentFooter
 import me.proton.core.compose.component.ProtonAlertDialog
 import me.proton.core.compose.component.ProtonAlertDialogButton
@@ -131,7 +132,10 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
             },
             bottomBar = {
                 if (state.isPasswordActionVisible) {
-                    ComposerBottomBar(onSetMessagePasswordClick = actions.onSetMessagePasswordClick)
+                    ComposerBottomBar(
+                        draftId = state.fields.draftId,
+                        onSetMessagePasswordClick = actions.onSetMessagePasswordClick
+                    )
                 }
             },
             snackbarHost = {
@@ -311,7 +315,7 @@ object ComposerScreen {
 
     data class Actions(
         val onCloseComposerClick: () -> Unit,
-        val onSetMessagePasswordClick: () -> Unit,
+        val onSetMessagePasswordClick: (MessageId) -> Unit,
         val showDraftSavedSnackbar: () -> Unit,
         val showMessageSendingSnackbar: () -> Unit,
         val showMessageSendingOfflineSnackbar: () -> Unit
