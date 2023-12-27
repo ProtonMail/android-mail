@@ -41,9 +41,10 @@ class MailboxPagerFactory @Inject constructor(
         userIds: List<UserId>,
         selectedMailLabelId: MailLabelId,
         filterUnread: Boolean,
-        type: MailboxItemType
+        type: MailboxItemType,
+        searchQuery: String
     ): Pager<MailboxPageKey, MailboxItem> {
-        val mailboxPageKey = buildPageKey(filterUnread, selectedMailLabelId, userIds)
+        val mailboxPageKey = buildPageKey(filterUnread, selectedMailLabelId, userIds, searchQuery)
         return Pager(
             config = PagingConfig(PageKey.defaultPageSize),
             remoteMediator = remoteMediatorFactory.create(mailboxPageKey, type),
@@ -54,11 +55,13 @@ class MailboxPagerFactory @Inject constructor(
     private fun buildPageKey(
         filterUnread: Boolean,
         selectedMailLabelId: MailLabelId,
-        userIds: List<UserId>
+        userIds: List<UserId>,
+        searchQuery: String
     ) = MailboxPageKey(
         userIds = userIds,
         pageKey = PageKey(
             PageFilter(
+                keyword = searchQuery,
                 labelId = selectedMailLabelId.labelId,
                 read = if (filterUnread) ReadStatus.Unread else ReadStatus.All
             )
