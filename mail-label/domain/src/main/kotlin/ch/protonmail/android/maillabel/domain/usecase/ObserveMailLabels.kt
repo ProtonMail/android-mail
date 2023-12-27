@@ -21,6 +21,7 @@ package ch.protonmail.android.maillabel.domain.usecase
 import ch.protonmail.android.mailcommon.domain.coroutines.DefaultDispatcher
 import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.maillabel.domain.model.isReservedSystemLabelId
 import ch.protonmail.android.maillabel.domain.model.toMailLabelCustom
 import ch.protonmail.android.maillabel.domain.model.toMailLabelSystem
 import kotlinx.coroutines.CoroutineDispatcher
@@ -45,12 +46,8 @@ class ObserveMailLabels @Inject constructor(
 
     operator fun invoke(userId: UserId) = combine(
         observeSystemLabelIds().map { it.toMailLabelSystem() },
-        observeLabels(userId, MessageLabel).map { it.toMailLabelCustom() },
-        observeLabels(userId, MessageFolder)
-            .map { labelList ->
-                labelList.map { it.copy(isExpanded = true) } // Temporary fix until folder hierarchy is supported
-            }
-            .map { it.toMailLabelCustom() }
+        observeCustomLabels(userId, MessageLabel).map { it.toMailLabelCustom() },
+        observeCustomLabels(userId, MessageFolder).map { it.toMailLabelCustom() }
     ) { defaults, labels, folders ->
         MailLabels(
             systemLabels = defaults,
@@ -61,11 +58,13 @@ class ObserveMailLabels @Inject constructor(
 
     private fun observeSystemLabelIds() = flowOf(SystemLabelId.displayedList)
 
-    private fun observeLabels(
-        userId: UserId,
-        type: LabelType
-    ) = labelRepository.observeLabels(userId, type)
+    private fun observeCustomLabels(userId: UserId, type: LabelType) = labelRepository.observeLabels(userId, type)
         .mapSuccessValueOrNull()
-        .mapLatest { list -> list.orEmpty().sortedBy { it.order } }
+        .mapLatest { list ->
+            list.orEmpty()
+                .filter { !it.labelId.isReservedSystemLabelId() }
+                .sortedBy { it.order }
+                .map { it.copy(isExpanded = true) } // Temporary fix until folder hierarchy is supported
+        }
         .flowOn(dispatcher)
 }
