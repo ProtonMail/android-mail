@@ -52,6 +52,7 @@ import ch.protonmail.android.maillabel.presentation.model.LabelSelectedState
 import ch.protonmail.android.maillabel.presentation.toCustomUiModel
 import ch.protonmail.android.maillabel.presentation.toUiModels
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
+import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
 import ch.protonmail.android.mailmessage.domain.model.UnreadCounter
 import ch.protonmail.android.mailmailbox.domain.model.toMailboxItemType
@@ -169,6 +170,8 @@ class MailboxViewModel @Inject constructor(
     val state: StateFlow<MailboxState> = mutableState.asStateFlow()
     val items: Flow<PagingData<MailboxItemUiModel>> = observePagingData().cachedIn(viewModelScope)
 
+    private val searchQuery = MutableStateFlow("")
+
     init {
         viewModelScope.launch {
             if (shouldDisplayOnboarding()) {
@@ -271,16 +274,29 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.MoveToSpam -> handleMoveToAction(viewAction)
                 is MailboxViewAction.EnterSearchMode -> handleEnterSearchMode(viewAction)
                 is MailboxViewAction.ExitSearchMode -> handleExitSearchMode(viewAction)
+                is MailboxViewAction.SearchQuery -> handleSearchQuery(viewAction)
+                is MailboxViewAction.SearchResult -> emitNewStateFrom(viewAction)
+
             }.exhaustive
         }
     }
 
     private fun handleEnterSearchMode(viewAction: MailboxViewAction) {
         emitNewStateFrom(viewAction)
+
+        searchQuery.value = ""
     }
 
     private fun handleExitSearchMode(viewAction: MailboxViewAction) {
         emitNewStateFrom(viewAction)
+
+        searchQuery.value = ""
+    }
+
+    private fun handleSearchQuery(searchQueryViewAction: MailboxViewAction.SearchQuery) {
+        emitNewStateFrom(searchQueryViewAction)
+
+        searchQuery.value = searchQueryViewAction.query
     }
 
     private suspend fun handleMailboxItemChanged(updatedItemIds: List<String>) {
@@ -374,13 +390,15 @@ class MailboxViewModel @Inject constructor(
             combine(
                 state.observeMailLabelChanges(),
                 state.observeUnreadFilterState(),
-                observeViewModeByLocation()
-            ) { selectedMailLabel, unreadFilterEnabled, viewMode ->
+                observeViewModeByLocation(),
+                searchQuery.asStateFlow()
+            ) { selectedMailLabel, unreadFilterEnabled, viewMode, query ->
                 mailboxPagerFactory.create(
                     userIds = listOf(userId),
                     selectedMailLabelId = selectedMailLabel.id,
                     filterUnread = unreadFilterEnabled,
-                    type = viewMode.toMailboxItemType()
+                    type = if (query.isEmpty()) viewMode.toMailboxItemType() else MailboxItemType.Message,
+                    searchQuery = query
                 )
             }.flatMapLatest { mapPagingData(userId, it) }
         }
