@@ -440,6 +440,10 @@ private fun MailboxSwipeRefresh(
     }
     lastViewState = currentViewState
 
+    BackHandler(searchMode.isInSearch()) {
+        actions.onExitSearchMode()
+    }
+
     if (searchMode.isInSearch()) {
         LaunchedEffect(currentViewState) {
             if (searchMode == MailboxSearchMode.NewSearchLoading &&
