@@ -89,6 +89,7 @@ import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxSearchMode
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
@@ -97,6 +98,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilter
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxPreview
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxPreviewProvider
 import ch.protonmail.android.mailmailbox.presentation.paging.mapToUiStates
+import ch.protonmail.android.mailmailbox.presentation.paging.search.mapToUiStatesInSearch
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoreActionsBottomSheetState
@@ -426,9 +428,18 @@ private fun MailboxSwipeRefresh(
     // remote and when the user pulls to refresh. We will use following flags to know when to show the indicator.
     var loadingWithDataCount by remember { mutableStateOf(0) }
     val refreshRequested = (state as? MailboxListState.Data.ViewMode)?.refreshRequested ?: false
-    val currentViewState = remember(items.loadState, refreshRequested) { items.mapToUiStates(refreshRequested) }
+    val searchMode = (state as? MailboxListState.Data.ViewMode)?.searchMode ?: MailboxSearchMode.None
 
-    val refreshing = currentViewState is MailboxScreenState.LoadingWithData
+    var lastViewState by remember { mutableStateOf<MailboxScreenState>(MailboxScreenState.Loading) }
+
+    val currentViewState = remember(items.loadState, state) {
+        if (searchMode.isInSearch()) items.mapToUiStatesInSearch(searchMode, lastViewState)
+        else items.mapToUiStates(refreshRequested)
+    }
+    lastViewState = currentViewState
+
+    val refreshing = currentViewState is MailboxScreenState.LoadingWithData ||
+        currentViewState is MailboxScreenState.SearchLoadingWithData
 
     LaunchedEffect(refreshing) {
         // first time refreshing
@@ -443,7 +454,8 @@ private fun MailboxSwipeRefresh(
     }
 
     val pullRefreshState = rememberPullRefreshState(
-        refreshing = refreshing && (refreshRequested || loadingWithDataCount == 1),
+        refreshing = if (searchMode.isInSearch()) refreshing
+        else refreshing && (refreshRequested || loadingWithDataCount == 1),
         onRefresh = {
             actions.onRefreshList()
             items.refresh()
@@ -489,6 +501,16 @@ private fun MailboxSwipeRefresh(
                 MailboxItemsList(state, listState, currentViewState, items, actions)
             }
 
+            is MailboxScreenState.NewSearch -> {}
+
+            is MailboxScreenState.SearchNoData -> {}
+
+            is MailboxScreenState.SearchLoading -> ProtonCenteredProgress(
+                modifier = Modifier.testTag(MailboxScreenTestTags.ListProgress)
+            )
+
+            is MailboxScreenState.SearchLoadingWithData,
+            is MailboxScreenState.SearchData,
             is MailboxScreenState.LoadingWithData,
             is MailboxScreenState.AppendLoading,
             is MailboxScreenState.AppendError,
