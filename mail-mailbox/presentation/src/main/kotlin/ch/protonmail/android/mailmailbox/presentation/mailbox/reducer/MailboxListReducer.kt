@@ -27,6 +27,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemU
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState.Data.SelectionMode.SelectedMailboxItem
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxSearchMode
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import me.proton.core.mailsettings.domain.entity.ViewMode
 import javax.inject.Inject
@@ -68,6 +69,26 @@ class MailboxListReducer @Inject constructor() {
             is MailboxViewAction.MarkAsUnread -> reduceMarkAsUnread(currentState)
             is MailboxViewAction.Star -> reduceStar(currentState)
             is MailboxViewAction.UnStar -> reduceUnStar(currentState)
+            is MailboxViewAction.EnterSearchMode -> reduceEnterSearchMode(currentState)
+            is MailboxViewAction.ExitSearchMode -> reduceExitSearchMode(currentState)
+        }
+    }
+
+    private fun reduceEnterSearchMode(currentState: MailboxListState): MailboxListState {
+        return when (currentState) {
+            is MailboxListState.Data.ViewMode -> currentState.copy(
+                searchMode = MailboxSearchMode.NewSearch
+            )
+            else -> currentState
+        }
+    }
+
+    private fun reduceExitSearchMode(currentState: MailboxListState): MailboxListState {
+        return when (currentState) {
+            is MailboxListState.Data.ViewMode -> currentState.copy(
+                searchMode = MailboxSearchMode.None
+            )
+            else -> currentState
         }
     }
 
@@ -84,7 +105,8 @@ class MailboxListReducer @Inject constructor() {
                 offlineEffect = Effect.empty(),
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
-                swipeActions = null
+                swipeActions = null,
+                searchMode = MailboxSearchMode.None
             )
 
             is MailboxListState.Data.SelectionMode -> currentState.copy(
@@ -110,7 +132,8 @@ class MailboxListReducer @Inject constructor() {
                 offlineEffect = Effect.empty(),
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
-                swipeActions = null
+                swipeActions = null,
+                searchMode = MailboxSearchMode.None
             )
 
             is MailboxListState.Data.ViewMode -> currentState.copy(
@@ -218,7 +241,8 @@ class MailboxListReducer @Inject constructor() {
             offlineEffect = Effect.empty(),
             refreshErrorEffect = Effect.empty(),
             refreshRequested = false,
-            swipeActions = currentState.swipeActions
+            swipeActions = currentState.swipeActions,
+            searchMode = MailboxSearchMode.None
         )
 
         else -> currentState

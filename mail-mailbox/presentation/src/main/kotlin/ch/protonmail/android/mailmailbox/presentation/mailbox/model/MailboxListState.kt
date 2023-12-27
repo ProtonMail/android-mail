@@ -38,7 +38,8 @@ sealed interface MailboxListState {
             val scrollToMailboxTop: Effect<MailLabelId>,
             val offlineEffect: Effect<Unit>,
             val refreshErrorEffect: Effect<Unit>,
-            val refreshRequested: Boolean
+            val refreshRequested: Boolean,
+            val searchMode: MailboxSearchMode
         ) : Data
 
         data class SelectionMode(

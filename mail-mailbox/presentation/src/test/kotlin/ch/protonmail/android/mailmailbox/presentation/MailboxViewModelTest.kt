@@ -85,6 +85,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxSearchMode
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
@@ -421,7 +422,8 @@ class MailboxViewModelTest {
                 offlineEffect = Effect.empty(),
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
-                swipeActions = null
+                swipeActions = null,
+                searchMode = MailboxSearchMode.None
             )
         )
         val expectedSwipeActions = SwipeActionsUiModel(
@@ -436,7 +438,8 @@ class MailboxViewModelTest {
                 offlineEffect = Effect.empty(),
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
-                swipeActions = expectedSwipeActions
+                swipeActions = expectedSwipeActions,
+                searchMode = MailboxSearchMode.None
             )
         )
         val mailLabelsFlow = MutableStateFlow(
@@ -492,7 +495,8 @@ class MailboxViewModelTest {
                 offlineEffect = Effect.empty(),
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
-                swipeActions = null
+                swipeActions = null,
+                searchMode = MailboxSearchMode.None
             )
         )
         val mailLabelsFlow = MutableStateFlow(
@@ -1054,7 +1058,8 @@ class MailboxViewModelTest {
                 offlineEffect = Effect.of(Unit),
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
-                swipeActions = null
+                swipeActions = null,
+                searchMode = MailboxSearchMode.None
             )
         )
         every {
@@ -1083,7 +1088,8 @@ class MailboxViewModelTest {
                 offlineEffect = Effect.empty(),
                 refreshErrorEffect = Effect.of(Unit),
                 refreshRequested = false,
-                swipeActions = null
+                swipeActions = null,
+                searchMode = MailboxSearchMode.None
             )
         )
         every {
@@ -1112,7 +1118,8 @@ class MailboxViewModelTest {
                 offlineEffect = Effect.of(Unit),
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = true,
-                swipeActions = null
+                swipeActions = null,
+                searchMode = MailboxSearchMode.None
             )
         )
         every {
@@ -3148,7 +3155,8 @@ class MailboxViewModelTest {
                 offlineEffect = Effect.empty(),
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
-                swipeActions = null
+                swipeActions = null,
+                searchMode = MailboxSearchMode.None
             ),
             unreadFilterState = UnreadFilterState.Data(
                 numUnread = UnreadCountersTestData.labelToCounterMap[initialLocationMailLabelId.labelId]!!,

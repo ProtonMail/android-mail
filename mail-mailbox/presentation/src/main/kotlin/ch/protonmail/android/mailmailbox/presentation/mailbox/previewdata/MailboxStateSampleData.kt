@@ -30,6 +30,7 @@ import ch.protonmail.android.maillabel.presentation.text
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState.Data.SelectionMode.SelectedMailboxItem
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxSearchMode
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingState
@@ -63,7 +64,8 @@ object MailboxStateSampleData {
             swipeActions = SwipeActionsUiModel(
                 start = SwipeUiModelSampleData.Trash,
                 end = SwipeUiModelSampleData.Archive
-            )
+            ),
+            searchMode = MailboxSearchMode.None
         ),
         topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
             currentLabelName = MailLabel.System(MailLabelId.System.Inbox).text()
@@ -93,7 +95,8 @@ object MailboxStateSampleData {
             swipeActions = SwipeActionsUiModel(
                 start = SwipeUiModelSampleData.Trash,
                 end = SwipeUiModelSampleData.Archive
-            )
+            ),
+            searchMode = MailboxSearchMode.None
         ),
         topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
             currentLabelName = MailLabel.System(MailLabelId.System.AllMail).text()
