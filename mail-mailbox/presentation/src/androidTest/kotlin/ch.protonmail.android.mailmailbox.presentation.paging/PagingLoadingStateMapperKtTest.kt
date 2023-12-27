@@ -64,6 +64,8 @@ class PagingLoadingStateMapperKtTest {
         val items = mockk<LazyPagingItems<MailboxItemUiModel>> {
             every { itemCount } returns 10
             every { loadState.source.refresh } returns LoadState.Loading
+            every { loadState.append } returns LoadState.NotLoading(false)
+
         }
         assertEquals(MailboxScreenState.LoadingWithData, items.mapToUiStates(false))
     }
@@ -72,6 +74,7 @@ class PagingLoadingStateMapperKtTest {
     fun returnLoadingWithDataWhenItemCountIsLargerThanZeroAndMediatorIsLoading() {
         val items = mockk<LazyPagingItems<MailboxItemUiModel>> {
             every { itemCount } returns 10
+            every { loadState.append } returns LoadState.NotLoading(false)
             every { loadState.source.refresh } returns LoadState.NotLoading(false)
             every { loadState.mediator } returns mockk(relaxed = true)
             every { loadState.mediator!!.refresh } returns LoadState.Loading
