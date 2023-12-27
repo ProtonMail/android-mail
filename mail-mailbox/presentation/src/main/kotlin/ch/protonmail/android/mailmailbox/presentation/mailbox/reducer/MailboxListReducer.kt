@@ -70,6 +70,8 @@ class MailboxListReducer @Inject constructor() {
             is MailboxViewAction.Star -> reduceStar(currentState)
             is MailboxViewAction.UnStar -> reduceUnStar(currentState)
             is MailboxViewAction.EnterSearchMode -> reduceEnterSearchMode(currentState)
+            is MailboxViewAction.SearchQuery -> reduceSearchQuery(currentState)
+            is MailboxViewAction.SearchResult -> reduceSearchResult(currentState)
             is MailboxViewAction.ExitSearchMode -> reduceExitSearchMode(currentState)
         }
     }
@@ -78,6 +80,26 @@ class MailboxListReducer @Inject constructor() {
         return when (currentState) {
             is MailboxListState.Data.ViewMode -> currentState.copy(
                 searchMode = MailboxSearchMode.NewSearch
+            )
+            else -> currentState
+        }
+    }
+
+    private fun reduceSearchQuery(currentState: MailboxListState): MailboxListState {
+        return when (currentState) {
+            is MailboxListState.Data.ViewMode ->
+                if (currentState.searchMode == MailboxSearchMode.NewSearch)
+                    currentState.copy(searchMode = MailboxSearchMode.NewSearchLoading)
+                else
+                    currentState.copy(searchMode = MailboxSearchMode.SearchData)
+            else -> currentState
+        }
+    }
+
+    private fun reduceSearchResult(currentState: MailboxListState): MailboxListState {
+        return when (currentState) {
+            is MailboxListState.Data.ViewMode -> currentState.copy(
+                searchMode = MailboxSearchMode.SearchData
             )
             else -> currentState
         }
