@@ -49,6 +49,7 @@ import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.maildetail.presentation.usecase.GetEmbeddedImageAvoidDuplicatedExecution
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.maillabel.domain.model.isReservedSystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ObserveCustomMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinationMailLabels
 import ch.protonmail.android.maillabel.presentation.model.LabelSelectedState
@@ -446,7 +447,7 @@ class MessageDetailViewModel @Inject constructor(
                 ifLeft = { emptyList() },
                 ifRight = { messageWithLabels ->
                     messageWithLabels.labels
-                        .filter { it.type == LabelType.MessageLabel }
+                        .filter { it.type == LabelType.MessageLabel && !it.labelId.isReservedSystemLabelId() }
                         .map { it.labelId }
                 }
             )

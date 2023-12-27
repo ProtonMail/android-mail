@@ -385,7 +385,8 @@ class MailboxItemUiModelMapperTest {
         val expectedLabels = listOf(
             LabelUiModel(
                 name = "label",
-                color = Color.Unspecified
+                color = Color.Unspecified,
+                id = "label"
             )
         )
         assertEquals(expectedLabels, result.labels)

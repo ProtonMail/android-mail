@@ -24,6 +24,7 @@ import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatShortTime
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.maillabel.domain.model.isReservedSystemLabelId
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
@@ -121,10 +122,11 @@ class MailboxItemUiModelMapper @Inject constructor(
         }
 
     private fun toLabelUiModels(labels: List<Label>): ImmutableList<LabelUiModel> =
-        labels.filter { it.type == LabelType.MessageLabel }.map { label ->
+        labels.filter { it.type == LabelType.MessageLabel && !it.labelId.isReservedSystemLabelId() }.map { label ->
             LabelUiModel(
                 name = label.name,
-                color = colorMapper.toColor(label.color).getOrElse { Color.Unspecified }
+                color = colorMapper.toColor(label.color).getOrElse { Color.Unspecified },
+                id = label.labelId.id
             )
         }.toImmutableList()
 

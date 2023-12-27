@@ -103,7 +103,6 @@ import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.usecase.GetRootLabel
 import ch.protonmail.android.maillabel.domain.usecase.ObserveCustomMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinationMailLabels
-import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelSample
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.model.GetDecryptedMessageBodyError
@@ -618,7 +617,7 @@ class ConversationDetailViewModelIntegrationTest {
         val initialMessage = MessageWithLabelsSample.AugWeatherForecast
         val updatedMessage = initialMessage.copy(
             message = initialMessage.message.copy(unread = true),
-            labels = listOf(LabelSample.Starred)
+            labels = listOf(LabelSample.Label2021)
         )
         val conversationWithLabelsFlow = MutableStateFlow(nonEmptyListOf(initialMessage).right())
         val observeConversationMessagesMock = mockk<ObserveConversationMessagesWithLabels> {
@@ -659,7 +658,7 @@ class ConversationDetailViewModelIntegrationTest {
                     as Collapsed
                 ).labels
             assertCorrectMessagesEmitted(actualUpdatedMessagesState, expected = updatedMessage)
-            assertEquals(LabelUiModelSample.Starred.name, actualLabels.first().name)
+            assertEquals(LabelSample.Label2021.name, actualLabels.first().name)
 
             cancelAndIgnoreRemainingEvents()
         }

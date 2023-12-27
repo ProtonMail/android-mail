@@ -30,7 +30,6 @@ import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatExtendedTime
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatShortTime
-import ch.protonmail.android.mailmessage.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.presentation.R.string.undisclosed_recipients
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailHeaderUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageLocationUiModel
@@ -38,6 +37,7 @@ import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelSample
 import ch.protonmail.android.mailmessage.domain.model.AttachmentCount
+import ch.protonmail.android.mailmessage.domain.model.MessageWithLabels
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantNameResult
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
@@ -75,9 +75,9 @@ class MessageDetailHeaderUiModelMapperTest {
 
     private val message = MessageTestData.starredMessageInArchiveWithAttachments
     private val labels = listOf(
-        LabelTestData.buildLabel(id = SystemLabelId.Archive.labelId.id),
-        LabelTestData.buildLabel(id = SystemLabelId.AllMail.labelId.id),
-        LabelTestData.buildLabel(id = SystemLabelId.Starred.labelId.id)
+        LabelTestData.buildLabel(id = "id1"),
+        LabelTestData.buildLabel(id = "id2"),
+        LabelTestData.buildLabel(id = "id3")
     )
     private val messageWithLabels = MessageWithLabels(
         message = message,

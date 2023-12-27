@@ -23,11 +23,12 @@ import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.mailcommon.presentation.mapper.ExpirationTimeMapper
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatShortTime
-import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
-import ch.protonmail.android.mailmessage.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.maillabel.domain.model.isReservedSystemLabelId
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
+import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
+import ch.protonmail.android.mailmessage.domain.model.MessageWithLabels
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
@@ -150,10 +151,11 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
     }
 
     private fun toLabelUiModels(labels: List<Label>): ImmutableList<LabelUiModel> =
-        labels.filter { it.type == LabelType.MessageLabel }.map { label ->
+        labels.filter { it.type == LabelType.MessageLabel && !it.labelId.isReservedSystemLabelId() }.map { label ->
             LabelUiModel(
                 name = label.name,
-                color = colorMapper.toColor(label.color).getOrElse { Color.Unspecified }
+                color = colorMapper.toColor(label.color).getOrElse { Color.Unspecified },
+                id = label.labelId.id
             )
         }.toImmutableList()
 }

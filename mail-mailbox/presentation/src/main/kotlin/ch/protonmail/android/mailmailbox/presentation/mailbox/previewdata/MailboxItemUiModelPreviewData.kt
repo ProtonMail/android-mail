@@ -129,12 +129,12 @@ object MailboxItemUiModelPreviewData {
             time = TextUiModel.Text("Aug 20th 2022"),
             isRead = true,
             labels = persistentListOf(
-                LabelUiModel("Long Test", Color.Red),
-                LabelUiModel("Test", Color.Blue),
-                LabelUiModel("Even Longer Test", Color.Cyan),
-                LabelUiModel("Short", Color.Blue),
-                LabelUiModel("1234567890123", Color.Blue),
-                LabelUiModel("Very important mail label", Color.Green)
+                LabelUiModel("Long Test", Color.Red, id = "longTest"),
+                LabelUiModel("Test", Color.Blue, id = "test"),
+                LabelUiModel("Even Longer Test", Color.Cyan, id = "evenLongerTest"),
+                LabelUiModel("Short", Color.Blue, id = "short"),
+                LabelUiModel("1234567890123", Color.Blue, id = "random"),
+                LabelUiModel("Very important mail label", Color.Green, id = "important")
             ),
             subject = "DroidCon London",
             participants = ParticipantsUiModel.Participants(

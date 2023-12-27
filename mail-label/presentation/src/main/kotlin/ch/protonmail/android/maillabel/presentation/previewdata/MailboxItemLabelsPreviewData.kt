@@ -25,39 +25,40 @@ import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
 object MailboxItemLabelsPreviewData {
 
     val NineItems = listOf(
-        LabelUiModel(name = "first", color = Color.Gray),
-        LabelUiModel(name = "second", color = Color.Gray),
-        LabelUiModel(name = "third", color = Color.Gray),
-        LabelUiModel(name = "fourth", color = Color.Gray),
-        LabelUiModel(name = "fifth", color = Color.Gray),
-        LabelUiModel(name = "sixth", color = Color.Gray),
-        LabelUiModel(name = "seventh", color = Color.Gray),
-        LabelUiModel(name = "eighth", color = Color.Gray),
-        LabelUiModel(name = "ninth", color = Color.Gray)
+        LabelUiModel(name = "first", color = Color.Gray, id = "first"),
+        LabelUiModel(name = "second", color = Color.Gray, id = "second"),
+        LabelUiModel(name = "third", color = Color.Gray, id = "third"),
+        LabelUiModel(name = "fourth", color = Color.Gray, id = "fourth"),
+        LabelUiModel(name = "fifth", color = Color.Gray, id = "fifth"),
+        LabelUiModel(name = "sixth", color = Color.Gray, id = "sixth"),
+        LabelUiModel(name = "seventh", color = Color.Gray, id = "seventh"),
+        LabelUiModel(name = "eighth", color = Color.Gray, id = "eighth"),
+        LabelUiModel(name = "ninth", color = Color.Gray, id = "ninth")
     )
 
     val OneVeryLongLabel = listOf(
         LabelUiModel(
             name = "just an extremely super ultra very long label that exceeds the screen width",
-            color = Color.Gray
+            color = Color.Gray,
+            id = "idGray"
         )
     )
 
     val OneLabelAndAVeryLongLabel = listOf(
-        LabelUiModel(name = "label", color = Color.Gray),
+        LabelUiModel(name = "label", color = Color.Gray, id = "idGray"),
         OneVeryLongLabel.first()
     )
 
     val OneLabelAVeryLongLabelAndAnotherLabel = listOf(
-        LabelUiModel(name = "label", color = Color.Gray),
+        LabelUiModel(name = "label", color = Color.Gray, id = "idGray"),
         OneVeryLongLabel.first(),
-        LabelUiModel(name = "label", color = Color.Gray)
+        LabelUiModel(name = "label", color = Color.Gray, id = "idGray")
     )
 
     val ThreeItems = listOf(
-        LabelUiModel(name = "first", color = Color.Gray),
-        LabelUiModel(name = "second", color = Color.Gray),
-        LabelUiModel(name = "third", color = Color.Gray)
+        LabelUiModel(name = "first", color = Color.Gray, id = "idGray"),
+        LabelUiModel(name = "second", color = Color.Gray, id = "idGray"),
+        LabelUiModel(name = "third", color = Color.Gray, id = "idGray")
     )
 }
 

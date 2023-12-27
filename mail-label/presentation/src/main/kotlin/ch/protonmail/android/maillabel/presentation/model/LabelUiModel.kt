@@ -22,5 +22,6 @@ import androidx.compose.ui.graphics.Color
 
 data class LabelUiModel(
     val name: String,
-    val color: Color
+    val color: Color,
+    val id: String
 )

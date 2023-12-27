@@ -31,6 +31,7 @@ object LabelUiModelSample {
 
     fun build(label: Label) = LabelUiModel(
         name = label.name,
-        color = Color.Red
+        color = Color.Red,
+        id = label.labelId.id
     )
 }
