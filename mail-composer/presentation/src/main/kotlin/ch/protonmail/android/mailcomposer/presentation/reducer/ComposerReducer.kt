@@ -22,6 +22,7 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
+import ch.protonmail.android.mailcomposer.domain.model.MessagePassword
 import ch.protonmail.android.mailcomposer.domain.model.Subject
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
@@ -137,6 +138,7 @@ class ComposerReducer @Inject constructor(
             this.contactSuggestions,
             this.suggestionsField
         )
+        is ComposerEvent.OnMessagePasswordUpdated -> updateStateForMessagePassword(currentState, this.messagePassword)
     }
 
     private fun updateBottomSheetVisibility(currentState: ComposerDraftState, bottomSheetVisibility: Boolean) =
@@ -241,6 +243,9 @@ class ComposerReducer @Inject constructor(
         currentState.copy(
             replaceDraftBody = Effect.of(TextUiModel(draftBody.value))
         )
+
+    private fun updateStateForMessagePassword(currentState: ComposerDraftState, messagePassword: MessagePassword?) =
+        currentState.copy(isMessagePasswordSet = messagePassword != null)
 
     private fun updateRecipientsTo(
         currentState: ComposerDraftState,

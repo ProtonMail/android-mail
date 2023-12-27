@@ -134,6 +134,7 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
                 if (state.isPasswordActionVisible) {
                     ComposerBottomBar(
                         draftId = state.fields.draftId,
+                        isMessagePasswordSet = state.isMessagePasswordSet,
                         onSetMessagePasswordClick = actions.onSetMessagePasswordClick
                     )
                 }

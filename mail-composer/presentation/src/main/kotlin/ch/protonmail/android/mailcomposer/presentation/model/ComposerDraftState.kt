@@ -42,6 +42,7 @@ data class ComposerDraftState(
     val replaceDraftBody: Effect<TextUiModel>,
     val warning: Effect<TextUiModel>,
     val isPasswordActionVisible: Boolean,
+    val isMessagePasswordSet: Boolean,
     val focusTextBody: Effect<Unit> = Effect.empty(),
     val sendingErrorEffect: Effect<TextUiModel> = Effect.empty(),
     val contactSuggestions: Map<ContactSuggestionsField, List<ContactSuggestionUiModel>> = emptyMap(),
@@ -84,7 +85,8 @@ data class ComposerDraftState(
             warning = Effect.empty(),
             replaceDraftBody = Effect.empty(),
             sendingErrorEffect = Effect.empty(),
-            isPasswordActionVisible = false
+            isPasswordActionVisible = false,
+            isMessagePasswordSet = false
         )
     }
 }

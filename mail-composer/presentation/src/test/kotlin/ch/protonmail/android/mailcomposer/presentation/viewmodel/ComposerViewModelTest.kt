@@ -36,6 +36,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.domain.model.DecryptedDraftFields
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
+import ch.protonmail.android.mailcomposer.domain.model.MessagePassword
 import ch.protonmail.android.mailcomposer.domain.model.MessageWithDecryptedBody
 import ch.protonmail.android.mailcomposer.domain.model.OriginalHtmlQuote
 import ch.protonmail.android.mailcomposer.domain.model.QuotedHtmlContent
@@ -55,6 +56,7 @@ import ch.protonmail.android.mailcomposer.domain.usecase.GetDecryptedDraftFields
 import ch.protonmail.android.mailcomposer.domain.usecase.GetLocalMessageDecrypted
 import ch.protonmail.android.mailcomposer.domain.usecase.IsValidEmailAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessageAttachments
+import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessagePassword
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessageSendingError
 import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
 import ch.protonmail.android.mailcomposer.domain.usecase.ReEncryptAttachments
@@ -188,6 +190,7 @@ class ComposerViewModelTest {
             FeatureFlag(null, FeatureId("PasswordMessages"), Scope.Local, defaultValue = true, value = true)
         )
     }
+    private val observeMessagePassword = mockk<ObserveMessagePassword>()
 
     private val attachmentUiModelMapper = AttachmentUiModelMapper()
     private val reducer = ComposerReducer(attachmentUiModelMapper)
@@ -225,6 +228,7 @@ class ComposerViewModelTest {
             deleteAllAttachments,
             reEncryptAttachments,
             observeMailFeature,
+            observeMessagePassword,
             getDecryptedDraftFields,
             savedStateHandle,
             observePrimaryUserIdMock,
@@ -265,7 +269,7 @@ class ComposerViewModelTest {
         expectNoInputDraftAction()
         expectStoreParentAttachmentSucceeds(expectedUserId, messageId)
         expectObserveMessageSendingError(expectedUserId, messageId)
-
+        expectObserveMessagePassword(expectedUserId, messageId)
 
         // When
         viewModel.submit(ComposerAction.AttachmentsAdded(listOf(uri)))
@@ -298,6 +302,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
+        expectObserveMessagePassword(expectedUserId, expectedMessageId)
 
         // When
         viewModel.submit(action)
@@ -340,6 +345,7 @@ class ComposerViewModelTest {
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), originalSenderEmail)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
+        expectObserveMessagePassword(expectedUserId, expectedMessageId)
 
         // Change internal state of the View Model to simulate an existing draft body before changing sender
         expectedViewModelInitialState(messageId = expectedMessageId, draftBody = expectedDraftBody)
@@ -382,6 +388,7 @@ class ComposerViewModelTest {
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), previousSenderEmail)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
+        expectObserveMessagePassword(expectedUserId, expectedMessageId)
 
         // Change internal state of the View Model to simulate an existing draft body before changing sender
         expectedViewModelInitialState(messageId = expectedMessageId, draftBody = expectedDraftBody)
@@ -417,6 +424,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
+        expectObserveMessagePassword(expectedUserId, expectedMessageId)
 
         // When
         viewModel.submit(action)
@@ -460,6 +468,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
+        expectObserveMessagePassword(expectedUserId, expectedMessageId)
 
         // When
         viewModel.submit(action)
@@ -503,6 +512,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
+        expectObserveMessagePassword(expectedUserId, expectedMessageId)
 
         // When
         viewModel.submit(action)
@@ -546,6 +556,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
+        expectObserveMessagePassword(expectedUserId, expectedMessageId)
 
         // When
         viewModel.submit(action)
@@ -580,6 +591,7 @@ class ComposerViewModelTest {
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
         expectSearchContacts(expectedUserId, expectedSearchTerm, expectedContacts)
+        expectObserveMessagePassword(expectedUserId, expectedMessageId)
 
         // When
         viewModel.submit(action)
@@ -627,6 +639,7 @@ class ComposerViewModelTest {
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
         expectSearchContacts(expectedUserId, expectedSearchTerm, expectedContacts)
+        expectObserveMessagePassword(expectedUserId, expectedMessageId)
 
         // When
         viewModel.submit(action)
@@ -668,6 +681,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
+        expectObserveMessagePassword(expectedUserId, expectedMessageId)
 
         // When
         viewModel.submit(action)
@@ -708,6 +722,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
+        expectObserveMessagePassword(expectedUserId, expectedMessageId)
 
         // Change internal state of the View Model to simulate the existence of all fields before closing the composer
         expectedViewModelInitialState(
@@ -762,6 +777,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
+        expectObserveMessagePassword(expectedUserId, expectedMessageId)
 
         // Change internal state of the View Model to simulate the existence of all fields before closing the composer
         expectedViewModelInitialState(
@@ -816,6 +832,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
+        expectObserveMessagePassword(expectedUserId, expectedMessageId)
 
         // Change internal state of the View Model to simulate the existence of all fields before closing the composer
         expectedViewModelInitialState(
@@ -851,6 +868,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
+        expectObserveMessagePassword(expectedUserId, expectedMessageId)
 
         // When
         viewModel.submit(ComposerAction.OnCloseComposer)
@@ -875,6 +893,7 @@ class ComposerViewModelTest {
         val expectedDraftBody = expectDraftBodyWithSignature()
         expectInjectAddressSignature(expectedUserId, expectedDraftBody, expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
+        expectObserveMessagePassword(expectedUserId, expectedMessageId)
 
         // Change internal state of the View Model to simulate an existing draft body before closing composer
         expectedViewModelInitialState(
@@ -923,6 +942,7 @@ class ComposerViewModelTest {
             expectObservedMessageAttachments(expectedUserId, expectedMessageId)
             expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
             expectObserveMessageSendingError(expectedUserId, expectedMessageId)
+            expectObserveMessagePassword(expectedUserId, expectedMessageId)
 
             // Change internal state of the View Model to simulate the
             // existence of all fields before closing the composer
@@ -957,6 +977,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
+        expectObserveMessagePassword(expectedUserId, expectedMessageId)
 
         // When
         val actual = viewModel.state.value
@@ -976,6 +997,7 @@ class ComposerViewModelTest {
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
+        expectObserveMessagePassword(expectedUserId, expectedMessageId)
 
         // When
         val actual = viewModel.state.value
@@ -999,6 +1021,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
+        expectObserveMessagePassword(expectedUserId, expectedMessageId)
 
         // When
         viewModel.submit(ComposerAction.ChangeSenderRequested)
@@ -1023,6 +1046,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
+        expectObserveMessagePassword(expectedUserId, expectedMessageId)
 
         // When
         viewModel.submit(ComposerAction.ChangeSenderRequested)
@@ -1047,6 +1071,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
+        expectObserveMessagePassword(expectedUserId, expectedMessageId)
 
         // When
         viewModel.submit(ComposerAction.ChangeSenderRequested)
@@ -1076,6 +1101,7 @@ class ComposerViewModelTest {
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), originalSenderEmail)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
+        expectObserveMessagePassword(expectedUserId, expectedMessageId)
 
         // When
         viewModel.submit(action)
@@ -1108,6 +1134,7 @@ class ComposerViewModelTest {
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), previousSenderEmail)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
+        expectObserveMessagePassword(expectedUserId, expectedMessageId)
 
         // When
         viewModel.submit(action)
@@ -1137,6 +1164,7 @@ class ComposerViewModelTest {
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), originalSenderEmail)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
+        expectObserveMessagePassword(expectedUserId, expectedMessageId)
 
         // When
         viewModel.submit(action)
@@ -1167,6 +1195,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
+        expectObserveMessagePassword(expectedUserId, expectedMessageId)
 
         // When
         viewModel.submit(action)
@@ -1194,6 +1223,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
+        expectObserveMessagePassword(expectedUserId, expectedMessageId)
 
         // When
         viewModel.submit(action)
@@ -1234,6 +1264,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
+        expectObserveMessagePassword(expectedUserId, expectedMessageId)
 
         // When
         viewModel.submit(action)
@@ -1271,6 +1302,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
+        expectObserveMessagePassword(expectedUserId, expectedMessageId)
 
         // When
         viewModel.submit(action)
@@ -1308,6 +1340,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
+        expectObserveMessagePassword(expectedUserId, expectedMessageId)
 
         // When
         viewModel.submit(action)
@@ -1331,6 +1364,7 @@ class ComposerViewModelTest {
         expectNoInputDraftAction()
         expectStoreParentAttachmentSucceeds(expectedUserId, expectedDraftId)
         expectObserveMessageSendingError(expectedUserId, expectedDraftId)
+        expectObserveMessagePassword(expectedUserId, expectedDraftId)
 
         // When
         val actual = viewModel.state.value
@@ -1355,6 +1389,7 @@ class ComposerViewModelTest {
             expectStoreParentAttachmentSucceeds(expectedUserId, expectedDraftId)
             expectNoInputDraftAction()
             expectObserveMessageSendingError(expectedUserId, expectedDraftId)
+            expectObserveMessagePassword(expectedUserId, expectedDraftId)
 
             // When
             val actual = viewModel.state.value
@@ -1389,6 +1424,7 @@ class ComposerViewModelTest {
         expectStoreParentAttachmentSucceeds(expectedUserId, expectedDraftId)
         expectNoInputDraftAction()
         expectObserveMessageSendingError(expectedUserId, expectedDraftId)
+        expectObserveMessagePassword(expectedUserId, expectedDraftId)
 
         // When
         val actual = viewModel.state.value
@@ -1442,6 +1478,7 @@ class ComposerViewModelTest {
                 expectedAction
             )
             expectObserveMessageSendingError(expectedUserId, expectedDraftId)
+            expectObserveMessagePassword(expectedUserId, expectedDraftId)
 
             // When
             val actual = viewModel.state.value
@@ -1473,6 +1510,7 @@ class ComposerViewModelTest {
         expectParentDraftDataError(expectedUserId, expectedParentId) { DataError.Local.DecryptionError }
         expectObservedMessageAttachments(expectedUserId, draftId)
         expectObserveMessageSendingError(expectedUserId, draftId)
+        expectObserveMessagePassword(expectedUserId, draftId)
 
         // When
         val actual = viewModel.state.value
@@ -1492,6 +1530,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedDraftId)
         expectNoInputDraftAction()
         expectObserveMessageSendingError(expectedUserId, expectedDraftId)
+        expectObserveMessagePassword(expectedUserId, expectedDraftId)
 
         // When
         val actual = viewModel.state.value
@@ -1513,6 +1552,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(userId, messageId)
         expectInjectAddressSignature(userId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(userId, messageId)
+        expectObserveMessagePassword(userId, messageId)
 
         // When
         val actual = viewModel.state.value
@@ -1535,6 +1575,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedDraftId)
         expectStoreParentAttachmentSucceeds(expectedUserId, expectedDraftId)
         expectObserveMessageSendingError(expectedUserId, expectedDraftId)
+        expectObserveMessagePassword(expectedUserId, expectedDraftId)
 
         // When
         viewModel.submit(ComposerAction.OnAddAttachments)
@@ -1557,6 +1598,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedDraftId)
         expectStoreParentAttachmentSucceeds(expectedUserId, expectedDraftId)
         expectObserveMessageSendingError(expectedUserId, expectedDraftId)
+        expectObserveMessagePassword(expectedUserId, expectedDraftId)
 
         // When
         viewModel.submit(ComposerAction.OnBottomSheetOptionSelected)
@@ -1595,6 +1637,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedDraftId)
         expectStoreParentAttachmentSucceeds(expectedUserId, expectedDraftId)
         expectObserveMessageSendingError(expectedUserId, expectedDraftId)
+        expectObserveMessagePassword(expectedUserId, expectedDraftId)
 
         // When
         viewModel.state.test {
@@ -1642,6 +1685,7 @@ class ComposerViewModelTest {
         expectAttachmentDeleteSucceeds(expectedUserId, expectedSenderEmail, messageId, expectedAttachmentId)
         expectStoreParentAttachmentSucceeds(expectedUserId, messageId)
         expectObserveMessageSendingError(expectedUserId, messageId)
+        expectObserveMessagePassword(expectedUserId, messageId)
 
         // When
         viewModel.submit(ComposerAction.RemoveAttachment(expectedAttachmentId))
@@ -1689,6 +1733,7 @@ class ComposerViewModelTest {
         expectNoInputDraftAction()
         expectStoreParentAttachmentSucceeds(expectedUserId, messageId)
         expectObserveMessageSendingError(expectedUserId, messageId)
+        expectObserveMessagePassword(expectedUserId, messageId)
 
         // When
         viewModel.submit(ComposerAction.AttachmentsAdded(listOf(uri)))
@@ -1715,6 +1760,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(userId, messageId)
         expectInjectAddressSignature(userId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(userId, messageId)
+        expectObserveMessagePassword(userId, messageId)
 
         // When
         viewModel.state // app is in foreground
@@ -1741,6 +1787,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(userId, messageId)
         expectInjectAddressSignature(userId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(userId, messageId)
+        expectObserveMessagePassword(userId, messageId)
 
         // When
         viewModel.state // app is in foreground
@@ -1752,6 +1799,28 @@ class ComposerViewModelTest {
             draftUploaderMock.startContinuousUpload(userId, messageId, DraftAction.Compose, any())
             draftUploaderMock.stopContinuousUpload()
             draftUploaderMock.startContinuousUpload(userId, messageId, DraftAction.Compose, any())
+        }
+    }
+
+    @Test
+    fun `should update state with message password info when message password changes`() = runTest {
+        // Given
+        val userId = expectedUserId { UserIdSample.Primary }
+        val messageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+        expectedPrimaryAddress(userId) { UserAddressSample.PrimaryAddress }
+        expectStartDraftSync(userId, messageId)
+        expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
+        expectObservedMessageAttachments(userId, messageId)
+        expectInjectAddressSignature(userId, expectDraftBodyWithSignature(), expectedSenderEmail)
+        expectObserveMessageSendingError(userId, messageId)
+        expectObserveMessagePassword(userId, messageId)
+
+        // When
+        viewModel.state.test {
+            // Then
+            assertTrue(awaitItem().isMessagePasswordSet)
         }
     }
 
@@ -1918,7 +1987,8 @@ class ComposerViewModelTest {
             attachmentsReEncryptionFailed = Effect.empty(),
             warning = Effect.empty(),
             replaceDraftBody = Effect.empty(),
-            isPasswordActionVisible = true
+            isPasswordActionVisible = true,
+            isMessagePasswordSet = false
         )
 
         mockkObject(ComposerDraftState.Companion)
@@ -2172,6 +2242,11 @@ class ComposerViewModelTest {
         messageId: MessageId
     ) {
         coJustRun { deleteAllAttachments(userId, senderEmail, messageId) }
+    }
+
+    private fun expectObserveMessagePassword(userId: UserId, messageId: MessageId) {
+        val messagePassword = MessagePassword(userId, messageId, "password", null)
+        coEvery { observeMessagePassword(userId, messageId) } returns flowOf(messagePassword)
     }
 
     private fun mockParticipantMapper() {

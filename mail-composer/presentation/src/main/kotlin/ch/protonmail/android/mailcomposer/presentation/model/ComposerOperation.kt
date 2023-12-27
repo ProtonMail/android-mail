@@ -22,6 +22,7 @@ import android.net.Uri
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
+import ch.protonmail.android.mailcomposer.domain.model.MessagePassword
 import ch.protonmail.android.mailcomposer.domain.model.Subject
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
@@ -61,6 +62,7 @@ sealed interface ComposerEvent : ComposerOperation {
     data class ReplaceDraftBody(val draftBody: DraftBody) : ComposerEvent
     data class OnAttachmentsUpdated(val attachments: List<MessageAttachment>) : ComposerEvent
     data class OnSendingError(val sendingError: TextUiModel) : ComposerEvent
+    data class OnMessagePasswordUpdated(val messagePassword: MessagePassword?) : ComposerEvent
     data class UpdateContactSuggestions(
         val contactSuggestions: List<ContactSuggestionUiModel>,
         val suggestionsField: ContactSuggestionsField

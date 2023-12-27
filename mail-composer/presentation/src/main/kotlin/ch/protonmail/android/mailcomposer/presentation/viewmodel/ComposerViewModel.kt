@@ -48,6 +48,7 @@ import ch.protonmail.android.mailcomposer.domain.usecase.GetDecryptedDraftFields
 import ch.protonmail.android.mailcomposer.domain.usecase.GetLocalMessageDecrypted
 import ch.protonmail.android.mailcomposer.domain.usecase.IsValidEmailAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessageAttachments
+import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessagePassword
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessageSendingError
 import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
 import ch.protonmail.android.mailcomposer.domain.usecase.ReEncryptAttachments
@@ -136,6 +137,7 @@ class ComposerViewModel @Inject constructor(
     private val deleteAllAttachments: DeleteAllAttachments,
     private val reEncryptAttachments: ReEncryptAttachments,
     private val observeMailFeature: ObserveMailFeature,
+    private val observeMessagePassword: ObserveMessagePassword,
     getDecryptedDraftFields: GetDecryptedDraftFields,
     savedStateHandle: SavedStateHandle,
     observePrimaryUserId: ObservePrimaryUserId,
@@ -183,6 +185,7 @@ class ComposerViewModel @Inject constructor(
 
         observeMessageAttachments()
         observeSendingError()
+        observeMessagePassword()
     }
 
     private fun prefillForDraftAction(draftAction: DraftAction) {
@@ -313,6 +316,13 @@ class ComposerViewModel @Inject constructor(
                     emitNewStateFor(ComposerEvent.OnSendingError(TextUiModel.Text(this)))
                 }
             }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeMessagePassword() {
+        primaryUserId
+            .flatMapLatest { userId -> observeMessagePassword(userId, currentMessageId()) }
+            .onEach { emitNewStateFor(ComposerEvent.OnMessagePasswordUpdated(it)) }
             .launchIn(viewModelScope)
     }
 

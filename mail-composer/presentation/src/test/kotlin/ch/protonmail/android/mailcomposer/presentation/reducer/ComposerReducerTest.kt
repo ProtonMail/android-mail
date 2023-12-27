@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
+import ch.protonmail.android.mailcomposer.domain.model.MessagePassword
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsBcc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsCc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsTo
@@ -54,6 +55,7 @@ import ch.protonmail.android.mailmessage.presentation.mapper.AttachmentUiModelMa
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
 import ch.protonmail.android.mailmessage.presentation.model.NO_ATTACHMENT_LIMIT
 import ch.protonmail.android.mailmessage.presentation.sample.AttachmentUiModelSample
+import ch.protonmail.android.testdata.user.UserIdTestData
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -678,6 +680,22 @@ class ComposerReducerTest(
             )
         )
 
+        private val EmptyToOnMessagePasswordUpdated = TestTransition(
+            name = "Should update state with info whether a message password is set",
+            currentState = ComposerDraftState.initial(messageId),
+            operation = ComposerEvent.OnMessagePasswordUpdated(
+                MessagePassword(
+                    UserIdTestData.userId,
+                    messageId,
+                    "password",
+                    null
+                )
+            ),
+            expectedState = ComposerDraftState.initial(messageId).copy(
+                isMessagePasswordSet = true
+            )
+        )
+
         private val transitions = listOf(
             EmptyToSubmittableToField,
             EmptyToNotSubmittableToField,
@@ -722,7 +740,8 @@ class ComposerReducerTest(
             EmptyToAttachmentFileExceeded,
             EmptyToAttachmentReEncryptionFailed,
             EmptyToOnSendingError,
-            EmptyToUpdateContactSuggestions
+            EmptyToUpdateContactSuggestions,
+            EmptyToOnMessagePasswordUpdated
         )
 
         private fun aSubmittableState(
@@ -765,7 +784,8 @@ class ComposerReducerTest(
             attachmentsReEncryptionFailed = attachmentReEncryptionFailed,
             warning = warning,
             isPasswordActionVisible = false,
-            replaceDraftBody = Effect.empty()
+            replaceDraftBody = Effect.empty(),
+            isMessagePasswordSet = false
         )
 
         private fun aNotSubmittableState(
@@ -815,7 +835,8 @@ class ComposerReducerTest(
             warning = warning,
             isPasswordActionVisible = false,
             replaceDraftBody = replaceDraftBody,
-            areContactSuggestionsExpanded = areContactSuggestionsExpanded
+            areContactSuggestionsExpanded = areContactSuggestionsExpanded,
+            isMessagePasswordSet = false
         )
 
         private fun aPositiveRandomInt(bound: Int = 10) = Random().nextInt(bound)

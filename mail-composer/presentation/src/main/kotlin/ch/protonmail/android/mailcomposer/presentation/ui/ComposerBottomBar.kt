@@ -18,11 +18,16 @@
 
 package ch.protonmail.android.mailcomposer.presentation.ui
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -31,6 +36,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
+import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -40,6 +47,7 @@ import me.proton.core.compose.theme.ProtonTheme
 @Composable
 fun ComposerBottomBar(
     draftId: MessageId,
+    isMessagePasswordSet: Boolean,
     onSetMessagePasswordClick: (MessageId) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -52,15 +60,54 @@ fun ComposerBottomBar(
                 .padding(horizontal = ProtonDimens.ExtraSmallSpacing),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            IconButton(
-                onClick = { onSetMessagePasswordClick(draftId) }
+            AddPasswordButton(draftId, isMessagePasswordSet, onSetMessagePasswordClick)
+        }
+    }
+}
+
+@Composable
+fun AddPasswordButton(
+    draftId: MessageId,
+    isMessagePasswordSet: Boolean,
+    onSetMessagePasswordClick: (MessageId) -> Unit
+) {
+    Box {
+        IconButton(
+            onClick = { onSetMessagePasswordClick(draftId) }
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_proton_lock),
+                contentDescription = stringResource(id = R.string.composer_button_add_password),
+                tint = ProtonTheme.colors.iconNorm
+            )
+        }
+        if (isMessagePasswordSet) {
+            Box(
+                modifier = Modifier
+                    .size(MailDimens.ExtraLargeSpacing)
+                    .padding(bottom = ProtonDimens.SmallSpacing, end = ProtonDimens.ExtraSmallSpacing),
+                contentAlignment = Alignment.BottomEnd
             ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_proton_lock),
-                    contentDescription = stringResource(id = R.string.composer_button_add_password),
-                    tint = ProtonTheme.colors.iconNorm
-                )
+                AddPasswordCheckmark()
             }
         }
+    }
+}
+
+@Composable
+fun AddPasswordCheckmark(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .size(ProtonDimens.SmallIconSize)
+            .background(ProtonTheme.colors.interactionNorm, CircleShape)
+            .border(Dp.Hairline, ProtonTheme.colors.backgroundNorm, CircleShape)
+            .padding(ProtonDimens.ExtraSmallSpacing),
+        contentAlignment = Alignment.Center
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_proton_checkmark),
+            contentDescription = NO_CONTENT_DESCRIPTION,
+            tint = ProtonTheme.colors.iconInverted
+        )
     }
 }
