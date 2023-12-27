@@ -39,6 +39,9 @@ sealed class MailLabelId(
         object Drafts : System(SystemLabelId.Drafts)
         object Outbox : System(SystemLabelId.Outbox)
         object Starred : System(SystemLabelId.Starred)
+        object AllScheduled : System(SystemLabelId.AllScheduled)
+        object AlmostAllMail : System(SystemLabelId.AlmostAllMail)
+        object Snoozed : System(SystemLabelId.Snoozed)
 
         fun toMailLabel() = MailLabel.System(id = this)
     }

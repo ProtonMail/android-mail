@@ -20,12 +20,15 @@ package ch.protonmail.android.maillabel.domain.model
 
 import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.AllDrafts
 import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.AllMail
+import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.AllScheduled
 import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.AllSent
+import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.AlmostAllMail
 import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.Archive
 import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.Drafts
 import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.Inbox
 import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.Outbox
 import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.Sent
+import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.Snoozed
 import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.Spam
 import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.Starred
 import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.Trash
@@ -49,29 +52,38 @@ enum class SystemLabelId(val labelId: LabelId) {
      */
     AllSent(LabelId("2")),
 
-    /** Displayed. */
+    /* Displayed. */
     Trash(LabelId("3")),
 
-    /** Displayed. */
+    /* Displayed. */
     Spam(LabelId("4")),
 
-    /** Displayed. */
+    /* Displayed. */
     AllMail(LabelId("5")),
 
-    /** Displayed. */
+    /* Displayed. */
     Archive(LabelId("6")),
 
-    /** Displayed. */
+    /* Displayed. */
     Sent(LabelId("7")),
 
-    /** Displayed. */
+    /* Displayed. */
     Drafts(LabelId("8")),
 
-    /** Displayed. */
+    /* Displayed. */
     Outbox(LabelId("9")),
 
-    /** Displayed. */
-    Starred(LabelId("10"));
+    /* Displayed. */
+    Starred(LabelId("10")),
+
+    /* Not Displayed. */
+    AllScheduled(LabelId("12")),
+
+    /* Not Displayed. */
+    AlmostAllMail(LabelId("15")),
+
+    /* Not Displayed. */
+    Snoozed(LabelId("16"));
 
     companion object {
 
@@ -88,6 +100,7 @@ enum class SystemLabelId(val labelId: LabelId) {
     }
 }
 
+@Suppress("ComplexMethod")
 fun SystemLabelId.toMailLabelSystem(): MailLabel.System = when (this) {
     SystemLabelId.Inbox -> MailLabel.System(Inbox)
     SystemLabelId.AllDrafts -> MailLabel.System(AllDrafts)
@@ -100,4 +113,9 @@ fun SystemLabelId.toMailLabelSystem(): MailLabel.System = when (this) {
     SystemLabelId.Drafts -> MailLabel.System(Drafts)
     SystemLabelId.Outbox -> MailLabel.System(Outbox)
     SystemLabelId.Starred -> MailLabel.System(Starred)
+    SystemLabelId.AllScheduled -> MailLabel.System(AllScheduled)
+    SystemLabelId.AlmostAllMail -> MailLabel.System(AlmostAllMail)
+    SystemLabelId.Snoozed -> MailLabel.System(Snoozed)
 }
+
+fun LabelId.isReservedSystemLabelId() = id in SystemLabelId.values().map { it.labelId.id }
