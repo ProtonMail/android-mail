@@ -22,6 +22,7 @@ import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.mapper.mapToEither
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maillabel.domain.model.MailLabel
+import ch.protonmail.android.maillabel.domain.model.isReservedSystemLabelId
 import ch.protonmail.android.maillabel.domain.model.toMailLabelCustom
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapLatest
@@ -38,8 +39,10 @@ class ObserveCustomMailLabels @Inject constructor(
         labelRepository.observeLabels(userId, LabelType.MessageLabel)
             .mapToEither()
             .mapLatest { labelList ->
-                labelList
-                    .map { labels -> labels.sortedBy { it.order } }
+                labelList.map { labels ->
+                    labels.filter { !it.labelId.isReservedSystemLabelId() }
+                        .sortedBy { it.order }
+                }
                     .map { it.toMailLabelCustom() }
             }
 }
