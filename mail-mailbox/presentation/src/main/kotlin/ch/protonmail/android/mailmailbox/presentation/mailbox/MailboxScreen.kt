@@ -186,6 +186,8 @@ fun MailboxScreen(
                 viewModel.submit(MailboxViewAction.SwipeStarAction(userId, itemId, isStarred))
             },
             onEnterSearchMode = { viewModel.submit(MailboxViewAction.EnterSearchMode) },
+            onSearchQuery = { query -> viewModel.submit(MailboxViewAction.SearchQuery(query)) },
+            onSearchResult = { viewModel.submit(MailboxViewAction.SearchResult) },
             onExitSearchMode = { viewModel.submit(MailboxViewAction.ExitSearchMode) }
         )
 
@@ -296,7 +298,7 @@ fun MailboxScreen(
                         onExitSearchMode = { actions.onExitSearchMode() },
                         onTitleClick = { scope.launch { lazyListState.animateScrollToItem(0) } },
                         onEnterSearchMode = { actions.onEnterSearchMode() },
-                        onSearch = { actions.showFeatureMissingSnackbar() },
+                        onSearch = { query -> actions.onSearchQuery(query) },
                         onOpenComposer = { actions.navigateToComposer() }
                     )
                 )
@@ -437,6 +439,16 @@ private fun MailboxSwipeRefresh(
         else items.mapToUiStates(refreshRequested)
     }
     lastViewState = currentViewState
+
+    if (searchMode.isInSearch()) {
+        LaunchedEffect(currentViewState) {
+            if (searchMode == MailboxSearchMode.NewSearchLoading &&
+                currentViewState !is MailboxScreenState.SearchLoading
+            ) {
+                actions.onSearchResult()
+            }
+        }
+    }
 
     val refreshing = currentViewState is MailboxScreenState.LoadingWithData ||
         currentViewState is MailboxScreenState.SearchLoadingWithData
@@ -787,6 +799,8 @@ object MailboxScreen {
         val onSwipeTrash: (UserId, String) -> Unit,
         val onSwipeStar: (UserId, String, Boolean) -> Unit,
         val onEnterSearchMode: () -> Unit,
+        val onSearchQuery: (String) -> Unit,
+        val onSearchResult: () -> Unit,
         val onExitSearchMode: () -> Unit
     ) {
 
@@ -827,7 +841,9 @@ object MailboxScreen {
                 onSwipeTrash = { _, _ -> },
                 onSwipeStar = { _, _, _ -> },
                 onExitSearchMode = {},
-                onEnterSearchMode = {}
+                onEnterSearchMode = {},
+                onSearchQuery = {},
+                onSearchResult = {}
             )
         }
     }
