@@ -60,6 +60,8 @@ internal sealed interface MailboxViewAction : MailboxOperation {
     ) : MailboxViewAction
 
     object EnterSearchMode : MailboxViewAction, AffectingTopAppBar, AffectingMailboxList
+    data class SearchQuery(val query: String) : MailboxViewAction, AffectingMailboxList
+    object SearchResult : MailboxViewAction, AffectingMailboxList
     object ExitSearchMode : MailboxViewAction, AffectingTopAppBar, AffectingMailboxList
 
     object ExitSelectionMode : MailboxViewAction, AffectingTopAppBar, AffectingMailboxList, AffectingBottomAppBar
