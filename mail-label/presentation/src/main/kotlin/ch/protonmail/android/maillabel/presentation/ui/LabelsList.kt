@@ -58,7 +58,7 @@ fun LabelsList(
     SubcomposeLayout(modifier = modifier.wrapContentSize()) { constraints ->
 
         val labelsMeasurables = labels.map { label ->
-            label to subcompose(label.name) {
+            label to subcompose(label.id) {
                 Label(label = label)
             }.single()
         }
@@ -239,7 +239,8 @@ object MailboxItemLabels {
     internal const val MinExpandedLabelLength = DummyMinExpandedLabelText.length
     internal val DummyMinExpandedLabel = LabelUiModel(
         name = DummyMinExpandedLabelText,
-        color = Color.Unspecified
+        color = Color.Unspecified,
+        id = "dummyLabel"
     )
 }
 
