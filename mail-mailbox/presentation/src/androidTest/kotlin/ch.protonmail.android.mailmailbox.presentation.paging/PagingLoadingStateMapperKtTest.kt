@@ -45,7 +45,7 @@ class PagingLoadingStateMapperKtTest {
             every { itemCount } returns 0
             every { loadState.source.refresh } returns LoadState.Loading
         }
-        assertEquals(MailboxScreenState.Loading, items.mapToUiStates())
+        assertEquals(MailboxScreenState.Loading, items.mapToUiStates(false))
     }
 
     @Test
@@ -56,7 +56,7 @@ class PagingLoadingStateMapperKtTest {
             every { loadState.source.refresh } returns LoadState.NotLoading(false)
             every { loadState.mediator!!.refresh } returns LoadState.Loading
         }
-        assertEquals(MailboxScreenState.Loading, items.mapToUiStates())
+        assertEquals(MailboxScreenState.Loading, items.mapToUiStates(false))
     }
 
     @Test
@@ -65,7 +65,7 @@ class PagingLoadingStateMapperKtTest {
             every { itemCount } returns 10
             every { loadState.source.refresh } returns LoadState.Loading
         }
-        assertEquals(MailboxScreenState.LoadingWithData, items.mapToUiStates())
+        assertEquals(MailboxScreenState.LoadingWithData, items.mapToUiStates(false))
     }
 
     @Test
@@ -76,7 +76,7 @@ class PagingLoadingStateMapperKtTest {
             every { loadState.mediator } returns mockk(relaxed = true)
             every { loadState.mediator!!.refresh } returns LoadState.Loading
         }
-        assertEquals(MailboxScreenState.LoadingWithData, items.mapToUiStates())
+        assertEquals(MailboxScreenState.LoadingWithData, items.mapToUiStates(false))
     }
 
     @Test
@@ -88,7 +88,7 @@ class PagingLoadingStateMapperKtTest {
             every { loadState.mediator } returns mockk(relaxed = true)
             every { loadState.append } returns LoadState.NotLoading(false)
         }
-        assertEquals(MailboxScreenState.UnexpectedError, items.mapToUiStates())
+        assertEquals(MailboxScreenState.UnexpectedError, items.mapToUiStates(false))
     }
 
     @Test
@@ -102,7 +102,7 @@ class PagingLoadingStateMapperKtTest {
             every { loadState.mediator } returns mockk(relaxed = true)
             every { loadState.append } returns LoadState.NotLoading(false)
         }
-        assertEquals(MailboxScreenState.Error, items.mapToUiStates())
+        assertEquals(MailboxScreenState.Error, items.mapToUiStates(false))
     }
 
     @Test
@@ -116,7 +116,7 @@ class PagingLoadingStateMapperKtTest {
             every { loadState.mediator } returns mockk(relaxed = true)
             every { loadState.append } returns LoadState.NotLoading(false)
         }
-        assertEquals(MailboxScreenState.Offline, items.mapToUiStates())
+        assertEquals(MailboxScreenState.Offline, items.mapToUiStates(false))
     }
 
     @Test
@@ -130,7 +130,7 @@ class PagingLoadingStateMapperKtTest {
             every { loadState.mediator } returns mockk(relaxed = true)
             every { loadState.append } returns LoadState.NotLoading(false)
         }
-        assertEquals(MailboxScreenState.ErrorWithData, items.mapToUiStates())
+        assertEquals(MailboxScreenState.ErrorWithData, items.mapToUiStates(false))
     }
 
     @Test
@@ -144,7 +144,7 @@ class PagingLoadingStateMapperKtTest {
             every { loadState.mediator } returns mockk(relaxed = true)
             every { loadState.append } returns LoadState.NotLoading(false)
         }
-        assertEquals(MailboxScreenState.OfflineWithData, items.mapToUiStates())
+        assertEquals(MailboxScreenState.OfflineWithData, items.mapToUiStates(false))
     }
 
     @Test
@@ -157,7 +157,7 @@ class PagingLoadingStateMapperKtTest {
             every { loadState.append } returns LoadState.NotLoading(false)
             every { loadState.prepend } returns LoadState.NotLoading(false)
         }
-        assertEquals(MailboxScreenState.Empty, items.mapToUiStates())
+        assertEquals(MailboxScreenState.Empty, items.mapToUiStates(false))
     }
 
     @Test
@@ -170,7 +170,7 @@ class PagingLoadingStateMapperKtTest {
             every { loadState.append } returns LoadState.NotLoading(false)
             every { loadState.prepend } returns LoadState.NotLoading(false)
         }
-        assertEquals(MailboxScreenState.Data(items), items.mapToUiStates())
+        assertEquals(MailboxScreenState.Data(items), items.mapToUiStates(false))
     }
 
     @Test
@@ -182,7 +182,7 @@ class PagingLoadingStateMapperKtTest {
             every { loadState.mediator } returns mockk(relaxed = true)
             every { loadState.append } returns LoadState.Loading
         }
-        assertEquals(MailboxScreenState.AppendLoading, items.mapToUiStates())
+        assertEquals(MailboxScreenState.AppendLoading, items.mapToUiStates(false))
     }
 
     @Test
@@ -194,7 +194,7 @@ class PagingLoadingStateMapperKtTest {
             every { loadState.mediator } returns mockk(relaxed = true)
             every { loadState.append } returns LoadState.Error(Exception("Not a known DataErrorException"))
         }
-        assertEquals(MailboxScreenState.UnexpectedError, items.mapToUiStates())
+        assertEquals(MailboxScreenState.UnexpectedError, items.mapToUiStates(false))
     }
 
     @Test
@@ -208,7 +208,7 @@ class PagingLoadingStateMapperKtTest {
                 DataErrorException(DataError.Remote.Http(NetworkError.ServerError))
             )
         }
-        assertEquals(MailboxScreenState.AppendError, items.mapToUiStates())
+        assertEquals(MailboxScreenState.AppendError, items.mapToUiStates(false))
     }
 
     @Test
@@ -222,6 +222,6 @@ class PagingLoadingStateMapperKtTest {
                 DataErrorException(DataError.Remote.Http(NetworkError.NoNetwork))
             )
         }
-        assertEquals(MailboxScreenState.AppendOfflineError, items.mapToUiStates())
+        assertEquals(MailboxScreenState.AppendOfflineError, items.mapToUiStates(false))
     }
 }

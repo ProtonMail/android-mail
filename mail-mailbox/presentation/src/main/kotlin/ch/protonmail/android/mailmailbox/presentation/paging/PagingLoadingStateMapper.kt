@@ -54,7 +54,7 @@ fun LazyPagingItems<MailboxItemUiModel>.mapToUiStates(refreshRequested: Boolean)
     }
 }
 
-private fun appendErrorToUiState(pagingItems: LazyPagingItems<MailboxItemUiModel>): MailboxScreenState {
+fun appendErrorToUiState(pagingItems: LazyPagingItems<MailboxItemUiModel>): MailboxScreenState {
     val exception = (pagingItems.loadState.append as? LoadState.Error)?.error
     if (exception !is DataErrorException) {
         return MailboxScreenState.UnexpectedError
@@ -66,7 +66,7 @@ private fun appendErrorToUiState(pagingItems: LazyPagingItems<MailboxItemUiModel
     }
 }
 
-private fun refreshErrorToUiState(pagingItems: LazyPagingItems<MailboxItemUiModel>): MailboxScreenState {
+fun refreshErrorToUiState(pagingItems: LazyPagingItems<MailboxItemUiModel>): MailboxScreenState {
     val exception = (pagingItems.loadState.refresh as? LoadState.Error)?.error
     if (exception !is DataErrorException) {
         return MailboxScreenState.UnexpectedError
@@ -87,6 +87,7 @@ private fun refreshErrorToUiState(pagingItems: LazyPagingItems<MailboxItemUiMode
     }
 }
 
+
 // General Loading State (When there is data)
 private fun LazyPagingItems<MailboxItemUiModel>.isPageLoadingWithData(): Boolean =
     this.loadState.isLoading() && this.itemCount > 0
@@ -97,15 +98,17 @@ private fun LazyPagingItems<MailboxItemUiModel>.isPageLoadingNoData(): Boolean =
 
 private fun LazyPagingItems<MailboxItemUiModel>.isPageAppendLoading(): Boolean = this.loadState.isAppendLoading()
 
-private fun LazyPagingItems<MailboxItemUiModel>.isPageAppendFailed(): Boolean = this.loadState.append is LoadState.Error
+fun LazyPagingItems<MailboxItemUiModel>.isPageAppendFailed(): Boolean = this.loadState.append is LoadState.Error
 
-private fun LazyPagingItems<MailboxItemUiModel>.isPageRefreshFailed(): Boolean =
-    this.loadState.refresh is LoadState.Error
+fun LazyPagingItems<MailboxItemUiModel>.isPageRefreshFailed(): Boolean = this.loadState.refresh is LoadState.Error
 
-private fun LazyPagingItems<MailboxItemUiModel>.isPageEmpty(): Boolean = this.itemCount == 0
+fun LazyPagingItems<MailboxItemUiModel>.isPageEmpty(): Boolean = this.itemCount == 0
+
+fun LazyPagingItems<MailboxItemUiModel>.isPageInError(): Boolean = isPageRefreshFailed() || isPageAppendFailed()
+
 
 // Mediator or Source is Loading
 private fun CombinedLoadStates.isLoading() = this.isSourceLoading() || this.isMediatorLoading()
-private fun CombinedLoadStates.isSourceLoading() = this.source.refresh is LoadState.Loading
-private fun CombinedLoadStates.isMediatorLoading() = this.mediator?.refresh is LoadState.Loading
+fun CombinedLoadStates.isSourceLoading() = this.source.refresh is LoadState.Loading
+fun CombinedLoadStates.isMediatorLoading() = this.mediator?.refresh is LoadState.Loading
 private fun CombinedLoadStates.isAppendLoading() = this.append is LoadState.Loading
