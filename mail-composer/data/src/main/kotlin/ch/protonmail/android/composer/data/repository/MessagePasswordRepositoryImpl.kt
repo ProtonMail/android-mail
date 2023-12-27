@@ -21,6 +21,9 @@ package ch.protonmail.android.composer.data.repository
 import ch.protonmail.android.composer.data.local.MessagePasswordLocalDataSource
 import ch.protonmail.android.mailcomposer.domain.model.MessagePassword
 import ch.protonmail.android.mailcomposer.domain.repository.MessagePasswordRepository
+import ch.protonmail.android.mailmessage.domain.model.MessageId
+import kotlinx.coroutines.flow.Flow
+import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 class MessagePasswordRepositoryImpl @Inject constructor(
@@ -29,4 +32,7 @@ class MessagePasswordRepositoryImpl @Inject constructor(
 
     override suspend fun saveMessagePassword(messagePassword: MessagePassword) =
         messagePasswordLocalDataSource.save(messagePassword)
+
+    override suspend fun observeMessagePassword(userId: UserId, messageId: MessageId): Flow<MessagePassword?> =
+        messagePasswordLocalDataSource.observe(userId, messageId)
 }

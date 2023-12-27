@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.composer.data.repository
 
+import app.cash.turbine.test
 import arrow.core.right
 import ch.protonmail.android.composer.data.local.MessagePasswordLocalDataSource
 import ch.protonmail.android.mailcomposer.domain.model.MessagePassword
@@ -26,6 +27,7 @@ import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -55,5 +57,24 @@ class MessagePasswordRepositoryImplTest {
             messagePasswordLocalDataSource.save(messagePassword)
         }
         assertEquals(Unit.right(), actual)
+    }
+
+    @Test
+    fun `should call method from local data source when observing message password`() = runTest {
+        // Given
+        val password = "password"
+        val hint = "hint"
+        val messagePassword = MessagePassword(userId, messageId, password, hint)
+        coEvery { messagePasswordLocalDataSource.observe(userId, messageId) } returns flowOf(messagePassword)
+
+        // When
+        messagePasswordRepository.observeMessagePassword(userId, messageId).test {
+            // Then
+            coVerify {
+                messagePasswordLocalDataSource.observe(userId, messageId)
+            }
+            assertEquals(messagePassword, awaitItem())
+            awaitComplete()
+        }
     }
 }

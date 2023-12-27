@@ -46,6 +46,8 @@ data class MessagePasswordEntity(
     val messageId: MessageId,
     val password: String,
     val passwordHint: String?
-)
+) {
+    fun toDomainModel() = MessagePassword(userId, messageId, password, passwordHint)
+}
 
 fun MessagePassword.toEntity() = MessagePasswordEntity(userId, messageId, password, passwordHint)

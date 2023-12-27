@@ -16,34 +16,32 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.composer.data.local
+package ch.protonmail.android.mailcomposer.domain.usecase
 
-import arrow.core.Either
-import ch.protonmail.android.composer.data.local.entity.toEntity
-import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcomposer.domain.model.MessagePassword
+import ch.protonmail.android.mailcomposer.domain.repository.MessagePasswordRepository
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapLatest
+import me.proton.core.crypto.common.keystore.KeyStoreCrypto
 import me.proton.core.domain.entity.UserId
-import timber.log.Timber
 import javax.inject.Inject
 
-class MessagePasswordLocalDataSourceImpl @Inject constructor(
-    database: DraftStateDatabase
-) : MessagePasswordLocalDataSource {
+class ObserveMessagePassword @Inject constructor(
+    private val keyStoreCrypto: KeyStoreCrypto,
+    private val messagePasswordRepository: MessagePasswordRepository
+) {
 
-    private val messagePasswordDao = database.messagePasswordDao()
+    suspend operator fun invoke(userId: UserId, messageId: MessageId): Flow<MessagePassword?> {
+        return messagePasswordRepository.observeMessagePassword(userId, messageId).mapLatest { messagePassword ->
+            if (messagePassword == null) return@mapLatest null
 
-    override suspend fun save(messagePassword: MessagePassword): Either<DataError.Local, Unit> {
-        return Either.catch {
-            messagePasswordDao.insertOrUpdate(messagePassword.toEntity())
-        }.mapLeft {
-            Timber.e("Unexpected error writing message password to DB.", it)
-            DataError.Local.Unknown
+            return@mapLatest runCatching {
+                keyStoreCrypto.decrypt(messagePassword.password)
+            }.fold(
+                onSuccess = { it },
+                onFailure = { null }
+            )?.let { messagePassword.copy(password = it) }
         }
     }
-
-    override suspend fun observe(userId: UserId, messageId: MessageId): Flow<MessagePassword?> =
-        messagePasswordDao.observe(userId, messageId).mapLatest { it?.toDomainModel() }
 }

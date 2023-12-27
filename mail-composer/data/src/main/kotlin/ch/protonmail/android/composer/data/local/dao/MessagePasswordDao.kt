@@ -36,5 +36,5 @@ abstract class MessagePasswordDao : BaseDao<MessagePasswordEntity>() {
             AND messageId = :messageId
         """
     )
-    abstract fun observe(userId: UserId, messageId: MessageId): Flow<MessagePasswordEntity>
+    abstract fun observe(userId: UserId, messageId: MessageId): Flow<MessagePasswordEntity?>
 }

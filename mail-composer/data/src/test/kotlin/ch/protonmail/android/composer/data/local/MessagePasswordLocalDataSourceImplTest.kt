@@ -19,6 +19,7 @@
 package ch.protonmail.android.composer.data.local
 
 import java.io.IOException
+import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.composer.data.local.dao.MessagePasswordDao
@@ -32,9 +33,11 @@ import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.runs
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNull
 
 class MessagePasswordLocalDataSourceImplTest {
 
@@ -76,5 +79,34 @@ class MessagePasswordLocalDataSourceImplTest {
 
         // Then
         assertEquals(DataError.Local.Unknown.left(), actual)
+    }
+
+    @Test
+    fun `should return message password when observing and password exists`() = runTest {
+        // Given
+        val password = "password"
+        val hint = "hint"
+        val messagePassword = MessagePassword(userId, messageId, password, hint)
+        coEvery { messagePasswordDao.observe(userId, messageId) } returns flowOf(messagePassword.toEntity())
+
+        // When
+        messagePasswordLocalDataSource.observe(userId, messageId).test {
+            // Then
+            assertEquals(messagePassword, awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `should return null when observing and password does not exist`() = runTest {
+        // Given
+        coEvery { messagePasswordDao.observe(userId, messageId) } returns flowOf(null)
+
+        // When
+        messagePasswordLocalDataSource.observe(userId, messageId).test {
+            // Then
+            assertNull(awaitItem())
+            awaitComplete()
+        }
     }
 }
