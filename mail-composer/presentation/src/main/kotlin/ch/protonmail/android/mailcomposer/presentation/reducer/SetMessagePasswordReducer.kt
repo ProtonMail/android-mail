@@ -46,6 +46,7 @@ class SetMessagePasswordReducer @Inject constructor() {
     ): SetMessagePasswordState = SetMessagePasswordState.Data(
         messagePassword = event.messagePassword?.password ?: EMPTY_STRING,
         messagePasswordHint = event.messagePassword?.passwordHint ?: EMPTY_STRING,
+        shouldShowEditingButtons = event.messagePassword != null,
         exitScreen = Effect.empty()
     )
 }

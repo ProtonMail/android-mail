@@ -79,7 +79,12 @@ class SetMessagePasswordViewModelTest {
         // When
         setMessagePasswordViewModel.state.test {
             // Then
-            val expected = SetMessagePasswordState.Data(EMPTY_STRING, EMPTY_STRING, Effect.empty())
+            val expected = SetMessagePasswordState.Data(
+                messagePassword = EMPTY_STRING,
+                messagePasswordHint = EMPTY_STRING,
+                shouldShowEditingButtons = false,
+                exitScreen = Effect.empty()
+            )
             assertEquals(expected, awaitItem())
         }
     }
@@ -95,7 +100,12 @@ class SetMessagePasswordViewModelTest {
         // When
         setMessagePasswordViewModel.state.test {
             // Then
-            val expected = SetMessagePasswordState.Data(password, passwordHint, Effect.empty())
+            val expected = SetMessagePasswordState.Data(
+                messagePassword = password,
+                messagePasswordHint = passwordHint,
+                shouldShowEditingButtons = true,
+                exitScreen = Effect.empty()
+            )
             assertEquals(expected, awaitItem())
         }
     }

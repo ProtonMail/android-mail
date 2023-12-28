@@ -24,6 +24,7 @@ import ch.protonmail.android.mailcomposer.presentation.model.MessagePasswordOper
 import ch.protonmail.android.mailcomposer.presentation.model.SetMessagePasswordState
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.testdata.user.UserIdTestData
+import me.proton.core.util.kotlin.EMPTY_STRING
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -57,13 +58,28 @@ class SetMessagePasswordReducerTest(
                 expectedState = SetMessagePasswordState.Data(
                     messagePassword = Password,
                     messagePasswordHint = Hint,
+                    shouldShowEditingButtons = true,
                     exitScreen = Effect.empty()
                 )
             ),
             TestInput(
-                currentState = SetMessagePasswordState.Data(Password, Hint, Effect.empty()),
+                currentState = SetMessagePasswordState.Loading,
+                operation = MessagePasswordOperation.Event.InitializeScreen(null),
+                expectedState = SetMessagePasswordState.Data(
+                    messagePassword = EMPTY_STRING,
+                    messagePasswordHint = EMPTY_STRING,
+                    shouldShowEditingButtons = false,
+                    exitScreen = Effect.empty()
+                )
+            ),
+            TestInput(
+                currentState = SetMessagePasswordState.Data(
+                    Password, Hint, shouldShowEditingButtons = true, exitScreen = Effect.empty()
+                ),
                 operation = MessagePasswordOperation.Event.ExitScreen,
-                expectedState = SetMessagePasswordState.Data(Password, Hint, Effect.of(Unit))
+                expectedState = SetMessagePasswordState.Data(
+                    Password, Hint, shouldShowEditingButtons = true, exitScreen = Effect.of(Unit)
+                )
             )
         )
 

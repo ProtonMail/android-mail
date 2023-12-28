@@ -53,6 +53,7 @@ import ch.protonmail.android.mailcomposer.presentation.ui.SetMessagePasswordScre
 import ch.protonmail.android.mailcomposer.presentation.ui.SetMessagePasswordScreen.MIN_PASSWORD_LENGTH
 import ch.protonmail.android.mailcomposer.presentation.viewmodel.SetMessagePasswordViewModel
 import me.proton.core.compose.component.ProtonCenteredProgress
+import me.proton.core.compose.component.ProtonOutlinedButton
 import me.proton.core.compose.component.ProtonSolidButton
 import me.proton.core.compose.component.appbar.ProtonTopAppBar
 import me.proton.core.compose.flow.rememberAsState
@@ -62,6 +63,7 @@ import me.proton.core.compose.theme.defaultInverted
 import me.proton.core.compose.theme.defaultSmallUnspecified
 import me.proton.core.compose.theme.defaultSmallWeak
 import me.proton.core.compose.theme.defaultStrongNorm
+import me.proton.core.compose.theme.defaultUnspecified
 
 @Composable
 fun SetMessagePasswordScreen(
@@ -195,18 +197,11 @@ fun SetMessagePasswordContent(
             onFocusChanged = {}
         )
         MessagePasswordSpacer(height = ProtonDimens.LargerSpacing)
-        ProtonSolidButton(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(ProtonDimens.DefaultButtonMinHeight),
-            enabled = isApplyButtonEnabled(),
-            onClick = { onApplyButtonClick(messagePassword, messagePasswordHint) }
-        ) {
-            Text(
-                text = stringResource(id = R.string.set_message_password_button_apply),
-                style = ProtonTheme.typography.defaultInverted
-            )
-        }
+        MessagePasswordButtons(
+            shouldShowEditingButtons = state.shouldShowEditingButtons,
+            isApplyButtonEnabled = isApplyButtonEnabled(),
+            onApplyButtonClick = { onApplyButtonClick(messagePassword, messagePasswordHint) }
+        )
     }
 }
 
@@ -228,6 +223,45 @@ fun MessagePasswordInfo(modifier: Modifier = Modifier) {
                 textResource = R.string.set_message_password_info_link,
                 textStyle = ProtonTheme.typography.defaultSmallUnspecified,
                 linkTextColor = ProtonTheme.colors.interactionNorm
+            )
+        }
+    }
+}
+
+@Composable
+fun MessagePasswordButtons(
+    shouldShowEditingButtons: Boolean,
+    isApplyButtonEnabled: Boolean,
+    onApplyButtonClick: () -> Unit
+) {
+    ProtonSolidButton(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(ProtonDimens.DefaultButtonMinHeight),
+        enabled = isApplyButtonEnabled,
+        onClick = onApplyButtonClick
+    ) {
+        Text(
+            text = stringResource(
+                id = if (shouldShowEditingButtons) {
+                    R.string.set_message_password_button_save_changes
+                } else R.string.set_message_password_button_apply
+            ),
+            style = ProtonTheme.typography.defaultInverted
+        )
+    }
+    if (shouldShowEditingButtons) {
+        MessagePasswordSpacer(height = ProtonDimens.DefaultSpacing)
+        ProtonOutlinedButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(ProtonDimens.DefaultButtonMinHeight),
+            onClick = {}
+        ) {
+            Text(
+                text = stringResource(id = R.string.set_message_password_button_remove_password),
+                style = ProtonTheme.typography.defaultUnspecified,
+                color = ProtonTheme.colors.interactionNorm
             )
         }
     }
