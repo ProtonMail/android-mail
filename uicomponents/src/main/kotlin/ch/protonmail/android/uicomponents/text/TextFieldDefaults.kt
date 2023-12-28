@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.presentation.mailbox
+package ch.protonmail.android.uicomponents.text
 
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
@@ -25,7 +25,7 @@ import androidx.compose.ui.graphics.Color
 import me.proton.core.compose.theme.ProtonTheme
 
 @Composable
-internal fun TextFieldDefaults.composerTextFieldColors(): TextFieldColors = colors(
+fun TextFieldDefaults.defaultTextFieldColors(): TextFieldColors = colors(
     focusedTextColor = ProtonTheme.colors.textNorm,
     focusedContainerColor = ProtonTheme.colors.backgroundNorm,
     unfocusedContainerColor = ProtonTheme.colors.backgroundNorm,

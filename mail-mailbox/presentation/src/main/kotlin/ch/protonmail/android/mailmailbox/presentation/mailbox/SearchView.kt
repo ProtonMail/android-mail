@@ -54,6 +54,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.mailcommon.presentation.compose.keyboardVisibilityAsState
 import ch.protonmail.android.mailmailbox.presentation.R
+import ch.protonmail.android.uicomponents.text.defaultTextFieldColors
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultNorm
 
@@ -95,7 +96,7 @@ internal fun SearchView(
                     }
                 },
             textStyle = ProtonTheme.typography.defaultNorm,
-            colors = TextFieldDefaults.composerTextFieldColors(),
+            colors = TextFieldDefaults.defaultTextFieldColors(),
             maxLines = 1,
             keyboardOptions = KeyboardOptions.Default.copy(
                 capitalization = KeyboardCapitalization.Sentences,

@@ -43,6 +43,7 @@ import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.presentation.R
+import ch.protonmail.android.uicomponents.text.defaultTextFieldColors
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultNorm
 
@@ -73,7 +74,7 @@ internal fun BodyTextField(
             .focusRequester(focusRequester),
         textStyle = ProtonTheme.typography.defaultNorm,
         minLines = bodyMinLines,
-        colors = TextFieldDefaults.composerTextFieldColors(),
+        colors = TextFieldDefaults.defaultTextFieldColors(),
         keyboardOptions = KeyboardOptions.Default.copy(capitalization = KeyboardCapitalization.Sentences),
         placeholder = {
             Text(
