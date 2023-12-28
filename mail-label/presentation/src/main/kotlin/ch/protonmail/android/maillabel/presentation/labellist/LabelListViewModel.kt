@@ -22,6 +22,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.maillabel.domain.model.isReservedSystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ObserveLabels
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -69,7 +70,7 @@ class LabelListViewModel @Inject constructor(
                 labelList = labels.getOrElse {
                     Timber.e("Error while observing custom labels")
                     return@map LabelListEvent.ErrorLoadingLabelList
-                }
+                }.filter { !it.labelId.isReservedSystemLabelId() }
             )
         }
     }
