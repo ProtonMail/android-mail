@@ -47,11 +47,12 @@ import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.HyperlinkText
 import ch.protonmail.android.mailcomposer.presentation.R
+import ch.protonmail.android.mailcomposer.presentation.model.MessagePasswordOperation
 import ch.protonmail.android.mailcomposer.presentation.model.SetMessagePasswordState
 import ch.protonmail.android.mailcomposer.presentation.ui.SetMessagePasswordScreen.MAX_PASSWORD_LENGTH
 import ch.protonmail.android.mailcomposer.presentation.ui.SetMessagePasswordScreen.MIN_PASSWORD_LENGTH
-import ch.protonmail.android.mailcomposer.presentation.viewmodel.MessagePasswordAction
 import ch.protonmail.android.mailcomposer.presentation.viewmodel.SetMessagePasswordViewModel
+import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonSolidButton
 import me.proton.core.compose.component.appbar.ProtonTopAppBar
 import me.proton.core.compose.flow.rememberAsState
@@ -61,7 +62,6 @@ import me.proton.core.compose.theme.defaultInverted
 import me.proton.core.compose.theme.defaultSmallUnspecified
 import me.proton.core.compose.theme.defaultSmallWeak
 import me.proton.core.compose.theme.defaultStrongNorm
-import me.proton.core.util.kotlin.EMPTY_STRING
 
 @Composable
 fun SetMessagePasswordScreen(
@@ -69,11 +69,7 @@ fun SetMessagePasswordScreen(
     modifier: Modifier = Modifier,
     viewModel: SetMessagePasswordViewModel = hiltViewModel()
 ) {
-    val state by rememberAsState(flow = viewModel.state, initial = SetMessagePasswordState.Initial)
-
-    ConsumableLaunchedEffect(effect = state.exitScreen) {
-        onBackClick()
-    }
+    val state by rememberAsState(flow = viewModel.state, initial = SetMessagePasswordState.Loading)
 
     Scaffold(
         modifier = modifier,
@@ -97,18 +93,36 @@ fun SetMessagePasswordScreen(
             )
         }
     ) { paddingValues ->
-        SetMessagePasswordContent(
-            modifier = Modifier.padding(paddingValues),
-            onApplyButtonClick = { messagePassword, messagePasswordHint ->
-                viewModel.submit(MessagePasswordAction.ApplyPassword(messagePassword, messagePasswordHint))
+        when (state) {
+            is SetMessagePasswordState.Loading -> ProtonCenteredProgress()
+            is SetMessagePasswordState.Data -> {
+                SetMessagePasswordContent(
+                    modifier = Modifier.padding(paddingValues),
+                    state = state as SetMessagePasswordState.Data,
+                    onApplyButtonClick = { messagePassword, messagePasswordHint ->
+                        viewModel.submit(
+                            MessagePasswordOperation.Action.ApplyPassword(messagePassword, messagePasswordHint)
+                        )
+                    },
+                    onBackClick = onBackClick
+                )
             }
-        )
+        }
     }
 }
 
 @Composable
 @Suppress("ComplexMethod")
-fun SetMessagePasswordContent(onApplyButtonClick: (String, String?) -> Unit, modifier: Modifier = Modifier) {
+fun SetMessagePasswordContent(
+    state: SetMessagePasswordState.Data,
+    onApplyButtonClick: (String, String?) -> Unit,
+    onBackClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    ConsumableLaunchedEffect(effect = state.exitScreen) {
+        onBackClick()
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -116,9 +130,9 @@ fun SetMessagePasswordContent(onApplyButtonClick: (String, String?) -> Unit, mod
             .verticalScroll(rememberScrollState(), reverseScrolling = true)
             .padding(ProtonDimens.DefaultSpacing)
     ) {
-        var messagePassword by rememberSaveable { mutableStateOf(EMPTY_STRING) }
-        var repeatedMessagePassword by rememberSaveable { mutableStateOf(EMPTY_STRING) }
-        var messagePasswordHint by rememberSaveable { mutableStateOf(EMPTY_STRING) }
+        var messagePassword by rememberSaveable { mutableStateOf(state.messagePassword) }
+        var repeatedMessagePassword by rememberSaveable { mutableStateOf(state.messagePassword) }
+        var messagePasswordHint by rememberSaveable { mutableStateOf(state.messagePasswordHint) }
         var isMessagePasswordError by rememberSaveable { mutableStateOf(false) }
         var isRepeatedMessagePasswordError by rememberSaveable { mutableStateOf(false) }
         var isMessagePasswordFieldActivated by rememberSaveable { mutableStateOf(false) }

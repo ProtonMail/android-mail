@@ -22,9 +22,11 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
-import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessagePassword
 import ch.protonmail.android.mailcomposer.domain.usecase.SaveMessagePassword
+import ch.protonmail.android.mailcomposer.presentation.model.MessagePasswordOperation
 import ch.protonmail.android.mailcomposer.presentation.model.SetMessagePasswordState
+import ch.protonmail.android.mailcomposer.presentation.reducer.SetMessagePasswordReducer
 import ch.protonmail.android.mailcomposer.presentation.ui.SetMessagePasswordScreen
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -38,6 +40,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SetMessagePasswordViewModel @Inject constructor(
+    private val observeMessagePassword: ObserveMessagePassword,
+    private val reducer: SetMessagePasswordReducer,
     private val saveMessagePassword: SaveMessagePassword,
     observePrimaryUserId: ObservePrimaryUserId,
     savedStateHandle: SavedStateHandle
@@ -46,23 +50,36 @@ class SetMessagePasswordViewModel @Inject constructor(
     private val primaryUserId = observePrimaryUserId().filterNotNull()
     private val messageId = savedStateHandle.get<String>(SetMessagePasswordScreen.DraftMessageIdKey)
 
-    private val mutableState = MutableStateFlow(SetMessagePasswordState.Initial)
+    private val mutableState = MutableStateFlow<SetMessagePasswordState>(SetMessagePasswordState.Loading)
     val state: StateFlow<SetMessagePasswordState> = mutableState.asStateFlow()
 
-    fun submit(action: MessagePasswordAction) = when (action) {
-        is MessagePasswordAction.ApplyPassword -> onApplyPassword(action.password, action.passwordHint)
+    init {
+        initializeScreen()
+    }
+
+    fun submit(action: MessagePasswordOperation.Action) = when (action) {
+        is MessagePasswordOperation.Action.ApplyPassword -> onApplyPassword(action.password, action.passwordHint)
     }
 
     private fun onApplyPassword(password: String, passwordHint: String?) {
         viewModelScope.launch {
             messageId?.let {
                 saveMessagePassword(primaryUserId.first(), MessageId(it), password, passwordHint)
-                mutableState.emit(mutableState.value.copy(exitScreen = Effect.of(Unit)))
+                emitNewStateFrom(MessagePasswordOperation.Event.ExitScreen)
             }
         }
     }
-}
 
-sealed interface MessagePasswordAction {
-    data class ApplyPassword(val password: String, val passwordHint: String?) : MessagePasswordAction
+    private fun initializeScreen() {
+        viewModelScope.launch {
+            messageId?.let { messageId ->
+                val messagePassword = observeMessagePassword(primaryUserId.first(), MessageId(messageId)).first()
+                emitNewStateFrom(MessagePasswordOperation.Event.InitializeScreen(messagePassword))
+            }
+        }
+    }
+
+    private suspend fun emitNewStateFrom(event: MessagePasswordOperation.Event) {
+        mutableState.emit(reducer.newStateFrom(mutableState.value, event))
+    }
 }

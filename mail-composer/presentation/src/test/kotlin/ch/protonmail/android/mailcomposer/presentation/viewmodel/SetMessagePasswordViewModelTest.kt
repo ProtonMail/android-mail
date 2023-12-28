@@ -23,8 +23,12 @@ import app.cash.turbine.test
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcomposer.domain.model.MessagePassword
+import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessagePassword
 import ch.protonmail.android.mailcomposer.domain.usecase.SaveMessagePassword
+import ch.protonmail.android.mailcomposer.presentation.model.MessagePasswordOperation
 import ch.protonmail.android.mailcomposer.presentation.model.SetMessagePasswordState
+import ch.protonmail.android.mailcomposer.presentation.reducer.SetMessagePasswordReducer
 import ch.protonmail.android.mailcomposer.presentation.ui.SetMessagePasswordScreen
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
@@ -35,6 +39,7 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
+import me.proton.core.util.kotlin.EMPTY_STRING
 import org.junit.Rule
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -47,6 +52,7 @@ class SetMessagePasswordViewModelTest {
     private val userId = UserIdTestData.userId
     private val messageId = MessageIdSample.NewDraftWithSubjectAndBody
 
+    private val observeMessagePassword = mockk<ObserveMessagePassword>()
     private val saveMessagePassword = mockk<SaveMessagePassword>()
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
         every { this@mockk.invoke() } returns flowOf(userId)
@@ -55,26 +61,60 @@ class SetMessagePasswordViewModelTest {
         every { get<String>(SetMessagePasswordScreen.DraftMessageIdKey) } returns messageId.id
     }
 
-    private val setMessagePasswordViewModel = SetMessagePasswordViewModel(
-        saveMessagePassword,
-        observePrimaryUserId,
-        savedStateHandle
-    )
+    private val setMessagePasswordViewModel by lazy {
+        SetMessagePasswordViewModel(
+            observeMessagePassword,
+            SetMessagePasswordReducer(),
+            saveMessagePassword,
+            observePrimaryUserId,
+            savedStateHandle
+        )
+    }
+
+    @Test
+    fun `should initialize screen with correct values when message password does not exist`() = runTest {
+        // Given
+        coEvery { observeMessagePassword(userId, messageId) } returns flowOf(null)
+
+        // When
+        setMessagePasswordViewModel.state.test {
+            // Then
+            val expected = SetMessagePasswordState.Data(EMPTY_STRING, EMPTY_STRING, Effect.empty())
+            assertEquals(expected, awaitItem())
+        }
+    }
+
+    @Test
+    fun `should initialize screen with correct values when message password exists`() = runTest {
+        // Given
+        val password = "password"
+        val passwordHint = "password hint"
+        val messagePassword = MessagePassword(userId, messageId, password, passwordHint)
+        coEvery { observeMessagePassword(userId, messageId) } returns flowOf(messagePassword)
+
+        // When
+        setMessagePasswordViewModel.state.test {
+            // Then
+            val expected = SetMessagePasswordState.Data(password, passwordHint, Effect.empty())
+            assertEquals(expected, awaitItem())
+        }
+    }
 
     @Test
     fun `should save message password and close the screen when apply password action is submitted`() = runTest {
         // Given
         val password = "password"
         val passwordHint = "password hint"
+        coEvery { observeMessagePassword(userId, messageId) } returns flowOf(null)
         coEvery { saveMessagePassword(userId, messageId, password, passwordHint) } returns Unit.right()
 
         // When
-        setMessagePasswordViewModel.submit(MessagePasswordAction.ApplyPassword(password, passwordHint))
+        setMessagePasswordViewModel.submit(MessagePasswordOperation.Action.ApplyPassword(password, passwordHint))
 
         // Then
         setMessagePasswordViewModel.state.test {
-            val expected = SetMessagePasswordState(exitScreen = Effect.of(Unit))
-            assertEquals(expected, awaitItem())
+            val item = awaitItem() as SetMessagePasswordState.Data
+            assertEquals(Effect.of(Unit), item.exitScreen)
             coVerify { saveMessagePassword(userId, messageId, password, passwordHint) }
         }
     }

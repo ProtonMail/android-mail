@@ -18,15 +18,14 @@
 
 package ch.protonmail.android.mailcomposer.presentation.model
 
-import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcomposer.domain.model.MessagePassword
 
-sealed class SetMessagePasswordState {
-
-    object Loading : SetMessagePasswordState()
-
-    data class Data(
-        val messagePassword: String,
-        val messagePasswordHint: String,
-        val exitScreen: Effect<Unit>
-    ) : SetMessagePasswordState()
+sealed interface MessagePasswordOperation {
+    sealed interface Action : MessagePasswordOperation {
+        data class ApplyPassword(val password: String, val passwordHint: String?) : Action
+    }
+    sealed interface Event : MessagePasswordOperation {
+        data class InitializeScreen(val messagePassword: MessagePassword?) : Event
+        object ExitScreen : Event
+    }
 }
