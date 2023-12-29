@@ -26,10 +26,12 @@ import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveSendingMessagesStatus
 import ch.protonmail.android.mailcomposer.domain.usecase.ResetSendingMessagesStatus
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
+import ch.protonmail.android.mailsettings.domain.usecase.autolock.ShouldPresentPinInsertionScreen
 import ch.protonmail.android.navigation.model.HomeState
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.unmockkAll
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.emptyFlow
@@ -41,6 +43,7 @@ import kotlinx.coroutines.test.setMain
 import me.proton.core.network.domain.NetworkManager
 import me.proton.core.network.domain.NetworkStatus
 import me.proton.core.user.domain.entity.User
+import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -63,19 +66,29 @@ class HomeViewModelTest {
 
     private val selectedMailLabelId = mockk<SelectedMailLabelId>(relaxUnitFun = true)
 
+    private val shouldPresentPinInsertionScreen = mockk<ShouldPresentPinInsertionScreen> {
+        every { this@mockk.invoke() } returns flowOf(false)
+    }
+
     private val homeViewModel by lazy {
         HomeViewModel(
             networkManager,
             observeSendingMessagesStatus,
             resetSendingMessageStatus,
             selectedMailLabelId,
-            observePrimaryUserMock
+            shouldPresentPinInsertionScreen,
+            observePrimaryUserMock,
         )
     }
 
     @BeforeTest
     fun setUp() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
+    }
+
+    @AfterTest
+    fun teardown() {
+        unmockkAll()
     }
 
     @Test
@@ -107,7 +120,8 @@ class HomeViewModelTest {
                 val actualItem = awaitItem()
                 val expectedItem = HomeState(
                     networkStatusEffect = Effect.of(NetworkStatus.Disconnected),
-                    messageSendingStatusEffect = Effect.empty()
+                    messageSendingStatusEffect = Effect.empty(),
+                    requestPinInsertionEffect = Effect.empty()
                 )
 
                 // Then
@@ -128,7 +142,8 @@ class HomeViewModelTest {
             val actualItem = awaitItem()
             val expectedItem = HomeState(
                 networkStatusEffect = Effect.of(NetworkStatus.Metered),
-                messageSendingStatusEffect = Effect.empty()
+                messageSendingStatusEffect = Effect.empty(),
+                requestPinInsertionEffect = Effect.empty()
             )
 
             // Then
@@ -146,7 +161,8 @@ class HomeViewModelTest {
             val actualItem = awaitItem()
             val expectedItem = HomeState(
                 networkStatusEffect = Effect.of(NetworkStatus.Metered),
-                messageSendingStatusEffect = Effect.empty()
+                messageSendingStatusEffect = Effect.empty(),
+                requestPinInsertionEffect = Effect.empty()
             )
 
             // Then
@@ -166,7 +182,8 @@ class HomeViewModelTest {
             val actualItem = awaitItem()
             val expectedItem = HomeState(
                 networkStatusEffect = Effect.of(NetworkStatus.Metered),
-                messageSendingStatusEffect = Effect.of(MessageSendingStatus.MessageSent)
+                messageSendingStatusEffect = Effect.of(MessageSendingStatus.MessageSent),
+                requestPinInsertionEffect = Effect.empty()
             )
             sendingMessageStatusFlow.emit(MessageSendingStatus.None)
 
@@ -189,7 +206,8 @@ class HomeViewModelTest {
                 val actualItem = awaitItem()
                 val expectedItem = HomeState(
                     networkStatusEffect = Effect.of(NetworkStatus.Metered),
-                    messageSendingStatusEffect = Effect.of(MessageSendingStatus.SendMessageError)
+                    messageSendingStatusEffect = Effect.of(MessageSendingStatus.SendMessageError),
+                    requestPinInsertionEffect = Effect.empty()
                 )
 
                 // Then
@@ -198,5 +216,20 @@ class HomeViewModelTest {
             }
         }
 
+    @Test
+    fun `when pin lock screen needs to be shown, the effect is emitted accordingly`() = runTest {
+        // Given
+        every { networkManager.observe() } returns flowOf(NetworkStatus.Unmetered)
+        every { shouldPresentPinInsertionScreen() } returns flowOf(true)
 
+        // When + Then
+        homeViewModel.state.test {
+            val actualItem = awaitItem()
+            val expectedItem = HomeState.Initial.copy(
+                networkStatusEffect = Effect.of(NetworkStatus.Unmetered),
+                requestPinInsertionEffect = Effect.of(Unit)
+            )
+            assertEquals(expectedItem, actualItem)
+        }
+    }
 }

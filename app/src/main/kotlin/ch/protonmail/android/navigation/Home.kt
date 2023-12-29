@@ -43,11 +43,14 @@ import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
 import ch.protonmail.android.mailmailbox.presentation.sidebar.Sidebar
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockInsertionMode
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPinContinuationAction
 import ch.protonmail.android.navigation.model.Destination.Dialog
 import ch.protonmail.android.navigation.model.Destination.Screen
 import ch.protonmail.android.navigation.model.HomeState
 import ch.protonmail.android.navigation.route.addAccountSettings
 import ch.protonmail.android.navigation.route.addAlternativeRoutingSetting
+import ch.protonmail.android.navigation.route.addAutoLockSettings
 import ch.protonmail.android.navigation.route.addCombinedContactsSetting
 import ch.protonmail.android.navigation.route.addComposer
 import ch.protonmail.android.navigation.route.addContacts
@@ -66,6 +69,7 @@ import ch.protonmail.android.navigation.route.addMailbox
 import ch.protonmail.android.navigation.route.addMessageDetail
 import ch.protonmail.android.navigation.route.addNotificationsSettings
 import ch.protonmail.android.navigation.route.addParentFolderList
+import ch.protonmail.android.navigation.route.addPinInsertion
 import ch.protonmail.android.navigation.route.addPrivacySettings
 import ch.protonmail.android.navigation.route.addRemoveAccountDialog
 import ch.protonmail.android.navigation.route.addSettings
@@ -184,12 +188,23 @@ fun Home(
     fun showLabelListErrorLoadingSnackbar() = scope.launch {
         snackbarHostErrorState.showSnackbar(message = labelListErrorLoadingText, type = ProtonSnackbarType.ERROR)
     }
+
     ConsumableLaunchedEffect(state.value.messageSendingStatusEffect) { sendingStatus ->
         when (sendingStatus) {
             is MessageSendingStatus.MessageSent -> showSuccessSendingMessageSnackbar()
             is MessageSendingStatus.SendMessageError -> showErrorSendingMessageSnackbar()
             is MessageSendingStatus.UploadAttachmentsError -> showErrorUploadAttachmentSnackbar()
             is MessageSendingStatus.None -> {}
+        }
+    }
+
+    ConsumableLaunchedEffect(effect = state.value.requestPinInsertionEffect) {
+        navController.navigate(
+            Screen.AutoLockPinSettings(
+                AutoLockInsertionMode.VerifyPin(AutoLockPinContinuationAction.None)
+            )
+        ) {
+            popUpTo(Screen.Mailbox.route) { inclusive = false }
         }
     }
 
@@ -356,6 +371,8 @@ fun Home(
                 addEditSwipeActionsSettings(navController)
                 addLanguageSettings(navController)
                 addPrivacySettings(navController)
+                addAutoLockSettings(navController)
+                addPinInsertion(navController)
                 addSwipeActionsSettings(navController)
                 addThemeSettings(navController)
                 addNotificationsSettings(navController)
