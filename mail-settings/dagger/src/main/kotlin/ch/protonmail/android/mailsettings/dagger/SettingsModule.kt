@@ -75,7 +75,6 @@ object SettingsModule {
     fun provideDataStoreProvider(@ApplicationContext context: Context): MailSettingsDataStoreProvider =
         MailSettingsDataStoreProvider(context)
 
-
     @Provides
     @Singleton
     fun provideAlternativeRoutingLocalDataSource(
@@ -120,7 +119,6 @@ object SettingsModule {
     @Singleton
     @ThemeObserverCoroutineScope
     fun provideThemeObserverCoroutineScope(): CoroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
-
 
     @Module
     @InstallIn(SingletonComponent::class)
