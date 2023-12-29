@@ -97,7 +97,7 @@ internal fun SearchView(
                 },
             textStyle = ProtonTheme.typography.defaultNorm,
             colors = TextFieldDefaults.defaultTextFieldColors(),
-            maxLines = 1,
+            singleLine = true,
             keyboardOptions = KeyboardOptions.Default.copy(
                 capitalization = KeyboardCapitalization.Sentences,
                 imeAction = if (searchText.text.trim().length >= 2) ImeAction.Search else ImeAction.Default
