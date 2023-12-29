@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailsettings.domain.repository
 
 import arrow.core.Either
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockAttemptPendingStatus
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockInterval
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockLastForegroundMillis
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPin
@@ -33,6 +34,7 @@ interface AutoLockRepository {
     fun observeAutoLockLastForegroundMillis(): Flow<Either<AutoLockPreferenceError, AutoLockLastForegroundMillis>>
     fun observeAutoLockPin(): Flow<Either<AutoLockPreferenceError, AutoLockPin>>
     fun observeAutoLockRemainingAttempts(): Flow<Either<AutoLockPreferenceError, AutoLockRemainingAttempts>>
+    fun observeAutoLockAttemptPendingStatus(): Flow<Either<AutoLockPreferenceError, AutoLockAttemptPendingStatus>>
 
     suspend fun updateAutoLockEnabledValue(value: AutoLockPreference): Either<AutoLockPreferenceError, Unit>
     suspend fun updateAutoLockInterval(interval: AutoLockInterval): Either<AutoLockPreferenceError, Unit>
@@ -44,6 +46,10 @@ interface AutoLockRepository {
 
     suspend fun updateAutoLockRemainingAttempts(
         attempts: AutoLockRemainingAttempts
+    ): Either<AutoLockPreferenceError, Unit>
+
+    suspend fun updateAutoLockAttemptPendingStatus(
+        pendingAttempt: AutoLockAttemptPendingStatus
     ): Either<AutoLockPreferenceError, Unit>
 }
 

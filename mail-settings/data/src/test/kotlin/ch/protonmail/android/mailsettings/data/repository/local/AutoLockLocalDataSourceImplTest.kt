@@ -28,9 +28,12 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailsettings.data.MailSettingsDataStoreProvider
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEnabledEncryptedValue
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedAttemptPendingStatus
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedInterval
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedLastForegroundMillis
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedPin
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedRemainingAttempts
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockLastForegroundTimestamp
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -38,6 +41,8 @@ import io.mockk.mockk
 import io.mockk.spyk
 import io.mockk.unmockkAll
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -52,8 +57,15 @@ internal class AutoLockLocalDataSourceImplTest {
     private val dataStoreProvider = mockk<MailSettingsDataStoreProvider> {
         every { this@mockk.autoLockDataStore } returns autoLockDataStoreSpy
     }
+    private val mockedFlow = MutableStateFlow<AutoLockEncryptedLastForegroundMillis?>(null)
+    private val autoLockLastForegroundTimestamp = mockk<AutoLockLastForegroundTimestamp> {
+        every { this@mockk.flow } returns mockedFlow
+    }
 
-    private val autoLockLocalDataSource = AutoLockLocalDataSourceImpl(dataStoreProvider)
+    private val autoLockLocalDataSource = AutoLockLocalDataSourceImpl(
+        autoLockLastForegroundTimestamp,
+        dataStoreProvider
+    )
 
     @After
     fun teardown() {
@@ -155,59 +167,36 @@ internal class AutoLockLocalDataSourceImplTest {
     }
 
     @Test
-    fun `should return locally stored preference from data store for last foreground millis when available`() =
+    fun `should return locally stored value for last foreground millis when available`() =
         runTest {
             // Given
-            expectValidPreference(LastForegroundMillisKey)
+            val expectedValue = AutoLockEncryptedLastForegroundMillis(StringPlaceholder)
+            expectForegroundTimestamp(expectedValue)
 
-            // When + Then
-            autoLockLocalDataSource
-                .observeLastEncryptedForegroundMillis()
-                .assertValue(AutoLockEncryptedLastForegroundMillis(StringPlaceholder))
+            // When
+            val result = autoLockLocalDataSource.observeLastEncryptedForegroundMillis().first()
+
+            // Then
+            assertEquals(expectedValue.right(), result)
         }
 
     @Test
     fun `should return an error when no encrypted auto lock last foreground millis is stored locally`() = runTest {
         // Given
-        expectEmptyPreferences()
-
-        // When + Then
-        autoLockLocalDataSource.observeLastEncryptedForegroundMillis().assertError()
-    }
-
-    @Test
-    fun `should return success when auto lock last foreground millis is updated`() = runTest {
-        // When
-        val result = autoLockLocalDataSource.updateLastEncryptedForegroundMillis(
-            AutoLockEncryptedLastForegroundMillis(StringPlaceholder)
-        )
-
-        // Then
-        coVerify { autoLockDataStoreSpy.updateData(any()) }
-        assertTrue(result.isRight())
-    }
-
-    @Test
-    fun `should return an error when auto lock last foreground millis cannot be updated`() = runTest {
-        // Given
-        coEvery { autoLockDataStoreSpy.updateData(any()) } throws IOException()
+        expectForegroundTimestamp(null)
 
         // When
-        val result = autoLockLocalDataSource.updateLastEncryptedForegroundMillis(
-            AutoLockEncryptedLastForegroundMillis(StringPlaceholder)
-        )
+        val result = autoLockLocalDataSource.observeLastEncryptedForegroundMillis().first()
 
         // Then
-        coVerify { autoLockDataStoreSpy.updateData(any()) }
-        assertTrue(result.isLeft())
+        assertEquals(PreferencesError.left(), result)
     }
-
 
     @Test
     fun `should return locally stored preference from data store for pin value when available`() =
         runTest {
             // Given
-            expectValidPreference(pinKey)
+            expectValidPreference(PinKey)
 
             // When + Then
             autoLockLocalDataSource
@@ -251,6 +240,102 @@ internal class AutoLockLocalDataSourceImplTest {
         assertTrue(result.isLeft())
     }
 
+    @Test
+    fun `should return locally stored preference from data store for remaining attempts value when available`() =
+        runTest {
+            // Given
+            expectValidPreference(AttemptsLeftKey)
+
+            // When + Then
+            autoLockLocalDataSource
+                .observeAutoLockEncryptedAttemptsLeft()
+                .assertValue(AutoLockEncryptedRemainingAttempts(StringPlaceholder))
+        }
+
+    @Test
+    fun `should return an error when no encrypted remaining attempts value is stored locally`() = runTest {
+        // Given
+        expectEmptyPreferences()
+
+        // When + Then
+        autoLockLocalDataSource.observeAutoLockEncryptedAttemptsLeft().assertError()
+    }
+
+    @Test
+    fun `should return success when encrypted remaining attempts value is updated`() = runTest {
+        // When
+        val result = autoLockLocalDataSource.updateAutoLockAttemptsLeft(
+            AutoLockEncryptedRemainingAttempts(StringPlaceholder)
+        )
+
+        // Then
+        coVerify { autoLockDataStoreSpy.updateData(any()) }
+        assertTrue(result.isRight())
+    }
+
+    @Test
+    fun `should return an error when encrypted remaining attempts value cannot be updated`() = runTest {
+        // Given
+        coEvery { autoLockDataStoreSpy.updateData(any()) } throws IOException()
+
+        // When
+        val result = autoLockLocalDataSource.updateAutoLockAttemptsLeft(
+            AutoLockEncryptedRemainingAttempts(StringPlaceholder)
+        )
+
+        // Then
+        coVerify { autoLockDataStoreSpy.updateData(any()) }
+        assertTrue(result.isLeft())
+    }
+
+    @Test
+    fun `should return locally stored preference from data store for pending attempt value when available`() =
+        runTest {
+            // Given
+            expectValidPreference(PendingAutoLockAttemptKey)
+
+            // When + Then
+            autoLockLocalDataSource
+                .observeAutoLockEncryptedPendingAttempt()
+                .assertValue(AutoLockEncryptedAttemptPendingStatus(StringPlaceholder))
+        }
+
+    @Test
+    fun `should return an error when no encrypted pending attempt value is stored locally`() = runTest {
+        // Given
+        expectEmptyPreferences()
+
+        // When + Then
+        autoLockLocalDataSource.observeAutoLockEncryptedPendingAttempt().assertError()
+    }
+
+    @Test
+    fun `should return success when encrypted pending attempt value is updated`() = runTest {
+        // When
+        val result = autoLockLocalDataSource.updateAutoLockPendingAttempt(
+            AutoLockEncryptedAttemptPendingStatus(StringPlaceholder)
+        )
+
+        // Then
+        coVerify { autoLockDataStoreSpy.updateData(any()) }
+        assertTrue(result.isRight())
+    }
+
+    @Test
+    fun `should return an error when encrypted pending attempt value cannot be updated`() = runTest {
+        // Given
+        coEvery { autoLockDataStoreSpy.updateData(any()) } throws IOException()
+
+        // When
+        val result = autoLockLocalDataSource.updateAutoLockPendingAttempt(
+            AutoLockEncryptedAttemptPendingStatus(StringPlaceholder)
+        )
+
+        // Then
+        coVerify { autoLockDataStoreSpy.updateData(any()) }
+        assertTrue(result.isLeft())
+    }
+
     private fun expectValidPreference(key: Preferences.Key<String>) {
         every { preferences[key] } returns StringPlaceholder
         every { autoLockDataStoreSpy.data } returns flowOf(preferences)
@@ -259,6 +344,10 @@ internal class AutoLockLocalDataSourceImplTest {
     private fun expectEmptyPreferences() {
         coEvery { preferences.get<String>(any()) } returns null
         every { autoLockDataStoreSpy.data } returns flowOf(preferences)
+    }
+
+    private fun expectForegroundTimestamp(value: AutoLockEncryptedLastForegroundMillis?) {
+        every { autoLockLastForegroundTimestamp.flow } returns MutableStateFlow(value)
     }
 
     private suspend fun <T> Flow<T>.assertError() = test {
@@ -278,7 +367,8 @@ internal class AutoLockLocalDataSourceImplTest {
         const val StringPlaceholder = "stringPlaceholder"
         val AutoLockPrefKey = stringPreferencesKey("hasAutoLockPrefKey")
         val AutoLockIntervalKey = stringPreferencesKey("autoLockIntervalPrefKey")
-        val LastForegroundMillisKey = stringPreferencesKey("lastForegroundTimestampPrefKey")
-        val pinKey = stringPreferencesKey("pinCodePrefKey")
+        val AttemptsLeftKey = stringPreferencesKey("autoLockAttemptsPrefKey")
+        val PendingAutoLockAttemptKey = stringPreferencesKey("pendingAutoLockAttemptPrefKey")
+        val PinKey = stringPreferencesKey("pinCodePrefKey")
     }
 }

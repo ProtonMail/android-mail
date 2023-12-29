@@ -26,22 +26,25 @@ import ch.protonmail.android.mailcommon.data.mapper.safeEdit
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailsettings.data.MailSettingsDataStoreProvider
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEnabledEncryptedValue
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedAttemptPendingStatus
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedInterval
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedLastForegroundMillis
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedPin
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedRemainingAttempts
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockLastForegroundTimestamp
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import javax.inject.Inject
 
 class AutoLockLocalDataSourceImpl @Inject constructor(
+    private val lastForegroundMillis: AutoLockLastForegroundTimestamp,
     private val dataStoreProvider: MailSettingsDataStoreProvider
 ) : AutoLockLocalDataSource {
 
     private val hasAutoLockKey = stringPreferencesKey("hasAutoLockPrefKey")
     private val autoLockIntervalKey = stringPreferencesKey("autoLockIntervalPrefKey")
-    private val lastForegroundMillisKey = stringPreferencesKey("lastForegroundTimestampPrefKey")
     private val attemptsKey = stringPreferencesKey("autoLockAttemptsPrefKey")
+    private val pendingAutoLockAttemptKey = stringPreferencesKey("pendingAutoLockAttemptPrefKey")
     private val pinKey = stringPreferencesKey("pinCodePrefKey")
 
     override fun observeAutoLockEnabledEncryptedValue() = dataStoreProvider.autoLockDataStore.data.map {
@@ -54,9 +57,8 @@ class AutoLockLocalDataSourceImpl @Inject constructor(
         AutoLockEncryptedInterval(encryptedValue).right()
     }
 
-    override fun observeLastEncryptedForegroundMillis() = dataStoreProvider.autoLockDataStore.data.mapLatest {
-        val encryptedValue = it[lastForegroundMillisKey] ?: return@mapLatest PreferencesError.left()
-        AutoLockEncryptedLastForegroundMillis(encryptedValue).right()
+    override fun observeLastEncryptedForegroundMillis() = lastForegroundMillis.flow.map {
+        it?.right() ?: return@map PreferencesError.left()
     }
 
     override fun observeAutoLockEncryptedPin() = dataStoreProvider.autoLockDataStore.data.map {
@@ -64,9 +66,14 @@ class AutoLockLocalDataSourceImpl @Inject constructor(
         AutoLockEncryptedPin(encryptedValue).right()
     }
 
-    override fun observeAutoLockEncryptedAttempts() = dataStoreProvider.autoLockDataStore.data.mapLatest {
+    override fun observeAutoLockEncryptedAttemptsLeft() = dataStoreProvider.autoLockDataStore.data.mapLatest {
         val encryptedValue = it[attemptsKey] ?: return@mapLatest PreferencesError.left()
         AutoLockEncryptedRemainingAttempts(encryptedValue).right()
+    }
+
+    override fun observeAutoLockEncryptedPendingAttempt() = dataStoreProvider.autoLockDataStore.data.mapLatest {
+        val encryptedValue = it[pendingAutoLockAttemptKey] ?: return@mapLatest PreferencesError.left()
+        AutoLockEncryptedAttemptPendingStatus(encryptedValue).right()
     }
 
     override suspend fun updateAutoLockEnabledEncryptedValue(value: AutoLockEnabledEncryptedValue) =
@@ -84,11 +91,7 @@ class AutoLockLocalDataSourceImpl @Inject constructor(
         }
 
     override suspend fun updateLastEncryptedForegroundMillis(timestamp: AutoLockEncryptedLastForegroundMillis) =
-        either<PreferencesError, Unit> {
-            dataStoreProvider.autoLockDataStore.safeEdit {
-                it[lastForegroundMillisKey] = timestamp.encryptedValue
-            }.bind()
-        }
+        either<PreferencesError, Unit> { lastForegroundMillis.update(timestamp) }
 
     override suspend fun updateAutoLockEncryptedPin(pin: AutoLockEncryptedPin) =
         either<PreferencesError, Unit> {
@@ -97,10 +100,17 @@ class AutoLockLocalDataSourceImpl @Inject constructor(
             }.bind()
         }
 
-    override suspend fun updateAutoLockRemainingAttempts(attempts: AutoLockEncryptedRemainingAttempts) =
+    override suspend fun updateAutoLockAttemptsLeft(attempts: AutoLockEncryptedRemainingAttempts) =
         either<PreferencesError, Unit> {
             dataStoreProvider.autoLockDataStore.safeEdit {
                 it[attemptsKey] = attempts.encryptedValue
+            }.bind()
+        }
+
+    override suspend fun updateAutoLockPendingAttempt(pendingAttempt: AutoLockEncryptedAttemptPendingStatus) =
+        either<PreferencesError, Unit> {
+            dataStoreProvider.autoLockDataStore.safeEdit {
+                it[pendingAutoLockAttemptKey] = pendingAttempt.encryptedValue
             }.bind()
         }
 }

@@ -26,14 +26,18 @@ import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailsettings.data.repository.local.AutoLockLocalDataSource
 import ch.protonmail.android.mailsettings.data.usecase.DecryptSerializableValue
 import ch.protonmail.android.mailsettings.data.usecase.EncryptSerializableValue
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockAttemptPendingStatus
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEnabledEncryptedValue
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedAttemptPendingStatus
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedInterval
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedLastForegroundMillis
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedPin
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedRemainingAttempts
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockInterval
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockLastForegroundMillis
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPin
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPreference
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockRemainingAttempts
 import ch.protonmail.android.mailsettings.domain.repository.AutoLockPreferenceError
 import io.mockk.coEvery
 import io.mockk.every
@@ -43,6 +47,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.crypto.common.keystore.KeyStoreCrypto
+import me.proton.core.util.kotlin.serialize
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -144,12 +149,12 @@ internal class AutoLockRepositoryFetchImplTest {
     @Test
     fun `should propagate data correctly when last foreground timestamp is observed`() = runTest {
         // Given
-        val expectedValue = AutoLockLastForegroundMillis(123L)
+        val expectedValue = AutoLockLastForegroundMillis(123)
         every { autoLockLocalDataSource.observeLastEncryptedForegroundMillis() } returns flowOf(
             AutoLockEncryptedLastForegroundMillis(BaseEncryptedDummyValue).right()
         )
 
-        expectSuccessfulDecryption("\"${expectedValue.value}\"")
+        expectSuccessfulDecryption(expectedValue.serialize())
 
         // When + Then
         autoLockRepository.observeAutoLockLastForegroundMillis().assertValue(expectedValue)
@@ -213,6 +218,84 @@ internal class AutoLockRepositoryFetchImplTest {
 
         // When + Then
         autoLockRepository.observeAutoLockPin().assertError(baseDecryptionError)
+    }
+
+    @Test
+    fun `should propagate data correctly when auto lock remaining attempts are observed`() = runTest {
+        // Given
+        val expectedValue = AutoLockRemainingAttempts(10)
+        every { autoLockLocalDataSource.observeAutoLockEncryptedAttemptsLeft() } returns flowOf(
+            AutoLockEncryptedRemainingAttempts(BaseEncryptedDummyValue).right()
+        )
+
+        expectSuccessfulDecryption("\"${expectedValue.value}\"")
+
+        // When + Then
+        autoLockRepository.observeAutoLockRemainingAttempts().assertValue(expectedValue)
+    }
+
+    @Test
+    fun `should propagate data store error when auto lock remaining attempts cannot be retrieved`() = runTest {
+        // Given
+        val expectedValue = AutoLockPreferenceError.DataStoreError
+        every { autoLockLocalDataSource.observeAutoLockEncryptedAttemptsLeft() } returns flowOf(
+            PreferencesError.left()
+        )
+
+        // When + Then
+        autoLockRepository.observeAutoLockRemainingAttempts().assertError(expectedValue)
+    }
+
+    @Test
+    fun `should propagate deserialization error when auto lock remaining attempts cannot be decoded`() = runTest {
+        // Given
+        every { autoLockLocalDataSource.observeAutoLockEncryptedAttemptsLeft() } returns flowOf(
+            AutoLockEncryptedRemainingAttempts(BaseEncryptedDummyValue).right()
+        )
+
+        expectDecryptionError()
+
+        // When + Then
+        autoLockRepository.observeAutoLockRemainingAttempts().assertError(baseDecryptionError)
+    }
+
+    @Test
+    fun `should propagate data correctly when auto lock pending attempt status is observed`() = runTest {
+        // Given
+        val expectedValue = AutoLockAttemptPendingStatus(true)
+        every { autoLockLocalDataSource.observeAutoLockEncryptedPendingAttempt() } returns flowOf(
+            AutoLockEncryptedAttemptPendingStatus(BaseEncryptedDummyValue).right()
+        )
+
+        expectSuccessfulDecryption(expectedValue.value.toString())
+
+        // When + Then
+        autoLockRepository.observeAutoLockAttemptPendingStatus().assertValue(expectedValue)
+    }
+
+    @Test
+    fun `should propagate data store error when auto lock pending attempt status cannot be retrieved`() = runTest {
+        // Given
+        val expectedValue = AutoLockPreferenceError.DataStoreError
+        every { autoLockLocalDataSource.observeAutoLockEncryptedPendingAttempt() } returns flowOf(
+            PreferencesError.left()
+        )
+
+        // When + Then
+        autoLockRepository.observeAutoLockAttemptPendingStatus().assertError(expectedValue)
+    }
+
+    @Test
+    fun `should propagate deserialization error when auto lock pending attempt status cannot be decoded`() = runTest {
+        // Given
+        every { autoLockLocalDataSource.observeAutoLockEncryptedPendingAttempt() } returns flowOf(
+            AutoLockEncryptedAttemptPendingStatus(BaseEncryptedDummyValue).right()
+        )
+
+        expectDecryptionError()
+
+        // When + Then
+        autoLockRepository.observeAutoLockAttemptPendingStatus().assertError(baseDecryptionError)
     }
 
     private fun expectSuccessfulDecryption(value: String) {

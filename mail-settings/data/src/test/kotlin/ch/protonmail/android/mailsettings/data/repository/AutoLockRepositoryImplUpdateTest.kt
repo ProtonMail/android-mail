@@ -25,14 +25,18 @@ import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailsettings.data.repository.local.AutoLockLocalDataSource
 import ch.protonmail.android.mailsettings.data.usecase.DecryptSerializableValue
 import ch.protonmail.android.mailsettings.data.usecase.EncryptSerializableValue
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockAttemptPendingStatus
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEnabledEncryptedValue
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedAttemptPendingStatus
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedInterval
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedLastForegroundMillis
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedPin
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedRemainingAttempts
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockInterval
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockLastForegroundMillis
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPin
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPreference
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockRemainingAttempts
 import ch.protonmail.android.mailsettings.domain.repository.AutoLockPreferenceError
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -254,6 +258,104 @@ internal class AutoLockRepositoryImplUpdateTest {
 
         // When
         val result = autoLockRepository.updateAutoLockPin(autoLockPin)
+
+        // Then
+        assertEquals(baseEncryptionError.left(), result)
+    }
+
+    @Test
+    fun `should return unit when auto lock remaining attempts update is successful`() = runTest {
+        // Given
+        val remainingAttempts = AutoLockRemainingAttempts(10)
+        val autoLockEncryptedAttempts = AutoLockEncryptedRemainingAttempts("encrypted")
+        coEvery {
+            autoLockLocalDataSource.updateAutoLockAttemptsLeft(autoLockEncryptedAttempts)
+        } returns Unit.right()
+
+        expectSuccessfulEncryption()
+
+        // When
+        val result = autoLockRepository.updateAutoLockRemainingAttempts(remainingAttempts)
+
+        // Then
+        assertEquals(Unit.right(), result)
+    }
+
+    @Test
+    fun `should propagate data store error auto lock remaining attempts update is not successful`() = runTest {
+        // Given
+        val remainingAttempts = AutoLockRemainingAttempts(10)
+        val autoLockEncryptedAttempts = AutoLockEncryptedRemainingAttempts("encrypted")
+        coEvery {
+            autoLockLocalDataSource.updateAutoLockAttemptsLeft(autoLockEncryptedAttempts)
+        } returns PreferencesError.left()
+
+        expectSuccessfulEncryption()
+
+        // When
+        val result = autoLockRepository.updateAutoLockRemainingAttempts(remainingAttempts)
+
+        // Then
+        assertEquals(AutoLockPreferenceError.DataStoreError.left(), result)
+    }
+
+    @Test
+    fun `should propagate encryption error when auto lock remaining attempts update is not successful`() = runTest {
+        // Given
+        val remainingAttempts = AutoLockRemainingAttempts(10)
+        expectEncryptionError()
+
+        // When
+        val result = autoLockRepository.updateAutoLockRemainingAttempts(remainingAttempts)
+
+        // Then
+        assertEquals(baseEncryptionError.left(), result)
+    }
+
+    @Test
+    fun `should return unit when auto lock pending status update is successful`() = runTest {
+        // Given
+        val pendingAttemptStatus = AutoLockAttemptPendingStatus(true)
+        val encryptedPendingAttempt = AutoLockEncryptedAttemptPendingStatus("encrypted")
+        coEvery {
+            autoLockLocalDataSource.updateAutoLockPendingAttempt(encryptedPendingAttempt)
+        } returns Unit.right()
+
+        expectSuccessfulEncryption()
+
+        // When
+        val result = autoLockRepository.updateAutoLockAttemptPendingStatus(pendingAttemptStatus)
+
+        // Then
+        assertEquals(Unit.right(), result)
+    }
+
+    @Test
+    fun `should propagate data store error when auto lock pending status update is not successful`() = runTest {
+        // Given
+        val pendingAttemptStatus = AutoLockAttemptPendingStatus(true)
+        val encryptedPendingAttempt = AutoLockEncryptedAttemptPendingStatus("encrypted")
+        coEvery {
+            autoLockLocalDataSource.updateAutoLockPendingAttempt(encryptedPendingAttempt)
+        } returns PreferencesError.left()
+
+        expectSuccessfulEncryption()
+
+        // When
+        val result = autoLockRepository.updateAutoLockAttemptPendingStatus(pendingAttemptStatus)
+
+        // Then
+        assertEquals(AutoLockPreferenceError.DataStoreError.left(), result)
+    }
+
+    @Test
+    fun `should propagate encryption error when auto lock pending status update is not successful`() = runTest {
+        // Given
+        val pendingAttemptStatus = AutoLockAttemptPendingStatus(true)
+        expectEncryptionError()
+
+        // When
+        val result = autoLockRepository.updateAutoLockAttemptPendingStatus(pendingAttemptStatus)
 
         // Then
         assertEquals(baseEncryptionError.left(), result)

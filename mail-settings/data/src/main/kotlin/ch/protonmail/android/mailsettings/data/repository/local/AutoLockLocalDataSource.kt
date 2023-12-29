@@ -21,6 +21,7 @@ package ch.protonmail.android.mailsettings.data.repository.local
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEnabledEncryptedValue
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedAttemptPendingStatus
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedInterval
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedLastForegroundMillis
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedPin
@@ -32,8 +33,9 @@ interface AutoLockLocalDataSource {
     fun observeAutoLockEnabledEncryptedValue(): Flow<Either<PreferencesError, AutoLockEnabledEncryptedValue>>
     fun observeAutoLockEncryptedInterval(): Flow<Either<PreferencesError, AutoLockEncryptedInterval>>
     fun observeLastEncryptedForegroundMillis(): Flow<Either<PreferencesError, AutoLockEncryptedLastForegroundMillis>>
-    fun observeAutoLockEncryptedAttempts(): Flow<Either<PreferencesError, AutoLockEncryptedRemainingAttempts>>
+    fun observeAutoLockEncryptedAttemptsLeft(): Flow<Either<PreferencesError, AutoLockEncryptedRemainingAttempts>>
     fun observeAutoLockEncryptedPin(): Flow<Either<PreferencesError, AutoLockEncryptedPin>>
+    fun observeAutoLockEncryptedPendingAttempt(): Flow<Either<PreferencesError, AutoLockEncryptedAttemptPendingStatus>>
 
     suspend fun updateAutoLockEnabledEncryptedValue(
         value: AutoLockEnabledEncryptedValue
@@ -45,8 +47,9 @@ interface AutoLockLocalDataSource {
     ): Either<PreferencesError, Unit>
 
     suspend fun updateAutoLockEncryptedPin(pin: AutoLockEncryptedPin): Either<PreferencesError, Unit>
+    suspend fun updateAutoLockAttemptsLeft(attempts: AutoLockEncryptedRemainingAttempts): Either<PreferencesError, Unit>
 
-    suspend fun updateAutoLockRemainingAttempts(
-        attempts: AutoLockEncryptedRemainingAttempts
+    suspend fun updateAutoLockPendingAttempt(
+        pendingAttempt: AutoLockEncryptedAttemptPendingStatus
     ): Either<PreferencesError, Unit>
 }

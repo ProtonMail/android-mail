@@ -25,7 +25,9 @@ import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailsettings.data.repository.local.AutoLockLocalDataSource
 import ch.protonmail.android.mailsettings.data.usecase.DecryptSerializableValue
 import ch.protonmail.android.mailsettings.data.usecase.EncryptSerializableValue
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockAttemptPendingStatus
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEnabledEncryptedValue
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedAttemptPendingStatus
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedInterval
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedLastForegroundMillis
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedPin
@@ -80,10 +82,18 @@ class AutoLockRepositoryImpl @Inject constructor(
         }
 
     override fun observeAutoLockRemainingAttempts(): AutoLockPreferenceEitherFlow<AutoLockRemainingAttempts> =
-        autoLockLocalDataSource.observeAutoLockEncryptedAttempts().map {
+        autoLockLocalDataSource.observeAutoLockEncryptedAttemptsLeft().map {
             either {
                 val encryptedValue = it.getOrElse { raise(AutoLockPreferenceError.DataStoreError) }.encryptedValue
                 decryptSerializedValue<AutoLockRemainingAttempts>(encryptedValue).bind()
+            }
+        }
+
+    override fun observeAutoLockAttemptPendingStatus(): AutoLockPreferenceEitherFlow<AutoLockAttemptPendingStatus> =
+        autoLockLocalDataSource.observeAutoLockEncryptedPendingAttempt().map {
+            either {
+                val encryptedValue = it.getOrElse { raise(AutoLockPreferenceError.DataStoreError) }.encryptedValue
+                decryptSerializedValue<AutoLockAttemptPendingStatus>(encryptedValue).bind()
             }
         }
 
@@ -119,8 +129,17 @@ class AutoLockRepositoryImpl @Inject constructor(
 
     override suspend fun updateAutoLockRemainingAttempts(attempts: AutoLockRemainingAttempts) = either {
         val encryptedValue = encryptValueWithSerialization(attempts).bind()
-        autoLockLocalDataSource.updateAutoLockRemainingAttempts(
+        autoLockLocalDataSource.updateAutoLockAttemptsLeft(
             AutoLockEncryptedRemainingAttempts(encryptedValue)
+        )
+            .mapEither()
+            .bind()
+    }
+
+    override suspend fun updateAutoLockAttemptPendingStatus(pendingAttempt: AutoLockAttemptPendingStatus) = either {
+        val encryptedValue = encryptValueWithSerialization(pendingAttempt).bind()
+        autoLockLocalDataSource.updateAutoLockPendingAttempt(
+            AutoLockEncryptedAttemptPendingStatus(encryptedValue)
         )
             .mapEither()
             .bind()
