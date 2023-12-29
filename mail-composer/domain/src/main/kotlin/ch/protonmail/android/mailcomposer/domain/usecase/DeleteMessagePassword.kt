@@ -16,17 +16,17 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcomposer.presentation.model
+package ch.protonmail.android.mailcomposer.domain.usecase
 
-import ch.protonmail.android.mailcomposer.domain.model.MessagePassword
+import ch.protonmail.android.mailcomposer.domain.repository.MessagePasswordRepository
+import ch.protonmail.android.mailmessage.domain.model.MessageId
+import me.proton.core.domain.entity.UserId
+import javax.inject.Inject
 
-sealed interface MessagePasswordOperation {
-    sealed interface Action : MessagePasswordOperation {
-        data class ApplyPassword(val password: String, val passwordHint: String?) : Action
-        object RemovePassword : Action
-    }
-    sealed interface Event : MessagePasswordOperation {
-        data class InitializeScreen(val messagePassword: MessagePassword?) : Event
-        object ExitScreen : Event
-    }
+class DeleteMessagePassword @Inject constructor(
+    private val messagePasswordRepository: MessagePasswordRepository
+) {
+
+    suspend operator fun invoke(userId: UserId, messageId: MessageId) =
+        messagePasswordRepository.deleteMessagePassword(userId, messageId)
 }

@@ -30,4 +30,6 @@ interface MessagePasswordLocalDataSource {
     suspend fun save(messagePassword: MessagePassword): Either<DataError.Local, Unit>
 
     suspend fun observe(userId: UserId, messageId: MessageId): Flow<MessagePassword?>
+
+    suspend fun delete(userId: UserId, messageId: MessageId)
 }

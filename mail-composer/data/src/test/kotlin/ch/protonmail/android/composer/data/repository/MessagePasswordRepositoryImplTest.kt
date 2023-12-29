@@ -26,7 +26,9 @@ import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.just
 import io.mockk.mockk
+import io.mockk.runs
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
@@ -76,5 +78,17 @@ class MessagePasswordRepositoryImplTest {
             assertEquals(messagePassword, awaitItem())
             awaitComplete()
         }
+    }
+
+    @Test
+    fun `should call delete method from local data source when deleting message password`() = runTest {
+        // Given
+        coEvery { messagePasswordLocalDataSource.delete(userId, messageId) } just runs
+
+        // When
+        messagePasswordRepository.deleteMessagePassword(userId, messageId)
+
+        // Then
+        coVerify { messagePasswordLocalDataSource.delete(userId, messageId) }
     }
 }

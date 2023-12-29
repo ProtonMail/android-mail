@@ -101,12 +101,15 @@ fun SetMessagePasswordScreen(
                 SetMessagePasswordContent(
                     modifier = Modifier.padding(paddingValues),
                     state = state as SetMessagePasswordState.Data,
-                    onApplyButtonClick = { messagePassword, messagePasswordHint ->
-                        viewModel.submit(
-                            MessagePasswordOperation.Action.ApplyPassword(messagePassword, messagePasswordHint)
-                        )
-                    },
-                    onBackClick = onBackClick
+                    actions = SetMessagePasswordContent.Actions(
+                        onApplyButtonClick = { messagePassword, messagePasswordHint ->
+                            viewModel.submit(
+                                MessagePasswordOperation.Action.ApplyPassword(messagePassword, messagePasswordHint)
+                            )
+                        },
+                        onRemoveButtonClick = { viewModel.submit(MessagePasswordOperation.Action.RemovePassword) },
+                        onBackClick = onBackClick
+                    )
                 )
             }
         }
@@ -117,12 +120,11 @@ fun SetMessagePasswordScreen(
 @Suppress("ComplexMethod")
 fun SetMessagePasswordContent(
     state: SetMessagePasswordState.Data,
-    onApplyButtonClick: (String, String?) -> Unit,
-    onBackClick: () -> Unit,
+    actions: SetMessagePasswordContent.Actions,
     modifier: Modifier = Modifier
 ) {
     ConsumableLaunchedEffect(effect = state.exitScreen) {
-        onBackClick()
+        actions.onBackClick()
     }
 
     Column(
@@ -200,7 +202,8 @@ fun SetMessagePasswordContent(
         MessagePasswordButtons(
             shouldShowEditingButtons = state.shouldShowEditingButtons,
             isApplyButtonEnabled = isApplyButtonEnabled(),
-            onApplyButtonClick = { onApplyButtonClick(messagePassword, messagePasswordHint) }
+            onApplyButtonClick = { actions.onApplyButtonClick(messagePassword, messagePasswordHint) },
+            onRemoveButtonClick = actions.onRemoveButtonClick
         )
     }
 }
@@ -232,7 +235,8 @@ fun MessagePasswordInfo(modifier: Modifier = Modifier) {
 fun MessagePasswordButtons(
     shouldShowEditingButtons: Boolean,
     isApplyButtonEnabled: Boolean,
-    onApplyButtonClick: () -> Unit
+    onApplyButtonClick: () -> Unit,
+    onRemoveButtonClick: () -> Unit
 ) {
     ProtonSolidButton(
         modifier = Modifier
@@ -256,7 +260,7 @@ fun MessagePasswordButtons(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(ProtonDimens.DefaultButtonMinHeight),
-            onClick = {}
+            onClick = onRemoveButtonClick
         ) {
             Text(
                 text = stringResource(id = R.string.set_message_password_button_remove_password),
@@ -277,4 +281,12 @@ object SetMessagePasswordScreen {
     const val MAX_PASSWORD_LENGTH = 21
 
     const val DraftMessageIdKey = "DraftMessageId"
+}
+
+object SetMessagePasswordContent {
+    data class Actions(
+        val onApplyButtonClick: (String, String?) -> Unit,
+        val onRemoveButtonClick: () -> Unit,
+        val onBackClick: () -> Unit
+    )
 }

@@ -24,6 +24,7 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcomposer.domain.model.MessagePassword
+import ch.protonmail.android.mailcomposer.domain.usecase.DeleteMessagePassword
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessagePassword
 import ch.protonmail.android.mailcomposer.domain.usecase.SaveMessagePassword
 import ch.protonmail.android.mailcomposer.presentation.model.MessagePasswordOperation
@@ -36,7 +37,9 @@ import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
+import io.mockk.runs
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.util.kotlin.EMPTY_STRING
@@ -52,6 +55,7 @@ class SetMessagePasswordViewModelTest {
     private val userId = UserIdTestData.userId
     private val messageId = MessageIdSample.NewDraftWithSubjectAndBody
 
+    private val deleteMessagePassword = mockk<DeleteMessagePassword>()
     private val observeMessagePassword = mockk<ObserveMessagePassword>()
     private val saveMessagePassword = mockk<SaveMessagePassword>()
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
@@ -63,6 +67,7 @@ class SetMessagePasswordViewModelTest {
 
     private val setMessagePasswordViewModel by lazy {
         SetMessagePasswordViewModel(
+            deleteMessagePassword,
             observeMessagePassword,
             SetMessagePasswordReducer(),
             saveMessagePassword,
@@ -126,6 +131,26 @@ class SetMessagePasswordViewModelTest {
             val item = awaitItem() as SetMessagePasswordState.Data
             assertEquals(Effect.of(Unit), item.exitScreen)
             coVerify { saveMessagePassword(userId, messageId, password, passwordHint) }
+        }
+    }
+
+    @Test
+    fun `should delete message password and close the screen when delete password action is submitted`() = runTest {
+        // Given
+        val password = "password"
+        val passwordHint = "password hint"
+        val messagePassword = MessagePassword(userId, messageId, password, passwordHint)
+        coEvery { observeMessagePassword(userId, messageId) } returns flowOf(messagePassword)
+        coEvery { deleteMessagePassword(userId, messageId) } just runs
+
+        // When
+        setMessagePasswordViewModel.submit(MessagePasswordOperation.Action.RemovePassword)
+
+        // Then
+        setMessagePasswordViewModel.state.test {
+            val item = awaitItem() as SetMessagePasswordState.Data
+            assertEquals(Effect.of(Unit), item.exitScreen)
+            coVerify { deleteMessagePassword(userId, messageId) }
         }
     }
 }

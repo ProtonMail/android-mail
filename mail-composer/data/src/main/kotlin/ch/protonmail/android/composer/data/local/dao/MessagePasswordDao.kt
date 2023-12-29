@@ -37,4 +37,13 @@ abstract class MessagePasswordDao : BaseDao<MessagePasswordEntity>() {
         """
     )
     abstract fun observe(userId: UserId, messageId: MessageId): Flow<MessagePasswordEntity?>
+
+    @Query(
+        """
+            DELETE from MessagePasswordEntity
+            WHERE userId = :userId
+            AND messageId = :messageId
+        """
+    )
+    abstract suspend fun delete(userId: UserId, messageId: MessageId)
 }

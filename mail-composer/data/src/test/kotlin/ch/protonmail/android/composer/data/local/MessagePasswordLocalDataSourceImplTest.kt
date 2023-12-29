@@ -29,6 +29,7 @@ import ch.protonmail.android.mailcomposer.domain.model.MessagePassword
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
@@ -108,5 +109,17 @@ class MessagePasswordLocalDataSourceImplTest {
             assertNull(awaitItem())
             awaitComplete()
         }
+    }
+
+    @Test
+    fun `should call delete method from dao when deleting message password`() = runTest {
+        // Given
+        coEvery { messagePasswordDao.delete(userId, messageId) } just runs
+
+        // When
+        messagePasswordLocalDataSource.delete(userId, messageId)
+
+        // Then
+        coVerify { messagePasswordDao.delete(userId, messageId) }
     }
 }

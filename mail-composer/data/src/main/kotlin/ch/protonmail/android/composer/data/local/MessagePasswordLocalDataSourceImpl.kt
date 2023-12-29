@@ -46,4 +46,6 @@ class MessagePasswordLocalDataSourceImpl @Inject constructor(
 
     override suspend fun observe(userId: UserId, messageId: MessageId): Flow<MessagePassword?> =
         messagePasswordDao.observe(userId, messageId).mapLatest { it?.toDomainModel() }
+
+    override suspend fun delete(userId: UserId, messageId: MessageId) = messagePasswordDao.delete(userId, messageId)
 }

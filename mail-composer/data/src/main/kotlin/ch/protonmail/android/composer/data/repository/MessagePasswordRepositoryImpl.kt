@@ -35,4 +35,7 @@ class MessagePasswordRepositoryImpl @Inject constructor(
 
     override suspend fun observeMessagePassword(userId: UserId, messageId: MessageId): Flow<MessagePassword?> =
         messagePasswordLocalDataSource.observe(userId, messageId)
+
+    override suspend fun deleteMessagePassword(userId: UserId, messageId: MessageId) =
+        messagePasswordLocalDataSource.delete(userId, messageId)
 }
