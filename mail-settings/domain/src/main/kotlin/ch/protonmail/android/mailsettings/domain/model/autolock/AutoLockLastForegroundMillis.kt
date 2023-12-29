@@ -23,6 +23,7 @@ import kotlinx.serialization.Serializable
 @JvmInline
 value class AutoLockEncryptedLastForegroundMillis(val encryptedValue: String)
 
-@JvmInline
+// Could be an inline class but in that case we cannot use it as a mock return with Mockk.
+// See https://github.com/mockk/mockk/issues/249.
 @Serializable
-value class AutoLockLastForegroundMillis(val value: Long)
+data class AutoLockLastForegroundMillis(val value: Long)
