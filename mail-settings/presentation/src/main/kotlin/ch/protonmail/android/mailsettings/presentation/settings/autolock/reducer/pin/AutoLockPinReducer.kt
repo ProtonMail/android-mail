@@ -81,7 +81,7 @@ class AutoLockPinReducer @Inject constructor(
     ): AutoLockPinState.DataLoaded {
         return when (event.action) {
             is AutoLockPinContinuationAction.NavigateToDeepLink ->
-                state.copy(navigateEffect = Effect.of(event.action.destination))
+                state.copy(navigateEffect = Effect.of(event.action.destination.toDecodedValue()))
 
             else -> state.copy(closeScreenEffect = Effect.of(Unit))
         }

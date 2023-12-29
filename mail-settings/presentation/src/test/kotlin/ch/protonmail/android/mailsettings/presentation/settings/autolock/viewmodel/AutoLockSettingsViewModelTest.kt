@@ -31,6 +31,7 @@ import ch.protonmail.android.mailsettings.domain.usecase.autolock.ObserveAutoLoc
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.ObserveSelectedAutoLockInterval
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.ToggleAutoLockEnabled
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.UpdateAutoLockInterval
+import ch.protonmail.android.mailsettings.presentation.settings.autolock.helpers.AutoLockTestData
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.AutoLockIntervalsUiModelMapper
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.AutoLockEnabledUiModel
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.AutoLockIntervalsUiModel
@@ -187,6 +188,29 @@ internal class AutoLockSettingsViewModelTest {
         coEvery { observeAutoLockPinValue() } returns flowOf(AutoLockPin("").right())
 
         val expectedState = defaultBaseState.copy(forceOpenPinCreation = Effect.of(Unit))
+
+        // When + Then
+        viewModel.state.test {
+            skipItems(1) // Base state
+
+            viewModel.submit(AutoLockSettingsViewAction.ToggleAutoLockPreference(true))
+            assertEquals(expectedState, awaitItem())
+        }
+    }
+
+    @Test
+    fun `should signal an error when auto lock preference cannot be updated`() = runTest {
+        // Given
+        expectAutoLockPreference(false)
+        expectAutoLockInterval()
+        coEvery {
+            toggleAutoLockEnabled(true)
+        } returns AutoLockPreferenceError.DataStoreError.left()
+        coEvery {
+            observeAutoLockPinValue()
+        } returns flowOf(AutoLockTestData.BaseAutoLockPin.right())
+
+        val expectedState = defaultBaseState.copy(updateError = Effect.of(Unit))
 
         // When + Then
         viewModel.state.test {

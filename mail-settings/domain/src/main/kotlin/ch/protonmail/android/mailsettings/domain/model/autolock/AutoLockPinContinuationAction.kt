@@ -19,13 +19,29 @@
 package ch.protonmail.android.mailsettings.domain.model.autolock
 
 import kotlinx.serialization.Serializable
+import kotlin.io.encoding.Base64
+import kotlin.io.encoding.ExperimentalEncodingApi
 
 @Serializable
 sealed interface AutoLockPinContinuationAction {
 
     @Serializable
-    data class NavigateToDeepLink(val destination: String) : AutoLockPinContinuationAction
+    data class NavigateToDeepLink(val destination: EncodedDestination) : AutoLockPinContinuationAction
 
     @Serializable
     object None : AutoLockPinContinuationAction
+
+    @JvmInline
+    @Serializable
+    value class EncodedDestination private constructor(val value: String) {
+
+        @OptIn(ExperimentalEncodingApi::class)
+        fun toDecodedValue() = Base64.decode(value).decodeToString()
+
+        companion object {
+
+            @OptIn(ExperimentalEncodingApi::class)
+            fun fromRawValue(rawValue: String) = EncodedDestination(Base64.encode(rawValue.toByteArray()))
+        }
+    }
 }

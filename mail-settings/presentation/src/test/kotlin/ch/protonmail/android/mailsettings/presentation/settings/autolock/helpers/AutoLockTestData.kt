@@ -58,7 +58,9 @@ internal object AutoLockTestData {
     val NineRemainingAttempts = PinVerificationRemainingAttempts(9)
 
     val BaseAutoLockPin = AutoLockPin("1234")
-    val BaseContinuationDestination = AutoLockPinContinuationAction.NavigateToDeepLink("continuationDestination")
+    val BaseContinuationDestination = AutoLockPinContinuationAction.NavigateToDeepLink(
+        AutoLockPinContinuationAction.EncodedDestination.fromRawValue("continuationDestination")
+    )
     val BaseInvalidPinInserted = InsertedPin(listOf(1, 2, 3))
     val BaseValidPinInserted = InsertedPin(listOf(1, 2, 3, 4))
 

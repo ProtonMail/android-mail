@@ -154,7 +154,9 @@ internal class AutoLockPinReducerTest(private val testInput: TestInput) {
                 state = AutoLockTestData.BaseLoadedState,
                 event = AutoLockPinEvent.Update.VerificationCompleted(AutoLockTestData.BaseContinuationDestination),
                 expected = AutoLockTestData.BaseLoadedState.copy(
-                    navigateEffect = Effect.of(AutoLockTestData.BaseContinuationDestination.destination)
+                    navigateEffect = Effect.of(
+                        AutoLockTestData.BaseContinuationDestination.destination.toDecodedValue()
+                    )
                 )
             ),
 
