@@ -163,10 +163,14 @@ fun SetMessagePasswordContent(
             value = messagePassword,
             showTrailingIcon = true,
             isError = isMessagePasswordError,
-            onValueChange = { messagePassword = it },
+            onValueChange = {
+                messagePassword = it
+                isMessagePasswordError()
+                if (isRepeatedMessagePasswordFieldActivated) isRepeatedMessagePasswordError()
+            },
             onFocusChanged = { hasFocus ->
                 if (hasFocus) isMessagePasswordFieldActivated = true
-                else if (isMessagePasswordFieldActivated) isMessagePasswordError()
+                if (isMessagePasswordFieldActivated) isMessagePasswordError()
                 if (isRepeatedMessagePasswordFieldActivated) isRepeatedMessagePasswordError()
             }
         )
@@ -181,10 +185,14 @@ fun SetMessagePasswordContent(
             value = repeatedMessagePassword,
             showTrailingIcon = true,
             isError = isRepeatedMessagePasswordError,
-            onValueChange = { repeatedMessagePassword = it },
+            onValueChange = {
+                repeatedMessagePassword = it
+                isRepeatedMessagePasswordError()
+                if (isMessagePasswordFieldActivated) isMessagePasswordError()
+            },
             onFocusChanged = { hasFocus ->
                 if (hasFocus) isRepeatedMessagePasswordFieldActivated = true
-                else if (isRepeatedMessagePasswordFieldActivated) isRepeatedMessagePasswordError()
+                if (isRepeatedMessagePasswordFieldActivated) isRepeatedMessagePasswordError()
                 if (isMessagePasswordFieldActivated) isMessagePasswordError()
             }
         )
