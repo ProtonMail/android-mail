@@ -24,10 +24,12 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
+import ch.protonmail.android.BuildConfig
 import ch.protonmail.android.feature.account.RemoveAccountDialog
 import ch.protonmail.android.feature.account.SignOutAccountDialog
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen
+import ch.protonmail.android.mailcontact.presentation.contactlist.ContactListScreen
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetail
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
@@ -45,7 +47,6 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailsettings.presentation.settings.MainSettingsScreen
 import ch.protonmail.android.navigation.model.Destination
 import ch.protonmail.android.navigation.model.SavedStateKey
-import ch.protonmail.android.mailcontact.presentation.contactlist.ContactListScreen
 import me.proton.core.compose.navigation.get
 import me.proton.core.domain.entity.UserId
 import me.proton.core.util.kotlin.takeIfNotBlank
@@ -202,7 +203,11 @@ internal fun NavGraphBuilder.addSettings(navController: NavHostController, showF
                     navController.navigate(Destination.Screen.Notifications.route)
                 },
                 onAutoLockClick = {
-                    showFeatureMissingSnackbar()
+                    if (BuildConfig.DEBUG) { // To be removed prior to release.
+                        navController.navigate(Destination.Screen.AutoLockSettings.route)
+                    } else {
+                        showFeatureMissingSnackbar()
+                    }
                 },
                 onAlternativeRoutingClick = {
                     navController.navigate(Destination.Screen.AlternativeRoutingSettings.route)

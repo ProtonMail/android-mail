@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.navigation.route
 
+import android.net.Uri
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -28,6 +29,8 @@ import ch.protonmail.android.mailsettings.presentation.accountsettings.conversat
 import ch.protonmail.android.mailsettings.presentation.accountsettings.defaultaddress.ui.EditDefaultAddressScreen
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.ui.EditAddressIdentityScreen
 import ch.protonmail.android.mailsettings.presentation.settings.alternativerouting.AlternativeRoutingSettingScreen
+import ch.protonmail.android.mailsettings.presentation.settings.autolock.ui.AutoLockSettingsScreen
+import ch.protonmail.android.mailsettings.presentation.settings.autolock.ui.pin.AutoLockPinScreen
 import ch.protonmail.android.mailsettings.presentation.settings.combinedcontacts.CombinedContactsSettingScreen
 import ch.protonmail.android.mailsettings.presentation.settings.language.LanguageSettingsScreen
 import ch.protonmail.android.mailsettings.presentation.settings.notifications.ui.PushNotificationsSettingsScreen
@@ -109,6 +112,28 @@ internal fun NavGraphBuilder.addPrivacySettings(navController: NavHostController
         PrivacySettingsScreen(
             modifier = Modifier,
             onBackClick = { navController.popBackStack() }
+        )
+    }
+}
+
+internal fun NavGraphBuilder.addAutoLockSettings(navController: NavHostController) {
+    composable(route = Screen.AutoLockSettings.route) {
+        AutoLockSettingsScreen(
+            modifier = Modifier,
+            onBackClick = { navController.popBackStack() },
+            onPinScreenNavigation = { navController.navigate(Screen.AutoLockPinSettings(it)) }
+        )
+    }
+}
+
+internal fun NavGraphBuilder.addPinInsertion(navController: NavHostController) {
+    composable(route = Screen.AutoLockPinSettings.route) {
+        AutoLockPinScreen(
+            modifier = Modifier,
+            onBackClick = { navController.popBackStack() },
+            onNavigateTo = {
+                navController.navigate(Uri.parse(it))
+            }
         )
     }
 }
