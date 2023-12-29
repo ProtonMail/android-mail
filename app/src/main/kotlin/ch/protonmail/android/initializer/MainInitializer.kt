@@ -75,7 +75,8 @@ class MainInitializer : Initializer<Unit> {
         ThemeObserverInitializer::class.java,
         NotificationInitializer::class.java,
         NotificationHandlersInitializer::class.java,
-        OutboxInitializer::class.java
+        OutboxInitializer::class.java,
+        AutoLockHandlerInitializer::class.java
     )
 
     companion object {
