@@ -30,7 +30,7 @@ object Versions {
 
     object AndroidX {
 
-        const val activity = "1.7.0-beta01"
+        const val activity = "1.7.2"
         const val annotation = "1.2.0"
         const val appCompat = "1.6.1"
         const val compose = "1.4.3"
