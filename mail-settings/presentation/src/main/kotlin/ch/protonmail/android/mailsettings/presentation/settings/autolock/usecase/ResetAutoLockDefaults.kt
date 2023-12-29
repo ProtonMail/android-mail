@@ -20,6 +20,7 @@ package ch.protonmail.android.mailsettings.presentation.settings.autolock.usecas
 
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPin
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.SaveAutoLockPin
+import ch.protonmail.android.mailsettings.domain.usecase.autolock.ToggleAutoLockAttemptPendingStatus
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.ToggleAutoLockEnabled
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.UpdateRemainingAutoLockAttempts
 import javax.inject.Inject
@@ -27,13 +28,15 @@ import javax.inject.Inject
 class ResetAutoLockDefaults @Inject constructor(
     private val toggleAutoLockEnabled: ToggleAutoLockEnabled,
     private val updateRemainingAutoLockAttempts: UpdateRemainingAutoLockAttempts,
-    private val saveAutoLockPin: SaveAutoLockPin
+    private val saveAutoLockPin: SaveAutoLockPin,
+    private val toggleAutoLockAttemptStatus: ToggleAutoLockAttemptPendingStatus
 ) {
 
     suspend operator fun invoke() {
         toggleAutoLockEnabled(Defaults.AutoLockPreference)
         saveAutoLockPin(Defaults.AutoLockPin)
         updateRemainingAutoLockAttempts(Defaults.AutoLockRemainingAttempts)
+        toggleAutoLockAttemptStatus(Defaults.AutoLockPendingStatus)
     }
 
     private object Defaults {
@@ -41,5 +44,6 @@ class ResetAutoLockDefaults @Inject constructor(
         const val AutoLockPreference = false
         val AutoLockPin = AutoLockPin("")
         const val AutoLockRemainingAttempts = 10
+        const val AutoLockPendingStatus = false
     }
 }

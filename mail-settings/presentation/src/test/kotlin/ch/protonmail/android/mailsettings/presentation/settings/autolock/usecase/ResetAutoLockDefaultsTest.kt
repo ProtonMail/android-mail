@@ -21,6 +21,7 @@ package ch.protonmail.android.mailsettings.presentation.settings.autolock.usecas
 import arrow.core.right
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPin
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.SaveAutoLockPin
+import ch.protonmail.android.mailsettings.domain.usecase.autolock.ToggleAutoLockAttemptPendingStatus
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.ToggleAutoLockEnabled
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.UpdateRemainingAutoLockAttempts
 import io.mockk.coEvery
@@ -34,11 +35,13 @@ internal class ResetAutoLockDefaultsTest {
     private val toggleAutoLockEnabled = mockk<ToggleAutoLockEnabled>()
     private val updateRemainingAutoLockAttempts = mockk<UpdateRemainingAutoLockAttempts>()
     private val saveAutoLockPin = mockk<SaveAutoLockPin>()
+    private val toggleAutoLockPendingAttemptStatus = mockk<ToggleAutoLockAttemptPendingStatus>()
 
     private val resetAutoLockDefaults = ResetAutoLockDefaults(
         toggleAutoLockEnabled,
         updateRemainingAutoLockAttempts,
-        saveAutoLockPin
+        saveAutoLockPin,
+        toggleAutoLockPendingAttemptStatus
     )
 
     @Test
@@ -47,6 +50,7 @@ internal class ResetAutoLockDefaultsTest {
         coEvery { toggleAutoLockEnabled(ExpectedDefaults.AutoLockPreference) } returns Unit.right()
         coEvery { updateRemainingAutoLockAttempts(ExpectedDefaults.AutoLockRemainingAttempts) } returns Unit.right()
         coEvery { saveAutoLockPin(ExpectedDefaults.AutoLockPin) } returns Unit.right()
+        coEvery { toggleAutoLockPendingAttemptStatus(ExpectedDefaults.AutoLockPendingStatus) } returns Unit.right()
 
         // When
         resetAutoLockDefaults()
@@ -56,6 +60,7 @@ internal class ResetAutoLockDefaultsTest {
             toggleAutoLockEnabled(ExpectedDefaults.AutoLockPreference)
             saveAutoLockPin(ExpectedDefaults.AutoLockPin)
             updateRemainingAutoLockAttempts(ExpectedDefaults.AutoLockRemainingAttempts)
+            toggleAutoLockPendingAttemptStatus(ExpectedDefaults.AutoLockPendingStatus)
         }
     }
 
@@ -64,5 +69,6 @@ internal class ResetAutoLockDefaultsTest {
         const val AutoLockPreference = false
         val AutoLockPin = AutoLockPin("")
         const val AutoLockRemainingAttempts = 10
+        const val AutoLockPendingStatus = false
     }
 }
