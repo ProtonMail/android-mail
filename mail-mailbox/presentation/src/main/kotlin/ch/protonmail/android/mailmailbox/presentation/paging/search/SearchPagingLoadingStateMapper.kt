@@ -58,7 +58,7 @@ fun LazyPagingItems<MailboxItemUiModel>.mapToUiStatesInSearch(
         is MailboxScreenState.AppendError,
         is MailboxScreenState.AppendOfflineError -> SearchAppendErrorStateHandler.getNextState(this, searchMode)
 
-        else -> MailboxScreenState.SearchData(this)
+        else -> SearchStateFinder.getBestSearchState(this, searchMode)
     }.exhaustive
 }
 

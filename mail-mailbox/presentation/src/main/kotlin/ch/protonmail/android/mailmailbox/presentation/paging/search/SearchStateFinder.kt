@@ -22,6 +22,7 @@ import androidx.paging.compose.LazyPagingItems
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreenState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxSearchMode
+import ch.protonmail.android.mailmailbox.presentation.paging.isPageEmpty
 
 object SearchStateFinder {
 
@@ -32,7 +33,13 @@ object SearchStateFinder {
         return when (searchMode) {
             MailboxSearchMode.NewSearch -> NewSearchStateHandler.getNextState(paging, searchMode)
             MailboxSearchMode.NewSearchLoading -> SearchLoadingStateHandler.getNextState(paging)
-            else -> SearchDataStateHandler.getNextState(paging)
+            else -> {
+                if (paging.isPageEmpty()) {
+                    SearchNoDataStateHandler.getNextState(paging)
+                } else {
+                    SearchDataStateHandler.getNextState(paging)
+                }
+            }
         }
     }
 }
