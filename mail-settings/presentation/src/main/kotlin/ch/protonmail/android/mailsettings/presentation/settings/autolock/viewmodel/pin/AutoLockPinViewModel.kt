@@ -27,7 +27,9 @@ import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPinConti
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.GetRemainingAutoLockAttempts
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.ObserveAutoLockPinValue
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.SaveAutoLockPin
+import ch.protonmail.android.mailsettings.domain.usecase.autolock.ToggleAutoLockAttemptPendingStatus
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.ToggleAutoLockEnabled
+import ch.protonmail.android.mailsettings.domain.usecase.autolock.UpdateLastForegroundMillis
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.UpdateRemainingAutoLockAttempts
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.AutoLockPinEvent
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.AutoLockPinState
@@ -56,6 +58,8 @@ class AutoLockPinViewModel @Inject constructor(
     private val updateRemainingAutoLockAttempts: UpdateRemainingAutoLockAttempts,
     private val saveAutoLockPin: SaveAutoLockPin,
     private val clearPinDataAndForceLogout: ClearPinDataAndForceLogout,
+    private val toggleAutoLockAttemptStatus: ToggleAutoLockAttemptPendingStatus,
+    private val updateAutoLockLastForegroundMillis: UpdateLastForegroundMillis,
     private val reducer: AutoLockPinReducer,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -85,6 +89,8 @@ class AutoLockPinViewModel @Inject constructor(
             val remainingAttempts = getRemainingAutoLockAttempts().getOrNull()?.value?.let {
                 PinVerificationRemainingAttempts(it)
             } ?: PinVerificationRemainingAttempts.Default
+
+            toggleAutoLockAttemptStatus(value = true)
 
             emitNewStateFrom(AutoLockPinEvent.Data.Loaded(step, remainingAttempts))
         }
@@ -182,6 +188,14 @@ class AutoLockPinViewModel @Inject constructor(
 
         updateRemainingAutoLockAttempts(PinVerificationRemainingAttempts.MaxAttempts).onLeft {
             Timber.e("Unable to reset remaining auto lock attempts. - $it")
+        }
+
+        toggleAutoLockAttemptStatus(value = false).onLeft {
+            Timber.e("Unable to reset pending lock attempt. - $it")
+        }
+
+        updateAutoLockLastForegroundMillis(Long.MAX_VALUE).onLeft {
+            Timber.e("Unable to update last foreground millis - $it")
         }
 
         continuation()

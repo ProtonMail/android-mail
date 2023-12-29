@@ -32,7 +32,9 @@ import ch.protonmail.android.mailsettings.domain.repository.AutoLockPreferenceEr
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.GetRemainingAutoLockAttempts
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.ObserveAutoLockPinValue
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.SaveAutoLockPin
+import ch.protonmail.android.mailsettings.domain.usecase.autolock.ToggleAutoLockAttemptPendingStatus
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.ToggleAutoLockEnabled
+import ch.protonmail.android.mailsettings.domain.usecase.autolock.UpdateLastForegroundMillis
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.UpdateRemainingAutoLockAttempts
 import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.helpers.AutoLockTestData
@@ -72,6 +74,8 @@ internal class AutoLockPinViewModelTest {
     private val updateRemainingAutoLockAttempts = mockk<UpdateRemainingAutoLockAttempts>()
     private val saveAutoLockPin = mockk<SaveAutoLockPin>()
     private val clearPinDataAndForceLogout = mockk<ClearPinDataAndForceLogout>(relaxUnitFun = true)
+    private val toggleAutoLockAttemptStatus = mockk<ToggleAutoLockAttemptPendingStatus>()
+    private val updateAutoLockLastForegroundMillis = mockk<UpdateLastForegroundMillis>()
     private val savedStateHandle = mockk<SavedStateHandle>()
     private val reducer = AutoLockPinReducer(AutoLockPinStepUiMapper(), AutoLockPinErrorUiMapper())
 
@@ -83,6 +87,8 @@ internal class AutoLockPinViewModelTest {
             updateRemainingAutoLockAttempts,
             saveAutoLockPin,
             clearPinDataAndForceLogout,
+            toggleAutoLockAttemptStatus,
+            updateAutoLockLastForegroundMillis,
             reducer,
             savedStateHandle
         )
@@ -103,6 +109,7 @@ internal class AutoLockPinViewModelTest {
         // Given
         expectStandaloneStart()
         expectAttempts()
+        expectAttemptStatusToggling()
         val expectedState = AutoLockTestData.BaseLoadedState
 
         // When + Then
@@ -117,6 +124,7 @@ internal class AutoLockPinViewModelTest {
         // Given
         expectStandaloneStart()
         expectAttempts()
+        expectAttemptStatusToggling()
 
         // When + Then
         viewModel.state.test {
@@ -141,6 +149,7 @@ internal class AutoLockPinViewModelTest {
         // Given
         expectStandaloneStart()
         expectAttempts()
+        expectAttemptStatusToggling()
         val expectedState = AutoLockTestData.BaseLoadedState.copy(closeScreenEffect = Effect.of(Unit))
 
         // When + Then
@@ -158,6 +167,7 @@ internal class AutoLockPinViewModelTest {
         // Given
         expectConditionalStart(AutoLockInsertionMode.ChangePin)
         expectAttempts()
+        expectAttemptStatusToggling()
         val expectedCloseEffect = Effect.of(Unit)
 
         // When + Then
@@ -178,6 +188,7 @@ internal class AutoLockPinViewModelTest {
         // Given
         expectConditionalStart(AutoLockInsertionMode.VerifyPin(AutoLockPinContinuationAction.None))
         expectAttempts()
+        expectAttemptStatusToggling()
 
         // When + Then
         viewModel.state.test {
@@ -194,6 +205,7 @@ internal class AutoLockPinViewModelTest {
         // Given
         expectStandaloneStart()
         expectAttempts()
+        expectAttemptStatusToggling()
         val expectedInsertedPin = InsertedPin(listOf(0))
 
         // When + Then
@@ -213,6 +225,7 @@ internal class AutoLockPinViewModelTest {
         // Given
         expectStandaloneStart()
         expectAttempts()
+        expectAttemptStatusToggling()
         val expectedInsertedPin = InsertedPin(listOf(1))
 
         // When + Then
@@ -237,6 +250,7 @@ internal class AutoLockPinViewModelTest {
         // Given
         expectStandaloneStart()
         expectAttempts()
+        expectAttemptStatusToggling()
         val expectedStep = PinInsertionStep.PinConfirmation
         val expectedError = Effect.of(TextUiModel(R.string.mail_settings_pin_insertion_error_no_match))
 
@@ -261,6 +275,7 @@ internal class AutoLockPinViewModelTest {
         // Given
         expectStandaloneStart()
         expectAttempts()
+        expectAttemptStatusToggling()
         coEvery {
             saveAutoLockPin(AutoLockTestData.BaseAutoLockPin)
         } returns AutoLockPreferenceError.DataStoreError.left()
@@ -289,6 +304,7 @@ internal class AutoLockPinViewModelTest {
         // Given
         expectStandaloneStart()
         expectAttempts()
+        expectAttemptStatusToggling()
         coEvery { saveAutoLockPin(AutoLockTestData.BaseAutoLockPin) } returns Unit.right()
         coEvery { toggleAutoLockEnabled(true) } returns AutoLockPreferenceError.DataStoreError.left()
 
@@ -316,6 +332,7 @@ internal class AutoLockPinViewModelTest {
         // Given
         expectStandaloneStart()
         expectAttempts()
+        expectAttemptStatusToggling()
         coEvery { saveAutoLockPin(AutoLockTestData.BaseAutoLockPin) } returns Unit.right()
         coEvery { toggleAutoLockEnabled(true) } returns Unit.right()
 
@@ -345,8 +362,10 @@ internal class AutoLockPinViewModelTest {
         // Given
         expectConditionalStart(AutoLockInsertionMode.ChangePin)
         expectAttempts()
+        expectAttemptStatusToggling()
         expectExistingPin("1234")
         expectValidAutoLockAttemptsUpdate()
+        expectLastForegroundReset()
 
         // When + Then
         viewModel.state.test {
@@ -368,6 +387,7 @@ internal class AutoLockPinViewModelTest {
         // Given
         expectConditionalStart(AutoLockInsertionMode.ChangePin)
         expectAttempts(value = PinVerificationRemainingAttempts.MaxAttempts)
+        expectAttemptStatusToggling()
         expectExistingPin("1234")
         expectValidAutoLockAttemptsUpdate()
 
@@ -392,6 +412,7 @@ internal class AutoLockPinViewModelTest {
         // Given
         expectConditionalStart(AutoLockInsertionMode.ChangePin)
         expectAttempts(value = 1)
+        expectAttemptStatusToggling()
         expectExistingPin("1234")
         expectValidAutoLockAttemptsUpdate()
 
@@ -417,8 +438,10 @@ internal class AutoLockPinViewModelTest {
         // Given
         expectConditionalStart(AutoLockInsertionMode.VerifyPin(AutoLockPinContinuationAction.None))
         expectAttempts()
+        expectAttemptStatusToggling()
         expectExistingPin("1234")
         expectValidAutoLockAttemptsUpdate()
+        expectLastForegroundReset()
 
         val expectedCloseEffect = Effect.of(Unit)
 
@@ -441,11 +464,17 @@ internal class AutoLockPinViewModelTest {
         // Given
         val expectedDestination = "destination"
         expectConditionalStart(
-            AutoLockInsertionMode.VerifyPin(AutoLockPinContinuationAction.NavigateToDeepLink(expectedDestination))
+            AutoLockInsertionMode.VerifyPin(
+                AutoLockPinContinuationAction.NavigateToDeepLink(
+                    AutoLockPinContinuationAction.EncodedDestination.fromRawValue(expectedDestination)
+                )
+            )
         )
         expectAttempts()
+        expectAttemptStatusToggling()
         expectExistingPin("1234")
         expectValidAutoLockAttemptsUpdate()
+        expectLastForegroundReset()
 
         val expectedNavigationEffect = Effect.of(expectedDestination)
 
@@ -477,12 +506,21 @@ internal class AutoLockPinViewModelTest {
         coEvery { getRemainingAutoLockAttempts() } returns AutoLockRemainingAttempts(value).right()
     }
 
+    private fun expectAttemptStatusToggling() {
+        coEvery { toggleAutoLockAttemptStatus(true) } returns Unit.right()
+        coEvery { toggleAutoLockAttemptStatus(false) } returns Unit.right()
+    }
+
     private fun expectValidAutoLockAttemptsUpdate() {
         coEvery { updateRemainingAutoLockAttempts(any()) } returns Unit.right()
     }
 
     private fun expectExistingPin(pin: String) {
         every { observeAutoLockPin() } returns flowOf(AutoLockPin(pin).right())
+    }
+
+    private fun expectLastForegroundReset() {
+        coEvery { updateAutoLockLastForegroundMillis(Long.MAX_VALUE) } returns Unit.right()
     }
 
     private fun AutoLockPinViewModel.insertPinAndConfirm(pin: String) {
