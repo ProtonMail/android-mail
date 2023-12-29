@@ -31,12 +31,15 @@ import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample.AlphaAppQAReport
+import ch.protonmail.android.mailsettings.domain.usecase.autolock.ShouldPresentPinInsertionScreen
 import ch.protonmail.android.navigation.deeplinks.NotificationsDeepLinksViewModel.State.NavigateToComposerForReply
 import ch.protonmail.android.navigation.deeplinks.NotificationsDeepLinksViewModel.State.NavigateToConversation
 import ch.protonmail.android.navigation.deeplinks.NotificationsDeepLinksViewModel.State.NavigateToInbox
 import ch.protonmail.android.navigation.deeplinks.NotificationsDeepLinksViewModel.State.NavigateToMessageDetails
+import io.mockk.called
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
@@ -68,6 +71,9 @@ class NotificationsDeepLinksViewModelTest {
         coEvery { getMailSettings(any(), any()) } returns mailSettings
     }
     private val getPrimaryAddress: GetPrimaryAddress = mockk()
+    private val shouldPresentPinInsertionScreen = mockk<ShouldPresentPinInsertionScreen> {
+        every { this@mockk() } returns flowOf(false)
+    }
 
     @Before
     fun before() {
@@ -319,12 +325,36 @@ class NotificationsDeepLinksViewModelTest {
             coVerify { accountManager.setAsPrimary(secondaryAccount.userId) }
         }
 
+    @Test
+    fun `Should navigate to pin lock before processing the notification`() = runTest {
+        // Given
+        every { shouldPresentPinInsertionScreen() } returns flowOf(true)
+        val viewModel = buildViewModel()
+        val expected = NotificationsDeepLinksViewModel.State.ForcePinVerification
+
+        // When + Then
+        viewModel.state.test {
+            assertEquals(expected, awaitItem())
+            expectNoEvents()
+        }
+
+        coVerify {
+            networkManager wasNot called
+            accountManager wasNot called
+            messageRepository wasNot called
+            conversationRepository wasNot called
+            mailSettingsRepository wasNot called
+            getPrimaryAddress wasNot called
+        }
+    }
+
     private fun buildViewModel() = NotificationsDeepLinksViewModel(
         networkManager = networkManager,
         accountManager = accountManager,
         messageRepository = messageRepository,
         conversationRepository = conversationRepository,
         mailSettingsRepository = mailSettingsRepository,
-        getPrimaryAddress = getPrimaryAddress
+        getPrimaryAddress = getPrimaryAddress,
+        shouldPresentPinInsertionScreen = shouldPresentPinInsertionScreen
     )
 }

@@ -27,6 +27,7 @@ import ch.protonmail.android.mailconversation.domain.repository.ConversationRepo
 import ch.protonmail.android.mailmessage.domain.model.Message
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
+import ch.protonmail.android.mailsettings.domain.usecase.autolock.ShouldPresentPinInsertionScreen
 import ch.protonmail.android.navigation.deeplinks.NotificationsDeepLinksViewModel.State.NavigateToInbox
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -36,6 +37,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
 import me.proton.core.account.domain.entity.AccountState
 import me.proton.core.accountmanager.domain.AccountManager
@@ -56,13 +59,20 @@ class NotificationsDeepLinksViewModel @Inject constructor(
     private val getPrimaryAddress: GetPrimaryAddress,
     private val messageRepository: MessageRepository,
     private val conversationRepository: ConversationRepository,
-    private val mailSettingsRepository: MailSettingsRepository
+    private val mailSettingsRepository: MailSettingsRepository,
+    shouldPresentPinInsertionScreen: ShouldPresentPinInsertionScreen
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<State>(State.None)
     val state: StateFlow<State> = _state
 
     private var navigateJob: Job? = null
+
+    init {
+        shouldPresentPinInsertionScreen().mapLatest {
+            _state.value = if (it) State.ForcePinVerification else State.Launched
+        }.launchIn(viewModelScope)
+    }
 
     fun navigateToMessage(messageId: String, userId: String) {
         if (isOffline()) {
@@ -212,7 +222,10 @@ class NotificationsDeepLinksViewModel @Inject constructor(
     private fun isOffline() = networkManager.networkStatus == NetworkStatus.Disconnected
 
     sealed interface State {
+        object Launched : State
+
         object None : State
+
         sealed interface NavigateToInbox : State {
             object ActiveUser : NavigateToInbox
             data class ActiveUserSwitched(val email: String) : NavigateToInbox
@@ -233,6 +246,8 @@ class NotificationsDeepLinksViewModel @Inject constructor(
             val messageId: MessageId,
             val userSwitchedEmail: String? = null
         ) : State
+
+        object ForcePinVerification : State
     }
 
     private sealed interface AccountSwitchResult {

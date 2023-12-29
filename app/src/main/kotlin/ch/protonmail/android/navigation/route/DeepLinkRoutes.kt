@@ -19,6 +19,7 @@
 package ch.protonmail.android.navigation.route
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.compose.runtime.LaunchedEffect
@@ -34,6 +35,8 @@ import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailnotifications.domain.NotificationInteraction
 import ch.protonmail.android.mailnotifications.domain.NotificationsDeepLinkHelper
 import ch.protonmail.android.mailnotifications.domain.resolveNotificationInteraction
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockInsertionMode
+import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPinContinuationAction
 import ch.protonmail.android.navigation.deeplinks.NotificationsDeepLinksViewModel
 import ch.protonmail.android.navigation.model.Destination
 import timber.log.Timber
@@ -56,6 +59,48 @@ internal fun NavGraphBuilder.addDeepLinkHandler(navController: NavHostController
             when (state) {
                 is NotificationsDeepLinksViewModel.State.None -> {
                     Timber.d("Deep link state is None")
+                }
+
+                is NotificationsDeepLinksViewModel.State.ForcePinVerification -> {
+                    val deeplink = it.arguments.originalDeepLink
+
+                    val continuationAction = deeplink?.let {
+                        AutoLockPinContinuationAction.NavigateToDeepLink(
+                            AutoLockPinContinuationAction.EncodedDestination.fromRawValue(it)
+                        )
+                    } ?: AutoLockPinContinuationAction.None
+
+                    navController.navigate(
+                        Destination.Screen.AutoLockPinSettings(
+                            AutoLockInsertionMode.VerifyPin(continuationAction)
+                        )
+                    ) {
+                        popUpTo(Destination.Screen.Mailbox.route) { inclusive = false }
+                    }
+                }
+
+                is NotificationsDeepLinksViewModel.State.Launched -> {
+                    val interaction = resolveNotificationInteraction(
+                        userId = it.arguments.userId,
+                        messageId = it.arguments.messageId,
+                        action = it.arguments.action
+                    )
+
+                    when (interaction) {
+                        is NotificationInteraction.SingleTap -> {
+                            viewModel.navigateToMessage(messageId = interaction.messageId, userId = interaction.userId)
+                        }
+
+                        is NotificationInteraction.GroupTap -> {
+                            viewModel.navigateToInbox(interaction.userId)
+                        }
+
+                        is NotificationInteraction.ReplyActionTap -> {
+                            viewModel.navigateToComposer(messageId = interaction.messageId, userId = interaction.userId)
+                        }
+
+                        NotificationInteraction.NoAction -> Unit
+                    }
                 }
 
                 is NotificationsDeepLinksViewModel.State.NavigateToInbox.ActiveUser -> {
@@ -93,28 +138,6 @@ internal fun NavGraphBuilder.addDeepLinkHandler(navController: NavHostController
                     showUserSwitchedEmailIfRequired(context, state.userSwitchedEmail)
                 }
             }
-
-            val interaction = resolveNotificationInteraction(
-                userId = it.arguments.userId,
-                messageId = it.arguments.messageId,
-                action = it.arguments.action
-            )
-
-            when (interaction) {
-                is NotificationInteraction.SingleTap -> {
-                    viewModel.navigateToMessage(messageId = interaction.messageId, userId = interaction.userId)
-                }
-
-                is NotificationInteraction.GroupTap -> {
-                    viewModel.navigateToInbox(interaction.userId)
-                }
-
-                is NotificationInteraction.ReplyActionTap -> {
-                    viewModel.navigateToComposer(messageId = interaction.messageId, userId = interaction.userId)
-                }
-
-                NotificationInteraction.NoAction -> Unit
-            }
         }
     }
 }
@@ -137,3 +160,10 @@ private val Bundle?.userId: String?
 
 private val Bundle?.action: String?
     get() = this?.getString("action")
+
+@Suppress("DEPRECATION") // Keep the deprecation, no valid alternative to fetch the intent uri data.
+private val Bundle?.originalDeepLink: String?
+    get() {
+        val intentDeepLink = (this?.get("android-support-nav:controller:deepLinkIntent") as Intent).data?.path
+        return intentDeepLink?.let { "proton://notification$it" }
+    }
