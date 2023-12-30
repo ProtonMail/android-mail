@@ -33,6 +33,13 @@ class MessagePasswordRepositoryImpl @Inject constructor(
     override suspend fun saveMessagePassword(messagePassword: MessagePassword) =
         messagePasswordLocalDataSource.save(messagePassword)
 
+    override suspend fun updateMessagePassword(
+        userId: UserId,
+        messageId: MessageId,
+        password: String,
+        passwordHint: String?
+    ) = messagePasswordLocalDataSource.update(userId, messageId, password, passwordHint)
+
     override suspend fun observeMessagePassword(userId: UserId, messageId: MessageId): Flow<MessagePassword?> =
         messagePasswordLocalDataSource.observe(userId, messageId)
 

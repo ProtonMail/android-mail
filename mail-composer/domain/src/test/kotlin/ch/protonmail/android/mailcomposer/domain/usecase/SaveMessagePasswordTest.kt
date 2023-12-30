@@ -40,9 +40,9 @@ import kotlin.test.assertEquals
 
 class SaveMessagePasswordTest {
 
-    val userId = UserIdTestData.userId
-    val messageId = MessageIdSample.NewDraftWithSubjectAndBody
-    val senderEmail = SenderEmail("sender@pm.me")
+    private val userId = UserIdTestData.userId
+    private val messageId = MessageIdSample.NewDraftWithSubjectAndBody
+    private val senderEmail = SenderEmail("sender@pm.me")
 
     private val getLocalDraft = mockk<GetLocalDraft>()
     private val keyStoreCrypto = mockk<KeyStoreCrypto>()
@@ -180,6 +180,52 @@ class SaveMessagePasswordTest {
 
         // When
         val actual = saveMessagePassword(userId, messageId, senderEmail, password, passwordHint)
+
+        // Then
+        assertEquals(DataError.Local.Unknown.left(), actual)
+    }
+
+    @Test
+    fun `should return unit when message password is encrypted and updated successfully`() = runTest {
+        // Given
+        val password = "password"
+        val passwordHint = "password hint"
+        val encryptedPassword = "encryptedPassword"
+        expectDraftAlreadyExists()
+        every { keyStoreCrypto.encrypt(password) } returns encryptedPassword
+        coEvery {
+            messagePasswordRepository.updateMessagePassword(
+                userId, MessageWithBodySample.EmptyDraft.message.messageId, encryptedPassword, passwordHint
+            )
+        } returns Unit.right()
+
+        // When
+        val actual = saveMessagePassword(
+            userId, messageId, senderEmail, password, passwordHint, SaveMessagePasswordAction.Update
+        )
+
+        // Then
+        assertEquals(Unit.right(), actual)
+    }
+
+    @Test
+    fun `should return error when updating of encrypted password fails`() = runTest {
+        // Given
+        val password = "password"
+        val passwordHint = "password hint"
+        val encryptedPassword = "encryptedPassword"
+        expectDraftAlreadyExists()
+        every { keyStoreCrypto.encrypt(password) } returns encryptedPassword
+        coEvery {
+            messagePasswordRepository.updateMessagePassword(
+                userId, MessageWithBodySample.EmptyDraft.message.messageId, encryptedPassword, passwordHint
+            )
+        } returns DataError.Local.Unknown.left()
+
+        // When
+        val actual = saveMessagePassword(
+            userId, messageId, senderEmail, password, passwordHint, SaveMessagePasswordAction.Update
+        )
 
         // Then
         assertEquals(DataError.Local.Unknown.left(), actual)

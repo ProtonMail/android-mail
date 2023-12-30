@@ -23,6 +23,7 @@ import ch.protonmail.android.mailcomposer.domain.model.MessagePassword
 sealed interface MessagePasswordOperation {
     sealed interface Action : MessagePasswordOperation {
         data class ApplyPassword(val password: String, val passwordHint: String?) : Action
+        data class UpdatePassword(val password: String, val passwordHint: String?) : Action
         object RemovePassword : Action
     }
     sealed interface Event : MessagePasswordOperation {

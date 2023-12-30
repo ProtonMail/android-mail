@@ -46,7 +46,8 @@ class SaveMessagePassword @Inject constructor(
         messageId: MessageId,
         senderEmail: SenderEmail,
         password: String,
-        passwordHint: String?
+        passwordHint: String?,
+        action: SaveMessagePasswordAction = SaveMessagePasswordAction.Create
     ): Either<DataError.Local, Unit> = transactor.performTransaction {
         either {
             val draft = getLocalDraft(userId, messageId, senderEmail)
@@ -66,9 +67,18 @@ class SaveMessagePassword @Inject constructor(
                 onSuccess = { it },
                 onFailure = { raise(DataError.Local.EncryptionError) }
             )
-            messagePasswordRepository.saveMessagePassword(
-                MessagePassword(userId, draft.message.messageId, encryptedPassword, passwordHint)
-            ).bind()
+
+            if (action == SaveMessagePasswordAction.Create) {
+                messagePasswordRepository.saveMessagePassword(
+                    MessagePassword(userId, draft.message.messageId, encryptedPassword, passwordHint)
+                )
+            } else {
+                messagePasswordRepository.updateMessagePassword(
+                    userId, draft.message.messageId, encryptedPassword, passwordHint
+                )
+            }.bind()
         }
     }
 }
+
+enum class SaveMessagePasswordAction { Create, Update }

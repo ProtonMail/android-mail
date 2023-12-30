@@ -44,6 +44,20 @@ class MessagePasswordLocalDataSourceImpl @Inject constructor(
         }
     }
 
+    override suspend fun update(
+        userId: UserId,
+        messageId: MessageId,
+        password: String,
+        passwordHint: String?
+    ): Either<DataError.Local, Unit> {
+        return Either.catch {
+            messagePasswordDao.updatePasswordAndHint(userId, messageId, password, passwordHint)
+        }.mapLeft {
+            Timber.e("Unexpected error updating message password in DB.", it)
+            DataError.Local.Unknown
+        }
+    }
+
     override suspend fun observe(userId: UserId, messageId: MessageId): Flow<MessagePassword?> =
         messagePasswordDao.observe(userId, messageId).mapLatest { it?.toDomainModel() }
 

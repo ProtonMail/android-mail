@@ -83,6 +83,34 @@ class MessagePasswordLocalDataSourceImplTest {
     }
 
     @Test
+    fun `should return unit when updating message password was successful`() = runTest {
+        // Given
+        val password = "password"
+        val hint = "hint"
+        coEvery { messagePasswordDao.updatePasswordAndHint(userId, messageId, password, hint) } just runs
+
+        // When
+        val actual = messagePasswordLocalDataSource.update(userId, messageId, password, hint)
+
+        // Then
+        assertEquals(Unit.right(), actual)
+    }
+
+    @Test
+    fun `should return error when updating message password throws an exception`() = runTest {
+        // Given
+        val password = "password"
+        val hint = "hint"
+        coEvery { messagePasswordDao.updatePasswordAndHint(userId, messageId, password, hint) } throws IOException()
+
+        // When
+        val actual = messagePasswordLocalDataSource.update(userId, messageId, password, hint)
+
+        // Then
+        assertEquals(DataError.Local.Unknown.left(), actual)
+    }
+
+    @Test
     fun `should return message password when observing and password exists`() = runTest {
         // Given
         val password = "password"

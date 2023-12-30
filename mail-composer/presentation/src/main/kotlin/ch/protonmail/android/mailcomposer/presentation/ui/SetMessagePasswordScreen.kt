@@ -107,7 +107,11 @@ fun SetMessagePasswordScreen(
                     actions = SetMessagePasswordContent.Actions(
                         onApplyButtonClick = { messagePassword, messagePasswordHint ->
                             viewModel.submit(
-                                MessagePasswordOperation.Action.ApplyPassword(messagePassword, messagePasswordHint)
+                                if ((state as SetMessagePasswordState.Data).shouldShowEditingButtons) {
+                                    MessagePasswordOperation.Action.UpdatePassword(messagePassword, messagePasswordHint)
+                                } else {
+                                    MessagePasswordOperation.Action.ApplyPassword(messagePassword, messagePasswordHint)
+                                }
                             )
                         },
                         onRemoveButtonClick = { viewModel.submit(MessagePasswordOperation.Action.RemovePassword) },

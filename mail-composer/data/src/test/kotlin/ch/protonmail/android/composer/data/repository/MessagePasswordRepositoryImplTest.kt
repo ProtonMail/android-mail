@@ -62,6 +62,23 @@ class MessagePasswordRepositoryImplTest {
     }
 
     @Test
+    fun `should call method from local data source when updating message password`() = runTest {
+        // Given
+        val password = "password"
+        val hint = "hint"
+        coEvery { messagePasswordLocalDataSource.update(userId, messageId, password, hint) } returns Unit.right()
+
+        // When
+        val actual = messagePasswordRepository.updateMessagePassword(userId, messageId, password, hint)
+
+        // Then
+        coVerify {
+            messagePasswordLocalDataSource.update(userId, messageId, password, hint)
+        }
+        assertEquals(Unit.right(), actual)
+    }
+
+    @Test
     fun `should call method from local data source when observing message password`() = runTest {
         // Given
         val password = "password"

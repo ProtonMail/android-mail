@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcomposer.domain.usecase.DeleteMessagePassword
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessagePassword
 import ch.protonmail.android.mailcomposer.domain.usecase.SaveMessagePassword
+import ch.protonmail.android.mailcomposer.domain.usecase.SaveMessagePasswordAction
 import ch.protonmail.android.mailcomposer.presentation.model.MessagePasswordOperation
 import ch.protonmail.android.mailcomposer.presentation.model.SetMessagePasswordState
 import ch.protonmail.android.mailcomposer.presentation.reducer.SetMessagePasswordReducer
@@ -63,6 +64,7 @@ class SetMessagePasswordViewModel @Inject constructor(
 
     fun submit(action: MessagePasswordOperation.Action) = when (action) {
         is MessagePasswordOperation.Action.ApplyPassword -> onApplyPassword(action.password, action.passwordHint)
+        is MessagePasswordOperation.Action.UpdatePassword -> onUpdatePassword(action.password, action.passwordHint)
         is MessagePasswordOperation.Action.RemovePassword -> onRemovePassword()
     }
 
@@ -75,6 +77,22 @@ class SetMessagePasswordViewModel @Inject constructor(
                     inputParams.senderEmail,
                     password,
                     passwordHint
+                )
+                emitNewStateFrom(MessagePasswordOperation.Event.ExitScreen)
+            }
+        }
+    }
+
+    private fun onUpdatePassword(password: String, passwordHint: String?) {
+        viewModelScope.launch {
+            inputParams?.let { inputParams ->
+                saveMessagePassword(
+                    primaryUserId.first(),
+                    inputParams.messageId,
+                    inputParams.senderEmail,
+                    password,
+                    passwordHint,
+                    SaveMessagePasswordAction.Update
                 )
                 emitNewStateFrom(MessagePasswordOperation.Event.ExitScreen)
             }

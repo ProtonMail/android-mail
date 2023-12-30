@@ -28,6 +28,7 @@ import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.domain.usecase.DeleteMessagePassword
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessagePassword
 import ch.protonmail.android.mailcomposer.domain.usecase.SaveMessagePassword
+import ch.protonmail.android.mailcomposer.domain.usecase.SaveMessagePasswordAction
 import ch.protonmail.android.mailcomposer.presentation.model.MessagePasswordOperation
 import ch.protonmail.android.mailcomposer.presentation.model.SetMessagePasswordState
 import ch.protonmail.android.mailcomposer.presentation.reducer.SetMessagePasswordReducer
@@ -136,6 +137,33 @@ class SetMessagePasswordViewModelTest {
             val item = awaitItem() as SetMessagePasswordState.Data
             assertEquals(Effect.of(Unit), item.exitScreen)
             coVerify { saveMessagePassword(userId, messageId, senderEmail, password, passwordHint) }
+        }
+    }
+
+    @Test
+    fun `should update message password and close the screen when update password action is submitted`() = runTest {
+        // Given
+        val password = "password"
+        val passwordHint = "password hint"
+        coEvery { observeMessagePassword(userId, messageId) } returns flowOf(null)
+        coEvery {
+            saveMessagePassword(
+                userId, messageId, senderEmail, password, passwordHint, SaveMessagePasswordAction.Update
+            )
+        } returns Unit.right()
+
+        // When
+        setMessagePasswordViewModel.submit(MessagePasswordOperation.Action.UpdatePassword(password, passwordHint))
+
+        // Then
+        setMessagePasswordViewModel.state.test {
+            val item = awaitItem() as SetMessagePasswordState.Data
+            assertEquals(Effect.of(Unit), item.exitScreen)
+            coVerify {
+                saveMessagePassword(
+                    userId, messageId, senderEmail, password, passwordHint, SaveMessagePasswordAction.Update
+                )
+            }
         }
     }
 

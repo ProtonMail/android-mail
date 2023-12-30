@@ -46,4 +46,19 @@ abstract class MessagePasswordDao : BaseDao<MessagePasswordEntity>() {
         """
     )
     abstract suspend fun delete(userId: UserId, messageId: MessageId)
+
+    @Query(
+        """
+            UPDATE MessagePasswordEntity
+            SET password = :password, passwordHint = :passwordHint
+            WHERE userId = :userId
+            AND messageId = :messageId
+        """
+    )
+    abstract suspend fun updatePasswordAndHint(
+        userId: UserId,
+        messageId: MessageId,
+        password: String,
+        passwordHint: String?
+    )
 }

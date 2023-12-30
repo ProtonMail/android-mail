@@ -29,6 +29,13 @@ interface MessagePasswordRepository {
 
     suspend fun saveMessagePassword(messagePassword: MessagePassword): Either<DataError.Local, Unit>
 
+    suspend fun updateMessagePassword(
+        userId: UserId,
+        messageId: MessageId,
+        password: String,
+        passwordHint: String?
+    ): Either<DataError.Local, Unit>
+
     suspend fun observeMessagePassword(userId: UserId, messageId: MessageId): Flow<MessagePassword?>
 
     suspend fun deleteMessagePassword(userId: UserId, messageId: MessageId)
