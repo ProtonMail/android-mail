@@ -38,11 +38,11 @@
   <string name="mailbox_error_message_generic">Kotak pesan gagal dimuat</string>
   <string name="mailbox_error_message_unexpected">Terdapat kesalahan yang tidak terduga</string>
   <string name="mailbox_is_empty_title">Tidak ada pesan</string>
-  <string name="mailbox_is_empty_description">You are up to date</string>
-  <string name="mailbox_is_empty_no_unread_messages_title">No unread messages</string>
+  <string name="mailbox_is_empty_description">Anda sudah terkini</string>
+  <string name="mailbox_is_empty_no_unread_messages_title">Tidak ada pesan yang belum dibaca</string>
   <string name="mailbox_is_empty_folder_description">Folder ini kosong</string>
   <string name="mailbox_is_empty_spam_description">Folder spam Anda kosong</string>
-  <string name="mailbox_is_empty_trash_description">Trash is empty</string>
+  <string name="mailbox_is_empty_trash_description">Sampah kosong</string>
   <plurals name="mailbox_action_trash">
     <item quantity="other">%d pesan dipindahkan ke Sampah</item>
   </plurals>
@@ -71,7 +71,7 @@
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Gagal mendapatkan folder</string>
   <!--  Spotlight V6 Beta  -->
   <string name="onboarding_headline_beta">Coba aplikasi beta baru</string>
-  <string name="onboarding_description_beta">We\'ve rebuilt the app for stability and reliability. Share your feedback and stay tuned as we reintroduce features. <a href="https://proton.me/support/mail-android-beta">Learn more.</a></string>
+  <string name="onboarding_description_beta">Kami telah merancang ulang aplikasi kami untuk performa yang lebih stabil dan lebih handal. Berikanlah tanggapan Anda dan ikuti terus perkembangan aplikasinya seiring dengan berbagai fitur yang akan kembali hadir seiring waktu. <a href="https://proton.me/support/mail-android-beta">Pelajari lebih lanjut</a>.</string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Selamat datang di aplikasi yang baru</string>
   <string name="onboarding_description_ga">Dibuat ulang sepenuhnya dari awal, aplikasi Proton Mail baru dibuat untuk stabilitas dan kinerja.</string>

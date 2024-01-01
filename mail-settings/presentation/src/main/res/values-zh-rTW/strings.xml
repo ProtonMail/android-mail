@@ -118,7 +118,7 @@
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">自動鎖定</string>
   <string name="mail_settings_auto_lock_item_title">自動鎖定應用程式</string>
-  <string name="mail_settings_auto_lock_item_description">Turn this feature on to auto lock your app and use a PIN code or Fingerprint to unlock it</string>
+  <string name="mail_settings_auto_lock_item_description">啟用這個功能會自動鎖定您的應用程式，使用 PIN 碼或指紋來解鎖</string>
   <string name="mail_settings_auto_lock_change_pin_description">變更 PIN 碼</string>
   <string name="mail_settings_auto_lock_item_timer_title">自動鎖定計時器</string>
   <string name="mail_settings_auto_lock_not_enabled">未啟用</string>
@@ -134,7 +134,7 @@
   <string name="mail_settings_pin_insertion_lock_icon_description">鎖定圖示</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">Pin dot</string>
   <string name="mail_settings_pin_insertion_backspace_description">倒退鍵</string>
-  <string name="mail_settings_pin_insertion_button_create">創建</string>
+  <string name="mail_settings_pin_insertion_button_create">建立</string>
   <string name="mail_settings_pin_insertion_button_confirm">確認</string>
   <string name="mail_settings_pin_insertion_error_no_match">PIN 碼不符.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">

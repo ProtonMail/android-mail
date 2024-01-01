@@ -28,6 +28,8 @@
   <string name="label_title_all_mail">Уся пошта</string>
   <string name="label_title_all_drafts">Усе чарнавікі</string>
   <string name="label_title_all_sent">Усе адпраўленыя</string>
+  <string name="label_title_all_scheduled">Усе запланаваныя</string>
+  <string name="label_title_snoozed">Адкладзеныя</string>
   <string name="label_title_folders">Папкі</string>
   <string name="label_title_parent_folder">Бацькоўская папка</string>
   <string name="label_title_labels">Меткі</string>

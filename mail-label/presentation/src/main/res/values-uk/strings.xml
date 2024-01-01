@@ -28,6 +28,8 @@
   <string name="label_title_all_mail">Уся пошта</string>
   <string name="label_title_all_drafts">Усі чернетки</string>
   <string name="label_title_all_sent">Усі надіслані</string>
+  <string name="label_title_all_scheduled">All Scheduled</string>
+  <string name="label_title_snoozed">Snoozed</string>
   <string name="label_title_folders">Теки</string>
   <string name="label_title_parent_folder">Тека вищого рівня</string>
   <string name="label_title_labels">Мітки</string>
@@ -75,6 +77,6 @@
   <string name="folder_form_no_parent">None</string>
   <string name="folder_form_notifications">Сповіщення</string>
   <string name="folder_saved">Folder saved</string>
-  <string name="folder_deleted">Folder deleted</string>
+  <string name="folder_deleted">Теку видалено</string>
   <string name="parent_folder_none">None</string>
 </resources>

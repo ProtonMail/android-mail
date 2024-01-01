@@ -28,6 +28,8 @@
   <string name="label_title_all_mail">Wszystkie wiadomości</string>
   <string name="label_title_all_drafts">Wszystkie szkice</string>
   <string name="label_title_all_sent">Wszystkie wysłane</string>
+  <string name="label_title_all_scheduled">Zaplanowane</string>
+  <string name="label_title_snoozed">Odłożone</string>
   <string name="label_title_folders">Foldery</string>
   <string name="label_title_parent_folder">Folder nadrzędny</string>
   <string name="label_title_labels">Etykiety</string>

@@ -28,7 +28,7 @@
     <item quantity="other">已选择 %d 项</item>
   </plurals>
   <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
-  <string name="filter_unread_button_text_without_counter">Unread</string>
+  <string name="filter_unread_button_text_without_counter">未读</string>
   <plurals name="filter_unread_button_text">
     <item quantity="other">%d 封未读邮件</item>
   </plurals>
@@ -37,12 +37,12 @@
   <string name="mailbox_error_message_offline">网络未连接，无法获取数据</string>
   <string name="mailbox_error_message_generic">邮箱数据加载失败</string>
   <string name="mailbox_error_message_unexpected">发生意外错误。</string>
-  <string name="mailbox_is_empty_title">No messages</string>
+  <string name="mailbox_is_empty_title">无邮件</string>
   <string name="mailbox_is_empty_description">You are up to date</string>
   <string name="mailbox_is_empty_no_unread_messages_title">No unread messages</string>
   <string name="mailbox_is_empty_folder_description">此文件夹为空</string>
   <string name="mailbox_is_empty_spam_description">没有垃圾邮件</string>
-  <string name="mailbox_is_empty_trash_description">Trash is empty</string>
+  <string name="mailbox_is_empty_trash_description">回收站为空</string>
   <plurals name="mailbox_action_trash">
     <item quantity="other">%d 封邮件已移至废件箱</item>
   </plurals>
@@ -71,7 +71,7 @@
   <string name="mailbox_action_move_messages_failed_retrieving_folders">无法列出文件夹</string>
   <!--  Spotlight V6 Beta  -->
   <string name="onboarding_headline_beta">体验测试版应用程序</string>
-  <string name="onboarding_description_beta">We\'ve rebuilt the app for stability and reliability. Share your feedback and stay tuned as we reintroduce features. <a href="https://proton.me/support/mail-android-beta">Learn more.</a></string>
+  <string name="onboarding_description_beta">我们重新构建了应用程序，以提升其稳定性和可靠性。请分享您的反馈，并保持关注，因为我们会逐步重新引入应用的各项功能。了解更多信息。<a href="https://proton.me/support/mail-android-beta">了解详情</a></string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">欢迎体验全新的应用</string>
   <string name="onboarding_description_ga">Proton Mail 的全新应用程序是完全从头开始重新构建的，它专为提升稳定性和性能而设计。</string>

@@ -29,7 +29,7 @@
   <string name="mail_settings_app_language">Язык приложения</string>
   <string name="mail_settings_combined_contacts">Объединенные контакты</string>
   <string name="mail_settings_local_cache">Локальный кэш</string>
-  <string name="mail_settings_local_cache_hint">Space used: %s</string>
+  <string name="mail_settings_local_cache_hint">Используемый пробел: %s</string>
   <string name="mail_settings_local_cache_clear_button">Очистить данные</string>
   <string name="mail_settings_swipe_actions">Жесты пролистывания</string>
   <string name="mail_settings_combined_contacts_hint">Включите эту функцию для автозаполнения адресов электронной почты из контактов всех ваших авторизованных аккаунтов.</string>
@@ -65,11 +65,11 @@
   <string name="mail_settings_conversation_mode_hint">Группировать сообщения, относящиеся к одной теме в папке Входящие или отображать их отдельно</string>
   <!-- Default email address settings -->
   <string name="mail_settings_default_email_address_title">Адрес эл. почты по умолчанию</string>
-  <string name="mail_settings_default_email_address_inactive_addresses">Inactive addresses</string>
-  <string name="mail_settings_default_email_address_no_inactive_addresses">No inactive addresses</string>
+  <string name="mail_settings_default_email_address_inactive_addresses">Неактивные адреса</string>
+  <string name="mail_settings_default_email_address_no_inactive_addresses">Нет неактивных адресов</string>
   <string name="mail_settings_default_email_address_error_loading">Ошибка загрузки настроек</string>
-  <string name="mail_settings_default_email_address_error_update">Error updating settings</string>
-  <string name="mail_settings_default_email_address_error_update_subscription">Upgrade to a paid plan to set this address as default</string>
+  <string name="mail_settings_default_email_address_error_update">Ошибка обновления настроек</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">Перейдите на платный тариф, чтобы установить этот адрес основным</string>
   <!-- Display name, signature, mobile footer -->
   <string name="mail_settings_identity_title">Отображаемое имя и подпись</string>
   <string name="mail_settings_identity_save_button">Сохранить</string>
@@ -78,18 +78,18 @@
   <string name="mail_settings_identity_signature">Подпись</string>
   <string name="mail_settings_identity_signature_hint">Подпись</string>
   <string name="mail_settings_identity_mobile_footer">Нижний колонтитул для мобильных устройств</string>
-  <string name="mail_settings_identity_mobile_footer_subtext">The footer is added after your signature.</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">Нижний колонтитул будет добавлен после Вашей подписи.</string>
   <string name="mail_settings_identity_mobile_footer_hint">Нижний колонтитул для мобильных устройств</string>
   <string name="mail_settings_identity_mobile_footer_default_free">Отправлено из мобильного приложения Proton Mail Android</string>
-  <string name="mail_settings_identity_error_updating">Error updating settings</string>
+  <string name="mail_settings_identity_error_updating">Ошибка обновления настроек</string>
   <string name="mail_settings_identity_error_loading">Ошибка загрузки настроек</string>
   <!-- Privacy settings -->
   <string name="mail_settings_privacy_auto_show_remote_content">Автоматический показ удаленного содержимого</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">Авто-показ встроенных изображений</string>
   <string name="mail_settings_privacy_prevent_taking_screenshots">Предотвратить снятие снимков экрана</string>
   <string name="mail_settings_privacy_request_link_confirmation">Запрашивать подтверждение при переходе по ссылкам</string>
-  <string name="mail_settings_privacy_background_sync">Background sync</string>
-  <string name="mail_settings_privacy_background_sync_description">If this option is enabled, the app will sync with the server in the background. Disabling this feature will also disable push notifications.</string>
+  <string name="mail_settings_privacy_background_sync">Фоновая синхронизация</string>
+  <string name="mail_settings_privacy_background_sync_description">Если эта опция включена, то приложение будет синхронизироваться с сервером в фоновом режиме. Отключение этой функции также отключит push-уведомления.</string>
   <string name="mail_settings_privacy_error_updating">Ошибка обновления настроек</string>
   <string name="mail_settings_privacy_error_loading">Ошибка загрузки настроек</string>
   <!-- Swipe Actions -->
@@ -112,8 +112,8 @@
   <string name="mail_settings_notifications_extended_notifications_title">Расширенные уведомления</string>
   <string name="mail_settings_notifications_extended_notifications_summary">Включите эту функцию, чтобы видеть отправителя\nписем в push-уведомлениях.</string>
   <string name="mail_settings_notifications_notifications_settings">Настройки уведомлений</string>
-  <string name="mail_settings_notifications_notifications_settings_hint">Navigate to system notification settings</string>
-  <string name="mail_settings_notifications_update_error">Error updating settings</string>
+  <string name="mail_settings_notifications_notifications_settings_hint">Перейти к настройкам системных оповещений</string>
+  <string name="mail_settings_notifications_update_error">Ошибка обновления настроек</string>
   <string name="mail_settings_notifications_loading_error">Ошибка загрузки настроек</string>
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">Автоблокировка</string>
@@ -144,7 +144,7 @@
     <item quantity="other">Неверный PIN. Осталось %s попыток.</item>
   </plurals>
   <!-- Local storage -->
-  <string name="mail_settings_clearing_cached_data">Clearing local cached data…</string>
+  <string name="mail_settings_clearing_cached_data">Очистка локальных кэшированных данных…</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Произошла ошибка. Попробуйте ещё раз.</string>
 </resources>

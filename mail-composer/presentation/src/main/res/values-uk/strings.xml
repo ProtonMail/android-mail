@@ -49,7 +49,7 @@
   <string name="composer_warning_local_data_shown">The latest version of this draft failed to load. Any change will override its content.</string>
   <string name="composer_button_add_password">Додати пароль</string>
   <!-- Message sending error dialog -->
-  <string name="message_sending_error_dialog_header">Sending error</string>
+  <string name="message_sending_error_dialog_header">Надсилання помилки</string>
   <string name="message_sending_error_dialog_button_dismiss">Закрити</string>
   <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the email entered due to the following reason:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">There are no Trusted Keys: %s</string>

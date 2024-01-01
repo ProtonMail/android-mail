@@ -43,6 +43,6 @@
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Переместить в...</string>
   <string name="bottom_sheet_done_action">Готово</string>
-  <string name="bottom_sheet_archive_action">Also archive?</string>
+  <string name="bottom_sheet_archive_action">Также перенести в архив?</string>
   <string name="bottom_sheet_label_as_title">Отметить, как...</string>
 </resources>

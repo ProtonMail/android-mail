@@ -63,7 +63,7 @@
   <string name="message_body_embedded_and_remote_content_banner_text">Автоматическая загрузка встроенных изображений и внешнего содержимого отключена. Это можно изменить в настройках.</string>
   <string name="message_phishing_banner_text">Наша система отметила это сообщение как попытку фишинга. Пожалуйста, проверьте, является ли оно подлинным.</string>
   <!-- External link confirmation dialog -->
-  <string name="external_link_confirmation_dialog_text">You are about to leave the app and navigate to:</string>
+  <string name="external_link_confirmation_dialog_text">Вы собираетесь выйти из приложения и перейти по ссылке:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">Больше не спрашивать</string>
   <string name="external_link_confirmation_dialog_cancel_button">Отменить</string>
   <string name="external_link_confirmation_dialog_continue_button">Продолжить</string>
@@ -76,9 +76,9 @@
   <string name="message_delete_dialog_title">Удалить сообщение</string>
   <string name="message_delete_dialog_message">Вы уверены, что хотите безвозвратно удалить это сообщение?</string>
   <string name="message_deleted">Сообщение удалено</string>
-  <string name="error_delete_message_failed">Failed to delete message</string>
-  <string name="error_delete_message_failed_wrong_folder">Message is not in a location where it can be deleted</string>
-  <string name="error_delete_conversation_failed">Failed to delete conversation</string>
-  <string name="error_delete_conversation_failed_wrong_folder">Conversation is not in a location where it can be deleted</string>
+  <string name="error_delete_message_failed">Не удалось удалить сообщение</string>
+  <string name="error_delete_message_failed_wrong_folder">Сообщение находится не в том месте, где его можно удалить</string>
+  <string name="error_delete_conversation_failed">Не удалось удалить цепочку писем</string>
+  <string name="error_delete_conversation_failed_wrong_folder">Сообщение находится не в том месте, где его можно удалить</string>
   <string name="conversation_deleted">Цепочка писем удалена</string>
 </resources>

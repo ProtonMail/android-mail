@@ -28,8 +28,10 @@
   <string name="label_title_all_mail">Összes levél</string>
   <string name="label_title_all_drafts">Minden piszkozat</string>
   <string name="label_title_all_sent">Minden elküldött</string>
+  <string name="label_title_all_scheduled">All Scheduled</string>
+  <string name="label_title_snoozed">Snoozed</string>
   <string name="label_title_folders">Mappák</string>
-  <string name="label_title_parent_folder">Parent folder</string>
+  <string name="label_title_parent_folder">Szülő mappa</string>
   <string name="label_title_labels">Címkék</string>
   <string name="label_title_add_folder">Új mappa</string>
   <string name="label_title_add_label">Új címke</string>

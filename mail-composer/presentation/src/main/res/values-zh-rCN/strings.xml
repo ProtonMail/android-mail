@@ -37,21 +37,21 @@
   <string name="composer_error_store_draft_subject">无法存储此草稿的主题</string>
   <string name="composer_error_store_draft_recipients">无法存储此草稿的收件人信息</string>
   <string name="composer_error_loading_draft">此草稿的内容暂时无法加载，继续编辑将覆盖此前保存的内容。</string>
-  <string name="composer_add_attachments_content_description">Add attachments</string>
+  <string name="composer_add_attachments_content_description">添加附件</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Import from…</string>
   <string name="composer_error_loading_parent_message">Could not load the message\'s information</string>
   <string name="composer_original_message_quote">Original Message</string>
-  <string name="composer_sender_quote">On %s, %s &lt;%s&gt; wrote:</string>
+  <string name="composer_sender_quote">%s，%s &lt;%s&gt;，来信：</string>
   <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
   <string name="composer_attachment_size_exceeded_dialog_title">Attachment limit reached</string>
   <string name="composer_attachment_size_exceeded_dialog_message">The size limit for attachments is %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Reencryption of attachment failed. For security reasons all attachments got removed.</string>
   <string name="composer_warning_local_data_shown">The latest version of this draft failed to load. Any change will override its content.</string>
-  <string name="composer_button_add_password">Add password</string>
+  <string name="composer_button_add_password">添加密码</string>
   <!-- Message sending error dialog -->
-  <string name="message_sending_error_dialog_header">Sending error</string>
-  <string name="message_sending_error_dialog_button_dismiss">Close</string>
+  <string name="message_sending_error_dialog_header">发送时出错</string>
+  <string name="message_sending_error_dialog_button_dismiss">关闭</string>
   <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the email entered due to the following reason:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">There are no Trusted Keys: %s</string>
-  <string name="message_sending_error_dialog_text_reason_address_disabled">Address does not exist: %s</string>
+  <string name="message_sending_error_dialog_text_reason_address_disabled">地址不存在：%s</string>
 </resources>

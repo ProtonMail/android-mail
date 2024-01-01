@@ -44,7 +44,7 @@
   <string name="mailbox_error_message_generic">Načítání e-mailové schránky selhalo</string>
   <string name="mailbox_error_message_unexpected">Něco se nečekaně zvrtlo</string>
   <string name="mailbox_is_empty_title">Žádné zprávy</string>
-  <string name="mailbox_is_empty_description">Váš systém je aktuální</string>
+  <string name="mailbox_is_empty_description">Vše je vyřízeno</string>
   <string name="mailbox_is_empty_no_unread_messages_title">Žádné nepřečtené zprávy</string>
   <string name="mailbox_is_empty_folder_description">Tato složka je prázdná</string>
   <string name="mailbox_is_empty_spam_description">Vaše složka spamu je prázdná</string>

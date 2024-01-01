@@ -28,6 +28,8 @@
   <string name="label_title_all_mail">Semua surat</string>
   <string name="label_title_all_drafts">Semua draf</string>
   <string name="label_title_all_sent">Semua surat terkirim</string>
+  <string name="label_title_all_scheduled">All Scheduled</string>
+  <string name="label_title_snoozed">Snoozed</string>
   <string name="label_title_folders">Folder</string>
   <string name="label_title_parent_folder">Folder induk</string>
   <string name="label_title_labels">Label</string>

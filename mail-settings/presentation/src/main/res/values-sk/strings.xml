@@ -116,9 +116,9 @@
   <string name="mail_settings_notifications_update_error">Chyba pri aktualizácii nastavení</string>
   <string name="mail_settings_notifications_loading_error">Chyba pri načítaní nastavení</string>
   <!-- Auto lock -->
-  <string name="mail_settings_auto_lock_title">Auto lock</string>
-  <string name="mail_settings_auto_lock_item_title">Auto lock app</string>
-  <string name="mail_settings_auto_lock_item_description">Turn this feature on to auto lock your app and use a PIN code or Fingerprint to unlock it</string>
+  <string name="mail_settings_auto_lock_title">Automatické uzamknutie</string>
+  <string name="mail_settings_auto_lock_item_title">Automatické uzamknutie aplikácie</string>
+  <string name="mail_settings_auto_lock_item_description">Zapnutím tejto funkcie aplikáciu automaticky uzamknete a odomknete ju pomocou kódu PIN alebo odtlačku prsta.</string>
   <string name="mail_settings_auto_lock_change_pin_description">Zmeniť PIN kód</string>
   <string name="mail_settings_auto_lock_item_timer_title">Časovač aut. zámku</string>
   <string name="mail_settings_auto_lock_not_enabled">Neaktívny</string>
@@ -129,9 +129,9 @@
   <string name="mail_settings_auto_lock_item_timer_description_one_day">1 deň nečinnosti</string>
   <string name="mail_settings_auto_lock_update_error">Chyba pri aktualizácii nastavení</string>
   <string name="mail_settings_pin_insertion_input_title">Zadajte PIN kód</string>
-  <string name="mail_settings_pin_insertion_set_title">Set PIN code</string>
+  <string name="mail_settings_pin_insertion_set_title">Nastaviť PIN kód</string>
   <string name="mail_settings_pin_insertion_confirm_title">Potvrdiť PIN kód</string>
-  <string name="mail_settings_pin_insertion_lock_icon_description">Lock icon</string>
+  <string name="mail_settings_pin_insertion_lock_icon_description">Ikona zámku</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">Pin dot</string>
   <string name="mail_settings_pin_insertion_backspace_description">Backspace</string>
   <string name="mail_settings_pin_insertion_button_create">Vytvoriť</string>

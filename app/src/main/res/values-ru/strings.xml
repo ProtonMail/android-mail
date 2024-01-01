@@ -17,7 +17,7 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="dialog_sign_out_account_title">Sign out</string>
+  <string name="dialog_sign_out_account_title">Выйти</string>
   <string name="dialog_sign_out_account_description">Вы уверены, что хотите выйти?</string>
   <string name="dialog_sign_out_account_confirm">Да</string>
   <string name="dialog_sign_out_account_cancel">Нет</string>
@@ -36,7 +36,7 @@
   <string name="mailbox_message_sending_error_action">Перейти в Черновики</string>
   <string name="mailbox_attachment_uploading_error">Ошибка загрузки вложения</string>
   <string name="notification_switched_account">Переключено на аккаунт: %s</string>
-  <string name="label_saved">Label saved</string>
+  <string name="label_saved">Ярлык сохранён</string>
   <string name="label_deleted">Ярлык удален</string>
-  <string name="label_list_loading_error">Error loading label, please try again later</string>
+  <string name="label_list_loading_error">Ошибка загрузки ярлыка, повторите попытку позже</string>
 </resources>

@@ -28,6 +28,8 @@
   <string name="label_title_all_mail">Todo el correo</string>
   <string name="label_title_all_drafts">Todos los borradores</string>
   <string name="label_title_all_sent">Todos los correos enviados</string>
+  <string name="label_title_all_scheduled">Todas las programaciones</string>
+  <string name="label_title_snoozed">En pausa</string>
   <string name="label_title_folders">Carpetas</string>
   <string name="label_title_parent_folder">Carpeta principal</string>
   <string name="label_title_labels">Etiquetas</string>

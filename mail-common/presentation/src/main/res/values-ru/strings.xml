@@ -43,14 +43,14 @@
   <string name="action_view_in_light_mode_description">Посмотреть сообщение в светлом режиме</string>
   <string name="action_view_in_dark_mode_description">Посмотреть сообщение в тёмном режиме</string>
   <string name="action_print_description">Распечатать</string>
-  <string name="action_view_headers_description">View headers</string>
+  <string name="action_view_headers_description">Просмотреть заголовки</string>
   <string name="action_view_html_description">Просмотр HTML</string>
   <string name="action_report_phishing_description">Пожаловаться на фишинг</string>
   <string name="action_remind_description">Напомнить</string>
   <string name="action_save_pdf_description">Сохранить как PDF</string>
   <string name="action_sender_emails_description">Установить действие для последующих писем от этого отправителя</string>
   <string name="action_save_attachments_description">Сохранить вложения</string>
-  <string name="action_more_description">More</string>
+  <string name="action_more_description">Еще</string>
   <string name="action_reply_content_description">Ответить</string>
   <string name="action_reply_all_content_description">Ответить всем</string>
   <string name="action_forward_content_description">Переслать</string>

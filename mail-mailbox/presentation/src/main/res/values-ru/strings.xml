@@ -51,60 +51,60 @@
   <string name="mailbox_is_empty_trash_description">Корзина пуста</string>
   <plurals name="mailbox_action_trash">
     <item quantity="one">Сообщение помещено в Корзину</item>
-    <item quantity="few">%d messages moved to Trash</item>
-    <item quantity="many">%d messages moved to Trash</item>
+    <item quantity="few">%d сообщения перемещены в Корзину</item>
+    <item quantity="many">%d сообщений перемещено в Корзину</item>
     <item quantity="other">%d messages moved to Trash</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Удалить цепочку писем</item>
-    <item quantity="few">Delete %d conversations</item>
-    <item quantity="many">Delete %d conversations</item>
-    <item quantity="other">Delete %d conversations</item>
+    <item quantity="few">Удалить %d цепочки писем</item>
+    <item quantity="many">Удалить %d цепочек писем</item>
+    <item quantity="other">Удалить %d цепочек писем</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_title">
     <item quantity="one">Удалить сообщение</item>
-    <item quantity="few">Delete %d messages</item>
-    <item quantity="many">Delete %d messages</item>
-    <item quantity="other">Delete %d messages</item>
+    <item quantity="few">Удалить %d сообщения</item>
+    <item quantity="many">Удалить %d сообщений</item>
+    <item quantity="other">Удалить %d сообщений</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_message">
     <item quantity="one">Вы уверены, что хотите безвозвратно удалить эту цепочку писем?</item>
-    <item quantity="few">Are you sure you want to permanently delete these conversations?</item>
-    <item quantity="many">Are you sure you want to permanently delete these conversations?</item>
-    <item quantity="other">Are you sure you want to permanently delete these conversations?</item>
+    <item quantity="few">Вы уверены, что хотите безвозвратно удалить эти цепочки писем?</item>
+    <item quantity="many">Вы уверены, что хотите безвозвратно удалить эти цепочки писем?</item>
+    <item quantity="other">Вы уверены, что хотите безвозвратно удалить эти цепочки писем?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_message">
     <item quantity="one">Вы уверены, что хотите безвозвратно удалить это сообщение?</item>
-    <item quantity="few">Are you sure you want to permanently delete these messages?</item>
-    <item quantity="many">Are you sure you want to permanently delete these messages?</item>
-    <item quantity="other">Are you sure you want to permanently delete these messages?</item>
+    <item quantity="few">Вы уверены, что хотите безвозвратно удалить эти сообщения?</item>
+    <item quantity="many">Вы уверены, что хотите безвозвратно удалить эти сообщения?</item>
+    <item quantity="other">Вы уверены, что хотите безвозвратно удалить эти сообщения?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message">
-    <item quantity="one">Message permanently deleted</item>
-    <item quantity="few">%d messages permanently deleted</item>
-    <item quantity="many">%d messages permanently deleted</item>
-    <item quantity="other">%d messages permanently deleted</item>
+    <item quantity="one">Сообщение безвозвратно удалено</item>
+    <item quantity="few">%d сообщения безвозвратно удалено</item>
+    <item quantity="many">%d сообщений безвозвратно удалено</item>
+    <item quantity="other">%d сообщений безвозвратно удалено</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation">
-    <item quantity="one">Conversation permanently deleted</item>
-    <item quantity="few">%d conversations permanently deleted</item>
-    <item quantity="many">%d conversations permanently deleted</item>
-    <item quantity="other">%d conversations permanently deleted</item>
+    <item quantity="one">Цепочка писем удалена безвозвратно</item>
+    <item quantity="few">%d цепочки писем удалено безвозвратно</item>
+    <item quantity="many">%d цепочек писем удалено безвозвратно</item>
+    <item quantity="other">%d цепочек писем удалено безвозвратно</item>
   </plurals>
-  <string name="mailbox_action_label_messages_failed">Label operation failed</string>
-  <string name="mailbox_action_label_messages_failed_retrieving_labels">Failed to get labels</string>
-  <string name="mailbox_action_failed_retrieving_colors">Failed to get color settings</string>
-  <string name="mailbox_action_move_messages_failed">Move operation failed</string>
-  <string name="mailbox_action_move_messages_failed_retrieving_folders">Failed to get folders</string>
+  <string name="mailbox_action_label_messages_failed">Операция с ярлыком не удалась</string>
+  <string name="mailbox_action_label_messages_failed_retrieving_labels">Не удалось получить ярлыки</string>
+  <string name="mailbox_action_failed_retrieving_colors">Не удалось получить настройки цвета</string>
+  <string name="mailbox_action_move_messages_failed">Операция перемещения не удалась</string>
+  <string name="mailbox_action_move_messages_failed_retrieving_folders">Не удалось получить папки</string>
   <!--  Spotlight V6 Beta  -->
-  <string name="onboarding_headline_beta">Beta test the new app</string>
+  <string name="onboarding_headline_beta">Бета-тестирование нового приложения</string>
   <string name="onboarding_description_beta">Мы переработали приложение для обеспечения стабильности и надежности. Поделитесь своими отзывами и следите за обновлениями. <a href="https://proton.me/support/mail-android-beta">Подробнее.</a></string>
   <!--  Spotlight V6 GA  -->
-  <string name="onboarding_headline_ga">Welcome to the new app</string>
-  <string name="onboarding_description_ga">Completely rebuilt from scratch, the new Proton Mail app was made for stability and performance.</string>
+  <string name="onboarding_headline_ga">Добро пожаловать в новое приложение</string>
+  <string name="onboarding_description_ga">Полностью переработанное с нуля, новое приложение Proton Mail отличается стабильностью и производительностью.</string>
   <!--  Onboarding 1  -->
   <string name="onboarding_privacy_for_all_headline">Конфиденциальность для всех</string>
-  <string name="onboarding_privacy_for_all_description">Invite others to Proton Mail so you can all benefit from end-to-end encryption.</string>
+  <string name="onboarding_privacy_for_all_description">Приглашайте других пользователей в Proton Mail, чтобы вы все могли воспользоваться преимуществами сквозного шифрования.</string>
   <!--  Onboarding 2  -->
   <string name="onboarding_easily_up_to_date_headline">Легко обновить</string>
   <string name="onboarding_easily_up_to_date_description">Просматривайте потоковые сообщения в режиме цепочки писем.</string>
@@ -114,12 +114,12 @@
   <!--  Onboarding actions  -->
   <string name="onboarding_next">Далее</string>
   <string name="onboarding_get_started">Приступить к работе</string>
-  <string name="onboarding_illustration_content_description">Onboarding illustration</string>
+  <string name="onboarding_illustration_content_description">Иллюстрация использования</string>
   <string name="onboarding_close_content_description">Закрыть</string>
   <!-- Sidebar Beta label -->
-  <string name="sidebar_beta_version_title">Proton Mail Beta</string>
-  <string name="sidebar_beta_version_description">Tap to learn more about this project.</string>
-  <string name="sidebar_beta_version_icon_content_description">Navigate to KB article.</string>
+  <string name="sidebar_beta_version_title">Proton Mail Бета</string>
+  <string name="sidebar_beta_version_description">Нажмите, чтобы узнать больше об этом проекте.</string>
+  <string name="sidebar_beta_version_icon_content_description">Перейти к Базе Знаний</string>
   <string name="mailbox_action_trash_message">Сообщение перемещено в корзину</string>
   <string name="mailbox_action_archive_message">Сообщение перемещено в архив</string>
   <string name="mailbox_action_spam_message">сообщение перемещено в спам</string>

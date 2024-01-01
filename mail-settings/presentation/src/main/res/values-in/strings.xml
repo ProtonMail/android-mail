@@ -117,18 +117,18 @@
   <string name="mail_settings_notifications_loading_error">Terdapat kesalahan dalam memuat pengaturan</string>
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">Kunci otomatis</string>
-  <string name="mail_settings_auto_lock_item_title">Auto lock app</string>
-  <string name="mail_settings_auto_lock_item_description">Turn this feature on to auto lock your app and use a PIN code or Fingerprint to unlock it</string>
+  <string name="mail_settings_auto_lock_item_title">Kunci aplikasi secara otomatis</string>
+  <string name="mail_settings_auto_lock_item_description">Aktifkan fitur ini agar aplikasi dapat terkunci secara otomatis, yang mengharuskan permbukaan melalui kode PIN atau sidik jari</string>
   <string name="mail_settings_auto_lock_change_pin_description">Ubah kode PIN</string>
-  <string name="mail_settings_auto_lock_item_timer_title">Auto lock timer</string>
+  <string name="mail_settings_auto_lock_item_timer_title">Waktu penguncian otomatis</string>
   <string name="mail_settings_auto_lock_not_enabled">Tidak diaktifkan</string>
   <string name="mail_settings_auto_lock_immediately">Segera</string>
-  <string name="mail_settings_auto_lock_item_timer_description_five_minutes">5 minutes inactivity</string>
-  <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 minutes inactivity</string>
-  <string name="mail_settings_auto_lock_item_timer_description_one_hour">1 hour inactivity</string>
-  <string name="mail_settings_auto_lock_item_timer_description_one_day">1 day inactivity</string>
+  <string name="mail_settings_auto_lock_item_timer_description_five_minutes">5 menit tidak aktif</string>
+  <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 menit tidak aktif</string>
+  <string name="mail_settings_auto_lock_item_timer_description_one_hour">1 jam tidak aktif</string>
+  <string name="mail_settings_auto_lock_item_timer_description_one_day">1 hari tidak aktif</string>
   <string name="mail_settings_auto_lock_update_error">Terjadu kesalahan memperbarui pengaturan</string>
-  <string name="mail_settings_pin_insertion_input_title">Insert PIN code</string>
+  <string name="mail_settings_pin_insertion_input_title">Masukkan kode PIN</string>
   <string name="mail_settings_pin_insertion_set_title">Atur kode PIN</string>
   <string name="mail_settings_pin_insertion_confirm_title">Konfirmasikan kode PIN</string>
   <string name="mail_settings_pin_insertion_lock_icon_description">Ikon kunci</string>
@@ -138,7 +138,7 @@
   <string name="mail_settings_pin_insertion_button_confirm">Konfirmasi</string>
   <string name="mail_settings_pin_insertion_error_no_match">Kode PIN tidak sesuai.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="other">Wrong PIN code. %s remaining attempts.</item>
+    <item quantity="other">Kode PIN aslah. %s upaya tersisa.</item>
   </plurals>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Bersihkan cache data lokal...</string>

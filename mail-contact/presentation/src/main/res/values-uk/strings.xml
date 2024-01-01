@@ -24,11 +24,11 @@
   <string name="add_contact">Add contact</string>
   <string name="add_contact_content_description">Add contact</string>
   <string name="all_title">All</string>
-  <string name="groups_title">Groups</string>
+  <string name="groups_title">Групи</string>
   <string name="group_member_count">%1$s member</string>
   <string name="group_members_count">%1$s members</string>
   <string name="new_contact">New contact</string>
-  <string name="new_group">New group</string>
+  <string name="new_group">Нова група</string>
   <string name="import_contact">Вивантажити контакти пристрою</string>
   <string name="no_contact_email">Немає адреси е-пошти</string>
   <string name="multiple_contact_emails">%1$s, +%2$d</string>

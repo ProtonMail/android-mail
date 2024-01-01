@@ -74,7 +74,7 @@
   <string name="message_delete_dialog_title">Nachricht löschen</string>
   <string name="message_delete_dialog_message">Möchtest du diese Nachricht wirklich löschen?</string>
   <string name="message_deleted">Nachricht gelöscht</string>
-  <string name="error_delete_message_failed">Löschen der Nachricht fehlgeschlagen.</string>
+  <string name="error_delete_message_failed">Fehler beim Löschen der Nachricht.</string>
   <string name="error_delete_message_failed_wrong_folder">Die Nachricht befindet sich an einem Ort, an dem sie nicht gelöscht werden kann.</string>
   <string name="error_delete_conversation_failed">Löschen der Unterhaltung fehlgeschlagen.</string>
   <string name="error_delete_conversation_failed_wrong_folder">Die Unterhaltung befindet sich an einem Ort, an dem sie nicht gelöscht werden kann.</string>

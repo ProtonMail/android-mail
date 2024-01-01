@@ -28,6 +28,8 @@
   <string name="label_title_all_mail">Toate mesajele</string>
   <string name="label_title_all_drafts">Toate ciornele</string>
   <string name="label_title_all_sent">Toate trimise</string>
+  <string name="label_title_all_scheduled">All Scheduled</string>
+  <string name="label_title_snoozed">Snoozed</string>
   <string name="label_title_folders">Foldere</string>
   <string name="label_title_parent_folder">Folder părinte</string>
   <string name="label_title_labels">Etichete</string>

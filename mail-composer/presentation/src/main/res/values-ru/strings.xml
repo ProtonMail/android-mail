@@ -35,23 +35,23 @@
   <string name="composer_error_store_draft_body">Сохранение адреса отправителя этого черновика не удалось</string>
   <string name="composer_error_duplicate_recipient">Удалено дубликатов получателя: %1$s</string>
   <string name="composer_error_store_draft_subject">Не удалось сохранить тему этого черновика</string>
-  <string name="composer_error_store_draft_recipients">Storing this draft\'s recipients failed</string>
-  <string name="composer_error_loading_draft">The content of this draft is not available at this time. Editing will override any pre-existing content.</string>
-  <string name="composer_add_attachments_content_description">Add attachments</string>
+  <string name="composer_error_store_draft_recipients">Сохранение получателей этого черновика не удалось</string>
+  <string name="composer_error_loading_draft">Содержимое этого черновика в данный момент недоступно. Изменение приведет к замене всего ранее существовавшего содержимого.</string>
+  <string name="composer_add_attachments_content_description">Добавить вложения</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Импортировать из…</string>
-  <string name="composer_error_loading_parent_message">Could not load the message\'s information</string>
-  <string name="composer_original_message_quote">Original Message</string>
-  <string name="composer_sender_quote">On %s, %s &lt;%s&gt; wrote:</string>
+  <string name="composer_error_loading_parent_message">Не удалось загрузить информацию сообщения</string>
+  <string name="composer_original_message_quote">Оригинальное Сообщение</string>
+  <string name="composer_sender_quote">%s, %s &lt;%s&gt; написал:</string>
   <string name="composer_attachment_size_exceeded_dialog_confirm_button">Да</string>
   <string name="composer_attachment_size_exceeded_dialog_title">Достигнут лимит вложений</string>
   <string name="composer_attachment_size_exceeded_dialog_message">Максимальный размер вложений %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Повторное шифрование вложений не удалось. В целях безопасности все вложения были удалены.</string>
-  <string name="composer_warning_local_data_shown">The latest version of this draft failed to load. Any change will override its content.</string>
+  <string name="composer_warning_local_data_shown">Последняя версия этого черновика не загрузилась. Любые изменения заменят его содержимое.</string>
   <string name="composer_button_add_password">Добавить пароль</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Ошибка отправки</string>
   <string name="message_sending_error_dialog_button_dismiss">Закрыть</string>
-  <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the email entered due to the following reason:</string>
-  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">There are no Trusted Keys: %s</string>
-  <string name="message_sending_error_dialog_text_reason_address_disabled">Address does not exist: %s</string>
+  <string name="message_sending_error_dialog_text_error">Ваше письмо не может быть отправлено на указанный адрес электронной почты по следующей причине:</string>
+  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Нет доверенных ключей: %s</string>
+  <string name="message_sending_error_dialog_text_reason_address_disabled">Адрес не существует: %s</string>
 </resources>

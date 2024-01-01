@@ -60,14 +60,14 @@
   <string name="message_body_embedded_and_remote_content_banner_text">已經關閉內嵌影像與遠端內容的自動載入。這可以在設定中變更。</string>
   <string name="message_phishing_banner_text">我們的系統已將此郵件認定為釣魚郵件。請檢查這是否正常郵件。</string>
   <!-- External link confirmation dialog -->
-  <string name="external_link_confirmation_dialog_text">You are about to leave the app and navigate to:</string>
+  <string name="external_link_confirmation_dialog_text">您將離開應用程式並導覽到:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">下次無需再詢問</string>
   <string name="external_link_confirmation_dialog_cancel_button">取消</string>
   <string name="external_link_confirmation_dialog_continue_button">繼續</string>
   <!-- Phishing link confirmation dialog -->
   <string name="phishing_link_confirmation_dialog_title">警告：疑似假冒網站</string>
   <string name="phishing_link_confirmation_dialog_content_part_1">此連結指向的網站可能試圖竊取您的資訊，例如密碼或信用卡細節 。</string>
-  <string name="phishing_link_confirmation_dialog_content_part_2">For your security, do not continue.</string>
+  <string name="phishing_link_confirmation_dialog_content_part_2">為了您的安全，不要繼續</string>
   <string name="phishing_link_confirmation_dialog_button_go_back">返回（推薦）</string>
   <string name="phishing_link_confirmation_dialog_button_continue">忽略警告並繼續</string>
   <string name="message_delete_dialog_title">刪除訊息</string>

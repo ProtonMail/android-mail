@@ -80,7 +80,7 @@
   <string name="mailbox_action_move_messages_failed_retrieving_folders">საქაღალდეების მიღება ჩავარდა</string>
   <!--  Spotlight V6 Beta  -->
   <string name="onboarding_headline_beta">ახალი აპის ბეტა ტესტი</string>
-  <string name="onboarding_description_beta">We\'ve rebuilt the app for stability and reliability. Share your feedback and stay tuned as we reintroduce features. <a href="https://proton.me/support/mail-android-beta">Learn more.</a></string>
+  <string name="onboarding_description_beta">ჩვენ თავიდან ავაგეთ აპი სტაბილურობისა და სანდოობისთვის. გაგვიზიარეთ თქვენი აზრი და დარჩით ჩვენთან ერთად, რადგან ფუნქციებს ჯერ კიდევ ვამატებთ. <a href="https://proton.me/support/mail-android-beta">გაიგეთ მეტი.</a></string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">მოგესალმებით ახალ აპში</string>
   <string name="onboarding_description_ga">სრულად 0-დან შექმნილი ახალი Proton Mail-ის აპი, რომელიც სტაბილურობით და წარმადობით გამოირჩევა.</string>

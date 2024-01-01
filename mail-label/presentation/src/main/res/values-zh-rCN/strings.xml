@@ -28,6 +28,8 @@
   <string name="label_title_all_mail">所有邮件</string>
   <string name="label_title_all_drafts">所有草稿</string>
   <string name="label_title_all_sent">所有已发送</string>
+  <string name="label_title_all_scheduled">All Scheduled</string>
+  <string name="label_title_snoozed">已免打扰</string>
   <string name="label_title_folders">文件夹</string>
   <string name="label_title_parent_folder">上级文件夹</string>
   <string name="label_title_labels">标签</string>
@@ -72,9 +74,9 @@
   <string name="switch_on">On</string>
   <string name="switch_off">Off</string>
   <string name="folder_form_parent">父文件夹</string>
-  <string name="folder_form_no_parent">None</string>
-  <string name="folder_form_notifications">Notifications</string>
+  <string name="folder_form_no_parent">无</string>
+  <string name="folder_form_notifications">通知</string>
   <string name="folder_saved">Folder saved</string>
   <string name="folder_deleted">Folder deleted</string>
-  <string name="parent_folder_none">None</string>
+  <string name="parent_folder_none">无</string>
 </resources>

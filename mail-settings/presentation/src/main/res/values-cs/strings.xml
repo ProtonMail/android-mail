@@ -117,8 +117,8 @@
   <string name="mail_settings_notifications_loading_error">Chyba při načítání nastavení</string>
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">Automatické uzamčení</string>
-  <string name="mail_settings_auto_lock_item_title">Automatické uzamčení aplikací</string>
-  <string name="mail_settings_auto_lock_item_description">Zapněte tuto funkci automatického uzamčení aplikací a použijte kód PIN nebo čtečku otisku prstů pro odemčení</string>
+  <string name="mail_settings_auto_lock_item_title">Automatické uzamčení aplikace</string>
+  <string name="mail_settings_auto_lock_item_description">Zapněte tuto funkci pro automatické uzamčení aplikace a použijte kód PIN nebo otisk prstu pro odemčení</string>
   <string name="mail_settings_auto_lock_change_pin_description">Změnit PIN kód</string>
   <string name="mail_settings_auto_lock_item_timer_title">Časovač automatického uzamčení</string>
   <string name="mail_settings_auto_lock_not_enabled">Nepovoleno</string>
@@ -129,11 +129,11 @@
   <string name="mail_settings_auto_lock_item_timer_description_one_day">1 den nečinnosti</string>
   <string name="mail_settings_auto_lock_update_error">Chyba při aktualizaci nastavení</string>
   <string name="mail_settings_pin_insertion_input_title">Zadejte PIN kód</string>
-  <string name="mail_settings_pin_insertion_set_title">Nastavit PIN kód</string>
-  <string name="mail_settings_pin_insertion_confirm_title">Potvrdit PIN kód</string>
+  <string name="mail_settings_pin_insertion_set_title">Nastavte PIN kód</string>
+  <string name="mail_settings_pin_insertion_confirm_title">Potvrďte PIN kód</string>
   <string name="mail_settings_pin_insertion_lock_icon_description">Ikona zámku</string>
-  <string name="mail_settings_pin_insertion_pin_dot_description">Pin dot</string>
-  <string name="mail_settings_pin_insertion_backspace_description">Backspace</string>
+  <string name="mail_settings_pin_insertion_pin_dot_description">Tečky PIN kódu</string>
+  <string name="mail_settings_pin_insertion_backspace_description">Vymazat</string>
   <string name="mail_settings_pin_insertion_button_create">Vytvořit</string>
   <string name="mail_settings_pin_insertion_button_confirm">Potvrdit</string>
   <string name="mail_settings_pin_insertion_error_no_match">PIN kódy se neshodují.</string>

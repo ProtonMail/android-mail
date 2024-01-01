@@ -39,12 +39,12 @@
   <string name="mailbox_error_message_offline">Você está desconectado, não é possível recuperar os itens</string>
   <string name="mailbox_error_message_generic">Erro ao carregar a caixa de correio</string>
   <string name="mailbox_error_message_unexpected">Ocorreu um erro inesperado.</string>
-  <string name="mailbox_is_empty_title">No messages</string>
-  <string name="mailbox_is_empty_description">You are up to date</string>
-  <string name="mailbox_is_empty_no_unread_messages_title">No unread messages</string>
+  <string name="mailbox_is_empty_title">Nenhuma mensagem</string>
+  <string name="mailbox_is_empty_description">Você está atualizado</string>
+  <string name="mailbox_is_empty_no_unread_messages_title">Nenhuma mensagem não lida</string>
   <string name="mailbox_is_empty_folder_description">Esta pasta está vazia</string>
   <string name="mailbox_is_empty_spam_description">Sua pasta de spam está vazia</string>
-  <string name="mailbox_is_empty_trash_description">Trash is empty</string>
+  <string name="mailbox_is_empty_trash_description">A lixeira está vazia</string>
   <plurals name="mailbox_action_trash">
     <item quantity="one">Mensagem movida para a lixeira</item>
     <item quantity="other">%d mensagens movidas para lixeira</item>

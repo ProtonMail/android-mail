@@ -28,6 +28,8 @@
   <string name="label_title_all_mail">Akk Imaylen</string>
   <string name="label_title_all_drafts">Akk irewwayen</string>
   <string name="label_title_all_sent">Akk iznan yettwaznen</string>
+  <string name="label_title_all_scheduled">All Scheduled</string>
+  <string name="label_title_snoozed">Snoozed</string>
   <string name="label_title_folders">Ikaramen</string>
   <string name="label_title_parent_folder">Akaram amaraw</string>
   <string name="label_title_labels">Tibzimin</string>

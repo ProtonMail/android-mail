@@ -44,7 +44,7 @@
   <string name="mailbox_is_empty_no_unread_messages_title">Tous les messages sont lus.</string>
   <string name="mailbox_is_empty_folder_description">Ce dossier est vide.</string>
   <string name="mailbox_is_empty_spam_description">Votre dossier Indésirables/spam est vide.</string>
-  <string name="mailbox_is_empty_trash_description">Le dossier Corbeille est vide.</string>
+  <string name="mailbox_is_empty_trash_description">La Corbeille est vide.</string>
   <plurals name="mailbox_action_trash">
     <item quantity="one">Le message a été déplacé dans le dossier Corbeille.</item>
     <item quantity="other">%d messages ont été déplacés dans le dossier Corbeille.</item>

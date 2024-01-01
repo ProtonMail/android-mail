@@ -23,7 +23,7 @@
   <string name="no_contacts_description">Usprawnij korzystanie z poczty, tworząc nowy kontakt lub importując istniejące.</string>
   <string name="add_contact">Dodaj kontakt</string>
   <string name="add_contact_content_description">Dodaj kontakt</string>
-  <string name="all_title">All</string>
+  <string name="all_title">Wszystkie</string>
   <string name="groups_title">Grupy</string>
   <string name="group_member_count">%1$s członek</string>
   <string name="group_members_count">%1$s członków</string>

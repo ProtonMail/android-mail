@@ -28,6 +28,8 @@
   <string name="label_title_all_mail">All e-post</string>
   <string name="label_title_all_drafts">Alla utkast</string>
   <string name="label_title_all_sent">Allt skickat</string>
+  <string name="label_title_all_scheduled">Alla schemalagda</string>
+  <string name="label_title_snoozed">Snoozad</string>
   <string name="label_title_folders">Mappar</string>
   <string name="label_title_parent_folder">Överordnad mapp</string>
   <string name="label_title_labels">Etiketter</string>

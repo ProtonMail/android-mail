@@ -118,7 +118,7 @@
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">ავტოჩაკეტვა</string>
   <string name="mail_settings_auto_lock_item_title">აპის ავტომატური ჩაკეტვა</string>
-  <string name="mail_settings_auto_lock_item_description">Turn this feature on to auto lock your app and use a PIN code or Fingerprint to unlock it</string>
+  <string name="mail_settings_auto_lock_item_description">აპლიკაციის ავტომატურად ჩასაკეტად და მისი განბლოკვისთვის PIN-კოდის, ან ანაბეჭდის გამოსაყენებლად ჩართეთ ეს თვისება</string>
   <string name="mail_settings_auto_lock_change_pin_description">PIN კოდის შეცვლა</string>
   <string name="mail_settings_auto_lock_item_timer_title">ავტომატური დაბლოკვის დრო</string>
   <string name="mail_settings_auto_lock_not_enabled">ჩართული არაა</string>

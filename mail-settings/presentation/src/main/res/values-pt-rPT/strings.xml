@@ -130,7 +130,7 @@
   <string name="mail_settings_auto_lock_update_error">Erro ao atualizar as definições</string>
   <string name="mail_settings_pin_insertion_input_title">Insert PIN code</string>
   <string name="mail_settings_pin_insertion_set_title">Set PIN code</string>
-  <string name="mail_settings_pin_insertion_confirm_title">Confirma o seu PIN</string>
+  <string name="mail_settings_pin_insertion_confirm_title">Confirme o seu PIN</string>
   <string name="mail_settings_pin_insertion_lock_icon_description">Lock icon</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">Pin dot</string>
   <string name="mail_settings_pin_insertion_backspace_description">Backspace</string>

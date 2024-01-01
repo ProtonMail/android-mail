@@ -28,6 +28,8 @@
   <string name="label_title_all_mail">Tous les messages</string>
   <string name="label_title_all_drafts">Tous les brouillons</string>
   <string name="label_title_all_sent">Tous les messages envoyés</string>
+  <string name="label_title_all_scheduled">Toutes les programmations</string>
+  <string name="label_title_snoozed">En attente</string>
   <string name="label_title_folders">Dossiers</string>
   <string name="label_title_parent_folder">Dossier parent</string>
   <string name="label_title_labels">Labels</string>

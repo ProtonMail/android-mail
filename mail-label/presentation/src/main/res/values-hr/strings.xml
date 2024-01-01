@@ -28,6 +28,8 @@
   <string name="label_title_all_mail">Sva pošta</string>
   <string name="label_title_all_drafts">All drafts</string>
   <string name="label_title_all_sent">Sve poslane poruke</string>
+  <string name="label_title_all_scheduled">All Scheduled</string>
+  <string name="label_title_snoozed">Snoozed</string>
   <string name="label_title_folders">Mape</string>
   <string name="label_title_parent_folder">Glavna mapa</string>
   <string name="label_title_labels">Oznake</string>

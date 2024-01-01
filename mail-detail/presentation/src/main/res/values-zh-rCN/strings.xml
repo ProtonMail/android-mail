@@ -62,15 +62,15 @@
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">You are about to leave the app and navigate to:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">不再询问</string>
-  <string name="external_link_confirmation_dialog_cancel_button">Cancel</string>
-  <string name="external_link_confirmation_dialog_continue_button">Continue</string>
+  <string name="external_link_confirmation_dialog_cancel_button">关闭</string>
+  <string name="external_link_confirmation_dialog_continue_button">继续</string>
   <!-- Phishing link confirmation dialog -->
   <string name="phishing_link_confirmation_dialog_title">警告：疑似虚假网站</string>
   <string name="phishing_link_confirmation_dialog_content_part_1">此链接指向的网站可能会窃取您的密码、信用卡等信息。</string>
   <string name="phishing_link_confirmation_dialog_content_part_2">For your security, do not continue.</string>
   <string name="phishing_link_confirmation_dialog_button_go_back">返回（推荐）</string>
   <string name="phishing_link_confirmation_dialog_button_continue">忽视警告并继续</string>
-  <string name="message_delete_dialog_title">Delete message</string>
+  <string name="message_delete_dialog_title">删除邮件</string>
   <string name="message_delete_dialog_message">确定要永久删除此邮件吗？</string>
   <string name="message_deleted">邮件已删除</string>
   <string name="error_delete_message_failed">Failed to delete message</string>

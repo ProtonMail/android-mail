@@ -21,7 +21,7 @@
   <string name="dialog_sign_out_account_description">Ви дійсно хочете вийти?</string>
   <string name="dialog_sign_out_account_confirm">Так</string>
   <string name="dialog_sign_out_account_cancel">Ні</string>
-  <string name="dialog_remove_account_title">Remove Account</string>
+  <string name="dialog_remove_account_title">Вилучити обліковий запис</string>
   <string name="dialog_remove_account_description">Ви вийдете, а всі пов\'язані з цим обліковим записом дані буде вилучено.</string>
   <string name="dialog_remove_account_confirm">Вилучити</string>
   <string name="dialog_remove_account_cancel">Скасувати</string>

@@ -18,18 +18,18 @@
   -->
 <resources>
   <string name="contact_list_title">Kontak</string>
-  <string name="contact_list_loading_error">Error loading contacts, please try again later</string>
-  <string name="no_contacts">No contacts found</string>
-  <string name="no_contacts_description">Improve your email experience by creating a new contact or importing existing ones.</string>
+  <string name="contact_list_loading_error">Terdapat kesalahan dalam memuat kontak. Silakan coba lagi nanti</string>
+  <string name="no_contacts">Tidak ada kontak yang ditemukan</string>
+  <string name="no_contacts_description">Tingkatkan pengalaman berkirim email Anda dengan membuat kontak baru atau mengimpor kontak yang telah ada.</string>
   <string name="add_contact">Tambah kontak</string>
   <string name="add_contact_content_description">Tambah kontak</string>
   <string name="all_title">Semua</string>
   <string name="groups_title">Grup</string>
-  <string name="group_member_count">%1$s member</string>
-  <string name="group_members_count">%1$s members</string>
+  <string name="group_member_count">%1$s anggota</string>
+  <string name="group_members_count">%1$s anggota</string>
   <string name="new_contact">Kontak baru</string>
   <string name="new_group">Grup baru</string>
   <string name="import_contact">Unggah kontak perangkat</string>
   <string name="no_contact_email">Tidak ada alamat surel</string>
-  <string name="multiple_contact_emails">%1$s, +%2$d</string>
+  <string name="multiple_contact_emails">%1$s, + %2$d</string>
 </resources>

@@ -30,7 +30,7 @@
   <string name="mail_settings_combined_contacts">Об\'єднані контакти</string>
   <string name="mail_settings_local_cache">Локальний кеш</string>
   <string name="mail_settings_local_cache_hint">Space used: %s</string>
-  <string name="mail_settings_local_cache_clear_button">Clear data</string>
+  <string name="mail_settings_local_cache_clear_button">Очистити дані</string>
   <string name="mail_settings_swipe_actions">Жести посування</string>
   <string name="mail_settings_combined_contacts_hint">Увімкніть цю функцію для автозавершення адрес електронної пошти, використовуючи контакти з усіх ваших під\'єднаних облікових записів.</string>
   <string name="mail_settings_alternative_routing_hint">У випадку блокування сайтів Proton, цей параметр дозволяє програмі спробувати альтернативний мережевий маршрут для доступу до Proton, що може бути корисним для обходу мережевих екранів чи мережевих проблем: Радимо ввімкнути цей параметр для кращої надійності.</string>
@@ -59,13 +59,13 @@
   <string name="mail_settings_mailbox">Поштова скринька</string>
   <string name="mail_settings_privacy">Приватність</string>
   <string name="mail_settings_labels">Мітки</string>
-  <string name="mail_settings_folders">Folders</string>
+  <string name="mail_settings_folders">Теки</string>
   <string name="mail_settings_conversation_mode">Режим розмов</string>
   <string name="mail_settings_not_set">Не встановлено</string>
   <string name="mail_settings_conversation_mode_hint">Групуйте електронні листи в одній розмові або переглядайте їх окремо</string>
   <!-- Default email address settings -->
   <string name="mail_settings_default_email_address_title">Типова адреса електронної пошти</string>
-  <string name="mail_settings_default_email_address_inactive_addresses">Inactive addresses</string>
+  <string name="mail_settings_default_email_address_inactive_addresses">Неактивні адреси</string>
   <string name="mail_settings_default_email_address_no_inactive_addresses">No inactive addresses</string>
   <string name="mail_settings_default_email_address_error_loading">Помилка завантаження налаштувань</string>
   <string name="mail_settings_default_email_address_error_update">Помилка оновлення налаштувань</string>
@@ -109,7 +109,7 @@
   <string name="mail_settings_swipe_action_trash_description">Перемістити до смітника</string>
   <!-- Notification settings -->
   <string name="mail_settings_notifications_title">Push-сповіщення</string>
-  <string name="mail_settings_notifications_extended_notifications_title">Extended notifications</string>
+  <string name="mail_settings_notifications_extended_notifications_title">Розширені сповіщення</string>
   <string name="mail_settings_notifications_extended_notifications_summary">Увімкніть цю функцію, щоб бачити відправника листів у push-сповіщеннях.</string>
   <string name="mail_settings_notifications_notifications_settings">Notifications settings</string>
   <string name="mail_settings_notifications_notifications_settings_hint">Navigate to system notification settings</string>
@@ -125,7 +125,7 @@
   <string name="mail_settings_auto_lock_immediately">Негайно</string>
   <string name="mail_settings_auto_lock_item_timer_description_five_minutes">5 minutes inactivity</string>
   <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 minutes inactivity</string>
-  <string name="mail_settings_auto_lock_item_timer_description_one_hour">1 hour inactivity</string>
+  <string name="mail_settings_auto_lock_item_timer_description_one_hour">1 год бездіяльності</string>
   <string name="mail_settings_auto_lock_item_timer_description_one_day">1 day inactivity</string>
   <string name="mail_settings_auto_lock_update_error">Помилка оновлення налаштувань</string>
   <string name="mail_settings_pin_insertion_input_title">Insert PIN code</string>
@@ -135,7 +135,7 @@
   <string name="mail_settings_pin_insertion_pin_dot_description">Pin dot</string>
   <string name="mail_settings_pin_insertion_backspace_description">Backspace</string>
   <string name="mail_settings_pin_insertion_button_create">Створити</string>
-  <string name="mail_settings_pin_insertion_button_confirm">Confirm</string>
+  <string name="mail_settings_pin_insertion_button_confirm">Підтвердити</string>
   <string name="mail_settings_pin_insertion_error_no_match">PIN-коди відрізняються.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
     <item quantity="one">Wrong PIN code. %s remaining attempt.</item>
