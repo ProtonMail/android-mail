@@ -24,7 +24,7 @@
     <string name="mail_settings_app_settings">App settings</string>
     <string name="mail_settings_theme">Theme</string>
     <string name="mail_settings_push_notifications">Push notifications</string>
-    <string name="mail_settings_auto_lock">Auto Lock</string>
+    <string name="mail_settings_auto_lock">Auto lock</string>
     <string name="mail_settings_alternative_routing">Alternative routing</string>
     <string name="mail_settings_app_language">App language</string>
     <string name="mail_settings_combined_contacts">Combined contacts</string>
