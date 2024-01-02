@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.ButtonDefaults
@@ -59,6 +60,7 @@ fun VirtualKeyboardDigitItem(
 
     Box(
         modifier = modifier
+            .clickable(interactionSource = interactionSource, indication = null) { onElementClicked(value) }
             .size(KeyboardButtonItemSize)
             .wrapContentSize()
             .background(color = ProtonTheme.colors.interactionWeakNorm, shape = CircleShape),
@@ -66,7 +68,6 @@ fun VirtualKeyboardDigitItem(
     ) {
         Text(
             modifier = Modifier
-                .clickable(interactionSource = interactionSource, indication = null) { onElementClicked(value) }
                 .size(InnerKeyboardButtonTextSize)
                 .padding(ProtonDimens.DefaultSpacing)
                 .padding(ProtonDimens.ExtraSmallSpacing),
@@ -87,7 +88,6 @@ fun VirtualKeyboardButtonItem(
     IconButton(
         modifier = modifier
             .size(KeyboardButtonItemSize)
-            .wrapContentSize()
             .padding(ProtonDimens.SmallSpacing),
         onClick = onClick
     ) {
@@ -107,6 +107,7 @@ fun VirtualKeyboardConfirmButton(
     ProtonButton(
         modifier = modifier
             .fillMaxWidth()
+            .wrapContentHeight()
             .padding(ProtonDimens.DefaultSpacing),
         elevation = null,
         border = null,

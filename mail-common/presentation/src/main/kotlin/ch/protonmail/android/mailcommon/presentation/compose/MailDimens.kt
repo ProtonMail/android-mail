@@ -78,7 +78,7 @@ object MailDimens {
 
     object AutoLockPinScreen {
 
-        val SpacerSize = 64.dp
+        val SpacerSize = 48.dp
         val PinDotsGridHeight = 64.dp
         val KeyboardButtonItemSize = 84.dp
         val InnerKeyboardButtonTextSize = 64.dp

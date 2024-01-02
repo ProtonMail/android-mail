@@ -24,7 +24,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -58,9 +60,10 @@ fun AutoLockPinInsertionScreen(
 
         Column(
             modifier = Modifier
-                .weight(1f)
-                .padding(ProtonDimens.DefaultSpacing)
-                .padding(ProtonDimens.LargeSpacing),
+                .fillMaxHeight()
+                .weight(1f, fill = false)
+                .padding(horizontal = ProtonDimens.DefaultSpacing)
+                .padding(horizontal = ProtonDimens.LargeSpacing),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -74,7 +77,10 @@ fun AutoLockPinInsertionScreen(
                 onDigitAdded = actions.onDigitAdded,
                 onBackSpaceClick = actions.onBackspaceClick
             )
+
+            Spacer(modifier = Modifier.height(ProtonDimens.SmallSpacing))
         }
+
         Row {
             VirtualKeyboardConfirmButton(
                 confirmButtonUiModel = state.confirmButtonState.confirmButtonUiModel,
