@@ -45,6 +45,7 @@ private fun AutoLockPinScreenPreview() {
                     TopBarUiModel(true, R.string.mail_settings_pin_insertion_confirm_title)
                 ),
                 AutoLockPinState.PinInsertionState(
+                    startingStep = PinInsertionStep.PinInsertion,
                     step = PinInsertionStep.PinInsertion,
                     remainingAttempts = PinVerificationRemainingAttempts(remainingAttempts),
                     PinInsertionUiModel(insertedPin)
@@ -60,7 +61,8 @@ private fun AutoLockPinScreenPreview() {
                 ),
                 Effect.empty(),
                 Effect.empty(),
-                Effect.of(TextUiModel.Text("PIN error placeholder"))
+                Effect.of(TextUiModel.Text("PIN error placeholder")),
+                Effect.empty()
             ),
             actions = AutoLockPinDetailScreen.Actions(
                 onConfirmation = {},
@@ -68,10 +70,13 @@ private fun AutoLockPinScreenPreview() {
                 onDigitAdded = {},
                 onBackspaceClick = {},
                 onBackAction = {},
+                onNavigateTo = {},
+                onShowSuccessSnackbar = {}
+            ),
+            signOutActions = AutoLockPinDetailScreen.SignOutActions(
                 onSignOut = {},
                 onSignOutConfirmed = {},
                 onSignOutCanceled = {},
-                onNavigateTo = {}
             ),
             onBackClick = {}
         )

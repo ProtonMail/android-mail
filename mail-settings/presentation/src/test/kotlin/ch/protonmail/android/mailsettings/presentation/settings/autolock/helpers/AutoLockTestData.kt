@@ -38,8 +38,10 @@ internal object AutoLockTestData {
     val BaseTopBarState = AutoLockPinState.TopBarState(BaseTopBarUiModel)
 
     val BasePinInsertionState = AutoLockPinState.PinInsertionState(
-        PinInsertionStep.PinInsertion, PinVerificationRemainingAttempts.Default,
-        PinInsertionUiModel(InsertedPin(emptyList()))
+        startingStep = PinInsertionStep.PinInsertion,
+        step = PinInsertionStep.PinInsertion,
+        remainingAttempts = PinVerificationRemainingAttempts.Default,
+        pinInsertionUiModel = PinInsertionUiModel(InsertedPin(emptyList()))
     )
 
     val BaseConfirmButtonUiModel =
@@ -56,6 +58,7 @@ internal object AutoLockTestData {
         signOutButtonState = BaseSignOutState,
         Effect.empty(),
         Effect.empty(),
+        Effect.empty(),
         Effect.empty()
     )
 
@@ -63,6 +66,7 @@ internal object AutoLockTestData {
     val NineRemainingAttempts = PinVerificationRemainingAttempts(9)
 
     val BaseAutoLockPin = AutoLockPin("1234")
+    val BaseAutoLockUpdatedPin = AutoLockPin("1233")
     val BaseContinuationDestination = AutoLockPinContinuationAction.NavigateToDeepLink(
         AutoLockPinContinuationAction.EncodedDestination.fromRawValue("continuationDestination")
     )

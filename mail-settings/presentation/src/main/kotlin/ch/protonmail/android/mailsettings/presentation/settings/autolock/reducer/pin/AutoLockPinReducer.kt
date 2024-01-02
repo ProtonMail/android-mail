@@ -22,6 +22,7 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPinContinuationAction
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.pin.AutoLockPinErrorUiMapper
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.pin.AutoLockPinStepUiMapper
+import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.pin.AutoLockSuccessfulOperationUiMapper
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.AutoLockPinEvent
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.AutoLockPinState
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.InsertedPin
@@ -32,12 +33,14 @@ import javax.inject.Inject
 
 class AutoLockPinReducer @Inject constructor(
     private val stepUiMapper: AutoLockPinStepUiMapper,
+    private val successfulOperationUiMapper: AutoLockSuccessfulOperationUiMapper,
     private val errorsUiMapper: AutoLockPinErrorUiMapper
 ) {
 
     fun newStateFrom(currentState: AutoLockPinState, operation: AutoLockPinEvent) =
         currentState.toNewStateFromEvent(operation)
 
+    @Suppress("ComplexMethod")
     private fun AutoLockPinState.toNewStateFromEvent(event: AutoLockPinEvent): AutoLockPinState {
         return when (this) {
             is AutoLockPinState.Loading -> when (event) {
@@ -48,7 +51,7 @@ class AutoLockPinReducer @Inject constructor(
             is AutoLockPinState.DataLoaded -> when (event) {
                 is AutoLockPinEvent.Update.PinValueChanged -> updatePinValue(this, event)
                 is AutoLockPinEvent.Update.MovedToStep -> moveToStep(this, event.step)
-                is AutoLockPinEvent.Update.OperationAborted,
+                is AutoLockPinEvent.Update.OperationAborted -> abortOperation(this)
                 is AutoLockPinEvent.Update.OperationCompleted -> completeOperation(this)
                 is AutoLockPinEvent.Update.VerificationCompleted -> completeVerification(this, event)
                 is AutoLockPinEvent.Update.Error -> handleError(this, event)
@@ -74,8 +77,15 @@ class AutoLockPinReducer @Inject constructor(
         else -> state.copy(pinInsertionErrorEffect = Effect.of(errorsUiMapper.toUiModel(event)))
     }
 
-    private fun completeOperation(state: AutoLockPinState.DataLoaded) =
-        state.copy(closeScreenEffect = Effect.of(Unit))
+    private fun abortOperation(state: AutoLockPinState.DataLoaded) = state.copy(closeScreenEffect = Effect.of(Unit))
+
+    private fun completeOperation(state: AutoLockPinState.DataLoaded): AutoLockPinState.DataLoaded {
+        val closeEffect = Effect.of(Unit)
+        val snackbarEffect = successfulOperationUiMapper.toTextUiModel(state.pinInsertionState.startingStep)
+            ?.let { Effect.of(it) }
+            ?: Effect.empty()
+        return state.copy(closeScreenEffect = closeEffect, snackbarSuccessEffect = snackbarEffect)
+    }
 
     private fun completeVerification(
         state: AutoLockPinState.DataLoaded,
@@ -96,7 +106,10 @@ class AutoLockPinReducer @Inject constructor(
         val newTopBarState = AutoLockPinState.TopBarState(topBarUiModel)
         val newConfirmButtonState = AutoLockPinState.ConfirmButtonState(confirmButtonUiModel)
         val newPinInsertionState = AutoLockPinState.PinInsertionState(
-            step, PinVerificationRemainingAttempts.Default, PinInsertionUiModel(InsertedPin.Empty)
+            startingStep = state.pinInsertionState.startingStep,
+            step = step,
+            remainingAttempts = PinVerificationRemainingAttempts.Default,
+            pinInsertionUiModel = PinInsertionUiModel(InsertedPin.Empty)
         )
 
         return state.copy(
@@ -147,15 +160,17 @@ class AutoLockPinReducer @Inject constructor(
         return AutoLockPinState.DataLoaded(
             topBarState = AutoLockPinState.TopBarState(topBarUiModel),
             pinInsertionState = AutoLockPinState.PinInsertionState(
-                step,
-                remainingAttempts,
-                pinInsertionUiModel
+                startingStep = step,
+                step = step,
+                remainingAttempts = remainingAttempts,
+                pinInsertionUiModel = pinInsertionUiModel
             ),
             confirmButtonState = AutoLockPinState.ConfirmButtonState(confirmButtonUiModel),
             signOutButtonState = AutoLockPinState.SignOutButtonState(signOutUiModel),
             closeScreenEffect = Effect.empty(),
             navigateEffect = Effect.empty(),
-            pinInsertionErrorEffect = errorEffect
+            pinInsertionErrorEffect = errorEffect,
+            snackbarSuccessEffect = Effect.empty()
         )
     }
 }

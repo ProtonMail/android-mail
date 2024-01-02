@@ -26,15 +26,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
+import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.AutoLockPinState
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.AutoLockPinViewAction
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.viewmodel.pin.AutoLockPinViewModel
 import me.proton.core.compose.component.ProtonCenteredProgress
 
 @Composable
+@Suppress("UseComposableActions")
 fun AutoLockPinScreen(
     onBackClick: () -> Unit,
     onNavigateTo: (String) -> Unit,
+    onShowSuccessSnackbar: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: AutoLockPinViewModel = hiltViewModel()
 ) {
@@ -46,17 +49,22 @@ fun AutoLockPinScreen(
         onBackAction = { viewModel.submit(AutoLockPinViewAction.PerformBack) },
         onConfirmation = { viewModel.submit(AutoLockPinViewAction.PerformConfirm) },
         onBiometricsClick = {},
+        onShowSuccessSnackbar = onShowSuccessSnackbar,
+        onNavigateTo = onNavigateTo
+    )
+
+    val signOutActions = AutoLockPinDetailScreen.SignOutActions(
         onSignOut = { viewModel.submit(AutoLockPinViewAction.RequestSignOut) },
         onSignOutConfirmed = { viewModel.submit(AutoLockPinViewAction.ConfirmSignOut) },
-        onSignOutCanceled = { viewModel.submit(AutoLockPinViewAction.CancelSignOut) },
-        onNavigateTo = onNavigateTo
+        onSignOutCanceled = { viewModel.submit(AutoLockPinViewAction.CancelSignOut) }
     )
 
     AutoLockPinScreen(
         modifier = modifier,
         state = state,
         onBackClick = onBackClick,
-        actions = actions
+        actions = actions,
+        signOutActions = signOutActions
     )
 }
 
@@ -65,6 +73,7 @@ fun AutoLockPinScreen(
     state: AutoLockPinState,
     onBackClick: () -> Unit,
     actions: AutoLockPinDetailScreen.Actions,
+    signOutActions: AutoLockPinDetailScreen.SignOutActions,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -82,13 +91,17 @@ fun AutoLockPinScreen(
                     AutoLockPinInsertionScreen(
                         modifier = Modifier.padding(paddingValues),
                         state = state,
-                        actions = actions
+                        actions = actions,
+                        signOutActions = signOutActions
                     )
                     ConsumableLaunchedEffect(state.closeScreenEffect) {
                         onBackClick()
                     }
                     ConsumableLaunchedEffect(state.navigateEffect) {
                         actions.onNavigateTo(it)
+                    }
+                    ConsumableTextEffect(state.snackbarSuccessEffect) {
+                        actions.onShowSuccessSnackbar(it)
                     }
                 }
             }

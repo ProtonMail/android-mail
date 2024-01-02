@@ -372,7 +372,14 @@ fun Home(
                 addLanguageSettings(navController)
                 addPrivacySettings(navController)
                 addAutoLockSettings(navController)
-                addPinInsertion(navController)
+                addPinInsertion(
+                    navController = navController,
+                    onShowSuccessSnackbar = {
+                        scope.launch {
+                            snackbarHostSuccessState.showSnackbar(message = it, type = ProtonSnackbarType.SUCCESS)
+                        }
+                    }
+                )
                 addSwipeActionsSettings(navController)
                 addThemeSettings(navController)
                 addNotificationsSettings(navController)

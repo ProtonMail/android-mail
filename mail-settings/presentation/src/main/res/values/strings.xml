@@ -150,7 +150,8 @@
     <string name="mail_settings_pin_insertion_signout_dialog_description">Are you sure you want to sign out?</string>
     <string name="mail_settings_pin_insertion_signout_dialog_confirm">Yes</string>
     <string name="mail_settings_pin_insertion_signout_dialog_cancel">No</string>
-
+    <string name="mail_settings_pin_insertion_created_success">PIN code created successfully.</string>
+    <string name="mail_settings_pin_insertion_changed_success">PIN code changed successfully.</string>
     <!-- Local storage -->
     <string name="mail_settings_clearing_cached_data">Clearing local cached data…</string>
     <!-- Error messages -->

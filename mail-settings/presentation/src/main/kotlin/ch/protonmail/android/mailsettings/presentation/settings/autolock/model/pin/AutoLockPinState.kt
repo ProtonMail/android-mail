@@ -32,7 +32,8 @@ sealed interface AutoLockPinState {
         val signOutButtonState: SignOutButtonState,
         val closeScreenEffect: Effect<Unit>,
         val navigateEffect: Effect<String>,
-        val pinInsertionErrorEffect: Effect<TextUiModel>
+        val pinInsertionErrorEffect: Effect<TextUiModel>,
+        val snackbarSuccessEffect: Effect<TextUiModel>
     ) : AutoLockPinState
 
     data class SignOutButtonState(val signOutUiModel: SignOutUiModel)
@@ -42,6 +43,7 @@ sealed interface AutoLockPinState {
     data class TopBarState(val topBarStateUiModel: TopBarUiModel)
 
     data class PinInsertionState(
+        val startingStep: PinInsertionStep,
         val step: PinInsertionStep,
         val remainingAttempts: PinVerificationRemainingAttempts,
         val pinInsertionUiModel: PinInsertionUiModel

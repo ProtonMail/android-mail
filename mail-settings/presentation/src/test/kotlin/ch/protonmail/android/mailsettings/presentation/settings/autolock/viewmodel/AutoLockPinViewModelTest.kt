@@ -40,12 +40,16 @@ import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.helpers.AutoLockTestData
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.pin.AutoLockPinErrorUiMapper
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.pin.AutoLockPinStepUiMapper
+import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.pin.AutoLockSuccessfulOperationUiMapper
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.AutoLockPinState
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.AutoLockPinViewAction
+import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.ConfirmButtonUiModel
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.InsertedPin
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.PinInsertionStep
+import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.PinInsertionUiModel
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.PinVerificationRemainingAttempts
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.SignOutUiModel
+import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.TopBarUiModel
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.reducer.pin.AutoLockPinReducer
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.ui.pin.AutoLockPinScreen
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.usecase.ClearPinDataAndForceLogout
@@ -78,7 +82,11 @@ internal class AutoLockPinViewModelTest {
     private val toggleAutoLockAttemptStatus = mockk<ToggleAutoLockAttemptPendingStatus>()
     private val updateAutoLockLastForegroundMillis = mockk<UpdateLastForegroundMillis>()
     private val savedStateHandle = mockk<SavedStateHandle>()
-    private val reducer = AutoLockPinReducer(AutoLockPinStepUiMapper(), AutoLockPinErrorUiMapper())
+    private val reducer = AutoLockPinReducer(
+        AutoLockPinStepUiMapper(),
+        AutoLockSuccessfulOperationUiMapper(),
+        AutoLockPinErrorUiMapper()
+    )
 
     private val viewModel by lazy {
         AutoLockPinViewModel(
@@ -306,7 +314,7 @@ internal class AutoLockPinViewModelTest {
         expectStandaloneStart()
         expectAttempts()
         expectAttemptStatusToggling()
-        coEvery { saveAutoLockPin(AutoLockTestData.BaseAutoLockPin) } returns Unit.right()
+        expectValidPinSaving()
         coEvery { toggleAutoLockEnabled(true) } returns AutoLockPreferenceError.DataStoreError.left()
 
         val expectedStep = PinInsertionStep.PinConfirmation
@@ -334,8 +342,8 @@ internal class AutoLockPinViewModelTest {
         expectStandaloneStart()
         expectAttempts()
         expectAttemptStatusToggling()
-        coEvery { saveAutoLockPin(AutoLockTestData.BaseAutoLockPin) } returns Unit.right()
-        coEvery { toggleAutoLockEnabled(true) } returns Unit.right()
+        expectValidPinSaving()
+        expectAutoLockToggling(true)
 
         val expectedStep = PinInsertionStep.PinConfirmation
         val expectedCloseEffect = Effect.of(Unit)
@@ -571,6 +579,77 @@ internal class AutoLockPinViewModelTest {
         }
     }
 
+    @Test
+    fun `should not emit the snackbar confirmation when the starting flow is verification`() = runTest {
+        // Given
+        expectConditionalStart(AutoLockInsertionMode.VerifyPin(AutoLockPinContinuationAction.None))
+        expectAttempts()
+        expectAttemptStatusToggling()
+        expectExistingPin("1234")
+        expectValidAutoLockAttemptsUpdate()
+        expectLastForegroundReset()
+
+        val expectedSnackbarEffect = Effect.empty<TextUiModel>()
+
+        // When + Then
+        viewModel.state.test {
+            skipItems(1)
+
+            viewModel.insertPinAndConfirm("1234")
+            skipItems(4)
+
+            val actual = awaitItem() as AutoLockPinState.DataLoaded
+
+            assertEquals(expectedSnackbarEffect, actual.snackbarSuccessEffect)
+        }
+    }
+
+    @Test
+    fun `should emit a snackbar state when completing the change pin flow`() = runTest {
+        // Given
+        expectConditionalStart(AutoLockInsertionMode.ChangePin)
+        expectAttempts()
+        expectAttemptStatusToggling()
+        expectValidAutoLockAttemptsUpdate()
+        expectLastForegroundReset()
+        expectValidPinSaving()
+        expectAutoLockToggling(true)
+
+        coEvery { observeAutoLockPin() } returns flowOf(AutoLockPin("1234").right())
+        val expectedEffect = Effect.of(TextUiModel(R.string.mail_settings_pin_insertion_changed_success))
+        val expectedState = AutoLockTestData.BaseLoadedState.copy(
+            pinInsertionState = AutoLockPinState.PinInsertionState(
+                startingStep = PinInsertionStep.PinChange,
+                step = PinInsertionStep.PinConfirmation,
+                remainingAttempts = PinVerificationRemainingAttempts(10),
+                pinInsertionUiModel = PinInsertionUiModel(InsertedPin(listOf(1, 2, 3, 3)))
+            ),
+            topBarState = AutoLockPinState.TopBarState(
+                TopBarUiModel(showBackButton = true, R.string.mail_settings_pin_insertion_confirm_title)
+            ),
+            confirmButtonState = AutoLockPinState.ConfirmButtonState(
+                ConfirmButtonUiModel(isEnabled = true, R.string.mail_settings_pin_insertion_button_create)
+            ),
+            snackbarSuccessEffect = expectedEffect,
+            closeScreenEffect = Effect.of(Unit)
+        )
+
+        // When + Then
+        viewModel.state.test {
+            skipItems(1)
+
+            // Insertion and confirmation
+            viewModel.insertPinAndConfirm("1234")
+            viewModel.insertPinAndConfirm("1233")
+            viewModel.insertPinAndConfirm("1233")
+            skipItems(14)
+
+            val actual = awaitItem() as AutoLockPinState.DataLoaded
+
+            assertEquals(expectedState, actual)
+        }
+    }
+
     private fun expectConditionalStart(mode: AutoLockInsertionMode) {
         every {
             savedStateHandle.get<String>(AutoLockPinScreen.AutoLockPinModeKey)
@@ -583,6 +662,16 @@ internal class AutoLockPinViewModelTest {
 
     private fun expectAttempts(value: Int = 10) {
         coEvery { getRemainingAutoLockAttempts() } returns AutoLockRemainingAttempts(value).right()
+    }
+
+    private fun expectAutoLockToggling(newValue: Boolean) {
+        coEvery { toggleAutoLockEnabled(newValue) } returns Unit.right()
+
+    }
+
+    private fun expectValidPinSaving() {
+        coEvery { saveAutoLockPin(AutoLockTestData.BaseAutoLockPin) } returns Unit.right()
+        coEvery { saveAutoLockPin(AutoLockTestData.BaseAutoLockUpdatedPin) } returns Unit.right()
     }
 
     private fun expectAttemptStatusToggling() {

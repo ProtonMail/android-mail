@@ -43,6 +43,7 @@ import me.proton.core.compose.theme.ProtonDimens
 fun AutoLockPinInsertionScreen(
     state: AutoLockPinState.DataLoaded,
     actions: AutoLockPinDetailScreen.Actions,
+    signOutActions: AutoLockPinDetailScreen.SignOutActions,
     modifier: Modifier = Modifier
 ) {
     LockScreenOrientationEffect(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
@@ -80,11 +81,9 @@ fun AutoLockPinInsertionScreen(
 
             Spacer(modifier = Modifier.height(ProtonDimens.SmallSpacing))
 
-            AutoLockSignOutItem(
+            AutoLockPinSignOutItem(
                 state = state.signOutButtonState,
-                onSignOut = actions.onSignOut,
-                onSignOutConfirmed = actions.onSignOutConfirmed,
-                onSignOutCanceled = actions.onSignOutCanceled
+                actions = signOutActions
             )
         }
 
@@ -101,12 +100,16 @@ object AutoLockPinDetailScreen {
     data class Actions(
         val onNavigateTo: (String) -> Unit,
         val onBackAction: () -> Unit,
+        val onShowSuccessSnackbar: (snackbarText: String) -> Unit,
         val onDigitAdded: (Int) -> Unit,
         val onBackspaceClick: () -> Unit,
         val onBiometricsClick: () -> Unit,
+        val onConfirmation: () -> Unit
+    )
+
+    data class SignOutActions(
         val onSignOut: () -> Unit,
         val onSignOutConfirmed: () -> Unit,
         val onSignOutCanceled: () -> Unit,
-        val onConfirmation: () -> Unit
     )
 }

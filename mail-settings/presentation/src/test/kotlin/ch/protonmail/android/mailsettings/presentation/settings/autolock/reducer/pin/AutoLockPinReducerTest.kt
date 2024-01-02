@@ -19,9 +19,12 @@
 package ch.protonmail.android.mailsettings.presentation.settings.autolock.reducer.pin
 
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.helpers.AutoLockTestData
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.pin.AutoLockPinErrorUiMapper
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.pin.AutoLockPinStepUiMapper
+import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.pin.AutoLockSuccessfulOperationUiMapper
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.AutoLockPinEvent
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.AutoLockPinState
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.PinInsertionStep
@@ -36,7 +39,7 @@ import kotlin.test.assertEquals
 @RunWith(Parameterized::class)
 internal class AutoLockPinReducerTest(private val testInput: TestInput) {
 
-    private val reducer = AutoLockPinReducer(stepMapper, errorMapper)
+    private val reducer = AutoLockPinReducer(stepMapper, operationMapper, errorMapper)
 
     @Test
     fun `should map the step to the appropriate top bar ui model`() = with(testInput) {
@@ -50,6 +53,7 @@ internal class AutoLockPinReducerTest(private val testInput: TestInput) {
     private companion object {
 
         val stepMapper = AutoLockPinStepUiMapper()
+        val operationMapper = AutoLockSuccessfulOperationUiMapper()
         val errorMapper = AutoLockPinErrorUiMapper()
 
         @JvmStatic
@@ -134,7 +138,10 @@ internal class AutoLockPinReducerTest(private val testInput: TestInput) {
                 state = AutoLockTestData.BaseLoadedState,
                 event = AutoLockPinEvent.Update.OperationCompleted,
                 expected = AutoLockTestData.BaseLoadedState.copy(
-                    closeScreenEffect = Effect.of(Unit)
+                    closeScreenEffect = Effect.of(Unit),
+                    snackbarSuccessEffect = Effect.of(
+                        TextUiModel.TextRes(R.string.mail_settings_pin_insertion_created_success)
+                    )
                 )
             ),
             TestInput(
@@ -218,6 +225,23 @@ internal class AutoLockPinReducerTest(private val testInput: TestInput) {
                     signOutButtonState = AutoLockPinState.SignOutButtonState(AutoLockTestData.SignOutRequestedUiModel)
                 ),
                 event = AutoLockPinEvent.Update.SignOutCanceled,
+                expected = AutoLockTestData.BaseLoadedState.copy(
+                    pinInsertionState = AutoLockTestData.BasePinInsertionState.copy(
+                        step = PinInsertionStep.PinVerification
+                    ),
+                    signOutButtonState = AutoLockPinState.SignOutButtonState(
+                        SignOutUiModel(isDisplayed = true, isRequested = false)
+                    )
+                )
+            ),
+            TestInput(
+                state = AutoLockTestData.BaseLoadedState.copy(
+                    pinInsertionState = AutoLockTestData.BasePinInsertionState.copy(
+                        step = PinInsertionStep.PinVerification
+                    ),
+                    signOutButtonState = AutoLockPinState.SignOutButtonState(AutoLockTestData.SignOutRequestedUiModel)
+                ),
+                event = AutoLockPinEvent.Update.SignOutConfirmed,
                 expected = AutoLockTestData.BaseLoadedState.copy(
                     pinInsertionState = AutoLockTestData.BasePinInsertionState.copy(
                         step = PinInsertionStep.PinVerification
