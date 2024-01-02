@@ -29,6 +29,7 @@ import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.p
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.PinInsertionStep
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.PinInsertionUiModel
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.PinVerificationRemainingAttempts
+import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.SignOutUiModel
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.TopBarUiModel
 
 internal object AutoLockTestData {
@@ -45,10 +46,14 @@ internal object AutoLockTestData {
         ConfirmButtonUiModel(isEnabled = false, R.string.mail_settings_pin_insertion_button_confirm)
     val BaseConfirmButtonState = AutoLockPinState.ConfirmButtonState(BaseConfirmButtonUiModel)
 
+    val BaseSignOutUiModel = SignOutUiModel(isDisplayed = false, isRequested = false)
+    val BaseSignOutState = AutoLockPinState.SignOutButtonState(BaseSignOutUiModel)
+
     val BaseLoadedState = AutoLockPinState.DataLoaded(
         topBarState = BaseTopBarState,
         pinInsertionState = BasePinInsertionState,
         confirmButtonState = BaseConfirmButtonState,
+        signOutButtonState = BaseSignOutState,
         Effect.empty(),
         Effect.empty(),
         Effect.empty()
@@ -65,4 +70,6 @@ internal object AutoLockTestData {
     val BaseValidPinInserted = InsertedPin(listOf(1, 2, 3, 4))
 
     val PlaceholderTextUiModel = TextUiModel("placeholder")
+    val SignOutShownUiModel = SignOutUiModel(isDisplayed = true, isRequested = false)
+    val SignOutRequestedUiModel = SignOutUiModel(isDisplayed = true, isRequested = true)
 }

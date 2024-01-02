@@ -79,6 +79,13 @@ fun AutoLockPinInsertionScreen(
             )
 
             Spacer(modifier = Modifier.height(ProtonDimens.SmallSpacing))
+
+            AutoLockSignOutItem(
+                state = state.signOutButtonState,
+                onSignOut = actions.onSignOut,
+                onSignOutConfirmed = actions.onSignOutConfirmed,
+                onSignOutCanceled = actions.onSignOutCanceled
+            )
         }
 
         Row {
@@ -97,6 +104,9 @@ object AutoLockPinDetailScreen {
         val onDigitAdded: (Int) -> Unit,
         val onBackspaceClick: () -> Unit,
         val onBiometricsClick: () -> Unit,
+        val onSignOut: () -> Unit,
+        val onSignOutConfirmed: () -> Unit,
+        val onSignOutCanceled: () -> Unit,
         val onConfirmation: () -> Unit
     )
 }

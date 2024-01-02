@@ -27,14 +27,21 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens.AutoLockPinScreen.PinDotsGridHeight
 import ch.protonmail.android.mailsettings.presentation.R
+import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.AutoLockPinState
+import me.proton.core.compose.component.ProtonAlertDialog
+import me.proton.core.compose.component.ProtonAlertDialogButton
+import me.proton.core.compose.component.ProtonAlertDialogText
+import me.proton.core.compose.component.ProtonTextButton
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
+import me.proton.core.compose.theme.defaultNorm
 
 @Composable
 fun AutoLockPinLockIcon(modifier: Modifier = Modifier) {
@@ -109,6 +116,42 @@ fun AutoLockPinKeyboardGrid(
                 contentDescription = stringResource(id = R.string.mail_settings_pin_insertion_backspace_description)
             )
         }
+    }
+}
+
+@Composable
+fun AutoLockSignOutItem(
+    state: AutoLockPinState.SignOutButtonState,
+    onSignOut: () -> Unit,
+    onSignOutConfirmed: () -> Unit,
+    onSignOutCanceled: () -> Unit
+) {
+    if (state.signOutUiModel.isDisplayed) {
+        ProtonTextButton(onClick = onSignOut) {
+            Text(
+                text = stringResource(id = R.string.mail_settings_pin_insertion_signout_text),
+                style = ProtonTheme.typography.defaultNorm(),
+                color = ProtonTheme.colors.textAccent
+            )
+        }
+    }
+
+    if (state.signOutUiModel.isRequested) {
+        ProtonAlertDialog(
+            onDismissRequest = onSignOutCanceled,
+            confirmButton = {
+                ProtonAlertDialogButton(R.string.mail_settings_pin_insertion_signout_dialog_confirm) {
+                    onSignOutConfirmed()
+                }
+            },
+            dismissButton = {
+                ProtonAlertDialogButton(R.string.mail_settings_pin_insertion_signout_dialog_cancel) {
+                    onSignOutCanceled()
+                }
+            },
+            title = stringResource(id = R.string.mail_settings_pin_insertion_signout_dialog_title),
+            text = { ProtonAlertDialogText(R.string.mail_settings_pin_insertion_signout_dialog_description) }
+        )
     }
 }
 

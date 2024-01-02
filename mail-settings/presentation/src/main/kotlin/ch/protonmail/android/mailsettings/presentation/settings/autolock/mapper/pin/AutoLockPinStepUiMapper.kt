@@ -21,6 +21,7 @@ package ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper
 import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.ConfirmButtonUiModel
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.PinInsertionStep
+import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.SignOutUiModel
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.TopBarUiModel
 import javax.inject.Inject
 
@@ -47,5 +48,10 @@ class AutoLockPinStepUiMapper @Inject constructor() {
         }
 
         return ConfirmButtonUiModel(isEnabled, stringRes)
+    }
+
+    fun toSignOutUiModel(step: PinInsertionStep): SignOutUiModel {
+        val isEnabled = step == PinInsertionStep.PinVerification
+        return SignOutUiModel(isDisplayed = isEnabled, isRequested = false)
     }
 }

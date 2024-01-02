@@ -46,6 +46,9 @@ fun AutoLockPinScreen(
         onBackAction = { viewModel.submit(AutoLockPinViewAction.PerformBack) },
         onConfirmation = { viewModel.submit(AutoLockPinViewAction.PerformConfirm) },
         onBiometricsClick = {},
+        onSignOut = { viewModel.submit(AutoLockPinViewAction.RequestSignOut) },
+        onSignOutConfirmed = { viewModel.submit(AutoLockPinViewAction.ConfirmSignOut) },
+        onSignOutCanceled = { viewModel.submit(AutoLockPinViewAction.CancelSignOut) },
         onNavigateTo = onNavigateTo
     )
 

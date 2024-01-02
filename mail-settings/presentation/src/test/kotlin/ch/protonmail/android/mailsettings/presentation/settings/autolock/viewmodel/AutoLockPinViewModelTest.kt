@@ -45,6 +45,7 @@ import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.p
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.InsertedPin
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.PinInsertionStep
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.PinVerificationRemainingAttempts
+import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.SignOutUiModel
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.reducer.pin.AutoLockPinReducer
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.ui.pin.AutoLockPinScreen
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.usecase.ClearPinDataAndForceLogout
@@ -489,6 +490,84 @@ internal class AutoLockPinViewModelTest {
 
             assertEquals(Effect.empty(), actual.closeScreenEffect)
             assertEquals(expectedNavigationEffect, actual.navigateEffect)
+        }
+    }
+
+    @Test
+    fun `should update the sign out confirmation dialog when the button is pressed`() = runTest {
+        // Given
+        val expectedSignOutState = AutoLockPinState.SignOutButtonState(
+            SignOutUiModel(isDisplayed = true, isRequested = true)
+        )
+        expectConditionalStart(AutoLockInsertionMode.VerifyPin(AutoLockPinContinuationAction.None))
+        expectAttempts()
+        expectAttemptStatusToggling()
+        expectExistingPin("1234")
+        expectValidAutoLockAttemptsUpdate()
+        expectLastForegroundReset()
+
+        // When + Then
+        viewModel.state.test {
+            skipItems(1)
+
+            viewModel.submit(AutoLockPinViewAction.RequestSignOut)
+            val actual = awaitItem() as AutoLockPinState.DataLoaded
+
+            assertEquals(expectedSignOutState, actual.signOutButtonState)
+        }
+    }
+
+    @Test
+    fun `should update the sign out confirmation dialog when the dialog is dismissed`() = runTest {
+        // Given
+        val expectedSignOutState = AutoLockPinState.SignOutButtonState(
+            SignOutUiModel(isDisplayed = true, isRequested = false)
+        )
+        expectConditionalStart(AutoLockInsertionMode.VerifyPin(AutoLockPinContinuationAction.None))
+        expectAttempts()
+        expectAttemptStatusToggling()
+        expectExistingPin("1234")
+        expectValidAutoLockAttemptsUpdate()
+        expectLastForegroundReset()
+
+        // When + Then
+        viewModel.state.test {
+            skipItems(1)
+
+            viewModel.submit(AutoLockPinViewAction.RequestSignOut)
+            skipItems(1)
+
+            viewModel.submit(AutoLockPinViewAction.CancelSignOut)
+            val actual = awaitItem() as AutoLockPinState.DataLoaded
+
+            assertEquals(expectedSignOutState, actual.signOutButtonState)
+        }
+    }
+
+    @Test
+    fun `should update the sign out confirmation dialog when the dialog is confirmed`() = runTest {
+        // Given
+        val expectedSignOutState = AutoLockPinState.SignOutButtonState(
+            SignOutUiModel(isDisplayed = true, isRequested = false)
+        )
+        expectConditionalStart(AutoLockInsertionMode.VerifyPin(AutoLockPinContinuationAction.None))
+        expectAttempts()
+        expectAttemptStatusToggling()
+        expectExistingPin("1234")
+        expectValidAutoLockAttemptsUpdate()
+        expectLastForegroundReset()
+
+        // When + Then
+        viewModel.state.test {
+            skipItems(1)
+
+            viewModel.submit(AutoLockPinViewAction.RequestSignOut)
+            skipItems(1)
+
+            viewModel.submit(AutoLockPinViewAction.ConfirmSignOut)
+            val actual = awaitItem() as AutoLockPinState.DataLoaded
+
+            assertEquals(expectedSignOutState, actual.signOutButtonState)
         }
     }
 

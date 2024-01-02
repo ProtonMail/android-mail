@@ -27,6 +27,7 @@ import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.p
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.PinInsertionStep
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.PinInsertionUiModel
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.PinVerificationRemainingAttempts
+import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.SignOutUiModel
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -159,7 +160,6 @@ internal class AutoLockPinReducerTest(private val testInput: TestInput) {
                     )
                 )
             ),
-
             TestInput(
                 state = AutoLockTestData.BaseLoadedState,
                 event = AutoLockPinEvent.Update.MovedToStep(PinInsertionStep.PinConfirmation),
@@ -191,6 +191,57 @@ internal class AutoLockPinReducerTest(private val testInput: TestInput) {
                         stepMapper.toConfirmButtonUiModel(isEnabled = false, PinInsertionStep.PinConfirmation)
                     ),
                     pinInsertionErrorEffect = Effect.empty()
+                )
+            ),
+            TestInput(
+                state = AutoLockTestData.BaseLoadedState.copy(
+                    pinInsertionState = AutoLockTestData.BasePinInsertionState.copy(
+                        step = PinInsertionStep.PinVerification
+                    ),
+                    signOutButtonState = AutoLockPinState.SignOutButtonState(AutoLockTestData.SignOutShownUiModel)
+                ),
+                event = AutoLockPinEvent.Update.SignOutRequested,
+                expected = AutoLockTestData.BaseLoadedState.copy(
+                    pinInsertionState = AutoLockTestData.BasePinInsertionState.copy(
+                        step = PinInsertionStep.PinVerification
+                    ),
+                    signOutButtonState = AutoLockPinState.SignOutButtonState(
+                        AutoLockTestData.SignOutShownUiModel.copy(isRequested = true)
+                    )
+                )
+            ),
+            TestInput(
+                state = AutoLockTestData.BaseLoadedState.copy(
+                    pinInsertionState = AutoLockTestData.BasePinInsertionState.copy(
+                        step = PinInsertionStep.PinVerification
+                    ),
+                    signOutButtonState = AutoLockPinState.SignOutButtonState(AutoLockTestData.SignOutRequestedUiModel)
+                ),
+                event = AutoLockPinEvent.Update.SignOutCanceled,
+                expected = AutoLockTestData.BaseLoadedState.copy(
+                    pinInsertionState = AutoLockTestData.BasePinInsertionState.copy(
+                        step = PinInsertionStep.PinVerification
+                    ),
+                    signOutButtonState = AutoLockPinState.SignOutButtonState(
+                        SignOutUiModel(isDisplayed = true, isRequested = false)
+                    )
+                )
+            ),
+            TestInput(
+                state = AutoLockTestData.BaseLoadedState.copy(
+                    pinInsertionState = AutoLockTestData.BasePinInsertionState.copy(
+                        step = PinInsertionStep.PinVerification
+                    ),
+                    signOutButtonState = AutoLockPinState.SignOutButtonState(AutoLockTestData.SignOutRequestedUiModel)
+                ),
+                event = AutoLockPinEvent.Update.SignOutConfirmed,
+                expected = AutoLockTestData.BaseLoadedState.copy(
+                    pinInsertionState = AutoLockTestData.BasePinInsertionState.copy(
+                        step = PinInsertionStep.PinVerification
+                    ),
+                    signOutButtonState = AutoLockPinState.SignOutButtonState(
+                        SignOutUiModel(isDisplayed = true, isRequested = false)
+                    )
                 )
             )
         )

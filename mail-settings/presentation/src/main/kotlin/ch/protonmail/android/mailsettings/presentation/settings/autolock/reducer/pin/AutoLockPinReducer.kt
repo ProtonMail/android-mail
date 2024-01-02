@@ -52,7 +52,9 @@ class AutoLockPinReducer @Inject constructor(
                 is AutoLockPinEvent.Update.OperationCompleted -> completeOperation(this)
                 is AutoLockPinEvent.Update.VerificationCompleted -> completeVerification(this, event)
                 is AutoLockPinEvent.Update.Error -> handleError(this, event)
-
+                AutoLockPinEvent.Update.SignOutRequested -> handleSignOutRequested(this)
+                AutoLockPinEvent.Update.SignOutCanceled -> handleSignOutCanceled(this)
+                AutoLockPinEvent.Update.SignOutConfirmed -> handleSignOutConfirmed(this)
                 else -> this
             }
         }
@@ -120,10 +122,26 @@ class AutoLockPinReducer @Inject constructor(
         return state.copy(pinInsertionState = pinInsertionState, confirmButtonState = confirmButtonState)
     }
 
+    private fun handleSignOutRequested(state: AutoLockPinState.DataLoaded): AutoLockPinState.DataLoaded {
+        val uiModel = state.signOutButtonState.signOutUiModel.copy(isRequested = true)
+        return state.copy(signOutButtonState = AutoLockPinState.SignOutButtonState(uiModel))
+    }
+
+    private fun handleSignOutCanceled(state: AutoLockPinState.DataLoaded): AutoLockPinState.DataLoaded {
+        val uiModel = state.signOutButtonState.signOutUiModel.copy(isRequested = false)
+        return state.copy(signOutButtonState = AutoLockPinState.SignOutButtonState(uiModel))
+    }
+
+    private fun handleSignOutConfirmed(state: AutoLockPinState.DataLoaded): AutoLockPinState.DataLoaded {
+        val uiModel = state.signOutButtonState.signOutUiModel.copy(isRequested = false)
+        return state.copy(signOutButtonState = AutoLockPinState.SignOutButtonState(uiModel))
+    }
+
     private fun AutoLockPinEvent.Data.Loaded.toDataState(): AutoLockPinState.DataLoaded {
         val pinInsertionUiModel = PinInsertionUiModel(InsertedPin.Empty)
         val topBarUiModel = stepUiMapper.toTopBarUiModel(step)
         val confirmButtonUiModel = stepUiMapper.toConfirmButtonUiModel(isEnabled = false, step)
+        val signOutUiModel = stepUiMapper.toSignOutUiModel(step)
         val errorEffect = errorsUiMapper.toUiModel(remainingAttempts)?.let { Effect.of(it) } ?: Effect.empty()
 
         return AutoLockPinState.DataLoaded(
@@ -134,9 +152,10 @@ class AutoLockPinReducer @Inject constructor(
                 pinInsertionUiModel
             ),
             confirmButtonState = AutoLockPinState.ConfirmButtonState(confirmButtonUiModel),
-            Effect.empty(),
-            Effect.empty(),
-            errorEffect
+            signOutButtonState = AutoLockPinState.SignOutButtonState(signOutUiModel),
+            closeScreenEffect = Effect.empty(),
+            navigateEffect = Effect.empty(),
+            pinInsertionErrorEffect = errorEffect
         )
     }
 }

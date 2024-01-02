@@ -21,6 +21,7 @@ package ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper
 import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.ConfirmButtonUiModel
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.PinInsertionStep
+import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.SignOutUiModel
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.TopBarUiModel
 import org.junit.Test
 import org.junit.experimental.runners.Enclosed
@@ -126,6 +127,50 @@ internal class AutoLockPinStepUiMapperTest {
             val isEnabled: Boolean,
             val step: PinInsertionStep,
             val expectedValue: ConfirmButtonUiModel
+        )
+    }
+
+    @RunWith(Parameterized::class)
+    internal class AutoLockPinStepSignOutButtonUiMapperTest(private val testInput: TestInput) {
+
+        private val mapper = AutoLockPinStepUiMapper()
+
+        @Test
+        fun `should map to the appropriate sign out button ui model`() = with(testInput) {
+            // When
+            val actual = mapper.toSignOutUiModel(step)
+
+            // Then
+            assertEquals(expectedValue, actual)
+        }
+
+        companion object {
+
+            @JvmStatic
+            @Parameterized.Parameters(name = "{0}")
+            fun data() = arrayOf(
+                TestInput(
+                    PinInsertionStep.PinInsertion,
+                    SignOutUiModel(isDisplayed = false, isRequested = false)
+                ),
+                TestInput(
+                    PinInsertionStep.PinConfirmation,
+                    SignOutUiModel(isDisplayed = false, isRequested = false)
+                ),
+                TestInput(
+                    PinInsertionStep.PinChange,
+                    SignOutUiModel(isDisplayed = false, isRequested = false)
+                ),
+                TestInput(
+                    PinInsertionStep.PinVerification,
+                    SignOutUiModel(isDisplayed = true, isRequested = false)
+                )
+            )
+        }
+
+        data class TestInput(
+            val step: PinInsertionStep,
+            val expectedValue: SignOutUiModel
         )
     }
 }

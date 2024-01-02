@@ -29,3 +29,6 @@ data class PinInsertionUiModel(val currentPin: InsertedPin)
 
 @Stable
 data class ConfirmButtonUiModel(val isEnabled: Boolean, @StringRes val textRes: Int)
+
+@Stable
+data class SignOutUiModel(val isDisplayed: Boolean, val isRequested: Boolean)

@@ -27,6 +27,9 @@ sealed interface AutoLockPinViewAction : AutoLockPinOperation {
     object RemovePinDigit : AutoLockPinViewAction
     object PerformConfirm : AutoLockPinViewAction
     object PerformBack : AutoLockPinViewAction
+    object RequestSignOut : AutoLockPinViewAction
+    object ConfirmSignOut : AutoLockPinViewAction
+    object CancelSignOut : AutoLockPinViewAction
 }
 
 sealed interface AutoLockPinEvent : AutoLockPinOperation {
@@ -44,6 +47,10 @@ sealed interface AutoLockPinEvent : AutoLockPinOperation {
         data class VerificationCompleted(
             val action: AutoLockPinContinuationAction = AutoLockPinContinuationAction.None
         ) : Update
+
+        object SignOutRequested : Update
+        object SignOutConfirmed : Update
+        object SignOutCanceled : Update
 
         sealed interface Error : Update {
             data class WrongPinCode(val remainingAttempts: PinVerificationRemainingAttempts) : Error

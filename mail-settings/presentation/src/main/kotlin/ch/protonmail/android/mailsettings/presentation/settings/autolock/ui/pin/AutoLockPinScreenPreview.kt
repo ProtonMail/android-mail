@@ -29,6 +29,7 @@ import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.p
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.PinInsertionStep
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.PinInsertionUiModel
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.PinVerificationRemainingAttempts
+import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.SignOutUiModel
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.TopBarUiModel
 import me.proton.core.compose.theme.ProtonTheme
 
@@ -54,6 +55,9 @@ private fun AutoLockPinScreenPreview() {
                         R.string.mail_settings_pin_insertion_button_create
                     )
                 ),
+                AutoLockPinState.SignOutButtonState(
+                    SignOutUiModel(isDisplayed = true, isRequested = false)
+                ),
                 Effect.empty(),
                 Effect.empty(),
                 Effect.of(TextUiModel.Text("PIN error placeholder"))
@@ -64,6 +68,9 @@ private fun AutoLockPinScreenPreview() {
                 onDigitAdded = {},
                 onBackspaceClick = {},
                 onBackAction = {},
+                onSignOut = {},
+                onSignOutConfirmed = {},
+                onSignOutCanceled = {},
                 onNavigateTo = {}
             ),
             onBackClick = {}

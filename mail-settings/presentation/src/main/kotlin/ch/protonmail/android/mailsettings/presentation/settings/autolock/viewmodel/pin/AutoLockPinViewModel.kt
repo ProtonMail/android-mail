@@ -103,6 +103,9 @@ class AutoLockPinViewModel @Inject constructor(
                 AutoLockPinViewAction.PerformConfirm -> onPerformConfirm()
                 AutoLockPinViewAction.RemovePinDigit -> onPinDigitRemoved()
                 is AutoLockPinViewAction.AddPinDigit -> onPinDigitAdded(action)
+                AutoLockPinViewAction.RequestSignOut -> onSignOutRequested()
+                AutoLockPinViewAction.ConfirmSignOut -> onSignOutConfirmed()
+                AutoLockPinViewAction.CancelSignOut -> onSignOutCanceled()
             }
         }
     }
@@ -229,6 +232,19 @@ class AutoLockPinViewModel @Inject constructor(
         if (currentPin.isMaxLength()) return
 
         emitNewStateFrom(AutoLockPinEvent.Update.PinValueChanged(currentPin.appendDigit(action.addition)))
+    }
+
+    private fun onSignOutRequested() {
+        emitNewStateFrom(AutoLockPinEvent.Update.SignOutRequested)
+    }
+
+    private suspend fun onSignOutConfirmed() {
+        clearPinDataAndForceLogout()
+        emitNewStateFrom(AutoLockPinEvent.Update.SignOutConfirmed)
+    }
+
+    private fun onSignOutCanceled() {
+        emitNewStateFrom(AutoLockPinEvent.Update.SignOutCanceled)
     }
 
     private fun emitNewStateFrom(event: AutoLockPinEvent) = mutableState.update {
