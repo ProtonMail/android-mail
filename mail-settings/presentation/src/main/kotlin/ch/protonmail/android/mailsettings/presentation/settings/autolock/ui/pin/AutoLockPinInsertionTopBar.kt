@@ -28,9 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.AutoLockPinState
-import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.TopBarUiModel
 import me.proton.core.compose.component.appbar.ProtonTopAppBar
-import timber.log.Timber
 
 @Composable
 fun AutoLockPinInsertionTopBar(
@@ -38,10 +36,7 @@ fun AutoLockPinInsertionTopBar(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val uiModel = (state as? AutoLockPinState.DataLoaded)?.topBarState?.topBarStateUiModel
-        ?: TopBarUiModel(true, R.string.mail_settings_pin_insertion_confirm_title).also {
-            Timber.d("State is not data loaded")
-        }
+    val uiModel = (state as? AutoLockPinState.DataLoaded)?.topBarState?.topBarStateUiModel ?: return
 
     val navigationIcon: (@Composable () -> Unit)? = if (uiModel.showBackButton) {
         {
