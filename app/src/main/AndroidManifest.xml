@@ -166,6 +166,15 @@
 
         <receiver android:name=".mailnotifications.data.local.PushNotificationActionsBroadcastReceiver" />
 
+        <receiver
+            android:name=".mailsettings.presentation.settings.autolock.broadcastreceiver.TimeSetBroadcastReceiver"
+            android:exported="false">
+
+            <intent-filter>
+                <action android:name="android.intent.action.TIME_SET" />
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
