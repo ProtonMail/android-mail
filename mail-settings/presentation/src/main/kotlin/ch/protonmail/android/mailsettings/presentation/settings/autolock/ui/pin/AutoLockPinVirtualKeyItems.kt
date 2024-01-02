@@ -66,10 +66,10 @@ fun VirtualKeyboardDigitItem(
     ) {
         Text(
             modifier = Modifier
+                .clickable(interactionSource = interactionSource, indication = null) { onElementClicked(value) }
                 .size(InnerKeyboardButtonTextSize)
                 .padding(ProtonDimens.DefaultSpacing)
-                .padding(ProtonDimens.ExtraSmallSpacing)
-                .clickable(interactionSource = interactionSource, indication = null) { onElementClicked(value) },
+                .padding(ProtonDimens.ExtraSmallSpacing),
             text = value.toString(),
             style = ProtonTypography.Default.defaultNorm,
             textAlign = TextAlign.Center
