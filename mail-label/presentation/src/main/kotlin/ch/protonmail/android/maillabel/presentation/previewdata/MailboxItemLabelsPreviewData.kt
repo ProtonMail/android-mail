@@ -50,15 +50,15 @@ object MailboxItemLabelsPreviewData {
     )
 
     val OneLabelAVeryLongLabelAndAnotherLabel = listOf(
-        LabelUiModel(name = "label", color = Color.Gray, id = "idGray"),
+        LabelUiModel(name = "label", color = Color.Gray, id = "idGray1"),
         OneVeryLongLabel.first(),
-        LabelUiModel(name = "label", color = Color.Gray, id = "idGray")
+        LabelUiModel(name = "label", color = Color.Gray, id = "idGray2")
     )
 
     val ThreeItems = listOf(
-        LabelUiModel(name = "first", color = Color.Gray, id = "idGray"),
-        LabelUiModel(name = "second", color = Color.Gray, id = "idGray"),
-        LabelUiModel(name = "third", color = Color.Gray, id = "idGray")
+        LabelUiModel(name = "first", color = Color.Gray, id = "idGray1"),
+        LabelUiModel(name = "second", color = Color.Gray, id = "idGray2"),
+        LabelUiModel(name = "third", color = Color.Gray, id = "idGray3")
     )
 }
 
