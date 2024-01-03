@@ -104,7 +104,10 @@ internal fun SearchView(
             ),
             keyboardActions = KeyboardActions(
                 onSearch = {
-                    actions.onSearchQuerySubmit(searchText.text.trim())
+                    val query = searchText.text.trim()
+                    if (query.isNotEmpty()) {
+                        actions.onSearchQuerySubmit(query)
+                    }
                     keyboardController?.hide()
                 }
             ),
