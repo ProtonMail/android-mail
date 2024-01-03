@@ -559,6 +559,8 @@ private fun MailboxItemsList(
         onAvatarClicked = actions.onAvatarClicked
     )
 
+    val swipingEnabled = state is MailboxListState.Data.ViewMode && !state.searchMode.isInSearch()
+
     LazyColumn(
         state = listState,
         modifier = Modifier
@@ -574,7 +576,7 @@ private fun MailboxItemsList(
                 SwipeableItem(
                     modifier = Modifier.animateItemPlacement(),
                     swipeActionsUiModel = (state as MailboxListState.Data).swipeActions,
-                    swipingEnabled = state is MailboxListState.Data.ViewMode,
+                    swipingEnabled = swipingEnabled,
                     swipeActionCallbacks = generateSwipeActions(items, actions, item)
                 ) {
                     MailboxItem(
