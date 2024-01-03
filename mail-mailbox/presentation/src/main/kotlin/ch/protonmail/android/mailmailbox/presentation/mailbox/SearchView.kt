@@ -100,7 +100,7 @@ internal fun SearchView(
             singleLine = true,
             keyboardOptions = KeyboardOptions.Default.copy(
                 capitalization = KeyboardCapitalization.Sentences,
-                imeAction = if (searchText.text.trim().length >= 2) ImeAction.Search else ImeAction.Default
+                imeAction = ImeAction.Search
             ),
             keyboardActions = KeyboardActions(
                 onSearch = {
