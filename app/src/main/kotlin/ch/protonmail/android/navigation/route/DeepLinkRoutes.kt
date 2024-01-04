@@ -20,6 +20,7 @@ package ch.protonmail.android.navigation.route
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.compose.runtime.LaunchedEffect
@@ -161,9 +162,16 @@ private val Bundle?.userId: String?
 private val Bundle?.action: String?
     get() = this?.getString("action")
 
-@Suppress("DEPRECATION") // Keep the deprecation, no valid alternative to fetch the intent uri data.
 private val Bundle?.originalDeepLink: String?
     get() {
-        val intentDeepLink = (this?.get("android-support-nav:controller:deepLinkIntent") as Intent).data?.path
-        return intentDeepLink?.let { "proton://notification$it" }
+        val intentKey = "android-support-nav:controller:deepLinkIntent"
+
+        val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            this?.getParcelable(intentKey, Intent::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            this?.get(intentKey) as Intent
+        }
+
+        return intent?.data?.path?.let { "proton://notification$it" }
     }
