@@ -22,7 +22,6 @@ import android.content.pm.ActivityInfo
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -87,12 +86,10 @@ fun AutoLockPinInsertionScreen(
             )
         }
 
-        Row {
-            VirtualKeyboardConfirmButton(
-                confirmButtonUiModel = state.confirmButtonState.confirmButtonUiModel,
-                onClick = actions.onConfirmation
-            )
-        }
+        VirtualKeyboardConfirmButton(
+            confirmButtonUiModel = state.confirmButtonState.confirmButtonUiModel,
+            onClick = actions.onConfirmation
+        )
     }
 }
 
@@ -110,6 +107,6 @@ object AutoLockPinDetailScreen {
     data class SignOutActions(
         val onSignOut: () -> Unit,
         val onSignOutConfirmed: () -> Unit,
-        val onSignOutCanceled: () -> Unit,
+        val onSignOutCanceled: () -> Unit
     )
 }
