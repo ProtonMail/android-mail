@@ -25,7 +25,6 @@ import ch.protonmail.android.mailsettings.domain.usecase.autolock.HasAutoLockPen
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.IsAutoLockEnabled
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.UpdateLastForegroundMillis
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -42,8 +41,6 @@ class ForegroundAwareAutoLockHandler @Inject constructor(
     fun handle() {
         coroutineScope.launch {
             appInBackgroundState.observe().collectLatest { isInBackground ->
-                delay(Delay) // Keep the delay as otherwise we collect the initial background state.
-
                 if (!isInBackground) return@collectLatest
                 if (!isAutoLockEnabled()) return@collectLatest
 
@@ -60,10 +57,5 @@ class ForegroundAwareAutoLockHandler @Inject constructor(
                 Timber.d("Auto Lock timestamp updated.")
             }
         }
-    }
-
-    private companion object {
-
-        const val Delay = 500L
     }
 }
