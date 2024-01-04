@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin
 
 @JvmInline
-value class InsertedPin(private val digits: List<Int>) {
+value class InsertedPin(val digits: List<Int>) {
 
     override fun toString() = digits.joinToString(separator = "")
 
