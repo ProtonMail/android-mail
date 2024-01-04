@@ -3347,6 +3347,42 @@ class MailboxViewModelTest {
         }
     }
 
+    @Test
+    fun `search will be performed in AllMail label independent from current label`() = runTest {
+        // Given
+        val queryText = "query"
+        val currentLocationFlow = MutableStateFlow<MailLabelId>(initialLocationMailLabelId)
+        val initialMailboxState = createMailboxDataState()
+        val userIds = listOf(userId)
+        every { selectedMailLabelId.flow } returns currentLocationFlow
+        every { pagerFactory.create(userIds, any(), false, any(), any()) } returns mockk mockPager@{
+            every { this@mockPager.flow } returns flowOf(PagingData.from(listOf(unreadMailboxItem)))
+        }
+        every { mailboxReducer.newStateFrom(any(), any()) } returns initialMailboxState
+
+        mailboxViewModel.items.test {
+            // Then
+            awaitItem()
+            verify { pagerFactory.create(userIds, initialLocationMailLabelId, false, any(), any()) }
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.SearchQuery(queryText))
+
+            // Then
+            awaitItem()
+            verify { pagerFactory.create(userIds, MailLabelId.System.AllMail, false, any(), queryText) }
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.ExitSearchMode)
+
+            // Then
+            awaitItem()
+            verify { pagerFactory.create(userIds, initialLocationMailLabelId, false, any(), any()) }
+
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
     private fun returnExpectedStateForBottomBarEvent(
         intermediateState: MailboxState? = null,
         expectedState: MailboxState
@@ -3432,10 +3468,7 @@ class MailboxViewModelTest {
         } returns bottomSheetState
     }
 
-    private fun expectedLabelAsStateChange(
-        selectedItems: List<MailboxItemUiModel>,
-        labelId: LabelId
-    ) {
+    private fun expectedLabelAsStateChange(selectedItems: List<MailboxItemUiModel>, labelId: LabelId) {
         every {
             mailboxReducer.newStateFrom(any(), MailboxViewAction.LabelAsToggleAction(labelId))
         } returns createMailboxStateWithLabelAsBottomSheet(selectedItems, true)
