@@ -21,7 +21,7 @@ package ch.protonmail.android.mailsettings.presentation.settings.autolock.model.
 @JvmInline
 value class PinVerificationRemainingAttempts(val value: Int) {
 
-    fun decrement() = PinVerificationRemainingAttempts(value.dec())
+    fun decrement() = PinVerificationRemainingAttempts(value.dec().coerceAtLeast(0))
 
     companion object {
 
