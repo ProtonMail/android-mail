@@ -165,16 +165,18 @@ class AutoLockPinViewModel @Inject constructor(
             ?: return emitNewStateFrom(AutoLockPinEvent.Update.Error.UnknownError)
 
         if (!storedPin.matches(insertedPin)) {
-            if (remainingAttempts.value == 1) {
+            if (remainingAttempts.value <= 1) {
                 clearPinDataAndForceLogout()
                 return
             }
 
-            updateRemainingAutoLockAttempts(remainingAttempts.decrement().value).onLeft {
+            val decrementedRemainingAttempts = remainingAttempts.decrement()
+
+            updateRemainingAutoLockAttempts(decrementedRemainingAttempts.value).onLeft {
                 Timber.e("Unable to update remaining auto lock attempts. - $it")
             }
 
-            return emitNewStateFrom(AutoLockPinEvent.Update.Error.WrongPinCode(remainingAttempts.decrement()))
+            return emitNewStateFrom(AutoLockPinEvent.Update.Error.WrongPinCode(decrementedRemainingAttempts))
         }
 
         updateRemainingAutoLockAttempts(PinVerificationRemainingAttempts.MaxAttempts).onLeft {
@@ -218,7 +220,7 @@ class AutoLockPinViewModel @Inject constructor(
         reducer.newStateFrom(it, event)
     }
 
-    private fun AutoLockPin.matches(insertedPin: InsertedPin) = value == insertedPin.digits.joinToString(separator = "")
+    private fun AutoLockPin.matches(insertedPin: InsertedPin) = value == insertedPin.toString()
 
     companion object {
 
