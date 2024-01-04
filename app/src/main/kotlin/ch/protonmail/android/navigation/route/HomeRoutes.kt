@@ -24,7 +24,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
-import ch.protonmail.android.BuildConfig
 import ch.protonmail.android.feature.account.RemoveAccountDialog
 import ch.protonmail.android.feature.account.SignOutAccountDialog
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
@@ -189,7 +188,7 @@ internal fun NavGraphBuilder.addRemoveAccountDialog(navController: NavHostContro
     }
 }
 
-internal fun NavGraphBuilder.addSettings(navController: NavHostController, showFeatureMissingSnackbar: () -> Unit) {
+internal fun NavGraphBuilder.addSettings(navController: NavHostController) {
     composable(route = Destination.Screen.Settings.route) {
         MainSettingsScreen(
             actions = MainSettingsScreen.Actions(
@@ -203,11 +202,7 @@ internal fun NavGraphBuilder.addSettings(navController: NavHostController, showF
                     navController.navigate(Destination.Screen.Notifications.route)
                 },
                 onAutoLockClick = {
-                    if (BuildConfig.DEBUG) { // To be removed prior to release.
-                        navController.navigate(Destination.Screen.AutoLockSettings.route)
-                    } else {
-                        showFeatureMissingSnackbar()
-                    }
+                    navController.navigate(Destination.Screen.AutoLockSettings.route)
                 },
                 onAlternativeRoutingClick = {
                     navController.navigate(Destination.Screen.AlternativeRoutingSettings.route)
