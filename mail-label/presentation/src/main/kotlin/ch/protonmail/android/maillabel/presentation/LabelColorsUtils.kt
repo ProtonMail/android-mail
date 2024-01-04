@@ -20,10 +20,11 @@ package ch.protonmail.android.maillabel.presentation
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import ch.protonmail.android.maillabel.domain.extension.normalizeColorHex
 
 @SuppressWarnings("ImplicitDefaultLocale", "MagicNumber")
 fun Int.hexToString() = String.format("#%06X", 0xFFFFFF and this)
 
 fun Color.getHexStringFromColor() = this.toArgb().hexToString()
 
-fun String.getColorFromHexString() = Color(android.graphics.Color.parseColor(this))
+fun String.getColorFromHexString() = Color(android.graphics.Color.parseColor(this.normalizeColorHex()))
