@@ -45,7 +45,7 @@ class AutoLockPinErrorUiMapper @Inject constructor() {
     }
 
     private fun toRemainingAttemptsUiModel(remainingAttempts: PinVerificationRemainingAttempts) =
-        if (remainingAttempts.value <= AttemptsThresholdLimit) {
+        if (remainingAttempts.value <= AttemptsThresholdWarningLimit) {
             TextUiModel.PluralisedText(
                 R.plurals.mail_settings_pin_insertion_error_wrong_code_ultimatum,
                 remainingAttempts.value
@@ -59,6 +59,6 @@ class AutoLockPinErrorUiMapper @Inject constructor() {
 
     private companion object {
 
-        const val AttemptsThresholdLimit = 3
+        const val AttemptsThresholdWarningLimit = 3
     }
 }
