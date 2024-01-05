@@ -72,7 +72,7 @@ internal fun NavGraphBuilder.addDeepLinkHandler(navController: NavHostController
                     } ?: AutoLockPinContinuationAction.None
 
                     navController.navigate(
-                        Destination.Screen.AutoLockPinSettings(
+                        Destination.Screen.AutoLockPinScreen(
                             AutoLockInsertionMode.VerifyPin(continuationAction)
                         )
                     ) {

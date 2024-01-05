@@ -75,7 +75,7 @@ sealed class Destination(val route: String) {
         object AccountSettings : Destination("settings/account")
         object AlternativeRoutingSettings : Destination("settings/alternativeRouting")
         object AutoLockSettings : Destination("settings/autolock")
-        object AutoLockPinSettings : Destination("settings/autolock/pin/${AutoLockPinModeKey.wrap()}") {
+        object AutoLockPinScreen : Destination("settings/autolock/pin/${AutoLockPinModeKey.wrap()}") {
 
             operator fun invoke(mode: AutoLockInsertionMode) =
                 route.replace(AutoLockPinModeKey.wrap(), mode.serialize())

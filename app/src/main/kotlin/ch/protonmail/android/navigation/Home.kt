@@ -50,6 +50,7 @@ import ch.protonmail.android.navigation.model.Destination.Screen
 import ch.protonmail.android.navigation.model.HomeState
 import ch.protonmail.android.navigation.route.addAccountSettings
 import ch.protonmail.android.navigation.route.addAlternativeRoutingSetting
+import ch.protonmail.android.navigation.route.addAutoLockPinScreen
 import ch.protonmail.android.navigation.route.addAutoLockSettings
 import ch.protonmail.android.navigation.route.addCombinedContactsSetting
 import ch.protonmail.android.navigation.route.addComposer
@@ -69,7 +70,6 @@ import ch.protonmail.android.navigation.route.addMailbox
 import ch.protonmail.android.navigation.route.addMessageDetail
 import ch.protonmail.android.navigation.route.addNotificationsSettings
 import ch.protonmail.android.navigation.route.addParentFolderList
-import ch.protonmail.android.navigation.route.addPinInsertion
 import ch.protonmail.android.navigation.route.addPrivacySettings
 import ch.protonmail.android.navigation.route.addRemoveAccountDialog
 import ch.protonmail.android.navigation.route.addSettings
@@ -199,8 +199,11 @@ fun Home(
     }
 
     ConsumableLaunchedEffect(effect = state.value.requestPinInsertionEffect) {
+        // Close the drawer if it was left open before sending the app to the background.
+        if (scaffoldState.drawerState.isOpen) scaffoldState.drawerState.close()
+
         navController.navigate(
-            Screen.AutoLockPinSettings(
+            Screen.AutoLockPinScreen(
                 AutoLockInsertionMode.VerifyPin(AutoLockPinContinuationAction.None)
             )
         ) {
@@ -367,7 +370,7 @@ fun Home(
                 addLanguageSettings(navController)
                 addPrivacySettings(navController)
                 addAutoLockSettings(navController)
-                addPinInsertion(
+                addAutoLockPinScreen(
                     navController = navController,
                     onShowSuccessSnackbar = {
                         scope.launch {

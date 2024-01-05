@@ -121,16 +121,16 @@ internal fun NavGraphBuilder.addAutoLockSettings(navController: NavHostControlle
         AutoLockSettingsScreen(
             modifier = Modifier,
             onBackClick = { navController.popBackStack() },
-            onPinScreenNavigation = { navController.navigate(Screen.AutoLockPinSettings(it)) }
+            onPinScreenNavigation = { navController.navigate(Screen.AutoLockPinScreen(it)) }
         )
     }
 }
 
-internal fun NavGraphBuilder.addPinInsertion(
+internal fun NavGraphBuilder.addAutoLockPinScreen(
     navController: NavHostController,
     onShowSuccessSnackbar: (String) -> Unit
 ) {
-    composable(route = Screen.AutoLockPinSettings.route) {
+    composable(route = Screen.AutoLockPinScreen.route) {
         AutoLockPinScreen(
             modifier = Modifier,
             onBackClick = { navController.popBackStack() },
