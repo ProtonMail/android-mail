@@ -20,6 +20,8 @@ package ch.protonmail.android.mailcontact.domain.usecase
 
 import app.cash.turbine.test
 import arrow.core.Either
+import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailcommon.domain.sample.LabelSample
 import ch.protonmail.android.mailcontact.domain.model.ContactGroup
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
@@ -60,7 +62,7 @@ class ObserveDecryptedContactTest {
         )
     }
 
-    private val labelRepository = mockk<LabelRepository> {
+    private val labelRepositoryMock = mockk<LabelRepository> {
         every {
             this@mockk.observeLabels(
                 UserIdTestData.Primary,
@@ -83,7 +85,7 @@ class ObserveDecryptedContactTest {
     private val observeDecryptedContact = ObserveDecryptedContact(
         contactRepositoryMock,
         decryptContactMock,
-        labelRepository
+        labelRepositoryMock
     )
 
     @Test
@@ -115,6 +117,54 @@ class ObserveDecryptedContactTest {
             // Then
             val actual = assertIs<Either.Right<DecryptedContact>>(awaitItem())
             assertEquals(expectedContactGroups, actual.value.contactGroups)
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `propagates error when contactRepository fails`() = runTest {
+        // Given
+        every { contactRepositoryMock.observeContactWithCards(any(), any()) } returns flowOf(
+            DataResult.Error.Remote(
+                message = "",
+                cause = null,
+                httpCode = 404
+            )
+        )
+        val expectedError = DataError.Remote.Http(
+            networkError = NetworkError.NotFound,
+            apiErrorInfo = ""
+        )
+
+        // When
+        observeDecryptedContact(UserIdTestData.Primary, ContactWithCardsSample.Stefano.contact.id).test {
+            // Then
+            val actual = assertIs<Either.Left<DataError.Remote.Http>>(awaitItem())
+            assertEquals(expectedError, actual.value)
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `propagates error when labelRepository fails`() = runTest {
+        // Given
+        every { labelRepositoryMock.observeLabels(any(), any()) } returns flowOf(
+            DataResult.Error.Remote(
+                message = "",
+                cause = null,
+                httpCode = 404
+            )
+        )
+        val expectedError = DataError.Remote.Http(
+            networkError = NetworkError.NotFound,
+            apiErrorInfo = ""
+        )
+
+        // When
+        observeDecryptedContact(UserIdTestData.Primary, ContactWithCardsSample.Stefano.contact.id).test {
+            // Then
+            val actual = assertIs<Either.Left<DataError.Remote.Http>>(awaitItem())
+            assertEquals(expectedError, actual.value)
             awaitComplete()
         }
     }
