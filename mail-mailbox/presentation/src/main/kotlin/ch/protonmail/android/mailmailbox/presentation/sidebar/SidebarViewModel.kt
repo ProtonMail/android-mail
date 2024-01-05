@@ -29,6 +29,8 @@ import ch.protonmail.android.maillabel.domain.usecase.UpdateLabelExpandedState
 import ch.protonmail.android.maillabel.presentation.MailLabelsUiModel
 import ch.protonmail.android.maillabel.presentation.sidebar.SidebarLabelAction
 import ch.protonmail.android.maillabel.presentation.toUiModels
+import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
+import ch.protonmail.android.mailmessage.domain.model.UnreadCounter
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -39,6 +41,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import me.proton.core.compose.viewmodel.stopTimeoutMillis
+import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.payment.domain.PaymentManager
 import me.proton.core.util.kotlin.exhaustive
 import javax.inject.Inject
@@ -51,7 +54,8 @@ class SidebarViewModel @Inject constructor(
     private val paymentManager: PaymentManager,
     observePrimaryUser: ObservePrimaryUser,
     observeFolderColors: ObserveFolderColorSettings,
-    observeMailLabels: ObserveMailLabels
+    observeMailLabels: ObserveMailLabels,
+    observeUnreadCounters: ObserveUnreadCounters
 ) : ViewModel() {
 
     val initialState = State.Disabled
@@ -70,12 +74,13 @@ class SidebarViewModel @Inject constructor(
         combine(
             selectedMailLabelId.flow,
             observeFolderColors(user.userId),
-            observeMailLabels(user.userId)
-        ) { selectedMailLabelId, folderColors, mailLabels ->
+            observeMailLabels(user.userId),
+            observeUnreadCounters(user.userId)
+        ) { selectedMailLabelId, folderColors, mailLabels, counters ->
             State.Enabled(
                 selectedMailLabelId = selectedMailLabelId,
                 canChangeSubscription = paymentManager.isSubscriptionAvailable(user.userId),
-                mailLabels = mailLabels.toUiModels(folderColors, emptyMap(), selectedMailLabelId)
+                mailLabels = mailLabels.toUiModels(folderColors, counters.toMap(), selectedMailLabelId)
             )
         }
     }.stateIn(
@@ -106,6 +111,10 @@ class SidebarViewModel @Inject constructor(
         primaryUser.value?.let {
             updateLabelExpandedState(it.userId, labelId, isExpanded)
         }
+    }
+
+    private fun List<UnreadCounter>.toMap(): Map<LabelId, Int?> = run {
+        associateBy({ it.labelId }, { it.count.takeIf { count -> count > 0 } })
     }
 
     sealed class State {

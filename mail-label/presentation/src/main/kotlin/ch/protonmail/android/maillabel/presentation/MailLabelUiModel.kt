@@ -26,6 +26,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.model.toMailLabelSystem
+import me.proton.core.label.domain.entity.LabelId
 
 @Immutable
 sealed interface MailLabelUiModel {
@@ -88,7 +89,7 @@ data class MailLabelsUiModel(
                 systems = SystemLabelId.displayedList.map {
                     it.toMailLabelSystem().toSystemUiModel(
                         settings = ch.protonmail.android.mailsettings.domain.model.FolderColorSettings(),
-                        counters = emptyMap(),
+                        counters = mapOf(LabelId("0") to 12),
                         selected = MailLabelId.System.Trash
                     )
                 },

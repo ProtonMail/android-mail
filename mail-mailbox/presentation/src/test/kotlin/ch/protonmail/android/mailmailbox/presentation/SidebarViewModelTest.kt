@@ -32,10 +32,12 @@ import ch.protonmail.android.maillabel.presentation.MailLabelsUiModel
 import ch.protonmail.android.maillabel.presentation.sidebar.SidebarLabelAction.Collapse
 import ch.protonmail.android.maillabel.presentation.sidebar.SidebarLabelAction.Expand
 import ch.protonmail.android.maillabel.presentation.sidebar.SidebarLabelAction.Select
+import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
 import ch.protonmail.android.mailmailbox.presentation.sidebar.SidebarViewModel
 import ch.protonmail.android.mailmailbox.presentation.sidebar.SidebarViewModel.Action.LabelAction
 import ch.protonmail.android.mailmailbox.presentation.sidebar.SidebarViewModel.State.Disabled
 import ch.protonmail.android.mailmailbox.presentation.sidebar.SidebarViewModel.State.Enabled
+import ch.protonmail.android.mailmessage.domain.model.UnreadCounter
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.testdata.user.UserIdTestData
@@ -47,6 +49,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -83,6 +86,10 @@ class SidebarViewModelTest {
     private val observeFolderColors = mockk<ObserveFolderColorSettings> {
         every { this@mockk(any()) } returns folderColorSettings
     }
+
+    private val observeUnreadCounters = mockk<ObserveUnreadCounters> {
+        coEvery { this@mockk.invoke(any()) } returns flowOf(emptyList<UnreadCounter>())
+    }
     private val paymentManager = mockk<PaymentManager> {
         coEvery { this@mockk.isSubscriptionAvailable(userId = any()) } returns true
     }
@@ -99,7 +106,8 @@ class SidebarViewModelTest {
             paymentManager = paymentManager,
             observePrimaryUser = observePrimaryUser,
             observeFolderColors = observeFolderColors,
-            observeMailLabels = observeMailboxLabels
+            observeMailLabels = observeMailboxLabels,
+            observeUnreadCounters = observeUnreadCounters
         )
     }
 

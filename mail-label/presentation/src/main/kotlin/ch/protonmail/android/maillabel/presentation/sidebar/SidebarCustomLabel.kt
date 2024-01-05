@@ -60,10 +60,8 @@ import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.label.domain.entity.LabelType.MessageFolder
 import me.proton.core.label.domain.entity.LabelType.MessageLabel
 
-fun LazyListScope.sidebarLabelItems(
-    items: List<MailLabelUiModel.Custom>,
-    onLabelAction: (SidebarLabelAction) -> Unit
-) = sidebarCustomLabelItems(MessageLabel, items, onLabelAction)
+fun LazyListScope.sidebarLabelItems(items: List<MailLabelUiModel.Custom>, onLabelAction: (SidebarLabelAction) -> Unit) =
+    sidebarCustomLabelItems(MessageLabel, items, onLabelAction)
 
 fun LazyListScope.sidebarFolderItems(
     items: List<MailLabelUiModel.Custom>,
@@ -91,13 +89,12 @@ private fun LazyListScope.sidebarCustomLabelItems(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun LazyItemScope.SidebarCustomLabel(
     item: MailLabelUiModel.Custom,
     onLabelAction: (SidebarLabelAction) -> Unit
 ) {
-    ProtonSidebarItem(
+    SidebarItemWithCounter(
         modifier = Modifier
             .testTag("${SidebarCustomLabelTestTags.RootItem}${item.testTag}")
             .animateItemPlacement(),

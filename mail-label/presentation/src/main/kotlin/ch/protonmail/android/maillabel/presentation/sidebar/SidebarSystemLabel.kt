@@ -32,7 +32,6 @@ import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
 import ch.protonmail.android.maillabel.presentation.MailLabelsUiModel
 import ch.protonmail.android.maillabel.presentation.sidebar.SidebarLabelAction.Select
 import ch.protonmail.android.maillabel.presentation.sidebar.SidebarSystemLabelTestTags.BaseTag
-import me.proton.core.compose.component.ProtonSidebarItem
 import me.proton.core.compose.component.ProtonSidebarLazy
 import me.proton.core.compose.theme.ProtonTheme
 
@@ -55,7 +54,7 @@ private fun SidebarSystemLabel(
     item: MailLabelUiModel.System,
     onLabelAction: (SidebarLabelAction) -> Unit
 ) {
-    ProtonSidebarItem(
+    SidebarItemWithCounter(
         modifier = modifier,
         icon = painterResource(item.icon),
         text = stringResource(item.text.value),
