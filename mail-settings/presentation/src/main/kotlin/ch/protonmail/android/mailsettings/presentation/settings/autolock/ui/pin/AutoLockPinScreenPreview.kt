@@ -76,7 +76,7 @@ private fun AutoLockPinScreenPreview() {
             signOutActions = AutoLockPinDetailScreen.SignOutActions(
                 onSignOut = {},
                 onSignOutConfirmed = {},
-                onSignOutCanceled = {},
+                onSignOutCanceled = {}
             ),
             onBackClick = {}
         )

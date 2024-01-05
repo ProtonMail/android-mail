@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcommon.presentation.compose
 
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 object MailDimens {
 
@@ -80,7 +81,8 @@ object MailDimens {
 
         val SpacerSize = 48.dp
         val PinDotsGridHeight = 64.dp
-        val KeyboardButtonItemSize = 84.dp
-        val InnerKeyboardButtonTextSize = 64.dp
+        val KeyboardButtonBoxSize = 84.dp
+        val DigitTextSize = 20.sp
+        val BottomButtonSize = 24.dp
     }
 }

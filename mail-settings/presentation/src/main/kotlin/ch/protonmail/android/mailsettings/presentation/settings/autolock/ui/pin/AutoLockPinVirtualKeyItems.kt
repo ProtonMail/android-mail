@@ -24,9 +24,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.ButtonDefaults
@@ -40,8 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import ch.protonmail.android.mailcommon.presentation.compose.MailDimens.AutoLockPinScreen.InnerKeyboardButtonTextSize
-import ch.protonmail.android.mailcommon.presentation.compose.MailDimens.AutoLockPinScreen.KeyboardButtonItemSize
+import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.ConfirmButtonUiModel
 import me.proton.core.compose.component.ProtonButton
 import me.proton.core.compose.component.protonButtonColors
@@ -61,17 +60,15 @@ fun VirtualKeyboardDigitItem(
     Box(
         modifier = modifier
             .clickable(interactionSource = interactionSource, indication = null) { onElementClicked(value) }
-            .size(KeyboardButtonItemSize)
             .wrapContentSize()
-            .background(color = ProtonTheme.colors.interactionWeakNorm, shape = CircleShape),
+            .size(MailDimens.AutoLockPinScreen.KeyboardButtonBoxSize)
+            .padding(ProtonDimens.SmallSpacing)
+            .background(color = ProtonTheme.colors.shade10, shape = CircleShape),
         contentAlignment = Alignment.Center
     ) {
         Text(
-            modifier = Modifier
-                .size(InnerKeyboardButtonTextSize)
-                .padding(ProtonDimens.DefaultSpacing)
-                .padding(ProtonDimens.ExtraSmallSpacing),
             text = value.toString(),
+            fontSize = MailDimens.AutoLockPinScreen.DigitTextSize,
             style = ProtonTypography.Default.defaultNorm,
             textAlign = TextAlign.Center
         )
@@ -87,7 +84,7 @@ fun VirtualKeyboardButtonItem(
 ) {
     IconButton(
         modifier = modifier
-            .size(KeyboardButtonItemSize)
+            .size(MailDimens.AutoLockPinScreen.KeyboardButtonBoxSize)
             .padding(ProtonDimens.SmallSpacing),
         onClick = onClick
     ) {
@@ -107,7 +104,6 @@ fun VirtualKeyboardConfirmButton(
     ProtonButton(
         modifier = modifier
             .fillMaxWidth()
-            .wrapContentHeight()
             .padding(ProtonDimens.DefaultSpacing),
         elevation = null,
         border = null,
@@ -116,6 +112,11 @@ fun VirtualKeyboardConfirmButton(
         enabled = confirmButtonUiModel.isEnabled,
         onClick = onClick
     ) {
-        Text(stringResource(id = confirmButtonUiModel.textRes))
+        Box(
+            modifier = Modifier.height(MailDimens.AutoLockPinScreen.BottomButtonSize),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(stringResource(id = confirmButtonUiModel.textRes))
+        }
     }
 }
