@@ -282,7 +282,7 @@ internal class AutoLockRepositoryImplUpdateTest {
     }
 
     @Test
-    fun `should propagate data store error auto lock remaining attempts update is not successful`() = runTest {
+    fun `should propagate data store error if auto lock remaining attempts update is not successful`() = runTest {
         // Given
         val remainingAttempts = AutoLockRemainingAttempts(10)
         val autoLockEncryptedAttempts = AutoLockEncryptedRemainingAttempts("encrypted")
