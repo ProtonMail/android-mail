@@ -37,7 +37,7 @@ sealed interface AutoLockSettingsEvent : AutoLockSettingsOperation {
         data class Loaded(
             val lockEnabled: AutoLockPreference,
             val selectedInterval: AutoLockInterval,
-            val dropdownMenuVisible: Boolean = false
+            val dropDownMenuVisible: Boolean = false
         ) : Data
     }
 

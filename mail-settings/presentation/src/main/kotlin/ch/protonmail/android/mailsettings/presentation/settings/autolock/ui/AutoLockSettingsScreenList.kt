@@ -35,14 +35,14 @@ fun AutoLockSettingsScreenList(
     LazyColumn(modifier = modifier) {
         AutoLockEnabledItem(state.autoLockEnabledState.autoLockEnabledUiModel, actions.onToggleAutoLockEnabled)
 
-        if (!state.autoLockEnabledState.autoLockEnabledUiModel.enabled) return@LazyColumn
-
-        AutoLockIntervalsSection(
-            state.autoLockIntervalsState,
-            actions.onIntervalSelected,
-            actions.onPinScreenNavigation,
-            actions.onTimerItemClick
-        )
+        if (state.autoLockEnabledState.autoLockEnabledUiModel.enabled) {
+            AutoLockIntervalsSection(
+                state.autoLockIntervalsState,
+                actions.onIntervalSelected,
+                actions.onPinScreenNavigation,
+                actions.onTimerItemClick
+            )
+        }
     }
 
     ConsumableLaunchedEffect(state.updateError) {

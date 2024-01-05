@@ -95,7 +95,7 @@ class AutoLockSettingsReducer @Inject constructor(
         val autoLockEnabledState = AutoLockSettingsState.DataLoaded.AutoLockEnabledState(autoLockEnabledUiModel)
         val autoLockIntervalsState = AutoLockSettingsState.DataLoaded.AutoLockIntervalState(
             autoLockIntervalsUiModel,
-            dropdownMenuVisible
+            dropDownMenuVisible
         )
 
         return AutoLockSettingsState.DataLoaded(
