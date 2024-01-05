@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -202,12 +203,19 @@ fun Home(
         // Close the drawer if it was left open before sending the app to the background.
         if (scaffoldState.drawerState.isOpen) scaffoldState.drawerState.close()
 
-        navController.navigate(
-            Screen.AutoLockPinScreen(
-                AutoLockInsertionMode.VerifyPin(AutoLockPinContinuationAction.None)
-            )
+        // Avoid triggering multiple navigation events to the PIN screen when opening the app via deep links.
+        if (navController.currentDestination != null &&
+            !navController.currentDestination.isDeepLinkRoute() &&
+            !navController.currentDestination.isAutoLockPinScreenRoute()
         ) {
-            popUpTo(Screen.Mailbox.route) { inclusive = false }
+
+            navController.navigate(
+                Screen.AutoLockPinScreen(
+                    AutoLockInsertionMode.VerifyPin(AutoLockPinContinuationAction.None)
+                )
+            ) {
+                popUpTo(Screen.Mailbox.route) { inclusive = false }
+            }
         }
     }
 
@@ -406,3 +414,10 @@ private fun buildSidebarActions(
     onReportBug = launcherActions.onReportBug,
     onBetaLabelClick = activityActions.openInActivityInNewTask
 )
+
+private fun NavDestination?.isDeepLinkRoute(): Boolean = this?.route == Screen.DeepLinksHandler.route
+
+private fun NavDestination?.isAutoLockPinScreenRoute(): Boolean {
+    val pinScreenRoute = Screen.AutoLockPinScreen.route.substringBeforeLast("/")
+    return this?.route?.startsWith(pinScreenRoute) == true
+}
