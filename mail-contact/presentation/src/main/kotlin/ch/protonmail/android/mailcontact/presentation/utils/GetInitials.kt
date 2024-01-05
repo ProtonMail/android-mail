@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.mailcontact.presentation.utils
 
-fun getInitials(name: String, takeFirstOnly: Boolean? = false): String {
+internal fun getInitials(name: String, takeFirstOnly: Boolean? = false): String {
     if (name.isBlank()) return ""
     if (takeFirstOnly == true) return name.uppercase().take(1)
     val initials = name.uppercase().split(' ')

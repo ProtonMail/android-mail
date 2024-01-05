@@ -24,6 +24,5 @@ import javax.inject.Inject
 
 class DecodeByteArray @Inject constructor() {
 
-    operator fun invoke(byteArray: ByteArray): Bitmap? =
-        decodeByteArray(byteArray, 0, byteArray.size)
+    operator fun invoke(byteArray: ByteArray): Bitmap? = decodeByteArray(byteArray, 0, byteArray.size)
 }

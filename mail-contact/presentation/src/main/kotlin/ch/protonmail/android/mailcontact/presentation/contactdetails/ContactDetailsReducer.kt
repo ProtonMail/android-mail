@@ -39,7 +39,7 @@ class ContactDetailsReducer @Inject constructor() {
         event: ContactDetailsEvent.ContactLoaded
     ): ContactDetailsState {
         return when (currentState) {
-            is ContactDetailsState.Data -> currentState.copy()
+            is ContactDetailsState.Data -> currentState
             is ContactDetailsState.Loading -> ContactDetailsState.Data(contact = event.contactDetailsUiModel)
         }
     }

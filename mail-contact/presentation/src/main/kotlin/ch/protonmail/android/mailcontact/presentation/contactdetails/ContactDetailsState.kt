@@ -22,19 +22,19 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactDetailsUiModel
 
-sealed interface ContactDetailsState {
-
-    val close: Effect<Unit>
+sealed class ContactDetailsState(
+    open val close: Effect<Unit>
+) {
 
     data class Loading(
         override val close: Effect<Unit> = Effect.empty(),
         val errorLoading: Effect<TextUiModel> = Effect.empty()
-    ) : ContactDetailsState
+    ) : ContactDetailsState(close)
 
     data class Data(
         override val close: Effect<Unit> = Effect.empty(),
         val closeWithSuccess: Effect<TextUiModel> = Effect.empty(),
         val contact: ContactDetailsUiModel
-    ) : ContactDetailsState
+    ) : ContactDetailsState(Effect.empty())
 }
 
