@@ -29,9 +29,10 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
+import ch.protonmail.android.mailcommon.presentation.mapper.UnreadCountValueMapper
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.PreviewData.DummyUnreadCount
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
@@ -67,7 +68,11 @@ fun UnreadItemsFilter(
                 trailingIcon = addCloseIconForEnabledState(state)
             ) {
                 Text(
-                    text = stringResource(id = R.string.filter_unread_button_text_without_counter)
+                    text = pluralStringResource(
+                        id = R.plurals.filter_unread_button_text,
+                        count = state.numUnread,
+                        UnreadCountValueMapper.toCappedValue(state.numUnread)
+                    )
                 )
             }
         }
