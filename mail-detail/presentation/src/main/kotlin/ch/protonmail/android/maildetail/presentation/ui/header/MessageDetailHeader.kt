@@ -371,7 +371,7 @@ private fun MessageDetailHeaderLayout(
                     topReference = spacerRef,
                     endReference = quickReplyButtonRef,
                     isExpanded = isExpanded,
-                    topMargin = if (isExpanded) ProtonDimens.SmallSpacing else ProtonDimens.ExtraSmallSpacing
+                    topMargin = ProtonDimens.SmallSpacing
                 )
                 visibility = visibleWhen(uiModel.labels.isNotEmpty())
             },
