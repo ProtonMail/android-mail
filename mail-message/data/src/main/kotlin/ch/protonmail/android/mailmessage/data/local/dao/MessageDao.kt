@@ -202,6 +202,90 @@ abstract class MessageDao : BaseDao<MessageEntity>() {
         size: Int = Int.MAX_VALUE
     ): Flow<List<MessageWithLabelIds>>
 
+    fun observeSearchResults(userId: UserId, pageKey: PageKey): Flow<List<MessageWithLabelIds>> {
+        val keyword = pageKey.filter.keyword
+        val (minValue, maxValue) = when (pageKey.orderBy) {
+            OrderBy.Time -> pageKey.filter.minTime to pageKey.filter.maxTime
+        }
+        val (minOrder, maxOrder) = when (pageKey.orderBy) {
+            OrderBy.Time -> pageKey.filter.minOrder to pageKey.filter.maxOrder
+        }
+        val size = pageKey.size
+        return when (pageKey.orderDirection) {
+            OrderDirection.Ascending -> observeSearchResultsOrderByTimeAsc(
+                userId = userId,
+                keyword = keyword,
+                minValue = minValue,
+                maxValue = maxValue,
+                minOrder = minOrder,
+                maxOrder = maxOrder,
+                size = size
+            )
+
+            OrderDirection.Descending -> observeSearchResultsOrderByTimeDesc(
+                userId = userId,
+                keyword = keyword,
+                minValue = minValue,
+                maxValue = maxValue,
+                minOrder = minOrder,
+                maxOrder = maxOrder,
+                size = size
+            )
+        }
+    }
+
+    @Query(
+        """
+        SELECT * FROM MessageEntity
+        JOIN SearchResultEntity
+        ON SearchResultEntity.userId = MessageEntity.userId
+        AND SearchResultEntity.keyword = :keyword
+        AND SearchResultEntity.messageId = MessageEntity.messageId
+        WHERE MessageEntity.userId = :userId
+        AND (MessageEntity.time > :minValue OR (MessageEntity.time = :minValue AND MessageEntity.`order` >= :minOrder))
+        AND (MessageEntity.time < :maxValue OR (MessageEntity.time = :maxValue AND MessageEntity.`order` <= :maxOrder))
+        GROUP BY MessageEntity.messageId
+        ORDER BY MessageEntity.time ASC, MessageEntity.`order` ASC
+        LIMIT :size
+        """
+    )
+    @Transaction
+    abstract fun observeSearchResultsOrderByTimeAsc(
+        userId: UserId,
+        keyword: String,
+        minValue: Long = Long.MIN_VALUE,
+        maxValue: Long = Long.MAX_VALUE,
+        minOrder: Long = Long.MIN_VALUE,
+        maxOrder: Long = Long.MAX_VALUE,
+        size: Int = Int.MAX_VALUE
+    ): Flow<List<MessageWithLabelIds>>
+
+    @Query(
+        """
+        SELECT * FROM MessageEntity
+        JOIN SearchResultEntity
+        ON SearchResultEntity.userId = MessageEntity.userId
+        AND SearchResultEntity.keyword = :keyword
+        AND SearchResultEntity.messageId = MessageEntity.messageId
+        WHERE MessageEntity.userId = :userId
+       AND (MessageEntity.time > :minValue OR (MessageEntity.time = :minValue AND MessageEntity.`order` >= :minOrder))
+        AND (MessageEntity.time < :maxValue OR (MessageEntity.time = :maxValue AND MessageEntity.`order` <= :maxOrder))
+        GROUP BY MessageEntity.messageId
+        ORDER BY MessageEntity.time DESC, MessageEntity.`order` DESC
+        LIMIT :size
+        """
+    )
+    @Transaction
+    abstract fun observeSearchResultsOrderByTimeDesc(
+        userId: UserId,
+        keyword: String,
+        minValue: Long = Long.MIN_VALUE,
+        maxValue: Long = Long.MAX_VALUE,
+        minOrder: Long = Long.MIN_VALUE,
+        maxOrder: Long = Long.MAX_VALUE,
+        size: Int = Int.MAX_VALUE
+    ): Flow<List<MessageWithLabelIds>>
+
     @Query("SELECT messageId FROM MessageEntity WHERE userId = :userId AND conversationId IN (:conversationIds)")
     abstract suspend fun getMessageIdsInConversations(
         userId: UserId,

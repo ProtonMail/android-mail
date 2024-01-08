@@ -119,8 +119,13 @@ class MessageLocalDataSourceImpl @Inject constructor(
     override suspend fun getClippedPageKey(userId: UserId, pageKey: PageKey): PageKey? =
         pageIntervalDao.getClippedPageKey(userId, PageItemType.Message, pageKey)
 
-    override suspend fun getMessages(userId: UserId, pageKey: PageKey): List<Message> =
-        observeMessages(userId, pageKey).first()
+    override suspend fun getMessages(userId: UserId, pageKey: PageKey): List<Message> {
+        return if (pageKey.filter.keyword.isEmpty()) {
+            observeMessages(userId, pageKey).first()
+        } else {
+            observeSearchResults(userId, pageKey).first()
+        }
+    }
 
     override suspend fun isLocalPageValid(
         userId: UserId,
@@ -142,6 +147,10 @@ class MessageLocalDataSourceImpl @Inject constructor(
 
     override fun observeMessages(userId: UserId, pageKey: PageKey): Flow<List<Message>> = messageDao
         .observeAll(userId, pageKey)
+        .mapLatest { list -> list.map { it.toMessage() } }
+
+    override fun observeSearchResults(userId: UserId, pageKey: PageKey): Flow<List<Message>> = messageDao
+        .observeSearchResults(userId, pageKey)
         .mapLatest { list -> list.map { it.toMessage() } }
 
     override fun observeMessages(userId: UserId, messageIds: List<MessageId>): Flow<List<Message>> =
@@ -350,8 +359,7 @@ class MessageLocalDataSourceImpl @Inject constructor(
         attachmentFileStorage.updateParentFolderForAttachments(userId, localDraftId, apiAssignedId)
     }
 
-    override fun observeCachedMessagesTotalSize(): Flow<Long> =
-        messageDao.observeCachedMessagesTotalSize()
+    override fun observeCachedMessagesTotalSize(): Flow<Long> = messageDao.observeCachedMessagesTotalSize()
 
     private suspend fun updateLabels(messages: List<Message>) = with(groupByUserId(messages)) {
         deleteLabels()

@@ -231,6 +231,61 @@ class MessageLocalDataSourceImplTest {
     }
 
     @Test
+    fun `in search mode get messages should return search results`() = runTest {
+        // Given
+        val keyword = "search query"
+        val pageKey = PageKey(
+            orderDirection = OrderDirection.Ascending, size = 3,
+            filter = PageFilter(keyword = keyword)
+        )
+        val messages = listOf(
+            getMessageWithLabels(userId1, "1"),
+            getMessageWithLabels(userId1, "2"),
+            getMessageWithLabels(userId1, "3")
+        )
+        val searchResults = listOf(
+            getMessageWithLabels(userId1, "2"),
+            getMessageWithLabels(userId1, "3")
+        )
+        coEvery { messageDao.observeAll(userId1, pageKey) } returns flowOf(messages)
+        coEvery { messageDao.observeSearchResults(userId1, pageKey) } returns flowOf(searchResults)
+
+        // When
+        messageLocalDataSource.getMessages(userId1, pageKey)
+
+        // Then
+        coVerify(exactly = 0) { messageDao.observeAll(any(), any()) }
+        coVerify(exactly = 1) { messageDao.observeSearchResults(userId1, pageKey) }
+    }
+
+    @Test
+    fun `in non-search mode get messages should return messages in local db`() = runTest {
+        // Given
+        val pageKey = PageKey(
+            orderDirection = OrderDirection.Ascending, size = 3
+        )
+
+        val messages = listOf(
+            getMessageWithLabels(userId1, "1"),
+            getMessageWithLabels(userId1, "2"),
+            getMessageWithLabels(userId1, "3")
+        )
+        val searchResults = listOf(
+            getMessageWithLabels(userId1, "2"),
+            getMessageWithLabels(userId1, "3")
+        )
+        coEvery { messageDao.observeAll(userId1, pageKey) } returns flowOf(messages)
+        coEvery { messageDao.observeSearchResults(userId1, pageKey) } returns flowOf(searchResults)
+
+        // When
+        messageLocalDataSource.getMessages(userId1, pageKey)
+
+        // Then
+        coVerify(exactly = 1) { messageDao.observeAll(userId1, pageKey) }
+        coVerify(exactly = 0) { messageDao.observeSearchResults(any(), any()) }
+    }
+
+    @Test
     fun `should delete all messages and page interval from the db and message body files`() = runTest {
         // Given
         coEvery { messageBodyFileStorage.deleteAllMessageBodies(userId1) } returns true
