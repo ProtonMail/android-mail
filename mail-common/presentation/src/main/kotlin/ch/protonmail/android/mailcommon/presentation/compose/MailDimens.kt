@@ -56,6 +56,8 @@ object MailDimens {
     val TextFieldSingleLineSize = 80.dp
     val TextFieldMultiLineSize = 128.dp
 
+    val ExtraSmallNegativeOffset = (-4).dp
+
     object ColorPicker {
 
         val CircleBoxSize = 56.dp

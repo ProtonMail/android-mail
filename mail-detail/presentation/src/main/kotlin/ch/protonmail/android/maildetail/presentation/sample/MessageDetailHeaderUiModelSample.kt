@@ -21,6 +21,7 @@ package ch.protonmail.android.maildetail.presentation.sample
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailHeaderUiModel
+import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageLocationUiModel
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
@@ -58,6 +59,7 @@ object MessageDetailHeaderUiModelSample {
         labels = labels,
         size = "6.35 KB",
         encryptionPadlock = 0,
-        encryptionInfo = ""
+        encryptionInfo = "",
+        messageIdUiModel = MessageIdUiModel("id")
     )
 }

@@ -41,5 +41,6 @@ data class MessageDetailHeaderUiModel(
     val labels: ImmutableList<LabelUiModel>,
     val size: String,
     @DrawableRes val encryptionPadlock: Int,
-    val encryptionInfo: String
+    val encryptionInfo: String,
+    val messageIdUiModel: MessageIdUiModel
 )

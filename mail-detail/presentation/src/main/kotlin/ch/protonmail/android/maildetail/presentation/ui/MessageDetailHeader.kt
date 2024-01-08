@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.ui
+package ch.protonmail.android.maildetail.presentation.ui.header
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -27,19 +27,33 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.with
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material3.FilledIconButton
+import androidx.compose.material3.IconButtonColors
+import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.OutlinedIconButton
+import androidx.compose.material3.ShapeDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -51,17 +65,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstrainScope
 import androidx.constraintlayout.compose.ConstrainedLayoutReference
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.constraintlayout.compose.Visibility
-import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.Avatar
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.OfficialBadge
@@ -75,6 +88,7 @@ import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailHe
 import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailHeaderPreviewProvider
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
 import ch.protonmail.android.maillabel.presentation.ui.LabelsList
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import kotlinx.collections.immutable.ImmutableList
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
@@ -89,11 +103,15 @@ fun MessageDetailHeader(
     modifier: Modifier = Modifier,
     uiModel: MessageDetailHeaderUiModel,
     initiallyExpanded: Boolean = false,
-    showFeatureMissingSnackbar: () -> Unit = { }
+    headerActions: MessageDetailHeader.Actions
 ) {
     val isExpanded = rememberSaveable(inputs = arrayOf()) {
         mutableStateOf(initiallyExpanded)
     }
+
+    val actions = headerActions.copy(
+        onClick = { isExpanded.value = !isExpanded.value }
+    )
 
     AnimatedContent(
         targetState = isExpanded.value,
@@ -107,8 +125,7 @@ fun MessageDetailHeader(
             modifier = modifier,
             uiModel = uiModel,
             isExpanded = targetState,
-            onClick = { isExpanded.value = !isExpanded.value },
-            showFeatureMissingSnackbar = showFeatureMissingSnackbar
+            actions = actions
         )
     }
 }
@@ -118,8 +135,7 @@ private fun MessageDetailHeaderLayout(
     modifier: Modifier = Modifier,
     uiModel: MessageDetailHeaderUiModel,
     isExpanded: Boolean,
-    onClick: () -> Unit,
-    showFeatureMissingSnackbar: () -> Unit
+    actions: MessageDetailHeader.Actions
 ) {
     ConstraintLayout(
         modifier = modifier
@@ -129,7 +145,7 @@ private fun MessageDetailHeaderLayout(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null,
                 enabled = !isExpanded
-            ) { onClick() }
+            ) { actions.onClick() }
             .padding(
                 start = ProtonDimens.SmallSpacing + ProtonDimens.ExtraSmallSpacing,
                 end = ProtonDimens.DefaultSpacing,
@@ -158,6 +174,7 @@ private fun MessageDetailHeaderLayout(
         ) = createRefs()
 
         val (
+            quickReplyButtonRef,
             locationRef,
             sizeRef,
             hideDetailsRef
@@ -186,11 +203,11 @@ private fun MessageDetailHeaderLayout(
                 width = Dimension.fillToConstraints
                 top.linkTo(senderNameRef.bottom, margin = ProtonDimens.ExtraSmallSpacing)
                 start.linkTo(avatarRef.end, margin = ProtonDimens.SmallSpacing)
-                end.linkTo(moreButtonRef.start, margin = ProtonDimens.SmallSpacing)
+                end.linkTo(quickReplyButtonRef.start, margin = ProtonDimens.SmallSpacing)
             },
             participantUiModel = uiModel.sender,
             isExpanded = isExpanded,
-            showFeatureMissingSnackbar = showFeatureMissingSnackbar
+            showFeatureMissingSnackbar = actions.onShowFeatureMissingSnackbar
         )
 
         Icons(
@@ -213,12 +230,42 @@ private fun MessageDetailHeaderLayout(
             time = uiModel.time
         )
 
-        MoreButton(
+        if (uiModel.recipientsCount > 1) {
+            MessageDetailHeaderButton(
+                modifier = modifier
+                    .testTag(MessageDetailHeaderTestTags.ReplyAllButton)
+                    .constrainAs(quickReplyButtonRef) {
+                        top.linkTo(senderNameRef.bottom)
+                        bottom.linkTo(moreButtonRef.bottom)
+                        end.linkTo(moreButtonRef.start, margin = ProtonDimens.ExtraSmallSpacing)
+                    },
+                iconResource = R.drawable.ic_proton_reply_all,
+                contentDescriptionResource = R.string.quick_reply_all_button_content_description,
+                onClick = { actions.onReplyAll(MessageId(uiModel.messageIdUiModel.id)) }
+            )
+        } else {
+            MessageDetailHeaderButton(
+                modifier = modifier
+                    .testTag(MessageDetailHeaderTestTags.ReplyButton)
+                    .constrainAs(quickReplyButtonRef) {
+                        top.linkTo(senderNameRef.bottom)
+                        bottom.linkTo(moreButtonRef.bottom)
+                        end.linkTo(moreButtonRef.start, margin = ProtonDimens.ExtraSmallSpacing)
+                    },
+                iconResource = R.drawable.ic_proton_reply,
+                contentDescriptionResource = R.string.quick_reply_button_content_description,
+                onClick = { actions.onReply(MessageId(uiModel.messageIdUiModel.id)) }
+            )
+        }
+
+        MessageDetailHeaderButton(
             modifier = modifier.constrainAs(moreButtonRef) {
-                top.linkTo(timeRef.bottom, margin = ProtonDimens.ExtraSmallSpacing)
-                end.linkTo(parent.end)
+                top.linkTo(senderNameRef.bottom)
+                end.linkTo(timeRef.end, margin = MailDimens.ExtraSmallNegativeOffset)
             },
-            onClick = showFeatureMissingSnackbar
+            iconResource = R.drawable.ic_proton_three_dots_vertical,
+            contentDescriptionResource = R.string.more_button_content_description,
+            onClick = actions.onShowFeatureMissingSnackbar
         )
 
         AllRecipients(
@@ -226,7 +273,7 @@ private fun MessageDetailHeaderLayout(
                 width = Dimension.fillToConstraints
                 top.linkTo(senderAddressRef.bottom, margin = ProtonDimens.ExtraSmallSpacing)
                 start.linkTo(avatarRef.end, margin = ProtonDimens.SmallSpacing)
-                end.linkTo(moreButtonRef.start, margin = ProtonDimens.SmallSpacing)
+                end.linkTo(quickReplyButtonRef.start, margin = ProtonDimens.SmallSpacing)
                 visibility = visibleWhen(!isExpanded)
             },
             allRecipients = uiModel.allRecipients
@@ -252,7 +299,7 @@ private fun MessageDetailHeaderLayout(
                     constrainRecipients(
                         topReference = allRecipientsRef,
                         startReference = avatarRef,
-                        endReference = moreButtonRef,
+                        endReference = quickReplyButtonRef,
                         recipients = uiModel.toRecipients,
                         isExpanded = isExpanded,
                         hasUndisclosedRecipients = uiModel.shouldShowUndisclosedRecipients
@@ -260,7 +307,7 @@ private fun MessageDetailHeaderLayout(
                 },
             recipients = uiModel.toRecipients,
             hasUndisclosedRecipients = uiModel.shouldShowUndisclosedRecipients,
-            showFeatureMissingSnackbar = showFeatureMissingSnackbar
+            showFeatureMissingSnackbar = actions.onShowFeatureMissingSnackbar
         )
 
         RecipientsTitle(
@@ -282,13 +329,13 @@ private fun MessageDetailHeaderLayout(
                     constrainRecipients(
                         topReference = toRecipientsRef,
                         startReference = avatarRef,
-                        endReference = moreButtonRef,
+                        endReference = quickReplyButtonRef,
                         recipients = uiModel.ccRecipients,
                         isExpanded = isExpanded
                     )
                 },
             recipients = uiModel.ccRecipients,
-            showFeatureMissingSnackbar = showFeatureMissingSnackbar
+            showFeatureMissingSnackbar = actions.onShowFeatureMissingSnackbar
         )
 
         RecipientsTitle(
@@ -310,13 +357,13 @@ private fun MessageDetailHeaderLayout(
                     constrainRecipients(
                         topReference = ccRecipientsRef,
                         startReference = avatarRef,
-                        endReference = moreButtonRef,
+                        endReference = quickReplyButtonRef,
                         recipients = uiModel.bccRecipients,
                         isExpanded = isExpanded
                     )
                 },
             recipients = uiModel.bccRecipients,
-            showFeatureMissingSnackbar = showFeatureMissingSnackbar
+            showFeatureMissingSnackbar = actions.onShowFeatureMissingSnackbar
         )
 
         Spacer(
@@ -332,7 +379,7 @@ private fun MessageDetailHeaderLayout(
             modifier = modifier.constrainAs(labelsRef) {
                 constrainExtendedHeaderRow(
                     topReference = spacerRef,
-                    endReference = moreButtonRef,
+                    endReference = quickReplyButtonRef,
                     isExpanded = isExpanded,
                     topMargin = if (isExpanded) ProtonDimens.SmallSpacing else ProtonDimens.ExtraSmallSpacing
                 )
@@ -348,7 +395,7 @@ private fun MessageDetailHeaderLayout(
                 .constrainAs(extendedTimeRef) {
                     constrainExtendedHeaderRow(
                         topReference = labelsRef,
-                        endReference = moreButtonRef,
+                        endReference = quickReplyButtonRef,
                         isExpanded = isExpanded
                     )
                 },
@@ -362,7 +409,7 @@ private fun MessageDetailHeaderLayout(
                 .constrainAs(locationRef) {
                     constrainExtendedHeaderRow(
                         topReference = extendedTimeRef,
-                        endReference = moreButtonRef,
+                        endReference = quickReplyButtonRef,
                         isExpanded = isExpanded
                     )
                 },
@@ -377,7 +424,7 @@ private fun MessageDetailHeaderLayout(
                 .constrainAs(sizeRef) {
                     constrainExtendedHeaderRow(
                         topReference = locationRef,
-                        endReference = moreButtonRef,
+                        endReference = quickReplyButtonRef,
                         isExpanded = isExpanded
                     )
                 },
@@ -422,7 +469,7 @@ private fun MessageDetailHeaderLayout(
                     start.linkTo(avatarRef.end, margin = ProtonDimens.SmallSpacing)
                     visibility = visibleWhen(isExpanded)
                 }
-                .clickable { onClick() }
+                .clickable { actions.onClick() }
         )
     }
 }
@@ -503,22 +550,6 @@ private fun Time(modifier: Modifier = Modifier, time: TextUiModel) {
         text = time.string(),
         maxLines = 1,
         style = ProtonTheme.typography.captionWeak
-    )
-}
-
-@Composable
-private fun MoreButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
-    Icon(
-        modifier = modifier
-            .testTag(MessageDetailHeaderTestTags.MoreButton)
-            .clickable(
-                onClickLabel = stringResource(id = R.string.more_button_content_description),
-                role = Role.Button,
-                onClick = onClick
-            ),
-        painter = painterResource(id = R.drawable.ic_proton_three_dots_horizontal),
-        tint = ProtonTheme.colors.iconWeak,
-        contentDescription = NO_CONTENT_DESCRIPTION
     )
 }
 
@@ -614,6 +645,30 @@ private fun ParticipantText(
         overflow = TextOverflow.Ellipsis,
         style = ProtonTheme.typography.captionNorm
     )
+}
+
+@Composable
+internal fun MessageDetailHeaderButton(
+    modifier: Modifier = Modifier,
+    @DrawableRes iconResource: Int,
+    @StringRes contentDescriptionResource: Int,
+    onClick: () -> Unit
+) {
+    OutlinedIconButton(
+        modifier = modifier.wrapContentSize(),
+        shape = ShapeDefaults.Medium,
+        border = BorderStroke(MailDimens.DefaultBorder, ProtonTheme.colors.separatorNorm),
+        colors = IconButtonDefaults.filledIconButtonColors(
+            containerColor = ProtonTheme.colors.backgroundNorm
+        ),
+        onClick = onClick
+    ) {
+        Icon(
+            painter = painterResource(id = iconResource),
+            tint = ProtonTheme.colors.iconNorm,
+            contentDescription = stringResource(contentDescriptionResource)
+        )
+    }
 }
 
 @Composable
@@ -736,6 +791,29 @@ private fun ConstrainScope.constrainExtendedHeaderRow(
 
 private fun visibleWhen(isVisible: Boolean) = if (isVisible) Visibility.Visible else Visibility.Gone
 
+private val MessageDetailHeaderUiModel.recipientsCount
+    get() = (toRecipients + ccRecipients + bccRecipients).toSet().size
+
+object MessageDetailHeader {
+    data class Actions(
+        val onClick: () -> Unit,
+        val onReply: (MessageId) -> Unit,
+        val onReplyAll: (MessageId) -> Unit,
+        val onShowFeatureMissingSnackbar: () -> Unit
+    ) {
+
+        companion object {
+
+            val Empty = Actions(
+                onClick = {},
+                onReply = {},
+                onReplyAll = {},
+                onShowFeatureMissingSnackbar = {}
+            )
+        }
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun MessageDetailHeaderPreview(
@@ -744,37 +822,8 @@ fun MessageDetailHeaderPreview(
     ProtonTheme {
         MessageDetailHeader(
             uiModel = preview.uiModel,
-            initiallyExpanded = preview.initiallyExpanded
+            initiallyExpanded = preview.initiallyExpanded,
+            headerActions = MessageDetailHeader.Actions.Empty
         )
     }
-}
-
-object MessageDetailHeaderTestTags {
-
-    const val RootItem = "MessageDetailHeaderRootItem"
-    const val SenderName = "SenderName"
-    const val Time = "Time"
-    const val SenderAddress = "SenderAddress"
-    const val Icons = "Icons"
-    const val MoreButton = "MoreButton"
-    const val AllRecipientsText = "AllRecipientsText"
-    const val AllRecipientsValue = "AllRecipientsValue"
-    const val ToRecipientsText = "ToRecipientsText"
-    const val ToRecipientsList = "ToRecipientsList"
-    const val CcRecipientsText = "CcRecipientsText"
-    const val CcRecipientsList = "CcRecipientsList"
-    const val BccRecipientsText = "BccRecipientsText"
-    const val BccRecipientsList = "BccRecipientsList"
-    const val ParticipantName = "ParticipantName"
-    const val ParticipantValue = "ParticipantValue"
-    const val LabelIcon = "LabelIcon"
-    const val LabelsList = "LabelsList"
-
-    const val ExtendedLabelRow = "ExtendedLabelRow"
-    const val ExtendedTimeRow = "ExtendedTimeRow"
-    const val ExtendedFolderRow = "ExtendedFolderRow"
-    const val ExtendedSizeRow = "ExtendedSizeRow"
-    const val ExtendedHeaderIcon = "ExtendedHeaderIcon"
-    const val ExtendedHeaderText = "ExtendedHeaderText"
-    const val ExtendedHideDetails = "ExtendedHideDetails"
 }

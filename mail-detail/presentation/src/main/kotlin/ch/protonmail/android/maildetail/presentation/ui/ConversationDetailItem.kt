@@ -102,6 +102,12 @@ private fun ConversationDetailExpandedItem(
     modifier: Modifier = Modifier,
     onMessageBodyLoadFinished: (messageId: MessageId, height: Int) -> Unit
 ) {
+    val headerActions = MessageDetailHeader.Actions.Empty.copy(
+        onReply = actions.onReply,
+        onReplyAll = actions.onReplyAll,
+        onShowFeatureMissingSnackbar = actions.showFeatureMissingSnackbar
+    )
+
     Column(modifier = modifier) {
         Box(
             modifier = Modifier
@@ -112,7 +118,7 @@ private fun ConversationDetailExpandedItem(
         )
         MessageDetailHeader(
             uiModel = uiModel.messageDetailHeaderUiModel,
-            showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar
+            headerActions = headerActions
         )
         MailDivider()
         MessageBanners(messageBannersUiModel = uiModel.messageBannersUiModel)

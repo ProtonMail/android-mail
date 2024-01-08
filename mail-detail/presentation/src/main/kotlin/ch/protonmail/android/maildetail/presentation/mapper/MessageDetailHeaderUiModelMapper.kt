@@ -28,10 +28,12 @@ import ch.protonmail.android.mailcommon.presentation.usecase.FormatExtendedTime
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatShortTime
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailHeaderUiModel
+import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.isReservedSystemLabelId
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
 import ch.protonmail.android.mailmessage.domain.model.Message
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithLabels
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
@@ -89,7 +91,8 @@ class MessageDetailHeaderUiModelMapper @Inject constructor(
             labels = toLabelUiModels(messageWithLabels.labels),
             size = Formatter.formatShortFileSize(context, messageWithLabels.message.size),
             encryptionPadlock = R.drawable.ic_proton_lock,
-            encryptionInfo = "End-to-end encrypted and signed message"
+            encryptionInfo = "End-to-end encrypted and signed message",
+            messageIdUiModel = toMessageUiModel(messageWithLabels.message.messageId)
         )
     }
 
@@ -117,4 +120,6 @@ class MessageDetailHeaderUiModelMapper @Inject constructor(
                 id = label.labelId.id
             )
         }.toImmutableList()
+
+    private fun toMessageUiModel(messageId: MessageId) = MessageIdUiModel(messageId.id)
 }

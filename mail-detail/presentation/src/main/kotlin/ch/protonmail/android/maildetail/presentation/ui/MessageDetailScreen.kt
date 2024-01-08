@@ -366,6 +366,12 @@ private fun MessageDetailContent(
         )
     }
 
+    val headerActions = MessageDetailHeader.Actions.Empty.copy(
+        onReply = actions.onReply,
+        onReplyAll = actions.onReplyAll,
+        onShowFeatureMissingSnackbar = actions.showFeatureMissingSnackbar
+    )
+
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
@@ -375,7 +381,7 @@ private fun MessageDetailContent(
         item {
             MessageDetailHeader(
                 uiModel = messageMetadataState.messageDetailHeader,
-                showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar
+                headerActions = headerActions
             )
             MailDivider()
             when (messageBannersState) {

@@ -32,6 +32,7 @@ import ch.protonmail.android.mailcommon.presentation.usecase.FormatExtendedTime
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatShortTime
 import ch.protonmail.android.maildetail.presentation.R.string.undisclosed_recipients
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailHeaderUiModel
+import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageLocationUiModel
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
@@ -100,7 +101,8 @@ class MessageDetailHeaderUiModelMapperTest {
         labels = labels.map(LabelUiModelSample::build).toImmutableList(),
         size = "12 MB",
         encryptionPadlock = ic_proton_lock,
-        encryptionInfo = "End-to-end encrypted and signed message"
+        encryptionInfo = "End-to-end encrypted and signed message",
+        messageIdUiModel = MessageIdUiModel(message.id)
     )
 
     private val colorMapper: ColorMapper = mockk {

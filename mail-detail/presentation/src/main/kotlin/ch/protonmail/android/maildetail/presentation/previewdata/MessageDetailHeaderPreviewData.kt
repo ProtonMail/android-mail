@@ -23,6 +23,7 @@ import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailHeaderUiModel
+import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageLocationUiModel
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
 import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelSample
@@ -80,7 +81,8 @@ object MessageDetailHeaderPreviewData {
         labels = persistentListOf(),
         size = "6.35 KB",
         encryptionPadlock = R.drawable.ic_proton_lock,
-        encryptionInfo = "End-to-end encrypted and signed message"
+        encryptionInfo = "End-to-end encrypted and signed message",
+        messageIdUiModel = MessageIdUiModel("string")
     )
 
     val WithLabels = WithoutLabels.copy(

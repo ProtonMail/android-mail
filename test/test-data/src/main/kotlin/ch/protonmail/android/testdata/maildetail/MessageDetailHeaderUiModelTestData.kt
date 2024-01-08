@@ -22,6 +22,7 @@ import ch.protonmail.android.mailcommon.presentation.R
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailHeaderUiModel
+import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageLocationUiModel
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
 import kotlinx.collections.immutable.persistentListOf
@@ -71,6 +72,7 @@ object MessageDetailHeaderUiModelTestData {
         labels = persistentListOf(),
         size = "12 MB",
         encryptionPadlock = R.drawable.ic_proton_lock,
-        encryptionInfo = "End-to-end encrypted and signed message"
+        encryptionInfo = "End-to-end encrypted and signed message",
+        messageIdUiModel = MessageIdUiModel("id")
     )
 }
