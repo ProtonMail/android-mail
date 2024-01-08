@@ -121,7 +121,6 @@
   <string name="mail_settings_auto_lock_item_description">Activeu aquesta funció per bloquejar automàticament la vostra aplicació i utilitzar un codi PIN o empremta digital per desbloquejar-la.</string>
   <string name="mail_settings_auto_lock_change_pin_description">Canvia el codi PIN</string>
   <string name="mail_settings_auto_lock_item_timer_title">Temps de bloqueig automàtic</string>
-  <string name="mail_settings_auto_lock_not_enabled">Desactivat</string>
   <string name="mail_settings_auto_lock_immediately">Immediatament</string>
   <string name="mail_settings_auto_lock_item_timer_description_five_minutes">5 minuts d\'inactivitat</string>
   <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 minuts d\'inactivitat</string>
@@ -138,9 +137,14 @@
   <string name="mail_settings_pin_insertion_button_confirm">Confirma</string>
   <string name="mail_settings_pin_insertion_error_no_match">Els codis PIN no coincideixen.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="one">El codi PIN no és correcte. Resta %s intent.</item>
-    <item quantity="other">El codi PIN no és correcte. Resten %s intents.</item>
+    <item quantity="one">%s remaining attempt.</item>
+    <item quantity="other">%s remaining attempts.</item>
   </plurals>
+  <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
+    <item quantity="one">%s remaining attempt until secure data wipe.</item>
+    <item quantity="other">%s remaining attempts until secure data wipe.</item>
+  </plurals>
+  <string name="mail_settings_pin_insertion_error_unknown">There was an error verifying your PIN code.</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">S\'estan netejant les dades a la memòria cau local...</string>
   <!-- Error messages -->

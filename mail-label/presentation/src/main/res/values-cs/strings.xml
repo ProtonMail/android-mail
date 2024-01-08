@@ -29,7 +29,7 @@
   <string name="label_title_all_drafts">Všechny koncepty</string>
   <string name="label_title_all_sent">Všechny odeslané</string>
   <string name="label_title_all_scheduled">All Scheduled</string>
-  <string name="label_title_snoozed">Snoozed</string>
+  <string name="label_title_snoozed">Odloženo</string>
   <string name="label_title_folders">Složky</string>
   <string name="label_title_parent_folder">Nadřazená složka</string>
   <string name="label_title_labels">Štítky</string>

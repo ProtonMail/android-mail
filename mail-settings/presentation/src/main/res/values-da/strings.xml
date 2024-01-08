@@ -121,7 +121,6 @@
   <string name="mail_settings_auto_lock_item_description">Slå denne funktion til for at låse din app automatisk og bruge en pinkode eller et fingeraftryk til at låse den op.</string>
   <string name="mail_settings_auto_lock_change_pin_description">Skift pinkode</string>
   <string name="mail_settings_auto_lock_item_timer_title">Autolås-timer</string>
-  <string name="mail_settings_auto_lock_not_enabled">Ikke aktiveret</string>
   <string name="mail_settings_auto_lock_immediately">Straks</string>
   <string name="mail_settings_auto_lock_item_timer_description_five_minutes">5 minutters inaktivitet</string>
   <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 minutters inaktivitet</string>
@@ -138,9 +137,14 @@
   <string name="mail_settings_pin_insertion_button_confirm">Bekræft</string>
   <string name="mail_settings_pin_insertion_error_no_match">Pinkoder stemmer ikke overens.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="one">Forkert pinkode. %s forsøg tilbage.</item>
-    <item quantity="other">Forkert pinkode. %s forsøg tilbage.</item>
+    <item quantity="one">%s remaining attempt.</item>
+    <item quantity="other">%s remaining attempts.</item>
   </plurals>
+  <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
+    <item quantity="one">%s remaining attempt until secure data wipe.</item>
+    <item quantity="other">%s remaining attempts until secure data wipe.</item>
+  </plurals>
+  <string name="mail_settings_pin_insertion_error_unknown">There was an error verifying your PIN code.</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Rydder lokale cachelagrede data…</string>
   <!-- Error messages -->

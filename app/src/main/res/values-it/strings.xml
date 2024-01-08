@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="dialog_sign_out_account_title">Disconnetti</string>
-  <string name="dialog_sign_out_account_description">Sei sicuro di volerti disconnettere?</string>
+  <string name="dialog_sign_out_account_description">Sei sicuro di voler disconnettere l\'account?</string>
   <string name="dialog_sign_out_account_confirm">Sì</string>
   <string name="dialog_sign_out_account_cancel">No</string>
   <string name="dialog_remove_account_title">Rimuovi l\'account</string>

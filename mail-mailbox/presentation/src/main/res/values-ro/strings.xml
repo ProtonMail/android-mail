@@ -24,6 +24,9 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Ieșire din modul de selecție</string>
   <string name="mailbox_toolbar_menu_button_content_description">Meniu</string>
   <string name="mailbox_toolbar_search_button_content_description">Căutare</string>
+  <string name="mailbox_toolbar_exit_search_mode_content_description">Exit search mode</string>
+  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Clear search query</string>
+  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Enter search query</string>
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="one">Selectate: %d</item>
     <item quantity="few">Selectate: %d</item>
@@ -114,4 +117,7 @@
   <string name="mailbox_action_trash_message">Mesaj mutat în «Gunoi».</string>
   <string name="mailbox_action_archive_message">Mesaj mutat în «Arhivă».</string>
   <string name="mailbox_action_spam_message">Mesaj mutat în «Nedorite».</string>
+  <string name="mailbox_search_placeholder_text">Search messages</string>
+  <string name="mailbox_search_no_results_title">No results found</string>
+  <string name="mailbox_search_no_results_explanation">Search date, name, email address, or subject line</string>
 </resources>

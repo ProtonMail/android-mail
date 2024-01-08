@@ -24,6 +24,9 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Ukončit režim výběru</string>
   <string name="mailbox_toolbar_menu_button_content_description">Nabídka</string>
   <string name="mailbox_toolbar_search_button_content_description">Vyhledat</string>
+  <string name="mailbox_toolbar_exit_search_mode_content_description">Exit search mode</string>
+  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Clear search query</string>
+  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Enter search query</string>
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="one">%d vybrán</item>
     <item quantity="few">%d vybrány</item>
@@ -123,4 +126,7 @@
   <string name="mailbox_action_trash_message">Zpráva přesunuta do koše</string>
   <string name="mailbox_action_archive_message">Zpráva přesunuta do archivu</string>
   <string name="mailbox_action_spam_message">Zpráva přesunuta do spamu</string>
+  <string name="mailbox_search_placeholder_text">Prohledat zprávy</string>
+  <string name="mailbox_search_no_results_title">Nebyly nalezeny žádné výsledky</string>
+  <string name="mailbox_search_no_results_explanation">Vyhledávání podle data, jména, e-mailové adresy nebo předmětu zprávy</string>
 </resources>

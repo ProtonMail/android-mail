@@ -20,7 +20,7 @@
   <string name="detail_error_loading_contacts">Caricamento dei contatti non riuscito</string>
   <string name="detail_error_loading_conversation">Caricamento della conversazione non riuscito</string>
   <string name="detail_error_loading_messages">Caricamento dei messaggi non riuscito</string>
-  <string name="error_mark_unread_failed">Contrassegnazione come non letta non riuscita. Riprova.</string>
+  <string name="error_mark_unread_failed">Contrassegnazione come non letto non riuscita. Riprova.</string>
   <plurals name="message_count_label_text">
     <item quantity="one">%d messaggio</item>
     <item quantity="other">%d messaggi</item>
@@ -31,7 +31,7 @@
   <string name="bcc">Ccn:</string>
   <string name="hide_details">Nascondi i dettagli</string>
   <string name="undisclosed_recipients">Destinatari nascosti</string>
-  <string name="error_mark_as_unread_failed">Contrassegnazione come non letta non riuscita. Riprova.</string>
+  <string name="error_mark_as_unread_failed">Contrassegnazione come non letto non riuscita. Riprova.</string>
   <string name="error_star_operation_failed">Contrassegnazione come importante non riuscita. Riprova.</string>
   <string name="error_unstar_operation_failed">Contrassegnazione come non importante non riuscita. Riprova.</string>
   <string name="error_move_to_trash_failed">Spostamento nel cestino non riuscito. Riprova.</string>

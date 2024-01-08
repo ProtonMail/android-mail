@@ -24,6 +24,9 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Ukončiť režim výberu</string>
   <string name="mailbox_toolbar_menu_button_content_description">Menu</string>
   <string name="mailbox_toolbar_search_button_content_description">Hľadať</string>
+  <string name="mailbox_toolbar_exit_search_mode_content_description">Exit search mode</string>
+  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Clear search query</string>
+  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Enter search query</string>
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="one">%d vybraný</item>
     <item quantity="few">%d vybrané</item>
@@ -98,7 +101,7 @@
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Nepodarilo sa získať priečinky</string>
   <!--  Spotlight V6 Beta  -->
   <string name="onboarding_headline_beta">Beta testovanie novej aplikácie</string>
-  <string name="onboarding_description_beta">Prestavali sme aplikáciu, aby bola stabilná a spoľahlivá. Podeľte sa o svoje pripomienky a zostaňte na príjme, keď budeme znovu zavádzať rôzne funkcie. <a href="https://proton.me/support/mail-android-beta">Zistite viac</a>.</string>
+  <string name="onboarding_description_beta">Prestavali sme aplikáciu, aby bola stabilná a spoľahlivá. Podeľte sa o svoje pripomienky a zostaňte na príjme, keď budeme znovu zavádzať rôzne funkcie. <a href="https://proton.me/support/mail-android-beta">Zistiť viac</a>.</string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Vitajte v novej aplikácii</string>
   <string name="onboarding_description_ga">Nová aplikácia Proton Mail bola úplne od základu prepracovaná, aby bola stabilná a výkonná.</string>
@@ -123,4 +126,7 @@
   <string name="mailbox_action_trash_message">Správa bola presunutá do koša</string>
   <string name="mailbox_action_archive_message">Správa bola presunutá do archívu</string>
   <string name="mailbox_action_spam_message">Správa bola presunutá do spamu</string>
+  <string name="mailbox_search_placeholder_text">Search messages</string>
+  <string name="mailbox_search_no_results_title">No results found</string>
+  <string name="mailbox_search_no_results_explanation">Search date, name, email address, or subject line</string>
 </resources>

@@ -24,6 +24,9 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Stäng valläget</string>
   <string name="mailbox_toolbar_menu_button_content_description">Meny</string>
   <string name="mailbox_toolbar_search_button_content_description">Sök</string>
+  <string name="mailbox_toolbar_exit_search_mode_content_description">Avsluta sökläge</string>
+  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Rensa sökfråga</string>
+  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Ange sökfråga</string>
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="one">%d vald</item>
     <item quantity="other">%d valda</item>
@@ -105,4 +108,7 @@
   <string name="mailbox_action_trash_message">Meddelande flyttat till papperskorg</string>
   <string name="mailbox_action_archive_message">Meddelande flyttat till arkiv</string>
   <string name="mailbox_action_spam_message">Meddelande flyttat till skräppost</string>
+  <string name="mailbox_search_placeholder_text">Sök meddelanden</string>
+  <string name="mailbox_search_no_results_title">Inga resultat hittades</string>
+  <string name="mailbox_search_no_results_explanation">Sök datum, namn, e-postadress eller ämnesrad</string>
 </resources>

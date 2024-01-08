@@ -121,7 +121,6 @@
   <string name="mail_settings_auto_lock_item_description">Уключыце гэту функцыю, каб аўтаматычна блакіраваць праграму і выкарыстоўваць PIN-код або адбітак пальца для яе разблакіроўкі</string>
   <string name="mail_settings_auto_lock_change_pin_description">Змяніць PIN-код</string>
   <string name="mail_settings_auto_lock_item_timer_title">Час аўтаблакіроўкі</string>
-  <string name="mail_settings_auto_lock_not_enabled">Не ўключана</string>
   <string name="mail_settings_auto_lock_immediately">Адразу</string>
   <string name="mail_settings_auto_lock_item_timer_description_five_minutes">5 хвілін бяздзейнасці</string>
   <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 хвілін бяздзейнасці</string>
@@ -138,11 +137,18 @@
   <string name="mail_settings_pin_insertion_button_confirm">Пацвердзіць</string>
   <string name="mail_settings_pin_insertion_error_no_match">PIN-коды не супадаюць.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="one">Няправільны PIN-код. Засталася %s спроба.</item>
-    <item quantity="few">Няправільны PIN-код. Засталося %s спробы.</item>
-    <item quantity="many">Няправільны PIN-код. Засталося %s спроб.</item>
-    <item quantity="other">Няправільны PIN-код. Засталося %s спроб.</item>
+    <item quantity="one">Засталася %s спроба.</item>
+    <item quantity="few">Засталося %s спробы.</item>
+    <item quantity="many">Засталося %s спроб.</item>
+    <item quantity="other">Засталося %s спроб.</item>
   </plurals>
+  <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
+    <item quantity="one">Засталася %s спроба, пакуль абароненыя даныя не будуць выцертыя.</item>
+    <item quantity="few">Засталося %s спробы, пакуль абароненыя даныя не будуць выцертыя.</item>
+    <item quantity="many">Засталося %s спроб, пакуль абароненыя даныя не будуць выцертыя.</item>
+    <item quantity="other">Засталося %s спроб, пакуль абароненыя даныя не будуць выцертыя.</item>
+  </plurals>
+  <string name="mail_settings_pin_insertion_error_unknown">Адбылася памылка пры праверцы вашага PIN-кода.</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Ачыстка даных лакальнага кэша...</string>
   <!-- Error messages -->

@@ -24,6 +24,9 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Auswahlmodus beenden</string>
   <string name="mailbox_toolbar_menu_button_content_description">Menü</string>
   <string name="mailbox_toolbar_search_button_content_description">Suche</string>
+  <string name="mailbox_toolbar_exit_search_mode_content_description">Suchmodus beenden</string>
+  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Suchanfrage löschen</string>
+  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Suchanfrage eingeben</string>
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="one">%d ausgewählt</item>
     <item quantity="other">%d ausgewählt</item>
@@ -105,4 +108,7 @@
   <string name="mailbox_action_trash_message">Nachricht wurde in den Papierkorb verschoben</string>
   <string name="mailbox_action_archive_message">Nachricht wurde in das Archiv verschoben</string>
   <string name="mailbox_action_spam_message">Nachricht wurde in den Spam-Ordner verschoben</string>
+  <string name="mailbox_search_placeholder_text">Nachrichten durchsuchen</string>
+  <string name="mailbox_search_no_results_title">Keine Ergebnisse gefunden</string>
+  <string name="mailbox_search_no_results_explanation">Suche nach Datum, Name, E-Mail-Adresse oder Betreff</string>
 </resources>

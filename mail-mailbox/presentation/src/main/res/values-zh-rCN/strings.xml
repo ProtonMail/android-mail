@@ -24,6 +24,9 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">关闭选择模式</string>
   <string name="mailbox_toolbar_menu_button_content_description">菜单</string>
   <string name="mailbox_toolbar_search_button_content_description">搜索</string>
+  <string name="mailbox_toolbar_exit_search_mode_content_description">Exit search mode</string>
+  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Clear search query</string>
+  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Enter search query</string>
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="other">已选择 %d 项</item>
   </plurals>
@@ -96,4 +99,7 @@
   <string name="mailbox_action_trash_message">邮件已移动到垃圾箱</string>
   <string name="mailbox_action_archive_message">邮件已存档</string>
   <string name="mailbox_action_spam_message">封邮件已移至垃圾邮件箱</string>
+  <string name="mailbox_search_placeholder_text">Search messages</string>
+  <string name="mailbox_search_no_results_title">No results found</string>
+  <string name="mailbox_search_no_results_explanation">Search date, name, email address, or subject line</string>
 </resources>

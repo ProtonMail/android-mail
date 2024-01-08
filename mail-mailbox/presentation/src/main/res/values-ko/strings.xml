@@ -24,6 +24,9 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">선택 모드 나가기</string>
   <string name="mailbox_toolbar_menu_button_content_description">메뉴</string>
   <string name="mailbox_toolbar_search_button_content_description">검색</string>
+  <string name="mailbox_toolbar_exit_search_mode_content_description">Exit search mode</string>
+  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Clear search query</string>
+  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Enter search query</string>
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="other">%d 선택됨</item>
   </plurals>
@@ -96,4 +99,7 @@
   <string name="mailbox_action_trash_message">메시지를 휴지통으로 이동함</string>
   <string name="mailbox_action_archive_message">메시지가 보관함으로 이동함</string>
   <string name="mailbox_action_spam_message">메시지를 스팸으로 옮겼습니다</string>
+  <string name="mailbox_search_placeholder_text">Search messages</string>
+  <string name="mailbox_search_no_results_title">No results found</string>
+  <string name="mailbox_search_no_results_explanation">Search date, name, email address, or subject line</string>
 </resources>

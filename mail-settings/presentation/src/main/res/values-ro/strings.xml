@@ -121,7 +121,6 @@
   <string name="mail_settings_auto_lock_item_description">Activați această funcție pentru a autobloca aplicația și a folosi PIN sau amprentă pentru deblocare</string>
   <string name="mail_settings_auto_lock_change_pin_description">Schimbare cod PIN</string>
   <string name="mail_settings_auto_lock_item_timer_title">Timp autoblocare</string>
-  <string name="mail_settings_auto_lock_not_enabled">Nu este activată</string>
   <string name="mail_settings_auto_lock_immediately">Imediat</string>
   <string name="mail_settings_auto_lock_item_timer_description_five_minutes">5 minute de inactivitate</string>
   <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 minute de inactivitate</string>
@@ -138,10 +137,16 @@
   <string name="mail_settings_pin_insertion_button_confirm">Confirmare</string>
   <string name="mail_settings_pin_insertion_error_no_match">Codurile PIN nu coincid.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="one">Cod PIN greșit. Încercări rămase: %s</item>
-    <item quantity="few">Cod PIN greșit. Încercări rămase: %s</item>
-    <item quantity="other">Cod PIN greșit. Încercări rămase: %s</item>
+    <item quantity="one">%s remaining attempt.</item>
+    <item quantity="few">%s remaining attempts.</item>
+    <item quantity="other">%s remaining attempts.</item>
   </plurals>
+  <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
+    <item quantity="one">%s remaining attempt until secure data wipe.</item>
+    <item quantity="few">%s remaining attempts until secure data wipe.</item>
+    <item quantity="other">%s remaining attempts until secure data wipe.</item>
+  </plurals>
+  <string name="mail_settings_pin_insertion_error_unknown">There was an error verifying your PIN code.</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Se golesc datele din bufferul local…</string>
   <!-- Error messages -->

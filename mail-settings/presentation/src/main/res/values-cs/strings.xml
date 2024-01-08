@@ -121,7 +121,6 @@
   <string name="mail_settings_auto_lock_item_description">Zapněte tuto funkci pro automatické uzamčení aplikace a použijte kód PIN nebo otisk prstu pro odemčení</string>
   <string name="mail_settings_auto_lock_change_pin_description">Změnit PIN kód</string>
   <string name="mail_settings_auto_lock_item_timer_title">Časovač automatického uzamčení</string>
-  <string name="mail_settings_auto_lock_not_enabled">Nepovoleno</string>
   <string name="mail_settings_auto_lock_immediately">Okamžitě</string>
   <string name="mail_settings_auto_lock_item_timer_description_five_minutes">5 minut nečinnosti</string>
   <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 minut nečinnosti</string>
@@ -138,11 +137,18 @@
   <string name="mail_settings_pin_insertion_button_confirm">Potvrdit</string>
   <string name="mail_settings_pin_insertion_error_no_match">PIN kódy se neshodují.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="one">Chybný kód PIN. Zbývá %s pokus.</item>
-    <item quantity="few">Chybný kód PIN. Zbývají %s pokusy.</item>
-    <item quantity="many">Chybný kód PIN. Zbývá %s pokusů.</item>
-    <item quantity="other">Chybný kód PIN. Zbývá %s pokusů.</item>
+    <item quantity="one">Zbývá %s pokus.</item>
+    <item quantity="few">Zbývají %s pokusy.</item>
+    <item quantity="many">Zbývá %s pokusů.</item>
+    <item quantity="other">Zbývá %s pokusů.</item>
   </plurals>
+  <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
+    <item quantity="one">Zbývá %s pokus před bezpečným smazáním dat.</item>
+    <item quantity="few">Zbývají %s pokusy před bezpečným smazáním dat.</item>
+    <item quantity="many">Zbývá %s pokusů před bezpečným smazáním dat.</item>
+    <item quantity="other">Zbývá %s pokusů před bezpečným smazáním dat.</item>
+  </plurals>
+  <string name="mail_settings_pin_insertion_error_unknown">Při ověřování PIN kódu došlo k chybě.</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Vymazání místních dat z mezipaměti…</string>
   <!-- Error messages -->

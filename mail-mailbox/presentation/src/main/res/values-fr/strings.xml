@@ -24,6 +24,9 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Quitter le mode sélection</string>
   <string name="mailbox_toolbar_menu_button_content_description">Menu</string>
   <string name="mailbox_toolbar_search_button_content_description">Rechercher</string>
+  <string name="mailbox_toolbar_exit_search_mode_content_description">Quitter le mode recherche</string>
+  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Effacer le critère de recherche</string>
+  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Saisir le critère de recherche</string>
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="one">Sélection : %d</item>
     <item quantity="other">Sélection : %d</item>
@@ -41,10 +44,10 @@
   <string name="mailbox_error_message_unexpected">Une erreur imprévue s\'est produite.</string>
   <string name="mailbox_is_empty_title">Aucun message</string>
   <string name="mailbox_is_empty_description">Vous êtes à jour.</string>
-  <string name="mailbox_is_empty_no_unread_messages_title">Tous les messages sont lus.</string>
+  <string name="mailbox_is_empty_no_unread_messages_title">Vous n\'avez aucun message non lu.</string>
   <string name="mailbox_is_empty_folder_description">Ce dossier est vide.</string>
   <string name="mailbox_is_empty_spam_description">Votre dossier Indésirables/spam est vide.</string>
-  <string name="mailbox_is_empty_trash_description">La Corbeille est vide.</string>
+  <string name="mailbox_is_empty_trash_description">Le dossier Corbeille est vide.</string>
   <plurals name="mailbox_action_trash">
     <item quantity="one">Le message a été déplacé dans le dossier Corbeille.</item>
     <item quantity="other">%d messages ont été déplacés dans le dossier Corbeille.</item>
@@ -105,4 +108,7 @@
   <string name="mailbox_action_trash_message">Le message a été déplacé dans le dossier Corbeille.</string>
   <string name="mailbox_action_archive_message">Le message a été déplacé dans le dossier Archives.</string>
   <string name="mailbox_action_spam_message">Le message a été déplacé dans le dossier Indésirables/spam.</string>
+  <string name="mailbox_search_placeholder_text">Rechercher des messages.</string>
+  <string name="mailbox_search_no_results_title">Aucun résultat n\'a été trouvé.</string>
+  <string name="mailbox_search_no_results_explanation">Search date, name, email address, or subject line</string>
 </resources>

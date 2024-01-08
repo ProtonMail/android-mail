@@ -121,7 +121,6 @@
   <string name="mail_settings_auto_lock_item_description">Slå på denna funktion för att låsa din app automatiskt och använd en PIN-kod eller fingeravtryck för att låsa upp den</string>
   <string name="mail_settings_auto_lock_change_pin_description">Ändra PIN-kod</string>
   <string name="mail_settings_auto_lock_item_timer_title">Timer för autolås</string>
-  <string name="mail_settings_auto_lock_not_enabled">Inte aktiverad</string>
   <string name="mail_settings_auto_lock_immediately">Omedelbart</string>
   <string name="mail_settings_auto_lock_item_timer_description_five_minutes">5 minuters inaktivitet</string>
   <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 minuters inaktivitet</string>
@@ -138,9 +137,14 @@
   <string name="mail_settings_pin_insertion_button_confirm">Bekräfta</string>
   <string name="mail_settings_pin_insertion_error_no_match">PIN-koder matchar inte.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="one">Fel PIN-kod. %s försök återstår.</item>
-    <item quantity="other">Fel PIN-kod. %s försök återstår.</item>
+    <item quantity="one">%s återstående försök.</item>
+    <item quantity="other">%s återstående försök.</item>
   </plurals>
+  <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
+    <item quantity="one">%s remaining attempt until secure data wipe.</item>
+    <item quantity="other">%s remaining attempts until secure data wipe.</item>
+  </plurals>
+  <string name="mail_settings_pin_insertion_error_unknown">There was an error verifying your PIN code.</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Rensar lokal cachad data…</string>
   <!-- Error messages -->

@@ -121,7 +121,6 @@
   <string name="mail_settings_auto_lock_item_description">Slå på denne funksjonen for å låse appen automatisk, og bruk en PIN-kode eller fingeravtrykk for å låse den opp</string>
   <string name="mail_settings_auto_lock_change_pin_description">Endre PIN-koden</string>
   <string name="mail_settings_auto_lock_item_timer_title">Tidtaker for autolås</string>
-  <string name="mail_settings_auto_lock_not_enabled">Ikke aktivert</string>
   <string name="mail_settings_auto_lock_immediately">Umiddelbart</string>
   <string name="mail_settings_auto_lock_item_timer_description_five_minutes">5 minutter med inaktivitet</string>
   <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 minutter med inaktivitet</string>
@@ -138,9 +137,14 @@
   <string name="mail_settings_pin_insertion_button_confirm">Bekreft</string>
   <string name="mail_settings_pin_insertion_error_no_match">PIN-kodene samsvarer ikke.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="one">Feil PIN-kode. %s forsøk gjenstår.</item>
-    <item quantity="other">Feil PIN-kode. %s forsøk gjenstår.</item>
+    <item quantity="one">%s gjenstående forsøk</item>
+    <item quantity="other">%s gjenstående forsøk.</item>
   </plurals>
+  <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
+    <item quantity="one">%s gjenværende forsøk til sikker datasletting</item>
+    <item quantity="other">%s gjenværende forsøk til sikker datasletting</item>
+  </plurals>
+  <string name="mail_settings_pin_insertion_error_unknown">Det oppstod en feil under bekreftelse av PIN-koden.</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Tømmer lokalt hurtigbufrede data…</string>
   <!-- Error messages -->

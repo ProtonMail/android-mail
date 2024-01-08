@@ -24,6 +24,9 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Wyjdź z trybu zaznaczania</string>
   <string name="mailbox_toolbar_menu_button_content_description">Menu</string>
   <string name="mailbox_toolbar_search_button_content_description">Szukaj</string>
+  <string name="mailbox_toolbar_exit_search_mode_content_description">Wyjdź z trybu wyszukiwania</string>
+  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Wyczyść zapytanie</string>
+  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Wpisz zapytanie</string>
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="one">%d zaznaczona</item>
     <item quantity="few">%d zaznaczone</item>
@@ -123,4 +126,7 @@
   <string name="mailbox_action_trash_message">Wiadomość została przeniesiona do Kosza</string>
   <string name="mailbox_action_archive_message">Wiadomość została przeniesiona do Archiwum</string>
   <string name="mailbox_action_spam_message">Wiadomość została przeniesiona do Spamu</string>
+  <string name="mailbox_search_placeholder_text">Szukaj wiadomości</string>
+  <string name="mailbox_search_no_results_title">Nie znaleziono żadnych wyników</string>
+  <string name="mailbox_search_no_results_explanation">Szukaj daty, nazwy, adresu e-mail lub tematu</string>
 </resources>

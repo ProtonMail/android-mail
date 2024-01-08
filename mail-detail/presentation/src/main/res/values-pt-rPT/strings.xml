@@ -66,7 +66,7 @@
   <string name="external_link_confirmation_dialog_cancel_button">Cancel</string>
   <string name="external_link_confirmation_dialog_continue_button">Continue</string>
   <!-- Phishing link confirmation dialog -->
-  <string name="phishing_link_confirmation_dialog_title">Aviso: suspeita de sítio web falso</string>
+  <string name="phishing_link_confirmation_dialog_title">Aviso: suspeita de website falso</string>
   <string name="phishing_link_confirmation_dialog_content_part_1">Esta hiperligação leva a um website que pode tentar roubar a sua informação, como palavras-passe e números de cartão de crédito.</string>
   <string name="phishing_link_confirmation_dialog_content_part_2">For your security, do not continue.</string>
   <string name="phishing_link_confirmation_dialog_button_go_back">Retroceder (recomendado)</string>

@@ -121,7 +121,6 @@
   <string name="mail_settings_auto_lock_item_description">Aktifkan fitur ini agar aplikasi dapat terkunci secara otomatis, yang mengharuskan permbukaan melalui kode PIN atau sidik jari</string>
   <string name="mail_settings_auto_lock_change_pin_description">Ubah kode PIN</string>
   <string name="mail_settings_auto_lock_item_timer_title">Waktu penguncian otomatis</string>
-  <string name="mail_settings_auto_lock_not_enabled">Tidak diaktifkan</string>
   <string name="mail_settings_auto_lock_immediately">Segera</string>
   <string name="mail_settings_auto_lock_item_timer_description_five_minutes">5 menit tidak aktif</string>
   <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 menit tidak aktif</string>
@@ -138,8 +137,12 @@
   <string name="mail_settings_pin_insertion_button_confirm">Konfirmasi</string>
   <string name="mail_settings_pin_insertion_error_no_match">Kode PIN tidak sesuai.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="other">Kode PIN aslah. %s upaya tersisa.</item>
+    <item quantity="other">%s upaya tersisa.</item>
   </plurals>
+  <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
+    <item quantity="other">%s upaya tersisa sebelum penghapusan data.</item>
+  </plurals>
+  <string name="mail_settings_pin_insertion_error_unknown">Terdapat masalah dalam memverifikasi kode PIN Anda.</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Bersihkan cache data lokal...</string>
   <!-- Error messages -->

@@ -121,7 +121,6 @@
   <string name="mail_settings_auto_lock_item_description">Włączenie tej funkcji zablokuje aplikację. Wymagane będzie użycie kodu PIN lub odcisku palca, aby ją odblokować</string>
   <string name="mail_settings_auto_lock_change_pin_description">Zmień kod PIN</string>
   <string name="mail_settings_auto_lock_item_timer_title">Automatyczne blokowanie</string>
-  <string name="mail_settings_auto_lock_not_enabled">Wyłączone</string>
   <string name="mail_settings_auto_lock_immediately">Natychmiast</string>
   <string name="mail_settings_auto_lock_item_timer_description_five_minutes">5 minut bezczynności</string>
   <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 minut bezczynności</string>
@@ -138,11 +137,18 @@
   <string name="mail_settings_pin_insertion_button_confirm">Potwierdź</string>
   <string name="mail_settings_pin_insertion_error_no_match">Kody PIN nie pasują do siebie.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="one">Kod PIN jest nieprawidłowy. Pozostała %s próba.</item>
-    <item quantity="few">Kod PIN jest nieprawidłowy. Pozostały %s próby.</item>
-    <item quantity="many">Kod PIN jest nieprawidłowy. Pozostało %s prób.</item>
-    <item quantity="other">Kod PIN jest nieprawidłowy. Pozostało %s prób.</item>
+    <item quantity="one">%s remaining attempt.</item>
+    <item quantity="few">%s remaining attempts.</item>
+    <item quantity="many">%s remaining attempts.</item>
+    <item quantity="other">%s remaining attempts.</item>
   </plurals>
+  <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
+    <item quantity="one">%s remaining attempt until secure data wipe.</item>
+    <item quantity="few">%s remaining attempts until secure data wipe.</item>
+    <item quantity="many">%s remaining attempts until secure data wipe.</item>
+    <item quantity="other">%s remaining attempts until secure data wipe.</item>
+  </plurals>
+  <string name="mail_settings_pin_insertion_error_unknown">There was an error verifying your PIN code.</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Czyszczenie pamięci podręcznej…</string>
   <!-- Error messages -->

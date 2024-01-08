@@ -24,15 +24,18 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Esci dalla modalità di selezione</string>
   <string name="mailbox_toolbar_menu_button_content_description">Menu</string>
   <string name="mailbox_toolbar_search_button_content_description">Cerca</string>
+  <string name="mailbox_toolbar_exit_search_mode_content_description">Esci dalla modalità di ricerca</string>
+  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Cancella la parola chiave</string>
+  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Inserisci una parola chiave</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">%d selezionata</item>
-    <item quantity="other">%d selezionate</item>
+    <item quantity="one">%d selezionato</item>
+    <item quantity="other">%d selezionati</item>
   </plurals>
   <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
-  <string name="filter_unread_button_text_without_counter">Non lette</string>
+  <string name="filter_unread_button_text_without_counter">Non letti</string>
   <plurals name="filter_unread_button_text">
-    <item quantity="one">%d non letta</item>
-    <item quantity="other">%d non lette</item>
+    <item quantity="one">%d non letto</item>
+    <item quantity="other">%d non letti</item>
   </plurals>
   <string name="mailbox_default_recipient">(Nessun destinatario)</string>
   <string name="mailbox_default_sender">(Nessun mittente)</string>
@@ -105,4 +108,7 @@
   <string name="mailbox_action_trash_message">Messaggio spostato nel cestino</string>
   <string name="mailbox_action_archive_message">Messaggio spostato nell\'archivio</string>
   <string name="mailbox_action_spam_message">Messaggio spostato in spam</string>
+  <string name="mailbox_search_placeholder_text">Cerca nei messaggi</string>
+  <string name="mailbox_search_no_results_title">Nessun risultato trovato</string>
+  <string name="mailbox_search_no_results_explanation">Ricerca per data, nome, indirizzo email o oggetto del messaggio</string>
 </resources>

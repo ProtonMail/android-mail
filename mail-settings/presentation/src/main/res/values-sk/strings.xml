@@ -117,11 +117,10 @@
   <string name="mail_settings_notifications_loading_error">Chyba pri načítaní nastavení</string>
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">Automatické uzamknutie</string>
-  <string name="mail_settings_auto_lock_item_title">Automatické uzamknutie aplikácie</string>
+  <string name="mail_settings_auto_lock_item_title">Autom. uzamknutie aplikácie</string>
   <string name="mail_settings_auto_lock_item_description">Zapnutím tejto funkcie aplikáciu automaticky uzamknete a odomknete ju pomocou kódu PIN alebo odtlačku prsta.</string>
   <string name="mail_settings_auto_lock_change_pin_description">Zmeniť PIN kód</string>
-  <string name="mail_settings_auto_lock_item_timer_title">Časovač aut. zámku</string>
-  <string name="mail_settings_auto_lock_not_enabled">Neaktívny</string>
+  <string name="mail_settings_auto_lock_item_timer_title">Časovač autom. zámku</string>
   <string name="mail_settings_auto_lock_immediately">Okamžite</string>
   <string name="mail_settings_auto_lock_item_timer_description_five_minutes">5 min. nečinnosti</string>
   <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 min. nečinnosti</string>
@@ -132,17 +131,24 @@
   <string name="mail_settings_pin_insertion_set_title">Nastaviť PIN kód</string>
   <string name="mail_settings_pin_insertion_confirm_title">Potvrdiť PIN kód</string>
   <string name="mail_settings_pin_insertion_lock_icon_description">Ikona zámku</string>
-  <string name="mail_settings_pin_insertion_pin_dot_description">Pin dot</string>
-  <string name="mail_settings_pin_insertion_backspace_description">Backspace</string>
+  <string name="mail_settings_pin_insertion_pin_dot_description">Bodky PIN kódu</string>
+  <string name="mail_settings_pin_insertion_backspace_description">Vymazať</string>
   <string name="mail_settings_pin_insertion_button_create">Vytvoriť</string>
   <string name="mail_settings_pin_insertion_button_confirm">Potvrdiť</string>
   <string name="mail_settings_pin_insertion_error_no_match">PIN kódy sa nezhodujú.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="one">Nesprávny PIN kód. Zostáva %s pokus.</item>
-    <item quantity="few">Nesprávny PIN kód. Zostávajú %s pokusy.</item>
-    <item quantity="many">Nesprávny PIN kód. Zostáva %s pokusov.</item>
-    <item quantity="other">Nesprávny PIN kód. Zostáva %s pokusov.</item>
+    <item quantity="one">%s remaining attempt.</item>
+    <item quantity="few">%s remaining attempts.</item>
+    <item quantity="many">%s remaining attempts.</item>
+    <item quantity="other">%s remaining attempts.</item>
   </plurals>
+  <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
+    <item quantity="one">%s remaining attempt until secure data wipe.</item>
+    <item quantity="few">%s remaining attempts until secure data wipe.</item>
+    <item quantity="many">%s remaining attempts until secure data wipe.</item>
+    <item quantity="other">%s remaining attempts until secure data wipe.</item>
+  </plurals>
+  <string name="mail_settings_pin_insertion_error_unknown">There was an error verifying your PIN code.</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Mazanie dát lokálnej medzipamäte...</string>
   <!-- Error messages -->

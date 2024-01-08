@@ -30,8 +30,8 @@
   <string name="action_reply_description">Rispondi</string>
   <string name="action_reply_all_description">Rispondi a tutti</string>
   <string name="action_forward_description">Inoltra</string>
-  <string name="action_mark_read_description">Segna come letta</string>
-  <string name="action_mark_unread_description">Segna come non letta</string>
+  <string name="action_mark_read_description">Segna come letto</string>
+  <string name="action_mark_unread_description">Segna come non letto</string>
   <string name="action_star_description">Segna come importante</string>
   <string name="action_unstar_description">Segna come non importante</string>
   <string name="action_label_description">Etichetta come</string>
@@ -54,8 +54,8 @@
   <string name="action_reply_content_description">Rispondi</string>
   <string name="action_reply_all_content_description">Rispondi a tutti</string>
   <string name="action_forward_content_description">Inoltra</string>
-  <string name="action_mark_read_content_description">Segna come letta</string>
-  <string name="action_mark_unread_content_description">Segna come non letta</string>
+  <string name="action_mark_read_content_description">Segna come letto</string>
+  <string name="action_mark_unread_content_description">Segna come non letto</string>
   <string name="action_star_content_description">Segna come importante</string>
   <string name="action_unstar_content_description">Segna come non importante</string>
   <string name="action_label_content_description">Etichetta come</string>

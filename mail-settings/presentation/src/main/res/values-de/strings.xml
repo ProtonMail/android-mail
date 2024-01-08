@@ -121,7 +121,6 @@
   <string name="mail_settings_auto_lock_item_description">Schalte diese Funktion ein, um deine App automatisch zu sperren und mit einem PIN-Code oder Fingerabdruck zu entsperren</string>
   <string name="mail_settings_auto_lock_change_pin_description">PIN-Code ändern</string>
   <string name="mail_settings_auto_lock_item_timer_title">Zeit bis zur automatischen Sperrung</string>
-  <string name="mail_settings_auto_lock_not_enabled">Nicht aktiviert</string>
   <string name="mail_settings_auto_lock_immediately">Sofort</string>
   <string name="mail_settings_auto_lock_item_timer_description_five_minutes">5 Minuten Inaktivität</string>
   <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 Minuten Inaktivität</string>
@@ -138,9 +137,14 @@
   <string name="mail_settings_pin_insertion_button_confirm">Bestätigen</string>
   <string name="mail_settings_pin_insertion_error_no_match">PIN-Codes stimmen nicht überein.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="one">Falscher PIN Code. %s verbleibender Versuch</item>
-    <item quantity="other">Falscher PIN Code. %s verbleibende Versuche.</item>
+    <item quantity="one">%s remaining attempt.</item>
+    <item quantity="other">%s remaining attempts.</item>
   </plurals>
+  <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
+    <item quantity="one">%s remaining attempt until secure data wipe.</item>
+    <item quantity="other">%s remaining attempts until secure data wipe.</item>
+  </plurals>
+  <string name="mail_settings_pin_insertion_error_unknown">There was an error verifying your PIN code.</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Lokal zwischengespeicherte Daten werden bereinigt…</string>
   <!-- Error messages -->

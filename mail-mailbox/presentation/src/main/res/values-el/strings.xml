@@ -24,6 +24,9 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Έξοδος από τη λειτουργία επιλογής</string>
   <string name="mailbox_toolbar_menu_button_content_description">Μενού</string>
   <string name="mailbox_toolbar_search_button_content_description">Αναζήτηση</string>
+  <string name="mailbox_toolbar_exit_search_mode_content_description">Exit search mode</string>
+  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Clear search query</string>
+  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Enter search query</string>
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="one">%d Επιλεγμένο</item>
     <item quantity="other">%d Επιλεγμένα</item>
@@ -105,4 +108,7 @@
   <string name="mailbox_action_trash_message">Το μήνυμα μετακινήθηκε στα Διαγραμμένα</string>
   <string name="mailbox_action_archive_message">Το μήνυμα μετακινήθηκε στα Αρχειοθετημένα</string>
   <string name="mailbox_action_spam_message">μήνυμα μετακινήθηκε στα Ενοχλητικά</string>
+  <string name="mailbox_search_placeholder_text">Search messages</string>
+  <string name="mailbox_search_no_results_title">No results found</string>
+  <string name="mailbox_search_no_results_explanation">Search date, name, email address, or subject line</string>
 </resources>

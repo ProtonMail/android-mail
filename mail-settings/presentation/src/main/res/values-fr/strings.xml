@@ -121,26 +121,30 @@
   <string name="mail_settings_auto_lock_item_description">Activez cette fonctionnalité pour verrouiller automatiquement votre application et utilisez un code PIN ou une empreinte digitale pour la déverrouiller.</string>
   <string name="mail_settings_auto_lock_change_pin_description">Modifier le code PIN</string>
   <string name="mail_settings_auto_lock_item_timer_title">Délai de verrouillage automatique</string>
-  <string name="mail_settings_auto_lock_not_enabled">Désactivé</string>
   <string name="mail_settings_auto_lock_immediately">Immédiatement</string>
   <string name="mail_settings_auto_lock_item_timer_description_five_minutes">5 minutes d\'inactivité</string>
   <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 minutes d\'inactivité</string>
   <string name="mail_settings_auto_lock_item_timer_description_one_hour">1 heure d\'inactivité</string>
   <string name="mail_settings_auto_lock_item_timer_description_one_day">1 jour d\'inactivité</string>
   <string name="mail_settings_auto_lock_update_error">Une erreur s\'est produite pendant la mise à jour des paramètres.</string>
-  <string name="mail_settings_pin_insertion_input_title">Insérez le code PIN</string>
+  <string name="mail_settings_pin_insertion_input_title">Saisir le code PIN</string>
   <string name="mail_settings_pin_insertion_set_title">Définir le code PIN</string>
   <string name="mail_settings_pin_insertion_confirm_title">Confirmez le code PIN</string>
   <string name="mail_settings_pin_insertion_lock_icon_description">Icône de verrouillage</string>
-  <string name="mail_settings_pin_insertion_pin_dot_description">Code PIN en points</string>
-  <string name="mail_settings_pin_insertion_backspace_description">Effacer</string>
+  <string name="mail_settings_pin_insertion_pin_dot_description">Code PIN sous forme de points</string>
+  <string name="mail_settings_pin_insertion_backspace_description">Retour arrière</string>
   <string name="mail_settings_pin_insertion_button_create">Créer</string>
   <string name="mail_settings_pin_insertion_button_confirm">Confirmer</string>
   <string name="mail_settings_pin_insertion_error_no_match">Les codes PIN ne correspondent pas.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="one">Le code PIN n\'est pas correct. Il reste %s tentative.</item>
-    <item quantity="other">Le code PIN n\'est pas correct. Il reste %s tentatives.</item>
+    <item quantity="one">%s tentative restante.</item>
+    <item quantity="other">%s tentatives restantes.</item>
   </plurals>
+  <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
+    <item quantity="one">%s remaining attempt until secure data wipe.</item>
+    <item quantity="other">%s remaining attempts until secure data wipe.</item>
+  </plurals>
+  <string name="mail_settings_pin_insertion_error_unknown">There was an error verifying your PIN code.</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Les données locales mises en cache sont en cours d\'effacement.</string>
   <!-- Error messages -->

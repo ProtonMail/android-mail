@@ -121,7 +121,6 @@
   <string name="mail_settings_auto_lock_item_description">Включите эту функцию, чтобы автоматически заблокировать приложение и использовать PIN или отпечаток пальца для его разблокировки.</string>
   <string name="mail_settings_auto_lock_change_pin_description">Изменить PIN-код</string>
   <string name="mail_settings_auto_lock_item_timer_title">Таймер автоблокировки</string>
-  <string name="mail_settings_auto_lock_not_enabled">Не включено</string>
   <string name="mail_settings_auto_lock_immediately">Немедленно</string>
   <string name="mail_settings_auto_lock_item_timer_description_five_minutes">5 минут бездействия</string>
   <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 минут бездействия</string>
@@ -138,11 +137,18 @@
   <string name="mail_settings_pin_insertion_button_confirm">Подтвердить</string>
   <string name="mail_settings_pin_insertion_error_no_match">Пин-коды не совпадают.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="one">Неверный PIN. Осталось %s попытка.</item>
-    <item quantity="few">Неверный PIN. Осталось %s попытки.</item>
-    <item quantity="many">Неверный PIN. Осталось %s попыток.</item>
-    <item quantity="other">Неверный PIN. Осталось %s попыток.</item>
+    <item quantity="one">%s remaining attempt.</item>
+    <item quantity="few">%s remaining attempts.</item>
+    <item quantity="many">%s remaining attempts.</item>
+    <item quantity="other">%s remaining attempts.</item>
   </plurals>
+  <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
+    <item quantity="one">%s remaining attempt until secure data wipe.</item>
+    <item quantity="few">%s remaining attempts until secure data wipe.</item>
+    <item quantity="many">%s remaining attempts until secure data wipe.</item>
+    <item quantity="other">%s remaining attempts until secure data wipe.</item>
+  </plurals>
+  <string name="mail_settings_pin_insertion_error_unknown">There was an error verifying your PIN code.</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Очистка локальных кэшированных данных…</string>
   <!-- Error messages -->

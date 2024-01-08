@@ -121,7 +121,6 @@
   <string name="mail_settings_auto_lock_item_description">Turn this feature on to auto lock your app and use a PIN code or Fingerprint to unlock it</string>
   <string name="mail_settings_auto_lock_change_pin_description">PINコードを変更する</string>
   <string name="mail_settings_auto_lock_item_timer_title">Auto lock timer</string>
-  <string name="mail_settings_auto_lock_not_enabled">Not enabled</string>
   <string name="mail_settings_auto_lock_immediately">Immediately</string>
   <string name="mail_settings_auto_lock_item_timer_description_five_minutes">5 minutes inactivity</string>
   <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 minutes inactivity</string>
@@ -138,8 +137,12 @@
   <string name="mail_settings_pin_insertion_button_confirm">Confirm</string>
   <string name="mail_settings_pin_insertion_error_no_match">PINコードが一致しません.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="other">Wrong PIN code. %s remaining attempts.</item>
+    <item quantity="other">%s remaining attempts.</item>
   </plurals>
+  <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
+    <item quantity="other">%s remaining attempts until secure data wipe.</item>
+  </plurals>
+  <string name="mail_settings_pin_insertion_error_unknown">There was an error verifying your PIN code.</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Clearing local cached data…</string>
   <!-- Error messages -->

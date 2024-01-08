@@ -40,8 +40,8 @@
   <string name="mail_settings_theme_dark">Scuro</string>
   <!-- Settings item states -->
   <string name="mail_settings_no_information_available">Nessuna informazione disponibile</string>
-  <string name="mail_settings_enabled">Abilitata</string>
-  <string name="mail_settings_disabled">Disabilitata</string>
+  <string name="mail_settings_enabled">Abilitato</string>
+  <string name="mail_settings_disabled">Disabilitato</string>
   <string name="mail_settings_allowed">Consentito</string>
   <string name="mail_settings_denied">Negato</string>
   <string name="mail_settings_auto_detect">Riconoscimento automatico</string>
@@ -60,7 +60,7 @@
   <string name="mail_settings_privacy">Privacy</string>
   <string name="mail_settings_labels">Etichette</string>
   <string name="mail_settings_folders">Cartelle</string>
-  <string name="mail_settings_conversation_mode">Modalità delle conversazioni</string>
+  <string name="mail_settings_conversation_mode">Modalità conversazione</string>
   <string name="mail_settings_not_set">Non impostato</string>
   <string name="mail_settings_conversation_mode_hint">Raggruppa o visualizza separatamente le email nella stessa conversazione</string>
   <!-- Default email address settings -->
@@ -80,7 +80,7 @@
   <string name="mail_settings_identity_mobile_footer">Piè di pagina mobile</string>
   <string name="mail_settings_identity_mobile_footer_subtext">Il piè di pagina viene aggiunto dopo la tua firma.</string>
   <string name="mail_settings_identity_mobile_footer_hint">Piè di pagina mobile</string>
-  <string name="mail_settings_identity_mobile_footer_default_free">Inviata da Proton Mail Android</string>
+  <string name="mail_settings_identity_mobile_footer_default_free">Inviato da Proton Mail Android</string>
   <string name="mail_settings_identity_error_updating">Errore nell\'aggiornamento delle impostazioni</string>
   <string name="mail_settings_identity_error_loading">Errore nel caricamento delle impostazioni</string>
   <!-- Privacy settings -->
@@ -98,12 +98,12 @@
   <string name="mail_settings_swipe_right_name">Da sinistra a destra</string>
   <string name="mail_settings_swipe_left_name">Da destra a sinistra</string>
   <string name="mail_settings_swipe_action_archive_title">Archivio</string>
-  <string name="mail_settings_swipe_action_read_title">Non letta</string>
+  <string name="mail_settings_swipe_action_read_title">Non letto</string>
   <string name="mail_settings_swipe_action_spam_title">Spam</string>
   <string name="mail_settings_swipe_action_star_title">Importante</string>
   <string name="mail_settings_swipe_action_trash_title">Cestino</string>
   <string name="mail_settings_swipe_action_archive_description">Sposta nell\'archivio</string>
-  <string name="mail_settings_swipe_action_read_description">Segna come letta/non letta</string>
+  <string name="mail_settings_swipe_action_read_description">Segna come letto/non letto</string>
   <string name="mail_settings_swipe_action_spam_description">Sposta in spam</string>
   <string name="mail_settings_swipe_action_star_description">Segna come importante/non importante</string>
   <string name="mail_settings_swipe_action_trash_description">Sposta nel cestino</string>
@@ -121,7 +121,6 @@
   <string name="mail_settings_auto_lock_item_description">Attiva questa funzione per bloccare automaticamente l\'app e usare un codice PIN o un\'impronta digitale per sbloccarla</string>
   <string name="mail_settings_auto_lock_change_pin_description">Cambia il codice PIN</string>
   <string name="mail_settings_auto_lock_item_timer_title">Blocco automatico per inattività</string>
-  <string name="mail_settings_auto_lock_not_enabled">Non abilitato</string>
   <string name="mail_settings_auto_lock_immediately">Immediato</string>
   <string name="mail_settings_auto_lock_item_timer_description_five_minutes">5 minuti</string>
   <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 minuti</string>
@@ -138,9 +137,14 @@
   <string name="mail_settings_pin_insertion_button_confirm">Conferma</string>
   <string name="mail_settings_pin_insertion_error_no_match">I codici PIN non corrispondono</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="one">Codice PIN errato. %s tentativo rimanente.</item>
-    <item quantity="other">Codice PIN errato. %s tentativi rimanenti.</item>
+    <item quantity="one">%s tentativo rimasto</item>
+    <item quantity="other">%s tentativi rimasti</item>
   </plurals>
+  <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
+    <item quantity="one">%s tentativo rimasto prima dell\'eliminazione sicura dei dati</item>
+    <item quantity="other">%s tentativi rimasti prima dell\'eliminazione sicura dei dati</item>
+  </plurals>
+  <string name="mail_settings_pin_insertion_error_unknown">Errore nella verifica del codice PIN</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Cancellazione della cache locale in corso</string>
   <!-- Error messages -->

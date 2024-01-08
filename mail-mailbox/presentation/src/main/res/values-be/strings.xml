@@ -24,6 +24,9 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Выйсці з меню выбару</string>
   <string name="mailbox_toolbar_menu_button_content_description">Меню</string>
   <string name="mailbox_toolbar_search_button_content_description">Пошук</string>
+  <string name="mailbox_toolbar_exit_search_mode_content_description">Выхад з рэжыму пошуку</string>
+  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Ачысціць пошукавы запыт</string>
+  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Увесці пошукавы запыт</string>
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="one">%d выбраны</item>
     <item quantity="few">%d выбрана</item>
@@ -123,4 +126,7 @@
   <string name="mailbox_action_trash_message">Паведамленне перамешчана ў сметніцу</string>
   <string name="mailbox_action_archive_message">Паведамленне перамешчана ў архіў</string>
   <string name="mailbox_action_spam_message">Паведамленне перамешчана ў спам</string>
+  <string name="mailbox_search_placeholder_text">Пошук паведамленняў</string>
+  <string name="mailbox_search_no_results_title">Вынікі не знойдзены</string>
+  <string name="mailbox_search_no_results_explanation">Пошук па даце, імі, адрасе электроннай пошце або радку тэмы</string>
 </resources>
