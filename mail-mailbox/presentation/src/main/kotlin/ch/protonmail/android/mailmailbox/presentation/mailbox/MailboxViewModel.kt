@@ -85,6 +85,7 @@ import ch.protonmail.android.mailmessage.domain.model.LabelSelectionList
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.UnreadCounter
 import ch.protonmail.android.mailmessage.domain.usecase.DeleteMessages
+import ch.protonmail.android.mailmessage.domain.usecase.DeleteSearchResults
 import ch.protonmail.android.mailmessage.domain.usecase.GetMessagesWithLabels
 import ch.protonmail.android.mailmessage.domain.usecase.MarkMessagesAsRead
 import ch.protonmail.android.mailmessage.domain.usecase.MarkMessagesAsUnread
@@ -165,7 +166,8 @@ class MailboxViewModel @Inject constructor(
     private val mailboxReducer: MailboxReducer,
     private val dispatchersProvider: DispatcherProvider,
     private val observeOnboarding: ObserveOnboarding,
-    private val saveOnboarding: SaveOnboarding
+    private val saveOnboarding: SaveOnboarding,
+    private val deleteSearchResults: DeleteSearchResults
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId()
@@ -318,8 +320,11 @@ class MailboxViewModel @Inject constructor(
         searchQuery.value = ""
     }
 
-    private fun handleExitSearchMode(viewAction: MailboxViewAction) {
+    private suspend fun handleExitSearchMode(viewAction: MailboxViewAction) {
         emitNewStateFrom(viewAction)
+
+        val user = primaryUserId.filterNotNull().first()
+        deleteSearchResults(user, searchQuery.value)
 
         searchQuery.value = ""
     }

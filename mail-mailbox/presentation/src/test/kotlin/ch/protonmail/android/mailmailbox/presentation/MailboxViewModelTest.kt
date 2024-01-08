@@ -100,6 +100,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageWithLabels
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailmessage.domain.usecase.DeleteMessages
+import ch.protonmail.android.mailmessage.domain.usecase.DeleteSearchResults
 import ch.protonmail.android.mailmessage.domain.usecase.GetMessagesWithLabels
 import ch.protonmail.android.mailmessage.domain.usecase.MarkMessagesAsRead
 import ch.protonmail.android.mailmessage.domain.usecase.MarkMessagesAsUnread
@@ -139,8 +140,10 @@ import io.mockk.coVerifyOrder
 import io.mockk.coVerifySequence
 import io.mockk.confirmVerified
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
 import io.mockk.mockkStatic
+import io.mockk.runs
 import io.mockk.unmockkStatic
 import io.mockk.verify
 import io.mockk.verifyOrder
@@ -255,6 +258,7 @@ class MailboxViewModelTest {
     private val starConversations = mockk<StarConversations>()
     private val unStarMessages = mockk<UnStarMessages>()
     private val unStarConversations = mockk<UnStarConversations>()
+    private val deleteSearchResults = mockk<DeleteSearchResults>()
 
     private val mailboxViewModel by lazy {
         MailboxViewModel(
@@ -294,7 +298,8 @@ class MailboxViewModelTest {
             mailboxReducer = mailboxReducer,
             dispatchersProvider = TestDispatcherProvider(),
             observeOnboarding = observeOnboarding,
-            saveOnboarding = saveOnboarding
+            saveOnboarding = saveOnboarding,
+            deleteSearchResults = deleteSearchResults
         )
     }
 
@@ -3464,6 +3469,7 @@ class MailboxViewModelTest {
                 MailboxViewAction.ExitSearchMode
             )
         } returns expectedState
+        coEvery { deleteSearchResults.invoke(any(), any()) } just runs
 
         // When
         mailboxViewModel.submit(MailboxViewAction.ExitSearchMode)
@@ -3471,6 +3477,7 @@ class MailboxViewModelTest {
 
             // Then
             assertEquals(expectedState, awaitItem())
+            coVerify { deleteSearchResults.invoke(any(), any()) }
         }
     }
 
@@ -3551,6 +3558,7 @@ class MailboxViewModelTest {
             every { this@mockPager.flow } returns flowOf(PagingData.from(listOf(unreadMailboxItem)))
         }
         every { mailboxReducer.newStateFrom(any(), any()) } returns initialMailboxState
+        coEvery { deleteSearchResults.invoke(any(), any()) } just runs
 
         mailboxViewModel.items.test {
             // Then
