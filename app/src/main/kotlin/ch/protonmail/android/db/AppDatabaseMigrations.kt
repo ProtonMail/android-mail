@@ -23,6 +23,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import ch.protonmail.android.composer.data.local.DraftStateDatabase
 import ch.protonmail.android.mailconversation.data.local.ConversationDatabase
 import ch.protonmail.android.mailmessage.data.local.MessageDatabase
+import ch.protonmail.android.mailmessage.data.local.SearchResultsDatabase
 import me.proton.core.account.data.db.AccountDatabase
 import me.proton.core.contact.data.local.db.ContactDatabase
 import me.proton.core.eventmanager.data.db.EventMetadataDatabase
@@ -186,6 +187,14 @@ object AppDatabaseMigrations {
             MessageDatabase.MIGRATION_6.migrate(database)
             // Add UnreadConversationsCount Table
             ConversationDatabase.MIGRATION_0.migrate(database)
+        }
+    }
+
+
+    val MIGRATION_24_25 = object : Migration(24, 25) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            // Create SearchResults Table
+            SearchResultsDatabase.MIGRATION_0.migrate(database)
         }
     }
 }

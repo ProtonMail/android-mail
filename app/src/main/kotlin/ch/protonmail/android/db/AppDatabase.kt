@@ -34,6 +34,7 @@ import ch.protonmail.android.mailconversation.data.local.entity.UnreadConversati
 import ch.protonmail.android.mailmessage.data.local.entity.UnreadMessagesCountEntity
 import ch.protonmail.android.mailmessage.data.local.MessageConverters
 import ch.protonmail.android.mailmessage.data.local.MessageDatabase
+import ch.protonmail.android.mailmessage.data.local.SearchResultsDatabase
 import ch.protonmail.android.mailmessage.data.local.converters.AttachmentWorkerStatusConverters
 import ch.protonmail.android.mailmessage.data.local.converters.UriConverter
 import ch.protonmail.android.mailmessage.data.local.entity.AttachmentStateEntity
@@ -42,6 +43,7 @@ import ch.protonmail.android.mailmessage.data.local.entity.MessageAttachmentMeta
 import ch.protonmail.android.mailmessage.data.local.entity.MessageBodyEntity
 import ch.protonmail.android.mailmessage.data.local.entity.MessageEntity
 import ch.protonmail.android.mailmessage.data.local.entity.MessageLabelEntity
+import ch.protonmail.android.mailmessage.data.local.entity.SearchResultEntity
 import ch.protonmail.android.mailpagination.data.local.PageIntervalDatabase
 import ch.protonmail.android.mailpagination.data.local.entity.PageIntervalEntity
 import me.proton.core.account.data.db.AccountConverters
@@ -176,7 +178,9 @@ import me.proton.core.usersettings.data.entity.UserSettingsEntity
         AttachmentStateEntity::class,
         // Unread counts
         UnreadMessagesCountEntity::class,
-        UnreadConversationsCountEntity::class
+        UnreadConversationsCountEntity::class,
+        // Search results
+        SearchResultEntity::class
     ],
     version = AppDatabase.version,
     exportSchema = true
@@ -228,12 +232,13 @@ abstract class AppDatabase :
     NotificationDatabase,
     PushDatabase,
     TelemetryDatabase,
-    DraftStateDatabase {
+    DraftStateDatabase,
+    SearchResultsDatabase {
 
     companion object {
 
         const val name = "db-mail"
-        const val version = 24
+        const val version = 25
 
         internal val migrations = listOf(
             AppDatabaseMigrations.MIGRATION_1_2,
@@ -258,7 +263,8 @@ abstract class AppDatabase :
             AppDatabaseMigrations.MIGRATION_20_21,
             AppDatabaseMigrations.MIGRATION_21_22,
             AppDatabaseMigrations.MIGRATION_22_23,
-            AppDatabaseMigrations.MIGRATION_23_24
+            AppDatabaseMigrations.MIGRATION_23_24,
+            AppDatabaseMigrations.MIGRATION_24_25,
         )
 
         fun buildDatabase(context: Context): AppDatabase = databaseBuilder<AppDatabase>(context, name)

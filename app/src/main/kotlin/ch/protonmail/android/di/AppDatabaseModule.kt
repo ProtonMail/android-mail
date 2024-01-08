@@ -24,6 +24,7 @@ import ch.protonmail.android.composer.data.local.DraftStateDatabase
 import ch.protonmail.android.db.AppDatabase
 import ch.protonmail.android.mailconversation.data.local.ConversationDatabase
 import ch.protonmail.android.mailmessage.data.local.MessageDatabase
+import ch.protonmail.android.mailmessage.data.local.SearchResultsDatabase
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -134,4 +135,7 @@ abstract class AppDatabaseBindsModule {
 
     @Binds
     abstract fun provideDraftStateDatabase(appDatabase: AppDatabase): DraftStateDatabase
+
+    @Binds
+    abstract fun provideSearchResultsDatabase(appDatabase: AppDatabase): SearchResultsDatabase
 }
