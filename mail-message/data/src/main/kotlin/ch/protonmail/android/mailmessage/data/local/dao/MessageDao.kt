@@ -33,7 +33,6 @@ import kotlinx.coroutines.flow.Flow
 import me.proton.core.data.room.db.BaseDao
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
-import me.proton.core.util.kotlin.EMPTY_STRING
 
 @Dao
 @Suppress("LongParameterList")
@@ -93,7 +92,6 @@ abstract class MessageDao : BaseDao<MessageEntity>() {
 
     fun observeAll(userId: UserId, pageKey: PageKey): Flow<List<MessageWithLabelIds>> {
         val labelId = pageKey.filter.labelId
-        val keyword = pageKey.filter.keyword
         val unread = when (pageKey.filter.read) {
             ReadStatus.All -> ReadAndUnread
             ReadStatus.Read -> listOf(false)
@@ -111,7 +109,6 @@ abstract class MessageDao : BaseDao<MessageEntity>() {
                 userId = userId,
                 labelId = labelId,
                 conversationId = null,
-                keyword = keyword,
                 unread = unread,
                 minValue = minValue,
                 maxValue = maxValue,
@@ -123,7 +120,6 @@ abstract class MessageDao : BaseDao<MessageEntity>() {
             OrderDirection.Descending -> observeAllOrderByTimeDesc(
                 userId = userId,
                 labelId = labelId,
-                keyword = keyword,
                 unread = unread,
                 minValue = minValue,
                 maxValue = maxValue,
@@ -149,14 +145,6 @@ abstract class MessageDao : BaseDao<MessageEntity>() {
             OR :conversationId IS NULL
         )
         WHERE MessageEntity.userId = :userId
-        AND (
-            MessageEntity.subject LIKE '%'||:keyword||'%'
-            OR MessageEntity.sender_name LIKE '%'||:keyword||'%'
-            OR MessageEntity.sender_address LIKE '%'||:keyword||'%'
-            OR MessageEntity.toList LIKE '%'||:keyword||'%'
-            OR MessageEntity.ccList LIKE '%'||:keyword||'%'
-            OR MessageEntity.bccList LIKE '%'||:keyword||'%'
-        )
         AND MessageEntity.unread IN (:unread)
         AND (MessageEntity.time > :minValue OR (MessageEntity.time = :minValue AND MessageEntity.`order` >= :minOrder))
         AND (MessageEntity.time < :maxValue OR (MessageEntity.time = :maxValue AND MessageEntity.`order` <= :maxOrder))
@@ -170,7 +158,6 @@ abstract class MessageDao : BaseDao<MessageEntity>() {
         userId: UserId,
         labelId: LabelId? = null,
         conversationId: ConversationId? = null,
-        keyword: String = EMPTY_STRING,
         unread: List<Boolean> = ReadAndUnread,
         minValue: Long = Long.MIN_VALUE,
         maxValue: Long = Long.MAX_VALUE,
@@ -194,14 +181,6 @@ abstract class MessageDao : BaseDao<MessageEntity>() {
             OR :conversationId IS NULL
         )
         WHERE MessageEntity.userId = :userId
-        AND (
-            MessageEntity.subject LIKE '%'||:keyword||'%'
-            OR MessageEntity.sender_name LIKE '%'||:keyword||'%'
-            OR MessageEntity.sender_address LIKE '%'||:keyword||'%'
-            OR MessageEntity.toList LIKE '%'||:keyword||'%'
-            OR MessageEntity.ccList LIKE '%'||:keyword||'%'
-            OR MessageEntity.bccList LIKE '%'||:keyword||'%'
-        )
         AND MessageEntity.unread IN (:unread)
         AND (MessageEntity.time > :minValue OR (MessageEntity.time = :minValue AND MessageEntity.`order` >= :minOrder))
         AND (MessageEntity.time < :maxValue OR (MessageEntity.time = :maxValue AND MessageEntity.`order` <= :maxOrder))
@@ -215,7 +194,6 @@ abstract class MessageDao : BaseDao<MessageEntity>() {
         userId: UserId,
         labelId: LabelId? = null,
         conversationId: ConversationId? = null,
-        keyword: String = EMPTY_STRING,
         unread: List<Boolean> = ReadAndUnread,
         minValue: Long = Long.MIN_VALUE,
         maxValue: Long = Long.MAX_VALUE,
