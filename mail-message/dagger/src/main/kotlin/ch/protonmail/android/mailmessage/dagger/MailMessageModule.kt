@@ -20,6 +20,8 @@ package ch.protonmail.android.mailmessage.dagger
 
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSourceImpl
+import ch.protonmail.android.mailmessage.data.local.SearchResultsLocalDataSource
+import ch.protonmail.android.mailmessage.data.local.SearchResultsLocalDataSourceImpl
 import ch.protonmail.android.mailmessage.data.local.UnreadMessagesCountLocalDataSource
 import ch.protonmail.android.mailmessage.data.local.UnreadMessagesCountLocalDataSourceImpl
 import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSource
@@ -28,9 +30,11 @@ import ch.protonmail.android.mailmessage.data.remote.UnreadMessagesCountRemoteDa
 import ch.protonmail.android.mailmessage.data.remote.UnreadMessagesCountRemoteDataSourceImpl
 import ch.protonmail.android.mailmessage.data.repository.MessageRepositoryImpl
 import ch.protonmail.android.mailmessage.data.repository.OutboxRepositoryImpl
+import ch.protonmail.android.mailmessage.data.repository.SearchResultsRepositoryImpl
 import ch.protonmail.android.mailmessage.data.repository.UnreadMessageCountRepositoryImpl
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.repository.OutboxRepository
+import ch.protonmail.android.mailmessage.domain.repository.SearchResultsRepository
 import ch.protonmail.android.mailmessage.domain.repository.UnreadMessagesCountRepository
 import dagger.Binds
 import dagger.Module
@@ -58,6 +62,16 @@ abstract class MailMessageModule {
     @Binds
     @Singleton
     abstract fun provideOutboxRepositoryImpl(repositoryImpl: OutboxRepositoryImpl): OutboxRepository
+
+    @Binds
+    @Singleton
+    abstract fun provideSearchResultsRepository(repositoryImpl: SearchResultsRepositoryImpl): SearchResultsRepository
+
+    @Binds
+    @Singleton
+    abstract fun provideSearchResultsLocalDataSource(
+        localDataSourceImpl: SearchResultsLocalDataSourceImpl
+    ): SearchResultsLocalDataSource
 
     @Binds
     @Reusable
