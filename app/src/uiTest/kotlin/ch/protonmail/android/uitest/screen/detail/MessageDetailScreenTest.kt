@@ -225,6 +225,34 @@ internal class MessageDetailScreenTest {
     }
 
     @Test
+    fun whenMessageIsLoadedAndHasOneRecipientThenReplyQuickActionButtonIsShown() {
+        // given
+        val state = MessageDetailHeaderTestData.MessageWithOneRecipient
+
+        // when
+        val robot = setUpScreen(state = state)
+
+        // then
+        robot.messageHeaderSection {
+            verify { hasReplyButton() }
+        }
+    }
+
+    @Test
+    fun whenMessageIsLoadedAndHasMoreThanOneRecipientThenReplyAllQuickActionButtonIsShown() {
+        // given
+        val state = MessageDetailHeaderTestData.MessageWithMultipleRecipients
+
+        // when
+        val robot = setUpScreen(state = state)
+
+        // then
+        robot.messageHeaderSection {
+            verify { hasReplyAllButton() }
+        }
+    }
+
+    @Test
     fun whenTrashIsClickedThenActionIsCalled() {
         // given
         val state = MessageDetailsPreviewData.Message.copy(

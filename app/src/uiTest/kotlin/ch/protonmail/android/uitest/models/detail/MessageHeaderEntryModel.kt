@@ -82,6 +82,14 @@ internal class MessageHeaderEntryModel(
         hasTestTag(MessageDetailHeaderTestTags.Time)
     }
 
+    private val replyButton = rootItem.child {
+        hasTestTag(MessageDetailHeaderTestTags.ReplyButton)
+    }
+
+    private val replyAllButton = rootItem.child {
+        hasTestTag(MessageDetailHeaderTestTags.ReplyAllButton)
+    }
+
     private val moreButton = rootItem.child {
         hasTestTag(MessageDetailHeaderTestTags.MoreButton)
     }
@@ -163,6 +171,14 @@ internal class MessageHeaderEntryModel(
             val model = LabelEntryModel(labelsList, it.index)
             model.hasText(it.text)
         }
+    }
+
+    fun hasReplyButton() = apply {
+        replyButton.assertIsDisplayed()
+    }
+
+    fun hasReplyAllButton() = apply {
+        replyAllButton.assertIsDisplayed()
     }
     // endregion
 }

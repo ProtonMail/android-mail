@@ -79,5 +79,13 @@ internal class MessageHeaderSection : ComposeSectionRobot() {
         fun hasLabels(vararg labels: LabelEntry) = apply {
             headerModel.hasLabels(*labels)
         }
+
+        fun hasReplyButton() = apply {
+            headerModel.hasReplyButton()
+        }
+
+        fun hasReplyAllButton() = apply {
+            headerModel.hasReplyAllButton()
+        }
     }
 }
