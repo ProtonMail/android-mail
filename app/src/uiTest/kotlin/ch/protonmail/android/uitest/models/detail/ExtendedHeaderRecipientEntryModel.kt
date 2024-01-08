@@ -21,7 +21,7 @@ package ch.protonmail.android.uitest.models.detail
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.hasTestTag
-import ch.protonmail.android.maildetail.presentation.ui.MessageDetailHeaderTestTags
+import ch.protonmail.android.maildetail.presentation.ui.header.MessageDetailHeaderTestTags
 import ch.protonmail.android.uitest.util.children
 
 internal class ExtendedHeaderRecipientEntryModel(

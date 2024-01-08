@@ -28,7 +28,7 @@ import androidx.compose.ui.test.performClick
 import ch.protonmail.android.mailcommon.presentation.compose.AvatarTestTags
 import ch.protonmail.android.mailcommon.presentation.compose.OfficialBadgeTestTags
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailItemTestTags
-import ch.protonmail.android.maildetail.presentation.ui.MessageDetailHeaderTestTags
+import ch.protonmail.android.maildetail.presentation.ui.header.MessageDetailHeaderTestTags
 import ch.protonmail.android.test.R
 import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.labels.LabelEntry

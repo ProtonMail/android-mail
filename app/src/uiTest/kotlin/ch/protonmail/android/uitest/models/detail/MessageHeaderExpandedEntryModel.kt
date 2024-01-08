@@ -25,7 +25,7 @@ import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailItemTestTags
-import ch.protonmail.android.maildetail.presentation.ui.MessageDetailHeaderTestTags
+import ch.protonmail.android.maildetail.presentation.ui.header.MessageDetailHeaderTestTags
 import ch.protonmail.android.uitest.models.labels.LabelEntry
 import ch.protonmail.android.uitest.models.labels.LabelEntryModel
 import ch.protonmail.android.uitest.util.child
