@@ -33,7 +33,7 @@
   <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
   <string name="filter_unread_button_text_without_counter">Belum dibaca</string>
   <plurals name="filter_unread_button_text">
-    <item quantity="other">%d belum dibaca</item>
+    <item quantity="other">%s belum dibaca</item>
   </plurals>
   <string name="mailbox_default_recipient">(Tanpa Penerima)</string>
   <string name="mailbox_default_sender">(Tanpa Pengirim)</string>

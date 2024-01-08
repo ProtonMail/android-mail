@@ -36,10 +36,10 @@
   <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
   <string name="filter_unread_button_text_without_counter">Unread</string>
   <plurals name="filter_unread_button_text">
-    <item quantity="one">%d непрочитане</item>
-    <item quantity="few">%d непрочитані</item>
-    <item quantity="many">%d непрочитаних</item>
-    <item quantity="other">%d непрочитаних</item>
+    <item quantity="one">%s непрочитане</item>
+    <item quantity="few">%s непрочитані</item>
+    <item quantity="many">%s непрочитаних</item>
+    <item quantity="other">%s непрочитаних</item>
   </plurals>
   <string name="mailbox_default_recipient">(Немає отримувача)</string>
   <string name="mailbox_default_sender">(Немає відправника)</string>

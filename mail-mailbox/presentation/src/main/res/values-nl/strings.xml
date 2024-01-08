@@ -34,8 +34,8 @@
   <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
   <string name="filter_unread_button_text_without_counter">Ongelezen</string>
   <plurals name="filter_unread_button_text">
-    <item quantity="one">%d ongelezen</item>
-    <item quantity="other">%d ongelezen</item>
+    <item quantity="one">%s ongelezen</item>
+    <item quantity="other">%s ongelezen</item>
   </plurals>
   <string name="mailbox_default_recipient">(Geen ontvanger)</string>
   <string name="mailbox_default_sender">(Geen afzender)</string>

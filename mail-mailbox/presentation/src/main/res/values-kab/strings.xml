@@ -34,8 +34,8 @@
   <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
   <string name="filter_unread_button_text_without_counter">Unread</string>
   <plurals name="filter_unread_button_text">
-    <item quantity="one">%d ur yettwaɣer ara</item>
-    <item quantity="other">%d ur ttwaɣren ara</item>
+    <item quantity="one">%s ur yettwaɣer ara</item>
+    <item quantity="other">%s ur ttwaɣren ara</item>
   </plurals>
   <string name="mailbox_default_recipient">(Ulac iɣerwaḍen)</string>
   <string name="mailbox_default_sender">(Ulac amazan)</string>

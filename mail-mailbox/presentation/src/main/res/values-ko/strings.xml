@@ -33,7 +33,7 @@
   <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
   <string name="filter_unread_button_text_without_counter">개 읽지 않음</string>
   <plurals name="filter_unread_button_text">
-    <item quantity="other">%d 읽지 않음</item>
+    <item quantity="other">%s 읽지 않음</item>
   </plurals>
   <string name="mailbox_default_recipient">(수신자 없음)</string>
   <string name="mailbox_default_sender">(보낸 사람 없음)</string>

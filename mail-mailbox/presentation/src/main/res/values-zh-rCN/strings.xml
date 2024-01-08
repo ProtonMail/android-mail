@@ -33,7 +33,7 @@
   <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
   <string name="filter_unread_button_text_without_counter">未读</string>
   <plurals name="filter_unread_button_text">
-    <item quantity="other">%d 封未读邮件</item>
+    <item quantity="other">%s 封未读邮件</item>
   </plurals>
   <string name="mailbox_default_recipient">（无收件人）</string>
   <string name="mailbox_default_sender">（无发件人）</string>

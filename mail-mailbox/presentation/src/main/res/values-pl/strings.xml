@@ -36,10 +36,10 @@
   <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
   <string name="filter_unread_button_text_without_counter">Nieprzeczytane</string>
   <plurals name="filter_unread_button_text">
-    <item quantity="one">%d nieprzeczytana</item>
-    <item quantity="few">%d nieprzeczytane</item>
-    <item quantity="many">%d nieprzeczytanych</item>
-    <item quantity="other">%d nieprzeczytanych</item>
+    <item quantity="one">%s nieprzeczytana</item>
+    <item quantity="few">%s nieprzeczytane</item>
+    <item quantity="many">%s nieprzeczytanych</item>
+    <item quantity="other">%s nieprzeczytanych</item>
   </plurals>
   <string name="mailbox_default_recipient">(brak odbiorcy)</string>
   <string name="mailbox_default_sender">(brak nadawcy)</string>

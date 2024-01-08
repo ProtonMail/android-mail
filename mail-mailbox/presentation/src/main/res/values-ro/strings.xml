@@ -36,8 +36,8 @@
   <string name="filter_unread_button_text_without_counter">Necitit</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">Unul necitit</item>
-    <item quantity="few">%d necitite</item>
-    <item quantity="other">%d necitite</item>
+    <item quantity="few">%s necitite</item>
+    <item quantity="other">%s necitite</item>
   </plurals>
   <string name="mailbox_default_recipient">(Fără destinatar)</string>
   <string name="mailbox_default_sender">(Fără expeditor)</string>

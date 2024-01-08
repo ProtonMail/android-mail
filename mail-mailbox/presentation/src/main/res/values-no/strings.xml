@@ -31,8 +31,8 @@
   <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
   <string name="filter_unread_button_text_without_counter">Ulest</string>
   <plurals name="filter_unread_button_text">
-    <item quantity="one">%d ulest</item>
-    <item quantity="other">%d uleste</item>
+    <item quantity="one">%s ulest</item>
+    <item quantity="other">%s uleste</item>
   </plurals>
   <string name="mailbox_default_recipient">(Ingen mottaker)</string>
   <string name="mailbox_default_sender">(Ingen avsender)</string>

@@ -34,8 +34,8 @@
   <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
   <string name="filter_unread_button_text_without_counter">Non letti</string>
   <plurals name="filter_unread_button_text">
-    <item quantity="one">%d non letto</item>
-    <item quantity="other">%d non letti</item>
+    <item quantity="one">%s non letto</item>
+    <item quantity="other">%s non letti</item>
   </plurals>
   <string name="mailbox_default_recipient">(Nessun destinatario)</string>
   <string name="mailbox_default_sender">(Nessun mittente)</string>
