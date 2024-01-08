@@ -52,6 +52,7 @@ import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailpagination.data.local.dao.PageIntervalDao
 import ch.protonmail.android.mailpagination.data.local.upsertPageInterval
 import ch.protonmail.android.mailpagination.domain.model.OrderDirection
+import ch.protonmail.android.mailpagination.domain.model.PageFilter
 import ch.protonmail.android.mailpagination.domain.model.PageItemType
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.testdata.message.MessageAttachmentEntityTestData
@@ -127,6 +128,7 @@ class MessageLocalDataSourceImplTest {
     }
     private val messageBodyFileStorage = mockk<MessageBodyFileStorage>()
     private val attachmentFileStorage = mockk<AttachmentFileStorage>(relaxUnitFun = true)
+    private val searchResultsLocalDataSource = mockk<SearchResultsLocalDataSource>(relaxUnitFun = true)
     private val messageWithBodyEntityMapper = MessageWithBodyEntityMapper()
     private val attachmentEntityMapper = MessageAttachmentEntityMapper()
 
@@ -140,7 +142,8 @@ class MessageLocalDataSourceImplTest {
             messageBodyFileStorage = messageBodyFileStorage,
             messageWithBodyEntityMapper = messageWithBodyEntityMapper,
             messageAttachmentEntityMapper = attachmentEntityMapper,
-            attachmentFileStorage = attachmentFileStorage
+            attachmentFileStorage = attachmentFileStorage,
+            searchResultsLocalDataSource = searchResultsLocalDataSource
         )
     }
 
@@ -191,6 +194,40 @@ class MessageLocalDataSourceImplTest {
         coVerify(exactly = 1) { messageDao.insertOrUpdate(entities = anyVararg()) }
         coVerify(exactly = 3) { labelDao.insertOrUpdate(entities = anyVararg()) }
         coVerify(exactly = 1) { pageIntervalDao.upsertPageInterval(any(), any(), any(), any()) }
+    }
+
+    @Test
+    fun `in search mode upsert messages to search results data source`() = runTest {
+        // Given
+        val keyword = "search query"
+        val pageKey = PageKey(
+            orderDirection = OrderDirection.Ascending, size = 3,
+            filter = PageFilter(keyword = keyword)
+        )
+        val messages = listOf(
+            // userId1
+            getMessage(userId1, "1", time = 1000, labelIds = emptyList()),
+            getMessage(userId1, "2", time = 2000, labelIds = listOf("4")),
+            getMessage(userId1, "3", time = 3000, labelIds = listOf("0", "1"))
+        )
+        val user1MessageIds = listOf(MessageId("1"), MessageId("2"), MessageId("3"))
+
+        // When
+        messageLocalDataSource.upsertMessages(userId1, pageKey, messages)
+
+        // Then
+        coVerify { db.inTransaction(any()) }
+        coVerify { labelDao.deleteAll(userId1, user1MessageIds) }
+        coVerify(exactly = 1) { messageDao.insertOrUpdate(entities = anyVararg()) }
+        coVerify(exactly = 3) { labelDao.insertOrUpdate(entities = anyVararg()) }
+        coVerify(exactly = 1) { pageIntervalDao.upsertPageInterval(any(), any(), any(), any()) }
+        coVerify(exactly = 1) {
+            searchResultsLocalDataSource.upsertResults(
+                userId1,
+                keyword,
+                messages
+            )
+        }
     }
 
     @Test

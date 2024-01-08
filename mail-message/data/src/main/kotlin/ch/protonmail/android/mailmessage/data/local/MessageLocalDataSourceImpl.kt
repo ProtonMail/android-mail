@@ -54,7 +54,8 @@ class MessageLocalDataSourceImpl @Inject constructor(
     private val messageBodyFileStorage: MessageBodyFileStorage,
     private val messageWithBodyEntityMapper: MessageWithBodyEntityMapper,
     private val messageAttachmentEntityMapper: MessageAttachmentEntityMapper,
-    private val attachmentFileStorage: AttachmentFileStorage
+    private val attachmentFileStorage: AttachmentFileStorage,
+    private val searchResultsLocalDataSource: SearchResultsLocalDataSource
 ) : MessageLocalDataSource {
 
     private val messageDao = db.messageDao()
@@ -173,6 +174,10 @@ class MessageLocalDataSourceImpl @Inject constructor(
     ) = db.inTransaction {
         upsertMessages(items)
         upsertPageInterval(userId, pageKey, items)
+
+        if (pageKey.filter.keyword.isNotEmpty()) {
+            upsertSearchResults(userId, pageKey.filter.keyword, items)
+        }
     }
 
     override fun observeMessageWithBody(userId: UserId, messageId: MessageId): Flow<MessageWithBody?> {
@@ -358,6 +363,12 @@ class MessageLocalDataSourceImpl @Inject constructor(
         pageKey: PageKey,
         messages: List<Message>
     ) = pageIntervalDao.upsertPageInterval(userId, PageItemType.Message, pageKey, messages)
+
+    private suspend fun upsertSearchResults(
+        userId: UserId,
+        keyword: String,
+        messages: List<Message>
+    ) = searchResultsLocalDataSource.upsertResults(userId, keyword, messages)
 
     private fun groupByUserId(messages: List<Message>) = messages.fold(
         mutableMapOf<UserId, MutableList<Message>>()
