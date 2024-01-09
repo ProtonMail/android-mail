@@ -18,14 +18,10 @@
 
 package ch.protonmail.android.mailmailbox.domain.usecase
 
-import ch.protonmail.android.mailcommon.domain.MailFeatureId
-import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
-import ch.protonmail.android.mailmessage.domain.model.UnreadCounter
 import ch.protonmail.android.mailmailbox.domain.model.UnreadCounters
 import ch.protonmail.android.mailmailbox.domain.repository.UnreadCountersRepository
+import ch.protonmail.android.mailmessage.domain.model.UnreadCounter
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.mapLatest
 import me.proton.core.domain.entity.UserId
@@ -42,16 +38,10 @@ import javax.inject.Inject
  */
 class ObserveUnreadCounters @Inject constructor(
     private val countersRepository: UnreadCountersRepository,
-    private val observeMailFeature: ObserveMailFeature,
     private val observeCurrentViewMode: ObserveCurrentViewMode
 ) {
 
-    suspend operator fun invoke(userId: UserId): Flow<List<UnreadCounter>> {
-        val showCountersFeature = observeMailFeature(userId, MailFeatureId.ShowUnreadCounters).firstOrNull()
-        if (showCountersFeature?.value == false) {
-            return flowOf(emptyList())
-        }
-
+    operator fun invoke(userId: UserId): Flow<List<UnreadCounter>> {
         return observeCurrentViewMode(userId).flatMapLatest { viewMode ->
             countersRepository.observeUnreadCounters(userId).mapLatest { unreadCounters ->
                 val counters = getCountersForViewMode(viewMode, unreadCounters)

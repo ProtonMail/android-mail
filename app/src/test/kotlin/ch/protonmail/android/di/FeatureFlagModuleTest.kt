@@ -46,7 +46,6 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
                 buildDebug = true,
                 expectedDefaultsMap = mapOf(
                     MailFeatureId.ConversationMode to true,
-                    MailFeatureId.ShowUnreadCounters to true,
                     MailFeatureId.PasswordMessages to true
                 )
             ),
@@ -55,7 +54,6 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
                 buildDebug = true,
                 expectedDefaultsMap = mapOf(
                     MailFeatureId.ConversationMode to true,
-                    MailFeatureId.ShowUnreadCounters to true,
                     MailFeatureId.PasswordMessages to true
                 )
             ),
@@ -64,7 +62,6 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
                 buildDebug = false,
                 expectedDefaultsMap = mapOf(
                     MailFeatureId.ConversationMode to true,
-                    MailFeatureId.ShowUnreadCounters to false,
                     MailFeatureId.PasswordMessages to false
                 )
             )

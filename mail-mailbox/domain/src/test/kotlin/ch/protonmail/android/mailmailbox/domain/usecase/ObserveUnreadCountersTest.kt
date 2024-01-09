@@ -19,19 +19,15 @@
 package ch.protonmail.android.mailmailbox.domain.usecase
 
 import app.cash.turbine.test
-import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
-import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
-import ch.protonmail.android.mailmessage.domain.model.UnreadCounter
 import ch.protonmail.android.mailmailbox.domain.model.UnreadCounters
 import ch.protonmail.android.mailmailbox.domain.repository.UnreadCountersRepository
+import ch.protonmail.android.mailmessage.domain.model.UnreadCounter
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import me.proton.core.featureflag.domain.entity.FeatureFlag
-import me.proton.core.featureflag.domain.entity.Scope
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.mailsettings.domain.entity.ViewMode
 import org.junit.Test
@@ -42,9 +38,8 @@ class ObserveUnreadCountersTest {
 
     private val repository = mockk<UnreadCountersRepository>()
     private val observeCurrentViewMode = mockk<ObserveCurrentViewMode>()
-    private val observeMailFeature = mockk<ObserveMailFeature>()
 
-    private val observeUnreadCounters = ObserveUnreadCounters(repository, observeMailFeature, observeCurrentViewMode)
+    private val observeUnreadCounters = ObserveUnreadCounters(repository, observeCurrentViewMode)
 
     @Test
     fun `when view mode is message mode return the messages counters`() = runTest {
@@ -53,7 +48,6 @@ class ObserveUnreadCountersTest {
             UnreadCounters(emptyList(), messageUnreadCounters)
         )
         every { observeCurrentViewMode(userId) } returns flowOf(ViewMode.NoConversationGrouping)
-        givenFeatureEnabled()
 
         // When
         observeUnreadCounters(userId).test {
@@ -77,7 +71,6 @@ class ObserveUnreadCountersTest {
                 UnreadCounters(conversationUnreadCounters, messageUnreadCounters)
             )
             every { observeCurrentViewMode(userId) } returns flowOf(ViewMode.ConversationGrouping)
-            givenFeatureEnabled()
 
             // When
             observeUnreadCounters(userId).test {
@@ -88,36 +81,6 @@ class ObserveUnreadCountersTest {
                 awaitComplete()
             }
         }
-
-    @Test
-    fun `returns empty flow when feature flag is disabled`() = runTest {
-        // Given
-        every { repository.observeUnreadCounters(userId) } returns flowOf(
-            UnreadCounters(conversationUnreadCounters, messageUnreadCounters)
-        )
-        every { observeCurrentViewMode(userId) } returns flowOf(ViewMode.ConversationGrouping)
-        givenFeatureDisabled()
-
-        // When
-        observeUnreadCounters(userId).test {
-            // Then
-            val actual = awaitItem()
-            assertTrue(actual.isEmpty())
-            awaitComplete()
-        }
-    }
-
-    private fun givenFeatureEnabled() {
-        every { observeMailFeature(userId, MailFeatureId.ShowUnreadCounters) } returns flowOf(
-            FeatureFlag(userId, MailFeatureId.ShowUnreadCounters.id, Scope.Unknown, defaultValue = false, value = true)
-        )
-    }
-
-    private fun givenFeatureDisabled() {
-        every { observeMailFeature(userId, MailFeatureId.ShowUnreadCounters) } returns flowOf(
-            FeatureFlag(userId, MailFeatureId.ShowUnreadCounters.id, Scope.Unknown, defaultValue = false, value = false)
-        )
-    }
 
     companion object TestData {
         private val userId = UserIdSample.Primary
