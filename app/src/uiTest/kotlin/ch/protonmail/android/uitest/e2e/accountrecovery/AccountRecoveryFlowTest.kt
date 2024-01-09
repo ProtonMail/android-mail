@@ -10,18 +10,27 @@ import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import me.proton.core.accountmanager.data.AccountStateHandler
+import me.proton.core.accountrecovery.dagger.CoreAccountRecoveryFeaturesModule
+import me.proton.core.accountrecovery.domain.IsAccountRecoveryEnabled
 import me.proton.core.accountrecovery.test.MinimalAccountRecoveryNotificationTest
 import me.proton.core.auth.test.usecase.WaitForPrimaryAccount
+import me.proton.core.domain.entity.UserId
 import me.proton.core.eventmanager.domain.EventManagerProvider
 import me.proton.core.eventmanager.domain.repository.EventMetadataRepository
 import me.proton.core.network.data.ApiProvider
+import me.proton.core.notification.dagger.CoreNotificationFeaturesModule
 import me.proton.core.notification.domain.repository.NotificationRepository
+import me.proton.core.notification.domain.usecase.IsNotificationsEnabled
 import me.proton.core.test.quark.Quark
 import javax.inject.Inject
 
 @CoreLibraryTest
 @HiltAndroidTest
-@UninstallModules(LocalhostApiModule::class)
+@UninstallModules(
+    LocalhostApiModule::class,
+    CoreAccountRecoveryFeaturesModule::class,
+    CoreNotificationFeaturesModule::class,
+)
 internal class AccountRecoveryFlowTest : BaseTest(), MinimalAccountRecoveryNotificationTest {
     @JvmField
     @BindValue
@@ -45,6 +54,14 @@ internal class AccountRecoveryFlowTest : BaseTest(), MinimalAccountRecoveryNotif
 
     @Inject
     override lateinit var waitForPrimaryAccount: WaitForPrimaryAccount
+
+    @BindValue
+    internal val isAccountRecoveryEnabled = object : IsAccountRecoveryEnabled {
+        override fun invoke(userId: UserId?): Boolean = true
+    }
+
+    @BindValue
+    internal val isNotificationsEnabled = IsNotificationsEnabled { true }
 
     override val quark: Quark = BaseTest.quark
 
