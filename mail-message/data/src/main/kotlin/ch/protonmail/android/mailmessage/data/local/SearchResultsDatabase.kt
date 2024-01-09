@@ -32,7 +32,6 @@ interface SearchResultsDatabase : Database {
             @Suppress("MaxLineLength")
             override fun migrate(database: SupportSQLiteDatabase) {
                 // Create SearchResult table
-                // database.execSQL("CREATE TABLE IF NOT EXISTS `SearchResultEntity` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `keyword` TEXT NOT NULL, `messageId` TEXT NOT NULL)")
                 database.execSQL("CREATE TABLE IF NOT EXISTS `SearchResultEntity` (`userId` TEXT NOT NULL, `keyword` TEXT NOT NULL, `messageId` TEXT NOT NULL, PRIMARY KEY(`userId`, `messageId`, `keyword`), FOREIGN KEY(`userId`) REFERENCES `UserEntity`(`userId`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`userId`, `messageId`) REFERENCES `MessageEntity`(`userId`, `messageId`) ON UPDATE CASCADE ON DELETE CASCADE )")
                 database.execSQL("CREATE INDEX IF NOT EXISTS `index_SearchResultEntity_userId` ON `SearchResultEntity` (`userId`)")
                 database.execSQL("CREATE INDEX IF NOT EXISTS `index_SearchResultEntity_messageId` ON `SearchResultEntity` (`messageId`)")
