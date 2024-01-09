@@ -21,7 +21,9 @@ package ch.protonmail.android.mailcontact.presentation.contactdetails
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontact.presentation.R
+import ch.protonmail.android.mailcontact.presentation.model.Avatar
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactDetailsPreviewData
+import me.proton.core.contact.domain.entity.ContactId
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -45,6 +47,11 @@ class ContactDetailsReducerTest(
     companion object {
 
         private val loadedContactDetailsUiModel = ContactDetailsPreviewData.contactDetailsSampleData
+        private val loadedContactDetailsUiModel2 = ContactDetailsPreviewData.contactDetailsSampleData.copy(
+            id = ContactId("Id 2"),
+            displayName = "John Doe 2",
+            avatar = Avatar.Initials("JD 2")
+        )
 
         private val emptyLoadingState = ContactDetailsState.Loading()
         private val loadedContactState = ContactDetailsState.Data(contact = loadedContactDetailsUiModel)
@@ -79,8 +86,10 @@ class ContactDetailsReducerTest(
         private val transitionsFromDataState = listOf(
             TestInput(
                 currentState = loadedContactState,
-                event = ContactDetailsEvent.ContactLoaded(loadedContactDetailsUiModel),
-                expectedState = loadedContactState
+                event = ContactDetailsEvent.ContactLoaded(loadedContactDetailsUiModel2),
+                expectedState = loadedContactState.copy(
+                    contact = loadedContactDetailsUiModel2
+                )
             ),
             TestInput(
                 currentState = loadedContactState,
