@@ -195,6 +195,11 @@
                     android:scheme="proton" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".LockScreenActivity"
+            android:theme="@style/ProtonTheme.Mail" />
+
         <activity
             android:name="me.proton.core.auth.presentation.ui.AddAccountActivity"
             android:theme="@style/ProtonTheme.Mail.AddAccount"
