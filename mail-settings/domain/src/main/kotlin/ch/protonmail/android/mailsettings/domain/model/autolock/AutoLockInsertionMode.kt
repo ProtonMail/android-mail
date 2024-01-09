@@ -30,5 +30,5 @@ sealed interface AutoLockInsertionMode {
     object ChangePin : AutoLockInsertionMode
 
     @Serializable
-    data class VerifyPin(val action: AutoLockPinContinuationAction) : AutoLockInsertionMode
+    object VerifyPin : AutoLockInsertionMode
 }

@@ -48,7 +48,7 @@ fun AutoLockPinInsertionScreen(
     LockScreenOrientationEffect(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
 
     BackHandler(true) {
-        actions.onBackAction()
+        actions.onBack()
     }
 
     Column(
@@ -95,8 +95,7 @@ fun AutoLockPinInsertionScreen(
 
 object AutoLockPinDetailScreen {
     data class Actions(
-        val onNavigateTo: (String) -> Unit,
-        val onBackAction: () -> Unit,
+        val onBack: () -> Unit,
         val onShowSuccessSnackbar: (snackbarText: String) -> Unit,
         val onDigitAdded: (Int) -> Unit,
         val onBackspaceClick: () -> Unit,

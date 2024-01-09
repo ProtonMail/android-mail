@@ -36,7 +36,6 @@ import me.proton.core.compose.component.ProtonCenteredProgress
 @Suppress("UseComposableActions")
 fun AutoLockPinScreen(
     onBackClick: () -> Unit,
-    onNavigateTo: (String) -> Unit,
     onShowSuccessSnackbar: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: AutoLockPinViewModel = hiltViewModel()
@@ -46,11 +45,10 @@ fun AutoLockPinScreen(
     val actions = AutoLockPinDetailScreen.Actions(
         onBackspaceClick = { viewModel.submit(AutoLockPinViewAction.RemovePinDigit) },
         onDigitAdded = { viewModel.submit(AutoLockPinViewAction.AddPinDigit(it)) },
-        onBackAction = { viewModel.submit(AutoLockPinViewAction.PerformBack) },
+        onBack = { viewModel.submit(AutoLockPinViewAction.PerformBack) },
         onConfirmation = { viewModel.submit(AutoLockPinViewAction.PerformConfirm) },
         onBiometricsClick = {},
-        onShowSuccessSnackbar = onShowSuccessSnackbar,
-        onNavigateTo = onNavigateTo
+        onShowSuccessSnackbar = onShowSuccessSnackbar
     )
 
     val signOutActions = AutoLockPinDetailScreen.SignOutActions(
@@ -62,7 +60,7 @@ fun AutoLockPinScreen(
     AutoLockPinScreen(
         modifier = modifier,
         state = state,
-        onBackClick = onBackClick,
+        onBack = onBackClick,
         actions = actions,
         signOutActions = signOutActions
     )
@@ -71,7 +69,7 @@ fun AutoLockPinScreen(
 @Composable
 fun AutoLockPinScreen(
     state: AutoLockPinState,
-    onBackClick: () -> Unit,
+    onBack: () -> Unit,
     actions: AutoLockPinDetailScreen.Actions,
     signOutActions: AutoLockPinDetailScreen.SignOutActions,
     modifier: Modifier = Modifier
@@ -81,7 +79,7 @@ fun AutoLockPinScreen(
         topBar = {
             AutoLockPinInsertionTopBar(
                 state = state,
-                onBackClick = actions.onBackAction
+                onBackClick = actions.onBack
             )
         },
         content = { paddingValues ->
@@ -95,10 +93,7 @@ fun AutoLockPinScreen(
                         signOutActions = signOutActions
                     )
                     ConsumableLaunchedEffect(state.closeScreenEffect) {
-                        onBackClick()
-                    }
-                    ConsumableLaunchedEffect(state.navigateEffect) {
-                        actions.onNavigateTo(it)
+                        onBack()
                     }
                     ConsumableTextEffect(state.snackbarSuccessEffect) {
                         actions.onShowSuccessSnackbar(it)

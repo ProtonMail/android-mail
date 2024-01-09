@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.navigation.route
 
-import android.net.Uri
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -126,18 +125,12 @@ internal fun NavGraphBuilder.addAutoLockSettings(navController: NavHostControlle
     }
 }
 
-internal fun NavGraphBuilder.addAutoLockPinScreen(
-    navController: NavHostController,
-    onShowSuccessSnackbar: (String) -> Unit
-) {
+internal fun NavGraphBuilder.addAutoLockPinScreen(onBack: () -> Unit, onShowSuccessSnackbar: (String) -> Unit) {
     composable(route = Screen.AutoLockPinScreen.route) {
         AutoLockPinScreen(
             modifier = Modifier,
-            onBackClick = { navController.popBackStack() },
-            onShowSuccessSnackbar = onShowSuccessSnackbar,
-            onNavigateTo = {
-                navController.navigate(Uri.parse(it))
-            }
+            onBackClick = onBack,
+            onShowSuccessSnackbar = onShowSuccessSnackbar
         )
     }
 }

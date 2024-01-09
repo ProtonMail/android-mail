@@ -23,7 +23,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockInsertionMode
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPin
-import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPinContinuationAction
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.GetRemainingAutoLockAttempts
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.ObserveAutoLockPinValue
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.SaveAutoLockPin
@@ -67,7 +66,6 @@ class AutoLockPinViewModel @Inject constructor(
     private val mutableState = MutableStateFlow<AutoLockPinState>(AutoLockPinState.Loading)
     val state = mutableState.asStateFlow()
 
-    private val continuationAction: AutoLockPinContinuationAction
     private var temporaryInsertedPin: InsertedPin? = null
 
     init {
@@ -81,9 +79,6 @@ class AutoLockPinViewModel @Inject constructor(
             is AutoLockInsertionMode.VerifyPin -> PinInsertionStep.PinVerification
             else -> PinInsertionStep.PinInsertion
         }
-
-        continuationAction = (openMode as? AutoLockInsertionMode.VerifyPin)?.action
-            ?: AutoLockPinContinuationAction.None
 
         viewModelScope.launch {
             val remainingAttempts = getRemainingAutoLockAttempts().getOrNull()?.value?.let {
@@ -163,7 +158,7 @@ class AutoLockPinViewModel @Inject constructor(
         insertedPin: InsertedPin,
         remainingAttempts: PinVerificationRemainingAttempts
     ) = matchExistingPin(insertedPin, remainingAttempts) {
-        emitNewStateFrom(AutoLockPinEvent.Update.VerificationCompleted(continuationAction))
+        emitNewStateFrom(AutoLockPinEvent.Update.VerificationCompleted)
     }
 
     private suspend inline fun matchExistingPin(
@@ -176,7 +171,8 @@ class AutoLockPinViewModel @Inject constructor(
 
         if (!storedPin.matches(insertedPin)) {
             if (remainingAttempts.value <= 1) {
-                clearPinDataAndForceLogout()
+                clearPinDataAndForceLogout().await()
+                emitNewStateFrom(AutoLockPinEvent.Update.OperationAborted)
                 return
             }
 
@@ -239,7 +235,7 @@ class AutoLockPinViewModel @Inject constructor(
     }
 
     private suspend fun onSignOutConfirmed() {
-        clearPinDataAndForceLogout()
+        clearPinDataAndForceLogout().await()
         emitNewStateFrom(AutoLockPinEvent.Update.SignOutConfirmed)
     }
 

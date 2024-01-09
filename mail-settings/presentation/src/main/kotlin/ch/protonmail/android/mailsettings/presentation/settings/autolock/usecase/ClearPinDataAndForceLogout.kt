@@ -20,8 +20,8 @@ package ch.protonmail.android.mailsettings.presentation.settings.autolock.usecas
 
 import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 import me.proton.core.accountmanager.domain.AccountManager
 import javax.inject.Inject
 
@@ -31,12 +31,10 @@ class ClearPinDataAndForceLogout @Inject constructor(
     @AppScope private val coroutineScope: CoroutineScope
 ) {
 
-    suspend operator fun invoke() {
-        coroutineScope.launch {
-            with(accountManager) {
-                getAccounts().first().forEach { disableAccount(it.userId) }
-            }
-            resetAutoLockDefaults()
+    suspend operator fun invoke() = coroutineScope.async {
+        with(accountManager) {
+            getAccounts().first().forEach { disableAccount(it.userId) }
         }
+        resetAutoLockDefaults()
     }
 }

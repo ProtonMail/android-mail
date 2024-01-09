@@ -18,8 +18,6 @@
 
 package ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin
 
-import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPinContinuationAction
-
 sealed interface AutoLockPinOperation
 
 sealed interface AutoLockPinViewAction : AutoLockPinOperation {
@@ -44,9 +42,7 @@ sealed interface AutoLockPinEvent : AutoLockPinOperation {
 
         object OperationAborted : Update
         object OperationCompleted : Update
-        data class VerificationCompleted(
-            val action: AutoLockPinContinuationAction = AutoLockPinContinuationAction.None
-        ) : Update
+        object VerificationCompleted : Update
 
         object SignOutRequested : Update
         object SignOutConfirmed : Update

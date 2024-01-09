@@ -19,7 +19,6 @@
 package ch.protonmail.android.mailsettings.presentation.settings.autolock.reducer.pin
 
 import ch.protonmail.android.mailcommon.presentation.Effect
-import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPinContinuationAction
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.pin.AutoLockPinErrorUiMapper
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.pin.AutoLockPinStepUiMapper
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.pin.AutoLockSuccessfulOperationUiMapper
@@ -53,7 +52,7 @@ class AutoLockPinReducer @Inject constructor(
                 is AutoLockPinEvent.Update.MovedToStep -> moveToStep(this, event.step)
                 is AutoLockPinEvent.Update.OperationAborted -> abortOperation(this)
                 is AutoLockPinEvent.Update.OperationCompleted -> completeOperation(this)
-                is AutoLockPinEvent.Update.VerificationCompleted -> completeVerification(this, event)
+                is AutoLockPinEvent.Update.VerificationCompleted -> completeVerification(this)
                 is AutoLockPinEvent.Update.Error -> handleError(this, event)
                 AutoLockPinEvent.Update.SignOutRequested -> handleSignOutRequested(this)
                 AutoLockPinEvent.Update.SignOutCanceled -> handleSignOutCanceled(this)
@@ -87,17 +86,8 @@ class AutoLockPinReducer @Inject constructor(
         return state.copy(closeScreenEffect = closeEffect, snackbarSuccessEffect = snackbarEffect)
     }
 
-    private fun completeVerification(
-        state: AutoLockPinState.DataLoaded,
-        event: AutoLockPinEvent.Update.VerificationCompleted
-    ): AutoLockPinState.DataLoaded {
-        return when (event.action) {
-            is AutoLockPinContinuationAction.NavigateToDeepLink ->
-                state.copy(navigateEffect = Effect.of(event.action.destination.toDecodedValue()))
-
-            else -> state.copy(closeScreenEffect = Effect.of(Unit))
-        }
-    }
+    private fun completeVerification(state: AutoLockPinState.DataLoaded): AutoLockPinState.DataLoaded =
+        state.copy(closeScreenEffect = Effect.of(Unit))
 
     private fun moveToStep(state: AutoLockPinState.DataLoaded, step: PinInsertionStep): AutoLockPinState {
         val confirmButtonUiModel = stepUiMapper.toConfirmButtonUiModel(isEnabled = false, step)
@@ -145,10 +135,8 @@ class AutoLockPinReducer @Inject constructor(
         return state.copy(signOutButtonState = AutoLockPinState.SignOutButtonState(uiModel))
     }
 
-    private fun handleSignOutConfirmed(state: AutoLockPinState.DataLoaded): AutoLockPinState.DataLoaded {
-        val uiModel = state.signOutButtonState.signOutUiModel.copy(isRequested = false)
-        return state.copy(signOutButtonState = AutoLockPinState.SignOutButtonState(uiModel))
-    }
+    private fun handleSignOutConfirmed(state: AutoLockPinState.DataLoaded): AutoLockPinState.DataLoaded =
+        state.copy(closeScreenEffect = Effect.of(Unit))
 
     private fun AutoLockPinEvent.Data.Loaded.toDataState(): AutoLockPinState.DataLoaded {
         val pinInsertionUiModel = PinInsertionUiModel(InsertedPin.Empty)
@@ -168,7 +156,6 @@ class AutoLockPinReducer @Inject constructor(
             confirmButtonState = AutoLockPinState.ConfirmButtonState(confirmButtonUiModel),
             signOutButtonState = AutoLockPinState.SignOutButtonState(signOutUiModel),
             closeScreenEffect = Effect.empty(),
-            navigateEffect = Effect.empty(),
             pinInsertionErrorEffect = errorEffect,
             snackbarSuccessEffect = Effect.empty()
         )

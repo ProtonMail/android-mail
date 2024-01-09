@@ -21,7 +21,6 @@ package ch.protonmail.android.mailsettings.presentation.settings.autolock.helper
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPin
-import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPinContinuationAction
 import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.AutoLockPinState
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.ConfirmButtonUiModel
@@ -59,7 +58,6 @@ internal object AutoLockTestData {
         Effect.empty(),
         Effect.empty(),
         Effect.empty(),
-        Effect.empty()
     )
 
     val OneRemainingAttempt = PinVerificationRemainingAttempts(1)
@@ -67,9 +65,6 @@ internal object AutoLockTestData {
 
     val BaseAutoLockPin = AutoLockPin("1234")
     val BaseAutoLockUpdatedPin = AutoLockPin("1233")
-    val BaseContinuationDestination = AutoLockPinContinuationAction.NavigateToDeepLink(
-        AutoLockPinContinuationAction.EncodedDestination.fromRawValue("continuationDestination")
-    )
     val BaseInvalidPinInserted = InsertedPin(listOf(1, 2, 3))
     val BaseValidPinInserted = InsertedPin(listOf(1, 2, 3, 4))
 

@@ -62,15 +62,13 @@ private fun AutoLockPinScreenPreview() {
                 Effect.empty(),
                 Effect.empty(),
                 Effect.of(TextUiModel.Text("PIN error placeholder")),
-                Effect.empty()
             ),
             actions = AutoLockPinDetailScreen.Actions(
                 onConfirmation = {},
                 onBiometricsClick = {},
                 onDigitAdded = {},
                 onBackspaceClick = {},
-                onBackAction = {},
-                onNavigateTo = {},
+                onBack = {},
                 onShowSuccessSnackbar = {}
             ),
             signOutActions = AutoLockPinDetailScreen.SignOutActions(
@@ -78,7 +76,7 @@ private fun AutoLockPinScreenPreview() {
                 onSignOutConfirmed = {},
                 onSignOutCanceled = {}
             ),
-            onBackClick = {}
+            onBack = {}
         )
     }
 }

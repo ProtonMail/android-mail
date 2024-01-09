@@ -31,7 +31,6 @@ sealed interface AutoLockPinState {
         val confirmButtonState: ConfirmButtonState,
         val signOutButtonState: SignOutButtonState,
         val closeScreenEffect: Effect<Unit>,
-        val navigateEffect: Effect<String>,
         val pinInsertionErrorEffect: Effect<TextUiModel>,
         val snackbarSuccessEffect: Effect<TextUiModel>
     ) : AutoLockPinState

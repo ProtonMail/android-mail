@@ -153,18 +153,16 @@ internal class AutoLockPinReducerTest(private val testInput: TestInput) {
             ),
             TestInput(
                 state = AutoLockTestData.BaseLoadedState,
-                event = AutoLockPinEvent.Update.VerificationCompleted(),
+                event = AutoLockPinEvent.Update.VerificationCompleted,
                 expected = AutoLockTestData.BaseLoadedState.copy(
                     closeScreenEffect = Effect.of(Unit)
                 )
             ),
             TestInput(
                 state = AutoLockTestData.BaseLoadedState,
-                event = AutoLockPinEvent.Update.VerificationCompleted(AutoLockTestData.BaseContinuationDestination),
+                event = AutoLockPinEvent.Update.VerificationCompleted,
                 expected = AutoLockTestData.BaseLoadedState.copy(
-                    navigateEffect = Effect.of(
-                        AutoLockTestData.BaseContinuationDestination.destination.toDecodedValue()
-                    )
+                    closeScreenEffect = Effect.of(Unit)
                 )
             ),
             TestInput(
@@ -247,25 +245,9 @@ internal class AutoLockPinReducerTest(private val testInput: TestInput) {
                         step = PinInsertionStep.PinVerification
                     ),
                     signOutButtonState = AutoLockPinState.SignOutButtonState(
-                        SignOutUiModel(isDisplayed = true, isRequested = false)
-                    )
-                )
-            ),
-            TestInput(
-                state = AutoLockTestData.BaseLoadedState.copy(
-                    pinInsertionState = AutoLockTestData.BasePinInsertionState.copy(
-                        step = PinInsertionStep.PinVerification
+                        SignOutUiModel(isDisplayed = true, isRequested = true)
                     ),
-                    signOutButtonState = AutoLockPinState.SignOutButtonState(AutoLockTestData.SignOutRequestedUiModel)
-                ),
-                event = AutoLockPinEvent.Update.SignOutConfirmed,
-                expected = AutoLockTestData.BaseLoadedState.copy(
-                    pinInsertionState = AutoLockTestData.BasePinInsertionState.copy(
-                        step = PinInsertionStep.PinVerification
-                    ),
-                    signOutButtonState = AutoLockPinState.SignOutButtonState(
-                        SignOutUiModel(isDisplayed = true, isRequested = false)
-                    )
+                    closeScreenEffect = Effect.of(Unit)
                 )
             )
         )

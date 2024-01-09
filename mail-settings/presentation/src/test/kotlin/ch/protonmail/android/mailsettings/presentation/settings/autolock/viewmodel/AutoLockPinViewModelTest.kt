@@ -26,7 +26,6 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockInsertionMode
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPin
-import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPinContinuationAction
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockRemainingAttempts
 import ch.protonmail.android.mailsettings.domain.repository.AutoLockPreferenceError
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.GetRemainingAutoLockAttempts
@@ -58,7 +57,9 @@ import io.mockk.called
 import io.mockk.coEvery
 import io.mockk.coVerifySequence
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
+import io.mockk.runs
 import io.mockk.unmockkAll
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
@@ -188,14 +189,13 @@ internal class AutoLockPinViewModelTest {
             val actual = awaitItem() as AutoLockPinState.DataLoaded
 
             assertEquals(expectedCloseEffect, actual.closeScreenEffect)
-            assertEquals(Effect.empty(), actual.navigateEffect)
         }
     }
 
     @Test
     fun `should not dismiss the screen when going back from the main pin verification screen`() = runTest {
         // Given
-        expectConditionalStart(AutoLockInsertionMode.VerifyPin(AutoLockPinContinuationAction.None))
+        expectConditionalStart(AutoLockInsertionMode.VerifyPin)
         expectAttempts()
         expectAttemptStatusToggling()
 
@@ -362,7 +362,6 @@ internal class AutoLockPinViewModelTest {
             assertEquals(expectedStep, actual.pinInsertionState.step)
             assertEquals(expectedCloseEffect, actual.closeScreenEffect)
             assertEquals(Effect.empty(), actual.pinInsertionErrorEffect)
-            assertEquals(Effect.empty(), actual.navigateEffect)
         }
     }
 
@@ -424,6 +423,8 @@ internal class AutoLockPinViewModelTest {
         expectAttemptStatusToggling()
         expectExistingPin("1234")
         expectValidAutoLockAttemptsUpdate()
+        expectValidReset()
+        val expectedCloseEffect = Effect.of(Unit)
 
         // When + Then
         viewModel.state.test {
@@ -433,7 +434,9 @@ internal class AutoLockPinViewModelTest {
             skipItems(1)
 
             viewModel.submit(AutoLockPinViewAction.PerformConfirm)
-            expectNoEvents()
+            val actual = awaitItem() as AutoLockPinState.DataLoaded
+
+            assertEquals(expectedCloseEffect, actual.closeScreenEffect)
         }
 
         coVerifySequence {
@@ -445,7 +448,7 @@ internal class AutoLockPinViewModelTest {
     @Test
     fun `should close the screen when verification is completed without continuation`() = runTest {
         // Given
-        expectConditionalStart(AutoLockInsertionMode.VerifyPin(AutoLockPinContinuationAction.None))
+        expectConditionalStart(AutoLockInsertionMode.VerifyPin)
         expectAttempts()
         expectAttemptStatusToggling()
         expectExistingPin("1234")
@@ -464,40 +467,6 @@ internal class AutoLockPinViewModelTest {
             val actual = awaitItem() as AutoLockPinState.DataLoaded
 
             assertEquals(expectedCloseEffect, actual.closeScreenEffect)
-            assertEquals(Effect.empty(), actual.navigateEffect)
-        }
-    }
-
-    @Test
-    fun `should navigate to continuation when verification is completed with one`() = runTest {
-        // Given
-        val expectedDestination = "destination"
-        expectConditionalStart(
-            AutoLockInsertionMode.VerifyPin(
-                AutoLockPinContinuationAction.NavigateToDeepLink(
-                    AutoLockPinContinuationAction.EncodedDestination.fromRawValue(expectedDestination)
-                )
-            )
-        )
-        expectAttempts()
-        expectAttemptStatusToggling()
-        expectExistingPin("1234")
-        expectValidAutoLockAttemptsUpdate()
-        expectLastForegroundReset()
-
-        val expectedNavigationEffect = Effect.of(expectedDestination)
-
-        // When + Then
-        viewModel.state.test {
-            skipItems(1)
-
-            viewModel.insertPinAndConfirm("1234")
-            skipItems(4)
-
-            val actual = awaitItem() as AutoLockPinState.DataLoaded
-
-            assertEquals(Effect.empty(), actual.closeScreenEffect)
-            assertEquals(expectedNavigationEffect, actual.navigateEffect)
         }
     }
 
@@ -507,7 +476,7 @@ internal class AutoLockPinViewModelTest {
         val expectedSignOutState = AutoLockPinState.SignOutButtonState(
             SignOutUiModel(isDisplayed = true, isRequested = true)
         )
-        expectConditionalStart(AutoLockInsertionMode.VerifyPin(AutoLockPinContinuationAction.None))
+        expectConditionalStart(AutoLockInsertionMode.VerifyPin)
         expectAttempts()
         expectAttemptStatusToggling()
         expectExistingPin("1234")
@@ -531,7 +500,7 @@ internal class AutoLockPinViewModelTest {
         val expectedSignOutState = AutoLockPinState.SignOutButtonState(
             SignOutUiModel(isDisplayed = true, isRequested = false)
         )
-        expectConditionalStart(AutoLockInsertionMode.VerifyPin(AutoLockPinContinuationAction.None))
+        expectConditionalStart(AutoLockInsertionMode.VerifyPin)
         expectAttempts()
         expectAttemptStatusToggling()
         expectExistingPin("1234")
@@ -556,14 +525,15 @@ internal class AutoLockPinViewModelTest {
     fun `should update the sign out confirmation dialog when the dialog is confirmed`() = runTest {
         // Given
         val expectedSignOutState = AutoLockPinState.SignOutButtonState(
-            SignOutUiModel(isDisplayed = true, isRequested = false)
+            SignOutUiModel(isDisplayed = true, isRequested = true)
         )
-        expectConditionalStart(AutoLockInsertionMode.VerifyPin(AutoLockPinContinuationAction.None))
+        expectConditionalStart(AutoLockInsertionMode.VerifyPin)
         expectAttempts()
         expectAttemptStatusToggling()
         expectExistingPin("1234")
         expectValidAutoLockAttemptsUpdate()
         expectLastForegroundReset()
+        expectValidReset()
 
         // When + Then
         viewModel.state.test {
@@ -582,7 +552,7 @@ internal class AutoLockPinViewModelTest {
     @Test
     fun `should not emit the snackbar confirmation when the starting flow is verification`() = runTest {
         // Given
-        expectConditionalStart(AutoLockInsertionMode.VerifyPin(AutoLockPinContinuationAction.None))
+        expectConditionalStart(AutoLockInsertionMode.VerifyPin)
         expectAttempts()
         expectAttemptStatusToggling()
         expectExistingPin("1234")
@@ -689,6 +659,10 @@ internal class AutoLockPinViewModelTest {
 
     private fun expectLastForegroundReset() {
         coEvery { updateAutoLockLastForegroundMillis(Long.MAX_VALUE) } returns Unit.right()
+    }
+
+    private fun expectValidReset() {
+        coEvery { clearPinDataAndForceLogout().await() } just runs
     }
 
     private fun AutoLockPinViewModel.insertPinAndConfirm(pin: String) {
