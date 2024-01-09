@@ -76,8 +76,7 @@ class HomeViewModelTest {
             observeSendingMessagesStatus,
             resetSendingMessageStatus,
             selectedMailLabelId,
-            shouldPresentPinInsertionScreen,
-            observePrimaryUserMock,
+            observePrimaryUserMock
         )
     }
 
@@ -120,8 +119,7 @@ class HomeViewModelTest {
                 val actualItem = awaitItem()
                 val expectedItem = HomeState(
                     networkStatusEffect = Effect.of(NetworkStatus.Disconnected),
-                    messageSendingStatusEffect = Effect.empty(),
-                    requestPinInsertionEffect = Effect.empty()
+                    messageSendingStatusEffect = Effect.empty()
                 )
 
                 // Then
@@ -142,8 +140,7 @@ class HomeViewModelTest {
             val actualItem = awaitItem()
             val expectedItem = HomeState(
                 networkStatusEffect = Effect.of(NetworkStatus.Metered),
-                messageSendingStatusEffect = Effect.empty(),
-                requestPinInsertionEffect = Effect.empty()
+                messageSendingStatusEffect = Effect.empty()
             )
 
             // Then
@@ -161,8 +158,7 @@ class HomeViewModelTest {
             val actualItem = awaitItem()
             val expectedItem = HomeState(
                 networkStatusEffect = Effect.of(NetworkStatus.Metered),
-                messageSendingStatusEffect = Effect.empty(),
-                requestPinInsertionEffect = Effect.empty()
+                messageSendingStatusEffect = Effect.empty()
             )
 
             // Then
@@ -182,8 +178,7 @@ class HomeViewModelTest {
             val actualItem = awaitItem()
             val expectedItem = HomeState(
                 networkStatusEffect = Effect.of(NetworkStatus.Metered),
-                messageSendingStatusEffect = Effect.of(MessageSendingStatus.MessageSent),
-                requestPinInsertionEffect = Effect.empty()
+                messageSendingStatusEffect = Effect.of(MessageSendingStatus.MessageSent)
             )
             sendingMessageStatusFlow.emit(MessageSendingStatus.None)
 
@@ -206,8 +201,7 @@ class HomeViewModelTest {
                 val actualItem = awaitItem()
                 val expectedItem = HomeState(
                     networkStatusEffect = Effect.of(NetworkStatus.Metered),
-                    messageSendingStatusEffect = Effect.of(MessageSendingStatus.SendMessageError),
-                    requestPinInsertionEffect = Effect.empty()
+                    messageSendingStatusEffect = Effect.of(MessageSendingStatus.SendMessageError)
                 )
 
                 // Then
@@ -226,8 +220,7 @@ class HomeViewModelTest {
         homeViewModel.state.test {
             val actualItem = awaitItem()
             val expectedItem = HomeState.Initial.copy(
-                networkStatusEffect = Effect.of(NetworkStatus.Unmetered),
-                requestPinInsertionEffect = Effect.of(Unit)
+                networkStatusEffect = Effect.of(NetworkStatus.Unmetered)
             )
             assertEquals(expectedItem, actualItem)
         }

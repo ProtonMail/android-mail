@@ -24,16 +24,14 @@ import me.proton.core.network.domain.NetworkStatus
 
 data class HomeState(
     val networkStatusEffect: Effect<NetworkStatus>,
-    val messageSendingStatusEffect: Effect<MessageSendingStatus>,
-    val requestPinInsertionEffect: Effect<Unit>
+    val messageSendingStatusEffect: Effect<MessageSendingStatus>
 ) {
 
     companion object {
 
         val Initial = HomeState(
             networkStatusEffect = Effect.empty(),
-            messageSendingStatusEffect = Effect.empty(),
-            requestPinInsertionEffect = Effect.empty()
+            messageSendingStatusEffect = Effect.empty()
         )
     }
 }

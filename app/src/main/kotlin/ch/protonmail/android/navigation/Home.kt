@@ -33,7 +33,6 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -44,8 +43,6 @@ import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
 import ch.protonmail.android.mailmailbox.presentation.sidebar.Sidebar
-import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockInsertionMode
-import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPinContinuationAction
 import ch.protonmail.android.navigation.model.Destination.Dialog
 import ch.protonmail.android.navigation.model.Destination.Screen
 import ch.protonmail.android.navigation.model.HomeState
@@ -196,26 +193,6 @@ fun Home(
             is MessageSendingStatus.SendMessageError -> showErrorSendingMessageSnackbar()
             is MessageSendingStatus.UploadAttachmentsError -> showErrorUploadAttachmentSnackbar()
             is MessageSendingStatus.None -> {}
-        }
-    }
-
-    ConsumableLaunchedEffect(effect = state.value.requestPinInsertionEffect) {
-        // Close the drawer if it was left open before sending the app to the background.
-        if (scaffoldState.drawerState.isOpen) scaffoldState.drawerState.close()
-
-        // Avoid triggering multiple navigation events to the PIN screen when opening the app via deep links.
-        if (navController.currentDestination != null &&
-            !navController.currentDestination.isDeepLinkRoute() &&
-            !navController.currentDestination.isAutoLockPinScreenRoute()
-        ) {
-
-            navController.navigate(
-                Screen.AutoLockPinScreen(
-                    AutoLockInsertionMode.VerifyPin(AutoLockPinContinuationAction.None)
-                )
-            ) {
-                popUpTo(Screen.Mailbox.route) { inclusive = false }
-            }
         }
     }
 
@@ -379,7 +356,7 @@ fun Home(
                 addPrivacySettings(navController)
                 addAutoLockSettings(navController)
                 addAutoLockPinScreen(
-                    navController = navController,
+                    onBack = { navController.popBackStack() },
                     onShowSuccessSnackbar = {
                         scope.launch {
                             snackbarHostSuccessState.showSnackbar(message = it, type = ProtonSnackbarType.SUCCESS)
@@ -414,10 +391,3 @@ private fun buildSidebarActions(
     onReportBug = launcherActions.onReportBug,
     onBetaLabelClick = activityActions.openInActivityInNewTask
 )
-
-private fun NavDestination?.isDeepLinkRoute(): Boolean = this?.route == Screen.DeepLinksHandler.route
-
-private fun NavDestination?.isAutoLockPinScreenRoute(): Boolean {
-    val pinScreenRoute = Screen.AutoLockPinScreen.route.substringBeforeLast("/")
-    return this?.route?.startsWith(pinScreenRoute) == true
-}

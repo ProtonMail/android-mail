@@ -29,22 +29,18 @@ import ch.protonmail.android.mailcomposer.domain.usecase.ObserveSendingMessagesS
 import ch.protonmail.android.mailcomposer.domain.usecase.ResetSendingMessagesStatus
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
-import ch.protonmail.android.mailsettings.domain.usecase.autolock.ShouldPresentPinInsertionScreen
 import ch.protonmail.android.navigation.model.Destination
 import ch.protonmail.android.navigation.model.HomeState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import me.proton.core.network.domain.NetworkManager
 import me.proton.core.network.domain.NetworkStatus
 import javax.inject.Inject
@@ -55,7 +51,6 @@ class HomeViewModel @Inject constructor(
     private val observeSendingMessagesStatus: ObserveSendingMessagesStatus,
     private val resetSendingMessageStatus: ResetSendingMessagesStatus,
     private val selectedMailLabelId: SelectedMailLabelId,
-    private val shouldPresentPinInsertionScreen: ShouldPresentPinInsertionScreen,
     observePrimaryUser: ObservePrimaryUser
 ) : ViewModel() {
 
@@ -81,14 +76,6 @@ class HomeViewModel @Inject constructor(
             emitNewStateFor(it)
             resetSendingMessageStatus(primaryUser.first().userId)
         }.launchIn(viewModelScope)
-
-        viewModelScope.launch {
-            shouldPresentPinInsertionScreen().collectLatest { isPinRequired ->
-                if (isPinRequired) mutableState.update { state ->
-                    state.copy(requestPinInsertionEffect = Effect.of(Unit))
-                }
-            }
-        }
     }
 
     /**
