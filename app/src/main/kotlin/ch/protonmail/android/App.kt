@@ -19,6 +19,7 @@
 package ch.protonmail.android
 
 import android.app.Application
+import ch.protonmail.android.callbacks.AutoLockLifecycleCallbacks
 import ch.protonmail.android.callbacks.SecureActivityLifecycleCallbacks
 import ch.protonmail.android.initializer.MainInitializer
 import ch.protonmail.android.mailcommon.domain.benchmark.BenchmarkTracer
@@ -32,6 +33,9 @@ internal class App : Application() {
     lateinit var secureActivityLifecycleCallbacks: SecureActivityLifecycleCallbacks
 
     @Inject
+    lateinit var lockScreenLifecycleCallbacks: AutoLockLifecycleCallbacks
+
+    @Inject
     lateinit var benchmarkTracer: BenchmarkTracer
 
     override fun onCreate() {
@@ -41,6 +45,7 @@ internal class App : Application() {
 
         MainInitializer.init(this)
         registerActivityLifecycleCallbacks(secureActivityLifecycleCallbacks)
+        registerActivityLifecycleCallbacks(lockScreenLifecycleCallbacks)
 
         benchmarkTracer.end()
     }
