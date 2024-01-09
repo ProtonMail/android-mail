@@ -37,10 +37,7 @@ class SearchResultsLocalDataSourceImplTest {
 
     private val userId = UserId("1")
 
-    private val searchResultDao = mockk<SearchResultDao>(relaxed = true) {
-        coEvery { insertOrUpdate(any()) } just runs
-        coEvery { deleteAll(any(), any()) } just runs
-    }
+    private val searchResultDao = mockk<SearchResultDao>()
 
     private val db = mockk<SearchResultsDatabase>(relaxed = true) {
         every { searchResultsDao() } returns searchResultDao
@@ -61,6 +58,7 @@ class SearchResultsLocalDataSourceImplTest {
         // Given
         val message = getMessage(userId, "1", time = 1000)
         val searchResult = SearchResultEntity(userId, "keyword", message.messageId)
+        coEvery { searchResultDao.insertOrUpdate(searchResult) } just runs
 
         // When
         searchResultsLocalDataSource.upsertResults(userId, "keyword", listOf(message))
@@ -74,6 +72,7 @@ class SearchResultsLocalDataSourceImplTest {
     fun `delete search results calls corresponding dao function with given parameters`() = runTest {
         // Given
         val keyword = "keyword"
+        coEvery { searchResultDao.deleteAll(userId, keyword) } just runs
 
         // When
         searchResultsLocalDataSource.deleteResults(userId, keyword)
