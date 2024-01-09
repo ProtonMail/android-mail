@@ -51,6 +51,7 @@ internal class MenuRobot : ComposeRobot() {
 
     fun openSidebarMenu(): MenuRobot = apply {
         hamburgerMenuButton.awaitDisplayed().performClick()
+        rootItem.awaitDisplayed()
     }
 
     fun openInbox() = openMailbox(SystemLabelId.Inbox)
