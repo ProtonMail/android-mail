@@ -23,6 +23,7 @@ import android.app.Application.ActivityLifecycleCallbacks
 import android.os.Bundle
 import android.view.WindowManager
 import arrow.core.getOrElse
+import ch.protonmail.android.LockScreenActivity
 import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.ObservePreventScreenshotsSetting
 import kotlinx.coroutines.CoroutineScope
@@ -70,6 +71,7 @@ internal class SecureActivityLifecycleCallbacks @Inject constructor(
 
     override fun onActivityPaused(p0: Activity) {
         setSecureJob?.cancel()
+        setSecureJob = null
     }
 
     override fun onActivityCreated(p0: Activity, p1: Bundle?) = Unit
@@ -88,7 +90,9 @@ internal class SecureActivityLifecycleCallbacks @Inject constructor(
 
     private fun Activity.isSecureActivity(): Boolean = when (this) {
         is AuthActivity<*>,
-        is PasswordManagementActivity -> true
+        is PasswordManagementActivity,
+        is LockScreenActivity -> true
+
         else -> false
     }
 }
