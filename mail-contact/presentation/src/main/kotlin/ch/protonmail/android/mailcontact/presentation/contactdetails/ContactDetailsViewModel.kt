@@ -51,8 +51,7 @@ class ContactDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    val initialState: ContactDetailsState = ContactDetailsState.Loading()
-    private val mutableState = MutableStateFlow<ContactDetailsState>(ContactDetailsState.Loading())
+    private val mutableState = MutableStateFlow(initialState)
     private val primaryUserId = observePrimaryUserId().filterNotNull()
     private val actionMutex = Mutex()
 
@@ -106,5 +105,9 @@ class ContactDetailsViewModel @Inject constructor(
     private fun emitNewStateFor(event: ContactDetailsEvent) {
         val currentState = state.value
         mutableState.value = reducer.newStateFrom(currentState, event)
+    }
+
+    companion object {
+        val initialState: ContactDetailsState = ContactDetailsState.Loading()
     }
 }

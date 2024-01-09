@@ -229,8 +229,6 @@ class ContactListReducerTest(
             )
         )
 
-        // transitionsFromEmptyState
-
         @JvmStatic
         @Parameterized.Parameters(name = "{0}")
         fun data() = (

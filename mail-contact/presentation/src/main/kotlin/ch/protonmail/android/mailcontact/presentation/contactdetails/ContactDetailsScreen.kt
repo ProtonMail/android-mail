@@ -91,7 +91,7 @@ fun ContactDetailsScreen(actions: ContactDetailsScreen.Actions, viewModel: Conta
     val view = LocalView.current
     val keyboardController = LocalSoftwareKeyboardController.current
     val snackbarHostErrorState = ProtonSnackbarHostState(defaultType = ProtonSnackbarType.ERROR)
-    val state = rememberAsState(flow = viewModel.state, initial = viewModel.initialState).value
+    val state = rememberAsState(flow = viewModel.state, initial = ContactDetailsViewModel.initialState).value
 
     val customActions = actions.copy(
         onDeleteClick = {
