@@ -19,8 +19,6 @@
 package ch.protonmail.android.navigation.route
 
 import android.content.Context
-import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.compose.runtime.LaunchedEffect
@@ -36,11 +34,8 @@ import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailnotifications.domain.NotificationInteraction
 import ch.protonmail.android.mailnotifications.domain.NotificationsDeepLinkHelper
 import ch.protonmail.android.mailnotifications.domain.resolveNotificationInteraction
-import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockInsertionMode
-import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPinContinuationAction
 import ch.protonmail.android.navigation.deeplinks.NotificationsDeepLinksViewModel
 import ch.protonmail.android.navigation.model.Destination
-import timber.log.Timber
 
 @Suppress("ComplexMethod", "LongMethod")
 internal fun NavGraphBuilder.addDeepLinkHandler(navController: NavHostController) {
@@ -58,28 +53,6 @@ internal fun NavGraphBuilder.addDeepLinkHandler(navController: NavHostController
 
         LaunchedEffect(key1 = state) {
             when (state) {
-                is NotificationsDeepLinksViewModel.State.None -> {
-                    Timber.d("Deep link state is None")
-                }
-
-                is NotificationsDeepLinksViewModel.State.ForcePinVerification -> {
-                    val deeplink = it.arguments.originalDeepLink
-
-                    val continuationAction = deeplink?.let {
-                        AutoLockPinContinuationAction.NavigateToDeepLink(
-                            AutoLockPinContinuationAction.EncodedDestination.fromRawValue(it)
-                        )
-                    } ?: AutoLockPinContinuationAction.None
-
-                    navController.navigate(
-                        Destination.Screen.AutoLockPinScreen(
-                            AutoLockInsertionMode.VerifyPin(continuationAction)
-                        )
-                    ) {
-                        popUpTo(Destination.Screen.Mailbox.route) { inclusive = false }
-                    }
-                }
-
                 is NotificationsDeepLinksViewModel.State.Launched -> {
                     val interaction = resolveNotificationInteraction(
                         userId = it.arguments.userId,
@@ -161,17 +134,3 @@ private val Bundle?.userId: String?
 
 private val Bundle?.action: String?
     get() = this?.getString("action")
-
-private val Bundle?.originalDeepLink: String?
-    get() {
-        val intentKey = "android-support-nav:controller:deepLinkIntent"
-
-        val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            this?.getParcelable(intentKey, Intent::class.java)
-        } else {
-            @Suppress("DEPRECATION")
-            this?.get(intentKey) as Intent
-        }
-
-        return intent?.data?.path?.let { "proton://notification$it" }
-    }
