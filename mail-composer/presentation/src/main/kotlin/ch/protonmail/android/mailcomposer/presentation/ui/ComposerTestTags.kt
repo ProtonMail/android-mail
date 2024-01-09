@@ -39,4 +39,8 @@ object ComposerTestTags {
     const val CloseButton = "CloseButton"
     const val SendButton = "SendButton"
     const val ChangeSenderButton = "ChangeSenderButton"
+    const val SendWithEmptySubjectDialog = "SendWithEmptySubjectDialog"
+    const val SendWithEmptySubjectDialogConfirm = "SendWithEmptySubjectDialogConfirm"
+    const val SendWithEmptySubjectDialogDismiss = "SendWithEmptySubjectDialogDismiss"
+
 }

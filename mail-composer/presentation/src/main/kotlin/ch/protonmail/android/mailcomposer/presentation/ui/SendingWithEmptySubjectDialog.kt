@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.mailcomposer.presentation.R
@@ -38,7 +39,7 @@ fun SendingWithEmptySubjectDialog(
     modifier: Modifier = Modifier
 ) {
     ProtonAlertDialog(
-        modifier = modifier,
+        modifier = modifier.testTag(ComposerTestTags.SendWithEmptySubjectDialog),
         titleResId = R.string.composer_send_without_subject_dialog_title,
         text = {
             Column {
@@ -50,10 +51,16 @@ fun SendingWithEmptySubjectDialog(
             }
         },
         dismissButton = {
-            ProtonAlertDialogButton(R.string.composer_send_without_subject_dialog_reject_button) { onDismissClicked() }
+            ProtonAlertDialogButton(
+                titleResId = R.string.composer_send_without_subject_dialog_reject_button,
+                modifier = Modifier.testTag(ComposerTestTags.SendWithEmptySubjectDialogDismiss)
+            ) { onDismissClicked() }
         },
         confirmButton = {
-            ProtonAlertDialogButton(R.string.composer_send_without_subject_dialog_confirm_button) { onConfirmClicked() }
+            ProtonAlertDialogButton(
+                titleResId = R.string.composer_send_without_subject_dialog_confirm_button,
+                modifier = Modifier.testTag(ComposerTestTags.SendWithEmptySubjectDialogConfirm)
+            ) { onConfirmClicked() }
         },
         onDismissRequest = {}
     )
@@ -64,10 +71,7 @@ fun SendingWithEmptySubjectDialog(
 private fun SendingWithEmptySubjectDialogPreview() {
     ProtonTheme3 {
         ProtonTheme {
-            SendingWithEmptySubjectDialog(
-                onConfirmClicked = {},
-                onDismissClicked = {}
-            )
+            SendingWithEmptySubjectDialog(onConfirmClicked = {}, onDismissClicked = {})
         }
     }
 }

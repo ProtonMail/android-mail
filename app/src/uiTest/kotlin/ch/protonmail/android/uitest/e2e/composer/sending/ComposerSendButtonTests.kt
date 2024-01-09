@@ -28,6 +28,7 @@ import ch.protonmail.android.uitest.helpers.core.TestId
 import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.robot.composer.composerRobot
+import ch.protonmail.android.uitest.robot.composer.section.composerAlertDialogSection
 import ch.protonmail.android.uitest.robot.composer.section.messageBodySection
 import ch.protonmail.android.uitest.robot.composer.section.recipients.toRecipientSection
 import ch.protonmail.android.uitest.robot.composer.section.subjectSection
@@ -166,6 +167,38 @@ internal class ComposerSendButtonTests : MockedNetworkTest(), ComposerTests {
             toRecipientSection { typeMultipleRecipients("proton.me", "test@proton.me") }
 
             topAppBarSection { verify { isSendButtonDisabled() } }
+        }
+    }
+
+    @Test
+    @TestId("268527")
+    fun checkConfirmationDialogIsShownWhenSubjectIsEmptyAndSendButtonClicked() {
+        navigator { navigateTo(Destination.Composer) }
+
+        composerRobot {
+            toRecipientSection { typeRecipient("test@proton.me") }
+            messageBodySection { typeMessageBody(placeholderString) }
+
+            topAppBarSection { verify { isSendButtonEnabled() } }
+            topAppBarSection { tapSendButton() }
+
+            composerAlertDialogSection {
+                verify {
+                    isSendWithEmptySubjectDialogDisplayed()
+                }
+
+                clickSendWithEmptySubjectDialogDismissButton()
+
+                verify {
+                    isSendWithEmptySubjectDialogDismissed()
+                }
+            }
+
+            subjectSection {
+                verify { hasEmptySubject() }
+
+                verify { hasFocus() }
+            }
         }
     }
 }
