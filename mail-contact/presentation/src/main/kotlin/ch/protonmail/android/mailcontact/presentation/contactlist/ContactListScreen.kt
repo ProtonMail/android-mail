@@ -130,7 +130,7 @@ fun ContactListScreen(actions: ContactListScreen.Actions, viewModel: ContactList
                         onBackClick = actions.onBackClick,
                         onAddClick = { viewModel.submit(ContactListViewAction.OnOpenBottomSheet) }
                     ),
-                    isAddButtonVisible = state is ContactListState.ListLoaded.Data
+                    isAddButtonVisible = false // state is ContactListState.ListLoaded.Data
                 )
             },
             content = { paddingValues ->
@@ -365,17 +365,19 @@ fun EmptyContactListScreen(modifier: Modifier = Modifier, onAddClick: () -> Unit
             style = ProtonTheme.typography.defaultSmallWeak,
             textAlign = TextAlign.Center
         )
-        ProtonSecondaryButton(
-            modifier = Modifier.padding(top = ProtonDimens.LargeSpacing),
-            onClick = onAddClick
-        ) {
-            Text(
-                text = stringResource(R.string.add_contact),
-                Modifier.padding(
-                    horizontal = ProtonDimens.SmallSpacing
-                ),
-                style = ProtonTheme.typography.captionNorm
-            )
+        if (false) {
+            ProtonSecondaryButton(
+                modifier = Modifier.padding(top = ProtonDimens.LargeSpacing),
+                onClick = onAddClick
+            ) {
+                Text(
+                    text = stringResource(R.string.add_contact),
+                    Modifier.padding(
+                        horizontal = ProtonDimens.SmallSpacing
+                    ),
+                    style = ProtonTheme.typography.captionNorm
+                )
+            }
         }
     }
 }

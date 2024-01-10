@@ -39,7 +39,7 @@ class SidebarState(
     val drawerState: DrawerState = DrawerState(Closed),
     val accountPrimaryState: AccountPrimaryState = AccountPrimaryState(),
     val hasPrimaryAccount: Boolean = true,
-    val showContacts: Boolean = false,
+    val showContacts: Boolean = true,
     mailLabels: MailLabelsUiModel = MailLabelsUiModel.Loading,
     isSubscriptionVisible: Boolean = true
 ) {

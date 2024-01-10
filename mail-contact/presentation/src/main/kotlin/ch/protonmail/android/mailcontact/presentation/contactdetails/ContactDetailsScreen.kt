@@ -210,20 +210,26 @@ private fun ActionItemsRow(modifier: Modifier = Modifier, actions: ContactDetail
     Row(
         modifier = modifier
     ) {
-        ContactDetailsActionItem(
-            iconResId = R.drawable.ic_proton_phone,
-            onClick = actions.showFeatureMissingSnackbar
-        )
-        ContactDetailsActionItem(
-            modifier = Modifier.padding(start = ProtonDimens.DefaultSpacing),
-            iconResId = R.drawable.ic_proton_pen_square,
-            onClick = actions.showFeatureMissingSnackbar
-        )
-        ContactDetailsActionItem(
-            modifier = Modifier.padding(start = ProtonDimens.DefaultSpacing),
-            iconResId = R.drawable.ic_proton_arrow_up_from_square,
-            onClick = actions.showFeatureMissingSnackbar
-        )
+        if (false) {
+            ContactDetailsActionItem(
+                iconResId = R.drawable.ic_proton_phone,
+                onClick = actions.showFeatureMissingSnackbar
+            )
+        }
+        if (false) {
+            ContactDetailsActionItem(
+                modifier = Modifier.padding(start = ProtonDimens.DefaultSpacing),
+                iconResId = R.drawable.ic_proton_pen_square,
+                onClick = actions.showFeatureMissingSnackbar
+            )
+        }
+        if (false) {
+            ContactDetailsActionItem(
+                modifier = Modifier.padding(start = ProtonDimens.DefaultSpacing),
+                iconResId = R.drawable.ic_proton_arrow_up_from_square,
+                onClick = actions.showFeatureMissingSnackbar
+            )
+        }
     }
 }
 
@@ -382,19 +388,23 @@ fun ContactDetailsTopBar(actions: ContactDetailsScreen.Actions) {
             }
         },
         actions = {
-            IconButton(onClick = actions.onEditClick) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_proton_pen),
-                    tint = ProtonTheme.colors.iconNorm,
-                    contentDescription = stringResource(R.string.edit_contact_content_description)
-                )
+            if (false) {
+                IconButton(onClick = actions.onEditClick) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_proton_pen),
+                        tint = ProtonTheme.colors.iconNorm,
+                        contentDescription = stringResource(R.string.edit_contact_content_description)
+                    )
+                }
             }
-            IconButton(onClick = actions.onDeleteClick) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_proton_trash),
-                    tint = ProtonTheme.colors.iconNorm,
-                    contentDescription = stringResource(R.string.delete_contact_content_description)
-                )
+            if (false) {
+                IconButton(onClick = actions.onDeleteClick) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_proton_trash),
+                        tint = ProtonTheme.colors.iconNorm,
+                        contentDescription = stringResource(R.string.delete_contact_content_description)
+                    )
+                }
             }
         }
     )
