@@ -33,9 +33,18 @@ data class ContactDetailsUiModel(
     val contactMainDetailsItemList: List<ContactDetailsItem> = emptyList(),
     val contactOtherDetailsItemList: List<ContactDetailsItem> = emptyList(),
     val contactGroups: ContactDetailsGroupsItem
-)
+) {
+    fun isCallActionEnabled() = defaultPhoneNumber.isNotEmpty()
+}
 
 sealed interface ContactDetailsItem {
+
+    sealed interface ContactDetailType {
+        sealed interface Triggerable : ContactDetailType {
+            data class Phone(val phoneNumber: String) : Triggerable
+        }
+        object Undefined : ContactDetailType
+    }
 
     val displayIcon: Boolean
     val iconResId: Int
@@ -45,7 +54,8 @@ sealed interface ContactDetailsItem {
         override val displayIcon: Boolean,
         override val iconResId: Int,
         override val header: TextUiModel,
-        val value: TextUiModel
+        val value: TextUiModel,
+        val type: ContactDetailType = ContactDetailType.Undefined
     ) : ContactDetailsItem
 
     data class Image(

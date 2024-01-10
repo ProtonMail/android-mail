@@ -237,55 +237,64 @@ class ContactDetailsUiModelMapperTest {
                     displayIcon = true,
                     iconResId = R.drawable.ic_proton_phone,
                     header = TextUiModel(R.string.contact_type_phone),
-                    value = TextUiModel("1231231235")
+                    value = TextUiModel("1231231235"),
+                    type = ContactDetailsItem.ContactDetailType.Triggerable.Phone("1231231235")
                 ),
                 ContactDetailsItem.Text(
                     displayIcon = false,
                     iconResId = R.drawable.ic_proton_phone,
                     header = TextUiModel(R.string.contact_type_home),
-                    value = TextUiModel("23233232323")
+                    value = TextUiModel("23233232323"),
+                    type = ContactDetailsItem.ContactDetailType.Triggerable.Phone("23233232323")
                 ),
                 ContactDetailsItem.Text(
                     displayIcon = false,
                     iconResId = R.drawable.ic_proton_phone,
                     header = TextUiModel(R.string.contact_type_pager),
-                    value = TextUiModel("34343434")
+                    value = TextUiModel("34343434"),
+                    type = ContactDetailsItem.ContactDetailType.Triggerable.Phone("34343434")
                 ),
                 ContactDetailsItem.Text(
                     displayIcon = false,
                     iconResId = R.drawable.ic_proton_phone,
                     header = TextUiModel(R.string.contact_type_work),
-                    value = TextUiModel("45454545")
+                    value = TextUiModel("45454545"),
+                    type = ContactDetailsItem.ContactDetailType.Triggerable.Phone("45454545")
                 ),
                 ContactDetailsItem.Text(
                     displayIcon = false,
                     iconResId = R.drawable.ic_proton_phone,
                     header = TextUiModel(R.string.contact_type_other),
-                    value = TextUiModel("565656")
+                    value = TextUiModel("565656"),
+                    type = ContactDetailsItem.ContactDetailType.Triggerable.Phone("565656")
                 ),
                 ContactDetailsItem.Text(
                     displayIcon = false,
                     iconResId = R.drawable.ic_proton_phone,
                     header = TextUiModel(R.string.contact_type_phone),
-                    value = TextUiModel("676767")
+                    value = TextUiModel("676767"),
+                    type = ContactDetailsItem.ContactDetailType.Triggerable.Phone("676767")
                 ),
                 ContactDetailsItem.Text(
                     displayIcon = false,
                     iconResId = R.drawable.ic_proton_phone,
                     header = TextUiModel(R.string.contact_type_phone),
-                    value = TextUiModel("787887")
+                    value = TextUiModel("787887"),
+                    type = ContactDetailsItem.ContactDetailType.Triggerable.Phone("787887")
                 ),
                 ContactDetailsItem.Text(
                     displayIcon = false,
                     iconResId = R.drawable.ic_proton_phone,
                     header = TextUiModel(R.string.contact_type_fax),
-                    value = TextUiModel("898989")
+                    value = TextUiModel("898989"),
+                    type = ContactDetailsItem.ContactDetailType.Triggerable.Phone("898989")
                 ),
                 ContactDetailsItem.Text(
                     displayIcon = false,
                     iconResId = R.drawable.ic_proton_phone,
                     header = TextUiModel(R.string.contact_type_pager),
-                    value = TextUiModel("90909090")
+                    value = TextUiModel("90909090"),
+                    type = ContactDetailsItem.ContactDetailType.Triggerable.Phone("90909090")
                 ),
                 /* Addresses */
                 ContactDetailsItem.Text(

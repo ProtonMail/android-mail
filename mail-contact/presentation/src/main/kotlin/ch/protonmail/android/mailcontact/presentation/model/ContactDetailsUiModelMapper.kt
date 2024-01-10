@@ -111,7 +111,8 @@ class ContactDetailsUiModelMapper @Inject constructor(
                             ContactProperty.Telephone.Type.Pager -> R.string.contact_type_pager
                         }
                     ),
-                    value = TextUiModel(phone.text)
+                    value = TextUiModel(phone.text),
+                    type = ContactDetailsItem.ContactDetailType.Triggerable.Phone(phone.text)
                 )
             )
         }
