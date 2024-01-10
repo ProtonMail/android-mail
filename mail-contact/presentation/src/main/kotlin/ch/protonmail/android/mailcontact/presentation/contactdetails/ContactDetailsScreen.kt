@@ -18,7 +18,9 @@
 
 package ch.protonmail.android.mailcontact.presentation.contactdetails
 
+import android.content.Intent
 import android.content.res.Configuration
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -68,6 +70,7 @@ import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.model.Avatar
 import ch.protonmail.android.mailcontact.presentation.model.ContactDetailsGroupsItem
 import ch.protonmail.android.mailcontact.presentation.model.ContactDetailsItem
+import ch.protonmail.android.mailcontact.presentation.model.ContactDetailsItem.ContactDetailType.Triggerable
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactDetailsPreviewData.contactDetailsSampleData
 import ch.protonmail.android.mailcontact.presentation.ui.ImageContactAvatar
 import ch.protonmail.android.mailcontact.presentation.ui.InitialsContactAvatar
@@ -96,7 +99,10 @@ fun ContactDetailsScreen(actions: ContactDetailsScreen.Actions, viewModel: Conta
     val customActions = actions.copy(
         onDeleteClick = {
             viewModel.submit(ContactDetailsViewAction.OnDeleteClick)
-        }
+        },
+        onCallClick = { phoneNumber ->
+            viewModel.submit(ContactDetailsViewAction.OnCallClick(phoneNumber))
+        },
     )
 
     Scaffold(
@@ -115,7 +121,14 @@ fun ContactDetailsScreen(actions: ContactDetailsScreen.Actions, viewModel: Conta
                     ConsumableTextEffect(effect = state.closeWithSuccess) { message ->
                         actions.exitWithSuccessMessage(message)
                     }
+                    ConsumableLaunchedEffect(effect = state.callPhoneNumber) {
+                        val callIntent = Intent(Intent.ACTION_DIAL).apply {
+                            data = Uri.parse("tel:$it}")
+                        }
+                        context.startActivity(callIntent)
+                    }
                 }
+
                 is ContactDetailsState.Loading -> {
                     ProtonCenteredProgress(
                         modifier = Modifier
@@ -164,6 +177,7 @@ fun ContactDetailsContent(
                             initials = state.contact.avatar.value
                         )
                     }
+
                     is Avatar.Photo -> {
                         ImageContactAvatar(
                             modifier = Modifier
@@ -184,15 +198,16 @@ fun ContactDetailsContent(
                     modifier = Modifier
                         .padding(vertical = ProtonDimens.MediumSpacing)
                         .align(Alignment.CenterHorizontally),
-                    actions = actions
+                    actions = actions,
+                    state = state
                 )
             }
         }
         items(state.contact.contactMainDetailsItemList) { contactDetailsItem ->
-            ContactDetailsItem(contactDetailsItem = contactDetailsItem)
+            ContactDetailsItem(contactDetailsItem = contactDetailsItem, actions = actions)
         }
         items(state.contact.contactOtherDetailsItemList) { contactDetailsItem ->
-            ContactDetailsItem(contactDetailsItem = contactDetailsItem)
+            ContactDetailsItem(contactDetailsItem = contactDetailsItem, actions = actions)
         }
         item {
             if (state.contact.contactGroups.displayGroupSection) {
@@ -206,28 +221,33 @@ fun ContactDetailsContent(
 }
 
 @Composable
-private fun ActionItemsRow(modifier: Modifier = Modifier, actions: ContactDetailsScreen.Actions) {
+private fun ActionItemsRow(
+    modifier: Modifier = Modifier,
+    actions: ContactDetailsScreen.Actions,
+    state: ContactDetailsState.Data
+) {
     Row(
         modifier = modifier
     ) {
-        if (false) {
-            ContactDetailsActionItem(
-                iconResId = R.drawable.ic_proton_phone,
-                onClick = actions.showFeatureMissingSnackbar
-            )
-        }
+        ContactDetailsActionItem(
+            iconResId = R.drawable.ic_proton_phone,
+            onClick = { actions.onCallClick(state.contact.defaultPhoneNumber) },
+            isEnabled = state.contact.isCallActionEnabled()
+        )
         if (false) {
             ContactDetailsActionItem(
                 modifier = Modifier.padding(start = ProtonDimens.DefaultSpacing),
                 iconResId = R.drawable.ic_proton_pen_square,
-                onClick = actions.showFeatureMissingSnackbar
+                onClick = actions.showFeatureMissingSnackbar,
+                isEnabled = false
             )
         }
         if (false) {
             ContactDetailsActionItem(
                 modifier = Modifier.padding(start = ProtonDimens.DefaultSpacing),
                 iconResId = R.drawable.ic_proton_arrow_up_from_square,
-                onClick = actions.showFeatureMissingSnackbar
+                onClick = actions.showFeatureMissingSnackbar,
+                isEnabled = false
             )
         }
     }
@@ -291,9 +311,24 @@ private fun ContactGroupLabel(
 }
 
 @Composable
-private fun ContactDetailsItem(modifier: Modifier = Modifier, contactDetailsItem: ContactDetailsItem) {
+private fun ContactDetailsItem(
+    modifier: Modifier = Modifier,
+    contactDetailsItem: ContactDetailsItem,
+    actions: ContactDetailsScreen.Actions
+) {
     Row(
         modifier = modifier
+            .fillMaxWidth()
+            .clickable(
+                enabled = contactDetailsItem is ContactDetailsItem.Text && contactDetailsItem.type is Triggerable,
+                onClick = {if (contactDetailsItem is ContactDetailsItem.Text) {
+                    if (contactDetailsItem.type is Triggerable) {
+                        when (contactDetailsItem.type) {
+                            is Triggerable.Phone -> actions.onCallClick(contactDetailsItem.type.phoneNumber)
+                        }
+                    }
+                }}
+            )
             .padding(ProtonDimens.DefaultSpacing)
     ) {
         if (contactDetailsItem.displayIcon) {
@@ -329,6 +364,7 @@ private fun ContactDetailsItem(modifier: Modifier = Modifier, contactDetailsItem
                         contentDescription = contactDetailsItem.header.string()
                     )
                 }
+
                 is ContactDetailsItem.Text -> {
                     Text(
                         text = contactDetailsItem.value.string(),
@@ -344,6 +380,7 @@ private fun ContactDetailsItem(modifier: Modifier = Modifier, contactDetailsItem
 private fun ContactDetailsActionItem(
     modifier: Modifier = Modifier,
     iconResId: Int,
+    isEnabled: Boolean,
     onClick: () -> Unit
 ) {
     Box(
@@ -353,13 +390,17 @@ private fun ContactDetailsActionItem(
                 minHeight = MailDimens.ContactActionSize
             )
             .background(
-                color = ProtonTheme.colors.interactionWeakNorm,
+                color = if (isEnabled)
+                    ProtonTheme.colors.interactionWeakNorm
+                else
+                    ProtonTheme.colors.interactionWeakDisabled,
                 shape = RoundedCornerShape(MailDimens.ContactActionCornerRadius)
             )
             .clip(
                 shape = RoundedCornerShape(MailDimens.ContactActionCornerRadius)
             )
             .clickable(
+                enabled = isEnabled,
                 role = Role.Button,
                 onClick = onClick
             ),
@@ -367,7 +408,7 @@ private fun ContactDetailsActionItem(
     ) {
         Icon(
             painter = painterResource(id = iconResId),
-            tint = ProtonTheme.colors.iconNorm,
+            tint = if(isEnabled) ProtonTheme.colors.iconNorm else ProtonTheme.colors.iconDisabled,
             contentDescription = NO_CONTENT_DESCRIPTION
         )
     }
@@ -420,6 +461,7 @@ object ContactDetailsScreen {
         val exitWithErrorMessage: (String) -> Unit,
         val onEditClick: () -> Unit,
         val onDeleteClick: () -> Unit,
+        val onCallClick: (String) -> Unit,
         val showFeatureMissingSnackbar: () -> Unit
     ) {
 
@@ -431,6 +473,7 @@ object ContactDetailsScreen {
                 exitWithErrorMessage = {},
                 onEditClick = {},
                 onDeleteClick = {},
+                onCallClick = {},
                 showFeatureMissingSnackbar = {}
             )
         }
