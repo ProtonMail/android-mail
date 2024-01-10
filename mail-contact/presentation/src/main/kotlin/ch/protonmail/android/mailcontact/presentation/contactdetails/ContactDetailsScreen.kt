@@ -321,13 +321,15 @@ private fun ContactDetailsItem(
             .fillMaxWidth()
             .clickable(
                 enabled = contactDetailsItem is ContactDetailsItem.Text && contactDetailsItem.type is Triggerable,
-                onClick = {if (contactDetailsItem is ContactDetailsItem.Text) {
-                    if (contactDetailsItem.type is Triggerable) {
-                        when (contactDetailsItem.type) {
-                            is Triggerable.Phone -> actions.onCallClick(contactDetailsItem.type.phoneNumber)
+                onClick = {
+                    if (contactDetailsItem is ContactDetailsItem.Text) {
+                        if (contactDetailsItem.type is Triggerable) {
+                            when (contactDetailsItem.type) {
+                                is Triggerable.Phone -> actions.onCallClick(contactDetailsItem.type.phoneNumber)
+                            }
                         }
                     }
-                }}
+                }
             )
             .padding(ProtonDimens.DefaultSpacing)
     ) {
@@ -408,7 +410,7 @@ private fun ContactDetailsActionItem(
     ) {
         Icon(
             painter = painterResource(id = iconResId),
-            tint = if(isEnabled) ProtonTheme.colors.iconNorm else ProtonTheme.colors.iconDisabled,
+            tint = if (isEnabled) ProtonTheme.colors.iconNorm else ProtonTheme.colors.iconDisabled,
             contentDescription = NO_CONTENT_DESCRIPTION
         )
     }
