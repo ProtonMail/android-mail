@@ -19,11 +19,13 @@
 package ch.protonmail.android.uitest.e2e.account
 
 import ch.protonmail.android.di.ServerProofModule
+import ch.protonmail.android.networkmocks.mockwebserver.combineWith
 import ch.protonmail.android.test.annotations.suite.RegressionTest
 import ch.protonmail.android.uitest.MockedNetworkTest
 import ch.protonmail.android.uitest.helpers.core.TestId
 import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
+import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.robot.account.section.buttonsSection
 import ch.protonmail.android.uitest.robot.account.signOutAccountDialogRobot
 import ch.protonmail.android.uitest.robot.account.verify
@@ -41,7 +43,7 @@ import org.junit.Test
 @RegressionTest
 @HiltAndroidTest
 @UninstallModules(ServerProofModule::class)
-internal class SidebarMenuFoldersTests : MockedNetworkTest() {
+internal class SignOutAccountTest : MockedNetworkTest() {
 
     @JvmField
     @BindValue
@@ -49,6 +51,7 @@ internal class SidebarMenuFoldersTests : MockedNetworkTest() {
 
     @Before
     fun navigateToLogout() {
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher()
         navigator { navigateTo(Destination.SidebarMenu) }
         menuRobot { tapSignOut() }
     }
