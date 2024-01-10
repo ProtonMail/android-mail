@@ -140,7 +140,7 @@ class ContactDetailsViewModelTest {
             // Then
             awaitItem() // Contact was loaded
 
-            contactDetailsViewModel.submit(ContactDetailsViewAction.OnCloseContactDetailsClick)
+            contactDetailsViewModel.submit(ContactDetailsViewAction.OnCloseClick)
 
             val actual = awaitItem()
 

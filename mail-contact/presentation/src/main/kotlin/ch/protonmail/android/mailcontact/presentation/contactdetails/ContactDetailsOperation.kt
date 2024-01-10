@@ -24,14 +24,16 @@ sealed interface ContactDetailsOperation
 
 internal sealed interface ContactDetailsViewAction : ContactDetailsOperation {
     object OnDeleteClick : ContactDetailsViewAction
-    object OnCloseContactDetailsClick : ContactDetailsViewAction
+    object OnCloseClick : ContactDetailsViewAction
 }
 
 sealed interface ContactDetailsEvent : ContactDetailsOperation {
     data class ContactLoaded(
         val contactDetailsUiModel: ContactDetailsUiModel
     ) : ContactDetailsEvent
+
     object LoadContactError : ContactDetailsEvent
     object ContactDeleted : ContactDetailsEvent
     object CloseContactDetails : ContactDetailsEvent
+    data class CallPhoneNumber(val phoneNumber: String) : ContactDetailsEvent
 }

@@ -74,7 +74,7 @@ class ContactDetailsViewModel @Inject constructor(
         viewModelScope.launch {
             actionMutex.withLock {
                 when (action) {
-                    ContactDetailsViewAction.OnCloseContactDetailsClick -> emitNewStateFor(
+                    ContactDetailsViewAction.OnCloseClick -> emitNewStateFor(
                         ContactDetailsEvent.CloseContactDetails
                     )
                     ContactDetailsViewAction.OnDeleteClick -> handleOnDeleteClick()

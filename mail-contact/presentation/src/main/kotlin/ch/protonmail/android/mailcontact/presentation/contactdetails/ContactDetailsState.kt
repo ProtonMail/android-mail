@@ -34,6 +34,7 @@ sealed class ContactDetailsState(
     data class Data(
         override val close: Effect<Unit> = Effect.empty(),
         val closeWithSuccess: Effect<TextUiModel> = Effect.empty(),
+        val callPhoneNumber: Effect<String> = Effect.empty(),
         val contact: ContactDetailsUiModel
     ) : ContactDetailsState(Effect.empty())
 }

@@ -31,6 +31,7 @@ class ContactDetailsReducer @Inject constructor() {
             is ContactDetailsEvent.LoadContactError -> reduceLoadContactError(currentState)
             is ContactDetailsEvent.CloseContactDetails -> reduceCloseContactDetails(currentState)
             is ContactDetailsEvent.ContactDeleted -> reduceContactDeleted(currentState)
+            is ContactDetailsEvent.CallPhoneNumber -> reduceCallPhoneNumber(currentState, event)
         }
     }
 
@@ -42,6 +43,7 @@ class ContactDetailsReducer @Inject constructor() {
             is ContactDetailsState.Data -> currentState.copy(
                 contact = event.contactDetailsUiModel
             )
+
             is ContactDetailsState.Loading -> ContactDetailsState.Data(contact = event.contactDetailsUiModel)
         }
     }
@@ -67,6 +69,20 @@ class ContactDetailsReducer @Inject constructor() {
             is ContactDetailsState.Data -> currentState.copy(
                 closeWithSuccess = Effect.of(TextUiModel(R.string.contact_details_delete_success))
             )
+
+            is ContactDetailsState.Loading -> currentState
+        }
+    }
+
+    private fun reduceCallPhoneNumber(
+        currentState: ContactDetailsState,
+        event: ContactDetailsEvent.CallPhoneNumber
+    ): ContactDetailsState {
+        return when (currentState) {
+            is ContactDetailsState.Data -> currentState.copy(
+                callPhoneNumber = Effect.of(event.phoneNumber)
+            )
+
             is ContactDetailsState.Loading -> currentState
         }
     }

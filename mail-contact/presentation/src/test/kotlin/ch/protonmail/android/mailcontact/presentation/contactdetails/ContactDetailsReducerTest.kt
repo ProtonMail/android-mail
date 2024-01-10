@@ -109,6 +109,13 @@ class ContactDetailsReducerTest(
                 expectedState = loadedContactState.copy(
                     closeWithSuccess = Effect.of(TextUiModel(R.string.contact_details_delete_success))
                 )
+            ),
+            TestInput(
+                currentState = loadedContactState,
+                event = ContactDetailsEvent.CallPhoneNumber("123456789"),
+                expectedState = loadedContactState.copy(
+                    callPhoneNumber = Effect.of("123456789")
+                )
             )
         )
 
