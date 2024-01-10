@@ -201,6 +201,7 @@ class ContactDetailsUiModelMapperTest {
 
         val expected = ContactDetailsUiModel(
             id = ContactSample.Mario.id,
+            defaultPhoneNumber = "1231231235",
             displayName = "Mario@protonmail.com",
             firstName = "Mario First Name",
             lastName = "Mario Last Name",
@@ -431,7 +432,7 @@ class ContactDetailsUiModelMapperTest {
             )
         )
 
-        assertEquals(actual, expected)
+        assertEquals(expected, actual)
     }
 
     @Test
