@@ -34,14 +34,16 @@ class ContactListItemUiModelMapper @Inject constructor() {
         contactList.map {
             it.copy(name = it.name.trim())
         }.sortedBy {
-            it.name
+            it.name.uppercase()
         }.groupBy {
             it.name.first().uppercaseChar()
         }.forEach { nameGroup ->
             contacts.add(
                 ContactListItemUiModel.Header(value = nameGroup.key.toString())
             )
-            nameGroup.value.forEach { contact ->
+            nameGroup.value.sortedBy {
+                it.name
+            }.forEach { contact ->
                 contacts.add(
                     ContactListItemUiModel.Contact(
                         id = contact.id.id,

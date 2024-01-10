@@ -123,4 +123,62 @@ class ContactListItemUiModelMapperTest {
 
         assertEquals(actual, expected)
     }
+
+    @Test
+    fun `return contacts correctly sorted by name, with list headers`() {
+        // Given
+        val contacts = listOf(
+            Contact(
+                UserIdTestData.userId,
+                ContactId("0"),
+                "diego",
+                emptyList()
+            ),
+            Contact(
+                UserIdTestData.userId,
+                ContactId("1"),
+                "coccodrillo",
+                emptyList()
+            ),
+            Contact(
+                UserIdTestData.userId,
+                ContactId("2"),
+                "Clara",
+                emptyList()
+            ),
+            Contact(
+                UserIdTestData.userId,
+                ContactId("3"),
+                "abc",
+                emptyList()
+            ),
+            Contact(
+                UserIdTestData.userId,
+                ContactId("4"),
+                "adam",
+                emptyList()
+            ),
+            Contact(
+                UserIdTestData.userId,
+                ContactId("5"),
+                "Bella",
+                emptyList()
+            )
+        )
+
+        // When
+        val actual = contactListItemUiModelMapper.toContactListItemUiModel(contacts)
+
+        // Then
+        assertEquals((actual[0] as ContactListItemUiModel.Header).value, "A")
+        assertEquals((actual[1] as ContactListItemUiModel.Contact).name, "abc")
+        assertEquals((actual[2] as ContactListItemUiModel.Contact).name, "adam")
+        assertEquals((actual[3] as ContactListItemUiModel.Header).value, "B")
+        assertEquals((actual[4] as ContactListItemUiModel.Contact).name, "Bella")
+        assertEquals((actual[5] as ContactListItemUiModel.Header).value, "C")
+        assertEquals((actual[6] as ContactListItemUiModel.Contact).name, "Clara")
+        assertEquals((actual[7] as ContactListItemUiModel.Contact).name, "coccodrillo")
+        assertEquals((actual[8] as ContactListItemUiModel.Header).value, "D")
+        assertEquals((actual[9] as ContactListItemUiModel.Contact).name, "diego")
+    }
 }
