@@ -181,6 +181,37 @@ class ContactDetailsViewModelTest {
         }
     }
 
+    @Test
+    fun `when OnCallClick action is submitted, then call phone is emitted`() = runTest {
+        // Given
+        val expectedPhoneNumber = "123123123"
+        val expectedDecryptedContact = DecryptedContact(testContactId)
+        val expectedContactDetailsUiModel = ContactDetailsPreviewData.contactDetailsSampleData.copy(
+            defaultPhoneNumber = expectedPhoneNumber
+        )
+        expectDecryptedContact(testUserId, testContactId, expectedDecryptedContact)
+        expectContactDetailsUiModel(expectedDecryptedContact, expectedContactDetailsUiModel)
+
+        expectSavedStateContactId(testContactId)
+
+        // When
+        contactDetailsViewModel.state.test {
+            // Then
+            awaitItem() // Contact was loaded
+
+            contactDetailsViewModel.submit(ContactDetailsViewAction.OnCallClick(expectedPhoneNumber))
+
+            val actual = awaitItem()
+
+            val expected = ContactDetailsState.Data(
+                contact = expectedContactDetailsUiModel,
+                callPhoneNumber = Effect.of(expectedPhoneNumber)
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
     private fun expectSavedStateContactId(contactId: ContactId?) {
         every {
             savedStateHandleMock.get<String>(ContactDetailsScreen.ContactDetailsContactIdKey)

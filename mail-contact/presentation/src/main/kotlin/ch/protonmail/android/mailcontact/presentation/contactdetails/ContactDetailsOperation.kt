@@ -25,6 +25,7 @@ sealed interface ContactDetailsOperation
 internal sealed interface ContactDetailsViewAction : ContactDetailsOperation {
     object OnDeleteClick : ContactDetailsViewAction
     object OnCloseClick : ContactDetailsViewAction
+    data class OnCallClick(val phoneNumber: String) : ContactDetailsViewAction
 }
 
 sealed interface ContactDetailsEvent : ContactDetailsOperation {

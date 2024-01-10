@@ -78,6 +78,7 @@ class ContactDetailsViewModel @Inject constructor(
                         ContactDetailsEvent.CloseContactDetails
                     )
                     ContactDetailsViewAction.OnDeleteClick -> handleOnDeleteClick()
+                    is ContactDetailsViewAction.OnCallClick -> handleOnCallClick(action.phoneNumber)
                 }
             }
         }
@@ -98,6 +99,10 @@ class ContactDetailsViewModel @Inject constructor(
 
     private suspend fun handleOnDeleteClick() {
         emitNewStateFor(ContactDetailsEvent.ContactDeleted)
+    }
+
+    private fun handleOnCallClick(phoneNumber: String) {
+        emitNewStateFor(ContactDetailsEvent.CallPhoneNumber(phoneNumber))
     }
 
     private suspend fun primaryUserId() = primaryUserId.first()
