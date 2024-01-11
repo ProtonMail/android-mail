@@ -39,6 +39,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxSearc
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.StorageLimitState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxStateSampleData
 import ch.protonmail.android.test.annotations.suite.RegressionTest
@@ -219,6 +220,7 @@ internal class MailboxScreenTest {
                 actionMessage = Effect.empty(),
                 deleteDialogState = DeleteDialogState.Hidden,
                 deleteAllDialogState = DeleteDialogState.Hidden,
+                storageLimitState = StorageLimitState.HasEnoughSpace,
                 bottomSheetState = null,
                 error = Effect.empty()
             )

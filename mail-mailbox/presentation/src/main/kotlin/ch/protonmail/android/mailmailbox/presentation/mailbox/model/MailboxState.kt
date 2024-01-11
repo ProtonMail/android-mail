@@ -34,6 +34,7 @@ data class MailboxState(
     val onboardingState: OnboardingState,
     val deleteDialogState: DeleteDialogState,
     val deleteAllDialogState: DeleteDialogState,
+    val storageLimitState: StorageLimitState,
     val bottomSheetState: BottomSheetState?,
     val actionMessage: Effect<TextUiModel>,
     val error: Effect<TextUiModel>

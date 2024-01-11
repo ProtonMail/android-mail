@@ -37,6 +37,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.StorageLimitState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxStateSampleData
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
@@ -190,6 +191,7 @@ internal class MailboxReducerTest(
             deleteDialogState = DeleteDialogState.Hidden,
             deleteAllDialogState = DeleteDialogState.Hidden,
             bottomSheetState = null,
+            storageLimitState = StorageLimitState.None,
             error = Effect.empty()
         )
 

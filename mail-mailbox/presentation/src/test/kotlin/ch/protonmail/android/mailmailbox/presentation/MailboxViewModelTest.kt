@@ -88,6 +88,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.StorageLimitState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.SwipeActionsUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxStateSampleData
@@ -334,6 +335,7 @@ class MailboxViewModelTest {
                 onboardingState = OnboardingState.Hidden,
                 deleteDialogState = DeleteDialogState.Hidden,
                 deleteAllDialogState = DeleteDialogState.Hidden,
+                storageLimitState = StorageLimitState.None,
                 bottomSheetState = null,
                 actionMessage = Effect.empty(),
                 error = Effect.empty()
