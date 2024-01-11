@@ -86,6 +86,7 @@ import me.proton.core.compose.theme.captionWeak
 import me.proton.core.compose.theme.defaultNorm
 import me.proton.core.compose.theme.defaultSmallStrongUnspecified
 import me.proton.core.compose.theme.headlineNorm
+import timber.log.Timber
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -97,12 +98,9 @@ fun ContactDetailsScreen(actions: ContactDetailsScreen.Actions, viewModel: Conta
     val state = rememberAsState(flow = viewModel.state, initial = ContactDetailsViewModel.initialState).value
 
     val customActions = actions.copy(
-        onDeleteClick = {
-            viewModel.submit(ContactDetailsViewAction.OnDeleteClick)
-        },
-        onCallClick = { phoneNumber ->
-            viewModel.submit(ContactDetailsViewAction.OnCallClick(phoneNumber))
-        },
+        onDeleteClick = { viewModel.submit(ContactDetailsViewAction.OnDeleteClick) },
+        onCallClick = { phoneNumber -> viewModel.submit(ContactDetailsViewAction.OnCallClick(phoneNumber)) },
+        onEmailClick = { email -> viewModel.submit(ContactDetailsViewAction.OnEmailClick(email)) },
     )
 
     Scaffold(
@@ -126,6 +124,9 @@ fun ContactDetailsScreen(actions: ContactDetailsScreen.Actions, viewModel: Conta
                             data = Uri.parse("tel:$it}")
                         }
                         context.startActivity(callIntent)
+                    }
+                    ConsumableLaunchedEffect(effect = state.openComposer) {
+                        Timber.d("Open composer with email: $it")
                     }
                 }
 
@@ -234,14 +235,12 @@ private fun ActionItemsRow(
             onClick = { actions.onCallClick(state.contact.defaultPhoneNumber) },
             isEnabled = state.contact.isCallActionEnabled()
         )
-        if (false) {
-            ContactDetailsActionItem(
-                modifier = Modifier.padding(start = ProtonDimens.DefaultSpacing),
-                iconResId = R.drawable.ic_proton_pen_square,
-                onClick = actions.showFeatureMissingSnackbar,
-                isEnabled = false
-            )
-        }
+        ContactDetailsActionItem(
+            modifier = Modifier.padding(start = ProtonDimens.DefaultSpacing),
+            iconResId = R.drawable.ic_proton_pen_square,
+            onClick = { actions.onEmailClick(state.contact.defaultEmail) },
+            isEnabled = state.contact.isEmailActionEnabled()
+        )
         if (false) {
             ContactDetailsActionItem(
                 modifier = Modifier.padding(start = ProtonDimens.DefaultSpacing),
@@ -326,7 +325,7 @@ private fun ContactDetailsItem(
                         if (contactDetailsItem.type is Triggerable) {
                             when (contactDetailsItem.type) {
                                 is Triggerable.Phone -> actions.onCallClick(contactDetailsItem.type.phoneNumber)
-                                is Triggerable.Email -> {}
+                                is Triggerable.Email -> actions.onEmailClick(contactDetailsItem.type.email)
                             }
                         }
                     }
@@ -465,6 +464,7 @@ object ContactDetailsScreen {
         val onEditClick: () -> Unit,
         val onDeleteClick: () -> Unit,
         val onCallClick: (String) -> Unit,
+        val onEmailClick: (String) -> Unit,
         val showFeatureMissingSnackbar: () -> Unit
     ) {
 
@@ -477,6 +477,7 @@ object ContactDetailsScreen {
                 onEditClick = {},
                 onDeleteClick = {},
                 onCallClick = {},
+                onEmailClick = {},
                 showFeatureMissingSnackbar = {}
             )
         }
