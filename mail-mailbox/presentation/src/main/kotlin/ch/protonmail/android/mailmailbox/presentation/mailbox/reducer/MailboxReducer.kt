@@ -33,6 +33,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.StorageLimitState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetOperation
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
@@ -48,6 +49,7 @@ class MailboxReducer @Inject constructor(
     private val unreadFilterReducer: MailboxUnreadFilterReducer,
     private val bottomAppBarReducer: BottomBarReducer,
     private val onboardingReducer: OnboardingReducer,
+    private val storageLimitReducer: StorageLimitReducer,
     private val actionMessageReducer: MailboxActionMessageReducer,
     private val deleteDialogReducer: MailboxDeleteDialogReducer,
     private val bottomSheetReducer: BottomSheetReducer
@@ -60,6 +62,7 @@ class MailboxReducer @Inject constructor(
             unreadFilterState = currentState.toNewUnreadFilterStateFrom(operation),
             bottomAppBarState = currentState.toNewBottomAppBarStateFrom(operation),
             onboardingState = currentState.toNewOnboardingStateFrom(operation),
+            storageLimitState = currentState.toNewStorageLimitStateFrom(operation),
             deleteDialogState = currentState.toNewDeleteActionStateFrom(operation),
             deleteAllDialogState = currentState.toNewDeleteAllActionStateFrom(operation),
             bottomSheetState = currentState.toNewBottomSheetState(operation),
@@ -106,6 +109,14 @@ class MailboxReducer @Inject constructor(
             bottomAppBarReducer.newStateFrom(bottomAppBarState, bottomBarOperation)
         } else {
             bottomAppBarState
+        }
+    }
+
+    private fun MailboxState.toNewStorageLimitStateFrom(operation: MailboxOperation): StorageLimitState {
+        return if (operation is MailboxOperation.AffectingStorageLimit) {
+            storageLimitReducer.newStateFrom(this.storageLimitState, operation)
+        } else {
+            storageLimitState
         }
     }
 
