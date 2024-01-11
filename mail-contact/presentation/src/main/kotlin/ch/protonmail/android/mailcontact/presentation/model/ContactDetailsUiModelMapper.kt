@@ -90,7 +90,8 @@ class ContactDetailsUiModelMapper @Inject constructor(
                             ContactProperty.Email.Type.Other -> R.string.contact_type_other
                         }
                     ),
-                    value = TextUiModel(email.value)
+                    value = TextUiModel(email.value),
+                    type = ContactDetailsItem.ContactDetailType.Triggerable.Email(email.value)
                 )
             )
         }

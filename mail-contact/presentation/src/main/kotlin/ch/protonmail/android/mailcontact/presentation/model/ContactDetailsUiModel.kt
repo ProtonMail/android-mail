@@ -42,6 +42,7 @@ sealed interface ContactDetailsItem {
     sealed interface ContactDetailType {
         sealed interface Triggerable : ContactDetailType {
             data class Phone(val phoneNumber: String) : Triggerable
+            data class Email(val email: String) : Triggerable
         }
         object Undefined : ContactDetailType
     }

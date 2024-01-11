@@ -50,7 +50,7 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 
-class ContactDetailsUiModelMapperTest {
+class  ContactDetailsUiModelMapperTest {
 
     private val getAppLocale = mockk<GetAppLocale> {
         every { this@mockk.invoke() } returns Locale.US
@@ -212,25 +212,29 @@ class ContactDetailsUiModelMapperTest {
                     displayIcon = true,
                     iconResId = R.drawable.ic_proton_at,
                     header = TextUiModel(R.string.contact_type_email),
-                    value = TextUiModel("Mario@protonmail.com")
+                    value = TextUiModel("Mario@protonmail.com"),
+                    type = ContactDetailsItem.ContactDetailType.Triggerable.Email("Mario@protonmail.com")
                 ),
                 ContactDetailsItem.Text(
                     displayIcon = false,
                     iconResId = R.drawable.ic_proton_at,
                     header = TextUiModel(R.string.contact_type_home),
-                    value = TextUiModel("home_email@Mario.protonmail.com")
+                    value = TextUiModel("home_email@Mario.protonmail.com"),
+                    type = ContactDetailsItem.ContactDetailType.Triggerable.Email("home_email@Mario.protonmail.com")
                 ),
                 ContactDetailsItem.Text(
                     displayIcon = false,
                     iconResId = R.drawable.ic_proton_at,
                     header = TextUiModel(R.string.contact_type_work),
-                    value = TextUiModel("work_email@Mario.protonmail.com")
+                    value = TextUiModel("work_email@Mario.protonmail.com"),
+                    type = ContactDetailsItem.ContactDetailType.Triggerable.Email("work_email@Mario.protonmail.com")
                 ),
                 ContactDetailsItem.Text(
                     displayIcon = false,
                     iconResId = R.drawable.ic_proton_at,
                     header = TextUiModel(R.string.contact_type_other),
-                    value = TextUiModel("other_email@Mario.protonmail.com")
+                    value = TextUiModel("other_email@Mario.protonmail.com"),
+                    type = ContactDetailsItem.ContactDetailType.Triggerable.Email("other_email@Mario.protonmail.com")
                 ),
                 /* Phones */
                 ContactDetailsItem.Text(

@@ -326,6 +326,7 @@ private fun ContactDetailsItem(
                         if (contactDetailsItem.type is Triggerable) {
                             when (contactDetailsItem.type) {
                                 is Triggerable.Phone -> actions.onCallClick(contactDetailsItem.type.phoneNumber)
+                                is Triggerable.Email -> {}
                             }
                         }
                     }
