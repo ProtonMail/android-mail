@@ -22,6 +22,7 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetOperation
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetVisibilityEffect
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.DetailMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
@@ -30,7 +31,8 @@ import javax.inject.Inject
 class BottomSheetReducer @Inject constructor(
     private val moveToBottomSheetReducer: MoveToBottomSheetReducer,
     private val labelAsBottomSheetReducer: LabelAsBottomSheetReducer,
-    private val mailboxMoreActionsBottomSheetReducer: MailboxMoreActionsBottomSheetReducer
+    private val mailboxMoreActionsBottomSheetReducer: MailboxMoreActionsBottomSheetReducer,
+    private val detailMoreActionsBottomSheetReducer: DetailMoreActionsBottomSheetReducer
 ) {
 
     fun newStateFrom(currentState: BottomSheetState?, operation: BottomSheetOperation): BottomSheetState? {
@@ -43,6 +45,9 @@ class BottomSheetReducer @Inject constructor(
 
             is MailboxMoreActionsBottomSheetState.MailboxMoreActionsBottomSheetOperation ->
                 mailboxMoreActionsBottomSheetReducer.newStateFrom(currentState, operation)
+
+            is DetailMoreActionsBottomSheetState.MessageDetailMoreActionsBottomSheetEvent.DataLoaded ->
+                detailMoreActionsBottomSheetReducer.newStateFrom(currentState, operation)
 
             is BottomSheetOperation.Dismiss -> BottomSheetState(null, Effect.of(BottomSheetVisibilityEffect.Hide))
             is BottomSheetOperation.Requested -> BottomSheetState(null, Effect.of(BottomSheetVisibilityEffect.Show))
