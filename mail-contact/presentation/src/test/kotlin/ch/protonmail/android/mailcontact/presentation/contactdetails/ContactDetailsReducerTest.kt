@@ -116,6 +116,13 @@ class ContactDetailsReducerTest(
                 expectedState = loadedContactState.copy(
                     callPhoneNumber = Effect.of("123456789")
                 )
+            ),
+            TestInput(
+                currentState = loadedContactState,
+                event = ContactDetailsEvent.EmailAddress("test@proton.me"),
+                expectedState = loadedContactState.copy(
+                    openComposer = Effect.of("test@proton.me")
+                )
             )
         )
 

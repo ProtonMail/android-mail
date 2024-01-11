@@ -32,6 +32,7 @@ class ContactDetailsReducer @Inject constructor() {
             is ContactDetailsEvent.CloseContactDetails -> reduceCloseContactDetails(currentState)
             is ContactDetailsEvent.ContactDeleted -> reduceContactDeleted(currentState)
             is ContactDetailsEvent.CallPhoneNumber -> reduceCallPhoneNumber(currentState, event)
+            is ContactDetailsEvent.EmailAddress -> reduceComposeEmail(currentState, event)
         }
     }
 
@@ -81,6 +82,19 @@ class ContactDetailsReducer @Inject constructor() {
         return when (currentState) {
             is ContactDetailsState.Data -> currentState.copy(
                 callPhoneNumber = Effect.of(event.phoneNumber)
+            )
+
+            is ContactDetailsState.Loading -> currentState
+        }
+    }
+
+    private fun reduceComposeEmail(
+        currentState: ContactDetailsState,
+        event: ContactDetailsEvent.EmailAddress
+    ): ContactDetailsState {
+        return when (currentState) {
+            is ContactDetailsState.Data -> currentState.copy(
+                openComposer = Effect.of(event.email)
             )
 
             is ContactDetailsState.Loading -> currentState

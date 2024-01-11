@@ -37,4 +37,5 @@ sealed interface ContactDetailsEvent : ContactDetailsOperation {
     object ContactDeleted : ContactDetailsEvent
     object CloseContactDetails : ContactDetailsEvent
     data class CallPhoneNumber(val phoneNumber: String) : ContactDetailsEvent
+    data class EmailAddress(val email: String) : ContactDetailsEvent
 }
