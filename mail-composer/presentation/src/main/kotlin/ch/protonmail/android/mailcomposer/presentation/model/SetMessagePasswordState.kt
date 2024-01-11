@@ -25,9 +25,11 @@ sealed class SetMessagePasswordState {
     object Loading : SetMessagePasswordState()
 
     data class Data(
-        val messagePassword: String,
-        val messagePasswordHint: String,
-        val shouldShowEditingButtons: Boolean,
+        val initialMessagePasswordValue: String,
+        val initialMessagePasswordHintValue: String,
+        val hasMessagePasswordError: Boolean,
+        val hasRepeatedMessagePasswordError: Boolean,
+        val isInEditMode: Boolean,
         val exitScreen: Effect<Unit>
     ) : SetMessagePasswordState()
 }

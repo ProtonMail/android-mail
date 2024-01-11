@@ -32,6 +32,9 @@ class SetMessagePasswordReducer @Inject constructor() {
     ): SetMessagePasswordState = when (event) {
         is MessagePasswordOperation.Event.ExitScreen -> newStateForExitScreen(currentState)
         is MessagePasswordOperation.Event.InitializeScreen -> newStateForPrefillInputFields(event)
+        is MessagePasswordOperation.Event.PasswordValidated -> newStateForPasswordValidated(currentState, event)
+        is MessagePasswordOperation.Event.RepeatedPasswordValidated ->
+            newStateForRepeatedPasswordValidated(currentState, event)
     }
 
     private fun newStateForExitScreen(currentState: SetMessagePasswordState): SetMessagePasswordState =
@@ -44,9 +47,29 @@ class SetMessagePasswordReducer @Inject constructor() {
     private fun newStateForPrefillInputFields(
         event: MessagePasswordOperation.Event.InitializeScreen
     ): SetMessagePasswordState = SetMessagePasswordState.Data(
-        messagePassword = event.messagePassword?.password ?: EMPTY_STRING,
-        messagePasswordHint = event.messagePassword?.passwordHint ?: EMPTY_STRING,
-        shouldShowEditingButtons = event.messagePassword != null,
+        initialMessagePasswordValue = event.messagePassword?.password ?: EMPTY_STRING,
+        initialMessagePasswordHintValue = event.messagePassword?.passwordHint ?: EMPTY_STRING,
+        hasMessagePasswordError = false,
+        hasRepeatedMessagePasswordError = false,
+        isInEditMode = event.messagePassword != null,
         exitScreen = Effect.empty()
     )
+
+    private fun newStateForPasswordValidated(
+        currentState: SetMessagePasswordState,
+        event: MessagePasswordOperation.Event.PasswordValidated
+    ) = if (currentState is SetMessagePasswordState.Data) {
+        currentState.copy(hasMessagePasswordError = event.hasMessagePasswordError)
+    } else {
+        currentState
+    }
+
+    private fun newStateForRepeatedPasswordValidated(
+        currentState: SetMessagePasswordState,
+        event: MessagePasswordOperation.Event.RepeatedPasswordValidated
+    ) = if (currentState is SetMessagePasswordState.Data) {
+        currentState.copy(hasRepeatedMessagePasswordError = event.hasRepeatedMessagePasswordError)
+    } else {
+        currentState
+    }
 }

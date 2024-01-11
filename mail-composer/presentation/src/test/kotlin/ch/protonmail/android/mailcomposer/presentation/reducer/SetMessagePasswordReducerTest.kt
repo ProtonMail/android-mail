@@ -56,9 +56,11 @@ class SetMessagePasswordReducerTest(
                 currentState = SetMessagePasswordState.Loading,
                 operation = MessagePasswordOperation.Event.InitializeScreen(messagePassword),
                 expectedState = SetMessagePasswordState.Data(
-                    messagePassword = Password,
-                    messagePasswordHint = Hint,
-                    shouldShowEditingButtons = true,
+                    initialMessagePasswordValue = Password,
+                    initialMessagePasswordHintValue = Hint,
+                    hasMessagePasswordError = false,
+                    hasRepeatedMessagePasswordError = false,
+                    isInEditMode = true,
                     exitScreen = Effect.empty()
                 )
             ),
@@ -66,19 +68,71 @@ class SetMessagePasswordReducerTest(
                 currentState = SetMessagePasswordState.Loading,
                 operation = MessagePasswordOperation.Event.InitializeScreen(null),
                 expectedState = SetMessagePasswordState.Data(
-                    messagePassword = EMPTY_STRING,
-                    messagePasswordHint = EMPTY_STRING,
-                    shouldShowEditingButtons = false,
+                    initialMessagePasswordValue = EMPTY_STRING,
+                    initialMessagePasswordHintValue = EMPTY_STRING,
+                    hasMessagePasswordError = false,
+                    hasRepeatedMessagePasswordError = false,
+                    isInEditMode = false,
                     exitScreen = Effect.empty()
                 )
             ),
             TestInput(
                 currentState = SetMessagePasswordState.Data(
-                    Password, Hint, shouldShowEditingButtons = true, exitScreen = Effect.empty()
+                    initialMessagePasswordValue = Password,
+                    initialMessagePasswordHintValue = Hint,
+                    hasMessagePasswordError = false,
+                    hasRepeatedMessagePasswordError = false,
+                    isInEditMode = true,
+                    exitScreen = Effect.empty()
                 ),
                 operation = MessagePasswordOperation.Event.ExitScreen,
                 expectedState = SetMessagePasswordState.Data(
-                    Password, Hint, shouldShowEditingButtons = true, exitScreen = Effect.of(Unit)
+                    initialMessagePasswordValue = Password,
+                    initialMessagePasswordHintValue = Hint,
+                    hasMessagePasswordError = false,
+                    hasRepeatedMessagePasswordError = false,
+                    isInEditMode = true,
+                    exitScreen = Effect.of(Unit)
+                )
+            ),
+            TestInput(
+                currentState = SetMessagePasswordState.Data(
+                    initialMessagePasswordValue = EMPTY_STRING,
+                    initialMessagePasswordHintValue = EMPTY_STRING,
+                    hasMessagePasswordError = false,
+                    hasRepeatedMessagePasswordError = false,
+                    isInEditMode = false,
+                    exitScreen = Effect.empty()
+                ),
+                operation = MessagePasswordOperation.Event.PasswordValidated(hasMessagePasswordError = true),
+                expectedState = SetMessagePasswordState.Data(
+                    initialMessagePasswordValue = EMPTY_STRING,
+                    initialMessagePasswordHintValue = EMPTY_STRING,
+                    hasMessagePasswordError = true,
+                    hasRepeatedMessagePasswordError = false,
+                    isInEditMode = false,
+                    exitScreen = Effect.empty()
+                )
+            ),
+            TestInput(
+                currentState = SetMessagePasswordState.Data(
+                    initialMessagePasswordValue = EMPTY_STRING,
+                    initialMessagePasswordHintValue = EMPTY_STRING,
+                    hasMessagePasswordError = false,
+                    hasRepeatedMessagePasswordError = false,
+                    isInEditMode = false,
+                    exitScreen = Effect.empty()
+                ),
+                operation = MessagePasswordOperation.Event.RepeatedPasswordValidated(
+                    hasRepeatedMessagePasswordError = true
+                ),
+                expectedState = SetMessagePasswordState.Data(
+                    initialMessagePasswordValue = EMPTY_STRING,
+                    initialMessagePasswordHintValue = EMPTY_STRING,
+                    hasMessagePasswordError = false,
+                    hasRepeatedMessagePasswordError = true,
+                    isInEditMode = false,
+                    exitScreen = Effect.empty()
                 )
             )
         )

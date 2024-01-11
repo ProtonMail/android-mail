@@ -50,8 +50,6 @@ import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailcomposer.presentation.model.MessagePasswordOperation
 import ch.protonmail.android.mailcomposer.presentation.model.SetMessagePasswordState
-import ch.protonmail.android.mailcomposer.presentation.ui.SetMessagePasswordScreen.MAX_PASSWORD_LENGTH
-import ch.protonmail.android.mailcomposer.presentation.ui.SetMessagePasswordScreen.MIN_PASSWORD_LENGTH
 import ch.protonmail.android.mailcomposer.presentation.viewmodel.SetMessagePasswordViewModel
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import kotlinx.serialization.Serializable
@@ -105,9 +103,17 @@ fun SetMessagePasswordScreen(
                     modifier = Modifier.padding(paddingValues),
                     state = state as SetMessagePasswordState.Data,
                     actions = SetMessagePasswordContent.Actions(
+                        validatePassword = { password ->
+                            viewModel.submit(MessagePasswordOperation.Action.ValidatePassword(password))
+                        },
+                        validateRepeatedPassword = { password, repeatedPassword ->
+                            viewModel.submit(
+                                MessagePasswordOperation.Action.ValidateRepeatedPassword(password, repeatedPassword)
+                            )
+                        },
                         onApplyButtonClick = { messagePassword, messagePasswordHint ->
                             viewModel.submit(
-                                if ((state as SetMessagePasswordState.Data).shouldShowEditingButtons) {
+                                if ((state as SetMessagePasswordState.Data).isInEditMode) {
                                     MessagePasswordOperation.Action.UpdatePassword(messagePassword, messagePasswordHint)
                                 } else {
                                     MessagePasswordOperation.Action.ApplyPassword(messagePassword, messagePasswordHint)
@@ -141,35 +147,33 @@ fun SetMessagePasswordContent(
             .verticalScroll(rememberScrollState(), reverseScrolling = true)
             .padding(ProtonDimens.DefaultSpacing)
     ) {
-        var messagePassword by rememberSaveable { mutableStateOf(state.messagePassword) }
-        var repeatedMessagePassword by rememberSaveable { mutableStateOf(state.messagePassword) }
-        var messagePasswordHint by rememberSaveable { mutableStateOf(state.messagePasswordHint) }
-        var isMessagePasswordError by rememberSaveable { mutableStateOf(false) }
-        var isRepeatedMessagePasswordError by rememberSaveable { mutableStateOf(false) }
-        var isMessagePasswordFieldActivated by rememberSaveable { mutableStateOf(false) }
-        var isRepeatedMessagePasswordFieldActivated by rememberSaveable { mutableStateOf(false) }
+        var messagePassword by rememberSaveable { mutableStateOf(state.initialMessagePasswordValue) }
+        var repeatedMessagePassword by rememberSaveable { mutableStateOf(state.initialMessagePasswordValue) }
+        var messagePasswordHint by rememberSaveable { mutableStateOf(state.initialMessagePasswordHintValue) }
+        var isMessagePasswordFieldActivated by rememberSaveable { mutableStateOf(state.isInEditMode) }
+        var isRepeatedMessagePasswordFieldActivated by rememberSaveable { mutableStateOf(state.isInEditMode) }
 
         fun isMessagePasswordError() {
-            isMessagePasswordError = messagePassword.length !in MIN_PASSWORD_LENGTH..MAX_PASSWORD_LENGTH
+            actions.validatePassword(messagePassword)
         }
         fun isRepeatedMessagePasswordError() {
-            isRepeatedMessagePasswordError = messagePassword != repeatedMessagePassword
+            actions.validateRepeatedPassword(messagePassword, repeatedMessagePassword)
         }
         fun isApplyButtonEnabled() = isMessagePasswordFieldActivated && isRepeatedMessagePasswordFieldActivated &&
-            !isMessagePasswordError && !isRepeatedMessagePasswordError
+            !state.hasMessagePasswordError && !state.hasRepeatedMessagePasswordError
 
         MessagePasswordInfo()
         MessagePasswordSpacer()
         PasswordInputField(
             titleRes = R.string.set_message_password_label,
-            supportingTextRes = if (isMessagePasswordError) {
+            supportingTextRes = if (state.hasMessagePasswordError) {
                 R.string.set_message_password_supporting_error_text
             } else {
                 R.string.set_message_password_supporting_text
             },
             value = messagePassword,
             showTrailingIcon = true,
-            isError = isMessagePasswordError,
+            isError = state.hasMessagePasswordError,
             onValueChange = {
                 messagePassword = it
                 isMessagePasswordError()
@@ -184,14 +188,14 @@ fun SetMessagePasswordContent(
         MessagePasswordSpacer()
         PasswordInputField(
             titleRes = R.string.set_message_password_label_repeat,
-            supportingTextRes = if (isRepeatedMessagePasswordError) {
+            supportingTextRes = if (state.hasRepeatedMessagePasswordError) {
                 R.string.set_message_password_supporting_error_text_repeat
             } else {
                 R.string.set_message_password_supporting_text_repeat
             },
             value = repeatedMessagePassword,
             showTrailingIcon = true,
-            isError = isRepeatedMessagePasswordError,
+            isError = state.hasRepeatedMessagePasswordError,
             onValueChange = {
                 repeatedMessagePassword = it
                 isRepeatedMessagePasswordError()
@@ -215,7 +219,7 @@ fun SetMessagePasswordContent(
         )
         MessagePasswordSpacer(height = ProtonDimens.LargerSpacing)
         MessagePasswordButtons(
-            shouldShowEditingButtons = state.shouldShowEditingButtons,
+            shouldShowEditingButtons = state.isInEditMode,
             isApplyButtonEnabled = isApplyButtonEnabled(),
             onApplyButtonClick = { actions.onApplyButtonClick(messagePassword, messagePasswordHint) },
             onRemoveButtonClick = actions.onRemoveButtonClick
@@ -292,8 +296,6 @@ fun MessagePasswordSpacer(modifier: Modifier = Modifier, height: Dp = ProtonDime
 }
 
 object SetMessagePasswordScreen {
-    const val MIN_PASSWORD_LENGTH = 4
-    const val MAX_PASSWORD_LENGTH = 21
 
     const val InputParamsKey = "InputParams"
 
@@ -306,6 +308,8 @@ object SetMessagePasswordScreen {
 
 object SetMessagePasswordContent {
     data class Actions(
+        val validatePassword: (String) -> Unit,
+        val validateRepeatedPassword: (String, String) -> Unit,
         val onApplyButtonClick: (String, String?) -> Unit,
         val onRemoveButtonClick: () -> Unit,
         val onBackClick: () -> Unit
