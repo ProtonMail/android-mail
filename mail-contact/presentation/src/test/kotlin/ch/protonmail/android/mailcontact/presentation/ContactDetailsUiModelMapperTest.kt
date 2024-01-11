@@ -50,7 +50,7 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 
-class  ContactDetailsUiModelMapperTest {
+class ContactDetailsUiModelMapperTest {
 
     private val getAppLocale = mockk<GetAppLocale> {
         every { this@mockk.invoke() } returns Locale.US
@@ -202,6 +202,7 @@ class  ContactDetailsUiModelMapperTest {
         val expected = ContactDetailsUiModel(
             id = ContactSample.Mario.id,
             defaultPhoneNumber = "1231231235",
+            defaultEmail = "Mario@protonmail.com",
             displayName = "Mario@protonmail.com",
             firstName = "Mario First Name",
             lastName = "Mario Last Name",

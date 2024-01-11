@@ -26,6 +26,7 @@ import me.proton.core.contact.domain.entity.ContactId
 data class ContactDetailsUiModel(
     val id: ContactId,
     val defaultPhoneNumber: String = "",
+    val defaultEmail: String = "",
     val displayName: String,
     val firstName: String = "",
     val lastName: String = "",
@@ -35,6 +36,7 @@ data class ContactDetailsUiModel(
     val contactGroups: ContactDetailsGroupsItem
 ) {
     fun isCallActionEnabled() = defaultPhoneNumber.isNotEmpty()
+    fun isEmailActionEnabled() = defaultEmail.isNotEmpty()
 }
 
 sealed interface ContactDetailsItem {

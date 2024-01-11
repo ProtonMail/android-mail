@@ -36,9 +36,11 @@ class ContactDetailsUiModelMapper @Inject constructor(
     fun toContactDetailsUiModel(decryptedContact: DecryptedContact): ContactDetailsUiModel {
         val groupLabelList = getGroupLabelList(decryptedContact)
         val defaultPhoneNumber = decryptedContact.telephones.firstOrNull()?.text ?: ""
+        val defaultEmail = decryptedContact.emails.firstOrNull()?.value ?: ""
         return ContactDetailsUiModel(
             id = decryptedContact.id,
             defaultPhoneNumber = defaultPhoneNumber,
+            defaultEmail = defaultEmail,
             displayName = decryptedContact.formattedName?.value ?: "",
             firstName = decryptedContact.structuredName?.given ?: "",
             lastName = decryptedContact.structuredName?.family ?: "",
