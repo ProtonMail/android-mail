@@ -20,6 +20,7 @@ package ch.protonmail.android.mailmessage.presentation.model.bottomsheet
 
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModelWithSelectedState
@@ -100,4 +101,29 @@ sealed interface MailboxMoreActionsBottomSheetState : BottomSheetContentState {
     sealed interface MailboxMoreActionsBottomSheetEvent : MailboxMoreActionsBottomSheetOperation {
         data class ActionData(val actionUiModels: ImmutableList<ActionUiModel>) : MailboxMoreActionsBottomSheetEvent
     }
+}
+
+sealed interface DetailMoreActionsBottomSheetState : BottomSheetContentState {
+    data class Data(
+        val messageDataUiModel: MessageDataUiModel,
+        val replyActionsUiModel: ImmutableList<ActionUiModel>
+    ) : DetailMoreActionsBottomSheetState
+
+    object Loading : DetailMoreActionsBottomSheetState
+
+    sealed interface MessageDetailMoreActionsBottomSheetOperation : BottomSheetOperation
+    sealed interface MessageDetailMoreActionsBottomSheetEvent : MessageDetailMoreActionsBottomSheetOperation {
+        data class DataLoaded(
+            val messageSender: String,
+            val messageSubject: String,
+            val messageId: String,
+            val participantsCount: Int
+        ) : MessageDetailMoreActionsBottomSheetEvent
+    }
+
+    data class MessageDataUiModel(
+        val headerSubjectText: TextUiModel,
+        val headerDescriptionText: TextUiModel,
+        val messageId: String
+    )
 }

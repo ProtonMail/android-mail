@@ -296,7 +296,8 @@ class MessageDetailViewModelTest {
         BottomSheetReducer(
             MoveToBottomSheetReducer(),
             LabelAsBottomSheetReducer(),
-            MailboxMoreActionsBottomSheetReducer()
+            MailboxMoreActionsBottomSheetReducer(),
+            DetailMoreActionsBottomSheetReducer(DetailMoreActionsBottomSheetUiMapper())
         ),
         MessageDeleteDialogReducer()
     )
