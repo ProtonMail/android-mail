@@ -86,7 +86,6 @@ import me.proton.core.compose.theme.captionWeak
 import me.proton.core.compose.theme.defaultNorm
 import me.proton.core.compose.theme.defaultSmallStrongUnspecified
 import me.proton.core.compose.theme.headlineNorm
-import timber.log.Timber
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -126,7 +125,7 @@ fun ContactDetailsScreen(actions: ContactDetailsScreen.Actions, viewModel: Conta
                         context.startActivity(callIntent)
                     }
                     ConsumableLaunchedEffect(effect = state.openComposer) {
-                        Timber.d("Open composer with email: $it")
+                        actions.navigateToComposer(it)
                     }
                 }
 
@@ -465,7 +464,8 @@ object ContactDetailsScreen {
         val onDeleteClick: () -> Unit,
         val onCallClick: (String) -> Unit,
         val onEmailClick: (String) -> Unit,
-        val showFeatureMissingSnackbar: () -> Unit
+        val showFeatureMissingSnackbar: () -> Unit,
+        val navigateToComposer: (String) -> Unit
     ) {
 
         companion object {
@@ -478,7 +478,8 @@ object ContactDetailsScreen {
                 onDeleteClick = {},
                 onCallClick = {},
                 onEmailClick = {},
-                showFeatureMissingSnackbar = {}
+                showFeatureMissingSnackbar = {},
+                navigateToComposer = {}
             )
         }
     }

@@ -82,7 +82,9 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
     val keyboardController = LocalSoftwareKeyboardController.current
     val state by viewModel.state.collectAsState()
     var recipientsOpen by rememberSaveable { mutableStateOf(false) }
-    var focusedField by rememberSaveable { mutableStateOf(FocusedFieldType.TO) }
+    var focusedField by rememberSaveable {
+        mutableStateOf(if (state.fields.to.isEmpty()) FocusedFieldType.TO else FocusedFieldType.BODY)
+    }
     val snackbarHostState = remember { ProtonSnackbarHostState() }
     val bottomSheetType = rememberSaveable { mutableStateOf(BottomSheetType.AddAttachments) }
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
@@ -333,6 +335,7 @@ object ComposerScreen {
 
     const val DraftMessageIdKey = "draft_message_id"
     const val SerializedDraftActionKey = "serialized_draft_action_key"
+    const val PrefilledRecipientKey = "passed_contact_recipient_key"
 
     data class Actions(
         val onCloseComposerClick: () -> Unit,

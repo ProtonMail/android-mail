@@ -165,7 +165,9 @@ class ComposerViewModelTest {
     private val getComposerSenderAddresses = mockk<GetComposerSenderAddresses> {
         coEvery { this@mockk.invoke() } returns GetComposerSenderAddresses.Error.UpgradeToChangeSender.left()
     }
-    private val savedStateHandle = mockk<SavedStateHandle>()
+    private val savedStateHandle = mockk<SavedStateHandle> {
+        every { get<String>(ComposerScreen.PrefilledRecipientKey) } returns null
+    }
     private val getDecryptedDraftFields = mockk<GetDecryptedDraftFields>()
     private val styleQuotedHtml = mockk<StyleQuotedHtml>()
     private val getLocalMessageDecrypted = mockk<GetLocalMessageDecrypted>()
@@ -1824,6 +1826,36 @@ class ComposerViewModelTest {
         }
     }
 
+    @Test
+    fun `should set recipient to state when recipient was given as an input`() = runTest {
+        // Given
+        val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val expectedRecipient = RecipientSample.John
+        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+
+        expectNoInputDraftAction()
+        expectNoInputDraftMessageId()
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
+        expectedMessageId { expectedMessageId }
+        expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        expectContacts()
+        mockParticipantMapper()
+        expectInputContactRecipient(expectedRecipient.address)
+        expectStoreDraftRecipientsSucceeds(
+            expectedMessageId,
+            expectedSenderEmail,
+            expectedUserId,
+            listOf(expectedRecipient)
+        )
+        expectStartDraftSync(expectedUserId, expectedMessageId)
+        expectObservedMessageAttachments(expectedUserId, expectedMessageId)
+        expectObserveMessageSendingError(expectedUserId, expectedMessageId)
+        expectObserveMessagePassword(expectedUserId, expectedMessageId)
+
+        assertEquals(viewModel.state.value.fields.to.first(), RecipientUiModel.Valid(expectedRecipient.address))
+    }
+
     @AfterTest
     fun tearDown() {
         unmockkObject(ComposerDraftState.Companion)
@@ -1887,6 +1919,10 @@ class ComposerViewModelTest {
 
     private fun expectNoInputDraftMessageId() {
         every { savedStateHandle.get<String>(ComposerScreen.DraftMessageIdKey) } returns null
+    }
+
+    private fun expectInputContactRecipient(recipient: String) {
+        every { savedStateHandle.get<String>(ComposerScreen.PrefilledRecipientKey) } returns recipient
     }
 
     private fun expectDraftBodyWithSignature() = DraftBody(

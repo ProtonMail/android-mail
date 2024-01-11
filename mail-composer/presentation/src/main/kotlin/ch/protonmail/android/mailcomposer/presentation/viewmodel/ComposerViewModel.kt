@@ -66,11 +66,11 @@ import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerEvent
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerOperation
+import ch.protonmail.android.mailcomposer.presentation.model.ContactSuggestionUiModel
+import ch.protonmail.android.mailcomposer.presentation.model.ContactSuggestionsField
 import ch.protonmail.android.mailcomposer.presentation.model.DraftUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
-import ch.protonmail.android.mailcomposer.presentation.model.ContactSuggestionUiModel
-import ch.protonmail.android.mailcomposer.presentation.model.ContactSuggestionsField
 import ch.protonmail.android.mailcomposer.presentation.reducer.ComposerReducer
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen
 import ch.protonmail.android.mailcomposer.presentation.usecase.FormatMessageSendingError
@@ -150,7 +150,11 @@ class ComposerViewModel @Inject constructor(
     private val searchContactsJobs = mutableMapOf<ContactSuggestionsField, Job>()
     private val mutableState = MutableStateFlow(
         ComposerDraftState.initial(
-            MessageId(savedStateHandle.get<String>(ComposerScreen.DraftMessageIdKey) ?: provideNewDraftId().id)
+            MessageId(savedStateHandle.get<String>(ComposerScreen.DraftMessageIdKey) ?: provideNewDraftId().id),
+            // setting the passed recipient directly here in the initial value makes the UX a bit smoother
+            to = savedStateHandle.get<String>(ComposerScreen.PrefilledRecipientKey)?.let {
+                listOf(RecipientUiModel.Valid(it))
+            } ?: emptyList(),
         )
     )
     val state: StateFlow<ComposerDraftState> = mutableState
@@ -159,6 +163,7 @@ class ComposerViewModel @Inject constructor(
         val inputDraftId = savedStateHandle.get<String>(ComposerScreen.DraftMessageIdKey)
         val draftAction = savedStateHandle.get<String>(ComposerScreen.SerializedDraftActionKey)
             ?.deserialize<DraftAction>()
+        val recipientAddress = savedStateHandle.get<String>(ComposerScreen.PrefilledRecipientKey)
 
         primaryUserId.onEach { userId ->
             getPrimaryAddress(userId)
@@ -168,6 +173,11 @@ class ComposerViewModel @Inject constructor(
                     val isCreatingNewEmptyDraft = inputDraftId == null && draftAction == null
                     if (isCreatingNewEmptyDraft) {
                         injectAddressSignature(SenderEmail(it.email))
+                    }
+                    recipientAddress?.let { recipient ->
+                        emitNewStateFor(
+                            onToChanged(ComposerAction.RecipientsToChanged(listOf(RecipientUiModel.Valid(recipient))))
+                        )
                     }
                 }
         }.launchIn(viewModelScope)
@@ -275,6 +285,7 @@ class ComposerViewModel @Inject constructor(
                         action.searchTerm,
                         action.suggestionsField
                     )
+
                     is ComposerAction.ContactSuggestionsDismissed -> emitNewStateFor(action)
                     is ComposerAction.OnBottomSheetOptionSelected -> emitNewStateFor(action)
                     is ComposerAction.OnAddAttachments -> emitNewStateFor(action)

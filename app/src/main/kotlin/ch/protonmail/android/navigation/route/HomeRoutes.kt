@@ -29,6 +29,7 @@ import ch.protonmail.android.feature.account.SignOutAccountDialog
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen
 import ch.protonmail.android.mailcomposer.presentation.ui.SetMessagePasswordScreen
+import ch.protonmail.android.mailcontact.presentation.contactdetails.ContactDetailsScreen
 import ch.protonmail.android.mailcontact.presentation.contactlist.ContactListScreen
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetail
@@ -47,7 +48,6 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailsettings.presentation.settings.MainSettingsScreen
 import ch.protonmail.android.navigation.model.Destination
 import ch.protonmail.android.navigation.model.SavedStateKey
-import ch.protonmail.android.mailcontact.presentation.contactdetails.ContactDetailsScreen
 import me.proton.core.compose.navigation.get
 import me.proton.core.contact.domain.entity.ContactId
 import me.proton.core.domain.entity.UserId
@@ -170,6 +170,7 @@ internal fun NavGraphBuilder.addComposer(
     composable(route = Destination.Screen.Composer.route) { ComposerScreen(actions) }
     composable(route = Destination.Screen.EditDraftComposer.route) { ComposerScreen(actions) }
     composable(route = Destination.Screen.MessageActionComposer.route) { ComposerScreen(actions) }
+    composable(route = Destination.Screen.ContactActionComposer.route) { ComposerScreen(actions) }
 }
 
 internal fun NavGraphBuilder.addSignOutAccountDialog(navController: NavHostController) {
@@ -412,9 +413,7 @@ internal fun NavGraphBuilder.addContactDetails(
     showFeatureMissingSnackbar: () -> Unit
 ) {
     val actions = ContactDetailsScreen.Actions.Empty.copy(
-        onBackClick = {
-            navController.popBackStack()
-        },
+        onBackClick = { navController.popBackStack() },
         exitWithSuccessMessage = { message ->
             navController.popBackStack()
             showSuccessSnackbar(message)
@@ -423,12 +422,9 @@ internal fun NavGraphBuilder.addContactDetails(
             navController.popBackStack()
             showErrorSnackbar(message)
         },
-        onEditClick = {
-            showFeatureMissingSnackbar()
-        },
-        showFeatureMissingSnackbar = {
-            showFeatureMissingSnackbar()
-        }
+        onEditClick = { showFeatureMissingSnackbar() },
+        showFeatureMissingSnackbar = { showFeatureMissingSnackbar() },
+        navigateToComposer = { navController.navigate(Destination.Screen.ContactActionComposer(it)) }
     )
     composable(route = Destination.Screen.ContactDetails.route) {
         ContactDetailsScreen(actions)
