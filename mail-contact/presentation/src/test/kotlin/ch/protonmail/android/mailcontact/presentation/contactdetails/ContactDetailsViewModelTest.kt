@@ -212,6 +212,37 @@ class ContactDetailsViewModelTest {
         }
     }
 
+    @Test
+    fun `when OnEmailClick action is submitted, then open composer is emitted`() = runTest {
+        // Given
+        val expectedMail = "test@proton.me"
+        val expectedDecryptedContact = DecryptedContact(testContactId)
+        val expectedContactDetailsUiModel = ContactDetailsPreviewData.contactDetailsSampleData.copy(
+            defaultEmail = expectedMail
+        )
+        expectDecryptedContact(testUserId, testContactId, expectedDecryptedContact)
+        expectContactDetailsUiModel(expectedDecryptedContact, expectedContactDetailsUiModel)
+
+        expectSavedStateContactId(testContactId)
+
+        // When
+        contactDetailsViewModel.state.test {
+            // Then
+            awaitItem() // Contact was loaded
+
+            contactDetailsViewModel.submit(ContactDetailsViewAction.OnEmailClick(expectedMail))
+
+            val actual = awaitItem()
+
+            val expected = ContactDetailsState.Data(
+                contact = expectedContactDetailsUiModel,
+                openComposer = Effect.of(expectedMail)
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
     private fun expectSavedStateContactId(contactId: ContactId?) {
         every {
             savedStateHandleMock.get<String>(ContactDetailsScreen.ContactDetailsContactIdKey)

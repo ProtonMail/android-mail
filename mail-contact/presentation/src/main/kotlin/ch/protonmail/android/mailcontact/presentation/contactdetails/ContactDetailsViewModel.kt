@@ -74,11 +74,10 @@ class ContactDetailsViewModel @Inject constructor(
         viewModelScope.launch {
             actionMutex.withLock {
                 when (action) {
-                    ContactDetailsViewAction.OnCloseClick -> emitNewStateFor(
-                        ContactDetailsEvent.CloseContactDetails
-                    )
+                    ContactDetailsViewAction.OnCloseClick -> emitNewStateFor(ContactDetailsEvent.CloseContactDetails)
                     ContactDetailsViewAction.OnDeleteClick -> handleOnDeleteClick()
                     is ContactDetailsViewAction.OnCallClick -> handleOnCallClick(action.phoneNumber)
+                    is ContactDetailsViewAction.OnEmailClick -> handleOnEmailClick(action)
                 }
             }
         }
@@ -105,6 +104,10 @@ class ContactDetailsViewModel @Inject constructor(
         emitNewStateFor(ContactDetailsEvent.CallPhoneNumber(phoneNumber))
     }
 
+    private fun handleOnEmailClick(action: ContactDetailsViewAction.OnEmailClick) {
+        emitNewStateFor(ContactDetailsEvent.EmailAddress(action.email))
+    }
+
     private suspend fun primaryUserId() = primaryUserId.first()
 
     private fun emitNewStateFor(event: ContactDetailsEvent) {
@@ -113,6 +116,7 @@ class ContactDetailsViewModel @Inject constructor(
     }
 
     companion object {
+
         val initialState: ContactDetailsState = ContactDetailsState.Loading()
     }
 }
