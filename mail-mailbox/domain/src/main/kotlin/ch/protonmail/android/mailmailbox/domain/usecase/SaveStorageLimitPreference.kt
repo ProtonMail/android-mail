@@ -16,24 +16,18 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.data
+package ch.protonmail.android.mailmailbox.domain.usecase
 
-import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
+import ch.protonmail.android.mailmailbox.domain.repository.StorageLimitRepository
 import javax.inject.Inject
 
-class MailMailboxDataStoreProvider @Inject constructor(
-    context: Context
+class SaveStorageLimitPreference @Inject constructor(
+    private val storageLimitRepository: StorageLimitRepository
 ) {
 
-    private val Context.onboardingDataStore: DataStore<Preferences> by preferencesDataStore(
-        name = "onboardingPrefDataStore"
-    )
-    private val Context.storageLimitPrefDataStore: DataStore<Preferences> by preferencesDataStore(
-        name = "storageLimitPrefDataStore"
-    )
-    val onboardingDataStore = context.onboardingDataStore
-    val storageLimitPrefDataStore = context.storageLimitPrefDataStore
+    suspend fun saveFirstLimitWarningPreference(warningConfirmed: Boolean) =
+        storageLimitRepository.saveFirstLimitWarningPreference(warningConfirmed)
+
+    suspend fun saveSecondLimitWarningPreference(warningConfirmed: Boolean) =
+        storageLimitRepository.saveSecondLimitWarningPreference(warningConfirmed)
 }

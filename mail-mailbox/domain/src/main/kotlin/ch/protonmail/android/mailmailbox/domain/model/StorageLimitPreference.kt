@@ -16,24 +16,9 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.data
+package ch.protonmail.android.mailmailbox.domain.model
 
-import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
-import javax.inject.Inject
-
-class MailMailboxDataStoreProvider @Inject constructor(
-    context: Context
-) {
-
-    private val Context.onboardingDataStore: DataStore<Preferences> by preferencesDataStore(
-        name = "onboardingPrefDataStore"
-    )
-    private val Context.storageLimitPrefDataStore: DataStore<Preferences> by preferencesDataStore(
-        name = "storageLimitPrefDataStore"
-    )
-    val onboardingDataStore = context.onboardingDataStore
-    val storageLimitPrefDataStore = context.storageLimitPrefDataStore
-}
+data class StorageLimitPreference(
+    val firstLimitWarningConfirmed: Boolean,
+    val secondLimitWarningConfirmed: Boolean
+)
