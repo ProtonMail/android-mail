@@ -21,6 +21,8 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.model
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.mailmailbox.domain.model.StorageLimitPreference
+import ch.protonmail.android.mailmailbox.domain.model.UserAccountStorageStatus
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingActionMessage
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingBottomAppBar
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingBottomSheet
@@ -30,6 +32,8 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOpera
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingMailboxList
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingTopAppBar
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingUnreadFilter
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingStorageLimit
+
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetOperation
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
@@ -41,6 +45,7 @@ internal sealed interface MailboxOperation {
     sealed interface AffectingMailboxList
     sealed interface AffectingBottomAppBar
     sealed interface AffectingOnboarding
+    sealed interface AffectingStorageLimit
     sealed interface AffectingActionMessage
     sealed interface AffectingDeleteDialog
     sealed interface AffectingClearDialog
@@ -49,6 +54,9 @@ internal sealed interface MailboxOperation {
 }
 
 internal sealed interface MailboxViewAction : MailboxOperation {
+    object StorageLimitDoNotRemind : MailboxViewAction, AffectingStorageLimit
+    object StorageLimitConfirmed : MailboxViewAction, AffectingStorageLimit
+
     data class OnItemLongClicked(
         val item: MailboxItemUiModel
     ) : MailboxViewAction
@@ -136,6 +144,11 @@ internal sealed interface MailboxViewAction : MailboxOperation {
 }
 
 internal sealed interface MailboxEvent : MailboxOperation {
+
+    data class StorageLimitStatusChanged(
+        val userAccountStorageStatus: UserAccountStorageStatus,
+        val storageLimitPreference: StorageLimitPreference
+    ) : MailboxEvent, AffectingStorageLimit
 
     data class NewLabelSelected(
         val selectedLabel: MailLabel,

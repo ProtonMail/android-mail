@@ -68,13 +68,18 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Conversati
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Message
 import ch.protonmail.android.mailmailbox.domain.model.OnboardingPreference
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
+import ch.protonmail.android.mailmailbox.domain.model.StorageLimitPreference
+import ch.protonmail.android.mailmailbox.domain.model.UserAccountStorageStatus
 import ch.protonmail.android.mailmailbox.domain.usecase.GetMailboxActions
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveOnboarding
+import ch.protonmail.android.mailmailbox.domain.usecase.ObservePrimaryUserAccountStorageStatus
+import ch.protonmail.android.mailmailbox.domain.usecase.ObserveStorageLimitPreference
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
 import ch.protonmail.android.mailmailbox.domain.usecase.RelabelConversations
 import ch.protonmail.android.mailmailbox.domain.usecase.RelabelMessages
 import ch.protonmail.android.mailmailbox.domain.usecase.SaveOnboarding
+import ch.protonmail.android.mailmailbox.domain.usecase.SaveStorageLimitPreference
 import ch.protonmail.android.mailmailbox.presentation.helper.MailboxAsyncPagingDataDiffer
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxViewModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.MailboxItemUiModelMapper
@@ -260,6 +265,16 @@ class MailboxViewModelTest {
     private val unStarMessages = mockk<UnStarMessages>()
     private val unStarConversations = mockk<UnStarConversations>()
     private val deleteSearchResults = mockk<DeleteSearchResults>()
+    private val observePrimaryUserAccountStorageStatus = mockk<ObservePrimaryUserAccountStorageStatus> {
+        every { this@mockk() } returns flowOf()
+    }
+    private val observeStorageLimitPreference = mockk<ObserveStorageLimitPreference> {
+        every { this@mockk() } returns flowOf()
+    }
+    private val saveStorageLimitPreference = mockk<SaveStorageLimitPreference> {
+        coEvery { saveFirstLimitWarningPreference(any()) } returns Unit.right()
+        coEvery { saveSecondLimitWarningPreference(any()) } returns Unit.right()
+    }
 
     private val mailboxViewModel by lazy {
         MailboxViewModel(
@@ -300,7 +315,10 @@ class MailboxViewModelTest {
             dispatchersProvider = TestDispatcherProvider(),
             observeOnboarding = observeOnboarding,
             saveOnboarding = saveOnboarding,
-            deleteSearchResults = deleteSearchResults
+            deleteSearchResults = deleteSearchResults,
+            observePrimaryUserAccountStorageStatus = observePrimaryUserAccountStorageStatus,
+            observeStorageLimitPreference = observeStorageLimitPreference,
+            saveStorageLimitPreference = saveStorageLimitPreference
         )
     }
 
@@ -344,6 +362,170 @@ class MailboxViewModelTest {
             assertEquals(expected, actual)
 
             verify { pagerFactory wasNot Called }
+        }
+    }
+
+    @Test
+    fun `emits storage limit state when storage status and limit preferences read`() = runTest {
+        // Given
+        val expectedStorageLimitState = MailboxStateSampleData.Loading.storageLimitState
+        val userAccountStorageStatus = UserAccountStorageStatus(5_000L, 10_000L)
+        val storageLimitPreference = StorageLimitPreference(
+            firstLimitWarningConfirmed = false,
+            secondLimitWarningConfirmed = false
+        )
+        coEvery { observePrimaryUserAccountStorageStatus() } returns flowOf(userAccountStorageStatus)
+        coEvery { observeStorageLimitPreference() } returns flowOf(storageLimitPreference.right())
+
+        // When
+        mailboxViewModel.state.test {
+            // Then
+            val actual = awaitItem()
+            assertEquals(expectedStorageLimitState, actual.storageLimitState)
+        }
+    }
+
+    @Test
+    fun `emits new storage limit state when user confirms with do not remind again`() = runTest {
+        // Given
+        val initialState = MailboxStateSampleData.Loading.copy(
+            storageLimitState = StorageLimitState.FirstLimitOver(false)
+        )
+        val expectedState = MailboxStateSampleData.Loading.copy(
+            storageLimitState = StorageLimitState.FirstLimitOver(true)
+        )
+        val userAccountStorageStatus = UserAccountStorageStatus(8_001L, 10_000L)
+        val storageLimitPreference = StorageLimitPreference(
+            firstLimitWarningConfirmed = false,
+            secondLimitWarningConfirmed = false
+        )
+        coEvery { observePrimaryUserAccountStorageStatus() } returns flowOf(userAccountStorageStatus)
+        coEvery { observeStorageLimitPreference() } returns flowOf(storageLimitPreference.right())
+        every {
+            mailboxReducer.newStateFrom(
+                any(),
+                MailboxEvent.StorageLimitStatusChanged(userAccountStorageStatus, storageLimitPreference)
+            )
+        } returns initialState
+        every {
+            mailboxReducer.newStateFrom(
+                any(),
+                MailboxViewAction.StorageLimitDoNotRemind
+            )
+        } returns expectedState
+        // When
+        mailboxViewModel.state.test {
+            // Then
+            assertEquals(initialState, awaitItem())
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.StorageLimitDoNotRemind)
+
+            // Then
+            assertEquals(expectedState, awaitItem())
+        }
+    }
+
+    @Test
+    fun `emits new storage limit state when user confirms with ok button`() = runTest {
+        // Given
+        val initialState = MailboxStateSampleData.Loading.copy(
+            storageLimitState = StorageLimitState.QuotaOver(false)
+        )
+        val expectedState = MailboxStateSampleData.Loading.copy(
+            storageLimitState = StorageLimitState.QuotaOver(true)
+        )
+        val userAccountStorageStatus = UserAccountStorageStatus(10_001L, 10_000L)
+        val storageLimitPreference = StorageLimitPreference(
+            firstLimitWarningConfirmed = false,
+            secondLimitWarningConfirmed = false
+        )
+        coEvery { observePrimaryUserAccountStorageStatus() } returns flowOf(userAccountStorageStatus)
+        coEvery { observeStorageLimitPreference() } returns flowOf(storageLimitPreference.right())
+        every {
+            mailboxReducer.newStateFrom(
+                any(),
+                MailboxEvent.StorageLimitStatusChanged(userAccountStorageStatus, storageLimitPreference)
+            )
+        } returns initialState
+        every {
+            mailboxReducer.newStateFrom(
+                any(),
+                MailboxViewAction.StorageLimitConfirmed
+            )
+        } returns expectedState
+        // When
+        mailboxViewModel.state.test {
+            // Then
+            assertEquals(initialState, awaitItem())
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.StorageLimitConfirmed)
+
+            // Then
+            assertEquals(expectedState, awaitItem())
+        }
+    }
+
+
+    @Test
+    fun `revokes first storage limit confirmation when storage status is below first limit`() = runTest {
+        // Given
+        val initialState = MailboxStateSampleData.Loading.copy(
+            storageLimitState = StorageLimitState.FirstLimitOver(true)
+        )
+        val userAccountStorageStatus = UserAccountStorageStatus(5_000L, 10_000L)
+        val storageLimitPreference = StorageLimitPreference(
+            firstLimitWarningConfirmed = true,
+            secondLimitWarningConfirmed = false
+        )
+        coEvery { observePrimaryUserAccountStorageStatus() } returns flowOf(userAccountStorageStatus)
+        coEvery { observeStorageLimitPreference() } returns flowOf(storageLimitPreference.right())
+        coEvery { saveStorageLimitPreference.saveFirstLimitWarningPreference(false) } returns Unit.right()
+
+        every {
+            mailboxReducer.newStateFrom(
+                any(),
+                MailboxEvent.StorageLimitStatusChanged(userAccountStorageStatus, storageLimitPreference)
+            )
+        } returns initialState
+
+        // When
+        mailboxViewModel.state.test {
+            // Then
+            assertEquals(initialState, awaitItem())
+            coVerify { saveStorageLimitPreference.saveFirstLimitWarningPreference(false) }
+        }
+    }
+
+
+    @Test
+    fun `revokes second storage limit confirmation when storage status is below second limit`() = runTest {
+        // Given
+        val initialState = MailboxStateSampleData.Loading.copy(
+            storageLimitState = StorageLimitState.SecondLimitOver(true)
+        )
+        val userAccountStorageStatus = UserAccountStorageStatus(5_000L, 10_000L)
+        val storageLimitPreference = StorageLimitPreference(
+            firstLimitWarningConfirmed = true,
+            secondLimitWarningConfirmed = true
+        )
+        coEvery { observePrimaryUserAccountStorageStatus() } returns flowOf(userAccountStorageStatus)
+        coEvery { observeStorageLimitPreference() } returns flowOf(storageLimitPreference.right())
+        coEvery { saveStorageLimitPreference.saveSecondLimitWarningPreference(false) } returns Unit.right()
+
+        every {
+            mailboxReducer.newStateFrom(
+                any(),
+                MailboxEvent.StorageLimitStatusChanged(userAccountStorageStatus, storageLimitPreference)
+            )
+        } returns initialState
+
+        // When
+        mailboxViewModel.state.test {
+            // Then
+            assertEquals(initialState, awaitItem())
+            coVerify { saveStorageLimitPreference.saveSecondLimitWarningPreference(false) }
         }
     }
 
