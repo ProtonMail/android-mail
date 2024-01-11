@@ -23,14 +23,14 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSh
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
-import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoreActionsBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import javax.inject.Inject
 
 class BottomSheetReducer @Inject constructor(
     private val moveToBottomSheetReducer: MoveToBottomSheetReducer,
     private val labelAsBottomSheetReducer: LabelAsBottomSheetReducer,
-    private val moreActionsBottomSheetReducer: MoreActionsBottomSheetReducer
+    private val mailboxMoreActionsBottomSheetReducer: MailboxMoreActionsBottomSheetReducer
 ) {
 
     fun newStateFrom(currentState: BottomSheetState?, operation: BottomSheetOperation): BottomSheetState? {
@@ -41,8 +41,8 @@ class BottomSheetReducer @Inject constructor(
             is LabelAsBottomSheetState.LabelAsBottomSheetOperation ->
                 labelAsBottomSheetReducer.newStateFrom(currentState, operation)
 
-            is MoreActionsBottomSheetState.MoreActionsBottomSheetOperation ->
-                moreActionsBottomSheetReducer.newStateFrom(currentState, operation)
+            is MailboxMoreActionsBottomSheetState.MailboxMoreActionsBottomSheetOperation ->
+                mailboxMoreActionsBottomSheetReducer.newStateFrom(currentState, operation)
 
             is BottomSheetOperation.Dismiss -> BottomSheetState(null, Effect.of(BottomSheetVisibilityEffect.Hide))
             is BottomSheetOperation.Requested -> BottomSheetState(null, Effect.of(BottomSheetVisibilityEffect.Show))

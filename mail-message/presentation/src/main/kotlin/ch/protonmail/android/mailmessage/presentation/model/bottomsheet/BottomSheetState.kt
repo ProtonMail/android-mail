@@ -91,13 +91,13 @@ sealed interface LabelAsBottomSheetState : BottomSheetContentState {
     }
 }
 
-sealed interface MoreActionsBottomSheetState : BottomSheetContentState {
+sealed interface MailboxMoreActionsBottomSheetState : BottomSheetContentState {
 
-    data class Data(val actionUiModels: ImmutableList<ActionUiModel>) : MoreActionsBottomSheetState
-    object Loading : MoreActionsBottomSheetState
+    data class Data(val actionUiModels: ImmutableList<ActionUiModel>) : MailboxMoreActionsBottomSheetState
+    object Loading : MailboxMoreActionsBottomSheetState
 
-    sealed interface MoreActionsBottomSheetOperation : BottomSheetOperation
-    sealed interface MoreActionsBottomSheetEvent : MoreActionsBottomSheetOperation {
-        data class ActionData(val actionUiModels: ImmutableList<ActionUiModel>) : MoreActionsBottomSheetEvent
+    sealed interface MailboxMoreActionsBottomSheetOperation : BottomSheetOperation
+    sealed interface MailboxMoreActionsBottomSheetEvent : MailboxMoreActionsBottomSheetOperation {
+        data class ActionData(val actionUiModels: ImmutableList<ActionUiModel>) : MailboxMoreActionsBottomSheetEvent
     }
 }

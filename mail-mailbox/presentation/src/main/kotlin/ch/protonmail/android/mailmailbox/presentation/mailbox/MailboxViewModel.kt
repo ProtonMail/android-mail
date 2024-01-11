@@ -94,7 +94,7 @@ import ch.protonmail.android.mailmessage.domain.usecase.ObserveClearMessageOpera
 import ch.protonmail.android.mailmessage.domain.usecase.StarMessages
 import ch.protonmail.android.mailmessage.domain.usecase.UnStarMessages
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
-import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoreActionsBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveSwipeActionsPreference
@@ -818,7 +818,7 @@ class MailboxViewModel @Inject constructor(
 
         emitNewStateFrom(
             MailboxEvent.MailboxBottomSheetEvent(
-                MoreActionsBottomSheetState.MoreActionsBottomSheetEvent.ActionData(
+                MailboxMoreActionsBottomSheetState.MailboxMoreActionsBottomSheetEvent.ActionData(
                     listOfNotNull(usedStarAction, Action.Archive, Action.Spam)
                         .map { actionUiModelMapper.toUiModel(it) }
                         .toImmutableList()

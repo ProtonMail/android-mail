@@ -24,12 +24,12 @@ import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.contentDescription
 import ch.protonmail.android.mailcommon.presentation.model.description
 import ch.protonmail.android.mailcommon.presentation.model.iconDrawable
-import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoreActionsBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxMoreActionsBottomSheetState
 import kotlinx.collections.immutable.toImmutableList
 
-object MoreActionBottomSheetPreviewData {
+object MailboxMoreActionBottomSheetPreviewData {
 
-    val Data = MoreActionsBottomSheetState.Data(
+    val Data = MailboxMoreActionsBottomSheetState.Data(
         listOf(
             ActionUiModel(
                 Action.MarkUnread,
@@ -59,9 +59,9 @@ object MoreActionBottomSheetPreviewData {
     )
 }
 
-class MoreActionBottomSheetPreviewDataProvider : PreviewParameterProvider<MoreActionsBottomSheetState> {
+class MailboxMoreActionBottomSheetPreviewDataProvider : PreviewParameterProvider<MailboxMoreActionsBottomSheetState> {
 
     override val values = sequenceOf(
-        MoreActionBottomSheetPreviewData.Data
+        MailboxMoreActionBottomSheetPreviewData.Data
     )
 }

@@ -20,7 +20,7 @@ package ch.protonmail.android.mailmessage.presentation.reducer
 
 import ch.protonmail.android.mailcommon.presentation.sample.ActionUiModelSample
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
-import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoreActionsBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxMoreActionsBottomSheetState
 import kotlinx.collections.immutable.toImmutableList
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -28,12 +28,12 @@ import org.junit.runners.Parameterized
 import kotlin.test.assertEquals
 
 @RunWith(Parameterized::class)
-internal class MoreActionsBottomSheetReducerTest(
+internal class MailboxMoreActionsBottomSheetReducerTest(
     private val testName: String,
     private val testInput: TestInput
 ) {
 
-    private val reducer = MoreActionsBottomSheetReducer()
+    private val reducer = MailboxMoreActionsBottomSheetReducer()
 
     @Test
     fun `should produce the expected new bottom sheet state`() = with(testInput) {
@@ -46,15 +46,15 @@ internal class MoreActionsBottomSheetReducerTest(
 
         private val transitionsFromLoadingState = listOf(
             TestInput(
-                currentState = BottomSheetState(MoreActionsBottomSheetState.Loading),
-                operation = MoreActionsBottomSheetState.MoreActionsBottomSheetEvent.ActionData(
+                currentState = BottomSheetState(MailboxMoreActionsBottomSheetState.Loading),
+                operation = MailboxMoreActionsBottomSheetState.MailboxMoreActionsBottomSheetEvent.ActionData(
                     actionUiModels = listOf(
                         ActionUiModelSample.Archive,
                         ActionUiModelSample.MarkUnread
                     ).toImmutableList()
                 ),
                 expectedState = BottomSheetState(
-                    contentState = MoreActionsBottomSheetState.Data(
+                    contentState = MailboxMoreActionsBottomSheetState.Data(
                         actionUiModels = listOf(
                             ActionUiModelSample.Archive,
                             ActionUiModelSample.MarkUnread
@@ -79,8 +79,7 @@ internal class MoreActionsBottomSheetReducerTest(
 
     data class TestInput(
         val currentState: BottomSheetState,
-        val operation: MoreActionsBottomSheetState.MoreActionsBottomSheetOperation,
+        val operation: MailboxMoreActionsBottomSheetState.MailboxMoreActionsBottomSheetOperation,
         val expectedState: BottomSheetState
     )
-
 }

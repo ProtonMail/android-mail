@@ -110,7 +110,7 @@ import ch.protonmail.android.mailmessage.domain.usecase.StarMessages
 import ch.protonmail.android.mailmessage.domain.usecase.UnStarMessages
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
-import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoreActionsBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.model.SwipeActionsPreference
@@ -2423,7 +2423,7 @@ class MailboxViewModelTest {
             ActionUiModelSample.build(Action.Archive),
             ActionUiModelSample.build(Action.Spam)
         )
-        val expectedBottomSheetContent = MoreActionsBottomSheetState.Data(
+        val expectedBottomSheetContent = MailboxMoreActionsBottomSheetState.Data(
             actionUiModels = expectedActionItems.toImmutableList()
         )
         val bottomSheetShownState =
@@ -2463,7 +2463,7 @@ class MailboxViewModelTest {
             ActionUiModelSample.build(Action.Archive),
             ActionUiModelSample.build(Action.Spam)
         )
-        val expectedBottomSheetContent = MoreActionsBottomSheetState.Data(
+        val expectedBottomSheetContent = MailboxMoreActionsBottomSheetState.Data(
             actionUiModels = expectedActionItems.toImmutableList()
         )
         val bottomSheetShownState =
@@ -2503,7 +2503,7 @@ class MailboxViewModelTest {
             ActionUiModelSample.build(Action.Archive),
             ActionUiModelSample.build(Action.Spam)
         )
-        val expectedBottomSheetContent = MoreActionsBottomSheetState.Data(
+        val expectedBottomSheetContent = MailboxMoreActionsBottomSheetState.Data(
             actionUiModels = expectedActionItems.toImmutableList()
         )
         val bottomSheetShownState =
@@ -2595,7 +2595,7 @@ class MailboxViewModelTest {
             ActionUiModelSample.build(Action.Archive),
             ActionUiModelSample.build(Action.Spam)
         )
-        val expectedBottomSheetContent = MoreActionsBottomSheetState.Data(
+        val expectedBottomSheetContent = MailboxMoreActionsBottomSheetState.Data(
             actionUiModels = expectedActionItems.toImmutableList()
         )
         val bottomSheetShownState =
@@ -2686,7 +2686,7 @@ class MailboxViewModelTest {
             ActionUiModelSample.build(Action.Archive),
             ActionUiModelSample.build(Action.Spam)
         )
-        val expectedBottomSheetContent = MoreActionsBottomSheetState.Data(
+        val expectedBottomSheetContent = MailboxMoreActionsBottomSheetState.Data(
             actionUiModels = expectedActionItems.toImmutableList()
         )
         val bottomSheetShownState =
@@ -2731,7 +2731,7 @@ class MailboxViewModelTest {
             ActionUiModelSample.build(Action.Archive),
             ActionUiModelSample.build(Action.Spam)
         )
-        val expectedBottomSheetContent = MoreActionsBottomSheetState.Data(
+        val expectedBottomSheetContent = MailboxMoreActionsBottomSheetState.Data(
             actionUiModels = expectedActionItems.toImmutableList()
         )
         val bottomSheetShownState =
@@ -2783,7 +2783,7 @@ class MailboxViewModelTest {
             ActionUiModelSample.build(Action.Archive),
             ActionUiModelSample.build(Action.Spam)
         )
-        val expectedBottomSheetContent = MoreActionsBottomSheetState.Data(
+        val expectedBottomSheetContent = MailboxMoreActionsBottomSheetState.Data(
             actionUiModels = expectedActionItems.toImmutableList()
         )
         val bottomSheetShownState =
@@ -2828,7 +2828,7 @@ class MailboxViewModelTest {
             ActionUiModelSample.build(Action.Archive),
             ActionUiModelSample.build(Action.Spam)
         )
-        val expectedBottomSheetContent = MoreActionsBottomSheetState.Data(
+        val expectedBottomSheetContent = MailboxMoreActionsBottomSheetState.Data(
             actionUiModels = expectedActionItems.toImmutableList()
         )
         val bottomSheetShownState =
@@ -3662,7 +3662,9 @@ class MailboxViewModelTest {
             mailboxReducer.newStateFrom(
                 currentState = any(),
                 operation = MailboxEvent.MailboxBottomSheetEvent(
-                    MoreActionsBottomSheetState.MoreActionsBottomSheetEvent.ActionData(actionUiModels.toImmutableList())
+                    MailboxMoreActionsBottomSheetState.MailboxMoreActionsBottomSheetEvent.ActionData(
+                        actionUiModels.toImmutableList()
+                    )
                 )
             )
         } returns bottomSheetState
@@ -3942,7 +3944,7 @@ class MailboxViewModelTest {
 
     private fun createMailboxStateWithMoreActionBottomSheet(
         selectedMailboxItems: List<MailboxItemUiModel>,
-        expectedBottomSheetContent: MoreActionsBottomSheetState
+        expectedBottomSheetContent: MailboxMoreActionsBottomSheetState
     ) = MailboxStateSampleData.createSelectionMode(
         selectedMailboxItemUiModels = selectedMailboxItems,
         currentMailLabel = MailLabel.System(MailLabelId.System.Trash),

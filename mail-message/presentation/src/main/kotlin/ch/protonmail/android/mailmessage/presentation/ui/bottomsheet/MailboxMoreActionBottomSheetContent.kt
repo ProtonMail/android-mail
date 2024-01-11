@@ -34,29 +34,31 @@ import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.model.string
-import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoreActionsBottomSheetState
-import ch.protonmail.android.mailmessage.presentation.previewdata.MoreActionBottomSheetPreviewDataProvider
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxMoreActionsBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.previewdata.MailboxMoreActionBottomSheetPreviewDataProvider
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonRawListItem
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme3
 
 @Composable
-fun MoreActionBottomSheetContent(
+fun MailboxMoreActionBottomSheetContent(
     modifier: Modifier = Modifier,
-    state: MoreActionsBottomSheetState,
+    state: MailboxMoreActionsBottomSheetState,
     actionCallbacks: MoreActionBottomSheetContent.Actions
 ) {
     when (state) {
-        is MoreActionsBottomSheetState.Data -> MoreActionBottomSheetContent(modifier, state, actionCallbacks)
+        is MailboxMoreActionsBottomSheetState.Data ->
+            MailboxMoreActionBottomSheetContent(modifier, state, actionCallbacks)
+
         else -> ProtonCenteredProgress()
     }
 }
 
 @Composable
-fun MoreActionBottomSheetContent(
+fun MailboxMoreActionBottomSheetContent(
     modifier: Modifier = Modifier,
-    state: MoreActionsBottomSheetState.Data,
+    state: MailboxMoreActionsBottomSheetState.Data,
     actionCallbacks: MoreActionBottomSheetContent.Actions
 ) {
     LazyColumn(modifier = modifier.padding(vertical = ProtonDimens.DefaultSpacing)) {
@@ -87,7 +89,7 @@ fun MoreActionBottomSheetContent(
     }
 }
 
-fun callbackForAction(action: Action, actionCallbacks: MoreActionBottomSheetContent.Actions): () -> Unit =
+private fun callbackForAction(action: Action, actionCallbacks: MoreActionBottomSheetContent.Actions): () -> Unit =
     when (action) {
         Action.Star -> actionCallbacks.onStar
         Action.Unstar -> actionCallbacks.onUnStar
@@ -122,10 +124,11 @@ object MoreActionBottomSheetContent {
 @Composable
 @AdaptivePreviews
 private fun MoreActionBottomSheetContentPreview(
-    @PreviewParameter(MoreActionBottomSheetPreviewDataProvider::class) state: MoreActionsBottomSheetState.Data
+    @PreviewParameter(MailboxMoreActionBottomSheetPreviewDataProvider::class)
+    state: MailboxMoreActionsBottomSheetState.Data
 ) {
     ProtonTheme3 {
-        MoreActionBottomSheetContent(state = state, actionCallbacks = MoreActionBottomSheetContent.Actions.Empty)
+        MailboxMoreActionBottomSheetContent(state = state, actionCallbacks = MoreActionBottomSheetContent.Actions.Empty)
     }
 }
 

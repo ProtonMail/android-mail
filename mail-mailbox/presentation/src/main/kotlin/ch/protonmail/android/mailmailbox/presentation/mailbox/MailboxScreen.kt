@@ -107,9 +107,10 @@ import ch.protonmail.android.mailmailbox.presentation.paging.mapToUiStates
 import ch.protonmail.android.mailmailbox.presentation.paging.search.mapToUiStatesInSearch
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
-import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoreActionsBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.LabelAsBottomSheetContent
+import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MailboxMoreActionBottomSheetContent
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MoreActionBottomSheetContent
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MoveToBottomSheetContent
 import kotlinx.coroutines.launch
@@ -124,9 +125,9 @@ import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultSmallWeak
-import me.proton.core.compose.theme.headlineSmallNorm
 import me.proton.core.compose.theme.defaultStrongNorm
 import me.proton.core.compose.theme.headlineNorm
+import me.proton.core.compose.theme.headlineSmallNorm
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import ch.protonmail.android.mailcommon.presentation.R.string as commonString
@@ -242,7 +243,7 @@ fun MailboxScreen(
                         )
                     )
 
-                    is MoreActionsBottomSheetState -> MoreActionBottomSheetContent(
+                    is MailboxMoreActionsBottomSheetState -> MailboxMoreActionBottomSheetContent(
                         state = bottomSheetContentState,
                         actionCallbacks = MoreActionBottomSheetContent.Actions(
                             onStar = { viewModel.submit(MailboxViewAction.Star) },

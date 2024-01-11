@@ -119,7 +119,7 @@ import ch.protonmail.android.mailmessage.presentation.mapper.AttachmentUiModelMa
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
 import ch.protonmail.android.mailmessage.presentation.reducer.LabelAsBottomSheetReducer
-import ch.protonmail.android.mailmessage.presentation.reducer.MoreActionsBottomSheetReducer
+import ch.protonmail.android.mailmessage.presentation.reducer.MailboxMoreActionsBottomSheetReducer
 import ch.protonmail.android.mailmessage.presentation.reducer.MoveToBottomSheetReducer
 import ch.protonmail.android.mailmessage.presentation.usecase.InjectCssIntoDecryptedMessageBody
 import ch.protonmail.android.mailmessage.presentation.usecase.SanitizeHtmlOfDecryptedMessageBody
@@ -329,7 +329,7 @@ class ConversationDetailViewModelIntegrationTest {
         bottomSheetReducer = BottomSheetReducer(
             moveToBottomSheetReducer = MoveToBottomSheetReducer(),
             labelAsBottomSheetReducer = LabelAsBottomSheetReducer(),
-            moreActionsBottomSheetReducer = MoreActionsBottomSheetReducer()
+            mailboxMoreActionsBottomSheetReducer = MailboxMoreActionsBottomSheetReducer()
         ),
         deleteDialogReducer = ConversationDeleteDialogReducer()
     )

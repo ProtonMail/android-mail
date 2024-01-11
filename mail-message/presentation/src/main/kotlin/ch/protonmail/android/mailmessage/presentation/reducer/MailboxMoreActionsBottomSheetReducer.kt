@@ -20,26 +20,26 @@ package ch.protonmail.android.mailmessage.presentation.reducer
 
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
-import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoreActionsBottomSheetState
-import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoreActionsBottomSheetState.MoreActionsBottomSheetEvent.ActionData
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxMoreActionsBottomSheetState
 import javax.inject.Inject
 
-class MoreActionsBottomSheetReducer @Inject constructor() {
+class MailboxMoreActionsBottomSheetReducer @Inject constructor() {
 
     fun newStateFrom(
         currentState: BottomSheetState?,
-        operation: MoreActionsBottomSheetState.MoreActionsBottomSheetOperation
+        operation: MailboxMoreActionsBottomSheetState.MailboxMoreActionsBottomSheetOperation
     ): BottomSheetState {
         return when (operation) {
-            is ActionData -> operation.toNewBottomSheetState(currentState)
+            is MailboxMoreActionsBottomSheetState.MailboxMoreActionsBottomSheetEvent.ActionData ->
+                operation.toNewBottomSheetState(currentState)
         }
     }
 
-    private fun ActionData.toNewBottomSheetState(currentState: BottomSheetState?): BottomSheetState {
+    private fun MailboxMoreActionsBottomSheetState.MailboxMoreActionsBottomSheetEvent.ActionData.toNewBottomSheetState(
+        currentState: BottomSheetState?
+    ): BottomSheetState {
         return BottomSheetState(
-            contentState = MoreActionsBottomSheetState.Data(
-                actionUiModels = actionUiModels
-            ),
+            contentState = MailboxMoreActionsBottomSheetState.Data(actionUiModels = actionUiModels),
             bottomSheetVisibilityEffect = currentState?.bottomSheetVisibilityEffect ?: Effect.empty()
         )
     }
