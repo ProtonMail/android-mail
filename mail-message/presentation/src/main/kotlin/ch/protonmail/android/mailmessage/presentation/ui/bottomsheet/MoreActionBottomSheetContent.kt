@@ -28,12 +28,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
+import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.previewdata.MoreActionBottomSheetPreviewDataProvider
 import me.proton.core.compose.component.ProtonCenteredProgress
@@ -78,7 +78,7 @@ fun MoreActionBottomSheetContent(
                     modifier = Modifier
                         .testTag(LabelAsBottomSheetTestTags.LabelNameText)
                         .weight(1f),
-                    text = stringResource(id = actionItem.description),
+                    text = actionItem.description.string(),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )

@@ -19,6 +19,9 @@
 package ch.protonmail.android.mailcommon.domain.model
 
 enum class Action {
+    Reply,
+    ReplyAll,
+    Forward,
     MarkRead,
     MarkUnread,
     Star,

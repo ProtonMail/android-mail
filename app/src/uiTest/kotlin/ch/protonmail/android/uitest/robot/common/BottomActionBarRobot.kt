@@ -24,7 +24,8 @@ import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.presentation.R
-import ch.protonmail.android.mailcommon.presentation.model.contentDescription
+import ch.protonmail.android.mailcommon.presentation.model.contentDescriptionRes
+import ch.protonmail.android.mailcommon.presentation.model.descriptionRes
 import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
 import ch.protonmail.android.uitest.robot.ComposeRobot
 import ch.protonmail.android.uitest.util.onNodeWithContentDescription
@@ -50,12 +51,12 @@ internal class BottomActionBarRobot : ComposeRobot() {
         }
 
         fun actionIsDisplayed(action: Action) {
-            composeTestRule.onNodeWithContentDescription(action.contentDescription())
+            composeTestRule.onNodeWithContentDescription(action.descriptionRes)
                 .assertIsDisplayed()
         }
 
         fun actionIsNotDisplayed(action: Action) {
-            composeTestRule.onNodeWithContentDescription(action.contentDescription())
+            composeTestRule.onNodeWithContentDescription(action.contentDescriptionRes)
                 .assertDoesNotExist()
         }
 

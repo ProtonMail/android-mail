@@ -19,7 +19,6 @@
 package ch.protonmail.android.mailcommon.presentation.ui
 
 import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -43,12 +42,15 @@ import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.R
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.previewdata.BottomActionBarPreviewProvider
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.ProtonTypography
 import me.proton.core.compose.theme.default
+import timber.log.Timber
 
 @Composable
 fun BottomActionBar(
@@ -88,7 +90,7 @@ fun BottomActionBar(
                         BottomBarIcon(
                             modifier = Modifier.testTag("${BottomActionBarTestTags.Button}$index"),
                             iconId = uiModel.icon,
-                            descriptionId = uiModel.contentDescription,
+                            description = uiModel.contentDescription,
                             onClick = callbackForAction(uiModel.action, viewActionCallbacks)
                         )
                     }
@@ -125,6 +127,9 @@ fun callbackForAction(action: Action, viewActionCallbacks: BottomActionBar.Actio
     Action.SenderEmails -> viewActionCallbacks.onSenderEmail
     Action.SaveAttachments -> viewActionCallbacks.onSaveAttachments
     Action.More -> viewActionCallbacks.onMore
+    else -> {
+        { Timber.d("Action not handled $action.") }
+    }
 }
 
 @Composable
@@ -134,7 +139,7 @@ private fun Int.exceedsMaxActionsShowed() = this > BottomActionBar.MAX_ACTIONS_C
 private fun BottomBarIcon(
     modifier: Modifier = Modifier,
     @DrawableRes iconId: Int,
-    @StringRes descriptionId: Int,
+    description: TextUiModel,
     onClick: () -> Unit
 ) {
     IconButton(
@@ -144,7 +149,7 @@ private fun BottomBarIcon(
         Icon(
             modifier = Modifier,
             painter = painterResource(id = iconId),
-            contentDescription = stringResource(id = descriptionId),
+            contentDescription = description.string(),
             tint = ProtonTheme.colors.iconNorm
         )
     }
