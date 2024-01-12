@@ -255,7 +255,7 @@ private fun MessageDetailHeaderLayout(
             },
             iconResource = R.drawable.ic_proton_three_dots_vertical,
             contentDescriptionResource = R.string.more_button_content_description,
-            onClick = actions.onShowFeatureMissingSnackbar
+            onClick = { actions.onMore(MessageId(uiModel.messageIdUiModel.id)) }
         )
 
         AllRecipients(
@@ -789,7 +789,8 @@ object MessageDetailHeader {
         val onClick: () -> Unit,
         val onReply: (MessageId) -> Unit,
         val onReplyAll: (MessageId) -> Unit,
-        val onShowFeatureMissingSnackbar: () -> Unit
+        val onShowFeatureMissingSnackbar: () -> Unit,
+        val onMore: (MessageId) -> Unit
     ) {
 
         companion object {
@@ -798,7 +799,8 @@ object MessageDetailHeader {
                 onClick = {},
                 onReply = {},
                 onReplyAll = {},
-                onShowFeatureMissingSnackbar = {}
+                onShowFeatureMissingSnackbar = {},
+                onMore = {}
             )
         }
     }

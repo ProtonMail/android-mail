@@ -147,7 +147,8 @@ class MessageDetailReducer @Inject constructor(
                 is MessageViewAction.MoveToDestinationSelected -> MoveToDestinationSelected(operation.mailLabelId)
                 is MessageViewAction.LabelAsToggleAction -> LabelToggled(operation.labelId)
                 is MessageViewAction.RequestLabelAsBottomSheet,
-                is MessageViewAction.RequestMoveToBottomSheet -> BottomSheetOperation.Requested
+                is MessageViewAction.RequestMoveToBottomSheet,
+                is MessageViewAction.RequestMoreActionsBottomSheet -> BottomSheetOperation.Requested
 
                 is MessageViewAction.LabelAsConfirmed,
                 is MessageViewAction.DismissBottomSheet -> BottomSheetOperation.Dismiss

@@ -23,6 +23,7 @@ import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.Event
 import app.cash.turbine.ReceiveTurbine
 import app.cash.turbine.test
+import arrow.core.Either
 import arrow.core.left
 import arrow.core.nonEmptyListOf
 import arrow.core.right
@@ -38,6 +39,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
+import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.usecase.GetDownloadingAttachmentsForMessages
@@ -85,10 +87,14 @@ import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailmessage.domain.usecase.DeleteMessages
 import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
+import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
+import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
+import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantNameResult
 import ch.protonmail.android.mailmessage.domain.usecase.StarMessages
 import ch.protonmail.android.mailmessage.domain.usecase.UnStarMessages
 import ch.protonmail.android.mailmessage.presentation.mapper.DetailMoreActionsBottomSheetUiMapper
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.DetailMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
@@ -134,6 +140,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertThrows
+import org.junit.Assert.assertTrue
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -166,6 +173,10 @@ class MessageDetailViewModelTest {
         every { this@mockk.invoke() } returns flowOf(userId)
     }
 
+    private val observeContacts = mockk<ObserveContacts> {
+        every { this@mockk.invoke(userId) } returns flowOf(Either.Right(ContactTestData.contacts))
+    }
+    private val observeMessage = mockk<ObserveMessage>()
     private val observeMessageWithLabels = mockk<ObserveMessageWithLabels> {
         every { this@mockk.invoke(userId, any()) } returns flowOf(
             MessageWithLabels(
@@ -174,6 +185,7 @@ class MessageDetailViewModelTest {
             ).right()
         )
     }
+
     private val getDecryptedMessageBody = mockk<GetDecryptedMessageBody> {
         coEvery { this@mockk(userId, any()) } returns decryptedMessageBody.right()
     }
@@ -270,6 +282,9 @@ class MessageDetailViewModelTest {
             )
         }.right()
     }
+    private val resolveParticipantName = mockk<ResolveParticipantName> {
+        every { this@mockk(any(), any()) } returns ResolveParticipantNameResult("Sender", isProton = false)
+    }
 
     // Privacy settings for link confirmation dialog
     private val observePrivacySettings = mockk<ObservePrivacySettings> {
@@ -311,10 +326,12 @@ class MessageDetailViewModelTest {
             getDecryptedMessageBody = getDecryptedMessageBody,
             messageDetailReducer = messageDetailReducer,
             actionUiModelMapper = actionUiModelMapper,
+            observeContacts = observeContacts,
             observeDetailActions = observeDetailActions,
             observeDestinationMailLabels = observeMailLabels,
             observeFolderColor = observeFolderColorSettings,
             observeCustomMailLabels = observeCustomMailLabels,
+            observeMessage = observeMessage,
             observeMessageAttachmentStatus = observeAttachmentWorkerStatus,
             markUnread = markUnread,
             markRead = markRead,
@@ -330,7 +347,8 @@ class MessageDetailViewModelTest {
             getDownloadingAttachmentsForMessages = getDownloadingAttachmentsForMessages,
             getEmbeddedImageAvoidDuplicatedExecution = getEmbeddedImageAvoidDuplicatedExecution,
             observePrivacySettings = observePrivacySettings,
-            updateLinkConfirmationSetting = updateLinkConfirmationSetting
+            updateLinkConfirmationSetting = updateLinkConfirmationSetting,
+            resolveParticipantName = resolveParticipantName
         )
     }
 
@@ -915,6 +933,42 @@ class MessageDetailViewModelTest {
             }
         }
     }
+
+    @Test
+    fun `bottom sheet with data is emitted when more actions bottom sheet is requested and loading succeeds`() =
+        runTest {
+            // Given
+            coEvery {
+                observeMessage(userId = userId, messageId = messageId)
+            } returns flowOf(MessageSample.Invoice.right())
+
+            // When
+            viewModel.state.test {
+                viewModel.submit(MessageViewAction.RequestMoreActionsBottomSheet(messageId))
+                advanceUntilIdle()
+
+                // Then
+                assertIs<DetailMoreActionsBottomSheetState.Data>(lastEmittedItem().bottomSheetState?.contentState)
+            }
+        }
+
+    @Test
+    fun `verify no bottom sheet data is emitted when more actions bottom sheet is requested and loading fails`() =
+        runTest {
+            // Given
+            coEvery {
+                observeMessage(userId = userId, messageId = messageId)
+            } returns flowOf(DataError.Local.NoDataCached.left())
+
+            // When
+            viewModel.state.test {
+                viewModel.submit(MessageViewAction.RequestMoreActionsBottomSheet(messageId))
+                advanceUntilIdle()
+
+                // Then
+                assertNull(lastEmittedItem().bottomSheetState?.contentState)
+            }
+        }
 
     @Test
     fun `verify relabel message and move to is called and dismiss is set when destination gets confirmed`() = runTest {

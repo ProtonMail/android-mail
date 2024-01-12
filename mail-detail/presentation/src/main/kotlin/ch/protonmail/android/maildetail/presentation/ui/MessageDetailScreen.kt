@@ -72,8 +72,10 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetVisibilityEffect
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.DetailMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.DetailMoreActionsBottomSheetContent
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.LabelAsBottomSheetContent
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MoveToBottomSheetContent
 import kotlinx.coroutines.launch
@@ -151,6 +153,15 @@ fun MessageDetailScreen(
                     )
                 )
 
+                is DetailMoreActionsBottomSheetState -> DetailMoreActionsBottomSheetContent(
+                    state = bottomSheetContentState,
+                    actions = DetailMoreActionsBottomSheetContent.Actions(
+                        onReply = actions.onReply,
+                        onReplyAll = actions.onReplyAll,
+                        onForward = actions.onForward
+                    )
+                )
+
                 else -> {
                     if (bottomSheetState.isVisible) {
                         ProtonCenteredProgress()
@@ -171,6 +182,7 @@ fun MessageDetailScreen(
                 onUnreadClick = { viewModel.submit(MessageViewAction.MarkUnread) },
                 onMoveClick = { viewModel.submit(MessageViewAction.RequestMoveToBottomSheet) },
                 onLabelAsClick = { viewModel.submit(MessageViewAction.RequestLabelAsBottomSheet) },
+                onMoreActionsClick = { viewModel.submit(MessageViewAction.RequestMoreActionsBottomSheet(it)) },
                 onMessageBodyLinkClicked = { viewModel.submit(MessageViewAction.MessageBodyLinkClicked(it)) },
                 onDoNotAskLinkConfirmationAgain = { viewModel.submit(MessageViewAction.DoNotAskLinkConfirmationAgain) },
                 onOpenMessageBodyLink = actions.openMessageBodyLink,
@@ -325,7 +337,8 @@ fun MessageDetailScreen(
                     onReply = actions.onReplyClick,
                     onReplyAll = actions.onReplyAllClick,
                     onForward = actions.onForwardClick,
-                    onExpandCollapseButtonClicked = actions.onExpandCollapseButtonClicked
+                    onExpandCollapseButtonClicked = actions.onExpandCollapseButtonClicked,
+                    onMoreActionsClick = actions.onMoreActionsClick
                 )
                 MessageDetailContent(
                     padding = innerPadding,
@@ -370,7 +383,7 @@ private fun MessageDetailContent(
     val headerActions = MessageDetailHeader.Actions.Empty.copy(
         onReply = actions.onReply,
         onReplyAll = actions.onReplyAll,
-        onShowFeatureMissingSnackbar = actions.showFeatureMissingSnackbar
+        onMore = actions.onMoreActionsClick
     )
 
     LazyColumn(
@@ -473,7 +486,8 @@ object MessageDetailScreen {
         val openAttachment: (values: OpenAttachmentIntentValues) -> Unit,
         val showFeatureMissingSnackbar: () -> Unit,
         val loadEmbeddedImage: (contentId: String) -> GetEmbeddedImageResult?,
-        val onExpandCollapseButtonClicked: () -> Unit
+        val onExpandCollapseButtonClicked: () -> Unit,
+        val onMoreActionsClick: (MessageId) -> Unit
     ) {
 
         companion object {
@@ -499,7 +513,8 @@ object MessageDetailScreen {
                 openAttachment = {},
                 showFeatureMissingSnackbar = {},
                 loadEmbeddedImage = { null },
-                onExpandCollapseButtonClicked = {}
+                onExpandCollapseButtonClicked = {},
+                onMoreActionsClick = {}
             )
         }
     }
@@ -517,7 +532,8 @@ object MessageDetailContent {
         val onReply: (MessageId) -> Unit,
         val onReplyAll: (MessageId) -> Unit,
         val onForward: (MessageId) -> Unit,
-        val onExpandCollapseButtonClicked: () -> Unit
+        val onExpandCollapseButtonClicked: () -> Unit,
+        val onMoreActionsClick: (MessageId) -> Unit
     )
 }
 

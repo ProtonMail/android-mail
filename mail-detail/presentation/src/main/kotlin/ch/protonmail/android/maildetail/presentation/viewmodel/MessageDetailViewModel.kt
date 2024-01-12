@@ -29,6 +29,7 @@ import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
+import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.usecase.GetDownloadingAttachmentsForMessages
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsRead
@@ -62,10 +63,13 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.usecase.DeleteMessages
 import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
+import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
+import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailmessage.domain.usecase.StarMessages
 import ch.protonmail.android.mailmessage.domain.usecase.UnStarMessages
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.DetailMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
@@ -89,7 +93,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
-import me.proton.core.util.kotlin.exhaustive
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -97,10 +100,12 @@ import javax.inject.Inject
 @Suppress("LongParameterList", "TooManyFunctions")
 class MessageDetailViewModel @Inject constructor(
     observePrimaryUserId: ObservePrimaryUserId,
+    private val observeMessage: ObserveMessage,
     private val observeMessageWithLabels: ObserveMessageWithLabels,
     private val getDecryptedMessageBody: GetDecryptedMessageBody,
     private val messageDetailReducer: MessageDetailReducer,
     private val actionUiModelMapper: ActionUiModelMapper,
+    private val observeContacts: ObserveContacts,
     private val observeDetailActions: ObserveMessageDetailActions,
     private val observeDestinationMailLabels: ObserveExclusiveDestinationMailLabels,
     private val observeFolderColor: ObserveFolderColorSettings,
@@ -120,7 +125,8 @@ class MessageDetailViewModel @Inject constructor(
     private val getDownloadingAttachmentsForMessages: GetDownloadingAttachmentsForMessages,
     private val getEmbeddedImageAvoidDuplicatedExecution: GetEmbeddedImageAvoidDuplicatedExecution,
     private val observePrivacySettings: ObservePrivacySettings,
-    private val updateLinkConfirmationSetting: UpdateLinkConfirmationSetting
+    private val updateLinkConfirmationSetting: UpdateLinkConfirmationSetting,
+    private val resolveParticipantName: ResolveParticipantName
 ) : ViewModel() {
 
     private val messageId = requireMessageId()
@@ -150,6 +156,7 @@ class MessageDetailViewModel @Inject constructor(
             is MessageViewAction.DismissBottomSheet,
             is MessageViewAction.DeleteRequested,
             is MessageViewAction.DeleteDialogDismissed -> directlyHandleViewAction(action)
+
             is MessageViewAction.DeleteConfirmed -> handleDeleteConfirmed(action)
             is MessageViewAction.RequestMoveToBottomSheet -> showMoveToBottomSheetAndLoadData(action)
             is MessageViewAction.MoveToDestinationSelected -> moveToDestinationSelected(action.mailLabelId)
@@ -161,7 +168,8 @@ class MessageDetailViewModel @Inject constructor(
             is MessageViewAction.DoNotAskLinkConfirmationAgain -> onDoNotAskLinkConfirmationChecked()
             is MessageViewAction.ShowAllAttachments -> onShowAllAttachmentsClicked()
             is MessageViewAction.OnAttachmentClicked -> onOpenAttachmentClicked(action.attachmentId)
-        }.exhaustive
+            is MessageViewAction.RequestMoreActionsBottomSheet -> showMoreActionsBottomSheetAndLoadData(action)
+        }
     }
 
     fun loadEmbeddedImage(contentId: String): GetEmbeddedImageResult? {
@@ -408,6 +416,35 @@ class MessageDetailViewModel @Inject constructor(
             }.onEach { event ->
                 emitNewStateFrom(event)
             }.launchIn(viewModelScope)
+        }
+    }
+
+    private fun showMoreActionsBottomSheetAndLoadData(initialEvent: MessageViewAction.RequestMoreActionsBottomSheet) {
+        viewModelScope.launch {
+            emitNewStateFrom(initialEvent)
+
+            val userId = primaryUserId.first()
+            val contacts = observeContacts(userId).first().getOrNull()
+            val message = observeMessage(userId, initialEvent.messageId).first().getOrElse {
+                Timber.e("Unable to fetch message data.")
+                emitNewStateFrom(MessageViewAction.DismissBottomSheet)
+                return@launch
+            }
+
+            val sender = contacts?.let {
+                return@let resolveParticipantName(message.sender, it)
+            }?.name ?: message.sender.name
+
+            val event = MessageDetailEvent.MessageBottomSheetEvent(
+                DetailMoreActionsBottomSheetState.MessageDetailMoreActionsBottomSheetEvent.DataLoaded(
+                    messageSender = sender,
+                    messageSubject = message.subject,
+                    messageId = message.messageId.id,
+                    participantsCount = message.allRecipientsDeduplicated.size
+                )
+            )
+
+            emitNewStateFrom(event)
         }
     }
 

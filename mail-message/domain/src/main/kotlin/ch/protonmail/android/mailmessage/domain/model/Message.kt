@@ -65,6 +65,9 @@ data class Message(
     override val read: Boolean by lazy { !unread }
     override val keywords: String by lazy { subject + sender + toList + ccList + bccList }
 
+    val allRecipients = toList + ccList + bccList
+    val allRecipientsDeduplicated = allRecipients.toSet()
+
     fun expirationTimeOrNull(): Duration? = expirationTime.takeIf { it > 0 }?.seconds
 
     fun isDraft() = labelIds.any { it == SystemLabelId.AllDrafts.labelId }
@@ -73,6 +76,7 @@ data class Message(
         flags.and(FLAG_PHISHING_MANUAL) == FLAG_PHISHING_MANUAL
 
     companion object {
+
         const val FLAG_PHISHING_AUTO = 1_073_741_824L
         const val FLAG_PHISHING_MANUAL = 2_147_483_648L
     }
