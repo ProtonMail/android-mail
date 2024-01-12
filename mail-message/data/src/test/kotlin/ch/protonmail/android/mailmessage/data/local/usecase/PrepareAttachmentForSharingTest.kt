@@ -35,8 +35,8 @@ import ch.protonmail.android.mailmessage.data.local.provider.GetUriFromMediaScan
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
-import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
+import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.testdata.message.MessageBodyTestData
 import ch.protonmail.android.testdata.message.MessageTestData
 import io.mockk.Runs
@@ -45,7 +45,9 @@ import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.mockkStatic
+import io.mockk.spyk
 import io.mockk.unmockkStatic
+import io.mockk.verify
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -81,6 +83,7 @@ class PrepareAttachmentForSharingTest {
     private val buildVersionProvider = mockk<BuildVersionProvider>()
     private val contentValuesProvider = mockk<ContentValuesProvider>()
     private val getUriFromMediaScanner = mockk<GetUriFromMediaScanner>()
+    private val sanitizeFullFileName = spyk<SanitizeFullFileName>()
     private val prepareAttachmentForSharing =
         PrepareAttachmentForSharing(
             context,
@@ -88,6 +91,7 @@ class PrepareAttachmentForSharingTest {
             buildVersionProvider,
             contentValuesProvider,
             getUriFromMediaScanner,
+            sanitizeFullFileName,
             UnconfinedTestDispatcher()
         )
 
@@ -154,6 +158,7 @@ class PrepareAttachmentForSharingTest {
 
         // Then
         assertEquals(expectedUri.right(), result)
+        verify { sanitizeFullFileName(expectedAttachment.name) }
     }
 
     @Test
@@ -186,13 +191,15 @@ class PrepareAttachmentForSharingTest {
         // Given
         provideSdkBeforeQ()
         val expectedUri = mockk<Uri>()
-        coEvery { getUriFromMediaScanner(any(), MessageAttachmentSample.invoice.mimeType) } returns expectedUri
+        val expectedAttachment = MessageAttachmentSample.invoice
+        coEvery { getUriFromMediaScanner(any(), expectedAttachment.mimeType) } returns expectedUri
 
         // When
         val result = prepareAttachmentForSharing(userId, messageId, attachmentId, decryptedByteArray)
 
         // Then
         assertEquals(expectedUri.right(), result)
+        verify { sanitizeFullFileName(expectedAttachment.name) }
     }
 
 
