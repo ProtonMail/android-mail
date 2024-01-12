@@ -152,9 +152,7 @@ class ComposerViewModel @Inject constructor(
         ComposerDraftState.initial(
             MessageId(savedStateHandle.get<String>(ComposerScreen.DraftMessageIdKey) ?: provideNewDraftId().id),
             // setting the passed recipient directly here in the initial value makes the UX a bit smoother
-            to = savedStateHandle.get<String>(ComposerScreen.PrefilledRecipientKey)?.let {
-                listOf(RecipientUiModel.Valid(it))
-            } ?: emptyList(),
+            to = savedStateHandle.extractRecipient() ?: emptyList(),
         )
     )
     val state: StateFlow<ComposerDraftState> = mutableState
@@ -163,7 +161,7 @@ class ComposerViewModel @Inject constructor(
         val inputDraftId = savedStateHandle.get<String>(ComposerScreen.DraftMessageIdKey)
         val draftAction = savedStateHandle.get<String>(ComposerScreen.SerializedDraftActionKey)
             ?.deserialize<DraftAction>()
-        val recipientAddress = savedStateHandle.get<String>(ComposerScreen.PrefilledRecipientKey)
+        val recipientAddress = savedStateHandle.extractRecipient()
 
         primaryUserId.onEach { userId ->
             getPrimaryAddress(userId)
@@ -175,9 +173,7 @@ class ComposerViewModel @Inject constructor(
                         injectAddressSignature(SenderEmail(it.email))
                     }
                     recipientAddress?.let { recipient ->
-                        emitNewStateFor(
-                            onToChanged(ComposerAction.RecipientsToChanged(listOf(RecipientUiModel.Valid(recipient))))
-                        )
+                        emitNewStateFor(onToChanged(ComposerAction.RecipientsToChanged(recipient)))
                     }
                 }
         }.launchIn(viewModelScope)
@@ -625,5 +621,11 @@ class ComposerViewModel @Inject constructor(
     private fun emitNewStateFor(operation: ComposerOperation) {
         val currentState = state.value
         mutableState.value = reducer.newStateFrom(currentState, operation)
+    }
+
+    private fun SavedStateHandle.extractRecipient(): List<RecipientUiModel>? {
+        return get<String>(ComposerScreen.SerializedDraftActionKey)?.deserialize<DraftAction>()
+            .let { it as? DraftAction.ComposeWithRecipient }
+            ?.let { listOf(RecipientUiModel.Valid(it.recipient)) }
     }
 }

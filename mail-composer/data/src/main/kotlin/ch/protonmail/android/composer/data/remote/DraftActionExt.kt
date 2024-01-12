@@ -21,7 +21,9 @@ package ch.protonmail.android.composer.data.remote
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 
 fun DraftAction.toApiInt() = when (this) {
-    is DraftAction.Compose -> -1
+    is DraftAction.Compose,
+    is DraftAction.ComposeWithRecipient -> -1
+
     is DraftAction.Reply -> 0
     is DraftAction.ReplyAll -> 1
     is DraftAction.Forward -> 2

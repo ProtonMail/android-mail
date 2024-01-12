@@ -21,10 +21,9 @@ package ch.protonmail.android.navigation.model
 import ch.protonmail.android.feature.account.SignOutAccountDialog.USER_ID_KEY
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.DraftMessageIdKey
-import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.PrefilledRecipientKey
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.SerializedDraftActionKey
-import ch.protonmail.android.mailcontact.presentation.contactdetails.ContactDetailsScreen.ContactDetailsContactIdKey
 import ch.protonmail.android.mailcomposer.presentation.ui.SetMessagePasswordScreen
+import ch.protonmail.android.mailcontact.presentation.contactdetails.ContactDetailsScreen.ContactDetailsContactIdKey
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.ConversationIdKey
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.ScrollToMessageIdKey
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen.MESSAGE_ID_KEY
@@ -79,11 +78,6 @@ sealed class Destination(val route: String) {
 
             operator fun invoke(action: DraftAction) =
                 route.replace(SerializedDraftActionKey.wrap(), action.serialize())
-        }
-
-        object ContactActionComposer : Destination("composer/contact/${PrefilledRecipientKey.wrap()}") {
-
-            operator fun invoke(recipient: String) = route.replace(PrefilledRecipientKey.wrap(), recipient)
         }
 
         object Settings : Destination("settings")

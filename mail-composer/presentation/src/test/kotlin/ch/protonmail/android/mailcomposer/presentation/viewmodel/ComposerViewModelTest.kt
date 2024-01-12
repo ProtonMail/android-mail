@@ -165,9 +165,7 @@ class ComposerViewModelTest {
     private val getComposerSenderAddresses = mockk<GetComposerSenderAddresses> {
         coEvery { this@mockk.invoke() } returns GetComposerSenderAddresses.Error.UpgradeToChangeSender.left()
     }
-    private val savedStateHandle = mockk<SavedStateHandle> {
-        every { get<String>(ComposerScreen.PrefilledRecipientKey) } returns null
-    }
+    private val savedStateHandle = mockk<SavedStateHandle>()
     private val getDecryptedDraftFields = mockk<GetDecryptedDraftFields>()
     private val styleQuotedHtml = mockk<StyleQuotedHtml>()
     private val getLocalMessageDecrypted = mockk<GetLocalMessageDecrypted>()
@@ -1841,7 +1839,7 @@ class ComposerViewModelTest {
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
         expectContacts()
         mockParticipantMapper()
-        expectInputContactRecipient(expectedRecipient.address)
+        expectInputDraftAction { DraftAction.ComposeWithRecipient(expectedRecipient.address) }
         expectStoreDraftRecipientsSucceeds(
             expectedMessageId,
             expectedSenderEmail,
@@ -1919,10 +1917,6 @@ class ComposerViewModelTest {
 
     private fun expectNoInputDraftMessageId() {
         every { savedStateHandle.get<String>(ComposerScreen.DraftMessageIdKey) } returns null
-    }
-
-    private fun expectInputContactRecipient(recipient: String) {
-        every { savedStateHandle.get<String>(ComposerScreen.PrefilledRecipientKey) } returns recipient
     }
 
     private fun expectDraftBodyWithSignature() = DraftBody(

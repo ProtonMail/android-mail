@@ -23,11 +23,11 @@ import arrow.core.raise.Raise
 import arrow.core.raise.either
 import ch.protonmail.android.mailcommon.domain.util.mapFalse
 import ch.protonmail.android.mailcomposer.domain.Transactor
-import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.MessageWithDecryptedBody
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentSyncState
+import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MimeType
@@ -91,7 +91,9 @@ class StoreDraftWithParentAttachments @Inject constructor(
         is DraftAction.Forward -> parentMessageAttachments
         is DraftAction.Reply,
         is DraftAction.ReplyAll -> parentMessageAttachments.filter { it.disposition == "inline" }
-        is DraftAction.Compose -> {
+
+        is DraftAction.Compose,
+        is DraftAction.ComposeWithRecipient -> {
             Timber.w("Store Draft with parent attachments for a Compose action. This shouldn't happen.")
             raise(Error.ActionWithNoParent)
         }

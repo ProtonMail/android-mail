@@ -27,7 +27,6 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveUserAddresses
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatExtendedTime
-import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
 import ch.protonmail.android.mailcomposer.domain.model.MessageWithDecryptedBody
@@ -39,6 +38,7 @@ import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.domain.model.Subject
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
+import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.Message
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.model.MimeType
@@ -189,7 +189,9 @@ class ParentMessageToDraftFields @Inject constructor(
     ): List<Recipient> {
         val allRecipients = when (action) {
             is DraftAction.Compose,
+            is DraftAction.ComposeWithRecipient, // will be handled via VM
             is DraftAction.Forward -> emptyList()
+
             is DraftAction.Reply -> listOf(messageWithBody.messageBody.replyTo)
             is DraftAction.ReplyAll -> listOf(messageWithBody.messageBody.replyTo) + messageWithBody.message.toList
         }
@@ -198,13 +200,17 @@ class ParentMessageToDraftFields @Inject constructor(
 
     private fun ccRecipientsForAction(action: DraftAction, message: Message) = when (action) {
         is DraftAction.Compose,
+        is DraftAction.ComposeWithRecipient,
         is DraftAction.Forward,
         is DraftAction.Reply -> emptyList()
+
         is DraftAction.ReplyAll -> message.ccList
     }
 
     private fun subjectPrefixForAction(action: DraftAction) = when (action) {
-        is DraftAction.Compose -> ""
+        is DraftAction.Compose,
+        is DraftAction.ComposeWithRecipient -> ""
+
         is DraftAction.Forward -> "Fw:"
         is DraftAction.Reply,
         is DraftAction.ReplyAll -> "Re:"

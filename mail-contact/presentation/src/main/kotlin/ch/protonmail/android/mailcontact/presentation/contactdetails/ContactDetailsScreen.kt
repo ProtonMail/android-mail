@@ -124,9 +124,7 @@ fun ContactDetailsScreen(actions: ContactDetailsScreen.Actions, viewModel: Conta
                         }
                         context.startActivity(callIntent)
                     }
-                    ConsumableLaunchedEffect(effect = state.openComposer) {
-                        actions.navigateToComposer(it)
-                    }
+                    ConsumableLaunchedEffect(effect = state.openComposer) { actions.navigateToComposer(it) }
                 }
 
                 is ContactDetailsState.Loading -> {

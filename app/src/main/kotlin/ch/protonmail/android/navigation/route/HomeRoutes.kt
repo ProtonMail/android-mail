@@ -170,7 +170,6 @@ internal fun NavGraphBuilder.addComposer(
     composable(route = Destination.Screen.Composer.route) { ComposerScreen(actions) }
     composable(route = Destination.Screen.EditDraftComposer.route) { ComposerScreen(actions) }
     composable(route = Destination.Screen.MessageActionComposer.route) { ComposerScreen(actions) }
-    composable(route = Destination.Screen.ContactActionComposer.route) { ComposerScreen(actions) }
 }
 
 internal fun NavGraphBuilder.addSignOutAccountDialog(navController: NavHostController) {
@@ -424,7 +423,9 @@ internal fun NavGraphBuilder.addContactDetails(
         },
         onEditClick = { showFeatureMissingSnackbar() },
         showFeatureMissingSnackbar = { showFeatureMissingSnackbar() },
-        navigateToComposer = { navController.navigate(Destination.Screen.ContactActionComposer(it)) }
+        navigateToComposer = {
+            navController.navigate(Destination.Screen.MessageActionComposer(DraftAction.ComposeWithRecipient(it)))
+        }
     )
     composable(route = Destination.Screen.ContactDetails.route) {
         ContactDetailsScreen(actions)
