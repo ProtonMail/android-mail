@@ -131,7 +131,7 @@ fun SetMessagePasswordScreen(
 
 @Composable
 @Suppress("ComplexMethod")
-fun SetMessagePasswordContent(
+private fun SetMessagePasswordContent(
     state: SetMessagePasswordState.Data,
     actions: SetMessagePasswordContent.Actions,
     modifier: Modifier = Modifier
@@ -153,13 +153,13 @@ fun SetMessagePasswordContent(
         var isMessagePasswordFieldActivated by rememberSaveable { mutableStateOf(state.isInEditMode) }
         var isRepeatedMessagePasswordFieldActivated by rememberSaveable { mutableStateOf(state.isInEditMode) }
 
-        fun isMessagePasswordError() {
+        fun validateMessagePassword() {
             actions.validatePassword(messagePassword)
         }
-        fun isRepeatedMessagePasswordError() {
+        fun validateRepeatedMessagePassword() {
             actions.validateRepeatedPassword(messagePassword, repeatedMessagePassword)
         }
-        fun isApplyButtonEnabled() = isMessagePasswordFieldActivated && isRepeatedMessagePasswordFieldActivated &&
+        fun shouldApplyButtonBeEnabled() = isMessagePasswordFieldActivated && isRepeatedMessagePasswordFieldActivated &&
             !state.hasMessagePasswordError && !state.hasRepeatedMessagePasswordError
 
         MessagePasswordInfo()
@@ -176,13 +176,13 @@ fun SetMessagePasswordContent(
             isError = state.hasMessagePasswordError,
             onValueChange = {
                 messagePassword = it
-                isMessagePasswordError()
-                if (isRepeatedMessagePasswordFieldActivated) isRepeatedMessagePasswordError()
+                validateMessagePassword()
+                if (isRepeatedMessagePasswordFieldActivated) validateRepeatedMessagePassword()
             },
             onFocusChanged = { hasFocus ->
                 if (hasFocus) isMessagePasswordFieldActivated = true
-                if (isMessagePasswordFieldActivated) isMessagePasswordError()
-                if (isRepeatedMessagePasswordFieldActivated) isRepeatedMessagePasswordError()
+                if (isMessagePasswordFieldActivated) validateMessagePassword()
+                if (isRepeatedMessagePasswordFieldActivated) validateRepeatedMessagePassword()
             }
         )
         MessagePasswordSpacer()
@@ -198,13 +198,13 @@ fun SetMessagePasswordContent(
             isError = state.hasRepeatedMessagePasswordError,
             onValueChange = {
                 repeatedMessagePassword = it
-                isRepeatedMessagePasswordError()
-                if (isMessagePasswordFieldActivated) isMessagePasswordError()
+                validateRepeatedMessagePassword()
+                if (isMessagePasswordFieldActivated) validateMessagePassword()
             },
             onFocusChanged = { hasFocus ->
                 if (hasFocus) isRepeatedMessagePasswordFieldActivated = true
-                if (isRepeatedMessagePasswordFieldActivated) isRepeatedMessagePasswordError()
-                if (isMessagePasswordFieldActivated) isMessagePasswordError()
+                if (isRepeatedMessagePasswordFieldActivated) validateRepeatedMessagePassword()
+                if (isMessagePasswordFieldActivated) validateMessagePassword()
             }
         )
         MessagePasswordSpacer()
@@ -220,7 +220,7 @@ fun SetMessagePasswordContent(
         MessagePasswordSpacer(height = ProtonDimens.LargerSpacing)
         MessagePasswordButtons(
             shouldShowEditingButtons = state.isInEditMode,
-            isApplyButtonEnabled = isApplyButtonEnabled(),
+            isApplyButtonEnabled = shouldApplyButtonBeEnabled(),
             onApplyButtonClick = { actions.onApplyButtonClick(messagePassword, messagePasswordHint) },
             onRemoveButtonClick = actions.onRemoveButtonClick
         )
@@ -228,7 +228,7 @@ fun SetMessagePasswordContent(
 }
 
 @Composable
-fun MessagePasswordInfo(modifier: Modifier = Modifier) {
+private fun MessagePasswordInfo(modifier: Modifier = Modifier) {
     Row(modifier = modifier) {
         Icon(
             painter = painterResource(id = R.drawable.ic_proton_info_circle),
@@ -251,7 +251,7 @@ fun MessagePasswordInfo(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun MessagePasswordButtons(
+private fun MessagePasswordButtons(
     shouldShowEditingButtons: Boolean,
     isApplyButtonEnabled: Boolean,
     onApplyButtonClick: () -> Unit,
@@ -291,7 +291,7 @@ fun MessagePasswordButtons(
 }
 
 @Composable
-fun MessagePasswordSpacer(modifier: Modifier = Modifier, height: Dp = ProtonDimens.MediumSpacing) {
+private fun MessagePasswordSpacer(modifier: Modifier = Modifier, height: Dp = ProtonDimens.MediumSpacing) {
     Spacer(modifier = modifier.height(height))
 }
 

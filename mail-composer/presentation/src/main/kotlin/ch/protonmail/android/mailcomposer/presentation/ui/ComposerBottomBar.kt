@@ -68,7 +68,7 @@ fun ComposerBottomBar(
 }
 
 @Composable
-fun AddPasswordButton(
+private fun AddPasswordButton(
     draftId: MessageId,
     senderEmail: SenderEmail,
     isMessagePasswordSet: Boolean,
@@ -98,7 +98,7 @@ fun AddPasswordButton(
 }
 
 @Composable
-fun AddPasswordCheckmark(modifier: Modifier = Modifier) {
+private fun AddPasswordCheckmark(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .size(ProtonDimens.SmallIconSize)
