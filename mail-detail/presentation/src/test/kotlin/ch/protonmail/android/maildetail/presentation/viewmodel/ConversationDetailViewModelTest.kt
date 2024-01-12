@@ -91,6 +91,9 @@ import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
+import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
+import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
+import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantNameResult
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
@@ -198,6 +201,7 @@ class ConversationDetailViewModelTest {
         every { this@mockk(UserIdSample.Primary, ConversationIdSample.WeatherForecast, any()) } returns
             flowOf(ConversationSample.WeatherForecast.right())
     }
+    private val observeMessage = mockk<ObserveMessage>()
     private val observeConversationMessagesWithLabels: ObserveConversationMessagesWithLabels = mockk {
         every { this@mockk(UserIdSample.Primary, ConversationIdSample.WeatherForecast) } returns flowOf(
             nonEmptyListOf(
@@ -279,6 +283,9 @@ class ConversationDetailViewModelTest {
         )
     }
     private val updateLinkConfirmationSetting = mockk<UpdateLinkConfirmationSetting>()
+    private val resolveParticipantsName = mockk<ResolveParticipantName> {
+        coEvery { this@mockk(any(), any(), any()) } returns ResolveParticipantNameResult("Sender", isProton = false)
+    }
 
     private val inMemoryConversationStateRepository = FakeInMemoryConversationStateRepository()
     private val setMessageViewState = SetMessageViewState(inMemoryConversationStateRepository)
@@ -302,6 +309,7 @@ class ConversationDetailViewModelTest {
             observeDestinationMailLabels = observeMailLabels,
             observeFolderColor = observeFolderColorSettings,
             observeCustomMailLabels = observeCustomMailLabels,
+            observeMessage = observeMessage,
             observeMessageAttachmentStatus = observeAttachmentStatus,
             getDownloadingAttachmentsForMessages = getAttachmentDownloadStatus,
             reducer = reducer,
@@ -316,7 +324,8 @@ class ConversationDetailViewModelTest {
             getEmbeddedImageAvoidDuplicatedExecution = getEmbeddedImageAvoidDuplicatedExecution,
             ioDispatcher = Dispatchers.Unconfined,
             observePrivacySettings = observePrivacySettings,
-            updateLinkConfirmationSetting = updateLinkConfirmationSetting
+            updateLinkConfirmationSetting = updateLinkConfirmationSetting,
+            resolveParticipantName = resolveParticipantsName
         )
     }
 

@@ -24,6 +24,8 @@ import android.content.Context
 import android.net.Uri
 import android.text.format.Formatter
 import androidx.lifecycle.SavedStateHandle
+import app.cash.turbine.Event
+import app.cash.turbine.ReceiveTurbine
 import app.cash.turbine.test
 import arrow.core.NonEmptyList
 import arrow.core.left
@@ -111,13 +113,16 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithLabels
 import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
+import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
+import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailmessage.presentation.mapper.AttachmentUiModelMapper
 import ch.protonmail.android.mailmessage.presentation.mapper.DetailMoreActionsBottomSheetUiMapper
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.DetailMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
 import ch.protonmail.android.mailmessage.presentation.reducer.DetailMoreActionsBottomSheetReducer
 import ch.protonmail.android.mailmessage.presentation.reducer.LabelAsBottomSheetReducer
@@ -177,6 +182,7 @@ class ConversationDetailViewModelIntegrationTest {
         every { this@mockk(UserIdSample.Primary, ConversationIdSample.WeatherForecast, any()) } returns
             flowOf(ConversationSample.WeatherForecast.right())
     }
+    private val observeMessage = mockk<ObserveMessage>()
     private val observeConversationMessagesWithLabels: ObserveConversationMessagesWithLabels = mockk {
         every { this@mockk(UserIdSample.Primary, ConversationIdSample.WeatherForecast) } returns flowOf(
             nonEmptyListOf(
@@ -1375,6 +1381,49 @@ class ConversationDetailViewModelIntegrationTest {
         assertNull(actual)
     }
 
+    @Test
+    fun `verify bottom sheet with data is emitted when more actions bottom sheet is requested and loading succeeds`() =
+        runTest {
+            // Given
+            val messageId = MessageId("messageId")
+            coEvery {
+                observeMessage(userId = userId, messageId = messageId)
+            } returns flowOf(MessageSample.AugWeatherForecast.right())
+
+            // When
+            val viewModel = buildConversationDetailViewModel()
+            viewModel.state.test {
+                viewModel.submit(ConversationDetailViewAction.RequestMoreActionsBottomSheet(messageId))
+                advanceUntilIdle()
+
+                // Then
+                assertIs<DetailMoreActionsBottomSheetState.Data>(lastEmittedItem().bottomSheetState?.contentState)
+            }
+        }
+
+    @Test
+    fun `verify no bottom sheet data is emitted when more actions bottom sheet is requested and loading fails`() =
+        runTest {
+            // Given
+            val messageId = MessageId("messageId")
+            coEvery {
+                observeMessage(
+                    userId = userId,
+                    messageId = messageId
+                )
+            } returns flowOf(DataError.Local.NoDataCached.left())
+
+            // When
+            val viewModel = buildConversationDetailViewModel()
+            viewModel.state.test {
+                viewModel.submit(ConversationDetailViewAction.RequestMoreActionsBottomSheet(messageId))
+                advanceUntilIdle()
+
+                // Then
+                assertNull(lastEmittedItem().bottomSheetState?.contentState)
+            }
+        }
+
     @Suppress("LongParameterList")
     private fun buildConversationDetailViewModel(
         observePrimaryUser: ObservePrimaryUserId = observePrimaryUserId,
@@ -1420,6 +1469,7 @@ class ConversationDetailViewModelIntegrationTest {
         observeDestinationMailLabels = observeDestinationMailLabels,
         observeFolderColor = observeFolderColor,
         observeCustomMailLabels = observeCustomMailLabels,
+        observeMessage = observeMessage,
         observeMessageAttachmentStatus = observeMessageAttachmentStatus,
         getDownloadingAttachmentsForMessages = getAttachmentStatus,
         reducer = detailReducer,
@@ -1434,7 +1484,8 @@ class ConversationDetailViewModelIntegrationTest {
         getEmbeddedImageAvoidDuplicatedExecution = getEmbeddedImageAvoidDuplicatedExecution,
         ioDispatcher = ioDispatcher,
         observePrivacySettings = observePrivacySettings,
-        updateLinkConfirmationSetting = updateLinkConfirmationSetting
+        updateLinkConfirmationSetting = updateLinkConfirmationSetting,
+        resolveParticipantName = resolveParticipantName
     )
 
     private fun aMessageAttachment(id: String): MessageAttachment = MessageAttachment(
@@ -1448,4 +1499,9 @@ class ConversationDetailViewModelIntegrationTest {
         encSignature = null,
         headers = emptyMap()
     )
+
+    private suspend fun ReceiveTurbine<ConversationDetailState>.lastEmittedItem(): ConversationDetailState {
+        val events = cancelAndConsumeRemainingEvents()
+        return (events.last() as Event.Item).value
+    }
 }

@@ -83,8 +83,10 @@ import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetVisibilityEffect
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.DetailMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.DetailMoreActionsBottomSheetContent
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.LabelAsBottomSheetContent
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MoveToBottomSheetContent
 import kotlinx.collections.immutable.ImmutableList
@@ -162,6 +164,15 @@ fun ConversationDetailScreen(
                     )
                 )
 
+                is DetailMoreActionsBottomSheetState -> DetailMoreActionsBottomSheetContent(
+                    state = bottomSheetContentState,
+                    actions = DetailMoreActionsBottomSheetContent.Actions(
+                        onReply = actions.onReply,
+                        onReplyAll = actions.onReplyAll,
+                        onForward = actions.onForward
+                    )
+                )
+
                 else -> {
                     if (bottomSheetState.isVisible) {
                         ProtonCenteredProgress()
@@ -209,6 +220,9 @@ fun ConversationDetailScreen(
                 },
                 onBodyExpandCollapseButtonClicked = {
                     viewModel.submit(ConversationDetailViewAction.ExpandOrCollapseMessageBody(it))
+                },
+                onMoreActionsClick = { messageId ->
+                    viewModel.submit(ConversationDetailViewAction.RequestMoreActionsBottomSheet(messageId))
                 }
             ),
             scrollToMessageId = state.scrollToMessage?.id
@@ -376,7 +390,8 @@ fun ConversationDetailScreen(
                     onReplyAll = actions.onReplyAll,
                     onForward = actions.onForward,
                     onScrollRequestCompleted = actions.onScrollRequestCompleted,
-                    onBodyExpandCollapseButtonClicked = actions.onBodyExpandCollapseButtonClicked
+                    onBodyExpandCollapseButtonClicked = actions.onBodyExpandCollapseButtonClicked,
+                    onMoreActionsClick = actions.onMoreActionsClick
 
                 )
                 MessagesContent(
@@ -614,7 +629,8 @@ object ConversationDetailScreen {
         val onReply: (MessageId) -> Unit,
         val onReplyAll: (MessageId) -> Unit,
         val onForward: (MessageId) -> Unit,
-        val onBodyExpandCollapseButtonClicked: (MessageIdUiModel) -> Unit
+        val onBodyExpandCollapseButtonClicked: (MessageIdUiModel) -> Unit,
+        val onMoreActionsClick: (MessageId) -> Unit
     ) {
 
         companion object {
@@ -643,7 +659,8 @@ object ConversationDetailScreen {
                 onReply = {},
                 onReplyAll = {},
                 onForward = {},
-                onBodyExpandCollapseButtonClicked = {}
+                onBodyExpandCollapseButtonClicked = {},
+                onMoreActionsClick = {}
             )
         }
     }

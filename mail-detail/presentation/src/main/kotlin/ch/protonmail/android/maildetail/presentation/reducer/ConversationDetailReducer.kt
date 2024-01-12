@@ -111,6 +111,7 @@ class ConversationDetailReducer @Inject constructor(
 
                 is ConversationDetailViewAction.LabelAsToggleAction -> LabelToggled(operation.labelId)
                 is ConversationDetailViewAction.RequestLabelAsBottomSheet,
+                is ConversationDetailViewAction.RequestMoreActionsBottomSheet,
                 is ConversationDetailViewAction.RequestMoveToBottomSheet -> BottomSheetOperation.Requested
 
                 is ConversationDetailViewAction.LabelAsConfirmed,
@@ -179,6 +180,7 @@ class ConversationDetailReducer @Inject constructor(
         is ConversationDetailViewAction.MessageBodyLinkClicked -> Effect.of(
             MessageBodyLink(operation.messageId, operation.uri)
         )
+
         else -> openMessageBodyLinkEffect
     }
 

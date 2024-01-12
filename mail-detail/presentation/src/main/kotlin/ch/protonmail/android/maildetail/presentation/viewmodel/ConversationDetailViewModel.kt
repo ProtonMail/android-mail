@@ -96,6 +96,9 @@ import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithLabels
 import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
+import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
+import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.DetailMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
@@ -147,6 +150,7 @@ class ConversationDetailViewModel @Inject constructor(
     private val observeDestinationMailLabels: ObserveExclusiveDestinationMailLabels,
     private val observeFolderColor: ObserveFolderColorSettings,
     private val observeCustomMailLabels: ObserveCustomMailLabels,
+    private val observeMessage: ObserveMessage,
     private val observeMessageAttachmentStatus: ObserveMessageAttachmentStatus,
     private val getDownloadingAttachmentsForMessages: GetDownloadingAttachmentsForMessages,
     private val reducer: ConversationDetailReducer,
@@ -161,7 +165,8 @@ class ConversationDetailViewModel @Inject constructor(
     private val getEmbeddedImageAvoidDuplicatedExecution: GetEmbeddedImageAvoidDuplicatedExecution,
     @IODispatcher private val ioDispatcher: CoroutineDispatcher,
     private val observePrivacySettings: ObservePrivacySettings,
-    private val updateLinkConfirmationSetting: UpdateLinkConfirmationSetting
+    private val updateLinkConfirmationSetting: UpdateLinkConfirmationSetting,
+    private val resolveParticipantName: ResolveParticipantName
 ) : ViewModel() {
 
     private val primaryUserId: Flow<UserId> = observePrimaryUserId().filterNotNull()
@@ -197,6 +202,9 @@ class ConversationDetailViewModel @Inject constructor(
             is RequestLabelAsBottomSheet -> showLabelAsBottomSheetAndLoadData(action)
             is LabelAsToggleAction -> onLabelToggled(action.labelId)
             is LabelAsConfirmed -> onLabelAsConfirmed(action.archiveSelected)
+            is ConversationDetailViewAction.RequestMoreActionsBottomSheet ->
+                showMoreActionsBottomSheetAndLoadData(action)
+
             is ExpandMessage -> onExpandMessage(action.messageId)
             is CollapseMessage -> onCollapseMessage(action.messageId)
             is MessageBodyLinkClicked -> onMessageBodyLinkClicked(action)
@@ -535,6 +543,37 @@ class ConversationDetailViewModel @Inject constructor(
     private fun List<MessageWithLabels>.partiallyContainsLabel(labelId: LabelId): Boolean {
         return this.any { messageWithLabel ->
             messageWithLabel.labels.any { it.labelId == labelId }
+        }
+    }
+
+    private fun showMoreActionsBottomSheetAndLoadData(
+        initialEvent: ConversationDetailViewAction.RequestMoreActionsBottomSheet
+    ) {
+        viewModelScope.launch {
+            emitNewStateFrom(initialEvent)
+
+            val userId = primaryUserId.first()
+            val contacts = observeContacts(userId).first().getOrNull()
+            val message = observeMessage(userId, initialEvent.messageId).first().getOrElse {
+                Timber.e("Unable to fetch message data.")
+                emitNewStateFrom(DismissBottomSheet)
+                return@launch
+            }
+
+            val sender = contacts?.let {
+                return@let resolveParticipantName(message.sender, it)
+            }?.name ?: message.sender.name
+
+            val event = ConversationDetailEvent.ConversationBottomSheetEvent(
+                DetailMoreActionsBottomSheetState.MessageDetailMoreActionsBottomSheetEvent.DataLoaded(
+                    messageSender = sender,
+                    messageSubject = message.subject,
+                    messageId = message.messageId.id,
+                    participantsCount = message.allRecipientsDeduplicated.size
+                )
+            )
+
+            emitNewStateFrom(event)
         }
     }
 
