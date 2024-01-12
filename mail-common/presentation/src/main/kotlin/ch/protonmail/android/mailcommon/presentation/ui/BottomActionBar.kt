@@ -127,8 +127,10 @@ fun callbackForAction(action: Action, viewActionCallbacks: BottomActionBar.Actio
     Action.SenderEmails -> viewActionCallbacks.onSenderEmail
     Action.SaveAttachments -> viewActionCallbacks.onSaveAttachments
     Action.More -> viewActionCallbacks.onMore
-    else -> {
-        { Timber.d("Action not handled $action.") }
+    Action.Reply,
+    Action.ReplyAll,
+    Action.Forward -> {
+        { Timber.d("Action not handled for BottomActionBar - $action.") }
     }
 }
 
