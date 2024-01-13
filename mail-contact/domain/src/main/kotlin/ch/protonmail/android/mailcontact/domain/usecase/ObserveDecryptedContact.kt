@@ -37,7 +37,7 @@ import javax.inject.Inject
 
 class ObserveDecryptedContact @Inject constructor(
     private val contactRepository: ContactRepository,
-    private val decryptContact: DecryptContact,
+    private val getDecryptedContact: GetDecryptedContact,
     private val labelRepository: LabelRepository
 ) {
 
@@ -55,9 +55,9 @@ class ObserveDecryptedContact @Inject constructor(
                 val contactWithCards = contactWithCardsEither.bind()
                 val allContactLabels = labelsEither.bind()
 
-                decryptContact(userId, contactWithCards).copy(
+                getDecryptedContact(userId, contactWithCards).getOrNull()?.copy(
                     contactGroups = createContactGroups(contactWithCards, allContactLabels)
-                )
+                ) ?: raise(DataError.Local.DecryptionError)
             }
         }
     }

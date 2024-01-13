@@ -19,8 +19,12 @@
 package ch.protonmail.android.mailcontact.domain.usecase
 
 import java.time.ZoneId
+import arrow.core.Either
+import arrow.core.raise.either
+import arrow.core.right
 import ch.protonmail.android.mailcontact.domain.model.ContactProperty
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
+import ch.protonmail.android.mailcontact.domain.model.GetContactError
 import ezvcard.property.Address
 import ezvcard.property.Anniversary
 import ezvcard.property.Birthday
@@ -39,44 +43,30 @@ import ezvcard.property.Telephone
 import ezvcard.property.Timezone
 import ezvcard.property.Title
 import ezvcard.property.Url
-import me.proton.core.contact.domain.decryptContactCard
 import me.proton.core.contact.domain.entity.ContactId
 import me.proton.core.contact.domain.entity.ContactWithCards
 import me.proton.core.contact.domain.entity.DecryptedVCard
-import me.proton.core.crypto.common.context.CryptoContext
 import me.proton.core.crypto.common.pgp.VerificationStatus
 import me.proton.core.domain.entity.UserId
-import me.proton.core.key.domain.useKeys
-import me.proton.core.user.domain.UserManager
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
  * Decrypts ContactCards and combines all the data into one [DecryptedContact] model.
  */
-class DecryptContact @Inject constructor(
-    private val userManager: UserManager,
-    private val cryptoContext: CryptoContext
+class GetDecryptedContact @Inject constructor(
+    private val decryptContactCards: DecryptContactCards
 ) {
 
-    suspend operator fun invoke(userId: UserId, contactWithCards: ContactWithCards): DecryptedContact {
+    suspend operator fun invoke(
+        userId: UserId,
+        contactWithCards: ContactWithCards
+    ): Either<GetContactError, DecryptedContact> = either {
 
-        val user = userManager.getUser(userId)
-        val decryptedCards = user.useKeys(cryptoContext) {
-            contactWithCards.contactCards.map { card ->
-                runCatching {
-                    decryptContactCard(card).takeIf {
-                        it.status == VerificationStatus.Success ||
-                            it.status == VerificationStatus.NotSigned
-                    }
-                }.getOrElse {
-                    Timber.e("Exception decrypting Contact VCard", it)
-                    null
-                }
-            }
-        }.filterNotNull()
+        val decryptedCards = decryptContactCards(userId, contactWithCards).bind().filter {
+            it.status == VerificationStatus.Success || it.status == VerificationStatus.NotSigned
+        }
 
-        return extractFromVCards(contactWithCards.id, decryptedCards)
+        return extractFromVCards(contactWithCards.id, decryptedCards).right()
     }
 
     @Suppress("LongMethod", "ComplexMethod")

@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcontact.domain.usecase
 
 import app.cash.turbine.test
 import arrow.core.Either
+import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailcommon.domain.sample.LabelSample
@@ -73,18 +74,18 @@ class ObserveDecryptedContactTest {
         )
     }
 
-    private val decryptContactMock = mockk<DecryptContact> {
+    private val getDecryptedContactMock = mockk<GetDecryptedContact> {
         coEvery {
             this@mockk.invoke(UserIdTestData.Primary, ContactWithCardsSample.Mario)
-        } returns DecryptedContact(ContactWithCardsSample.Mario.contact.id)
+        } returns DecryptedContact(ContactWithCardsSample.Mario.contact.id).right()
         coEvery {
             this@mockk.invoke(UserIdTestData.Primary, ContactWithCardsSample.Stefano)
-        } returns DecryptedContact(ContactWithCardsSample.Stefano.contact.id)
+        } returns DecryptedContact(ContactWithCardsSample.Stefano.contact.id).right()
     }
 
     private val observeDecryptedContact = ObserveDecryptedContact(
         contactRepositoryMock,
-        decryptContactMock,
+        getDecryptedContactMock,
         labelRepositoryMock
     )
 
