@@ -126,11 +126,13 @@ class GetDecryptedContact @Inject constructor(
                     }
 
                     is Birthday -> {
-                        decryptedContact.copy(
-                            birthday = ContactProperty.Birthday(
-                                it.date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+                        if (it.date != null) {
+                            decryptedContact.copy(
+                                birthday = ContactProperty.Birthday(
+                                    it.date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+                                )
                             )
-                        )
+                        } else decryptedContact
                     }
 
                     is Note -> {
@@ -216,11 +218,13 @@ class GetDecryptedContact @Inject constructor(
                     }
 
                     is Anniversary -> {
-                        decryptedContact.copy(
-                            anniversary = ContactProperty.Anniversary(
-                                it.date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+                        if (it.date != null) {
+                            decryptedContact.copy(
+                                anniversary = ContactProperty.Anniversary(
+                                    it.date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+                                )
                             )
-                        )
+                        } else decryptedContact
                     }
 
                     is Url -> {

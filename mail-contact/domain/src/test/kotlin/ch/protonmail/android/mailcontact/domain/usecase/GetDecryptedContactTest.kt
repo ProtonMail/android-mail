@@ -213,6 +213,38 @@ class GetDecryptedContactTest {
     }
 
     @Test
+    fun `does not crash on malformed data`() = runTest {
+        // Given
+        val vCardEncrypted = """
+            BEGIN:VCARD
+            VERSION:4.0
+            PRODID:ez-vcard 0.11.3
+            BDAY:202312__
+            ANNIVERSARY:202312__
+            END:VCARD
+        """.trimIndent()
+
+        val contactWithCards = ContactWithCards(
+            contact = ContactSample.Mario,
+            contactCards = listOf(
+                ContactCard.Encrypted(vCardEncrypted, vCardSignature)
+            )
+        )
+
+        expectDecryptContactCards(contactWithCards)
+
+        val expected = DecryptedContact(
+            ContactSample.Mario.id
+        ).right()
+
+        // When
+        val actual = sut(user.userId, contactWithCards)
+
+        // Then
+        assertEquals(expected, actual)
+    }
+
+    @Test
     fun `parses and combines all VCard Properties into DecryptedContact model`() = runTest {
         // Given
         val contactWithCards = ContactWithCards(
