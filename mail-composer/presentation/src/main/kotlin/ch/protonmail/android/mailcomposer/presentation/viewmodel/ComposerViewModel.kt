@@ -279,7 +279,9 @@ class ComposerViewModel @Inject constructor(
                     is ComposerAction.OnBottomSheetOptionSelected -> emitNewStateFor(action)
                     is ComposerAction.OnAddAttachments -> emitNewStateFor(action)
                     is ComposerAction.OnCloseComposer -> emitNewStateFor(onCloseComposer(action))
-                    is ComposerAction.OnSendMessage -> emitNewStateFor(onSendMessage(action))
+                    is ComposerAction.OnSendMessage -> emitNewStateFor(handleOnSendMessage(action))
+                    is ComposerAction.ConfirmSendingWithoutSubject -> emitNewStateFor(onSendMessage(action))
+                    is ComposerAction.RejectSendingWithoutSubject -> emitNewStateFor(action)
                     is ComposerAction.RemoveAttachment -> onAttachmentsRemoved(action)
                 }
                 composerIdlingResource.decrement()
@@ -373,7 +375,16 @@ class ComposerViewModel @Inject constructor(
         }
     }
 
-    private suspend fun onSendMessage(action: ComposerAction.OnSendMessage): ComposerOperation {
+    private suspend fun handleOnSendMessage(action: ComposerAction.OnSendMessage): ComposerOperation {
+        val draftFields = buildDraftFields()
+        return if (draftFields.haveBlankSubject()) {
+            ComposerEvent.ConfirmEmptySubject
+        } else {
+            onSendMessage(action)
+        }
+    }
+
+    private suspend fun onSendMessage(action: ComposerOperation): ComposerOperation {
         val draftFields = buildDraftFields()
         return when {
             draftFields.areBlank() -> action

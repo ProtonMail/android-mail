@@ -44,6 +44,7 @@ import ch.protonmail.android.mailcomposer.presentation.model.ComposerOperation
 import ch.protonmail.android.mailcomposer.presentation.model.ContactSuggestionUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.ContactSuggestionsField
 import ch.protonmail.android.mailcomposer.presentation.model.DraftUiModel
+import ch.protonmail.android.mailcomposer.presentation.model.FocusedFieldType
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel.Invalid
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel.Valid
@@ -695,6 +696,53 @@ class ComposerReducerTest(
                 isMessagePasswordSet = true
             )
         )
+        private val SubmittableToRequestConfirmEmptySubject = TestTransition(
+            name = "Should update state to request confirmation for sending without subject",
+            currentState = aSubmittableState(
+                messageId,
+                subject = Subject(""),
+                confirmSendingWithoutSubject = Effect.empty()
+            ),
+            operation = ComposerEvent.ConfirmEmptySubject,
+            expectedState = aSubmittableState(
+                messageId,
+                subject = Subject(""),
+                confirmSendingWithoutSubject = Effect.of(Unit)
+            )
+        )
+
+        private val SubmittableToConfirmEmptySubject = TestTransition(
+            name = "Should update state to confirm sending without subject",
+            currentState = aSubmittableState(
+                messageId,
+                subject = Subject(""),
+                confirmSendingWithoutSubject = Effect.of(Unit)
+            ),
+            operation = ComposerAction.ConfirmSendingWithoutSubject,
+            expectedState = aSubmittableState(
+                messageId,
+                subject = Subject(""),
+                confirmSendingWithoutSubject = Effect.empty(),
+                closeComposerWithMessageSending = Effect.of(Unit)
+            )
+        )
+
+        private val SubmittableToRejectEmptySubject = TestTransition(
+            name = "Should update state to reject sending without subject",
+            currentState = aSubmittableState(
+                messageId,
+                subject = Subject(""),
+                confirmSendingWithoutSubject = Effect.of(Unit),
+                changeFocusToField = Effect.empty()
+            ),
+            operation = ComposerAction.RejectSendingWithoutSubject,
+            expectedState = aSubmittableState(
+                messageId,
+                subject = Subject(""),
+                confirmSendingWithoutSubject = Effect.empty(),
+                changeFocusToField = Effect.of(FocusedFieldType.SUBJECT)
+            )
+        )
 
         private val transitions = listOf(
             EmptyToSubmittableToField,
@@ -741,7 +789,10 @@ class ComposerReducerTest(
             EmptyToAttachmentReEncryptionFailed,
             EmptyToOnSendingError,
             EmptyToUpdateContactSuggestions,
-            EmptyToOnMessagePasswordUpdated
+            EmptyToOnMessagePasswordUpdated,
+            SubmittableToRequestConfirmEmptySubject,
+            SubmittableToConfirmEmptySubject,
+            SubmittableToRejectEmptySubject
         )
 
         private fun aSubmittableState(
@@ -755,6 +806,8 @@ class ComposerReducerTest(
             error: Effect<TextUiModel> = Effect.empty(),
             closeComposerWithMessageSending: Effect<Unit> = Effect.empty(),
             closeComposerWithMessageSendingOffline: Effect<Unit> = Effect.empty(),
+            confirmSendingWithoutSubject: Effect<Unit> = Effect.empty(),
+            changeFocusToField: Effect<FocusedFieldType> = Effect.empty(),
             attachmentsFileSizeExceeded: Effect<Unit> = Effect.empty(),
             attachmentReEncryptionFailed: Effect<Unit> = Effect.empty(),
             warning: Effect<TextUiModel> = Effect.empty()
@@ -777,6 +830,8 @@ class ComposerReducerTest(
             changeBottomSheetVisibility = Effect.empty(),
             closeComposer = Effect.empty(),
             closeComposerWithDraftSaved = Effect.empty(),
+            confirmSendingWithoutSubject = confirmSendingWithoutSubject,
+            changeFocusToField = changeFocusToField,
             isLoading = false,
             closeComposerWithMessageSending = closeComposerWithMessageSending,
             closeComposerWithMessageSendingOffline = closeComposerWithMessageSendingOffline,
@@ -829,7 +884,9 @@ class ComposerReducerTest(
             closeComposerWithDraftSaved = closeComposerWithDraftSaved,
             isLoading = isLoading,
             closeComposerWithMessageSending = Effect.empty(),
+            changeFocusToField = Effect.empty(),
             closeComposerWithMessageSendingOffline = Effect.empty(),
+            confirmSendingWithoutSubject = Effect.empty(),
             attachmentsFileSizeExceeded = attachmentsFileSizeExceeded,
             attachmentsReEncryptionFailed = attachmentReEncryptionFailed,
             warning = warning,

@@ -16,9 +16,9 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcomposer.presentation.ui
+package ch.protonmail.android.mailcomposer.presentation.model
 
-internal enum class FocusedFieldType {
+enum class FocusedFieldType {
     TO,
     CC,
     BCC,

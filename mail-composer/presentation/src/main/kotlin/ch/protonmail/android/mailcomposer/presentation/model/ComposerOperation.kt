@@ -51,6 +51,8 @@ internal sealed interface ComposerAction : ComposerOperation {
     object OnAddAttachments : ComposerAction
     object OnCloseComposer : ComposerAction
     object OnSendMessage : ComposerAction
+    object ConfirmSendingWithoutSubject : ComposerAction
+    object RejectSendingWithoutSubject : ComposerAction
 }
 
 sealed interface ComposerEvent : ComposerOperation {
@@ -81,4 +83,5 @@ sealed interface ComposerEvent : ComposerOperation {
     object ErrorLoadingParentMessageData : ComposerEvent
     object ErrorAttachmentsExceedSizeLimit : ComposerEvent
     object ErrorAttachmentsReEncryption : ComposerEvent
+    object ConfirmEmptySubject : ComposerEvent
 }

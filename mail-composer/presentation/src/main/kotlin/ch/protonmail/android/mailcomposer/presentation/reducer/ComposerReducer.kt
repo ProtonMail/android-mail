@@ -34,6 +34,7 @@ import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.ContactSuggestionUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.ContactSuggestionsField
+import ch.protonmail.android.mailcomposer.presentation.model.FocusedFieldType
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.presentation.mapper.AttachmentUiModelMapper
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
@@ -72,6 +73,9 @@ class ComposerReducer @Inject constructor(
             currentState,
             this.suggestionsField
         )
+        is ComposerAction.ConfirmSendingWithoutSubject -> updateForConfirmSendWithoutSubject(currentState)
+        is ComposerAction.RejectSendingWithoutSubject -> updateForRejectSendWithoutSubject(currentState)
+
     }
 
     @Suppress("ComplexMethod")
@@ -139,6 +143,9 @@ class ComposerReducer @Inject constructor(
             this.suggestionsField
         )
         is ComposerEvent.OnMessagePasswordUpdated -> updateStateForMessagePassword(currentState, this.messagePassword)
+        is ComposerEvent.ConfirmEmptySubject -> currentState.copy(
+            confirmSendingWithoutSubject = Effect.of(Unit)
+        )
     }
 
     private fun updateBottomSheetVisibility(currentState: ComposerDraftState, bottomSheetVisibility: Boolean) =
@@ -216,6 +223,16 @@ class ComposerReducer @Inject constructor(
 
     private fun updateStateForSendMessage(currentState: ComposerDraftState) =
         currentState.copy(closeComposerWithMessageSending = Effect.of(Unit))
+
+    private fun updateForConfirmSendWithoutSubject(currentState: ComposerDraftState) = currentState.copy(
+        closeComposerWithMessageSending = Effect.of(Unit),
+        confirmSendingWithoutSubject = Effect.empty()
+    )
+
+    private fun updateForRejectSendWithoutSubject(currentState: ComposerDraftState) = currentState.copy(
+        changeFocusToField = Effect.of(FocusedFieldType.SUBJECT),
+        confirmSendingWithoutSubject = Effect.empty()
+    )
 
     private fun updateStateForSendMessageOffline(currentState: ComposerDraftState) =
         currentState.copy(closeComposerWithMessageSendingOffline = Effect.of(Unit))

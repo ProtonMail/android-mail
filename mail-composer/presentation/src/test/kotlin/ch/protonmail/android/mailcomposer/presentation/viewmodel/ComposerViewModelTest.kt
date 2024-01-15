@@ -1983,6 +1983,8 @@ class ComposerViewModelTest {
             isLoading = false,
             closeComposerWithMessageSending = Effect.empty(),
             closeComposerWithMessageSendingOffline = Effect.empty(),
+            confirmSendingWithoutSubject = Effect.empty(),
+            changeFocusToField = Effect.empty(),
             attachmentsFileSizeExceeded = Effect.empty(),
             attachmentsReEncryptionFailed = Effect.empty(),
             warning = Effect.empty(),

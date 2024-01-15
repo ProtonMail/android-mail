@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcomposer.presentation.ui
 
 import ch.protonmail.android.mailcomposer.presentation.model.ContactSuggestionsField
+import ch.protonmail.android.mailcomposer.presentation.model.FocusedFieldType
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 
 internal data class ComposerFormActions(
