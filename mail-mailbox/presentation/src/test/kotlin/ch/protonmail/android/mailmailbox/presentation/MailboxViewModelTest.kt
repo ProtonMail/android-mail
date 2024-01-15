@@ -366,7 +366,7 @@ class MailboxViewModelTest {
     }
 
     @Test
-    fun `emits storage limit state when storage status and limit preferences read`() = runTest {
+    fun `emits storage limit state when storage status and limit preferences are read`() = runTest {
         // Given
         val expectedStorageLimitState = MailboxStateSampleData.Loading.storageLimitState
         val userAccountStorageStatus = UserAccountStorageStatus(5_000L, 10_000L)
