@@ -168,6 +168,7 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
                         emailValidator = viewModel::validateEmailAddress,
                         recipientsOpen = recipientsOpen,
                         initialFocus = focusedField,
+                        changeFocusToField = state.changeFocusToField,
                         fields = state.fields,
                         replaceDraftBody = state.replaceDraftBody,
                         shouldForceBodyTextFocus = state.focusTextBody,

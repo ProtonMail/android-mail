@@ -35,15 +35,20 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.compose.FocusableForm
+import ch.protonmail.android.mailcommon.presentation.compose.keyboardVisibilityAsState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
 import ch.protonmail.android.mailcomposer.presentation.R
@@ -61,11 +66,13 @@ import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import timber.log.Timber
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun ComposerForm(
     emailValidator: (String) -> Boolean,
     recipientsOpen: Boolean,
     initialFocus: FocusedFieldType,
+    changeFocusToField: Effect<FocusedFieldType>,
     fields: ComposerFields,
     replaceDraftBody: Effect<TextUiModel>,
     shouldForceBodyTextFocus: Effect<Unit>,
@@ -74,6 +81,9 @@ internal fun ComposerForm(
     areContactSuggestionsExpanded: Map<ContactSuggestionsField, Boolean>,
     modifier: Modifier = Modifier
 ) {
+    val isKeyboardVisible by keyboardVisibilityAsState()
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     val maxWidthModifier = Modifier.fillMaxWidth()
     val emailNextKeyboardOptions = KeyboardOptions(
         imeAction = ImeAction.Next,
@@ -95,6 +105,14 @@ internal fun ComposerForm(
             actions.onFocusChanged(it)
         }
     ) { fieldFocusRequesters ->
+
+        ConsumableLaunchedEffect(effect = changeFocusToField) {
+            fieldFocusRequesters[it]?.requestFocus()
+            if (!isKeyboardVisible) {
+                keyboardController?.show()
+            }
+        }
+
         Column(
             modifier = modifier.fillMaxWidth()
         ) {
