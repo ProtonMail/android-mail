@@ -168,8 +168,7 @@ class ComposerViewModel @Inject constructor(
                 .onLeft { emitNewStateFor(ComposerEvent.ErrorLoadingDefaultSenderAddress) }
                 .onRight {
                     emitNewStateFor(ComposerEvent.DefaultSenderReceived(SenderUiModel(it.email)))
-                    val isCreatingNewEmptyDraft = inputDraftId == null && draftAction == null
-                    if (isCreatingNewEmptyDraft) {
+                    if (isCreatingEmptyDraft(inputDraftId, draftAction)) {
                         injectAddressSignature(SenderEmail(it.email))
                     }
                     recipientAddress?.let { recipient ->
@@ -193,6 +192,9 @@ class ComposerViewModel @Inject constructor(
         observeSendingError()
         observeMessagePassword()
     }
+
+    private fun isCreatingEmptyDraft(inputDraftId: String?, draftAction: DraftAction?): Boolean =
+        inputDraftId == null && (draftAction == null || draftAction is DraftAction.ComposeWithRecipient)
 
     private fun prefillForDraftAction(draftAction: DraftAction) {
         val parentMessageId = draftAction.getParentMessageId() ?: return
