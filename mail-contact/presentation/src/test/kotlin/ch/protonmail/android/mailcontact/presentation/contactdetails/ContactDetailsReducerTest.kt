@@ -119,7 +119,7 @@ class ContactDetailsReducerTest(
             ),
             TestInput(
                 currentState = loadedContactState,
-                event = ContactDetailsEvent.EmailAddress("test@proton.me"),
+                event = ContactDetailsEvent.ComposeEmail("test@proton.me"),
                 expectedState = loadedContactState.copy(
                     openComposer = Effect.of("test@proton.me")
                 )

@@ -105,7 +105,7 @@ class ContactDetailsViewModel @Inject constructor(
     }
 
     private fun handleOnEmailClick(action: ContactDetailsViewAction.OnEmailClick) {
-        emitNewStateFor(ContactDetailsEvent.EmailAddress(action.email))
+        emitNewStateFor(ContactDetailsEvent.ComposeEmail(action.email))
     }
 
     private suspend fun primaryUserId() = primaryUserId.first()
