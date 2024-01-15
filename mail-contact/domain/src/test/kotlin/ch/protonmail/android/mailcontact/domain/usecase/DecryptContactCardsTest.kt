@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcontact.domain.usecase
 
 import arrow.core.left
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
+import ch.protonmail.android.mailcontact.domain.decryptContactCardTrailingSpacesFallback
 import ch.protonmail.android.mailcontact.domain.model.GetContactError
 import ch.protonmail.android.testdata.contact.ContactSample
 import io.mockk.coEvery
@@ -27,7 +28,6 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import kotlinx.coroutines.test.runTest
-import me.proton.core.contact.domain.decryptContactCard
 import me.proton.core.contact.domain.entity.ContactCard
 import me.proton.core.contact.domain.entity.ContactWithCards
 import me.proton.core.crypto.common.context.CryptoContext
@@ -73,9 +73,9 @@ class DecryptContactCardsTest {
             )
         )
 
-        mockkStatic(KeyHolderContext::decryptContactCard)
+        mockkStatic(KeyHolderContext::decryptContactCardTrailingSpacesFallback)
         every {
-            any<KeyHolderContext>().decryptContactCard(contactWithCards.contactCards.first())
+            any<KeyHolderContext>().decryptContactCardTrailingSpacesFallback(contactWithCards.contactCards.first())
         } throws Exception("decryption exception")
 
         val expected = GetContactError.left()

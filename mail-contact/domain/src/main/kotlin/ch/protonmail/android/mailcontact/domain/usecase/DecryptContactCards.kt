@@ -21,8 +21,8 @@ package ch.protonmail.android.mailcontact.domain.usecase
 import arrow.core.Either
 import arrow.core.raise.either
 import arrow.core.right
+import ch.protonmail.android.mailcontact.domain.decryptContactCardTrailingSpacesFallback
 import ch.protonmail.android.mailcontact.domain.model.GetContactError
-import me.proton.core.contact.domain.decryptContactCard
 import me.proton.core.contact.domain.entity.ContactWithCards
 import me.proton.core.contact.domain.entity.DecryptedVCard
 import me.proton.core.crypto.common.context.CryptoContext
@@ -48,7 +48,7 @@ class DecryptContactCards @Inject constructor(
         return user.useKeys(cryptoContext) {
             contactWithCards.contactCards.map { card ->
                 runCatching {
-                    decryptContactCard(card)
+                    decryptContactCardTrailingSpacesFallback(card)
                 }.getOrElse {
                     Timber.e("Exception decrypting Contact VCard", it)
                     raise(GetContactError)
