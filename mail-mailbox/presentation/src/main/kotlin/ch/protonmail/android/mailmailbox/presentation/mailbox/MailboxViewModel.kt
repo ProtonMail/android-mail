@@ -373,13 +373,13 @@ class MailboxViewModel @Inject constructor(
         emitNewStateFrom(viewAction)
 
         when (state.value.storageLimitState) {
-            is StorageLimitState.FirstLimitOver -> {
+            is StorageLimitState.Notifiable.FirstLimitOver -> {
                 viewModelScope.launch {
                     saveStorageLimitPreference.saveFirstLimitWarningPreference(true)
                 }
             }
 
-            is StorageLimitState.SecondLimitOver -> {
+            is StorageLimitState.Notifiable.SecondLimitOver -> {
                 viewModelScope.launch {
                     saveStorageLimitPreference.saveSecondLimitWarningPreference(true)
                 }

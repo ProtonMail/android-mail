@@ -47,63 +47,64 @@ class StorageLimitReducer @Inject constructor() {
     ): StorageLimitState {
         return when (currentState) {
             is StorageLimitState.None -> createInitialState(event)
-            is StorageLimitState.QuotaOver -> handleStatusChangeWhenQuotaOver(currentState, event)
-            is StorageLimitState.FirstLimitOver -> handleStatusChangeWhenFirstLimitOver(currentState, event)
-            is StorageLimitState.SecondLimitOver -> handleStatusChangeWhenSecondLimitOver(currentState, event)
+            is StorageLimitState.Notifiable.QuotaOver -> handleStatusChangeWhenQuotaOver(currentState, event)
+            is StorageLimitState.Notifiable.FirstLimitOver -> handleStatusChangeWhenFirstLimitOver(currentState, event)
+            is StorageLimitState.Notifiable.SecondLimitOver ->
+                handleStatusChangeWhenSecondLimitOver(currentState, event)
             is StorageLimitState.HasEnoughSpace -> handleStatusChangeWhenHasEnoughSpace(event)
         }
     }
 
     private fun createInitialState(event: MailboxEvent.StorageLimitStatusChanged): StorageLimitState {
         return if (event.userAccountStorageStatus.isOverQuota()) {
-            StorageLimitState.QuotaOver(false)
+            StorageLimitState.Notifiable.QuotaOver(false)
         } else if (event.userAccountStorageStatus.isOverSecondLimit()) {
-            StorageLimitState.SecondLimitOver(event.storageLimitPreference.secondLimitWarningConfirmed)
+            StorageLimitState.Notifiable.SecondLimitOver(event.storageLimitPreference.secondLimitWarningConfirmed)
         } else if (event.userAccountStorageStatus.isOverFirstLimit()) {
-            StorageLimitState.FirstLimitOver(event.storageLimitPreference.firstLimitWarningConfirmed)
+            StorageLimitState.Notifiable.FirstLimitOver(event.storageLimitPreference.firstLimitWarningConfirmed)
         } else {
             StorageLimitState.HasEnoughSpace
         }
     }
 
     private fun handleStatusChangeWhenQuotaOver(
-        currentState: StorageLimitState.QuotaOver,
+        currentState: StorageLimitState.Notifiable.QuotaOver,
         event: MailboxEvent.StorageLimitStatusChanged
     ): StorageLimitState {
         return if (event.userAccountStorageStatus.isOverQuota()) {
             currentState
         } else if (event.userAccountStorageStatus.isOverSecondLimit()) {
-            StorageLimitState.SecondLimitOver(currentState.confirmed)
+            StorageLimitState.Notifiable.SecondLimitOver(currentState.confirmed)
         } else if (event.userAccountStorageStatus.isOverFirstLimit()) {
-            StorageLimitState.FirstLimitOver(currentState.confirmed)
+            StorageLimitState.Notifiable.FirstLimitOver(currentState.confirmed)
         } else {
             StorageLimitState.HasEnoughSpace
         }
     }
 
     private fun handleStatusChangeWhenSecondLimitOver(
-        currentState: StorageLimitState.SecondLimitOver,
+        currentState: StorageLimitState.Notifiable.SecondLimitOver,
         event: MailboxEvent.StorageLimitStatusChanged
     ): StorageLimitState {
         return if (event.userAccountStorageStatus.isOverQuota()) {
-            StorageLimitState.QuotaOver(false)
+            StorageLimitState.Notifiable.QuotaOver(false)
         } else if (event.userAccountStorageStatus.isOverSecondLimit()) {
             currentState
         } else if (event.userAccountStorageStatus.isOverFirstLimit()) {
-            StorageLimitState.FirstLimitOver(currentState.confirmed)
+            StorageLimitState.Notifiable.FirstLimitOver(currentState.confirmed)
         } else {
             StorageLimitState.HasEnoughSpace
         }
     }
 
     private fun handleStatusChangeWhenFirstLimitOver(
-        currentState: StorageLimitState.FirstLimitOver,
+        currentState: StorageLimitState.Notifiable.FirstLimitOver,
         event: MailboxEvent.StorageLimitStatusChanged
     ): StorageLimitState {
         return if (event.userAccountStorageStatus.isOverQuota()) {
-            StorageLimitState.QuotaOver(false)
+            StorageLimitState.Notifiable.QuotaOver(false)
         } else if (event.userAccountStorageStatus.isOverSecondLimit()) {
-            StorageLimitState.SecondLimitOver(false)
+            StorageLimitState.Notifiable.SecondLimitOver(false)
         } else if (event.userAccountStorageStatus.isOverFirstLimit()) {
             currentState
         } else {
@@ -113,11 +114,11 @@ class StorageLimitReducer @Inject constructor() {
 
     private fun handleStatusChangeWhenHasEnoughSpace(event: MailboxEvent.StorageLimitStatusChanged): StorageLimitState {
         return if (event.userAccountStorageStatus.isOverQuota()) {
-            StorageLimitState.QuotaOver(false)
+            StorageLimitState.Notifiable.QuotaOver(false)
         } else if (event.userAccountStorageStatus.isOverSecondLimit()) {
-            StorageLimitState.SecondLimitOver(false)
+            StorageLimitState.Notifiable.SecondLimitOver(false)
         } else if (event.userAccountStorageStatus.isOverFirstLimit()) {
-            StorageLimitState.FirstLimitOver(false)
+            StorageLimitState.Notifiable.FirstLimitOver(false)
         } else {
             StorageLimitState.HasEnoughSpace
         }
@@ -125,9 +126,9 @@ class StorageLimitReducer @Inject constructor() {
 
     private fun newStateForWarningConfirmed(currentState: StorageLimitState): StorageLimitState {
         return when (currentState) {
-            is StorageLimitState.QuotaOver -> StorageLimitState.QuotaOver(true)
-            is StorageLimitState.FirstLimitOver -> StorageLimitState.FirstLimitOver(true)
-            is StorageLimitState.SecondLimitOver -> StorageLimitState.SecondLimitOver(true)
+            is StorageLimitState.Notifiable.QuotaOver -> StorageLimitState.Notifiable.QuotaOver(true)
+            is StorageLimitState.Notifiable.FirstLimitOver -> StorageLimitState.Notifiable.FirstLimitOver(true)
+            is StorageLimitState.Notifiable.SecondLimitOver -> StorageLimitState.Notifiable.SecondLimitOver(true)
             else -> currentState
         }
     }

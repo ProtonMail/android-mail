@@ -389,10 +389,10 @@ class MailboxViewModelTest {
     fun `emits new storage limit state when user confirms first limit with do not remind again`() = runTest {
         // Given
         val initialState = MailboxStateSampleData.Loading.copy(
-            storageLimitState = StorageLimitState.FirstLimitOver(false)
+            storageLimitState = StorageLimitState.Notifiable.FirstLimitOver(false)
         )
         val expectedState = MailboxStateSampleData.Loading.copy(
-            storageLimitState = StorageLimitState.FirstLimitOver(true)
+            storageLimitState = StorageLimitState.Notifiable.FirstLimitOver(true)
         )
         val userAccountStorageStatus = UserAccountStorageStatus(8_001L, 10_000L)
         val storageLimitPreference = StorageLimitPreference(
@@ -435,10 +435,10 @@ class MailboxViewModelTest {
     fun `emits new storage limit state when user confirms second limit with do not remind again`() = runTest {
         // Given
         val initialState = MailboxStateSampleData.Loading.copy(
-            storageLimitState = StorageLimitState.SecondLimitOver(false)
+            storageLimitState = StorageLimitState.Notifiable.SecondLimitOver(false)
         )
         val expectedState = MailboxStateSampleData.Loading.copy(
-            storageLimitState = StorageLimitState.SecondLimitOver(true)
+            storageLimitState = StorageLimitState.Notifiable.SecondLimitOver(true)
         )
         val userAccountStorageStatus = UserAccountStorageStatus(9_001L, 10_000L)
         val storageLimitPreference = StorageLimitPreference(
@@ -481,10 +481,10 @@ class MailboxViewModelTest {
     fun `emits new storage limit state when user confirms with ok button`() = runTest {
         // Given
         val initialState = MailboxStateSampleData.Loading.copy(
-            storageLimitState = StorageLimitState.QuotaOver(false)
+            storageLimitState = StorageLimitState.Notifiable.QuotaOver(false)
         )
         val expectedState = MailboxStateSampleData.Loading.copy(
-            storageLimitState = StorageLimitState.QuotaOver(true)
+            storageLimitState = StorageLimitState.Notifiable.QuotaOver(true)
         )
         val userAccountStorageStatus = UserAccountStorageStatus(10_001L, 10_000L)
         val storageLimitPreference = StorageLimitPreference(
@@ -523,7 +523,7 @@ class MailboxViewModelTest {
     fun `revokes first storage limit confirmation when storage status is below first limit`() = runTest {
         // Given
         val initialState = MailboxStateSampleData.Loading.copy(
-            storageLimitState = StorageLimitState.FirstLimitOver(true)
+            storageLimitState = StorageLimitState.Notifiable.FirstLimitOver(true)
         )
         val userAccountStorageStatus = UserAccountStorageStatus(5_000L, 10_000L)
         val storageLimitPreference = StorageLimitPreference(
@@ -554,7 +554,7 @@ class MailboxViewModelTest {
     fun `revokes second storage limit confirmation when storage status is below second limit`() = runTest {
         // Given
         val initialState = MailboxStateSampleData.Loading.copy(
-            storageLimitState = StorageLimitState.SecondLimitOver(true)
+            storageLimitState = StorageLimitState.Notifiable.SecondLimitOver(true)
         )
         val userAccountStorageStatus = UserAccountStorageStatus(5_000L, 10_000L)
         val storageLimitPreference = StorageLimitPreference(

@@ -62,33 +62,33 @@ internal class StorageLimitReducerTest(
         private val transitionsDueToConfirmations = listOf(
             // Confirm FirstLimitOver with StorageLimitDoNotRemind
             TestInput(
-                currentState = StorageLimitState.FirstLimitOver(false),
+                currentState = StorageLimitState.Notifiable.FirstLimitOver(false),
                 event = MailboxViewAction.StorageLimitDoNotRemind,
-                expectedState = StorageLimitState.FirstLimitOver(true)
+                expectedState = StorageLimitState.Notifiable.FirstLimitOver(true)
             ),
             // Confirm SecondLimitOver with StorageLimitDoNotRemind
             TestInput(
-                currentState = StorageLimitState.SecondLimitOver(false),
+                currentState = StorageLimitState.Notifiable.SecondLimitOver(false),
                 event = MailboxViewAction.StorageLimitDoNotRemind,
-                expectedState = StorageLimitState.SecondLimitOver(true)
+                expectedState = StorageLimitState.Notifiable.SecondLimitOver(true)
             ),
             // Confirm FirstLimitOver with StorageLimitConfirmed (OK button)
             TestInput(
-                currentState = StorageLimitState.FirstLimitOver(false),
+                currentState = StorageLimitState.Notifiable.FirstLimitOver(false),
                 event = MailboxViewAction.StorageLimitConfirmed,
-                expectedState = StorageLimitState.FirstLimitOver(true)
+                expectedState = StorageLimitState.Notifiable.FirstLimitOver(true)
             ),
             // Confirm SecondLimitOver with StorageLimitConfirmed (OK button)
             TestInput(
-                currentState = StorageLimitState.SecondLimitOver(false),
+                currentState = StorageLimitState.Notifiable.SecondLimitOver(false),
                 event = MailboxViewAction.StorageLimitDoNotRemind,
-                expectedState = StorageLimitState.SecondLimitOver(true)
+                expectedState = StorageLimitState.Notifiable.SecondLimitOver(true)
             ),
             // Confirm QuotaOver with StorageLimitConfirmed (OK button)
             TestInput(
-                currentState = StorageLimitState.QuotaOver(false),
+                currentState = StorageLimitState.Notifiable.QuotaOver(false),
                 event = MailboxViewAction.StorageLimitDoNotRemind,
-                expectedState = StorageLimitState.QuotaOver(true)
+                expectedState = StorageLimitState.Notifiable.QuotaOver(true)
             )
         )
 
@@ -105,7 +105,7 @@ internal class StorageLimitReducerTest(
                 ),
                 expectedState = StorageLimitState.HasEnoughSpace
             ),
-            // Transition from StorageLimitState.None to StorageLimitState.FirstLimitOver( not confirmed)
+            // Transition from StorageLimitState.None to StorageLimitState.Notifiable.FirstLimitOver( not confirmed)
             TestInput(
                 currentState = StorageLimitState.None,
                 event = MailboxEvent.StorageLimitStatusChanged(
@@ -115,9 +115,9 @@ internal class StorageLimitReducerTest(
                         secondLimitWarningConfirmed = false
                     )
                 ),
-                expectedState = StorageLimitState.FirstLimitOver(false)
+                expectedState = StorageLimitState.Notifiable.FirstLimitOver(false)
             ),
-            // Transition from StorageLimitState.None to StorageLimitState.FirstLimitOver( confirmed)
+            // Transition from StorageLimitState.None to StorageLimitState.Notifiable.FirstLimitOver( confirmed)
             TestInput(
                 currentState = StorageLimitState.None,
                 event = MailboxEvent.StorageLimitStatusChanged(
@@ -127,9 +127,9 @@ internal class StorageLimitReducerTest(
                         secondLimitWarningConfirmed = false
                     )
                 ),
-                expectedState = StorageLimitState.FirstLimitOver(true)
+                expectedState = StorageLimitState.Notifiable.FirstLimitOver(true)
             ),
-            // Transition from StorageLimitState.None to StorageLimitState.SecondLimitOver( not confirmed)
+            // Transition from StorageLimitState.None to StorageLimitState.Notifiable.SecondLimitOver( not confirmed)
             TestInput(
                 currentState = StorageLimitState.None,
                 event = MailboxEvent.StorageLimitStatusChanged(
@@ -139,9 +139,9 @@ internal class StorageLimitReducerTest(
                         secondLimitWarningConfirmed = false
                     )
                 ),
-                expectedState = StorageLimitState.SecondLimitOver(false)
+                expectedState = StorageLimitState.Notifiable.SecondLimitOver(false)
             ),
-            // Transition from StorageLimitState.None to StorageLimitState.SecondLimitOver( confirmed)
+            // Transition from StorageLimitState.None to StorageLimitState.Notifiable.SecondLimitOver( confirmed)
             TestInput(
                 currentState = StorageLimitState.None,
                 event = MailboxEvent.StorageLimitStatusChanged(
@@ -151,9 +151,9 @@ internal class StorageLimitReducerTest(
                         secondLimitWarningConfirmed = true
                     )
                 ),
-                expectedState = StorageLimitState.SecondLimitOver(true)
+                expectedState = StorageLimitState.Notifiable.SecondLimitOver(true)
             ),
-            // Transition from StorageLimitState.None to StorageLimitState.QuotaOver( not confirmed)
+            // Transition from StorageLimitState.None to StorageLimitState.Notifiable.QuotaOver( not confirmed)
             TestInput(
                 currentState = StorageLimitState.None,
                 event = MailboxEvent.StorageLimitStatusChanged(
@@ -163,7 +163,7 @@ internal class StorageLimitReducerTest(
                         secondLimitWarningConfirmed = false
                     )
                 ),
-                expectedState = StorageLimitState.QuotaOver(false)
+                expectedState = StorageLimitState.Notifiable.QuotaOver(false)
             )
         )
 
@@ -172,21 +172,21 @@ internal class StorageLimitReducerTest(
         private val transitionsFromFirstLimitOver =
             transitionsFromNoneState.map {
                 it.transformInput(
-                    currentState = StorageLimitState.FirstLimitOver(false),
+                    currentState = StorageLimitState.Notifiable.FirstLimitOver(false),
                     expectedStateConfirmed = false
                 )
             }
         private val transitionsFromSecondLimitOver =
             transitionsFromNoneState.map {
                 it.transformInput(
-                    currentState = StorageLimitState.SecondLimitOver(false),
+                    currentState = StorageLimitState.Notifiable.SecondLimitOver(false),
                     expectedStateConfirmed = false
                 )
             }
         private val transitionsFromQuotaOver =
             transitionsFromNoneState.map {
                 it.transformInput(
-                    currentState = StorageLimitState.QuotaOver(false),
+                    currentState = StorageLimitState.Notifiable.QuotaOver(false),
                     expectedStateConfirmed = false
                 )
             }
@@ -204,9 +204,9 @@ internal class StorageLimitReducerTest(
         private fun StorageLimitState.transformState(stateConfirmed: Boolean): StorageLimitState {
             return when (this) {
                 is StorageLimitState.None -> this
-                is StorageLimitState.QuotaOver -> this.copy(confirmed = stateConfirmed)
-                is StorageLimitState.FirstLimitOver -> this.copy(confirmed = stateConfirmed)
-                is StorageLimitState.SecondLimitOver -> this.copy(confirmed = stateConfirmed)
+                is StorageLimitState.Notifiable.QuotaOver -> this.copy(confirmed = stateConfirmed)
+                is StorageLimitState.Notifiable.FirstLimitOver -> this.copy(confirmed = stateConfirmed)
+                is StorageLimitState.Notifiable.SecondLimitOver -> this.copy(confirmed = stateConfirmed)
                 is StorageLimitState.HasEnoughSpace -> this
             }
         }

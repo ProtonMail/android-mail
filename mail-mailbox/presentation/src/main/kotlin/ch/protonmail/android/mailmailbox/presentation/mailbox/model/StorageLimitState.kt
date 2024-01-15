@@ -26,19 +26,19 @@ sealed interface StorageLimitState {
 
     object HasEnoughSpace : StorageLimitState
 
-    sealed interface Notifiable : StorageLimitState{
+    sealed interface Notifiable : StorageLimitState {
         val showWarning: Effect<Unit>
-    }
 
-    data class QuotaOver(val confirmed: Boolean) : Notifiable {
-        override val showWarning: Effect<Unit> = if (confirmed) Effect.empty() else Effect.of(Unit)
-    }
+        data class QuotaOver(val confirmed: Boolean) : Notifiable {
+            override val showWarning: Effect<Unit> = if (confirmed) Effect.empty() else Effect.of(Unit)
+        }
 
-    data class FirstLimitOver(val confirmed: Boolean) : Notifiable {
-        override val showWarning: Effect<Unit> = if (confirmed) Effect.empty() else Effect.of(Unit)
-    }
+        data class FirstLimitOver(val confirmed: Boolean) : Notifiable {
+            override val showWarning: Effect<Unit> = if (confirmed) Effect.empty() else Effect.of(Unit)
+        }
 
-    data class SecondLimitOver(val confirmed: Boolean) : Notifiable {
-        override val showWarning: Effect<Unit> = if (confirmed) Effect.empty() else Effect.of(Unit)
+        data class SecondLimitOver(val confirmed: Boolean) : Notifiable {
+            override val showWarning: Effect<Unit> = if (confirmed) Effect.empty() else Effect.of(Unit)
+        }
     }
 }
