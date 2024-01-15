@@ -88,6 +88,7 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val attachmentSizeDialogState = remember { mutableStateOf(false) }
     val sendingErrorDialogState = remember { mutableStateOf<String?>(null) }
+    var sendWithoutSubjectDialogState = remember { mutableStateOf(false) }
 
     val imagePicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetMultipleContents(),
@@ -194,6 +195,19 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
         }
     }
 
+    if (sendWithoutSubjectDialogState.value) {
+
+        SendingWithEmptySubjectDialog(
+            onConfirmClicked = {
+                viewModel.submit(ComposerAction.ConfirmSendingWithoutSubject)
+                sendWithoutSubjectDialogState.value = false
+            },
+            onDismissClicked = {
+                viewModel.submit(ComposerAction.RejectSendingWithoutSubject)
+                sendWithoutSubjectDialogState.value = false
+            }
+        )
+    }
     if (attachmentSizeDialogState.value) {
         ProtonAlertDialog(
             onDismissRequest = { attachmentSizeDialogState.value = false },
@@ -281,6 +295,10 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
     }
 
     ConsumableLaunchedEffect(effect = state.attachmentsFileSizeExceeded) { attachmentSizeDialogState.value = true }
+
+    ConsumableLaunchedEffect(effect = state.confirmSendingWithoutSubject) {
+        sendWithoutSubjectDialogState.value = true
+    }
 
     BackHandler(true) {
         viewModel.submit(ComposerAction.OnCloseComposer)
