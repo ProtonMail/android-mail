@@ -21,10 +21,13 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.StorageLimitState
 import me.proton.core.compose.component.ProtonAlertDialog
@@ -39,40 +42,63 @@ fun StorageLimitDialogs(
     actions: StorageLimitDialogs.Actions,
     modifier: Modifier = Modifier
 ) {
+    val quotaOverDialogState = remember { mutableStateOf(false) }
+    val firstLimitOverDialogState = remember { mutableStateOf(false) }
+    val secondLimitOverDialogState = remember { mutableStateOf(false) }
 
-    when (storageLimitState) {
-        is StorageLimitState.QuotaOver -> {
-            if (!storageLimitState.confirmed) {
-                StorageQuotaOverWarningDialog(
-                    onConfirmButtonClicked = actions.dialogConfirmed,
-                    modifier = modifier
-                )
+    ConsumableLaunchedEffect(effect = storageLimitState.showWarning) {
+        when (storageLimitState) {
+            is StorageLimitState.QuotaOver -> {
+                quotaOverDialogState.value = true
             }
-        }
 
-        is StorageLimitState.FirstLimitOver -> {
-            if (!storageLimitState.confirmed) {
-                StorageLimitWarningDialog(
-                    warningTextResId = R.string.storage_first_limit_exceeded_warning_dialog_text,
-                    onDoNotRemindClicked = actions.doNotRemindClicked,
-                    onConfirmButtonClicked = actions.dialogConfirmed,
-                    modifier = modifier
-                )
+            is StorageLimitState.FirstLimitOver -> {
+                firstLimitOverDialogState.value = true
             }
-        }
 
-        is StorageLimitState.SecondLimitOver -> {
-            if (!storageLimitState.confirmed) {
-                StorageLimitWarningDialog(
-                    warningTextResId = R.string.storage_second_limit_exceeded_warning_dialog_text,
-                    onDoNotRemindClicked = actions.doNotRemindClicked,
-                    onConfirmButtonClicked = actions.dialogConfirmed,
-                    modifier = modifier
-                )
+            is StorageLimitState.SecondLimitOver -> {
+                secondLimitOverDialogState.value = true
             }
-        }
 
-        else -> Unit
+            else -> Unit
+        }
+    }
+
+    if (quotaOverDialogState.value) {
+        StorageQuotaOverWarningDialog(
+            onConfirmButtonClicked = actions.dialogConfirmed,
+            modifier = modifier
+        )
+    }
+
+    if (firstLimitOverDialogState.value) {
+        StorageLimitWarningDialog(
+            warningTextResId = R.string.storage_first_limit_exceeded_warning_dialog_text,
+            onDoNotRemindClicked = {
+                actions.doNotRemindClicked()
+                firstLimitOverDialogState.value = false
+            },
+            onConfirmButtonClicked = {
+                actions.dialogConfirmed()
+                firstLimitOverDialogState.value = false
+            },
+            modifier = modifier
+        )
+    }
+
+    if (secondLimitOverDialogState.value) {
+        StorageLimitWarningDialog(
+            warningTextResId = R.string.storage_second_limit_exceeded_warning_dialog_text,
+            onDoNotRemindClicked = {
+                actions.doNotRemindClicked()
+                secondLimitOverDialogState.value = false
+            },
+            onConfirmButtonClicked = {
+                actions.dialogConfirmed()
+                secondLimitOverDialogState.value = false
+            },
+            modifier = modifier
+        )
     }
 }
 

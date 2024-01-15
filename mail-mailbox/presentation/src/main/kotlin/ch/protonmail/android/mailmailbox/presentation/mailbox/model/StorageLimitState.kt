@@ -18,14 +18,34 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox.model
 
+import ch.protonmail.android.mailcommon.presentation.Effect
+
 sealed interface StorageLimitState {
-    object None : StorageLimitState
 
-    object HasEnoughSpace : StorageLimitState
+    val showWarning: Effect<Unit>
 
-    data class QuotaOver(val confirmed: Boolean) : StorageLimitState
+    object None : StorageLimitState {
 
-    data class FirstLimitOver(val confirmed: Boolean) : StorageLimitState
+        override val showWarning: Effect<Unit> = Effect.empty()
+    }
 
-    data class SecondLimitOver(val confirmed: Boolean) : StorageLimitState
+    object HasEnoughSpace : StorageLimitState {
+
+        override val showWarning: Effect<Unit> = Effect.empty()
+    }
+
+    data class QuotaOver(val confirmed: Boolean) : StorageLimitState {
+
+        override val showWarning: Effect<Unit> = if (confirmed) Effect.empty() else Effect.of(Unit)
+    }
+
+    data class FirstLimitOver(val confirmed: Boolean) : StorageLimitState {
+
+        override val showWarning: Effect<Unit> = if (confirmed) Effect.empty() else Effect.of(Unit)
+    }
+
+    data class SecondLimitOver(val confirmed: Boolean) : StorageLimitState {
+
+        override val showWarning: Effect<Unit> = if (confirmed) Effect.empty() else Effect.of(Unit)
+    }
 }
