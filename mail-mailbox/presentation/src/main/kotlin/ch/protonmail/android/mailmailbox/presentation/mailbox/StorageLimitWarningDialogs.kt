@@ -46,21 +46,21 @@ fun StorageLimitDialogs(
     val firstLimitOverDialogState = remember { mutableStateOf(false) }
     val secondLimitOverDialogState = remember { mutableStateOf(false) }
 
-    ConsumableLaunchedEffect(effect = storageLimitState.showWarning) {
-        when (storageLimitState) {
-            is StorageLimitState.QuotaOver -> {
-                quotaOverDialogState.value = true
-            }
+    if(storageLimitState is StorageLimitState.Notifiable) {
+        ConsumableLaunchedEffect(effect = storageLimitState.showWarning) {
+            when (storageLimitState) {
+                is StorageLimitState.QuotaOver -> {
+                    quotaOverDialogState.value = true
+                }
 
-            is StorageLimitState.FirstLimitOver -> {
-                firstLimitOverDialogState.value = true
-            }
+                is StorageLimitState.FirstLimitOver -> {
+                    firstLimitOverDialogState.value = true
+                }
 
-            is StorageLimitState.SecondLimitOver -> {
-                secondLimitOverDialogState.value = true
+                is StorageLimitState.SecondLimitOver -> {
+                    secondLimitOverDialogState.value = true
+                }
             }
-
-            else -> Unit
         }
     }
 
