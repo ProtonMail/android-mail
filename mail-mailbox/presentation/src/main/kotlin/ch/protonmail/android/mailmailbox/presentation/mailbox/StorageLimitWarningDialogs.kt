@@ -133,7 +133,7 @@ fun StorageLimitWarningDialog(
                 modifier = Modifier.testTag(StorageLimitWarningTestTags.LimitWarningDialogOkButton)
             ) { onConfirmButtonClicked() }
         },
-        onDismissRequest = { onConfirmButtonClicked() }
+        onDismissRequest = {}
     )
 }
 
@@ -158,7 +158,7 @@ fun StorageQuotaOverWarningDialog(modifier: Modifier = Modifier, onConfirmButton
                 modifier = Modifier.testTag(StorageLimitWarningTestTags.QuotaOverDialogOkButton)
             ) { onConfirmButtonClicked() }
         },
-        onDismissRequest = { onConfirmButtonClicked() }
+        onDismissRequest = {}
     )
 }
 
