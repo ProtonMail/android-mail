@@ -30,6 +30,7 @@ import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen
 import ch.protonmail.android.mailcomposer.presentation.ui.SetMessagePasswordScreen
 import ch.protonmail.android.mailcontact.presentation.contactdetails.ContactDetailsScreen
+import ch.protonmail.android.mailcontact.presentation.contactform.ContactFormScreen
 import ch.protonmail.android.mailcontact.presentation.contactlist.ContactListScreen
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetail
@@ -384,7 +385,7 @@ internal fun NavGraphBuilder.addContacts(
         ContactListScreen(
             actions = ContactListScreen.Actions(
                 openContactForm = {
-                    showFeatureMissingSnackbar()
+                    navController.navigate(Destination.Screen.CreateContact.route)
                 },
                 openContactGroupForm = {
                     showFeatureMissingSnackbar()
@@ -431,5 +432,36 @@ internal fun NavGraphBuilder.addContactDetails(
     )
     composable(route = Destination.Screen.ContactDetails.route) {
         ContactDetailsScreen(actions)
+    }
+}
+
+internal fun NavGraphBuilder.addContactForm(
+    navController: NavHostController,
+    showSuccessSnackbar: (message: String) -> Unit,
+    showErrorSnackbar: (message: String) -> Unit,
+    showFeatureMissingSnackbar: () -> Unit
+) {
+
+    val actions = ContactFormScreen.Actions.Empty.copy(
+        onCloseClick = {
+            navController.popBackStack()
+        },
+        exitWithSuccessMessage = { message ->
+            navController.popBackStack()
+            showSuccessSnackbar(message)
+        },
+        exitWithErrorMessage = { message ->
+            navController.popBackStack()
+            showErrorSnackbar(message)
+        },
+        onSaveClick = {
+            showFeatureMissingSnackbar()
+        }
+    )
+    composable(route = Destination.Screen.CreateContact.route) {
+        ContactFormScreen(actions)
+    }
+    composable(route = Destination.Screen.EditContact.route) {
+        ContactFormScreen(actions)
     }
 }
