@@ -57,9 +57,9 @@ object MessageDetailsPreviewData {
         ),
         messageBodyState = MessageBodyState.Data(
             messageBodyUiModel = MessageBodyUiModel(
+                messageId = MessageId("This is a messageId"),
                 messageBody = "This is a message body with quote.",
                 messageBodyWithoutQuote = "This is a message body without quote.",
-                messageId = MessageId("This is a messageId"),
                 mimeType = MimeTypeUiModel.PlainText,
                 shouldShowEmbeddedImages = false,
                 shouldShowRemoteContent = false,

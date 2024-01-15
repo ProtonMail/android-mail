@@ -35,9 +35,9 @@ object MessageDetailBodyUiModelSample {
         shouldShowRemoteContentBanner: Boolean = false,
         attachments: AttachmentGroupUiModel? = null
     ) = MessageBodyUiModel(
+        messageId = messageId,
         messageBody = messageBody,
         messageBodyWithoutQuote = messageBody,
-        messageId = messageId,
         mimeType = mimeType,
         shouldShowEmbeddedImages = shouldShowEmbeddedImages,
         shouldShowRemoteContent = shouldShowRemoteContent,

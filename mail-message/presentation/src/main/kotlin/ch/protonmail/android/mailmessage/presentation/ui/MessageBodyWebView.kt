@@ -84,9 +84,11 @@ fun MessageBodyWebView(
     val scope = rememberCoroutineScope()
     var contentLoaded by remember { mutableStateOf(false) }
     val state = rememberWebViewStateWithHTMLData(
-        data =
-        if (bodyDisplayMode == MessageBodyExpandCollapseMode.Collapsed) messageBodyUiModel.messageBodyWithoutQuote
-        else messageBodyUiModel.messageBody,
+        data = if (bodyDisplayMode == MessageBodyExpandCollapseMode.Collapsed) {
+            messageBodyUiModel.messageBodyWithoutQuote
+        } else {
+            messageBodyUiModel.messageBody
+        },
         mimeType = messageBodyUiModel.mimeType.value
     )
     val messageId = messageBodyUiModel.messageId

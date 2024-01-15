@@ -67,9 +67,9 @@ class MessageBodyUiModelMapper @Inject constructor(
         } else originalMessageBody
 
         return MessageBodyUiModel(
+            messageId = decryptedMessageBody.messageId,
             messageBody = originalMessageBody,
             messageBodyWithoutQuote = bodyWithoutQuote,
-            messageId = decryptedMessageBody.messageId,
             mimeType = decryptedMessageBody.mimeType.toMimeTypeUiModel(),
             shouldShowEmbeddedImages = shouldShowEmbeddedImages,
             shouldShowRemoteContent = shouldShowRemoteContent(userId),
@@ -87,9 +87,9 @@ class MessageBodyUiModelMapper @Inject constructor(
     }
 
     fun toUiModel(decryptionError: GetDecryptedMessageBodyError.Decryption) = MessageBodyUiModel(
+        messageId = decryptionError.messageId,
         messageBody = decryptionError.encryptedMessageBody,
         messageBodyWithoutQuote = decryptionError.encryptedMessageBody,
-        messageId = decryptionError.messageId,
         mimeType = MimeTypeUiModel.PlainText,
         shouldShowEmbeddedImages = false,
         shouldShowRemoteContent = false,
