@@ -28,6 +28,7 @@
   <string name="action_reply_all">Odgovori svima</string>
   <string name="action_forward">Proslijedi</string>
   <string name="action_reply_description">Odgovori</string>
+  <string name="action_reply_to_description">Reply to %s</string>
   <string name="action_reply_all_description">Odgovori svima</string>
   <string name="action_forward_description">Proslijedi</string>
   <string name="action_mark_read_description">Označi kao pročitano</string>
@@ -52,6 +53,7 @@
   <string name="action_save_attachments_description">Spremi privitke</string>
   <string name="action_more_description">Više</string>
   <string name="action_reply_content_description">Odgovori</string>
+  <string name="action_reply_to_content_description">Reply to %s</string>
   <string name="action_reply_all_content_description">Odgovori svima</string>
   <string name="action_forward_content_description">Proslijedi</string>
   <string name="action_mark_read_content_description">Označi kao pročitano</string>

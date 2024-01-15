@@ -118,7 +118,7 @@
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">Automatyczna blokada</string>
   <string name="mail_settings_auto_lock_item_title">Automatyczna blokada aplikacji</string>
-  <string name="mail_settings_auto_lock_item_description">Włączenie tej funkcji zablokuje aplikację. Wymagane będzie użycie kodu PIN lub odcisku palca, aby ją odblokować</string>
+  <string name="mail_settings_auto_lock_item_description">Włączenie tej funkcji zablokuje aplikację. Wymagane będzie użycie kodu PIN, aby ją odblokować.</string>
   <string name="mail_settings_auto_lock_change_pin_description">Zmień kod PIN</string>
   <string name="mail_settings_auto_lock_item_timer_title">Automatyczne blokowanie</string>
   <string name="mail_settings_auto_lock_immediately">Natychmiast</string>
@@ -137,18 +137,25 @@
   <string name="mail_settings_pin_insertion_button_confirm">Potwierdź</string>
   <string name="mail_settings_pin_insertion_error_no_match">Kody PIN nie pasują do siebie.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="one">%s remaining attempt.</item>
-    <item quantity="few">%s remaining attempts.</item>
-    <item quantity="many">%s remaining attempts.</item>
-    <item quantity="other">%s remaining attempts.</item>
+    <item quantity="one">Pozostała %s próba.</item>
+    <item quantity="few">Pozostały %s próby.</item>
+    <item quantity="many">Pozostało %s prób.</item>
+    <item quantity="other">Pozostało %s prób.</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
-    <item quantity="one">%s remaining attempt until secure data wipe.</item>
-    <item quantity="few">%s remaining attempts until secure data wipe.</item>
-    <item quantity="many">%s remaining attempts until secure data wipe.</item>
-    <item quantity="other">%s remaining attempts until secure data wipe.</item>
+    <item quantity="one">Pozostała %s próba do bezpiecznego wymazania danych.</item>
+    <item quantity="few">Pozostały %s próby do bezpiecznego wymazania danych.</item>
+    <item quantity="many">Pozostało %s prób do bezpiecznego wymazania danych.</item>
+    <item quantity="other">Pozostało %s prób do bezpiecznego wymazania danych.</item>
   </plurals>
-  <string name="mail_settings_pin_insertion_error_unknown">There was an error verifying your PIN code.</string>
+  <string name="mail_settings_pin_insertion_error_unknown">Wystąpił błąd podczas weryfikowania kodu PIN.</string>
+  <string name="mail_settings_pin_insertion_signout_text">Wyloguj</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_title">Wyloguj</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_description">Czy na pewno chcesz się wylogować?</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_confirm">Tak</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_cancel">Nie</string>
+  <string name="mail_settings_pin_insertion_created_success">Kod PIN został utworzony.</string>
+  <string name="mail_settings_pin_insertion_changed_success">Kod PIN został zmieniony.</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Czyszczenie pamięci podręcznej…</string>
   <!-- Error messages -->

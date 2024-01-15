@@ -31,8 +31,6 @@
     <item quantity="one">%d seleccionado</item>
     <item quantity="other">%d seleccionados</item>
   </plurals>
-  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
-  <string name="filter_unread_button_text_without_counter">Sin leer</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%s sin leer</item>
     <item quantity="other">%s sin leer</item>
@@ -111,4 +109,13 @@
   <string name="mailbox_search_placeholder_text">Buscar mensajes</string>
   <string name="mailbox_search_no_results_title">No se encontraron resultados</string>
   <string name="mailbox_search_no_results_explanation">Búsqueda por fecha, nombre, dirección de correo o asunto</string>
+  <string name="mailbox_action_button_clear_trash">Vaciar papelera</string>
+  <string name="mailbox_action_button_clear_spam">Vaciar spam</string>
+  <string name="mailbox_action_clear_trash_dialog_title">Vaciar papelera</string>
+  <string name="mailbox_action_clear_spam_dialog_title">Vaciar spam</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">¿En verdad desea eliminar permanentemente todos los mensajes en la carpeta ‘Papelera’?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">¿En verdad desea eliminar permanentemente todos los mensajes en la carpeta ‘Spam’?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_conversation">¿En verdad desea eliminar permanentemente todas las conversaciones en ‘Papelera’?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">¿En verdad desea eliminar permanentemente todas las conversaciones en ‘Spam’?</string>
+  <string name="mailbox_action_clear_operation_scheduled">"La operación de borrado está programada"</string>
 </resources>

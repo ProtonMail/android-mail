@@ -24,7 +24,7 @@
   <string name="mail_settings_app_settings">Pengaturan aplikasi</string>
   <string name="mail_settings_theme">Tema</string>
   <string name="mail_settings_push_notifications">Notifikasi push</string>
-  <string name="mail_settings_auto_lock">Kunci Otomatis</string>
+  <string name="mail_settings_auto_lock">Kunci otomatis</string>
   <string name="mail_settings_alternative_routing">Pengalihan lalu lintas alternatif</string>
   <string name="mail_settings_app_language">Bahasa aplikasi</string>
   <string name="mail_settings_combined_contacts">Kontak gabungan</string>
@@ -118,7 +118,7 @@
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">Kunci otomatis</string>
   <string name="mail_settings_auto_lock_item_title">Kunci aplikasi secara otomatis</string>
-  <string name="mail_settings_auto_lock_item_description">Aktifkan fitur ini agar aplikasi dapat terkunci secara otomatis, yang mengharuskan permbukaan melalui kode PIN atau sidik jari</string>
+  <string name="mail_settings_auto_lock_item_description">Aktifkan fitur ini untuk mengunci aplikasi Anda secara otomatis dan gunakan kode PIN untuk membukanya.</string>
   <string name="mail_settings_auto_lock_change_pin_description">Ubah kode PIN</string>
   <string name="mail_settings_auto_lock_item_timer_title">Waktu penguncian otomatis</string>
   <string name="mail_settings_auto_lock_immediately">Segera</string>
@@ -143,6 +143,13 @@
     <item quantity="other">%s upaya tersisa sebelum penghapusan data.</item>
   </plurals>
   <string name="mail_settings_pin_insertion_error_unknown">Terdapat masalah dalam memverifikasi kode PIN Anda.</string>
+  <string name="mail_settings_pin_insertion_signout_text">Keluar</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_title">Keluar</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_description">Apakah Anda yakin ingin keluar?</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_confirm">Ya</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_cancel">Tidak</string>
+  <string name="mail_settings_pin_insertion_created_success">Kode PIN berhasil dibuat.</string>
+  <string name="mail_settings_pin_insertion_changed_success">Kode PIN berhasil diubah.</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Bersihkan cache data lokal...</string>
   <!-- Error messages -->

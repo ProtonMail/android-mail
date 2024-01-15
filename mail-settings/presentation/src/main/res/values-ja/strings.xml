@@ -24,7 +24,7 @@
   <string name="mail_settings_app_settings">アプリ設定</string>
   <string name="mail_settings_theme">テーマ</string>
   <string name="mail_settings_push_notifications">プッシュ通知</string>
-  <string name="mail_settings_auto_lock">自動ロック</string>
+  <string name="mail_settings_auto_lock">Auto lock</string>
   <string name="mail_settings_alternative_routing">代替ルーティング</string>
   <string name="mail_settings_app_language">アプリ言語</string>
   <string name="mail_settings_combined_contacts">連絡先の相互利用</string>
@@ -118,7 +118,7 @@
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">Auto lock</string>
   <string name="mail_settings_auto_lock_item_title">Auto lock app</string>
-  <string name="mail_settings_auto_lock_item_description">Turn this feature on to auto lock your app and use a PIN code or Fingerprint to unlock it</string>
+  <string name="mail_settings_auto_lock_item_description">Turn this feature on to auto lock your app and use a PIN code to unlock it.</string>
   <string name="mail_settings_auto_lock_change_pin_description">PINコードを変更する</string>
   <string name="mail_settings_auto_lock_item_timer_title">Auto lock timer</string>
   <string name="mail_settings_auto_lock_immediately">Immediately</string>
@@ -137,12 +137,19 @@
   <string name="mail_settings_pin_insertion_button_confirm">Confirm</string>
   <string name="mail_settings_pin_insertion_error_no_match">PINコードが一致しません.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="other">%s remaining attempts.</item>
+    <item quantity="other">残りの試行回数は %s 回です.</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
     <item quantity="other">%s remaining attempts until secure data wipe.</item>
   </plurals>
   <string name="mail_settings_pin_insertion_error_unknown">There was an error verifying your PIN code.</string>
+  <string name="mail_settings_pin_insertion_signout_text">Sign Out</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_title">Sign Out</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_description">サインアウトしてよろしいでしょうか?</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_confirm">Yes</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_cancel">No</string>
+  <string name="mail_settings_pin_insertion_created_success">PIN code created successfully.</string>
+  <string name="mail_settings_pin_insertion_changed_success">PIN code changed successfully.</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Clearing local cached data…</string>
   <!-- Error messages -->

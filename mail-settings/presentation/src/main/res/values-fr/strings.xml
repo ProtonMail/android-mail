@@ -118,7 +118,7 @@
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">Verrouillage automatique</string>
   <string name="mail_settings_auto_lock_item_title">Verrouillage automatique de l\'application</string>
-  <string name="mail_settings_auto_lock_item_description">Activez cette fonctionnalité pour verrouiller automatiquement votre application et utilisez un code PIN ou une empreinte digitale pour la déverrouiller.</string>
+  <string name="mail_settings_auto_lock_item_description">Activez cette fonctionnalité pour verrouiller automatiquement votre application et utilisez un code PIN pour la déverrouiller.</string>
   <string name="mail_settings_auto_lock_change_pin_description">Modifier le code PIN</string>
   <string name="mail_settings_auto_lock_item_timer_title">Délai de verrouillage automatique</string>
   <string name="mail_settings_auto_lock_immediately">Immédiatement</string>
@@ -141,10 +141,17 @@
     <item quantity="other">%s tentatives restantes.</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
-    <item quantity="one">%s remaining attempt until secure data wipe.</item>
-    <item quantity="other">%s remaining attempts until secure data wipe.</item>
+    <item quantity="one">Il reste %s tentative avant l’effacement des données sécurisées.</item>
+    <item quantity="other">Il reste %s tentatives avant l’effacement des données sécurisées.</item>
   </plurals>
-  <string name="mail_settings_pin_insertion_error_unknown">There was an error verifying your PIN code.</string>
+  <string name="mail_settings_pin_insertion_error_unknown">Une erreur s\'est produite lors de la vérification du code PIN.</string>
+  <string name="mail_settings_pin_insertion_signout_text">Se déconnecter</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_title">Se déconnecter</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_description">Voulez-vous vraiment vous déconnecter ?</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_confirm">Oui</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_cancel">Non</string>
+  <string name="mail_settings_pin_insertion_created_success">Le code PIN a été créé.</string>
+  <string name="mail_settings_pin_insertion_changed_success">Le code PIN a été modifié.</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Les données locales mises en cache sont en cours d\'effacement.</string>
   <!-- Error messages -->

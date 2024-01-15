@@ -28,6 +28,7 @@
   <string name="action_reply_all">Err-asen akk</string>
   <string name="action_forward">Ɣer zdat</string>
   <string name="action_reply_description">Err</string>
+  <string name="action_reply_to_description">Reply to %s</string>
   <string name="action_reply_all_description">Err-asen akk</string>
   <string name="action_forward_description">Ɣer zdat</string>
   <string name="action_mark_read_description">Creḍ yettwaɣra</string>
@@ -52,6 +53,7 @@
   <string name="action_save_attachments_description">Sekles imeddayen</string>
   <string name="action_more_description">Ugar</string>
   <string name="action_reply_content_description">Err</string>
+  <string name="action_reply_to_content_description">Reply to %s</string>
   <string name="action_reply_all_content_description">Err-asen akk</string>
   <string name="action_forward_content_description">Welleh</string>
   <string name="action_mark_read_content_description">Creḍ yettwaɣra</string>

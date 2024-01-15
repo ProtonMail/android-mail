@@ -25,6 +25,8 @@
     <item quantity="one">%d n yizen</item>
     <item quantity="other">%d n yiznan</item>
   </plurals>
+  <string name="quick_reply_button_content_description">Reply</string>
+  <string name="quick_reply_all_button_content_description">Reply All</string>
   <string name="more_button_content_description">Ugar</string>
   <string name="to">Ɣer:</string>
   <string name="cc">Anɣ. I:</string>

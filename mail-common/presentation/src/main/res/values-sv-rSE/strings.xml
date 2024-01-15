@@ -28,6 +28,7 @@
   <string name="action_reply_all">Svara alla</string>
   <string name="action_forward">Vidarebefordra</string>
   <string name="action_reply_description">Svara</string>
+  <string name="action_reply_to_description">Svara till %s</string>
   <string name="action_reply_all_description">Svara alla</string>
   <string name="action_forward_description">Vidarebefordra</string>
   <string name="action_mark_read_description">Markera som läst</string>
@@ -52,6 +53,7 @@
   <string name="action_save_attachments_description">Spara bilagorna</string>
   <string name="action_more_description">Mer</string>
   <string name="action_reply_content_description">Svara</string>
+  <string name="action_reply_to_content_description">Svara till %s</string>
   <string name="action_reply_all_content_description">Svara alla</string>
   <string name="action_forward_content_description">Vidarebefordra</string>
   <string name="action_mark_read_content_description">Markera som läst</string>

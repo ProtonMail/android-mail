@@ -25,6 +25,8 @@
     <item quantity="one">%d Nachricht</item>
     <item quantity="other">%d Nachrichten</item>
   </plurals>
+  <string name="quick_reply_button_content_description">Antworten</string>
+  <string name="quick_reply_all_button_content_description">Allen antworten</string>
   <string name="more_button_content_description">Mehr</string>
   <string name="to">An:</string>
   <string name="cc">CC:</string>

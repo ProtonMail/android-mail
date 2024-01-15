@@ -25,6 +25,8 @@
     <item quantity="one">%d melding</item>
     <item quantity="other">%d meldinger</item>
   </plurals>
+  <string name="quick_reply_button_content_description">Svar</string>
+  <string name="quick_reply_all_button_content_description">Svar alle</string>
   <string name="more_button_content_description">Mer</string>
   <string name="to">Til:</string>
   <string name="cc">Kopi:</string>

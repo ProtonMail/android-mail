@@ -24,12 +24,12 @@
   <string name="mail_settings_app_settings">Настройки приложения</string>
   <string name="mail_settings_theme">Тема</string>
   <string name="mail_settings_push_notifications">Push-уведомления</string>
-  <string name="mail_settings_auto_lock">Автоблокировка</string>
+  <string name="mail_settings_auto_lock">Auto lock</string>
   <string name="mail_settings_alternative_routing">Альтернативная маршрутизация</string>
   <string name="mail_settings_app_language">Язык приложения</string>
   <string name="mail_settings_combined_contacts">Объединенные контакты</string>
   <string name="mail_settings_local_cache">Локальный кэш</string>
-  <string name="mail_settings_local_cache_hint">Используемый пробел: %s</string>
+  <string name="mail_settings_local_cache_hint">Использовано места: %s</string>
   <string name="mail_settings_local_cache_clear_button">Очистить данные</string>
   <string name="mail_settings_swipe_actions">Жесты пролистывания</string>
   <string name="mail_settings_combined_contacts_hint">Включите эту функцию для автозаполнения адресов электронной почты из контактов всех ваших авторизованных аккаунтов.</string>
@@ -68,8 +68,8 @@
   <string name="mail_settings_default_email_address_inactive_addresses">Неактивные адреса</string>
   <string name="mail_settings_default_email_address_no_inactive_addresses">Нет неактивных адресов</string>
   <string name="mail_settings_default_email_address_error_loading">Ошибка загрузки настроек</string>
-  <string name="mail_settings_default_email_address_error_update">Ошибка обновления настроек</string>
-  <string name="mail_settings_default_email_address_error_update_subscription">Перейдите на платный тариф, чтобы установить этот адрес основным</string>
+  <string name="mail_settings_default_email_address_error_update">Ошибка сохранения настроек</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">Улучшите тариф, чтобы сделать этот адрес основным</string>
   <!-- Display name, signature, mobile footer -->
   <string name="mail_settings_identity_title">Отображаемое имя и подпись</string>
   <string name="mail_settings_identity_save_button">Сохранить</string>
@@ -81,20 +81,20 @@
   <string name="mail_settings_identity_mobile_footer_subtext">Нижний колонтитул будет добавлен после Вашей подписи.</string>
   <string name="mail_settings_identity_mobile_footer_hint">Нижний колонтитул для мобильных устройств</string>
   <string name="mail_settings_identity_mobile_footer_default_free">Отправлено из мобильного приложения Proton Mail Android</string>
-  <string name="mail_settings_identity_error_updating">Ошибка обновления настроек</string>
+  <string name="mail_settings_identity_error_updating">Ошибка сохранения настроек</string>
   <string name="mail_settings_identity_error_loading">Ошибка загрузки настроек</string>
   <!-- Privacy settings -->
-  <string name="mail_settings_privacy_auto_show_remote_content">Автоматический показ удаленного содержимого</string>
+  <string name="mail_settings_privacy_auto_show_remote_content">Авто-показ внешнего содержимого</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">Авто-показ встроенных изображений</string>
   <string name="mail_settings_privacy_prevent_taking_screenshots">Предотвратить снятие снимков экрана</string>
   <string name="mail_settings_privacy_request_link_confirmation">Запрашивать подтверждение при переходе по ссылкам</string>
   <string name="mail_settings_privacy_background_sync">Фоновая синхронизация</string>
   <string name="mail_settings_privacy_background_sync_description">Если эта опция включена, то приложение будет синхронизироваться с сервером в фоновом режиме. Отключение этой функции также отключит push-уведомления.</string>
-  <string name="mail_settings_privacy_error_updating">Ошибка обновления настроек</string>
+  <string name="mail_settings_privacy_error_updating">Ошибка сохранения настроек</string>
   <string name="mail_settings_privacy_error_loading">Ошибка загрузки настроек</string>
   <!-- Swipe Actions -->
-  <string name="mail_settings_swipe_actions_title">Жесты пролистывания</string>
-  <string name="mail_settings_swipe_actions_subtitle">Настройте жесты пролистывания для доступа к наиболее используемым действиям.</string>
+  <string name="mail_settings_swipe_actions_title">Жесты</string>
+  <string name="mail_settings_swipe_actions_subtitle">Настроить жесты для наиболее используемых действий.</string>
   <string name="mail_settings_swipe_right_name">Слева направо</string>
   <string name="mail_settings_swipe_left_name">Справа налево</string>
   <string name="mail_settings_swipe_action_archive_title">Архив</string>
@@ -113,12 +113,12 @@
   <string name="mail_settings_notifications_extended_notifications_summary">Включите эту функцию, чтобы видеть отправителя\nписем в push-уведомлениях.</string>
   <string name="mail_settings_notifications_notifications_settings">Настройки уведомлений</string>
   <string name="mail_settings_notifications_notifications_settings_hint">Перейти к настройкам системных оповещений</string>
-  <string name="mail_settings_notifications_update_error">Ошибка обновления настроек</string>
+  <string name="mail_settings_notifications_update_error">Ошибка сохранения настроек</string>
   <string name="mail_settings_notifications_loading_error">Ошибка загрузки настроек</string>
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">Автоблокировка</string>
   <string name="mail_settings_auto_lock_item_title">Автоблокировка приложения</string>
-  <string name="mail_settings_auto_lock_item_description">Включите эту функцию, чтобы автоматически заблокировать приложение и использовать PIN или отпечаток пальца для его разблокировки.</string>
+  <string name="mail_settings_auto_lock_item_description">Turn this feature on to auto lock your app and use a PIN code to unlock it.</string>
   <string name="mail_settings_auto_lock_change_pin_description">Изменить PIN-код</string>
   <string name="mail_settings_auto_lock_item_timer_title">Таймер автоблокировки</string>
   <string name="mail_settings_auto_lock_immediately">Немедленно</string>
@@ -126,16 +126,16 @@
   <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 минут бездействия</string>
   <string name="mail_settings_auto_lock_item_timer_description_one_hour">1 час бездействия</string>
   <string name="mail_settings_auto_lock_item_timer_description_one_day">1 день бездействия</string>
-  <string name="mail_settings_auto_lock_update_error">Ошибка обновления настроек</string>
-  <string name="mail_settings_pin_insertion_input_title">Введите PIN</string>
-  <string name="mail_settings_pin_insertion_set_title">Установите PIN</string>
+  <string name="mail_settings_auto_lock_update_error">Ошибка сохранения настроек</string>
+  <string name="mail_settings_pin_insertion_input_title">Вставьте PIN-код</string>
+  <string name="mail_settings_pin_insertion_set_title">Установите PIN-код</string>
   <string name="mail_settings_pin_insertion_confirm_title">Подтвердите ПИН-код</string>
   <string name="mail_settings_pin_insertion_lock_icon_description">Значок блокировки</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">Pin dot</string>
   <string name="mail_settings_pin_insertion_backspace_description">Backspace</string>
   <string name="mail_settings_pin_insertion_button_create">Создать</string>
   <string name="mail_settings_pin_insertion_button_confirm">Подтвердить</string>
-  <string name="mail_settings_pin_insertion_error_no_match">Пин-коды не совпадают.</string>
+  <string name="mail_settings_pin_insertion_error_no_match">PIN-коды не совпадают.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
     <item quantity="one">%s remaining attempt.</item>
     <item quantity="few">%s remaining attempts.</item>
@@ -149,8 +149,15 @@
     <item quantity="other">%s remaining attempts until secure data wipe.</item>
   </plurals>
   <string name="mail_settings_pin_insertion_error_unknown">There was an error verifying your PIN code.</string>
+  <string name="mail_settings_pin_insertion_signout_text">Sign Out</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_title">Sign Out</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_description">Вы уверены, что хотите выйти?</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_confirm">Yes</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_cancel">No</string>
+  <string name="mail_settings_pin_insertion_created_success">PIN code created successfully.</string>
+  <string name="mail_settings_pin_insertion_changed_success">PIN code changed successfully.</string>
   <!-- Local storage -->
-  <string name="mail_settings_clearing_cached_data">Очистка локальных кэшированных данных…</string>
+  <string name="mail_settings_clearing_cached_data">Очистка кэша на устройстве…</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Произошла ошибка. Попробуйте ещё раз.</string>
 </resources>

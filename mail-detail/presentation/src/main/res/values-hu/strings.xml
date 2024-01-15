@@ -25,6 +25,8 @@
     <item quantity="one">%d üzenet</item>
     <item quantity="other">%d üzenet</item>
   </plurals>
+  <string name="quick_reply_button_content_description">Reply</string>
+  <string name="quick_reply_all_button_content_description">Reply All</string>
   <string name="more_button_content_description">Több</string>
   <string name="to">Címzett:</string>
   <string name="cc">Másolatot kap:</string>

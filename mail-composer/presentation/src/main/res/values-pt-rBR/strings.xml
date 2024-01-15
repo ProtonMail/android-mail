@@ -54,4 +54,17 @@
   <string name="message_sending_error_dialog_text_error">Seu e-mail não pode ser enviado para o e-mail informado pelo seguinte motivo:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Não há chaves confiáveis: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">Endereço não existe: %s</string>
+  <string name="set_message_password_title">Criptografar mensagem</string>
+  <string name="set_message_password_info_message">Defina uma senha para criptografar esta mensagem para destinatários que não usam Proton Mail.</string>
+  <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Saiba mais</a></string>
+  <string name="set_message_password_label">Senha da mensagem</string>
+  <string name="set_message_password_label_repeat">Repeat password</string>
+  <string name="set_message_password_label_hint">Dica de senha (opcional)</string>
+  <string name="set_message_password_supporting_text">de 4 a 21 caracteres</string>
+  <string name="set_message_password_supporting_error_text">A sua senha deve ter entre 4 e 21 caracteres.</string>
+  <string name="set_message_password_supporting_text_repeat">As senhas devem ser iguais.</string>
+  <string name="set_message_password_supporting_error_text_repeat">As senhas não correspondem.</string>
+  <string name="set_message_password_button_show">Mostrar senha</string>
+  <string name="set_message_password_button_hide">Ocultar senha</string>
+  <string name="set_message_password_button_apply">Aplicar senha</string>
 </resources>

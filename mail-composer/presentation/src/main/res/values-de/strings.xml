@@ -54,4 +54,17 @@
   <string name="message_sending_error_dialog_text_error">Deine E-Mail kann aus folgendem Grund nicht an die angegebene E-Mail-Adresse gesendet werden:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Es gibt keine vertrauenswürdigen Schlüssel: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">Adresse existiert nicht: %s</string>
+  <string name="set_message_password_title">Nachricht verschlüsseln</string>
+  <string name="set_message_password_info_message">Lege ein Passwort zum Verschlüsseln dieser Nachricht für nicht-Proton Mail-Benutzer fest.</string>
+  <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Mehr erfahren</a></string>
+  <string name="set_message_password_label">Message password</string>
+  <string name="set_message_password_label_repeat">Passwort wiederholen</string>
+  <string name="set_message_password_label_hint">Passworthinweis (optional)</string>
+  <string name="set_message_password_supporting_text">4-21 Zeichen lang</string>
+  <string name="set_message_password_supporting_error_text">Das Passwort muss zwischen 4 und 21 Zeichen lang sein.</string>
+  <string name="set_message_password_supporting_text_repeat">Die Passwörter müssen übereinstimmen</string>
+  <string name="set_message_password_supporting_error_text_repeat">Die Passwörter stimmen nicht überein</string>
+  <string name="set_message_password_button_show">Passwort anzeigen</string>
+  <string name="set_message_password_button_hide">Passwort ausblenden</string>
+  <string name="set_message_password_button_apply">Passwort übernehmen</string>
 </resources>

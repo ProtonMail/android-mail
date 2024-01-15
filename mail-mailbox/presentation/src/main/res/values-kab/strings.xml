@@ -31,11 +31,9 @@
     <item quantity="one">%d yettwafernen</item>
     <item quantity="other">%d yettwafernen</item>
   </plurals>
-  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
-  <string name="filter_unread_button_text_without_counter">Unread</string>
   <plurals name="filter_unread_button_text">
-    <item quantity="one">%s ur yettwaɣer ara</item>
-    <item quantity="other">%s ur ttwaɣren ara</item>
+    <item quantity="one">%s ur yettwaɣra ara</item>
+    <item quantity="other">%s ur ttwaɣran ara</item>
   </plurals>
   <string name="mailbox_default_recipient">(Ulac iɣerwaḍen)</string>
   <string name="mailbox_default_sender">(Ulac amazan)</string>
@@ -108,7 +106,16 @@
   <string name="mailbox_action_trash_message">Izen yettwasnekzen ar ar iḍumman</string>
   <string name="mailbox_action_archive_message">Izen yettwasnekzen ɣer teṛcivt</string>
   <string name="mailbox_action_spam_message">yizen yettwasenkez ɣer uspam</string>
-  <string name="mailbox_search_placeholder_text">Search messages</string>
-  <string name="mailbox_search_no_results_title">No results found</string>
-  <string name="mailbox_search_no_results_explanation">Search date, name, email address, or subject line</string>
+  <string name="mailbox_search_placeholder_text">Nadi iznan</string>
+  <string name="mailbox_search_no_results_title">Ulac igmaḍ</string>
+  <string name="mailbox_search_no_results_explanation">Nadi s wazemz, s yisem, s tansa n yimayl neɣ s usentel n yizen</string>
+  <string name="mailbox_action_button_clear_trash">Empty Trash</string>
+  <string name="mailbox_action_button_clear_spam">Empty Spam</string>
+  <string name="mailbox_action_clear_trash_dialog_title">Empty Trash folder</string>
+  <string name="mailbox_action_clear_spam_dialog_title">Empty Spam folder</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Are you sure you want to permanently delete all messages within ‘Trash’?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">Are you sure you want to permanently delete all messages within ‘Spam’?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_conversation">Are you sure you want to permanently delete all conversations within ‘Trash’?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">Are you sure you want to permanently delete all conversations within ‘Spam’?</string>
+  <string name="mailbox_action_clear_operation_scheduled">"Clear operation is scheduled"</string>
 </resources>

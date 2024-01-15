@@ -24,7 +24,7 @@
   <string name="mail_settings_app_settings">Uygulama ayarları</string>
   <string name="mail_settings_theme">Tema</string>
   <string name="mail_settings_push_notifications">Anlık bildirimler</string>
-  <string name="mail_settings_auto_lock">Otomatik kilit</string>
+  <string name="mail_settings_auto_lock">Otomatik kilitleme</string>
   <string name="mail_settings_alternative_routing">Alternatif yöneltme</string>
   <string name="mail_settings_app_language">Uygulama dili</string>
   <string name="mail_settings_combined_contacts">Birleştirilmiş kişiler</string>
@@ -118,7 +118,7 @@
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">Otomatik kilitleme</string>
   <string name="mail_settings_auto_lock_item_title">Uygulama otomatik kilitlensin</string>
-  <string name="mail_settings_auto_lock_item_description">Uygulamanızın otomatik olarak kilitlenmesi için bu özelliği açın. Kilidi açmak için bir PIN kodu veya parmak izi ayarlayın</string>
+  <string name="mail_settings_auto_lock_item_description">Uygulamanızı otomatik olarak kilitlemek için bu özelliği açın ve kilidini açmak için bir PIN kodu kullanın.</string>
   <string name="mail_settings_auto_lock_change_pin_description">PIN kodunu değiştir</string>
   <string name="mail_settings_auto_lock_item_timer_title">Otomatik kilit süresi</string>
   <string name="mail_settings_auto_lock_immediately">Hemen</string>
@@ -137,14 +137,21 @@
   <string name="mail_settings_pin_insertion_button_confirm">Onayla</string>
   <string name="mail_settings_pin_insertion_error_no_match">PIN kodu ile onayı aynı değil.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="one">%s remaining attempt.</item>
-    <item quantity="other">%s remaining attempts.</item>
+    <item quantity="one">%s deneme hakkı kaldı.</item>
+    <item quantity="other">%s deneme hakkı kaldı.</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
-    <item quantity="one">%s remaining attempt until secure data wipe.</item>
-    <item quantity="other">%s remaining attempts until secure data wipe.</item>
+    <item quantity="one">Güvenli verilerin silinmesinden önce %s deneme hakkınız kaldı.</item>
+    <item quantity="other">Güvenli verilerin silinmesinden önce %s deneme hakkınız kaldı.</item>
   </plurals>
-  <string name="mail_settings_pin_insertion_error_unknown">There was an error verifying your PIN code.</string>
+  <string name="mail_settings_pin_insertion_error_unknown">PIN kodunuz doğrulanırken bir sorun çıktı.</string>
+  <string name="mail_settings_pin_insertion_signout_text">Oturumu kapat</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_title">Oturumu kapat</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_description">Oturumu kapatmak istediğinize emin misiniz?</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_confirm">Evet</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_cancel">Hayır</string>
+  <string name="mail_settings_pin_insertion_created_success">PIN kodu oluşturuldu.</string>
+  <string name="mail_settings_pin_insertion_changed_success">PIN kodu değiştirildi.</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Yerel ön bellek verileri temizleniyor…</string>
   <!-- Error messages -->

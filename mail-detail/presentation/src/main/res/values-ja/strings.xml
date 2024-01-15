@@ -24,6 +24,8 @@
   <plurals name="message_count_label_text">
     <item quantity="other">%d 件のメール</item>
   </plurals>
+  <string name="quick_reply_button_content_description">Reply</string>
+  <string name="quick_reply_all_button_content_description">Reply All</string>
   <string name="more_button_content_description">その他</string>
   <string name="to">宛先:</string>
   <string name="cc">CC:</string>

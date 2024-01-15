@@ -118,7 +118,7 @@
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">Autolås</string>
   <string name="mail_settings_auto_lock_item_title">Autolås app</string>
-  <string name="mail_settings_auto_lock_item_description">Slå på denna funktion för att låsa din app automatiskt och använd en PIN-kod eller fingeravtryck för att låsa upp den</string>
+  <string name="mail_settings_auto_lock_item_description">Turn this feature on to auto lock your app and use a PIN code to unlock it.</string>
   <string name="mail_settings_auto_lock_change_pin_description">Ändra PIN-kod</string>
   <string name="mail_settings_auto_lock_item_timer_title">Timer för autolås</string>
   <string name="mail_settings_auto_lock_immediately">Omedelbart</string>
@@ -144,7 +144,14 @@
     <item quantity="one">%s remaining attempt until secure data wipe.</item>
     <item quantity="other">%s remaining attempts until secure data wipe.</item>
   </plurals>
-  <string name="mail_settings_pin_insertion_error_unknown">There was an error verifying your PIN code.</string>
+  <string name="mail_settings_pin_insertion_error_unknown">Det var ett fel att verifiera din PIN-kod.</string>
+  <string name="mail_settings_pin_insertion_signout_text">Logga ut</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_title">Logga ut</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_description">Är du säker på att du vill logga ut?</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_confirm">Ja</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_cancel">Nej</string>
+  <string name="mail_settings_pin_insertion_created_success">PIN-kod skapad.</string>
+  <string name="mail_settings_pin_insertion_changed_success">PIN-kod ändrad.</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Rensar lokal cachad data…</string>
   <!-- Error messages -->

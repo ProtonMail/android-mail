@@ -24,7 +24,7 @@
   <string name="mail_settings_app_settings">App-indstillinger</string>
   <string name="mail_settings_theme">Tema</string>
   <string name="mail_settings_push_notifications">Push-notifikationer</string>
-  <string name="mail_settings_auto_lock">Autolås</string>
+  <string name="mail_settings_auto_lock">Auto lock</string>
   <string name="mail_settings_alternative_routing">Alternativ routing</string>
   <string name="mail_settings_app_language">App-sprog</string>
   <string name="mail_settings_combined_contacts">Kombinerede kontakter</string>
@@ -118,7 +118,7 @@
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">Autolås</string>
   <string name="mail_settings_auto_lock_item_title">Autolås app</string>
-  <string name="mail_settings_auto_lock_item_description">Slå denne funktion til for at låse din app automatisk og bruge en pinkode eller et fingeraftryk til at låse den op.</string>
+  <string name="mail_settings_auto_lock_item_description">Turn this feature on to auto lock your app and use a PIN code to unlock it.</string>
   <string name="mail_settings_auto_lock_change_pin_description">Skift pinkode</string>
   <string name="mail_settings_auto_lock_item_timer_title">Autolås-timer</string>
   <string name="mail_settings_auto_lock_immediately">Straks</string>
@@ -138,13 +138,20 @@
   <string name="mail_settings_pin_insertion_error_no_match">Pinkoder stemmer ikke overens.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
     <item quantity="one">%s remaining attempt.</item>
-    <item quantity="other">%s remaining attempts.</item>
+    <item quantity="other">%s forsøg tilbage.</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
     <item quantity="one">%s remaining attempt until secure data wipe.</item>
     <item quantity="other">%s remaining attempts until secure data wipe.</item>
   </plurals>
   <string name="mail_settings_pin_insertion_error_unknown">There was an error verifying your PIN code.</string>
+  <string name="mail_settings_pin_insertion_signout_text">Sign Out</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_title">Sign Out</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_description">Er du sikker på, at du vil logge ud?</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_confirm">Yes</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_cancel">No</string>
+  <string name="mail_settings_pin_insertion_created_success">PIN code created successfully.</string>
+  <string name="mail_settings_pin_insertion_changed_success">PIN code changed successfully.</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Rydder lokale cachelagrede data…</string>
   <!-- Error messages -->

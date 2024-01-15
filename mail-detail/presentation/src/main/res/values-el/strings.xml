@@ -25,6 +25,8 @@
     <item quantity="one">%d μήνυμα</item>
     <item quantity="other">%d μηνύματα</item>
   </plurals>
+  <string name="quick_reply_button_content_description">Απάντηση</string>
+  <string name="quick_reply_all_button_content_description">Απάντηση σε όλους</string>
   <string name="more_button_content_description">Περισσότερα</string>
   <string name="to">Προς:</string>
   <string name="cc">Κοιν:</string>

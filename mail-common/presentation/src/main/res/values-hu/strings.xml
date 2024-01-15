@@ -28,6 +28,7 @@
   <string name="action_reply_all">Válasz mindenkinek</string>
   <string name="action_forward">Továbbítás</string>
   <string name="action_reply_description">Válasz</string>
+  <string name="action_reply_to_description">Reply to %s</string>
   <string name="action_reply_all_description">Válasz mindenkinek</string>
   <string name="action_forward_description">Továbbítás</string>
   <string name="action_mark_read_description">Megjelölés olvasottként</string>
@@ -52,6 +53,7 @@
   <string name="action_save_attachments_description">Mellékletek mentése</string>
   <string name="action_more_description">Több</string>
   <string name="action_reply_content_description">Válasz</string>
+  <string name="action_reply_to_content_description">Reply to %s</string>
   <string name="action_reply_all_content_description">Válasz mindenkinek</string>
   <string name="action_forward_content_description">Továbbítás</string>
   <string name="action_mark_read_content_description">Megjelölés olvasottként</string>
@@ -83,7 +85,7 @@
   <string name="email_notification_channel_name">E-mailek</string>
   <string name="login_notification_channel_name">Bejelentkezési figyelmeztetések</string>
   <string name="email_notification_channel_description">Bejövő e-mail értesítések</string>
-  <string name="login_notification_channel_description">Bejelentkezési értesítések</string>
+  <string name="login_notification_channel_description">Új bejelentkezési értesítések</string>
   <string name="auth_badge_official">Hivatalos</string>
   <string name="intent_failure_no_app_found_to_handle_this_action">Nincs megfelelő alkalmazás a művelet elvégzésére</string>
   <string name="mailbox_action_delete_dialog_button_cancel">Mégsem</string>

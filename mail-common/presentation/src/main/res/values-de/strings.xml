@@ -28,6 +28,7 @@
   <string name="action_reply_all">Allen antworten</string>
   <string name="action_forward">Weiterleiten</string>
   <string name="action_reply_description">Antworten</string>
+  <string name="action_reply_to_description">Reply to %s</string>
   <string name="action_reply_all_description">Allen antworten</string>
   <string name="action_forward_description">Weiterleiten</string>
   <string name="action_mark_read_description">Als gelesen markieren</string>
@@ -52,6 +53,7 @@
   <string name="action_save_attachments_description">Anhänge speichern</string>
   <string name="action_more_description">Mehr</string>
   <string name="action_reply_content_description">Antworten</string>
+  <string name="action_reply_to_content_description">Reply to %s</string>
   <string name="action_reply_all_content_description">Allen antworten</string>
   <string name="action_forward_content_description">Weiterleiten</string>
   <string name="action_mark_read_content_description">Als gelesen markieren</string>

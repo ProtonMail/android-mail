@@ -28,6 +28,7 @@
   <string name="action_reply_all">Rispondi a tutti</string>
   <string name="action_forward">Inoltra</string>
   <string name="action_reply_description">Rispondi</string>
+  <string name="action_reply_to_description">Rispondi a %s</string>
   <string name="action_reply_all_description">Rispondi a tutti</string>
   <string name="action_forward_description">Inoltra</string>
   <string name="action_mark_read_description">Segna come letto</string>
@@ -52,6 +53,7 @@
   <string name="action_save_attachments_description">Salva gli allegati</string>
   <string name="action_more_description">Altro</string>
   <string name="action_reply_content_description">Rispondi</string>
+  <string name="action_reply_to_content_description">Rispondi a %s</string>
   <string name="action_reply_all_content_description">Rispondi a tutti</string>
   <string name="action_forward_content_description">Inoltra</string>
   <string name="action_mark_read_content_description">Segna come letto</string>

@@ -118,7 +118,7 @@
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">Blocco automatico</string>
   <string name="mail_settings_auto_lock_item_title">Blocco automatico dell\'app</string>
-  <string name="mail_settings_auto_lock_item_description">Attiva questa funzione per bloccare automaticamente l\'app e usare un codice PIN o un\'impronta digitale per sbloccarla</string>
+  <string name="mail_settings_auto_lock_item_description">Attiva questa funzione per bloccare automaticamente l\'app e usare un codice PIN per sbloccarla.</string>
   <string name="mail_settings_auto_lock_change_pin_description">Cambia il codice PIN</string>
   <string name="mail_settings_auto_lock_item_timer_title">Blocco automatico per inattività</string>
   <string name="mail_settings_auto_lock_immediately">Immediato</string>
@@ -131,7 +131,7 @@
   <string name="mail_settings_pin_insertion_set_title">Imposta il codice PIN</string>
   <string name="mail_settings_pin_insertion_confirm_title">Conferma il codice PIN</string>
   <string name="mail_settings_pin_insertion_lock_icon_description">Icona del lucchetto</string>
-  <string name="mail_settings_pin_insertion_pin_dot_description">Codice PIN con punti</string>
+  <string name="mail_settings_pin_insertion_pin_dot_description">Puntino del PIN</string>
   <string name="mail_settings_pin_insertion_backspace_description">Cancella</string>
   <string name="mail_settings_pin_insertion_button_create">Crea</string>
   <string name="mail_settings_pin_insertion_button_confirm">Conferma</string>
@@ -145,6 +145,13 @@
     <item quantity="other">%s tentativi rimasti prima dell\'eliminazione sicura dei dati</item>
   </plurals>
   <string name="mail_settings_pin_insertion_error_unknown">Errore nella verifica del codice PIN</string>
+  <string name="mail_settings_pin_insertion_signout_text">Disconnetti</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_title">Disconnetti</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_description">Sei sicuro di voler disconnettere l\'account?</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_confirm">Sì</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_cancel">No</string>
+  <string name="mail_settings_pin_insertion_created_success">Codice PIN creato</string>
+  <string name="mail_settings_pin_insertion_changed_success">Codice PIN cambiato</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Cancellazione della cache locale in corso</string>
   <!-- Error messages -->

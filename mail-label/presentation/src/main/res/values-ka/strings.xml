@@ -28,8 +28,8 @@
   <string name="label_title_all_mail">ყველა ელფოსტა</string>
   <string name="label_title_all_drafts">ყველა მონახაზი</string>
   <string name="label_title_all_sent">ყველა გაგზავნილი</string>
-  <string name="label_title_all_scheduled">All Scheduled</string>
-  <string name="label_title_snoozed">Snoozed</string>
+  <string name="label_title_all_scheduled">ყველა დაგეგმილი</string>
+  <string name="label_title_snoozed">დროებით დადუმებულია</string>
   <string name="label_title_folders">საქაღალდეები</string>
   <string name="label_title_parent_folder">მშობელი საქაღალდე</string>
   <string name="label_title_labels">ჭდეები</string>

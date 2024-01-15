@@ -31,8 +31,6 @@
     <item quantity="one">%d selezionato</item>
     <item quantity="other">%d selezionati</item>
   </plurals>
-  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
-  <string name="filter_unread_button_text_without_counter">Non letti</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%s non letto</item>
     <item quantity="other">%s non letti</item>
@@ -111,4 +109,13 @@
   <string name="mailbox_search_placeholder_text">Cerca nei messaggi</string>
   <string name="mailbox_search_no_results_title">Nessun risultato trovato</string>
   <string name="mailbox_search_no_results_explanation">Ricerca per data, nome, indirizzo email o oggetto del messaggio</string>
+  <string name="mailbox_action_button_clear_trash">Svuota il cestino</string>
+  <string name="mailbox_action_button_clear_spam">Svuota la cartella spam</string>
+  <string name="mailbox_action_clear_trash_dialog_title">Svuota il cestino</string>
+  <string name="mailbox_action_clear_spam_dialog_title">Svuota la cartella spam</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Sei sicuro di voler eliminare definitivamente tutti i messaggi presenti nel cestino?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">Sei sicuro di voler eliminare definitivamente tutti i messaggi presenti nella cartella spam?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_conversation">Sei sicuro di voler eliminare definitivamente tutte le conversazioni presenti nel cestino?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">Sei sicuro di voler eliminare definitivamente tutte le conversazioni presenti nella cartella spam?</string>
+  <string name="mailbox_action_clear_operation_scheduled">"Lo svuotamento è programmato"</string>
 </resources>

@@ -25,6 +25,8 @@
     <item quantity="one">%d besked</item>
     <item quantity="other">%d beskeder</item>
   </plurals>
+  <string name="quick_reply_button_content_description">Reply</string>
+  <string name="quick_reply_all_button_content_description">Reply All</string>
   <string name="more_button_content_description">Mere</string>
   <string name="to">Til:</string>
   <string name="cc">CC:</string>

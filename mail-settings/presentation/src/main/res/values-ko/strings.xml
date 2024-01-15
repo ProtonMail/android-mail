@@ -118,7 +118,7 @@
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">자동 잠금</string>
   <string name="mail_settings_auto_lock_item_title">앱 자동 잠금</string>
-  <string name="mail_settings_auto_lock_item_description">이 기능을 활성화하여 앱을 자동 잠금하고 PIN 코드 또는 지문을 통한 잠금 해제를 사용할 수 있습니다.</string>
+  <string name="mail_settings_auto_lock_item_description">이 기능을 활성화하여 앱을 자동 잠금하고 PIN 코드를 통한 잠금 해제를 사용할 수 있습니다.</string>
   <string name="mail_settings_auto_lock_change_pin_description">PIN 코드 변경</string>
   <string name="mail_settings_auto_lock_item_timer_title">자동 잠금 타이머</string>
   <string name="mail_settings_auto_lock_immediately">즉시</string>
@@ -137,14 +137,21 @@
   <string name="mail_settings_pin_insertion_button_confirm">확정</string>
   <string name="mail_settings_pin_insertion_error_no_match">PIN 코드가 일치하지 않습니다.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="other">%s remaining attempts.</item>
+    <item quantity="other">%s회 남은 시도.</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
-    <item quantity="other">%s remaining attempts until secure data wipe.</item>
+    <item quantity="other">보안 데이터 삭제까지 %s회 남았습니다.</item>
   </plurals>
-  <string name="mail_settings_pin_insertion_error_unknown">There was an error verifying your PIN code.</string>
+  <string name="mail_settings_pin_insertion_error_unknown">PIN 코드를 확인하는데 오류가 발생했습니다.</string>
+  <string name="mail_settings_pin_insertion_signout_text">로그아웃</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_title">로그아웃</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_description">정말로 로그아웃하시겠습니까?</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_confirm">예</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_cancel">아니오</string>
+  <string name="mail_settings_pin_insertion_created_success">PIN 코드를 성공적으로 생성했습니다.</string>
+  <string name="mail_settings_pin_insertion_changed_success">PIN 코드를 성공적으로 변경했습니다.</string>
   <!-- Local storage -->
-  <string name="mail_settings_clearing_cached_data">로컬 캐시 데이터 정리중…</string>
+  <string name="mail_settings_clearing_cached_data">로컬 캐시 데이터 정리 중…</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">오류 발생. 다시 시도하세요.</string>
 </resources>

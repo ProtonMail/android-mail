@@ -28,6 +28,7 @@
   <string name="action_reply_all">Tümünü yanıtla</string>
   <string name="action_forward">İlet</string>
   <string name="action_reply_description">Yanıtla</string>
+  <string name="action_reply_to_description">Reply to %s</string>
   <string name="action_reply_all_description">Tümünü yanıtla</string>
   <string name="action_forward_description">İlet</string>
   <string name="action_mark_read_description">Okunmuş olarak işaretle</string>
@@ -52,6 +53,7 @@
   <string name="action_save_attachments_description">Ek dosyaları kaydet</string>
   <string name="action_more_description">Diğer</string>
   <string name="action_reply_content_description">Yanıtla</string>
+  <string name="action_reply_to_content_description">Reply to %s</string>
   <string name="action_reply_all_content_description">Tümünü yanıtla</string>
   <string name="action_forward_content_description">İlet</string>
   <string name="action_mark_read_content_description">Okunmuş olarak işaretle</string>

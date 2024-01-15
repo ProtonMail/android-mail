@@ -25,11 +25,13 @@
     <item quantity="one">%d ileti</item>
     <item quantity="other">%d ileti</item>
   </plurals>
+  <string name="quick_reply_button_content_description">Yanıtla</string>
+  <string name="quick_reply_all_button_content_description">Tümünü yanıtla</string>
   <string name="more_button_content_description">Diğer</string>
   <string name="to">Kime:</string>
   <string name="cc">Kopya:</string>
   <string name="bcc">Gizli kopya:</string>
-  <string name="hide_details">Ayrıntıları gizle</string>
+  <string name="hide_details">Bilgileri gizle</string>
   <string name="undisclosed_recipients">Gizli alıcılar</string>
   <string name="error_mark_as_unread_failed">Okunmamış olarak işaretlenemedi. Lütfen yeniden deneyin.</string>
   <string name="error_star_operation_failed">Yıldız eklenemedi. Lütfen yeniden deneyin.</string>

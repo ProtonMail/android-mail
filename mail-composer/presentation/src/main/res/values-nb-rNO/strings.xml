@@ -54,4 +54,17 @@
   <string name="message_sending_error_dialog_text_error">E-posten din kan ikke sendes til den oppgitte e-postadressen av følgende årsak:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Det er ingen klarerte nøkler: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">Adressen eksisterer ikke: %s</string>
+  <string name="set_message_password_title">Krypter melding</string>
+  <string name="set_message_password_info_message">Angi et passord for å kryptere denne meldingen for ikke-Proton Mail-brukere.</string>
+  <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Lær mer</a></string>
+  <string name="set_message_password_label">Meldingspassord</string>
+  <string name="set_message_password_label_repeat">Gjenta passord</string>
+  <string name="set_message_password_label_hint">Passordhint (valgfritt)</string>
+  <string name="set_message_password_supporting_text">4 til 21 tegn lang</string>
+  <string name="set_message_password_supporting_error_text">Passordet må bestå av mellom 4 og 21 tegn</string>
+  <string name="set_message_password_supporting_text_repeat">Passordene må samsvare</string>
+  <string name="set_message_password_supporting_error_text_repeat">De 2 passordene samsvarer ikke</string>
+  <string name="set_message_password_button_show">Vis passord</string>
+  <string name="set_message_password_button_hide">Skjul passord</string>
+  <string name="set_message_password_button_apply">Anvend passord</string>
 </resources>

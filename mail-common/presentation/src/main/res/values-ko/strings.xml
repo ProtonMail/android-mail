@@ -28,6 +28,7 @@
   <string name="action_reply_all">전체 회신</string>
   <string name="action_forward">전달</string>
   <string name="action_reply_description">답장</string>
+  <string name="action_reply_to_description">Reply to %s</string>
   <string name="action_reply_all_description">전체 답장</string>
   <string name="action_forward_description">전달</string>
   <string name="action_mark_read_description">읽음으로 표시</string>
@@ -50,8 +51,9 @@
   <string name="action_save_pdf_description">PDF로 저장</string>
   <string name="action_sender_emails_description">이 발신자의 향후 이메일에 대한 작업 설정</string>
   <string name="action_save_attachments_description">첨부 파일 저장</string>
-  <string name="action_more_description">더 보기</string>
+  <string name="action_more_description">더보기</string>
   <string name="action_reply_content_description">답장</string>
+  <string name="action_reply_to_content_description">Reply to %s</string>
   <string name="action_reply_all_content_description">전체 답장</string>
   <string name="action_forward_content_description">전달</string>
   <string name="action_mark_read_content_description">읽음으로 표시</string>

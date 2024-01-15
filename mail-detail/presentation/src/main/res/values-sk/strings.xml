@@ -27,6 +27,8 @@
     <item quantity="many">%d správ</item>
     <item quantity="other">%d správ</item>
   </plurals>
+  <string name="quick_reply_button_content_description">Odpovedať</string>
+  <string name="quick_reply_all_button_content_description">Odpovedať všetkým</string>
   <string name="more_button_content_description">Viac</string>
   <string name="to">Komu:</string>
   <string name="cc">Kópia:</string>

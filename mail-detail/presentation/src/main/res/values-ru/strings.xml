@@ -27,6 +27,8 @@
     <item quantity="many">%d сообщений</item>
     <item quantity="other">%d сообщения</item>
   </plurals>
+  <string name="quick_reply_button_content_description">Reply</string>
+  <string name="quick_reply_all_button_content_description">Reply All</string>
   <string name="more_button_content_description">Больше</string>
   <string name="to">Кому:</string>
   <string name="cc">Копия:</string>

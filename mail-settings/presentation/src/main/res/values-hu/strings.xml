@@ -24,7 +24,7 @@
   <string name="mail_settings_app_settings">Alkalmazás beállításai</string>
   <string name="mail_settings_theme">Téma</string>
   <string name="mail_settings_push_notifications">Push értesítések</string>
-  <string name="mail_settings_auto_lock">Automatikus lezárás</string>
+  <string name="mail_settings_auto_lock">Auto lock</string>
   <string name="mail_settings_alternative_routing">Alternatív útválasztás</string>
   <string name="mail_settings_app_language">Alkalmazás nyelve</string>
   <string name="mail_settings_combined_contacts">Kombinált névjegyek</string>
@@ -118,7 +118,7 @@
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">Automatikus lezárás</string>
   <string name="mail_settings_auto_lock_item_title">Alkalmazás automatikus lezárása</string>
-  <string name="mail_settings_auto_lock_item_description">Turn this feature on to auto lock your app and use a PIN code or Fingerprint to unlock it</string>
+  <string name="mail_settings_auto_lock_item_description">Turn this feature on to auto lock your app and use a PIN code to unlock it.</string>
   <string name="mail_settings_auto_lock_change_pin_description">PIN kód megváltoztatása</string>
   <string name="mail_settings_auto_lock_item_timer_title">Auto lock timer</string>
   <string name="mail_settings_auto_lock_immediately">Azonnal</string>
@@ -145,6 +145,13 @@
     <item quantity="other">%s remaining attempts until secure data wipe.</item>
   </plurals>
   <string name="mail_settings_pin_insertion_error_unknown">There was an error verifying your PIN code.</string>
+  <string name="mail_settings_pin_insertion_signout_text">Sign Out</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_title">Sign Out</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_description">Biztos, hogy ki szeretne jelentkezni?</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_confirm">Yes</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_cancel">No</string>
+  <string name="mail_settings_pin_insertion_created_success">PIN code created successfully.</string>
+  <string name="mail_settings_pin_insertion_changed_success">PIN code changed successfully.</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Clearing local cached data…</string>
   <!-- Error messages -->

@@ -118,7 +118,7 @@
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">Bloqueio automático</string>
   <string name="mail_settings_auto_lock_item_title">Bloqueio automático do aplicativo</string>
-  <string name="mail_settings_auto_lock_item_description">Ative este recurso para bloquear automaticamente o aplicativo e use o código PIN ou impressão digital para desbloqueá-lo</string>
+  <string name="mail_settings_auto_lock_item_description">Ative este recurso para bloquear automaticamente seu aplicativo e use um código PIN para desbloqueá-lo.</string>
   <string name="mail_settings_auto_lock_change_pin_description">Alterar o código PIN</string>
   <string name="mail_settings_auto_lock_item_timer_title">Tempo de bloqueio automático</string>
   <string name="mail_settings_auto_lock_immediately">Imediatamente</string>
@@ -131,20 +131,27 @@
   <string name="mail_settings_pin_insertion_set_title">Definir código PIN</string>
   <string name="mail_settings_pin_insertion_confirm_title">Confirmar código PIN</string>
   <string name="mail_settings_pin_insertion_lock_icon_description">Ícone de bloqueio</string>
-  <string name="mail_settings_pin_insertion_pin_dot_description">Pin dot</string>
+  <string name="mail_settings_pin_insertion_pin_dot_description">Código PIN de pontos</string>
   <string name="mail_settings_pin_insertion_backspace_description">Desfazer</string>
   <string name="mail_settings_pin_insertion_button_create">Criar</string>
   <string name="mail_settings_pin_insertion_button_confirm">Confirmar</string>
   <string name="mail_settings_pin_insertion_error_no_match">Os códigos PIN não correspondem.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="one">%s remaining attempt.</item>
-    <item quantity="other">%s remaining attempts.</item>
+    <item quantity="one">%s tentativa restante.</item>
+    <item quantity="other">%s tentativas restantes.</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
-    <item quantity="one">%s remaining attempt until secure data wipe.</item>
-    <item quantity="other">%s remaining attempts until secure data wipe.</item>
+    <item quantity="one">%s tentativa restante até a limpeza segura dos dados.</item>
+    <item quantity="other">%s tentativas restantes até a limpeza segura dos dados.</item>
   </plurals>
   <string name="mail_settings_pin_insertion_error_unknown">There was an error verifying your PIN code.</string>
+  <string name="mail_settings_pin_insertion_signout_text">Encerrar sessão</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_title">Encerrar sessão</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_description">Você tem certeza que deseja encerrar a sessão?</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_confirm">Sim</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_cancel">Não</string>
+  <string name="mail_settings_pin_insertion_created_success">Código PIN foi criado com sucesso.</string>
+  <string name="mail_settings_pin_insertion_changed_success">Código PIN foi alterado com sucesso.</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Limpando dados locais em cache…</string>
   <!-- Error messages -->

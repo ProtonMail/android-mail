@@ -33,8 +33,6 @@
     <item quantity="many">%d vybráno</item>
     <item quantity="other">%d vybráno</item>
   </plurals>
-  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
-  <string name="filter_unread_button_text_without_counter">Nepřečteno</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%s nepřečtená</item>
     <item quantity="few">%s nepřečtené</item>
@@ -129,4 +127,13 @@
   <string name="mailbox_search_placeholder_text">Prohledat zprávy</string>
   <string name="mailbox_search_no_results_title">Nebyly nalezeny žádné výsledky</string>
   <string name="mailbox_search_no_results_explanation">Vyhledávání podle data, jména, e-mailové adresy nebo předmětu zprávy</string>
+  <string name="mailbox_action_button_clear_trash">Vyprázdnit koš</string>
+  <string name="mailbox_action_button_clear_spam">Vysypat spam</string>
+  <string name="mailbox_action_clear_trash_dialog_title">Empty Trash folder</string>
+  <string name="mailbox_action_clear_spam_dialog_title">Empty Spam folder</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Opravdu chcete trvale odstranit všechny zprávy v ‘Koši’?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">Opravdu chcete trvale odstranit všechny zprávy ve ‘Spamu’?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_conversation">Opravdu chcete trvale odstranit všechny konverzace v ‘Koši’?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">Opravdu chcete trvale odstranit všechny konverzace ve ‘Spamu’?</string>
+  <string name="mailbox_action_clear_operation_scheduled">"Operace vyčištění je naplánována"</string>
 </resources>

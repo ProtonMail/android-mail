@@ -118,7 +118,7 @@
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">Automatické uzamčení</string>
   <string name="mail_settings_auto_lock_item_title">Automatické uzamčení aplikace</string>
-  <string name="mail_settings_auto_lock_item_description">Zapněte tuto funkci pro automatické uzamčení aplikace a použijte kód PIN nebo otisk prstu pro odemčení</string>
+  <string name="mail_settings_auto_lock_item_description">Zapněte tuto funkci pro automatické uzamčení vaší aplikace a použijte PIN kód pro odemčení.</string>
   <string name="mail_settings_auto_lock_change_pin_description">Změnit PIN kód</string>
   <string name="mail_settings_auto_lock_item_timer_title">Časovač automatického uzamčení</string>
   <string name="mail_settings_auto_lock_immediately">Okamžitě</string>
@@ -149,6 +149,13 @@
     <item quantity="other">Zbývá %s pokusů před bezpečným smazáním dat.</item>
   </plurals>
   <string name="mail_settings_pin_insertion_error_unknown">Při ověřování PIN kódu došlo k chybě.</string>
+  <string name="mail_settings_pin_insertion_signout_text">Odhlásit se</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_title">Odhlásit se</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_description">Opravdu se chcete odhlásit?</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_confirm">Ano</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_cancel">Ne</string>
+  <string name="mail_settings_pin_insertion_created_success">PIN kód úspěšně vytvořen.</string>
+  <string name="mail_settings_pin_insertion_changed_success">PIN kód úspěšně změněn.</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Vymazání místních dat z mezipaměti…</string>
   <!-- Error messages -->

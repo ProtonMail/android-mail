@@ -28,6 +28,7 @@
   <string name="action_reply_all">Responder a todos</string>
   <string name="action_forward">Encaminhar</string>
   <string name="action_reply_description">Responder</string>
+  <string name="action_reply_to_description">Reply to %s</string>
   <string name="action_reply_all_description">Responder a todos</string>
   <string name="action_forward_description">Encaminhar</string>
   <string name="action_mark_read_description">Marcar como lida</string>
@@ -52,6 +53,7 @@
   <string name="action_save_attachments_description">Salvar anexos</string>
   <string name="action_more_description">Mais</string>
   <string name="action_reply_content_description">Responder</string>
+  <string name="action_reply_to_content_description">Reply to %s</string>
   <string name="action_reply_all_content_description">Responder a todos</string>
   <string name="action_forward_content_description">Encaminhar</string>
   <string name="action_mark_read_content_description">Marcar como lida</string>

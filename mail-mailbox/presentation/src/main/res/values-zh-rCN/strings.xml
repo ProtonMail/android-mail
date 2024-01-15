@@ -30,8 +30,6 @@
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="other">已选择 %d 项</item>
   </plurals>
-  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
-  <string name="filter_unread_button_text_without_counter">未读</string>
   <plurals name="filter_unread_button_text">
     <item quantity="other">%s 封未读邮件</item>
   </plurals>
@@ -74,7 +72,7 @@
   <string name="mailbox_action_move_messages_failed_retrieving_folders">无法列出文件夹</string>
   <!--  Spotlight V6 Beta  -->
   <string name="onboarding_headline_beta">体验测试版应用程序</string>
-  <string name="onboarding_description_beta">我们重新构建了应用程序，以提升其稳定性和可靠性。请分享您的反馈，并保持关注，因为我们会逐步重新引入应用的各项功能。了解更多信息。<a href="https://proton.me/support/mail-android-beta">了解详情</a></string>
+  <string name="onboarding_description_beta">我们彻底重构了本应用，以提升稳定性与可靠性。欢迎提出宝贵意见，并请期待我们重新引入各项功能。<a href="https://proton.me/support/mail-android-beta">了解详情</a>。</string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">欢迎体验全新的应用</string>
   <string name="onboarding_description_ga">Proton Mail 的全新应用程序是完全从头开始重新构建的，它专为提升稳定性和性能而设计。</string>
@@ -99,7 +97,16 @@
   <string name="mailbox_action_trash_message">邮件已移动到垃圾箱</string>
   <string name="mailbox_action_archive_message">邮件已存档</string>
   <string name="mailbox_action_spam_message">封邮件已移至垃圾邮件箱</string>
-  <string name="mailbox_search_placeholder_text">Search messages</string>
-  <string name="mailbox_search_no_results_title">No results found</string>
-  <string name="mailbox_search_no_results_explanation">Search date, name, email address, or subject line</string>
+  <string name="mailbox_search_placeholder_text">搜索邮件</string>
+  <string name="mailbox_search_no_results_title">未找到结果</string>
+  <string name="mailbox_search_no_results_explanation">搜索日期、姓名、邮箱地址或邮件主题</string>
+  <string name="mailbox_action_button_clear_trash">Empty Trash</string>
+  <string name="mailbox_action_button_clear_spam">Empty Spam</string>
+  <string name="mailbox_action_clear_trash_dialog_title">Empty Trash folder</string>
+  <string name="mailbox_action_clear_spam_dialog_title">Empty Spam folder</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Are you sure you want to permanently delete all messages within ‘Trash’?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">Are you sure you want to permanently delete all messages within ‘Spam’?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_conversation">Are you sure you want to permanently delete all conversations within ‘Trash’?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">Are you sure you want to permanently delete all conversations within ‘Spam’?</string>
+  <string name="mailbox_action_clear_operation_scheduled">"Clear operation is scheduled"</string>
 </resources>

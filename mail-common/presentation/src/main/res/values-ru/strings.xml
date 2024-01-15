@@ -28,6 +28,7 @@
   <string name="action_reply_all">Ответить всем</string>
   <string name="action_forward">Переслать</string>
   <string name="action_reply_description">Ответить</string>
+  <string name="action_reply_to_description">Reply to %s</string>
   <string name="action_reply_all_description">Ответить всем</string>
   <string name="action_forward_description">Переслать</string>
   <string name="action_mark_read_description">Отметить как прочитанное</string>
@@ -52,6 +53,7 @@
   <string name="action_save_attachments_description">Сохранить вложения</string>
   <string name="action_more_description">Еще</string>
   <string name="action_reply_content_description">Ответить</string>
+  <string name="action_reply_to_content_description">Reply to %s</string>
   <string name="action_reply_all_content_description">Ответить всем</string>
   <string name="action_forward_content_description">Переслать</string>
   <string name="action_mark_read_content_description">Отметить как прочитанное</string>

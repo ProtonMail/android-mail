@@ -24,7 +24,7 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Ukončiť režim výberu</string>
   <string name="mailbox_toolbar_menu_button_content_description">Menu</string>
   <string name="mailbox_toolbar_search_button_content_description">Hľadať</string>
-  <string name="mailbox_toolbar_exit_search_mode_content_description">Exit search mode</string>
+  <string name="mailbox_toolbar_exit_search_mode_content_description">Opustiť režim vyhľadávania</string>
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Clear search query</string>
   <string name="mailbox_toolbar_searchview_query_text_field_content_description">Enter search query</string>
   <plurals name="mailbox_toolbar_selected_count">
@@ -33,8 +33,6 @@
     <item quantity="many">%d vybraných</item>
     <item quantity="other">%d vybraných</item>
   </plurals>
-  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
-  <string name="filter_unread_button_text_without_counter">Neprečítané</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%s neprečítaná</item>
     <item quantity="few">%s neprečítané</item>
@@ -126,7 +124,16 @@
   <string name="mailbox_action_trash_message">Správa bola presunutá do koša</string>
   <string name="mailbox_action_archive_message">Správa bola presunutá do archívu</string>
   <string name="mailbox_action_spam_message">Správa bola presunutá do spamu</string>
-  <string name="mailbox_search_placeholder_text">Search messages</string>
-  <string name="mailbox_search_no_results_title">No results found</string>
-  <string name="mailbox_search_no_results_explanation">Search date, name, email address, or subject line</string>
+  <string name="mailbox_search_placeholder_text">Vyhľadať správy</string>
+  <string name="mailbox_search_no_results_title">Neboli nájdené žiadne výsledky</string>
+  <string name="mailbox_search_no_results_explanation">Vyhľadávanie podľa dátumu, mena, emailovej adresy alebo predmetu správy</string>
+  <string name="mailbox_action_button_clear_trash">Vyprázdniť kôš</string>
+  <string name="mailbox_action_button_clear_spam">Vyprázdniť spam</string>
+  <string name="mailbox_action_clear_trash_dialog_title">Vyprázdniť priečinok Kôš</string>
+  <string name="mailbox_action_clear_spam_dialog_title">Vyprázdniť priečinok Spam</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Naozaj chcete natrvalo odstrániť všetky správy v \'Koši\'?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">Naozaj chcete natrvalo odstrániť všetky správy v \'Spame\'?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_conversation">Naozaj chcete odstrániť všetky konverzácie v ‚Koši\' natrvalo?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">Naozaj chcete natrvalo odstrániť všetky konverzácie v \'Spame\'?</string>
+  <string name="mailbox_action_clear_operation_scheduled">"Operácia vyčistenia je naplánovaná"</string>
 </resources>

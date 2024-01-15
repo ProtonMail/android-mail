@@ -46,7 +46,7 @@
   <string name="composer_attachment_size_exceeded_dialog_title">Bijlage-limiet bereikt</string>
   <string name="composer_attachment_size_exceeded_dialog_message">De maximale grootte voor bijlagen is 1%1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Herversleuteling van bijlage mislukt. Wegens veiligheidsredenen werden alle bijlagen verwijderd.</string>
-  <string name="composer_warning_local_data_shown">The latest version of this draft failed to load. Any change will override its content.</string>
+  <string name="composer_warning_local_data_shown">Het laden van de laatste versie van dit concept is mislukt. Wijzigingen zal het inhoud overschrijven.</string>
   <string name="composer_button_add_password">Add password</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Sending error</string>
@@ -54,4 +54,17 @@
   <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the email entered due to the following reason:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">There are no Trusted Keys: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">Address does not exist: %s</string>
+  <string name="set_message_password_title">Encrypt message</string>
+  <string name="set_message_password_info_message">Set a password to encrypt this message for non-Proton Mail users.</string>
+  <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Learn more</a></string>
+  <string name="set_message_password_label">Message password</string>
+  <string name="set_message_password_label_repeat">Repeat password</string>
+  <string name="set_message_password_label_hint">Password hint (optional)</string>
+  <string name="set_message_password_supporting_text">4 to 21 characters long</string>
+  <string name="set_message_password_supporting_error_text">The password must be between 4 and 21 characters</string>
+  <string name="set_message_password_supporting_text_repeat">Passwords must match</string>
+  <string name="set_message_password_supporting_error_text_repeat">The 2 passwords are not matching</string>
+  <string name="set_message_password_button_show">Show password</string>
+  <string name="set_message_password_button_hide">Hide password</string>
+  <string name="set_message_password_button_apply">Apply password</string>
 </resources>

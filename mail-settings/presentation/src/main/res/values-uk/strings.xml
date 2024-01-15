@@ -24,7 +24,7 @@
   <string name="mail_settings_app_settings">Налаштування програми</string>
   <string name="mail_settings_theme">Тема</string>
   <string name="mail_settings_push_notifications">Push-сповіщення</string>
-  <string name="mail_settings_auto_lock">Автозамкнення</string>
+  <string name="mail_settings_auto_lock">Auto lock</string>
   <string name="mail_settings_alternative_routing">Альтернативна маршрутизація</string>
   <string name="mail_settings_app_language">Мова програми</string>
   <string name="mail_settings_combined_contacts">Об\'єднані контакти</string>
@@ -118,7 +118,7 @@
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">Auto lock</string>
   <string name="mail_settings_auto_lock_item_title">Автоблокування програми</string>
-  <string name="mail_settings_auto_lock_item_description">Увімкніть цю функцію, щоб автоматично блокувати програму і використовувати PIN-код або відбиток пальця для розблокування</string>
+  <string name="mail_settings_auto_lock_item_description">Turn this feature on to auto lock your app and use a PIN code to unlock it.</string>
   <string name="mail_settings_auto_lock_change_pin_description">Змінити PIN-код</string>
   <string name="mail_settings_auto_lock_item_timer_title">Таймер автоблокування</string>
   <string name="mail_settings_auto_lock_immediately">Негайно</string>
@@ -138,9 +138,9 @@
   <string name="mail_settings_pin_insertion_error_no_match">PIN-коди відрізняються.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
     <item quantity="one">%s remaining attempt.</item>
-    <item quantity="few">%s remaining attempts.</item>
-    <item quantity="many">%s remaining attempts.</item>
-    <item quantity="other">%s remaining attempts.</item>
+    <item quantity="few">Залишилось %s спроби.</item>
+    <item quantity="many">Залишилось %s спроби.</item>
+    <item quantity="other">Залишилось %s спроби.</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
     <item quantity="one">%s remaining attempt until secure data wipe.</item>
@@ -149,6 +149,13 @@
     <item quantity="other">%s remaining attempts until secure data wipe.</item>
   </plurals>
   <string name="mail_settings_pin_insertion_error_unknown">There was an error verifying your PIN code.</string>
+  <string name="mail_settings_pin_insertion_signout_text">Sign Out</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_title">Sign Out</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_description">Ви дійсно хочете вийти?</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_confirm">Yes</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_cancel">No</string>
+  <string name="mail_settings_pin_insertion_created_success">PIN code created successfully.</string>
+  <string name="mail_settings_pin_insertion_changed_success">PIN code changed successfully.</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Clearing local cached data…</string>
   <!-- Error messages -->

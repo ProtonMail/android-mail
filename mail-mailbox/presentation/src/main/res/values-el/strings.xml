@@ -24,18 +24,16 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Έξοδος από τη λειτουργία επιλογής</string>
   <string name="mailbox_toolbar_menu_button_content_description">Μενού</string>
   <string name="mailbox_toolbar_search_button_content_description">Αναζήτηση</string>
-  <string name="mailbox_toolbar_exit_search_mode_content_description">Exit search mode</string>
-  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Clear search query</string>
-  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Enter search query</string>
+  <string name="mailbox_toolbar_exit_search_mode_content_description">Έξοδος από τη λειτουργία αναζήτησης</string>
+  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Εκκαθάριση ερωτήματος αναζήτησης</string>
+  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Πληκτρολογήστε το ερώτημα αναζήτησης</string>
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="one">%d Επιλεγμένο</item>
     <item quantity="other">%d Επιλεγμένα</item>
   </plurals>
-  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
-  <string name="filter_unread_button_text_without_counter">Μη διαβασμένα</string>
   <plurals name="filter_unread_button_text">
-    <item quantity="one">%s αδιάβαστο</item>
-    <item quantity="other">%s αδιάβαστα</item>
+    <item quantity="one">%s μη διαβασμένα</item>
+    <item quantity="other">%s μη διαβασμένα</item>
   </plurals>
   <string name="mailbox_default_recipient">(Κανένας παραλήπτης)</string>
   <string name="mailbox_default_sender">(Κανένας αποστολέας)</string>
@@ -108,7 +106,16 @@
   <string name="mailbox_action_trash_message">Το μήνυμα μετακινήθηκε στα Διαγραμμένα</string>
   <string name="mailbox_action_archive_message">Το μήνυμα μετακινήθηκε στα Αρχειοθετημένα</string>
   <string name="mailbox_action_spam_message">μήνυμα μετακινήθηκε στα Ενοχλητικά</string>
-  <string name="mailbox_search_placeholder_text">Search messages</string>
-  <string name="mailbox_search_no_results_title">No results found</string>
-  <string name="mailbox_search_no_results_explanation">Search date, name, email address, or subject line</string>
+  <string name="mailbox_search_placeholder_text">Αναζήτηση μηνυμάτων</string>
+  <string name="mailbox_search_no_results_title">Δε βρέθηκαν αποτελέσματα</string>
+  <string name="mailbox_search_no_results_explanation">Αναζητήστε με ημερομηνία, όνομα, διεύθυνση ηλεκτρονικού ταχυδρομείου ή γραμμή θέματος</string>
+  <string name="mailbox_action_button_clear_trash">Εκκαθάριση Διαγραμμένων</string>
+  <string name="mailbox_action_button_clear_spam">Καθαρισμός Ανεπιθύμητων</string>
+  <string name="mailbox_action_clear_trash_dialog_title">Εκκαθάριση φακέλου Διαγραμμένων</string>
+  <string name="mailbox_action_clear_spam_dialog_title">Εκκαθάριση φακέλου Ενοχλητικών</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά όλα τα μηνύματα στον \"Κάδο απορριμμάτων\";</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά όλα τα μηνύματα στα \"Ανεπιθύμητα\";</string>
+  <string name="mailbox_action_clear_trash_dialog_body_conversation">Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά όλες τις συνομιλίες στον \"Κάδο απορριμμάτων\";</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά όλες τις συνομιλίες στα \"Ανεπιθύμητα\";</string>
+  <string name="mailbox_action_clear_operation_scheduled">"Έχει προγραμματιστεί η λειτουργία εκκαθάρισης"</string>
 </resources>

@@ -25,6 +25,8 @@
     <item quantity="one">%d mensagem</item>
     <item quantity="other">%d mensagens</item>
   </plurals>
+  <string name="quick_reply_button_content_description">Reply</string>
+  <string name="quick_reply_all_button_content_description">Reply All</string>
   <string name="more_button_content_description">Mais</string>
   <string name="to">Para:</string>
   <string name="cc">CC:</string>

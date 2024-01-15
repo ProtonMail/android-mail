@@ -54,4 +54,17 @@
   <string name="message_sending_error_dialog_text_error">Din e-mail kan ikke sendes til den indtastede e-mail af følgende grund:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Der er ingen betroede nøgler: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">Adresse findes ikke: %s</string>
+  <string name="set_message_password_title">Encrypt message</string>
+  <string name="set_message_password_info_message">Set a password to encrypt this message for non-Proton Mail users.</string>
+  <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Learn more</a></string>
+  <string name="set_message_password_label">Message password</string>
+  <string name="set_message_password_label_repeat">Repeat password</string>
+  <string name="set_message_password_label_hint">Password hint (optional)</string>
+  <string name="set_message_password_supporting_text">4 to 21 characters long</string>
+  <string name="set_message_password_supporting_error_text">The password must be between 4 and 21 characters</string>
+  <string name="set_message_password_supporting_text_repeat">Passwords must match</string>
+  <string name="set_message_password_supporting_error_text_repeat">The 2 passwords are not matching</string>
+  <string name="set_message_password_button_show">Show password</string>
+  <string name="set_message_password_button_hide">Hide password</string>
+  <string name="set_message_password_button_apply">Apply password</string>
 </resources>

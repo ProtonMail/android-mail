@@ -118,7 +118,7 @@
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">Automatisches Sperren</string>
   <string name="mail_settings_auto_lock_item_title">App automatisch sperren</string>
-  <string name="mail_settings_auto_lock_item_description">Schalte diese Funktion ein, um deine App automatisch zu sperren und mit einem PIN-Code oder Fingerabdruck zu entsperren</string>
+  <string name="mail_settings_auto_lock_item_description">Aktiviere diese Funktion, um deine App automatisch zu sperren und sie mit einem PIN-Code zu entsperren.</string>
   <string name="mail_settings_auto_lock_change_pin_description">PIN-Code ändern</string>
   <string name="mail_settings_auto_lock_item_timer_title">Zeit bis zur automatischen Sperrung</string>
   <string name="mail_settings_auto_lock_immediately">Sofort</string>
@@ -137,14 +137,21 @@
   <string name="mail_settings_pin_insertion_button_confirm">Bestätigen</string>
   <string name="mail_settings_pin_insertion_error_no_match">PIN-Codes stimmen nicht überein.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="one">%s remaining attempt.</item>
-    <item quantity="other">%s remaining attempts.</item>
+    <item quantity="one">%s verbleibender Versuch.</item>
+    <item quantity="other">%s verbleibende Versuche.</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
-    <item quantity="one">%s remaining attempt until secure data wipe.</item>
-    <item quantity="other">%s remaining attempts until secure data wipe.</item>
+    <item quantity="one">%s verbleibender Versuch bis zur sicheren Datenlöschung.</item>
+    <item quantity="other">%s verbleibende Versuche bis zur sicheren Datenlöschung.</item>
   </plurals>
-  <string name="mail_settings_pin_insertion_error_unknown">There was an error verifying your PIN code.</string>
+  <string name="mail_settings_pin_insertion_error_unknown">Es gab einen Fehler bei der Überprüfung deines PIN-Codes.</string>
+  <string name="mail_settings_pin_insertion_signout_text">Abmelden</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_title">Abmelden</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_description">Bist du sicher, dass du dich abmelden möchtest?</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_confirm">Ja</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_cancel">Nein</string>
+  <string name="mail_settings_pin_insertion_created_success">PIN-Code erfolgreich erstellt.</string>
+  <string name="mail_settings_pin_insertion_changed_success">PIN-Code erfolgreich geändert.</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Lokal zwischengespeicherte Daten werden bereinigt…</string>
   <!-- Error messages -->

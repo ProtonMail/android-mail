@@ -31,8 +31,6 @@
     <item quantity="one">%d ausgewählt</item>
     <item quantity="other">%d ausgewählt</item>
   </plurals>
-  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
-  <string name="filter_unread_button_text_without_counter">Ungelesen</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%s ungelesen</item>
     <item quantity="other">%s ungelesen</item>
@@ -111,4 +109,13 @@
   <string name="mailbox_search_placeholder_text">Nachrichten durchsuchen</string>
   <string name="mailbox_search_no_results_title">Keine Ergebnisse gefunden</string>
   <string name="mailbox_search_no_results_explanation">Suche nach Datum, Name, E-Mail-Adresse oder Betreff</string>
+  <string name="mailbox_action_button_clear_trash">Papierkorb leeren</string>
+  <string name="mailbox_action_button_clear_spam">Spam leeren</string>
+  <string name="mailbox_action_clear_trash_dialog_title">Papierkorb-Ordner leeren</string>
+  <string name="mailbox_action_clear_spam_dialog_title">Spam-Ordner leeren</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Bist du sicher, dass du alle Nachrichten im \"Papierkorb\" dauerhaft löschen möchtest?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">Bist du sicher, dass du alle Nachrichten im \"Spam\" dauerhaft löschen möchtest?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_conversation">Bist du sicher, dass du alle Unterhaltungen im \"Papierkorb\" dauerhaft löschen möchtest?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">Bist du sicher, dass du alle Unterhaltungen im \"Spam\" dauerhaft löschen möchtest?</string>
+  <string name="mailbox_action_clear_operation_scheduled">"Lösche geplante Aufgabe"</string>
 </resources>

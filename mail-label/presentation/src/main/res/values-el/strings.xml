@@ -28,8 +28,8 @@
   <string name="label_title_all_mail">Όλα τα μηνύματα</string>
   <string name="label_title_all_drafts">Όλα τα πρόχειρα</string>
   <string name="label_title_all_sent">Όλα τα απεσταλμένα</string>
-  <string name="label_title_all_scheduled">All Scheduled</string>
-  <string name="label_title_snoozed">Snoozed</string>
+  <string name="label_title_all_scheduled">Όλα τα Προγραμματισμένα</string>
+  <string name="label_title_snoozed">Σε αναβολή</string>
   <string name="label_title_folders">Φάκελοι</string>
   <string name="label_title_parent_folder">Γονικός φάκελος</string>
   <string name="label_title_labels">Ετικέτες</string>

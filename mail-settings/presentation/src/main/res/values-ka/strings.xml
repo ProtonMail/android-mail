@@ -24,7 +24,7 @@
   <string name="mail_settings_app_settings">აპის მორგება</string>
   <string name="mail_settings_theme">თემა</string>
   <string name="mail_settings_push_notifications">პუშ გაფრთხილებები</string>
-  <string name="mail_settings_auto_lock">თვითჩაკეტვა</string>
+  <string name="mail_settings_auto_lock">ავტოჩაკეტვა</string>
   <string name="mail_settings_alternative_routing">ალტერნატიული რაუტინგი</string>
   <string name="mail_settings_app_language">აპის ენა</string>
   <string name="mail_settings_combined_contacts">გაერთიანებული კონტაქტები</string>
@@ -118,7 +118,7 @@
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">ავტოჩაკეტვა</string>
   <string name="mail_settings_auto_lock_item_title">აპის ავტომატური ჩაკეტვა</string>
-  <string name="mail_settings_auto_lock_item_description">აპლიკაციის ავტომატურად ჩასაკეტად და მისი განბლოკვისთვის PIN-კოდის, ან ანაბეჭდის გამოსაყენებლად ჩართეთ ეს თვისება</string>
+  <string name="mail_settings_auto_lock_item_description">აპლიკაციის ავტომატურად ჩასაკეტად და მისი განბლოკვისთვის PIN-კოდის გამოსაყენებლად ჩართეთ ეს თვისება.</string>
   <string name="mail_settings_auto_lock_change_pin_description">PIN კოდის შეცვლა</string>
   <string name="mail_settings_auto_lock_item_timer_title">ავტომატური დაბლოკვის დრო</string>
   <string name="mail_settings_auto_lock_immediately">დაუყოვნებლივ</string>
@@ -137,14 +137,21 @@
   <string name="mail_settings_pin_insertion_button_confirm">დასტური</string>
   <string name="mail_settings_pin_insertion_error_no_match">Pin-კოდები არ ემთხვევა.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="one">%s remaining attempt.</item>
-    <item quantity="other">%s remaining attempts.</item>
+    <item quantity="one">%s დარჩენილი ცდა.</item>
+    <item quantity="other">%s დარჩენილი ცდა.</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
-    <item quantity="one">%s remaining attempt until secure data wipe.</item>
-    <item quantity="other">%s remaining attempts until secure data wipe.</item>
+    <item quantity="one">მონაცემების წაშლამდე დარჩენილია %s ცდა.</item>
+    <item quantity="other">მონაცემების წაშლამდე დარჩენილია %s ცდა.</item>
   </plurals>
-  <string name="mail_settings_pin_insertion_error_unknown">There was an error verifying your PIN code.</string>
+  <string name="mail_settings_pin_insertion_error_unknown">აღმოჩენილია თქვენი PIN-კოდის გადამოწმების შეცდომა.</string>
+  <string name="mail_settings_pin_insertion_signout_text">გასვლა</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_title">გასვლა</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_description">დარწმუნებული ბრძანდებით, რომ გნებავთ, გახვიდეთ?</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_confirm">დიახ</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_cancel">არა</string>
+  <string name="mail_settings_pin_insertion_created_success">PIN-კოდი წარმატებით შეიქმნა</string>
+  <string name="mail_settings_pin_insertion_changed_success">PIN-კოდი წარმატებით შეიცვალა</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">მონაცემების გასუფთავება ლოკალური კეშიდან…</string>
   <!-- Error messages -->

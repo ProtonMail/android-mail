@@ -28,6 +28,7 @@
   <string name="action_reply_all">Allen beantwoorden</string>
   <string name="action_forward">Doorsturen</string>
   <string name="action_reply_description">Beantwoorden</string>
+  <string name="action_reply_to_description">Reply to %s</string>
   <string name="action_reply_all_description">Allen beantwoorden</string>
   <string name="action_forward_description">Doorsturen</string>
   <string name="action_mark_read_description">Markeer als gelezen</string>
@@ -52,6 +53,7 @@
   <string name="action_save_attachments_description">Bijlagen opslaan</string>
   <string name="action_more_description">Meer</string>
   <string name="action_reply_content_description">Beantwoorden</string>
+  <string name="action_reply_to_content_description">Reply to %s</string>
   <string name="action_reply_all_content_description">Allen beantwoorden</string>
   <string name="action_forward_content_description">Doorsturen</string>
   <string name="action_mark_read_content_description">Markeer als gelezen</string>

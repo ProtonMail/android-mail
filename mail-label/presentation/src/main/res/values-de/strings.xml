@@ -29,7 +29,7 @@
   <string name="label_title_all_drafts">Alle Entwürfe</string>
   <string name="label_title_all_sent">Alle Gesendete</string>
   <string name="label_title_all_scheduled">Alle geplanten</string>
-  <string name="label_title_snoozed">Snoozed</string>
+  <string name="label_title_snoozed">Stumm geschaltet</string>
   <string name="label_title_folders">Ordner</string>
   <string name="label_title_parent_folder">Übergeordnetes Verzeichnis</string>
   <string name="label_title_labels">Kategorien</string>

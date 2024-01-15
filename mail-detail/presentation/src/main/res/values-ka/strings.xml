@@ -25,6 +25,8 @@
     <item quantity="one">%d შეტყობინება</item>
     <item quantity="other">%d შეტყობინება</item>
   </plurals>
+  <string name="quick_reply_button_content_description">პასუხი</string>
+  <string name="quick_reply_all_button_content_description">ყველასთვის პასუხი</string>
   <string name="more_button_content_description">მეტი</string>
   <string name="to">ვის:</string>
   <string name="cc">ასლი:</string>

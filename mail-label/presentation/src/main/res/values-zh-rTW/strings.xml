@@ -28,8 +28,8 @@
   <string name="label_title_all_mail">所有郵件</string>
   <string name="label_title_all_drafts">所有草稿</string>
   <string name="label_title_all_sent">全部寄件備份</string>
-  <string name="label_title_all_scheduled">All Scheduled</string>
-  <string name="label_title_snoozed">Snoozed</string>
+  <string name="label_title_all_scheduled">全部排程</string>
+  <string name="label_title_snoozed">已延後</string>
   <string name="label_title_folders">資料夾</string>
   <string name="label_title_parent_folder">上層資料夾</string>
   <string name="label_title_labels">標籤</string>

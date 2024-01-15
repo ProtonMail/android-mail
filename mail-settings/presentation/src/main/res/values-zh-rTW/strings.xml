@@ -118,7 +118,7 @@
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">自動鎖定</string>
   <string name="mail_settings_auto_lock_item_title">自動鎖定應用程式</string>
-  <string name="mail_settings_auto_lock_item_description">啟用這個功能會自動鎖定您的應用程式，使用 PIN 碼或指紋來解鎖</string>
+  <string name="mail_settings_auto_lock_item_description">啟用此功能以自動鎖定您的應用程式並使用 PIN 碼來解鎖。</string>
   <string name="mail_settings_auto_lock_change_pin_description">變更 PIN 碼</string>
   <string name="mail_settings_auto_lock_item_timer_title">自動鎖定計時器</string>
   <string name="mail_settings_auto_lock_immediately">立即</string>
@@ -137,12 +137,19 @@
   <string name="mail_settings_pin_insertion_button_confirm">確認</string>
   <string name="mail_settings_pin_insertion_error_no_match">PIN 碼不符.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="other">%s remaining attempts.</item>
+    <item quantity="other">最後 %s 次嘗試機會.</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
     <item quantity="other">%s remaining attempts until secure data wipe.</item>
   </plurals>
   <string name="mail_settings_pin_insertion_error_unknown">There was an error verifying your PIN code.</string>
+  <string name="mail_settings_pin_insertion_signout_text">登出</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_title">登出</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_description">您確定要登出嗎？</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_confirm">是</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_cancel">否</string>
+  <string name="mail_settings_pin_insertion_created_success">Pin碼已成功創建。</string>
+  <string name="mail_settings_pin_insertion_changed_success">Pin碼已成功變更。</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">正在清理本機快取資料中…</string>
   <!-- Error messages -->

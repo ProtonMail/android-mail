@@ -31,11 +31,9 @@
     <item quantity="one">%d selecionado</item>
     <item quantity="other">%d selecionados</item>
   </plurals>
-  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
-  <string name="filter_unread_button_text_without_counter">Não lido</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%s não lido</item>
-    <item quantity="other">%s não lidos</item>
+    <item quantity="other">%s não lido</item>
   </plurals>
   <string name="mailbox_default_recipient">(Nenhum destinatário)</string>
   <string name="mailbox_default_sender">(Nenhum remetente)</string>
@@ -111,4 +109,13 @@
   <string name="mailbox_search_placeholder_text">Pesquisar mensagens</string>
   <string name="mailbox_search_no_results_title">Nenhum resultado encontrado</string>
   <string name="mailbox_search_no_results_explanation">Pesquise data, nome, endereço de e-mail ou assunto</string>
+  <string name="mailbox_action_button_clear_trash">Esvaziar lixeira</string>
+  <string name="mailbox_action_button_clear_spam">Esvaziar spam</string>
+  <string name="mailbox_action_clear_trash_dialog_title">Esvaziar lixeira</string>
+  <string name="mailbox_action_clear_spam_dialog_title">Esvaziar pasta de spam</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Você tem certeza de que deseja excluir permanentemente todas as mensagens da ‘Lixeira ‘?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">Você tem certeza de que deseja excluir permanentemente todas as mensagens de ‘Spam‘?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_conversation">Você tem certeza de que deseja excluir permanentemente todas as conversas da ‘Lixeira ‘?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">Você tem certeza de que deseja excluir permanentemente todas as conversas de ‘Spam ‘?</string>
+  <string name="mailbox_action_clear_operation_scheduled">"Clear operation is scheduled"</string>
 </resources>

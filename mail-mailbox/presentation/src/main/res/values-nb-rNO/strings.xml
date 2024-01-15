@@ -31,8 +31,6 @@
     <item quantity="one">%d valgt</item>
     <item quantity="other">%d valgt</item>
   </plurals>
-  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
-  <string name="filter_unread_button_text_without_counter">Ulest</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%s ulest</item>
     <item quantity="other">%s uleste</item>
@@ -111,4 +109,13 @@
   <string name="mailbox_search_placeholder_text">Søk i meldinger</string>
   <string name="mailbox_search_no_results_title">Ingen resultater funnet</string>
   <string name="mailbox_search_no_results_explanation">Søk dato, navn, e-postadresse eller emnelinje</string>
+  <string name="mailbox_action_button_clear_trash">Tøm papirkurven</string>
+  <string name="mailbox_action_button_clear_spam">Tøm søppelpost</string>
+  <string name="mailbox_action_clear_trash_dialog_title">Tøm papirkurvmappen</string>
+  <string name="mailbox_action_clear_spam_dialog_title">Tøm søppelpostmappen</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Er du sikker på at du vil slette alle meldinger permanent i \'Papirkurv\'?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">Er du sikker på at du vil slette alle meldinger permanent i \'Søppelpost\'?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_conversation">Er du sikker på at du vil slette alle samtaler permanent i \'Papirkurv\'?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">Er du sikker på at du vil slette alle samtaler permanent i \'Søppelpost\'?</string>
+  <string name="mailbox_action_clear_operation_scheduled">"Tøm operasjon er planlagt"</string>
 </resources>

@@ -27,6 +27,8 @@
     <item quantity="many">%d zpráv</item>
     <item quantity="other">%d zpráv</item>
   </plurals>
+  <string name="quick_reply_button_content_description">Odpovědět</string>
+  <string name="quick_reply_all_button_content_description">Odpovědět všem</string>
   <string name="more_button_content_description">Více</string>
   <string name="to">Komu:</string>
   <string name="cc">Kopie:</string>

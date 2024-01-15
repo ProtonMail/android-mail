@@ -118,7 +118,7 @@
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">Аўтаблакіроўка</string>
   <string name="mail_settings_auto_lock_item_title">Аўтаблакіроўка праграмы</string>
-  <string name="mail_settings_auto_lock_item_description">Уключыце гэту функцыю, каб аўтаматычна блакіраваць праграму і выкарыстоўваць PIN-код або адбітак пальца для яе разблакіроўкі</string>
+  <string name="mail_settings_auto_lock_item_description">Уключыце гэту функцыю, каб аўтаматычна блакіраваць праграму і ўжываць PIN-код для яе разблакіроўкі.</string>
   <string name="mail_settings_auto_lock_change_pin_description">Змяніць PIN-код</string>
   <string name="mail_settings_auto_lock_item_timer_title">Час аўтаблакіроўкі</string>
   <string name="mail_settings_auto_lock_immediately">Адразу</string>
@@ -149,6 +149,13 @@
     <item quantity="other">Засталося %s спроб, пакуль абароненыя даныя не будуць выцертыя.</item>
   </plurals>
   <string name="mail_settings_pin_insertion_error_unknown">Адбылася памылка пры праверцы вашага PIN-кода.</string>
+  <string name="mail_settings_pin_insertion_signout_text">Выйсці</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_title">Выйсці</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_description">Вы сапраўды хочаце выйсці?</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_confirm">Так</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_cancel">Не</string>
+  <string name="mail_settings_pin_insertion_created_success">PIN-код паспяхова створаны.</string>
+  <string name="mail_settings_pin_insertion_changed_success">PIN-код паспяхова зменены.</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Ачыстка даных лакальнага кэша...</string>
   <!-- Error messages -->

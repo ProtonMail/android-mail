@@ -118,7 +118,7 @@
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">Autolås</string>
   <string name="mail_settings_auto_lock_item_title">Autolås app</string>
-  <string name="mail_settings_auto_lock_item_description">Slå på denne funksjonen for å låse appen automatisk, og bruk en PIN-kode eller fingeravtrykk for å låse den opp</string>
+  <string name="mail_settings_auto_lock_item_description">Slå på denne funksjonen for å låse appen automatisk, og bruk en PIN-kode for å låse den opp.</string>
   <string name="mail_settings_auto_lock_change_pin_description">Endre PIN-koden</string>
   <string name="mail_settings_auto_lock_item_timer_title">Tidtaker for autolås</string>
   <string name="mail_settings_auto_lock_immediately">Umiddelbart</string>
@@ -145,6 +145,13 @@
     <item quantity="other">%s gjenværende forsøk til sikker datasletting</item>
   </plurals>
   <string name="mail_settings_pin_insertion_error_unknown">Det oppstod en feil under bekreftelse av PIN-koden.</string>
+  <string name="mail_settings_pin_insertion_signout_text">Logg av</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_title">Logg av</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_description">Er du sikker på at du vil logge av?</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_confirm">Ja</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_cancel">Nei</string>
+  <string name="mail_settings_pin_insertion_created_success">PIN-kode opprettet</string>
+  <string name="mail_settings_pin_insertion_changed_success">PIN-kode endret</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Tømmer lokalt hurtigbufrede data…</string>
   <!-- Error messages -->

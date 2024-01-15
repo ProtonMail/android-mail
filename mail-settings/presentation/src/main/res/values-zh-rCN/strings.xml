@@ -24,7 +24,7 @@
   <string name="mail_settings_app_settings">程序设置</string>
   <string name="mail_settings_theme">配色</string>
   <string name="mail_settings_push_notifications">推送通知</string>
-  <string name="mail_settings_auto_lock">自动锁定</string>
+  <string name="mail_settings_auto_lock">Auto lock</string>
   <string name="mail_settings_alternative_routing">备用线路</string>
   <string name="mail_settings_app_language">语言</string>
   <string name="mail_settings_combined_contacts">共用通讯录</string>
@@ -118,7 +118,7 @@
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">Auto lock</string>
   <string name="mail_settings_auto_lock_item_title">自动锁定程序</string>
-  <string name="mail_settings_auto_lock_item_description">开启后程序将自动锁定，您需要输入 PIN 码或使用指纹来解锁。</string>
+  <string name="mail_settings_auto_lock_item_description">Turn this feature on to auto lock your app and use a PIN code to unlock it.</string>
   <string name="mail_settings_auto_lock_change_pin_description">更改口令</string>
   <string name="mail_settings_auto_lock_item_timer_title">自动锁定时间</string>
   <string name="mail_settings_auto_lock_immediately">立刻</string>
@@ -137,12 +137,19 @@
   <string name="mail_settings_pin_insertion_button_confirm">确定</string>
   <string name="mail_settings_pin_insertion_error_no_match">PIN codes do not match.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="other">%s remaining attempts.</item>
+    <item quantity="other">剩余 %s 次尝试.</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
     <item quantity="other">%s remaining attempts until secure data wipe.</item>
   </plurals>
   <string name="mail_settings_pin_insertion_error_unknown">There was an error verifying your PIN code.</string>
+  <string name="mail_settings_pin_insertion_signout_text">Sign Out</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_title">Sign Out</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_description">你确定要登出吗？</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_confirm">Yes</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_cancel">No</string>
+  <string name="mail_settings_pin_insertion_created_success">PIN code created successfully.</string>
+  <string name="mail_settings_pin_insertion_changed_success">PIN code changed successfully.</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">清除本地缓存</string>
   <!-- Error messages -->

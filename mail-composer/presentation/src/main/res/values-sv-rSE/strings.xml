@@ -54,4 +54,17 @@
   <string name="message_sending_error_dialog_text_error">Din e-post kan inte skickas till den angivna e-postadressen på grund av följande anledning:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Det finns inga betrodda nycklar: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">Adress finns inte: %s</string>
+  <string name="set_message_password_title">Kryptera meddelande</string>
+  <string name="set_message_password_info_message">Ställ in ett lösenord för att kryptera detta meddelande för icke-Proton Mail-användare.</string>
+  <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Lär dig mer</a></string>
+  <string name="set_message_password_label">Meddelandelösenord</string>
+  <string name="set_message_password_label_repeat">Upprepa lösenord</string>
+  <string name="set_message_password_label_hint">Lösenordsledtråd (valfritt)</string>
+  <string name="set_message_password_supporting_text">4 till 21 tecken långt</string>
+  <string name="set_message_password_supporting_error_text">Lösenordet måste vara mellan 4 och 21 tecken</string>
+  <string name="set_message_password_supporting_text_repeat">Lösenorden måste matcha</string>
+  <string name="set_message_password_supporting_error_text_repeat">De två lösenorden matchar inte</string>
+  <string name="set_message_password_button_show">Visa lösenord</string>
+  <string name="set_message_password_button_hide">Dölj lösenord</string>
+  <string name="set_message_password_button_apply">Tillämpa lösenord</string>
 </resources>

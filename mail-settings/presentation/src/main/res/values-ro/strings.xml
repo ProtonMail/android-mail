@@ -118,7 +118,7 @@
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">Autoblocare</string>
   <string name="mail_settings_auto_lock_item_title">Autoblocare aplicație</string>
-  <string name="mail_settings_auto_lock_item_description">Activați această funcție pentru a autobloca aplicația și a folosi PIN sau amprentă pentru deblocare</string>
+  <string name="mail_settings_auto_lock_item_description">Activați funcția pentru a bloca automat aplicația și a folosi un cod PIN pentru deblocare.</string>
   <string name="mail_settings_auto_lock_change_pin_description">Schimbare cod PIN</string>
   <string name="mail_settings_auto_lock_item_timer_title">Timp autoblocare</string>
   <string name="mail_settings_auto_lock_immediately">Imediat</string>
@@ -137,16 +137,23 @@
   <string name="mail_settings_pin_insertion_button_confirm">Confirmare</string>
   <string name="mail_settings_pin_insertion_error_no_match">Codurile PIN nu coincid.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="one">%s remaining attempt.</item>
-    <item quantity="few">%s remaining attempts.</item>
-    <item quantity="other">%s remaining attempts.</item>
+    <item quantity="one">Încercări rămase: %s.</item>
+    <item quantity="few">Încercări rămase: %s.</item>
+    <item quantity="other">Încercări rămase: %s.</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
-    <item quantity="one">%s remaining attempt until secure data wipe.</item>
-    <item quantity="few">%s remaining attempts until secure data wipe.</item>
-    <item quantity="other">%s remaining attempts until secure data wipe.</item>
+    <item quantity="one">A mai rămas %s încercare până la ștergerea securizată a datelor.</item>
+    <item quantity="few">Au mai rămas %s încercări până la ștergerea securizată a datelor.</item>
+    <item quantity="other">Au mai rămas %s de încercări până la ștergerea securizată a datelor.</item>
   </plurals>
-  <string name="mail_settings_pin_insertion_error_unknown">There was an error verifying your PIN code.</string>
+  <string name="mail_settings_pin_insertion_error_unknown">A apărut o eroare la verificarea codului PIN.</string>
+  <string name="mail_settings_pin_insertion_signout_text">Deconectare</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_title">Deconectare</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_description">Sigur doriți să vă deconectați?</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_confirm">Da</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_cancel">Nu</string>
+  <string name="mail_settings_pin_insertion_created_success">Codul PIN a fost creat.</string>
+  <string name="mail_settings_pin_insertion_changed_success">Codul PIN a fost modificat.</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Se golesc datele din bufferul local…</string>
   <!-- Error messages -->

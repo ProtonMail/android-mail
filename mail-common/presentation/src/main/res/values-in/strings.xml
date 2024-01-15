@@ -28,6 +28,7 @@
   <string name="action_reply_all">Balas semua</string>
   <string name="action_forward">Teruskan</string>
   <string name="action_reply_description">Balas</string>
+  <string name="action_reply_to_description">Reply to %s</string>
   <string name="action_reply_all_description">Balas semua</string>
   <string name="action_forward_description">Teruskan</string>
   <string name="action_mark_read_description">Tandai dibaca</string>
@@ -52,6 +53,7 @@
   <string name="action_save_attachments_description">Simpan lampiran</string>
   <string name="action_more_description">Lainnya</string>
   <string name="action_reply_content_description">Balas</string>
+  <string name="action_reply_to_content_description">Reply to %s</string>
   <string name="action_reply_all_content_description">Balas semua</string>
   <string name="action_forward_content_description">Teruskan</string>
   <string name="action_mark_read_content_description">Tandai dibaca</string>

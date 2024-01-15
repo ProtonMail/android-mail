@@ -31,8 +31,6 @@
     <item quantity="one">%d valgt</item>
     <item quantity="other">%d valgte</item>
   </plurals>
-  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
-  <string name="filter_unread_button_text_without_counter">Ulæste</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%s ulæst</item>
     <item quantity="other">%s ulæste</item>
@@ -108,7 +106,16 @@
   <string name="mailbox_action_trash_message">Besked flyttet til Papirkurv</string>
   <string name="mailbox_action_archive_message">Besked flyttet til arkiv</string>
   <string name="mailbox_action_spam_message">Besked flyttet til spam</string>
-  <string name="mailbox_search_placeholder_text">Search messages</string>
-  <string name="mailbox_search_no_results_title">No results found</string>
-  <string name="mailbox_search_no_results_explanation">Search date, name, email address, or subject line</string>
+  <string name="mailbox_search_placeholder_text">Søg i beskeder</string>
+  <string name="mailbox_search_no_results_title">Ingen resultater fundet</string>
+  <string name="mailbox_search_no_results_explanation">Søg dato, navn, e-mailadresse eller emnelinje</string>
+  <string name="mailbox_action_button_clear_trash">Empty Trash</string>
+  <string name="mailbox_action_button_clear_spam">Empty Spam</string>
+  <string name="mailbox_action_clear_trash_dialog_title">Empty Trash folder</string>
+  <string name="mailbox_action_clear_spam_dialog_title">Empty Spam folder</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Are you sure you want to permanently delete all messages within ‘Trash’?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">Are you sure you want to permanently delete all messages within ‘Spam’?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_conversation">Are you sure you want to permanently delete all conversations within ‘Trash’?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">Are you sure you want to permanently delete all conversations within ‘Spam’?</string>
+  <string name="mailbox_action_clear_operation_scheduled">"Clear operation is scheduled"</string>
 </resources>

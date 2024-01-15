@@ -31,8 +31,6 @@
     <item quantity="one">%d vald</item>
     <item quantity="other">%d valda</item>
   </plurals>
-  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
-  <string name="filter_unread_button_text_without_counter">Oläst</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%s oläst</item>
     <item quantity="other">%s olästa</item>
@@ -111,4 +109,13 @@
   <string name="mailbox_search_placeholder_text">Sök meddelanden</string>
   <string name="mailbox_search_no_results_title">Inga resultat hittades</string>
   <string name="mailbox_search_no_results_explanation">Sök datum, namn, e-postadress eller ämnesrad</string>
+  <string name="mailbox_action_button_clear_trash">Töm papperskorg</string>
+  <string name="mailbox_action_button_clear_spam">Töm skräppost</string>
+  <string name="mailbox_action_clear_trash_dialog_title">Töm papperskorg</string>
+  <string name="mailbox_action_clear_spam_dialog_title">Töm skräppostmapp</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Are you sure you want to permanently delete all messages within ‘Trash’?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">Are you sure you want to permanently delete all messages within ‘Spam’?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_conversation">Are you sure you want to permanently delete all conversations within ‘Trash’?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">Are you sure you want to permanently delete all conversations within ‘Spam’?</string>
+  <string name="mailbox_action_clear_operation_scheduled">"Rensningsåtgärd är schemalagd"</string>
 </resources>

@@ -24,7 +24,7 @@
   <string name="mail_settings_app_settings">Ρυθμίσεις εφαρμογής</string>
   <string name="mail_settings_theme">Θέμα</string>
   <string name="mail_settings_push_notifications">Ειδοποιήσεις Push</string>
-  <string name="mail_settings_auto_lock">Αυτόματο Κλείδωμα</string>
+  <string name="mail_settings_auto_lock">Αυτόματο κλείδωμα</string>
   <string name="mail_settings_alternative_routing">Εναλλακτική δρομολόγηση</string>
   <string name="mail_settings_app_language">Γλώσσα εφαρμογής</string>
   <string name="mail_settings_combined_contacts">Συνδυασμένες επαφές</string>
@@ -118,7 +118,7 @@
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">Αυτόματο κλείδωμα</string>
   <string name="mail_settings_auto_lock_item_title">Αυτόματο κλείδωμα εφαρμογής</string>
-  <string name="mail_settings_auto_lock_item_description">Ενεργοποιήστε αυτή τη λειτουργία για να κλειδώσετε αυτόματα την εφαρμογή σας και να χρησιμοποιήσετε έναν κωδικό PIN ή ένα Δακτυλικό Αποτύπωμα για να την ξεκλειδώσετε</string>
+  <string name="mail_settings_auto_lock_item_description">Ενεργοποιήστε αυτήν τη λειτουργία για να κλειδώσετε αυτόματα την εφαρμογή σας και χρησιμοποιήστε έναν κωδικό PIN για να την ξεκλειδώσετε.</string>
   <string name="mail_settings_auto_lock_change_pin_description">Αλλάξτε κωδικό PIN</string>
   <string name="mail_settings_auto_lock_item_timer_title">Χρονικό όριο αυτόματου κλειδώματος</string>
   <string name="mail_settings_auto_lock_immediately">Άμεσα</string>
@@ -137,14 +137,21 @@
   <string name="mail_settings_pin_insertion_button_confirm">Επιβεβαίωση</string>
   <string name="mail_settings_pin_insertion_error_no_match">Οι κωδικοί PIN δεν ταιριάζουν.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="one">%s remaining attempt.</item>
-    <item quantity="other">%s remaining attempts.</item>
+    <item quantity="one">%s προσπάθεια απομένει.</item>
+    <item quantity="other">%s προσπάθειες απομένουν.</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
-    <item quantity="one">%s remaining attempt until secure data wipe.</item>
-    <item quantity="other">%s remaining attempts until secure data wipe.</item>
+    <item quantity="one">%s υπόλοιπη προσπάθεια μέχρι ασφαλή διαγραφή δεδομένων.</item>
+    <item quantity="other">%s υπόλοιπες προσπάθειες μέχρι ασφαλή διαγραφή δεδομένων.</item>
   </plurals>
-  <string name="mail_settings_pin_insertion_error_unknown">There was an error verifying your PIN code.</string>
+  <string name="mail_settings_pin_insertion_error_unknown">Παρουσιάστηκε σφάλμα κατά την επαλήθευση του κωδικού PIN.</string>
+  <string name="mail_settings_pin_insertion_signout_text">Έξοδος</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_title">Έξοδος</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_description">Είστε βέβαιοι ότι θέλετε να αποσυνδεθείτε;</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_confirm">Ναι</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_cancel">Όχι</string>
+  <string name="mail_settings_pin_insertion_created_success">Ο κωδικός PIN δημιουργήθηκε με επιτυχία.</string>
+  <string name="mail_settings_pin_insertion_changed_success">Ο κωδικός PIN άλλαξε με επιτυχία.</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Εκκαθάριση τοπικών προσωρινά αποθηκευμένων δεδομένων…</string>
   <!-- Error messages -->

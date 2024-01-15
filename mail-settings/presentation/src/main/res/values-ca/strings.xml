@@ -24,7 +24,7 @@
   <string name="mail_settings_app_settings">Configuració de l\'aplicació</string>
   <string name="mail_settings_theme">Tema</string>
   <string name="mail_settings_push_notifications">Notificacions push</string>
-  <string name="mail_settings_auto_lock">Bloqueig automàtic</string>
+  <string name="mail_settings_auto_lock">Auto lock</string>
   <string name="mail_settings_alternative_routing">Enrutament alternatiu</string>
   <string name="mail_settings_app_language">Idioma de l\'aplicació</string>
   <string name="mail_settings_combined_contacts">Contactes combinats</string>
@@ -118,7 +118,7 @@
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">Bloqueig automàtic</string>
   <string name="mail_settings_auto_lock_item_title">Bloqueig automàtic de l\'aplicació</string>
-  <string name="mail_settings_auto_lock_item_description">Activeu aquesta funció per bloquejar automàticament la vostra aplicació i utilitzar un codi PIN o empremta digital per desbloquejar-la.</string>
+  <string name="mail_settings_auto_lock_item_description">Turn this feature on to auto lock your app and use a PIN code to unlock it.</string>
   <string name="mail_settings_auto_lock_change_pin_description">Canvia el codi PIN</string>
   <string name="mail_settings_auto_lock_item_timer_title">Temps de bloqueig automàtic</string>
   <string name="mail_settings_auto_lock_immediately">Immediatament</string>
@@ -138,13 +138,20 @@
   <string name="mail_settings_pin_insertion_error_no_match">Els codis PIN no coincideixen.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
     <item quantity="one">%s remaining attempt.</item>
-    <item quantity="other">%s remaining attempts.</item>
+    <item quantity="other">%s intents restants.</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
     <item quantity="one">%s remaining attempt until secure data wipe.</item>
     <item quantity="other">%s remaining attempts until secure data wipe.</item>
   </plurals>
   <string name="mail_settings_pin_insertion_error_unknown">There was an error verifying your PIN code.</string>
+  <string name="mail_settings_pin_insertion_signout_text">Sign Out</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_title">Sign Out</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_description">Segur que desitgeu tancar la sessió?</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_confirm">Yes</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_cancel">No</string>
+  <string name="mail_settings_pin_insertion_created_success">PIN code created successfully.</string>
+  <string name="mail_settings_pin_insertion_changed_success">PIN code changed successfully.</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">S\'estan netejant les dades a la memòria cau local...</string>
   <!-- Error messages -->

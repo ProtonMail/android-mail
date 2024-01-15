@@ -31,8 +31,6 @@
     <item quantity="one">Sélection : %d</item>
     <item quantity="other">Sélection : %d</item>
   </plurals>
-  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
-  <string name="filter_unread_button_text_without_counter">Non lus</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%s non lu</item>
     <item quantity="other">%s non lus</item>
@@ -110,5 +108,14 @@
   <string name="mailbox_action_spam_message">Le message a été déplacé dans le dossier Indésirables/spam.</string>
   <string name="mailbox_search_placeholder_text">Rechercher des messages.</string>
   <string name="mailbox_search_no_results_title">Aucun résultat n\'a été trouvé.</string>
-  <string name="mailbox_search_no_results_explanation">Search date, name, email address, or subject line</string>
+  <string name="mailbox_search_no_results_explanation">Recherchez par date, nom, adresse e-mail ou objet du message.</string>
+  <string name="mailbox_action_button_clear_trash">Vider le dossier Corbeille</string>
+  <string name="mailbox_action_button_clear_spam">Vider le dossier Indésirables/spam</string>
+  <string name="mailbox_action_clear_trash_dialog_title">Vider le dossier Corbeille</string>
+  <string name="mailbox_action_clear_spam_dialog_title">Vider le dossier Indésirables/spam</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Voulez-vous vraiment supprimer définitivement tous les messages qui se trouvent dans le dossier Corbeille ?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">Voulez-vous vraiment supprimer définitivement tous les messages qui se trouvent dans le dossier Indésirables/spam ?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_conversation">Voulez-vous vraiment supprimer définitivement toutes les conversations qui se trouvent dans le dossier Corbeille ?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">Voulez-vous vraiment supprimer définitivement toutes les conversations qui se trouvent dans le dossier Indésirables/spam ?</string>
+  <string name="mailbox_action_clear_operation_scheduled">"L'opération d'effacement est programmée."</string>
 </resources>

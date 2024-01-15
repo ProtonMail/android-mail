@@ -25,6 +25,8 @@
     <item quantity="one">%d bericht</item>
     <item quantity="other">%d berichten</item>
   </plurals>
+  <string name="quick_reply_button_content_description">Reply</string>
+  <string name="quick_reply_all_button_content_description">Reply All</string>
   <string name="more_button_content_description">Meer</string>
   <string name="to">Aan:</string>
   <string name="cc">Cc:</string>

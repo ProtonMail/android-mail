@@ -28,6 +28,7 @@
   <string name="action_reply_all">Respon a tothom</string>
   <string name="action_forward">Reenvia</string>
   <string name="action_reply_description">Respon</string>
+  <string name="action_reply_to_description">Reply to %s</string>
   <string name="action_reply_all_description">Respon a tothom</string>
   <string name="action_forward_description">Reenvia</string>
   <string name="action_mark_read_description">Marca com a llegit</string>
@@ -52,6 +53,7 @@
   <string name="action_save_attachments_description">Desa els adjunts</string>
   <string name="action_more_description">Més</string>
   <string name="action_reply_content_description">Respon</string>
+  <string name="action_reply_to_content_description">Reply to %s</string>
   <string name="action_reply_all_content_description">Respon a tothom</string>
   <string name="action_forward_content_description">Reenvia</string>
   <string name="action_mark_read_content_description">Marca com a llegit</string>

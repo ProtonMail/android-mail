@@ -30,8 +30,6 @@
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="other">%d Dipilih</item>
   </plurals>
-  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
-  <string name="filter_unread_button_text_without_counter">Belum dibaca</string>
   <plurals name="filter_unread_button_text">
     <item quantity="other">%s belum dibaca</item>
   </plurals>
@@ -102,4 +100,13 @@
   <string name="mailbox_search_placeholder_text">Cari pesan</string>
   <string name="mailbox_search_no_results_title">Tidak ada hasil yang ditemukan</string>
   <string name="mailbox_search_no_results_explanation">Cari tanggal, nama, alamat email, atau baris subjek</string>
+  <string name="mailbox_action_button_clear_trash">Kosongkan Sampah</string>
+  <string name="mailbox_action_button_clear_spam">Kosongkan Spam</string>
+  <string name="mailbox_action_clear_trash_dialog_title">Kosongkan folder Sampah</string>
+  <string name="mailbox_action_clear_spam_dialog_title">Kosongkan folder Spam</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Apakah Anda yakin untuk menghapus semua pesan dalam ‘Sampah’ secara permanen?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">Apakah Anda yakin untuk menghapus semua pesan dalam ‘Spam’ secara permanen?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_conversation">Apakah Anda yakin untuk menghapus semua percakapan dalam ‘Sampah’ secara permanen?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">Apakah Anda yakin untuk menghapus semua percakapan dalam ‘Spam’ secara permanen?</string>
+  <string name="mailbox_action_clear_operation_scheduled">"Tindakan pembersihan dijadwalkan"</string>
 </resources>

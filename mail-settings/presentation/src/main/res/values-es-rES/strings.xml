@@ -118,7 +118,7 @@
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">Bloqueo automático</string>
   <string name="mail_settings_auto_lock_item_title">Bloqueo automático de la aplicación</string>
-  <string name="mail_settings_auto_lock_item_description">Activa esta función para bloquear automáticamente la aplicación y utilizar un código PIN o huella dactilar para desbloquearla.</string>
+  <string name="mail_settings_auto_lock_item_description">Activa esta función para bloquear automáticamente tu aplicación y utilizar un código PIN para desbloquearla.</string>
   <string name="mail_settings_auto_lock_change_pin_description">Cambiar el código PIN</string>
   <string name="mail_settings_auto_lock_item_timer_title">Tiempo de bloqueo automático</string>
   <string name="mail_settings_auto_lock_immediately">Inmediatamente</string>
@@ -145,6 +145,13 @@
     <item quantity="other">%s intentos restantes antes de borrar los datos seguros.</item>
   </plurals>
   <string name="mail_settings_pin_insertion_error_unknown">Se ha producido un error al verificar tu código PIN.</string>
+  <string name="mail_settings_pin_insertion_signout_text">Cerrar sesión</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_title">Cerrar sesión</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_description">¿Estás seguro de que quieres cerrar sesión?</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_confirm">Sí</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_cancel">No</string>
+  <string name="mail_settings_pin_insertion_created_success">El código PIN ha sido creado.</string>
+  <string name="mail_settings_pin_insertion_changed_success">El código PIN ha sido cambiado.</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Borrando los datos de la caché local…</string>
   <!-- Error messages -->

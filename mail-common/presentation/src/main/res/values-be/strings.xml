@@ -28,6 +28,7 @@
   <string name="action_reply_all">Адказаць усім</string>
   <string name="action_forward">Пераслаць</string>
   <string name="action_reply_description">Адказаць</string>
+  <string name="action_reply_to_description">Адказаць %s</string>
   <string name="action_reply_all_description">Адказаць усім</string>
   <string name="action_forward_description">Пераслаць</string>
   <string name="action_mark_read_description">Пазначыць прачытаным</string>
@@ -52,6 +53,7 @@
   <string name="action_save_attachments_description">Захаваць далучэнні</string>
   <string name="action_more_description">Больш</string>
   <string name="action_reply_content_description">Адказаць</string>
+  <string name="action_reply_to_content_description">Адказаць %s</string>
   <string name="action_reply_all_content_description">Адказаць усім</string>
   <string name="action_forward_content_description">Пераслаць</string>
   <string name="action_mark_read_content_description">Пазначыць прачытаным</string>

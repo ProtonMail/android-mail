@@ -28,6 +28,7 @@
   <string name="action_reply_all">Odpowiedz wszystkim</string>
   <string name="action_forward">Przekaż dalej</string>
   <string name="action_reply_description">Odpowiedz</string>
+  <string name="action_reply_to_description">Odpowiedz do %s</string>
   <string name="action_reply_all_description">Odpowiedz wszystkim</string>
   <string name="action_forward_description">Przekaż dalej</string>
   <string name="action_mark_read_description">Oznacz jako przeczytane</string>
@@ -52,6 +53,7 @@
   <string name="action_save_attachments_description">Zapisz załączniki</string>
   <string name="action_more_description">Więcej</string>
   <string name="action_reply_content_description">Odpowiedz</string>
+  <string name="action_reply_to_content_description">Odpowiedz do %s</string>
   <string name="action_reply_all_content_description">Odpowiedz wszystkim</string>
   <string name="action_forward_content_description">Przekaż dalej</string>
   <string name="action_mark_read_content_description">Oznacz jako przeczytane</string>
