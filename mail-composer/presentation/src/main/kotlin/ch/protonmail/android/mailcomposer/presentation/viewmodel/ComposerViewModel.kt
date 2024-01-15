@@ -628,6 +628,12 @@ class ComposerViewModel @Inject constructor(
     private fun SavedStateHandle.extractRecipient(): List<RecipientUiModel>? {
         return get<String>(ComposerScreen.SerializedDraftActionKey)?.deserialize<DraftAction>()
             .let { it as? DraftAction.ComposeWithRecipient }
-            ?.let { listOf(RecipientUiModel.Valid(it.recipient)) }
+            ?.let {
+                val recipientUiModel = when {
+                    validateEmailAddress(it.recipient) -> RecipientUiModel.Valid(it.recipient)
+                    else -> RecipientUiModel.Invalid(it.recipient)
+                }
+                listOf(recipientUiModel)
+            }
     }
 }
