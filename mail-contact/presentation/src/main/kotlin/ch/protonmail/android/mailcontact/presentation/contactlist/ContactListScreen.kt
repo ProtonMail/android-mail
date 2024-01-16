@@ -128,9 +128,13 @@ fun ContactListScreen(actions: ContactListScreen.Actions, viewModel: ContactList
                 ContactListTopBar(
                     actions = ContactListTopBar.Actions(
                         onBackClick = actions.onBackClick,
-                        onAddClick = { viewModel.submit(ContactListViewAction.OnOpenBottomSheet) }
+                        onAddClick = {
+                            viewModel.submit(ContactListViewAction.OnNewContactClick)
+                            // We skip opening bottom sheet dialog until we implement the other actions
+                            // viewModel.submit(ContactListViewAction.OnOpenBottomSheet)
+                        }
                     ),
-                    isAddButtonVisible = false // state is ContactListState.ListLoaded.Data
+                    isAddButtonVisible = state is ContactListState.ListLoaded.Data
                 )
             },
             content = { paddingValues ->
