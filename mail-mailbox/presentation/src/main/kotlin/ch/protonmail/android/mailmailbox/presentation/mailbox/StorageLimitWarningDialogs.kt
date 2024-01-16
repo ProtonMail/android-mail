@@ -66,7 +66,10 @@ fun StorageLimitDialogs(
 
     if (quotaOverDialogState.value) {
         StorageQuotaOverWarningDialog(
-            onConfirmButtonClicked = actions.dialogConfirmed,
+            onConfirmButtonClicked = {
+                actions.dialogConfirmed
+                quotaOverDialogState.value = false
+            },
             modifier = modifier
         )
     }
