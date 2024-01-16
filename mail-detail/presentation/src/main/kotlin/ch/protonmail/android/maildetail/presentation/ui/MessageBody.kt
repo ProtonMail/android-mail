@@ -54,6 +54,7 @@ import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.mailmessage.presentation.ui.MessageBodyWebView
+import me.proton.core.compose.component.ProtonButton
 import me.proton.core.compose.component.ProtonSolidButton
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
@@ -79,7 +80,10 @@ fun MessageBody(
             MessageBodyBanner(text = R.string.message_body_embedded_images_banner_text)
         }
         messageBodyUiModel.shouldShowRemoteContentBanner -> {
-            MessageBodyBanner(text = R.string.message_body_remote_content_banner_text)
+            MessageBodyRemoteContentBanner(
+                text = R.string.message_body_remote_content_banner_text,
+                onLoadRemoteContent = { actions.onLoadRemoteContent(messageBodyUiModel.messageId) }
+            )
         }
     }
 
@@ -244,6 +248,31 @@ fun MessageBodyBanner(@StringRes text: Int) {
     )
 }
 
+@Composable
+fun MessageBodyRemoteContentBanner(@StringRes text: Int, onLoadRemoteContent: () -> Unit) {
+    MessageBanner(
+        icon = R.drawable.ic_proton_image,
+        iconTint = ProtonTheme.colors.iconWeak,
+        text = text,
+        textStyle = ProtonTheme.typography.defaultSmallWeak,
+        backgroundColor = ProtonTheme.colors.backgroundSecondary
+    ) {
+        ProtonButton(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = { onLoadRemoteContent() },
+            colors = ButtonDefaults.buttonColors(backgroundColor = ProtonTheme.colors.backgroundSecondary),
+            elevation = ButtonDefaults.elevation(defaultElevation = 0.dp),
+            shape = ProtonTheme.shapes.small,
+            border = BorderStroke(.5.dp, ProtonTheme.colors.textWeak)
+        ) {
+            Text(
+                text = stringResource(id = R.string.message_body_load_remote_content_button_text),
+                style = ProtonTheme.typography.defaultSmallWeak
+            )
+        }
+    }
+}
+
 object MessageBody {
 
     data class Actions(
@@ -254,7 +283,8 @@ object MessageBody {
         val loadEmbeddedImage: (messageId: MessageId, contentId: String) -> GetEmbeddedImageResult?,
         val onReply: (MessageId) -> Unit,
         val onReplyAll: (MessageId) -> Unit,
-        val onForward: (MessageId) -> Unit
+        val onForward: (MessageId) -> Unit,
+        val onLoadRemoteContent: (MessageId) -> Unit
     )
 }
 

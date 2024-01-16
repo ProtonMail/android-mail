@@ -137,7 +137,8 @@ private fun ConversationDetailExpandedItem(
                 loadEmbeddedImage = actions.loadEmbeddedImage,
                 onReply = actions.onReply,
                 onReplyAll = actions.onReplyAll,
-                onForward = actions.onForward
+                onForward = actions.onForward,
+                onLoadRemoteContent = {}
             ),
             onMessageBodyLoaded = onMessageBodyLoadFinished
         )

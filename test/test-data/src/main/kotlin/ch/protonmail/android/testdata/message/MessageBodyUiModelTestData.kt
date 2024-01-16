@@ -53,6 +53,27 @@ object MessageBodyUiModelTestData {
         mimeType = MimeTypeUiModel.Html
     )
 
+    val messageBodyWithRemoteContentBlocked = buildMessageBodyUiModel(
+        messageBody = """
+            <div>
+                <p>Dear Test,</p>
+                <p>This is an HTML message body.</p>
+                <img src="http://remote-insecure-image" />
+                <p>Kind regards,<br>
+                Developer</p>
+            </div>
+        """.trimIndent(),
+        mimeType = MimeTypeUiModel.Html,
+        shouldShowRemoteContent = false,
+        shouldShowRemoteContentBanner = true
+    )
+
+    val messageBodyWithRemoteContentLoaded = messageBodyWithRemoteContentBlocked.copy(
+        shouldShowRemoteContent = true,
+        shouldShowRemoteContentBanner = false
+    )
+
+
     fun buildMessageBodyUiModel(
         messageId: MessageId = MessageIdSample.build(),
         messageBody: String = MessageBodyTestData.messageBody.body,

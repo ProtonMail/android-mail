@@ -127,4 +127,5 @@ sealed interface MessageViewAction : MessageDetailOperation {
     object DoNotAskLinkConfirmationAgain : MessageViewAction
     object ShowAllAttachments : MessageViewAction
     data class OnAttachmentClicked(val attachmentId: AttachmentId) : MessageViewAction
+    data class LoadRemoteContent(val messageId: MessageId) : MessageViewAction, AffectingMessageBody
 }

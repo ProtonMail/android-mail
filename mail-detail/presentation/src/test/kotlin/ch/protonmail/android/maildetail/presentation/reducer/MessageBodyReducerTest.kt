@@ -22,11 +22,11 @@ import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
-import ch.protonmail.android.mailmessage.presentation.sample.AttachmentUiModelSample
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
+import ch.protonmail.android.mailmessage.presentation.sample.AttachmentUiModelSample
 import ch.protonmail.android.testdata.message.MessageBodyUiModelTestData
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -135,6 +135,17 @@ class MessageBodyReducerTest(
                 MessageBodyState.Data(
                     MessageBodyUiModelTestData.messageBodyWithAttachmentsUiModel,
                     expandCollapseMode = MessageBodyExpandCollapseMode.Expanded
+                )
+            ),
+            TestInput(
+                MessageBodyState.Data(
+                    MessageBodyUiModelTestData.messageBodyWithRemoteContentBlocked
+                ),
+                MessageViewAction.LoadRemoteContent(
+                    MessageBodyUiModelTestData.messageBodyWithRemoteContentBlocked.messageId
+                ),
+                MessageBodyState.Data(
+                    MessageBodyUiModelTestData.messageBodyWithRemoteContentLoaded
                 )
             )
         )

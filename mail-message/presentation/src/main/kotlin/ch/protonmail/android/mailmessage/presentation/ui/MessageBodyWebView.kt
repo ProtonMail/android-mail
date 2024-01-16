@@ -42,6 +42,7 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -93,8 +94,9 @@ fun MessageBodyWebView(
     )
     val messageId = messageBodyUiModel.messageId
 
-    val client = remember {
+    val client = remember(messageBodyUiModel) {
         object : AccompanistWebViewClient() {
+
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
                 request?.let {
                     actions.onMessageBodyLinkClicked(it.url)
@@ -133,49 +135,50 @@ fun MessageBodyWebView(
     var webViewHeightPx by remember { mutableStateOf(0) }
 
     Column(modifier = modifier) {
-        WebView(
-            onCreated = {
-                it.settings.builtInZoomControls = true
-                it.settings.displayZoomControls = false
-                it.settings.javaScriptEnabled = false
-                it.settings.safeBrowsingEnabled = true
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    it.settings.isAlgorithmicDarkeningAllowed = true
-                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    it.settings.forceDark =
-                        if (isSystemInDarkTheme) WebSettings.FORCE_DARK_ON else WebSettings.FORCE_DARK_OFF
-                }
-            },
-            captureBackPresses = false,
-            state = state,
-            modifier = with(
-                Modifier
-                    .testTag(MessageBodyWebViewTestTags.WebView)
-                    .fillMaxWidth()
-                    // There are no guarantees onSizeChanged will not be re-invoked with the same size. We need to take
-                    // our own measures to avoid callback with the same size.
-                    .onSizeChanged {
-                            size ->
-                        if (size.height >= 0 && contentLoaded) {
-                            scope.launch {
-                                delay(WEB_PAGE_CONTENT_LOAD_TIMEOUT)
-                                if (webViewHeightPx != size.height) {
-                                    onMessageBodyLoaded(messageId, size.height)
-                                    webViewHeightPx = size.height
+        key(client) {
+            WebView(
+                onCreated = {
+                    it.settings.builtInZoomControls = true
+                    it.settings.displayZoomControls = false
+                    it.settings.javaScriptEnabled = false
+                    it.settings.safeBrowsingEnabled = true
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        it.settings.isAlgorithmicDarkeningAllowed = true
+                    } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        it.settings.forceDark =
+                            if (isSystemInDarkTheme) WebSettings.FORCE_DARK_ON else WebSettings.FORCE_DARK_OFF
+                    }
+                },
+                captureBackPresses = false,
+                state = state,
+                modifier = with(
+                    Modifier
+                        .testTag(MessageBodyWebViewTestTags.WebView)
+                        .fillMaxWidth()
+                        // There are no guarantees onSizeChanged will not be re-invoked with the same size.
+                        // We need to take our own measures to avoid callback with the same size.
+                        .onSizeChanged { size ->
+                            if (size.height >= 0 && contentLoaded) {
+                                scope.launch {
+                                    delay(WEB_PAGE_CONTENT_LOAD_TIMEOUT)
+                                    if (webViewHeightPx != size.height) {
+                                        onMessageBodyLoaded(messageId, size.height)
+                                        webViewHeightPx = size.height
+                                    }
                                 }
                             }
                         }
+                ) {
+                    if (webViewHeightPx < WEB_VIEW_FIXED_MAX_HEIGHT) {
+                        this
+                    } else {
+                        height((WEB_VIEW_FIXED_MAX_HEIGHT - 1).pxToDp())
                     }
-            ) {
-                if (webViewHeightPx < WEB_VIEW_FIXED_MAX_HEIGHT) {
-                    this
-                } else {
-                    height((WEB_VIEW_FIXED_MAX_HEIGHT - 1).pxToDp())
-                }
-            },
-            client = client,
-            chromeClient = chromeClient
-        )
+                },
+                client = client,
+                chromeClient = chromeClient
+            )
+        }
         if (bodyDisplayMode != MessageBodyExpandCollapseMode.NotApplicable) {
             ExpandCollapseBodyButton(
                 modifier = Modifier.offset(x = ProtonDimens.SmallSpacing),

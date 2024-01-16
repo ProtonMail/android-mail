@@ -3,6 +3,7 @@ package ch.protonmail.android.maildetail.presentation.ui
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -43,26 +44,31 @@ fun MessageBanner(
     iconTint: Color,
     @StringRes text: Int,
     textStyle: TextStyle,
-    backgroundColor: Color
+    backgroundColor: Color,
+    content: @Composable () -> Unit = {}
 ) {
-    Row(
+    Column(
         modifier = modifier
             .testTag(MessageBodyTestTags.MessageBodyBanner)
             .padding(ProtonDimens.DefaultSpacing)
             .background(color = backgroundColor, shape = ProtonTheme.shapes.medium)
             .padding(ProtonDimens.DefaultSpacing)
     ) {
-        Icon(
-            modifier = Modifier.testTag(MessageBodyTestTags.MessageBodyBannerIcon),
-            painter = painterResource(id = icon),
-            contentDescription = NO_CONTENT_DESCRIPTION,
-            tint = iconTint
-        )
-        Spacer(modifier = Modifier.width(ProtonDimens.SmallSpacing))
-        Text(
-            modifier = Modifier.testTag(MessageBodyTestTags.MessageBodyBannerText),
-            text = stringResource(id = text),
-            style = textStyle
-        )
+        Row {
+            Icon(
+                modifier = Modifier.testTag(MessageBodyTestTags.MessageBodyBannerIcon),
+                painter = painterResource(id = icon),
+                contentDescription = NO_CONTENT_DESCRIPTION,
+                tint = iconTint
+            )
+            Spacer(modifier = Modifier.width(ProtonDimens.SmallSpacing))
+            Text(
+                modifier = Modifier.testTag(MessageBodyTestTags.MessageBodyBannerText),
+                text = stringResource(id = text),
+                style = textStyle
+            )
+        }
+
+        content()
     }
 }
