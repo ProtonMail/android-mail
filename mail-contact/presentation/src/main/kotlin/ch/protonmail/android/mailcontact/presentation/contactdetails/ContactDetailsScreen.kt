@@ -86,6 +86,7 @@ import me.proton.core.compose.theme.captionWeak
 import me.proton.core.compose.theme.defaultNorm
 import me.proton.core.compose.theme.defaultSmallStrongUnspecified
 import me.proton.core.compose.theme.headlineNorm
+import me.proton.core.contact.domain.entity.ContactId
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -104,7 +105,10 @@ fun ContactDetailsScreen(actions: ContactDetailsScreen.Actions, viewModel: Conta
 
     Scaffold(
         topBar = {
-            ContactDetailsTopBar(actions = customActions)
+            ContactDetailsTopBar(
+                state = state,
+                actions = customActions
+            )
         },
         content = { paddingValues ->
             when (state) {
@@ -414,7 +418,7 @@ private fun ContactDetailsActionItem(
 }
 
 @Composable
-fun ContactDetailsTopBar(actions: ContactDetailsScreen.Actions) {
+fun ContactDetailsTopBar(state: ContactDetailsState, actions: ContactDetailsScreen.Actions) {
     ProtonTopAppBar(
         modifier = Modifier.fillMaxWidth(),
         title = { },
@@ -428,22 +432,22 @@ fun ContactDetailsTopBar(actions: ContactDetailsScreen.Actions) {
             }
         },
         actions = {
-            if (false) {
-                IconButton(onClick = actions.onEditClick) {
+            if (state is ContactDetailsState.Data) {
+                IconButton(onClick = { actions.onEditClick(state.contact.id) }) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_proton_pen),
                         tint = ProtonTheme.colors.iconNorm,
                         contentDescription = stringResource(R.string.edit_contact_content_description)
                     )
                 }
-            }
-            if (false) {
-                IconButton(onClick = actions.onDeleteClick) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_proton_trash),
-                        tint = ProtonTheme.colors.iconNorm,
-                        contentDescription = stringResource(R.string.delete_contact_content_description)
-                    )
+                if (false) {
+                    IconButton(onClick = actions.onDeleteClick) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_proton_trash),
+                            tint = ProtonTheme.colors.iconNorm,
+                            contentDescription = stringResource(R.string.delete_contact_content_description)
+                        )
+                    }
                 }
             }
         }
@@ -458,7 +462,7 @@ object ContactDetailsScreen {
         val onBackClick: () -> Unit,
         val exitWithSuccessMessage: (String) -> Unit,
         val exitWithErrorMessage: (String) -> Unit,
-        val onEditClick: () -> Unit,
+        val onEditClick: (ContactId) -> Unit,
         val onDeleteClick: () -> Unit,
         val onCallClick: (String) -> Unit,
         val onEmailClick: (String) -> Unit,
@@ -496,6 +500,7 @@ private fun ContactDetailsScreenPreview() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 private fun ContactDetailsTopBarPreview() {
     ContactDetailsTopBar(
+        state = ContactDetailsState.Data(contact = contactDetailsSampleData),
         actions = ContactDetailsScreen.Actions.Empty
     )
 }
