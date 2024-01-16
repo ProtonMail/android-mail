@@ -34,6 +34,7 @@ import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.navigation.Launcher
 import ch.protonmail.android.navigation.LauncherViewModel
 import ch.protonmail.android.navigation.model.LauncherState
+import ch.protonmail.android.navigation.share.ShareIntentObserver
 import dagger.hilt.android.AndroidEntryPoint
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.notification.presentation.deeplink.DeeplinkManager
@@ -50,6 +51,9 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var deviceCapabilities: DeviceCapabilities
 
+    @Inject
+    lateinit var shareIntentObserver: ShareIntentObserver
+
     private val launcherViewModel: LauncherViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,6 +65,8 @@ class MainActivity : AppCompatActivity() {
 
         // Register activities for result.
         launcherViewModel.register(this)
+
+        shareIntentObserver.onNewIntent(intent)
 
         setContent {
             ProtonTheme {
