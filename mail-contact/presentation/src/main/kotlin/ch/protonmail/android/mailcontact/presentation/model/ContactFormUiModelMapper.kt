@@ -26,5 +26,27 @@ fun DecryptedContact.toContactFormUiModel(): ContactFormUiModel {
         displayName = this.formattedName?.value ?: "",
         firstName = this.structuredName?.given ?: "",
         lastName = this.structuredName?.family ?: "",
+        emails = this.emails.map {
+            InputField.SingleTyped(
+                value = it.value,
+                selectedType = FieldType.EmailType.valueOf(it.type.name),
+            )
+        },
+        phones = this.telephones.map {
+            InputField.SingleTyped(
+                value = it.text,
+                selectedType = FieldType.PhoneType.valueOf(it.type.name),
+            )
+        },
+        addresses = this.addresses.map {
+            InputField.Address(
+                streetAddress = it.streetAddress,
+                postalCode = it.postalCode,
+                locality = it.locality,
+                region = it.region,
+                country = it.country,
+                selectedType = FieldType.AddressType.valueOf(it.type.name),
+            )
+        }
     )
 }

@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailcontact.presentation.model
 
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcontact.presentation.R
 import me.proton.core.contact.domain.entity.ContactId
 
 data class ContactFormUiModel(
@@ -25,6 +27,9 @@ data class ContactFormUiModel(
     val displayName: String = "",
     val firstName: String = "",
     val lastName: String = "",
+    val emails: List<InputField.SingleTyped> = emptyList(),
+    val phones: List<InputField.SingleTyped> = emptyList(),
+    val addresses: List<InputField.Address> = emptyList(),
 )
 
 sealed interface InputField {
@@ -33,5 +38,40 @@ sealed interface InputField {
         val value: String,
         val selectedType: FieldType
     ) : InputField
+
+    data class Address(
+        val streetAddress: String,
+        val postalCode: String,
+        val locality: String,
+        val region: String,
+        val country: String,
+        val selectedType: FieldType
+    ) : InputField
 }
 
+sealed interface FieldType {
+    enum class EmailType(val localizedValue: TextUiModel) : FieldType {
+        Email(TextUiModel(R.string.contact_type_email)),
+        Home(TextUiModel(R.string.contact_type_home)),
+        Work(TextUiModel(R.string.contact_type_work)),
+        Other(TextUiModel(R.string.contact_type_other))
+    }
+
+    enum class PhoneType(val localizedValue: TextUiModel) : FieldType {
+        Phone(TextUiModel(R.string.contact_type_phone)),
+        Home(TextUiModel(R.string.contact_type_home)),
+        Work(TextUiModel(R.string.contact_type_work)),
+        Other(TextUiModel(R.string.contact_type_other)),
+        Mobile(TextUiModel(R.string.contact_type_mobile)),
+        Main(TextUiModel(R.string.contact_type_main)),
+        Fax(TextUiModel(R.string.contact_type_fax)),
+        Pager(TextUiModel(R.string.contact_type_pager))
+    }
+
+    enum class AddressType(val localizedValue: TextUiModel) : FieldType {
+        Address(TextUiModel(R.string.contact_type_address)),
+        Home(TextUiModel(R.string.contact_type_home)),
+        Work(TextUiModel(R.string.contact_type_work)),
+        Other(TextUiModel(R.string.contact_type_other))
+    }
+}

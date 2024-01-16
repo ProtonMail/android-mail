@@ -19,6 +19,8 @@
 package ch.protonmail.android.mailcontact.presentation.previewdata
 
 import ch.protonmail.android.mailcontact.presentation.model.ContactFormUiModel
+import ch.protonmail.android.mailcontact.presentation.model.FieldType
+import ch.protonmail.android.mailcontact.presentation.model.InputField
 import me.proton.core.contact.domain.entity.ContactId
 
 object ContactFormPreviewData {
@@ -28,5 +30,21 @@ object ContactFormPreviewData {
         displayName = "displayName",
         firstName = "firstName",
         lastName = "lastName",
+        emails = listOf(
+            InputField.SingleTyped("email@proton.me", FieldType.EmailType.Email)
+        ),
+        phones = listOf(
+            InputField.SingleTyped("0123456789", FieldType.PhoneType.Phone)
+        ),
+        addresses = listOf(
+            InputField.Address(
+                "Street",
+                "Postal Code",
+                "City",
+                "Region",
+                "Country",
+                FieldType.AddressType.Address
+            )
+        )
     )
 }
