@@ -138,7 +138,7 @@ private fun ConversationDetailExpandedItem(
                 onReply = actions.onReply,
                 onReplyAll = actions.onReplyAll,
                 onForward = actions.onForward,
-                onLoadRemoteContent = {}
+                onLoadRemoteContent = { actions.onLoadRemoteContent(it) }
             ),
             onMessageBodyLoaded = onMessageBodyLoadFinished
         )
@@ -160,7 +160,8 @@ object ConversationDetailItem {
         val onForward: (MessageId) -> Unit,
         val onScrollRequestCompleted: () -> Unit,
         val onBodyExpandCollapseButtonClicked: (MessageIdUiModel) -> Unit,
-        val onMoreActionsClick: (MessageId) -> Unit
+        val onMoreActionsClick: (MessageId) -> Unit,
+        val onLoadRemoteContent: (MessageId) -> Unit
     )
 }
 

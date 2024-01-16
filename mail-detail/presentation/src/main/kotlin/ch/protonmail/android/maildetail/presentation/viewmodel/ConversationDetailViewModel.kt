@@ -217,6 +217,7 @@ class ConversationDetailViewModel @Inject constructor(
             }
 
             is ConversationDetailViewAction.ExpandOrCollapseMessageBody -> onExpandOrCollapseMessageBody(action)
+            is ConversationDetailViewAction.LoadRemoteContent -> directlyHandleViewAction(action)
         }
     }
 
@@ -671,6 +672,11 @@ class ConversationDetailViewModel @Inject constructor(
     private fun dismissBottomSheet(action: ConversationDetailViewAction) {
         viewModelScope.launch { emitNewStateFrom(action) }
     }
+
+    private fun directlyHandleViewAction(action: ConversationDetailViewAction) {
+        viewModelScope.launch { emitNewStateFrom(action) }
+    }
+
 
     private fun onExpandOrCollapseMessageBody(action: ConversationDetailViewAction) {
         viewModelScope.launch { emitNewStateFrom(action) }

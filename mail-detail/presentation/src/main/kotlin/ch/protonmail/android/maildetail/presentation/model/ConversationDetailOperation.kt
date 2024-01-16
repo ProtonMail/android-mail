@@ -147,5 +147,6 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
         ConversationDetailViewAction
     data class ExpandOrCollapseMessageBody(val messageId: MessageIdUiModel) :
         ConversationDetailViewAction, AffectingMessages
+    data class LoadRemoteContent(val messageId: MessageIdUiModel) : ConversationDetailViewAction, AffectingMessages
 
 }

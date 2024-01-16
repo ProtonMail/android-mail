@@ -223,6 +223,9 @@ fun ConversationDetailScreen(
                 },
                 onMoreActionsClick = { messageId ->
                     viewModel.submit(ConversationDetailViewAction.RequestMoreActionsBottomSheet(messageId))
+                },
+                onLoadRemoteContent = {
+                    viewModel.submit(ConversationDetailViewAction.LoadRemoteContent(MessageIdUiModel(it.id)))
                 }
             ),
             scrollToMessageId = state.scrollToMessage?.id
@@ -391,7 +394,8 @@ fun ConversationDetailScreen(
                     onForward = actions.onForward,
                     onScrollRequestCompleted = actions.onScrollRequestCompleted,
                     onBodyExpandCollapseButtonClicked = actions.onBodyExpandCollapseButtonClicked,
-                    onMoreActionsClick = actions.onMoreActionsClick
+                    onMoreActionsClick = actions.onMoreActionsClick,
+                    onLoadRemoteContent = actions.onLoadRemoteContent
 
                 )
                 MessagesContent(
@@ -630,7 +634,8 @@ object ConversationDetailScreen {
         val onReplyAll: (MessageId) -> Unit,
         val onForward: (MessageId) -> Unit,
         val onBodyExpandCollapseButtonClicked: (MessageIdUiModel) -> Unit,
-        val onMoreActionsClick: (MessageId) -> Unit
+        val onMoreActionsClick: (MessageId) -> Unit,
+        val onLoadRemoteContent: (MessageId) -> Unit
     ) {
 
         companion object {
@@ -660,7 +665,8 @@ object ConversationDetailScreen {
                 onReplyAll = {},
                 onForward = {},
                 onBodyExpandCollapseButtonClicked = {},
-                onMoreActionsClick = {}
+                onMoreActionsClick = {},
+                onLoadRemoteContent = {}
             )
         }
     }

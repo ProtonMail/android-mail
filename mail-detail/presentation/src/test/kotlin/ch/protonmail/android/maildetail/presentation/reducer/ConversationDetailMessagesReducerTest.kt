@@ -23,6 +23,7 @@ import ch.protonmail.android.maildetail.presentation.R.string
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
 import kotlinx.collections.immutable.toImmutableList
@@ -256,6 +257,22 @@ class ConversationDetailMessagesReducerTest(
                     messages = listOf(
                         ConversationDetailMessageUiModelSample.invoiceExpandedWithAttachments(4),
                         ConversationDetailMessageUiModelSample.SepWeatherForecast
+                    ).toImmutableList()
+                )
+            ),
+
+            Input(
+                currentState = ConversationDetailsMessagesState.Data(
+                    messages = listOf(
+                        ConversationDetailMessageUiModelSample.MessageWithRemoteContentBlocked
+                    ).toImmutableList()
+                ),
+                operation = ConversationDetailViewAction.LoadRemoteContent(
+                    messageId = ConversationDetailMessageUiModelSample.MessageWithRemoteContentBlocked.messageId
+                ),
+                expectedState = ConversationDetailsMessagesState.Data(
+                    messages = listOf(
+                        ConversationDetailMessageUiModelSample.MessageWithRemoteContentLoaded
                     ).toImmutableList()
                 )
             )

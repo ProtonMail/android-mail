@@ -126,6 +126,16 @@ object ConversationDetailMessageUiModelSample {
         messageWithLabels = MessageWithLabelsSample.AnotherInvoiceWithoutLabels
     )
 
+    val MessageWithRemoteContentBlocked = buildExpanded(
+        messageWithLabels = MessageWithLabelsSample.LotteryScam,
+        messageBodyUiModel = MessageDetailBodyUiModelSample.withBlockedRemoteContent
+    )
+
+    val MessageWithRemoteContentLoaded = buildExpanded(
+        messageWithLabels = MessageWithLabelsSample.LotteryScam,
+        messageBodyUiModel = MessageDetailBodyUiModelSample.withAllowedRemoteContent
+    )
+
     fun invoiceExpandedWithAttachments(limit: Int) = buildExpanded(
         messageWithLabels = MessageWithLabelsSample.InvoiceWithLabel,
         messageBodyUiModel = MessageDetailBodyUiModelSample.build(

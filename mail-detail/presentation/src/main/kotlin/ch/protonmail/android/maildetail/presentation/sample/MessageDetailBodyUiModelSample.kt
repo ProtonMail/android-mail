@@ -25,6 +25,18 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 
 object MessageDetailBodyUiModelSample {
 
+    val withBlockedRemoteContent = build(
+        "A message body with blocked remote content",
+        shouldShowRemoteContent = false,
+        shouldShowRemoteContentBanner = true
+    )
+
+    val withAllowedRemoteContent = build(
+        "A message body with blocked remote content",
+        shouldShowRemoteContent = true,
+        shouldShowRemoteContentBanner = false
+    )
+
     fun build(
         messageBody: String,
         messageId: MessageId = MessageId("sample message id"),
