@@ -81,7 +81,6 @@ import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailR
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.maildetail.presentation.usecase.GetEmbeddedImageAvoidDuplicatedExecution
 import ch.protonmail.android.maillabel.domain.model.MailLabel
-import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ObserveCustomMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinationMailLabels
@@ -192,31 +191,31 @@ class ConversationDetailViewModel @Inject constructor(
             is UnStar -> unStarConversation()
             is MarkUnread -> markAsUnread()
             is Trash -> moveConversationToTrash()
-            is ConversationDetailViewAction.DeleteRequested -> handleDeleteConversationRequested(action)
-            is ConversationDetailViewAction.DeleteDialogDismissed -> handleDeleteDialogDismissed(action)
             is ConversationDetailViewAction.DeleteConfirmed -> handleDeleteConfirmed(action)
-            is DismissBottomSheet -> dismissBottomSheet(action)
             is RequestMoveToBottomSheet -> showMoveToBottomSheetAndLoadData(action)
-            is MoveToDestinationSelected -> moveToDestinationSelected(action.mailLabelId)
             is MoveToDestinationConfirmed -> onBottomSheetDestinationConfirmed(action.mailLabelText)
             is RequestLabelAsBottomSheet -> showLabelAsBottomSheetAndLoadData(action)
-            is LabelAsToggleAction -> onLabelToggled(action.labelId)
             is LabelAsConfirmed -> onLabelAsConfirmed(action.archiveSelected)
             is ConversationDetailViewAction.RequestMoreActionsBottomSheet ->
                 showMoreActionsBottomSheetAndLoadData(action)
 
             is ExpandMessage -> onExpandMessage(action.messageId)
             is CollapseMessage -> onCollapseMessage(action.messageId)
-            is MessageBodyLinkClicked -> onMessageBodyLinkClicked(action)
             is DoNotAskLinkConfirmationAgain -> onDoNotAskLinkConfirmationChecked()
-            is RequestScrollTo -> onRequestScrollTo(action)
-            is ScrollRequestCompleted -> onScrollRequestCompleted(action)
             is ShowAllAttachmentsForMessage -> showAllAttachmentsForMessage(action.messageId)
             is ConversationDetailViewAction.OnAttachmentClicked -> {
                 onOpenAttachmentClicked(action.messageId, action.attachmentId)
             }
 
-            is ConversationDetailViewAction.ExpandOrCollapseMessageBody -> onExpandOrCollapseMessageBody(action)
+            is ConversationDetailViewAction.DeleteRequested,
+            is ConversationDetailViewAction.DeleteDialogDismissed,
+            is DismissBottomSheet,
+            is MoveToDestinationSelected,
+            is LabelAsToggleAction,
+            is MessageBodyLinkClicked,
+            is RequestScrollTo,
+            is ScrollRequestCompleted,
+            is ConversationDetailViewAction.ExpandOrCollapseMessageBody,
             is ConversationDetailViewAction.LoadRemoteContent -> directlyHandleViewAction(action)
         }
     }
@@ -461,10 +460,6 @@ class ConversationDetailViewModel @Inject constructor(
         }
     }
 
-    private fun onLabelToggled(labelId: LabelId) {
-        viewModelScope.launch { emitNewStateFrom(LabelAsToggleAction(labelId)) }
-    }
-
     private fun onLabelAsConfirmed(archiveSelected: Boolean) {
         viewModelScope.launch {
             val userId = primaryUserId.first()
@@ -637,14 +632,6 @@ class ConversationDetailViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    private fun handleDeleteConversationRequested(action: ConversationDetailViewAction) {
-        viewModelScope.launch { emitNewStateFrom(action) }
-    }
-
-    private fun handleDeleteDialogDismissed(action: ConversationDetailViewAction) {
-        viewModelScope.launch { emitNewStateFrom(action) }
-    }
-
     private fun handleDeleteConfirmed(action: ConversationDetailViewAction) {
         viewModelScope.launch {
             val userId = primaryUserId.first()
@@ -669,23 +656,8 @@ class ConversationDetailViewModel @Inject constructor(
         }
     }
 
-    private fun dismissBottomSheet(action: ConversationDetailViewAction) {
-        viewModelScope.launch { emitNewStateFrom(action) }
-    }
-
     private fun directlyHandleViewAction(action: ConversationDetailViewAction) {
         viewModelScope.launch { emitNewStateFrom(action) }
-    }
-
-
-    private fun onExpandOrCollapseMessageBody(action: ConversationDetailViewAction) {
-        viewModelScope.launch { emitNewStateFrom(action) }
-    }
-
-    private fun moveToDestinationSelected(mailLabelId: MailLabelId) {
-        viewModelScope.launch {
-            emitNewStateFrom(MoveToDestinationSelected(mailLabelId))
-        }
     }
 
     private fun onBottomSheetDestinationConfirmed(mailLabelText: String) {
@@ -732,20 +704,8 @@ class ConversationDetailViewModel @Inject constructor(
         viewModelScope.launch { setMessageViewState.collapsed(MessageId(messageId.id)) }
     }
 
-    private fun onMessageBodyLinkClicked(action: MessageBodyLinkClicked) {
-        viewModelScope.launch { emitNewStateFrom(action) }
-    }
-
     private fun onDoNotAskLinkConfirmationChecked() {
         viewModelScope.launch { updateLinkConfirmationSetting(false) }
-    }
-
-    private fun onRequestScrollTo(action: RequestScrollTo) {
-        viewModelScope.launch { emitNewStateFrom(action) }
-    }
-
-    private fun onScrollRequestCompleted(action: ScrollRequestCompleted) {
-        viewModelScope.launch { emitNewStateFrom(action) }
     }
 
     private suspend fun emitMessageBodyDecryptError(error: GetDecryptedMessageBodyError, messageId: MessageIdUiModel) {
