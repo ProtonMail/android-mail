@@ -1834,12 +1834,13 @@ class ComposerViewModelTest {
 
         expectNoInputDraftAction()
         expectNoInputDraftMessageId()
+
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectedMessageId { expectedMessageId }
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
         expectContacts()
         mockParticipantMapper()
-        expectInputDraftAction { DraftAction.ComposeWithRecipient(expectedRecipient.address) }
+        expectInputDraftAction { DraftAction.ComposeToAddress(expectedRecipient.address) }
         expectStoreDraftRecipientsSucceeds(
             expectedMessageId,
             expectedSenderEmail,
@@ -1850,6 +1851,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
         expectObserveMessagePassword(expectedUserId, expectedMessageId)
+        expectAddressValidation(expectedRecipient.address, true)
 
         assertEquals(viewModel.state.value.fields.to.first(), RecipientUiModel.Valid(expectedRecipient.address))
     }
@@ -2279,6 +2281,10 @@ class ComposerViewModelTest {
     private fun expectObserveMessagePassword(userId: UserId, messageId: MessageId) {
         val messagePassword = MessagePassword(userId, messageId, "password", null)
         coEvery { observeMessagePassword(userId, messageId) } returns flowOf(messagePassword)
+    }
+
+    private fun expectAddressValidation(address: String, expectedResult: Boolean) {
+        every { isValidEmailAddressMock(address) } returns expectedResult
     }
 
     private fun mockParticipantMapper() {

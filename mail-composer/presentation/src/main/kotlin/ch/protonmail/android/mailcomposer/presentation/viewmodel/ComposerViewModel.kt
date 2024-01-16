@@ -194,7 +194,7 @@ class ComposerViewModel @Inject constructor(
     }
 
     private fun isCreatingEmptyDraft(inputDraftId: String?, draftAction: DraftAction?): Boolean =
-        inputDraftId == null && (draftAction == null || draftAction is DraftAction.ComposeWithRecipient)
+        inputDraftId == null && (draftAction == null || draftAction is DraftAction.ComposeToAddress)
 
     private fun prefillForDraftAction(draftAction: DraftAction) {
         val parentMessageId = draftAction.getParentMessageId() ?: return
@@ -627,7 +627,7 @@ class ComposerViewModel @Inject constructor(
 
     private fun SavedStateHandle.extractRecipient(): List<RecipientUiModel>? {
         return get<String>(ComposerScreen.SerializedDraftActionKey)?.deserialize<DraftAction>()
-            .let { it as? DraftAction.ComposeWithRecipient }
+            .let { it as? DraftAction.ComposeToAddress }
             ?.let {
                 val recipientUiModel = when {
                     validateEmailAddress(it.recipient) -> RecipientUiModel.Valid(it.recipient)

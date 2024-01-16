@@ -36,11 +36,11 @@ sealed interface DraftAction {
     data class Forward(val parentId: MessageId) : DraftAction
 
     @Serializable
-    data class ComposeWithRecipient(val recipient: String) : DraftAction
+    data class ComposeToAddress(val recipient: String) : DraftAction
 
     fun getParentMessageId(): MessageId? = when (this) {
         is Compose,
-        is ComposeWithRecipient -> null
+        is ComposeToAddress -> null
 
         is Forward -> this.parentId
         is Reply -> this.parentId

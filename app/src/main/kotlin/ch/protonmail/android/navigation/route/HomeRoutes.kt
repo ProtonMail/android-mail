@@ -424,7 +424,7 @@ internal fun NavGraphBuilder.addContactDetails(
         onEditClick = { showFeatureMissingSnackbar() },
         showFeatureMissingSnackbar = { showFeatureMissingSnackbar() },
         navigateToComposer = {
-            navController.navigate(Destination.Screen.MessageActionComposer(DraftAction.ComposeWithRecipient(it)))
+            navController.navigate(Destination.Screen.MessageActionComposer(DraftAction.ComposeToAddress(it)))
         }
     )
     composable(route = Destination.Screen.ContactDetails.route) {
