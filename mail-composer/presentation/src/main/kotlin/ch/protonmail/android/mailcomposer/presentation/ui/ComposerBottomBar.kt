@@ -39,6 +39,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
+import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import me.proton.core.compose.theme.ProtonDimens
@@ -47,8 +48,9 @@ import me.proton.core.compose.theme.ProtonTheme
 @Composable
 fun ComposerBottomBar(
     draftId: MessageId,
+    senderEmail: SenderEmail,
     isMessagePasswordSet: Boolean,
-    onSetMessagePasswordClick: (MessageId) -> Unit,
+    onSetMessagePasswordClick: (MessageId, SenderEmail) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
@@ -60,7 +62,7 @@ fun ComposerBottomBar(
                 .padding(horizontal = ProtonDimens.ExtraSmallSpacing),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            AddPasswordButton(draftId, isMessagePasswordSet, onSetMessagePasswordClick)
+            AddPasswordButton(draftId, senderEmail, isMessagePasswordSet, onSetMessagePasswordClick)
         }
     }
 }
@@ -68,12 +70,13 @@ fun ComposerBottomBar(
 @Composable
 fun AddPasswordButton(
     draftId: MessageId,
+    senderEmail: SenderEmail,
     isMessagePasswordSet: Boolean,
-    onSetMessagePasswordClick: (MessageId) -> Unit
+    onSetMessagePasswordClick: (MessageId, SenderEmail) -> Unit
 ) {
     Box {
         IconButton(
-            onClick = { onSetMessagePasswordClick(draftId) }
+            onClick = { onSetMessagePasswordClick(draftId, senderEmail) }
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_proton_lock),

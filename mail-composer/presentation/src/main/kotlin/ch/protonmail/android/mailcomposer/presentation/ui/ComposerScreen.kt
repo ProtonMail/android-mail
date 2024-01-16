@@ -54,6 +54,7 @@ import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.compose.dismissKeyboard
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
+import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.domain.model.Subject
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreAttachments
 import ch.protonmail.android.mailcomposer.presentation.R
@@ -138,6 +139,7 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
                 if (state.isPasswordActionVisible) {
                     ComposerBottomBar(
                         draftId = state.fields.draftId,
+                        senderEmail = SenderEmail(state.fields.sender.email),
                         isMessagePasswordSet = state.isMessagePasswordSet,
                         onSetMessagePasswordClick = actions.onSetMessagePasswordClick
                     )
@@ -338,7 +340,7 @@ object ComposerScreen {
 
     data class Actions(
         val onCloseComposerClick: () -> Unit,
-        val onSetMessagePasswordClick: (MessageId) -> Unit,
+        val onSetMessagePasswordClick: (MessageId, SenderEmail) -> Unit,
         val showDraftSavedSnackbar: () -> Unit,
         val showMessageSendingSnackbar: () -> Unit,
         val showMessageSendingOfflineSnackbar: () -> Unit
@@ -349,7 +351,7 @@ object ComposerScreen {
             val Empty = Actions(
 
                 onCloseComposerClick = {},
-                onSetMessagePasswordClick = {},
+                onSetMessagePasswordClick = { _, _ -> },
                 showDraftSavedSnackbar = {},
                 showMessageSendingSnackbar = {},
                 showMessageSendingOfflineSnackbar = {}

@@ -19,32 +19,56 @@
 package ch.protonmail.android.mailcomposer.domain.usecase
 
 import arrow.core.Either
-import arrow.core.left
+import arrow.core.raise.either
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcomposer.domain.Transactor
 import ch.protonmail.android.mailcomposer.domain.model.MessagePassword
+import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.domain.repository.MessagePasswordRepository
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import me.proton.core.crypto.common.keystore.KeyStoreCrypto
 import me.proton.core.domain.entity.UserId
+import timber.log.Timber
 import javax.inject.Inject
 
 class SaveMessagePassword @Inject constructor(
+    private val getLocalDraft: GetLocalDraft,
     private val keyStoreCrypto: KeyStoreCrypto,
-    private val messagePasswordRepository: MessagePasswordRepository
+    private val messagePasswordRepository: MessagePasswordRepository,
+    private val messageRepository: MessageRepository,
+    private val saveDraft: SaveDraft,
+    private val transactor: Transactor
 ) {
 
     suspend operator fun invoke(
         userId: UserId,
         messageId: MessageId,
+        senderEmail: SenderEmail,
         password: String,
         passwordHint: String?
-    ): Either<DataError.Local, Unit> {
-        val encryptedPassword = runCatching { keyStoreCrypto.encrypt(password) }.fold(
-            onSuccess = { it },
-            onFailure = { return DataError.Local.EncryptionError.left() }
-        )
-        return messagePasswordRepository.saveMessagePassword(
-            MessagePassword(userId, messageId, encryptedPassword, passwordHint)
-        )
+    ): Either<DataError.Local, Unit> = transactor.performTransaction {
+        either {
+            val draft = getLocalDraft(userId, messageId, senderEmail)
+                .mapLeft { DataError.Local.NoDataCached }
+                .bind()
+            // Verify that draft exists in db, if not create it
+            val messageWithBody = messageRepository.getLocalMessageWithBody(userId, draft.message.messageId)
+            if (messageWithBody == null) {
+                val success = saveDraft(draft, userId)
+                if (!success) {
+                    Timber.d("Failed to save draft")
+                    raise(DataError.Local.Unknown)
+                }
+            }
+
+            val encryptedPassword = runCatching { keyStoreCrypto.encrypt(password) }.fold(
+                onSuccess = { it },
+                onFailure = { raise(DataError.Local.EncryptionError) }
+            )
+            messagePasswordRepository.saveMessagePassword(
+                MessagePassword(userId, draft.message.messageId, encryptedPassword, passwordHint)
+            ).bind()
+        }
     }
 }

@@ -20,6 +20,7 @@ package ch.protonmail.android.navigation.model
 
 import ch.protonmail.android.feature.account.SignOutAccountDialog.USER_ID_KEY
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.DraftMessageIdKey
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.SerializedDraftActionKey
 import ch.protonmail.android.mailcomposer.presentation.ui.SetMessagePasswordScreen
@@ -63,10 +64,12 @@ sealed class Destination(val route: String) {
 
         object Composer : Destination("composer")
         object SetMessagePassword : Destination(
-            "composer/setMessagePassword/${SetMessagePasswordScreen.DraftMessageIdKey.wrap()}"
+            "composer/setMessagePassword/${SetMessagePasswordScreen.InputParamsKey.wrap()}"
         ) {
-            operator fun invoke(messageId: MessageId) =
-                route.replace(SetMessagePasswordScreen.DraftMessageIdKey.wrap(), messageId.id)
+            operator fun invoke(messageId: MessageId, senderEmail: SenderEmail) = route.replace(
+                SetMessagePasswordScreen.InputParamsKey.wrap(),
+                SetMessagePasswordScreen.InputParams(messageId, senderEmail).serialize()
+            )
         }
 
         object EditDraftComposer : Destination("composer/${DraftMessageIdKey.wrap()}") {

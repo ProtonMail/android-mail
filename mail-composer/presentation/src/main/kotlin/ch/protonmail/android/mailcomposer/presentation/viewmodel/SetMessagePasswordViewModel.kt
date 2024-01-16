@@ -29,7 +29,6 @@ import ch.protonmail.android.mailcomposer.presentation.model.MessagePasswordOper
 import ch.protonmail.android.mailcomposer.presentation.model.SetMessagePasswordState
 import ch.protonmail.android.mailcomposer.presentation.reducer.SetMessagePasswordReducer
 import ch.protonmail.android.mailcomposer.presentation.ui.SetMessagePasswordScreen
-import ch.protonmail.android.mailmessage.domain.model.MessageId
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -37,6 +36,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import me.proton.core.util.kotlin.deserializeOrNull
 import javax.inject.Inject
 
 @HiltViewModel
@@ -50,7 +50,9 @@ class SetMessagePasswordViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId().filterNotNull()
-    private val messageId = savedStateHandle.get<String>(SetMessagePasswordScreen.DraftMessageIdKey)
+    private val inputParams: SetMessagePasswordScreen.InputParams? = savedStateHandle.get<String>(
+        SetMessagePasswordScreen.InputParamsKey
+    )?.deserializeOrNull()
 
     private val mutableState = MutableStateFlow<SetMessagePasswordState>(SetMessagePasswordState.Loading)
     val state: StateFlow<SetMessagePasswordState> = mutableState.asStateFlow()
@@ -66,8 +68,14 @@ class SetMessagePasswordViewModel @Inject constructor(
 
     private fun onApplyPassword(password: String, passwordHint: String?) {
         viewModelScope.launch {
-            messageId?.let {
-                saveMessagePassword(primaryUserId.first(), MessageId(it), password, passwordHint)
+            inputParams?.let { inputParams ->
+                saveMessagePassword(
+                    primaryUserId.first(),
+                    inputParams.messageId,
+                    inputParams.senderEmail,
+                    password,
+                    passwordHint
+                )
                 emitNewStateFrom(MessagePasswordOperation.Event.ExitScreen)
             }
         }
@@ -75,8 +83,8 @@ class SetMessagePasswordViewModel @Inject constructor(
 
     private fun onRemovePassword() {
         viewModelScope.launch {
-            messageId?.let {
-                deleteMessagePassword(primaryUserId.first(), MessageId(it))
+            inputParams?.let {
+                deleteMessagePassword(primaryUserId.first(), it.messageId)
                 emitNewStateFrom(MessagePasswordOperation.Event.ExitScreen)
             }
         }
@@ -84,8 +92,8 @@ class SetMessagePasswordViewModel @Inject constructor(
 
     private fun initializeScreen() {
         viewModelScope.launch {
-            messageId?.let { messageId ->
-                val messagePassword = observeMessagePassword(primaryUserId.first(), MessageId(messageId)).first()
+            inputParams?.let {
+                val messagePassword = observeMessagePassword(primaryUserId.first(), inputParams.messageId).first()
                 emitNewStateFrom(MessagePasswordOperation.Event.InitializeScreen(messagePassword))
             }
         }

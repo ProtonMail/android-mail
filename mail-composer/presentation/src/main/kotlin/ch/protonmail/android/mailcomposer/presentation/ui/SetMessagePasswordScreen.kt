@@ -46,12 +46,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.HyperlinkText
+import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailcomposer.presentation.model.MessagePasswordOperation
 import ch.protonmail.android.mailcomposer.presentation.model.SetMessagePasswordState
 import ch.protonmail.android.mailcomposer.presentation.ui.SetMessagePasswordScreen.MAX_PASSWORD_LENGTH
 import ch.protonmail.android.mailcomposer.presentation.ui.SetMessagePasswordScreen.MIN_PASSWORD_LENGTH
 import ch.protonmail.android.mailcomposer.presentation.viewmodel.SetMessagePasswordViewModel
+import ch.protonmail.android.mailmessage.domain.model.MessageId
+import kotlinx.serialization.Serializable
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonOutlinedButton
 import me.proton.core.compose.component.ProtonSolidButton
@@ -288,7 +291,13 @@ object SetMessagePasswordScreen {
     const val MIN_PASSWORD_LENGTH = 4
     const val MAX_PASSWORD_LENGTH = 21
 
-    const val DraftMessageIdKey = "DraftMessageId"
+    const val InputParamsKey = "InputParams"
+
+    @Serializable
+    data class InputParams(
+        val messageId: MessageId,
+        val senderEmail: SenderEmail
+    )
 }
 
 object SetMessagePasswordContent {

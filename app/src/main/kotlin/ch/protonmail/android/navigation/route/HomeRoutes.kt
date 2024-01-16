@@ -162,7 +162,9 @@ internal fun NavGraphBuilder.addComposer(
 ) {
     val actions = ComposerScreen.Actions(
         onCloseComposerClick = navController::popBackStack,
-        onSetMessagePasswordClick = { navController.navigate(Destination.Screen.SetMessagePassword(it)) },
+        onSetMessagePasswordClick = { messageId, senderEmail ->
+            navController.navigate(Destination.Screen.SetMessagePassword(messageId, senderEmail))
+        },
         showDraftSavedSnackbar = showDraftSavedSnackbar,
         showMessageSendingSnackbar = showMessageSendingSnackbar,
         showMessageSendingOfflineSnackbar = showMessageSendingOfflineSnackbar

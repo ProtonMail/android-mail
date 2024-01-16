@@ -96,5 +96,15 @@ interface DraftStateDatabase : Database {
                 database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessagePasswordEntity_userId_messageId` ON `MessagePasswordEntity` (`userId`, `messageId`)")
             }
         }
+
+        val MIGRATION_7: DatabaseMigration = object : DatabaseMigration {
+            @Suppress("MaxLineLength")
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.dropTable("MessagePasswordEntity")
+                database.execSQL("CREATE TABLE IF NOT EXISTS `MessagePasswordEntity` (`userId` TEXT NOT NULL, `messageId` TEXT NOT NULL, `password` TEXT NOT NULL, `passwordHint` TEXT, PRIMARY KEY(`userId`, `messageId`), FOREIGN KEY(`userId`, `messageId`) REFERENCES `MessageEntity`(`userId`,`messageId`) ON UPDATE CASCADE ON DELETE CASCADE, FOREIGN KEY(`userId`)  REFERENCES `UserEntity`(`userId`) ON UPDATE NO ACTION ON DELETE CASCADE )")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessagePasswordEntity_userId` ON `MessagePasswordEntity` (`userId`)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessagePasswordEntity_userId_messageId` ON `MessagePasswordEntity` (`userId`, `messageId`)")
+            }
+        }
     }
 }

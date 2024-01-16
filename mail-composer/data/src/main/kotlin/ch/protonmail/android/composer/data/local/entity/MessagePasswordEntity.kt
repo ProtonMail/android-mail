@@ -22,6 +22,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import ch.protonmail.android.mailcomposer.domain.model.MessagePassword
+import ch.protonmail.android.mailmessage.data.local.entity.MessageEntity
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import me.proton.core.domain.entity.UserId
 import me.proton.core.user.data.entity.UserEntity
@@ -38,6 +39,13 @@ import me.proton.core.user.data.entity.UserEntity
             parentColumns = ["userId"],
             childColumns = ["userId"],
             onDelete = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = MessageEntity::class,
+            parentColumns = ["userId", "messageId"],
+            childColumns = ["userId", "messageId"],
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE
         )
     ]
 )

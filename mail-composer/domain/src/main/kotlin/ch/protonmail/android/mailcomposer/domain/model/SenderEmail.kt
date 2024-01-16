@@ -18,5 +18,8 @@
 
 package ch.protonmail.android.mailcomposer.domain.model
 
+import kotlinx.serialization.Serializable
+
 @JvmInline
+@Serializable
 value class SenderEmail(val value: String)
