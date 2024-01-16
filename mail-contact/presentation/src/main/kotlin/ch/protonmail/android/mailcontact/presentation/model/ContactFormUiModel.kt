@@ -22,5 +22,16 @@ import me.proton.core.contact.domain.entity.ContactId
 
 data class ContactFormUiModel(
     val id: ContactId?,
-    val name: String = ""
+    val displayName: String = "",
+    val firstName: String = "",
+    val lastName: String = "",
 )
+
+sealed interface InputField {
+
+    data class SingleTyped(
+        val value: String,
+        val selectedType: FieldType
+    ) : InputField
+}
+

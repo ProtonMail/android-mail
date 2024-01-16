@@ -136,7 +136,7 @@ fun ContactFormContent(
                     start = ProtonDimens.DefaultSpacing
                 ),
                 style = ProtonTheme.typography.defaultNorm,
-                text = state.contact.name
+                text = state.contact.displayName
             )
         }
     }

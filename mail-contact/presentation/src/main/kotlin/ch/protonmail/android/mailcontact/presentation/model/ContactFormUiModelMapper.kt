@@ -23,6 +23,8 @@ import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
 fun DecryptedContact.toContactFormUiModel(): ContactFormUiModel {
     return ContactFormUiModel(
         id = this.id,
-        name = this.formattedName?.value ?: ""
+        displayName = this.formattedName?.value ?: "",
+        firstName = this.structuredName?.given ?: "",
+        lastName = this.structuredName?.family ?: "",
     )
 }

@@ -25,6 +25,8 @@ object ContactFormPreviewData {
 
     val contactFormSampleData = ContactFormUiModel(
         id = ContactId("Id"),
-        name = "Name"
+        displayName = "displayName",
+        firstName = "firstName",
+        lastName = "lastName",
     )
 }
