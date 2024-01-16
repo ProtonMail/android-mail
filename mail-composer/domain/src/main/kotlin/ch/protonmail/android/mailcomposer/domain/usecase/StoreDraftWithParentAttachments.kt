@@ -88,6 +88,7 @@ class StoreDraftWithParentAttachments @Inject constructor(
         draftAction: DraftAction,
         parentMessageAttachments: List<MessageAttachment>
     ): List<MessageAttachment> = when (draftAction) {
+        is DraftAction.PrefillForShare -> emptyList()
         is DraftAction.Forward -> parentMessageAttachments
         is DraftAction.Reply,
         is DraftAction.ReplyAll -> parentMessageAttachments.filter { it.disposition == "inline" }

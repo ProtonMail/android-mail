@@ -337,6 +337,7 @@ object ComposerScreen {
 
     const val DraftMessageIdKey = "draft_message_id"
     const val SerializedDraftActionKey = "serialized_draft_action_key"
+    const val DraftActionForShareKey = "draft_action_for_share_key"
 
     data class Actions(
         val onCloseComposerClick: () -> Unit,

@@ -22,8 +22,8 @@ import ch.protonmail.android.mailmessage.domain.model.DraftAction
 
 fun DraftAction.toApiInt() = when (this) {
     is DraftAction.Compose,
+    is DraftAction.PrefillForShare,
     is DraftAction.ComposeToAddress -> -1
-
     is DraftAction.Reply -> 0
     is DraftAction.ReplyAll -> 1
     is DraftAction.Forward -> 2

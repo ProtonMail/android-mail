@@ -22,6 +22,7 @@ import ch.protonmail.android.feature.account.SignOutAccountDialog.USER_ID_KEY
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.DraftMessageIdKey
+import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.DraftActionForShareKey
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.SerializedDraftActionKey
 import ch.protonmail.android.mailcomposer.presentation.ui.SetMessagePasswordScreen
 import ch.protonmail.android.mailcontact.presentation.contactdetails.ContactDetailsScreen.ContactDetailsContactIdKey
@@ -76,6 +77,14 @@ sealed class Destination(val route: String) {
         object EditDraftComposer : Destination("composer/${DraftMessageIdKey.wrap()}") {
 
             operator fun invoke(messageId: MessageId) = route.replace(DraftMessageIdKey.wrap(), messageId.id)
+        }
+
+        object ShareFileComposer : Destination("composer/share/${DraftActionForShareKey.wrap()}") {
+
+            operator fun invoke(draftAction: DraftAction) = route.replace(
+                DraftActionForShareKey.wrap(),
+                draftAction.serialize()
+            )
         }
 
         object MessageActionComposer : Destination("composer/action/${SerializedDraftActionKey.wrap()}") {
@@ -164,3 +173,4 @@ sealed class Destination(val route: String) {
  * Wrap a key in the format required by the Navigation framework: `{key_name}`
  */
 private fun String.wrap() = "{$this}"
+
