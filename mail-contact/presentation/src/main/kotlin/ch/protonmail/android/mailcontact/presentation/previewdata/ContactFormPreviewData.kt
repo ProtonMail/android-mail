@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcontact.presentation.previewdata
 
+import java.time.LocalDate
 import ch.protonmail.android.mailcontact.presentation.model.ContactFormUiModel
 import ch.protonmail.android.mailcontact.presentation.model.FieldType
 import ch.protonmail.android.mailcontact.presentation.model.InputField
@@ -45,6 +46,11 @@ object ContactFormPreviewData {
                 "Country",
                 FieldType.AddressType.Address
             )
+        ),
+        birthday = InputField.Date(LocalDate.now()),
+        notes = listOf(
+            InputField.Note("Notes")
+        )
         )
     )
 }

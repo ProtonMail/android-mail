@@ -47,6 +47,14 @@ fun DecryptedContact.toContactFormUiModel(): ContactFormUiModel {
                 country = it.country,
                 selectedType = FieldType.AddressType.valueOf(it.type.name),
             )
+        },
+        birthday = this.birthday?.let {
+            InputField.Date(value = it.date)
+        },
+        notes = this.notes.map {
+            InputField.Note(
+                value = it.value
+            )
         }
     )
 }

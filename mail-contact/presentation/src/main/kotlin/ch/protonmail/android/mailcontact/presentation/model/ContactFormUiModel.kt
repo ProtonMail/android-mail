@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcontact.presentation.model
 
+import java.time.LocalDate
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontact.presentation.R
 import me.proton.core.contact.domain.entity.ContactId
@@ -30,6 +31,8 @@ data class ContactFormUiModel(
     val emails: List<InputField.SingleTyped> = emptyList(),
     val phones: List<InputField.SingleTyped> = emptyList(),
     val addresses: List<InputField.Address> = emptyList(),
+    val birthday: InputField.Date? = null,
+    val notes: List<InputField.Note> = emptyList()
 )
 
 sealed interface InputField {
@@ -46,6 +49,14 @@ sealed interface InputField {
         val region: String,
         val country: String,
         val selectedType: FieldType
+    ) : InputField
+
+    data class Date(
+        val value: LocalDate
+    ) : InputField
+
+    data class Note(
+        val value: String
     ) : InputField
 }
 
