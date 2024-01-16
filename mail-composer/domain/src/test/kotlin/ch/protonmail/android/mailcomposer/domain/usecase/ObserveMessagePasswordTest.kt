@@ -19,9 +19,16 @@
 package ch.protonmail.android.mailcomposer.domain.usecase
 
 import app.cash.turbine.test
+import arrow.core.right
 import ch.protonmail.android.mailcomposer.domain.model.MessagePassword
 import ch.protonmail.android.mailcomposer.domain.repository.MessagePasswordRepository
+import ch.protonmail.android.mailmessage.domain.model.DraftAction
+import ch.protonmail.android.mailmessage.domain.model.DraftState
+import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
+import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import ch.protonmail.android.test.utils.FakeTransactor
 import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.coEvery
 import io.mockk.every
@@ -36,32 +43,67 @@ import kotlin.test.assertNull
 
 class ObserveMessagePasswordTest {
 
-    val userId = UserIdTestData.userId
-    val messageId = MessageIdSample.NewDraftWithSubjectAndBody
+    private val userId = UserIdTestData.userId
+    private val messageId = MessageIdSample.NewDraftWithSubjectAndBody
+    private val apiMessageId = MessageId("apiMessageId")
 
+    private val draftStateRepository = mockk<DraftStateRepository>()
     private val keyStoreCrypto = mockk<KeyStoreCrypto>()
     private val messagePasswordRepository = mockk<MessagePasswordRepository>()
+    private val transactor = FakeTransactor()
 
-    private val observeMessagePassword = ObserveMessagePassword(keyStoreCrypto, messagePasswordRepository)
+    private val observeMessagePassword = ObserveMessagePassword(
+        draftStateRepository = draftStateRepository,
+        keyStoreCrypto = keyStoreCrypto,
+        messagePasswordRepository = messagePasswordRepository,
+        transactor = transactor
+    )
 
     @Test
-    fun `should return decrypted message password when password is emitted and decryption is successful`() = runTest {
-        // Given
-        val encryptedPassword = "encryptedPassword"
-        val decryptedPassword = "decryptedPassword"
-        val hint = "hint"
-        val messagePassword = MessagePassword(userId, messageId, encryptedPassword, hint)
-        coEvery { messagePasswordRepository.observeMessagePassword(userId, messageId) } returns flowOf(messagePassword)
-        every { keyStoreCrypto.decrypt(encryptedPassword) } returns decryptedPassword
+    fun `should return decrypted password for message id when password is emitted and decryption is successful`() =
+        runTest {
+            // Given
+            val encryptedPassword = "encryptedPassword"
+            val decryptedPassword = "decryptedPassword"
+            val hint = "hint"
+            val messagePassword = MessagePassword(userId, messageId, encryptedPassword, hint)
+            expectApiMessageIdDoesNotExist()
+            coEvery {
+                messagePasswordRepository.observeMessagePassword(userId, messageId)
+            } returns flowOf(messagePassword)
+            every { keyStoreCrypto.decrypt(encryptedPassword) } returns decryptedPassword
 
-        // When
-        observeMessagePassword(userId, messageId).test {
-            // Then
-            val expected = messagePassword.copy(password = decryptedPassword)
-            assertEquals(expected, awaitItem())
-            awaitComplete()
+            // When
+            observeMessagePassword(userId, messageId).test {
+                // Then
+                val expected = messagePassword.copy(password = decryptedPassword)
+                assertEquals(expected, awaitItem())
+                awaitComplete()
+            }
         }
-    }
+
+    @Test
+    fun `should return decrypted password for api message id when password is emitted and decryption is successful`() =
+        runTest {
+            // Given
+            val encryptedPassword = "encryptedPassword"
+            val decryptedPassword = "decryptedPassword"
+            val hint = "hint"
+            val messagePassword = MessagePassword(userId, apiMessageId, encryptedPassword, hint)
+            expectApiMessageIdExists()
+            coEvery {
+                messagePasswordRepository.observeMessagePassword(userId, apiMessageId)
+            } returns flowOf(messagePassword)
+            every { keyStoreCrypto.decrypt(encryptedPassword) } returns decryptedPassword
+
+            // When
+            observeMessagePassword(userId, messageId).test {
+                // Then
+                val expected = messagePassword.copy(password = decryptedPassword)
+                assertEquals(expected, awaitItem())
+                awaitComplete()
+            }
+        }
 
     @Test
     fun `should return null when password is emitted but was not decrypted successfully`() = runTest {
@@ -69,6 +111,7 @@ class ObserveMessagePasswordTest {
         val encryptedPassword = "encryptedPassword"
         val hint = "hint"
         val messagePassword = MessagePassword(userId, messageId, encryptedPassword, hint)
+        expectApiMessageIdDoesNotExist()
         coEvery { messagePasswordRepository.observeMessagePassword(userId, messageId) } returns flowOf(messagePassword)
         every { keyStoreCrypto.decrypt(encryptedPassword) } throws CryptoException()
 
@@ -83,6 +126,7 @@ class ObserveMessagePasswordTest {
     @Test
     fun `should return null when message password does not exist`() = runTest {
         // Given
+        expectApiMessageIdDoesNotExist()
         coEvery { messagePasswordRepository.observeMessagePassword(userId, messageId) } returns flowOf(null)
 
         // When
@@ -91,5 +135,37 @@ class ObserveMessagePasswordTest {
             assertNull(awaitItem())
             awaitComplete()
         }
+    }
+
+    private fun expectApiMessageIdExists() {
+        coEvery {
+            draftStateRepository.observe(userId, messageId)
+        } returns flowOf(
+            DraftState(
+                userId = userId,
+                messageId = messageId,
+                apiMessageId = apiMessageId,
+                state = DraftSyncState.Synchronized,
+                action = DraftAction.Compose,
+                sendingError = null,
+                sendingStatusConfirmed = false
+            ).right()
+        )
+    }
+
+    private fun expectApiMessageIdDoesNotExist() {
+        coEvery {
+            draftStateRepository.observe(userId, messageId)
+        } returns flowOf(
+            DraftState(
+                userId = userId,
+                messageId = messageId,
+                apiMessageId = null,
+                state = DraftSyncState.Synchronized,
+                action = DraftAction.Compose,
+                sendingError = null,
+                sendingStatusConfirmed = false
+            ).right()
+        )
     }
 }

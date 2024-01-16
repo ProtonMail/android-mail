@@ -18,30 +18,44 @@
 
 package ch.protonmail.android.mailcomposer.domain.usecase
 
+import ch.protonmail.android.mailcomposer.domain.Transactor
 import ch.protonmail.android.mailcomposer.domain.model.MessagePassword
 import ch.protonmail.android.mailcomposer.domain.repository.MessagePasswordRepository
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.mapLatest
 import me.proton.core.crypto.common.keystore.KeyStoreCrypto
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 class ObserveMessagePassword @Inject constructor(
+    private val draftStateRepository: DraftStateRepository,
     private val keyStoreCrypto: KeyStoreCrypto,
-    private val messagePasswordRepository: MessagePasswordRepository
+    private val messagePasswordRepository: MessagePasswordRepository,
+    private val transactor: Transactor
 ) {
 
-    suspend operator fun invoke(userId: UserId, messageId: MessageId): Flow<MessagePassword?> {
-        return messagePasswordRepository.observeMessagePassword(userId, messageId).mapLatest { messagePassword ->
-            if (messagePassword == null) return@mapLatest null
+    suspend operator fun invoke(userId: UserId, messageId: MessageId): Flow<MessagePassword?> =
+        transactor.performTransaction {
+            draftStateRepository.observe(userId, messageId)
+                .distinctUntilChanged()
+                .flatMapLatest { draftStateEither ->
+                    val draftState = draftStateEither.getOrNull()
+                    messagePasswordRepository.observeMessagePassword(
+                        userId, draftState?.apiMessageId ?: messageId
+                    ).mapLatest { messagePassword ->
+                        if (messagePassword == null) return@mapLatest null
 
-            return@mapLatest runCatching {
-                keyStoreCrypto.decrypt(messagePassword.password)
-            }.fold(
-                onSuccess = { it },
-                onFailure = { null }
-            )?.let { messagePassword.copy(password = it) }
+                        return@mapLatest runCatching {
+                            keyStoreCrypto.decrypt(messagePassword.password)
+                        }.fold(
+                            onSuccess = { it },
+                            onFailure = { null }
+                        )?.let { messagePassword.copy(password = it) }
+                    }
+                }
         }
-    }
 }

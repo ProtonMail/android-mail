@@ -18,15 +18,26 @@
 
 package ch.protonmail.android.mailcomposer.domain.usecase
 
+import ch.protonmail.android.mailcomposer.domain.Transactor
 import ch.protonmail.android.mailcomposer.domain.repository.MessagePasswordRepository
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
+import kotlinx.coroutines.flow.first
 import me.proton.core.domain.entity.UserId
+import timber.log.Timber
 import javax.inject.Inject
 
 class DeleteMessagePassword @Inject constructor(
-    private val messagePasswordRepository: MessagePasswordRepository
+    private val draftStateRepository: DraftStateRepository,
+    private val messagePasswordRepository: MessagePasswordRepository,
+    private val transactor: Transactor
 ) {
 
-    suspend operator fun invoke(userId: UserId, messageId: MessageId) =
-        messagePasswordRepository.deleteMessagePassword(userId, messageId)
+    suspend operator fun invoke(userId: UserId, messageId: MessageId) = transactor.performTransaction {
+        val apiMessageId = draftStateRepository.observe(userId, messageId).first().onLeft {
+            Timber.e("No draft state found for $messageId")
+        }.getOrNull()?.apiMessageId
+
+        return@performTransaction messagePasswordRepository.deleteMessagePassword(userId, apiMessageId ?: messageId)
+    }
 }
