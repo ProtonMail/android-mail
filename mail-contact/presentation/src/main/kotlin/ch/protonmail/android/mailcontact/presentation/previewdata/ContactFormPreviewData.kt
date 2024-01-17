@@ -50,7 +50,11 @@ object ContactFormPreviewData {
         birthday = InputField.Date(LocalDate.now()),
         notes = listOf(
             InputField.Note("Notes")
-        )
+        ),
+        others = listOf(
+            InputField.SingleTyped("Title", FieldType.OtherType.Title),
+            InputField.SingleTyped("Organization", FieldType.OtherType.Organization),
+            InputField.SingleTyped("Language", FieldType.OtherType.Language)
         )
     )
 }

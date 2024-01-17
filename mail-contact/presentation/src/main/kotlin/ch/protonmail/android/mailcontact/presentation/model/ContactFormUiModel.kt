@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcontact.presentation.model
 
 import java.time.LocalDate
+import android.graphics.Bitmap
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontact.presentation.R
 import me.proton.core.contact.domain.entity.ContactId
@@ -32,7 +33,9 @@ data class ContactFormUiModel(
     val phones: List<InputField.SingleTyped> = emptyList(),
     val addresses: List<InputField.Address> = emptyList(),
     val birthday: InputField.Date? = null,
-    val notes: List<InputField.Note> = emptyList()
+    val notes: List<InputField.Note> = emptyList(),
+    val others: List<InputField> = emptyList(),
+    val otherTypes: List<FieldType.OtherType> = FieldType.OtherType.values().toList()
 )
 
 sealed interface InputField {
@@ -48,6 +51,16 @@ sealed interface InputField {
         val locality: String,
         val region: String,
         val country: String,
+        val selectedType: FieldType
+    ) : InputField
+
+    data class ImageTyped(
+        val value: Bitmap,
+        val selectedType: FieldType
+    ) : InputField
+
+    data class DateTyped(
+        val value: LocalDate,
         val selectedType: FieldType
     ) : InputField
 
@@ -84,5 +97,19 @@ sealed interface FieldType {
         Home(TextUiModel(R.string.contact_type_home)),
         Work(TextUiModel(R.string.contact_type_work)),
         Other(TextUiModel(R.string.contact_type_other))
+    }
+
+    enum class OtherType(val localizedValue: TextUiModel) : FieldType {
+        Photo(TextUiModel(R.string.contact_property_photo)),
+        Organization(TextUiModel(R.string.contact_property_organization)),
+        Title(TextUiModel(R.string.contact_property_title)),
+        Role(TextUiModel(R.string.contact_property_role)),
+        TimeZone(TextUiModel(R.string.contact_property_time_zone)),
+        Logo(TextUiModel(R.string.contact_property_logo)),
+        Member(TextUiModel(R.string.contact_property_member)),
+        Language(TextUiModel(R.string.contact_property_language)),
+        Url(TextUiModel(R.string.contact_property_url)),
+        Gender(TextUiModel(R.string.contact_property_gender)),
+        Anniversary(TextUiModel(R.string.contact_property_anniversary))
     }
 }

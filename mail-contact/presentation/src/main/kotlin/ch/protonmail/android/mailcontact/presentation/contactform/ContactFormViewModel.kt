@@ -25,7 +25,7 @@ import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveDecryptedContact
 import ch.protonmail.android.mailcontact.presentation.model.ContactFormUiModel
-import ch.protonmail.android.mailcontact.presentation.model.toContactFormUiModel
+import ch.protonmail.android.mailcontact.presentation.model.ContactFormUiModelMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -42,6 +42,7 @@ import javax.inject.Inject
 class ContactFormViewModel @Inject constructor(
     private val observeDecryptedContact: ObserveDecryptedContact,
     private val reducer: ContactFormReducer,
+    private val contactFormUiModelMapper: ContactFormUiModelMapper,
     observePrimaryUserId: ObservePrimaryUserId,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -56,7 +57,7 @@ class ContactFormViewModel @Inject constructor(
     init {
         savedStateHandle.get<String>(ContactFormScreen.ContactFormContactIdKey)?.let { contactId ->
             viewModelScope.launch {
-                val contact = observeDecryptedContact(
+                val decryptedContact = observeDecryptedContact(
                     userId = primaryUserId(),
                     contactId = ContactId(contactId)
                 ).first().getOrElse {
@@ -65,7 +66,7 @@ class ContactFormViewModel @Inject constructor(
                 }
                 emitNewStateFor(
                     ContactFormEvent.EditContact(
-                        contact.toContactFormUiModel()
+                        contactFormUiModelMapper.toContactFormUiModel(decryptedContact)
                     )
                 )
             }
