@@ -16,36 +16,28 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcontact.dagger
+package ch.protonmail.android.mailcontact.data
 
-import ch.protonmail.android.mailcontact.data.ContactDetailRepositoryImpl
+import arrow.core.Either
+import arrow.core.raise.either
 import ch.protonmail.android.mailcontact.data.local.ContactDetailLocalDataSource
-import ch.protonmail.android.mailcontact.data.local.ContactDetailLocalDataSourceImpl
 import ch.protonmail.android.mailcontact.data.remote.ContactDetailRemoteDataSource
-import ch.protonmail.android.mailcontact.data.remote.ContactDetailRemoteDataSourceImpl
 import ch.protonmail.android.mailcontact.domain.repository.ContactDetailRepository
-import dagger.Binds
-import dagger.Module
-import dagger.Reusable
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import ch.protonmail.android.mailcontact.domain.repository.ContactDetailRepository.ContactDetailErrors
+import me.proton.core.contact.domain.entity.ContactId
+import me.proton.core.domain.entity.UserId
+import javax.inject.Inject
 
-@Module
-@InstallIn(SingletonComponent::class)
-abstract class MailContactModule {
+class ContactDetailRepositoryImpl @Inject constructor(
+    private val contactDetailLocalDataSource: ContactDetailLocalDataSource,
+    private val contactDetailRemoteDataSource: ContactDetailRemoteDataSource
+) : ContactDetailRepository {
 
-    @Binds
-    @Reusable
-    abstract fun bindContactDetailLocalDataSource(impl: ContactDetailLocalDataSourceImpl): ContactDetailLocalDataSource
-
-    @Binds
-    @Reusable
-    abstract fun bindContactDetailRemoteDataSource(
-        impl: ContactDetailRemoteDataSourceImpl
-    ): ContactDetailRemoteDataSource
-
-    @Binds
-    @Reusable
-    abstract fun bindContactDetailRepository(impl: ContactDetailRepositoryImpl): ContactDetailRepository
-
+    override suspend fun deleteContact(userId: UserId, contactId: ContactId): Either<ContactDetailErrors, Unit> =
+        either {
+            Either.catch { contactDetailLocalDataSource.deleteContact(contactId) }
+                .mapLeft { ContactDetailErrors.ContactDetailLocalDataSourceError }
+                .bind()
+            contactDetailRemoteDataSource.deleteContact(userId, contactId)
+        }
 }
