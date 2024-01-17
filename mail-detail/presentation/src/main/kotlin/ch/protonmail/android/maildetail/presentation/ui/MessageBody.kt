@@ -41,6 +41,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
@@ -170,7 +171,7 @@ private fun MessageActionButton(
     Button(
         modifier = modifier,
         shape = RoundedCornerShape(MailDimens.ActionButtonShapeRadius),
-        border = BorderStroke(.5.dp, ProtonTheme.colors.shade20),
+        border = BorderStroke(Dp.Hairline, ProtonTheme.colors.shade20),
         colors = ButtonDefaults.buttonColors(backgroundColor = ProtonTheme.colors.backgroundNorm),
         elevation = ButtonDefaults.elevation(defaultElevation = 0.dp),
         onClick = { onClick() }
@@ -265,7 +266,7 @@ fun MessageBodyButtonBanner(
             colors = ButtonDefaults.buttonColors(backgroundColor = ProtonTheme.colors.backgroundSecondary),
             elevation = ButtonDefaults.elevation(defaultElevation = 0.dp),
             shape = ProtonTheme.shapes.small,
-            border = BorderStroke(.5.dp, ProtonTheme.colors.textWeak)
+            border = BorderStroke(Dp.Hairline, ProtonTheme.colors.textWeak)
         ) {
             Text(
                 text = stringResource(id = buttonText),
