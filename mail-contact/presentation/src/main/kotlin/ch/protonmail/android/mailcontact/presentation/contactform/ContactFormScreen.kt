@@ -172,7 +172,7 @@ fun ContactFormContent(state: ContactFormState.Data, modifier: Modifier = Modifi
                 }
                 FormInputField(
                     initialValue = state.contact.displayName,
-                    hint = "Display name",
+                    hint = stringResource(R.string.display_name),
                     maxCharacters = CONTACT_NAME_MAX_LENGTH,
                     onTextChange = {
                         // Trigger action here
@@ -180,7 +180,7 @@ fun ContactFormContent(state: ContactFormState.Data, modifier: Modifier = Modifi
                 )
                 FormInputField(
                     initialValue = state.contact.firstName,
-                    hint = "First name",
+                    hint = stringResource(R.string.first_name),
                     maxCharacters = CONTACT_FIRST_LAST_NAME_MAX_LENGTH,
                     onTextChange = {
                         // Trigger action here
@@ -188,7 +188,7 @@ fun ContactFormContent(state: ContactFormState.Data, modifier: Modifier = Modifi
                 )
                 FormInputField(
                     initialValue = state.contact.lastName,
-                    hint = "Last name",
+                    hint = stringResource(R.string.last_name),
                     maxCharacters = CONTACT_FIRST_LAST_NAME_MAX_LENGTH,
                     onTextChange = {
                         // Trigger action here

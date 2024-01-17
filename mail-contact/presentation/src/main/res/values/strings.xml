@@ -73,4 +73,7 @@
     <string name="note_section">Note</string>
     <string name="birthday_section">Birthday</string>
     <string name="other_section">Additional information</string>
+    <string name="display_name">Display name</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
 </resources>
