@@ -171,6 +171,13 @@ fun ContactFormContent(state: ContactFormState.Data, modifier: Modifier = Modifi
                     }
                 }
                 FormInputField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            start = ProtonDimens.DefaultSpacing,
+                            end = ProtonDimens.DefaultSpacing,
+                            bottom = ProtonDimens.DefaultSpacing
+                        ),
                     initialValue = state.contact.displayName,
                     hint = stringResource(R.string.display_name),
                     maxCharacters = CONTACT_NAME_MAX_LENGTH,
@@ -179,6 +186,13 @@ fun ContactFormContent(state: ContactFormState.Data, modifier: Modifier = Modifi
                     }
                 )
                 FormInputField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            start = ProtonDimens.DefaultSpacing,
+                            end = ProtonDimens.DefaultSpacing,
+                            bottom = ProtonDimens.DefaultSpacing
+                        ),
                     initialValue = state.contact.firstName,
                     hint = stringResource(R.string.first_name),
                     maxCharacters = CONTACT_FIRST_LAST_NAME_MAX_LENGTH,
@@ -187,6 +201,13 @@ fun ContactFormContent(state: ContactFormState.Data, modifier: Modifier = Modifi
                     }
                 )
                 FormInputField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            start = ProtonDimens.DefaultSpacing,
+                            end = ProtonDimens.DefaultSpacing,
+                            bottom = ProtonDimens.DefaultSpacing
+                        ),
                     initialValue = state.contact.lastName,
                     hint = stringResource(R.string.last_name),
                     maxCharacters = CONTACT_FIRST_LAST_NAME_MAX_LENGTH,

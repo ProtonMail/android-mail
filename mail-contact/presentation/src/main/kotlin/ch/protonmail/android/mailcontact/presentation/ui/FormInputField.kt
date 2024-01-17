@@ -19,9 +19,6 @@
 package ch.protonmail.android.mailcontact.presentation.ui
 
 import android.content.res.Configuration
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
@@ -43,50 +40,42 @@ import kotlin.math.min
 
 @Composable
 fun FormInputField(
+    modifier: Modifier = Modifier,
     initialValue: String = "",
     hint: String,
     maxCharacters: Int? = null,
     onTextChange: (String) -> Unit
 ) {
-    Column(
-        Modifier.padding(
-            start = ProtonDimens.DefaultSpacing,
-            end = ProtonDimens.DefaultSpacing,
-            bottom = ProtonDimens.DefaultSpacing
-        )
-    ) {
-        var textFieldValue by rememberSaveable(stateSaver = TextFieldValue.Saver) {
-            mutableStateOf(TextFieldValue(initialValue))
-        }
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth(),
-            value = textFieldValue,
-            onValueChange = {
-                textFieldValue = it.copy(
-                    text = maxCharacters?.let { maxCharacters ->
-                        it.text.substring(0, min(it.text.length, maxCharacters))
-                    } ?: it.text
-                )
-                onTextChange(textFieldValue.text)
-            },
-            placeholder = {
-                Text(
-                    text = hint,
-                    color = ProtonTheme.colors.textHint,
-                    style = ProtonTheme.typography.defaultNorm
-                )
-            },
-            shape = RoundedCornerShape(ProtonDimens.LargeCornerRadius),
-            colors = formTextFieldColors(),
-            singleLine = true,
-            textStyle = ProtonTheme.typography.defaultNorm,
-            keyboardOptions = KeyboardOptions.Default.copy(
-                capitalization = KeyboardCapitalization.Sentences,
-                imeAction = ImeAction.Done
-            )
-        )
+    var textFieldValue by rememberSaveable(stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(TextFieldValue(initialValue))
     }
+    OutlinedTextField(
+        modifier = modifier,
+        value = textFieldValue,
+        onValueChange = {
+            textFieldValue = it.copy(
+                text = maxCharacters?.let { maxCharacters ->
+                    it.text.substring(0, min(it.text.length, maxCharacters))
+                } ?: it.text
+            )
+            onTextChange(textFieldValue.text)
+        },
+        placeholder = {
+            Text(
+                text = hint,
+                color = ProtonTheme.colors.textHint,
+                style = ProtonTheme.typography.defaultNorm
+            )
+        },
+        shape = RoundedCornerShape(ProtonDimens.LargeCornerRadius),
+        colors = formTextFieldColors(),
+        singleLine = true,
+        textStyle = ProtonTheme.typography.defaultNorm,
+        keyboardOptions = KeyboardOptions.Default.copy(
+            capitalization = KeyboardCapitalization.Sentences,
+            imeAction = ImeAction.Done
+        )
+    )
 }
 
 @Composable
