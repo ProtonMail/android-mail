@@ -26,6 +26,7 @@ import me.proton.core.contact.domain.entity.ContactId
 
 data class ContactFormUiModel(
     val id: ContactId?,
+    val avatar: Bitmap? = null,
     val displayName: String = "",
     val firstName: String = "",
     val lastName: String = "",

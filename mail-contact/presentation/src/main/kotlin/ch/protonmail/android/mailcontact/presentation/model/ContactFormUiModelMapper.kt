@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcontact.presentation.model
 
+import android.graphics.Bitmap
 import ch.protonmail.android.mailcommon.presentation.usecase.DecodeByteArray
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
 import javax.inject.Inject
@@ -29,6 +30,7 @@ class ContactFormUiModelMapper @Inject constructor(
     fun toContactFormUiModel(decryptedContact: DecryptedContact): ContactFormUiModel {
         return ContactFormUiModel(
             id = decryptedContact.id,
+            avatar = getAvatar(decryptedContact),
             displayName = decryptedContact.formattedName?.value ?: "",
             firstName = decryptedContact.structuredName?.given ?: "",
             lastName = decryptedContact.structuredName?.family ?: "",
@@ -69,7 +71,9 @@ class ContactFormUiModelMapper @Inject constructor(
 
     private fun buildOthers(decryptedContact: DecryptedContact): List<InputField> {
         val others = arrayListOf<InputField>()
-        decryptedContact.photos.forEach { photo ->
+        decryptedContact.photos.forEachIndexed { index, photo ->
+            // Skip first index as we use it for avatar already
+            if (index == 0) return@forEachIndexed
             decodeByteArray(photo.data)?.let { bitmap ->
                 others.add(InputField.ImageTyped(bitmap, FieldType.OtherType.Photo))
             }
@@ -107,5 +111,15 @@ class ContactFormUiModelMapper @Inject constructor(
             others.add(InputField.DateTyped(anniversary.date, FieldType.OtherType.Anniversary))
         }
         return others
+    }
+
+    private fun getAvatar(decryptedContact: DecryptedContact): Bitmap? {
+        if (decryptedContact.photos.isNotEmpty()) {
+            val byteArray = decryptedContact.photos.first().data
+            decodeByteArray(byteArray)?.let { bitmap ->
+                return bitmap
+            }
+        }
+        return null
     }
 }
