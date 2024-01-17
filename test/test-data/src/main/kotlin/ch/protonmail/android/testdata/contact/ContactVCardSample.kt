@@ -20,7 +20,7 @@ package ch.protonmail.android.testdata.contact
 
 object ContactVCardSample {
 
-    val marioVCardType2 = """
+    val marioVCardType3 = """
         BEGIN:VCARD
         VERSION:4.0
         PRODID:ez-vcard 0.11.3
@@ -154,7 +154,7 @@ object ContactVCardSample {
         END:VCARD
     """.trimIndent()
 
-    val marioVCardType3 = """
+    val marioVCardType2 = """
         BEGIN:VCARD
         VERSION:4.0
         PRODID:ez-vcard 0.11.3
@@ -167,7 +167,7 @@ object ContactVCardSample {
         END:VCARD
     """.trimIndent()
 
-    val stefanoVCardType3 = """
+    val stefanoVCardType2 = """
         BEGIN:VCARD
         VERSION:4.0
         PRODID:ez-vcard 0.11.3

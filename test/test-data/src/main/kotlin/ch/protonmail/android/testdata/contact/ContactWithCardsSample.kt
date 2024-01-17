@@ -41,7 +41,7 @@ object ContactWithCardsSample {
         ContactSample.Stefano,
         contactCards = listOf(
             ContactCard.Encrypted(
-                ContactVCardSample.stefanoVCardType3,
+                ContactVCardSample.stefanoVCardType2,
                 "signature"
             )
         )
