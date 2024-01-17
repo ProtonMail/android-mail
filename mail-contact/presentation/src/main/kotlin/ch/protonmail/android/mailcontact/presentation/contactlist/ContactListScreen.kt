@@ -369,19 +369,17 @@ fun EmptyContactListScreen(modifier: Modifier = Modifier, onAddClick: () -> Unit
             style = ProtonTheme.typography.defaultSmallWeak,
             textAlign = TextAlign.Center
         )
-        if (false) {
-            ProtonSecondaryButton(
-                modifier = Modifier.padding(top = ProtonDimens.LargeSpacing),
-                onClick = onAddClick
-            ) {
-                Text(
-                    text = stringResource(R.string.add_contact),
-                    Modifier.padding(
-                        horizontal = ProtonDimens.SmallSpacing
-                    ),
-                    style = ProtonTheme.typography.captionNorm
-                )
-            }
+        ProtonSecondaryButton(
+            modifier = Modifier.padding(top = ProtonDimens.LargeSpacing),
+            onClick = onAddClick
+        ) {
+            Text(
+                text = stringResource(R.string.add_contact),
+                Modifier.padding(
+                    horizontal = ProtonDimens.SmallSpacing
+                ),
+                style = ProtonTheme.typography.captionNorm
+            )
         }
     }
 }
