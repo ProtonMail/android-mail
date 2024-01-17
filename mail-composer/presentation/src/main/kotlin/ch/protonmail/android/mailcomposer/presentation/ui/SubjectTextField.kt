@@ -23,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -47,11 +48,20 @@ internal fun SubjectTextField(
     var text by rememberSaveable(stateSaver = TextFieldValue.Saver) {
         mutableStateOf(TextFieldValue(initialValue))
     }
+
+    var userUpdated by rememberSaveable { mutableStateOf(false) }
+    LaunchedEffect(key1 = initialValue) {
+        if (!userUpdated) {
+            text = TextFieldValue(initialValue)
+        }
+    }
+
     TextField(
         value = text,
         onValueChange = {
             text = it
             onSubjectChange(it.text)
+            userUpdated = true
         },
         modifier = modifier,
         textStyle = ProtonTheme.typography.defaultNorm,
