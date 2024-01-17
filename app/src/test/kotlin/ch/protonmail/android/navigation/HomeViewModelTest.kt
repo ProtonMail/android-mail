@@ -18,7 +18,11 @@
 
 package ch.protonmail.android.navigation
 
+import android.content.Intent
+import android.net.Uri
 import app.cash.turbine.test
+import ch.protonmail.android.mailcommon.data.file.getFileShareInfo
+import ch.protonmail.android.mailcommon.domain.model.FileShareInfo
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailcommon.presentation.Effect
@@ -28,10 +32,13 @@ import ch.protonmail.android.mailcomposer.domain.usecase.ResetSendingMessagesSta
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.ShouldPresentPinInsertionScreen
 import ch.protonmail.android.navigation.model.HomeState
+import ch.protonmail.android.navigation.share.ShareIntentObserver
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkStatic
 import io.mockk.unmockkAll
+import io.mockk.unmockkStatic
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.emptyFlow
@@ -43,10 +50,12 @@ import kotlinx.coroutines.test.setMain
 import me.proton.core.network.domain.NetworkManager
 import me.proton.core.network.domain.NetworkStatus
 import me.proton.core.user.domain.entity.User
+import org.junit.Assert.assertNull
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 
 class HomeViewModelTest {
 
@@ -70,24 +79,31 @@ class HomeViewModelTest {
         every { this@mockk.invoke() } returns flowOf(false)
     }
 
+    private val shareIntentObserver = mockk<ShareIntentObserver>(relaxUnitFun = true) {
+        every { this@mockk() } returns emptyFlow()
+    }
+
     private val homeViewModel by lazy {
         HomeViewModel(
             networkManager,
             observeSendingMessagesStatus,
             resetSendingMessageStatus,
             selectedMailLabelId,
-            observePrimaryUserMock
+            observePrimaryUserMock,
+            shareIntentObserver
         )
     }
 
     @BeforeTest
     fun setUp() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
+        mockkStatic(Uri::class)
     }
 
     @AfterTest
     fun teardown() {
         unmockkAll()
+        unmockkStatic(Uri::class)
     }
 
     @Test
@@ -119,7 +135,8 @@ class HomeViewModelTest {
                 val actualItem = awaitItem()
                 val expectedItem = HomeState(
                     networkStatusEffect = Effect.of(NetworkStatus.Disconnected),
-                    messageSendingStatusEffect = Effect.empty()
+                    messageSendingStatusEffect = Effect.empty(),
+                    navigateToEffect = Effect.empty()
                 )
 
                 // Then
@@ -140,7 +157,8 @@ class HomeViewModelTest {
             val actualItem = awaitItem()
             val expectedItem = HomeState(
                 networkStatusEffect = Effect.of(NetworkStatus.Metered),
-                messageSendingStatusEffect = Effect.empty()
+                messageSendingStatusEffect = Effect.empty(),
+                navigateToEffect = Effect.empty()
             )
 
             // Then
@@ -158,7 +176,8 @@ class HomeViewModelTest {
             val actualItem = awaitItem()
             val expectedItem = HomeState(
                 networkStatusEffect = Effect.of(NetworkStatus.Metered),
-                messageSendingStatusEffect = Effect.empty()
+                messageSendingStatusEffect = Effect.empty(),
+                navigateToEffect = Effect.empty()
             )
 
             // Then
@@ -178,7 +197,8 @@ class HomeViewModelTest {
             val actualItem = awaitItem()
             val expectedItem = HomeState(
                 networkStatusEffect = Effect.of(NetworkStatus.Metered),
-                messageSendingStatusEffect = Effect.of(MessageSendingStatus.MessageSent)
+                messageSendingStatusEffect = Effect.of(MessageSendingStatus.MessageSent),
+                navigateToEffect = Effect.empty()
             )
             sendingMessageStatusFlow.emit(MessageSendingStatus.None)
 
@@ -201,7 +221,8 @@ class HomeViewModelTest {
                 val actualItem = awaitItem()
                 val expectedItem = HomeState(
                     networkStatusEffect = Effect.of(NetworkStatus.Metered),
-                    messageSendingStatusEffect = Effect.of(MessageSendingStatus.SendMessageError)
+                    messageSendingStatusEffect = Effect.of(MessageSendingStatus.SendMessageError),
+                    navigateToEffect = Effect.empty()
                 )
 
                 // Then
@@ -223,6 +244,63 @@ class HomeViewModelTest {
                 networkStatusEffect = Effect.of(NetworkStatus.Unmetered)
             )
             assertEquals(expectedItem, actualItem)
+        }
+    }
+
+    @Test
+    fun `should emit a new state with navigation effect when a share intent is received`() = runTest {
+        // Given
+        val fileUriStr = "content://media/1234"
+        val fileUri = mockk<Uri>()
+        val fileShareInfo = FileShareInfo.Empty.copy(
+            attachmentUris = listOf(fileUriStr)
+        )
+        val shareIntent = mockIntent(
+            action = Intent.ACTION_SEND,
+            data = fileUri
+        )
+        // Mock the extension function
+        mockkStatic("ch.protonmail.android.mailcommon.data.file.IntentShareExtensionsKt")
+        every { any<Intent>().getFileShareInfo() } returns fileShareInfo
+
+        every { networkManager.observe() } returns flowOf()
+        every { shouldPresentPinInsertionScreen() } returns flowOf()
+        every { shareIntentObserver() } returns flowOf(shareIntent)
+
+        // When + Then
+        homeViewModel.state.test {
+            val actualItem = awaitItem()
+            assertNotNull(actualItem.navigateToEffect.consume())
+        }
+    }
+
+    @Test
+    fun `should not emit a new navigation state when file share info is empty`() = runTest {
+        // Given
+        val fileUri = mockk<Uri>()
+        val shareIntent = mockIntent(
+            action = Intent.ACTION_VIEW,
+            data = fileUri
+        )
+        // Mock the extension function
+        mockkStatic("ch.protonmail.android.mailcommon.data.file.IntentShareExtensionsKt")
+        every { any<Intent>().getFileShareInfo() } returns FileShareInfo.Empty
+
+        every { networkManager.observe() } returns flowOf()
+        every { shouldPresentPinInsertionScreen() } returns flowOf()
+        every { shareIntentObserver() } returns flowOf(shareIntent)
+
+        // When + Then
+        homeViewModel.state.test {
+            val actualItem = awaitItem()
+            assertNull(actualItem.navigateToEffect.consume())
+        }
+    }
+
+    private fun mockIntent(action: String, data: Uri): Intent {
+        return mockk {
+            every { this@mockk.action } returns action
+            every { this@mockk.data } returns data
         }
     }
 }

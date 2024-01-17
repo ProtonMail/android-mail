@@ -78,7 +78,7 @@ class ComposerReducer @Inject constructor(
 
     }
 
-    @Suppress("ComplexMethod")
+    @Suppress("ComplexMethod", "LongMethod")
     private fun ComposerEvent.newStateForEvent(currentState: ComposerDraftState) = when (this) {
         is ComposerEvent.DefaultSenderReceived -> updateSenderTo(currentState, this.sender)
         is ComposerEvent.ErrorLoadingDefaultSenderAddress -> updateStateToSenderError(currentState)
@@ -116,6 +116,11 @@ class ComposerReducer @Inject constructor(
             currentState,
             this.draftUiModel,
             this.isDataRefreshed
+        )
+
+        is ComposerEvent.PrefillDataReceivedViaShare -> updateComposerFieldsState(
+            currentState,
+            this.draftUiModel, true
         )
 
         is ComposerEvent.ReplaceDraftBody -> {

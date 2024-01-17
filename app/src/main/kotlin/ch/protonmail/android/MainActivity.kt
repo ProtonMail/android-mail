@@ -76,7 +76,8 @@ class MainActivity : AppCompatActivity() {
                     Launcher(
                         Actions(
                             openInActivityInNewTask = { openInActivityInNewTask(it) },
-                            openIntentChooser = { openIntentChooser(it) }
+                            openIntentChooser = { openIntentChooser(it) },
+                            finishActivity = { finishAfterTransition() }
                         ),
                         launcherViewModel
                     )
@@ -117,6 +118,7 @@ class MainActivity : AppCompatActivity() {
 
     data class Actions(
         val openInActivityInNewTask: (uri: Uri) -> Unit,
-        val openIntentChooser: (values: OpenAttachmentIntentValues) -> Unit
+        val openIntentChooser: (values: OpenAttachmentIntentValues) -> Unit,
+        val finishActivity: () -> Unit
     )
 }

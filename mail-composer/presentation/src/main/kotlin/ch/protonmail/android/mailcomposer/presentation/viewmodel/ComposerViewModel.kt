@@ -18,12 +18,16 @@
 
 package ch.protonmail.android.mailcomposer.presentation.viewmodel
 
+import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
 import ch.protonmail.android.mailcommon.domain.MailFeatureId
+import ch.protonmail.android.mailcommon.domain.model.FileShareInfo
+import ch.protonmail.android.mailcommon.domain.model.decode
+import ch.protonmail.android.mailcommon.domain.model.hasEmailData
 import ch.protonmail.android.mailcommon.domain.usecase.GetPrimaryAddress
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
@@ -103,7 +107,7 @@ import me.proton.core.util.kotlin.takeIfNotEmpty
 import timber.log.Timber
 import javax.inject.Inject
 
-@Suppress("LongParameterList", "TooManyFunctions")
+@Suppress("LongParameterList", "TooManyFunctions", "LargeClass")
 @HiltViewModel
 class ComposerViewModel @Inject constructor(
     private val appInBackgroundState: AppInBackgroundState,
@@ -152,7 +156,7 @@ class ComposerViewModel @Inject constructor(
         ComposerDraftState.initial(
             MessageId(savedStateHandle.get<String>(ComposerScreen.DraftMessageIdKey) ?: provideNewDraftId().id),
             // setting the passed recipient directly here in the initial value makes the UX a bit smoother
-            to = savedStateHandle.extractRecipient() ?: emptyList(),
+            to = savedStateHandle.extractRecipient() ?: emptyList()
         )
     )
     val state: StateFlow<ComposerDraftState> = mutableState
@@ -162,6 +166,9 @@ class ComposerViewModel @Inject constructor(
         val draftAction = savedStateHandle.get<String>(ComposerScreen.SerializedDraftActionKey)
             ?.deserialize<DraftAction>()
         val recipientAddress = savedStateHandle.extractRecipient()
+
+        val draftActionForShare = savedStateHandle.get<String>(ComposerScreen.DraftActionForShareKey)
+            ?.deserialize<DraftAction.PrefillForShare>()
 
         primaryUserId.onEach { userId ->
             getPrimaryAddress(userId)
@@ -180,6 +187,7 @@ class ComposerViewModel @Inject constructor(
         when {
             inputDraftId != null -> prefillWithExistingDraft(inputDraftId, getDecryptedDraftFields)
             draftAction != null -> prefillForDraftAction(draftAction)
+            draftActionForShare != null -> prefillForShareDraftAction(draftActionForShare)
             else -> uploadDraftContinuouslyWhileInForeground(DraftAction.Compose)
         }
 
@@ -195,6 +203,67 @@ class ComposerViewModel @Inject constructor(
 
     private fun isCreatingEmptyDraft(inputDraftId: String?, draftAction: DraftAction?): Boolean =
         inputDraftId == null && (draftAction == null || draftAction is DraftAction.ComposeToAddress)
+
+    private fun prefillForShareDraftAction(shareDraftAction: DraftAction.PrefillForShare) {
+        val fileShareInfo = shareDraftAction.fileShareInfo.decode()
+
+        uploadDraftContinuouslyWhileInForeground(DraftAction.Compose)
+
+        viewModelScope.launch {
+            fileShareInfo.attachmentUris.takeIfNotEmpty()?.let { uris ->
+                storeAttachments(
+                    primaryUserId(),
+                    currentMessageId(),
+                    currentSenderEmail(),
+                    uris.map { Uri.parse(it) }
+                ).onLeft { error ->
+                    if (error is StoreDraftWithAttachmentError.FileSizeExceedsLimit) {
+                        emitNewStateFor(ComposerEvent.ErrorAttachmentsExceedSizeLimit)
+                    }
+                }
+            }
+
+            if (fileShareInfo.hasEmailData()) {
+                emitNewStateFor(
+                    ComposerEvent.PrefillDataReceivedViaShare(
+                        prepareDraftFieldsFor(fileShareInfo).toDraftUiModel()
+                    )
+                )
+            }
+        }
+    }
+
+    private suspend fun prepareDraftFieldsFor(fileShareInfo: FileShareInfo): DraftFields {
+        val draftBody = DraftBody(fileShareInfo.emailBody ?: "")
+        val subject = Subject(fileShareInfo.emailSubject ?: "")
+        val recipientsTo = RecipientsTo(
+            fileShareInfo.emailRecipientTo.takeIfNotEmpty()?.map {
+                participantMapper.recipientUiModelToParticipant(RecipientUiModel.Valid(it), contactsOrEmpty())
+            } ?: emptyList()
+        )
+
+        val recipientsCc = RecipientsCc(
+            fileShareInfo.emailRecipientCc.takeIfNotEmpty()?.map {
+                participantMapper.recipientUiModelToParticipant(RecipientUiModel.Valid(it), contactsOrEmpty())
+            } ?: emptyList()
+        )
+
+        val recipientsBcc = RecipientsBcc(
+            fileShareInfo.emailRecipientBcc.takeIfNotEmpty()?.map {
+                participantMapper.recipientUiModelToParticipant(RecipientUiModel.Valid(it), contactsOrEmpty())
+            } ?: emptyList()
+        )
+
+        return DraftFields(
+            currentSenderEmail(),
+            subject,
+            draftBody,
+            recipientsTo,
+            recipientsCc,
+            recipientsBcc,
+            null
+        )
+    }
 
     private fun prefillForDraftAction(draftAction: DraftAction) {
         val parentMessageId = draftAction.getParentMessageId() ?: return

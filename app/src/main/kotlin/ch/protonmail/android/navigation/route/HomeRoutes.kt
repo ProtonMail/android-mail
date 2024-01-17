@@ -24,6 +24,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
+import ch.protonmail.android.MainActivity
 import ch.protonmail.android.feature.account.RemoveAccountDialog
 import ch.protonmail.android.feature.account.SignOutAccountDialog
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
@@ -157,6 +158,7 @@ internal fun NavGraphBuilder.addMessageDetail(
 
 internal fun NavGraphBuilder.addComposer(
     navController: NavHostController,
+    activityActions: MainActivity.Actions,
     showDraftSavedSnackbar: () -> Unit,
     showMessageSendingSnackbar: () -> Unit,
     showMessageSendingOfflineSnackbar: () -> Unit
@@ -173,6 +175,13 @@ internal fun NavGraphBuilder.addComposer(
     composable(route = Destination.Screen.Composer.route) { ComposerScreen(actions) }
     composable(route = Destination.Screen.EditDraftComposer.route) { ComposerScreen(actions) }
     composable(route = Destination.Screen.MessageActionComposer.route) { ComposerScreen(actions) }
+    composable(route = Destination.Screen.ShareFileComposer.route) {
+        ComposerScreen(
+            actions.copy(
+                onCloseComposerClick = { activityActions.finishActivity() }
+            )
+        )
+    }
 }
 
 internal fun NavGraphBuilder.addSignOutAccountDialog(navController: NavHostController) {

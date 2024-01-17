@@ -587,6 +587,24 @@ class ComposerReducerTest(
         )
 
         @Suppress("VariableMaxLength")
+        private val LoadingToFieldsWhenReceivedDraftDataFromViaShare = TestTransition(
+            name = "Should stop loading and set the received draft data as composer fields when draft data received, " +
+                " via share",
+            currentState = ComposerDraftState.initial(messageId).copy(isLoading = true),
+            operation = ComposerEvent.PrefillDataReceivedViaShare(draftUiModel),
+            expectedState = aSubmittableState(
+                draftId = messageId,
+                sender = SenderUiModel(draftFieldsWithoutRecipients.sender.value),
+                to = draftFields.recipientsTo.value.map { Valid(it.address) },
+                cc = draftFields.recipientsCc.value.map { Valid(it.address) },
+                bcc = draftFields.recipientsBcc.value.map { Valid(it.address) },
+                subject = draftFieldsWithoutRecipients.subject,
+                draftBody = draftFieldsWithoutRecipients.body.value,
+                warning = Effect.empty()
+            )
+        )
+
+        @Suppress("VariableMaxLength")
         private val EmptyToStateWhenReplaceDraftBody = TestTransition(
             name = "Should update the state with new DraftBody Effect when ReplaceDraftBody was emitted",
             currentState = aNotSubmittableState(draftId = messageId),
@@ -781,6 +799,7 @@ class ComposerReducerTest(
             LoadingToFieldsWhenReceivedDraftDataEmptyRecipients,
             LoadingToFieldsWhenReceivedDraftDataValidRecipients,
             LoadingToFieldsWhenReceivedDraftDataFromLocal,
+            LoadingToFieldsWhenReceivedDraftDataFromViaShare,
             LoadingToErrorWhenErrorLoadingDraftData,
             EmptyToBottomSheetOpened,
             EmptyToBottomSheetClosed,

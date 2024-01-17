@@ -118,6 +118,10 @@ fun Home(
         }
     }
 
+    ConsumableLaunchedEffect(state.value.navigateToEffect) {
+        viewModel.navigateTo(navController, it)
+    }
+
     val featureMissingSnackbarMessage = stringResource(id = R.string.feature_coming_soon)
     fun showFeatureMissingSnackbar() = scope.launch {
         snackbarHostNormState.showSnackbar(
@@ -276,10 +280,12 @@ fun Home(
                 )
                 addComposer(
                     navController,
+                    activityActions,
                     showDraftSavedSnackbar = { showDraftSavedSnackbar() },
                     showMessageSendingSnackbar = { showMessageSendingSnackbar() },
                     showMessageSendingOfflineSnackbar = { showMessageSendingOfflineSnackbar() }
                 )
+
                 addSetMessagePassword(navController)
                 addSignOutAccountDialog(navController)
                 addRemoveAccountDialog(navController)

@@ -22,6 +22,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
+import ch.protonmail.android.mailcommon.data.file.getFileShareInfo
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
@@ -31,6 +32,11 @@ import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.navigation.model.Destination
 import ch.protonmail.android.navigation.model.HomeState
+import ch.protonmail.android.mailcommon.domain.model.FileShareInfo
+import ch.protonmail.android.mailcommon.domain.model.encode
+import ch.protonmail.android.mailcommon.domain.model.isNotEmpty
+import ch.protonmail.android.mailmessage.domain.model.DraftAction
+import ch.protonmail.android.navigation.share.ShareIntentObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -51,7 +57,8 @@ class HomeViewModel @Inject constructor(
     private val observeSendingMessagesStatus: ObserveSendingMessagesStatus,
     private val resetSendingMessageStatus: ResetSendingMessagesStatus,
     private val selectedMailLabelId: SelectedMailLabelId,
-    observePrimaryUser: ObservePrimaryUser
+    observePrimaryUser: ObservePrimaryUser,
+    shareIntentObserver: ShareIntentObserver
 ) : ViewModel() {
 
     private val primaryUser = observePrimaryUser().filterNotNull()
@@ -76,6 +83,17 @@ class HomeViewModel @Inject constructor(
             emitNewStateFor(it)
             resetSendingMessageStatus(primaryUser.first().userId)
         }.launchIn(viewModelScope)
+
+        shareIntentObserver().onEach { intent ->
+            val fileShareInfo = intent.getFileShareInfo()
+            if (fileShareInfo.isNotEmpty()) {
+                emitNewStateForShareVia(fileShareInfo)
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    fun navigateTo(navController: NavController, route: String) {
+        navController.navigate(route = route)
     }
 
     /**
@@ -102,6 +120,15 @@ class HomeViewModel @Inject constructor(
         }
         val currentState = state.value
         mutableState.value = currentState.copy(messageSendingStatusEffect = Effect.of(messageSendingStatus))
+    }
+
+    private fun emitNewStateForShareVia(fileShareInfo: FileShareInfo) {
+        val currentState = state.value
+        mutableState.value = currentState.copy(
+            navigateToEffect = Effect.of(
+                Destination.Screen.ShareFileComposer(DraftAction.PrefillForShare(fileShareInfo.encode()))
+            )
+        )
     }
 
     private fun emitNewStateFor(networkStatus: NetworkStatus) {
