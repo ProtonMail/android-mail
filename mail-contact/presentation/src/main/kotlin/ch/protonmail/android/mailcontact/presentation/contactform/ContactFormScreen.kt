@@ -20,16 +20,20 @@ package ch.protonmail.android.mailcontact.presentation.contactform
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -41,11 +45,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
+import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.dismissKeyboard
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
@@ -58,6 +64,7 @@ import ch.protonmail.android.mailcontact.presentation.ui.FormInputField
 import ch.protonmail.android.mailcontact.presentation.ui.ImageContactAvatar
 import ch.protonmail.android.mailcontact.presentation.ui.InitialsContactAvatar
 import me.proton.core.compose.component.ProtonCenteredProgress
+import me.proton.core.compose.component.ProtonSecondaryButton
 import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
@@ -66,6 +73,8 @@ import me.proton.core.compose.component.appbar.ProtonTopAppBar
 import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
+import me.proton.core.compose.theme.captionNorm
+import me.proton.core.compose.theme.captionWeak
 import me.proton.core.compose.theme.defaultStrongNorm
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -187,6 +196,145 @@ fun ContactFormContent(state: ContactFormState.Data, modifier: Modifier = Modifi
                 )
             }
         }
+        this.emailSection(state)
+        this.phoneSection(state)
+        this.addressSection(state)
+        this.noteSection(state)
+        this.otherSection(state)
+    }
+}
+
+private fun LazyListScope.emailSection(state: ContactFormState.Data) {
+    item {
+        SectionHeader(
+            iconResId = R.drawable.ic_proton_at,
+            title = stringResource(id = R.string.email_section)
+        )
+    }
+    items(state.contact.emails) { email ->
+
+    }
+    item {
+        AddNewButton {
+            // Trigger action here
+        }
+    }
+}
+
+private fun LazyListScope.phoneSection(state: ContactFormState.Data) {
+    item {
+        SectionHeader(
+            iconResId = R.drawable.ic_proton_phone,
+            title = stringResource(id = R.string.phone_section)
+        )
+    }
+    items(state.contact.phones) { phone ->
+
+    }
+    item {
+        AddNewButton {
+            // Trigger action here
+        }
+    }
+}
+
+private fun LazyListScope.addressSection(state: ContactFormState.Data) {
+    item {
+        SectionHeader(
+            iconResId = R.drawable.ic_proton_map_pin,
+            title = stringResource(id = R.string.address_section)
+        )
+    }
+    items(state.contact.addresses) { address ->
+
+    }
+    item {
+        AddNewButton {
+            // Trigger action here
+        }
+    }
+}
+
+private fun LazyListScope.noteSection(state: ContactFormState.Data) {
+    item {
+        SectionHeader(
+            iconResId = R.drawable.ic_proton_note,
+            title = stringResource(id = R.string.note_section)
+        )
+    }
+    items(state.contact.notes) { note ->
+
+    }
+    item {
+        AddNewButton {
+            // Trigger action here
+        }
+    }
+}
+
+private fun LazyListScope.otherSection(state: ContactFormState.Data) {
+    item {
+        SectionHeader(
+            iconResId = R.drawable.ic_proton_text_align_left,
+            title = stringResource(id = R.string.other_section)
+        )
+    }
+    items(state.contact.others) { other ->
+
+    }
+    item {
+        AddNewButton {
+            // Trigger action here
+        }
+    }
+}
+
+@Composable
+private fun SectionHeader(
+    modifier: Modifier = Modifier,
+    iconResId: Int,
+    title: String
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(
+                start = ProtonDimens.DefaultSpacing,
+                end = ProtonDimens.DefaultSpacing,
+                top = ProtonDimens.MediumSpacing,
+                bottom = ProtonDimens.SmallSpacing
+            )
+    ) {
+        Icon(
+            painter = painterResource(id = iconResId),
+            modifier = Modifier.size(ProtonDimens.SmallIconSize),
+            tint = ProtonTheme.colors.iconWeak,
+            contentDescription = NO_CONTENT_DESCRIPTION
+        )
+        Text(
+            modifier = Modifier.padding(start = ProtonDimens.SmallSpacing),
+            text = title,
+            style = ProtonTheme.typography.captionWeak
+        )
+    }
+    Divider()
+}
+
+@Composable
+private fun AddNewButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
+    ProtonSecondaryButton(
+        modifier = modifier.padding(
+            start = ProtonDimens.DefaultSpacing,
+            top = ProtonDimens.ExtraSmallSpacing,
+            bottom = ProtonDimens.DefaultSpacing
+        ),
+        onClick = onClick
+    ) {
+        Text(
+            text = stringResource(R.string.add_new),
+            Modifier.padding(horizontal = ProtonDimens.SmallSpacing),
+            style = ProtonTheme.typography.captionNorm
+        )
     }
 }
 

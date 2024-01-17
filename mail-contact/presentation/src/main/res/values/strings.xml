@@ -66,4 +66,11 @@
     <string name="contact_form_save_success">Contact saved</string>
     <string name="save_contact_content_description">Save contact</string>
     <string name="contact_form_save">Save</string>
+    <string name="add_new">Add new</string>
+    <string name="email_section">Email</string>
+    <string name="phone_section">Phone number</string>
+    <string name="address_section">Address</string>
+    <string name="note_section">Note</string>
+    <string name="birthday_section">Birthday</string>
+    <string name="other_section">Additional information</string>
 </resources>
