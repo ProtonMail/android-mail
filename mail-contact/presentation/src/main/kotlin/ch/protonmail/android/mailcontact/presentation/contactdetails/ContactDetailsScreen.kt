@@ -98,7 +98,7 @@ fun ContactDetailsScreen(actions: ContactDetailsScreen.Actions, viewModel: Conta
     val state = rememberAsState(flow = viewModel.state, initial = ContactDetailsViewModel.initialState).value
 
     val customActions = actions.copy(
-        onDeleteClick = { viewModel.submit(ContactDetailsViewAction.OnDeleteClick) },
+        onDeleteClick = { viewModel.submit(ContactDetailsViewAction.DeleteRequested) },
         onCallClick = { phoneNumber -> viewModel.submit(ContactDetailsViewAction.OnCallClick(phoneNumber)) },
         onEmailClick = { email -> viewModel.submit(ContactDetailsViewAction.OnEmailClick(email)) },
     )

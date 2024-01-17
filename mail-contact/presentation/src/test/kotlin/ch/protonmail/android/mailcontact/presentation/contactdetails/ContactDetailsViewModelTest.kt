@@ -159,34 +159,6 @@ class ContactDetailsViewModelTest {
     }
 
     @Test
-    fun `when OnDeleteClick action is submitted, then CloseContactDetails is emitted`() = runTest {
-        // Given
-        val expectedDecryptedContact = DecryptedContact(testContactId)
-        val expectedContactDetailsUiModel = ContactDetailsPreviewData.contactDetailsSampleData
-        expectDecryptedContact(testUserId, testContactId, expectedDecryptedContact)
-        expectContactDetailsUiModel(expectedDecryptedContact, expectedContactDetailsUiModel)
-
-        expectSavedStateContactId(testContactId)
-
-        // When
-        contactDetailsViewModel.state.test {
-            // Then
-            awaitItem() // Contact was loaded
-
-            contactDetailsViewModel.submit(ContactDetailsViewAction.OnDeleteClick)
-
-            val actual = awaitItem()
-
-            val expected = ContactDetailsState.Data(
-                contact = expectedContactDetailsUiModel,
-                closeWithSuccess = Effect.of(TextUiModel(R.string.contact_details_delete_success))
-            )
-
-            assertEquals(expected, actual)
-        }
-    }
-
-    @Test
     fun `when OnCallClick action is submitted, then call phone is emitted`() = runTest {
         // Given
         val expectedPhoneNumber = "123123123"
@@ -249,7 +221,7 @@ class ContactDetailsViewModelTest {
     }
 
     @Test
-    fun `when delete action is submitted, then delete is called`() = runTest {
+    fun `when delete request action is submitted, then confirm dialog is shown`() = runTest {
         // Given
         val expectedMail = "test@proton.me"
         val expectedDecryptedContact = DecryptedContact(testContactId)
@@ -267,7 +239,39 @@ class ContactDetailsViewModelTest {
             // Then
             awaitItem() // Contact was loaded
 
-            contactDetailsViewModel.submit(ContactDetailsViewAction.OnDeleteClick)
+            contactDetailsViewModel.submit(ContactDetailsViewAction.DeleteRequested)
+
+            val actual = awaitItem()
+
+            val expected = ContactDetailsState.Data(
+                contact = expectedContactDetailsUiModel,
+                showDeleteConfirmDialog = Effect.of(Unit)
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `when delete confirm action is submitted, then delete use case is called`() = runTest {
+        // Given
+        val expectedMail = "test@proton.me"
+        val expectedDecryptedContact = DecryptedContact(testContactId)
+        val expectedContactDetailsUiModel = ContactDetailsPreviewData.contactDetailsSampleData.copy(
+            defaultEmail = expectedMail
+        )
+        expectDecryptedContact(testUserId, testContactId, expectedDecryptedContact)
+        expectContactDetailsUiModel(expectedDecryptedContact, expectedContactDetailsUiModel)
+        expectDeleteContact(testUserId, testContactId)
+
+        expectSavedStateContactId(testContactId)
+
+        // When
+        contactDetailsViewModel.state.test {
+            // Then
+            awaitItem() // Contact was loaded
+
+            contactDetailsViewModel.submit(ContactDetailsViewAction.DeleteConfirmed)
 
             val actual = awaitItem()
 

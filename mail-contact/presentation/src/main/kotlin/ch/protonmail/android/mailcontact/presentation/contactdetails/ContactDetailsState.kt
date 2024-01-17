@@ -36,6 +36,7 @@ sealed class ContactDetailsState(
         val closeWithSuccess: Effect<TextUiModel> = Effect.empty(),
         val callPhoneNumber: Effect<String> = Effect.empty(),
         val openComposer: Effect<String> = Effect.empty(),
+        val showDeleteConfirmDialog: Effect<Unit> = Effect.empty(),
         val contact: ContactDetailsUiModel
     ) : ContactDetailsState(Effect.empty())
 }

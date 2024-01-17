@@ -78,7 +78,7 @@ class ContactDetailsReducerTest(
             ),
             TestInput(
                 currentState = emptyLoadingState,
-                event = ContactDetailsEvent.ContactDeleted,
+                event = ContactDetailsEvent.DeleteRequested,
                 expectedState = emptyLoadingState
             )
         )
@@ -105,7 +105,14 @@ class ContactDetailsReducerTest(
             ),
             TestInput(
                 currentState = loadedContactState,
-                event = ContactDetailsEvent.ContactDeleted,
+                event = ContactDetailsEvent.DeleteRequested,
+                expectedState = loadedContactState.copy(
+                    showDeleteConfirmDialog = Effect.of(Unit)
+                )
+            ),
+            TestInput(
+                currentState = loadedContactState,
+                event = ContactDetailsEvent.DeleteConfirmed,
                 expectedState = loadedContactState.copy(
                     closeWithSuccess = Effect.of(TextUiModel(R.string.contact_details_delete_success))
                 )

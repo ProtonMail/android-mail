@@ -77,7 +77,8 @@ class ContactDetailsViewModel @Inject constructor(
             actionMutex.withLock {
                 when (action) {
                     ContactDetailsViewAction.OnCloseClick -> emitNewStateFor(ContactDetailsEvent.CloseContactDetails)
-                    ContactDetailsViewAction.OnDeleteClick -> handleOnDeleteClick()
+                    ContactDetailsViewAction.DeleteRequested -> handleDeleteRequested()
+                    ContactDetailsViewAction.DeleteConfirmed -> handleDeleteConfirmed()
                     is ContactDetailsViewAction.OnCallClick -> handleOnCallClick(action.phoneNumber)
                     is ContactDetailsViewAction.OnEmailClick -> handleOnEmailClick(action)
                 }
@@ -98,10 +99,14 @@ class ContactDetailsViewModel @Inject constructor(
         }
     }
 
-    private suspend fun handleOnDeleteClick() {
+    private fun handleDeleteRequested() {
+        emitNewStateFor(ContactDetailsEvent.DeleteRequested)
+    }
+
+    private suspend fun handleDeleteConfirmed() {
         extractContactId()?.let {
             deleteContact(primaryUserId(), ContactId(it))
-            emitNewStateFor(ContactDetailsEvent.ContactDeleted)
+            emitNewStateFor(ContactDetailsEvent.DeleteConfirmed)
         }
     }
 

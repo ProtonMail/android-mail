@@ -23,7 +23,8 @@ import ch.protonmail.android.mailcontact.presentation.model.ContactDetailsUiMode
 sealed interface ContactDetailsOperation
 
 internal sealed interface ContactDetailsViewAction : ContactDetailsOperation {
-    object OnDeleteClick : ContactDetailsViewAction
+    object DeleteRequested : ContactDetailsViewAction
+    object DeleteConfirmed : ContactDetailsViewAction
     object OnCloseClick : ContactDetailsViewAction
     data class OnCallClick(val phoneNumber: String) : ContactDetailsViewAction
     data class OnEmailClick(val email: String) : ContactDetailsViewAction
@@ -35,7 +36,8 @@ sealed interface ContactDetailsEvent : ContactDetailsOperation {
     ) : ContactDetailsEvent
 
     object LoadContactError : ContactDetailsEvent
-    object ContactDeleted : ContactDetailsEvent
+    object DeleteRequested : ContactDetailsEvent
+    object DeleteConfirmed : ContactDetailsEvent
     object CloseContactDetails : ContactDetailsEvent
     data class CallPhoneNumber(val phoneNumber: String) : ContactDetailsEvent
     data class ComposeEmail(val email: String) : ContactDetailsEvent
