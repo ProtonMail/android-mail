@@ -77,12 +77,17 @@ fun MessageBody(
             MessageBodyBanner(text = R.string.message_body_embedded_and_remote_content_banner_text)
         }
         messageBodyUiModel.shouldShowEmbeddedImagesBanner -> {
-            MessageBodyBanner(text = R.string.message_body_embedded_images_banner_text)
+            MessageBodyButtonBanner(
+                bannerText = R.string.message_body_embedded_images_banner_text,
+                buttonText = R.string.message_body_load_embedded_images_button_text,
+                onButtonClicked = { actions.onLoadEmbeddedImages(messageBodyUiModel.messageId) }
+            )
         }
         messageBodyUiModel.shouldShowRemoteContentBanner -> {
-            MessageBodyRemoteContentBanner(
-                text = R.string.message_body_remote_content_banner_text,
-                onLoadRemoteContent = { actions.onLoadRemoteContent(messageBodyUiModel.messageId) }
+            MessageBodyButtonBanner(
+                bannerText = R.string.message_body_remote_content_banner_text,
+                buttonText = R.string.message_body_load_remote_content_button_text,
+                onButtonClicked = { actions.onLoadRemoteContent(messageBodyUiModel.messageId) }
             )
         }
     }
@@ -249,24 +254,28 @@ fun MessageBodyBanner(@StringRes text: Int) {
 }
 
 @Composable
-fun MessageBodyRemoteContentBanner(@StringRes text: Int, onLoadRemoteContent: () -> Unit) {
+fun MessageBodyButtonBanner(
+    @StringRes bannerText: Int,
+    @StringRes buttonText: Int,
+    onButtonClicked: () -> Unit
+) {
     MessageBanner(
         icon = R.drawable.ic_proton_image,
         iconTint = ProtonTheme.colors.iconWeak,
-        text = text,
+        text = bannerText,
         textStyle = ProtonTheme.typography.defaultSmallWeak,
         backgroundColor = ProtonTheme.colors.backgroundSecondary
     ) {
         ProtonButton(
             modifier = Modifier.fillMaxWidth(),
-            onClick = { onLoadRemoteContent() },
+            onClick = { onButtonClicked() },
             colors = ButtonDefaults.buttonColors(backgroundColor = ProtonTheme.colors.backgroundSecondary),
             elevation = ButtonDefaults.elevation(defaultElevation = 0.dp),
             shape = ProtonTheme.shapes.small,
             border = BorderStroke(.5.dp, ProtonTheme.colors.textWeak)
         ) {
             Text(
-                text = stringResource(id = R.string.message_body_load_remote_content_button_text),
+                text = stringResource(id = buttonText),
                 style = ProtonTheme.typography.defaultSmallWeak
             )
         }
@@ -284,7 +293,8 @@ object MessageBody {
         val onReply: (MessageId) -> Unit,
         val onReplyAll: (MessageId) -> Unit,
         val onForward: (MessageId) -> Unit,
-        val onLoadRemoteContent: (MessageId) -> Unit
+        val onLoadRemoteContent: (MessageId) -> Unit,
+        val onLoadEmbeddedImages: (MessageId) -> Unit
     )
 }
 

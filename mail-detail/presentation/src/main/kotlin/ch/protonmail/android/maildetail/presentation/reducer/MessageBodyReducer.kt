@@ -44,6 +44,19 @@ class MessageBodyReducer @Inject constructor() {
                 messageBodyState.newMessageBodyStateFromCollapseOrExpand()
 
             is MessageViewAction.LoadRemoteContent -> messageBodyState.newStateFromLoadRemoteContent()
+            is MessageViewAction.LoadEmbeddedImages -> messageBodyState.newStateFromLoadEmbeddedImages()
+        }
+    }
+
+    private fun MessageBodyState.newStateFromLoadEmbeddedImages(): MessageBodyState {
+        return when (this) {
+            is MessageBodyState.Data -> this.copy(
+                messageBodyUiModel = messageBodyUiModel.copy(
+                    shouldShowEmbeddedImages = true,
+                    shouldShowEmbeddedImagesBanner = false
+                )
+            )
+            else -> this
         }
     }
 

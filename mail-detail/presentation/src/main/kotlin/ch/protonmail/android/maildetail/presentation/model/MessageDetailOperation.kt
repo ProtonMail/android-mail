@@ -128,4 +128,5 @@ sealed interface MessageViewAction : MessageDetailOperation {
     object ShowAllAttachments : MessageViewAction
     data class OnAttachmentClicked(val attachmentId: AttachmentId) : MessageViewAction
     data class LoadRemoteContent(val messageId: MessageId) : MessageViewAction, AffectingMessageBody
+    data class LoadEmbeddedImages(val messageId: MessageId) : MessageViewAction, AffectingMessageBody
 }

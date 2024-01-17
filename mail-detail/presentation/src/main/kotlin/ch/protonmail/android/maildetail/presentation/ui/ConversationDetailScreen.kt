@@ -395,8 +395,8 @@ fun ConversationDetailScreen(
                     onScrollRequestCompleted = actions.onScrollRequestCompleted,
                     onBodyExpandCollapseButtonClicked = actions.onBodyExpandCollapseButtonClicked,
                     onMoreActionsClick = actions.onMoreActionsClick,
-                    onLoadRemoteContent = actions.onLoadRemoteContent
-
+                    onLoadRemoteContent = actions.onLoadRemoteContent,
+                    onLoadEmbeddedImages = {}
                 )
                 MessagesContent(
                     uiModels = state.messagesState.messages,

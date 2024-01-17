@@ -81,4 +81,5 @@
     <string name="error_delete_conversation_failed_wrong_folder">Conversation is not in a location where it can be deleted</string>
     <string name="conversation_deleted">Conversation deleted</string>
     <string name="message_body_load_remote_content_button_text">Load content</string>
+    <string name="message_body_load_embedded_images_button_text">Load embedded images</string>
 </resources>
