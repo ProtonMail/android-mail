@@ -94,14 +94,16 @@ sealed interface InputField {
 }
 
 sealed interface FieldType {
-    enum class EmailType(val localizedValue: TextUiModel) : FieldType {
+    val localizedValue: TextUiModel
+
+    enum class EmailType(override val localizedValue: TextUiModel) : FieldType {
         Email(TextUiModel(R.string.contact_type_email)),
         Home(TextUiModel(R.string.contact_type_home)),
         Work(TextUiModel(R.string.contact_type_work)),
         Other(TextUiModel(R.string.contact_type_other))
     }
 
-    enum class PhoneType(val localizedValue: TextUiModel) : FieldType {
+    enum class PhoneType(override val localizedValue: TextUiModel) : FieldType {
         Phone(TextUiModel(R.string.contact_type_phone)),
         Home(TextUiModel(R.string.contact_type_home)),
         Work(TextUiModel(R.string.contact_type_work)),
@@ -112,14 +114,14 @@ sealed interface FieldType {
         Pager(TextUiModel(R.string.contact_type_pager))
     }
 
-    enum class AddressType(val localizedValue: TextUiModel) : FieldType {
+    enum class AddressType(override val localizedValue: TextUiModel) : FieldType {
         Address(TextUiModel(R.string.contact_type_address)),
         Home(TextUiModel(R.string.contact_type_home)),
         Work(TextUiModel(R.string.contact_type_work)),
         Other(TextUiModel(R.string.contact_type_other))
     }
 
-    enum class OtherType(val localizedValue: TextUiModel) : FieldType {
+    enum class OtherType(override val localizedValue: TextUiModel) : FieldType {
         Photo(TextUiModel(R.string.contact_property_photo)),
         Organization(TextUiModel(R.string.contact_property_organization)),
         Title(TextUiModel(R.string.contact_property_title)),
