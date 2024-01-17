@@ -33,6 +33,7 @@ import ch.protonmail.android.uitest.robot.common.section.snackbarSection
 import ch.protonmail.android.uitest.robot.common.section.verify
 import ch.protonmail.android.uitest.robot.composer.composerRobot
 import ch.protonmail.android.uitest.robot.composer.model.snackbar.ComposerSnackbar
+import ch.protonmail.android.uitest.robot.composer.section.composerAlertDialogSection
 import ch.protonmail.android.uitest.robot.composer.section.topAppBarSection
 import ch.protonmail.android.uitest.robot.mailbox.mailboxRobot
 import dagger.hilt.android.testing.BindValue
@@ -110,6 +111,7 @@ internal class ComposerSendMessageToMultipleProtonTests : MockedNetworkTest(
         composerRobot {
             prepareDraft(toRecipients = mergedRecipients)
             topAppBarSection { tapSendButton() }
+            composerAlertDialogSection { clickSendWithEmptySubjectDialogConfirmButton() }
         }
     }
 

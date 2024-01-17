@@ -19,7 +19,6 @@
 package ch.protonmail.android.uitest.robot.composer.section
 
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerTestTags
@@ -38,8 +37,12 @@ internal class ComposerAlertDialogSection : ComposeSectionRobot() {
     private val sendWithEmptySubjectDialogDismissButton = composeTestRule.onNodeWithTag(
         ComposerTestTags.SendWithEmptySubjectDialogDismiss
     )
+    private val sendWithEmptySubjectDialogConfirmButton = composeTestRule.onNodeWithTag(
+        ComposerTestTags.SendWithEmptySubjectDialogConfirm
+    )
 
     fun clickSendWithEmptySubjectDialogDismissButton() = sendWithEmptySubjectDialogDismissButton.performClick()
+    fun clickSendWithEmptySubjectDialogConfirmButton() = sendWithEmptySubjectDialogConfirmButton.performClick()
 
     @VerifiesOuter
     inner class Verify {
