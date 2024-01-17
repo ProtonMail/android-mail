@@ -25,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -63,11 +64,19 @@ internal fun BodyTextField(
     val bodyMinLines =
         if (screenOrientation == Configuration.ORIENTATION_PORTRAIT) Composer.MessageBodyPortraitMinLines else 1
 
+    var userUpdated by rememberSaveable { mutableStateOf(false) }
+    LaunchedEffect(key1 = initialValue) {
+        if (!userUpdated) {
+            text = TextFieldValue(initialValue)
+        }
+    }
+
     TextField(
         value = text,
         onValueChange = {
             text = it
             onBodyChange(it.text)
+            userUpdated = true
         },
         modifier = modifier
             .fillMaxSize()
