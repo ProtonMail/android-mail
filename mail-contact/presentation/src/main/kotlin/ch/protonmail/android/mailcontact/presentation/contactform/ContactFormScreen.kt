@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcontact.presentation.contactform
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -32,8 +33,10 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalView
@@ -47,7 +50,10 @@ import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.dismissKeyboard
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcontact.presentation.R
+import ch.protonmail.android.mailcontact.presentation.model.ContactFormAvatar
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactFormPreviewData.contactFormSampleData
+import ch.protonmail.android.mailcontact.presentation.ui.ImageContactAvatar
+import ch.protonmail.android.mailcontact.presentation.ui.InitialsContactAvatar
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
@@ -121,23 +127,41 @@ fun ContactFormScreen(actions: ContactFormScreen.Actions, viewModel: ContactForm
 }
 
 @Composable
-fun ContactFormContent(
-    state: ContactFormState.Data,
-    modifier: Modifier = Modifier
-) {
+fun ContactFormContent(state: ContactFormState.Data, modifier: Modifier = Modifier) {
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
     ) {
         item {
-            Text(
-                modifier = Modifier.padding(
-                    top = ProtonDimens.DefaultSpacing,
-                    start = ProtonDimens.DefaultSpacing
-                ),
-                style = ProtonTheme.typography.defaultNorm,
-                text = state.contact.displayName
-            )
+            Column(modifier.fillMaxWidth()) {
+                when (val avatar = state.contact.avatar) {
+                    is ContactFormAvatar.Empty -> {
+                        // Temporary: replace with camera icon avatar once we implement image picker.
+                        InitialsContactAvatar(
+                            modifier = Modifier
+                                .align(Alignment.CenterHorizontally)
+                                .padding(top = ProtonDimens.DefaultSpacing),
+                            initials = ""
+                        )
+                    }
+                    is ContactFormAvatar.Photo -> {
+                        ImageContactAvatar(
+                            modifier = Modifier
+                                .align(Alignment.CenterHorizontally)
+                                .padding(top = ProtonDimens.DefaultSpacing),
+                            imageBitmap = avatar.bitmap.asImageBitmap()
+                        )
+                    }
+                }
+                Text(
+                    modifier = Modifier.padding(
+                        top = ProtonDimens.DefaultSpacing,
+                        start = ProtonDimens.DefaultSpacing
+                    ),
+                    style = ProtonTheme.typography.defaultNorm,
+                    text = state.contact.displayName
+                )
+            }
         }
     }
 }

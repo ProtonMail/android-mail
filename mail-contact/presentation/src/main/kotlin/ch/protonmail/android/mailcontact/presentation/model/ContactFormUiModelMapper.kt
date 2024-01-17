@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.mailcontact.presentation.model
 
-import android.graphics.Bitmap
 import ch.protonmail.android.mailcommon.presentation.usecase.DecodeByteArray
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
 import javax.inject.Inject
@@ -113,13 +112,13 @@ class ContactFormUiModelMapper @Inject constructor(
         return others
     }
 
-    private fun getAvatar(decryptedContact: DecryptedContact): Bitmap? {
+    private fun getAvatar(decryptedContact: DecryptedContact): ContactFormAvatar {
         if (decryptedContact.photos.isNotEmpty()) {
             val byteArray = decryptedContact.photos.first().data
             decodeByteArray(byteArray)?.let { bitmap ->
-                return bitmap
+                return ContactFormAvatar.Photo(bitmap = bitmap)
             }
         }
-        return null
+        return ContactFormAvatar.Empty
     }
 }

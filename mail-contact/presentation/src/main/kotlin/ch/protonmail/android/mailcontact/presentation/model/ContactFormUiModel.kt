@@ -26,7 +26,7 @@ import me.proton.core.contact.domain.entity.ContactId
 
 data class ContactFormUiModel(
     val id: ContactId?,
-    val avatar: Bitmap?,
+    val avatar: ContactFormAvatar,
     val displayName: String,
     val firstName: String,
     val lastName: String,
@@ -41,7 +41,7 @@ data class ContactFormUiModel(
 
 val emptyContactFormUiModel = ContactFormUiModel(
     id = null,
-    avatar = null,
+    avatar = ContactFormAvatar.Empty,
     displayName = "",
     firstName = "",
     lastName = "",
@@ -128,4 +128,14 @@ sealed interface FieldType {
         Gender(TextUiModel(R.string.contact_property_gender)),
         Anniversary(TextUiModel(R.string.contact_property_anniversary))
     }
+}
+
+sealed interface ContactFormAvatar {
+
+    // Use data class with camera icon res id here once we implement image picker.
+    object Empty : ContactFormAvatar
+
+    data class Photo(
+        val bitmap: Bitmap
+    ) : ContactFormAvatar
 }

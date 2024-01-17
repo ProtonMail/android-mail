@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcontact.presentation.previewdata
 
 import java.time.LocalDate
+import ch.protonmail.android.mailcontact.presentation.model.ContactFormAvatar
 import ch.protonmail.android.mailcontact.presentation.model.ContactFormUiModel
 import ch.protonmail.android.mailcontact.presentation.model.FieldType
 import ch.protonmail.android.mailcontact.presentation.model.InputField
@@ -28,7 +29,7 @@ object ContactFormPreviewData {
 
     val contactFormSampleData = ContactFormUiModel(
         id = ContactId("Id"),
-        avatar = null,
+        avatar = ContactFormAvatar.Empty,
         displayName = "displayName",
         firstName = "firstName",
         lastName = "lastName",
