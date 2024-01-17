@@ -47,6 +47,10 @@ dependencies {
 
     implementation(Dependencies.moduleDataLibs)
 
+    implementation(Dagger.hiltAndroid)
+    implementation(AndroidX.Hilt.work)
+    implementation(project(":mail-common:data"))
+
     implementation(Proton.Core.contact)
 
     implementation(project(":mail-contact:domain"))
