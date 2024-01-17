@@ -23,6 +23,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailcontact.domain.usecase.DeleteContact
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveDecryptedContact
 import ch.protonmail.android.mailcontact.presentation.model.ContactDetailsUiModelMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -47,8 +48,9 @@ class ContactDetailsViewModel @Inject constructor(
     private val observeDecryptedContact: ObserveDecryptedContact,
     private val reducer: ContactDetailsReducer,
     private val contactDetailsUiModelMapper: ContactDetailsUiModelMapper,
-    observePrimaryUserId: ObservePrimaryUserId,
-    savedStateHandle: SavedStateHandle
+    private val deleteContact: DeleteContact,
+    private val savedStateHandle: SavedStateHandle,
+    observePrimaryUserId: ObservePrimaryUserId
 ) : ViewModel() {
 
     private val mutableState = MutableStateFlow(initialState)
@@ -58,7 +60,7 @@ class ContactDetailsViewModel @Inject constructor(
     val state: StateFlow<ContactDetailsState> = mutableState
 
     init {
-        savedStateHandle.get<String>(ContactDetailsScreen.ContactDetailsContactIdKey)?.let { contactId ->
+        extractContactId()?.let { contactId ->
             viewModelScope.launch {
                 flowContactDetailsEvent(userId = primaryUserId(), contactId = ContactId(contactId))
                     .onEach { contactListEvent -> emitNewStateFor(contactListEvent) }
@@ -97,7 +99,10 @@ class ContactDetailsViewModel @Inject constructor(
     }
 
     private suspend fun handleOnDeleteClick() {
-        emitNewStateFor(ContactDetailsEvent.ContactDeleted)
+        extractContactId()?.let {
+            deleteContact(primaryUserId(), ContactId(it))
+            emitNewStateFor(ContactDetailsEvent.ContactDeleted)
+        }
     }
 
     private fun handleOnCallClick(phoneNumber: String) {
@@ -109,6 +114,8 @@ class ContactDetailsViewModel @Inject constructor(
     }
 
     private suspend fun primaryUserId() = primaryUserId.first()
+
+    private fun extractContactId() = savedStateHandle.get<String>(ContactDetailsScreen.ContactDetailsContactIdKey)
 
     private fun emitNewStateFor(event: ContactDetailsEvent) {
         val currentState = state.value

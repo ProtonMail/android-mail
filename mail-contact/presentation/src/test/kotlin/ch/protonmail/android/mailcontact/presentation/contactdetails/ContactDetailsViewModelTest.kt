@@ -27,12 +27,15 @@ import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
+import ch.protonmail.android.mailcontact.domain.usecase.DeleteContact
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveDecryptedContact
 import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.model.ContactDetailsUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactDetailsUiModelMapper
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactDetailsPreviewData
 import ch.protonmail.android.testdata.user.UserIdTestData
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
@@ -60,6 +63,7 @@ class ContactDetailsViewModelTest {
 
     private val contactDetailsUiModelMapperMock = mockk<ContactDetailsUiModelMapper>()
     private val observeDecryptedContactMock = mockk<ObserveDecryptedContact>()
+    private val deleteContact = mockk<DeleteContact>()
     private val savedStateHandleMock = mockk<SavedStateHandle>()
 
     private val reducer = ContactDetailsReducer()
@@ -69,8 +73,9 @@ class ContactDetailsViewModelTest {
             observeDecryptedContactMock,
             reducer,
             contactDetailsUiModelMapperMock,
-            observePrimaryUserId,
-            savedStateHandleMock
+            deleteContact,
+            savedStateHandleMock,
+            observePrimaryUserId
         )
     }
 
@@ -243,6 +248,39 @@ class ContactDetailsViewModelTest {
         }
     }
 
+    @Test
+    fun `when delete action is submitted, then delete is called`() = runTest {
+        // Given
+        val expectedMail = "test@proton.me"
+        val expectedDecryptedContact = DecryptedContact(testContactId)
+        val expectedContactDetailsUiModel = ContactDetailsPreviewData.contactDetailsSampleData.copy(
+            defaultEmail = expectedMail
+        )
+        expectDecryptedContact(testUserId, testContactId, expectedDecryptedContact)
+        expectContactDetailsUiModel(expectedDecryptedContact, expectedContactDetailsUiModel)
+        expectDeleteContact(testUserId, testContactId)
+
+        expectSavedStateContactId(testContactId)
+
+        // When
+        contactDetailsViewModel.state.test {
+            // Then
+            awaitItem() // Contact was loaded
+
+            contactDetailsViewModel.submit(ContactDetailsViewAction.OnDeleteClick)
+
+            val actual = awaitItem()
+
+            val expected = ContactDetailsState.Data(
+                contact = expectedContactDetailsUiModel,
+                closeWithSuccess = Effect.of(TextUiModel(R.string.contact_details_delete_success))
+            )
+
+            assertEquals(expected, actual)
+            coVerify { deleteContact(testUserId, testContactId) }
+        }
+    }
+
     private fun expectSavedStateContactId(contactId: ContactId?) {
         every {
             savedStateHandleMock.get<String>(ContactDetailsScreen.ContactDetailsContactIdKey)
@@ -266,5 +304,9 @@ class ContactDetailsViewModelTest {
         every {
             contactDetailsUiModelMapperMock.toContactDetailsUiModel(decryptedContact)
         } returns expectedContactDetailsUiModel
+    }
+
+    private fun expectDeleteContact(userId: UserId, contactId: ContactId) {
+        coEvery { deleteContact(userId, contactId) } returns Unit.right()
     }
 }
