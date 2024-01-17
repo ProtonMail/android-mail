@@ -24,6 +24,10 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontact.presentation.R
 import me.proton.core.contact.domain.entity.ContactId
 
+const val CONTACT_NAME_MAX_LENGTH = 190
+// We remove one to avoid issue with space when computing the full name
+const val CONTACT_FIRST_LAST_NAME_MAX_LENGTH = CONTACT_NAME_MAX_LENGTH / 2 - 1
+
 data class ContactFormUiModel(
     val id: ContactId?,
     val avatar: ContactFormAvatar,

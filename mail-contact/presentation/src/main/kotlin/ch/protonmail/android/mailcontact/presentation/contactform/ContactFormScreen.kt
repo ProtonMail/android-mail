@@ -50,8 +50,11 @@ import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.dismissKeyboard
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcontact.presentation.R
+import ch.protonmail.android.mailcontact.presentation.model.CONTACT_FIRST_LAST_NAME_MAX_LENGTH
+import ch.protonmail.android.mailcontact.presentation.model.CONTACT_NAME_MAX_LENGTH
 import ch.protonmail.android.mailcontact.presentation.model.ContactFormAvatar
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactFormPreviewData.contactFormSampleData
+import ch.protonmail.android.mailcontact.presentation.ui.FormInputField
 import ch.protonmail.android.mailcontact.presentation.ui.ImageContactAvatar
 import ch.protonmail.android.mailcontact.presentation.ui.InitialsContactAvatar
 import me.proton.core.compose.component.ProtonCenteredProgress
@@ -63,7 +66,6 @@ import me.proton.core.compose.component.appbar.ProtonTopAppBar
 import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
-import me.proton.core.compose.theme.defaultNorm
 import me.proton.core.compose.theme.defaultStrongNorm
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -140,7 +142,10 @@ fun ContactFormContent(state: ContactFormState.Data, modifier: Modifier = Modifi
                         InitialsContactAvatar(
                             modifier = Modifier
                                 .align(Alignment.CenterHorizontally)
-                                .padding(top = ProtonDimens.DefaultSpacing),
+                                .padding(
+                                    top = ProtonDimens.DefaultSpacing,
+                                    bottom = ProtonDimens.MediumSpacing
+                                ),
                             initials = ""
                         )
                     }
@@ -148,18 +153,37 @@ fun ContactFormContent(state: ContactFormState.Data, modifier: Modifier = Modifi
                         ImageContactAvatar(
                             modifier = Modifier
                                 .align(Alignment.CenterHorizontally)
-                                .padding(top = ProtonDimens.DefaultSpacing),
+                                .padding(
+                                    top = ProtonDimens.DefaultSpacing,
+                                    bottom = ProtonDimens.MediumSpacing
+                                ),
                             imageBitmap = avatar.bitmap.asImageBitmap()
                         )
                     }
                 }
-                Text(
-                    modifier = Modifier.padding(
-                        top = ProtonDimens.DefaultSpacing,
-                        start = ProtonDimens.DefaultSpacing
-                    ),
-                    style = ProtonTheme.typography.defaultNorm,
-                    text = state.contact.displayName
+                FormInputField(
+                    initialValue = state.contact.displayName,
+                    hint = "Display name",
+                    maxCharacters = CONTACT_NAME_MAX_LENGTH,
+                    onTextChange = {
+                        // Trigger action here
+                    }
+                )
+                FormInputField(
+                    initialValue = state.contact.firstName,
+                    hint = "First name",
+                    maxCharacters = CONTACT_FIRST_LAST_NAME_MAX_LENGTH,
+                    onTextChange = {
+                        // Trigger action here
+                    }
+                )
+                FormInputField(
+                    initialValue = state.contact.lastName,
+                    hint = "Last name",
+                    maxCharacters = CONTACT_FIRST_LAST_NAME_MAX_LENGTH,
+                    onTextChange = {
+                        // Trigger action here
+                    }
                 )
             }
         }
