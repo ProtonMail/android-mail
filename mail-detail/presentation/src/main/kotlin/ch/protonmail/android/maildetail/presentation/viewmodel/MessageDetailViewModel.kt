@@ -153,6 +153,7 @@ class MessageDetailViewModel @Inject constructor(
             is MessageViewAction.UnStar -> unStarMessage()
             is MessageViewAction.MarkUnread -> markMessageUnread()
             is MessageViewAction.Trash -> trashMessage()
+            is MessageViewAction.LoadRemoteAndEmbeddedContent,
             is MessageViewAction.LoadEmbeddedImages,
             is MessageViewAction.LoadRemoteContent,
             is MessageViewAction.DismissBottomSheet,

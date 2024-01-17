@@ -84,6 +84,21 @@ object MessageBodyUiModelTestData {
         shouldShowEmbeddedImagesBanner = false
     )
 
+    val bodyWithRemoteAndEmbeddedContentBlocked = buildMessageBodyUiModel(
+        messageBody = "MessageWithRemoteAndEmbeddedImages",
+        shouldShowRemoteContent = false,
+        shouldShowEmbeddedImages = false,
+        shouldShowRemoteContentBanner = true,
+        shouldShowEmbeddedImagesBanner = true
+    )
+
+    val bodyWithRemoteAndEmbeddedContentLoaded = bodyWithRemoteAndEmbeddedContentBlocked.copy(
+        shouldShowEmbeddedImages = true,
+        shouldShowRemoteContent = true,
+        shouldShowRemoteContentBanner = false,
+        shouldShowEmbeddedImagesBanner = false
+    )
+
 
     fun buildMessageBodyUiModel(
         messageId: MessageId = MessageIdSample.build(),

@@ -158,6 +158,17 @@ class MessageBodyReducerTest(
                 MessageBodyState.Data(
                     MessageBodyUiModelTestData.messageBodyWithEmbeddedImagesLoaded
                 )
+            ),
+            TestInput(
+                MessageBodyState.Data(
+                    MessageBodyUiModelTestData.bodyWithRemoteAndEmbeddedContentBlocked
+                ),
+                MessageViewAction.LoadRemoteAndEmbeddedContent(
+                    MessageBodyUiModelTestData.bodyWithRemoteAndEmbeddedContentBlocked.messageId
+                ),
+                MessageBodyState.Data(
+                    MessageBodyUiModelTestData.bodyWithRemoteAndEmbeddedContentLoaded
+                )
             )
         )
 

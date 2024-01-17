@@ -149,5 +149,7 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
         ConversationDetailViewAction, AffectingMessages
     data class LoadRemoteContent(val messageId: MessageIdUiModel) : ConversationDetailViewAction, AffectingMessages
     data class LoadEmbeddedImages(val messageId: MessageIdUiModel) : ConversationDetailViewAction, AffectingMessages
+    data class LoadRemoteAndEmbeddedContent(val messageId: MessageIdUiModel) :
+        ConversationDetailViewAction, AffectingMessages
 
 }

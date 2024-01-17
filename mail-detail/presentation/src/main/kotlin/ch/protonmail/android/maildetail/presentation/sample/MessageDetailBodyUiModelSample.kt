@@ -49,6 +49,21 @@ object MessageDetailBodyUiModelSample {
         shouldShowEmbeddedImagesBanner = false
     )
 
+    val withBlockedContent = build(
+        "A message body with both remote and embedded images",
+        shouldShowRemoteContent = false,
+        shouldShowEmbeddedImages = false,
+        shouldShowRemoteContentBanner = true,
+        shouldShowEmbeddedImagesBanner = true
+    )
+
+    val withAllowedContent = build(
+        "A message body with both remote and embedded images",
+        shouldShowRemoteContent = true,
+        shouldShowEmbeddedImages = true,
+        shouldShowRemoteContentBanner = false,
+        shouldShowEmbeddedImagesBanner = false
+    )
 
     fun build(
         messageBody: String,

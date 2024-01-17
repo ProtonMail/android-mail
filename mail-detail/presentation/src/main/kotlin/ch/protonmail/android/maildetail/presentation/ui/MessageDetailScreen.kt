@@ -199,7 +199,10 @@ fun MessageDetailScreen(
                     viewModel.submit(MessageViewAction.ExpandOrCollapseMessageBody)
                 },
                 onLoadRemoteContent = { viewModel.submit(MessageViewAction.LoadRemoteContent(it)) },
-                onLoadEmbeddedImages = { viewModel.submit(MessageViewAction.LoadEmbeddedImages(it)) }
+                onLoadEmbeddedImages = { viewModel.submit(MessageViewAction.LoadEmbeddedImages(it)) },
+                onLoadRemoteAndEmbeddedContent = {
+                    viewModel.submit(MessageViewAction.LoadRemoteAndEmbeddedContent(it))
+                }
             )
         )
     }
@@ -342,7 +345,9 @@ fun MessageDetailScreen(
                     onExpandCollapseButtonClicked = actions.onExpandCollapseButtonClicked,
                     onMoreActionsClick = actions.onMoreActionsClick,
                     onLoadRemoteContent = actions.onLoadRemoteContent,
-                    onLoadEmbeddedImages = actions.onLoadEmbeddedImages
+                    onLoadEmbeddedImages = actions.onLoadEmbeddedImages,
+                    onLoadRemoteAndEmbeddedContent = actions.onLoadRemoteAndEmbeddedContent
+
                 )
                 MessageDetailContent(
                     padding = innerPadding,
@@ -421,7 +426,8 @@ private fun MessageDetailContent(
                         onReplyAll = actions.onReplyAll,
                         onForward = actions.onForward,
                         onLoadRemoteContent = actions.onLoadRemoteContent,
-                        onLoadEmbeddedImages = actions.onLoadEmbeddedImages
+                        onLoadEmbeddedImages = actions.onLoadEmbeddedImages,
+                        onLoadRemoteAndEmbeddedContent = actions.onLoadRemoteAndEmbeddedContent
                     )
                 )
 
@@ -445,7 +451,8 @@ private fun MessageDetailContent(
                             onReplyAll = { Timber.d("Message: Reply All to message $it") },
                             onForward = { Timber.d("Message: Forward message $it") },
                             onLoadRemoteContent = { actions.onLoadRemoteContent(it) },
-                            onLoadEmbeddedImages = { actions.onLoadEmbeddedImages(it) }
+                            onLoadEmbeddedImages = { actions.onLoadEmbeddedImages(it) },
+                            onLoadRemoteAndEmbeddedContent = { actions.onLoadRemoteAndEmbeddedContent(it) }
                         )
                     )
                 }
@@ -497,7 +504,8 @@ object MessageDetailScreen {
         val onExpandCollapseButtonClicked: () -> Unit,
         val onMoreActionsClick: (MessageId) -> Unit,
         val onLoadRemoteContent: (MessageId) -> Unit,
-        val onLoadEmbeddedImages: (MessageId) -> Unit
+        val onLoadEmbeddedImages: (MessageId) -> Unit,
+        val onLoadRemoteAndEmbeddedContent: (MessageId) -> Unit
     ) {
 
         companion object {
@@ -526,7 +534,8 @@ object MessageDetailScreen {
                 onExpandCollapseButtonClicked = {},
                 onMoreActionsClick = {},
                 onLoadRemoteContent = {},
-                onLoadEmbeddedImages = {}
+                onLoadEmbeddedImages = {},
+                onLoadRemoteAndEmbeddedContent = {}
             )
         }
     }
@@ -547,7 +556,8 @@ object MessageDetailContent {
         val onExpandCollapseButtonClicked: () -> Unit,
         val onMoreActionsClick: (MessageId) -> Unit,
         val onLoadRemoteContent: (MessageId) -> Unit,
-        val onLoadEmbeddedImages: (MessageId) -> Unit
+        val onLoadEmbeddedImages: (MessageId) -> Unit,
+        val onLoadRemoteAndEmbeddedContent: (MessageId) -> Unit
     )
 }
 

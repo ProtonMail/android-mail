@@ -291,6 +291,22 @@ class ConversationDetailMessagesReducerTest(
                         ConversationDetailMessageUiModelSample.MessageWithEmbeddedImagesLoaded
                     ).toImmutableList()
                 )
+            ),
+
+            Input(
+                currentState = ConversationDetailsMessagesState.Data(
+                    messages = listOf(
+                        ConversationDetailMessageUiModelSample.WithRemoteAndEmbeddedContentBlocked
+                    ).toImmutableList()
+                ),
+                operation = ConversationDetailViewAction.LoadRemoteAndEmbeddedContent(
+                    ConversationDetailMessageUiModelSample.WithRemoteAndEmbeddedContentBlocked.messageId
+                ),
+                expectedState = ConversationDetailsMessagesState.Data(
+                    messages = listOf(
+                        ConversationDetailMessageUiModelSample.WithRemoteAndEmbeddedContentLoaded
+                    ).toImmutableList()
+                )
             )
         )
 

@@ -229,6 +229,9 @@ fun ConversationDetailScreen(
                 },
                 onLoadEmbeddedImages = {
                     viewModel.submit(ConversationDetailViewAction.LoadEmbeddedImages(MessageIdUiModel(it.id)))
+                },
+                onLoadRemoteAndEmbeddedContent = {
+                    viewModel.submit(ConversationDetailViewAction.LoadRemoteAndEmbeddedContent(MessageIdUiModel(it.id)))
                 }
             ),
             scrollToMessageId = state.scrollToMessage?.id
@@ -399,7 +402,8 @@ fun ConversationDetailScreen(
                     onBodyExpandCollapseButtonClicked = actions.onBodyExpandCollapseButtonClicked,
                     onMoreActionsClick = actions.onMoreActionsClick,
                     onLoadRemoteContent = actions.onLoadRemoteContent,
-                    onLoadEmbeddedImages = actions.onLoadEmbeddedImages
+                    onLoadEmbeddedImages = actions.onLoadEmbeddedImages,
+                    onLoadRemoteAndEmbeddedContent = { actions.onLoadRemoteAndEmbeddedContent(it) }
                 )
                 MessagesContent(
                     uiModels = state.messagesState.messages,
@@ -639,7 +643,8 @@ object ConversationDetailScreen {
         val onBodyExpandCollapseButtonClicked: (MessageIdUiModel) -> Unit,
         val onMoreActionsClick: (MessageId) -> Unit,
         val onLoadRemoteContent: (MessageId) -> Unit,
-        val onLoadEmbeddedImages: (MessageId) -> Unit
+        val onLoadEmbeddedImages: (MessageId) -> Unit,
+        val onLoadRemoteAndEmbeddedContent: (MessageId) -> Unit
     ) {
 
         companion object {
@@ -671,7 +676,8 @@ object ConversationDetailScreen {
                 onBodyExpandCollapseButtonClicked = {},
                 onMoreActionsClick = {},
                 onLoadRemoteContent = {},
-                onLoadEmbeddedImages = {}
+                onLoadEmbeddedImages = {},
+                onLoadRemoteAndEmbeddedContent = {}
             )
         }
     }

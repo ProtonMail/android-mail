@@ -99,6 +99,10 @@ class ConversationDetailMessagesReducer @Inject constructor() {
         is ConversationDetailViewAction.LoadEmbeddedImages -> {
             currentState.toNewMessageBodyLoadEmbeddedImagesState(operation)
         }
+
+        is ConversationDetailViewAction.LoadRemoteAndEmbeddedContent -> {
+            currentState.toNewStateLoadRemoteAndEmbeddedContent(operation)
+        }
     }
 
     private fun ConversationDetailsMessagesState.toNewStateForNoNetworkError() = when (this) {
@@ -115,6 +119,29 @@ class ConversationDetailMessagesReducer @Inject constructor() {
         is ConversationDetailsMessagesState.Error -> ConversationDetailsMessagesState.Error(
             message = TextUiModel(string.detail_error_loading_messages)
         )
+    }
+
+    private fun ConversationDetailsMessagesState.toNewStateLoadRemoteAndEmbeddedContent(
+        operation: ConversationDetailViewAction.LoadRemoteAndEmbeddedContent
+    ): ConversationDetailsMessagesState = when (this) {
+        is ConversationDetailsMessagesState.Data -> ConversationDetailsMessagesState.Data(
+            messages = messages.map {
+                if (it.messageId == operation.messageId && it is ConversationDetailMessageUiModel.Expanded) {
+                    it.copy(
+                        messageBodyUiModel = it.messageBodyUiModel.copy(
+                            shouldShowEmbeddedImages = true,
+                            shouldShowRemoteContent = true,
+                            shouldShowEmbeddedImagesBanner = false,
+                            shouldShowRemoteContentBanner = false
+                        )
+                    )
+                } else {
+                    it
+                }
+            }.toImmutableList()
+        )
+
+        else -> this
     }
 
     private fun ConversationDetailsMessagesState.toNewMessageBodyLoadEmbeddedImagesState(

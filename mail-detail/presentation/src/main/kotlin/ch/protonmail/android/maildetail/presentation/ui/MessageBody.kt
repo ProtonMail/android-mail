@@ -74,7 +74,11 @@ fun MessageBody(
 
     when {
         messageBodyUiModel.shouldShowEmbeddedImagesBanner && messageBodyUiModel.shouldShowRemoteContentBanner -> {
-            MessageBodyBanner(text = R.string.message_body_embedded_and_remote_content_banner_text)
+            MessageBodyButtonBanner(
+                bannerText = R.string.message_body_embedded_and_remote_content_banner_text,
+                buttonText = R.string.message_body_load_embedded_and_remote_content_button_text,
+                onButtonClicked = { actions.onLoadRemoteAndEmbeddedContent(messageBodyUiModel.messageId) }
+            )
         }
         messageBodyUiModel.shouldShowEmbeddedImagesBanner -> {
             MessageBodyButtonBanner(
@@ -243,17 +247,6 @@ internal fun MessageBodyLoadingError(
 }
 
 @Composable
-fun MessageBodyBanner(@StringRes text: Int) {
-    MessageBanner(
-        icon = R.drawable.ic_proton_image,
-        iconTint = ProtonTheme.colors.iconWeak,
-        text = text,
-        textStyle = ProtonTheme.typography.defaultSmallWeak,
-        backgroundColor = ProtonTheme.colors.backgroundSecondary
-    )
-}
-
-@Composable
 fun MessageBodyButtonBanner(
     @StringRes bannerText: Int,
     @StringRes buttonText: Int,
@@ -294,7 +287,8 @@ object MessageBody {
         val onReplyAll: (MessageId) -> Unit,
         val onForward: (MessageId) -> Unit,
         val onLoadRemoteContent: (MessageId) -> Unit,
-        val onLoadEmbeddedImages: (MessageId) -> Unit
+        val onLoadEmbeddedImages: (MessageId) -> Unit,
+        val onLoadRemoteAndEmbeddedContent: (MessageId) -> Unit
     )
 }
 
