@@ -376,7 +376,7 @@ fun Home(
                     navController,
                     showSuccessSnackbar = { message ->
                         scope.launch {
-                            snackbarHostNormState.showSnackbar(
+                            snackbarHostSuccessState.showSnackbar(
                                 message = message,
                                 type = ProtonSnackbarType.SUCCESS
                             )
@@ -384,7 +384,7 @@ fun Home(
                     },
                     showErrorSnackbar = { message ->
                         scope.launch {
-                            snackbarHostNormState.showSnackbar(
+                            snackbarHostErrorState.showSnackbar(
                                 message = message,
                                 type = ProtonSnackbarType.ERROR
                             )

@@ -22,5 +22,5 @@ import me.proton.core.contact.domain.entity.ContactId
 
 data class ContactFormUiModel(
     val id: ContactId?,
-    val name: String
+    val name: String = ""
 )

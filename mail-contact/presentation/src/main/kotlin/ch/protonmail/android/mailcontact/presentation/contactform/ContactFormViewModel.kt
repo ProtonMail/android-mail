@@ -72,10 +72,7 @@ class ContactFormViewModel @Inject constructor(
         } ?: run {
             emitNewStateFor(
                 ContactFormEvent.ContactLoaded(
-                    ContactFormUiModel(
-                        id = null,
-                        name = ""
-                    )
+                    ContactFormUiModel(id = null)
                 )
             )
         }
