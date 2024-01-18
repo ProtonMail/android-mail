@@ -94,7 +94,7 @@ fun MessageBodyWebView(
     )
     val messageId = messageBodyUiModel.messageId
 
-    val client = remember(messageBodyUiModel) {
+    val client = remember(messageBodyUiModel.shouldShowRemoteContent, messageBodyUiModel.shouldShowEmbeddedImages) {
         object : AccompanistWebViewClient() {
 
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
