@@ -89,7 +89,8 @@ fun SetMessagePasswordScreen(
                     IconButton(onClick = onBackClick) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_arrow_back),
-                            contentDescription = stringResource(id = R.string.presentation_back)
+                            contentDescription = stringResource(id = R.string.presentation_back),
+                            tint = ProtonTheme.colors.iconNorm
                         )
                     }
                 }
