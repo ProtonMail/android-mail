@@ -67,7 +67,6 @@ import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.model.CONTACT_FIRST_LAST_NAME_MAX_LENGTH
 import ch.protonmail.android.mailcontact.presentation.model.CONTACT_NAME_MAX_LENGTH
 import ch.protonmail.android.mailcontact.presentation.model.ContactFormAvatar
-import ch.protonmail.android.mailcontact.presentation.model.FieldType
 import ch.protonmail.android.mailcontact.presentation.model.InputField
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactFormPreviewData.contactFormSampleData
 import ch.protonmail.android.mailcontact.presentation.ui.FormInputField
@@ -105,7 +104,7 @@ fun ContactFormScreen(actions: ContactFormScreen.Actions, viewModel: ContactForm
                     viewModel.submit(ContactFormViewAction.OnCloseContactFormClick)
                 },
                 onSaveContactClick = {
-                    TODO()
+                    // Trigger save action here
                 }
             )
         },
@@ -150,10 +149,7 @@ fun ContactFormScreen(actions: ContactFormScreen.Actions, viewModel: ContactForm
 
 @Composable
 fun ContactFormContent(state: ContactFormState.Data, modifier: Modifier = Modifier) {
-    LazyColumn(
-        modifier = modifier
-            .fillMaxSize()
-    ) {
+    LazyColumn(modifier = modifier.fillMaxSize()) {
         item {
             Column(modifier.fillMaxWidth()) {
                 when (val avatar = state.contact.avatar) {
@@ -181,51 +177,8 @@ fun ContactFormContent(state: ContactFormState.Data, modifier: Modifier = Modifi
                         )
                     }
                 }
-                FormInputField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            start = ProtonDimens.DefaultSpacing,
-                            end = ProtonDimens.DefaultSpacing,
-                            bottom = ProtonDimens.DefaultSpacing
-                        ),
-                    initialValue = state.contact.displayName,
-                    hint = stringResource(R.string.display_name),
-                    maxCharacters = CONTACT_NAME_MAX_LENGTH,
-                    onTextChange = {
-                        // Trigger action here
-                    }
-                )
-                FormInputField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            start = ProtonDimens.DefaultSpacing,
-                            end = ProtonDimens.DefaultSpacing,
-                            bottom = ProtonDimens.DefaultSpacing
-                        ),
-                    initialValue = state.contact.firstName,
-                    hint = stringResource(R.string.first_name),
-                    maxCharacters = CONTACT_FIRST_LAST_NAME_MAX_LENGTH,
-                    onTextChange = {
-                        // Trigger action here
-                    }
-                )
-                FormInputField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            start = ProtonDimens.DefaultSpacing,
-                            end = ProtonDimens.DefaultSpacing,
-                            bottom = ProtonDimens.DefaultSpacing
-                        ),
-                    initialValue = state.contact.lastName,
-                    hint = stringResource(R.string.last_name),
-                    maxCharacters = CONTACT_FIRST_LAST_NAME_MAX_LENGTH,
-                    onTextChange = {
-                        // Trigger action here
-                    }
-                )
+
+                NameSection(state)
             }
         }
         this.emailSection(state)
@@ -244,12 +197,8 @@ private fun LazyListScope.emailSection(state: ContactFormState.Data) {
         )
     }
     items(state.contact.emails) { email ->
-        SingleTypedField(
-            value = email.value,
-            hint = stringResource(id = R.string.email_address),
-            selectedType = email.selectedType.localizedValue,
-            types = FieldType.EmailType.values().map { it.localizedValue }
-        )
+        InputFieldWithTrash(value = email.value, hint = stringResource(id = R.string.email_address))
+        TypePickerField(selectedType = email.selectedType.localizedValue)
     }
     item {
         AddNewButton {
@@ -266,12 +215,8 @@ private fun LazyListScope.phoneSection(state: ContactFormState.Data) {
         )
     }
     items(state.contact.phones) { phone ->
-        SingleTypedField(
-            value = phone.value,
-            hint = stringResource(id = R.string.phone_number),
-            selectedType = phone.selectedType.localizedValue,
-            types = FieldType.PhoneType.values().map { it.localizedValue }
-        )
+        InputFieldWithTrash(value = phone.value, hint = stringResource(id = R.string.phone_number))
+        TypePickerField(selectedType = phone.selectedType.localizedValue)
     }
     item {
         AddNewButton {
@@ -288,7 +233,12 @@ private fun LazyListScope.addressSection(state: ContactFormState.Data) {
         )
     }
     items(state.contact.addresses) { address ->
-        AddressField(address = address)
+        InputFieldWithTrash(value = address.streetAddress, hint = stringResource(R.string.address_street))
+        InputField(value = address.postalCode, hint = stringResource(R.string.address_postal_code))
+        InputField(value = address.city, hint = stringResource(R.string.address_city))
+        InputField(value = address.region, hint = stringResource(R.string.address_region))
+        InputField(value = address.country, hint = stringResource(R.string.address_country))
+        TypePickerField(selectedType = address.selectedType.localizedValue)
     }
     item {
         AddNewButton {
@@ -330,12 +280,8 @@ private fun LazyListScope.otherSection(state: ContactFormState.Data) {
                 // Add image picker / image display field for photos and logos here
             }
             is InputField.SingleTyped -> {
-                SingleTypedField(
-                    value = other.value,
-                    hint = stringResource(id = R.string.additional_info),
-                    selectedType = other.selectedType.localizedValue,
-                    types = state.contact.otherTypes.map { it.localizedValue }
-                )
+                InputFieldWithTrash(value = other.value, hint = stringResource(id = R.string.additional_info))
+                TypePickerField(selectedType = other.selectedType.localizedValue)
             }
             else -> {
                 // Ignore the other types
@@ -347,6 +293,55 @@ private fun LazyListScope.otherSection(state: ContactFormState.Data) {
             // Trigger action here
         }
     }
+}
+
+@Composable
+private fun NameSection(state: ContactFormState.Data) {
+    FormInputField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                start = ProtonDimens.DefaultSpacing,
+                end = ProtonDimens.DefaultSpacing,
+                bottom = ProtonDimens.DefaultSpacing
+            ),
+        initialValue = state.contact.displayName,
+        hint = stringResource(R.string.display_name),
+        maxCharacters = CONTACT_NAME_MAX_LENGTH,
+        onTextChange = {
+            // Trigger action here
+        }
+    )
+    FormInputField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                start = ProtonDimens.DefaultSpacing,
+                end = ProtonDimens.DefaultSpacing,
+                bottom = ProtonDimens.DefaultSpacing
+            ),
+        initialValue = state.contact.firstName,
+        hint = stringResource(R.string.first_name),
+        maxCharacters = CONTACT_FIRST_LAST_NAME_MAX_LENGTH,
+        onTextChange = {
+            // Trigger action here
+        }
+    )
+    FormInputField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                start = ProtonDimens.DefaultSpacing,
+                end = ProtonDimens.DefaultSpacing,
+                bottom = ProtonDimens.DefaultSpacing
+            ),
+        initialValue = state.contact.lastName,
+        hint = stringResource(R.string.last_name),
+        maxCharacters = CONTACT_FIRST_LAST_NAME_MAX_LENGTH,
+        onTextChange = {
+            // Trigger action here
+        }
+    )
 }
 
 @Composable
@@ -399,31 +394,7 @@ private fun AddNewButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
 }
 
 @Composable
-private fun SingleTypedField(
-    value: String,
-    hint: String,
-    selectedType: TextUiModel,
-    types: List<TextUiModel>
-) {
-    SingleInputFieldWithTrash(value = value, hint = hint)
-    TypePickerField(selectedType = selectedType, types = types)
-}
-
-@Composable
-private fun AddressField(address: InputField.Address) {
-    SingleInputFieldWithTrash(value = address.streetAddress, hint = stringResource(R.string.address_street))
-    SingleInputField(value = address.postalCode, hint = stringResource(R.string.address_postal_code))
-    SingleInputField(value = address.city, hint = stringResource(R.string.address_city))
-    SingleInputField(value = address.region, hint = stringResource(R.string.address_region))
-    SingleInputField(value = address.country, hint = stringResource(R.string.address_country))
-    TypePickerField(
-        selectedType = address.selectedType.localizedValue,
-        types = FieldType.AddressType.values().map { it.localizedValue }
-    )
-}
-
-@Composable
-private fun SingleInputField(value: String, hint: String) {
+private fun InputField(value: String, hint: String) {
     Row {
         FormInputField(
             modifier = Modifier
@@ -444,7 +415,7 @@ private fun SingleInputField(value: String, hint: String) {
 }
 
 @Composable
-private fun SingleInputFieldWithTrash(value: String, hint: String) {
+private fun InputFieldWithTrash(value: String, hint: String) {
     Row {
         FormInputField(
             modifier = Modifier
@@ -481,7 +452,7 @@ private fun SingleInputFieldWithTrash(value: String, hint: String) {
 }
 
 @Composable
-private fun TypePickerField(selectedType: TextUiModel, types: List<TextUiModel>) {
+private fun TypePickerField(selectedType: TextUiModel) {
     Row(
         modifier = Modifier
             .padding(
