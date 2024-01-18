@@ -288,7 +288,7 @@ private fun LazyListScope.addressSection(state: ContactFormState.Data) {
         )
     }
     items(state.contact.addresses) { address ->
-
+        AddressField(address = address)
     }
     item {
         AddNewButton {
@@ -409,6 +409,18 @@ private fun SingleTypedField(
     TypePickerField(selectedType = selectedType, types = types)
 }
 
+@Composable
+private fun AddressField(address: InputField.Address) {
+    SingleInputFieldWithTrash(value = address.streetAddress, hint = stringResource(R.string.address_street))
+    SingleInputField(value = address.postalCode, hint = stringResource(R.string.address_postal_code))
+    SingleInputField(value = address.city, hint = stringResource(R.string.address_city))
+    SingleInputField(value = address.region, hint = stringResource(R.string.address_region))
+    SingleInputField(value = address.country, hint = stringResource(R.string.address_country))
+    TypePickerField(
+        selectedType = address.selectedType.localizedValue,
+        types = FieldType.AddressType.values().map { it.localizedValue }
+    )
+}
 
 @Composable
 private fun SingleInputField(value: String, hint: String) {

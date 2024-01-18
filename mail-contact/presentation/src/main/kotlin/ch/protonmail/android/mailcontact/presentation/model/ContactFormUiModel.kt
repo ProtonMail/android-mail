@@ -68,7 +68,7 @@ sealed interface InputField {
     data class Address(
         val streetAddress: String,
         val postalCode: String,
-        val locality: String,
+        val city: String,
         val region: String,
         val country: String,
         val selectedType: FieldType

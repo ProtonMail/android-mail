@@ -49,7 +49,7 @@ class ContactFormUiModelMapper @Inject constructor(
                 InputField.Address(
                     streetAddress = it.streetAddress,
                     postalCode = it.postalCode,
-                    locality = it.locality,
+                    city = it.locality,
                     region = it.region,
                     country = it.country,
                     selectedType = FieldType.AddressType.valueOf(it.type.name)
