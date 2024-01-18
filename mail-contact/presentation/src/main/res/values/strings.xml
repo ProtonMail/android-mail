@@ -76,6 +76,14 @@
     <string name="display_name">Display name</string>
     <string name="first_name">First name</string>
     <string name="last_name">Last name</string>
+    <string name="email_address">Email address</string>
+    <string name="phone_number">Phone number</string>
+    <string name="additional_info">Additional info</string>
     <string name="remove_contact_property">Remove contact property</string>
     <string name="property_type">Property type</string>
+    <string name="address_street">Street</string>
+    <string name="address_postal_code">Postal code</string>
+    <string name="address_city">City</string>
+    <string name="address_region">Region</string>
+    <string name="address_country">Country</string>
 </resources>
