@@ -228,7 +228,7 @@ fun ConversationDetailScreen(
                     viewModel.submit(ConversationDetailViewAction.LoadRemoteContent(MessageIdUiModel(it.id)))
                 },
                 onLoadEmbeddedImages = {
-                    viewModel.submit(ConversationDetailViewAction.LoadEmbeddedImages(MessageIdUiModel(it.id)))
+                    viewModel.submit(ConversationDetailViewAction.ShowEmbeddedImages(MessageIdUiModel(it.id)))
                 },
                 onLoadRemoteAndEmbeddedContent = {
                     viewModel.submit(ConversationDetailViewAction.LoadRemoteAndEmbeddedContent(MessageIdUiModel(it.id)))

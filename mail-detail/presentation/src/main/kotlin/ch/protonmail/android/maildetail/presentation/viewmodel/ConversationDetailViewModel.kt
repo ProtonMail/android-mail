@@ -216,7 +216,7 @@ class ConversationDetailViewModel @Inject constructor(
             is RequestScrollTo,
             is ScrollRequestCompleted,
             is ConversationDetailViewAction.ExpandOrCollapseMessageBody,
-            is ConversationDetailViewAction.LoadEmbeddedImages,
+            is ConversationDetailViewAction.ShowEmbeddedImages,
             is ConversationDetailViewAction.LoadRemoteAndEmbeddedContent,
             is ConversationDetailViewAction.LoadRemoteContent -> directlyHandleViewAction(action)
         }

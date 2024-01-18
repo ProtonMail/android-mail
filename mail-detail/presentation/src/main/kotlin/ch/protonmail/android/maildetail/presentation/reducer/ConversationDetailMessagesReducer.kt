@@ -96,8 +96,8 @@ class ConversationDetailMessagesReducer @Inject constructor() {
             currentState.toNewMessageBodyLoadRemoteContentState(operation)
         }
 
-        is ConversationDetailViewAction.LoadEmbeddedImages -> {
-            currentState.toNewMessageBodyLoadEmbeddedImagesState(operation)
+        is ConversationDetailViewAction.ShowEmbeddedImages -> {
+            currentState.toNewMessageBodyShowEmbeddedImagesState(operation)
         }
 
         is ConversationDetailViewAction.LoadRemoteAndEmbeddedContent -> {
@@ -144,8 +144,8 @@ class ConversationDetailMessagesReducer @Inject constructor() {
         else -> this
     }
 
-    private fun ConversationDetailsMessagesState.toNewMessageBodyLoadEmbeddedImagesState(
-        operation: ConversationDetailViewAction.LoadEmbeddedImages
+    private fun ConversationDetailsMessagesState.toNewMessageBodyShowEmbeddedImagesState(
+        operation: ConversationDetailViewAction.ShowEmbeddedImages
     ): ConversationDetailsMessagesState = when (this) {
         is ConversationDetailsMessagesState.Data -> ConversationDetailsMessagesState.Data(
             messages = messages.map {

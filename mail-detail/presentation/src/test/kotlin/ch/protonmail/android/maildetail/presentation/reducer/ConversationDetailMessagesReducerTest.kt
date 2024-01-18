@@ -283,7 +283,7 @@ class ConversationDetailMessagesReducerTest(
                         ConversationDetailMessageUiModelSample.MessageWithEmbeddedImagesBlocked
                     ).toImmutableList()
                 ),
-                operation = ConversationDetailViewAction.LoadEmbeddedImages(
+                operation = ConversationDetailViewAction.ShowEmbeddedImages(
                     messageId = ConversationDetailMessageUiModelSample.MessageWithEmbeddedImagesBlocked.messageId
                 ),
                 expectedState = ConversationDetailsMessagesState.Data(

@@ -199,7 +199,7 @@ fun MessageDetailScreen(
                     viewModel.submit(MessageViewAction.ExpandOrCollapseMessageBody)
                 },
                 onLoadRemoteContent = { viewModel.submit(MessageViewAction.LoadRemoteContent(it)) },
-                onLoadEmbeddedImages = { viewModel.submit(MessageViewAction.LoadEmbeddedImages(it)) },
+                onLoadEmbeddedImages = { viewModel.submit(MessageViewAction.ShowEmbeddedImages(it)) },
                 onLoadRemoteAndEmbeddedContent = {
                     viewModel.submit(MessageViewAction.LoadRemoteAndEmbeddedContent(it))
                 }

@@ -152,7 +152,7 @@ class MessageBodyReducerTest(
                 MessageBodyState.Data(
                     MessageBodyUiModelTestData.messageBodyWithEmbeddedImagesBlocked
                 ),
-                MessageViewAction.LoadEmbeddedImages(
+                MessageViewAction.ShowEmbeddedImages(
                     MessageBodyUiModelTestData.messageBodyWithEmbeddedImagesBlocked.messageId
                 ),
                 MessageBodyState.Data(
