@@ -43,6 +43,9 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -74,6 +77,8 @@ import ch.protonmail.android.mailcontact.presentation.model.ContactDetailsItem.C
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactDetailsPreviewData.contactDetailsSampleData
 import ch.protonmail.android.mailcontact.presentation.ui.ImageContactAvatar
 import ch.protonmail.android.mailcontact.presentation.ui.InitialsContactAvatar
+import me.proton.core.compose.component.ProtonAlertDialog
+import me.proton.core.compose.component.ProtonAlertDialogButton
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
@@ -85,6 +90,7 @@ import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.captionWeak
 import me.proton.core.compose.theme.defaultNorm
 import me.proton.core.compose.theme.defaultSmallStrongUnspecified
+import me.proton.core.compose.theme.defaultWeak
 import me.proton.core.compose.theme.headlineNorm
 import me.proton.core.contact.domain.entity.ContactId
 
@@ -96,6 +102,7 @@ fun ContactDetailsScreen(actions: ContactDetailsScreen.Actions, viewModel: Conta
     val keyboardController = LocalSoftwareKeyboardController.current
     val snackbarHostErrorState = ProtonSnackbarHostState(defaultType = ProtonSnackbarType.ERROR)
     val state = rememberAsState(flow = viewModel.state, initial = ContactDetailsViewModel.initialState).value
+    val deleteDialogShownState = remember { mutableStateOf(false) }
 
     val customActions = actions.copy(
         onDeleteClick = { viewModel.submit(ContactDetailsViewAction.DeleteRequested) },
@@ -129,6 +136,9 @@ fun ContactDetailsScreen(actions: ContactDetailsScreen.Actions, viewModel: Conta
                         context.startActivity(callIntent)
                     }
                     ConsumableLaunchedEffect(effect = state.openComposer) { actions.navigateToComposer(it) }
+                    ConsumableLaunchedEffect(effect = state.showDeleteConfirmDialog) {
+                        deleteDialogShownState.value = true
+                    }
                 }
 
                 is ContactDetailsState.Loading -> {
@@ -150,6 +160,11 @@ fun ContactDetailsScreen(actions: ContactDetailsScreen.Actions, viewModel: Conta
                 hostState = snackbarHostErrorState
             )
         }
+    )
+
+    ContactDetailsDeleteConfirmationDialog(
+        deleteDialogShownState = deleteDialogShownState,
+        onDeleteConfirmed = { viewModel.submit(ContactDetailsViewAction.DeleteConfirmed) }
     )
 
     ConsumableLaunchedEffect(effect = state.close) {
@@ -443,19 +458,53 @@ fun ContactDetailsTopBar(state: ContactDetailsState, actions: ContactDetailsScre
                         )
                     }
                 }
-                // Remove below if to enable delete contact
-                if (false) {
-                    IconButton(onClick = actions.onDeleteClick) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_proton_trash),
-                            tint = ProtonTheme.colors.iconNorm,
-                            contentDescription = stringResource(R.string.delete_contact_content_description)
-                        )
-                    }
+                IconButton(onClick = actions.onDeleteClick) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_proton_trash),
+                        tint = ProtonTheme.colors.iconNorm,
+                        contentDescription = stringResource(R.string.delete_contact_content_description)
+                    )
                 }
             }
         }
     )
+}
+
+@Composable
+fun ContactDetailsDeleteConfirmationDialog(
+    onDeleteConfirmed: () -> Unit,
+    deleteDialogShownState: MutableState<Boolean>
+) {
+    if (deleteDialogShownState.value) {
+        ProtonAlertDialog(
+            modifier = Modifier.testTag(ContactDetailsTestTags.DeleteDialog),
+            titleResId = R.string.contact_details_delete_dialog_title,
+            text = {
+                Text(
+                    text = stringResource(id = R.string.contact_details_delete_dialog_text),
+                    style = ProtonTheme.typography.defaultWeak
+                )
+            },
+            dismissButton = {
+                ProtonAlertDialogButton(
+                    titleResId = R.string.contact_details_delete_dialog_cancel_button,
+                    modifier = Modifier.testTag(ContactDetailsTestTags.DeleteDialogCancelButton)
+                ) {
+                    deleteDialogShownState.value = false
+                }
+            },
+            confirmButton = {
+                ProtonAlertDialogButton(
+                    titleResId = R.string.contact_details_delete_dialog_confirm_button,
+                    modifier = Modifier.testTag(ContactDetailsTestTags.DeleteDialogConfirmButton)
+                ) {
+                    deleteDialogShownState.value = false
+                    onDeleteConfirmed()
+                }
+            },
+            onDismissRequest = { deleteDialogShownState.value = false }
+        )
+    }
 }
 
 object ContactDetailsScreen {
@@ -507,4 +556,11 @@ private fun ContactDetailsTopBarPreview() {
         state = ContactDetailsState.Data(contact = contactDetailsSampleData),
         actions = ContactDetailsScreen.Actions.Empty
     )
+}
+
+object ContactDetailsTestTags {
+
+    const val DeleteDialog = "DeleteContactDialog"
+    const val DeleteDialogCancelButton = "DeleteContactDialogCancelButton"
+    const val DeleteDialogConfirmButton = "DeleteContactDialogConfirmButton"
 }
