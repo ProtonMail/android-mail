@@ -77,4 +77,5 @@
     <string name="first_name">First name</string>
     <string name="last_name">Last name</string>
     <string name="remove_contact_property">Remove contact property</string>
+    <string name="property_type">Property type</string>
 </resources>

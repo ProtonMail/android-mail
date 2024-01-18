@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcontact.presentation.contactform
 
 import android.content.res.Configuration
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
@@ -40,6 +41,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -60,11 +62,13 @@ import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.dismissKeyboard
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.model.CONTACT_FIRST_LAST_NAME_MAX_LENGTH
 import ch.protonmail.android.mailcontact.presentation.model.CONTACT_NAME_MAX_LENGTH
 import ch.protonmail.android.mailcontact.presentation.model.ContactFormAvatar
+import ch.protonmail.android.mailcontact.presentation.model.FieldType
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactFormPreviewData.contactFormSampleData
 import ch.protonmail.android.mailcontact.presentation.ui.FormInputField
 import ch.protonmail.android.mailcontact.presentation.ui.ImageContactAvatar
@@ -81,6 +85,7 @@ import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.captionNorm
 import me.proton.core.compose.theme.captionWeak
+import me.proton.core.compose.theme.defaultNorm
 import me.proton.core.compose.theme.defaultStrongNorm
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -398,6 +403,54 @@ private fun SingleTypedField(
                         // Trigger action here
                     }
                 ),
+            contentDescription = NO_CONTENT_DESCRIPTION
+        )
+    }
+
+    TypePickerField(selectedType = selectedType, types = types)
+}
+
+@Composable
+private fun TypePickerField(selectedType: TextUiModel, types: List<TextUiModel>) {
+    val openDialog = remember { mutableStateOf(false) }
+
+    Row(
+        modifier = Modifier
+            .padding(
+                start = ProtonDimens.DefaultSpacing,
+                end = MailDimens.ContactFormTypePaddingEnd
+            )
+            .background(
+                color = ProtonTheme.colors.backgroundSecondary,
+                shape = ProtonTheme.shapes.medium
+            )
+            .fillMaxWidth()
+            .clickable(
+                onClickLabel = stringResource(R.string.property_type),
+                role = Role.Button,
+                onClick = {
+                    openDialog.value = true
+                }
+            )
+    ) {
+        Text(
+            modifier = Modifier
+                .weight(1f)
+                .padding(
+                    top = ProtonDimens.DefaultSpacing,
+                    bottom = ProtonDimens.DefaultSpacing,
+                    start = ProtonDimens.DefaultSpacing,
+                    end = ProtonDimens.ExtraSmallSpacing
+                ),
+            text = selectedType.string(),
+            style = ProtonTheme.typography.defaultNorm
+        )
+        Icon(
+            painter = painterResource(id = R.drawable.ic_proton_chevron_down),
+            modifier = Modifier
+                .padding(end = ProtonDimens.DefaultSpacing)
+                .size(ProtonDimens.SmallIconSize)
+                .align(Alignment.CenterVertically),
             contentDescription = NO_CONTENT_DESCRIPTION
         )
     }
