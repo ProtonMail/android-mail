@@ -130,7 +130,7 @@ fun ContactListScreen(actions: ContactListScreen.Actions, viewModel: ContactList
                         onBackClick = actions.onBackClick,
                         onAddClick = {
                             viewModel.submit(ContactListViewAction.OnNewContactClick)
-                            // We skip opening bottom sheet dialog until we implement the other actions
+                            // Uncomment below to enable bottom sheet dialog
                             // viewModel.submit(ContactListViewAction.OnOpenBottomSheet)
                         }
                     ),
@@ -406,12 +406,15 @@ fun ContactListTopBar(
         },
         actions = {
             if (isAddButtonVisible) {
-                IconButton(onClick = actions.onAddClick) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_proton_plus),
-                        tint = ProtonTheme.colors.iconNorm,
-                        contentDescription = stringResource(R.string.add_contact_content_description)
-                    )
+                // Remove below if to display add button
+                if (false) {
+                    IconButton(onClick = actions.onAddClick) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_proton_plus),
+                            tint = ProtonTheme.colors.iconNorm,
+                            contentDescription = stringResource(R.string.add_contact_content_description)
+                        )
+                    }
                 }
             }
         }

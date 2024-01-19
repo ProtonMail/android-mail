@@ -433,13 +433,17 @@ fun ContactDetailsTopBar(state: ContactDetailsState, actions: ContactDetailsScre
         },
         actions = {
             if (state is ContactDetailsState.Data) {
-                IconButton(onClick = { actions.onEditClick(state.contact.id) }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_proton_pen),
-                        tint = ProtonTheme.colors.iconNorm,
-                        contentDescription = stringResource(R.string.edit_contact_content_description)
-                    )
+                // Remove below if to enable edit contact
+                if (false) {
+                    IconButton(onClick = { actions.onEditClick(state.contact.id) }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_proton_pen),
+                            tint = ProtonTheme.colors.iconNorm,
+                            contentDescription = stringResource(R.string.edit_contact_content_description)
+                        )
+                    }
                 }
+                // Remove below if to enable delete contact
                 if (false) {
                     IconButton(onClick = actions.onDeleteClick) {
                         Icon(
