@@ -95,4 +95,6 @@
 
     <string name="mailbox_action_delete_dialog_button_cancel">Cancel</string>
     <string name="mailbox_action_delete_dialog_button_delete">Delete</string>
+
+    <string name="picker_dialog_cancel">Cancel</string>
 </resources>

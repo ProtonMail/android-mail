@@ -99,4 +99,6 @@ object MailDimens {
     val ContactGroupLabelCornerRadius = 6.dp
 
     val ContactFormTypedFieldPaddingEnd = 56.dp
+
+    val PickerDialogItemVerticalPadding = 12.dp
 }
