@@ -27,7 +27,10 @@ internal sealed interface ContactFormViewAction : ContactFormOperation {
 }
 
 sealed interface ContactFormEvent : ContactFormOperation {
-    data class ContactLoaded(
+    data class NewContact(
+        val contactFormUiModel: ContactFormUiModel
+    ) : ContactFormEvent
+    data class EditContact(
         val contactFormUiModel: ContactFormUiModel
     ) : ContactFormEvent
     object LoadContactError : ContactFormEvent

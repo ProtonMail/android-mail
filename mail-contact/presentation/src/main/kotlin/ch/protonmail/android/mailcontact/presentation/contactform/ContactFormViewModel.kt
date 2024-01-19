@@ -64,14 +64,14 @@ class ContactFormViewModel @Inject constructor(
                     return@launch emitNewStateFor(ContactFormEvent.LoadContactError)
                 }
                 emitNewStateFor(
-                    ContactFormEvent.ContactLoaded(
+                    ContactFormEvent.EditContact(
                         contact.toContactFormUiModel()
                     )
                 )
             }
         } ?: run {
             emitNewStateFor(
-                ContactFormEvent.ContactLoaded(
+                ContactFormEvent.NewContact(
                     ContactFormUiModel(id = null)
                 )
             )
