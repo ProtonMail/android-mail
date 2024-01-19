@@ -147,7 +147,9 @@ class GetDecryptedContact @Inject constructor(
                         decryptedContact.copy(
                             photos = decryptedContact.photos + ContactProperty.Photo(
                                 data = it.data ?: ByteArray(0),
-                                contentType = it.contentType.value ?: "jpeg"
+                                contentType = it.contentType?.value,
+                                mediaType = it.contentType?.mediaType,
+                                extension = it.contentType?.extension
                             )
                         )
                     }
@@ -188,7 +190,9 @@ class GetDecryptedContact @Inject constructor(
                         decryptedContact.copy(
                             logos = decryptedContact.logos + ContactProperty.Logo(
                                 data = it.data ?: ByteArray(0),
-                                contentType = it.contentType.value ?: "jpeg"
+                                contentType = it.contentType?.value,
+                                mediaType = it.contentType?.mediaType,
+                                extension = it.contentType?.extension
                             )
                         )
                     }

@@ -52,9 +52,12 @@ sealed interface ContactProperty {
 
     data class Photo(
         val data: ByteArray,
-        val contentType: String
+        val contentType: String?,
+        val mediaType: String?,
+        val extension: String?
     ) : ContactProperty {
 
+        @Suppress("ReturnCount")
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (javaClass != other?.javaClass) return false
@@ -62,14 +65,20 @@ sealed interface ContactProperty {
             other as Photo
 
             if (!data.contentEquals(other.data)) return false
-            return contentType == other.contentType
+            if (contentType != other.contentType) return false
+            if (mediaType != other.mediaType) return false
+            return extension == other.extension
         }
 
         override fun hashCode(): Int {
             var result = data.contentHashCode()
-            result = 31 * result + contentType.hashCode()
+            result = 31 * result + (contentType?.hashCode() ?: 0)
+            result = 31 * result + (mediaType?.hashCode() ?: 0)
+            result = 31 * result + (extension?.hashCode() ?: 0)
             return result
         }
+
+
     }
 
     data class Birthday(
@@ -98,9 +107,12 @@ sealed interface ContactProperty {
 
     data class Logo(
         val data: ByteArray,
-        val contentType: String
+        val contentType: String?,
+        val mediaType: String?,
+        val extension: String?
     ) : ContactProperty {
 
+        @Suppress("ReturnCount")
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (javaClass != other?.javaClass) return false
@@ -108,14 +120,19 @@ sealed interface ContactProperty {
             other as Logo
 
             if (!data.contentEquals(other.data)) return false
-            return contentType == other.contentType
+            if (contentType != other.contentType) return false
+            if (mediaType != other.mediaType) return false
+            return extension == other.extension
         }
 
         override fun hashCode(): Int {
             var result = data.contentHashCode()
-            result = 31 * result + contentType.hashCode()
+            result = 31 * result + (contentType?.hashCode() ?: 0)
+            result = 31 * result + (mediaType?.hashCode() ?: 0)
+            result = 31 * result + (extension?.hashCode() ?: 0)
             return result
         }
+
     }
 
     data class Member(
