@@ -44,9 +44,7 @@ internal class AutoLockLifecycleCallbacks @Inject constructor(
         job = coroutineScope.launch {
             shouldPresentPinInsertionScreen().collectLatest { forcePinInsertion ->
                 if (!forcePinInsertion) return@collectLatest
-                val intent = Intent(activity, LockScreenActivity::class.java).apply {
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                }
+                val intent = Intent(activity, LockScreenActivity::class.java)
                 activity.startActivity(intent)
             }
         }
