@@ -26,17 +26,32 @@ import me.proton.core.contact.domain.entity.ContactId
 
 data class ContactFormUiModel(
     val id: ContactId?,
-    val avatar: Bitmap? = null,
-    val displayName: String = "",
-    val firstName: String = "",
-    val lastName: String = "",
-    val emails: List<InputField.SingleTyped> = emptyList(),
-    val phones: List<InputField.SingleTyped> = emptyList(),
-    val addresses: List<InputField.Address> = emptyList(),
-    val birthday: InputField.Date? = null,
-    val notes: List<InputField.Note> = emptyList(),
-    val others: List<InputField> = emptyList(),
-    val otherTypes: List<FieldType.OtherType> = FieldType.OtherType.values().toList()
+    val avatar: Bitmap?,
+    val displayName: String,
+    val firstName: String,
+    val lastName: String,
+    val emails: List<InputField.SingleTyped>,
+    val phones: List<InputField.SingleTyped>,
+    val addresses: List<InputField.Address>,
+    val birthday: InputField.Date?,
+    val notes: List<InputField.Note>,
+    val others: List<InputField>,
+    val otherTypes: List<FieldType.OtherType>
+)
+
+val emptyContactFormUiModel = ContactFormUiModel(
+    id = null,
+    avatar = null,
+    displayName = "",
+    firstName = "",
+    lastName = "",
+    emails = emptyList(),
+    phones = emptyList(),
+    addresses = emptyList(),
+    birthday = null,
+    notes = emptyList(),
+    others = emptyList(),
+    otherTypes = FieldType.OtherType.values().toList()
 )
 
 sealed interface InputField {

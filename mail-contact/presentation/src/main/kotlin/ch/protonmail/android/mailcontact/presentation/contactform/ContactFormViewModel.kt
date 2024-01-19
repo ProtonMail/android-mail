@@ -24,8 +24,8 @@ import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveDecryptedContact
-import ch.protonmail.android.mailcontact.presentation.model.ContactFormUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactFormUiModelMapper
+import ch.protonmail.android.mailcontact.presentation.model.emptyContactFormUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -72,9 +72,7 @@ class ContactFormViewModel @Inject constructor(
             }
         } ?: run {
             emitNewStateFor(
-                ContactFormEvent.NewContact(
-                    ContactFormUiModel(id = null)
-                )
+                ContactFormEvent.NewContact(emptyContactFormUiModel)
             )
         }
     }

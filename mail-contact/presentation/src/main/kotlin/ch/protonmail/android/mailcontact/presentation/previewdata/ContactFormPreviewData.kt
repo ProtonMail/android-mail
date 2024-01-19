@@ -28,6 +28,7 @@ object ContactFormPreviewData {
 
     val contactFormSampleData = ContactFormUiModel(
         id = ContactId("Id"),
+        avatar = null,
         displayName = "displayName",
         firstName = "firstName",
         lastName = "lastName",
@@ -55,6 +56,7 @@ object ContactFormPreviewData {
             InputField.SingleTyped("Title", FieldType.OtherType.Title),
             InputField.SingleTyped("Organization", FieldType.OtherType.Organization),
             InputField.SingleTyped("Language", FieldType.OtherType.Language)
-        )
+        ),
+        otherTypes = FieldType.OtherType.values().toList()
     )
 }
