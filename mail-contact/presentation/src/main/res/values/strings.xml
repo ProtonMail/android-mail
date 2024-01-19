@@ -81,6 +81,7 @@
     <string name="additional_info">Additional info</string>
     <string name="remove_contact_property">Remove contact property</string>
     <string name="property_type">Property type</string>
+    <string name="property_label">Label</string>
     <string name="address_street">Street</string>
     <string name="address_postal_code">Postal code</string>
     <string name="address_city">City</string>

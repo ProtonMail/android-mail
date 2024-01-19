@@ -37,10 +37,10 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.ripple.rememberRipple
-import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -59,14 +59,17 @@ import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
+import ch.protonmail.android.mailcommon.presentation.compose.PickerDialog
 import ch.protonmail.android.mailcommon.presentation.compose.dismissKeyboard
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
+import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
 import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.model.CONTACT_FIRST_LAST_NAME_MAX_LENGTH
 import ch.protonmail.android.mailcontact.presentation.model.CONTACT_NAME_MAX_LENGTH
 import ch.protonmail.android.mailcontact.presentation.model.ContactFormAvatar
+import ch.protonmail.android.mailcontact.presentation.model.FieldType
 import ch.protonmail.android.mailcontact.presentation.model.InputField
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactFormPreviewData.contactFormSampleData
 import ch.protonmail.android.mailcontact.presentation.ui.FormInputField
@@ -198,7 +201,10 @@ private fun LazyListScope.emailSection(state: ContactFormState.Data) {
     }
     items(state.contact.emails) { email ->
         InputFieldWithTrash(value = email.value, hint = stringResource(id = R.string.email_address))
-        TypePickerField(selectedType = email.selectedType.localizedValue)
+        TypePickerField(
+            selectedType = email.selectedType.localizedValue,
+            types = FieldType.EmailType.values().map { it.localizedValue }
+        )
     }
     item {
         AddNewButton {
@@ -216,7 +222,10 @@ private fun LazyListScope.phoneSection(state: ContactFormState.Data) {
     }
     items(state.contact.phones) { phone ->
         InputFieldWithTrash(value = phone.value, hint = stringResource(id = R.string.phone_number))
-        TypePickerField(selectedType = phone.selectedType.localizedValue)
+        TypePickerField(
+            selectedType = phone.selectedType.localizedValue,
+            types = FieldType.PhoneType.values().map { it.localizedValue }
+        )
     }
     item {
         AddNewButton {
@@ -238,7 +247,10 @@ private fun LazyListScope.addressSection(state: ContactFormState.Data) {
         InputField(value = address.city, hint = stringResource(R.string.address_city))
         InputField(value = address.region, hint = stringResource(R.string.address_region))
         InputField(value = address.country, hint = stringResource(R.string.address_country))
-        TypePickerField(selectedType = address.selectedType.localizedValue)
+        TypePickerField(
+            selectedType = address.selectedType.localizedValue,
+            types = FieldType.AddressType.values().map { it.localizedValue }
+        )
     }
     item {
         AddNewButton {
@@ -281,7 +293,10 @@ private fun LazyListScope.otherSection(state: ContactFormState.Data) {
             }
             is InputField.SingleTyped -> {
                 InputFieldWithTrash(value = other.value, hint = stringResource(id = R.string.additional_info))
-                TypePickerField(selectedType = other.selectedType.localizedValue)
+                TypePickerField(
+                    selectedType = other.selectedType.localizedValue,
+                    types = FieldType.OtherType.values().map { it.localizedValue }
+                )
             }
             else -> {
                 // Ignore the other types
@@ -372,7 +387,7 @@ private fun SectionHeader(
             style = ProtonTheme.typography.captionWeak
         )
     }
-    Divider()
+    MailDivider()
 }
 
 @Composable
@@ -452,7 +467,23 @@ private fun InputFieldWithTrash(value: String, hint: String) {
 }
 
 @Composable
-private fun TypePickerField(selectedType: TextUiModel) {
+private fun TypePickerField(selectedType: TextUiModel, types: List<TextUiModel>) {
+    val openDialog = remember { mutableStateOf(false) }
+    when {
+        openDialog.value -> {
+            PickerDialog(
+                title = stringResource(R.string.property_label),
+                selectedValue = selectedType,
+                values = types,
+                onDismissRequest = { openDialog.value = false },
+                onValueSelected = { _ ->
+                    openDialog.value = false
+                    // Trigger action here
+                }
+            )
+        }
+    }
+
     Row(
         modifier = Modifier
             .padding(
@@ -469,9 +500,7 @@ private fun TypePickerField(selectedType: TextUiModel) {
             .clickable(
                 onClickLabel = stringResource(R.string.property_type),
                 role = Role.Button,
-                onClick = {
-                    // Open dialog here
-                }
+                onClick = { openDialog.value = true }
             )
     ) {
         Text(
