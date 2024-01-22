@@ -187,7 +187,7 @@ run_firebase_proton_core_libs_tests:
   script:
     - bundle exec fastlane coreLibsTest
   rules:
-    - if: $CI_COMMIT_BRANCH == "master" && ($NIGHTLY_ALPHA_BUILD == "true" || $INTERNAL_ALPHA_RELEASE == "true" || $BETA_RELEASE == "true")
+    - if: $CI_COMMIT_BRANCH == "master" && ($NIGHTLY_ALPHA_BUILD == "true" || $INTERNAL_ALPHA_RELEASE == "true")
 
 run_firebase_smoke_tests:
   extends: .firebase_test_job
@@ -203,7 +203,7 @@ run_firebase_full_regression_tests:
   script:
     - bundle exec fastlane fullRegressionTest
   rules:
-    - if: $CI_COMMIT_BRANCH == "master" && ($NIGHTLY_ALPHA_BUILD == "true" || $INTERNAL_ALPHA_RELEASE == "true" || $BETA_RELEASE == "true")
+    - if: $CI_COMMIT_BRANCH == "master" && ($NIGHTLY_ALPHA_BUILD == "true" || $INTERNAL_ALPHA_RELEASE == "true")
     # Allow manual regression test runs on MRs if needed.
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
       when: manual
@@ -217,7 +217,7 @@ tag_release:
   script:
     - bundle exec fastlane tagRelease
   rules:
-    - if: $CI_COMMIT_BRANCH == "master" && ($INTERNAL_ALPHA_RELEASE == "true" || $BETA_RELEASE == "true")
+    - if: $CI_COMMIT_BRANCH == "master" && ($INTERNAL_ALPHA_RELEASE == "true")
 
 deploy_to_firebase_dev:
   extends: .firebase_deploy_job
