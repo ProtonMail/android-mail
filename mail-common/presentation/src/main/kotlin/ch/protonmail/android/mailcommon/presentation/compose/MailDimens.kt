@@ -30,7 +30,6 @@ object MailDimens {
     val TinySpacing = 2.dp
 
     val SeparatorHeight = 1.dp
-    val SidebarBetaLabelHeight = 64.dp
 
     val DefaultTouchTargetSize = 32.dp
 

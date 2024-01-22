@@ -27,7 +27,6 @@ import androidx.compose.ui.test.performScrollToNode
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.presentation.sidebar.SidebarSystemLabelTestTags.BaseTag
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxTopAppBarTestTags
-import ch.protonmail.android.mailmailbox.presentation.sidebar.SidebarBetaLabelInfoItemTestTags
 import ch.protonmail.android.mailmailbox.presentation.sidebar.SidebarMenuTestTags
 import ch.protonmail.android.test.ksp.annotations.AsDsl
 import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
@@ -87,10 +86,6 @@ internal class MenuRobot : ComposeRobot() {
 
     fun tapSignOut() {
         tapSidebarMenuItemWithText(getTestString(testR.string.test_signout))
-    }
-
-    fun tapBetaItem() {
-        tapSidebarMenuItemWithTag(SidebarBetaLabelInfoItemTestTags.RootItem)
     }
 
     private fun tapSidebarMenuItemWithText(value: String) {

@@ -20,7 +20,6 @@ package ch.protonmail.android.mailmailbox.presentation.sidebar
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
-import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -164,7 +163,6 @@ fun Sidebar(
         if (viewState.showContacts) item { SidebarContactsItem(onClick = actions.onContacts) }
         item { ProtonSidebarReportBugItem(onClick = actions.onReportBug) }
         item { ProtonSidebarSignOutItem(onClick = { actions.onSignOut(null) }) }
-        item { SidebarBetaLabelInfoItem(onClick = actions.onBetaLabelClick) }
         item { SidebarAppVersionItem(viewState.appInformation) }
     }
 }
@@ -215,8 +213,7 @@ object Sidebar {
         val onLabelAction: (SidebarLabelAction) -> Unit,
         val onSubscription: () -> Unit,
         val onContacts: () -> Unit,
-        val onReportBug: () -> Unit,
-        val onBetaLabelClick: (Uri) -> Unit
+        val onReportBug: () -> Unit
     ) {
 
         companion object {
@@ -230,8 +227,7 @@ object Sidebar {
                 onLabelAction = {},
                 onSubscription = {},
                 onContacts = {},
-                onReportBug = {},
-                onBetaLabelClick = {}
+                onReportBug = {}
             )
         }
     }
@@ -248,8 +244,7 @@ object Sidebar {
         val onFolderAdd: () -> Unit,
         val onSubscription: () -> Unit,
         val onContacts: () -> Unit,
-        val onReportBug: () -> Unit,
-        val onBetaLabelClick: (Uri) -> Unit
+        val onReportBug: () -> Unit
     ) {
 
         fun toSidebarActions(close: () -> Unit, onLabelAction: (SidebarLabelAction) -> Unit) = Actions(
@@ -288,10 +283,6 @@ object Sidebar {
             onReportBug = {
                 onReportBug()
                 close()
-            },
-            onBetaLabelClick = {
-                onBetaLabelClick(it)
-                close()
             }
         )
 
@@ -309,8 +300,7 @@ object Sidebar {
                 onFolderAdd = {},
                 onSubscription = {},
                 onContacts = {},
-                onReportBug = {},
-                onBetaLabelClick = {}
+                onReportBug = {}
             )
         }
     }

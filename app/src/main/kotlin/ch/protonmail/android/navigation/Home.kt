@@ -210,7 +210,7 @@ fun Home(
         drawerContent = {
             Sidebar(
                 drawerState = scaffoldState.drawerState,
-                navigationActions = buildSidebarActions(navController, activityActions, launcherActions)
+                navigationActions = buildSidebarActions(navController, launcherActions)
             )
         },
         drawerGesturesEnabled = currentDestinationRoute == Screen.Mailbox.route,
@@ -428,7 +428,6 @@ fun Home(
 
 private fun buildSidebarActions(
     navController: NavHostController,
-    activityActions: MainActivity.Actions,
     launcherActions: Launcher.Actions
 ) = Sidebar.NavigationActions(
     onSignIn = launcherActions.onSignIn,
@@ -442,6 +441,5 @@ private fun buildSidebarActions(
     onFolderAdd = { navController.navigate(Screen.CreateFolder.route) },
     onSubscription = launcherActions.onSubscription,
     onContacts = { navController.navigate(Screen.Contacts.route) },
-    onReportBug = launcherActions.onReportBug,
-    onBetaLabelClick = activityActions.openInActivityInNewTask
+    onReportBug = launcherActions.onReportBug
 )
