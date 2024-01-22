@@ -41,6 +41,8 @@ fun Intent.getFileShareInfo(): FileShareInfo {
     }
 }
 
+fun Intent.isStartedFromLauncher(): Boolean = action == Intent.ACTION_MAIN
+
 private fun Intent.getShareInfoForActionSendSingleFile(): FileShareInfo {
 
     return FileShareInfo(

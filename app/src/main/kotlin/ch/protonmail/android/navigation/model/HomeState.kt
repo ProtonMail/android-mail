@@ -25,7 +25,8 @@ import me.proton.core.network.domain.NetworkStatus
 data class HomeState(
     val networkStatusEffect: Effect<NetworkStatus>,
     val messageSendingStatusEffect: Effect<MessageSendingStatus>,
-    val navigateToEffect: Effect<String>
+    val navigateToEffect: Effect<String>,
+    val startedFromLauncher: Boolean
 ) {
 
     companion object {
@@ -33,7 +34,8 @@ data class HomeState(
         val Initial = HomeState(
             networkStatusEffect = Effect.empty(),
             messageSendingStatusEffect = Effect.empty(),
-            navigateToEffect = Effect.empty()
+            navigateToEffect = Effect.empty(),
+            startedFromLauncher = false
         )
     }
 }

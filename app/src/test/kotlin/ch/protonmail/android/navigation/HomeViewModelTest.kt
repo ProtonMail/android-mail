@@ -122,6 +122,28 @@ class HomeViewModelTest {
     }
 
     @Test
+    fun `should emit a new state with started from launcher set when intent with main action is received`() = runTest {
+        // Given
+        val mainIntent = mockIntent(
+            action = Intent.ACTION_MAIN,
+            data = null
+        )
+        every { networkManager.observe() } returns emptyFlow()
+        every { shareIntentObserver() } returns flowOf(mainIntent)
+
+        // When
+        homeViewModel.state.test {
+            val actualItem = awaitItem()
+            val expectedItem = HomeState.Initial.copy(
+                startedFromLauncher = true
+            )
+
+            // Then
+            assertEquals(expectedItem, actualItem)
+        }
+    }
+
+    @Test
     fun `when the status is disconnected and is still disconnected after 5 seconds then emit disconnected status`() =
         runTest {
             // Given
@@ -136,7 +158,8 @@ class HomeViewModelTest {
                 val expectedItem = HomeState(
                     networkStatusEffect = Effect.of(NetworkStatus.Disconnected),
                     messageSendingStatusEffect = Effect.empty(),
-                    navigateToEffect = Effect.empty()
+                    navigateToEffect = Effect.empty(),
+                    startedFromLauncher = false
                 )
 
                 // Then
@@ -158,7 +181,8 @@ class HomeViewModelTest {
             val expectedItem = HomeState(
                 networkStatusEffect = Effect.of(NetworkStatus.Metered),
                 messageSendingStatusEffect = Effect.empty(),
-                navigateToEffect = Effect.empty()
+                navigateToEffect = Effect.empty(),
+                startedFromLauncher = false
             )
 
             // Then
@@ -177,7 +201,8 @@ class HomeViewModelTest {
             val expectedItem = HomeState(
                 networkStatusEffect = Effect.of(NetworkStatus.Metered),
                 messageSendingStatusEffect = Effect.empty(),
-                navigateToEffect = Effect.empty()
+                navigateToEffect = Effect.empty(),
+                startedFromLauncher = false
             )
 
             // Then
@@ -198,7 +223,8 @@ class HomeViewModelTest {
             val expectedItem = HomeState(
                 networkStatusEffect = Effect.of(NetworkStatus.Metered),
                 messageSendingStatusEffect = Effect.of(MessageSendingStatus.MessageSent),
-                navigateToEffect = Effect.empty()
+                navigateToEffect = Effect.empty(),
+                startedFromLauncher = false
             )
             sendingMessageStatusFlow.emit(MessageSendingStatus.None)
 
@@ -222,7 +248,8 @@ class HomeViewModelTest {
                 val expectedItem = HomeState(
                     networkStatusEffect = Effect.of(NetworkStatus.Metered),
                     messageSendingStatusEffect = Effect.of(MessageSendingStatus.SendMessageError),
-                    navigateToEffect = Effect.empty()
+                    navigateToEffect = Effect.empty(),
+                    startedFromLauncher = false
                 )
 
                 // Then
@@ -297,7 +324,38 @@ class HomeViewModelTest {
         }
     }
 
-    private fun mockIntent(action: String, data: Uri): Intent {
+    @Test
+    fun `should not emit a new navigation state when activity was started from launcher`() = runTest {
+        // Given
+        val fileUriStr = "content://media/1234"
+        val fileUri = mockk<Uri>()
+        val fileShareInfo = FileShareInfo.Empty.copy(
+            attachmentUris = listOf(fileUriStr)
+        )
+        val shareIntent = mockIntent(
+            action = Intent.ACTION_SEND,
+            data = fileUri
+        )
+        val mainIntent = mockIntent(
+            action = Intent.ACTION_MAIN,
+            data = null
+        )
+        // Mock the extension function
+        mockkStatic("ch.protonmail.android.mailcommon.data.file.IntentShareExtensionsKt")
+        every { any<Intent>().getFileShareInfo() } returns fileShareInfo
+
+        every { networkManager.observe() } returns flowOf()
+        every { shouldPresentPinInsertionScreen() } returns flowOf()
+        every { shareIntentObserver() } returns flowOf(mainIntent, shareIntent)
+
+        // When + Then
+        homeViewModel.state.test {
+            val actualItem = awaitItem()
+            assertNull(actualItem.navigateToEffect.consume())
+        }
+    }
+
+    private fun mockIntent(action: String, data: Uri?): Intent {
         return mockk {
             every { this@mockk.action } returns action
             every { this@mockk.data } returns data

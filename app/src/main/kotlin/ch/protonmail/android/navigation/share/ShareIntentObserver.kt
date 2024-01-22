@@ -22,6 +22,7 @@ import android.content.Intent
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
 import javax.inject.Inject
@@ -40,9 +41,11 @@ class ShareIntentObserver @Inject constructor() {
                     Intent.ACTION_SEND,
                     Intent.ACTION_SEND_MULTIPLE,
                     Intent.ACTION_VIEW,
-                    Intent.ACTION_SENDTO
+                    Intent.ACTION_SENDTO,
+                    Intent.ACTION_MAIN
                 )
             }
+            .distinctUntilChanged()
     }
 
     fun onNewIntent(intent: Intent?) {
