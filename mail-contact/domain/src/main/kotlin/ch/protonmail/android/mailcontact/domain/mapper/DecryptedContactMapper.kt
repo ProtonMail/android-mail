@@ -1,0 +1,256 @@
+/*
+ * Copyright (c) 2022 Proton Technologies AG
+ * This file is part of Proton Technologies AG and Proton Mail.
+ *
+ * Proton Mail is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Proton Mail is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package ch.protonmail.android.mailcontact.domain.mapper
+
+import java.time.ZoneId
+import java.util.Date
+import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
+import ezvcard.VCard
+import ezvcard.VCardVersion
+import ezvcard.parameter.AddressType
+import ezvcard.parameter.EmailType
+import ezvcard.parameter.ImageType
+import ezvcard.parameter.TelephoneType
+import ezvcard.property.Address
+import ezvcard.property.Anniversary
+import ezvcard.property.Birthday
+import ezvcard.property.Email
+import ezvcard.property.Gender
+import ezvcard.property.Logo
+import ezvcard.property.Member
+import ezvcard.property.Organization
+import ezvcard.property.Photo
+import ezvcard.property.StructuredName
+import ezvcard.property.Telephone
+import ezvcard.property.Timezone
+import ezvcard.property.Title
+import ezvcard.property.Uid
+import me.proton.core.util.kotlin.takeIfNotEmpty
+
+class DecryptedContactMapper {
+
+    /**
+     * We should not generate ClearText ContactCard if CATEGORIES field is empty.
+     *
+     * We don't support it on Android so the only way we return non-null here is
+     * if there was ClearText VCard passed as [vCard].
+     */
+    fun mapToClearTextContactCard(fallbackUid: Uid, vCard: VCard?): VCard? {
+        if (vCard == null) return null
+
+        return vCard.apply {
+            uid = vCard.uid ?: fallbackUid
+            version = vCard.version ?: VCardVersion.V4_0
+        }
+    }
+
+    fun mapToSignedContactCard(
+        fallbackUid: Uid,
+        fallbackName: String,
+        decryptedContact: DecryptedContact,
+        vCard: VCard?
+    ): VCard {
+        return with(vCard ?: VCard()) {
+            uid = vCard?.uid ?: fallbackUid
+            version = vCard?.version ?: VCardVersion.V4_0
+
+            decryptedContact.formattedName?.value?.let {
+                setFormattedName(it)
+            }
+
+            // API requires every Contact to have FN field
+            if (formattedName?.value == null) {
+                setFormattedName(fallbackName)
+            }
+
+            decryptedContact.emails.takeIfNotEmpty()?.let {
+                emails.clear()
+                it.forEachIndexed { index, email ->
+                    addEmail(
+                        Email(email.value).apply {
+                            group = "ITEM${index + 1}"
+                            if (email.type.value.isNotBlank()) {
+                                types.add(EmailType.get(email.type.value))
+                            }
+                            pref = index + 1
+                        }
+                    )
+                }
+            }
+
+            this
+
+            // pinned-key related fields should also be here but we do not support editing them
+            // so we should just not overwrite them with blanks
+        }
+    }
+
+    @Suppress("LongMethod", "ComplexMethod")
+    fun mapToEncryptedAndSignedContactCard(
+        fallbackUid: Uid,
+        decryptedContact: DecryptedContact,
+        vCard: VCard?
+    ): VCard {
+        return with(vCard ?: VCard()) {
+            uid = vCard?.uid ?: fallbackUid
+            version = vCard?.version ?: VCardVersion.V4_0
+
+            decryptedContact.structuredName?.let {
+                structuredName = StructuredName().apply {
+                    family = it.family
+                    given = it.given
+                }
+            }
+
+            decryptedContact.telephones.takeIfNotEmpty()?.let {
+                telephoneNumbers.clear()
+                it.forEachIndexed { index, telephone ->
+                    addTelephoneNumber(
+                        Telephone(telephone.text).apply {
+                            if (telephone.type.value.isNotBlank()) {
+                                types.add(TelephoneType.get(telephone.type.value))
+                            }
+                            pref = index + 1
+                        }
+                    )
+                }
+            }
+
+            decryptedContact.addresses.takeIfNotEmpty()?.let {
+                addresses.clear()
+                it.forEachIndexed { index, address ->
+                    addAddress(
+                        Address().apply {
+                            if (address.type.value.isNotBlank()) {
+                                types.add(AddressType.get(address.type.value))
+                            }
+                            streetAddress = address.streetAddress
+                            locality = address.locality
+                            region = address.region
+                            postalCode = address.postalCode
+                            country = address.country
+                            pref = index + 1
+                        }
+                    )
+                }
+            }
+
+            decryptedContact.birthday?.let {
+                birthday = Birthday(Date.from(it.date.atStartOfDay(ZoneId.systemDefault()).toInstant()))
+            }
+
+            decryptedContact.notes.takeIfNotEmpty()?.let {
+                notes.clear()
+                it.forEach { note ->
+                    addNote(note.value)
+                }
+            }
+
+            decryptedContact.photos.takeIfNotEmpty()?.let {
+                photos.clear()
+                it.forEachIndexed { index, photo ->
+                    addPhoto(
+                        Photo(
+                            photo.data,
+                            ImageType.get(photo.contentType, photo.mediaType, photo.extension)
+                        ).apply {
+                            pref = index + 1
+                        }
+                    )
+                }
+            }
+
+            decryptedContact.organizations.takeIfNotEmpty()?.let {
+                organizations.clear()
+                it.forEach { organization ->
+                    addOrganization(
+                        Organization().apply {
+                            values.add(organization.value)
+                        }
+                    )
+                }
+            }
+
+            decryptedContact.titles.takeIfNotEmpty()?.let {
+                titles.clear()
+                it.forEach { title ->
+                    addTitle(Title(title.value))
+                }
+            }
+
+            decryptedContact.roles.takeIfNotEmpty()?.let {
+                roles.clear()
+                it.forEach { role ->
+                    addRole(role.value)
+                }
+            }
+
+            decryptedContact.timezones.takeIfNotEmpty()?.let {
+                timezones.clear()
+                it.forEach { timezone ->
+                    addTimezone(Timezone(timezone.text))
+                }
+            }
+
+            decryptedContact.logos.takeIfNotEmpty()?.let {
+                logos.clear()
+                it.forEach { logo ->
+                    addLogo(
+                        Logo(
+                            logo.data,
+                            ImageType.get(logo.contentType, logo.mediaType, logo.extension)
+                        )
+                    )
+                }
+            }
+
+            decryptedContact.members.takeIfNotEmpty()?.let {
+                members.clear()
+                it.forEach { member ->
+                    addMember(Member(member.value))
+                }
+            }
+
+            decryptedContact.languages.takeIfNotEmpty()?.let {
+                languages.clear()
+                it.forEach { language ->
+                    addLanguage(language.value)
+                }
+            }
+
+            decryptedContact.gender?.let {
+                gender = Gender(it.gender)
+            }
+
+            decryptedContact.anniversary?.let {
+                anniversary = Anniversary(Date.from(it.date.atStartOfDay(ZoneId.systemDefault()).toInstant()))
+            }
+
+            decryptedContact.urls.takeIfNotEmpty()?.let {
+                urls.clear()
+                it.forEach { url ->
+                    addUrl(url.value)
+                }
+            }
+
+            this
+        }
+    }
+
+}
