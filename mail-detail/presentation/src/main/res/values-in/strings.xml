@@ -80,4 +80,7 @@
   <string name="error_delete_conversation_failed">Percakapan gagal dihapus</string>
   <string name="error_delete_conversation_failed_wrong_folder">Percakapan tidak terletak pada lokasi yang memungkinkan percakapan untuk dihapus</string>
   <string name="conversation_deleted">Percakapan dihapus</string>
+  <string name="message_body_load_remote_content_button_text">Muat remote content</string>
+  <string name="message_body_load_embedded_images_button_text">Muat gambar yang tersemat</string>
+  <string name="message_body_load_embedded_and_remote_content_button_text">Muat remote content dan gambar yang tersemat</string>
 </resources>

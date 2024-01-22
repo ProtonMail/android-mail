@@ -28,8 +28,8 @@
   <string name="label_title_all_mail">Alle e-mails</string>
   <string name="label_title_all_drafts">Alle concepten</string>
   <string name="label_title_all_sent">Alle verzonden</string>
-  <string name="label_title_all_scheduled">All Scheduled</string>
-  <string name="label_title_snoozed">Snoozed</string>
+  <string name="label_title_all_scheduled">Alles gepland</string>
+  <string name="label_title_snoozed">Uitgesteld</string>
   <string name="label_title_folders">Mappen</string>
   <string name="label_title_parent_folder">Bovenliggende map</string>
   <string name="label_title_labels">Labels</string>
@@ -59,7 +59,7 @@
   <string name="folder_limit_reached_error">Mappenlimiet bereikt</string>
   <string name="delete_label_error">Fout bij het verwijderen van label</string>
   <string name="input_field_clear_content_description">Tekst wissen</string>
-  <string name="label_list_item_content_description">Label list item</string>
+  <string name="label_list_item_content_description">Label lijst item</string>
   <string name="folder_list_item_content_description">Folder list item</string>
   <string name="folder_list_no_folders_found">Geen mappen gevonden</string>
   <string name="folder_list_create_folder_placeholder_description">Creëer een map om uw e-mailervaring te verbeteren.</string>
@@ -69,8 +69,8 @@
   <string name="folder_settings_done_button">Klaar</string>
   <string name="folder_settings_folder_colors">Gebruik mapkleuren</string>
   <string name="folder_settings_parent_color">Inherit parent folder color</string>
-  <string name="folder_list_loading_error">Error loading folders, please try again later</string>
-  <string name="folder_loading_error">Error loading folder, please try again later</string>
+  <string name="folder_list_loading_error">Fout bij het laden van de mappen, probeer het later nog een keer</string>
+  <string name="folder_loading_error">Fout bij het laden van de map, probeer het later nog een keer</string>
   <string name="switch_on">Aan</string>
   <string name="switch_off">Uit</string>
   <string name="folder_form_parent">Bovenliggende map</string>

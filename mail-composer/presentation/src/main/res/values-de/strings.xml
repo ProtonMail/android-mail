@@ -48,6 +48,11 @@
   <string name="composer_attachment_reencryption_failed_message">Die erneute Verschlüsselung des Anhangs ist fehlgeschlagen. Aus Sicherheitsgründen wurden alle Anhänge entfernt.</string>
   <string name="composer_warning_local_data_shown">Die letzte Version dieses Entwurfs konnte nicht geladen werden. Jede Änderung wird den Inhalt überschreiben.</string>
   <string name="composer_button_add_password">Passwort hinzufügen</string>
+  <!-- Message sending without subject dialog -->
+  <string name="composer_send_without_subject_dialog_title">Verfassen</string>
+  <string name="composer_send_without_subject_dialog_text">Nachricht ohne Betreff senden?</string>
+  <string name="composer_send_without_subject_dialog_confirm_button">Ja</string>
+  <string name="composer_send_without_subject_dialog_reject_button">Nein</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Sendefehler</string>
   <string name="message_sending_error_dialog_button_dismiss">Schließen</string>
@@ -57,7 +62,7 @@
   <string name="set_message_password_title">Nachricht verschlüsseln</string>
   <string name="set_message_password_info_message">Lege ein Passwort zum Verschlüsseln dieser Nachricht für nicht-Proton Mail-Benutzer fest.</string>
   <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Mehr erfahren</a></string>
-  <string name="set_message_password_label">Message password</string>
+  <string name="set_message_password_label">Passwort der Nachricht</string>
   <string name="set_message_password_label_repeat">Passwort wiederholen</string>
   <string name="set_message_password_label_hint">Passworthinweis (optional)</string>
   <string name="set_message_password_supporting_text">4-21 Zeichen lang</string>
@@ -67,4 +72,6 @@
   <string name="set_message_password_button_show">Passwort anzeigen</string>
   <string name="set_message_password_button_hide">Passwort ausblenden</string>
   <string name="set_message_password_button_apply">Passwort übernehmen</string>
+  <string name="set_message_password_button_save_changes">Änderungen speichern</string>
+  <string name="set_message_password_button_remove_password">Passwort entfernen</string>
 </resources>

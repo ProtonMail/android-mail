@@ -24,11 +24,11 @@
   <string name="mail_settings_app_settings">アプリ設定</string>
   <string name="mail_settings_theme">テーマ</string>
   <string name="mail_settings_push_notifications">プッシュ通知</string>
-  <string name="mail_settings_auto_lock">Auto lock</string>
+  <string name="mail_settings_auto_lock">自動ロック</string>
   <string name="mail_settings_alternative_routing">代替ルーティング</string>
   <string name="mail_settings_app_language">アプリ言語</string>
   <string name="mail_settings_combined_contacts">連絡先の相互利用</string>
-  <string name="mail_settings_local_cache">Local cache</string>
+  <string name="mail_settings_local_cache">ローカルキャッシュ</string>
   <string name="mail_settings_local_cache_hint">Space used: %s</string>
   <string name="mail_settings_local_cache_clear_button">Clear data</string>
   <string name="mail_settings_swipe_actions">スワイプ操作</string>

@@ -71,8 +71,8 @@
   <string name="folder_settings_parent_color">Наследовать цвет родительской папки</string>
   <string name="folder_list_loading_error">Ошибка при скачивании папок, повторите попытку позже</string>
   <string name="folder_loading_error">Ошибка при скачивании папки, повторите попытку позже</string>
-  <string name="switch_on">Вкл</string>
-  <string name="switch_off">Выкл</string>
+  <string name="switch_on">Вкл.</string>
+  <string name="switch_off">Выкл.</string>
   <string name="folder_form_parent">Родительская папка</string>
   <string name="folder_form_no_parent">Отсутствует</string>
   <string name="folder_form_notifications">Уведомления</string>

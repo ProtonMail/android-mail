@@ -43,4 +43,5 @@
   <string name="bottom_sheet_done_action">Ferdig</string>
   <string name="bottom_sheet_archive_action">Arkiver i tillegg?</string>
   <string name="bottom_sheet_label_as_title">Merk som...</string>
+  <string name="bottom_sheet_more_header_message_from">Melding fra %s</string>
 </resources>

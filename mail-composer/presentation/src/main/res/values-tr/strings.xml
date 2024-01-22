@@ -48,6 +48,11 @@
   <string name="composer_attachment_reencryption_failed_message">Ek dosya yeniden şifrelenemedi. Güvenlik nedeniyle tüm ek dosyalar kaldırıldı.</string>
   <string name="composer_warning_local_data_shown">Taslağın son sürümü yüklenemedi. Yapılmış değişiklikler geçersiz olacak.</string>
   <string name="composer_button_add_password">Parola ekle</string>
+  <!-- Message sending without subject dialog -->
+  <string name="composer_send_without_subject_dialog_title">Compose</string>
+  <string name="composer_send_without_subject_dialog_text">Send message without subject?</string>
+  <string name="composer_send_without_subject_dialog_confirm_button">Yes</string>
+  <string name="composer_send_without_subject_dialog_reject_button">No</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Gönderme sorunu</string>
   <string name="message_sending_error_dialog_button_dismiss">Kapat</string>
@@ -67,4 +72,6 @@
   <string name="set_message_password_button_show">Show password</string>
   <string name="set_message_password_button_hide">Hide password</string>
   <string name="set_message_password_button_apply">Apply password</string>
+  <string name="set_message_password_button_save_changes">Save changes</string>
+  <string name="set_message_password_button_remove_password">Remove password</string>
 </resources>

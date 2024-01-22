@@ -118,7 +118,7 @@
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">Automatické uzamknutie</string>
   <string name="mail_settings_auto_lock_item_title">Autom. uzamknutie aplikácie</string>
-  <string name="mail_settings_auto_lock_item_description">Zapnite túto funkciu pre automatické uzamknutie vašej aplikácie a použite PIN kód pre odomknutie.</string>
+  <string name="mail_settings_auto_lock_item_description">Zapnutím tejto funkcie aplikáciu automaticky uzamknete a odomknete ju pomocou PIN kódu.</string>
   <string name="mail_settings_auto_lock_change_pin_description">Zmeniť PIN kód</string>
   <string name="mail_settings_auto_lock_item_timer_title">Časovač autom. zámku</string>
   <string name="mail_settings_auto_lock_immediately">Okamžite</string>
@@ -140,13 +140,13 @@
     <item quantity="one">Zostáva %s pokus.</item>
     <item quantity="few">Zostáva %s pokusov.</item>
     <item quantity="many">Zostávajú %s pokusy.</item>
-    <item quantity="other">Zostávajú %s pokusy.</item>
+    <item quantity="other">Zostáva %s pokusov.</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
     <item quantity="one">Zostáva %s pokus pred bezpečným zmazaním dát.</item>
     <item quantity="few">Zostávajú %s pokusy pred bezpečným zmazaním dát.</item>
     <item quantity="many">Zostáva %s pokusov pred bezpečným zmazaním dát.</item>
-    <item quantity="other">Zostáva %s pokusov pred bezpečným zmazaním dát.</item>
+    <item quantity="other">Zostáva %s pokusov do bezpečného vymazania údajov.</item>
   </plurals>
   <string name="mail_settings_pin_insertion_error_unknown">Pri overovaní PIN kódu došlo k chybe.</string>
   <string name="mail_settings_pin_insertion_signout_text">Odhlásiť sa</string>

@@ -48,6 +48,11 @@
   <string name="composer_attachment_reencryption_failed_message">Rekryptering af vedhæftet fil mislykkedes. Af sikkerhedsgrunde blev alle vedhæftede filer fjernet.</string>
   <string name="composer_warning_local_data_shown">Den seneste version af denne kladde kunne ikke indlæses. Enhver ændring vil tilsidesætte dens indhold.</string>
   <string name="composer_button_add_password">Tilføj adgangskode</string>
+  <!-- Message sending without subject dialog -->
+  <string name="composer_send_without_subject_dialog_title">Compose</string>
+  <string name="composer_send_without_subject_dialog_text">Send message without subject?</string>
+  <string name="composer_send_without_subject_dialog_confirm_button">Yes</string>
+  <string name="composer_send_without_subject_dialog_reject_button">No</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Afsendelsesfejl</string>
   <string name="message_sending_error_dialog_button_dismiss">Luk</string>
@@ -67,4 +72,6 @@
   <string name="set_message_password_button_show">Show password</string>
   <string name="set_message_password_button_hide">Hide password</string>
   <string name="set_message_password_button_apply">Apply password</string>
+  <string name="set_message_password_button_save_changes">Save changes</string>
+  <string name="set_message_password_button_remove_password">Remove password</string>
 </resources>

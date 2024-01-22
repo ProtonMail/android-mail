@@ -81,4 +81,7 @@
   <string name="error_delete_conversation_failed">Löschen der Unterhaltung fehlgeschlagen.</string>
   <string name="error_delete_conversation_failed_wrong_folder">Die Unterhaltung befindet sich an einem Ort, an dem sie nicht gelöscht werden kann.</string>
   <string name="conversation_deleted">Unterhaltung gelöscht</string>
+  <string name="message_body_load_remote_content_button_text">Externe Inhalte laden</string>
+  <string name="message_body_load_embedded_images_button_text">Eingebettete Bilder laden</string>
+  <string name="message_body_load_embedded_and_remote_content_button_text">Externe und eingebettete Inhalte laden</string>
 </resources>

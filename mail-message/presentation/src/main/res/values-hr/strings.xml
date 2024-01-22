@@ -44,4 +44,5 @@
   <string name="bottom_sheet_done_action">Gotovo</string>
   <string name="bottom_sheet_archive_action">Also archive?</string>
   <string name="bottom_sheet_label_as_title">Označi kao...</string>
+  <string name="bottom_sheet_more_header_message_from">Message from %s</string>
 </resources>

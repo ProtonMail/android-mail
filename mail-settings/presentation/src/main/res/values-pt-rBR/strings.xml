@@ -144,7 +144,7 @@
     <item quantity="one">%s tentativa restante até a limpeza segura dos dados.</item>
     <item quantity="other">%s tentativas restantes até a limpeza segura dos dados.</item>
   </plurals>
-  <string name="mail_settings_pin_insertion_error_unknown">There was an error verifying your PIN code.</string>
+  <string name="mail_settings_pin_insertion_error_unknown">Ocorreu um erro ao verificar o seu código PIN.</string>
   <string name="mail_settings_pin_insertion_signout_text">Encerrar sessão</string>
   <string name="mail_settings_pin_insertion_signout_dialog_title">Encerrar sessão</string>
   <string name="mail_settings_pin_insertion_signout_dialog_description">Você tem certeza que deseja encerrar a sessão?</string>

@@ -81,4 +81,7 @@
   <string name="error_delete_conversation_failed">Erro ao excluir a conversa</string>
   <string name="error_delete_conversation_failed_wrong_folder">A conversa não está em um local onde possa ser excluída</string>
   <string name="conversation_deleted">Conversa excluída</string>
+  <string name="message_body_load_remote_content_button_text">Carregar conteúdo remoto</string>
+  <string name="message_body_load_embedded_images_button_text">Carregar imagens incorporadas</string>
+  <string name="message_body_load_embedded_and_remote_content_button_text">Carregar conteúdo remoto e imagens incorporadas</string>
 </resources>

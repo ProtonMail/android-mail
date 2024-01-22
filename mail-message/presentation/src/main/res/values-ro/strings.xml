@@ -44,4 +44,5 @@
   <string name="bottom_sheet_done_action">Gata</string>
   <string name="bottom_sheet_archive_action">Și arhivare?</string>
   <string name="bottom_sheet_label_as_title">Etichetare cu...</string>
+  <string name="bottom_sheet_more_header_message_from">Message from %s</string>
 </resources>

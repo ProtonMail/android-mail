@@ -34,7 +34,7 @@
     <item quantity="other">%d zaznaczonych</item>
   </plurals>
   <plurals name="filter_unread_button_text">
-    <item quantity="one">%s nieprzeczytana</item>
+    <item quantity="one">%s nieprzeczytany</item>
     <item quantity="few">%s nieprzeczytane</item>
     <item quantity="many">%s nieprzeczytanych</item>
     <item quantity="other">%s nieprzeczytanych</item>
@@ -131,4 +131,14 @@
   <string name="mailbox_action_clear_trash_dialog_body_conversation">Czy na pewno chcesz trwale usunąć wszystkie wątki z Kosza?</string>
   <string name="mailbox_action_clear_spam_dialog_body_conversation">Czy na pewno chcesz trwale usunąć wszystkie wątki ze Spamu?</string>
   <string name="mailbox_action_clear_operation_scheduled">"Operacja wyczyszczenia jest zaplanowana"</string>
+  <!--    Storage Limit Warning-->
+  <string name="storage_limit_warning_dialog_title">Ostrzeżenie</string>
+  <string name="storage_first_limit_exceeded_warning_dialog_text">Wykorzystano 80% dostępnej przestrzeni dyskowej konta Proton. Zwolnij część miejsca lub ulepsz konto, aby uzyskać więcej miejsca.</string>
+  <string name="storage_second_limit_exceeded_warning_dialog_text">Wykorzystano 90% dostępnej przestrzeni dyskowej konta Proton. Zwolnij część miejsca lub ulepsz konto, aby uzyskać więcej miejsca.</string>
+  <string name="storage_limit_warning_dialog_do_not_remind_button">Nie przypominaj</string>
+  <string name="storage_limit_warning_dialog_confirm_button">OK</string>
+  <!--    Storage Quota Over Warning-->
+  <string name="storage_quota_over_dialog_title">Ostrzeżenie</string>
+  <string name="storage_quota_over_dialog_text">Wykorzystano 100% dostępnej przestrzeni dyskowej konta Proton. Nie możesz wysyłać ani odbierać wiadomości, chyba że trwale usuniesz część z nich lub ulepszysz konto, aby uzyskać więcej miejsca.</string>
+  <string name="storage_quota_over_dialog_confirm_button">OK</string>
 </resources>

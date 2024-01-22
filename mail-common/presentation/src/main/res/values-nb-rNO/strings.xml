@@ -90,4 +90,5 @@
   <string name="intent_failure_no_app_found_to_handle_this_action">Ingen app ble funnet til å håndtere denne handlingen.</string>
   <string name="mailbox_action_delete_dialog_button_cancel">Avbryt</string>
   <string name="mailbox_action_delete_dialog_button_delete">Slett</string>
+  <string name="picker_dialog_cancel">Avbryt</string>
 </resources>

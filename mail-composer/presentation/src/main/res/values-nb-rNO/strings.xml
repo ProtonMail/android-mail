@@ -48,6 +48,11 @@
   <string name="composer_attachment_reencryption_failed_message">Kryptering av vedlegg på nytt mislyktes. Av sikkerhetsmessige årsaker ble alle vedlegg fjernet.</string>
   <string name="composer_warning_local_data_shown">Den nyeste versjonen av dette utkastet kunne ikke lastes inn. Enhver endring vil overstyre innholdet.</string>
   <string name="composer_button_add_password">Legg til passord</string>
+  <!-- Message sending without subject dialog -->
+  <string name="composer_send_without_subject_dialog_title">Skriv e-post</string>
+  <string name="composer_send_without_subject_dialog_text">Sende melding uten emne?</string>
+  <string name="composer_send_without_subject_dialog_confirm_button">Ja</string>
+  <string name="composer_send_without_subject_dialog_reject_button">Nei</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Feil ved sending</string>
   <string name="message_sending_error_dialog_button_dismiss">Lukk</string>
@@ -67,4 +72,6 @@
   <string name="set_message_password_button_show">Vis passord</string>
   <string name="set_message_password_button_hide">Skjul passord</string>
   <string name="set_message_password_button_apply">Anvend passord</string>
+  <string name="set_message_password_button_save_changes">Lagre endringer</string>
+  <string name="set_message_password_button_remove_password">Fjern passord</string>
 </resources>

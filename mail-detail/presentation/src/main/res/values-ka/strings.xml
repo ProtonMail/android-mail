@@ -70,7 +70,7 @@
   <!-- Phishing link confirmation dialog -->
   <string name="phishing_link_confirmation_dialog_title">გაფრთხილება: დიდი ალბათობით ვებგვერდი ყალბია</string>
   <string name="phishing_link_confirmation_dialog_content_part_1">ბმული მიდის ვებგვერდამდე, რომელმაც შეიძლება მოიპაროს თქვენი ისეთი ინფორმაცია, როგორიცაა პაროლები და საკრედიტო ბარათის დეტალები.</string>
-  <string name="phishing_link_confirmation_dialog_content_part_2">თქვენი უსაფრთხოებისთვის, არ გააგრძელოთ.</string>
+  <string name="phishing_link_confirmation_dialog_content_part_2">თქვენი უსაფრთხოებისთვის არ გააგრძელოთ.</string>
   <string name="phishing_link_confirmation_dialog_button_go_back">უკან დაბრუნება (რეკომენდებულია)</string>
   <string name="phishing_link_confirmation_dialog_button_continue">გაფრთხილების იგნორი და გაგრძელება</string>
   <string name="message_delete_dialog_title">შეტყობინების წაშლა</string>
@@ -81,4 +81,7 @@
   <string name="error_delete_conversation_failed">საუბრის წაშლა ჩავარდა</string>
   <string name="error_delete_conversation_failed_wrong_folder">საუბარი არ იმყოფება მდებარეობაზე, საიდანაც მისი წაშლა შეგიძლიათ</string>
   <string name="conversation_deleted">საუბარი წაიშალა</string>
+  <string name="message_body_load_remote_content_button_text">Load remote content</string>
+  <string name="message_body_load_embedded_images_button_text">Load embedded images</string>
+  <string name="message_body_load_embedded_and_remote_content_button_text">Load remote and embedded content</string>
 </resources>

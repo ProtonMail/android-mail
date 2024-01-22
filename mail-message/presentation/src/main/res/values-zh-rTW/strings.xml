@@ -40,6 +40,7 @@
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">移至...</string>
   <string name="bottom_sheet_done_action">完成</string>
-  <string name="bottom_sheet_archive_action">Also archive?</string>
+  <string name="bottom_sheet_archive_action">同時封存?</string>
   <string name="bottom_sheet_label_as_title">標籤為...</string>
+  <string name="bottom_sheet_more_header_message_from">Message from %s</string>
 </resources>

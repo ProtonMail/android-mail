@@ -28,7 +28,7 @@
   <string name="action_reply_all">Respon a tothom</string>
   <string name="action_forward">Reenvia</string>
   <string name="action_reply_description">Respon</string>
-  <string name="action_reply_to_description">Reply to %s</string>
+  <string name="action_reply_to_description">Respon a %s</string>
   <string name="action_reply_all_description">Respon a tothom</string>
   <string name="action_forward_description">Reenvia</string>
   <string name="action_mark_read_description">Marca com a llegit</string>
@@ -53,7 +53,7 @@
   <string name="action_save_attachments_description">Desa els adjunts</string>
   <string name="action_more_description">Més</string>
   <string name="action_reply_content_description">Respon</string>
-  <string name="action_reply_to_content_description">Reply to %s</string>
+  <string name="action_reply_to_content_description">Respon a %s</string>
   <string name="action_reply_all_content_description">Respon a tothom</string>
   <string name="action_forward_content_description">Reenvia</string>
   <string name="action_mark_read_content_description">Marca com a llegit</string>
@@ -90,4 +90,5 @@
   <string name="intent_failure_no_app_found_to_handle_this_action">No s\'ha trobat cap aplicació per a gestionar aquesta acció</string>
   <string name="mailbox_action_delete_dialog_button_cancel">Cancel·la</string>
   <string name="mailbox_action_delete_dialog_button_delete">Elimina</string>
+  <string name="picker_dialog_cancel">Cancel</string>
 </resources>

@@ -42,4 +42,5 @@
   <string name="bottom_sheet_done_action">Selesai</string>
   <string name="bottom_sheet_archive_action">Arsipkan juga?</string>
   <string name="bottom_sheet_label_as_title">Beri label sebagai...</string>
+  <string name="bottom_sheet_more_header_message_from">Pesan dari %s</string>
 </resources>

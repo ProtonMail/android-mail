@@ -24,7 +24,7 @@
   <string name="mail_settings_app_settings">Настройки приложения</string>
   <string name="mail_settings_theme">Тема</string>
   <string name="mail_settings_push_notifications">Push-уведомления</string>
-  <string name="mail_settings_auto_lock">Auto lock</string>
+  <string name="mail_settings_auto_lock">Автоблокировка</string>
   <string name="mail_settings_alternative_routing">Альтернативная маршрутизация</string>
   <string name="mail_settings_app_language">Язык приложения</string>
   <string name="mail_settings_combined_contacts">Объединенные контакты</string>
@@ -118,7 +118,7 @@
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">Автоблокировка</string>
   <string name="mail_settings_auto_lock_item_title">Автоблокировка приложения</string>
-  <string name="mail_settings_auto_lock_item_description">Turn this feature on to auto lock your app and use a PIN code to unlock it.</string>
+  <string name="mail_settings_auto_lock_item_description">Включите эту функцию, чтобы автоматически заблокировать приложение и использовать PIN для его разблокировки.</string>
   <string name="mail_settings_auto_lock_change_pin_description">Изменить PIN-код</string>
   <string name="mail_settings_auto_lock_item_timer_title">Таймер автоблокировки</string>
   <string name="mail_settings_auto_lock_immediately">Немедленно</string>
@@ -137,25 +137,25 @@
   <string name="mail_settings_pin_insertion_button_confirm">Подтвердить</string>
   <string name="mail_settings_pin_insertion_error_no_match">PIN-коды не совпадают.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="one">%s remaining attempt.</item>
-    <item quantity="few">%s remaining attempts.</item>
-    <item quantity="many">%s remaining attempts.</item>
-    <item quantity="other">%s remaining attempts.</item>
+    <item quantity="one">Осталась %s попытка.</item>
+    <item quantity="few">Остались %s попытки.</item>
+    <item quantity="many">Остались %s попыток.</item>
+    <item quantity="other">Остались %s попыток.</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
-    <item quantity="one">%s remaining attempt until secure data wipe.</item>
-    <item quantity="few">%s remaining attempts until secure data wipe.</item>
-    <item quantity="many">%s remaining attempts until secure data wipe.</item>
-    <item quantity="other">%s remaining attempts until secure data wipe.</item>
+    <item quantity="one">Осталась %s попытка до безопасного стирания данных.</item>
+    <item quantity="few">Остались %s попытки до безопасного стирания данных.</item>
+    <item quantity="many">Остались %s попыток до безопасного стирания данных.</item>
+    <item quantity="other">Остались %s попыток до безопасного стирания данных.</item>
   </plurals>
-  <string name="mail_settings_pin_insertion_error_unknown">There was an error verifying your PIN code.</string>
-  <string name="mail_settings_pin_insertion_signout_text">Sign Out</string>
-  <string name="mail_settings_pin_insertion_signout_dialog_title">Sign Out</string>
+  <string name="mail_settings_pin_insertion_error_unknown">Произошла ошибка при проверке вашего PIN-а.</string>
+  <string name="mail_settings_pin_insertion_signout_text">Выйти</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_title">Выйти</string>
   <string name="mail_settings_pin_insertion_signout_dialog_description">Вы уверены, что хотите выйти?</string>
-  <string name="mail_settings_pin_insertion_signout_dialog_confirm">Yes</string>
-  <string name="mail_settings_pin_insertion_signout_dialog_cancel">No</string>
-  <string name="mail_settings_pin_insertion_created_success">PIN code created successfully.</string>
-  <string name="mail_settings_pin_insertion_changed_success">PIN code changed successfully.</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_confirm">Да</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_cancel">Нет</string>
+  <string name="mail_settings_pin_insertion_created_success">PIN успешно создан</string>
+  <string name="mail_settings_pin_insertion_changed_success">PIN успешно изменен</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Очистка кэша на устройстве…</string>
   <!-- Error messages -->

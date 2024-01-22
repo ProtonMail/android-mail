@@ -27,7 +27,7 @@
   <string name="mail_settings_auto_lock">Otomatik kilitleme</string>
   <string name="mail_settings_alternative_routing">Alternatif yöneltme</string>
   <string name="mail_settings_app_language">Uygulama dili</string>
-  <string name="mail_settings_combined_contacts">Birleştirilmiş kişiler</string>
+  <string name="mail_settings_combined_contacts">Kişileri birleştirme</string>
   <string name="mail_settings_local_cache">Yerel ön bellek</string>
   <string name="mail_settings_local_cache_hint">Kullanılan alan: %s</string>
   <string name="mail_settings_local_cache_clear_button">Verileri temizle</string>

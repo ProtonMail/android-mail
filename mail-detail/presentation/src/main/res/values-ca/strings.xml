@@ -25,8 +25,8 @@
     <item quantity="one">%d missatge</item>
     <item quantity="other">%d missatges</item>
   </plurals>
-  <string name="quick_reply_button_content_description">Reply</string>
-  <string name="quick_reply_all_button_content_description">Reply All</string>
+  <string name="quick_reply_button_content_description">Respon</string>
+  <string name="quick_reply_all_button_content_description">Respon a tothom</string>
   <string name="more_button_content_description">Més</string>
   <string name="to">Per a:</string>
   <string name="cc">CC:</string>
@@ -81,4 +81,7 @@
   <string name="error_delete_conversation_failed">No s\'ha pogut eliminar la conversa</string>
   <string name="error_delete_conversation_failed_wrong_folder">La conversa no es troba en una ubicació on es pugui eliminar</string>
   <string name="conversation_deleted">S\'ha eliminat la conversa.</string>
+  <string name="message_body_load_remote_content_button_text">Load remote content</string>
+  <string name="message_body_load_embedded_images_button_text">Load embedded images</string>
+  <string name="message_body_load_embedded_and_remote_content_button_text">Load remote and embedded content</string>
 </resources>

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2022 Proton Technologies AG
   ~ This file is part of Proton Technologies AG and Proton Mail.
   ~
@@ -17,118 +16,127 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="drawer_title_more">Ещё</string>
-  <string name="drawer_title_contacts">Контакты</string>
-  <string name="drawer_title_subscription">Подписка</string>
-  <string name="mailbox_toolbar_compose_button_content_description">Написать новое сообщение</string>
-  <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Выход из режима выбора</string>
-  <string name="mailbox_toolbar_menu_button_content_description">Меню</string>
-  <string name="mailbox_toolbar_search_button_content_description">Поиск</string>
-  <string name="mailbox_toolbar_exit_search_mode_content_description">Exit search mode</string>
-  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Clear search query</string>
-  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Enter search query</string>
-  <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">%d выбрано</item>
-    <item quantity="few">%d выбрано</item>
-    <item quantity="many">%d выбрано</item>
-    <item quantity="other">%d выбрано</item>
-  </plurals>
-  <plurals name="filter_unread_button_text">
-    <item quantity="one">%s непрочитанное</item>
-    <item quantity="few">%s непрочитанных</item>
-    <item quantity="many">%s непрочитанных</item>
-    <item quantity="other">%s непрочитанных</item>
-  </plurals>
-  <string name="mailbox_default_recipient">(Нет получателя)</string>
-  <string name="mailbox_default_sender">(Нет отправителя)</string>
-  <string name="mailbox_error_message_offline">Вы офлайн, не удалось получить элементы</string>
-  <string name="mailbox_error_message_generic">Загрузка почтового ящика не удалась</string>
-  <string name="mailbox_error_message_unexpected">Что-то неожиданно пошло не так</string>
-  <string name="mailbox_is_empty_title">Сообщений нет</string>
-  <string name="mailbox_is_empty_description">Обновление не требуется</string>
-  <string name="mailbox_is_empty_no_unread_messages_title">Нет непрочитанных сообщений</string>
-  <string name="mailbox_is_empty_folder_description">Эта папка пуста</string>
-  <string name="mailbox_is_empty_spam_description">Папка Спам пуста</string>
-  <string name="mailbox_is_empty_trash_description">Корзина пуста</string>
-  <plurals name="mailbox_action_trash">
-    <item quantity="one">Сообщение помещено в Корзину</item>
-    <item quantity="few">%d сообщения перемещены в Корзину</item>
-    <item quantity="many">%d сообщений перемещено в Корзину</item>
-    <item quantity="other">%d messages moved to Trash</item>
-  </plurals>
-  <plurals name="mailbox_action_delete_conversation_dialog_title">
-    <item quantity="one">Удалить цепочку писем</item>
-    <item quantity="few">Удалить %d цепочки писем</item>
-    <item quantity="many">Удалить %d цепочек писем</item>
-    <item quantity="other">Удалить %d цепочек писем</item>
-  </plurals>
-  <plurals name="mailbox_action_delete_message_dialog_title">
-    <item quantity="one">Удалить сообщение</item>
-    <item quantity="few">Удалить %d сообщения</item>
-    <item quantity="many">Удалить %d сообщений</item>
-    <item quantity="other">Удалить %d сообщений</item>
-  </plurals>
-  <plurals name="mailbox_action_delete_conversation_dialog_message">
-    <item quantity="one">Вы уверены, что хотите безвозвратно удалить эту цепочку писем?</item>
-    <item quantity="few">Вы уверены, что хотите безвозвратно удалить эти цепочки писем?</item>
-    <item quantity="many">Вы уверены, что хотите безвозвратно удалить эти цепочки писем?</item>
-    <item quantity="other">Вы уверены, что хотите безвозвратно удалить эти цепочки писем?</item>
-  </plurals>
-  <plurals name="mailbox_action_delete_message_dialog_message">
-    <item quantity="one">Вы уверены, что хотите безвозвратно удалить это сообщение?</item>
-    <item quantity="few">Вы уверены, что хотите безвозвратно удалить эти сообщения?</item>
-    <item quantity="many">Вы уверены, что хотите безвозвратно удалить эти сообщения?</item>
-    <item quantity="other">Вы уверены, что хотите безвозвратно удалить эти сообщения?</item>
-  </plurals>
-  <plurals name="mailbox_action_delete_message">
-    <item quantity="one">Сообщение безвозвратно удалено</item>
-    <item quantity="few">%d сообщения безвозвратно удалено</item>
-    <item quantity="many">%d сообщений безвозвратно удалено</item>
-    <item quantity="other">%d сообщений безвозвратно удалено</item>
-  </plurals>
-  <plurals name="mailbox_action_delete_conversation">
-    <item quantity="one">Цепочка писем удалена безвозвратно</item>
-    <item quantity="few">%d цепочки писем удалено безвозвратно</item>
-    <item quantity="many">%d цепочек писем удалено безвозвратно</item>
-    <item quantity="other">%d цепочек писем удалено безвозвратно</item>
-  </plurals>
-  <string name="mailbox_action_label_messages_failed">Операция с ярлыком не удалась</string>
-  <string name="mailbox_action_label_messages_failed_retrieving_labels">Не удалось получить ярлыки</string>
-  <string name="mailbox_action_failed_retrieving_colors">Не удалось получить настройки цвета</string>
-  <string name="mailbox_action_move_messages_failed">Операция перемещения не удалась</string>
-  <string name="mailbox_action_move_messages_failed_retrieving_folders">Не удалось получить папки</string>
-  <!--  Spotlight V6 Beta  -->
-  <!--  Spotlight V6 GA  -->
-  <string name="onboarding_headline_ga">Добро пожаловать в новое приложение</string>
-  <string name="onboarding_description_ga">Полностью переработанное с нуля, новое приложение Proton Mail отличается стабильностью и производительностью.</string>
-  <!--  Onboarding 1  -->
-  <string name="onboarding_privacy_for_all_headline">Конфиденциальность для всех</string>
-  <string name="onboarding_privacy_for_all_description">Приглашайте других пользователей в Proton Mail, чтобы вы все могли воспользоваться преимуществами сквозного шифрования.</string>
-  <!--  Onboarding 2  -->
-  <string name="onboarding_easily_up_to_date_headline">Легко обновить</string>
-  <string name="onboarding_easily_up_to_date_description">Просматривайте потоковые сообщения в режиме цепочки писем.</string>
-  <!--  Onboarding 3  -->
-  <string name="onboarding_neat_and_tidy_headline">Чистота и порядок</string>
-  <string name="onboarding_neat_and_tidy_description">Упорядочивайте, отмечайте и раскрашивайте зашифрованные сообщения, чтобы создать идеальный индивидуальный почтовый ящик.</string>
-  <!--  Onboarding actions  -->
-  <string name="onboarding_next">Далее</string>
-  <string name="onboarding_get_started">Приступить к работе</string>
-  <string name="onboarding_illustration_content_description">Иллюстрация использования</string>
-  <string name="onboarding_close_content_description">Закрыть</string>
-  <!-- Sidebar Beta label -->
-  <string name="mailbox_action_trash_message">Сообщение перемещено в корзину</string>
-  <string name="mailbox_action_archive_message">Сообщение перемещено в архив</string>
-  <string name="mailbox_action_spam_message">сообщение перемещено в спам</string>
-  <string name="mailbox_search_placeholder_text">Поиск сообщений</string>
-  <string name="mailbox_search_no_results_title">Ничего не найдено</string>
-  <string name="mailbox_search_no_results_explanation">Поиск по дате, имени, адресу электронной почты или теме письма</string>
-  <string name="mailbox_action_button_clear_trash">Empty Trash</string>
-  <string name="mailbox_action_button_clear_spam">Empty Spam</string>
-  <string name="mailbox_action_clear_trash_dialog_title">Empty Trash folder</string>
-  <string name="mailbox_action_clear_spam_dialog_title">Empty Spam folder</string>
-  <string name="mailbox_action_clear_trash_dialog_body_message">Are you sure you want to permanently delete all messages within ‘Trash’?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_message">Are you sure you want to permanently delete all messages within ‘Spam’?</string>
-  <string name="mailbox_action_clear_trash_dialog_body_conversation">Are you sure you want to permanently delete all conversations within ‘Trash’?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">Are you sure you want to permanently delete all conversations within ‘Spam’?</string>
-  <string name="mailbox_action_clear_operation_scheduled">"Clear operation is scheduled"</string>
+    <string name="drawer_title_more">Ещё</string>
+    <string name="drawer_title_contacts">Контакты</string>
+    <string name="drawer_title_subscription">Подписка</string>
+    <string name="mailbox_toolbar_compose_button_content_description">Написать новое сообщение</string>
+    <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Выход из режима выбора</string>
+    <string name="mailbox_toolbar_menu_button_content_description">Меню</string>
+    <string name="mailbox_toolbar_search_button_content_description">Поиск</string>
+    <string name="mailbox_toolbar_exit_search_mode_content_description">Exit search mode</string>
+    <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Clear search query</string>
+    <string name="mailbox_toolbar_searchview_query_text_field_content_description">Enter search query</string>
+    <plurals name="mailbox_toolbar_selected_count">
+        <item quantity="one">%d выбран</item>
+        <item quantity="few">%d выбраны</item>
+        <item quantity="many">%d выбрано</item>
+        <item quantity="other">%d выбрано</item>
+    </plurals>
+    <plurals name="filter_unread_button_text">
+        <item quantity="one">%s непрочитанное</item>
+        <item quantity="few">%s непрочитанных</item>
+        <item quantity="many">%s непрочитанных</item>
+        <item quantity="other">%s непрочитанных</item>
+    </plurals>
+    <string name="mailbox_default_recipient">(Нет получателя)</string>
+    <string name="mailbox_default_sender">(Нет отправителя)</string>
+    <string name="mailbox_error_message_offline">Вы офлайн, не удалось получить элементы</string>
+    <string name="mailbox_error_message_generic">Загрузка почтового ящика не удалась</string>
+    <string name="mailbox_error_message_unexpected">Что-то неожиданно пошло не так</string>
+    <string name="mailbox_is_empty_title">Сообщений нет</string>
+    <string name="mailbox_is_empty_description">Обновление не требуется</string>
+    <string name="mailbox_is_empty_no_unread_messages_title">Нет непрочитанных сообщений</string>
+    <string name="mailbox_is_empty_folder_description">Эта папка пуста</string>
+    <string name="mailbox_is_empty_spam_description">Папка Спам пуста</string>
+    <string name="mailbox_is_empty_trash_description">Корзина пуста</string>
+    <plurals name="mailbox_action_trash">
+        <item quantity="one">%d cообщение помещено в Корзину</item>
+        <item quantity="few">%d сообщения перемещены в Корзину</item>
+        <item quantity="many">%d сообщений перемещено в Корзину</item>
+        <item quantity="other">%d messages moved to Trash</item>
+    </plurals>
+    <plurals name="mailbox_action_delete_conversation_dialog_title">
+        <item quantity="one">Удалить %d цепочку писем</item>
+        <item quantity="few">Удалить %d цепочки писем</item>
+        <item quantity="many">Удалить %d цепочек писем</item>
+        <item quantity="other">Удалить %d цепочек писем</item>
+    </plurals>
+    <plurals name="mailbox_action_delete_message_dialog_title">
+        <item quantity="one">Удалить %d сообщение</item>
+        <item quantity="few">Удалить %d сообщения</item>
+        <item quantity="many">Удалить %d сообщений</item>
+        <item quantity="other">Удалить %d сообщений</item>
+    </plurals>
+    <plurals name="mailbox_action_delete_conversation_dialog_message">
+        <item quantity="one">Вы уверены, что хотите безвозвратно удалить %d писем?</item>
+        <item quantity="few">Вы уверены, что хотите безвозвратно удалить %d писем?</item>
+        <item quantity="many">Вы уверены, что хотите безвозвратно удалить %d писем?</item>
+        <item quantity="other">Вы уверены, что хотите безвозвратно удалить %d писем?</item>
+    </plurals>
+    <plurals name="mailbox_action_delete_message_dialog_message">
+        <item quantity="one">Вы уверены, что хотите навсегда удалить %d сообщение?</item>
+        <item quantity="few">Вы уверены, что хотите навсегда удалить %d сообщения?</item>
+        <item quantity="many">Вы уверены, что хотите навсегда удалить %d сообщения?</item>
+        <item quantity="other">Вы уверены, что хотите навсегда удалить %d сообщения?</item>
+    </plurals>
+    <plurals name="mailbox_action_delete_message">
+        <item quantity="one">%d cообщение безвозвратно удалено</item>
+        <item quantity="few">%d сообщения безвозвратно удалены</item>
+        <item quantity="many">%d сообщений безвозвратно удалено</item>
+        <item quantity="other">%d сообщений безвозвратно удалено</item>
+    </plurals>
+    <plurals name="mailbox_action_delete_conversation">
+        <item quantity="one">%d цепочка писем безвозвратно удалена</item>
+        <item quantity="few">%d цепочки писем безвозвратно удалены</item>
+        <item quantity="many">%d цепочек писем безвозвратно удалено</item>
+        <item quantity="other">%d цепочек писем безвозвратно удалено</item>
+    </plurals>
+    <string name="mailbox_action_label_messages_failed">Операция с ярлыком не удалась</string>
+    <string name="mailbox_action_label_messages_failed_retrieving_labels">Не удалось получить ярлыки</string>
+    <string name="mailbox_action_failed_retrieving_colors">Не удалось получить настройки цвета</string>
+    <string name="mailbox_action_move_messages_failed">Операция перемещения не удалась</string>
+    <string name="mailbox_action_move_messages_failed_retrieving_folders">Не удалось получить папки</string>
+    <!--  Spotlight V6 GA  -->
+    <string name="onboarding_headline_ga">Добро пожаловать в новое приложение</string>
+    <string name="onboarding_description_ga">Полностью переработанное с нуля, новое приложение Proton Mail отличается стабильностью и производительностью.</string>
+    <!--  Onboarding 1  -->
+    <string name="onboarding_privacy_for_all_headline">Конфиденциальность для всех</string>
+    <string name="onboarding_privacy_for_all_description">Приглашайте других пользователей в Proton Mail, чтобы вы все могли воспользоваться преимуществами сквозного шифрования.</string>
+    <!--  Onboarding 2  -->
+    <string name="onboarding_easily_up_to_date_headline">Легко обновить</string>
+    <string name="onboarding_easily_up_to_date_description">Просматривайте потоковые сообщения в режиме цепочки писем.</string>
+    <!--  Onboarding 3  -->
+    <string name="onboarding_neat_and_tidy_headline">Чистота и порядок</string>
+    <string name="onboarding_neat_and_tidy_description">Упорядочивайте, отмечайте и раскрашивайте зашифрованные сообщения, чтобы создать идеальный индивидуальный почтовый ящик.</string>
+    <!--  Onboarding actions  -->
+    <string name="onboarding_next">Далее</string>
+    <string name="onboarding_get_started">Приступить к работе</string>
+    <string name="onboarding_illustration_content_description">Иллюстрация использования</string>
+    <string name="onboarding_close_content_description">Закрыть</string>
+    <!-- Sidebar Beta label -->
+    <string name="mailbox_action_trash_message">Сообщение перемещено в Корзину</string>
+    <string name="mailbox_action_archive_message">Сообщение перемещено в Архив</string>
+    <string name="mailbox_action_spam_message">Сообщение перемещено в Спам</string>
+    <string name="mailbox_search_placeholder_text">Поиск сообщений</string>
+    <string name="mailbox_search_no_results_title">Результатов не найдено</string>
+    <string name="mailbox_search_no_results_explanation">Поиск по дате, имени, адресу электронной почты или теме письма</string>
+    <string name="mailbox_action_button_clear_trash">Очистить корзину</string>
+    <string name="mailbox_action_button_clear_spam">Очистить Спам</string>
+    <string name="mailbox_action_clear_trash_dialog_title">Очистить папку Корзина</string>
+    <string name="mailbox_action_clear_spam_dialog_title">Очистить папку Спам</string>
+    <string name="mailbox_action_clear_trash_dialog_body_message">Вы уверены, что хотите навсегда удалить все сообщения в \"Корзина\"?</string>
+    <string name="mailbox_action_clear_spam_dialog_body_message">Вы уверены, что хотите навсегда удалить все сообщения в \"Спам\"?</string>
+    <string name="mailbox_action_clear_trash_dialog_body_conversation">Вы уверены, что хотите навсегда удалить все цепочки писем в \"Корзина\"?</string>
+    <string name="mailbox_action_clear_spam_dialog_body_conversation">Вы уверены, что хотите навсегда удалить все цепочки писем в \"Спам\"?</string>
+    <string name="mailbox_action_clear_operation_scheduled">"Clear operation is scheduled"</string>
+    <!--    Storage Limit Warning-->
+    <string name="storage_limit_warning_dialog_title">Warning</string>
+    <string name="storage_first_limit_exceeded_warning_dialog_text">Your Proton account storage is more than 80% full. Free up space or upgrade for more storage.</string>
+    <string name="storage_second_limit_exceeded_warning_dialog_text">Your Proton account storage is more than 90% full. Free up space or upgrade for more storage.</string>
+    <string name="storage_limit_warning_dialog_do_not_remind_button">Don\'t remind me again</string>
+    <string name="storage_limit_warning_dialog_confirm_button">OK</string>
+    <!--    Storage Quota Over Warning-->
+    <string name="storage_quota_over_dialog_title">Warning</string>
+    <string name="storage_quota_over_dialog_text">Your Proton account storage is 100% full. You won\'t be able to send or receive emails unless you permanently delete some emails or upgrade for more storage.</string>
+    <string name="storage_quota_over_dialog_confirm_button">OK</string>
 </resources>

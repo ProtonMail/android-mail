@@ -113,4 +113,14 @@
   <string name="mailbox_action_clear_trash_dialog_body_conversation">Er du sikker på at du vil slette alle samtaler permanent i \'Papirkurv\'?</string>
   <string name="mailbox_action_clear_spam_dialog_body_conversation">Er du sikker på at du vil slette alle samtaler permanent i \'Søppelpost\'?</string>
   <string name="mailbox_action_clear_operation_scheduled">"Tøm operasjon er planlagt"</string>
+  <!--    Storage Limit Warning-->
+  <string name="storage_limit_warning_dialog_title">Advarsel</string>
+  <string name="storage_first_limit_exceeded_warning_dialog_text">Lagringsplassen til Proton-kontoen din er mer enn 80% full. Frigjør plass eller oppgrader for mer lagringsplass.</string>
+  <string name="storage_second_limit_exceeded_warning_dialog_text">Lagringsplassen til Proton-kontoen din er mer enn 90% full. Frigjør plass eller oppgrader for mer lagringsplass.</string>
+  <string name="storage_limit_warning_dialog_do_not_remind_button">Ikke minn meg på det igjen</string>
+  <string name="storage_limit_warning_dialog_confirm_button">OK</string>
+  <!--    Storage Quota Over Warning-->
+  <string name="storage_quota_over_dialog_title">Advarsel</string>
+  <string name="storage_quota_over_dialog_text">Lagringsplassen til Proton-kontoen din er 100% full. Du vil ikke kunne sende eller motta e-post med mindre du permanent sletter noen e-poster eller oppgraderer for mer lagringsplass.</string>
+  <string name="storage_quota_over_dialog_confirm_button">OK</string>
 </resources>

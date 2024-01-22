@@ -68,7 +68,7 @@
   <string name="folder_settings_title">მორგება</string>
   <string name="folder_settings_done_button">მზადაა</string>
   <string name="folder_settings_folder_colors">საქაღალდის ფერების გამოყენება</string>
-  <string name="folder_settings_parent_color">საქაღალდის ფერი მემკვიდრეობით მიღება</string>
+  <string name="folder_settings_parent_color">საქაღალდის ფერის მემკვიდრეობით მიღება</string>
   <string name="folder_list_loading_error">საქაღალდეების ჩატვრთვის შეცდომა. მოგვიანებით სცადეთ</string>
   <string name="folder_loading_error">საქაღალდის ჩატვრთვის შეცდომა. მოგვიანებით სცადეთ</string>
   <string name="switch_on">ჩართ</string>

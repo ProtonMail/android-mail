@@ -47,7 +47,12 @@
   <string name="composer_attachment_size_exceeded_dialog_message">附件大小上限為 %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Reencryption of attachment failed. For security reasons all attachments got removed.</string>
   <string name="composer_warning_local_data_shown">The latest version of this draft failed to load. Any change will override its content.</string>
-  <string name="composer_button_add_password">Add password</string>
+  <string name="composer_button_add_password">新增密碼</string>
+  <!-- Message sending without subject dialog -->
+  <string name="composer_send_without_subject_dialog_title">Compose</string>
+  <string name="composer_send_without_subject_dialog_text">Send message without subject?</string>
+  <string name="composer_send_without_subject_dialog_confirm_button">Yes</string>
+  <string name="composer_send_without_subject_dialog_reject_button">No</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">回報錯誤</string>
   <string name="message_sending_error_dialog_button_dismiss">關閉</string>
@@ -67,4 +72,6 @@
   <string name="set_message_password_button_show">Show password</string>
   <string name="set_message_password_button_hide">Hide password</string>
   <string name="set_message_password_button_apply">Apply password</string>
+  <string name="set_message_password_button_save_changes">Save changes</string>
+  <string name="set_message_password_button_remove_password">Remove password</string>
 </resources>

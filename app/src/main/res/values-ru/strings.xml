@@ -28,7 +28,7 @@
   <string name="user_select_other_account_content_description">Выбрать другой аккаунт</string>
   <string name="you_are_offline">Вы офлайн</string>
   <string name="feature_coming_soon">Функция скоро появится…</string>
-  <string name="mailbox_draft_saved">Черновик сохранен</string>
+  <string name="mailbox_draft_saved">Черновик сохранён</string>
   <string name="mailbox_message_sending">Отправка сообщения…</string>
   <string name="mailbox_message_sending_offline">Офлайн, сообщение добавлено в очередь на отправку</string>
   <string name="mailbox_message_sending_success">Сообщение отправлено</string>
@@ -37,6 +37,6 @@
   <string name="mailbox_attachment_uploading_error">Ошибка загрузки вложения</string>
   <string name="notification_switched_account">Переключено на аккаунт: %s</string>
   <string name="label_saved">Ярлык сохранён</string>
-  <string name="label_deleted">Ярлык удален</string>
+  <string name="label_deleted">Ярлык удалён</string>
   <string name="label_list_loading_error">Ошибка загрузки ярлыка, повторите попытку позже</string>
 </resources>

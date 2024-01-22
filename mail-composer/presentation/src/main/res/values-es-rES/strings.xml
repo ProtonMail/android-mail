@@ -48,23 +48,30 @@
   <string name="composer_attachment_reencryption_failed_message">Error al volver a cifrar el archivo adjunto. Por seguridad se han borrado todos los archivos adjuntos.</string>
   <string name="composer_warning_local_data_shown">Error al cargar la última versión de este borrador. Cualquier cambio sobrescribirá su contenido.</string>
   <string name="composer_button_add_password">Añadir una contraseña</string>
+  <!-- Message sending without subject dialog -->
+  <string name="composer_send_without_subject_dialog_title">Redactar</string>
+  <string name="composer_send_without_subject_dialog_text">¿Enviar el mensaje sin asunto?</string>
+  <string name="composer_send_without_subject_dialog_confirm_button">Sí</string>
+  <string name="composer_send_without_subject_dialog_reject_button">No</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Error de envío</string>
   <string name="message_sending_error_dialog_button_dismiss">Cerrar</string>
   <string name="message_sending_error_dialog_text_error">Tu correo electrónico no puede ser enviado al correo electrónico especificado debido a la siguiente razón:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">No hay claves de confianza: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">La dirección no existe: %s</string>
-  <string name="set_message_password_title">Encrypt message</string>
-  <string name="set_message_password_info_message">Set a password to encrypt this message for non-Proton Mail users.</string>
-  <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Learn more</a></string>
-  <string name="set_message_password_label">Message password</string>
-  <string name="set_message_password_label_repeat">Repeat password</string>
-  <string name="set_message_password_label_hint">Password hint (optional)</string>
-  <string name="set_message_password_supporting_text">4 to 21 characters long</string>
-  <string name="set_message_password_supporting_error_text">The password must be between 4 and 21 characters</string>
-  <string name="set_message_password_supporting_text_repeat">Passwords must match</string>
-  <string name="set_message_password_supporting_error_text_repeat">The 2 passwords are not matching</string>
-  <string name="set_message_password_button_show">Show password</string>
-  <string name="set_message_password_button_hide">Hide password</string>
-  <string name="set_message_password_button_apply">Apply password</string>
+  <string name="set_message_password_title">Cifrar el mensaje</string>
+  <string name="set_message_password_info_message">Establece una contraseña para cifrar este mensaje para usuarios que no sean de Proton Mail.</string>
+  <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Más información</a></string>
+  <string name="set_message_password_label">Contraseña del mensaje</string>
+  <string name="set_message_password_label_repeat">Repetir la contraseña</string>
+  <string name="set_message_password_label_hint">Pista de la contraseña (opcional)</string>
+  <string name="set_message_password_supporting_text">Longitud de 4 a 21 caracteres</string>
+  <string name="set_message_password_supporting_error_text">La contraseña debe tener entre 4 y 21 caracteres.</string>
+  <string name="set_message_password_supporting_text_repeat">Las contraseñas deben coincidir.</string>
+  <string name="set_message_password_supporting_error_text_repeat">Las dos contraseñas no coinciden</string>
+  <string name="set_message_password_button_show">Mostrar la contraseña</string>
+  <string name="set_message_password_button_hide">Ocultar la contraseña</string>
+  <string name="set_message_password_button_apply">Aplicar la contraseña</string>
+  <string name="set_message_password_button_save_changes">Guardar los cambios</string>
+  <string name="set_message_password_button_remove_password">Borrar la contraseña</string>
 </resources>

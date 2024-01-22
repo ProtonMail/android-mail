@@ -24,9 +24,9 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Ukončit režim výběru</string>
   <string name="mailbox_toolbar_menu_button_content_description">Nabídka</string>
   <string name="mailbox_toolbar_search_button_content_description">Vyhledat</string>
-  <string name="mailbox_toolbar_exit_search_mode_content_description">Exit search mode</string>
-  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Clear search query</string>
-  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Enter search query</string>
+  <string name="mailbox_toolbar_exit_search_mode_content_description">Ukončit režim vyhledávání</string>
+  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Vymazat vyhledávací dotaz</string>
+  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Zadejte vyhledávací dotaz</string>
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="one">%d vybrán</item>
     <item quantity="few">%d vybrány</item>
@@ -124,11 +124,21 @@
   <string name="mailbox_search_no_results_explanation">Vyhledávání podle data, jména, e-mailové adresy nebo předmětu zprávy</string>
   <string name="mailbox_action_button_clear_trash">Vyprázdnit koš</string>
   <string name="mailbox_action_button_clear_spam">Vysypat spam</string>
-  <string name="mailbox_action_clear_trash_dialog_title">Empty Trash folder</string>
-  <string name="mailbox_action_clear_spam_dialog_title">Empty Spam folder</string>
+  <string name="mailbox_action_clear_trash_dialog_title">Vysypat koš</string>
+  <string name="mailbox_action_clear_spam_dialog_title">Vyprázdnit složku spam</string>
   <string name="mailbox_action_clear_trash_dialog_body_message">Opravdu chcete trvale odstranit všechny zprávy v ‘Koši’?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">Opravdu chcete trvale odstranit všechny zprávy ve ‘Spamu’?</string>
   <string name="mailbox_action_clear_trash_dialog_body_conversation">Opravdu chcete trvale odstranit všechny konverzace v ‘Koši’?</string>
   <string name="mailbox_action_clear_spam_dialog_body_conversation">Opravdu chcete trvale odstranit všechny konverzace ve ‘Spamu’?</string>
   <string name="mailbox_action_clear_operation_scheduled">"Operace vyčištění je naplánována"</string>
+  <!--    Storage Limit Warning-->
+  <string name="storage_limit_warning_dialog_title">Varování</string>
+  <string name="storage_first_limit_exceeded_warning_dialog_text">Úložiště vašeho účtu Proton je zaplněno z více než 80 %. Uvolněte místo nebo upgradujte a získejte více úložného prostoru.</string>
+  <string name="storage_second_limit_exceeded_warning_dialog_text">Úložiště vašeho účtu Proton je zaplněno z více než 90 %. Uvolněte místo nebo upgradujte a získejte více úložného prostoru.</string>
+  <string name="storage_limit_warning_dialog_do_not_remind_button">Znovu nepřípomínat</string>
+  <string name="storage_limit_warning_dialog_confirm_button">OK</string>
+  <!--    Storage Quota Over Warning-->
+  <string name="storage_quota_over_dialog_title">Varování</string>
+  <string name="storage_quota_over_dialog_text">Úložiště vašeho účtu Proton je na 100 % zaplněno. Nebudete moci odesílat ani přijímat e-maily, pokud trvale neodstraníte některé e-maily nebo neprovedete upgrade na větší úložiště.</string>
+  <string name="storage_quota_over_dialog_confirm_button">OK</string>
 </resources>

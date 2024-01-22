@@ -48,23 +48,30 @@
   <string name="composer_attachment_reencryption_failed_message">No s\'ha pogut tornar a xifrar el fitxer adjunt. Per motius de seguretat, s\'han eliminat tots els fitxers adjunts.</string>
   <string name="composer_warning_local_data_shown">La darrera versió d\'aquest esborrany no s\'ha pogut carregar. Qualsevol canvi anul·larà el seu contingut.</string>
   <string name="composer_button_add_password">Afegeix una contrasenya</string>
+  <!-- Message sending without subject dialog -->
+  <string name="composer_send_without_subject_dialog_title">Redacta</string>
+  <string name="composer_send_without_subject_dialog_text">Send message without subject?</string>
+  <string name="composer_send_without_subject_dialog_confirm_button">Sí</string>
+  <string name="composer_send_without_subject_dialog_reject_button">No</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Error d\'enviament</string>
   <string name="message_sending_error_dialog_button_dismiss">Tanca</string>
   <string name="message_sending_error_dialog_text_error">El vostre correu electrònic no es pot enviar al correu electrònic introduït pel motiu següent:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">No hi ha claus de confiança: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">L\'adreça no existeix: %s</string>
-  <string name="set_message_password_title">Encrypt message</string>
+  <string name="set_message_password_title">Xifra el missatge</string>
   <string name="set_message_password_info_message">Set a password to encrypt this message for non-Proton Mail users.</string>
-  <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Learn more</a></string>
-  <string name="set_message_password_label">Message password</string>
-  <string name="set_message_password_label_repeat">Repeat password</string>
+  <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Més informació</a></string>
+  <string name="set_message_password_label">Contrasenya del missatge</string>
+  <string name="set_message_password_label_repeat">Repeteix la contrasenya</string>
   <string name="set_message_password_label_hint">Password hint (optional)</string>
   <string name="set_message_password_supporting_text">4 to 21 characters long</string>
   <string name="set_message_password_supporting_error_text">The password must be between 4 and 21 characters</string>
   <string name="set_message_password_supporting_text_repeat">Passwords must match</string>
   <string name="set_message_password_supporting_error_text_repeat">The 2 passwords are not matching</string>
-  <string name="set_message_password_button_show">Show password</string>
-  <string name="set_message_password_button_hide">Hide password</string>
-  <string name="set_message_password_button_apply">Apply password</string>
+  <string name="set_message_password_button_show">Mostra la contrasenya</string>
+  <string name="set_message_password_button_hide">Amaga la contrasenya</string>
+  <string name="set_message_password_button_apply">Aplica la contrasenya</string>
+  <string name="set_message_password_button_save_changes">Desa els canvis</string>
+  <string name="set_message_password_button_remove_password">Esborra la contrasenya</string>
 </resources>

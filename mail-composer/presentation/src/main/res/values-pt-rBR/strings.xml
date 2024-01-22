@@ -48,6 +48,11 @@
   <string name="composer_attachment_reencryption_failed_message">A recriptografia do anexo falhou. Por motivos de segurança, todos os anexos foram removidos.</string>
   <string name="composer_warning_local_data_shown">A versão mais recente deste rascunho não foi carregada. Qualquer alteração substituirá seu conteúdo.</string>
   <string name="composer_button_add_password">Adicionar senha</string>
+  <!-- Message sending without subject dialog -->
+  <string name="composer_send_without_subject_dialog_title">Escrever</string>
+  <string name="composer_send_without_subject_dialog_text">Enviar mensagem sem assunto?</string>
+  <string name="composer_send_without_subject_dialog_confirm_button">Sim</string>
+  <string name="composer_send_without_subject_dialog_reject_button">Não</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Erro ao enviar</string>
   <string name="message_sending_error_dialog_button_dismiss">Fechar</string>
@@ -58,7 +63,7 @@
   <string name="set_message_password_info_message">Defina uma senha para criptografar esta mensagem para destinatários que não usam Proton Mail.</string>
   <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Saiba mais</a></string>
   <string name="set_message_password_label">Senha da mensagem</string>
-  <string name="set_message_password_label_repeat">Repeat password</string>
+  <string name="set_message_password_label_repeat">Repetir senha</string>
   <string name="set_message_password_label_hint">Dica de senha (opcional)</string>
   <string name="set_message_password_supporting_text">de 4 a 21 caracteres</string>
   <string name="set_message_password_supporting_error_text">A sua senha deve ter entre 4 e 21 caracteres.</string>
@@ -67,4 +72,6 @@
   <string name="set_message_password_button_show">Mostrar senha</string>
   <string name="set_message_password_button_hide">Ocultar senha</string>
   <string name="set_message_password_button_apply">Aplicar senha</string>
+  <string name="set_message_password_button_save_changes">Salvar alterações</string>
+  <string name="set_message_password_button_remove_password">Remover senha</string>
 </resources>

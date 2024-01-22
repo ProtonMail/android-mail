@@ -24,7 +24,7 @@
   <string name="mail_settings_app_settings">Configuració de l\'aplicació</string>
   <string name="mail_settings_theme">Tema</string>
   <string name="mail_settings_push_notifications">Notificacions push</string>
-  <string name="mail_settings_auto_lock">Auto lock</string>
+  <string name="mail_settings_auto_lock">Bloqueig automàtic</string>
   <string name="mail_settings_alternative_routing">Enrutament alternatiu</string>
   <string name="mail_settings_app_language">Idioma de l\'aplicació</string>
   <string name="mail_settings_combined_contacts">Contactes combinats</string>
@@ -131,7 +131,7 @@
   <string name="mail_settings_pin_insertion_set_title">Estableix el codi PIN</string>
   <string name="mail_settings_pin_insertion_confirm_title">Confirma el codi PIN</string>
   <string name="mail_settings_pin_insertion_lock_icon_description">Icona de bloqueig</string>
-  <string name="mail_settings_pin_insertion_pin_dot_description">Codi PIN en punts</string>
+  <string name="mail_settings_pin_insertion_pin_dot_description">Punt del codi PIN</string>
   <string name="mail_settings_pin_insertion_backspace_description">Retrocés</string>
   <string name="mail_settings_pin_insertion_button_create">Crea</string>
   <string name="mail_settings_pin_insertion_button_confirm">Confirma</string>
@@ -145,10 +145,10 @@
     <item quantity="other">%s remaining attempts until secure data wipe.</item>
   </plurals>
   <string name="mail_settings_pin_insertion_error_unknown">There was an error verifying your PIN code.</string>
-  <string name="mail_settings_pin_insertion_signout_text">Sign Out</string>
-  <string name="mail_settings_pin_insertion_signout_dialog_title">Sign Out</string>
+  <string name="mail_settings_pin_insertion_signout_text">Tanca la sessió</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_title">Tanca la sessió</string>
   <string name="mail_settings_pin_insertion_signout_dialog_description">Segur que desitgeu tancar la sessió?</string>
-  <string name="mail_settings_pin_insertion_signout_dialog_confirm">Yes</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_confirm">Sí</string>
   <string name="mail_settings_pin_insertion_signout_dialog_cancel">No</string>
   <string name="mail_settings_pin_insertion_created_success">PIN code created successfully.</string>
   <string name="mail_settings_pin_insertion_changed_success">PIN code changed successfully.</string>

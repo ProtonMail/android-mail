@@ -28,7 +28,7 @@
   <string name="action_reply_all">Balas semua</string>
   <string name="action_forward">Teruskan</string>
   <string name="action_reply_description">Balas</string>
-  <string name="action_reply_to_description">Reply to %s</string>
+  <string name="action_reply_to_description">Balas %s</string>
   <string name="action_reply_all_description">Balas semua</string>
   <string name="action_forward_description">Teruskan</string>
   <string name="action_mark_read_description">Tandai dibaca</string>
@@ -53,7 +53,7 @@
   <string name="action_save_attachments_description">Simpan lampiran</string>
   <string name="action_more_description">Lainnya</string>
   <string name="action_reply_content_description">Balas</string>
-  <string name="action_reply_to_content_description">Reply to %s</string>
+  <string name="action_reply_to_content_description">Balas %s</string>
   <string name="action_reply_all_content_description">Balas semua</string>
   <string name="action_forward_content_description">Teruskan</string>
   <string name="action_mark_read_content_description">Tandai dibaca</string>
@@ -90,4 +90,5 @@
   <string name="intent_failure_no_app_found_to_handle_this_action">Aplikasi untuk menangani tindakan ini tidak ditemukan</string>
   <string name="mailbox_action_delete_dialog_button_cancel">Batalkan</string>
   <string name="mailbox_action_delete_dialog_button_delete">Hapus</string>
+  <string name="picker_dialog_cancel">Batal</string>
 </resources>

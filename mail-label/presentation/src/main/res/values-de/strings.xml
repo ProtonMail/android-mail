@@ -78,5 +78,5 @@
   <string name="folder_form_notifications">Benachrichtigungen</string>
   <string name="folder_saved">Ordner gespeichert</string>
   <string name="folder_deleted">Ordner gelöscht</string>
-  <string name="parent_folder_none">Keines</string>
+  <string name="parent_folder_none">Keiner</string>
 </resources>

@@ -35,7 +35,7 @@
   </plurals>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%s непрачытанае</item>
-    <item quantity="few">%s непрачытаных</item>
+    <item quantity="few">%s непрачытаныя</item>
     <item quantity="many">%s непрачытаных</item>
     <item quantity="other">%s непрачытаных</item>
   </plurals>
@@ -131,4 +131,14 @@
   <string name="mailbox_action_clear_trash_dialog_body_conversation">Вы сапраўды хочаце незваротна выдаліць усе размовы з папкі ’Сметніца’?</string>
   <string name="mailbox_action_clear_spam_dialog_body_conversation">Вы сапраўды хочаце незваротна выдаліць усе размовы з папкі ’Спам’?</string>
   <string name="mailbox_action_clear_operation_scheduled">"Запланавана аперацыя па ачыстцы"</string>
+  <!--    Storage Limit Warning-->
+  <string name="storage_limit_warning_dialog_title">Папярэджанне</string>
+  <string name="storage_first_limit_exceeded_warning_dialog_text">Сховішча вашага ўліковага запісу Proton запоўнена больш чым на 80%. Вызваліце прастору або перайдзіце на тарыфны план больш высокага ўзроўню, каб атрымаць больш сховішча.</string>
+  <string name="storage_second_limit_exceeded_warning_dialog_text">Сховішча вашага ўліковага запісу Proton запоўнена больш чым на 90%. Вызваліце прастору або перайдзіце на тарыфны план больш высокага ўзроўню, каб атрымаць больш сховішча.</string>
+  <string name="storage_limit_warning_dialog_do_not_remind_button">Больш не нагадваць</string>
+  <string name="storage_limit_warning_dialog_confirm_button">Добра</string>
+  <!--    Storage Quota Over Warning-->
+  <string name="storage_quota_over_dialog_title">Папярэджанне</string>
+  <string name="storage_quota_over_dialog_text">Сховішча вашага ўліковага запісу Proton запоўнена на 100%. Цяпер вы не можаце адпраўляць і атрымліваць электронныя лісты, пакуль некаторыя з іх не будуць незваротна выдалены. У вас таксама ёсць магчымасць перайсці на тарыфны план больш высокага ўзроўню, каб атрымаць больш сховішча.</string>
+  <string name="storage_quota_over_dialog_confirm_button">Добра</string>
 </resources>

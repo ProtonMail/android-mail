@@ -65,8 +65,8 @@
   <string name="folder_list_create_folder_placeholder_description">Create a folder to enhance your email experience.</string>
   <string name="add_folder_content_description">Add folder</string>
   <string name="folder_settings_content_description">Folder settings</string>
-  <string name="folder_settings_title">Settings</string>
-  <string name="folder_settings_done_button">Done</string>
+  <string name="folder_settings_title">設定</string>
+  <string name="folder_settings_done_button">完了</string>
   <string name="folder_settings_folder_colors">フォルダーの色を使用</string>
   <string name="folder_settings_parent_color">Inherit parent folder color</string>
   <string name="folder_list_loading_error">Error loading folders, please try again later</string>
@@ -74,9 +74,9 @@
   <string name="switch_on">On</string>
   <string name="switch_off">Off</string>
   <string name="folder_form_parent">Parent folder</string>
-  <string name="folder_form_no_parent">None</string>
-  <string name="folder_form_notifications">Notifications</string>
+  <string name="folder_form_no_parent">なし</string>
+  <string name="folder_form_notifications">通知</string>
   <string name="folder_saved">Folder saved</string>
   <string name="folder_deleted">Folder deleted</string>
-  <string name="parent_folder_none">None</string>
+  <string name="parent_folder_none">なし</string>
 </resources>

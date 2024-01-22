@@ -48,6 +48,11 @@
   <string name="composer_attachment_reencryption_failed_message">Omkryptering av bilaga misslyckades. Av säkerhetsskäl har alla bilagor tagits bort.</string>
   <string name="composer_warning_local_data_shown">Den senaste versionen av detta utkast misslyckades att laddas. Alla ändringar kommer att åsidosätta dess innehåll.</string>
   <string name="composer_button_add_password">Lägg till lösenord</string>
+  <!-- Message sending without subject dialog -->
+  <string name="composer_send_without_subject_dialog_title">Skriv</string>
+  <string name="composer_send_without_subject_dialog_text">Skicka meddelande utan ämne?</string>
+  <string name="composer_send_without_subject_dialog_confirm_button">Ja</string>
+  <string name="composer_send_without_subject_dialog_reject_button">Nej</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Sändningsfel</string>
   <string name="message_sending_error_dialog_button_dismiss">Stäng</string>
@@ -67,4 +72,6 @@
   <string name="set_message_password_button_show">Visa lösenord</string>
   <string name="set_message_password_button_hide">Dölj lösenord</string>
   <string name="set_message_password_button_apply">Tillämpa lösenord</string>
+  <string name="set_message_password_button_save_changes">Spara ändringar</string>
+  <string name="set_message_password_button_remove_password">Ta bort lösenord</string>
 </resources>

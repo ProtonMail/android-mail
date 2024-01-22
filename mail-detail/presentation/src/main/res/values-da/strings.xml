@@ -25,8 +25,8 @@
     <item quantity="one">%d besked</item>
     <item quantity="other">%d beskeder</item>
   </plurals>
-  <string name="quick_reply_button_content_description">Reply</string>
-  <string name="quick_reply_all_button_content_description">Reply All</string>
+  <string name="quick_reply_button_content_description">Svar</string>
+  <string name="quick_reply_all_button_content_description">Svar alle</string>
   <string name="more_button_content_description">Mere</string>
   <string name="to">Til:</string>
   <string name="cc">CC:</string>
@@ -81,4 +81,7 @@
   <string name="error_delete_conversation_failed">Kunne ikke slette samtale</string>
   <string name="error_delete_conversation_failed_wrong_folder">Samtale er ikke på en placering, hvor den kan slettes</string>
   <string name="conversation_deleted">Samtale slettet</string>
+  <string name="message_body_load_remote_content_button_text">Load remote content</string>
+  <string name="message_body_load_embedded_images_button_text">Load embedded images</string>
+  <string name="message_body_load_embedded_and_remote_content_button_text">Load remote and embedded content</string>
 </resources>

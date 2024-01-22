@@ -81,4 +81,7 @@
   <string name="error_delete_conversation_failed">Failed to delete conversation</string>
   <string name="error_delete_conversation_failed_wrong_folder">Conversation is not in a location where it can be deleted</string>
   <string name="conversation_deleted">Beszélgetés törölve</string>
+  <string name="message_body_load_remote_content_button_text">Load remote content</string>
+  <string name="message_body_load_embedded_images_button_text">Load embedded images</string>
+  <string name="message_body_load_embedded_and_remote_content_button_text">Load remote and embedded content</string>
 </resources>

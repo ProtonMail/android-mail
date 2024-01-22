@@ -48,6 +48,11 @@
   <string name="composer_attachment_reencryption_failed_message">Ponowne szyfrowanie załącznika nie powiodło się. Ze względów bezpieczeństwa wszystkie załączniki zostały usunięte.</string>
   <string name="composer_warning_local_data_shown">Nie udało się załadować najnowszej wersji szkicu. Wszelkie jej zmiany spowodują nadpisanie zawartości.</string>
   <string name="composer_button_add_password">Dodaj hasło</string>
+  <!-- Message sending without subject dialog -->
+  <string name="composer_send_without_subject_dialog_title">Napisz</string>
+  <string name="composer_send_without_subject_dialog_text">Wysłać wiadomość bez tematu?</string>
+  <string name="composer_send_without_subject_dialog_confirm_button">Tak</string>
+  <string name="composer_send_without_subject_dialog_reject_button">Nie</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Błąd wysyłania</string>
   <string name="message_sending_error_dialog_button_dismiss">Zamknij</string>
@@ -67,4 +72,6 @@
   <string name="set_message_password_button_show">Pokaż hasło</string>
   <string name="set_message_password_button_hide">Ukryj hasło</string>
   <string name="set_message_password_button_apply">Zastosuj hasło</string>
+  <string name="set_message_password_button_save_changes">Zapisz zmiany</string>
+  <string name="set_message_password_button_remove_password">Usuń hasło</string>
 </resources>

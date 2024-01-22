@@ -48,23 +48,30 @@
   <string name="composer_attachment_reencryption_failed_message">Lampiran gagal dienkripsi ulang. Demi alasan keamanan, seluruh lampiran telah dihapus.</string>
   <string name="composer_warning_local_data_shown">Versi terbaru draf ini gagal dimuat. Perubahan apa pun akan menimpa draf ini.</string>
   <string name="composer_button_add_password">Tambahkan kata sandi</string>
+  <!-- Message sending without subject dialog -->
+  <string name="composer_send_without_subject_dialog_title">Tulis</string>
+  <string name="composer_send_without_subject_dialog_text">Kirim pesan tanpa subjek?</string>
+  <string name="composer_send_without_subject_dialog_confirm_button">Ya</string>
+  <string name="composer_send_without_subject_dialog_reject_button">Tidak</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Pesan gagal dikirim</string>
   <string name="message_sending_error_dialog_button_dismiss">Tutup</string>
   <string name="message_sending_error_dialog_text_error">Email Anda tidak dapat dikirim ke alamat email yang dituju karena alasan berikut:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Kunci Terpercaya tidak ada: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">Alamat tidak ada: %s</string>
-  <string name="set_message_password_title">Encrypt message</string>
-  <string name="set_message_password_info_message">Set a password to encrypt this message for non-Proton Mail users.</string>
-  <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Learn more</a></string>
-  <string name="set_message_password_label">Message password</string>
-  <string name="set_message_password_label_repeat">Repeat password</string>
-  <string name="set_message_password_label_hint">Password hint (optional)</string>
-  <string name="set_message_password_supporting_text">4 to 21 characters long</string>
-  <string name="set_message_password_supporting_error_text">The password must be between 4 and 21 characters</string>
-  <string name="set_message_password_supporting_text_repeat">Passwords must match</string>
-  <string name="set_message_password_supporting_error_text_repeat">The 2 passwords are not matching</string>
-  <string name="set_message_password_button_show">Show password</string>
-  <string name="set_message_password_button_hide">Hide password</string>
-  <string name="set_message_password_button_apply">Apply password</string>
+  <string name="set_message_password_title">Enkripsi pesan</string>
+  <string name="set_message_password_info_message">Tentukan kata sandi untuk mengenkripsi pesan ini bagi para pengguna non-Proton Mail.</string>
+  <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Pelajari lebih lanjut</a></string>
+  <string name="set_message_password_label">Kata sandi pesan</string>
+  <string name="set_message_password_label_repeat">Ulangi kata sandi</string>
+  <string name="set_message_password_label_hint">Petunjuk kata sandi (opsional)</string>
+  <string name="set_message_password_supporting_text">antara 4 hingga 21 karakter</string>
+  <string name="set_message_password_supporting_error_text">Kata sandi harus mengandung antara 4 dan 21 karakter</string>
+  <string name="set_message_password_supporting_text_repeat">Kata sandi harus sesuai</string>
+  <string name="set_message_password_supporting_error_text_repeat">Kedua kata sandi tidak sesuai</string>
+  <string name="set_message_password_button_show">Tampilkan kata sandi</string>
+  <string name="set_message_password_button_hide">Sembunyikan kata sandi</string>
+  <string name="set_message_password_button_apply">Terapkan kata sandi</string>
+  <string name="set_message_password_button_save_changes">Simpan perubahan</string>
+  <string name="set_message_password_button_remove_password">Hapus kata sandi</string>
 </resources>

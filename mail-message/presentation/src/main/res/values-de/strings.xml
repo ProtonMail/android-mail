@@ -43,4 +43,5 @@
   <string name="bottom_sheet_done_action">Fertig</string>
   <string name="bottom_sheet_archive_action">Ebenfalls archivieren?</string>
   <string name="bottom_sheet_label_as_title">Kategorisieren als…</string>
+  <string name="bottom_sheet_more_header_message_from">Nachricht von %s</string>
 </resources>

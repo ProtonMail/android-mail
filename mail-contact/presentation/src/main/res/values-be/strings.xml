@@ -20,7 +20,7 @@
   <string name="contact_list_title">Кантакты</string>
   <string name="contact_list_loading_error">Памылка загрузкі кантактаў. Паспрабуйце яшчэ раз пазней</string>
   <string name="no_contacts">Кантакты не знойдзены</string>
-  <string name="no_contacts_description">Палепшыце працу сваёй электроннай пошты стварыўшы новы кантакт або імпартуючы адзін з існуючых.</string>
+  <string name="no_contacts_description">Палепшыце працу сваёй электроннай пошты стварыўшы новы кантакт або імпартуйце адзін з існуючых.</string>
   <string name="add_contact">Дадаць кантакт</string>
   <string name="add_contact_content_description">Дадаць кантакт</string>
   <string name="all_title">Усе</string>
@@ -32,7 +32,7 @@
   <string name="import_contact">Запампаваць кантакты з прылады</string>
   <string name="no_contact_email">Няма адраса электроннай пошты</string>
   <string name="multiple_contact_emails">%1$s, +%2$d</string>
-  <string name="contact_details_loading_error">Памылка загрузкі кантакта. Паспрабуйце яшчэ раз пазней</string>
+  <string name="contact_details_loading_error">Памылка загрузкі кантакту. Паспрабуйце яшчэ раз пазней</string>
   <string name="contact_details_delete_success">Кантакт выдалены</string>
   <string name="edit_contact_content_description">Рэдагаваць кантакт</string>
   <string name="delete_contact_content_description">Выдаліць кантакт</string>
@@ -62,4 +62,29 @@
   <string name="contact_property_gender">Пол</string>
   <string name="contact_property_language">Мова</string>
   <string name="contact_property_time_zone">Часавы пояс</string>
+  <string name="contact_form_loading_error">Памылка загрузкі кантакту. Паспрабуйце яшчэ раз пазней</string>
+  <string name="contact_form_save_success">Кантакт захаваны</string>
+  <string name="save_contact_content_description">Захаваць кантакт</string>
+  <string name="contact_form_save">Захаваць</string>
+  <string name="add_new">Дадаць новы</string>
+  <string name="email_section">Электронная пошта</string>
+  <string name="phone_section">Нумар тэлефона</string>
+  <string name="address_section">Адрас</string>
+  <string name="note_section">Нататка</string>
+  <string name="birthday_section">Дзень нараджэння</string>
+  <string name="other_section">Дадатковая інфармацыя</string>
+  <string name="display_name">Бачнае імя</string>
+  <string name="first_name">Імя</string>
+  <string name="last_name">Прозвішча</string>
+  <string name="email_address">Адрас электроннай пошты</string>
+  <string name="phone_number">Нумар тэлефона</string>
+  <string name="additional_info">Дадатковая інфармацыя</string>
+  <string name="remove_contact_property">Выдаліць уласцівасці кантакту</string>
+  <string name="property_type">Тып уласцівасці</string>
+  <string name="property_label">Метка</string>
+  <string name="address_street">Вуліца</string>
+  <string name="address_postal_code">Паштовы індэкс</string>
+  <string name="address_city">Горад</string>
+  <string name="address_region">Вобласць</string>
+  <string name="address_country">Краіна</string>
 </resources>

@@ -80,4 +80,7 @@
   <string name="error_delete_conversation_failed">대화 삭제를 실패했습니다.</string>
   <string name="error_delete_conversation_failed_wrong_folder">대화가 삭제 가능한 위치에 있지 않습니다.</string>
   <string name="conversation_deleted">대화 지움</string>
+  <string name="message_body_load_remote_content_button_text">Load remote content</string>
+  <string name="message_body_load_embedded_images_button_text">Load embedded images</string>
+  <string name="message_body_load_embedded_and_remote_content_button_text">Load remote and embedded content</string>
 </resources>

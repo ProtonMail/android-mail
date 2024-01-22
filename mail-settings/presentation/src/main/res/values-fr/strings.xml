@@ -118,7 +118,7 @@
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">Verrouillage automatique</string>
   <string name="mail_settings_auto_lock_item_title">Verrouillage automatique de l\'application</string>
-  <string name="mail_settings_auto_lock_item_description">Activez cette fonctionnalité pour verrouiller automatiquement votre application et utilisez un code PIN pour la déverrouiller.</string>
+  <string name="mail_settings_auto_lock_item_description">Activez cette fonctionnalité pour verrouiller automatiquement votre application et utiliser un code PIN pour la déverrouiller.</string>
   <string name="mail_settings_auto_lock_change_pin_description">Modifier le code PIN</string>
   <string name="mail_settings_auto_lock_item_timer_title">Délai de verrouillage automatique</string>
   <string name="mail_settings_auto_lock_immediately">Immédiatement</string>
@@ -137,14 +137,14 @@
   <string name="mail_settings_pin_insertion_button_confirm">Confirmer</string>
   <string name="mail_settings_pin_insertion_error_no_match">Les codes PIN ne correspondent pas.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="one">%s tentative restante.</item>
-    <item quantity="other">%s tentatives restantes.</item>
+    <item quantity="one">Il reste %s tentative.</item>
+    <item quantity="other">Il reste %s tentatives.</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
     <item quantity="one">Il reste %s tentative avant l’effacement des données sécurisées.</item>
     <item quantity="other">Il reste %s tentatives avant l’effacement des données sécurisées.</item>
   </plurals>
-  <string name="mail_settings_pin_insertion_error_unknown">Une erreur s\'est produite lors de la vérification du code PIN.</string>
+  <string name="mail_settings_pin_insertion_error_unknown">Une erreur s\'est produite lors de la vérification de votre code PIN.</string>
   <string name="mail_settings_pin_insertion_signout_text">Se déconnecter</string>
   <string name="mail_settings_pin_insertion_signout_dialog_title">Se déconnecter</string>
   <string name="mail_settings_pin_insertion_signout_dialog_description">Voulez-vous vraiment vous déconnecter ?</string>

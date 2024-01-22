@@ -24,9 +24,9 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">選択モードを終了</string>
   <string name="mailbox_toolbar_menu_button_content_description">メニュー</string>
   <string name="mailbox_toolbar_search_button_content_description">検索</string>
-  <string name="mailbox_toolbar_exit_search_mode_content_description">Exit search mode</string>
-  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Clear search query</string>
-  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Enter search query</string>
+  <string name="mailbox_toolbar_exit_search_mode_content_description">検索モードを終了</string>
+  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">検索クエリを消去</string>
+  <string name="mailbox_toolbar_searchview_query_text_field_content_description">検索クエリを入力</string>
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="other">%d個選択済み</item>
   </plurals>
@@ -38,12 +38,12 @@
   <string name="mailbox_error_message_offline">インターネットに接続できないため、メールを取得できませんでした。</string>
   <string name="mailbox_error_message_generic">メールボックスの読み込みに失敗しました</string>
   <string name="mailbox_error_message_unexpected">予期せぬ問題が発生しました</string>
-  <string name="mailbox_is_empty_title">No messages</string>
-  <string name="mailbox_is_empty_description">You are up to date</string>
-  <string name="mailbox_is_empty_no_unread_messages_title">No unread messages</string>
+  <string name="mailbox_is_empty_title">メッセージはありません</string>
+  <string name="mailbox_is_empty_description">最新です</string>
+  <string name="mailbox_is_empty_no_unread_messages_title">未読メッセージはありません</string>
   <string name="mailbox_is_empty_folder_description">このフォルダーは空です</string>
   <string name="mailbox_is_empty_spam_description">迷惑メールフォルダーは空です</string>
-  <string name="mailbox_is_empty_trash_description">Trash is empty</string>
+  <string name="mailbox_is_empty_trash_description">ごみ箱は空です</string>
   <plurals name="mailbox_action_trash">
     <item quantity="other">%d 個のメッセージをゴミ箱に移動しました</item>
   </plurals>
@@ -87,7 +87,7 @@
   <string name="onboarding_next">次へ</string>
   <string name="onboarding_get_started">はじめましょう</string>
   <string name="onboarding_illustration_content_description">Onboarding illustration</string>
-  <string name="onboarding_close_content_description">Close</string>
+  <string name="onboarding_close_content_description">閉じる</string>
   <!-- Sidebar Beta label -->
   <string name="mailbox_action_trash_message">メッセージをごみ箱に移動する</string>
   <string name="mailbox_action_archive_message">メッセージをアーカイブに移動しました</string>
@@ -95,13 +95,23 @@
   <string name="mailbox_search_placeholder_text">メッセージを検索</string>
   <string name="mailbox_search_no_results_title">該当する項目がありません</string>
   <string name="mailbox_search_no_results_explanation">日付、名前、メールアドレス、件名で検索</string>
-  <string name="mailbox_action_button_clear_trash">Empty Trash</string>
-  <string name="mailbox_action_button_clear_spam">Empty Spam</string>
-  <string name="mailbox_action_clear_trash_dialog_title">Empty Trash folder</string>
-  <string name="mailbox_action_clear_spam_dialog_title">Empty Spam folder</string>
-  <string name="mailbox_action_clear_trash_dialog_body_message">Are you sure you want to permanently delete all messages within ‘Trash’?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_message">Are you sure you want to permanently delete all messages within ‘Spam’?</string>
-  <string name="mailbox_action_clear_trash_dialog_body_conversation">Are you sure you want to permanently delete all conversations within ‘Trash’?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">Are you sure you want to permanently delete all conversations within ‘Spam’?</string>
+  <string name="mailbox_action_button_clear_trash">ごみ箱を空にする</string>
+  <string name="mailbox_action_button_clear_spam">迷惑メールを空にする</string>
+  <string name="mailbox_action_clear_trash_dialog_title">ごみ箱フォルダーを空にする</string>
+  <string name="mailbox_action_clear_spam_dialog_title">迷惑メールフォルダーを空にする</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">「ごみ箱」内のすべてのメッセージを完全に削除してよろしいですか？</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">「迷惑メール」内のすべてのメッセージを完全に削除してよろしいですか？</string>
+  <string name="mailbox_action_clear_trash_dialog_body_conversation">「ごみ箱」内のすべての会話を完全に削除してよろしいですか？</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">「迷惑メール」内のすべての会話を完全に削除してよろしいですか？</string>
   <string name="mailbox_action_clear_operation_scheduled">"Clear operation is scheduled"</string>
+  <!--    Storage Limit Warning-->
+  <string name="storage_limit_warning_dialog_title">Warning</string>
+  <string name="storage_first_limit_exceeded_warning_dialog_text">Your Proton account storage is more than 80% full. Free up space or upgrade for more storage.</string>
+  <string name="storage_second_limit_exceeded_warning_dialog_text">Your Proton account storage is more than 90% full. Free up space or upgrade for more storage.</string>
+  <string name="storage_limit_warning_dialog_do_not_remind_button">Don\'t remind me again</string>
+  <string name="storage_limit_warning_dialog_confirm_button">OK</string>
+  <!--    Storage Quota Over Warning-->
+  <string name="storage_quota_over_dialog_title">Warning</string>
+  <string name="storage_quota_over_dialog_text">Your Proton account storage is 100% full. You won\'t be able to send or receive emails unless you permanently delete some emails or upgrade for more storage.</string>
+  <string name="storage_quota_over_dialog_confirm_button">OK</string>
 </resources>

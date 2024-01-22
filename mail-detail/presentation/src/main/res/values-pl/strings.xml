@@ -83,4 +83,7 @@
   <string name="error_delete_conversation_failed">Nie udało się usunąć wątku</string>
   <string name="error_delete_conversation_failed_wrong_folder">Wątek znajduje się miejscu, gdzie nie może zostać usunięty</string>
   <string name="conversation_deleted">Wątek został usunięty</string>
+  <string name="message_body_load_remote_content_button_text">Załaduj zawartość zdalną</string>
+  <string name="message_body_load_embedded_images_button_text">Załaduj osadzone obrazy</string>
+  <string name="message_body_load_embedded_and_remote_content_button_text">Załaduj zawartość zdalną i osadzone obrazy</string>
 </resources>

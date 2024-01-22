@@ -81,4 +81,7 @@
   <string name="error_delete_conversation_failed">Error al eliminar la conversación</string>
   <string name="error_delete_conversation_failed_wrong_folder">La conversación no está en una ubicación de donde pueda ser eliminada</string>
   <string name="conversation_deleted">Conversación eliminada</string>
+  <string name="message_body_load_remote_content_button_text">Cargar contenido remoto</string>
+  <string name="message_body_load_embedded_images_button_text">Cargar imágenes incrustadas</string>
+  <string name="message_body_load_embedded_and_remote_content_button_text">Cargar contenido remoto e incrustado</string>
 </resources>

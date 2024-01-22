@@ -25,8 +25,8 @@
   <string name="mailbox_toolbar_menu_button_content_description">Menu</string>
   <string name="mailbox_toolbar_search_button_content_description">Hľadať</string>
   <string name="mailbox_toolbar_exit_search_mode_content_description">Opustiť režim vyhľadávania</string>
-  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Clear search query</string>
-  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Enter search query</string>
+  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Vymazanie vyhľadávacieho reťazca</string>
+  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Zadajte vyhľadávací reťazec</string>
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="one">%d vybraný</item>
     <item quantity="few">%d vybrané</item>
@@ -128,7 +128,17 @@
   <string name="mailbox_action_clear_spam_dialog_title">Vyprázdniť priečinok Spam</string>
   <string name="mailbox_action_clear_trash_dialog_body_message">Naozaj chcete natrvalo odstrániť všetky správy v \'Koši\'?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">Naozaj chcete natrvalo odstrániť všetky správy v \'Spame\'?</string>
-  <string name="mailbox_action_clear_trash_dialog_body_conversation">Naozaj chcete odstrániť všetky konverzácie v ‚Koši\' natrvalo?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_conversation">Naozaj chcete natrvalo odstrániť všetky konverzácie v \'Koši\'?</string>
   <string name="mailbox_action_clear_spam_dialog_body_conversation">Naozaj chcete natrvalo odstrániť všetky konverzácie v \'Spame\'?</string>
   <string name="mailbox_action_clear_operation_scheduled">"Operácia vyčistenia je naplánovaná"</string>
+  <!--    Storage Limit Warning-->
+  <string name="storage_limit_warning_dialog_title">Warning</string>
+  <string name="storage_first_limit_exceeded_warning_dialog_text">Your Proton account storage is more than 80% full. Free up space or upgrade for more storage.</string>
+  <string name="storage_second_limit_exceeded_warning_dialog_text">Your Proton account storage is more than 90% full. Free up space or upgrade for more storage.</string>
+  <string name="storage_limit_warning_dialog_do_not_remind_button">Don\'t remind me again</string>
+  <string name="storage_limit_warning_dialog_confirm_button">OK</string>
+  <!--    Storage Quota Over Warning-->
+  <string name="storage_quota_over_dialog_title">Warning</string>
+  <string name="storage_quota_over_dialog_text">Your Proton account storage is 100% full. You won\'t be able to send or receive emails unless you permanently delete some emails or upgrade for more storage.</string>
+  <string name="storage_quota_over_dialog_confirm_button">OK</string>
 </resources>

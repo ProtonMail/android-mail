@@ -90,4 +90,5 @@
   <string name="intent_failure_no_app_found_to_handle_this_action">Не знойдзена праграм для апрацоўкі гэтага дзеяння</string>
   <string name="mailbox_action_delete_dialog_button_cancel">Скасаваць</string>
   <string name="mailbox_action_delete_dialog_button_delete">Выдаліць</string>
+  <string name="picker_dialog_cancel">Скасаваць</string>
 </resources>

@@ -48,23 +48,30 @@
   <string name="composer_attachment_reencryption_failed_message">Chiffrer à nouveau la pièce jointe n\'a pas abouti. Pour des raisons de sécurité, toutes les pièces jointes ont été retirées.</string>
   <string name="composer_warning_local_data_shown">La dernière version de ce brouillon n\'a pas pu être chargée. Toute modification remplacera son contenu.</string>
   <string name="composer_button_add_password">Ajouter un mot de passe</string>
+  <!-- Message sending without subject dialog -->
+  <string name="composer_send_without_subject_dialog_title">Rédiger</string>
+  <string name="composer_send_without_subject_dialog_text">Envoyer le message sans objet ?</string>
+  <string name="composer_send_without_subject_dialog_confirm_button">Oui</string>
+  <string name="composer_send_without_subject_dialog_reject_button">Non</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Une erreur s\'est produite pendant l\'envoi.</string>
   <string name="message_sending_error_dialog_button_dismiss">Fermer</string>
   <string name="message_sending_error_dialog_text_error">Votre message ne peut pas être envoyé à l\'adresse indiquée pour la raison suivante :</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Il n\'y a pas de clés de confiance : %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">L\'adresse n\'existe pas : %s</string>
-  <string name="set_message_password_title">Encrypt message</string>
-  <string name="set_message_password_info_message">Set a password to encrypt this message for non-Proton Mail users.</string>
-  <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Learn more</a></string>
-  <string name="set_message_password_label">Message password</string>
-  <string name="set_message_password_label_repeat">Repeat password</string>
-  <string name="set_message_password_label_hint">Password hint (optional)</string>
-  <string name="set_message_password_supporting_text">4 to 21 characters long</string>
-  <string name="set_message_password_supporting_error_text">The password must be between 4 and 21 characters</string>
-  <string name="set_message_password_supporting_text_repeat">Passwords must match</string>
-  <string name="set_message_password_supporting_error_text_repeat">The 2 passwords are not matching</string>
-  <string name="set_message_password_button_show">Show password</string>
-  <string name="set_message_password_button_hide">Hide password</string>
-  <string name="set_message_password_button_apply">Apply password</string>
+  <string name="set_message_password_title">Chiffrer le message</string>
+  <string name="set_message_password_info_message">Définissez un mot de passe pour chiffrer ce message à destination de personnes qui n\'utilisent pas Proton Mail.</string>
+  <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">En savoir plus</a></string>
+  <string name="set_message_password_label">Mot de passe du message</string>
+  <string name="set_message_password_label_repeat">Confirmer le mot de passe</string>
+  <string name="set_message_password_label_hint">Indication de mot de passe (facultatif)</string>
+  <string name="set_message_password_supporting_text">4 à 21 caractères</string>
+  <string name="set_message_password_supporting_error_text">Le mot de passe doit contenir entre 4 et 21 caractères.</string>
+  <string name="set_message_password_supporting_text_repeat">Les mots de passe doivent être identiques.</string>
+  <string name="set_message_password_supporting_error_text_repeat">Les 2 mots de passe ne sont pas identiques.</string>
+  <string name="set_message_password_button_show">Afficher le mot de passe</string>
+  <string name="set_message_password_button_hide">Masquer le mot de passe</string>
+  <string name="set_message_password_button_apply">Appliquer le mot de passe</string>
+  <string name="set_message_password_button_save_changes">Enregistrer les modifications</string>
+  <string name="set_message_password_button_remove_password">Retirer le mot de passe</string>
 </resources>

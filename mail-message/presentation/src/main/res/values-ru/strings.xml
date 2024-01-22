@@ -20,8 +20,8 @@
   <plurals name="attachment_count_label">
     <item quantity="one">%d файл</item>
     <item quantity="few">%d файла</item>
-    <item quantity="many">%d файлы</item>
-    <item quantity="other">%d файлы</item>
+    <item quantity="many">%d файлов</item>
+    <item quantity="other">%d файлов</item>
   </plurals>
   <string name="attachment_show_more_label">+%1$d больше</string>
   <string name="attachment_permission_dialog_title">Необходимо разрешение</string>
@@ -45,4 +45,5 @@
   <string name="bottom_sheet_done_action">Готово</string>
   <string name="bottom_sheet_archive_action">Также перенести в архив?</string>
   <string name="bottom_sheet_label_as_title">Отметить, как...</string>
+  <string name="bottom_sheet_more_header_message_from">Message from %s</string>
 </resources>

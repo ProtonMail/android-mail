@@ -28,7 +28,7 @@
   <string name="composer_expand_recipients_button">Más címzettek megjelenítése</string>
   <string name="composer_error_invalid_email">Az e-mail cím érvénytelen</string>
   <string name="composer_error_invalid_sender">A küldő cím érvénytelen</string>
-  <string name="change_sender_button_content_description">Change sender</string>
+  <string name="change_sender_button_content_description">Feladó módosítása</string>
   <string name="composer_change_sender_paid_feature">Upgrade to a paid plan to change the sender address</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Cannot change sender as getting user\'s subscription failed. Try again.</string>
   <string name="composer_error_store_draft_sender_address">Storing this draft\'s sender address failed</string>
@@ -36,24 +36,29 @@
   <string name="composer_error_duplicate_recipient">Removed duplicate recipient: %1$s</string>
   <string name="composer_error_store_draft_subject">Storing this draft\'s subject failed</string>
   <string name="composer_error_store_draft_recipients">Storing this draft\'s recipients failed</string>
-  <string name="composer_error_loading_draft">The content of this draft is not available at this time. Editing will override any pre-existing content.</string>
+  <string name="composer_error_loading_draft">Ennek a piszkozatnak a tartalma jelenleg nem elérhető. Szerkesztése felülírja az esetlegesen már korábban hozzáadott tartalmat.</string>
   <string name="composer_add_attachments_content_description">Add attachments</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Importálás innen…</string>
   <string name="composer_error_loading_parent_message">Could not load the message\'s information</string>
-  <string name="composer_original_message_quote">Original Message</string>
+  <string name="composer_original_message_quote">Eredeti üzenet</string>
   <string name="composer_sender_quote">%s-kor, %s&lt;%s&gt; ezt írta:</string>
   <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
   <string name="composer_attachment_size_exceeded_dialog_title">Attachment limit reached</string>
   <string name="composer_attachment_size_exceeded_dialog_message">A mellékletek maximális mérete %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Reencryption of attachment failed. For security reasons all attachments got removed.</string>
   <string name="composer_warning_local_data_shown">The latest version of this draft failed to load. Any change will override its content.</string>
-  <string name="composer_button_add_password">Add password</string>
+  <string name="composer_button_add_password">Jelszó hozzáadása</string>
+  <!-- Message sending without subject dialog -->
+  <string name="composer_send_without_subject_dialog_title">Compose</string>
+  <string name="composer_send_without_subject_dialog_text">Send message without subject?</string>
+  <string name="composer_send_without_subject_dialog_confirm_button">Yes</string>
+  <string name="composer_send_without_subject_dialog_reject_button">No</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Hiba a küldés közben</string>
   <string name="message_sending_error_dialog_button_dismiss">Bezárás</string>
-  <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the email entered due to the following reason:</string>
+  <string name="message_sending_error_dialog_text_error">A levél nem küldhető el a megadott e-mail címre a következő ok miatt:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">There are no Trusted Keys: %s</string>
-  <string name="message_sending_error_dialog_text_reason_address_disabled">Address does not exist: %s</string>
+  <string name="message_sending_error_dialog_text_reason_address_disabled">Cím nem létezik: %s</string>
   <string name="set_message_password_title">Encrypt message</string>
   <string name="set_message_password_info_message">Set a password to encrypt this message for non-Proton Mail users.</string>
   <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Learn more</a></string>
@@ -67,4 +72,6 @@
   <string name="set_message_password_button_show">Show password</string>
   <string name="set_message_password_button_hide">Hide password</string>
   <string name="set_message_password_button_apply">Apply password</string>
+  <string name="set_message_password_button_save_changes">Save changes</string>
+  <string name="set_message_password_button_remove_password">Remove password</string>
 </resources>

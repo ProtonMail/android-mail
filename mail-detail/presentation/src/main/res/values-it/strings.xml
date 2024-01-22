@@ -64,7 +64,7 @@
   <string name="message_phishing_banner_text">Il nostro sistema ha segnalato questo messaggio come tentativo di phishing. Verifica che sia legittimo.</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">Stai per uscire dall\'app e andare sul sito:</string>
-  <string name="external_link_confirmation_dialog_do_not_ask_again">Non chiederlo più</string>
+  <string name="external_link_confirmation_dialog_do_not_ask_again">Non chiederlo di nuovo</string>
   <string name="external_link_confirmation_dialog_cancel_button">Annulla</string>
   <string name="external_link_confirmation_dialog_continue_button">Continua</string>
   <!-- Phishing link confirmation dialog -->
@@ -81,4 +81,7 @@
   <string name="error_delete_conversation_failed">Eliminazione della conversazione non riuscita</string>
   <string name="error_delete_conversation_failed_wrong_folder">La conversazione non è in una posizione dove può essere eliminata</string>
   <string name="conversation_deleted">Conversazione eliminata</string>
+  <string name="message_body_load_remote_content_button_text">Carica i contenuti remoti</string>
+  <string name="message_body_load_embedded_images_button_text">Carica le immagini incorporate</string>
+  <string name="message_body_load_embedded_and_remote_content_button_text">Carica i contenuti remoti e incorporati</string>
 </resources>

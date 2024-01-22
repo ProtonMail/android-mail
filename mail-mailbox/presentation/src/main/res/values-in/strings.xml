@@ -104,4 +104,14 @@
   <string name="mailbox_action_clear_trash_dialog_body_conversation">Apakah Anda yakin untuk menghapus semua percakapan dalam ‘Sampah’ secara permanen?</string>
   <string name="mailbox_action_clear_spam_dialog_body_conversation">Apakah Anda yakin untuk menghapus semua percakapan dalam ‘Spam’ secara permanen?</string>
   <string name="mailbox_action_clear_operation_scheduled">"Tindakan pembersihan dijadwalkan"</string>
+  <!--    Storage Limit Warning-->
+  <string name="storage_limit_warning_dialog_title">Peringatan</string>
+  <string name="storage_first_limit_exceeded_warning_dialog_text">Ruang penyimpanan akun Proton Anda telah terisi lebih dari 80%. Kosongkan ruang yang ada atau tingkatkan akun Anda untuk memperoleh lebih banyak ruang.</string>
+  <string name="storage_second_limit_exceeded_warning_dialog_text">Ruang penyimpanan akun Proton Anda telah terisi lebih dari 90%. Kosongkan ruang yang ada atau tingkatkan akun Anda untuk memperoleh lebih banyak ruang.</string>
+  <string name="storage_limit_warning_dialog_do_not_remind_button">Jangan ingatkan saya lagi</string>
+  <string name="storage_limit_warning_dialog_confirm_button">OK</string>
+  <!--    Storage Quota Over Warning-->
+  <string name="storage_quota_over_dialog_title">Peringatan</string>
+  <string name="storage_quota_over_dialog_text">Ruang penyimpanan akun Proton Anda telah terisi 100%. Anda tidak akan dapat mengirim atau menerima email hingga Anda menghapus sebagian email yang ada secara permanen atau meningkatkan akun Anda untuk memperoleh lebih banyak ruang.</string>
+  <string name="storage_quota_over_dialog_confirm_button">OK</string>
 </resources>

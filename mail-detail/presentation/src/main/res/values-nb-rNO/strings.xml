@@ -81,4 +81,7 @@
   <string name="error_delete_conversation_failed">Kunne ikke slette samtale</string>
   <string name="error_delete_conversation_failed_wrong_folder">Samtalen er ikke på en plassering der den kan slettes</string>
   <string name="conversation_deleted">Samtale slettet</string>
+  <string name="message_body_load_remote_content_button_text">Last eksternt innhold</string>
+  <string name="message_body_load_embedded_images_button_text">Last innebygde bilder</string>
+  <string name="message_body_load_embedded_and_remote_content_button_text">Last inn eksternt og innebygd innhold</string>
 </resources>

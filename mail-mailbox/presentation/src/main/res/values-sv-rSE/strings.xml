@@ -108,9 +108,19 @@
   <string name="mailbox_action_button_clear_spam">Töm skräppost</string>
   <string name="mailbox_action_clear_trash_dialog_title">Töm papperskorg</string>
   <string name="mailbox_action_clear_spam_dialog_title">Töm skräppostmapp</string>
-  <string name="mailbox_action_clear_trash_dialog_body_message">Are you sure you want to permanently delete all messages within ‘Trash’?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_message">Are you sure you want to permanently delete all messages within ‘Spam’?</string>
-  <string name="mailbox_action_clear_trash_dialog_body_conversation">Are you sure you want to permanently delete all conversations within ‘Trash’?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">Are you sure you want to permanently delete all conversations within ‘Spam’?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Är du säker på att du vill ta bort alla meddelanden permanent i ‘Papperskorg’?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">Är du säker på att du vill ta bort alla meddelanden permanent i ‘Skräppost’?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_conversation">Är du säker på att du vill ta bort alla konversationer permanent i ‘Papperskorg’?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">Är du säker på att du vill ta bort alla konversationer permanent i ‘Skräppost’?</string>
   <string name="mailbox_action_clear_operation_scheduled">"Rensningsåtgärd är schemalagd"</string>
+  <!--    Storage Limit Warning-->
+  <string name="storage_limit_warning_dialog_title">Varning</string>
+  <string name="storage_first_limit_exceeded_warning_dialog_text">Lagringsutrymmet på ditt Proton-konto är mer än 80 % fullt. Frigör utrymme eller uppgradera för mer lagringsutrymme.</string>
+  <string name="storage_second_limit_exceeded_warning_dialog_text">Lagringsutrymmet på ditt Proton-konto är mer än 90 % fullt. Frigör utrymme eller uppgradera för mer lagringsutrymme.</string>
+  <string name="storage_limit_warning_dialog_do_not_remind_button">Påminn mig inte igen</string>
+  <string name="storage_limit_warning_dialog_confirm_button">OK</string>
+  <!--    Storage Quota Over Warning-->
+  <string name="storage_quota_over_dialog_title">Varning</string>
+  <string name="storage_quota_over_dialog_text">Lagringsutrymmet för ditt Proton-konto är 100 % fullt. Du kommer inte att kunna skicka eller ta emot e-postmeddelanden om du inte permanent tar bort några e-postmeddelanden eller uppgraderar för mer lagringsutrymme.</string>
+  <string name="storage_quota_over_dialog_confirm_button">OK</string>
 </resources>

@@ -48,6 +48,11 @@
   <string name="composer_attachment_reencryption_failed_message">Error al volver a cifrar el archivo adjunto. Por seguridad se borraron todos los archivos adjuntos.</string>
   <string name="composer_warning_local_data_shown">Error al cargar la última versión de este borrador. Cualquier cambio sobrescribirá su contenido.</string>
   <string name="composer_button_add_password">Añadir una contraseña</string>
+  <!-- Message sending without subject dialog -->
+  <string name="composer_send_without_subject_dialog_title">Redactar</string>
+  <string name="composer_send_without_subject_dialog_text">¿Enviar el mensaje sin asunto?</string>
+  <string name="composer_send_without_subject_dialog_confirm_button">Sí</string>
+  <string name="composer_send_without_subject_dialog_reject_button">No</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Error de envío</string>
   <string name="message_sending_error_dialog_button_dismiss">Cerrar</string>
@@ -67,4 +72,6 @@
   <string name="set_message_password_button_show">Mostrar contraseña</string>
   <string name="set_message_password_button_hide">Ocultar contraseña</string>
   <string name="set_message_password_button_apply">Aplicar contraseña</string>
+  <string name="set_message_password_button_save_changes">Guardar los cambios</string>
+  <string name="set_message_password_button_remove_password">Borrar la contraseña</string>
 </resources>

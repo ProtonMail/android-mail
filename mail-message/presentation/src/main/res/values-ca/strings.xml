@@ -43,4 +43,5 @@
   <string name="bottom_sheet_done_action">Fet</string>
   <string name="bottom_sheet_archive_action">Voleu arxivar també?</string>
   <string name="bottom_sheet_label_as_title">Etiqueta com a…</string>
+  <string name="bottom_sheet_more_header_message_from">Missatge de %s</string>
 </resources>

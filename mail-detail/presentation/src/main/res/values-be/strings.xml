@@ -83,4 +83,7 @@
   <string name="error_delete_conversation_failed">Не ўдалося выдаліць размову</string>
   <string name="error_delete_conversation_failed_wrong_folder">Змяніце размяшчэнне размовы, каб выдаліць яе</string>
   <string name="conversation_deleted">Размова выдалена</string>
+  <string name="message_body_load_remote_content_button_text">Загружаць аддаленае змесціва</string>
+  <string name="message_body_load_embedded_images_button_text">Загружаць убудаваныя відарысы</string>
+  <string name="message_body_load_embedded_and_remote_content_button_text">Загружаць аддаленае і ўбудаванае змесціва</string>
 </resources>
