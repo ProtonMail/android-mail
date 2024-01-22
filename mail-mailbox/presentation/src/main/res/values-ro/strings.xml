@@ -89,8 +89,6 @@
   <string name="mailbox_action_move_messages_failed">Mutarea nu a reușit.</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Preluarea folderelor a eșuat.</string>
   <!--  Spotlight V6 Beta  -->
-  <string name="onboarding_headline_beta">Testați noile aplicații beta</string>
-  <string name="onboarding_description_beta">Am reconstruit aplicația pentru stabilitate și fiabilitate. Împărtășiți-vă părerile despre ea și rămâneți la curent pe măsură ce reintroducem funcțiile. <a href="https://proton.me/support/mail-android-beta">Detalii.</a></string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Bun venit la noua aplicație</string>
   <string name="onboarding_description_ga">Complet reconstruită de la zero, noua aplicație Proton Mail a fost creată pentru stabilitate și performanță.</string>
@@ -109,9 +107,6 @@
   <string name="onboarding_illustration_content_description">Ilustrație de integrare</string>
   <string name="onboarding_close_content_description">Închidere</string>
   <!-- Sidebar Beta label -->
-  <string name="sidebar_beta_version_title">Proton Mail Beta</string>
-  <string name="sidebar_beta_version_description">Atingeți ca să aflați mai multe despre acest proiect.</string>
-  <string name="sidebar_beta_version_icon_content_description">Navigați la articolul din baza de cunoștințe.</string>
   <string name="mailbox_action_trash_message">Mesaj mutat în «Gunoi».</string>
   <string name="mailbox_action_archive_message">Mesaj mutat în «Arhivă».</string>
   <string name="mailbox_action_spam_message">Mesaj mutat în «Nedorite».</string>

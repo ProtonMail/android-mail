@@ -71,8 +71,6 @@
   <string name="mailbox_action_move_messages_failed">移动操作失败</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">无法列出文件夹</string>
   <!--  Spotlight V6 Beta  -->
-  <string name="onboarding_headline_beta">体验测试版应用程序</string>
-  <string name="onboarding_description_beta">我们彻底重构了本应用，以提升稳定性与可靠性。欢迎提出宝贵意见，并请期待我们重新引入各项功能。<a href="https://proton.me/support/mail-android-beta">了解详情</a>。</string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">欢迎体验全新的应用</string>
   <string name="onboarding_description_ga">Proton Mail 的全新应用程序是完全从头开始重新构建的，它专为提升稳定性和性能而设计。</string>
@@ -91,9 +89,6 @@
   <string name="onboarding_illustration_content_description">入职流程插画</string>
   <string name="onboarding_close_content_description">关闭</string>
   <!-- Sidebar Beta label -->
-  <string name="sidebar_beta_version_title">Proton Mail 测试版</string>
-  <string name="sidebar_beta_version_description">了解详细信息</string>
-  <string name="sidebar_beta_version_icon_content_description">跳转知识库</string>
   <string name="mailbox_action_trash_message">邮件已移动到垃圾箱</string>
   <string name="mailbox_action_archive_message">邮件已存档</string>
   <string name="mailbox_action_spam_message">封邮件已移至垃圾邮件箱</string>

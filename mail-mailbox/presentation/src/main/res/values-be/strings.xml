@@ -98,8 +98,6 @@
   <string name="mailbox_action_move_messages_failed">Збой аперацыі пераносу</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Не ўдалося атрымаць папкі</string>
   <!--  Spotlight V6 Beta  -->
-  <string name="onboarding_headline_beta">Бэта-тэсціраванне новай праграмы</string>
-  <string name="onboarding_description_beta">Мы перапрацавалі праграму для стабільнасці і надзейнасці. Падзяліцеся сваім водгукам і будзьце ў курсе, калі мы ўкараняем новыя функцыі. <a href="https://proton.me/support/mail-android-beta">Даведацца больш.</a></string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Сардэчна запрашаем у новую праграму</string>
   <string name="onboarding_description_ga">Новая праграма Proton Mail цалкам перапрацавана з нуля, каб забяспечыць стабільнасць і прадукцыйнасць.</string>
@@ -118,9 +116,6 @@
   <string name="onboarding_illustration_content_description">Ілюстрацыі для азнаямлення</string>
   <string name="onboarding_close_content_description">Закрыць</string>
   <!-- Sidebar Beta label -->
-  <string name="sidebar_beta_version_title">Proton Mail Beta</string>
-  <string name="sidebar_beta_version_description">Націсніце, каб даведацца больш пра гэты праект.</string>
-  <string name="sidebar_beta_version_icon_content_description">Перайсці да артыкулаў базы ведаў.</string>
   <string name="mailbox_action_trash_message">Паведамленне перамешчана ў сметніцу</string>
   <string name="mailbox_action_archive_message">Паведамленне перамешчана ў архіў</string>
   <string name="mailbox_action_spam_message">Паведамленне перамешчана ў спам</string>

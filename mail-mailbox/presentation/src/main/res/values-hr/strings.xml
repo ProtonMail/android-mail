@@ -89,8 +89,6 @@
   <string name="mailbox_action_move_messages_failed">Move operation failed</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Failed to get folders</string>
   <!--  Spotlight V6 Beta  -->
-  <string name="onboarding_headline_beta">Beta test the new app</string>
-  <string name="onboarding_description_beta">We\'ve rebuilt the app for stability and reliability. Share your feedback and stay tuned as we reintroduce features. <a href="https://proton.me/support/mail-android-beta">Learn more.</a></string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Welcome to the new app</string>
   <string name="onboarding_description_ga">Completely rebuilt from scratch, the new Proton Mail app was made for stability and performance.</string>
@@ -109,9 +107,6 @@
   <string name="onboarding_illustration_content_description">Onboarding illustration</string>
   <string name="onboarding_close_content_description">Zatvori</string>
   <!-- Sidebar Beta label -->
-  <string name="sidebar_beta_version_title">Proton Mail Beta</string>
-  <string name="sidebar_beta_version_description">Tap to learn more about this project.</string>
-  <string name="sidebar_beta_version_icon_content_description">Navigate to KB article.</string>
   <string name="mailbox_action_trash_message">Poruka premještena u otpad</string>
   <string name="mailbox_action_archive_message">Message moved to archive</string>
   <string name="mailbox_action_spam_message">Message moved to spam</string>

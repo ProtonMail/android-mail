@@ -71,8 +71,6 @@
   <string name="mailbox_action_move_messages_failed">Move operation failed</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Failed to get folders</string>
   <!--  Spotlight V6 Beta  -->
-  <string name="onboarding_headline_beta">Beta test the new app</string>
-  <string name="onboarding_description_beta">We\'ve rebuilt the app for stability and reliability. Share your feedback and stay tuned as we reintroduce features. <a href="https://proton.me/support/mail-android-beta">Learn more.</a></string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">新しいアプリへようこそ</string>
   <string name="onboarding_description_ga">新しい Proton Mail アプリは、安定性とパフォーマンスを重視してゼロから完全に再構築されました。</string>
@@ -91,9 +89,6 @@
   <string name="onboarding_illustration_content_description">Onboarding illustration</string>
   <string name="onboarding_close_content_description">Close</string>
   <!-- Sidebar Beta label -->
-  <string name="sidebar_beta_version_title">Proton Mail Beta</string>
-  <string name="sidebar_beta_version_description">Tap to learn more about this project.</string>
-  <string name="sidebar_beta_version_icon_content_description">Navigate to KB article.</string>
   <string name="mailbox_action_trash_message">メッセージをごみ箱に移動する</string>
   <string name="mailbox_action_archive_message">メッセージをアーカイブに移動しました</string>
   <string name="mailbox_action_spam_message">件のメッセージが迷惑メールに移動されました</string>

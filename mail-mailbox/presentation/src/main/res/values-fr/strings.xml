@@ -80,8 +80,6 @@
   <string name="mailbox_action_move_messages_failed">Le déplacement n\'a pas abouti.</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Les dossiers n\'ont pas pu être obtenus.</string>
   <!--  Spotlight V6 Beta  -->
-  <string name="onboarding_headline_beta">Testez la nouvelle application (bêta)</string>
-  <string name="onboarding_description_beta">Nous avons remanié l\'application pour la rendre plus stable et plus fiable. Partagez vos commentaires et restez à l\'écoute des fonctionnalités que nous allons à nouveau proposer. <a href="https://proton.me/support/mail-android-beta">En savoir plus</a>.</string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Bienvenue dans la nouvelle application</string>
   <string name="onboarding_description_ga">Entièrement repensée, la nouvelle application Proton Mail a été conçue pour garantir la stabilité et la performance.</string>
@@ -100,9 +98,6 @@
   <string name="onboarding_illustration_content_description">Illustration d\'accueil</string>
   <string name="onboarding_close_content_description">Fermer</string>
   <!-- Sidebar Beta label -->
-  <string name="sidebar_beta_version_title">Proton Mail version bêta</string>
-  <string name="sidebar_beta_version_description">Appuyez pour en savoir plus sur ce projet.</string>
-  <string name="sidebar_beta_version_icon_content_description">Consultez l\'article de la base de connaissances.</string>
   <string name="mailbox_action_trash_message">Le message a été déplacé dans le dossier Corbeille.</string>
   <string name="mailbox_action_archive_message">Le message a été déplacé dans le dossier Archives.</string>
   <string name="mailbox_action_spam_message">Le message a été déplacé dans le dossier Indésirables/spam.</string>

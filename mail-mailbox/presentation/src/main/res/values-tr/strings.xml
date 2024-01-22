@@ -80,8 +80,6 @@
   <string name="mailbox_action_move_messages_failed">Taşıma işlemi tamamlanamadı</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Klasörler alınamadı</string>
   <!--  Spotlight V6 Beta  -->
-  <string name="onboarding_headline_beta">Yeni uygulama Beta sürümü</string>
-  <string name="onboarding_description_beta">Kararlılığını ve güvenilirliğini artırmak için uygulamayı yeniden oluşturduk. Deneyiminizi paylaşın ve biz özellikleri yeniden sunarken izlemeyi sürdürün. <a href="https://proton.me/support/mail-android-beta">Ayrıntılı bilgi alın</a>.</string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Yeni uygulamaya hoş geldiniz</string>
   <string name="onboarding_description_ga">Tümüyle sıfırdan yeniden oluşturulan yeni Proton Mail uygulaması, kararlılık ve başarım için tasarlandı.</string>
@@ -100,9 +98,6 @@
   <string name="onboarding_illustration_content_description">Başlama çizimi</string>
   <string name="onboarding_close_content_description">Kapat</string>
   <!-- Sidebar Beta label -->
-  <string name="sidebar_beta_version_title">Proton Mail Beta</string>
-  <string name="sidebar_beta_version_description">Bu proje hakkında ayrıntılı bilgi almak için dokunun.</string>
-  <string name="sidebar_beta_version_icon_content_description">Bilgi bankası makalesine git.</string>
   <string name="mailbox_action_trash_message">İleti çöpe atıldı</string>
   <string name="mailbox_action_archive_message">İleti arşivlendi</string>
   <string name="mailbox_action_spam_message">ileti İstenmeyen kutusuna taşındı</string>

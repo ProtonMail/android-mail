@@ -80,8 +80,6 @@
   <string name="mailbox_action_move_messages_failed">Η μετακίνηση απέτυχε</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Αποτυχία λήψης φακέλων</string>
   <!--  Spotlight V6 Beta  -->
-  <string name="onboarding_headline_beta">Δοκιμάστε τη νέα εφαρμογή beta</string>
-  <string name="onboarding_description_beta">Ανακατασκευάσαμε την εφαρμογή για σταθερότητα και αξιοπιστία. Μοιραστείτε τα σχόλιά σας και μείνετε συντονισμένοι καθώς επαναφέρουμε τις λειτουργίες. <a href="https://proton.me/support/mail-android-beta">Μάθετε περισσότερα.</a></string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Καλώς ήλθατε στη νέα εφαρμογή</string>
   <string name="onboarding_description_ga">Πλήρως ανακατασκευασμένη από την αρχή, η νέα εφαρμογή Proton Mail δημιουργήθηκε για σταθερότητα και απόδοση.</string>
@@ -100,9 +98,6 @@
   <string name="onboarding_illustration_content_description">Απεικόνιση ενσωμάτωσης</string>
   <string name="onboarding_close_content_description">Κλείσιμο</string>
   <!-- Sidebar Beta label -->
-  <string name="sidebar_beta_version_title">Proton Mail Beta</string>
-  <string name="sidebar_beta_version_description">Πατήστε για να μάθετε περισσότερα σχετικά με αυτό το έργο.</string>
-  <string name="sidebar_beta_version_icon_content_description">Μεταβείτε στο άρθρο της Γνωσιακής Βάσης.</string>
   <string name="mailbox_action_trash_message">Το μήνυμα μετακινήθηκε στα Διαγραμμένα</string>
   <string name="mailbox_action_archive_message">Το μήνυμα μετακινήθηκε στα Αρχειοθετημένα</string>
   <string name="mailbox_action_spam_message">μήνυμα μετακινήθηκε στα Ενοχλητικά</string>

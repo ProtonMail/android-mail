@@ -80,8 +80,6 @@
   <string name="mailbox_action_move_messages_failed">გადატანის ოპერაცია ჩავარდა</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">საქაღალდეების მიღება ჩავარდა</string>
   <!--  Spotlight V6 Beta  -->
-  <string name="onboarding_headline_beta">ახალი აპის ბეტა ტესტი</string>
-  <string name="onboarding_description_beta">ჩვენ თავიდან ავაგეთ აპი სტაბილურობისა და სანდოობისთვის. გაგვიზიარეთ თქვენი აზრი და დარჩით ჩვენთან ერთად, რადგან ფუნქციებს ჯერ კიდევ ვამატებთ. <a href="https://proton.me/support/mail-android-beta">გაიგეთ მეტი.</a></string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">მოგესალმებით ახალ აპში</string>
   <string name="onboarding_description_ga">სრულად 0-დან შექმნილი ახალი Proton Mail-ის აპი, რომელიც სტაბილურობით და წარმადობით გამოირჩევა.</string>
@@ -100,9 +98,6 @@
   <string name="onboarding_illustration_content_description">გაცნობის ილუსტრაცია</string>
   <string name="onboarding_close_content_description">დახურვა</string>
   <!-- Sidebar Beta label -->
-  <string name="sidebar_beta_version_title">Proton Mail ბეტა</string>
-  <string name="sidebar_beta_version_description">დაატყაპუნეთ ამ პროექტის შესახებ მეტის გასაგებად.</string>
-  <string name="sidebar_beta_version_icon_content_description">სტატიაზე გადასვლა.</string>
   <string name="mailbox_action_trash_message">შეტყობინება გადატანილია ნაგავში</string>
   <string name="mailbox_action_archive_message">შეტყობინება გადატანილია არქივში</string>
   <string name="mailbox_action_spam_message">შეტყობინება გადატანილია სპამში</string>

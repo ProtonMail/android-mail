@@ -80,8 +80,6 @@
   <string name="mailbox_action_move_messages_failed">No s\'ha pogut moure.</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">No s\'han pogut obtenir les carpetes.</string>
   <!--  Spotlight V6 Beta  -->
-  <string name="onboarding_headline_beta">Proveu la beta de la nova aplicació.</string>
-  <string name="onboarding_description_beta">Hem reconstruït l\'aplicació per a aconseguir estabilitat i fiabilitat. Compartiu els vostres comentaris i mantingueu-vos atents mentre reintroduïm característiques. <a href="https://proton.me/support/mail-android-beta">Més informació</a>.</string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Us donem la benvinguda a la nova aplicació</string>
   <string name="onboarding_description_ga">Completament reconstruïda des de zero, la nova aplicació de Proton Mail s\'ha fet per a l\'estabilitat i el rendiment.</string>
@@ -100,9 +98,6 @@
   <string name="onboarding_illustration_content_description">Il·lustració de benvinguda</string>
   <string name="onboarding_close_content_description">Tanca</string>
   <!-- Sidebar Beta label -->
-  <string name="sidebar_beta_version_title">Proton Mail Beta</string>
-  <string name="sidebar_beta_version_description">Toca per obtenir més informació sobre aquest projecte.</string>
-  <string name="sidebar_beta_version_icon_content_description">Consulteu l\'article de la base de coneixements.</string>
   <string name="mailbox_action_trash_message">S\'ha mogut el missatge a la paperera.</string>
   <string name="mailbox_action_archive_message">S\'ha mogut el missatge a l\'arxiu.</string>
   <string name="mailbox_action_spam_message">S\'ha mogut el missatge al correu brossa.</string>

@@ -71,8 +71,6 @@
   <string name="mailbox_action_move_messages_failed">移動失敗</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">取得資料夾失敗</string>
   <!--  Spotlight V6 Beta  -->
-  <string name="onboarding_headline_beta">Beta 測試新應用程式</string>
-  <string name="onboarding_description_beta">We\'ve rebuilt the app for stability and reliability. Share your feedback and stay tuned as we reintroduce features. <a href="https://proton.me/support/mail-android-beta">Learn more.</a></string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">歡迎使用全新的應用程式</string>
   <string name="onboarding_description_ga">完全從零開始重建，全新的 Proton Mail 應用程式專為穩定性和性能而設計。</string>
@@ -91,9 +89,6 @@
   <string name="onboarding_illustration_content_description">入門指南</string>
   <string name="onboarding_close_content_description">關閉</string>
   <!-- Sidebar Beta label -->
-  <string name="sidebar_beta_version_title">Proton Mail Beta</string>
-  <string name="sidebar_beta_version_description">按這裡了解更多關於此專案的資訊。</string>
-  <string name="sidebar_beta_version_icon_content_description">導覽到 KB 文章</string>
   <string name="mailbox_action_trash_message">郵件丟進垃圾桶</string>
   <string name="mailbox_action_archive_message">要移動到至「封存」的郵件</string>
   <string name="mailbox_action_spam_message">訊息移至垃圾郵件</string>

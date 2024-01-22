@@ -80,8 +80,6 @@
   <string name="mailbox_action_move_messages_failed">Flytning mislykkedes</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Kunne ikke hente mapper</string>
   <!--  Spotlight V6 Beta  -->
-  <string name="onboarding_headline_beta">Betatest den nye app</string>
-  <string name="onboarding_description_beta">Vi har genopbygget appen for at sikre stabilitet og pålidelighed. Del din feedback, og følg med, når vi genintroducerer nye funktioner. <a href="https://proton.me/support/mail-android-beta">Få mere at vide.</a></string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Velkommen til den nye app</string>
   <string name="onboarding_description_ga">Den nye Proton Mail-app er genopbygget helt fra bunden og er skabt med henblik på stabilitet og ydeevne.</string>
@@ -100,9 +98,6 @@
   <string name="onboarding_illustration_content_description">Introduktion-illustration</string>
   <string name="onboarding_close_content_description">Luk</string>
   <!-- Sidebar Beta label -->
-  <string name="sidebar_beta_version_title">Proton Mail Beta</string>
-  <string name="sidebar_beta_version_description">Tryk for at få flere oplysninger om dette projekt.</string>
-  <string name="sidebar_beta_version_icon_content_description">Gå til KB-artikel</string>
   <string name="mailbox_action_trash_message">Besked flyttet til Papirkurv</string>
   <string name="mailbox_action_archive_message">Besked flyttet til arkiv</string>
   <string name="mailbox_action_spam_message">Besked flyttet til spam</string>
