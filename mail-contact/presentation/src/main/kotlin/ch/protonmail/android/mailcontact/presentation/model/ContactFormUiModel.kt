@@ -104,7 +104,7 @@ sealed interface FieldType {
     }
 
     enum class PhoneType(override val localizedValue: TextUiModel) : FieldType {
-        Phone(TextUiModel(R.string.contact_type_phone)),
+        Telephone(TextUiModel(R.string.contact_type_phone)),
         Home(TextUiModel(R.string.contact_type_home)),
         Work(TextUiModel(R.string.contact_type_work)),
         Other(TextUiModel(R.string.contact_type_other)),

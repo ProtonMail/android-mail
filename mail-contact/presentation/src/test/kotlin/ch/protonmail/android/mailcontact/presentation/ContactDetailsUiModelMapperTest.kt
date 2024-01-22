@@ -118,17 +118,16 @@ class ContactDetailsUiModelMapperTest {
                     type = ContactProperty.Telephone.Type.Home,
                     text = "23233232323"
                 ),
-                ContactProperty.Telephone(type = ContactProperty.Telephone.Type.Pager, text = "34343434"),
                 ContactProperty.Telephone(
                     type = ContactProperty.Telephone.Type.Work,
                     text = "45454545"
                 ),
                 ContactProperty.Telephone(type = ContactProperty.Telephone.Type.Other, text = "565656"),
                 ContactProperty.Telephone(
-                    type = ContactProperty.Telephone.Type.Telephone,
+                    type = ContactProperty.Telephone.Type.Mobile,
                     text = "676767"
                 ),
-                ContactProperty.Telephone(type = ContactProperty.Telephone.Type.Telephone, text = "787887"),
+                ContactProperty.Telephone(type = ContactProperty.Telephone.Type.Main, text = "787887"),
                 ContactProperty.Telephone(
                     type = ContactProperty.Telephone.Type.Fax,
                     text = "898989"
@@ -255,13 +254,6 @@ class ContactDetailsUiModelMapperTest {
                 ContactDetailsItem.Text(
                     displayIcon = false,
                     iconResId = R.drawable.ic_proton_phone,
-                    header = TextUiModel(R.string.contact_type_pager),
-                    value = TextUiModel("34343434"),
-                    type = ContactDetailsItem.ContactDetailType.Triggerable.Phone("34343434")
-                ),
-                ContactDetailsItem.Text(
-                    displayIcon = false,
-                    iconResId = R.drawable.ic_proton_phone,
                     header = TextUiModel(R.string.contact_type_work),
                     value = TextUiModel("45454545"),
                     type = ContactDetailsItem.ContactDetailType.Triggerable.Phone("45454545")
@@ -276,14 +268,14 @@ class ContactDetailsUiModelMapperTest {
                 ContactDetailsItem.Text(
                     displayIcon = false,
                     iconResId = R.drawable.ic_proton_phone,
-                    header = TextUiModel(R.string.contact_type_phone),
+                    header = TextUiModel(R.string.contact_type_mobile),
                     value = TextUiModel("676767"),
                     type = ContactDetailsItem.ContactDetailType.Triggerable.Phone("676767")
                 ),
                 ContactDetailsItem.Text(
                     displayIcon = false,
                     iconResId = R.drawable.ic_proton_phone,
-                    header = TextUiModel(R.string.contact_type_phone),
+                    header = TextUiModel(R.string.contact_type_main),
                     value = TextUiModel("787887"),
                     type = ContactDetailsItem.ContactDetailType.Triggerable.Phone("787887")
                 ),
