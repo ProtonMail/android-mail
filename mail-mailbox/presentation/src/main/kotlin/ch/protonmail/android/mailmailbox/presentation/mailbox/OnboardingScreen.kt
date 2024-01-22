@@ -72,9 +72,9 @@ fun OnboardingScreen(actions: MailboxScreen.Actions) {
 
     val contentMap = listOf(
         OnboardingUiModel(
-            illustrationId = R.drawable.illustration_onboarding_beta,
-            headlineId = R.string.onboarding_headline_beta,
-            descriptionId = R.string.onboarding_description_beta
+            illustrationId = R.drawable.illustration_onboarding_ga,
+            headlineId = R.string.onboarding_headline_ga,
+            descriptionId = R.string.onboarding_description_ga
         ),
         OnboardingUiModel(
             illustrationId = R.drawable.illustration_privacy_for_all,
