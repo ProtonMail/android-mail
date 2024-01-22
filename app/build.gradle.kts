@@ -195,7 +195,6 @@ android {
         getByName("androidTest").res.srcDirs("src/uiTest/res")
         getByName("dev").res.srcDirs("src/dev/res")
         getByName("alpha").res.srcDirs("src/alpha/res")
-        getByName("prod").res.srcDirs("src/prod/res")
     }
 }
 
