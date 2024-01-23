@@ -142,6 +142,8 @@ fun MessageBodyWebView(
                     it.settings.displayZoomControls = false
                     it.settings.javaScriptEnabled = false
                     it.settings.safeBrowsingEnabled = true
+                    it.settings.allowContentAccess = false
+                    it.settings.allowFileAccess = false
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                         it.settings.isAlgorithmicDarkeningAllowed = true
                     } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
