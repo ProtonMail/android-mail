@@ -86,31 +86,6 @@ class ContactFormViewModelTest {
         unmockkAll()
     }
 
-    private fun expectSavedStateContactId(contactId: ContactId?) {
-        every {
-            savedStateHandleMock.get<String>(ContactFormScreen.ContactFormContactIdKey)
-        } returns contactId?.id
-    }
-
-    private fun expectDecryptedContact(
-        userId: UserId,
-        contactId: ContactId,
-        decryptedContact: DecryptedContact?
-    ) {
-        every {
-            observeDecryptedContactMock.invoke(userId, contactId)
-        } returns flowOf(decryptedContact?.right() ?: DataError.Local.NoDataCached.left())
-    }
-
-    private fun expectContactFormUiModel(
-        decryptedContact: DecryptedContact,
-        expectedContactFormUiModel: ContactFormUiModel
-    ) {
-        every {
-            contactFormUiModelMapperMock.toContactFormUiModel(decryptedContact)
-        } returns expectedContactFormUiModel
-    }
-
     @Test
     fun `given empty Contact ID in SavedState, when init, then emits create state`() = runTest {
         // Given
@@ -165,6 +140,31 @@ class ContactFormViewModelTest {
 
             assertEquals(expected, actual)
         }
+    }
+
+    private fun expectSavedStateContactId(contactId: ContactId?) {
+        every {
+            savedStateHandleMock.get<String>(ContactFormScreen.ContactFormContactIdKey)
+        } returns contactId?.id
+    }
+
+    private fun expectDecryptedContact(
+        userId: UserId,
+        contactId: ContactId,
+        decryptedContact: DecryptedContact?
+    ) {
+        every {
+            observeDecryptedContactMock.invoke(userId, contactId)
+        } returns flowOf(decryptedContact?.right() ?: DataError.Local.NoDataCached.left())
+    }
+
+    private fun expectContactFormUiModel(
+        decryptedContact: DecryptedContact,
+        expectedContactFormUiModel: ContactFormUiModel
+    ) {
+        every {
+            contactFormUiModelMapperMock.toContactFormUiModel(decryptedContact)
+        } returns expectedContactFormUiModel
     }
 
 }
