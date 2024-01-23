@@ -31,7 +31,12 @@ import ch.protonmail.android.mailcontact.domain.usecase.ObserveDecryptedContact
 import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.model.ContactFormUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactFormUiModelMapper
+import ch.protonmail.android.mailcontact.presentation.model.emptyAddressField
 import ch.protonmail.android.mailcontact.presentation.model.emptyContactFormUiModel
+import ch.protonmail.android.mailcontact.presentation.model.emptyDefaultOtherField
+import ch.protonmail.android.mailcontact.presentation.model.emptyEmailField
+import ch.protonmail.android.mailcontact.presentation.model.emptyNoteField
+import ch.protonmail.android.mailcontact.presentation.model.emptyTelephoneField
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactFormPreviewData
 import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.every
@@ -159,6 +164,121 @@ class ContactFormViewModelTest {
             val expected = ContactFormState.Data.Create(
                 contact = emptyContactFormUiModel,
                 close = Effect.of(Unit)
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `when OnAddEmailClick action is submitted, then state contact is updated`() = runTest {
+        // Given
+        expectSavedStateContactId(null)
+
+        // When
+        contactFormViewModel.state.test {
+            // Then
+            awaitItem()
+
+            contactFormViewModel.submit(ContactFormViewAction.OnAddEmailClick)
+
+            val actual = awaitItem()
+            val expected = ContactFormState.Data.Create(
+                contact = emptyContactFormUiModel.copy(
+                    emails = emptyContactFormUiModel.emails.plus(emptyEmailField)
+                )
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `when OnAddTelephoneClick action is submitted, then state contact is updated`() = runTest {
+        // Given
+        expectSavedStateContactId(null)
+
+        // When
+        contactFormViewModel.state.test {
+            // Then
+            awaitItem()
+
+            contactFormViewModel.submit(ContactFormViewAction.OnAddTelephoneClick)
+
+            val actual = awaitItem()
+            val expected = ContactFormState.Data.Create(
+                contact = emptyContactFormUiModel.copy(
+                    telephones = emptyContactFormUiModel.telephones.plus(emptyTelephoneField)
+                )
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `when OnAddAddressClick action is submitted, then state contact is updated`() = runTest {
+        // Given
+        expectSavedStateContactId(null)
+
+        // When
+        contactFormViewModel.state.test {
+            // Then
+            awaitItem()
+
+            contactFormViewModel.submit(ContactFormViewAction.OnAddAddressClick)
+
+            val actual = awaitItem()
+            val expected = ContactFormState.Data.Create(
+                contact = emptyContactFormUiModel.copy(
+                    addresses = emptyContactFormUiModel.addresses.plus(emptyAddressField)
+                )
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `when OnAddNoteClick action is submitted, then state contact is updated`() = runTest {
+        // Given
+        expectSavedStateContactId(null)
+
+        // When
+        contactFormViewModel.state.test {
+            // Then
+            awaitItem()
+
+            contactFormViewModel.submit(ContactFormViewAction.OnAddNoteClick)
+
+            val actual = awaitItem()
+            val expected = ContactFormState.Data.Create(
+                contact = emptyContactFormUiModel.copy(
+                    notes = emptyContactFormUiModel.notes.plus(emptyNoteField)
+                )
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `when OnAddOtherClick action is submitted, then state contact is updated`() = runTest {
+        // Given
+        expectSavedStateContactId(null)
+
+        // When
+        contactFormViewModel.state.test {
+            // Then
+            awaitItem()
+
+            contactFormViewModel.submit(ContactFormViewAction.OnAddOtherClick)
+
+            val actual = awaitItem()
+            val expected = ContactFormState.Data.Create(
+                contact = emptyContactFormUiModel.copy(
+                    others = emptyContactFormUiModel.others.plus(emptyDefaultOtherField)
+                )
             )
 
             assertEquals(expected, actual)
