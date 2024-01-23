@@ -282,6 +282,141 @@ class ContactFormViewModelTest {
         }
     }
 
+    @Test
+    fun `when on remove email action is submitted, then state contact is updated`() = runTest {
+        // Given
+        val contactFormUiModel = expectContactFormStateUpdate()
+
+        // When
+        contactFormViewModel.state.test {
+            // Then
+            awaitItem()
+
+            contactFormViewModel.submit(
+                ContactFormViewAction.OnRemoveItemClick(Section.Emails, 0)
+            )
+
+            val actual = awaitItem()
+            val newEmails = contactFormUiModel.emails.toMutableList()
+            newEmails.removeAt(0)
+            val expected = ContactFormState.Data.Update(
+                contact = contactFormUiModel.copy(
+                    emails = newEmails
+                )
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `when on remove telephone action is submitted, then state contact is updated`() = runTest {
+        // Given
+        val contactFormUiModel = expectContactFormStateUpdate()
+
+        // When
+        contactFormViewModel.state.test {
+            // Then
+            awaitItem()
+
+            contactFormViewModel.submit(
+                ContactFormViewAction.OnRemoveItemClick(Section.Telephones, 0)
+            )
+
+            val actual = awaitItem()
+            val newTelephones = contactFormUiModel.telephones.toMutableList()
+            newTelephones.removeAt(0)
+            val expected = ContactFormState.Data.Update(
+                contact = contactFormUiModel.copy(
+                    telephones = newTelephones
+                )
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `when on remove address action is submitted, then state contact is updated`() = runTest {
+        // Given
+        val contactFormUiModel = expectContactFormStateUpdate()
+
+        // When
+        contactFormViewModel.state.test {
+            // Then
+            awaitItem()
+
+            contactFormViewModel.submit(
+                ContactFormViewAction.OnRemoveItemClick(Section.Addresses, 0)
+            )
+
+            val actual = awaitItem()
+            val newAddresses = contactFormUiModel.addresses.toMutableList()
+            newAddresses.removeAt(0)
+            val expected = ContactFormState.Data.Update(
+                contact = contactFormUiModel.copy(
+                    addresses = newAddresses
+                )
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `when on remove note action is submitted, then state contact is updated`() = runTest {
+        // Given
+        val contactFormUiModel = expectContactFormStateUpdate()
+
+        // When
+        contactFormViewModel.state.test {
+            // Then
+            awaitItem()
+
+            contactFormViewModel.submit(
+                ContactFormViewAction.OnRemoveItemClick(Section.Notes, 0)
+            )
+
+            val actual = awaitItem()
+            val newNotes = contactFormUiModel.notes.toMutableList()
+            newNotes.removeAt(0)
+            val expected = ContactFormState.Data.Update(
+                contact = contactFormUiModel.copy(
+                    notes = newNotes
+                )
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `when on remove other action is submitted, then state contact is updated`() = runTest {
+        // Given
+        val contactFormUiModel = expectContactFormStateUpdate()
+
+        // When
+        contactFormViewModel.state.test {
+            // Then
+            awaitItem()
+
+            contactFormViewModel.submit(
+                ContactFormViewAction.OnRemoveItemClick(Section.Others, 0)
+            )
+
+            val actual = awaitItem()
+            val newOthers = contactFormUiModel.others.toMutableList()
+            newOthers.removeAt(0)
+            val expected = ContactFormState.Data.Update(
+                contact = contactFormUiModel.copy(
+                    others = newOthers
+                )
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
     private fun expectSavedStateContactId(contactId: ContactId?) {
         every {
             savedStateHandleMock.get<String>(ContactFormScreen.ContactFormContactIdKey)
