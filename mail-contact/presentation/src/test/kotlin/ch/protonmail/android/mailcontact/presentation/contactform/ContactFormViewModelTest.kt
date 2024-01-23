@@ -129,19 +129,14 @@ class ContactFormViewModelTest {
     @Test
     fun `given Contact ID in SavedState, when init, then emits update state`() = runTest {
         // Given
-        val expectedDecryptedContact = DecryptedContact(testContactId)
-        val expectedContactFormUiModel = ContactFormPreviewData.contactFormSampleData
-        expectDecryptedContact(testUserId, testContactId, expectedDecryptedContact)
-        expectContactFormUiModel(expectedDecryptedContact, expectedContactFormUiModel)
-
-        expectSavedStateContactId(testContactId)
+        val contactFormUiModel = expectContactFormStateUpdate()
 
         // When
         contactFormViewModel.state.test {
             // Then
             val actual = awaitItem()
             val expected = ContactFormState.Data.Update(
-                contact = expectedContactFormUiModel
+                contact = contactFormUiModel
             )
 
             assertEquals(expected, actual)
@@ -310,6 +305,16 @@ class ContactFormViewModelTest {
         every {
             contactFormUiModelMapperMock.toContactFormUiModel(decryptedContact)
         } returns expectedContactFormUiModel
+    }
+
+    private fun expectContactFormStateUpdate(): ContactFormUiModel {
+        val expectedDecryptedContact = DecryptedContact(testContactId)
+        val expectedContactFormUiModel = ContactFormPreviewData.contactFormSampleData
+        expectDecryptedContact(testUserId, testContactId, expectedDecryptedContact)
+        expectContactFormUiModel(expectedDecryptedContact, expectedContactFormUiModel)
+
+        expectSavedStateContactId(testContactId)
+        return expectedContactFormUiModel
     }
 
 }
