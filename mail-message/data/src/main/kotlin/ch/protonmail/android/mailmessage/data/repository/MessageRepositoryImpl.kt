@@ -34,6 +34,7 @@ import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageApi
 import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSource
 import ch.protonmail.android.mailmessage.data.usecase.ExcludeDraftMessagesAlreadyInOutbox
+import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.model.Message
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -293,6 +294,11 @@ class MessageRepositoryImpl @Inject constructor(
 
     override fun observeClearLabelOperation(userId: UserId, labelId: LabelId) =
         remoteDataSource.observeClearWorkerIsEnqueuedOrRunning(userId, labelId)
+
+    override suspend fun reportPhishing(
+        userId: UserId,
+        decryptedMessageBody: DecryptedMessageBody
+    ): Either<DataError, Unit> = remoteDataSource.reportPhishing(userId, decryptedMessageBody)
 
     private suspend fun moveToTrashOrSpam(
         userId: UserId,

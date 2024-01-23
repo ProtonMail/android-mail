@@ -46,6 +46,7 @@ import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
 import ch.protonmail.android.mailpagination.domain.model.PageFilter
 import ch.protonmail.android.mailpagination.domain.model.PageKey
+import ch.protonmail.android.testdata.message.DecryptedMessageBodyTestData
 import ch.protonmail.android.testdata.message.MessageBodyTestData
 import ch.protonmail.android.testdata.message.MessageTestData
 import io.mockk.Called
@@ -1126,5 +1127,35 @@ class MessageRepositoryImplTest {
             // Then
             assertTrue { awaitItem() }
         }
+    }
+
+    @Test
+    fun `when report phishing is called then remote layer is called and returns Unit if successful`() = runTest {
+        // Given
+        val decryptedMessage = DecryptedMessageBodyTestData.MessageWithAttachments
+        val expected = Unit.right()
+        coEvery { remoteDataSource.reportPhishing(userId, decryptedMessage) } returns expected
+
+        // When
+        val actual = messageRepository.reportPhishing(userId, decryptedMessage)
+
+        // Then
+        assertEquals(expected, actual)
+        coVerify { remoteDataSource.reportPhishing(userId, decryptedMessage) }
+    }
+
+    @Test
+    fun `when report phishing is called then remote layer is called and returns error if unsuccessful`() = runTest {
+        // Given
+        val decryptedMessage = DecryptedMessageBodyTestData.MessageWithAttachments
+        val expected = DataError.Remote.Unknown.left()
+        coEvery { remoteDataSource.reportPhishing(userId, decryptedMessage) } returns expected
+
+        // When
+        val actual = messageRepository.reportPhishing(userId, decryptedMessage)
+
+        // Then
+        assertEquals(expected, actual)
+        coVerify { remoteDataSource.reportPhishing(userId, decryptedMessage) }
     }
 }
