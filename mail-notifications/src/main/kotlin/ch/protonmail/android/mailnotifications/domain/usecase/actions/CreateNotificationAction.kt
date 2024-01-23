@@ -43,10 +43,7 @@ internal class CreateNotificationAction @Inject constructor(
         }
 
         // Icon is always going to be 0, as it is unused.
-        return Action.Builder(0, payload.action.title, pendingIntent).apply {
-            // Force device to be unlocked on API >= 31 when interacting with the notification action.
-            setAuthenticationRequired(true)
-        }.build()
+        return Action.Builder(0, payload.action.title, pendingIntent).build()
     }
 
     private fun createMoveToPendingIntent(payload: PushNotificationPendingIntentPayloadData): PendingIntent {
