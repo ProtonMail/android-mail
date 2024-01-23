@@ -48,7 +48,7 @@ internal class RecipientChipEntryModel(
 
     // region actions
     fun tapDeleteIcon() = withParentDisplayed {
-        deleteIcon.performClick()
+        deleteIcon.performScrollTo().performClick()
     }
     // endregion
 
@@ -62,7 +62,7 @@ internal class RecipientChipEntryModel(
     }
 
     fun hasDeleteIcon() = withParentDisplayed {
-        deleteIcon.assertExists()
+        deleteIcon.performScrollTo().assertExists()
     }
 
     fun hasNoDeleteIcon() = withParentDisplayed {
