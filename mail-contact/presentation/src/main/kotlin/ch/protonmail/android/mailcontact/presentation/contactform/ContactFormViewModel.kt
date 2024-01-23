@@ -88,6 +88,7 @@ class ContactFormViewModel @Inject constructor(
             actionMutex.withLock {
                 when (action) {
                     is ContactFormViewAction.OnAddItemClick -> handleAddItem(action)
+                    is ContactFormViewAction.OnRemoveItemClick -> handleRemoveItem(action)
                     ContactFormViewAction.OnCloseContactFormClick -> emitNewStateFor(ContactFormEvent.CloseContactForm)
                 }
             }
@@ -116,6 +117,38 @@ class ContactFormViewModel @Inject constructor(
                     Section.Others -> contact.copy(
                         others = contact.others.plus(emptyRandomOtherField())
                     )
+                }
+            )
+        )
+    }
+
+    private fun handleRemoveItem(action: ContactFormViewAction.OnRemoveItemClick) {
+        val stateValue = state.value
+        if (stateValue !is ContactFormState.Data) return
+        val contact = stateValue.contact
+        emitNewStateFor(
+            ContactFormEvent.UpdateContactFormUiModel(
+                when (action.section) {
+                    Section.Emails -> {
+                        val mutableEmails = contact.emails.toMutableList().apply { this.removeAt(action.index) }
+                        contact.copy(emails = mutableEmails)
+                    }
+                    Section.Telephones -> {
+                        val mutableTelephones = contact.telephones.toMutableList().apply { this.removeAt(action.index) }
+                        contact.copy(telephones = mutableTelephones)
+                    }
+                    Section.Addresses -> {
+                        val mutableAddresses = contact.addresses.toMutableList().apply { this.removeAt(action.index) }
+                        contact.copy(addresses = mutableAddresses)
+                    }
+                    Section.Notes -> {
+                        val mutableNotes = contact.notes.toMutableList().apply { this.removeAt(action.index) }
+                        contact.copy(notes = mutableNotes)
+                    }
+                    Section.Others -> {
+                        val mutableOthers = contact.others.toMutableList().apply { this.removeAt(action.index) }
+                        contact.copy(others = mutableOthers)
+                    }
                 }
             )
         )

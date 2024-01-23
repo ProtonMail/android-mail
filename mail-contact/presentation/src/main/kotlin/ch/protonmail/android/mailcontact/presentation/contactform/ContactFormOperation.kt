@@ -28,6 +28,10 @@ sealed interface ContactFormViewAction : ContactFormOperation {
     data class OnAddItemClick(
         val section: Section
     ) : ContactFormViewAction
+    data class OnRemoveItemClick(
+        val section: Section,
+        val index: Int
+    ) : ContactFormViewAction
 }
 
 sealed interface ContactFormEvent : ContactFormOperation {
