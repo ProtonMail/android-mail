@@ -40,8 +40,12 @@ import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -89,6 +93,7 @@ import me.proton.core.compose.theme.captionNorm
 import me.proton.core.compose.theme.captionWeak
 import me.proton.core.compose.theme.defaultNorm
 import me.proton.core.compose.theme.defaultStrongNorm
+import kotlin.math.min
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -116,7 +121,14 @@ fun ContactFormScreen(actions: ContactFormScreen.Actions, viewModel: ContactForm
                 is ContactFormState.Data -> {
                     ContactFormContent(
                         state = state,
-                        modifier = Modifier.padding(paddingValues)
+                        modifier = Modifier.padding(paddingValues),
+                        actions = ContactFormContent.Actions(
+                            onAddEmailClick = { viewModel.submit(ContactFormViewAction.OnAddEmailClick) },
+                            onAddTelephoneClick = { viewModel.submit(ContactFormViewAction.OnAddTelephoneClick) },
+                            onAddAddressClick = { viewModel.submit(ContactFormViewAction.OnAddAddressClick) },
+                            onAddNoteClick = { viewModel.submit(ContactFormViewAction.OnAddNoteClick) },
+                            onAddOtherClick = { viewModel.submit(ContactFormViewAction.OnAddOtherClick) }
+                        )
                     )
 
                     ConsumableTextEffect(effect = state.closeWithSuccess) { message ->
@@ -151,7 +163,11 @@ fun ContactFormScreen(actions: ContactFormScreen.Actions, viewModel: ContactForm
 }
 
 @Composable
-fun ContactFormContent(state: ContactFormState.Data, modifier: Modifier = Modifier) {
+fun ContactFormContent(
+    state: ContactFormState.Data,
+    modifier: Modifier = Modifier,
+    actions: ContactFormContent.Actions
+) {
     LazyColumn(modifier = modifier.fillMaxSize()) {
         item {
             Column(modifier.fillMaxWidth()) {
@@ -184,15 +200,15 @@ fun ContactFormContent(state: ContactFormState.Data, modifier: Modifier = Modifi
                 NameSection(state)
             }
         }
-        this.emailSection(state)
-        this.phoneSection(state)
-        this.addressSection(state)
-        this.noteSection(state)
-        this.otherSection(state)
+        this.emailSection(state, actions)
+        this.phoneSection(state, actions)
+        this.addressSection(state, actions)
+        this.noteSection(state, actions)
+        this.otherSection(state, actions)
     }
 }
 
-private fun LazyListScope.emailSection(state: ContactFormState.Data) {
+private fun LazyListScope.emailSection(state: ContactFormState.Data, actions: ContactFormContent.Actions) {
     item {
         SectionHeader(
             iconResId = R.drawable.ic_proton_at,
@@ -200,41 +216,47 @@ private fun LazyListScope.emailSection(state: ContactFormState.Data) {
         )
     }
     items(state.contact.emails) { email ->
-        InputFieldWithTrash(value = email.value, hint = stringResource(id = R.string.email_address))
-        TypePickerField(
-            selectedType = email.selectedType.localizedValue,
-            types = FieldType.EmailType.values().map { it.localizedValue }
-        )
+        key(email) {
+            var emailValue by rememberSaveable { mutableStateOf(email.value) }
+            InputFieldWithTrash(value = emailValue, hint = stringResource(id = R.string.email_address)) {
+                emailValue = it
+            }
+            TypePickerField(
+                selectedType = email.selectedType.localizedValue,
+                types = FieldType.EmailType.values().map { it.localizedValue }
+            )
+        }
     }
     item {
-        AddNewButton {
-            // Trigger action here
-        }
+        AddNewButton(onClick = actions.onAddEmailClick)
     }
 }
 
-private fun LazyListScope.phoneSection(state: ContactFormState.Data) {
+private fun LazyListScope.phoneSection(state: ContactFormState.Data, actions: ContactFormContent.Actions) {
     item {
         SectionHeader(
             iconResId = R.drawable.ic_proton_phone,
             title = stringResource(id = R.string.phone_section)
         )
     }
-    items(state.contact.phones) { phone ->
-        InputFieldWithTrash(value = phone.value, hint = stringResource(id = R.string.phone_number))
-        TypePickerField(
-            selectedType = phone.selectedType.localizedValue,
-            types = FieldType.PhoneType.values().map { it.localizedValue }
-        )
+    items(state.contact.telephones) { telephone ->
+        key(telephone) {
+            var telephoneValue by rememberSaveable { mutableStateOf(telephone.value) }
+            InputFieldWithTrash(value = telephoneValue, hint = stringResource(id = R.string.phone_number)) {
+                telephoneValue = it
+            }
+            TypePickerField(
+                selectedType = telephone.selectedType.localizedValue,
+                types = FieldType.TelephoneType.values().map { it.localizedValue }
+            )
+        }
     }
     item {
-        AddNewButton {
-            // Trigger action here
-        }
+        AddNewButton(onClick = actions.onAddTelephoneClick)
     }
 }
 
-private fun LazyListScope.addressSection(state: ContactFormState.Data) {
+private fun LazyListScope.addressSection(state: ContactFormState.Data, actions: ContactFormContent.Actions) {
     item {
         SectionHeader(
             iconResId = R.drawable.ic_proton_map_pin,
@@ -242,41 +264,59 @@ private fun LazyListScope.addressSection(state: ContactFormState.Data) {
         )
     }
     items(state.contact.addresses) { address ->
-        InputFieldWithTrash(value = address.streetAddress, hint = stringResource(R.string.address_street))
-        InputField(value = address.postalCode, hint = stringResource(R.string.address_postal_code))
-        InputField(value = address.city, hint = stringResource(R.string.address_city))
-        InputField(value = address.region, hint = stringResource(R.string.address_region))
-        InputField(value = address.country, hint = stringResource(R.string.address_country))
-        TypePickerField(
-            selectedType = address.selectedType.localizedValue,
-            types = FieldType.AddressType.values().map { it.localizedValue }
-        )
+        key(address) {
+            var streetAddress by rememberSaveable { mutableStateOf(address.streetAddress) }
+            var postalCode by rememberSaveable { mutableStateOf(address.postalCode) }
+            var city by rememberSaveable { mutableStateOf(address.city) }
+            var region by rememberSaveable { mutableStateOf(address.region) }
+            var country by rememberSaveable { mutableStateOf(address.country) }
+            InputFieldWithTrash(value = streetAddress, hint = stringResource(R.string.address_street)) {
+                streetAddress = it
+            }
+            InputField(value = postalCode, hint = stringResource(R.string.address_postal_code)) {
+                postalCode = it
+            }
+            InputField(value = city, hint = stringResource(R.string.address_city)) {
+                city = it
+            }
+            InputField(value = region, hint = stringResource(R.string.address_region)) {
+                region = it
+            }
+            InputField(value = country, hint = stringResource(R.string.address_country)) {
+                country = it
+            }
+            TypePickerField(
+                selectedType = address.selectedType.localizedValue,
+                types = FieldType.AddressType.values().map { it.localizedValue }
+            )
+        }
     }
     item {
-        AddNewButton {
-            // Trigger action here
-        }
+        AddNewButton(onClick = actions.onAddAddressClick)
     }
 }
 
-private fun LazyListScope.noteSection(state: ContactFormState.Data) {
+private fun LazyListScope.noteSection(state: ContactFormState.Data, actions: ContactFormContent.Actions) {
     item {
         SectionHeader(
             iconResId = R.drawable.ic_proton_note,
             title = stringResource(id = R.string.note_section)
         )
     }
-    items(state.contact.notes) { _ ->
-        // Add note field here
+    items(state.contact.notes) { note ->
+        key(note) {
+            var noteValue by rememberSaveable { mutableStateOf(note.value) }
+            InputFieldWithTrash(value = noteValue, hint = stringResource(id = R.string.note_section)) {
+                noteValue = it
+            }
+        }
     }
     item {
-        AddNewButton {
-            // Trigger action here
-        }
+        AddNewButton(onClick = actions.onAddNoteClick)
     }
 }
 
-private fun LazyListScope.otherSection(state: ContactFormState.Data) {
+private fun LazyListScope.otherSection(state: ContactFormState.Data, actions: ContactFormContent.Actions) {
     item {
         SectionHeader(
             iconResId = R.drawable.ic_proton_text_align_left,
@@ -284,34 +324,40 @@ private fun LazyListScope.otherSection(state: ContactFormState.Data) {
         )
     }
     items(state.contact.others) { other ->
-        when (other) {
-            is InputField.DateTyped -> {
-                // Add date field for anniversary here
-            }
-            is InputField.ImageTyped -> {
-                // Add image picker / image display field for photos and logos here
-            }
-            is InputField.SingleTyped -> {
-                InputFieldWithTrash(value = other.value, hint = stringResource(id = R.string.additional_info))
-                TypePickerField(
-                    selectedType = other.selectedType.localizedValue,
-                    types = FieldType.OtherType.values().map { it.localizedValue }
-                )
-            }
-            else -> {
-                // Ignore the other types
+        key(other) {
+            when (other) {
+                is InputField.DateTyped -> {
+                    // Add date field for anniversary here
+                }
+                is InputField.ImageTyped -> {
+                    // Add image picker / image display field for photos and logos here
+                }
+                is InputField.SingleTyped -> {
+                    var otherValue by rememberSaveable { mutableStateOf(other.value) }
+                    InputFieldWithTrash(value = otherValue, hint = stringResource(id = R.string.additional_info)) {
+                        otherValue = it
+                    }
+                    TypePickerField(
+                        selectedType = other.selectedType.localizedValue,
+                        types = FieldType.OtherType.values().map { it.localizedValue }
+                    )
+                }
+                else -> {
+                    // Ignore the other types
+                }
             }
         }
     }
     item {
-        AddNewButton {
-            // Trigger action here
-        }
+        AddNewButton(onClick = actions.onAddOtherClick)
     }
 }
 
 @Composable
 private fun NameSection(state: ContactFormState.Data) {
+    var displayName by rememberSaveable { mutableStateOf(state.contact.displayName) }
+    var firstName by rememberSaveable { mutableStateOf(state.contact.firstName) }
+    var lastName by rememberSaveable { mutableStateOf(state.contact.lastName) }
     FormInputField(
         modifier = Modifier
             .fillMaxWidth()
@@ -320,11 +366,10 @@ private fun NameSection(state: ContactFormState.Data) {
                 end = ProtonDimens.DefaultSpacing,
                 bottom = ProtonDimens.DefaultSpacing
             ),
-        initialValue = state.contact.displayName,
+        value = displayName,
         hint = stringResource(R.string.display_name),
-        maxCharacters = CONTACT_NAME_MAX_LENGTH,
         onTextChange = {
-            // Trigger action here
+            displayName = it.substring(0, min(it.length, CONTACT_NAME_MAX_LENGTH))
         }
     )
     FormInputField(
@@ -335,11 +380,10 @@ private fun NameSection(state: ContactFormState.Data) {
                 end = ProtonDimens.DefaultSpacing,
                 bottom = ProtonDimens.DefaultSpacing
             ),
-        initialValue = state.contact.firstName,
+        value = firstName,
         hint = stringResource(R.string.first_name),
-        maxCharacters = CONTACT_FIRST_LAST_NAME_MAX_LENGTH,
         onTextChange = {
-            // Trigger action here
+            firstName = it.substring(0, min(it.length, CONTACT_FIRST_LAST_NAME_MAX_LENGTH))
         }
     )
     FormInputField(
@@ -350,11 +394,10 @@ private fun NameSection(state: ContactFormState.Data) {
                 end = ProtonDimens.DefaultSpacing,
                 bottom = ProtonDimens.DefaultSpacing
             ),
-        initialValue = state.contact.lastName,
+        value = lastName,
         hint = stringResource(R.string.last_name),
-        maxCharacters = CONTACT_FIRST_LAST_NAME_MAX_LENGTH,
         onTextChange = {
-            // Trigger action here
+            lastName = it.substring(0, min(it.length, CONTACT_FIRST_LAST_NAME_MAX_LENGTH))
         }
     )
 }
@@ -409,7 +452,11 @@ private fun AddNewButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
 }
 
 @Composable
-private fun InputField(value: String, hint: String) {
+private fun InputField(
+    value: String,
+    hint: String,
+    onTextChange: (String) -> Unit
+) {
     Row {
         FormInputField(
             modifier = Modifier
@@ -420,17 +467,19 @@ private fun InputField(value: String, hint: String) {
                     end = MailDimens.ContactFormTypedFieldPaddingEnd,
                     top = ProtonDimens.DefaultSpacing
                 ),
-            initialValue = value,
+            value = value,
             hint = hint,
-            onTextChange = {
-                // Trigger action here
-            }
+            onTextChange = onTextChange
         )
     }
 }
 
 @Composable
-private fun InputFieldWithTrash(value: String, hint: String) {
+private fun InputFieldWithTrash(
+    value: String,
+    hint: String,
+    onTextChange: (String) -> Unit
+) {
     Row {
         FormInputField(
             modifier = Modifier
@@ -441,11 +490,9 @@ private fun InputFieldWithTrash(value: String, hint: String) {
                     end = ProtonDimens.DefaultSpacing,
                     top = ProtonDimens.DefaultSpacing
                 ),
-            initialValue = value,
+            value = value,
             hint = hint,
-            onTextChange = {
-                // Trigger action here
-            }
+            onTextChange = onTextChange
         )
         Icon(
             painter = painterResource(id = R.drawable.ic_proton_trash),
@@ -595,11 +642,35 @@ object ContactFormScreen {
     }
 }
 
+object ContactFormContent {
+
+    data class Actions(
+        val onAddEmailClick: () -> Unit,
+        val onAddTelephoneClick: () -> Unit,
+        val onAddAddressClick: () -> Unit,
+        val onAddNoteClick: () -> Unit,
+        val onAddOtherClick: () -> Unit
+    ) {
+
+        companion object {
+
+            val Empty = Actions(
+                onAddEmailClick = {},
+                onAddTelephoneClick = {},
+                onAddAddressClick = {},
+                onAddNoteClick = {},
+                onAddOtherClick = {}
+            )
+        }
+    }
+}
+
 @Composable
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 private fun CreateContactFormScreenPreview() {
     ContactFormContent(
-        state = ContactFormState.Data.Create(contact = contactFormSampleData)
+        state = ContactFormState.Data.Create(contact = contactFormSampleData),
+        actions = ContactFormContent.Actions.Empty
     )
 }
 
@@ -607,7 +678,8 @@ private fun CreateContactFormScreenPreview() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 private fun UpdateContactFormScreenPreview() {
     ContactFormContent(
-        state = ContactFormState.Data.Update(contact = contactFormSampleData)
+        state = ContactFormState.Data.Update(contact = contactFormSampleData),
+        actions = ContactFormContent.Actions.Empty
     )
 }
 
