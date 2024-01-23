@@ -496,6 +496,7 @@ private fun InputFieldWithTrash(
         )
         Icon(
             painter = painterResource(id = R.drawable.ic_proton_trash),
+            tint = ProtonTheme.colors.iconNorm,
             modifier = Modifier
                 .padding(end = ProtonDimens.DefaultSpacing)
                 .align(Alignment.CenterVertically)
@@ -564,6 +565,7 @@ private fun TypePickerField(selectedType: TextUiModel, types: List<TextUiModel>)
         )
         Icon(
             painter = painterResource(id = R.drawable.ic_proton_chevron_down),
+            tint = ProtonTheme.colors.iconNorm,
             modifier = Modifier
                 .padding(end = ProtonDimens.DefaultSpacing)
                 .size(ProtonDimens.SmallIconSize)
