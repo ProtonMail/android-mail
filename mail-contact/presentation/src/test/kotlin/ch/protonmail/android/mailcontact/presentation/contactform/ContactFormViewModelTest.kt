@@ -124,11 +124,12 @@ class ContactFormViewModelTest {
     @Test
     fun `given Contact ID in SavedState, when init, then emits update state`() = runTest {
         // Given
-        expectSavedStateContactId(testContactId)
         val expectedDecryptedContact = DecryptedContact(testContactId)
-        expectDecryptedContact(testUserId, testContactId, expectedDecryptedContact)
         val expectedContactFormUiModel = ContactFormPreviewData.contactFormSampleData
+        expectDecryptedContact(testUserId, testContactId, expectedDecryptedContact)
         expectContactFormUiModel(expectedDecryptedContact, expectedContactFormUiModel)
+
+        expectSavedStateContactId(testContactId)
 
         // When
         contactFormViewModel.state.test {
@@ -136,6 +137,28 @@ class ContactFormViewModelTest {
             val actual = awaitItem()
             val expected = ContactFormState.Data.Update(
                 contact = expectedContactFormUiModel
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `when OnCloseContactFormClick action is submitted, then CloseContactForm is emitted`() = runTest {
+        // Given
+        expectSavedStateContactId(null)
+
+        // When
+        contactFormViewModel.state.test {
+            // Then
+            awaitItem()
+
+            contactFormViewModel.submit(ContactFormViewAction.OnCloseContactFormClick)
+
+            val actual = awaitItem()
+            val expected = ContactFormState.Data.Create(
+                contact = emptyContactFormUiModel,
+                close = Effect.of(Unit)
             )
 
             assertEquals(expected, actual)
