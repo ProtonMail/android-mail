@@ -31,6 +31,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -124,7 +125,10 @@ fun ContactFormScreen(actions: ContactFormScreen.Actions, viewModel: ContactForm
                         state = state,
                         modifier = Modifier.padding(paddingValues),
                         actions = ContactFormContent.Actions(
-                            onAddItemClick = { viewModel.submit(ContactFormViewAction.OnAddItemClick(it)) }
+                            onAddItemClick = { viewModel.submit(ContactFormViewAction.OnAddItemClick(it)) },
+                            onRemoveItemClick = { section, index ->
+                                viewModel.submit(ContactFormViewAction.OnRemoveItemClick(section, index))
+                            }
                         )
                     )
 
@@ -198,7 +202,7 @@ fun ContactFormContent(
             }
         }
         this.emailSection(state, actions)
-        this.phoneSection(state, actions)
+        this.telephoneSection(state, actions)
         this.addressSection(state, actions)
         this.noteSection(state, actions)
         this.otherSection(state, actions)
@@ -212,10 +216,14 @@ private fun LazyListScope.emailSection(state: ContactFormState.Data, actions: Co
             title = stringResource(id = R.string.email_section)
         )
     }
-    items(state.contact.emails) { email ->
+    itemsIndexed(state.contact.emails) { index, email ->
         key(email) {
             var emailValue by rememberSaveable { mutableStateOf(email.value) }
-            InputFieldWithTrash(value = emailValue, hint = stringResource(id = R.string.email_address)) {
+            InputFieldWithTrash(
+                value = emailValue,
+                hint = stringResource(id = R.string.email_address),
+                onDeleteClick = { actions.onRemoveItemClick(Section.Emails, index) }
+            ) {
                 emailValue = it
             }
             TypePickerField(
@@ -229,17 +237,21 @@ private fun LazyListScope.emailSection(state: ContactFormState.Data, actions: Co
     }
 }
 
-private fun LazyListScope.phoneSection(state: ContactFormState.Data, actions: ContactFormContent.Actions) {
+private fun LazyListScope.telephoneSection(state: ContactFormState.Data, actions: ContactFormContent.Actions) {
     item {
         SectionHeader(
             iconResId = R.drawable.ic_proton_phone,
             title = stringResource(id = R.string.phone_section)
         )
     }
-    items(state.contact.telephones) { telephone ->
+    itemsIndexed(state.contact.telephones) { index, telephone ->
         key(telephone) {
             var telephoneValue by rememberSaveable { mutableStateOf(telephone.value) }
-            InputFieldWithTrash(value = telephoneValue, hint = stringResource(id = R.string.phone_number)) {
+            InputFieldWithTrash(
+                value = telephoneValue,
+                hint = stringResource(id = R.string.phone_number),
+                onDeleteClick = { actions.onRemoveItemClick(Section.Telephones, index) }
+            ) {
                 telephoneValue = it
             }
             TypePickerField(
@@ -260,14 +272,18 @@ private fun LazyListScope.addressSection(state: ContactFormState.Data, actions: 
             title = stringResource(id = R.string.address_section)
         )
     }
-    items(state.contact.addresses) { address ->
+    itemsIndexed(state.contact.addresses) { index, address ->
         key(address) {
             var streetAddress by rememberSaveable { mutableStateOf(address.streetAddress) }
             var postalCode by rememberSaveable { mutableStateOf(address.postalCode) }
             var city by rememberSaveable { mutableStateOf(address.city) }
             var region by rememberSaveable { mutableStateOf(address.region) }
             var country by rememberSaveable { mutableStateOf(address.country) }
-            InputFieldWithTrash(value = streetAddress, hint = stringResource(R.string.address_street)) {
+            InputFieldWithTrash(
+                value = streetAddress,
+                hint = stringResource(R.string.address_street),
+                onDeleteClick = { actions.onRemoveItemClick(Section.Addresses, index) }
+            ) {
                 streetAddress = it
             }
             InputField(value = postalCode, hint = stringResource(R.string.address_postal_code)) {
@@ -300,10 +316,14 @@ private fun LazyListScope.noteSection(state: ContactFormState.Data, actions: Con
             title = stringResource(id = R.string.note_section)
         )
     }
-    items(state.contact.notes) { note ->
+    itemsIndexed(state.contact.notes) { index, note ->
         key(note) {
             var noteValue by rememberSaveable { mutableStateOf(note.value) }
-            InputFieldWithTrash(value = noteValue, hint = stringResource(id = R.string.note_section)) {
+            InputFieldWithTrash(
+                value = noteValue,
+                hint = stringResource(id = R.string.note_section),
+                onDeleteClick = { actions.onRemoveItemClick(Section.Notes, index) }
+            ) {
                 noteValue = it
             }
         }
@@ -320,7 +340,7 @@ private fun LazyListScope.otherSection(state: ContactFormState.Data, actions: Co
             title = stringResource(id = R.string.other_section)
         )
     }
-    items(state.contact.others) { other ->
+    itemsIndexed(state.contact.others) { index, other ->
         key(other) {
             when (other) {
                 is InputField.DateTyped -> {
@@ -331,7 +351,11 @@ private fun LazyListScope.otherSection(state: ContactFormState.Data, actions: Co
                 }
                 is InputField.SingleTyped -> {
                     var otherValue by rememberSaveable { mutableStateOf(other.value) }
-                    InputFieldWithTrash(value = otherValue, hint = stringResource(id = R.string.additional_info)) {
+                    InputFieldWithTrash(
+                        value = otherValue,
+                        hint = stringResource(id = R.string.additional_info),
+                        onDeleteClick = { actions.onRemoveItemClick(Section.Others, index) }
+                    ) {
                         otherValue = it
                     }
                     TypePickerField(
@@ -475,6 +499,7 @@ private fun InputField(
 private fun InputFieldWithTrash(
     value: String,
     hint: String,
+    onDeleteClick: () -> Unit,
     onTextChange: (String) -> Unit
 ) {
     Row {
@@ -502,9 +527,7 @@ private fun InputFieldWithTrash(
                     indication = rememberRipple(bounded = false),
                     onClickLabel = stringResource(R.string.remove_contact_property),
                     role = Role.Button,
-                    onClick = {
-                        // Trigger action here
-                    }
+                    onClick = onDeleteClick
                 ),
             contentDescription = NO_CONTENT_DESCRIPTION
         )
@@ -644,13 +667,15 @@ object ContactFormScreen {
 object ContactFormContent {
 
     data class Actions(
-        val onAddItemClick: (Section) -> Unit
+        val onAddItemClick: (Section) -> Unit,
+        val onRemoveItemClick: (Section, Int) -> Unit
     ) {
 
         companion object {
 
             val Empty = Actions(
-                onAddItemClick = {}
+                onAddItemClick = {},
+                onRemoveItemClick = { _, _ -> }
             )
         }
     }
