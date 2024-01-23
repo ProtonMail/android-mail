@@ -24,42 +24,25 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultNorm
-import kotlin.math.min
 
 @Composable
 fun FormInputField(
     modifier: Modifier = Modifier,
-    initialValue: String = "",
+    value: String,
     hint: String,
-    maxCharacters: Int? = null,
     onTextChange: (String) -> Unit
 ) {
-    var textFieldValue by rememberSaveable(stateSaver = TextFieldValue.Saver) {
-        mutableStateOf(TextFieldValue(initialValue))
-    }
     OutlinedTextField(
         modifier = modifier,
-        value = textFieldValue,
-        onValueChange = {
-            textFieldValue = it.copy(
-                text = maxCharacters?.let { maxCharacters ->
-                    it.text.substring(0, min(it.text.length, maxCharacters))
-                } ?: it.text
-            )
-            onTextChange(textFieldValue.text)
-        },
+        value = value,
+        onValueChange = { onTextChange(it) },
         placeholder = {
             Text(
                 text = hint,
@@ -82,7 +65,7 @@ fun FormInputField(
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 private fun FormInputFieldPreview() {
     FormInputField(
-        initialValue = "Input field value",
+        value = "Input field value",
         hint = "Input field hint",
         onTextChange = {}
     )
@@ -92,6 +75,7 @@ private fun FormInputFieldPreview() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 private fun EmptyFormInputFieldPreview() {
     FormInputField(
+        value = "",
         hint = "Input field hint",
         onTextChange = {}
     )
