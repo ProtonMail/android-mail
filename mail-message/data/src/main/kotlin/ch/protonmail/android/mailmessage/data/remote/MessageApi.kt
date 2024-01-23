@@ -21,6 +21,7 @@ package ch.protonmail.android.mailmessage.data.remote
 import ch.protonmail.android.mailmessage.data.remote.resource.MarkMessageAsReadBody
 import ch.protonmail.android.mailmessage.data.remote.resource.MarkMessageAsUnreadBody
 import ch.protonmail.android.mailmessage.data.remote.resource.MessageActionBody
+import ch.protonmail.android.mailmessage.data.remote.resource.MessagePhishingReportBody
 import ch.protonmail.android.mailmessage.data.remote.response.GetMessageResponse
 import ch.protonmail.android.mailmessage.data.remote.response.GetMessagesResponse
 import ch.protonmail.android.mailmessage.data.remote.response.MarkReadResponse
@@ -31,6 +32,7 @@ import okhttp3.ResponseBody
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -76,6 +78,9 @@ interface MessageApi : BaseRetrofitApi {
 
     @DELETE("mail/v4/messages/empty")
     suspend fun emptyLabel(@Query("LabelID") labelId: String): ResponseBody
+
+    @POST("core/v4/reports/phishing")
+    suspend fun reportPhishing(@Body body: MessagePhishingReportBody): ResponseBody
 
     companion object {
 

@@ -18,13 +18,16 @@
 
 package ch.protonmail.android.mailmessage.data.remote
 
+import java.net.UnknownHostException
 import arrow.core.right
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcommon.domain.benchmark.BenchmarkTracerImpl
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.data.getMessage
 import ch.protonmail.android.mailmessage.data.getMessageResource
 import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSourceImpl.Companion.MAX_ACTION_WORKER_PARAMETER_COUNT
+import ch.protonmail.android.mailmessage.data.remote.resource.MessagePhishingReportBody
 import ch.protonmail.android.mailmessage.data.remote.response.GetMessagesResponse
 import ch.protonmail.android.mailmessage.data.remote.worker.AddLabelMessageWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.ClearMessageLabelWorker
@@ -39,6 +42,7 @@ import ch.protonmail.android.mailpagination.domain.model.OrderDirection
 import ch.protonmail.android.mailpagination.domain.model.PageFilter
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.mailpagination.domain.model.ReadStatus
+import ch.protonmail.android.testdata.message.DecryptedMessageBodyTestData
 import ch.protonmail.android.testdata.message.MessageTestData
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -508,6 +512,42 @@ class MessageRemoteDataSourceImplTest {
                 ClearMessageLabelWorker.params(userId, labelId)
             )
         }
+    }
+
+    @Test
+    fun `should return Unit when calling report phishing succeeds`() = runTest {
+        // Given
+        val decryptedMessageBody = DecryptedMessageBodyTestData.PlainTextDecryptedBody
+        val messagePhishingReportBody = MessagePhishingReportBody(
+            messageId = decryptedMessageBody.messageId.id,
+            mimeType = decryptedMessageBody.mimeType.value,
+            body = decryptedMessageBody.value
+        )
+        coEvery { messageApi.reportPhishing(messagePhishingReportBody) } returns mockk()
+
+        // When
+        val result = messageRemoteDataSource.reportPhishing(userId, decryptedMessageBody)
+
+        // Then
+        assertEquals(Unit.right(), result)
+    }
+
+    @Test
+    fun `should return RemoteError when calling report phishing fails`() = runTest {
+        // Given
+        val decryptedMessageBody = DecryptedMessageBodyTestData.PlainTextDecryptedBody
+        val messagePhishingReportBody = MessagePhishingReportBody(
+            messageId = decryptedMessageBody.messageId.id,
+            mimeType = decryptedMessageBody.mimeType.value,
+            body = decryptedMessageBody.value
+        )
+        coEvery { messageApi.reportPhishing(messagePhishingReportBody) } throws UnknownHostException()
+
+        // When
+        val result = messageRemoteDataSource.reportPhishing(userId, decryptedMessageBody)
+
+        // Then
+        assert(result.leftOrNull() is DataError.Remote)
     }
 
     private fun mapDeepEquals(expected: Map<String, Any?>, actual: Map<String, Any?>): Boolean =

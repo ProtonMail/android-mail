@@ -20,6 +20,7 @@ package ch.protonmail.android.mailmessage.data.remote
 
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.model.Message
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
@@ -88,4 +89,12 @@ interface MessageRemoteDataSource {
      * Observe if the [ClearLabelWorker] is enqueued or running for the given [userId] and [labelId]
      */
     fun observeClearWorkerIsEnqueuedOrRunning(userId: UserId, labelId: LabelId): Flow<Boolean>
+
+    /**
+     * Report a message as phishing
+     */
+    suspend fun reportPhishing(
+        userId: UserId,
+        decryptedMessageBody: DecryptedMessageBody
+    ): Either<DataError.Remote, Unit>
 }

@@ -23,12 +23,14 @@ import ch.protonmail.android.mailcommon.data.mapper.toEither
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcommon.domain.benchmark.BenchmarkTracer
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailmessage.data.remote.resource.MessagePhishingReportBody
 import ch.protonmail.android.mailmessage.data.remote.worker.AddLabelMessageWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.ClearMessageLabelWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.DeleteMessagesWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.MarkMessageAsReadWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.MarkMessageAsUnreadWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.RemoveLabelMessageWorker
+import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.model.Message
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
@@ -154,6 +156,20 @@ class MessageRemoteDataSourceImpl @Inject constructor(
 
     override fun observeClearWorkerIsEnqueuedOrRunning(userId: UserId, labelId: LabelId): Flow<Boolean> =
         enqueuer.observeWorkStatusIsEnqueuedOrRunning(ClearMessageLabelWorker.id(userId, labelId))
+
+    override suspend fun reportPhishing(
+        userId: UserId,
+        decryptedMessageBody: DecryptedMessageBody
+    ): Either<DataError.Remote, Unit> =
+        apiProvider.get<MessageApi>(userId).invoke {
+            reportPhishing(
+                MessagePhishingReportBody(
+                    messageId = decryptedMessageBody.messageId.id,
+                    mimeType = decryptedMessageBody.mimeType.value,
+                    body = decryptedMessageBody.value
+                )
+            )
+        }.toEither().map { }
 
     companion object {
 
