@@ -90,43 +90,11 @@ class ContactFormViewModel @Inject constructor(
                     is ContactFormOperation.AffectingData -> {
                         val stateValue = state.value
                         if (stateValue !is ContactFormState.Data) return@launch
-                        when (action) {
-                            ContactFormViewAction.OnAddEmailClick -> {
-                                emitNewStateFor(
-                                    ContactFormEvent.UpdateContactFormUiModel(
-                                        addEmailField(stateValue.contact)
-                                    )
-                                )
-                            }
-                            ContactFormViewAction.OnAddTelephoneClick -> {
-                                emitNewStateFor(
-                                    ContactFormEvent.UpdateContactFormUiModel(
-                                        addTelephoneField(stateValue.contact)
-                                    )
-                                )
-                            }
-                            ContactFormViewAction.OnAddAddressClick -> {
-                                emitNewStateFor(
-                                    ContactFormEvent.UpdateContactFormUiModel(
-                                        addAddressField(stateValue.contact)
-                                    )
-                                )
-                            }
-                            ContactFormViewAction.OnAddNoteClick -> {
-                                emitNewStateFor(
-                                    ContactFormEvent.UpdateContactFormUiModel(
-                                        addNoteField(stateValue.contact)
-                                    )
-                                )
-                            }
-                            ContactFormViewAction.OnAddOtherClick -> {
-                                emitNewStateFor(
-                                    ContactFormEvent.UpdateContactFormUiModel(
-                                        addOtherField(stateValue.contact)
-                                    )
-                                )
-                            }
-                        }
+                        emitNewStateFor(
+                            ContactFormEvent.UpdateContactFormUiModel(
+                                handleUpdateDataAction(action, stateValue.contact)
+                            )
+                        )
                     }
                     is ContactFormOperation.AffectingNavigation -> {
                         when (action) {
@@ -140,34 +108,27 @@ class ContactFormViewModel @Inject constructor(
         }
     }
 
-    private fun addEmailField(contact: ContactFormUiModel): ContactFormUiModel {
-        return contact.copy(
-            emails = contact.emails.plus(emptyEmailField)
-        )
-    }
-
-    private fun addTelephoneField(contact: ContactFormUiModel): ContactFormUiModel {
-        return contact.copy(
-            telephones = contact.telephones.plus(emptyTelephoneField)
-        )
-    }
-
-    private fun addAddressField(contact: ContactFormUiModel): ContactFormUiModel {
-        return contact.copy(
-            addresses = contact.addresses.plus(emptyAddressField)
-        )
-    }
-
-    private fun addNoteField(contact: ContactFormUiModel): ContactFormUiModel {
-        return contact.copy(
-            notes = contact.notes.plus(emptyNoteField)
-        )
-    }
-
-    private fun addOtherField(contact: ContactFormUiModel): ContactFormUiModel {
-        return contact.copy(
-            others = contact.others.plus(emptyDefaultOtherField)
-        )
+    private fun handleUpdateDataAction(
+        action: ContactFormOperation.AffectingData,
+        contact: ContactFormUiModel
+    ): ContactFormUiModel {
+        return when (action) {
+            ContactFormViewAction.OnAddEmailClick -> {
+                contact.copy(emails = contact.emails.plus(emptyEmailField))
+            }
+            ContactFormViewAction.OnAddTelephoneClick -> {
+                contact.copy(telephones = contact.telephones.plus(emptyTelephoneField))
+            }
+            ContactFormViewAction.OnAddAddressClick -> {
+                contact.copy(addresses = contact.addresses.plus(emptyAddressField))
+            }
+            ContactFormViewAction.OnAddNoteClick -> {
+                contact.copy(notes = contact.notes.plus(emptyNoteField))
+            }
+            ContactFormViewAction.OnAddOtherClick -> {
+                contact.copy(others = contact.others.plus(emptyDefaultOtherField))
+            }
+        }
     }
 
     private suspend fun primaryUserId() = primaryUserId.first()
