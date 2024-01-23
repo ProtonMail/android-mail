@@ -35,27 +35,12 @@ data class ContactFormUiModel(
     val firstName: String,
     val lastName: String,
     val emails: List<InputField.SingleTyped>,
-    val phones: List<InputField.SingleTyped>,
+    val telephones: List<InputField.SingleTyped>,
     val addresses: List<InputField.Address>,
     val birthday: InputField.Date?,
     val notes: List<InputField.Note>,
     val others: List<InputField>,
     val otherTypes: List<FieldType.OtherType>
-)
-
-val emptyContactFormUiModel = ContactFormUiModel(
-    id = null,
-    avatar = ContactFormAvatar.Empty,
-    displayName = "",
-    firstName = "",
-    lastName = "",
-    emails = emptyList(),
-    phones = emptyList(),
-    addresses = emptyList(),
-    birthday = null,
-    notes = emptyList(),
-    others = emptyList(),
-    otherTypes = FieldType.OtherType.values().toList()
 )
 
 sealed interface InputField {
@@ -103,7 +88,7 @@ sealed interface FieldType {
         Other(TextUiModel(R.string.contact_type_other))
     }
 
-    enum class PhoneType(override val localizedValue: TextUiModel) : FieldType {
+    enum class TelephoneType(override val localizedValue: TextUiModel) : FieldType {
         Telephone(TextUiModel(R.string.contact_type_phone)),
         Home(TextUiModel(R.string.contact_type_home)),
         Work(TextUiModel(R.string.contact_type_work)),
@@ -145,3 +130,41 @@ sealed interface ContactFormAvatar {
         val bitmap: Bitmap
     ) : ContactFormAvatar
 }
+
+val emptyContactFormUiModel = ContactFormUiModel(
+    id = null,
+    avatar = ContactFormAvatar.Empty,
+    displayName = "",
+    firstName = "",
+    lastName = "",
+    emails = emptyList(),
+    telephones = emptyList(),
+    addresses = emptyList(),
+    birthday = null,
+    notes = emptyList(),
+    others = emptyList(),
+    otherTypes = FieldType.OtherType.values().toList()
+)
+val emptyEmailField = InputField.SingleTyped(
+    value = "",
+    selectedType = FieldType.EmailType.Email
+)
+val emptyTelephoneField = InputField.SingleTyped(
+    value = "",
+    selectedType = FieldType.TelephoneType.Telephone
+)
+val emptyAddressField = InputField.Address(
+    streetAddress = "",
+    postalCode = "",
+    city = "",
+    region = "",
+    country = "",
+    selectedType = FieldType.AddressType.Address
+)
+val emptyNoteField = InputField.Note(
+    value = ""
+)
+val emptyDefaultOtherField = InputField.SingleTyped(
+    value = "",
+    selectedType = FieldType.OtherType.Role
+)
