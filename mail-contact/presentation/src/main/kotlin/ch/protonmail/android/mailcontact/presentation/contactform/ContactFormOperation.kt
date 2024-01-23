@@ -22,12 +22,12 @@ import ch.protonmail.android.mailcontact.presentation.contactform.ContactFormOpe
 import ch.protonmail.android.mailcontact.presentation.contactform.ContactFormOperation.AffectingNavigation
 import ch.protonmail.android.mailcontact.presentation.model.ContactFormUiModel
 
-internal sealed interface ContactFormOperation {
+sealed interface ContactFormOperation {
     sealed interface AffectingData
     sealed interface AffectingNavigation
 }
 
-internal sealed interface ContactFormViewAction : ContactFormOperation {
+sealed interface ContactFormViewAction : ContactFormOperation {
     object OnCloseContactFormClick : ContactFormViewAction, AffectingNavigation
     object OnAddEmailClick : ContactFormViewAction, AffectingData
     object OnAddTelephoneClick : ContactFormViewAction, AffectingData
@@ -36,7 +36,7 @@ internal sealed interface ContactFormViewAction : ContactFormOperation {
     object OnAddOtherClick : ContactFormViewAction, AffectingData
 }
 
-internal sealed interface ContactFormEvent : ContactFormOperation {
+sealed interface ContactFormEvent : ContactFormOperation {
     data class NewContact(
         val contactFormUiModel: ContactFormUiModel
     ) : ContactFormEvent

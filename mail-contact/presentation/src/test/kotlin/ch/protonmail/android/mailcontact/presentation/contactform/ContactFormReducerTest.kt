@@ -92,6 +92,24 @@ class ContactFormReducerTest(
                 expectedState = loadedUpdateContactState.copy(
                     close = Effect.of(Unit)
                 )
+            ),
+            TestInput(
+                currentState = loadedCreateContactState,
+                event = ContactFormEvent.UpdateContactFormUiModel(
+                    contactFormUiModel = loadedContactFormUiModel.copy(displayName = "Updated displayName")
+                ),
+                expectedState = loadedCreateContactState.copy(
+                    contact = loadedContactFormUiModel.copy(displayName = "Updated displayName")
+                )
+            ),
+            TestInput(
+                currentState = loadedUpdateContactState,
+                event = ContactFormEvent.UpdateContactFormUiModel(
+                    contactFormUiModel = emptyContactFormUiModel.copy(displayName = "Updated displayName")
+                ),
+                expectedState = loadedUpdateContactState.copy(
+                    contact = emptyContactFormUiModel.copy(displayName = "Updated displayName")
+                )
             )
         )
 
