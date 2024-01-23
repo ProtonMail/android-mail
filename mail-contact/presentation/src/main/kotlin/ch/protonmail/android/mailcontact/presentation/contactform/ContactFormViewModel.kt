@@ -24,8 +24,14 @@ import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveDecryptedContact
+import ch.protonmail.android.mailcontact.presentation.model.ContactFormUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactFormUiModelMapper
+import ch.protonmail.android.mailcontact.presentation.model.emptyAddressField
 import ch.protonmail.android.mailcontact.presentation.model.emptyContactFormUiModel
+import ch.protonmail.android.mailcontact.presentation.model.emptyDefaultOtherField
+import ch.protonmail.android.mailcontact.presentation.model.emptyEmailField
+import ch.protonmail.android.mailcontact.presentation.model.emptyNoteField
+import ch.protonmail.android.mailcontact.presentation.model.emptyTelephoneField
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -81,10 +87,87 @@ class ContactFormViewModel @Inject constructor(
         viewModelScope.launch {
             actionMutex.withLock {
                 when (action) {
-                    ContactFormViewAction.OnCloseContactFormClick -> emitNewStateFor(ContactFormEvent.CloseContactForm)
+                    is ContactFormOperation.AffectingData -> {
+                        val stateValue = state.value
+                        if (stateValue !is ContactFormState.Data) return@launch
+                        when (action) {
+                            ContactFormViewAction.OnAddEmailClick -> {
+                                emitNewStateFor(
+                                    ContactFormEvent.UpdateContactFormUiModel(
+                                        addEmailField(stateValue.contact)
+                                    )
+                                )
+                            }
+                            ContactFormViewAction.OnAddTelephoneClick -> {
+                                emitNewStateFor(
+                                    ContactFormEvent.UpdateContactFormUiModel(
+                                        addTelephoneField(stateValue.contact)
+                                    )
+                                )
+                            }
+                            ContactFormViewAction.OnAddAddressClick -> {
+                                emitNewStateFor(
+                                    ContactFormEvent.UpdateContactFormUiModel(
+                                        addAddressField(stateValue.contact)
+                                    )
+                                )
+                            }
+                            ContactFormViewAction.OnAddNoteClick -> {
+                                emitNewStateFor(
+                                    ContactFormEvent.UpdateContactFormUiModel(
+                                        addNoteField(stateValue.contact)
+                                    )
+                                )
+                            }
+                            ContactFormViewAction.OnAddOtherClick -> {
+                                emitNewStateFor(
+                                    ContactFormEvent.UpdateContactFormUiModel(
+                                        addOtherField(stateValue.contact)
+                                    )
+                                )
+                            }
+                        }
+                    }
+                    is ContactFormOperation.AffectingNavigation -> {
+                        when (action) {
+                            ContactFormViewAction.OnCloseContactFormClick -> {
+                                emitNewStateFor(ContactFormEvent.CloseContactForm)
+                            }
+                        }
+                    }
                 }
             }
         }
+    }
+
+    private fun addEmailField(contact: ContactFormUiModel): ContactFormUiModel {
+        return contact.copy(
+            emails = contact.emails.plus(emptyEmailField)
+        )
+    }
+
+    private fun addTelephoneField(contact: ContactFormUiModel): ContactFormUiModel {
+        return contact.copy(
+            telephones = contact.telephones.plus(emptyTelephoneField)
+        )
+    }
+
+    private fun addAddressField(contact: ContactFormUiModel): ContactFormUiModel {
+        return contact.copy(
+            addresses = contact.addresses.plus(emptyAddressField)
+        )
+    }
+
+    private fun addNoteField(contact: ContactFormUiModel): ContactFormUiModel {
+        return contact.copy(
+            notes = contact.notes.plus(emptyNoteField)
+        )
+    }
+
+    private fun addOtherField(contact: ContactFormUiModel): ContactFormUiModel {
+        return contact.copy(
+            others = contact.others.plus(emptyDefaultOtherField)
+        )
     }
 
     private suspend fun primaryUserId() = primaryUserId.first()
