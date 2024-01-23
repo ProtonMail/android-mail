@@ -36,8 +36,8 @@ object ContactFormPreviewData {
         emails = listOf(
             InputField.SingleTyped("email@proton.me", FieldType.EmailType.Email)
         ),
-        phones = listOf(
-            InputField.SingleTyped("0123456789", FieldType.PhoneType.Telephone)
+        telephones = listOf(
+            InputField.SingleTyped("0123456789", FieldType.TelephoneType.Telephone)
         ),
         addresses = listOf(
             InputField.Address(

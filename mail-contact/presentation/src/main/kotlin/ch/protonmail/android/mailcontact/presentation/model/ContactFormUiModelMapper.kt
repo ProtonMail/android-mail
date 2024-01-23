@@ -39,10 +39,10 @@ class ContactFormUiModelMapper @Inject constructor(
                     selectedType = FieldType.EmailType.valueOf(it.type.name)
                 )
             },
-            phones = decryptedContact.telephones.map {
+            telephones = decryptedContact.telephones.map {
                 InputField.SingleTyped(
                     value = it.text,
-                    selectedType = FieldType.PhoneType.valueOf(it.type.name)
+                    selectedType = FieldType.TelephoneType.valueOf(it.type.name)
                 )
             },
             addresses = decryptedContact.addresses.map {
