@@ -17,6 +17,7 @@
  */
 
 import java.util.Properties
+import configuration.extensions.protonEnvironment
 
 plugins {
     id("com.android.application")
@@ -26,6 +27,7 @@ plugins {
     id("com.google.devtools.ksp")
     id("dagger.hilt.android.plugin")
     id("io.sentry.android.gradle")
+    id("me.proton.core.gradle-plugins.environment-config") version "1.3.0"
 }
 
 setAsHiltModule()
@@ -64,10 +66,13 @@ android {
             }
         }
 
+        protonEnvironment {
+            apiPrefix = "mail-api"
+        }
+
         buildConfigField("String", "SENTRY_DSN", sentryDSN.toBuildConfigValue())
         buildConfigField("String", "ACCOUNT_SENTRY_DSN", accountSentryDSN.toBuildConfigValue())
         buildConfigField("String", "PROXY_TOKEN", proxyToken.toBuildConfigValue())
-        buildConfigField("String", "HUMAN_VERIFICATION_HOST", "verify.proton.me".toBuildConfigValue())
     }
 
     testOptions {
@@ -140,18 +145,19 @@ android {
             applicationIdSuffix = ".dev"
             versionNameSuffix = "-dev+$gitHash"
             buildConfigField("Boolean", "USE_DEFAULT_PINS", "false")
-            buildConfigField("String", "HOST", "\"proton.black\"")
-            buildConfigField("String", "HUMAN_VERIFICATION_HOST", "\"verify.proton.black\"")
+
+            protonEnvironment {
+                host = "proton.black"
+                apiPrefix = "mail-api"
+            }
         }
         create("alpha") {
             applicationIdSuffix = ".alpha"
             versionNameSuffix = "-alpha+$gitHash"
             buildConfigField("Boolean", "USE_DEFAULT_PINS", "true")
-            buildConfigField("String", "HOST", "\"proton.me\"")
         }
         create("prod") {
             buildConfigField("Boolean", "USE_DEFAULT_PINS", "true")
-            buildConfigField("String", "HOST", "\"proton.me\"")
         }
     }
 
@@ -217,6 +223,11 @@ dependencies {
     implementation(project(":mail-settings"))
 
     debugImplementation(Dependencies.appDebug)
+
+    // Environment configuration
+    releaseImplementation(Proton.Core.configDaggerStatic)
+    debugImplementation(Proton.Core.configDaggerContentProvider)
+
     kapt(Dependencies.appAnnotationProcessors)
 
     coreLibraryDesugaring(AndroidTools.desugarJdkLibs)

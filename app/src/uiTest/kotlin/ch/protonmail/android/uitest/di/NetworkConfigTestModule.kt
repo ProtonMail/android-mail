@@ -19,7 +19,6 @@
 package ch.protonmail.android.uitest.di
 
 import ch.protonmail.android.di.NetworkConfigModule
-import ch.protonmail.android.di.NetworkModule
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.components.SingletonComponent
@@ -27,6 +26,7 @@ import dagger.hilt.testing.TestInstallIn
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import me.proton.core.configuration.EnvironmentConfiguration
 import me.proton.core.network.data.di.BaseProtonApiUrl
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
@@ -41,7 +41,11 @@ object NetworkConfigTestModule {
 
     @Provides
     @BaseProtonApiUrl
-    fun provideBaseProtonApiUrl(@LocalhostApi localhostApi: Boolean, mockWebServer: MockWebServer): HttpUrl {
+    fun provideBaseProtonApiUrl(
+        @LocalhostApi localhostApi: Boolean,
+        mockWebServer: MockWebServer,
+        envConfig: EnvironmentConfiguration
+    ): HttpUrl {
         return if (localhostApi) {
             runBlocking {
                 withContext(Dispatchers.IO) {
@@ -50,7 +54,7 @@ object NetworkConfigTestModule {
             }
         } else {
             // This is a temporary solution until we come up with an efficient environment switch.
-            NetworkModule.BASE_URL.toHttpUrl()
+            envConfig.baseUrl.toHttpUrl()
         }
     }
 }

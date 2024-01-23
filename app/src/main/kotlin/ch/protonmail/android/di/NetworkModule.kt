@@ -30,6 +30,7 @@ import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import me.proton.core.configuration.EnvironmentConfiguration
 import me.proton.core.network.data.client.ExtraHeaderProviderImpl
 import me.proton.core.network.data.di.AlternativeApiPins
 import me.proton.core.network.data.di.BaseProtonApiUrl
@@ -48,11 +49,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Suppress("LongParameterList")
 object NetworkModule {
-
-    private const val HOST = BuildConfig.HOST
-    private const val API_HOST = "mail-api.$HOST"
-    const val BASE_URL = "https://$API_HOST"
-
     @Provides
     @Singleton
     fun provideApiClient(
@@ -111,5 +107,5 @@ object NetworkConfigModule {
 
     @Provides
     @BaseProtonApiUrl
-    fun provideProtonApiUrl(): HttpUrl = NetworkModule.BASE_URL.toHttpUrl()
+    fun provideProtonApiUrl(envConfig: EnvironmentConfiguration): HttpUrl = envConfig.baseUrl.toHttpUrl()
 }

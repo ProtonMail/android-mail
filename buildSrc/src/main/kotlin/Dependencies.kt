@@ -98,6 +98,7 @@ object Dependencies {
         add(Proton.Core.telemetry)
         add(Proton.Core.user)
         add(Proton.Core.userSettings)
+        add(Proton.Core.configData)
         add(Proton.Core.utilAndroidDagger)
         add(Proton.Core.utilAndroidSentry)
         add(Proton.Core.utilAndroidStrictMode)

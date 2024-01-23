@@ -22,8 +22,8 @@ import android.content.Context
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.test.core.app.ActivityScenario
 import androidx.test.platform.app.InstrumentationRegistry
+import ch.protonmail.android.BuildConfig
 import ch.protonmail.android.MainActivity
-import ch.protonmail.android.test.BuildConfig
 import ch.protonmail.android.uitest.rule.GrantNotificationsPermissionRule
 import ch.protonmail.android.uitest.rule.HiltInjectRule
 import ch.protonmail.android.uitest.rule.MainInitializerRule
@@ -33,6 +33,7 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import kotlinx.coroutines.runBlocking
 import me.proton.core.auth.domain.entity.SessionInfo
 import me.proton.core.auth.domain.testing.LoginTestHelper
+import me.proton.core.configuration.EnvironmentConfiguration
 import me.proton.core.mailsettings.domain.repository.MailSettingsRepository
 import me.proton.core.mailsettings.domain.repository.getMailSettingsOrNull
 import me.proton.core.test.android.instrumented.utils.Shell.setupDeviceForAutomation
@@ -126,9 +127,12 @@ internal open class BaseTest(
         val users = User.Users.fromJson(
             json = context.assets.open("users.json").bufferedReader().use { it.readText() }
         )
+
+        private val envConfig: EnvironmentConfiguration = EnvironmentConfiguration.fromClass()
+
         val quark = Quark.fromJson(
             json = context.assets.open("internal_api.json").bufferedReader().use { it.readText() },
-            host = BuildConfig.HOST,
+            host = envConfig.host,
             proxyToken = BuildConfig.PROXY_TOKEN
         )
 

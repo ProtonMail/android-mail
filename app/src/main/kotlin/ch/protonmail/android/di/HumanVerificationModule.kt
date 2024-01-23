@@ -18,11 +18,11 @@
 
 package ch.protonmail.android.di
 
-import ch.protonmail.android.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import me.proton.core.configuration.EnvironmentConfiguration
 import me.proton.core.humanverification.presentation.HumanVerificationApiHost
 import me.proton.core.humanverification.presentation.utils.HumanVerificationVersion
 
@@ -32,7 +32,7 @@ object HumanVerificationModule {
 
     @Provides
     @HumanVerificationApiHost
-    fun provideHumanVerificationApiHost(): String = "https://${BuildConfig.HUMAN_VERIFICATION_HOST}/"
+    fun provideHumanVerificationApiHost(envConfig: EnvironmentConfiguration): String = "https://${envConfig.hv3Host}/"
 
     @Provides
     fun provideHumanVerificationVersion() = HumanVerificationVersion.HV3

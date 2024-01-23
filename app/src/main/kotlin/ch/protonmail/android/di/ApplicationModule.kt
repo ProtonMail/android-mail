@@ -31,6 +31,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import me.proton.core.account.domain.entity.AccountType
+import me.proton.core.configuration.EnvironmentConfiguration
 import me.proton.core.domain.entity.AppStore
 import me.proton.core.domain.entity.Product
 import javax.inject.Qualifier
@@ -54,13 +55,13 @@ object ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideAppInfo(): AppInformation = AppInformation(
+    fun provideAppInfo(envConfig: EnvironmentConfiguration): AppInformation = AppInformation(
         appName = "Proton Mail",
         appVersionName = BuildConfig.VERSION_NAME,
         appVersionCode = BuildConfig.VERSION_CODE,
         appBuildType = BuildConfig.BUILD_TYPE,
         appBuildFlavor = BuildConfig.FLAVOR,
-        appHost = BuildConfig.HOST
+        appHost = envConfig.host
     )
 
     @Provides
