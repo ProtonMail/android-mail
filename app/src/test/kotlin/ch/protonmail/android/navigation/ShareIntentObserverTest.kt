@@ -20,6 +20,7 @@ package ch.protonmail.android.navigation
 
 import android.content.Intent
 import app.cash.turbine.test
+import ch.protonmail.android.mailnotifications.domain.NotificationsDeepLinkHelper
 import ch.protonmail.android.navigation.share.ShareIntentObserver
 import io.mockk.every
 import io.mockk.mockk
@@ -109,6 +110,23 @@ class ShareIntentObserverTest {
         // Given
         val intent = mockk<Intent>(relaxed = true) {
             every { action } returns Intent.ACTION_APP_ERROR
+        }
+
+        // When
+        shareIntentObserver.onNewIntent(intent)
+
+        // Then
+        shareIntentObserver().test {
+            expectNoEvents()
+        }
+    }
+
+    @Test
+    fun `should not emit share intent for a notification action`() = runTest {
+        // Given
+        val intent = mockk<Intent>(relaxed = true) {
+            every { action } returns Intent.ACTION_VIEW
+            every { data?.host } returns NotificationsDeepLinkHelper.NotificationHost
         }
 
         // When

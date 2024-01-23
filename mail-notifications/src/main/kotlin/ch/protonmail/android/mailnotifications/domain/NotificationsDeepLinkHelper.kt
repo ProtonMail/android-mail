@@ -61,7 +61,8 @@ interface NotificationsDeepLinkHelper {
     companion object {
 
         private const val ReplyActionValue = "reply"
-        private const val DeepLinkBaseUri = "proton://notification/"
+        const val NotificationHost = "notification"
+        private const val DeepLinkBaseUri = "proton://$NotificationHost/"
         private const val DeepLinkMessageBase = "${DeepLinkBaseUri}mailbox/message/"
         const val DeepLinkMessageTemplate = "$DeepLinkMessageBase{messageId}/{userId}/{notificationId}"
         private const val DeepLinkMessageGroupBase = "${DeepLinkBaseUri}mailbox/"
