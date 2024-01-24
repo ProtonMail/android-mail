@@ -205,38 +205,38 @@ class ContactFormUiModelMapperTest {
                     selectedType = FieldType.EmailType.Other
                 )
             ),
-            phones = listOf(
+            telephones = listOf(
                 InputField.SingleTyped(
                     value = "1231231235",
-                    selectedType = FieldType.PhoneType.Telephone
+                    selectedType = FieldType.TelephoneType.Telephone
                 ),
                 InputField.SingleTyped(
                     value = "23233232323",
-                    selectedType = FieldType.PhoneType.Home
+                    selectedType = FieldType.TelephoneType.Home
                 ),
                 InputField.SingleTyped(
                     value = "45454545",
-                    selectedType = FieldType.PhoneType.Work
+                    selectedType = FieldType.TelephoneType.Work
                 ),
                 InputField.SingleTyped(
                     value = "565656",
-                    selectedType = FieldType.PhoneType.Other
+                    selectedType = FieldType.TelephoneType.Other
                 ),
                 InputField.SingleTyped(
                     value = "676767",
-                    selectedType = FieldType.PhoneType.Mobile
+                    selectedType = FieldType.TelephoneType.Mobile
                 ),
                 InputField.SingleTyped(
                     value = "787887",
-                    selectedType = FieldType.PhoneType.Main
+                    selectedType = FieldType.TelephoneType.Main
                 ),
                 InputField.SingleTyped(
                     value = "898989",
-                    selectedType = FieldType.PhoneType.Fax
+                    selectedType = FieldType.TelephoneType.Fax
                 ),
                 InputField.SingleTyped(
                     value = "90909090",
-                    selectedType = FieldType.PhoneType.Pager
+                    selectedType = FieldType.TelephoneType.Pager
                 )
             ),
             addresses = listOf(
