@@ -218,6 +218,7 @@ private fun LazyListScope.emailSection(state: ContactFormState.Data, actions: Co
     itemsIndexed(state.contact.emails) { index, email ->
         key(email) {
             var emailValue by rememberSaveable { mutableStateOf(email.value) }
+            var selectedType by remember { mutableStateOf(email.selectedType.localizedValue) }
             InputFieldWithTrash(
                 value = emailValue,
                 hint = stringResource(id = R.string.email_address),
@@ -226,9 +227,11 @@ private fun LazyListScope.emailSection(state: ContactFormState.Data, actions: Co
                 emailValue = it
             }
             TypePickerField(
-                selectedType = email.selectedType.localizedValue,
+                selectedType = selectedType,
                 types = FieldType.EmailType.values().map { it.localizedValue }
-            )
+            ) { selectedValue ->
+                selectedType = selectedValue
+            }
         }
     }
     item {
@@ -246,6 +249,7 @@ private fun LazyListScope.telephoneSection(state: ContactFormState.Data, actions
     itemsIndexed(state.contact.telephones) { index, telephone ->
         key(telephone) {
             var telephoneValue by rememberSaveable { mutableStateOf(telephone.value) }
+            var selectedType by remember { mutableStateOf(telephone.selectedType.localizedValue) }
             InputFieldWithTrash(
                 value = telephoneValue,
                 hint = stringResource(id = R.string.phone_number),
@@ -254,9 +258,11 @@ private fun LazyListScope.telephoneSection(state: ContactFormState.Data, actions
                 telephoneValue = it
             }
             TypePickerField(
-                selectedType = telephone.selectedType.localizedValue,
+                selectedType = selectedType,
                 types = FieldType.TelephoneType.values().map { it.localizedValue }
-            )
+            ) { selectedValue ->
+                selectedType = selectedValue
+            }
         }
     }
     item {
@@ -278,6 +284,7 @@ private fun LazyListScope.addressSection(state: ContactFormState.Data, actions: 
             var city by rememberSaveable { mutableStateOf(address.city) }
             var region by rememberSaveable { mutableStateOf(address.region) }
             var country by rememberSaveable { mutableStateOf(address.country) }
+            var selectedType by remember { mutableStateOf(address.selectedType.localizedValue) }
             InputFieldWithTrash(
                 value = streetAddress,
                 hint = stringResource(R.string.address_street),
@@ -298,9 +305,11 @@ private fun LazyListScope.addressSection(state: ContactFormState.Data, actions: 
                 country = it
             }
             TypePickerField(
-                selectedType = address.selectedType.localizedValue,
+                selectedType = selectedType,
                 types = FieldType.AddressType.values().map { it.localizedValue }
-            )
+            ) { selectedValue ->
+                selectedType = selectedValue
+            }
         }
     }
     item {
@@ -350,6 +359,7 @@ private fun LazyListScope.otherSection(state: ContactFormState.Data, actions: Co
                 }
                 is InputField.SingleTyped -> {
                     var otherValue by rememberSaveable { mutableStateOf(other.value) }
+                    var selectedType by remember { mutableStateOf(other.selectedType.localizedValue) }
                     InputFieldWithTrash(
                         value = otherValue,
                         hint = stringResource(id = R.string.additional_info),
@@ -358,9 +368,11 @@ private fun LazyListScope.otherSection(state: ContactFormState.Data, actions: Co
                         otherValue = it
                     }
                     TypePickerField(
-                        selectedType = other.selectedType.localizedValue,
+                        selectedType = selectedType,
                         types = FieldType.OtherType.values().map { it.localizedValue }
-                    )
+                    ) { selectedValue ->
+                        selectedType = selectedValue
+                    }
                 }
                 else -> {
                     // Ignore the other types
@@ -534,7 +546,11 @@ private fun InputFieldWithTrash(
 }
 
 @Composable
-private fun TypePickerField(selectedType: TextUiModel, types: List<TextUiModel>) {
+private fun TypePickerField(
+    selectedType: TextUiModel,
+    types: List<TextUiModel>,
+    onValueSelected: (TextUiModel) -> Unit
+) {
     val openDialog = remember { mutableStateOf(false) }
     when {
         openDialog.value -> {
@@ -543,9 +559,9 @@ private fun TypePickerField(selectedType: TextUiModel, types: List<TextUiModel>)
                 selectedValue = selectedType,
                 values = types,
                 onDismissRequest = { openDialog.value = false },
-                onValueSelected = { _ ->
+                onValueSelected = { selectedValue ->
                     openDialog.value = false
-                    // Trigger action here
+                    onValueSelected(selectedValue)
                 }
             )
         }
