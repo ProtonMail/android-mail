@@ -29,4 +29,6 @@ object ContactIdSample {
     val Mario = ContactId("Mario")
 
     val Stefano = ContactId("Stefano")
+
+    val Francesco = ContactId("Francesco")
 }

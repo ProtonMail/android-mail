@@ -42,8 +42,9 @@ import ezvcard.property.Timezone
 import ezvcard.property.Title
 import ezvcard.property.Uid
 import me.proton.core.util.kotlin.takeIfNotEmpty
+import javax.inject.Inject
 
-class DecryptedContactMapper {
+class DecryptedContactMapper @Inject constructor() {
 
     /**
      * We should not generate ClearText ContactCard if CATEGORIES field is empty.

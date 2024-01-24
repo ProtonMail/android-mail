@@ -79,24 +79,38 @@ class EncryptAndSignContactCards @Inject constructor(
         //  and it's not provided in our DecryptedContact
         val fallbackName = contactWithCards.contact.name
 
+        val clearTextContactCard = cardsToDecryptedCards.find {
+            it.first is ContactCard.ClearText
+        }?.second?.card
+        val signedContactCard = cardsToDecryptedCards.find { it.first is ContactCard.Signed }?.second?.card
+        val encryptedAndSignedContactCard = cardsToDecryptedCards.find {
+            it.first is ContactCard.Encrypted
+        }?.second?.card
+
         // insert all properties from DecryptedContact where they belong inside the ContactCards, encrypt and sign
         val encryptedAndSignedContactCards = userManager.getUser(userId).useKeys(cryptoContext) {
             listOfNotNull(
-                decryptedContactMapper.mapToClearTextContactCard(
-                    fallbackUid,
-                    cardsToDecryptedCards.find { it.first is ContactCard.ClearText }?.second?.card
-                )?.let { ContactCard.ClearText(it.write()) },
-                decryptedContactMapper.mapToSignedContactCard(
-                    fallbackUid,
-                    fallbackName,
-                    decryptedContact,
-                    cardsToDecryptedCards.find { it.first is ContactCard.Signed }?.second?.card
-                ).let { signContactCard(it) },
-                decryptedContactMapper.mapToEncryptedAndSignedContactCard(
-                    fallbackUid,
-                    decryptedContact,
-                    cardsToDecryptedCards.find { it.first is ContactCard.Encrypted }?.second?.card
-                ).let { encryptAndSignContactCard(it) }
+                clearTextContactCard?.let {
+                    decryptedContactMapper.mapToClearTextContactCard(
+                        fallbackUid,
+                        clearTextContactCard
+                    )?.let { ContactCard.ClearText(it.write()) }
+                },
+                signedContactCard?.let {
+                    decryptedContactMapper.mapToSignedContactCard(
+                        fallbackUid,
+                        fallbackName,
+                        decryptedContact,
+                        signedContactCard
+                    ).let { signContactCard(it) }
+                },
+                encryptedAndSignedContactCard?.let {
+                    decryptedContactMapper.mapToEncryptedAndSignedContactCard(
+                        fallbackUid,
+                        decryptedContact,
+                        encryptedAndSignedContactCard
+                    ).let { encryptAndSignContactCard(it) }
+                }
             )
         }
 

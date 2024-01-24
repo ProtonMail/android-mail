@@ -193,7 +193,9 @@ class ContactFormUiModelMapperTest {
             photos = listOf(
                 ContactProperty.Photo(
                     data = ContactImagesSample.Photo,
-                    contentType = "jpeg"
+                    contentType = "jpeg",
+                    mediaType = null,
+                    extension = null
                 )
             ),
             organizations = listOf(
@@ -206,7 +208,9 @@ class ContactFormUiModelMapperTest {
             logos = listOf(
                 ContactProperty.Logo(
                     data = ContactImagesSample.Logo,
-                    contentType = "jpeg"
+                    contentType = "jpeg",
+                    mediaType = null,
+                    extension = null
                 )
             ),
             members = listOf(ContactProperty.Member(value = "Member")),

@@ -62,4 +62,17 @@ object ContactEmailSample {
         emptyList(),
         false
     )
+
+    val contactEmail4 = ContactEmail(
+        UserIdTestData.Primary,
+        ContactIdTestData.contactEmailId4,
+        "name (contact email 4)",
+        "email (contact email 4)",
+        0,
+        2,
+        ContactIdTestData.contactId4,
+        "canonical email (contact email 4)",
+        emptyList(),
+        false
+    )
 }

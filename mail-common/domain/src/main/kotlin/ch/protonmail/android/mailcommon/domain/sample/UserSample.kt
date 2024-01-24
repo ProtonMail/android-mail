@@ -18,14 +18,33 @@
 
 package ch.protonmail.android.mailcommon.domain.sample
 
+import me.proton.core.crypto.common.keystore.EncryptedByteArray
 import me.proton.core.domain.entity.UserId
+import me.proton.core.key.domain.entity.key.KeyId
+import me.proton.core.key.domain.entity.key.PrivateKey
 import me.proton.core.user.domain.entity.Delinquent
 import me.proton.core.user.domain.entity.Role
 import me.proton.core.user.domain.entity.User
+import me.proton.core.user.domain.entity.UserKey
 
 object UserSample {
 
     val Primary = build()
+
+    val UserWithKeys = build().copy(
+        keys = listOf(
+            UserKey(
+                userId = UserIdSample.Primary,
+                version = 1,
+                keyId = KeyId("userKey"),
+                privateKey = PrivateKey(
+                    key = "private key armored",
+                    isPrimary = true,
+                    passphrase = EncryptedByteArray("private key passphrase".toByteArray())
+                )
+            )
+        )
+    )
 
     fun build(
         name: String = AccountSample.build().username,

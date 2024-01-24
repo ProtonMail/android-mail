@@ -46,4 +46,9 @@ object ContactWithCardsSample {
             )
         )
     )
+
+    val Francesco = ContactWithCards(
+        ContactSample.Francesco,
+        contactCards = emptyList()
+    )
 }

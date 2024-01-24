@@ -53,4 +53,11 @@ object ContactSample {
         name = "Stefano",
         userId = UserIdTestData.Primary
     )
+
+    val Francesco = Contact(
+        contactEmails = listOf(ContactEmailSample.contactEmail4),
+        id = ContactIdSample.Francesco,
+        name = "Francesco",
+        userId = UserIdTestData.Primary
+    )
 }
