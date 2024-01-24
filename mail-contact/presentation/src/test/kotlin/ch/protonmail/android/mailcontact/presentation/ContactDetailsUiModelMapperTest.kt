@@ -330,7 +330,7 @@ class ContactDetailsUiModelMapperTest {
                 /* Birthday */
                 ContactDetailsItem.Text(
                     displayIcon = true,
-                    iconResId = R.drawable.ic_proton_calendar_day,
+                    iconResId = R.drawable.ic_cake,
                     header = TextUiModel(R.string.contact_property_birthday),
                     value = TextUiModel(formatLocalDate(LocalDate.of(2023, 12, 14)))
                 ),
