@@ -66,6 +66,7 @@ import ch.protonmail.android.maildetail.presentation.reducer.MessageBodyReducer
 import ch.protonmail.android.maildetail.presentation.reducer.MessageDeleteDialogReducer
 import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailMetadataReducer
 import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailReducer
+import ch.protonmail.android.maildetail.presentation.reducer.MessageReportPhishingDialogReducer
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.maildetail.presentation.usecase.ExtractMessageBodyWithoutQuote
 import ch.protonmail.android.maildetail.presentation.usecase.GetEmbeddedImageAvoidDuplicatedExecution
@@ -316,7 +317,8 @@ class MessageDetailViewModelTest {
             MailboxMoreActionsBottomSheetReducer(),
             DetailMoreActionsBottomSheetReducer(DetailMoreActionsBottomSheetUiMapper())
         ),
-        MessageDeleteDialogReducer()
+        MessageDeleteDialogReducer(),
+        MessageReportPhishingDialogReducer()
     )
 
     private val viewModel by lazy {

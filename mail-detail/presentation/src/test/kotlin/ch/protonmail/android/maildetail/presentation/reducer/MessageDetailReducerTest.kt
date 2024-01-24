@@ -32,14 +32,16 @@ import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperatio
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
+import ch.protonmail.android.maildetail.presentation.model.ReportPhishingDialogState
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
+import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import ch.protonmail.android.mailmessage.domain.sample.MessageWithLabelsSample
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
-import ch.protonmail.android.mailmessage.domain.sample.MessageWithLabelsSample
-import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
@@ -93,13 +95,18 @@ class MessageDetailReducerTest(
         every { newStateFrom(any()) } returns reducedState.deleteDialogState
     }
 
+    private val reportPhishingDialogReducer: MessageReportPhishingDialogReducer = mockk {
+        every { newStateFrom(any()) } returns reducedState.reportPhishingDialogState
+    }
+
     private val detailReducer = MessageDetailReducer(
         messageMetadataReducer,
         messageBannersReducer,
         messageBodyReducer,
         bottomBarReducer,
         bottomSheetReducer,
-        deleteDialogReducer
+        deleteDialogReducer,
+        reportPhishingDialogReducer
     )
 
     @Test
@@ -200,6 +207,12 @@ class MessageDetailReducerTest(
             } else {
                 assertEquals(currentState.requestPhishingLinkConfirmation, nextState.requestPhishingLinkConfirmation)
             }
+
+            if (shouldReduceReportPhishingDialogState) {
+                verify { reportPhishingDialogReducer.newStateFrom(any()) }
+            } else {
+                assertEquals(currentState.reportPhishingDialogState, nextState.reportPhishingDialogState, testName)
+            }
         }
     }
 
@@ -227,7 +240,8 @@ class MessageDetailReducerTest(
             openAttachmentEffect = Effect.empty(),
             requestLinkConfirmation = false,
             requestPhishingLinkConfirmation = false,
-            deleteDialogState = DeleteDialogState.Hidden
+            deleteDialogState = DeleteDialogState.Hidden,
+            reportPhishingDialogState = ReportPhishingDialogState.Hidden
         )
 
         private val actions = listOf(
@@ -416,6 +430,48 @@ class MessageDetailReducerTest(
                 shouldReduceOpenMessageBodyLinkEffect = false,
                 shouldReducePhishingLinkConfirmation = false,
                 shouldReduceDeleteDialogState = true
+            ),
+            TestInput(
+                MessageViewAction.ReportPhishing(MessageIdSample.Invoice),
+                shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBannersState = false,
+                shouldReduceMessageBodyState = false,
+                shouldReduceBottomBarState = false,
+                shouldReduceExitEffect = false,
+                shouldReduceToErrorEffect = false,
+                shouldReduceBottomSheetState = false,
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReducePhishingLinkConfirmation = false,
+                shouldReduceDeleteDialogState = false,
+                shouldReduceReportPhishingDialogState = false
+            ),
+            TestInput(
+                MessageViewAction.ReportPhishingConfirmed,
+                shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBannersState = false,
+                shouldReduceMessageBodyState = false,
+                shouldReduceBottomBarState = false,
+                shouldReduceExitEffect = false,
+                shouldReduceToErrorEffect = false,
+                shouldReduceBottomSheetState = false,
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReducePhishingLinkConfirmation = false,
+                shouldReduceDeleteDialogState = false,
+                shouldReduceReportPhishingDialogState = true
+            ),
+            TestInput(
+                MessageViewAction.ReportPhishingDismissed,
+                shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBannersState = false,
+                shouldReduceMessageBodyState = false,
+                shouldReduceBottomBarState = false,
+                shouldReduceExitEffect = false,
+                shouldReduceToErrorEffect = false,
+                shouldReduceBottomSheetState = false,
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReducePhishingLinkConfirmation = false,
+                shouldReduceDeleteDialogState = false,
+                shouldReduceReportPhishingDialogState = true
             )
         )
 
@@ -620,6 +676,32 @@ class MessageDetailReducerTest(
                 shouldReduceOpenMessageBodyLinkEffect = false,
                 shouldReducePhishingLinkConfirmation = false,
                 shouldReduceDeleteDialogState = true
+            ),
+            TestInput(
+                MessageDetailEvent.ReportPhishingRequested(messageId = MessageIdSample.Invoice, isOffline = true),
+                shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBannersState = false,
+                shouldReduceMessageBodyState = false,
+                shouldReduceBottomBarState = false,
+                shouldReduceExitEffect = false,
+                shouldReduceToErrorEffect = false,
+                shouldReduceBottomSheetState = true,
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReducePhishingLinkConfirmation = false,
+                shouldReduceReportPhishingDialogState = true
+            ),
+            TestInput(
+                MessageDetailEvent.ReportPhishingRequested(messageId = MessageIdSample.Invoice, isOffline = false),
+                shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBannersState = false,
+                shouldReduceMessageBodyState = false,
+                shouldReduceBottomBarState = false,
+                shouldReduceExitEffect = false,
+                shouldReduceToErrorEffect = false,
+                shouldReduceBottomSheetState = true,
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReducePhishingLinkConfirmation = false,
+                shouldReduceReportPhishingDialogState = true
             )
         )
 
@@ -649,6 +731,7 @@ class MessageDetailReducerTest(
         val shouldReduceOpenMessageBodyLinkEffect: Boolean,
         val shouldReducePhishingLinkConfirmation: Boolean,
         val exitMessage: TextUiModel? = null,
-        val shouldReduceDeleteDialogState: Boolean = false
+        val shouldReduceDeleteDialogState: Boolean = false,
+        val shouldReduceReportPhishingDialogState: Boolean = false
     )
 }

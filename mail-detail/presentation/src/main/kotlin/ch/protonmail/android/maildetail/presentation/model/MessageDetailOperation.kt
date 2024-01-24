@@ -28,6 +28,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperatio
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation.AffectingMessageBanners
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation.AffectingMessageBody
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation.AffectingPhishingLinkConfirmationDialog
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation.AffectingReportPhishingDialog
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
@@ -48,6 +49,7 @@ sealed interface MessageDetailOperation {
     sealed interface AffectingBottomSheet
     sealed interface AffectingDeleteDialog
     sealed interface AffectingPhishingLinkConfirmationDialog
+    sealed interface AffectingReportPhishingDialog
 }
 
 sealed interface MessageDetailEvent : MessageDetailOperation {
@@ -90,6 +92,11 @@ sealed interface MessageDetailEvent : MessageDetailOperation {
         val status: AttachmentWorkerStatus
     ) : MessageDetailEvent, AffectingMessageBody
 
+    data class ReportPhishingRequested(
+        val messageId: MessageId,
+        val isOffline: Boolean
+    ) : MessageDetailEvent, AffectingBottomSheet, AffectingReportPhishingDialog
+
     object NoCachedMetadata : MessageDetailEvent, AffectingMessage
     object ErrorAddingStar : MessageDetailEvent, AffectingMessage, AffectingErrorBar
     object ErrorRemovingStar : MessageDetailEvent, AffectingMessage, AffectingErrorBar
@@ -130,4 +137,7 @@ sealed interface MessageViewAction : MessageDetailOperation {
     data class LoadRemoteContent(val messageId: MessageId) : MessageViewAction, AffectingMessageBody
     data class ShowEmbeddedImages(val messageId: MessageId) : MessageViewAction, AffectingMessageBody
     data class LoadRemoteAndEmbeddedContent(val messageId: MessageId) : MessageViewAction, AffectingMessageBody
+    data class ReportPhishing(val messageId: MessageId) : MessageViewAction
+    object ReportPhishingConfirmed : MessageViewAction, AffectingReportPhishingDialog
+    object ReportPhishingDismissed : MessageViewAction, AffectingReportPhishingDialog
 }

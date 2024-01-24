@@ -32,6 +32,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageBannersUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
+import ch.protonmail.android.maildetail.presentation.model.ReportPhishingDialogState
 import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
 import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelSample
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -93,7 +94,8 @@ object MessageDetailsPreviewData {
         openAttachmentEffect = Effect.empty(),
         requestLinkConfirmation = false,
         requestPhishingLinkConfirmation = false,
-        deleteDialogState = DeleteDialogState.Hidden
+        deleteDialogState = DeleteDialogState.Hidden,
+        reportPhishingDialogState = ReportPhishingDialogState.Hidden
     )
 
     val MessageWithLabels = Message.copy(
@@ -121,7 +123,8 @@ object MessageDetailsPreviewData {
         openAttachmentEffect = Effect.empty(),
         requestLinkConfirmation = false,
         requestPhishingLinkConfirmation = false,
-        deleteDialogState = DeleteDialogState.Hidden
+        deleteDialogState = DeleteDialogState.Hidden,
+        reportPhishingDialogState = ReportPhishingDialogState.Hidden
     )
 }
 

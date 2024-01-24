@@ -158,7 +158,8 @@ class MessageDetailViewModel @Inject constructor(
             is MessageViewAction.LoadRemoteContent,
             is MessageViewAction.DismissBottomSheet,
             is MessageViewAction.DeleteRequested,
-            is MessageViewAction.DeleteDialogDismissed -> directlyHandleViewAction(action)
+            is MessageViewAction.DeleteDialogDismissed,
+            is MessageViewAction.ReportPhishingDismissed-> directlyHandleViewAction(action)
 
             is MessageViewAction.DeleteConfirmed -> handleDeleteConfirmed(action)
             is MessageViewAction.RequestMoveToBottomSheet -> showMoveToBottomSheetAndLoadData(action)
@@ -172,6 +173,8 @@ class MessageDetailViewModel @Inject constructor(
             is MessageViewAction.ShowAllAttachments -> onShowAllAttachmentsClicked()
             is MessageViewAction.OnAttachmentClicked -> onOpenAttachmentClicked(action.attachmentId)
             is MessageViewAction.RequestMoreActionsBottomSheet -> showMoreActionsBottomSheetAndLoadData(action)
+            is MessageViewAction.ReportPhishing -> handleReportPhishing()
+            MessageViewAction.ReportPhishingConfirmed -> handleReportPhishingConfirmed()
         }
     }
 
@@ -597,6 +600,14 @@ class MessageDetailViewModel @Inject constructor(
                 emitNewStateFrom(MessageDetailEvent.ErrorAttachmentDownloadInProgress)
             }
         }
+    }
+
+    private fun handleReportPhishing(){
+
+    }
+
+    private fun handleReportPhishingConfirmed(){
+
     }
 
     private suspend fun emitNewStateFrom(operation: MessageDetailOperation) {

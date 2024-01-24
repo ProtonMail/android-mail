@@ -41,7 +41,8 @@ class MessageDetailReducer @Inject constructor(
     private val messageBodyReducer: MessageBodyReducer,
     private val bottomBarReducer: BottomBarReducer,
     private val bottomSheetReducer: BottomSheetReducer,
-    private val deleteDialogReducer: MessageDeleteDialogReducer
+    private val deleteDialogReducer: MessageDeleteDialogReducer,
+    private val requestPhishingDialogReducer: MessageReportPhishingDialogReducer
 ) {
 
     suspend fun newStateFrom(currentState: MessageDetailState, operation: MessageDetailOperation): MessageDetailState =
@@ -57,7 +58,8 @@ class MessageDetailReducer @Inject constructor(
             openMessageBodyLinkEffect = currentState.toNewOpenMessageBodyLinkStateFrom(operation),
             openAttachmentEffect = currentState.toNewOpenAttachmentStateFrom(operation),
             deleteDialogState = currentState.toNewDeleteDialogStateFrom(operation),
-            requestPhishingLinkConfirmation = currentState.toNewPhishingLinkConfirmationState(operation)
+            requestPhishingLinkConfirmation = currentState.toNewPhishingLinkConfirmationState(operation),
+            reportPhishingDialogState = currentState.toNewReportPhishingDialogStateFrom(operation)
         )
 
     private fun MessageDetailState.toNewErrorStateFrom(operation: MessageDetailOperation) =
@@ -151,6 +153,7 @@ class MessageDetailReducer @Inject constructor(
                 is MessageViewAction.RequestMoreActionsBottomSheet -> BottomSheetOperation.Requested
 
                 is MessageViewAction.LabelAsConfirmed,
+                is MessageDetailEvent.ReportPhishingRequested,
                 is MessageViewAction.DismissBottomSheet -> BottomSheetOperation.Dismiss
             }
             bottomSheetReducer.newStateFrom(bottomSheetState, bottomSheetOperation)
@@ -183,5 +186,12 @@ class MessageDetailReducer @Inject constructor(
         when (operation) {
             is MessageDetailEvent.MessageWithLabelsEvent -> operation.messageWithLabels.message.isPhishing()
             else -> requestPhishingLinkConfirmation
+        }
+
+    private fun MessageDetailState.toNewReportPhishingDialogStateFrom(operation: MessageDetailOperation) =
+        if (operation is MessageDetailOperation.AffectingReportPhishingDialog) {
+            requestPhishingDialogReducer.newStateFrom(operation)
+        } else {
+            reportPhishingDialogState
         }
 }
