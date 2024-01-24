@@ -38,7 +38,7 @@ data class ContactFormUiModel(
     val emails: List<InputField.SingleTyped>,
     val telephones: List<InputField.SingleTyped>,
     val addresses: List<InputField.Address>,
-    val birthday: InputField.Date?,
+    val birthday: InputField.Birthday?,
     val notes: List<InputField.Note>,
     val others: List<InputField>,
     val otherTypes: List<FieldType.OtherType>
@@ -70,7 +70,7 @@ sealed interface InputField {
         val selectedType: FieldType
     ) : InputField
 
-    data class Date(
+    data class Birthday(
         val value: LocalDate
     ) : InputField
 

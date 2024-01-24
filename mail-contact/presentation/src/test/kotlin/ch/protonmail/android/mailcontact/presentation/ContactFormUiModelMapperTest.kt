@@ -273,7 +273,7 @@ class ContactFormUiModelMapperTest {
                     selectedType = FieldType.AddressType.Work
                 )
             ),
-            birthday = InputField.Date(
+            birthday = InputField.Birthday(
                 value = LocalDate.of(2023, 12, 14)
             ),
             notes = listOf(

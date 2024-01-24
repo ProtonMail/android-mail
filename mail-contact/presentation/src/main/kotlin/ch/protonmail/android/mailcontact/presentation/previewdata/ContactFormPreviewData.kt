@@ -49,7 +49,7 @@ object ContactFormPreviewData {
                 FieldType.AddressType.Address
             )
         ),
-        birthday = InputField.Date(LocalDate.now()),
+        birthday = InputField.Birthday(LocalDate.now()),
         notes = listOf(
             InputField.Note("Notes")
         ),

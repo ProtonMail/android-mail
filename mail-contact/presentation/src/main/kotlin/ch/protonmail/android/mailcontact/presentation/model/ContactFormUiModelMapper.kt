@@ -56,7 +56,7 @@ class ContactFormUiModelMapper @Inject constructor(
                 )
             },
             birthday = decryptedContact.birthday?.let {
-                InputField.Date(value = it.date)
+                InputField.Birthday(value = it.date)
             },
             notes = decryptedContact.notes.map {
                 InputField.Note(
