@@ -1,0 +1,1 @@
+-keep class me.proton.core.configuration.EnvironmentConfigurationDefaults { *; }
