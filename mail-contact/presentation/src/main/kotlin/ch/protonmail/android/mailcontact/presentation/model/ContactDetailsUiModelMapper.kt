@@ -143,7 +143,7 @@ class ContactDetailsUiModelMapper @Inject constructor(
             contactDetailsItem.add(
                 ContactDetailsItem.Text(
                     displayIcon = true,
-                    iconResId = R.drawable.ic_proton_calendar_day,
+                    iconResId = R.drawable.ic_cake,
                     header = TextUiModel(R.string.contact_property_birthday),
                     value = TextUiModel(
                         formatLocalDate(birthday.date)
