@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcontact.presentation.contactform
 
 import ch.protonmail.android.mailcontact.presentation.model.ContactFormUiModel
+import ch.protonmail.android.mailcontact.presentation.model.InputField
 import ch.protonmail.android.mailcontact.presentation.model.Section
 
 sealed interface ContactFormOperation
@@ -31,6 +32,11 @@ sealed interface ContactFormViewAction : ContactFormOperation {
     data class OnRemoveItemClick(
         val section: Section,
         val index: Int
+    ) : ContactFormViewAction
+    data class OnUpdateItem(
+        val section: Section,
+        val index: Int,
+        val newValue: InputField
     ) : ContactFormViewAction
 }
 

@@ -25,6 +25,7 @@ import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveDecryptedContact
 import ch.protonmail.android.mailcontact.presentation.model.ContactFormUiModelMapper
+import ch.protonmail.android.mailcontact.presentation.model.InputField
 import ch.protonmail.android.mailcontact.presentation.model.Section
 import ch.protonmail.android.mailcontact.presentation.model.emptyAddressField
 import ch.protonmail.android.mailcontact.presentation.model.emptyContactFormUiModel
@@ -89,6 +90,7 @@ class ContactFormViewModel @Inject constructor(
                 when (action) {
                     is ContactFormViewAction.OnAddItemClick -> handleAddItem(action)
                     is ContactFormViewAction.OnRemoveItemClick -> handleRemoveItem(action)
+                    is ContactFormViewAction.OnUpdateItem -> handleUpdateItem(action)
                     ContactFormViewAction.OnCloseContactFormClick -> emitNewStateFor(ContactFormEvent.CloseContactForm)
                 }
             }
@@ -147,6 +149,48 @@ class ContactFormViewModel @Inject constructor(
                     }
                     Section.Others -> {
                         val mutableOthers = contact.others.toMutableList().apply { this.removeAt(action.index) }
+                        contact.copy(others = mutableOthers)
+                    }
+                }
+            )
+        )
+    }
+
+    private fun handleUpdateItem(action: ContactFormViewAction.OnUpdateItem) {
+        val stateValue = state.value
+        if (stateValue !is ContactFormState.Data) return
+        val contact = stateValue.contact
+        emitNewStateFor(
+            ContactFormEvent.UpdateContactFormUiModel(
+                when (action.section) {
+                    Section.Emails -> {
+                        val mutableEmails = contact.emails.toMutableList().apply {
+                            this[action.index] = action.newValue as InputField.SingleTyped
+                        }
+                        contact.copy(emails = mutableEmails)
+                    }
+                    Section.Telephones -> {
+                        val mutableTelephones = contact.telephones.toMutableList().apply {
+                            this[action.index] = action.newValue as InputField.SingleTyped
+                        }
+                        contact.copy(telephones = mutableTelephones)
+                    }
+                    Section.Addresses -> {
+                        val mutableAddresses = contact.addresses.toMutableList().apply {
+                            this[action.index] = action.newValue as InputField.Address
+                        }
+                        contact.copy(addresses = mutableAddresses)
+                    }
+                    Section.Notes -> {
+                        val mutableNotes = contact.notes.toMutableList().apply {
+                            this[action.index] = action.newValue as InputField.Note
+                        }
+                        contact.copy(notes = mutableNotes)
+                    }
+                    Section.Others -> {
+                        val mutableOthers = contact.others.toMutableList().apply {
+                            this[action.index] = action.newValue
+                        }
                         contact.copy(others = mutableOthers)
                     }
                 }
