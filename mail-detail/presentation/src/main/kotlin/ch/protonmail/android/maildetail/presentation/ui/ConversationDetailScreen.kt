@@ -78,6 +78,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMe
 import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
 import ch.protonmail.android.maildetail.presentation.previewdata.ConversationDetailsPreviewProvider
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.scrollOffsetDp
+import ch.protonmail.android.maildetail.presentation.ui.dialog.ReportPhishingDialog
 import ch.protonmail.android.maildetail.presentation.viewmodel.ConversationDetailViewModel
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -140,6 +141,12 @@ fun ConversationDetailScreen(
         dismiss = { viewModel.submit(ConversationDetailViewAction.DeleteDialogDismissed) }
     )
 
+    ReportPhishingDialog(
+        state = state.reportPhishingDialogState,
+        onConfirm = { viewModel.submit(ConversationDetailViewAction.ReportPhishingConfirmed(it)) },
+        onDismiss = { viewModel.submit(ConversationDetailViewAction.ReportPhishingDismissed) }
+    )
+
     ProtonModalBottomSheetLayout(
         sheetState = bottomSheetState,
         sheetContent = {
@@ -170,7 +177,7 @@ fun ConversationDetailScreen(
                         onReply = actions.onReply,
                         onReplyAll = actions.onReplyAll,
                         onForward = actions.onForward,
-                        onReportPhishing = {}
+                        onReportPhishing = { viewModel.submit(ConversationDetailViewAction.ReportPhishing(it)) }
                     )
                 )
 
@@ -266,6 +273,7 @@ fun ConversationDetailScreen(
             is ConversationDetailsMessagesState.Data -> state.messagesState.messages.find {
                 it.messageId == messageBodyLink.messageId
             }
+
             else -> null
         }
         val requestPhishingLinkConfirmation = when (message) {
