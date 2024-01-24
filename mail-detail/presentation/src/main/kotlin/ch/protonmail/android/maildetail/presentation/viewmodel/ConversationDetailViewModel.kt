@@ -96,6 +96,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithLabels
 import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
+import ch.protonmail.android.mailmessage.domain.usecase.ReportPhishingMessage
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.DetailMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
@@ -127,6 +128,8 @@ import kotlinx.coroutines.runBlocking
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
+import me.proton.core.network.domain.NetworkManager
+import me.proton.core.network.domain.NetworkStatus
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -165,7 +168,9 @@ class ConversationDetailViewModel @Inject constructor(
     @IODispatcher private val ioDispatcher: CoroutineDispatcher,
     private val observePrivacySettings: ObservePrivacySettings,
     private val updateLinkConfirmationSetting: UpdateLinkConfirmationSetting,
-    private val resolveParticipantName: ResolveParticipantName
+    private val resolveParticipantName: ResolveParticipantName,
+    private val reportPhishingMessage: ReportPhishingMessage,
+    private val networkManager: NetworkManager
 ) : ViewModel() {
 
     private val primaryUserId: Flow<UserId> = observePrimaryUserId().filterNotNull()
@@ -206,8 +211,9 @@ class ConversationDetailViewModel @Inject constructor(
             is ConversationDetailViewAction.OnAttachmentClicked -> {
                 onOpenAttachmentClicked(action.messageId, action.attachmentId)
             }
-            is ConversationDetailViewAction.ReportPhishing -> handleReportPhishing()
-            is ConversationDetailViewAction.ReportPhishingConfirmed -> handleReportPhishingConfirmed()
+
+            is ConversationDetailViewAction.ReportPhishing -> handleReportPhishing(action)
+            is ConversationDetailViewAction.ReportPhishingConfirmed -> handleReportPhishingConfirmed(action)
 
             is ConversationDetailViewAction.DeleteRequested,
             is ConversationDetailViewAction.DeleteDialogDismissed,
@@ -221,7 +227,7 @@ class ConversationDetailViewModel @Inject constructor(
             is ConversationDetailViewAction.ShowEmbeddedImages,
             is ConversationDetailViewAction.LoadRemoteAndEmbeddedContent,
             is ConversationDetailViewAction.LoadRemoteContent,
-            is ConversationDetailViewAction.ReportPhishingDismissed-> directlyHandleViewAction(action)
+            is ConversationDetailViewAction.ReportPhishingDismissed -> directlyHandleViewAction(action)
         }
     }
 
@@ -800,12 +806,26 @@ class ConversationDetailViewModel @Inject constructor(
         } else false
     }
 
-    private fun handleReportPhishingConfirmed(){
-
+    private fun handleReportPhishingConfirmed(action: ConversationDetailViewAction.ReportPhishingConfirmed) {
+        viewModelScope.launch {
+            reportPhishingMessage(primaryUserId.first(), action.messageId)
+                .onLeft { Timber.e("Error while reporting phishing message: $it") }
+            emitNewStateFrom(action)
+        }
     }
 
-    private fun handleReportPhishing() {
+    private fun handleReportPhishing(action: ConversationDetailViewAction.ReportPhishing) {
+        viewModelScope.launch {
+            val operation = when (networkManager.networkStatus) {
+                NetworkStatus.Disconnected -> ConversationDetailEvent.ReportPhishingRequested(
+                    messageId = action.messageId,
+                    isOffline = true
+                )
 
+                else -> ConversationDetailEvent.ReportPhishingRequested(messageId = action.messageId, isOffline = false)
+            }
+            emitNewStateFrom(operation)
+        }
     }
 
     companion object {

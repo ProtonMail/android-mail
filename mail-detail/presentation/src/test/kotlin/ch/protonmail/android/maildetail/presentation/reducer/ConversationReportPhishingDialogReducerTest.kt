@@ -4,6 +4,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEve
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
 import ch.protonmail.android.maildetail.presentation.model.ReportPhishingDialogState
+import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import kotlin.test.Test
@@ -32,7 +33,7 @@ class ConversationReportPhishingDialogReducerTest(
                 expectedState = ReportPhishingDialogState.Hidden
             ),
             TestInput(
-                operation = ConversationDetailViewAction.ReportPhishingConfirmed,
+                operation = ConversationDetailViewAction.ReportPhishingConfirmed(MessageIdSample.Invoice),
                 expectedState = ReportPhishingDialogState.Hidden
             ),
             TestInput(

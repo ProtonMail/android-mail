@@ -163,6 +163,8 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
 
     data class ReportPhishing(val messageId: MessageId) : ConversationDetailViewAction
     object ReportPhishingDismissed : ConversationDetailViewAction, AffectingReportPhishingDialog
-    object ReportPhishingConfirmed : ConversationDetailViewAction, AffectingReportPhishingDialog
+    data class ReportPhishingConfirmed(
+        val messageId: MessageId
+    ) : ConversationDetailViewAction, AffectingReportPhishingDialog
 
 }

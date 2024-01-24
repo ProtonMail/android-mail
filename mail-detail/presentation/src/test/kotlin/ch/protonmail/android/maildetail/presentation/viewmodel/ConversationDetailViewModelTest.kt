@@ -92,6 +92,7 @@ import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
+import ch.protonmail.android.mailmessage.domain.usecase.ReportPhishingMessage
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantNameResult
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
@@ -125,6 +126,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.label.domain.entity.LabelId
+import me.proton.core.network.domain.NetworkManager
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -290,6 +292,8 @@ class ConversationDetailViewModelTest {
     private val inMemoryConversationStateRepository = FakeInMemoryConversationStateRepository()
     private val setMessageViewState = SetMessageViewState(inMemoryConversationStateRepository)
     private val observeConversationViewState = ObserveConversationViewState(inMemoryConversationStateRepository)
+    private val networkManager = mockk<NetworkManager>()
+    private val reportPhishingMessage = mockk<ReportPhishingMessage>()
 
     private val viewModel by lazy {
         ConversationDetailViewModel(
@@ -325,7 +329,9 @@ class ConversationDetailViewModelTest {
             ioDispatcher = Dispatchers.Unconfined,
             observePrivacySettings = observePrivacySettings,
             updateLinkConfirmationSetting = updateLinkConfirmationSetting,
-            resolveParticipantName = resolveParticipantsName
+            resolveParticipantName = resolveParticipantsName,
+            networkManager = networkManager,
+            reportPhishingMessage = reportPhishingMessage
         )
     }
 

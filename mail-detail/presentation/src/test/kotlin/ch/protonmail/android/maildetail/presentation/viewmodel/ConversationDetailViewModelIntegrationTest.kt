@@ -91,6 +91,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailVie
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.RequestScrollTo
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.ShowAllAttachmentsForMessage
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
+import ch.protonmail.android.maildetail.presentation.model.ReportPhishingDialogState
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDeleteDialogReducer
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailMessagesReducer
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailMetadataReducer
@@ -114,11 +115,13 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithLabels
 import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
+import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
 import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
+import ch.protonmail.android.mailmessage.domain.usecase.ReportPhishingMessage
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailmessage.presentation.mapper.AttachmentUiModelMapper
 import ch.protonmail.android.mailmessage.presentation.mapper.DetailMoreActionsBottomSheetUiMapper
@@ -159,6 +162,8 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import me.proton.core.contact.domain.entity.Contact
+import me.proton.core.network.domain.NetworkManager
+import me.proton.core.network.domain.NetworkStatus
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -218,6 +223,7 @@ class ConversationDetailViewModelIntegrationTest {
             MailLabelTestData.listOfCustomLabels.right()
         )
     }
+    private val reportPhishingMessage = mockk<ReportPhishingMessage>()
 
     // Privacy settings for link confirmation dialog
     private val observePrivacySettings = mockk<ObservePrivacySettings> {
@@ -350,6 +356,7 @@ class ConversationDetailViewModelIntegrationTest {
     private val inMemoryConversationStateRepository = FakeInMemoryConversationStateRepository()
     private val setMessageViewState = SetMessageViewState(inMemoryConversationStateRepository)
     private val observeConversationViewState = ObserveConversationViewState(inMemoryConversationStateRepository)
+    private val networkManager = mockk<NetworkManager>()
     private var testDispatcher: TestDispatcher? = null
 
     @BeforeTest
@@ -1426,6 +1433,59 @@ class ConversationDetailViewModelIntegrationTest {
             }
         }
 
+    @Test
+    fun `when user clicks report phishing and network state is connected then confirm dialog is shown`() = runTest {
+        // Given
+        val expected = ReportPhishingDialogState.Shown.ShowConfirmation(MessageIdSample.Invoice)
+        coEvery { networkManager.networkStatus } returns NetworkStatus.Metered
+
+        val viewModel = buildConversationDetailViewModel()
+        viewModel.state.test {
+            // When
+            viewModel.submit(ConversationDetailViewAction.ReportPhishing(MessageIdSample.Invoice))
+            advanceUntilIdle()
+
+            // Then
+            assertEquals(expected, lastEmittedItem().reportPhishingDialogState)
+        }
+    }
+
+    @Test
+    fun `when user clicks report phishing and network state is disconnected then offline hint is shown`() = runTest {
+        // Given
+        val expected = ReportPhishingDialogState.Shown.ShowOfflineHint
+        coEvery { networkManager.networkStatus } returns NetworkStatus.Disconnected
+
+        val viewModel = buildConversationDetailViewModel()
+        viewModel.state.test {
+            // When
+            viewModel.submit(ConversationDetailViewAction.ReportPhishing(MessageIdSample.Invoice))
+            advanceUntilIdle()
+
+            // Then
+            assertEquals(expected, lastEmittedItem().reportPhishingDialogState)
+        }
+    }
+
+    @Test
+    fun `when user confirms report phishing then report use case is called`() = runTest {
+        // Given
+        val expectedMessageId = MessageIdSample.HtmlInvoice
+        coEvery { networkManager.networkStatus } returns NetworkStatus.Metered
+        coEvery { reportPhishingMessage(userId, expectedMessageId) } returns Unit.right()
+
+        val viewModel = buildConversationDetailViewModel()
+        viewModel.state.test {
+            // When
+            viewModel.submit(ConversationDetailViewAction.ReportPhishingConfirmed(expectedMessageId))
+            advanceUntilIdle()
+
+            // Then
+            coVerify { reportPhishingMessage(userId, expectedMessageId) }
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
     @Suppress("LongParameterList")
     private fun buildConversationDetailViewModel(
         observePrimaryUser: ObservePrimaryUserId = observePrimaryUserId,
@@ -1436,6 +1496,7 @@ class ConversationDetailViewModelIntegrationTest {
         moveConversation: MoveConversation = move,
         relabel: RelabelConversation = relabelConversation,
         delete: DeleteConversations = deleteConversations,
+        report: ReportPhishingMessage = reportPhishingMessage,
         contacts: ObserveContacts = observeContacts,
         observeConversation: ObserveConversation = observeConversationUseCase,
         observeConversationMessages: ObserveConversationMessagesWithLabels = observeConversationMessagesWithLabels,
@@ -1453,7 +1514,8 @@ class ConversationDetailViewModelIntegrationTest {
         markMessageAndConversationReadIfAllMessagesRead: MarkMessageAndConversationReadIfAllMessagesRead =
             markMessageAndConversationReadIfAllRead,
         getIntentValues: GetAttachmentIntentValues = getAttachmentIntentValues,
-        ioDispatcher: CoroutineDispatcher = testDispatcher!!
+        ioDispatcher: CoroutineDispatcher = testDispatcher!!,
+        networkMgmt: NetworkManager = networkManager,
     ) = ConversationDetailViewModel(
         observePrimaryUserId = observePrimaryUser,
         messageIdUiModelMapper = messageIdUiModelMapper,
@@ -1464,6 +1526,7 @@ class ConversationDetailViewModelIntegrationTest {
         moveConversation = moveConversation,
         deleteConversations = delete,
         relabelConversation = relabel,
+        reportPhishingMessage = report,
         observeContacts = contacts,
         observeConversation = observeConversation,
         observeConversationMessages = observeConversationMessages,
@@ -1487,7 +1550,8 @@ class ConversationDetailViewModelIntegrationTest {
         ioDispatcher = ioDispatcher,
         observePrivacySettings = observePrivacySettings,
         updateLinkConfirmationSetting = updateLinkConfirmationSetting,
-        resolveParticipantName = resolveParticipantName
+        resolveParticipantName = resolveParticipantName,
+        networkManager = networkMgmt
     )
 
     private fun aMessageAttachment(id: String): MessageAttachment = MessageAttachment(
