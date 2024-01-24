@@ -31,6 +31,7 @@ import ch.protonmail.android.mailcontact.domain.usecase.ObserveDecryptedContact
 import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.model.ContactFormUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactFormUiModelMapper
+import ch.protonmail.android.mailcontact.presentation.model.Section
 import ch.protonmail.android.mailcontact.presentation.model.emptyAddressField
 import ch.protonmail.android.mailcontact.presentation.model.emptyContactFormUiModel
 import ch.protonmail.android.mailcontact.presentation.model.emptyDefaultOtherField
@@ -171,7 +172,7 @@ class ContactFormViewModelTest {
     }
 
     @Test
-    fun `when OnAddEmailClick action is submitted, then state contact is updated`() = runTest {
+    fun `when on add email action is submitted, then state contact is updated`() = runTest {
         // Given
         expectSavedStateContactId(null)
 
@@ -180,7 +181,7 @@ class ContactFormViewModelTest {
             // Then
             awaitItem()
 
-            contactFormViewModel.submit(ContactFormViewAction.OnAddEmailClick)
+            contactFormViewModel.submit(ContactFormViewAction.OnAddItemClick(Section.Emails))
 
             val actual = awaitItem()
             val expected = ContactFormState.Data.Create(
@@ -194,7 +195,7 @@ class ContactFormViewModelTest {
     }
 
     @Test
-    fun `when OnAddTelephoneClick action is submitted, then state contact is updated`() = runTest {
+    fun `when on add telephone action is submitted, then state contact is updated`() = runTest {
         // Given
         expectSavedStateContactId(null)
 
@@ -203,7 +204,7 @@ class ContactFormViewModelTest {
             // Then
             awaitItem()
 
-            contactFormViewModel.submit(ContactFormViewAction.OnAddTelephoneClick)
+            contactFormViewModel.submit(ContactFormViewAction.OnAddItemClick(Section.Telephones))
 
             val actual = awaitItem()
             val expected = ContactFormState.Data.Create(
@@ -217,7 +218,7 @@ class ContactFormViewModelTest {
     }
 
     @Test
-    fun `when OnAddAddressClick action is submitted, then state contact is updated`() = runTest {
+    fun `when on add address action is submitted, then state contact is updated`() = runTest {
         // Given
         expectSavedStateContactId(null)
 
@@ -226,7 +227,7 @@ class ContactFormViewModelTest {
             // Then
             awaitItem()
 
-            contactFormViewModel.submit(ContactFormViewAction.OnAddAddressClick)
+            contactFormViewModel.submit(ContactFormViewAction.OnAddItemClick(Section.Addresses))
 
             val actual = awaitItem()
             val expected = ContactFormState.Data.Create(
@@ -240,7 +241,7 @@ class ContactFormViewModelTest {
     }
 
     @Test
-    fun `when OnAddNoteClick action is submitted, then state contact is updated`() = runTest {
+    fun `when on add note action is submitted, then state contact is updated`() = runTest {
         // Given
         expectSavedStateContactId(null)
 
@@ -249,7 +250,7 @@ class ContactFormViewModelTest {
             // Then
             awaitItem()
 
-            contactFormViewModel.submit(ContactFormViewAction.OnAddNoteClick)
+            contactFormViewModel.submit(ContactFormViewAction.OnAddItemClick(Section.Notes))
 
             val actual = awaitItem()
             val expected = ContactFormState.Data.Create(
@@ -263,7 +264,7 @@ class ContactFormViewModelTest {
     }
 
     @Test
-    fun `when OnAddOtherClick action is submitted, then state contact is updated`() = runTest {
+    fun `when on add other action is submitted, then state contact is updated`() = runTest {
         // Given
         expectSavedStateContactId(null)
 
@@ -272,7 +273,7 @@ class ContactFormViewModelTest {
             // Then
             awaitItem()
 
-            contactFormViewModel.submit(ContactFormViewAction.OnAddOtherClick)
+            contactFormViewModel.submit(ContactFormViewAction.OnAddItemClick(Section.Others))
 
             val actual = awaitItem()
             val expected = ContactFormState.Data.Create(

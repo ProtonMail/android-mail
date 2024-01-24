@@ -75,6 +75,7 @@ import ch.protonmail.android.mailcontact.presentation.model.CONTACT_NAME_MAX_LEN
 import ch.protonmail.android.mailcontact.presentation.model.ContactFormAvatar
 import ch.protonmail.android.mailcontact.presentation.model.FieldType
 import ch.protonmail.android.mailcontact.presentation.model.InputField
+import ch.protonmail.android.mailcontact.presentation.model.Section
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactFormPreviewData.contactFormSampleData
 import ch.protonmail.android.mailcontact.presentation.ui.FormInputField
 import ch.protonmail.android.mailcontact.presentation.ui.ImageContactAvatar
@@ -123,11 +124,7 @@ fun ContactFormScreen(actions: ContactFormScreen.Actions, viewModel: ContactForm
                         state = state,
                         modifier = Modifier.padding(paddingValues),
                         actions = ContactFormContent.Actions(
-                            onAddEmailClick = { viewModel.submit(ContactFormViewAction.OnAddEmailClick) },
-                            onAddTelephoneClick = { viewModel.submit(ContactFormViewAction.OnAddTelephoneClick) },
-                            onAddAddressClick = { viewModel.submit(ContactFormViewAction.OnAddAddressClick) },
-                            onAddNoteClick = { viewModel.submit(ContactFormViewAction.OnAddNoteClick) },
-                            onAddOtherClick = { viewModel.submit(ContactFormViewAction.OnAddOtherClick) }
+                            onAddItemClick = { viewModel.submit(ContactFormViewAction.OnAddItemClick(it)) }
                         )
                     )
 
@@ -228,7 +225,7 @@ private fun LazyListScope.emailSection(state: ContactFormState.Data, actions: Co
         }
     }
     item {
-        AddNewButton(onClick = actions.onAddEmailClick)
+        AddNewButton(onClick = { actions.onAddItemClick(Section.Emails) })
     }
 }
 
@@ -252,7 +249,7 @@ private fun LazyListScope.phoneSection(state: ContactFormState.Data, actions: Co
         }
     }
     item {
-        AddNewButton(onClick = actions.onAddTelephoneClick)
+        AddNewButton(onClick = { actions.onAddItemClick(Section.Telephones) })
     }
 }
 
@@ -292,7 +289,7 @@ private fun LazyListScope.addressSection(state: ContactFormState.Data, actions: 
         }
     }
     item {
-        AddNewButton(onClick = actions.onAddAddressClick)
+        AddNewButton(onClick = { actions.onAddItemClick(Section.Addresses) })
     }
 }
 
@@ -312,7 +309,7 @@ private fun LazyListScope.noteSection(state: ContactFormState.Data, actions: Con
         }
     }
     item {
-        AddNewButton(onClick = actions.onAddNoteClick)
+        AddNewButton(onClick = { actions.onAddItemClick(Section.Notes) })
     }
 }
 
@@ -349,7 +346,7 @@ private fun LazyListScope.otherSection(state: ContactFormState.Data, actions: Co
         }
     }
     item {
-        AddNewButton(onClick = actions.onAddOtherClick)
+        AddNewButton(onClick = { actions.onAddItemClick(Section.Others) })
     }
 }
 
@@ -647,21 +644,13 @@ object ContactFormScreen {
 object ContactFormContent {
 
     data class Actions(
-        val onAddEmailClick: () -> Unit,
-        val onAddTelephoneClick: () -> Unit,
-        val onAddAddressClick: () -> Unit,
-        val onAddNoteClick: () -> Unit,
-        val onAddOtherClick: () -> Unit
+        val onAddItemClick: (Section) -> Unit
     ) {
 
         companion object {
 
             val Empty = Actions(
-                onAddEmailClick = {},
-                onAddTelephoneClick = {},
-                onAddAddressClick = {},
-                onAddNoteClick = {},
-                onAddOtherClick = {}
+                onAddItemClick = {}
             )
         }
     }

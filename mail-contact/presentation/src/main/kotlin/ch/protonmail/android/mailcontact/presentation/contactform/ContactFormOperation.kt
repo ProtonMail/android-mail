@@ -18,22 +18,16 @@
 
 package ch.protonmail.android.mailcontact.presentation.contactform
 
-import ch.protonmail.android.mailcontact.presentation.contactform.ContactFormOperation.AffectingData
-import ch.protonmail.android.mailcontact.presentation.contactform.ContactFormOperation.AffectingNavigation
 import ch.protonmail.android.mailcontact.presentation.model.ContactFormUiModel
+import ch.protonmail.android.mailcontact.presentation.model.Section
 
-sealed interface ContactFormOperation {
-    sealed interface AffectingData
-    sealed interface AffectingNavigation
-}
+sealed interface ContactFormOperation
 
 sealed interface ContactFormViewAction : ContactFormOperation {
-    object OnCloseContactFormClick : ContactFormViewAction, AffectingNavigation
-    object OnAddEmailClick : ContactFormViewAction, AffectingData
-    object OnAddTelephoneClick : ContactFormViewAction, AffectingData
-    object OnAddAddressClick : ContactFormViewAction, AffectingData
-    object OnAddNoteClick : ContactFormViewAction, AffectingData
-    object OnAddOtherClick : ContactFormViewAction, AffectingData
+    object OnCloseContactFormClick : ContactFormViewAction
+    data class OnAddItemClick(
+        val section: Section
+    ) : ContactFormViewAction
 }
 
 sealed interface ContactFormEvent : ContactFormOperation {

@@ -24,8 +24,8 @@ import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveDecryptedContact
-import ch.protonmail.android.mailcontact.presentation.model.ContactFormUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactFormUiModelMapper
+import ch.protonmail.android.mailcontact.presentation.model.Section
 import ch.protonmail.android.mailcontact.presentation.model.emptyAddressField
 import ch.protonmail.android.mailcontact.presentation.model.emptyContactFormUiModel
 import ch.protonmail.android.mailcontact.presentation.model.emptyDefaultOtherField
@@ -87,48 +87,38 @@ class ContactFormViewModel @Inject constructor(
         viewModelScope.launch {
             actionMutex.withLock {
                 when (action) {
-                    is ContactFormOperation.AffectingData -> {
-                        val stateValue = state.value
-                        if (stateValue !is ContactFormState.Data) return@launch
-                        emitNewStateFor(
-                            ContactFormEvent.UpdateContactFormUiModel(
-                                handleUpdateDataAction(action, stateValue.contact)
-                            )
-                        )
-                    }
-                    is ContactFormOperation.AffectingNavigation -> {
-                        when (action) {
-                            ContactFormViewAction.OnCloseContactFormClick -> {
-                                emitNewStateFor(ContactFormEvent.CloseContactForm)
-                            }
-                        }
-                    }
+                    is ContactFormViewAction.OnAddItemClick -> handleAddItem(action)
+                    ContactFormViewAction.OnCloseContactFormClick -> emitNewStateFor(ContactFormEvent.CloseContactForm)
                 }
             }
         }
     }
 
-    private fun handleUpdateDataAction(
-        action: ContactFormOperation.AffectingData,
-        contact: ContactFormUiModel
-    ): ContactFormUiModel {
-        return when (action) {
-            ContactFormViewAction.OnAddEmailClick -> {
-                contact.copy(emails = contact.emails.plus(emptyEmailField))
-            }
-            ContactFormViewAction.OnAddTelephoneClick -> {
-                contact.copy(telephones = contact.telephones.plus(emptyTelephoneField))
-            }
-            ContactFormViewAction.OnAddAddressClick -> {
-                contact.copy(addresses = contact.addresses.plus(emptyAddressField))
-            }
-            ContactFormViewAction.OnAddNoteClick -> {
-                contact.copy(notes = contact.notes.plus(emptyNoteField))
-            }
-            ContactFormViewAction.OnAddOtherClick -> {
-                contact.copy(others = contact.others.plus(emptyDefaultOtherField))
-            }
-        }
+    private fun handleAddItem(action: ContactFormViewAction.OnAddItemClick) {
+        val stateValue = state.value
+        if (stateValue !is ContactFormState.Data) return
+        val contact = stateValue.contact
+        emitNewStateFor(
+            ContactFormEvent.UpdateContactFormUiModel(
+                when (action.section) {
+                    Section.Emails -> contact.copy(
+                        emails = contact.emails.plus(emptyEmailField)
+                    )
+                    Section.Telephones -> contact.copy(
+                        telephones = contact.telephones.plus(emptyTelephoneField)
+                    )
+                    Section.Addresses -> contact.copy(
+                        addresses = contact.addresses.plus(emptyAddressField)
+                    )
+                    Section.Notes -> contact.copy(
+                        notes = contact.notes.plus(emptyNoteField)
+                    )
+                    Section.Others -> contact.copy(
+                        others = contact.others.plus(emptyDefaultOtherField)
+                    )
+                }
+            )
+        )
     }
 
     private suspend fun primaryUserId() = primaryUserId.first()

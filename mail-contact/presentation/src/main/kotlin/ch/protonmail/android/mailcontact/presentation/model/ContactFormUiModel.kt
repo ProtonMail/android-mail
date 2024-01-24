@@ -121,6 +121,14 @@ sealed interface FieldType {
     }
 }
 
+enum class Section {
+    Emails,
+    Telephones,
+    Addresses,
+    Notes,
+    Others
+}
+
 sealed interface ContactFormAvatar {
 
     // Use data class with camera icon res id here once we implement image picker.
