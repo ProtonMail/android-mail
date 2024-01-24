@@ -64,6 +64,7 @@ import ch.protonmail.android.mailmessage.domain.usecase.DeleteMessages
 import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
 import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
+import ch.protonmail.android.mailmessage.domain.usecase.ReportPhishingMessage
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailmessage.domain.usecase.StarMessages
 import ch.protonmail.android.mailmessage.domain.usecase.UnStarMessages
@@ -93,6 +94,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
+import me.proton.core.network.domain.NetworkManager
+import me.proton.core.network.domain.NetworkStatus
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -126,7 +129,9 @@ class MessageDetailViewModel @Inject constructor(
     private val getEmbeddedImageAvoidDuplicatedExecution: GetEmbeddedImageAvoidDuplicatedExecution,
     private val observePrivacySettings: ObservePrivacySettings,
     private val updateLinkConfirmationSetting: UpdateLinkConfirmationSetting,
-    private val resolveParticipantName: ResolveParticipantName
+    private val resolveParticipantName: ResolveParticipantName,
+    private val reportPhishingMessage: ReportPhishingMessage,
+    private val networkManager: NetworkManager
 ) : ViewModel() {
 
     private val messageId = requireMessageId()
@@ -159,7 +164,7 @@ class MessageDetailViewModel @Inject constructor(
             is MessageViewAction.DismissBottomSheet,
             is MessageViewAction.DeleteRequested,
             is MessageViewAction.DeleteDialogDismissed,
-            is MessageViewAction.ReportPhishingDismissed-> directlyHandleViewAction(action)
+            is MessageViewAction.ReportPhishingDismissed -> directlyHandleViewAction(action)
 
             is MessageViewAction.DeleteConfirmed -> handleDeleteConfirmed(action)
             is MessageViewAction.RequestMoveToBottomSheet -> showMoveToBottomSheetAndLoadData(action)
@@ -173,8 +178,8 @@ class MessageDetailViewModel @Inject constructor(
             is MessageViewAction.ShowAllAttachments -> onShowAllAttachmentsClicked()
             is MessageViewAction.OnAttachmentClicked -> onOpenAttachmentClicked(action.attachmentId)
             is MessageViewAction.RequestMoreActionsBottomSheet -> showMoreActionsBottomSheetAndLoadData(action)
-            is MessageViewAction.ReportPhishing -> handleReportPhishing()
-            MessageViewAction.ReportPhishingConfirmed -> handleReportPhishingConfirmed()
+            is MessageViewAction.ReportPhishing -> handleReportPhishing(action)
+            is MessageViewAction.ReportPhishingConfirmed -> handleReportPhishingConfirmed(action)
         }
     }
 
@@ -602,12 +607,27 @@ class MessageDetailViewModel @Inject constructor(
         }
     }
 
-    private fun handleReportPhishing(){
+    private fun handleReportPhishing(action: MessageViewAction.ReportPhishing) {
+        viewModelScope.launch {
+            val operation = when (networkManager.networkStatus) {
+                NetworkStatus.Disconnected -> MessageDetailEvent.ReportPhishingRequested(
+                    messageId = action.messageId,
+                    isOffline = true
+                )
 
+                else -> MessageDetailEvent.ReportPhishingRequested(messageId = action.messageId, isOffline = false)
+            }
+            emitNewStateFrom(operation)
+        }
     }
 
-    private fun handleReportPhishingConfirmed(){
-
+    private fun handleReportPhishingConfirmed(action: MessageViewAction.ReportPhishingConfirmed) {
+        viewModelScope.launch {
+            reportPhishingMessage(primaryUserId.first(), messageId).onLeft {
+                Timber.e("Failed to report phishing: $it")
+            }
+            emitNewStateFrom(action)
+        }
     }
 
     private suspend fun emitNewStateFrom(operation: MessageDetailOperation) {

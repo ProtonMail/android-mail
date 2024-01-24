@@ -61,6 +61,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageDetailActionBa
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
+import ch.protonmail.android.maildetail.presentation.model.ReportPhishingDialogState
 import ch.protonmail.android.maildetail.presentation.reducer.MessageBannersReducer
 import ch.protonmail.android.maildetail.presentation.reducer.MessageBodyReducer
 import ch.protonmail.android.maildetail.presentation.reducer.MessageDeleteDialogReducer
@@ -84,11 +85,13 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithLabels
 import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
+import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailmessage.domain.usecase.DeleteMessages
 import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
 import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
+import ch.protonmail.android.mailmessage.domain.usecase.ReportPhishingMessage
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantNameResult
 import ch.protonmail.android.mailmessage.domain.usecase.StarMessages
@@ -139,6 +142,8 @@ import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import me.proton.core.network.domain.NetworkManager
+import me.proton.core.network.domain.NetworkStatus
 import org.junit.After
 import org.junit.Assert.assertThrows
 import org.junit.Assert.assertTrue
@@ -305,6 +310,8 @@ class MessageDetailViewModelTest {
     private val getDownloadingAttachmentsForMessages = mockk<GetDownloadingAttachmentsForMessages>()
     private val getEmbeddedImageAvoidDuplicatedExecution = mockk<GetEmbeddedImageAvoidDuplicatedExecution>()
     private val deleteMessages = mockk<DeleteMessages>()
+    private val reportPhishingMessage = mockk<ReportPhishingMessage>()
+    private val networkManager = mockk<NetworkManager>()
 
     private val messageDetailReducer = MessageDetailReducer(
         MessageDetailMetadataReducer(messageDetailActionBarUiModelMapper, messageDetailHeaderUiModelMapper),
@@ -350,7 +357,9 @@ class MessageDetailViewModelTest {
             getEmbeddedImageAvoidDuplicatedExecution = getEmbeddedImageAvoidDuplicatedExecution,
             observePrivacySettings = observePrivacySettings,
             updateLinkConfirmationSetting = updateLinkConfirmationSetting,
-            resolveParticipantName = resolveParticipantName
+            resolveParticipantName = resolveParticipantName,
+            reportPhishingMessage = reportPhishingMessage,
+            networkManager = networkManager,
         )
     }
 
@@ -1520,6 +1529,62 @@ class MessageDetailViewModelTest {
             cancelAndIgnoreRemainingEvents()
         }
     }
+
+    @Test
+    fun `when user clicks report phishing and network state is connected than confirm dialog is shown`() = runTest {
+        // Given
+        val expected = ReportPhishingDialogState.Shown.ShowConfirmation(MessageIdSample.Invoice)
+        coEvery { networkManager.networkStatus } returns NetworkStatus.Metered
+
+
+        viewModel.state.test {
+            initialStateEmitted()
+            skipItems(3)
+
+            // When
+            viewModel.submit(MessageViewAction.ReportPhishing(MessageIdSample.Invoice))
+
+            assertEquals(expected, awaitItem().reportPhishingDialogState)
+        }
+    }
+
+    @Test
+    fun `when user clicks report phishing and network state is disconnected than offline hint is shown`() = runTest {
+        // Given
+        val expected = ReportPhishingDialogState.Shown.ShowOfflineHint
+        coEvery { networkManager.networkStatus } returns NetworkStatus.Disconnected
+
+
+        viewModel.state.test {
+            initialStateEmitted()
+            skipItems(3)
+
+            // When
+            viewModel.submit(MessageViewAction.ReportPhishing(MessageIdSample.Invoice))
+
+            assertEquals(expected, awaitItem().reportPhishingDialogState)
+        }
+    }
+
+    @Test
+    fun `when user confirms report phishing then report use case is called`() = runTest {
+        // Given
+        coEvery { networkManager.networkStatus } returns NetworkStatus.Metered
+        coEvery { reportPhishingMessage(userId, messageId) } returns Unit.right()
+
+
+        viewModel.state.test {
+            initialStateEmitted()
+            skipItems(3)
+
+            // When
+            viewModel.submit(MessageViewAction.ReportPhishingConfirmed)
+            advanceUntilIdle()
+
+            coVerify { reportPhishingMessage(userId, messageId) }
+        }
+    }
+
 
     private suspend fun ReceiveTurbine<MessageDetailState>.initialStateEmitted() {
         assertEquals(MessageDetailState.Loading, awaitItem())
