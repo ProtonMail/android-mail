@@ -21,8 +21,8 @@ package ch.protonmail.android.navigation
 import android.content.Intent
 import android.net.Uri
 import app.cash.turbine.test
-import ch.protonmail.android.mailcommon.data.file.getFileShareInfo
-import ch.protonmail.android.mailcommon.domain.model.FileShareInfo
+import ch.protonmail.android.mailcommon.data.file.getShareInfo
+import ch.protonmail.android.mailcommon.domain.model.IntentShareInfo
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailcommon.presentation.Effect
@@ -279,7 +279,7 @@ class HomeViewModelTest {
         // Given
         val fileUriStr = "content://media/1234"
         val fileUri = mockk<Uri>()
-        val fileShareInfo = FileShareInfo.Empty.copy(
+        val intentShareInfo = IntentShareInfo.Empty.copy(
             attachmentUris = listOf(fileUriStr)
         )
         val shareIntent = mockIntent(
@@ -288,7 +288,7 @@ class HomeViewModelTest {
         )
         // Mock the extension function
         mockkStatic("ch.protonmail.android.mailcommon.data.file.IntentShareExtensionsKt")
-        every { any<Intent>().getFileShareInfo() } returns fileShareInfo
+        every { any<Intent>().getShareInfo() } returns intentShareInfo
 
         every { networkManager.observe() } returns flowOf()
         every { shouldPresentPinInsertionScreen() } returns flowOf()
@@ -311,7 +311,7 @@ class HomeViewModelTest {
         )
         // Mock the extension function
         mockkStatic("ch.protonmail.android.mailcommon.data.file.IntentShareExtensionsKt")
-        every { any<Intent>().getFileShareInfo() } returns FileShareInfo.Empty
+        every { any<Intent>().getShareInfo() } returns IntentShareInfo.Empty
 
         every { networkManager.observe() } returns flowOf()
         every { shouldPresentPinInsertionScreen() } returns flowOf()
@@ -329,7 +329,7 @@ class HomeViewModelTest {
         // Given
         val fileUriStr = "content://media/1234"
         val fileUri = mockk<Uri>()
-        val fileShareInfo = FileShareInfo.Empty.copy(
+        val intentShareInfo = IntentShareInfo.Empty.copy(
             attachmentUris = listOf(fileUriStr)
         )
         val shareIntent = mockIntent(
@@ -342,7 +342,7 @@ class HomeViewModelTest {
         )
         // Mock the extension function
         mockkStatic("ch.protonmail.android.mailcommon.data.file.IntentShareExtensionsKt")
-        every { any<Intent>().getFileShareInfo() } returns fileShareInfo
+        every { any<Intent>().getShareInfo() } returns intentShareInfo
 
         every { networkManager.observe() } returns flowOf()
         every { shouldPresentPinInsertionScreen() } returns flowOf()

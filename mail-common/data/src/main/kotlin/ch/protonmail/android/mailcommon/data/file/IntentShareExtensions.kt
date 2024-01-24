@@ -22,31 +22,34 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import androidx.core.net.MailTo
-import ch.protonmail.android.mailcommon.domain.model.FileShareInfo
+import ch.protonmail.android.mailcommon.domain.model.IntentShareInfo
 import me.proton.core.util.kotlin.takeIfNotEmpty
 import timber.log.Timber
 
-fun Intent.getFileShareInfo(): FileShareInfo {
+fun Intent.getShareInfo(): IntentShareInfo {
 
     return when (action) {
-        Intent.ACTION_SEND -> getShareInfoForActionSendSingleFile()
-        Intent.ACTION_SEND_MULTIPLE -> getShareInfoForActionSendMultipleFiles()
-        Intent.ACTION_VIEW -> getShareInfoForActionView()
-        Intent.ACTION_SENDTO -> getShareInfoForActionSendTo()
+        Intent.ACTION_SEND -> getShareInfoForSingleSendAction()
+        Intent.ACTION_SEND_MULTIPLE -> getShareInfoForMultipleSendAction()
+        Intent.ACTION_VIEW -> getShareInfoForViewAction()
+        Intent.ACTION_SENDTO -> getShareInfoForSendToAction()
 
         else -> {
             Timber.d("Unhandled intent action: $action")
-            FileShareInfo.Empty
+            IntentShareInfo.Empty
         }
     }
 }
 
 fun Intent.isStartedFromLauncher(): Boolean = action == Intent.ACTION_MAIN
 
-private fun Intent.getShareInfoForActionSendSingleFile(): FileShareInfo {
+private fun Intent.getShareInfoForSingleSendAction(): IntentShareInfo {
+    val fileUriList = getFileUriForActionSend()?.let {
+        listOf(it.toString())
+    } ?: emptyList()
 
-    return FileShareInfo(
-        attachmentUris = getFileUriForActionSendSingleFile().map { it.toString() },
+    return IntentShareInfo(
+        attachmentUris = fileUriList,
         emailSubject = getSubject(),
         emailRecipientTo = getRecipientTo(),
         emailRecipientCc = getRecipientCc(),
@@ -55,9 +58,9 @@ private fun Intent.getShareInfoForActionSendSingleFile(): FileShareInfo {
     )
 }
 
-private fun Intent.getShareInfoForActionSendMultipleFiles(): FileShareInfo {
-    return FileShareInfo(
-        attachmentUris = getFileUrisForActionSendMultipleFiles().map { it.toString() },
+private fun Intent.getShareInfoForMultipleSendAction(): IntentShareInfo {
+    return IntentShareInfo(
+        attachmentUris = getFileUrisForActionSendMultiple().map { it.toString() },
         emailSubject = getSubject(),
         emailRecipientTo = getRecipientTo(),
         emailRecipientCc = getRecipientCc(),
@@ -66,8 +69,7 @@ private fun Intent.getShareInfoForActionSendMultipleFiles(): FileShareInfo {
     )
 }
 
-
-private fun Intent.getShareInfoForActionView(): FileShareInfo {
+private fun Intent.getShareInfoForViewAction(): IntentShareInfo {
     val intentUri = getFileUrisForActionViewAndSendTo().takeIfNotEmpty()?.firstOrNull()
 
     return if (intentUri?.scheme == MAILTO_SCHEME) {
@@ -89,7 +91,7 @@ private fun Intent.getShareInfoForActionView(): FileShareInfo {
         val subject = mailTo.subject ?: getSubject()
         val body = mailTo.body ?: getEmailBody()
 
-        FileShareInfo(
+        IntentShareInfo(
             attachmentUris = emptyList(),
             emailSubject = subject,
             emailRecipientTo = toRecipients,
@@ -98,14 +100,12 @@ private fun Intent.getShareInfoForActionView(): FileShareInfo {
             emailBody = body
         )
     } else {
-        getShareInfoForActionSendTo()
+        getShareInfoForSendToAction()
     }
-
 }
 
-
-private fun Intent.getShareInfoForActionSendTo(): FileShareInfo {
-    return FileShareInfo(
+private fun Intent.getShareInfoForSendToAction(): IntentShareInfo {
+    return IntentShareInfo(
         attachmentUris = getFileUrisForActionViewAndSendTo().map { it.toString() },
         emailSubject = getSubject(),
         emailRecipientTo = getRecipientTo(),
@@ -125,35 +125,31 @@ private fun Intent.getFileUrisForActionViewAndSendTo(): List<Uri> {
     return fileUris
 }
 
-private fun Intent.getFileUriForActionSendSingleFile(): List<Uri> {
-    val fileUris = mutableListOf<Uri>()
-
+private fun Intent.getFileUriForActionSend(): Uri? {
     val clipData = clipData
-    if (clipData != null) {
-        for (i in 0 until clipData.itemCount) {
-            fileUris.add(clipData.getItemAt(i).uri)
-        }
+    return if (clipData != null) {
+        clipData.getItemAt(0)?.uri
     } else {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-            getParcelableExtra<Uri>(Intent.EXTRA_STREAM)?.let { fileUris.add(it) }
+            @Suppress("DEPRECATION")
+            getParcelableExtra(Intent.EXTRA_STREAM)
         } else {
-            getParcelableExtra(Intent.EXTRA_STREAM, Uri::class.java)?.let { fileUris.add(it) }
+            getParcelableExtra(Intent.EXTRA_STREAM, Uri::class.java)
         }
     }
-
-    return fileUris
 }
 
-private fun Intent.getFileUrisForActionSendMultipleFiles(): List<Uri> {
+private fun Intent.getFileUrisForActionSendMultiple(): List<Uri> {
     val fileUris = mutableListOf<Uri>()
 
     val clipData = clipData
     if (clipData != null) {
         for (i in 0 until clipData.itemCount) {
-            fileUris.add(clipData.getItemAt(i).uri)
+            clipData.getItemAt(i)?.uri?.run { fileUris.add(this) }
         }
     } else {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            @Suppress("DEPRECATION")
             getParcelableArrayListExtra<Uri>(Intent.EXTRA_STREAM)?.let { fileUris.addAll(it) }
         } else {
             getParcelableArrayListExtra(Intent.EXTRA_STREAM, Uri::class.java)?.let { fileUris.addAll(it) }

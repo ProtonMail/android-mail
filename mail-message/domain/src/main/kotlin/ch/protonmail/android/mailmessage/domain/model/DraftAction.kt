@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.mailmessage.domain.model
 
-import ch.protonmail.android.mailcommon.domain.model.FileShareInfo
+import ch.protonmail.android.mailcommon.domain.model.IntentShareInfo
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -40,7 +40,7 @@ sealed interface DraftAction {
     data class ComposeToAddress(val recipient: String) : DraftAction
 
     @Serializable
-    data class PrefillForShare(val fileShareInfo: FileShareInfo) : DraftAction
+    data class PrefillForShare(val intentShareInfo: IntentShareInfo) : DraftAction
 
     fun getParentMessageId(): MessageId? = when (this) {
         is Compose,

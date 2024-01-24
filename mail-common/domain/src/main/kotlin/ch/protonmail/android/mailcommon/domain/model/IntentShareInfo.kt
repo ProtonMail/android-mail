@@ -23,7 +23,7 @@ import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 
 @Serializable
-data class FileShareInfo(
+data class IntentShareInfo(
     val attachmentUris: List<String>,
     val emailSubject: String?,
     val emailRecipientTo: List<String>,
@@ -35,7 +35,7 @@ data class FileShareInfo(
 
     companion object {
 
-        val Empty = FileShareInfo(
+        val Empty = IntentShareInfo(
             attachmentUris = emptyList(),
             emailSubject = null,
             emailRecipientTo = emptyList(),
@@ -47,8 +47,8 @@ data class FileShareInfo(
     }
 }
 
-fun FileShareInfo.isNotEmpty(): Boolean = this != FileShareInfo.Empty
-fun FileShareInfo.hasEmailData(): Boolean = emailSubject != null ||
+fun IntentShareInfo.isNotEmpty(): Boolean = this != IntentShareInfo.Empty
+fun IntentShareInfo.hasEmailData(): Boolean = emailSubject != null ||
     emailBody != null ||
     emailRecipientTo.isNotEmpty() ||
     emailRecipientCc.isNotEmpty() ||
@@ -58,8 +58,8 @@ fun FileShareInfo.hasEmailData(): Boolean = emailSubject != null ||
  * Without Base64 encoding, navigation graph fails to resolve the destination with the serialized form of this class.
  */
 @OptIn(ExperimentalEncodingApi::class)
-fun FileShareInfo.encode(): FileShareInfo {
-    return FileShareInfo(
+fun IntentShareInfo.encode(): IntentShareInfo {
+    return IntentShareInfo(
         attachmentUris = attachmentUris.map { Base64.encode(it.toByteArray()) },
         emailSubject = emailSubject?.let { Base64.encode(it.toByteArray()) },
         emailRecipientTo = emailRecipientTo.map { Base64.encode(it.toByteArray()) },
@@ -71,8 +71,8 @@ fun FileShareInfo.encode(): FileShareInfo {
 }
 
 @OptIn(ExperimentalEncodingApi::class)
-fun FileShareInfo.decode(): FileShareInfo {
-    return FileShareInfo(
+fun IntentShareInfo.decode(): IntentShareInfo {
+    return IntentShareInfo(
         attachmentUris = attachmentUris.map { String(Base64.decode(it)) },
         emailSubject = emailSubject?.let { String(Base64.decode(it)) },
         emailRecipientTo = emailRecipientTo.map { String(Base64.decode(it)) },

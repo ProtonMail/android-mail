@@ -23,8 +23,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
-import ch.protonmail.android.mailcommon.data.file.getFileShareInfo
+import ch.protonmail.android.mailcommon.data.file.getShareInfo
 import ch.protonmail.android.mailcommon.data.file.isStartedFromLauncher
+import ch.protonmail.android.mailcommon.domain.model.IntentShareInfo
+import ch.protonmail.android.mailcommon.domain.model.encode
+import ch.protonmail.android.mailcommon.domain.model.isNotEmpty
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
@@ -32,12 +35,9 @@ import ch.protonmail.android.mailcomposer.domain.usecase.ObserveSendingMessagesS
 import ch.protonmail.android.mailcomposer.domain.usecase.ResetSendingMessagesStatus
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.navigation.model.Destination
 import ch.protonmail.android.navigation.model.HomeState
-import ch.protonmail.android.mailcommon.domain.model.FileShareInfo
-import ch.protonmail.android.mailcommon.domain.model.encode
-import ch.protonmail.android.mailcommon.domain.model.isNotEmpty
-import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.navigation.share.ShareIntentObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -130,20 +130,20 @@ class HomeViewModel @Inject constructor(
 
             mutableState.value = currentState.copy(startedFromLauncher = true)
         } else if (!currentState.startedFromLauncher) {
-            val fileShareInfo = intent.getFileShareInfo()
-            if (fileShareInfo.isNotEmpty()) {
-                emitNewStateForShareVia(fileShareInfo)
+            val intentShareInfo = intent.getShareInfo()
+            if (intentShareInfo.isNotEmpty()) {
+                emitNewStateForShareVia(intentShareInfo)
             }
         } else {
             Timber.d("Share intent is not processed as this instance was started from launcher!")
         }
     }
 
-    private fun emitNewStateForShareVia(fileShareInfo: FileShareInfo) {
+    private fun emitNewStateForShareVia(intentShareInfo: IntentShareInfo) {
         val currentState = state.value
         mutableState.value = currentState.copy(
             navigateToEffect = Effect.of(
-                Destination.Screen.ShareFileComposer(DraftAction.PrefillForShare(fileShareInfo.encode()))
+                Destination.Screen.ShareFileComposer(DraftAction.PrefillForShare(intentShareInfo.encode()))
             )
         )
     }

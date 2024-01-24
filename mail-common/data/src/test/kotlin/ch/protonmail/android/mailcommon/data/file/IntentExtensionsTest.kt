@@ -21,7 +21,7 @@ package ch.protonmail.android.mailcommon.data.file
 import android.content.ClipData
 import android.content.Intent
 import android.net.Uri
-import ch.protonmail.android.mailcommon.domain.model.FileShareInfo
+import ch.protonmail.android.mailcommon.domain.model.IntentShareInfo
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
@@ -59,10 +59,10 @@ class IntentExtensionsTest {
         val intent = mockIntent(action = "unhandled_action")
 
         // When
-        val fileShareInfo = intent.getFileShareInfo()
+        val fileShareInfo = intent.getShareInfo()
 
         // Then
-        assertEquals(FileShareInfo.Empty, fileShareInfo)
+        assertEquals(IntentShareInfo.Empty, fileShareInfo)
     }
 
     @Test
@@ -71,10 +71,10 @@ class IntentExtensionsTest {
         val intent = mockIntent(action = Intent.ACTION_VIEW, data = null)
 
         // When
-        val fileShareInfo = intent.getFileShareInfo()
+        val fileShareInfo = intent.getShareInfo()
 
         // Then
-        assertEquals(FileShareInfo.Empty, fileShareInfo)
+        assertEquals(IntentShareInfo.Empty, fileShareInfo)
     }
 
     @Test
@@ -82,12 +82,13 @@ class IntentExtensionsTest {
         // Given
         every { uri1.toString() } returns "content://test1"
         val intent = mockIntent(action = Intent.ACTION_VIEW, data = uri1)
+        val expected = IntentShareInfo.Empty.copy(attachmentUris = listOf(uri1.toString()))
 
         // When
-        val fileShareInfo = intent.getFileShareInfo()
+        val fileShareInfo = intent.getShareInfo()
 
         // Then
-        assertEquals(FileShareInfo.Empty.copy(attachmentUris = listOf(uri1.toString())), fileShareInfo)
+        assertEquals(expected, fileShareInfo)
     }
 
     @Test
@@ -98,12 +99,13 @@ class IntentExtensionsTest {
         every { Uri.parse(any()) } returns mailToUri
         every { mailToUri.toString() } returns "mailto:$recipientEmail"
         val intent = mockIntent(action = Intent.ACTION_VIEW, data = mailToUri)
+        val expected = IntentShareInfo.Empty.copy(emailRecipientTo = listOf(recipientEmail))
 
         // When
-        val fileShareInfo = intent.getFileShareInfo()
+        val fileShareInfo = intent.getShareInfo()
 
         // Then
-        assertEquals(FileShareInfo.Empty.copy(emailRecipientTo = listOf(recipientEmail)), fileShareInfo)
+        assertEquals(expected, fileShareInfo)
     }
 
     @Test
@@ -116,21 +118,19 @@ class IntentExtensionsTest {
         every { Uri.parse(any()) } returns mailToUri
         every { mailToUri.toString() } returns "mailto:$recipientEmail1,$recipientEmail2,$recipientEmail3"
         val intent = mockIntent(action = Intent.ACTION_VIEW, data = mailToUri)
+        val expected = IntentShareInfo.Empty.copy(
+            emailRecipientTo = listOf(
+                recipientEmail1,
+                recipientEmail2,
+                recipientEmail3
+            )
+        )
 
         // When
-        val fileShareInfo = intent.getFileShareInfo()
+        val fileShareInfo = intent.getShareInfo()
 
         // Then
-        assertEquals(
-            FileShareInfo.Empty.copy(
-                emailRecipientTo = listOf(
-                    recipientEmail1,
-                    recipientEmail2,
-                    recipientEmail3
-                )
-            ),
-            fileShareInfo
-        )
+        assertEquals(expected, fileShareInfo)
     }
 
     @Test
@@ -139,10 +139,10 @@ class IntentExtensionsTest {
         val intent = mockIntent(action = Intent.ACTION_SENDTO, data = null)
 
         // When
-        val fileShareInfo = intent.getFileShareInfo()
+        val fileShareInfo = intent.getShareInfo()
 
         // Then
-        assertEquals(FileShareInfo.Empty, fileShareInfo)
+        assertEquals(IntentShareInfo.Empty, fileShareInfo)
     }
 
     @Test
@@ -150,12 +150,13 @@ class IntentExtensionsTest {
         // Given
         every { uri1.toString() } returns "content://test1"
         val intent = mockIntent(action = Intent.ACTION_SENDTO, data = uri1)
+        val expected = IntentShareInfo.Empty.copy(attachmentUris = listOf(uri1.toString()))
 
         // When
-        val fileShareInfo = intent.getFileShareInfo()
+        val fileShareInfo = intent.getShareInfo()
 
         // Then
-        assertEquals(FileShareInfo.Empty.copy(attachmentUris = listOf(uri1.toString())), fileShareInfo)
+        assertEquals(expected, fileShareInfo)
     }
 
     @Test
@@ -163,12 +164,13 @@ class IntentExtensionsTest {
         // Given
         every { uri1.toString() } returns "content://test1"
         val intent = mockIntent(action = Intent.ACTION_SEND, extraStreamUri = uri1)
+        val expected = IntentShareInfo.Empty.copy(attachmentUris = listOf(uri1.toString()))
 
         // when
-        val fileShareInfo = intent.getFileShareInfo()
+        val fileShareInfo = intent.getShareInfo()
 
         // then
-        assertEquals(FileShareInfo.Empty.copy(attachmentUris = listOf(uri1.toString())), fileShareInfo)
+        assertEquals(expected, fileShareInfo)
     }
 
     @Test
@@ -177,10 +179,10 @@ class IntentExtensionsTest {
         val intent = mockIntent(action = Intent.ACTION_SEND, extraStreamUri = null)
 
         // when
-        val fileShareInfo = intent.getFileShareInfo()
+        val fileShareInfo = intent.getShareInfo()
 
         // then
-        assertEquals(FileShareInfo.Empty, fileShareInfo)
+        assertEquals(IntentShareInfo.Empty, fileShareInfo)
     }
 
     @Test
@@ -189,10 +191,10 @@ class IntentExtensionsTest {
         val intent = mockIntent(action = Intent.ACTION_SEND, extraStreamUri = null)
 
         // when
-        val fileShareInfo = intent.getFileShareInfo()
+        val fileShareInfo = intent.getShareInfo()
 
         // then
-        assertEquals(FileShareInfo.Empty, fileShareInfo)
+        assertEquals(IntentShareInfo.Empty, fileShareInfo)
     }
 
     @Test
@@ -204,12 +206,13 @@ class IntentExtensionsTest {
             every { getItemAt(0) } returns mockk { every { uri } returns uri1 }
         }
         val intent = mockIntent(action = Intent.ACTION_SEND, clipData = clipData)
+        val expected = IntentShareInfo.Empty.copy(attachmentUris = listOf(uri1.toString()))
 
         // When
-        val fileShareInfo = intent.getFileShareInfo()
+        val fileShareInfo = intent.getShareInfo()
 
         // Then
-        assertEquals(FileShareInfo.Empty.copy(attachmentUris = listOf(uri1.toString())), fileShareInfo)
+        assertEquals(expected, fileShareInfo)
     }
 
     @Test
@@ -217,12 +220,13 @@ class IntentExtensionsTest {
         // Given
         every { uri1.toString() } returns "content://test1"
         val intent = mockIntent(action = Intent.ACTION_SEND, clipData = null, extraStreamUri = uri1)
+        val expected = IntentShareInfo.Empty.copy(attachmentUris = listOf(uri1.toString()))
 
         // When
-        val fileShareInfo = intent.getFileShareInfo()
+        val fileShareInfo = intent.getShareInfo()
 
         // Then
-        assertEquals(FileShareInfo.Empty.copy(attachmentUris = listOf(uri1.toString())), fileShareInfo)
+        assertEquals(expected, fileShareInfo)
     }
 
     @Test
@@ -236,12 +240,13 @@ class IntentExtensionsTest {
             every { getItemAt(1) } returns mockk { every { uri } returns uri2 }
         }
         val intent = mockIntent(action = Intent.ACTION_SEND_MULTIPLE, clipData = clipData)
+        val expected = IntentShareInfo.Empty.copy(attachmentUris = listOf(uri1.toString(), uri2.toString()))
 
         // When
-        val fileShareInfo = intent.getFileShareInfo()
+        val fileShareInfo = intent.getShareInfo()
 
         // Then
-        assertEquals(FileShareInfo.Empty.copy(attachmentUris = listOf(uri1.toString(), uri2.toString())), fileShareInfo)
+        assertEquals(expected, fileShareInfo)
     }
 
     @Test
@@ -253,12 +258,13 @@ class IntentExtensionsTest {
             action = Intent.ACTION_SEND_MULTIPLE,
             extraStreamUriList = arrayListOf(uri1, uri2)
         )
+        val expected = IntentShareInfo.Empty.copy(attachmentUris = listOf(uri1.toString(), uri2.toString()))
 
         // When
-        val fileShareInfo = intent.getFileShareInfo()
+        val fileShareInfo = intent.getShareInfo()
 
         // Then
-        assertEquals(FileShareInfo.Empty.copy(attachmentUris = listOf(uri1.toString(), uri2.toString())), fileShareInfo)
+        assertEquals(expected, fileShareInfo)
     }
 
     @Test
@@ -282,21 +288,36 @@ class IntentExtensionsTest {
             extraText = body
         )
 
+        val expected = IntentShareInfo.Empty.copy(
+            attachmentUris = listOf(uri1.toString(), uri2.toString()),
+            emailRecipientTo = toRecipients.toList(),
+            emailRecipientCc = ccRecipients.toList(),
+            emailRecipientBcc = bccRecipients.toList(),
+            emailBody = body,
+            emailSubject = subject
+        )
+
         // When
-        val fileShareInfo = intent.getFileShareInfo()
+        val fileShareInfo = intent.getShareInfo()
 
         // Then
-        assertEquals(
-            FileShareInfo.Empty.copy(
-                attachmentUris = listOf(uri1.toString(), uri2.toString()),
-                emailRecipientTo = toRecipients.toList(),
-                emailRecipientCc = ccRecipients.toList(),
-                emailRecipientBcc = bccRecipients.toList(),
-                emailBody = body,
-                emailSubject = subject
-            ),
-            fileShareInfo
-        )
+        assertEquals(expected, fileShareInfo)
+    }
+
+    @Test
+    fun `should ignore null uri when parsing attachments`() {
+        // Given
+        val clipData = mockk<ClipData> {
+            every { itemCount } returns 1
+            every { getItemAt(0).uri } returns null
+        }
+        val intent = mockIntent(Intent.ACTION_SEND, clipData = clipData)
+
+        // When
+        val shareInfo = intent.getShareInfo()
+
+        // Then
+        assertEquals(IntentShareInfo.Empty, shareInfo)
     }
 
     private fun mockIntent(

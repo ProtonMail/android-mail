@@ -25,7 +25,7 @@ import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
 import ch.protonmail.android.mailcommon.domain.MailFeatureId
-import ch.protonmail.android.mailcommon.domain.model.FileShareInfo
+import ch.protonmail.android.mailcommon.domain.model.IntentShareInfo
 import ch.protonmail.android.mailcommon.domain.model.decode
 import ch.protonmail.android.mailcommon.domain.model.hasEmailData
 import ch.protonmail.android.mailcommon.domain.usecase.GetPrimaryAddress
@@ -205,7 +205,7 @@ class ComposerViewModel @Inject constructor(
         inputDraftId == null && (draftAction == null || draftAction is DraftAction.ComposeToAddress)
 
     private fun prefillForShareDraftAction(shareDraftAction: DraftAction.PrefillForShare) {
-        val fileShareInfo = shareDraftAction.fileShareInfo.decode()
+        val fileShareInfo = shareDraftAction.intentShareInfo.decode()
 
         uploadDraftContinuouslyWhileInForeground(DraftAction.Compose)
 
@@ -233,23 +233,23 @@ class ComposerViewModel @Inject constructor(
         }
     }
 
-    private suspend fun prepareDraftFieldsFor(fileShareInfo: FileShareInfo): DraftFields {
-        val draftBody = DraftBody(fileShareInfo.emailBody ?: "")
-        val subject = Subject(fileShareInfo.emailSubject ?: "")
+    private suspend fun prepareDraftFieldsFor(intentShareInfo: IntentShareInfo): DraftFields {
+        val draftBody = DraftBody(intentShareInfo.emailBody ?: "")
+        val subject = Subject(intentShareInfo.emailSubject ?: "")
         val recipientsTo = RecipientsTo(
-            fileShareInfo.emailRecipientTo.takeIfNotEmpty()?.map {
+            intentShareInfo.emailRecipientTo.takeIfNotEmpty()?.map {
                 participantMapper.recipientUiModelToParticipant(RecipientUiModel.Valid(it), contactsOrEmpty())
             } ?: emptyList()
         )
 
         val recipientsCc = RecipientsCc(
-            fileShareInfo.emailRecipientCc.takeIfNotEmpty()?.map {
+            intentShareInfo.emailRecipientCc.takeIfNotEmpty()?.map {
                 participantMapper.recipientUiModelToParticipant(RecipientUiModel.Valid(it), contactsOrEmpty())
             } ?: emptyList()
         )
 
         val recipientsBcc = RecipientsBcc(
-            fileShareInfo.emailRecipientBcc.takeIfNotEmpty()?.map {
+            intentShareInfo.emailRecipientBcc.takeIfNotEmpty()?.map {
                 participantMapper.recipientUiModelToParticipant(RecipientUiModel.Valid(it), contactsOrEmpty())
             } ?: emptyList()
         )

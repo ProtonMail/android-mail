@@ -24,7 +24,7 @@ import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
-class FileShareInfoTest {
+class IntentShareInfoTest {
 
     private val uri1 = mockk<Uri>()
     private val uri2 = mockk<Uri>()
@@ -39,7 +39,7 @@ class FileShareInfoTest {
         val bccRecipients = arrayOf("bccemail1@example.com", "bccemail2@example.com")
         val subject = "Test Subject"
         val body = "Test Body"
-        val fileShareInfo = FileShareInfo.Empty.copy(
+        val intentShareInfo = IntentShareInfo.Empty.copy(
             attachmentUris = listOf(uri1.toString(), uri2.toString()),
             emailRecipientTo = toRecipients.toList(),
             emailRecipientCc = ccRecipients.toList(),
@@ -49,9 +49,9 @@ class FileShareInfoTest {
         )
 
         // When
-        val encodedDecodedFileShareInfo = fileShareInfo.encode().decode()
+        val encodedDecodedFileShareInfo = intentShareInfo.encode().decode()
 
         // Then
-        assertEquals(fileShareInfo, encodedDecodedFileShareInfo)
+        assertEquals(intentShareInfo, encodedDecodedFileShareInfo)
     }
 }
