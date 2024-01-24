@@ -363,7 +363,7 @@ fun EmptyFolderListScreen(modifier: Modifier = Modifier, onAddFolderClick: () ->
             onClick = onAddFolderClick
         ) {
             Text(
-                text = stringResource(R.string.label_title_add_folder),
+                text = stringResource(R.string.label_title_create_folder),
                 Modifier.padding(
                     horizontal = ProtonDimens.SmallSpacing
                 ),
@@ -400,7 +400,7 @@ fun FolderListTopBar(
                     Icon(
                         painter = painterResource(id = R.drawable.ic_proton_plus),
                         tint = ProtonTheme.colors.iconNorm,
-                        contentDescription = stringResource(R.string.add_folder_content_description)
+                        contentDescription = stringResource(R.string.create_folder_content_description)
                     )
                 }
             }

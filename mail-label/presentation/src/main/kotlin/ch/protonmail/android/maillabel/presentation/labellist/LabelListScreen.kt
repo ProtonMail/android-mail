@@ -229,7 +229,7 @@ fun EmptyLabelListScreen(onAddLabelClick: () -> Unit, paddingValues: PaddingValu
             onClick = onAddLabelClick
         ) {
             Text(
-                text = stringResource(R.string.label_title_add_label),
+                text = stringResource(R.string.label_title_create_label),
                 Modifier.padding(
                     horizontal = ProtonDimens.SmallSpacing
                 ),
@@ -265,7 +265,7 @@ fun LabelListTopBar(
                     Icon(
                         painter = painterResource(id = R.drawable.ic_proton_plus),
                         tint = ProtonTheme.colors.iconNorm,
-                        contentDescription = stringResource(R.string.add_label_content_description)
+                        contentDescription = stringResource(R.string.create_label_content_description)
                     )
                 }
             }

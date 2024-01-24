@@ -137,8 +137,8 @@ private fun SidebarCustomLabelTitleItem(
                 Icon(
                     painter = painterResource(R.drawable.ic_proton_plus),
                     contentDescription = stringResource(
-                        id = if (type == MessageLabel) R.string.label_title_add_label
-                        else R.string.label_title_add_folder
+                        id = if (type == MessageLabel) R.string.label_title_create_label
+                        else R.string.label_title_create_folder
                     ),
                     tint = ProtonTheme.colors.iconWeak
                 )

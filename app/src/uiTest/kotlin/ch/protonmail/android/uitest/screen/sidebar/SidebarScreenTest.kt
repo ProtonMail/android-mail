@@ -83,8 +83,8 @@ internal class SidebarScreenTest {
         listOf(
             label.string.label_title_labels,
             label.string.label_title_folders,
-            label.string.label_title_add_folder,
-            label.string.label_title_add_label
+            label.string.label_title_create_folder,
+            label.string.label_title_create_label
         ).forEach {
             composeTestRule
                 .onNodeWithText(it)

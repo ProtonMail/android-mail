@@ -116,7 +116,7 @@ fun LabelAsBottomSheetContent(
                 .testTag(LabelAsBottomSheetTestTags.AddLabelRow)
                 .fillMaxWidth()
                 .clickable(
-                    onClickLabel = stringResource(id = R.string.add_label_content_description),
+                    onClickLabel = stringResource(id = R.string.create_label_content_description),
                     role = Role.Button,
                     onClick = actions.onAddLabelClick
                 ),
@@ -135,7 +135,7 @@ fun LabelAsBottomSheetContent(
                     .testTag(LabelAsBottomSheetTestTags.AddLabelText)
                     .weight(1f)
                     .padding(vertical = ProtonDimens.DefaultSpacing),
-                text = stringResource(id = R.string.label_title_add_label),
+                text = stringResource(id = R.string.label_title_create_label),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )

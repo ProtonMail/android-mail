@@ -32,7 +32,7 @@ fun LabelType.labelTitleRes() = when (this) {
 @StringRes
 fun LabelType.labelAddTitleRes() = when (this) {
     LabelType.ContactGroup -> 0
-    LabelType.MessageLabel -> R.string.label_title_add_label
-    LabelType.MessageFolder -> R.string.label_title_add_folder
+    LabelType.MessageLabel -> R.string.label_title_create_label
+    LabelType.MessageFolder -> R.string.label_title_create_folder
     LabelType.SystemFolder -> throw UnsupportedOperationException()
 }

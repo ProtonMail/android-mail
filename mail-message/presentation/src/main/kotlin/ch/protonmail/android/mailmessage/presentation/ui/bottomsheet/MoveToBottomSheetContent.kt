@@ -103,7 +103,7 @@ fun MoveToBottomSheetContent(dataState: MoveToBottomSheetState.Data, actions: Mo
                 .testTag(MoveToBottomSheetTestTags.AddFolderRow)
                 .fillMaxWidth()
                 .clickable(
-                    onClickLabel = stringResource(id = R.string.add_folder_content_description),
+                    onClickLabel = stringResource(id = R.string.create_folder_content_description),
                     role = Role.Button,
                     onClick = actions.onAddFolderClick
                 ),
@@ -122,7 +122,7 @@ fun MoveToBottomSheetContent(dataState: MoveToBottomSheetState.Data, actions: Mo
                     .testTag(MoveToBottomSheetTestTags.AddFolderText)
                     .weight(1f)
                     .padding(vertical = ProtonDimens.DefaultSpacing),
-                text = stringResource(id = R.string.label_title_add_folder),
+                text = stringResource(id = R.string.label_title_create_folder),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
