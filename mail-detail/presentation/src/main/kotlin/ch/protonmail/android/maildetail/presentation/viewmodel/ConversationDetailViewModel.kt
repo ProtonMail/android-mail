@@ -206,6 +206,8 @@ class ConversationDetailViewModel @Inject constructor(
             is ConversationDetailViewAction.OnAttachmentClicked -> {
                 onOpenAttachmentClicked(action.messageId, action.attachmentId)
             }
+            is ConversationDetailViewAction.ReportPhishing -> handleReportPhishing()
+            is ConversationDetailViewAction.ReportPhishingConfirmed -> handleReportPhishingConfirmed()
 
             is ConversationDetailViewAction.DeleteRequested,
             is ConversationDetailViewAction.DeleteDialogDismissed,
@@ -218,7 +220,8 @@ class ConversationDetailViewModel @Inject constructor(
             is ConversationDetailViewAction.ExpandOrCollapseMessageBody,
             is ConversationDetailViewAction.ShowEmbeddedImages,
             is ConversationDetailViewAction.LoadRemoteAndEmbeddedContent,
-            is ConversationDetailViewAction.LoadRemoteContent -> directlyHandleViewAction(action)
+            is ConversationDetailViewAction.LoadRemoteContent,
+            is ConversationDetailViewAction.ReportPhishingDismissed-> directlyHandleViewAction(action)
         }
     }
 
@@ -795,6 +798,14 @@ class ConversationDetailViewModel @Inject constructor(
             getDownloadingAttachmentsForMessages(userId, messagesState.messages.map { MessageId(it.messageId.id) })
                 .isNotEmpty()
         } else false
+    }
+
+    private fun handleReportPhishingConfirmed(){
+
+    }
+
+    private fun handleReportPhishing() {
+
     }
 
     companion object {

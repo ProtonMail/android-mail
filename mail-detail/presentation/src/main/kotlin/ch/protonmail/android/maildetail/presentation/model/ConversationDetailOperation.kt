@@ -26,6 +26,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOpe
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingDeleteDialog
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingErrorBar
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingMessages
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingReportPhishingDialog
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
@@ -41,6 +42,7 @@ sealed interface ConversationDetailOperation {
     sealed interface AffectingErrorBar
     sealed interface AffectingBottomSheet
     sealed interface AffectingDeleteDialog
+    sealed interface AffectingReportPhishingDialog
 }
 
 sealed interface ConversationDetailEvent : ConversationDetailOperation {
@@ -113,6 +115,10 @@ sealed interface ConversationDetailEvent : ConversationDetailOperation {
     ) : MessageDetailEvent, AffectingMessages
 
     data class OpenAttachmentEvent(val values: OpenAttachmentIntentValues) : ConversationDetailEvent
+    data class ReportPhishingRequested(
+        val messageId: MessageId,
+        val isOffline: Boolean
+    ) : ConversationDetailEvent, AffectingBottomSheet, AffectingReportPhishingDialog
 }
 
 sealed interface ConversationDetailViewAction : ConversationDetailOperation {
@@ -136,6 +142,7 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
     data class LabelAsConfirmed(val archiveSelected: Boolean) : ConversationDetailViewAction, AffectingBottomSheet
     data class RequestMoreActionsBottomSheet(val messageId: MessageId) :
         ConversationDetailViewAction, AffectingBottomSheet
+
     data class ExpandMessage(val messageId: MessageIdUiModel) : ConversationDetailViewAction
     data class CollapseMessage(val messageId: MessageIdUiModel) : ConversationDetailViewAction
     data class MessageBodyLinkClicked(val messageId: MessageIdUiModel, val uri: Uri) : ConversationDetailViewAction
@@ -145,11 +152,17 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
     data class ShowAllAttachmentsForMessage(val messageId: MessageIdUiModel) : ConversationDetailViewAction
     data class OnAttachmentClicked(val messageId: MessageIdUiModel, val attachmentId: AttachmentId) :
         ConversationDetailViewAction
+
     data class ExpandOrCollapseMessageBody(val messageId: MessageIdUiModel) :
         ConversationDetailViewAction, AffectingMessages
+
     data class LoadRemoteContent(val messageId: MessageIdUiModel) : ConversationDetailViewAction, AffectingMessages
     data class ShowEmbeddedImages(val messageId: MessageIdUiModel) : ConversationDetailViewAction, AffectingMessages
     data class LoadRemoteAndEmbeddedContent(val messageId: MessageIdUiModel) :
         ConversationDetailViewAction, AffectingMessages
+
+    data class ReportPhishing(val messageId: MessageId) : ConversationDetailViewAction
+    object ReportPhishingDismissed : ConversationDetailViewAction, AffectingReportPhishingDialog
+    object ReportPhishingConfirmed : ConversationDetailViewAction, AffectingReportPhishingDialog
 
 }

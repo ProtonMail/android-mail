@@ -57,12 +57,14 @@ class ConversationDetailReducerTest(
     private val metadataReducer = mockk<ConversationDetailMetadataReducer>(relaxed = true)
     private val bottomSheetReducer = mockk<BottomSheetReducer>(relaxed = true)
     private val deleteDialogReducer = mockk<ConversationDeleteDialogReducer>(relaxed = true)
+    private val reportPhishingDialogReducer = mockk<ConversationReportPhishingDialogReducer>(relaxed = true)
     private val reducer = ConversationDetailReducer(
         bottomBarReducer = bottomBarReducer,
         messagesReducer = messagesReducer,
         metadataReducer = metadataReducer,
         bottomSheetReducer = bottomSheetReducer,
-        deleteDialogReducer = deleteDialogReducer
+        deleteDialogReducer = deleteDialogReducer,
+        reportPhishingDialogReducer = reportPhishingDialogReducer
     )
 
     @Test

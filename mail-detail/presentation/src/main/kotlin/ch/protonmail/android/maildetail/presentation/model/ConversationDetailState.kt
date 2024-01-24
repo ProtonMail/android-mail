@@ -37,7 +37,8 @@ data class ConversationDetailState(
     val openAttachmentEffect: Effect<OpenAttachmentIntentValues>,
     val scrollToMessage: MessageIdUiModel?,
     val requestLinkConfirmation: Boolean,
-    val deleteDialogState: DeleteDialogState
+    val deleteDialogState: DeleteDialogState,
+    val reportPhishingDialogState: ReportPhishingDialogState
 ) {
 
     companion object {
@@ -54,7 +55,8 @@ data class ConversationDetailState(
             openAttachmentEffect = Effect.empty(),
             scrollToMessage = null,
             requestLinkConfirmation = false,
-            deleteDialogState = DeleteDialogState.Hidden
+            deleteDialogState = DeleteDialogState.Hidden,
+            reportPhishingDialogState = ReportPhishingDialogState.Hidden
         )
     }
 }

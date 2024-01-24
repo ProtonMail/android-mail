@@ -24,6 +24,7 @@ import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.presentation.R
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ConversationBottomBarEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ConversationBottomSheetEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorAddStar
@@ -48,6 +49,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailSta
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyLink
 import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
+import ch.protonmail.android.maildetail.presentation.model.ReportPhishingDialogState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetOperation
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState.LabelAsBottomSheetAction.LabelToggled
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState.MoveToBottomSheetAction.MoveToDestinationSelected
@@ -59,7 +61,8 @@ class ConversationDetailReducer @Inject constructor(
     private val metadataReducer: ConversationDetailMetadataReducer,
     private val messagesReducer: ConversationDetailMessagesReducer,
     private val bottomSheetReducer: BottomSheetReducer,
-    private val deleteDialogReducer: ConversationDeleteDialogReducer
+    private val deleteDialogReducer: ConversationDeleteDialogReducer,
+    private val reportPhishingDialogReducer: ConversationReportPhishingDialogReducer
 ) {
 
     fun newStateFrom(
@@ -77,7 +80,8 @@ class ConversationDetailReducer @Inject constructor(
             openMessageBodyLinkEffect = currentState.toOpenMessageBodyLinkState(operation),
             openAttachmentEffect = currentState.toNewOpenAttachmentStateFrom(operation),
             scrollToMessage = currentState.toScrollToMessageState(operation),
-            deleteDialogState = currentState.toNewDeleteDialogState(operation)
+            deleteDialogState = currentState.toNewDeleteDialogState(operation),
+            reportPhishingDialogState = currentState.toNewReportPhishingDialogState(operation)
         )
     }
 
@@ -115,6 +119,7 @@ class ConversationDetailReducer @Inject constructor(
                 is ConversationDetailViewAction.RequestMoveToBottomSheet -> BottomSheetOperation.Requested
 
                 is ConversationDetailViewAction.LabelAsConfirmed,
+                is ConversationDetailEvent.ReportPhishingRequested,
                 is ConversationDetailViewAction.DismissBottomSheet -> BottomSheetOperation.Dismiss
             }
             bottomSheetReducer.newStateFrom(bottomSheetState, bottomSheetOperation)
@@ -216,6 +221,16 @@ class ConversationDetailReducer @Inject constructor(
             deleteDialogReducer.newStateFrom(operation)
         } else {
             deleteDialogState
+        }
+    }
+
+    private fun ConversationDetailState.toNewReportPhishingDialogState(
+        operation: ConversationDetailOperation
+    ): ReportPhishingDialogState {
+        return if (operation is ConversationDetailOperation.AffectingReportPhishingDialog) {
+            reportPhishingDialogReducer.newStateFrom(operation)
+        } else {
+            reportPhishingDialogState
         }
     }
 }
