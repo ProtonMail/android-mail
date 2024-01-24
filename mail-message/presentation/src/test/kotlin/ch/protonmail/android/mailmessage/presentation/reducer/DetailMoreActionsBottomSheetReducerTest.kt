@@ -46,11 +46,11 @@ internal class DetailMoreActionsBottomSheetReducerTest(
     @Before
     fun setup() {
         every {
-            mapper.toReplyActionUiModels(ExpectedSender, SingleParticipantCount)
+            mapper.mapMoreActionUiModels(ExpectedSender, SingleParticipantCount)
         } returns expectedSingleParticipantAction
 
         every {
-            mapper.toReplyActionUiModels(ExpectedSender, MultipleParticipantsCount)
+            mapper.mapMoreActionUiModels(ExpectedSender, MultipleParticipantsCount)
         } returns expectedMultipleParticipantAction
 
         every {
@@ -83,8 +83,10 @@ internal class DetailMoreActionsBottomSheetReducerTest(
             headerDescriptionText = TextUiModel(ExpectedSender),
             messageId = ExpectedMessageId
         )
-        private val expectedSingleParticipantAction = listOf(ActionUiModelSample.Reply).toImmutableList()
-        private val expectedMultipleParticipantAction = listOf(ActionUiModelSample.Forward).toImmutableList()
+        private val expectedSingleParticipantAction =
+            listOf(ActionUiModelSample.Reply, ActionUiModelSample.ReportPhishing).toImmutableList()
+        private val expectedMultipleParticipantAction =
+            listOf(ActionUiModelSample.Forward, ActionUiModelSample.ReportPhishing).toImmutableList()
 
         private val transitionsFromLoadingState = listOf(
             TestInput(

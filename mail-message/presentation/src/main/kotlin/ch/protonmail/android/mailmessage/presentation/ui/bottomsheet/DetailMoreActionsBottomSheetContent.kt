@@ -129,6 +129,7 @@ private fun callbackForAction(
         Action.Reply -> actionCallbacks.onReply
         Action.ReplyAll -> actionCallbacks.onReplyAll
         Action.Forward -> actionCallbacks.onForward
+        Action.ReportPhishing -> actionCallbacks.onReportPhishing
 
         else -> {
             { Timber.d("Action not handled $action.") }
@@ -141,7 +142,8 @@ object DetailMoreActionsBottomSheetContent {
     data class Actions(
         val onReply: (MessageId) -> Unit,
         val onReplyAll: (MessageId) -> Unit,
-        val onForward: (MessageId) -> Unit
+        val onForward: (MessageId) -> Unit,
+        val onReportPhishing: (MessageId) -> Unit
     )
 }
 
@@ -159,13 +161,15 @@ private fun BottomSheetContentPreview() {
                 listOf(
                     ActionUiModel(Action.Reply),
                     ActionUiModel(Action.ReplyAll),
-                    ActionUiModel(Action.Forward)
+                    ActionUiModel(Action.Forward),
+                    ActionUiModel(Action.ReportPhishing)
                 ).toImmutableList()
             ),
             actions = DetailMoreActionsBottomSheetContent.Actions(
                 onReply = {},
                 onReplyAll = {},
-                onForward = {}
+                onForward = {},
+                onReportPhishing = {}
             )
         )
     }

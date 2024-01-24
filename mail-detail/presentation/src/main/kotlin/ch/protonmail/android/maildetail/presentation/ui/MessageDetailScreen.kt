@@ -65,6 +65,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailsPreviewProvider
+import ch.protonmail.android.maildetail.presentation.ui.dialog.ReportPhishingDialog
 import ch.protonmail.android.maildetail.presentation.ui.header.MessageDetailHeader
 import ch.protonmail.android.maildetail.presentation.viewmodel.MessageDetailViewModel
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
@@ -129,6 +130,12 @@ fun MessageDetailScreen(
         dismiss = { viewModel.submit(MessageViewAction.DeleteDialogDismissed) }
     )
 
+    ReportPhishingDialog(
+        state = state.reportPhishingDialogState,
+        onConfirm = { viewModel.submit(MessageViewAction.ReportPhishingConfirmed) },
+        onDismiss = { viewModel.submit(MessageViewAction.ReportPhishingDismissed) }
+    )
+
     ProtonModalBottomSheetLayout(
         sheetState = bottomSheetState,
         sheetContent = {
@@ -158,7 +165,8 @@ fun MessageDetailScreen(
                     actions = DetailMoreActionsBottomSheetContent.Actions(
                         onReply = actions.onReply,
                         onReplyAll = actions.onReplyAll,
-                        onForward = actions.onForward
+                        onForward = actions.onForward,
+                        onReportPhishing = { viewModel.submit(MessageViewAction.ReportPhishing(it)) }
                     )
                 )
 

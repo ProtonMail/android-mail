@@ -46,6 +46,9 @@ object ActionUiModelSample {
     val Trash: ActionUiModel =
         build(Action.Trash)
 
+    val ReportPhishing: ActionUiModel =
+        build(Action.ReportPhishing)
+
     fun ReplyTo(recipient: String): ActionUiModel =
         Reply.copy(
             description = TextUiModel.TextResWithArgs(R.string.action_reply_to_description, listOf(recipient)),

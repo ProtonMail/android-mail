@@ -40,7 +40,7 @@ class DetailMoreActionsBottomSheetUiMapper @Inject constructor() {
             messageId
         )
 
-    fun toReplyActionUiModels(senderName: String, recipientsCount: Int): ImmutableList<ActionUiModel> {
+    fun mapMoreActionUiModels(senderName: String, recipientsCount: Int): ImmutableList<ActionUiModel> {
         return mutableListOf<ActionUiModel>().apply {
             // Show Reply + Reply All only if needed
             if (recipientsCount > 1) {
@@ -63,6 +63,7 @@ class DetailMoreActionsBottomSheetUiMapper @Inject constructor() {
             }
 
             add(ActionUiModel(Action.Forward))
+            add(ActionUiModel(Action.ReportPhishing))
         }.toImmutableList()
     }
 }

@@ -55,11 +55,12 @@ internal class DetailMoreActionsBottomSheetUiMapperTest {
         // Given
         val expectedList = listOf(
             ActionUiModel(Action.Reply),
-            ActionUiModel(Action.Forward)
+            ActionUiModel(Action.Forward),
+            ActionUiModel(Action.ReportPhishing)
         ).toImmutableList()
 
         // When
-        val actual = mapper.toReplyActionUiModels(ExpectedSender, SingleRecipientCount)
+        val actual = mapper.mapMoreActionUiModels(ExpectedSender, SingleRecipientCount)
 
         // Then
         assertEquals(expectedList, actual)
@@ -81,11 +82,12 @@ internal class DetailMoreActionsBottomSheetUiMapperTest {
                 )
             ),
             ActionUiModel(Action.ReplyAll),
-            ActionUiModel(Action.Forward)
+            ActionUiModel(Action.Forward),
+            ActionUiModel(Action.ReportPhishing)
         ).toImmutableList()
 
         // When
-        val actual = mapper.toReplyActionUiModels(ExpectedSender, PluralRecipientCount)
+        val actual = mapper.mapMoreActionUiModels(ExpectedSender, PluralRecipientCount)
 
         // Then
         assertEquals(expectedList, actual)

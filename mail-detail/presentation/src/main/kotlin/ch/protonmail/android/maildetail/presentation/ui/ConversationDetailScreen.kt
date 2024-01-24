@@ -169,7 +169,8 @@ fun ConversationDetailScreen(
                     actions = DetailMoreActionsBottomSheetContent.Actions(
                         onReply = actions.onReply,
                         onReplyAll = actions.onReplyAll,
-                        onForward = actions.onForward
+                        onForward = actions.onForward,
+                        onReportPhishing = {}
                     )
                 )
 
